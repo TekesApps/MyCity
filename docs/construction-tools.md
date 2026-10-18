@@ -40,6 +40,7 @@ status 区分 ok、rejected、pending、partial；partial 仅用于明确分页�
 
 | 工具 | 类别 | 关键输入 | 关键输出 |
 | --- | --- | --- | --- |
+| city.election_status | 只读 | 城市／term_id／程序版本／分页 | 选举时间表、登记／选票总计、名单、席位、当选人与交接状态 |
 | city.governance_status | 只读 | 城市／制度版本／分页 | 宪章、条例、拨款、生效程序与司法限制 |
 | city.bill_propose | 草案 | 类型化条款／范围／财政影响／授权 | 法案草案与版本 |
 | city.bill_evaluate | 评估 | 法案版本／制度与财政快照 | 能力、冲突、槽位、程序和资金影响 |
