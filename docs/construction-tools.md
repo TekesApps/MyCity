@@ -1,0 +1,334 @@
+# Agent 城市建设工具协议
+
+版本：设计草案 v0.4，2026-10-18。以下 API 为 MyCity 待实现协议，尚未注册到任何 harness，也不是 TekesAgentKit 已有方法。
+
+配套：[运行闭环](runtime-loop.md)、[性能预算](performance-budget.md)、[空间与精度契约](spatial-contract.md)、[市长与 City Team](city-team.md)、[评审总览](preparation-review.md)。
+
+## 1. 目标与职责
+
+工具必须让 agent 知道：能在哪里建设、能建什么、精确占用多大范围、会改动哪些对象、需要多少资源、为何不合法，以及提交后实际发生了什么。
+
+采用分层能力：市长表达目标，City Team 编排与解释，几何求解器生成可执行草案，规则引擎验证，模拟核心提交。agent 能查看和引用精确坐标，但不必逐点描绘道路或逐栋猜位置。
+
+计划内的道路、地块、建筑、连接和地形调整必须展开成可检查的最终动作；“自动解决一切”的黑盒工具不能直接写世界状态。
+
+## 2. 服务接入与权限
+
+MyCity 内部以类型化命令／查询实现工具服务，再由消费侧适配层接到所选 harness 的公开工具接口。是否暴露 MCP 或其他公开扩展协议，在接入验证后确定，不在文档阶段绑定未验证传输。
+
+TekesAgentKit 负责会话和执行状态，MyCity 拥有工具规则、世界状态与权限。身份及有效权限由宿主绑定的连接上下文注入；模型填写的 role、city_id 或 authorization_ref 不能自行扩大权限。
+
+城市负责人可在项目授权内提交；部门分析默认只读和草拟，确需执行时获得明确子范围。数据库、存档文件、任意 Rust 代码与 shell 执行均不作为游戏建设接口。
+
+## 3. 公共请求与响应
+
+请求公共字段：schema_version、request_id、world_id、branch_id、arguments；地图／城市级请求另带 map_id／city_id；已建立的任务上下文另带 goal_id、goal_revision 和 team_task_id。snapshot_ref 在需要固定观察时提供，首次查询可由服务创建。持久化修改请求（含目标、监测、政策与世界）带 operation_id、有效权限依据和相应预期版本；草案修改使用独立的 plan_revision，不要求存在尚未创建的项目 ID。
+
+request_id 用于追踪单次调用；operation_id 表示同一逻辑修改，跨重试保持不变。operation_id 的作用域为 world_id + branch_id，参数规范化后哈希校验，相同 ID 不同参数返回冲突。
+
+schema 对未知字段、错误单位、NaN／Infinity、越界整数与混合坐标框架报错。schema_version 不支持时拒绝，不能猜测兼容。
+
+响应公共字段：request_id、world_id、branch_id、status、snapshot_ref、simulation_tick、data、warnings、errors、next_cursor。响应另含 coverage 和 data_age；数据不足以满足精确查询时明确报告待验证。对象结果带 revision，坐标带 frame_id，距离和面积带明确单位。
+
+status 区分 ok、rejected、pending、partial；partial 仅用于明确分页／批次结果或多阶段项目，不允许“原子建设完成一半”。pending 必须提供 task_id 或 operation_id，可查询权威状态。
+
+只读查询通过冻结 snapshot_ref 分页，禁止翻页混入不同时间的对象；快照过期返回 snapshot_expired。摘要包含总数、已返回数量和是否截断。
+
+## 4. 首版工具目录
+
+16 GB 档一次详细运行一张地图，已连接邻图使用摘要。能力描述返回地图尺寸、地图模式、区域时钟与剩余计算配额，见 [跨地图运行](cross-map-runtime.md)。
+
+| 工具 | 类别 | 关键输入 | 关键输出 |
+| --- | --- | --- | --- |
+| city.region_status | 只读 | 区域快照与地图过滤 | 地图模式、统一时钟、端口状态与预算 |
+| city.exchange_query | 只读 | 类型、容量池、双方与时间窗 | 有效、预留、占用、自由容量与交付 |
+| city.exchange_contract_propose | 草案 | 类型化条款、双方、资源与费用 | 合同草案及未满足项 |
+| city.exchange_contract_evaluate | 预演 | 合同、区域快照与版本 | 供给、通道、预算校验，不占真实资源 |
+| city.exchange_contract_apply | 持久修改 | 已评估合同、双方依据、operation_id | 原子创建合同和资源／资金预留 |
+| city.exchange_contract_end | 持久修改 | 合同、条款、授权、operation_id | 终止、释放及在途义务处理 |
+| city.exchange_deliveries | 只读 | 合同、批次、计量周期、游标 | 发货、派遣、交付和短缺 |
+| city.exchange_settlements | 只读 | 合同、发票、账期、游标 | 配对分录、退款和欠款 |
+| city.map_open | 表示切换 | map_id、有效授权、operation_id | 同一逻辑时刻加载并对齐，不增加详细槽位 |
+| city.goal_propose | 目标草案 | 市长命令引用、目标、约束、默认值与未决项 | 目标草案与需确认项；只有宿主依据玩家事件／既有授权才能激活 |
+| city.goal_update | 目标修改 | goal_id、预期版本、amends／supersedes 和玩家依据 | 新目标版本或待决定提案；不能自改权限、放宽硬约束 |
+| city.goal_status | 只读 | goal_id | 目标／项目／监测状态、版本、完成证据与阻碍 |
+| city.monitor_register | 监测配置 | 目标、metric_spec、窗口、阈值、告警与预算 | 持久化 monitor_ref，按游戏时钟调度 |
+| city.monitor_update | 监测配置 | monitor_ref、预期版本、更新／停止参数 | 新监测版本；改变目标达标条件仍需有效目标修改 |
+| city.events | 只读 | 目标／项目过滤、持久游标 | 有序事件、缺口／重同步提示，支持离线补读 |
+| city.services_query | 只读 | 服务类型、区域、供方与快照 | 可用容量、响应成本、覆盖、报价与摘要精度 |
+| city.service_contract_propose | 草案 | 供需双方、容量、时间窗、费用与优先级 | 协议草案与未满足条件 |
+| city.service_contract_evaluate | 预演 | 草案、供方版本和快照 | 容量、路线、响应与预算校验，不占真实容量 |
+| city.service_contract_apply | 持久修改 | 已校验草案、授权、版本、operation_id | 原子预留与协议生效回执 |
+| city.service_contract_end | 持久修改 | 协议、终止条款、授权、operation_id | 到期／终止、预留释放及未完交付处理 |
+| city.service_settlements | 只读 | 协议、交付、时间窗、游标 | 实际服务、费用、账单与对账状态 |
+| city.capabilities | 只读 | 无或 schema_version | 支持动作、模板规则、精度、限制、预演模型与 endpoint 接入状态 |
+| city.inspect | 只读 | 区域／对象／指标、快照 | 容量、网络、环境和财政摘要，全部来源版本 |
+| city.resolve_region | 只读 | 对象关系、选区引用或多边形 | 冻结 region_ref、解释、面积、可操作范围和歧义 |
+| city.query_objects | 只读 | 区域、类型、条件、游标 | 有界对象集合与稳定引用 |
+| city.get_object | 只读 | 对象引用、详情字段 | 几何、端口、占地、版本、状态与关联 |
+| city.catalog | 只读 | 模板类别与过滤条件 | 建筑、道路、管线的版本化模板及参数范围 |
+| city.find_sites | 只读求解 | 用途、region_ref、硬约束、软偏好 | 候选地块及得分、排除原因、可行性 |
+| city.create_plan | 草案 | 目标、范围、预算和授权引用 | draft_id、plan_revision、冻结目标与约束 |
+| city.propose_layout | 草案求解 | 草案、地块、道路端点、模板及布局规则 | 多个候选草案差异、最终几何、实际占地和未满足条件 |
+| city.edit_plan | 草案修改 | 草案版本、增删改动作 | 新计划版本、变换明细、失效评估 |
+| city.evaluate_plan | 预演 | 计划版本、快照、模型和时间窗 | 硬校验、预测、资源、依赖、评估凭据 |
+| city.apply_plan | 修改世界 | 已评估计划、operation_id、有效授权 | 已接受或拒绝回执、项目／步骤状态 |
+| city.operation_status | 只读 | operation_id | 未见记录、执行中、已完成或失败，已生效对象 |
+| city.cancel_task | 停止后续动作 | task_id、operation_id | 停止结果、不可撤回的已提交动作、释放预留 |
+| city.observe | 只读 | 目标／项目、基线、时间窗 | 实际指标、差值、证据与未达成原因 |
+| city.set_policy | 修改世界 | 类型化政策、范围、预期版本、授权、operation_id | 当前状态校验后的政策回执 |
+
+原有 city.plan_district 收敛为 create_plan + propose_layout + evaluate_plan；不保留绕过评估的独立建设通道。新增工具以明确 schema 版本发布。目标、授权及监测的语义以 [运行闭环](runtime-loop.md) 为准；工具上下文不能反过来成为自授权来源。
+
+草案修改不改变正式世界，也不扣建设款；计算成本受调用预算限制。真正的资金与空间预留在接受项目时发生，草案预估不是锁定承诺。
+
+## 5. 草案动作体系
+
+| 动作类型 | 必须描述 | 验证重点 |
+| --- | --- | --- |
+| parcel.split／merge | 原地块引用、目标边界 | 权属、面积、无缝无重叠、已有建筑 |
+| zone.assign | 区域、用途、密度及开发规则 | 合法用地、保护条件、不会瞬间生成私营建筑 |
+| terrain.grade | 范围、目标坡面、挖填上限 | 完整改动范围、边坡、土方与水域 |
+| road.build／upgrade | 端点、模板、曲线、连接模式 | 路权、交叉口、曲率、坡度、断联影响 |
+| utility.build／upgrade | 类型、走廊、深度层、网络节点 | 容量、拓扑、服务与地下范围 |
+| building.place | 模板版本、地块、位置、朝向 | 全用地、包络、退界、地基与端口 |
+| connection.build | 建筑端口、目标节点及连接走廊 | 可达性、容量、占地与类型兼容 |
+| object.demolish | 明确对象版本、依赖和安置规则 | 既有授权、人口／就业／管网后果 |
+| land.clear | 范围、移除对象类型 | 林地与保护约束、清除成本 |
+
+首版每种动作分别声明 implemented／preview_only／unsupported，不以“工具存在”代表所有动作可执行。公共设施优先支持直接建造；私人分区开发由模拟推进。公共住宅等直接开发必须有明确产权与预算规则。
+
+依赖通过草案内 action_id 引用。道路、泵站和连接可以作为同一 commissioning_group 检查最终拓扑并原子提交，避免新建筑与其端口连接互相等待；跨组依赖为无环图。built_uncommissioned 与 operational 分开，服务容量只有真实可供给时生效。提交回执给出 action_id → object_ref 映射。
+
+## 6. 硬约束、软偏好与求解
+
+施工硬约束包括允许范围、禁止拆迁、保护地、累计预算、模板范围、最低净距及当前组必须满足的连接条件；未满足不能提交。实际入住等运营结果条件通过持续监测核验，不能与提交条件混用。未来服务依赖必须标为未投运或纳入 require_operational 原子组，不能拿未来供应顶替当前供应。
+
+软偏好包括更短道路、更少土方、朝向、街区整齐和未来扩建空间。返回评分分项和取舍，不用综合分掩盖硬约束失败。
+
+find_sites 和 propose_layout 可返回 feasible、infeasible、unknown。unknown 表示搜索预算内未找到或数值无法判断，不能声称数学上不存在解。
+
+“住宅容量两万人”可以验证模板和规划容量，“实际入住两万人”取决于就业、需求、时间和交通，只能作为后续观察目标。市长将入住数作为硬完成目标时，系统持续核验，不能把规划容量当作已完成。
+
+不能验证的硬约束返回 unsupported_constraint。例如首版没有水文模型时，“下游水质不变”不能标绿通过；若市长接受保护带等替代约束，需形成新的目标版本。
+
+## 7. 评估分层
+
+1. schema 与引用：单位、范围、版本、模板、参数和动作依赖。
+2. 硬几何与权限：完整设施及施工占地、保护区、跨区授权、碰撞、退界、坡度与网络连接。
+3. 当前资源与建设：财政、空间占用、投入物、成本归属、工程阶段和服务容量。
+4. 隔离预测：在指定快照与时间窗内运行交通、市场、人口和环境预演；声明 static／traffic／long_run 层级、时间预算、收敛与数据覆盖。首版最多一个完整预演任务，不无限并行复制城市。
+5. 汇总：分别返回 hard_checks、operational_readiness、prediction_status、goal_assessment，而不合成一个失去含义的“通过”。预测缺失不能声称目标保证；若硬检查通过且市长已授权承担明确运营风险，可以按规则建设未投运资产。
+
+评估凭据绑定 plan_revision、canonical_geometry_hash、construction_revision、模板／规则／授权版本和预测有效期。编辑草案使凭据失效。提交时仍重新检查当前财政、授权、占用和必要资源，评估凭据不保证未来一定可执行。
+
+费用分别列出建设款、预留款、经常维护和预计收入；不得用乐观税收抵消确定的建设预算。展示模型时间窗与成本假设。
+
+## 8. 提交、施工与竞态
+
+apply_plan 接受已评估计划，在模拟提交边界原子校验并记录项目、预算和空间预留。首版可以采用全局 construction_revision 比较并交换，拒绝期间发生建设修改的旧方案。
+
+首版原子步骤可在某个模拟步直接建成，不承诺真实施工机械与工期模拟；分期表示项目调度与依赖，可等待资金或指标触发。若后续加入占地施工期，施工中状态、投入物消耗和取消成本须扩展为明确状态机。
+
+项目由多个原子步骤构成；每步施工前再次检查未失效的授权、依赖和资源。已完成步骤保留，后续失败使项目进入 blocked／partial，并报告剩余预留和可选处理。
+
+取消释放未耗用预留，不能退回已经花费的建设款或消除实际后果。项目预留按游戏时钟管理，暂停不超时；受阻超过 1 游戏日未推进时释放未用资源，恢复需重新评估。短期计算锁按现实超时回收，规则见 runtime-loop.md。
+
+接受项目后，各原子组按当前状态与项目自身回执验证，不能把初次接受时的全局建设版本硬套到每一步，使项目被自己的前一步永久判过期。
+
+若两个计划竞争同一土地或预算，只有先成功提交者取得预留，另一个得到冲突信息后重新规划。锁顺序与原子提交由服务负责，agent 不能靠调用顺序假设自己拥有地块。
+
+服务先按 operation_id 查询既有结果，再检查新请求的前置条件；重复请求返回原回执，不因世界版本已变化而拒绝已成功的同一操作。
+
+请求超时先查询 operation_status；not_found 仅表示本次查询时没有权威记录。再次提交时继续使用同一 operation_id，由服务进行去重，不能换新 ID 盲目重建。
+
+## 9. 错误与可恢复反馈
+
+错误响应至少含 code、action_id、object_ref、conflict_geometry_ref、actual、required、recoverable、suggested_next_tool。不要只返回“建设失败”。
+
+| 错误码 | 含义／处理 |
+| --- | --- |
+| ambiguous_region | 指代或区域关系不唯一，列候选供绑定 |
+| out_of_scope | 任一直接改动范围超出授权，返回越界几何 |
+| protected_overlap | 侵入保护地，必须调整方案或取得明确新政策 |
+| memory_budget | 求解／预演剩余内存不足，分段处理或排队，不静默超配 |
+| stale_reference／stale_plan | 对象或建设版本变化，读取最新状态后重评估 |
+| budget_exceeded | 累计支出加预留超出限额，不能分单绕过 |
+| geometry_invalid／numerically_ambiguous | 自交、退化或无法稳健判断，修几何或分段 |
+| setback_violation／slope_exceeded | 实际净距或坡度不符合游戏模板 |
+| bootstrap_dependency_cycle | 运营依赖成环且没有真实启动供应，不能凭空出水发电 |
+| disconnected_access／utility_capacity | 道路不达或水电容量不足 |
+| unsupported_constraint／unsupported_action | 缺少能力，必须说明而非静默忽略 |
+| idempotency_conflict | 相同 operation_id 携带不同请求内容 |
+| precondition_failed | 当前资源、权限或依赖与评估不一致 |
+| limit_exceeded | 对象、顶点或计算预算超限，分阶段处理 |
+
+## 10. 一次精确设施建设示例
+
+命令：“在规划区南侧建一座小型水泵站，接入这条路和已有水电，不要碰树林，预算不超过两百万。”
+
+流程：capabilities → resolve_region → inspect／catalog → find_sites → create_plan → propose_layout／edit_plan → evaluate_plan → apply_plan → operation_status → observe。
+
+计划示例采用米制对象坐标；ID 为示意，必须来自真实查询。以下是 edit_plan 的 arguments 示例，通用请求上下文由外层提供：
+
+```json
+{
+  "draft_id": "draft-pump-01",
+  "expected_plan_revision": 2,
+  "add_actions": [
+    {
+      "action_id": "pump",
+      "type": "building.place",
+      "catalog_asset_ref": {
+        "id": "U1",
+        "revision": 1
+      },
+      "parcel_ref": {
+        "id": "parcel-17",
+        "revision": 4
+      },
+      "placement": {
+        "frame_id": "local-metric-v1",
+        "anchor": "site_center",
+        "position_m": {
+          "x": 1048.0,
+          "y": 720.0
+        },
+        "foundation": {
+          "mode": "fit_existing_terrain"
+        },
+        "heading_deg": 90.0,
+        "snap_step_m": 0.25
+      }
+    },
+    {
+      "action_id": "access",
+      "type": "connection.build",
+      "from": {
+        "action_id": "pump",
+        "port_id": "maintenance_access"
+      },
+      "to": {
+        "object_id": "road-node-28",
+        "revision": 3
+      },
+      "network_kind": "road",
+      "route": {
+        "solver": "within_region",
+        "region_ref": "region-pump-project-r1"
+      }
+    },
+    {
+      "action_id": "water",
+      "type": "connection.build",
+      "from": {
+        "action_id": "pump",
+        "port_id": "water_out"
+      },
+      "to": {
+        "object_id": "water-node-12",
+        "revision": 2
+      },
+      "network_kind": "water",
+      "route": {
+        "solver": "follow_action_corridor",
+        "action_id": "access"
+      }
+    },
+    {
+      "action_id": "power",
+      "type": "connection.build",
+      "from": {
+        "action_id": "pump",
+        "port_id": "power_in"
+      },
+      "to": {
+        "object_id": "power-node-8",
+        "revision": 2
+      },
+      "network_kind": "electricity",
+      "route": {
+        "solver": "follow_action_corridor",
+        "action_id": "access"
+      }
+    }
+  ],
+  "commissioning_groups": [
+    {
+      "group_id": "pump-service",
+      "action_ids": [
+        "pump",
+        "access",
+        "water",
+        "power"
+      ],
+      "require_operational": true
+    }
+  ]
+}
+```
+
+模板还需声明有效水源资格；若地块无法满足水源条件，即使位置和管线都合法也拒绝。初始描述没有指定新水源时，团队必须核对已有取水条件。
+
+heading 为 90° 时，16×20 m 设施用地旋转后的轴向外包框为 20×16 m；中心 (1048,720) 对应示意范围 x=[1038,1058]、y=[712,728]，面积 320 m²。8×12 m 主体对应 12×8 m，但其模板内偏移和端口仍应按模板变换，不由 agent 猜测。
+
+工具生成并返回连接走廊、最终坐标、高程和完整占地后，才能评估／提交。上面的候选本身不是有效施工承诺。
+
+提交 arguments 示例：
+
+```json
+{
+  "draft_id": "draft-pump-01",
+  "expected_plan_revision": 3,
+  "evaluation_ref": "eval-pump-01-r3",
+  "expected_construction_revision": 41,
+  "authorization_ref": "auth-pump-budget-r1",
+  "operation_id": "build-pump-01"
+}
+```
+
+泵站与其接入作为一个原子投运组，最终需要足够的已存在供电、水源资格和合法维护入口。运行示例创建目标并注册水电供给与服务能力 Monitor，完工后按实际窗口采样。
+
+通过授权、规则和当前资源检查后，回执给出实际资产 ID、最终几何哈希、扣款／预留、construction_revision 和工程状态。完工后再检查真实道路、水源、电力和供水能力，不能仅以模型回复“已完成”结束。
+
+## 11. 工具限制与成本预算
+
+原型建议：只读几何摘录纳入缓存配额。单页最多 100 个对象、单个同步草案最多 100 个动作、单一输入区域总顶点最多 4096；这些是待测预算，不是实际产品限制。超限通过分页、分阶段或异步求解处理，结果不得静默截断关键冲突。
+
+每任务设模型调用数、token／费用和工具计算预算，长计算返回 pending 与进度。cancel 需贯穿模型运行和工具任务，已提交修改仍遵守操作回执语义。
+
+每次会话先读取 capabilities；不将整个城市每栋建筑的坐标反复传给模型。精细几何以引用持有，摘要给面积、尺寸、净距和关键坐标，按需读取明细。
+
+## 12. 验收矩阵
+
+- 合法设施：在正确比例、完整授权与连通条件下精确落地，地图和权威几何一致。
+- 越界设施：主体中心合法但附属用地／外接走廊越界，提交失败且无扣款。
+- 模板限制：随意缩放建筑、无效朝向参数或未支持动作必须拒绝。
+- 道路几何：弯曲道路的路权、交叉口和边坡全部参与校验。
+- 草案隔离：固定输入快照哈希不变，预演不产生正式世界写入；正式城市若仍在推进，可发生正常变化，不能错误要求前后整城哈希相等。
+- 原子性：一个动作内部失败不产生半成品或部分扣款。
+- 项目分期：后续阶段失败，已完成步骤和未执行项准确可见。
+- 并发：两部门争同一地块／预算，一个成功，另一个得到明确冲突。
+- 去重：超时重连重复同一 operation_id 只施工和扣款一次。
+- 目标变更：旧 goal_revision 的后续写入被拦截。
+- 能力缺失：不支持水质或桥隧时不声称验证通过。
+- 容量与实绩：规划住宅容量不当作实际入住，团队汇报引用真实快照。
+- 持续观察：监测在 agent 离线时持续运行，暂停无新样本，达标需符合窗口和分母条件。
+- 投运分组：新设施与端口连接同组校验提交；无启动条件不虚报容量。
+- 真实接入：通过所选 endpoint 的公开工具通道验证全部调用链，再做真实模型自然语言验收。
+
+## 13. 实现前必须形成的交付物
+
+工具 JSON Schema、单位及引用公共类型、模板配置格式、错误码枚举、几何回归样例、命令回放样例和 endpoint 工具桥接验证记录。
+
+本文的 JSON 是可审阅协议示例；完整机器可验证 schema 仍需在实现准备阶段生成并与类型定义保持一致，不应把示例当作现成 API。
+
+## 14. 公共服务采购
+
+具体服务单位、有效容量、跨区响应和费用规则见 [共享公共服务](shared-public-services.md)。服务协议使用独立的容量预留，不占用建筑施工用地；账单与实际交付状态一起持久化。外部供方摘要有明确内存上限，不借此常驻邻图精细资源。
+
+## 15. 跨地图统一协议
+
+共同权威见 [跨地图运行](cross-map-runtime.md)。service_contract 工具是 exchange_contract 的类型适配，不另建合同、容量池和账本。商品自动撮合也登记到同一资源预留和交付机制，不要求每笔交易都调用 agent。
+
+区域工具返回 source_mode、measured_tick、coverage 和 exchange_epoch，保留物理单位。摘要不足以证明逐栋结果时明确待验证。map_open 仅切换表示，不能增权、回滚邻城或重播收费。

@@ -1,0 +1,7 @@
+.DS_Store
+/target/
+/work/
+/outputs/
+.env
+.env.*
+!.env.example
