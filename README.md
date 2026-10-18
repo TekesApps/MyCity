@@ -1,6 +1,6 @@
 # MyCity
 
-文档发布版本：`v0.4.19`。每次文档提交递增版本并推送对应附注 tag，规则见 [AGENTS.md](AGENTS.md)。
+文档发布版本：`v0.4.20`。每次文档提交递增版本并推送对应附注 tag，规则见 [AGENTS.md](AGENTS.md)。
 
 基于 Rust + wgpu 的城市与区域模拟游戏，以《模拟城市 4》的区域建设体验为起点，围绕交通后果、人口互动和自动区域市场建立自己的模拟体系。
 
@@ -41,8 +41,11 @@
 
 ## 文档入口
 
+- [建筑类型与技术路线目录](docs/building-types-and-technology-catalog.md)：住宅、工业、商业、市政与交通关联设施，区分规格／机制和首版／后续。
+- [v0.4.20目录审查](docs/review-v0.4.20.md)：基础样例与完整分类的关系、双轴状态、改造和扩展准入。
+
 - [Root Component与通用能力](docs/root-component-contract.md)：统一入口、16类组合能力、唯一权威和有界模板缓存。
-- [四类首版对象模板](docs/first-release-object-templates.md)：住宅、工业、商业、市政设施的13个候选空间模板与12类经营profile。
+- [四类基础对象模板样例](docs/first-release-object-templates.md)：13个结构样例与12类经营profile，用于走通属性契约，不是全部建筑目录。
 - [属性—系统—指标双向表](docs/property-system-metric-matrix.md)：34组属性、14个逻辑系统、26类指标及可追踪反馈。
 - [v0.4.19模板与对照审查](docs/review-v0.4.19.md)：经营状态、交付权威、统计口径和16 GB设计边界。
 
