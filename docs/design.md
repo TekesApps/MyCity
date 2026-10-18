@@ -80,6 +80,8 @@
 
 ### 交通模型
 
+基础需求、岗位和路网持续保存，路线选择阶段性求解，稳定时复用分配方案。运行中的积压、在途与费用不能靠重算清除。具体失效、收敛与可选逐人通勤方案见 [阶段交通](traffic-state-and-recalculation.md)。
+
 起终点需求包括通勤、消费与货运，映射到真实道路出入口。路径成本同时考虑行程时间、拥堵与必要的货运费用。
 
 初期使用有容量约束的汇总流量分配，记录未完成出行与延迟运输。道路断开、交叉口瓶颈和容量饱和必须反映在可达性中。
@@ -194,3 +196,7 @@ crates/
 - [wgpu 官方项目](https://github.com/gfx-rs/wgpu)
 - [winit 窗口接口](https://docs.rs/winit/latest/winit/window/struct.Window.html)
 - [Apple：管理 macOS Metal 游戏窗口](https://developer.apple.com/documentation/metal/managing-your-game-window-for-metal-in-macos?language=objc)
+
+## 资料研究补全
+
+需求／容量／吸引力、空置、对象模板与实例、生活垃圾和关键设施维护采用 [原作资料研究与设计补充](sc4-research-and-gaps.md) 的边界。生活垃圾复用现有库存／货运／结算，关键设施状态占区域0.5 MiB；完整人口学、污水水质和金融仍为后续专项。
