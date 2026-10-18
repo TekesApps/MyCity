@@ -1,10 +1,12 @@
 # MyCity
 
-文档发布版本：`v0.4.16`。每次文档提交递增版本并推送对应附注 tag，规则见 [AGENTS.md](AGENTS.md)。
+文档发布版本：`v0.4.17`。每次文档提交递增版本并推送对应附注 tag，规则见 [AGENTS.md](AGENTS.md)。
 
 基于 Rust + wgpu 的城市与区域模拟游戏，以《模拟城市 4》的区域建设体验为起点，围绕交通后果、人口互动和自动区域市场建立自己的模拟体系。
 
 状态：准备设计 v0.4（2026-10-18）；当前仅有设计文档，尚未创建 Rust 工程或验证运行性能。
+
+仓库：[TekesApps/MyCity](https://github.com/TekesApps/MyCity)，公开发布，采用 [MIT License](LICENSE)。
 
 ## 项目目标
 
