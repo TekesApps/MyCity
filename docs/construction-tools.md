@@ -22,7 +22,7 @@ TekesAgentKit 负责会话和执行状态，MyCity 拥有工具规则、世界�
 
 ## 3. 公共请求与响应
 
-请求公共字段：schema_version、request_id、world_id、branch_id、arguments；地图／城市级请求另带 map_id／city_id；已建立的任务上下文另带 goal_id、goal_revision 和 team_task_id。snapshot_ref 在需要固定观察时提供，首次查询可由服务创建。持久化修改请求（含目标、监测、政策与世界）带 operation_id、有效权限依据和相应预期版本；草案修改使用独立的 plan_revision，不要求存在尚未创建的项目 ID。
+请求公共字段：schema_version、request_id、world_id、branch_id、arguments；地图／城市级请求另带 map_id／city_id；跨图请求带 involved_map_ids／city_ids，区域只读工具可省略单图；已建立的任务上下文另带 goal_id、goal_revision 和 team_task_id。snapshot_ref 在需要固定观察时提供，首次查询可由服务创建。持久化修改请求（含目标、监测、政策与世界）带 operation_id、有效权限依据和相应预期版本；草案修改使用独立的 plan_revision，不要求存在尚未创建的项目 ID。
 
 request_id 用于追踪单次调用；operation_id 表示同一逻辑修改，跨重试保持不变。operation_id 的作用域为 world_id + branch_id，参数规范化后哈希校验，相同 ID 不同参数返回冲突。
 
@@ -161,6 +161,8 @@ apply_plan 接受已评估计划，在模拟提交边界原子校验并记录项
 | unsupported_constraint／unsupported_action | 缺少能力，必须说明而非静默忽略 |
 | idempotency_conflict | 相同 operation_id 携带不同请求内容 |
 | precondition_failed | 当前资源、权限或依赖与评估不一致 |
+| capacity_overcommitted／unverified_flow | 故障超占用或本期供给不可验证，保留义务并报告缺口，不虚增输出 |
+| obligation_limit／storage_unavailable | 无收尾槽位、有限资金或可靠落盘空间，拒绝新增承诺或暂停世界 |
 | limit_exceeded | 对象、顶点或计算预算超限，分阶段处理 |
 
 ## 10. 一次精确设施建设示例
@@ -332,3 +334,9 @@ heading 为 90° 时，16×20 m 设施用地旋转后的轴向外包框为 20×1
 共同权威见 [跨地图运行](cross-map-runtime.md)。service_contract 工具是 exchange_contract 的类型适配，不另建合同、容量池和账本。商品自动撮合也登记到同一资源预留和交付机制，不要求每笔交易都调用 agent。
 
 区域工具返回 source_mode、measured_tick、coverage 和 exchange_epoch，保留物理单位。摘要不足以证明逐栋结果时明确待验证。map_open 仅切换表示，不能增权、回滚邻城或重播收费。
+
+## 16. 提交准入与有界查询
+
+交换合同接受必须在同一事务校验双方权限、共享瓶颈、指定时段资源、资金和义务记录空间。服务入口与通用交换入口使用同一预留，不重复扣款。长期框架和当前已锁定窗口分别返回，不能把下次续购当作既成承诺。
+
+退款响应区分托管释放、现金退款、服务抵扣和应收应付；付款方／所有者身份不可由摘要聚合抹去。负载、正文长度、分页、合同分段和路径明细受 performance-budget.md 限制；长结果以引用／游标返回，不一次把所有历史装入内存。
