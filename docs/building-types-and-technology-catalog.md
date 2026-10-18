@@ -211,3 +211,9 @@ O01一般制造、O02物流、O10施工、O11园林供方是首版经营profile�
 - [EIA电力储能](https://www.eia.gov/energyexplained/electricity/energy-storage-for-electricity-generation.php)：储能与一次发电区分，据此为CAT-E-14／15单列存量与充放电约束。
 - [EPA水源保护概览](https://19january2017snapshot.epa.gov/sourcewaterprotection/source-water-protection-basics_.html) 与 [饮用水处理技术](https://www.epa.gov/sdwa/overview-drinking-water-treatment-technologies)：区分源水与处理；不是游戏水质模型或现实达标认证。
 - [DOE聚变介绍](https://www.energy.gov/topics/fusion-energy)：将走向可靠商业供能仍需解决的科学技术问题与游戏设想分开；CAT-E-13保持远期，不把目录承诺成现实可用技术。
+
+## v0.4.21：自定义复合、摊位与纪念物
+
+[实物—经济模型](composition-and-cost-model.md) 补充“定义机制＋预定义资产＋受限自定义”的关系：配置设备／面积／用途产生需求与工程成本，租金／业态还取决于真实需求和支付能力，不能手填低耗高产／保底收入。政务＋商业、车站商业是可表达的后续组合，CAT-R-06等混合用途、CAT-C-06办公及CAT-T-06轨道仍B，不因为能画组合图就开放。
+
+普通商品摊位可参考CAT-C-01／O03，但临时空间许可、共享接入、计费／退款／清场与绑定仍须先定义；餐饮仍CAT-C-04后续。纪念物／地标归公共文化及景观候选，必须有实体、占地和维护成本，没有已支持访问／旅游模型就无保底客流或钱；不新增一个“纪念物行业”。90条分类数量及首版范围不变。
