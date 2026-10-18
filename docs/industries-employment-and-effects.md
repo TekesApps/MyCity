@@ -4,6 +4,8 @@
 
 ## 1. 参考依据与游戏参数
 
+v0.4.22运行接口按 [经济契约](physical-economy-runtime-contract.md)：设备／活动与实际输入同区间可行，工资不按产出同比扣；独立单店满销预测不可相加，联合预演／成交共用同一需求／现金及真实库存。正常行为评估每日一次、最多8候选，30日预测扣搬迁／改造／退出成本经连续优势与冷却门才提出主动迁移，硬失效即时处理。此为后续机制候选，不改首版家庭租约；部分修理不刷新整套年龄，动态异龄换新unsupported，真实整套更换须工程／残余物／计量责任闭合。
+
 - [英国就业用地评估指导](https://www.gov.uk/guidance/housing-and-economic-development-needs-assessments) 将行业、物业类型、就业／建筑面积、建筑面积／用地面积分开评估。MyCity同样不直接以地块面积乘一个全行业常数。
 - [HCA Employment Density Guide第三版，2015年](https://www.kirklees.gov.uk/beta/planning-policy/pdf/examination/national-evidence/NE48_employment_density_guide_3rd_edition.pdf) 区分FTE与实际人数及面积口径。其历史参考包括专业服务12 m² NIA/FTE、制造36 m² GIA/FTE、末端配送70 m² GEA/FTE；这些是特定时期英国用途的基准，不是2026年全球通用标准，更不是同时在场人数。
 - [BLS劳动生产率说明](https://www.bls.gov/k12/productivity-101/content/what-is-productivity/what-is-labor-productivity.htm) 用产出／劳动小时表达劳动生产率；MyCity用实际工时约束劳动投入，不把岗位容量当作已完成工作。
