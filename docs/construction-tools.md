@@ -40,6 +40,12 @@ status 区分 ok、rejected、pending、partial；partial 仅用于明确分页�
 
 | 工具 | 类别 | 关键输入 | 关键输出 |
 | --- | --- | --- | --- |
+| city.governance_status | 只读 | 城市／制度版本／分页 | 宪章、条例、拨款、生效程序与司法限制 |
+| city.bill_propose | 草案 | 类型化条款／范围／财政影响／授权 | 法案草案与版本 |
+| city.bill_evaluate | 评估 | 法案版本／制度与财政快照 | 能力、冲突、槽位、程序和资金影响 |
+| city.bill_submit | 持久修改 | 冻结法案／授权／预期版本／operation_id | 程序与必要槽位预留，不等于通过或生效 |
+| city.case_file | 程序修改 | 可信申请身份／事实／证据／请求／operation_id | 收件时刻、受理／排队／管辖回执 |
+| city.case_status | 只读 | 有效查询身份／案件／分页 | 证据、阶段、停止令和裁决执行状态 |
 | city.team_status | 只读 | 城市／名册版本 | 席位、兼任覆盖、工时、工资和模型费用配额 |
 | city.team_catalog | 只读 | 专业／能力／分页 | 人员模板、知识包、薪酬和到岗条款 |
 | city.team_change_evaluate | 预演 | 编制差异／合同／team_revision | 生效时间、工资预留、职能覆盖与任务交接 |
@@ -304,6 +310,8 @@ heading 为 90° 时，16×20 m 设施用地旋转后的轴向外包框为 20×1
 接受回执给出项目ID、预分配资产ID、冻结几何哈希、当前阶段预留及建设版本，不表示建筑已完工。重复apply_plan只返回同一项目，不重新开始工期；后续通过project_query观察阶段，最后核实供给。
 
 ## 11. 工具限制与成本预算
+
+[制度规则](governance-council-and-justice.md) 要求行政提交分别检查法律／拨款、玩家授权、资源与法院命令。评估凭据还绑定rule_revision、appropriation_revision和司法命令版本，提交／阶段执行时重新校验；city.set_policy仅能行使现有条例已委任的行政范围，需要立法的变更走法案程序。没有agent直接写入最终票数、判决或制度身份的接口；系统申诉／表决／裁判通过独立可信通道，不依赖被告市长授权。
 
 团队配置语义见 [编制与知识](team-staffing-and-knowledge.md)。成员ID、专业标签或模型自报岗位不构成权限，宿主校验当前任务与有效授权。聘用、解聘和兼任按team_revision及工资／时间预留一致性提交；未知回执先查询。离任不撤销已提交工程或删除项目证据，人员增加不倍增调用预算。
 
