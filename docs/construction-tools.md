@@ -40,6 +40,8 @@ status 区分 ok、rejected、pending、partial；partial 仅用于明确分页�
 
 | 工具 | 类别 | 关键输入 | 关键输出 |
 | --- | --- | --- | --- |
+| city.matter_register | 筹备持久化 | 目标／范围／筹备授权预算／关联／预期版本／operation_id | matter_id、共享档案槽及筹备回执，不是工程接受 |
+| city.matter_status | 只读 | matter_id／快照／分页 | 当前程序门、参与方、版本、资金缺口与各对象回执 |
 | city.household_status | 只读 | 家庭／画像／快照／有效查询范围／分页 | 教育技能、就业收入、资金义务、住房消费与满意度原因 |
 | city.housing_catalog | 只读 | 地区／资格／价格／快照／分页 | 房源、户型容量、质量、产权／居住权、可交付与锁定状态 |
 | city.education_status | 只读 | 课程／地区／参加者范围／快照／分页 | 前置资格、教学容量、费用、工时与进度 |
@@ -88,7 +90,7 @@ status 区分 ok、rejected、pending、partial；partial 仅用于明确分页�
 | city.get_object | 只读 | 对象引用、详情字段 | 几何、端口、占地、版本、状态与关联 |
 | city.catalog | 只读 | 模板类别与过滤条件 | 建筑、道路、管线的版本化模板及参数范围 |
 | city.find_sites | 只读求解 | 用途、region_ref、硬约束、软偏好 | 候选地块及得分、排除原因、可行性 |
-| city.create_plan | 草案 | 目标、范围、预算和授权引用 | draft_id、plan_revision、冻结目标与约束 |
+| city.create_plan | 草案 | matter_ref、目标、范围、预算和授权引用 | draft_id、plan_revision、冻结目标与约束 |
 | city.propose_layout | 草案求解 | 草案、地块、道路端点、模板及布局规则 | 多个候选草案差异、最终几何、实际占地和未满足条件 |
 | city.edit_plan | 草案修改 | 草案版本、增删改动作 | 新计划版本、变换明细、失效评估 |
 | city.evaluate_plan | 预演 | 计划版本、快照、模型和时间窗 | 硬校验、预测、资源、依赖、评估凭据 |
@@ -103,7 +105,7 @@ status 区分 ok、rejected、pending、partial；partial 仅用于明确分页�
 
 原有 city.plan_district 收敛为 create_plan + propose_layout + evaluate_plan；不保留绕过评估的独立建设通道。新增工具以明确 schema 版本发布。目标、授权及监测的语义以 [运行闭环](runtime-loop.md) 为准；工具上下文不能反过来成为自授权来源。
 
-草案修改不改变正式世界，也不扣建设款；计算成本受调用预算限制。真正的资金与空间预留在接受项目时发生，草案预估不是锁定承诺。
+草案修改不改变正式物理世界，也不扣建设款；计算成本受调用预算限制。施工资金与空间预留在接受工程时发生，草案预估不是锁定承诺；筹备登记及其实际调查采购使用独立筹备授权／费用，不因此获得未来施工权。
 
 ## 5. 草案动作体系
 
@@ -192,7 +194,7 @@ apply_plan 接受已评估计划，在模拟提交边界原子校验并记录项
 
 命令：“在规划区南侧建一座小型水泵站，接入这条路和已有水电，不要碰树林，预算不超过两百万。”
 
-流程：capabilities → resolve_region → inspect／catalog → find_sites → create_plan → propose_layout／edit_plan → evaluate_plan → apply_plan → operation_status → observe。
+流程：capabilities → resolve_region → inspect／catalog → find_sites → matter_register → create_plan → propose_layout／edit_plan → evaluate_plan → apply_plan → operation_status → observe。持久草案绑定matter_ref，缺筹备授权或档案额度时先停止，不把初查结果当作已批准工程。
 
 计划示例采用米制对象坐标；ID 为示意，必须来自真实查询。以下是 edit_plan 的 arguments 示例，通用请求上下文由外层提供：
 
@@ -317,6 +319,8 @@ heading 为 90° 时，16×20 m 设施用地旋转后的轴向外包框为 20×1
 接受回执给出项目ID、预分配资产ID、冻结几何哈希、当前阶段预留及建设版本，不表示建筑已完工。重复apply_plan只返回同一项目，不重新开始工期；后续通过project_query观察阶段，最后核实供给。
 
 ## 11. 工具限制与成本预算
+
+[事项流程](civic-project-workflow.md) 要求物理项目持久化草案／create_plan绑定有效matter_ref，使用128个筹备／实施／收尾共享档案槽；轻量只读查询和目标草案不因此成为工程。行政代理登记须有效筹备授权，私人自动开发由宿主绑定的合法业主／模拟身份进入同一准入，不要求市长逐笔批准私人施工，也不能让模型自报owner获得权限。登记不预留施工土地／资金，调查开支另按实际授权付款；apply_plan仍是正式接受工程的唯一既定接口。
 
 [市民生活](citizen-households-and-living.md) 使用36 MiB现行区域预算，仍含于原0.35 GiB模拟域。家庭／住房／课程查询和市长政策工具不赋予私人财产权；居民自动交易、培训与迁居由可信模拟通道依据真实家庭身份执行。行政模型不能自报家庭ID代扣私人款，搜索16候选耗尽返回unresolved而非无房证明，产权／资金操作以持久回执原子清算。
 

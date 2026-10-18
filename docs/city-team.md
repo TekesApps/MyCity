@@ -78,13 +78,15 @@ City Team 不能直接写世界状态或存档。曲线几何、地块生成、�
 
 完整 API 以 [Agent 建设工具协议](construction-tools.md) 为准，空间规则以 [空间与精度契约](spatial-contract.md) 为准。工具是 MyCity 待实现的能力，不是 AgentKit 现成接口。
 
-调用主线：capabilities → resolve_region → inspect／catalog／find_sites → create_plan → propose_layout／edit_plan → evaluate_plan → apply_plan → operation_status／observe。
+调用主线：capabilities → resolve_region → inspect／catalog／find_sites → matter_register → create_plan → propose_layout／edit_plan → evaluate_plan → apply_plan → operation_status／observe。筹备与法定意见／拨款等门按事项级别插入，登记不等于可施工。
 
 此前概念接口 city.plan_district 收敛为分步规划与评估。所有修改必须通过最终几何、范围、模板、预算和授权校验；地图预览与提交回执引用同一几何。
 
 区域引用冻结自然语言指代，建筑与道路按真实米制尺度生成；地形、索引格和环境场分别采样。不能只检查建筑中心，必须覆盖全部设施与施工占地。
 
 ## 6. 计划生命周期与一致性
+
+按 [市政事项流程](civic-project-workflow.md) 组织不同参与方与阶段门，市长命令先成为目标而非建设结果。缺预算时提供缩减、分期、延期等真实选择；产权、法定许可、财政、玩家授权及资源都不能靠部门多数意见互相替代。已批准内容的实质变化重走对应程序，分期不规避总投资与累积影响。
 
 计划至少包含目标、约束、候选方案、步骤依赖、预算预留、世界版本和验证结果。Plan 状态为草案、已评估、过期、已接受或放弃；Project 另外管理执行中、部分完成、受阻、建成与取消。Goal 是否达标由 Monitor 的窗口证据判断。
 
