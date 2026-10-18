@@ -40,6 +40,9 @@ status 区分 ok、rejected、pending、partial；partial 仅用于明确分页�
 
 | 工具 | 类别 | 关键输入 | 关键输出 |
 | --- | --- | --- | --- |
+| city.industry_catalog | 只读 | 行业／模板版本／分页 | 面积与FTE口径、岗位／资格、配方、交付类型、影响、来源及能力状态 |
+| city.employment_status | 只读 | 城市／行业／快照／分页 | 可用劳动、招聘、雇佣、到岗／工时、工资支付与unresolved |
+| city.industry_status | 只读 | 经营地点／行业／快照／分页 | 产出、库存、投入／成本瓶颈、上下游及环境交通证据 |
 | city.election_status | 只读 | 城市／term_id／程序版本／分页 | 选举时间表、登记／选票总计、名单、席位、当选人与交接状态 |
 | city.governance_status | 只读 | 城市／制度版本／分页 | 宪章、条例、拨款、生效程序与司法限制 |
 | city.bill_propose | 草案 | 类型化条款／范围／财政影响／授权 | 法案草案与版本 |
