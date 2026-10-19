@@ -1,0 +1,23 @@
+{
+  "source_sha256": "d8c926d2098085fe86382ed2f78387c723b3f3597a158d1a1ebd5b4d9b911e00",
+  "release_tests_passed": 167,
+  "functional_t10a_gate": "passed",
+  "paced_economy_day": {
+    "actual_game_seconds_per_wall_second": 1407.7824384342593,
+    "actual_wall_seconds": 61.373119625,
+    "game_seconds": 86400,
+    "memory_16gb_gate": "not_run",
+    "persistent_commits": 24,
+    "same_state_as_unpaced": true,
+    "source_sha256": "d8c926d2098085fe86382ed2f78387c723b3f3597a158d1a1ebd5b4d9b911e00",
+    "state_sha256": "0e0277ef5f873108e1e55d5b3522203344810b63018bc7efba229fee75223b02",
+    "store_owned_capacity_bytes": 2623391,
+    "target_exactly_met": false,
+    "target_wall_seconds": 60
+  },
+  "strict_economy_60_second_gate": "not_met",
+  "full_t10": "not_completed",
+  "full_source_scheduler": "not_implemented",
+  "memory_16gb_gate": "not_run",
+  "tests_sha256": "cae9a5659319947d09ef9e26a0cbe4d5ee70aada18ea7d53e92f70036b7b4582"
+}

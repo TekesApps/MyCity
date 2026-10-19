@@ -1,0 +1,16 @@
+{
+  "release": "v0.5.19",
+  "date": "2026-10-20",
+  "base_commit": "8a032126c7aa18844ff23ec5d47fa5c9a918bf06",
+  "source_sha256": "d8c926d2098085fe86382ed2f78387c723b3f3597a158d1a1ebd5b4d9b911e00",
+  "lock_sha256": "b286c192f63ff681be3a3cd7813fc2110540bc02e20f810d4741990ac12df93e",
+  "rustc": "rustc 1.85.1 (4eb161250 2025-03-15)",
+  "architecture": "arm64",
+  "host_memory_bytes": 34359738368,
+  "os": "ProductName:\t\tmacOS\nProductVersion:\t\t26.6.2\nBuildVersion:\t\t25G83",
+  "rules_identity": "must_match_current_binary_source_sha256",
+  "advisor": "single_targeted_dependency_and_blocking_review_no_tests_run_by_advisor",
+  "ui": "not_implemented",
+  "agentkit": "not_implemented",
+  "memory_16gb_gate": "not_run"
+}

@@ -126,6 +126,20 @@ fn archive_bytes(dir: &Path) -> Result<u64, Error> {
     Ok(total)
 }
 impl Store {
+    /// Read an original hot or checkpointed receipt without re-executing it.
+    /// Host-local diagnostic API; this does not grant mutation authority.
+    pub fn receipt(&mut self, operation: u64) -> Result<Option<JournalRecord>, Error> {
+        self.engine()?;
+        if let Some(record) = self
+            .engine
+            .journal()
+            .iter()
+            .find(|r| r.operation_id == operation)
+        {
+            return Ok(Some(*record));
+        }
+        self.lookup_archived(operation)
+    }
     pub(super) fn lookup_archived(
         &mut self,
         operation: u64,

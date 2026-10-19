@@ -161,6 +161,7 @@ dependencies = [
  "mycity-core",
  "mycity-map",
  "mycity-storage",
+ "serde",
  "serde_json",
  "sha2",
 ]

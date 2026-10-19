@@ -2,6 +2,7 @@ mod boot_probe;
 mod continuity;
 mod economy_probe;
 mod exchange_probe;
+mod session;
 use mycity_core::{parse_bootstrap, read_bounded, sha256, INPUT_LIMIT, NUMERIC_STRATEGY, SCHEMA};
 use serde_json::json;
 use std::{
@@ -21,6 +22,9 @@ fn system(command: &str, args: &[&str]) -> Option<String> {
 
 fn run() -> Result<(), String> {
     let args: Vec<_> = env::args().collect();
+    if args.get(1).is_some_and(|a| a == "session") {
+        return session::run(&args);
+    }
     if args.get(1).is_some_and(|a| a == "continuity-worker") {
         return continuity::worker(&args);
     }
