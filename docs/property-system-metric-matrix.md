@@ -2,6 +2,8 @@
 
 设计补充：v0.4.19，2026-10-19。P＝属性组，S＝逻辑系统，M＝指标族；编号与 [Root／组件](root-component-contract.md)、[首版模板](first-release-object-templates.md) 对齐。这里的“双向”是从字段到指标、从系统／指标反查字段，**不是指标可以直接给事实赋值**。
 
+v0.4.25现行粒度与预算以 [整体分配审查](granularity-allocation-audit.md) 为准：34属性／14系统／27物件逐项区分保留、聚合、延后；新增基础本地供应计费绑定使用原区域余量4 MiB，现为27项43.0078125／44 MiB、余0.9921875 MiB，应用目标不增。下文39.0078125／26项是此前基线，不作本版准入；未验证布局／索引与16 GB实机性能。
+
 v0.4.24的 [字段字典](capability-field-dictionary.md) 与 [常用物件契约](common-object-contracts.md) 向下展开本表；[覆盖矩阵](object-definition-coverage.md) 向上检查目录缺项。本表P01—P34／C01—C16／S00—S13／M01—M26不扩编号，字段只保留决策所需最小状态，遵守 [粒度与误差准入](model-granularity-and-convergence.md)。
 
 ## 1. 字段和箭头的语义
@@ -29,14 +31,14 @@ S静态参数来自冻结模板／profile；A权威运行事实；R有身份、�
 | P05 | project／commissioning／physical_state_ref，R及原A状态投影 | 原工程／设施生命周期，S01；营业状态统一引用P18.common | 全适用系统→M01、M07、M09、M10、M15、M22 |
 | P06 | capability_kind／facet_ref、availability原因，S／R／D | 模板及对应原记录，S00解析而不另写一份业务值 | 全系统→M23、M24 |
 | P07 | footprint／site／envelope／growth_bound、面积口径、z、最多8子区，S及A几何（m／m²） | 原几何／模板，S01 | S02、S04、S05、S10—S12→M01、M05、M16、M20、M23 |
-| P08 | port_id、局部门位／法向、实际锚点／侧／方向／模式／时段、连接／状态，S／R／A | 模板＋65536端口，S01写结构／绑定；S04写通行状态字段 | S02—S09、S12→M04—M06、M15、M16 |
+| P08 | port_id、局部门位／法向、实际锚点／侧／方向／模式／时段、连接／状态，S／R／A | 模板＋65536端口，S01写结构／绑定；S04仅写人货通行，水电运行／隔离引用S05 | S02—S09、S12→M04—M06、M15、M16 |
 | P09 | owner／operator／maintainer／account_ref、地域／垂直使用依据，R | 原产权／运营／账户绑定；S02房屋权益、S07经营关系；合法转移经S00提交 | S01、S02、S06—S10、S12→M11—M14、M23、M24 |
 | P10 | shared_space／building_use_ref、许可／分摊／开放、关闭待移交，R | 原8192使用关系及合同／权益，S01管理空间关联，S02房屋使用关系，S08只结算份额 | S04、S09、S10、S12→M05、M14—M16、M23 |
 | P11 | stage、actual_work、remaining_work、min_calendar、actual_inputs／cost／safe_hold，A及S阶段参数 | 原128工程档案，S01 | S04、S05、S08、S11—S13→M14、M18、M19、M22 |
 | P12 | resource_code、idle／load曲线、min／target、priority／shortfall规则，S（指定单位/游戏时） | 冻结资源／操作profile；合法新版本经S00 | S05—S10→M07—M10、M14 |
 | P13 | allocated／delivered／actually_consumed／shortfall、计量区间及余数，A | 水电量及网络交付S05；商品库存变化只由S07写，S06等提交实际活动意图 | S02、S06、S08—S11→M07—M10、M14、M17 |
-| P14 | capacity_kind／unit／window、design_limit及有效条件，S；effective_limit为D | 模板／原道路、服务、库存等资源权威；S01／S06／S09分别管理自身资源的参数版本 | S02—S10→M01、M03、M07、M09、M10、M15、M16 |
-| P15 | reserved／occupied／quota_used／remainder、4释放摘要／原来源引用，A／R | 原提供方按资源键单写：S04道路／独立空间组，S09服务池，S07库存容量；服务／货运使用空间组时向S04请求，不各写一份 | S02—S10、S12→M05、M08、M15、M16 |
+| P14 | capacity_kind／unit／window、design_limit及有效条件，S；effective_limit为D | 模板／原道路、服务、库存等资源权威；按kind由S01／S02／S03／S05／S06／S07／S09管理各自字段，S04只管通行／独立空间资源 | S02—S10→M01、M03、M07、M09、M10、M15、M16 |
+| P15 | reserved／occupied／quota_used／remainder、4释放摘要／原来源引用，A／R | 原提供方按资源键单写：S02住房、S03教学／劳动（额定岗位引用S06）、S04道路／独立空间组、S05水电、S09服务池、S07库存容量；服务／货运使用空间组时向S04请求，不各写一份 | S02—S10、S12→M05、M08、M15、M16 |
 | P16 | work_positions、reference_FTE、job_offer／skill／qualification／shift_ref，S＋A招聘状态 | 原运营单位／岗位声明，S06；服务／教育只提供需求条件，不重复开岗位 | S03、S04、S08、S09→M03、M04 |
 | P17 | household_member／labor_share、employer、matched／scheduled／actual_payable_hours、arrival_ref，R／A（人／h） | 原32768雇佣边／来源，S03写匹配／实际应付工时；实际通行引用S04，paid金额只归S08 | S02、S04、S06、S08、S09→M03、M04、M07、M11 |
 | P18 | common：operator／host／profile／operating_status／activity_source_ref，所有运营单位必需；production：可选recipe／equipment／critical_crew，S／R／A | 原运营单位，S06写common经营状态；实际活动由delivery_adapter指定的S03—S07／S09／S10唯一产生，common只引用，不二次生产 | S03、S05、S07、S08、S11→M04、M07、M09、M10、M17—M19、M25 |
@@ -52,7 +54,7 @@ S静态参数来自冻结模板／profile；A权威运行事实；R有身份、�
 | P28 | request／dispatch／in_service／return／completed／unmet、duration／patient／crew_ref，A／R | 原2048服务交付／占用，S09写服务状态；transport事实引用S04，空间令牌沿P15 | S02、S04、S08、S10、S13→M05、M06、M15、M16 |
 | P29 | maintenance_policy／order／actual_work／cost_ref、condition／backlog／derating，S／R／A | 适用关键设施表、宿主原状态或植物表；S10写维护／条件，工程翻修由S01产生事实再交接 | S01、S05、S06、S08、S09、S11→M07、M09、M10、M14—M16、M20 |
 | P30 | emission／noise_profile、activity_source／channel／unit／contribution，S／R／D | 活动源保留原事实，S11按唯一来源键计算贡献；不让多个业务引擎各加一次排放 | S11—S13→M18、M19、M23 |
-| P31 | environment_field／exposure／coverage／source_mode／age，A场状态与D暴露结果 | 原最多8通道环境场／已有家庭暴露来源，S11；世界时间积分非显示帧 | S02、S09、S10、S12、S13→M18、M19、M21、M24 |
+| P31 | environment_field／exposure／coverage／source_mode／age，A场状态、D瞬时／预测暴露；有行为／阈值用途的已发生累计为A或可准确重放持久来源 | 原最多8通道环境场／已有家庭暴露来源，S11；世界时间积分非显示帧 | S02、S09、S10、S12、S13→M18、M19、M21、M24 |
 | P32 | maturity／coverage／condition／management_quality／growth_bound_ref／last_tick，S／A | 原4096植物及宿主维护状态，S10；质量与成熟不同，令牌／几何不复制 | S01、S02、S04、S11—S13→M05、M20、M21、M23 |
 | P33 | charter／rule／appropriation／authority／court_ref、effective_time／transition／terrain_basis，R／A | 原256规则、法案／案件／授权和回执，S12；产权／玩家授权仍独立校验 | 全体适用动作／运行→M14、M22—M24 |
 | P34 | 8维satisfaction／target_sources、low_since／cooldown／behavior_trigger，A及D解释 | 原每户必要状态，S13写游戏满意度；S02消费／迁居决定不反写满意度凑目标 | S02、S03、S12、S13→M21、M24 |
@@ -103,7 +105,7 @@ v0.4.23 [数字案例](worked-examples-housing-retail-and-stalls.md) 以原字�
 | M13 财政可用现金 | 付款方账本余额−合法受限预留，游戏币；拨款／未来税收／应收不当现金 | P09、P21、P33；S08 |
 | M14 真实支出／维护 | 指定付款主体实际资本／运行／工资／采购分类，合同价含人工不在同一主体再加一份；维护完成另看P29 | P09—P13、P21、P29、P33；S01、S08、S10 |
 | M15 服务实达／响应 | 固定服务类型及请求集合，报告可提供／已接／完成／未满足、响应时间及占用；按真实请求／患者等已声明单位权重算P95，不按聚合批次数等权；附失败／在途，患者与队伍不可混算 | P08、P13—P17、P25、P27、P28；S04、S09 |
-| M16 物理容量／占用 | 资源键＋单位／窗口，实际占用÷当前合法能力；超过上限原样报告，能力0且有人为capacity_breach，不裁人数凑100% | P07、P10、P14、P15、P27、P28；原资源提供方／S04、S09 |
+| M16 物理容量／占用 | 资源键＋单位／窗口，实际占用÷当前合法能力；超过上限原样报告，能力0且有人为capacity_breach，不裁人数凑100% | P07、P10、P14、P15、P27、P28；按kind对应原资源提供方／S02—S05、S07、S09 |
 | M17 库存／废物去向 | 按resource_code统计来源、当前库存、在途、使用／处置／有限最终存量；每批所有权／位置只记一次，不混吨、件和m³ | P13、P18—P20、P26；S06、S07、S04 |
 | M18 空气／暴露 | 已支持通道的场值／面积与人群时间暴露，单位随通道；Σ浓度×暴露时长及覆盖，不把未知当清洁 | P04、P24、P30、P31；S11 |
 | M19 噪声／休息暴露 | 已支持声模型的日夜／峰值／累计暴露及覆盖；游戏指数与物理dB分开，dB不得直接线性加／平均 | P04、P11、P18、P20、P24、P28、P30、P31；S11 |
