@@ -206,3 +206,50 @@ fn spatial_store_cli_restores_cpu_assets_and_money_without_claiming_mutable_cons
     assert_eq!(v["memory_16gb_gate"], "not_run");
     assert_eq!(v["rules"]["storage"]["schema"], "mycity-m0-genesis-v2");
 }
+
+#[test]
+fn economy_cli_executes_real_30_day_cash_goods_and_failure_branches() {
+    let input = format!(
+        "{}/../../fixtures/m0-economy-opening.json",
+        env!("CARGO_MANIFEST_DIR")
+    );
+    let dir = std::env::temp_dir().join(format!(
+        "mycity-economy-cli-{}-{}",
+        std::process::id(),
+        std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_nanos()
+    ));
+    let out = Command::new(env!("CARGO_BIN_EXE_mycity-headless"))
+        .arg("economy-probe")
+        .arg(&input)
+        .arg(&dir)
+        .output()
+        .unwrap();
+    assert!(
+        out.status.success(),
+        "{}",
+        String::from_utf8_lossy(&out.stderr)
+    );
+    let v: serde_json::Value = serde_json::from_slice(&out.stdout).unwrap();
+    assert_eq!(v["economic_prototypes"], "P-E0_and_P-E1_executed");
+    let p = &v["economy_probe"];
+    assert_eq!(p["pe0"]["world"]["economy"]["closed_days"], 30);
+    let accounts = p["pe0"]["world"]["accounts"].as_array().unwrap();
+    for (id, cash) in [(1, 808000), (2, 56000), (3, 816000), (4, 1320000)] {
+        assert_eq!(
+            accounts.iter().find(|a| a["id"] == id).unwrap()["cash"],
+            cash
+        );
+    }
+    assert_eq!(
+        p["pe1"]["refund_shortfall"]["world"]["economy"]["claims"][1]["paid"],
+        1000
+    );
+    assert_eq!(p["P_BOOT"], "not_run");
+    assert_eq!(v["memory_16gb_gate"], "not_run");
+    assert!(p["pe0"]["spatial_reference"].is_object());
+    assert!(p["pe0"]["checkpoints"].as_array().unwrap().len() >= 4);
+    std::fs::remove_dir_all(dir).unwrap();
+}

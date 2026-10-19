@@ -1,0 +1,3 @@
+PASS: independently checked P-E0 money, quantity, tax, recovery and untested gates; 102 Release tests and 44 process exits.
+PASS: source/lock/input/rules SHA256 match this checkout; source=a23360d9ad653bd7325f4877d64835d21493f7ccd18afbb9a9de22afd3f1ad5f
+Memory: {"allocation": "fixed_inline_once_per_laboratory_world_not_per_resident_or_building", "days": 30, "inline_bytes": 5496, "max_claims": 3, "max_sale_lines": 32, "option_bytes": 5496}

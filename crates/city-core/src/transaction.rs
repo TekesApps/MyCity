@@ -43,6 +43,9 @@ impl Caller {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum Action {
+    Economy {
+        command: crate::economy::Command,
+    },
     RegionSettleDebt {
         obligation: u32,
     },
@@ -123,6 +126,7 @@ pub enum TxError {
     Lease,
     WorkingLimit,
     Region(crate::region::Error),
+    Economy(crate::economy::Error),
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
@@ -183,6 +187,7 @@ pub struct Engine {
 }
 
 struct Prepared {
+    economy: Option<crate::economy::Economy>,
     region: Option<crate::region::Region>,
     accounts: Vec<(Handle<AccountDomain>, Account)>,
     stocks: Vec<(Handle<InventoryDomain>, Stock)>,
@@ -194,6 +199,9 @@ struct Prepared {
 
 impl Engine {
     pub fn new(world: World, mut resources: Vec<Resource>) -> Result<Self, TxError> {
+        if world.economy.is_some() && !resources.is_empty() {
+            return Err(TxError::Resource);
+        }
         if resources.len() > MAX_RESOURCES {
             return Err(TxError::Resource);
         }
@@ -337,8 +345,23 @@ impl Engine {
         let mut created_tokens = [None; MAX_ACTIONS];
         let mut migrated = [None; MAX_ACTIONS];
         let mut region = self.world.region;
+        let mut economy = self.world.economy;
         for (action_index, action) in env.actions.iter().enumerate() {
             match *action {
+                Action::Economy { command } => {
+                    if !matches!(caller, Caller::System) {
+                        return Err(TxError::Unauthorized);
+                    }
+                    let e = economy.as_mut().ok_or(TxError::InvalidOperation)?;
+                    e.command(
+                        command,
+                        &mut EconomicLedger {
+                            world: &self.world,
+                            accounts: &mut accounts,
+                            stocks: &mut stocks,
+                        },
+                    )?;
+                }
                 Action::RegionSettleDebt { obligation } => {
                     if !matches!(caller, Caller::System) {
                         return Err(TxError::Unauthorized);
@@ -479,6 +502,24 @@ impl Engine {
                     }
                 }
                 Action::MoveStock { from, to, quantity } => {
+                    if let Some(e) = &economy {
+                        for raw in [from, to] {
+                            let h = self
+                                .world
+                                .stocks
+                                .resolve(raw)
+                                .map_err(|_| TxError::InvalidHandle)?;
+                            if e.governs(
+                                self.world
+                                    .stocks
+                                    .get(h)
+                                    .map_err(|_| TxError::InvalidHandle)?
+                                    .id,
+                            ) {
+                                return Err(TxError::Unauthorized);
+                            }
+                        }
+                    }
                     let f = stage_stock(&self.world, &mut stocks, from)?;
                     let t = stage_stock(&self.world, &mut stocks, to)?;
                     if f == t
@@ -619,7 +660,20 @@ impl Engine {
                 }
             }
         }
+        if let Some(e) = &economy {
+            e.validate(&mut EconomicLedger {
+                world: &self.world,
+                accounts: &mut accounts,
+                stocks: &mut stocks,
+            })?;
+            for (_, a) in &accounts {
+                if a.protected < e.required_protection(a.id) {
+                    return Err(TxError::Protection);
+                }
+            }
+        }
         Ok(Prepared {
+            economy,
             region,
             accounts,
             stocks,
@@ -650,6 +704,7 @@ impl Engine {
                 .replace(h, s)
                 .expect("validated commit handle");
         }
+        self.world.economy = prepared.economy;
         self.world.region = prepared.region;
         self.world.revision = prepared.receipt.revision;
         self.resources = prepared.resources;
@@ -739,6 +794,113 @@ fn settle_obligation(
         .map_err(|_| TxError::Overflow)?;
     o.arrears = o.arrears.checked_sub(paid).map_err(|_| TxError::Overflow)?;
     Ok(())
+}
+
+struct EconomicLedger<'a> {
+    world: &'a World,
+    accounts: &'a mut Vec<(Handle<AccountDomain>, Account)>,
+    stocks: &'a mut Vec<(Handle<InventoryDomain>, Stock)>,
+}
+impl crate::economy::Ledger for EconomicLedger<'_> {
+    fn stock(&mut self, id: u32) -> Result<Stock, TxError> {
+        let h = self
+            .world
+            .stock_handle(id)
+            .map_err(|_| TxError::InvalidHandle)?;
+        if let Some((_, s)) = self.stocks.iter().find(|(old, _)| *old == h) {
+            return Ok(*s);
+        }
+        self.world
+            .stocks
+            .get(h)
+            .copied()
+            .map_err(|_| TxError::InvalidHandle)
+    }
+    fn put_stock(&mut self, id: u32, stock: Stock) -> Result<(), TxError> {
+        let raw = self
+            .world
+            .stock_ref(id)
+            .map_err(|_| TxError::InvalidHandle)?;
+        let i = stage_stock(self.world, self.stocks, raw)?;
+        self.stocks[i].1 = stock;
+        Ok(())
+    }
+    fn cash(&mut self, id: u32) -> Result<Money, TxError> {
+        let raw = self
+            .world
+            .account_ref(id)
+            .map_err(|_| TxError::InvalidHandle)?;
+        let i = stage_account(self.world, self.accounts, raw)?;
+        Ok(self.accounts[i].1.cash)
+    }
+    fn available(&mut self, id: u32) -> Result<Money, TxError> {
+        let raw = self
+            .world
+            .account_ref(id)
+            .map_err(|_| TxError::InvalidHandle)?;
+        let i = stage_account(self.world, self.accounts, raw)?;
+        self.accounts[i]
+            .1
+            .cash
+            .checked_sub(self.accounts[i].1.protected)
+            .map_err(|_| TxError::Protection)
+    }
+    fn protect(&mut self, id: u32, amount: Money) -> Result<(), TxError> {
+        if self.available(id)? < amount {
+            return Err(TxError::InsufficientFunds);
+        }
+        let raw = self
+            .world
+            .account_ref(id)
+            .map_err(|_| TxError::InvalidHandle)?;
+        let i = stage_account(self.world, self.accounts, raw)?;
+        self.accounts[i].1.protected = self.accounts[i]
+            .1
+            .protected
+            .checked_add(amount)
+            .map_err(|_| TxError::Overflow)?;
+        Ok(())
+    }
+    fn pay(&mut self, from: u32, to: u32, amount: Money, protected: bool) -> Result<(), TxError> {
+        if from == to {
+            return Err(TxError::InvalidOperation);
+        }
+        if !protected && self.available(from)? < amount {
+            return Err(TxError::InsufficientFunds);
+        }
+        let f = stage_account(
+            self.world,
+            self.accounts,
+            self.world
+                .account_ref(from)
+                .map_err(|_| TxError::InvalidHandle)?,
+        )?;
+        let t = stage_account(
+            self.world,
+            self.accounts,
+            self.world
+                .account_ref(to)
+                .map_err(|_| TxError::InvalidHandle)?,
+        )?;
+        if protected {
+            self.accounts[f].1.protected = self.accounts[f]
+                .1
+                .protected
+                .checked_sub(amount)
+                .map_err(|_| TxError::Protection)?;
+        }
+        self.accounts[f].1.cash = self.accounts[f]
+            .1
+            .cash
+            .checked_sub(amount)
+            .map_err(|_| TxError::InsufficientFunds)?;
+        self.accounts[t].1.cash = self.accounts[t]
+            .1
+            .cash
+            .checked_add(amount)
+            .map_err(|_| TxError::Overflow)?;
+        Ok(())
+    }
 }
 
 #[cfg(test)]

@@ -1,0 +1,529 @@
+{
+  "schema": "mycity-m0-opening-v1",
+  "bootstrap": {
+    "schema": "mycity-m0-bootstrap-v1",
+    "world": 1,
+    "branch": 1,
+    "seed": 7,
+    "laboratory_only": true
+  },
+  "sources": [
+    {
+      "id": 1,
+      "kind": "cash_capital",
+      "amount": 1000000
+    },
+    {
+      "id": 2,
+      "kind": "cash_capital",
+      "amount": 200000
+    },
+    {
+      "id": 3,
+      "kind": "cash_capital",
+      "amount": 600000
+    },
+    {
+      "id": 4,
+      "kind": "cash_capital",
+      "amount": 1200000
+    },
+    {
+      "id": 5,
+      "kind": "inventory_capital",
+      "amount": 240000
+    },
+    {
+      "id": 6,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 7,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 8,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 9,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 10,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 11,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 12,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 13,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 14,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 15,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 16,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 17,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 18,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 19,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 20,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 21,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 22,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 23,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 24,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 25,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 26,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 27,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 28,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 29,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 30,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 31,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 32,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 33,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 34,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 35,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 36,
+      "kind": "inventory_capital",
+      "amount": 0
+    }
+  ],
+  "accounts": [
+    {
+      "id": 1,
+      "role": "treasury",
+      "cash": 1000000,
+      "source": 1
+    },
+    {
+      "id": 2,
+      "role": "household",
+      "cash": 200000,
+      "source": 2
+    },
+    {
+      "id": 3,
+      "role": "company",
+      "cash": 600000,
+      "source": 3
+    },
+    {
+      "id": 4,
+      "role": "supplier",
+      "cash": 1200000,
+      "source": 4
+    }
+  ],
+  "stocks": [
+    {
+      "id": 1,
+      "owner": 4,
+      "commodity": "raw",
+      "quantity": 600000,
+      "basis": 240000,
+      "source": 5
+    },
+    {
+      "id": 2,
+      "owner": 3,
+      "commodity": "raw",
+      "quantity": 0,
+      "basis": 0,
+      "source": 6
+    },
+    {
+      "id": 100,
+      "owner": 3,
+      "commodity": "product",
+      "quantity": 0,
+      "basis": 0,
+      "source": 7
+    },
+    {
+      "id": 101,
+      "owner": 3,
+      "commodity": "product",
+      "quantity": 0,
+      "basis": 0,
+      "source": 8
+    },
+    {
+      "id": 102,
+      "owner": 3,
+      "commodity": "product",
+      "quantity": 0,
+      "basis": 0,
+      "source": 9
+    },
+    {
+      "id": 103,
+      "owner": 3,
+      "commodity": "product",
+      "quantity": 0,
+      "basis": 0,
+      "source": 10
+    },
+    {
+      "id": 104,
+      "owner": 3,
+      "commodity": "product",
+      "quantity": 0,
+      "basis": 0,
+      "source": 11
+    },
+    {
+      "id": 105,
+      "owner": 3,
+      "commodity": "product",
+      "quantity": 0,
+      "basis": 0,
+      "source": 12
+    },
+    {
+      "id": 106,
+      "owner": 3,
+      "commodity": "product",
+      "quantity": 0,
+      "basis": 0,
+      "source": 13
+    },
+    {
+      "id": 107,
+      "owner": 3,
+      "commodity": "product",
+      "quantity": 0,
+      "basis": 0,
+      "source": 14
+    },
+    {
+      "id": 108,
+      "owner": 3,
+      "commodity": "product",
+      "quantity": 0,
+      "basis": 0,
+      "source": 15
+    },
+    {
+      "id": 109,
+      "owner": 3,
+      "commodity": "product",
+      "quantity": 0,
+      "basis": 0,
+      "source": 16
+    },
+    {
+      "id": 110,
+      "owner": 3,
+      "commodity": "product",
+      "quantity": 0,
+      "basis": 0,
+      "source": 17
+    },
+    {
+      "id": 111,
+      "owner": 3,
+      "commodity": "product",
+      "quantity": 0,
+      "basis": 0,
+      "source": 18
+    },
+    {
+      "id": 112,
+      "owner": 3,
+      "commodity": "product",
+      "quantity": 0,
+      "basis": 0,
+      "source": 19
+    },
+    {
+      "id": 113,
+      "owner": 3,
+      "commodity": "product",
+      "quantity": 0,
+      "basis": 0,
+      "source": 20
+    },
+    {
+      "id": 114,
+      "owner": 3,
+      "commodity": "product",
+      "quantity": 0,
+      "basis": 0,
+      "source": 21
+    },
+    {
+      "id": 115,
+      "owner": 3,
+      "commodity": "product",
+      "quantity": 0,
+      "basis": 0,
+      "source": 22
+    },
+    {
+      "id": 116,
+      "owner": 3,
+      "commodity": "product",
+      "quantity": 0,
+      "basis": 0,
+      "source": 23
+    },
+    {
+      "id": 117,
+      "owner": 3,
+      "commodity": "product",
+      "quantity": 0,
+      "basis": 0,
+      "source": 24
+    },
+    {
+      "id": 118,
+      "owner": 3,
+      "commodity": "product",
+      "quantity": 0,
+      "basis": 0,
+      "source": 25
+    },
+    {
+      "id": 119,
+      "owner": 3,
+      "commodity": "product",
+      "quantity": 0,
+      "basis": 0,
+      "source": 26
+    },
+    {
+      "id": 120,
+      "owner": 3,
+      "commodity": "product",
+      "quantity": 0,
+      "basis": 0,
+      "source": 27
+    },
+    {
+      "id": 121,
+      "owner": 3,
+      "commodity": "product",
+      "quantity": 0,
+      "basis": 0,
+      "source": 28
+    },
+    {
+      "id": 122,
+      "owner": 3,
+      "commodity": "product",
+      "quantity": 0,
+      "basis": 0,
+      "source": 29
+    },
+    {
+      "id": 123,
+      "owner": 3,
+      "commodity": "product",
+      "quantity": 0,
+      "basis": 0,
+      "source": 30
+    },
+    {
+      "id": 124,
+      "owner": 3,
+      "commodity": "product",
+      "quantity": 0,
+      "basis": 0,
+      "source": 31
+    },
+    {
+      "id": 125,
+      "owner": 3,
+      "commodity": "product",
+      "quantity": 0,
+      "basis": 0,
+      "source": 32
+    },
+    {
+      "id": 126,
+      "owner": 3,
+      "commodity": "product",
+      "quantity": 0,
+      "basis": 0,
+      "source": 33
+    },
+    {
+      "id": 127,
+      "owner": 3,
+      "commodity": "product",
+      "quantity": 0,
+      "basis": 0,
+      "source": 34
+    },
+    {
+      "id": 128,
+      "owner": 3,
+      "commodity": "product",
+      "quantity": 0,
+      "basis": 0,
+      "source": 35
+    },
+    {
+      "id": 129,
+      "owner": 3,
+      "commodity": "product",
+      "quantity": 0,
+      "basis": 0,
+      "source": 36
+    }
+  ],
+  "economy": {
+    "schema": "mycity-m0-economy-v1",
+    "profile": "pe0-30d-v1",
+    "accounts": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "supplier_stock": 1,
+    "raw_stock": 2,
+    "product_stocks": [
+      100,
+      101,
+      102,
+      103,
+      104,
+      105,
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119,
+      120,
+      121,
+      122,
+      123,
+      124,
+      125,
+      126,
+      127,
+      128,
+      129
+    ],
+    "transport_source": "laboratory-corridor-v1",
+    "distance_m": 1000,
+    "travel_seconds": 3600,
+    "capacity": 10000,
+    "daily_capacity": 20000,
+    "electric_wh": 0,
+    "water_l": 0,
+    "waste_q": 0,
+    "debt": null
+  }
+}

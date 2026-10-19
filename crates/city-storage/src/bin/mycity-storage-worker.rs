@@ -69,6 +69,31 @@ fn run() -> Result<(), String> {
         );
         return Ok(());
     }
+    if args[1] == "economy-commit" {
+        let command: Envelope = serde_json::from_slice(
+            &std::fs::read(args.get(3).ok_or("missing_envelope")?).map_err(err)?,
+        )
+        .map_err(err)?;
+        let crash = args.get(4).map(String::as_str).unwrap_or("none");
+        let outcome = store
+            .execute_with_observer(
+                Caller::System,
+                command,
+                |point: WritePoint| -> io::Result<()> {
+                    if format!("{point:?}") == crash {
+                        std::process::exit(97)
+                    }
+                    Ok(())
+                },
+            )
+            .map_err(err)?;
+        println!("{}", serde_json::to_string(&outcome).map_err(err)?);
+        io::stdout().flush().map_err(err)?;
+        if crash == "Responded" {
+            std::process::exit(97)
+        }
+        return Ok(());
+    }
     if args[1] != "commit" {
         return Err("unknown_worker_command".into());
     }

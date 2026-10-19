@@ -70,6 +70,7 @@ pub struct Opening {
     pub accounts: Vec<OpeningAccount>,
     pub stocks: Vec<OpeningStock>,
     pub region: Option<crate::region::Opening>,
+    pub economy: Option<crate::economy::Opening>,
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -102,6 +103,7 @@ pub struct World {
     pub(crate) stock_ids: Vec<(u32, Handle<InventoryDomain>)>,
     sources: Vec<OpeningSource>,
     pub(crate) region: Option<crate::region::Region>,
+    pub(crate) economy: Option<crate::economy::Economy>,
 }
 
 #[derive(Debug, PartialEq, Eq, Serialize)]
@@ -133,6 +135,7 @@ pub struct WorldView {
     pub stocks: Vec<StockView>,
     pub opening_sources: Vec<OpeningSource>,
     pub region: Option<crate::region::Region>,
+    pub economy: Option<crate::economy::Economy>,
 }
 
 impl World {
@@ -156,7 +159,7 @@ impl World {
     }
     pub fn view(&self) -> WorldView {
         WorldView {
-            schema: "mycity-m0-state-v3",
+            schema: "mycity-m0-state-v4",
             scope: self.scope,
             seed: self.seed,
             revision: self.revision,
@@ -193,6 +196,7 @@ impl World {
                 .collect(),
             opening_sources: self.sources.clone(),
             region: self.region,
+            economy: self.economy,
         }
     }
     pub fn state_hash(&self) -> String {
@@ -287,6 +291,7 @@ pub fn assemble(bytes: &[u8]) -> Result<World, String> {
         account_ids: Vec::with_capacity(input.accounts.len()),
         stock_ids: Vec::with_capacity(input.stocks.len()),
         sources: input.sources,
+        economy: None,
         region: input
             .region
             .map(crate::region::Region::new)
@@ -328,6 +333,9 @@ pub fn assemble(bytes: &[u8]) -> Result<World, String> {
             world.account_handle(obligation.payer)?;
             world.account_handle(obligation.payee)?;
         }
+    }
+    if let Some(economy) = input.economy {
+        world.economy = Some(crate::economy::Economy::new(economy, &world)?);
     }
     if world.layout()["owned_capacity_bytes"].as_u64().unwrap() > WORLD_BYTE_BUDGET as u64 {
         return Err("world_byte_limit".into());

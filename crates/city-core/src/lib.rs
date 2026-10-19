@@ -7,6 +7,7 @@ use std::io::{self, Read};
 pub mod arena;
 pub mod assembly;
 pub mod calendar;
+pub mod economy;
 pub mod probes;
 pub mod region;
 pub mod schedule;
