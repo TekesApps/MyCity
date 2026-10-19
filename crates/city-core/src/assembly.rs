@@ -85,6 +85,10 @@ pub(crate) struct Stock {
     pub commodity: Commodity,
     pub quantity: Quantity,
     pub basis: Money,
+    pub lot_id: u32,
+    pub origin_quantity: Quantity,
+    pub origin_basis: Money,
+    pub offset: Quantity,
 }
 
 pub struct World {
@@ -112,6 +116,10 @@ pub struct StockView {
     pub commodity: Commodity,
     pub quantity: Quantity,
     pub basis: Money,
+    pub lot_id: u32,
+    pub origin_quantity: Quantity,
+    pub origin_basis: Money,
+    pub offset: Quantity,
 }
 #[derive(Debug, PartialEq, Eq, Serialize)]
 pub struct WorldView {
@@ -125,6 +133,12 @@ pub struct WorldView {
 }
 
 impl World {
+    pub fn account_ref(&self, id: u32) -> Result<crate::arena::RawHandle, String> {
+        Ok(self.account_handle(id)?.raw())
+    }
+    pub fn stock_ref(&self, id: u32) -> Result<crate::arena::RawHandle, String> {
+        Ok(self.stock_handle(id)?.raw())
+    }
     pub(crate) fn account_handle(&self, id: u32) -> Result<Handle<AccountDomain>, String> {
         self.account_ids
             .binary_search_by_key(&id, |x| x.0)
@@ -139,7 +153,7 @@ impl World {
     }
     pub fn view(&self) -> WorldView {
         WorldView {
-            schema: ASSEMBLY_SCHEMA,
+            schema: "mycity-m0-state-v2",
             scope: self.scope,
             seed: self.seed,
             revision: self.revision,
@@ -167,6 +181,10 @@ impl World {
                         commodity: s.commodity,
                         quantity: s.quantity,
                         basis: s.basis,
+                        lot_id: s.lot_id,
+                        origin_quantity: s.origin_quantity,
+                        origin_basis: s.origin_basis,
+                        offset: s.offset,
                     }
                 })
                 .collect(),
@@ -288,6 +306,10 @@ pub fn assemble(bytes: &[u8]) -> Result<World, String> {
                 commodity: s.commodity,
                 quantity: s.quantity,
                 basis: s.basis,
+                lot_id: s.source,
+                origin_quantity: s.quantity,
+                origin_basis: s.basis,
+                offset: Quantity::ZERO,
             })
             .map_err(|e| format!("{e:?}"))?;
         world.stock_ids.push((s.id, h));

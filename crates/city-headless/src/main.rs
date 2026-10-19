@@ -17,12 +17,17 @@ fn system(command: &str, args: &[&str]) -> Option<String> {
 
 fn run() -> Result<(), String> {
     let args: Vec<_> = env::args().collect();
-    if args.len() != 3 || !["baseline", "layout", "assemble"].contains(&args[1].as_str()) {
-        return Err("usage: mycity-headless <baseline|layout|assemble> <input.json>".into());
+    if args.len() != 3
+        || !["baseline", "layout", "assemble", "transaction-probe"].contains(&args[1].as_str())
+    {
+        return Err(
+            "usage: mycity-headless <baseline|layout|assemble|transaction-probe> <input.json>"
+                .into(),
+        );
     }
     let file = File::open(&args[2]).map_err(|e| e.to_string())?;
     let bytes = read_bounded(file, INPUT_LIMIT).map_err(|e| e.to_string())?;
-    let assembled = if args[1] == "assemble" {
+    let assembled = if ["assemble", "transaction-probe"].contains(&args[1].as_str()) {
         Some(mycity_core::assembly::assemble(&bytes)?)
     } else {
         None
@@ -46,6 +51,9 @@ fn run() -> Result<(), String> {
         rules["max_stocks"] = json!(mycity_core::assembly::MAX_STOCKS);
         rules["max_sources"] = json!(mycity_core::assembly::MAX_SOURCES);
         rules["world_byte_budget"] = json!(mycity_core::assembly::WORLD_BYTE_BUDGET);
+    }
+    if args[1] == "transaction-probe" {
+        rules["transaction"] = json!({"max_actions":mycity_core::transaction::MAX_ACTIONS,"max_receipts":mycity_core::transaction::MAX_RECEIPTS,"engine_byte_budget":mycity_core::transaction::ENGINE_BYTE_BUDGET,"cost_policy":"frozen_lot_interval_v1","protected_release":"trusted_host_only"});
     }
     let now = SystemTime::now()
         .duration_since(UNIX_EPOCH)
@@ -89,6 +97,11 @@ fn run() -> Result<(), String> {
         report["world"] = json!(world.view());
         report["state_sha256"] = json!(world.state_hash());
         report["layout"] = world.layout();
+    }
+    if args[1] == "transaction-probe" {
+        report["task"] = json!("M0-T04");
+        report["result"] = json!("volatile_transaction_probes_passed");
+        report["transaction_probe"] = mycity_core::probes::transaction_probe(&bytes)?;
     }
     println!(
         "{}",

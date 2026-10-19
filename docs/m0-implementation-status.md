@@ -15,7 +15,7 @@
 | T01 | headless子阶段通过，v0.5.4 | Release离线构建／测试／CLI实际运行、输入及规则／源码／锁文件hash、实际机器；wgpu随GPU阶段、macOS14兼容未实测 |
 | T02 | 类型／固定表子阶段通过，v0.5.5 | checked单位／余数、typed scope及代际、记录／字节双限，实际探针布局；全域writer／真实领域记录随T03/T04验，整机长跑未测 |
 | T03 | 有限实验装配通过，v0.5.6 | 4主体／600Q库存及成本的真实记录、来源唯一消费／引用校验／数量字节门；未推进经济 |
-| T04 | planned | 易失事务／权限／幂等／原子预留 |
+| T04 | 有限易失事务通过，v0.5.7 | 资金保护／钱货原子／带scope容量令牌／幂等与反例；保护款释放仅可信宿主；持久成功未实现 |
 | T05 | planned | 共同钟／阶段／稳定随机／到期分页 |
 | T06 | planned | 持久成功／锁／WAL／根／恢复故障注入 |
 | T07 | planned，模型数据部分 | 地形／几何／合法接缝；显示与拾取UI延期 |
@@ -67,3 +67,18 @@ Release共12项测试（含1个compile-fail）通过，fmt／clippy通过。`lay
 当前实际账户record24B／slot32B，库存record56B／slot64B；预留固定表、索引、来源容量和剩余世界头合计11600B。完整实跑来源和布局见[装配报告](evidence/m0-t03/assembly.json)。按稳定ID装配与来源排序，相同输入内容换序仍为同状态hash；world／branch继续参与引用，不把输入顺序当永久身份。
 
 Release共17项测试通过（13单元＋3 CLI集成＋1编译失败），fmt／clippy通过；覆盖输入乱序、重复／错成本／缺主体、额度和未消费资金源，以及CLI装配真实记录。`cargo run --release --locked --offline -p mycity-headless -- assemble fixtures/m0-e0-opening.json`可重跑。输出revision0、经济not_run；没有交易、劳动、在途、生产或存档通过结论。
+
+
+## 6. T04：有界易失事务、权限和共享容量
+
+单CPU writer先在有界dirty集计算全部账户／库存／容量候选，校验版本／权限／余额／保护／配额后一起替换。每批最多16动作、32触及账户／32库存、8资源／64租约；没有持部分资源锁等待。现金保护不新发钱，保护转实付只扣一次。当前尚无完整来源化保护条款，**ReleaseProtection／PayProtected只接受可信System实验内部调用**，普通账户不可自行解除或改付他人；宿主Caller不从工具JSON反序列化。后续业务层须绑定真实保护来源和受款方，不能把这个内部原语直接暴露给Agent。
+
+容量令牌携world／branch／单调token，跨世界即便数字相同也拒绝，释放后不复用。请求两资源但其中一个不足时整批不占有；已提交的他人租约不可被调度器强行释放。股票／票数／司法不在本阶段，不以System实验调用冒称有真实法定流程。
+
+库存按固定取得批次Q0／C0和原批次offset结转累计差额：`floor(C0*(offset+dQ)/Q0)−floor(C0*offset/Q0)`。内部调货保留原批次和位置，拆3个1与一次3成本一致。每槽目前只支持一个连续原批区间；不同批次或非连续区间合并显式拒绝，需要未来独立批次行，不能重新平均洗成本。新增批次字段使state投影版本改为mycity-m0-state-v2；没有既有运行存档被热迁移，v0.5.6布局证据仍按原tag解释。
+
+1024条固定journal保留成功／经接纳的失败结果及原动作，预留空间满后拒绝新操作，旧回执仍可读。同ID同载荷／同调用身份返回原结果，同ID改载荷拒绝；world／branch隔离，旧revision／错引用／越权拒绝。业务state hash不含拒绝回执，故拒绝可增加journal但不能改变钱货／占用／revision。当前journal只在内存，所有成功明确为volatile_only，不能宣称崩溃后不重付。
+
+实际CLI实验检查保护阻止挪用、支付转换、共享10容量先占8后另一方申请8失败、整批释放及重复操作。见[T04实跑](evidence/m0-t04/transactions.json)；`cargo run --release --locked --offline -p mycity-headless -- transaction-probe fixtures/m0-e0-opening.json`可重跑。Release共29项测试（24单元＋4 CLI＋1编译失败）、fmt／clippy通过，包含advisor指出的保护自解、跨world同号token、拆单成本三项回归，以及满journal、后动作失败不半扣钱货。
+
+该实验引擎owned capacity1934272B，含真实世界表／索引与固定journal／容量状态；整体硬准入4MiB。世界表按模拟域计，journal／诊断及16KiB以内dirty工作页按运行0.45GiB域计，不新增预算、不双计世界表；该数字不含allocator metadata／JSON投影及临时解析，亦未测footprint长时峰值。未来T06持久化／到期事实不能靠永远增长这个journal，应有可恢复覆盖／归档和背压；尚未实现的不算通过。

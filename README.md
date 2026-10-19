@@ -1,6 +1,6 @@
 # MyCity
 
-仓库发布版本：`v0.5.6`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.7`。已开始Rust模型与headless CLI，当前不做UI。
 
 **从[完整产品蓝图](docs/PRODUCT_BLUEPRINT.md)开始。** 总体覆盖市长／City Team、市民生活、企业经营和城市运行，实施分版本；原23类首期和90类目录不作为总体完成证明。
 

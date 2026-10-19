@@ -6,6 +6,8 @@ use std::io::{self, Read};
 
 pub mod arena;
 pub mod assembly;
+pub mod probes;
+pub mod transaction;
 pub mod units;
 
 pub const SCHEMA: &str = "mycity-m0-bootstrap-v1";

@@ -1,0 +1,673 @@
+{
+  "build": {
+    "profile": "release",
+    "rustc": "rustc 1.85.1 (4eb161250 2025-03-15)",
+    "target": "aarch64-apple-darwin"
+  },
+  "economic_prototypes": "not_run",
+  "gpu": "not_implemented",
+  "host": {
+    "arch": "aarch64",
+    "chip": "Apple M4",
+    "memory_bytes": "34359738368",
+    "os": "macos",
+    "os_version": "26.6.2"
+  },
+  "input": {
+    "branch": 1,
+    "laboratory_only": true,
+    "schema": "mycity-m0-bootstrap-v1",
+    "seed": 7,
+    "world": 1
+  },
+  "input_sha256": "6756555697457b3de5307086610a108c88d15650c6e668da0cdf990ca52b874c",
+  "layout": {
+    "accounts": {
+      "free_index_capacity": 64,
+      "header_bytes": 80,
+      "live_records": 4,
+      "owned_capacity_bytes": 2384,
+      "record_bytes": 24,
+      "slot_bytes": 32,
+      "slots_capacity": 64
+    },
+    "allocator_metadata_included": false,
+    "index_capacity_bytes": 200,
+    "opening_sources_capacity_bytes": 128,
+    "owned_capacity_bytes": 15696,
+    "stocks": {
+      "free_index_capacity": 128,
+      "header_bytes": 80,
+      "live_records": 1,
+      "owned_capacity_bytes": 12880,
+      "record_bytes": 88,
+      "slot_bytes": 96,
+      "slots_capacity": 128
+    },
+    "temporary_parse_and_view_pages_included": false,
+    "world_remaining_header_bytes": 104
+  },
+  "lock_sha256": "947be764293056e38d46cf3fa9a50bda395c3dec6f31f617d08b604d782fd1b5",
+  "memory_16gb_gate": "not_run",
+  "report_schema": "mycity-m0-evidence-v1",
+  "result": "volatile_transaction_probes_passed",
+  "rules": {
+    "input_limit_bytes": 65536,
+    "max_accounts": 64,
+    "max_sources": 192,
+    "max_stocks": 128,
+    "mode": "headless_laboratory",
+    "numeric_strategy": "checked-integer-v1",
+    "opening_schema": "mycity-m0-opening-v1",
+    "schema": "mycity-m0-bootstrap-v1",
+    "transaction": {
+      "cost_policy": "frozen_lot_interval_v1",
+      "engine_byte_budget": 4194304,
+      "max_actions": 16,
+      "max_receipts": 1024,
+      "protected_release": "trusted_host_only"
+    },
+    "world_byte_budget": 131072
+  },
+  "rules_sha256": "f7340fccbf9d074e7804c64019dfb6c707d91d9c9877c50dbbb460b34099de61",
+  "run_id": "84770-1792414690413009000",
+  "source_sha256": "85aee326be5f2640049df3b2f6d305035d06586f503056f1cb8f179fd9b9e7d5",
+  "state_sha256": "7c45e970f5c38d62e4442956079f289d4d287c6f347245ff36a6d4ac0042d8f4",
+  "task": "M0-T04",
+  "transaction_probe": {
+    "durability": "volatile_only",
+    "journal": [
+      {
+        "actions": [
+          {
+            "account": {
+              "branch": 1,
+              "domain": 1,
+              "generation": 1,
+              "index": 1,
+              "world": 1
+            },
+            "amount": 10000,
+            "kind": "protect"
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "actor": 2,
+        "operation_id": 1,
+        "outcome": {
+          "Ok": {
+            "created_tokens": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "durability": "volatile_only",
+            "operation_id": 1,
+            "revision": 1
+          }
+        },
+        "payload_sha256": [
+          186,
+          184,
+          143,
+          11,
+          96,
+          215,
+          154,
+          111,
+          163,
+          210,
+          22,
+          13,
+          161,
+          47,
+          243,
+          58,
+          89,
+          188,
+          175,
+          222,
+          110,
+          108,
+          99,
+          158,
+          168,
+          33,
+          180,
+          69,
+          221,
+          184,
+          215,
+          96
+        ]
+      },
+      {
+        "actions": [
+          {
+            "amount": 195000,
+            "from": {
+              "branch": 1,
+              "domain": 1,
+              "generation": 1,
+              "index": 1,
+              "world": 1
+            },
+            "kind": "transfer",
+            "to": {
+              "branch": 1,
+              "domain": 1,
+              "generation": 1,
+              "index": 2,
+              "world": 1
+            }
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "actor": 2,
+        "operation_id": 2,
+        "outcome": {
+          "Err": "insufficient_funds"
+        },
+        "payload_sha256": [
+          178,
+          68,
+          168,
+          212,
+          246,
+          13,
+          39,
+          101,
+          69,
+          95,
+          192,
+          30,
+          59,
+          81,
+          247,
+          138,
+          214,
+          83,
+          145,
+          147,
+          197,
+          72,
+          85,
+          66,
+          194,
+          175,
+          102,
+          176,
+          62,
+          233,
+          106,
+          196
+        ]
+      },
+      {
+        "actions": [
+          {
+            "amount": 10000,
+            "from": {
+              "branch": 1,
+              "domain": 1,
+              "generation": 1,
+              "index": 1,
+              "world": 1
+            },
+            "kind": "pay_protected",
+            "to": {
+              "branch": 1,
+              "domain": 1,
+              "generation": 1,
+              "index": 2,
+              "world": 1
+            }
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "actor": 0,
+        "operation_id": 3,
+        "outcome": {
+          "Ok": {
+            "created_tokens": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "durability": "volatile_only",
+            "operation_id": 3,
+            "revision": 2
+          }
+        },
+        "payload_sha256": [
+          51,
+          245,
+          152,
+          239,
+          94,
+          29,
+          180,
+          115,
+          188,
+          171,
+          1,
+          87,
+          205,
+          51,
+          240,
+          239,
+          86,
+          87,
+          179,
+          186,
+          229,
+          127,
+          163,
+          177,
+          32,
+          211,
+          124,
+          157,
+          243,
+          81,
+          242,
+          167
+        ]
+      },
+      {
+        "actions": [
+          {
+            "kind": "reserve_capacity",
+            "resource": 1,
+            "units": 8
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "actor": 2,
+        "operation_id": 4,
+        "outcome": {
+          "Ok": {
+            "created_tokens": [
+              {
+                "branch": 1,
+                "number": 1,
+                "world": 1
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "durability": "volatile_only",
+            "operation_id": 4,
+            "revision": 3
+          }
+        },
+        "payload_sha256": [
+          154,
+          7,
+          215,
+          44,
+          80,
+          25,
+          57,
+          43,
+          179,
+          175,
+          147,
+          77,
+          142,
+          145,
+          74,
+          237,
+          146,
+          24,
+          45,
+          187,
+          132,
+          96,
+          28,
+          183,
+          158,
+          238,
+          174,
+          245,
+          21,
+          210,
+          253,
+          4
+        ]
+      },
+      {
+        "actions": [
+          {
+            "kind": "reserve_capacity",
+            "resource": 2,
+            "units": 8
+          },
+          {
+            "kind": "reserve_capacity",
+            "resource": 1,
+            "units": 8
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "actor": 3,
+        "operation_id": 5,
+        "outcome": {
+          "Err": "capacity"
+        },
+        "payload_sha256": [
+          209,
+          96,
+          191,
+          196,
+          61,
+          144,
+          212,
+          158,
+          161,
+          201,
+          27,
+          48,
+          32,
+          76,
+          226,
+          46,
+          194,
+          91,
+          170,
+          205,
+          215,
+          218,
+          116,
+          221,
+          174,
+          3,
+          214,
+          24,
+          10,
+          199,
+          127,
+          183
+        ]
+      }
+    ],
+    "owned_capacity_bytes": 1934272,
+    "persistent_recovery": "not_run",
+    "resources": [
+      {
+        "capacity": 10,
+        "id": 1,
+        "occupied": 0,
+        "reserved": 8
+      },
+      {
+        "capacity": 10,
+        "id": 2,
+        "occupied": 0,
+        "reserved": 0
+      }
+    ],
+    "result": "volatile_transaction_probes_passed",
+    "scope": "protection_payment_atomic_capacity_and_retry_only",
+    "state_sha256": "c90257e4a8efb81bcfc2eb3b5e645e38f72567a2d124c89ee46fcddd8be1a6e2",
+    "world": {
+      "accounts": [
+        {
+          "cash": 1000000,
+          "id": 1,
+          "protected": 0,
+          "role": "treasury"
+        },
+        {
+          "cash": 190000,
+          "id": 2,
+          "protected": 0,
+          "role": "household"
+        },
+        {
+          "cash": 610000,
+          "id": 3,
+          "protected": 0,
+          "role": "company"
+        },
+        {
+          "cash": 1200000,
+          "id": 4,
+          "protected": 0,
+          "role": "supplier"
+        }
+      ],
+      "opening_sources": [
+        {
+          "amount": 1000000,
+          "id": 1,
+          "kind": "cash_capital"
+        },
+        {
+          "amount": 200000,
+          "id": 2,
+          "kind": "cash_capital"
+        },
+        {
+          "amount": 600000,
+          "id": 3,
+          "kind": "cash_capital"
+        },
+        {
+          "amount": 1200000,
+          "id": 4,
+          "kind": "cash_capital"
+        },
+        {
+          "amount": 240000,
+          "id": 5,
+          "kind": "inventory_capital"
+        }
+      ],
+      "revision": 3,
+      "schema": "mycity-m0-state-v2",
+      "scope": {
+        "branch": 1,
+        "world": 1
+      },
+      "seed": 7,
+      "stocks": [
+        {
+          "basis": 240000,
+          "commodity": "raw",
+          "id": 1,
+          "lot_id": 5,
+          "offset": 0,
+          "origin_basis": 240000,
+          "origin_quantity": 600000,
+          "owner": 4,
+          "quantity": 600000
+        }
+      ]
+    }
+  },
+  "ui": "not_implemented_by_scope",
+  "world": {
+    "accounts": [
+      {
+        "cash": 1000000,
+        "id": 1,
+        "protected": 0,
+        "role": "treasury"
+      },
+      {
+        "cash": 200000,
+        "id": 2,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 600000,
+        "id": 3,
+        "protected": 0,
+        "role": "company"
+      },
+      {
+        "cash": 1200000,
+        "id": 4,
+        "protected": 0,
+        "role": "supplier"
+      }
+    ],
+    "opening_sources": [
+      {
+        "amount": 1000000,
+        "id": 1,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 200000,
+        "id": 2,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 600000,
+        "id": 3,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 1200000,
+        "id": 4,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 240000,
+        "id": 5,
+        "kind": "inventory_capital"
+      }
+    ],
+    "revision": 0,
+    "schema": "mycity-m0-state-v2",
+    "scope": {
+      "branch": 1,
+      "world": 1
+    },
+    "seed": 7,
+    "stocks": [
+      {
+        "basis": 240000,
+        "commodity": "raw",
+        "id": 1,
+        "lot_id": 5,
+        "offset": 0,
+        "origin_basis": 240000,
+        "origin_quantity": 600000,
+        "owner": 4,
+        "quantity": 600000
+      }
+    ]
+  }
+}

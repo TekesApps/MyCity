@@ -59,3 +59,28 @@ fn opening_cli_assembles_real_bounded_records_without_running_the_economy() {
     assert_eq!(v["economic_prototypes"], "not_run");
     assert_eq!(v["world"]["revision"], 0);
 }
+
+#[test]
+fn transaction_probe_exercises_model_without_claiming_durable_success() {
+    let input = format!(
+        "{}/../../fixtures/m0-e0-opening.json",
+        env!("CARGO_MANIFEST_DIR")
+    );
+    let out = Command::new(env!("CARGO_BIN_EXE_mycity-headless"))
+        .args(["transaction-probe", &input])
+        .output()
+        .unwrap();
+    assert!(
+        out.status.success(),
+        "{}",
+        String::from_utf8_lossy(&out.stderr)
+    );
+    let v: serde_json::Value = serde_json::from_slice(&out.stdout).unwrap();
+    assert_eq!(v["transaction_probe"]["durability"], "volatile_only");
+    assert_eq!(v["transaction_probe"]["resources"][1]["reserved"], 0);
+    assert_eq!(
+        v["transaction_probe"]["world"]["accounts"][1]["cash"],
+        190000
+    );
+    assert_eq!(v["memory_16gb_gate"], "not_run");
+}

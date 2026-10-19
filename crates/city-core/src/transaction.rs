@@ -1,0 +1,1071 @@
+//! Single-writer, bounded volatile transactions. No durable-success claim until storage.
+use crate::{
+    arena::{AccountDomain, Handle, InventoryDomain, RawHandle},
+    assembly::{Account, Stock, World},
+    sha256,
+    units::{Money, Quantity},
+};
+use serde::{Deserialize, Serialize};
+use std::mem::size_of;
+
+pub const MAX_ACTIONS: usize = 16;
+pub const MAX_RECEIPTS: usize = 1024;
+pub const MAX_RESOURCES: usize = 8;
+pub const MAX_LEASES: usize = 64;
+pub const ENGINE_BYTE_BUDGET: usize = 4 * 1024 * 1024;
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct CapacityToken {
+    pub world: u64,
+    pub branch: u64,
+    pub number: u64,
+}
+
+/// Only trusted host code constructs this context; never deserialized from tool input.
+#[derive(Clone, Copy, Debug)]
+pub enum Caller {
+    System,
+    Account(u32),
+}
+impl Caller {
+    fn key(self) -> u32 {
+        match self {
+            Self::System => 0,
+            Self::Account(id) => id,
+        }
+    }
+    fn permits(self, id: u32) -> bool {
+        matches!(self, Self::System) || self.key() == id
+    }
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
+pub enum Action {
+    Transfer {
+        from: RawHandle,
+        to: RawHandle,
+        amount: Money,
+    },
+    Protect {
+        account: RawHandle,
+        amount: Money,
+    },
+    ReleaseProtection {
+        account: RawHandle,
+        amount: Money,
+    },
+    PayProtected {
+        from: RawHandle,
+        to: RawHandle,
+        amount: Money,
+    },
+    MoveStock {
+        from: RawHandle,
+        to: RawHandle,
+        quantity: Quantity,
+    },
+    ReserveCapacity {
+        resource: u32,
+        units: u32,
+    },
+    OccupyCapacity {
+        token: CapacityToken,
+    },
+    ReleaseCapacity {
+        token: CapacityToken,
+    },
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Envelope {
+    pub world: u64,
+    pub branch: u64,
+    pub operation_id: u64,
+    pub expected_revision: u64,
+    pub actions: Vec<Action>,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub enum TxError {
+    WrongScope,
+    InvalidOperation,
+    TooManyActions,
+    Unauthorized,
+    OperationConflict,
+    JournalFull,
+    StaleRevision,
+    InvalidHandle,
+    InsufficientFunds,
+    Protection,
+    Overflow,
+    Stock,
+    Resource,
+    Capacity,
+    Lease,
+    WorkingLimit,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+pub struct Receipt {
+    pub operation_id: u64,
+    pub revision: u64,
+    pub durability: &'static str,
+    pub created_tokens: [Option<CapacityToken>; MAX_ACTIONS],
+}
+
+#[derive(Clone, Copy, Debug, Serialize)]
+pub struct JournalRecord {
+    pub actor: u32,
+    pub operation_id: u64,
+    pub payload_sha256: [u8; 32],
+    pub outcome: Result<Receipt, TxError>,
+    pub actions: [Option<Action>; MAX_ACTIONS],
+}
+
+#[derive(Clone, Copy, Debug, Serialize)]
+pub struct Resource {
+    pub id: u32,
+    pub capacity: u32,
+    pub reserved: u32,
+    pub occupied: u32,
+}
+impl Resource {
+    pub fn new(id: u32, capacity: u32) -> Result<Self, TxError> {
+        if id == 0 {
+            return Err(TxError::Resource);
+        }
+        Ok(Self {
+            id,
+            capacity,
+            reserved: 0,
+            occupied: 0,
+        })
+    }
+}
+#[derive(Clone, Copy, Debug, Serialize)]
+pub struct Lease {
+    pub token: u64,
+    pub actor: u32,
+    pub resource: u32,
+    pub units: u32,
+    pub occupied: bool,
+}
+
+pub struct Engine {
+    pub(crate) world: World,
+    resources: Vec<Resource>,
+    leases: Vec<Option<Lease>>,
+    next_token: u64,
+    journal: Vec<JournalRecord>,
+}
+
+impl Engine {
+    pub fn new(world: World, mut resources: Vec<Resource>) -> Result<Self, TxError> {
+        if resources.len() > MAX_RESOURCES {
+            return Err(TxError::Resource);
+        }
+        resources.sort_by_key(|r| r.id);
+        if resources
+            .iter()
+            .any(|r| r.id == 0 || r.reserved != 0 || r.occupied != 0)
+            || resources.windows(2).any(|w| w[0].id == w[1].id)
+        {
+            return Err(TxError::Resource);
+        }
+        let mut journal = Vec::new();
+        journal
+            .try_reserve_exact(MAX_RECEIPTS)
+            .map_err(|_| TxError::WorkingLimit)?;
+        let mut leases = Vec::new();
+        leases
+            .try_reserve_exact(MAX_LEASES)
+            .map_err(|_| TxError::WorkingLimit)?;
+        leases.resize(MAX_LEASES, None);
+        let engine = Self {
+            world,
+            resources,
+            leases,
+            next_token: 1,
+            journal,
+        };
+        if engine.owned_capacity_bytes() > ENGINE_BYTE_BUDGET {
+            return Err(TxError::WorkingLimit);
+        }
+        Ok(engine)
+    }
+    pub fn world(&self) -> &World {
+        &self.world
+    }
+    pub fn resources(&self) -> &[Resource] {
+        &self.resources
+    }
+    pub fn journal(&self) -> &[JournalRecord] {
+        &self.journal
+    }
+    pub fn owned_capacity_bytes(&self) -> usize {
+        size_of::<Self>() - size_of::<World>()
+            + self.world.layout()["owned_capacity_bytes"]
+                .as_u64()
+                .expect("world layout") as usize
+            + self.resources.capacity() * size_of::<Resource>()
+            + self.leases.capacity() * size_of::<Option<Lease>>()
+            + self.journal.capacity() * size_of::<JournalRecord>()
+    }
+    pub fn state_hash(&self) -> String {
+        sha256(&serde_json::to_vec(&serde_json::json!({"world":self.world.view(),"resources":self.resources,"leases":self.leases,"next_token":self.next_token})).expect("exact state"))
+    }
+    pub fn execute(&mut self, caller: Caller, env: Envelope) -> Result<Receipt, TxError> {
+        if env.world != self.world.scope.world() || env.branch != self.world.scope.branch() {
+            return Err(TxError::WrongScope);
+        }
+        if env.operation_id == 0 || matches!(caller, Caller::Account(0)) {
+            return Err(TxError::InvalidOperation);
+        }
+        if env.actions.is_empty() || env.actions.len() > MAX_ACTIONS {
+            return Err(TxError::TooManyActions);
+        }
+        if let Caller::Account(id) = caller {
+            self.world
+                .account_handle(id)
+                .map_err(|_| TxError::Unauthorized)?;
+        }
+        let digest: [u8; 32] = {
+            use sha2::{Digest, Sha256};
+            Sha256::digest(serde_json::to_vec(&env).map_err(|_| TxError::InvalidOperation)?).into()
+        };
+        if let Some(old) = self
+            .journal
+            .iter()
+            .find(|r| r.operation_id == env.operation_id)
+        {
+            if old.actor != caller.key() {
+                return Err(TxError::Unauthorized);
+            }
+            return if old.payload_sha256 == digest {
+                old.outcome
+            } else {
+                Err(TxError::OperationConflict)
+            };
+        }
+        if self.journal.len() == MAX_RECEIPTS {
+            return Err(TxError::JournalFull);
+        }
+        let result = if env.expected_revision != self.world.revision {
+            Err(TxError::StaleRevision)
+        } else {
+            self.prepare_and_commit(caller, &env)
+        };
+        let mut actions = [None; MAX_ACTIONS];
+        for (i, a) in env.actions.into_iter().enumerate() {
+            actions[i] = Some(a)
+        }
+        // Space was admitted before preparing. No allocation or fallible mutation after commit.
+        self.journal.push(JournalRecord {
+            actor: caller.key(),
+            operation_id: env.operation_id,
+            payload_sha256: digest,
+            outcome: result,
+            actions,
+        });
+        result
+    }
+
+    fn prepare_and_commit(&mut self, caller: Caller, env: &Envelope) -> Result<Receipt, TxError> {
+        let next_revision = self
+            .world
+            .revision
+            .checked_add(1)
+            .ok_or(TxError::Overflow)?;
+        let mut accounts: Vec<(Handle<AccountDomain>, Account)> =
+            Vec::with_capacity(MAX_ACTIONS * 2);
+        let mut stocks: Vec<(Handle<InventoryDomain>, Stock)> = Vec::with_capacity(MAX_ACTIONS * 2);
+        let mut resources = self.resources.clone();
+        let mut leases = self.leases.clone();
+        let mut next_token = self.next_token;
+        let mut created_tokens = [None; MAX_ACTIONS];
+        for (action_index, action) in env.actions.iter().enumerate() {
+            match *action {
+                Action::Transfer { from, to, amount }
+                | Action::PayProtected { from, to, amount } => {
+                    let f = stage_account(&self.world, &mut accounts, from)?;
+                    let t = stage_account(&self.world, &mut accounts, to)?;
+                    if f == t {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    if !caller.permits(accounts[f].1.id) {
+                        return Err(TxError::Unauthorized);
+                    }
+                    if matches!(action, Action::PayProtected { .. }) {
+                        // Source-bound release rules are not implemented yet. Host-only
+                        // laboratory primitive; account ownership alone is not authority.
+                        if !matches!(caller, Caller::System) {
+                            return Err(TxError::Unauthorized);
+                        }
+                        accounts[f].1.protected = accounts[f]
+                            .1
+                            .protected
+                            .checked_sub(amount)
+                            .map_err(|_| TxError::Protection)?;
+                    } else if accounts[f]
+                        .1
+                        .cash
+                        .checked_sub(accounts[f].1.protected)
+                        .map_err(|_| TxError::Protection)?
+                        < amount
+                    {
+                        return Err(TxError::InsufficientFunds);
+                    }
+                    accounts[f].1.cash = accounts[f]
+                        .1
+                        .cash
+                        .checked_sub(amount)
+                        .map_err(|_| TxError::InsufficientFunds)?;
+                    accounts[t].1.cash = accounts[t]
+                        .1
+                        .cash
+                        .checked_add(amount)
+                        .map_err(|_| TxError::Overflow)?;
+                }
+                Action::Protect { account, amount }
+                | Action::ReleaseProtection { account, amount } => {
+                    if matches!(action, Action::ReleaseProtection { .. })
+                        && !matches!(caller, Caller::System)
+                    {
+                        return Err(TxError::Unauthorized);
+                    }
+                    let i = stage_account(&self.world, &mut accounts, account)?;
+                    if !caller.permits(accounts[i].1.id) {
+                        return Err(TxError::Unauthorized);
+                    }
+                    let a = &mut accounts[i].1;
+                    a.protected = if matches!(action, Action::Protect { .. }) {
+                        a.protected
+                            .checked_add(amount)
+                            .map_err(|_| TxError::Overflow)?
+                    } else {
+                        a.protected
+                            .checked_sub(amount)
+                            .map_err(|_| TxError::Protection)?
+                    };
+                    if a.protected > a.cash {
+                        return Err(TxError::InsufficientFunds);
+                    }
+                }
+                Action::MoveStock { from, to, quantity } => {
+                    let f = stage_stock(&self.world, &mut stocks, from)?;
+                    let t = stage_stock(&self.world, &mut stocks, to)?;
+                    if f == t
+                        || quantity == Quantity::ZERO
+                        || stocks[f].1.commodity != stocks[t].1.commodity
+                    {
+                        return Err(TxError::Stock);
+                    }
+                    let owner = self
+                        .world
+                        .accounts
+                        .get(stocks[f].1.owner)
+                        .map_err(|_| TxError::InvalidHandle)?
+                        .id;
+                    if !caller.permits(owner) {
+                        return Err(TxError::Unauthorized);
+                    }
+                    let old = stocks[f].1;
+                    let left = old
+                        .quantity
+                        .checked_sub(quantity)
+                        .map_err(|_| TxError::Stock)?;
+                    let end = old
+                        .offset
+                        .checked_add(quantity)
+                        .map_err(|_| TxError::Overflow)?;
+                    let denominator = old.origin_quantity.value();
+                    if denominator == 0 || end > old.origin_quantity {
+                        return Err(TxError::Stock);
+                    }
+                    let cost = i128::from(old.origin_basis.value()) * i128::from(end.value())
+                        / i128::from(denominator)
+                        - i128::from(old.origin_basis.value()) * i128::from(old.offset.value())
+                            / i128::from(denominator);
+                    let cost = Money::new(i64::try_from(cost).map_err(|_| TxError::Overflow)?)
+                        .map_err(|_| TxError::Overflow)?;
+                    let destination = &mut stocks[t].1;
+                    if destination.quantity == Quantity::ZERO {
+                        if destination.basis != Money::ZERO {
+                            return Err(TxError::Stock);
+                        }
+                        destination.lot_id = old.lot_id;
+                        destination.origin_quantity = old.origin_quantity;
+                        destination.origin_basis = old.origin_basis;
+                        destination.offset = old.offset;
+                    } else if destination.lot_id != old.lot_id
+                        || destination.origin_quantity != old.origin_quantity
+                        || destination.origin_basis != old.origin_basis
+                        || destination
+                            .offset
+                            .checked_add(destination.quantity)
+                            .map_err(|_| TxError::Overflow)?
+                            != old.offset
+                    {
+                        // One contiguous acquisition lot per slot for this laboratory.
+                        // Mixing requires separately budgeted lot rows, never a basis reset.
+                        return Err(TxError::Stock);
+                    }
+                    stocks[f].1.quantity = left;
+                    stocks[f].1.offset = end;
+                    stocks[f].1.basis = old.basis.checked_sub(cost).map_err(|_| TxError::Stock)?;
+                    stocks[t].1.quantity = stocks[t]
+                        .1
+                        .quantity
+                        .checked_add(quantity)
+                        .map_err(|_| TxError::Overflow)?;
+                    stocks[t].1.basis = stocks[t]
+                        .1
+                        .basis
+                        .checked_add(cost)
+                        .map_err(|_| TxError::Overflow)?;
+                }
+                Action::ReserveCapacity { resource, units } => {
+                    if units == 0 {
+                        return Err(TxError::Capacity);
+                    }
+                    let r = resources
+                        .iter_mut()
+                        .find(|r| r.id == resource)
+                        .ok_or(TxError::Resource)?;
+                    let reserved = r.reserved.checked_add(units).ok_or(TxError::Overflow)?;
+                    if reserved.checked_add(r.occupied).ok_or(TxError::Overflow)? > r.capacity {
+                        return Err(TxError::Capacity);
+                    }
+                    let slot = leases
+                        .iter_mut()
+                        .find(|l| l.is_none())
+                        .ok_or(TxError::Lease)?;
+                    let token = next_token;
+                    next_token = next_token.checked_add(1).ok_or(TxError::Overflow)?;
+                    *slot = Some(Lease {
+                        token,
+                        actor: caller.key(),
+                        resource,
+                        units,
+                        occupied: false,
+                    });
+                    r.reserved = reserved;
+                    created_tokens[action_index] = Some(CapacityToken {
+                        world: self.world.scope.world(),
+                        branch: self.world.scope.branch(),
+                        number: token,
+                    });
+                }
+                Action::OccupyCapacity { token } | Action::ReleaseCapacity { token } => {
+                    if token.world != self.world.scope.world()
+                        || token.branch != self.world.scope.branch()
+                    {
+                        return Err(TxError::WrongScope);
+                    }
+                    let slot = leases
+                        .iter_mut()
+                        .find(|l| l.as_ref().is_some_and(|l| l.token == token.number))
+                        .ok_or(TxError::Lease)?;
+                    let l = slot.as_mut().ok_or(TxError::Lease)?;
+                    if !matches!(caller, Caller::System) && l.actor != caller.key() {
+                        return Err(TxError::Unauthorized);
+                    }
+                    let r = resources
+                        .iter_mut()
+                        .find(|r| r.id == l.resource)
+                        .ok_or(TxError::Resource)?;
+                    if matches!(action, Action::OccupyCapacity { .. }) {
+                        if l.occupied {
+                            return Err(TxError::Lease);
+                        }
+                        r.reserved = r.reserved.checked_sub(l.units).ok_or(TxError::Lease)?;
+                        r.occupied = r.occupied.checked_add(l.units).ok_or(TxError::Overflow)?;
+                        l.occupied = true;
+                    } else {
+                        if l.occupied {
+                            r.occupied = r.occupied.checked_sub(l.units).ok_or(TxError::Lease)?
+                        } else {
+                            r.reserved = r.reserved.checked_sub(l.units).ok_or(TxError::Lease)?
+                        }
+                        *slot = None;
+                    }
+                }
+            }
+        }
+        // All touched handles and arithmetic were validated under the single writer.
+        for (h, a) in accounts {
+            self.world
+                .accounts
+                .replace(h, a)
+                .expect("validated commit handle");
+        }
+        for (h, s) in stocks {
+            self.world
+                .stocks
+                .replace(h, s)
+                .expect("validated commit handle");
+        }
+        self.world.revision = next_revision;
+        self.resources = resources;
+        self.leases = leases;
+        self.next_token = next_token;
+        Ok(Receipt {
+            operation_id: env.operation_id,
+            revision: next_revision,
+            durability: "volatile_only",
+            created_tokens,
+        })
+    }
+}
+
+fn stage_account(
+    world: &World,
+    dirty: &mut Vec<(Handle<AccountDomain>, Account)>,
+    raw: RawHandle,
+) -> Result<usize, TxError> {
+    let h = world
+        .accounts
+        .resolve(raw)
+        .map_err(|_| TxError::InvalidHandle)?;
+    if let Some(i) = dirty.iter().position(|(old, _)| *old == h) {
+        return Ok(i);
+    }
+    if dirty.len() == MAX_ACTIONS * 2 {
+        return Err(TxError::WorkingLimit);
+    }
+    dirty.push((
+        h,
+        *world.accounts.get(h).map_err(|_| TxError::InvalidHandle)?,
+    ));
+    Ok(dirty.len() - 1)
+}
+fn stage_stock(
+    world: &World,
+    dirty: &mut Vec<(Handle<InventoryDomain>, Stock)>,
+    raw: RawHandle,
+) -> Result<usize, TxError> {
+    let h = world
+        .stocks
+        .resolve(raw)
+        .map_err(|_| TxError::InvalidHandle)?;
+    if let Some(i) = dirty.iter().position(|(old, _)| *old == h) {
+        return Ok(i);
+    }
+    if dirty.len() == MAX_ACTIONS * 2 {
+        return Err(TxError::WorkingLimit);
+    }
+    dirty.push((h, *world.stocks.get(h).map_err(|_| TxError::InvalidHandle)?));
+    Ok(dirty.len() - 1)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::assembly::assemble;
+    fn engine() -> Engine {
+        Engine::new(
+            assemble(include_bytes!("../../../fixtures/m0-e0-opening.json")).unwrap(),
+            vec![Resource::new(1, 10).unwrap(), Resource::new(2, 10).unwrap()],
+        )
+        .unwrap()
+    }
+    fn cash(v: i64) -> Money {
+        Money::new(v).unwrap()
+    }
+    fn account(e: &Engine, id: u32) -> RawHandle {
+        e.world.account_handle(id).unwrap().raw()
+    }
+    fn env(e: &Engine, id: u64, actions: Vec<Action>) -> Envelope {
+        Envelope {
+            world: e.world.scope.world(),
+            branch: e.world.scope.branch(),
+            operation_id: id,
+            expected_revision: e.world.revision,
+            actions,
+        }
+    }
+    #[test]
+    fn failed_late_action_leaves_no_partial_cash_or_capacity() {
+        let mut e = engine();
+        let hash = e.state_hash();
+        let a = account(&e, 2);
+        let b = account(&e, 3);
+        let cmd = env(
+            &e,
+            1,
+            vec![
+                Action::Transfer {
+                    from: a,
+                    to: b,
+                    amount: cash(100),
+                },
+                Action::ReserveCapacity {
+                    resource: 1,
+                    units: 11,
+                },
+            ],
+        );
+        assert_eq!(e.execute(Caller::System, cmd), Err(TxError::Capacity));
+        assert_eq!(e.state_hash(), hash);
+        assert_eq!(e.journal.len(), 1);
+    }
+    #[test]
+    fn retry_is_exact_and_changed_payload_or_actor_cannot_reuse_receipt() {
+        let mut e = engine();
+        let cmd = env(
+            &e,
+            1,
+            vec![Action::Transfer {
+                from: account(&e, 2),
+                to: account(&e, 3),
+                amount: cash(100),
+            }],
+        );
+        let r = e.execute(Caller::Account(2), cmd.clone()).unwrap();
+        let hash = e.state_hash();
+        assert_eq!(e.execute(Caller::Account(2), cmd.clone()), Ok(r));
+        assert_eq!(e.state_hash(), hash);
+        assert_eq!(
+            e.execute(Caller::Account(3), cmd.clone()),
+            Err(TxError::Unauthorized)
+        );
+        let mut different = cmd;
+        different.expected_revision = 1;
+        assert_eq!(
+            e.execute(Caller::Account(2), different),
+            Err(TxError::OperationConflict)
+        );
+    }
+    #[test]
+    fn protection_is_not_new_cash_and_payment_converts_once() {
+        let mut e = engine();
+        let a = account(&e, 2);
+        let b = account(&e, 3);
+        let cmd = env(
+            &e,
+            1,
+            vec![Action::Protect {
+                account: a,
+                amount: cash(150000),
+            }],
+        );
+        e.execute(Caller::Account(2), cmd).unwrap();
+        let cmd = env(
+            &e,
+            2,
+            vec![Action::Transfer {
+                from: a,
+                to: b,
+                amount: cash(100000),
+            }],
+        );
+        assert_eq!(
+            e.execute(Caller::Account(2), cmd),
+            Err(TxError::InsufficientFunds)
+        );
+        let cmd = env(
+            &e,
+            3,
+            vec![Action::PayProtected {
+                from: a,
+                to: b,
+                amount: cash(150000),
+            }],
+        );
+        e.execute(Caller::System, cmd).unwrap();
+        let a = e
+            .world
+            .accounts
+            .get(e.world.account_handle(2).unwrap())
+            .unwrap();
+        assert_eq!(a.cash, cash(50000));
+        assert_eq!(a.protected, Money::ZERO);
+        assert_eq!(
+            e.world
+                .view()
+                .accounts
+                .iter()
+                .map(|a| a.cash.value())
+                .sum::<i64>(),
+            3_000_000
+        );
+    }
+    #[test]
+    fn two_resource_request_does_not_hold_one_when_second_is_unavailable() {
+        let mut e = engine();
+        let cmd = env(
+            &e,
+            1,
+            vec![Action::ReserveCapacity {
+                resource: 1,
+                units: 8,
+            }],
+        );
+        let r = e.execute(Caller::Account(2), cmd).unwrap();
+        let before = e.state_hash();
+        let cmd = env(
+            &e,
+            2,
+            vec![
+                Action::ReserveCapacity {
+                    resource: 2,
+                    units: 8,
+                },
+                Action::ReserveCapacity {
+                    resource: 1,
+                    units: 8,
+                },
+            ],
+        );
+        assert_eq!(e.execute(Caller::Account(3), cmd), Err(TxError::Capacity));
+        assert_eq!(e.state_hash(), before);
+        let cmd = env(
+            &e,
+            3,
+            vec![Action::OccupyCapacity {
+                token: r.created_tokens[0].unwrap(),
+            }],
+        );
+        e.execute(Caller::Account(2), cmd).unwrap();
+        assert_eq!(e.resources[0].occupied, 8);
+        assert_eq!(e.resources[0].reserved, 0);
+        let cmd = env(
+            &e,
+            4,
+            vec![Action::ReleaseCapacity {
+                token: r.created_tokens[0].unwrap(),
+            }],
+        );
+        assert_eq!(
+            e.execute(Caller::Account(3), cmd),
+            Err(TxError::Unauthorized)
+        );
+    }
+    #[test]
+    fn stale_revision_scope_and_foreign_handles_do_not_write() {
+        let mut e = engine();
+        let hash = e.state_hash();
+        let a = account(&e, 2);
+        let b = account(&e, 3);
+        let mut cmd = env(
+            &e,
+            1,
+            vec![Action::Transfer {
+                from: a,
+                to: b,
+                amount: cash(1),
+            }],
+        );
+        cmd.expected_revision = 1;
+        assert_eq!(e.execute(Caller::System, cmd), Err(TxError::StaleRevision));
+        let mut cmd = env(
+            &e,
+            2,
+            vec![Action::Transfer {
+                from: a,
+                to: b,
+                amount: cash(1),
+            }],
+        );
+        cmd.branch = 2;
+        assert_eq!(e.execute(Caller::System, cmd), Err(TxError::WrongScope));
+        let cmd = env(
+            &e,
+            3,
+            vec![Action::Protect {
+                account: RawHandle { world: 2, ..a },
+                amount: cash(1),
+            }],
+        );
+        assert_eq!(e.execute(Caller::System, cmd), Err(TxError::InvalidHandle));
+        assert_eq!(e.state_hash(), hash);
+    }
+    #[test]
+    fn full_journal_backpressures_without_erasing_prior_receipts() {
+        let mut e = engine();
+        let first = env(
+            &e,
+            1,
+            vec![Action::ReserveCapacity {
+                resource: 99,
+                units: 1,
+            }],
+        );
+        assert_eq!(
+            e.execute(Caller::System, first.clone()),
+            Err(TxError::Resource)
+        );
+        for id in 2..=MAX_RECEIPTS as u64 {
+            let cmd = env(
+                &e,
+                id,
+                vec![Action::ReserveCapacity {
+                    resource: 99,
+                    units: 1,
+                }],
+            );
+            assert_eq!(e.execute(Caller::System, cmd), Err(TxError::Resource));
+        }
+        let before = e.state_hash();
+        let cmd = env(
+            &e,
+            2048,
+            vec![Action::Protect {
+                account: account(&e, 2),
+                amount: cash(1),
+            }],
+        );
+        assert_eq!(e.execute(Caller::System, cmd), Err(TxError::JournalFull));
+        assert_eq!(e.state_hash(), before);
+        assert_eq!(e.execute(Caller::System, first), Err(TxError::Resource));
+    }
+
+    #[test]
+    fn stock_and_payment_commit_as_one_with_conserved_quantity_and_basis() {
+        let mut v: serde_json::Value =
+            serde_json::from_slice(include_bytes!("../../../fixtures/m0-e0-opening.json")).unwrap();
+        v["sources"]
+            .as_array_mut()
+            .unwrap()
+            .push(serde_json::json!({"id":6,"kind":"inventory_capital","amount":0}));
+        v["stocks"].as_array_mut().unwrap().push(serde_json::json!({"id":2,"owner":3,"commodity":"raw","quantity":0,"basis":0,"source":6}));
+        let mut e =
+            Engine::new(assemble(&serde_json::to_vec(&v).unwrap()).unwrap(), vec![]).unwrap();
+        let from = e.world.stock_ref(1).unwrap();
+        let to = e.world.stock_ref(2).unwrap();
+        let transfer = Action::Transfer {
+            from: account(&e, 3),
+            to: account(&e, 4),
+            amount: cash(4000),
+        };
+        let before = e.state_hash();
+        let cmd = env(
+            &e,
+            1,
+            vec![
+                transfer,
+                Action::MoveStock {
+                    from,
+                    to,
+                    quantity: Quantity::new(600001).unwrap(),
+                },
+            ],
+        );
+        assert_eq!(e.execute(Caller::System, cmd), Err(TxError::Stock));
+        assert_eq!(e.state_hash(), before);
+        let cmd = env(
+            &e,
+            2,
+            vec![
+                transfer,
+                Action::MoveStock {
+                    from,
+                    to,
+                    quantity: Quantity::new(10000).unwrap(),
+                },
+            ],
+        );
+        e.execute(Caller::System, cmd).unwrap();
+        let v = e.world.view();
+        assert_eq!(
+            v.stocks.iter().map(|s| s.quantity.value()).sum::<i64>(),
+            600000
+        );
+        assert_eq!(
+            v.stocks.iter().map(|s| s.basis.value()).sum::<i64>(),
+            240000
+        );
+        assert_eq!(v.stocks[1].basis.value(), 4000);
+        assert_eq!(
+            v.accounts.iter().map(|a| a.cash.value()).sum::<i64>(),
+            3_000_000
+        );
+    }
+
+    #[test]
+    fn capacity_lifecycle_releases_once_and_never_reuses_token() {
+        let mut e = engine();
+        let cmd = env(
+            &e,
+            1,
+            vec![Action::ReserveCapacity {
+                resource: 1,
+                units: 10,
+            }],
+        );
+        let first = e.execute(Caller::Account(2), cmd).unwrap().created_tokens[0].unwrap();
+        let cmd = env(&e, 2, vec![Action::OccupyCapacity { token: first }]);
+        e.execute(Caller::Account(2), cmd).unwrap();
+        let cmd = env(&e, 3, vec![Action::ReleaseCapacity { token: first }]);
+        e.execute(Caller::Account(2), cmd).unwrap();
+        let hash = e.state_hash();
+        let cmd = env(&e, 4, vec![Action::ReleaseCapacity { token: first }]);
+        assert_eq!(e.execute(Caller::Account(2), cmd), Err(TxError::Lease));
+        assert_eq!(e.state_hash(), hash);
+        let cmd = env(
+            &e,
+            5,
+            vec![Action::ReserveCapacity {
+                resource: 1,
+                units: 10,
+            }],
+        );
+        let second = e.execute(Caller::Account(2), cmd).unwrap().created_tokens[0].unwrap();
+        assert!(second > first);
+    }
+
+    #[test]
+    fn account_cannot_unprotect_or_redirect_reserved_funds() {
+        let mut e = engine();
+        let a = account(&e, 2);
+        let b = account(&e, 3);
+        let cmd = env(
+            &e,
+            1,
+            vec![Action::Protect {
+                account: a,
+                amount: cash(100),
+            }],
+        );
+        e.execute(Caller::Account(2), cmd).unwrap();
+        let hash = e.state_hash();
+        for (id, action) in [
+            (
+                2,
+                Action::ReleaseProtection {
+                    account: a,
+                    amount: cash(100),
+                },
+            ),
+            (
+                3,
+                Action::PayProtected {
+                    from: a,
+                    to: b,
+                    amount: cash(100),
+                },
+            ),
+        ] {
+            let cmd = env(&e, id, vec![action]);
+            assert_eq!(
+                e.execute(Caller::Account(2), cmd),
+                Err(TxError::Unauthorized)
+            );
+            assert_eq!(e.state_hash(), hash);
+        }
+    }
+
+    #[test]
+    fn foreign_capacity_reference_cannot_resolve_same_number_in_another_world() {
+        let mut a = engine();
+        let cmd = env(
+            &a,
+            1,
+            vec![Action::ReserveCapacity {
+                resource: 1,
+                units: 2,
+            }],
+        );
+        let foreign = a.execute(Caller::Account(2), cmd).unwrap().created_tokens[0].unwrap();
+        let mut v: serde_json::Value =
+            serde_json::from_slice(include_bytes!("../../../fixtures/m0-e0-opening.json")).unwrap();
+        v["bootstrap"]["world"] = serde_json::json!(2);
+        let mut b = Engine::new(
+            assemble(&serde_json::to_vec(&v).unwrap()).unwrap(),
+            vec![Resource::new(1, 10).unwrap()],
+        )
+        .unwrap();
+        let cmd = env(
+            &b,
+            1,
+            vec![Action::ReserveCapacity {
+                resource: 1,
+                units: 2,
+            }],
+        );
+        let local = b.execute(Caller::Account(2), cmd).unwrap().created_tokens[0].unwrap();
+        assert_eq!(foreign.number, local.number);
+        let before = b.state_hash();
+        let cmd = env(&b, 2, vec![Action::OccupyCapacity { token: foreign }]);
+        assert_eq!(b.execute(Caller::Account(2), cmd), Err(TxError::WrongScope));
+        assert_eq!(b.state_hash(), before);
+    }
+
+    #[test]
+    fn lot_cost_is_invariant_under_splitting_and_internal_transfer() {
+        let setup = || {
+            let mut v: serde_json::Value =
+                serde_json::from_slice(include_bytes!("../../../fixtures/m0-e0-opening.json"))
+                    .unwrap();
+            v["stocks"][0]["quantity"] = serde_json::json!(5);
+            v["stocks"][0]["basis"] = serde_json::json!(2);
+            v["sources"][4]["amount"] = serde_json::json!(2);
+            for (source, id) in [(6, 2), (7, 3)] {
+                v["sources"]
+                    .as_array_mut()
+                    .unwrap()
+                    .push(serde_json::json!({"id":source,"kind":"inventory_capital","amount":0}));
+                v["stocks"].as_array_mut().unwrap().push(serde_json::json!({"id":id,"owner":4,"commodity":"raw","quantity":0,"basis":0,"source":source}));
+            }
+            Engine::new(assemble(&serde_json::to_vec(&v).unwrap()).unwrap(), vec![]).unwrap()
+        };
+        let mut whole = setup();
+        let from = whole.world.stock_ref(1).unwrap();
+        let to = whole.world.stock_ref(2).unwrap();
+        let cmd = env(
+            &whole,
+            1,
+            vec![Action::MoveStock {
+                from,
+                to,
+                quantity: Quantity::new(3).unwrap(),
+            }],
+        );
+        whole.execute(Caller::System, cmd).unwrap();
+        let mut split = setup();
+        for id in 1..=3 {
+            let cmd = env(
+                &split,
+                id,
+                vec![Action::MoveStock {
+                    from,
+                    to,
+                    quantity: Quantity::new(1).unwrap(),
+                }],
+            );
+            split.execute(Caller::System, cmd).unwrap();
+        }
+        assert_eq!(whole.world.view().stocks, split.world.view().stocks);
+        assert_eq!(whole.world.view().stocks[1].basis.value(), 1);
+        let mut relayed = setup();
+        let mid = relayed.world.stock_ref(3).unwrap();
+        for id in 1..=3 {
+            let cmd = env(
+                &relayed,
+                id * 2,
+                vec![Action::MoveStock {
+                    from,
+                    to: mid,
+                    quantity: Quantity::new(1).unwrap(),
+                }],
+            );
+            relayed.execute(Caller::System, cmd).unwrap();
+            let cmd = env(
+                &relayed,
+                id * 2 + 1,
+                vec![Action::MoveStock {
+                    from: mid,
+                    to,
+                    quantity: Quantity::new(1).unwrap(),
+                }],
+            );
+            relayed.execute(Caller::System, cmd).unwrap();
+        }
+        assert_eq!(relayed.world.view().stocks[1].basis.value(), 1);
+        assert_eq!(relayed.world.view().stocks[0].basis.value(), 1);
+    }
+}
