@@ -1,0 +1,372 @@
+{
+  "build": {
+    "profile": "release",
+    "rustc": "rustc 1.85.1 (4eb161250 2025-03-15)",
+    "target": "aarch64-apple-darwin"
+  },
+  "economic_prototypes": "not_run",
+  "gpu": "not_implemented",
+  "host": {
+    "arch": "aarch64",
+    "chip": "Apple M4",
+    "memory_bytes": "34359738368",
+    "os": "macos",
+    "os_version": "26.6.2"
+  },
+  "input": {
+    "branch": 1,
+    "laboratory_only": true,
+    "schema": "mycity-m0-bootstrap-v1",
+    "seed": 7,
+    "world": 1
+  },
+  "input_sha256": "6756555697457b3de5307086610a108c88d15650c6e668da0cdf990ca52b874c",
+  "layout": {
+    "accounts": {
+      "free_index_capacity": 64,
+      "header_bytes": 80,
+      "live_records": 4,
+      "owned_capacity_bytes": 2384,
+      "record_bytes": 24,
+      "slot_bytes": 32,
+      "slots_capacity": 64
+    },
+    "allocator_metadata_included": false,
+    "index_capacity_bytes": 200,
+    "opening_sources_capacity_bytes": 128,
+    "owned_capacity_bytes": 20336,
+    "stocks": {
+      "free_index_capacity": 128,
+      "header_bytes": 80,
+      "live_records": 1,
+      "owned_capacity_bytes": 12880,
+      "record_bytes": 88,
+      "slot_bytes": 96,
+      "slots_capacity": 128
+    },
+    "temporary_parse_and_view_pages_included": false,
+    "world_remaining_header_bytes": 4744
+  },
+  "lock_sha256": "341af2f5bd913944e0f4fa4be679b64f10863eac3e023c0568a7c07e60e6b9f7",
+  "memory_16gb_gate": "not_run",
+  "png_input_sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8",
+  "report_schema": "mycity-m0-evidence-v1",
+  "result": "immutable_spatial_storage_executed",
+  "rules": {
+    "input_limit_bytes": 65536,
+    "max_accounts": 64,
+    "max_sources": 192,
+    "max_stocks": 128,
+    "mode": "headless_laboratory",
+    "numeric_strategy": "checked-integer-v1",
+    "opening_schema": "mycity-m0-opening-v1",
+    "schema": "mycity-m0-bootstrap-v1",
+    "spatial": {
+      "curve_error_cm": 5,
+      "decoder_byte_limit": 41943040,
+      "geometry_budget_bytes": 1048576,
+      "import_peak_budget_bytes": 134217728,
+      "land_cell_cm": 1600,
+      "max_source_side": 4097,
+      "max_vertices": 1025,
+      "numeric_strategy": "bounded-i128-bilinear-cm-swne-integer-capsule-v1",
+      "schema": "mycity-m0-spatial-v1",
+      "source_byte_limit": 16777216,
+      "terrain_resident_budget_bytes": 10485760,
+      "terrain_step_cm": 400,
+      "xy_limit_cm": 1000000000,
+      "z_limit_cm": 1000000
+    },
+    "storage": {
+      "committed_boundary": "CURRENT_root_hash_sequence_and_wal_end",
+      "frame_limit": 32768,
+      "rules_identity": "1b29f7c5caac59fa7dc1f8f410674b25c0306816a0773797124b4fa282d75b19",
+      "schema": "mycity-m0-genesis-v2",
+      "wal_limit": 67108864
+    },
+    "world_byte_budget": 131072
+  },
+  "rules_sha256": "7cb3638ce3f319e98863c0d3cb9ae6e12cd883eaac378786fd940e07f3dc7178",
+  "run_id": "78696-1792421520324388000",
+  "source_sha256": "1b29f7c5caac59fa7dc1f8f410674b25c0306816a0773797124b4fa282d75b19",
+  "spatial_input_sha256": "d7a3d9ebeeb2c92ac0a6dba3ac0683639c3cc360d7d1cf1c01d249ecb82b8da2",
+  "spatial_store_probe": {
+    "allocator_metadata_and_replay_working_pages_included": false,
+    "committed_sequence": 1,
+    "economic_prototypes": "not_run",
+    "engine_owned_capacity_bytes": 2078144,
+    "first": {
+      "committed_sequence": 1,
+      "has_persistent_receipt": true,
+      "model": {
+        "Ok": {
+          "created_tokens": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "durability": "volatile_only",
+          "migrated": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "operation_id": 1,
+          "revision": 1
+        }
+      }
+    },
+    "geometry_sha256": "0c908df7a49207840b194ce284f1381784ac04887ac61b01d6e5af5ffc66c560",
+    "gpu": "not_run",
+    "memory_16gb_gate": "not_run",
+    "power_loss": "not_tested",
+    "result": "joint_state_restored_once",
+    "retry": {
+      "committed_sequence": 1,
+      "has_persistent_receipt": true,
+      "model": {
+        "Ok": {
+          "created_tokens": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "durability": "volatile_only",
+          "migrated": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "operation_id": 1,
+          "revision": 1
+        }
+      }
+    },
+    "schema": "mycity-m0-spatial-storage-evidence-v1",
+    "space": "immutable_genesis_assets_only_not_terrain_edits",
+    "spatial_owned_capacity_bytes": 612663,
+    "spatial_reference": {
+      "branch": 1,
+      "geometry_sha256": "0c908df7a49207840b194ce284f1381784ac04887ac61b01d6e5af5ffc66c560",
+      "input_bytes": 3679,
+      "input_sha256": "d7a3d9ebeeb2c92ac0a6dba3ac0683639c3cc360d7d1cf1c01d249ecb82b8da2",
+      "png_bytes": 207,
+      "png_sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8",
+      "schema": "mycity-m0-spatial-ref-v1",
+      "seed": 7,
+      "terrain_sha256": "afc09640069721be020608c7c732eaf496ce9e347ca6bb91995d8359be1adb65",
+      "world": 1
+    },
+    "store_owned_capacity_bytes": 2691560,
+    "store_state_sha256": "ec2a17181580e670709244fe6fe0739b39d7ffd1df3a53e655bf68d78e230b0c",
+    "terrain_sha256": "afc09640069721be020608c7c732eaf496ce9e347ca6bb91995d8359be1adb65",
+    "terrain_vertices": 66049,
+    "world": {
+      "accounts": [
+        {
+          "cash": 1000000,
+          "id": 1,
+          "protected": 0,
+          "role": "treasury"
+        },
+        {
+          "cash": 190000,
+          "id": 2,
+          "protected": 0,
+          "role": "household"
+        },
+        {
+          "cash": 610000,
+          "id": 3,
+          "protected": 0,
+          "role": "company"
+        },
+        {
+          "cash": 1200000,
+          "id": 4,
+          "protected": 0,
+          "role": "supplier"
+        }
+      ],
+      "opening_sources": [
+        {
+          "amount": 1000000,
+          "id": 1,
+          "kind": "cash_capital"
+        },
+        {
+          "amount": 200000,
+          "id": 2,
+          "kind": "cash_capital"
+        },
+        {
+          "amount": 600000,
+          "id": 3,
+          "kind": "cash_capital"
+        },
+        {
+          "amount": 1200000,
+          "id": 4,
+          "kind": "cash_capital"
+        },
+        {
+          "amount": 240000,
+          "id": 5,
+          "kind": "inventory_capital"
+        }
+      ],
+      "region": null,
+      "revision": 1,
+      "schema": "mycity-m0-state-v3",
+      "scope": {
+        "branch": 1,
+        "world": 1
+      },
+      "seed": 7,
+      "stocks": [
+        {
+          "basis": 240000,
+          "commodity": "raw",
+          "id": 1,
+          "lot_id": 5,
+          "offset": 0,
+          "origin_basis": 240000,
+          "origin_quantity": 600000,
+          "owner": 4,
+          "quantity": 600000
+        }
+      ]
+    }
+  },
+  "state_sha256": "bf177c061cea4b83f751e731443072120c51b9d8395d1cf9578c93f44b32d6a7",
+  "task": "M0-T07-spatial-storage-subset",
+  "ui": "not_implemented_by_scope",
+  "world": {
+    "accounts": [
+      {
+        "cash": 1000000,
+        "id": 1,
+        "protected": 0,
+        "role": "treasury"
+      },
+      {
+        "cash": 200000,
+        "id": 2,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 600000,
+        "id": 3,
+        "protected": 0,
+        "role": "company"
+      },
+      {
+        "cash": 1200000,
+        "id": 4,
+        "protected": 0,
+        "role": "supplier"
+      }
+    ],
+    "opening_sources": [
+      {
+        "amount": 1000000,
+        "id": 1,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 200000,
+        "id": 2,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 600000,
+        "id": 3,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 1200000,
+        "id": 4,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 240000,
+        "id": 5,
+        "kind": "inventory_capital"
+      }
+    ],
+    "region": null,
+    "revision": 0,
+    "schema": "mycity-m0-state-v3",
+    "scope": {
+      "branch": 1,
+      "world": 1
+    },
+    "seed": 7,
+    "stocks": [
+      {
+        "basis": 240000,
+        "commodity": "raw",
+        "id": 1,
+        "lot_id": 5,
+        "offset": 0,
+        "origin_basis": 240000,
+        "origin_quantity": 600000,
+        "owner": 4,
+        "quantity": 600000
+      }
+    ]
+  }
+}

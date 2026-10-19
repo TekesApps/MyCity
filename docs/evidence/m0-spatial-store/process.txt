@@ -1,0 +1,20 @@
+    Finished `release` profile [optimized] target(s) in 0.24s
+     Running `target/release/mycity-headless spatial-store-probe fixtures/m0-e0-opening.json fixtures/m0-spatial.json fixtures/terrain/m0-flat16.png /tmp/mycity-spatial-store-v0512-20261019`
+        0.74 real         0.03 user         0.03 sys
+             4800512  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+                5167  page reclaims
+                 183  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+                  71  voluntary context switches
+                1187  involuntary context switches
+           707681440  instructions retired
+           258866185  cycles elapsed
+             2998584  peak memory footprint

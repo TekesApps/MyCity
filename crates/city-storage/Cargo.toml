@@ -7,6 +7,7 @@ license.workspace = true
 
 [dependencies]
 mycity-core = { path = "../city-core" }
+mycity-map = { path = "../city-map" }
 serde.workspace = true
 serde_json.workspace = true
 sha2.workspace = true

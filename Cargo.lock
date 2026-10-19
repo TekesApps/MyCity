@@ -183,6 +183,7 @@ version = "0.1.0"
 dependencies = [
  "fs2",
  "mycity-core",
+ "mycity-map",
  "serde",
  "serde_json",
  "sha2",

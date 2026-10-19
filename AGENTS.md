@@ -34,4 +34,4 @@
 
 ## v0.5.11空间与GPU数据边界
 
-现行T07实现边界见docs/m0-spatial-model-and-gpu-layout.md。CPU厘米/i128为几何权威；wgpu上传使用显式字节布局、块内f32与版本化候选，不能将CPU打包测试报告成Metal/DX12设备通过。空间尚未接Store，不得暗中授予真实建设权限。
+现行T07实现边界见docs/m0-spatial-model-and-gpu-layout.md。CPU厘米/i128为几何权威；wgpu上传使用显式字节布局、块内f32与版本化候选，不能将CPU打包测试报告成Metal/DX12设备通过。v0.5.12已接不可变期初空间包至Store根；运行时工程／地形修改仍未实现，不得暗中授予真实建设权限。后端兼容交给wgpu，当前不展开Metal／DX12适配。

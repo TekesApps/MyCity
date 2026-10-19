@@ -1,5 +1,7 @@
 # M0：核心实现范围、任务依赖与原型验收计划
 
+v0.5.12实现补充：[空间存档](m0-spatial-storage.md)补齐不可变CPU地形／几何与模型同根恢复；原计划T08依赖的T03／T05／T06基座可继续接正式活动，T07其他未测项不被签收。
+
 v0.5.11实现补充：[T07空间与GPU交换布局](m0-spatial-model-and-gpu-layout.md)交付原生灰度／保守平地步行几何子阶段；只验证CPU打包，未接Store／真实GPU。T07剩余门与T08前置空间引用继续逐项跟踪，不以该子阶段签收全部P-IMPORT／P-XMAP。
 
 v0.5.10变更：[R54城市快照与交互增量](regional-snapshots-and-interaction-ledger.md)替代旧跨城共同本地钟，当前依赖与本轮有限实测见[M0状态](m0-implementation-status.md)。先对齐设计，再复用T03/T04/T06权威与保存实现T09的快照子集，未满足T07/T08的真实交通／经济不算T09全验收。

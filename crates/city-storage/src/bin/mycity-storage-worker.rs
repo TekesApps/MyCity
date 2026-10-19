@@ -1,7 +1,7 @@
 //! Explicit crash-test helper for laboratory worlds; never used by the simulator implicitly.
 use mycity_core::transaction::{Action, Caller, Envelope, Resource};
 use mycity_core::units::Money;
-use mycity_storage::{Store, WritePoint};
+use mycity_storage::{CreatePoint, Store, WritePoint};
 use std::{
     env,
     io::{self, Write},
@@ -17,6 +17,35 @@ fn run() -> Result<(), String> {
         );
     }
     let dir = Path::new(&args[2]);
+    if args[1] == "init-spatial" {
+        let crash = args.get(3).map(String::as_str).unwrap_or("none");
+        let store = Store::create_spatial_with_observer(
+            dir,
+            include_bytes!("../../../../fixtures/m0-region-opening.json"),
+            vec![Resource::new(1, 10).map_err(err)?],
+            RULES,
+            (
+                include_bytes!("../../../../fixtures/m0-spatial.json"),
+                include_bytes!("../../../../fixtures/terrain/m0-flat16.png"),
+            ),
+            |point: CreatePoint| -> io::Result<()> {
+                if format!("{point:?}") == crash {
+                    std::process::exit(97)
+                }
+                Ok(())
+            },
+        )
+        .map_err(err)?;
+        println!(
+            "{}",
+            serde_json::json!({"result":"created","store_state_sha256":store.state_hash().map_err(err)?})
+        );
+        io::stdout().flush().map_err(err)?;
+        if crash == "Responded" {
+            std::process::exit(97)
+        }
+        return Ok(());
+    }
     if args[1] == "init" || args[1] == "init-regional" {
         let _ = Store::create(
             dir,
@@ -36,7 +65,7 @@ fn run() -> Result<(), String> {
         let engine = store.engine().map_err(err)?;
         println!(
             "{}",
-            serde_json::json!({"sequence":store.committed_sequence(),"state_sha256":engine.state_hash(),"world":engine.world().view(),"resources":engine.resources(),"journal":engine.journal()})
+            serde_json::json!({"sequence":store.committed_sequence(),"state_sha256":engine.state_hash(),"world":engine.world().view(),"resources":engine.resources(),"journal":engine.journal(),"store_state_sha256":store.state_hash().map_err(err)?,"spatial_reference":store.spatial_reference().map_err(err)?})
         );
         return Ok(());
     }

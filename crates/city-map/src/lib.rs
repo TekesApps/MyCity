@@ -1,5 +1,6 @@
 //! Immutable, bounded spatial laboratory. No UI or implicit construction authority.
 use serde::{Deserialize, Serialize};
+pub mod assets;
 pub mod geometry;
 pub mod gpu_layout;
 pub mod probe;

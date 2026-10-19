@@ -163,3 +163,46 @@ fn spatial_cli_imports_actual_png_and_validates_geometry_without_claiming_city_p
     assert_eq!(a["economic_prototypes"], "not_run");
     assert_eq!(a["memory_16gb_gate"], "not_run");
 }
+
+#[test]
+fn spatial_store_cli_restores_cpu_assets_and_money_without_claiming_mutable_construction() {
+    let root = format!("{}/../../", env!("CARGO_MANIFEST_DIR"));
+    let parent = std::env::temp_dir().join(format!(
+        "mycity-cli-spatial-store-{}-{}",
+        std::process::id(),
+        std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_nanos()
+    ));
+    std::fs::create_dir(&parent).unwrap();
+    let world = parent.join("world");
+    let out = Command::new(env!("CARGO_BIN_EXE_mycity-headless"))
+        .args([
+            "spatial-store-probe",
+            &format!("{root}fixtures/m0-e0-opening.json"),
+            &format!("{root}fixtures/m0-spatial.json"),
+            &format!("{root}fixtures/terrain/m0-flat16.png"),
+            world.to_str().unwrap(),
+        ])
+        .output()
+        .unwrap();
+    std::fs::remove_dir_all(parent).unwrap();
+    assert!(
+        out.status.success(),
+        "{}",
+        String::from_utf8_lossy(&out.stderr)
+    );
+    let v: serde_json::Value = serde_json::from_slice(&out.stdout).unwrap();
+    let p = &v["spatial_store_probe"];
+    assert_eq!(p["committed_sequence"], 1);
+    assert_eq!(p["terrain_vertices"], 66049);
+    assert_eq!(p["retry"]["has_persistent_receipt"], true);
+    assert_eq!(
+        p["space"],
+        "immutable_genesis_assets_only_not_terrain_edits"
+    );
+    assert_eq!(v["economic_prototypes"], "not_run");
+    assert_eq!(v["memory_16gb_gate"], "not_run");
+    assert_eq!(v["rules"]["storage"]["schema"], "mycity-m0-genesis-v2");
+}

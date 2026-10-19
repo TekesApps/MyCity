@@ -21,7 +21,15 @@ fn run() -> Result<(), String> {
         .get(1)
         .is_some_and(|a| ["storage-probe", "regional-probe"].contains(&a.as_str()));
     let spatial = args.get(1).is_some_and(|a| a == "spatial-probe");
-    if args.len() != if storage || spatial { 4 } else { 3 }
+    let spatial_store = args.get(1).is_some_and(|a| a == "spatial-store-probe");
+    if args.len()
+        != if spatial_store {
+            6
+        } else if storage || spatial {
+            4
+        } else {
+            3
+        }
         || ![
             "baseline",
             "layout",
@@ -31,11 +39,12 @@ fn run() -> Result<(), String> {
             "storage-probe",
             "regional-probe",
             "spatial-probe",
+            "spatial-store-probe",
         ]
         .contains(&args[1].as_str())
     {
         return Err(
-            "usage: mycity-headless <baseline|layout|assemble|transaction-probe|clock-probe> <input.json>; <storage-probe|regional-probe> <input.json> <new_world_dir>; spatial-probe <input.json> <height.png>"
+            "usage: mycity-headless <baseline|layout|assemble|transaction-probe|clock-probe> <input.json>; <storage-probe|regional-probe> <input.json> <new_world_dir>; spatial-probe <input.json> <height.png>; spatial-store-probe <opening.json> <spatial.json> <height.png> <new_world_dir>"
                 .into(),
         );
     }
@@ -46,6 +55,7 @@ fn run() -> Result<(), String> {
         "transaction-probe",
         "storage-probe",
         "regional-probe",
+        "spatial-store-probe",
     ]
     .contains(&args[1].as_str())
     {
@@ -97,10 +107,10 @@ fn run() -> Result<(), String> {
     if args[1] == "clock-probe" {
         rules["schedule"] = json!({"source_limit":mycity_core::schedule::SOURCE_LIMIT,"ready_limit":mycity_core::schedule::READY_LIMIT,"max_interval_seconds":mycity_core::schedule::MAX_INTERVAL_SECONDS,"calendar_epoch":"2001-01-01","rng":"sha256-domain-source-window-v1"});
     }
-    if storage {
-        rules["storage"] = json!({"schema":"mycity-m0-genesis-v1","rules_identity":env!("MYCITY_SOURCE_SHA256"),"frame_limit":mycity_storage::FRAME_LIMIT,"wal_limit":mycity_storage::WAL_LIMIT,"committed_boundary":"CURRENT_root_hash_sequence_and_wal_end"});
+    if storage || spatial_store {
+        rules["storage"] = json!({"schema":if spatial_store {"mycity-m0-genesis-v2"}else{"mycity-m0-genesis-v1"},"rules_identity":env!("MYCITY_SOURCE_SHA256"),"frame_limit":mycity_storage::FRAME_LIMIT,"wal_limit":mycity_storage::WAL_LIMIT,"committed_boundary":"CURRENT_root_hash_sequence_and_wal_end"});
     }
-    if spatial {
+    if spatial || spatial_store {
         rules["spatial"] = json!({"schema":mycity_map::SCHEMA,"land_cell_cm":mycity_map::LAND_CELL_CM,
             "terrain_step_cm":mycity_map::TERRAIN_STEP_CM,"xy_limit_cm":mycity_map::XY_LIMIT_CM,
             "z_limit_cm":mycity_map::Z_LIMIT_CM,"geometry_budget_bytes":mycity_map::GEOMETRY_BUDGET_BYTES,
@@ -172,6 +182,24 @@ fn run() -> Result<(), String> {
         report["task"] = json!("M0-T09-snapshot-subset");
         report["result"] = json!("regional_snapshot_subset_executed");
         report["regional_probe"] = regional_probe(&bytes, std::path::Path::new(&args[3]))?;
+    }
+    if spatial_store {
+        let spatial_bytes = read_bounded(
+            File::open(&args[3]).map_err(|e| e.to_string())?,
+            INPUT_LIMIT,
+        )
+        .map_err(|e| e.to_string())?;
+        let png = read_bounded(
+            File::open(&args[4]).map_err(|e| e.to_string())?,
+            mycity_map::terrain::SOURCE_BYTE_LIMIT,
+        )
+        .map_err(|e| e.to_string())?;
+        report["task"] = json!("M0-T07-spatial-storage-subset");
+        report["result"] = json!("immutable_spatial_storage_executed");
+        report["spatial_input_sha256"] = json!(sha256(&spatial_bytes));
+        report["png_input_sha256"] = json!(sha256(&png));
+        report["spatial_store_probe"] =
+            spatial_store_probe(&bytes, &spatial_bytes, &png, std::path::Path::new(&args[5]))?;
     }
     if let Some(input) = spatial_input {
         let file = File::open(&args[3]).map_err(|e| e.to_string())?;
@@ -371,4 +399,81 @@ fn main() {
         eprintln!("{error}");
         std::process::exit(2);
     }
+}
+
+fn spatial_store_probe(
+    opening: &[u8],
+    input: &[u8],
+    png: &[u8],
+    dir: &std::path::Path,
+) -> Result<serde_json::Value, String> {
+    use mycity_core::{
+        transaction::{Action, Caller, Envelope},
+        units::Money,
+    };
+    use mycity_storage::Store;
+    fn err(e: impl std::fmt::Debug) -> String {
+        format!("{e:?}")
+    }
+    let mut store = Store::create_spatial(
+        dir,
+        opening,
+        vec![],
+        env!("MYCITY_SOURCE_SHA256"),
+        input,
+        png,
+    )
+    .map_err(err)?;
+    let initial = store.engine().map_err(err)?.world().view();
+    let initial_cash = initial.accounts.iter().map(|a| a.cash.value()).sum::<i64>();
+    let reference = serde_json::to_value(store.spatial_reference().map_err(err)?).map_err(err)?;
+    let cmd = Envelope {
+        world: initial.scope.world(),
+        branch: initial.scope.branch(),
+        operation_id: 1,
+        expected_revision: 0,
+        actions: vec![Action::Transfer {
+            from: store.engine().map_err(err)?.world().account_ref(2)?,
+            to: store.engine().map_err(err)?.world().account_ref(3)?,
+            amount: Money::new(10000).map_err(err)?,
+        }],
+    };
+    let first = store
+        .execute(Caller::Account(2), cmd.clone())
+        .map_err(err)?;
+    first.model.map_err(err)?;
+    let before = store.state_hash().map_err(err)?;
+    let owned = store.owned_capacity_bytes().map_err(err)?;
+    let engine_owned = store.engine().map_err(err)?.owned_capacity_bytes();
+    let spatial_owned = store
+        .spatial()
+        .map_err(err)?
+        .ok_or("missing_spatial")?
+        .owned_capacity_bytes();
+    drop(store);
+    let mut restored = Store::open(dir, env!("MYCITY_SOURCE_SHA256")).map_err(err)?;
+    let retry = restored.execute(Caller::Account(2), cmd).map_err(err)?;
+    let view = restored.engine().map_err(err)?.world().view();
+    let assets = restored
+        .spatial()
+        .map_err(err)?
+        .ok_or("missing_restored_spatial")?;
+    if !first.has_persistent_receipt
+        || !retry.has_persistent_receipt
+        || before != restored.state_hash().map_err(err)?
+        || restored.committed_sequence() != 1
+        || reference
+            != serde_json::to_value(restored.spatial_reference().map_err(err)?).map_err(err)?
+        || initial_cash != view.accounts.iter().map(|a| a.cash.value()).sum::<i64>()
+    {
+        return Err("spatial_storage_invariant_failed".into());
+    }
+    Ok(
+        json!({"schema":"mycity-m0-spatial-storage-evidence-v1","result":"joint_state_restored_once","spatial_reference":reference,
+        "world":view,"committed_sequence":restored.committed_sequence(),"store_state_sha256":before,"first":first,"retry":retry,
+        "store_owned_capacity_bytes":owned,"engine_owned_capacity_bytes":engine_owned,"spatial_owned_capacity_bytes":spatial_owned,
+        "terrain_sha256":assets.terrain().state_hash(),"geometry_sha256":assets.scene().state_hash(),"terrain_vertices":assets.terrain().heights().len(),
+        "allocator_metadata_and_replay_working_pages_included":false,"space":"immutable_genesis_assets_only_not_terrain_edits",
+        "gpu":"not_run","economic_prototypes":"not_run","power_loss":"not_tested","memory_16gb_gate":"not_run"}),
+    )
 }

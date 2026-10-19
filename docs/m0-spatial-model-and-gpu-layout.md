@@ -1,5 +1,7 @@
 # M0-T07：空间／地图实验与跨后端缓冲布局
 
+v0.5.12接续：[不可变期初空间已接Store根](m0-spatial-storage.md)，下文“尚未接Store”记录v0.5.11时点；运行时空间修改仍未实现。后端兼容交给wgpu，当前不展开单独适配。
+
 v0.5.11，2026-10-19。Rust headless实现子阶段；无UI、窗口、渲染或GPU运行。不重开已收口的产品功能设计，按[空间契约](spatial-contract.md)、[BC43 §1](city-baseline-completion-contract.md#1-cd-04高度图与物理资产的同一坐标)实现明确子集。T07完整验收仍有缺口，不能把本篇当作P-IMPORT／P-XMAP全部通过。
 
 ## 1. 实现归属、单位与安全边界

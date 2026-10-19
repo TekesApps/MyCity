@@ -19,12 +19,12 @@ pub fn run(input: Input, png: &[u8]) -> Result<Value, Error> {
         return Err(Error::Input);
     }
     let budget = terrain::budget(&input.terrain, png.len(), 0)?;
-    let t = terrain::import(input.terrain, png, input.scene.terrain_revision, 0)?;
-    // The fixture explicitly reuses one immutable height asset for two map instances.
-    // This is not evidence that arbitrary neighbor DEMs line up.
-    let s = scene::Scene::assemble(input.scene, &t, &t)?;
+    let identity = input.bootstrap.clone();
+    let assets = crate::assets::SpatialAssets::assemble(input, png, &identity)?;
+    let t = assets.terrain();
+    let s = assets.scene();
     let tile = crate::gpu_layout::TileUpload::pack(
-        &t,
+        t,
         &s.input().map,
         s.input().geometry_revision,
         1,

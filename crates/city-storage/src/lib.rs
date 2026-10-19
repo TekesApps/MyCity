@@ -1,5 +1,6 @@
 //! Laboratory persistence: one writer, bounded replay, WAL + explicit committed boundary.
 //! No historical migration, power-loss certification or automatic fallback of confirmed data.
+mod spatial;
 use fs2::FileExt;
 use mycity_core::{
     assembly::assemble,
@@ -7,9 +8,11 @@ use mycity_core::{
     transaction::{
         Caller, Engine, Envelope, JournalRecord, Receipt, Resource, TxError, MAX_RECEIPTS,
     },
-    INPUT_LIMIT,
+    Bootstrap, INPUT_LIMIT, SCHEMA,
 };
+use mycity_map::assets::SpatialAssets;
 use serde::{Deserialize, Serialize};
+pub use spatial::{CreatePoint, SpatialReference};
 use std::{
     fs::{self, File, OpenOptions},
     io::{self, Read, Seek, SeekFrom, Write},
@@ -63,6 +66,8 @@ struct Genesis {
     rules_identity: String,
     opening: Vec<u8>,
     resources: Vec<Resource>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    spatial: Option<SpatialReference>,
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -118,6 +123,8 @@ impl Drop for Persistence {
 }
 pub struct Store {
     engine: Engine,
+    spatial: Option<SpatialAssets>,
+    spatial_ref: Option<SpatialReference>,
     io: Persistence,
 }
 
@@ -125,8 +132,12 @@ fn json<T: Serialize>(v: &T) -> Result<Vec<u8>, Error> {
     Ok(serde_json::to_vec(v)?)
 }
 fn read_file(path: &Path, limit: u64) -> Result<Vec<u8>, Error> {
-    if fs::symlink_metadata(path)?.file_type().is_symlink() {
+    let metadata = fs::symlink_metadata(path)?;
+    if metadata.file_type().is_symlink() {
         return Err(Error::Invalid("symlink_dependency"));
+    }
+    if !metadata.is_file() || metadata.len() > limit {
+        return Err(Error::Invalid("dependency_type_or_length"));
     }
     Ok(read_bounded(File::open(path)?, limit)?)
 }
@@ -177,6 +188,52 @@ impl Store {
         resources: Vec<Resource>,
         rules_identity: &str,
     ) -> Result<Self, Error> {
+        Self::create_internal(dir, opening, resources, rules_identity, None, |_| Ok(()))
+    }
+    pub fn create_spatial(
+        dir: &Path,
+        opening: &[u8],
+        resources: Vec<Resource>,
+        rules_identity: &str,
+        input: &[u8],
+        png: &[u8],
+    ) -> Result<Self, Error> {
+        Self::create_spatial_with_observer(
+            dir,
+            opening,
+            resources,
+            rules_identity,
+            (input, png),
+            |_| Ok(()),
+        )
+    }
+    /// A failure after CURRENT publication is uncertain; reopen the existing directory.
+    /// Never delete or initialize over it in response to an I/O failure.
+    pub fn create_spatial_with_observer(
+        dir: &Path,
+        opening: &[u8],
+        resources: Vec<Resource>,
+        rules_identity: &str,
+        bundle: (&[u8], &[u8]),
+        observer: impl FnMut(CreatePoint) -> io::Result<()>,
+    ) -> Result<Self, Error> {
+        Self::create_internal(
+            dir,
+            opening,
+            resources,
+            rules_identity,
+            Some(bundle),
+            observer,
+        )
+    }
+    fn create_internal(
+        dir: &Path,
+        opening: &[u8],
+        resources: Vec<Resource>,
+        rules_identity: &str,
+        bundle: Option<(&[u8], &[u8])>,
+        mut observer: impl FnMut(CreatePoint) -> io::Result<()>,
+    ) -> Result<Self, Error> {
         if opening.len() as u64 > INPUT_LIMIT
             || rules_identity.is_empty()
             || rules_identity.len() > 128
@@ -185,24 +242,58 @@ impl Store {
         }
         let engine = Engine::new(assemble(opening).map_err(Error::Model)?, resources.clone())
             .map_err(|e| Error::Model(format!("{e:?}")))?;
+        let identity = identity(&engine);
+        let (spatial_ref, spatial) = if let Some((input, png)) = bundle {
+            let (reference, assets) = SpatialReference::prepare(input, png, &identity)?;
+            (Some(reference), Some(assets))
+        } else {
+            (None, None)
+        };
+        observer(CreatePoint::Validated)?;
         fs::create_dir(dir)?;
         let lock = lock(dir)?;
+        if let Some((input, png)) = bundle {
+            spatial::write_dependency(
+                dir,
+                spatial::INPUT_FILE,
+                input,
+                CreatePoint::SpatialInputHalf,
+                CreatePoint::SpatialInputSynced,
+                &mut observer,
+            )?;
+            spatial::write_dependency(
+                dir,
+                spatial::PNG_FILE,
+                png,
+                CreatePoint::SpatialPngHalf,
+                CreatePoint::SpatialPngSynced,
+                &mut observer,
+            )?;
+        }
         let genesis = json(&Genesis {
-            schema: "mycity-m0-genesis-v1".into(),
+            schema: if spatial_ref.is_some() {
+                "mycity-m0-genesis-v2"
+            } else {
+                "mycity-m0-genesis-v1"
+            }
+            .into(),
             rules_identity: rules_identity.into(),
             opening: opening.to_vec(),
             resources,
+            spatial: spatial_ref.clone(),
         })?;
         if genesis.len() as u64 > GENESIS_LIMIT {
             return Err(Error::Invalid("genesis_encoded_limit"));
         }
         atomic_file(dir, "genesis.json", &genesis, || Ok(()))?;
+        observer(CreatePoint::GenesisSynced)?;
         let wal = OpenOptions::new()
             .read(true)
             .write(true)
             .create_new(true)
             .open(dir.join("wal.bin"))?;
         wal.sync_all()?;
+        observer(CreatePoint::WalSynced)?;
         let genesis_sha256 = sha256(&genesis);
         let root = Root {
             schema: "mycity-m0-root-v1".into(),
@@ -213,6 +304,7 @@ impl Store {
         };
         let root_bytes = json(&root)?;
         atomic_file(dir, "root-0.json", &root_bytes, || Ok(()))?;
+        observer(CreatePoint::RootSynced)?;
         atomic_file(
             dir,
             "CURRENT.json",
@@ -221,11 +313,16 @@ impl Store {
                 slot: 0,
                 root_sha256: sha256(&root_bytes),
             })?,
-            || Ok(()),
+            || observer(CreatePoint::CurrentRenamed),
         )?;
+        observer(CreatePoint::CurrentSynced)?;
         sync_directory(dir.parent().unwrap_or(Path::new(".")))?;
+        observer(CreatePoint::DirectorySynced)?;
+        observer(CreatePoint::Ready)?;
         Ok(Self {
             engine,
+            spatial,
+            spatial_ref,
             io: Persistence {
                 owner_pid: std::process::id(),
                 dir: dir.to_owned(),
@@ -264,7 +361,12 @@ impl Store {
             return Err(Error::Invalid("genesis_corrupt"));
         }
         let genesis: Genesis = serde_json::from_slice(&genesis_bytes)?;
-        if genesis.schema != "mycity-m0-genesis-v1" || genesis.rules_identity != rules_identity {
+        drop(genesis_bytes);
+        let valid_schema = matches!(
+            (genesis.schema.as_str(), genesis.spatial.is_some()),
+            ("mycity-m0-genesis-v1", false) | ("mycity-m0-genesis-v2", true)
+        );
+        if !valid_schema || genesis.rules_identity != rules_identity {
             return Err(Error::Invalid("unsupported_rules_or_schema"));
         }
         // Fresh reconstruction of the recorded genesis, not a gift to an existing world.
@@ -273,6 +375,11 @@ impl Store {
             genesis.resources,
         )
         .map_err(|e| Error::Model(format!("{e:?}")))?;
+        let spatial_ref = genesis.spatial;
+        let spatial = spatial_ref
+            .as_ref()
+            .map(|r| r.load(dir, &identity(&engine)))
+            .transpose()?;
         let wal_path = dir.join("wal.bin");
         if fs::symlink_metadata(&wal_path)?.file_type().is_symlink() {
             return Err(Error::Invalid("symlink_wal"));
@@ -370,6 +477,8 @@ impl Store {
         wal.seek(SeekFrom::Start(root.wal_end))?;
         Ok(Self {
             engine,
+            spatial,
+            spatial_ref,
             io: Persistence {
                 owner_pid: std::process::id(),
                 dir: dir.to_owned(),
@@ -387,6 +496,35 @@ impl Store {
         } else {
             Ok(&self.engine)
         }
+    }
+    pub fn spatial(&self) -> Result<Option<&SpatialAssets>, Error> {
+        self.engine()?;
+        Ok(self.spatial.as_ref())
+    }
+    pub fn spatial_reference(&self) -> Result<Option<&SpatialReference>, Error> {
+        self.engine()?;
+        Ok(self.spatial_ref.as_ref())
+    }
+    /// Joint identity of financial/runtime state and immutable CPU spatial dependencies.
+    pub fn state_hash(&self) -> Result<String, Error> {
+        Ok(sha256(&json(
+            &serde_json::json!({"schema":"mycity-m0-store-state-v1","engine":self.engine()?.state_hash(),"spatial":self.spatial_reference()?}),
+        )?))
+    }
+    /// Owned Rust capacities only; excludes allocator/kernel/OS pages and transient replay.
+    pub fn owned_capacity_bytes(&self) -> Result<usize, Error> {
+        Ok(std::mem::size_of::<Self>() - std::mem::size_of::<Engine>()
+            + self.engine()?.owned_capacity_bytes()
+            + self.io.dir.capacity()
+            + self.io.root.schema.capacity()
+            + self.io.root.wal_chain.capacity()
+            + self.io.root.genesis_sha256.capacity()
+            + self.spatial()?.map_or(0, |a| {
+                a.owned_capacity_bytes() - std::mem::size_of::<SpatialAssets>()
+            })
+            + self.spatial_reference()?.map_or(0, |r| {
+                r.owned_capacity_bytes() - std::mem::size_of::<SpatialReference>()
+            }))
     }
     pub fn committed_sequence(&self) -> u64 {
         self.io.root.sequence
@@ -537,4 +675,15 @@ fn hex(digest: &[u8; 32]) -> String {
         out.push(HEX[(b & 15) as usize] as char);
     }
     out
+}
+
+fn identity(engine: &Engine) -> Bootstrap {
+    let view = engine.world().view();
+    Bootstrap {
+        schema: SCHEMA.into(),
+        world: view.scope.world(),
+        branch: view.scope.branch(),
+        seed: view.seed,
+        laboratory_only: true,
+    }
 }
