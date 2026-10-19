@@ -1,5 +1,7 @@
 # 统一开局与共同参数：START35小镇
 
+v0.4.44后继场景[START44](city-input-assembly-register.md)显式继承START35／RUN36并绑定正常需要／工资承诺、采购差异与A缺项；原START35表及收支为历史版本，不热改旧账。本版26账户只是最小清单，实际主体／权益／供方展开仍待交付。
+
 设计修订：v0.4.35，2026-10-19。定义同一个可核算输入，不是游戏实现、经济均衡、可投运资产或16GB验收。本包引用[DP34的23类候选规格](first-release-type-definition-pack.md)、[财政规则](fiscal-recurring-budget-contract.md)及[交通来源](traffic-state-and-recalculation.md)，不拼接过去独立案例的现金／资产。
 
 v0.4.36后继配置见[RUN36](minimum-operating-parameters.md)：补四组有限运行参数、轮休修正与新资源／费用；本文START35数字保留历史候选基线，不自动热改成新版本。

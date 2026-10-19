@@ -1,5 +1,7 @@
 # 全局设计覆盖、缺口与收敛顺序
 
+v0.4.44主线进入[AS44输入装配](city-input-assembly-register.md)，明确B文档绑定／M缺失／A实际可验证三态，固定小镇需要／采购与工资窗口并列13类交付门；没有新增玩法或模拟常驻状态。当前继续填必要来源，不再默认重复专题复核。
+
 v0.4.43现行进度：[IL43](institutions-and-labor-execution.md)与[BC43](city-baseline-completion-contract.md)完成City清单剩余CD-04至09的有限D；此前各段“下一优先”仅记录历史。接下来统一真实输入装配A和阻启用项，不再默认循环复核；所有I／V仍未开始，AgentKit继续不展开。这不是90类资产均可用或整个游戏设计永远无需调整。
 
 v0.4.42 [LS42](environment-services-and-satisfaction.md)接续GAP-06／CD-03有限规则定义：正常服务需要、实际人时、8维／短板／未知与迁居改善门。真实输入装配与I/V仍开；新9.5MiB已在原模拟域内重划，不宣称疾病／犯罪／火灾模型或16GB已跑通。现行下一优先按City清单合并CD-06。
