@@ -1,0 +1,130 @@
+{
+  "schema": "mycity-m0-opening-v1",
+  "bootstrap": {
+    "schema": "mycity-m0-bootstrap-v1",
+    "world": 1,
+    "branch": 1,
+    "seed": 7,
+    "laboratory_only": true
+  },
+  "sources": [
+    {
+      "id": 1,
+      "kind": "cash_capital",
+      "amount": 1000000
+    },
+    {
+      "id": 2,
+      "kind": "cash_capital",
+      "amount": 200000
+    },
+    {
+      "id": 3,
+      "kind": "cash_capital",
+      "amount": 600000
+    },
+    {
+      "id": 4,
+      "kind": "cash_capital",
+      "amount": 1200000
+    },
+    {
+      "id": 5,
+      "kind": "inventory_capital",
+      "amount": 240000
+    }
+  ],
+  "accounts": [
+    {
+      "id": 1,
+      "role": "treasury",
+      "cash": 1000000,
+      "source": 1
+    },
+    {
+      "id": 2,
+      "role": "household",
+      "cash": 200000,
+      "source": 2
+    },
+    {
+      "id": 3,
+      "role": "company",
+      "cash": 600000,
+      "source": 3
+    },
+    {
+      "id": 4,
+      "role": "supplier",
+      "cash": 1200000,
+      "source": 4
+    }
+  ],
+  "stocks": [
+    {
+      "id": 1,
+      "owner": 4,
+      "commodity": "raw",
+      "quantity": 600000,
+      "basis": 240000,
+      "source": 5
+    }
+  ],
+  "region": {
+    "schema": "mycity-m0-region-v1",
+    "active_city": 2,
+    "cities": [
+      {
+        "id": 1,
+        "development_elapsed": 3153600000,
+        "population": 4000,
+        "willing": 1998,
+        "housing_capacity": 5000
+      },
+      {
+        "id": 2,
+        "development_elapsed": 0,
+        "population": 100,
+        "willing": 0,
+        "housing_capacity": 4000
+      },
+      {
+        "id": 3,
+        "development_elapsed": 4000,
+        "population": 300,
+        "willing": 100,
+        "housing_capacity": 1000
+      }
+    ],
+    "routes": [
+      {
+        "id": 1,
+        "from": 1,
+        "to": 3,
+        "distance_m": 2000,
+        "travel_seconds": 10,
+        "capacity_people": 2000
+      },
+      {
+        "id": 2,
+        "from": 3,
+        "to": 2,
+        "distance_m": 1000,
+        "travel_seconds": 10,
+        "capacity_people": 2000
+      }
+    ],
+    "obligations": [
+      {
+        "id": 1,
+        "payer": 3,
+        "payee": 2,
+        "period_seconds": 10,
+        "amount": 400000,
+        "next_due": 10,
+        "expires_at": 30,
+        "arrears": 0
+      }
+    ]
+  }
+}

@@ -43,6 +43,21 @@ impl Caller {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum Action {
+    RegionSettleDebt {
+        obligation: u32,
+    },
+    RegionActivate {
+        city: u32,
+    },
+    RegionAdvance {
+        seconds: u32,
+    },
+    RegionMigrate {
+        from: u32,
+        to: u32,
+        requested: u32,
+        tolerance: u32,
+    },
     Transfer {
         from: RawHandle,
         to: RawHandle,
@@ -107,6 +122,7 @@ pub enum TxError {
     Capacity,
     Lease,
     WorkingLimit,
+    Region(crate::region::Error),
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
@@ -114,6 +130,7 @@ pub struct Receipt {
     pub operation_id: u64,
     pub revision: u64,
     pub durability: &'static str,
+    pub migrated: [Option<u32>; MAX_ACTIONS],
     pub created_tokens: [Option<CapacityToken>; MAX_ACTIONS],
 }
 
@@ -166,6 +183,7 @@ pub struct Engine {
 }
 
 struct Prepared {
+    region: Option<crate::region::Region>,
     accounts: Vec<(Handle<AccountDomain>, Account)>,
     stocks: Vec<(Handle<InventoryDomain>, Stock)>,
     resources: Vec<Resource>,
@@ -317,8 +335,83 @@ impl Engine {
         let mut leases = self.leases.clone();
         let mut next_token = self.next_token;
         let mut created_tokens = [None; MAX_ACTIONS];
+        let mut migrated = [None; MAX_ACTIONS];
+        let mut region = self.world.region;
         for (action_index, action) in env.actions.iter().enumerate() {
             match *action {
+                Action::RegionSettleDebt { obligation } => {
+                    if !matches!(caller, Caller::System) {
+                        return Err(TxError::Unauthorized);
+                    }
+                    let r = region.as_mut().ok_or(TxError::InvalidOperation)?;
+                    let o = r
+                        .obligations
+                        .iter_mut()
+                        .flatten()
+                        .find(|o| o.id == obligation)
+                        .ok_or(TxError::InvalidOperation)?;
+                    settle_obligation(&self.world, &mut accounts, o)?;
+                }
+                Action::RegionActivate { city } => {
+                    if !matches!(caller, Caller::System) {
+                        return Err(TxError::Unauthorized);
+                    }
+                    region
+                        .as_mut()
+                        .ok_or(TxError::InvalidOperation)?
+                        .activate(city)
+                        .map_err(TxError::Region)?;
+                }
+                Action::RegionAdvance { seconds } => {
+                    if !matches!(caller, Caller::System) {
+                        return Err(TxError::Unauthorized);
+                    }
+                    if seconds == 0 || seconds > crate::region::MAX_ADVANCE_SECONDS {
+                        return Err(TxError::Region(crate::region::Error::Limit));
+                    }
+                    let r = region.as_mut().ok_or(TxError::InvalidOperation)?;
+                    let mut remaining = seconds;
+                    while remaining > 0 {
+                        let step = r.next_step(remaining);
+                        let end = r
+                            .interaction_time
+                            .checked_add(u64::from(step))
+                            .ok_or(TxError::Overflow)?;
+                        let due: [bool; crate::region::MAX_OBLIGATIONS] =
+                            std::array::from_fn(|i| {
+                                r.obligations[i]
+                                    .is_some_and(|o| o.next_due.is_some_and(|t| t <= end))
+                            });
+                        r.advance(step).map_err(TxError::Region)?;
+                        for (i, o) in r.obligations.iter_mut().enumerate() {
+                            if due[i] {
+                                settle_obligation(
+                                    &self.world,
+                                    &mut accounts,
+                                    o.as_mut().expect("due obligation"),
+                                )?;
+                            }
+                        }
+                        remaining -= step;
+                    }
+                }
+                Action::RegionMigrate {
+                    from,
+                    to,
+                    requested,
+                    tolerance,
+                } => {
+                    if !matches!(caller, Caller::System) {
+                        return Err(TxError::Unauthorized);
+                    }
+                    migrated[action_index] = Some(
+                        region
+                            .as_mut()
+                            .ok_or(TxError::InvalidOperation)?
+                            .migrate(from, to, requested, tolerance)
+                            .map_err(TxError::Region)?,
+                    );
+                }
                 Action::Transfer { from, to, amount }
                 | Action::PayProtected { from, to, amount } => {
                     let f = stage_account(&self.world, &mut accounts, from)?;
@@ -527,6 +620,7 @@ impl Engine {
             }
         }
         Ok(Prepared {
+            region,
             accounts,
             stocks,
             resources,
@@ -536,6 +630,7 @@ impl Engine {
                 operation_id: env.operation_id,
                 revision: next_revision,
                 durability: "volatile_only",
+                migrated,
                 created_tokens,
             },
         })
@@ -555,6 +650,7 @@ impl Engine {
                 .replace(h, s)
                 .expect("validated commit handle");
         }
+        self.world.region = prepared.region;
         self.world.revision = prepared.receipt.revision;
         self.resources = prepared.resources;
         self.leases = prepared.leases;
@@ -600,6 +696,49 @@ fn stage_stock(
     }
     dirty.push((h, *world.stocks.get(h).map_err(|_| TxError::InvalidHandle)?));
     Ok(dirty.len() - 1)
+}
+
+// Only the trusted regional workflow calls this, never a user-provided payer alias.
+fn settle_obligation(
+    world: &World,
+    accounts: &mut Vec<(Handle<AccountDomain>, Account)>,
+    o: &mut crate::region::Obligation,
+) -> Result<(), TxError> {
+    if o.arrears == Money::ZERO {
+        return Ok(());
+    }
+    let f = stage_account(
+        world,
+        accounts,
+        world
+            .account_ref(o.payer)
+            .map_err(|_| TxError::InvalidHandle)?,
+    )?;
+    let t = stage_account(
+        world,
+        accounts,
+        world
+            .account_ref(o.payee)
+            .map_err(|_| TxError::InvalidHandle)?,
+    )?;
+    let available = accounts[f]
+        .1
+        .cash
+        .checked_sub(accounts[f].1.protected)
+        .map_err(|_| TxError::Protection)?;
+    let paid = o.arrears.min(available);
+    accounts[f].1.cash = accounts[f]
+        .1
+        .cash
+        .checked_sub(paid)
+        .map_err(|_| TxError::Overflow)?;
+    accounts[t].1.cash = accounts[t]
+        .1
+        .cash
+        .checked_add(paid)
+        .map_err(|_| TxError::Overflow)?;
+    o.arrears = o.arrears.checked_sub(paid).map_err(|_| TxError::Overflow)?;
+    Ok(())
 }
 
 #[cfg(test)]

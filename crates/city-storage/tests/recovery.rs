@@ -306,3 +306,101 @@ fn abrupt_process_exit_at_each_boundary_retains_exactly_the_published_operation(
         }
     }
 }
+
+#[test]
+fn regional_clocks_migrants_debt_and_snapshot_watermarks_recover_atomically_once() {
+    let t = Temp::new();
+    let input = include_bytes!("../../../fixtures/m0-region-opening.json");
+    let mut s = Store::create(&t.world(), input, vec![], "regional-rules1").unwrap();
+    let cmd = Envelope {
+        world: 1,
+        branch: 1,
+        operation_id: 1,
+        expected_revision: 0,
+        actions: vec![
+            Action::RegionMigrate {
+                from: 1,
+                to: 2,
+                requested: 2000,
+                tolerance: 2,
+            },
+            Action::RegionAdvance { seconds: 30 },
+            Action::RegionActivate { city: 1 },
+        ],
+    };
+    let receipt = s.execute(Caller::System, cmd.clone()).unwrap();
+    assert!(receipt.has_persistent_receipt);
+    assert_eq!(receipt.model.unwrap().migrated[0], Some(1998));
+    let before = s.engine().unwrap().state_hash();
+    let r = s.engine().unwrap().world().view().region.unwrap();
+    assert_eq!(r.city(2).unwrap().population, 2098);
+    assert_eq!(r.obligations[0].unwrap().arrears.value(), 600000);
+    drop(s);
+    let mut s = Store::open(&t.world(), "regional-rules1").unwrap();
+    assert_eq!(s.engine().unwrap().state_hash(), before);
+    assert!(
+        s.execute(Caller::System, cmd)
+            .unwrap()
+            .has_persistent_receipt
+    );
+    assert_eq!(s.committed_sequence(), 1);
+    assert_eq!(s.engine().unwrap().state_hash(), before);
+}
+
+#[test]
+fn regional_process_exit_never_publishes_half_population_half_clock_or_half_payment() {
+    for (point, committed) in [
+        ("Prepared", false),
+        ("WalHeaderHalf", false),
+        ("WalPayloadHalf", false),
+        ("WalChecksumHalf", false),
+        ("WalWritten", false),
+        ("WalSynced", false),
+        ("RootPublished", false),
+        ("CurrentRenamed", true),
+        ("CurrentSynced", true),
+        ("Applied", true),
+        ("Responded", true),
+    ] {
+        let t = Temp::new();
+        let path = t.world();
+        let p = path.to_str().unwrap();
+        assert!(worker(&["init-regional", p]).status.success());
+        let out = worker(&["commit", p, point]);
+        assert_eq!(
+            out.status.code(),
+            Some(97),
+            "{point}: {}",
+            String::from_utf8_lossy(&out.stderr)
+        );
+        let out = worker(&["inspect", p]);
+        assert!(out.status.success());
+        let v: serde_json::Value = serde_json::from_slice(&out.stdout).unwrap();
+        let r = &v["world"]["region"];
+        assert_eq!(v["sequence"], u64::from(committed), "{point}");
+        assert_eq!(r["interaction_time"], if committed { 30 } else { 0 });
+        assert_eq!(r["active_city"], if committed { 1 } else { 2 });
+        assert_eq!(
+            r["cities"][0]["population"],
+            if committed { 2002 } else { 4000 }
+        );
+        assert_eq!(
+            r["cities"][1]["population"],
+            if committed { 2098 } else { 100 }
+        );
+        assert_eq!(
+            r["obligations"][0]["arrears"],
+            if committed { 600000 } else { 0 }
+        );
+        assert_eq!(
+            v["world"]["accounts"][2]["cash"],
+            if committed { 0 } else { 600000 }
+        );
+        if committed {
+            assert!(worker(&["commit", p, "none"]).status.success());
+            let out = worker(&["inspect", p]);
+            let after: serde_json::Value = serde_json::from_slice(&out.stdout).unwrap();
+            assert_eq!(after, v, "{point} retry");
+        }
+    }
+}

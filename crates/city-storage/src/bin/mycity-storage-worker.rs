@@ -17,10 +17,14 @@ fn run() -> Result<(), String> {
         );
     }
     let dir = Path::new(&args[2]);
-    if args[1] == "init" {
+    if args[1] == "init" || args[1] == "init-regional" {
         let _ = Store::create(
             dir,
-            include_bytes!("../../../../fixtures/m0-e0-opening.json"),
+            if args[1] == "init-regional" {
+                &include_bytes!("../../../../fixtures/m0-region-opening.json")[..]
+            } else {
+                &include_bytes!("../../../../fixtures/m0-e0-opening.json")[..]
+            },
             vec![Resource::new(1, 10).map_err(err)?],
             RULES,
         )
@@ -45,21 +49,34 @@ fn run() -> Result<(), String> {
         branch: 1,
         operation_id: 1,
         expected_revision: 0,
-        actions: vec![
-            Action::Protect {
-                account: world.account_ref(2)?,
-                amount: Money::new(10000).map_err(err)?,
-            },
-            Action::Transfer {
-                from: world.account_ref(3)?,
-                to: world.account_ref(4)?,
-                amount: Money::new(10000).map_err(err)?,
-            },
-            Action::ReserveCapacity {
-                resource: 1,
-                units: 8,
-            },
-        ],
+        actions: if world.view().region.is_some() {
+            vec![
+                Action::RegionMigrate {
+                    from: 1,
+                    to: 2,
+                    requested: 2000,
+                    tolerance: 2,
+                },
+                Action::RegionAdvance { seconds: 30 },
+                Action::RegionActivate { city: 1 },
+            ]
+        } else {
+            vec![
+                Action::Protect {
+                    account: world.account_ref(2)?,
+                    amount: Money::new(10000).map_err(err)?,
+                },
+                Action::Transfer {
+                    from: world.account_ref(3)?,
+                    to: world.account_ref(4)?,
+                    amount: Money::new(10000).map_err(err)?,
+                },
+                Action::ReserveCapacity {
+                    resource: 1,
+                    units: 8,
+                },
+            ]
+        },
     };
     let crash = args.get(3).map(String::as_str).unwrap_or("none");
     let outcome = store

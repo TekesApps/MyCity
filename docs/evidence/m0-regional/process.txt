@@ -1,0 +1,20 @@
+    Finished `release` profile [optimized] target(s) in 0.04s
+     Running `target/release/mycity-headless regional-probe fixtures/m0-region-opening.json /tmp/mycity-region-v0510-20261019`
+        0.45 real         0.02 user         0.02 sys
+             4718592  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+                5110  page reclaims
+                   5  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+                  98  voluntary context switches
+                 281  involuntary context switches
+           449870666  instructions retired
+           159258770  cycles elapsed
+             1737016  peak memory footprint

@@ -17,7 +17,9 @@ fn system(command: &str, args: &[&str]) -> Option<String> {
 
 fn run() -> Result<(), String> {
     let args: Vec<_> = env::args().collect();
-    let storage = args.get(1).is_some_and(|a| a == "storage-probe");
+    let storage = args
+        .get(1)
+        .is_some_and(|a| ["storage-probe", "regional-probe"].contains(&a.as_str()));
     if args.len() != if storage { 4 } else { 3 }
         || ![
             "baseline",
@@ -26,22 +28,29 @@ fn run() -> Result<(), String> {
             "transaction-probe",
             "clock-probe",
             "storage-probe",
+            "regional-probe",
         ]
         .contains(&args[1].as_str())
     {
         return Err(
-            "usage: mycity-headless <baseline|layout|assemble|transaction-probe|clock-probe> <input.json>"
+            "usage: mycity-headless <baseline|layout|assemble|transaction-probe|clock-probe> <input.json>; <storage-probe|regional-probe> <input.json> <new_world_dir>"
                 .into(),
         );
     }
     let file = File::open(&args[2]).map_err(|e| e.to_string())?;
     let bytes = read_bounded(file, INPUT_LIMIT).map_err(|e| e.to_string())?;
-    let assembled =
-        if ["assemble", "transaction-probe", "storage-probe"].contains(&args[1].as_str()) {
-            Some(mycity_core::assembly::assemble(&bytes)?)
-        } else {
-            None
-        };
+    let assembled = if [
+        "assemble",
+        "transaction-probe",
+        "storage-probe",
+        "regional-probe",
+    ]
+    .contains(&args[1].as_str())
+    {
+        Some(mycity_core::assembly::assemble(&bytes)?)
+    } else {
+        None
+    };
     let input = if let Some(world) = &assembled {
         let view = world.view();
         mycity_core::Bootstrap {
@@ -64,6 +73,13 @@ fn run() -> Result<(), String> {
     }
     if args[1] == "transaction-probe" {
         rules["transaction"] = json!({"max_actions":mycity_core::transaction::MAX_ACTIONS,"max_receipts":mycity_core::transaction::MAX_RECEIPTS,"engine_byte_budget":mycity_core::transaction::ENGINE_BYTE_BUDGET,"cost_policy":"frozen_lot_interval_v1","protected_release":"trusted_host_only"});
+    }
+    if args[1] == "regional-probe" {
+        rules["regional"] = json!({"schema":"mycity-m0-region-v1","max_cities":mycity_core::region::MAX_CITIES,
+            "max_routes":mycity_core::region::MAX_ROUTES,"max_transits":mycity_core::region::MAX_TRANSITS,
+            "max_obligations":mycity_core::region::MAX_OBLIGATIONS,"max_shortfall":mycity_core::region::MAX_SHORTFALL,
+            "max_advance_seconds":mycity_core::region::MAX_ADVANCE_SECONDS,"contract_clock":"interaction_time",
+            "route_model":"whole_journey_people_capacity_reservation_not_vehicle_flow","population":"anonymous_no_personal_financial_rights"});
     }
     if args[1] == "clock-probe" {
         rules["schedule"] = json!({"source_limit":mycity_core::schedule::SOURCE_LIMIT,"ready_limit":mycity_core::schedule::READY_LIMIT,"max_interval_seconds":mycity_core::schedule::MAX_INTERVAL_SECONDS,"calendar_epoch":"2001-01-01","rng":"sha256-domain-source-window-v1"});
@@ -124,10 +140,15 @@ fn run() -> Result<(), String> {
         report["result"] = json!("static_clock_probes_passed");
         report["clock_probe"] = mycity_core::probes::schedule_probe(&input)?;
     }
-    if storage {
+    if args[1] == "storage-probe" {
         report["task"] = json!("M0-T06");
         report["result"] = json!("transaction_storage_roundtrip_passed");
         report["storage_probe"] = storage_probe(&bytes, std::path::Path::new(&args[3]))?;
+    }
+    if args[1] == "regional-probe" {
+        report["task"] = json!("M0-T09-snapshot-subset");
+        report["result"] = json!("regional_snapshot_subset_executed");
+        report["regional_probe"] = regional_probe(&bytes, std::path::Path::new(&args[3]))?;
     }
     println!(
         "{}",
@@ -215,6 +236,100 @@ fn storage_probe(input: &[u8], dir: &std::path::Path) -> Result<serde_json::Valu
     }
     Ok(
         json!({"result":"committed_transactions_recovered_once","committed_sequence":2,"world":engine.world().view(),"resources":engine.resources(),"state_sha256":before,"journal_sha256":sha256(&journal),"replay_has_persistent_receipt":replay.has_persistent_receipt,"engine_owned_capacity_bytes":engine.owned_capacity_bytes(),"model_receipt_durability":"volatile_only_inside_core; storage_wrapper_confirms_persistent_coverage","scope":"transaction_recovery_only_not_scheduler_checkpoint","power_loss":"not_tested","memory_16gb_gate":"not_run"}),
+    )
+}
+
+fn regional_probe(input: &[u8], dir: &std::path::Path) -> Result<serde_json::Value, String> {
+    use mycity_core::transaction::{Action, Caller, Envelope};
+    use mycity_storage::Store;
+    fn err(e: impl std::fmt::Debug) -> String {
+        format!("{e:?}")
+    }
+    let mut store = Store::create(dir, input, vec![], env!("MYCITY_SOURCE_SHA256")).map_err(err)?;
+    let initial = store.engine().map_err(err)?.world().view();
+    let candidates = initial
+        .region
+        .ok_or("region_required")?
+        .candidates(1)
+        .map_err(err)?;
+    let scope = initial.scope;
+    let commands = [
+        vec![Action::RegionMigrate {
+            from: 1,
+            to: 2,
+            requested: 2000,
+            tolerance: 2,
+        }],
+        vec![Action::RegionAdvance { seconds: 30 }],
+        vec![Action::RegionActivate { city: 1 }],
+    ];
+    let mut first = None;
+    let mut outcomes = Vec::new();
+    for (i, actions) in commands.into_iter().enumerate() {
+        let command = Envelope {
+            world: scope.world(),
+            branch: scope.branch(),
+            operation_id: i as u64 + 1,
+            expected_revision: i as u64,
+            actions,
+        };
+        if i == 0 {
+            first = Some(command.clone());
+        }
+        let result = store.execute(Caller::System, command).map_err(err)?;
+        result.model.map_err(err)?;
+        if !result.has_persistent_receipt {
+            return Err("missing_persistent_receipt".into());
+        }
+        outcomes.push(result);
+    }
+    let before = store.engine().map_err(err)?.state_hash();
+    drop(store);
+    let mut restored = Store::open(dir, env!("MYCITY_SOURCE_SHA256")).map_err(err)?;
+    let retry = restored
+        .execute(Caller::System, first.ok_or("missing_first")?)
+        .map_err(err)?;
+    let engine = restored.engine().map_err(err)?;
+    let final_view = engine.world().view();
+    let r = final_view.region.ok_or("missing_region")?;
+    let people = |v: &mycity_core::assembly::WorldView| {
+        let r = v.region.expect("region");
+        r.cities
+            .iter()
+            .flatten()
+            .map(|c| u64::from(c.population))
+            .sum::<u64>()
+            + r.transits
+                .iter()
+                .flatten()
+                .map(|t| u64::from(t.actual))
+                .sum::<u64>()
+    };
+    let cash = |v: &mycity_core::assembly::WorldView| {
+        v.accounts.iter().map(|a| a.cash.value()).sum::<i64>()
+    };
+    if before != engine.state_hash()
+        || restored.committed_sequence() != 3
+        || !retry.has_persistent_receipt
+        || retry.model.map_err(err)?.migrated[0] != Some(1998)
+        || people(&initial) != people(&final_view)
+        || cash(&initial) != cash(&final_view)
+        || r.interaction_time != 30
+        || r.city(1).map_err(err)?.development_elapsed != 3153600000
+        || r.city(2).map_err(err)?.population != 2098
+        || r.obligations[0].ok_or("obligation")?.arrears.value() != 600000
+    {
+        return Err("regional_probe_invariant_failed".into());
+    }
+    Ok(
+        json!({"initial":initial,"final":final_view,"candidates_from_city_1":candidates,
+        "outcomes":outcomes,"replay":retry,"committed_sequence":restored.committed_sequence(),
+        "state_sha256":before,"engine_owned_capacity_bytes":engine.owned_capacity_bytes(),
+        "world_layout":engine.world().layout(),"region_inline_bytes":std::mem::size_of::<mycity_core::region::Region>(),
+        "population_including_transit":people(&final_view),"cash_cents":cash(&final_view),
+        "scope":"synthetic_anonymous_migration_fixed_second_obligations_and_atomic_recovery_only",
+        "market_clearing":"not_implemented","electric_water_solver":"not_implemented",
+        "full_scheduler_checkpoint":"not_tested","power_loss":"not_tested","memory_16gb_gate":"not_run"}),
     )
 }
 

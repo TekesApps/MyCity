@@ -20,7 +20,7 @@
 | T06 | 事务持久子阶段通过，v0.5.9 | 显式提交边界／单写锁／逻辑WAL／恢复与进程退出；完整检查点压缩／时钟事实联合／断电未测 |
 | T07 | planned，模型数据部分 | 地形／几何／合法接缝；显示与拾取UI延期 |
 | T08 | planned | P-E0/P-E1及完整启动实验 |
-| T09 | planned | 同池／配额／退出责任 |
+| T09 | 快照／交互子阶段通过，v0.5.10 | 双钟、三城多跳匿名迁移、住房／通道预留、秒周期债务及原子恢复；真实几何／费用、货运／能源、具名家庭／司法及P-XMAP全场景未测 |
 | T10 | planned，CLI／协议部分 | 查询／实验控制／来源；UI延期 |
 | T11 | deferred_by_user_scope | 原生UI／绘图／窗口／输入，不算通过 |
 | T12 | planned CPU，GPU延期 | CPU数值与恢复门；GPU未启用，无加速结论 |
@@ -122,3 +122,27 @@ cargo test -p mycity-storage --test recovery --release --locked --offline
 ```
 
 以上仅是本机进程退出／故障注入，不是断电／文件系统损坏后的数据保证；ENOSPC来自注入，并非灌满真实磁盘。调度bookmark与钱物同一提交、真实日周月应计与到期、1024之后的内部覆盖／归档、全场景输入、长期恢复增长、8h压力和16GB门仍未通过。M0-T14继续not_accepted，P-E0/P-E1完整经济执行仍not_run；不能为推进进度将未做项改为PASS。
+
+
+## 9. v0.5.10：区域快照与交互账本子阶段
+
+设计先按用户新要求改为[R54](regional-snapshots-and-interaction-ledger.md)，替代旧全城共同本地发展钟。单轮advisor指出事件到期顺序和履约磨损，已补设计；本轮按到期／到达边界截段，关闭城设备运行与磨损仍待实现，不能借审查签收。
+
+Rust在现有World内增加固定区域表；所有区域动作走原Engine prepare／持久hook／apply与Store WAL，不复制另一套账户／库存或8个Engine。输入须显式带mycity-m0-region-v1，旧独立装配仍无区域；观察schema升级mycity-m0-state-v3。Store规则源码fingerprint变更拒绝旧规则保存；没有历史存档自动迁移。快照只存观测／版本与已消费水位，当前事实表随交互立即更新；切换更新投影水位，不再执行现金或人口delta。
+
+固定上限8城／16条有向人口通道／16在途批／16义务，每命令最多16动作、每advance最多3600秒，沿到期和到达切有界子段。合同按ID稳定尝试支付，保护款不挪用；不足留原欠款，到期不续约；后续真实入资可显式RegionSettleDebt。输入中的固定秒周期不代表月薪，匿名同属性人群不代表具名家庭权益迁移。发现按最短米制距离排序，未实现完整偏好／市场撮合。通道整旅途保守预留，合成实验无运输费用或实际车队，不作真实交通／经济证明。
+
+实际[区域报告](evidence/m0-regional/region.json)：三城总4400人，旧城development_elapsed=3153600000秒，新城从0仅前进30秒，区域交互30秒。2000意向、1998实际、2缺额，经3000m多跳／20秒在途后目的城2098人，源城2002，中间城300；未借快照再次补人。有限义务原公司600000分支付耗尽后留600000分欠款，世界现金仍3000000分；换城和存储重开／幂等重试不重复支付／迁居。缺额不是已知住户、钱或货的舍入。
+
+布局实测Region内联4640B、World owned capacity20336B、Engine含1024预留回执共2078144B，分别在World128KiB／Engine4MiB原门内；临时解析／视图／allocator metadata不含其中。完整产品域内增量划分见R54，不能从这个小表推出完整16GB通过。
+
+[Release测试](evidence/m0-regional/tests.txt)共59项通过（35 core单元＋5区域集成＋6 CLI集成＋12存储集成＋1编译失败）。新增覆盖多跳／瓶颈、缺额守恒、休眠欠款、换城水位、分步与整步应付结果、权限／溢出／无效来源、持久hook失败和整批回滚；另在11个真实子进程exit(97)边界核对区域钟／人口／现金／欠款／幂等回执全有或全无。fmt与[clippy](evidence/m0-regional/clippy.txt)通过。进程退出不等于物理断电证明。
+
+重跑（最后的存档目录必须不存在）：
+
+```sh
+cargo test --workspace --release --locked --offline
+cargo run --release --locked --offline -p mycity-headless -- regional-probe fixtures/m0-region-opening.json /tmp/mycity-region-fresh-world
+```
+
+[短进程观测](evidence/m0-regional/process.txt)在本机M4／32GiB取得，仅是此合成CLI命令及宿主探测／保存恢复的时间与资源观测，不是城市吞吐、长跑或16GB设备证据。P-E0/P-E1、P-XMAP真实全场景、完整P0—P5世界游标检查点、经济平衡、闭城生产／磨损、电水流、真实货运、具名迁居、16GB联合负载仍未通过。下一步回到T07空间／T08经济装配依赖，不继续堆区域审查故事。

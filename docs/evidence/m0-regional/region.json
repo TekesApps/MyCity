@@ -1,0 +1,974 @@
+{
+  "build": {
+    "profile": "release",
+    "rustc": "rustc 1.85.1 (4eb161250 2025-03-15)",
+    "target": "aarch64-apple-darwin"
+  },
+  "economic_prototypes": "not_run",
+  "gpu": "not_implemented",
+  "host": {
+    "arch": "aarch64",
+    "chip": "Apple M4",
+    "memory_bytes": "34359738368",
+    "os": "macos",
+    "os_version": "26.6.2"
+  },
+  "input": {
+    "branch": 1,
+    "laboratory_only": true,
+    "schema": "mycity-m0-bootstrap-v1",
+    "seed": 7,
+    "world": 1
+  },
+  "input_sha256": "b654f042638d2efd3b058b87590a1c0446dcec2112faa99f10f6eefafed91544",
+  "layout": {
+    "accounts": {
+      "free_index_capacity": 64,
+      "header_bytes": 80,
+      "live_records": 4,
+      "owned_capacity_bytes": 2384,
+      "record_bytes": 24,
+      "slot_bytes": 32,
+      "slots_capacity": 64
+    },
+    "allocator_metadata_included": false,
+    "index_capacity_bytes": 200,
+    "opening_sources_capacity_bytes": 128,
+    "owned_capacity_bytes": 20336,
+    "stocks": {
+      "free_index_capacity": 128,
+      "header_bytes": 80,
+      "live_records": 1,
+      "owned_capacity_bytes": 12880,
+      "record_bytes": 88,
+      "slot_bytes": 96,
+      "slots_capacity": 128
+    },
+    "temporary_parse_and_view_pages_included": false,
+    "world_remaining_header_bytes": 4744
+  },
+  "lock_sha256": "e24f0d6697640e7a13e16710e54b982c11a8e53f3abeb922785087f770e3a4aa",
+  "memory_16gb_gate": "not_run",
+  "regional_probe": {
+    "candidates_from_city_1": [
+      {
+        "city": 3,
+        "distance_m": 2000,
+        "travel_seconds": 10
+      },
+      {
+        "city": 2,
+        "distance_m": 3000,
+        "travel_seconds": 20
+      }
+    ],
+    "cash_cents": 3000000,
+    "committed_sequence": 3,
+    "electric_water_solver": "not_implemented",
+    "engine_owned_capacity_bytes": 2078144,
+    "final": {
+      "accounts": [
+        {
+          "cash": 1000000,
+          "id": 1,
+          "protected": 0,
+          "role": "treasury"
+        },
+        {
+          "cash": 800000,
+          "id": 2,
+          "protected": 0,
+          "role": "household"
+        },
+        {
+          "cash": 0,
+          "id": 3,
+          "protected": 0,
+          "role": "company"
+        },
+        {
+          "cash": 1200000,
+          "id": 4,
+          "protected": 0,
+          "role": "supplier"
+        }
+      ],
+      "opening_sources": [
+        {
+          "amount": 1000000,
+          "id": 1,
+          "kind": "cash_capital"
+        },
+        {
+          "amount": 200000,
+          "id": 2,
+          "kind": "cash_capital"
+        },
+        {
+          "amount": 600000,
+          "id": 3,
+          "kind": "cash_capital"
+        },
+        {
+          "amount": 1200000,
+          "id": 4,
+          "kind": "cash_capital"
+        },
+        {
+          "amount": 240000,
+          "id": 5,
+          "kind": "inventory_capital"
+        }
+      ],
+      "region": {
+        "active_city": 1,
+        "cities": [
+          {
+            "development_elapsed": 3153600000,
+            "housing_capacity": 5000,
+            "id": 1,
+            "population": 2002,
+            "willing": 0
+          },
+          {
+            "development_elapsed": 30,
+            "housing_capacity": 4000,
+            "id": 2,
+            "population": 2098,
+            "willing": 0
+          },
+          {
+            "development_elapsed": 4000,
+            "housing_capacity": 1000,
+            "id": 3,
+            "population": 300,
+            "willing": 100
+          },
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "interaction_time": 30,
+        "next_transit": 2,
+        "obligations": [
+          {
+            "amount": 400000,
+            "arrears": 600000,
+            "expires_at": 30,
+            "id": 1,
+            "next_due": null,
+            "payee": 2,
+            "payer": 3,
+            "period_seconds": 10
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "routes": [
+          {
+            "capacity_people": 2000,
+            "distance_m": 2000,
+            "from": 1,
+            "id": 1,
+            "to": 3,
+            "travel_seconds": 10
+          },
+          {
+            "capacity_people": 2000,
+            "distance_m": 1000,
+            "from": 3,
+            "id": 2,
+            "to": 2,
+            "travel_seconds": 10
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "sequence": 5,
+        "snapshots": [
+          {
+            "applied_sequence": 5,
+            "city": 1,
+            "observed_at": 30,
+            "population": 2002,
+            "version": 2
+          },
+          {
+            "applied_sequence": 5,
+            "city": 2,
+            "observed_at": 30,
+            "population": 2098,
+            "version": 2
+          },
+          {
+            "applied_sequence": 0,
+            "city": 3,
+            "observed_at": 0,
+            "population": 300,
+            "version": 1
+          },
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "transits": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "revision": 3,
+      "schema": "mycity-m0-state-v3",
+      "scope": {
+        "branch": 1,
+        "world": 1
+      },
+      "seed": 7,
+      "stocks": [
+        {
+          "basis": 240000,
+          "commodity": "raw",
+          "id": 1,
+          "lot_id": 5,
+          "offset": 0,
+          "origin_basis": 240000,
+          "origin_quantity": 600000,
+          "owner": 4,
+          "quantity": 600000
+        }
+      ]
+    },
+    "full_scheduler_checkpoint": "not_tested",
+    "initial": {
+      "accounts": [
+        {
+          "cash": 1000000,
+          "id": 1,
+          "protected": 0,
+          "role": "treasury"
+        },
+        {
+          "cash": 200000,
+          "id": 2,
+          "protected": 0,
+          "role": "household"
+        },
+        {
+          "cash": 600000,
+          "id": 3,
+          "protected": 0,
+          "role": "company"
+        },
+        {
+          "cash": 1200000,
+          "id": 4,
+          "protected": 0,
+          "role": "supplier"
+        }
+      ],
+      "opening_sources": [
+        {
+          "amount": 1000000,
+          "id": 1,
+          "kind": "cash_capital"
+        },
+        {
+          "amount": 200000,
+          "id": 2,
+          "kind": "cash_capital"
+        },
+        {
+          "amount": 600000,
+          "id": 3,
+          "kind": "cash_capital"
+        },
+        {
+          "amount": 1200000,
+          "id": 4,
+          "kind": "cash_capital"
+        },
+        {
+          "amount": 240000,
+          "id": 5,
+          "kind": "inventory_capital"
+        }
+      ],
+      "region": {
+        "active_city": 2,
+        "cities": [
+          {
+            "development_elapsed": 3153600000,
+            "housing_capacity": 5000,
+            "id": 1,
+            "population": 4000,
+            "willing": 1998
+          },
+          {
+            "development_elapsed": 0,
+            "housing_capacity": 4000,
+            "id": 2,
+            "population": 100,
+            "willing": 0
+          },
+          {
+            "development_elapsed": 4000,
+            "housing_capacity": 1000,
+            "id": 3,
+            "population": 300,
+            "willing": 100
+          },
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "interaction_time": 0,
+        "next_transit": 1,
+        "obligations": [
+          {
+            "amount": 400000,
+            "arrears": 0,
+            "expires_at": 30,
+            "id": 1,
+            "next_due": 10,
+            "payee": 2,
+            "payer": 3,
+            "period_seconds": 10
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "routes": [
+          {
+            "capacity_people": 2000,
+            "distance_m": 2000,
+            "from": 1,
+            "id": 1,
+            "to": 3,
+            "travel_seconds": 10
+          },
+          {
+            "capacity_people": 2000,
+            "distance_m": 1000,
+            "from": 3,
+            "id": 2,
+            "to": 2,
+            "travel_seconds": 10
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "sequence": 0,
+        "snapshots": [
+          {
+            "applied_sequence": 0,
+            "city": 1,
+            "observed_at": 0,
+            "population": 4000,
+            "version": 1
+          },
+          {
+            "applied_sequence": 0,
+            "city": 2,
+            "observed_at": 0,
+            "population": 100,
+            "version": 1
+          },
+          {
+            "applied_sequence": 0,
+            "city": 3,
+            "observed_at": 0,
+            "population": 300,
+            "version": 1
+          },
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "transits": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "revision": 0,
+      "schema": "mycity-m0-state-v3",
+      "scope": {
+        "branch": 1,
+        "world": 1
+      },
+      "seed": 7,
+      "stocks": [
+        {
+          "basis": 240000,
+          "commodity": "raw",
+          "id": 1,
+          "lot_id": 5,
+          "offset": 0,
+          "origin_basis": 240000,
+          "origin_quantity": 600000,
+          "owner": 4,
+          "quantity": 600000
+        }
+      ]
+    },
+    "market_clearing": "not_implemented",
+    "memory_16gb_gate": "not_run",
+    "outcomes": [
+      {
+        "committed_sequence": 1,
+        "has_persistent_receipt": true,
+        "model": {
+          "Ok": {
+            "created_tokens": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "durability": "volatile_only",
+            "migrated": [
+              1998,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "operation_id": 1,
+            "revision": 1
+          }
+        }
+      },
+      {
+        "committed_sequence": 2,
+        "has_persistent_receipt": true,
+        "model": {
+          "Ok": {
+            "created_tokens": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "durability": "volatile_only",
+            "migrated": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "operation_id": 2,
+            "revision": 2
+          }
+        }
+      },
+      {
+        "committed_sequence": 3,
+        "has_persistent_receipt": true,
+        "model": {
+          "Ok": {
+            "created_tokens": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "durability": "volatile_only",
+            "migrated": [
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "operation_id": 3,
+            "revision": 3
+          }
+        }
+      }
+    ],
+    "population_including_transit": 4400,
+    "power_loss": "not_tested",
+    "region_inline_bytes": 4640,
+    "replay": {
+      "committed_sequence": 3,
+      "has_persistent_receipt": true,
+      "model": {
+        "Ok": {
+          "created_tokens": [
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "durability": "volatile_only",
+          "migrated": [
+            1998,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "operation_id": 1,
+          "revision": 1
+        }
+      }
+    },
+    "scope": "synthetic_anonymous_migration_fixed_second_obligations_and_atomic_recovery_only",
+    "state_sha256": "708f742c654e4f0f4d397b5b3505d534a90b1da2dcbeaf56a6f270004725232c",
+    "world_layout": {
+      "accounts": {
+        "free_index_capacity": 64,
+        "header_bytes": 80,
+        "live_records": 4,
+        "owned_capacity_bytes": 2384,
+        "record_bytes": 24,
+        "slot_bytes": 32,
+        "slots_capacity": 64
+      },
+      "allocator_metadata_included": false,
+      "index_capacity_bytes": 200,
+      "opening_sources_capacity_bytes": 128,
+      "owned_capacity_bytes": 20336,
+      "stocks": {
+        "free_index_capacity": 128,
+        "header_bytes": 80,
+        "live_records": 1,
+        "owned_capacity_bytes": 12880,
+        "record_bytes": 88,
+        "slot_bytes": 96,
+        "slots_capacity": 128
+      },
+      "temporary_parse_and_view_pages_included": false,
+      "world_remaining_header_bytes": 4744
+    }
+  },
+  "report_schema": "mycity-m0-evidence-v1",
+  "result": "regional_snapshot_subset_executed",
+  "rules": {
+    "input_limit_bytes": 65536,
+    "max_accounts": 64,
+    "max_sources": 192,
+    "max_stocks": 128,
+    "mode": "headless_laboratory",
+    "numeric_strategy": "checked-integer-v1",
+    "opening_schema": "mycity-m0-opening-v1",
+    "regional": {
+      "contract_clock": "interaction_time",
+      "max_advance_seconds": 3600,
+      "max_cities": 8,
+      "max_obligations": 16,
+      "max_routes": 16,
+      "max_shortfall": 16,
+      "max_transits": 16,
+      "population": "anonymous_no_personal_financial_rights",
+      "route_model": "whole_journey_people_capacity_reservation_not_vehicle_flow",
+      "schema": "mycity-m0-region-v1"
+    },
+    "schema": "mycity-m0-bootstrap-v1",
+    "storage": {
+      "committed_boundary": "CURRENT_root_hash_sequence_and_wal_end",
+      "frame_limit": 32768,
+      "rules_identity": "f2b75d35610998336909c6fb7e84c7cc066b7ffb68acd77db756d92f6982c8f5",
+      "schema": "mycity-m0-genesis-v1",
+      "wal_limit": 67108864
+    },
+    "world_byte_budget": 131072
+  },
+  "rules_sha256": "8a025f38eb702e483d28deeab0e56366236d866dbb70e722367ff830f8f4e497",
+  "run_id": "27983-1792417738831711000",
+  "source_sha256": "f2b75d35610998336909c6fb7e84c7cc066b7ffb68acd77db756d92f6982c8f5",
+  "state_sha256": "cdba81d4962841eb84f8c8c4a1071492230a5de3a42f725e7be22351bc47be9f",
+  "task": "M0-T09-snapshot-subset",
+  "ui": "not_implemented_by_scope",
+  "world": {
+    "accounts": [
+      {
+        "cash": 1000000,
+        "id": 1,
+        "protected": 0,
+        "role": "treasury"
+      },
+      {
+        "cash": 200000,
+        "id": 2,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 600000,
+        "id": 3,
+        "protected": 0,
+        "role": "company"
+      },
+      {
+        "cash": 1200000,
+        "id": 4,
+        "protected": 0,
+        "role": "supplier"
+      }
+    ],
+    "opening_sources": [
+      {
+        "amount": 1000000,
+        "id": 1,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 200000,
+        "id": 2,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 600000,
+        "id": 3,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 1200000,
+        "id": 4,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 240000,
+        "id": 5,
+        "kind": "inventory_capital"
+      }
+    ],
+    "region": {
+      "active_city": 2,
+      "cities": [
+        {
+          "development_elapsed": 3153600000,
+          "housing_capacity": 5000,
+          "id": 1,
+          "population": 4000,
+          "willing": 1998
+        },
+        {
+          "development_elapsed": 0,
+          "housing_capacity": 4000,
+          "id": 2,
+          "population": 100,
+          "willing": 0
+        },
+        {
+          "development_elapsed": 4000,
+          "housing_capacity": 1000,
+          "id": 3,
+          "population": 300,
+          "willing": 100
+        },
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "interaction_time": 0,
+      "next_transit": 1,
+      "obligations": [
+        {
+          "amount": 400000,
+          "arrears": 0,
+          "expires_at": 30,
+          "id": 1,
+          "next_due": 10,
+          "payee": 2,
+          "payer": 3,
+          "period_seconds": 10
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "routes": [
+        {
+          "capacity_people": 2000,
+          "distance_m": 2000,
+          "from": 1,
+          "id": 1,
+          "to": 3,
+          "travel_seconds": 10
+        },
+        {
+          "capacity_people": 2000,
+          "distance_m": 1000,
+          "from": 3,
+          "id": 2,
+          "to": 2,
+          "travel_seconds": 10
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "sequence": 0,
+      "snapshots": [
+        {
+          "applied_sequence": 0,
+          "city": 1,
+          "observed_at": 0,
+          "population": 4000,
+          "version": 1
+        },
+        {
+          "applied_sequence": 0,
+          "city": 2,
+          "observed_at": 0,
+          "population": 100,
+          "version": 1
+        },
+        {
+          "applied_sequence": 0,
+          "city": 3,
+          "observed_at": 0,
+          "population": 300,
+          "version": 1
+        },
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "transits": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "revision": 0,
+    "schema": "mycity-m0-state-v3",
+    "scope": {
+      "branch": 1,
+      "world": 1
+    },
+    "seed": 7,
+    "stocks": [
+      {
+        "basis": 240000,
+        "commodity": "raw",
+        "id": 1,
+        "lot_id": 5,
+        "offset": 0,
+        "origin_basis": 240000,
+        "origin_quantity": 600000,
+        "owner": 4,
+        "quantity": 600000
+      }
+    ]
+  }
+}

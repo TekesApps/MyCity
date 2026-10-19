@@ -8,6 +8,7 @@ pub mod arena;
 pub mod assembly;
 pub mod calendar;
 pub mod probes;
+pub mod region;
 pub mod schedule;
 pub mod transaction;
 pub mod units;

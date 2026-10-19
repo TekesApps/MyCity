@@ -91,7 +91,12 @@
     2
   ],
   "active_reference_qualifications": 8,
-  "requirements": 56,
+  "requirements": 60,
   "capabilities": 37,
-  "contract_axes_per_capability": 9
+  "contract_axes_per_capability": 9,
+  "regional_carve_out_mib": {
+    "events_from_existing_12": 1,
+    "market_from_existing_7_125": 0.25,
+    "runtime_from_existing_0_45_gib": 0.0625
+  }
 }

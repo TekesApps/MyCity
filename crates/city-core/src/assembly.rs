@@ -69,6 +69,7 @@ pub struct Opening {
     pub sources: Vec<OpeningSource>,
     pub accounts: Vec<OpeningAccount>,
     pub stocks: Vec<OpeningStock>,
+    pub region: Option<crate::region::Opening>,
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -100,6 +101,7 @@ pub struct World {
     pub(crate) account_ids: Vec<(u32, Handle<AccountDomain>)>,
     pub(crate) stock_ids: Vec<(u32, Handle<InventoryDomain>)>,
     sources: Vec<OpeningSource>,
+    pub(crate) region: Option<crate::region::Region>,
 }
 
 #[derive(Debug, PartialEq, Eq, Serialize)]
@@ -130,6 +132,7 @@ pub struct WorldView {
     pub accounts: Vec<AccountView>,
     pub stocks: Vec<StockView>,
     pub opening_sources: Vec<OpeningSource>,
+    pub region: Option<crate::region::Region>,
 }
 
 impl World {
@@ -153,7 +156,7 @@ impl World {
     }
     pub fn view(&self) -> WorldView {
         WorldView {
-            schema: "mycity-m0-state-v2",
+            schema: "mycity-m0-state-v3",
             scope: self.scope,
             seed: self.seed,
             revision: self.revision,
@@ -189,6 +192,7 @@ impl World {
                 })
                 .collect(),
             opening_sources: self.sources.clone(),
+            region: self.region,
         }
     }
     pub fn state_hash(&self) -> String {
@@ -283,6 +287,11 @@ pub fn assemble(bytes: &[u8]) -> Result<World, String> {
         account_ids: Vec::with_capacity(input.accounts.len()),
         stock_ids: Vec::with_capacity(input.stocks.len()),
         sources: input.sources,
+        region: input
+            .region
+            .map(crate::region::Region::new)
+            .transpose()
+            .map_err(|e| format!("region_{e:?}"))?,
     };
     for a in input.accounts {
         let h = world
@@ -313,6 +322,12 @@ pub fn assemble(bytes: &[u8]) -> Result<World, String> {
             })
             .map_err(|e| format!("{e:?}"))?;
         world.stock_ids.push((s.id, h));
+    }
+    if let Some(region) = &world.region {
+        for obligation in region.obligations.iter().flatten() {
+            world.account_handle(obligation.payer)?;
+            world.account_handle(obligation.payee)?;
+        }
     }
     if world.layout()["owned_capacity_bytes"].as_u64().unwrap() > WORLD_BYTE_BUDGET as u64 {
         return Err("world_byte_limit".into());
