@@ -2,6 +2,8 @@
 
 版本：设计草案 v0.4，2026-10-18。以下 API 为 MyCity 待实现协议，尚未注册到任何 harness，也不是 TekesAgentKit 已有方法。
 
+v0.4.27 [单栋住宅能源案例](worked-example-building-cooking-energy.md) 的预览须区分新建能源包／从既有E改造，分别返回资本承担者、期中可用钱、工期、保留设备／馈线、缺供与原配额；不得以新建价差退款。多栋计划解析真实共享设施／权利，用户说“小区”不等于授权改全部家庭私人设备。
+
 v0.4.26查询／草案应按 [烹饪与天然气](natural-gas-and-cooking.md) 区分能源需求、实际设备、源／站／气管／阀门／气口与检验／收费；燃气后续B返回明确缺机制／配置，不能仅写“gas”自动连水管或开通。能源改造走工程、资金／断接／废物／验收，不热改profile免费切换。
 
 v0.4.24工具查询／草案校验须沿 [覆盖矩阵](object-definition-coverage.md) 区分结构、契约、参数、表示、机制及实现状态，读取 [字段字典](capability-field-dictionary.md) 的类型／来源和 [物件契约](common-object-contracts.md) 的前后置。按 [粒度收敛](model-granularity-and-convergence.md) 返回实际模型、近似／覆盖／年龄、缺项和预算原因；精确工具不意味着逐设备／逐车仿真，未配置不按0、缺机制不因agent填字符串启用。

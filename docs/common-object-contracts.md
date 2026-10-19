@@ -2,6 +2,8 @@
 
 设计契约：v0.4.24，2026-10-19。把13个基础样例及首版必要支持物件展开为27类有界物件契约，服从 [粒度收敛](model-granularity-and-convergence.md) 和 [字段字典](capability-field-dictionary.md)。OBJ编号是设计契约族，不是新增资产、行业、实体表或C能力；27类不意味着每实例分配27组件。后续技术路线／商业租赁／复合楼／摊位仍按 [覆盖矩阵](object-definition-coverage.md) 缺项处理。
 
+v0.4.27 [单栋住宅能源案例](worked-example-building-cooking-energy.md) 展开OBJ-HOUSE／EQUIPMENT／PORT／BOUNDARY：独立炉具K条件先有表示才允许局部改造，饭煲／通风原年龄不刷新；公共配电／气站在楼外有自己的资产／接入，不凭“住宅楼”免费生成。三分支各独立、混合为楼内不同户配置。
+
 v0.4.26住宅／设备补 [电炊与天然气烹饪契约](natural-gas-and-cooking.md)：同一有用烹饪量只满足一次、已有综合电负荷不得双加、双能源须真实安装。天然气完整链仍后续B，不能借OBJ-WATER-EDGE／NET-NODE／PORT现有抽象直接启用；原8口、M／C和网络字节联合限额不增加。
 
 首版住宅／企业／市政水电沿 [本地供应计费裁定](granularity-allocation-audit.md#6-水电计费粒度与条数门)；不把房屋产权、费用责任或公共负荷混成一个payer，物理与金额不同writer，B／H／K只关联唯一累计来源。库存损失按 [短缺裁定](granularity-allocation-audit.md#5-交通库存与暴露的三个硬边界) 调实物锁定但保留合同责任；暴露瞬时D与已发生必需A分开。

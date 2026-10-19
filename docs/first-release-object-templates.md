@@ -2,6 +2,8 @@
 
 设计补充：v0.4.19；目录澄清v0.4.20，2026-10-19。以下13个空间对象模板是首版候选的属性结构，不是已经导入游戏的资产。数值仅为游戏演示、待平衡；未填的必要profile不按零执行。P／C编号来自 [Root契约](root-component-contract.md)，S／M编号及统计口径来自 [双向表](property-system-metric-matrix.md)。
 
+v0.4.27 [24户单栋样例](worked-example-building-cooking-energy.md) 是参数／闭环演算，不替换原13模板／12profile或授予天然气首版资格。真实住宅单元不是同数量的共享功能子区／楼外口；每楼8口和原H／F／K状态各自准入，楼体／单元／设备／共享设施分开计数。
+
 v0.4.26住宅profile需按 [烹饪能源](natural-gas-and-cooking.md) 明确electric／piped_gas／installed_dual的适用范围及有用需求／峰时负荷。现行首版先配置电炊，旧楼须明确迁移／工程，不重复原综合用电；天然气完整设施为后续B候选，不新增已启用模板或行业。
 
 v0.4.24按 [覆盖矩阵](object-definition-coverage.md) 将基础样例与90类目录对齐；适用字段见 [字典](capability-field-dictionary.md)，运行／失败／退出见 [27类契约](common-object-contracts.md)。13个样例、12类经营profile的身份不变；新增OBJ是契约族而非新增实体或已完成参数包，所有细化须过 [收敛门](model-granularity-and-convergence.md)。

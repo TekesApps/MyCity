@@ -2,6 +2,8 @@
 
 设计补充：v0.4.19，2026-10-19。沿“基础对象→能力组合→具体模板→系统读写→指标→反向补属性”收敛。本文是语义／数据契约，不是Rust代码、ECS选型或已注册schema；与 [对象模型](city-object-model.md)、[空间运行契约](spatial-runtime-contract.md) 共同约束首版。
 
+v0.4.27空间实例以 [单栋演算](worked-example-building-cooking-energy.md#1-先定义楼再组合多栋共享) 为例：楼体Root、住宅单元H／家庭F、公共设施／共享使用关系分别存在。多栋项目／小区是组织或空间范围，不必新增一种拥有全部住户与管网的小区Root；临街楼独立接入，真实共享实体和瓶颈只计一次。
+
 v0.4.25现行粒度与预算以 [整体分配审查](granularity-allocation-audit.md) 为准：34属性／14系统／27物件逐项区分保留、聚合、延后；新增基础本地供应计费绑定使用原区域余量4 MiB，现为27项43.0078125／44 MiB、余0.9921875 MiB，应用目标不增。下文39.0078125／26项是此前基线，不作本版准入；未验证布局／索引与16 GB实机性能。
 
 v0.4.24细化沿 [粒度收敛](model-granularity-and-convergence.md) → [覆盖矩阵](object-definition-coverage.md) → [字段字典](capability-field-dictionary.md) → [物件契约](common-object-contracts.md)。16类能力和原权威不增；新增语义先证明必要用途／聚合方式／误差／预算，字段路径不是每实例物理列，缺参数／表示不能凭目录启用。
