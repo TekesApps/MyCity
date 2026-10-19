@@ -81,14 +81,14 @@ pub struct Opening {
     pub exchange: Option<crate::exchange::Opening>,
 }
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 pub(crate) struct Account {
     pub id: u32,
     pub role: Role,
     pub cash: Money,
     pub protected: Money,
 }
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 pub(crate) struct Stock {
     pub id: u32,
     pub owner: Handle<AccountDomain>,
@@ -101,6 +101,8 @@ pub(crate) struct Stock {
     pub offset: Quantity,
 }
 
+#[derive(Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct World {
     pub(crate) scope: Scope,
     pub(crate) seed: u64,
@@ -151,6 +153,50 @@ pub struct WorldView {
 }
 
 impl World {
+    pub(crate) fn restore_capacity(&mut self) -> Result<(), String> {
+        self.accounts
+            .restore_capacity(self.scope, MAX_ACCOUNTS as u32, WORLD_BYTE_BUDGET / 2)
+            .map_err(|_| "checkpoint_account_arena")?;
+        self.stocks
+            .restore_capacity(self.scope, MAX_STOCKS as u32, WORLD_BYTE_BUDGET / 2)
+            .map_err(|_| "checkpoint_stock_arena")?;
+        if self.account_ids.len() != self.accounts.len()
+            || self.stock_ids.len() != self.stocks.len()
+            || self.sources.len() > MAX_SOURCES
+        {
+            return Err("checkpoint_index_length".into());
+        }
+        for (i, (id, h)) in self.account_ids.iter().enumerate() {
+            let a = self
+                .accounts
+                .get(*h)
+                .map_err(|_| "checkpoint_account_handle")?;
+            if a.id != *id
+                || a.protected > a.cash
+                || self.account_ids[..i].iter().any(|(old, _)| old == id)
+            {
+                return Err("checkpoint_account_index".into());
+            }
+        }
+        for (i, (id, h)) in self.stock_ids.iter().enumerate() {
+            let stock = self.stocks.get(*h).map_err(|_| "checkpoint_stock_handle")?;
+            self.accounts
+                .get(stock.owner)
+                .map_err(|_| "checkpoint_stock_owner")?;
+            if stock.id != *id || self.stock_ids[..i].iter().any(|(old, _)| old == id) {
+                return Err("checkpoint_stock_index".into());
+            }
+        }
+        if self.exchange.is_some()
+            && (self.boot.is_none() || self.region.is_none() || self.economy.is_some())
+        {
+            return Err("checkpoint_runtime_combination".into());
+        }
+        if self.layout()["owned_capacity_bytes"].as_u64().unwrap() > WORLD_BYTE_BUDGET as u64 {
+            return Err("checkpoint_world_budget".into());
+        }
+        Ok(())
+    }
     pub fn account_ref(&self, id: u32) -> Result<crate::arena::RawHandle, String> {
         Ok(self.account_handle(id)?.raw())
     }

@@ -49,7 +49,7 @@ pub enum Command {
         facility: Facility,
     },
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Error {
     Profile,
     Stage,
@@ -58,13 +58,13 @@ pub enum Error {
     Invariant,
     Limit,
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Phase {
     Idle,
     Running,
     Failed,
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Job {
     pub phase: Phase,
     pub identity: u64,
@@ -91,9 +91,10 @@ impl Default for Job {
         }
     }
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(bound(deserialize = ""))]
 pub struct Boot {
-    pub profile: &'static str,
+    pub profile: crate::FrozenLabel,
     pub operator: u32,
     pub contractor: u32,
     pub stocks: [u32; 6],
@@ -204,7 +205,7 @@ impl Boot {
             .try_fold(Money::ZERO, |sum, a| sum.checked_add(a.cash))
             .map_err(|_| "cash")?;
         Ok(Self {
-            profile: PROFILE,
+            profile: crate::FrozenLabel(PROFILE),
             operator: o.operator,
             contractor: o.contractor,
             stocks: o.stocks,

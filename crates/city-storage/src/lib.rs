@@ -1,6 +1,8 @@
 //! Laboratory persistence: one writer, bounded replay, WAL + explicit committed boundary.
 //! No historical migration, power-loss certification or automatic fallback of confirmed data.
+mod checkpoint;
 mod spatial;
+pub use checkpoint::{CheckpointPoint, CheckpointStatus};
 use fs2::FileExt;
 use mycity_core::{
     assembly::assemble,
@@ -74,6 +76,9 @@ struct Genesis {
 struct Root {
     schema: String,
     sequence: u64,
+    generation: u64,
+    checkpoint: Option<checkpoint::Reference>,
+    segment: u64,
     wal_end: u64,
     wal_chain: String,
     genesis_sha256: String,
@@ -299,6 +304,9 @@ impl Store {
         let root = Root {
             schema: "mycity-m0-root-v1".into(),
             sequence: 0,
+            generation: 0,
+            checkpoint: None,
+            segment: 0,
             wal_end: 0,
             wal_chain: genesis_sha256.clone(),
             genesis_sha256,
@@ -350,10 +358,9 @@ impl Store {
             return Err(Error::Invalid("committed_root_corrupt"));
         }
         let root: Root = serde_json::from_slice(&root_bytes)?;
-        if root.sequence % 2 != u64::from(current.slot)
+        if root.generation % 2 != u64::from(current.slot)
             || root.schema != "mycity-m0-root-v1"
             || root.wal_end > WAL_LIMIT
-            || root.sequence > MAX_RECEIPTS as u64
         {
             return Err(Error::Invalid("root_limits_or_schema"));
         }
@@ -371,18 +378,30 @@ impl Store {
             return Err(Error::Invalid("unsupported_rules_or_schema"));
         }
         // Fresh reconstruction of the recorded genesis, not a gift to an existing world.
-        let mut engine = Engine::new(
+        let genesis_engine = Engine::new(
             assemble(&genesis.opening).map_err(Error::Model)?,
             genesis.resources,
         )
         .map_err(|e| Error::Model(format!("{e:?}")))?;
+        let mut engine = if let Some(reference) = &root.checkpoint {
+            let checkpoint = checkpoint::load(dir, reference)?;
+            if checkpoint.sequence > root.sequence
+                || checkpoint.genesis_sha256 != root.genesis_sha256
+            {
+                return Err(Error::Invalid("checkpoint_boundary"));
+            }
+            checkpoint::verify_archive(dir, reference, &root.genesis_sha256)?;
+            Engine::restore_checkpoint(&checkpoint.engine).map_err(Error::Model)?
+        } else {
+            genesis_engine
+        };
         let spatial_ref = genesis.spatial;
         let spatial = spatial_ref
             .as_ref()
             .map(|r| r.load(dir, &identity(&engine)))
             .transpose()?;
         spatial::validate_exchange_binding(&engine, spatial.as_ref())?;
-        let wal_path = dir.join("wal.bin");
+        let wal_path = dir.join(checkpoint::wal_name(root.segment));
         if fs::symlink_metadata(&wal_path)?.file_type().is_symlink() {
             return Err(Error::Invalid("symlink_wal"));
         }
@@ -392,8 +411,12 @@ impl Store {
             return Err(Error::Invalid("committed_wal_truncated"));
         }
         let mut pos = 0u64;
-        let mut sequence = 0u64;
-        let mut chain = root.genesis_sha256.clone();
+        let (mut sequence, mut chain) = if let Some(reference) = &root.checkpoint {
+            let checkpoint = checkpoint::load(dir, reference)?;
+            (checkpoint.sequence, checkpoint.chain)
+        } else {
+            (0, root.genesis_sha256.clone())
+        };
         while pos < root.wal_end {
             if root.wal_end - pos < 4 {
                 return Err(Error::Invalid("committed_header_truncated"));
@@ -543,7 +566,9 @@ impl Store {
         if self.io.poisoned || self.io.owner_pid != std::process::id() {
             return Err(Error::RecoveryRequired);
         }
-        if envelope.actions.len() > mycity_core::transaction::MAX_ACTIONS
+        if envelope.world != self.engine.world().view().scope.world()
+            || envelope.branch != self.engine.world().view().scope.branch()
+            || envelope.actions.len() > mycity_core::transaction::MAX_ACTIONS
             || envelope.actions.is_empty()
             || envelope.operation_id == 0
             || matches!(caller, Caller::Account(0))
@@ -560,6 +585,29 @@ impl Store {
         };
         let hash = digest(&json(&envelope)?);
         let operation = envelope.operation_id;
+        if let Some(record) = self.lookup_archived(operation)? {
+            let model = if record.actor != actor {
+                Err(TxError::Unauthorized)
+            } else if record.payload_sha256 != hash {
+                Err(TxError::OperationConflict)
+            } else {
+                record.outcome
+            };
+            return Ok(Outcome {
+                has_persistent_receipt: record.actor == actor && record.payload_sha256 == hash,
+                model,
+                committed_sequence: self.io.root.sequence,
+            });
+        }
+        if self.engine.journal().len() >= MAX_RECEIPTS / 2
+            && !self
+                .engine
+                .journal()
+                .iter()
+                .any(|r| r.operation_id == operation)
+        {
+            self.checkpoint()?;
+        }
         let io = &mut self.io;
         let result = self
             .engine
@@ -642,11 +690,18 @@ impl Persistence {
         let root = Root {
             schema: self.root.schema.clone(),
             sequence,
+            generation: self
+                .root
+                .generation
+                .checked_add(1)
+                .ok_or(Error::Invalid("publication_overflow"))?,
+            checkpoint: self.root.checkpoint.clone(),
+            segment: self.root.segment,
             wal_end,
             wal_chain: hex(&checksum),
             genesis_sha256: self.root.genesis_sha256.clone(),
         };
-        let slot = (sequence % 2) as u8;
+        let slot = (root.generation % 2) as u8;
         let root_bytes = json(&root)?;
         atomic_file(&self.dir, &format!("root-{slot}.json"), &root_bytes, || {
             Ok(())

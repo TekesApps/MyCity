@@ -63,14 +63,15 @@ fn envelope(s: &Store, actions: Vec<Action>) -> Envelope {
     Envelope {
         world: 1,
         branch: 1,
-        operation_id: e.journal().len() as u64 + 1,
+        operation_id: s.committed_sequence() + 1,
         expected_revision: e.world().view().revision,
         actions,
     }
 }
 fn execute(s: &mut Store, action: Action) {
     let cmd = envelope(s, vec![action]);
-    assert!(s.execute(Caller::System, cmd).unwrap().model.is_ok());
+    let result = s.execute(Caller::System, cmd).unwrap().model;
+    assert!(result.is_ok(), "{result:?}");
 }
 fn start(facility: Facility) -> Action {
     Action::Boot {
@@ -295,7 +296,8 @@ fn uncertain_arrival_settlement_hides_writer_and_recovers_once_with_provenance()
     drop(s);
     let mut s = Store::open(&dir, RULES).unwrap();
     let hash = s.state_hash().unwrap();
-    assert!(s.execute(Caller::System, cmd).unwrap().model.is_ok());
+    let result = s.execute(Caller::System, cmd).unwrap().model;
+    assert!(result.is_ok(), "{result:?}");
     assert_eq!(s.state_hash().unwrap(), hash);
     let w = s.engine().unwrap().world().view();
     assert_eq!(
@@ -326,4 +328,70 @@ fn regional_store_requires_bound_spatial_frames_and_flat_template_before_creatin
     )
     .is_err());
     assert!(!dir.exists());
+}
+
+#[test]
+fn full_checkpoints_keep_running_failed_and_paused_physical_state() {
+    for scenario in 0..3 {
+        let t = Temp::new();
+        let mut s = create(&t.0.join("world"), INPUT);
+        if scenario < 2 {
+            execute(&mut s, start(Facility::Pump));
+            if scenario == 1 {
+                execute(
+                    &mut s,
+                    Action::Boot {
+                        command: BootCommand::Fault {
+                            facility: Facility::Pump,
+                        },
+                    },
+                );
+            }
+        } else {
+            prepare(&mut s);
+            execute(&mut s, dispatch(1));
+            execute(
+                &mut s,
+                x(ExchangeCommand::SetLink {
+                    edge: 1,
+                    open: false,
+                }),
+            );
+        }
+        let hash = s.state_hash().unwrap();
+        let view = serde_json::to_value(s.engine().unwrap().world().view()).unwrap();
+        s.checkpoint().unwrap();
+        s.checkpoint().unwrap();
+        drop(s);
+        let mut s = Store::open(&t.0.join("world"), RULES).unwrap();
+        assert_eq!(s.state_hash().unwrap(), hash);
+        assert_eq!(
+            serde_json::to_value(s.engine().unwrap().world().view()).unwrap(),
+            view
+        );
+        if scenario == 0 {
+            advance(&mut s, 60);
+        } else if scenario == 1 {
+            execute(
+                &mut s,
+                Action::Boot {
+                    command: BootCommand::ClearFailure {
+                        facility: Facility::Pump,
+                    },
+                },
+            );
+        } else {
+            execute(
+                &mut s,
+                x(ExchangeCommand::SetLink {
+                    edge: 1,
+                    open: true,
+                }),
+            );
+            advance(&mut s, 120);
+        }
+        s.checkpoint().unwrap();
+        drop(s);
+        Store::open(&t.0.join("world"), RULES).unwrap();
+    }
 }

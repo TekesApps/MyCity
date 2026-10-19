@@ -113,3 +113,20 @@ mod tests {
         .is_err());
     }
 }
+
+/// Finite persisted labels; no borrowed input and no leaked heap strings.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[serde(transparent)]
+pub struct FrozenLabel(pub(crate) &'static str);
+impl<'de> Deserialize<'de> for FrozenLabel {
+    fn deserialize<D: serde::Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        let s = String::deserialize(d)?;
+        match s.as_str() {
+            "pe0-30d-v1" => Ok(Self("pe0-30d-v1")),
+            "regional-fulfilment-v1" => Ok(Self("regional-fulfilment-v1")),
+            "pboot-cold-micro-v1" => Ok(Self("pboot-cold-micro-v1")),
+            "volatile_only" => Ok(Self("volatile_only")),
+            _ => Err(serde::de::Error::custom("unsupported_frozen_label")),
+        }
+    }
+}

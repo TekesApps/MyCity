@@ -1,0 +1,5 @@
+source_sha256=bef667cf641eada19d45cb617e56cb335bf8e26a469fda60856b3762dfeed9fe
+rustc=rustc 1.85.1 (4eb161250 2025-03-15)
+macOS-26.6.2-arm64-arm-64bit
+full_workspace_tests_passed=139
+additional_allocator_test=1

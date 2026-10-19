@@ -58,7 +58,7 @@ impl Case {
         Ok(Envelope {
             world: v.scope.world(),
             branch: v.scope.branch(),
-            operation_id: e.journal().len() as u64 + 1,
+            operation_id: self.store.committed_sequence() + 1,
             expected_revision: v.revision,
             actions: vec![Action::Economy { command: c }],
         })

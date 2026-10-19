@@ -44,7 +44,7 @@ fn envelope(s: &Store, command: BootCommand) -> Envelope {
     Envelope {
         world: 1,
         branch: 1,
-        operation_id: e.journal().len() as u64 + 1,
+        operation_id: s.committed_sequence() + 1,
         expected_revision: e.world().view().revision,
         actions: vec![Action::Boot { command }],
     }

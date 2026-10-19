@@ -200,3 +200,9 @@ T08只签收本轮P-E0／P-E1有限子阶段：完整P-BOOT泵／机组互锁、
 [134项Release测试](evidence/m0-t09-fulfilment/tests.txt)、[fmt](evidence/m0-t09-fulfilment/fmt.txt)、[clippy](evidence/m0-t09-fulfilment/clippy.txt)过；新增121个真实进程退出点验证货／电／水发运和结算、关城作业完成／故障、断链／修复及切图同根恢复、同ID只生效一次。到达IO不确定亦隐藏writer并由重开确认；不是断电保证。[实际探针](evidence/m0-t09-fulfilment/exchange.json)与[独立指纹／算术](evidence/m0-t09-fulfilment/provenance-checks.txt)对应本源码。
 
 Exchange内联3808B／Boot472B／World33320B／Engine2091224B／空间Store2704637B按原域归属，不重复加父子容量。M4／32GiB七分支短测RSS20316160B；16GB联合峰值及真实吞吐仍未测。P-CAP本轮只签自愿满槽背压及既有责任／收容保留，非自愿收件箱／满箱停钟／预留退出仍未实现；P-XMAP仍缺车辆、真实潮流水力、具名金融权益与全行业／环境／日历联合，不能将本轮标成完整T09或M0通过。下一主线补P-CAP及持久覆盖增长。
+
+## 15. v0.5.16：完整检查点与持久回执轮转
+
+[检查点契约](m0-checkpoint-and-retry.md)接续T09持久增长缺口：完整World／allocator／runtime／容量状态专用恢复，512条热窗口轮转，磁盘哈希链保留成功和失败原回执，独立发布generation避免空检查点覆盖根。advisor的一轮只读核查发现轮转阈值处热重试可能被当作新操作，已修为先识别原热记录再轮转并增加边界测试。探针操作ID改从持久sequence派生，不能依赖会归零的热日志长度。
+
+本阶段测试及边界见[原始输出](evidence/m0-t09-checkpoint/tests.txt)；不据此签收完整P-CAP、30—60分钟组合持续运行或16GB。下一阶段继续事实收件、应急容量与退出、分页查询。

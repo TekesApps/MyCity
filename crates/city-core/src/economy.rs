@@ -53,7 +53,7 @@ pub enum Command {
     BeginExit,
     Close,
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Error {
     Input,
     Unsupported,
@@ -66,7 +66,7 @@ pub enum Error {
     Stock,
     Protection,
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Phase {
     Open,
     RawArrival,
@@ -80,7 +80,7 @@ pub enum Phase {
     Closing,
     Closed,
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Reason {
     None,
     Accepted,
@@ -90,7 +90,7 @@ pub enum Reason {
     Suspended,
     AlreadyCanceled,
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct DayRecord {
     pub accepted: bool,
     pub reason: Reason,
@@ -129,7 +129,7 @@ impl Default for DayRecord {
         }
     }
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Fragment {
     pub lot_id: u32,
     pub origin_quantity: Quantity,
@@ -138,19 +138,19 @@ pub struct Fragment {
     pub quantity: Quantity,
     pub basis: Money,
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Sale {
     pub buyer: u32,
     pub fragment: Fragment,
     pub price: Money,
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum ClaimKind {
     Existing,
     Refund,
     ProfitTax,
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Claim {
     pub source: u64,
     pub kind: ClaimKind,
@@ -168,16 +168,17 @@ impl Claim {
             .expect("claim invariant")
     }
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Prepayment {
     pub ordered: Quantity,
     pub dispatched: Quantity,
     pub paid: Money,
     pub canceled: bool,
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(bound(deserialize = ""))]
 pub struct Economy {
-    pub profile: &'static str,
+    pub profile: crate::FrozenLabel,
     pub accounts: [u32; 4],
     pub supplier_stock: u32,
     pub raw_stock: u32,
@@ -347,7 +348,7 @@ impl Economy {
             });
         }
         Ok(Self {
-            profile: "pe0-30d-v1",
+            profile: crate::FrozenLabel("pe0-30d-v1"),
             accounts: o.accounts,
             supplier_stock: o.supplier_stock,
             raw_stock: o.raw_stock,

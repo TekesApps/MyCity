@@ -94,7 +94,7 @@ pub enum Command {
     SetLink { edge: u32, open: bool },
     Cancel { quote: u32 },
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Status {
     Pending,
     Transit,
@@ -102,7 +102,7 @@ pub enum Status {
     Canceled,
     Expired,
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Quote {
     pub spec: QuoteSpec,
     pub status: Status,
@@ -113,7 +113,7 @@ pub struct Quote {
     pub loss_cost: Money,
     pub source_fragment: Option<Fragment>,
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Shipment {
     pub quote_index: usize,
     pub fragment: Fragment,
@@ -126,9 +126,10 @@ pub struct Shipment {
     pub remaining: u64,
     pub tokens: [Option<u64>; PATH],
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(bound(deserialize = ""))]
 pub struct Exchange {
-    pub profile: &'static str,
+    pub profile: crate::FrozenLabel,
     pub home_city: u32,
     pub maps: [Placement; 3],
     pub accounts: [AccountHome; 4],
@@ -148,7 +149,7 @@ pub struct Exchange {
     pub initial_basis: Money,
     pub initial_raw: Quantity,
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Error {
     Input,
     State,
@@ -353,7 +354,7 @@ impl Exchange {
             source_fragment: None,
         });
         let result = Self {
-            profile: "regional-fulfilment-v1",
+            profile: crate::FrozenLabel("regional-fulfilment-v1"),
             home_city: o.home_city,
             maps,
             accounts,

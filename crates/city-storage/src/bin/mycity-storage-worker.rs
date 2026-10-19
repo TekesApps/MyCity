@@ -61,6 +61,18 @@ fn run() -> Result<(), String> {
         return Ok(());
     }
     let mut store = Store::open(dir, RULES).map_err(err)?;
+    if args[1] == "checkpoint" {
+        let crash = args.get(3).map(String::as_str).unwrap_or("none");
+        store
+            .checkpoint_with_observer(|p| {
+                if format!("{p:?}") == crash {
+                    std::process::exit(97);
+                }
+                Ok(())
+            })
+            .map_err(err)?;
+        return Ok(());
+    }
     if args[1] == "inspect" {
         let engine = store.engine().map_err(err)?;
         println!(

@@ -71,9 +71,11 @@ impl Domain for InventoryDomain {
     const ID: u16 = 2;
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(bound = "", deny_unknown_fields)]
 pub struct Handle<D: Domain> {
     raw: RawHandle,
+    #[serde(skip)]
     marker: PhantomData<D>,
 }
 impl<D: Domain> Handle<D> {
@@ -93,19 +95,25 @@ pub enum ArenaError {
     Allocation,
 }
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 struct Slot<T: Copy> {
     generation: u32,
     value: Option<T>,
 }
 
 /// Owns only fixed-size records: T must not hide owned heap storage or borrowed world state.
+#[derive(Serialize, Deserialize)]
+#[serde(
+    bound(serialize = "T: Serialize", deserialize = "T: Deserialize<'de>"),
+    deny_unknown_fields
+)]
 pub struct Arena<D: Domain, T: Copy> {
     scope: Scope,
     slots: Vec<Slot<T>>,
     free: Vec<u32>,
     max: u32,
     live: usize,
+    #[serde(skip)]
     marker: PhantomData<D>,
 }
 
@@ -137,6 +145,43 @@ impl<D: Domain, T: Copy> Arena<D, T> {
             return Err(ArenaError::Budget);
         }
         Ok(table)
+    }
+    pub(crate) fn restore_capacity(
+        &mut self,
+        scope: Scope,
+        max: u32,
+        budget: usize,
+    ) -> Result<(), ArenaError> {
+        if self.scope != scope
+            || self.max != max
+            || self.slots.len() > max as usize
+            || self.free.len() > max as usize
+            || self.live != self.slots.iter().filter(|s| s.value.is_some()).count()
+            || self.slots.iter().any(|s| s.generation == 0)
+        {
+            return Err(ArenaError::InvalidScope);
+        }
+        for (i, index) in self.free.iter().enumerate() {
+            if self.free[..i].contains(index)
+                || self
+                    .slots
+                    .get(*index as usize)
+                    .is_none_or(|s| s.value.is_some())
+            {
+                return Err(ArenaError::StaleHandle);
+            }
+        }
+        for (i, s) in self.slots.iter().enumerate() {
+            if s.value.is_none() && s.generation != u32::MAX && !self.free.contains(&(i as u32)) {
+                return Err(ArenaError::StaleHandle);
+            }
+        }
+        let mut restored = Self::new(scope, max, budget)?;
+        restored.slots.extend_from_slice(&self.slots);
+        restored.free.extend_from_slice(&self.free);
+        restored.live = self.live;
+        *self = restored;
+        Ok(())
     }
     pub fn owned_bytes(&self) -> usize {
         size_of::<Self>()
@@ -300,5 +345,45 @@ mod tests {
         a.remove(end).unwrap();
         assert_eq!(a.insert(2), Err(ArenaError::Full));
         assert!(a.get(h).is_err());
+    }
+}
+
+#[cfg(test)]
+mod checkpoint_tests {
+    use super::*;
+    #[test]
+    fn checkpoint_preserves_free_stack_generation_and_retired_slots() {
+        let scope = Scope::new(1, 1).unwrap();
+        let mut a = Arena::<AccountDomain, u64>::new(scope, 3, 4096).unwrap();
+        let x = a.insert(1).unwrap();
+        let y = a.insert(2).unwrap();
+        let z = a.insert(3).unwrap();
+        a.remove(y).unwrap();
+        a.remove(x).unwrap();
+        let bytes = serde_json::to_vec(&a).unwrap();
+        let mut restored: Arena<AccountDomain, u64> = serde_json::from_slice(&bytes).unwrap();
+        restored.restore_capacity(scope, 3, 4096).unwrap();
+        assert_eq!(
+            a.insert(4).unwrap().raw(),
+            restored.insert(4).unwrap().raw()
+        );
+        assert_eq!(
+            a.insert(5).unwrap().raw(),
+            restored.insert(5).unwrap().raw()
+        );
+        assert!(restored.get(x).is_err());
+        assert_eq!(*restored.get(z).unwrap(), 3);
+        a.slots[z.raw.index as usize].generation = u32::MAX;
+        let h = a
+            .resolve(RawHandle {
+                generation: u32::MAX,
+                ..z.raw()
+            })
+            .unwrap();
+        a.remove(h).unwrap();
+        let bytes = serde_json::to_vec(&a).unwrap();
+        let mut restored: Arena<AccountDomain, u64> = serde_json::from_slice(&bytes).unwrap();
+        restored.restore_capacity(scope, 3, 4096).unwrap();
+        assert_eq!(restored.insert(9), Err(ArenaError::Full));
     }
 }

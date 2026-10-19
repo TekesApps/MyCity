@@ -112,7 +112,7 @@ pub struct Envelope {
     pub actions: Vec<Action>,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum TxError {
     WrongScope,
@@ -137,16 +137,17 @@ pub enum TxError {
     Exchange(crate::exchange::Error),
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(bound(deserialize = ""))]
 pub struct Receipt {
     pub operation_id: u64,
     pub revision: u64,
-    pub durability: &'static str,
+    pub durability: crate::FrozenLabel,
     pub migrated: [Option<u32>; MAX_ACTIONS],
     pub created_tokens: [Option<CapacityToken>; MAX_ACTIONS],
 }
 
-#[derive(Clone, Copy, Debug, Serialize)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 pub struct JournalRecord {
     pub actor: u32,
     pub operation_id: u64,
@@ -177,7 +178,7 @@ impl Resource {
         })
     }
 }
-#[derive(Clone, Copy, Debug, Serialize)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 pub struct Lease {
     pub token: u64,
     pub actor: u32,
@@ -186,6 +187,8 @@ pub struct Lease {
     pub occupied: bool,
 }
 
+#[derive(Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct Engine {
     pub(crate) world: World,
     resources: Vec<Resource>,
@@ -260,6 +263,169 @@ impl Engine {
             return Err(TxError::WorkingLimit);
         }
         Ok(engine)
+    }
+    /// Complete authoritative state, excluding the hot retry window (retained by Store's immutable archive).
+    pub fn export_checkpoint(&self) -> Result<Vec<u8>, String> {
+        let mut value = serde_json::to_value(self).map_err(|e| e.to_string())?;
+        value["journal"] = serde_json::json!([]);
+        serde_json::to_vec(&value).map_err(|e| e.to_string())
+    }
+    /// Only a hash-verified, rules-bound storage dependency may enter this boundary.
+    pub fn restore_checkpoint(bytes: &[u8]) -> Result<Self, String> {
+        if bytes.len() > 512 * 1024 {
+            return Err("checkpoint_byte_limit".into());
+        }
+        let mut candidate: Self = serde_json::from_slice(bytes).map_err(|e| e.to_string())?;
+        if !candidate.journal.is_empty()
+            || candidate.resources.len() > MAX_RESOURCES
+            || candidate.leases.len() != MAX_LEASES
+            || candidate.next_token == 0
+        {
+            return Err("checkpoint_collection_limits".into());
+        }
+        candidate.world.restore_capacity()?;
+        for (i, r) in candidate.resources.iter().enumerate() {
+            if r.id == 0 || candidate.resources[..i].iter().any(|p| p.id == r.id) {
+                return Err("checkpoint_resource_identity".into());
+            }
+            let mut reserved = 0u32;
+            let mut occupied = 0u32;
+            for l in candidate
+                .leases
+                .iter()
+                .flatten()
+                .filter(|l| l.resource == r.id)
+            {
+                let sum = if l.occupied {
+                    &mut occupied
+                } else {
+                    &mut reserved
+                };
+                *sum = sum
+                    .checked_add(l.units)
+                    .ok_or("checkpoint_capacity_overflow")?;
+            }
+            if reserved != r.reserved
+                || occupied != r.occupied
+                || reserved
+                    .checked_add(occupied)
+                    .ok_or("checkpoint_capacity_overflow")?
+                    > r.capacity
+            {
+                return Err("checkpoint_capacity_mismatch".into());
+            }
+        }
+        for (i, l) in candidate
+            .leases
+            .iter()
+            .enumerate()
+            .filter_map(|(i, l)| l.as_ref().map(|l| (i, l)))
+        {
+            if l.token == 0
+                || l.token >= candidate.next_token
+                || l.units == 0
+                || !candidate.resources.iter().any(|r| r.id == l.resource)
+                || candidate.leases[..i]
+                    .iter()
+                    .flatten()
+                    .any(|old| old.token == l.token)
+            {
+                return Err("checkpoint_lease_identity".into());
+            }
+        }
+        if let Some(r) = candidate.world.region {
+            if r.transits.iter().flatten().any(|t| {
+                t.route_indices
+                    .iter()
+                    .flatten()
+                    .any(|i| *i >= r.routes.len() || r.routes[*i].is_none())
+            }) {
+                return Err("checkpoint_route_index".into());
+            }
+        }
+        if let Some(e) = candidate.world.exchange {
+            if e.shipments
+                .iter()
+                .flatten()
+                .any(|s| s.quote_index >= e.quotes.len())
+            {
+                return Err("checkpoint_quote_index".into());
+            }
+        }
+        candidate
+            .validate_checkpoint_runtime()
+            .map_err(|e| format!("checkpoint_invariant:{e:?}"))?;
+        candidate.journal = Vec::with_capacity(MAX_RECEIPTS);
+        if candidate.owned_capacity_bytes() > ENGINE_BYTE_BUDGET {
+            return Err("checkpoint_engine_budget".into());
+        }
+        Ok(candidate)
+    }
+    fn validate_checkpoint_runtime(&self) -> Result<(), TxError> {
+        let economy = self.world.economy;
+        let boot = self.world.boot;
+        let exchange = self.world.exchange;
+        let region = self.world.region;
+        let mut accounts = Vec::with_capacity(MAX_ACTIONS * 2);
+        let mut stocks = Vec::with_capacity(MAX_ACTIONS * 2);
+        let mut resources = self.resources.clone();
+        let mut leases = self.leases.clone();
+        let mut next_token = self.next_token;
+        if let Some(e) = &economy {
+            e.validate(&mut EconomicLedger {
+                world: &self.world,
+                accounts: &mut accounts,
+                stocks: &mut stocks,
+            })?;
+            for (_, a) in &accounts {
+                if a.protected < e.required_protection(a.id) {
+                    return Err(TxError::Protection);
+                }
+            }
+        }
+        if let Some(b) = boot {
+            let mut ledger = BootLedger {
+                base: EconomicLedger {
+                    world: &self.world,
+                    accounts: &mut accounts,
+                    stocks: &mut stocks,
+                },
+                resources: &mut resources,
+                leases: &mut leases,
+                next_token: &mut next_token,
+            };
+            let mut cash = Money::ZERO;
+            for (id, _) in &self.world.account_ids {
+                cash = cash
+                    .checked_add(crate::boot::Ledger::cash(&mut ledger, *id)?)
+                    .map_err(|_| TxError::Overflow)?;
+            }
+            b.validate(&mut ledger, cash)?;
+        }
+        if let Some(e) = exchange {
+            e.validate(
+                region.as_ref().ok_or(TxError::InvalidOperation)?,
+                boot.as_ref().ok_or(TxError::InvalidOperation)?,
+                &mut BootLedger {
+                    base: EconomicLedger {
+                        world: &self.world,
+                        accounts: &mut accounts,
+                        stocks: &mut stocks,
+                    },
+                    resources: &mut resources,
+                    leases: &mut leases,
+                    next_token: &mut next_token,
+                },
+            )?;
+        }
+        Ok(())
+    }
+    /// Storage may retire this window only after the checkpoint and exact receipt archive are published.
+    pub fn retire_checkpointed_journal(&mut self) {
+        self.journal.clear();
+    }
+    pub fn leases(&self) -> &[Option<Lease>] {
+        &self.leases
     }
     pub fn world(&self) -> &World {
         &self.world
@@ -909,7 +1075,7 @@ impl Engine {
             receipt: Receipt {
                 operation_id: env.operation_id,
                 revision: next_revision,
-                durability: "volatile_only",
+                durability: crate::FrozenLabel("volatile_only"),
                 migrated,
                 created_tokens,
             },

@@ -50,7 +50,7 @@ pub struct Opening {
     pub routes: Vec<Route>,
     pub obligations: Vec<Obligation>,
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Snapshot {
     pub city: u32,
     pub version: u64,
@@ -58,7 +58,7 @@ pub struct Snapshot {
     pub population: u32,
     pub applied_sequence: u64,
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Transit {
     pub id: u64,
     pub from: u32,
@@ -71,7 +71,7 @@ pub struct Transit {
     pub lease_tokens: [Option<u64>; MAX_CITIES],
     pub pause_remaining: Option<u64>,
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Region {
     pub interaction_time: u64,
     pub active_city: u32,
@@ -83,7 +83,7 @@ pub struct Region {
     pub obligations: [Option<Obligation>; MAX_OBLIGATIONS],
     next_transit: u64,
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Error {
     Input,
     City,
@@ -93,7 +93,7 @@ pub enum Error {
     Limit,
     Overflow,
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Candidate {
     pub city: u32,
     pub distance_m: u64,
