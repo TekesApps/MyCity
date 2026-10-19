@@ -2,6 +2,8 @@
 
 设计修订：v0.4.37，2026-10-19。落实[City清单CD-01](city-design-closure-checklist.md)，对应GAP-05。仅游戏候选规则，无实现或经济均衡证据；[原家庭](citizen-households-and-living.md)、[行业](industries-employment-and-effects.md)、[实物经济](physical-economy-runtime-contract.md)、[工资税](fiscal-recurring-budget-contract.md)仍为权利／交付／账务权威。
 
+v0.4.40 [ME40](market-entities-and-equity.md)允许个人直接出资与分红。个人自有账户不是家庭钱包副本，个人收益仅经明确共同收支／真实转账进入F现金；不额外放大FB37的I30。搬家／家庭拆并不重分股权，住所从原成员／F／H关系查询。核算按登记公司完整O范围封闭，原每O行为锚点仍是本地经营意图，不因汇总取消岗位／亏损或旧债。
+
 ## 1. 有限范围与因果顺序
 
 本策略FB37可在START36后继配置选择，不热改START35／36的历史数字／合同。商品、工资报价、现行租约沿冻结条款；首版反馈不要求动态价格、贷款或完整地产／破产机制。家庭需求、企业预测、意图、实际交易、应计、现金分别保留，任何预测不能直接写收入。

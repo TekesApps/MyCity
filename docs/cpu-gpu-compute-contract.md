@@ -1,5 +1,7 @@
 # CPU／GPU计算分工与提交契约 CG39
 
+v0.4.40 [ME40](market-entities-and-equity.md)另从模拟域其他用途划出3.375MiB，现余310.65MiB；本文第6节314.025为CG39发布时基线。计算16MiB／剩余工作188.8MiB与区域31项不变，股份／财务状态留CPU。
+
 本篇定义首版的计算边界，关联[运行参数RUN36](minimum-operating-parameters.md)、[收敛原则](model-granularity-and-convergence.md)、[交通重算](traffic-state-and-recalculation.md)及[性能预算](performance-budget.md)。这是设计约束，没有Rust工程、着色器或实测加速证据。
 
 CPU先提供可验证的模拟基线；GPU绘图，并在通过正确性及整机负载门后承担有限数值计算。在macOS上通过wgpu的Metal后端提交compute，不另写一套原生Metal城市核心。具体wgpu版本、适配器能力、限制和shader版本在实现时冻结；Metal支持的功能不等于wgpu全部暴露。
