@@ -1,5 +1,7 @@
 # M0-T08：P-BOOT有限启动互锁
 
+v0.5.15更新：只有显式[T09联合profile](m0-regional-fulfilment.md)允许Boot与Region同装配，改由交互钟唯一推进并核对真实导出边界；下面v0.5.14独立实验的互斥描述保留当时语境。没有直接放开所有模块混装，Economy独立日程仍未联合。
+
 v0.5.14，2026-10-19。补[M0计划](m0-implementation-plan.md)P-BOOT表要求的完整**有限启动输入实验**：缺源拒绝、真实有限启动源及费用、共享容量、失败收尾、持久恢复。与已完成的[P-E0／P-E1](m0-economy-runtime.md)一起登记T08有限实验。当前仍只有Rust／headless，没有UI。
 
 ## 1. profile与验收范围

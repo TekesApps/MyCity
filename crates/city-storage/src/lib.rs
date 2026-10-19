@@ -249,6 +249,7 @@ impl Store {
         } else {
             (None, None)
         };
+        spatial::validate_exchange_binding(&engine, spatial.as_ref())?;
         observer(CreatePoint::Validated)?;
         fs::create_dir(dir)?;
         let lock = lock(dir)?;
@@ -380,6 +381,7 @@ impl Store {
             .as_ref()
             .map(|r| r.load(dir, &identity(&engine)))
             .transpose()?;
+        spatial::validate_exchange_binding(&engine, spatial.as_ref())?;
         let wal_path = dir.join("wal.bin");
         if fs::symlink_metadata(&wal_path)?.file_type().is_symlink() {
             return Err(Error::Invalid("symlink_wal"));

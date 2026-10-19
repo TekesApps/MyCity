@@ -108,6 +108,8 @@ pub struct Boot {
     pub fees: Money,
     pub failed_expense: Money,
     pub fuel_used: Quantity,
+    pub exports: [Quantity; 2],
+    pub exported_basis: Money,
 }
 fn q(v: i64) -> Quantity {
     Quantity::new(v).expect("profile quantity")
@@ -134,13 +136,13 @@ pub(crate) trait Ledger {
     fn owns(&mut self, resources: [u32; 2], tokens: [u64; 2]) -> bool;
 }
 impl Boot {
-    pub(crate) fn new(o: Opening, w: &World) -> Result<Self, String> {
+    pub(crate) fn new(o: Opening, w: &World, joint: bool) -> Result<Self, String> {
         if o.schema != "mycity-m0-boot-v1"
             || o.profile != PROFILE
-            || w.region.is_some()
+            || (w.region.is_some() && !joint)
             || w.economy.is_some()
             || w.account_ids.len() != 4
-            || w.stock_ids.len() != 6
+            || w.stock_ids.len() != if joint { 14 } else { 6 }
             || o.operator == o.contractor
             || o.resources[0] == 0
             || o.resources[1] == 0
@@ -217,7 +219,28 @@ impl Boot {
             fees: Money::ZERO,
             failed_expense: Money::ZERO,
             fuel_used: Quantity::ZERO,
+            exports: [Quantity::ZERO; 2],
+            exported_basis: Money::ZERO,
         })
+    }
+    pub(crate) fn export(
+        &mut self,
+        index: usize,
+        quantity: Quantity,
+        l: &mut impl Ledger,
+    ) -> Result<Money, TxError> {
+        if index > 1 {
+            return Err(error(Error::Input));
+        }
+        let cost = take(
+            l,
+            self.stocks[if index == 0 { 1 } else { 2 }],
+            quantity,
+            false,
+        )?;
+        self.exports[index] = plus(self.exports[index], quantity)?;
+        self.exported_basis = add(self.exported_basis, cost)?;
+        Ok(cost)
     }
     pub fn governs(&self, id: u32) -> bool {
         self.stocks.contains(&id)
@@ -410,7 +433,7 @@ impl Boot {
             return Err(error(Error::Invariant));
         }
         let mut quantities = [Quantity::ZERO; 6];
-        let mut basis = self.failed_expense;
+        let mut basis = add(self.failed_expense, self.exported_basis)?;
         for (n, id) in self.stocks.iter().enumerate() {
             let s = l.stock(*id)?;
             if s.quantity > self.limits[n]
@@ -436,10 +459,12 @@ impl Boot {
         // Fuel Q has 1000 Wh/Q; all utility quantities are milli-native-unit.
         let energy = i128::from(quantities[0].value()) * 1000
             + i128::from(quantities[1].value())
+            + i128::from(self.exports[0].value())
             + i128::from(quantities[5].value());
         let initial_energy =
             i128::from(self.initial[0].value()) * 1000 + i128::from(self.initial[1].value());
-        let water = i128::from(quantities[2].value())
+        let water = i128::from(self.exports[1].value())
+            + i128::from(quantities[2].value())
             + i128::from(quantities[3].value())
             + i128::from(quantities[4].value());
         if energy != initial_energy

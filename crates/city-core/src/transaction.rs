@@ -43,6 +43,9 @@ impl Caller {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum Action {
+    Exchange {
+        command: crate::exchange::Command,
+    },
     Boot {
         command: crate::boot::Command,
     },
@@ -131,6 +134,7 @@ pub enum TxError {
     Region(crate::region::Error),
     Economy(crate::economy::Error),
     Boot(crate::boot::Error),
+    Exchange(crate::exchange::Error),
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
@@ -191,6 +195,7 @@ pub struct Engine {
 }
 
 struct Prepared {
+    exchange: Option<crate::exchange::Exchange>,
     boot: Option<crate::boot::Boot>,
     economy: Option<crate::economy::Economy>,
     region: Option<crate::region::Region>,
@@ -211,6 +216,15 @@ impl Engine {
             return Err(TxError::Resource);
         }
         resources.sort_by_key(|r| r.id);
+        if let Some(e) = world.exchange {
+            if e.edges.iter().any(|e| {
+                !resources
+                    .iter()
+                    .any(|r| r.id == e.resource && r.capacity > 0)
+            }) {
+                return Err(TxError::Resource);
+            }
+        }
         if let Some(b) = world.boot {
             if b.resources
                 .iter()
@@ -360,11 +374,44 @@ impl Engine {
         let mut region = self.world.region;
         let mut economy = self.world.economy;
         let mut boot = self.world.boot;
+        let mut exchange = self.world.exchange;
         for (action_index, action) in env.actions.iter().enumerate() {
             match *action {
+                Action::Exchange { command } => {
+                    if !matches!(caller, Caller::System) {
+                        return Err(TxError::Unauthorized);
+                    }
+                    exchange
+                        .as_mut()
+                        .ok_or(TxError::InvalidOperation)?
+                        .command(
+                            command,
+                            region.as_mut().ok_or(TxError::InvalidOperation)?,
+                            boot.as_mut().ok_or(TxError::InvalidOperation)?,
+                            &mut BootLedger {
+                                base: EconomicLedger {
+                                    world: &self.world,
+                                    accounts: &mut accounts,
+                                    stocks: &mut stocks,
+                                },
+                                resources: &mut resources,
+                                leases: &mut leases,
+                                next_token: &mut next_token,
+                            },
+                        )?;
+                }
                 Action::Boot { command } => {
                     if !matches!(caller, Caller::System) {
                         return Err(TxError::Unauthorized);
+                    }
+                    if let Some(e) = exchange {
+                        let r = region.as_ref().ok_or(TxError::InvalidOperation)?;
+                        if matches!(command, crate::boot::Command::Advance { .. })
+                            || matches!(command, crate::boot::Command::Start { .. })
+                                && r.active_city != e.home_city
+                        {
+                            return Err(TxError::Exchange(crate::exchange::Error::Clock));
+                        }
                     }
                     let b = boot.as_mut().ok_or(TxError::InvalidOperation)?;
                     b.command(
@@ -428,7 +475,29 @@ impl Engine {
                     let r = region.as_mut().ok_or(TxError::InvalidOperation)?;
                     let mut remaining = seconds;
                     while remaining > 0 {
-                        let step = r.next_step(remaining);
+                        let mut step = r.next_step(remaining);
+                        if let Some(e) = exchange {
+                            if let Some(t) = e.next_boundary(r.interaction_time) {
+                                step = step
+                                    .min(u32::try_from(t - r.interaction_time).unwrap_or(u32::MAX));
+                            }
+                            if let Some(b) = boot {
+                                for j in b
+                                    .jobs
+                                    .iter()
+                                    .filter(|j| j.phase == crate::boot::Phase::Running)
+                                {
+                                    step = step.min(
+                                        u32::try_from(j.due - r.interaction_time)
+                                            .map_err(|_| TxError::Overflow)?,
+                                    );
+                                }
+                            }
+                            step = step.min(60);
+                        }
+                        if step == 0 {
+                            return Err(TxError::Exchange(crate::exchange::Error::Clock));
+                        }
                         let end = r
                             .interaction_time
                             .checked_add(u64::from(step))
@@ -438,6 +507,28 @@ impl Engine {
                                 r.obligations[i]
                                     .is_some_and(|o| o.next_due.is_some_and(|t| t <= end))
                             });
+                        if exchange.is_some() {
+                            for t in r
+                                .transits
+                                .iter()
+                                .flatten()
+                                .filter(|t| t.pause_remaining.is_none() && t.arrives_at <= end)
+                            {
+                                crate::exchange::Ledger::release_path(
+                                    &mut BootLedger {
+                                        base: EconomicLedger {
+                                            world: &self.world,
+                                            accounts: &mut accounts,
+                                            stocks: &mut stocks,
+                                        },
+                                        resources: &mut resources,
+                                        leases: &mut leases,
+                                        next_token: &mut next_token,
+                                    },
+                                    t.lease_tokens,
+                                )?;
+                            }
+                        }
                         r.advance(step).map_err(TxError::Region)?;
                         for (i, o) in r.obligations.iter_mut().enumerate() {
                             if due[i] {
@@ -447,6 +538,23 @@ impl Engine {
                                     o.as_mut().expect("due obligation"),
                                 )?;
                             }
+                        }
+                        if let Some(e) = exchange.as_mut() {
+                            let mut ledger = BootLedger {
+                                base: EconomicLedger {
+                                    world: &self.world,
+                                    accounts: &mut accounts,
+                                    stocks: &mut stocks,
+                                },
+                                resources: &mut resources,
+                                leases: &mut leases,
+                                next_token: &mut next_token,
+                            };
+                            boot.as_mut().ok_or(TxError::InvalidOperation)?.command(
+                                crate::boot::Command::Advance { seconds: step },
+                                &mut ledger,
+                            )?;
+                            e.arrive(r, &mut ledger)?;
                         }
                         remaining -= step;
                     }
@@ -467,6 +575,33 @@ impl Engine {
                             .migrate(from, to, requested, tolerance)
                             .map_err(TxError::Region)?,
                     );
+                    if let Some(e) = exchange {
+                        let r = region.as_mut().ok_or(TxError::InvalidOperation)?;
+                        let i = r
+                            .transits
+                            .iter()
+                            .enumerate()
+                            .filter_map(|(i, t)| t.map(|t| (i, t.id)))
+                            .max_by_key(|(_, id)| *id)
+                            .ok_or(TxError::InvalidOperation)?
+                            .0;
+                        let t = r.transits[i].ok_or(TxError::InvalidOperation)?;
+                        let requests = e.migration_requests(r, t.route_indices, t.actual)?;
+                        let tokens = crate::exchange::Ledger::claim_path(
+                            &mut BootLedger {
+                                base: EconomicLedger {
+                                    world: &self.world,
+                                    accounts: &mut accounts,
+                                    stocks: &mut stocks,
+                                },
+                                resources: &mut resources,
+                                leases: &mut leases,
+                                next_token: &mut next_token,
+                            },
+                            &requests,
+                        )?;
+                        r.transits[i].as_mut().expect("transit").lease_tokens = tokens;
+                    }
                 }
                 Action::Transfer { from, to, amount }
                 | Action::PayProtected { from, to, amount } => {
@@ -535,6 +670,9 @@ impl Engine {
                     }
                 }
                 Action::MoveStock { from, to, quantity } => {
+                    if exchange.is_some() {
+                        return Err(TxError::Unauthorized);
+                    }
                     if let Some(b) = boot {
                         for raw in [from, to] {
                             let h = self
@@ -742,7 +880,24 @@ impl Engine {
             }
             b.validate(&mut ledger, cash)?;
         }
+        if let Some(e) = exchange {
+            e.validate(
+                region.as_ref().ok_or(TxError::InvalidOperation)?,
+                boot.as_ref().ok_or(TxError::InvalidOperation)?,
+                &mut BootLedger {
+                    base: EconomicLedger {
+                        world: &self.world,
+                        accounts: &mut accounts,
+                        stocks: &mut stocks,
+                    },
+                    resources: &mut resources,
+                    leases: &mut leases,
+                    next_token: &mut next_token,
+                },
+            )?;
+        }
         Ok(Prepared {
+            exchange,
             boot,
             economy,
             region,
@@ -775,6 +930,7 @@ impl Engine {
                 .replace(h, s)
                 .expect("validated commit handle");
         }
+        self.world.exchange = prepared.exchange;
         self.world.boot = prepared.boot;
         self.world.economy = prepared.economy;
         self.world.region = prepared.region;
@@ -1058,6 +1214,118 @@ impl crate::boot::Ledger for BootLedger<'_> {
                 l.token == token && l.resource == id && l.occupied && l.units == 1 && l.actor == 0
             })
         })
+    }
+}
+
+impl crate::exchange::Ledger for BootLedger<'_> {
+    fn protect(&mut self, id: u32, amount: Money) -> Result<(), TxError> {
+        crate::economy::Ledger::protect(&mut self.base, id, amount)
+    }
+    fn pay_protected(&mut self, from: u32, to: u32, amount: Money) -> Result<(), TxError> {
+        crate::economy::Ledger::pay(&mut self.base, from, to, amount, true)
+    }
+    fn protection(&mut self, id: u32) -> Result<Money, TxError> {
+        let raw = self
+            .base
+            .world
+            .account_ref(id)
+            .map_err(|_| TxError::InvalidHandle)?;
+        let i = stage_account(self.base.world, self.base.accounts, raw)?;
+        Ok(self.base.accounts[i].1.protected)
+    }
+    fn claim_path(
+        &mut self,
+        requests: &[(u32, u32)],
+    ) -> Result<[Option<u64>; crate::exchange::PATH], TxError> {
+        if requests.len() > crate::exchange::PATH {
+            return Err(TxError::Lease);
+        }
+        let mut sorted = requests.to_vec();
+        sorted.sort();
+        if sorted.windows(2).any(|p| p[0].0 == p[1].0) {
+            return Err(TxError::Resource);
+        }
+        let mut tokens = [None; crate::exchange::PATH];
+        for (i, (id, units)) in sorted.into_iter().enumerate() {
+            if units == 0 {
+                return Err(TxError::Capacity);
+            }
+            let r = self
+                .resources
+                .iter_mut()
+                .find(|r| r.id == id)
+                .ok_or(TxError::Resource)?;
+            if r.reserved
+                .checked_add(r.occupied)
+                .and_then(|n| n.checked_add(units))
+                .ok_or(TxError::Overflow)?
+                > r.capacity
+            {
+                return Err(TxError::Capacity);
+            }
+            let slot = self
+                .leases
+                .iter_mut()
+                .find(|l| l.is_none())
+                .ok_or(TxError::Lease)?;
+            let token = *self.next_token;
+            *self.next_token = self.next_token.checked_add(1).ok_or(TxError::Overflow)?;
+            *slot = Some(Lease {
+                token,
+                actor: 0,
+                resource: id,
+                units,
+                occupied: true,
+            });
+            r.occupied += units;
+            tokens[i] = Some(token);
+        }
+        Ok(tokens)
+    }
+    fn release_path(
+        &mut self,
+        tokens: [Option<u64>; crate::exchange::PATH],
+    ) -> Result<(), TxError> {
+        for token in tokens.into_iter().flatten() {
+            let slot = self
+                .leases
+                .iter_mut()
+                .find(|s| s.is_some_and(|l| l.token == token))
+                .ok_or(TxError::Lease)?;
+            let lease = slot.ok_or(TxError::Lease)?;
+            if lease.actor != 0 || !lease.occupied {
+                return Err(TxError::Lease);
+            }
+            let r = self
+                .resources
+                .iter_mut()
+                .find(|r| r.id == lease.resource)
+                .ok_or(TxError::Resource)?;
+            r.occupied = r.occupied.checked_sub(lease.units).ok_or(TxError::Lease)?;
+            *slot = None;
+        }
+        Ok(())
+    }
+    fn owns_path(
+        &self,
+        requests: &[(u32, u32)],
+        tokens: [Option<u64>; crate::exchange::PATH],
+    ) -> bool {
+        let mut sorted = requests.to_vec();
+        sorted.sort();
+        tokens.iter().flatten().count() == sorted.len()
+            && sorted
+                .into_iter()
+                .zip(tokens)
+                .all(|((resource, units), token)| {
+                    self.leases.iter().flatten().any(|l| {
+                        Some(l.token) == token
+                            && l.actor == 0
+                            && l.occupied
+                            && l.resource == resource
+                            && l.units == units
+                    })
+                })
     }
 }
 

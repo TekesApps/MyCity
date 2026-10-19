@@ -68,6 +68,8 @@ pub struct Transit {
     pub shortfall: u32,
     pub arrives_at: u64,
     pub route_indices: [Option<usize>; MAX_CITIES],
+    pub lease_tokens: [Option<u64>; MAX_CITIES],
+    pub pause_remaining: Option<u64>,
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
 pub struct Region {
@@ -184,7 +186,7 @@ impl Region {
     pub fn city(&self, id: u32) -> Result<City, Error> {
         self.cities[self.index(id)?].ok_or(Error::City)
     }
-    fn bump(&mut self) -> Result<(), Error> {
+    pub(crate) fn bump(&mut self) -> Result<(), Error> {
         self.sequence = self.sequence.checked_add(1).ok_or(Error::Overflow)?;
         Ok(())
     }
@@ -351,6 +353,8 @@ impl Region {
             shortfall: requested - actual,
             arrives_at,
             route_indices: path,
+            lease_tokens: [None; MAX_CITIES],
+            pause_remaining: None,
         });
         Ok(actual)
     }
@@ -359,7 +363,13 @@ impl Region {
             .iter()
             .flatten()
             .filter_map(|o| o.next_due)
-            .chain(self.transits.iter().flatten().map(|t| t.arrives_at))
+            .chain(
+                self.transits
+                    .iter()
+                    .flatten()
+                    .filter(|t| t.pause_remaining.is_none())
+                    .map(|t| t.arrives_at),
+            )
             .filter_map(|t| t.checked_sub(self.interaction_time))
             .filter(|dt| *dt > 0 && *dt <= u64::from(remaining))
             .min()
@@ -382,8 +392,8 @@ impl Region {
             .ok_or(Error::Overflow)?;
         self.cities[i] = Some(active);
         for slot in 0..MAX_TRANSITS {
-            if let Some(transit) =
-                self.transits[slot].filter(|t| t.arrives_at <= self.interaction_time)
+            if let Some(transit) = self.transits[slot]
+                .filter(|t| t.pause_remaining.is_none() && t.arrives_at <= self.interaction_time)
             {
                 let i = self.index(transit.to)?;
                 let mut dest = self.cities[i].ok_or(Error::City)?;

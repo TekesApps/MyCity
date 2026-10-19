@@ -1,0 +1,4 @@
+PASS: independent cash, actual stock, energy/water/raw, cost bridge, original lot, age, expiry, utility interruption and capacity oracles.
+PASS: 134 offline Release tests including 121 real regional process exits; full P-XMAP/P-CAP and 16GB gates remain unaccepted.
+PASS: source/lock/input/rules hashes match checkout; source=1b2b1e0e9e7a9622e2d9dc4637ea7fdf9aea185c90b3063514a3ea3b36f19ab1
+World=33320 Engine=2091224 Store=2704637 Exchange=3808 Boot=472

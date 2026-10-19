@@ -78,6 +78,7 @@ pub struct Opening {
     pub region: Option<crate::region::Opening>,
     pub economy: Option<crate::economy::Opening>,
     pub boot: Option<crate::boot::Opening>,
+    pub exchange: Option<crate::exchange::Opening>,
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -112,6 +113,7 @@ pub struct World {
     pub(crate) region: Option<crate::region::Region>,
     pub(crate) economy: Option<crate::economy::Economy>,
     pub(crate) boot: Option<crate::boot::Boot>,
+    pub(crate) exchange: Option<crate::exchange::Exchange>,
 }
 
 #[derive(Debug, PartialEq, Eq, Serialize)]
@@ -145,6 +147,7 @@ pub struct WorldView {
     pub region: Option<crate::region::Region>,
     pub economy: Option<crate::economy::Economy>,
     pub boot: Option<crate::boot::Boot>,
+    pub exchange: Option<crate::exchange::Exchange>,
 }
 
 impl World {
@@ -168,7 +171,7 @@ impl World {
     }
     pub fn view(&self) -> WorldView {
         WorldView {
-            schema: "mycity-m0-state-v5",
+            schema: "mycity-m0-state-v6",
             scope: self.scope,
             seed: self.seed,
             revision: self.revision,
@@ -207,6 +210,7 @@ impl World {
             region: self.region,
             economy: self.economy,
             boot: self.boot,
+            exchange: self.exchange,
         }
     }
     pub fn state_hash(&self) -> String {
@@ -303,6 +307,7 @@ pub fn assemble(bytes: &[u8]) -> Result<World, String> {
         sources: input.sources,
         economy: None,
         boot: None,
+        exchange: None,
         region: input
             .region
             .map(crate::region::Region::new)
@@ -349,7 +354,14 @@ pub fn assemble(bytes: &[u8]) -> Result<World, String> {
         world.economy = Some(crate::economy::Economy::new(economy, &world)?);
     }
     if let Some(boot) = input.boot {
-        world.boot = Some(crate::boot::Boot::new(boot, &world)?);
+        world.boot = Some(crate::boot::Boot::new(
+            boot,
+            &world,
+            input.exchange.is_some(),
+        )?);
+    }
+    if let Some(exchange) = input.exchange {
+        world.exchange = Some(crate::exchange::Exchange::new(exchange, &world)?);
     }
     if world.layout()["owned_capacity_bytes"].as_u64().unwrap() > WORLD_BYTE_BUDGET as u64 {
         return Err("world_byte_limit".into());

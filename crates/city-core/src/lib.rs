@@ -9,6 +9,7 @@ pub mod assembly;
 pub mod boot;
 pub mod calendar;
 pub mod economy;
+pub mod exchange;
 pub mod probes;
 pub mod region;
 pub mod schedule;

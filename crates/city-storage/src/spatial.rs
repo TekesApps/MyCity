@@ -141,3 +141,43 @@ pub(crate) fn write_dependency(
     observer(synced)?;
     Ok(())
 }
+
+/// The regional prototype explicitly reuses one immutable flat terrain template for three frames.
+/// These are dedicated metric terminals, not proof that a walking road supports trucks or pipes.
+pub(crate) fn validate_exchange_binding(
+    engine: &mycity_core::transaction::Engine,
+    assets: Option<&SpatialAssets>,
+) -> Result<(), Error> {
+    let Some(exchange) = engine.world().view().exchange else {
+        return Ok(());
+    };
+    let assets = assets.ok_or(Error::Invalid("exchange_spatial_bundle_required"))?;
+    let terrain = assets.terrain();
+    let manifest = terrain.manifest();
+    let scene = assets.scene().input();
+    if !manifest.synthetic
+        || !matches!(manifest.validity, mycity_map::terrain::Validity::AllValid)
+        || !matches!(manifest.water, mycity_map::terrain::Water::AllDry)
+        || terrain.heights().iter().any(|h| *h != 0)
+        || scene.map.size.side_cm() != 102400
+        || scene.neighbor.size.side_cm() != 102400
+    {
+        return Err(Error::Invalid("exchange_flat_terrain_template"));
+    }
+    for frame in [&scene.map, &scene.neighbor] {
+        if frame.origin.y != 0
+            || frame.metric_frame != "synthetic-local-v1"
+            || frame.vertical_datum != "synthetic-z0"
+            || !exchange
+                .maps
+                .iter()
+                .any(|p| p.city == frame.map && p.origin_x_cm == frame.origin.x)
+        {
+            return Err(Error::Invalid("exchange_spatial_frame_mismatch"));
+        }
+    }
+    if scene.map.map != exchange.home_city {
+        return Err(Error::Invalid("exchange_spatial_home"));
+    }
+    Ok(())
+}
