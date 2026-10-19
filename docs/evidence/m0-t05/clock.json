@@ -1,0 +1,104 @@
+{
+  "build": {
+    "profile": "release",
+    "rustc": "rustc 1.85.1 (4eb161250 2025-03-15)",
+    "target": "aarch64-apple-darwin"
+  },
+  "clock_probe": {
+    "bookmark_recovery": "in_memory_serde_roundtrip_only",
+    "final_boundary": {
+      "at": 3601,
+      "cursor": 20000,
+      "interval_closed": true,
+      "last_complete": 3601,
+      "paused": false,
+      "phase": null,
+      "schema": "mycity-m0-schedule-v1",
+      "scope": {
+        "branch": 1,
+        "world": 1
+      },
+      "sequence": 20,
+      "source_sha256": "ccd035e24e4402d74b0cb4c9c1590c64ed8e13b4b89cbeb957708f828b9be297"
+    },
+    "max_ready_page": 8192,
+    "mid_boundary": {
+      "at": 3600,
+      "cursor": 8192,
+      "interval_closed": true,
+      "last_complete": 0,
+      "paused": false,
+      "phase": "P2",
+      "schema": "mycity-m0-schedule-v1",
+      "scope": {
+        "branch": 1,
+        "world": 1
+      },
+      "sequence": 9,
+      "source_sha256": "ccd035e24e4402d74b0cb4c9c1590c64ed8e13b4b89cbeb957708f828b9be297"
+    },
+    "monthly_anchor31": [
+      {
+        "day": 31,
+        "month": 1,
+        "year": 2001
+      },
+      {
+        "day": 28,
+        "month": 2,
+        "year": 2001
+      },
+      {
+        "day": 31,
+        "month": 3,
+        "year": 2001
+      }
+    ],
+    "payroll_amounts_and_world_atomicity": "not_integrated",
+    "persistent_recovery": "not_run",
+    "processed": 20000,
+    "processed_sha256": "3ab987c2fb55d38554a7f597cfc7808f52ae907ba2b5cabdb2ab2ed3b125c744",
+    "result": "static_due_paging_and_bookmark_probe_passed",
+    "rng_sample": 4082165070452534003,
+    "source_capacity_bytes": 480000
+  },
+  "economic_prototypes": "not_run",
+  "gpu": "not_implemented",
+  "host": {
+    "arch": "aarch64",
+    "chip": "Apple M4",
+    "memory_bytes": "34359738368",
+    "os": "macos",
+    "os_version": "26.6.2"
+  },
+  "input": {
+    "branch": 1,
+    "laboratory_only": true,
+    "schema": "mycity-m0-bootstrap-v1",
+    "seed": 7,
+    "world": 1
+  },
+  "input_sha256": "f56047a1a7fc1a08a25053117467487c61bf98363c07934725e0a7298603e5ba",
+  "lock_sha256": "947be764293056e38d46cf3fa9a50bda395c3dec6f31f617d08b604d782fd1b5",
+  "memory_16gb_gate": "not_run",
+  "report_schema": "mycity-m0-evidence-v1",
+  "result": "static_clock_probes_passed",
+  "rules": {
+    "input_limit_bytes": 65536,
+    "mode": "headless_laboratory",
+    "numeric_strategy": "checked-integer-v1",
+    "schedule": {
+      "calendar_epoch": "2001-01-01",
+      "max_interval_seconds": 3600,
+      "ready_limit": 8192,
+      "rng": "sha256-domain-source-window-v1",
+      "source_limit": 65536
+    },
+    "schema": "mycity-m0-bootstrap-v1"
+  },
+  "rules_sha256": "d1c163eee3fbdc4ccdbbcf9ab55b397a6fd9d75a30312eca9158e0c4a77a395d",
+  "run_id": "89956-1792415157119471000",
+  "source_sha256": "4b5dad8828859c38d535dd63311e84abb026a2bca3b357b7754299aa4da1b3b9",
+  "task": "M0-T05",
+  "ui": "not_implemented_by_scope"
+}

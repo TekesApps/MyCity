@@ -84,3 +84,24 @@ fn transaction_probe_exercises_model_without_claiming_durable_success() {
     );
     assert_eq!(v["memory_16gb_gate"], "not_run");
 }
+
+#[test]
+fn clock_probe_pages_twenty_thousand_sources_and_does_not_claim_disk_recovery() {
+    let input = format!(
+        "{}/../../fixtures/m0-bootstrap.json",
+        env!("CARGO_MANIFEST_DIR")
+    );
+    let out = Command::new(env!("CARGO_BIN_EXE_mycity-headless"))
+        .args(["clock-probe", &input])
+        .output()
+        .unwrap();
+    assert!(
+        out.status.success(),
+        "{}",
+        String::from_utf8_lossy(&out.stderr)
+    );
+    let v: serde_json::Value = serde_json::from_slice(&out.stdout).unwrap();
+    assert_eq!(v["clock_probe"]["processed"], 20000);
+    assert_eq!(v["clock_probe"]["max_ready_page"], 8192);
+    assert_eq!(v["clock_probe"]["persistent_recovery"], "not_run");
+}

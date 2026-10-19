@@ -108,3 +108,66 @@ pub fn transaction_probe(input: &[u8]) -> Result<Value, String> {
 fn err(e: impl std::fmt::Debug) -> String {
     format!("{e:?}")
 }
+
+pub fn schedule_probe(input: &crate::Bootstrap) -> Result<Value, String> {
+    use crate::{
+        arena::Scope,
+        calendar::Date,
+        schedule::{random_u64, Bookmark, Due, Phase, Schedule},
+        units::GameTime,
+    };
+    let scope = Scope::new(input.world, input.branch).map_err(err)?;
+    let at = GameTime::new(3600).map_err(err)?;
+    let target = GameTime::new(3601).map_err(err)?;
+    let sources = || {
+        (1..=20000)
+            .map(|source| Due {
+                at,
+                phase: Phase::P2,
+                source,
+            })
+            .collect::<Vec<_>>()
+    };
+    let mut schedule = Schedule::new(scope, sources()).map_err(err)?;
+    let mut ids = Vec::with_capacity(20000);
+    let mut max_page = 0;
+    loop {
+        let page = schedule
+            .next_page(target)
+            .map_err(err)?
+            .ok_or("unexpected_schedule_completion")?;
+        max_page = max_page.max(page.events.len());
+        ids.extend(page.events.iter().map(|e| e.source));
+        let t = page.ticket;
+        schedule.acknowledge(t).map_err(err)?;
+        if ids.len() == 8192 {
+            break;
+        }
+    }
+    let bytes = serde_json::to_vec(&schedule.bookmark()).map_err(err)?;
+    let bookmark: Bookmark = serde_json::from_slice(&bytes).map_err(err)?;
+    let old = schedule
+        .next_page(target)
+        .map_err(err)?
+        .ok_or("missing_second_page")?
+        .ticket;
+    let mut restored = Schedule::restore(scope, sources(), bookmark.clone()).map_err(err)?;
+    if restored.acknowledge(old).is_ok() {
+        return Err("old_schedule_ticket_accepted".into());
+    }
+    while let Some(p) = restored.next_page(target).map_err(err)? {
+        max_page = max_page.max(p.events.len());
+        ids.extend(p.events.iter().map(|e| e.source));
+        let t = p.ticket;
+        restored.acknowledge(t).map_err(err)?;
+    }
+    if ids != (1..=20000).collect::<Vec<_>>() || max_page != 8192 {
+        return Err("schedule_paging_probe_failed".into());
+    }
+    let jan = Date::new(2001, 1, 31).map_err(str::to_owned)?;
+    let feb = jan.next_monthly(31).map_err(str::to_owned)?;
+    let march = feb.next_monthly(31).map_err(str::to_owned)?;
+    Ok(
+        json!({"result":"static_due_paging_and_bookmark_probe_passed","processed":ids.len(),"max_ready_page":max_page,"processed_sha256":crate::sha256(&serde_json::to_vec(&ids).map_err(err)?),"mid_boundary":bookmark,"final_boundary":restored.bookmark(),"source_capacity_bytes":restored.owned_source_capacity_bytes(),"rng_sample":random_u64(input.seed,1,1,30),"monthly_anchor31":[jan,feb,march],"bookmark_recovery":"in_memory_serde_roundtrip_only","persistent_recovery":"not_run","payroll_amounts_and_world_atomicity":"not_integrated"}),
+    )
+}

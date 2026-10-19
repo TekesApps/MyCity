@@ -18,10 +18,17 @@ fn system(command: &str, args: &[&str]) -> Option<String> {
 fn run() -> Result<(), String> {
     let args: Vec<_> = env::args().collect();
     if args.len() != 3
-        || !["baseline", "layout", "assemble", "transaction-probe"].contains(&args[1].as_str())
+        || ![
+            "baseline",
+            "layout",
+            "assemble",
+            "transaction-probe",
+            "clock-probe",
+        ]
+        .contains(&args[1].as_str())
     {
         return Err(
-            "usage: mycity-headless <baseline|layout|assemble|transaction-probe> <input.json>"
+            "usage: mycity-headless <baseline|layout|assemble|transaction-probe|clock-probe> <input.json>"
                 .into(),
         );
     }
@@ -54,6 +61,9 @@ fn run() -> Result<(), String> {
     }
     if args[1] == "transaction-probe" {
         rules["transaction"] = json!({"max_actions":mycity_core::transaction::MAX_ACTIONS,"max_receipts":mycity_core::transaction::MAX_RECEIPTS,"engine_byte_budget":mycity_core::transaction::ENGINE_BYTE_BUDGET,"cost_policy":"frozen_lot_interval_v1","protected_release":"trusted_host_only"});
+    }
+    if args[1] == "clock-probe" {
+        rules["schedule"] = json!({"source_limit":mycity_core::schedule::SOURCE_LIMIT,"ready_limit":mycity_core::schedule::READY_LIMIT,"max_interval_seconds":mycity_core::schedule::MAX_INTERVAL_SECONDS,"calendar_epoch":"2001-01-01","rng":"sha256-domain-source-window-v1"});
     }
     let now = SystemTime::now()
         .duration_since(UNIX_EPOCH)
@@ -102,6 +112,11 @@ fn run() -> Result<(), String> {
         report["task"] = json!("M0-T04");
         report["result"] = json!("volatile_transaction_probes_passed");
         report["transaction_probe"] = mycity_core::probes::transaction_probe(&bytes)?;
+    }
+    if args[1] == "clock-probe" {
+        report["task"] = json!("M0-T05");
+        report["result"] = json!("static_clock_probes_passed");
+        report["clock_probe"] = mycity_core::probes::schedule_probe(&input)?;
     }
     println!(
         "{}",

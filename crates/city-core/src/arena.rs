@@ -23,6 +23,19 @@ impl Scope {
     }
 }
 
+impl<'de> Deserialize<'de> for Scope {
+    fn deserialize<D: serde::Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        #[derive(Deserialize)]
+        #[serde(deny_unknown_fields)]
+        struct Raw {
+            world: u64,
+            branch: u64,
+        }
+        let raw = Raw::deserialize(d)?;
+        Self::new(raw.world, raw.branch).map_err(|_| serde::de::Error::custom("invalid_scope"))
+    }
+}
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct RawHandle {
