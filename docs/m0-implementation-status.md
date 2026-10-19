@@ -206,3 +206,15 @@ Exchange内联3808B／Boot472B／World33320B／Engine2091224B／空间Store27046
 [检查点契约](m0-checkpoint-and-retry.md)接续T09持久增长缺口：完整World／allocator／runtime／容量状态专用恢复，512条热窗口轮转，磁盘哈希链保留成功和失败原回执，独立发布generation避免空检查点覆盖根。advisor的一轮只读核查发现轮转阈值处热重试可能被当作新操作，已修为先识别原热记录再轮转并增加边界测试。探针操作ID改从持久sequence派生，不能依赖会归零的热日志长度。
 
 本阶段测试及边界见[原始输出](evidence/m0-t09-checkpoint/tests.txt)；不据此签收完整P-CAP、30—60分钟组合持续运行或16GB。下一阶段继续事实收件、应急容量与退出、分页查询。
+
+## 16. v0.5.17：事实收件、应急背压、独立追收与分页
+
+[本阶段契约](m0-fact-inbox-and-emergency-exit.md)实现合同内预留Delivery、真实到达一次登记处理费和Incident责任；新增显式注册来源的持久pending→World→确认协议。来源事实满箱不确认／不写死失败，重开需来源frontier对齐才继续区域推进；已注册文件缺失／损坏／跨scope拒载。普通4门限、工作12、独立追收16、来源pending16的边界分别有限，外部接纳不能占掉已有运输Incident预留。
+
+已收到未付清的责任可原样移交独立追收池；取消／修复／交付／清理／真实部分支付／释放不清债或生成资源。普通磁盘配额与8MiB应急预留持久化；应急资格由授权成功且实际推进已有责任的Prepared决定，拒绝动作标签、失败、空操作及重复开关旁路。普通检查点不能花应急区。CLI分页合同、履约、欠费、资源租约、阻塞及恢复状态、热／冷原凭证，写入／来源变化后旧游标拒绝。
+
+[Release证据](evidence/m0-t09-inbox/tests.txt)与[clippy](evidence/m0-t09-inbox/clippy.txt)分别登记；真实30—60分钟组合运行另行交付，不将短测或模拟时长算通过。来源真实性、永久断链实物处置、破产减记及完整企业损益是明确后续边界；本轮不签全部T09、M0、UI或16GB。
+
+本阶段[155项Release测试](evidence/m0-t09-inbox/tests.txt)、[fmt](evidence/m0-t09-inbox/fmt.txt)、[Clippy](evidence/m0-t09-inbox/clippy.txt)及文档检查通过。另以同一冻结Release库执行[独立Rust探针](evidence/m0-t09-inbox/retained-capacity-probe.rs)，[实测填满16条追收记录](evidence/m0-t09-inbox/retained-capacity.txt)：第17次移交原子拒绝，实际支付1分并归档后腾位，新请求移交成功，旧失败ID跨检查点／重开仍拒绝；未偿16分＋已付1分＝应计17分，现金3000000分不变。新回执按动作保存创建事实ID及实际支付额，归档后可直接连接来源和各次结算。
+
+回执新增两组固定数组使1,024条热窗口增加512KiB；收件／追收数组和Root字段另增若干KiB，当前含空间Store探针owned约3.09MiB。所有城市共享这一World／Region和热窗口，不能按每个地图重复计量；磁盘冷段及暂存另计。它不是全城规模或16GB峰值通过，长跑RSS／日志增长待后续独立证据。

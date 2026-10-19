@@ -43,6 +43,9 @@ impl Caller {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum Action {
+    Inbox {
+        command: crate::inbox::Command,
+    },
     Exchange {
         command: crate::exchange::Command,
     },
@@ -121,6 +124,8 @@ pub enum TxError {
     Unauthorized,
     OperationConflict,
     JournalFull,
+    InboxFull,
+    UnsettledResponsibility,
     StaleRevision,
     InvalidHandle,
     InsufficientFunds,
@@ -144,12 +149,15 @@ pub struct Receipt {
     pub revision: u64,
     pub durability: crate::FrozenLabel,
     pub migrated: [Option<u32>; MAX_ACTIONS],
+    pub created_facts: [Option<u64>; MAX_ACTIONS],
+    pub settled: [Option<Money>; MAX_ACTIONS],
     pub created_tokens: [Option<CapacityToken>; MAX_ACTIONS],
 }
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 pub struct JournalRecord {
     pub actor: u32,
+    pub emergency_eligible: bool,
     pub operation_id: u64,
     pub expected_revision: u64,
     pub payload_sha256: [u8; 32],
@@ -465,6 +473,14 @@ impl Engine {
         if env.world != self.world.scope.world() || env.branch != self.world.scope.branch() {
             return Ok(Err(TxError::WrongScope));
         }
+        if env.actions.iter().any(|a|matches!(a,Action::Inbox{command:crate::inbox::Command::External{fact}} if env.operation_id!=fact.operation_id())) {return Ok(Err(TxError::InvalidOperation));}
+        if env.operation_id >= 0xf000000000000000
+            && !(matches!(caller, Caller::System)
+                && env.actions.len() == 1
+                && matches!(env.actions[0],Action::Inbox{command:crate::inbox::Command::External{fact}} if fact.operation_id()==env.operation_id))
+        {
+            return Ok(Err(TxError::InvalidOperation));
+        }
         if env.operation_id == 0 || matches!(caller, Caller::Account(0)) {
             return Ok(Err(TxError::InvalidOperation));
         }
@@ -497,7 +513,13 @@ impl Engine {
         if self.journal.len() == MAX_RECEIPTS {
             return Ok(Err(TxError::JournalFull));
         }
-        let prepared = if env.expected_revision != self.world.revision {
+        let normal_full = self
+            .world
+            .exchange
+            .is_some_and(|e| e.inbox.admission_full());
+        let prepared = if normal_full && env.actions.iter().any(Action::is_new_commitment) {
+            Err(TxError::InboxFull)
+        } else if env.expected_revision != self.world.revision {
             Err(TxError::StaleRevision)
         } else {
             self.prepare(caller, &env)
@@ -509,6 +531,9 @@ impl Engine {
         }
         let record = JournalRecord {
             actor: caller.key(),
+            emergency_eligible: prepared
+                .as_ref()
+                .is_ok_and(|p| self.emergency_progress(caller, &env, p)),
             operation_id: env.operation_id,
             expected_revision: env.expected_revision,
             payload_sha256: digest,
@@ -523,6 +548,79 @@ impl Engine {
         Ok(outcome)
     }
 
+    pub fn can_advance_existing_responsibility(&self, caller: Caller, env: &Envelope) -> bool {
+        if env.world != self.world.scope.world()
+            || env.branch != self.world.scope.branch()
+            || env.expected_revision != self.world.revision
+        {
+            return false;
+        }
+        self.prepare(caller, env)
+            .as_ref()
+            .is_ok_and(|p| self.emergency_progress(caller, env, p))
+    }
+    fn emergency_progress(&self, _caller: Caller, env: &Envelope, p: &Prepared) -> bool {
+        if env.actions.len() != 1 {
+            return false;
+        }
+        match env.actions[0] {
+            Action::Inbox { command }
+                if !matches!(
+                    command,
+                    crate::inbox::Command::Enable | crate::inbox::Command::Receive { .. }
+                ) =>
+            {
+                self.world
+                    .exchange
+                    .zip(p.exchange)
+                    .is_some_and(|(a, b)| a.inbox != b.inbox)
+            }
+            Action::Exchange {
+                command: crate::exchange::Command::Cancel { .. },
+            } => self
+                .world
+                .exchange
+                .zip(p.exchange)
+                .is_some_and(|(a, b)| a.quotes != b.quotes),
+            Action::Exchange {
+                command: crate::exchange::Command::SetLink { .. },
+            } => self.world.exchange.zip(p.exchange).is_some_and(|(a, b)| {
+                a.open != b.open
+                    && (a.link_faults != b.link_faults
+                        || a.link_repairs != b.link_repairs
+                        || a.population_link_controls != b.population_link_controls)
+            }),
+            Action::Boot {
+                command:
+                    crate::boot::Command::Fault { .. } | crate::boot::Command::ClearFailure { .. },
+            } => self.world.boot != p.boot,
+            Action::RegionAdvance { seconds } => {
+                seconds > 0
+                    && (self.world.boot.is_some_and(|b| {
+                        b.jobs
+                            .iter()
+                            .any(|j| j.phase == crate::boot::Phase::Running)
+                    }) || self.world.exchange.is_some_and(|e| {
+                        e.shipments.iter().flatten().any(|s| s.arrives_at.is_some())
+                    }) || self.world.region.is_some_and(|r| {
+                        r.transits
+                            .iter()
+                            .flatten()
+                            .any(|t| t.pause_remaining.is_none())
+                            || r.obligations.iter().flatten().any(|o| o.next_due.is_some())
+                    }))
+            }
+            Action::RegionSettleDebt { .. } => self
+                .world
+                .region
+                .zip(p.region)
+                .is_some_and(|(a, b)| a.obligations != b.obligations),
+            Action::ReleaseCapacity { .. } => {
+                self.leases.iter().flatten().count() > p.leases.iter().flatten().count()
+            }
+            _ => false,
+        }
+    }
     fn prepare(&self, caller: Caller, env: &Envelope) -> Result<Prepared, TxError> {
         let next_revision = self
             .world
@@ -537,16 +635,67 @@ impl Engine {
         let mut next_token = self.next_token;
         let mut created_tokens = [None; MAX_ACTIONS];
         let mut migrated = [None; MAX_ACTIONS];
+        let mut created_facts = [None; MAX_ACTIONS];
+        let mut settled = [None; MAX_ACTIONS];
         let mut region = self.world.region;
         let mut economy = self.world.economy;
         let mut boot = self.world.boot;
         let mut exchange = self.world.exchange;
         for (action_index, action) in env.actions.iter().enumerate() {
             match *action {
+                Action::Inbox { command } => {
+                    if !matches!(caller, Caller::System) {
+                        return Err(TxError::Unauthorized);
+                    }
+                    let previous_inbox = exchange.as_ref().ok_or(TxError::InvalidOperation)?.inbox;
+                    exchange
+                        .as_mut()
+                        .ok_or(TxError::InvalidOperation)?
+                        .inbox_command(
+                            command,
+                            region
+                                .as_ref()
+                                .ok_or(TxError::InvalidOperation)?
+                                .interaction_time,
+                            &mut BootLedger {
+                                base: EconomicLedger {
+                                    world: &self.world,
+                                    accounts: &mut accounts,
+                                    stocks: &mut stocks,
+                                },
+                                resources: &mut resources,
+                                leases: &mut leases,
+                                next_token: &mut next_token,
+                            },
+                        )?;
+                    let next = exchange.as_ref().ok_or(TxError::InvalidOperation)?.inbox;
+                    if next.next_sequence != previous_inbox.next_sequence {
+                        created_facts[action_index] = Some(previous_inbox.next_sequence);
+                    }
+                    if let crate::inbox::Command::Settle { sequence } = command {
+                        let before = previous_inbox
+                            .all()
+                            .find(|f| f.sequence == sequence)
+                            .ok_or(TxError::InvalidOperation)?
+                            .paid;
+                        let after = next
+                            .all()
+                            .find(|f| f.sequence == sequence)
+                            .ok_or(TxError::InvalidOperation)?
+                            .paid;
+                        settled[action_index] =
+                            Some(after.checked_sub(before).map_err(|_| TxError::Overflow)?);
+                    }
+                }
                 Action::Exchange { command } => {
                     if !matches!(caller, Caller::System) {
                         return Err(TxError::Unauthorized);
                     }
+                    let previous = exchange
+                        .as_ref()
+                        .ok_or(TxError::InvalidOperation)?
+                        .inbox
+                        .next_sequence;
                     exchange
                         .as_mut()
                         .ok_or(TxError::InvalidOperation)?
@@ -565,6 +714,15 @@ impl Engine {
                                 next_token: &mut next_token,
                             },
                         )?;
+                    if exchange
+                        .as_ref()
+                        .ok_or(TxError::InvalidOperation)?
+                        .inbox
+                        .next_sequence
+                        != previous
+                    {
+                        created_facts[action_index] = Some(previous);
+                    }
                 }
                 Action::Boot { command } => {
                     if !matches!(caller, Caller::System) {
@@ -619,7 +777,10 @@ impl Engine {
                         .flatten()
                         .find(|o| o.id == obligation)
                         .ok_or(TxError::InvalidOperation)?;
+                    let due = o.arrears;
                     settle_obligation(&self.world, &mut accounts, o)?;
+                    settled[action_index] =
+                        Some(due.checked_sub(o.arrears).map_err(|_| TxError::Overflow)?);
                 }
                 Action::RegionActivate { city } => {
                     if !matches!(caller, Caller::System) {
@@ -1077,6 +1238,8 @@ impl Engine {
                 revision: next_revision,
                 durability: crate::FrozenLabel("volatile_only"),
                 migrated,
+                created_facts,
+                settled,
                 created_tokens,
             },
         })
@@ -1492,6 +1655,43 @@ impl crate::exchange::Ledger for BootLedger<'_> {
                             && l.units == units
                     })
                 })
+    }
+}
+
+impl Action {
+    pub fn is_new_commitment(&self) -> bool {
+        matches!(
+            self,
+            Self::Exchange {
+                command: crate::exchange::Command::Dispatch { .. }
+            } | Self::Boot {
+                command: crate::boot::Command::Start { .. }
+            } | Self::RegionMigrate { .. }
+                | Self::ReserveCapacity { .. }
+        )
+    }
+    /// Only management of existing obligations can draw on storage's emergency reserve.
+    pub fn is_responsibility_control(&self) -> bool {
+        matches!(
+            self,
+            Self::Inbox {
+                command: crate::inbox::Command::Receive { .. }
+                    | crate::inbox::Command::External { .. }
+                    | crate::inbox::Command::Incident { .. }
+                    | crate::inbox::Command::Settle { .. }
+                    | crate::inbox::Command::Handoff { .. }
+                    | crate::inbox::Command::Archive { .. }
+            } | Self::Exchange {
+                command: crate::exchange::Command::Cancel { .. }
+                    | crate::exchange::Command::SetLink { .. }
+            } | Self::RegionAdvance { .. }
+                | Self::RegionSettleDebt { .. }
+                | Self::ReleaseCapacity { .. }
+                | Self::Boot {
+                    command: crate::boot::Command::Fault { .. }
+                        | crate::boot::Command::ClearFailure { .. }
+                }
+        )
     }
 }
 

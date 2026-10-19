@@ -61,6 +61,29 @@ fn run() -> Result<(), String> {
         return Ok(());
     }
     let mut store = Store::open(dir, RULES).map_err(err)?;
+    if args[1] == "source-queue" || args[1] == "source-receive" {
+        let fact: mycity_core::inbox::ExternalFact = serde_json::from_slice(
+            &std::fs::read(args.get(3).ok_or("missing_fact")?).map_err(err)?,
+        )
+        .map_err(err)?;
+        let crash = args.get(4).map(String::as_str).unwrap_or("none");
+        let observer = |p: mycity_storage::SourcePoint| {
+            if format!("{p:?}") == crash {
+                std::process::exit(97);
+            }
+            Ok(())
+        };
+        if args[1] == "source-queue" {
+            store
+                .queue_external_with_observer(fact, observer)
+                .map_err(err)?;
+        } else {
+            store
+                .receive_external_with_observer(fact, observer)
+                .map_err(err)?;
+        }
+        return Ok(());
+    }
     if args[1] == "checkpoint" {
         let crash = args.get(3).map(String::as_str).unwrap_or("none");
         store

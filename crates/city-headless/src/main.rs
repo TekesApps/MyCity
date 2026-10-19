@@ -1,4 +1,5 @@
 mod boot_probe;
+mod continuity;
 mod economy_probe;
 mod exchange_probe;
 use mycity_core::{parse_bootstrap, read_bounded, sha256, INPUT_LIMIT, NUMERIC_STRATEGY, SCHEMA};
@@ -20,6 +21,47 @@ fn system(command: &str, args: &[&str]) -> Option<String> {
 
 fn run() -> Result<(), String> {
     let args: Vec<_> = env::args().collect();
+    if args.get(1).is_some_and(|a| a == "continuity-worker") {
+        return continuity::worker(&args);
+    }
+    if args.get(1).is_some_and(|a| a == "continuity-probe") {
+        if args.len() != 4 {
+            return Err("usage: mycity-headless continuity-probe NEW_DIR WALL_SECONDS (1800..3600 for duration gate)".into());
+        }
+        let seconds = args[3].parse::<u64>().map_err(|e| e.to_string())?;
+        println!(
+            "{}",
+            serde_json::to_string_pretty(&continuity::run(
+                std::path::Path::new(&args[2]),
+                seconds
+            )?)
+            .map_err(|e| e.to_string())?
+        );
+        return Ok(());
+    }
+    if args.get(1).is_some_and(|a| a == "query") {
+        if !(5..=7).contains(&args.len()) {
+            return Err("usage: mycity-headless query WORLD RULES <contracts|fulfilment|arrears|capacity|blocked|recovery|receipts> [1..64] [cursor]".into());
+        }
+        let query: mycity_storage::Query =
+            serde_json::from_value(json!(args[4])).map_err(|e| e.to_string())?;
+        let limit = args
+            .get(5)
+            .map(|s| s.parse::<usize>())
+            .transpose()
+            .map_err(|e| e.to_string())?
+            .unwrap_or(16);
+        let mut store = mycity_storage::Store::open(std::path::Path::new(&args[2]), &args[3])
+            .map_err(|e| format!("{e:?}"))?;
+        let page = store
+            .query(query, args.get(6).map(String::as_str), limit)
+            .map_err(|e| format!("{e:?}"))?;
+        println!(
+            "{}",
+            serde_json::to_string_pretty(&page).map_err(|e| e.to_string())?
+        );
+        return Ok(());
+    }
     let storage = args.get(1).is_some_and(|a| {
         [
             "storage-probe",

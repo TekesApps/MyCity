@@ -1,0 +1,14 @@
+source_sha256=92bc51cd473e1e7a8d8eab3c2ead1812df922f8a1dc59b3a5a0352c0201a5703
+Cargo.lock sha256=341af2f5bd913944e0f4fa4be679b64f10863eac3e023c0568a7c07e60e6b9f7
+fixtures/m0-exchange-opening.json sha256=e8471dd9b12a69fc5710dcb13fb43860ced9be046c07ec72e7ba6d3f45da6fe9
+fixtures/m0-exchange-spatial.json sha256=1891b68e1190fac29e3dc83a1d5d96ba3fa972cc7594fb8106ccbe179cdd29d6
+fixtures/terrain/m0-flat16.png sha256=cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8
+target/release/mycity-headless sha256=a40721900192d427db9776254982a80f052e6d0145fefbbd87a507e2c32f7741
+macOS-26.6.2-arm64-arm-64bit
+rustc 1.85.1 (4eb161250 2025-03-15)
+host_mem_bytes=34359738368
+host_chip=Apple M4
+active_run=/tmp/mycity-t09-continuity.NkjRse
+model_source_frozen_for_actual_duration_run=true
+full_workspace_tests_passed=155
+independent_retained_capacity_probe=passed

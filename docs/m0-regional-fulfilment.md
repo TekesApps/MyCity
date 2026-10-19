@@ -86,3 +86,7 @@ cargo clippy --workspace --all-targets --release --locked --offline -- -D warnin
 [七分支短测](evidence/m0-t09-fulfilment/process.txt)在M4／32GiB上耗2.91s，maximum RSS20316160B、peak footprint17219920B；这是合成小世界含串行存档／重开和报告的观测，不是全城市吞吐或16GB联合证明。3.10GiB常态候选、P-MEM／P-LOAD和长期日志增长仍未签收。
 
 advisor一次方案澄清和一轮最终只读检查指出资源类型可错绑、到达后来源凭证会丢、期初来源可占生成批次ID三项，均修复并有反例；其要求的电／水分别断链和已接纳订单跨截止也已实跑。审查不替代测试。证据指纹及独立对账见[核对记录](evidence/m0-t09-fulfilment/provenance-checks.txt)。本专题有限履约至此收口，T09下一缺口为完整P-CAP非自愿收件／满域停钟／预留退出及持久覆盖增长；不继续以重复复核代替这些缺项。
+
+## v0.5.17后续实现
+
+收件、容量退出和CLI扩展见[事实收件与应急退出](m0-fact-inbox-and-emergency-exit.md)。上文保留v0.5.15实际履约基线及其当时证据；最新缺口和验收状态以扩展契约与实现状态为准，不将扩展短测算成长跑／16GB通过。

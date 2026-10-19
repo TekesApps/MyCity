@@ -148,6 +148,10 @@ pub struct Exchange {
     pub cogs: Money,
     pub initial_basis: Money,
     pub initial_raw: Quantity,
+    pub inbox: crate::inbox::Inbox,
+    pub link_faults: [u8; MAX_QUOTES],
+    pub link_repairs: [u8; MAX_QUOTES],
+    pub population_link_controls: [u8; 6],
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Error {
@@ -373,6 +377,10 @@ impl Exchange {
             cogs: Money::ZERO,
             initial_basis: basis,
             initial_raw,
+            inbox: crate::inbox::Inbox::default(),
+            link_faults: [0; MAX_QUOTES],
+            link_repairs: [0; MAX_QUOTES],
+            population_link_controls: [0; 6],
         };
         for (i, quote) in result.quotes.iter().enumerate() {
             let s = quote.spec;
@@ -543,6 +551,30 @@ impl Exchange {
                     .iter()
                     .position(|e| e.id == edge)
                     .ok_or(error(Error::Path))?;
+                if self.open[i] != open {
+                    for ship in self.shipments.iter().flatten() {
+                        if self.quotes[ship.quote_index]
+                            .spec
+                            .edges
+                            .contains(&Some(edge))
+                        {
+                            if open {
+                                self.link_repairs[ship.quote_index] |= 1 << i;
+                            } else {
+                                self.link_faults[ship.quote_index] |= 1 << i;
+                            }
+                        }
+                    }
+                    if r.transits.iter().flatten().any(|t| {
+                        t.route_indices.iter().flatten().any(|ri| {
+                            r.routes[*ri].is_some_and(|route| {
+                                self.edges[i].population_route == Some(route.id)
+                            })
+                        })
+                    }) {
+                        self.population_link_controls[i] |= if open { 2 } else { 1 };
+                    }
+                }
                 self.open[i] = open;
                 for si in 0..MAX_SHIPMENTS {
                     if let Some(mut ship) = self.shipments[si] {
@@ -606,6 +638,7 @@ impl Exchange {
                     .position(|q| q.spec.id == quote)
                     .ok_or(error(Error::Input))?;
                 let spec = self.quotes[qi].spec;
+                self.inbox.admit(spec.id, spec.buyer, spec.carrier)?;
                 if r.interaction_time >= spec.expires_at {
                     return Err(error(Error::Expired));
                 }
@@ -819,6 +852,8 @@ impl Exchange {
                 q.source_cost = ship.fragment.basis;
                 q.source_fragment = Some(ship.fragment);
                 q.loss_cost = ship.loss_cost;
+                self.inbox
+                    .delivered(spec.id, now, ship.net, ship.price, ship.fragment)?;
                 l.release_path(ship.tokens)?;
                 self.shipments[i] = None;
                 r.bump().map_err(TxError::Region)?;
@@ -832,6 +867,7 @@ impl Exchange {
         b: &Boot,
         l: &mut impl Ledger,
     ) -> Result<(), TxError> {
+        self.inbox.validate()?;
         if b.time != r.interaction_time {
             return Err(error(Error::Clock));
         }

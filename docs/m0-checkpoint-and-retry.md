@@ -24,3 +24,7 @@ Arena恢复重建固定容量，而非直接信任反序列化Vec capacity。Eng
 测试入口：`crates/city-storage/tests/checkpoint.rs`、`crates/city-storage/tests/exchange.rs`。覆盖超过两倍原热回执容量、原成功／失败跨轮转重试、恰好512条时的重试、连续空检查点、生产中／失败未清／断链在途检查点与继续运行、档案损坏拒载，以及六个检查点发布点的真实子进程退出。原始输出置于[evidence](evidence/m0-t09-checkpoint/tests.txt)。
 
 这是文件系统API／进程退出证据，不是断电认证。非自愿收件、有限容量下退出与CLI分页由后续交付接续；真实30—60分钟组合运行尚未在本阶段宣称完成。
+
+## v0.5.17应急边界补充
+
+[普通／应急配额与收尾资格](m0-fact-inbox-and-emergency-exit.md)已实现。普通轮转不占应急区；热窗口真正到1,024且已确认有实际责任推进时，才允许必要的应急轮转。本页之前的v0.5.16记录保留该阶段边界。

@@ -1,6 +1,12 @@
 //! Laboratory persistence: one writer, bounded replay, WAL + explicit committed boundary.
 //! No historical migration, power-loss certification or automatic fallback of confirmed data.
+mod capacity;
+mod outbox;
+mod query;
+pub use outbox::{SourcePoint, SourceStatus};
+pub use query::{Page, Query};
 mod checkpoint;
+pub use capacity::{CapacityPolicy, CapacityStatus};
 mod spatial;
 pub use checkpoint::{CheckpointPoint, CheckpointStatus};
 use fs2::FileExt;
@@ -35,6 +41,14 @@ pub enum Error {
     Model(String),
     Locked,
     RecoveryRequired,
+    FactBlocked(&'static str),
+    SourceSyncRequired,
+    Capacity {
+        used_bytes: u64,
+        limit_bytes: u64,
+        required_bytes: u64,
+        emergency: bool,
+    },
 }
 impl From<io::Error> for Error {
     fn from(e: io::Error) -> Self {
@@ -77,6 +91,8 @@ struct Root {
     schema: String,
     sequence: u64,
     generation: u64,
+    capacity: CapacityPolicy,
+    source_registered: bool,
     checkpoint: Option<checkpoint::Reference>,
     segment: u64,
     wal_end: u64,
@@ -113,6 +129,7 @@ struct Persistence {
     wal: File,
     root: Root,
     poisoned: bool,
+    source_reconciled: bool,
 }
 impl Drop for Persistence {
     fn drop(&mut self) {
@@ -305,6 +322,8 @@ impl Store {
             schema: "mycity-m0-root-v1".into(),
             sequence: 0,
             generation: 0,
+            capacity: CapacityPolicy::default(),
+            source_registered: false,
             checkpoint: None,
             segment: 0,
             wal_end: 0,
@@ -339,6 +358,7 @@ impl Store {
                 wal,
                 root,
                 poisoned: false,
+                source_reconciled: !outbox::exists(dir),
             },
         })
     }
@@ -363,6 +383,10 @@ impl Store {
             || root.wal_end > WAL_LIMIT
         {
             return Err(Error::Invalid("root_limits_or_schema"));
+        }
+        root.capacity.validate()?;
+        if root.source_registered && !outbox::exists(dir) {
+            return Err(Error::Invalid("registered_source_missing"));
         }
         let genesis_bytes = read_file(&dir.join("genesis.json"), GENESIS_LIMIT)?;
         if sha256(&genesis_bytes) != root.genesis_sha256 {
@@ -395,6 +419,7 @@ impl Store {
         } else {
             genesis_engine
         };
+        outbox::verify(dir, engine.world().view().scope)?;
         let spatial_ref = genesis.spatial;
         let spatial = spatial_ref
             .as_ref()
@@ -511,6 +536,7 @@ impl Store {
                 wal,
                 root,
                 poisoned: false,
+                source_reconciled: !outbox::exists(dir),
             },
         })
     }
@@ -585,7 +611,16 @@ impl Store {
         };
         let hash = digest(&json(&envelope)?);
         let operation = envelope.operation_id;
-        if let Some(record) = self.lookup_archived(operation)? {
+        let prior = self
+            .engine
+            .journal()
+            .iter()
+            .find(|r| r.operation_id == operation)
+            .copied();
+        if let Some(record) = match prior {
+            Some(r) => Some(r),
+            None => self.lookup_archived(operation)?,
+        } {
             let model = if record.actor != actor {
                 Err(TxError::Unauthorized)
             } else if record.payload_sha256 != hash {
@@ -599,6 +634,33 @@ impl Store {
                 committed_sequence: self.io.root.sequence,
             });
         }
+        outbox::validate_attempt(
+            &self.io.dir,
+            self.io.root.source_registered,
+            &envelope,
+            self.engine.world().view().revision,
+        )?;
+        if outbox::exists(&self.io.dir)
+            && !self.io.source_reconciled
+            && envelope.actions.iter().any(|a| {
+                a.is_new_commitment()
+                    || matches!(a, mycity_core::transaction::Action::RegionAdvance { .. })
+            })
+        {
+            return Err(Error::SourceSyncRequired);
+        }
+        let control = envelope
+            .actions
+            .iter()
+            .all(mycity_core::transaction::Action::is_responsibility_control);
+        if !control {
+            capacity::admit(
+                &self.io.dir,
+                self.io.root.capacity,
+                FRAME_LIMIT as u64 + 2 * META_LIMIT,
+                false,
+            )?;
+        }
         if self.engine.journal().len() >= MAX_RECEIPTS / 2
             && !self
                 .engine
@@ -606,7 +668,19 @@ impl Store {
                 .iter()
                 .any(|r| r.operation_id == operation)
         {
-            self.checkpoint()?;
+            match self.checkpoint() {
+                Ok(()) => {}
+                Err(Error::Capacity { .. }) if control => {
+                    if self.engine.journal().len() == MAX_RECEIPTS
+                        && self
+                            .engine
+                            .can_advance_existing_responsibility(caller, &envelope)
+                    {
+                        self.checkpoint_emergency()?;
+                    }
+                }
+                Err(e) => return Err(e),
+            }
         }
         let io = &mut self.io;
         let result = self
@@ -617,7 +691,9 @@ impl Store {
         let result = match result {
             Ok(r) => r,
             Err(e) => {
-                self.io.poisoned = true;
+                if !matches!(e, Error::Capacity { .. } | Error::FactBlocked(_)) {
+                    self.io.poisoned = true;
+                }
                 return Err(e);
             }
         };
@@ -646,6 +722,17 @@ impl Persistence {
         record: &JournalRecord,
         observer: &mut impl FnMut(WritePoint) -> io::Result<()>,
     ) -> Result<(), Error> {
+        if envelope.actions.iter().any(|a| {
+            matches!(
+                a,
+                mycity_core::transaction::Action::Inbox {
+                    command: mycity_core::inbox::Command::External { .. }
+                }
+            )
+        }) && matches!(record.outcome, Err(TxError::InboxFull))
+        {
+            return Err(Error::FactBlocked("world_fact_inbox_full"));
+        }
         observer(WritePoint::Prepared)?;
         let sequence = self
             .root
@@ -674,6 +761,12 @@ impl Persistence {
         if wal_end > WAL_LIMIT {
             return Err(Error::Invalid("wal_limit"));
         }
+        capacity::admit(
+            &self.dir,
+            self.root.capacity,
+            check.len() as u64 + 32 + 2 * META_LIMIT,
+            record.emergency_eligible,
+        )?;
         self.wal.write_all(&length[..2])?;
         observer(WritePoint::WalHeaderHalf)?;
         self.wal.write_all(&length[2..])?;
@@ -690,6 +783,8 @@ impl Persistence {
         let root = Root {
             schema: self.root.schema.clone(),
             sequence,
+            capacity: self.root.capacity,
+            source_registered: self.root.source_registered,
             generation: self
                 .root
                 .generation

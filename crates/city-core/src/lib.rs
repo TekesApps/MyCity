@@ -10,6 +10,7 @@ pub mod boot;
 pub mod calendar;
 pub mod economy;
 pub mod exchange;
+pub mod inbox;
 pub mod probes;
 pub mod region;
 pub mod schedule;

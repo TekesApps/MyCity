@@ -344,3 +344,49 @@ fn regional_fulfilment_cli_runs_actual_goods_utilities_common_pools_and_closed_m
     );
     std::fs::remove_dir_all(dir).unwrap();
 }
+
+#[test]
+fn continuity_short_run_exercises_model_but_does_not_pass_wall_duration_or_16gb_gate() {
+    let root = std::env::temp_dir().join(format!(
+        "mycity-continuity-cli-{}-{}",
+        std::process::id(),
+        std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_nanos()
+    ));
+    let output = std::process::Command::new(env!("CARGO_BIN_EXE_mycity-headless"))
+        .args(["continuity-probe", root.to_str().unwrap(), "2"])
+        .output()
+        .unwrap();
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    let report: serde_json::Value = serde_json::from_slice(&output.stdout).unwrap();
+    assert_eq!(report["wall_duration_gate"], false);
+    assert_eq!(report["sixteen_gb_acceptance"], false);
+    assert!(report["cycles"].as_u64().unwrap() > 0);
+    assert_eq!(report["final"]["cash_cents"], 3000000);
+    let world = root.join("world");
+    let query = std::process::Command::new(env!("CARGO_BIN_EXE_mycity-headless"))
+        .args([
+            "query",
+            world.to_str().unwrap(),
+            report["source_sha256"].as_str().unwrap(),
+            "contracts",
+            "3",
+        ])
+        .output()
+        .unwrap();
+    assert!(
+        query.status.success(),
+        "{}",
+        String::from_utf8_lossy(&query.stderr)
+    );
+    let page: serde_json::Value = serde_json::from_slice(&query.stdout).unwrap();
+    assert_eq!(page["rows"].as_array().unwrap().len(), 3);
+    assert!(page["next_cursor"].is_string());
+    std::fs::remove_dir_all(root).unwrap();
+}

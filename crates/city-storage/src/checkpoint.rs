@@ -153,6 +153,63 @@ impl Store {
         }
         result
     }
+    pub(super) fn receipt_rows(
+        &mut self,
+        offset: usize,
+        limit: usize,
+    ) -> Result<(Vec<serde_json::Value>, usize), Error> {
+        let result = (|| {
+            let total = usize::try_from(self.io.root.sequence)
+                .map_err(|_| Error::Invalid("query_sequence_range"))?;
+            if offset > total {
+                return Err(Error::Invalid("query_offset"));
+            }
+            let mut rows = Vec::with_capacity(limit);
+            let mut skipped = offset;
+            for (i, record) in self.engine.journal().iter().enumerate().rev() {
+                if skipped > 0 {
+                    skipped -= 1;
+                    continue;
+                }
+                if rows.len() == limit {
+                    break;
+                }
+                rows.push(serde_json::json!({"committed_sequence":self.io.root.sequence-self.engine.journal().len()as u64+i as u64+1,"record":record}));
+            }
+            let mut cursor = self.io.root.checkpoint.clone();
+            while rows.len() < limit {
+                let Some(r) = cursor else {
+                    break;
+                };
+                let index = load_index(&self.io.dir, &r)?;
+                if skipped >= index.operations.len() {
+                    skipped -= index.operations.len();
+                    cursor = index.previous;
+                    continue;
+                }
+                let cp = load(&self.io.dir, &r)?;
+                for (i, record) in cp.receipts.iter().enumerate().rev() {
+                    if skipped > 0 {
+                        skipped -= 1;
+                        continue;
+                    }
+                    if rows.len() == limit {
+                        break;
+                    }
+                    rows.push(serde_json::json!({"committed_sequence":cp.sequence-cp.receipts.len()as u64+i as u64+1,"record":record}));
+                }
+                cursor = cp.previous;
+            }
+            Ok((rows, total))
+        })();
+        if result
+            .as_ref()
+            .is_err_and(|e| !matches!(e, Error::Invalid("query_offset")))
+        {
+            self.io.poisoned = true;
+        }
+        result
+    }
     pub fn checkpoint_status(&self) -> Result<CheckpointStatus, Error> {
         self.engine()?;
         Ok(CheckpointStatus {
@@ -165,10 +222,20 @@ impl Store {
         })
     }
     pub fn checkpoint(&mut self) -> Result<(), Error> {
-        self.checkpoint_with_observer(|_| Ok(()))
+        self.checkpoint_internal(false, |_| Ok(()))
     }
     pub fn checkpoint_with_observer(
         &mut self,
+        observer: impl FnMut(CheckpointPoint) -> io::Result<()>,
+    ) -> Result<(), Error> {
+        self.checkpoint_internal(false, observer)
+    }
+    pub(super) fn checkpoint_emergency(&mut self) -> Result<(), Error> {
+        self.checkpoint_internal(true, |_| Ok(()))
+    }
+    fn checkpoint_internal(
+        &mut self,
+        emergency: bool,
         mut observer: impl FnMut(CheckpointPoint) -> io::Result<()>,
     ) -> Result<(), Error> {
         self.engine()?;
@@ -189,6 +256,12 @@ impl Store {
                 previous: self.io.root.checkpoint.clone(),
             };
             let bytes = json(&cp)?;
+            capacity::admit(
+                &self.io.dir,
+                self.io.root.capacity,
+                bytes.len() as u64 + 32 * 1024 + 2 * META_LIMIT,
+                emergency,
+            )?;
             if bytes.len() as u64 > CHECKPOINT_LIMIT
                 || archive_bytes(&self.io.dir)?
                     .checked_add(bytes.len() as u64)
@@ -250,7 +323,10 @@ impl Store {
             observer(CheckpointPoint::Retired)?;
             Ok(())
         })();
-        if result.is_err() {
+        if result
+            .as_ref()
+            .is_err_and(|e| !matches!(e, Error::Capacity { .. }))
+        {
             self.io.poisoned = true;
         }
         result

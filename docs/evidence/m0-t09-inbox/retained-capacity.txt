@@ -1,0 +1,4 @@
+PASS: retained=16/16; seventeenth handoff rejected atomically; old claims preserved; real 1c payment and archive free one slot; new handoff succeeds; old rejected ID stays rejected across checkpoint/reopen; outstanding16c + paid1c = accrued17c; total cash3000000c
+store_state_sha256=f5e70025f93dce4bc06fc47b7e8b79a6dac8281af513beba1ebaaace4a98ba4b; owned_capacity_bytes=3234151
+mycity_core /Users/frankqin/dev/MyCity/target/release/deps/libmycity_core-9950064af9b18981.rlib sha256=c230336f4cfdd4e057ab6eb0b10fc81d4d101eac933d2b01b08b26d4e9b901af
+mycity_storage /Users/frankqin/dev/MyCity/target/release/libmycity_storage.rlib sha256=29b5d062b75f342a67e39de82e9f30ce1c92edc4b8895a7fd8bdd02886c254a7
