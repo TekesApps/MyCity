@@ -1,5 +1,7 @@
 # 首版数值、23类配置与最小资产 C48
 
+v0.4.49 [E49](agent-command-targeting-and-editing.md)为CAT-T-01增W16与W8→W16改造，参数见[road-variants.csv](inputs/baseline-v1/road-variants.csv)；保留catalog原W8基准、23类总数与聚合粒度。受限入口改造走同一工程与产权校验，不任意修改楼体属性；桥梁继续延期。
+
 设计修订v0.4.48。将[DP34](first-release-type-definition-pack.md)、[LC38](first-release-lifecycle-inputs-and-exit.md)、[RUN36](minimum-operating-parameters.md)、[字段字典](capability-field-dictionary.md)及[属性—系统—指标](property-system-metric-matrix.md)合成一套可直接开发的非代码配置。明确是原创游戏合成候选，不是现实工程、医疗或法律标准；不以性能／试玩缺证据阻止选定必要参数。
 
 交付[23类catalog.csv](inputs/baseline-v1/catalog.csv)与[numeric-v1.json](inputs/baseline-v1/numeric-v1.json)。每行CAT与90目录首版集合严格一一对应。已有13结构样例、27物件族是复用契约，不增23套系统。后续66类型／远期1类型按原目录延期，组合扩展、天然气、铁路／航空等不因配置表存在而启用。

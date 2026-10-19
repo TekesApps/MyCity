@@ -1,5 +1,7 @@
 # Agent 城市建设工具协议
 
+v0.4.49主操作以[Agent选择与改造E49](agent-command-targeting-and-editing.md)为准：地图精确选择给文本／未来语音命令提供上下文；新增只读capture_selection与受限object.retrofit，T01提供W8/W16规格。现有计划／评估／授权／持续工程／回执路径不变，不用手工编辑器作为必要玩法。
+
 版本：设计草案 v0.4，2026-10-18。以下 API 为 MyCity 待实现协议，尚未注册到任何 harness，也不是 TekesAgentKit 已有方法。
 
 v0.4.28预览／检查须依 [分层契约](building-unit-shared-facility-contract.md) 返回真实楼体／单元／管理／付款／维护主体、单元接入组及其依赖、原容量资源键、分摊原票和条件覆盖。拆楼／封楼梯／切支管／出售单元重查实际受影响者；不能用项目／小区范围代表有权操作所有住户、自动连门或承诺未预算物业费。
@@ -96,6 +98,7 @@ status 区分 ok、rejected、pending、partial；partial 仅用于明确分页�
 | city.service_contract_end | 持久修改 | 协议、终止条款、授权、operation_id | 到期／终止、预留释放及未完交付处理 |
 | city.service_settlements | 只读 | 协议、交付、时间窗、游标 | 实际服务、费用、账单与对账状态 |
 | city.capabilities | 只读 | 无或 schema_version | 支持动作、模板规则、精度、限制、预演模型与 endpoint 接入状态 |
+| city.capture_selection | 只读 | 快照、typed对象／道路桩号／region或查询集合 | 冻结selection_ref、完整目标／数量／版本／口径与覆盖；不授予施工权 |
 | city.inspect | 只读 | 区域／对象／指标、快照 | 容量、网络、环境和财政摘要，全部来源版本 |
 | city.resolve_region | 只读 | 对象关系、选区引用或多边形 | 冻结 region_ref、解释、面积、可操作范围和歧义 |
 | city.query_objects | 只读 | 区域、类型、条件、游标 | 有界对象集合与稳定引用 |
@@ -128,6 +131,7 @@ status 区分 ok、rejected、pending、partial；partial 仅用于明确分页�
 | terrain.grade | 范围、目标坡面、挖填上限 | 完整改动范围、边坡、土方与水域 |
 | road.build／upgrade | 端点、模板、曲线、连接模式 | 路权、交叉口、曲率、坡度、断联影响 |
 | utility.build／upgrade | 类型、走廊、用途层、实际深度／z、地形版本、网络节点 | 容量、拓扑、服务、地下／地面接入及保守包络 |
+| object.retrofit | 原对象、受支持入口／设备改造profile、旧新接入／组、范围／费用／工期与授权 | 不通用set属性；旧权利／在途／内部组／临时口共享容量及完整工程验收 |
 | building.place | 模板版本、地块、位置、朝向、端口选择及共享空间引用 | 全用地、实体包络、门位／方向、用途兼容、权利、地基与必要接入 |
 | connection.build | 明确建筑端口、网络锚点／侧／进出方向及连接走廊 | 分模式可达性、转向／过街／高差、实际容量、占地与权限 |
 | object.demolish | 明确对象版本、依赖和安置规则 | 既有授权、人口／就业／管网后果 |

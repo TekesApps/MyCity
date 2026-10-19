@@ -1,5 +1,7 @@
 # 市长 + City Team 玩法与 AgentKit 架构
 
+v0.4.49 [E49](agent-command-targeting-and-editing.md)明确默认通过Agent文本调整城市，未来语音同协议；每栋建筑／道路局部／区域均可精确选择并绑定命令。团队负责调查／构造／预演／执行，地图不是要求玩家逐步手工造城的主入口。
+
 状态：2026-10-18 准备阶段设计 v0.4，尚未实现或验证游戏工具调用。本文把市长与团队确立为核心玩法，并明确技术职责。
 
 闭环细则以 [运行闭环](runtime-loop.md) 为准；[性能预算](performance-budget.md) 限定团队、预演与模拟并发。Goal、Plan、Project、Monitor 分别持久化与判断完成，不能合并成一个聊天任务状态。

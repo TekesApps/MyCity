@@ -1,0 +1,3 @@
+variant,cat,right_of_way_m,carriageway_m,lanes_per_direction,lane_width_m,sidewalk_each_m,vehicle_per_direction_per_hour,walk_shared_per_hour,speed_kmh,capital_per_m_coins,upgrade_from_W8_per_m_coins,minimum_selected_length_m,transition_each_end_m
+W8,CAT-T-01,8,6,1,3,1,600,600,30,1200,0,20,20
+W16,CAT-T-01,16,12,2,3,2,1200,1200,30,2400,1200,20,20
