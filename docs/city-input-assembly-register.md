@@ -1,5 +1,7 @@
 # 统一输入装配台账 AS44／START44
 
+v0.4.45 [START45空间输入](start45-spatial-input-pack.md)接续A44-03／04：已交4份CSV／40条数据，新增回转场及对应公共K／维护，普通采购保护改5901.10。START44原金额保留为历史；PNG／完整机动／楼内贯入与立管／法源及供方仍M，不将具体CSV的静态检查提升为完整A通过。
+
 设计修订：v0.4.44，2026-10-19。接续[BC43](city-baseline-completion-contract.md)、[IL43](institutions-and-labor-execution.md)、[START35](standard-start-and-shared-parameters.md)及[RUN36](minimum-operating-parameters.md)。本篇开始推进真实输入装配A，不重开已经有限冻结的City规则D；不展开AgentKit、不写代码。
 
 这里的“真实输入”指具体、可追溯的游戏场景数据，不要求用现实城市或现实个人资料。文档已绑定数值不等于对应文件、记录和引用已存在。当前没有可加载场景文件或验证器，所有“装配可验证”状态仍待实际交付；不得将下表当成游戏存档。

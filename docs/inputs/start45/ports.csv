@@ -1,0 +1,9 @@
+id,host,role,x_cm,y_cm,z_cm,normal_x,normal_y,external_anchor,access_group
+R_P,R_BODY,resident_walk,11600,9000,0,0,-1,R_WALK_S,RG1
+R_S,R_BODY,crew_cart_service,12600,10000,0,1,0,R_SERVICE_S,RG2
+R_E,R_BODY,electric,11600,11400,-80,0,1,E_R_END,RG1
+R_W,R_BODY,water,12000,11400,-140,0,1,W_R_END,RG1
+L_P,L_BODY,staff_customer_walk,31300,9000,0,0,-1,L_WALK_S,LG1
+L_S,L_BODY,crew_cart_goods,32200,10200,0,1,0,L_SERVICE_S,LG2
+L_E,L_BODY,electric,31000,11400,-80,0,1,E_L_END,LG1
+L_W,L_BODY,water,31600,11400,-140,0,1,W_L_END,LG1
