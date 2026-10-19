@@ -1,5 +1,7 @@
 # 物件定义覆盖矩阵
 
+v0.5.1新增[T52交通扩展细目](transport-facility-expansion-catalog.md)，细分T04—09的设施、运营、空间／资源与预算门；本矩阵首版23类不变，不把目录补全当机制已实现。
+
 v0.4.38 [LC38逐23类生命周期](first-release-lifecycle-inputs-and-exit.md)接续下文启动／资源／物料终点与退出的待配规则：补煤残余物G09、真实相容接收和保全投入，旧案例不追改。有限D定义可登记；实际几何／供方／班次／费用／阶段表示与运行仍待验，不以“已登记”投运。
 
 设计索引：v0.4.24，2026-10-19。逐项覆盖[90条类型目录](building-types-and-technology-catalog.md)，映射[27类常用契约](common-object-contracts.md)及[字段字典](capability-field-dictionary.md)。所有展开先过[粒度收敛门](model-granularity-and-convergence.md)，不用“有一行”或“字段更多”代表完成。
