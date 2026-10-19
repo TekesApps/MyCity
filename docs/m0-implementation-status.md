@@ -14,7 +14,7 @@
 | --- | --- | --- |
 | T01 | headless子阶段通过，v0.5.4 | Release离线构建／测试／CLI实际运行、输入及规则／源码／锁文件hash、实际机器；wgpu随GPU阶段、macOS14兼容未实测 |
 | T02 | 类型／固定表子阶段通过，v0.5.5 | checked单位／余数、typed scope及代际、记录／字节双限，实际探针布局；全域writer／真实领域记录随T03/T04验，整机长跑未测 |
-| T03 | planned | 实际领域输入装配／有限初始来源 |
+| T03 | 有限实验装配通过，v0.5.6 | 4主体／600Q库存及成本的真实记录、来源唯一消费／引用校验／数量字节门；未推进经济 |
 | T04 | planned | 易失事务／权限／幂等／原子预留 |
 | T05 | planned | 共同钟／阶段／稳定随机／到期分页 |
 | T06 | planned | 持久成功／锁／WAL／根／恢复故障注入 |
@@ -56,3 +56,14 @@ Rust金额／物量／能量／水量／时间分别为独立新类型，负值�
 Release共12项测试（含1个compile-fail）通过，fmt／clippy通过。`layout`实际填写并读回32768个u64探针：record8B、slot24B、header80B、free索引32768项，owned capacity917584B，checksum536854528。见[布局证据](evidence/m0-t02/layout.json)和[本次进程资源观测](evidence/m0-t02/process-resource.txt)。后者是整个短CLI进程的time观测，包含启动／主机探测，不能归因于单张表，更不是16GB或长时泄漏证明。allocator metadata不在917584B内，报告明确标记；真实财务／库存记录及其索引后续各自测量。
 
 可重跑：`cargo run --release --locked --offline -p mycity-headless -- layout fixtures/m0-bootstrap.json`。对应v0.5.5代码hash按第3节算法复核。尚无异步求解／存档恢复运行实例，未宣称旧异步结果或完整writer门已通过；它们在T04/T06/T12接入。
+
+
+## 5. T03：有限实验世界装配
+
+[期初输入](../fixtures/m0-e0-opening.json)以分／毫Q登记4个真实账户合计3000000分（30000币）、600000毫Q原料及240000分取得成本。5条明确期初来源分别给现金与非现金权益，来源类型／金额必须匹配且恰好用一次；股票／现金或库存来源不可复制。不允许无所有者库存、重复ID／来源、空库存有成本、超schema／数量／金额范围或未消费来源。只返回完整的新实验世界，不提供对运行世界重复注资API；恢复不能重跑初始化。
+
+本轮暂将实验规模限制为64账户／128库存／192来源、输入64KiB、常驻固定表及索引128KiB。它是可测的小原型边界，不是改小完整产品容量；未来扩大必须重新验证真实字节和索引。输入JSON在64KiB总字节门内解析、再验数组数／关系、再分配领域表；短期解析／观察投影页与allocator metadata未归入表字节，不能拿表字节代表整进程。
+
+当前实际账户record24B／slot32B，库存record56B／slot64B；预留固定表、索引、来源容量和剩余世界头合计11600B。完整实跑来源和布局见[装配报告](evidence/m0-t03/assembly.json)。按稳定ID装配与来源排序，相同输入内容换序仍为同状态hash；world／branch继续参与引用，不把输入顺序当永久身份。
+
+Release共17项测试通过（13单元＋3 CLI集成＋1编译失败），fmt／clippy通过；覆盖输入乱序、重复／错成本／缺主体、额度和未消费资金源，以及CLI装配真实记录。`cargo run --release --locked --offline -p mycity-headless -- assemble fixtures/m0-e0-opening.json`可重跑。输出revision0、经济not_run；没有交易、劳动、在途、生产或存档通过结论。

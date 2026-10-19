@@ -5,6 +5,7 @@ use sha2::{Digest, Sha256};
 use std::io::{self, Read};
 
 pub mod arena;
+pub mod assembly;
 pub mod units;
 
 pub const SCHEMA: &str = "mycity-m0-bootstrap-v1";

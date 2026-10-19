@@ -17,13 +17,36 @@ fn system(command: &str, args: &[&str]) -> Option<String> {
 
 fn run() -> Result<(), String> {
     let args: Vec<_> = env::args().collect();
-    if args.len() != 3 || !["baseline", "layout"].contains(&args[1].as_str()) {
-        return Err("usage: mycity-headless <baseline|layout> <bootstrap.json>".into());
+    if args.len() != 3 || !["baseline", "layout", "assemble"].contains(&args[1].as_str()) {
+        return Err("usage: mycity-headless <baseline|layout|assemble> <input.json>".into());
     }
     let file = File::open(&args[2]).map_err(|e| e.to_string())?;
     let bytes = read_bounded(file, INPUT_LIMIT).map_err(|e| e.to_string())?;
-    let input = parse_bootstrap(&bytes)?;
-    let rules = json!({"schema": SCHEMA, "numeric_strategy": NUMERIC_STRATEGY, "input_limit_bytes": INPUT_LIMIT, "mode": "headless_laboratory"});
+    let assembled = if args[1] == "assemble" {
+        Some(mycity_core::assembly::assemble(&bytes)?)
+    } else {
+        None
+    };
+    let input = if let Some(world) = &assembled {
+        let view = world.view();
+        mycity_core::Bootstrap {
+            schema: SCHEMA.into(),
+            world: view.scope.world(),
+            branch: view.scope.branch(),
+            seed: view.seed,
+            laboratory_only: true,
+        }
+    } else {
+        parse_bootstrap(&bytes)?
+    };
+    let mut rules = json!({"schema": SCHEMA, "numeric_strategy": NUMERIC_STRATEGY, "input_limit_bytes": INPUT_LIMIT, "mode": "headless_laboratory"});
+    if assembled.is_some() {
+        rules["opening_schema"] = json!(mycity_core::assembly::ASSEMBLY_SCHEMA);
+        rules["max_accounts"] = json!(mycity_core::assembly::MAX_ACCOUNTS);
+        rules["max_stocks"] = json!(mycity_core::assembly::MAX_STOCKS);
+        rules["max_sources"] = json!(mycity_core::assembly::MAX_SOURCES);
+        rules["world_byte_budget"] = json!(mycity_core::assembly::WORLD_BYTE_BUDGET);
+    }
     let now = SystemTime::now()
         .duration_since(UNIX_EPOCH)
         .map_err(|e| e.to_string())?
@@ -59,6 +82,13 @@ fn run() -> Result<(), String> {
         report["task"] = json!("M0-T02");
         report["result"] = json!("fixed_record_layout_executed");
         report["layout"] = json!({"type": "u64_probe_not_full_financial_record", "table": table.layout(), "readback_sum": checksum, "allocator_metadata_in_table_bytes": false});
+    }
+    if let Some(world) = assembled {
+        report["task"] = json!("M0-T03");
+        report["result"] = json!("opening_assembled_not_simulated");
+        report["world"] = json!(world.view());
+        report["state_sha256"] = json!(world.state_hash());
+        report["layout"] = world.layout();
     }
     println!(
         "{}",

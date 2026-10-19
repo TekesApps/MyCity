@@ -1,0 +1,142 @@
+{
+  "build": {
+    "profile": "release",
+    "rustc": "rustc 1.85.1 (4eb161250 2025-03-15)",
+    "target": "aarch64-apple-darwin"
+  },
+  "economic_prototypes": "not_run",
+  "gpu": "not_implemented",
+  "host": {
+    "arch": "aarch64",
+    "chip": "Apple M4",
+    "memory_bytes": "34359738368",
+    "os": "macos",
+    "os_version": "26.6.2"
+  },
+  "input": {
+    "branch": 1,
+    "laboratory_only": true,
+    "schema": "mycity-m0-bootstrap-v1",
+    "seed": 7,
+    "world": 1
+  },
+  "input_sha256": "6756555697457b3de5307086610a108c88d15650c6e668da0cdf990ca52b874c",
+  "layout": {
+    "accounts": {
+      "free_index_capacity": 64,
+      "header_bytes": 80,
+      "live_records": 4,
+      "owned_capacity_bytes": 2384,
+      "record_bytes": 24,
+      "slot_bytes": 32,
+      "slots_capacity": 64
+    },
+    "allocator_metadata_included": false,
+    "index_capacity_bytes": 200,
+    "opening_sources_capacity_bytes": 128,
+    "owned_capacity_bytes": 11600,
+    "stocks": {
+      "free_index_capacity": 128,
+      "header_bytes": 80,
+      "live_records": 1,
+      "owned_capacity_bytes": 8784,
+      "record_bytes": 56,
+      "slot_bytes": 64,
+      "slots_capacity": 128
+    },
+    "temporary_parse_and_view_pages_included": false,
+    "world_remaining_header_bytes": 104
+  },
+  "lock_sha256": "947be764293056e38d46cf3fa9a50bda395c3dec6f31f617d08b604d782fd1b5",
+  "memory_16gb_gate": "not_run",
+  "report_schema": "mycity-m0-evidence-v1",
+  "result": "opening_assembled_not_simulated",
+  "rules": {
+    "input_limit_bytes": 65536,
+    "max_accounts": 64,
+    "max_sources": 192,
+    "max_stocks": 128,
+    "mode": "headless_laboratory",
+    "numeric_strategy": "checked-integer-v1",
+    "opening_schema": "mycity-m0-opening-v1",
+    "schema": "mycity-m0-bootstrap-v1",
+    "world_byte_budget": 131072
+  },
+  "rules_sha256": "8725182dc6252969d7f921550e81952a1822331787bac179988b2c78f11847a7",
+  "run_id": "78288-1792414244227773000",
+  "source_sha256": "08744da7968ef3fc176a6b36416f10f9a1506c21608b8f11dcc58d7596fafa45",
+  "state_sha256": "889aa7d0463ce1947516e0081198447b20595225a44bcc2199c4efa949602e6e",
+  "task": "M0-T03",
+  "ui": "not_implemented_by_scope",
+  "world": {
+    "accounts": [
+      {
+        "cash": 1000000,
+        "id": 1,
+        "protected": 0,
+        "role": "treasury"
+      },
+      {
+        "cash": 200000,
+        "id": 2,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 600000,
+        "id": 3,
+        "protected": 0,
+        "role": "company"
+      },
+      {
+        "cash": 1200000,
+        "id": 4,
+        "protected": 0,
+        "role": "supplier"
+      }
+    ],
+    "opening_sources": [
+      {
+        "amount": 1000000,
+        "id": 1,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 200000,
+        "id": 2,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 600000,
+        "id": 3,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 1200000,
+        "id": 4,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 240000,
+        "id": 5,
+        "kind": "inventory_capital"
+      }
+    ],
+    "revision": 0,
+    "schema": "mycity-m0-opening-v1",
+    "scope": {
+      "branch": 1,
+      "world": 1
+    },
+    "seed": 7,
+    "stocks": [
+      {
+        "basis": 240000,
+        "commodity": "raw",
+        "id": 1,
+        "owner": 4,
+        "quantity": 600000
+      }
+    ]
+  }
+}
