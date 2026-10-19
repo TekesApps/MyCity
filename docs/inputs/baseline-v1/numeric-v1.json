@@ -1,0 +1,73 @@
+{
+  "id": "mycity-numeric-v1",
+  "synthetic": true,
+  "calendar": {
+    "epoch": "2001-01-01T00:00:00",
+    "display_year_alias": "Y1",
+    "day_seconds": 86400,
+    "time_unit": "integer_game_second"
+  },
+  "money": {
+    "stored": "i64",
+    "atoms_per_coin": 100,
+    "price_intermediate": "i128 rational",
+    "refund": "original_receipt_cumulative_difference"
+  },
+  "quantities": {
+    "stored": "i64",
+    "atoms_per_Q": 1000000,
+    "atoms_per_m3": 1000000,
+    "atoms_per_kWh": 1000000,
+    "power_milliwatt": true,
+    "water_rate_atoms_per_hour": true,
+    "rate_integral_denominator": 3600
+  },
+  "geometry": {
+    "stored": "i64_cm",
+    "cross_area_volume_intermediate": "checked_i128",
+    "angle_deci_degree": true,
+    "map_cell_m": 16,
+    "terrain_vertex_m": 4,
+    "environment_cell_m": 32
+  },
+  "score": {
+    "stored_anchor": "f32_outward_interval",
+    "reference": "f64",
+    "domain": [
+      0,
+      100
+    ],
+    "max_certified_error_points": 0.001,
+    "ui_decimal_places": 1
+  },
+  "bounded_domains": {
+    "max_absolute_account_atoms": 1000000000000000,
+    "max_absolute_resource_atoms": 1000000000000000,
+    "max_game_year": 9999,
+    "max_world_coordinate_cm": 100000000
+  },
+  "qualifications": [
+    "driver",
+    "electric",
+    "water",
+    "medical",
+    "nursing",
+    "police",
+    "fire",
+    "teaching"
+  ],
+  "skills": [
+    "basic",
+    "technical",
+    "professional"
+  ],
+  "education": [
+    "general",
+    "vocational",
+    "higher"
+  ],
+  "catalog_source": "catalog.csv",
+  "lifecycle_source": "../../first-release-lifecycle-inputs-and-exit.md",
+  "current_table_budget_MiB": "43.8828125/44",
+  "other_simulation_MiB": "300.15"
+}

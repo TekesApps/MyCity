@@ -1,5 +1,7 @@
 # 通用能力字段字典
 
+v0.4.48 Money、Quantity、Score、时间／资格与中间精度的当前决定见[C48数值协议](first-release-data-and-content.md#2-数值协议-numeric-v1)及其JSON；本文旧“待冻结”由该协议关闭。只定义语义和布局要求，不声称sizeof／GPU误差通过。
+
 v0.4.42 [LS42](environment-services-and-satisfaction.md)用显式9.5MiB专用状态承接8维平滑上下界、当日实际人时及三类需要；原living满意度语义引用其唯一S13来源，F只投影。143条通用字段与34P／16C／14S／26M不扩，服务实际交付仍归原S09来源，不在暴露或需要表复制容量／钱包。
 
 设计契约：v0.4.24，2026-10-19。将既有P01—P34与C01—C16细化成有类型字段路径，供 [物件契约](common-object-contracts.md) 组合；不是Rust结构体、数据库迁移或已注册工具schema。所有字段服从 [粒度收敛](model-granularity-and-convergence.md)，共享profile字段不在每实例复制，关系／派生路径可投影原表，不为每个格子／物件分配以下全集。
