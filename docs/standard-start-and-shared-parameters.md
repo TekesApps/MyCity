@@ -2,6 +2,8 @@
 
 设计修订：v0.4.35，2026-10-19。定义同一个可核算输入，不是游戏实现、经济均衡、可投运资产或16GB验收。本包引用[DP34的23类候选规格](first-release-type-definition-pack.md)、[财政规则](fiscal-recurring-budget-contract.md)及[交通来源](traffic-state-and-recalculation.md)，不拼接过去独立案例的现金／资产。
 
+v0.4.36后继配置见[RUN36](minimum-operating-parameters.md)：补四组有限运行参数、轮休修正与新资源／费用；本文START35数字保留历史候选基线，不自动热改成新版本。
+
 ## 1. 目标、时间与范围
 
 START35固定为游戏公历非闰年Y1，1月1日星期一00:00的期初快照。当前地图为小地图；仅一个详细城市A、一个摘要城市B及有限外部供方，引用原地图容量，不缩小16m土地单元。观察窗为28游戏日，供给和预算到期不自动续订。默认群体／家庭与劳动份额，不另建48个人生agent。
