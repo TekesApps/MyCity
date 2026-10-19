@@ -1,5 +1,7 @@
 # MyCity 完整准备设计：市长、City Team 与精准建设
 
+v0.5.2当前总体范围／机制／实施版本以[完整产品蓝图](PRODUCT_BLUEPRINT.md)及四视角需求矩阵为准。本文的23首期／90CAT／延期／旧预算描述是历史切片或分类来源，不能替代完整产品完成条件，也不能否定新总体机制。
+
 当前唯一首选入口与已交付／延期／I/V边界见[首版设计基线](FIRST_RELEASE_BASELINE.md)。本文保留专题或历史过程；旧版本缺项／预算／下一步不覆盖基线及其明确引用。
 
 v0.4.47本篇为历史准备综述；当前完整目标按[交付计划](design-delivery-plan.md)推进，游戏策划见[G47](first-release-game-design.md)，模块／调度／预算／开发验收见[T47](first-release-implementation-blueprint.md)。最终唯一权威入口将在统一合成输入与最后总审后发布，不再以本篇“待讨论”覆盖已作决定。

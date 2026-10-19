@@ -1,5 +1,7 @@
 # 首版计划与验收
 
+v0.5.2当前总体范围／机制／实施版本以[完整产品蓝图](PRODUCT_BLUEPRINT.md)及四视角需求矩阵为准。本文的23首期／90CAT／延期／旧预算描述是历史切片或分类来源，不能替代完整产品完成条件，也不能否定新总体机制。
+
 当前唯一首选入口与已交付／延期／I/V边界见[首版设计基线](FIRST_RELEASE_BASELINE.md)。本文保留专题或历史过程；旧版本缺项／预算／下一步不覆盖基线及其明确引用。
 
 v0.4.47现行开发顺序与阶段退出标准以[技术实施T47第7节](first-release-implementation-blueprint.md#7-开发顺序与各阶段退出证据)为准；游戏体验以[G47](first-release-game-design.md)，完整交付以[21项清单](design-delivery-plan.md)。本文下方早期阶段／待确认列表只作历史，不要求先选AgentKit内部endpoint才能完成City设计；外部接入后置I6但仍首版验收必需。
