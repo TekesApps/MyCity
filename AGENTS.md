@@ -31,3 +31,7 @@
 ## v0.5.10区域规则
 
 跨城现行权威是docs/regional-snapshots-and-interaction-ledger.md：全存档发现、活动城自主发展、单调交互钟履约、快照非资源、实际增量一次入账。旧共同本地钟／全城后台内生发展文字为被替代设计，不可静默恢复。物理因果与精确权益保留，统计近似须明确边界。
+
+## v0.5.11空间与GPU数据边界
+
+现行T07实现边界见docs/m0-spatial-model-and-gpu-layout.md。CPU厘米/i128为几何权威；wgpu上传使用显式字节布局、块内f32与版本化候选，不能将CPU打包测试报告成Metal/DX12设备通过。空间尚未接Store，不得暗中授予真实建设权限。

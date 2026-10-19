@@ -20,7 +20,8 @@ fn run() -> Result<(), String> {
     let storage = args
         .get(1)
         .is_some_and(|a| ["storage-probe", "regional-probe"].contains(&a.as_str()));
-    if args.len() != if storage { 4 } else { 3 }
+    let spatial = args.get(1).is_some_and(|a| a == "spatial-probe");
+    if args.len() != if storage || spatial { 4 } else { 3 }
         || ![
             "baseline",
             "layout",
@@ -29,11 +30,12 @@ fn run() -> Result<(), String> {
             "clock-probe",
             "storage-probe",
             "regional-probe",
+            "spatial-probe",
         ]
         .contains(&args[1].as_str())
     {
         return Err(
-            "usage: mycity-headless <baseline|layout|assemble|transaction-probe|clock-probe> <input.json>; <storage-probe|regional-probe> <input.json> <new_world_dir>"
+            "usage: mycity-headless <baseline|layout|assemble|transaction-probe|clock-probe> <input.json>; <storage-probe|regional-probe> <input.json> <new_world_dir>; spatial-probe <input.json> <height.png>"
                 .into(),
         );
     }
@@ -51,7 +53,18 @@ fn run() -> Result<(), String> {
     } else {
         None
     };
-    let input = if let Some(world) = &assembled {
+    let spatial_input = if spatial {
+        Some(
+            serde_json::from_slice::<mycity_map::probe::Input>(&bytes)
+                .map_err(|e| e.to_string())?,
+        )
+    } else {
+        None
+    };
+    let input = if let Some(s) = &spatial_input {
+        s.bootstrap.validate().map_err(str::to_owned)?;
+        s.bootstrap.clone()
+    } else if let Some(world) = &assembled {
         let view = world.view();
         mycity_core::Bootstrap {
             schema: SCHEMA.into(),
@@ -86,6 +99,16 @@ fn run() -> Result<(), String> {
     }
     if storage {
         rules["storage"] = json!({"schema":"mycity-m0-genesis-v1","rules_identity":env!("MYCITY_SOURCE_SHA256"),"frame_limit":mycity_storage::FRAME_LIMIT,"wal_limit":mycity_storage::WAL_LIMIT,"committed_boundary":"CURRENT_root_hash_sequence_and_wal_end"});
+    }
+    if spatial {
+        rules["spatial"] = json!({"schema":mycity_map::SCHEMA,"land_cell_cm":mycity_map::LAND_CELL_CM,
+            "terrain_step_cm":mycity_map::TERRAIN_STEP_CM,"xy_limit_cm":mycity_map::XY_LIMIT_CM,
+            "z_limit_cm":mycity_map::Z_LIMIT_CM,"geometry_budget_bytes":mycity_map::GEOMETRY_BUDGET_BYTES,
+            "terrain_resident_budget_bytes":mycity_map::TERRAIN_RESIDENT_BUDGET_BYTES,
+            "import_peak_budget_bytes":mycity_map::IMPORT_PEAK_BUDGET_BYTES,"source_byte_limit":mycity_map::terrain::SOURCE_BYTE_LIMIT,
+            "decoder_byte_limit":mycity_map::terrain::DECODER_BYTE_LIMIT,"max_source_side":mycity_map::terrain::MAX_SOURCE_SIDE,
+            "max_vertices":mycity_map::geometry::MAX_VERTICES,"curve_error_cm":mycity_map::geometry::CURVE_ERROR_CM,
+            "numeric_strategy":"bounded-i128-bilinear-cm-swne-integer-capsule-v1"});
     }
     let now = SystemTime::now()
         .duration_since(UNIX_EPOCH)
@@ -149,6 +172,16 @@ fn run() -> Result<(), String> {
         report["task"] = json!("M0-T09-snapshot-subset");
         report["result"] = json!("regional_snapshot_subset_executed");
         report["regional_probe"] = regional_probe(&bytes, std::path::Path::new(&args[3]))?;
+    }
+    if let Some(input) = spatial_input {
+        let file = File::open(&args[3]).map_err(|e| e.to_string())?;
+        let png = read_bounded(file, mycity_map::terrain::SOURCE_BYTE_LIMIT)
+            .map_err(|e| e.to_string())?;
+        report["task"] = json!("M0-T07-spatial-subset");
+        report["result"] = json!("spatial_fixture_executed");
+        report["png_input_sha256"] = json!(sha256(&png));
+        report["spatial_probe"] =
+            mycity_map::probe::run(input, &png).map_err(|e| format!("{e:?}"))?;
     }
     println!(
         "{}",

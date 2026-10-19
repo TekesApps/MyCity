@@ -1,5 +1,5 @@
 [workspace]
-members = ["crates/city-core", "crates/city-headless", "crates/city-storage"]
+members = ["crates/city-core", "crates/city-headless", "crates/city-storage", "crates/city-map"]
 resolver = "2"
 
 [workspace.package]

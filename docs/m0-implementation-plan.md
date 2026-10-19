@@ -1,5 +1,7 @@
 # M0：核心实现范围、任务依赖与原型验收计划
 
+v0.5.11实现补充：[T07空间与GPU交换布局](m0-spatial-model-and-gpu-layout.md)交付原生灰度／保守平地步行几何子阶段；只验证CPU打包，未接Store／真实GPU。T07剩余门与T08前置空间引用继续逐项跟踪，不以该子阶段签收全部P-IMPORT／P-XMAP。
+
 v0.5.10变更：[R54城市快照与交互增量](regional-snapshots-and-interaction-ledger.md)替代旧跨城共同本地钟，当前依赖与本轮有限实测见[M0状态](m0-implementation-status.md)。先对齐设计，再复用T03/T04/T06权威与保存实现T09的快照子集，未满足T07/T08的真实交通／经济不算T09全验收。
 
 文档发布v0.5.3，2026-10-19。状态为**实施计划已定义，尚未授权／开始游戏代码，所有原型均未运行**。本篇细化[总体实施路线](product-runtime-budget-and-versions.md#5-r04从总体能力到可实施版本)的M0，不能将M0通过等同于完整产品、首个可玩版或16GB全功能通过。总体范围仍由[完整产品蓝图](PRODUCT_BLUEPRINT.md)定义。

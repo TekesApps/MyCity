@@ -137,3 +137,29 @@ fn storage_cli_confirms_persistent_operation_but_not_full_city_recovery() {
     assert_eq!(v["storage_probe"]["replay_has_persistent_receipt"], true);
     assert_eq!(v["storage_probe"]["power_loss"], "not_tested");
 }
+
+#[test]
+fn spatial_cli_imports_actual_png_and_validates_geometry_without_claiming_city_persistence() {
+    let root = format!("{}/../../", env!("CARGO_MANIFEST_DIR"));
+    let run = || {
+        Command::new(env!("CARGO_BIN_EXE_mycity-headless"))
+            .args([
+                "spatial-probe",
+                &format!("{root}fixtures/m0-spatial.json"),
+                &format!("{root}fixtures/terrain/m0-flat16.png"),
+            ])
+            .output()
+            .unwrap()
+    };
+    let a = run();
+    assert!(a.status.success(), "{}", String::from_utf8_lossy(&a.stderr));
+    let b = run();
+    assert!(b.status.success());
+    let a: serde_json::Value = serde_json::from_slice(&a.stdout).unwrap();
+    let b: serde_json::Value = serde_json::from_slice(&b.stdout).unwrap();
+    assert_eq!(a["spatial_probe"], b["spatial_probe"]);
+    assert_eq!(a["spatial_probe"]["terrain_vertices"], 66049);
+    assert_eq!(a["spatial_probe"]["store_integration"], "not_implemented");
+    assert_eq!(a["economic_prototypes"], "not_run");
+    assert_eq!(a["memory_16gb_gate"], "not_run");
+}

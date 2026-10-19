@@ -1,0 +1,226 @@
+{
+  "build": {
+    "profile": "release",
+    "rustc": "rustc 1.85.1 (4eb161250 2025-03-15)",
+    "target": "aarch64-apple-darwin"
+  },
+  "economic_prototypes": "not_run",
+  "gpu": "not_implemented",
+  "host": {
+    "arch": "aarch64",
+    "chip": "Apple M4",
+    "memory_bytes": "34359738368",
+    "os": "macos",
+    "os_version": "26.6.2"
+  },
+  "input": {
+    "branch": 1,
+    "laboratory_only": true,
+    "schema": "mycity-m0-bootstrap-v1",
+    "seed": 7,
+    "world": 1
+  },
+  "input_sha256": "d7a3d9ebeeb2c92ac0a6dba3ac0683639c3cc360d7d1cf1c01d249ecb82b8da2",
+  "lock_sha256": "4f9a977211633e5c64cb9341f81fe2586f1dcfcc792f6c5fe30167a065c61086",
+  "memory_16gb_gate": "not_run",
+  "png_input_sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8",
+  "report_schema": "mycity-m0-evidence-v1",
+  "result": "spatial_fixture_executed",
+  "rules": {
+    "input_limit_bytes": 65536,
+    "mode": "headless_laboratory",
+    "numeric_strategy": "checked-integer-v1",
+    "schema": "mycity-m0-bootstrap-v1",
+    "spatial": {
+      "curve_error_cm": 5,
+      "decoder_byte_limit": 41943040,
+      "geometry_budget_bytes": 1048576,
+      "import_peak_budget_bytes": 134217728,
+      "land_cell_cm": 1600,
+      "max_source_side": 4097,
+      "max_vertices": 1025,
+      "numeric_strategy": "bounded-i128-bilinear-cm-swne-integer-capsule-v1",
+      "schema": "mycity-m0-spatial-v1",
+      "source_byte_limit": 16777216,
+      "terrain_resident_budget_bytes": 10485760,
+      "terrain_step_cm": 400,
+      "xy_limit_cm": 1000000000,
+      "z_limit_cm": 1000000
+    }
+  },
+  "rules_sha256": "35adb403cae1d38d9d747f7b55be7d529043070ed2ee701d8ea99c025b959511",
+  "run_id": "67979-1792420573129461000",
+  "source_sha256": "d1cf93dc054db013b0e05489a28c5dc2d24b0f85eacd00d9b2db911ed72d81ce",
+  "spatial_probe": {
+    "allocator_metadata_included": false,
+    "connector_length_upper_cm": 3000,
+    "construction_authority": "none_readonly_laboratory",
+    "frame": {
+      "branch": 1,
+      "map": 1,
+      "metric_frame": "synthetic-local-v1",
+      "origin": {
+        "x": 0,
+        "y": 0
+      },
+      "size": "small",
+      "vertical_datum": "synthetic-z0",
+      "world": 1
+    },
+    "geometry_owned_capacity_bytes": 17617,
+    "geometry_revision": 1,
+    "geometry_sha256": "0c908df7a49207840b194ce284f1381784ac04887ac61b01d6e5af5ffc66c560",
+    "gpu_byte_layout": {
+      "flag_bytes": 16900,
+      "header_bytes": 64,
+      "height_bytes": 16900,
+      "max_height_conversion_error_cm": 0.0,
+      "stamp": {
+        "branch": 1,
+        "generation": 1,
+        "geometry_revision": 1,
+        "map": 1,
+        "terrain_revision": 1,
+        "terrain_sha256": "afc09640069721be020608c7c732eaf496ce9e347ca6bb91995d8359be1adb65",
+        "world": 1
+      },
+      "status": "cpu_packing_only_no_backend_execution",
+      "tile_owned_capacity_bytes": 34080,
+      "vertex_bytes": 272,
+      "vertex_stride_bytes": 16,
+      "wgsl_sha256": "c2ba4ba736f8621e69348287a7caaec4f512509a9ebb6f6b3930a2759f0d3637"
+    },
+    "height_results_cm": [
+      0,
+      0,
+      0
+    ],
+    "memory_16gb_gate": "not_run",
+    "neighbor": {
+      "branch": 1,
+      "map": 2,
+      "metric_frame": "synthetic-local-v1",
+      "origin": {
+        "x": 102400,
+        "y": 0
+      },
+      "size": "small",
+      "vertical_datum": "synthetic-z0",
+      "world": 1
+    },
+    "neighbor_asset": "same_immutable_synthetic_fixture",
+    "owned_capacity_bytes": 612585,
+    "parse_and_report_pages_included": false,
+    "permissions": "laboratory_input_facts_not_a_legal_authority_check",
+    "planned_import_peak": {
+      "compressed_copy_allowance_bytes": 207,
+      "decoded_bytes": 132098,
+      "decoder_limit_bytes": 41943040,
+      "geometry_pair_allowance_bytes": 2097152,
+      "input_bytes": 207,
+      "old_owned_bytes": 0,
+      "planned_peak_bytes": 45029289,
+      "scratch_allowance_bytes": 262144,
+      "target_payload_bytes": 594441
+    },
+    "queries_cm": [
+      {
+        "x": 0,
+        "y": 0
+      },
+      {
+        "x": 102400,
+        "y": 102400
+      },
+      {
+        "x": 51200,
+        "y": 51200
+      }
+    ],
+    "result": "immutable_flat_scene_validated",
+    "road_length_upper_cm": 4070,
+    "road_radius_including_error_cm": 355,
+    "road_vertices": [
+      {
+        "x": 1000,
+        "y": 1000
+      },
+      {
+        "x": 1250,
+        "y": 930
+      },
+      {
+        "x": 1500,
+        "y": 869
+      },
+      {
+        "x": 1750,
+        "y": 817
+      },
+      {
+        "x": 2000,
+        "y": 775
+      },
+      {
+        "x": 2250,
+        "y": 742
+      },
+      {
+        "x": 2500,
+        "y": 719
+      },
+      {
+        "x": 2750,
+        "y": 705
+      },
+      {
+        "x": 3000,
+        "y": 700
+      },
+      {
+        "x": 3250,
+        "y": 705
+      },
+      {
+        "x": 3500,
+        "y": 719
+      },
+      {
+        "x": 3750,
+        "y": 742
+      },
+      {
+        "x": 4000,
+        "y": 775
+      },
+      {
+        "x": 4250,
+        "y": 817
+      },
+      {
+        "x": 4500,
+        "y": 869
+      },
+      {
+        "x": 4750,
+        "y": 930
+      },
+      {
+        "x": 5000,
+        "y": 1000
+      }
+    ],
+    "schema": "mycity-m0-spatial-evidence-v1",
+    "seam": "declared_directional_walk_geometry_and_2m_approach_checked_not_complete_route",
+    "search_provider": "not_implemented",
+    "source_sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8",
+    "store_integration": "not_implemented",
+    "terrain_owned_capacity_bytes": 594968,
+    "terrain_revision": 1,
+    "terrain_sha256": "afc09640069721be020608c7c732eaf496ce9e347ca6bb91995d8359be1adb65",
+    "terrain_vertices": 66049,
+    "vehicle_turning_and_grades": "not_implemented_flat_support_only"
+  },
+  "task": "M0-T07-spatial-subset",
+  "ui": "not_implemented_by_scope"
+}

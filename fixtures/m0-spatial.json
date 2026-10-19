@@ -1,0 +1,189 @@
+{
+  "schema": "mycity-m0-spatial-v1",
+  "bootstrap": {
+    "schema": "mycity-m0-bootstrap-v1",
+    "world": 1,
+    "branch": 1,
+    "seed": 7,
+    "laboratory_only": true
+  },
+  "terrain": {
+    "schema": "mycity-heightmap-v1",
+    "source_sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8",
+    "width": 257,
+    "height": 257,
+    "bit_depth": 16,
+    "size": "small",
+    "sample_semantics": "vertices",
+    "row0": "north",
+    "z_min_cm": 0,
+    "z_max_cm": 65535,
+    "vertical_datum": "synthetic-z0",
+    "source_resolution_cm": 400,
+    "source_accuracy_cm": null,
+    "synthetic": true,
+    "georeferencing": "local_metric",
+    "processing_version": "bilinear-cm-swne-v1",
+    "license": "CC0-1.0: original MyCity synthetic flat test terrain",
+    "validity": {
+      "kind": "all_valid"
+    },
+    "water": {
+      "kind": "all_dry"
+    }
+  },
+  "scene": {
+    "schema": "mycity-m0-geometry-v1",
+    "geometry_revision": 1,
+    "terrain_revision": 1,
+    "map": {
+      "world": 1,
+      "branch": 1,
+      "map": 1,
+      "size": "small",
+      "origin": {
+        "x": 0,
+        "y": 0
+      },
+      "metric_frame": "synthetic-local-v1",
+      "vertical_datum": "synthetic-z0"
+    },
+    "neighbor": {
+      "world": 1,
+      "branch": 1,
+      "map": 2,
+      "size": "small",
+      "origin": {
+        "x": 102400,
+        "y": 0
+      },
+      "metric_frame": "synthetic-local-v1",
+      "vertical_datum": "synthetic-z0"
+    },
+    "region": {
+      "outer": {
+        "min": {
+          "x": 0,
+          "y": 0
+        },
+        "max": {
+          "x": 102400,
+          "y": 102400
+        }
+      },
+      "holes": [
+        {
+          "min": {
+            "x": 8000,
+            "y": 8000
+          },
+          "max": {
+            "x": 10000,
+            "y": 10000
+          }
+        }
+      ]
+    },
+    "building": {
+      "footprint": {
+        "min": {
+          "x": 2000,
+          "y": 2000
+        },
+        "max": {
+          "x": 4000,
+          "y": 4000
+        }
+      },
+      "z_min_cm": -60,
+      "z_max_cm": 1500,
+      "layer": "g"
+    },
+    "ground_z_cm": 0,
+    "door": {
+      "point": {
+        "x": 3000,
+        "y": 2000
+      },
+      "z_cm": 0,
+      "mode": "walk",
+      "facing": "south",
+      "clear_width_cm": 200,
+      "can_enter": true,
+      "can_exit": true,
+      "authorized": true
+    },
+    "anchor": {
+      "point": {
+        "x": 5000,
+        "y": 1000
+      },
+      "z_cm": 0,
+      "mode": "walk",
+      "facing": "north",
+      "clear_width_cm": 200,
+      "can_enter": true,
+      "can_exit": true,
+      "authorized": true
+    },
+    "connector": [
+      {
+        "x": 3000,
+        "y": 2000
+      },
+      {
+        "x": 3000,
+        "y": 1000
+      },
+      {
+        "x": 5000,
+        "y": 1000
+      }
+    ],
+    "connector_width_cm": 200,
+    "road": {
+      "start": {
+        "x": 1000,
+        "y": 1000
+      },
+      "control": {
+        "x": 3000,
+        "y": 400
+      },
+      "end": {
+        "x": 5000,
+        "y": 1000
+      }
+    },
+    "road_width_cm": 700,
+    "road_mode": "walk",
+    "obstacles": [],
+    "seam_from": {
+      "point": {
+        "x": 102400,
+        "y": 5000
+      },
+      "z_cm": 0,
+      "mode": "walk",
+      "facing": "east",
+      "clear_width_cm": 200,
+      "can_enter": true,
+      "can_exit": true,
+      "authorized": true
+    },
+    "seam_to": {
+      "point": {
+        "x": 0,
+        "y": 5000
+      },
+      "z_cm": 0,
+      "mode": "walk",
+      "facing": "west",
+      "clear_width_cm": 200,
+      "can_enter": true,
+      "can_exit": true,
+      "authorized": true
+    },
+    "neighbor_obstacles": []
+  }
+}
