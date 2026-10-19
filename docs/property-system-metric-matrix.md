@@ -2,6 +2,8 @@
 
 设计补充：v0.4.19，2026-10-19。P＝属性组，S＝逻辑系统，M＝指标族；编号与 [Root／组件](root-component-contract.md)、[首版模板](first-release-object-templates.md) 对齐。这里的“双向”是从字段到指标、从系统／指标反查字段，**不是指标可以直接给事实赋值**。
 
+v0.4.28 [关系一致性审查](building-unit-shared-facility-contract.md) 对齐P04／P07—P10、P14—P15、P21／P23／P29：单元接入取冻结布局组，P10建筑使用边不是每户费用源，S08按真实H／C条款和义务单写；P29按物理对象排他覆盖，整楼综合健康仅派生，不为它另写第二condition。
+
 v0.4.27 [楼级能源三方案](worked-example-building-cooking-energy.md) 对齐同一P12需求／P13交付、P14—P15真实峰值、P21现金与保护／到期、P29维护、P34偏好来源；M25分列经营净现金与资本，M24保留B候选与覆盖。EU月底为正仍可能期中缺钱，不能从期末余额证明可行。
 
 v0.4.26 [烹饪能源链](natural-gas-and-cooking.md) 将同一有用服务需求→电／气设备输入→实际交付／费用／环境→家庭基本需求缺口对齐P12—P15／P21／P29—P31、S02／S05／S08／S10／S11／S13；M08／M09／M14／M18／M23／M24按单位分列。燃气用M08类型化服务缺口／M24支持状态观察，不把燃气MJ塞进M09电力kWh；不新增指标族，燃气机制仍B。
@@ -34,7 +36,7 @@ S静态参数来自冻结模板／profile；A权威运行事实；R有身份、�
 | P04 | geometry／frame／terrain／host_ref，R；layer为D | 原几何／宿主，S01 | S04、S05、S10—S13→M05、M18、M19、M23、M24 |
 | P05 | project／commissioning／physical_state_ref，R及原A状态投影 | 原工程／设施生命周期，S01；营业状态统一引用P18.common | 全适用系统→M01、M07、M09、M10、M15、M22 |
 | P06 | capability_kind／facet_ref、availability原因，S／R／D | 模板及对应原记录，S00解析而不另写一份业务值 | 全系统→M23、M24 |
-| P07 | footprint／site／envelope／growth_bound、面积口径、z、最多8子区，S及A几何（m／m²） | 原几何／模板，S01 | S02、S04、S05、S10—S12→M01、M05、M16、M20、M23 |
+| P07 | footprint／site／envelope／growth_bound、面积口径、z、最多8共享／功能子区（H套内布局另计），S及A几何（m／m²） | 原几何／模板，S01 | S02、S04、S05、S10—S12→M01、M05、M16、M20、M23 |
 | P08 | port_id、局部门位／法向、实际锚点／侧／方向／模式／时段、连接／状态，S／R／A | 模板＋65536端口，S01写结构／绑定；S04仅写人货通行，水电运行／隔离引用S05 | S02—S09、S12→M04—M06、M15、M16 |
 | P09 | owner／operator／maintainer／account_ref、地域／垂直使用依据，R | 原产权／运营／账户绑定；S02房屋权益、S07经营关系；合法转移经S00提交 | S01、S02、S06—S10、S12→M11—M14、M23、M24 |
 | P10 | shared_space／building_use_ref、许可／分摊／开放、关闭待移交，R | 原8192使用关系及合同／权益，S01管理空间关联，S02房屋使用关系，S08只结算份额 | S04、S09、S10、S12→M05、M14—M16、M23 |

@@ -2,6 +2,8 @@
 
 设计索引：v0.4.24，2026-10-19。逐项覆盖[90条类型目录](building-types-and-technology-catalog.md)，映射[27类常用契约](common-object-contracts.md)及[字段字典](capability-field-dictionary.md)。所有展开先过[粒度收敛门](model-granularity-and-convergence.md)，不用“有一行”或“字段更多”代表完成。
 
+v0.4.28 [27物件分层复核](building-unit-shared-facility-contract.md#8-27类物件逐项核对) 统一产权、接入、容量、费用和维护来源，90目录范围标签保持；共享使用关系不等于独立单元账务，复杂共有／规模化独立物业收费仍须补机制和预算，不从本次关系裁定升级后续类型。
+
 v0.4.26 [天然气设施链](natural-gas-and-cooking.md) 细化CAT-P-16燃气分支为NG01—NG08，明确与住宅电炊互为设备配置；仍后续B，缺参数／布局／运行验收。90目录／27基础OBJ不变，NG是候选子机制，未把全部能源设施升级首版。
 
 v0.4.25现行粒度与预算以 [整体分配审查](granularity-allocation-audit.md) 为准：34属性／14系统／27物件逐项区分保留、聚合、延后；新增基础本地供应计费绑定使用原区域余量4 MiB，现为27项43.0078125／44 MiB、余0.9921875 MiB，应用目标不增。下文39.0078125／26项是此前基线，不作本版准入；未验证布局／索引与16 GB实机性能。

@@ -2,6 +2,8 @@
 
 设计契约：v0.4.24，2026-10-19。把13个基础样例及首版必要支持物件展开为27类有界物件契约，服从 [粒度收敛](model-granularity-and-convergence.md) 和 [字段字典](capability-field-dictionary.md)。OBJ编号是设计契约族，不是新增资产、行业、实体表或C能力；27类不意味着每实例分配27组件。后续技术路线／商业租赁／复合楼／摊位仍按 [覆盖矩阵](object-definition-coverage.md) 缺项处理。
 
+v0.4.28 [27物件逐项复核](building-unit-shared-facility-contract.md#8-27类物件逐项核对) 以B楼体、H单元、O经营、共享设施／权利分别解析；单元经已验证接入组，不自动连所有门，8区／4功能不限制H套数。各资源容量、分摊应计和维护condition均唯一，独立物业收费仍按真实协议额度。
+
 v0.4.27 [单栋住宅能源案例](worked-example-building-cooking-energy.md) 展开OBJ-HOUSE／EQUIPMENT／PORT／BOUNDARY：独立炉具K条件先有表示才允许局部改造，饭煲／通风原年龄不刷新；公共配电／气站在楼外有自己的资产／接入，不凭“住宅楼”免费生成。三分支各独立、混合为楼内不同户配置。
 
 v0.4.26住宅／设备补 [电炊与天然气烹饪契约](natural-gas-and-cooking.md)：同一有用烹饪量只满足一次、已有综合电负荷不得双加、双能源须真实安装。天然气完整链仍后续B，不能借OBJ-WATER-EDGE／NET-NODE／PORT现有抽象直接启用；原8口、M／C和网络字节联合限额不增加。
@@ -18,7 +20,7 @@ v0.4.25现行粒度与预算以 [整体分配审查](granularity-allocation-audi
 
 | 包 | 明确必需内容／缺项后果 |
 | --- | --- |
-| identity／geometry | Root有类型身份、模板／schema／实例版本；真实几何、z／frame、site／权利、适用8子区／8口与净空。缺项不创建可施工实物 |
+| identity／geometry | Root有类型身份、模板／schema／实例版本；真实几何、z／frame、site／权利、适用8共享／功能子区（H套内布局另计）／8口与净空。缺项不创建可施工实物 |
 | operation／quantity | 适用活动／请求、单位／精度／范围、时段、额定上界／必要班组／资格、启动／待机／降级／停止；缺项不承诺实际能力 |
 | resource／finance | 必要资源曲线／相容输入／库存、真实付款方／账户、工资／费用／资金保障、计量／尾差／原票／收尾；非适用项声明原因，不默认免费 |
 | project／maintenance | 创建／建设／最低工期、实际投入／验收、条件／维护周期／交付／减容、停用／更换／拆除和残余物；缺项不接受新工程／运营义务 |
@@ -39,7 +41,7 @@ v0.4.25现行粒度与预算以 [整体分配审查](granularity-allocation-audi
 
 范围：CAT-R-01—04，R-H1／R-H2及独栋／联排／低中层的几何规格。C01—C06／C10／C11／C14／C16；楼体、H住房单元、F家庭、账户各原记录，住宅不自动生成运营企业。
 
-- 特有字段：`house.unit_count`（S／N、每资产有界）、`house.unit_layout_ref`（S／G及每单元可用面积／人数限额）、`house.common_area_ref`（S／R）；`housing.unit_ref／occupancy_ref／rent_terms_ref`归S02，楼体只引用。8维满意度不存到楼体；家庭成员／劳动份额不是每栋重造一套。
+- 特有字段：`house.unit_count`（S／N、每资产有界）、`house.unit_layout_ref`（S／G及每单元可用面积／人数限额）、`house.common_area_ref`（S／R）；`housing.unit_ref／occupancy_ref／rent_terms_ref`归S02，楼体只引用；H布局槽还须解析已验证的内部公共通路／支撑到外接组，不能因host相同自动连所有门。8维满意度不存到楼体；家庭成员／劳动份额不是每栋重造一套。
 - 运算：可交付单元＝已验收且必要入口／水电／合法条件满足的实际单元；入住由真实房源／家庭现金／权利锁匹配，不按容量造人。设备计数／时段与实际居民条件产生有界用水电需求；房租应计／实付归S08，景观／通勤／空气／噪声经来源更新家庭行为。
 - 门：每单元人数与实际入住分别计；普通租赁、受限全款与市有普通出租复用原权益。高层垂直交通、复杂共有产权、混合楼、多租户商业、按揭／资格配租不由此启用。装修／扩容须实际工程，不能把公共／结构面积变免费住房。
 - 更新／退出：S01几何／入口，S02权益／入住，S05交付、S08账务、S10条件、S13家庭满意度各单写；封门／断供保留家庭实际接入／权利。拆除先安置／程序／断接／清场，旧欠租押金有原来源。M01／M02／M05／M12／M18—M21。H1四户×最多4人与H2十六户×最多4人仍只是样例上限，几何／资源／维护profile待资产配置。
@@ -186,7 +188,7 @@ S01登记最大生长包络／权利，S10按原模板／游戏时推进成熟�
 
 ## 22. OBJ-YARD：庭院／硬质共享区／通道
 
-C01／C02／C03／C06／C14／适用C15／C16。字段`yard.host_or_facility_ref`（明确二选一）、`yard.use_geometry_ref`、`yard.exclusivity_ref`、`yard.time_windows_ref`、`yard.capacity_provider_ref`、`yard.maintenance_ref`。归原宿主≤8子区或真实独立设施，穿行功能另占真实路网边／节点，不用space_ref免费造物件。
+C01／C02／C03／C06／C14／适用C15／C16。字段`yard.host_or_facility_ref`（明确二选一）、`yard.use_geometry_ref`、`yard.exclusivity_ref`、`yard.time_windows_ref`、`yard.capacity_provider_ref`、`yard.maintenance_ref`。归原宿主≤8共享／功能子区或真实独立设施，穿行功能另占真实路网边／节点，不用space_ref免费造物件。
 
 S01物理与建筑使用关联，S04独立空间组／实际通行，S08真实费用分摊，S10维护，原权限／使用责任按来源不复制。每空间32使用建筑／全世界8192（关闭待退出仍占位）；公众访问和景观受益不是每个受益楼都要建使用权。面积／费用／容量只一次，时分转换须清场，故障保留超占用。M05／M14／M16／M20；完整商业空间租赁／摊位合同不因已有庭院共享而自动支持。
 
