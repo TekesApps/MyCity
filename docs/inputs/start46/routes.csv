@@ -1,0 +1,3 @@
+id,map,mode,points_cm,length_cm,speed_m_per_min,authority,source
+B_PED_J,B,walk,22400 8350 0;2400 8350 0;2400 28350 0;62400 28350 0;62400 8350 0;102400 8350 0,160000,80,B_public_pedestrian_right_pending,START46
+B_VEH_J,B,vehicle,22400 8000 0;102400 8000 0,80000,500,B_public_vehicle_right_pending,START46

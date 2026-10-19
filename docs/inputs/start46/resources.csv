@@ -1,0 +1,14 @@
+id,owner,kind,quantity,unit,shared_limit,source
+S_MED_V,S,vehicle_6x2.4m,1,vehicle,1,finite_opening_asset
+S_POL_V,S,vehicle_6x2.4m,1,vehicle,1,finite_opening_asset
+S_FIRE_V,S,vehicle_6x2.4m,1,vehicle,1,finite_opening_asset
+M_V,M,vehicle_6x2.4m,1,vehicle,1,finite_opening_asset
+C_V,C,goods_vehicle_6x2.4m,1,vehicle,1,finite_opening_asset
+S_FIRE_TOOL,S,portable_electric_pump,1,set,1,RUN36+finite_opening_asset
+M_TOOL,M,electric_water_maintenance_toolset,1,set,1,RUN36+finite_opening_asset
+C_PAYLOAD,C,general_goods,20,goods_unit,20,C_V_payload_not_second_vehicle
+S_KIT,S,onboard_two_hour_person_support,8,person_kit,8,V_to_S_16
+M_KIT,M,onboard_two_hour_person_support,2,person_kit,2,V_to_M_4
+C_KIT,C,onboard_two_hour_person_support,1,person_kit,1,V_to_C_2
+V_NORMAL,V,finite_vehicle_operating_support,272,vehicle_hour,272,normal_contracts_only_not_free_fuel
+V_TAIL,V,prepositioned_extra_operating_support,10,vehicle_hour,10,one_shared_tail_not_per_task

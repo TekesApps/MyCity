@@ -1,5 +1,7 @@
 # 统一输入装配台账 AS44／START44
 
+v0.4.46 [FP46有限供方输入](start46-finite-providers-and-return.md)接续A44-05至09／11，交36外部人员、5车／工具／有限包、2条B路段、13资金来源和38零余额对手记录。S轮班不假设全天100潜力，64账户仍880000；254拟采购与208自有保护不增加A的5901.10。正式法源、完整路线／环境、G补货／U上游及长期安全接收仍M。
+
 v0.4.45 [START45空间输入](start45-spatial-input-pack.md)接续A44-03／04：已交4份CSV／40条数据，新增回转场及对应公共K／维护，普通采购保护改5901.10。START44原金额保留为历史；PNG／完整机动／楼内贯入与立管／法源及供方仍M，不将具体CSV的静态检查提升为完整A通过。
 
 设计修订：v0.4.44，2026-10-19。接续[BC43](city-baseline-completion-contract.md)、[IL43](institutions-and-labor-execution.md)、[START35](standard-start-and-shared-parameters.md)及[RUN36](minimum-operating-parameters.md)。本篇开始推进真实输入装配A，不重开已经有限冻结的City规则D；不展开AgentKit、不写代码。
