@@ -2,6 +2,8 @@
 
 设计补充：v0.4.19，2026-10-19。P＝属性组，S＝逻辑系统，M＝指标族；编号与 [Root／组件](root-component-contract.md)、[首版模板](first-release-object-templates.md) 对齐。这里的“双向”是从字段到指标、从系统／指标反查字段，**不是指标可以直接给事实赋值**。
 
+v0.4.24的 [字段字典](capability-field-dictionary.md) 与 [常用物件契约](common-object-contracts.md) 向下展开本表；[覆盖矩阵](object-definition-coverage.md) 向上检查目录缺项。本表P01—P34／C01—C16／S00—S13／M01—M26不扩编号，字段只保留决策所需最小状态，遵守 [粒度与误差准入](model-granularity-and-convergence.md)。
+
 ## 1. 字段和箭头的语义
 
 v0.4.22接口补充见 [经济运行契约](physical-economy-runtime-contract.md)：P12／P13与实际活动同区间联合可行，待机／增量不双计，工资仍依P17；P15是新接纳门，不裁掉故障超占用，M16报告缺口；P29维修不刷新设备年龄。M25独立单店情景不可相加，联合预演共享需求／现金；报价不预留，退款／押金沿S08唯一原票。新绑定有0.125 MiB候选扩展，meter余数归原计量段；34属性／14系统／26指标族不变，后续字段／机制仍先验证落点。

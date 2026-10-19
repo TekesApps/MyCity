@@ -2,6 +2,8 @@
 
 设计补充：v0.4.19，2026-10-19。沿“基础对象→能力组合→具体模板→系统读写→指标→反向补属性”收敛。本文是语义／数据契约，不是Rust代码、ECS选型或已注册schema；与 [对象模型](city-object-model.md)、[空间运行契约](spatial-runtime-contract.md) 共同约束首版。
 
+v0.4.24细化沿 [粒度收敛](model-granularity-and-convergence.md) → [覆盖矩阵](object-definition-coverage.md) → [字段字典](capability-field-dictionary.md) → [物件契约](common-object-contracts.md)。16类能力和原权威不增；新增语义先证明必要用途／聚合方式／误差／预算，字段路径不是每实例物理列，缺参数／表示不能凭目录启用。
+
 ## 1. Root是统一入口，不是巨型父类
 
 v0.4.22组合新事实落点按 [经济运行契约](physical-economy-runtime-contract.md)：原宿主1 KiB只引用扩展，新增128×256 B宿主、512×128 B功能绑定与2048×16 B依赖／meter关联共0.125 MiB在原模拟域重划。下文原表仍只拥有原事实，不复制现金、库存、权利、占用或计量余数；新增复合字段不再笼统挤入原宿主。候选仍后续B、须布局／索引验收，满16冻结版本不阻止旧实例记账／延期／安全退出。
