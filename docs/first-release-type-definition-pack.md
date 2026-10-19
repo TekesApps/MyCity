@@ -2,6 +2,8 @@
 
 设计修订：v0.4.34，2026-10-19。仅定义文档；数值是游戏候选参数，不是现实工程定额、市场价格或性能证据。
 
+v0.4.35由[START35统一开局](standard-start-and-shared-parameters.md)选择最小共同子集：已建住宅／零售／路网与有限外购，并核工资／采购／租金和长期维护缺口。它不启用全部23类，也不关闭本文的投运门。
+
 ## 1. 范围与完成门
 
 [90类目录](building-types-and-technology-catalog.md) 中首版23类各有下表一个基准规格；66后续与1远期仍按[覆盖矩阵](object-definition-coverage.md)保留机制缺项。这23类包括道路、网络、边界，不全是楼。复用[27物件契约](common-object-contracts.md)、[13结构样例与12经营profile](first-release-object-templates.md)，不另建23套经营系统。
