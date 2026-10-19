@@ -1,5 +1,7 @@
 # 家庭—企业有限反馈契约
 
+v0.4.41 [ME41交叉约束](market-entities-and-equity.md#10-me41家庭收入个人出资与消费资金门)将自主出资／家庭转个人再认购统一列为可选资本支出，先满足原硬保护与H窗口必要生活预算；转回家庭／股息不重加I30，工资仍依原家庭收款与劳动地点税源。并发认购复核同一可用余额，不给个人再发消费需求。
+
 设计修订：v0.4.37，2026-10-19。落实[City清单CD-01](city-design-closure-checklist.md)，对应GAP-05。仅游戏候选规则，无实现或经济均衡证据；[原家庭](citizen-households-and-living.md)、[行业](industries-employment-and-effects.md)、[实物经济](physical-economy-runtime-contract.md)、[工资税](fiscal-recurring-budget-contract.md)仍为权利／交付／账务权威。
 
 v0.4.40 [ME40](market-entities-and-equity.md)允许个人直接出资与分红。个人自有账户不是家庭钱包副本，个人收益仅经明确共同收支／真实转账进入F现金；不额外放大FB37的I30。搬家／家庭拆并不重分股权，住所从原成员／F／H关系查询。核算按登记公司完整O范围封闭，原每O行为锚点仍是本地经营意图，不因汇总取消岗位／亏损或旧债。
