@@ -1,0 +1,21 @@
+continuity: wall=1.7s cycles=1 sequence=54 crashes=0 disk=139240B
+continuity: wall=31.9s cycles=87 sequence=743 crashes=1 disk=664524B
+Io(Os { code: 23, kind: Uncategorized, message: "Too many open files in system" })
+       38.21 real         0.35 user         0.84 sys
+            14991360  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+                2128  page reclaims
+                  10  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+               24675  voluntary context switches
+                4619  involuntary context switches
+         10666881457  instructions retired
+          4485640894  cycles elapsed
+             8929616  peak memory footprint

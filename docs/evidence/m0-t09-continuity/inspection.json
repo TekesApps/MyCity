@@ -1,0 +1,14 @@
+{
+  "financial_or_management_receipts": 35,
+  "receipts_scanned": 48895,
+  "sequence": 48895,
+  "source_after_read_only_reopen": {
+    "next_event": 6,
+    "pending": [],
+    "pending_limit": 16,
+    "reconciled": false,
+    "registered": true
+  },
+  "store_state_sha256": "4f08c995c8bcb5153a9a08eafbcde53257b9e6ce216062823abfcbfa5554c335",
+  "unchanged_by_queries": true
+}

@@ -1,0 +1,1 @@
+PASS: read-only world and seven query examples; scanned 48895 committed receipts, selected 35 financial/management traces; queries changed neither state hash nor sequence

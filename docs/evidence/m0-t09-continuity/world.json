@@ -1,0 +1,1255 @@
+{
+  "schema": "mycity-m0-state-v6",
+  "scope": {
+    "world": 1,
+    "branch": 1
+  },
+  "seed": 7,
+  "revision": 42803,
+  "accounts": [
+    {
+      "id": 1,
+      "role": "treasury",
+      "cash": 1000000,
+      "protected": 0
+    },
+    {
+      "id": 2,
+      "role": "company",
+      "cash": 0,
+      "protected": 0
+    },
+    {
+      "id": 3,
+      "role": "company",
+      "cash": 596800,
+      "protected": 0
+    },
+    {
+      "id": 4,
+      "role": "supplier",
+      "cash": 1403200,
+      "protected": 0
+    }
+  ],
+  "stocks": [
+    {
+      "id": 1,
+      "owner": 3,
+      "commodity": "fuel",
+      "quantity": 5000,
+      "basis": 2000,
+      "lot_id": 5,
+      "origin_quantity": 5000,
+      "origin_basis": 2000,
+      "offset": 0
+    },
+    {
+      "id": 2,
+      "owner": 3,
+      "commodity": "electricity",
+      "quantity": 0,
+      "basis": 0,
+      "lot_id": 6,
+      "origin_quantity": 0,
+      "origin_basis": 0,
+      "offset": 0
+    },
+    {
+      "id": 3,
+      "owner": 3,
+      "commodity": "water",
+      "quantity": 0,
+      "basis": 0,
+      "lot_id": 7,
+      "origin_quantity": 0,
+      "origin_basis": 0,
+      "offset": 0
+    },
+    {
+      "id": 4,
+      "owner": 3,
+      "commodity": "raw_water",
+      "quantity": 5400000,
+      "basis": 0,
+      "lot_id": 8,
+      "origin_quantity": 5400000,
+      "origin_basis": 0,
+      "offset": 0
+    },
+    {
+      "id": 5,
+      "owner": 3,
+      "commodity": "waste_water",
+      "quantity": 600000,
+      "basis": 0,
+      "lot_id": 9,
+      "origin_quantity": 600000,
+      "origin_basis": 0,
+      "offset": 0
+    },
+    {
+      "id": 6,
+      "owner": 3,
+      "commodity": "heat",
+      "quantity": 100000,
+      "basis": 0,
+      "lot_id": 10,
+      "origin_quantity": 100000,
+      "origin_basis": 0,
+      "offset": 0
+    },
+    {
+      "id": 7,
+      "owner": 4,
+      "commodity": "raw",
+      "quantity": 1000,
+      "basis": 400,
+      "lot_id": 11,
+      "origin_quantity": 5000,
+      "origin_basis": 2000,
+      "offset": 4000
+    },
+    {
+      "id": 8,
+      "owner": 2,
+      "commodity": "raw",
+      "quantity": 1000,
+      "basis": 2020,
+      "lot_id": 3221225473,
+      "origin_quantity": 1000,
+      "origin_basis": 2020,
+      "offset": 0
+    },
+    {
+      "id": 9,
+      "owner": 2,
+      "commodity": "raw",
+      "quantity": 1000,
+      "basis": 2020,
+      "lot_id": 3221225474,
+      "origin_quantity": 1000,
+      "origin_basis": 2020,
+      "offset": 0
+    },
+    {
+      "id": 10,
+      "owner": 2,
+      "commodity": "raw",
+      "quantity": 1000,
+      "basis": 2020,
+      "lot_id": 3221225475,
+      "origin_quantity": 1000,
+      "origin_basis": 2020,
+      "offset": 0
+    },
+    {
+      "id": 11,
+      "owner": 2,
+      "commodity": "raw",
+      "quantity": 1000,
+      "basis": 2020,
+      "lot_id": 3221225476,
+      "origin_quantity": 1000,
+      "origin_basis": 2020,
+      "offset": 0
+    },
+    {
+      "id": 12,
+      "owner": 2,
+      "commodity": "raw",
+      "quantity": 0,
+      "basis": 0,
+      "lot_id": 16,
+      "origin_quantity": 0,
+      "origin_basis": 0,
+      "offset": 0
+    },
+    {
+      "id": 13,
+      "owner": 2,
+      "commodity": "electricity",
+      "quantity": 0,
+      "basis": 0,
+      "lot_id": 17,
+      "origin_quantity": 0,
+      "origin_basis": 0,
+      "offset": 0
+    },
+    {
+      "id": 14,
+      "owner": 2,
+      "commodity": "water",
+      "quantity": 0,
+      "basis": 0,
+      "lot_id": 18,
+      "origin_quantity": 0,
+      "origin_basis": 0,
+      "offset": 0
+    }
+  ],
+  "opening_sources": [
+    {
+      "id": 1,
+      "kind": "cash_capital",
+      "amount": 1000000
+    },
+    {
+      "id": 2,
+      "kind": "cash_capital",
+      "amount": 200000
+    },
+    {
+      "id": 3,
+      "kind": "cash_capital",
+      "amount": 600000
+    },
+    {
+      "id": 4,
+      "kind": "cash_capital",
+      "amount": 1200000
+    },
+    {
+      "id": 5,
+      "kind": "inventory_capital",
+      "amount": 2000
+    },
+    {
+      "id": 6,
+      "kind": "inventory_capital",
+      "amount": 100
+    },
+    {
+      "id": 7,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 8,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 9,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 10,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 11,
+      "kind": "inventory_capital",
+      "amount": 2000
+    },
+    {
+      "id": 12,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 13,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 14,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 15,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 16,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 17,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 18,
+      "kind": "inventory_capital",
+      "amount": 0
+    }
+  ],
+  "region": {
+    "interaction_time": 182850,
+    "active_city": 1,
+    "sequence": 24421,
+    "cities": [
+      {
+        "id": 1,
+        "development_elapsed": 3153660930,
+        "population": 4000,
+        "willing": 1998,
+        "housing_capacity": 10000
+      },
+      {
+        "id": 2,
+        "development_elapsed": 61020,
+        "population": 100,
+        "willing": 0,
+        "housing_capacity": 10000
+      },
+      {
+        "id": 3,
+        "development_elapsed": 64900,
+        "population": 300,
+        "willing": 100,
+        "housing_capacity": 10000
+      },
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "snapshots": [
+      {
+        "city": 1,
+        "version": 4063,
+        "observed_at": 182820,
+        "population": 4000,
+        "applied_sequence": 24418
+      },
+      {
+        "city": 2,
+        "version": 4063,
+        "observed_at": 182790,
+        "population": 100,
+        "applied_sequence": 24414
+      },
+      {
+        "city": 3,
+        "version": 4141,
+        "observed_at": 182820,
+        "population": 300,
+        "applied_sequence": 24418
+      },
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "routes": [
+      {
+        "id": 1,
+        "from": 1,
+        "to": 3,
+        "distance_m": 1024,
+        "travel_seconds": 60,
+        "capacity_people": 2000
+      },
+      {
+        "id": 2,
+        "from": 3,
+        "to": 2,
+        "distance_m": 1024,
+        "travel_seconds": 60,
+        "capacity_people": 2000
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "transits": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "obligations": [
+      {
+        "id": 1,
+        "payer": 3,
+        "payee": 2,
+        "period_seconds": 30,
+        "amount": 1000,
+        "next_due": null,
+        "expires_at": 90,
+        "arrears": 0
+      },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
+    "next_transit": 1
+  },
+  "economy": null,
+  "boot": {
+    "profile": "pboot-cold-micro-v1",
+    "operator": 3,
+    "contractor": 4,
+    "stocks": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "resources": [
+      101,
+      102
+    ],
+    "limits": [
+      5000,
+      2000000,
+      6000000,
+      6000000,
+      6000000,
+      10000000
+    ],
+    "initial": [
+      5000,
+      100000,
+      0,
+      6000000,
+      0,
+      0
+    ],
+    "initial_basis": 2100,
+    "initial_cash": 3000000,
+    "time": 182850,
+    "next_job": 2,
+    "jobs": [
+      {
+        "phase": "Idle",
+        "identity": 1,
+        "started": 0,
+        "due": 60,
+        "tokens": [
+          0,
+          0
+        ],
+        "inputs": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "cost": 0,
+        "completed": 0,
+        "failed": 1
+      },
+      {
+        "phase": "Idle",
+        "identity": 0,
+        "started": 0,
+        "due": 0,
+        "tokens": [
+          0,
+          0
+        ],
+        "inputs": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "cost": 0,
+        "completed": 0,
+        "failed": 0
+      }
+    ],
+    "fees": 200,
+    "failed_expense": 300,
+    "fuel_used": 0,
+    "exports": [
+      0,
+      0
+    ],
+    "exported_basis": 0
+  },
+  "exchange": {
+    "profile": "regional-fulfilment-v1",
+    "home_city": 1,
+    "maps": [
+      {
+        "city": 1,
+        "origin_x_cm": 0
+      },
+      {
+        "city": 2,
+        "origin_x_cm": 204800
+      },
+      {
+        "city": 3,
+        "origin_x_cm": 102400
+      }
+    ],
+    "accounts": [
+      {
+        "account": 1,
+        "city": 3
+      },
+      {
+        "account": 2,
+        "city": 2
+      },
+      {
+        "account": 3,
+        "city": 1
+      },
+      {
+        "account": 4,
+        "city": 1
+      }
+    ],
+    "stocks": [
+      {
+        "stock": 1,
+        "city": 1,
+        "limit": 5000
+      },
+      {
+        "stock": 2,
+        "city": 1,
+        "limit": 2000000
+      },
+      {
+        "stock": 3,
+        "city": 1,
+        "limit": 6000000
+      },
+      {
+        "stock": 4,
+        "city": 1,
+        "limit": 6000000
+      },
+      {
+        "stock": 5,
+        "city": 1,
+        "limit": 6000000
+      },
+      {
+        "stock": 6,
+        "city": 1,
+        "limit": 10000000
+      },
+      {
+        "stock": 7,
+        "city": 1,
+        "limit": 5000
+      },
+      {
+        "stock": 8,
+        "city": 2,
+        "limit": 10000
+      },
+      {
+        "stock": 9,
+        "city": 2,
+        "limit": 10000
+      },
+      {
+        "stock": 10,
+        "city": 2,
+        "limit": 10000
+      },
+      {
+        "stock": 11,
+        "city": 2,
+        "limit": 10000
+      },
+      {
+        "stock": 12,
+        "city": 2,
+        "limit": 10000
+      },
+      {
+        "stock": 13,
+        "city": 2,
+        "limit": 1000000
+      },
+      {
+        "stock": 14,
+        "city": 2,
+        "limit": 1000000
+      }
+    ],
+    "edges": [
+      {
+        "id": 1,
+        "from": 1,
+        "to": 3,
+        "kind": "freight",
+        "resource": 201,
+        "a_cm": [
+          51200,
+          51200,
+          0
+        ],
+        "b_cm": [
+          153600,
+          51200,
+          0
+        ],
+        "travel_seconds": 60,
+        "population_route": 1
+      },
+      {
+        "id": 2,
+        "from": 3,
+        "to": 2,
+        "kind": "freight",
+        "resource": 202,
+        "a_cm": [
+          153600,
+          51200,
+          0
+        ],
+        "b_cm": [
+          256000,
+          51200,
+          0
+        ],
+        "travel_seconds": 60,
+        "population_route": 2
+      },
+      {
+        "id": 3,
+        "from": 1,
+        "to": 3,
+        "kind": "electricity",
+        "resource": 101,
+        "a_cm": [
+          51200,
+          51200,
+          500
+        ],
+        "b_cm": [
+          153600,
+          51200,
+          500
+        ],
+        "travel_seconds": 1,
+        "population_route": null
+      },
+      {
+        "id": 4,
+        "from": 3,
+        "to": 2,
+        "kind": "electricity",
+        "resource": 103,
+        "a_cm": [
+          153600,
+          51200,
+          500
+        ],
+        "b_cm": [
+          256000,
+          51200,
+          500
+        ],
+        "travel_seconds": 1,
+        "population_route": null
+      },
+      {
+        "id": 5,
+        "from": 1,
+        "to": 3,
+        "kind": "water",
+        "resource": 102,
+        "a_cm": [
+          51200,
+          51200,
+          -300
+        ],
+        "b_cm": [
+          153600,
+          51200,
+          -300
+        ],
+        "travel_seconds": 512,
+        "population_route": null
+      },
+      {
+        "id": 6,
+        "from": 3,
+        "to": 2,
+        "kind": "water",
+        "resource": 104,
+        "a_cm": [
+          153600,
+          51200,
+          -300
+        ],
+        "b_cm": [
+          256000,
+          51200,
+          -300
+        ],
+        "travel_seconds": 512,
+        "population_route": null
+      }
+    ],
+    "open": [
+      true,
+      true,
+      true,
+      true,
+      true,
+      true
+    ],
+    "quotes": [
+      {
+        "spec": {
+          "id": 1,
+          "from": 1,
+          "to": 2,
+          "seller": 4,
+          "buyer": 2,
+          "carrier": 4,
+          "source": 7,
+          "destination": 8,
+          "kind": "freight",
+          "quantity": 1000,
+          "unit_price": 2000,
+          "expires_at": 2000,
+          "max_distance_m": 2048,
+          "edges": [
+            1,
+            2,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        "status": "Delivered",
+        "delivered": 1000,
+        "invoice": 2000,
+        "freight": 20,
+        "source_cost": 400,
+        "loss_cost": 0,
+        "source_fragment": {
+          "lot_id": 11,
+          "origin_quantity": 5000,
+          "origin_basis": 2000,
+          "offset": 0,
+          "quantity": 1000,
+          "basis": 400
+        }
+      },
+      {
+        "spec": {
+          "id": 2,
+          "from": 1,
+          "to": 2,
+          "seller": 4,
+          "buyer": 2,
+          "carrier": 4,
+          "source": 7,
+          "destination": 9,
+          "kind": "freight",
+          "quantity": 1000,
+          "unit_price": 2000,
+          "expires_at": 2000,
+          "max_distance_m": 2048,
+          "edges": [
+            1,
+            2,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        "status": "Delivered",
+        "delivered": 1000,
+        "invoice": 2000,
+        "freight": 20,
+        "source_cost": 400,
+        "loss_cost": 0,
+        "source_fragment": {
+          "lot_id": 11,
+          "origin_quantity": 5000,
+          "origin_basis": 2000,
+          "offset": 1000,
+          "quantity": 1000,
+          "basis": 400
+        }
+      },
+      {
+        "spec": {
+          "id": 3,
+          "from": 1,
+          "to": 2,
+          "seller": 4,
+          "buyer": 2,
+          "carrier": 4,
+          "source": 7,
+          "destination": 10,
+          "kind": "freight",
+          "quantity": 1000,
+          "unit_price": 2000,
+          "expires_at": 2000,
+          "max_distance_m": 2048,
+          "edges": [
+            1,
+            2,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        "status": "Delivered",
+        "delivered": 1000,
+        "invoice": 2000,
+        "freight": 20,
+        "source_cost": 400,
+        "loss_cost": 0,
+        "source_fragment": {
+          "lot_id": 11,
+          "origin_quantity": 5000,
+          "origin_basis": 2000,
+          "offset": 2000,
+          "quantity": 1000,
+          "basis": 400
+        }
+      },
+      {
+        "spec": {
+          "id": 4,
+          "from": 1,
+          "to": 2,
+          "seller": 4,
+          "buyer": 2,
+          "carrier": 4,
+          "source": 7,
+          "destination": 11,
+          "kind": "freight",
+          "quantity": 1000,
+          "unit_price": 2000,
+          "expires_at": 2000,
+          "max_distance_m": 2048,
+          "edges": [
+            1,
+            2,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        "status": "Delivered",
+        "delivered": 1000,
+        "invoice": 2000,
+        "freight": 20,
+        "source_cost": 400,
+        "loss_cost": 0,
+        "source_fragment": {
+          "lot_id": 11,
+          "origin_quantity": 5000,
+          "origin_basis": 2000,
+          "offset": 3000,
+          "quantity": 1000,
+          "basis": 400
+        }
+      },
+      {
+        "spec": {
+          "id": 5,
+          "from": 1,
+          "to": 2,
+          "seller": 4,
+          "buyer": 2,
+          "carrier": 4,
+          "source": 7,
+          "destination": 12,
+          "kind": "freight",
+          "quantity": 1000,
+          "unit_price": 2000,
+          "expires_at": 30,
+          "max_distance_m": 2048,
+          "edges": [
+            1,
+            2,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        "status": "Expired",
+        "delivered": 0,
+        "invoice": 0,
+        "freight": 0,
+        "source_cost": 0,
+        "loss_cost": 0,
+        "source_fragment": null
+      },
+      {
+        "spec": {
+          "id": 6,
+          "from": 1,
+          "to": 2,
+          "seller": 3,
+          "buyer": 2,
+          "carrier": 4,
+          "source": 2,
+          "destination": 13,
+          "kind": "electricity",
+          "quantity": 100000,
+          "unit_price": 1,
+          "expires_at": 190,
+          "max_distance_m": 2048,
+          "edges": [
+            3,
+            4,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        "status": "Expired",
+        "delivered": 0,
+        "invoice": 0,
+        "freight": 0,
+        "source_cost": 0,
+        "loss_cost": 0,
+        "source_fragment": null
+      },
+      {
+        "spec": {
+          "id": 7,
+          "from": 1,
+          "to": 2,
+          "seller": 3,
+          "buyer": 2,
+          "carrier": 4,
+          "source": 3,
+          "destination": 14,
+          "kind": "water",
+          "quantity": 100000,
+          "unit_price": 2,
+          "expires_at": 2000,
+          "max_distance_m": 2048,
+          "edges": [
+            5,
+            6,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        "status": "Expired",
+        "delivered": 0,
+        "invoice": 0,
+        "freight": 0,
+        "source_cost": 0,
+        "loss_cost": 0,
+        "source_fragment": null
+      },
+      {
+        "spec": {
+          "id": 8,
+          "from": 1,
+          "to": 2,
+          "seller": 3,
+          "buyer": 2,
+          "carrier": 4,
+          "source": 2,
+          "destination": 13,
+          "kind": "electricity",
+          "quantity": 100000,
+          "unit_price": 1,
+          "expires_at": 2000,
+          "max_distance_m": 1000,
+          "edges": [
+            3,
+            4,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+          ]
+        },
+        "status": "Expired",
+        "delivered": 0,
+        "invoice": 0,
+        "freight": 0,
+        "source_cost": 0,
+        "loss_cost": 0,
+        "source_fragment": null
+      }
+    ],
+    "shipments": [
+      null,
+      null,
+      null,
+      null
+    ],
+    "energy_loss": 0,
+    "water_loss": 0,
+    "energy_loss_limit": 100000,
+    "water_loss_limit": 100000,
+    "loss_expense": 0,
+    "sales": 8000,
+    "freight_income": 80,
+    "cogs": 1600,
+    "initial_basis": 4100,
+    "initial_raw": 5000,
+    "inbox": {
+      "enabled": true,
+      "facts": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "retained": [
+        {
+          "sequence": 9,
+          "quote": 0,
+          "kind": "External",
+          "received_at": 0,
+          "debtor": 2,
+          "creditor": 4,
+          "manager": 1,
+          "handoffs": 1,
+          "fee": 700000,
+          "paid": 195000,
+          "quantity": 0,
+          "invoice": 0,
+          "fragment": null,
+          "external": {
+            "source": 1,
+            "event": 1,
+            "debtor": 2,
+            "creditor": 4,
+            "amount": 700000,
+            "due": 50,
+            "reason": "emergency_repair"
+          }
+        },
+        {
+          "sequence": 10,
+          "quote": 0,
+          "kind": "External",
+          "received_at": 0,
+          "debtor": 2,
+          "creditor": 4,
+          "manager": 1,
+          "handoffs": 1,
+          "fee": 700000,
+          "paid": 0,
+          "quantity": 0,
+          "invoice": 0,
+          "fragment": null,
+          "external": {
+            "source": 1,
+            "event": 2,
+            "debtor": 2,
+            "creditor": 4,
+            "amount": 700000,
+            "due": 50,
+            "reason": "emergency_repair"
+          }
+        },
+        {
+          "sequence": 11,
+          "quote": 0,
+          "kind": "External",
+          "received_at": 0,
+          "debtor": 2,
+          "creditor": 4,
+          "manager": 1,
+          "handoffs": 1,
+          "fee": 700000,
+          "paid": 0,
+          "quantity": 0,
+          "invoice": 0,
+          "fragment": null,
+          "external": {
+            "source": 1,
+            "event": 3,
+            "debtor": 2,
+            "creditor": 4,
+            "amount": 700000,
+            "due": 50,
+            "reason": "emergency_repair"
+          }
+        },
+        {
+          "sequence": 12,
+          "quote": 0,
+          "kind": "External",
+          "received_at": 0,
+          "debtor": 2,
+          "creditor": 4,
+          "manager": 1,
+          "handoffs": 1,
+          "fee": 700000,
+          "paid": 0,
+          "quantity": 0,
+          "invoice": 0,
+          "fragment": null,
+          "external": {
+            "source": 1,
+            "event": 4,
+            "debtor": 2,
+            "creditor": 4,
+            "amount": 700000,
+            "due": 50,
+            "reason": "emergency_repair"
+          }
+        },
+        {
+          "sequence": 13,
+          "quote": 0,
+          "kind": "External",
+          "received_at": 0,
+          "debtor": 2,
+          "creditor": 4,
+          "manager": 1,
+          "handoffs": 1,
+          "fee": 700000,
+          "paid": 0,
+          "quantity": 0,
+          "invoice": 0,
+          "fragment": null,
+          "external": {
+            "source": 1,
+            "event": 5,
+            "debtor": 2,
+            "creditor": 4,
+            "amount": 700000,
+            "due": 50,
+            "reason": "emergency_repair"
+          }
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "external_next": 6,
+      "next_sequence": 14,
+      "incident_seen": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        false
+      ],
+      "accrued": 3500120,
+      "paid": 195120,
+      "closed": 8
+    },
+    "link_faults": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "link_repairs": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0,
+      0,
+      0
+    ],
+    "population_link_controls": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

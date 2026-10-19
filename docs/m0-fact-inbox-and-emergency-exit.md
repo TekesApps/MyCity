@@ -73,3 +73,5 @@
 ### 回执的直接结算关联
 
 成功回执按action下标保存`created_facts`及`settled`：Dispatch／Incident／External创建的事实ID直接返回，显式Settle／RegionSettleDebt记录本次实际转现金额（不足时为实付部分，零支付为0）。来源／原双方从同条原始动作及合同追溯，后续Settle／Handoff／Archive使用相同事实ID。即使工作记录已归档，也可从冷回执直接连接“来源→事实ID→各次实付”，不要求查询者重放整个模型才能猜出关系。同operation重试返回原实付回执，不能把该返回值再次当成新转账。
+
+v0.5.18已取得[完整30分钟及独立验算](m0-continuity-acceptance.md#v0518最终结果本轮六包完成)。本页的短测与接口契约不单独承担时长证明，具体源码指纹、原始报告、48,895条回执扫描及延后范围以验收页为准。

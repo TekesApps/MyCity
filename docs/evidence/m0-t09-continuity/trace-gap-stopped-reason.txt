@@ -1,0 +1,1 @@
+Stopped intentionally: completion audit requires explicit created-fact IDs and actual settlement amounts in durable receipts; this partial run is not acceptance.

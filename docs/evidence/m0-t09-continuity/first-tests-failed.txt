@@ -1,0 +1,153 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+    Finished `release` profile [optimized] target(s) in 6.81s
+     Running unittests src/lib.rs (target/release/deps/mycity_core-d9714c4df210afe2)
+
+running 36 tests
+test arena::tests::generation_exhaustion_retires_slot_instead_of_resurrecting_old_handle ... ok
+test arena::tests::wrong_world_branch_domain_and_generation_are_rejected ... ok
+test calendar::tests::month_anchor_does_not_drift_after_february ... ok
+test calendar::tests::dates_round_trip_and_reject_invalid_bounds ... ok
+test arena::tests::full_tables_preserve_existing_state_and_owned_capacity ... ok
+test calendar::tests::rent_30_days_is_not_calendar_month_or_four_weeks ... ok
+test arena::checkpoint_tests::checkpoint_preserves_free_stack_generation_and_retired_slots ... ok
+test assembly::tests::input_order_does_not_change_world_identity_or_hash ... ok
+test assembly::tests::sources_and_independent_initial_worlds_are_exact ... ok
+test assembly::tests::duplicate_sources_missing_owners_and_cost_mismatches_reject ... ok
+test assembly::tests::oversized_counts_and_unspent_initial_sources_do_not_publish_a_world ... ok
+test schedule::tests::large_same_time_source_pages_finish_before_advancing_world ... ok
+test schedule::tests::pause_and_old_ack_do_not_change_cursor_or_time ... ok
+test schedule::tests::phase_order_and_interval_cap_are_independent_of_input_order ... ok
+test tests::digest_has_known_reference_value ... ok
+test tests::stream_bound_does_not_depend_on_file_metadata ... ok
+test schedule::tests::bookmark_continues_remaining_pages_without_reprocessing_old_sources ... ok
+test tests::unsupported_or_ambiguous_bootstrap_is_rejected ... ok
+test transaction::tests::account_cannot_unprotect_or_redirect_reserved_funds ... ok
+test transaction::tests::capacity_lifecycle_releases_once_and_never_reuses_token ... ok
+test transaction::tests::failed_late_action_leaves_no_partial_cash_or_capacity ... ok
+test transaction::tests::persistence_hook_failure_publishes_neither_model_changes_nor_receipt ... ok
+test transaction::tests::protection_is_not_new_cash_and_payment_converts_once ... ok
+test transaction::tests::retry_is_exact_and_changed_payload_or_actor_cannot_reuse_receipt ... ok
+test transaction::tests::foreign_capacity_reference_cannot_resolve_same_number_in_another_world ... ok
+test transaction::tests::stale_revision_scope_and_foreign_handles_do_not_write ... ok
+test transaction::tests::lot_cost_is_invariant_under_splitting_and_internal_transfer ... ok
+test transaction::tests::full_journal_backpressures_without_erasing_prior_receipts ... ok
+test schedule::tests::bookmark_cannot_be_loaded_into_another_world_or_branch ... ok
+test schedule::tests::per_source_randomness_ignores_paging_and_is_domain_separated ... ok
+test units::tests::failed_accrual_preserves_carry ... ok
+test units::tests::negative_values_and_overflow_cannot_enter_exact_units ... ok
+test units::tests::splitting_and_restoring_time_does_not_drop_fractional_cost ... ok
+test transaction::tests::two_resource_request_does_not_hold_one_when_second_is_unavailable ... ok
+test transaction::tests::stock_and_payment_commit_as_one_with_conserved_quantity_and_basis ... ok
+test schedule::tests::malformed_bookmarks_and_changed_sources_reject ... ok
+
+test result: ok. 36 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/boot.rs (target/release/deps/boot-f5a6819bb6021d1f)
+
+running 13 tests
+test restarting_cold_cleared_work_keeps_old_loss_and_requires_new_real_inputs ... ok
+test malformed_profiles_sources_units_and_shared_clock_mixes_are_rejected ... ok
+test independent_economic_and_regional_clocks_cannot_be_mixed_with_boot ... ok
+test authorization_hook_failure_late_batch_error_and_generic_bypasses_cannot_partially_publish ... ok
+test half_steps_match_one_step_and_due_output_is_not_visible_to_earlier_start ... ok
+test faults_keep_actual_losses_and_receivers_then_cleanup_releases_only_work_leases ... ok
+test battery_then_actual_water_then_generator_and_parallel_cycles_conserve_inputs_and_fees ... ok
+test no_seed_rejects_both_dependencies_and_time_does_not_create_outputs ... ok
+test fuel_aquifer_battery_cash_and_output_capacity_are_finite ... ok
+test reverse_requests_use_same_pool_and_failed_request_leaves_no_partial_claim_or_cash ... ok
+test reversed_resource_request_has_identical_tokens_and_releasing_then_new_id_retry_succeeds ... ok
+test water_tank_is_an_alternative_real_seed_not_a_future_generator_promise ... ok
+test worst_fault_outlet_reservations_reject_new_work_before_any_consumption ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/economy.rs (target/release/deps/economy-4b587758b7999771)
+
+running 13 tests
+test independent_capacity_pool_cannot_be_enabled_beside_private_economic_corridor ... ok
+test external_debt_cannot_reuse_generated_refund_or_tax_source ... ok
+test pe1_insolvent_supplier_retains_refund_claim_and_cancellation_does_not_mint_money ... ok
+test pe1_existing_debt_is_part_paid_then_handed_off_without_changing_parties_or_disappearing_on_exit ... ok
+test malformed_profiles_overlapping_batches_and_conflicting_region_clock_are_rejected ... ok
+test advances_split_at_events_restore_equivalent_business_state_and_never_open_next_day_early ... ok
+test pe1_prepayment_cancel_keeps_delivered_labor_and_creates_only_one_real_refund ... ok
+test economic_caller_protection_stock_and_disk_failure_gates_leave_no_partial_commit ... ok
+test pe1_low_household_cash_records_failed_whole_order_retains_costed_old_lots_and_keeps_running ... ok
+test month_end_tax_cash_shortfall_survives_activity_handoff_and_never_mints_payment ... ok
+test pe0_reaches_all_independent_thirty_day_oracles_through_actual_hourly_transactions ... ok
+test suspended_guaranteed_wages_are_expense_and_cumulative_tax_can_fall_without_cash_refund ... ok
+test pe1_twenty_units_exhaust_without_new_labor_wages_products_or_deleting_existing_tax ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/exchange.rs (target/release/deps/exchange-c50cda2fca9e2460)
+
+running 12 tests
+test opening_capital_cannot_reuse_generated_purchase_lot_namespace ... ok
+test malformed_geometry_custody_type_and_missing_pool_are_rejected ... ok
+test broken_link_pauses_actual_goods_and_people_without_erasing_reservations_or_fees ... ok
+test freight_blocks_otherwise_eligible_population_and_closed_city_fault_preserves_losses ... ok
+test expiry_keeps_old_debt_and_already_accepted_delivery_while_split_steps_keep_business_results ... ok
+test accepted_boot_finishes_while_closed_then_real_multihop_goods_and_utilities_settle_once ... ok
+test electric_and_water_link_failure_keeps_buffers_money_and_capacity_then_delivers_after_expiry ... ok
+test old_due_at_arrival_cannot_spend_later_delivery_income_or_silently_repay_old_arrears ... ok
+test resource_type_swaps_cannot_bypass_boot_and_original_lot_intervals_survive_buyer_costs ... ok
+test population_freight_boot_and_utility_compete_in_actual_shared_pools ... ok
+test protections_lease_ownership_clock_scope_hook_and_late_error_are_real_gates ... ok
+test full_shipments_expiry_distance_storage_loss_and_insufficient_funds_reject_atomically ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/region.rs (target/release/deps/region-50d7c2e853fd8b97)
+
+running 5 tests
+test malformed_sources_bounds_and_overflow_never_admit_partial_worlds ... ok
+test due_order_and_cash_do_not_depend_on_advance_chunk_size ... ok
+test switching_does_not_catch_up_replay_or_replenish_and_sleep_cannot_erase_debt ... ok
+test remote_discovery_and_approximate_migration_preserve_actual_people ... ok
+test persisted_hook_failure_and_late_action_failure_roll_back_the_entire_region ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running unittests src/main.rs (target/release/deps/mycity_headless-5bf8aaec02fe0bb3)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/baseline.rs (target/release/deps/baseline-22e620877db76417)
+
+running 12 tests
+test bad_invocation_and_missing_input_exit_nonzero ... ok
+test opening_cli_assembles_real_bounded_records_without_running_the_economy ... ok
+test clock_probe_pages_twenty_thousand_sources_and_does_not_claim_disk_recovery ... ok
+test offline_runs_retain_provenance_and_do_not_claim_simulation ... ok
+test transaction_probe_exercises_model_without_claiming_durable_success ... ok
+test spatial_cli_imports_actual_png_and_validates_geometry_without_claiming_city_persistence ... ok
+test storage_cli_confirms_persistent_operation_but_not_full_city_recovery ... ok
+test spatial_store_cli_restores_cpu_assets_and_money_without_claiming_mutable_construction ... ok
+
+thread 'continuity_short_run_exercises_model_but_does_not_pass_wall_duration_or_16gb_gate' panicked at crates/city-headless/tests/baseline.rs:370:5:
+assertion failed: report["cycles"].as_u64().unwrap() > 0
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test continuity_short_run_exercises_model_but_does_not_pass_wall_duration_or_16gb_gate ... FAILED
+test boot_cli_runs_finite_interlocks_and_recovery_without_claiming_city_network_or_16gb ... ok
+test regional_fulfilment_cli_runs_actual_goods_utilities_common_pools_and_closed_map_recovery ... ok
+
+thread 'economy_cli_executes_real_30_day_cash_goods_and_failure_branches' panicked at crates/city-headless/tests/baseline.rs:230:5:
+Io(Os { code: 23, kind: Uncategorized, message: "Too many open files in system" })
+
+test economy_cli_executes_real_30_day_cash_goods_and_failure_branches ... FAILED
+
+failures:
+
+failures:
+    continuity_short_run_exercises_model_but_does_not_pass_wall_duration_or_16gb_gate
+    economy_cli_executes_real_30_day_cash_goods_and_failure_branches
+
+test result: FAILED. 10 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 23.49s
+
+error: test failed, to rerun pass `-p mycity-headless --test baseline`

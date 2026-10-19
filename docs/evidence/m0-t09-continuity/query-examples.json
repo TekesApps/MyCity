@@ -1,0 +1,1007 @@
+[
+  {
+    "page": {
+      "next_cursor": "{\"sequence\":48895,\"generation\":48993,\"state\":\"78b9ab7fc084e44db4ef6e0a56e7a7e9be190b8e69cb631d49a528f6369ffdce\",\"query\":\"contracts\",\"offset\":3}",
+      "rows": [
+        {
+          "key": 1,
+          "type": "contract",
+          "value": {
+            "delivered": 1000,
+            "freight": 20,
+            "invoice": 2000,
+            "loss_cost": 0,
+            "source_cost": 400,
+            "source_fragment": {
+              "basis": 400,
+              "lot_id": 11,
+              "offset": 0,
+              "origin_basis": 2000,
+              "origin_quantity": 5000,
+              "quantity": 1000
+            },
+            "spec": {
+              "buyer": 2,
+              "carrier": 4,
+              "destination": 8,
+              "edges": [
+                1,
+                2,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "expires_at": 2000,
+              "from": 1,
+              "id": 1,
+              "kind": "freight",
+              "max_distance_m": 2048,
+              "quantity": 1000,
+              "seller": 4,
+              "source": 7,
+              "to": 2,
+              "unit_price": 2000
+            },
+            "status": "Delivered"
+          }
+        },
+        {
+          "key": 2,
+          "type": "contract",
+          "value": {
+            "delivered": 1000,
+            "freight": 20,
+            "invoice": 2000,
+            "loss_cost": 0,
+            "source_cost": 400,
+            "source_fragment": {
+              "basis": 400,
+              "lot_id": 11,
+              "offset": 1000,
+              "origin_basis": 2000,
+              "origin_quantity": 5000,
+              "quantity": 1000
+            },
+            "spec": {
+              "buyer": 2,
+              "carrier": 4,
+              "destination": 9,
+              "edges": [
+                1,
+                2,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "expires_at": 2000,
+              "from": 1,
+              "id": 2,
+              "kind": "freight",
+              "max_distance_m": 2048,
+              "quantity": 1000,
+              "seller": 4,
+              "source": 7,
+              "to": 2,
+              "unit_price": 2000
+            },
+            "status": "Delivered"
+          }
+        },
+        {
+          "key": 3,
+          "type": "contract",
+          "value": {
+            "delivered": 1000,
+            "freight": 20,
+            "invoice": 2000,
+            "loss_cost": 0,
+            "source_cost": 400,
+            "source_fragment": {
+              "basis": 400,
+              "lot_id": 11,
+              "offset": 2000,
+              "origin_basis": 2000,
+              "origin_quantity": 5000,
+              "quantity": 1000
+            },
+            "spec": {
+              "buyer": 2,
+              "carrier": 4,
+              "destination": 10,
+              "edges": [
+                1,
+                2,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "expires_at": 2000,
+              "from": 1,
+              "id": 3,
+              "kind": "freight",
+              "max_distance_m": 2048,
+              "quantity": 1000,
+              "seller": 4,
+              "source": 7,
+              "to": 2,
+              "unit_price": 2000
+            },
+            "status": "Delivered"
+          }
+        }
+      ],
+      "schema": "mycity-m0-query-v1",
+      "sequence": 48895,
+      "snapshot_sha256": "78b9ab7fc084e44db4ef6e0a56e7a7e9be190b8e69cb631d49a528f6369ffdce",
+      "state_sha256": "4f08c995c8bcb5153a9a08eafbcde53257b9e6ce216062823abfcbfa5554c335"
+    },
+    "query": "contracts"
+  },
+  {
+    "page": {
+      "next_cursor": "{\"sequence\":48895,\"generation\":48993,\"state\":\"78b9ab7fc084e44db4ef6e0a56e7a7e9be190b8e69cb631d49a528f6369ffdce\",\"query\":\"fulfilment\",\"offset\":3}",
+      "rows": [
+        {
+          "quote": 1,
+          "type": "physical_delivery",
+          "value": {
+            "delivered": 1000,
+            "freight": 20,
+            "invoice": 2000,
+            "loss_cost": 0,
+            "source_cost": 400,
+            "source_fragment": {
+              "basis": 400,
+              "lot_id": 11,
+              "offset": 0,
+              "origin_basis": 2000,
+              "origin_quantity": 5000,
+              "quantity": 1000
+            },
+            "spec": {
+              "buyer": 2,
+              "carrier": 4,
+              "destination": 8,
+              "edges": [
+                1,
+                2,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "expires_at": 2000,
+              "from": 1,
+              "id": 1,
+              "kind": "freight",
+              "max_distance_m": 2048,
+              "quantity": 1000,
+              "seller": 4,
+              "source": 7,
+              "to": 2,
+              "unit_price": 2000
+            },
+            "status": "Delivered"
+          }
+        },
+        {
+          "quote": 2,
+          "type": "physical_delivery",
+          "value": {
+            "delivered": 1000,
+            "freight": 20,
+            "invoice": 2000,
+            "loss_cost": 0,
+            "source_cost": 400,
+            "source_fragment": {
+              "basis": 400,
+              "lot_id": 11,
+              "offset": 1000,
+              "origin_basis": 2000,
+              "origin_quantity": 5000,
+              "quantity": 1000
+            },
+            "spec": {
+              "buyer": 2,
+              "carrier": 4,
+              "destination": 9,
+              "edges": [
+                1,
+                2,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "expires_at": 2000,
+              "from": 1,
+              "id": 2,
+              "kind": "freight",
+              "max_distance_m": 2048,
+              "quantity": 1000,
+              "seller": 4,
+              "source": 7,
+              "to": 2,
+              "unit_price": 2000
+            },
+            "status": "Delivered"
+          }
+        },
+        {
+          "quote": 3,
+          "type": "physical_delivery",
+          "value": {
+            "delivered": 1000,
+            "freight": 20,
+            "invoice": 2000,
+            "loss_cost": 0,
+            "source_cost": 400,
+            "source_fragment": {
+              "basis": 400,
+              "lot_id": 11,
+              "offset": 2000,
+              "origin_basis": 2000,
+              "origin_quantity": 5000,
+              "quantity": 1000
+            },
+            "spec": {
+              "buyer": 2,
+              "carrier": 4,
+              "destination": 10,
+              "edges": [
+                1,
+                2,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              "expires_at": 2000,
+              "from": 1,
+              "id": 3,
+              "kind": "freight",
+              "max_distance_m": 2048,
+              "quantity": 1000,
+              "seller": 4,
+              "source": 7,
+              "to": 2,
+              "unit_price": 2000
+            },
+            "status": "Delivered"
+          }
+        }
+      ],
+      "schema": "mycity-m0-query-v1",
+      "sequence": 48895,
+      "snapshot_sha256": "78b9ab7fc084e44db4ef6e0a56e7a7e9be190b8e69cb631d49a528f6369ffdce",
+      "state_sha256": "4f08c995c8bcb5153a9a08eafbcde53257b9e6ce216062823abfcbfa5554c335"
+    },
+    "query": "fulfilment"
+  },
+  {
+    "page": {
+      "next_cursor": "{\"sequence\":48895,\"generation\":48993,\"state\":\"78b9ab7fc084e44db4ef6e0a56e7a7e9be190b8e69cb631d49a528f6369ffdce\",\"query\":\"arrears\",\"offset\":3}",
+      "rows": [
+        {
+          "outstanding_cents": 505000,
+          "type": "fact_liability",
+          "value": {
+            "creditor": 4,
+            "debtor": 2,
+            "external": {
+              "amount": 700000,
+              "creditor": 4,
+              "debtor": 2,
+              "due": 50,
+              "event": 1,
+              "reason": "emergency_repair",
+              "source": 1
+            },
+            "fee": 700000,
+            "fragment": null,
+            "handoffs": 1,
+            "invoice": 0,
+            "kind": "External",
+            "manager": 1,
+            "paid": 195000,
+            "quantity": 0,
+            "quote": 0,
+            "received_at": 0,
+            "sequence": 9
+          }
+        },
+        {
+          "outstanding_cents": 700000,
+          "type": "fact_liability",
+          "value": {
+            "creditor": 4,
+            "debtor": 2,
+            "external": {
+              "amount": 700000,
+              "creditor": 4,
+              "debtor": 2,
+              "due": 50,
+              "event": 2,
+              "reason": "emergency_repair",
+              "source": 1
+            },
+            "fee": 700000,
+            "fragment": null,
+            "handoffs": 1,
+            "invoice": 0,
+            "kind": "External",
+            "manager": 1,
+            "paid": 0,
+            "quantity": 0,
+            "quote": 0,
+            "received_at": 0,
+            "sequence": 10
+          }
+        },
+        {
+          "outstanding_cents": 700000,
+          "type": "fact_liability",
+          "value": {
+            "creditor": 4,
+            "debtor": 2,
+            "external": {
+              "amount": 700000,
+              "creditor": 4,
+              "debtor": 2,
+              "due": 50,
+              "event": 3,
+              "reason": "emergency_repair",
+              "source": 1
+            },
+            "fee": 700000,
+            "fragment": null,
+            "handoffs": 1,
+            "invoice": 0,
+            "kind": "External",
+            "manager": 1,
+            "paid": 0,
+            "quantity": 0,
+            "quote": 0,
+            "received_at": 0,
+            "sequence": 11
+          }
+        }
+      ],
+      "schema": "mycity-m0-query-v1",
+      "sequence": 48895,
+      "snapshot_sha256": "78b9ab7fc084e44db4ef6e0a56e7a7e9be190b8e69cb631d49a528f6369ffdce",
+      "state_sha256": "4f08c995c8bcb5153a9a08eafbcde53257b9e6ce216062823abfcbfa5554c335"
+    },
+    "query": "arrears"
+  },
+  {
+    "page": {
+      "next_cursor": "{\"sequence\":48895,\"generation\":48993,\"state\":\"78b9ab7fc084e44db4ef6e0a56e7a7e9be190b8e69cb631d49a528f6369ffdce\",\"query\":\"capacity\",\"offset\":3}",
+      "rows": [
+        {
+          "type": "resource",
+          "value": {
+            "capacity": 1,
+            "id": 101,
+            "occupied": 0,
+            "reserved": 0
+          }
+        },
+        {
+          "type": "resource",
+          "value": {
+            "capacity": 1,
+            "id": 102,
+            "occupied": 0,
+            "reserved": 0
+          }
+        },
+        {
+          "type": "resource",
+          "value": {
+            "capacity": 1,
+            "id": 103,
+            "occupied": 0,
+            "reserved": 0
+          }
+        }
+      ],
+      "schema": "mycity-m0-query-v1",
+      "sequence": 48895,
+      "snapshot_sha256": "78b9ab7fc084e44db4ef6e0a56e7a7e9be190b8e69cb631d49a528f6369ffdce",
+      "state_sha256": "4f08c995c8bcb5153a9a08eafbcde53257b9e6ce216062823abfcbfa5554c335"
+    },
+    "query": "capacity"
+  },
+  {
+    "page": {
+      "next_cursor": null,
+      "rows": [
+        {
+          "type": "disk_capacity",
+          "value": {
+            "hard_blocked": false,
+            "normal_blocked": false,
+            "normal_limit": 125829120,
+            "reason": null,
+            "total_bytes": 134217728,
+            "used_bytes": 43809176
+          }
+        },
+        {
+          "type": "source_sync",
+          "value": {
+            "next_event": 6,
+            "pending": [],
+            "pending_limit": 16,
+            "reconciled": false,
+            "registered": true
+          }
+        }
+      ],
+      "schema": "mycity-m0-query-v1",
+      "sequence": 48895,
+      "snapshot_sha256": "78b9ab7fc084e44db4ef6e0a56e7a7e9be190b8e69cb631d49a528f6369ffdce",
+      "state_sha256": "4f08c995c8bcb5153a9a08eafbcde53257b9e6ce216062823abfcbfa5554c335"
+    },
+    "query": "blocked"
+  },
+  {
+    "page": {
+      "next_cursor": null,
+      "rows": [
+        {
+          "type": "checkpoint",
+          "value": {
+            "archive_bytes": 43809176,
+            "archive_limit": 134217728,
+            "generation": 48993,
+            "hot_receipts": 0,
+            "sequence": 48895,
+            "wal_bytes": 0
+          }
+        },
+        {
+          "type": "source_sync",
+          "value": {
+            "next_event": 6,
+            "pending": [],
+            "pending_limit": 16,
+            "reconciled": false,
+            "registered": true
+          }
+        },
+        {
+          "active_city": 1,
+          "cities": [
+            {
+              "development_elapsed": 3153660930,
+              "housing_capacity": 10000,
+              "id": 1,
+              "population": 4000,
+              "willing": 1998
+            },
+            {
+              "development_elapsed": 61020,
+              "housing_capacity": 10000,
+              "id": 2,
+              "population": 100,
+              "willing": 0
+            },
+            {
+              "development_elapsed": 64900,
+              "housing_capacity": 10000,
+              "id": 3,
+              "population": 300,
+              "willing": 100
+            },
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "interaction_time": 182850,
+          "snapshots": [
+            {
+              "applied_sequence": 24418,
+              "city": 1,
+              "observed_at": 182820,
+              "population": 4000,
+              "version": 4063
+            },
+            {
+              "applied_sequence": 24414,
+              "city": 2,
+              "observed_at": 182790,
+              "population": 100,
+              "version": 4063
+            },
+            {
+              "applied_sequence": 24418,
+              "city": 3,
+              "observed_at": 182820,
+              "population": 300,
+              "version": 4141
+            },
+            null,
+            null,
+            null,
+            null,
+            null
+          ],
+          "type": "regional_alignment"
+        }
+      ],
+      "schema": "mycity-m0-query-v1",
+      "sequence": 48895,
+      "snapshot_sha256": "78b9ab7fc084e44db4ef6e0a56e7a7e9be190b8e69cb631d49a528f6369ffdce",
+      "state_sha256": "4f08c995c8bcb5153a9a08eafbcde53257b9e6ce216062823abfcbfa5554c335"
+    },
+    "query": "recovery"
+  },
+  {
+    "page": {
+      "next_cursor": "{\"sequence\":48895,\"generation\":48993,\"state\":\"78b9ab7fc084e44db4ef6e0a56e7a7e9be190b8e69cb631d49a528f6369ffdce\",\"query\":\"receipts\",\"offset\":3}",
+      "rows": [
+        {
+          "committed_sequence": 48895,
+          "record": {
+            "actions": [
+              {
+                "kind": "region_advance",
+                "seconds": 30
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "actor": 0,
+            "emergency_eligible": false,
+            "expected_revision": 42802,
+            "operation_id": 48895,
+            "outcome": {
+              "Ok": {
+                "created_facts": [
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null
+                ],
+                "created_tokens": [
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null
+                ],
+                "durability": "volatile_only",
+                "migrated": [
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null
+                ],
+                "operation_id": 48895,
+                "revision": 42803,
+                "settled": [
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null
+                ]
+              }
+            },
+            "payload_sha256": [
+              197,
+              18,
+              194,
+              217,
+              86,
+              189,
+              14,
+              155,
+              23,
+              53,
+              237,
+              75,
+              75,
+              89,
+              162,
+              164,
+              55,
+              61,
+              247,
+              222,
+              252,
+              124,
+              134,
+              100,
+              72,
+              99,
+              254,
+              12,
+              90,
+              227,
+              60,
+              116
+            ]
+          }
+        },
+        {
+          "committed_sequence": 48894,
+          "record": {
+            "actions": [
+              {
+                "command": {
+                  "edge": 1,
+                  "kind": "set_link",
+                  "open": true
+                },
+                "kind": "exchange"
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "actor": 0,
+            "emergency_eligible": false,
+            "expected_revision": 42801,
+            "operation_id": 48894,
+            "outcome": {
+              "Ok": {
+                "created_facts": [
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null
+                ],
+                "created_tokens": [
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null
+                ],
+                "durability": "volatile_only",
+                "migrated": [
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null
+                ],
+                "operation_id": 48894,
+                "revision": 42802,
+                "settled": [
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null
+                ]
+              }
+            },
+            "payload_sha256": [
+              123,
+              122,
+              89,
+              31,
+              79,
+              210,
+              242,
+              80,
+              8,
+              252,
+              90,
+              68,
+              173,
+              97,
+              199,
+              5,
+              224,
+              95,
+              248,
+              207,
+              116,
+              179,
+              213,
+              199,
+              248,
+              188,
+              74,
+              204,
+              175,
+              20,
+              16,
+              159
+            ]
+          }
+        },
+        {
+          "committed_sequence": 48893,
+          "record": {
+            "actions": [
+              {
+                "command": {
+                  "edge": 1,
+                  "kind": "set_link",
+                  "open": false
+                },
+                "kind": "exchange"
+              },
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "actor": 0,
+            "emergency_eligible": false,
+            "expected_revision": 42800,
+            "operation_id": 48893,
+            "outcome": {
+              "Ok": {
+                "created_facts": [
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null
+                ],
+                "created_tokens": [
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null
+                ],
+                "durability": "volatile_only",
+                "migrated": [
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null
+                ],
+                "operation_id": 48893,
+                "revision": 42801,
+                "settled": [
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null
+                ]
+              }
+            },
+            "payload_sha256": [
+              78,
+              195,
+              55,
+              170,
+              236,
+              104,
+              47,
+              134,
+              152,
+              125,
+              134,
+              43,
+              209,
+              65,
+              153,
+              132,
+              233,
+              110,
+              109,
+              119,
+              212,
+              60,
+              178,
+              145,
+              147,
+              204,
+              214,
+              45,
+              176,
+              35,
+              238,
+              198
+            ]
+          }
+        }
+      ],
+      "schema": "mycity-m0-query-v1",
+      "sequence": 48895,
+      "snapshot_sha256": "78b9ab7fc084e44db4ef6e0a56e7a7e9be190b8e69cb631d49a528f6369ffdce",
+      "state_sha256": "4f08c995c8bcb5153a9a08eafbcde53257b9e6ce216062823abfcbfa5554c335"
+    },
+    "query": "receipts"
+  }
+]

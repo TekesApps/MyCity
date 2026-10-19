@@ -1,0 +1,111 @@
+{
+  "actual_process_exits": 121,
+  "actual_wall_seconds": 1802.858080792,
+  "after_physical_delivery_and_handoff": {
+    "cash_cents": 3000000,
+    "checkpoint": {
+      "archive_bytes": 140533,
+      "archive_limit": 134217728,
+      "generation": 48,
+      "hot_receipts": 0,
+      "sequence": 46,
+      "wal_bytes": 0
+    },
+    "interaction_time": 120,
+    "outstanding_cents": 3305000,
+    "owned_capacity_bytes": 3234115,
+    "source": {
+      "next_event": 6,
+      "pending": [],
+      "pending_limit": 16,
+      "reconciled": true,
+      "registered": true
+    },
+    "state_sha256": "69a15d11d72caedc93db4e0533cbf4913896d421c5ddf46d4bbbb0387809e38b"
+  },
+  "all_crash_points_exercised": true,
+  "committed_sequence": 48895,
+  "crash_points": [
+    "Prepared",
+    "WalHeaderHalf",
+    "WalPayloadHalf",
+    "WalChecksumHalf",
+    "WalWritten",
+    "WalSynced",
+    "RootPublished",
+    "CurrentRenamed",
+    "CurrentSynced",
+    "Applied",
+    "Responded"
+  ],
+  "cycles": 6091,
+  "final": {
+    "cash_cents": 3000000,
+    "checkpoint": {
+      "archive_bytes": 43809176,
+      "archive_limit": 134217728,
+      "generation": 48993,
+      "hot_receipts": 0,
+      "sequence": 48895,
+      "wal_bytes": 0
+    },
+    "interaction_time": 182850,
+    "outstanding_cents": 3305000,
+    "owned_capacity_bytes": 3234115,
+    "source": {
+      "next_event": 6,
+      "pending": [],
+      "pending_limit": 16,
+      "reconciled": true,
+      "registered": true
+    },
+    "state_sha256": "4f08c995c8bcb5153a9a08eafbcde53257b9e6ce216062823abfcbfa5554c335"
+  },
+  "initial_full_and_blocked": {
+    "cash_cents": 3000000,
+    "checkpoint": {
+      "archive_bytes": 69922,
+      "archive_limit": 134217728,
+      "generation": 20,
+      "hot_receipts": 19,
+      "sequence": 19,
+      "wal_bytes": 21535
+    },
+    "interaction_time": 0,
+    "outstanding_cents": 2800100,
+    "owned_capacity_bytes": 3234003,
+    "source": {
+      "next_event": 6,
+      "pending": [
+        {
+          "amount": 700000,
+          "creditor": 4,
+          "debtor": 2,
+          "due": 50,
+          "event": 5,
+          "reason": "emergency_repair",
+          "source": 1
+        }
+      ],
+      "pending_limit": 16,
+      "reconciled": false,
+      "registered": true
+    },
+    "state_sha256": "dfb8b9766c22523894ff2dc35c036963148516e56e50b75dd7e5ae5f3aff70e5"
+  },
+  "lock_sha256": "341af2f5bd913944e0f4fa4be679b64f10863eac3e023c0568a7c07e60e6b9f7",
+  "max_cycle_us": 3531372,
+  "max_invariant_check_us": 9911,
+  "max_owned_capacity_bytes": 3234083,
+  "profile": "release",
+  "requested_wall_seconds": 1800,
+  "restart_count": 367,
+  "rustc": "rustc 1.85.1 (4eb161250 2025-03-15)",
+  "schema": "mycity-m0-continuity-v1",
+  "scope": "same finite three-city profile; initial four actual deliveries and external debts, recurring shared-capacity exhaustion, map clocks, link faults, queries and durable recovery; no new contracts/steady economic balance/UI/GPU",
+  "sixteen_gb_acceptance": false,
+  "source_sha256": "92bc51cd473e1e7a8d8eab3c2ead1812df922f8a1dc59b3a5a0352c0201a5703",
+  "target": "aarch64-apple-darwin",
+  "wall_duration_gate": true,
+  "workload_wall_seconds": 1800.456601125
+}

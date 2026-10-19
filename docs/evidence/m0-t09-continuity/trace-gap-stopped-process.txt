@@ -1,0 +1,29 @@
+continuity: wall=3.0s cycles=1 sequence=54 crashes=0 disk=139240B
+continuity: wall=33.4s cycles=71 sequence=615 crashes=1 disk=550068B
+continuity: wall=63.7s cycles=133 sequence=1112 crashes=2 disk=904501B
+continuity: wall=94.1s cycles=199 sequence=1641 crashes=3 disk=1289860B
+continuity: wall=124.2s cycles=264 sequence=2163 crashes=5 disk=1669220B
+continuity: wall=154.3s cycles=324 sequence=2644 crashes=6 disk=2011574B
+continuity: wall=184.7s cycles=391 sequence=3181 crashes=7 disk=2404260B
+continuity: wall=215.0s cycles=459 sequence=3727 crashes=9 disk=2805027B
+continuity: wall=245.3s cycles=513 sequence=4160 crashes=10 disk=3103809B
+continuity: wall=275.3s cycles=563 sequence=4561 crashes=11 disk=3465387B
+time: command terminated abnormally
+      283.47 real         3.40 user         6.99 sys
+            26230784  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+                9578  page reclaims
+                  64  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+              162255  voluntary context switches
+               85098  involuntary context switches
+         78197142508  instructions retired
+         35164290133  cycles elapsed
+            19546448  peak memory footprint

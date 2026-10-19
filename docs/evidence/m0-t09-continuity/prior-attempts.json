@@ -1,0 +1,14 @@
+[
+  {
+    "run": "/tmp/mycity-t09-continuity.SvcjGc",
+    "source_sha256": "4e8e0208f6a92ffeb041cf8f206e55f6318c36c6ad1f3a56bbe13e1afbfa7f40",
+    "accepted_as_duration_evidence": false,
+    "reason": "terminated: system ENFILE; test suite also exposed warmup consuming short-run duration"
+  },
+  {
+    "run": "/tmp/mycity-t09-continuity.Q9eqNe",
+    "source_sha256": "133910e4b8e38b96371419011f8195e03cd45d294eeed5605e42ebf8675ed43b",
+    "accepted_as_duration_evidence": false,
+    "reason": "intentionally stopped to add explicit created-fact and actual-payment receipt tracing"
+  }
+]

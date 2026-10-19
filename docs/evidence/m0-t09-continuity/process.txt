@@ -1,0 +1,78 @@
+continuity: wall=2.7s cycles=1 sequence=54 crashes=0 disk=149067B
+continuity: wall=32.9s cycles=78 sequence=671 crashes=1 disk=712584B
+continuity: wall=63.2s cycles=148 sequence=1232 crashes=2 disk=1218396B
+continuity: wall=93.3s cycles=215 sequence=1770 crashes=4 disk=1701385B
+continuity: wall=123.6s cycles=284 sequence=2323 crashes=5 disk=2200638B
+continuity: wall=154.0s cycles=355 sequence=2893 crashes=7 disk=2718158B
+continuity: wall=184.5s cycles=423 sequence=3438 crashes=8 disk=3208534B
+continuity: wall=214.9s cycles=471 sequence=3823 crashes=9 disk=3528180B
+continuity: wall=245.8s cycles=539 sequence=4368 crashes=10 disk=4018616B
+continuity: wall=276.2s cycles=609 sequence=4930 crashes=12 disk=4527354B
+continuity: wall=306.5s cycles=669 sequence=5411 crashes=13 disk=4949609B
+continuity: wall=336.5s cycles=738 sequence=5964 crashes=14 disk=5448957B
+continuity: wall=366.9s cycles=815 sequence=6582 crashes=16 disk=6017316B
+continuity: wall=397.0s cycles=866 sequence=6991 crashes=17 disk=6362448B
+continuity: wall=427.2s cycles=944 sequence=7616 crashes=18 disk=6938342B
+continuity: wall=457.3s cycles=1057 sequence=8523 crashes=21 disk=7724357B
+continuity: wall=487.4s cycles=1160 sequence=9349 crashes=23 disk=8424252B
+continuity: wall=517.5s cycles=1271 sequence=10239 crashes=25 disk=9284612B
+continuity: wall=547.5s cycles=1381 sequence=11121 crashes=27 disk=10046143B
+continuity: wall=578.2s cycles=1500 sequence=12076 crashes=30 disk=10888023B
+continuity: wall=608.3s cycles=1621 sequence=13046 crashes=32 disk=11745769B
+continuity: wall=638.3s cycles=1744 sequence=14032 crashes=34 disk=12620632B
+continuity: wall=668.4s cycles=1862 sequence=14979 crashes=37 disk=13453923B
+continuity: wall=698.6s cycles=1992 sequence=16021 crashes=39 disk=14389294B
+continuity: wall=728.7s cycles=2088 sequence=16791 crashes=41 disk=15124549B
+continuity: wall=758.8s cycles=2201 sequence=17698 crashes=44 disk=15914518B
+continuity: wall=789.1s cycles=2325 sequence=18692 crashes=46 disk=16798615B
+continuity: wall=819.2s cycles=2437 sequence=19590 crashes=48 disk=17578863B
+continuity: wall=849.3s cycles=2564 sequence=20609 crashes=51 disk=18489159B
+continuity: wall=879.6s cycles=2686 sequence=21587 crashes=53 disk=19356018B
+continuity: wall=909.7s cycles=2800 sequence=22502 crashes=56 disk=20247546B
+continuity: wall=939.8s cycles=2915 sequence=23424 crashes=58 disk=21053651B
+continuity: wall=969.9s cycles=3039 sequence=24418 crashes=60 disk=21937351B
+continuity: wall=1000.1s cycles=3167 sequence=25445 crashes=63 disk=22856867B
+continuity: wall=1030.2s cycles=3276 sequence=26319 crashes=65 disk=23611269B
+continuity: wall=1060.4s cycles=3392 sequence=27249 crashes=67 disk=24425910B
+continuity: wall=1090.4s cycles=3507 sequence=28172 crashes=70 disk=25326138B
+continuity: wall=1120.4s cycles=3610 sequence=28998 crashes=72 disk=26029390B
+continuity: wall=1150.6s cycles=3727 sequence=29936 crashes=74 disk=26852599B
+continuity: wall=1180.7s cycles=3841 sequence=30850 crashes=76 disk=27650337B
+continuity: wall=1210.7s cycles=3952 sequence=31741 crashes=79 disk=28515911B
+continuity: wall=1240.8s cycles=4066 sequence=32655 crashes=81 disk=29313578B
+continuity: wall=1270.9s cycles=4180 sequence=33569 crashes=83 disk=30111057B
+continuity: wall=1301.0s cycles=4284 sequence=34403 crashes=85 disk=30823033B
+continuity: wall=1331.1s cycles=4399 sequence=35325 crashes=87 disk=31722081B
+continuity: wall=1361.2s cycles=4509 sequence=36208 crashes=90 disk=32486472B
+continuity: wall=1391.3s cycles=4621 sequence=37106 crashes=92 disk=33266683B
+continuity: wall=1421.4s cycles=4730 sequence=37980 crashes=94 disk=34021609B
+continuity: wall=1451.5s cycles=4839 sequence=38854 crashes=96 disk=34868828B
+continuity: wall=1481.5s cycles=4947 sequence=39720 crashes=98 disk=35614538B
+continuity: wall=1511.6s cycles=5053 sequence=40571 crashes=101 disk=36344619B
+continuity: wall=1541.7s cycles=5161 sequence=41437 crashes=103 disk=37183550B
+continuity: wall=1572.0s cycles=5268 sequence=42295 crashes=105 disk=37920853B
+continuity: wall=1602.2s cycles=5375 sequence=43153 crashes=107 disk=38658341B
+continuity: wall=1632.4s cycles=5484 sequence=44027 crashes=109 disk=39505868B
+continuity: wall=1662.6s cycles=5589 sequence=44869 crashes=111 disk=40226303B
+continuity: wall=1692.6s cycles=5696 sequence=45727 crashes=113 disk=40963635B
+continuity: wall=1722.9s cycles=5798 sequence=46545 crashes=115 disk=41750629B
+continuity: wall=1753.1s cycles=5911 sequence=47452 crashes=118 disk=42541048B
+continuity: wall=1783.2s cycles=6020 sequence=48326 crashes=120 disk=43295758B
+     1803.70 real       124.40 user       149.16 sys
+            20234240  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+               87929  page reclaims
+                 635  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+             1009594  voluntary context switches
+              354565  involuntary context switches
+       2585887844996  instructions retired
+        748997147427  cycles elapsed
+            15597904  peak memory footprint

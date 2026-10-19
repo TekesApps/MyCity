@@ -1,0 +1,3 @@
+mycity_core /Users/frankqin/dev/MyCity/target/release/deps/libmycity_core-9950064af9b18981.rlib sha256=c230336f4cfdd4e057ab6eb0b10fc81d4d101eac933d2b01b08b26d4e9b901af
+mycity_storage /Users/frankqin/dev/MyCity/target/release/libmycity_storage.rlib sha256=29b5d062b75f342a67e39de82e9f30ce1c92edc4b8895a7fd8bdd02886c254a7
+serde_json /Users/frankqin/dev/MyCity/target/release/deps/libserde_json-53d8ad5e673e85b4.rlib sha256=1ba8ac3621dd13973adb5959505650f25ab62098449f9fb147854a2d9c60c5e3

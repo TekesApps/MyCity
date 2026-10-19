@@ -1,0 +1,64 @@
+[
+  {
+    "type": "resource",
+    "value": {
+      "capacity": 1,
+      "id": 101,
+      "occupied": 0,
+      "reserved": 0
+    }
+  },
+  {
+    "type": "resource",
+    "value": {
+      "capacity": 1,
+      "id": 102,
+      "occupied": 0,
+      "reserved": 0
+    }
+  },
+  {
+    "type": "resource",
+    "value": {
+      "capacity": 1,
+      "id": 103,
+      "occupied": 0,
+      "reserved": 0
+    }
+  },
+  {
+    "type": "resource",
+    "value": {
+      "capacity": 1,
+      "id": 104,
+      "occupied": 0,
+      "reserved": 0
+    }
+  },
+  {
+    "type": "resource",
+    "value": {
+      "capacity": 2000,
+      "id": 201,
+      "occupied": 0,
+      "reserved": 0
+    }
+  },
+  {
+    "type": "resource",
+    "value": {
+      "capacity": 2000,
+      "id": 202,
+      "occupied": 0,
+      "reserved": 0
+    }
+  },
+  {
+    "normal_limit": 4,
+    "retained_limit": 16,
+    "retained_used": 5,
+    "type": "fact_capacity",
+    "working_limit": 12,
+    "working_used": 0
+  }
+]
