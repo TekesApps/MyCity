@@ -17,13 +17,15 @@ fn system(command: &str, args: &[&str]) -> Option<String> {
 
 fn run() -> Result<(), String> {
     let args: Vec<_> = env::args().collect();
-    if args.len() != 3
+    let storage = args.get(1).is_some_and(|a| a == "storage-probe");
+    if args.len() != if storage { 4 } else { 3 }
         || ![
             "baseline",
             "layout",
             "assemble",
             "transaction-probe",
             "clock-probe",
+            "storage-probe",
         ]
         .contains(&args[1].as_str())
     {
@@ -34,11 +36,12 @@ fn run() -> Result<(), String> {
     }
     let file = File::open(&args[2]).map_err(|e| e.to_string())?;
     let bytes = read_bounded(file, INPUT_LIMIT).map_err(|e| e.to_string())?;
-    let assembled = if ["assemble", "transaction-probe"].contains(&args[1].as_str()) {
-        Some(mycity_core::assembly::assemble(&bytes)?)
-    } else {
-        None
-    };
+    let assembled =
+        if ["assemble", "transaction-probe", "storage-probe"].contains(&args[1].as_str()) {
+            Some(mycity_core::assembly::assemble(&bytes)?)
+        } else {
+            None
+        };
     let input = if let Some(world) = &assembled {
         let view = world.view();
         mycity_core::Bootstrap {
@@ -64,6 +67,9 @@ fn run() -> Result<(), String> {
     }
     if args[1] == "clock-probe" {
         rules["schedule"] = json!({"source_limit":mycity_core::schedule::SOURCE_LIMIT,"ready_limit":mycity_core::schedule::READY_LIMIT,"max_interval_seconds":mycity_core::schedule::MAX_INTERVAL_SECONDS,"calendar_epoch":"2001-01-01","rng":"sha256-domain-source-window-v1"});
+    }
+    if storage {
+        rules["storage"] = json!({"schema":"mycity-m0-genesis-v1","rules_identity":env!("MYCITY_SOURCE_SHA256"),"frame_limit":mycity_storage::FRAME_LIMIT,"wal_limit":mycity_storage::WAL_LIMIT,"committed_boundary":"CURRENT_root_hash_sequence_and_wal_end"});
     }
     let now = SystemTime::now()
         .duration_since(UNIX_EPOCH)
@@ -118,11 +124,98 @@ fn run() -> Result<(), String> {
         report["result"] = json!("static_clock_probes_passed");
         report["clock_probe"] = mycity_core::probes::schedule_probe(&input)?;
     }
+    if storage {
+        report["task"] = json!("M0-T06");
+        report["result"] = json!("transaction_storage_roundtrip_passed");
+        report["storage_probe"] = storage_probe(&bytes, std::path::Path::new(&args[3]))?;
+    }
     println!(
         "{}",
         serde_json::to_string_pretty(&report).map_err(|e| e.to_string())?
     );
     Ok(())
+}
+
+fn storage_probe(input: &[u8], dir: &std::path::Path) -> Result<serde_json::Value, String> {
+    use mycity_core::{
+        transaction::{Action, Caller, Envelope, Resource},
+        units::Money,
+    };
+    use mycity_storage::Store;
+    let err = |e| format!("{e:?}");
+    let mut store = Store::create(
+        dir,
+        input,
+        vec![Resource::new(1, 10).map_err(|e| format!("{e:?}"))?],
+        env!("MYCITY_SOURCE_SHA256"),
+    )
+    .map_err(err)?;
+    let world = store.engine().map_err(err)?.world();
+    let view = world.view();
+    let family = world.account_ref(2)?;
+    let company = world.account_ref(3)?;
+    let supplier = world.account_ref(4)?;
+    let command = Envelope {
+        world: view.scope.world(),
+        branch: view.scope.branch(),
+        operation_id: 1,
+        expected_revision: 0,
+        actions: vec![
+            Action::Protect {
+                account: family,
+                amount: Money::new(10000).map_err(|e| format!("{e:?}"))?,
+            },
+            Action::Transfer {
+                from: company,
+                to: supplier,
+                amount: Money::new(10000).map_err(|e| format!("{e:?}"))?,
+            },
+            Action::ReserveCapacity {
+                resource: 1,
+                units: 8,
+            },
+        ],
+    };
+    let first = store
+        .execute(Caller::System, command.clone())
+        .map_err(err)?;
+    let receipt = first.model.map_err(|e| format!("{e:?}"))?;
+    let token = receipt.created_tokens[2].ok_or("missing_capacity_token")?;
+    let second = Envelope {
+        world: view.scope.world(),
+        branch: view.scope.branch(),
+        operation_id: 2,
+        expected_revision: 1,
+        actions: vec![
+            Action::OccupyCapacity { token },
+            Action::PayProtected {
+                from: family,
+                to: company,
+                amount: Money::new(10000).map_err(|e| format!("{e:?}"))?,
+            },
+        ],
+    };
+    let second = store.execute(Caller::System, second).map_err(err)?;
+    second.model.map_err(|e| format!("{e:?}"))?;
+    let before = store.engine().map_err(err)?.state_hash();
+    let journal =
+        serde_json::to_vec(store.engine().map_err(err)?.journal()).map_err(|e| e.to_string())?;
+    drop(store);
+    let mut restored = Store::open(dir, env!("MYCITY_SOURCE_SHA256")).map_err(err)?;
+    let replay = restored.execute(Caller::System, command).map_err(err)?;
+    let engine = restored.engine().map_err(err)?;
+    if !first.has_persistent_receipt
+        || !second.has_persistent_receipt
+        || !replay.has_persistent_receipt
+        || before != engine.state_hash()
+        || restored.committed_sequence() != 2
+        || serde_json::to_vec(engine.journal()).map_err(|e| e.to_string())? != journal
+    {
+        return Err("storage_roundtrip_probe_failed".into());
+    }
+    Ok(
+        json!({"result":"committed_transactions_recovered_once","committed_sequence":2,"world":engine.world().view(),"resources":engine.resources(),"state_sha256":before,"journal_sha256":sha256(&journal),"replay_has_persistent_receipt":replay.has_persistent_receipt,"engine_owned_capacity_bytes":engine.owned_capacity_bytes(),"model_receipt_durability":"volatile_only_inside_core; storage_wrapper_confirms_persistent_coverage","scope":"transaction_recovery_only_not_scheduler_checkpoint","power_loss":"not_tested","memory_16gb_gate":"not_run"}),
+    )
 }
 
 fn main() {

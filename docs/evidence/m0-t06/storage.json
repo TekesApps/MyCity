@@ -1,0 +1,248 @@
+{
+  "build": {
+    "profile": "release",
+    "rustc": "rustc 1.85.1 (4eb161250 2025-03-15)",
+    "target": "aarch64-apple-darwin"
+  },
+  "economic_prototypes": "not_run",
+  "gpu": "not_implemented",
+  "host": {
+    "arch": "aarch64",
+    "chip": "Apple M4",
+    "memory_bytes": "34359738368",
+    "os": "macos",
+    "os_version": "26.6.2"
+  },
+  "input": {
+    "branch": 1,
+    "laboratory_only": true,
+    "schema": "mycity-m0-bootstrap-v1",
+    "seed": 7,
+    "world": 1
+  },
+  "input_sha256": "6756555697457b3de5307086610a108c88d15650c6e668da0cdf990ca52b874c",
+  "layout": {
+    "accounts": {
+      "free_index_capacity": 64,
+      "header_bytes": 80,
+      "live_records": 4,
+      "owned_capacity_bytes": 2384,
+      "record_bytes": 24,
+      "slot_bytes": 32,
+      "slots_capacity": 64
+    },
+    "allocator_metadata_included": false,
+    "index_capacity_bytes": 200,
+    "opening_sources_capacity_bytes": 128,
+    "owned_capacity_bytes": 15696,
+    "stocks": {
+      "free_index_capacity": 128,
+      "header_bytes": 80,
+      "live_records": 1,
+      "owned_capacity_bytes": 12880,
+      "record_bytes": 88,
+      "slot_bytes": 96,
+      "slots_capacity": 128
+    },
+    "temporary_parse_and_view_pages_included": false,
+    "world_remaining_header_bytes": 104
+  },
+  "lock_sha256": "e24f0d6697640e7a13e16710e54b982c11a8e53f3abeb922785087f770e3a4aa",
+  "memory_16gb_gate": "not_run",
+  "report_schema": "mycity-m0-evidence-v1",
+  "result": "transaction_storage_roundtrip_passed",
+  "rules": {
+    "input_limit_bytes": 65536,
+    "max_accounts": 64,
+    "max_sources": 192,
+    "max_stocks": 128,
+    "mode": "headless_laboratory",
+    "numeric_strategy": "checked-integer-v1",
+    "opening_schema": "mycity-m0-opening-v1",
+    "schema": "mycity-m0-bootstrap-v1",
+    "storage": {
+      "committed_boundary": "CURRENT_root_hash_sequence_and_wal_end",
+      "frame_limit": 32768,
+      "rules_identity": "ce34a277cb5a48852c503b912d23412a5f55fd6e8f0c76376b0542c6f2eeca0c",
+      "schema": "mycity-m0-genesis-v1",
+      "wal_limit": 67108864
+    },
+    "world_byte_budget": 131072
+  },
+  "rules_sha256": "fcb9e6ca802ac13795fc2d04a9ab5e876e0ed8000dd501376b8288e481533ac0",
+  "run_id": "3342-1792415976302678000",
+  "source_sha256": "ce34a277cb5a48852c503b912d23412a5f55fd6e8f0c76376b0542c6f2eeca0c",
+  "state_sha256": "7c45e970f5c38d62e4442956079f289d4d287c6f347245ff36a6d4ac0042d8f4",
+  "storage_probe": {
+    "committed_sequence": 2,
+    "engine_owned_capacity_bytes": 1942448,
+    "journal_sha256": "856481ea0071862f25f029500e8cf6757400fc47c2ff174bab9022588621ab40",
+    "memory_16gb_gate": "not_run",
+    "model_receipt_durability": "volatile_only_inside_core; storage_wrapper_confirms_persistent_coverage",
+    "power_loss": "not_tested",
+    "replay_has_persistent_receipt": true,
+    "resources": [
+      {
+        "capacity": 10,
+        "id": 1,
+        "occupied": 8,
+        "reserved": 0
+      }
+    ],
+    "result": "committed_transactions_recovered_once",
+    "scope": "transaction_recovery_only_not_scheduler_checkpoint",
+    "state_sha256": "46a0661878c61b3c7ac2a57c7352e0a8d0d87d51c99fc0727d8f9f19a48f8cb6",
+    "world": {
+      "accounts": [
+        {
+          "cash": 1000000,
+          "id": 1,
+          "protected": 0,
+          "role": "treasury"
+        },
+        {
+          "cash": 190000,
+          "id": 2,
+          "protected": 0,
+          "role": "household"
+        },
+        {
+          "cash": 600000,
+          "id": 3,
+          "protected": 0,
+          "role": "company"
+        },
+        {
+          "cash": 1210000,
+          "id": 4,
+          "protected": 0,
+          "role": "supplier"
+        }
+      ],
+      "opening_sources": [
+        {
+          "amount": 1000000,
+          "id": 1,
+          "kind": "cash_capital"
+        },
+        {
+          "amount": 200000,
+          "id": 2,
+          "kind": "cash_capital"
+        },
+        {
+          "amount": 600000,
+          "id": 3,
+          "kind": "cash_capital"
+        },
+        {
+          "amount": 1200000,
+          "id": 4,
+          "kind": "cash_capital"
+        },
+        {
+          "amount": 240000,
+          "id": 5,
+          "kind": "inventory_capital"
+        }
+      ],
+      "revision": 2,
+      "schema": "mycity-m0-state-v2",
+      "scope": {
+        "branch": 1,
+        "world": 1
+      },
+      "seed": 7,
+      "stocks": [
+        {
+          "basis": 240000,
+          "commodity": "raw",
+          "id": 1,
+          "lot_id": 5,
+          "offset": 0,
+          "origin_basis": 240000,
+          "origin_quantity": 600000,
+          "owner": 4,
+          "quantity": 600000
+        }
+      ]
+    }
+  },
+  "task": "M0-T06",
+  "ui": "not_implemented_by_scope",
+  "world": {
+    "accounts": [
+      {
+        "cash": 1000000,
+        "id": 1,
+        "protected": 0,
+        "role": "treasury"
+      },
+      {
+        "cash": 200000,
+        "id": 2,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 600000,
+        "id": 3,
+        "protected": 0,
+        "role": "company"
+      },
+      {
+        "cash": 1200000,
+        "id": 4,
+        "protected": 0,
+        "role": "supplier"
+      }
+    ],
+    "opening_sources": [
+      {
+        "amount": 1000000,
+        "id": 1,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 200000,
+        "id": 2,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 600000,
+        "id": 3,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 1200000,
+        "id": 4,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 240000,
+        "id": 5,
+        "kind": "inventory_capital"
+      }
+    ],
+    "revision": 0,
+    "schema": "mycity-m0-state-v2",
+    "scope": {
+      "branch": 1,
+      "world": 1
+    },
+    "seed": 7,
+    "stocks": [
+      {
+        "basis": 240000,
+        "commodity": "raw",
+        "id": 1,
+        "lot_id": 5,
+        "offset": 0,
+        "origin_basis": 240000,
+        "origin_quantity": 600000,
+        "owner": 4,
+        "quantity": 600000
+      }
+    ]
+  }
+}

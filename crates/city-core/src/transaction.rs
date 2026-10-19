@@ -121,12 +121,14 @@ pub struct Receipt {
 pub struct JournalRecord {
     pub actor: u32,
     pub operation_id: u64,
+    pub expected_revision: u64,
     pub payload_sha256: [u8; 32],
     pub outcome: Result<Receipt, TxError>,
     pub actions: [Option<Action>; MAX_ACTIONS],
 }
 
-#[derive(Clone, Copy, Debug, Serialize)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct Resource {
     pub id: u32,
     pub capacity: u32,
@@ -161,6 +163,15 @@ pub struct Engine {
     leases: Vec<Option<Lease>>,
     next_token: u64,
     journal: Vec<JournalRecord>,
+}
+
+struct Prepared {
+    accounts: Vec<(Handle<AccountDomain>, Account)>,
+    stocks: Vec<(Handle<InventoryDomain>, Stock)>,
+    resources: Vec<Resource>,
+    leases: Vec<Option<Lease>>,
+    next_token: u64,
+    receipt: Receipt,
 }
 
 impl Engine {
@@ -219,23 +230,36 @@ impl Engine {
         sha256(&serde_json::to_vec(&serde_json::json!({"world":self.world.view(),"resources":self.resources,"leases":self.leases,"next_token":self.next_token})).expect("exact state"))
     }
     pub fn execute(&mut self, caller: Caller, env: Envelope) -> Result<Receipt, TxError> {
+        self.execute_recorded(caller, env, |_, _| Ok::<(), std::convert::Infallible>(()))
+            .unwrap_or_else(|never| match never {})
+    }
+
+    /// Trusted storage boundary. The hook gets a fully validated fixed outcome before
+    /// any CPU world or receipt publication. A hook error leaves the model unchanged.
+    /// This core method itself never claims disk durability.
+    pub fn execute_recorded<E>(
+        &mut self,
+        caller: Caller,
+        env: Envelope,
+        persist: impl FnOnce(&Envelope, &JournalRecord) -> Result<(), E>,
+    ) -> Result<Result<Receipt, TxError>, E> {
         if env.world != self.world.scope.world() || env.branch != self.world.scope.branch() {
-            return Err(TxError::WrongScope);
+            return Ok(Err(TxError::WrongScope));
         }
         if env.operation_id == 0 || matches!(caller, Caller::Account(0)) {
-            return Err(TxError::InvalidOperation);
+            return Ok(Err(TxError::InvalidOperation));
         }
         if env.actions.is_empty() || env.actions.len() > MAX_ACTIONS {
-            return Err(TxError::TooManyActions);
+            return Ok(Err(TxError::TooManyActions));
         }
         if let Caller::Account(id) = caller {
-            self.world
-                .account_handle(id)
-                .map_err(|_| TxError::Unauthorized)?;
+            if self.world.account_handle(id).is_err() {
+                return Ok(Err(TxError::Unauthorized));
+            }
         }
         let digest: [u8; 32] = {
             use sha2::{Digest, Sha256};
-            Sha256::digest(serde_json::to_vec(&env).map_err(|_| TxError::InvalidOperation)?).into()
+            Sha256::digest(serde_json::to_vec(&env).expect("bounded typed envelope")).into()
         };
         if let Some(old) = self
             .journal
@@ -243,38 +267,44 @@ impl Engine {
             .find(|r| r.operation_id == env.operation_id)
         {
             if old.actor != caller.key() {
-                return Err(TxError::Unauthorized);
+                return Ok(Err(TxError::Unauthorized));
             }
-            return if old.payload_sha256 == digest {
+            return Ok(if old.payload_sha256 == digest {
                 old.outcome
             } else {
                 Err(TxError::OperationConflict)
-            };
+            });
         }
         if self.journal.len() == MAX_RECEIPTS {
-            return Err(TxError::JournalFull);
+            return Ok(Err(TxError::JournalFull));
         }
-        let result = if env.expected_revision != self.world.revision {
+        let prepared = if env.expected_revision != self.world.revision {
             Err(TxError::StaleRevision)
         } else {
-            self.prepare_and_commit(caller, &env)
+            self.prepare(caller, &env)
         };
+        let outcome = prepared.as_ref().map(|p| p.receipt).map_err(|e| *e);
         let mut actions = [None; MAX_ACTIONS];
-        for (i, a) in env.actions.into_iter().enumerate() {
-            actions[i] = Some(a)
+        for (i, a) in env.actions.iter().enumerate() {
+            actions[i] = Some(*a)
         }
-        // Space was admitted before preparing. No allocation or fallible mutation after commit.
-        self.journal.push(JournalRecord {
+        let record = JournalRecord {
             actor: caller.key(),
             operation_id: env.operation_id,
+            expected_revision: env.expected_revision,
             payload_sha256: digest,
-            outcome: result,
+            outcome,
             actions,
-        });
-        result
+        };
+        persist(&env, &record)?;
+        if let Ok(change) = prepared {
+            self.apply(change);
+        }
+        self.journal.push(record);
+        Ok(outcome)
     }
 
-    fn prepare_and_commit(&mut self, caller: Caller, env: &Envelope) -> Result<Receipt, TxError> {
+    fn prepare(&self, caller: Caller, env: &Envelope) -> Result<Prepared, TxError> {
         let next_revision = self
             .world
             .revision
@@ -496,29 +526,39 @@ impl Engine {
                 }
             }
         }
-        // All touched handles and arithmetic were validated under the single writer.
-        for (h, a) in accounts {
+        Ok(Prepared {
+            accounts,
+            stocks,
+            resources,
+            leases,
+            next_token,
+            receipt: Receipt {
+                operation_id: env.operation_id,
+                revision: next_revision,
+                durability: "volatile_only",
+                created_tokens,
+            },
+        })
+    }
+
+    fn apply(&mut self, prepared: Prepared) {
+        // No user hook, allocation or business failure after the durable hook succeeds.
+        for (h, a) in prepared.accounts {
             self.world
                 .accounts
                 .replace(h, a)
                 .expect("validated commit handle");
         }
-        for (h, s) in stocks {
+        for (h, s) in prepared.stocks {
             self.world
                 .stocks
                 .replace(h, s)
                 .expect("validated commit handle");
         }
-        self.world.revision = next_revision;
-        self.resources = resources;
-        self.leases = leases;
-        self.next_token = next_token;
-        Ok(Receipt {
-            operation_id: env.operation_id,
-            revision: next_revision,
-            durability: "volatile_only",
-            created_tokens,
-        })
+        self.world.revision = prepared.receipt.revision;
+        self.resources = prepared.resources;
+        self.leases = prepared.leases;
+        self.next_token = prepared.next_token;
     }
 }
 
@@ -957,6 +997,28 @@ mod tests {
             );
             assert_eq!(e.state_hash(), hash);
         }
+    }
+
+    #[test]
+    fn persistence_hook_failure_publishes_neither_model_changes_nor_receipt() {
+        let mut e = engine();
+        let before = e.state_hash();
+        let cmd = env(
+            &e,
+            1,
+            vec![Action::Transfer {
+                from: account(&e, 2),
+                to: account(&e, 3),
+                amount: cash(100),
+            }],
+        );
+        let result = e.execute_recorded(Caller::System, cmd, |_, record| {
+            assert!(record.outcome.is_ok());
+            Err("disk_error")
+        });
+        assert_eq!(result, Err("disk_error"));
+        assert_eq!(e.state_hash(), before);
+        assert!(e.journal().is_empty());
     }
 
     #[test]

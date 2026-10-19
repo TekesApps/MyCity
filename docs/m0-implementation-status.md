@@ -17,7 +17,7 @@
 | T03 | 有限实验装配通过，v0.5.6 | 4主体／600Q库存及成本的真实记录、来源唯一消费／引用校验／数量字节门；未推进经济 |
 | T04 | 有限易失事务通过，v0.5.7 | 资金保护／钱货原子／带scope容量令牌／幂等与反例；保护款释放仅可信宿主；持久成功未实现 |
 | T05 | 静态到期源／日历子阶段通过，v0.5.8 | 20000源分页、P0—P5、暂停／书签／随机；世界事实与游标持久原子提交、工资金额尚未集成 |
-| T06 | planned | 持久成功／锁／WAL／根／恢复故障注入 |
+| T06 | 事务持久子阶段通过，v0.5.9 | 显式提交边界／单写锁／逻辑WAL／恢复与进程退出；完整检查点压缩／时钟事实联合／断电未测 |
 | T07 | planned，模型数据部分 | 地形／几何／合法接缝；显示与拾取UI延期 |
 | T08 | planned | P-E0/P-E1及完整启动实验 |
 | T09 | planned | 同池／配额／退出责任 |
@@ -95,3 +95,30 @@ Release共17项测试通过（13单元＋3 CLI集成＋1编译失败），fmt／
 [实跑报告](evidence/m0-t05/clock.json)处理20000个同刻P2源，单页8192，第一批后恢复书签继续，无漏重，最终完整边界3601秒；来源容量480000B，位于M-events额度内，临时排序／hash／诊断页计运行域，未测allocator或长时峰值。`cargo run --release --locked --offline -p mycity-headless -- clock-probe fixtures/m0-bootstrap.json`可重跑。
 
 Release共40项测试（34单元＋5 CLI＋1编译失败）、fmt／clippy通过。完整P-TIME还缺T06的磁盘／故障恢复和与实际业务的共同提交，P-E0/P-E1经济仍not_run；本阶段不把排序计数器冒充实际支付或城市运行吞吐。
+
+
+## 8. T06：先验证事务持久提交与恢复
+
+新增Rust `mycity-storage`，只依赖core／固定serde／SHA256／fs2锁，无UI。core重构为prepare→可信存储hook→CPU apply与journal发布；hook收到冻结原命令和固定结果，不重算业务，不成功则CPU不发布变化。core的model receipt继续标volatile_only；**Store返回的has_persistent_receipt才表示该原操作被可靠提交边界覆盖**，不把仅调用core当持久成功。
+
+有限协议：新目录／单写LOCK→固定genesis（原有限来源及规则身份）→有长度／序号／前链／SHA256的逻辑WAL→同步WAL→写双槽提交根并同步→CURRENT绑定根hash／最新sequence／wal_end并同步目录→CPU apply→响应。逻辑WAL重放冻结命令，逐条校验原结果与幂等覆盖；CLI将实际代码内容hash作为规则身份，版本不匹配拒载，未实现自动迁移。创建新世界不能覆写既有目录。
+
+恢复必须验证CURRENT、最新根、genesis及全部已提交WAL链与结果；任何提交区间内的截断／坏checksum／缺依赖／不兼容拒载，不能用旧根吞掉已确认操作。只有验证边界外的字节可截除，已知未引用原子临时文件可回收；任意用户文件不删。两个根保留完整前缀依赖，是有界重放恢复点，**尚未实现独立压缩数据页检查点／长时日志合并与任意历史加载**。当前frame≤32KiB、WAL≤64MiB、genesis≤512KiB、metadata≤4KiB、journal≤1024，在原运行／磁盘额度内准入，达到上界拒新，不能继续运行无限增表。该实验更紧的限制不修改全产品20GiB目标。
+
+I/O返回错误可能已提交，Store进入RecoveryRequired，禁止继续读作当前完整状态或修改，必须重开验证并按原operation查询。当前写者生命周期结束显式best-effort解锁，记录创建PID，只由原进程解除自己的锁，Drop不补写／不发成功；锁FD不clone、不向子进程移交。活跃写者期间第二进程仍明确Locked，未给锁冲突添加自动重试。
+
+实测与检查：
+
+- [实际存储往返](evidence/m0-t06/storage.json)：保护／现金／容量共同提交两批，关闭／重新打开，业务状态、journal及旧ID重试一致，sequence仍2。
+- [Release测试记录](evidence/m0-t06/test-transcript.txt)：52项通过（35 core单元＋6 CLI集成＋10存储集成＋1编译失败），fmt／clippy通过；存储测试含11个位置的独立子进程exit(97)，覆盖准备、WAL分段、同步、根、CURRENT、CPU应用和响应后；重开核对revision／现金保护／容量／journal，已提交重试不重复支付。
+- 测试还覆盖第二进程锁、已提交损坏／缺依赖拒载、不兼容规则拒载、边界外残尾、注入ENOSPC后的隔离、超限命令在序列化前拒绝且WAL／状态不变、临时文件与用户文件区分。
+- advisor定点检查要求补齐“序列化前动作门”，已加回归。重复测试发现过真实的立即重开Locked失败，记录保留于[修复前输出](evidence/m0-t06/lock-failure-before-fix.txt)；并发spawn继承描述符是合理解释而非已证实根因。增加显式生命周期解锁／PID约束及100次重开同时100次spawn测试后，[固定5次恢复套件复测](evidence/m0-t06/lock-retest.json)通过，不隐去失败。
+
+可重跑（world目录必须尚不存在，父目录已存在）：
+
+```sh
+cargo run --release --locked --offline -p mycity-headless -- storage-probe fixtures/m0-e0-opening.json /tmp/mycity-m0-world
+cargo test -p mycity-storage --test recovery --release --locked --offline
+```
+
+以上仅是本机进程退出／故障注入，不是断电／文件系统损坏后的数据保证；ENOSPC来自注入，并非灌满真实磁盘。调度bookmark与钱物同一提交、真实日周月应计与到期、1024之后的内部覆盖／归档、全场景输入、长期恢复增长、8h压力和16GB门仍未通过。M0-T14继续not_accepted，P-E0/P-E1完整经济执行仍not_run；不能为推进进度将未做项改为PASS。

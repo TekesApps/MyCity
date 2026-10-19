@@ -1,0 +1,100 @@
+    Finished `release` profile [optimized] target(s) in 0.01s
+     Running unittests src/lib.rs (target/release/deps/mycity_core-d9714c4df210afe2)
+
+running 35 tests
+test arena::tests::full_tables_preserve_existing_state_and_owned_capacity ... ok
+test arena::tests::generation_exhaustion_retires_slot_instead_of_resurrecting_old_handle ... ok
+test arena::tests::wrong_world_branch_domain_and_generation_are_rejected ... ok
+test calendar::tests::rent_30_days_is_not_calendar_month_or_four_weeks ... ok
+test calendar::tests::month_anchor_does_not_drift_after_february ... ok
+test calendar::tests::dates_round_trip_and_reject_invalid_bounds ... ok
+test assembly::tests::input_order_does_not_change_world_identity_or_hash ... ok
+test assembly::tests::duplicate_sources_missing_owners_and_cost_mismatches_reject ... ok
+test assembly::tests::sources_and_independent_initial_worlds_are_exact ... ok
+test schedule::tests::pause_and_old_ack_do_not_change_cursor_or_time ... ok
+test assembly::tests::oversized_counts_and_unspent_initial_sources_do_not_publish_a_world ... ok
+test schedule::tests::phase_order_and_interval_cap_are_independent_of_input_order ... ok
+test tests::digest_has_known_reference_value ... ok
+test tests::stream_bound_does_not_depend_on_file_metadata ... ok
+test tests::unsupported_or_ambiguous_bootstrap_is_rejected ... ok
+test transaction::tests::failed_late_action_leaves_no_partial_cash_or_capacity ... ok
+test transaction::tests::capacity_lifecycle_releases_once_and_never_reuses_token ... ok
+test transaction::tests::foreign_capacity_reference_cannot_resolve_same_number_in_another_world ... ok
+test transaction::tests::account_cannot_unprotect_or_redirect_reserved_funds ... ok
+test transaction::tests::protection_is_not_new_cash_and_payment_converts_once ... ok
+test transaction::tests::persistence_hook_failure_publishes_neither_model_changes_nor_receipt ... ok
+test transaction::tests::retry_is_exact_and_changed_payload_or_actor_cannot_reuse_receipt ... ok
+test transaction::tests::lot_cost_is_invariant_under_splitting_and_internal_transfer ... ok
+test transaction::tests::stale_revision_scope_and_foreign_handles_do_not_write ... ok
+test units::tests::failed_accrual_preserves_carry ... ok
+test units::tests::negative_values_and_overflow_cannot_enter_exact_units ... ok
+test transaction::tests::stock_and_payment_commit_as_one_with_conserved_quantity_and_basis ... ok
+test transaction::tests::two_resource_request_does_not_hold_one_when_second_is_unavailable ... ok
+test units::tests::splitting_and_restoring_time_does_not_drop_fractional_cost ... ok
+test transaction::tests::full_journal_backpressures_without_erasing_prior_receipts ... ok
+test schedule::tests::large_same_time_source_pages_finish_before_advancing_world ... ok
+test schedule::tests::per_source_randomness_ignores_paging_and_is_domain_separated ... ok
+test schedule::tests::bookmark_continues_remaining_pages_without_reprocessing_old_sources ... ok
+test schedule::tests::malformed_bookmarks_and_changed_sources_reject ... ok
+test schedule::tests::bookmark_cannot_be_loaded_into_another_world_or_branch ... ok
+
+test result: ok. 35 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running unittests src/main.rs (target/release/deps/mycity_headless-3eae7b2ce91bfd4f)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/baseline.rs (target/release/deps/baseline-4504aefc5bbc051b)
+
+running 6 tests
+test bad_invocation_and_missing_input_exit_nonzero ... ok
+test opening_cli_assembles_real_bounded_records_without_running_the_economy ... ok
+test transaction_probe_exercises_model_without_claiming_durable_success ... ok
+test clock_probe_pages_twenty_thousand_sources_and_does_not_claim_disk_recovery ... ok
+test offline_runs_retain_provenance_and_do_not_claim_simulation ... ok
+test storage_cli_confirms_persistent_operation_but_not_full_city_recovery ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.42s
+
+     Running unittests src/lib.rs (target/release/deps/mycity_storage-f5cc594b0db92107)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/mycity-storage-worker.rs (target/release/deps/mycity_storage_worker-6b34d2862f3a11fc)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/recovery.rs (target/release/deps/recovery-15786f745421af1b)
+
+running 9 tests
+test incompatible_rules_reject_instead_of_recalculating_history ... ok
+test oversized_command_is_rejected_before_serializing_and_never_changes_storage ... ok
+test recovery_reclaims_only_known_unreferenced_atomic_temp_files ... ok
+test acknowledged_success_and_operation_coverage_survive_reopen_without_double_payment ... ok
+test only_tail_outside_the_validated_committed_boundary_is_truncated ... ok
+test a_second_process_cannot_open_a_world_while_writer_lock_is_held ... ok
+test injected_io_uncertainty_poisoning_prevents_further_writes_until_recovery ... FAILED
+test committed_corruption_or_missing_dependency_never_falls_back_to_old_root ... ok
+test abrupt_process_exit_at_each_boundary_retains_exactly_the_published_operation ... ok
+
+failures:
+
+---- injected_io_uncertainty_poisoning_prevents_further_writes_until_recovery stdout ----
+
+thread 'injected_io_uncertainty_poisoning_prevents_further_writes_until_recovery' panicked at crates/city-storage/tests/recovery.rs:177:59:
+called `Result::unwrap()` on an `Err` value: Locked
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    injected_io_uncertainty_poisoning_prevents_further_writes_until_recovery
+
+test result: FAILED. 8 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.16s
+
+error: test failed, to rerun pass `-p mycity-storage --test recovery`

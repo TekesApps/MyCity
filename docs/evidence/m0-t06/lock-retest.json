@@ -1,0 +1,26 @@
+{
+  "kind": "finite_repeat_after_real_lock_reopen_failure",
+  "runs": [
+    {
+      "run": 1,
+      "exit_code": 0
+    },
+    {
+      "run": 2,
+      "exit_code": 0
+    },
+    {
+      "run": 3,
+      "exit_code": 0
+    },
+    {
+      "run": 4,
+      "exit_code": 0
+    },
+    {
+      "run": 5,
+      "exit_code": 0
+    }
+  ],
+  "not_power_loss_or_16gb_evidence": true
+}

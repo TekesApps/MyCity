@@ -105,3 +105,35 @@ fn clock_probe_pages_twenty_thousand_sources_and_does_not_claim_disk_recovery() 
     assert_eq!(v["clock_probe"]["max_ready_page"], 8192);
     assert_eq!(v["clock_probe"]["persistent_recovery"], "not_run");
 }
+
+#[test]
+fn storage_cli_confirms_persistent_operation_but_not_full_city_recovery() {
+    let parent = std::env::temp_dir().join(format!(
+        "mycity-cli-store-{}-{}",
+        std::process::id(),
+        std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_nanos()
+    ));
+    std::fs::create_dir(&parent).unwrap();
+    let world = parent.join("world");
+    let input = format!(
+        "{}/../../fixtures/m0-e0-opening.json",
+        env!("CARGO_MANIFEST_DIR")
+    );
+    let out = Command::new(env!("CARGO_BIN_EXE_mycity-headless"))
+        .args(["storage-probe", &input, world.to_str().unwrap()])
+        .output()
+        .unwrap();
+    std::fs::remove_dir_all(parent).unwrap();
+    assert!(
+        out.status.success(),
+        "{}",
+        String::from_utf8_lossy(&out.stderr)
+    );
+    let v: serde_json::Value = serde_json::from_slice(&out.stdout).unwrap();
+    assert_eq!(v["storage_probe"]["committed_sequence"], 2);
+    assert_eq!(v["storage_probe"]["replay_has_persistent_receipt"], true);
+    assert_eq!(v["storage_probe"]["power_loss"], "not_tested");
+}

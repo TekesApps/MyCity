@@ -8,6 +8,7 @@ build = "build.rs"
 
 [dependencies]
 mycity-core = { path = "../city-core" }
+mycity-storage = { path = "../city-storage" }
 serde_json.workspace = true
 
 [build-dependencies]
