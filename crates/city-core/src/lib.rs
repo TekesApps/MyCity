@@ -4,6 +4,9 @@ use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::io::{self, Read};
 
+pub mod arena;
+pub mod units;
+
 pub const SCHEMA: &str = "mycity-m0-bootstrap-v1";
 pub const NUMERIC_STRATEGY: &str = "checked-integer-v1";
 pub const INPUT_LIMIT: u64 = 64 * 1024;

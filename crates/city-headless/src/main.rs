@@ -17,8 +17,8 @@ fn system(command: &str, args: &[&str]) -> Option<String> {
 
 fn run() -> Result<(), String> {
     let args: Vec<_> = env::args().collect();
-    if args.len() != 3 || args[1] != "baseline" {
-        return Err("usage: mycity-headless baseline <bootstrap.json>".into());
+    if args.len() != 3 || !["baseline", "layout"].contains(&args[1].as_str()) {
+        return Err("usage: mycity-headless <baseline|layout> <bootstrap.json>".into());
     }
     let file = File::open(&args[2]).map_err(|e| e.to_string())?;
     let bytes = read_bounded(file, INPUT_LIMIT).map_err(|e| e.to_string())?;
@@ -28,7 +28,7 @@ fn run() -> Result<(), String> {
         .duration_since(UNIX_EPOCH)
         .map_err(|e| e.to_string())?
         .as_nanos();
-    let report = json!({
+    let mut report = json!({
         "report_schema": "mycity-m0-evidence-v1",
         "task": "M0-T01", "run_id": format!("{}-{now}", std::process::id()),
         "result": "bootstrap_validated_only",
@@ -43,6 +43,23 @@ fn run() -> Result<(), String> {
         "ui": "not_implemented_by_scope", "gpu": "not_implemented",
         "economic_prototypes": "not_run", "memory_16gb_gate": "not_run"
     });
+    if args[1] == "layout" {
+        use mycity_core::arena::{AccountDomain, Arena, Scope};
+        let mut table = Arena::<AccountDomain, u64>::new(
+            Scope::new(input.world, input.branch).map_err(|e| format!("{e:?}"))?,
+            32768,
+            2 * 1024 * 1024,
+        )
+        .map_err(|e| format!("{e:?}"))?;
+        let mut checksum = 0u64;
+        for n in 0..32768u64 {
+            let h = table.insert(n).map_err(|e| format!("{e:?}"))?;
+            checksum += *table.get(h).map_err(|e| format!("{e:?}"))?;
+        }
+        report["task"] = json!("M0-T02");
+        report["result"] = json!("fixed_record_layout_executed");
+        report["layout"] = json!({"type": "u64_probe_not_full_financial_record", "table": table.layout(), "readback_sum": checksum, "allocator_metadata_in_table_bytes": false});
+    }
     println!(
         "{}",
         serde_json::to_string_pretty(&report).map_err(|e| e.to_string())?

@@ -1,0 +1,53 @@
+{
+  "build": {
+    "profile": "release",
+    "rustc": "rustc 1.85.1 (4eb161250 2025-03-15)",
+    "target": "aarch64-apple-darwin"
+  },
+  "economic_prototypes": "not_run",
+  "gpu": "not_implemented",
+  "host": {
+    "arch": "aarch64",
+    "chip": "Apple M4",
+    "memory_bytes": "34359738368",
+    "os": "macos",
+    "os_version": "26.6.2"
+  },
+  "input": {
+    "branch": 1,
+    "laboratory_only": true,
+    "schema": "mycity-m0-bootstrap-v1",
+    "seed": 7,
+    "world": 1
+  },
+  "input_sha256": "f56047a1a7fc1a08a25053117467487c61bf98363c07934725e0a7298603e5ba",
+  "layout": {
+    "allocator_metadata_in_table_bytes": false,
+    "readback_sum": 536854528,
+    "table": {
+      "free_index_capacity": 32768,
+      "header_bytes": 80,
+      "live_records": 32768,
+      "owned_capacity_bytes": 917584,
+      "record_bytes": 8,
+      "slot_bytes": 24,
+      "slots_capacity": 32768
+    },
+    "type": "u64_probe_not_full_financial_record"
+  },
+  "lock_sha256": "947be764293056e38d46cf3fa9a50bda395c3dec6f31f617d08b604d782fd1b5",
+  "memory_16gb_gate": "not_run",
+  "report_schema": "mycity-m0-evidence-v1",
+  "result": "fixed_record_layout_executed",
+  "rules": {
+    "input_limit_bytes": 65536,
+    "mode": "headless_laboratory",
+    "numeric_strategy": "checked-integer-v1",
+    "schema": "mycity-m0-bootstrap-v1"
+  },
+  "rules_sha256": "66b433f7a9896763867a275570050e57029fdd66f211554b548755121d838f73",
+  "run_id": "75505-1792414036681889000",
+  "source_sha256": "71baa5c5f5473e08eab70cb411bf1f4fa649f251855689e1ed330c226c613fd5",
+  "task": "M0-T02",
+  "ui": "not_implemented_by_scope"
+}
