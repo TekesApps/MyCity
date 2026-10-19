@@ -1,0 +1,17 @@
+[package]
+name = "mycity-headless"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+build = "build.rs"
+
+[dependencies]
+mycity-core = { path = "../city-core" }
+serde_json.workspace = true
+
+[build-dependencies]
+sha2.workspace = true
+
+[lints]
+workspace = true

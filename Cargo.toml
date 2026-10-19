@@ -1,0 +1,20 @@
+[workspace]
+members = ["crates/city-core", "crates/city-headless"]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.85.1"
+license = "MIT"
+
+[workspace.dependencies]
+serde = { version = "=1.0.229", features = ["derive"] }
+serde_json = "=1.0.149"
+sha2 = "=0.10.9"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[profile.release]
+overflow-checks = true
