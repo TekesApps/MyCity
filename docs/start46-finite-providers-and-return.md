@@ -1,5 +1,7 @@
 # START46：有限供方、邻城路线与有界收尾 FP46
 
+v0.4.51统一合成场景改用[U51](first-release-unified-world-inputs.md)的明确覆盖及构造；本文为历史来源，旧M不重新成为文档冻结前置，实际加载／运行仍待I/V。
+
 设计修订：v0.4.46，2026-10-19。接续[AS44装配台账](city-input-assembly-register.md)、[SP45具体空间输入](start45-spatial-input-pack.md)与[RUN36](minimum-operating-parameters.md)。本轮交付供方人员／实物／资金和B侧路线的文档数据，不实现加载器／游戏，不展开AgentKit。START46是显式后继版本，不能改旧存档重新发钱。
 
 ## 1. 数据交付与来源边界

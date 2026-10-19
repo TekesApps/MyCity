@@ -1,0 +1,142 @@
+{
+  "synthetic": true,
+  "schema": "mycity-doc-input-1",
+  "maps": [
+    {
+      "map": 0,
+      "size_m": 2048,
+      "sites": 4330,
+      "rows": 51,
+      "street_y_m": [
+        140,
+        278,
+        376,
+        464,
+        552,
+        640,
+        728,
+        816,
+        904,
+        992,
+        1080,
+        1156,
+        1232,
+        1308,
+        1384,
+        1450,
+        1514,
+        1578,
+        1642,
+        1706,
+        1754,
+        1802,
+        1850,
+        1898,
+        1946,
+        1994
+      ],
+      "north_edge_m": 1998,
+      "site_area_m2": 3421096,
+      "physical_buildings": 4000,
+      "housing_units": 21000
+    },
+    {
+      "map": 1,
+      "size_m": 1024,
+      "sites": 154,
+      "rows": 4,
+      "street_y_m": [
+        60,
+        136
+      ],
+      "north_edge_m": 174,
+      "site_area_m2": 129680,
+      "physical_buildings": 154,
+      "housing_units": 429
+    },
+    {
+      "map": 2,
+      "size_m": 1024,
+      "sites": 154,
+      "rows": 4,
+      "street_y_m": [
+        60,
+        136
+      ],
+      "north_edge_m": 174,
+      "site_area_m2": 129680,
+      "physical_buildings": 154,
+      "housing_units": 429
+    },
+    {
+      "map": 3,
+      "size_m": 1024,
+      "sites": 154,
+      "rows": 4,
+      "street_y_m": [
+        60,
+        136
+      ],
+      "north_edge_m": 174,
+      "site_area_m2": 129680,
+      "physical_buildings": 154,
+      "housing_units": 429
+    },
+    {
+      "map": 4,
+      "size_m": 1024,
+      "sites": 154,
+      "rows": 4,
+      "street_y_m": [
+        60,
+        136
+      ],
+      "north_edge_m": 174,
+      "site_area_m2": 129680,
+      "physical_buildings": 154,
+      "housing_units": 429
+    },
+    {
+      "map": 5,
+      "size_m": 1024,
+      "sites": 153,
+      "rows": 4,
+      "street_y_m": [
+        60,
+        136
+      ],
+      "north_edge_m": 174,
+      "site_area_m2": 129360,
+      "physical_buildings": 153,
+      "housing_units": 428
+    },
+    {
+      "map": 6,
+      "size_m": 1024,
+      "sites": 153,
+      "rows": 4,
+      "street_y_m": [
+        60,
+        136
+      ],
+      "north_edge_m": 174,
+      "site_area_m2": 129360,
+      "physical_buildings": 153,
+      "housing_units": 428
+    },
+    {
+      "map": 7,
+      "size_m": 1024,
+      "sites": 153,
+      "rows": 4,
+      "street_y_m": [
+        60,
+        136
+      ],
+      "north_edge_m": 174,
+      "site_area_m2": 129360,
+      "physical_buildings": 153,
+      "housing_units": 428
+    }
+  ]
+}
