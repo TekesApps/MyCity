@@ -1,5 +1,7 @@
 # 全局设计覆盖、缺口与收敛顺序
 
+v0.4.42 [LS42](environment-services-and-satisfaction.md)接续GAP-06／CD-03有限规则定义：正常服务需要、实际人时、8维／短板／未知与迁居改善门。真实输入装配与I/V仍开；新9.5MiB已在原模拟域内重划，不宣称疾病／犯罪／火灾模型或16GB已跑通。现行下一优先按City清单合并CD-06。
+
 v0.4.38 [LC38](first-release-lifecycle-inputs-and-exit.md)完成City清单CD-02的23类有限生命周期D定义，物件A／I／V仍待真实来源与验收；第9商品煤残余物使用原16槽，不新增动态表。当前优先转CD-03自然公服需求与环境—居民反馈，AgentKit继续不展开。现行31项预算保持。
 
 v0.4.37按用户要求，后续优先顺序以[City专用关闭清单](city-design-closure-checklist.md)为准：先补City剩余核心规则／输入，不展开AgentKit。CD-01已补[固定报价反馈](household-business-feedback.md)，自然公服／完整满意度／资产／合法用工依赖仍开，不声称City设计全部完成。新增行为锚点0.3125MiB后现31项43.8828125／44MiB、余0.1171875MiB，下方29／27项为历史基线。

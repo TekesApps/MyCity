@@ -1,5 +1,7 @@
 # 23类首版物件：启动、运行、物料终点与安全退出
 
+v0.4.42 [LS42](environment-services-and-satisfaction.md)接上本篇实际环境／服务交付到家庭反馈；正常三类基础需要不等疾病、刑案或真实火灾。已有医院支持性留观、服务人员／床位／资源及安全退出仍沿本篇类型化来源，不以满意度替代治疗／工作或生成新能力。
+
 设计修订：v0.4.38，2026-10-19，候选规则包LC38。落实[City清单CD-02](city-design-closure-checklist.md)，承接[DP34规格](first-release-type-definition-pack.md)、[RUN36](minimum-operating-parameters.md)及[27类契约](common-object-contracts.md)。全部数值为游戏规则，不是现实工程安全定额；仅文档，无实现／资产装配／16GB性能证据。
 
 ## 1. 范围、继承与不能省略的来源

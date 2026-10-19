@@ -1,5 +1,7 @@
 # 属性、运算系统与指标的双向对照
 
+v0.4.42 [LS42](environment-services-and-satisfaction.md)接P23／P24／P26／P30—P34到S09真实服务、S11人时暴露与S13满意度／迁居：8维／权重／短板及unknown有固定来源，M18—M21等只投影，不用监测桶持有权威。9.5MiB专用包与原行为锚点分开，不新增指标族。
+
 设计补充：v0.4.19，2026-10-19。P＝属性组，S＝逻辑系统，M＝指标族；编号与 [Root／组件](root-component-contract.md)、[首版模板](first-release-object-templates.md) 对齐。这里的“双向”是从字段到指标、从系统／指标反查字段，**不是指标可以直接给事实赋值**。
 
 v0.4.28 [关系一致性审查](building-unit-shared-facility-contract.md) 对齐P04／P07—P10、P14—P15、P21／P23／P29：单元接入取冻结布局组，P10建筑使用边不是每户费用源，S08按真实H／C条款和义务单写；P29按物理对象排他覆盖，整楼综合健康仅派生，不为它另写第二condition。

@@ -1,5 +1,7 @@
 # 家庭—企业有限反馈契约
 
+v0.4.42 [LS42](environment-services-and-satisfaction.md)接续CD-03有限满意度定义：8维、权重／短板、完整人时覆盖及公服实际结果；unknown打断保守14完整日证明，成功入住后才30日冷却，候选须同规则有效目标改善≥5。LS42住房评分的bootstrap收入参考不是本篇完整30日I30，也不是可花现金；原资金／工作／租约／迁居权利不改。
+
 v0.4.41 [ME41交叉约束](market-entities-and-equity.md#10-me41家庭收入个人出资与消费资金门)将自主出资／家庭转个人再认购统一列为可选资本支出，先满足原硬保护与H窗口必要生活预算；转回家庭／股息不重加I30，工资仍依原家庭收款与劳动地点税源。并发认购复核同一可用余额，不给个人再发消费需求。
 
 设计修订：v0.4.37，2026-10-19。落实[City清单CD-01](city-design-closure-checklist.md)，对应GAP-05。仅游戏候选规则，无实现或经济均衡证据；[原家庭](citizen-households-and-living.md)、[行业](industries-employment-and-effects.md)、[实物经济](physical-economy-runtime-contract.md)、[工资税](fiscal-recurring-budget-contract.md)仍为权利／交付／账务权威。
