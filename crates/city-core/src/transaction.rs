@@ -43,6 +43,9 @@ impl Caller {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum Action {
+    Boot {
+        command: crate::boot::Command,
+    },
     Economy {
         command: crate::economy::Command,
     },
@@ -127,6 +130,7 @@ pub enum TxError {
     WorkingLimit,
     Region(crate::region::Error),
     Economy(crate::economy::Error),
+    Boot(crate::boot::Error),
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
@@ -187,6 +191,7 @@ pub struct Engine {
 }
 
 struct Prepared {
+    boot: Option<crate::boot::Boot>,
     economy: Option<crate::economy::Economy>,
     region: Option<crate::region::Region>,
     accounts: Vec<(Handle<AccountDomain>, Account)>,
@@ -206,6 +211,14 @@ impl Engine {
             return Err(TxError::Resource);
         }
         resources.sort_by_key(|r| r.id);
+        if let Some(b) = world.boot {
+            if b.resources
+                .iter()
+                .any(|id| !resources.iter().any(|r| r.id == *id && r.capacity > 0))
+            {
+                return Err(TxError::Resource);
+            }
+        }
         if resources
             .iter()
             .any(|r| r.id == 0 || r.reserved != 0 || r.occupied != 0)
@@ -346,8 +359,28 @@ impl Engine {
         let mut migrated = [None; MAX_ACTIONS];
         let mut region = self.world.region;
         let mut economy = self.world.economy;
+        let mut boot = self.world.boot;
         for (action_index, action) in env.actions.iter().enumerate() {
             match *action {
+                Action::Boot { command } => {
+                    if !matches!(caller, Caller::System) {
+                        return Err(TxError::Unauthorized);
+                    }
+                    let b = boot.as_mut().ok_or(TxError::InvalidOperation)?;
+                    b.command(
+                        command,
+                        &mut BootLedger {
+                            base: EconomicLedger {
+                                world: &self.world,
+                                accounts: &mut accounts,
+                                stocks: &mut stocks,
+                            },
+                            resources: &mut resources,
+                            leases: &mut leases,
+                            next_token: &mut next_token,
+                        },
+                    )?;
+                }
                 Action::Economy { command } => {
                     if !matches!(caller, Caller::System) {
                         return Err(TxError::Unauthorized);
@@ -502,6 +535,24 @@ impl Engine {
                     }
                 }
                 Action::MoveStock { from, to, quantity } => {
+                    if let Some(b) = boot {
+                        for raw in [from, to] {
+                            let h = self
+                                .world
+                                .stocks
+                                .resolve(raw)
+                                .map_err(|_| TxError::InvalidHandle)?;
+                            if b.governs(
+                                self.world
+                                    .stocks
+                                    .get(h)
+                                    .map_err(|_| TxError::InvalidHandle)?
+                                    .id,
+                            ) {
+                                return Err(TxError::Unauthorized);
+                            }
+                        }
+                    }
                     if let Some(e) = &economy {
                         for raw in [from, to] {
                             let h = self
@@ -672,7 +723,27 @@ impl Engine {
                 }
             }
         }
+        if let Some(b) = boot {
+            let mut ledger = BootLedger {
+                base: EconomicLedger {
+                    world: &self.world,
+                    accounts: &mut accounts,
+                    stocks: &mut stocks,
+                },
+                resources: &mut resources,
+                leases: &mut leases,
+                next_token: &mut next_token,
+            };
+            let mut cash = Money::ZERO;
+            for (id, _) in &self.world.account_ids {
+                cash = cash
+                    .checked_add(crate::boot::Ledger::cash(&mut ledger, *id)?)
+                    .map_err(|_| TxError::Overflow)?;
+            }
+            b.validate(&mut ledger, cash)?;
+        }
         Ok(Prepared {
+            boot,
             economy,
             region,
             accounts,
@@ -704,6 +775,7 @@ impl Engine {
                 .replace(h, s)
                 .expect("validated commit handle");
         }
+        self.world.boot = prepared.boot;
         self.world.economy = prepared.economy;
         self.world.region = prepared.region;
         self.world.revision = prepared.receipt.revision;
@@ -900,6 +972,92 @@ impl crate::economy::Ledger for EconomicLedger<'_> {
             .checked_add(amount)
             .map_err(|_| TxError::Overflow)?;
         Ok(())
+    }
+}
+
+struct BootLedger<'a> {
+    base: EconomicLedger<'a>,
+    resources: &'a mut Vec<Resource>,
+    leases: &'a mut Vec<Option<Lease>>,
+    next_token: &'a mut u64,
+}
+impl crate::boot::Ledger for BootLedger<'_> {
+    fn stock(&mut self, id: u32) -> Result<Stock, TxError> {
+        crate::economy::Ledger::stock(&mut self.base, id)
+    }
+    fn put(&mut self, id: u32, s: Stock) -> Result<(), TxError> {
+        crate::economy::Ledger::put_stock(&mut self.base, id, s)
+    }
+    fn cash(&mut self, id: u32) -> Result<Money, TxError> {
+        crate::economy::Ledger::cash(&mut self.base, id)
+    }
+    fn pay(&mut self, from: u32, to: u32, amount: Money) -> Result<(), TxError> {
+        crate::economy::Ledger::pay(&mut self.base, from, to, amount, false)
+    }
+    fn claim(&mut self, mut ids: [u32; 2]) -> Result<[u64; 2], TxError> {
+        ids.sort();
+        let mut tokens = [0; 2];
+        for (i, id) in ids.into_iter().enumerate() {
+            let r = self
+                .resources
+                .iter_mut()
+                .find(|r| r.id == id)
+                .ok_or(TxError::Resource)?;
+            if r.reserved
+                .checked_add(r.occupied)
+                .and_then(|v| v.checked_add(1))
+                .ok_or(TxError::Overflow)?
+                > r.capacity
+            {
+                return Err(TxError::Capacity);
+            }
+            let slot = self
+                .leases
+                .iter_mut()
+                .find(|l| l.is_none())
+                .ok_or(TxError::Lease)?;
+            let token = *self.next_token;
+            *self.next_token = self.next_token.checked_add(1).ok_or(TxError::Overflow)?;
+            *slot = Some(Lease {
+                token,
+                actor: 0,
+                resource: id,
+                units: 1,
+                occupied: true,
+            });
+            r.occupied += 1;
+            tokens[i] = token;
+        }
+        Ok(tokens)
+    }
+    fn release(&mut self, tokens: [u64; 2]) -> Result<(), TxError> {
+        for token in tokens {
+            let slot = self
+                .leases
+                .iter_mut()
+                .find(|l| l.is_some_and(|l| l.token == token))
+                .ok_or(TxError::Lease)?;
+            let lease = slot.ok_or(TxError::Lease)?;
+            let r = self
+                .resources
+                .iter_mut()
+                .find(|r| r.id == lease.resource)
+                .ok_or(TxError::Resource)?;
+            if !lease.occupied || lease.units != 1 || lease.actor != 0 {
+                return Err(TxError::Lease);
+            }
+            r.occupied = r.occupied.checked_sub(1).ok_or(TxError::Lease)?;
+            *slot = None;
+        }
+        Ok(())
+    }
+    fn owns(&mut self, mut ids: [u32; 2], tokens: [u64; 2]) -> bool {
+        ids.sort();
+        ids.into_iter().zip(tokens).all(|(id, token)| {
+            self.leases.iter().flatten().any(|l| {
+                l.token == token && l.resource == id && l.occupied && l.units == 1 && l.actor == 0
+            })
+        })
     }
 }
 

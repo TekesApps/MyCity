@@ -1,0 +1,6295 @@
+{
+  "P_BOOT": "finite_experiment_executed",
+  "boot_probe": {
+    "boot_inline_bytes": 448,
+    "competition": {
+      "checkpoints": [
+        {
+          "label": "old_failed_operation_stays_failed_after_release",
+          "resources": [
+            {
+              "capacity": 1,
+              "id": 101,
+              "occupied": 0,
+              "reserved": 0
+            },
+            {
+              "capacity": 1,
+              "id": 102,
+              "occupied": 0,
+              "reserved": 0
+            }
+          ],
+          "sequence": 3,
+          "state_sha256": "d85953603133685e11b661bd2e922a8f801f53411ec27fcb3058a969d257b24a",
+          "world": {
+            "accounts": [
+              {
+                "cash": 1000000,
+                "id": 1,
+                "protected": 0,
+                "role": "treasury"
+              },
+              {
+                "cash": 200000,
+                "id": 2,
+                "protected": 0,
+                "role": "household"
+              },
+              {
+                "cash": 599800,
+                "id": 3,
+                "protected": 0,
+                "role": "company"
+              },
+              {
+                "cash": 1200200,
+                "id": 4,
+                "protected": 0,
+                "role": "supplier"
+              }
+            ],
+            "boot": {
+              "contractor": 4,
+              "failed_expense": 0,
+              "fees": 200,
+              "fuel_used": 0,
+              "initial": [
+                5000,
+                100000,
+                60000,
+                6000000,
+                0,
+                0
+              ],
+              "initial_basis": 2160,
+              "initial_cash": 3000000,
+              "jobs": [
+                {
+                  "completed": 1,
+                  "cost": 0,
+                  "due": 60,
+                  "failed": 0,
+                  "identity": 1,
+                  "inputs": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "phase": "Idle",
+                  "started": 0,
+                  "tokens": [
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "completed": 0,
+                  "cost": 0,
+                  "due": 0,
+                  "failed": 0,
+                  "identity": 0,
+                  "inputs": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "phase": "Idle",
+                  "started": 0,
+                  "tokens": [
+                    0,
+                    0
+                  ]
+                }
+              ],
+              "limits": [
+                5000,
+                2000000,
+                6000000,
+                6000000,
+                6000000,
+                10000000
+              ],
+              "next_job": 2,
+              "operator": 3,
+              "profile": "pboot-cold-micro-v1",
+              "resources": [
+                101,
+                102
+              ],
+              "stocks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "time": 60
+            },
+            "economy": null,
+            "opening_sources": [
+              {
+                "amount": 1000000,
+                "id": 1,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 200000,
+                "id": 2,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 600000,
+                "id": 3,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 1200000,
+                "id": 4,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 2000,
+                "id": 5,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 100,
+                "id": 6,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 60,
+                "id": 7,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 8,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 9,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 10,
+                "kind": "inventory_capital"
+              }
+            ],
+            "region": null,
+            "revision": 2,
+            "schema": "mycity-m0-state-v5",
+            "scope": {
+              "branch": 1,
+              "world": 1
+            },
+            "seed": 7,
+            "stocks": [
+              {
+                "basis": 2000,
+                "commodity": "fuel",
+                "id": 1,
+                "lot_id": 5,
+                "offset": 0,
+                "origin_basis": 2000,
+                "origin_quantity": 5000,
+                "owner": 3,
+                "quantity": 5000
+              },
+              {
+                "basis": 0,
+                "commodity": "electricity",
+                "id": 2,
+                "lot_id": 6,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 0,
+                "owner": 3,
+                "quantity": 0
+              },
+              {
+                "basis": 360,
+                "commodity": "water",
+                "id": 3,
+                "lot_id": 7,
+                "offset": 0,
+                "origin_basis": 360,
+                "origin_quantity": 660000,
+                "owner": 3,
+                "quantity": 660000
+              },
+              {
+                "basis": 0,
+                "commodity": "raw_water",
+                "id": 4,
+                "lot_id": 8,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 5400000,
+                "owner": 3,
+                "quantity": 5400000
+              },
+              {
+                "basis": 0,
+                "commodity": "waste_water",
+                "id": 5,
+                "lot_id": 9,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 0,
+                "owner": 3,
+                "quantity": 0
+              },
+              {
+                "basis": 0,
+                "commodity": "heat",
+                "id": 6,
+                "lot_id": 10,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 100000,
+                "owner": 3,
+                "quantity": 100000
+              }
+            ]
+          }
+        },
+        {
+          "label": "new_operation_can_retry_after_capacity_release",
+          "resources": [
+            {
+              "capacity": 1,
+              "id": 101,
+              "occupied": 1,
+              "reserved": 0
+            },
+            {
+              "capacity": 1,
+              "id": 102,
+              "occupied": 1,
+              "reserved": 0
+            }
+          ],
+          "sequence": 4,
+          "state_sha256": "cd8907f066cc788128a76c64ee10552946c29cc4c9c401ea0131e9c133885460",
+          "world": {
+            "accounts": [
+              {
+                "cash": 1000000,
+                "id": 1,
+                "protected": 0,
+                "role": "treasury"
+              },
+              {
+                "cash": 200000,
+                "id": 2,
+                "protected": 0,
+                "role": "household"
+              },
+              {
+                "cash": 599500,
+                "id": 3,
+                "protected": 0,
+                "role": "company"
+              },
+              {
+                "cash": 1200500,
+                "id": 4,
+                "protected": 0,
+                "role": "supplier"
+              }
+            ],
+            "boot": {
+              "contractor": 4,
+              "failed_expense": 0,
+              "fees": 500,
+              "fuel_used": 0,
+              "initial": [
+                5000,
+                100000,
+                60000,
+                6000000,
+                0,
+                0
+              ],
+              "initial_basis": 2160,
+              "initial_cash": 3000000,
+              "jobs": [
+                {
+                  "completed": 1,
+                  "cost": 0,
+                  "due": 60,
+                  "failed": 0,
+                  "identity": 1,
+                  "inputs": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "phase": "Idle",
+                  "started": 0,
+                  "tokens": [
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "completed": 0,
+                  "cost": 732,
+                  "due": 120,
+                  "failed": 0,
+                  "identity": 2,
+                  "inputs": [
+                    1000,
+                    0,
+                    60000,
+                    0,
+                    0,
+                    0
+                  ],
+                  "phase": "Running",
+                  "started": 60,
+                  "tokens": [
+                    3,
+                    4
+                  ]
+                }
+              ],
+              "limits": [
+                5000,
+                2000000,
+                6000000,
+                6000000,
+                6000000,
+                10000000
+              ],
+              "next_job": 3,
+              "operator": 3,
+              "profile": "pboot-cold-micro-v1",
+              "resources": [
+                101,
+                102
+              ],
+              "stocks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "time": 60
+            },
+            "economy": null,
+            "opening_sources": [
+              {
+                "amount": 1000000,
+                "id": 1,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 200000,
+                "id": 2,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 600000,
+                "id": 3,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 1200000,
+                "id": 4,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 2000,
+                "id": 5,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 100,
+                "id": 6,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 60,
+                "id": 7,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 8,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 9,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 10,
+                "kind": "inventory_capital"
+              }
+            ],
+            "region": null,
+            "revision": 3,
+            "schema": "mycity-m0-state-v5",
+            "scope": {
+              "branch": 1,
+              "world": 1
+            },
+            "seed": 7,
+            "stocks": [
+              {
+                "basis": 1600,
+                "commodity": "fuel",
+                "id": 1,
+                "lot_id": 5,
+                "offset": 1000,
+                "origin_basis": 2000,
+                "origin_quantity": 5000,
+                "owner": 3,
+                "quantity": 4000
+              },
+              {
+                "basis": 0,
+                "commodity": "electricity",
+                "id": 2,
+                "lot_id": 6,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 0,
+                "owner": 3,
+                "quantity": 0
+              },
+              {
+                "basis": 328,
+                "commodity": "water",
+                "id": 3,
+                "lot_id": 7,
+                "offset": 0,
+                "origin_basis": 328,
+                "origin_quantity": 600000,
+                "owner": 3,
+                "quantity": 600000
+              },
+              {
+                "basis": 0,
+                "commodity": "raw_water",
+                "id": 4,
+                "lot_id": 8,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 5400000,
+                "owner": 3,
+                "quantity": 5400000
+              },
+              {
+                "basis": 0,
+                "commodity": "waste_water",
+                "id": 5,
+                "lot_id": 9,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 0,
+                "owner": 3,
+                "quantity": 0
+              },
+              {
+                "basis": 0,
+                "commodity": "heat",
+                "id": 6,
+                "lot_id": 10,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 100000,
+                "owner": 3,
+                "quantity": 100000
+              }
+            ]
+          }
+        }
+      ],
+      "engine_owned_capacity_bytes": 2084448,
+      "input_sha256": "9ac85ae65e13811c28e647be2aa12f874ba9e0d87a66bbda5d0e3a42ae106b9a",
+      "resources": [
+        {
+          "capacity": 1,
+          "id": 101,
+          "occupied": 0,
+          "reserved": 0
+        },
+        {
+          "capacity": 1,
+          "id": 102,
+          "occupied": 0,
+          "reserved": 0
+        }
+      ],
+      "sequence": 5,
+      "spatial_reference": null,
+      "state_sha256": "c60a6ec00d88fd9e2028fb5a8302c4d9c46188de87ae6aaf2d37f1e6c9630252",
+      "store_owned_capacity_bytes": 2086084,
+      "world": {
+        "accounts": [
+          {
+            "cash": 1000000,
+            "id": 1,
+            "protected": 0,
+            "role": "treasury"
+          },
+          {
+            "cash": 200000,
+            "id": 2,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 599500,
+            "id": 3,
+            "protected": 0,
+            "role": "company"
+          },
+          {
+            "cash": 1200500,
+            "id": 4,
+            "protected": 0,
+            "role": "supplier"
+          }
+        ],
+        "boot": {
+          "contractor": 4,
+          "failed_expense": 0,
+          "fees": 500,
+          "fuel_used": 1000,
+          "initial": [
+            5000,
+            100000,
+            60000,
+            6000000,
+            0,
+            0
+          ],
+          "initial_basis": 2160,
+          "initial_cash": 3000000,
+          "jobs": [
+            {
+              "completed": 1,
+              "cost": 0,
+              "due": 60,
+              "failed": 0,
+              "identity": 1,
+              "inputs": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "phase": "Idle",
+              "started": 0,
+              "tokens": [
+                0,
+                0
+              ]
+            },
+            {
+              "completed": 1,
+              "cost": 0,
+              "due": 120,
+              "failed": 0,
+              "identity": 2,
+              "inputs": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "phase": "Idle",
+              "started": 60,
+              "tokens": [
+                0,
+                0
+              ]
+            }
+          ],
+          "limits": [
+            5000,
+            2000000,
+            6000000,
+            6000000,
+            6000000,
+            10000000
+          ],
+          "next_job": 3,
+          "operator": 3,
+          "profile": "pboot-cold-micro-v1",
+          "resources": [
+            101,
+            102
+          ],
+          "stocks": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "time": 120
+        },
+        "economy": null,
+        "opening_sources": [
+          {
+            "amount": 1000000,
+            "id": 1,
+            "kind": "cash_capital"
+          },
+          {
+            "amount": 200000,
+            "id": 2,
+            "kind": "cash_capital"
+          },
+          {
+            "amount": 600000,
+            "id": 3,
+            "kind": "cash_capital"
+          },
+          {
+            "amount": 1200000,
+            "id": 4,
+            "kind": "cash_capital"
+          },
+          {
+            "amount": 2000,
+            "id": 5,
+            "kind": "inventory_capital"
+          },
+          {
+            "amount": 100,
+            "id": 6,
+            "kind": "inventory_capital"
+          },
+          {
+            "amount": 60,
+            "id": 7,
+            "kind": "inventory_capital"
+          },
+          {
+            "amount": 0,
+            "id": 8,
+            "kind": "inventory_capital"
+          },
+          {
+            "amount": 0,
+            "id": 9,
+            "kind": "inventory_capital"
+          },
+          {
+            "amount": 0,
+            "id": 10,
+            "kind": "inventory_capital"
+          }
+        ],
+        "region": null,
+        "revision": 4,
+        "schema": "mycity-m0-state-v5",
+        "scope": {
+          "branch": 1,
+          "world": 1
+        },
+        "seed": 7,
+        "stocks": [
+          {
+            "basis": 1600,
+            "commodity": "fuel",
+            "id": 1,
+            "lot_id": 5,
+            "offset": 1000,
+            "origin_basis": 2000,
+            "origin_quantity": 5000,
+            "owner": 3,
+            "quantity": 4000
+          },
+          {
+            "basis": 732,
+            "commodity": "electricity",
+            "id": 2,
+            "lot_id": 6,
+            "offset": 0,
+            "origin_basis": 732,
+            "origin_quantity": 400000,
+            "owner": 3,
+            "quantity": 400000
+          },
+          {
+            "basis": 328,
+            "commodity": "water",
+            "id": 3,
+            "lot_id": 7,
+            "offset": 0,
+            "origin_basis": 328,
+            "origin_quantity": 600000,
+            "owner": 3,
+            "quantity": 600000
+          },
+          {
+            "basis": 0,
+            "commodity": "raw_water",
+            "id": 4,
+            "lot_id": 8,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 5400000,
+            "owner": 3,
+            "quantity": 5400000
+          },
+          {
+            "basis": 0,
+            "commodity": "waste_water",
+            "id": 5,
+            "lot_id": 9,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 60000,
+            "owner": 3,
+            "quantity": 60000
+          },
+          {
+            "basis": 0,
+            "commodity": "heat",
+            "id": 6,
+            "lot_id": 10,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 700000,
+            "owner": 3,
+            "quantity": 700000
+          }
+        ]
+      },
+      "world_layout": {
+        "accounts": {
+          "free_index_capacity": 64,
+          "header_bytes": 80,
+          "live_records": 4,
+          "owned_capacity_bytes": 2384,
+          "record_bytes": 24,
+          "slot_bytes": 32,
+          "slots_capacity": 64
+        },
+        "allocator_metadata_included": false,
+        "index_capacity_bytes": 400,
+        "opening_sources_capacity_bytes": 256,
+        "owned_capacity_bytes": 26608,
+        "stocks": {
+          "free_index_capacity": 128,
+          "header_bytes": 80,
+          "live_records": 6,
+          "owned_capacity_bytes": 12880,
+          "record_bytes": 88,
+          "slot_bytes": 96,
+          "slots_capacity": 128
+        },
+        "temporary_parse_and_view_pages_included": false,
+        "world_remaining_header_bytes": 10688
+      }
+    },
+    "exhausted": {
+      "checkpoints": [
+        {
+          "label": "finite_fuel_is_not_recreated",
+          "resources": [
+            {
+              "capacity": 2,
+              "id": 101,
+              "occupied": 0,
+              "reserved": 0
+            },
+            {
+              "capacity": 2,
+              "id": 102,
+              "occupied": 0,
+              "reserved": 0
+            }
+          ],
+          "sequence": 13,
+          "state_sha256": "d5f325601bf3096b90dcd64e42d5263281e765e6837b1e46bc36af2b506e414d",
+          "world": {
+            "accounts": [
+              {
+                "cash": 1000000,
+                "id": 1,
+                "protected": 0,
+                "role": "treasury"
+              },
+              {
+                "cash": 200000,
+                "id": 2,
+                "protected": 0,
+                "role": "household"
+              },
+              {
+                "cash": 598300,
+                "id": 3,
+                "protected": 0,
+                "role": "company"
+              },
+              {
+                "cash": 1201700,
+                "id": 4,
+                "protected": 0,
+                "role": "supplier"
+              }
+            ],
+            "boot": {
+              "contractor": 4,
+              "failed_expense": 0,
+              "fees": 1700,
+              "fuel_used": 5000,
+              "initial": [
+                5000,
+                100000,
+                0,
+                6000000,
+                0,
+                0
+              ],
+              "initial_basis": 2100,
+              "initial_cash": 3000000,
+              "jobs": [
+                {
+                  "completed": 1,
+                  "cost": 0,
+                  "due": 60,
+                  "failed": 0,
+                  "identity": 1,
+                  "inputs": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "phase": "Idle",
+                  "started": 0,
+                  "tokens": [
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "completed": 5,
+                  "cost": 0,
+                  "due": 360,
+                  "failed": 0,
+                  "identity": 6,
+                  "inputs": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "phase": "Idle",
+                  "started": 300,
+                  "tokens": [
+                    0,
+                    0
+                  ]
+                }
+              ],
+              "limits": [
+                5000,
+                2000000,
+                6000000,
+                6000000,
+                6000000,
+                10000000
+              ],
+              "next_job": 7,
+              "operator": 3,
+              "profile": "pboot-cold-micro-v1",
+              "resources": [
+                101,
+                102
+              ],
+              "stocks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "time": 360
+            },
+            "economy": null,
+            "opening_sources": [
+              {
+                "amount": 1000000,
+                "id": 1,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 200000,
+                "id": 2,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 600000,
+                "id": 3,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 1200000,
+                "id": 4,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 2000,
+                "id": 5,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 100,
+                "id": 6,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 7,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 8,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 9,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 10,
+                "kind": "inventory_capital"
+              }
+            ],
+            "region": null,
+            "revision": 12,
+            "schema": "mycity-m0-state-v5",
+            "scope": {
+              "branch": 1,
+              "world": 1
+            },
+            "seed": 7,
+            "stocks": [
+              {
+                "basis": 0,
+                "commodity": "fuel",
+                "id": 1,
+                "lot_id": 5,
+                "offset": 5000,
+                "origin_basis": 2000,
+                "origin_quantity": 5000,
+                "owner": 3,
+                "quantity": 0
+              },
+              {
+                "basis": 3650,
+                "commodity": "electricity",
+                "id": 2,
+                "lot_id": 6,
+                "offset": 0,
+                "origin_basis": 3650,
+                "origin_quantity": 2000000,
+                "owner": 3,
+                "quantity": 2000000
+              },
+              {
+                "basis": 150,
+                "commodity": "water",
+                "id": 3,
+                "lot_id": 7,
+                "offset": 0,
+                "origin_basis": 150,
+                "origin_quantity": 300000,
+                "owner": 3,
+                "quantity": 300000
+              },
+              {
+                "basis": 0,
+                "commodity": "raw_water",
+                "id": 4,
+                "lot_id": 8,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 5400000,
+                "owner": 3,
+                "quantity": 5400000
+              },
+              {
+                "basis": 0,
+                "commodity": "waste_water",
+                "id": 5,
+                "lot_id": 9,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 300000,
+                "owner": 3,
+                "quantity": 300000
+              },
+              {
+                "basis": 0,
+                "commodity": "heat",
+                "id": 6,
+                "lot_id": 10,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 3100000,
+                "owner": 3,
+                "quantity": 3100000
+              }
+            ]
+          }
+        }
+      ],
+      "engine_owned_capacity_bytes": 2084448,
+      "input_sha256": "3281e6e230a11e59c14b2189489387a2d4a397704192578dd86594a18975c6b7",
+      "resources": [
+        {
+          "capacity": 2,
+          "id": 101,
+          "occupied": 0,
+          "reserved": 0
+        },
+        {
+          "capacity": 2,
+          "id": 102,
+          "occupied": 0,
+          "reserved": 0
+        }
+      ],
+      "sequence": 13,
+      "spatial_reference": null,
+      "state_sha256": "d5f325601bf3096b90dcd64e42d5263281e765e6837b1e46bc36af2b506e414d",
+      "store_owned_capacity_bytes": 2086082,
+      "world": {
+        "accounts": [
+          {
+            "cash": 1000000,
+            "id": 1,
+            "protected": 0,
+            "role": "treasury"
+          },
+          {
+            "cash": 200000,
+            "id": 2,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 598300,
+            "id": 3,
+            "protected": 0,
+            "role": "company"
+          },
+          {
+            "cash": 1201700,
+            "id": 4,
+            "protected": 0,
+            "role": "supplier"
+          }
+        ],
+        "boot": {
+          "contractor": 4,
+          "failed_expense": 0,
+          "fees": 1700,
+          "fuel_used": 5000,
+          "initial": [
+            5000,
+            100000,
+            0,
+            6000000,
+            0,
+            0
+          ],
+          "initial_basis": 2100,
+          "initial_cash": 3000000,
+          "jobs": [
+            {
+              "completed": 1,
+              "cost": 0,
+              "due": 60,
+              "failed": 0,
+              "identity": 1,
+              "inputs": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "phase": "Idle",
+              "started": 0,
+              "tokens": [
+                0,
+                0
+              ]
+            },
+            {
+              "completed": 5,
+              "cost": 0,
+              "due": 360,
+              "failed": 0,
+              "identity": 6,
+              "inputs": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "phase": "Idle",
+              "started": 300,
+              "tokens": [
+                0,
+                0
+              ]
+            }
+          ],
+          "limits": [
+            5000,
+            2000000,
+            6000000,
+            6000000,
+            6000000,
+            10000000
+          ],
+          "next_job": 7,
+          "operator": 3,
+          "profile": "pboot-cold-micro-v1",
+          "resources": [
+            101,
+            102
+          ],
+          "stocks": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "time": 360
+        },
+        "economy": null,
+        "opening_sources": [
+          {
+            "amount": 1000000,
+            "id": 1,
+            "kind": "cash_capital"
+          },
+          {
+            "amount": 200000,
+            "id": 2,
+            "kind": "cash_capital"
+          },
+          {
+            "amount": 600000,
+            "id": 3,
+            "kind": "cash_capital"
+          },
+          {
+            "amount": 1200000,
+            "id": 4,
+            "kind": "cash_capital"
+          },
+          {
+            "amount": 2000,
+            "id": 5,
+            "kind": "inventory_capital"
+          },
+          {
+            "amount": 100,
+            "id": 6,
+            "kind": "inventory_capital"
+          },
+          {
+            "amount": 0,
+            "id": 7,
+            "kind": "inventory_capital"
+          },
+          {
+            "amount": 0,
+            "id": 8,
+            "kind": "inventory_capital"
+          },
+          {
+            "amount": 0,
+            "id": 9,
+            "kind": "inventory_capital"
+          },
+          {
+            "amount": 0,
+            "id": 10,
+            "kind": "inventory_capital"
+          }
+        ],
+        "region": null,
+        "revision": 12,
+        "schema": "mycity-m0-state-v5",
+        "scope": {
+          "branch": 1,
+          "world": 1
+        },
+        "seed": 7,
+        "stocks": [
+          {
+            "basis": 0,
+            "commodity": "fuel",
+            "id": 1,
+            "lot_id": 5,
+            "offset": 5000,
+            "origin_basis": 2000,
+            "origin_quantity": 5000,
+            "owner": 3,
+            "quantity": 0
+          },
+          {
+            "basis": 3650,
+            "commodity": "electricity",
+            "id": 2,
+            "lot_id": 6,
+            "offset": 0,
+            "origin_basis": 3650,
+            "origin_quantity": 2000000,
+            "owner": 3,
+            "quantity": 2000000
+          },
+          {
+            "basis": 150,
+            "commodity": "water",
+            "id": 3,
+            "lot_id": 7,
+            "offset": 0,
+            "origin_basis": 150,
+            "origin_quantity": 300000,
+            "owner": 3,
+            "quantity": 300000
+          },
+          {
+            "basis": 0,
+            "commodity": "raw_water",
+            "id": 4,
+            "lot_id": 8,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 5400000,
+            "owner": 3,
+            "quantity": 5400000
+          },
+          {
+            "basis": 0,
+            "commodity": "waste_water",
+            "id": 5,
+            "lot_id": 9,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 300000,
+            "owner": 3,
+            "quantity": 300000
+          },
+          {
+            "basis": 0,
+            "commodity": "heat",
+            "id": 6,
+            "lot_id": 10,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 3100000,
+            "owner": 3,
+            "quantity": 3100000
+          }
+        ]
+      },
+      "world_layout": {
+        "accounts": {
+          "free_index_capacity": 64,
+          "header_bytes": 80,
+          "live_records": 4,
+          "owned_capacity_bytes": 2384,
+          "record_bytes": 24,
+          "slot_bytes": 32,
+          "slots_capacity": 64
+        },
+        "allocator_metadata_included": false,
+        "index_capacity_bytes": 400,
+        "opening_sources_capacity_bytes": 256,
+        "owned_capacity_bytes": 26608,
+        "stocks": {
+          "free_index_capacity": 128,
+          "header_bytes": 80,
+          "live_records": 6,
+          "owned_capacity_bytes": 12880,
+          "record_bytes": 88,
+          "slot_bytes": 96,
+          "slots_capacity": 128
+        },
+        "temporary_parse_and_view_pages_included": false,
+        "world_remaining_header_bytes": 10688
+      }
+    },
+    "faults": [
+      {
+        "checkpoints": [
+          {
+            "label": "failure_keeps_cost_and_actual_receivers",
+            "resources": [
+              {
+                "capacity": 2,
+                "id": 101,
+                "occupied": 1,
+                "reserved": 0
+              },
+              {
+                "capacity": 2,
+                "id": 102,
+                "occupied": 1,
+                "reserved": 0
+              }
+            ],
+            "sequence": 3,
+            "state_sha256": "e3468645e92e3f5197ee7c2262c34672834d624ad7ae5fb06cc6dbbf0e1679c4",
+            "world": {
+              "accounts": [
+                {
+                  "cash": 1000000,
+                  "id": 1,
+                  "protected": 0,
+                  "role": "treasury"
+                },
+                {
+                  "cash": 200000,
+                  "id": 2,
+                  "protected": 0,
+                  "role": "household"
+                },
+                {
+                  "cash": 599800,
+                  "id": 3,
+                  "protected": 0,
+                  "role": "company"
+                },
+                {
+                  "cash": 1200200,
+                  "id": 4,
+                  "protected": 0,
+                  "role": "supplier"
+                }
+              ],
+              "boot": {
+                "contractor": 4,
+                "failed_expense": 300,
+                "fees": 200,
+                "fuel_used": 0,
+                "initial": [
+                  5000,
+                  100000,
+                  0,
+                  6000000,
+                  0,
+                  0
+                ],
+                "initial_basis": 2100,
+                "initial_cash": 3000000,
+                "jobs": [
+                  {
+                    "completed": 0,
+                    "cost": 0,
+                    "due": 60,
+                    "failed": 1,
+                    "identity": 1,
+                    "inputs": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "phase": "Failed",
+                    "started": 0,
+                    "tokens": [
+                      1,
+                      2
+                    ]
+                  },
+                  {
+                    "completed": 0,
+                    "cost": 0,
+                    "due": 0,
+                    "failed": 0,
+                    "identity": 0,
+                    "inputs": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "phase": "Idle",
+                    "started": 0,
+                    "tokens": [
+                      0,
+                      0
+                    ]
+                  }
+                ],
+                "limits": [
+                  5000,
+                  2000000,
+                  6000000,
+                  6000000,
+                  6000000,
+                  10000000
+                ],
+                "next_job": 2,
+                "operator": 3,
+                "profile": "pboot-cold-micro-v1",
+                "resources": [
+                  101,
+                  102
+                ],
+                "stocks": [
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6
+                ],
+                "time": 30
+              },
+              "economy": null,
+              "opening_sources": [
+                {
+                  "amount": 1000000,
+                  "id": 1,
+                  "kind": "cash_capital"
+                },
+                {
+                  "amount": 200000,
+                  "id": 2,
+                  "kind": "cash_capital"
+                },
+                {
+                  "amount": 600000,
+                  "id": 3,
+                  "kind": "cash_capital"
+                },
+                {
+                  "amount": 1200000,
+                  "id": 4,
+                  "kind": "cash_capital"
+                },
+                {
+                  "amount": 2000,
+                  "id": 5,
+                  "kind": "inventory_capital"
+                },
+                {
+                  "amount": 100,
+                  "id": 6,
+                  "kind": "inventory_capital"
+                },
+                {
+                  "amount": 0,
+                  "id": 7,
+                  "kind": "inventory_capital"
+                },
+                {
+                  "amount": 0,
+                  "id": 8,
+                  "kind": "inventory_capital"
+                },
+                {
+                  "amount": 0,
+                  "id": 9,
+                  "kind": "inventory_capital"
+                },
+                {
+                  "amount": 0,
+                  "id": 10,
+                  "kind": "inventory_capital"
+                }
+              ],
+              "region": null,
+              "revision": 3,
+              "schema": "mycity-m0-state-v5",
+              "scope": {
+                "branch": 1,
+                "world": 1
+              },
+              "seed": 7,
+              "stocks": [
+                {
+                  "basis": 2000,
+                  "commodity": "fuel",
+                  "id": 1,
+                  "lot_id": 5,
+                  "offset": 0,
+                  "origin_basis": 2000,
+                  "origin_quantity": 5000,
+                  "owner": 3,
+                  "quantity": 5000
+                },
+                {
+                  "basis": 0,
+                  "commodity": "electricity",
+                  "id": 2,
+                  "lot_id": 6,
+                  "offset": 0,
+                  "origin_basis": 0,
+                  "origin_quantity": 0,
+                  "owner": 3,
+                  "quantity": 0
+                },
+                {
+                  "basis": 0,
+                  "commodity": "water",
+                  "id": 3,
+                  "lot_id": 7,
+                  "offset": 0,
+                  "origin_basis": 0,
+                  "origin_quantity": 0,
+                  "owner": 3,
+                  "quantity": 0
+                },
+                {
+                  "basis": 0,
+                  "commodity": "raw_water",
+                  "id": 4,
+                  "lot_id": 8,
+                  "offset": 0,
+                  "origin_basis": 0,
+                  "origin_quantity": 5400000,
+                  "owner": 3,
+                  "quantity": 5400000
+                },
+                {
+                  "basis": 0,
+                  "commodity": "waste_water",
+                  "id": 5,
+                  "lot_id": 9,
+                  "offset": 0,
+                  "origin_basis": 0,
+                  "origin_quantity": 600000,
+                  "owner": 3,
+                  "quantity": 600000
+                },
+                {
+                  "basis": 0,
+                  "commodity": "heat",
+                  "id": 6,
+                  "lot_id": 10,
+                  "offset": 0,
+                  "origin_basis": 0,
+                  "origin_quantity": 100000,
+                  "owner": 3,
+                  "quantity": 100000
+                }
+              ]
+            }
+          },
+          {
+            "label": "cleanup_releases_work_leases_retains_receiver_contents",
+            "resources": [
+              {
+                "capacity": 2,
+                "id": 101,
+                "occupied": 0,
+                "reserved": 0
+              },
+              {
+                "capacity": 2,
+                "id": 102,
+                "occupied": 0,
+                "reserved": 0
+              }
+            ],
+            "sequence": 5,
+            "state_sha256": "acebcc8a8a5f348250e192362fa471c0e34be025f91861ddfd179a5725fc0ee2",
+            "world": {
+              "accounts": [
+                {
+                  "cash": 1000000,
+                  "id": 1,
+                  "protected": 0,
+                  "role": "treasury"
+                },
+                {
+                  "cash": 200000,
+                  "id": 2,
+                  "protected": 0,
+                  "role": "household"
+                },
+                {
+                  "cash": 599800,
+                  "id": 3,
+                  "protected": 0,
+                  "role": "company"
+                },
+                {
+                  "cash": 1200200,
+                  "id": 4,
+                  "protected": 0,
+                  "role": "supplier"
+                }
+              ],
+              "boot": {
+                "contractor": 4,
+                "failed_expense": 300,
+                "fees": 200,
+                "fuel_used": 0,
+                "initial": [
+                  5000,
+                  100000,
+                  0,
+                  6000000,
+                  0,
+                  0
+                ],
+                "initial_basis": 2100,
+                "initial_cash": 3000000,
+                "jobs": [
+                  {
+                    "completed": 0,
+                    "cost": 0,
+                    "due": 60,
+                    "failed": 1,
+                    "identity": 1,
+                    "inputs": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "phase": "Idle",
+                    "started": 0,
+                    "tokens": [
+                      0,
+                      0
+                    ]
+                  },
+                  {
+                    "completed": 0,
+                    "cost": 0,
+                    "due": 0,
+                    "failed": 0,
+                    "identity": 0,
+                    "inputs": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "phase": "Idle",
+                    "started": 0,
+                    "tokens": [
+                      0,
+                      0
+                    ]
+                  }
+                ],
+                "limits": [
+                  5000,
+                  2000000,
+                  6000000,
+                  6000000,
+                  6000000,
+                  10000000
+                ],
+                "next_job": 2,
+                "operator": 3,
+                "profile": "pboot-cold-micro-v1",
+                "resources": [
+                  101,
+                  102
+                ],
+                "stocks": [
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6
+                ],
+                "time": 30
+              },
+              "economy": null,
+              "opening_sources": [
+                {
+                  "amount": 1000000,
+                  "id": 1,
+                  "kind": "cash_capital"
+                },
+                {
+                  "amount": 200000,
+                  "id": 2,
+                  "kind": "cash_capital"
+                },
+                {
+                  "amount": 600000,
+                  "id": 3,
+                  "kind": "cash_capital"
+                },
+                {
+                  "amount": 1200000,
+                  "id": 4,
+                  "kind": "cash_capital"
+                },
+                {
+                  "amount": 2000,
+                  "id": 5,
+                  "kind": "inventory_capital"
+                },
+                {
+                  "amount": 100,
+                  "id": 6,
+                  "kind": "inventory_capital"
+                },
+                {
+                  "amount": 0,
+                  "id": 7,
+                  "kind": "inventory_capital"
+                },
+                {
+                  "amount": 0,
+                  "id": 8,
+                  "kind": "inventory_capital"
+                },
+                {
+                  "amount": 0,
+                  "id": 9,
+                  "kind": "inventory_capital"
+                },
+                {
+                  "amount": 0,
+                  "id": 10,
+                  "kind": "inventory_capital"
+                }
+              ],
+              "region": null,
+              "revision": 4,
+              "schema": "mycity-m0-state-v5",
+              "scope": {
+                "branch": 1,
+                "world": 1
+              },
+              "seed": 7,
+              "stocks": [
+                {
+                  "basis": 2000,
+                  "commodity": "fuel",
+                  "id": 1,
+                  "lot_id": 5,
+                  "offset": 0,
+                  "origin_basis": 2000,
+                  "origin_quantity": 5000,
+                  "owner": 3,
+                  "quantity": 5000
+                },
+                {
+                  "basis": 0,
+                  "commodity": "electricity",
+                  "id": 2,
+                  "lot_id": 6,
+                  "offset": 0,
+                  "origin_basis": 0,
+                  "origin_quantity": 0,
+                  "owner": 3,
+                  "quantity": 0
+                },
+                {
+                  "basis": 0,
+                  "commodity": "water",
+                  "id": 3,
+                  "lot_id": 7,
+                  "offset": 0,
+                  "origin_basis": 0,
+                  "origin_quantity": 0,
+                  "owner": 3,
+                  "quantity": 0
+                },
+                {
+                  "basis": 0,
+                  "commodity": "raw_water",
+                  "id": 4,
+                  "lot_id": 8,
+                  "offset": 0,
+                  "origin_basis": 0,
+                  "origin_quantity": 5400000,
+                  "owner": 3,
+                  "quantity": 5400000
+                },
+                {
+                  "basis": 0,
+                  "commodity": "waste_water",
+                  "id": 5,
+                  "lot_id": 9,
+                  "offset": 0,
+                  "origin_basis": 0,
+                  "origin_quantity": 600000,
+                  "owner": 3,
+                  "quantity": 600000
+                },
+                {
+                  "basis": 0,
+                  "commodity": "heat",
+                  "id": 6,
+                  "lot_id": 10,
+                  "offset": 0,
+                  "origin_basis": 0,
+                  "origin_quantity": 100000,
+                  "owner": 3,
+                  "quantity": 100000
+                }
+              ]
+            }
+          }
+        ],
+        "engine_owned_capacity_bytes": 2084448,
+        "input_sha256": "3281e6e230a11e59c14b2189489387a2d4a397704192578dd86594a18975c6b7",
+        "resources": [
+          {
+            "capacity": 2,
+            "id": 101,
+            "occupied": 0,
+            "reserved": 0
+          },
+          {
+            "capacity": 2,
+            "id": 102,
+            "occupied": 0,
+            "reserved": 0
+          }
+        ],
+        "sequence": 5,
+        "spatial_reference": null,
+        "state_sha256": "acebcc8a8a5f348250e192362fa471c0e34be025f91861ddfd179a5725fc0ee2",
+        "store_owned_capacity_bytes": 2086083,
+        "world": {
+          "accounts": [
+            {
+              "cash": 1000000,
+              "id": 1,
+              "protected": 0,
+              "role": "treasury"
+            },
+            {
+              "cash": 200000,
+              "id": 2,
+              "protected": 0,
+              "role": "household"
+            },
+            {
+              "cash": 599800,
+              "id": 3,
+              "protected": 0,
+              "role": "company"
+            },
+            {
+              "cash": 1200200,
+              "id": 4,
+              "protected": 0,
+              "role": "supplier"
+            }
+          ],
+          "boot": {
+            "contractor": 4,
+            "failed_expense": 300,
+            "fees": 200,
+            "fuel_used": 0,
+            "initial": [
+              5000,
+              100000,
+              0,
+              6000000,
+              0,
+              0
+            ],
+            "initial_basis": 2100,
+            "initial_cash": 3000000,
+            "jobs": [
+              {
+                "completed": 0,
+                "cost": 0,
+                "due": 60,
+                "failed": 1,
+                "identity": 1,
+                "inputs": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "phase": "Idle",
+                "started": 0,
+                "tokens": [
+                  0,
+                  0
+                ]
+              },
+              {
+                "completed": 0,
+                "cost": 0,
+                "due": 0,
+                "failed": 0,
+                "identity": 0,
+                "inputs": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "phase": "Idle",
+                "started": 0,
+                "tokens": [
+                  0,
+                  0
+                ]
+              }
+            ],
+            "limits": [
+              5000,
+              2000000,
+              6000000,
+              6000000,
+              6000000,
+              10000000
+            ],
+            "next_job": 2,
+            "operator": 3,
+            "profile": "pboot-cold-micro-v1",
+            "resources": [
+              101,
+              102
+            ],
+            "stocks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "time": 30
+          },
+          "economy": null,
+          "opening_sources": [
+            {
+              "amount": 1000000,
+              "id": 1,
+              "kind": "cash_capital"
+            },
+            {
+              "amount": 200000,
+              "id": 2,
+              "kind": "cash_capital"
+            },
+            {
+              "amount": 600000,
+              "id": 3,
+              "kind": "cash_capital"
+            },
+            {
+              "amount": 1200000,
+              "id": 4,
+              "kind": "cash_capital"
+            },
+            {
+              "amount": 2000,
+              "id": 5,
+              "kind": "inventory_capital"
+            },
+            {
+              "amount": 100,
+              "id": 6,
+              "kind": "inventory_capital"
+            },
+            {
+              "amount": 0,
+              "id": 7,
+              "kind": "inventory_capital"
+            },
+            {
+              "amount": 0,
+              "id": 8,
+              "kind": "inventory_capital"
+            },
+            {
+              "amount": 0,
+              "id": 9,
+              "kind": "inventory_capital"
+            },
+            {
+              "amount": 0,
+              "id": 10,
+              "kind": "inventory_capital"
+            }
+          ],
+          "region": null,
+          "revision": 4,
+          "schema": "mycity-m0-state-v5",
+          "scope": {
+            "branch": 1,
+            "world": 1
+          },
+          "seed": 7,
+          "stocks": [
+            {
+              "basis": 2000,
+              "commodity": "fuel",
+              "id": 1,
+              "lot_id": 5,
+              "offset": 0,
+              "origin_basis": 2000,
+              "origin_quantity": 5000,
+              "owner": 3,
+              "quantity": 5000
+            },
+            {
+              "basis": 0,
+              "commodity": "electricity",
+              "id": 2,
+              "lot_id": 6,
+              "offset": 0,
+              "origin_basis": 0,
+              "origin_quantity": 0,
+              "owner": 3,
+              "quantity": 0
+            },
+            {
+              "basis": 0,
+              "commodity": "water",
+              "id": 3,
+              "lot_id": 7,
+              "offset": 0,
+              "origin_basis": 0,
+              "origin_quantity": 0,
+              "owner": 3,
+              "quantity": 0
+            },
+            {
+              "basis": 0,
+              "commodity": "raw_water",
+              "id": 4,
+              "lot_id": 8,
+              "offset": 0,
+              "origin_basis": 0,
+              "origin_quantity": 5400000,
+              "owner": 3,
+              "quantity": 5400000
+            },
+            {
+              "basis": 0,
+              "commodity": "waste_water",
+              "id": 5,
+              "lot_id": 9,
+              "offset": 0,
+              "origin_basis": 0,
+              "origin_quantity": 600000,
+              "owner": 3,
+              "quantity": 600000
+            },
+            {
+              "basis": 0,
+              "commodity": "heat",
+              "id": 6,
+              "lot_id": 10,
+              "offset": 0,
+              "origin_basis": 0,
+              "origin_quantity": 100000,
+              "owner": 3,
+              "quantity": 100000
+            }
+          ]
+        },
+        "world_layout": {
+          "accounts": {
+            "free_index_capacity": 64,
+            "header_bytes": 80,
+            "live_records": 4,
+            "owned_capacity_bytes": 2384,
+            "record_bytes": 24,
+            "slot_bytes": 32,
+            "slots_capacity": 64
+          },
+          "allocator_metadata_included": false,
+          "index_capacity_bytes": 400,
+          "opening_sources_capacity_bytes": 256,
+          "owned_capacity_bytes": 26608,
+          "stocks": {
+            "free_index_capacity": 128,
+            "header_bytes": 80,
+            "live_records": 6,
+            "owned_capacity_bytes": 12880,
+            "record_bytes": 88,
+            "slot_bytes": 96,
+            "slots_capacity": 128
+          },
+          "temporary_parse_and_view_pages_included": false,
+          "world_remaining_header_bytes": 10688
+        }
+      },
+      {
+        "checkpoints": [
+          {
+            "label": "failure_keeps_cost_and_actual_receivers",
+            "resources": [
+              {
+                "capacity": 2,
+                "id": 101,
+                "occupied": 1,
+                "reserved": 0
+              },
+              {
+                "capacity": 2,
+                "id": 102,
+                "occupied": 1,
+                "reserved": 0
+              }
+            ],
+            "sequence": 5,
+            "state_sha256": "3024b7d2c7a225b9acc9a4fdf7309ca09edee621529c53adc5823afed702289a",
+            "world": {
+              "accounts": [
+                {
+                  "cash": 1000000,
+                  "id": 1,
+                  "protected": 0,
+                  "role": "treasury"
+                },
+                {
+                  "cash": 200000,
+                  "id": 2,
+                  "protected": 0,
+                  "role": "household"
+                },
+                {
+                  "cash": 599500,
+                  "id": 3,
+                  "protected": 0,
+                  "role": "company"
+                },
+                {
+                  "cash": 1200500,
+                  "id": 4,
+                  "protected": 0,
+                  "role": "supplier"
+                }
+              ],
+              "boot": {
+                "contractor": 4,
+                "failed_expense": 730,
+                "fees": 500,
+                "fuel_used": 1000,
+                "initial": [
+                  5000,
+                  100000,
+                  0,
+                  6000000,
+                  0,
+                  0
+                ],
+                "initial_basis": 2100,
+                "initial_cash": 3000000,
+                "jobs": [
+                  {
+                    "completed": 1,
+                    "cost": 0,
+                    "due": 60,
+                    "failed": 0,
+                    "identity": 1,
+                    "inputs": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "phase": "Idle",
+                    "started": 0,
+                    "tokens": [
+                      0,
+                      0
+                    ]
+                  },
+                  {
+                    "completed": 0,
+                    "cost": 0,
+                    "due": 120,
+                    "failed": 1,
+                    "identity": 2,
+                    "inputs": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "phase": "Failed",
+                    "started": 60,
+                    "tokens": [
+                      3,
+                      4
+                    ]
+                  }
+                ],
+                "limits": [
+                  5000,
+                  2000000,
+                  6000000,
+                  6000000,
+                  6000000,
+                  10000000
+                ],
+                "next_job": 3,
+                "operator": 3,
+                "profile": "pboot-cold-micro-v1",
+                "resources": [
+                  101,
+                  102
+                ],
+                "stocks": [
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6
+                ],
+                "time": 90
+              },
+              "economy": null,
+              "opening_sources": [
+                {
+                  "amount": 1000000,
+                  "id": 1,
+                  "kind": "cash_capital"
+                },
+                {
+                  "amount": 200000,
+                  "id": 2,
+                  "kind": "cash_capital"
+                },
+                {
+                  "amount": 600000,
+                  "id": 3,
+                  "kind": "cash_capital"
+                },
+                {
+                  "amount": 1200000,
+                  "id": 4,
+                  "kind": "cash_capital"
+                },
+                {
+                  "amount": 2000,
+                  "id": 5,
+                  "kind": "inventory_capital"
+                },
+                {
+                  "amount": 100,
+                  "id": 6,
+                  "kind": "inventory_capital"
+                },
+                {
+                  "amount": 0,
+                  "id": 7,
+                  "kind": "inventory_capital"
+                },
+                {
+                  "amount": 0,
+                  "id": 8,
+                  "kind": "inventory_capital"
+                },
+                {
+                  "amount": 0,
+                  "id": 9,
+                  "kind": "inventory_capital"
+                },
+                {
+                  "amount": 0,
+                  "id": 10,
+                  "kind": "inventory_capital"
+                }
+              ],
+              "region": null,
+              "revision": 5,
+              "schema": "mycity-m0-state-v5",
+              "scope": {
+                "branch": 1,
+                "world": 1
+              },
+              "seed": 7,
+              "stocks": [
+                {
+                  "basis": 1600,
+                  "commodity": "fuel",
+                  "id": 1,
+                  "lot_id": 5,
+                  "offset": 1000,
+                  "origin_basis": 2000,
+                  "origin_quantity": 5000,
+                  "owner": 3,
+                  "quantity": 4000
+                },
+                {
+                  "basis": 0,
+                  "commodity": "electricity",
+                  "id": 2,
+                  "lot_id": 6,
+                  "offset": 0,
+                  "origin_basis": 0,
+                  "origin_quantity": 0,
+                  "owner": 3,
+                  "quantity": 0
+                },
+                {
+                  "basis": 270,
+                  "commodity": "water",
+                  "id": 3,
+                  "lot_id": 7,
+                  "offset": 0,
+                  "origin_basis": 270,
+                  "origin_quantity": 540000,
+                  "owner": 3,
+                  "quantity": 540000
+                },
+                {
+                  "basis": 0,
+                  "commodity": "raw_water",
+                  "id": 4,
+                  "lot_id": 8,
+                  "offset": 0,
+                  "origin_basis": 0,
+                  "origin_quantity": 5400000,
+                  "owner": 3,
+                  "quantity": 5400000
+                },
+                {
+                  "basis": 0,
+                  "commodity": "waste_water",
+                  "id": 5,
+                  "lot_id": 9,
+                  "offset": 0,
+                  "origin_basis": 0,
+                  "origin_quantity": 60000,
+                  "owner": 3,
+                  "quantity": 60000
+                },
+                {
+                  "basis": 0,
+                  "commodity": "heat",
+                  "id": 6,
+                  "lot_id": 10,
+                  "offset": 0,
+                  "origin_basis": 0,
+                  "origin_quantity": 1100000,
+                  "owner": 3,
+                  "quantity": 1100000
+                }
+              ]
+            }
+          },
+          {
+            "label": "cleanup_releases_work_leases_retains_receiver_contents",
+            "resources": [
+              {
+                "capacity": 2,
+                "id": 101,
+                "occupied": 0,
+                "reserved": 0
+              },
+              {
+                "capacity": 2,
+                "id": 102,
+                "occupied": 0,
+                "reserved": 0
+              }
+            ],
+            "sequence": 7,
+            "state_sha256": "102f569ee61c9d2d1f10e49bfc275f5dc083f463f7e581cbcf9b4a4f7a8129aa",
+            "world": {
+              "accounts": [
+                {
+                  "cash": 1000000,
+                  "id": 1,
+                  "protected": 0,
+                  "role": "treasury"
+                },
+                {
+                  "cash": 200000,
+                  "id": 2,
+                  "protected": 0,
+                  "role": "household"
+                },
+                {
+                  "cash": 599500,
+                  "id": 3,
+                  "protected": 0,
+                  "role": "company"
+                },
+                {
+                  "cash": 1200500,
+                  "id": 4,
+                  "protected": 0,
+                  "role": "supplier"
+                }
+              ],
+              "boot": {
+                "contractor": 4,
+                "failed_expense": 730,
+                "fees": 500,
+                "fuel_used": 1000,
+                "initial": [
+                  5000,
+                  100000,
+                  0,
+                  6000000,
+                  0,
+                  0
+                ],
+                "initial_basis": 2100,
+                "initial_cash": 3000000,
+                "jobs": [
+                  {
+                    "completed": 1,
+                    "cost": 0,
+                    "due": 60,
+                    "failed": 0,
+                    "identity": 1,
+                    "inputs": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "phase": "Idle",
+                    "started": 0,
+                    "tokens": [
+                      0,
+                      0
+                    ]
+                  },
+                  {
+                    "completed": 0,
+                    "cost": 0,
+                    "due": 120,
+                    "failed": 1,
+                    "identity": 2,
+                    "inputs": [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "phase": "Idle",
+                    "started": 60,
+                    "tokens": [
+                      0,
+                      0
+                    ]
+                  }
+                ],
+                "limits": [
+                  5000,
+                  2000000,
+                  6000000,
+                  6000000,
+                  6000000,
+                  10000000
+                ],
+                "next_job": 3,
+                "operator": 3,
+                "profile": "pboot-cold-micro-v1",
+                "resources": [
+                  101,
+                  102
+                ],
+                "stocks": [
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6
+                ],
+                "time": 90
+              },
+              "economy": null,
+              "opening_sources": [
+                {
+                  "amount": 1000000,
+                  "id": 1,
+                  "kind": "cash_capital"
+                },
+                {
+                  "amount": 200000,
+                  "id": 2,
+                  "kind": "cash_capital"
+                },
+                {
+                  "amount": 600000,
+                  "id": 3,
+                  "kind": "cash_capital"
+                },
+                {
+                  "amount": 1200000,
+                  "id": 4,
+                  "kind": "cash_capital"
+                },
+                {
+                  "amount": 2000,
+                  "id": 5,
+                  "kind": "inventory_capital"
+                },
+                {
+                  "amount": 100,
+                  "id": 6,
+                  "kind": "inventory_capital"
+                },
+                {
+                  "amount": 0,
+                  "id": 7,
+                  "kind": "inventory_capital"
+                },
+                {
+                  "amount": 0,
+                  "id": 8,
+                  "kind": "inventory_capital"
+                },
+                {
+                  "amount": 0,
+                  "id": 9,
+                  "kind": "inventory_capital"
+                },
+                {
+                  "amount": 0,
+                  "id": 10,
+                  "kind": "inventory_capital"
+                }
+              ],
+              "region": null,
+              "revision": 6,
+              "schema": "mycity-m0-state-v5",
+              "scope": {
+                "branch": 1,
+                "world": 1
+              },
+              "seed": 7,
+              "stocks": [
+                {
+                  "basis": 1600,
+                  "commodity": "fuel",
+                  "id": 1,
+                  "lot_id": 5,
+                  "offset": 1000,
+                  "origin_basis": 2000,
+                  "origin_quantity": 5000,
+                  "owner": 3,
+                  "quantity": 4000
+                },
+                {
+                  "basis": 0,
+                  "commodity": "electricity",
+                  "id": 2,
+                  "lot_id": 6,
+                  "offset": 0,
+                  "origin_basis": 0,
+                  "origin_quantity": 0,
+                  "owner": 3,
+                  "quantity": 0
+                },
+                {
+                  "basis": 270,
+                  "commodity": "water",
+                  "id": 3,
+                  "lot_id": 7,
+                  "offset": 0,
+                  "origin_basis": 270,
+                  "origin_quantity": 540000,
+                  "owner": 3,
+                  "quantity": 540000
+                },
+                {
+                  "basis": 0,
+                  "commodity": "raw_water",
+                  "id": 4,
+                  "lot_id": 8,
+                  "offset": 0,
+                  "origin_basis": 0,
+                  "origin_quantity": 5400000,
+                  "owner": 3,
+                  "quantity": 5400000
+                },
+                {
+                  "basis": 0,
+                  "commodity": "waste_water",
+                  "id": 5,
+                  "lot_id": 9,
+                  "offset": 0,
+                  "origin_basis": 0,
+                  "origin_quantity": 60000,
+                  "owner": 3,
+                  "quantity": 60000
+                },
+                {
+                  "basis": 0,
+                  "commodity": "heat",
+                  "id": 6,
+                  "lot_id": 10,
+                  "offset": 0,
+                  "origin_basis": 0,
+                  "origin_quantity": 1100000,
+                  "owner": 3,
+                  "quantity": 1100000
+                }
+              ]
+            }
+          }
+        ],
+        "engine_owned_capacity_bytes": 2084448,
+        "input_sha256": "3281e6e230a11e59c14b2189489387a2d4a397704192578dd86594a18975c6b7",
+        "resources": [
+          {
+            "capacity": 2,
+            "id": 101,
+            "occupied": 0,
+            "reserved": 0
+          },
+          {
+            "capacity": 2,
+            "id": 102,
+            "occupied": 0,
+            "reserved": 0
+          }
+        ],
+        "sequence": 7,
+        "spatial_reference": null,
+        "state_sha256": "102f569ee61c9d2d1f10e49bfc275f5dc083f463f7e581cbcf9b4a4f7a8129aa",
+        "store_owned_capacity_bytes": 2086088,
+        "world": {
+          "accounts": [
+            {
+              "cash": 1000000,
+              "id": 1,
+              "protected": 0,
+              "role": "treasury"
+            },
+            {
+              "cash": 200000,
+              "id": 2,
+              "protected": 0,
+              "role": "household"
+            },
+            {
+              "cash": 599500,
+              "id": 3,
+              "protected": 0,
+              "role": "company"
+            },
+            {
+              "cash": 1200500,
+              "id": 4,
+              "protected": 0,
+              "role": "supplier"
+            }
+          ],
+          "boot": {
+            "contractor": 4,
+            "failed_expense": 730,
+            "fees": 500,
+            "fuel_used": 1000,
+            "initial": [
+              5000,
+              100000,
+              0,
+              6000000,
+              0,
+              0
+            ],
+            "initial_basis": 2100,
+            "initial_cash": 3000000,
+            "jobs": [
+              {
+                "completed": 1,
+                "cost": 0,
+                "due": 60,
+                "failed": 0,
+                "identity": 1,
+                "inputs": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "phase": "Idle",
+                "started": 0,
+                "tokens": [
+                  0,
+                  0
+                ]
+              },
+              {
+                "completed": 0,
+                "cost": 0,
+                "due": 120,
+                "failed": 1,
+                "identity": 2,
+                "inputs": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "phase": "Idle",
+                "started": 60,
+                "tokens": [
+                  0,
+                  0
+                ]
+              }
+            ],
+            "limits": [
+              5000,
+              2000000,
+              6000000,
+              6000000,
+              6000000,
+              10000000
+            ],
+            "next_job": 3,
+            "operator": 3,
+            "profile": "pboot-cold-micro-v1",
+            "resources": [
+              101,
+              102
+            ],
+            "stocks": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6
+            ],
+            "time": 90
+          },
+          "economy": null,
+          "opening_sources": [
+            {
+              "amount": 1000000,
+              "id": 1,
+              "kind": "cash_capital"
+            },
+            {
+              "amount": 200000,
+              "id": 2,
+              "kind": "cash_capital"
+            },
+            {
+              "amount": 600000,
+              "id": 3,
+              "kind": "cash_capital"
+            },
+            {
+              "amount": 1200000,
+              "id": 4,
+              "kind": "cash_capital"
+            },
+            {
+              "amount": 2000,
+              "id": 5,
+              "kind": "inventory_capital"
+            },
+            {
+              "amount": 100,
+              "id": 6,
+              "kind": "inventory_capital"
+            },
+            {
+              "amount": 0,
+              "id": 7,
+              "kind": "inventory_capital"
+            },
+            {
+              "amount": 0,
+              "id": 8,
+              "kind": "inventory_capital"
+            },
+            {
+              "amount": 0,
+              "id": 9,
+              "kind": "inventory_capital"
+            },
+            {
+              "amount": 0,
+              "id": 10,
+              "kind": "inventory_capital"
+            }
+          ],
+          "region": null,
+          "revision": 6,
+          "schema": "mycity-m0-state-v5",
+          "scope": {
+            "branch": 1,
+            "world": 1
+          },
+          "seed": 7,
+          "stocks": [
+            {
+              "basis": 1600,
+              "commodity": "fuel",
+              "id": 1,
+              "lot_id": 5,
+              "offset": 1000,
+              "origin_basis": 2000,
+              "origin_quantity": 5000,
+              "owner": 3,
+              "quantity": 4000
+            },
+            {
+              "basis": 0,
+              "commodity": "electricity",
+              "id": 2,
+              "lot_id": 6,
+              "offset": 0,
+              "origin_basis": 0,
+              "origin_quantity": 0,
+              "owner": 3,
+              "quantity": 0
+            },
+            {
+              "basis": 270,
+              "commodity": "water",
+              "id": 3,
+              "lot_id": 7,
+              "offset": 0,
+              "origin_basis": 270,
+              "origin_quantity": 540000,
+              "owner": 3,
+              "quantity": 540000
+            },
+            {
+              "basis": 0,
+              "commodity": "raw_water",
+              "id": 4,
+              "lot_id": 8,
+              "offset": 0,
+              "origin_basis": 0,
+              "origin_quantity": 5400000,
+              "owner": 3,
+              "quantity": 5400000
+            },
+            {
+              "basis": 0,
+              "commodity": "waste_water",
+              "id": 5,
+              "lot_id": 9,
+              "offset": 0,
+              "origin_basis": 0,
+              "origin_quantity": 60000,
+              "owner": 3,
+              "quantity": 60000
+            },
+            {
+              "basis": 0,
+              "commodity": "heat",
+              "id": 6,
+              "lot_id": 10,
+              "offset": 0,
+              "origin_basis": 0,
+              "origin_quantity": 1100000,
+              "owner": 3,
+              "quantity": 1100000
+            }
+          ]
+        },
+        "world_layout": {
+          "accounts": {
+            "free_index_capacity": 64,
+            "header_bytes": 80,
+            "live_records": 4,
+            "owned_capacity_bytes": 2384,
+            "record_bytes": 24,
+            "slot_bytes": 32,
+            "slots_capacity": 64
+          },
+          "allocator_metadata_included": false,
+          "index_capacity_bytes": 400,
+          "opening_sources_capacity_bytes": 256,
+          "owned_capacity_bytes": 26608,
+          "stocks": {
+            "free_index_capacity": 128,
+            "header_bytes": 80,
+            "live_records": 6,
+            "owned_capacity_bytes": 12880,
+            "record_bytes": 88,
+            "slot_bytes": 96,
+            "slots_capacity": 128
+          },
+          "temporary_parse_and_view_pages_included": false,
+          "world_remaining_header_bytes": 10688
+        }
+      }
+    ],
+    "long_run_balance": "not_tested",
+    "memory_16gb_gate": "not_run",
+    "no_seed": {
+      "checkpoints": [
+        {
+          "label": "both_dependency_failures_persistent",
+          "resources": [
+            {
+              "capacity": 2,
+              "id": 101,
+              "occupied": 0,
+              "reserved": 0
+            },
+            {
+              "capacity": 2,
+              "id": 102,
+              "occupied": 0,
+              "reserved": 0
+            }
+          ],
+          "sequence": 2,
+          "state_sha256": "acff76d2ff76ca1d6ab6f2bb18d26a931914f130e118d6b07129a4e782906edb",
+          "world": {
+            "accounts": [
+              {
+                "cash": 1000000,
+                "id": 1,
+                "protected": 0,
+                "role": "treasury"
+              },
+              {
+                "cash": 200000,
+                "id": 2,
+                "protected": 0,
+                "role": "household"
+              },
+              {
+                "cash": 600000,
+                "id": 3,
+                "protected": 0,
+                "role": "company"
+              },
+              {
+                "cash": 1200000,
+                "id": 4,
+                "protected": 0,
+                "role": "supplier"
+              }
+            ],
+            "boot": {
+              "contractor": 4,
+              "failed_expense": 0,
+              "fees": 0,
+              "fuel_used": 0,
+              "initial": [
+                5000,
+                0,
+                0,
+                6000000,
+                0,
+                0
+              ],
+              "initial_basis": 2000,
+              "initial_cash": 3000000,
+              "jobs": [
+                {
+                  "completed": 0,
+                  "cost": 0,
+                  "due": 0,
+                  "failed": 0,
+                  "identity": 0,
+                  "inputs": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "phase": "Idle",
+                  "started": 0,
+                  "tokens": [
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "completed": 0,
+                  "cost": 0,
+                  "due": 0,
+                  "failed": 0,
+                  "identity": 0,
+                  "inputs": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "phase": "Idle",
+                  "started": 0,
+                  "tokens": [
+                    0,
+                    0
+                  ]
+                }
+              ],
+              "limits": [
+                5000,
+                2000000,
+                6000000,
+                6000000,
+                6000000,
+                10000000
+              ],
+              "next_job": 1,
+              "operator": 3,
+              "profile": "pboot-cold-micro-v1",
+              "resources": [
+                101,
+                102
+              ],
+              "stocks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "time": 0
+            },
+            "economy": null,
+            "opening_sources": [
+              {
+                "amount": 1000000,
+                "id": 1,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 200000,
+                "id": 2,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 600000,
+                "id": 3,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 1200000,
+                "id": 4,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 2000,
+                "id": 5,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 6,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 7,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 8,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 9,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 10,
+                "kind": "inventory_capital"
+              }
+            ],
+            "region": null,
+            "revision": 0,
+            "schema": "mycity-m0-state-v5",
+            "scope": {
+              "branch": 1,
+              "world": 1
+            },
+            "seed": 7,
+            "stocks": [
+              {
+                "basis": 2000,
+                "commodity": "fuel",
+                "id": 1,
+                "lot_id": 5,
+                "offset": 0,
+                "origin_basis": 2000,
+                "origin_quantity": 5000,
+                "owner": 3,
+                "quantity": 5000
+              },
+              {
+                "basis": 0,
+                "commodity": "electricity",
+                "id": 2,
+                "lot_id": 6,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 0,
+                "owner": 3,
+                "quantity": 0
+              },
+              {
+                "basis": 0,
+                "commodity": "water",
+                "id": 3,
+                "lot_id": 7,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 0,
+                "owner": 3,
+                "quantity": 0
+              },
+              {
+                "basis": 0,
+                "commodity": "raw_water",
+                "id": 4,
+                "lot_id": 8,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 6000000,
+                "owner": 3,
+                "quantity": 6000000
+              },
+              {
+                "basis": 0,
+                "commodity": "waste_water",
+                "id": 5,
+                "lot_id": 9,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 0,
+                "owner": 3,
+                "quantity": 0
+              },
+              {
+                "basis": 0,
+                "commodity": "heat",
+                "id": 6,
+                "lot_id": 10,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 0,
+                "owner": 3,
+                "quantity": 0
+              }
+            ]
+          }
+        }
+      ],
+      "engine_owned_capacity_bytes": 2084448,
+      "input_sha256": "a1be8550f4b583e61d64712b5b14400f949d0e5c8c8791cc532e26a2f00503ff",
+      "resources": [
+        {
+          "capacity": 2,
+          "id": 101,
+          "occupied": 0,
+          "reserved": 0
+        },
+        {
+          "capacity": 2,
+          "id": 102,
+          "occupied": 0,
+          "reserved": 0
+        }
+      ],
+      "sequence": 3,
+      "spatial_reference": null,
+      "state_sha256": "b63ace1bc38fa7efc007d92118ecd78daea229bb128ad049de0a8f959299c984",
+      "store_owned_capacity_bytes": 2086080,
+      "world": {
+        "accounts": [
+          {
+            "cash": 1000000,
+            "id": 1,
+            "protected": 0,
+            "role": "treasury"
+          },
+          {
+            "cash": 200000,
+            "id": 2,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 600000,
+            "id": 3,
+            "protected": 0,
+            "role": "company"
+          },
+          {
+            "cash": 1200000,
+            "id": 4,
+            "protected": 0,
+            "role": "supplier"
+          }
+        ],
+        "boot": {
+          "contractor": 4,
+          "failed_expense": 0,
+          "fees": 0,
+          "fuel_used": 0,
+          "initial": [
+            5000,
+            0,
+            0,
+            6000000,
+            0,
+            0
+          ],
+          "initial_basis": 2000,
+          "initial_cash": 3000000,
+          "jobs": [
+            {
+              "completed": 0,
+              "cost": 0,
+              "due": 0,
+              "failed": 0,
+              "identity": 0,
+              "inputs": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "phase": "Idle",
+              "started": 0,
+              "tokens": [
+                0,
+                0
+              ]
+            },
+            {
+              "completed": 0,
+              "cost": 0,
+              "due": 0,
+              "failed": 0,
+              "identity": 0,
+              "inputs": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "phase": "Idle",
+              "started": 0,
+              "tokens": [
+                0,
+                0
+              ]
+            }
+          ],
+          "limits": [
+            5000,
+            2000000,
+            6000000,
+            6000000,
+            6000000,
+            10000000
+          ],
+          "next_job": 1,
+          "operator": 3,
+          "profile": "pboot-cold-micro-v1",
+          "resources": [
+            101,
+            102
+          ],
+          "stocks": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "time": 60
+        },
+        "economy": null,
+        "opening_sources": [
+          {
+            "amount": 1000000,
+            "id": 1,
+            "kind": "cash_capital"
+          },
+          {
+            "amount": 200000,
+            "id": 2,
+            "kind": "cash_capital"
+          },
+          {
+            "amount": 600000,
+            "id": 3,
+            "kind": "cash_capital"
+          },
+          {
+            "amount": 1200000,
+            "id": 4,
+            "kind": "cash_capital"
+          },
+          {
+            "amount": 2000,
+            "id": 5,
+            "kind": "inventory_capital"
+          },
+          {
+            "amount": 0,
+            "id": 6,
+            "kind": "inventory_capital"
+          },
+          {
+            "amount": 0,
+            "id": 7,
+            "kind": "inventory_capital"
+          },
+          {
+            "amount": 0,
+            "id": 8,
+            "kind": "inventory_capital"
+          },
+          {
+            "amount": 0,
+            "id": 9,
+            "kind": "inventory_capital"
+          },
+          {
+            "amount": 0,
+            "id": 10,
+            "kind": "inventory_capital"
+          }
+        ],
+        "region": null,
+        "revision": 1,
+        "schema": "mycity-m0-state-v5",
+        "scope": {
+          "branch": 1,
+          "world": 1
+        },
+        "seed": 7,
+        "stocks": [
+          {
+            "basis": 2000,
+            "commodity": "fuel",
+            "id": 1,
+            "lot_id": 5,
+            "offset": 0,
+            "origin_basis": 2000,
+            "origin_quantity": 5000,
+            "owner": 3,
+            "quantity": 5000
+          },
+          {
+            "basis": 0,
+            "commodity": "electricity",
+            "id": 2,
+            "lot_id": 6,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 0,
+            "owner": 3,
+            "quantity": 0
+          },
+          {
+            "basis": 0,
+            "commodity": "water",
+            "id": 3,
+            "lot_id": 7,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 0,
+            "owner": 3,
+            "quantity": 0
+          },
+          {
+            "basis": 0,
+            "commodity": "raw_water",
+            "id": 4,
+            "lot_id": 8,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 6000000,
+            "owner": 3,
+            "quantity": 6000000
+          },
+          {
+            "basis": 0,
+            "commodity": "waste_water",
+            "id": 5,
+            "lot_id": 9,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 0,
+            "owner": 3,
+            "quantity": 0
+          },
+          {
+            "basis": 0,
+            "commodity": "heat",
+            "id": 6,
+            "lot_id": 10,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 0,
+            "owner": 3,
+            "quantity": 0
+          }
+        ]
+      },
+      "world_layout": {
+        "accounts": {
+          "free_index_capacity": 64,
+          "header_bytes": 80,
+          "live_records": 4,
+          "owned_capacity_bytes": 2384,
+          "record_bytes": 24,
+          "slot_bytes": 32,
+          "slots_capacity": 64
+        },
+        "allocator_metadata_included": false,
+        "index_capacity_bytes": 400,
+        "opening_sources_capacity_bytes": 256,
+        "owned_capacity_bytes": 26608,
+        "stocks": {
+          "free_index_capacity": 128,
+          "header_bytes": 80,
+          "live_records": 6,
+          "owned_capacity_bytes": 12880,
+          "record_bytes": 88,
+          "slot_bytes": 96,
+          "slots_capacity": 128
+        },
+        "temporary_parse_and_view_pages_included": false,
+        "world_remaining_header_bytes": 10688
+      }
+    },
+    "normal": {
+      "checkpoints": [
+        {
+          "label": "pump_admitted_no_future_water",
+          "resources": [
+            {
+              "capacity": 2,
+              "id": 101,
+              "occupied": 1,
+              "reserved": 0
+            },
+            {
+              "capacity": 2,
+              "id": 102,
+              "occupied": 1,
+              "reserved": 0
+            }
+          ],
+          "sequence": 2,
+          "state_sha256": "97d40c7ed9d876c8debd6a48f31f9cbdfa64065b2ed9eb2351b1b02046c1cd0c",
+          "world": {
+            "accounts": [
+              {
+                "cash": 1000000,
+                "id": 1,
+                "protected": 0,
+                "role": "treasury"
+              },
+              {
+                "cash": 200000,
+                "id": 2,
+                "protected": 0,
+                "role": "household"
+              },
+              {
+                "cash": 599800,
+                "id": 3,
+                "protected": 0,
+                "role": "company"
+              },
+              {
+                "cash": 1200200,
+                "id": 4,
+                "protected": 0,
+                "role": "supplier"
+              }
+            ],
+            "boot": {
+              "contractor": 4,
+              "failed_expense": 0,
+              "fees": 200,
+              "fuel_used": 0,
+              "initial": [
+                5000,
+                100000,
+                0,
+                6000000,
+                0,
+                0
+              ],
+              "initial_basis": 2100,
+              "initial_cash": 3000000,
+              "jobs": [
+                {
+                  "completed": 0,
+                  "cost": 300,
+                  "due": 60,
+                  "failed": 0,
+                  "identity": 1,
+                  "inputs": [
+                    0,
+                    100000,
+                    0,
+                    600000,
+                    0,
+                    0
+                  ],
+                  "phase": "Running",
+                  "started": 0,
+                  "tokens": [
+                    1,
+                    2
+                  ]
+                },
+                {
+                  "completed": 0,
+                  "cost": 0,
+                  "due": 0,
+                  "failed": 0,
+                  "identity": 0,
+                  "inputs": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "phase": "Idle",
+                  "started": 0,
+                  "tokens": [
+                    0,
+                    0
+                  ]
+                }
+              ],
+              "limits": [
+                5000,
+                2000000,
+                6000000,
+                6000000,
+                6000000,
+                10000000
+              ],
+              "next_job": 2,
+              "operator": 3,
+              "profile": "pboot-cold-micro-v1",
+              "resources": [
+                101,
+                102
+              ],
+              "stocks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "time": 0
+            },
+            "economy": null,
+            "opening_sources": [
+              {
+                "amount": 1000000,
+                "id": 1,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 200000,
+                "id": 2,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 600000,
+                "id": 3,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 1200000,
+                "id": 4,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 2000,
+                "id": 5,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 100,
+                "id": 6,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 7,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 8,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 9,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 10,
+                "kind": "inventory_capital"
+              }
+            ],
+            "region": null,
+            "revision": 1,
+            "schema": "mycity-m0-state-v5",
+            "scope": {
+              "branch": 1,
+              "world": 1
+            },
+            "seed": 7,
+            "stocks": [
+              {
+                "basis": 2000,
+                "commodity": "fuel",
+                "id": 1,
+                "lot_id": 5,
+                "offset": 0,
+                "origin_basis": 2000,
+                "origin_quantity": 5000,
+                "owner": 3,
+                "quantity": 5000
+              },
+              {
+                "basis": 0,
+                "commodity": "electricity",
+                "id": 2,
+                "lot_id": 6,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 0,
+                "owner": 3,
+                "quantity": 0
+              },
+              {
+                "basis": 0,
+                "commodity": "water",
+                "id": 3,
+                "lot_id": 7,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 0,
+                "owner": 3,
+                "quantity": 0
+              },
+              {
+                "basis": 0,
+                "commodity": "raw_water",
+                "id": 4,
+                "lot_id": 8,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 5400000,
+                "owner": 3,
+                "quantity": 5400000
+              },
+              {
+                "basis": 0,
+                "commodity": "waste_water",
+                "id": 5,
+                "lot_id": 9,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 0,
+                "owner": 3,
+                "quantity": 0
+              },
+              {
+                "basis": 0,
+                "commodity": "heat",
+                "id": 6,
+                "lot_id": 10,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 0,
+                "owner": 3,
+                "quantity": 0
+              }
+            ]
+          }
+        },
+        {
+          "label": "pump_halfway_no_output",
+          "resources": [
+            {
+              "capacity": 2,
+              "id": 101,
+              "occupied": 1,
+              "reserved": 0
+            },
+            {
+              "capacity": 2,
+              "id": 102,
+              "occupied": 1,
+              "reserved": 0
+            }
+          ],
+          "sequence": 3,
+          "state_sha256": "38d8f1acc65fb460855a4c1a0b603e76062e6ac59fc7dbec88f84d282e9c342f",
+          "world": {
+            "accounts": [
+              {
+                "cash": 1000000,
+                "id": 1,
+                "protected": 0,
+                "role": "treasury"
+              },
+              {
+                "cash": 200000,
+                "id": 2,
+                "protected": 0,
+                "role": "household"
+              },
+              {
+                "cash": 599800,
+                "id": 3,
+                "protected": 0,
+                "role": "company"
+              },
+              {
+                "cash": 1200200,
+                "id": 4,
+                "protected": 0,
+                "role": "supplier"
+              }
+            ],
+            "boot": {
+              "contractor": 4,
+              "failed_expense": 0,
+              "fees": 200,
+              "fuel_used": 0,
+              "initial": [
+                5000,
+                100000,
+                0,
+                6000000,
+                0,
+                0
+              ],
+              "initial_basis": 2100,
+              "initial_cash": 3000000,
+              "jobs": [
+                {
+                  "completed": 0,
+                  "cost": 300,
+                  "due": 60,
+                  "failed": 0,
+                  "identity": 1,
+                  "inputs": [
+                    0,
+                    100000,
+                    0,
+                    600000,
+                    0,
+                    0
+                  ],
+                  "phase": "Running",
+                  "started": 0,
+                  "tokens": [
+                    1,
+                    2
+                  ]
+                },
+                {
+                  "completed": 0,
+                  "cost": 0,
+                  "due": 0,
+                  "failed": 0,
+                  "identity": 0,
+                  "inputs": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "phase": "Idle",
+                  "started": 0,
+                  "tokens": [
+                    0,
+                    0
+                  ]
+                }
+              ],
+              "limits": [
+                5000,
+                2000000,
+                6000000,
+                6000000,
+                6000000,
+                10000000
+              ],
+              "next_job": 2,
+              "operator": 3,
+              "profile": "pboot-cold-micro-v1",
+              "resources": [
+                101,
+                102
+              ],
+              "stocks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "time": 30
+            },
+            "economy": null,
+            "opening_sources": [
+              {
+                "amount": 1000000,
+                "id": 1,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 200000,
+                "id": 2,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 600000,
+                "id": 3,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 1200000,
+                "id": 4,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 2000,
+                "id": 5,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 100,
+                "id": 6,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 7,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 8,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 9,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 10,
+                "kind": "inventory_capital"
+              }
+            ],
+            "region": null,
+            "revision": 2,
+            "schema": "mycity-m0-state-v5",
+            "scope": {
+              "branch": 1,
+              "world": 1
+            },
+            "seed": 7,
+            "stocks": [
+              {
+                "basis": 2000,
+                "commodity": "fuel",
+                "id": 1,
+                "lot_id": 5,
+                "offset": 0,
+                "origin_basis": 2000,
+                "origin_quantity": 5000,
+                "owner": 3,
+                "quantity": 5000
+              },
+              {
+                "basis": 0,
+                "commodity": "electricity",
+                "id": 2,
+                "lot_id": 6,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 0,
+                "owner": 3,
+                "quantity": 0
+              },
+              {
+                "basis": 0,
+                "commodity": "water",
+                "id": 3,
+                "lot_id": 7,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 0,
+                "owner": 3,
+                "quantity": 0
+              },
+              {
+                "basis": 0,
+                "commodity": "raw_water",
+                "id": 4,
+                "lot_id": 8,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 5400000,
+                "owner": 3,
+                "quantity": 5400000
+              },
+              {
+                "basis": 0,
+                "commodity": "waste_water",
+                "id": 5,
+                "lot_id": 9,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 0,
+                "owner": 3,
+                "quantity": 0
+              },
+              {
+                "basis": 0,
+                "commodity": "heat",
+                "id": 6,
+                "lot_id": 10,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 0,
+                "owner": 3,
+                "quantity": 0
+              }
+            ]
+          }
+        },
+        {
+          "label": "pump_complete",
+          "resources": [
+            {
+              "capacity": 2,
+              "id": 101,
+              "occupied": 0,
+              "reserved": 0
+            },
+            {
+              "capacity": 2,
+              "id": 102,
+              "occupied": 0,
+              "reserved": 0
+            }
+          ],
+          "sequence": 4,
+          "state_sha256": "cb1b78ddaecfeda4299c4a781b03898e26c57326550834443dd36a4373915324",
+          "world": {
+            "accounts": [
+              {
+                "cash": 1000000,
+                "id": 1,
+                "protected": 0,
+                "role": "treasury"
+              },
+              {
+                "cash": 200000,
+                "id": 2,
+                "protected": 0,
+                "role": "household"
+              },
+              {
+                "cash": 599800,
+                "id": 3,
+                "protected": 0,
+                "role": "company"
+              },
+              {
+                "cash": 1200200,
+                "id": 4,
+                "protected": 0,
+                "role": "supplier"
+              }
+            ],
+            "boot": {
+              "contractor": 4,
+              "failed_expense": 0,
+              "fees": 200,
+              "fuel_used": 0,
+              "initial": [
+                5000,
+                100000,
+                0,
+                6000000,
+                0,
+                0
+              ],
+              "initial_basis": 2100,
+              "initial_cash": 3000000,
+              "jobs": [
+                {
+                  "completed": 1,
+                  "cost": 0,
+                  "due": 60,
+                  "failed": 0,
+                  "identity": 1,
+                  "inputs": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "phase": "Idle",
+                  "started": 0,
+                  "tokens": [
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "completed": 0,
+                  "cost": 0,
+                  "due": 0,
+                  "failed": 0,
+                  "identity": 0,
+                  "inputs": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "phase": "Idle",
+                  "started": 0,
+                  "tokens": [
+                    0,
+                    0
+                  ]
+                }
+              ],
+              "limits": [
+                5000,
+                2000000,
+                6000000,
+                6000000,
+                6000000,
+                10000000
+              ],
+              "next_job": 2,
+              "operator": 3,
+              "profile": "pboot-cold-micro-v1",
+              "resources": [
+                101,
+                102
+              ],
+              "stocks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "time": 60
+            },
+            "economy": null,
+            "opening_sources": [
+              {
+                "amount": 1000000,
+                "id": 1,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 200000,
+                "id": 2,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 600000,
+                "id": 3,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 1200000,
+                "id": 4,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 2000,
+                "id": 5,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 100,
+                "id": 6,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 7,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 8,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 9,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 10,
+                "kind": "inventory_capital"
+              }
+            ],
+            "region": null,
+            "revision": 3,
+            "schema": "mycity-m0-state-v5",
+            "scope": {
+              "branch": 1,
+              "world": 1
+            },
+            "seed": 7,
+            "stocks": [
+              {
+                "basis": 2000,
+                "commodity": "fuel",
+                "id": 1,
+                "lot_id": 5,
+                "offset": 0,
+                "origin_basis": 2000,
+                "origin_quantity": 5000,
+                "owner": 3,
+                "quantity": 5000
+              },
+              {
+                "basis": 0,
+                "commodity": "electricity",
+                "id": 2,
+                "lot_id": 6,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 0,
+                "owner": 3,
+                "quantity": 0
+              },
+              {
+                "basis": 300,
+                "commodity": "water",
+                "id": 3,
+                "lot_id": 7,
+                "offset": 0,
+                "origin_basis": 300,
+                "origin_quantity": 600000,
+                "owner": 3,
+                "quantity": 600000
+              },
+              {
+                "basis": 0,
+                "commodity": "raw_water",
+                "id": 4,
+                "lot_id": 8,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 5400000,
+                "owner": 3,
+                "quantity": 5400000
+              },
+              {
+                "basis": 0,
+                "commodity": "waste_water",
+                "id": 5,
+                "lot_id": 9,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 0,
+                "owner": 3,
+                "quantity": 0
+              },
+              {
+                "basis": 0,
+                "commodity": "heat",
+                "id": 6,
+                "lot_id": 10,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 100000,
+                "owner": 3,
+                "quantity": 100000
+              }
+            ]
+          }
+        },
+        {
+          "label": "generator_wip",
+          "resources": [
+            {
+              "capacity": 2,
+              "id": 101,
+              "occupied": 1,
+              "reserved": 0
+            },
+            {
+              "capacity": 2,
+              "id": 102,
+              "occupied": 1,
+              "reserved": 0
+            }
+          ],
+          "sequence": 5,
+          "state_sha256": "f65a1275ece9df67036c9c5441c33423dc9362b529856027e91b4ab0107eefd3",
+          "world": {
+            "accounts": [
+              {
+                "cash": 1000000,
+                "id": 1,
+                "protected": 0,
+                "role": "treasury"
+              },
+              {
+                "cash": 200000,
+                "id": 2,
+                "protected": 0,
+                "role": "household"
+              },
+              {
+                "cash": 599500,
+                "id": 3,
+                "protected": 0,
+                "role": "company"
+              },
+              {
+                "cash": 1200500,
+                "id": 4,
+                "protected": 0,
+                "role": "supplier"
+              }
+            ],
+            "boot": {
+              "contractor": 4,
+              "failed_expense": 0,
+              "fees": 500,
+              "fuel_used": 0,
+              "initial": [
+                5000,
+                100000,
+                0,
+                6000000,
+                0,
+                0
+              ],
+              "initial_basis": 2100,
+              "initial_cash": 3000000,
+              "jobs": [
+                {
+                  "completed": 1,
+                  "cost": 0,
+                  "due": 60,
+                  "failed": 0,
+                  "identity": 1,
+                  "inputs": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "phase": "Idle",
+                  "started": 0,
+                  "tokens": [
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "completed": 0,
+                  "cost": 730,
+                  "due": 120,
+                  "failed": 0,
+                  "identity": 2,
+                  "inputs": [
+                    1000,
+                    0,
+                    60000,
+                    0,
+                    0,
+                    0
+                  ],
+                  "phase": "Running",
+                  "started": 60,
+                  "tokens": [
+                    3,
+                    4
+                  ]
+                }
+              ],
+              "limits": [
+                5000,
+                2000000,
+                6000000,
+                6000000,
+                6000000,
+                10000000
+              ],
+              "next_job": 3,
+              "operator": 3,
+              "profile": "pboot-cold-micro-v1",
+              "resources": [
+                101,
+                102
+              ],
+              "stocks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "time": 60
+            },
+            "economy": null,
+            "opening_sources": [
+              {
+                "amount": 1000000,
+                "id": 1,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 200000,
+                "id": 2,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 600000,
+                "id": 3,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 1200000,
+                "id": 4,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 2000,
+                "id": 5,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 100,
+                "id": 6,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 7,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 8,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 9,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 10,
+                "kind": "inventory_capital"
+              }
+            ],
+            "region": null,
+            "revision": 4,
+            "schema": "mycity-m0-state-v5",
+            "scope": {
+              "branch": 1,
+              "world": 1
+            },
+            "seed": 7,
+            "stocks": [
+              {
+                "basis": 1600,
+                "commodity": "fuel",
+                "id": 1,
+                "lot_id": 5,
+                "offset": 1000,
+                "origin_basis": 2000,
+                "origin_quantity": 5000,
+                "owner": 3,
+                "quantity": 4000
+              },
+              {
+                "basis": 0,
+                "commodity": "electricity",
+                "id": 2,
+                "lot_id": 6,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 0,
+                "owner": 3,
+                "quantity": 0
+              },
+              {
+                "basis": 270,
+                "commodity": "water",
+                "id": 3,
+                "lot_id": 7,
+                "offset": 0,
+                "origin_basis": 270,
+                "origin_quantity": 540000,
+                "owner": 3,
+                "quantity": 540000
+              },
+              {
+                "basis": 0,
+                "commodity": "raw_water",
+                "id": 4,
+                "lot_id": 8,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 5400000,
+                "owner": 3,
+                "quantity": 5400000
+              },
+              {
+                "basis": 0,
+                "commodity": "waste_water",
+                "id": 5,
+                "lot_id": 9,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 0,
+                "owner": 3,
+                "quantity": 0
+              },
+              {
+                "basis": 0,
+                "commodity": "heat",
+                "id": 6,
+                "lot_id": 10,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 100000,
+                "owner": 3,
+                "quantity": 100000
+              }
+            ]
+          }
+        },
+        {
+          "label": "generator_complete",
+          "resources": [
+            {
+              "capacity": 2,
+              "id": 101,
+              "occupied": 0,
+              "reserved": 0
+            },
+            {
+              "capacity": 2,
+              "id": 102,
+              "occupied": 0,
+              "reserved": 0
+            }
+          ],
+          "sequence": 6,
+          "state_sha256": "7466754195a2404f4f8b9b33c8b70b04caf7f0b06a78a3af6648c75b7352e789",
+          "world": {
+            "accounts": [
+              {
+                "cash": 1000000,
+                "id": 1,
+                "protected": 0,
+                "role": "treasury"
+              },
+              {
+                "cash": 200000,
+                "id": 2,
+                "protected": 0,
+                "role": "household"
+              },
+              {
+                "cash": 599500,
+                "id": 3,
+                "protected": 0,
+                "role": "company"
+              },
+              {
+                "cash": 1200500,
+                "id": 4,
+                "protected": 0,
+                "role": "supplier"
+              }
+            ],
+            "boot": {
+              "contractor": 4,
+              "failed_expense": 0,
+              "fees": 500,
+              "fuel_used": 1000,
+              "initial": [
+                5000,
+                100000,
+                0,
+                6000000,
+                0,
+                0
+              ],
+              "initial_basis": 2100,
+              "initial_cash": 3000000,
+              "jobs": [
+                {
+                  "completed": 1,
+                  "cost": 0,
+                  "due": 60,
+                  "failed": 0,
+                  "identity": 1,
+                  "inputs": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "phase": "Idle",
+                  "started": 0,
+                  "tokens": [
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "completed": 1,
+                  "cost": 0,
+                  "due": 120,
+                  "failed": 0,
+                  "identity": 2,
+                  "inputs": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "phase": "Idle",
+                  "started": 60,
+                  "tokens": [
+                    0,
+                    0
+                  ]
+                }
+              ],
+              "limits": [
+                5000,
+                2000000,
+                6000000,
+                6000000,
+                6000000,
+                10000000
+              ],
+              "next_job": 3,
+              "operator": 3,
+              "profile": "pboot-cold-micro-v1",
+              "resources": [
+                101,
+                102
+              ],
+              "stocks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "time": 120
+            },
+            "economy": null,
+            "opening_sources": [
+              {
+                "amount": 1000000,
+                "id": 1,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 200000,
+                "id": 2,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 600000,
+                "id": 3,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 1200000,
+                "id": 4,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 2000,
+                "id": 5,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 100,
+                "id": 6,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 7,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 8,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 9,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 10,
+                "kind": "inventory_capital"
+              }
+            ],
+            "region": null,
+            "revision": 5,
+            "schema": "mycity-m0-state-v5",
+            "scope": {
+              "branch": 1,
+              "world": 1
+            },
+            "seed": 7,
+            "stocks": [
+              {
+                "basis": 1600,
+                "commodity": "fuel",
+                "id": 1,
+                "lot_id": 5,
+                "offset": 1000,
+                "origin_basis": 2000,
+                "origin_quantity": 5000,
+                "owner": 3,
+                "quantity": 4000
+              },
+              {
+                "basis": 730,
+                "commodity": "electricity",
+                "id": 2,
+                "lot_id": 6,
+                "offset": 0,
+                "origin_basis": 730,
+                "origin_quantity": 400000,
+                "owner": 3,
+                "quantity": 400000
+              },
+              {
+                "basis": 270,
+                "commodity": "water",
+                "id": 3,
+                "lot_id": 7,
+                "offset": 0,
+                "origin_basis": 270,
+                "origin_quantity": 540000,
+                "owner": 3,
+                "quantity": 540000
+              },
+              {
+                "basis": 0,
+                "commodity": "raw_water",
+                "id": 4,
+                "lot_id": 8,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 5400000,
+                "owner": 3,
+                "quantity": 5400000
+              },
+              {
+                "basis": 0,
+                "commodity": "waste_water",
+                "id": 5,
+                "lot_id": 9,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 60000,
+                "owner": 3,
+                "quantity": 60000
+              },
+              {
+                "basis": 0,
+                "commodity": "heat",
+                "id": 6,
+                "lot_id": 10,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 700000,
+                "owner": 3,
+                "quantity": 700000
+              }
+            ]
+          }
+        },
+        {
+          "label": "parallel_complete",
+          "resources": [
+            {
+              "capacity": 2,
+              "id": 101,
+              "occupied": 0,
+              "reserved": 0
+            },
+            {
+              "capacity": 2,
+              "id": 102,
+              "occupied": 0,
+              "reserved": 0
+            }
+          ],
+          "sequence": 9,
+          "state_sha256": "28779c1a2e9a5438cddaaf2ee29e039c678545cf4adcf75bf2a7ca78f360dda6",
+          "world": {
+            "accounts": [
+              {
+                "cash": 1000000,
+                "id": 1,
+                "protected": 0,
+                "role": "treasury"
+              },
+              {
+                "cash": 200000,
+                "id": 2,
+                "protected": 0,
+                "role": "household"
+              },
+              {
+                "cash": 599000,
+                "id": 3,
+                "protected": 0,
+                "role": "company"
+              },
+              {
+                "cash": 1201000,
+                "id": 4,
+                "protected": 0,
+                "role": "supplier"
+              }
+            ],
+            "boot": {
+              "contractor": 4,
+              "failed_expense": 0,
+              "fees": 1000,
+              "fuel_used": 2000,
+              "initial": [
+                5000,
+                100000,
+                0,
+                6000000,
+                0,
+                0
+              ],
+              "initial_basis": 2100,
+              "initial_cash": 3000000,
+              "jobs": [
+                {
+                  "completed": 2,
+                  "cost": 0,
+                  "due": 180,
+                  "failed": 0,
+                  "identity": 3,
+                  "inputs": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "phase": "Idle",
+                  "started": 120,
+                  "tokens": [
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "completed": 2,
+                  "cost": 0,
+                  "due": 180,
+                  "failed": 0,
+                  "identity": 4,
+                  "inputs": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "phase": "Idle",
+                  "started": 120,
+                  "tokens": [
+                    0,
+                    0
+                  ]
+                }
+              ],
+              "limits": [
+                5000,
+                2000000,
+                6000000,
+                6000000,
+                6000000,
+                10000000
+              ],
+              "next_job": 5,
+              "operator": 3,
+              "profile": "pboot-cold-micro-v1",
+              "resources": [
+                101,
+                102
+              ],
+              "stocks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "time": 180
+            },
+            "economy": null,
+            "opening_sources": [
+              {
+                "amount": 1000000,
+                "id": 1,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 200000,
+                "id": 2,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 600000,
+                "id": 3,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 1200000,
+                "id": 4,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 2000,
+                "id": 5,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 100,
+                "id": 6,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 7,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 8,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 9,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 10,
+                "kind": "inventory_capital"
+              }
+            ],
+            "region": null,
+            "revision": 8,
+            "schema": "mycity-m0-state-v5",
+            "scope": {
+              "branch": 1,
+              "world": 1
+            },
+            "seed": 7,
+            "stocks": [
+              {
+                "basis": 1200,
+                "commodity": "fuel",
+                "id": 1,
+                "lot_id": 5,
+                "offset": 2000,
+                "origin_basis": 2000,
+                "origin_quantity": 5000,
+                "owner": 3,
+                "quantity": 3000
+              },
+              {
+                "basis": 1278,
+                "commodity": "electricity",
+                "id": 2,
+                "lot_id": 6,
+                "offset": 0,
+                "origin_basis": 1278,
+                "origin_quantity": 700000,
+                "owner": 3,
+                "quantity": 700000
+              },
+              {
+                "basis": 622,
+                "commodity": "water",
+                "id": 3,
+                "lot_id": 7,
+                "offset": 0,
+                "origin_basis": 622,
+                "origin_quantity": 1080000,
+                "owner": 3,
+                "quantity": 1080000
+              },
+              {
+                "basis": 0,
+                "commodity": "raw_water",
+                "id": 4,
+                "lot_id": 8,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 4800000,
+                "owner": 3,
+                "quantity": 4800000
+              },
+              {
+                "basis": 0,
+                "commodity": "waste_water",
+                "id": 5,
+                "lot_id": 9,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 120000,
+                "owner": 3,
+                "quantity": 120000
+              },
+              {
+                "basis": 0,
+                "commodity": "heat",
+                "id": 6,
+                "lot_id": 10,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 1400000,
+                "owner": 3,
+                "quantity": 1400000
+              }
+            ]
+          }
+        }
+      ],
+      "engine_owned_capacity_bytes": 2084448,
+      "input_sha256": "3281e6e230a11e59c14b2189489387a2d4a397704192578dd86594a18975c6b7",
+      "resources": [
+        {
+          "capacity": 2,
+          "id": 101,
+          "occupied": 0,
+          "reserved": 0
+        },
+        {
+          "capacity": 2,
+          "id": 102,
+          "occupied": 0,
+          "reserved": 0
+        }
+      ],
+      "sequence": 9,
+      "spatial_reference": {
+        "branch": 1,
+        "geometry_sha256": "0c908df7a49207840b194ce284f1381784ac04887ac61b01d6e5af5ffc66c560",
+        "input_bytes": 3679,
+        "input_sha256": "d7a3d9ebeeb2c92ac0a6dba3ac0683639c3cc360d7d1cf1c01d249ecb82b8da2",
+        "png_bytes": 207,
+        "png_sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8",
+        "schema": "mycity-m0-spatial-ref-v1",
+        "seed": 7,
+        "terrain_sha256": "afc09640069721be020608c7c732eaf496ce9e347ca6bb91995d8359be1adb65",
+        "world": 1
+      },
+      "state_sha256": "28779c1a2e9a5438cddaaf2ee29e039c678545cf4adcf75bf2a7ca78f360dda6",
+      "store_owned_capacity_bytes": 2697862,
+      "world": {
+        "accounts": [
+          {
+            "cash": 1000000,
+            "id": 1,
+            "protected": 0,
+            "role": "treasury"
+          },
+          {
+            "cash": 200000,
+            "id": 2,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 599000,
+            "id": 3,
+            "protected": 0,
+            "role": "company"
+          },
+          {
+            "cash": 1201000,
+            "id": 4,
+            "protected": 0,
+            "role": "supplier"
+          }
+        ],
+        "boot": {
+          "contractor": 4,
+          "failed_expense": 0,
+          "fees": 1000,
+          "fuel_used": 2000,
+          "initial": [
+            5000,
+            100000,
+            0,
+            6000000,
+            0,
+            0
+          ],
+          "initial_basis": 2100,
+          "initial_cash": 3000000,
+          "jobs": [
+            {
+              "completed": 2,
+              "cost": 0,
+              "due": 180,
+              "failed": 0,
+              "identity": 3,
+              "inputs": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "phase": "Idle",
+              "started": 120,
+              "tokens": [
+                0,
+                0
+              ]
+            },
+            {
+              "completed": 2,
+              "cost": 0,
+              "due": 180,
+              "failed": 0,
+              "identity": 4,
+              "inputs": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "phase": "Idle",
+              "started": 120,
+              "tokens": [
+                0,
+                0
+              ]
+            }
+          ],
+          "limits": [
+            5000,
+            2000000,
+            6000000,
+            6000000,
+            6000000,
+            10000000
+          ],
+          "next_job": 5,
+          "operator": 3,
+          "profile": "pboot-cold-micro-v1",
+          "resources": [
+            101,
+            102
+          ],
+          "stocks": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "time": 180
+        },
+        "economy": null,
+        "opening_sources": [
+          {
+            "amount": 1000000,
+            "id": 1,
+            "kind": "cash_capital"
+          },
+          {
+            "amount": 200000,
+            "id": 2,
+            "kind": "cash_capital"
+          },
+          {
+            "amount": 600000,
+            "id": 3,
+            "kind": "cash_capital"
+          },
+          {
+            "amount": 1200000,
+            "id": 4,
+            "kind": "cash_capital"
+          },
+          {
+            "amount": 2000,
+            "id": 5,
+            "kind": "inventory_capital"
+          },
+          {
+            "amount": 100,
+            "id": 6,
+            "kind": "inventory_capital"
+          },
+          {
+            "amount": 0,
+            "id": 7,
+            "kind": "inventory_capital"
+          },
+          {
+            "amount": 0,
+            "id": 8,
+            "kind": "inventory_capital"
+          },
+          {
+            "amount": 0,
+            "id": 9,
+            "kind": "inventory_capital"
+          },
+          {
+            "amount": 0,
+            "id": 10,
+            "kind": "inventory_capital"
+          }
+        ],
+        "region": null,
+        "revision": 8,
+        "schema": "mycity-m0-state-v5",
+        "scope": {
+          "branch": 1,
+          "world": 1
+        },
+        "seed": 7,
+        "stocks": [
+          {
+            "basis": 1200,
+            "commodity": "fuel",
+            "id": 1,
+            "lot_id": 5,
+            "offset": 2000,
+            "origin_basis": 2000,
+            "origin_quantity": 5000,
+            "owner": 3,
+            "quantity": 3000
+          },
+          {
+            "basis": 1278,
+            "commodity": "electricity",
+            "id": 2,
+            "lot_id": 6,
+            "offset": 0,
+            "origin_basis": 1278,
+            "origin_quantity": 700000,
+            "owner": 3,
+            "quantity": 700000
+          },
+          {
+            "basis": 622,
+            "commodity": "water",
+            "id": 3,
+            "lot_id": 7,
+            "offset": 0,
+            "origin_basis": 622,
+            "origin_quantity": 1080000,
+            "owner": 3,
+            "quantity": 1080000
+          },
+          {
+            "basis": 0,
+            "commodity": "raw_water",
+            "id": 4,
+            "lot_id": 8,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 4800000,
+            "owner": 3,
+            "quantity": 4800000
+          },
+          {
+            "basis": 0,
+            "commodity": "waste_water",
+            "id": 5,
+            "lot_id": 9,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 120000,
+            "owner": 3,
+            "quantity": 120000
+          },
+          {
+            "basis": 0,
+            "commodity": "heat",
+            "id": 6,
+            "lot_id": 10,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 1400000,
+            "owner": 3,
+            "quantity": 1400000
+          }
+        ]
+      },
+      "world_layout": {
+        "accounts": {
+          "free_index_capacity": 64,
+          "header_bytes": 80,
+          "live_records": 4,
+          "owned_capacity_bytes": 2384,
+          "record_bytes": 24,
+          "slot_bytes": 32,
+          "slots_capacity": 64
+        },
+        "allocator_metadata_included": false,
+        "index_capacity_bytes": 400,
+        "opening_sources_capacity_bytes": 256,
+        "owned_capacity_bytes": 26608,
+        "stocks": {
+          "free_index_capacity": 128,
+          "header_bytes": 80,
+          "live_records": 6,
+          "owned_capacity_bytes": 12880,
+          "record_bytes": 88,
+          "slot_bytes": 96,
+          "slots_capacity": 128
+        },
+        "temporary_parse_and_view_pages_included": false,
+        "world_remaining_header_bytes": 10688
+      }
+    },
+    "profile": "pboot-cold-micro-v1",
+    "resource_units": {
+      "duration_seconds": 60,
+      "electric_slot_envelope_watts": 24000,
+      "resource_limits": "same_generic_lease_pool_plus_separate_finite_physical_buffers",
+      "water_slot_envelope_liters_per_second": 10
+    },
+    "result": "P_BOOT_finite_startup_interlock_executed_and_verified",
+    "schema": "mycity-m0-boot-evidence-v1",
+    "scope": "finite_micro_profile_not_LC38_or_city_utility_network",
+    "ui": "not_implemented",
+    "water_seed": {
+      "checkpoints": [
+        {
+          "label": "alternative_real_water_tank_seed",
+          "resources": [
+            {
+              "capacity": 2,
+              "id": 101,
+              "occupied": 0,
+              "reserved": 0
+            },
+            {
+              "capacity": 2,
+              "id": 102,
+              "occupied": 0,
+              "reserved": 0
+            }
+          ],
+          "sequence": 4,
+          "state_sha256": "02e2a4c4f0ffd1cd318d7183841eb9ccd35e1bffaf293e27feb39942a587fe66",
+          "world": {
+            "accounts": [
+              {
+                "cash": 1000000,
+                "id": 1,
+                "protected": 0,
+                "role": "treasury"
+              },
+              {
+                "cash": 200000,
+                "id": 2,
+                "protected": 0,
+                "role": "household"
+              },
+              {
+                "cash": 599500,
+                "id": 3,
+                "protected": 0,
+                "role": "company"
+              },
+              {
+                "cash": 1200500,
+                "id": 4,
+                "protected": 0,
+                "role": "supplier"
+              }
+            ],
+            "boot": {
+              "contractor": 4,
+              "failed_expense": 0,
+              "fees": 500,
+              "fuel_used": 1000,
+              "initial": [
+                5000,
+                0,
+                60000,
+                6000000,
+                0,
+                0
+              ],
+              "initial_basis": 2060,
+              "initial_cash": 3000000,
+              "jobs": [
+                {
+                  "completed": 1,
+                  "cost": 0,
+                  "due": 120,
+                  "failed": 0,
+                  "identity": 2,
+                  "inputs": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "phase": "Idle",
+                  "started": 60,
+                  "tokens": [
+                    0,
+                    0
+                  ]
+                },
+                {
+                  "completed": 1,
+                  "cost": 0,
+                  "due": 60,
+                  "failed": 0,
+                  "identity": 1,
+                  "inputs": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                  ],
+                  "phase": "Idle",
+                  "started": 0,
+                  "tokens": [
+                    0,
+                    0
+                  ]
+                }
+              ],
+              "limits": [
+                5000,
+                2000000,
+                6000000,
+                6000000,
+                6000000,
+                10000000
+              ],
+              "next_job": 3,
+              "operator": 3,
+              "profile": "pboot-cold-micro-v1",
+              "resources": [
+                101,
+                102
+              ],
+              "stocks": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "time": 120
+            },
+            "economy": null,
+            "opening_sources": [
+              {
+                "amount": 1000000,
+                "id": 1,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 200000,
+                "id": 2,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 600000,
+                "id": 3,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 1200000,
+                "id": 4,
+                "kind": "cash_capital"
+              },
+              {
+                "amount": 2000,
+                "id": 5,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 6,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 60,
+                "id": 7,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 8,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 9,
+                "kind": "inventory_capital"
+              },
+              {
+                "amount": 0,
+                "id": 10,
+                "kind": "inventory_capital"
+              }
+            ],
+            "region": null,
+            "revision": 4,
+            "schema": "mycity-m0-state-v5",
+            "scope": {
+              "branch": 1,
+              "world": 1
+            },
+            "seed": 7,
+            "stocks": [
+              {
+                "basis": 1600,
+                "commodity": "fuel",
+                "id": 1,
+                "lot_id": 5,
+                "offset": 1000,
+                "origin_basis": 2000,
+                "origin_quantity": 5000,
+                "owner": 3,
+                "quantity": 4000
+              },
+              {
+                "basis": 570,
+                "commodity": "electricity",
+                "id": 2,
+                "lot_id": 6,
+                "offset": 0,
+                "origin_basis": 570,
+                "origin_quantity": 300000,
+                "owner": 3,
+                "quantity": 300000
+              },
+              {
+                "basis": 390,
+                "commodity": "water",
+                "id": 3,
+                "lot_id": 7,
+                "offset": 0,
+                "origin_basis": 390,
+                "origin_quantity": 600000,
+                "owner": 3,
+                "quantity": 600000
+              },
+              {
+                "basis": 0,
+                "commodity": "raw_water",
+                "id": 4,
+                "lot_id": 8,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 5400000,
+                "owner": 3,
+                "quantity": 5400000
+              },
+              {
+                "basis": 0,
+                "commodity": "waste_water",
+                "id": 5,
+                "lot_id": 9,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 60000,
+                "owner": 3,
+                "quantity": 60000
+              },
+              {
+                "basis": 0,
+                "commodity": "heat",
+                "id": 6,
+                "lot_id": 10,
+                "offset": 0,
+                "origin_basis": 0,
+                "origin_quantity": 700000,
+                "owner": 3,
+                "quantity": 700000
+              }
+            ]
+          }
+        }
+      ],
+      "engine_owned_capacity_bytes": 2084448,
+      "input_sha256": "29a2edd1691b69d360a9563cbad5254d5419c22c7b641421f7ffd0984c8d5ee1",
+      "resources": [
+        {
+          "capacity": 2,
+          "id": 101,
+          "occupied": 0,
+          "reserved": 0
+        },
+        {
+          "capacity": 2,
+          "id": 102,
+          "occupied": 0,
+          "reserved": 0
+        }
+      ],
+      "sequence": 4,
+      "spatial_reference": null,
+      "state_sha256": "02e2a4c4f0ffd1cd318d7183841eb9ccd35e1bffaf293e27feb39942a587fe66",
+      "store_owned_capacity_bytes": 2086083,
+      "world": {
+        "accounts": [
+          {
+            "cash": 1000000,
+            "id": 1,
+            "protected": 0,
+            "role": "treasury"
+          },
+          {
+            "cash": 200000,
+            "id": 2,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 599500,
+            "id": 3,
+            "protected": 0,
+            "role": "company"
+          },
+          {
+            "cash": 1200500,
+            "id": 4,
+            "protected": 0,
+            "role": "supplier"
+          }
+        ],
+        "boot": {
+          "contractor": 4,
+          "failed_expense": 0,
+          "fees": 500,
+          "fuel_used": 1000,
+          "initial": [
+            5000,
+            0,
+            60000,
+            6000000,
+            0,
+            0
+          ],
+          "initial_basis": 2060,
+          "initial_cash": 3000000,
+          "jobs": [
+            {
+              "completed": 1,
+              "cost": 0,
+              "due": 120,
+              "failed": 0,
+              "identity": 2,
+              "inputs": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "phase": "Idle",
+              "started": 60,
+              "tokens": [
+                0,
+                0
+              ]
+            },
+            {
+              "completed": 1,
+              "cost": 0,
+              "due": 60,
+              "failed": 0,
+              "identity": 1,
+              "inputs": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "phase": "Idle",
+              "started": 0,
+              "tokens": [
+                0,
+                0
+              ]
+            }
+          ],
+          "limits": [
+            5000,
+            2000000,
+            6000000,
+            6000000,
+            6000000,
+            10000000
+          ],
+          "next_job": 3,
+          "operator": 3,
+          "profile": "pboot-cold-micro-v1",
+          "resources": [
+            101,
+            102
+          ],
+          "stocks": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "time": 120
+        },
+        "economy": null,
+        "opening_sources": [
+          {
+            "amount": 1000000,
+            "id": 1,
+            "kind": "cash_capital"
+          },
+          {
+            "amount": 200000,
+            "id": 2,
+            "kind": "cash_capital"
+          },
+          {
+            "amount": 600000,
+            "id": 3,
+            "kind": "cash_capital"
+          },
+          {
+            "amount": 1200000,
+            "id": 4,
+            "kind": "cash_capital"
+          },
+          {
+            "amount": 2000,
+            "id": 5,
+            "kind": "inventory_capital"
+          },
+          {
+            "amount": 0,
+            "id": 6,
+            "kind": "inventory_capital"
+          },
+          {
+            "amount": 60,
+            "id": 7,
+            "kind": "inventory_capital"
+          },
+          {
+            "amount": 0,
+            "id": 8,
+            "kind": "inventory_capital"
+          },
+          {
+            "amount": 0,
+            "id": 9,
+            "kind": "inventory_capital"
+          },
+          {
+            "amount": 0,
+            "id": 10,
+            "kind": "inventory_capital"
+          }
+        ],
+        "region": null,
+        "revision": 4,
+        "schema": "mycity-m0-state-v5",
+        "scope": {
+          "branch": 1,
+          "world": 1
+        },
+        "seed": 7,
+        "stocks": [
+          {
+            "basis": 1600,
+            "commodity": "fuel",
+            "id": 1,
+            "lot_id": 5,
+            "offset": 1000,
+            "origin_basis": 2000,
+            "origin_quantity": 5000,
+            "owner": 3,
+            "quantity": 4000
+          },
+          {
+            "basis": 570,
+            "commodity": "electricity",
+            "id": 2,
+            "lot_id": 6,
+            "offset": 0,
+            "origin_basis": 570,
+            "origin_quantity": 300000,
+            "owner": 3,
+            "quantity": 300000
+          },
+          {
+            "basis": 390,
+            "commodity": "water",
+            "id": 3,
+            "lot_id": 7,
+            "offset": 0,
+            "origin_basis": 390,
+            "origin_quantity": 600000,
+            "owner": 3,
+            "quantity": 600000
+          },
+          {
+            "basis": 0,
+            "commodity": "raw_water",
+            "id": 4,
+            "lot_id": 8,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 5400000,
+            "owner": 3,
+            "quantity": 5400000
+          },
+          {
+            "basis": 0,
+            "commodity": "waste_water",
+            "id": 5,
+            "lot_id": 9,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 60000,
+            "owner": 3,
+            "quantity": 60000
+          },
+          {
+            "basis": 0,
+            "commodity": "heat",
+            "id": 6,
+            "lot_id": 10,
+            "offset": 0,
+            "origin_basis": 0,
+            "origin_quantity": 700000,
+            "owner": 3,
+            "quantity": 700000
+          }
+        ]
+      },
+      "world_layout": {
+        "accounts": {
+          "free_index_capacity": 64,
+          "header_bytes": 80,
+          "live_records": 4,
+          "owned_capacity_bytes": 2384,
+          "record_bytes": 24,
+          "slot_bytes": 32,
+          "slots_capacity": 64
+        },
+        "allocator_metadata_included": false,
+        "index_capacity_bytes": 400,
+        "opening_sources_capacity_bytes": 256,
+        "owned_capacity_bytes": 26608,
+        "stocks": {
+          "free_index_capacity": 128,
+          "header_bytes": 80,
+          "live_records": 6,
+          "owned_capacity_bytes": 12880,
+          "record_bytes": 88,
+          "slot_bytes": 96,
+          "slots_capacity": 128
+        },
+        "temporary_parse_and_view_pages_included": false,
+        "world_remaining_header_bytes": 10688
+      }
+    }
+  },
+  "build": {
+    "profile": "release",
+    "rustc": "rustc 1.85.1 (4eb161250 2025-03-15)",
+    "target": "aarch64-apple-darwin"
+  },
+  "economic_prototypes": "not_run",
+  "gpu": "not_implemented",
+  "host": {
+    "arch": "aarch64",
+    "chip": "Apple M4",
+    "memory_bytes": "34359738368",
+    "os": "macos",
+    "os_version": "26.6.2"
+  },
+  "input": {
+    "branch": 1,
+    "laboratory_only": true,
+    "schema": "mycity-m0-bootstrap-v1",
+    "seed": 7,
+    "world": 1
+  },
+  "input_sha256": "d2505d4b292ee8745de0266178168853f09a0a71a767b8e74598bf0f105f12da",
+  "layout": {
+    "accounts": {
+      "free_index_capacity": 64,
+      "header_bytes": 80,
+      "live_records": 4,
+      "owned_capacity_bytes": 2384,
+      "record_bytes": 24,
+      "slot_bytes": 32,
+      "slots_capacity": 64
+    },
+    "allocator_metadata_included": false,
+    "index_capacity_bytes": 400,
+    "opening_sources_capacity_bytes": 256,
+    "owned_capacity_bytes": 26608,
+    "stocks": {
+      "free_index_capacity": 128,
+      "header_bytes": 80,
+      "live_records": 6,
+      "owned_capacity_bytes": 12880,
+      "record_bytes": 88,
+      "slot_bytes": 96,
+      "slots_capacity": 128
+    },
+    "temporary_parse_and_view_pages_included": false,
+    "world_remaining_header_bytes": 10688
+  },
+  "lock_sha256": "341af2f5bd913944e0f4fa4be679b64f10863eac3e023c0568a7c07e60e6b9f7",
+  "memory_16gb_gate": "not_run",
+  "report_schema": "mycity-m0-evidence-v1",
+  "result": "finite_startup_interlock_executed",
+  "rules": {
+    "boot": {
+      "cost_policy": "fuel_frozen_lot_utility_blended_pool",
+      "duration_seconds": 60,
+      "electric_slot_envelope_watts": 24000,
+      "failure": "committed_inputs_not_refunded_worst_outlets_reserved",
+      "profile": "pboot-cold-micro-v1",
+      "schema": "mycity-m0-boot-v1",
+      "water_slot_envelope_liters_per_second": 10
+    },
+    "input_limit_bytes": 65536,
+    "max_accounts": 64,
+    "max_sources": 192,
+    "max_stocks": 128,
+    "mode": "headless_laboratory",
+    "numeric_strategy": "checked-integer-v1",
+    "opening_schema": "mycity-m0-opening-v1",
+    "schema": "mycity-m0-bootstrap-v1",
+    "storage": {
+      "committed_boundary": "CURRENT_root_hash_sequence_and_wal_end",
+      "frame_limit": 32768,
+      "rules_identity": "acc45264fbf74d4a61dc186d86590f1f0d17612d038b6e2e3762b7a3d28a392f",
+      "schema": "explicit_v2_spatial_baseline_and_v1_financial_branches",
+      "wal_limit": 67108864
+    },
+    "world_byte_budget": 131072
+  },
+  "rules_sha256": "026ae83c5739db9ce553e392ca19925c9daa5d7cf08d708709001338b7c683bb",
+  "run_id": "16673-1792424407354907000",
+  "source_sha256": "acc45264fbf74d4a61dc186d86590f1f0d17612d038b6e2e3762b7a3d28a392f",
+  "state_sha256": "41d689fadaace68915cee60b96c884f4931c1482adcd0d2366f8774d6a919d30",
+  "task": "M0-T08-P-BOOT",
+  "ui": "not_implemented_by_scope",
+  "world": {
+    "accounts": [
+      {
+        "cash": 1000000,
+        "id": 1,
+        "protected": 0,
+        "role": "treasury"
+      },
+      {
+        "cash": 200000,
+        "id": 2,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 600000,
+        "id": 3,
+        "protected": 0,
+        "role": "company"
+      },
+      {
+        "cash": 1200000,
+        "id": 4,
+        "protected": 0,
+        "role": "supplier"
+      }
+    ],
+    "boot": {
+      "contractor": 4,
+      "failed_expense": 0,
+      "fees": 0,
+      "fuel_used": 0,
+      "initial": [
+        5000,
+        100000,
+        0,
+        6000000,
+        0,
+        0
+      ],
+      "initial_basis": 2100,
+      "initial_cash": 3000000,
+      "jobs": [
+        {
+          "completed": 0,
+          "cost": 0,
+          "due": 0,
+          "failed": 0,
+          "identity": 0,
+          "inputs": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "phase": "Idle",
+          "started": 0,
+          "tokens": [
+            0,
+            0
+          ]
+        },
+        {
+          "completed": 0,
+          "cost": 0,
+          "due": 0,
+          "failed": 0,
+          "identity": 0,
+          "inputs": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "phase": "Idle",
+          "started": 0,
+          "tokens": [
+            0,
+            0
+          ]
+        }
+      ],
+      "limits": [
+        5000,
+        2000000,
+        6000000,
+        6000000,
+        6000000,
+        10000000
+      ],
+      "next_job": 1,
+      "operator": 3,
+      "profile": "pboot-cold-micro-v1",
+      "resources": [
+        101,
+        102
+      ],
+      "stocks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "time": 0
+    },
+    "economy": null,
+    "opening_sources": [
+      {
+        "amount": 1000000,
+        "id": 1,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 200000,
+        "id": 2,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 600000,
+        "id": 3,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 1200000,
+        "id": 4,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 2000,
+        "id": 5,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 100,
+        "id": 6,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 7,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 8,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 9,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 10,
+        "kind": "inventory_capital"
+      }
+    ],
+    "region": null,
+    "revision": 0,
+    "schema": "mycity-m0-state-v5",
+    "scope": {
+      "branch": 1,
+      "world": 1
+    },
+    "seed": 7,
+    "stocks": [
+      {
+        "basis": 2000,
+        "commodity": "fuel",
+        "id": 1,
+        "lot_id": 5,
+        "offset": 0,
+        "origin_basis": 2000,
+        "origin_quantity": 5000,
+        "owner": 3,
+        "quantity": 5000
+      },
+      {
+        "basis": 100,
+        "commodity": "electricity",
+        "id": 2,
+        "lot_id": 6,
+        "offset": 0,
+        "origin_basis": 100,
+        "origin_quantity": 100000,
+        "owner": 3,
+        "quantity": 100000
+      },
+      {
+        "basis": 0,
+        "commodity": "water",
+        "id": 3,
+        "lot_id": 7,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw_water",
+        "id": 4,
+        "lot_id": 8,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 6000000,
+        "owner": 3,
+        "quantity": 6000000
+      },
+      {
+        "basis": 0,
+        "commodity": "waste_water",
+        "id": 5,
+        "lot_id": 9,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "heat",
+        "id": 6,
+        "lot_id": 10,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      }
+    ]
+  }
+}

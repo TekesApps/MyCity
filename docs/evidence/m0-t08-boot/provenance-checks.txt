@@ -1,0 +1,4 @@
+PASS: independent physical quantity, fuel-energy, water, cost, actual fee and cash oracles; failure sinks and finite fuel exhaustion.
+PASS: 118 offline Release tests including 88 actual startup process exits; finite scope and untested gates retained.
+PASS: source/lock/input/rules fingerprint matches checkout; source=acc45264fbf74d4a61dc186d86590f1f0d17612d038b6e2e3762b7a3d28a392f
+Measured Boot inline bytes=448; World=26608; Engine=2084448; Store=2697862

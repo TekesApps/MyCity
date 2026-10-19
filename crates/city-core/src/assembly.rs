@@ -27,6 +27,12 @@ pub enum Role {
 pub enum Commodity {
     Raw,
     Product,
+    Fuel,
+    Electricity,
+    Water,
+    RawWater,
+    WasteWater,
+    Heat,
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
@@ -71,6 +77,7 @@ pub struct Opening {
     pub stocks: Vec<OpeningStock>,
     pub region: Option<crate::region::Opening>,
     pub economy: Option<crate::economy::Opening>,
+    pub boot: Option<crate::boot::Opening>,
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -104,6 +111,7 @@ pub struct World {
     sources: Vec<OpeningSource>,
     pub(crate) region: Option<crate::region::Region>,
     pub(crate) economy: Option<crate::economy::Economy>,
+    pub(crate) boot: Option<crate::boot::Boot>,
 }
 
 #[derive(Debug, PartialEq, Eq, Serialize)]
@@ -136,6 +144,7 @@ pub struct WorldView {
     pub opening_sources: Vec<OpeningSource>,
     pub region: Option<crate::region::Region>,
     pub economy: Option<crate::economy::Economy>,
+    pub boot: Option<crate::boot::Boot>,
 }
 
 impl World {
@@ -159,7 +168,7 @@ impl World {
     }
     pub fn view(&self) -> WorldView {
         WorldView {
-            schema: "mycity-m0-state-v4",
+            schema: "mycity-m0-state-v5",
             scope: self.scope,
             seed: self.seed,
             revision: self.revision,
@@ -197,6 +206,7 @@ impl World {
             opening_sources: self.sources.clone(),
             region: self.region,
             economy: self.economy,
+            boot: self.boot,
         }
     }
     pub fn state_hash(&self) -> String {
@@ -292,6 +302,7 @@ pub fn assemble(bytes: &[u8]) -> Result<World, String> {
         stock_ids: Vec::with_capacity(input.stocks.len()),
         sources: input.sources,
         economy: None,
+        boot: None,
         region: input
             .region
             .map(crate::region::Region::new)
@@ -336,6 +347,9 @@ pub fn assemble(bytes: &[u8]) -> Result<World, String> {
     }
     if let Some(economy) = input.economy {
         world.economy = Some(crate::economy::Economy::new(economy, &world)?);
+    }
+    if let Some(boot) = input.boot {
+        world.boot = Some(crate::boot::Boot::new(boot, &world)?);
     }
     if world.layout()["owned_capacity_bytes"].as_u64().unwrap() > WORLD_BYTE_BUDGET as u64 {
         return Err("world_byte_limit".into());

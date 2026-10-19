@@ -253,3 +253,40 @@ fn economy_cli_executes_real_30_day_cash_goods_and_failure_branches() {
     assert!(p["pe0"]["checkpoints"].as_array().unwrap().len() >= 4);
     std::fs::remove_dir_all(dir).unwrap();
 }
+
+#[test]
+fn boot_cli_runs_finite_interlocks_and_recovery_without_claiming_city_network_or_16gb() {
+    let input = format!(
+        "{}/../../fixtures/m0-boot-opening.json",
+        env!("CARGO_MANIFEST_DIR")
+    );
+    let dir = std::env::temp_dir().join(format!(
+        "mycity-boot-cli-{}-{}",
+        std::process::id(),
+        std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_nanos()
+    ));
+    let out = Command::new(env!("CARGO_BIN_EXE_mycity-headless"))
+        .arg("boot-probe")
+        .arg(&input)
+        .arg(&dir)
+        .output()
+        .unwrap();
+    assert!(
+        out.status.success(),
+        "{}",
+        String::from_utf8_lossy(&out.stderr)
+    );
+    let v: serde_json::Value = serde_json::from_slice(&out.stdout).unwrap();
+    assert_eq!(v["P_BOOT"], "finite_experiment_executed");
+    assert_eq!(v["economic_prototypes"], "not_run");
+    assert_eq!(v["memory_16gb_gate"], "not_run");
+    let b = &v["boot_probe"];
+    assert_eq!(b["normal"]["world"]["boot"]["fees"], 1000);
+    assert_eq!(b["exhausted"]["world"]["stocks"][0]["quantity"], 0);
+    assert!(b["normal"]["spatial_reference"].is_object());
+    assert_eq!(b["faults"].as_array().unwrap().len(), 2);
+    std::fs::remove_dir_all(dir).unwrap();
+}

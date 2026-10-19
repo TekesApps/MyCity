@@ -2,7 +2,7 @@
 
 总体设计P53，文档发布v0.5.3，2026-10-19。**完整产品主要机制D_full已交付；实现、完整场景实例、经济平衡、性能和可玩性未验证。** 本文是唯一总体入口。[v0.5.0基线](FIRST_RELEASE_BASELINE.md)保留为历史首期实施切片，23类或90CAT既不是本总体范围，也不是完成证明。当前只完成文档／配置／构造规范，不写游戏代码。
 
-v0.5.13执行更新：用户已授权Rust模型与headless CLI，当前不做UI；上段“只完成文档／不写代码”记录的是总体设计交付时点。现行实现／实测与未测项见[M0状态](m0-implementation-status.md)，总体功能范围保留。空间／地图与跨后端数据契约的当前实测见[T07说明](m0-spatial-model-and-gpu-layout.md)，CPU权威与GPU投影分开，后端兼容交给wgpu，不作为当前另行适配主线。不可变空间已接[同一存档根](m0-spatial-storage.md)，运行时空间修改仍未完成。 [T08](m0-economy-runtime.md)已实跑P-E0／P-E1；完整启动、跨城经济整合和长期平衡仍未验。
+v0.5.14执行更新：用户已授权Rust模型与headless CLI，当前不做UI；上段“只完成文档／不写代码”记录的是总体设计交付时点。现行实现／实测与未测项见[M0状态](m0-implementation-status.md)，总体功能范围保留。空间／地图与跨后端数据契约的当前实测见[T07说明](m0-spatial-model-and-gpu-layout.md)，CPU权威与GPU投影分开，后端兼容交给wgpu，不作为当前另行适配主线。不可变空间已接[同一存档根](m0-spatial-storage.md)，运行时空间修改仍未完成。 [T08经济](m0-economy-runtime.md)和[P-BOOT](m0-boot-runtime.md)已实跑三项有限实验；真实设施全生命周期、跨城经济整合和长期平衡仍未验。
 
 ## 1. 产品是什么
 

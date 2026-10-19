@@ -62,7 +62,7 @@ macro_rules! nonnegative_unit {
 }
 
 nonnegative_unit!(Money); // cents, 100 per laboratory currency unit
-nonnegative_unit!(Quantity); // milli-Q
+nonnegative_unit!(Quantity); // milli-native commodity unit: Q, Wh or L fixed by the profile
 nonnegative_unit!(Energy); // Wh
 nonnegative_unit!(Water); // L
 nonnegative_unit!(GameTime); // seconds since world epoch

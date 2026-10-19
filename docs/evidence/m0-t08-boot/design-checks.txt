@@ -1,0 +1,3 @@
+PASS: 37x9 source locations; REQ01..61; 236MiB / 3.10GiB and joint caps; 13 facility families / 9 support packs; meal/heat/water/tax/fuel/safety arithmetic. Static design evidence only.
+Checked 131 Markdown files, 1218 relative links, 293 JSON files; ID sets, 13 templates / 12 operating profiles, arithmetic and 31 budget rows passed.
+All static checks passed.

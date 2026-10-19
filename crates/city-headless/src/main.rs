@@ -1,3 +1,4 @@
+mod boot_probe;
 mod economy_probe;
 use mycity_core::{parse_bootstrap, read_bounded, sha256, INPUT_LIMIT, NUMERIC_STRATEGY, SCHEMA};
 use serde_json::json;
@@ -19,7 +20,13 @@ fn system(command: &str, args: &[&str]) -> Option<String> {
 fn run() -> Result<(), String> {
     let args: Vec<_> = env::args().collect();
     let storage = args.get(1).is_some_and(|a| {
-        ["storage-probe", "regional-probe", "economy-probe"].contains(&a.as_str())
+        [
+            "storage-probe",
+            "regional-probe",
+            "economy-probe",
+            "boot-probe",
+        ]
+        .contains(&a.as_str())
     });
     let spatial = args.get(1).is_some_and(|a| a == "spatial-probe");
     let spatial_store = args.get(1).is_some_and(|a| a == "spatial-store-probe");
@@ -41,12 +48,13 @@ fn run() -> Result<(), String> {
             "regional-probe",
             "spatial-probe",
             "economy-probe",
+            "boot-probe",
             "spatial-store-probe",
         ]
         .contains(&args[1].as_str())
     {
         return Err(
-            "usage: mycity-headless <baseline|layout|assemble|transaction-probe|clock-probe> <input.json>; <storage-probe|regional-probe|economy-probe> <input.json> <new_world_dir>; spatial-probe <input.json> <height.png>; spatial-store-probe <opening.json> <spatial.json> <height.png> <new_world_dir>"
+            "usage: mycity-headless <baseline|layout|assemble|transaction-probe|clock-probe> <input.json>; <storage-probe|regional-probe|economy-probe|boot-probe> <input.json> <new_world_dir>; spatial-probe <input.json> <height.png>; spatial-store-probe <opening.json> <spatial.json> <height.png> <new_world_dir>"
                 .into(),
         );
     }
@@ -59,6 +67,7 @@ fn run() -> Result<(), String> {
         "regional-probe",
         "spatial-store-probe",
         "economy-probe",
+        "boot-probe",
     ]
     .contains(&args[1].as_str())
     {
@@ -97,6 +106,9 @@ fn run() -> Result<(), String> {
         rules["max_sources"] = json!(mycity_core::assembly::MAX_SOURCES);
         rules["world_byte_budget"] = json!(mycity_core::assembly::WORLD_BYTE_BUDGET);
     }
+    if args[1] == "boot-probe" {
+        rules["boot"] = json!({"schema":"mycity-m0-boot-v1","profile":mycity_core::boot::PROFILE,"duration_seconds":60,"electric_slot_envelope_watts":24000,"water_slot_envelope_liters_per_second":10,"cost_policy":"fuel_frozen_lot_utility_blended_pool","failure":"committed_inputs_not_refunded_worst_outlets_reserved"});
+    }
     if args[1] == "economy-probe" {
         rules["economy"] = json!({"profile":"pe0-30d-v1","schema":"mycity-m0-economy-v1","days":mycity_core::economy::DAYS,"max_step_seconds":3600,
             "cost_policy":"direct_labor_capitalized_fifo_frozen_lot_v1","tax_policy":"cumulative_net_profit_floor_10_percent_v1","transport":"one_hour_10Q_in_transit_20Q_daily_synthetic_source"});
@@ -115,7 +127,7 @@ fn run() -> Result<(), String> {
         rules["schedule"] = json!({"source_limit":mycity_core::schedule::SOURCE_LIMIT,"ready_limit":mycity_core::schedule::READY_LIMIT,"max_interval_seconds":mycity_core::schedule::MAX_INTERVAL_SECONDS,"calendar_epoch":"2001-01-01","rng":"sha256-domain-source-window-v1"});
     }
     if storage || spatial_store {
-        rules["storage"] = json!({"schema":if spatial_store {"mycity-m0-genesis-v2"}else if args[1] == "economy-probe" {"explicit_v2_spatial_baseline_and_v1_financial_branches"}else{"mycity-m0-genesis-v1"},"rules_identity":env!("MYCITY_SOURCE_SHA256"),"frame_limit":mycity_storage::FRAME_LIMIT,"wal_limit":mycity_storage::WAL_LIMIT,"committed_boundary":"CURRENT_root_hash_sequence_and_wal_end"});
+        rules["storage"] = json!({"schema":if spatial_store {"mycity-m0-genesis-v2"}else if ["economy-probe", "boot-probe"].contains(&args[1].as_str()) {"explicit_v2_spatial_baseline_and_v1_financial_branches"}else{"mycity-m0-genesis-v1"},"rules_identity":env!("MYCITY_SOURCE_SHA256"),"frame_limit":mycity_storage::FRAME_LIMIT,"wal_limit":mycity_storage::WAL_LIMIT,"committed_boundary":"CURRENT_root_hash_sequence_and_wal_end"});
     }
     if spatial || spatial_store {
         rules["spatial"] = json!({"schema":mycity_map::SCHEMA,"land_cell_cm":mycity_map::LAND_CELL_CM,
@@ -184,6 +196,16 @@ fn run() -> Result<(), String> {
         report["task"] = json!("M0-T06");
         report["result"] = json!("transaction_storage_roundtrip_passed");
         report["storage_probe"] = storage_probe(&bytes, std::path::Path::new(&args[3]))?;
+    }
+    if args[1] == "boot-probe" {
+        report["task"] = json!("M0-T08-P-BOOT");
+        report["boot_probe"] = boot_probe::run(
+            &bytes,
+            std::path::Path::new(&args[3]),
+            env!("MYCITY_SOURCE_SHA256"),
+        )?;
+        report["result"] = json!("finite_startup_interlock_executed");
+        report["P_BOOT"] = json!("finite_experiment_executed");
     }
     if args[1] == "economy-probe" {
         report["task"] = json!("M0-T08-P-E0-P-E1");

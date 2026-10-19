@@ -69,7 +69,7 @@ fn run() -> Result<(), String> {
         );
         return Ok(());
     }
-    if args[1] == "economy-commit" {
+    if args[1] == "economy-commit" || args[1] == "activity-commit" {
         let command: Envelope = serde_json::from_slice(
             &std::fs::read(args.get(3).ok_or("missing_envelope")?).map_err(err)?,
         )
