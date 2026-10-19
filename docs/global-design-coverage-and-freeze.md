@@ -1,5 +1,7 @@
 # 全局设计覆盖、缺口与收敛顺序
 
+v0.4.38 [LC38](first-release-lifecycle-inputs-and-exit.md)完成City清单CD-02的23类有限生命周期D定义，物件A／I／V仍待真实来源与验收；第9商品煤残余物使用原16槽，不新增动态表。当前优先转CD-03自然公服需求与环境—居民反馈，AgentKit继续不展开。现行31项预算保持。
+
 v0.4.37按用户要求，后续优先顺序以[City专用关闭清单](city-design-closure-checklist.md)为准：先补City剩余核心规则／输入，不展开AgentKit。CD-01已补[固定报价反馈](household-business-feedback.md)，自然公服／完整满意度／资产／合法用工依赖仍开，不声称City设计全部完成。新增行为锚点0.3125MiB后现31项43.8828125／44MiB、余0.1171875MiB，下方29／27项为历史基线。
 
 v0.4.36 [RUN36有限共同参数](minimum-operating-parameters.md)承接START35，只为已选交通、两个环境通道、三种公服验收请求与五项维护冻结候选值；自然需求、完整环境—居民反馈、几何／供方／安全收尾、精度与运行验收仍待补。不关闭GAP-04／06的完整验收，也不扩大90类目录或现行预算。

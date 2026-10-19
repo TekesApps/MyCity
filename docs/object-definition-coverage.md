@@ -1,5 +1,7 @@
 # 物件定义覆盖矩阵
 
+v0.4.38 [LC38逐23类生命周期](first-release-lifecycle-inputs-and-exit.md)接续下文启动／资源／物料终点与退出的待配规则：补煤残余物G09、真实相容接收和保全投入，旧案例不追改。有限D定义可登记；实际几何／供方／班次／费用／阶段表示与运行仍待验，不以“已登记”投运。
+
 设计索引：v0.4.24，2026-10-19。逐项覆盖[90条类型目录](building-types-and-technology-catalog.md)，映射[27类常用契约](common-object-contracts.md)及[字段字典](capability-field-dictionary.md)。所有展开先过[粒度收敛门](model-granularity-and-convergence.md)，不用“有一行”或“字段更多”代表完成。
 
 v0.4.28 [27物件分层复核](building-unit-shared-facility-contract.md#8-27类物件逐项核对) 统一产权、接入、容量、费用和维护来源，90目录范围标签保持；共享使用关系不等于独立单元账务，复杂共有／规模化独立物业收费仍须补机制和预算，不从本次关系裁定升级后续类型。
