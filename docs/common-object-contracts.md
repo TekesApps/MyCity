@@ -2,6 +2,8 @@
 
 设计契约：v0.4.24，2026-10-19。把13个基础样例及首版必要支持物件展开为27类有界物件契约，服从 [粒度收敛](model-granularity-and-convergence.md) 和 [字段字典](capability-field-dictionary.md)。OBJ编号是设计契约族，不是新增资产、行业、实体表或C能力；27类不意味着每实例分配27组件。后续技术路线／商业租赁／复合楼／摊位仍按 [覆盖矩阵](object-definition-coverage.md) 缺项处理。
 
+v0.4.26住宅／设备补 [电炊与天然气烹饪契约](natural-gas-and-cooking.md)：同一有用烹饪量只满足一次、已有综合电负荷不得双加、双能源须真实安装。天然气完整链仍后续B，不能借OBJ-WATER-EDGE／NET-NODE／PORT现有抽象直接启用；原8口、M／C和网络字节联合限额不增加。
+
 首版住宅／企业／市政水电沿 [本地供应计费裁定](granularity-allocation-audit.md#6-水电计费粒度与条数门)；不把房屋产权、费用责任或公共负荷混成一个payer，物理与金额不同writer，B／H／K只关联唯一累计来源。库存损失按 [短缺裁定](granularity-allocation-audit.md#5-交通库存与暴露的三个硬边界) 调实物锁定但保留合同责任；暴露瞬时D与已发生必需A分开。
 
 v0.4.25现行粒度与预算以 [整体分配审查](granularity-allocation-audit.md) 为准：34属性／14系统／27物件逐项区分保留、聚合、延后；新增基础本地供应计费绑定使用原区域余量4 MiB，现为27项43.0078125／44 MiB、余0.9921875 MiB，应用目标不增。下文39.0078125／26项是此前基线，不作本版准入；未验证布局／索引与16 GB实机性能。
