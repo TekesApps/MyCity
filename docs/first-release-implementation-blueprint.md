@@ -1,5 +1,7 @@
 # 首版技术实施方案 T47
 
+v0.5.3执行提示：本篇是历史首期切片及被继承的技术通则；总体范围／预算采用[完整产品蓝图](PRODUCT_BLUEPRINT.md)，当前实施起点采用[M0计划](m0-implementation-plan.md)。旧I1—V2不覆盖新M0到1.0版本路线，旧2.65GiB／10GiB预算不替代R03全产品3.10GiB／20GiB，也不能因本篇已有“可开工”表述视为获得游戏代码授权。
+
 设计修订v0.4.47。整合现有[Root](root-component-contract.md)、[字段字典](capability-field-dictionary.md)、[运行阶段](institutions-and-labor-execution.md)、[CG39](cpu-gpu-compute-contract.md)及[BC43保存](city-baseline-completion-contract.md)。是可开工的非代码方案，不代表已创建Rust工程。AgentKit仅公开适配需求，不设计其内部实现。
 
 ## 1. 模块、依赖与所有权
