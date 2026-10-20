@@ -1,0 +1,11 @@
+{
+  "scope": "changed Markdown local file targets only; no UI/runtime claim",
+  "files": [
+    "README.md",
+    "docs/m0-implementation-status.md",
+    "docs/m0-model-scale-performance.md",
+    "docs/evidence/m0-t13a-speeds/STATUS.md"
+  ],
+  "checked_targets": 188,
+  "missing": []
+}

@@ -1,0 +1,13 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+    Finished `release` profile [optimized] target(s) in 0.42s
+     Running tests/scale_model_task.rs (target/release/deps/scale_model_task-459c0cf2e7f4242f)
+
+running 5 tests
+test fingerprint_enforces_the_bound_and_exact_bytes ... ok
+test killed_reference_leaves_no_authoritative_result_or_parent_artifacts ... ok
+test invalid_source_partial_and_old_result_never_authorize_a_task ... ok
+test killing_supervisor_closes_parent_pipe_and_stops_reference_child ... ok
+test streamed_reference_keeps_frozen_small_oracle_and_rejects_corrupted_artifact ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 25.87s
+

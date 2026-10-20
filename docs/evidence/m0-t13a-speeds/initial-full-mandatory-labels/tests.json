@@ -1,0 +1,8 @@
+{
+  "source_sha256": "eadfbc91dba98033121ad5987eeb26519b17acd38c57b58f0b538764a8eb0117",
+  "profile": "release",
+  "passed": 41,
+  "failed": 0,
+  "ignored": 0,
+  "scope": "36 headless lib and5 scale_model_task; not full workspace"
+}

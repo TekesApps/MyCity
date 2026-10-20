@@ -21,7 +21,7 @@ fn save(p: &Path, value: &impl Serialize) -> Result<(), String> {
     f.write_all(b"\n").map_err(err)?;
     f.sync_all().map_err(err)
 }
-struct Job(Child);
+pub(crate) struct Job(pub(crate) Child);
 impl Drop for Job {
     fn drop(&mut self) {
         if self.0.try_wait().ok().flatten().is_none() {
@@ -30,7 +30,7 @@ impl Drop for Job {
         let _ = self.0.wait();
     }
 }
-fn start(root: &Path, name: &str, args: &[&std::ffi::OsStr]) -> Result<Job, String> {
+pub(crate) fn start(root: &Path, name: &str, args: &[&std::ffi::OsStr]) -> Result<Job, String> {
     start_owned(root, name, args, false)
 }
 fn start_owned(
@@ -57,7 +57,7 @@ fn start_owned(
         .spawn()
         .map_err(err)?))
 }
-fn done(job: &mut Job) -> Result<bool, String> {
+pub(crate) fn done(job: &mut Job) -> Result<bool, String> {
     match job.0.try_wait().map_err(err)? {
         None => Ok(false),
         Some(s) if s.success() => Ok(true),

@@ -1,0 +1,255 @@
+{
+  "source_sha256": "65d5e659074237a460a0cf29bd494c573830ed6cd798ad098ce81de467dcf3aa",
+  "scope": "same-source raw full speed experiment timing diagnostics; offline analysis; execution concurrency conditions recorded in STATUS.md; not performance acceptance",
+  "raw_bytes": 49825692,
+  "sealed_producers": 726,
+  "partial_producers": 0,
+  "quantile": "exact nearest rank on raw nanoseconds; no pooling across producer/role/sealed state",
+  "minimum_class_samples": 200,
+  "p95_limit_ns": 20000000,
+  "p99_limit_ns": 40000000,
+  "strata": [
+    {
+      "record_state": "sealed",
+      "producer": "sim",
+      "role": "execution",
+      "class": "L2_background_capture_admit_cpu",
+      "samples": 1448,
+      "maximum_ns": 81678249,
+      "p95_ns": 11505573,
+      "p99_ns": 22993480,
+      "minimum_samples_met": true,
+      "observed_p95_p99_thresholds_met": true
+    },
+    {
+      "record_state": "sealed",
+      "producer": "sim",
+      "role": "execution",
+      "class": "L2_claims_batch",
+      "samples": 20,
+      "maximum_ns": 84409,
+      "p95_ns": 53911,
+      "p99_ns": 84409,
+      "minimum_samples_met": false,
+      "observed_p95_p99_thresholds_met": null
+    },
+    {
+      "record_state": "sealed",
+      "producer": "sim",
+      "role": "execution",
+      "class": "L2_payroll_batch",
+      "samples": 724,
+      "maximum_ns": 34748,
+      "p95_ns": 3623,
+      "p99_ns": 8582,
+      "minimum_samples_met": true,
+      "observed_p95_p99_thresholds_met": true
+    },
+    {
+      "record_state": "sealed",
+      "producer": "sim",
+      "role": "execution",
+      "class": "L2_region_exchange_boot_batch",
+      "samples": 736,
+      "maximum_ns": 51830377,
+      "p95_ns": 7393043,
+      "p99_ns": 14718084,
+      "minimum_samples_met": true,
+      "observed_p95_p99_thresholds_met": true
+    },
+    {
+      "record_state": "sealed",
+      "producer": "sim",
+      "role": "execution",
+      "class": "air_cell_page",
+      "samples": 691200,
+      "maximum_ns": 8283458,
+      "p95_ns": 17167,
+      "p99_ns": 17833,
+      "minimum_samples_met": true,
+      "observed_p95_p99_thresholds_met": true
+    },
+    {
+      "record_state": "sealed",
+      "producer": "sim",
+      "role": "execution",
+      "class": "air_source_page",
+      "samples": 4,
+      "maximum_ns": 583,
+      "p95_ns": 583,
+      "p99_ns": 583,
+      "minimum_samples_met": false,
+      "observed_p95_p99_thresholds_met": null
+    },
+    {
+      "record_state": "sealed",
+      "producer": "sim",
+      "role": "quote",
+      "class": "L2_background_capture_admit_cpu",
+      "samples": 2172,
+      "maximum_ns": 192917434,
+      "p95_ns": 22610738,
+      "p99_ns": 38705367,
+      "minimum_samples_met": true,
+      "observed_p95_p99_thresholds_met": false
+    },
+    {
+      "record_state": "sealed",
+      "producer": "sim",
+      "role": "quote",
+      "class": "L2_claims_batch",
+      "samples": 20,
+      "maximum_ns": 255043,
+      "p95_ns": 208538,
+      "p99_ns": 255043,
+      "minimum_samples_met": false,
+      "observed_p95_p99_thresholds_met": null
+    },
+    {
+      "record_state": "sealed",
+      "producer": "sim",
+      "role": "quote",
+      "class": "L2_payroll_batch",
+      "samples": 724,
+      "maximum_ns": 19709,
+      "p95_ns": 7292,
+      "p99_ns": 14918,
+      "minimum_samples_met": true,
+      "observed_p95_p99_thresholds_met": true
+    },
+    {
+      "record_state": "sealed",
+      "producer": "sim",
+      "role": "quote",
+      "class": "L2_region_exchange_boot_batch",
+      "samples": 724,
+      "maximum_ns": 68093626,
+      "p95_ns": 15428292,
+      "p99_ns": 31488418,
+      "minimum_samples_met": true,
+      "observed_p95_p99_thresholds_met": true
+    },
+    {
+      "record_state": "sealed",
+      "producer": "sim",
+      "role": "quote",
+      "class": "air_cell_page",
+      "samples": 2073600,
+      "maximum_ns": 34834500,
+      "p95_ns": 17167,
+      "p99_ns": 17791,
+      "minimum_samples_met": true,
+      "observed_p95_p99_thresholds_met": true
+    },
+    {
+      "record_state": "sealed",
+      "producer": "sim",
+      "role": "quote",
+      "class": "air_source_page",
+      "samples": 12,
+      "maximum_ns": 1167,
+      "p95_ns": 1167,
+      "p99_ns": 1167,
+      "minimum_samples_met": false,
+      "observed_p95_p99_thresholds_met": null
+    },
+    {
+      "record_state": "sealed",
+      "producer": "worker",
+      "role": "execution",
+      "class": "air_cell_page",
+      "samples": 2764800,
+      "maximum_ns": 13469542,
+      "p95_ns": 1084,
+      "p99_ns": 14959,
+      "minimum_samples_met": true,
+      "observed_p95_p99_thresholds_met": true
+    },
+    {
+      "record_state": "sealed",
+      "producer": "worker",
+      "role": "execution",
+      "class": "air_source_page",
+      "samples": 4,
+      "maximum_ns": 917,
+      "p95_ns": 917,
+      "p99_ns": 917,
+      "minimum_samples_met": false,
+      "observed_p95_p99_thresholds_met": null
+    }
+  ],
+  "background_subregion_diagnostics": {
+    "capture": {
+      "samples": 724,
+      "maximum_ns": 51828042,
+      "p95_ns": 7392625,
+      "p99_ns": 14715708,
+      "minimum_samples_met": true,
+      "observed_p95_p99_thresholds_met": true
+    },
+    "admit": {
+      "samples": 724,
+      "maximum_ns": 81678249,
+      "p95_ns": 12837285,
+      "p99_ns": 33021938,
+      "minimum_samples_met": true,
+      "observed_p95_p99_thresholds_met": true
+    }
+  },
+  "region_subtype_diagnostics": {
+    "direct_command": {
+      "samples": 12,
+      "maximum_ns": 8916,
+      "p95_ns": 8916,
+      "p99_ns": 8916,
+      "minimum_samples_met": false,
+      "observed_p95_p99_thresholds_met": null
+    },
+    "clock + boot_finish": {
+      "samples": 2,
+      "maximum_ns": 7086957,
+      "p95_ns": 7086957,
+      "p99_ns": 7086957,
+      "minimum_samples_met": false,
+      "observed_p95_p99_thresholds_met": null
+    },
+    "clock + freight_arrival": {
+      "samples": 2,
+      "maximum_ns": 6478000,
+      "p95_ns": 6478000,
+      "p99_ns": 6478000,
+      "minimum_samples_met": false,
+      "observed_p95_p99_thresholds_met": null
+    },
+    "clock": {
+      "samples": 690,
+      "maximum_ns": 51830377,
+      "p95_ns": 7358958,
+      "p99_ns": 14924045,
+      "minimum_samples_met": true,
+      "observed_p95_p99_thresholds_met": true
+    },
+    "clock + obligation": {
+      "samples": 30,
+      "maximum_ns": 11892085,
+      "p95_ns": 7505126,
+      "p99_ns": 11892085,
+      "minimum_samples_met": false,
+      "observed_p95_p99_thresholds_met": null
+    }
+  },
+  "region_overlap": "Region P0 includes capture; do not add region and capture durations",
+  "missing_sealed_execution_classes": [
+    "L0_pe0_model_transaction",
+    "L0_pe1_model_transaction",
+    "L1_native_record_index_page",
+    "L1_stub_record_index_page"
+  ],
+  "execution_strata_exceeding_observed_thresholds": [],
+  "formal_10class_gate": "not_accepted; missing L0/L1/rare strata and formal same-source joint protocol",
+  "four_speeds": "not_run",
+  "steady": "not_run",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run",
+  "full_M0": "not_accepted"
+}

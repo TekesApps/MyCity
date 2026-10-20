@@ -478,6 +478,9 @@ pub(crate) fn independent_experiment_options(
     })
 }
 impl Experiment {
+    pub(crate) fn counts(&self) -> (u64, u64, u64) {
+        (self.windows, self.verified, self.failed_attempts)
+    }
     pub(crate) fn save_stop(&mut self) -> Result<(), String> {
         self.call(Command::Checkpoint)?;
         self.call(Command::Stop)?;

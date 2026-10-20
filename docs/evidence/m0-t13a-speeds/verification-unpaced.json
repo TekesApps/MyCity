@@ -1,0 +1,32 @@
+{
+  "source_sha256": "65d5e659074237a460a0cf29bd494c573830ed6cd798ad098ce81de467dcf3aa",
+  "rate": "unpaced",
+  "profile": "L2_full_actual",
+  "mandatory_pe0_gate": "not_evaluated_other_profile",
+  "legacy_session_speed": "not_retested",
+  "experiment_completed": true,
+  "operating_seconds": 337.904630875,
+  "publication_cutoff_seconds": 337.904626083,
+  "queries": 33,
+  "saves": 1,
+  "all_daily_budgets_met": true,
+  "whole_budget_met": true,
+  "speed_target_met": true,
+  "all_723_targets_equal_original_reference": true,
+  "exact_complete_Engine_including_metadata": true,
+  "original_receipts": 3011,
+  "normal_heap_records": {
+    "scale-model-task": 3,
+    "compute-worker-bounded": 724,
+    "sim-host-scale-full": 2,
+    "speed-driver": 1,
+    "normal-pool-host": 1,
+    "speed-run": 1
+  },
+  "L1": "absent",
+  "common_8MiB": "not_accepted",
+  "normal_3_10GiB": "not_accepted",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run",
+  "full_M0": "not_accepted"
+}

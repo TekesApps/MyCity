@@ -27,6 +27,7 @@ pub enum Mode {
     Reference,
     FaultReference,
     CompareEndurance,
+    CompareSpeed,
     BeforeReopen,
     Compare,
 }
@@ -36,6 +37,7 @@ impl Mode {
             Self::Reference => "reference",
             Self::FaultReference => "fault-reference",
             Self::CompareEndurance => "compare-endurance",
+            Self::CompareSpeed => "compare-speed",
             Self::BeforeReopen => "before-reopen",
             Self::Compare => "compare",
         }
@@ -336,7 +338,7 @@ pub fn execute(dir: &Path) -> Result<(), String> {
                 *slot = Some(artifact(&dir, name)?);
             }
         }
-        Mode::BeforeReopen | Mode::Compare | Mode::CompareEndurance => {
+        Mode::BeforeReopen | Mode::Compare | Mode::CompareEndurance | Mode::CompareSpeed => {
             let decoded = control_data::root_decode(r.root.as_str())?;
             let root = Path::new(decoded.as_str());
             let (bytes, root_bytes, stamp) = checked_image(&joined(root, "world")?)?;
@@ -347,7 +349,10 @@ pub fn execute(dir: &Path) -> Result<(), String> {
             drop(root_bytes);
             result.root = Some(stamp);
             result.artifacts[0] = Some(artifact(&dir, "root.json")?);
-            if matches!(r.mode, Mode::Compare | Mode::CompareEndurance) {
+            if matches!(
+                r.mode,
+                Mode::Compare | Mode::CompareEndurance | Mode::CompareSpeed
+            ) {
                 let before = validate(&joined(root, Mode::BeforeReopen.name())?)?;
                 if before.image_sha256 != result.image_sha256 {
                     return Err("scale_sim_saved_image_changed".into());
@@ -367,7 +372,7 @@ pub fn execute(dir: &Path) -> Result<(), String> {
                     )?,
                     FILE_LIMIT,
                 )?)?;
-                if r.mode == Mode::CompareEndurance
+                if matches!(r.mode, Mode::CompareEndurance | Mode::CompareSpeed)
                     && actual.export_checkpoint()? != expected.export_checkpoint()?
                 {
                     return Err("endurance_entire_engine_including_metadata".into());
@@ -471,14 +476,14 @@ pub fn validate(dir: &Path) -> Result<ResultRecord, String> {
             if result.image_sha256.is_none()
                 && result.business_sha256.is_none()
                 && result.root.is_none() => {}
-        Mode::BeforeReopen | Mode::Compare | Mode::CompareEndurance
+        Mode::BeforeReopen | Mode::Compare | Mode::CompareEndurance | Mode::CompareSpeed
             if result
                 .image_sha256
                 .as_ref()
                 .is_some_and(|s| s.as_str().len() == 64)
                 && result.root.is_some()
                 && match r.mode {
-                    Mode::Compare | Mode::CompareEndurance => result
+                    Mode::Compare | Mode::CompareEndurance | Mode::CompareSpeed => result
                         .business_sha256
                         .as_ref()
                         .is_some_and(|s| s.as_str().len() == 64),

@@ -240,6 +240,23 @@ fn run() -> Result<(), String> {
         );
         return Ok(());
     }
+    if args
+        .get(1)
+        .is_some_and(|a| matches!(a.as_str(), "speed-run" | "speed-driver"))
+    {
+        if args.len() != 4 {
+            return Err(
+                "usage: mycity-headless speed-run|speed-driver NEW_DIR unpaced|600|60|10|1".into(),
+            );
+        }
+        let rate = mycity_headless::scale_speed::Rate::parse(&args[3])?;
+        if args[1] == "speed-run" {
+            mycity_headless::scale_speed::run(std::path::Path::new(&args[2]), rate)?;
+        } else {
+            mycity_headless::scale_speed::driver(std::path::Path::new(&args[2]), rate)?;
+        }
+        return Ok(());
+    }
     if args.get(1).is_some_and(|a| a == "scale-endurance") {
         if args.len() != 4 {
             return Err("usage: mycity-headless scale-endurance NEW_DIR formal|smoke".into());

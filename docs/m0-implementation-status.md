@@ -351,3 +351,6 @@ v0.5.49的T13A-3j：[耐久控制器功能与默认栈修复](evidence/m0-t13a-e
 
 
 v0.5.50的T13A-3k：[Rust联合托管及原负载保护失败](evidence/m0-t13a-joint-endurance/STATUS.md)。Rust监督实际pool/layout/business Child，布局owner S/EOF区分、至少覆盖完整业务时轴、固定截止排空及最新冷恢复路径接入；诊断首行持久身份避免新增数百文件。最终来源45定向/clippy/fmt/build通过，初版全仓317分源保留。原完整联合在316.368秒因非正常pressure60.056秒保护失败，451目标业务/空气对原CPU相同，316扫描/1完整快照，但600秒/30日/最新冷恢复及池最终平衡均未完成。所有大文件hash并保留，缺footer不算零；advisor仅认可接入实现及失败留证。完整联合、共同8MiB、精确常规工作区、正式三轮/四档/实际8h仍未签，真实16GB not_run，M0 not_accepted。
+
+
+v0.5.51：[完整L2无等待30日及速度控制器](evidence/m0-t13a-speeds/STATUS.md)。最终来源41定向/clippy/fmt/build通过；真实实验总373.132秒、经营337.905秒，723目标/3011原票/完整Engine含metadata及冷开/724借还独立核验通过，原负载不变。full无等待局部60秒/日目标满足，不替代P-E0或旧session限速验收。Claims仅20样本，L1缺席；共同8MiB、精确常规工作区、正式十类/四档/三轮稳态/实际8h仍未签，真实16GB not_run、M0 not_accepted。下一依赖是实际session发布节奏修复及真正P-E0完整30日测量。

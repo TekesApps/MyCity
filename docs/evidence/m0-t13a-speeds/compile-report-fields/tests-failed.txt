@@ -1,0 +1,20 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+error: recursion limit reached while expanding `$crate::json_internal!`
+   --> crates/city-headless/src/scale_speed.rs:362:10
+    |
+362 |           &json!({"schema":"mycity-speed-driver-v1","source_sha256":env!("MYCITY_SOURCE_SHA256"),"rate":rate.name(),
+    |  __________^
+363 | |         "profile":"L2_full_actual","mandatory_pe0_gate":"not_evaluated_other_profile","legacy_session_speed":"not_retested",
+364 | |         "completed_hours":hours,"verified_targets":targets,"worker_windows":windows,
+365 | |         "entire_engine_including_metadata":"equal_independent_normal_reference",
+...   |
+378 | |         "whole_driver_wall_seconds":whole.elapsed().as_secs_f64(),"image_sha256":compared.image_sha256,
+379 | |         "L1":"absent","common_8MiB":"not_accepted","exact_normal_owned":"not_accepted","eight_hour":"not_run","real_16GB":"not_run","full_M0":"not_accepted"...
+    | |______________________________________________________________________________________________________________________________________________________________^
+    |
+    = help: consider increasing the recursion limit by adding a `#![recursion_limit = "256"]` attribute to your crate (`mycity_headless`)
+    = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: could not compile `mycity-headless` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `mycity-headless` (lib test) due to 1 previous error

@@ -1,0 +1,6 @@
+{
+  "source_sha256": "eaff31d359ef27cfe728191cb6164976b600ef0c52b5e20123addbe6391b2b21",
+  "files": 145,
+  "binary": "none; failed compile, old binary is not this source",
+  "reason": "json macro recursion depth exceeded by extended report"
+}

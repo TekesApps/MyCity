@@ -1,0 +1,7 @@
+{
+  "profile": "release",
+  "passed": 41,
+  "failed": 0,
+  "ignored": 0,
+  "scope": "headless lib and scale_model_task; not full workspace"
+}
