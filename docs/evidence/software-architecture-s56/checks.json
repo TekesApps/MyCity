@@ -1,0 +1,30 @@
+{
+  "release": "v0.5.22",
+  "verification": "static_document_and_source_alignment_only",
+  "model_baseline": "v0.5.21",
+  "model_source_sha256": "8e0a98232a30917569d58661d84e1ac82cede598f3d152aa4ebc59270c77d13c",
+  "rust_or_fixture_changes": false,
+  "crate_dependencies": {
+    "city-core": [],
+    "city-map": [
+      "mycity-core"
+    ],
+    "city-storage": [
+      "mycity-core",
+      "mycity-map"
+    ],
+    "city-headless": [
+      "mycity-core",
+      "mycity-map",
+      "mycity-storage"
+    ]
+  },
+  "baseline_release_tests": 185,
+  "new_runtime_tests": "not_run_document_only",
+  "worker_pool": "not_implemented",
+  "independent_sim_host": "not_implemented",
+  "unified_subject_event_api": "not_implemented",
+  "ui_agentkit_render": "not_implemented",
+  "memory_16gb_gate": "not_run",
+  "architecture_sha256": "862a17ab941a40155e16fb85ef784444f2ecb176e59aa0ae3a1b0b44fcc4b9ec"
+}
