@@ -4,6 +4,8 @@
 
 当前发布v0.5.23增加[T12-A纯数值参考](m0-air-cpu-reference.md)，尚未写入城市世界；业务协调器为v0.5.21的[T05-B](m0-timeline-runtime.md)接入当前实验profile的真实来源、日历及持久游标；Region／Boot／Exchange／Payroll可联合，旧[T08经济](m0-economy-runtime.md)仍为独立profile，不能与区域重复计劳动。后文按阶段保留，旧not_run为当时状态；有限通过不能扩大为全部M0、真实公用网或16GB通过。
 
+当前后台计算连续目标的冻结标准见[W0—W4验收](background-compute-acceptance.md)（v0.5.25）；worker及联合门仍未通过。
+
 ## 1. 本轮范围覆盖
 
 保留[原M0计划](m0-implementation-plan.md)的模型／空间数据／工具命令／持久化任务；不做原生窗口、地图绘图、渲染／IME／AX／VoiceOver，不引入UI框架。CLI用于构造、执行和导出实验，不作为最终玩家操作界面。T11延期，GPU compute候选及wgpu版本冻结延期；这些不是通过或永久删掉总体目标。T12 CPU参考、T13模型与保存负载可继续实现，T13 GPU／显示联合和16GB门仍单列。

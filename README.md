@@ -1,6 +1,6 @@
 # MyCity
 
-仓库发布版本：`v0.5.24`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.25`。已开始Rust模型与headless CLI，当前不做UI。
 
 **软件结构先读[总体架构](docs/SOFTWARE_ARCHITECTURE.md)：当前代码、主体与事件、单writer、多进程目标、数据文件和预算。**
 
@@ -22,6 +22,7 @@
 - [T09区域实际履约](docs/m0-regional-fulfilment.md)：三城货物／电水、共池容量、实际费用与损耗、关图／断链／恢复；完整P-CAP及真实车辆／公用物理仍未验。
 - [检查点与重试档案](docs/m0-checkpoint-and-retry.md)：完整运行状态、分段WAL、冷凭证与损坏拒载；保留既有责任，不靠清历史绕过容量。
 - [T05-B全源与持久日历](docs/m0-timeline-runtime.md)：已实现profile的真实到期、工资账期、P0—P5与有限续做票；逐页恢复实测，完整产品日历与16GB仍未验。
+- [可恢复后台计算验收](docs/background-compute-acceptance.md)：冻结W0—W4、独立worker／Sim唯一写入／联合故障实验与全进程测量；目前仅标准，未通过运行验收。
 - [T12-A空气CPU参考](docs/m0-air-cpu-reference.md)：单通道EI、源／tile分页、数值位恢复及独立f64复算；未接世界指标／GPU或worker池。
 - [进程、worker与GPU渲染架构](docs/process-worker-and-render-architecture.md)：App监督／Sim唯一writer、可重算任务与渲染部署、进程组16GB预算；架构为设计，worker／渲染未实现。
 - [T10有限CLI会话](docs/m0-cli-session.md)：可信宿主身份、暂停／单步／实际倍率、冷回执与快照分页；T05-B分页用step，UI及16GB仍未验。
