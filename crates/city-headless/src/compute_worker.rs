@@ -484,9 +484,28 @@ fn run_inner(root: &Path, gated: bool, bounded: bool) -> Result<(), String> {
 
 /// One child and a four-frame bounded reader. stderr is discarded, never an unbounded pipe.
 /// The owning Sim supplies durable retries; this transport does not retry or mutate a world.
+enum Input {
+    Pipe(ChildStdin),
+    Socket(std::os::unix::net::UnixStream),
+}
+impl Write for Input {
+    fn write(&mut self, bytes: &[u8]) -> std::io::Result<usize> {
+        match self {
+            Self::Pipe(s) => s.write(bytes),
+            Self::Socket(s) => s.write(bytes),
+        }
+    }
+    fn flush(&mut self) -> std::io::Result<()> {
+        match self {
+            Self::Pipe(s) => s.flush(),
+            Self::Socket(s) => s.flush(),
+        }
+    }
+}
 pub struct Worker {
-    child: Child,
-    stdin: Option<ChildStdin>,
+    child: Option<Child>,
+    broker: Option<crate::normal_pool::broker::Lease>,
+    stdin: Option<Input>,
     receiver: Option<Receiver<Result<Event, String>>>,
     reader: Option<JoinHandle<()>>,
     outstanding: Option<Ticket>,
@@ -522,6 +541,41 @@ impl Worker {
         bounded: bool,
         pool: Option<&Path>,
     ) -> Result<Self, String> {
+        if bounded && pool.is_none() {
+            if let Some((lease, stream)) =
+                crate::normal_pool::broker::Lease::spawn_from_env(root, gated)?
+            {
+                let stdout = stream.try_clone().map_err(|e| e.to_string())?;
+                let (sender, receiver) = mpsc::sync_channel(4);
+                let reader = thread::spawn(move || {
+                    let mut r = BufReader::with_capacity(8192, stdout);
+                    loop {
+                        let result = match frame(&mut r) {
+                            Ok(Some(b)) => {
+                                serde_json::from_slice::<Event>(&b).map_err(|e| e.to_string())
+                            }
+                            Ok(None) => Err("worker_eof".into()),
+                            Err(e) => Err(e),
+                        };
+                        let failed = result.is_err();
+                        if sender.send(result).is_err() || failed {
+                            break;
+                        }
+                    }
+                });
+                return Ok(Self {
+                    child: None,
+                    broker: Some(lease),
+                    stdin: Some(Input::Socket(stream)),
+                    receiver: Some(receiver),
+                    reader: Some(reader),
+                    outstanding: None,
+                    root: root.to_owned(),
+                    gated,
+                    pool_grant: None,
+                });
+            }
+        }
         let mut pool_grant = if bounded {
             match pool {
                 Some(root) => Some(crate::normal_pool::Grant::prepare(root)?),
@@ -557,7 +611,7 @@ impl Worker {
                 return Err(error);
             }
         }
-        let stdin = child.stdin.take();
+        let stdin = child.stdin.take().map(Input::Pipe);
         let stdout = child.stdout.take().ok_or("worker_stdout")?;
         let (sender, receiver) = mpsc::sync_channel(4);
         let reader = thread::spawn(move || {
@@ -575,7 +629,8 @@ impl Worker {
             }
         });
         Ok(Self {
-            child,
+            child: Some(child),
+            broker: None,
             stdin,
             receiver: Some(receiver),
             reader: Some(reader),
@@ -603,7 +658,20 @@ impl Worker {
         )
     }
     pub fn pid(&self) -> u32 {
-        self.child.id()
+        match (&self.child, &self.broker) {
+            (Some(child), None) => child.id(),
+            (None, Some(lease)) => lease.pid(),
+            _ => unreachable!("worker ownership"),
+        }
+    }
+    pub fn broker_lease(&self) -> Option<u64> {
+        self.broker.as_ref().map(|lease| lease.id())
+    }
+    fn close_input(&mut self) {
+        if let Some(Input::Socket(s)) = self.stdin.as_ref() {
+            let _ = s.shutdown(std::net::Shutdown::Write);
+        }
+        self.stdin.take();
     }
     pub fn submit(&mut self, request: &Request) -> Result<(), String> {
         if self.outstanding.is_some() {
@@ -655,16 +723,29 @@ impl Worker {
         if self.outstanding.is_some() {
             return self.stop();
         }
-        self.stdin.take();
+        self.close_input();
         self.receiver.take();
+        if let Some(lease) = self.broker.as_mut() {
+            let status = lease.stop(false)?;
+            if let Some(reader) = self.reader.take() {
+                reader.join().map_err(|_| "worker_reader_panic")?;
+            }
+            return Ok(status);
+        }
         let deadline = std::time::Instant::now() + timeout;
         loop {
-            if let Some(status) = self.child.try_wait().map_err(|e| e.to_string())? {
+            if let Some(status) = self
+                .child
+                .as_mut()
+                .expect("direct owner")
+                .try_wait()
+                .map_err(|e| e.to_string())?
+            {
                 if let Some(reader) = self.reader.take() {
                     reader.join().map_err(|_| "worker_reader_panic")?;
                 }
                 if let Some(grant) = self.pool_grant.as_mut() {
-                    grant.after_wait(self.child.id(), status)?;
+                    grant.after_wait(self.child.as_ref().expect("direct owner").id(), status)?;
                 }
                 return Ok(status);
             }
@@ -675,13 +756,38 @@ impl Worker {
         }
     }
     pub fn stop(&mut self) -> Result<ExitStatus, String> {
-        // Kill also interrupts an executing job; no cooperative cancellation assumption.
-        if self.child.try_wait().map_err(|e| e.to_string())?.is_none() {
-            self.child.kill().map_err(|e| e.to_string())?;
+        if let Some(lease) = self.broker.as_mut() {
+            let status = lease.stop(true)?;
+            self.close_input();
+            self.receiver.take();
+            if let Some(reader) = self.reader.take() {
+                reader.join().map_err(|_| "worker_reader_panic")?;
+            }
+            return Ok(status);
         }
-        let status = self.child.wait().map_err(|e| e.to_string())?;
+        // Kill also interrupts an executing job; no cooperative cancellation assumption.
+        if self
+            .child
+            .as_mut()
+            .expect("direct owner")
+            .try_wait()
+            .map_err(|e| e.to_string())?
+            .is_none()
+        {
+            self.child
+                .as_mut()
+                .expect("direct owner")
+                .kill()
+                .map_err(|e| e.to_string())?;
+        }
+        let status = self
+            .child
+            .as_mut()
+            .expect("direct owner")
+            .wait()
+            .map_err(|e| e.to_string())?;
         if let Some(grant) = self.pool_grant.as_mut() {
-            grant.after_wait(self.child.id(), status)?;
+            grant.after_wait(self.child.as_ref().expect("direct owner").id(), status)?;
         }
         self.stdin.take();
         self.receiver.take(); // unblock a reader blocked on its bounded sender before join

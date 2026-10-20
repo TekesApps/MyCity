@@ -1,0 +1,14 @@
+    Finished `release` profile [optimized] target(s) in 0.09s
+     Running tests/broker.rs (target/release/deps/broker-d0dc3c4dc3f51881)
+
+running 7 tests
+test actual_sim_spawn_permission_failure_cancels_unbound_registration ... ok
+test lost_bind_reply_reaps_actual_sim_and_cancels_generation_before_replacement ... ok
+test broker_owned_worker_fault_retries_inside_same_sim_without_double_credit ... ok
+test lost_revoke_request_or_reply_retries_after_real_sim_wait_without_duplicate_credit ... ok
+test broker_death_is_fail_closed_and_cannot_adopt_old_ready_or_claim_return ... ok
+test sim_killed_after_worker_spawn_before_start_reply_recovers_without_knowing_worker_id ... ok
+test broker_wait_and_real_sim_death_revoke_restore_capacity_and_cold_result ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 11.74s
+

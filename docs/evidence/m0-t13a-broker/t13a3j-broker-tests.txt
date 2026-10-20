@@ -1,0 +1,10 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+    Finished `release` profile [optimized] target(s) in 15.10s
+     Running tests/broker.rs (target/release/deps/broker-d0dc3c4dc3f51881)
+
+running 2 tests
+test broker_owned_worker_fault_retries_inside_same_sim_without_double_credit ... ok
+test broker_wait_and_real_sim_death_revoke_restore_capacity_and_cold_result ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.39s
+

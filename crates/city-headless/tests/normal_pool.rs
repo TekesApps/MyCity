@@ -218,11 +218,23 @@ fn old_boot_bad_control_and_parent_pipe_closure_cannot_create_credit() {
     socket.read_to_string(&mut out).unwrap();
     assert!(out.contains("normal_pool_request_boot"));
     let mut socket = UnixStream::connect(root.join("pool.sock")).unwrap();
-    socket.write_all(&vec![b' '; 8193]).unwrap();
-    socket.shutdown(std::net::Shutdown::Write).unwrap();
+    // The server may reject at8KiB while the final excess byte is still being
+    // sent. BrokenPipe/reset is a legitimate fail-closed response, not a grant.
+    if let Err(e) = socket.write_all(&vec![b' '; 8193]) {
+        assert!(
+            matches!(
+                e.kind(),
+                std::io::ErrorKind::BrokenPipe | std::io::ErrorKind::ConnectionReset
+            ),
+            "{e}"
+        );
+    }
+    let _ = socket.shutdown(std::net::Shutdown::Write);
     let mut out = String::new();
     let _ = socket.read_to_string(&mut out);
-    assert!(out.contains("normal_pool_control_bound"));
+    if let Ok(reply) = serde_json::from_str::<serde_json::Value>(&out) {
+        assert_eq!(reply["error"], "normal_pool_control_bound");
+    } // A rejected connection may also lose or truncate its reply; event below is required.
     let s = normal_pool::status(&root).unwrap();
     assert_eq!(s.rejected_requests, 2);
     assert_eq!(s.available_touched_bytes, BYTES);
@@ -238,6 +250,20 @@ fn old_boot_bad_control_and_parent_pipe_closure_cannot_create_credit() {
         std::thread::sleep(Duration::from_millis(10));
     }
     assert!(root.join("report.json").exists());
+    let events: Vec<serde_json::Value> = fs::read_to_string(root.join("events.jsonl"))
+        .unwrap()
+        .lines()
+        .map(|l| serde_json::from_str(l).unwrap())
+        .collect();
+    assert_eq!(
+        events
+            .iter()
+            .filter(
+                |e| e["kind"] == "rejected" && e["rejection_reason"] == "normal_pool_control_bound"
+            )
+            .count(),
+        1
+    );
 }
 
 #[test]

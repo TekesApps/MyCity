@@ -1,0 +1,27 @@
+{
+  "status": "same_Rust_full_business_plus_pool_functional_branch_bound",
+  "source_sha256": "34c59abec56d3c01322e13244c426daf9b6a3a6cf80ed9e12e3d80a119c3b8cd",
+  "Rust_binary_sha256": "31119f70ecc9709b464ad0e1a0b826787511976be88e078582b49d93010b7fc9",
+  "launcher_script_sha256": "55ed96f200657cdee6c9d50f6a45602c04197cb9c6c059c34736f20f4eb01cf2",
+  "observer_entry_binary_sha_is_launcher_script_not_Rust": true,
+  "runner_hot_trace": {
+    "current_bytes": 33653,
+    "peak_bytes": 173150,
+    "trace_metadata_bytes": 23728,
+    "charged_hot_bytes": 196878,
+    "cap_bytes": 1048576,
+    "scope": "runtime hot Python traced data after imports; interpreter/startup/native not included; not whole process heap"
+  },
+  "observer_actual_wall_seconds": 408.60506849999996,
+  "business_work_seconds": null,
+  "all_children_waited_successfully": true,
+  "L1": "absent_not_joint_pressure",
+  "original_joint_attempt": "failed_preserved",
+  "shared_8MiB": "not_accepted_extra_interpreter_startup_native_unclosed",
+  "exact_normal_owned": "not_accepted",
+  "performance": "not_accepted",
+  "formal_steady": "not_run",
+  "four_speeds": "not_run",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run"
+}

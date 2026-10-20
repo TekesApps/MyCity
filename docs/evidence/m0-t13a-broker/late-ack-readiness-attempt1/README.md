@@ -1,0 +1,1 @@
+Initial synthetic probe read a ready file before JSON completed and failed with JSONDecodeError. No business/worker and no result claim; process stdin was closed and waited in finally. Probe now waits for complete JSON within original10s. Production ready reader already retries; no production deadline changed.

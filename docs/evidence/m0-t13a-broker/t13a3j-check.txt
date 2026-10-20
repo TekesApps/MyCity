@@ -1,0 +1,22 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+error[E0277]: `broker::Op` doesn't implement `Debug`
+  --> crates/city-headless/src/normal_pool.rs:93:12
+   |
+61 | #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
+   |                       ----- in this derive macro expansion
+...
+93 |     Broker(broker::Op),
+   |            ^^^^^^^^^^ `broker::Op` cannot be formatted using `{:?}`
+   |
+   = help: the trait `Debug` is not implemented for `broker::Op`
+   = note: add `#[derive(Debug)]` to `broker::Op` or manually `impl Debug for broker::Op`
+   = note: this error originates in the derive macro `Debug` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: consider annotating `broker::Op` with `#[derive(Debug)]`
+  --> crates/city-headless/src/normal_pool/broker.rs:11:1
+   |
+11 + #[derive(Debug)]
+12 | pub(super) enum Op {
+   |
+
+For more information about this error, try `rustc --explain E0277`.
+error: could not compile `mycity-headless` (lib) due to 1 previous error

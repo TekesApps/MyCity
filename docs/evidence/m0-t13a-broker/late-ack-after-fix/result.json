@@ -1,0 +1,11 @@
+{
+  "scope": "synthetic control only, fixed fake supervisor keys, no Sim/worker/business",
+  "source_sha256": "34c59abec56d3c01322e13244c426daf9b6a3a6cf80ed9e12e3d80a119c3b8cd",
+  "binary_sha256": "31119f70ecc9709b464ad0e1a0b826787511976be88e078582b49d93010b7fc9",
+  "old_generation": 1,
+  "new_generation": 2,
+  "late_ack_receipt_generation": 1,
+  "appended_events": [],
+  "wrong_generation_event": false,
+  "pool_exit": 0
+}

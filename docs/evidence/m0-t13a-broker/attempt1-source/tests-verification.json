@@ -1,0 +1,9 @@
+{
+  "source_sha256": "cac433182b9e5c2ef41ac4a1c032b3c7e86793ab36253c1d5879ca3d39d961b9",
+  "status": "passed",
+  "passed": 312,
+  "failed": 0,
+  "ignored": 0,
+  "result_sections": 47,
+  "scope": "full release locked offline workspace, includes compile-fail doc tests; not performance acceptance"
+}

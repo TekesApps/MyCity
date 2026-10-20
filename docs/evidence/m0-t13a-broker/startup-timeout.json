@@ -1,0 +1,15 @@
+{
+  "scope": "failed current-source targeted attempt, not formal startup/performance acceptance",
+  "source_sha256": "68605c5c60d44c19ff86b960dc4e83311a6c94ae69fcfaa48a8a2dd4139206dd",
+  "binary_sha256": "c8074c5ca5e3c67195be8dea79d72e2442a948dede6fdb90c108daf7db4cc06d",
+  "log": "t13a3k-targeted.txt",
+  "library_tests_passed": 31,
+  "broker_tests_failed_ready_deadline": 7,
+  "other_selected_integration_targets": "not_run_after_failure",
+  "readiness_deadline_seconds_unchanged": 10,
+  "cause": "not_proven; per-process readiness state was removed by original temporary cleanup",
+  "later_same_source_seven_broker_retry": "passed, retained under work/t13a3k-fault-retry and archived fault-artifacts.zip",
+  "later_same_source_default_temp_single_test": "passed",
+  "final_default_temp_full_workspace": "312 passed at final source34c59ab; earlier same-source686 readiness cause still unproven",
+  "eight_hour": "not_run"
+}

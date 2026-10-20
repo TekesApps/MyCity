@@ -162,3 +162,6 @@ v0.5.46的T13A-3g[有界诊断与原联合失败](evidence/m0-t13a-bounded-diagn
 
 
 v0.5.47的T13A-3h：[实体余额与协议修复](evidence/m0-t13a-normal-pool/STATUS.md)。全仓303项、clippy/fmt及实际分片/超时/EOF/身份回归通过；原full无L1分支365.873秒完成，724实际借还/Filled/父wait、3011原票、完整Engine及旧hash独立核验通过，731正常退出记录。原L1联合在81.061秒保护失败、首个功能分支grant125协议失败均保留，未拼成联合通过。普通Engine分配仍为额外压力，64MiB精确常规工作区/共同8MiB、正式稳态、四档、实际8h均未签，真实16GB not_run，M0 not_accepted。下一依赖是Sim死亡时broker持有Child的代次撤销回收及8h安全日志，再进行原长时运行。
+
+
+v0.5.48的T13A-3i：[broker实际Child与有限故障恢复](evidence/m0-t13a-broker/STATUS.md)。Client持Sim Child/独立监督cap，Sim持租约，broker实际wait后归还4MiB；撤销回执确认前禁新会话，晚到旧ACK无新事件，Start丢回复须撤销重开、broker死亡失败关闭。最终同源312回归及12池有限故障工件核验通过；原full无L1运行408.605秒，724借还/Filled、731正常heap、3011原票、完整Engine及旧hash独立核验通过。旧首轮7启动就绪超时原因未证明，旧overbound测试BrokenPipe失败及晚ACK错误各留原来源；不把重跑覆盖为从未失败。扫描仍1s，周期日志30s累计、行1536B/总8MiB有界；实际8h尚未运行。普通Engine额外压力、共同8MiB、精确常规工作区、L1联合、正式稳态及四档均未签，真实16GB not_run，M0 not_accepted。下一依赖是原28800秒/96保存/指定故障时点控制器及实跑，不再扩本阶段有限案例。

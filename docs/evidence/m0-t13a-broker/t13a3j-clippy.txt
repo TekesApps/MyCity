@@ -1,0 +1,95 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+error: large size difference between variants
+  --> crates/city-headless/src/normal_pool/broker.rs:11:1
+   |
+11 | /   pub(super) enum Op {
+12 | |       Register {
+13 | |           supervisor: Text<64>,
+14 | |       },
+...  |
+32 | | /     Start {
+33 | | |         generation: u64,
+34 | | |         key: Text<64>,
+35 | | |         endpoint: Text<256>,
+...  | |
+39 | | |         diagnostics: bool,
+40 | | |     },
+   | | |_____- the largest variant contains at least 1394 bytes
+...  |
+47 | | /     Kill {
+48 | | |         generation: u64,
+49 | | |         key: Text<64>,
+50 | | |         pid: u32,
+51 | | |         lease: u64,
+52 | | |     },
+   | | |_____- the second-largest variant contains at least 92 bytes
+53 | |   }
+   | |___^ the entire enum is at least 1408 bytes
+   |
+note: boxing a variant would require the type no longer be `Copy`
+  --> crates/city-headless/src/normal_pool/broker.rs:11:17
+   |
+11 | pub(super) enum Op {
+   |                 ^^
+help: consider boxing the large fields to reduce the total size of the enum
+  --> crates/city-headless/src/normal_pool/broker.rs:32:5
+   |
+32 | /     Start {
+33 | |         generation: u64,
+34 | |         key: Text<64>,
+35 | |         endpoint: Text<256>,
+...  |
+39 | |         diagnostics: bool,
+40 | |     },
+   | |_____^
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#large_enum_variant
+   = note: `-D clippy::large-enum-variant` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::large_enum_variant)]`
+
+error: this boolean expression can be simplified
+   --> crates/city-headless/src/normal_pool/broker.rs:355:20
+    |
+355 |                 if !self.broker.owned.as_ref().is_some_and(|w| w.lease == lease) {
+    |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: try: `self.broker.owned.as_ref().is_none_or(|w| w.lease != lease)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#nonminimal_bool
+    = note: `-D clippy::nonminimal-bool` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::nonminimal_bool)]`
+
+error: large size difference between variants
+  --> crates/city-headless/src/normal_pool.rs:63:1
+   |
+63 | /  enum Op {
+64 | |      Prepare {
+65 | |          parent: u32,
+66 | |          parent_instance: u128,
+...  |
+74 | |/     Filled {
+75 | ||         id: u64,
+76 | ||         key: Text<64>,
+77 | ||         identity: worker_slots::Identity,
+...  ||
+80 | ||         full_balance_scan_passed: bool,
+81 | ||     },
+   | ||_____- the second-largest variant contains at least 161 bytes
+...  |
+93 | |      Broker(broker::Op),
+   | |      ------------------ the largest variant contains at least 1408 bytes
+94 | |  }
+   | |__^ the entire enum is at least 1408 bytes
+   |
+note: boxing a variant would require the type no longer be `Copy`
+  --> crates/city-headless/src/normal_pool.rs:63:6
+   |
+63 | enum Op {
+   |      ^^
+help: consider boxing the large fields to reduce the total size of the enum
+  --> crates/city-headless/src/normal_pool.rs:93:5
+   |
+93 |     Broker(broker::Op),
+   |     ^^^^^^^^^^^^^^^^^^
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#large_enum_variant
+
+error: could not compile `mycity-headless` (lib) due to 3 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `mycity-headless` (lib test) due to 3 previous errors

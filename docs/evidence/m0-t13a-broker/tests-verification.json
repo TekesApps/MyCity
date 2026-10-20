@@ -1,0 +1,10 @@
+{
+  "source_sha256": "34c59abec56d3c01322e13244c426daf9b6a3a6cf80ed9e12e3d80a119c3b8cd",
+  "status": "passed",
+  "passed": 312,
+  "failed": 0,
+  "ignored": 0,
+  "result_sections": 47,
+  "temporary_directories": "default OS paths, parallel broker cases",
+  "scope": "final-source full release locked offline workspace tests, not performance acceptance"
+}

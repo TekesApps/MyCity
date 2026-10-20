@@ -1,5 +1,6 @@
 //! Actual external balance. Only worker byte slots are converted into grants.
 //! Ordinary Engine allocations remain EXTRA pressure, never subtracted from this pool.
+pub mod broker;
 use crate::{control_data::Text, heap_meter, worker_slots};
 use serde::{Deserialize, Serialize};
 use std::os::unix::net::{UnixListener, UnixStream};
@@ -22,6 +23,8 @@ pub const DIAGNOSTIC_BYTES: usize = 256 * 1024;
 const FILL: u8 = 0xa7;
 const CONTROL: usize = 8192;
 const MAX_GRANTS: u64 = 2048;
+pub const EVENT_BYTES: usize = 1536;
+const PERIODIC_EVENT_SECONDS: u64 = 30;
 fn err(e: impl std::fmt::Display) -> String {
     e.to_string()
 }
@@ -57,8 +60,10 @@ pub struct Summary {
     pub rejected_requests: u64,
     pub maximum_prepare_to_fill_or_reap_ns: u64,
 }
-#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
+#[derive(Clone, Copy, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case", deny_unknown_fields)]
+// Fixed stack control storage avoids hidden heap allocations for large Start fields.
+#[allow(clippy::large_enum_variant)]
 enum Op {
     Prepare {
         parent: u32,
@@ -89,6 +94,7 @@ enum Op {
         key: Text<64>,
     },
     Status,
+    Broker(broker::Op),
 }
 #[derive(Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -104,6 +110,8 @@ struct Reply {
     id: Option<u64>,
     worker_key: Option<Text<64>>,
     summary: Summary,
+    #[serde(default)]
+    broker: Option<broker::Receipt>,
 }
 #[derive(Clone, Copy)]
 struct Active {
@@ -126,6 +134,8 @@ struct Returned {
 struct Event {
     kind: &'static str,
     rejection_reason: Option<&'static str>,
+    broker_generation: Option<u64>,
+    broker_sim_pid: Option<u32>,
     observed_ns: u64,
     id: Option<u64>,
     parent: Option<u32>,
@@ -149,8 +159,14 @@ impl From<String> for ActionError {
 enum Fault {
     ReturnSecondPage,
     AfterAttachEvent,
+    AfterBrokerSpawnPause,
+    AfterBrokerBindReply,
+    BeforeBrokerRevoke,
+    AfterBrokerRevokeReply,
 }
 struct Pool {
+    broker_root: PathBuf,
+    broker: broker::State,
     ready: Ready,
     fault: Option<Fault>,
     pages: [Option<Vec<u8>>; 64],
@@ -177,9 +193,15 @@ impl Pool {
             None => None,
             Some("return-page-2") => Some(Fault::ReturnSecondPage),
             Some("after-attach-event") => Some(Fault::AfterAttachEvent),
+            Some("after-broker-spawn-pause") => Some(Fault::AfterBrokerSpawnPause),
+            Some("after-broker-bind-reply") => Some(Fault::AfterBrokerBindReply),
+            Some("before-broker-revoke") => Some(Fault::BeforeBrokerRevoke),
+            Some("after-broker-revoke-reply") => Some(Fault::AfterBrokerRevokeReply),
             Some(_) => return Err("normal_pool_fault_mode".into()),
         };
         let mut pool = Self {
+            broker_root: root.to_owned(),
+            broker: broker::State::default(),
             fault,
             ready: Ready {
                 schema: Text::new("mycity-normal-pool-v1")?,
@@ -260,14 +282,19 @@ impl Pool {
         struct Count<'a> {
             sink: &'a mut BufWriter<File>,
             used: &'a mut usize,
+            row_bytes: usize,
         }
         impl Write for Count<'_> {
             fn write(&mut self, b: &[u8]) -> std::io::Result<usize> {
+                if self.row_bytes.saturating_add(b.len()) > EVENT_BYTES {
+                    return Err(std::io::Error::other("normal_pool_event_row_bound"));
+                }
                 if self.used.saturating_add(b.len()) > 8 * MIB {
                     return Err(std::io::Error::other("normal_pool_event_bound"));
                 }
                 self.sink.write_all(b)?;
                 *self.used += b.len();
+                self.row_bytes += b.len();
                 Ok(b.len())
             }
             fn flush(&mut self) -> std::io::Result<()> {
@@ -277,6 +304,8 @@ impl Pool {
         let e = Event {
             kind,
             rejection_reason,
+            broker_generation: self.broker.generation(),
+            broker_sim_pid: self.broker.sim_pid(),
             observed_ns: self.now(),
             id: a.map(|v| v.id),
             parent: a.map(|v| v.parent),
@@ -289,6 +318,7 @@ impl Pool {
         let mut sink = Count {
             sink: &mut self.events,
             used: &mut self.event_bytes,
+            row_bytes: 0,
         };
         serde_json::to_writer(&mut sink, &e).map_err(err)?;
         sink.write_all(b"\n").map_err(err)?;
@@ -339,7 +369,16 @@ impl Pool {
         self.event("returned_after_wait_or_abort", Some(a))
     }
     fn action(&mut self, op: Op) -> Result<(Option<u64>, Option<Text<64>>), ActionError> {
+        if self.broker.registered() && !matches!(op, Op::Filled { .. } | Op::Status) {
+            return Err(ActionError::Rejected("normal_pool_legacy_broker_conflict"));
+        }
+        self.legacy_action(op)
+    }
+    fn legacy_action(&mut self, op: Op) -> Result<(Option<u64>, Option<Text<64>>), ActionError> {
         match op {
+            Op::Broker(_) => Err(ActionError::Rejected(
+                "normal_pool_broker_dispatch_required",
+            )),
             Op::Prepare {
                 parent,
                 parent_instance,
@@ -743,6 +782,7 @@ pub fn serve(root: &Path) -> Result<(), String> {
     serde_json::to_writer(&mut f, &pool.ready).map_err(err)?;
     f.sync_all().map_err(err)?;
     let mut next_scan = Instant::now() + Duration::from_secs(1);
+    let mut next_periodic_event = Instant::now() + Duration::from_secs(PERIODIC_EVENT_SECONDS);
     while !stopped.load(Ordering::Acquire) {
         match listener.accept() {
             Ok((mut socket, _)) => {
@@ -756,6 +796,18 @@ pub fn serve(root: &Path) -> Result<(), String> {
                     .set_write_timeout(Some(Duration::from_secs(2)))
                     .map_err(err)?;
                 let request: Result<Request, _> = read_wire(&mut socket);
+                if pool.fault == Some(Fault::BeforeBrokerRevoke)
+                    && matches!(
+                        &request,
+                        Ok(Request {
+                            action: Op::Broker(broker::Op::Revoke { .. }),
+                            ..
+                        })
+                    )
+                {
+                    pool.fault = None;
+                    continue; // fault lab: request lost before mutation, no credit granted
+                }
                 let answer = match request {
                     Ok(r) if r.source.as_str() != SOURCE => {
                         Err(ActionError::Rejected("normal_pool_request_source"))
@@ -763,14 +815,20 @@ pub fn serve(root: &Path) -> Result<(), String> {
                     Ok(r) if r.boot != pool.ready.boot => {
                         Err(ActionError::Rejected("normal_pool_request_boot"))
                     }
-                    Ok(r) => pool.action(r.action),
+                    Ok(r) => match r.action {
+                        Op::Broker(op) => pool
+                            .broker_action(op)
+                            .map(|receipt| (None, None, Some(receipt))),
+                        op => pool.action(op).map(|(id, key)| (id, key, None)),
+                    },
                     Err(e) => Err(ActionError::Rejected(e)),
                 };
                 let reply = match answer {
-                    Ok((id, key)) => Reply {
+                    Ok((id, key, broker)) => Reply {
                         error: None,
                         id,
                         worker_key: key,
+                        broker,
                         summary: pool.summary,
                     },
                     Err(ActionError::Fatal(e)) => return Err(format!("normal_pool_internal:{e}")),
@@ -781,12 +839,28 @@ pub fn serve(root: &Path) -> Result<(), String> {
                             error: Some(Text::new(e)?),
                             id: None,
                             worker_key: None,
+                            broker: None,
                             summary: pool.summary,
                         }
                     }
                 };
                 // A lost reply does not undo the grant. All successful actions are
                 // idempotent under the same capability; no automatic credit on EOF.
+                match (pool.fault, reply.broker) {
+                    (Some(Fault::AfterBrokerSpawnPause), Some(broker::Receipt::Started { .. })) => {
+                        pool.fault = None;
+                        std::thread::sleep(Duration::from_secs(2)); // fault lab: Sim can die before Start receipt
+                    }
+                    (Some(Fault::AfterBrokerBindReply), Some(broker::Receipt::Bound { .. }))
+                    | (
+                        Some(Fault::AfterBrokerRevokeReply),
+                        Some(broker::Receipt::Revoked { .. }),
+                    ) => {
+                        pool.fault = None;
+                        continue; // fault lab: successful mutation, lost reply
+                    }
+                    _ => (),
+                }
                 let _ = write_wire(&mut socket, &reply);
             }
             Err(e) if e.kind() == std::io::ErrorKind::WouldBlock => {
@@ -796,13 +870,16 @@ pub fn serve(root: &Path) -> Result<(), String> {
         }
         if Instant::now() >= next_scan {
             pool.scan()?;
-            pool.event("periodic_balance_scan", pool.active)?;
+            if Instant::now() >= next_periodic_event {
+                pool.event("periodic_balance_scan", pool.active)?;
+                next_periodic_event = Instant::now() + Duration::from_secs(PERIODIC_EVENT_SECONDS);
+            }
             next_scan = Instant::now() + Duration::from_secs(1);
         }
     }
     pool.scan()?;
     pool.event("parent_pipe_closed", pool.active)?;
-    let balanced = pool.active.is_none();
+    let balanced = pool.active.is_none() && !pool.broker.registered();
     #[derive(Serialize)]
     struct Final {
         source_sha256: &'static str,
@@ -1065,6 +1142,16 @@ mod tests {
             },
             Op::Abort { id: 1, key },
             Op::Status,
+            Op::Broker(broker::Op::Start {
+                generation: 1,
+                key,
+                endpoint: Text::new("/tmp/probe.sock").unwrap(),
+                root: Text::new("/tmp/model").unwrap(),
+                instance: u128::MAX,
+                gated: true,
+                diagnostics: true,
+            }),
+            Op::Broker(broker::Op::AcknowledgeRevoke { generation: 1, key }),
         ] {
             let request = Request {
                 source: Text::new(SOURCE).unwrap(),
@@ -1087,5 +1174,46 @@ mod tests {
             std::mem::size_of::<Pool>() + 2 * CONTROL + 40 * 1024 + 8192 + 64 * 1024
                 < DIAGNOSTIC_BYTES
         );
+    }
+    #[test]
+    fn fixed_event_envelope_covers_u128_and_original_eight_hour_diagnostics() {
+        let text = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+        let event = Event {
+            kind: text,
+            rejection_reason: Some(text),
+            broker_generation: Some(u64::MAX),
+            broker_sim_pid: Some(u32::MAX),
+            observed_ns: u64::MAX,
+            id: Some(u64::MAX),
+            parent: Some(u32::MAX),
+            parent_instance: Some(u128::MAX),
+            pid: Some(u32::MAX),
+            worker_identity: Some(worker_slots::Identity {
+                process_pid: u32::MAX,
+                process_instance_unix_ns: u128::MAX,
+                run_epoch: u64::MAX,
+                owner_instance: u64::MAX,
+                job: u64::MAX,
+                generation: u32::MAX,
+                attempt: u8::MAX,
+            }),
+            summary: Summary {
+                capacity_bytes: usize::MAX,
+                available_touched_bytes: usize::MAX,
+                granted_capacity_bytes: usize::MAX,
+                grants: u64::MAX,
+                returns: u64::MAX,
+                fill_acknowledgements: u64::MAX,
+                scans: u64::MAX,
+                rejected_requests: u64::MAX,
+                maximum_prepare_to_fill_or_reap_ns: u64::MAX,
+            },
+            owner_actual_capacity_bytes: usize::MAX,
+        };
+        assert!(serde_json::to_vec(&event).unwrap().len() < EVENT_BYTES);
+        // Original724 windows plus retries (up to768),960 periodic checkpoints,
+        // sixteen session handoffs and64 exceptional transitions. Diagnostic bound only.
+        let rows = 5 * 768 + 28_800 / PERIODIC_EVENT_SECONDS + 4 * 16 + 64;
+        assert!(rows as usize * EVENT_BYTES < 8 * MIB);
     }
 }

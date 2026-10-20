@@ -1,0 +1,39 @@
+{
+  "source_sha256": "cac433182b9e5c2ef41ac4a1c032b3c7e86793ab36253c1d5879ca3d39d961b9",
+  "status": "actual_64MiB_balance_and_724_worker_grants_verified",
+  "pool_process_identity": [
+    52911,
+    1792525109286140000
+  ],
+  "capacity_bytes": 67108864,
+  "worker_grant_bytes": 4194304,
+  "grants_with_actual_slot_identity_and_owned_wait": 724,
+  "periodic_logged_scan_checkpoints": 14,
+  "actual_total_balance_scans": 2614,
+  "broker_sessions": [
+    {
+      "generation": 1,
+      "pid": 53098,
+      "grants": 724
+    },
+    {
+      "generation": 2,
+      "pid": 64583,
+      "grants": 0
+    }
+  ],
+  "event_log_bytes": 2144778,
+  "event_row_bound_bytes": 1536,
+  "scan_cadence_seconds": 1,
+  "periodic_log_cadence_seconds": 30,
+  "maximum_observed_release_event_to_fill_event_ns": 203417416,
+  "pool_reported_prepare_to_fill_maximum_ns": 352990709,
+  "transition_scope": "observed event intervals; no claim of continuously full pressure or exact allocation timestamps",
+  "pool_requested_heap_peak_plus_tail_bytes": 67191808,
+  "unconverted_Engine_work": "extra_pressure_not_deducted",
+  "exact_normal_owned": "not_accepted",
+  "formal_steady": "not_run",
+  "four_speeds": "not_run",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run"
+}

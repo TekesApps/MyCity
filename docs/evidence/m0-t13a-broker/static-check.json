@@ -1,0 +1,42 @@
+{
+  "verified": [
+    {
+      "folder": "attempt1-source",
+      "source_sha256": "cac433182b9e5c2ef41ac4a1c032b3c7e86793ab36253c1d5879ca3d39d961b9",
+      "files": 141,
+      "matches_current_workspace": false
+    },
+    {
+      "folder": "attempt2-source",
+      "source_sha256": "68605c5c60d44c19ff86b960dc4e83311a6c94ae69fcfaa48a8a2dd4139206dd",
+      "files": 141,
+      "matches_current_workspace": false
+    },
+    {
+      "folder": "m0-t13a-broker",
+      "source_sha256": "34c59abec56d3c01322e13244c426daf9b6a3a6cf80ed9e12e3d80a119c3b8cd",
+      "files": 141,
+      "matches_current_workspace": true
+    },
+    {
+      "attempt": "t13a3j-functional-01",
+      "status": "passed_measurement_wrapper",
+      "source_sha256": "cac433182b9e5c2ef41ac4a1c032b3c7e86793ab36253c1d5879ca3d39d961b9",
+      "archive_files": 3732
+    },
+    {
+      "attempt": "t13a3m-functional-01",
+      "status": "passed_measurement_wrapper",
+      "source_sha256": "34c59abec56d3c01322e13244c426daf9b6a3a6cf80ed9e12e3d80a119c3b8cd",
+      "archive_files": 3732
+    }
+  ],
+  "scope": "source and archive integrity only; separate runtime verifiers required",
+  "L1_joint": "not_accepted",
+  "diagnostic_total": "not_closed",
+  "formal_steady": "not_run",
+  "four_speeds": "not_run",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run",
+  "full_M0": "not_accepted"
+}

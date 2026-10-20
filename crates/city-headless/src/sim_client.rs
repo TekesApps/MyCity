@@ -13,6 +13,8 @@ use std::{
 };
 pub struct Client {
     child: Child,
+    supervisor: Option<crate::normal_pool::broker::Supervisor>,
+    worker_lease: Option<u64>,
     input: Option<ChildStdin>,
     receiver: Option<Receiver<Result<Event, String>>>,
     reader: Option<JoinHandle<()>>,
@@ -23,10 +25,10 @@ pub struct Client {
 }
 impl Client {
     pub fn spawn(executable: &Path, world: &Path, create: bool) -> Result<Self, String> {
-        Self::spawn_inner(executable, world, create, false, Profile::Base, false)
+        Self::spawn_inner(executable, world, create, false, Profile::Base, false, None)
     }
     pub fn spawn_probe(executable: &Path, world: &Path, create: bool) -> Result<Self, String> {
-        Self::spawn_inner(executable, world, create, true, Profile::Base, false)
+        Self::spawn_inner(executable, world, create, true, Profile::Base, false, None)
     }
     pub fn spawn_joint(
         executable: &Path,
@@ -34,7 +36,15 @@ impl Client {
         create: bool,
         probe: bool,
     ) -> Result<Self, String> {
-        Self::spawn_inner(executable, world, create, probe, Profile::Joint, false)
+        Self::spawn_inner(
+            executable,
+            world,
+            create,
+            probe,
+            Profile::Joint,
+            false,
+            None,
+        )
     }
     pub fn spawn_scale_full(
         executable: &Path,
@@ -64,6 +74,7 @@ impl Client {
             probe,
             Profile::Scale(tier),
             false,
+            None,
         )
     }
     pub fn spawn_scale_measured(
@@ -73,7 +84,33 @@ impl Client {
         probe: bool,
         tier: crate::scale_reference::Tier,
     ) -> Result<Self, String> {
-        Self::spawn_inner(executable, world, create, probe, Profile::Scale(tier), true)
+        Self::spawn_inner(
+            executable,
+            world,
+            create,
+            probe,
+            Profile::Scale(tier),
+            true,
+            None,
+        )
+    }
+    /// Explicit pool avoids process-global environment mutation in real integration tests.
+    pub fn spawn_in_pool(
+        executable: &Path,
+        world: &Path,
+        create: bool,
+        probe: bool,
+        pool: &Path,
+    ) -> Result<Self, String> {
+        Self::spawn_inner(
+            executable,
+            world,
+            create,
+            probe,
+            Profile::Base,
+            false,
+            Some(pool),
+        )
     }
     fn spawn_inner(
         executable: &Path,
@@ -82,12 +119,24 @@ impl Client {
         probe: bool,
         profile: Profile,
         measured: bool,
+        pool: Option<&Path>,
     ) -> Result<Self, String> {
         if !world.is_absolute() {
             return Err("sim_world_absolute_path_required".into());
         }
         let executable = executable.canonicalize().map_err(|e| e.to_string())?;
+        let mut supervisor = match pool {
+            Some(root) => Some(crate::normal_pool::broker::Supervisor::register(root)?),
+            None => crate::normal_pool::broker::Supervisor::from_env()?,
+        };
         let mut command = Command::new(&executable);
+        if let Some(s) = supervisor.as_ref() {
+            s.configure(&mut command)?;
+        } else {
+            command
+                .env_remove("MYCITY_BROKER_SESSION")
+                .env_remove("MYCITY_BROKER_SUPERVISOR");
+        }
         if measured {
             command.env("MYCITY_DIAGNOSTICS", "1");
         } else {
@@ -102,6 +151,14 @@ impl Client {
             .stderr(Stdio::null())
             .spawn()
             .map_err(|e| e.to_string())?;
+        if let Some(s) = supervisor.as_mut() {
+            if let Err(e) = s.bind(child.id()) {
+                let _ = child.kill();
+                let status = child.wait().map_err(|e| e.to_string())?;
+                s.after_sim_wait(child.id(), status)?;
+                return Err(e);
+            }
+        }
         let input = child.stdin.take();
         let stdout = child.stdout.take().ok_or("sim_stdout")?;
         let (sender, receiver) = mpsc::sync_channel(4);
@@ -121,6 +178,8 @@ impl Client {
         });
         Ok(Self {
             child,
+            supervisor,
+            worker_lease: None,
             input,
             receiver: Some(receiver),
             reader: Some(reader),
@@ -175,6 +234,10 @@ impl Client {
                     return Err("sim_worker_pid".into());
                 }
                 self.worker_pid = Some(pid);
+                self.worker_lease = event.payload["broker_lease"].as_u64();
+                if self.supervisor.is_some() && self.worker_lease.is_none() {
+                    return Err("sim_broker_worker_lease_absent".into());
+                }
             }
             "worker_progress" | "attempt_failed" | "probe_barrier" if event.id != 0 => (),
             _ => return Err("sim_event_kind".into()),
@@ -207,6 +270,15 @@ impl Client {
         let Some(pid) = self.worker_pid else {
             return Ok(());
         };
+        if let Some(s) = self.supervisor.as_ref() {
+            s.kill_worker(
+                pid,
+                self.worker_lease.ok_or("sim_broker_worker_lease_absent")?,
+            )?;
+            self.worker_pid = None;
+            self.worker_lease = None;
+            return Ok(());
+        }
         let output = Command::new("ps")
             .args(["-p", &pid.to_string(), "-o", "ppid=,stat=,command="])
             .output()
@@ -254,7 +326,8 @@ impl Client {
     pub fn wait_for_sim_exit(&mut self, timeout: Duration) -> Result<(), String> {
         let deadline = std::time::Instant::now() + timeout;
         loop {
-            if self.child.try_wait().map_err(|e| e.to_string())?.is_some() {
+            if let Some(status) = self.child.try_wait().map_err(|e| e.to_string())? {
+                self.after_sim_wait(status)?;
                 return Ok(());
             }
             if std::time::Instant::now() >= deadline {
@@ -263,28 +336,39 @@ impl Client {
             thread::sleep(Duration::from_millis(10));
         }
     }
+    fn after_sim_wait(&mut self, status: std::process::ExitStatus) -> Result<(), String> {
+        if let Some(s) = self.supervisor.as_mut() {
+            s.after_sim_wait(self.child.id(), status)?;
+            self.worker_pid = None;
+            self.worker_lease = None;
+        } else {
+            self.kill_owned_worker()?;
+        }
+        Ok(())
+    }
     pub fn kill_sim(&mut self) -> Result<(), String> {
-        self.child.kill().map_err(|e| e.to_string())?;
-        self.child.wait().map_err(|e| e.to_string())?;
-        self.kill_owned_worker()?;
+        if self.child.try_wait().map_err(|e| e.to_string())?.is_none() {
+            self.child.kill().map_err(|e| e.to_string())?;
+        }
+        let status = self.child.wait().map_err(|e| e.to_string())?;
+        self.after_sim_wait(status)?;
         self.stop()
     }
     pub fn stop(&mut self) -> Result<(), String> {
         self.input.take();
         // Caller normally sends Stop and drains its reply first. This is a bounded reap.
         let deadline = std::time::Instant::now() + Duration::from_secs(2);
-        loop {
-            if self.child.try_wait().map_err(|e| e.to_string())?.is_some() {
-                break;
+        let status = loop {
+            if let Some(status) = self.child.try_wait().map_err(|e| e.to_string())? {
+                break status;
             }
             if std::time::Instant::now() >= deadline {
                 self.child.kill().map_err(|e| e.to_string())?;
-                self.child.wait().map_err(|e| e.to_string())?;
-                break;
+                break self.child.wait().map_err(|e| e.to_string())?;
             }
             thread::sleep(Duration::from_millis(10));
-        }
-        self.kill_owned_worker()?;
+        };
+        self.after_sim_wait(status)?;
         self.receiver.take();
         if let Some(reader) = self.reader.take() {
             reader.join().map_err(|_| "sim_reader_panic")?;

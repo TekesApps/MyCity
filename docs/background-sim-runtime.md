@@ -2,6 +2,8 @@
 
 发布v0.5.28，承接[冻结验收](background-compute-acceptance.md)、[纯worker](background-worker-runtime.md)和[城市接纳](background-store-runtime.md)。本阶段只实现Rust模型／CLI进程链；W4联合1800秒运行、全进程组资源及最终advisor联合审查仍须单独实测，16GB门仍未通过。
 
+后续T13-A托管路径补充：启用normal pool的Sim现在持逻辑worker租约与直接socket，实际Child由CPU broker拥有；Client持Sim Child并在实际wait后撤销／确认代次。下文W3的ps／kill及旧PID栅栏描述保留原版本含义，不能作为新路径的归还凭证。当前路径见[总体架构](SOFTWARE_ARCHITECTURE.md#当前cpu-broker的所有权与恢复)及[broker计划](evidence/m0-t13a-broker/PLAN.md)；有限故障测试不签8h或16GB。
+
 ## 1. 运行角色与可重跑入口
 
 `mycity-headless sim-host create|open WORLD`是独立Sim；`sim_client::Client`是宿主监督适配器。宿主通过管道提交有界命令及取得进度，Sim独占Store写锁，独立`compute-worker-bounded`只读取固定输入和产生候选。宿主不打开活动世界写入；实验探针只在Sim退出后重开Store核验持久状态。当前实际进程控制依赖Unix的ps／kill，macOS已测；不宣称Windows进程监督已实现。

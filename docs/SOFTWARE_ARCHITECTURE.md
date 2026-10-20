@@ -1,6 +1,6 @@
 # MyCity软件总体架构
 
-架构汇总S56；初版v0.5.22，现按W1—W4的实际实现更新。历史冻结证据仍归其原发布版本。本篇总结软件如何运行，不再按建筑或游戏功能列策划清单。[完整产品蓝图](PRODUCT_BLUEPRINT.md)说明产品目标，本篇说明模块、状态、事件、进程、提交、恢复及资源归属；细节继承[A55部署契约](process-worker-and-render-architecture.md)和各运行专题。
+架构汇总S56；初版v0.5.22，现按W1—W4及T13-A的实际实现更新。历史冻结证据仍归其原发布版本。本篇总结软件如何运行，不再按建筑或游戏功能列策划清单。[完整产品蓝图](PRODUCT_BLUEPRINT.md)说明产品目标，本篇说明模块、状态、事件、进程、提交、恢复及资源归属；细节继承[A55部署契约](process-worker-and-render-architecture.md)和各运行专题。
 
 标记约定：**已实现**是当前代码存在，**已实测**仅指相应冻结证据的有限范围；**设计**不是已经具备的能力。当前已有单个纯空气worker、独立Sim Host、有界宿主协议及Store接纳／恢复；通用worker池、完整市民／建筑系统、UI、AgentKit和渲染仍未实现。W1—W3各有冻结运行证据；W4正式联合工件、限制和独立结论按[联合运行专题](background-joint-runtime.md)单列，不转用旧测试或文档作通过。实际16GB与全城性能仍未验。
 
@@ -8,12 +8,14 @@
 
 一个权威模拟核心拥有城市状态与排程，通过一个持久化提交口修改世界；工具、未来App、Agent和渲染通过命令／只读投影使用它，计算worker只产生可拒绝、可重算的候选。
 
-**当前有两条实际入口**：原CLI session可在进程内调用Store→Engine；W3／W4宿主则启动独立Sim进程，Sim持有唯一Store writer并监督纯空气worker。两条路径复用相同核心和持久规则，不允许同时写同一世界。W1纯worker支持连续任务复用；当前Sim集成为每次attempt建立有界worker，尚未实现通用池或双worker并行。
+**当前有两条实际入口**：原CLI session可在进程内调用Store→Engine；W3／W4宿主则启动独立Sim进程，Sim持有唯一Store writer。未启用normal pool时沿用Sim直接拥有worker Child；启用时由normal-pool broker实际拥有worker Child，Sim仅持租约和数据连接，宿主持Sim Child及独立监督凭证。两条路径复用相同核心和持久规则，不允许同时写同一世界。W1纯worker支持连续任务复用；当前Sim集成为每次attempt建立有界worker，尚未实现通用池或双worker并行。
 
 ```mermaid
 flowchart LR
     CLI[原 CLI session] --> Store[Store：锁、幂等、容量、提交]
     Host[W3/W4 宿主 CLI] -->|有界 JSONL| Sim[独立 Sim]
+    Host -->|实际 Sim wait 后撤销会话| Broker[可选 CPU normal-pool broker]
+    Broker -->|实际创建、kill、wait 与容量归还| Worker
     Sim --> Store
     Sim -->|冻结输入与任务代际| Worker[纯空气 worker]
     Worker -->|候选文件与通知| Sim
@@ -34,6 +36,14 @@ flowchart LR
 | [city-headless](../crates/city-headless/src/main.rs)／[session](../crates/city-headless/src/session.rs) | 可信宿主Caller、暂停／单步、实验装配与诊断、有限CLI观察 | JSON自授System、普通命令随意set_property、用展示或计数代替执行 |
 
 crate依赖是core；map→core；storage→core＋map；headless→三者。未来sim／tools／render／app／team-adapter是职责边界，不要求现在凭空拆空crate，也不能把相同权威规则再写一遍。core和map无需依赖App或AgentKit。
+
+### 当前CPU broker的所有权与恢复
+
+[CPU broker契约与验证计划](evidence/m0-t13a-broker/PLAN.md)区分物理进程和逻辑租约。宿主Client在内存生成监督凭证，注册／绑定实际Sim Child；只把不同的会话凭证传给Sim，不把监督凭证写ready文件或传入Sim环境。broker用实际Child拥有worker，Sim经短路径Unix socket直接交换原控制帧；broker不转发大payload，也不保留worker数据fd副本。worker仍只产生文件hash候选，Store、钱物与权利只有Sim可提交。
+
+正常worker停止和故障撤销都走broker的实际wait→补回4MiB实体页。Sim被杀后必须先由其宿主持Child确认退出，再撤销对应代次；收到撤销回执并确认后才允许新会话。旧代次／旧租约的重复请求不增加信用，重复确认也不把旧事件记到新会话。Start回复丢失会busy，需旧Sim退出／撤销后重开，不能称Start原地重试成功。broker自身被SIGKILL则失败关闭，没有实际wait或正常归还报告，不自动接管旧ready或凭PID补信用。
+
+这仍只有一个会话和一个空气worker；不是通用双worker池，不按主体开进程，也不是GPU Broker。真实有限进程故障见[当前来源工件审计](evidence/m0-t13a-broker/fault-audit.json)，完整满级业务和8小时须各按同源运行证据签收。旧W1—W4记录继续说明其原版本，不作为新来源联合／长跑通过。
 
 ## 2. 主体有状态、待办和历史，但只有一份权威
 
@@ -130,7 +140,7 @@ AgentKit未来是命令／查询的客户，不是城市writer：玩家意图经
 
 预算属于整个应用进程组，不能给每个worker／城市各领一份。现行全产品常态候选3.10GiB，真实16GB联合门未通过；运行时与求解、渲染、工具等域按[预算总表](product-runtime-budget-and-versions.md)共同准入。A55至多两个普通32MiB计算任务；预演模式减少并发／停GPU候选；进程基础开销、共享投影、IPC、保存高峰及重建副本都需计入，不能只报Engine owned。
 
-T05-B另明确Timeline最多2MiB常驻、普通事务副本2MiB运行时份额，Engine仍4MiB owned门；检查点保存／恢复的64MiB规划归A55单一128MiB高峰作业，不增加总预算。规划不等于实际allocator硬门；当前宿主是M4／32GiB；W4单独记录完整进程组观察与采样限制，不能代替真实16GB、GPU／全城压缩与swap验证。
+T05-B当版小负载明确Timeline最多2MiB常驻、普通事务副本2MiB运行时份额及Engine4MiB owned门；这些旧门不自动覆盖T13-A满级输入。T13-A采用64MiB常规工作区候选与共同8MiB诊断候选，实体池的64MiB已触页余额及worker4MiB借还不等于所有Engine／serde分配都已纳入；未转换分配保留为额外压力，精确常规预算仍未签收。检查点保存／恢复规划仍归共同高峰额度，不因新增进程各领一份。规划不等于实际allocator硬门；当前宿主是M4／32GiB；W4单独记录完整进程组观察与采样限制，不能代替真实16GB、GPU／全城压缩与swap验证。
 
 确定性要求相同规则、输入、已提交日志及数值策略在不同分页／恢复／worker返回顺序下得到相同精确权益。整数单位、有理余数、稳定来源ID及阶段顺序进入权威状态；随机不得按渲染帧或worker完成先后抽取。近似统计和GPU误差另列版本与容差，不能泛化成账款也允许“不精确”。
 

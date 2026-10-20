@@ -1,0 +1,9 @@
+{
+  "source_sha256": "cac433182b9e5c2ef41ac4a1c032b3c7e86793ab36253c1d5879ca3d39d961b9",
+  "source_files": 141,
+  "frozen_acceptance_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+  "observer_sha256": "9fcb2290b7837fff0e73eefae0e761237fa90e9c03f8d53d96b8388647bc5ac1",
+  "source_support_sha256": "6d886faa53a8b86966c6c1367f026320f4e9a657e1f2791c129602025ada04fe",
+  "binary_sha256": "82af5e381df9fc33b0ef746c0fb696a37aa7a91ed57476aa4ac45748558541b2",
+  "rust": "1.85.1"
+}

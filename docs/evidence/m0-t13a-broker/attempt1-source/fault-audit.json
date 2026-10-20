@@ -1,0 +1,106 @@
+{
+  "source_sha256": "cac433182b9e5c2ef41ac4a1c032b3c7e86793ab36253c1d5879ca3d39d961b9",
+  "scope": "current-source real finite fault artifacts; actual wait path and cold results asserted by integration tests; no physical peaks inferred",
+  "archive_files_verified": 192,
+  "pools": [
+    {
+      "path": "mc-broker-48864-0/pool/",
+      "fault": null,
+      "normal_pool_report": true,
+      "actual_wait_events": 0,
+      "return_events": 0,
+      "maximum_event_bytes": 482
+    },
+    {
+      "path": "mc-broker-48864-1/pool/",
+      "fault": null,
+      "normal_pool_report": true,
+      "actual_wait_events": 2,
+      "return_events": 2,
+      "maximum_event_bytes": 631
+    },
+    {
+      "path": "mc-broker-48864-10/pool/",
+      "fault": null,
+      "normal_pool_report": true,
+      "actual_wait_events": 2,
+      "return_events": 2,
+      "maximum_event_bytes": 630
+    },
+    {
+      "path": "mc-broker-48864-11/pool/",
+      "fault": null,
+      "normal_pool_report": true,
+      "actual_wait_events": 1,
+      "return_events": 1,
+      "maximum_event_bytes": 630
+    },
+    {
+      "path": "mc-broker-48864-2/pool/",
+      "fault": null,
+      "normal_pool_report": true,
+      "actual_wait_events": 1,
+      "return_events": 1,
+      "maximum_event_bytes": 631
+    },
+    {
+      "path": "mc-broker-48864-3/pool/",
+      "fault": "after-broker-spawn-pause",
+      "normal_pool_report": false,
+      "actual_wait_events": 0,
+      "return_events": 0,
+      "maximum_event_bytes": 633
+    },
+    {
+      "path": "mc-broker-48864-4/pool/",
+      "fault": "before-broker-revoke",
+      "normal_pool_report": true,
+      "actual_wait_events": 1,
+      "return_events": 1,
+      "maximum_event_bytes": 637
+    },
+    {
+      "path": "mc-broker-48864-5/pool/",
+      "fault": "after-broker-bind-reply",
+      "normal_pool_report": true,
+      "actual_wait_events": 0,
+      "return_events": 0,
+      "maximum_event_bytes": 482
+    },
+    {
+      "path": "mc-broker-48864-6/pool/",
+      "fault": "after-broker-spawn-pause",
+      "normal_pool_report": true,
+      "actual_wait_events": 1,
+      "return_events": 1,
+      "maximum_event_bytes": 497
+    },
+    {
+      "path": "mc-broker-48864-7/pool/",
+      "fault": "after-broker-revoke-reply",
+      "normal_pool_report": true,
+      "actual_wait_events": 1,
+      "return_events": 1,
+      "maximum_event_bytes": 631
+    },
+    {
+      "path": "mc-broker-48864-8/pool/",
+      "fault": null,
+      "normal_pool_report": true,
+      "actual_wait_events": 2,
+      "return_events": 2,
+      "maximum_event_bytes": 631
+    },
+    {
+      "path": "mc-broker-48864-9/pool/",
+      "fault": null,
+      "normal_pool_report": true,
+      "actual_wait_events": 2,
+      "return_events": 2,
+      "maximum_event_bytes": 630
+    }
+  ],
+  "eight_hour": "not_run",
+  "full_business": "separate_run_required",
+  "real16GB": "not_run"
+}

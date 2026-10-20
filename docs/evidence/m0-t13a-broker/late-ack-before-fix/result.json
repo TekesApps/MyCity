@@ -1,0 +1,16 @@
+{
+  "scope": "synthetic control only, fixed fake supervisor keys, no Sim/worker/business",
+  "source_sha256": "cac433182b9e5c2ef41ac4a1c032b3c7e86793ab36253c1d5879ca3d39d961b9",
+  "binary_sha256": "82af5e381df9fc33b0ef746c0fb696a37aa7a91ed57476aa4ac45748558541b2",
+  "old_generation": 1,
+  "new_generation": 2,
+  "late_ack_receipt_generation": 1,
+  "appended_events": [
+    {
+      "kind": "broker_revoke_receipt_acknowledged",
+      "broker_generation": 2
+    }
+  ],
+  "wrong_generation_event": true,
+  "pool_exit": 0
+}

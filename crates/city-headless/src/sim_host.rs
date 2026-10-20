@@ -298,7 +298,7 @@ fn required(
                 w,
                 id,
                 "worker_started",
-                json!({"worker_pid":child.pid(),"ticket":request.ticket}),
+                json!({"worker_pid":child.pid(),"broker_lease":child.broker_lease(),"ticket":request.ticket}),
             )?;
             child.submit(&request)?;
             for _ in 0..4 {

@@ -1,0 +1,9 @@
+# Independent advisor review
+
+Before implementation, advisor approved broker-owned actual worker Child with safe OwnedFd/stdin/stdout handoff, no retained broker data-fd copies, bounded endpoint/connect, a separate supervisor capability retained by actual Sim Child owner, and revoke after actual Sim wait. Required cleanup of unbound/start-reply-lost gaps, no legacy/broker ownership mixing, no PID-based fake Child, and real wait before credit. No new budget acceptance inferred.
+
+During implementation advisor read the broker/client/worker source and finite fault tests, found no new blocking causal/authority issue. Explicit limitations: Start reply loss requires oldSim termination and revoke/reopen; broker SIGKILL does not execute Drop and cannot promise automatic reaping or old-ready adoption.
+
+Final source34c59ab/bin31119f70: advisor independently ran static_check.py, verify_faults.py, verify_functional.py, verify_full.py --pool-only, verify_pool.py and coverage.py successfully. Verified original724worker/grant/Filled/return,3011receipts, complete Engine including metadata equals CPU, old input/candidate hashes, ordered two-session register/bind/revoke/ACK and731normal heap instances. Twelve fault pools:11normal endings,1deliberately killed broker with no credit/report. Late oldACK now returns idempotently without new-generation event; old failure and corrected probes preserved. Helper91217 has no RSS frame: normal footer is not physical peak proof.
+
+Approved releasev0.5.48 as normal worker custody plus finite fault recovery, no new phase blocker. Unknown10s readiness timeout cause remains unproven despite later passes. No L1 joint/shared8MiB/exact normal workspace/formal steady/four-speed/8h/real16GB acceptance. End finite review and proceed to next implementation dependency.

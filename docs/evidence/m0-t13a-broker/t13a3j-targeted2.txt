@@ -1,0 +1,38 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+    Finished `release` profile [optimized] target(s) in 16.48s
+     Running tests/broker.rs (target/release/deps/broker-d0dc3c4dc3f51881)
+
+running 2 tests
+test broker_owned_worker_fault_retries_inside_same_sim_without_double_credit ... ok
+test broker_wait_and_real_sim_death_revoke_restore_capacity_and_cold_result ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.41s
+
+     Running tests/compute_worker.rs (target/release/deps/compute_worker-145f5246832e3aa7)
+
+running 10 tests
+test existing_candidate_corruption_is_rejected_without_replacing_it ... ok
+test completed_worker_can_exit_on_eof_while_active_stop_still_kills ... ok
+test stopping_worker_without_draining_its_response_reaps_child ... ok
+test complete_but_forged_finite_candidate_is_rejected_by_full_cpu_check ... ok
+test bounded_cache_clears_retry_residue_and_real_worker_stays_within_charge ... ok
+test oversized_or_truncated_control_and_directory_quota_fail_closed ... ok
+test stale_source_unknown_schema_wrong_input_and_attempt_overflow_fail_without_candidate ... ok
+test actual_bounded_worker_reuses_local_slots_and_existing_candidate_without_tail_bytes ... ok
+test actual_freight_drives_worker_field_and_sim_store_commits_then_reopens_original_receipt ... ok
+test actual_persistent_worker_and_gated_sigkill_recovery_match_full_cpu_state ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.66s
+
+     Running tests/normal_pool.rs (target/release/deps/normal_pool-1394bffa8277edbd)
+
+running 6 tests
+test existing_run_directory_or_live_ready_is_never_adopted_by_a_new_process ... ok
+test old_boot_bad_control_and_parent_pipe_closure_cannot_create_credit ... ok
+test internal_mutation_failures_terminate_service_without_publishing_balanced_credit ... ok
+test real_worker_retains_and_reuses_slots_until_owned_wait_then_returns_actual_pages ... ok
+test killed_workers_only_return_capacity_after_parent_wait_and_spawn_failure_aborts ... ok
+test fragmented_control_waits_for_suffix_but_timeout_eof_and_identity_remain_distinct ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.23s
+

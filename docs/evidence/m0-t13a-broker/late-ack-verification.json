@@ -1,0 +1,8 @@
+{
+  "scope": "synthetic control, no Sim/worker/business; fixed supervisor keys only",
+  "old_source": "cac433182b9e5c2ef41ac4a1c032b3c7e86793ab36253c1d5879ca3d39d961b9",
+  "new_source": "34c59abec56d3c01322e13244c426daf9b6a3a6cf80ed9e12e3d80a119c3b8cd",
+  "before_wrong_generation_event": true,
+  "after_appended_events": [],
+  "eight_hour": "not_run"
+}

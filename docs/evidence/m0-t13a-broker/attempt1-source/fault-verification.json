@@ -1,0 +1,142 @@
+{
+  "scope": "real finite process faults from current-source integration tests; not full business or8h acceptance",
+  "source_sha256": "cac433182b9e5c2ef41ac4a1c032b3c7e86793ab36253c1d5879ca3d39d961b9",
+  "pools": [
+    {
+      "path": "mc-broker-48864-0",
+      "source": "cac433182b9e5c2ef41ac4a1c032b3c7e86793ab36253c1d5879ca3d39d961b9",
+      "fault": null,
+      "events": 8,
+      "max_event_bytes": 482,
+      "last_kind": "parent_pipe_closed",
+      "grants": 0,
+      "returns": 0,
+      "normal_pool_exit_report": true
+    },
+    {
+      "path": "mc-broker-48864-1",
+      "source": "cac433182b9e5c2ef41ac4a1c032b3c7e86793ab36253c1d5879ca3d39d961b9",
+      "fault": null,
+      "events": 16,
+      "max_event_bytes": 631,
+      "last_kind": "parent_pipe_closed",
+      "grants": 2,
+      "returns": 2,
+      "normal_pool_exit_report": true
+    },
+    {
+      "path": "mc-broker-48864-10",
+      "source": "cac433182b9e5c2ef41ac4a1c032b3c7e86793ab36253c1d5879ca3d39d961b9",
+      "fault": null,
+      "events": 21,
+      "max_event_bytes": 630,
+      "last_kind": "parent_pipe_closed",
+      "grants": 2,
+      "returns": 2,
+      "normal_pool_exit_report": true
+    },
+    {
+      "path": "mc-broker-48864-11",
+      "source": "cac433182b9e5c2ef41ac4a1c032b3c7e86793ab36253c1d5879ca3d39d961b9",
+      "fault": null,
+      "events": 16,
+      "max_event_bytes": 630,
+      "last_kind": "parent_pipe_closed",
+      "grants": 1,
+      "returns": 1,
+      "normal_pool_exit_report": true
+    },
+    {
+      "path": "mc-broker-48864-2",
+      "source": "cac433182b9e5c2ef41ac4a1c032b3c7e86793ab36253c1d5879ca3d39d961b9",
+      "fault": null,
+      "events": 16,
+      "max_event_bytes": 631,
+      "last_kind": "parent_pipe_closed",
+      "grants": 1,
+      "returns": 1,
+      "normal_pool_exit_report": true
+    },
+    {
+      "path": "mc-broker-48864-3",
+      "source": "cac433182b9e5c2ef41ac4a1c032b3c7e86793ab36253c1d5879ca3d39d961b9",
+      "fault": "after-broker-spawn-pause",
+      "events": 6,
+      "max_event_bytes": 633,
+      "last_kind": "worker_actual_slots_filled",
+      "grants": 1,
+      "returns": 0,
+      "normal_pool_exit_report": false
+    },
+    {
+      "path": "mc-broker-48864-4",
+      "source": "cac433182b9e5c2ef41ac4a1c032b3c7e86793ab36253c1d5879ca3d39d961b9",
+      "fault": "before-broker-revoke",
+      "events": 16,
+      "max_event_bytes": 637,
+      "last_kind": "parent_pipe_closed",
+      "grants": 1,
+      "returns": 1,
+      "normal_pool_exit_report": true
+    },
+    {
+      "path": "mc-broker-48864-5",
+      "source": "cac433182b9e5c2ef41ac4a1c032b3c7e86793ab36253c1d5879ca3d39d961b9",
+      "fault": "after-broker-bind-reply",
+      "events": 10,
+      "max_event_bytes": 482,
+      "last_kind": "parent_pipe_closed",
+      "grants": 0,
+      "returns": 0,
+      "normal_pool_exit_report": true
+    },
+    {
+      "path": "mc-broker-48864-6",
+      "source": "cac433182b9e5c2ef41ac4a1c032b3c7e86793ab36253c1d5879ca3d39d961b9",
+      "fault": "after-broker-spawn-pause",
+      "events": 10,
+      "max_event_bytes": 497,
+      "last_kind": "parent_pipe_closed",
+      "grants": 1,
+      "returns": 1,
+      "normal_pool_exit_report": true
+    },
+    {
+      "path": "mc-broker-48864-7",
+      "source": "cac433182b9e5c2ef41ac4a1c032b3c7e86793ab36253c1d5879ca3d39d961b9",
+      "fault": "after-broker-revoke-reply",
+      "events": 16,
+      "max_event_bytes": 631,
+      "last_kind": "parent_pipe_closed",
+      "grants": 1,
+      "returns": 1,
+      "normal_pool_exit_report": true
+    },
+    {
+      "path": "mc-broker-48864-8",
+      "source": "cac433182b9e5c2ef41ac4a1c032b3c7e86793ab36253c1d5879ca3d39d961b9",
+      "fault": null,
+      "events": 21,
+      "max_event_bytes": 631,
+      "last_kind": "parent_pipe_closed",
+      "grants": 2,
+      "returns": 2,
+      "normal_pool_exit_report": true
+    },
+    {
+      "path": "mc-broker-48864-9",
+      "source": "cac433182b9e5c2ef41ac4a1c032b3c7e86793ab36253c1d5879ca3d39d961b9",
+      "fault": null,
+      "events": 21,
+      "max_event_bytes": 630,
+      "last_kind": "parent_pipe_closed",
+      "grants": 2,
+      "returns": 2,
+      "normal_pool_exit_report": true
+    }
+  ],
+  "actual_pool_reports": 11,
+  "deliberately_killed_broker_no_report": 1,
+  "eight_hour": "not_run",
+  "real16GB": "not_run"
+}
