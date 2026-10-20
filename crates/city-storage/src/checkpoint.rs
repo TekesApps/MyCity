@@ -47,6 +47,10 @@ fn load_index(dir: &Path, r: &Reference) -> Result<Index, Error> {
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum CheckpointPoint {
+    WorldSynced,
+    ReceiptsSynced,
+    ReceiptIndexSynced,
+    GcFileRemoved,
     SnapshotSynced,
     SegmentSynced,
     RootPublished,
@@ -144,6 +148,14 @@ impl Store {
         &mut self,
         operation: u64,
     ) -> Result<Option<JournalRecord>, Error> {
+        if self.io.root.checkpoint_layout == 2 {
+            let result =
+                checkpoint_v2::lookup(&self.io.dir, self.io.root.checkpoint_v2.as_ref(), operation);
+            if result.is_err() {
+                self.io.poisoned = true;
+            }
+            return result;
+        }
         let result = (|| {
             let mut cursor = self.io.root.checkpoint.clone();
             while let Some(r) = cursor {
@@ -189,6 +201,16 @@ impl Store {
                     break;
                 }
                 rows.push(serde_json::json!({"committed_sequence":self.io.root.sequence-self.engine.journal().len()as u64+i as u64+1,"record":record}));
+            }
+            if self.io.root.checkpoint_layout == 2 {
+                checkpoint_v2::rows(
+                    &self.io.dir,
+                    self.io.root.checkpoint_v2.as_ref(),
+                    &mut skipped,
+                    limit,
+                    &mut rows,
+                )?;
+                return Ok((rows, total));
             }
             let mut cursor = self.io.root.checkpoint.clone();
             while rows.len() < limit {
@@ -253,6 +275,9 @@ impl Store {
         mut observer: impl FnMut(CheckpointPoint) -> io::Result<()>,
     ) -> Result<(), Error> {
         self.engine()?;
+        if self.io.root.checkpoint_layout == 2 {
+            return self.checkpoint_v2(emergency, observer);
+        }
         let result = (|| {
             let generation = self
                 .io

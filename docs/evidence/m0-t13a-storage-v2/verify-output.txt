@@ -1,0 +1,20 @@
+{
+  "source_sha256": "172d3ddde6b64b26e38d808470fd89353d12eb13667977dfd66a0aa75e883b07",
+  "same_full_initial_fields_and_all_88_original_receipts": true,
+  "full_30_day_checkpoint_fields_equal": true,
+  "raw_encoding_order_changed": true,
+  "borrowed_v1_completed_saves": 19,
+  "v2_completed_saves": 96,
+  "v2_final_actual_bytes": 3872163,
+  "v2_retained_world_generations": [
+    183,
+    184
+  ],
+  "v2_permanent_receipt_segments": 1,
+  "gate": "paused_storage_lower_bound_passed_only",
+  "real_business_96_saves": "not_run",
+  "steady": "not_run",
+  "eight_hour": "not_run",
+  "real_16gb": "not_run",
+  "full_M0": "not_accepted"
+}

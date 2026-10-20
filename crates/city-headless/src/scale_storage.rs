@@ -22,11 +22,22 @@ fn checkpoint_hash(s: &Store) -> Result<String, String> {
 /// Repeated paused-world saves are a LOWER bound: no daily growth, no Sim/IPC,
 /// no business playback. Failure here cannot be reported as 96-save acceptance.
 pub fn run(dir: &Path) -> Result<Value, String> {
+    run_inner(dir, false)
+}
+pub fn run_v2(dir: &Path) -> Result<Value, String> {
+    run_inner(dir, true)
+}
+fn run_inner(dir: &Path, v2: bool) -> Result<Value, String> {
     fs::create_dir(dir).map_err(err)?;
     let world = dir.join("world");
     let mut events = File::create(dir.join("events.jsonl")).map_err(err)?;
     let started = Instant::now();
-    let mut store = Store::create_spatial(
+    let create = if v2 {
+        Store::create_spatial_v2
+    } else {
+        Store::create_spatial
+    };
+    let mut store = create(
         &world,
         scale_reference::OPENING,
         scale_reference::resources()?,
@@ -156,7 +167,7 @@ pub fn run(dir: &Path) -> Result<Value, String> {
         }
     }
     events.sync_all().map_err(err)?;
-    let report = json!({"schema":"mycity-full-storage-growth-lower-bound-v1","source_sha256":env!("MYCITY_SOURCE_SHA256"),"opening_sha256":sha256(scale_reference::OPENING),"policy_sha256":sha256(scale_reference::POLICY),"full_initial_accounts":64,"full_initial_stocks":128,"payroll":64,"claims":20000,"engine_checkpoint_bytes":engine_bytes,"initialization_seconds":initialized_seconds,"wall_seconds":started.elapsed().as_secs_f64(),"original_engine_checkpoint_sha256":original,"committed_startup_commands":sequence,"requested_saves":96,"completed_saves":saves.len(),"saves":saves,"cold_samples":cold_samples,"rejected_save":failed,"final_state_equal":checkpoint_hash(&store)?==original,"final_status":store.checkpoint_status().map_err(err)?,"business_time_advanced":false,"scope":"paused full initial world; lower bound, not full L2 business/IPC, no fabricated throughput acceptance","ninety_six_save_gate":if saves.len()==96 { "storage_lower_bound_only" } else { "failed_lower_bound" },"eight_hour_gate":"not_run","memory_16gb_gate":"not_run","full_M0":"not_accepted"});
+    let report = json!({"schema":"mycity-full-storage-growth-lower-bound-v1","checkpoint_layout":if v2 {2} else {1},"source_sha256":env!("MYCITY_SOURCE_SHA256"),"opening_sha256":sha256(scale_reference::OPENING),"policy_sha256":sha256(scale_reference::POLICY),"full_initial_accounts":64,"full_initial_stocks":128,"payroll":64,"claims":20000,"engine_checkpoint_bytes":engine_bytes,"initialization_seconds":initialized_seconds,"wall_seconds":started.elapsed().as_secs_f64(),"original_engine_checkpoint_sha256":original,"committed_startup_commands":sequence,"requested_saves":96,"completed_saves":saves.len(),"saves":saves,"cold_samples":cold_samples,"rejected_save":failed,"final_state_equal":checkpoint_hash(&store)?==original,"final_status":store.checkpoint_status().map_err(err)?,"business_time_advanced":false,"scope":"paused full initial world; lower bound, not full L2 business/IPC, no fabricated throughput acceptance","ninety_six_save_gate":if saves.len()==96 { "storage_lower_bound_only" } else { "failed_lower_bound" },"eight_hour_gate":"not_run","memory_16gb_gate":"not_run","full_M0":"not_accepted"});
     fs::write(
         dir.join("report.json"),
         serde_json::to_vec_pretty(&report).map_err(err)?,

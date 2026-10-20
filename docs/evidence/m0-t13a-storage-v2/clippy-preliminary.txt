@@ -1,0 +1,17 @@
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+    Checking mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+    Checking mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+error: this boolean expression can be simplified
+   --> crates/city-storage/src/checkpoint_v2.rs:274:13
+    |
+274 |             !r.is_some_and(|r| r.generation == g)
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: try: `r.is_none_or(|r| r.generation != g)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#nonminimal_bool
+    = note: `-D clippy::nonminimal-bool` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::nonminimal_bool)]`
+
+error: could not compile `mycity-storage` (lib test) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `mycity-storage` (lib) due to 1 previous error

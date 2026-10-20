@@ -122,3 +122,6 @@ v0.5.32执行T13A-1b：[完整L1布局、连续快照与有界观测](evidence/m
 
 
 v0.5.33的[真实满级Store增长下界](evidence/m0-t13a-storage/STATUS.md)在第20次保存实际容量拒绝，96保存门为failed_lower_bound；不以单次冷开小于10秒冒充经营／联合性能通过。[格式修复范围](m0-scale-checkpoint-format.md)区分永久原票与历史World及当前恢复，不放宽原保存／16GB门。
+
+
+v0.5.34[存档增长修复](evidence/m0-t13a-storage-v2/STATUS.md)：同完整输入v2完成96次暂停保存，原票永久保留、两份Engine历史图像轮转，旧v1仍可打开且未自动迁移。此门只为paused_storage_lower_bound_passed；真实经营／Sim IPC／多Receipt段增长、联合内存及全部长时门仍需测，不用3.69MiB常量外推8h。

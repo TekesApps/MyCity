@@ -1,0 +1,11 @@
+{
+  "release_workspace_tests_passed": 251,
+  "fmt": "passed",
+  "clippy": "passed",
+  "paused_96_saves": "passed_lower_bound_only",
+  "legacy_v1_actual_read": "passed",
+  "full_30_day_all_checkpoint_fields": "equal",
+  "eight_hour": "not_run",
+  "real_16gb": "not_run",
+  "full_M0": "not_accepted"
+}

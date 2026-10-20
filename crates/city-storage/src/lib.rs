@@ -13,6 +13,7 @@ mod query;
 pub use outbox::{SourcePoint, SourceStatus};
 pub use query::{Page, Query};
 mod checkpoint;
+mod checkpoint_v2;
 pub use capacity::{CapacityPolicy, CapacityStatus};
 mod spatial;
 pub use checkpoint::{CheckpointPoint, CheckpointStatus};
@@ -82,11 +83,16 @@ pub enum WritePoint {
     Applied,
 }
 
+fn is_zero(n: &u8) -> bool {
+    *n == 0
+}
 #[derive(Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 struct Genesis {
     schema: String,
     rules_identity: String,
+    #[serde(default, skip_serializing_if = "is_zero")]
+    checkpoint_layout: u8,
     opening: Vec<u8>,
     resources: Vec<Resource>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -105,6 +111,10 @@ struct Root {
     #[serde(default)]
     worker_cache_bytes: u64,
     checkpoint: Option<checkpoint::Reference>,
+    #[serde(default, skip_serializing_if = "is_zero")]
+    checkpoint_layout: u8,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    checkpoint_v2: Option<checkpoint_v2::Reference>,
     segment: u64,
     wal_end: u64,
     wal_chain: String,
@@ -222,7 +232,7 @@ impl Store {
         resources: Vec<Resource>,
         rules_identity: &str,
     ) -> Result<Self, Error> {
-        Self::create_internal(dir, opening, resources, rules_identity, None, |_| Ok(()))
+        Self::create_internal(dir, opening, resources, rules_identity, None, 0, |_| Ok(()))
     }
     pub fn create_spatial(
         dir: &Path,
@@ -257,7 +267,27 @@ impl Store {
             resources,
             rules_identity,
             Some(bundle),
+            0,
             observer,
+        )
+    }
+    /// Explicit new-world format selection. Existing worlds never upgrade implicitly.
+    pub fn create_spatial_v2(
+        dir: &Path,
+        opening: &[u8],
+        resources: Vec<Resource>,
+        rules_identity: &str,
+        input: &[u8],
+        png: &[u8],
+    ) -> Result<Self, Error> {
+        Self::create_internal(
+            dir,
+            opening,
+            resources,
+            rules_identity,
+            Some((input, png)),
+            2,
+            |_| Ok(()),
         )
     }
     fn create_internal(
@@ -266,6 +296,7 @@ impl Store {
         resources: Vec<Resource>,
         rules_identity: &str,
         bundle: Option<(&[u8], &[u8])>,
+        checkpoint_layout: u8,
         mut observer: impl FnMut(CreatePoint) -> io::Result<()>,
     ) -> Result<Self, Error> {
         if opening.len() as u64 > INPUT_LIMIT
@@ -313,6 +344,7 @@ impl Store {
             }
             .into(),
             rules_identity: rules_identity.into(),
+            checkpoint_layout,
             opening: opening.to_vec(),
             resources,
             spatial: spatial_ref.clone(),
@@ -340,6 +372,8 @@ impl Store {
             background_reserve: None,
             worker_cache_bytes: 0,
             checkpoint: None,
+            checkpoint_layout,
+            checkpoint_v2: None,
             segment: 0,
             wal_end: 0,
             wal_chain: genesis_sha256.clone(),
@@ -424,17 +458,28 @@ impl Store {
             genesis.resources,
         )
         .map_err(|e| Error::Model(format!("{e:?}")))?;
-        let mut engine = if let Some(reference) = &root.checkpoint {
-            let checkpoint = checkpoint::load(dir, reference)?;
-            if checkpoint.sequence > root.sequence
-                || checkpoint.genesis_sha256 != root.genesis_sha256
-            {
+        if root.checkpoint_layout != genesis.checkpoint_layout
+            || !matches!(root.checkpoint_layout, 0 | 2)
+            || root.checkpoint_layout == 0 && root.checkpoint_v2.is_some()
+            || root.checkpoint_layout == 2 && root.checkpoint.is_some()
+        {
+            return Err(Error::Invalid("checkpoint_layout_binding"));
+        }
+        let (mut engine, mut sequence, mut chain) = if let Some(reference) = &root.checkpoint_v2 {
+            checkpoint_v2::open(dir, reference, &root.genesis_sha256, root.sequence)?
+        } else if let Some(reference) = &root.checkpoint {
+            let cp = checkpoint::load(dir, reference)?;
+            if cp.sequence > root.sequence || cp.genesis_sha256 != root.genesis_sha256 {
                 return Err(Error::Invalid("checkpoint_boundary"));
             }
             checkpoint::verify_archive(dir, reference, &root.genesis_sha256)?;
-            Engine::restore_checkpoint(&checkpoint.engine).map_err(Error::Model)?
+            (
+                Engine::restore_checkpoint(&cp.engine).map_err(Error::Model)?,
+                cp.sequence,
+                cp.chain,
+            )
         } else {
-            genesis_engine
+            (genesis_engine, 0, root.genesis_sha256.clone())
         };
         outbox::verify(dir, engine.world().view().scope)?;
         let spatial_ref = genesis.spatial;
@@ -453,12 +498,6 @@ impl Store {
             return Err(Error::Invalid("committed_wal_truncated"));
         }
         let mut pos = 0u64;
-        let (mut sequence, mut chain) = if let Some(reference) = &root.checkpoint {
-            let checkpoint = checkpoint::load(dir, reference)?;
-            (checkpoint.sequence, checkpoint.chain)
-        } else {
-            (0, root.genesis_sha256.clone())
-        };
         let mut background_live = Vec::with_capacity(BACKGROUND_LIVE_ASSETS);
         while pos < root.wal_end {
             if root.wal_end - pos < 4 {
@@ -554,6 +593,9 @@ impl Store {
         }
         if cleaned {
             sync_directory(dir)?;
+        }
+        if root.checkpoint_layout == 2 {
+            checkpoint_v2::gc(dir, root.checkpoint_v2.as_ref(), root.segment, |_| Ok(()))?;
         }
         background::gc(dir, &root, &background_live)?;
         wal.seek(SeekFrom::Start(root.wal_end))?;
@@ -870,6 +912,8 @@ impl Persistence {
                 .checked_add(1)
                 .ok_or(Error::Invalid("publication_overflow"))?,
             checkpoint: self.root.checkpoint.clone(),
+            checkpoint_layout: self.root.checkpoint_layout,
+            checkpoint_v2: self.root.checkpoint_v2.clone(),
             segment: self.root.segment,
             wal_end,
             wal_chain: hex(&checksum),

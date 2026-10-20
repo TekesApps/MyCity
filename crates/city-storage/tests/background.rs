@@ -37,7 +37,15 @@ impl Drop for Temp {
     }
 }
 fn create(path: &Path) -> Store {
-    Store::create_spatial(
+    create_mode(path, false)
+}
+fn create_mode(path: &Path, v2: bool) -> Store {
+    let create = if v2 {
+        Store::create_spatial_v2
+    } else {
+        Store::create_spatial
+    };
+    create(
         path,
         include_bytes!("../../../fixtures/m0-exchange-opening.json"),
         [
@@ -97,7 +105,9 @@ fn advance(limit: u16) -> Action {
     }
 }
 fn ready(path: &Path, freight: bool, limit: u16) -> Store {
-    let mut s = create(path);
+    ready_from(create(path), freight, limit)
+}
+fn ready_from(mut s: Store, freight: bool, limit: u16) -> Store {
     if freight {
         apply(
             &mut s,
@@ -773,4 +783,49 @@ fn canonical_accept_rejections_do_not_create_wal_or_cold_failed_receipts() {
     let replay = s.execute(Caller::System, valid).unwrap();
     assert!(replay.has_persistent_receipt);
     assert_eq!(replay.model, receipt.model);
+}
+
+#[test]
+fn v2_staged_asset_checkpoint_reopen_accept_and_gc_preserve_original_receipts() {
+    let t = Temp::new();
+    let mut s = ready_from(create_mode(&t.world(), true), true, 256);
+    let (hash, result) = stage(&mut s);
+    let reserved = s.background_reserve().unwrap();
+    let continuation = s.continuation_status().unwrap();
+    let sequence = s.committed_sequence();
+    let old = s.receipt(1).unwrap().unwrap();
+    s.checkpoint().unwrap();
+    s.checkpoint().unwrap();
+    drop(s);
+    let mut s = Store::open(&t.world(), RULES).unwrap();
+    assert_eq!(s.background_reserve().unwrap(), reserved);
+    assert_eq!(s.continuation_status().unwrap(), continuation);
+    assert_eq!(s.committed_sequence(), sequence);
+    assert!(asset(&t.world(), &hash).exists());
+    let cmd = accept(&s, hash, 1);
+    s.execute(Caller::System, cmd.clone())
+        .unwrap()
+        .model
+        .unwrap();
+    let original = s.receipt(cmd.operation_id).unwrap().unwrap();
+    s.checkpoint().unwrap();
+    s.checkpoint().unwrap();
+    drop(s);
+    let mut s = Store::open(&t.world(), RULES).unwrap();
+    assert_eq!(
+        s.engine().unwrap().background().unwrap().field(),
+        Some(&result)
+    );
+    assert!(!asset(&t.world(), &hash).exists());
+    assert_eq!(
+        serde_json::to_value(s.receipt(1).unwrap()).unwrap(),
+        serde_json::to_value(Some(old)).unwrap()
+    );
+    assert_eq!(
+        serde_json::to_value(s.receipt(cmd.operation_id).unwrap()).unwrap(),
+        serde_json::to_value(Some(original)).unwrap()
+    );
+    let seq = s.committed_sequence();
+    assert!(s.execute(Caller::System, cmd).unwrap().model.is_ok());
+    assert_eq!(s.committed_sequence(), seq);
 }

@@ -318,10 +318,58 @@ impl Engine {
     }
     /// Complete authoritative state, excluding the hot retry window (retained by Store's immutable archive).
     pub fn export_checkpoint(&self) -> Result<Vec<u8>, String> {
-        let mut value = serde_json::to_value(self).map_err(|e| e.to_string())?;
-        value["journal"] = serde_json::json!([]);
-        serde_json::to_vec(&value).map_err(|e| e.to_string())
+        let mut bytes = Vec::new();
+        self.write_checkpoint(&mut bytes)?;
+        Ok(bytes)
     }
+    /// Serialize every authoritative field without allocating a JSON DOM or hot journal copy.
+    /// Storage still binds bytes to its rules/genesis and validates before publication.
+    pub fn write_checkpoint(&self, writer: impl std::io::Write) -> Result<(), String> {
+        #[derive(Serialize)]
+        struct View<'a> {
+            world: &'a World,
+            resources: &'a [Resource],
+            leases: &'a [Option<Lease>],
+            next_token: u64,
+            journal: &'a [JournalRecord],
+            timeline: &'a Option<crate::timeline::Timeline>,
+            background: &'a Option<crate::background::Background>,
+        }
+        struct Bounded<W> {
+            inner: W,
+            bytes: usize,
+        }
+        impl<W: std::io::Write> std::io::Write for Bounded<W> {
+            fn write(&mut self, data: &[u8]) -> std::io::Result<usize> {
+                if data.len() > 4 * 1024 * 1024 - self.bytes {
+                    return Err(std::io::Error::other("checkpoint_byte_limit"));
+                }
+                let n = self.inner.write(data)?;
+                self.bytes += n;
+                Ok(n)
+            }
+            fn flush(&mut self) -> std::io::Result<()> {
+                self.inner.flush()
+            }
+        }
+        serde_json::to_writer(
+            Bounded {
+                inner: writer,
+                bytes: 0,
+            },
+            &View {
+                world: &self.world,
+                resources: &self.resources,
+                leases: &self.leases,
+                next_token: self.next_token,
+                journal: &[],
+                timeline: &self.timeline,
+                background: &self.background,
+            },
+        )
+        .map_err(|e| e.to_string())
+    }
+
     /// Diagnostic comparison of ALL business state. Excludes only hot receipts,
     /// world revision, and background execution metadata (air is compared separately).
     pub fn business_comparison_checkpoint(&self) -> Result<Vec<u8>, String> {

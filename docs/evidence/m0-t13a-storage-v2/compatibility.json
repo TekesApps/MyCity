@@ -1,0 +1,40 @@
+{
+  "all_88_original_receipts_equal": true,
+  "implicit_migration": false,
+  "old_version": "v0.5.33",
+  "sequence": 88,
+  "world_fields_equal": true,
+  "original_file_bytes_unchanged": true,
+  "storage_rlib_sha256": "3de5854537b2409147ad9de12b7f95ac5c33de7416cfc5e7e37c91304347a0c0",
+  "serde_rlib_sha256": "1ba8ac3621dd13973adb5959505650f25ab62098449f9fb147854a2d9c60c5e3",
+  "reader_source_sha256": "26087863f6b3d9876ac90d39943683e6c737112aff74d0e83a2ad76ebc192345",
+  "reader_binary_sha256": "c66b22b7c73a29c8d3e27b1f3f9e358d9ac7fc9f9fcaaa19977aa7c1fea1822d",
+  "current_source_sha256": "172d3ddde6b64b26e38d808470fd89353d12eb13667977dfd66a0aa75e883b07",
+  "compile_command": [
+    "rustc",
+    "--edition=2021",
+    "--crate-name",
+    "mycity_v1_compatibility",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-storage-v2/compatibility.rs",
+    "--extern",
+    "mycity_storage=/Users/frankqin/dev/MyCity/target/release/libmycity_storage.rlib",
+    "--extern",
+    "serde_json=/Users/frankqin/dev/MyCity/target/release/deps/libserde_json-53d8ad5e673e85b4.rlib",
+    "-L",
+    "dependency=/Users/frankqin/dev/MyCity/target/release/deps",
+    "-O",
+    "-o",
+    "/Users/frankqin/dev/MyCity/work/t13a2-v1-compatibility/reader"
+  ],
+  "cargo_command": [
+    "cargo",
+    "build",
+    "-p",
+    "mycity-storage",
+    "--lib",
+    "--release",
+    "--locked",
+    "--offline",
+    "--message-format=json"
+  ]
+}

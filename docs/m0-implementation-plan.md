@@ -248,3 +248,6 @@ v0.5.32的T13A-1b实现[完整L1布局与有界观测](evidence/m0-t13a-layout/S
 
 
 v0.5.33完成T13A-2a[Store增长下界诊断](evidence/m0-t13a-storage/STATUS.md)，实际19保存成功／第20次容量拒绝，96保存未过。下一依赖为[存档格式修复](m0-scale-checkpoint-format.md)，原负载／原票及默认配额对照后，才继续真实L2全源性能和联合长跑。
+
+
+v0.5.34的T13A-2b[拆分World／原票与同满级96保存](evidence/m0-t13a-storage-v2/STATUS.md)实测解决暂停世界增长下界，251项回归及旧档读取通过；不签L2实际经营或8h。下一依赖是为新建满级Sim接入显式v2，装配small／medium／full真实经营与计时，保留8192页、720小时目标及完整账／库存／空气对照，再进入原定稳态和联合长跑。

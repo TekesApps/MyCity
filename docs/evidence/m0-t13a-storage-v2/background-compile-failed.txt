@@ -1,0 +1,35 @@
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+error[E0369]: binary operation `==` cannot be applied to type `Option<JournalRecord>`
+   --> crates/city-storage/tests/background.rs:820:5
+    |
+820 |     assert_eq!(s.receipt(1).unwrap(), Some(old));
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     |
+    |     Option<JournalRecord>
+    |     Option<JournalRecord>
+    |
+note: the foreign item type `JournalRecord` doesn't implement `PartialEq`
+   --> /Users/frankqin/dev/MyCity/crates/city-core/src/transaction.rs:196:1
+    |
+196 | pub struct JournalRecord {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^ not implement `PartialEq`
+    = note: this error originates in the macro `assert_eq` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0369]: binary operation `==` cannot be applied to type `Option<JournalRecord>`
+   --> crates/city-storage/tests/background.rs:821:5
+    |
+821 |     assert_eq!(s.receipt(cmd.operation_id).unwrap(), Some(original));
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     |
+    |     Option<JournalRecord>
+    |     Option<JournalRecord>
+    |
+note: the foreign item type `JournalRecord` doesn't implement `PartialEq`
+   --> /Users/frankqin/dev/MyCity/crates/city-core/src/transaction.rs:196:1
+    |
+196 | pub struct JournalRecord {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^ not implement `PartialEq`
+    = note: this error originates in the macro `assert_eq` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+For more information about this error, try `rustc --explain E0369`.
+error: could not compile `mycity-storage` (test "background") due to 2 previous errors
