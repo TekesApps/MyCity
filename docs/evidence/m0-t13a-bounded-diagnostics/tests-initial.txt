@@ -1,0 +1,48 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+    Finished `release` profile [optimized] target(s) in 13.99s
+     Running unittests src/lib.rs (target/release/deps/mycity_headless-50f2d753a50ef36d)
+
+running 22 tests
+test control_data::tests::bill_is_exactly_256kib ... ok
+test control_data::tests::text_rejects_before_copying_and_round_trips_unicode ... ok
+test diagnostic_contract::tests::total_stays_eight_mib ... ok
+test control_data::tests::leases_reject_overlap_and_return_on_unwind ... ok
+test layout_load::tests::eight_hour_snapshot_summaries_do_not_retain_file_trees ... ok
+test scale_metrics::tests::compact_bucket_refuses_overflow_without_corrupting_quantile_or_count ... ok
+test layout_load::tests::external_component_reservation_rejects_oversize_before_allocation ... ok
+test scale_metrics::tests::inactive_histograms_allocate_no_bins ... ok
+test scale_metrics::tests::quantile_does_not_hide_tail_or_sparse_class ... ok
+test scale_sim::buffer_tests::diagnostic_buffer_refuses_growth_before_limit_and_keeps_previous_bytes ... ok
+test scale_sim::buffer_tests::golden_line_reader_is_bounded_before_allocation_and_rejects_truncation ... ok
+test layout_load::tests::real_cow_releases_placeholder_before_copy_and_preserves_snapshot ... ok
+test cpu_log::tests::instance_creation_does_not_retry_io_errors_or_wrap_counter ... ok
+test scale_sim::buffer_tests::streaming_payload_digest_preserves_exact_old_wire_hash_and_length ... ok
+test worker_slots::tests::duplicate_wrong_slot_old_epoch_and_generation_cannot_refund_a_live_slot ... ok
+test worker_slots::tests::read_failure_encoding_failure_and_unwind_restore_touched_balance ... ok
+test worker_slots::tests::exact_capacity_prefix_and_one_byte_overflow_never_grow_or_publish_tail ... ok
+test layout_load::tests::all_stub_counts_widths_population_and_references_are_real_records ... ok
+test cpu_log::tests::reused_pid_and_partial_initialization_skip_existing_directories_atomically ... ok
+test layout_load::tests::restore_rejects_component_reservation_before_loading_any_large_file ... ok
+test cpu_log::tests::failed_transaction_batches_never_fill_success_histogram_and_raw_pages_remain_attempts ... ok
+test cpu_log::tests::same_pid_logs_keep_original_files_and_shared_quota_across_instances ... ok
+
+test result: ok. 22 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+
+     Running tests/scale_model_task.rs (target/release/deps/scale_model_task-459c0cf2e7f4242f)
+
+running 5 tests
+test fingerprint_enforces_the_bound_and_exact_bytes ... ok
+test killed_reference_leaves_no_authoritative_result_or_parent_artifacts ... ok
+test invalid_source_partial_and_old_result_never_authorize_a_task ... ok
+test killing_supervisor_closes_parent_pipe_and_stops_reference_child ... ok
+test streamed_reference_keeps_frozen_small_oracle_and_rejects_corrupted_artifact ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 26.58s
+
+     Running tests/scale_reference.rs (target/release/deps/scale_reference-3d7c68dc357b42e4)
+
+running 1 test
+test full_64_payroll_20000_claims_and_eight_real_deliveries_match_independent_30day_oracle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 23.06s
+

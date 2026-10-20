@@ -1,0 +1,17 @@
+{
+  "status": "preserved_failed_original_joint_attempt",
+  "reason": "system non-normal pressure exceeded 60 seconds",
+  "source_sha256": "71c5cc1f99ad80f197da0cc09943098b7ffab339d23426fd597e954db13e85df",
+  "actual_wall_seconds": 61.0507895,
+  "sample_frames": 245,
+  "all_sample_RSS_sums_verified": true,
+  "swap_net_growth_bytes": 0,
+  "business_launched": false,
+  "normal_exit_heap_footers": "absent_due_to_protective_termination_not_zero",
+  "diagnostic_8MiB_gate": "not_accepted",
+  "full_joint_owned": "not_accepted",
+  "four_speeds": "not_run",
+  "formal_steady": "not_run",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run"
+}

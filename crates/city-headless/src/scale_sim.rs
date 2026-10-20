@@ -281,10 +281,10 @@ pub fn run_measured(dir: &Path, tier: Tier, measured: bool) -> Result<Value, Str
     if measured {
         write_json(
             &dir.join("manifest.json"),
-            &json!({"external_owned_charge_bytes":4*1024*1024,
-            "scope":"conservative diagnostic reservation: one Sim <=3MiB plus one worker <=1MiB; L1 absent; observer separate",
-            "unclosed_diagnostics":["business_driver_whole_heap","model_helper_diagnostics"],
-            "budget_acceptance":"not_accepted_driver_and_helper_fees_unclosed"}),
+            &json!({"external_owned_charge_bytes":crate::diagnostic_contract::SIM+crate::diagnostic_contract::WORKER+crate::diagnostic_contract::DRIVER+crate::diagnostic_contract::HELPER,
+            "component_caps":crate::diagnostic_contract::caps(),
+            "scope":"standalone: Sim2.5 + worker1 + driver1 + helper0.25 MiB; observer separate; model/native/stack separate",
+            "budget_acceptance":"not_accepted_until_measured_component_contracts"}),
         )?;
     }
     let result = run_inner(&dir, tier, measured);
@@ -372,7 +372,7 @@ fn run_inner(dir: &Path, tier: Tier, measured: bool) -> Result<Value, String> {
     let saved = e.call(Command::Status)?;
     e.client.stop()?;
     let before = scale_model_task::run(dir, tier, Mode::BeforeReopen)?;
-    let root = before.root.ok_or("scale_sim_before_root")?;
+    let saved_sequence = before.root.ok_or("scale_sim_before_root")?.sequence;
     let cold_started = Instant::now();
     e.client = spawn(&exe, &world, false, tier, measured)?;
     let ready = e.client.next(Duration::from_secs(35))?;
@@ -420,11 +420,17 @@ fn run_inner(dir: &Path, tier: Tier, measured: bool) -> Result<Value, String> {
     e.call(Command::Checkpoint)?;
     e.client.stop()?;
     let compared = scale_model_task::run(dir, tier, Mode::Compare)?;
-    let final_root = compared.root.ok_or("scale_sim_final_root")?;
+    let stamp = compared.root.ok_or("scale_sim_final_root")?;
+    let root_bytes = read(&dir.join("compare/root.json"), 8192)?;
+    if root_bytes.len() as u64 != stamp.bytes || sha256(&root_bytes) != stamp.sha256.as_str() {
+        return Err("scale_sim_final_root_asset".into());
+    }
+    let final_root: Value = serde_json::from_slice(&root_bytes).map_err(err)?;
+    drop(root_bytes);
     let final_business_sha256 = compared.business_sha256.ok_or("scale_sim_final_business")?;
     e.log.flush().map_err(err)?;
     e.log.get_ref().sync_all().map_err(err)?;
-    let report = json!({"schema":"mycity-t13a-full-sim-assembly-v1","compute_diagnostics_enabled":measured,"source_sha256":env!("MYCITY_SOURCE_SHA256"),"opening_sha256":sha256(tier.opening()),"policy_sha256":sha256(tier.policy()),"oracle_sha256":sha256(tier.oracle()),"tier":tier.name(),"scope":"named_tier_real_30day_sim_worker_v2_store_diagnostic_only","cpu_oracle":oracle,"completed_hour_targets":hours,"verified_drive_targets":e.verified,"actual_worker_windows":e.windows,"attempt_failures":e.failed_attempts,"business_sha256":final_business_sha256,"final_air_sha256":final_air_sha256,"sim_work_wall_seconds_including_ipc_and_persistence":work_seconds,"maximum_complete_drive_seconds":e.max_boundary_seconds,"cold_ready_seconds":cold_seconds,"oldest_receipt_retry":"passed_without_side_effect","complete_final_business_and_air":"passed","cold_complete_image_unchanged":true,"saved_sequence":root["sequence"],"final_root":final_root,"transcript_bytes":e.log_bytes,"performance_acceptance":"not_run","steady_three_runs":"not_run","eight_hour_gate":"not_run","memory_16gb_gate":"not_run","full_M0":"not_accepted"});
+    let report = json!({"schema":"mycity-t13a-full-sim-assembly-v1","compute_diagnostics_enabled":measured,"source_sha256":env!("MYCITY_SOURCE_SHA256"),"opening_sha256":sha256(tier.opening()),"policy_sha256":sha256(tier.policy()),"oracle_sha256":sha256(tier.oracle()),"tier":tier.name(),"scope":"named_tier_real_30day_sim_worker_v2_store_diagnostic_only","cpu_oracle":oracle,"completed_hour_targets":hours,"verified_drive_targets":e.verified,"actual_worker_windows":e.windows,"attempt_failures":e.failed_attempts,"business_sha256":final_business_sha256,"final_air_sha256":final_air_sha256,"sim_work_wall_seconds_including_ipc_and_persistence":work_seconds,"maximum_complete_drive_seconds":e.max_boundary_seconds,"cold_ready_seconds":cold_seconds,"oldest_receipt_retry":"passed_without_side_effect","complete_final_business_and_air":"passed","cold_complete_image_unchanged":true,"saved_sequence":saved_sequence,"final_root":final_root,"transcript_bytes":e.log_bytes,"performance_acceptance":"not_run","steady_three_runs":"not_run","eight_hour_gate":"not_run","memory_16gb_gate":"not_run","full_M0":"not_accepted"});
     write_json(&dir.join("report.json"), &report)?;
     Ok(report)
 }

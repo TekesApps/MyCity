@@ -1,0 +1,14 @@
+{
+  "source_sha256": "71c5cc1f99ad80f197da0cc09943098b7ffab339d23426fd597e954db13e85df",
+  "binary_sha256": "27c5ac574486833dddd73009a38ba6b3cc8a5d01a5be67f602c168c77f0e579e",
+  "source_files_verified": 137,
+  "archived_files_verified": 55,
+  "normal_readiness_span_seconds": 120.21252970799999,
+  "readiness_max_gap_seconds": 5.016467790999997,
+  "large_L1_pressure_payload": "retained_in_ignored_work_with_original_snapshot_index_hashes; not_embedded_in_git",
+  "full_joint_owned": "not_accepted",
+  "formal_steady": "not_run",
+  "four_speeds": "not_run",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run"
+}

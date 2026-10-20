@@ -1,0 +1,18 @@
+{
+  "full_CPU_723_targets_match_v42": true,
+  "full_CPU_engine_bytes_match_v42": true,
+  "all_CPU_report_fields_except_source_and_wall_match_v42": true,
+  "source_sha256": "71c5cc1f99ad80f197da0cc09943098b7ffab339d23426fd597e954db13e85df",
+  "binary_sha256": "27c5ac574486833dddd73009a38ba6b3cc8a5d01a5be67f602c168c77f0e579e",
+  "legacy_archive_sha256": "1ccc2aac1fbdb59ae64c539c7883a7cdee96ace1b026346202693af5f9c46f56",
+  "helper_instance_records": 8,
+  "synthetic_image_chain_comparison": "passed_synthetic_only_not_Store_cold_reopen",
+  "real_Sim_full_30_days": "not_run_this_source",
+  "diagnostic_8MiB_gate": "not_accepted",
+  "external_64MiB_gate": "not_accepted",
+  "performance_gate": "not_run",
+  "eight_hour_gate": "not_run",
+  "memory_16gb_gate": "not_run",
+  "full_M0": "not_accepted"
+}
+

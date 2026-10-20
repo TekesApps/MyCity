@@ -1,0 +1,32 @@
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+    Checking mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+    Checking mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+error: this `map_or` can be simplified
+  --> crates/city-headless/src/heap_meter.rs:74:22
+   |
+74 |           let within = cap.map_or(true, |cap| {
+   |  ______________________^
+75 | |             snapshot()
+76 | |                 .lifetime_peak_requested_bytes
+77 | |                 .saturating_add(TAIL_RESERVED_BYTES)
+78 | |                 <= cap
+79 | |         });
+   | |__________^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#unnecessary_map_or
+   = note: `-D clippy::unnecessary-map-or` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::unnecessary_map_or)]`
+help: use is_none_or instead
+   |
+74 ~         let within = cap.is_none_or(|cap| {
+75 +             snapshot()
+76 +                 .lifetime_peak_requested_bytes
+77 +                 .saturating_add(TAIL_RESERVED_BYTES)
+78 +                 <= cap
+79 ~         });
+   |
+
+error: could not compile `mycity-headless` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `mycity-headless` (lib test) due to 1 previous error

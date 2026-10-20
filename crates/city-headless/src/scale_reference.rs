@@ -211,6 +211,31 @@ pub fn run_observed(
 ) -> Result<(Reference, Value), String> {
     run_tier_observed(Tier::Full, observe)
 }
+// Exact old Value report number semantics without allocating a report subtree.
+struct LegacyField<'a>(&'a mycity_core::air::Report);
+impl Serialize for LegacyField<'_> {
+    fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        use serde::ser::SerializeMap;
+        let r = self.0;
+        let mut m = serializer.serialize_map(Some(19))?;
+        macro_rules! fields {($($key:literal:$value:expr),+ $(,)?)=>{$(m.serialize_entry($key,&$value)?;)+};}
+        fields! {"background":r.background,"boundary_exchange":r.boundary_exchange,"complete":r.complete,"decay":r.decay,
+        "emitted_micro":r.emitted_micro,"field_sha256":r.field_sha256,"input_sha256":r.input_sha256,"integral_sha256":r.integral_sha256,
+        "maximum":f64::from(r.maximum),"minimum":f64::from(r.minimum),"owned_bytes":r.owned_bytes,"progress":r.progress,
+        "rounding_residual":r.rounding_residual,"side":r.side,"steps":r.steps,"strategy":r.strategy,"sum":r.sum,"target":r.target,"time":r.time}
+        m.end()
+    }
+}
+#[derive(Serialize)]
+struct ReferenceCounts {
+    accounts: usize,
+    cities: usize,
+    claims: usize,
+    inflight_peak: usize,
+    payroll: usize,
+    quotes: usize,
+    stocks: usize,
+}
 // Two report destinations share the same model work. The compatibility API
 // builds its original Value directly; the helper streams without a full tree.
 trait ReportSink {
@@ -449,9 +474,9 @@ fn run_tier_report(
     // not a report buffer. Compute it before serializing the bounded report.
     let business_sha256 = joint_reference::business_digest(&r.engine)?;
     // Preserve the old json! report's f32 -> JSON Number(f64) conversion.
-    // This fixed 19-field scalar summary is diagnostic data; the full report
-    // and model arrays remain borrowed/streamed, not a second Value tree.
-    let field = serde_json::to_value(field).map_err(err)?;
+    // The fixed 19-field adapter borrows scalar data and widens extrema;
+    // no diagnostic Value subtree or complete report tree is constructed.
+    let field = LegacyField(&field);
     macro_rules! report_fields {
         ($($key:literal: $value:expr),+ $(,)?) => {
             $(report.field($key, &$value)?;)+
@@ -462,7 +487,7 @@ fn run_tier_report(
         "opening_sha256": mycity_core::sha256(tier.opening()),
         "policy_sha256": mycity_core::sha256(tier.policy()), "oracle_sha256": mycity_core::sha256(tier.oracle()),
         "tier": tier.name(), "scope": "named_tier_direct_cpu_model_only", "work_wall_seconds": started.elapsed().as_secs_f64(),
-        "counts": json!({"accounts":account_count,"stocks":stock_count,"cities":8,"payroll":payroll_count,"claims":claim_count,"quotes":8,"inflight_peak":peak_shipments}),
+        "counts": ReferenceCounts{accounts:account_count,stocks:stock_count,cities:8,payroll:payroll_count,claims:claim_count,quotes:8,inflight_peak:peak_shipments},
         "game_seconds": 30*86400, "completed_hour_targets": completed_hours, "air_windows": r.windows, "field": field,
         "initial_owned_capacity_bytes": initialized_owned, "final_owned_capacity_bytes": r.engine.owned_capacity_bytes(),
         "business_sha256": business_sha256, "cash_accounts": actual_accounts,

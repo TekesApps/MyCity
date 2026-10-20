@@ -34,3 +34,7 @@ pub mod heap_meter;
 pub mod worker_slots;
 
 pub mod scale_model_task;
+
+pub mod control_data;
+
+pub mod diagnostic_contract;

@@ -1,10 +1,10 @@
 //! Independent CPU proof work. These children remain observed model workload;
 //! extracting them never removes their workspaces or diagnostics from the budget.
 use crate::{
+    control_data::{self, joined, Bytes, Capacity, Scratch, Text},
     heap_meter,
     joint_reference::business_digest,
     scale_reference::{self, Step, Tier},
-    scale_sim::image,
 };
 use mycity_core::{read_bounded, sha256, transaction::Engine};
 use serde::{Deserialize, Serialize};
@@ -40,43 +40,121 @@ impl Mode {
 #[derive(Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 struct Request {
-    schema: String,
-    source_sha256: String,
-    tier: String,
-    opening_sha256: String,
-    policy_sha256: String,
-    oracle_sha256: String,
+    schema: Text<64>,
+    source_sha256: Text<64>,
+    tier: Text<8>,
+    opening_sha256: Text<64>,
+    policy_sha256: Text<64>,
+    oracle_sha256: Text<64>,
     mode: Mode,
-    root: PathBuf,
+    root: Text<2048>,
 }
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Artifact {
-    pub name: String,
+    pub name: Text<32>,
     pub bytes: u64,
-    pub sha256: String,
+    pub sha256: Text<64>,
+}
+#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct RootStamp {
+    pub sequence: u64,
+    pub bytes: u64,
+    pub sha256: Text<64>,
 }
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct ResultRecord {
-    schema: String,
-    source_sha256: String,
-    request_sha256: String,
+    schema: Text<64>,
+    source_sha256: Text<64>,
+    request_sha256: Text<64>,
     mode: Mode,
-    tier: String,
+    tier: Text<8>,
     pub pid: u32,
     pub instance_unix_ns: u128,
-    pub artifacts: Vec<Artifact>,
-    pub image_sha256: Option<String>,
-    pub business_sha256: Option<String>,
-    pub root: Option<serde_json::Value>,
-    diagnostic_budget_acceptance: String,
+    pub artifacts: [Option<Artifact>; 3],
+    pub image_sha256: Option<Text<64>>,
+    pub business_sha256: Option<Text<64>>,
+    pub root: Option<RootStamp>,
+    diagnostic_budget_acceptance: Text<64>,
+    pub diagnostic_capacity: Capacity,
+}
+#[derive(Deserialize)]
+struct Current {
+    slot: u8,
+    root_sha256: Text<64>,
+}
+#[derive(Deserialize)]
+struct Point {
+    generation: u64,
+    sha256: Text<64>,
+}
+#[derive(Deserialize)]
+struct Root {
+    sequence: u64,
+    checkpoint_layout: u8,
+    checkpoint_v2: Point,
+}
+#[derive(Deserialize)]
+struct ImagePoint {
+    generation: u64,
+    sequence: u64,
+    bytes: u64,
+    sha256: Text<64>,
+}
+#[derive(Deserialize)]
+struct Index {
+    current: ImagePoint,
+}
+fn checked_image(world: &Path) -> Result<(Vec<u8>, Bytes, RootStamp), String> {
+    let current: Current = control_data::parse(&joined(world, "CURRENT.json")?)?;
+    if current.slot > 1 {
+        return Err("scale_sim_root_slot".into());
+    }
+    let root_bytes = Bytes::read(&joined(world, &format!("root-{}.json", current.slot))?)?;
+    if sha256(root_bytes.as_slice()) != current.root_sha256.as_str() {
+        return Err("scale_sim_root_hash".into());
+    }
+    let root: Root = control_data::decode(root_bytes.as_slice())?;
+    if root.checkpoint_layout != 2 {
+        return Err("scale_sim_layout".into());
+    }
+    let index_bytes = Bytes::read(&joined(
+        world,
+        &format!("world-index-{}.json", root.checkpoint_v2.generation),
+    )?)?;
+    if sha256(index_bytes.as_slice()) != root.checkpoint_v2.sha256.as_str() {
+        return Err("scale_sim_manifest_hash".into());
+    }
+    let index: Index = control_data::decode(index_bytes.as_slice())?;
+    if index.current.generation != root.checkpoint_v2.generation
+        || index.current.sequence != root.sequence
+    {
+        return Err("scale_sim_not_at_saved_boundary".into());
+    }
+    drop(index_bytes);
+    let bytes = read(
+        &joined(world, &format!("world-{}.json", index.current.generation))?,
+        FILE_LIMIT,
+    )?;
+    if bytes.len() as u64 != index.current.bytes || sha256(&bytes) != index.current.sha256.as_str()
+    {
+        return Err("scale_sim_world_hash".into());
+    }
+    let stamp = RootStamp {
+        sequence: root.sequence,
+        bytes: root_bytes.as_slice().len() as u64,
+        sha256: Text::new(&sha256(root_bytes.as_slice()))?,
+    };
+    Ok((bytes, root_bytes, stamp))
 }
 fn read(path: &Path, limit: u64) -> Result<Vec<u8>, String> {
     read_bounded(File::open(path).map_err(err)?, limit).map_err(err)
 }
 /// Fixed stack readback; limits are enforced before accepting the artifact.
 pub fn fingerprint(path: &Path, limit: u64) -> Result<(u64, String), String> {
+    let _scratch = Scratch::hash()?;
     let mut f = File::open(path).map_err(err)?;
     let mut hash = Sha256::new();
     let mut buffer = [0; 65536];
@@ -121,78 +199,87 @@ fn publish(
     limit: u64,
     write: impl FnOnce(&mut BoundedFile) -> Result<(), String>,
 ) -> Result<(), String> {
-    let tmp = dir.join(format!("{name}.tmp"));
+    let tmp = joined(dir, &format!("{name}.tmp"))?;
     let mut output = BoundedFile {
-        file: File::create_new(&tmp).map_err(err)?,
+        file: File::create_new(&*tmp).map_err(err)?,
         bytes: 0,
         limit,
     };
     write(&mut output)?;
     output.flush().map_err(err)?;
     output.file.sync_all().map_err(err)?;
-    fs::hard_link(&tmp, dir.join(name)).map_err(err)?;
-    fs::remove_file(tmp).map_err(err)?;
+    fs::hard_link(&*tmp, &*joined(dir, name)?).map_err(err)?;
+    fs::remove_file(&*tmp).map_err(err)?;
     File::open(dir).map_err(err)?.sync_all().map_err(err)
 }
 fn artifact(dir: &Path, name: &str) -> Result<Artifact, String> {
     let (bytes, sha256) = fingerprint(
-        &dir.join(name),
-        if name == "cpu-report.json" {
+        &joined(dir, name)?,
+        if name == "root.json" {
+            8192
+        } else if name == "cpu-report.json" {
             65536
         } else {
             FILE_LIMIT
         },
     )?;
     Ok(Artifact {
-        name: name.into(),
+        name: Text::new(name)?,
         bytes,
-        sha256,
+        sha256: Text::new(&sha256)?,
     })
 }
 fn request(dir: &Path) -> Result<(Request, String, Tier), String> {
-    let bytes = read(&dir.join("request.json"), 8192)?;
-    let r: Request = serde_json::from_slice(&bytes).map_err(err)?;
-    let tier = Tier::parse(&r.tier)?;
-    if r.schema != "mycity-model-task-request-v1"
-        || r.source_sha256 != SOURCE
-        || r.opening_sha256 != sha256(tier.opening())
-        || r.policy_sha256 != sha256(tier.policy())
-        || r.oracle_sha256 != sha256(tier.oracle())
-        || !r.root.is_absolute()
-        || r.root.canonicalize().map_err(err)? != r.root
-        || dir.parent() != Some(r.root.as_path())
+    let bytes = Bytes::read(&joined(dir, "request.json")?)?;
+    let r: Request = control_data::decode(bytes.as_slice())?;
+    let tier = Tier::parse(r.tier.as_str())?;
+    let decoded = control_data::root_decode(r.root.as_str())?;
+    let root = Path::new(decoded.as_str());
+    if r.schema.as_str() != "mycity-model-task-request-v2"
+        || r.source_sha256.as_str() != SOURCE
+        || r.opening_sha256.as_str() != sha256(tier.opening())
+        || r.policy_sha256.as_str() != sha256(tier.policy())
+        || r.oracle_sha256.as_str() != sha256(tier.oracle())
+        || !root.is_absolute()
+        || root.canonicalize().map_err(err)? != root
+        || dir.parent() != Some(root)
         || dir.file_name().and_then(|s| s.to_str()) != Some(r.mode.name())
     {
         return Err("model_task_request_identity".into());
     }
-    Ok((r, sha256(&bytes), tier))
+    Ok((r, sha256(bytes.as_slice()), tier))
 }
 /// CLI-internal entry. No result is published until all original proof work passes.
 pub fn execute(dir: &Path) -> Result<(), String> {
     let dir = dir.canonicalize().map_err(err)?;
     let (r, request_sha256, tier) = request(&dir)?;
-    if dir.join("result.json").exists() {
+    if joined(&dir, "result.json")?.exists() {
         return Err("model_task_result_exists".into());
     }
     let mut result = ResultRecord {
-        schema: "mycity-model-task-result-v1".into(),
-        source_sha256: SOURCE.into(),
-        request_sha256,
+        schema: Text::new("mycity-model-task-result-v2")?,
+        source_sha256: Text::new(SOURCE)?,
+        request_sha256: Text::new(&request_sha256)?,
         mode: r.mode,
-        tier: r.tier.clone(),
+        tier: r.tier,
         pid: std::process::id(),
         instance_unix_ns: heap_meter::process_instance(),
-        artifacts: Vec::new(),
+        artifacts: [None; 3],
         image_sha256: None,
         business_sha256: None,
         root: None,
-        diagnostic_budget_acceptance: "not_accepted_separate_owner_closure_required".into(),
+        diagnostic_budget_acceptance: Text::new("fixed-control-v2-not-global-acceptance")?,
+        diagnostic_capacity: control_data::capacity(),
     };
     match r.mode {
         Mode::Reference => {
             let mut reference = None;
             publish(&dir, "cpu-targets.jsonl", FILE_LIMIT, |golden_file| {
+                let _scratch = Scratch::golden()?;
                 let mut golden = BufWriter::with_capacity(65536, golden_file);
+                if golden.capacity() != 65536 {
+                    return Err("model_golden_capacity".into());
+                }
                 publish(&dir, "cpu-report.json", 65536, |report| {
                     reference = Some(scale_reference::run_tier_streamed(
                         tier,
@@ -203,7 +290,19 @@ pub fn execute(dir: &Path) -> Result<(), String> {
                                     .background()
                                     .and_then(|b| b.field())
                                     .ok_or("scale_sim_cpu_field")?;
-                                let row = serde_json::json!({"target":target,"business_sha256":business_digest(&state.engine)?,"air_sha256":sha256(&air.checkpoint()?),"windows":state.windows});
+                                #[derive(Serialize)]
+                                struct Target {
+                                    air_sha256: String,
+                                    business_sha256: String,
+                                    target: u64,
+                                    windows: u64,
+                                }
+                                let row = Target {
+                                    air_sha256: sha256(&air.checkpoint()?),
+                                    business_sha256: business_digest(&state.engine)?,
+                                    target: *target,
+                                    windows: state.windows,
+                                };
                                 serde_json::to_writer(&mut golden, &row).map_err(err)?;
                                 golden.write_all(b"\n").map_err(err)?;
                             }
@@ -220,28 +319,35 @@ pub fn execute(dir: &Path) -> Result<(), String> {
                 file.write_all(&reference.engine.export_checkpoint()?)
                     .map_err(err)
             })?;
-            for name in [
+            for (slot, name) in result.artifacts.iter_mut().zip([
                 "cpu-targets.jsonl",
                 "cpu-report.json",
                 "cpu-final-engine.json",
-            ] {
-                result.artifacts.push(artifact(&dir, name)?);
+            ]) {
+                *slot = Some(artifact(&dir, name)?);
             }
         }
         Mode::BeforeReopen | Mode::Compare => {
-            let (bytes, root) = image(&r.root.join("world"))?;
-            result.image_sha256 = Some(sha256(&bytes));
-            result.root = Some(root);
+            let decoded = control_data::root_decode(r.root.as_str())?;
+            let root = Path::new(decoded.as_str());
+            let (bytes, root_bytes, stamp) = checked_image(&joined(root, "world")?)?;
+            result.image_sha256 = Some(Text::new(&sha256(&bytes))?);
+            publish(&dir, "root.json", 8192, |file| {
+                file.write_all(root_bytes.as_slice()).map_err(err)
+            })?;
+            drop(root_bytes);
+            result.root = Some(stamp);
+            result.artifacts[0] = Some(artifact(&dir, "root.json")?);
             if r.mode == Mode::Compare {
-                let before = validate(&r.root.join(Mode::BeforeReopen.name()))?;
+                let before = validate(&joined(root, Mode::BeforeReopen.name())?)?;
                 if before.image_sha256 != result.image_sha256 {
                     return Err("scale_sim_saved_image_changed".into());
                 }
-                validate(&r.root.join(Mode::Reference.name()))?;
+                validate(&joined(root, Mode::Reference.name())?)?;
                 let actual = Engine::restore_checkpoint(&bytes)?;
                 drop(bytes);
                 let expected = Engine::restore_checkpoint(&read(
-                    &r.root.join("reference/cpu-final-engine.json"),
+                    &joined(root, "reference/cpu-final-engine.json")?,
                     FILE_LIMIT,
                 )?)?;
                 if actual.business_comparison_checkpoint()?
@@ -259,27 +365,30 @@ pub fn execute(dir: &Path) -> Result<(), String> {
                 {
                     return Err("scale_sim_full_final_comparison".into());
                 }
-                result.business_sha256 = Some(business_digest(&actual)?);
+                result.business_sha256 = Some(Text::new(&business_digest(&actual)?)?);
             }
         }
     }
-    publish(&dir, "result.json", 65536, |file| {
+    if !control_data::idle() {
+        return Err("model_task_control_owner_not_returned".into());
+    }
+    result.diagnostic_capacity = control_data::capacity();
+    publish(&dir, "result.json", 8192, |file| {
         serde_json::to_writer(file, &result).map_err(err)
     })
 }
 /// Check source, request, exact artifact list, sizes and hashes after a successful exit.
 pub fn validate(dir: &Path) -> Result<ResultRecord, String> {
     let (r, digest, _) = request(dir)?;
-    let result: ResultRecord =
-        serde_json::from_slice(&read(&dir.join("result.json"), 65536)?).map_err(err)?;
-    if result.schema != "mycity-model-task-result-v1"
-        || result.source_sha256 != SOURCE
-        || result.request_sha256 != digest
+    let result: ResultRecord = control_data::parse(&joined(dir, "result.json")?)?;
+    if result.schema.as_str() != "mycity-model-task-result-v2"
+        || result.source_sha256.as_str() != SOURCE
+        || result.request_sha256.as_str() != digest
         || result.mode != r.mode
         || result.tier != r.tier
         || result.pid == 0
         || result.instance_unix_ns == 0
-        || result.diagnostic_budget_acceptance != "not_accepted_separate_owner_closure_required"
+        || result.diagnostic_budget_acceptance.as_str() != "fixed-control-v2-not-global-acceptance"
     {
         return Err("model_task_result_identity".into());
     }
@@ -289,18 +398,50 @@ pub fn validate(dir: &Path) -> Result<ResultRecord, String> {
             "cpu-report.json",
             "cpu-final-engine.json",
         ],
-        _ => &[],
+        _ => &["root.json"],
     };
-    if result.artifacts.len() != names.len() {
-        return Err("model_task_artifact_list".into());
-    }
-    for (a, name) in result.artifacts.iter().zip(names) {
-        if a.name != *name {
+    for (index, slot) in result.artifacts.iter().enumerate() {
+        if index >= names.len() {
+            if slot.is_some() {
+                return Err("model_task_artifact_list".into());
+            }
+            continue;
+        }
+        let a = slot.as_ref().ok_or("model_task_artifact_list")?;
+        let name = names[index];
+        if a.name.as_str() != name {
             return Err("model_task_artifact_name".into());
         }
         let expected = artifact(dir, name)?;
         if a.bytes != expected.bytes || a.sha256 != expected.sha256 {
             return Err("model_task_artifact_integrity".into());
+        }
+    }
+    let bill = &result.diagnostic_capacity;
+    let expected = control_data::capacity();
+    if bill.limit_bytes != expected.limit_bytes
+        || bill.control_slots_bytes != expected.control_slots_bytes
+        || bill.parser_error_scratch_bytes != expected.parser_error_scratch_bytes
+        || bill.paths_and_metadata_bytes != expected.paths_and_metadata_bytes
+        || bill.golden_or_hash_bytes != expected.golden_or_hash_bytes
+        || bill.exit_tail_bytes != expected.exit_tail_bytes
+        || bill.usage.control_peak_owners > 3
+        || bill.usage.path_peak_owners > 3
+        || bill.usage.golden_peak_owners > 1
+        || bill.usage.hash_peak_owners > 1
+    {
+        return Err("model_task_capacity_contract".into());
+    }
+    if let Some(stamp) = result.root {
+        let root_bytes = Bytes::read(&joined(dir, "root.json")?)?;
+        if stamp.bytes != root_bytes.as_slice().len() as u64
+            || stamp.sha256.as_str() != sha256(root_bytes.as_slice())
+        {
+            return Err("model_task_root_asset".into());
+        }
+        let root: Root = control_data::decode(root_bytes.as_slice())?;
+        if root.sequence != stamp.sequence {
+            return Err("model_task_root_sequence".into());
         }
     }
     match r.mode {
@@ -309,13 +450,16 @@ pub fn validate(dir: &Path) -> Result<ResultRecord, String> {
                 && result.business_sha256.is_none()
                 && result.root.is_none() => {}
         Mode::BeforeReopen | Mode::Compare
-            if result.image_sha256.as_ref().is_some_and(|s| s.len() == 64)
+            if result
+                .image_sha256
+                .as_ref()
+                .is_some_and(|s| s.as_str().len() == 64)
                 && result.root.is_some()
                 && match r.mode {
                     Mode::Compare => result
                         .business_sha256
                         .as_ref()
-                        .is_some_and(|s| s.len() == 64),
+                        .is_some_and(|s| s.as_str().len() == 64),
                     _ => result.business_sha256.is_none(),
                 } => {}
         _ => return Err("model_task_result_shape".into()),
@@ -336,14 +480,14 @@ pub fn prepare(root: &Path, tier: Tier, mode: Mode) -> Result<PathBuf, String> {
     let dir = root.join(mode.name());
     fs::create_dir(&dir).map_err(err)?;
     let r = Request {
-        schema: "mycity-model-task-request-v1".into(),
-        source_sha256: SOURCE.into(),
-        tier: tier.name().into(),
-        opening_sha256: sha256(tier.opening()),
-        policy_sha256: sha256(tier.policy()),
-        oracle_sha256: sha256(tier.oracle()),
+        schema: Text::new("mycity-model-task-request-v2")?,
+        source_sha256: Text::new(SOURCE)?,
+        tier: Text::new(tier.name())?,
+        opening_sha256: Text::new(&sha256(tier.opening()))?,
+        policy_sha256: Text::new(&sha256(tier.policy()))?,
+        oracle_sha256: Text::new(&sha256(tier.oracle()))?,
         mode,
-        root,
+        root: control_data::root_encode(&root)?,
     };
     publish(&dir, "request.json", 8192, |f| {
         serde_json::to_writer(f, &r).map_err(err)
@@ -399,8 +543,8 @@ pub fn run(root: &Path, tier: Tier, mode: Mode) -> Result<ResultRecord, String> 
     }
     // Preserve the original public artifact paths; publication never overwrites.
     if mode == Mode::Reference {
-        for a in &result.artifacts {
-            fs::hard_link(dir.join(&a.name), root.join(&a.name)).map_err(err)?;
+        for a in result.artifacts.iter().flatten() {
+            fs::hard_link(dir.join(a.name.as_str()), root.join(a.name.as_str())).map_err(err)?;
         }
         File::open(root).map_err(err)?.sync_all().map_err(err)?;
     }
@@ -432,3 +576,14 @@ pub fn reference_probe(dir: &Path, tier: Tier) -> Result<ResultRecord, String> {
     fs::create_dir(dir).map_err(err)?;
     run(dir, tier, Mode::Reference)
 }
+
+// Diagnostic control frames and path conversion reserve are distinct. Fixed
+// metadata must remain within the 16KiB part of the 64KiB metadata/path bill.
+const _: () = assert!(
+    std::mem::size_of::<Request>() * 2
+        + std::mem::size_of::<ResultRecord>() * 3
+        + std::mem::size_of::<Root>() * 3
+        + std::mem::size_of::<Index>() * 2
+        + 4096
+        <= 16 * 1024
+);

@@ -285,9 +285,9 @@ impl CpuLog {
             return Err(e.clone());
         }
         let cap = if self.producer == "worker" {
-            1024 * 1024
+            crate::diagnostic_contract::WORKER
         } else {
-            3 * 1024 * 1024
+            crate::diagnostic_contract::SIM
         };
         if self.owned_bytes().saturating_add(256 * 1024) > cap {
             return Err("cpu_producer_hot_quota".into());

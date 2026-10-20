@@ -66,8 +66,24 @@ impl Recorder {
         }
     }
     pub fn finish(&self, success: bool) -> Result<(), String> {
+        let cap = match self.role.as_str() {
+            "scale-sim-probe" => Some(crate::diagnostic_contract::DRIVER),
+            "joint-budget-probe" => Some(crate::diagnostic_contract::SUPERVISOR),
+            _ => None,
+        };
+        let within = cap.is_none_or(|cap| {
+            snapshot()
+                .lifetime_peak_requested_bytes
+                .saturating_add(TAIL_RESERVED_BYTES)
+                <= cap
+        });
+        let success = success && within;
         let Some(path) = &self.path else {
-            return Ok(());
+            return if within {
+                Ok(())
+            } else {
+                Err("diagnostic_whole_process_heap_cap".into())
+            };
         };
         if !path.is_absolute() {
             return Err("heap_log_absolute_path_required".into());
@@ -87,7 +103,11 @@ impl Recorder {
         let record=Record{schema:"mycity-rust-heap-v1",pid:std::process::id(),instance_unix_ns:self.instance,role:&self.role,source_sha256:env!("MYCITY_SOURCE_SHA256"),success,heap:snapshot(),tail_reserved_bytes:TAIL_RESERVED_BYTES,scope:"Rust heap through final record construction; 64KiB tail reserved, not exact exit peak; realloc copies counted; no reset; native/stack/mapped/foreign excluded"};
         serde_json::to_writer(&mut file, &record).map_err(|e| e.to_string())?;
         file.write_all(b"\n").map_err(|e| e.to_string())?;
-        file.sync_all().map_err(|e| e.to_string())
+        file.sync_all().map_err(|e| e.to_string())?;
+        if !within {
+            return Err("diagnostic_whole_process_heap_cap".into());
+        }
+        Ok(())
     }
 }
 

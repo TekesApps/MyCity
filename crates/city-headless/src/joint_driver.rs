@@ -168,14 +168,14 @@ struct Witness {
 #[derive(Serialize)]
 struct Manifest {
     external_owned_charge_bytes: usize,
-    component_caps_bytes: [usize; 4],
+    component_caps_bytes: [usize; 6],
     scope: &'static str,
 }
 #[derive(Serialize)]
 struct Report {
     schema: &'static str,
     source_sha256: &'static str,
-    diagnostic_component_caps_bytes: [usize; 5],
+    diagnostic_component_caps_bytes: [usize; 7],
     l1_charged_bound_bytes: usize,
     supervisor_requested_heap_peak_bytes: usize,
     whole_ns: u64,
@@ -190,7 +190,7 @@ pub fn run(dir: &Path) -> Result<(), String> {
     fs::create_dir(dir).map_err(err)?;
     let dir = dir.canonicalize().map_err(err)?;
     let mib = 1024 * 1024;
-    save(&dir.join("manifest.json"),&Manifest{external_owned_charge_bytes:6*mib,component_caps_bytes:[3*mib,mib,mib,mib],scope:"Sim3 + worker1 + L1 diagnostics1 + Rust supervisor1 MiB; observer has separate2; external normal-owned remains unproven"})?;
+    save(&dir.join("manifest.json"),&Manifest{external_owned_charge_bytes:6*mib,component_caps_bytes:[crate::diagnostic_contract::SIM,mib,mib,mib/4,mib,mib/4],scope:"Sim2.5 + worker1 + L1 diagnostics1 + supervisor0.25 + driver1 + helper0.25 MiB; observer separate2; external normal-owned unproven"})?;
     let mut clock = Clock {
         begin: Instant::now(),
         events: BufWriter::with_capacity(
@@ -348,10 +348,12 @@ pub fn run(dir: &Path) -> Result<(), String> {
         return Err("joint_restore_result".into());
     }
     let supervisor_peak = crate::heap_meter::snapshot().lifetime_peak_requested_bytes;
-    if supervisor_peak + crate::heap_meter::TAIL_RESERVED_BYTES > mib {
+    if supervisor_peak + crate::heap_meter::TAIL_RESERVED_BYTES
+        > crate::diagnostic_contract::SUPERVISOR
+    {
         return Err("joint_supervisor_diagnostic_heap_cap".into());
     }
-    save(&dir.join("report.json"),&Report{schema:"mycity-joint-budget-diagnostic-v1",source_sha256:env!("MYCITY_SOURCE_SHA256"),diagnostic_component_caps_bytes:[3*mib,mib,mib,2*mib,mib],l1_charged_bound_bytes:l.diagnostics.charged_bound_bytes,supervisor_requested_heap_peak_bytes:supervisor_peak,whole_ns:clock.now(),overlap_witness_in_observed_tree:true,scope:"fixed 600s concurrent diagnostic; raw business unchanged; unused external reservation pressure still missing",joint_owned_budget:"not_accepted",steady_gate:"not_run",eight_hour_gate:"not_run",memory_16gb_gate:"not_run"})?;
+    save(&dir.join("report.json"),&Report{schema:"mycity-joint-budget-diagnostic-v1",source_sha256:env!("MYCITY_SOURCE_SHA256"),diagnostic_component_caps_bytes:[crate::diagnostic_contract::SIM,mib,mib,2*mib,mib/4,mib,mib/4],l1_charged_bound_bytes:l.diagnostics.charged_bound_bytes,supervisor_requested_heap_peak_bytes:supervisor_peak,whole_ns:clock.now(),overlap_witness_in_observed_tree:true,scope:"fixed 600s concurrent diagnostic; raw business unchanged; unused external reservation pressure still missing",joint_owned_budget:"not_accepted",steady_gate:"not_run",eight_hour_gate:"not_run",memory_16gb_gate:"not_run"})?;
     clock.events.flush().map_err(err)?;
     clock.events.get_ref().sync_all().map_err(err)
 }

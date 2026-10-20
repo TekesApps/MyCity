@@ -156,3 +156,6 @@ v0.5.43的T13A-3d[worker固定槽及失败实测](evidence/m0-t13a-worker-slots/
 v0.5.44的T13A-3e[模型证明helper与报告兼容](evidence/m0-t13a-model-tasks/STATUS.md)：将CPU参考及完整比较工作从业务驱动分离，helper仍是收费／被观察负载；新增成功退出、工件凭据和父死亡回收。最终full CPU的723目标和完整期末Engine逐字节与v42相同，6项受影响路径及clippy通过。初版全仓、报告兼容失败与后续修复各自留证；最终来源未跑完整Sim，构造image链不算实际Store恢复。当前pressure warning继续阻止正式满压力重试；8MiB、64MiB、四速度、三轮、8h及真实16GB均未签收。
 
 v0.5.45的T13A-3f[原full实际轨迹与诊断费用依据](evidence/m0-t13a-runtime-ledger/STATUS.md)：同v44来源完成730实例、原723目标／724窗口／3011票、全部槽与旧hash及真实Store冷开／整个Engine对CPU；全程316.365秒、业务279.960秒，驱动整堆峰加64KiB尾部600,825B。全程normal／swap净增0，3721原文件全归档；1334次footprint缺测不抹掉。单次standalone不签四档／正式三轮／L1联合／8h；helper诊断／共同8MiB、64MiB实际grant／余额和真实16GB仍未闭合，继续按原依赖实施。
+
+
+v0.5.46的T13A-3g[有界诊断与原联合失败](evidence/m0-t13a-bounded-diagnostics/STATUS.md)：helper v2固定控制槽/字段/三artifact及root资产、共享8MiB候选份额和固定4KiB空气报告hash接入；最终来源全仓293项与clippy/fmt通过，full CPU723目标/完整Engine/参考报告对v42不变。原L1联合在61.051秒因warning持续60.229秒按保护失败，尚未启动业务，245RSS帧/部分工件归档；没有用旧full补本次。共同8MiB实测、64MiB真实grant与触页余额、四档、正式三轮、8h与真实16GB均未签收。先继续常规工作区owner实现，正常准入后补原联合；M0 not_accepted。

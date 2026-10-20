@@ -636,15 +636,25 @@ impl State {
         Ok(state)
     }
     pub fn report(&self) -> Report {
-        let mut hash = Vec::with_capacity(self.field.len() * 4);
-        for b in &self.field {
-            hash.extend(b.to_le_bytes());
+        // Hash the exact old little-endian wire with a fixed 4KiB scratch.
+        // The old integral pass grew a 64KiB Vec to 128KiB while reporting.
+        let mut buffer = [0u8; 4096];
+        let mut field_hash = Sha256::new();
+        for chunk in self.field.chunks(1024) {
+            for (out, value) in buffer.chunks_exact_mut(4).zip(chunk) {
+                out.copy_from_slice(&value.to_le_bytes());
+            }
+            field_hash.update(&buffer[..chunk.len() * 4]);
         }
-        let field_sha256 = sha256(&hash);
-        hash.clear();
-        for b in &self.integral {
-            hash.extend(b.to_le_bytes());
+        let field_sha256 = format!("{:x}", field_hash.finalize());
+        let mut integral_hash = Sha256::new();
+        for chunk in self.integral.chunks(512) {
+            for (out, value) in buffer.chunks_exact_mut(8).zip(chunk) {
+                out.copy_from_slice(&value.to_le_bytes());
+            }
+            integral_hash.update(&buffer[..chunk.len() * 8]);
         }
+        let integral_sha256 = format!("{:x}", integral_hash.finalize());
         let values = self.field.iter().map(|b| f32::from_bits(*b));
         Report {
             strategy: STRATEGY,
@@ -656,7 +666,7 @@ impl State {
             steps: self.steps,
             side: self.input.side,
             field_sha256,
-            integral_sha256: sha256(&hash),
+            integral_sha256,
             minimum: values.clone().fold(f32::INFINITY, f32::min),
             maximum: values.clone().fold(0.0, f32::max),
             sum: values.map(f64::from).sum(),
@@ -666,6 +676,41 @@ impl State {
             boundary_exchange: f64::from_bits(self.totals.boundary),
             rounding_residual: f64::from_bits(self.totals.rounding),
             owned_bytes: self.owned_bytes(),
+        }
+    }
+}
+
+#[cfg(test)]
+mod report_hash_tests {
+    use super::*;
+    #[test]
+    fn fixed_scratch_report_matches_the_previous_complete_wire_hashes() {
+        for side in [32, 128] {
+            let mut state = State::new(Input {
+                schema: STRATEGY.into(),
+                side,
+                target: 120,
+                initial_micro: 2_000_000,
+                boundary_micro: [Some(2_000_000); 4],
+                boundary_until: 120,
+                sources: vec![],
+            })
+            .unwrap();
+            for (i, v) in state.field.iter_mut().enumerate() {
+                *v = (2.0 + (i % 1234) as f32 * 0.000001).to_bits();
+            }
+            for (i, v) in state.integral.iter_mut().enumerate() {
+                *v = (i as f64 / 7.0).to_bits();
+            }
+            let old_field: Vec<u8> = state.field.iter().flat_map(|v| v.to_le_bytes()).collect();
+            let old_integral: Vec<u8> = state
+                .integral
+                .iter()
+                .flat_map(|v| v.to_le_bytes())
+                .collect();
+            let report = state.report();
+            assert_eq!(report.field_sha256, sha256(&old_field));
+            assert_eq!(report.integral_sha256, sha256(&old_integral));
         }
     }
 }
