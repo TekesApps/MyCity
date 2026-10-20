@@ -1,0 +1,10 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+    Finished `release` profile [optimized] target(s) in 0.40s
+     Running tests/scale_sim.rs (target/release/deps/scale_sim-f315e9f92d69012c)
+
+running 2 tests
+test frozen_input_walk_preserves_every_hour_special_target_and_startup_count ... ok
+test named_profiles_have_frozen_counts_v2_identity_and_read_only_bounded_progress ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.13s
+

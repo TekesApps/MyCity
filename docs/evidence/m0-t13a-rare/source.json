@@ -1,0 +1,6 @@
+{
+  "source_sha256": "6e55bee703f63e31ea4c776bad9818c20b52fea539ee838f3de2c4687844c9f1",
+  "files": 128,
+  "binary_sha256": "9acac5298be3627f40712b779642c4d0ce34920ef14fc9a988dd5177bd96a629",
+  "rust": "1.85.1"
+}

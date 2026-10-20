@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-rare/verify.py", line 57, in <module>
+    base,_r,_n=image_and_receipts(lambda n:z.read(f'model/anchors/{kind}/world/'+n))
+  File "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-rare/verify.py", line 14, in image_and_receipts
+    b=read('world-'+str(p['generation'])+'.json');assert len(b)==p['bytes'] and sha(b)==p['sha256'];images.append(b)
+TypeError: 'NoneType' object is not subscriptable

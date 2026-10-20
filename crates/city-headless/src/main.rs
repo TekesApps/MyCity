@@ -26,6 +26,48 @@ fn system(command: &str, args: &[&str]) -> Option<String> {
 
 fn run() -> Result<(), String> {
     let args: Vec<_> = env::args().collect();
+    if args.get(1).is_some_and(|a| a == "scale-rare-anchors") {
+        if args.len() != 3 {
+            return Err("usage: mycity-headless scale-rare-anchors NEW_DIR".into());
+        }
+        let r = mycity_headless::scale_rare::anchors(std::path::Path::new(&args[2]))?;
+        println!(
+            "{}",
+            serde_json::to_string_pretty(&r).map_err(|e| e.to_string())?
+        );
+        return Ok(());
+    }
+    if args.get(1).is_some_and(|a| a == "scale-rare-trial") {
+        if args.len() != 5 {
+            return Err(
+                "usage: mycity-headless scale-rare-trial ANCHORS NEW_DIR claims|source".into(),
+            );
+        }
+        let r = mycity_headless::scale_rare::trial(
+            std::path::Path::new(&args[2]),
+            std::path::Path::new(&args[3]),
+            &args[4],
+        )?;
+        println!(
+            "{}",
+            serde_json::to_string_pretty(&r).map_err(|e| e.to_string())?
+        );
+        return Ok(());
+    }
+    if args.get(1).is_some_and(|a| a == "scale-rare-restore") {
+        if args.len() != 4 {
+            return Err("usage: mycity-headless scale-rare-restore WORLD EXPECTED_ENGINE".into());
+        }
+        let r = mycity_headless::scale_rare::restore(
+            std::path::Path::new(&args[2]),
+            std::path::Path::new(&args[3]),
+        )?;
+        println!(
+            "{}",
+            serde_json::to_string_pretty(&r).map_err(|e| e.to_string())?
+        );
+        return Ok(());
+    }
     if args.get(1).is_some_and(|a| a == "layout-load-only") {
         if args.len() != 4 {
             return Err(

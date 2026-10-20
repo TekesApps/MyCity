@@ -1,0 +1,23 @@
+{
+  "source_sha256": "6e55bee703f63e31ea4c776bad9818c20b52fea539ee838f3de2c4687844c9f1",
+  "binary_sha256": "9acac5298be3627f40712b779642c4d0ce34920ef14fc9a988dd5177bd96a629",
+  "tests": {
+    "actual_full_anchor_and_trials": 1,
+    "existing_scale_profile_regressions": 2
+  },
+  "clippy_all_targets": "passed",
+  "fmt": "passed",
+  "build_release": "passed",
+  "full_workspace_258_this_source": "not_run_not_claimed",
+  "actual_full_repetitions": {
+    "claims": 200,
+    "source": 100,
+    "all_archives_cold_reopened": true
+  },
+  "independent_artifacts_and_raw_audit": "passed",
+  "advisor_phase_review": "passed_with_explicit_outstanding_gates",
+  "observer_binary_fingerprint_scope": "Python interpreter directly launched; Rust fingerprint source collector before/after, no continuous Rust fingerprint monitoring claim",
+  "formal_T13A": "not_accepted",
+  "memory_16gb_gate": "not_run",
+  "full_M0": "not_accepted"
+}

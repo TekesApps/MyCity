@@ -1,0 +1,20 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+    Finished `release` profile [optimized] target(s) in 22.66s
+     Running tests/scale_rare.rs (target/release/deps/scale_rare-2b5574a4c6e66695)
+
+running 1 test
+
+thread 'actual_full_anchors_restore_real_sim_trials_and_preserve_cache_charge' panicked at crates/city-headless/tests/scale_rare.rs:9:5:
+cache_owner_identity
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test actual_full_anchors_restore_real_sim_trials_and_preserve_cache_charge ... FAILED
+
+failures:
+
+failures:
+    actual_full_anchors_restore_real_sim_trials_and_preserve_cache_charge
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 13.22s
+
+error: test failed, to rerun pass `-p mycity-headless --test scale_rare`

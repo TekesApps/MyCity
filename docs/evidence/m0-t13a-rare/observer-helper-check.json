@@ -1,0 +1,19 @@
+{
+  "scope": "synthetic observer helpers only; not gameplay or formal run",
+  "same_captured_ps_rows": 668,
+  "same_ps_parse": true,
+  "synthetic_worker_directories": 724,
+  "same_disk_bytes": 10136,
+  "same_latency_bytes": 6516,
+  "files": 3620,
+  "repeated_samples": 40,
+  "current_bytes": 48816,
+  "peak_bytes": 204425,
+  "tracer_bytes": 56304,
+  "combined_observer_hot_bytes": 260729,
+  "bound_2MiB": "passed_helper_only",
+  "symlink_rejected": true,
+  "4096_files_accepted_4097_rejected": true,
+  "depth64_rejected": true,
+  "directory_disappeared_between_is_dir_and_scandir_tolerated": true
+}

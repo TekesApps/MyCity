@@ -1,0 +1,20 @@
+{
+  "schema": "mycity-rare-repetition-result-v1",
+  "source_sha256": "6e55bee703f63e31ea4c776bad9818c20b52fea539ee838f3de2c4687844c9f1",
+  "mode": "full",
+  "completed": 44,
+  "by_stratum": {
+    "claims": 44
+  },
+  "actual_raw_bytes_archived": 3045636,
+  "actual_log_bytes_archived": 1979891,
+  "reserved_raw_bytes": 5767168,
+  "reserved_log_bytes": 11534336,
+  "all_archives_verified_and_cold_reopened": true,
+  "actual_wall_seconds": 52.16072725,
+  "formal_10class_gate": "not_accepted_here",
+  "steady_three_runs": "not_run",
+  "eight_hour_gate": "not_run",
+  "memory_16gb_gate": "not_run",
+  "full_M0": "not_accepted"
+}

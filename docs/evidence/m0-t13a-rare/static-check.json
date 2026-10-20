@@ -1,0 +1,8 @@
+{
+  "release": "v0.5.38",
+  "local_links": 182,
+  "source_sha256": "6e55bee703f63e31ea4c776bad9818c20b52fea539ee838f3de2c4687844c9f1",
+  "measured_source_unchanged": true,
+  "frozen_acceptance_unchanged": true,
+  "formal_performance_gate": "not_accepted_by_static_checks"
+}

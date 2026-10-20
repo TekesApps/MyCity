@@ -31,7 +31,7 @@ fn write_json(path: &Path, value: &Value) -> Result<(), String> {
     f.write_all(b"\n").map_err(err)?;
     f.sync_all().map_err(err)
 }
-struct Experiment {
+pub(crate) struct Experiment {
     client: Client,
     id: u64,
     log: BufWriter<File>,
@@ -57,7 +57,7 @@ impl Experiment {
         self.log_bytes += bytes.len() + 1;
         Ok(())
     }
-    fn call(&mut self, command: Command) -> Result<Value, String> {
+    pub(crate) fn call(&mut self, command: Command) -> Result<Value, String> {
         self.id = self.id.checked_add(1).ok_or("scale_sim_id")?;
         self.record(json!({"request":self.id,"command":command}))?;
         self.client.submit(self.id, command)?;
@@ -79,7 +79,7 @@ impl Experiment {
         }
         Err("scale_sim_event_bound".into())
     }
-    fn raw(&mut self, actions: Vec<Action>) -> Result<Envelope, String> {
+    pub(crate) fn raw(&mut self, actions: Vec<Action>) -> Result<Envelope, String> {
         let state = self.call(Command::Progress)?;
         self.raw_at(&state, actions)
     }
@@ -103,7 +103,7 @@ impl Experiment {
         }
         Ok(envelope)
     }
-    fn drive(&mut self, target: u64, expected: &Value) -> Result<(), String> {
+    pub(crate) fn drive(&mut self, target: u64, expected: &Value) -> Result<(), String> {
         let started = Instant::now();
         for _ in 0..10000 {
             let state = self.call(Command::Progress)?;
@@ -156,7 +156,7 @@ impl Experiment {
     }
 }
 /// Read only after the Sim has stopped, verifying the exact CURRENT -> root -> image chain.
-fn image(world: &Path) -> Result<(Vec<u8>, Value), String> {
+pub(crate) fn image(world: &Path) -> Result<(Vec<u8>, Value), String> {
     let current: Value =
         serde_json::from_slice(&read(&world.join("CURRENT.json"), 32768)?).map_err(err)?;
     let slot = current["slot"]
@@ -381,4 +381,44 @@ fn run_inner(dir: &Path, tier: Tier, measured: bool) -> Result<Value, String> {
     let report = json!({"schema":"mycity-t13a-full-sim-assembly-v1","compute_diagnostics_enabled":measured,"source_sha256":env!("MYCITY_SOURCE_SHA256"),"opening_sha256":sha256(tier.opening()),"policy_sha256":sha256(tier.policy()),"oracle_sha256":sha256(tier.oracle()),"tier":tier.name(),"scope":"named_tier_real_30day_sim_worker_v2_store_diagnostic_only","cpu_oracle":oracle,"completed_hour_targets":hours,"verified_drive_targets":e.verified,"actual_worker_windows":e.windows,"attempt_failures":e.failed_attempts,"business_sha256":business_digest(&actual)?,"final_air_sha256":after["background"]["state_sha256"],"sim_work_wall_seconds_including_ipc_and_persistence":work_seconds,"maximum_complete_drive_seconds":e.max_boundary_seconds,"cold_ready_seconds":cold_seconds,"oldest_receipt_retry":"passed_without_side_effect","complete_final_business_and_air":"passed","cold_complete_image_unchanged":true,"saved_sequence":root["sequence"],"final_root":final_root,"transcript_bytes":e.log_bytes,"performance_acceptance":"not_run","steady_three_runs":"not_run","eight_hour_gate":"not_run","memory_16gb_gate":"not_run","full_M0":"not_accepted"});
     write_json(&dir.join("report.json"), &report)?;
     Ok(report)
+}
+
+/// Real full-profile process experiment for independently restored diagnostic branches.
+pub(crate) fn independent_experiment(
+    dir: &Path,
+    create: bool,
+    measured: bool,
+) -> Result<Experiment, String> {
+    let exe = std::env::current_exe().map_err(err)?;
+    let mut client = spawn(&exe, &dir.join("world"), create, Tier::Full, measured)?;
+    if client.next(Duration::from_secs(35))?.kind != "ready" {
+        return Err("rare_not_ready".into());
+    }
+    Ok(Experiment {
+        client,
+        id: 0,
+        log: BufWriter::with_capacity(
+            65536,
+            File::create_new(dir.join("transcript.jsonl")).map_err(err)?,
+        ),
+        log_bytes: 0,
+        began: Instant::now(),
+        windows: 0,
+        verified: 0,
+        max_boundary_seconds: 0.0,
+        failed_attempts: 0,
+    })
+}
+impl Experiment {
+    pub(crate) fn save_stop(&mut self) -> Result<(), String> {
+        self.call(Command::Checkpoint)?;
+        self.call(Command::Stop)?;
+        self.client.stop()?;
+        self.log.flush().map_err(err)?;
+        self.log.get_ref().sync_all().map_err(err)?;
+        if self.failed_attempts != 0 {
+            return Err("rare_failed_worker_attempt".into());
+        }
+        Ok(())
+    }
 }

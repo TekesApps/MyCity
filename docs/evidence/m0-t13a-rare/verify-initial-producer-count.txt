@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-rare/verify.py", line 74, in <module>
+    reports=[n for n in a.namelist() if n.startswith('diagnostics/') and n.endswith('/report.json')];assert len(reports)==2
+AssertionError

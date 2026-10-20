@@ -24,3 +24,5 @@ pub mod scale_storage;
 pub mod scale_sim;
 
 pub mod cpu_log;
+
+pub mod scale_rare;
