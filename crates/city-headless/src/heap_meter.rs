@@ -67,7 +67,7 @@ impl Recorder {
     }
     pub fn finish(&self, success: bool) -> Result<(), String> {
         let cap = match self.role.as_str() {
-            "scale-sim-probe" => Some(crate::diagnostic_contract::DRIVER),
+            "scale-sim-probe" | "scale-endurance" => Some(crate::diagnostic_contract::DRIVER),
             "joint-budget-probe" => Some(crate::diagnostic_contract::SUPERVISOR),
             "normal-pool-host" => {
                 Some(crate::normal_pool::BYTES + crate::normal_pool::DIAGNOSTIC_BYTES)

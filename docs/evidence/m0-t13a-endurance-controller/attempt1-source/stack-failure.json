@@ -1,0 +1,162 @@
+{
+  "source_sha256": "ce9efd12246a4870495c838c4047ffc274177316f956a73c47de5343b754e2b2",
+  "test_process_pid": 21280,
+  "exit": "SIGABRT stack overflow; workspace exit101",
+  "faulting_thread": "actual_full_anchors_restore_real_sim_trials_and_preserve_cache_",
+  "frames": [
+    {
+      "symbol": "__pthread_kill",
+      "offset": 8
+    },
+    {
+      "symbol": "pthread_kill",
+      "offset": 296
+    },
+    {
+      "symbol": "abort",
+      "offset": 148
+    },
+    {
+      "symbol": "std::sys::pal::unix::abort_internal::h687cee5ebc83a374",
+      "offset": 12
+    },
+    {
+      "symbol": "std::sys::pal::unix::stack_overflow::imp::signal_handler::h1f6a18a7918ff130",
+      "offset": 356
+    },
+    {
+      "symbol": "_sigtramp",
+      "offset": 56
+    },
+    {
+      "symbol": "mycity_core::region::_::_$LT$impl$u20$serde_core..de..Deserialize$u20$for$u20$mycity_core..region..Region$GT$::deserialize::he9f902cc1d7a289a",
+      "offset": 56
+    },
+    {
+      "symbol": "mycity_core::region::_::_$LT$impl$u20$serde_core..de..Deserialize$u20$for$u20$mycity_core..region..Region$GT$::deserialize::he9f902cc1d7a289a",
+      "offset": 56
+    },
+    {
+      "symbol": "_$LT$serde_core..de..impls..OptionVisitor$LT$T$GT$$u20$as$u20$serde_core..de..Visitor$GT$::visit_some::h01ba5bbaebddf897",
+      "offset": 52
+    },
+    {
+      "symbol": "_$LT$$RF$mut$u20$serde_json..de..Deserializer$LT$R$GT$$u20$as$u20$serde_core..de..Deserializer$GT$::deserialize_option::h19b7507cf1f548dd",
+      "offset": 192
+    },
+    {
+      "symbol": "serde_core::de::impls::_$LT$impl$u20$serde_core..de..Deserialize$u20$for$u20$core..option..Option$LT$T$GT$$GT$::deserialize::h6daabf413e344b1c",
+      "offset": 24
+    },
+    {
+      "symbol": "_$LT$core..marker..PhantomData$LT$T$GT$$u20$as$u20$serde_core..de..DeserializeSeed$GT$::deserialize::h04b3ed07e1eb542c",
+      "offset": 24
+    },
+    {
+      "symbol": "_$LT$serde_json..de..MapAccess$LT$R$GT$$u20$as$u20$serde_core..de..MapAccess$GT$::next_value_seed::h15083bcf6eb818e4",
+      "offset": 132
+    },
+    {
+      "symbol": "serde_core::de::MapAccess::next_value::h0ba9003932c67391",
+      "offset": 24
+    },
+    {
+      "symbol": "_$LT$mycity_core..assembly.._..$LT$impl$u20$serde_core..de..Deserialize$u20$for$u20$mycity_core..assembly..World$GT$..deserialize..__Visitor$u20$as$u20$serde_core..de..Visitor$GT$::visit_map::h7c00633bd82315b9",
+      "offset": 3196
+    },
+    {
+      "symbol": "_$LT$$RF$mut$u20$serde_json..de..Deserializer$LT$R$GT$$u20$as$u20$serde_core..de..Deserializer$GT$::deserialize_struct::h03d03815c753982a",
+      "offset": 1740
+    },
+    {
+      "symbol": "mycity_core::assembly::_::_$LT$impl$u20$serde_core..de..Deserialize$u20$for$u20$mycity_core..assembly..World$GT$::deserialize::h391506e9b2629c83",
+      "offset": 56
+    },
+    {
+      "symbol": "_$LT$core..marker..PhantomData$LT$T$GT$$u20$as$u20$serde_core..de..DeserializeSeed$GT$::deserialize::h795d243dbe5cf2d7",
+      "offset": 24
+    },
+    {
+      "symbol": "_$LT$serde_json..de..MapAccess$LT$R$GT$$u20$as$u20$serde_core..de..MapAccess$GT$::next_value_seed::hb6506c2a02463e52",
+      "offset": 132
+    },
+    {
+      "symbol": "serde_core::de::MapAccess::next_value::hb3e4dba8d59e7b0c",
+      "offset": 24
+    },
+    {
+      "symbol": "_$LT$mycity_core..transaction.._..$LT$impl$u20$serde_core..de..Deserialize$u20$for$u20$mycity_core..transaction..Engine$GT$..deserialize..__Visitor$u20$as$u20$serde_core..de..Visitor$GT$::visit_map::ha04813836dabddfb",
+      "offset": 708
+    },
+    {
+      "symbol": "_$LT$$RF$mut$u20$serde_json..de..Deserializer$LT$R$GT$$u20$as$u20$serde_core..de..Deserializer$GT$::deserialize_struct::h57e0c9acc06c5bd3",
+      "offset": 1748
+    },
+    {
+      "symbol": "mycity_core::transaction::_::_$LT$impl$u20$serde_core..de..Deserialize$u20$for$u20$mycity_core..transaction..Engine$GT$::deserialize::h93e7b7466f70a7e0",
+      "offset": 56
+    },
+    {
+      "symbol": "serde_json::de::from_trait::h6d6e28a1ba7bbbd0",
+      "offset": 92
+    },
+    {
+      "symbol": "serde_json::de::from_slice::h868e4a619215ecc3",
+      "offset": 52
+    },
+    {
+      "symbol": "mycity_core::transaction::Engine::restore_checkpoint::h6f6d0027c134572e",
+      "offset": 280
+    },
+    {
+      "symbol": "mycity_storage::checkpoint_v2::open::hfead4956edef8e94",
+      "offset": 2224
+    },
+    {
+      "symbol": "mycity_storage::Store::open::h9697467b8dd77c4c",
+      "offset": 4616
+    },
+    {
+      "symbol": "scale_rare::actual_full_anchors_restore_real_sim_trials_and_preserve_cache_charge::h397a137294757604",
+      "offset": 1916
+    },
+    {
+      "symbol": "scale_rare::actual_full_anchors_restore_real_sim_trials_and_preserve_cache_charge::_$u7b$$u7b$closure$u7d$$u7d$::he265034da005a378",
+      "offset": 24
+    },
+    {
+      "symbol": "core::ops::function::FnOnce::call_once::h0a90f99731b7a31a",
+      "offset": 20
+    },
+    {
+      "symbol": "test::__rust_begin_short_backtrace::h6a00e9701917ae73",
+      "offset": 24
+    },
+    {
+      "symbol": "test::run_test::_$u7b$$u7b$closure$u7d$$u7d$::ha42a6e253bb8588b",
+      "offset": 712
+    },
+    {
+      "symbol": "std::sys::backtrace::__rust_begin_short_backtrace::h1c2499bf0241ed29",
+      "offset": 132
+    },
+    {
+      "symbol": "core::ops::function::FnOnce::call_once$u7b$$u7b$vtable.shim$u7d$$u7d$::hac4fee4518ecdefb",
+      "offset": 148
+    },
+    {
+      "symbol": "std::sys::pal::unix::thread::Thread::new::thread_start::hdb877a8060df0ba1",
+      "offset": 52
+    },
+    {
+      "symbol": "_pthread_start",
+      "offset": 136
+    },
+    {
+      "symbol": "thread_start",
+      "offset": 8
+    }
+  ],
+  "privacy": "only test-related symbol stack; raw device/crash identifiers excluded",
+  "no_stack_limit_increase": true
+}

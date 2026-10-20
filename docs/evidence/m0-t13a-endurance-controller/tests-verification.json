@@ -1,0 +1,11 @@
+{
+  "source_sha256": "2b378e37683f390f5be24459b933c24b118e8d6071ca5ab116c1f3e8bb9ff885",
+  "profile": "release",
+  "sections": 48,
+  "passed": 316,
+  "failed": 0,
+  "ignored": 0,
+  "original_default_stack_debug_case": "passed153.54s",
+  "legacy_default_stack_restore_fixture": "passed0.39s",
+  "prior_debug_full_suite": "failed stack overflow, retained, not converted to pass"
+}

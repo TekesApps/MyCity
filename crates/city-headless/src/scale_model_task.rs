@@ -25,6 +25,8 @@ fn err(e: impl std::fmt::Display) -> String {
 #[serde(rename_all = "snake_case")]
 pub enum Mode {
     Reference,
+    FaultReference,
+    CompareEndurance,
     BeforeReopen,
     Compare,
 }
@@ -32,6 +34,8 @@ impl Mode {
     fn name(self) -> &'static str {
         match self {
             Self::Reference => "reference",
+            Self::FaultReference => "fault-reference",
+            Self::CompareEndurance => "compare-endurance",
             Self::BeforeReopen => "before-reopen",
             Self::Compare => "compare",
         }
@@ -47,6 +51,7 @@ struct Request {
     policy_sha256: Text<64>,
     oracle_sha256: Text<64>,
     mode: Mode,
+    retry_job: Option<u64>,
     root: Text<2048>,
 }
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
@@ -272,7 +277,10 @@ pub fn execute(dir: &Path) -> Result<(), String> {
         diagnostic_capacity: control_data::capacity(),
     };
     match r.mode {
-        Mode::Reference => {
+        Mode::Reference | Mode::FaultReference => {
+            if (r.mode == Mode::FaultReference) != r.retry_job.is_some() {
+                return Err("model_task_retry_mode".into());
+            }
             let mut reference = None;
             publish(&dir, "cpu-targets.jsonl", FILE_LIMIT, |golden_file| {
                 let _scratch = Scratch::golden()?;
@@ -281,8 +289,9 @@ pub fn execute(dir: &Path) -> Result<(), String> {
                     return Err("model_golden_capacity".into());
                 }
                 publish(&dir, "cpu-report.json", 65536, |report| {
-                    reference = Some(scale_reference::run_tier_streamed(
+                    reference = Some(scale_reference::run_tier_streamed_retry(
                         tier,
+                        r.retry_job,
                         |state, step| {
                             if let Step::Drive(target) = step {
                                 let air = state
@@ -327,7 +336,7 @@ pub fn execute(dir: &Path) -> Result<(), String> {
                 *slot = Some(artifact(&dir, name)?);
             }
         }
-        Mode::BeforeReopen | Mode::Compare => {
+        Mode::BeforeReopen | Mode::Compare | Mode::CompareEndurance => {
             let decoded = control_data::root_decode(r.root.as_str())?;
             let root = Path::new(decoded.as_str());
             let (bytes, root_bytes, stamp) = checked_image(&joined(root, "world")?)?;
@@ -338,18 +347,31 @@ pub fn execute(dir: &Path) -> Result<(), String> {
             drop(root_bytes);
             result.root = Some(stamp);
             result.artifacts[0] = Some(artifact(&dir, "root.json")?);
-            if r.mode == Mode::Compare {
+            if matches!(r.mode, Mode::Compare | Mode::CompareEndurance) {
                 let before = validate(&joined(root, Mode::BeforeReopen.name())?)?;
                 if before.image_sha256 != result.image_sha256 {
                     return Err("scale_sim_saved_image_changed".into());
                 }
-                validate(&joined(root, Mode::Reference.name())?)?;
+                let reference_mode = if r.mode == Mode::CompareEndurance {
+                    Mode::FaultReference
+                } else {
+                    Mode::Reference
+                };
+                validate(&joined(root, reference_mode.name())?)?;
                 let actual = Engine::restore_checkpoint(&bytes)?;
                 drop(bytes);
                 let expected = Engine::restore_checkpoint(&read(
-                    &joined(root, "reference/cpu-final-engine.json")?,
+                    &joined(
+                        &joined(root, reference_mode.name())?,
+                        "cpu-final-engine.json",
+                    )?,
                     FILE_LIMIT,
                 )?)?;
+                if r.mode == Mode::CompareEndurance
+                    && actual.export_checkpoint()? != expected.export_checkpoint()?
+                {
+                    return Err("endurance_entire_engine_including_metadata".into());
+                }
                 if actual.business_comparison_checkpoint()?
                     != expected.business_comparison_checkpoint()?
                     || actual
@@ -393,7 +415,7 @@ pub fn validate(dir: &Path) -> Result<ResultRecord, String> {
         return Err("model_task_result_identity".into());
     }
     let names: &[&str] = match r.mode {
-        Mode::Reference => &[
+        Mode::Reference | Mode::FaultReference => &[
             "cpu-targets.jsonl",
             "cpu-report.json",
             "cpu-final-engine.json",
@@ -445,18 +467,18 @@ pub fn validate(dir: &Path) -> Result<ResultRecord, String> {
         }
     }
     match r.mode {
-        Mode::Reference
+        Mode::Reference | Mode::FaultReference
             if result.image_sha256.is_none()
                 && result.business_sha256.is_none()
                 && result.root.is_none() => {}
-        Mode::BeforeReopen | Mode::Compare
+        Mode::BeforeReopen | Mode::Compare | Mode::CompareEndurance
             if result
                 .image_sha256
                 .as_ref()
                 .is_some_and(|s| s.as_str().len() == 64)
                 && result.root.is_some()
                 && match r.mode {
-                    Mode::Compare => result
+                    Mode::Compare | Mode::CompareEndurance => result
                         .business_sha256
                         .as_ref()
                         .is_some_and(|s| s.as_str().len() == 64),
@@ -476,6 +498,17 @@ impl Drop for Job {
     }
 }
 pub fn prepare(root: &Path, tier: Tier, mode: Mode) -> Result<PathBuf, String> {
+    prepare_retry(root, tier, mode, None)
+}
+fn prepare_retry(
+    root: &Path,
+    tier: Tier,
+    mode: Mode,
+    retry_job: Option<u64>,
+) -> Result<PathBuf, String> {
+    if (mode == Mode::FaultReference) != retry_job.is_some() {
+        return Err("model_task_retry_mode".into());
+    }
     let root = root.canonicalize().map_err(err)?;
     let dir = root.join(mode.name());
     fs::create_dir(&dir).map_err(err)?;
@@ -487,6 +520,7 @@ pub fn prepare(root: &Path, tier: Tier, mode: Mode) -> Result<PathBuf, String> {
         policy_sha256: Text::new(&sha256(tier.policy()))?,
         oracle_sha256: Text::new(&sha256(tier.oracle()))?,
         mode,
+        retry_job,
         root: control_data::root_encode(&root)?,
     };
     publish(&dir, "request.json", 8192, |f| {
@@ -495,7 +529,15 @@ pub fn prepare(root: &Path, tier: Tier, mode: Mode) -> Result<PathBuf, String> {
     Ok(dir)
 }
 pub fn run(root: &Path, tier: Tier, mode: Mode) -> Result<ResultRecord, String> {
-    let dir = prepare(root, tier, mode)?;
+    run_retry(root, tier, mode, None)
+}
+pub(crate) fn run_retry(
+    root: &Path,
+    tier: Tier,
+    mode: Mode,
+    retry_job: Option<u64>,
+) -> Result<ResultRecord, String> {
+    let dir = prepare_retry(root, tier, mode, retry_job)?;
     let mut job = Job(Command::new(std::env::current_exe().map_err(err)?)
         .arg("scale-model-task")
         .arg(&dir)

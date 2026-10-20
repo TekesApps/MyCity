@@ -301,6 +301,8 @@ pub struct Reference {
     pub engine: Engine,
     next_operation: u64,
     pub windows: u64,
+    retry_job: Option<u64>,
+    retried: bool,
 }
 impl Reference {
     pub fn new() -> Result<Self, String> {
@@ -308,6 +310,8 @@ impl Reference {
             engine: engine()?,
             next_operation: 1,
             windows: 0,
+            retry_job: None,
+            retried: false,
         })
     }
     /// Fresh diagnostic reference only; never restores or writes a Store.
@@ -323,6 +327,8 @@ impl Reference {
             engine,
             next_operation: 1,
             windows: 0,
+            retry_job: None,
+            retried: false,
         })
     }
     pub fn execute(&mut self, actions: Vec<Action>) -> Result<Receipt, String> {
@@ -348,6 +354,17 @@ impl Reference {
             )
             .map_err(err)
     }
+    /// Independent fault oracle: one failed worker attempt, no business inputs changed.
+    pub(crate) fn expect_worker_retry(&mut self, job: u64) -> Result<(), String> {
+        if job == 0 || self.retry_job.is_some() || self.windows != 0 {
+            return Err("reference_retry_plan".into());
+        }
+        self.retry_job = Some(job);
+        Ok(())
+    }
+    pub(crate) fn retry_plan_completed(&self) -> bool {
+        self.retry_job.is_none() || self.retried
+    }
     pub fn complete_field(&mut self) -> Result<(), String> {
         let job = self
             .engine
@@ -358,6 +375,28 @@ impl Reference {
         self.execute(vec![Action::Background {
             command: B::RebindLease { job },
         }])?;
+        if self.retry_job == Some(job) {
+            if self.retried {
+                return Err("reference_retry_repeated".into());
+            }
+            let generation = self
+                .engine
+                .background()
+                .and_then(|b| b.pending())
+                .ok_or("joint_no_task")?
+                .generation;
+            self.execute(vec![Action::Background {
+                command: B::Fail {
+                    job,
+                    generation,
+                    failure: background::Failure::Transient,
+                },
+            }])?;
+            self.execute(vec![Action::Background {
+                command: B::RebindLease { job },
+            }])?;
+            self.retried = true;
+        }
         let b = self.engine.background().ok_or("joint_no_background")?;
         let generation = b.pending().ok_or("joint_no_task")?.generation;
         let mut state = b.frozen_input()?;

@@ -40,3 +40,5 @@ pub mod control_data;
 pub mod diagnostic_contract;
 
 pub mod normal_pool;
+
+pub mod scale_endurance;

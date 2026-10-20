@@ -237,7 +237,7 @@ pub struct Lease {
 #[derive(Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Engine {
-    pub(crate) world: World,
+    pub(crate) world: Box<World>,
     resources: Vec<Resource>,
     leases: Vec<Option<Lease>>,
     next_token: u64,
@@ -304,7 +304,7 @@ impl Engine {
             .map_err(|_| TxError::WorkingLimit)?;
         leases.resize(MAX_LEASES, None);
         let engine = Self {
-            world,
+            world: Box::new(world),
             resources,
             leases,
             next_token: 1,
@@ -673,7 +673,8 @@ impl Engine {
             + self.background.as_ref().map_or(0, |b| {
                 b.owned_bytes() - size_of::<crate::background::Background>()
             });
-        extra + size_of::<Self>() - size_of::<World>()
+        extra
+            + size_of::<Self>()
             + self.world.layout()["owned_capacity_bytes"]
                 .as_u64()
                 .expect("world layout") as usize

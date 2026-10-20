@@ -218,6 +218,25 @@ fn run() -> Result<(), String> {
         );
         return Ok(());
     }
+    if args.get(1).is_some_and(|a| a == "scale-endurance") {
+        if args.len() != 4 {
+            return Err("usage: mycity-headless scale-endurance NEW_DIR formal|smoke".into());
+        }
+        let cadence = match args[3].as_str() {
+            "formal" => mycity_headless::scale_endurance::Cadence::Formal,
+            "smoke" => mycity_headless::scale_endurance::Cadence::Smoke,
+            _ => return Err("endurance_cadence".into()),
+        };
+        println!(
+            "{}",
+            serde_json::to_string_pretty(&mycity_headless::scale_endurance::run(
+                std::path::Path::new(&args[2]),
+                cadence
+            )?)
+            .map_err(|e| e.to_string())?
+        );
+        return Ok(());
+    }
     if args.get(1).is_some_and(|a| a == "scale-sim-probe") {
         if !(3..=5).contains(&args.len()) {
             return Err(

@@ -1,0 +1,156 @@
+{
+  "source_sha256": "ce9efd12246a4870495c838c4047ffc274177316f956a73c47de5343b754e2b2",
+  "scope": "same-source full-controller smoke diagnostic audit, L1 absent",
+  "normal_heap_records": 732,
+  "normal_component_evidence": {
+    "sim": {
+      "reports": 3,
+      "maximum_reported_component_charge_bytes": 2446940,
+      "component_cap_bytes": 2621440,
+      "scope": "sealed component capacity evidence; not whole process or missing-process proof"
+    },
+    "worker": {
+      "reports": 724,
+      "maximum_reported_component_charge_bytes": 848052,
+      "component_cap_bytes": 1048576,
+      "scope": "sealed component capacity evidence; not whole process or missing-process proof"
+    },
+    "driver": {
+      "whole_Rust_heap_peak_plus_tail_bytes": 839797,
+      "cap_bytes": 1048576,
+      "native_stack_foreign": "separate"
+    },
+    "helper": [
+      {
+        "mode": "reference",
+        "control_capacity": {
+          "limit_bytes": 262144,
+          "control_slots_bytes": 24576,
+          "parser_error_scratch_bytes": 40960,
+          "paths_and_metadata_bytes": 65536,
+          "golden_or_hash_bytes": 65536,
+          "exit_tail_bytes": 65536,
+          "usage": {
+            "control_peak_owners": 1,
+            "path_peak_owners": 3,
+            "golden_peak_owners": 1,
+            "hash_peak_owners": 1
+          }
+        },
+        "whole_Rust_heap_peak_plus_tail_bytes_including_model_work": 29506512,
+        "scope": "static diagnostic owners separately counted; whole model peak is EXTRA, never deducted from pool"
+      },
+      {
+        "mode": "fault-reference",
+        "control_capacity": {
+          "limit_bytes": 262144,
+          "control_slots_bytes": 24576,
+          "parser_error_scratch_bytes": 40960,
+          "paths_and_metadata_bytes": 65536,
+          "golden_or_hash_bytes": 65536,
+          "exit_tail_bytes": 65536,
+          "usage": {
+            "control_peak_owners": 1,
+            "path_peak_owners": 3,
+            "golden_peak_owners": 1,
+            "hash_peak_owners": 1
+          }
+        },
+        "whole_Rust_heap_peak_plus_tail_bytes_including_model_work": 29506524,
+        "scope": "static diagnostic owners separately counted; whole model peak is EXTRA, never deducted from pool"
+      },
+      {
+        "mode": "before-reopen",
+        "control_capacity": {
+          "limit_bytes": 262144,
+          "control_slots_bytes": 24576,
+          "parser_error_scratch_bytes": 40960,
+          "paths_and_metadata_bytes": 65536,
+          "golden_or_hash_bytes": 65536,
+          "exit_tail_bytes": 65536,
+          "usage": {
+            "control_peak_owners": 2,
+            "path_peak_owners": 2,
+            "golden_peak_owners": 0,
+            "hash_peak_owners": 1
+          }
+        },
+        "whole_Rust_heap_peak_plus_tail_bytes_including_model_work": 6390642,
+        "scope": "static diagnostic owners separately counted; whole model peak is EXTRA, never deducted from pool"
+      },
+      {
+        "mode": "compare-endurance",
+        "control_capacity": {
+          "limit_bytes": 262144,
+          "control_slots_bytes": 24576,
+          "parser_error_scratch_bytes": 40960,
+          "paths_and_metadata_bytes": 65536,
+          "golden_or_hash_bytes": 65536,
+          "exit_tail_bytes": 65536,
+          "usage": {
+            "control_peak_owners": 2,
+            "path_peak_owners": 2,
+            "golden_peak_owners": 0,
+            "hash_peak_owners": 1
+          }
+        },
+        "whole_Rust_heap_peak_plus_tail_bytes_including_model_work": 29226052,
+        "scope": "static diagnostic owners separately counted; whole model peak is EXTRA, never deducted from pool"
+      }
+    ],
+    "pool": {
+      "whole_Rust_heap_peak_plus_tail_bytes": 67191772,
+      "whole_upper_bound_bytes": 67371008,
+      "diagnostic_0_25MiB_separate_proof": "not_closed; no subtraction of lifetime peaks while pages are lent"
+    },
+    "observer": {
+      "observed_hot_trace_bound_bytes": 1221311,
+      "cap_bytes": 2097152,
+      "startup_native_foreign": "not_proven_by_hot_tracemalloc"
+    },
+    "Python_runner": {
+      "observed_hot_trace_bound_bytes": 197186,
+      "cap_bytes": 1048576,
+      "startup_interpreter_native": "unclosed; replace formal runner with Rust supervisor"
+    }
+  },
+  "fault_instances_without_normal_heap_footer": [
+    {
+      "producer": "worker-99630-0",
+      "pid": 99630,
+      "sealed_component_report_present": false,
+      "normal_heap_footer": "absent; not zero"
+    },
+    {
+      "producer": "worker-99969-0",
+      "pid": 99969,
+      "sealed_component_report_present": true,
+      "normal_heap_footer": "absent; not zero"
+    },
+    {
+      "producer": "sim-99251-0",
+      "pid": 99251,
+      "sealed_component_report_present": false,
+      "normal_heap_footer": "absent; not zero"
+    }
+  ],
+  "role_whole_Rust_heap_peaks_plus_tail_including_model_work": {
+    "scale-model-task": 29506524,
+    "compute-worker-bounded": 5198992,
+    "sim-host-scale-full-probe": 29507886,
+    "scale-endurance": 839797,
+    "normal-pool-host": 67191772
+  },
+  "component_caps_addition_only": {
+    "formal_Rust_joint_nominal_bytes": 8388608,
+    "joint_with_1MiB_Python_instead_of_0_25MiB_Rust_supervisor_nominal_bytes": 9175040,
+    "not_measured_joint_proof": true
+  },
+  "shared_8MiB_joint": "not_accepted",
+  "normal_3_10GiB": "not_accepted; all ordinary Engine/serde/helper allocations remain extra",
+  "L1_joint": "absent",
+  "formal_latency": "not_accepted; concurrent regression and shortened cadence",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run",
+  "full_M0": "not_accepted"
+}

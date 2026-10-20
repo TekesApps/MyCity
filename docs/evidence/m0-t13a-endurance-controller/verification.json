@@ -1,0 +1,49 @@
+{
+  "source_sha256": "2b378e37683f390f5be24459b933c24b118e8d6071ca5ab116c1f3e8bb9ff885",
+  "scope": "original full workload/controller functional test; no L1",
+  "formal": false,
+  "clock": {
+    "actual_wall_seconds": 358.180895083,
+    "committed_job": 65,
+    "formal": false,
+    "hours": 720,
+    "max_query_completion_lateness_seconds": 0.906164291,
+    "max_save_completion_lateness_seconds": 0.929838625,
+    "queries_completed": 2880,
+    "required_wall_seconds": 72.0,
+    "retry_job": 37,
+    "saves_completed": 96,
+    "scheduled_cold_reopen": true,
+    "targets": 723
+  },
+  "exact_final_engine_equal_fault_reference": true,
+  "metadata_delta_from_normal": {
+    "world.revision": 2,
+    "background.incarnation": 1
+  },
+  "receipts": 3013,
+  "normal_heap_records": {
+    "scale-model-task": 4,
+    "compute-worker-bounded": 723,
+    "sim-host-scale-full-probe": 3,
+    "scale-endurance": 1,
+    "normal-pool-host": 1
+  },
+  "deliberately_killed_processes_without_footer": {
+    "Sim": 1,
+    "worker": 2
+  },
+  "normal_diagnostic_producers": 727,
+  "pool_grants_returned": 725,
+  "all_724_logical_input_candidate_hashes_equal_v48": true,
+  "broker_sessions": 4,
+  "failed_worker_OS_waits": 2,
+  "known_scope_PID_reuse": "none; ambiguity rejected, formal initialization identity still required",
+  "partial_producers_without_report": [
+    "sim-35077-0",
+    "worker-35719-0"
+  ],
+  "eight_hour": "not_run",
+  "real_16GB": "not_run",
+  "full_M0": "not_accepted"
+}

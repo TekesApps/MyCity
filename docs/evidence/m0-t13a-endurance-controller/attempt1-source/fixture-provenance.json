@@ -1,0 +1,87 @@
+{
+  "fixture": "fixtures/regressions/t13a-legacy-stack-world.zip",
+  "sha256": "08cb6317ddf74c04a05cf517510f0cc09861d1c01406c09776e422bf623e3b15",
+  "origin": "actual failed test21280 source anchor, no business data edited",
+  "world_files": [
+    {
+      "path": "CURRENT.json",
+      "bytes": 123,
+      "sha256": "1102d2d011a55c81efe42c59688247151fca4d7d8133dbc36ce353ab477f20d5"
+    },
+    {
+      "path": "LOCK",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "air-worker/candidates/fa2513b01f6a25277e056fe0e96c36db109482c6c9d99252ae35e24c56ded726.air",
+      "bytes": 688805,
+      "sha256": "fa2513b01f6a25277e056fe0e96c36db109482c6c9d99252ae35e24c56ded726"
+    },
+    {
+      "path": "air-worker/inputs/02a05f3bd64585ac59aa98e14fab9d4c5a87646eea2587c568d9b00da8b718aa.air",
+      "bytes": 246364,
+      "sha256": "02a05f3bd64585ac59aa98e14fab9d4c5a87646eea2587c568d9b00da8b718aa"
+    },
+    {
+      "path": "air-worker-owner.json",
+      "bytes": 220,
+      "sha256": "e4661806333cb400be257a55e769cbc7ae1672abc2b8a4fd551c8bde03ebc227"
+    },
+    {
+      "path": "air-worker.lock",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "genesis.json",
+      "bytes": 101670,
+      "sha256": "f9d96a8bbb425a9af8d6059533adb80e88b2e8e96ba49c640a6bee15390e1948"
+    },
+    {
+      "path": "receipt-index-100.json",
+      "bytes": 589,
+      "sha256": "ade856f45fb79f098d83322eb5d9d04b7c909263cba1d366aab4053bcf673d62"
+    },
+    {
+      "path": "receipts-100.json",
+      "bytes": 99572,
+      "sha256": "30f2c50f6222fb00517409d0eb2d50d41546184c3945e09f4615f1c08dd51804"
+    },
+    {
+      "path": "root-0.json",
+      "bytes": 565,
+      "sha256": "0c810116ba005f2a57b0ae7054a187af70698fa9020d4853b2e170309f79aa50"
+    },
+    {
+      "path": "root-1.json",
+      "bytes": 456,
+      "sha256": "00a2c3c130dae3278268d5eb19499eac2b2960dbeea62aadd1a3fc15c7d29449"
+    },
+    {
+      "path": "spatial-height.png",
+      "bytes": 207,
+      "sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8"
+    },
+    {
+      "path": "spatial-input.json",
+      "bytes": 3679,
+      "sha256": "1891b68e1190fac29e3dc83a1d5d96ba3fa972cc7594fb8106ccbe179cdd29d6"
+    },
+    {
+      "path": "wal-100.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "world-100.json",
+      "bytes": 2527389,
+      "sha256": "090a8ddcbf95956cb58f47952e0510e84b709f8167070d09156109a5411bddcc"
+    },
+    {
+      "path": "world-index-100.json",
+      "bytes": 453,
+      "sha256": "c0069d76cd4e841c4663952a2b00d0fb55fb445651610109e4da29d3ca041003"
+    }
+  ]
+}

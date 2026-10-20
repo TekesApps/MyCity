@@ -269,7 +269,7 @@ pub fn run_tier_observed(
     observe: impl FnMut(&Reference, &Step) -> Result<(), String>,
 ) -> Result<(Reference, Value), String> {
     let mut report = ValueReport(Map::new());
-    let reference = run_tier_report(tier, observe, &mut report)?;
+    let reference = run_tier_report(tier, None, observe, &mut report)?;
     Ok((reference, Value::Object(report.0)))
 }
 /// Same oracle and model work, with borrowed report fields serialized directly.
@@ -279,9 +279,18 @@ pub fn run_tier_streamed(
     observe: impl FnMut(&Reference, &Step) -> Result<(), String>,
     report: &mut impl std::io::Write,
 ) -> Result<Reference, String> {
+    run_tier_streamed_retry(tier, None, observe, report)
+}
+pub(crate) fn run_tier_streamed_retry(
+    tier: Tier,
+    retry_job: Option<u64>,
+    observe: impl FnMut(&Reference, &Step) -> Result<(), String>,
+    report: &mut impl std::io::Write,
+) -> Result<Reference, String> {
     report.write_all(b"{").map_err(err)?;
     let reference = run_tier_report(
         tier,
+        retry_job,
         observe,
         &mut StreamReport {
             writer: report,
@@ -293,6 +302,7 @@ pub fn run_tier_streamed(
 }
 fn run_tier_report(
     tier: Tier,
+    retry_job: Option<u64>,
     mut observe: impl FnMut(&Reference, &Step) -> Result<(), String>,
     report: &mut impl ReportSink,
 ) -> Result<Reference, String> {
@@ -302,6 +312,9 @@ fn run_tier_report(
     let mut r = Reference::from_unstarted_engine(
         Engine::new(assemble(tier.opening())?, resources()?).map_err(err)?,
     )?;
+    if let Some(job) = retry_job {
+        r.expect_worker_retry(job)?;
+    }
     let initial = r.engine.world().view();
     let initial_extra = serde_json::to_value(&initial.stocks[14..]).map_err(err)?;
     if (initial.accounts.len(), initial.stocks.len()) != (account_count, stock_count)
@@ -353,6 +366,9 @@ fn run_tier_report(
         }
         observe(&r, &step)
     })?;
+    if !r.retry_plan_completed() {
+        return Err("scale_retry_not_executed".into());
+    }
     let view = r.engine.world().view();
     let t = r.engine.timeline().ok_or("scale_timeline")?;
     let x = view.exchange.as_ref().ok_or("scale_exchange")?;

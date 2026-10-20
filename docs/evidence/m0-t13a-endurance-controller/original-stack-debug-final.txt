@@ -1,0 +1,10 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.16s
+     Running tests/scale_rare.rs (target/debug/deps/scale_rare-b2d5824cc1066f37)
+
+running 1 test
+test actual_full_anchors_restore_real_sim_trials_and_preserve_cache_charge has been running for over 60 seconds
+test actual_full_anchors_restore_real_sim_trials_and_preserve_cache_charge ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 153.54s
+

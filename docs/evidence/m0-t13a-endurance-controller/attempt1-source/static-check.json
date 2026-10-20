@@ -1,0 +1,7 @@
+{
+  "source_sha256": "ce9efd12246a4870495c838c4047ffc274177316f956a73c47de5343b754e2b2",
+  "files": 142,
+  "frozen_load_unchanged": true,
+  "binary_and_scripts_unchanged": true,
+  "scope": "static integrity only; no runtime/performance/8h acceptance"
+}

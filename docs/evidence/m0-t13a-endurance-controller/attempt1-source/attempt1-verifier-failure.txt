@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-endurance-controller/attempt1-verifier.py", line 53, in <module>
+    assert roles=={'normal-pool-host':1,'scale-endurance':1,'scale-model-task':4,'sim-host-scale-full-probe':3,'compute-worker-bounded':724},roles
+AssertionError: Counter({'compute-worker-bounded': 723, 'scale-model-task': 4, 'sim-host-scale-full-probe': 3, 'scale-endurance': 1, 'normal-pool-host': 1})

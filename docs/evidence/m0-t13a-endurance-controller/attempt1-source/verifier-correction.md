@@ -1,0 +1,5 @@
+# 核验器首轮错误保留
+
+首轮verify.py在正常heap计数断言失败：预期724个正常worker尾记录，实得723。实际工件显示两个owned_child_wait_failure：Cells故障job38/worker99630，以及提交后杀Sim时由broker回收的已完成job73/worker99969。后者已有计算完成及diagnostic report，但SIGKILL前未正常退出，因此也没有heap尾记录。两者都不补造尾部或物理峰。
+
+修正为从实际broker wait失败身份推导正常worker尾部725减2，严格要求两个失败job恰为已注入的38和73，且所有无尾记录生产者恰为这两个worker及被杀Sim99251。缺report仍仅Cells worker和Sim，共2个；已完成的job73 worker报告保留。原核验器见attempt1-verifier.py。不是修改Rust、重跑业务或放宽资源门。

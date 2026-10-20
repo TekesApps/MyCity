@@ -1,0 +1,12 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.16s
+     Running tests/stack_restore.rs (target/debug/deps/stack_restore-484ec4b751d1c139)
+
+running 1 test
+test original_full_v2_anchor_opens_on_default_stack_and_preserves_old_engine_bytes ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.39s
+

@@ -76,7 +76,7 @@ fn payload_digest(value: &Value) -> Result<(String, usize), String> {
     Ok((format!("{:x}", sink.hash.finalize()), sink.bytes))
 }
 /// Unlike BufRead::lines(), enforce the bound before allocating the whole line.
-fn target_line(reader: &mut impl BufRead) -> Result<Option<Vec<u8>>, String> {
+pub(crate) fn target_line(reader: &mut impl BufRead) -> Result<Option<Vec<u8>>, String> {
     let mut line = Vec::with_capacity(4096);
     loop {
         let available = reader.fill_buf().map_err(err)?;
@@ -103,8 +103,8 @@ fn target_line(reader: &mut impl BufRead) -> Result<Option<Vec<u8>>, String> {
     }
 }
 pub(crate) struct Experiment {
-    client: Client,
-    id: u64,
+    pub(crate) client: Client,
+    pub(crate) id: u64,
     log: BufWriter<File>,
     log_bytes: usize,
     began: Instant,
@@ -114,7 +114,7 @@ pub(crate) struct Experiment {
     failed_attempts: u64,
 }
 impl Experiment {
-    fn record(&mut self, value: Value) -> Result<(), String> {
+    pub(crate) fn record(&mut self, value: Value) -> Result<(), String> {
         #[derive(Serialize)]
         struct Row<'a> {
             elapsed_seconds: f64,
@@ -161,7 +161,11 @@ impl Experiment {
         let state = self.call(Command::Progress)?;
         self.raw_at(&state, actions)
     }
-    fn raw_at(&mut self, state: &Value, actions: Vec<Action>) -> Result<Envelope, String> {
+    pub(crate) fn raw_at(
+        &mut self,
+        state: &Value,
+        actions: Vec<Action>,
+    ) -> Result<Envelope, String> {
         let envelope = Envelope {
             world: 1,
             branch: 1,
@@ -441,8 +445,20 @@ pub(crate) fn independent_experiment(
     create: bool,
     measured: bool,
 ) -> Result<Experiment, String> {
+    independent_experiment_options(dir, create, measured, false)
+}
+pub(crate) fn independent_experiment_options(
+    dir: &Path,
+    create: bool,
+    measured: bool,
+    probe: bool,
+) -> Result<Experiment, String> {
     let exe = std::env::current_exe().map_err(err)?;
-    let mut client = spawn(&exe, &dir.join("world"), create, Tier::Full, measured)?;
+    let mut client = if measured {
+        Client::spawn_scale_measured(&exe, &dir.join("world"), create, probe, Tier::Full)?
+    } else {
+        Client::spawn_scale(&exe, &dir.join("world"), create, probe, Tier::Full)?
+    };
     if client.next(Duration::from_secs(35))?.kind != "ready" {
         return Err("rare_not_ready".into());
     }

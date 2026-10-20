@@ -345,3 +345,6 @@ v0.5.47的T13A-3h：[实体余额与协议修复](evidence/m0-t13a-normal-pool/S
 
 
 v0.5.48的T13A-3i：[broker实际Child与有限故障恢复](evidence/m0-t13a-broker/STATUS.md)。Client持Sim Child/独立监督cap，Sim持租约，broker实际wait后归还4MiB；撤销回执确认前禁新会话，晚到旧ACK无新事件，Start丢回复须撤销重开、broker死亡失败关闭。最终同源312回归及12池有限故障工件核验通过；原full无L1运行408.605秒，724借还/Filled、731正常heap、3011原票、完整Engine及旧hash独立核验通过。旧首轮7启动就绪超时原因未证明，旧overbound测试BrokenPipe失败及晚ACK错误各留原来源；不把重跑覆盖为从未失败。扫描仍1s，周期日志30s累计、行1536B/总8MiB有界；实际8h尚未运行。普通Engine额外压力、共同8MiB、精确常规工作区、L1联合、正式稳态及四档均未签，真实16GB not_run，M0 not_accepted。下一依赖是原28800秒/96保存/指定故障时点控制器及实跑，不再扩本阶段有限案例。
+
+
+v0.5.49的T13A-3j：[耐久控制器功能与默认栈修复](evidence/m0-t13a-endurance-controller/STATUS.md)。单调绝对时轴、2880查询/96保存、实际Cells故障/提交丢回复/冷重开及独立故障参考接入；最终同源full短时实测432.112秒，723目标/725借还/3013原票/完整Engine及724旧hash核验通过。旧全仓debug发生真实栈溢出，Box<World>修复后原默认栈故障路径及旧线格式精确回归通过，全仓release316通过；旧失败独立保留，不声称全仓debug通过。无L1，控制器formal入口尚未实际8h；共同8MiB、精确常规64MiB、正式三轮/四档/实际8h仍未签，真实16GB not_run、M0 not_accepted。下一依赖是Rust联合监督与完整L1时轴/实例预算，不再增加有限故事。

@@ -1,0 +1,34 @@
+{
+  "capsules": [
+    {
+      "folder": "attempt1-source",
+      "source_sha256": "ce9efd12246a4870495c838c4047ffc274177316f956a73c47de5343b754e2b2",
+      "files": 142,
+      "matches_current": false
+    },
+    {
+      "folder": "m0-t13a-endurance-controller",
+      "source_sha256": "2b378e37683f390f5be24459b933c24b118e8d6071ca5ab116c1f3e8bb9ff885",
+      "files": 144,
+      "matches_current": true
+    }
+  ],
+  "runtime_archives": [
+    {
+      "run": "t13a49-smoke02",
+      "source_sha256": "2b378e37683f390f5be24459b933c24b118e8d6071ca5ab116c1f3e8bb9ff885",
+      "files": 3935
+    },
+    {
+      "run": "t13a49-smoke01",
+      "source_sha256": "ce9efd12246a4870495c838c4047ffc274177316f956a73c47de5343b754e2b2",
+      "files": 3937
+    }
+  ],
+  "failed_regression_files": 111,
+  "frozen_load_unchanged": true,
+  "scope": "static provenance only; runtime verdicts remain separate",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run",
+  "full_M0": "not_accepted"
+}
