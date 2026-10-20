@@ -1,0 +1,23 @@
+{
+  "release": "v0.5.20",
+  "date": "2026-10-20",
+  "evidence": "static_design_only",
+  "published_model_baseline": "v0.5.19",
+  "draft_t05b": "uncommitted_not_accepted",
+  "app_total_gib": "3.10",
+  "runtime_domain_mib": "460.80",
+  "runtime_reserved_mib": 296,
+  "runtime_remaining_for_existing_uses_mib": "164.80",
+  "worker_count_candidate": 2,
+  "tasks_per_worker_candidate": 1,
+  "normal_worker_and_gpu_compute_mib": 96,
+  "preview_one_worker_gpu_compute_disabled_mib": 224,
+  "rgba8_4k_frame_bytes": 33177600,
+  "rgba8_4k_60fps_one_copy_bytes_per_second": 1990656000,
+  "three_color_frames_mib": "94.921875",
+  "process_pool": "not_implemented",
+  "gpu_render": "not_implemented",
+  "ipc": "not_implemented",
+  "memory_16gb_gate": "not_run",
+  "backend_compatibility": "delegated_to_wgpu_no_native_adapter_implemented"
+}

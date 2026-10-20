@@ -102,3 +102,7 @@ Apple Silicon的统一物理内存不是CPU16GB加GPU16GB，也不等于wgpu保�
 - [Apple：Metal Compute on MacBook Pro](https://developer.apple.com/videos/play/tech-talks/10580/)：统一内存、共享访问同步及异步提交原则；该演讲是架构参考，不作为当前机型性能规格。
 - [wgpu Buffer API](https://docs.rs/wgpu/latest/wgpu/struct.Buffer.html)：CPU映射与GPU使用互斥、异步映射完成和解除映射；latest不是本项目已冻结依赖。
 - [WGSL浮点求值规则](https://www.w3.org/TR/WGSL/#floating-point-evaluation)：浮点运算及允许的实现差异，不能据此声称跨设备逐bit可重放。
+
+## A55进程与所有权补充
+
+[运行架构](process-worker-and-render-architecture.md)将计算地点和提交权限分开：CPU计算可在独立worker，GPU经唯一Owner／Broker；结果均由Sim验证并原子接纳。设备／任务／writer代际和输入版本绑定，崩溃不重复业务副作用；进程组与实际副本共同计预算。独立Render Host为待测候选，当前不因wgpu后端兼容就假定Surface可跨进程。此补充只属设计，原GPU实测门不变。

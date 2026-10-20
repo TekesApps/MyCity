@@ -56,3 +56,7 @@ M0验证核心数据／钟／账／保存及真实16GB；0.1文本市长交通�
 
 
 本版[发布来源清单](inputs/product-blueprint/manifest-v0.5.3.json)锁定全部设计／CSV／JSON的字节与SHA256（不递归散列清单自身）；该清单不是运行存档／性能证书。v0.5.2等历史清单在原tag解释，历史发布tag不移动，后续每次文档提交继续递增附注tag。
+
+## 7. 进程与GPU部署补充（A55）
+
+[进程、worker与GPU渲染架构](process-worker-and-render-architecture.md)区分App交互监督、Sim权威调度、纯计算worker和GPU Owner；首个图形原型候选为App专用渲染线程，独立Render Host需单独验证跨进程呈现／共享与总预算。替代将“同一进程CPU/GPU”当作所有模块必须共进程的部署前提，仍使用同一台16GB机器的联合预算。此为文档决策；进程池、图形和T05-B当前都不能据此签收。
