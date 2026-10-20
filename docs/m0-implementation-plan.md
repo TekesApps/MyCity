@@ -251,3 +251,6 @@ v0.5.33完成T13A-2a[Store增长下界诊断](evidence/m0-t13a-storage/STATUS.md
 
 
 v0.5.34的T13A-2b[拆分World／原票与同满级96保存](evidence/m0-t13a-storage-v2/STATUS.md)实测解决暂停世界增长下界，251项回归及旧档读取通过；不签L2实际经营或8h。下一依赖是为新建满级Sim接入显式v2，装配small／medium／full真实经营与计时，保留8192页、720小时目标及完整账／库存／空气对照，再进入原定稳态和联合长跑。
+
+
+v0.5.35的T13A-2c[满级真实30日Sim／worker／v2Store](evidence/m0-t13a-full-sim/STATUS.md)已完成原冻结经营轨迹、关键目标全量对照、完整冷开与最早原票重试；真实Receipt链增长已实际观测，但本次未装配96次定期保存／L1同行。接下来按实测查询／协调开销推进分级计时与安全优化，然后执行既定三轮稳态及8h，不以本次接入诊断替代性能门。

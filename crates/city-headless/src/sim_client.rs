@@ -1,7 +1,7 @@
 //! One in-flight host command, bounded IPC; no Store writer exists in this process.
 use crate::{
     compute_worker as wire,
-    sim_host::{Command as SimCommand, Event, Request},
+    sim_host::{Command as SimCommand, Event, Profile, Request},
 };
 use std::{
     io::BufReader,
@@ -23,10 +23,10 @@ pub struct Client {
 }
 impl Client {
     pub fn spawn(executable: &Path, world: &Path, create: bool) -> Result<Self, String> {
-        Self::spawn_inner(executable, world, create, false, false)
+        Self::spawn_inner(executable, world, create, false, Profile::Base)
     }
     pub fn spawn_probe(executable: &Path, world: &Path, create: bool) -> Result<Self, String> {
-        Self::spawn_inner(executable, world, create, true, false)
+        Self::spawn_inner(executable, world, create, true, Profile::Base)
     }
     pub fn spawn_joint(
         executable: &Path,
@@ -34,26 +34,29 @@ impl Client {
         create: bool,
         probe: bool,
     ) -> Result<Self, String> {
-        Self::spawn_inner(executable, world, create, probe, true)
+        Self::spawn_inner(executable, world, create, probe, Profile::Joint)
+    }
+    pub fn spawn_scale_full(
+        executable: &Path,
+        world: &Path,
+        create: bool,
+        probe: bool,
+    ) -> Result<Self, String> {
+        Self::spawn_inner(executable, world, create, probe, Profile::ScaleFull)
     }
     fn spawn_inner(
         executable: &Path,
         world: &Path,
         create: bool,
         probe: bool,
-        joint: bool,
+        profile: Profile,
     ) -> Result<Self, String> {
         if !world.is_absolute() {
             return Err("sim_world_absolute_path_required".into());
         }
         let executable = executable.canonicalize().map_err(|e| e.to_string())?;
         let mut child = Command::new(&executable)
-            .arg(match (joint, probe) {
-                (false, false) => "sim-host",
-                (false, true) => "sim-host-probe",
-                (true, false) => "sim-host-joint",
-                (true, true) => "sim-host-joint-probe",
-            })
+            .arg(profile.command(probe))
             .arg(if create { "create" } else { "open" })
             .arg(world)
             .stdin(Stdio::piped())

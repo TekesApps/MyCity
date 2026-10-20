@@ -33,28 +33,6 @@ pub fn resources() -> Result<Vec<Resource>, String> {
     .map(|(id, cap)| Resource::new(id, cap).map_err(err))
     .collect()
 }
-fn execute(r: &mut Reference, action: Action) -> Result<(), String> {
-    r.execute(vec![action])
-        .map_err(|e| format!("{action:?}: {e}"))?;
-    Ok(())
-}
-fn settle(r: &mut Reference, sequences: std::ops::RangeInclusive<u64>) -> Result<(), String> {
-    for sequence in sequences {
-        execute(
-            r,
-            Action::Inbox {
-                command: Inbox::Settle { sequence },
-            },
-        )?;
-        execute(
-            r,
-            Action::Inbox {
-                command: Inbox::Archive { sequence },
-            },
-        )?;
-    }
-    Ok(())
-}
 /// Exact startup shared by direct reference and storage diagnostics; no time advance.
 pub fn startup_actions(policy: &Value) -> Result<Vec<Action>, String> {
     let mut actions = vec![
@@ -90,10 +68,17 @@ pub fn startup_actions(policy: &Value) -> Result<Vec<Action>, String> {
     });
     Ok(actions)
 }
-pub fn run() -> Result<(Reference, Value), String> {
-    let started = Instant::now();
+#[derive(Clone, Debug)]
+pub enum Step {
+    Action(Action),
+    Drive(u64),
+    Initialized,
+    PeakShipments,
+    HourComplete,
+}
+/// Frozen input order shared by independent CPU and process executions.
+pub fn walk(mut step: impl FnMut(Step) -> Result<(), String>) -> Result<(), String> {
     let policy: Value = serde_json::from_slice(POLICY).map_err(err)?;
-    let oracle: Value = serde_json::from_slice(ORACLE).map_err(err)?;
     if policy["boot_start_seconds"] != json!({"pump":0,"generator":60})
         || policy["first_group_settle_seconds"] != 180
         || policy["freight_dispatch"]
@@ -105,6 +90,69 @@ pub fn run() -> Result<(Reference, Value), String> {
         return Err("scale_frozen_schedule".into());
     }
 
+    for action in startup_actions(&policy)? {
+        step(Step::Action(action))?;
+    }
+    step(Step::Initialized)?;
+    step(Step::Drive(60))?;
+    step(Step::Action(Action::Boot {
+        command: Boot::Start {
+            facility: Facility::Generator,
+            reverse_request: false,
+        },
+    }))?;
+    for quote in 1..=4 {
+        step(Step::Action(Action::Exchange {
+            command: Exchange::Dispatch { quote },
+        }))?;
+    }
+    step(Step::PeakShipments)?;
+    step(Step::Drive(180))?;
+    for sequence in 1..=4 {
+        step(Step::Action(Action::Inbox {
+            command: Inbox::Settle { sequence },
+        }))?;
+        step(Step::Action(Action::Inbox {
+            command: Inbox::Archive { sequence },
+        }))?;
+    }
+    for hour in 1..=720 {
+        step(Step::Drive(hour * 3600))?;
+        step(Step::HourComplete)?;
+        if hour == 168 {
+            step(Step::Action(Action::RegionActivate { city: 2 }))?;
+        }
+        if hour == 192 {
+            step(Step::Action(Action::RegionActivate { city: 1 }))?;
+        }
+        if hour == 360 {
+            for quote in 5..=8 {
+                step(Step::Action(Action::Exchange {
+                    command: Exchange::Dispatch { quote },
+                }))?;
+            }
+            step(Step::Drive(hour * 3600 + 120))?;
+            for sequence in 5..=8 {
+                step(Step::Action(Action::Inbox {
+                    command: Inbox::Settle { sequence },
+                }))?;
+                step(Step::Action(Action::Inbox {
+                    command: Inbox::Archive { sequence },
+                }))?;
+            }
+        }
+    }
+    Ok(())
+}
+pub fn run() -> Result<(Reference, Value), String> {
+    run_observed(|_, _| Ok(()))
+}
+/// Observer receives actual CPU results; it cannot alter the frozen inputs.
+pub fn run_observed(
+    mut observe: impl FnMut(&Reference, &Step) -> Result<(), String>,
+) -> Result<(Reference, Value), String> {
+    let started = Instant::now();
+    let oracle: Value = serde_json::from_slice(ORACLE).map_err(err)?;
     let mut r = Reference::from_unstarted_engine(
         Engine::new(assemble(OPENING)?, resources()?).map_err(err)?,
     )?;
@@ -130,66 +178,35 @@ pub fn run() -> Result<(Reference, Value), String> {
     {
         return Err("scale_full_counts".into());
     }
-    for action in startup_actions(&policy)? {
-        execute(&mut r, action)?;
-    }
-    let initialized_owned = r.engine.owned_capacity_bytes();
-    r.drive(60)?;
-    execute(
-        &mut r,
-        Action::Boot {
-            command: Boot::Start {
-                facility: Facility::Generator,
-                reverse_request: false,
-            },
-        },
-    )?;
-    for quote in 1..=4 {
-        execute(
-            &mut r,
-            Action::Exchange {
-                command: Exchange::Dispatch { quote },
-            },
-        )?;
-    }
-    let peak_shipments = r
-        .engine
-        .world()
-        .view()
-        .exchange
-        .ok_or("scale_exchange")?
-        .shipments
-        .iter()
-        .flatten()
-        .count();
-    if peak_shipments != 4 {
-        return Err("scale_inflight_not_full".into());
-    }
-    r.drive(180)?;
-    settle(&mut r, 1..=4)?;
+    let mut initialized_owned = 0;
+    let mut peak_shipments = 0;
     let mut completed_hours = 0;
-    for hour in 1..=720 {
-        r.drive(hour * 3600)?;
-        completed_hours += 1;
-        if hour == 7 * 24 {
-            execute(&mut r, Action::RegionActivate { city: 2 })?;
-        }
-        if hour == 8 * 24 {
-            execute(&mut r, Action::RegionActivate { city: 1 })?;
-        }
-        if hour == 15 * 24 {
-            for quote in 5..=8 {
-                execute(
-                    &mut r,
-                    Action::Exchange {
-                        command: Exchange::Dispatch { quote },
-                    },
-                )?;
+    walk(|step| {
+        match &step {
+            Step::Action(action) => {
+                r.execute(vec![*action])?;
             }
-            r.drive(hour * 3600 + 120)?;
-            settle(&mut r, 5..=8)?;
+            Step::Drive(target) => r.drive(*target)?,
+            Step::Initialized => initialized_owned = r.engine.owned_capacity_bytes(),
+            Step::PeakShipments => {
+                peak_shipments = r
+                    .engine
+                    .world()
+                    .view()
+                    .exchange
+                    .ok_or("scale_exchange")?
+                    .shipments
+                    .iter()
+                    .flatten()
+                    .count();
+                if peak_shipments != 4 {
+                    return Err("scale_inflight_not_full".into());
+                }
+            }
+            Step::HourComplete => completed_hours += 1,
         }
-    }
+        observe(&r, &step)
+    })?;
     let view = r.engine.world().view();
     let t = r.engine.timeline().ok_or("scale_timeline")?;
     let x = view.exchange.as_ref().ok_or("scale_exchange")?;

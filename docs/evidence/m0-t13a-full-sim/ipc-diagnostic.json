@@ -1,0 +1,202 @@
+{
+  "scope": "whole IPC round trips including storage and worker; not CPU compute-class gates",
+  "ipc_calls": {
+    "status": {
+      "samples": 4461,
+      "sum_seconds": 125.66498843100018,
+      "p95_seconds": 0.033509875,
+      "p99_seconds": 0.041703208,
+      "maximum_seconds": 0.141517167
+    },
+    "execute": {
+      "samples": 1564,
+      "sum_seconds": 60.31917854699998,
+      "p95_seconds": 0.052479625,
+      "p99_seconds": 0.150186458,
+      "maximum_seconds": 0.841747791
+    },
+    "receipt_proof": {
+      "samples": 2,
+      "sum_seconds": 0.001813542,
+      "p95_seconds": 0.001748917,
+      "p99_seconds": 0.001748917,
+      "maximum_seconds": 0.001748917
+    },
+    "run_required": {
+      "samples": 724,
+      "sum_seconds": 155.54833011899996,
+      "p95_seconds": 0.246149625,
+      "p99_seconds": 0.383481042,
+      "maximum_seconds": 1.040402167
+    },
+    "checkpoint": {
+      "samples": 2,
+      "sum_seconds": 0.194949666,
+      "p95_seconds": 0.108647916,
+      "p99_seconds": 0.108647916,
+      "maximum_seconds": 0.108647916
+    }
+  },
+  "complete_drive": {
+    "samples": 723,
+    "sum_seconds": 337.3443790399999,
+    "p95_seconds": 0.564947334,
+    "p99_seconds": 0.919551625,
+    "maximum_seconds": 1.392383583
+  },
+  "actual_day_completion_targets": [
+    {
+      "game_day": 1,
+      "elapsed_since_sim_ready_seconds": 17.540229458,
+      "since_previous_day_seconds": 17.540229458
+    },
+    {
+      "game_day": 2,
+      "elapsed_since_sim_ready_seconds": 28.768779625,
+      "since_previous_day_seconds": 11.228550167000002
+    },
+    {
+      "game_day": 3,
+      "elapsed_since_sim_ready_seconds": 39.615844791,
+      "since_previous_day_seconds": 10.847065166
+    },
+    {
+      "game_day": 4,
+      "elapsed_since_sim_ready_seconds": 50.924975416,
+      "since_previous_day_seconds": 11.309130625000002
+    },
+    {
+      "game_day": 5,
+      "elapsed_since_sim_ready_seconds": 62.080153875,
+      "since_previous_day_seconds": 11.155178458999998
+    },
+    {
+      "game_day": 6,
+      "elapsed_since_sim_ready_seconds": 73.066833625,
+      "since_previous_day_seconds": 10.98667975
+    },
+    {
+      "game_day": 7,
+      "elapsed_since_sim_ready_seconds": 83.579166041,
+      "since_previous_day_seconds": 10.512332415999992
+    },
+    {
+      "game_day": 8,
+      "elapsed_since_sim_ready_seconds": 97.070382125,
+      "since_previous_day_seconds": 13.491216084000001
+    },
+    {
+      "game_day": 9,
+      "elapsed_since_sim_ready_seconds": 108.459931625,
+      "since_previous_day_seconds": 11.389549500000001
+    },
+    {
+      "game_day": 10,
+      "elapsed_since_sim_ready_seconds": 120.34703225,
+      "since_previous_day_seconds": 11.887100625000002
+    },
+    {
+      "game_day": 11,
+      "elapsed_since_sim_ready_seconds": 133.075183916,
+      "since_previous_day_seconds": 12.728151665999988
+    },
+    {
+      "game_day": 12,
+      "elapsed_since_sim_ready_seconds": 143.966009291,
+      "since_previous_day_seconds": 10.89082537500002
+    },
+    {
+      "game_day": 13,
+      "elapsed_since_sim_ready_seconds": 154.356307541,
+      "since_previous_day_seconds": 10.39029825
+    },
+    {
+      "game_day": 14,
+      "elapsed_since_sim_ready_seconds": 164.945815,
+      "since_previous_day_seconds": 10.589507459000004
+    },
+    {
+      "game_day": 15,
+      "elapsed_since_sim_ready_seconds": 176.337031875,
+      "since_previous_day_seconds": 11.391216874999998
+    },
+    {
+      "game_day": 16,
+      "elapsed_since_sim_ready_seconds": 188.384226416,
+      "since_previous_day_seconds": 12.047194540999982
+    },
+    {
+      "game_day": 17,
+      "elapsed_since_sim_ready_seconds": 198.996479333,
+      "since_previous_day_seconds": 10.612252917000006
+    },
+    {
+      "game_day": 18,
+      "elapsed_since_sim_ready_seconds": 209.757110333,
+      "since_previous_day_seconds": 10.760631000000018
+    },
+    {
+      "game_day": 19,
+      "elapsed_since_sim_ready_seconds": 220.820075541,
+      "since_previous_day_seconds": 11.06296520799998
+    },
+    {
+      "game_day": 20,
+      "elapsed_since_sim_ready_seconds": 231.408032166,
+      "since_previous_day_seconds": 10.587956625000004
+    },
+    {
+      "game_day": 21,
+      "elapsed_since_sim_ready_seconds": 241.792094333,
+      "since_previous_day_seconds": 10.384062166999996
+    },
+    {
+      "game_day": 22,
+      "elapsed_since_sim_ready_seconds": 253.020862458,
+      "since_previous_day_seconds": 11.228768125000016
+    },
+    {
+      "game_day": 23,
+      "elapsed_since_sim_ready_seconds": 263.828311041,
+      "since_previous_day_seconds": 10.807448582999996
+    },
+    {
+      "game_day": 24,
+      "elapsed_since_sim_ready_seconds": 274.541922583,
+      "since_previous_day_seconds": 10.713611541999967
+    },
+    {
+      "game_day": 25,
+      "elapsed_since_sim_ready_seconds": 286.70049725,
+      "since_previous_day_seconds": 12.158574667000039
+    },
+    {
+      "game_day": 26,
+      "elapsed_since_sim_ready_seconds": 297.782043833,
+      "since_previous_day_seconds": 11.081546582999977
+    },
+    {
+      "game_day": 27,
+      "elapsed_since_sim_ready_seconds": 308.649031708,
+      "since_previous_day_seconds": 10.866987875000007
+    },
+    {
+      "game_day": 28,
+      "elapsed_since_sim_ready_seconds": 319.59433825,
+      "since_previous_day_seconds": 10.945306542000026
+    },
+    {
+      "game_day": 29,
+      "elapsed_since_sim_ready_seconds": 330.117892833,
+      "since_previous_day_seconds": 10.523554582999964
+    },
+    {
+      "game_day": 30,
+      "elapsed_since_sim_ready_seconds": 342.132034666,
+      "since_previous_day_seconds": 12.014141832999996
+    }
+  ],
+  "paced_speed_gates": "not_run",
+  "P_E0_30day_gate": "not_run",
+  "eight_hour_gate": "not_run"
+}

@@ -1,6 +1,6 @@
 # MyCity
 
-仓库发布版本：`v0.5.34`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.35`。已开始Rust模型与headless CLI，当前不做UI。
 
 **软件结构先读[总体架构](docs/SOFTWARE_ARCHITECTURE.md)：当前代码、主体与事件、单writer、多进程目标、数据文件和预算。**
 
@@ -22,7 +22,7 @@
 - [T09区域实际履约](docs/m0-regional-fulfilment.md)：三城货物／电水、共池容量、实际费用与损耗、关图／断链／恢复；完整P-CAP及真实车辆／公用物理仍未验。
 - [检查点与重试档案](docs/m0-checkpoint-and-retry.md)：完整运行状态、分段WAL、冷凭证与损坏拒载；保留既有责任，不靠清历史绕过容量。
 - [T05-B全源与持久日历](docs/m0-timeline-runtime.md)：已实现profile的真实到期、工资账期、P0—P5与有限续做票；逐页恢复实测，完整产品日历与16GB仍未验。
-- [T13-A模型规模与性能](docs/m0-model-scale-performance.md)：已冻结L0真实包／L1完整布局压力／L2引擎上限、三轮稳态及实际8小时门；已完成[满级30日CPU参考与native布局子阶段](docs/evidence/m0-t13a-assembly/STATUS.md)，完整压力、分位／速度、稳态及8小时门仍未测。
+- [T13-A模型规模与性能](docs/m0-model-scale-performance.md)：已冻结L0真实包／L1完整布局压力／L2引擎上限、三轮稳态及实际8小时门；已完成CPU参考、完整L1布局短诊断及[真实满级Sim／worker／v2存档30日](docs/evidence/m0-t13a-full-sim/STATUS.md)；正式分位／速度、联合稳态及8小时门仍未通过。
 - [可恢复后台计算验收](docs/background-compute-acceptance.md)：冻结W0—W4、独立worker／Sim唯一写入／联合故障实验与全进程测量；W1—W4有限闭环已实测；[1800秒联合运行与限制](docs/background-joint-runtime.md)及[逐项完成审计](docs/background-compute-completion-audit.md)有原始工件和最终独立结论，16GB及完整M0仍未通过。
 - [W2任务与同根接纳](docs/background-store-runtime.md)：实际货运输入、P4屏障、Sim资产／小WAL、代际及独立预留；独立Sim见W3，有限长跑及进程组观察见W4。
 - [W3独立Sim与恢复](docs/background-sim-runtime.md)：原子换代、固定接纳原票、持久worker身份及OS缓存栅栏、6MiB磁盘charge和真实进程故障；[W4联合运行](docs/background-joint-runtime.md)已完成1800.435秒及独立核验／审查，采样限制明确。

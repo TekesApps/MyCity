@@ -1,0 +1,18 @@
+{
+  "release_workspace_tests_passed": 253,
+  "fmt": "passed",
+  "clippy": "passed",
+  "advisor_stage_review": "completed_read_only_no_stage_blocker",
+  "full_frozen_real_30day_sim_worker_v2_store": "passed_assembly_diagnostic",
+  "complete_final_state_and_original_receipts": "passed",
+  "steady_three_runs": "not_run",
+  "ten_compute_classes": "not_run",
+  "eight_hour": "not_run",
+  "real_16gb": "not_run",
+  "full_M0": "not_accepted",
+  "logs_sha256": {
+    "tests-release.txt": "affd7a01e5320eae80961abb7c669c5b63056de30d50def349c6aedddca98163",
+    "fmt.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "clippy.txt": "4885476e0f3d0394fc3849b3a6d2f48004177a344d389e6fd430a1e5a0150d00"
+  }
+}

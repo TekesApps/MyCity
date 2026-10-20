@@ -6,7 +6,7 @@ use crate::{
 use mycity_core::{
     background::{self, Command as B, Failure},
     sha256,
-    transaction::{Action, Caller, Envelope, Resource},
+    transaction::{Action, Caller, Envelope},
 };
 use mycity_storage::Store;
 use serde::{Deserialize, Serialize};
@@ -33,6 +33,7 @@ pub enum Command {
     ProbeRequired { job: u64, point: ProbePoint },
     ProbeAck { point: ProbePoint, cancel: bool },
     Checkpoint,
+    ReceiptProof { operation: u64 },
     Stop,
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -96,12 +97,31 @@ fn event(w: &mut impl Write, id: u64, kind: &str, payload: Value) -> Result<(), 
         },
     )
 }
-fn rules(joint: bool) -> String {
-    format!(
-        "{}:{}",
-        if joint { "sim-w4" } else { "sim-w3" },
-        env!("MYCITY_SOURCE_SHA256")
-    )
+#[derive(Clone, Copy)]
+pub(crate) enum Profile {
+    Base,
+    Joint,
+    ScaleFull,
+}
+impl Profile {
+    pub(crate) fn command(self, probe: bool) -> &'static str {
+        match (self, probe) {
+            (Self::Base, false) => "sim-host",
+            (Self::Base, true) => "sim-host-probe",
+            (Self::Joint, false) => "sim-host-joint",
+            (Self::Joint, true) => "sim-host-joint-probe",
+            (Self::ScaleFull, false) => "sim-host-scale-full",
+            (Self::ScaleFull, true) => "sim-host-scale-full-probe",
+        }
+    }
+    fn rules(self) -> String {
+        let name = match self {
+            Self::Base => "sim-w3",
+            Self::Joint => "sim-w4",
+            Self::ScaleFull => "sim-t13a-full-v2",
+        };
+        format!("{name}:{}", env!("MYCITY_SOURCE_SHA256"))
+    }
 }
 fn status(store: &Store, worker: &Option<Worker>) -> Result<Value, String> {
     let e = store.engine().map_err(err)?;
@@ -398,35 +418,48 @@ fn required(
     }
 }
 pub fn run(world: &Path, create: bool) -> Result<(), String> {
-    run_inner(world, create, false, false)
+    run_inner(world, create, false, Profile::Base)
 }
 pub fn run_probe(world: &Path, create: bool) -> Result<(), String> {
-    run_inner(world, create, true, false)
+    run_inner(world, create, true, Profile::Base)
 }
 pub fn run_joint(world: &Path, create: bool, probe: bool) -> Result<(), String> {
-    run_inner(world, create, probe, true)
+    run_inner(world, create, probe, Profile::Joint)
 }
-fn run_inner(world: &Path, create: bool, probe_enabled: bool, joint: bool) -> Result<(), String> {
-    let rules = rules(joint);
+pub fn run_scale_full(world: &Path, create: bool, probe: bool) -> Result<(), String> {
+    run_inner(world, create, probe, Profile::ScaleFull)
+}
+fn run_inner(
+    world: &Path,
+    create: bool,
+    probe_enabled: bool,
+    profile: Profile,
+) -> Result<(), String> {
+    let rules = profile.rules();
     let mut store = if create {
-        Store::create_spatial(
+        let (opening, resources) = match profile {
+            Profile::ScaleFull => (
+                crate::scale_reference::OPENING,
+                crate::scale_reference::resources()?,
+            ),
+            Profile::Joint => (
+                crate::joint_reference::OPENING,
+                crate::joint_reference::resources()?,
+            ),
+            Profile::Base => (
+                include_bytes!("../../../fixtures/m0-exchange-opening.json").as_slice(),
+                crate::joint_reference::resources()?,
+            ),
+        };
+        let constructor = if matches!(profile, Profile::ScaleFull) {
+            Store::create_spatial_v2
+        } else {
+            Store::create_spatial
+        };
+        constructor(
             world,
-            if joint {
-                crate::joint_reference::OPENING
-            } else {
-                include_bytes!("../../../fixtures/m0-exchange-opening.json")
-            },
-            [
-                (101, 1),
-                (102, 1),
-                (103, 1),
-                (104, 1),
-                (201, 2000),
-                (202, 2000),
-            ]
-            .into_iter()
-            .map(|(id, c)| Resource::new(id, c).map_err(err))
-            .collect::<Result<Vec<_>, _>>()?,
+            opening,
+            resources,
             &rules,
             include_bytes!("../../../fixtures/m0-exchange-spatial.json"),
             include_bytes!("../../../fixtures/terrain/m0-flat16.png"),
@@ -449,6 +482,10 @@ fn run_inner(world: &Path, create: bool, probe_enabled: bool, joint: bool) -> Re
         let stop = matches!(request.command, Command::Stop);
         let outcome = match request.command {
             Command::Status => status(&store, &worker),
+            Command::ReceiptProof { operation } => store.receipt(operation).map_err(err).and_then(|record| {
+                let bytes = serde_json::to_vec(&record).map_err(err)?;
+                Ok(json!({"operation":operation,"present":record.is_some(),"sha256":sha256(&bytes),"bytes":bytes.len()}))
+            }),
             Command::Execute { envelope } => {
                 let prefix = envelope.operation_id & 0xf000_0000_0000_0000;
                 if matches!(prefix, 0xd000_0000_0000_0000 | 0xe000_0000_0000_0000)

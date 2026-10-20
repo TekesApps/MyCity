@@ -125,3 +125,6 @@ v0.5.33的[真实满级Store增长下界](evidence/m0-t13a-storage/STATUS.md)在
 
 
 v0.5.34[存档增长修复](evidence/m0-t13a-storage-v2/STATUS.md)：同完整输入v2完成96次暂停保存，原票永久保留、两份Engine历史图像轮转，旧v1仍可打开且未自动迁移。此门只为paused_storage_lower_bound_passed；真实经营／Sim IPC／多Receipt段增长、联合内存及全部长时门仍需测，不用3.69MiB常量外推8h。
+
+
+v0.5.35的T13A-2c[真实满级Sim／worker／v2存档30日](evidence/m0-t13a-full-sim/STATUS.md)已完成723目标／724窗口、3011原票、完整CPU及独立oracle对照与冷开重试。Sim推进实测342.13秒，完整状态查询往返约125.66秒；这是接入／热点诊断，不是四档、10类计算、L1同行、三轮稳态或8h签收。下一步减少非必要完整查询并补分级计时，保留原目标、全部事实与数值步长。

@@ -1,0 +1,14 @@
+{
+  "source_sha256": "d58e07807aab85f5acc07fbb64ccf406a42fc53ede156b286987da6a758ba7c2",
+  "files_checked": 61,
+  "world_bytes": 9481429,
+  "complete_final_fields_equal_except_revision_and_incarnation": true,
+  "verified_targets": 723,
+  "receipt_segments": 23,
+  "permanent_original_receipts": 3011,
+  "independent_payroll_and_cash_oracle": "passed",
+  "performance_acceptance": "not_run",
+  "eight_hour_gate": "not_run",
+  "memory_16gb_gate": "not_run",
+  "full_M0": "not_accepted"
+}

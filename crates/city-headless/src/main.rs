@@ -77,6 +77,36 @@ fn run() -> Result<(), String> {
         );
         return Ok(());
     }
+    if args.get(1).is_some_and(|a| a == "scale-sim-probe") {
+        if args.len() != 3 {
+            return Err("usage: mycity-headless scale-sim-probe NEW_DIR".into());
+        }
+        println!(
+            "{}",
+            serde_json::to_string_pretty(&mycity_headless::scale_sim::run(std::path::Path::new(
+                &args[2]
+            ))?)
+            .map_err(|e| e.to_string())?
+        );
+        return Ok(());
+    }
+    if args.get(1).is_some_and(|a| {
+        matches!(
+            a.as_str(),
+            "sim-host-scale-full" | "sim-host-scale-full-probe"
+        )
+    }) {
+        if args.len() != 4 || !matches!(args[2].as_str(), "create" | "open") {
+            return Err(
+                "usage: mycity-headless sim-host-scale-full[-probe] create|open WORLD".into(),
+            );
+        }
+        return mycity_headless::sim_host::run_scale_full(
+            std::path::Path::new(&args[3]),
+            args[2] == "create",
+            args[1].ends_with("probe"),
+        );
+    }
     if args.get(1).is_some_and(|a| a == "scale-store-probe-v2") {
         if args.len() != 3 {
             return Err("usage: mycity-headless scale-store-probe-v2 NEW_DIR".into());
