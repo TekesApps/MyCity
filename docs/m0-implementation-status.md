@@ -4,7 +4,7 @@
 
 v0.5.23增加[T12-A纯数值参考](m0-air-cpu-reference.md)，尚未写入城市世界；业务协调器为v0.5.21的[T05-B](m0-timeline-runtime.md)接入当前实验profile的真实来源、日历及持久游标；Region／Boot／Exchange／Payroll可联合，旧[T08经济](m0-economy-runtime.md)仍为独立profile，不能与区域重复计劳动。后文按阶段保留，旧not_run为当时状态；有限通过不能扩大为全部M0、真实公用网或16GB通过。
 
-当前后台计算连续目标的冻结标准见[W0—W4验收](background-compute-acceptance.md)（v0.5.25）；[W1独立纯worker](background-worker-runtime.md)见v0.5.26，[W2城市接纳](background-store-runtime.md)见v0.5.27；独立Sim及联合门仍未通过。
+当前后台计算连续目标的冻结标准见[W0—W4验收](background-compute-acceptance.md)（v0.5.25）；[W1独立纯worker](background-worker-runtime.md)见v0.5.26，[W2城市接纳](background-store-runtime.md)见v0.5.27；[W3独立Sim／恢复](background-sim-runtime.md)见v0.5.28，1800秒联合门仍未通过。
 
 ## 1. 本轮范围覆盖
 
@@ -27,7 +27,7 @@ v0.5.23增加[T12-A纯数值参考](m0-air-cpu-reference.md)，尚未写入城�
 | T09 | 实际履约、收件背压／追收／连续性有限子阶段通过，v0.5.15—18 | 三城共池、交付费用／损耗、持久收件／应急退出及30分钟连续实测；永久断链、破产、真实车辆／潮流水力、具名权益及完整P-CAP／P-XMAP仍未验 |
 | T10 | T10-A有限CLI已实测；完整协议未完成 | 暂停／单步／四档实际等待、分页／热冷原票；当前profile接入T05-B step；目标对象revision／UI仍缺 |
 | T11 | deferred_by_user_scope | 原生UI／绘图／窗口／输入，不算通过 |
-| T12 | T12-A空气CPU有限参考已实测，v0.5.23 | 单通道32m EI、源／tile分页、任务检查点与新进程恢复、独立f64对照；未接世界／真实源投影／阈值，W1独立纯worker及W2有限场接纳已实测；独立Sim／GPU仍未完成 |
+| T12 | T12-A空气CPU有限参考已实测，v0.5.23 | 单通道32m EI、源／tile分页、任务检查点与新进程恢复、独立f64对照；未接世界／真实源投影／阈值，W1独立纯worker及W2有限场接纳已实测；独立Sim有限实现见W3；GPU仍未完成 |
 | T13 | 有限模型30分钟连续性实测，完整联合未验 | v0.5.18取得32GiB宿主有限实验RSS与冷档案增长；真实16GB大城／显示联合／8h长跑仍未运行 |
 | T14 | not_accepted | 不把headless子阶段签收等同完整M0 |
 
@@ -279,3 +279,9 @@ core.air用f32／f64位整数保存完整旧场、候选源累加／tile、积�
 ## 23. v0.5.24：树种与经纬度约束设计补充
 
 [树种契约](tree-species-climate-and-air.md)补地理适生、树种差异与有界空气作用。当前T12-A无树木项、T07无真实配准，均未改为实现通过；文档从M-env规划48KiB而不假定旧状态免费容纳。Rust／fixture／依赖没有变化，195项测试仍归v0.5.23冻结证据，本次只验文档、预算及来源。单worker隔离仍是下一模型依赖。
+
+## 27. v0.5.28：W3独立Sim、宿主监督和恢复
+
+[运行契约](background-sim-runtime.md)接入Rust独立Sim／有界宿主IPC和纯worker。RebindLease原子换代、最终Accept固定ID及成功才占票；D域防抢占；6MiB缓存持久charge、每attempt清理与跨Sim OS锁／owner登记避免旧worker并发复用。实际源／Cells杀worker、直接从外部杀Sim后全新监督端重开、候选发布及回复丢失、取消与三次封顶均有执行证据。
+
+[八分支CLI工件与核验](evidence/background-sim-w3/verify.py)比较完整空气State及规范化revision后的完整业务状态，原冷热票保持；全仓库门和工件复跑完成后才发布。本阶段没有1800秒联合、全进程组RSS或16GB设备证据；[W4具体计划](background-joint-experiment-plan.md)继续真实日／周工资、固定额营业税及合同债务／履约／空气联动。此前各版本not_run按历史保留，不将W3改称全部M0通过。

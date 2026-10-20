@@ -16,6 +16,33 @@ pub const MAX_RESOURCES: usize = 8;
 pub const MAX_LEASES: usize = 64;
 pub const ENGINE_BYTE_BUDGET: usize = 4 * 1024 * 1024;
 
+fn valid_background_operation(caller: Caller, env: &Envelope) -> bool {
+    if env.operation_id & 0xf000_0000_0000_0000 == 0xd000_0000_0000_0000 {
+        return matches!(caller, Caller::System)
+            && matches!(
+                env.actions.as_slice(),
+                [Action::Background {
+                    command: crate::background::Command::Restart
+                        | crate::background::Command::Lease { .. }
+                        | crate::background::Command::RebindLease { .. }
+                        | crate::background::Command::Fail { .. }
+                }]
+            );
+    }
+    let canonical = env.actions.iter().find_map(|a| match a {
+        Action::Background {
+            command: crate::background::Command::Accept { job, .. },
+        } => Some(crate::background::accept_operation_id(*job)),
+        _ => None,
+    });
+    if let Some(id) = canonical {
+        return matches!(caller, Caller::System)
+            && env.actions.len() == 1
+            && id.ok() == Some(env.operation_id);
+    }
+    env.operation_id & 0xf000_0000_0000_0000 != crate::background::ACCEPT_PREFIX
+}
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct CapacityToken {
@@ -529,7 +556,8 @@ impl Engine {
         env: &Envelope,
         candidate: Option<&crate::air::State>,
     ) -> bool {
-        matches!(caller, Caller::System)
+        valid_background_operation(caller, env)
+            && matches!(caller, Caller::System)
             && env.world == self.world.scope.world()
             && env.branch == self.world.scope.branch()
             && env.expected_revision == self.world.revision
@@ -593,6 +621,11 @@ impl Engine {
         {
             return Ok(Err(TxError::InvalidOperation));
         }
+        let background_accept_id =
+            env.operation_id & 0xf000_0000_0000_0000 == crate::background::ACCEPT_PREFIX;
+        if !valid_background_operation(caller, &env) {
+            return Ok(Err(TxError::InvalidOperation));
+        }
         if env.operation_id == 0 || matches!(caller, Caller::Account(0)) {
             return Ok(Err(TxError::InvalidOperation));
         }
@@ -636,6 +669,13 @@ impl Engine {
         } else {
             self.prepare_with_background(caller, &env, candidate)
         };
+        // A stale lease or unavailable candidate must not burn the job's final receipt.
+        // The hot/cold duplicate paths still return the original committed admission.
+        if background_accept_id {
+            if let Err(error) = prepared.as_ref() {
+                return Ok(Err(*error));
+            }
+        }
         let outcome = prepared.as_ref().map(|p| p.receipt).map_err(|e| *e);
         let mut actions = [None; MAX_ACTIONS];
         for (i, a) in env.actions.iter().enumerate() {

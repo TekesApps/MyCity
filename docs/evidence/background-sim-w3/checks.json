@@ -1,0 +1,60 @@
+{
+  "source_sha256": "b31269a45648b77f51c8d5e9102900b1137921dbdcf645525e243974371dbeb6",
+  "release_tests_passed": 227,
+  "cases": [
+    {
+      "case": "baseline",
+      "frames": 37,
+      "whole_air_and_business_match": true,
+      "original_receipt": true
+    },
+    {
+      "case": "worker_sources",
+      "frames": 41,
+      "whole_air_and_business_match": true,
+      "original_receipt": true
+    },
+    {
+      "case": "worker_cells",
+      "frames": 42,
+      "whole_air_and_business_match": true,
+      "original_receipt": true
+    },
+    {
+      "case": "sim_worker_cells",
+      "frames": 43,
+      "whole_air_and_business_match": true,
+      "original_receipt": true
+    },
+    {
+      "case": "sim_leased",
+      "frames": 40,
+      "whole_air_and_business_match": true,
+      "original_receipt": true
+    },
+    {
+      "case": "sim_asset",
+      "frames": 45,
+      "whole_air_and_business_match": true,
+      "original_receipt": true
+    },
+    {
+      "case": "sim_committed_reply",
+      "frames": 41,
+      "whole_air_and_business_match": true,
+      "original_receipt": true
+    },
+    {
+      "case": "cancel_retry",
+      "frames": 46,
+      "whole_air_and_business_match": true,
+      "original_receipt": true
+    }
+  ],
+  "runs_zip_sha256": "240dddeb13952264e8ee8ea17b4bda0808a0149a04f0ca78567cb94500840e91",
+  "verifier_sha256": "ea6854490a794796825c3fb8bc26c8b6a415e02ea1ec162c520111c004d706f0",
+  "whole_process_group_measurement": "not_run",
+  "endurance_1800_seconds": "not_run",
+  "memory_16gb_gate": "not_run",
+  "W4": "not_accepted"
+}

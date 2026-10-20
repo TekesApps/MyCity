@@ -11,6 +11,15 @@ pub const SOURCE_LIMIT: usize = crate::exchange::MAX_SHIPMENTS;
 pub const OWNED_LIMIT: usize = 320 * 1024;
 pub const ASSET_LIMIT: usize = 2 * 1024 * 1024;
 pub const END_LIMIT: u32 = 30 * 86400;
+/// Dedicated successful-admission receipt namespace; never consume it on rejection.
+pub const ACCEPT_PREFIX: u64 = 0xe000_0000_0000_0000;
+pub const JOB_ID_LIMIT: u64 = 0x0fff_ffff_ffff_ffff;
+pub fn accept_operation_id(job: u64) -> Result<u64, String> {
+    if job == 0 || job > JOB_ID_LIMIT {
+        return Err("background_job_id".into());
+    }
+    Ok(ACCEPT_PREFIX | job)
+}
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum Failure {
@@ -24,6 +33,10 @@ pub enum Command {
     Enable,
     Restart,
     Lease {
+        job: u64,
+    },
+    /// Atomic execution-epoch fence and lease, including recovery of a running attempt.
+    RebindLease {
         job: u64,
     },
     Fail {
@@ -113,7 +126,8 @@ impl Background {
         end: u64,
         revision: u64,
     ) -> Result<(), String> {
-        if self.pending.is_some()
+        if self.next_job > JOB_ID_LIMIT
+            || self.pending.is_some()
             || start != u64::from(self.time())
             || end <= start
             || end > u64::from(END_LIMIT)
@@ -215,6 +229,26 @@ impl Background {
                     job.running = false;
                 }
             }
+            Command::RebindLease { job: id } => {
+                let job = self.pending.as_mut().ok_or("background_no_job")?;
+                if job.id != id || job.attempt >= 3 || job.failure == Some(Failure::InvalidInput) {
+                    return Err("background_lease".into());
+                }
+                let incarnation = self
+                    .incarnation
+                    .checked_add(1)
+                    .ok_or("background_incarnation_overflow")?;
+                let generation = job
+                    .generation
+                    .checked_add(1)
+                    .ok_or("background_generation_overflow")?;
+                self.incarnation = incarnation;
+                job.incarnation = incarnation;
+                job.generation = generation;
+                job.attempt += 1;
+                job.running = true;
+                job.failure = None;
+            }
             Command::Lease { job: id } => {
                 let job = self.pending.as_mut().ok_or("background_no_job")?;
                 if self.incarnation == 0
@@ -292,6 +326,8 @@ impl Background {
     }
     pub fn validate(&self) -> Result<(), String> {
         if self.next_job == 0
+            || self.next_job > JOB_ID_LIMIT + 1
+            || self.version > u64::from(self.time())
             || self.next_job.checked_sub(1)
                 != self.version.checked_add(u64::from(self.pending.is_some()))
             || self.field.as_ref().is_some_and(|s| {

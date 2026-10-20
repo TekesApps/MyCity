@@ -172,3 +172,8 @@ v0.5.21执行更新：上列是v0.5.20时点的阻断记录；修复与有限联
 “共享数据文件”指同一存档的权威数据及按版本发布的不可变快照／任务输入。只有Sim持有writer锁并发布WAL、检查点与CURRENT；其他进程按输入hash／snapshot／generation读取或映射冻结数据，结果放入隔离的候选输出，提交前重新校验。不得让多个worker直接读写同一活动存档、把锁和未知提交结果责任交给共享文件，或将共享可写内存视为多writer许可证。
 
 后续单独整理总体软件架构时，应统一模块依赖、主体与事件schema、数据所有权、进程协议、调度、恢复及资源预算，并分别标记设计／实现／实测；本节是本轮概念澄清，不替代那次总体架构梳理，也不扩大当前代码范围。
+
+
+## 11. W3实际进程链（v0.5.28）
+
+[独立Sim实现与边界](background-sim-runtime.md)已提供Rust宿主Client→独立Sim唯一Store writer→bounded纯worker，并实测进程故障／原票恢复。每次attempt可停止／重建worker，尚不是通用worker池；正常常驻纯worker的复用证据仍见W1。缓存跨Sim复用先核持久owner并取得OS锁；不能只信旧App内存PID。Unix宿主实验、6MiB磁盘charge及具体帧限制不代替全进程内存实测，完整资源与实际经济长跑留W4；Render／UI／GPU和AgentKit保持当前范围之外。

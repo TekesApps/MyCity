@@ -23,7 +23,12 @@ fn envelope(s: &Store, a: Action) -> Result<Envelope, String> {
     Ok(Envelope {
         world: view.scope.world(),
         branch: view.scope.branch(),
-        operation_id: s.committed_sequence() + 1,
+        operation_id: match a {
+            Action::Background {
+                command: B::Accept { job, .. },
+            } => mycity_core::background::accept_operation_id(job).unwrap(),
+            _ => s.committed_sequence() + 1,
+        },
         expected_revision: view.revision,
         actions: vec![a],
     })

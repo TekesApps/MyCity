@@ -102,6 +102,8 @@ struct Root {
     source_registered: bool,
     continuation: Option<Continuation>,
     background_reserve: Option<BackgroundReserve>,
+    #[serde(default)]
+    worker_cache_bytes: u64,
     checkpoint: Option<checkpoint::Reference>,
     segment: u64,
     wal_end: u64,
@@ -336,6 +338,7 @@ impl Store {
             source_registered: false,
             continuation: None,
             background_reserve: None,
+            worker_cache_bytes: 0,
             checkpoint: None,
             segment: 0,
             wal_end: 0,
@@ -398,6 +401,7 @@ impl Store {
             return Err(Error::Invalid("root_limits_or_schema"));
         }
         root.capacity.validate()?;
+        background::validate_cache_charge(&root)?;
         if root.source_registered && !outbox::exists(dir) {
             return Err(Error::Invalid("registered_source_missing"));
         }
@@ -859,6 +863,7 @@ impl Persistence {
             source_registered: self.root.source_registered,
             continuation: next_continuation,
             background_reserve: next_background,
+            worker_cache_bytes: self.root.worker_cache_bytes,
             generation: self
                 .root
                 .generation

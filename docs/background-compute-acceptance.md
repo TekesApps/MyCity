@@ -70,3 +70,6 @@ W0架构审查已指出并纳入：连续场缺口、大候选WAL不适配、P4�
 
 
 v0.5.27执行登记：[W2运行专题](background-store-runtime.md)接入实际货运输入、Core任务／P4屏障、Sim不可变候选资产与小WAL同根提交、预留和恢复。当前Sim职责仍在CLI中；独立Sim／监督、统一worker缓存及1800秒联合进程组验证仍须W3—W4实测，不能用阶段提交替代。
+
+
+v0.5.28执行登记：[W3运行专题](background-sim-runtime.md)接入独立Sim／宿主控制、原子重试、固定原票、worker持久身份／OS缓存栅栏和有界charge；真实worker／Sim故障及八分支同态恢复有可复跑证据。[W4实验细化](background-joint-experiment-plan.md)保持本篇全部联合时长／实际业务／全组测量／最终advisor门，尚未通过，不随阶段完成降低。

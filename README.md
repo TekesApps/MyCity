@@ -1,6 +1,6 @@
 # MyCity
 
-仓库发布版本：`v0.5.27`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.28`。已开始Rust模型与headless CLI，当前不做UI。
 
 **软件结构先读[总体架构](docs/SOFTWARE_ARCHITECTURE.md)：当前代码、主体与事件、单writer、多进程目标、数据文件和预算。**
 
@@ -22,11 +22,12 @@
 - [T09区域实际履约](docs/m0-regional-fulfilment.md)：三城货物／电水、共池容量、实际费用与损耗、关图／断链／恢复；完整P-CAP及真实车辆／公用物理仍未验。
 - [检查点与重试档案](docs/m0-checkpoint-and-retry.md)：完整运行状态、分段WAL、冷凭证与损坏拒载；保留既有责任，不靠清历史绕过容量。
 - [T05-B全源与持久日历](docs/m0-timeline-runtime.md)：已实现profile的真实到期、工资账期、P0—P5与有限续做票；逐页恢复实测，完整产品日历与16GB仍未验。
-- [可恢复后台计算验收](docs/background-compute-acceptance.md)：冻结W0—W4、独立worker／Sim唯一写入／联合故障实验与全进程测量；W2已接Core／Store；独立Sim及联合门仍未通过。
-- [W2任务与同根接纳](docs/background-store-runtime.md)：实际货运输入、P4屏障、Sim资产／小WAL、代际及独立预留；独立Sim、长跑和进程组测量仍待验证。
+- [可恢复后台计算验收](docs/background-compute-acceptance.md)：冻结W0—W4、独立worker／Sim唯一写入／联合故障实验与全进程测量；W3已接独立Sim／监督及有限故障恢复；1800秒联合门仍未通过。
+- [W2任务与同根接纳](docs/background-store-runtime.md)：实际货运输入、P4屏障、Sim资产／小WAL、代际及独立预留；独立Sim见W3，长跑和进程组测量仍待W4验证。
+- [W3独立Sim与恢复](docs/background-sim-runtime.md)：原子换代、固定接纳原票、持久worker身份及OS缓存栅栏、6MiB磁盘charge和真实进程故障；[W4联合计划](docs/background-joint-experiment-plan.md)尚待实施实测。
 - [W1独立空气worker](docs/background-worker-runtime.md)：连续窗口、同进程复用、有界文件协议与阶段握手杀进程恢复；未接世界／Sim持久任务。
 - [T12-A空气CPU参考](docs/m0-air-cpu-reference.md)：单通道EI、源／tile分页、数值位恢复及独立f64复算；此为数值基线，有限城市接纳见W2；GPU及worker池仍未实现。
-- [进程、worker与GPU渲染架构](docs/process-worker-and-render-architecture.md)：App监督／Sim唯一writer、可重算任务与渲染部署、进程组16GB预算；worker纯计算见W1，独立Sim与渲染尚未实现。
+- [进程、worker与GPU渲染架构](docs/process-worker-and-render-architecture.md)：App监督／Sim唯一writer、可重算任务与渲染部署、进程组16GB预算；worker纯计算见W1，独立Sim见W3，渲染尚未实现。
 - [T10有限CLI会话](docs/m0-cli-session.md)：可信宿主身份、暂停／单步／实际倍率、冷回执与快照分页；T05-B分页用step，UI及16GB仍未验。
 - [M0本轮连续交付：验收方法与结果](docs/m0-continuity-acceptance.md)
 - [M0：事实收件、有限背压、责任退出与查询](docs/m0-fact-inbox-and-emergency-exit.md)

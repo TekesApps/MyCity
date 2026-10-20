@@ -6,6 +6,7 @@ use mycity_core::{
     transaction::Action,
 };
 pub const BACKGROUND_SLOTS: u8 = 16;
+pub const WORKER_CACHE_BYTES: u64 = 6 * 1024 * 1024;
 pub const BACKGROUND_ASSET_RESERVE: u64 = 10 * 1024 * 1024;
 pub const BACKGROUND_LIVE_ASSETS: usize = 32;
 const PREFIX: &str = "air-result-";
@@ -17,14 +18,17 @@ pub struct BackgroundReserve {
     pub slots: u8,
     pub staged_sha256: Option<[u8; 32]>,
     pub staged_bytes: u64,
+    #[serde(default)]
+    pub worker_cache_charge: u64,
 }
 impl BackgroundReserve {
     pub fn remaining_bytes(&self) -> u64 {
-        BACKGROUND_ASSET_RESERVE - self.staged_bytes
+        BACKGROUND_ASSET_RESERVE - self.staged_bytes - self.worker_cache_charge
             + u64::from(self.slots) * CONTINUATION_PAGE_BYTES
     }
     pub(super) fn valid(&self) -> bool {
-        self.start < self.at
+        matches!(self.worker_cache_charge, 0 | WORKER_CACHE_BYTES)
+            && self.start < self.at
             && self.at - self.start <= 3600
             && self.slots > 0
             && self.slots <= BACKGROUND_SLOTS
@@ -244,6 +248,7 @@ impl Store {
                     slots: BACKGROUND_SLOTS,
                     staged_sha256: None,
                     staged_bytes: 0,
+                    worker_cache_charge: self.io.root.worker_cache_bytes,
                 })
             } else {
                 None
@@ -321,7 +326,8 @@ impl Store {
         let envelope = Envelope {
             world: view.scope.world(),
             branch: view.scope.branch(),
-            operation_id: u64::MAX - 1,
+            operation_id: mycity_core::background::accept_operation_id(job)
+                .map_err(Error::Model)?,
             expected_revision: view.revision,
             actions: vec![Action::Background {
                 command: B::Accept {
@@ -331,7 +337,7 @@ impl Store {
                 },
             }],
         };
-        // The pure quote deliberately skips the reserved operation-ID namespace check.
+        // Import quotes use the same canonical admission identity as the final transaction.
         if !self
             .engine
             .background_control_quote(Caller::System, &envelope, Some(&state))
@@ -487,5 +493,125 @@ impl Persistence {
             .filter(|n| *n > 0)
             .ok_or(Error::Invalid("background_control_reserve_exhausted"))?;
         Ok(Some(next))
+    }
+}
+
+/// A cache allocation is durable quota, independent of disposable cache contents.
+pub(super) fn validate_cache_charge(root: &Root) -> Result<(), Error> {
+    if !matches!(root.worker_cache_bytes, 0 | WORKER_CACHE_BYTES)
+        || root
+            .background_reserve
+            .as_ref()
+            .is_some_and(|r| !r.valid() || r.worker_cache_charge != root.worker_cache_bytes)
+    {
+        return Err(Error::Invalid("worker_cache_charge"));
+    }
+    Ok(())
+}
+/// Bounded diagnostics only: no cache asset is needed to restore authoritative state.
+pub(super) fn cache_actual_bytes(dir: &Path) -> Result<u64, Error> {
+    let cache = dir.join("air-worker");
+    match fs::symlink_metadata(&cache) {
+        Err(e) if e.kind() == io::ErrorKind::NotFound => return Ok(0),
+        Err(e) => return Err(e.into()),
+        Ok(m) if !m.is_dir() => return Err(Error::Invalid("worker_cache_directory")),
+        Ok(_) => (),
+    }
+    let mut total = 0u64;
+    for (n, child) in fs::read_dir(&cache)?.enumerate() {
+        if n >= 2 {
+            return Err(Error::Invalid("worker_cache_directories"));
+        }
+        let child = child?;
+        if !matches!(child.file_name().to_str(), Some("inputs" | "candidates"))
+            || !child.file_type()?.is_dir()
+        {
+            return Err(Error::Invalid("worker_cache_directory"));
+        }
+        for (n, asset) in fs::read_dir(child.path())?.enumerate() {
+            if n >= 8 {
+                return Err(Error::Invalid("worker_cache_files"));
+            }
+            let asset = asset?;
+            if !asset.file_type()?.is_file() {
+                return Err(Error::Invalid("worker_cache_asset"));
+            }
+            total = total
+                .checked_add(asset.metadata()?.len())
+                .ok_or(Error::Invalid("worker_cache_overflow"))?;
+            if total > WORKER_CACHE_BYTES {
+                return Err(Error::Invalid("worker_cache_bytes"));
+            }
+        }
+    }
+    Ok(total)
+}
+impl Store {
+    /// Transfer the pre-funded IPC allocation into a persistent cache quota.
+    /// Call before creating cache files; this neither leases nor dispatches a task.
+    pub fn prepare_worker_cache(&mut self) -> Result<PathBuf, Error> {
+        self.engine()?;
+        if self.io.root.worker_cache_bytes == WORKER_CACHE_BYTES {
+            return Ok(self.io.dir.join("air-worker"));
+        }
+        if self.engine.background().and_then(|b| b.pending()).is_none() {
+            return Err(Error::Invalid("worker_cache_no_job"));
+        }
+        if cache_actual_bytes(&self.io.dir)? != 0 {
+            return Err(Error::Invalid("worker_cache_unfunded_files"));
+        }
+        let mut root = self.io.root.clone();
+        let r = root
+            .background_reserve
+            .as_mut()
+            .ok_or(Error::Invalid("background_reserve_missing"))?;
+        if r.slots < 2 {
+            return Err(Error::Invalid("background_control_reserve_exhausted"));
+        }
+        r.slots -= 1;
+        r.worker_cache_charge = WORKER_CACHE_BYTES;
+        root.worker_cache_bytes = WORKER_CACHE_BYTES;
+        validate_cache_charge(&root)?;
+        root.generation = root
+            .generation
+            .checked_add(1)
+            .ok_or(Error::Invalid("publication_overflow"))?;
+        let held = root.continuation.as_ref().map_or(0, |c| c.remaining_bytes)
+            + root
+                .background_reserve
+                .as_ref()
+                .expect("checked reserve")
+                .remaining_bytes();
+        // Existing CURRENT still charges zero; include the incoming charge explicitly.
+        capacity::admit_with_reserve(
+            &self.io.dir,
+            root.capacity,
+            WORKER_CACHE_BYTES + 2 * META_LIMIT,
+            true,
+            held,
+        )?;
+        let result = (|| {
+            let encoded = json(&root)?;
+            let slot = (root.generation % 2) as u8;
+            atomic_file(&self.io.dir, &format!("root-{slot}.json"), &encoded, || {
+                Ok(())
+            })?;
+            atomic_file(
+                &self.io.dir,
+                "CURRENT.json",
+                &json(&Current {
+                    schema: "mycity-m0-current-v1".into(),
+                    slot,
+                    root_sha256: sha256(&encoded),
+                })?,
+                || Ok(()),
+            )?;
+            self.io.root = root;
+            Ok(self.io.dir.join("air-worker"))
+        })();
+        if result.is_err() {
+            self.io.poisoned = true;
+        }
+        result
     }
 }

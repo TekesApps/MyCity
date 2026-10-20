@@ -1,0 +1,486 @@
+{
+  "baseline/transcript.jsonl": {
+    "bytes": 16392,
+    "sha256": "0fd69b65a264f3f6d20e74afd3b052041c999e07f4e4a3325f66eff9bf6e8d18"
+  },
+  "baseline/world/CURRENT.json": {
+    "bytes": 123,
+    "sha256": "19d7386b9a0dc0320b4896847edd1d7f0f288832e7323c2705b66d4124c1d7c5"
+  },
+  "baseline/world/LOCK": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "baseline/world/air-worker/candidates/bf83c94575957c72b9340a087add4895776b5829d0922f237777c2de53f5e7e3.air": {
+    "bytes": 688966,
+    "sha256": "bf83c94575957c72b9340a087add4895776b5829d0922f237777c2de53f5e7e3"
+  },
+  "baseline/world/air-worker/inputs/13ed146273285e12a4017ee51d0fdee55a0ad808904b74669a7d993cba689197.air": {
+    "bytes": 246479,
+    "sha256": "13ed146273285e12a4017ee51d0fdee55a0ad808904b74669a7d993cba689197"
+  },
+  "baseline/world/air-worker-owner.json": {
+    "bytes": 222,
+    "sha256": "494bba1c26101bb09dae7312180d0054dfc1ca731431c5cb4ffb22e390b55daf"
+  },
+  "baseline/world/air-worker.lock": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "baseline/world/checkpoint-10.json": {
+    "bytes": 2123810,
+    "sha256": "41d9d92b91efa075e9ff7ef59a646447b5325e5dff021ce11de7f762fa0f34de"
+  },
+  "baseline/world/checkpoint-index-10.json": {
+    "bytes": 165,
+    "sha256": "8feb72e08d4d6f2c788b50ec4d4d78a13b83412a0e44dfd70d1b01e4888673f7"
+  },
+  "baseline/world/genesis.json": {
+    "bytes": 43389,
+    "sha256": "b4144c5080521f594186067011334522a54838cf0e427de018385eb19c5ef0f8"
+  },
+  "baseline/world/root-0.json": {
+    "bytes": 622,
+    "sha256": "f8097d45b8f989f4d41fd7f7ac85e82e77c8b2725c4440b749638e6e99309175"
+  },
+  "baseline/world/root-1.json": {
+    "bytes": 534,
+    "sha256": "73b59a5f84b7f3023cc9f8e7e4e6818a701fd3f64b4467cc7166530a02a584cf"
+  },
+  "baseline/world/spatial-height.png": {
+    "bytes": 207,
+    "sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8"
+  },
+  "baseline/world/spatial-input.json": {
+    "bytes": 3679,
+    "sha256": "1891b68e1190fac29e3dc83a1d5d96ba3fa972cc7594fb8106ccbe179cdd29d6"
+  },
+  "baseline/world/wal-10.bin": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "cancel_retry/transcript.jsonl": {
+    "bytes": 19831,
+    "sha256": "76761d16bfeaa078c432510befd1dadf35a625480abcb023843a7c85066a3686"
+  },
+  "cancel_retry/world/CURRENT.json": {
+    "bytes": 123,
+    "sha256": "ff82fae8ff2f4ab616cbc2a80fe7bdece40761735e304efd5959cf8cab674723"
+  },
+  "cancel_retry/world/LOCK": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "cancel_retry/world/air-worker/candidates/bf83c94575957c72b9340a087add4895776b5829d0922f237777c2de53f5e7e3.air": {
+    "bytes": 688966,
+    "sha256": "bf83c94575957c72b9340a087add4895776b5829d0922f237777c2de53f5e7e3"
+  },
+  "cancel_retry/world/air-worker/inputs/13ed146273285e12a4017ee51d0fdee55a0ad808904b74669a7d993cba689197.air": {
+    "bytes": 246479,
+    "sha256": "13ed146273285e12a4017ee51d0fdee55a0ad808904b74669a7d993cba689197"
+  },
+  "cancel_retry/world/air-worker-owner.json": {
+    "bytes": 226,
+    "sha256": "8f2f72690244dc479124fc0e343ed0fa07ede94aacc34da0a107bd80be184898"
+  },
+  "cancel_retry/world/air-worker.lock": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "cancel_retry/world/checkpoint-12.json": {
+    "bytes": 2125587,
+    "sha256": "af225a54c6f9e6a4818d9e1636d00dbc46b75e98c9f72c1c9b66739ef39edd26"
+  },
+  "cancel_retry/world/checkpoint-index-12.json": {
+    "bytes": 207,
+    "sha256": "cebafbe0caff287514d3be067a5a072e8ecc9816461f1e4ef848abe11858eac3"
+  },
+  "cancel_retry/world/genesis.json": {
+    "bytes": 43389,
+    "sha256": "b4144c5080521f594186067011334522a54838cf0e427de018385eb19c5ef0f8"
+  },
+  "cancel_retry/world/root-0.json": {
+    "bytes": 622,
+    "sha256": "fb03a2bcaef456bf441ea50968731fcf7737c74b2d821f1c7b27c39d90cf9116"
+  },
+  "cancel_retry/world/root-1.json": {
+    "bytes": 536,
+    "sha256": "87b8d14cdc97586297d6dd73203a00e8f6ea947b9042dbfa874a05bafbc2c12d"
+  },
+  "cancel_retry/world/spatial-height.png": {
+    "bytes": 207,
+    "sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8"
+  },
+  "cancel_retry/world/spatial-input.json": {
+    "bytes": 3679,
+    "sha256": "1891b68e1190fac29e3dc83a1d5d96ba3fa972cc7594fb8106ccbe179cdd29d6"
+  },
+  "cancel_retry/world/wal-12.bin": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "report.json": {
+    "bytes": 52312,
+    "sha256": "7116f08c704fa3a7a8f41252898dc6d18fd0e145e57115da4a95dd5c8468c91d"
+  },
+  "sim_asset/transcript.jsonl": {
+    "bytes": 21030,
+    "sha256": "0992dfb12d941e647d7f402e55eaba366c931a245ad1ae8b5345a02e150f0ef2"
+  },
+  "sim_asset/world/CURRENT.json": {
+    "bytes": 123,
+    "sha256": "f14f02385bba481035510af41cc3b4fd5a37cbc0964913b2716a7c1762f79e50"
+  },
+  "sim_asset/world/LOCK": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sim_asset/world/air-worker/candidates/bf83c94575957c72b9340a087add4895776b5829d0922f237777c2de53f5e7e3.air": {
+    "bytes": 688966,
+    "sha256": "bf83c94575957c72b9340a087add4895776b5829d0922f237777c2de53f5e7e3"
+  },
+  "sim_asset/world/air-worker/inputs/13ed146273285e12a4017ee51d0fdee55a0ad808904b74669a7d993cba689197.air": {
+    "bytes": 246479,
+    "sha256": "13ed146273285e12a4017ee51d0fdee55a0ad808904b74669a7d993cba689197"
+  },
+  "sim_asset/world/air-worker-owner.json": {
+    "bytes": 223,
+    "sha256": "5145647a33c3ccec44d33b5dcb858b6d12adfccbac8ea5335072ce4ecc7888bb"
+  },
+  "sim_asset/world/air-worker.lock": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sim_asset/world/checkpoint-11.json": {
+    "bytes": 2124695,
+    "sha256": "32fe102cbf1b0cb2cba1ad67a3747de524c36e1019fdda7fe43caa3a8c7ded20"
+  },
+  "sim_asset/world/checkpoint-index-11.json": {
+    "bytes": 186,
+    "sha256": "14f508400e6c0971f6dee6f0349ecc8e42b3fd4ba38744c086771b6b3fbf0f6d"
+  },
+  "sim_asset/world/genesis.json": {
+    "bytes": 43389,
+    "sha256": "b4144c5080521f594186067011334522a54838cf0e427de018385eb19c5ef0f8"
+  },
+  "sim_asset/world/root-0.json": {
+    "bytes": 535,
+    "sha256": "9e6bf8dcfb7310743b64b5b0499ed3dc8f15a9d3533cc54406a1747eef571185"
+  },
+  "sim_asset/world/root-1.json": {
+    "bytes": 622,
+    "sha256": "b8b4a10ac22c94bbe29bbe92ed763398d7ae0b230084c6f1092da47e01dee01b"
+  },
+  "sim_asset/world/spatial-height.png": {
+    "bytes": 207,
+    "sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8"
+  },
+  "sim_asset/world/spatial-input.json": {
+    "bytes": 3679,
+    "sha256": "1891b68e1190fac29e3dc83a1d5d96ba3fa972cc7594fb8106ccbe179cdd29d6"
+  },
+  "sim_asset/world/wal-11.bin": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sim_committed_reply/transcript.jsonl": {
+    "bytes": 18731,
+    "sha256": "5f018daf70e83be8ac0a54facc21ee177e2cc909cba9d39f38a12fdfb4430f05"
+  },
+  "sim_committed_reply/world/CURRENT.json": {
+    "bytes": 123,
+    "sha256": "19d7386b9a0dc0320b4896847edd1d7f0f288832e7323c2705b66d4124c1d7c5"
+  },
+  "sim_committed_reply/world/LOCK": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sim_committed_reply/world/air-worker/candidates/bf83c94575957c72b9340a087add4895776b5829d0922f237777c2de53f5e7e3.air": {
+    "bytes": 688966,
+    "sha256": "bf83c94575957c72b9340a087add4895776b5829d0922f237777c2de53f5e7e3"
+  },
+  "sim_committed_reply/world/air-worker/inputs/13ed146273285e12a4017ee51d0fdee55a0ad808904b74669a7d993cba689197.air": {
+    "bytes": 246479,
+    "sha256": "13ed146273285e12a4017ee51d0fdee55a0ad808904b74669a7d993cba689197"
+  },
+  "sim_committed_reply/world/air-worker-owner.json": {
+    "bytes": 233,
+    "sha256": "bf99def015966254e1262a08eb1d3f3b57cbac413a8760535d460d4aa1be33ed"
+  },
+  "sim_committed_reply/world/air-worker.lock": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sim_committed_reply/world/checkpoint-10.json": {
+    "bytes": 2123810,
+    "sha256": "41d9d92b91efa075e9ff7ef59a646447b5325e5dff021ce11de7f762fa0f34de"
+  },
+  "sim_committed_reply/world/checkpoint-index-10.json": {
+    "bytes": 165,
+    "sha256": "8feb72e08d4d6f2c788b50ec4d4d78a13b83412a0e44dfd70d1b01e4888673f7"
+  },
+  "sim_committed_reply/world/genesis.json": {
+    "bytes": 43389,
+    "sha256": "b4144c5080521f594186067011334522a54838cf0e427de018385eb19c5ef0f8"
+  },
+  "sim_committed_reply/world/root-0.json": {
+    "bytes": 622,
+    "sha256": "f8097d45b8f989f4d41fd7f7ac85e82e77c8b2725c4440b749638e6e99309175"
+  },
+  "sim_committed_reply/world/root-1.json": {
+    "bytes": 534,
+    "sha256": "73b59a5f84b7f3023cc9f8e7e4e6818a701fd3f64b4467cc7166530a02a584cf"
+  },
+  "sim_committed_reply/world/spatial-height.png": {
+    "bytes": 207,
+    "sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8"
+  },
+  "sim_committed_reply/world/spatial-input.json": {
+    "bytes": 3679,
+    "sha256": "1891b68e1190fac29e3dc83a1d5d96ba3fa972cc7594fb8106ccbe179cdd29d6"
+  },
+  "sim_committed_reply/world/wal-10.bin": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sim_leased/transcript.jsonl": {
+    "bytes": 17519,
+    "sha256": "63d763960be8cd5dd4cc590b9086308b0aee0a659204ef4e9535b4b07bef8fc2"
+  },
+  "sim_leased/world/CURRENT.json": {
+    "bytes": 123,
+    "sha256": "f14f02385bba481035510af41cc3b4fd5a37cbc0964913b2716a7c1762f79e50"
+  },
+  "sim_leased/world/LOCK": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sim_leased/world/air-worker/candidates/bf83c94575957c72b9340a087add4895776b5829d0922f237777c2de53f5e7e3.air": {
+    "bytes": 688966,
+    "sha256": "bf83c94575957c72b9340a087add4895776b5829d0922f237777c2de53f5e7e3"
+  },
+  "sim_leased/world/air-worker/inputs/13ed146273285e12a4017ee51d0fdee55a0ad808904b74669a7d993cba689197.air": {
+    "bytes": 246479,
+    "sha256": "13ed146273285e12a4017ee51d0fdee55a0ad808904b74669a7d993cba689197"
+  },
+  "sim_leased/world/air-worker-owner.json": {
+    "bytes": 224,
+    "sha256": "7c9c65297a9d19ddc7d689d27ca938919e8e4d945ab72da0e391d9dc3cfe31c9"
+  },
+  "sim_leased/world/air-worker.lock": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sim_leased/world/checkpoint-11.json": {
+    "bytes": 2124695,
+    "sha256": "32fe102cbf1b0cb2cba1ad67a3747de524c36e1019fdda7fe43caa3a8c7ded20"
+  },
+  "sim_leased/world/checkpoint-index-11.json": {
+    "bytes": 186,
+    "sha256": "14f508400e6c0971f6dee6f0349ecc8e42b3fd4ba38744c086771b6b3fbf0f6d"
+  },
+  "sim_leased/world/genesis.json": {
+    "bytes": 43389,
+    "sha256": "b4144c5080521f594186067011334522a54838cf0e427de018385eb19c5ef0f8"
+  },
+  "sim_leased/world/root-0.json": {
+    "bytes": 535,
+    "sha256": "9e6bf8dcfb7310743b64b5b0499ed3dc8f15a9d3533cc54406a1747eef571185"
+  },
+  "sim_leased/world/root-1.json": {
+    "bytes": 622,
+    "sha256": "b8b4a10ac22c94bbe29bbe92ed763398d7ae0b230084c6f1092da47e01dee01b"
+  },
+  "sim_leased/world/spatial-height.png": {
+    "bytes": 207,
+    "sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8"
+  },
+  "sim_leased/world/spatial-input.json": {
+    "bytes": 3679,
+    "sha256": "1891b68e1190fac29e3dc83a1d5d96ba3fa972cc7594fb8106ccbe179cdd29d6"
+  },
+  "sim_leased/world/wal-11.bin": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sim_worker_cells/transcript.jsonl": {
+    "bytes": 19515,
+    "sha256": "aaad0a5d299def1887b46302e162d2e2b2db949f383c5212e46516f4ffe5c3c4"
+  },
+  "sim_worker_cells/world/CURRENT.json": {
+    "bytes": 123,
+    "sha256": "f14f02385bba481035510af41cc3b4fd5a37cbc0964913b2716a7c1762f79e50"
+  },
+  "sim_worker_cells/world/LOCK": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sim_worker_cells/world/air-worker/candidates/bf83c94575957c72b9340a087add4895776b5829d0922f237777c2de53f5e7e3.air": {
+    "bytes": 688966,
+    "sha256": "bf83c94575957c72b9340a087add4895776b5829d0922f237777c2de53f5e7e3"
+  },
+  "sim_worker_cells/world/air-worker/inputs/13ed146273285e12a4017ee51d0fdee55a0ad808904b74669a7d993cba689197.air": {
+    "bytes": 246479,
+    "sha256": "13ed146273285e12a4017ee51d0fdee55a0ad808904b74669a7d993cba689197"
+  },
+  "sim_worker_cells/world/air-worker-owner.json": {
+    "bytes": 230,
+    "sha256": "b1a7a012ab63490ab522d9f04b4eff0e48097da97ae447d4d1b6554ec0b2fb31"
+  },
+  "sim_worker_cells/world/air-worker.lock": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "sim_worker_cells/world/checkpoint-11.json": {
+    "bytes": 2124695,
+    "sha256": "32fe102cbf1b0cb2cba1ad67a3747de524c36e1019fdda7fe43caa3a8c7ded20"
+  },
+  "sim_worker_cells/world/checkpoint-index-11.json": {
+    "bytes": 186,
+    "sha256": "14f508400e6c0971f6dee6f0349ecc8e42b3fd4ba38744c086771b6b3fbf0f6d"
+  },
+  "sim_worker_cells/world/genesis.json": {
+    "bytes": 43389,
+    "sha256": "b4144c5080521f594186067011334522a54838cf0e427de018385eb19c5ef0f8"
+  },
+  "sim_worker_cells/world/root-0.json": {
+    "bytes": 535,
+    "sha256": "9e6bf8dcfb7310743b64b5b0499ed3dc8f15a9d3533cc54406a1747eef571185"
+  },
+  "sim_worker_cells/world/root-1.json": {
+    "bytes": 622,
+    "sha256": "b8b4a10ac22c94bbe29bbe92ed763398d7ae0b230084c6f1092da47e01dee01b"
+  },
+  "sim_worker_cells/world/spatial-height.png": {
+    "bytes": 207,
+    "sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8"
+  },
+  "sim_worker_cells/world/spatial-input.json": {
+    "bytes": 3679,
+    "sha256": "1891b68e1190fac29e3dc83a1d5d96ba3fa972cc7594fb8106ccbe179cdd29d6"
+  },
+  "sim_worker_cells/world/wal-11.bin": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "worker_cells/transcript.jsonl": {
+    "bytes": 18691,
+    "sha256": "87269f246a249809ba1d699b161cf88d0e7c4bc07adbb136bb41af2b67698c86"
+  },
+  "worker_cells/world/CURRENT.json": {
+    "bytes": 123,
+    "sha256": "f15de460966e7a527ec2f8a716bb0fb4caf0e039a59c859e7c62c5c439116d6d"
+  },
+  "worker_cells/world/LOCK": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "worker_cells/world/air-worker/candidates/bf83c94575957c72b9340a087add4895776b5829d0922f237777c2de53f5e7e3.air": {
+    "bytes": 688966,
+    "sha256": "bf83c94575957c72b9340a087add4895776b5829d0922f237777c2de53f5e7e3"
+  },
+  "worker_cells/world/air-worker/inputs/13ed146273285e12a4017ee51d0fdee55a0ad808904b74669a7d993cba689197.air": {
+    "bytes": 246479,
+    "sha256": "13ed146273285e12a4017ee51d0fdee55a0ad808904b74669a7d993cba689197"
+  },
+  "worker_cells/world/air-worker-owner.json": {
+    "bytes": 226,
+    "sha256": "696298c93baba51cdcc09e733a02d3c297d7b18459cf5a37bc3f03cd35e59a9e"
+  },
+  "worker_cells/world/air-worker.lock": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "worker_cells/world/checkpoint-12.json": {
+    "bytes": 2125588,
+    "sha256": "395a48a2d61b6ffa44466df64b0ac7a36c311a4a7beb662997bb35abc3b45705"
+  },
+  "worker_cells/world/checkpoint-index-12.json": {
+    "bytes": 207,
+    "sha256": "e7e080d415b030b36c28195c198cb1d497e71de35eb19688aaaa12722104402b"
+  },
+  "worker_cells/world/genesis.json": {
+    "bytes": 43389,
+    "sha256": "b4144c5080521f594186067011334522a54838cf0e427de018385eb19c5ef0f8"
+  },
+  "worker_cells/world/root-0.json": {
+    "bytes": 622,
+    "sha256": "4b5b2d7e556e4c5d12cd339670e66514e2de8308112d24d90edc70674c81ae62"
+  },
+  "worker_cells/world/root-1.json": {
+    "bytes": 536,
+    "sha256": "67236143ca65e72de3a8b69d6c117e384355e3d355fd9863466d2fba78e23edc"
+  },
+  "worker_cells/world/spatial-height.png": {
+    "bytes": 207,
+    "sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8"
+  },
+  "worker_cells/world/spatial-input.json": {
+    "bytes": 3679,
+    "sha256": "1891b68e1190fac29e3dc83a1d5d96ba3fa972cc7594fb8106ccbe179cdd29d6"
+  },
+  "worker_cells/world/wal-12.bin": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "worker_sources/transcript.jsonl": {
+    "bytes": 18002,
+    "sha256": "3a110d039b6b3b085ffb6a8f6f61f83b41c5e3833fd15afb805ce1bf72dc7aa0"
+  },
+  "worker_sources/world/CURRENT.json": {
+    "bytes": 123,
+    "sha256": "f15de460966e7a527ec2f8a716bb0fb4caf0e039a59c859e7c62c5c439116d6d"
+  },
+  "worker_sources/world/LOCK": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "worker_sources/world/air-worker/candidates/bf83c94575957c72b9340a087add4895776b5829d0922f237777c2de53f5e7e3.air": {
+    "bytes": 688966,
+    "sha256": "bf83c94575957c72b9340a087add4895776b5829d0922f237777c2de53f5e7e3"
+  },
+  "worker_sources/world/air-worker/inputs/13ed146273285e12a4017ee51d0fdee55a0ad808904b74669a7d993cba689197.air": {
+    "bytes": 246479,
+    "sha256": "13ed146273285e12a4017ee51d0fdee55a0ad808904b74669a7d993cba689197"
+  },
+  "worker_sources/world/air-worker-owner.json": {
+    "bytes": 228,
+    "sha256": "cefefc16dba87f9d2fb0c1ab4931a528d4a0568b262ee09d685d6ba3ecf44f21"
+  },
+  "worker_sources/world/air-worker.lock": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "worker_sources/world/checkpoint-12.json": {
+    "bytes": 2125588,
+    "sha256": "395a48a2d61b6ffa44466df64b0ac7a36c311a4a7beb662997bb35abc3b45705"
+  },
+  "worker_sources/world/checkpoint-index-12.json": {
+    "bytes": 207,
+    "sha256": "e7e080d415b030b36c28195c198cb1d497e71de35eb19688aaaa12722104402b"
+  },
+  "worker_sources/world/genesis.json": {
+    "bytes": 43389,
+    "sha256": "b4144c5080521f594186067011334522a54838cf0e427de018385eb19c5ef0f8"
+  },
+  "worker_sources/world/root-0.json": {
+    "bytes": 622,
+    "sha256": "4b5b2d7e556e4c5d12cd339670e66514e2de8308112d24d90edc70674c81ae62"
+  },
+  "worker_sources/world/root-1.json": {
+    "bytes": 536,
+    "sha256": "67236143ca65e72de3a8b69d6c117e384355e3d355fd9863466d2fba78e23edc"
+  },
+  "worker_sources/world/spatial-height.png": {
+    "bytes": 207,
+    "sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8"
+  },
+  "worker_sources/world/spatial-input.json": {
+    "bytes": 3679,
+    "sha256": "1891b68e1190fac29e3dc83a1d5d96ba3fa972cc7594fb8106ccbe179cdd29d6"
+  },
+  "worker_sources/world/wal-12.bin": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

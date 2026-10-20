@@ -61,7 +61,12 @@ fn envelope(s: &Store, a: Action) -> Envelope {
     Envelope {
         world: 1,
         branch: 1,
-        operation_id: s.committed_sequence() + 1,
+        operation_id: match a {
+            Action::Background {
+                command: B::Accept { job, .. },
+            } => mycity_core::background::accept_operation_id(job).unwrap(),
+            _ => s.committed_sequence() + 1,
+        },
         expected_revision: s.engine().unwrap().world().view().revision,
         actions: vec![a],
     }
@@ -281,6 +286,7 @@ fn normal_disk_exhaustion_preserves_background_and_timeline_funding() {
     assert!(s.capacity_status().unwrap().normal_blocked);
     drop(s);
     let mut s = Store::open(&t.world(), RULES).unwrap();
+    s.prepare_worker_cache().unwrap();
     apply(&mut s, bg(B::Restart));
     let protected = s.background_reserve().unwrap();
     let extra_restart = envelope(&s, bg(B::Restart));
@@ -669,4 +675,102 @@ fn result_reference_limit_checkpoints_before_new_obligation_and_keeps_cold_recei
     let s = Store::open(&t.world(), RULES).unwrap();
     assert_eq!(hash, s.state_hash().unwrap());
     println!("BACKGROUND_ASSET_ROTATION accepted=33 max_live_assets=32; checkpoint precedes next admission and cold receipt survives GC");
+}
+
+#[test]
+fn worker_cache_charge_survives_missing_files_and_moves_out_of_task_reserve_once() {
+    const CACHE: u64 = 6 * 1024 * 1024;
+    const PAGE: u64 = 45120;
+    let temp = Temp::new();
+    let world = temp.world();
+    let mut s = ready(&world, true, 256);
+    let before = s.capacity_status().unwrap();
+    let hash = s.state_hash().unwrap();
+    let sequence = s.committed_sequence();
+    let cache = s.prepare_worker_cache().unwrap();
+    let after = s.capacity_status().unwrap();
+    assert_eq!(s.state_hash().unwrap(), hash);
+    assert_eq!(s.committed_sequence(), sequence);
+    assert_eq!(after.worker_cache_charged_bytes, CACHE);
+    assert_eq!(after.worker_cache_actual_bytes, 0);
+    assert_eq!(
+        before.background_reserved_bytes - after.background_reserved_bytes,
+        CACHE + PAGE
+    );
+    let reserved = after.background_reserved_bytes;
+    assert_eq!(s.prepare_worker_cache().unwrap(), cache);
+    assert_eq!(
+        s.capacity_status().unwrap().background_reserved_bytes,
+        reserved
+    );
+    fs::create_dir(&cache).unwrap();
+    fs::create_dir(cache.join("inputs")).unwrap();
+    let f = OpenOptions::new()
+        .create_new(true)
+        .write(true)
+        .open(cache.join("inputs").join(".pending-123"))
+        .unwrap();
+    f.set_len(2 * 1024 * 1024).unwrap();
+    assert_eq!(
+        s.capacity_status().unwrap().worker_cache_actual_bytes,
+        2 * 1024 * 1024
+    );
+    let charged = s.capacity_status().unwrap().used_bytes;
+    fs::remove_dir_all(&cache).unwrap();
+    assert_eq!(s.capacity_status().unwrap().used_bytes, charged);
+    drop(s);
+    let mut s = Store::open(&world, RULES).unwrap();
+    assert_eq!(s.prepare_worker_cache().unwrap(), cache);
+    assert_eq!(
+        s.capacity_status().unwrap().background_reserved_bytes,
+        reserved
+    );
+    let (digest, _) = stage(&mut s);
+    let request = accept(&s, digest, 1);
+    let result = s.execute(Caller::System, request.clone()).unwrap();
+    assert!(result.model.is_ok());
+    s.checkpoint().unwrap();
+    drop(s);
+    let mut s = Store::open(&world, RULES).unwrap();
+    let replay = s.execute(Caller::System, request).unwrap();
+    assert_eq!(replay.model, result.model);
+    assert!(replay.has_persistent_receipt);
+    assert_eq!(
+        s.capacity_status().unwrap().worker_cache_charged_bytes,
+        CACHE
+    );
+}
+
+#[test]
+fn canonical_accept_rejections_do_not_create_wal_or_cold_failed_receipts() {
+    let temp = Temp::new();
+    let world = temp.world();
+    let mut s = ready(&world, true, 256);
+    let (hash, _) = stage(&mut s);
+    let valid = accept(&s, hash, 1);
+    let mut stale = valid.clone();
+    stale.expected_revision -= 1;
+    let sequence = s.committed_sequence();
+    let reserved = s.background_reserve().unwrap();
+    let rejected = s.execute(Caller::System, stale).unwrap();
+    assert!(rejected.model.is_err());
+    assert!(!rejected.has_persistent_receipt);
+    assert_eq!(s.committed_sequence(), sequence);
+    assert_eq!(s.background_reserve().unwrap(), reserved);
+    let mut ordinary_id = valid.clone();
+    ordinary_id.operation_id = sequence + 1;
+    let rejected = s.execute(Caller::System, ordinary_id).unwrap();
+    assert_eq!(rejected.model, Err(TxError::InvalidOperation));
+    assert!(!rejected.has_persistent_receipt);
+    drop(s);
+    let mut s = Store::open(&world, RULES).unwrap();
+    assert_eq!(s.committed_sequence(), sequence);
+    let receipt = s.execute(Caller::System, valid.clone()).unwrap();
+    assert!(receipt.model.is_ok());
+    s.checkpoint().unwrap();
+    drop(s);
+    let mut s = Store::open(&world, RULES).unwrap();
+    let replay = s.execute(Caller::System, valid).unwrap();
+    assert!(replay.has_persistent_receipt);
+    assert_eq!(replay.model, receipt.model);
 }

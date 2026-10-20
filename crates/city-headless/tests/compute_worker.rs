@@ -294,3 +294,52 @@ fn actual_freight_drives_worker_field_and_sim_store_commits_then_reopens_origina
     assert_eq!(report["whole_process_group_resources"], "not_run");
     assert_eq!(report["memory_16gb_gate"], "not_run");
 }
+
+#[test]
+fn bounded_cache_clears_retry_residue_and_real_worker_stays_within_charge() {
+    use mycity_headless::worker_cache as cache;
+    let temp = Temp::new();
+    let root = temp.0.join("bounded");
+    cache::reset_after_worker_stopped(&root).unwrap();
+    for attempt in 1..=3 {
+        let abandoned = fs::OpenOptions::new()
+            .create_new(true)
+            .write(true)
+            .open(root.join("candidates").join(format!(".pending-{attempt}")))
+            .unwrap();
+        abandoned.set_len(cache::ASSET_BYTES as u64).unwrap();
+        assert_eq!(
+            cache::actual_bytes(&root).unwrap(),
+            cache::ASSET_BYTES as u64
+        );
+        cache::reset_after_worker_stopped(&root).unwrap();
+        assert_eq!(cache::actual_bytes(&root).unwrap(), 0);
+    }
+    let state = state();
+    let req = request(&root, &state);
+    let mut worker = Worker::spawn_bounded(executable(), &root).unwrap();
+    worker.submit(&req).unwrap();
+    loop {
+        let event = worker.next(Duration::from_secs(10)).unwrap();
+        assert!(cache::actual_bytes(&root).unwrap() <= cache::CACHE_BYTES);
+        if event.stage == Stage::Complete {
+            break;
+        }
+    }
+    worker.stop().unwrap();
+    // Refuse a fourth publication before it can write past the whole-cache ceiling.
+    let occupied = fs::OpenOptions::new()
+        .create_new(true)
+        .write(true)
+        .open(root.join("candidates").join(".pending-999"))
+        .unwrap();
+    occupied.set_len(cache::ASSET_BYTES as u64).unwrap();
+    assert!(cache::publish(&root, "inputs", &vec![13; cache::ASSET_BYTES]).is_err());
+    cache::reset_after_worker_stopped(&root).unwrap();
+    fs::write(root.join("inputs").join("unrelated.txt"), b"keep").unwrap();
+    assert!(cache::reset_after_worker_stopped(&root).is_err());
+    assert_eq!(
+        fs::read(root.join("inputs").join("unrelated.txt")).unwrap(),
+        b"keep"
+    );
+}

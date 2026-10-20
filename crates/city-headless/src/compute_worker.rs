@@ -75,7 +75,7 @@ fn digest(s: &str) -> bool {
         && s.bytes()
             .all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b))
 }
-fn frame<R: BufRead>(r: &mut R) -> Result<Option<Vec<u8>>, String> {
+pub(crate) fn frame<R: BufRead>(r: &mut R) -> Result<Option<Vec<u8>>, String> {
     let mut bytes = Vec::new();
     // fill_buf/consume never allocates from an unbounded read_until line.
     loop {
@@ -102,7 +102,7 @@ fn frame<R: BufRead>(r: &mut R) -> Result<Option<Vec<u8>>, String> {
         }
     }
 }
-fn write_frame(w: &mut impl Write, value: &impl Serialize) -> Result<(), String> {
+pub(crate) fn write_frame(w: &mut impl Write, value: &impl Serialize) -> Result<(), String> {
     let bytes = serde_json::to_vec(value).map_err(|e| e.to_string())?;
     if bytes.len() + 1 > CONTROL_BYTES {
         return Err("worker_control_bytes".into());
@@ -263,11 +263,11 @@ fn emit(
 }
 /// Blocking child entry point. One control request at a time; stdin EOF stops it.
 pub fn run(root: &Path) -> Result<(), String> {
-    run_inner(root, false)
+    run_inner(root, false, false)
 }
 /// Fault laboratory only: explicit ACK holds each observed phase before execution continues.
 pub fn run_probe_gated(root: &Path) -> Result<(), String> {
-    run_inner(root, true)
+    run_inner(root, true, false)
 }
 fn gate(
     reader: &mut impl BufRead,
@@ -285,7 +285,13 @@ fn gate(
     }
     Ok(())
 }
-fn run_inner(root: &Path, gated: bool) -> Result<(), String> {
+pub fn run_bounded_probe(root: &Path) -> Result<(), String> {
+    run_inner(root, true, true)
+}
+pub fn run_bounded(root: &Path) -> Result<(), String> {
+    run_inner(root, false, true)
+}
+fn run_inner(root: &Path, gated: bool, bounded: bool) -> Result<(), String> {
     let stdin = std::io::stdin();
     let mut reader = BufReader::with_capacity(8192, stdin.lock());
     let stdout = std::io::stdout();
@@ -294,11 +300,27 @@ fn run_inner(root: &Path, gated: bool) -> Result<(), String> {
     directory_usage(&root.join("candidates"))?;
     while let Some(bytes) = frame(&mut reader)? {
         let request: Request = serde_json::from_slice(&bytes).map_err(|e| e.to_string())?;
+        let _cache_fence = if bounded {
+            Some(crate::worker_cache::exclusive(root)?)
+        } else {
+            None
+        };
+        if bounded {
+            crate::worker_cache::actual_bytes(root)?;
+            let path = root
+                .join("inputs")
+                .join(format!("{}.air", request.ticket.checkpoint_sha256));
+            if fs::metadata(path).map_err(|e| e.to_string())?.len()
+                > crate::worker_cache::ASSET_BYTES as u64
+            {
+                return Err("cache_input_bytes".into());
+            }
+        }
         let mut state = input(root, &request)?;
         let mut source_seen = false;
         let mut cells_seen = false;
         while !state.complete() {
-            state.page(256, 256)?;
+            state.page(if bounded && gated { 1 } else { 256 }, 256)?;
             if let Some(p) = state.progress() {
                 let (seen, stage) = match p.phase {
                     Phase::Sources => (&mut source_seen, Stage::Sources),
@@ -312,7 +334,11 @@ fn run_inner(root: &Path, gated: bool) -> Result<(), String> {
             }
         }
         let bytes = state.checkpoint()?;
-        let hash = publish(&root.join("candidates"), &bytes)?;
+        let hash = if bounded {
+            crate::worker_cache::publish(root, "candidates", &bytes)?
+        } else {
+            publish(&root.join("candidates"), &bytes)?
+        };
         emit(
             &mut writer,
             &request.ticket,
@@ -347,15 +373,30 @@ pub struct Worker {
 }
 impl Worker {
     pub fn spawn(executable: &Path, root: &Path) -> Result<Self, String> {
-        Self::spawn_inner(executable, root, false)
+        Self::spawn_inner(executable, root, false, false)
     }
     pub fn spawn_probe_gated(executable: &Path, root: &Path) -> Result<Self, String> {
-        Self::spawn_inner(executable, root, true)
+        Self::spawn_inner(executable, root, true, false)
     }
-    fn spawn_inner(executable: &Path, root: &Path, gated: bool) -> Result<Self, String> {
+    pub fn spawn_bounded_probe(executable: &Path, root: &Path) -> Result<Self, String> {
+        Self::spawn_inner(executable, root, true, true)
+    }
+    pub fn spawn_bounded(executable: &Path, root: &Path) -> Result<Self, String> {
+        Self::spawn_inner(executable, root, false, true)
+    }
+    fn spawn_inner(
+        executable: &Path,
+        root: &Path,
+        gated: bool,
+        bounded: bool,
+    ) -> Result<Self, String> {
         let mut child = Command::new(executable)
-            .arg(if gated {
+            .arg(if gated && bounded {
+                "compute-worker-bounded-probe"
+            } else if gated {
                 "compute-worker-probe-gated"
+            } else if bounded {
+                "compute-worker-bounded"
             } else {
                 "compute-worker"
             })

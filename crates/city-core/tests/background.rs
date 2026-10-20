@@ -28,7 +28,12 @@ fn env(e: &Engine, action: Action) -> Envelope {
     Envelope {
         world: 1,
         branch: 1,
-        operation_id: e.journal().len() as u64 + 1,
+        operation_id: match action {
+            Action::Background {
+                command: B::Accept { job, .. },
+            } => mycity_core::background::accept_operation_id(job).unwrap(),
+            _ => e.journal().len() as u64 + 1,
+        },
         expected_revision: e.world().view().revision,
         actions: vec![action],
     }
@@ -191,4 +196,99 @@ fn checkpoint_cannot_erase_a_pending_obligation_or_detach_its_timeline() {
             "{field}"
         );
     }
+}
+
+#[test]
+fn atomic_rebind_fences_running_attempt_and_exhaustion_does_not_reset() {
+    let mut e = ready();
+    run(&mut e, background(B::RebindLease { job: 1 }));
+    let first = e.background().unwrap().pending().unwrap().clone();
+    let s = result(&e);
+    let stale = accept(&e, &s, first.generation);
+    run(&mut e, background(B::RebindLease { job: 1 }));
+    let second = e.background().unwrap().pending().unwrap();
+    assert_eq!(second.attempt, 2);
+    assert_eq!(second.generation, first.generation + 1);
+    assert_eq!(second.incarnation, first.incarnation + 1);
+    assert!(second.running);
+    assert!(e
+        .execute_recorded_with_background(Caller::System, stale, Some(&s), |_, _| Ok::<(), ()>(()))
+        .unwrap()
+        .is_err());
+    run(&mut e, background(B::RebindLease { job: 1 }));
+    let before = e.background().unwrap().clone();
+    assert!(e
+        .execute(
+            Caller::System,
+            env(&e, background(B::RebindLease { job: 1 }))
+        )
+        .is_err());
+    assert_eq!(e.background(), Some(&before));
+    let restored = Engine::restore_checkpoint(&e.export_checkpoint().unwrap()).unwrap();
+    assert_eq!(restored.background(), Some(&before));
+}
+
+#[test]
+fn final_admission_namespace_cannot_be_burned_by_rejection_or_another_action() {
+    use mycity_core::background::{accept_operation_id, JOB_ID_LIMIT};
+    assert!(accept_operation_id(0).is_err());
+    assert!(accept_operation_id(JOB_ID_LIMIT + 1).is_err());
+    assert_eq!(
+        accept_operation_id(JOB_ID_LIMIT).unwrap(),
+        0xefff_ffff_ffff_ffff
+    );
+    let mut e = ready();
+    run(&mut e, background(B::RebindLease { job: 1 }));
+    let s = result(&e);
+    let mut request = accept(&e, &s, 1);
+    request.operation_id = accept_operation_id(1).unwrap();
+    let mut wrong = request.clone();
+    wrong.actions = vec![background(B::Restart)];
+    let before = e.state_hash();
+    assert_eq!(
+        e.execute(Caller::System, wrong),
+        Err(TxError::InvalidOperation)
+    );
+    assert_eq!(e.state_hash(), before);
+    // Candidate unavailable and stale revision are not durable failed final receipts.
+    let mut rejected = request.clone();
+    rejected.expected_revision -= 1;
+    {
+        assert!(e
+            .execute_recorded_with_background(
+                Caller::System,
+                rejected,
+                None,
+                |_, _| -> Result<(), ()> { panic!("rejection must not persist") }
+            )
+            .unwrap()
+            .is_err());
+    }
+    assert!(e
+        .execute_recorded_with_background(
+            Caller::System,
+            request.clone(),
+            None,
+            |_, _| -> Result<(), ()> { panic!("missing candidate must not persist") }
+        )
+        .unwrap()
+        .is_err());
+    assert_eq!(e.state_hash(), before);
+    let receipt = e
+        .execute_recorded_with_background(Caller::System, request.clone(), Some(&s), |_, _| {
+            Ok::<(), ()>(())
+        })
+        .unwrap()
+        .unwrap();
+    assert_eq!(
+        e.execute_recorded_with_background(
+            Caller::System,
+            request,
+            None,
+            |_, _| -> Result<(), ()> { panic!("duplicate must return receipt") }
+        )
+        .unwrap()
+        .unwrap(),
+        receipt
+    );
 }

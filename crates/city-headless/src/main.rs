@@ -26,6 +26,43 @@ fn system(command: &str, args: &[&str]) -> Option<String> {
 
 fn run() -> Result<(), String> {
     let args: Vec<_> = env::args().collect();
+    if args.get(1).is_some_and(|a| a == "sim-probe") {
+        if args.len() != 3 {
+            return Err("usage: mycity-headless sim-probe NEW_DIR".into());
+        }
+        println!(
+            "{}",
+            serde_json::to_string_pretty(&mycity_headless::sim_probe::run(std::path::Path::new(
+                &args[2]
+            ))?)
+            .map_err(|e| e.to_string())?
+        );
+        return Ok(());
+    }
+    if args.get(1).is_some_and(|a| a == "sim-host-probe") {
+        if args.len() != 4 || !matches!(args[2].as_str(), "create" | "open") {
+            return Err("usage: mycity-headless sim-host-probe create|open WORLD".into());
+        }
+        return mycity_headless::sim_host::run_probe(
+            std::path::Path::new(&args[3]),
+            args[2] == "create",
+        );
+    }
+    if args
+        .get(1)
+        .is_some_and(|a| a == "compute-worker-bounded-probe")
+    {
+        if args.len() != 3 {
+            return Err("usage: mycity-headless compute-worker-bounded-probe TASK_ROOT".into());
+        }
+        return mycity_headless::compute_worker::run_bounded_probe(std::path::Path::new(&args[2]));
+    }
+    if args.get(1).is_some_and(|a| a == "sim-host") {
+        if args.len() != 4 || !matches!(args[2].as_str(), "create" | "open") {
+            return Err("usage: mycity-headless sim-host create|open WORLD".into());
+        }
+        return mycity_headless::sim_host::run(std::path::Path::new(&args[3]), args[2] == "create");
+    }
     if args.get(1).is_some_and(|a| a == "background-probe") {
         if args.len() != 3 {
             return Err("usage: mycity-headless background-probe NEW_DIR".into());
@@ -56,6 +93,12 @@ fn run() -> Result<(), String> {
             return Err("usage: mycity-headless compute-worker-probe-gated TASK_ROOT".into());
         }
         return mycity_headless::compute_worker::run_probe_gated(std::path::Path::new(&args[2]));
+    }
+    if args.get(1).is_some_and(|a| a == "compute-worker-bounded") {
+        if args.len() != 3 {
+            return Err("usage: mycity-headless compute-worker-bounded TASK_ROOT".into());
+        }
+        return mycity_headless::compute_worker::run_bounded(std::path::Path::new(&args[2]));
     }
     if args.get(1).is_some_and(|a| a == "compute-worker") {
         if args.len() != 3 {

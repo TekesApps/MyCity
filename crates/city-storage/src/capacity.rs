@@ -16,7 +16,10 @@ impl Default for CapacityPolicy {
 }
 #[derive(Debug, Serialize)]
 pub struct CapacityStatus {
+    /// Top-level file bytes plus the durable worker-cache quota (not its actual usage).
     pub used_bytes: u64,
+    pub worker_cache_charged_bytes: u64,
+    pub worker_cache_actual_bytes: u64,
     pub continuation_reserved_bytes: u64,
     pub background_reserved_bytes: u64,
     pub total_bytes: u64,
@@ -46,7 +49,7 @@ pub(super) fn bytes(dir: &Path) -> Result<u64, Error> {
                 .ok_or(Error::Invalid("capacity_size_overflow"))?;
         }
     }
-    Ok(n)
+    Ok(n + persisted_cache_charge(dir)?)
 }
 pub(super) fn admit(
     dir: &Path,
@@ -57,9 +60,9 @@ pub(super) fn admit(
     let held = persisted_reserve(dir)?;
     admit_with_reserve(dir, policy, additional, control, held)
 }
-pub(super) fn persisted_reserve(dir: &Path) -> Result<u64, Error> {
+fn persisted_root(dir: &Path) -> Result<Option<Root>, Error> {
     if !dir.join("CURRENT.json").exists() {
-        return Ok(0);
+        return Ok(None);
     }
     let current: Current =
         serde_json::from_slice(&read_file(&dir.join("CURRENT.json"), META_LIMIT)?)?;
@@ -74,9 +77,16 @@ pub(super) fn persisted_reserve(dir: &Path) -> Result<u64, Error> {
     if root.continuation.as_ref().is_some_and(|c| !c.valid()) {
         return Err(Error::Invalid("timeline_ticket"));
     }
-    if root.background_reserve.as_ref().is_some_and(|r| !r.valid()) {
-        return Err(Error::Invalid("background_reserve"));
-    }
+    background::validate_cache_charge(&root)?;
+    Ok(Some(root))
+}
+fn persisted_cache_charge(dir: &Path) -> Result<u64, Error> {
+    Ok(persisted_root(dir)?.map_or(0, |r| r.worker_cache_bytes))
+}
+pub(super) fn persisted_reserve(dir: &Path) -> Result<u64, Error> {
+    let Some(root) = persisted_root(dir)? else {
+        return Ok(0);
+    };
     Ok(root.continuation.as_ref().map_or(0, |c| c.remaining_bytes)
         + root
             .background_reserve
@@ -196,6 +206,8 @@ impl Store {
             > p.total_bytes;
         Ok(CapacityStatus {
             used_bytes: used,
+            worker_cache_charged_bytes: self.io.root.worker_cache_bytes,
+            worker_cache_actual_bytes: background::cache_actual_bytes(&self.io.dir)?,
             continuation_reserved_bytes: reserved,
             background_reserved_bytes: background_reserved,
             total_bytes: p.total_bytes,
