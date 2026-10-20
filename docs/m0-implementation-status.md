@@ -326,3 +326,6 @@ v0.5.40的T13A-3a[并发接入与恢复修复](evidence/m0-t13a-joint/STATUS.md)
 
 
 v0.5.41的T13A-3b[诊断费用与进程堆证据](evidence/m0-t13a-budgets/STATUS.md)：同来源第一次205秒因系统pressure保护失败，原样保留；第二次612秒完成L1全量600扫描／两快照、full30日723目标／724worker／3011原票及9.41秒冷装，730正常堆记录完整。直方图及定宽摘要降低诊断费用，Rust监督与共同事件时钟接入；完整workspace回归、advisor独立核验通过。已量组件小计4,812,526B，但业务驱动诊断份额及64MiB真实占位借还未闭合，不能签8MiB或正式满级。quote后台采集／接纳p95约20.93ms热点保留，footprint仍有缺测。下一步先修PID目录复用和费用／压力，四速度／正式三轮／8h未测；真实16GB not_run，M0 not_accepted。
+
+
+v0.5.42的T13A-3c[实例身份与驱动复制收敛](evidence/m0-t13a-process-instances/STATUS.md)：原子创建日志实例目录，保留原预算及部分初始化目录；显式实例配对取代仅PID关联，固定日志／参考行容量并减少响应副本。原full30日单独实测完成，723目标／724worker／3011票及完整Engine含metadata与CPU一致，726报告与727退出记录独立核验通过；34项定向／共享调用回归及advisor终审通过。当前没有L1同行，不作为联合压力或旧版提速对比；诊断总账、64MiB占位、四速度、正式三轮、8h仍未通过，真实16GB not_run，M0 not_accepted。下一依赖是受控owner的额度、真实容量和已触页余额，而不是再次复核本阶段。

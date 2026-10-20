@@ -1,0 +1,64 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+    Finished `release` profile [optimized] target(s) in 59.13s
+     Running unittests src/lib.rs (target/release/deps/mycity_headless-50f2d753a50ef36d)
+
+running 15 tests
+test scale_metrics::tests::compact_bucket_refuses_overflow_without_corrupting_quantile_or_count ... ok
+test scale_metrics::tests::inactive_histograms_allocate_no_bins ... ok
+test layout_load::tests::external_component_reservation_rejects_oversize_before_allocation ... ok
+test layout_load::tests::eight_hour_snapshot_summaries_do_not_retain_file_trees ... ok
+test scale_metrics::tests::quantile_does_not_hide_tail_or_sparse_class ... ok
+test scale_sim::buffer_tests::golden_line_reader_is_bounded_before_allocation_and_rejects_truncation ... ok
+test scale_sim::buffer_tests::diagnostic_buffer_refuses_growth_before_limit_and_keeps_previous_bytes ... ok
+test cpu_log::tests::instance_creation_does_not_retry_io_errors_or_wrap_counter ... ok
+test scale_sim::buffer_tests::streaming_payload_digest_preserves_exact_old_wire_hash_and_length ... ok
+test layout_load::tests::real_cow_releases_placeholder_before_copy_and_preserves_snapshot ... ok
+test layout_load::tests::all_stub_counts_widths_population_and_references_are_real_records ... ok
+test cpu_log::tests::reused_pid_and_partial_initialization_skip_existing_directories_atomically ... ok
+test layout_load::tests::restore_rejects_component_reservation_before_loading_any_large_file ... ok
+test cpu_log::tests::failed_transaction_batches_never_fill_success_histogram_and_raw_pages_remain_attempts ... ok
+test cpu_log::tests::same_pid_logs_keep_original_files_and_shared_quota_across_instances ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+
+     Running tests/compute_worker.rs (target/release/deps/compute_worker-145f5246832e3aa7)
+
+running 8 tests
+test complete_but_forged_finite_candidate_is_rejected_by_full_cpu_check ... ok
+test completed_worker_can_exit_on_eof_while_active_stop_still_kills ... ok
+test stopping_worker_without_draining_its_response_reaps_child ... ok
+test bounded_cache_clears_retry_residue_and_real_worker_stays_within_charge ... ok
+test oversized_or_truncated_control_and_directory_quota_fail_closed ... ok
+test stale_source_unknown_schema_wrong_input_and_attempt_overflow_fail_without_candidate ... ok
+test actual_freight_drives_worker_field_and_sim_store_commits_then_reopens_original_receipt ... ok
+test actual_persistent_worker_and_gated_sigkill_recovery_match_full_cpu_state ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.16s
+
+     Running tests/heap_meter.rs (target/release/deps/heap_meter-a3f2d96857c2e0d0)
+
+running 1 test
+test lifetime_heap_peak_survives_release_and_concurrent_records_do_not_interleave ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/scale_sim.rs (target/release/deps/scale_sim-1b264a93878d96e1)
+
+running 2 tests
+test frozen_input_walk_preserves_every_hour_special_target_and_startup_count ... ok
+test named_profiles_have_frozen_counts_v2_identity_and_read_only_bounded_progress ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.34s
+
+     Running tests/sim_host.rs (target/release/deps/sim_host-b8b0219861d11f59)
+
+running 6 tests
+test internal_control_namespace_cannot_be_preoccupied_by_execute ... ok
+test independent_sim_owns_lock_runs_worker_and_returns_original_cold_receipt_after_reopen ... ok
+test cancelling_attempt_keeps_required_barrier_and_manual_retry_completes ... ok
+test three_real_cancelled_workers_exhaust_attempts_without_erasing_required_job ... ok
+test actual_worker_sigkill_in_sources_and_cells_retries_in_same_sim_with_new_generation ... ok
+test actual_sim_sigkill_at_lease_uncommitted_asset_and_committed_reply_recovers ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.04s
+

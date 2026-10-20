@@ -10,11 +10,35 @@ use std::{
     fs::{self, File},
     io::{BufWriter, Read, Seek, SeekFrom, Write},
     path::{Path, PathBuf},
+    sync::atomic::{AtomicU64, Ordering},
 };
 fn err(e: impl std::fmt::Debug) -> String {
     format!("{e:?}")
 }
+// Never reuse or remove an earlier instance, including a partially initialized
+// directory left by a crashed process. PID remains the second path component for
+// old tools, but new pairing uses the explicit process-instance identity.
+fn instance_dir(
+    base: &Path,
+    kind: &str,
+    pid: u32,
+    counter: &AtomicU64,
+) -> Result<(PathBuf, u64), String> {
+    for _ in 0..4096 {
+        let instance = counter
+            .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
+            .map_err(|_| "cpu_instance_counter_exhausted")?;
+        let root = base.join(format!("{kind}-{pid}-{instance}"));
+        match fs::create_dir(&root) {
+            Ok(()) => return Ok((root, instance)),
+            Err(e) if e.kind() == std::io::ErrorKind::AlreadyExists => (),
+            Err(e) => return Err(err(e)),
+        }
+    }
+    Err("cpu_instance_collision_limit".into())
+}
 pub struct CpuLog {
+    instance: u64,
     root: PathBuf,
     budget: PathBuf,
     raw_bytes: [u64; 3],
@@ -34,8 +58,8 @@ pub struct CpuLog {
 impl CpuLog {
     pub fn create(base: &Path, kind: &'static str) -> Result<Self, String> {
         fs::create_dir_all(base).map_err(err)?;
-        let root = base.join(format!("{kind}-{}", std::process::id()));
-        fs::create_dir(&root).map_err(err)?;
+        static NEXT_INSTANCE: AtomicU64 = AtomicU64::new(0);
+        let (root, instance) = instance_dir(base, kind, std::process::id(), &NEXT_INSTANCE)?;
         let mut ms = Vec::new();
         for role in ["execution", "quote", "replay"] {
             let d = root.join(role);
@@ -43,6 +67,7 @@ impl CpuLog {
             ms.push(Metrics::create(&d.join("compute-durations.bin"))?);
         }
         Ok(Self {
+            instance,
             producer: kind,
             log: BufWriter::with_capacity(
                 65536,
@@ -268,7 +293,7 @@ impl CpuLog {
         for m in &mut self.metrics {
             reports.push(m.report()?);
         }
-        let report = json!({"schema":"mycity-cpu-regions-v1","producer":self.producer,"source_sha256":env!("MYCITY_SOURCE_SHA256"),"roles":["execution","quote","replay"],"classes":mycity_core::diagnostics::CLASSES,"payroll_subtypes":["accrual","billing"],"region_subtypes":["clock","expiry","obligation","boot_finish","freight_arrival","population_arrival","economy_phase","direct_command"],
+        let report = json!({"schema":"mycity-cpu-regions-v1","producer":self.producer,"process_pid":std::process::id(),"process_instance_unix_ns":crate::heap_meter::process_instance(),"producer_instance":self.instance,"producer_directory":self.root.file_name().and_then(|s|s.to_str()),"source_sha256":env!("MYCITY_SOURCE_SHA256"),"roles":["execution","quote","replay"],"classes":mycity_core::diagnostics::CLASSES,"payroll_subtypes":["accrual","billing"],"region_subtypes":["clock","expiry","obligation","boot_finish","freight_arrival","population_arrival","economy_phase","direct_command"],
             "role_compute":reports,"nonempty_air_page_counts":self.page_counts,"empty_or_failed_pages":self.empty_pages,
             "air_page_limit_bounds_role_source_cell_min_max":self.page_limits,"air_processed_items_role_source_cell":self.page_items,
             "transaction_log_bytes":self.bytes,"owned_diagnostics_bytes":self.owned_bytes(),"transient_reservation_bytes":256*1024,"charged_diagnostics_bound_bytes":self.owned_bytes()+256*1024,
@@ -378,6 +403,88 @@ pub fn enabled() -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn same_pid_logs_keep_original_files_and_shared_quota_across_instances() {
+        let base =
+            std::env::temp_dir().join(format!("mycity-cpu-instances-{}", std::process::id()));
+        fs::create_dir(&base).unwrap();
+        let mut first = CpuLog::create(&base, "sim").unwrap();
+        first.begin(json!({"operation": 17})).unwrap();
+        first.page(AirPage {
+            role: Role::Execution,
+            class: Class::AirSources,
+            nanos: 123,
+            items: 1,
+            source_limit: 256,
+            cell_limit: 256,
+            ok: true,
+        });
+        let a = first.finish().unwrap();
+        let original = fs::read(first.root.join("report.json")).unwrap();
+        let quota = fs::read(base.join("run-budget.bin")).unwrap();
+        assert_eq!(u64::from_le_bytes(quota[..8].try_into().unwrap()), 65536);
+        assert_eq!(u64::from_le_bytes(quota[8..].try_into().unwrap()), 65536);
+        let mut second = CpuLog::create(&base, "sim").unwrap();
+        assert_ne!(first.root, second.root);
+        assert_eq!(fs::read(base.join("run-budget.bin")).unwrap(), quota);
+        second.begin(json!({"operation": 18})).unwrap();
+        let b = second.finish().unwrap();
+        assert_eq!(a["process_pid"], b["process_pid"]);
+        assert_eq!(a["process_instance_unix_ns"], b["process_instance_unix_ns"]);
+        assert_eq!(
+            a["process_instance_unix_ns"].to_string(),
+            crate::heap_meter::process_instance().to_string()
+        );
+        assert_ne!(a["producer_instance"], b["producer_instance"]);
+        assert_eq!(fs::read(first.root.join("report.json")).unwrap(), original);
+        let quota = fs::read(base.join("run-budget.bin")).unwrap();
+        assert_eq!(u64::from_le_bytes(quota[..8].try_into().unwrap()), 65536);
+        assert_eq!(u64::from_le_bytes(quota[8..].try_into().unwrap()), 131072);
+        drop(first);
+        drop(second);
+        fs::remove_dir_all(base).unwrap();
+    }
+    #[test]
+    fn reused_pid_and_partial_initialization_skip_existing_directories_atomically() {
+        let base =
+            std::env::temp_dir().join(format!("mycity-cpu-collision-{}", std::process::id()));
+        fs::create_dir(&base).unwrap();
+        let partial = base.join("worker-42-0");
+        fs::create_dir(&partial).unwrap();
+        fs::write(partial.join("sentinel"), b"original partial initialization").unwrap();
+        let (a, b) = std::thread::scope(|scope| {
+            let first =
+                scope.spawn(|| instance_dir(&base, "worker", 42, &AtomicU64::new(0)).unwrap());
+            let second =
+                scope.spawn(|| instance_dir(&base, "worker", 42, &AtomicU64::new(0)).unwrap());
+            (first.join().unwrap(), second.join().unwrap())
+        });
+        assert_ne!(a.0, b.0);
+        assert!(a.1 > 0 && b.1 > 0);
+        assert_eq!(
+            fs::read(partial.join("sentinel")).unwrap(),
+            b"original partial initialization"
+        );
+        // A third simulated restart with a reset counter must keep all old evidence.
+        let (c, n) = instance_dir(&base, "worker", 42, &AtomicU64::new(0)).unwrap();
+        assert!(n > 0 && c != a.0 && c != b.0);
+        let (real, _) = instance_dir(&base, "worker", 42, &AtomicU64::new(4)).unwrap();
+        assert!(real.is_dir());
+        fs::remove_dir_all(base).unwrap();
+    }
+    #[test]
+    fn instance_creation_does_not_retry_io_errors_or_wrap_counter() {
+        let base = std::env::temp_dir().join(format!("mycity-cpu-notdir-{}", std::process::id()));
+        fs::write(&base, b"not a directory").unwrap();
+        let counter = AtomicU64::new(0);
+        assert!(instance_dir(&base, "sim", 42, &counter).is_err());
+        assert_eq!(counter.load(Ordering::Relaxed), 1);
+        assert_eq!(
+            instance_dir(&base, "sim", 42, &AtomicU64::new(u64::MAX)).unwrap_err(),
+            "cpu_instance_counter_exhausted"
+        );
+        fs::remove_file(base).unwrap();
+    }
     #[test]
     fn failed_transaction_batches_never_fill_success_histogram_and_raw_pages_remain_attempts() {
         let root = std::env::temp_dir().join(format!("mycity-cpu-log-{}", std::process::id()));

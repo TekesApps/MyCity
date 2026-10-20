@@ -7,8 +7,19 @@ use std::{
     fs::OpenOptions,
     io::Write,
     path::PathBuf,
+    sync::OnceLock,
     time::{SystemTime, UNIX_EPOCH},
 };
+/// Shared by heap records and all diagnostic producers in this process. Directory
+/// uniqueness still comes from create_dir, not clock resolution or PID alone.
+pub fn process_instance() -> u128 {
+    static INSTANCE: OnceLock<u128> = OnceLock::new();
+    *INSTANCE.get_or_init(|| {
+        SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .map_or(0, |d| d.as_nanos())
+    })
+}
 pub const TAIL_RESERVED_BYTES: usize = 64 * 1024;
 #[global_allocator]
 static ALLOCATOR: peak_alloc::PeakAlloc = peak_alloc::PeakAlloc;
@@ -51,9 +62,7 @@ impl Recorder {
                 .chars()
                 .take(48)
                 .collect(),
-            instance: SystemTime::now()
-                .duration_since(UNIX_EPOCH)
-                .map_or(0, |d| d.as_nanos()),
+            instance: process_instance(),
         }
     }
     pub fn finish(&self, success: bool) -> Result<(), String> {

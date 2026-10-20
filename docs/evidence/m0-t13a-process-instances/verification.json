@@ -1,0 +1,37 @@
+{
+  "schema": "mycity-t13a-instance-audit-v1",
+  "source_sha256": "ea9b274cfc56659fafb7aaf0dace09355eb572eb8a1ba5521d95376504d62b5b",
+  "status": "full_30day_instance_and_copy_change_verified",
+  "process_records": {
+    "compute-worker-bounded": 724,
+    "sim-host-scale-full": 2,
+    "scale-sim-probe": 1
+  },
+  "producer_process_pairs": 726,
+  "producer_directories": 726,
+  "all_report_instances_match_heap_records": true,
+  "all_role_raw_counts_and_maxima_match": true,
+  "raw_samples": 5536188,
+  "raw_bytes": 49825692,
+  "original_receipts_verified": 3011,
+  "entire_engine_equal_cpu_including_metadata": true,
+  "RSS_frames_checked": 1474,
+  "transcript_requests": 6028,
+  "transcript_responses": 8924,
+  "maximum_transcript_row_bytes": 786,
+  "requested_Rust_heap_role_lifetime_peaks_bytes": {
+    "compute-worker-bounded": 3753772,
+    "sim-host-scale-full": 29442259,
+    "scale-sim-probe": 29358552
+  },
+  "diagnostic_charges_bytes": {
+    "worker": 846876,
+    "sim": 2446916
+  },
+  "diagnostic_total": "not_closed",
+  "full_joint_owned": "not_accepted",
+  "four_speeds": "not_run",
+  "formal_steady": "not_run",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run"
+}
