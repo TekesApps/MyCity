@@ -1,0 +1,41 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+    Finished `release` profile [optimized] target(s) in 0.43s
+     Running unittests src/main.rs (target/release/deps/mycity_headless-7381868882168a83)
+
+running 1 test
+test session::pacing_tests::computation_consumes_interval_but_idle_time_does_not_create_credit ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/session.rs (target/release/deps/session-247ed87dee38ede0)
+
+running 15 tests
+test old_source_identity_cannot_be_used_to_write_with_new_binary ... ok
+test malformed_and_oversized_input_are_bounded_and_do_not_commit ... ok
+test disk_backpressure_cannot_be_bypassed_by_step_or_speed ... ok
+test huge_time_speed_and_stale_cursor_reject_without_mutation ... ok
+test command_conflicts_scope_revision_and_paging_do_not_change_business_state ... ok
+test independent_boot_profile_completes_real_pump_before_pause_confirmation ... ok
+test pause_step_run_and_cold_receipt_are_exact_across_real_reopen ... ok
+test json_cannot_elevate_identity_and_failed_transactions_remain_queryable ... ok
+
+thread 'replay_conflict_and_rejected_requests_cannot_reset_release' panicked at crates/city-headless/tests/session.rs:747:9:
+assertion failed: out[i]["result"]["pacing_wait_ns"].as_u64().unwrap() > 0
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test replay_conflict_and_rejected_requests_cannot_reset_release ... FAILED
+test source_reconciliation_blocks_clock_but_preserves_observation ... ok
+test slicing_across_due_boundaries_changes_no_cash_obligation_or_clock ... ok
+test four_real_paced_speeds_preserve_business_result_without_claiming_throughput ... ok
+test timeline_partial_status_query_reopen_and_exact_receipt ... ok
+test timeline_probe_runs_real_three_profiles_and_reports_scope ... ok
+T10_PACED_DAY {"actual_game_seconds_per_wall_second":1491.1201711932454,"actual_wall_seconds":57.943016041999996,"game_seconds":86400,"memory_16gb_gate":"not_run","persistent_commits":24,"same_state_as_unpaced":true,"source_sha256":"a84507e2b8b07b77fa05750d4894940696f27fffa5355ae2dce8a23ce21007e1","state_sha256":"e12c19954ca89e978f61c64e4ce74e58c4aa4b99b095a663613288fd1e99849d","store_owned_capacity_bytes":2690926,"target_exactly_met":true,"target_wall_seconds":60}
+test paced_economy_day_matches_unpaced_committed_business_and_reports_real_wall_time ... ok
+
+failures:
+
+failures:
+    replay_conflict_and_rejected_requests_cannot_reset_release
+
+test result: FAILED. 14 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 58.79s
+
+error: test failed, to rerun pass `-p mycity-headless --test session`

@@ -1,0 +1,24 @@
+{
+  "source_sha256": "246a60c24824a6305ea12e4faccd63d07219782cb4788c8b9a4605ce9f4933bc",
+  "targeted_tests": 16,
+  "failures": 0,
+  "one_day_actual_session": {
+    "actual_game_seconds_per_wall_second": 1484.1346701765217,
+    "actual_wall_seconds": 58.215741291,
+    "game_seconds": 86400,
+    "memory_16gb_gate": "not_run",
+    "persistent_commits": 24,
+    "same_state_as_unpaced": true,
+    "source_sha256": "246a60c24824a6305ea12e4faccd63d07219782cb4788c8b9a4605ce9f4933bc",
+    "state_sha256": "e12c19954ca89e978f61c64e4ce74e58c4aa4b99b095a663613288fd1e99849d",
+    "store_owned_capacity_bytes": 2690926,
+    "target_exactly_met": true,
+    "target_wall_seconds": 60
+  },
+  "measurement_scope": "one-day regression among parallel integration tests, not isolated formal performance trial",
+  "mandatory_pe0_30days": "not_run",
+  "full_L2_four_rates": "not_run",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run",
+  "full_M0": "not_accepted"
+}

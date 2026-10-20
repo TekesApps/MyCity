@@ -174,3 +174,6 @@ v0.5.50的T13A-3k：[Rust联合托管及原负载保护失败](evidence/m0-t13a-
 
 
 v0.5.51：[完整L2无等待30日及速度控制器](evidence/m0-t13a-speeds/STATUS.md)。最终来源41定向/clippy/fmt/build通过；真实实验总373.132秒、经营337.905秒，723目标/3011原票/完整Engine含metadata及冷开/724借还独立核验通过，原负载不变。full无等待局部60秒/日目标满足，不替代P-E0或旧session限速验收。Claims仅20样本，L1缺席；共同8MiB、精确常规工作区、正式十类/四档/三轮稳态/实际8h仍未签，真实16GB not_run、M0 not_accepted。下一依赖是实际session发布节奏修复及真正P-E0完整30日测量。
+
+
+v0.5.52：[实际session节奏修复](evidence/m0-t13a-session-pacing/STATUS.md)。计算/IPC占用时间间隔，首次立即、迟到不积累追赶，幂等/冲突及失败不重置节拍，原权限上限保留。最终16定向及clippy/fmt/build通过，原实际session一日24持久推进58.216秒、终值对直接Store相同；这是同行回归，未含父进程Store预创建，不能签正式30日。初版sleep断言失败及来源分开保留。P-E0完整30日、full四档、联合预算/稳态/实际8h仍未签，真实16GB not_run，M0 not_accepted。

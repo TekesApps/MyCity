@@ -490,7 +490,13 @@ fn paced_economy_day_matches_unpaced_committed_business_and_reports_real_wall_ti
         "{out:?}"
     );
     assert_eq!(out[25]["result"]["paused"], true);
-    assert!(elapsed >= 60.0);
+    // Twenty-four releases start at 0, 2.5, ..., 57.5 seconds. Model/IPC
+    // consumes those periods; do not require an extra sleep after the last job.
+    assert!(elapsed >= 57.5);
+    assert_eq!(out[1]["result"]["pacing_wait_ns"], 0);
+    assert!(out[1..25]
+        .iter()
+        .all(|r| r["result"]["pacing_interval_ns"] == 2_500_000_000u64));
     assert!(out[1..25]
         .iter()
         .all(|r| r["result"]["outcome"]["has_persistent_receipt"] == true));
@@ -696,4 +702,69 @@ fn timeline_probe_runs_real_three_profiles_and_reports_scope() {
     assert_eq!(v["memory_16gb_gate"], "not_run");
     assert_eq!(v["gpu"], "not_run");
     assert_eq!(v["source_sha256"], RULES);
+}
+
+#[test]
+fn replay_conflict_and_rejected_requests_cannot_reset_release() {
+    let t = Temp::new();
+    drop(create(&t.world()));
+    let out = session(
+        &t.world(),
+        ["operator", "system"],
+        vec![
+            request(1, json!({"command":"speed","day_wall_ms":1000})),
+            request(2, json!({"command":"resume"})),
+            request(3, json!({"command":"run","envelope":env(1,0,3600)})),
+            request(4, json!({"command":"run","envelope":env(1,0,3600)})),
+            request(5, json!({"command":"run","envelope":env(1,0,3599)})),
+            request(6, json!({"command":"resume"})),
+            request(7, json!({"command":"speed","day_wall_ms":1000})),
+            request(8, json!({"command":"run","envelope":env(2,1,3600)})),
+            request(9, json!({"command":"run","envelope":env(3,2,u32::MAX)})),
+            request(10, json!({"command":"run","envelope":env(3,2,3600)})),
+            request(11, json!({"command":"pause"})),
+        ],
+    );
+    assert_eq!(out[2]["result"]["pacing_wait_ns"], 0);
+    assert_eq!(out[3]["result"]["already_recorded"], true);
+    assert_eq!(out[3]["result"]["pacing_wait_ns"], 0);
+    assert_eq!(
+        out[4]["result"]["outcome"]["model"]["Err"],
+        "operation_conflict"
+    );
+    assert_eq!(out[4]["result"]["already_recorded"], false);
+    assert_eq!(out[8]["error"]["code"], "wall_budget");
+    assert_eq!(out[10]["result"]["committed_game_seconds"], 10800);
+    // Assert the actual clock state, not a positive sleep: valid model/IPC
+    // time can legitimately exhaust an interval before the next request.
+    let deadline = &out[2]["result"]["status"]["next_release_in_session_ns"];
+    assert!(deadline.as_u64().unwrap() > 0);
+    for i in [3, 4] {
+        assert_eq!(
+            &out[i]["result"]["status"]["next_release_in_session_ns"],
+            deadline
+        );
+    }
+    for i in [5, 6] {
+        assert_eq!(&out[i]["result"]["next_release_in_session_ns"], deadline);
+    }
+    assert!(
+        out[7]["result"]["status"]["next_release_in_session_ns"]
+            .as_u64()
+            .unwrap()
+            > deadline.as_u64().unwrap()
+    );
+    assert!(
+        out[9]["result"]["status"]["next_release_in_session_ns"]
+            .as_u64()
+            .unwrap()
+            > out[7]["result"]["status"]["next_release_in_session_ns"]
+                .as_u64()
+                .unwrap()
+    );
+    assert!(out[10]["result"]["next_release_in_session_ns"].is_null());
+    assert_eq!(
+        Store::open(&t.world(), RULES).unwrap().committed_sequence(),
+        3
+    );
 }

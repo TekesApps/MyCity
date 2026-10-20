@@ -69,6 +69,25 @@ struct Session {
     paused: bool,
     day_wall_ms: u32,
     needs_reopen: bool,
+    pacing: Pacing,
+    wall_origin: Instant,
+}
+/// Volatile wall-clock pacing only. Committed game time remains in Store.
+/// Computation/IPC consumes the interval; late input never accumulates catch-up credit.
+#[derive(Default)]
+struct Pacing {
+    next_release: Option<Instant>,
+}
+impl Pacing {
+    fn release(&self, now: Instant) -> Instant {
+        self.next_release.map_or(now, |next| next.max(now))
+    }
+    fn committed(&mut self, release: Instant, interval: Duration) {
+        self.next_release = Some(release + interval);
+    }
+    fn reset(&mut self) {
+        self.next_release = None;
+    }
 }
 impl Session {
     fn status(&self) -> Result<Value, Value> {
@@ -89,7 +108,7 @@ impl Session {
             "sequence":self.store.committed_sequence(),"revision":view.revision,"world":view.scope.world(),"branch":view.scope.branch(),
             "state_sha256":self.store.state_hash().map_err(storage_error)?,"source":self.store.source_status().map_err(storage_error)?,
             "provenance":{"source_sha256":env!("MYCITY_SOURCE_SHA256"),"lock_sha256":env!("MYCITY_LOCK_SHA256")},
-            "timeline":engine.timeline().map(|t|t.progress),"continuation":self.store.continuation_status().map_err(storage_error)?,"offline_catchup":false,"full_source_scheduler":if engine.timeline().is_some(){"implemented_profiles_only"}else{"not_enabled"},"memory_16gb_gate":"not_run"}),
+            "timeline":engine.timeline().map(|t|t.progress),"continuation":self.store.continuation_status().map_err(storage_error)?,"offline_catchup":false,"wall_pacing":"volatile_release_start_v1","next_release_in_session_ns":self.pacing.next_release.map(|t|t.duration_since(self.wall_origin).as_nanos()),"full_source_scheduler":if engine.timeline().is_some(){"implemented_profiles_only"}else{"not_enabled"},"memory_16gb_gate":"not_run"}),
         )
     }
     fn clock_seconds(&self, envelope: &Envelope) -> Option<u32> {
@@ -125,6 +144,7 @@ impl Session {
             Command::Status => self.status(),
             Command::Pause => {
                 self.paused = true;
+                self.pacing.reset();
                 self.status()
             }
             Command::Resume => {
@@ -134,6 +154,9 @@ impl Session {
             Command::Speed { day_wall_ms } => {
                 if ![600000, 60000, 10000, 1000].contains(&day_wall_ms) {
                     return Err(json!({"code":"unsupported_speed"}));
+                }
+                if self.day_wall_ms != day_wall_ms {
+                    self.pacing.reset();
                 }
                 self.day_wall_ms = day_wall_ms;
                 self.status()
@@ -212,17 +235,29 @@ impl Session {
                     return Err(json!({"code":"pause_state"}));
                 }
                 let started = Instant::now();
-                let wait_ns = if mode == 2 && !retry {
+                let interval_ns = if mode == 2 && !retry {
                     u128::from(seconds.unwrap()) * u128::from(self.day_wall_ms) * 1_000_000 / 86400
                 } else {
                     0
                 };
-                if wait_ns > 60_000_000_000 {
+                if interval_ns > 60_000_000_000 {
                     return Err(json!({"code":"wall_budget","max_wall_ms":60000}));
                 }
+                // Existing IDs go straight to Store's actor/payload validation. Neither
+                // an exact replay nor a conflict gets a new release or advances pacing.
+                let interval = Duration::from_nanos(interval_ns as u64);
+                let wait_ns = if mode == 2 && !retry {
+                    self.pacing
+                        .release(Instant::now())
+                        .saturating_duration_since(Instant::now())
+                        .as_nanos()
+                } else {
+                    0
+                };
                 if wait_ns > 0 {
                     std::thread::sleep(Duration::from_nanos(wait_ns as u64));
                 }
+                let released = Instant::now();
                 let outcome = match self.store.execute(self.caller, envelope) {
                     Ok(outcome) => outcome,
                     Err(e) => {
@@ -232,10 +267,12 @@ impl Session {
                 };
                 if outcome.model.is_err() {
                     self.paused = true;
+                } else if mode == 2 && !retry {
+                    self.pacing.committed(released, interval);
                 }
                 let elapsed = started.elapsed().as_nanos();
                 Ok(
-                    json!({"outcome":outcome,"already_recorded":retry,"requested_game_seconds":seconds,"pacing_wait_ns":wait_ns,
+                    json!({"outcome":outcome,"already_recorded":retry && outcome.has_persistent_receipt,"requested_game_seconds":seconds,"pacing_wait_ns":wait_ns,"pacing_interval_ns":interval_ns,"pacing_release_elapsed_ns":released.duration_since(started).as_nanos(),
                     "elapsed_ns":elapsed,"completed_game_seconds_delta":before_complete.and_then(|before|self.store.engine().ok()?.timeline()?.progress.last_complete.checked_sub(before)),"actual_game_seconds_per_wall_second":if !timeline_request && mode!=0 && !retry && outcome.model.is_ok(){Some(f64::from(seconds.unwrap())*1e9/elapsed.max(1) as f64)}else{None},
                     "status":self.status()?}),
                 )
@@ -267,6 +304,8 @@ pub fn run(args: &[String]) -> Result<(), String> {
         paused: true,
         day_wall_ms: 60000,
         needs_reopen: false,
+        pacing: Pacing::default(),
+        wall_origin: Instant::now(),
     };
     let stdin = io::stdin();
     let mut input = stdin.lock();
@@ -322,4 +361,25 @@ pub fn run(args: &[String]) -> Result<(), String> {
             .map_err(|e| e.to_string())?;
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod pacing_tests {
+    use super::*;
+
+    #[test]
+    fn computation_consumes_interval_but_idle_time_does_not_create_credit() {
+        let start = Instant::now();
+        let interval = Duration::from_secs(10);
+        let mut p = Pacing::default();
+        assert_eq!(p.release(start), start);
+        p.committed(start, interval);
+        // Four seconds of model/IPC work leaves six seconds, not another ten.
+        assert_eq!(p.release(start + Duration::from_secs(4)), start + interval);
+        // A slow computation or an idle client rebases at actual release.
+        let late = start + Duration::from_secs(35);
+        assert_eq!(p.release(late), late);
+        p.committed(late, interval);
+        assert_eq!(p.release(late), late + interval);
+    }
 }

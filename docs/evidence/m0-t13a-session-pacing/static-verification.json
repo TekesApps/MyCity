@@ -1,0 +1,7 @@
+{
+  "source_sha256": "246a60c24824a6305ea12e4faccd63d07219782cb4788c8b9a4605ce9f4933bc",
+  "source_and_binary_match": true,
+  "frozen_acceptance_unchanged": true,
+  "observer_support_unchanged": true,
+  "scope": "static integrity only; no runtime/performance acceptance"
+}

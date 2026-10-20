@@ -1,0 +1,5 @@
+{
+  "source_sha256": "a84507e2b8b07b77fa05750d4894940696f27fffa5355ae2dce8a23ce21007e1",
+  "source_files": 145,
+  "scope": "initial session implementation and flaky wait assertion; test still live when captured"
+}

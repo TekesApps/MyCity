@@ -1,0 +1,9 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+    Finished `release` profile [optimized] target(s) in 13.53s
+     Running tests/session.rs (target/release/deps/session-247ed87dee38ede0)
+
+running 1 test
+test replay_conflict_and_rejected_requests_cannot_reset_release ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 14 filtered out; finished in 0.78s
+
