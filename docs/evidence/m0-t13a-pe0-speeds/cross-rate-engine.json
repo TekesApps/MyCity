@@ -1,0 +1,10 @@
+{
+  "scope": "same-source step versus actual60 whole Engine/facts; runtime binding in each verification",
+  "source_sha256": "0866a0f2a4b37e5f22b9c3002198b42675d723787079cc1a01633d9aacbbea86",
+  "entire_reference_engine_byte_equal": true,
+  "both_actual_cold_images_bound_to_same_engine_sha256": "4333551a7ac773c5c8fa900242c8fce79ed36046e4ff1b6545cc4d2d673fbe95",
+  "facts_byte_equal": true,
+  "step_operating_seconds": 18.513690167,
+  "paced_operating_seconds": 1800.240858542,
+  "paced_speed_target_met": false
+}

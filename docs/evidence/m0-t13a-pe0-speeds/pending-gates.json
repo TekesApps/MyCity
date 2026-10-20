@@ -1,0 +1,228 @@
+{
+  "schema": "t13a-pending-gate-ledger-v1",
+  "acceptance_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+  "snapshot_release": "v0.5.54",
+  "current_paced_handle": "65764 terminal0 experiment complete/performance failed",
+  "claim_scope": "pending/current evidence index only; not a new acceptance or changed threshold",
+  "thresholds_from_frozen_fixture": {
+    "steady": {
+      "scenarios": [
+        "L0_pack",
+        "L1_jprod_layout",
+        "L2_full_joint"
+      ],
+      "independent_runs_each": 3,
+      "warmup_wall_seconds": 300,
+      "measured_wall_seconds": 1800,
+      "tier_diagnostics_are_not_steady_acceptance": true
+    },
+    "speed": {
+      "day_wall_seconds": [
+        600,
+        60,
+        10,
+        1
+      ],
+      "mandatory_pe0_unpaced_day_max_wall_seconds": 60,
+      "mandatory_pe0_measured_days": 30,
+      "paced_wait_excluded_from_compute_quantiles": true,
+      "all_rates_and_whole_boundary_time_required": true,
+      "optional_fast_tiers_can_fail_without_discarding_facts": true,
+      "mandatory_pe0_actual_operating_day_max_wall_seconds": 60,
+      "mandatory_pe0_actual_operating_30days_max_wall_seconds": 1800,
+      "operating_measurement": "full committed trajectory including persistence and IPC, no subtraction of sleeps or post-hoc overhead"
+    },
+    "memory": {
+      "normal_gib": 3.1,
+      "soft_gib": 3.5,
+      "peak_guard_gib": 4,
+      "diagnostic_hot_bytes": 8388608,
+      "rss_sample_wall_ms": 250,
+      "footprint_system_sample_wall_seconds": 60,
+      "same_boundary_baseline_owned_tolerance_bytes": 1048576,
+      "same_boundary_baseline_rss_tolerance_bytes": 16777216,
+      "same_boundary_baseline_footprint_tolerance_bytes": 16777216,
+      "unexplained_growth_allowance_bytes_per_hour": 1048576,
+      "pressure_non_normal_max_consecutive_wall_seconds": 60,
+      "swap_net_growth_max_bytes": 268435456,
+      "rss_and_footprint_must_not_sum_individual_lifetime_peaks": true,
+      "real_16gb_gate": "not_run_unless_actual_device"
+    },
+    "disk": {
+      "world_max_bytes": 21474836480,
+      "warning_bytes": 17179869184,
+      "minimum_free_bytes": 2147483648,
+      "measurement_log_max_bytes": 268435456,
+      "transcript_max_bytes": 134217728,
+      "preflight_includes_two_snapshots_and_candidate": true,
+      "archive_quota_changes_require_measured_plan_and_recovery_regression": true
+    },
+    "endurance": {
+      "minimum_wall_seconds": 28800,
+      "game_days": 30,
+      "game_hour_wall_seconds": 40,
+      "joint_profiles": [
+        "L2_full_current_engine_real",
+        "L1_jprod_layout_pressure"
+      ],
+      "same_persistent_world": true,
+      "same_process_group_sampling_includes_reference_and_observers": true,
+      "autosave_requests": 96,
+      "worker_cells_kill_not_before_wall_seconds": 7200,
+      "sim_committed_reply_kill_not_before_wall_seconds": 14400,
+      "normal_cold_reopen_not_before_wall_seconds": 21600,
+      "last_business_boundary_must_span_run": true,
+      "no_reinitialize_no_refill_no_delete_receipts": true
+    }
+  },
+  "gates": [
+    {
+      "id": "freeze",
+      "requirement": "冻结负载与阈值",
+      "state": "frozen_and_independently_reviewed",
+      "evidence": "fixtures/m0-t13a-acceptance.json",
+      "limitation_or_next_action": "冻结输入SHA不变；计划通过不是运行通过"
+    },
+    {
+      "id": "l1_assembly",
+      "requirement": "完整JPROD布局/类型/stub/全扫描",
+      "state": "historical_diagnostics_present_final_joint_not_accepted",
+      "evidence": "docs/evidence/m0-t13a-joint-endurance/STATUS.md",
+      "limitation_or_next_action": "v50原数量未减，但联合只完成316扫描、1完整快照"
+    },
+    {
+      "id": "l2_graded",
+      "requirement": "small/medium/full真实合法Engine",
+      "state": "historical_graded_pass_current_source_not_rerun",
+      "evidence": "docs/evidence/m0-t13a-tiered/STATUS.md",
+      "limitation_or_next_action": "v36分级；v51完整full无等待；不作为v53四档实测"
+    },
+    {
+      "id": "pe0_step",
+      "requirement": "P-E0实际IPC完整30日无等待",
+      "state": "passed_limited_new_722_slicing",
+      "evidence": "docs/evidence/m0-t13a-pe0-speeds/verification-step.json",
+      "limitation_or_next_action": "v53同切分Engine+原终值核验；不是旧四中途恢复重测"
+    },
+    {
+      "id": "pe0_60",
+      "requirement": "P-E0实际IPC完整30日60秒档",
+      "state": "measured_failed_60_and_1800",
+      "evidence": "docs/evidence/m0-t13a-pe0-speeds/verification-paced.json",
+      "limitation_or_next_action": "complete30d operating1800.240858542; all facts correct; fix wake-anchored phase drift and remeasure original full trajectory"
+    },
+    {
+      "id": "full_rates",
+      "requirement": "完整L2四档600/60/10/1",
+      "state": "not_run",
+      "evidence": "docs/evidence/m0-t13a-speeds/PLAN.md",
+      "limitation_or_next_action": "unpaced不能代替任一paced；必须各真实完整30日，快档失败保留事实"
+    },
+    {
+      "id": "ten_classes",
+      "requirement": "10类别分角色至少200样本及20/40ms门",
+      "state": "not_accepted",
+      "evidence": "docs/evidence/m0-t13a-speeds/latency-unpaced.json",
+      "limitation_or_next_action": "v51Claims20/source4不足，quote capture/admit p95约22.61ms超20；历史稀有样本不拼当前源码"
+    },
+    {
+      "id": "l0_pack",
+      "requirement": "原P-E0/E1/W4包的正确性/失败/速度",
+      "state": "historical_finite_evidence_not_formal_steady",
+      "evidence": "docs/m0-model-scale-performance.md",
+      "limitation_or_next_action": "P-E0不能替代所有E1与W4分支，也不能把新世界当原世界注资"
+    },
+    {
+      "id": "backlog",
+      "requirement": "ready age p99<=1秒/max<=5秒",
+      "state": "not_accepted_formal_joint",
+      "evidence": "docs/m0-model-scale-performance.md",
+      "limitation_or_next_action": "从全部前提及预定release就绪起计，不能从实际开始起表"
+    },
+    {
+      "id": "recovery",
+      "requirement": "故障/冷开<=10秒及原票恢复",
+      "state": "finite_diagnostics_only",
+      "evidence": "docs/evidence/m0-t13a-endurance-controller/STATUS.md",
+      "limitation_or_next_action": "故障注入/原票回归接入；非指定2/4/6小时真实执行"
+    },
+    {
+      "id": "autosave",
+      "requirement": "自动保存绝对deadline到持久完成<=5秒",
+      "state": "not_accepted_formal_joint",
+      "evidence": "docs/evidence/m0-t13a-endurance-controller/STATUS.md",
+      "limitation_or_next_action": "短smoke或单次保存不替代原96次/5分钟壁钟"
+    },
+    {
+      "id": "l1_snapshot",
+      "requirement": "快照启动迟到<=5秒/持久耗时<=60秒",
+      "state": "finite_diagnostics_only",
+      "evidence": "docs/evidence/m0-t13a-joint-endurance/STATUS.md",
+      "limitation_or_next_action": "第一份22.8458秒不证明后续96份全部通过"
+    },
+    {
+      "id": "normal64",
+      "requirement": "精确常规64MiB真实替换/回收",
+      "state": "not_accepted",
+      "evidence": "crates/city-headless/src/normal_pool.rs",
+      "limitation_or_next_action": "仅worker4MiB两槽真实替换，Engine/serde/helper仍EXTRA"
+    },
+    {
+      "id": "diagnostic8",
+      "requirement": "共同热诊断<=8MiB",
+      "state": "not_accepted",
+      "evidence": "crates/city-headless/src/diagnostic_contract.rs",
+      "limitation_or_next_action": "名义caps合计8不证明全部临时及外部费用已收费"
+    },
+    {
+      "id": "memory_group",
+      "requirement": "同组RSS/footprint/owned及3.10/3.5/4GiB",
+      "state": "not_accepted",
+      "evidence": "docs/evidence/m0-t13a-joint-endurance/STATUS.md",
+      "limitation_or_next_action": "缺测不当0，逻辑释放不保证即时物理归还"
+    },
+    {
+      "id": "pressure",
+      "requirement": "pressure非正常<=60秒/swap净增<=256MiB",
+      "state": "last_full_joint_failed",
+      "evidence": "docs/evidence/m0-t13a-joint-endurance/failure-verification.json",
+      "limitation_or_next_action": "v50原联合316.368秒保护失败，不抹掉/归因后转绿"
+    },
+    {
+      "id": "steady9",
+      "requirement": "3正式场景各3次300+1800秒",
+      "state": "not_run",
+      "evidence": "fixtures/m0-t13a-acceptance.json",
+      "limitation_or_next_action": "共9次实际35分钟；small/medium或600秒短跑不替代"
+    },
+    {
+      "id": "endurance8",
+      "requirement": "同一full世界真实>=28800秒及L1同行",
+      "state": "not_run",
+      "evidence": "docs/evidence/m0-t13a-endurance-controller/STATUS.md",
+      "limitation_or_next_action": "控制器/smoke不算8h；原720小时目标/96保存/2/4/6h故障时点不变"
+    },
+    {
+      "id": "disk",
+      "requirement": "20GiB世界/16GiB警告/至少2GiB余量",
+      "state": "current_full_joint_preflight_pending",
+      "evidence": "fixtures/m0-t13a-acceptance.json",
+      "limitation_or_next_action": "需含两完整快照+候选+既有磁盘/增长；不删唯一原票"
+    },
+    {
+      "id": "device16",
+      "requirement": "真实16GB设备",
+      "state": "not_run_no_actual_device",
+      "evidence": "docs/evidence/m0-t13a-pe0-speeds/STATUS.md",
+      "limitation_or_next_action": "当前32GiB不模拟或改名16GB"
+    },
+    {
+      "id": "final_audit",
+      "requirement": "最终结果advisor独立审查与发布",
+      "state": "not_run_for_full_goal",
+      "evidence": "docs/m0-model-scale-performance.md",
+      "limitation_or_next_action": "有限阶段审查已做，正式整体尚未完成"
+    }
+  ],
+  "full_M0": "not_accepted"
+}

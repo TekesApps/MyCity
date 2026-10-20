@@ -1,0 +1,23 @@
+{
+  "source_sha256": "0866a0f2a4b37e5f22b9c3002198b42675d723787079cc1a01633d9aacbbea86",
+  "rate": "60",
+  "observed_run_responses": 722,
+  "last_game_seconds": 2592000,
+  "complete_30day_business_responses": true,
+  "final_report_present": true,
+  "proof_scope": "integer conservation of original actual-release-anchored pacing; no model execution, no new tolerance",
+  "attribution": "post-wait release delay includes wake scheduling and adjacent code overhead; not isolated OS sleep cost",
+  "positive_sleep_requests_after_first": 721,
+  "no_sleep_late_ready_requests_after_first": 0,
+  "accumulated_wake_phase_shift_ns": 2558500583,
+  "accumulated_late_ready_phase_shift_ns": 0,
+  "first_release_in_session_ns": 337292,
+  "last_release_in_session_ns": 1800058837875,
+  "ideal_phase_from_previous_intervals_ns": 1797500000000,
+  "exact_integer_phase_conservation": true,
+  "last_response_operating_seconds": 1800.167986125,
+  "speed_target_met": false,
+  "eight_hour": "not_run",
+  "real_16GB": "not_run",
+  "full_M0": "not_accepted"
+}

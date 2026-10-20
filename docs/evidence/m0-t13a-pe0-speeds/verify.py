@@ -28,7 +28,7 @@ for i,(x,t,e) in enumerate(zip(steps,targets,refs),1):
  expected={'world':1,'branch':1,'operation_id':i,'expected_revision':i-1,'actions':[{'kind':'economy','command':{'kind':'advance','seconds':t-prev}}]}
  env=x['request']['request']['envelope'];assert env==expected
  original[i]=hashlib.sha256(json.dumps(expected,separators=(',',':')).encode()).digest()
- r=x['response']['result'];assert r['outcome']['has_persistent_receipt'] and 'Ok' in r['outcome']['model'] and not r['already_recorded']
+ r=x['response']['result'];assert r['status']['provenance']['source_sha256']==info['source_sha256'];assert r['outcome']['has_persistent_receipt'] and 'Ok' in r['outcome']['model'] and not r['already_recorded']
  assert r['status']['committed_game_seconds']==t and r['status']['engine_state_sha256']==e['state_sha256'] and r['status']['revision']==r['status']['sequence']==i
  joint={'schema':'mycity-m0-store-state-v1','engine':e['state_sha256'],'spatial':genesis['spatial']}
  assert sha(json.dumps(joint,separators=(',',':'),sort_keys=True).encode())==r['status']['state_sha256']

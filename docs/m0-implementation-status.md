@@ -360,3 +360,6 @@ v0.5.52：[实际session节奏修复](evidence/m0-t13a-session-pacing/STATUS.md)
 
 
 v0.5.53：[实际P-E0完整30日无等待](evidence/m0-t13a-pe0-speeds/STATUS.md)。54定向/clippy/fmt/build通过，实际Store创建前计时至末Checkpoint/日志持久完成18.514秒；722目标/722原票/原现金物料税务终值/同切分完整Engine含metadata与冷开核验通过。722为新整点加在途切分，非旧半点命令；首轮Core/Store联合hash比较失败保留并实测修复。只签无等待P-E0，真实60档、full四档/L1/共同预算/正式稳态/实际8h仍未签，真实16GB not_run、M0 not_accepted。
+
+
+v0.5.54：[真实P-E0 60秒/日完整30日](evidence/m0-t13a-pe0-speeds/STATUS.md)已实际完成，722目标/原票/原终值/完整Engine及冷开正确，但经营1800.240858542秒、末日含Checkpoint60.240858542秒，严格日/总段门失败。721次后续请求均提前等待，实际release锚点累计迟到2558500583ns，独立整数核验定位，不全部归因OS sleep。旧源/阈值/输入未改、不加容差，advisor实际重核认可失败留证。下一修复scheduled-release锚定并完整重测；full四档/L1/共同预算/正式稳态/实际8h未签，真实16GB not_run、M0 not_accepted。

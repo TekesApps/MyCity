@@ -1,0 +1,21 @@
+{
+  "source_sha256": "0866a0f2a4b37e5f22b9c3002198b42675d723787079cc1a01633d9aacbbea86",
+  "source_and_binary_match": true,
+  "frozen_acceptance_unchanged": true,
+  "observer_unchanged": true,
+  "archives": [
+    {
+      "name": "t13a53-paced-01",
+      "files": 28
+    },
+    {
+      "name": "t13a53-step-02",
+      "files": 28
+    },
+    {
+      "name": "t13a53-step-01",
+      "files": 21
+    }
+  ],
+  "scope": "static integrity only; no runtime/performance acceptance"
+}
