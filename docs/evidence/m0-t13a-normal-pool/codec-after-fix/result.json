@@ -1,0 +1,6 @@
+{
+  "scope": "synthetic codec only; fake grant id; no real business or worker allocations",
+  "requests": 2000,
+  "unexpected": [],
+  "pool_exit": 0
+}

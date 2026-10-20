@@ -1,0 +1,16 @@
+{
+  "source_sha256": "dc7115b36a7c59f1dc4ae80fc79706dbdf18be2d678d2db0754b22ef9610caa0",
+  "binary_sha256": "d5cfabe4221ee93044ecaf8d5c12b69fa4e9fa57197fa8c938047571cc33f044",
+  "source_files_verified": 139,
+  "archived_files_verified": 16,
+  "observer_terminal_status": "failed",
+  "RSS_frames_verified": 325,
+  "normal_readiness_span_seconds": 120.35381154100003,
+  "readiness_max_gap_seconds": 5.039314875000002,
+  "large_L1_payload": "retained_in_ignored_work_with_original_snapshot_index_hashes",
+  "exact_normal_owned": "not_accepted",
+  "formal_steady": "not_run",
+  "four_speeds": "not_run",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run"
+}

@@ -361,6 +361,12 @@ fn run_inner(root: &Path, gated: bool, bounded: bool) -> Result<(), String> {
     } else {
         None
     };
+    let mut slots: Option<crate::worker_slots::Owner> = None;
+    let pool_grant = if bounded {
+        crate::normal_pool::WorkerGrant::from_env()?
+    } else {
+        None
+    };
     while let Some(bytes) = frame(&mut reader)? {
         let request: Request = serde_json::from_slice(&bytes).map_err(|e| e.to_string())?;
         let _cache_fence = if bounded {
@@ -379,16 +385,27 @@ fn run_inner(root: &Path, gated: bool, bounded: bool) -> Result<(), String> {
                 return Err("cache_input_bytes".into());
             }
         }
-        let mut slots = if bounded {
-            Some(crate::worker_slots::Owner::new(
-                request.ticket.incarnation,
-                request.ticket.job,
-                request.ticket.generation,
-                request.ticket.attempt,
-            )?)
-        } else {
-            None
-        };
+        if bounded {
+            if let Some(owner) = slots.as_mut() {
+                owner.rebind(
+                    request.ticket.incarnation,
+                    request.ticket.job,
+                    request.ticket.generation,
+                    request.ticket.attempt,
+                )?;
+            } else {
+                let owner = crate::worker_slots::Owner::new(
+                    request.ticket.incarnation,
+                    request.ticket.job,
+                    request.ticket.generation,
+                    request.ticket.attempt,
+                )?;
+                if let Some(grant) = pool_grant.as_ref() {
+                    grant.filled(&owner)?;
+                }
+                slots = Some(owner);
+            }
+        }
         if let (Some(log), Some(owner)) = (diag.as_mut(), slots.as_ref()) {
             log.set_external_diagnostics_owned_bytes(owner.metadata_charge_bytes())?;
         }
@@ -475,27 +492,46 @@ pub struct Worker {
     outstanding: Option<Ticket>,
     root: PathBuf,
     gated: bool,
+    pool_grant: Option<crate::normal_pool::Grant>,
 }
 impl Worker {
     pub fn spawn(executable: &Path, root: &Path) -> Result<Self, String> {
-        Self::spawn_inner(executable, root, false, false)
+        Self::spawn_inner(executable, root, false, false, None)
     }
     pub fn spawn_probe_gated(executable: &Path, root: &Path) -> Result<Self, String> {
-        Self::spawn_inner(executable, root, true, false)
+        Self::spawn_inner(executable, root, true, false, None)
     }
     pub fn spawn_bounded_probe(executable: &Path, root: &Path) -> Result<Self, String> {
-        Self::spawn_inner(executable, root, true, true)
+        Self::spawn_inner(executable, root, true, true, None)
     }
     pub fn spawn_bounded(executable: &Path, root: &Path) -> Result<Self, String> {
-        Self::spawn_inner(executable, root, false, true)
+        Self::spawn_inner(executable, root, false, true, None)
+    }
+    pub fn spawn_bounded_in_pool(
+        executable: &Path,
+        root: &Path,
+        pool: &Path,
+        gated: bool,
+    ) -> Result<Self, String> {
+        Self::spawn_inner(executable, root, gated, true, Some(pool))
     }
     fn spawn_inner(
         executable: &Path,
         root: &Path,
         gated: bool,
         bounded: bool,
+        pool: Option<&Path>,
     ) -> Result<Self, String> {
-        let mut child = Command::new(executable)
+        let mut pool_grant = if bounded {
+            match pool {
+                Some(root) => Some(crate::normal_pool::Grant::prepare(root)?),
+                None => crate::normal_pool::Grant::from_env()?,
+            }
+        } else {
+            None
+        };
+        let mut command = Command::new(executable);
+        command
             .arg(if gated && bounded {
                 "compute-worker-bounded-probe"
             } else if gated {
@@ -508,9 +544,19 @@ impl Worker {
             .arg(root)
             .stdin(Stdio::piped())
             .stdout(Stdio::piped())
-            .stderr(Stdio::null())
-            .spawn()
-            .map_err(|e| e.to_string())?;
+            .stderr(Stdio::null());
+        if let Some(grant) = pool_grant.as_ref() {
+            grant.configure(&mut command)?;
+        }
+        let mut child = command.spawn().map_err(|e| e.to_string())?;
+        if let Some(grant) = pool_grant.as_mut() {
+            if let Err(error) = grant.attach(child.id()) {
+                let _ = child.kill();
+                let status = child.wait().map_err(|e| e.to_string())?;
+                grant.after_wait(child.id(), status)?;
+                return Err(error);
+            }
+        }
         let stdin = child.stdin.take();
         let stdout = child.stdout.take().ok_or("worker_stdout")?;
         let (sender, receiver) = mpsc::sync_channel(4);
@@ -536,6 +582,7 @@ impl Worker {
             outstanding: None,
             root: root.to_owned(),
             gated,
+            pool_grant,
         })
     }
     /// Only the probe transport uses ACKs; ordinary workers never wait for one.
@@ -616,6 +663,9 @@ impl Worker {
                 if let Some(reader) = self.reader.take() {
                     reader.join().map_err(|_| "worker_reader_panic")?;
                 }
+                if let Some(grant) = self.pool_grant.as_mut() {
+                    grant.after_wait(self.child.id(), status)?;
+                }
                 return Ok(status);
             }
             if std::time::Instant::now() >= deadline {
@@ -630,6 +680,9 @@ impl Worker {
             self.child.kill().map_err(|e| e.to_string())?;
         }
         let status = self.child.wait().map_err(|e| e.to_string())?;
+        if let Some(grant) = self.pool_grant.as_mut() {
+            grant.after_wait(self.child.id(), status)?;
+        }
         self.stdin.take();
         self.receiver.take(); // unblock a reader blocked on its bounded sender before join
         if let Some(reader) = self.reader.take() {

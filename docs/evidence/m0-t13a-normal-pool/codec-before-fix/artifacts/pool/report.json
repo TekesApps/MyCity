@@ -1,0 +1,26 @@
+{
+  "source_sha256": "dc7115b36a7c59f1dc4ae80fc79706dbdf18be2d678d2db0754b22ef9610caa0",
+  "ready": {
+    "schema": "mycity-normal-pool-v1",
+    "source": "dc7115b36a7c59f1dc4ae80fc79706dbdf18be2d678d2db0754b22ef9610caa0",
+    "boot": 1792522177283304000,
+    "pid": 25304,
+    "capacity_bytes": 67108864,
+    "diagnostic_reserved_bytes": 262144,
+    "fault_injection": null
+  },
+  "summary": {
+    "capacity_bytes": 67108864,
+    "available_touched_bytes": 67108864,
+    "granted_capacity_bytes": 0,
+    "grants": 0,
+    "returns": 0,
+    "fill_acknowledgements": 0,
+    "scans": 7,
+    "rejected_requests": 2000,
+    "maximum_prepare_to_fill_or_reap_ns": 0
+  },
+  "balanced_after_owned_wait": true,
+  "normal_owned_acceptance": "not_accepted_unconverted_Engine_work_is_extra_pressure",
+  "scope": "64MiB physical balance plus worker grants; observed transitions are not a proof of continuously full pressure; native/stack separate"
+}

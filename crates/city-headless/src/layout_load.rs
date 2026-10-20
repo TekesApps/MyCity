@@ -862,12 +862,12 @@ pub fn probe_charged(
         + events.capacity()
         + snapshots.capacity() * size_of::<SnapshotSummary>();
     let diagnostic_charged = diagnostic_allocated + 256 * 1024;
-    if diagnostic_charged > MIB {
+    if diagnostic_charged > crate::diagnostic_contract::LAYOUT {
         return Err("layout_complete_diagnostics_cap".into());
     }
     let metrics = metrics.report()?;
     let manifest = load.manifest();
-    let report = json!({"schema":"mycity-layout-probe-v2","snapshot_summaries_only":true,"diagnostics":{"allocated_owned_bytes":diagnostic_allocated,"transient_reservation_bytes":256*1024,"charged_bound_bytes":diagnostic_charged,"cap_bytes":MIB,"full_snapshot_file_details":"events.jsonl and retained snapshot indices"},"source_sha256":env!("MYCITY_SOURCE_SHA256"),"requested_wall_seconds":wall_seconds,"work_wall_seconds":started.elapsed().as_secs_f64(),"initialization_seconds":init_seconds,"snapshot_interval_seconds":snapshot_seconds,"scans":scans,"expected_published_scans":wall_seconds.max(1),"all_published_scans_completed":scans==wall_seconds.max(1),"manifest":manifest,"snapshots":snapshots,"maximum_scan_ready_age_seconds":maximum_scan_lateness,"maximum_snapshot_start_lateness_seconds":maximum_snapshot_start_lateness,"compute":metrics,"diagnostic_outcome":outcome,"full_layout_assembled":true,"steady_gate":"not_accepted_requires_three_runs_and_group_system_measurements","eight_hour_gate":"not_run","memory_16gb_gate":"not_run","full_M0":"not_accepted"});
+    let report = json!({"schema":"mycity-layout-probe-v2","snapshot_summaries_only":true,"diagnostics":{"allocated_owned_bytes":diagnostic_allocated,"transient_reservation_bytes":256*1024,"charged_bound_bytes":diagnostic_charged,"cap_bytes":crate::diagnostic_contract::LAYOUT,"full_snapshot_file_details":"events.jsonl and retained snapshot indices"},"source_sha256":env!("MYCITY_SOURCE_SHA256"),"requested_wall_seconds":wall_seconds,"work_wall_seconds":started.elapsed().as_secs_f64(),"initialization_seconds":init_seconds,"snapshot_interval_seconds":snapshot_seconds,"scans":scans,"expected_published_scans":wall_seconds.max(1),"all_published_scans_completed":scans==wall_seconds.max(1),"manifest":manifest,"snapshots":snapshots,"maximum_scan_ready_age_seconds":maximum_scan_lateness,"maximum_snapshot_start_lateness_seconds":maximum_snapshot_start_lateness,"compute":metrics,"diagnostic_outcome":outcome,"full_layout_assembled":true,"steady_gate":"not_accepted_requires_three_runs_and_group_system_measurements","eight_hour_gate":"not_run","memory_16gb_gate":"not_run","full_M0":"not_accepted"});
     let mut file = File::create(dir.join("report.json")).map_err(err)?;
     serde_json::to_writer_pretty(&mut file, &report).map_err(err)?;
     file.sync_all().map_err(err)?;

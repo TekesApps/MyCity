@@ -1,0 +1,13 @@
+{
+  "scope": "actual process synthetic transport only, not real business or performance",
+  "before_source": "dc7115b36a7c59f1dc4ae80fc79706dbdf18be2d678d2db0754b22ef9610caa0",
+  "after_source": "5e6c4c2fa7f4edf34ea52d4ddc616676451d40d130bcaa1d9fb45dc8cf9b7d7b",
+  "before_prefix_rejected_seconds": 0.007639541,
+  "after_prefix_wait_without_reply_seconds": 0.05800274999999999,
+  "fragmented_requests_after": 2000,
+  "unexpected_rejections_after": 0,
+  "real_business": "separately_verified_corrected_source_full_724_grants_see_functional_verification",
+  "four_speeds": "not_run",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run"
+}

@@ -1,0 +1,49 @@
+{
+  "schema": "mycity-t13a-proof-helper-full-audit-v1",
+  "source_sha256": "5e6c4c2fa7f4edf34ea52d4ddc616676451d40d130bcaa1d9fb45dc8cf9b7d7b",
+  "status": "full_30day_actual_Sim_helpers_and_worker_slots_verified",
+  "process_records": {
+    "scale-model-task": 3,
+    "compute-worker-bounded": 724,
+    "sim-host-scale-full": 2,
+    "scale-sim-probe": 1,
+    "normal-pool-host": 1
+  },
+  "controlled_slot_owners": 724,
+  "controlled_metadata_charge_bytes": [
+    1152
+  ],
+  "all_724_input_candidate_hashes_equal_v42": true,
+  "CPU_final_bytes_equal_v42": true,
+  "owner_capacity_bytes": 4194304,
+  "all_owners_full_touched_balance_restored": true,
+  "producer_process_pairs": 726,
+  "producer_directories": 726,
+  "all_report_instances_match_heap_records": true,
+  "all_role_raw_counts_and_maxima_match": true,
+  "raw_samples": 5536188,
+  "raw_bytes": 49825692,
+  "original_receipts_verified": 3011,
+  "entire_engine_equal_cpu_including_metadata": true,
+  "RSS_frames_checked": 1464,
+  "transcript_requests": 6028,
+  "transcript_responses": 8924,
+  "maximum_transcript_row_bytes": 782,
+  "requested_Rust_heap_role_lifetime_peaks_bytes": {
+    "scale-model-task": 29440994,
+    "compute-worker-bounded": 5133520,
+    "sim-host-scale-full": 29442400,
+    "scale-sim-probe": 535319,
+    "normal-pool-host": 67126202
+  },
+  "diagnostic_charges_bytes": {
+    "worker": 848076,
+    "sim": 2446964
+  },
+  "diagnostic_total": "not_closed",
+  "full_joint_owned": "not_accepted",
+  "four_speeds": "not_run",
+  "formal_steady": "not_run",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run"
+}

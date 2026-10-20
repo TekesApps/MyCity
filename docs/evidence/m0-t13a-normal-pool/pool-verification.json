@@ -1,0 +1,22 @@
+{
+  "source_sha256": "5e6c4c2fa7f4edf34ea52d4ddc616676451d40d130bcaa1d9fb45dc8cf9b7d7b",
+  "status": "actual_64MiB_balance_and_724_worker_grants_verified",
+  "pool_process_identity": [
+    33027,
+    1792522993851431000
+  ],
+  "capacity_bytes": 67108864,
+  "worker_grant_bytes": 4194304,
+  "grants_with_actual_slot_identity_and_owned_wait": 724,
+  "periodic_full_page_scans": 357,
+  "maximum_observed_release_event_to_fill_event_ns": 164919791,
+  "pool_reported_prepare_to_fill_maximum_ns": 180822750,
+  "transition_scope": "observed event intervals; no claim of continuously full pressure or exact allocation timestamps",
+  "pool_requested_heap_peak_plus_tail_bytes": 67191738,
+  "unconverted_Engine_work": "extra_pressure_not_deducted",
+  "exact_normal_owned": "not_accepted",
+  "formal_steady": "not_run",
+  "four_speeds": "not_run",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run"
+}

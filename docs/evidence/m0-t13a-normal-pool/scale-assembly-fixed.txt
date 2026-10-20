@@ -1,0 +1,24 @@
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 1.01s
+     Running tests/scale_assembly.rs (target/release/deps/scale_assembly-92b50e2ff9a00926)
+
+running 2 tests
+
+running 1 test
+test nonzero_extra_stock_indices_lots_and_original_receipts_survive_wal_and_cold_checkpoint_reopen ... ok
+
+running 1 test
+
+running 1 test
+
+running 1 test
+
+running 1 test
+
+running 1 test
+
+running 1 test
+test actual_process_exits_keep_scaled_extra_stock_old_or_new_and_retry_once ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.76s
+

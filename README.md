@@ -1,6 +1,6 @@
 # MyCity
 
-仓库发布版本：`v0.5.46`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.47`。已开始Rust模型与headless CLI，当前不做UI。
 
 **软件结构先读[总体架构](docs/SOFTWARE_ARCHITECTURE.md)：当前代码、主体与事件、单writer、多进程目标、数据文件和预算。**
 
@@ -43,3 +43,5 @@
 最新有限阶段：[独立模型证明helper及报告兼容](docs/evidence/m0-t13a-model-tasks/STATUS.md)。最终来源full CPU的723目标和完整Engine与旧版逐项一致；构造image链不冒充Store冷开。诊断总账、64MiB、正式性能、8h和16GB仍未通过。
 
 最新实测：[730实例的真实full30日与驱动费用](docs/evidence/m0-t13a-runtime-ledger/STATUS.md)。724个worker、3011原票和真实Store冷开完整对照通过；业务279.96秒，驱动整堆峰加尾部600,825B。共同诊断／64MiB／L1联合／四档／稳态／8h及真实16GB仍未通过。
+
+本阶段v0.5.47：[64MiB实体余额与724次真实worker借还](docs/evidence/m0-t13a-normal-pool/STATUS.md)。同源303项回归通过，修复accepted socket分片误拒；无L1的原full30日、完整CPU／原票／候选hash和731正常实例核验通过。原联合压力失败及首个功能失败保留；共同内存预算、四档、正式稳态、8h及真实16GB仍未签收。

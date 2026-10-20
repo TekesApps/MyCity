@@ -159,3 +159,6 @@ v0.5.45的T13A-3f[原full实际轨迹与诊断费用依据](evidence/m0-t13a-run
 
 
 v0.5.46的T13A-3g[有界诊断与原联合失败](evidence/m0-t13a-bounded-diagnostics/STATUS.md)：helper v2固定控制槽/字段/三artifact及root资产、共享8MiB候选份额和固定4KiB空气报告hash接入；最终来源全仓293项与clippy/fmt通过，full CPU723目标/完整Engine/参考报告对v42不变。原L1联合在61.051秒因warning持续60.229秒按保护失败，尚未启动业务，245RSS帧/部分工件归档；没有用旧full补本次。共同8MiB实测、64MiB真实grant与触页余额、四档、正式三轮、8h与真实16GB均未签收。先继续常规工作区owner实现，正常准入后补原联合；M0 not_accepted。
+
+
+v0.5.47的T13A-3h：[实体余额与协议修复](evidence/m0-t13a-normal-pool/STATUS.md)。全仓303项、clippy/fmt及实际分片/超时/EOF/身份回归通过；原full无L1分支365.873秒完成，724实际借还/Filled/父wait、3011原票、完整Engine及旧hash独立核验通过，731正常退出记录。原L1联合在81.061秒保护失败、首个功能分支grant125协议失败均保留，未拼成联合通过。普通Engine分配仍为额外压力，64MiB精确常规工作区/共同8MiB、正式稳态、四档、实际8h均未签，真实16GB not_run，M0 not_accepted。下一依赖是Sim死亡时broker持有Child的代次撤销回收及8h安全日志，再进行原长时运行。

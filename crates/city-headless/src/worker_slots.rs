@@ -1,6 +1,6 @@
 //! Two real, pre-touched worker byte slots. This is a local controlled owner,
 //! not a claim that the cross-process 64MiB pool or State/serde is accounted.
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use std::{
     io::{self, Read, Write},
     sync::atomic::{AtomicU64, Ordering},
@@ -9,6 +9,7 @@ use std::{
 pub const SLOT_BYTES: usize = crate::worker_cache::ASSET_BYTES;
 pub const OWNER_BYTES: usize = 2 * SLOT_BYTES;
 const FILL: u8 = 0xa5;
+static NEXT_OWNER: AtomicU64 = AtomicU64::new(0);
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum Kind {
@@ -23,7 +24,8 @@ impl Kind {
         }
     }
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct Identity {
     pub process_pid: u32,
     pub process_instance_unix_ns: u128,
@@ -148,7 +150,7 @@ struct Transition {
 pub struct SlotReport {
     slot: Kind,
     capacity_bytes: usize,
-    available_touched_bytes: usize,
+    pub available_touched_bytes: usize,
     claims: u64,
     returns: u64,
     maximum_payload_bytes: usize,
@@ -157,11 +159,11 @@ pub struct SlotReport {
 pub struct Report<'a> {
     schema: &'static str,
     identity: Identity,
-    owner_capacity_bytes: usize,
-    available_touched_bytes: usize,
+    pub owner_capacity_bytes: usize,
+    pub available_touched_bytes: usize,
     lent_capacity_bytes: usize,
     controlled_metadata_charge_bytes: usize,
-    full_balance_scan_passed: bool,
+    pub full_balance_scan_passed: bool,
     slots: [SlotReport; 2],
     transitions: &'a [Option<Transition>],
     scope: &'static str,
@@ -179,7 +181,6 @@ impl Owner {
         if run_epoch == 0 || job == 0 || generation == 0 || !(1..=3).contains(&attempt) {
             return Err("worker_slot_identity".into());
         }
-        static NEXT_OWNER: AtomicU64 = AtomicU64::new(0);
         let owner_instance = NEXT_OWNER
             .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
             .map_err(|_| "worker_owner_counter")?;
@@ -199,6 +200,45 @@ impl Owner {
             events: [None; 8],
             event_count: 0,
         })
+    }
+    pub fn identity(&self) -> Identity {
+        self.identity
+    }
+    /// Reuse both already-touched byte slots across jobs in the SAME process.
+    /// A new identity/trace is published; no allocation is dropped or duplicated.
+    pub fn rebind(
+        &mut self,
+        run_epoch: u64,
+        job: u64,
+        generation: u32,
+        attempt: u8,
+    ) -> Result<(), String> {
+        if run_epoch == 0 || job == 0 || generation == 0 || !(1..=3).contains(&attempt) {
+            return Err("worker_slot_identity".into());
+        }
+        self.check_balance()?;
+        let owner_instance = NEXT_OWNER
+            .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
+            .map_err(|_| "worker_owner_counter")?;
+        self.identity = Identity {
+            process_pid: std::process::id(),
+            process_instance_unix_ns: crate::heap_meter::process_instance(),
+            run_epoch,
+            owner_instance,
+            job,
+            generation,
+            attempt,
+        };
+        for slot in &mut self.slots {
+            slot.claims = 0;
+            slot.returns = 0;
+            slot.maximum_payload_bytes = 0;
+        }
+        self.next = 1;
+        self.began = Instant::now();
+        self.events = [None; 8];
+        self.event_count = 0;
+        Ok(())
     }
     pub fn metadata_charge_bytes(&self) -> usize {
         std::mem::size_of::<Self>()
@@ -370,5 +410,39 @@ mod tests {
         owner.slots[0].give_back(ticket).unwrap();
         assert!(owner.slots[0].give_back(ticket).is_err());
         owner.check_balance().unwrap();
+    }
+}
+
+#[cfg(test)]
+mod retention_tests {
+    use super::*;
+    #[test]
+    fn rebind_reuses_the_same_two_allocations_and_rejects_busy_slots() {
+        let mut o = Owner::new(1, 1, 1, 1).unwrap();
+        let pointers = [
+            o.slots[0].bytes.data.as_ptr(),
+            o.slots[1].bytes.data.as_ptr(),
+        ];
+        let id = o.identity();
+        o.with_slot(Kind::Input, |b| {
+            b.write_all(b"actual bytes").map_err(|e| e.to_string())?;
+            Ok(())
+        })
+        .unwrap();
+        o.rebind(2, 3, 4, 2).unwrap();
+        assert_ne!(o.identity().owner_instance, id.owner_instance);
+        assert_eq!(o.identity().job, 3);
+        assert_eq!(
+            [
+                o.slots[0].bytes.data.as_ptr(),
+                o.slots[1].bytes.data.as_ptr()
+            ],
+            pointers
+        );
+        assert_eq!(o.slots[0].claims, 0);
+        o.check_balance().unwrap();
+        assert!(o.rebind(0, 3, 4, 2).is_err());
+        o.slots[0].poisoned = true;
+        assert!(o.rebind(2, 4, 4, 2).is_err());
     }
 }

@@ -1,0 +1,67 @@
+{
+  "scope": "synthetic codec only; fake grant id; no real business or worker allocations",
+  "requests": 2000,
+  "unexpected": [
+    {
+      "i": 768,
+      "packet": "{\"source\":\"dc7115b36a7c59f1dc4ae80fc79706dbdf18be2d678d2db0754b22ef9610caa0\",\"boot\":1792522177283304000,\"action\":{\"attach\":{\"id\":0,\"key\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"pid\":769}}}\n",
+      "response": {
+        "error": "normal_pool_request_identity",
+        "id": null,
+        "worker_key": null,
+        "summary": {
+          "capacity_bytes": 67108864,
+          "available_touched_bytes": 67108864,
+          "granted_capacity_bytes": 0,
+          "grants": 0,
+          "returns": 0,
+          "fill_acknowledgements": 0,
+          "scans": 3,
+          "rejected_requests": 769,
+          "maximum_prepare_to_fill_or_reap_ns": 0
+        }
+      }
+    },
+    {
+      "i": 1124,
+      "packet": "{\"source\":\"dc7115b36a7c59f1dc4ae80fc79706dbdf18be2d678d2db0754b22ef9610caa0\",\"boot\":1792522177283304000,\"action\":{\"attach\":{\"id\":0,\"key\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"pid\":1125}}}\n",
+      "response": {
+        "error": "normal_pool_request_identity",
+        "id": null,
+        "worker_key": null,
+        "summary": {
+          "capacity_bytes": 67108864,
+          "available_touched_bytes": 67108864,
+          "granted_capacity_bytes": 0,
+          "grants": 0,
+          "returns": 0,
+          "fill_acknowledgements": 0,
+          "scans": 4,
+          "rejected_requests": 1125,
+          "maximum_prepare_to_fill_or_reap_ns": 0
+        }
+      }
+    },
+    {
+      "i": 1168,
+      "packet": "{\"source\":\"dc7115b36a7c59f1dc4ae80fc79706dbdf18be2d678d2db0754b22ef9610caa0\",\"boot\":1792522177283304000,\"action\":{\"attach\":{\"id\":0,\"key\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"pid\":1169}}}\n",
+      "response": {
+        "error": "normal_pool_request_identity",
+        "id": null,
+        "worker_key": null,
+        "summary": {
+          "capacity_bytes": 67108864,
+          "available_touched_bytes": 67108864,
+          "granted_capacity_bytes": 0,
+          "grants": 0,
+          "returns": 0,
+          "fill_acknowledgements": 0,
+          "scans": 4,
+          "rejected_requests": 1169,
+          "maximum_prepare_to_fill_or_reap_ns": 0
+        }
+      }
+    }
+  ],
+  "pool_exit": 0
+}

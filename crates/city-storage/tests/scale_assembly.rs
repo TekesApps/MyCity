@@ -7,22 +7,34 @@ use std::{
     fs,
     path::{Path, PathBuf},
     process::Command,
+    sync::atomic::{AtomicU64, Ordering},
 };
 const INPUT: &[u8] = include_bytes!("../../../fixtures/m0-t13a-full-opening-candidate.json");
 const RULES: &str = "t13a-scale-assembly-v1";
 struct Temp(PathBuf);
 impl Temp {
     fn new() -> Self {
-        let path = std::env::temp_dir().join(format!(
-            "mycity-scale-{}-{}",
-            std::process::id(),
-            std::time::SystemTime::now()
-                .duration_since(std::time::UNIX_EPOCH)
-                .unwrap()
-                .as_nanos()
-        ));
-        fs::create_dir(&path).unwrap();
-        Self(path)
+        static NEXT: AtomicU64 = AtomicU64::new(0);
+        for _ in 0..1024 {
+            let serial = NEXT
+                .fetch_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
+                .expect("temp serial exhausted");
+            let path = std::env::temp_dir().join(format!(
+                "mycity-scale-{}-{}-{}",
+                std::process::id(),
+                std::time::SystemTime::now()
+                    .duration_since(std::time::UNIX_EPOCH)
+                    .unwrap()
+                    .as_nanos(),
+                serial
+            ));
+            match fs::create_dir(&path) {
+                Ok(()) => return Self(path),
+                Err(e) if e.kind() == std::io::ErrorKind::AlreadyExists => continue,
+                Err(e) => panic!("reserve test directory: {e}"),
+            }
+        }
+        panic!("cannot reserve a unique test directory after 1024 attempts");
     }
 }
 impl Drop for Temp {

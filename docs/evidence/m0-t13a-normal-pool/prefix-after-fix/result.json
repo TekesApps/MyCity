@@ -1,0 +1,25 @@
+{
+  "scope": "synthetic fragmented transport; fake unauthorized grant; no business",
+  "source": "5e6c4c2fa7f4edf34ea52d4ddc616676451d40d130bcaa1d9fb45dc8cf9b7d7b",
+  "binary_sha256": "5e1fa4984e32244ffdf7568ccfaaa3f858875fccdbe6c265183e8eba3c05b928",
+  "packet": "{\"source\":\"5e6c4c2fa7f4edf34ea52d4ddc616676451d40d130bcaa1d9fb45dc8cf9b7d7b\",\"boot\":1792522483927054000,\"action\":{\"attach\":{\"id\":0,\"key\":\"0000000000000000000000000000000000000000000000000000000000000000\",\"pid\":1}}}\n",
+  "reply_before_suffix": false,
+  "prefix_wait_seconds": 0.05800274999999999,
+  "reply": {
+    "error": "normal_pool_stale_or_wrong_grant",
+    "id": null,
+    "worker_key": null,
+    "summary": {
+      "capacity_bytes": 67108864,
+      "available_touched_bytes": 67108864,
+      "granted_capacity_bytes": 0,
+      "grants": 0,
+      "returns": 0,
+      "fill_acknowledgements": 0,
+      "scans": 1,
+      "rejected_requests": 1,
+      "maximum_prepare_to_fill_or_reap_ns": 0
+    }
+  },
+  "pool_exit": 0
+}

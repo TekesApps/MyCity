@@ -1,0 +1,14 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+    Finished `release` profile [optimized] target(s) in 15.58s
+     Running tests/normal_pool.rs (target/release/deps/normal_pool-1394bffa8277edbd)
+
+running 6 tests
+test existing_run_directory_or_live_ready_is_never_adopted_by_a_new_process ... ok
+test old_boot_bad_control_and_parent_pipe_closure_cannot_create_credit ... ok
+test internal_mutation_failures_terminate_service_without_publishing_balanced_credit ... ok
+test real_worker_retains_and_reuses_slots_until_owned_wait_then_returns_actual_pages ... ok
+test killed_workers_only_return_capacity_after_parent_wait_and_spawn_failure_aborts ... ok
+test fragmented_control_waits_for_suffix_but_timeout_eof_and_identity_remain_distinct ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.81s
+

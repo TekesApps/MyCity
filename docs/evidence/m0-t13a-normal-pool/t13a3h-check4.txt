@@ -1,0 +1,30 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+error[E0308]: mismatched types
+    --> crates/city-headless/src/normal_pool.rs:275:20
+     |
+275  |             .ok_or(ActionError::Rejected("normal_pool_stale_or_wrong_grant"))
+     |              ----- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `String`, found `ActionError`
+     |              |
+     |              arguments to this method are incorrect
+     |
+help: the return type of this call is `ActionError` due to the type of the argument passed
+    --> crates/city-headless/src/normal_pool.rs:266:9
+     |
+266  | /         self.active
+267  | |             .filter(|a| {
+268  | |                 a.id == id
+269  | |                     && if worker {
+...    |
+274  | |             })
+275  | |             .ok_or(ActionError::Rejected("normal_pool_stale_or_wrong_grant"))
+     | |____________________---------------------------------------------------------^
+     |                      |
+     |                      this argument influences the return type of `ok_or`
+note: method defined here
+    --> /Users/frankqin/.rustup/toolchains/1.85.1-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/option.rs:1252:12
+     |
+1252 |     pub fn ok_or<E>(self, err: E) -> Result<T, E> {
+     |            ^^^^^
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `mycity-headless` (lib) due to 1 previous error

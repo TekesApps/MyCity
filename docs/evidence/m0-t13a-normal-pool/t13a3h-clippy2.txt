@@ -1,0 +1,13 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+error: casting to the same type is unnecessary (`u32` -> `u32`)
+  --> crates/city-headless/tests/normal_pool.rs:58:29
+   |
+58 |                 cell: 528 + id as u32,
+   |                             ^^^^^^^^^ help: try: `id`
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#unnecessary_cast
+   = note: `-D clippy::unnecessary-cast` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::unnecessary_cast)]`
+
+error: could not compile `mycity-headless` (test "normal_pool") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

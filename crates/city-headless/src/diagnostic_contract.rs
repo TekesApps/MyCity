@@ -3,7 +3,8 @@ use serde::Serialize;
 pub const MIB: usize = 1024 * 1024;
 pub const SIM: usize = 5 * MIB / 2;
 pub const WORKER: usize = MIB;
-pub const LAYOUT: usize = MIB;
+pub const LAYOUT: usize = 3 * MIB / 4;
+pub const POOL: usize = MIB / 4;
 pub const OBSERVER: usize = 2 * MIB;
 pub const SUPERVISOR: usize = MIB / 4;
 pub const DRIVER: usize = MIB;
@@ -17,6 +18,7 @@ pub struct Caps {
     pub supervisor: usize,
     pub driver: usize,
     pub helper: usize,
+    pub pool: usize,
     pub total: usize,
 }
 pub fn caps() -> Caps {
@@ -28,7 +30,8 @@ pub fn caps() -> Caps {
         supervisor: SUPERVISOR,
         driver: DRIVER,
         helper: HELPER,
-        total: SIM + WORKER + LAYOUT + OBSERVER + SUPERVISOR + DRIVER + HELPER,
+        pool: POOL,
+        total: SIM + WORKER + LAYOUT + OBSERVER + SUPERVISOR + DRIVER + HELPER + POOL,
     }
 }
 #[cfg(test)]

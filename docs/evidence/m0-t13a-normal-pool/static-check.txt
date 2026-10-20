@@ -1,0 +1,18 @@
+{
+  "source_sha256": "5e6c4c2fa7f4edf34ea52d4ddc616676451d40d130bcaa1d9fb45dc8cf9b7d7b",
+  "binary_sha256": "5e1fa4984e32244ffdf7568ccfaaa3f858875fccdbe6c265183e8eba3c05b928",
+  "source_files_verified": 139,
+  "archived_files_verified": 16,
+  "observer_terminal_status": "failed",
+  "RSS_frames_verified": 325,
+  "normal_readiness_span_seconds": 120.35381154100003,
+  "readiness_max_gap_seconds": 5.039314875000002,
+  "large_L1_payload": "retained_in_ignored_work_with_original_snapshot_index_hashes",
+  "exact_normal_owned": "not_accepted",
+  "formal_steady": "not_run",
+  "four_speeds": "not_run",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run"
+}
+{"failed_functional_archive_verified": 706, "status": "model_failed_preserved", "grants": 125, "returns": 125, "filled": 124, "rejected": 2}
+{"corrected_functional_archive_files_verified": 3732, "source_sha256": "5e6c4c2fa7f4edf34ea52d4ddc616676451d40d130bcaa1d9fb45dc8cf9b7d7b", "status": "completed_functional_only", "joint": "prior_failure_preserved_not_accepted", "four_speeds": "not_run", "eight_hour": "not_run", "real_16GB": "not_run"}

@@ -26,6 +26,13 @@ fn system(command: &str, args: &[&str]) -> Option<String> {
 
 fn run() -> Result<(), String> {
     let args: Vec<_> = env::args().collect();
+    if args.get(1).is_some_and(|a| a == "normal-pool-host") {
+        if args.len() != 3 {
+            return Err("usage: mycity-headless normal-pool-host NEW_DIR".into());
+        }
+        return mycity_headless::normal_pool::serve(std::path::Path::new(&args[2]));
+    }
+
     if args.get(1).is_some_and(|a| a == "economy-short-probe") {
         if args.len() != 5 {
             return Err("usage: mycity-headless economy-short-probe INPUT NEW_DIR debt|prepay|refund|suspend".into());

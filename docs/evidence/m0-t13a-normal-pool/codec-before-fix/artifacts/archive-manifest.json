@@ -1,0 +1,32 @@
+[
+  {
+    "path": "result.json",
+    "sha256": "15a6bd5899c55d19b85ad2f4a3b5a2e2f58797fd7b4707715cdc58f028ffa96d",
+    "bytes": 2433
+  },
+  {
+    "path": "stdout",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  {
+    "path": "stderr",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0
+  },
+  {
+    "path": "pool/report.json",
+    "sha256": "6016979ccd714d47761b7d71a4d2f30ccc9f628d372242197f14fb303812d99a",
+    "bytes": 935
+  },
+  {
+    "path": "pool/events.jsonl",
+    "sha256": "90f837f4110a3b16b5e5dad6a5f5db9c196eb0910231fb622dbb976075dad523",
+    "bytes": 777327
+  },
+  {
+    "path": "pool/ready.json",
+    "sha256": "7687ef9fc6afcf3c1ec4551bc0ba8312a50597de71b87ca922e4911e2576f004",
+    "bytes": 233
+  }
+]

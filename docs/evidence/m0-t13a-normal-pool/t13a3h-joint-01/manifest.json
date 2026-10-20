@@ -1,0 +1,82 @@
+[
+  {
+    "path": "host-samples.jsonl",
+    "bytes": 200608,
+    "sha256": "c3cf6697f82787fd4c8b54acdbff2b1db4af4542925220a738e437daa8226f7c"
+  },
+  {
+    "path": "model/common-events.jsonl",
+    "bytes": 252,
+    "sha256": "268955aba0309baabac90219571635b951b9925c34e2442bf54bf60b44db02a5"
+  },
+  {
+    "path": "model/layout/compute-durations.bin",
+    "bytes": 131058,
+    "sha256": "fad4bdd16b68d932c3532ab4ff932c46519c7cfc1382f6970cd6f9e4023dee1d"
+  },
+  {
+    "path": "model/layout/events.jsonl",
+    "bytes": 28619,
+    "sha256": "3d4ac4dea9f91b2b3a268c0681042fb0980315c0fa6c3d5942e8ba4f979ea7dc"
+  },
+  {
+    "path": "model/layout/manifest.json",
+    "bytes": 11445,
+    "sha256": "f9288b4656ab68ea12d9ee8b08e648379eff4b369b0976b273bbeb0c4f8eb27d"
+  },
+  {
+    "path": "model/layout/snapshots/layout.lock",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/layout/snapshots/snapshot-000001/index.json",
+    "bytes": 16826,
+    "sha256": "b6196eba83ae638b95502bb3a4d9745f897e383ee6d1ba28f365f4f2abed3059"
+  },
+  {
+    "path": "model/layout.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/layout.stdout",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/manifest.json",
+    "bytes": 349,
+    "sha256": "17472d436633e005a69ac308b4de8b1f29f3a9da31048f10a576f5c7b658df44"
+  },
+  {
+    "path": "model/normal-pool/events.jsonl",
+    "bytes": 31565,
+    "sha256": "b22eb8f1bc81d30516c435e6452f45d4434f8dc599103ba6161c612f011e6289"
+  },
+  {
+    "path": "model/normal-pool/ready.json",
+    "bytes": 233,
+    "sha256": "6e7a2e4052d403969d469f16052281e740264fd091a8caf4031db728bfa94b8c"
+  },
+  {
+    "path": "model/normal-pool.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model.stdout",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "observer-report.json",
+    "bytes": 4587,
+    "sha256": "b78977fcecd400f6f68b8638c19cb3231a707ac8ed476347dd2bb2f55d6f46fa"
+  }
+]

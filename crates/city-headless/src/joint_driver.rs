@@ -34,6 +34,7 @@ fn start(root: &Path, name: &str, args: &[&std::ffi::OsStr]) -> Result<Job, Stri
     Ok(Job(Command::new(std::env::current_exe().map_err(err)?)
         .args(args)
         .env("MYCITY_HEAP_LOG", root.join("heaps.jsonl"))
+        .env("MYCITY_NORMAL_POOL", root.join("normal-pool"))
         .stdout(Stdio::from(
             File::create_new(root.join(format!("{name}.stdout"))).map_err(err)?,
         ))
@@ -168,14 +169,14 @@ struct Witness {
 #[derive(Serialize)]
 struct Manifest {
     external_owned_charge_bytes: usize,
-    component_caps_bytes: [usize; 6],
+    component_caps_bytes: [usize; 7],
     scope: &'static str,
 }
 #[derive(Serialize)]
 struct Report {
     schema: &'static str,
     source_sha256: &'static str,
-    diagnostic_component_caps_bytes: [usize; 7],
+    diagnostic_component_caps_bytes: [usize; 8],
     l1_charged_bound_bytes: usize,
     supervisor_requested_heap_peak_bytes: usize,
     whole_ns: u64,
@@ -190,7 +191,7 @@ pub fn run(dir: &Path) -> Result<(), String> {
     fs::create_dir(dir).map_err(err)?;
     let dir = dir.canonicalize().map_err(err)?;
     let mib = 1024 * 1024;
-    save(&dir.join("manifest.json"),&Manifest{external_owned_charge_bytes:6*mib,component_caps_bytes:[crate::diagnostic_contract::SIM,mib,mib,mib/4,mib,mib/4],scope:"Sim2.5 + worker1 + L1 diagnostics1 + supervisor0.25 + driver1 + helper0.25 MiB; observer separate2; external normal-owned unproven"})?;
+    save(&dir.join("manifest.json"),&Manifest{external_owned_charge_bytes:6*mib,component_caps_bytes:[crate::diagnostic_contract::SIM,mib,crate::diagnostic_contract::LAYOUT,mib/4,mib,mib/4,crate::diagnostic_contract::POOL],scope:"Sim2.5 + worker1 + L1 diagnostics0.75 + supervisor0.25 + driver1 + helper0.25 + pool0.25 MiB; observer separate2; 64MiB entity pool plus extra unconverted Engine pressure"})?;
     let mut clock = Clock {
         begin: Instant::now(),
         events: BufWriter::with_capacity(
@@ -199,6 +200,12 @@ pub fn run(dir: &Path) -> Result<(), String> {
         ),
     };
     clock.event("supervisor_started", Some(std::process::id()), None)?;
+    let mut normal_pool = crate::normal_pool::Process::spawn(
+        &std::env::current_exe().map_err(err)?,
+        &dir.join("normal-pool"),
+        Some(&dir.join("heaps.jsonl")),
+    )?;
+    clock.event("normal_pool_ready_observed", None, None)?;
     let layout_dir = dir.join("layout");
     let mut layout = start(
         &dir,
@@ -321,7 +328,7 @@ pub fn run(dir: &Path) -> Result<(), String> {
         || !l.snapshots.iter().enumerate().all(|(i, s)| {
             s.generation == i as u64 + 1 && s.record_restore_passed && s.pressure_readback_passed
         })
-        || l.diagnostics.charged_bound_bytes > mib
+        || l.diagnostics.charged_bound_bytes > crate::diagnostic_contract::LAYOUT
     {
         return Err("joint_layout_result".into());
     }
@@ -347,13 +354,24 @@ pub fn run(dir: &Path) -> Result<(), String> {
     if read::<Restore>(&restored.join("report.json"))?.cold_reopen_and_scan != "passed" {
         return Err("joint_restore_result".into());
     }
+    let pool_summary = crate::normal_pool::status(normal_pool.root())?;
+    if pool_summary.available_touched_bytes != crate::normal_pool::BYTES
+        || pool_summary.granted_capacity_bytes != 0
+        || pool_summary.grants != pool_summary.returns
+        || pool_summary.grants != 724
+        || pool_summary.fill_acknowledgements != 724
+    {
+        return Err("joint_normal_pool_balance".into());
+    }
+    normal_pool.finish()?;
+    clock.event("normal_pool_exited", None, None)?;
     let supervisor_peak = crate::heap_meter::snapshot().lifetime_peak_requested_bytes;
     if supervisor_peak + crate::heap_meter::TAIL_RESERVED_BYTES
         > crate::diagnostic_contract::SUPERVISOR
     {
         return Err("joint_supervisor_diagnostic_heap_cap".into());
     }
-    save(&dir.join("report.json"),&Report{schema:"mycity-joint-budget-diagnostic-v1",source_sha256:env!("MYCITY_SOURCE_SHA256"),diagnostic_component_caps_bytes:[crate::diagnostic_contract::SIM,mib,mib,2*mib,mib/4,mib,mib/4],l1_charged_bound_bytes:l.diagnostics.charged_bound_bytes,supervisor_requested_heap_peak_bytes:supervisor_peak,whole_ns:clock.now(),overlap_witness_in_observed_tree:true,scope:"fixed 600s concurrent diagnostic; raw business unchanged; unused external reservation pressure still missing",joint_owned_budget:"not_accepted",steady_gate:"not_run",eight_hour_gate:"not_run",memory_16gb_gate:"not_run"})?;
+    save(&dir.join("report.json"),&Report{schema:"mycity-joint-budget-diagnostic-v1",source_sha256:env!("MYCITY_SOURCE_SHA256"),diagnostic_component_caps_bytes:[crate::diagnostic_contract::SIM,mib,crate::diagnostic_contract::LAYOUT,2*mib,mib/4,mib,mib/4,crate::diagnostic_contract::POOL],l1_charged_bound_bytes:l.diagnostics.charged_bound_bytes,supervisor_requested_heap_peak_bytes:supervisor_peak,whole_ns:clock.now(),overlap_witness_in_observed_tree:true,scope:"fixed 600s concurrent diagnostic; raw business unchanged; 64MiB entity balance with real worker grants; unconverted Engine work remains extra pressure; exact total normal owned unproven",joint_owned_budget:"not_accepted",steady_gate:"not_run",eight_hour_gate:"not_run",memory_16gb_gate:"not_run"})?;
     clock.events.flush().map_err(err)?;
     clock.events.get_ref().sync_all().map_err(err)
 }

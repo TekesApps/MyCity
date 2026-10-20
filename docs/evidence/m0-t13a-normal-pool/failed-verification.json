@@ -1,0 +1,19 @@
+{
+  "status": "failed_original_joint_attempt_preserved",
+  "source_sha256": "dc7115b36a7c59f1dc4ae80fc79706dbdf18be2d678d2db0754b22ef9610caa0",
+  "reason": "system non-normal pressure exceeded 60 seconds",
+  "actual_wall_seconds": 81.06091670800001,
+  "non_normal_pressure_seconds": 60.00917425,
+  "RSS_frames_checked": 325,
+  "swap_net_growth_bytes": 0,
+  "pool_actual_64MiB_balance_scans": 79,
+  "actual_worker_grants": 0,
+  "business_launched": false,
+  "normal_heap_footers": "absent_protective_termination_not_zero",
+  "shared_diagnostic_gate": "not_accepted",
+  "exact_normal_owned": "not_accepted",
+  "formal_steady": "not_run",
+  "four_speeds": "not_run",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run"
+}
