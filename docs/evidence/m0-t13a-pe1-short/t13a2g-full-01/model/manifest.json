@@ -1,0 +1,4 @@
+{
+  "external_owned_charge_bytes": 6291456,
+  "scope": "conservative Rust diagnostics reservation; Python temporary owned memory incomplete; no joint budget acceptance"
+}

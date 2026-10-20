@@ -1,0 +1,67 @@
+[
+  {
+    "path": "debt-000/cli.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "debt-000/cli.stdout",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "debt-000/world/CURRENT.json",
+    "bytes": 123,
+    "sha256": "90667d87871832f0d0867c1778f07d45008571a71c3b48f25059c7dc70223b2c"
+  },
+  {
+    "path": "debt-000/world/LOCK",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "debt-000/world/genesis.json",
+    "bytes": 17879,
+    "sha256": "b0d577cced408304e2a648bcb994f83ce207a412bc376f913f208d605adeee14"
+  },
+  {
+    "path": "debt-000/world/root-0.json",
+    "bytes": 421,
+    "sha256": "12f7da0b640beb6d1b46ba7d41e4be1c12ab6ea567975d23be87969725d76da1"
+  },
+  {
+    "path": "debt-000/world/wal.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "manifest.json",
+    "bytes": 171,
+    "sha256": "3a475e48c4cc1ad2298de263d1c80e0e35a3e181cea6928c542d148a453426e9"
+  },
+  {
+    "path": "observer/host-samples.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "observer/model.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "observer/model.stdout",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "observer/observer-report.json",
+    "bytes": 2501,
+    "sha256": "742ac3208bf92d8f67085337f6ce5921ebe2277c1fbd92634d32acbf4cf70fd7"
+  },
+  {
+    "path": "run-plan.json",
+    "bytes": 243,
+    "sha256": "01fdd5be5e691accd56f7a2d20b0d394c6bcb89d6aa5acb95bae2abbe09cf2e8"
+  }
+]

@@ -1,0 +1,117 @@
+[
+  {
+    "path": "model/archives/debt-000.zip",
+    "bytes": 12180,
+    "sha256": "17bf8b593b42c971cc2556e9aa0ce6691de0d0ee240c7130a633aa983c2d9894"
+  },
+  {
+    "path": "model/archives/prepay-000.zip",
+    "bytes": 18902,
+    "sha256": "1476632f54b278d5e3c3082bdcc40b1360feb2da95b2980d7457eb5b88272526"
+  },
+  {
+    "path": "model/archives/refund-000.zip",
+    "bytes": 19262,
+    "sha256": "23ff159ab2eef51e80d80937595b01dbd74b7ffc7b2bde5e71ca0122525d11c8"
+  },
+  {
+    "path": "model/archives/suspend-000.zip",
+    "bytes": 24910,
+    "sha256": "00e69d742184034b9f9cbc4c43f77e1ec2c313e04ef75771aa8330ae5dc8031d"
+  },
+  {
+    "path": "model/debt-000-cold.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/debt-000-cold.stdout",
+    "bytes": 26369,
+    "sha256": "72076a0c7e66d09e76913734c494d30d7f1d289d51d0b209e950b78f7624f8d1"
+  },
+  {
+    "path": "model/debt-000-receipt.json",
+    "bytes": 371,
+    "sha256": "ad6a380a8f0f0d6501fae4759614017d33052c1f57d9a879cf2dce3ed9abc0be"
+  },
+  {
+    "path": "model/manifest.json",
+    "bytes": 171,
+    "sha256": "3a475e48c4cc1ad2298de263d1c80e0e35a3e181cea6928c542d148a453426e9"
+  },
+  {
+    "path": "model/prepay-000-cold.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/prepay-000-cold.stdout",
+    "bytes": 26610,
+    "sha256": "1069bfd2500b8c25599dcaa61cf1f2095e50d73a26a73314e43b66c163ecd5d0"
+  },
+  {
+    "path": "model/prepay-000-receipt.json",
+    "bytes": 379,
+    "sha256": "52c2ec56e8d5e020303d056b8cd10a2d8c82a4315714dfa304e4d1770daa91fb"
+  },
+  {
+    "path": "model/refund-000-cold.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/refund-000-cold.stdout",
+    "bytes": 26817,
+    "sha256": "3990e44fdceb4785845b070c15254d7a949e639599723342a2ab349b62416374"
+  },
+  {
+    "path": "model/refund-000-receipt.json",
+    "bytes": 379,
+    "sha256": "39810fd2f263d1c48191c4318116b60e6e53a3099d15655f0aa3ba6ace57dbea"
+  },
+  {
+    "path": "model/report.json",
+    "bytes": 2086,
+    "sha256": "d42645f4036c4146541732894b03764ac509c3900186360c42eae63b88c23a74"
+  },
+  {
+    "path": "model/run-plan.json",
+    "bytes": 243,
+    "sha256": "01fdd5be5e691accd56f7a2d20b0d394c6bcb89d6aa5acb95bae2abbe09cf2e8"
+  },
+  {
+    "path": "model/suspend-000-cold.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/suspend-000-cold.stdout",
+    "bytes": 26321,
+    "sha256": "1d2dd5c6584bbd4d94f13bf9539d707468265834e2b987b54ee023d06873f190"
+  },
+  {
+    "path": "model/suspend-000-receipt.json",
+    "bytes": 381,
+    "sha256": "229c7e1099ebb2524547831c40671db2d637fd5a792e9b7837a59a4797901103"
+  },
+  {
+    "path": "observer/host-samples.jsonl",
+    "bytes": 10219,
+    "sha256": "3c9a56447134d82dc6d93ab811d3032c297bbce36db049acccddf5c2f7f5dc3f"
+  },
+  {
+    "path": "observer/model.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "observer/model.stdout",
+    "bytes": 41,
+    "sha256": "1bf5cd7256a60e4deba42bd0430b948bc4455beacbc9683aaac345906ac72899"
+  },
+  {
+    "path": "observer/observer-report.json",
+    "bytes": 4274,
+    "sha256": "d990dce46504d358bda6573bd7391e3a1b89bef575c25fa39c5cd7b94428b05b"
+  }
+]

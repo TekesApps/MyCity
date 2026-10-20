@@ -1,0 +1,8 @@
+{
+  "source": "v0.5.37 original full CLI",
+  "archive": "docs/evidence/m0-t13a-cpu-regions/t13a2e-l0-01/artifacts.zip",
+  "archive_sha256": "e5eae519c71a5f46cfd09890200ed52e30c1b25f018f284ef7557ae52aad1946",
+  "member": "model.stdout",
+  "selection": "economy_probe.pe1.{debt_exit,prepaid_cancel,refund_shortfall,suspended_shift}.world; all fields unchanged",
+  "reference_sha256": "c0d53d07fd2cdd97bbbc640bcbdd3a254a7fb7d6199c21024ed5be31d5f3f314"
+}

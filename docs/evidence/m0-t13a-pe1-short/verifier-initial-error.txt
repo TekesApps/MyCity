@@ -1,0 +1,1 @@
+Initial pilot-only offline verifier failed: expected last_result="already_canceled", actual serialized Rust enum is "AlreadyCanceled". Corrected verifier literal; no Rust/business/input changes. Re-run pilot and full passed.

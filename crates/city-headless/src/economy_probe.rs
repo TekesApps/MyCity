@@ -163,7 +163,7 @@ fn require(test: bool, why: &str) -> Result<(), String> {
         Err(why.into())
     }
 }
-pub fn run(input: &[u8], root: &Path, rules: &str) -> Result<Value, String> {
+fn canonical(input: &[u8]) -> Result<Value, String> {
     let base_world = assemble(input)?;
     let base = base_world.view();
     let profile = base.economy.ok_or("economy_required")?;
@@ -187,7 +187,10 @@ pub fn run(input: &[u8], root: &Path, rules: &str) -> Result<Value, String> {
             && profile.claims.iter().all(Option::is_none),
         "canonical_pe0_start_required",
     )?;
-    let base: Value = serde_json::from_slice(input).map_err(err)?;
+    serde_json::from_slice(input).map_err(err)
+}
+pub fn run(input: &[u8], root: &Path, rules: &str) -> Result<Value, String> {
+    let base = canonical(input)?;
     std::fs::create_dir(root).map_err(err)?;
     let mut pe0 = Case::create(&root.join("pe0"), &base, rules, true)?;
     let last = pe0.run_to(1800)?;
@@ -278,82 +281,147 @@ pub fn run(input: &[u8], root: &Path, rules: &str) -> Result<Value, String> {
         supply.state()?.produced.value() == 20000,
         "pe1_exhaustion_no_free_production",
     )?;
-    let mut debt = base.clone();
-    debt["bootstrap"]["branch"] = json!(4);
-    debt["economy"]["debt"] = json!({"source":42,"payer":3,"payee":1,"amount":700000,"due":0});
-    let mut debt = Case::create(&root.join("pe1-debt"), &debt, rules, false)?;
-    debt.execute(Command::SettleDebt { claim: 1 })?;
-    debt.execute(Command::BeginExit)?;
-    let reject = debt.envelope(Command::Close)?;
-    require(
-        debt.store
-            .execute(Caller::System, reject)
-            .map_err(err)?
-            .model
-            .is_err(),
-        "exit_must_refuse_untransferred_debt",
-    )?;
-    debt.execute(Command::HandoffDebt { claim: 1 })?;
-    let last = debt.execute(Command::Close)?;
-    debt = recover(debt, "debt_registry_after_activity_exit", last)?;
-    require(
-        !debt.state()?.active
-            && debt.state()?.claims[0].is_some_and(|c| {
-                c.registry && c.outstanding().value() == 100000 && c.payer == 3 && c.payee == 1
-            }),
-        "pe1_debt_not_forgiven",
-    )?;
-    let mut prepay_input = base.clone();
-    prepay_input["bootstrap"]["branch"] = json!(5);
-    let mut prepay = Case::create(&root.join("pe1-prepay"), &prepay_input, rules, false)?;
-    prepay.execute(Command::Prepay {
-        quantity: Quantity::new(20000).map_err(err)?,
-    })?;
-    prepay.run_to(DAY)?;
-    let last = prepay.execute(Command::CancelFuture)?;
-    prepay = recover(prepay, "partial_order_canceled", last)?;
-    prepay.execute(Command::CancelFuture)?;
-    require(
-        prepay.state()?.claims[1]
-            .is_some_and(|c| c.principal.value() == 4000 && c.paid.value() == 4000)
-            && prepay.state()?.direct_wages.value() == 8000
-            && prepay.state()?.produced.value() == 10000,
-        "pe1_cancel_does_not_undo_delivery",
-    )?;
-    let mut refund = base.clone();
-    refund["bootstrap"]["branch"] = json!(6);
-    refund["economy"]["debt"] = json!({"source":43,"payer":4,"payee":1,"amount":1207000,"due":0});
-    let mut refund = Case::create(&root.join("pe1-refund"), &refund, rules, false)?;
-    refund.execute(Command::Prepay {
-        quantity: Quantity::new(20000).map_err(err)?,
-    })?;
-    refund.run_to(DAY)?;
-    refund.execute(Command::SettleDebt { claim: 1 })?;
-    let last = refund.execute(Command::CancelFuture)?;
-    refund = recover(refund, "supplier_partial_refund_debt", last)?;
-    refund.execute(Command::CancelFuture)?;
-    require(
-        refund.state()?.claims[1].is_some_and(|c| {
-            c.principal.value() == 4000 && c.paid.value() == 1000 && c.outstanding().value() == 3000
-        }),
-        "pe1_refund_requires_cash",
-    )?;
-    let mut suspend = base.clone();
-    suspend["bootstrap"]["branch"] = json!(7);
-    let mut suspend = Case::create(&root.join("pe1-suspend"), &suspend, rules, false)?;
-    suspend.run_to(DAY + HOUR)?;
-    suspend.execute(Command::SuspendShift)?;
-    let last = suspend.run_to(2 * DAY)?;
-    suspend = recover(suspend, "nonproductive_wage_and_tax_reduction", last)?;
-    require(
-        suspend.state()?.expenses.value() == 8000
-            && suspend.state()?.tax_accrued == Money::ZERO
-            && suspend.state()?.records[1].tax_delta_cents == -800,
-        "cumulative_profit_tax_must_fall",
-    )?;
+    let mut debt = short_case(&base, &root.join("pe1-debt"), rules, "debt")?;
+    let mut prepay = short_case(&base, &root.join("pe1-prepay"), rules, "prepay")?;
+    let mut refund = short_case(&base, &root.join("pe1-refund"), rules, "refund")?;
+    let mut suspend = short_case(&base, &root.join("pe1-suspend"), rules, "suspend")?;
     Ok(
         json!({"schema":"mycity-m0-economy-evidence-v1","result":"P-E0_P-E1_executed_and_verified","pe0":pe0.report()?,
         "pe1":{"low_cash_day3":row3,"low_cash_day30":low.report()?,"supply_day3":day3_supply,"supply_day30":supply.report()?,"debt_exit":debt.report()?,"prepaid_cancel":prepay.report()?,"refund_shortfall":refund.report()?,"suspended_shift":suspend.report()?},
         "days":30,"profile":"pe0-30d-v1","economic_balance":"not_tested_not_sustainable_pe0","P_BOOT":"not_run","memory_16gb_gate":"not_run","ui":"not_implemented","gpu":"not_used"}),
     )
+}
+
+// Shared with the complete P-E0/P-E1 probe: preserve commands, assertions and branch IDs.
+fn short_case(base: &Value, dir: &Path, rules: &str, kind: &str) -> Result<Case, String> {
+    match kind {
+        "debt" => {
+            let mut debt = base.clone();
+            debt["bootstrap"]["branch"] = json!(4);
+            debt["economy"]["debt"] =
+                json!({"source":42,"payer":3,"payee":1,"amount":700000,"due":0});
+            let mut debt = Case::create(dir, &debt, rules, false)?;
+            debt.execute(Command::SettleDebt { claim: 1 })?;
+            debt.execute(Command::BeginExit)?;
+            let reject = debt.envelope(Command::Close)?;
+            require(
+                debt.store
+                    .execute(Caller::System, reject)
+                    .map_err(err)?
+                    .model
+                    .is_err(),
+                "exit_must_refuse_untransferred_debt",
+            )?;
+            debt.execute(Command::HandoffDebt { claim: 1 })?;
+            let last = debt.execute(Command::Close)?;
+            debt = recover(debt, "debt_registry_after_activity_exit", last)?;
+            require(
+                !debt.state()?.active
+                    && debt.state()?.claims[0].is_some_and(|c| {
+                        c.registry
+                            && c.outstanding().value() == 100000
+                            && c.payer == 3
+                            && c.payee == 1
+                    }),
+                "pe1_debt_not_forgiven",
+            )?;
+            Ok(debt)
+        }
+        "prepay" => {
+            let mut prepay_input = base.clone();
+            prepay_input["bootstrap"]["branch"] = json!(5);
+            let mut prepay = Case::create(dir, &prepay_input, rules, false)?;
+            prepay.execute(Command::Prepay {
+                quantity: Quantity::new(20000).map_err(err)?,
+            })?;
+            prepay.run_to(DAY)?;
+            let last = prepay.execute(Command::CancelFuture)?;
+            prepay = recover(prepay, "partial_order_canceled", last)?;
+            prepay.execute(Command::CancelFuture)?;
+            require(
+                prepay.state()?.claims[1]
+                    .is_some_and(|c| c.principal.value() == 4000 && c.paid.value() == 4000)
+                    && prepay.state()?.direct_wages.value() == 8000
+                    && prepay.state()?.produced.value() == 10000,
+                "pe1_cancel_does_not_undo_delivery",
+            )?;
+            Ok(prepay)
+        }
+        "refund" => {
+            let mut refund = base.clone();
+            refund["bootstrap"]["branch"] = json!(6);
+            refund["economy"]["debt"] =
+                json!({"source":43,"payer":4,"payee":1,"amount":1207000,"due":0});
+            let mut refund = Case::create(dir, &refund, rules, false)?;
+            refund.execute(Command::Prepay {
+                quantity: Quantity::new(20000).map_err(err)?,
+            })?;
+            refund.run_to(DAY)?;
+            refund.execute(Command::SettleDebt { claim: 1 })?;
+            let last = refund.execute(Command::CancelFuture)?;
+            refund = recover(refund, "supplier_partial_refund_debt", last)?;
+            refund.execute(Command::CancelFuture)?;
+            require(
+                refund.state()?.claims[1].is_some_and(|c| {
+                    c.principal.value() == 4000
+                        && c.paid.value() == 1000
+                        && c.outstanding().value() == 3000
+                }),
+                "pe1_refund_requires_cash",
+            )?;
+            Ok(refund)
+        }
+        "suspend" => {
+            let mut suspend = base.clone();
+            suspend["bootstrap"]["branch"] = json!(7);
+            let mut suspend = Case::create(dir, &suspend, rules, false)?;
+            suspend.run_to(DAY + HOUR)?;
+            suspend.execute(Command::SuspendShift)?;
+            let last = suspend.run_to(2 * DAY)?;
+            suspend = recover(suspend, "nonproductive_wage_and_tax_reduction", last)?;
+            require(
+                suspend.state()?.expenses.value() == 8000
+                    && suspend.state()?.tax_accrued == Money::ZERO
+                    && suspend.state()?.records[1].tax_delta_cents == -800,
+                "cumulative_profit_tax_must_fall",
+            )?;
+            Ok(suspend)
+        }
+        _ => Err("unknown_economy_short_case".into()),
+    }
+}
+
+pub fn run_short(input: &[u8], dir: &Path, kind: &str) -> Result<Value, String> {
+    let base = canonical(input)?;
+    let rules = format!("m0-pe1-short-v1:{}", env!("MYCITY_SOURCE_SHA256"));
+    let mut case = short_case(&base, dir, &rules, kind)?;
+    let report = case.report()?;
+    let (successful, active, excluded) = match kind {
+        "debt" => (4, 4, "rejected Close and recovery retry excluded"),
+        "prepay" => (
+            27,
+            26,
+            "last successful AlreadyCanceled and recovery retry excluded",
+        ),
+        "refund" => (
+            28,
+            27,
+            "last successful AlreadyCanceled and recovery retry excluded",
+        ),
+        "suspend" => (49, 49, "recovery retry excluded"),
+        _ => unreachable!(),
+    };
+    Ok(json!({"schema":"mycity-pe1-short-v1", "case":kind,
+        "source_sha256":env!("MYCITY_SOURCE_SHA256"), "rules":rules,
+        "successful_transactions":successful,"active_transactions":active,
+        "sample_exclusion":excluded,"report":report,
+        "formal_steady_gate":"not_run","memory_16gb_gate":"not_run"}))
+}
+pub fn restore_short(dir: &Path) -> Result<Value, String> {
+    let rules = format!("m0-pe1-short-v1:{}", env!("MYCITY_SOURCE_SHA256"));
+    let store = Store::open(dir, &rules).map_err(err)?;
+    Ok(json!({"source_sha256":env!("MYCITY_SOURCE_SHA256"),
+        "world":store.engine().map_err(err)?.world().view(),
+        "state_sha256":store.state_hash().map_err(err)?,
+        "committed_sequence":store.committed_sequence()}))
 }

@@ -26,6 +26,33 @@ fn system(command: &str, args: &[&str]) -> Option<String> {
 
 fn run() -> Result<(), String> {
     let args: Vec<_> = env::args().collect();
+    if args.get(1).is_some_and(|a| a == "economy-short-probe") {
+        if args.len() != 5 {
+            return Err("usage: mycity-headless economy-short-probe INPUT NEW_DIR debt|prepay|refund|suspend".into());
+        }
+        let bytes = read_bounded(
+            File::open(&args[2]).map_err(|e| e.to_string())?,
+            INPUT_LIMIT,
+        )
+        .map_err(|e| e.to_string())?;
+        let report = economy_probe::run_short(&bytes, std::path::Path::new(&args[3]), &args[4])?;
+        println!(
+            "{}",
+            serde_json::to_string_pretty(&report).map_err(|e| e.to_string())?
+        );
+        return Ok(());
+    }
+    if args.get(1).is_some_and(|a| a == "economy-short-restore") {
+        if args.len() != 3 {
+            return Err("usage: mycity-headless economy-short-restore WORLD".into());
+        }
+        let report = economy_probe::restore_short(std::path::Path::new(&args[2]))?;
+        println!(
+            "{}",
+            serde_json::to_string_pretty(&report).map_err(|e| e.to_string())?
+        );
+        return Ok(());
+    }
     if args.get(1).is_some_and(|a| a == "scale-rare-anchors") {
         if args.len() != 3 {
             return Err("usage: mycity-headless scale-rare-anchors NEW_DIR".into());

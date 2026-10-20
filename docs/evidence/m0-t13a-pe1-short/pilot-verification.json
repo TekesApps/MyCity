@@ -1,0 +1,52 @@
+{
+  "status": "original_WAL_raw_intervals_complete_World_and_cold_proofs_verified",
+  "counts": {
+    "debt": 1,
+    "prepay": 1,
+    "refund": 1,
+    "suspend": 1
+  },
+  "successful_transactions": 108,
+  "failed_Close_receipts": 1,
+  "excluded_AlreadyCanceled": {
+    "prepay": 1,
+    "refund": 1
+  },
+  "active_case_compute": {
+    "debt": {
+      "samples": 4,
+      "p95_ns": 47750,
+      "p99_ns": 47750,
+      "max_ns": 47750,
+      "sample_minimum_met": false,
+      "latency_20_40ms_met": true
+    },
+    "prepay": {
+      "samples": 26,
+      "p95_ns": 18875,
+      "p99_ns": 24166,
+      "max_ns": 24166,
+      "sample_minimum_met": false,
+      "latency_20_40ms_met": true
+    },
+    "refund": {
+      "samples": 27,
+      "p95_ns": 20208,
+      "p99_ns": 21417,
+      "max_ns": 21417,
+      "sample_minimum_met": false,
+      "latency_20_40ms_met": true
+    },
+    "suspend": {
+      "samples": 49,
+      "p95_ns": 25124,
+      "p99_ns": 42125,
+      "max_ns": 42125,
+      "sample_minimum_met": false,
+      "latency_20_40ms_met": true
+    }
+  },
+  "raw_bytes": 972,
+  "classified_log_bytes": 581143,
+  "scope": "finite independent repetitions, not steady/joint/8h/16GB"
+}
