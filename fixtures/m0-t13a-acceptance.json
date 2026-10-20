@@ -1,0 +1,246 @@
+{
+  "schema": "mycity-m0-t13a-acceptance-v1",
+  "scope": "rust_model_cli_only",
+  "source_baseline_tag": "v0.5.29",
+  "evidence_classes": [
+    "L0_real_correctness_and_speed",
+    "L1_layout_storage_pressure_not_functional",
+    "L2_real_current_engine_limit"
+  ],
+  "l1": {
+    "source": "docs/inputs/product-blueprint/reference-values.json:jprod_1",
+    "counts": {
+      "maps": 8,
+      "households": 22800,
+      "housing": 24000,
+      "population": 57000,
+      "visitors": 1000,
+      "operators": 2500,
+      "entities": 1980,
+      "labor": 31200,
+      "accounts": 40000,
+      "inventory": 110000,
+      "obligations": 180000,
+      "equity_links": 12000,
+      "meter": 160000,
+      "general_contracts": 3000,
+      "od": 14800,
+      "path_refs": 900000,
+      "cargo_batches": 8500,
+      "passenger_batches": 40000,
+      "bus_train_vehicles": 2000,
+      "ship_aircraft_vehicles": 500,
+      "car_vehicles": 30000,
+      "matters": 120,
+      "team_members": 32,
+      "analysis_tasks": 32,
+      "models": 1,
+      "preview": 1
+    },
+    "additional_counts": {
+      "hosts": 7000,
+      "teaching_batches": 600,
+      "current_services": 1500,
+      "cases": 36,
+      "bills": 16
+    },
+    "app_gib": {
+      "simulation": 0.6,
+      "geometry": 0.3,
+      "assets": 0.85,
+      "render": 0.25,
+      "ui_tools": 0.4,
+      "solver_preview": 0.25,
+      "runtime_snapshot": 0.45
+    },
+    "mutating_scan_seconds": 1,
+    "snapshot_wall_seconds": 300,
+    "immutable_payload_fields_required": [
+      "record_id",
+      "schema_version",
+      "source_kind",
+      "owner_or_group",
+      "generation"
+    ],
+    "native_layout_types": [
+      "Account",
+      "Stock",
+      "Claim",
+      "Payroll",
+      "Resource",
+      "Lease"
+    ],
+    "unsupported_domains": "versioned typed layout stubs and budget pressure; no business results",
+    "dirty_bytes_each_scan": 1048576
+  },
+  "l2_tiers": [
+    {
+      "name": "small",
+      "accounts": 16,
+      "stocks": 32,
+      "payroll": 8,
+      "claims": 2000
+    },
+    {
+      "name": "medium",
+      "accounts": 32,
+      "stocks": 64,
+      "payroll": 32,
+      "claims": 10000
+    },
+    {
+      "name": "full_current_engine",
+      "accounts": 64,
+      "stocks": 128,
+      "payroll": 64,
+      "claims": 20000
+    }
+  ],
+  "l2_full": {
+    "region_cities": 8,
+    "spatial_frames": 8,
+    "resources": 8,
+    "leases_peak_branch": 64,
+    "quotes": 8,
+    "inflight_peak": 4,
+    "boot_jobs": 2,
+    "periodic_obligations": 16,
+    "air_side": 128,
+    "air_cell_m": 32,
+    "timeline_page_limit": 8192,
+    "claim_due_buckets": 20,
+    "freight_quantity_each_milli": 1000,
+    "freight_dispatch_days": [
+      0,
+      15
+    ],
+    "freight_dispatch_counts": [
+      4,
+      4
+    ],
+    "inactive_city_from_day": 7,
+    "inactive_city_until_day": 8,
+    "snapshot_wall_seconds": 300,
+    "query_wall_seconds": 10
+  },
+  "steady": {
+    "scenarios": [
+      "L0_pack",
+      "L1_jprod_layout",
+      "L2_full_joint"
+    ],
+    "independent_runs_each": 3,
+    "warmup_wall_seconds": 300,
+    "measured_wall_seconds": 1800,
+    "tier_diagnostics_are_not_steady_acceptance": true
+  },
+  "latency": {
+    "batch_compute_p95_us": 20000,
+    "batch_compute_p99_us": 40000,
+    "minimum_class_samples_for_quantiles": 200,
+    "small_class_gate": "report maximum; no percentile acceptance until enough samples",
+    "end_to_end_boundary_and_io_ipc_reported_separately": true,
+    "ready_queue_p99_wall_ms": 1000,
+    "ready_queue_max_wall_ms": 5000,
+    "recovery_max_wall_ms": 10000,
+    "autosave_max_lateness_wall_ms": 5000,
+    "compute_classes": [
+      "L0_pe0_model_transaction",
+      "L0_pe1_model_transaction",
+      "L2_claims_batch",
+      "L2_payroll_batch",
+      "L2_region_exchange_boot_batch",
+      "L2_background_capture_admit_cpu",
+      "air_source_page",
+      "air_cell_page",
+      "L1_native_record_index_page",
+      "L1_stub_record_index_page"
+    ],
+    "rare_compute_classes": "same-load independent repetitions until >=200 samples, otherwise not_passed",
+    "non_compute_maximum_classes": [
+      "fault_recovery",
+      "autosave_durable_completion",
+      "cold_reopen",
+      "full_layout_snapshot_io"
+    ],
+    "l2_autosave_lateness_definition": "durable_completion minus absolute predetermined deadline, including late request and start",
+    "l1_snapshot_start_lateness_wall_ms": 5000,
+    "l1_snapshot_durable_max_wall_ms": 60000,
+    "ready_definition": "all prerequisites and nominal release deadline satisfied, including delay caused by busy scheduler"
+  },
+  "speed": {
+    "day_wall_seconds": [
+      600,
+      60,
+      10,
+      1
+    ],
+    "mandatory_pe0_unpaced_day_max_wall_seconds": 60,
+    "mandatory_pe0_measured_days": 30,
+    "paced_wait_excluded_from_compute_quantiles": true,
+    "all_rates_and_whole_boundary_time_required": true,
+    "optional_fast_tiers_can_fail_without_discarding_facts": true,
+    "mandatory_pe0_actual_operating_day_max_wall_seconds": 60,
+    "mandatory_pe0_actual_operating_30days_max_wall_seconds": 1800,
+    "operating_measurement": "full committed trajectory including persistence and IPC, no subtraction of sleeps or post-hoc overhead"
+  },
+  "memory": {
+    "normal_gib": 3.1,
+    "soft_gib": 3.5,
+    "peak_guard_gib": 4,
+    "diagnostic_hot_bytes": 8388608,
+    "rss_sample_wall_ms": 250,
+    "footprint_system_sample_wall_seconds": 60,
+    "same_boundary_baseline_owned_tolerance_bytes": 1048576,
+    "same_boundary_baseline_rss_tolerance_bytes": 16777216,
+    "same_boundary_baseline_footprint_tolerance_bytes": 16777216,
+    "unexplained_growth_allowance_bytes_per_hour": 1048576,
+    "pressure_non_normal_max_consecutive_wall_seconds": 60,
+    "swap_net_growth_max_bytes": 268435456,
+    "rss_and_footprint_must_not_sum_individual_lifetime_peaks": true,
+    "real_16gb_gate": "not_run_unless_actual_device"
+  },
+  "disk": {
+    "world_max_bytes": 21474836480,
+    "warning_bytes": 17179869184,
+    "minimum_free_bytes": 2147483648,
+    "measurement_log_max_bytes": 268435456,
+    "transcript_max_bytes": 134217728,
+    "preflight_includes_two_snapshots_and_candidate": true,
+    "archive_quota_changes_require_measured_plan_and_recovery_regression": true
+  },
+  "endurance": {
+    "minimum_wall_seconds": 28800,
+    "game_days": 30,
+    "game_hour_wall_seconds": 40,
+    "joint_profiles": [
+      "L2_full_current_engine_real",
+      "L1_jprod_layout_pressure"
+    ],
+    "same_persistent_world": true,
+    "same_process_group_sampling_includes_reference_and_observers": true,
+    "autosave_requests": 96,
+    "worker_cells_kill_not_before_wall_seconds": 7200,
+    "sim_committed_reply_kill_not_before_wall_seconds": 14400,
+    "normal_cold_reopen_not_before_wall_seconds": 21600,
+    "last_business_boundary_must_span_run": true,
+    "no_reinitialize_no_refill_no_delete_receipts": true
+  },
+  "phases": [
+    "T13A-0_freeze_and_advisor",
+    "T13A-1_load_assembly_and_instrumentation",
+    "T13A-2_graded_baseline_and_bottleneck_fixes",
+    "T13A-3_three_run_steady_acceptance",
+    "T13A-4_actual_eight_hour_joint",
+    "T13A-5_independent_audit_and_publish"
+  ],
+  "not_claimed": [
+    "UI",
+    "GPU",
+    "AgentKit",
+    "full_JPROD_business_simulation",
+    "economic_balance",
+    "full_M0",
+    "real_16gb_without_device"
+  ]
+}

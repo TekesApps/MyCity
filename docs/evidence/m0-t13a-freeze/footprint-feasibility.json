@@ -1,0 +1,39 @@
+{
+  "scope": "instrumentation_feasibility_only",
+  "sdk_header_sha256": "1067178025c5fd88c9a1b8206a07c2695ef94dd471fe2783f06c512995382961",
+  "struct_bytes": 296,
+  "rows": [
+    {
+      "pid": 99417,
+      "rss_bytes": 12484608,
+      "phys_footprint_bytes": 8061240,
+      "lifetime_max_phys_footprint_bytes": 8143160,
+      "user_time_raw": 1602594,
+      "system_time_raw": 1545683,
+      "disk_bytes_read": 0,
+      "disk_bytes_written": 0,
+      "start_abstime": 21585853969777
+    },
+    {
+      "pid": 99418,
+      "rss_bytes": 1163264,
+      "phys_footprint_bytes": 852160,
+      "lifetime_max_phys_footprint_bytes": 868544,
+      "user_time_raw": 14648,
+      "system_time_raw": 17820,
+      "disk_bytes_read": 0,
+      "disk_bytes_written": 0,
+      "start_abstime": 21585857157145
+    }
+  ],
+  "mach_timebase": {
+    "numer": 125,
+    "denom": 3
+  },
+  "cpu_clock_calibration": {
+    "rusage_raw_delta": 2400455,
+    "converted_ns": 100018958,
+    "process_time_ns_delta": 100000000
+  },
+  "no_model_gate_claimed": true
+}

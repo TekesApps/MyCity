@@ -28,7 +28,7 @@ v0.5.23增加[T12-A纯数值参考](m0-air-cpu-reference.md)，尚未写入城�
 | T10 | T10-A有限CLI已实测；完整协议未完成 | 暂停／单步／四档实际等待、分页／热冷原票；当前profile接入T05-B step；目标对象revision／UI仍缺 |
 | T11 | deferred_by_user_scope | 原生UI／绘图／窗口／输入，不算通过 |
 | T12 | T12-A空气CPU有限参考已实测，v0.5.23 | 单通道32m EI、源／tile分页、任务检查点与新进程恢复、独立f64对照；未接世界／真实源投影／阈值，W1独立纯worker及W2有限场接纳已实测；独立Sim有限实现见W3；GPU仍未完成 |
-| T13 | 有限模型30分钟连续性实测，完整联合未验 | v0.5.18取得32GiB宿主有限实验RSS与冷档案增长；真实16GB大城／显示联合／8h长跑仍未运行 |
+| T13 | T13A-0模型规模／性能方案已冻结，v0.5.30；运行门未测 | [T13-A](m0-model-scale-performance.md)分真实业务与布局压力，满级64账户／128库存／64工资／20000 Claims，三轮稳态及8h待实际执行；原真实16GB／图形联合仍未通过 |
 | T14 | not_accepted | 不把headless子阶段签收等同完整M0 |
 
 ## 3. T01：构建和证据基线
@@ -296,3 +296,12 @@ core.air用f32／f64位整数保存完整旧场、候选源累加／tile、积�
 [完整核验](evidence/background-joint-w4/checks.json)含6419同刻采样，观察RSS和峰49823744B（47.515625MiB），最大采样间隔0.417930666秒，两短命worker漏采已披露；最后无Sim／worker／已知孤儿。最大必要任务往返1.169667583秒，实际队列峰值未插桩。实验只用M4／32GiB，不以这个有限小样本接受16GB、全城、8小时、经济均衡、真实污染或GPU。
 
 当前完整232项Release离线测试、fmt／Clippy和文档检查通过；[最终advisor](evidence/background-joint-w4/advisor-final-review.md)只读核查原始工件、完整持久状态及测试记录，无阻断，未自己重跑实验。[逐项完成审计](background-compute-completion-audit.md)保留所有原目标与证据边界；后台计算有限闭环可以收口，整个M0仍未接受。总体架构已按实际独立Sim／worker更新，不再把它们写成尚无实现；通用池、UI、渲染、GPU和AgentKit未展开。
+
+
+## 29. v0.5.30：T13A-0负载与验收冻结
+
+用户授权连续推进模型规模、性能与8h验收，仍不做UI／GPU／AgentKit。[冻结契约](m0-model-scale-performance.md)与[参数](../fixtures/m0-t13a-acceptance.json)保留L1完整JPROD数量、L2当前共享世界真实上限，禁止复制小Engine代表大世界。三正式场景各三轮5min热身＋30min稳态，之后同一满级持久世界30日／8现实h，96保存／L1压力／真实worker及Sim故障／冷重开，不能缩负载或跑完空等。
+
+计算p95／p99为20／40ms，P-E0实际经营30日≤1800秒，完整轨迹含持久化／IPC。计算类别／稀有样本、ready age起点、保存deadline到持久完成、诊断8MiB与世界20GiB／2GiB安全余量已冻结。advisor独立方案审查完成，不构成运行通过。32GiB下公开系统接口读取自身／子进程phys_footprint及CPU／I/O可行性已测，Mach tick经timebase校准；不是模型性能证据。
+
+本次未改Rust模型，仅新增验收输入／文档和测量可行性脚本；W4原232测试及30分钟证据归v0.5.29冻结源码，不移作本版规模通过。[静态核验](evidence/m0-t13a-freeze/checks.json)通过。下一阶段先装配逐字段／宽度／索引和满级资金物资oracle，补长时有界观测，分级测出瓶颈再修复；稳态、8h及16GB均not_run，整个M0未接受。

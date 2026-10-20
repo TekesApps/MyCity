@@ -1,0 +1,17 @@
+{
+  "schema": "mycity-t13a-freeze-check-v1",
+  "acceptance_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+  "baseline_tag": "v0.5.29",
+  "baseline_commit": "d78e24915b457b713952624a55e7b38ed4925552",
+  "workload_and_acceptance_frozen": true,
+  "advisor_plan_review": "completed_read_only",
+  "instrumentation_feasibility": "passed_only_for_named_probe",
+  "steady_minimum_seconds_excluding_diagnostics": 18900,
+  "endurance_minimum_seconds": 28800,
+  "model_scale_gate": "not_run",
+  "steady_gate": "not_run",
+  "eight_hour_gate": "not_run",
+  "memory_16gb_gate": "not_run",
+  "full_M0": "not_accepted",
+  "verifier_sha256": "5881bb2e95cea7bd0e70262c9c1d12780f11e2b8a065240b7a1d566fdc44434c"
+}
