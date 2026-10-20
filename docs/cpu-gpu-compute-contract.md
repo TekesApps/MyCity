@@ -106,3 +106,7 @@ Apple Silicon的统一物理内存不是CPU16GB加GPU16GB，也不等于wgpu保�
 ## A55进程与所有权补充
 
 [运行架构](process-worker-and-render-architecture.md)将计算地点和提交权限分开：CPU计算可在独立worker，GPU经唯一Owner／Broker；结果均由Sim验证并原子接纳。设备／任务／writer代际和输入版本绑定，崩溃不重复业务副作用；进程组与实际副本共同计预算。独立Render Host为待测候选，当前不因wgpu后端兼容就假定Surface可跨进程。此补充只属设计，原GPU实测门不变。
+
+## v0.5.23执行更新：CPU参考子阶段
+
+[T12-A](m0-air-cpu-reference.md)已实现RUN36空气EI单通道的有限CPU策略、源／cell分页、任务工件保存与新进程位级恢复，并以独立f64复算最终场和窗口时间平均值。上文“没有Rust工程／实测”描述CG39设计发布时点；本次证据仅限纯任务，未接真实活动投影、邻城环境、家庭暴露或世界提交。GPU、8通道／噪声联合、跨执行器误差资格与16GB仍未验，不能用CPU误差通过代替GPU准入。

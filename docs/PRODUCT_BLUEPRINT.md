@@ -66,3 +66,6 @@ v0.5.21执行更新：[T05-B](m0-timeline-runtime.md)已接已实现实验profil
 
 
 v0.5.22软件结构入口：[总体架构S56](SOFTWARE_ARCHITECTURE.md)集中区分当前Rust／CLI实现与未来Sim／worker／App，统一主体状态、待办历史、共享事件、持久化与资源所有权；本次仅文档整理，产品范围和v0.5.21模型证据不变。
+
+
+v0.5.23执行更新：[T12-A](m0-air-cpu-reference.md)已实现空气EI有限CPU纯任务、分页与任务文件恢复，独立f64复算包含场与区间时间平均值。未接真实活动／跨城环境／家庭暴露和城市提交，不新增完整产品能力通过结论；GPU、worker池、UI、AgentKit及真实16GB仍未实现或未测。

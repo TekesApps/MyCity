@@ -1,0 +1,100 @@
+{
+  "source_sha256": "7e48d3ccbd82e91506929ab6be128e6223f54b66d174f7cf2494dec6cf83cf49",
+  "release_tests_passed": 195,
+  "finite_air_cpu_gate": "passed",
+  "full_t12": "not_completed",
+  "memory_16gb_gate": "not_run",
+  "world_integration": "not_implemented",
+  "gpu": "not_run",
+  "worker_pool": "not_implemented",
+  "new_process_resumes": 5,
+  "cases": [
+    {
+      "name": "configured",
+      "side": 32,
+      "game_seconds": 86400,
+      "steps": 1443,
+      "sources": 3,
+      "emitted_micro": 540297700,
+      "numeric_ledger_residual": 4.092726157978177e-11,
+      "owned_bytes": 16860,
+      "field_error": 1.4889830722619735e-05,
+      "time_mean_error": 1.3864005857073977e-05
+    },
+    {
+      "name": "side-64",
+      "side": 64,
+      "game_seconds": 86400,
+      "steps": 1443,
+      "sources": 3,
+      "emitted_micro": 540297700,
+      "numeric_ledger_residual": -4.729372449219227e-11,
+      "owned_bytes": 66012,
+      "field_error": 1.7642858863187172e-05,
+      "time_mean_error": 1.3752497119033555e-05
+    },
+    {
+      "name": "side-128",
+      "side": 128,
+      "game_seconds": 86400,
+      "steps": 1443,
+      "sources": 3,
+      "emitted_micro": 540297700,
+      "numeric_ledger_residual": 8.076312951743603e-10,
+      "owned_bytes": 262620,
+      "field_error": 1.764290733463625e-05,
+      "time_mean_error": 1.3713877739670958e-05
+    },
+    {
+      "name": "fixed-30-days",
+      "side": 32,
+      "game_seconds": 2592000,
+      "steps": 43202,
+      "sources": 3,
+      "emitted_micro": 10130390600,
+      "numeric_ledger_residual": -2.294455043738708e-07,
+      "owned_bytes": 16860,
+      "field_error": 2.5545222296585735e-05,
+      "time_mean_error": 2.461697434126917e-05
+    },
+    {
+      "name": "dense-20000",
+      "side": 128,
+      "game_seconds": 120,
+      "steps": 4,
+      "sources": 20000,
+      "emitted_micro": 24500140,
+      "numeric_ledger_residual": 0.0,
+      "owned_bytes": 662560,
+      "field_error": 7.673176636302514e-07,
+      "time_mean_error": 3.497513572388774e-07
+    }
+  ],
+  "probe_wall_seconds": 1.343622208,
+  "rss_scope": "external /usr/bin/time command rusage as reported; separate child peaks and combined process-group footprint not measured",
+  "strict_legacy_economy_60_second_gate": "not_met",
+  "legacy_paced_day": {
+    "actual_game_seconds_per_wall_second": 1412.2047795817418,
+    "actual_wall_seconds": 61.18092875,
+    "game_seconds": 86400,
+    "memory_16gb_gate": "not_run",
+    "persistent_commits": 24,
+    "same_state_as_unpaced": true,
+    "source_sha256": "7e48d3ccbd82e91506929ab6be128e6223f54b66d174f7cf2494dec6cf83cf49",
+    "state_sha256": "1909674488bf793b1bfb93f4db0829e8c9e68fd2c4deee76e6e0c66c94e9ea29",
+    "store_owned_capacity_bytes": 2689095,
+    "target_exactly_met": false,
+    "target_wall_seconds": 60
+  },
+  "artifact_sha256": {
+    "tests.txt": "a699efbdd31934f730e9bb4a1e4d17488c83964f2c2093e0635d444bd2612b21",
+    "fmt.txt": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "clippy.txt": "1ff8bbcb4151dc887e69b78a29bc241d5062cba4757aa5f4639926ae712a8181",
+    "air.json": "3e4ea550969dcdfbe61873a4e0d1cc4fcf568e2b8f4347ac8c43428a67a0796f",
+    "tasks.zip": "d59c45b3d7afd1550083fd8d4aa93d25a8cfeec357efaa6704ae4ee9e427d69a",
+    "reference-checks.json": "dd8eb543af8c86c4a0efbeb24f56bb798f7b55cefca3549415c8a40d09dde4be",
+    "provenance.json": "1438fa04e5f213c0f5d1636e371770dbdbe516364078d59875fe7ee7bb875d20",
+    "process.txt": "6ff0e4c0ded4933680dbbbc7a90f89d1bfe2deeaf36d8199bb2882d004d26973",
+    "gates.json": "1b76b419febf4ac36d1dc1750c3a247c4024614209c60c0d048104d763435a97"
+  }
+}

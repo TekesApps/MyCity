@@ -4,6 +4,7 @@ use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::io::{self, Read};
 
+pub mod air;
 pub mod arena;
 pub mod assembly;
 pub mod boot;

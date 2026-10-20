@@ -1,0 +1,47 @@
+[
+  {
+    "name": "fmt",
+    "argv": [
+      "cargo",
+      "fmt",
+      "--all",
+      "--",
+      "--check"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 0.2505760192871094
+  },
+  {
+    "name": "tests",
+    "argv": [
+      "cargo",
+      "test",
+      "--workspace",
+      "--release",
+      "--locked",
+      "--offline",
+      "--",
+      "--nocapture",
+      "--test-threads=1"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 444.7113211154938
+  },
+  {
+    "name": "clippy",
+    "argv": [
+      "cargo",
+      "clippy",
+      "--workspace",
+      "--all-targets",
+      "--release",
+      "--locked",
+      "--offline",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 0.2132880687713623
+  }
+]

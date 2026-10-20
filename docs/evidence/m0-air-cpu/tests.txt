@@ -1,0 +1,392 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 36.87s
+     Running unittests src/lib.rs (target/release/deps/mycity_core-d9714c4df210afe2)
+
+running 36 tests
+test arena::checkpoint_tests::checkpoint_preserves_free_stack_generation_and_retired_slots ... ok
+test arena::tests::full_tables_preserve_existing_state_and_owned_capacity ... ok
+test arena::tests::generation_exhaustion_retires_slot_instead_of_resurrecting_old_handle ... ok
+test arena::tests::wrong_world_branch_domain_and_generation_are_rejected ... ok
+test assembly::tests::duplicate_sources_missing_owners_and_cost_mismatches_reject ... ok
+test assembly::tests::input_order_does_not_change_world_identity_or_hash ... ok
+test assembly::tests::oversized_counts_and_unspent_initial_sources_do_not_publish_a_world ... ok
+test assembly::tests::sources_and_independent_initial_worlds_are_exact ... ok
+test calendar::tests::dates_round_trip_and_reject_invalid_bounds ... ok
+test calendar::tests::month_anchor_does_not_drift_after_february ... ok
+test calendar::tests::rent_30_days_is_not_calendar_month_or_four_weeks ... ok
+test schedule::tests::bookmark_cannot_be_loaded_into_another_world_or_branch ... ok
+test schedule::tests::bookmark_continues_remaining_pages_without_reprocessing_old_sources ... ok
+test schedule::tests::large_same_time_source_pages_finish_before_advancing_world ... ok
+test schedule::tests::malformed_bookmarks_and_changed_sources_reject ... ok
+test schedule::tests::pause_and_old_ack_do_not_change_cursor_or_time ... ok
+test schedule::tests::per_source_randomness_ignores_paging_and_is_domain_separated ... ok
+test schedule::tests::phase_order_and_interval_cap_are_independent_of_input_order ... ok
+test tests::digest_has_known_reference_value ... ok
+test tests::stream_bound_does_not_depend_on_file_metadata ... ok
+test tests::unsupported_or_ambiguous_bootstrap_is_rejected ... ok
+test transaction::tests::account_cannot_unprotect_or_redirect_reserved_funds ... ok
+test transaction::tests::capacity_lifecycle_releases_once_and_never_reuses_token ... ok
+test transaction::tests::failed_late_action_leaves_no_partial_cash_or_capacity ... ok
+test transaction::tests::foreign_capacity_reference_cannot_resolve_same_number_in_another_world ... ok
+test transaction::tests::full_journal_backpressures_without_erasing_prior_receipts ... ok
+test transaction::tests::lot_cost_is_invariant_under_splitting_and_internal_transfer ... ok
+test transaction::tests::persistence_hook_failure_publishes_neither_model_changes_nor_receipt ... ok
+test transaction::tests::protection_is_not_new_cash_and_payment_converts_once ... ok
+test transaction::tests::retry_is_exact_and_changed_payload_or_actor_cannot_reuse_receipt ... ok
+test transaction::tests::stale_revision_scope_and_foreign_handles_do_not_write ... ok
+test transaction::tests::stock_and_payment_commit_as_one_with_conserved_quantity_and_basis ... ok
+test transaction::tests::two_resource_request_does_not_hold_one_when_second_is_unavailable ... ok
+test units::tests::failed_accrual_preserves_carry ... ok
+test units::tests::negative_values_and_overflow_cannot_enter_exact_units ... ok
+test units::tests::splitting_and_restoring_time_does_not_drop_fractional_cost ... ok
+
+test result: ok. 36 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running tests/air.rs (target/release/deps/air-4328a69a2e36bc3f)
+
+running 8 tests
+test checksum_stale_identity_invalid_cursor_and_nonfinite_restore_are_rejected ... ok
+test constant_background_is_exact_for_all_map_sizes_and_full_day_integral ... ok
+test decoder_rejects_excess_rows_before_accepting_source_or_checkpoint_vectors ... ok
+test dense_source_pages_and_mid_source_mid_tile_checkpoints_are_bit_exact ... AIR_DENSE {"checkpoint_bytes":1887078,"owned_bytes":662560,"source_struct_bytes":20,"sources":20000,"state":{"background":655.3600006103516,"boundary_exchange":-0.01624505087244743,"complete":true,"decay":655.5977509802356,"emitted_micro":24500140,"field_sha256":"e1001088379e8c758a9d4d94cb244c19db2ca1895c8ba7bd59748d0bc7a20efd","input_sha256":"6d457cedcc2f7f538fd5422f6d27b4629422b4f7147abb36a097583ba3a45cc7","integral_sha256":"188e6c0211ab1cb435934082e9eac2bf89095be0c4877105c7a3959369158440","maximum":2.005220413208008,"minimum":2.000075340270996,"owned_bytes":662560,"progress":null,"rounding_residual":-0.0021656020325231725,"side":128,"steps":4,"strategy":"run36-air-f32-v1","sum":32792.2439789772,"target":120,"time":120}}
+ok
+test independent_f64_single_step_day_and_fixed_thirty_day_window ... AIR_F64 {"game_seconds":60,"max_absolute_error":1.7495727515637327e-6,"numeric_ledger_residual":0.0,"source_micro":375000}
+AIR_F64 {"game_seconds":86400,"max_absolute_error":0.00001626952190303399,"numeric_ledger_residual":1.8189894035458565e-12,"source_micro":540000000}
+AIR_F64 {"game_seconds":2592000,"max_absolute_error":0.000024170802187306606,"numeric_ledger_residual":3.590512278606184e-7,"source_micro":16200000000}
+ok
+test partial_candidate_never_publishes_field_integral_time_or_diagnostics ... ok
+test pulse_spreads_from_a_single_cell_on_later_steps ... ok
+test unknown_boundary_bad_sources_and_limits_do_not_silently_substitute_zero ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.88s
+
+     Running tests/boot.rs (target/release/deps/boot-f5a6819bb6021d1f)
+
+running 13 tests
+test authorization_hook_failure_late_batch_error_and_generic_bypasses_cannot_partially_publish ... ok
+test battery_then_actual_water_then_generator_and_parallel_cycles_conserve_inputs_and_fees ... ok
+test faults_keep_actual_losses_and_receivers_then_cleanup_releases_only_work_leases ... ok
+test fuel_aquifer_battery_cash_and_output_capacity_are_finite ... ok
+test half_steps_match_one_step_and_due_output_is_not_visible_to_earlier_start ... ok
+test independent_economic_and_regional_clocks_cannot_be_mixed_with_boot ... ok
+test malformed_profiles_sources_units_and_shared_clock_mixes_are_rejected ... ok
+test no_seed_rejects_both_dependencies_and_time_does_not_create_outputs ... ok
+test restarting_cold_cleared_work_keeps_old_loss_and_requires_new_real_inputs ... ok
+test reverse_requests_use_same_pool_and_failed_request_leaves_no_partial_claim_or_cash ... ok
+test reversed_resource_request_has_identical_tokens_and_releasing_then_new_id_retry_succeeds ... ok
+test water_tank_is_an_alternative_real_seed_not_a_future_generator_promise ... ok
+test worst_fault_outlet_reservations_reject_new_work_before_any_consumption ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/economy.rs (target/release/deps/economy-4b587758b7999771)
+
+running 13 tests
+test advances_split_at_events_restore_equivalent_business_state_and_never_open_next_day_early ... ok
+test economic_caller_protection_stock_and_disk_failure_gates_leave_no_partial_commit ... ok
+test external_debt_cannot_reuse_generated_refund_or_tax_source ... ok
+test independent_capacity_pool_cannot_be_enabled_beside_private_economic_corridor ... ok
+test malformed_profiles_overlapping_batches_and_conflicting_region_clock_are_rejected ... ok
+test month_end_tax_cash_shortfall_survives_activity_handoff_and_never_mints_payment ... ok
+test pe0_reaches_all_independent_thirty_day_oracles_through_actual_hourly_transactions ... ok
+test pe1_existing_debt_is_part_paid_then_handed_off_without_changing_parties_or_disappearing_on_exit ... ok
+test pe1_insolvent_supplier_retains_refund_claim_and_cancellation_does_not_mint_money ... ok
+test pe1_low_household_cash_records_failed_whole_order_retains_costed_old_lots_and_keeps_running ... ok
+test pe1_prepayment_cancel_keeps_delivered_labor_and_creates_only_one_real_refund ... ok
+test pe1_twenty_units_exhaust_without_new_labor_wages_products_or_deleting_existing_tax ... ok
+test suspended_guaranteed_wages_are_expense_and_cumulative_tax_can_fall_without_cash_refund ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/exchange.rs (target/release/deps/exchange-c50cda2fca9e2460)
+
+running 12 tests
+test accepted_boot_finishes_while_closed_then_real_multihop_goods_and_utilities_settle_once ... ok
+test broken_link_pauses_actual_goods_and_people_without_erasing_reservations_or_fees ... ok
+test electric_and_water_link_failure_keeps_buffers_money_and_capacity_then_delivers_after_expiry ... ok
+test expiry_keeps_old_debt_and_already_accepted_delivery_while_split_steps_keep_business_results ... ok
+test freight_blocks_otherwise_eligible_population_and_closed_city_fault_preserves_losses ... ok
+test full_shipments_expiry_distance_storage_loss_and_insufficient_funds_reject_atomically ... ok
+test malformed_geometry_custody_type_and_missing_pool_are_rejected ... ok
+test old_due_at_arrival_cannot_spend_later_delivery_income_or_silently_repay_old_arrears ... ok
+test opening_capital_cannot_reuse_generated_purchase_lot_namespace ... ok
+test population_freight_boot_and_utility_compete_in_actual_shared_pools ... ok
+test protections_lease_ownership_clock_scope_hook_and_late_error_are_real_gates ... ok
+test resource_type_swaps_cannot_bypass_boot_and_original_lot_intervals_survive_buyer_costs ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/region.rs (target/release/deps/region-50d7c2e853fd8b97)
+
+running 5 tests
+test due_order_and_cash_do_not_depend_on_advance_chunk_size ... ok
+test malformed_sources_bounds_and_overflow_never_admit_partial_worlds ... ok
+test persisted_hook_failure_and_late_action_failure_roll_back_the_entire_region ... ok
+test remote_discovery_and_approximate_migration_preserve_actual_people ... ok
+test switching_does_not_catch_up_replay_or_replenish_and_sleep_cannot_erase_debt ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/timeline.rs (target/release/deps/timeline-0bbe4fbbbea80287)
+
+running 9 tests
+test daily_weekly_monthly_same_earned_wages_fraction_carry_and_exit_debt ... ok
+test economic_dynamic_same_time_work_wage_output_and_tax_match_legacy_thirty_days ... ok
+test inactive_city_gets_no_autonomous_work_and_payment_insufficiency_keeps_claim ... ok
+test joint_boot_transport_periodic_debt_and_population_use_real_dynamic_sources ... ok
+test later_page_can_touch_all_sixty_four_admitted_accounts ... ok
+test mid_wage_page_is_valid_and_p4_never_changes_money ... ok
+test monthly_anchor_leap_century_year_end_stop_and_frequency_change_keep_old_due ... ok
+test one_clock_no_new_action_in_frozen_stage_and_target_cannot_change ... ok
+test real_twenty_thousand_payments_page_and_checkpoint_without_duplicate_cash ... TIMELINE_20000 {"actual_claims":20000,"cash_paid_cents":20000,"checkpoint_bytes":1682728,"engine_owned_bytes":3645280,"progress":{"at":3600,"cursor":0,"lane":0,"last_complete":3600,"page_paid":3618,"page_sources":3618,"phase":null,"serial":3,"target":null}}
+ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.64s
+
+     Running unittests src/main.rs (target/release/deps/mycity_headless-5660ed2fecfd2cba)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/air.rs (target/release/deps/air-ab5d39ab4ae3c1e4)
+
+running 2 tests
+test cpu_suite_reopens_five_file_checkpoints_in_new_processes_and_reports_real_scope ... ok
+test stale_source_input_corruption_and_existing_output_cannot_publish_a_new_candidate ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.00s
+
+     Running tests/baseline.rs (target/release/deps/baseline-a55d717128a73690)
+
+running 12 tests
+test bad_invocation_and_missing_input_exit_nonzero ... ok
+test boot_cli_runs_finite_interlocks_and_recovery_without_claiming_city_network_or_16gb ... ok
+test clock_probe_pages_twenty_thousand_sources_and_does_not_claim_disk_recovery ... ok
+test continuity_short_run_exercises_model_but_does_not_pass_wall_duration_or_16gb_gate ... ok
+test economy_cli_executes_real_30_day_cash_goods_and_failure_branches ... ok
+test offline_runs_retain_provenance_and_do_not_claim_simulation ... ok
+test opening_cli_assembles_real_bounded_records_without_running_the_economy ... ok
+test regional_fulfilment_cli_runs_actual_goods_utilities_common_pools_and_closed_map_recovery ... ok
+test spatial_cli_imports_actual_png_and_validates_geometry_without_claiming_city_persistence ... ok
+test spatial_store_cli_restores_cpu_assets_and_money_without_claiming_mutable_construction ... ok
+test storage_cli_confirms_persistent_operation_but_not_full_city_recovery ... ok
+test transaction_probe_exercises_model_without_claiming_durable_success ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 83.79s
+
+     Running tests/session.rs (target/release/deps/session-35ddae623d185226)
+
+running 14 tests
+test command_conflicts_scope_revision_and_paging_do_not_change_business_state ... ok
+test disk_backpressure_cannot_be_bypassed_by_step_or_speed ... ok
+test four_real_paced_speeds_preserve_business_result_without_claiming_throughput ... ok
+test huge_time_speed_and_stale_cursor_reject_without_mutation ... ok
+test independent_boot_profile_completes_real_pump_before_pause_confirmation ... ok
+test json_cannot_elevate_identity_and_failed_transactions_remain_queryable ... ok
+test malformed_and_oversized_input_are_bounded_and_do_not_commit ... ok
+test old_source_identity_cannot_be_used_to_write_with_new_binary ... ok
+test paced_economy_day_matches_unpaced_committed_business_and_reports_real_wall_time ... T10_PACED_DAY {"actual_game_seconds_per_wall_second":1412.2047795817418,"actual_wall_seconds":61.18092875,"game_seconds":86400,"memory_16gb_gate":"not_run","persistent_commits":24,"same_state_as_unpaced":true,"source_sha256":"7e48d3ccbd82e91506929ab6be128e6223f54b66d174f7cf2494dec6cf83cf49","state_sha256":"1909674488bf793b1bfb93f4db0829e8c9e68fd2c4deee76e6e0c66c94e9ea29","store_owned_capacity_bytes":2689095,"target_exactly_met":false,"target_wall_seconds":60}
+ok
+test pause_step_run_and_cold_receipt_are_exact_across_real_reopen ... ok
+test slicing_across_due_boundaries_changes_no_cash_obligation_or_clock ... ok
+test source_reconciliation_blocks_clock_but_preserves_observation ... ok
+test timeline_partial_status_query_reopen_and_exact_receipt ... ok
+test timeline_probe_runs_real_three_profiles_and_reports_scope ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 78.45s
+
+     Running unittests src/lib.rs (target/release/deps/mycity_map-2a8e70820030661a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/spatial.rs (target/release/deps/spatial-37f005112640ddbb)
+
+running 16 tests
+test all_map_sizes_and_maximum_source_are_actually_decoded_with_bounded_owned_storage ... ok
+test black_is_valid_no_data_never_becomes_zero_and_water_is_a_separate_mask ... ok
+test decode_rejects_mismatches_corruption_unsupported_semantics_and_peak_overcommit ... ok
+test entrance_checks_first_normal_full_route_obstacles_modes_and_exact_anchor ... ok
+test gpu_bytes_have_wgsl_offsets_soa_strides_versions_and_no_global_float_coordinates ... ok
+test gpu_height_projection_stays_within_declared_half_cm_on_nonflat_signed_data ... ok
+test grayscale_8_and_16_north_orientation_and_negative_half_rounding_are_explicit ... ok
+test joint_scene_uses_support_whole_paths_revisions_and_real_neighbor_frames ... ok
+test joint_seam_rejects_water_off_center_cliff_neighbor_obstacle_and_unsupported_modes ... ok
+test maps_keep_one_grid_format_exact_global_coordinates_and_nonoverlapping_cells ... ok
+test metadata_and_overexpanded_streams_reject_and_known_narrow_water_is_not_lost ... ok
+test one_centimeter_invasion_holes_width_and_vertical_overlap_are_not_waived_by_grid_or_layer ... ok
+test quadratic_has_independently_sampled_error_below_five_cm_and_no_silent_budget_downgrade ... ok
+test runtime_uses_sw_ne_triangles_and_platform_proof_checks_internal_peaks ... ok
+test seams_require_real_global_adjacency_same_height_frame_mode_permission_and_direction ... ok
+test transparency_color_and_unbounded_metadata_are_never_reinterpreted_as_height ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.19s
+
+     Running unittests src/lib.rs (target/release/deps/mycity_storage-2619e9dd4495ee10)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/mycity-storage-worker.rs (target/release/deps/mycity_storage_worker-ea8971cd7ea77f1b)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/boot.rs (target/release/deps/boot-71e8fd96ef418006)
+
+running 2 tests
+test pump_and_generator_start_complete_fault_and_cleanup_survive_88_real_process_exits ... actual_boot_process_exits=88; pump_and_generator_start_complete_fault_cleanup; full_old_or_new_root_and_exactly_once_retry_verified
+ok
+test startup_wip_and_leases_restore_with_immutable_spatial_assets_and_uncertain_io ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.40s
+
+     Running tests/checkpoint.rs (target/release/deps/checkpoint-9737272f9b565fb6)
+
+running 4 tests
+test actual_process_exit_at_every_checkpoint_publication_boundary ... checkpoint_actual_process_exits=6
+ok
+test committed_archive_corruption_stops_recovery_and_does_not_fall_back ... ok
+test more_than_two_hot_windows_exact_success_and_failure_retry_after_restart ... checkpoint_boundary: commits=2100 original_hot_limit=1024 sequence=2100 status={"sequence":2100,"generation":2106,"hot_receipts":0,"wal_bytes":0,"archive_bytes":2040463,"archive_limit":134217728}
+ok
+test retry_at_exact_rotation_threshold_does_not_become_a_new_operation ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 79.30s
+
+     Running tests/economy.rs (target/release/deps/economy-0bddc3b4d1fba573)
+
+running 2 tests
+test economic_io_uncertainty_hides_state_until_reopen_then_retry_is_exactly_once ... ok
+test economic_transactions_survive_process_exit_at_every_wal_and_response_boundary ... actual_process_exits=44 stages=raw_dispatch,goods_delivery,refund,day30_tax; old_or_new_root_and_exactly_once_retry_verified
+ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 23.45s
+
+     Running tests/exchange.rs (target/release/deps/exchange-b2e1d37a4b08bee6)
+
+running 4 tests
+test full_checkpoints_keep_running_failed_and_paused_physical_state ... ok
+test regional_fulfilment_recovers_joint_old_or_new_state_at_121_actual_process_exits ... actual_exchange_process_exits=121; joint_ledger_clock_capacity_payment_spatial_root_and_exactly_once_retry_verified
+ok
+test regional_store_requires_bound_spatial_frames_and_flat_template_before_creating_directory ... ok
+test uncertain_arrival_settlement_hides_writer_and_recovers_once_with_provenance ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.60s
+
+     Running tests/inbox.rs (target/release/deps/inbox-58ac9792322d27fd)
+
+running 14 tests
+test actual_external_producer_and_ack_process_exits_preserve_exactly_once ... external_source_actual_process_exits=3; durable pending before application; world-root and source-ack interruption retries once
+ok
+test archived_fact_creation_and_actual_cash_settlement_remain_directly_traceable ... ok
+test external_cannot_bypass_registered_pending_or_take_the_incident_reserve ... ok
+test external_pending_full_inbox_restart_unpaid_handoff_and_source_alignment ... external: 12/12 working full; event5 NoAck and source pending survive restart; unpaid handoff frees one working slot without erasing 700000c claim; replay once; explicit upstream frontier required
+ok
+test full_inbox_retains_obligations_handoff_does_not_erase_debt_and_delivery_uses_reserved_slots ... inbox: normal=4 emergency=4 full=8; four paused deliveries resume in preallocated slots; 120c liabilities paid once; handoff retains debtor/creditor; restart and old/fresh notification retries exact
+ok
+test invalid_and_unchanged_controls_cannot_spend_emergency_storage ... ok
+test no_room_for_necessary_fact_stops_advancement_and_retains_source_without_false_ack ... ok
+test normal_disk_exhaustion_preserves_emergency_exit_and_quota_on_reopen ... disk normal full: cancellation, repair, handoff, delivery, payment and release succeeded using persisted reserve; used=106279
+ok
+test normal_rotation_at_threshold_cannot_consume_the_emergency_reserve ... ok
+test paused_clock_and_repeated_link_toggles_are_not_unbounded_emergency_work ... ok
+test physical_facts_and_exit_survive_real_process_exits_and_exact_retries ... inbox_delivery_actual_process_exits=11; facts, four invoices, materials, capacity and once-only handling liabilities share one durable root
+ok
+test producer_is_bounded_and_pauses_without_dropping_the_seventeenth_fact ... ok
+test query_pages_are_complete_provenanced_and_reject_stale_cursor ... ok
+test source_publication_crashes_retry_from_durable_pending_and_missing_source_is_not_ignored ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 30.90s
+
+     Running tests/recovery.rs (target/release/deps/recovery-62c786e12c6de7a2)
+
+running 12 tests
+test a_second_process_cannot_open_a_world_while_writer_lock_is_held ... ok
+test abrupt_process_exit_at_each_boundary_retains_exactly_the_published_operation ... ok
+test acknowledged_success_and_operation_coverage_survive_reopen_without_double_payment ... ok
+test committed_corruption_or_missing_dependency_never_falls_back_to_old_root ... ok
+test incompatible_rules_reject_instead_of_recalculating_history ... ok
+test injected_io_uncertainty_poisoning_prevents_further_writes_until_recovery ... ok
+test only_tail_outside_the_validated_committed_boundary_is_truncated ... ok
+test oversized_command_is_rejected_before_serializing_and_never_changes_storage ... ok
+test recovery_reclaims_only_known_unreferenced_atomic_temp_files ... ok
+test regional_clocks_migrants_debt_and_snapshot_watermarks_recover_atomically_once ... ok
+test regional_process_exit_never_publishes_half_population_half_clock_or_half_payment ... ok
+test store_ownership_handoff_reopens_immediately_during_parallel_process_spawn ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.79s
+
+     Running tests/spatial.rs (target/release/deps/spatial-44117fb1003df721)
+
+running 9 tests
+test abrupt_creation_exit_publishes_all_dependencies_and_capital_or_no_world ... ok
+test abrupt_transaction_exit_preserves_space_with_the_correct_financial_and_regional_root ... ok
+test corrupt_missing_nonregular_or_symlink_space_never_opens_or_truncates_wal_tail ... ok
+test create_io_failure_before_publication_retains_incomplete_directory_and_after_publication_requires_reopen ... ok
+test invalid_sources_and_cross_world_branch_or_seed_fail_before_any_directory_is_created ... ok
+test matching_file_checksums_cannot_hide_wrong_identity_or_terrain_interpretation ... ok
+test spatial_financial_and_regional_state_restore_under_one_root_without_double_capital_or_payment ... ok
+test uncertain_transaction_hides_both_model_and_space_until_joint_recovery ... ok
+test v1_v2_schema_and_derived_hash_gates_do_not_silently_drop_space ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.21s
+
+     Running tests/timeline.rs (target/release/deps/timeline-20b22824754e429b)
+
+running 7 tests
+test actual_process_exits_preserve_pure_cursor_zero_cash_and_final_ticket_release ... T05_ACTUAL_PROCESS_EXITS=33; pure cursor, zero-cash liability, final boundary under normal disk exhaustion
+ok
+test calendar_payroll_old_interval_and_partial_debt_survive_real_checkpoint_and_reopen ... ok
+test continuation_limit_and_receipt_reserve_are_bound_and_retry_never_spends_twice ... ok
+test dense_actual_payments_checkpoint_mid_page_retry_and_bounded_query ... T05_DENSE {"actual_paid_cents":20000,"checkpoint":{"archive_bytes":11650503,"archive_limit":134217728,"generation":83,"hot_receipts":0,"sequence":81,"wal_bytes":0},"claims":20000,"engine_owned_bytes":3645280,"physical_capacity":{"continuation_reserved_bytes":0,"hard_blocked":false,"normal_blocked":false,"normal_limit":125829120,"reason":null,"total_bytes":134217728,"used_bytes":11650503}}
+ok
+test full_fact_inbox_during_boundary_allows_safe_handoff_and_source_reconciliation ... ok
+test reserved_pure_phase_and_zero_cash_debt_pages_finish_when_normal_full_then_stop ... T05_RESERVE {"capacity":{"continuation_reserved_bytes":0,"hard_blocked":false,"normal_blocked":false,"normal_limit":138355,"reason":null,"total_bytes":4149747,"used_bytes":21134},"clock_extension_rejected":true,"complete_boundary":3600,"remote_goal_not_completed":7200,"unpaid_cents":1}
+ok
+test stale_advance_flood_cannot_spend_live_ticket_receipt_slots ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 36.84s
+
+   Doc-tests mycity_core
+
+running 1 test
+test crates/city-core/src/units.rs - units (line 3) - compile fail ... error[E0308]: mismatched types
+  --> crates/city-core/src/units.rs:6:37
+   |
+6  | Money::new(10).unwrap().checked_add(GameTime::new(10).unwrap());
+   |                         ----------- ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `Money`, found `GameTime`
+   |                         |
+   |                         arguments to this method are incorrect
+   |
+note: method defined here
+  --> /Users/frankqin/dev/MyCity/crates/city-core/src/units.rs:64:1
+   |
+64 | nonnegative_unit!(Money); // cents, 100 per laboratory currency unit
+   | ^^^^^^^^^^^^^^^^^^^^^^^^
+   = note: this error originates in the macro `nonnegative_unit` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0308`.
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+
+   Doc-tests mycity_map
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests mycity_storage
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

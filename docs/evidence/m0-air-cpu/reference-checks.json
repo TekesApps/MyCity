@@ -1,0 +1,66 @@
+{
+  "scope": "independent_python_f64_numerical_reference_only",
+  "criterion": "abs error of field or time mean <= 0.001 + 0.0001 * abs(reference)",
+  "tasks_zip_sha256": "d59c45b3d7afd1550083fd8d4aa93d25a8cfeec357efaa6704ae4ee9e427d69a",
+  "reference_script_sha256": "ec7e7510bd2219ab58944cf4816ef804c2209482cf01b163d0dbf1dc1cd9f052",
+  "cases": [
+    {
+      "name": "configured",
+      "side": 32,
+      "game_seconds": 86400,
+      "steps": 1443,
+      "max_absolute_field_error": 1.4889830722619735e-05,
+      "max_absolute_time_mean_error": 1.3864005857073977e-05,
+      "max_field_normalized_error": 0.012408165508835155,
+      "max_time_mean_normalized_error": 0.008085364368067442,
+      "passed": true
+    },
+    {
+      "name": "side-64",
+      "side": 64,
+      "game_seconds": 86400,
+      "steps": 1443,
+      "max_absolute_field_error": 1.7642858863187172e-05,
+      "max_absolute_time_mean_error": 1.3752497119033555e-05,
+      "max_field_normalized_error": 0.014702382385847198,
+      "max_time_mean_normalized_error": 0.01140247536361803,
+      "passed": true
+    },
+    {
+      "name": "side-128",
+      "side": 128,
+      "game_seconds": 86400,
+      "steps": 1443,
+      "max_absolute_field_error": 1.764290733463625e-05,
+      "max_absolute_time_mean_error": 1.3713877739670958e-05,
+      "max_field_normalized_error": 0.014702422778780816,
+      "max_time_mean_normalized_error": 0.011428192435192027,
+      "passed": true
+    },
+    {
+      "name": "fixed-30-days",
+      "side": 32,
+      "game_seconds": 2592000,
+      "steps": 43202,
+      "max_absolute_field_error": 2.5545222296585735e-05,
+      "max_absolute_time_mean_error": 2.461697434126917e-05,
+      "max_field_normalized_error": 0.02128582365260797,
+      "max_time_mean_normalized_error": 0.02051215857960473,
+      "passed": true
+    },
+    {
+      "name": "dense-20000",
+      "side": 128,
+      "game_seconds": 120,
+      "steps": 4,
+      "max_absolute_field_error": 7.673176636302514e-07,
+      "max_absolute_time_mean_error": 3.497513572388774e-07,
+      "max_field_normalized_error": 0.000639311984898442,
+      "max_time_mean_normalized_error": 0.00029144699196937616,
+      "passed": true
+    }
+  ],
+  "wall_seconds": 57.997576417000005,
+  "gpu_accuracy": "not_established",
+  "real_physical_accuracy": "not_verified"
+}

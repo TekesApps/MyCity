@@ -1,0 +1,36 @@
+{
+  "schema": "run36-air-f32-v1",
+  "side": 32,
+  "target": 86400,
+  "initial_micro": 2000000,
+  "boundary_micro": [
+    2000000,
+    2000000,
+    2000000,
+    2000000
+  ],
+  "boundary_until": 2592000,
+  "sources": [
+    {
+      "id": 1,
+      "cell": 528,
+      "start": 0,
+      "end": 43217,
+      "rate_micro": 10000
+    },
+    {
+      "id": 2,
+      "cell": 529,
+      "start": 43217,
+      "end": 86400,
+      "rate_micro": 2500
+    },
+    {
+      "id": 3,
+      "cell": 496,
+      "start": 37,
+      "end": 83,
+      "rate_micro": 3700
+    }
+  ]
+}

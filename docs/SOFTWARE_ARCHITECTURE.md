@@ -147,3 +147,6 @@ T05-B另明确Timeline最多2MiB常驻、普通事务副本2MiB运行时份额�
 完整软件尚缺通用主体／事件索引和动态依赖、真正城市交通／环境等求解器、更多产品领域、统一进程组准入及实际多进程协议；这些分别进入后续依赖，不通过本篇“所有模块都有名字”就算完成。下一步按CPU参考依赖推进，不先把所有函数搬到进程里，也不把当前领域状态改写成逐人Actor系统。
 
 本版[静态核对记录](evidence/software-architecture-s56/checks.json)及[复跑脚本](evidence/software-architecture-s56/verify.py)检查crate依赖、当前源指纹、文档责任及预算算术；它们不是worker／GPU／性能测试。v0.5.21的模型结果仍由原冻结证据负责。
+
+
+v0.5.23执行更新：[T12-A](m0-air-cpu-reference.md)新增core.air纯数值任务与CLI工件恢复，模块／唯一writer职责不变；它不是独立计算worker或城市环境writer。上文v0.5.22静态证据保留其冻结版本含义，当前模型证据按新运行专题分别登记。
