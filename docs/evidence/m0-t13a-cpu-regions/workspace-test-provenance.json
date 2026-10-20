@@ -1,0 +1,6 @@
+{
+  "passed": 258,
+  "source_sha256": "9a213062bcb45b2cebe65cffa1099eedeeedf09ebd802f2eefe1a2f37b5a15f6",
+  "later_changes": "remove three unnecessary drop(trace) statements using Rust NLL; add diagnostic commit-status metadata only; final targeted gates separately recorded",
+  "gameplay_changes_after_full_test": false
+}

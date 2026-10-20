@@ -298,6 +298,16 @@ fn run_inner(root: &Path, gated: bool, bounded: bool) -> Result<(), String> {
     let mut writer = stdout.lock();
     directory_usage(&root.join("inputs"))?;
     directory_usage(&root.join("candidates"))?;
+    let mut diag = if crate::cpu_log::enabled() {
+        let base = root
+            .parent()
+            .and_then(Path::parent)
+            .ok_or("worker_diagnostic_parent")?
+            .join("diagnostics");
+        Some(crate::cpu_log::CpuLog::create(&base, "worker")?)
+    } else {
+        None
+    };
     while let Some(bytes) = frame(&mut reader)? {
         let request: Request = serde_json::from_slice(&bytes).map_err(|e| e.to_string())?;
         let _cache_fence = if bounded {
@@ -317,10 +327,20 @@ fn run_inner(root: &Path, gated: bool, bounded: bool) -> Result<(), String> {
             }
         }
         let mut state = input(root, &request)?;
+        if let Some(log) = diag.as_mut() {
+            log.begin(serde_json::json!({"ticket":request.ticket,"kind":"worker_computation"}))?;
+        }
         let mut source_seen = false;
         let mut cells_seen = false;
         while !state.complete() {
-            state.page(if bounded && gated { 1 } else { 256 }, 256)?;
+            if let Some(log) = diag.as_mut() {
+                let mut sink = |p| log.page(p);
+                let mut trace = mycity_core::diagnostics::Trace::with_pages(&mut sink);
+                state.page_diagnosed(if bounded && gated { 1 } else { 256 }, 256, &mut trace)?;
+                log.check()?;
+            } else {
+                state.page(if bounded && gated { 1 } else { 256 }, 256)?;
+            }
             if let Some(p) = state.progress() {
                 let (seen, stage) = match p.phase {
                     Phase::Sources => (&mut source_seen, Stage::Sources),
@@ -348,6 +368,11 @@ fn run_inner(root: &Path, gated: bool, bounded: bool) -> Result<(), String> {
             None,
         )?;
         gate(&mut reader, &request, Stage::Published, gated)?;
+        if let Some(log) = diag.as_mut() {
+            log.worker_complete(
+                serde_json::json!({"ticket":request.ticket,"candidate_sha256":hash}),
+            )?;
+        }
         emit(
             &mut writer,
             &request.ticket,
@@ -356,6 +381,9 @@ fn run_inner(root: &Path, gated: bool, bounded: bool) -> Result<(), String> {
             bytes.len(),
             None,
         )?;
+    }
+    if let Some(log) = diag.as_mut() {
+        log.finish()?;
     }
     Ok(())
 }

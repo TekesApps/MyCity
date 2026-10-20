@@ -27,13 +27,16 @@ struct Histogram {
 impl Histogram {
     fn new() -> Self {
         Self {
-            bins: vec![0; LIMIT_US + 1],
+            bins: Vec::new(),
             count: 0,
             overflow: 0,
             max_ns: 0,
         }
     }
     fn add(&mut self, ns: u64) {
+        if self.bins.is_empty() {
+            self.bins.resize(LIMIT_US + 1, 0);
+        }
         self.count += 1;
         self.max_ns = self.max_ns.max(ns);
         let us = ns.div_ceil(1000);
@@ -140,6 +143,15 @@ impl Metrics {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn inactive_histograms_allocate_no_bins() {
+        let mut h = Histogram::new();
+        assert_eq!(h.bins.capacity(), 0);
+        assert_eq!(h.report()["samples"], 0);
+        h.add(1234);
+        assert_eq!(h.bins.len(), LIMIT_US + 1);
+        assert_eq!(h.quantile(99)["upper_inclusive_ns"], 2000);
+    }
     #[test]
     fn quantile_does_not_hide_tail_or_sparse_class() {
         let mut h = Histogram::new();

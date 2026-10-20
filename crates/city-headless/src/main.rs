@@ -78,19 +78,24 @@ fn run() -> Result<(), String> {
         return Ok(());
     }
     if args.get(1).is_some_and(|a| a == "scale-sim-probe") {
-        if !(3..=4).contains(&args.len()) {
+        if !(3..=5).contains(&args.len()) {
             return Err(
-                "usage: mycity-headless scale-sim-probe NEW_DIR [small|medium|full]".into(),
+                "usage: mycity-headless scale-sim-probe NEW_DIR [small|medium|full] [measure]"
+                    .into(),
             );
+        }
+        if args.get(4).is_some_and(|s| s != "measure") {
+            return Err("scale_measure_option".into());
         }
         let tier = mycity_headless::scale_reference::Tier::parse(
             args.get(3).map_or("full", String::as_str),
         )?;
         println!(
             "{}",
-            serde_json::to_string_pretty(&mycity_headless::scale_sim::run_tier(
+            serde_json::to_string_pretty(&mycity_headless::scale_sim::run_measured(
                 std::path::Path::new(&args[2]),
-                tier
+                tier,
+                args.get(4).is_some_and(|s| s == "measure")
             )?)
             .map_err(|e| e.to_string())?
         );

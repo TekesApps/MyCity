@@ -1,0 +1,425 @@
+//! Bounded external diagnostics, not business state. Log failure never rolls back money.
+use crate::scale_metrics::Metrics;
+use mycity_core::{
+    diagnostics::{AirPage, Class, Role, Summary, Trace},
+    transaction::{Caller, Envelope},
+};
+use mycity_storage::{Outcome, Store};
+use serde_json::{json, Value};
+use std::{
+    fs::{self, File},
+    io::{BufWriter, Read, Seek, SeekFrom, Write},
+    path::{Path, PathBuf},
+};
+fn err(e: impl std::fmt::Debug) -> String {
+    format!("{e:?}")
+}
+pub struct CpuLog {
+    root: PathBuf,
+    budget: PathBuf,
+    raw_bytes: [u64; 3],
+    reserved_raw: u64,
+    reserved_log: u64,
+    producer: &'static str,
+    metrics: [Metrics; 3],
+    log: BufWriter<File>,
+    bytes: usize,
+    page_counts: [u64; 3],
+    empty_pages: [u64; 3],
+    page_limits: [[[u32; 2]; 2]; 3],
+    page_items: [[u64; 2]; 3],
+    last_error: Option<String>,
+    l0: Option<&'static str>,
+}
+impl CpuLog {
+    pub fn create(base: &Path, kind: &'static str) -> Result<Self, String> {
+        fs::create_dir_all(base).map_err(err)?;
+        let root = base.join(format!("{kind}-{}", std::process::id()));
+        fs::create_dir(&root).map_err(err)?;
+        let mut ms = Vec::new();
+        for role in ["execution", "quote", "replay"] {
+            let d = root.join(role);
+            fs::create_dir(&d).map_err(err)?;
+            ms.push(Metrics::create(&d.join("compute-durations.bin"))?);
+        }
+        Ok(Self {
+            producer: kind,
+            log: BufWriter::with_capacity(
+                65536,
+                File::create_new(root.join("transactions.jsonl")).map_err(err)?,
+            ),
+            budget: base.join("run-budget.bin"),
+            raw_bytes: [0; 3],
+            reserved_raw: 0,
+            reserved_log: 0,
+            root,
+            metrics: ms.try_into().map_err(|_| "cpu_metrics_roles")?,
+            bytes: 0,
+            page_counts: [0; 3],
+            empty_pages: [0; 3],
+            page_limits: [[[0; 2]; 2]; 3],
+            page_items: [[0; 2]; 3],
+            last_error: None,
+            l0: None,
+        })
+    }
+    pub fn set_l0_class(&mut self, class: &'static str) -> Result<(), String> {
+        if !matches!(
+            class,
+            "L0_pe0_model_transaction" | "L0_pe1_model_transaction"
+        ) {
+            return Err("cpu_l0_class".into());
+        }
+        self.l0 = Some(class);
+        Ok(())
+    }
+    pub fn page(&mut self, page: AirPage) {
+        let index = page.role.index();
+        if page.ok && page.items > 0 {
+            let class = match page.class {
+                Class::AirSources => "air_source_page",
+                Class::AirCells => "air_cell_page",
+                _ => {
+                    self.last_error = Some("cpu_air_class".into());
+                    return;
+                }
+            };
+            let kind = usize::from(page.class == Class::AirCells);
+            let limit = if kind == 0 {
+                page.source_limit
+            } else {
+                page.cell_limit
+            };
+            let bounds = &mut self.page_limits[index][kind];
+            bounds[0] = if bounds[0] == 0 {
+                limit
+            } else {
+                bounds[0].min(limit)
+            };
+            bounds[1] = bounds[1].max(limit);
+            self.page_items[index][kind] += u64::from(page.items);
+            if let Err(e) = self.reserve(0, 9) {
+                self.last_error = Some(e);
+                return;
+            }
+            self.raw_bytes[index] += 9;
+            self.metrics[index].observe(class, page.nanos);
+            self.page_counts[index] += 1;
+        } else {
+            self.empty_pages[index] += 1;
+        }
+    }
+    pub fn record(
+        &mut self,
+        operation: u64,
+        kind: &str,
+        summary: &Summary,
+        durable: bool,
+    ) -> Result<(), String> {
+        // A successful model batch is ONE sample per transaction, not one per payment.
+        for role in [Role::Execution, Role::Quote, Role::Replay] {
+            let i = role.index();
+            let c = &summary.roles[i];
+            if role == Role::Execution
+                && (!durable || !summary.applied || !summary.hook_succeeded || summary.replayed)
+            {
+                continue;
+            }
+            if role == Role::Replay {
+                continue;
+            }
+            if role == Role::Execution {
+                if let Some(class) = self.l0 {
+                    self.reserve(0, 9)?;
+                    self.raw_bytes[i] += 9;
+                    self.metrics[i].observe(
+                        class,
+                        c[Class::Prepare as usize]
+                            .nanos
+                            .saturating_add(c[Class::Apply as usize].nanos),
+                    );
+                }
+            }
+            if self.l0.is_some() {
+                continue;
+            }
+            for (class, name) in [
+                (Class::Claims, "L2_claims_batch"),
+                (Class::Payroll, "L2_payroll_batch"),
+                (Class::Region, "L2_region_exchange_boot_batch"),
+            ] {
+                let row = c[class as usize];
+                if row.work > 0 {
+                    self.reserve(0, 9)?;
+                    self.raw_bytes[i] += 9;
+                    self.metrics[i].observe(name, row.nanos);
+                }
+            }
+            let capture = c[Class::Capture as usize];
+            let admit = c[Class::Admit as usize];
+            if capture.work + admit.work > 0 {
+                self.reserve(0, 9)?;
+                self.raw_bytes[i] += 9;
+                self.metrics[i].observe(
+                    "L2_background_capture_admit_cpu",
+                    capture.nanos.saturating_add(admit.nanos),
+                );
+            }
+        }
+        self.write(
+            json!({"operation":operation,"kind":kind,"durable_receipt":durable,"commit_status":if kind=="candidate_import_quote"{"not_applicable"}else if durable{"confirmed"}else{"unconfirmed"},"summary":summary,"raw_offsets_end":self.raw_bytes}),
+        )?;
+        self.check()
+    }
+    pub fn begin(&mut self, identity: Value) -> Result<(), String> {
+        self.write(json!({"phase":"begin", "identity":identity,"raw_offsets":self.raw_bytes}))
+    }
+    pub fn worker_complete(&mut self, identity: Value) -> Result<(), String> {
+        self.write(
+            json!({"phase":"worker_computation_complete","identity":identity,
+            "raw_offsets":self.raw_bytes,"sim_admission":"not_implied"}),
+        )?;
+        self.finish()?;
+        Ok(())
+    }
+    // Shared across producers. Reserve bounded chunks before writes; unused reservations
+    // are intentionally retained after process death, so crashes cannot free quota twice.
+    fn reserve(&mut self, kind: usize, extra: u64) -> Result<(), String> {
+        let used = if kind == 0 {
+            self.raw_bytes.iter().sum::<u64>()
+        } else {
+            self.bytes as u64
+        };
+        let reserved = if kind == 0 {
+            self.reserved_raw
+        } else {
+            self.reserved_log
+        };
+        if used + extra <= reserved {
+            return Ok(());
+        }
+        let more = (used + extra - reserved).div_ceil(65536) * 65536;
+        let mut file = std::fs::OpenOptions::new()
+            .create(true)
+            .truncate(false)
+            .read(true)
+            .write(true)
+            .open(&self.budget)
+            .map_err(err)?;
+        fs2::FileExt::lock_exclusive(&file).map_err(err)?;
+        let mut b = [0u8; 16];
+        if file.metadata().map_err(err)?.len() != 0 {
+            file.read_exact(&mut b).map_err(err)?;
+        }
+        let offset = kind * 8;
+        let total = u64::from_le_bytes(b[offset..offset + 8].try_into().map_err(err)?) + more;
+        let cap = if kind == 0 {
+            128 * 1024 * 1024
+        } else {
+            256 * 1024 * 1024
+        };
+        if total > cap {
+            return Err("cpu_run_shared_disk_quota".into());
+        }
+        b[offset..offset + 8].copy_from_slice(&total.to_le_bytes());
+        file.seek(SeekFrom::Start(0)).map_err(err)?;
+        file.write_all(&b).map_err(err)?;
+        file.sync_all().map_err(err)?;
+        if kind == 0 {
+            self.reserved_raw += more;
+        } else {
+            self.reserved_log += more;
+        }
+        Ok(())
+    }
+    fn write(&mut self, value: Value) -> Result<(), String> {
+        let b = serde_json::to_vec(&value).map_err(err)?;
+        if b.len() > 32768 || self.bytes + b.len() + 1 > 128 * 1024 * 1024 {
+            return Err("cpu_transaction_log_cap".into());
+        }
+        self.reserve(1, b.len() as u64 + 1)?;
+        self.log.write_all(&b).map_err(err)?;
+        self.log.write_all(b"\n").map_err(err)?;
+        self.bytes += b.len() + 1;
+        Ok(())
+    }
+    pub fn check(&self) -> Result<(), String> {
+        if let Some(e) = &self.last_error {
+            return Err(e.clone());
+        }
+        let cap = if self.producer == "worker" {
+            1024 * 1024
+        } else {
+            5 * 1024 * 1024
+        };
+        if self.owned_bytes() > cap {
+            return Err("cpu_producer_hot_quota".into());
+        }
+        for m in &self.metrics {
+            m.check()?;
+        }
+        Ok(())
+    }
+    pub fn finish(&mut self) -> Result<Value, String> {
+        self.check()?;
+        self.log.flush().map_err(err)?;
+        self.log.get_ref().sync_all().map_err(err)?;
+        let mut reports = Vec::new();
+        for m in &mut self.metrics {
+            reports.push(m.report()?);
+        }
+        let report = json!({"schema":"mycity-cpu-regions-v1","producer":self.producer,"source_sha256":env!("MYCITY_SOURCE_SHA256"),"roles":["execution","quote","replay"],"classes":mycity_core::diagnostics::CLASSES,"payroll_subtypes":["accrual","billing"],"region_subtypes":["clock","expiry","obligation","boot_finish","freight_arrival","population_arrival","economy_phase","direct_command"],
+            "role_compute":reports,"nonempty_air_page_counts":self.page_counts,"empty_or_failed_pages":self.empty_pages,
+            "air_page_limit_bounds_role_source_cell_min_max":self.page_limits,"air_processed_items_role_source_cell":self.page_items,
+            "transaction_log_bytes":self.bytes,"owned_diagnostics_bytes":self.owned_bytes(),
+            "clock":"elapsed compute-region Instant; excludes page sink callback; includes preemption, not thread CPU clock",
+            "overlap":"prepare includes child regions; region P0 includes capture; admit includes admission air pages; do not sum overlapping counters",
+            "air_samples":"pure computation attempts; raw ranges bind to transaction outcome or worker ticket; not committed/admitted sample gates",
+            "replay":"not instrumented by cold Store open; empty replay strata are unmeasured, not zero cost",
+            "shared_disk_reservations_bytes":{"raw":self.reserved_raw,"log":self.reserved_log},
+            "quote_samples":"separate diagnostic strata; never satisfy execution sample minimum","formal_gate":"not_accepted_here"});
+        let mut f = File::create(self.root.join("report.json")).map_err(err)?;
+        serde_json::to_writer_pretty(&mut f, &report).map_err(err)?;
+        f.sync_all().map_err(err)?;
+        Ok(report)
+    }
+    pub fn owned_bytes(&self) -> usize {
+        std::mem::size_of::<Self>()
+            + self.root.capacity()
+            + self.budget.capacity()
+            + self.log.capacity()
+            + self.metrics.iter().map(Metrics::owned_bytes).sum::<usize>()
+    }
+}
+pub fn execute(
+    store: &mut Store,
+    caller: Caller,
+    envelope: Envelope,
+    diag: &mut Option<CpuLog>,
+) -> Result<Outcome, String> {
+    let Some(log) = diag.as_mut() else {
+        return store.execute(caller, envelope).map_err(err);
+    };
+    let operation = envelope.operation_id;
+    log.begin(json!({"operation":operation,"kind":"transaction"}))?;
+    let mut sink = |p| log.page(p);
+    let mut trace = Trace::with_pages(&mut sink);
+    let started = std::time::Instant::now();
+    let mut points = [None; 14];
+    let mut observer = |p| {
+        use mycity_storage::WritePoint::*;
+        let i = match p {
+            Prepared => 0,
+            WalEncoded => 1,
+            WalAdmitted => 2,
+            WalHeaderHalf => 3,
+            WalPayloadHalf => 4,
+            WalChecksumHalf => 5,
+            WalWritten => 6,
+            WalSynced => 7,
+            RootEncoded => 8,
+            RootPublished => 9,
+            CurrentEncoded => 10,
+            CurrentRenamed => 11,
+            CurrentSynced => 12,
+            Applied => 13,
+        };
+        points[i] = Some(started.elapsed().as_nanos().min(u128::from(u64::MAX)) as u64);
+        Ok(())
+    };
+    let result = store.execute_observed_diagnosed(caller, envelope, &mut observer, &mut trace);
+    let summary = trace.summary.clone();
+    let durable = result.as_ref().is_ok_and(|o| o.has_persistent_receipt);
+    log.write(json!({"phase":"persistence_boundaries","operation":operation,
+        "clock":"elapsed ns from Store call; fixed observer callback overhead included",
+        "point_names":["prepared","wal_encoded_hashed","wal_admitted","wal_header_half","wal_payload_half","wal_checksum_half","wal_written","wal_synced","root_encoded","root_published_synced","current_encoded_hashed","current_renamed","current_directory_synced","applied"],
+        "points_ns":points,"durable_receipt":durable,"commit_status":if durable{"confirmed"}else{"unconfirmed"},"store_result":if result.is_ok(){"returned_outcome"}else{"error_requires_receipt_recovery"}}))?;
+    log.record(operation, "transaction", &summary, durable)
+        .map_err(|e| {
+            format!("measurement_failed_after_transaction:{e};durable_receipt={durable}")
+        })?;
+    result.map_err(err)
+}
+
+pub fn import(
+    store: &mut Store,
+    job: u64,
+    generation: u32,
+    bytes: &[u8],
+    observer: impl FnMut(mycity_storage::BackgroundPoint) -> std::io::Result<()>,
+    diag: &mut Option<CpuLog>,
+) -> Result<[u8; 32], mycity_storage::Error> {
+    let Some(log) = diag.as_mut() else {
+        return store.import_background_candidate_with_observer(job, generation, bytes, observer);
+    };
+    log.begin(json!({"job":job,"generation":generation,"kind":"candidate_import_quote"}))
+        .map_err(|e| mycity_storage::Error::Io(std::io::Error::other(e)))?;
+    let mut sink = |p| log.page(p);
+    let mut trace = Trace::with_pages(&mut sink);
+    let result = store.import_candidate_diagnosed(job, generation, bytes, observer, &mut trace);
+    let summary = trace.summary.clone();
+    log.record(
+        mycity_core::background::accept_operation_id(job).map_err(mycity_storage::Error::Model)?,
+        "candidate_import_quote",
+        &summary,
+        false,
+    )
+    .map_err(|e| {
+        mycity_storage::Error::Io(std::io::Error::other(format!(
+            "measurement_failed_after_import:{e}"
+        )))
+    })?;
+    result
+}
+pub fn enabled() -> bool {
+    std::env::var_os("MYCITY_DIAGNOSTICS").is_some_and(|v| v == "1")
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn failed_transaction_batches_never_fill_success_histogram_and_raw_pages_remain_attempts() {
+        let root = std::env::temp_dir().join(format!("mycity-cpu-log-{}", std::process::id()));
+        fs::create_dir(&root).unwrap();
+        let mut log = CpuLog::create(&root, "test").unwrap();
+        log.begin(json!({"operation":1})).unwrap();
+        let mut summary = Summary::default();
+        summary.roles[0][Class::Claims as usize].work = 20000;
+        summary.roles[0][Class::Claims as usize].nanos = 100;
+        log.record(1, "failed_persistence", &summary, false)
+            .unwrap();
+        summary.hook_succeeded = true;
+        summary.applied = true;
+        log.record(2, "committed", &summary, true).unwrap();
+        log.page(AirPage {
+            role: Role::Execution,
+            class: Class::AirSources,
+            nanos: 100,
+            items: 1,
+            source_limit: 256,
+            cell_limit: 256,
+            ok: true,
+        });
+        let report = log.finish().unwrap();
+        assert_eq!(
+            report["role_compute"][0]["classes"]["L2_claims_batch"]["samples"],
+            1
+        );
+        assert_eq!(
+            report["role_compute"][0]["classes"]["L2_claims_batch"]["gate"],
+            "not_passed_insufficient_samples"
+        );
+        assert_eq!(
+            report["air_page_limit_bounds_role_source_cell_min_max"][0][0],
+            json!([256, 256])
+        );
+        assert!(report["air_samples"]
+            .as_str()
+            .unwrap()
+            .contains("not committed"));
+        assert!(report["owned_diagnostics_bytes"].as_u64().unwrap() < 5 * 1024 * 1024);
+        drop(log);
+        fs::remove_dir_all(root).unwrap();
+    }
+}

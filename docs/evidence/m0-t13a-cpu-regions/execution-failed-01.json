@@ -1,0 +1,19 @@
+[
+  {
+    "name": "t13a2e-full-01",
+    "command": [
+      "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+      "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-layout/observe.py",
+      "/Users/frankqin/dev/MyCity/work/t13a2e-full-01",
+      "--",
+      "/Users/frankqin/dev/MyCity/target/release/mycity-headless",
+      "scale-sim-probe",
+      "/Users/frankqin/dev/MyCity/work/t13a2e-full-01/model",
+      "full",
+      "measure"
+    ],
+    "MYCITY_DIAGNOSTICS": null,
+    "exit_code": 1,
+    "wall_seconds": 192.65718604199998
+  }
+]

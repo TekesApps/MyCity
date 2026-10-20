@@ -362,6 +362,54 @@ impl State {
         }
         Ok(())
     }
+    /// Same exact page; observation is outside the measured compute interval.
+    pub fn page_diagnosed(
+        &mut self,
+        source_limit: u32,
+        cell_limit: u32,
+        trace: &mut crate::diagnostics::Trace<'_>,
+    ) -> Result<(), String> {
+        use crate::diagnostics::{AirPage, Class};
+        let Some(start) = trace.start() else {
+            return self.page(source_limit, cell_limit);
+        };
+        let (class, items) = if self.complete() {
+            (Class::AirEmpty, 0)
+        } else {
+            let p = self.progress.as_ref();
+            let cursor = p.map_or(0, |p| p.cursor as usize);
+            if p.is_none_or(|p| p.phase == Phase::Sources) {
+                (
+                    Class::AirSources,
+                    self.input
+                        .sources
+                        .len()
+                        .saturating_sub(cursor)
+                        .min(source_limit as usize) as u32,
+                )
+            } else {
+                (
+                    Class::AirCells,
+                    self.field
+                        .len()
+                        .saturating_sub(cursor)
+                        .min(cell_limit as usize) as u32,
+                )
+            }
+        };
+        let result = self.page(source_limit, cell_limit);
+        let nanos = trace.nanos(Some(start));
+        trace.page(AirPage {
+            role: trace.role,
+            class: if items == 0 { Class::AirEmpty } else { class },
+            nanos,
+            items,
+            source_limit,
+            cell_limit,
+            ok: result.is_ok(),
+        });
+        result
+    }
     /// One source page OR one cell page. A completed segment publishes atomically in memory.
     pub fn page(&mut self, source_limit: u32, cell_limit: u32) -> Result<(), String> {
         if source_limit == 0 || source_limit > 8192 || cell_limit == 0 || cell_limit > 1024 {

@@ -1,0 +1,482 @@
+[
+  {
+    "path": "host-samples.jsonl",
+    "bytes": 125784,
+    "sha256": "47fca44e5121e0c0eb9788e12536dd47121401efb8c7a00e725e60b6b6a66dea"
+  },
+  {
+    "path": "model/pe0/CURRENT.json",
+    "bytes": 123,
+    "sha256": "d00a77c64160cca7c31149a80958515c7e37cd8f19230182b5364ca1ceff1ea1"
+  },
+  {
+    "path": "model/pe0/LOCK",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/pe0/checkpoint-513.json",
+    "bytes": 507343,
+    "sha256": "5c5ba7a416fd4b18decd342962de38b3275bacba791908b1476410704faa90cb"
+  },
+  {
+    "path": "model/pe0/checkpoint-index-513.json",
+    "bytes": 2053,
+    "sha256": "89913698b76a92c7cd40827b3b65ca35112ec20b24ecad260f55f681a3207ae8"
+  },
+  {
+    "path": "model/pe0/diagnostics/economy-19136/execution/compute-durations.bin",
+    "bytes": 6489,
+    "sha256": "acc250ff066e14ba0c9ccfd5b9882266f8651c522a8aecaeb904004118d9f08d"
+  },
+  {
+    "path": "model/pe0/diagnostics/economy-19136/quote/compute-durations.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/pe0/diagnostics/economy-19136/replay/compute-durations.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/pe0/diagnostics/economy-19136/report.json",
+    "bytes": 10237,
+    "sha256": "4c2a5b4219673bde78c8a507b1018becc45c6ba10dda8411c28bcdb113e914f6"
+  },
+  {
+    "path": "model/pe0/diagnostics/economy-19136/transactions.jsonl",
+    "bytes": 1992775,
+    "sha256": "516afa9f694e30f5c5bc5bee264f4cbf29a4374ecc8ef761b9817f1a6e509165"
+  },
+  {
+    "path": "model/pe0/diagnostics/run-budget.bin",
+    "bytes": 16,
+    "sha256": "3d9ae3d371a4ebe385bf443d48270afdb2edabdcc0f2f87badbd696294a8aa12"
+  },
+  {
+    "path": "model/pe0/genesis.json",
+    "bytes": 18129,
+    "sha256": "2648ba79d704452a554e63bc2c846fe1ff3ef502236f724cceae85f7b90654e8"
+  },
+  {
+    "path": "model/pe0/root-0.json",
+    "bytes": 522,
+    "sha256": "8bcbb5f2cea872f7ffe50b97058333179b2597ad599873ea41b646a6373a5ebb"
+  },
+  {
+    "path": "model/pe0/root-1.json",
+    "bytes": 522,
+    "sha256": "1014f5da75a73e2aec36e84aa66c97c0c9c6bd3ea27ff8b912ac2811767dabfa"
+  },
+  {
+    "path": "model/pe0/spatial-height.png",
+    "bytes": 207,
+    "sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8"
+  },
+  {
+    "path": "model/pe0/spatial-input.json",
+    "bytes": 3679,
+    "sha256": "d7a3d9ebeeb2c92ac0a6dba3ac0683639c3cc360d7d1cf1c01d249ecb82b8da2"
+  },
+  {
+    "path": "model/pe0/wal-513.bin",
+    "bytes": 237553,
+    "sha256": "72dee7233a415cd9a00fe757656897bcc27904fb87df2051dae3bcb7ea4e4f65"
+  },
+  {
+    "path": "model/pe1-debt/CURRENT.json",
+    "bytes": 123,
+    "sha256": "ff2886b7d82cae04bc830b2c27fb6c27923780dd95f6f443efbec739b1997a40"
+  },
+  {
+    "path": "model/pe1-debt/LOCK",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/pe1-debt/diagnostics/economy-19136/execution/compute-durations.bin",
+    "bytes": 36,
+    "sha256": "0547fed9a53f77de293f4de1e710ea91f48ecf78fea2b7e6ae39388086474b7e"
+  },
+  {
+    "path": "model/pe1-debt/diagnostics/economy-19136/quote/compute-durations.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/pe1-debt/diagnostics/economy-19136/replay/compute-durations.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/pe1-debt/diagnostics/economy-19136/report.json",
+    "bytes": 10225,
+    "sha256": "340c22c98710bc9df1d0864c40852e9d388b9041c70f162cab78e75760953cce"
+  },
+  {
+    "path": "model/pe1-debt/diagnostics/economy-19136/transactions.jsonl",
+    "bytes": 11015,
+    "sha256": "fb7299773f7412799a60c1249fa43eb6fc2f6eab0f57b4b86477b5b57c1055e5"
+  },
+  {
+    "path": "model/pe1-debt/diagnostics/run-budget.bin",
+    "bytes": 16,
+    "sha256": "5b005620063a3600eb98e101be86de6060bfbad07be191ef895d17f856bac207"
+  },
+  {
+    "path": "model/pe1-debt/genesis.json",
+    "bytes": 17863,
+    "sha256": "8933fdb3bbf18e752b64c612266537026d1764d191af8ae77152adcdae0d30ae"
+  },
+  {
+    "path": "model/pe1-debt/root-0.json",
+    "bytes": 424,
+    "sha256": "1fd51bf08a898c9a29d03d4b071e8c887276a0f5b0d7d4ff61f3178507040b5d"
+  },
+  {
+    "path": "model/pe1-debt/root-1.json",
+    "bytes": 424,
+    "sha256": "aa94d589ea6be8cd7e5a8b26edf2d02a56a3ea47cd3365a54143aadcf9fa10bf"
+  },
+  {
+    "path": "model/pe1-debt/wal.bin",
+    "bytes": 5096,
+    "sha256": "b44ae478d1f77929617078200b3763d01ce32f82a015ef45d445ddfcd650818e"
+  },
+  {
+    "path": "model/pe1-low-cash/CURRENT.json",
+    "bytes": 123,
+    "sha256": "c8979f631bd011bb2ad9c6633997bf2e6b07793645096d57c6bec46facb1e2f8"
+  },
+  {
+    "path": "model/pe1-low-cash/LOCK",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/pe1-low-cash/checkpoint-513.json",
+    "bytes": 507259,
+    "sha256": "895879941fce8ab7fd438817b48592997811cf300967c0fdd9f3acc887f66751"
+  },
+  {
+    "path": "model/pe1-low-cash/checkpoint-index-513.json",
+    "bytes": 2053,
+    "sha256": "9bca30182b60741c8da475ac77356e2e61bc125685451a2429c19d7d478a04c6"
+  },
+  {
+    "path": "model/pe1-low-cash/diagnostics/economy-19136/execution/compute-durations.bin",
+    "bytes": 6480,
+    "sha256": "5f51097bd455612683f736b559f9034823867eb6d12a13d8a090c6faf904b11d"
+  },
+  {
+    "path": "model/pe1-low-cash/diagnostics/economy-19136/quote/compute-durations.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/pe1-low-cash/diagnostics/economy-19136/replay/compute-durations.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/pe1-low-cash/diagnostics/economy-19136/report.json",
+    "bytes": 10237,
+    "sha256": "2128ce7e3898747c2763aafc2d6172afc7bf4e2671c1b139a7c6d421c53900f2"
+  },
+  {
+    "path": "model/pe1-low-cash/diagnostics/economy-19136/transactions.jsonl",
+    "bytes": 1990186,
+    "sha256": "65acdacfea08dc2f6ec7cbb1a86ecddb0acc056fccd3bb7aec978f28b9b2d68b"
+  },
+  {
+    "path": "model/pe1-low-cash/diagnostics/run-budget.bin",
+    "bytes": 16,
+    "sha256": "3d9ae3d371a4ebe385bf443d48270afdb2edabdcc0f2f87badbd696294a8aa12"
+  },
+  {
+    "path": "model/pe1-low-cash/genesis.json",
+    "bytes": 17679,
+    "sha256": "824ac43569f28c30db3053fc46ee6627876abd9ba51c3a51d63c4c391a36b6f7"
+  },
+  {
+    "path": "model/pe1-low-cash/root-0.json",
+    "bytes": 522,
+    "sha256": "813df68a0f6fea93c3756d0b50c33f508802955332a884c5f91411ca35baa1bd"
+  },
+  {
+    "path": "model/pe1-low-cash/root-1.json",
+    "bytes": 522,
+    "sha256": "697630e8584692da380bbd50de074c9ace13d7ba3f783a5661f275b3ae4db1a2"
+  },
+  {
+    "path": "model/pe1-low-cash/wal-513.bin",
+    "bytes": 236386,
+    "sha256": "11d760172dcab50dd6ccaadde1ce36701990a75f00c0135000a0dddf4c5c8879"
+  },
+  {
+    "path": "model/pe1-prepay/CURRENT.json",
+    "bytes": 123,
+    "sha256": "8be777528f91d6be277c6b251cbf9cd236be6b662afd2d32a406fbde3111cb45"
+  },
+  {
+    "path": "model/pe1-prepay/LOCK",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/pe1-prepay/diagnostics/economy-19136/execution/compute-durations.bin",
+    "bytes": 243,
+    "sha256": "7705acc6855b1716dfdcaf389510453b50823ebb3f2430020ef15bf7190a9c32"
+  },
+  {
+    "path": "model/pe1-prepay/diagnostics/economy-19136/quote/compute-durations.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/pe1-prepay/diagnostics/economy-19136/replay/compute-durations.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/pe1-prepay/diagnostics/economy-19136/report.json",
+    "bytes": 10230,
+    "sha256": "b1893da669e80f6ea73aab5b7168917706c343d989759094c5db05a5fafffb60"
+  },
+  {
+    "path": "model/pe1-prepay/diagnostics/economy-19136/transactions.jsonl",
+    "bytes": 74450,
+    "sha256": "008c585651afd08ed63d24a0fd556ac80234dfd7e4c42760f0c54b8318505a88"
+  },
+  {
+    "path": "model/pe1-prepay/diagnostics/run-budget.bin",
+    "bytes": 16,
+    "sha256": "971bf4ac01ce99f3e815ab96259b83ff36a6ca96b8324bda1d1e739583d2263d"
+  },
+  {
+    "path": "model/pe1-prepay/genesis.json",
+    "bytes": 17685,
+    "sha256": "b28e3ca1f9a589168c618e5a016f94f8841d7ac0db707c8c73fb5a4bee116074"
+  },
+  {
+    "path": "model/pe1-prepay/root-0.json",
+    "bytes": 427,
+    "sha256": "400e05f5b96b131698d029defb561791fdfc699affddee4cb90c87064d23d0e6"
+  },
+  {
+    "path": "model/pe1-prepay/root-1.json",
+    "bytes": 427,
+    "sha256": "8a6e23851ccc88b3fad52ad7fda4f31f1d9161aa57b4cddcaf51fea3c06295bc"
+  },
+  {
+    "path": "model/pe1-prepay/wal.bin",
+    "bytes": 30384,
+    "sha256": "2852ed5511ebc03e029bc1ed4de6300b344a51cd9ee74f53590621dfa381c20a"
+  },
+  {
+    "path": "model/pe1-refund/CURRENT.json",
+    "bytes": 123,
+    "sha256": "4a2c3979890b9675e9a424c4675a6084a7663aaa6141f32b049e117ae7b838c8"
+  },
+  {
+    "path": "model/pe1-refund/LOCK",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/pe1-refund/diagnostics/economy-19136/execution/compute-durations.bin",
+    "bytes": 252,
+    "sha256": "f3fa4c684cc706dd3f2371590f2919c60fb431a73670716056918c8d025039b8"
+  },
+  {
+    "path": "model/pe1-refund/diagnostics/economy-19136/quote/compute-durations.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/pe1-refund/diagnostics/economy-19136/replay/compute-durations.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/pe1-refund/diagnostics/economy-19136/report.json",
+    "bytes": 10230,
+    "sha256": "642e99c9a667b3e2fd5c03129fb35f2bff289e96cb9def53d3abea4c62b8984f"
+  },
+  {
+    "path": "model/pe1-refund/diagnostics/economy-19136/transactions.jsonl",
+    "bytes": 77211,
+    "sha256": "ff276f1a83306f371716d16bbda969196173b5c47a93649d54fa696d476dddbe"
+  },
+  {
+    "path": "model/pe1-refund/diagnostics/run-budget.bin",
+    "bytes": 16,
+    "sha256": "971bf4ac01ce99f3e815ab96259b83ff36a6ca96b8324bda1d1e739583d2263d"
+  },
+  {
+    "path": "model/pe1-refund/genesis.json",
+    "bytes": 17866,
+    "sha256": "648451aef24e237678c30301b9aded81b74b3b1c4d802740648f905e6c6d215f"
+  },
+  {
+    "path": "model/pe1-refund/root-0.json",
+    "bytes": 427,
+    "sha256": "f5c8546f0bfd05c32bc648ed2a828a5b74ff4f11909df3f3e53ac072b402a049"
+  },
+  {
+    "path": "model/pe1-refund/root-1.json",
+    "bytes": 427,
+    "sha256": "bed246940997302282b1e9c93fb401c505395aea75ed8b42739a863da79d701c"
+  },
+  {
+    "path": "model/pe1-refund/wal.bin",
+    "bytes": 31522,
+    "sha256": "8cabfbc214253daf98e759095f2653f5b478c36c949d8c2cbf7a5be36e091dc3"
+  },
+  {
+    "path": "model/pe1-supply/CURRENT.json",
+    "bytes": 123,
+    "sha256": "9450a6e2be45b88c9f24fe563f0c72d02c7aaaece6d8145603015fa1ca06de33"
+  },
+  {
+    "path": "model/pe1-supply/LOCK",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/pe1-supply/checkpoint-513.json",
+    "bytes": 503990,
+    "sha256": "7cb2590d2b74157325798c6ff80fe5c8eec155d2cae3eed3e8eddff9c14a4545"
+  },
+  {
+    "path": "model/pe1-supply/checkpoint-index-513.json",
+    "bytes": 2053,
+    "sha256": "6a7e3e50872478641a39eda8eda46023c2cf5c1b987762b048bf2b44dbf40ee0"
+  },
+  {
+    "path": "model/pe1-supply/diagnostics/economy-19136/execution/compute-durations.bin",
+    "bytes": 6480,
+    "sha256": "5c9373f2143381ebfb80a8219b227d6d3a9830ff4d89e57d9071aebda90510b6"
+  },
+  {
+    "path": "model/pe1-supply/diagnostics/economy-19136/quote/compute-durations.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/pe1-supply/diagnostics/economy-19136/replay/compute-durations.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/pe1-supply/diagnostics/economy-19136/report.json",
+    "bytes": 10236,
+    "sha256": "a60c4c096699225fa9bcdf71f4d05177e60ea1d8536e651e266c67e57f02a784"
+  },
+  {
+    "path": "model/pe1-supply/diagnostics/economy-19136/transactions.jsonl",
+    "bytes": 1990121,
+    "sha256": "cf067f46aeebfc01ce7412b590888705ca99ea9d9b33b0b81c6b1b299c19c7ec"
+  },
+  {
+    "path": "model/pe1-supply/diagnostics/run-budget.bin",
+    "bytes": 16,
+    "sha256": "3d9ae3d371a4ebe385bf443d48270afdb2edabdcc0f2f87badbd696294a8aa12"
+  },
+  {
+    "path": "model/pe1-supply/genesis.json",
+    "bytes": 17670,
+    "sha256": "624bfe06af8c86469e104e668be0119e38c92e25b45636ed319c033c6a222c99"
+  },
+  {
+    "path": "model/pe1-supply/root-0.json",
+    "bytes": 522,
+    "sha256": "91345e3bc483ddaaffcc974c71ccb7af298f664a98b58c11eca6546f96da979e"
+  },
+  {
+    "path": "model/pe1-supply/root-1.json",
+    "bytes": 522,
+    "sha256": "4167fca485ab2af56b21a4e1869b557832fd4d89b5ad7cae9cf92a5772ba1940"
+  },
+  {
+    "path": "model/pe1-supply/wal-513.bin",
+    "bytes": 236321,
+    "sha256": "d60657e83c83d6aed7e751ff04b90d391e0c8d822770d1c805cacc15f2f13297"
+  },
+  {
+    "path": "model/pe1-suspend/CURRENT.json",
+    "bytes": 123,
+    "sha256": "43bb260f0343c59005886309b841655a714d888da6742850ae6fd580addbd565"
+  },
+  {
+    "path": "model/pe1-suspend/LOCK",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/pe1-suspend/diagnostics/economy-19136/execution/compute-durations.bin",
+    "bytes": 441,
+    "sha256": "db92d8db927b17c926db16cc91f900250cda7e9fec788a6ce4412d7ff75c2b6c"
+  },
+  {
+    "path": "model/pe1-suspend/diagnostics/economy-19136/quote/compute-durations.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/pe1-suspend/diagnostics/economy-19136/replay/compute-durations.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/pe1-suspend/diagnostics/economy-19136/report.json",
+    "bytes": 10231,
+    "sha256": "dc029369c94b26d71016cdf37175d61376d6c3f983ac29f69fe473bd5994312b"
+  },
+  {
+    "path": "model/pe1-suspend/diagnostics/economy-19136/transactions.jsonl",
+    "bytes": 135161,
+    "sha256": "b5b7868235e1af56307103c86462c8f871a4943eb05f08bd103358fde82859a6"
+  },
+  {
+    "path": "model/pe1-suspend/diagnostics/run-budget.bin",
+    "bytes": 16,
+    "sha256": "f69e2dcc6b6a1d8215bc808a0c3d64defe291092bbe90085dc0e7d1b5dca6f2e"
+  },
+  {
+    "path": "model/pe1-suspend/genesis.json",
+    "bytes": 17685,
+    "sha256": "a0831bf9c42ba9612bf59bac1ba0585f5eaf6d327f4292fb1ae56d3ace5c2a78"
+  },
+  {
+    "path": "model/pe1-suspend/root-0.json",
+    "bytes": 427,
+    "sha256": "46c0a1bca744543f2ee6f1db95b5b7682bbdd1517f5776a16f2a74d3890d89df"
+  },
+  {
+    "path": "model/pe1-suspend/root-1.json",
+    "bytes": 427,
+    "sha256": "8d62f21a70892a182471ca04057007cee83cb47dce0edcb64c149c4faec4269d"
+  },
+  {
+    "path": "model/pe1-suspend/wal.bin",
+    "bytes": 55292,
+    "sha256": "8b253839b1d6783518d70d3ad79a6fdc18c97e594919c44a78bbae9ee4ae48e1"
+  },
+  {
+    "path": "model.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model.stdout",
+    "bytes": 651987,
+    "sha256": "687bb6f0cd429fff3f470d04633756cc41d41bc6d63cdfdd9142b05b80ff92f1"
+  },
+  {
+    "path": "observer-report.json",
+    "bytes": 4115,
+    "sha256": "9d90377e806c0b8a3158298f8a21de743e94956080aacb407b8dea57d5599eae"
+  }
+]

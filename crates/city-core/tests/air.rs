@@ -367,3 +367,42 @@ fn continuous_windows_preserve_field_integral_and_source_ledger() {
     assert!(state.continue_from_boundary(input(60)).is_err());
     assert_eq!(before, state.checkpoint().unwrap());
 }
+
+#[test]
+fn diagnostics_keep_air_checkpoint_exact_and_exclude_page_sink_from_parent_clock() {
+    use mycity_core::diagnostics::{Class, Trace};
+    for with_source in [false, true] {
+        let mut i = input(60);
+        if with_source {
+            i.sources.push(Source {
+                id: 1,
+                cell: 12,
+                start: 0,
+                end: 60,
+                rate_micro: 100,
+            });
+        }
+        let mut plain = State::new(i.clone()).unwrap();
+        let mut measured = State::new(i).unwrap();
+        let mut nonempty_sources = 0;
+        let mut sink = |p: mycity_core::diagnostics::AirPage| {
+            if p.class == Class::AirSources && p.items > 0 {
+                nonempty_sources += 1;
+            }
+            std::thread::sleep(std::time::Duration::from_millis(1));
+        };
+        let mut trace = Trace::with_pages(&mut sink);
+        let wall = std::time::Instant::now();
+        let parent = trace.start();
+        while !measured.complete() {
+            plain.page(256, 256).unwrap();
+            measured.page_diagnosed(256, 256, &mut trace).unwrap();
+            assert_eq!(plain.checkpoint().unwrap(), measured.checkpoint().unwrap());
+        }
+        let compute = trace.nanos(parent);
+        let excluded = trace.summary.page_sink_nanos[0];
+        assert!(excluded > 0);
+        assert!(u128::from(compute) + u128::from(excluded) <= wall.elapsed().as_nanos());
+        assert_eq!(nonempty_sources, u64::from(with_source));
+    }
+}

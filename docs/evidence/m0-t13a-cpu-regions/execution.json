@@ -1,0 +1,35 @@
+[
+  {
+    "name": "t13a2e-full-02",
+    "command": [
+      "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+      "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-cpu-regions/observe_v2.py",
+      "/Users/frankqin/dev/MyCity/work/t13a2e-full-02",
+      "--",
+      "/Users/frankqin/dev/MyCity/target/release/mycity-headless",
+      "scale-sim-probe",
+      "/Users/frankqin/dev/MyCity/work/t13a2e-full-02/model",
+      "full",
+      "measure"
+    ],
+    "MYCITY_DIAGNOSTICS": null,
+    "exit_code": 0,
+    "wall_seconds": 298.171652833
+  },
+  {
+    "name": "t13a2e-l0-01",
+    "command": [
+      "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+      "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-cpu-regions/observe_v2.py",
+      "/Users/frankqin/dev/MyCity/work/t13a2e-l0-01",
+      "--",
+      "/Users/frankqin/dev/MyCity/target/release/mycity-headless",
+      "economy-probe",
+      "fixtures/m0-economy-opening.json",
+      "/Users/frankqin/dev/MyCity/work/t13a2e-l0-01/model"
+    ],
+    "MYCITY_DIAGNOSTICS": "1",
+    "exit_code": 0,
+    "wall_seconds": 62.34383820900001
+  }
+]

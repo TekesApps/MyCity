@@ -1,0 +1,21 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+error[E0308]: mismatched types
+   --> crates/city-storage/src/lib.rs:387:18
+    |
+387 |         observer(WritePoint::RootEncoded)?;
+    |         -------- ^^^^^^^^^^^^^^^^^^^^^^^ expected `CreatePoint`, found `WritePoint`
+    |         |
+    |         arguments to this function are incorrect
+    |
+note: type parameter defined here
+   --> crates/city-storage/src/lib.rs:304:23
+    |
+304 |         mut observer: impl FnMut(CreatePoint) -> io::Result<()>,
+    |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `mycity-storage` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

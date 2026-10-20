@@ -1,0 +1,293 @@
+{
+  "source_sha256": "b72de1cbea8681b387106ee9f5d11fa9a146aa889caee6c0bbfdcaa4d36314f7",
+  "runs": {
+    "t13a2e-full-01": {
+      "status": "failed_retained",
+      "reason": "observer hot-data bound current=945200 peak=1833655 tracer=284048",
+      "files": 2123,
+      "actual_wall_seconds": 192.59498575,
+      "no_full_30day_claim": true
+    },
+    "t13a2e-full-02": {
+      "files": 3702,
+      "producers": {
+        "sim": 2,
+        "worker": 724
+      },
+      "bound_attempts": 4460,
+      "raw_compute": [
+        {
+          "stratum": "sim",
+          "producer": "sim",
+          "role": "execution",
+          "class": "L2_background_capture_admit_cpu",
+          "samples": 1448,
+          "p95_ns": 11325614,
+          "p99_ns": 23027122,
+          "max_ns": 474957253,
+          "diagnostic_threshold": "within_20_40ms",
+          "formal_gate": "not_accepted; air attempts require outcome selection; repetitions and joint gates outstanding"
+        },
+        {
+          "stratum": "sim",
+          "producer": "sim",
+          "role": "execution",
+          "class": "L2_claims_batch",
+          "samples": 20,
+          "p95_ns": 71918,
+          "p99_ns": 77031,
+          "max_ns": 77031,
+          "diagnostic_threshold": "insufficient_samples",
+          "formal_gate": "not_accepted; air attempts require outcome selection; repetitions and joint gates outstanding"
+        },
+        {
+          "stratum": "sim",
+          "producer": "sim",
+          "role": "execution",
+          "class": "L2_payroll_batch",
+          "samples": 724,
+          "p95_ns": 4502,
+          "p99_ns": 8335,
+          "max_ns": 22298374,
+          "diagnostic_threshold": "within_20_40ms",
+          "formal_gate": "not_accepted; air attempts require outcome selection; repetitions and joint gates outstanding"
+        },
+        {
+          "stratum": "sim",
+          "producer": "sim",
+          "role": "execution",
+          "class": "L2_region_exchange_boot_batch",
+          "samples": 736,
+          "p95_ns": 6989042,
+          "p99_ns": 11835709,
+          "max_ns": 107563332,
+          "diagnostic_threshold": "within_20_40ms",
+          "formal_gate": "not_accepted; air attempts require outcome selection; repetitions and joint gates outstanding"
+        },
+        {
+          "stratum": "sim",
+          "producer": "sim",
+          "role": "execution",
+          "class": "air_cell_page",
+          "samples": 691200,
+          "p95_ns": 17458,
+          "p99_ns": 18208,
+          "max_ns": 21041084,
+          "diagnostic_threshold": "within_20_40ms",
+          "formal_gate": "not_accepted; air attempts require outcome selection; repetitions and joint gates outstanding"
+        },
+        {
+          "stratum": "sim",
+          "producer": "sim",
+          "role": "execution",
+          "class": "air_source_page",
+          "samples": 4,
+          "p95_ns": 2792,
+          "p99_ns": 2792,
+          "max_ns": 2792,
+          "diagnostic_threshold": "insufficient_samples",
+          "formal_gate": "not_accepted; air attempts require outcome selection; repetitions and joint gates outstanding"
+        },
+        {
+          "stratum": "sim",
+          "producer": "sim",
+          "role": "quote",
+          "class": "L2_background_capture_admit_cpu",
+          "samples": 2172,
+          "p95_ns": 21935895,
+          "p99_ns": 39594826,
+          "max_ns": 157117623,
+          "diagnostic_threshold": "outside_20_40ms",
+          "formal_gate": "not_accepted; air attempts require outcome selection; repetitions and joint gates outstanding"
+        },
+        {
+          "stratum": "sim",
+          "producer": "sim",
+          "role": "quote",
+          "class": "L2_claims_batch",
+          "samples": 20,
+          "p95_ns": 124950,
+          "p99_ns": 150083,
+          "max_ns": 150083,
+          "diagnostic_threshold": "insufficient_samples",
+          "formal_gate": "not_accepted; air attempts require outcome selection; repetitions and joint gates outstanding"
+        },
+        {
+          "stratum": "sim",
+          "producer": "sim",
+          "role": "quote",
+          "class": "L2_payroll_batch",
+          "samples": 724,
+          "p95_ns": 9919,
+          "p99_ns": 18914,
+          "max_ns": 56374,
+          "diagnostic_threshold": "within_20_40ms",
+          "formal_gate": "not_accepted; air attempts require outcome selection; repetitions and joint gates outstanding"
+        },
+        {
+          "stratum": "sim",
+          "producer": "sim",
+          "role": "quote",
+          "class": "L2_region_exchange_boot_batch",
+          "samples": 724,
+          "p95_ns": 13868415,
+          "p99_ns": 26829960,
+          "max_ns": 86010833,
+          "diagnostic_threshold": "within_20_40ms",
+          "formal_gate": "not_accepted; air attempts require outcome selection; repetitions and joint gates outstanding"
+        },
+        {
+          "stratum": "sim",
+          "producer": "sim",
+          "role": "quote",
+          "class": "air_cell_page",
+          "samples": 2073600,
+          "p95_ns": 17458,
+          "p99_ns": 18208,
+          "max_ns": 54064500,
+          "diagnostic_threshold": "within_20_40ms",
+          "formal_gate": "not_accepted; air attempts require outcome selection; repetitions and joint gates outstanding"
+        },
+        {
+          "stratum": "sim",
+          "producer": "sim",
+          "role": "quote",
+          "class": "air_source_page",
+          "samples": 12,
+          "p95_ns": 11917,
+          "p99_ns": 11917,
+          "max_ns": 11917,
+          "diagnostic_threshold": "insufficient_samples",
+          "formal_gate": "not_accepted; air attempts require outcome selection; repetitions and joint gates outstanding"
+        },
+        {
+          "stratum": "worker",
+          "producer": "worker",
+          "role": "execution",
+          "class": "air_cell_page",
+          "samples": 2764800,
+          "p95_ns": 1000,
+          "p99_ns": 15000,
+          "max_ns": 7262834,
+          "diagnostic_threshold": "within_20_40ms",
+          "formal_gate": "not_accepted; air attempts require outcome selection; repetitions and joint gates outstanding"
+        },
+        {
+          "stratum": "worker",
+          "producer": "worker",
+          "role": "execution",
+          "class": "air_source_page",
+          "samples": 4,
+          "p95_ns": 917,
+          "p99_ns": 917,
+          "max_ns": 917,
+          "diagnostic_threshold": "insufficient_samples",
+          "formal_gate": "not_accepted; air attempts require outcome selection; repetitions and joint gates outstanding"
+        }
+      ],
+      "sim_work_seconds": 264.2754425,
+      "full_state_exact_v036": true,
+      "observer_status": "passed_measurement_wrapper"
+    },
+    "t13a2e-l0-01": {
+      "files": 96,
+      "producers": {
+        "economy": 7
+      },
+      "bound_attempts": 2269,
+      "raw_compute": [
+        {
+          "stratum": "pe0",
+          "producer": "economy",
+          "role": "execution",
+          "class": "L0_pe0_model_transaction",
+          "samples": 721,
+          "p95_ns": 27583,
+          "p99_ns": 42541,
+          "max_ns": 209916,
+          "diagnostic_threshold": "within_20_40ms",
+          "formal_gate": "not_accepted; air attempts require outcome selection; repetitions and joint gates outstanding"
+        },
+        {
+          "stratum": "pe1-debt",
+          "producer": "economy",
+          "role": "execution",
+          "class": "L0_pe1_model_transaction",
+          "samples": 4,
+          "p95_ns": 15334,
+          "p99_ns": 15334,
+          "max_ns": 15334,
+          "diagnostic_threshold": "insufficient_samples",
+          "formal_gate": "not_accepted; air attempts require outcome selection; repetitions and joint gates outstanding"
+        },
+        {
+          "stratum": "pe1-low-cash",
+          "producer": "economy",
+          "role": "execution",
+          "class": "L0_pe1_model_transaction",
+          "samples": 720,
+          "p95_ns": 31709,
+          "p99_ns": 42417,
+          "max_ns": 100376,
+          "diagnostic_threshold": "within_20_40ms",
+          "formal_gate": "not_accepted; air attempts require outcome selection; repetitions and joint gates outstanding"
+        },
+        {
+          "stratum": "pe1-prepay",
+          "producer": "economy",
+          "role": "execution",
+          "class": "L0_pe1_model_transaction",
+          "samples": 27,
+          "p95_ns": 19501,
+          "p99_ns": 20917,
+          "max_ns": 20917,
+          "diagnostic_threshold": "insufficient_samples",
+          "formal_gate": "not_accepted; air attempts require outcome selection; repetitions and joint gates outstanding"
+        },
+        {
+          "stratum": "pe1-refund",
+          "producer": "economy",
+          "role": "execution",
+          "class": "L0_pe1_model_transaction",
+          "samples": 28,
+          "p95_ns": 21500,
+          "p99_ns": 26917,
+          "max_ns": 26917,
+          "diagnostic_threshold": "insufficient_samples",
+          "formal_gate": "not_accepted; air attempts require outcome selection; repetitions and joint gates outstanding"
+        },
+        {
+          "stratum": "pe1-supply",
+          "producer": "economy",
+          "role": "execution",
+          "class": "L0_pe1_model_transaction",
+          "samples": 720,
+          "p95_ns": 31708,
+          "p99_ns": 47250,
+          "max_ns": 83000,
+          "diagnostic_threshold": "within_20_40ms",
+          "formal_gate": "not_accepted; air attempts require outcome selection; repetitions and joint gates outstanding"
+        },
+        {
+          "stratum": "pe1-suspend",
+          "producer": "economy",
+          "role": "execution",
+          "class": "L0_pe1_model_transaction",
+          "samples": 49,
+          "p95_ns": 23125,
+          "p99_ns": 24583,
+          "max_ns": 24583,
+          "diagnostic_threshold": "insufficient_samples",
+          "formal_gate": "not_accepted; air attempts require outcome selection; repetitions and joint gates outstanding"
+        }
+      ],
+      "sim_work_seconds": null,
+      "full_state_exact_v036": false,
+      "observer_status": "passed_measurement_wrapper"
+    }
+  },
+  "formal_performance_acceptance": "not_run",
+  "eight_hour_gate": "not_run",
+  "memory_16gb_gate": "not_run",
+  "full_M0": "not_accepted"
+}

@@ -1,4 +1,5 @@
 //! Single-writer, bounded volatile transactions. No durable-success claim until storage.
+use crate::diagnostics::{Class, Role, Trace};
 use crate::{
     arena::{AccountDomain, Handle, InventoryDomain, RawHandle},
     assembly::{Account, Stock, World},
@@ -585,6 +586,14 @@ impl Engine {
         caller: Caller,
         env: &Envelope,
     ) -> Option<(crate::timeline::Progress, usize)> {
+        self.timeline_quote_diagnosed(caller, env, &mut Trace::disabled())
+    }
+    pub fn timeline_quote_diagnosed(
+        &self,
+        caller: Caller,
+        env: &Envelope,
+        trace: &mut Trace<'_>,
+    ) -> Option<(crate::timeline::Progress, usize)> {
         if !matches!(
             env.actions.as_slice(),
             [Action::Timeline {
@@ -597,7 +606,13 @@ impl Engine {
         {
             return None;
         }
-        let prepared = self.prepare(caller, env).ok()?;
+        let old = trace.role;
+        trace.role = Role::Quote;
+        let started = trace.start();
+        let prepared = self.prepare_diagnosed(caller, env, None, trace);
+        trace.end(Class::Prepare, started, 0, u64::from(prepared.is_ok()), 0);
+        trace.role = old;
+        let prepared = prepared.ok()?;
         let progress = prepared.timeline.as_ref()?.progress;
         let t = self.timeline.as_ref()?;
         // Every examined due row, phase transition, and small domain table is included.
@@ -622,13 +637,30 @@ impl Engine {
         env: &Envelope,
         candidate: Option<&crate::air::State>,
     ) -> bool {
+        self.background_control_quote_diagnosed(caller, env, candidate, &mut Trace::disabled())
+    }
+    pub fn background_control_quote_diagnosed(
+        &self,
+        caller: Caller,
+        env: &Envelope,
+        candidate: Option<&crate::air::State>,
+        trace: &mut Trace<'_>,
+    ) -> bool {
         valid_background_operation(caller, env)
             && matches!(caller, Caller::System)
             && env.world == self.world.scope.world()
             && env.branch == self.world.scope.branch()
             && env.expected_revision == self.world.revision
             && matches!(env.actions.as_slice(), [Action::Background { command }] if !matches!(command, crate::background::Command::Enable))
-            && self.prepare_with_background(caller, env, candidate).is_ok()
+            && {
+                let old = trace.role;
+                trace.role = Role::Quote;
+                let started = trace.start();
+                let result = self.prepare_diagnosed(caller, env, candidate, trace);
+                trace.end(Class::Prepare, started, 0, u64::from(result.is_ok()), 0);
+                trace.role = old;
+                result.is_ok()
+            }
     }
     pub fn background(&self) -> Option<&crate::background::Background> {
         self.background.as_ref()
@@ -676,6 +708,16 @@ impl Engine {
         candidate: Option<&crate::air::State>,
         persist: impl FnOnce(&Envelope, &JournalRecord) -> Result<(), E>,
     ) -> Result<Result<Receipt, TxError>, E> {
+        self.execute_recorded_diagnosed(caller, env, candidate, persist, &mut Trace::disabled())
+    }
+    pub fn execute_recorded_diagnosed<E>(
+        &mut self,
+        caller: Caller,
+        env: Envelope,
+        candidate: Option<&crate::air::State>,
+        persist: impl FnOnce(&Envelope, &JournalRecord) -> Result<(), E>,
+        trace: &mut Trace<'_>,
+    ) -> Result<Result<Receipt, TxError>, E> {
         if env.world != self.world.scope.world() || env.branch != self.world.scope.branch() {
             return Ok(Err(TxError::WrongScope));
         }
@@ -703,10 +745,12 @@ impl Engine {
                 return Ok(Err(TxError::Unauthorized));
             }
         }
+        let encode_started = trace.start();
         let digest: [u8; 32] = {
             use sha2::{Digest, Sha256};
             Sha256::digest(serde_json::to_vec(&env).expect("bounded typed envelope")).into()
         };
+        trace.end(Class::Encode, encode_started, 0, 1, 0);
         if let Some(old) = self
             .journal
             .iter()
@@ -715,6 +759,7 @@ impl Engine {
             if old.actor != caller.key() {
                 return Ok(Err(TxError::Unauthorized));
             }
+            trace.summary.replayed = true;
             return Ok(if old.payload_sha256 == digest {
                 old.outcome
             } else {
@@ -728,13 +773,21 @@ impl Engine {
             .world
             .exchange
             .is_some_and(|e| e.inbox.admission_full());
+        let prepare_started = trace.start();
         let prepared = if normal_full && env.actions.iter().any(Action::is_new_commitment) {
             Err(TxError::InboxFull)
         } else if env.expected_revision != self.world.revision {
             Err(TxError::StaleRevision)
         } else {
-            self.prepare_with_background(caller, &env, candidate)
+            self.prepare_diagnosed(caller, &env, candidate, trace)
         };
+        trace.end(
+            Class::Prepare,
+            prepare_started,
+            0,
+            u64::from(prepared.is_ok()),
+            0,
+        );
         // A stale lease or unavailable candidate must not burn the job's final receipt.
         // The hot/cold duplicate paths still return the original committed admission.
         if background_accept_id {
@@ -759,21 +812,39 @@ impl Engine {
             actions,
         };
         persist(&env, &record)?;
+        trace.summary.hook_succeeded = true;
         if let Ok(change) = prepared {
+            let started = trace.start();
             self.apply(change);
+            trace.end(Class::Apply, started, 0, 1, 0);
+            trace.summary.applied = true;
         }
         self.journal.push(record);
         Ok(outcome)
     }
 
     pub fn can_advance_existing_responsibility(&self, caller: Caller, env: &Envelope) -> bool {
+        self.can_advance_existing_responsibility_diagnosed(caller, env, &mut Trace::disabled())
+    }
+    pub fn can_advance_existing_responsibility_diagnosed(
+        &self,
+        caller: Caller,
+        env: &Envelope,
+        trace: &mut Trace<'_>,
+    ) -> bool {
         if env.world != self.world.scope.world()
             || env.branch != self.world.scope.branch()
             || env.expected_revision != self.world.revision
         {
             return false;
         }
-        self.prepare(caller, env)
+        let old = trace.role;
+        trace.role = Role::Quote;
+        let started = trace.start();
+        let prepared = self.prepare_diagnosed(caller, env, None, trace);
+        trace.end(Class::Prepare, started, 0, u64::from(prepared.is_ok()), 0);
+        trace.role = old;
+        prepared
             .as_ref()
             .is_ok_and(|p| self.emergency_progress(caller, env, p))
     }
@@ -877,14 +948,12 @@ impl Engine {
             _ => false,
         }
     }
-    fn prepare(&self, caller: Caller, env: &Envelope) -> Result<Prepared, TxError> {
-        self.prepare_with_background(caller, env, None)
-    }
-    fn prepare_with_background(
+    fn prepare_diagnosed(
         &self,
         caller: Caller,
         env: &Envelope,
         candidate: Option<&crate::air::State>,
+        trace: &mut Trace<'_>,
     ) -> Result<Prepared, TxError> {
         let next_revision = self
             .world
@@ -908,6 +977,19 @@ impl Engine {
         let mut timeline = self.timeline.clone();
         let mut background = self.background.clone();
         for (action_index, action) in env.actions.iter().enumerate() {
+            let domain_start = if matches!(
+                action,
+                Action::Boot { .. }
+                    | Action::Exchange { .. }
+                    | Action::RegionAdvance { .. }
+                    | Action::RegionActivate { .. }
+                    | Action::RegionMigrate { .. }
+                    | Action::RegionSettleDebt { .. }
+            ) {
+                trace.start().map(|s| (s, region, boot, exchange))
+            } else {
+                None
+            };
             if timeline
                 .as_ref()
                 .is_some_and(|t| t.progress.target.is_some())
@@ -981,11 +1063,16 @@ impl Engine {
                         {
                             return Err(TxError::InvalidOperation);
                         }
-                        background
+                        let started = trace.start();
+                        let result = background
                             .as_mut()
                             .ok_or(TxError::InvalidOperation)?
-                            .command(command, candidate)
-                            .map_err(|_| TxError::InvalidOperation)?;
+                            .command_diagnosed(command, candidate, trace)
+                            .map_err(|_| TxError::InvalidOperation);
+                        if matches!(command, crate::background::Command::Accept { .. }) {
+                            trace.end(Class::Admit, started, 0, u64::from(result.is_ok()), 0);
+                        }
+                        result?;
                     }
                 }
                 Action::Timeline { command } => {
@@ -996,6 +1083,7 @@ impl Engine {
                         return Err(TxError::Timeline(crate::timeline::Error::Input));
                     }
                     timeline_driver::Frame {
+                        trace,
                         world: &self.world,
                         background: &mut background,
                         region: &mut region,
@@ -1557,6 +1645,12 @@ impl Engine {
                         *slot = None;
                     }
                 }
+            }
+            if let Some((started, old_region, old_boot, old_exchange)) = domain_start {
+                let work =
+                    u64::from(old_region != region || old_boot != boot || old_exchange != exchange);
+                trace.end(Class::Region, Some(started), 0, work, 0);
+                trace.summary.region_subtypes[trace.role.index()][7] += work;
             }
         }
         if let Some(e) = &economy {

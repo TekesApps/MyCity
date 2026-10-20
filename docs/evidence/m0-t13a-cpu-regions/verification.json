@@ -1,0 +1,18 @@
+{
+  "full_workspace_tests": {
+    "source_sha256": "9a213062bcb45b2cebe65cffa1099eedeeedf09ebd802f2eefe1a2f37b5a15f6",
+    "passed": 258,
+    "exit_code": 0
+  },
+  "final_targeted_tests": {
+    "source_sha256": "b72de1cbea8681b387106ee9f5d11fa9a146aa889caee6c0bbfdcaa4d36314f7",
+    "passed": 9,
+    "commands_all_exit_zero": true
+  },
+  "final_clippy": "passed",
+  "final_fmt": "passed",
+  "independent_artifacts_and_quantiles": "passed",
+  "advisor_phase_review": "passed_with_explicit_outstanding_gates",
+  "formal_T13A": "not_accepted",
+  "full_M0": "not_accepted"
+}

@@ -213,10 +213,23 @@ impl Background {
         self.validate()
     }
     /// No business transfers occur here. The Engine prepares a clone before calling it.
+    #[cfg(test)]
     pub(crate) fn command(
         &mut self,
         command: Command,
         candidate: Option<&State>,
+    ) -> Result<(), String> {
+        self.command_diagnosed(
+            command,
+            candidate,
+            &mut crate::diagnostics::Trace::disabled(),
+        )
+    }
+    pub(crate) fn command_diagnosed(
+        &mut self,
+        command: Command,
+        candidate: Option<&State>,
+        trace: &mut crate::diagnostics::Trace<'_>,
     ) -> Result<(), String> {
         match command {
             Command::Enable => return Err("background_duplicate".into()),
@@ -309,7 +322,7 @@ impl Background {
                 }
                 let mut reference = self.frozen_input()?;
                 while !reference.complete() {
-                    reference.page(8192, 1024)?;
+                    reference.page_diagnosed(8192, 1024, trace)?;
                 }
                 if &reference != result {
                     return Err("background_cpu_mismatch".into());

@@ -23,10 +23,10 @@ pub struct Client {
 }
 impl Client {
     pub fn spawn(executable: &Path, world: &Path, create: bool) -> Result<Self, String> {
-        Self::spawn_inner(executable, world, create, false, Profile::Base)
+        Self::spawn_inner(executable, world, create, false, Profile::Base, false)
     }
     pub fn spawn_probe(executable: &Path, world: &Path, create: bool) -> Result<Self, String> {
-        Self::spawn_inner(executable, world, create, true, Profile::Base)
+        Self::spawn_inner(executable, world, create, true, Profile::Base, false)
     }
     pub fn spawn_joint(
         executable: &Path,
@@ -34,7 +34,7 @@ impl Client {
         create: bool,
         probe: bool,
     ) -> Result<Self, String> {
-        Self::spawn_inner(executable, world, create, probe, Profile::Joint)
+        Self::spawn_inner(executable, world, create, probe, Profile::Joint, false)
     }
     pub fn spawn_scale_full(
         executable: &Path,
@@ -57,7 +57,23 @@ impl Client {
         probe: bool,
         tier: crate::scale_reference::Tier,
     ) -> Result<Self, String> {
-        Self::spawn_inner(executable, world, create, probe, Profile::Scale(tier))
+        Self::spawn_inner(
+            executable,
+            world,
+            create,
+            probe,
+            Profile::Scale(tier),
+            false,
+        )
+    }
+    pub fn spawn_scale_measured(
+        executable: &Path,
+        world: &Path,
+        create: bool,
+        probe: bool,
+        tier: crate::scale_reference::Tier,
+    ) -> Result<Self, String> {
+        Self::spawn_inner(executable, world, create, probe, Profile::Scale(tier), true)
     }
     fn spawn_inner(
         executable: &Path,
@@ -65,12 +81,19 @@ impl Client {
         create: bool,
         probe: bool,
         profile: Profile,
+        measured: bool,
     ) -> Result<Self, String> {
         if !world.is_absolute() {
             return Err("sim_world_absolute_path_required".into());
         }
         let executable = executable.canonicalize().map_err(|e| e.to_string())?;
-        let mut child = Command::new(&executable)
+        let mut command = Command::new(&executable);
+        if measured {
+            command.env("MYCITY_DIAGNOSTICS", "1");
+        } else {
+            command.env_remove("MYCITY_DIAGNOSTICS");
+        }
+        let mut child = command
             .arg(profile.command(probe))
             .arg(if create { "create" } else { "open" })
             .arg(world)

@@ -1,0 +1,59 @@
+[
+  {
+    "command": [
+      "cargo",
+      "test",
+      "--release",
+      "--locked",
+      "--offline",
+      "-p",
+      "mycity-core",
+      "--test",
+      "air",
+      "diagnostics"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "cargo",
+      "test",
+      "--release",
+      "--locked",
+      "--offline",
+      "-p",
+      "mycity-core",
+      "--test",
+      "timeline",
+      "diagnostics"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "cargo",
+      "test",
+      "--release",
+      "--locked",
+      "--offline",
+      "-p",
+      "mycity-headless",
+      "--lib"
+    ],
+    "exit_code": 0
+  },
+  {
+    "command": [
+      "cargo",
+      "build",
+      "--release",
+      "--locked",
+      "--offline",
+      "-p",
+      "mycity-headless",
+      "--bin",
+      "mycity-headless"
+    ],
+    "exit_code": 0
+  }
+]

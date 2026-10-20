@@ -143,7 +143,11 @@ fn progress(store: &Store) -> Result<Value, String> {
             "pending":b.pending().map(|p|json!({"id":p.id,"generation":p.generation,"incarnation":p.incarnation,"attempt":p.attempt,"failure":p.failure}))}))}),
     )
 }
-fn status(store: &Store, worker: &Option<Worker>) -> Result<Value, String> {
+fn status(
+    store: &Store,
+    worker: &Option<Worker>,
+    diag: &Option<crate::cpu_log::CpuLog>,
+) -> Result<Value, String> {
     let e = store.engine().map_err(err)?;
     let b = e.background();
     let view = e.world().view();
@@ -151,7 +155,7 @@ fn status(store: &Store, worker: &Option<Worker>) -> Result<Value, String> {
         .and_then(|b| b.field())
         .map(|f| f.checkpoint().map(|b| sha256(&b)))
         .transpose()?;
-    let runtime = json!({"accounts":view.accounts,"boot":view.boot,"active_city":view.region.as_ref().map(|r|r.active_city),"obligations":view.region.as_ref().map(|r|r.obligations),"payroll":e.timeline().map(|t|t.payroll.iter().take(8).collect::<Vec<_>>()),"claims":e.timeline().map(|t|t.claims.iter().take(8).collect::<Vec<_>>()),"claim_count":e.timeline().map(|t|t.claims.len()),"payroll_count":e.timeline().map(|t|t.payroll.len()),"resources":e.resources(),"store_owned_bytes":store.owned_capacity_bytes().map_err(err)?});
+    let runtime = json!({"accounts":view.accounts,"boot":view.boot,"active_city":view.region.as_ref().map(|r|r.active_city),"obligations":view.region.as_ref().map(|r|r.obligations),"payroll":e.timeline().map(|t|t.payroll.iter().take(8).collect::<Vec<_>>()),"claims":e.timeline().map(|t|t.claims.iter().take(8).collect::<Vec<_>>()),"claim_count":e.timeline().map(|t|t.claims.len()),"payroll_count":e.timeline().map(|t|t.payroll.len()),"resources":e.resources(),"store_owned_bytes":store.owned_capacity_bytes().map_err(err)?,"diagnostics_owned_bytes":diag.as_ref().map_or(0,crate::cpu_log::CpuLog::owned_bytes)});
 
     Ok(
         json!({"revision":view.revision,"sequence":store.committed_sequence(),"business_sha256":crate::joint_reference::business_digest(e)?,"runtime":runtime,"timeline":e.timeline().map(|t|t.progress),
@@ -159,7 +163,11 @@ fn status(store: &Store, worker: &Option<Worker>) -> Result<Value, String> {
  "state_sha256":store.state_hash().map_err(err)?,"capacity":store.capacity_status().map_err(err)?,"worker_pid":worker.as_ref().map(|w|w.pid()),"source_sha256":env!("MYCITY_SOURCE_SHA256"),"memory_16gb_gate":"not_run"}),
     )
 }
-fn control(store: &mut Store, command: B) -> Result<(), String> {
+fn control(
+    store: &mut Store,
+    command: B,
+    diag: &mut Option<crate::cpu_log::CpuLog>,
+) -> Result<(), String> {
     let e = store.engine().map_err(err)?;
     let view = e.world().view();
     let envelope = Envelope {
@@ -174,9 +182,7 @@ fn control(store: &mut Store, command: B) -> Result<(), String> {
         expected_revision: view.revision,
         actions: vec![Action::Background { command }],
     };
-    store
-        .execute(Caller::System, envelope)
-        .map_err(err)?
+    crate::cpu_log::execute(store, Caller::System, envelope, diag)?
         .model
         .map_err(err)?;
     Ok(())
@@ -185,6 +191,7 @@ struct Required<'a> {
     id: u64,
     job: u64,
     rules: &'a str,
+    diag: &'a mut Option<crate::cpu_log::CpuLog>,
 }
 fn required(
     store: &mut Store,
@@ -194,7 +201,12 @@ fn required(
     reader: &mut impl BufRead,
     mut probe: Option<ProbePoint>,
 ) -> Result<Value, String> {
-    let Required { id, job, rules } = context;
+    let Required {
+        id,
+        job,
+        rules,
+        diag,
+    } = context;
     let operation = background::accept_operation_id(job)?;
     // Return the ORIGINAL persisted record; never rebuild an Envelope after lost ACK.
     if let Some(record) = store.receipt(operation).map_err(err)? {
@@ -220,7 +232,7 @@ fn required(
         let cache = store.prepare_worker_cache().map_err(err)?;
         let exe = std::env::current_exe().map_err(err)?;
         let cache_fence = worker_cache::recover_exclusive(&cache, &exe)?;
-        control(store, B::RebindLease { job })?;
+        control(store, B::RebindLease { job }, diag)?;
         worker_cache::reset_after_worker_stopped(&cache)?;
         let b = store
             .engine()
@@ -266,6 +278,7 @@ fn required(
                     generation: pending.generation,
                     failure: Failure::Cancelled,
                 },
+                diag,
             )?;
             return Err("sim_attempt_cancelled".into());
         }
@@ -346,6 +359,7 @@ fn required(
                             Failure::Transient
                         },
                     },
+                    diag,
                 )?;
                 event(
                     w,
@@ -360,7 +374,8 @@ fn required(
             }
         };
         // The pure worker's files are copied/validated into Sim-owned immutable assets.
-        let hash = match store.import_background_candidate_with_observer(
+        let hash = match crate::cpu_log::import(
+            store,
             job,
             pending.generation,
             &bytes,
@@ -383,6 +398,7 @@ fn required(
                 }
                 Ok(())
             },
+            diag,
         ) {
             Ok(h) => h,
             Err(error) => {
@@ -398,6 +414,7 @@ fn required(
                             generation: pending.generation,
                             failure: Failure::InvalidInput,
                         },
+                        diag,
                     )?;
                 }
                 return Err(err(error));
@@ -417,7 +434,7 @@ fn required(
                 },
             }],
         };
-        let outcome = store.execute(Caller::System, envelope).map_err(err)?;
+        let outcome = crate::cpu_log::execute(store, Caller::System, envelope, diag)?;
         outcome.model.map_err(err)?;
         if !outcome.has_persistent_receipt {
             return Err("sim_admission_not_durable".into());
@@ -493,12 +510,23 @@ fn run_inner(
     } else {
         Store::open(world, &rules).map_err(err)?
     };
+    let mut diag = if crate::cpu_log::enabled() {
+        Some(crate::cpu_log::CpuLog::create(
+            &world
+                .parent()
+                .ok_or("diagnostic_world_parent")?
+                .join("diagnostics"),
+            "sim",
+        )?)
+    } else {
+        None
+    };
     let mut worker = None;
     let stdin = std::io::stdin();
     let mut reader = BufReader::with_capacity(8192, stdin.lock());
     let stdout = std::io::stdout();
     let mut writer = stdout.lock();
-    event(&mut writer, 0, "ready", status(&store, &worker)?)?;
+    event(&mut writer, 0, "ready", status(&store, &worker, &diag)?)?;
     while let Some(bytes) = wire::frame(&mut reader)? {
         let request: Request = serde_json::from_slice(&bytes).map_err(err)?;
         if request.protocol != PROTOCOL || request.id == 0 {
@@ -506,7 +534,7 @@ fn run_inner(
         }
         let stop = matches!(request.command, Command::Stop);
         let outcome = match request.command {
-            Command::Status => status(&store, &worker),
+            Command::Status => status(&store, &worker, &diag),
             Command::Progress => progress(&store),
             Command::ReceiptProof { operation } => store.receipt(operation).map_err(err).and_then(|record| {
                 let bytes = serde_json::to_vec(&record).map_err(err)?;
@@ -522,9 +550,7 @@ fn run_inner(
                 {
                     Err("sim_internal_control_reserved".into())
                 } else {
-                    store
-                        .execute(Caller::System, envelope)
-                        .map_err(err)
+                    crate::cpu_log::execute(&mut store,Caller::System,envelope,&mut diag)
                         .and_then(|v| serde_json::to_value(v).map_err(err))
                 }
             }
@@ -535,6 +561,7 @@ fn run_inner(
                     id: request.id,
                     job,
                     rules: &rules,
+                    diag:&mut diag,
                 },
                 &mut writer,
                 &mut reader,
@@ -547,6 +574,7 @@ fn run_inner(
                     id: request.id,
                     job,
                     rules: &rules,
+                    diag:&mut diag,
                 },
                 &mut writer,
                 &mut reader,
@@ -573,6 +601,9 @@ fn run_inner(
     }
     if let Some(mut old) = worker.take() {
         old.stop()?;
+    }
+    if let Some(log) = diag.as_mut() {
+        log.finish()?;
     }
     Ok(())
 }

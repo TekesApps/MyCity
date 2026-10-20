@@ -29,7 +29,8 @@ fn check_time(at: u64) -> Result<(), TxError> {
     .map_err(|_| err(E::Calendar))?;
     Ok(())
 }
-pub(super) struct Frame<'a> {
+pub(super) struct Frame<'a, 'd> {
+    pub trace: &'a mut crate::diagnostics::Trace<'d>,
     pub world: &'a World,
     pub background: &'a mut Option<crate::background::Background>,
     pub region: &'a mut Option<crate::region::Region>,
@@ -42,7 +43,7 @@ pub(super) struct Frame<'a> {
     pub leases: &'a mut Vec<Option<Lease>>,
     pub next_token: &'a mut u64,
 }
-impl Frame<'_> {
+impl Frame<'_, '_> {
     fn now(&self) -> u64 {
         self.region
             .as_ref()
@@ -412,6 +413,70 @@ impl Frame<'_> {
             .is_some_and(|e| e.next_due == t.progress.at && phases.contains(&e.phase))
     }
     fn one(&mut self, t: &mut Timeline) -> Result<(), TxError> {
+        use crate::diagnostics::Class;
+        let Some(started) = self.trace.start() else {
+            return self.one_inner(t);
+        };
+        let p = t.progress;
+        let payroll_accrual = p.phase == Some(P::P0) && (p.cursor as usize) < t.payroll.len();
+        let class = match (p.phase, p.lane) {
+            (Some(P::P0), _) if payroll_accrual => Class::Payroll,
+            (Some(P::P2), 0) => Class::Claims,
+            (Some(P::P2), 1) => Class::Payroll,
+            _ => Class::Region,
+        };
+        let accrual_changed = payroll_accrual && t.payroll[p.cursor as usize].last_accrual < p.at;
+        let result = self.one_inner(t);
+        let nanos = self.trace.nanos(Some(started));
+        let scanned = if p.phase == Some(P::P2) && p.lane <= 1 {
+            let len = if p.lane == 0 {
+                t.claims.len()
+            } else {
+                t.payroll.len()
+            };
+            let end = if t.progress.lane != p.lane || t.progress.phase != p.phase {
+                len as u32
+            } else {
+                t.progress.cursor
+            };
+            u64::from(end.saturating_sub(p.cursor))
+        } else {
+            u64::from(payroll_accrual)
+        };
+        let work = u64::from(t.progress.page_sources.saturating_sub(p.page_sources))
+            + u64::from(accrual_changed && result.is_ok())
+            + u64::from(
+                p.phase == Some(P::P0)
+                    && !payroll_accrual
+                    && p.at > p.last_complete
+                    && self.region.is_some()
+                    && result.is_ok(),
+            );
+        let paid = t
+            .progress
+            .page_paid
+            .value()
+            .saturating_sub(p.page_paid.value()) as u64;
+        let role = self.trace.role.index();
+        if class == Class::Payroll && work > 0 {
+            self.trace.summary.payroll_subtypes[role][usize::from(!payroll_accrual)] += work;
+        }
+        if class == Class::Region && work > 0 {
+            let subtype = match (p.phase, p.lane) {
+                (Some(P::P0), _) => 0,
+                (Some(P::P1), _) => 1,
+                (Some(P::P2), 2) => 2,
+                (Some(P::P2), 4) => 3,
+                (Some(P::P2), 5) => 4,
+                (Some(P::P3), _) => 5,
+                _ => 6,
+            };
+            self.trace.summary.region_subtypes[role][subtype] += work;
+        }
+        self.trace.add(class, nanos, scanned, work, paid);
+        result
+    }
+    fn one_inner(&mut self, t: &mut Timeline) -> Result<(), TxError> {
         use crate::economy::Phase as EP;
         let p = t.progress;
         let at = p.at;
@@ -424,16 +489,26 @@ impl Frame<'_> {
                 } else {
                     let delta = at - p.last_complete;
                     if let Some(b) = self.background.as_mut().filter(|_| delta > 0) {
-                        b.capture(
-                            self.exchange.as_ref().ok_or(TxError::InvalidOperation)?,
-                            p.last_complete,
-                            at,
-                            self.world
-                                .revision
-                                .checked_add(1)
-                                .ok_or(TxError::Overflow)?,
-                        )
-                        .map_err(|_| TxError::InvalidOperation)?;
+                        let started = self.trace.start();
+                        let capture = b
+                            .capture(
+                                self.exchange.as_ref().ok_or(TxError::InvalidOperation)?,
+                                p.last_complete,
+                                at,
+                                self.world
+                                    .revision
+                                    .checked_add(1)
+                                    .ok_or(TxError::Overflow)?,
+                            )
+                            .map_err(|_| TxError::InvalidOperation);
+                        self.trace.end(
+                            crate::diagnostics::Class::Capture,
+                            started,
+                            0,
+                            u64::from(capture.is_ok()),
+                            0,
+                        );
+                        capture?;
                     }
                     if let Some(r) = self.region.as_mut() {
                         if delta > 0 {

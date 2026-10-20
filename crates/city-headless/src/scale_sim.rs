@@ -129,7 +129,7 @@ impl Experiment {
                 let seconds = started.elapsed().as_secs_f64();
                 self.max_boundary_seconds = self.max_boundary_seconds.max(seconds);
                 self.verified += 1;
-                self.record(json!({"verified_target":target,"boundary_seconds":seconds,"expected":expected,"sequence":state["sequence"],"capacity":state["capacity"]}))?;
+                self.record(json!({"verified_target":target,"boundary_seconds":seconds,"expected":expected,"actual_business_sha256":state["business_sha256"],"actual_air_sha256":state["background"]["state_sha256"],"sequence":state["sequence"],"capacity":state["capacity"]}))?;
                 return Ok(());
             }
             let phase: Option<Phase> =
@@ -195,9 +195,20 @@ pub fn run(dir: &Path) -> Result<Value, String> {
     run_tier(dir, Tier::Full)
 }
 pub fn run_tier(dir: &Path, tier: Tier) -> Result<Value, String> {
+    run_measured(dir, tier, false)
+}
+pub fn run_measured(dir: &Path, tier: Tier, measured: bool) -> Result<Value, String> {
     fs::create_dir(dir).map_err(err)?;
     let dir = dir.canonicalize().map_err(err)?;
-    let result = run_inner(&dir, tier);
+    if measured {
+        write_json(
+            &dir.join("manifest.json"),
+            &json!({"external_owned_charge_bytes":6*1024*1024,
+            "scope":"conservative diagnostic reservation: one Sim <=5MiB plus one worker <=1MiB; L1 absent; observer separate",
+            "budget_acceptance":"not_accepted_until_full_observation"}),
+        )?;
+    }
+    let result = run_inner(&dir, tier, measured);
     if let Err(error) = &result {
         write_json(
             &dir.join("failure.json"),
@@ -206,7 +217,20 @@ pub fn run_tier(dir: &Path, tier: Tier) -> Result<Value, String> {
     }
     result
 }
-fn run_inner(dir: &Path, tier: Tier) -> Result<Value, String> {
+fn spawn(
+    exe: &Path,
+    world: &Path,
+    create: bool,
+    tier: Tier,
+    measured: bool,
+) -> Result<Client, String> {
+    if measured {
+        Client::spawn_scale_measured(exe, world, create, false, tier)
+    } else {
+        Client::spawn_scale(exe, world, create, false, tier)
+    }
+}
+fn run_inner(dir: &Path, tier: Tier, measured: bool) -> Result<Value, String> {
     // CPU and persisted branches run separately; no joint reference residency claim.
     let mut golden = BufWriter::new(File::create_new(dir.join("cpu-targets.jsonl")).map_err(err)?);
     let (reference, oracle) = scale_reference::run_tier_observed(tier, |r, step| {
@@ -233,7 +257,7 @@ fn run_inner(dir: &Path, tier: Tier) -> Result<Value, String> {
     drop(golden);
     let exe = std::env::current_exe().map_err(err)?;
     let world: PathBuf = dir.join("world");
-    let mut client = Client::spawn_scale(&exe, &world, true, false, tier)?;
+    let mut client = spawn(&exe, &world, true, tier, measured)?;
     if client.next(Duration::from_secs(35))?.kind != "ready" {
         return Err("scale_sim_not_ready".into());
     }
@@ -295,7 +319,7 @@ fn run_inner(dir: &Path, tier: Tier) -> Result<Value, String> {
     let before_sha = sha256(&before_bytes);
     drop(before_bytes);
     let cold_started = Instant::now();
-    e.client = Client::spawn_scale(&exe, &world, false, false, tier)?;
+    e.client = spawn(&exe, &world, false, tier, measured)?;
     let ready = e.client.next(Duration::from_secs(35))?;
     if ready.kind != "ready" {
         return Err("scale_sim_cold_ready".into());
@@ -354,7 +378,7 @@ fn run_inner(dir: &Path, tier: Tier) -> Result<Value, String> {
     }
     e.log.flush().map_err(err)?;
     e.log.get_ref().sync_all().map_err(err)?;
-    let report = json!({"schema":"mycity-t13a-full-sim-assembly-v1","source_sha256":env!("MYCITY_SOURCE_SHA256"),"opening_sha256":sha256(tier.opening()),"policy_sha256":sha256(tier.policy()),"oracle_sha256":sha256(tier.oracle()),"tier":tier.name(),"scope":"named_tier_real_30day_sim_worker_v2_store_diagnostic_only","cpu_oracle":oracle,"completed_hour_targets":hours,"verified_drive_targets":e.verified,"actual_worker_windows":e.windows,"attempt_failures":e.failed_attempts,"business_sha256":business_digest(&actual)?,"final_air_sha256":after["background"]["state_sha256"],"sim_work_wall_seconds_including_ipc_and_persistence":work_seconds,"maximum_complete_drive_seconds":e.max_boundary_seconds,"cold_ready_seconds":cold_seconds,"oldest_receipt_retry":"passed_without_side_effect","complete_final_business_and_air":"passed","cold_complete_image_unchanged":true,"saved_sequence":root["sequence"],"final_root":final_root,"transcript_bytes":e.log_bytes,"performance_acceptance":"not_run","steady_three_runs":"not_run","eight_hour_gate":"not_run","memory_16gb_gate":"not_run","full_M0":"not_accepted"});
+    let report = json!({"schema":"mycity-t13a-full-sim-assembly-v1","compute_diagnostics_enabled":measured,"source_sha256":env!("MYCITY_SOURCE_SHA256"),"opening_sha256":sha256(tier.opening()),"policy_sha256":sha256(tier.policy()),"oracle_sha256":sha256(tier.oracle()),"tier":tier.name(),"scope":"named_tier_real_30day_sim_worker_v2_store_diagnostic_only","cpu_oracle":oracle,"completed_hour_targets":hours,"verified_drive_targets":e.verified,"actual_worker_windows":e.windows,"attempt_failures":e.failed_attempts,"business_sha256":business_digest(&actual)?,"final_air_sha256":after["background"]["state_sha256"],"sim_work_wall_seconds_including_ipc_and_persistence":work_seconds,"maximum_complete_drive_seconds":e.max_boundary_seconds,"cold_ready_seconds":cold_seconds,"oldest_receipt_retry":"passed_without_side_effect","complete_final_business_and_air":"passed","cold_complete_image_unchanged":true,"saved_sequence":root["sequence"],"final_root":final_root,"transcript_bytes":e.log_bytes,"performance_acceptance":"not_run","steady_three_runs":"not_run","eight_hour_gate":"not_run","memory_16gb_gate":"not_run","full_M0":"not_accepted"});
     write_json(&dir.join("report.json"), &report)?;
     Ok(report)
 }

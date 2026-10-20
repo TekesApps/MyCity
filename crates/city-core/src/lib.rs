@@ -9,6 +9,7 @@ pub mod arena;
 pub mod assembly;
 pub mod boot;
 pub mod calendar;
+pub mod diagnostics;
 pub mod economy;
 pub mod exchange;
 pub mod inbox;

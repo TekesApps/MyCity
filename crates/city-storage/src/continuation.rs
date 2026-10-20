@@ -53,6 +53,7 @@ impl Store {
         caller: Caller,
         env: &Envelope,
         background_funded: bool,
+        trace: &mut mycity_core::diagnostics::Trace<'_>,
     ) -> Result<Option<Continuation>, Error> {
         let limit = match env.actions.as_slice() {
             [Action::Timeline {
@@ -67,7 +68,7 @@ impl Store {
                 }
                 if self
                     .engine
-                    .timeline_quote(caller, env)
+                    .timeline_quote_diagnosed(caller, env, trace)
                     .is_some_and(|(p, _)| {
                         p.at == c.at
                             && p.serial == c.next_serial + 1
@@ -79,8 +80,10 @@ impl Store {
             }
             // Keep sufficient receipt slots for the clock, plus a separate finite reserve for
             // real source/cleanup progress. Failed or unrelated requests cannot spend that reserve.
-            let eligible =
-                background_funded || self.engine.can_advance_existing_responsibility(caller, env);
+            let eligible = background_funded
+                || self
+                    .engine
+                    .can_advance_existing_responsibility_diagnosed(caller, env, trace);
             let floor = c.remaining_pages as usize + if eligible { 0 } else { CONTROL_SLOTS };
             if self.engine.journal().len() + 1 + floor > MAX_RECEIPTS {
                 return Err(Error::Invalid("timeline_receipt_reserve"));
@@ -88,7 +91,8 @@ impl Store {
             return Ok(None);
         }
         let Some(limit) = limit else { return Ok(None) };
-        let Some((progress, steps)) = self.engine.timeline_quote(caller, env) else {
+        let Some((progress, steps)) = self.engine.timeline_quote_diagnosed(caller, env, trace)
+        else {
             return Ok(None);
         };
         // P4 forces one extra page boundary independent of the requested page width.

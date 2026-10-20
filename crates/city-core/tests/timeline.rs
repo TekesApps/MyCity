@@ -433,3 +433,144 @@ fn later_page_can_touch_all_sixty_four_admitted_accounts() {
         .all(|c| c.paid == c.principal));
     Engine::restore_checkpoint(&e.export_checkpoint().unwrap()).unwrap();
 }
+
+#[test]
+fn diagnostics_preserve_complete_state_quotes_retries_and_failed_persistence() {
+    use mycity_core::diagnostics::{Class, Role, Trace};
+    let mut plain = engine();
+    run(&mut plain, T::Enable);
+    run(
+        &mut plain,
+        T::Claims {
+            first_id: 1,
+            count: 20000,
+            payer: 3,
+            payee: 2,
+            amount: money(1),
+            due: 3600,
+        },
+    );
+    let mut measured = Engine::restore_checkpoint(&plain.export_checkpoint().unwrap()).unwrap();
+    let command = env(
+        &plain,
+        action(T::Advance {
+            target: 3600,
+            limit: 8192,
+        }),
+    );
+    let before = measured.export_checkpoint().unwrap();
+    let mut quote = Trace::enabled();
+    assert!(measured
+        .timeline_quote_diagnosed(Caller::System, &command, &mut quote)
+        .is_some());
+    assert_eq!(measured.export_checkpoint().unwrap(), before);
+    assert_eq!(
+        quote.summary.roles[Role::Execution.index()][Class::Claims as usize].calls,
+        0
+    );
+    assert!(quote.summary.roles[Role::Quote.index()][Class::Claims as usize].work > 0);
+    let mut failed = Trace::enabled();
+    let failure = measured.execute_recorded_diagnosed(
+        Caller::System,
+        command.clone(),
+        None,
+        |_, _| Err::<(), _>("disk failure"),
+        &mut failed,
+    );
+    assert_eq!(failure, Err("disk failure"));
+    assert!(!failed.summary.hook_succeeded && !failed.summary.applied);
+    assert_eq!(measured.export_checkpoint().unwrap(), before);
+    let expected = plain.execute(Caller::System, command.clone()).unwrap();
+    let mut trace = Trace::enabled();
+    assert_eq!(
+        measured
+            .execute_recorded_diagnosed(
+                Caller::System,
+                command.clone(),
+                None,
+                |_, _| Ok::<(), ()>(()),
+                &mut trace
+            )
+            .unwrap()
+            .unwrap(),
+        expected
+    );
+    assert!(trace.summary.hook_succeeded && trace.summary.applied);
+    assert_eq!(trace.summary.roles[0][Class::Claims as usize].work, 8190);
+    assert_eq!(
+        plain.export_checkpoint().unwrap(),
+        measured.export_checkpoint().unwrap()
+    );
+    let mut duplicate = Trace::enabled();
+    measured
+        .execute_recorded_diagnosed(
+            Caller::System,
+            command,
+            None,
+            |_, _| panic!("duplicate must not persist"),
+            &mut duplicate,
+        )
+        .unwrap_or_else(|_: ()| unreachable!())
+        .unwrap();
+    assert!(duplicate.summary.replayed && !duplicate.summary.applied);
+    assert_eq!(duplicate.summary.roles[0][Class::Prepare as usize].calls, 0);
+    assert_eq!(
+        plain.export_checkpoint().unwrap(),
+        measured.export_checkpoint().unwrap()
+    );
+}
+
+#[test]
+fn diagnostics_distinguish_empty_scan_from_zero_cash_debt_processing() {
+    use mycity_core::diagnostics::{Class, Trace};
+    let mut value: Value =
+        serde_json::from_slice(include_bytes!("../../../fixtures/m0-e0-opening.json")).unwrap();
+    value["accounts"][2]["cash"] = json!(0);
+    value["sources"][2]["amount"] = json!(0);
+    let mut e = Engine::new(
+        assemble(&serde_json::to_vec(&value).unwrap()).unwrap(),
+        vec![],
+    )
+    .unwrap();
+    run(&mut e, T::Enable);
+    run(
+        &mut e,
+        T::Claims {
+            first_id: 1,
+            count: 10,
+            payer: 3,
+            payee: 2,
+            amount: money(1),
+            due: 3600,
+        },
+    );
+    for (target, expected_work) in [(1800, 0), (3600, 10)] {
+        let command = env(
+            &e,
+            action(T::Advance {
+                target,
+                limit: 8192,
+            }),
+        );
+        let mut trace = Trace::enabled();
+        e.execute_recorded_diagnosed(
+            Caller::System,
+            command,
+            None,
+            |_, _| Ok::<(), ()>(()),
+            &mut trace,
+        )
+        .unwrap()
+        .unwrap();
+        let claims = trace.summary.roles[0][Class::Claims as usize];
+        assert_eq!(claims.scanned, 10);
+        assert_eq!(claims.work, expected_work);
+        assert_eq!(claims.paid, 0);
+    }
+    assert!(e
+        .timeline()
+        .unwrap()
+        .claims
+        .iter()
+        .all(|c| c.processed && c.paid == money(0)));
+}

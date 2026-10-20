@@ -18,6 +18,7 @@ struct Case {
     rules: String,
     input_sha: String,
     checkpoints: Vec<Value>,
+    diag: Option<mycity_headless::cpu_log::CpuLog>,
 }
 impl Case {
     fn create(dir: &Path, input: &Value, rules: &str, with_space: bool) -> Result<Self, String> {
@@ -35,7 +36,23 @@ impl Case {
             Store::create(dir, &bytes, vec![], rules)
         }
         .map_err(err)?;
+        let mut diag = if mycity_headless::cpu_log::enabled() {
+            Some(mycity_headless::cpu_log::CpuLog::create(
+                &dir.join("diagnostics"),
+                "economy",
+            )?)
+        } else {
+            None
+        };
+        if let Some(d) = diag.as_mut() {
+            d.set_l0_class(if dir.file_name().is_some_and(|s| s == "pe0") {
+                "L0_pe0_model_transaction"
+            } else {
+                "L0_pe1_model_transaction"
+            })?;
+        }
         Ok(Self {
+            diag,
             dir: dir.into(),
             store,
             rules: rules.into(),
@@ -65,10 +82,12 @@ impl Case {
     }
     fn execute(&mut self, c: Command) -> Result<Envelope, String> {
         let env = self.envelope(c)?;
-        let result = self
-            .store
-            .execute(Caller::System, env.clone())
-            .map_err(err)?;
+        let result = mycity_headless::cpu_log::execute(
+            &mut self.store,
+            Caller::System,
+            env.clone(),
+            &mut self.diag,
+        )?;
         result.model.map_err(err)?;
         if !result.has_persistent_receipt {
             return Err("not_persistent".into());
@@ -83,9 +102,10 @@ impl Case {
         }
         last.ok_or("no_time_advance".into())
     }
-    fn report(&self) -> Result<Value, String> {
+    fn report(&mut self) -> Result<Value, String> {
+        let compute = self.diag.as_mut().map(|d| d.finish()).transpose()?;
         Ok(
-            json!({"input_sha256":self.input_sha,"state_sha256":self.store.state_hash().map_err(err)?,"committed_sequence":self.store.committed_sequence(),
+            json!({"compute_diagnostics":compute,"input_sha256":self.input_sha,"state_sha256":self.store.state_hash().map_err(err)?,"committed_sequence":self.store.committed_sequence(),
             "world":self.store.engine().map_err(err)?.world().view(),"store_owned_capacity_bytes":self.store.owned_capacity_bytes().map_err(err)?,
             "engine_owned_capacity_bytes":self.store.engine().map_err(err)?.owned_capacity_bytes(),"world_layout":self.store.engine().map_err(err)?.world().layout(),
             "economy_layout":{"inline_bytes":std::mem::size_of::<Economy>(),"option_bytes":std::mem::size_of::<Option<Economy>>(),"allocation":"fixed_inline_once_per_laboratory_world_not_per_resident_or_building","days":30,"max_sale_lines":32,"max_claims":3},

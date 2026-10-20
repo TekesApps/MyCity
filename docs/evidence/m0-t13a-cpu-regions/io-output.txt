@@ -1,0 +1,227 @@
+{
+  "t13a2e-full-01": {
+    "confirmed_persistence_intervals": {
+      "wal_encode_hash": {
+        "samples": 1747,
+        "sum_ns": 34403783,
+        "p95_ns": 35458,
+        "p99_ns": 56416,
+        "max_ns": 312834
+      },
+      "capacity_and_continuation_admit": {
+        "samples": 1747,
+        "sum_ns": 577187262,
+        "p95_ns": 656084,
+        "p99_ns": 918791,
+        "max_ns": 4194541
+      },
+      "wal_write": {
+        "samples": 1747,
+        "sum_ns": 73387125,
+        "p95_ns": 81708,
+        "p99_ns": 110750,
+        "max_ns": 1771334
+      },
+      "wal_fsync": {
+        "samples": 1747,
+        "sum_ns": 8735187248,
+        "p95_ns": 7224250,
+        "p99_ns": 10630084,
+        "max_ns": 99369834
+      },
+      "root_construct_encode": {
+        "samples": 1747,
+        "sum_ns": 13714536,
+        "p95_ns": 16167,
+        "p99_ns": 30375,
+        "max_ns": 164833
+      },
+      "root_atomic_publish_sync": {
+        "samples": 1747,
+        "sum_ns": 17481175946,
+        "p95_ns": 11311709,
+        "p99_ns": 14200750,
+        "max_ns": 163160334
+      },
+      "current_hash_encode": {
+        "samples": 1747,
+        "sum_ns": 16225457,
+        "p95_ns": 13959,
+        "p99_ns": 22375,
+        "max_ns": 3297333
+      },
+      "current_write_rename": {
+        "samples": 1747,
+        "sum_ns": 8914909039,
+        "p95_ns": 5960000,
+        "p99_ns": 7830542,
+        "max_ns": 82107667
+      },
+      "current_directory_sync": {
+        "samples": 1747,
+        "sum_ns": 8194749247,
+        "p95_ns": 5312416,
+        "p99_ns": 6777083,
+        "max_ns": 86720750
+      },
+      "post_persist_apply": {
+        "samples": 1747,
+        "sum_ns": 21582738,
+        "p95_ns": 25000,
+        "p99_ns": 37167,
+        "max_ns": 289959
+      }
+    },
+    "unconfirmed_requires_reopen_receipt_query": 0
+  },
+  "t13a2e-l0-01": {
+    "confirmed_persistence_intervals": {
+      "wal_encode_hash": {
+        "samples": 2269,
+        "sum_ns": 35339682,
+        "p95_ns": 26708,
+        "p99_ns": 36250,
+        "max_ns": 117833
+      },
+      "capacity_and_continuation_admit": {
+        "samples": 2269,
+        "sum_ns": 171344035,
+        "p95_ns": 140542,
+        "p99_ns": 235417,
+        "max_ns": 4149083
+      },
+      "wal_write": {
+        "samples": 2269,
+        "sum_ns": 113131897,
+        "p95_ns": 82583,
+        "p99_ns": 203334,
+        "max_ns": 3686375
+      },
+      "wal_fsync": {
+        "samples": 2269,
+        "sum_ns": 11047156598,
+        "p95_ns": 5658959,
+        "p99_ns": 7451000,
+        "max_ns": 94375334
+      },
+      "root_construct_encode": {
+        "samples": 2269,
+        "sum_ns": 18524614,
+        "p95_ns": 14792,
+        "p99_ns": 23750,
+        "max_ns": 1717959
+      },
+      "root_atomic_publish_sync": {
+        "samples": 2269,
+        "sum_ns": 24251711811,
+        "p95_ns": 12072458,
+        "p99_ns": 15834792,
+        "max_ns": 212761666
+      },
+      "current_hash_encode": {
+        "samples": 2269,
+        "sum_ns": 22463831,
+        "p95_ns": 18583,
+        "p99_ns": 28208,
+        "max_ns": 796167
+      },
+      "current_write_rename": {
+        "samples": 2269,
+        "sum_ns": 12534187900,
+        "p95_ns": 6389958,
+        "p99_ns": 9115250,
+        "max_ns": 114789042
+      },
+      "current_directory_sync": {
+        "samples": 2269,
+        "sum_ns": 11408016924,
+        "p95_ns": 5818125,
+        "p99_ns": 7894250,
+        "max_ns": 95719292
+      },
+      "post_persist_apply": {
+        "samples": 2269,
+        "sum_ns": 25995538,
+        "p95_ns": 21791,
+        "p99_ns": 43000,
+        "max_ns": 425167
+      }
+    },
+    "unconfirmed_requires_reopen_receipt_query": 0
+  },
+  "t13a2e-full-02": {
+    "confirmed_persistence_intervals": {
+      "wal_encode_hash": {
+        "samples": 3011,
+        "sum_ns": 51518602,
+        "p95_ns": 28167,
+        "p99_ns": 39917,
+        "max_ns": 157333
+      },
+      "capacity_and_continuation_admit": {
+        "samples": 3011,
+        "sum_ns": 882778034,
+        "p95_ns": 452959,
+        "p99_ns": 631041,
+        "max_ns": 5970500
+      },
+      "wal_write": {
+        "samples": 3011,
+        "sum_ns": 108331695,
+        "p95_ns": 56958,
+        "p99_ns": 99459,
+        "max_ns": 6275000
+      },
+      "wal_fsync": {
+        "samples": 3011,
+        "sum_ns": 15099826507,
+        "p95_ns": 6941667,
+        "p99_ns": 10839000,
+        "max_ns": 94013417
+      },
+      "root_construct_encode": {
+        "samples": 3011,
+        "sum_ns": 82884124,
+        "p95_ns": 14084,
+        "p99_ns": 23250,
+        "max_ns": 52493541
+      },
+      "root_atomic_publish_sync": {
+        "samples": 3011,
+        "sum_ns": 30965180442,
+        "p95_ns": 11446541,
+        "p99_ns": 15158042,
+        "max_ns": 354561667
+      },
+      "current_hash_encode": {
+        "samples": 3011,
+        "sum_ns": 21167737,
+        "p95_ns": 13750,
+        "p99_ns": 22292,
+        "max_ns": 55750
+      },
+      "current_write_rename": {
+        "samples": 3011,
+        "sum_ns": 15739562957,
+        "p95_ns": 6090500,
+        "p99_ns": 8005209,
+        "max_ns": 97283375
+      },
+      "current_directory_sync": {
+        "samples": 3011,
+        "sum_ns": 14715340974,
+        "p95_ns": 5647917,
+        "p99_ns": 7721625,
+        "max_ns": 97054792
+      },
+      "post_persist_apply": {
+        "samples": 3011,
+        "sum_ns": 36392980,
+        "p95_ns": 22834,
+        "p99_ns": 38000,
+        "max_ns": 877000
+      }
+    },
+    "unconfirmed_requires_reopen_receipt_query": 0
+  }
+}

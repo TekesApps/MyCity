@@ -176,6 +176,7 @@ impl Store {
         &self,
         caller: Caller,
         envelope: &Envelope,
+        trace: &mut mycity_core::diagnostics::Trace<'_>,
     ) -> Result<Option<State>, Error> {
         match (
             envelope.actions.as_slice(),
@@ -193,10 +194,12 @@ impl Store {
                 let state = load_asset(&self.io.dir, candidate_sha256)?;
                 // Failure receipts are evaluated without attachments, hence their replay
                 // never depends on a payload that was not admitted into the model.
-                if self
-                    .engine
-                    .background_control_quote(caller, envelope, Some(&state))
-                {
+                if self.engine.background_control_quote_diagnosed(
+                    caller,
+                    envelope,
+                    Some(&state),
+                    trace,
+                ) {
                     Ok(Some(state))
                 } else {
                     Ok(None)
@@ -210,6 +213,7 @@ impl Store {
         caller: Caller,
         env: &Envelope,
         candidate: Option<&State>,
+        trace: &mut mycity_core::diagnostics::Trace<'_>,
     ) -> bool {
         let restart_needed = match env.actions.as_slice() {
             [Action::Background {
@@ -222,7 +226,9 @@ impl Store {
         };
         self.io.root.background_reserve.is_some()
             && restart_needed
-            && self.engine.background_control_quote(caller, env, candidate)
+            && self
+                .engine
+                .background_control_quote_diagnosed(caller, env, candidate, trace)
     }
     pub(super) fn prepare_background(
         &mut self,
@@ -230,6 +236,7 @@ impl Store {
         env: &Envelope,
         continuation: Option<&Continuation>,
         funded: bool,
+        trace: &mut mycity_core::diagnostics::Trace<'_>,
     ) -> Result<Plan, Error> {
         let initial = if self.engine.background().is_some()
             && self.io.root.background_reserve.is_none()
@@ -272,7 +279,9 @@ impl Store {
                 return Err(Error::Invalid("background_control_reserve_exhausted"));
             }
             let clock = continuation.is_some();
-            let existing = self.engine.can_advance_existing_responsibility(caller, env);
+            let existing = self
+                .engine
+                .can_advance_existing_responsibility_diagnosed(caller, env, trace);
             let floor = usize::from(r.slots) - usize::from(funded)
                 + continuation
                     .or(self.io.root.continuation.as_ref())
@@ -316,6 +325,22 @@ impl Store {
         bytes: &[u8],
         mut observer: impl FnMut(BackgroundPoint) -> io::Result<()>,
     ) -> Result<[u8; 32], Error> {
+        self.import_candidate_diagnosed(
+            job,
+            generation,
+            bytes,
+            &mut observer,
+            &mut mycity_core::diagnostics::Trace::disabled(),
+        )
+    }
+    pub fn import_candidate_diagnosed(
+        &mut self,
+        job: u64,
+        generation: u32,
+        bytes: &[u8],
+        mut observer: impl FnMut(BackgroundPoint) -> io::Result<()>,
+        trace: &mut mycity_core::diagnostics::Trace<'_>,
+    ) -> Result<[u8; 32], Error> {
         self.engine()?;
         if bytes.len() > ASSET_LIMIT {
             return Err(Error::Invalid("background_asset_bytes"));
@@ -338,10 +363,12 @@ impl Store {
             }],
         };
         // Import quotes use the same canonical admission identity as the final transaction.
-        if !self
-            .engine
-            .background_control_quote(Caller::System, &envelope, Some(&state))
-        {
+        if !self.engine.background_control_quote_diagnosed(
+            Caller::System,
+            &envelope,
+            Some(&state),
+            trace,
+        ) {
             return Err(Error::Invalid("background_candidate_rejected"));
         }
         let current = self

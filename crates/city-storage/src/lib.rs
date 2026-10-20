@@ -72,12 +72,16 @@ impl From<serde_json::Error> for Error {
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum WritePoint {
     Prepared,
+    WalEncoded,
+    WalAdmitted,
     WalHeaderHalf,
     WalPayloadHalf,
     WalChecksumHalf,
     WalWritten,
     WalSynced,
+    RootEncoded,
     RootPublished,
+    CurrentEncoded,
     CurrentRenamed,
     CurrentSynced,
     Applied,
@@ -665,6 +669,28 @@ impl Store {
         envelope: Envelope,
         mut observer: impl FnMut(WritePoint) -> io::Result<()>,
     ) -> Result<Outcome, Error> {
+        self.execute_observed_diagnosed(
+            caller,
+            envelope,
+            &mut observer,
+            &mut mycity_core::diagnostics::Trace::disabled(),
+        )
+    }
+    pub fn execute_diagnosed(
+        &mut self,
+        caller: Caller,
+        envelope: Envelope,
+        trace: &mut mycity_core::diagnostics::Trace<'_>,
+    ) -> Result<Outcome, Error> {
+        self.execute_observed_diagnosed(caller, envelope, |_| Ok(()), trace)
+    }
+    pub fn execute_observed_diagnosed(
+        &mut self,
+        caller: Caller,
+        envelope: Envelope,
+        mut observer: impl FnMut(WritePoint) -> io::Result<()>,
+        trace: &mut mycity_core::diagnostics::Trace<'_>,
+    ) -> Result<Outcome, Error> {
         if self.io.poisoned || self.io.owner_pid != std::process::id() {
             return Err(Error::RecoveryRequired);
         }
@@ -697,6 +723,7 @@ impl Store {
             Some(r) => Some(r),
             None => self.lookup_archived(operation)?,
         } {
+            trace.summary.replayed = true;
             let model = if record.actor != actor {
                 Err(TxError::Unauthorized)
             } else if record.payload_sha256 != hash {
@@ -731,20 +758,23 @@ impl Store {
         {
             return Err(Error::SourceSyncRequired);
         }
-        let candidate = match self.background_attachment(caller, &envelope) {
+        let candidate = match self.background_attachment(caller, &envelope, trace) {
             Ok(c) => c,
             Err(e) => {
                 self.io.poisoned = true;
                 return Err(e);
             }
         };
-        let background_funded = self.background_funded_quote(caller, &envelope, candidate.as_ref());
-        let continuation_plan = self.prepare_continuation(caller, &envelope, background_funded)?;
+        let background_funded =
+            self.background_funded_quote(caller, &envelope, candidate.as_ref(), trace);
+        let continuation_plan =
+            self.prepare_continuation(caller, &envelope, background_funded, trace)?;
         let background_plan = self.prepare_background(
             caller,
             &envelope,
             continuation_plan.as_ref(),
             background_funded,
+            trace,
         )?;
         let control = envelope
             .actions
@@ -773,7 +803,7 @@ impl Store {
                     if self.engine.journal().len() == MAX_RECEIPTS
                         && self
                             .engine
-                            .can_advance_existing_responsibility(caller, &envelope)
+                            .can_advance_existing_responsibility_diagnosed(caller, &envelope, trace)
                     {
                         self.checkpoint_emergency()?;
                     }
@@ -782,7 +812,7 @@ impl Store {
             }
         }
         let io = &mut self.io;
-        let result = self.engine.execute_recorded_with_background(
+        let result = self.engine.execute_recorded_diagnosed(
             caller,
             envelope,
             candidate.as_ref(),
@@ -795,6 +825,7 @@ impl Store {
                     &mut observer,
                 )
             },
+            trace,
         );
         let result = match result {
             Ok(r) => r,
@@ -863,6 +894,7 @@ impl Persistence {
         check.extend_from_slice(&length);
         check.extend_from_slice(&payload);
         let checksum = digest(&check);
+        observer(WritePoint::WalEncoded)?;
         let wal_end = self
             .root
             .wal_end
@@ -885,6 +917,7 @@ impl Persistence {
             next_continuation.as_ref().map_or(0, |c| c.remaining_bytes)
                 + next_background.as_ref().map_or(0, |b| b.remaining_bytes()),
         )?;
+        observer(WritePoint::WalAdmitted)?;
         self.wal.write_all(&length[..2])?;
         observer(WritePoint::WalHeaderHalf)?;
         self.wal.write_all(&length[2..])?;
@@ -921,6 +954,7 @@ impl Persistence {
         };
         let slot = (root.generation % 2) as u8;
         let root_bytes = json(&root)?;
+        observer(WritePoint::RootEncoded)?;
         atomic_file(&self.dir, &format!("root-{slot}.json"), &root_bytes, || {
             Ok(())
         })?;
@@ -930,7 +964,9 @@ impl Persistence {
             slot,
             root_sha256: sha256(&root_bytes),
         };
-        atomic_file(&self.dir, "CURRENT.json", &json(&current)?, || {
+        let current_bytes = json(&current)?;
+        observer(WritePoint::CurrentEncoded)?;
+        atomic_file(&self.dir, "CURRENT.json", &current_bytes, || {
             observer(WritePoint::CurrentRenamed)
         })?;
         observer(WritePoint::CurrentSynced)?;
