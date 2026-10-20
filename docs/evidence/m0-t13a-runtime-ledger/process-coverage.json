@@ -1,0 +1,29 @@
+{
+  "scope": "observed RSS frames by PID; all heap PIDs unique in this run, not an absolute peak proof",
+  "helper_coverage": {
+    "reference": {
+      "pid": 73015,
+      "sampled_frames": 140,
+      "normal_heap_footer": true
+    },
+    "before-reopen": {
+      "pid": 81075,
+      "sampled_frames": 0,
+      "normal_heap_footer": true
+    },
+    "compare": {
+      "pid": 81078,
+      "sampled_frames": 0,
+      "normal_heap_footer": true
+    }
+  },
+  "short_helpers_without_RSS_frame": [
+    81075,
+    81078
+  ],
+  "last_frame_member_roles": [
+    "observer",
+    "sampler_ps"
+  ],
+  "whole_process_RSS_peaks_for_unsampled_helpers": "not_measured"
+}

@@ -1,0 +1,106 @@
+{
+  "samples": [
+    {
+      "elapsed_seconds": 0.0036874169999999984,
+      "pressure": 1
+    },
+    {
+      "elapsed_seconds": 5.0090204169999994,
+      "pressure": 1
+    },
+    {
+      "elapsed_seconds": 10.01540775,
+      "pressure": 1
+    },
+    {
+      "elapsed_seconds": 15.023628667,
+      "pressure": 1
+    },
+    {
+      "elapsed_seconds": 20.031655625,
+      "pressure": 1
+    },
+    {
+      "elapsed_seconds": 25.040948,
+      "pressure": 1
+    },
+    {
+      "elapsed_seconds": 30.051534625,
+      "pressure": 1
+    },
+    {
+      "elapsed_seconds": 35.059287417,
+      "pressure": 1
+    },
+    {
+      "elapsed_seconds": 40.067419458,
+      "pressure": 1
+    },
+    {
+      "elapsed_seconds": 45.072741417,
+      "pressure": 1
+    },
+    {
+      "elapsed_seconds": 50.076988292,
+      "pressure": 1
+    },
+    {
+      "elapsed_seconds": 55.080568875000004,
+      "pressure": 1
+    },
+    {
+      "elapsed_seconds": 60.092376375,
+      "pressure": 1
+    },
+    {
+      "elapsed_seconds": 65.100098708,
+      "pressure": 1
+    },
+    {
+      "elapsed_seconds": 70.10751437500001,
+      "pressure": 1
+    },
+    {
+      "elapsed_seconds": 75.118970542,
+      "pressure": 1
+    },
+    {
+      "elapsed_seconds": 80.12674320800001,
+      "pressure": 1
+    },
+    {
+      "elapsed_seconds": 85.13276575,
+      "pressure": 1
+    },
+    {
+      "elapsed_seconds": 90.141070875,
+      "pressure": 1
+    },
+    {
+      "elapsed_seconds": 95.149093625,
+      "pressure": 1
+    },
+    {
+      "elapsed_seconds": 100.15712658300001,
+      "pressure": 1
+    },
+    {
+      "elapsed_seconds": 105.1621525,
+      "pressure": 1
+    },
+    {
+      "elapsed_seconds": 110.172132875,
+      "pressure": 1
+    },
+    {
+      "elapsed_seconds": 115.17765920800001,
+      "pressure": 1
+    },
+    {
+      "elapsed_seconds": 120.189631125,
+      "pressure": 1
+    }
+  ],
+  "continuous_120s_normal": true,
+  "scope": "admission observation only; no performance acceptance"
+}
