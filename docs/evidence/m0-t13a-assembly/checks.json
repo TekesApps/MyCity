@@ -1,0 +1,14 @@
+{
+  "schema": "mycity-t13a-assembly-check-v1",
+  "source_sha256": "62a57f1cd6fdc9911e1e408cb5650bea2f0b8cbefefd16276adf0c8299551bdf",
+  "scope": "T13A-1a_full_direct_CPU_and_native_layout_only",
+  "full_30_game_day_arithmetic_and_checkpoint": "passed",
+  "full_workspace_release_tests": 243,
+  "real_process_exit_points_extra_inventory": 7,
+  "full_L1_pressure": "not_run",
+  "long_observer": "not_implemented",
+  "steady_gate": "not_run",
+  "eight_hour_gate": "not_run",
+  "memory_16gb_gate": "not_run",
+  "full_M0": "not_accepted"
+}

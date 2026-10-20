@@ -12,6 +12,7 @@ pub mod calendar;
 pub mod economy;
 pub mod exchange;
 pub mod inbox;
+pub mod layout_pressure;
 pub mod probes;
 pub mod region;
 pub mod schedule;
@@ -120,12 +121,19 @@ mod tests {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
 #[serde(transparent)]
 pub struct FrozenLabel(pub(crate) &'static str);
+impl FrozenLabel {
+    pub const fn as_str(self) -> &'static str {
+        self.0
+    }
+}
 impl<'de> Deserialize<'de> for FrozenLabel {
     fn deserialize<D: serde::Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
         let s = String::deserialize(d)?;
         match s.as_str() {
             "pe0-30d-v1" => Ok(Self("pe0-30d-v1")),
             "regional-fulfilment-v1" => Ok(Self("regional-fulfilment-v1")),
+            "regional-fulfilment-scale-v1" => Ok(Self("regional-fulfilment-scale-v1")),
+            "pboot-cold-scale-v1" => Ok(Self("pboot-cold-scale-v1")),
             "pboot-cold-micro-v1" => Ok(Self("pboot-cold-micro-v1")),
             "volatile_only" => Ok(Self("volatile_only")),
             _ => Err(serde::de::Error::custom("unsupported_frozen_label")),

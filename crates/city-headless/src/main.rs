@@ -26,6 +26,17 @@ fn system(command: &str, args: &[&str]) -> Option<String> {
 
 fn run() -> Result<(), String> {
     let args: Vec<_> = env::args().collect();
+    if args.get(1).is_some_and(|a| a == "scale-reference") {
+        if args.len() != 3 {
+            return Err("usage: mycity-headless scale-reference NEW_DIR".into());
+        }
+        let report = mycity_headless::scale_reference::export(std::path::Path::new(&args[2]))?;
+        println!(
+            "{}",
+            serde_json::to_string_pretty(&report).map_err(|e| e.to_string())?
+        );
+        return Ok(());
+    }
     if args.get(1).is_some_and(|a| a == "joint-probe") {
         if args.len() != 4 {
             return Err("usage: mycity-headless joint-probe NEW_DIR WALL_SECONDS (0=dry; 1800..2100=endurance)".into());

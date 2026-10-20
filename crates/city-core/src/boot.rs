@@ -6,6 +6,7 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 pub const PROFILE: &str = "pboot-cold-micro-v1";
+pub const SCALE_PROFILE: &str = "pboot-cold-scale-v1";
 pub const SECONDS: u64 = 60;
 #[derive(Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -138,11 +139,15 @@ pub(crate) trait Ledger {
 }
 impl Boot {
     pub(crate) fn new(o: Opening, w: &World, joint: bool) -> Result<Self, String> {
+        let scaled = o.profile == SCALE_PROFILE;
+        let profile = if scaled { SCALE_PROFILE } else { PROFILE };
         if o.schema != "mycity-m0-boot-v1"
-            || o.profile != PROFILE
+            || o.profile != profile
             || (w.region.is_some() && !joint)
             || w.economy.is_some()
-            || w.stock_ids.len() != if joint { 14 } else { 6 }
+            || (!scaled && w.stock_ids.len() != if joint { 14 } else { 6 })
+            || (scaled
+                && (!joint || !(14..=crate::assembly::MAX_STOCKS).contains(&w.stock_ids.len())))
             || o.operator == o.contractor
             || o.resources[0] == 0
             || o.resources[1] == 0
@@ -204,7 +209,7 @@ impl Boot {
             .try_fold(Money::ZERO, |sum, a| sum.checked_add(a.cash))
             .map_err(|_| "cash")?;
         Ok(Self {
-            profile: crate::FrozenLabel(PROFILE),
+            profile: crate::FrozenLabel(profile),
             operator: o.operator,
             contractor: o.contractor,
             stocks: o.stocks,
@@ -241,6 +246,51 @@ impl Boot {
         self.exports[index] = plus(self.exports[index], quantity)?;
         self.exported_basis = add(self.exported_basis, cost)?;
         Ok(cost)
+    }
+    pub(crate) fn validate_world_shape(&self, w: &World, joint: bool) -> Result<(), String> {
+        let scaled = self.profile.as_str() == SCALE_PROFILE;
+        if ![PROFILE, SCALE_PROFILE].contains(&self.profile.as_str())
+            || w.economy.is_some()
+            || (w.region.is_some() && !joint)
+            || (!scaled && w.stock_ids.len() != if joint { 14 } else { 6 })
+            || (scaled
+                && (!joint || !(14..=crate::assembly::MAX_STOCKS).contains(&w.stock_ids.len())))
+            || self.operator == self.contractor
+            || self.resources.contains(&0)
+            || self.resources[0] == self.resources[1]
+        {
+            return Err("boot_profile_shape".into());
+        }
+        let owner = w.account_handle(self.operator)?;
+        if w.accounts.get(owner).map_err(|_| "boot_owner")?.role != Role::Company {
+            return Err("boot_operator".into());
+        }
+        w.account_handle(self.contractor)?;
+        for (i, kind) in [
+            Commodity::Fuel,
+            Commodity::Electricity,
+            Commodity::Water,
+            Commodity::RawWater,
+            Commodity::WasteWater,
+            Commodity::Heat,
+        ]
+        .iter()
+        .enumerate()
+        {
+            let stock = w
+                .stocks
+                .get(w.stock_handle(self.stocks[i])?)
+                .map_err(|_| "boot_stock")?;
+            if self.stocks[..i].contains(&self.stocks[i])
+                || stock.owner != owner
+                || stock.commodity != *kind
+                || self.limits[i] == Quantity::ZERO
+                || stock.quantity > self.limits[i]
+            {
+                return Err("boot_stock_binding".into());
+            }
+        }
+        Ok(())
     }
     pub fn governs(&self, id: u32) -> bool {
         self.stocks.contains(&id)

@@ -243,3 +243,6 @@ T10-A单CLI会话从UI／工具／Agent／语音0.40GiB域中明确预留8MiB请
 
 
 T13A-0执行冻结v0.5.30：[模型规模与性能](m0-model-scale-performance.md)按本篇JPROD数量做L1布局压力，实际模型L2另按当前上限分级。3.10／3.5／4GiB、诊断8MiB及世界20GiB／2GiB安全余量不扩；布局页／参考／观测器和临时高峰共同计费。三轮稳态与真实8h尚未执行，公开footprint读取可行不等于16GB或模型性能通过。
+
+
+T13A-1a v0.5.31：实际native诊断布局owned29625968B，字段／Arena／索引宽度由Rust导出；65,299,383B JSON实文件保存恢复属于布局证据。真实满级Engine为64／128／8城／64工资／20000债项，30日最终owned3927304B，接近既有4MiB门但未扩门。完整L1七域压力、观测及真实高峰仍未测；不得把29.6MB部分布局直接加在3.10GiB完整padding外。详见[子阶段证据](evidence/m0-t13a-assembly/STATUS.md)。

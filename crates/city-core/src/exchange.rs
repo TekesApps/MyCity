@@ -24,6 +24,68 @@ pub struct Placement {
     pub city: u32,
     pub origin_x_cm: i64,
 }
+pub const PROFILE: &str = "regional-fulfilment-v1";
+pub const SCALE_PROFILE: &str = "regional-fulfilment-scale-v1";
+
+/// Fixed owned storage, bounded decoding, and legacy array wire format.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct MapPlacements {
+    items: [Placement; MAX_CITIES],
+    len: u8,
+}
+impl std::ops::Deref for MapPlacements {
+    type Target = [Placement];
+    fn deref(&self) -> &Self::Target {
+        &self.items[..usize::from(self.len)]
+    }
+}
+impl std::ops::DerefMut for MapPlacements {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.items[..usize::from(self.len)]
+    }
+}
+impl Serialize for MapPlacements {
+    fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        self.deref_slice().serialize(serializer)
+    }
+}
+impl MapPlacements {
+    fn deref_slice(&self) -> &[Placement] {
+        self
+    }
+}
+impl<'de> Deserialize<'de> for MapPlacements {
+    fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        struct Maps;
+        impl<'de> serde::de::Visitor<'de> for Maps {
+            type Value = MapPlacements;
+            fn expecting(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+                f.write_str("at most eight metric map placements")
+            }
+            fn visit_seq<A: serde::de::SeqAccess<'de>>(
+                self,
+                mut seq: A,
+            ) -> Result<Self::Value, A::Error> {
+                let mut result = MapPlacements {
+                    items: [Placement {
+                        city: 0,
+                        origin_x_cm: 0,
+                    }; MAX_CITIES],
+                    len: 0,
+                };
+                while let Some(value) = seq.next_element::<Placement>()? {
+                    if usize::from(result.len) == MAX_CITIES {
+                        return Err(serde::de::Error::custom("exchange_map_limit"));
+                    }
+                    result.items[usize::from(result.len)] = value;
+                    result.len += 1;
+                }
+                Ok(result)
+            }
+        }
+        deserializer.deserialize_seq(Maps)
+    }
+}
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct AccountHome {
@@ -79,7 +141,7 @@ pub struct Opening {
     pub schema: String,
     pub profile: String,
     pub home_city: u32,
-    pub maps: [Placement; 3],
+    pub maps: MapPlacements,
     pub accounts: [AccountHome; 4],
     pub stocks: [StockHome; 14],
     pub edges: [Edge; 6],
@@ -131,7 +193,7 @@ pub struct Shipment {
 pub struct Exchange {
     pub profile: crate::FrozenLabel,
     pub home_city: u32,
-    pub maps: [Placement; 3],
+    pub maps: MapPlacements,
     pub accounts: [AccountHome; 4],
     pub stocks: [StockHome; 14],
     pub edges: [Edge; 6],
@@ -193,13 +255,24 @@ impl Exchange {
     pub(crate) fn new(o: Opening, w: &World) -> Result<Self, String> {
         let r = w.region.ok_or("exchange_region_required")?;
         let b = w.boot.ok_or("exchange_boot_required")?;
+        let scaled = o.profile == SCALE_PROFILE;
+        let profile = if scaled { SCALE_PROFILE } else { PROFILE };
         if o.schema != "mycity-m0-exchange-v1"
-            || o.profile != "regional-fulfilment-v1"
+            || o.profile != profile
             || w.economy.is_some()
-            || w.stock_ids.len() != 14
+            || (!scaled && w.stock_ids.len() != 14)
+            || (scaled && !(14..=crate::assembly::MAX_STOCKS).contains(&w.stock_ids.len()))
+            || b.profile.as_str()
+                != if scaled {
+                    boot::SCALE_PROFILE
+                } else {
+                    boot::PROFILE
+                }
             || b.stocks != [1, 2, 3, 4, 5, 6]
             || b.resources != [101, 102]
-            || r.cities.iter().flatten().count() != 3
+            || (!scaled && r.cities.iter().flatten().count() != 3)
+            || o.maps.len() != r.cities.iter().flatten().count()
+            || !(3..=MAX_CITIES).contains(&o.maps.len())
         {
             return Err("exchange_profile".into());
         }
@@ -357,7 +430,7 @@ impl Exchange {
             source_fragment: None,
         });
         let result = Self {
-            profile: crate::FrozenLabel("regional-fulfilment-v1"),
+            profile: crate::FrozenLabel(profile),
             home_city: o.home_city,
             maps,
             accounts,
@@ -381,55 +454,7 @@ impl Exchange {
             link_repairs: [0; MAX_QUOTES],
             population_link_controls: [0; 6],
         };
-        for (i, quote) in result.quotes.iter().enumerate() {
-            let s = quote.spec;
-            if s.id == 0
-                || s.id >= 0x10000000
-                || s.quantity == Quantity::ZERO
-                || s.quantity.value() > 1000000
-                || s.unit_price == Money::ZERO
-                || s.expires_at == 0
-                || s.max_distance_m == 0
-                || result.quotes[..i].iter().any(|q| q.spec.id == s.id)
-                || s.seller == s.buyer
-            {
-                return Err("exchange_quote".into());
-            }
-            for (id, city) in [(s.seller, s.from), (s.buyer, s.to)] {
-                if !result
-                    .accounts
-                    .iter()
-                    .any(|a| a.account == id && a.city == city)
-                {
-                    return Err("exchange_quote_home".into());
-                }
-            }
-            w.account_handle(s.carrier)?;
-            for (id, city, owner) in [(s.source, s.from, s.seller), (s.destination, s.to, s.buyer)]
-            {
-                let h = result
-                    .stocks
-                    .iter()
-                    .find(|x| x.stock == id && x.city == city)
-                    .ok_or("quote_custody")?;
-                let stock = w
-                    .stocks
-                    .get(w.stock_handle(h.stock)?)
-                    .map_err(|_| "stock")?;
-                if w.accounts.get(stock.owner).map_err(|_| "owner")?.id != owner {
-                    return Err("quote_owner".into());
-                }
-            }
-            let (source, dest) = match s.kind {
-                Kind::Freight => (s.source == 7, (8..=12).contains(&s.destination)),
-                Kind::Electricity => (s.source == 2, s.destination == 13),
-                Kind::Water => (s.source == 3, s.destination == 14),
-            };
-            if !source || !dest {
-                return Err("quote_source_type".into());
-            }
-            result.path(s).map_err(|_| "quote_path")?;
-        }
+        result.validate_world_shape(w)?;
         Ok(result)
     }
     fn path(&self, s: QuoteSpec) -> Result<Vec<usize>, TxError> {
@@ -696,7 +721,9 @@ impl Exchange {
                     }
                 }
                 if projected > receiver.limit
-                    || spec.kind == Kind::Freight && dst.quantity != Quantity::ZERO
+                    || spec.kind == Kind::Freight
+                        && dst.quantity != Quantity::ZERO
+                        && self.profile.as_str() != SCALE_PROFILE
                 {
                     return Err(error(Error::Storage));
                 }
@@ -829,7 +856,10 @@ impl Exchange {
             l.pay_protected(spec.buyer, spec.seller, ship.price)?;
             let mut dst = l.stock(spec.destination)?;
             let acquisition = add(ship.price, ship.freight)?;
-            if spec.kind == Kind::Freight && dst.quantity != Quantity::ZERO {
+            if spec.kind == Kind::Freight
+                && dst.quantity != Quantity::ZERO
+                && self.profile.as_str() != SCALE_PROFILE
+            {
                 return Err(error(Error::Storage));
             }
             dst.quantity = qa(dst.quantity, ship.net)?;
@@ -837,6 +867,8 @@ impl Exchange {
             dst.origin_quantity = dst.quantity;
             dst.origin_basis = dst.basis;
             dst.offset = Quantity::ZERO;
+            // This identifies the resulting acquisition-cost pool. Source fragments
+            // remain on each quote/receipt; a pooled lot is not a supplier's batch.
             dst.lot_id = 0xc0000000 + spec.id;
             l.put(spec.destination, dst)?;
             if spec.kind == Kind::Electricity {
@@ -868,6 +900,196 @@ impl Exchange {
             r.bump().map_err(TxError::Region)?;
         }
         Ok(())
+    }
+    pub(crate) fn validate_world_shape(&self, w: &World) -> Result<(), String> {
+        let r = w.region.as_ref().ok_or("exchange_region_required")?;
+        let b = w.boot.as_ref().ok_or("exchange_boot_required")?;
+        let scaled = self.profile.as_str() == SCALE_PROFILE;
+        if ![PROFILE, SCALE_PROFILE].contains(&self.profile.as_str())
+            || w.economy.is_some()
+            || (!scaled && (self.maps.len() != 3 || w.stock_ids.len() != 14))
+            || (scaled && !(14..=crate::assembly::MAX_STOCKS).contains(&w.stock_ids.len()))
+            || !(3..=MAX_CITIES).contains(&self.maps.len())
+            || self.maps.len() != r.cities.iter().flatten().count()
+            || b.profile.as_str()
+                != if scaled {
+                    boot::SCALE_PROFILE
+                } else {
+                    boot::PROFILE
+                }
+            || b.stocks != [1, 2, 3, 4, 5, 6]
+            || b.resources != [101, 102]
+        {
+            return Err("exchange_profile_shape".into());
+        }
+        for (i, m) in self.maps.iter().enumerate() {
+            r.city(m.city).map_err(|_| "exchange_map_city")?;
+            if !(0..=10000000).contains(&m.origin_x_cm)
+                || self.maps[..i].iter().any(|old| {
+                    old.city >= m.city || old.origin_x_cm.abs_diff(m.origin_x_cm) < 102400
+                })
+            {
+                return Err("exchange_map_placement".into());
+            }
+        }
+        if !self.maps.iter().any(|m| m.city == self.home_city) {
+            return Err("exchange_home".into());
+        }
+        for (i, a) in self.accounts.iter().enumerate() {
+            w.account_handle(a.account)?;
+            r.city(a.city).map_err(|_| "exchange_account_city")?;
+            if i > 0 && self.accounts[i - 1].account >= a.account {
+                return Err("exchange_account_identity".into());
+            }
+        }
+        for (i, binding) in self.stocks.iter().enumerate() {
+            let stock = w
+                .stocks
+                .get(w.stock_handle(binding.stock)?)
+                .map_err(|_| "exchange_stock")?;
+            let owner = w
+                .accounts
+                .get(stock.owner)
+                .map_err(|_| "exchange_owner")?
+                .id;
+            let kind = match i {
+                0..=5 => [
+                    Commodity::Fuel,
+                    Commodity::Electricity,
+                    Commodity::Water,
+                    Commodity::RawWater,
+                    Commodity::WasteWater,
+                    Commodity::Heat,
+                ][i],
+                6..=11 => Commodity::Raw,
+                12 => Commodity::Electricity,
+                _ => Commodity::Water,
+            };
+            if binding.stock != i as u32 + 1
+                || stock.commodity != kind
+                || binding.limit == Quantity::ZERO
+                || stock.quantity > binding.limit
+                || !self
+                    .accounts
+                    .iter()
+                    .any(|a| a.account == owner && a.city == binding.city)
+                || (i < 6 && (binding.city != self.home_city || binding.limit != b.limits[i]))
+            {
+                return Err("exchange_stock_binding".into());
+            }
+        }
+        for (i, e) in self.edges.iter().enumerate() {
+            let a = self
+                .maps
+                .iter()
+                .find(|m| m.city == e.from)
+                .ok_or("edge_from")?;
+            let b = self.maps.iter().find(|m| m.city == e.to).ok_or("edge_to")?;
+            let (z, seconds, resources) = match e.kind {
+                Kind::Freight => (0, 60, [201, 202]),
+                Kind::Electricity => (500, 1, [101, 103]),
+                Kind::Water => (-300, 512, [102, 104]),
+            };
+            if e.id == 0
+                || e.from == e.to
+                || !resources.contains(&e.resource)
+                || self.edges[..i]
+                    .iter()
+                    .any(|old| old.id >= e.id || old.resource == e.resource)
+                || e.a_cm != [a.origin_x_cm + 51200, 51200, z]
+                || e.b_cm != [b.origin_x_cm + 51200, 51200, z]
+                || e.distance_m() != 1024
+                || e.travel_seconds != seconds
+                || (e.kind == Kind::Electricity
+                    && ((e.resource == 101) != (e.from == self.home_city)))
+                || (e.kind == Kind::Water && ((e.resource == 102) != (e.from == self.home_city)))
+            {
+                return Err("exchange_edge_shape".into());
+            }
+            if e.kind == Kind::Freight {
+                let route = r
+                    .routes
+                    .iter()
+                    .flatten()
+                    .find(|route| Some(route.id) == e.population_route)
+                    .ok_or("exchange_edge_route")?;
+                if (
+                    route.from,
+                    route.to,
+                    u64::from(route.distance_m),
+                    route.travel_seconds,
+                ) != (e.from, e.to, e.distance_m(), e.travel_seconds)
+                {
+                    return Err("exchange_route_geometry".into());
+                }
+            } else if e.population_route.is_some() {
+                return Err("exchange_typed_link".into());
+            }
+        }
+        if r.routes.iter().flatten().any(|route| {
+            !self
+                .edges
+                .iter()
+                .any(|e| e.population_route == Some(route.id))
+        }) {
+            return Err("exchange_unbound_population_route".into());
+        }
+        for (i, quote) in self.quotes.iter().enumerate() {
+            let s = quote.spec;
+            if s.id == 0
+                || s.id >= 0x10000000
+                || s.quantity == Quantity::ZERO
+                || s.quantity.value() > 1000000
+                || s.unit_price == Money::ZERO
+                || s.expires_at == 0
+                || s.max_distance_m == 0
+                || self.quotes[..i].iter().any(|q| q.spec.id == s.id)
+                || s.seller == s.buyer
+            {
+                return Err("exchange_quote".into());
+            }
+            for (id, city) in [(s.seller, s.from), (s.buyer, s.to)] {
+                if !self
+                    .accounts
+                    .iter()
+                    .any(|a| a.account == id && a.city == city)
+                {
+                    return Err("exchange_quote_home".into());
+                }
+            }
+            w.account_handle(s.carrier)?;
+            for (id, city, owner) in [(s.source, s.from, s.seller), (s.destination, s.to, s.buyer)]
+            {
+                let h = self
+                    .stocks
+                    .iter()
+                    .find(|x| x.stock == id && x.city == city)
+                    .ok_or("quote_custody")?;
+                let stock = w
+                    .stocks
+                    .get(w.stock_handle(h.stock)?)
+                    .map_err(|_| "stock")?;
+                if w.accounts.get(stock.owner).map_err(|_| "owner")?.id != owner {
+                    return Err("quote_owner".into());
+                }
+            }
+            let (source, dest) = match s.kind {
+                Kind::Freight => (s.source == 7, (8..=12).contains(&s.destination)),
+                Kind::Electricity => (s.source == 2, s.destination == 13),
+                Kind::Water => (s.source == 3, s.destination == 14),
+            };
+            if !source || !dest {
+                return Err("quote_source_type".into());
+            }
+            self.path(s).map_err(|_| "quote_path")?;
+        }
+        Ok(())
+    }
+    pub(crate) fn permits_extra_stock_move(&self, ids: [u32; 2]) -> bool {
+        self.profile.as_str() == SCALE_PROFILE
+            && ids
+                .iter()
+                .all(|id| !self.stocks.iter().any(|s| s.stock == *id))
     }
     pub(crate) fn validate(
         &self,

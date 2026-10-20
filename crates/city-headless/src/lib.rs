@@ -12,3 +12,5 @@ pub mod joint_reference;
 pub mod group_sampler;
 
 pub mod joint_probe;
+
+pub mod scale_reference;

@@ -142,7 +142,7 @@ pub(crate) fn write_dependency(
     Ok(())
 }
 
-/// The regional prototype explicitly reuses one immutable flat terrain template for three frames.
+/// The regional prototype explicitly reuses one immutable flat terrain template for the profile's bounded three to eight metric frames.
 /// These are dedicated metric terminals, not proof that a walking road supports trucks or pipes.
 pub(crate) fn validate_exchange_binding(
     engine: &mycity_core::transaction::Engine,

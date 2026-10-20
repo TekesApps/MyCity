@@ -348,6 +348,12 @@ impl Engine {
             return Err("checkpoint_collection_limits".into());
         }
         candidate.world.restore_capacity()?;
+        if let Some(b) = candidate.world.boot {
+            b.validate_world_shape(&candidate.world, candidate.world.exchange.is_some())?;
+        }
+        if let Some(e) = candidate.world.exchange {
+            e.validate_world_shape(&candidate.world)?;
+        }
         if let Some(b) = &candidate.background {
             b.validate()?;
             let t = candidate.timeline.as_ref().ok_or("background_timeline")?;
@@ -899,10 +905,15 @@ impl Engine {
                         if background.is_some()
                             || region.is_none()
                             || exchange.as_ref().is_none_or(|x| {
+                                // This finite laboratory field covers freight source maps,
+                                // not every discovered city's unrelated metric frame.
                                 x.maps.iter().any(|m| {
-                                    m.origin_x_cm < 0
+                                    x.quotes.iter().any(|q| {
+                                        q.spec.kind == crate::exchange::Kind::Freight
+                                            && q.spec.from == m.city
+                                    }) && (m.origin_x_cm < 0
                                         || m.origin_x_cm
-                                            > i64::from(crate::background::SIDE) * 3200 - 102400
+                                            > i64::from(crate::background::SIDE) * 3200 - 102400)
                                 }) || x.quotes.iter().any(|q| {
                                     q.spec.kind == crate::exchange::Kind::Freight
                                         && q.spec.quantity.value() > 1_000_000
@@ -1305,8 +1316,24 @@ impl Engine {
                     }
                 }
                 Action::MoveStock { from, to, quantity } => {
-                    if exchange.is_some() {
-                        return Err(TxError::Unauthorized);
+                    if let Some(e) = exchange {
+                        let mut ids = [0; 2];
+                        for (i, raw) in [from, to].iter().enumerate() {
+                            let h = self
+                                .world
+                                .stocks
+                                .resolve(*raw)
+                                .map_err(|_| TxError::InvalidHandle)?;
+                            ids[i] = self
+                                .world
+                                .stocks
+                                .get(h)
+                                .map_err(|_| TxError::InvalidHandle)?
+                                .id;
+                        }
+                        if !e.permits_extra_stock_move(ids) {
+                            return Err(TxError::Unauthorized);
+                        }
                     }
                     if let Some(b) = boot {
                         for raw in [from, to] {

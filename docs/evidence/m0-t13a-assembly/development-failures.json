@@ -1,0 +1,45 @@
+{
+  "schema": "mycity-t13a-assembly-development-diagnostics-v1",
+  "scope": "development_test_failures_not_frozen_performance_baselines",
+  "failures": [
+    {
+      "case": "configure_after_four_dispatches",
+      "error": "InboxFull",
+      "cause": "normal Inbox admission quota is 4; new payroll/claims configuration cannot be admitted while all slots are committed",
+      "resolution": "configure all payroll and claims at time zero before dispatch; preserve four simultaneous in-flight shipments"
+    },
+    {
+      "case": "enable_air_with_eight_frames",
+      "error": "Background Enable: InvalidOperation",
+      "cause": "existing guard demanded every discovered metric frame fit within one 4096m air field",
+      "resolution": "validate all actual freight source frames within that field; other cities are not claimed as air-covered"
+    },
+    {
+      "case": "start_generator_with_four_inflight",
+      "error": "Boot Start Generator: InboxFull",
+      "cause": "generator start is correctly a new commitment under normal Inbox backpressure",
+      "resolution": "start generator at second 60 before four day-zero dispatches; receive and archive first group at second 180"
+    },
+    {
+      "case": "second_group_day15",
+      "error": "Exchange Dispatch quote5: Exchange(Storage)",
+      "cause": "legacy freight requires an empty receiving cost lot, despite sufficient storage capacity",
+      "resolution": "new scale profile alone permits sequential acquisition-cost pooling; preserve capacity, simultaneous-destination refusal and every original delivery fragment"
+    },
+    {
+      "case": "native_snapshot_restored_capacity",
+      "error": "owned equality: 29625968 != 35248496",
+      "cause": "serde JSON Vec growth capacities differ from exact native constructed capacities",
+      "resolution": "validate full record counts then repack vectors to exact lengths; real file roundtrip must remeasure"
+    },
+    {
+      "case": "workspace_tests_during_different_source_rebuild",
+      "error": "worker_eof/source_sha256 mismatch",
+      "cause": "test source fa68f1e24ee197d273129e9b2e5c32900e63092e43f2ffa0506ef6eeb89af15d versus replaced CLI 62a57f1cd6fdc9911e1e408cb5650bea2f0b8cbefefd16276adf0c8299551bdf",
+      "resolution": "preserve failed log; repeat full workspace against fixed build; no successful test credit from failed run"
+    }
+  ],
+  "performance_acceptance": "not_run",
+  "eight_hour_gate": "not_run",
+  "memory_16gb_gate": "not_run"
+}

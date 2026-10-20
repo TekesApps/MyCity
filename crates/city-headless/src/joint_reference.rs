@@ -310,6 +310,21 @@ impl Reference {
             windows: 0,
         })
     }
+    /// Fresh diagnostic reference only; never restores or writes a Store.
+    pub fn from_unstarted_engine(engine: Engine) -> Result<Self, String> {
+        if engine.world().view().revision != 0
+            || !engine.journal().is_empty()
+            || engine.timeline().is_some()
+            || engine.background().is_some()
+        {
+            return Err("reference_requires_unstarted_engine".into());
+        }
+        Ok(Self {
+            engine,
+            next_operation: 1,
+            windows: 0,
+        })
+    }
     pub fn execute(&mut self, actions: Vec<Action>) -> Result<Receipt, String> {
         if self.engine.journal().len() >= 512 {
             self.engine.retire_checkpointed_journal();

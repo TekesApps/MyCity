@@ -1,0 +1,120 @@
+{
+  "schema": "mycity-native-layout-v1",
+  "scope": "actual_types_synthetic_records_not_business_simulation",
+  "account_arena": {
+    "record_bytes": 24,
+    "slot_bytes": 32,
+    "header_bytes": 80,
+    "slots_capacity": 40000,
+    "free_index_capacity": 40000,
+    "owned_capacity_bytes": 1440080,
+    "live_records": 40000
+  },
+  "inventory_arena": {
+    "record_bytes": 88,
+    "slot_bytes": 96,
+    "header_bytes": 80,
+    "slots_capacity": 110000,
+    "free_index_capacity": 110000,
+    "owned_capacity_bytes": 11000080,
+    "live_records": 110000
+  },
+  "fields": [
+    [
+      "Account.id",
+      16
+    ],
+    [
+      "Account.role",
+      20
+    ],
+    [
+      "Account.cash",
+      0
+    ],
+    [
+      "Account.protected",
+      8
+    ],
+    [
+      "Stock.id",
+      72
+    ],
+    [
+      "Stock.owner",
+      0
+    ],
+    [
+      "Stock.commodity",
+      80
+    ],
+    [
+      "Stock.quantity",
+      32
+    ],
+    [
+      "Stock.basis",
+      40
+    ],
+    [
+      "Stock.lot_id",
+      76
+    ],
+    [
+      "Stock.origin_quantity",
+      48
+    ],
+    [
+      "Stock.origin_basis",
+      56
+    ],
+    [
+      "Stock.offset",
+      64
+    ]
+  ],
+  "vectors": [
+    [
+      "account_index",
+      40000,
+      40000,
+      32
+    ],
+    [
+      "inventory_index",
+      110000,
+      110000,
+      32
+    ],
+    [
+      "claims",
+      180000,
+      180000,
+      48
+    ],
+    [
+      "payroll",
+      31200,
+      31200,
+      120
+    ],
+    [
+      "resources",
+      8,
+      8,
+      16
+    ],
+    [
+      "leases",
+      64,
+      64,
+      24
+    ]
+  ],
+  "owned_capacity_bytes": 29625968,
+  "checkpoint_bytes": 65299383,
+  "actual_file_write_fsync_restore_hash_check_seconds": 2.039912667,
+  "source_sha256": "62a57f1cd6fdc9911e1e408cb5650bea2f0b8cbefefd16276adf0c8299551bdf",
+  "full_L1_pressure": "not_run",
+  "performance_gate": "not_run"
+}

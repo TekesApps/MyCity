@@ -1,0 +1,35 @@
+{
+  "scope": "baseline_v0.5.29_assembly_preflight_not_performance_acceptance",
+  "binary_sha256": "b4528c1580360e99ac0d35d14599e7aa12ebf906dd566c9a28f250ad6d1db592",
+  "cases": [
+    {
+      "case": "frozen_full_candidate",
+      "input_sha256": "908482ad0e7edefd415df7c215f9b2ebe0d296fb4678d5d528be99ee8e9a82ae",
+      "exit_code": 2,
+      "stderr": "trailing characters at line 1 column 25441\n",
+      "stdout_prefix": ""
+    },
+    {
+      "case": "core_tables_without_exchange",
+      "input_sha256": "1240d96df24fec7e9d19ea6f3382ff7bcc4a07a15821eb57da3c753beb07b6fa",
+      "exit_code": 2,
+      "stderr": "boot_profile\n",
+      "stdout_prefix": ""
+    },
+    {
+      "case": "bare_core_tables_without_boot_exchange",
+      "input_sha256": "d188744106253c7a0523e3bceb093519923556b63638353225ca02b3b6adee3a",
+      "exit_code": 0,
+      "stderr": "",
+      "stdout_prefix": "{\n  \"build\": {\n    \"profile\": \"release\",\n    \"rustc\": \"rustc 1.85.1 (4eb161250 2025-03-15)\",\n    \"target\": \"aarch64-apple-darwin\"\n  },\n  \"economic_prototypes\": \"not_run\",\n  \"gpu\": \"not_implemented\",\n  \"host\": {\n    \"arch\": \"aarch64\",\n    \"chip\": \"Apple M4\",\n    \"memory_bytes\": \"34359738368\",\n    \"os\": \"macos\",\n    \"os_version\": \"26.6.2\"\n  },\n  \"input\": {\n    \"branch\": 1,\n    \"laboratory_only\": true,\n    \"schema\": \"mycity-m0-bootstrap-v1\",\n    \"seed\": 7,\n    \"world\": 1\n  },\n  \"input_sha256\": \"d18"
+    },
+    {
+      "case": "three_city_adapter_with_full_stocks",
+      "input_sha256": "d39077b68c3d2f20d27e0035f789e0a3c69c86b40e22fdaea1a8679a7b123428",
+      "exit_code": 2,
+      "stderr": "boot_profile\n",
+      "stdout_prefix": ""
+    }
+  ],
+  "full_T13A1_assembly": "failed_requires_adapter_fix_no_load_reduction"
+}

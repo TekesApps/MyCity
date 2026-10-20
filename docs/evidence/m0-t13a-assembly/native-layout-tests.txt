@@ -1,0 +1,12 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+    Finished `release` profile [optimized] target(s) in 2.41s
+     Running tests/layout_pressure.rs (target/release/deps/layout_pressure-06286cd4be33d8e4)
+
+running 2 tests
+T13A_NATIVE {"schema":"mycity-native-layout-v1","scope":"actual_types_synthetic_records_not_business_simulation","account_arena":{"record_bytes":24,"slot_bytes":32,"header_bytes":80,"slots_capacity":40000,"free_index_capacity":40000,"owned_capacity_bytes":1440080,"live_records":40000},"inventory_arena":{"record_bytes":88,"slot_bytes":96,"header_bytes":80,"slots_capacity":110000,"free_index_capacity":110000,"owned_capacity_bytes":11000080,"live_records":110000},"fields":[["Account.id",16],["Account.role",20],["Account.cash",0],["Account.protected",8],["Stock.id",72],["Stock.owner",0],["Stock.commodity",80],["Stock.quantity",32],["Stock.basis",40],["Stock.lot_id",76],["Stock.origin_quantity",48],["Stock.origin_basis",56],["Stock.offset",64]],"vectors":[["account_index",40000,40000,32],["inventory_index",110000,110000,32],["claims",180000,180000,48],["payroll",31200,31200,120],["resources",8,8,16],["leases",64,64,24]],"owned_capacity_bytes":29625968} checkpoint_bytes=65299383
+test native_jprod_storage_counts_real_widths_and_all_scanned_records ... ok
+T13A_NATIVE_REAL_IO seconds=2.039912667 bytes=65299383
+test native_full_snapshot_roundtrip_and_truncation_use_real_files ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.06s
+
