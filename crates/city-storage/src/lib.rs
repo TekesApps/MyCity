@@ -1,6 +1,8 @@
 //! Laboratory persistence: one writer, bounded replay, WAL + explicit committed boundary.
 //! No historical migration, power-loss certification or automatic fallback of confirmed data.
 mod capacity;
+mod continuation;
+pub use continuation::{Continuation, CONTINUATION_MAX_PAGES, CONTINUATION_PAGE_BYTES};
 mod outbox;
 mod query;
 pub use outbox::{SourcePoint, SourceStatus};
@@ -93,6 +95,7 @@ struct Root {
     generation: u64,
     capacity: CapacityPolicy,
     source_registered: bool,
+    continuation: Option<Continuation>,
     checkpoint: Option<checkpoint::Reference>,
     segment: u64,
     wal_end: u64,
@@ -324,6 +327,7 @@ impl Store {
             generation: 0,
             capacity: CapacityPolicy::default(),
             source_registered: false,
+            continuation: None,
             checkpoint: None,
             segment: 0,
             wal_end: 0,
@@ -498,6 +502,7 @@ impl Store {
         if pos != root.wal_end || sequence != root.sequence || chain != root.wal_chain {
             return Err(Error::Invalid("committed_boundary_mismatch"));
         }
+        Self::validate_continuation(&engine, &root)?;
         // Only bytes provably beyond CURRENT's validated committed boundary are removable.
         if wal_length > root.wal_end {
             wal.set_len(root.wal_end)?;
@@ -644,11 +649,18 @@ impl Store {
             && !self.io.source_reconciled
             && envelope.actions.iter().any(|a| {
                 a.is_new_commitment()
-                    || matches!(a, mycity_core::transaction::Action::RegionAdvance { .. })
+                    || matches!(
+                        a,
+                        mycity_core::transaction::Action::RegionAdvance { .. }
+                            | mycity_core::transaction::Action::Timeline {
+                                command: mycity_core::timeline::Command::Advance { .. }
+                            }
+                    )
             })
         {
             return Err(Error::SourceSyncRequired);
         }
+        let continuation_plan = self.prepare_continuation(caller, &envelope)?;
         let control = envelope
             .actions
             .iter()
@@ -661,7 +673,9 @@ impl Store {
                 false,
             )?;
         }
-        if self.engine.journal().len() >= MAX_RECEIPTS / 2
+        if self.io.root.continuation.is_none()
+            && continuation_plan.is_none()
+            && self.engine.journal().len() >= MAX_RECEIPTS / 2
             && !self
                 .engine
                 .journal()
@@ -686,7 +700,7 @@ impl Store {
         let result = self
             .engine
             .execute_recorded(caller, envelope, |env, record| {
-                io.append(env, record, &mut observer)
+                io.append(env, record, continuation_plan.as_ref(), &mut observer)
             });
         let result = match result {
             Ok(r) => r,
@@ -720,6 +734,7 @@ impl Persistence {
         &mut self,
         envelope: &Envelope,
         record: &JournalRecord,
+        continuation_plan: Option<&Continuation>,
         observer: &mut impl FnMut(WritePoint) -> io::Result<()>,
     ) -> Result<(), Error> {
         if envelope.actions.iter().any(|a| {
@@ -761,11 +776,16 @@ impl Persistence {
         if wal_end > WAL_LIMIT {
             return Err(Error::Invalid("wal_limit"));
         }
-        capacity::admit(
+        let next_continuation = self.next_continuation(continuation_plan, record)?;
+        capacity::admit_with_reserve(
             &self.dir,
             self.root.capacity,
             check.len() as u64 + 32 + 2 * META_LIMIT,
-            record.emergency_eligible,
+            record.emergency_eligible
+                || self.root.continuation.is_some()
+                    && continuation_plan.is_some()
+                    && record.outcome.is_ok(),
+            next_continuation.as_ref().map_or(0, |c| c.remaining_bytes),
         )?;
         self.wal.write_all(&length[..2])?;
         observer(WritePoint::WalHeaderHalf)?;
@@ -785,6 +805,7 @@ impl Persistence {
             sequence,
             capacity: self.root.capacity,
             source_registered: self.root.source_registered,
+            continuation: next_continuation,
             generation: self
                 .root
                 .generation

@@ -197,7 +197,6 @@ impl Exchange {
             || o.profile != "regional-fulfilment-v1"
             || w.economy.is_some()
             || w.stock_ids.len() != 14
-            || w.account_ids.len() != 4
             || b.stocks != [1, 2, 3, 4, 5, 6]
             || b.resources != [101, 102]
             || r.cities.iter().flatten().count() != 3
@@ -814,50 +813,59 @@ impl Exchange {
             }
         }
         for i in 0..MAX_SHIPMENTS {
-            if let Some(ship) = self.shipments[i].filter(|s| s.arrives_at.is_some_and(|t| t <= now))
-            {
-                let spec = self.quotes[ship.quote_index].spec;
-                l.pay_protected(spec.buyer, spec.seller, ship.price)?;
-                let mut dst = l.stock(spec.destination)?;
-                let acquisition = add(ship.price, ship.freight)?;
-                if spec.kind == Kind::Freight && dst.quantity != Quantity::ZERO {
-                    return Err(error(Error::Storage));
-                }
-                dst.quantity = qa(dst.quantity, ship.net)?;
-                dst.basis = add(dst.basis, acquisition)?;
-                dst.origin_quantity = dst.quantity;
-                dst.origin_basis = dst.basis;
-                dst.offset = Quantity::ZERO;
-                dst.lot_id = 0xc0000000 + spec.id;
-                l.put(spec.destination, dst)?;
-                if spec.kind == Kind::Electricity {
-                    self.energy_loss = qa(self.energy_loss, ship.loss)?;
-                } else if spec.kind == Kind::Water {
-                    self.water_loss = qa(self.water_loss, ship.loss)?;
-                }
-                self.loss_expense = add(self.loss_expense, ship.loss_cost)?;
-                self.sales = add(self.sales, ship.price)?;
-                self.cogs = add(
-                    self.cogs,
-                    ship.fragment
-                        .basis
-                        .checked_sub(ship.loss_cost)
-                        .map_err(|_| error(Error::Invariant))?,
-                )?;
-                let q = &mut self.quotes[ship.quote_index];
-                q.status = Status::Delivered;
-                q.delivered = ship.net;
-                q.invoice = ship.price;
-                q.freight = ship.freight;
-                q.source_cost = ship.fragment.basis;
-                q.source_fragment = Some(ship.fragment);
-                q.loss_cost = ship.loss_cost;
-                self.inbox
-                    .delivered(spec.id, now, ship.net, ship.price, ship.fragment)?;
-                l.release_path(ship.tokens)?;
-                self.shipments[i] = None;
-                r.bump().map_err(TxError::Region)?;
+            self.arrive_one(r, l, i)?;
+        }
+        Ok(())
+    }
+    pub(crate) fn arrive_one(
+        &mut self,
+        r: &mut Region,
+        l: &mut impl Ledger,
+        i: usize,
+    ) -> Result<(), TxError> {
+        let now = r.interaction_time;
+        if let Some(ship) = self.shipments[i].filter(|s| s.arrives_at.is_some_and(|t| t <= now)) {
+            let spec = self.quotes[ship.quote_index].spec;
+            l.pay_protected(spec.buyer, spec.seller, ship.price)?;
+            let mut dst = l.stock(spec.destination)?;
+            let acquisition = add(ship.price, ship.freight)?;
+            if spec.kind == Kind::Freight && dst.quantity != Quantity::ZERO {
+                return Err(error(Error::Storage));
             }
+            dst.quantity = qa(dst.quantity, ship.net)?;
+            dst.basis = add(dst.basis, acquisition)?;
+            dst.origin_quantity = dst.quantity;
+            dst.origin_basis = dst.basis;
+            dst.offset = Quantity::ZERO;
+            dst.lot_id = 0xc0000000 + spec.id;
+            l.put(spec.destination, dst)?;
+            if spec.kind == Kind::Electricity {
+                self.energy_loss = qa(self.energy_loss, ship.loss)?;
+            } else if spec.kind == Kind::Water {
+                self.water_loss = qa(self.water_loss, ship.loss)?;
+            }
+            self.loss_expense = add(self.loss_expense, ship.loss_cost)?;
+            self.sales = add(self.sales, ship.price)?;
+            self.cogs = add(
+                self.cogs,
+                ship.fragment
+                    .basis
+                    .checked_sub(ship.loss_cost)
+                    .map_err(|_| error(Error::Invariant))?,
+            )?;
+            let q = &mut self.quotes[ship.quote_index];
+            q.status = Status::Delivered;
+            q.delivered = ship.net;
+            q.invoice = ship.price;
+            q.freight = ship.freight;
+            q.source_cost = ship.fragment.basis;
+            q.source_fragment = Some(ship.fragment);
+            q.loss_cost = ship.loss_cost;
+            self.inbox
+                .delivered(spec.id, now, ship.net, ship.price, ship.fragment)?;
+            l.release_path(ship.tokens)?;
+            self.shipments[i] = None;
+            r.bump().map_err(TxError::Region)?;
         }
         Ok(())
     }

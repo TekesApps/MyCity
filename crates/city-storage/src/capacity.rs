@@ -17,6 +17,7 @@ impl Default for CapacityPolicy {
 #[derive(Debug, Serialize)]
 pub struct CapacityStatus {
     pub used_bytes: u64,
+    pub continuation_reserved_bytes: u64,
     pub total_bytes: u64,
     pub normal_limit: u64,
     pub normal_blocked: bool,
@@ -52,22 +53,54 @@ pub(super) fn admit(
     additional: u64,
     control: bool,
 ) -> Result<(), Error> {
+    let held = persisted_reserve(dir)?;
+    admit_with_reserve(dir, policy, additional, control, held)
+}
+pub(super) fn persisted_reserve(dir: &Path) -> Result<u64, Error> {
+    if !dir.join("CURRENT.json").exists() {
+        return Ok(0);
+    }
+    let current: Current =
+        serde_json::from_slice(&read_file(&dir.join("CURRENT.json"), META_LIMIT)?)?;
+    if current.slot > 1 {
+        return Err(Error::Invalid("current_slot"));
+    }
+    let bytes = read_file(&dir.join(format!("root-{}.json", current.slot)), META_LIMIT)?;
+    if sha256(&bytes) != current.root_sha256 {
+        return Err(Error::Invalid("root_checksum"));
+    }
+    let root: Root = serde_json::from_slice(&bytes)?;
+    if root.continuation.as_ref().is_some_and(|c| !c.valid()) {
+        return Err(Error::Invalid("timeline_ticket"));
+    }
+    Ok(root.continuation.as_ref().map_or(0, |c| c.remaining_bytes))
+}
+pub(super) fn admit_with_reserve(
+    dir: &Path,
+    policy: CapacityPolicy,
+    additional: u64,
+    control: bool,
+    held: u64,
+) -> Result<(), Error> {
     policy.validate()?;
     let used = bytes(dir)?;
+    let required = additional
+        .checked_add(held)
+        .ok_or(Error::Invalid("capacity_reserve_overflow"))?;
     let limit = if control {
         policy.total_bytes
     } else {
         policy.total_bytes - policy.emergency_bytes
     };
     if used
-        .checked_add(additional)
+        .checked_add(required)
         .ok_or(Error::Invalid("capacity_size_overflow"))?
         > limit
     {
         return Err(Error::Capacity {
             used_bytes: used,
             limit_bytes: limit,
-            required_bytes: additional,
+            required_bytes: required,
             emergency: control,
         });
     }
@@ -131,10 +164,17 @@ impl Store {
         // needs durable space for its receipt before the model may advance.
         let next = (FRAME_LIMIT as u64) + META_LIMIT * 2;
         let normal_limit = p.total_bytes - p.emergency_bytes;
-        let normal_blocked = used.saturating_add(next) > normal_limit;
-        let hard_blocked = used.saturating_add(next) > p.total_bytes;
+        let reserved = self
+            .io
+            .root
+            .continuation
+            .as_ref()
+            .map_or(0, |c| c.remaining_bytes);
+        let normal_blocked = used.saturating_add(reserved).saturating_add(next) > normal_limit;
+        let hard_blocked = used.saturating_add(reserved).saturating_add(next) > p.total_bytes;
         Ok(CapacityStatus {
             used_bytes: used,
+            continuation_reserved_bytes: reserved,
             total_bytes: p.total_bytes,
             normal_limit,
             normal_blocked,

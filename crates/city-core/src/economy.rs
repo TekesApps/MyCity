@@ -577,7 +577,7 @@ impl Economy {
         }
         Ok(())
     }
-    fn event(&mut self, l: &mut impl Ledger) -> Result<(), TxError> {
+    pub(crate) fn event(&mut self, l: &mut impl Ledger) -> Result<(), TxError> {
         let base = (u64::from(self.day) - 1) * DAY;
         match self.phase {
             Phase::Open => {
@@ -719,29 +719,41 @@ impl Economy {
                 self.next_due = base + DAY;
             }
             Phase::DayEnd => {
-                let profit = i128::from(self.sales.value())
-                    - i128::from(self.cogs.value())
-                    - i128::from(self.expenses.value());
-                let tax =
-                    Money::new(i64::try_from(profit.max(0) / 10).map_err(|_| TxError::Overflow)?)
-                        .map_err(|_| TxError::Overflow)?;
-                self.row().tax_delta_cents = tax.value() - self.tax_accrued.value();
-                self.tax_accrued = tax;
-                self.closed_days = self.day;
-                if usize::from(self.day) == DAYS {
-                    self.make_tax_claim()?;
-                    if self.claims[2].is_some() {
-                        self.settle(2, l)?;
-                    }
-                    self.phase = Phase::Finished;
-                } else {
-                    self.day += 1;
-                    self.phase = Phase::Open;
-                }
+                self.accrue_day_tax()?;
+                self.pay_day_tax(l)?;
+                self.close_day();
             }
             _ => return Err(err(Error::Stage)),
         }
         Ok(())
+    }
+    pub(crate) fn accrue_day_tax(&mut self) -> Result<(), TxError> {
+        let profit = i128::from(self.sales.value())
+            - i128::from(self.cogs.value())
+            - i128::from(self.expenses.value());
+        let tax = Money::new(i64::try_from(profit.max(0) / 10).map_err(|_| TxError::Overflow)?)
+            .map_err(|_| TxError::Overflow)?;
+        self.row().tax_delta_cents = tax.value() - self.tax_accrued.value();
+        self.tax_accrued = tax;
+        Ok(())
+    }
+    pub(crate) fn pay_day_tax(&mut self, l: &mut impl Ledger) -> Result<(), TxError> {
+        if usize::from(self.day) == DAYS {
+            self.make_tax_claim()?;
+            if self.claims[2].is_some() {
+                self.settle(2, l)?;
+            }
+        }
+        Ok(())
+    }
+    pub(crate) fn close_day(&mut self) {
+        self.closed_days = self.day;
+        if usize::from(self.day) == DAYS {
+            self.phase = Phase::Finished;
+        } else {
+            self.day += 1;
+            self.phase = Phase::Open;
+        }
     }
     pub(crate) fn validate(&self, l: &mut impl Ledger) -> Result<(), TxError> {
         let mut cash = Money::ZERO;
@@ -796,7 +808,14 @@ impl Economy {
             .records
             .iter()
             .try_fold(Money::ZERO, |sum, r| add(sum, r.gross_paid))?;
-        if gross != add(self.direct_wages, self.expenses)?
+        // A durable scheduler page can stop after wage payment and before conversion.
+        // Paid direct labor remains WIP until the next Produce event capitalizes it.
+        let pending = if self.phase == Phase::Produce && !self.suspended {
+            self.records[usize::from(self.day) - 1].gross_paid
+        } else {
+            Money::ZERO
+        };
+        if gross != add(add(self.direct_wages, self.expenses)?, pending)?
             || self
                 .records
                 .iter()

@@ -1,6 +1,6 @@
 # MyCity
 
-仓库发布版本：`v0.5.20`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.21`。已开始Rust模型与headless CLI，当前不做UI。
 
 **从[完整产品蓝图](docs/PRODUCT_BLUEPRINT.md)开始。** 总体覆盖市长／City Team、市民生活、企业经营和城市运行，实施分版本；原23类首期和90类目录不作为总体完成证明。
 
@@ -18,8 +18,9 @@
 - [T08启动互锁P-BOOT](docs/m0-boot-runtime.md)：真实有限电池／水箱、泵与机组、同池容量、故障残余物与持久恢复；有限实验不代表真实公用网或煤机生命周期通过。
 - [T09区域实际履约](docs/m0-regional-fulfilment.md)：三城货物／电水、共池容量、实际费用与损耗、关图／断链／恢复；完整P-CAP及真实车辆／公用物理仍未验。
 - [检查点与重试档案](docs/m0-checkpoint-and-retry.md)：完整运行状态、分段WAL、冷凭证与损坏拒载；保留既有责任，不靠清历史绕过容量。
-- [进程、worker与GPU渲染架构](docs/process-worker-and-render-architecture.md)：App监督／Sim唯一writer、可重算任务与渲染部署、进程组16GB预算；本次只交设计。
-- [T10有限CLI会话](docs/m0-cli-session.md)：可信宿主身份、暂停／单步／实际倍率、冷回执与快照分页；完整调度、UI及16GB仍未验。
+- [T05-B全源与持久日历](docs/m0-timeline-runtime.md)：已实现profile的真实到期、工资账期、P0—P5与有限续做票；逐页恢复实测，完整产品日历与16GB仍未验。
+- [进程、worker与GPU渲染架构](docs/process-worker-and-render-architecture.md)：App监督／Sim唯一writer、可重算任务与渲染部署、进程组16GB预算；架构为设计，worker／渲染未实现。
+- [T10有限CLI会话](docs/m0-cli-session.md)：可信宿主身份、暂停／单步／实际倍率、冷回执与快照分页；T05-B分页用step，UI及16GB仍未验。
 - [M0本轮连续交付：验收方法与结果](docs/m0-continuity-acceptance.md)
 - [M0：事实收件、有限背压、责任退出与查询](docs/m0-fact-inbox-and-emergency-exit.md)
 - [M0具体实施计划](docs/m0-implementation-plan.md)：任务依赖、跨方向风险、经济原型与真实16GB基础验收，计划与实际状态分别登记。

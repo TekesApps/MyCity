@@ -3,6 +3,7 @@ use super::*;
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum Query {
+    Timeline,
     Contracts,
     Fulfilment,
     Arrears,
@@ -24,6 +25,8 @@ struct Cursor {
 pub struct Page {
     pub schema: &'static str,
     pub sequence: u64,
+    pub timeline: Option<mycity_core::timeline::Progress>,
+    pub complete_boundary: bool,
     pub state_sha256: String,
     pub snapshot_sha256: String,
     pub rows: Vec<serde_json::Value>,
@@ -66,6 +69,52 @@ impl Store {
             let (page, count) = self.receipt_rows(offset, limit)?;
             rows = page;
             total = count;
+        } else if query == Query::Arrears {
+            let mut old = vec![];
+            if let Some(r) = view.region {
+                for o in r
+                    .obligations
+                    .iter()
+                    .flatten()
+                    .filter(|o| o.arrears.value() > 0)
+                {
+                    old.push(serde_json::json!({"type":"periodic_obligation","value":o}));
+                }
+            }
+            if let Some(e) = view.exchange {
+                for f in e.inbox.all().filter(|f| f.fee > f.paid) {
+                    old.push(serde_json::json!({"type":"fact_liability","outstanding_cents":f.fee.value()-f.paid.value(),"value":f}));
+                }
+            }
+            let claims = self
+                .engine
+                .timeline()
+                .into_iter()
+                .flat_map(|t| t.claims.iter())
+                .filter(|c| c.processed && c.principal > c.paid);
+            let payroll = self
+                .engine
+                .timeline()
+                .into_iter()
+                .flat_map(|t| t.payroll.iter())
+                .filter(|c| c.billed > c.paid);
+            total = old.len() + claims.clone().count() + payroll.clone().count();
+            if offset > total {
+                return Err(Error::Invalid("query_offset"));
+            }
+            rows=old.into_iter().chain(claims.map(|c|serde_json::json!({"type":"scheduled_claim","outstanding_cents":c.principal.value()-c.paid.value(),"value":c}))).chain(payroll.map(|c|serde_json::json!({"type":"payroll_arrears","outstanding_cents":c.billed.value()-c.paid.value(),"value":c}))).skip(offset).take(limit).collect();
+        } else if query == Query::Timeline {
+            if let Some(t) = self.engine.timeline() {
+                total = 1 + t.claims.len() + t.payroll.len();
+                if offset > total {
+                    return Err(Error::Invalid("query_offset"));
+                }
+                for i in offset..offset.saturating_add(limit).min(total) {
+                    rows.push(if i==0{serde_json::json!({"type":"timeline","progress":t.progress,"complete":t.progress.target.is_none(),"boundary_complete":t.progress.phase.is_none(),"claim_count":t.claims.len(),"payroll_count":t.payroll.len()})}else if i<=t.claims.len(){serde_json::json!({"type":"claim","value":t.claims[i-1]})}else{serde_json::json!({"type":"payroll","value":t.payroll[i-1-t.claims.len()]})});
+                }
+            } else {
+                total = 0;
+            }
         } else {
             match query {
                 Query::Contracts => {
@@ -94,23 +143,7 @@ impl Store {
                         }
                     }
                 }
-                Query::Arrears => {
-                    if let Some(r) = view.region {
-                        for o in r
-                            .obligations
-                            .into_iter()
-                            .flatten()
-                            .filter(|o| o.arrears.value() > 0)
-                        {
-                            rows.push(serde_json::json!({"type":"periodic_obligation","value":o}));
-                        }
-                    }
-                    if let Some(e) = view.exchange {
-                        for f in e.inbox.all().filter(|f| f.fee > f.paid) {
-                            rows.push(serde_json::json!({"type":"fact_liability","outstanding_cents":f.fee.value()-f.paid.value(),"value":f}));
-                        }
-                    }
-                }
+                Query::Arrears => unreachable!(),
                 Query::Capacity => {
                     for r in self.engine.resources() {
                         rows.push(serde_json::json!({"type":"resource","value":r}));
@@ -154,7 +187,7 @@ impl Store {
                         rows.push(serde_json::json!({"type":"regional_alignment","active_city":r.active_city,"interaction_time":r.interaction_time,"cities":r.cities,"snapshots":r.snapshots}));
                     }
                 }
-                Query::Receipts => unreachable!(),
+                Query::Receipts | Query::Timeline => unreachable!(),
             }
             total = rows.len();
             if offset > total {
@@ -182,6 +215,11 @@ impl Store {
         Ok(Page {
             schema: "mycity-m0-query-v1",
             sequence: self.io.root.sequence,
+            timeline: self.engine.timeline().map(|t| t.progress),
+            complete_boundary: self
+                .engine
+                .timeline()
+                .is_none_or(|t| t.progress.phase.is_none()),
             state_sha256: state_hash,
             snapshot_sha256: hash,
             rows,

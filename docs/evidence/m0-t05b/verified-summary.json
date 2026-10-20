@@ -1,0 +1,45 @@
+{
+  "source_sha256": "8e0a98232a30917569d58661d84e1ac82cede598f3d152aa4ebc59270c77d13c",
+  "release_tests_passed": 185,
+  "actual_t05_process_exits": 33,
+  "finite_t05b_gate": "passed",
+  "full_product_t05": "not_completed",
+  "memory_16gb_gate": "not_run",
+  "economic_balance": "not_verified",
+  "worker_pool": "not_implemented",
+  "gpu": "not_run",
+  "legacy_profile_paced_day": {
+    "actual_game_seconds_per_wall_second": 1397.8970352693157,
+    "actual_wall_seconds": 61.807127292,
+    "game_seconds": 86400,
+    "memory_16gb_gate": "not_run",
+    "persistent_commits": 24,
+    "same_state_as_unpaced": true,
+    "source_sha256": "8e0a98232a30917569d58661d84e1ac82cede598f3d152aa4ebc59270c77d13c",
+    "state_sha256": "1909674488bf793b1bfb93f4db0829e8c9e68fd2c4deee76e6e0c66c94e9ea29",
+    "store_owned_capacity_bytes": 2689095,
+    "target_exactly_met": false,
+    "target_wall_seconds": 60
+  },
+  "strict_economy_60_second_gate": "not_met",
+  "dense_actual_paid_cents": 20000,
+  "dense_pages": 79,
+  "joint_cash_cents": {
+    "1": 1000000,
+    "2": 200980,
+    "3": 596688,
+    "4": 1202220,
+    "5": 112
+  },
+  "dense_engine_owned_bytes": 3645280,
+  "probe_wall_seconds": 9.776673083,
+  "artifact_sha256": {
+    "tests.txt": "d99b2477ddc0997c98b8c962b6426ca25174ea620d8cdb3d82449429fbc44440",
+    "fmt.txt": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "clippy.txt": "74a11a25ac15ad6045f693eda73ae0f9f4ef3781c701ad41072fa63465ac20ff",
+    "timeline.json": "a19e3a74a2ed22c78b08aaa80649baf6ae9496080a9f52c33d87b6464d4a7447",
+    "process.txt": "5313ed7619a17a2fe279e0f003dbfa70b35d714ae5d4ba7cb65fe3702e15f790",
+    "provenance.json": "18db87b174ae2f75958769de247a3169207795dbdb45e3734837a795fccf91a8",
+    "gates.json": "1eedee83bfb6b7322bcdf719cebc747acae407908394f8650199cef140744716"
+  }
+}

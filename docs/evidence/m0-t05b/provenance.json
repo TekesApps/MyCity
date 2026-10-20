@@ -1,0 +1,25 @@
+{
+  "source_sha256": "8e0a98232a30917569d58661d84e1ac82cede598f3d152aa4ebc59270c77d13c",
+  "lock_sha256": "b286c192f63ff681be3a3cd7813fc2110540bc02e20f810d4741990ac12df93e",
+  "base_commit": "6f4fa6dd2babea5a60b6b0af1833bfee07bf82cb",
+  "timestamp": "2026-10-20T03:10:32.021160+00:00",
+  "host_model": "Mac16,1",
+  "host_chip": "Apple M4",
+  "host_memory_bytes": 34359738368,
+  "rustc": "rustc 1.85.1 (4eb161250 2025-03-15)",
+  "argv": [
+    "target/release/mycity-headless",
+    "timeline-probe",
+    "/var/folders/lg/msp2zt0x5q14_lxl12ts9lsw0000gn/T/mycity-t05b-final-proof-qk3skv4v/worlds"
+  ],
+  "input_files": {
+    "fixtures/m0-e0-opening.json": "6756555697457b3de5307086610a108c88d15650c6e668da0cdf990ca52b874c",
+    "fixtures/m0-economy-opening.json": "964ee93769377f4d2ecae7e4b20bdfb191c61acbf1960f8a89109b3507771f94",
+    "fixtures/m0-exchange-opening.json": "e8471dd9b12a69fc5710dcb13fb43860ced9be046c07ec72e7ba6d3f45da6fe9",
+    "fixtures/m0-exchange-spatial.json": "1891b68e1190fac29e3dc83a1d5d96ba3fa972cc7594fb8106ccbe179cdd29d6",
+    "fixtures/terrain/m0-flat16.png": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8"
+  },
+  "joint_input_transform": "append source19 zero cash capital and household account5, no role relabel or cash creation",
+  "memory_16gb_gate": "not_run",
+  "concurrency": "workspace release tests running concurrently; finite probe observation, not throughput benchmark"
+}

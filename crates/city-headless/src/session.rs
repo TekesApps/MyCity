@@ -1,4 +1,4 @@
-//! Bounded, synchronous laboratory control. No new business scheduler or remote authority.
+//! Bounded synchronous laboratory control; scheduling lives in core, not this adapter.
 use mycity_core::transaction::{Action, Caller, Envelope};
 use mycity_storage::{Error, Query, Store};
 use serde::Deserialize;
@@ -85,16 +85,24 @@ impl Session {
         };
         let snapshots: Vec<_> = view.region.iter().flat_map(|r| r.snapshots.iter().flatten().map(move |s| json!({"city":s.city,"version":s.version,"observed_at":s.observed_at,"age_game_seconds":r.interaction_time.saturating_sub(s.observed_at),"applied_sequence":s.applied_sequence}))).collect();
         Ok(
-            json!({"evidence":"committed","regional_snapshots":snapshots,"paused":self.paused,"day_wall_ms":self.day_wall_ms,"profile":profile,"committed_game_seconds":time,
+            json!({"evidence":if engine.timeline().is_some_and(|t|t.progress.target.is_some()){"processing"}else{"committed"},"regional_snapshots":snapshots,"paused":self.paused,"day_wall_ms":self.day_wall_ms,"profile":profile,"committed_game_seconds":engine.timeline().map(|t|t.progress.last_complete).or(time),"working_game_seconds":engine.timeline().map(|t|t.progress.at).or(time),
             "sequence":self.store.committed_sequence(),"revision":view.revision,"world":view.scope.world(),"branch":view.scope.branch(),
             "state_sha256":self.store.state_hash().map_err(storage_error)?,"source":self.store.source_status().map_err(storage_error)?,
             "provenance":{"source_sha256":env!("MYCITY_SOURCE_SHA256"),"lock_sha256":env!("MYCITY_LOCK_SHA256")},
-            "offline_catchup":false,"full_source_scheduler":"not_implemented","memory_16gb_gate":"not_run"}),
+            "timeline":engine.timeline().map(|t|t.progress),"continuation":self.store.continuation_status().map_err(storage_error)?,"offline_catchup":false,"full_source_scheduler":if engine.timeline().is_some(){"implemented_profiles_only"}else{"not_enabled"},"memory_16gb_gate":"not_run"}),
         )
     }
     fn clock_seconds(&self, envelope: &Envelope) -> Option<u32> {
         let view = self.store.engine().ok()?.world().view();
         match envelope.actions.as_slice() {
+            [Action::Timeline {
+                command: mycity_core::timeline::Command::Advance { target, .. },
+            }] => {
+                let p = self.store.engine().ok()?.timeline()?.progress;
+                // Shape recognition also covers exact old receipts after later boundaries.
+                // The model validates a fresh target; retries must reach Store dedup first.
+                Some(target.saturating_sub(p.last_complete).min(3600) as u32)
+            }
             [Action::RegionAdvance { seconds }] if view.region.is_some() => Some(*seconds),
             [Action::Economy {
                 command: mycity_core::economy::Command::Advance { seconds },
@@ -159,11 +167,30 @@ impl Session {
                     _ => unreachable!(),
                 };
                 let seconds = self.clock_seconds(&envelope);
+                let timeline_request = matches!(
+                    envelope.actions.as_slice(),
+                    [Action::Timeline {
+                        command: mycity_core::timeline::Command::Advance { .. }
+                    }]
+                );
+                if mode == 2 && timeline_request {
+                    return Err(json!({"code":"timeline_step_only"}));
+                }
+                let before_complete = self
+                    .store
+                    .engine()
+                    .map_err(storage_error)?
+                    .timeline()
+                    .map(|t| t.progress.last_complete);
+
                 // Direct submissions cannot bypass the experiment controller clock gate.
                 let contains_clock = envelope.actions.iter().any(|a| {
                     matches!(
                         a,
                         Action::RegionAdvance { .. }
+                            | Action::Timeline {
+                                command: mycity_core::timeline::Command::Advance { .. }
+                            }
                             | Action::Economy {
                                 command: mycity_core::economy::Command::Advance { .. }
                             }
@@ -209,7 +236,7 @@ impl Session {
                 let elapsed = started.elapsed().as_nanos();
                 Ok(
                     json!({"outcome":outcome,"already_recorded":retry,"requested_game_seconds":seconds,"pacing_wait_ns":wait_ns,
-                    "elapsed_ns":elapsed,"actual_game_seconds_per_wall_second":if mode!=0 && !retry && outcome.model.is_ok(){Some(f64::from(seconds.unwrap())*1e9/elapsed.max(1) as f64)}else{None},
+                    "elapsed_ns":elapsed,"completed_game_seconds_delta":before_complete.and_then(|before|self.store.engine().ok()?.timeline()?.progress.last_complete.checked_sub(before)),"actual_game_seconds_per_wall_second":if !timeline_request && mode!=0 && !retry && outcome.model.is_ok(){Some(f64::from(seconds.unwrap())*1e9/elapsed.max(1) as f64)}else{None},
                     "status":self.status()?}),
                 )
             }

@@ -1,6 +1,6 @@
 //! Complete state checkpoints, immutable receipt chain and bounded hot WAL.
 use super::*;
-pub const CHECKPOINT_LIMIT: u64 = 8 * 1024 * 1024;
+pub const CHECKPOINT_LIMIT: u64 = 16 * 1024 * 1024;
 pub const ARCHIVE_LIMIT: u64 = 128 * 1024 * 1024;
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]

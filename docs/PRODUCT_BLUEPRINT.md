@@ -60,3 +60,6 @@ M0验证核心数据／钟／账／保存及真实16GB；0.1文本市长交通�
 ## 7. 进程与GPU部署补充（A55）
 
 [进程、worker与GPU渲染架构](process-worker-and-render-architecture.md)区分App交互监督、Sim权威调度、纯计算worker和GPU Owner；首个图形原型候选为App专用渲染线程，独立Render Host需单独验证跨进程呈现／共享与总预算。替代将“同一进程CPU/GPU”当作所有模块必须共进程的部署前提，仍使用同一台16GB机器的联合预算。此为文档决策；进程池、图形和T05-B当前都不能据此签收。
+
+
+v0.5.21执行更新：[T05-B](m0-timeline-runtime.md)已接已实现实验profile的全部到期源、分阶段税与工资、单安全边界续做票和持久游标；实际账／游标／余数同根恢复，有限联合证据不扩写为全部P-TIME或总体模型完成。worker／UI／AgentKit／渲染及真实16GB仍未实现或未测，后续按M0依赖推进CPU参考等剩余模型门。

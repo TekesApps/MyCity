@@ -1,6 +1,6 @@
 # T10-A：有限 profile 的可靠 CLI 会话
 
-发布：v0.5.19；日期：2026-10-20。范围是 Rust 模型与本地实验 CLI，不含 UI、AgentKit、远程授权服务或新的全源调度器。本阶段依赖已实现的 T04 事务、T05 有限推进器、T06 持久化和 T09 查询，不替代尚缺的 T05 全源／阶段游标与日历整合。
+发布：v0.5.19；日期：2026-10-20。范围是 Rust 模型与本地实验 CLI，不含 UI、AgentKit、远程授权服务或新的全源调度器。本阶段依赖已实现的 T04 事务、T05 有限推进器、T06 持久化和 T09 查询，该v0.5.19边界保留；v0.5.21的T05-B接入见文末与[运行契约](m0-timeline-runtime.md)。
 
 ## 1. 入口与权限
 
@@ -84,3 +84,8 @@ IO结果不确定或Store已被污染时，响应为 recovery_required／unknown
 ## 5. 后续依赖
 
 T10-A只交付有限 profile 的命令入口与实验控制。全源因果调度、动态同刻来源、阶段游标共同持久化、完整工资日历与区域双钟联合应在T05-B补齐；目标对象revision、建设授权／草案与预测处理状态仍未实现。完整T10／P-CMD、T12 CPU参考和T13规模／真实16GB验收保持未完成；T11 UI与AgentKit继续遵循用户本轮范围延期。
+
+
+## v0.5.21：T05-B分页接入
+
+新增timeline查询和Progress／complete_boundary，status区分last_complete与工作时刻，显示持久续做票。Timeline启用后旧独立推进器拒绝；其分页Advance只走暂停step，run返回timeline_step_only，不声称新协调器已通过倍率性能门。完整协议和未实现边界见[T05-B契约](m0-timeline-runtime.md)，真实CLI处理中状态／只读查询／重开有本版测试。原上文v0.5.19的速度观测只属于该冻结版本。

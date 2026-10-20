@@ -7,6 +7,8 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 use std::mem::size_of;
+#[path = "timeline_driver.rs"]
+mod timeline_driver;
 
 pub const MAX_ACTIONS: usize = 16;
 pub const MAX_RECEIPTS: usize = 1024;
@@ -43,6 +45,9 @@ impl Caller {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum Action {
+    Timeline {
+        command: crate::timeline::Command,
+    },
     Inbox {
         command: crate::inbox::Command,
     },
@@ -140,6 +145,7 @@ pub enum TxError {
     Economy(crate::economy::Error),
     Boot(crate::boot::Error),
     Exchange(crate::exchange::Error),
+    Timeline(crate::timeline::Error),
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -152,6 +158,7 @@ pub struct Receipt {
     pub created_facts: [Option<u64>; MAX_ACTIONS],
     pub settled: [Option<Money>; MAX_ACTIONS],
     pub created_tokens: [Option<CapacityToken>; MAX_ACTIONS],
+    pub timeline: Option<crate::timeline::Progress>,
 }
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
@@ -203,9 +210,11 @@ pub struct Engine {
     leases: Vec<Option<Lease>>,
     next_token: u64,
     journal: Vec<JournalRecord>,
+    timeline: Option<crate::timeline::Timeline>,
 }
 
 struct Prepared {
+    timeline: Option<crate::timeline::Timeline>,
     exchange: Option<crate::exchange::Exchange>,
     boot: Option<crate::boot::Boot>,
     economy: Option<crate::economy::Economy>,
@@ -266,6 +275,7 @@ impl Engine {
             leases,
             next_token: 1,
             journal,
+            timeline: None,
         };
         if engine.owned_capacity_bytes() > ENGINE_BYTE_BUDGET {
             return Err(TxError::WorkingLimit);
@@ -280,7 +290,7 @@ impl Engine {
     }
     /// Only a hash-verified, rules-bound storage dependency may enter this boundary.
     pub fn restore_checkpoint(bytes: &[u8]) -> Result<Self, String> {
-        if bytes.len() > 512 * 1024 {
+        if bytes.len() > 4 * 1024 * 1024 {
             return Err("checkpoint_byte_limit".into());
         }
         let mut candidate: Self = serde_json::from_slice(bytes).map_err(|e| e.to_string())?;
@@ -292,6 +302,15 @@ impl Engine {
             return Err("checkpoint_collection_limits".into());
         }
         candidate.world.restore_capacity()?;
+        if let Some(t) = candidate.timeline.as_mut() {
+            t.claims.shrink_to_fit();
+            t.payroll.shrink_to_fit();
+        }
+        if let Some(t) = &candidate.timeline {
+            t.validate()
+                .map_err(|e| format!("timeline_restore:{e:?}"))?;
+        }
+
         for (i, r) in candidate.resources.iter().enumerate() {
             if r.id == 0 || candidate.resources[..i].iter().any(|p| p.id == r.id) {
                 return Err("checkpoint_resource_identity".into());
@@ -370,11 +389,14 @@ impl Engine {
         Ok(candidate)
     }
     fn validate_checkpoint_runtime(&self) -> Result<(), TxError> {
+        if let Some(t) = &self.timeline {
+            timeline_driver::validate(self, t)?;
+        }
         let economy = self.world.economy;
         let boot = self.world.boot;
         let exchange = self.world.exchange;
         let region = self.world.region;
-        let mut accounts = Vec::with_capacity(MAX_ACTIONS * 2);
+        let mut accounts = Vec::with_capacity(crate::assembly::MAX_ACCOUNTS);
         let mut stocks = Vec::with_capacity(MAX_ACTIONS * 2);
         let mut resources = self.resources.clone();
         let mut leases = self.leases.clone();
@@ -444,8 +466,47 @@ impl Engine {
     pub fn journal(&self) -> &[JournalRecord] {
         &self.journal
     }
+    pub fn timeline_quote(
+        &self,
+        caller: Caller,
+        env: &Envelope,
+    ) -> Option<(crate::timeline::Progress, usize)> {
+        if !matches!(
+            env.actions.as_slice(),
+            [Action::Timeline {
+                command: crate::timeline::Command::Advance { .. }
+            }]
+        ) || !matches!(caller, Caller::System)
+            || env.world != self.world.scope.world()
+            || env.branch != self.world.scope.branch()
+            || env.expected_revision != self.world.revision
+        {
+            return None;
+        }
+        let prepared = self.prepare(caller, env).ok()?;
+        let progress = prepared.timeline.as_ref()?.progress;
+        let t = self.timeline.as_ref()?;
+        // Every examined due row, phase transition, and small domain table is included.
+        let steps = t
+            .claims
+            .iter()
+            .filter(|c| !c.processed && c.due == progress.at)
+            .count()
+            + 2 * t.payroll.len()
+            + 16
+            + 16
+            + 2
+            + 4
+            + 16
+            + 32;
+        Some((progress, steps))
+    }
+    pub fn timeline(&self) -> Option<&crate::timeline::Timeline> {
+        self.timeline.as_ref()
+    }
     pub fn owned_capacity_bytes(&self) -> usize {
-        size_of::<Self>() - size_of::<World>()
+        let extra = self.timeline.as_ref().map_or(0, |t| t.owned_bytes());
+        extra + size_of::<Self>() - size_of::<World>()
             + self.world.layout()["owned_capacity_bytes"]
                 .as_u64()
                 .expect("world layout") as usize
@@ -454,7 +515,7 @@ impl Engine {
             + self.journal.capacity() * size_of::<JournalRecord>()
     }
     pub fn state_hash(&self) -> String {
-        sha256(&serde_json::to_vec(&serde_json::json!({"world":self.world.view(),"resources":self.resources,"leases":self.leases,"next_token":self.next_token})).expect("exact state"))
+        sha256(&serde_json::to_vec(&serde_json::json!({"world":self.world.view(),"resources":self.resources,"leases":self.leases,"next_token":self.next_token,"timeline":self.timeline})).expect("exact state"))
     }
     pub fn execute(&mut self, caller: Caller, env: Envelope) -> Result<Receipt, TxError> {
         self.execute_recorded(caller, env, |_, _| Ok::<(), std::convert::Infallible>(()))
@@ -564,6 +625,44 @@ impl Engine {
             return false;
         }
         match env.actions[0] {
+            Action::Timeline {
+                command:
+                    crate::timeline::Command::Advance { .. }
+                    | crate::timeline::Command::SettleClaim { .. }
+                    | crate::timeline::Command::SettlePayroll { .. }
+                    | crate::timeline::Command::Terminate { .. },
+            } => {
+                self.timeline
+                    .as_ref()
+                    .zip(p.timeline.as_ref())
+                    .is_some_and(|(old, new)| {
+                        matches!(
+                            env.actions[0],
+                            Action::Timeline {
+                                command: crate::timeline::Command::Advance { .. }
+                            }
+                        ) && old.progress.phase.is_some()
+                            && old.progress.at == new.progress.at
+                            && old.progress.target == new.progress.target.or(old.progress.target)
+                            && new.progress.serial == old.progress.serial + 1
+                    })
+                    || p.timeline
+                        .as_ref()
+                        .is_some_and(|t| t.progress.page_paid.value() > 0)
+                    || self
+                        .world
+                        .boot
+                        .zip(p.boot)
+                        .is_some_and(|(a, b)| a.jobs != b.jobs)
+                    || self
+                        .world
+                        .exchange
+                        .zip(p.exchange)
+                        .is_some_and(|(a, b)| a.shipments != b.shipments)
+                    || self.world.region.zip(p.region).is_some_and(|(a, b)| {
+                        a.transits != b.transits || a.obligations != b.obligations
+                    })
+            }
             Action::Inbox { command }
                 if !matches!(
                     command,
@@ -628,7 +727,7 @@ impl Engine {
             .checked_add(1)
             .ok_or(TxError::Overflow)?;
         let mut accounts: Vec<(Handle<AccountDomain>, Account)> =
-            Vec::with_capacity(MAX_ACTIONS * 2);
+            Vec::with_capacity(crate::assembly::MAX_ACCOUNTS);
         let mut stocks: Vec<(Handle<InventoryDomain>, Stock)> = Vec::with_capacity(MAX_ACTIONS * 2);
         let mut resources = self.resources.clone();
         let mut leases = self.leases.clone();
@@ -641,8 +740,60 @@ impl Engine {
         let mut economy = self.world.economy;
         let mut boot = self.world.boot;
         let mut exchange = self.world.exchange;
+        let mut timeline = self.timeline.clone();
         for (action_index, action) in env.actions.iter().enumerate() {
+            if timeline
+                .as_ref()
+                .is_some_and(|t| t.progress.target.is_some())
+                && !matches!(
+                    action,
+                    Action::Timeline {
+                        command: crate::timeline::Command::Advance { .. }
+                            | crate::timeline::Command::CancelAdvance
+                    } | Action::Inbox {
+                        command: crate::inbox::Command::External { .. }
+                    }
+                )
+                && !safe_inbox_release(action, exchange.as_ref())
+            {
+                return Err(TxError::Timeline(crate::timeline::Error::Busy));
+            }
+            if timeline.is_some()
+                && matches!(
+                    action,
+                    Action::RegionAdvance { .. }
+                        | Action::Economy {
+                            command: crate::economy::Command::Advance { .. }
+                        }
+                        | Action::Boot {
+                            command: crate::boot::Command::Advance { .. }
+                        }
+                )
+            {
+                return Err(TxError::Timeline(crate::timeline::Error::LegacyClock));
+            }
             match *action {
+                Action::Timeline { command } => {
+                    if !matches!(caller, Caller::System) {
+                        return Err(TxError::Unauthorized);
+                    }
+                    if env.actions.len() != 1 {
+                        return Err(TxError::Timeline(crate::timeline::Error::Input));
+                    }
+                    timeline_driver::Frame {
+                        world: &self.world,
+                        region: &mut region,
+                        economy: &mut economy,
+                        boot: &mut boot,
+                        exchange: &mut exchange,
+                        accounts: &mut accounts,
+                        stocks: &mut stocks,
+                        resources: &mut resources,
+                        leases: &mut leases,
+                        next_token: &mut next_token,
+                    }
+                    .command(&mut timeline, command)?;
+                }
                 Action::Inbox { command } => {
                     if !matches!(caller, Caller::System) {
                         return Err(TxError::Unauthorized);
@@ -1223,7 +1374,20 @@ impl Engine {
                 },
             )?;
         }
+        if let Some(t) = &timeline {
+            t.validate()?;
+        }
+        let timeline_progress = if env
+            .actions
+            .iter()
+            .any(|a| matches!(a, Action::Timeline { .. }))
+        {
+            timeline.as_ref().map(|t| t.progress)
+        } else {
+            None
+        };
         Ok(Prepared {
+            timeline,
             exchange,
             boot,
             economy,
@@ -1241,6 +1405,7 @@ impl Engine {
                 created_facts,
                 settled,
                 created_tokens,
+                timeline: timeline_progress,
             },
         })
     }
@@ -1259,6 +1424,7 @@ impl Engine {
                 .replace(h, s)
                 .expect("validated commit handle");
         }
+        self.timeline = prepared.timeline;
         self.world.exchange = prepared.exchange;
         self.world.boot = prepared.boot;
         self.world.economy = prepared.economy;
@@ -1282,7 +1448,7 @@ fn stage_account(
     if let Some(i) = dirty.iter().position(|(old, _)| *old == h) {
         return Ok(i);
     }
-    if dirty.len() == MAX_ACTIONS * 2 {
+    if dirty.len() == crate::assembly::MAX_ACCOUNTS {
         return Err(TxError::WorkingLimit);
     }
     dirty.push((
@@ -1662,7 +1828,10 @@ impl Action {
     pub fn is_new_commitment(&self) -> bool {
         matches!(
             self,
-            Self::Exchange {
+            Self::Timeline {
+                command: crate::timeline::Command::Claims { .. }
+                    | crate::timeline::Command::AddPayroll { .. }
+            } | Self::Exchange {
                 command: crate::exchange::Command::Dispatch { .. }
             } | Self::Boot {
                 command: crate::boot::Command::Start { .. }
@@ -1674,7 +1843,13 @@ impl Action {
     pub fn is_responsibility_control(&self) -> bool {
         matches!(
             self,
-            Self::Inbox {
+            Self::Timeline {
+                command: crate::timeline::Command::Advance { .. }
+                    | crate::timeline::Command::SettleClaim { .. }
+                    | crate::timeline::Command::SettlePayroll { .. }
+                    | crate::timeline::Command::Terminate { .. }
+                    | crate::timeline::Command::StopWork { .. }
+            } | Self::Inbox {
                 command: crate::inbox::Command::Receive { .. }
                     | crate::inbox::Command::External { .. }
                     | crate::inbox::Command::Incident { .. }
@@ -1692,6 +1867,25 @@ impl Action {
                         | crate::boot::Command::ClearFailure { .. }
                 }
         )
+    }
+}
+
+fn safe_inbox_release(action: &Action, exchange: Option<&crate::exchange::Exchange>) -> bool {
+    let Some(e) = exchange else { return false };
+    match *action {
+        Action::Inbox {
+            command: crate::inbox::Command::Handoff { sequence, .. },
+        } => e
+            .inbox
+            .all()
+            .any(|f| f.sequence == sequence && f.received_at.is_some()),
+        Action::Inbox {
+            command: crate::inbox::Command::Archive { sequence },
+        } => e
+            .inbox
+            .all()
+            .any(|f| f.sequence == sequence && f.received_at.is_some() && f.fee == f.paid),
+        _ => false,
     }
 }
 

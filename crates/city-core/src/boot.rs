@@ -142,7 +142,6 @@ impl Boot {
             || o.profile != PROFILE
             || (w.region.is_some() && !joint)
             || w.economy.is_some()
-            || w.account_ids.len() != 4
             || w.stock_ids.len() != if joint { 14 } else { 6 }
             || o.operator == o.contractor
             || o.resources[0] == 0
@@ -376,7 +375,12 @@ impl Boot {
         }
         Ok(())
     }
-    fn finish(&mut self, i: usize, failed: bool, l: &mut impl Ledger) -> Result<(), TxError> {
+    pub(crate) fn finish(
+        &mut self,
+        i: usize,
+        failed: bool,
+        l: &mut impl Ledger,
+    ) -> Result<(), TxError> {
         let f = if i == 0 {
             Facility::Pump
         } else {

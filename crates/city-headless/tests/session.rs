@@ -1,5 +1,5 @@
 use mycity_core::{
-    transaction::{Action, Envelope},
+    transaction::{Action, Caller, Envelope},
     units::Money,
 };
 use mycity_storage::Store;
@@ -536,4 +536,164 @@ fn old_source_identity_cannot_be_used_to_write_with_new_binary() {
         Store::open(&t.world(), RULES).unwrap().committed_sequence(),
         0
     );
+}
+
+#[test]
+fn timeline_partial_status_query_reopen_and_exact_receipt() {
+    use mycity_core::timeline::Command as T;
+    let t = Temp::new();
+    let mut s = create(&t.world());
+    for (i, c) in [
+        T::Enable,
+        T::Claims {
+            first_id: 1,
+            count: 1,
+            payer: 3,
+            payee: 2,
+            amount: Money::new(1).unwrap(),
+            due: 3600,
+        },
+        T::Advance {
+            target: 3600,
+            limit: 1,
+        },
+    ]
+    .into_iter()
+    .enumerate()
+    {
+        let e = Envelope {
+            world: 1,
+            branch: 1,
+            operation_id: i as u64 + 1,
+            expected_revision: i as u64,
+            actions: vec![Action::Timeline { command: c }],
+        };
+        s.execute(Caller::System, e).unwrap().model.unwrap();
+    }
+    let hash = s.state_hash().unwrap();
+    let ticket = s.continuation_status().unwrap();
+    drop(s);
+    let out = session(
+        &t.world(),
+        ["operator", "system"],
+        vec![
+            request(1, json!({"command":"status"})),
+            request(
+                2,
+                json!({"command":"query","section":"timeline","limit":8,"cursor":null}),
+            ),
+            request(3, json!({"command":"receipt","operation_id":3})),
+        ],
+    );
+    assert_eq!(out[0]["result"]["committed_game_seconds"], 0, "{out:?}");
+    assert_eq!(out[0]["result"]["evidence"], "processing", "{out:?}");
+    assert_eq!(out[1]["result"]["complete_boundary"], false, "{out:?}");
+    let s = Store::open(&t.world(), RULES).unwrap();
+    assert_eq!(s.state_hash().unwrap(), hash);
+    assert_eq!(s.continuation_status().unwrap(), ticket);
+    assert!(out[2]["result"].is_object(), "{out:?}");
+    let mut s = s;
+    for id in 4..200 {
+        let e = Envelope {
+            world: 1,
+            branch: 1,
+            operation_id: id,
+            expected_revision: s.engine().unwrap().world().view().revision,
+            actions: vec![Action::Timeline {
+                command: T::Advance {
+                    target: 3600,
+                    limit: 1,
+                },
+            }],
+        };
+        s.execute(Caller::System, e).unwrap().model.unwrap();
+        if s.engine()
+            .unwrap()
+            .timeline()
+            .unwrap()
+            .progress
+            .target
+            .is_none()
+        {
+            break;
+        }
+    }
+    assert_eq!(
+        s.engine()
+            .unwrap()
+            .timeline()
+            .unwrap()
+            .progress
+            .last_complete,
+        3600
+    );
+    let later = Envelope {
+        world: 1,
+        branch: 1,
+        operation_id: 201,
+        expected_revision: s.engine().unwrap().world().view().revision,
+        actions: vec![Action::Timeline {
+            command: T::Advance {
+                target: 7200,
+                limit: 256,
+            },
+        }],
+    };
+    s.execute(Caller::System, later).unwrap().model.unwrap();
+    assert_eq!(
+        s.engine()
+            .unwrap()
+            .timeline()
+            .unwrap()
+            .progress
+            .last_complete,
+        7200
+    );
+    let h = s.state_hash().unwrap();
+    let seq = s.committed_sequence();
+    drop(s);
+    let old = Envelope {
+        world: 1,
+        branch: 1,
+        operation_id: 3,
+        expected_revision: 2,
+        actions: vec![Action::Timeline {
+            command: T::Advance {
+                target: 3600,
+                limit: 1,
+            },
+        }],
+    };
+    let out = session(
+        &t.world(),
+        ["operator", "system"],
+        vec![request(4, json!({"command":"step","envelope":old}))],
+    );
+    assert_eq!(
+        out[0]["result"]["outcome"]["has_persistent_receipt"], true,
+        "{out:?}"
+    );
+    let s = Store::open(&t.world(), RULES).unwrap();
+    assert_eq!(s.state_hash().unwrap(), h);
+    assert_eq!(s.committed_sequence(), seq);
+}
+
+#[test]
+fn timeline_probe_runs_real_three_profiles_and_reports_scope() {
+    let t = Temp::new();
+    let out = Command::new(env!("CARGO_BIN_EXE_mycity-headless"))
+        .args(["timeline-probe", t.world().to_str().unwrap()])
+        .output()
+        .unwrap();
+    assert!(
+        out.status.success(),
+        "{}",
+        String::from_utf8_lossy(&out.stderr)
+    );
+    let v: Value = serde_json::from_slice(&out.stdout).unwrap();
+    assert_eq!(v["dense"]["claim_paid_cents"], 20000);
+    assert_eq!(v["joint"]["payroll"][0]["paid"], 112);
+    assert_eq!(v["memory_16gb_gate"], "not_run");
+    assert_eq!(v["gpu"], "not_run");
+    assert_eq!(v["source_sha256"], RULES);
 }
