@@ -26,6 +26,20 @@ fn system(command: &str, args: &[&str]) -> Option<String> {
 
 fn run() -> Result<(), String> {
     let args: Vec<_> = env::args().collect();
+    if args
+        .get(1)
+        .is_some_and(|a| a == "pe0-speed-probe" || a == "pe0-speed-driver")
+    {
+        if args.len() != 4 {
+            return Err("usage: mycity-headless pe0-speed-probe NEW_DIR step|60".into());
+        }
+        let rate = mycity_headless::pe0_speed::Rate::parse(&args[3])?;
+        return if args[1] == "pe0-speed-probe" {
+            mycity_headless::pe0_speed::run(std::path::Path::new(&args[2]), rate)
+        } else {
+            mycity_headless::pe0_speed::driver(std::path::Path::new(&args[2]), rate)
+        };
+    }
     if args.get(1).is_some_and(|a| a == "normal-pool-host") {
         if args.len() != 3 {
             return Err("usage: mycity-headless normal-pool-host NEW_DIR".into());

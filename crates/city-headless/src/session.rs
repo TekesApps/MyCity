@@ -20,6 +20,7 @@ struct Request {
 #[serde(tag = "command", rename_all = "snake_case", deny_unknown_fields)]
 enum Command {
     Status,
+    Checkpoint,
     Pause,
     Resume,
     Speed {
@@ -106,7 +107,7 @@ impl Session {
         Ok(
             json!({"evidence":if engine.timeline().is_some_and(|t|t.progress.target.is_some()){"processing"}else{"committed"},"regional_snapshots":snapshots,"paused":self.paused,"day_wall_ms":self.day_wall_ms,"profile":profile,"committed_game_seconds":engine.timeline().map(|t|t.progress.last_complete).or(time),"working_game_seconds":engine.timeline().map(|t|t.progress.at).or(time),
             "sequence":self.store.committed_sequence(),"revision":view.revision,"world":view.scope.world(),"branch":view.scope.branch(),
-            "state_sha256":self.store.state_hash().map_err(storage_error)?,"source":self.store.source_status().map_err(storage_error)?,
+            "state_sha256":self.store.state_hash().map_err(storage_error)?,"engine_state_sha256":engine.state_hash(),"source":self.store.source_status().map_err(storage_error)?,
             "provenance":{"source_sha256":env!("MYCITY_SOURCE_SHA256"),"lock_sha256":env!("MYCITY_LOCK_SHA256")},
             "timeline":engine.timeline().map(|t|t.progress),"continuation":self.store.continuation_status().map_err(storage_error)?,"offline_catchup":false,"wall_pacing":"volatile_release_start_v1","next_release_in_session_ns":self.pacing.next_release.map(|t|t.duration_since(self.wall_origin).as_nanos()),"full_source_scheduler":if engine.timeline().is_some(){"implemented_profiles_only"}else{"not_enabled"},"memory_16gb_gate":"not_run"}),
         )
@@ -142,6 +143,10 @@ impl Session {
         self.store.engine().map_err(storage_error)?;
         match command {
             Command::Status => self.status(),
+            Command::Checkpoint => {
+                self.store.checkpoint().map_err(storage_error)?;
+                self.status()
+            }
             Command::Pause => {
                 self.paused = true;
                 self.pacing.reset();

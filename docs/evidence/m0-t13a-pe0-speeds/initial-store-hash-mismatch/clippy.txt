@@ -1,0 +1,2 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 3.15s

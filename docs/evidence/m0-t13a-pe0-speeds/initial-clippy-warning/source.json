@@ -1,0 +1,8 @@
+{
+  "source_sha256": "06d69974de8c75b0c3dadc99ae74ca6a7c0d73553b31b082e8977961c337a703",
+  "source_files": 146,
+  "binary_sha256": "492ce7e9bffc4a435b56a0359d062a09275a66157386a5a2c2dcfc6f329300fd",
+  "targeted_tests_passed": 54,
+  "clippy": "nonminimal_bool_warning_failure",
+  "actual_30d": "not_run"
+}

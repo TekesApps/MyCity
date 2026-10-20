@@ -1,0 +1,12 @@
+{
+  "source_sha256": "42a1122f4b4c84b1cd851ea0dfe336192858531ca567d995074d7e98deefcf7b",
+  "scope": "headless lib, binary and session integration; not full workspace",
+  "passed": 54,
+  "failed": 0,
+  "ignored": 0,
+  "sections": [
+    37,
+    1,
+    16
+  ]
+}

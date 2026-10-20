@@ -768,3 +768,30 @@ fn replay_conflict_and_rejected_requests_cannot_reset_release() {
         3
     );
 }
+
+#[test]
+fn checkpoint_persists_without_clock_or_pacing_reset_and_retains_original_receipt() {
+    let t = Temp::new();
+    drop(create(&t.world()));
+    let out = session(
+        &t.world(),
+        ["operator", "system"],
+        vec![
+            request(1, json!({"command":"resume"})),
+            request(2, json!({"command":"run","envelope":env(1,0,1)})),
+            request(3, json!({"command":"checkpoint"})),
+            request(4, json!({"command":"run","envelope":env(1,0,1)})),
+            request(5, json!({"command":"pause"})),
+        ],
+    );
+    assert_eq!(out[2]["result"]["committed_game_seconds"], 1);
+    assert_eq!(out[2]["result"]["paused"], false);
+    assert_eq!(
+        out[2]["result"]["next_release_in_session_ns"],
+        out[1]["result"]["status"]["next_release_in_session_ns"]
+    );
+    assert_eq!(out[3]["result"]["already_recorded"], true);
+    let mut restored = Store::open(&t.world(), RULES).unwrap();
+    assert_eq!(restored.committed_sequence(), 1);
+    assert!(restored.receipt(1).unwrap().unwrap().outcome.is_ok());
+}

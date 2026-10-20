@@ -1,0 +1,15 @@
+{
+  "source_sha256": "42a1122f4b4c84b1cd851ea0dfe336192858531ca567d995074d7e98deefcf7b",
+  "experiment": "t13a53-step-01",
+  "status": "failed_first_target",
+  "wrapper_terminal": 1,
+  "model_exit_code": 2,
+  "completed_targets": 1,
+  "core_hash": "a85fbd8948869ea78f1c3d9509758b5b964f7fce26dec1776f224c408b5a97eb",
+  "store_joint_hash": "868ac7eadba35ffaca60420ed408a0a361c52b8ab42806f61bb1d9fbb9b26bda",
+  "actual_status_store_hash": "868ac7eadba35ffaca60420ed408a0a361c52b8ab42806f61bb1d9fbb9b26bda",
+  "independent_hash_scope_explains_mismatch": true,
+  "full30d": "not_completed",
+  "session_normal_footer": "missing_after_driver_drop_kill_not_zero",
+  "reason": "core Engine hash compared to Store joint hash with immutable spatial reference"
+}

@@ -70,7 +70,7 @@ impl Recorder {
             "scale-sim-probe" | "scale-endurance" | "speed-driver" => {
                 Some(crate::diagnostic_contract::DRIVER)
             }
-            "joint-budget-probe" | "joint-endurance" | "speed-run" => {
+            "joint-budget-probe" | "joint-endurance" | "speed-run" | "pe0-speed-probe" => {
                 Some(crate::diagnostic_contract::SUPERVISOR)
             }
             "normal-pool-host" => {

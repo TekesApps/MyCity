@@ -1,0 +1,107 @@
+[
+  {
+    "path": "host-samples.jsonl",
+    "bytes": 5503,
+    "sha256": "c1638c031e41773f7623d07778ee7e1830dc8a397d20a6577773d91eeb2cc219"
+  },
+  {
+    "path": "model/driver.stderr",
+    "bytes": 25,
+    "sha256": "2181e33e390cff3236ddc24f8bc52981bef82774ec93695b64835f347e775793"
+  },
+  {
+    "path": "model/driver.stdout",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/heaps.jsonl",
+    "bytes": 965,
+    "sha256": "0e04c77858f2f2f0d0e0438bd757c34e6148e6e99cb6f124450c5ea65f2ba379"
+  },
+  {
+    "path": "model/manifest.json",
+    "bytes": 9786,
+    "sha256": "ce7b66b600cd48205cfdddb6236845ef1d1e2020f2ca48ae4decb145ecff74b4"
+  },
+  {
+    "path": "model/reference-engine.json",
+    "bytes": 22040,
+    "sha256": "4333551a7ac773c5c8fa900242c8fce79ed36046e4ff1b6545cc4d2d673fbe95"
+  },
+  {
+    "path": "model/reference-facts.json",
+    "bytes": 327,
+    "sha256": "083ce8eb0bcdcee7a2eb1bcc6df7a3d7e0e9903bf0e2b5531f9e89a2838603d4"
+  },
+  {
+    "path": "model/reference-targets.jsonl",
+    "bytes": 162738,
+    "sha256": "c96b6270d87a782956b09814d922b07831d3e77e2448c8ddccc6827db4333c0c"
+  },
+  {
+    "path": "model/session.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/transcript.jsonl",
+    "bytes": 1882,
+    "sha256": "db8d598870a033cd60b637cf67032a972d0b4c53c4e82a3cc5aab10f0d473491"
+  },
+  {
+    "path": "model/world/CURRENT.json",
+    "bytes": 123,
+    "sha256": "26c68b0a8a0dedd012988f6c0f932ac6a9bd08e5ba320faa17cee436b29310e5"
+  },
+  {
+    "path": "model/world/LOCK",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/world/genesis.json",
+    "bytes": 29100,
+    "sha256": "e65b29f05a79533d75a15c001bdfa72eab1416f357a1f37fdacdf82f6d354afb"
+  },
+  {
+    "path": "model/world/root-0.json",
+    "bytes": 421,
+    "sha256": "dddaffa367d1b3da937b3a7bb672c5834811e308e91454ca980b619b989fa32d"
+  },
+  {
+    "path": "model/world/root-1.json",
+    "bytes": 424,
+    "sha256": "42cc9c80c24968e9fe03f9fbd05b571aa8859c07614e689f8587dce52a1fcb2a"
+  },
+  {
+    "path": "model/world/spatial-height.png",
+    "bytes": 207,
+    "sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8"
+  },
+  {
+    "path": "model/world/spatial-input.json",
+    "bytes": 3679,
+    "sha256": "d7a3d9ebeeb2c92ac0a6dba3ac0683639c3cc360d7d1cf1c01d249ecb82b8da2"
+  },
+  {
+    "path": "model/world/wal.bin",
+    "bytes": 1125,
+    "sha256": "df4ebb0d742c513ee578f225efda1dd18932bd8b7f3ef3b32f8c556dca153813"
+  },
+  {
+    "path": "model.stderr",
+    "bytes": 40,
+    "sha256": "3cef612dc8ef12255e6f7a4f8e5b9d502e9e4576ad5ba8cf2cea8ebe5e33a76c"
+  },
+  {
+    "path": "model.stdout",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "observer-report.json",
+    "bytes": 4296,
+    "sha256": "cbf011a78d2b5d7af9d98cc66357c6157b07da2b2892f7afbb6651029fa52f0d"
+  }
+]

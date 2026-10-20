@@ -177,3 +177,6 @@ v0.5.51：[完整L2无等待30日及速度控制器](evidence/m0-t13a-speeds/STA
 
 
 v0.5.52：[实际session节奏修复](evidence/m0-t13a-session-pacing/STATUS.md)。计算/IPC占用时间间隔，首次立即、迟到不积累追赶，幂等/冲突及失败不重置节拍，原权限上限保留。最终16定向及clippy/fmt/build通过，原实际session一日24持久推进58.216秒、终值对直接Store相同；这是同行回归，未含父进程Store预创建，不能签正式30日。初版sleep断言失败及来源分开保留。P-E0完整30日、full四档、联合预算/稳态/实际8h仍未签，真实16GB not_run，M0 not_accepted。
+
+
+v0.5.53：[实际P-E0完整30日无等待](evidence/m0-t13a-pe0-speeds/STATUS.md)。54定向/clippy/fmt/build通过，实际Store创建前计时至末Checkpoint/日志持久完成18.514秒；722目标/722原票/原现金物料税务终值/同切分完整Engine含metadata与冷开核验通过。722为新整点加在途切分，非旧半点命令；首轮Core/Store联合hash比较失败保留并实测修复。只签无等待P-E0，真实60档、full四档/L1/共同预算/正式稳态/实际8h仍未签，真实16GB not_run、M0 not_accepted。

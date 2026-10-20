@@ -1,0 +1,8 @@
+{
+  "source_sha256": "42a1122f4b4c84b1cd851ea0dfe336192858531ca567d995074d7e98deefcf7b",
+  "source_and_binary_match": true,
+  "frozen_acceptance_unchanged": true,
+  "observer_unchanged": true,
+  "archives": [],
+  "scope": "static integrity only; no runtime/performance acceptance"
+}

@@ -1,0 +1,22 @@
+{
+  "source_sha256": "0866a0f2a4b37e5f22b9c3002198b42675d723787079cc1a01633d9aacbbea86",
+  "rate": "step",
+  "full_30day_actual_session": true,
+  "operating_seconds": 18.513690167,
+  "max_day_budget_seconds": 1.0378991670000008,
+  "final_day_with_checkpoint_seconds": 0.6409367080000017,
+  "daily_gate_met": true,
+  "whole_gate_met": true,
+  "speed_target_met": true,
+  "all722_targets_and_original_receipts": true,
+  "exact_same_trajectory_Engine_including_metadata": true,
+  "original_pe0_endpoints": true,
+  "old_half_hour_sequence_recovery": "not_retested",
+  "L1": "absent",
+  "common_8MiB": "not_accepted",
+  "normal_64MiB": "not_accepted",
+  "full_L2_four_rates": "not_run",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run",
+  "full_M0": "not_accepted"
+}
