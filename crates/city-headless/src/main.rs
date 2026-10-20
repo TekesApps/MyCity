@@ -5,6 +5,7 @@ mod economy_probe;
 mod exchange_probe;
 mod session;
 mod timeline_probe;
+mod worker_probe;
 use mycity_core::{parse_bootstrap, read_bounded, sha256, INPUT_LIMIT, NUMERIC_STRATEGY, SCHEMA};
 use serde_json::json;
 use std::{
@@ -24,6 +25,32 @@ fn system(command: &str, args: &[&str]) -> Option<String> {
 
 fn run() -> Result<(), String> {
     let args: Vec<_> = env::args().collect();
+    if args.get(1).is_some_and(|a| a == "worker-probe") {
+        if args.len() != 3 {
+            return Err("usage: mycity-headless worker-probe NEW_DIR".into());
+        }
+        println!(
+            "{}",
+            serde_json::to_string_pretty(&worker_probe::run(std::path::Path::new(&args[2]))?)
+                .map_err(|e| e.to_string())?
+        );
+        return Ok(());
+    }
+    if args
+        .get(1)
+        .is_some_and(|a| a == "compute-worker-probe-gated")
+    {
+        if args.len() != 3 {
+            return Err("usage: mycity-headless compute-worker-probe-gated TASK_ROOT".into());
+        }
+        return mycity_headless::compute_worker::run_probe_gated(std::path::Path::new(&args[2]));
+    }
+    if args.get(1).is_some_and(|a| a == "compute-worker") {
+        if args.len() != 3 {
+            return Err("usage: mycity-headless compute-worker TASK_ROOT".into());
+        }
+        return mycity_headless::compute_worker::run(std::path::Path::new(&args[2]));
+    }
     if args.get(1).is_some_and(|a| a == "air-probe") {
         if args.len() != 4 {
             return Err("usage: mycity-headless air-probe INPUT NEW_DIR".into());

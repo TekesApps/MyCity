@@ -311,3 +311,59 @@ fn decoder_rejects_excess_rows_before_accepting_source_or_checkpoint_vectors() {
         assert!(err.contains("air_rows"), "{field}: {err}");
     }
 }
+
+#[test]
+fn continuous_windows_preserve_field_integral_and_source_ledger() {
+    let mut first = input(60);
+    first.sources.push(Source {
+        id: 1,
+        cell: 528,
+        start: 0,
+        end: 60,
+        rate_micro: 10000,
+    });
+    let mut full = first.clone();
+    full.target = 180;
+    full.boundary_until = 180;
+    let mut direct = State::new(full).unwrap();
+    finish(&mut direct, 8192, 1024);
+    let mut state = State::new(first).unwrap();
+    finish(&mut state, 1, 17);
+    let field = state.field_bits().to_vec();
+    let integral = state.integral_bits().to_vec();
+    let mut next = input(180);
+    next.sources.clear();
+    let mut continued = state.continue_from_boundary(next.clone()).unwrap();
+    assert_eq!(continued.field_bits(), field);
+    assert_eq!(continued.integral_bits(), integral);
+    assert_eq!(continued.report().emitted_micro, 600000);
+    continued = State::restore(&continued.checkpoint().unwrap()).unwrap();
+    finish(&mut continued, 7, 111);
+    assert_eq!(continued.field_bits(), direct.field_bits());
+    assert_eq!(continued.integral_bits(), direct.integral_bits());
+    assert_eq!(
+        continued.report().emitted_micro,
+        direct.report().emitted_micro
+    );
+    assert!(continued.field_bits()[528] > 2f32.to_bits());
+    let before = state.checkpoint().unwrap();
+    let mut bad = next.clone();
+    bad.side = 64;
+    assert!(state.continue_from_boundary(bad).is_err());
+    let mut bad = next.clone();
+    bad.boundary_micro[0] = Some(0);
+    assert!(state.continue_from_boundary(bad).is_err());
+    let mut bad = next.clone();
+    bad.sources.push(Source {
+        id: 1,
+        cell: 1,
+        start: 59,
+        end: 61,
+        rate_micro: 1,
+    });
+    assert!(state.continue_from_boundary(bad).is_err());
+    let unfinished = State::new(next).unwrap();
+    assert!(unfinished.continue_from_boundary(input(200)).is_err());
+    assert!(state.continue_from_boundary(input(60)).is_err());
+    assert_eq!(before, state.checkpoint().unwrap());
+}

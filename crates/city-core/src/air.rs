@@ -265,6 +265,25 @@ impl State {
         s.validate()?;
         Ok(s)
     }
+    /// Continue a completed interval without resetting its field, integral or ledger.
+    /// New targets are explicit numerical cuts; arbitrary cuts need not be bit-equivalent.
+    pub fn continue_from_boundary(&self, input: Input) -> Result<Self, String> {
+        input.validate()?;
+        if !self.complete()
+            || input.target <= self.time
+            || input.side != self.input.side
+            || input.initial_micro != self.input.initial_micro
+            || input.boundary_micro != self.input.boundary_micro
+            || input.sources.iter().any(|s| s.start < self.time)
+        {
+            return Err("air_continuation_boundary".into());
+        }
+        let mut next = self.clone();
+        next.input_sha256 = input.identity();
+        next.input = input;
+        next.validate()?;
+        Ok(next)
+    }
     pub fn input(&self) -> &Input {
         &self.input
     }

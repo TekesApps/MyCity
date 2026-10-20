@@ -1,0 +1,18 @@
+{
+  "scope": "W1 pure worker only",
+  "release_tests_passed": 201,
+  "source_sha256": "f94333856ddab7a0265419adf259da198bbb216d98b3d09ebdbeaa6a45c22376",
+  "probe_wall_seconds": 1.293252334,
+  "stage_cursors": [
+    256,
+    256,
+    null
+  ],
+  "static_links_and_budget": "passed",
+  "architecture_advisor": "two concrete blockers corrected; advisor did not run tests",
+  "world_store_integration": "not_implemented",
+  "sim_process": "not_implemented",
+  "whole_process_group_resources": "not_run",
+  "memory_16gb_gate": "not_run",
+  "complete_M0": "not_accepted"
+}
