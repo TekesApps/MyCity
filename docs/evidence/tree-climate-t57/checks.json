@@ -1,0 +1,19 @@
+{
+  "release": "v0.5.24",
+  "scope": "static_design_only",
+  "source_sha256_unchanged": "7e48d3ccbd82e91506929ab6be128e6223f54b66d174f7cf2494dec6cf83cf49",
+  "requirement": "REQ23",
+  "planned_increment_bytes": 49152,
+  "remaining_m_env_subpool_mib": 5.953125,
+  "existing_plant_slots": 4096,
+  "tree_species_runtime": "not_implemented",
+  "georeferencing_runtime": "not_implemented",
+  "tree_air_runtime": "not_implemented",
+  "memory_16gb_gate": "not_run",
+  "document_sha256": "e88296419937093ae5a7fec3e545965e597310e236de5f5d8249bd4fe1d0f3ea",
+  "sources": [
+    "https://planthardiness.ars.usda.gov/pages/how-to-use-the-maps",
+    "https://www.forestresearch.gov.uk/tools-and-resources/fthr/ecological-site-classification/",
+    "https://www.forestresearch.gov.uk/climate-change/advice/urban-forests/"
+  ]
+}

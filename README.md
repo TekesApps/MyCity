@@ -1,6 +1,6 @@
 # MyCity
 
-仓库发布版本：`v0.5.23`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.24`。已开始Rust模型与headless CLI，当前不做UI。
 
 **软件结构先读[总体架构](docs/SOFTWARE_ARCHITECTURE.md)：当前代码、主体与事件、单writer、多进程目标、数据文件和预算。**
 
@@ -10,6 +10,7 @@
 - [玩家、空间、建设与治理](docs/product-governance-space-and-player.md)：精确选择、文字／语音、事项、协商补偿、议会司法与财政。
 - [市民、企业与复合空间](docs/product-citizens-enterprises-and-spaces.md)：生活就业、住房共享、公司持股、复合建筑／商租摊位和访客经济。
 - [全模式交通](docs/product-transport-and-logistics.md)：公交停车、电车／地铁／客货铁路、轮渡港口、三档机场与航空公司。
+- [树种、地理适生与空气作用](docs/tree-species-climate-and-air.md)：经纬度／气候／场地筛选，树种差异与有界环境作用；设计已补，运行未接。
 - [能源公用、环境与安全](docs/product-utilities-environment-and-safety.md)：燃气／供热、各种电源、供排水／固废、通信、天气绿化与公服事故。
 - [设施／设备构造](docs/product-facility-and-equipment-profiles.md)：可计算的成本、工程、资源、维护、退出及自定义约束。
 - [运行、16GB增量预算与版本路线](docs/product-runtime-budget-and-versions.md)：从M0到1.0的依赖和验收，全部机制同世界准入。

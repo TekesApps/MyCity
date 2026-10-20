@@ -69,3 +69,6 @@ v0.5.22软件结构入口：[总体架构S56](SOFTWARE_ARCHITECTURE.md)集中区
 
 
 v0.5.23执行更新：[T12-A](m0-air-cpu-reference.md)已实现空气EI有限CPU纯任务、分页与任务文件恢复，独立f64复算包含场与区间时间平均值。未接真实活动／跨城环境／家庭暴露和城市提交，不新增完整产品能力通过结论；GPU、worker池、UI、AgentKit及真实16GB仍未实现或未测。
+
+
+v0.5.24设计更新：[树种、经纬度与空气](tree-species-climate-and-air.md)补上此前植被通则未细化的适生筛选与树种差异，区分地理／气候／场地、生长与有限环境作用；尚未接运行，保留T12-A和P-WORKER边界。
