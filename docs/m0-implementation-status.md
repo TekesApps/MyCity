@@ -348,3 +348,6 @@ v0.5.48的T13A-3i：[broker实际Child与有限故障恢复](evidence/m0-t13a-br
 
 
 v0.5.49的T13A-3j：[耐久控制器功能与默认栈修复](evidence/m0-t13a-endurance-controller/STATUS.md)。单调绝对时轴、2880查询/96保存、实际Cells故障/提交丢回复/冷重开及独立故障参考接入；最终同源full短时实测432.112秒，723目标/725借还/3013原票/完整Engine及724旧hash核验通过。旧全仓debug发生真实栈溢出，Box<World>修复后原默认栈故障路径及旧线格式精确回归通过，全仓release316通过；旧失败独立保留，不声称全仓debug通过。无L1，控制器formal入口尚未实际8h；共同8MiB、精确常规64MiB、正式三轮/四档/实际8h仍未签，真实16GB not_run、M0 not_accepted。下一依赖是Rust联合监督与完整L1时轴/实例预算，不再增加有限故事。
+
+
+v0.5.50的T13A-3k：[Rust联合托管及原负载保护失败](evidence/m0-t13a-joint-endurance/STATUS.md)。Rust监督实际pool/layout/business Child，布局owner S/EOF区分、至少覆盖完整业务时轴、固定截止排空及最新冷恢复路径接入；诊断首行持久身份避免新增数百文件。最终来源45定向/clippy/fmt/build通过，初版全仓317分源保留。原完整联合在316.368秒因非正常pressure60.056秒保护失败，451目标业务/空气对原CPU相同，316扫描/1完整快照，但600秒/30日/最新冷恢复及池最终平衡均未完成。所有大文件hash并保留，缺footer不算零；advisor仅认可接入实现及失败留证。完整联合、共同8MiB、精确常规工作区、正式三轮/四档/实际8h仍未签，真实16GB not_run，M0 not_accepted。

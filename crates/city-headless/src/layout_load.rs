@@ -779,6 +779,39 @@ pub fn probe_charged(
     snapshot_seconds: u64,
     external_charge: Option<usize>,
 ) -> Result<Value, String> {
+    probe_schedule(dir, wall_seconds, snapshot_seconds, external_charge, false)
+}
+
+fn read_owner_stop(mut reader: impl Read) -> Result<(), String> {
+    let mut byte = [0];
+    reader.read_exact(&mut byte).map_err(err)?;
+    if byte == [b'S'] {
+        Ok(())
+    } else {
+        Err("layout_owner_command".into())
+    }
+}
+fn published_before(deadline: u64, end: Option<std::time::Duration>) -> bool {
+    end.is_none_or(|end| {
+        std::time::Duration::from_secs(deadline) < end.max(std::time::Duration::from_nanos(1))
+    })
+}
+
+/// Parent must explicitly stop; a broken owner pipe is a failure, not success.
+pub fn session(dir: &Path, minimum_seconds: u64) -> Result<Value, String> {
+    if ![600, 28800].contains(&minimum_seconds) {
+        return Err("layout_session_minimum".into());
+    }
+    probe_schedule(dir, minimum_seconds, 300, Some(64 * 1024 * 1024), true)
+}
+
+fn probe_schedule(
+    dir: &Path,
+    wall_seconds: u64,
+    snapshot_seconds: u64,
+    external_charge: Option<usize>,
+    owner_session: bool,
+) -> Result<Value, String> {
     use crate::scale_metrics::Metrics;
     use std::time::Duration;
     if wall_seconds > 28800
@@ -807,6 +840,21 @@ pub fn probe_charged(
     let mut events =
         BufWriter::with_capacity(65536, File::create(dir.join("events.jsonl")).map_err(err)?);
     let started = Instant::now();
+    let owner = if owner_session {
+        let (tx, rx) = std::sync::mpsc::sync_channel(1);
+        std::thread::Builder::new()
+            .name("layout-owner".into())
+            .stack_size(64 * 1024)
+            .spawn(move || {
+                let result = read_owner_stop(std::io::stdin());
+                let _ = tx.send((Instant::now(), result));
+            })
+            .map_err(err)?;
+        Some(rx)
+    } else {
+        None
+    };
+    let mut end = (!owner_session).then_some(Duration::from_secs(wall_seconds));
     let mut next_scan = 0u64;
     let mut next_snapshot = 0u64;
     let mut snapshots = Vec::with_capacity(128);
@@ -822,10 +870,35 @@ pub fn probe_charged(
                 snapshots.push(SnapshotSummary::from_result(&result)?);
             }
             let elapsed = started.elapsed().as_secs_f64();
-            if scans > 0 && elapsed >= wall_seconds as f64 {
+            if let Some(owner) = &owner {
+                if end.is_none() {
+                    match owner.try_recv() {
+                        Ok((received, result)) => {
+                            result?;
+                            let received = received.duration_since(started);
+                            let cutoff = received.max(Duration::from_secs(wall_seconds));
+                            serde_json::to_writer(&mut events, &json!({"owner_stop_received_seconds":received.as_secs_f64(),"publication_end_seconds":cutoff.as_secs_f64()})).map_err(err)?;
+                            events.write_all(b"\n").map_err(err)?;
+                            end = Some(cutoff);
+                        }
+                        Err(std::sync::mpsc::TryRecvError::Empty) => (),
+                        Err(std::sync::mpsc::TryRecvError::Disconnected) => {
+                            return Err("layout_owner_lost".into())
+                        }
+                    }
+                }
+                if elapsed >= 35000.0 {
+                    return Err("layout_session_horizon".into());
+                }
+            }
+            let published = |deadline| published_before(deadline, end);
+            if end.is_some_and(|end| started.elapsed() >= end)
+                && !published(next_scan)
+                && !published(next_snapshot)
+            {
                 break;
             }
-            if elapsed >= next_snapshot as f64 {
+            if published(next_snapshot) && elapsed >= next_snapshot as f64 {
                 let lateness = elapsed - next_snapshot as f64;
                 maximum_snapshot_start_lateness = maximum_snapshot_start_lateness.max(lateness);
                 let admission = load.start_snapshot()?;
@@ -833,7 +906,7 @@ pub fn probe_charged(
                 events.write_all(b"\n").map_err(err)?;
                 next_snapshot += snapshot_seconds;
             }
-            if elapsed >= next_scan as f64 {
+            if published(next_scan) && elapsed >= next_scan as f64 {
                 let lateness = elapsed - next_scan as f64;
                 maximum_scan_lateness = maximum_scan_lateness.max(lateness);
                 let scan = load.scan(|class, _, ns| metrics.observe(class, ns))?;
@@ -860,14 +933,20 @@ pub fn probe_charged(
     events.get_ref().sync_all().map_err(err)?;
     let diagnostic_allocated = metrics.owned_bytes()
         + events.capacity()
-        + snapshots.capacity() * size_of::<SnapshotSummary>();
+        + snapshots.capacity() * size_of::<SnapshotSummary>()
+        + if owner_session { 4096 } else { 0 };
     let diagnostic_charged = diagnostic_allocated + 256 * 1024;
     if diagnostic_charged > crate::diagnostic_contract::LAYOUT {
         return Err("layout_complete_diagnostics_cap".into());
     }
     let metrics = metrics.report()?;
     let manifest = load.manifest();
-    let report = json!({"schema":"mycity-layout-probe-v2","snapshot_summaries_only":true,"diagnostics":{"allocated_owned_bytes":diagnostic_allocated,"transient_reservation_bytes":256*1024,"charged_bound_bytes":diagnostic_charged,"cap_bytes":crate::diagnostic_contract::LAYOUT,"full_snapshot_file_details":"events.jsonl and retained snapshot indices"},"source_sha256":env!("MYCITY_SOURCE_SHA256"),"requested_wall_seconds":wall_seconds,"work_wall_seconds":started.elapsed().as_secs_f64(),"initialization_seconds":init_seconds,"snapshot_interval_seconds":snapshot_seconds,"scans":scans,"expected_published_scans":wall_seconds.max(1),"all_published_scans_completed":scans==wall_seconds.max(1),"manifest":manifest,"snapshots":snapshots,"maximum_scan_ready_age_seconds":maximum_scan_lateness,"maximum_snapshot_start_lateness_seconds":maximum_snapshot_start_lateness,"compute":metrics,"diagnostic_outcome":outcome,"full_layout_assembled":true,"steady_gate":"not_accepted_requires_three_runs_and_group_system_measurements","eight_hour_gate":"not_run","memory_16gb_gate":"not_run","full_M0":"not_accepted"});
+    let expected_scans = end
+        .unwrap_or(Duration::from_secs(wall_seconds))
+        .as_secs_f64()
+        .ceil()
+        .max(1.0) as u64;
+    let report = json!({"schema":"mycity-layout-probe-v2","owner_session":owner_session,"publication_end_seconds":end.map(|x|x.as_secs_f64()),"snapshot_summaries_only":true,"diagnostics":{"allocated_owned_bytes":diagnostic_allocated,"transient_reservation_bytes":256*1024,"charged_bound_bytes":diagnostic_charged,"cap_bytes":crate::diagnostic_contract::LAYOUT,"full_snapshot_file_details":"events.jsonl and retained snapshot indices"},"source_sha256":env!("MYCITY_SOURCE_SHA256"),"requested_wall_seconds":wall_seconds,"work_wall_seconds":started.elapsed().as_secs_f64(),"initialization_seconds":init_seconds,"snapshot_interval_seconds":snapshot_seconds,"scans":scans,"expected_published_scans":expected_scans,"all_published_scans_completed":scans==expected_scans,"manifest":manifest,"snapshots":snapshots,"maximum_scan_ready_age_seconds":maximum_scan_lateness,"maximum_snapshot_start_lateness_seconds":maximum_snapshot_start_lateness,"compute":metrics,"diagnostic_outcome":outcome,"full_layout_assembled":true,"steady_gate":"not_accepted_requires_three_runs_and_group_system_measurements","eight_hour_gate":"not_run","memory_16gb_gate":"not_run","full_M0":"not_accepted"});
     let mut file = File::create(dir.join("report.json")).map_err(err)?;
     serde_json::to_writer_pretty(&mut file, &report).map_err(err)?;
     file.sync_all().map_err(err)?;
@@ -1117,6 +1196,27 @@ fn reopen_inner(snapshot_dir: &Path, report_dir: &Path, save: bool) -> Result<Va
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn owner_stop_requires_explicit_byte_and_publication_cutoff_is_fixed() {
+        use std::time::Duration;
+        assert!(super::read_owner_stop(&b"S"[..]).is_ok());
+        assert!(super::read_owner_stop(&b""[..]).is_err());
+        assert!(super::read_owner_stop(&b"X"[..]).is_err());
+        // The fixed 600-second session publishes deadlines 0..599, even
+        // when the last scan is processed late. A stop at 600.2 adds 600.
+        let exact = Some(Duration::from_secs(600));
+        assert!(super::published_before(599, exact));
+        assert!(!super::published_before(600, exact));
+        assert!(super::published_before(
+            600,
+            Some(Duration::from_millis(600200))
+        ));
+        assert!(!super::published_before(
+            601,
+            Some(Duration::from_millis(600200))
+        ));
+        assert!(super::published_before(34999, None));
+    }
     use super::*;
     #[test]
     fn external_component_reservation_rejects_oversize_before_allocation() {

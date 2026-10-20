@@ -392,6 +392,15 @@ fn run_inner(dir: &Path, cadence: Cadence) -> Result<Value, String> {
                     max_query_lateness: Duration::ZERO,
                 });
                 d.e.record(json!({"endurance_clock_started":true}))?;
+                save(
+                    &dir.join("clock-started.json"),
+                    &json!({
+                        "source_sha256":env!("MYCITY_SOURCE_SHA256"),
+                        "pid":std::process::id(),
+                        "process_instance_unix_ns":crate::heap_meter::process_instance(),
+                        "required_wall_seconds":cadence.hour().as_secs_f64()*720.0
+                    }),
+                )?;
             }
             Step::Drive(target) => {
                 if target % 3600 == 0 {

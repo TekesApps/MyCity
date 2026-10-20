@@ -31,8 +31,21 @@ impl Drop for Job {
     }
 }
 fn start(root: &Path, name: &str, args: &[&std::ffi::OsStr]) -> Result<Job, String> {
+    start_owned(root, name, args, false)
+}
+fn start_owned(
+    root: &Path,
+    name: &str,
+    args: &[&std::ffi::OsStr],
+    owner_pipe: bool,
+) -> Result<Job, String> {
     Ok(Job(Command::new(std::env::current_exe().map_err(err)?)
         .args(args)
+        .stdin(if owner_pipe {
+            Stdio::piped()
+        } else {
+            Stdio::null()
+        })
         .env("MYCITY_HEAP_LOG", root.join("heaps.jsonl"))
         .env("MYCITY_NORMAL_POOL", root.join("normal-pool"))
         .stdout(Stdio::from(
@@ -372,6 +385,226 @@ pub fn run(dir: &Path) -> Result<(), String> {
         return Err("joint_supervisor_diagnostic_heap_cap".into());
     }
     save(&dir.join("report.json"),&Report{schema:"mycity-joint-budget-diagnostic-v1",source_sha256:env!("MYCITY_SOURCE_SHA256"),diagnostic_component_caps_bytes:[crate::diagnostic_contract::SIM,mib,crate::diagnostic_contract::LAYOUT,2*mib,mib/4,mib,mib/4,crate::diagnostic_contract::POOL],l1_charged_bound_bytes:l.diagnostics.charged_bound_bytes,supervisor_requested_heap_peak_bytes:supervisor_peak,whole_ns:clock.now(),overlap_witness_in_observed_tree:true,scope:"fixed 600s concurrent diagnostic; raw business unchanged; 64MiB entity balance with real worker grants; unconverted Engine work remains extra pressure; exact total normal owned unproven",joint_owned_budget:"not_accepted",steady_gate:"not_run",eight_hour_gate:"not_run",memory_16gb_gate:"not_run"})?;
+    clock.events.flush().map_err(err)?;
+    clock.events.get_ref().sync_all().map_err(err)
+}
+
+#[derive(Deserialize)]
+struct EnduranceClock {
+    formal: bool,
+    hours: u64,
+    targets: u64,
+    queries_completed: u64,
+    saves_completed: u64,
+    actual_wall_seconds: f64,
+    required_wall_seconds: f64,
+}
+#[derive(Deserialize)]
+struct EnduranceReport {
+    source_sha256: String,
+    clock: EnduranceClock,
+    entire_engine_including_metadata: String,
+}
+/// Full original business and L1 held under one real Rust child owner.
+/// A short cadence is functional evidence only, never a formal endurance pass.
+pub fn endurance(dir: &Path, formal: bool) -> Result<(), String> {
+    fs::create_dir(dir).map_err(err)?;
+    let dir = dir.canonicalize().map_err(err)?;
+    let mut clock = Clock {
+        begin: Instant::now(),
+        events: BufWriter::with_capacity(
+            65536,
+            File::create_new(dir.join("common-events.jsonl")).map_err(err)?,
+        ),
+    };
+    let cadence = if formal { "formal" } else { "smoke" };
+    let minimum = if formal { "28800" } else { "600" };
+    save(
+        &dir.join("manifest.json"),
+        &serde_json::json!({
+            "schema":"mycity-joint-endurance-v1", "source_sha256":env!("MYCITY_SOURCE_SHA256"),
+        "external_owned_charge_bytes":6*1024*1024,
+            "cadence":cadence, "layout_minimum_seconds":if formal {28800} else {600},
+            "layout_hard_failure_seconds":35000,"supervisor_hard_failure_seconds":36000,
+            "scan_seconds":1,"snapshot_seconds":300,"normal_pool_bytes":crate::normal_pool::BYTES,
+            "scope":"full actual business plus full L1 layout pressure; unconverted Engine remains EXTRA",
+            "common_8MiB":"not_accepted", "exact_normal_owned":"not_accepted", "real_16GB":"not_run"
+        }),
+    )?;
+    clock.event("supervisor_started", Some(std::process::id()), None)?;
+    let mut pool = crate::normal_pool::Process::spawn(
+        &std::env::current_exe().map_err(err)?,
+        &dir.join("normal-pool"),
+        Some(&dir.join("heaps.jsonl")),
+    )?;
+    clock.event("normal_pool_ready_observed", None, None)?;
+    let layout_dir = dir.join("layout");
+    let mut layout = start_owned(
+        &dir,
+        "layout",
+        &[
+            "layout-session".as_ref(),
+            layout_dir.as_os_str(),
+            minimum.as_ref(),
+        ],
+        true,
+    )?;
+    let ready = Instant::now();
+    loop {
+        if done(&mut layout)? {
+            return Err("joint_layout_stopped_before_ready".into());
+        }
+        if let Ok(r) = read::<Ready>(&layout_dir.join("manifest.json")) {
+            if r.external_owned_charge_bytes != crate::normal_pool::BYTES as u64
+                || r.normal_joint_budget_bytes != crate::layout_load::NORMAL_BYTES as u64
+            {
+                return Err("joint_ready_shape".into());
+            }
+            break;
+        }
+        if ready.elapsed() > Duration::from_secs(120) {
+            return Err("joint_layout_ready_deadline".into());
+        }
+        std::thread::sleep(Duration::from_millis(50));
+    }
+    clock.event("layout_ready_before_business", Some(layout.0.id()), None)?;
+    let business_dir = dir.join("business");
+    clock.event("business_launch_requested", None, None)?;
+    let mut business = start(
+        &dir,
+        "business",
+        &[
+            "scale-endurance".as_ref(),
+            business_dir.as_os_str(),
+            cadence.as_ref(),
+        ],
+    )?;
+    clock.event("business_spawned", Some(business.0.id()), None)?;
+    let mut business_done = false;
+    let mut stop_sent = false;
+    let mut clock_seen = false;
+    loop {
+        if clock.begin.elapsed() >= Duration::from_secs(36000) {
+            return Err("joint_endurance_deadline".into());
+        }
+        if !clock_seen && business_dir.join("clock-started.json").exists() {
+            clock_seen = true;
+            clock.event(
+                "business_clock_started_observed",
+                Some(business.0.id()),
+                None,
+            )?;
+        }
+        if !business_done && done(&mut business)? {
+            business_done = true;
+            clock.event(
+                "business_exited_before_layout_stop",
+                Some(business.0.id()),
+                None,
+            )?;
+            let b: EnduranceReport = read(&business_dir.join("report.json"))?;
+            if b.source_sha256 != env!("MYCITY_SOURCE_SHA256")
+                || b.entire_engine_including_metadata != "equal_independent_fault_reference"
+                || b.clock.formal != formal
+                || b.clock.hours != 720
+                || b.clock.targets != 723
+                || b.clock.queries_completed != 2880
+                || b.clock.saves_completed != 96
+                || !b.clock.actual_wall_seconds.is_finite()
+                || b.clock.actual_wall_seconds < b.clock.required_wall_seconds
+                || b.clock.required_wall_seconds != if formal { 28800.0 } else { 72.0 }
+                || !clock_seen
+            {
+                return Err("joint_endurance_business_result".into());
+            }
+            let mut pipe = layout.0.stdin.take().ok_or("joint_layout_owner_pipe")?;
+            pipe.write_all(b"S").map_err(err)?;
+            drop(pipe);
+            stop_sent = true;
+            clock.event("layout_stop_sent", Some(layout.0.id()), None)?;
+        }
+        if done(&mut layout)? {
+            if !business_done || !stop_sent {
+                return Err("joint_layout_ended_before_business".into());
+            }
+            clock.event("layout_exited_after_business", Some(layout.0.id()), None)?;
+            break;
+        }
+        std::thread::sleep(Duration::from_millis(50));
+    }
+    let l: Layout = read(&layout_dir.join("report.json"))?;
+    if l.scans < if formal { 28800 } else { 600 }
+        || !l.all_published_scans_completed
+        || l.snapshots.is_empty()
+        || l.snapshots.len() > 128
+        || !l.snapshots.iter().enumerate().all(|(i, s)| {
+            s.generation == i as u64 + 1 && s.record_restore_passed && s.pressure_readback_passed
+        })
+        || l.diagnostics.charged_bound_bytes > crate::diagnostic_contract::LAYOUT
+    {
+        return Err("joint_endurance_layout_result".into());
+    }
+    let generation = l
+        .snapshots
+        .last()
+        .ok_or("joint_snapshot_missing")?
+        .generation;
+    let latest = layout_dir.join(format!("snapshots/snapshot-{generation:06}"));
+    let restored = dir.join("layout-restored");
+    clock.event("restore_launch_requested", None, Some(generation))?;
+    let mut restore = start(
+        &dir,
+        "restore",
+        &[
+            "layout-load-only".as_ref(),
+            latest.as_os_str(),
+            restored.as_os_str(),
+        ],
+    )?;
+    let began = Instant::now();
+    while !done(&mut restore)? {
+        if began.elapsed() >= Duration::from_secs(120) {
+            return Err("joint_restore_deadline".into());
+        }
+        std::thread::sleep(Duration::from_millis(50));
+    }
+    if read::<Restore>(&restored.join("report.json"))?.cold_reopen_and_scan != "passed" {
+        return Err("joint_restore_result".into());
+    }
+    clock.event(
+        "latest_layout_restored",
+        Some(restore.0.id()),
+        Some(generation),
+    )?;
+    let balance = crate::normal_pool::status(pool.root())?;
+    if balance.available_touched_bytes != crate::normal_pool::BYTES
+        || balance.granted_capacity_bytes != 0
+        || balance.grants != 725
+        || balance.returns != 725
+        || balance.fill_acknowledgements != 725
+    {
+        return Err("joint_endurance_pool_balance".into());
+    }
+    pool.finish()?;
+    clock.event("normal_pool_exited", None, None)?;
+    let peak = crate::heap_meter::snapshot().lifetime_peak_requested_bytes;
+    if peak + crate::heap_meter::TAIL_RESERVED_BYTES > crate::diagnostic_contract::SUPERVISOR {
+        return Err("joint_supervisor_diagnostic_heap_cap".into());
+    }
+    save(
+        &dir.join("report.json"),
+        &serde_json::json!({
+            "schema":"mycity-joint-endurance-v1","source_sha256":env!("MYCITY_SOURCE_SHA256"),
+            "cadence":cadence,"whole_ns":clock.now(),"latest_restored_generation":generation,
+            "layout_scans":l.scans,"business_and_layout_completed":true,
+            "L1_coverage":"ready before business spawn; stop after complete business exit",
+            "supervisor_requested_heap_peak_bytes":peak,
+            "common_8MiB":"not_accepted","exact_normal_owned":"not_accepted",
+            "formal_steady":"not_run","four_speeds":"not_run",
+            "eight_hour":if formal {"requires_independent_audit"} else {"not_run"},
+            "real_16GB":"not_run","full_M0":"not_accepted"
+        }),
+    )?;
     clock.events.flush().map_err(err)?;
     clock.events.get_ref().sync_all().map_err(err)
 }

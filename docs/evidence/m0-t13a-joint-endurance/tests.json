@@ -1,0 +1,8 @@
+{
+  "source_sha256": "3931598f6b6b6d1b5fe6b297a0e18b53d9732a6eeaffd88b4cb3b144be50cd4a",
+  "profile": "release",
+  "passed": 45,
+  "failed": 0,
+  "ignored": 0,
+  "scope": "headless lib and compute_worker; full workspace317 belongs to initial identity-file source, not this final revision"
+}

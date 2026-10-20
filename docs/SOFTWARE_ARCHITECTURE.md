@@ -175,3 +175,6 @@ W3／W4执行更新：独立Sim、固定读集／代际、唯一接纳原票、O
 
 
 v0.5.49执行更新：[耐久控制器](evidence/m0-t13a-endurance-controller/STATUS.md)以单调时轴串行发布既有事务与独立计算故障，不将每个主体转换为独立进程。Engine.world盒装解决实测默认栈恢复溢出，线格式保持不变，堆成本仍计入；精确常规工作区和Rust联合监督仍待接入。主体权益逐笔保存与按事件稳定区间批处理可共存，快进不改变游戏时间因果，现冻结小时目标不变。
+
+
+v0.5.50执行更新：[联合托管](evidence/m0-t13a-joint-endurance/STATUS.md)接入Rust supervisor真实Child和布局owner管道；合法停止与EOF分开，布局时轴覆盖业务退出后才允许收尾。CpuLog先持久发布有界身份首行，故障footer缺测保持缺测。原完整联合实测触发pressure保护，不能将接入代码写成完整联合运行通过或精确内存预算已闭合。

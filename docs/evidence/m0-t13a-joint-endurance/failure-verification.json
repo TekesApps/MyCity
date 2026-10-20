@@ -1,0 +1,71 @@
+{
+  "source_sha256": "3931598f6b6b6d1b5fe6b297a0e18b53d9732a6eeaffd88b4cb3b144be50cd4a",
+  "result": "failed_pressure_protection; not completed joint validation",
+  "actual_wall_seconds": 316.368479875,
+  "pressure_seconds": 60.05595920899998,
+  "swap_net_growth_bytes": 0,
+  "verified_target_prefix": 451,
+  "last_verified_game_second": 1612800,
+  "all_completed_prefix_business_air_equal_original_cpu": true,
+  "normal_heap_records": 453,
+  "initialized_producers": 457,
+  "sealed_reports": 453,
+  "missing_footer_producers": [
+    {
+      "directory": "worker-64326-0",
+      "pid": 64326,
+      "instance": 1792533420770686000,
+      "report_present": false,
+      "heap": "missing, not zero"
+    },
+    {
+      "directory": "sim-59234-0",
+      "pid": 59234,
+      "instance": 1792533197752901000,
+      "report_present": false,
+      "heap": "missing, not zero"
+    },
+    {
+      "directory": "worker-58403-0",
+      "pid": 58403,
+      "instance": 1792533161885963000,
+      "report_present": false,
+      "heap": "missing, not zero"
+    },
+    {
+      "directory": "worker-58836-0",
+      "pid": 58836,
+      "instance": 1792533180642754000,
+      "report_present": true,
+      "heap": "missing, not zero"
+    },
+    {
+      "directory": "sim-57991-0",
+      "pid": 57991,
+      "instance": 1792533140991661000,
+      "report_present": false,
+      "heap": "missing, not zero"
+    }
+  ],
+  "completed_L1_scans": 316,
+  "completed_L1_snapshots": 1,
+  "admitted_L1_snapshots": 2,
+  "pool_last_observed": {
+    "capacity_bytes": 67108864,
+    "available_touched_bytes": 62914560,
+    "granted_capacity_bytes": 4194304,
+    "grants": 454,
+    "returns": 453,
+    "fill_acknowledgements": 454,
+    "scans": 1670,
+    "rejected_requests": 0,
+    "maximum_prepare_to_fill_or_reap_ns": 396332292
+  },
+  "pool_final_balance": "not_proven; forced terminal, no success report",
+  "latest_layout_cold_restore": "not_run",
+  "complete_30days": "not_completed",
+  "600_second_joint": "failed",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run",
+  "full_M0": "not_accepted"
+}

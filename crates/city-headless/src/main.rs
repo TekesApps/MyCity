@@ -141,6 +141,28 @@ fn run() -> Result<(), String> {
         mycity_headless::heap_meter::probe(std::path::Path::new(&args[2]))?;
         return Ok(());
     }
+    if args.get(1).is_some_and(|a| a == "joint-endurance") {
+        if args.len() != 4 || !matches!(args[3].as_str(), "smoke" | "formal") {
+            return Err("usage: mycity-headless joint-endurance NEW_DIR smoke|formal".into());
+        }
+        mycity_headless::joint_driver::endurance(
+            std::path::Path::new(&args[2]),
+            args[3] == "formal",
+        )?;
+        return Ok(());
+    }
+    if args.get(1).is_some_and(|a| a == "layout-session") {
+        if args.len() != 4 {
+            return Err("usage: mycity-headless layout-session NEW_DIR MINIMUM_SECONDS (600|28800); owner stdin S=stop".into());
+        }
+        mycity_headless::layout_load::session(
+            std::path::Path::new(&args[2]),
+            args[3]
+                .parse()
+                .map_err(|e: std::num::ParseIntError| e.to_string())?,
+        )?;
+        return Ok(());
+    }
     if args.get(1).is_some_and(|a| a == "joint-budget-probe") {
         if args.len() != 3 {
             return Err("usage: mycity-headless joint-budget-probe NEW_DIR".into());

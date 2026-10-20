@@ -1,0 +1,5 @@
+{
+  "source_sha256": "e5c831ba65c09c6629c305dd063a1425676046786cf92107719d46679ddcd407",
+  "files": 144,
+  "scope": "initial identity-file implementation, regression only; detected observer file-count conflict before joint measurement"
+}

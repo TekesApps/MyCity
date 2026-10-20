@@ -67,7 +67,7 @@ impl CpuLog {
             fs::create_dir(&d).map_err(err)?;
             ms.push(Metrics::create(&d.join("compute-durations.bin"))?);
         }
-        Ok(Self {
+        let mut log = Self {
             external_diagnostics_owned_bytes: 0,
             instance,
             producer: kind,
@@ -88,7 +88,26 @@ impl CpuLog {
             page_items: [[0; 2]; 3],
             last_error: None,
             l0: None,
-        })
+        };
+        // First record survives a killed producer without adding one file per
+        // process. Publication must complete before any diagnosed computation.
+        let identity = json!({"phase":"producer_identity","identity":{
+            "schema":"mycity-cpu-producer-identity-v1",
+            "producer":kind,"process_pid":std::process::id(),
+            "process_instance_unix_ns":crate::heap_meter::process_instance(),
+            "producer_instance":instance,"source_sha256":env!("MYCITY_SOURCE_SHA256")
+        }});
+        if serde_json::to_vec(&identity).map_err(err)?.len() + 1 > 1024 {
+            return Err("cpu_identity_cap".into());
+        }
+        log.write(identity)?;
+        log.log.flush().map_err(err)?;
+        log.log.get_ref().sync_all().map_err(err)?;
+        File::open(&log.root)
+            .map_err(err)?
+            .sync_all()
+            .map_err(err)?;
+        Ok(log)
     }
     pub fn set_external_diagnostics_owned_bytes(&mut self, bytes: usize) -> Result<(), String> {
         self.external_diagnostics_owned_bytes = bytes;
@@ -439,7 +458,29 @@ mod tests {
         assert_eq!(u64::from_le_bytes(quota[8..].try_into().unwrap()), 65536);
         let mut second = CpuLog::create(&base, "sim").unwrap();
         assert_ne!(first.root, second.root);
-        assert_eq!(fs::read(base.join("run-budget.bin")).unwrap(), quota);
+        let new_quota = fs::read(base.join("run-budget.bin")).unwrap();
+        assert_eq!(
+            u64::from_le_bytes(new_quota[..8].try_into().unwrap()),
+            65536
+        );
+        assert_eq!(
+            u64::from_le_bytes(new_quota[8..].try_into().unwrap()),
+            131072
+        );
+        // Identity is durable before any samples or transaction work.
+        let raw = fs::read(second.root.join("transactions.jsonl")).unwrap();
+        assert_eq!(raw.len(), second.bytes);
+        assert!(raw.len() <= 1024 && raw.ends_with(b"\n"));
+        let row: Value = serde_json::from_slice(&raw).unwrap();
+        assert_eq!(row["phase"], "producer_identity");
+        let identity = &row["identity"];
+        assert!(!second.root.join("identity.json").exists());
+        assert_eq!(identity["producer_instance"], second.instance);
+        assert_eq!(
+            identity["process_instance_unix_ns"].to_string(),
+            crate::heap_meter::process_instance().to_string()
+        );
+        assert!(!second.root.join("report.json").exists());
         second.begin(json!({"operation": 18})).unwrap();
         let b = second.finish().unwrap();
         assert_eq!(a["process_pid"], b["process_pid"]);
