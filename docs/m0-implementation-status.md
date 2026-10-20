@@ -28,7 +28,7 @@ v0.5.23增加[T12-A纯数值参考](m0-air-cpu-reference.md)，尚未写入城�
 | T10 | T10-A有限CLI已实测；完整协议未完成 | 暂停／单步／四档实际等待、分页／热冷原票；当前profile接入T05-B step；目标对象revision／UI仍缺 |
 | T11 | deferred_by_user_scope | 原生UI／绘图／窗口／输入，不算通过 |
 | T12 | T12-A空气CPU有限参考已实测，v0.5.23 | 单通道32m EI、源／tile分页、任务检查点与新进程恢复、独立f64对照；未接世界／真实源投影／阈值，W1独立纯worker及W2有限场接纳已实测；独立Sim有限实现见W3；GPU仍未完成 |
-| T13 | T13A-0冻结、1a真实CPU参考、1b完整L1短诊断已实测，v0.5.32；正式性能门未完成；v0.5.34修复存档增长下界 | [T13-A](m0-model-scale-performance.md)分真实业务与布局压力；[64／128／8城／64工资／2万债项实际30日](evidence/m0-t13a-assembly/STATUS.md)及[完整3.10GiB L1／连续快照／冷开与有界观测](evidence/m0-t13a-layout/STATUS.md)有独立证据；旧格式第20次拒绝的阻断已用[v2同满级96次暂停保存](evidence/m0-t13a-storage-v2/STATUS.md)解决，真实经营增长仍待测；[v0.5.35真实满级Sim／worker／v2存档30日](evidence/m0-t13a-full-sim/STATUS.md)及完整CPU／oracle／冷开对照通过接入诊断；正式性能、三轮稳态、8h及真实16GB／图形联合仍未通过 |
+| T13 | T13A-0已冻结；1a真实CPU、1b完整L1短诊断、2b存档下界与v0.5.36三档真实接入已测；正式门未完成 | [具名三档真实30日／完整oracle／冷开／Progress](evidence/m0-t13a-tiered/STATUS.md)与[完整L1布局短诊断](evidence/m0-t13a-layout/STATUS.md)分别留证；full输入与v0.5.35完整期末不变，单次推进227.99秒。集中到期性能、10类CPU计时、四档、三轮稳态、8h及真实16GB／图形联合仍未通过 |
 | T14 | not_accepted | 不把headless子阶段签收等同完整M0 |
 
 ## 3. T01：构建和证据基线
@@ -310,3 +310,6 @@ core.air用f32／f64位整数保存完整旧场、候选源累加／tile、积�
 ## 30. v0.5.35：T13A-2c满级真实业务接入
 
 [实际工件与边界](evidence/m0-t13a-full-sim/STATUS.md)：独立CPU与Sim／worker分别执行冻结输入；完整723目标／724空气窗口、64工资／20000债项／16义务／8单及完整期末／3011永久原票核实，真实新进程开城与最早请求重试无副作用。现有8资源池及v2配置显式绑定，IPC仍64KiB、预览仍有界。342.13秒推进及查询热点是实际诊断，未将其签作P-E0、计算分位、四档速度、L1联合、稳态或8h；完整M0仍未接受。
+
+
+v0.5.36的T13A-2d[具名small／medium／full真实30日与Progress优化](evidence/m0-t13a-tiered/STATUS.md)已完成全部关键目标、独立oracle／完整期末及冷开原票对照；full期初和完整Engine与v0.5.35不变，实际单次推进由342.13到227.99秒。三档诊断不替代集中到期、10类计算计时、四档实际速度、联合预算、三轮稳态或8h。下一依赖为固定大小的瞬时批次埋点，区分quote／replay／实际提交及worker／接纳复算，再按原冻结门继续。

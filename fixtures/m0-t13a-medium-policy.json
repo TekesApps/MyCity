@@ -1,0 +1,565 @@
+{
+  "schema": "mycity-m0-t13a-real-policy-v1-candidate",
+  "status": "frozen_assembly_input_not_performance_accepted",
+  "game_seconds": 2592000,
+  "initial_cash_cents": 3000000,
+  "initial_account_count": 32,
+  "initial_stock_count": 64,
+  "payroll": [
+    {
+      "id": 1,
+      "payer": 3,
+      "payee": 5,
+      "home_city": 1,
+      "hourly_cents": 8,
+      "cycle": {
+        "kind": "daily"
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 2,
+      "payer": 3,
+      "payee": 6,
+      "home_city": 1,
+      "hourly_cents": 9,
+      "cycle": {
+        "kind": "weekly"
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 3,
+      "payer": 3,
+      "payee": 7,
+      "home_city": 1,
+      "hourly_cents": 7,
+      "cycle": {
+        "kind": "monthly",
+        "anchor": 1
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 4,
+      "payer": 3,
+      "payee": 8,
+      "home_city": 1,
+      "hourly_cents": 8,
+      "cycle": {
+        "kind": "daily"
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 5,
+      "payer": 3,
+      "payee": 9,
+      "home_city": 1,
+      "hourly_cents": 9,
+      "cycle": {
+        "kind": "weekly"
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 6,
+      "payer": 3,
+      "payee": 10,
+      "home_city": 1,
+      "hourly_cents": 7,
+      "cycle": {
+        "kind": "monthly",
+        "anchor": 1
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 7,
+      "payer": 3,
+      "payee": 11,
+      "home_city": 1,
+      "hourly_cents": 8,
+      "cycle": {
+        "kind": "daily"
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 8,
+      "payer": 3,
+      "payee": 12,
+      "home_city": 1,
+      "hourly_cents": 9,
+      "cycle": {
+        "kind": "weekly"
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 9,
+      "payer": 3,
+      "payee": 13,
+      "home_city": 1,
+      "hourly_cents": 7,
+      "cycle": {
+        "kind": "monthly",
+        "anchor": 1
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 10,
+      "payer": 3,
+      "payee": 14,
+      "home_city": 1,
+      "hourly_cents": 8,
+      "cycle": {
+        "kind": "daily"
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 11,
+      "payer": 3,
+      "payee": 15,
+      "home_city": 1,
+      "hourly_cents": 9,
+      "cycle": {
+        "kind": "weekly"
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 12,
+      "payer": 3,
+      "payee": 16,
+      "home_city": 1,
+      "hourly_cents": 7,
+      "cycle": {
+        "kind": "monthly",
+        "anchor": 1
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 13,
+      "payer": 3,
+      "payee": 17,
+      "home_city": 1,
+      "hourly_cents": 8,
+      "cycle": {
+        "kind": "daily"
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 14,
+      "payer": 3,
+      "payee": 18,
+      "home_city": 1,
+      "hourly_cents": 9,
+      "cycle": {
+        "kind": "weekly"
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 15,
+      "payer": 3,
+      "payee": 19,
+      "home_city": 1,
+      "hourly_cents": 7,
+      "cycle": {
+        "kind": "monthly",
+        "anchor": 1
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 16,
+      "payer": 3,
+      "payee": 20,
+      "home_city": 1,
+      "hourly_cents": 8,
+      "cycle": {
+        "kind": "daily"
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 17,
+      "payer": 3,
+      "payee": 21,
+      "home_city": 1,
+      "hourly_cents": 9,
+      "cycle": {
+        "kind": "weekly"
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 18,
+      "payer": 3,
+      "payee": 22,
+      "home_city": 1,
+      "hourly_cents": 7,
+      "cycle": {
+        "kind": "monthly",
+        "anchor": 1
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 19,
+      "payer": 3,
+      "payee": 23,
+      "home_city": 1,
+      "hourly_cents": 8,
+      "cycle": {
+        "kind": "daily"
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 20,
+      "payer": 3,
+      "payee": 24,
+      "home_city": 1,
+      "hourly_cents": 9,
+      "cycle": {
+        "kind": "weekly"
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 21,
+      "payer": 3,
+      "payee": 25,
+      "home_city": 1,
+      "hourly_cents": 7,
+      "cycle": {
+        "kind": "monthly",
+        "anchor": 1
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 22,
+      "payer": 3,
+      "payee": 26,
+      "home_city": 1,
+      "hourly_cents": 8,
+      "cycle": {
+        "kind": "daily"
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 23,
+      "payer": 3,
+      "payee": 27,
+      "home_city": 1,
+      "hourly_cents": 9,
+      "cycle": {
+        "kind": "weekly"
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 24,
+      "payer": 3,
+      "payee": 28,
+      "home_city": 1,
+      "hourly_cents": 7,
+      "cycle": {
+        "kind": "monthly",
+        "anchor": 1
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 25,
+      "payer": 3,
+      "payee": 29,
+      "home_city": 1,
+      "hourly_cents": 8,
+      "cycle": {
+        "kind": "daily"
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 26,
+      "payer": 3,
+      "payee": 30,
+      "home_city": 1,
+      "hourly_cents": 9,
+      "cycle": {
+        "kind": "weekly"
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 27,
+      "payer": 3,
+      "payee": 31,
+      "home_city": 1,
+      "hourly_cents": 7,
+      "cycle": {
+        "kind": "monthly",
+        "anchor": 1
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 28,
+      "payer": 3,
+      "payee": 32,
+      "home_city": 1,
+      "hourly_cents": 8,
+      "cycle": {
+        "kind": "daily"
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 29,
+      "payer": 3,
+      "payee": 5,
+      "home_city": 1,
+      "hourly_cents": 9,
+      "cycle": {
+        "kind": "weekly"
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 30,
+      "payer": 3,
+      "payee": 6,
+      "home_city": 1,
+      "hourly_cents": 7,
+      "cycle": {
+        "kind": "monthly",
+        "anchor": 1
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 31,
+      "payer": 3,
+      "payee": 7,
+      "home_city": 1,
+      "hourly_cents": 8,
+      "cycle": {
+        "kind": "daily"
+      },
+      "ends_at": 2592000
+    },
+    {
+      "id": 32,
+      "payer": 3,
+      "payee": 8,
+      "home_city": 1,
+      "hourly_cents": 9,
+      "cycle": {
+        "kind": "weekly"
+      },
+      "ends_at": 2592000
+    }
+  ],
+  "claims": [
+    {
+      "first_id": 1,
+      "count": 500,
+      "payer": 3,
+      "payee": 5,
+      "amount": 1,
+      "due": 86400
+    },
+    {
+      "first_id": 501,
+      "count": 500,
+      "payer": 3,
+      "payee": 6,
+      "amount": 1,
+      "due": 172800
+    },
+    {
+      "first_id": 1001,
+      "count": 500,
+      "payer": 3,
+      "payee": 7,
+      "amount": 1,
+      "due": 259200
+    },
+    {
+      "first_id": 1501,
+      "count": 500,
+      "payer": 3,
+      "payee": 8,
+      "amount": 1,
+      "due": 345600
+    },
+    {
+      "first_id": 2001,
+      "count": 500,
+      "payer": 3,
+      "payee": 9,
+      "amount": 1,
+      "due": 432000
+    },
+    {
+      "first_id": 2501,
+      "count": 500,
+      "payer": 3,
+      "payee": 10,
+      "amount": 1,
+      "due": 518400
+    },
+    {
+      "first_id": 3001,
+      "count": 500,
+      "payer": 3,
+      "payee": 11,
+      "amount": 1,
+      "due": 604800
+    },
+    {
+      "first_id": 3501,
+      "count": 500,
+      "payer": 3,
+      "payee": 12,
+      "amount": 1,
+      "due": 691200
+    },
+    {
+      "first_id": 4001,
+      "count": 500,
+      "payer": 3,
+      "payee": 13,
+      "amount": 1,
+      "due": 777600
+    },
+    {
+      "first_id": 4501,
+      "count": 500,
+      "payer": 3,
+      "payee": 14,
+      "amount": 1,
+      "due": 864000
+    },
+    {
+      "first_id": 5001,
+      "count": 500,
+      "payer": 3,
+      "payee": 15,
+      "amount": 1,
+      "due": 950400
+    },
+    {
+      "first_id": 5501,
+      "count": 500,
+      "payer": 3,
+      "payee": 16,
+      "amount": 1,
+      "due": 1036800
+    },
+    {
+      "first_id": 6001,
+      "count": 500,
+      "payer": 3,
+      "payee": 17,
+      "amount": 1,
+      "due": 1123200
+    },
+    {
+      "first_id": 6501,
+      "count": 500,
+      "payer": 3,
+      "payee": 18,
+      "amount": 1,
+      "due": 1209600
+    },
+    {
+      "first_id": 7001,
+      "count": 500,
+      "payer": 3,
+      "payee": 19,
+      "amount": 1,
+      "due": 1296000
+    },
+    {
+      "first_id": 7501,
+      "count": 500,
+      "payer": 3,
+      "payee": 20,
+      "amount": 1,
+      "due": 1382400
+    },
+    {
+      "first_id": 8001,
+      "count": 500,
+      "payer": 3,
+      "payee": 21,
+      "amount": 1,
+      "due": 1468800
+    },
+    {
+      "first_id": 8501,
+      "count": 500,
+      "payer": 3,
+      "payee": 22,
+      "amount": 1,
+      "due": 1555200
+    },
+    {
+      "first_id": 9001,
+      "count": 500,
+      "payer": 3,
+      "payee": 23,
+      "amount": 1,
+      "due": 1641600
+    },
+    {
+      "first_id": 9501,
+      "count": 500,
+      "payer": 3,
+      "payee": 24,
+      "amount": 1,
+      "due": 1728000
+    }
+  ],
+  "boot_start_seconds": {
+    "pump": 0,
+    "generator": 60
+  },
+  "first_group_settle_seconds": 180,
+  "freight_dispatch": [
+    {
+      "at": 60,
+      "quotes": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "at": 1296000,
+      "quotes": [
+        5,
+        6,
+        7,
+        8
+      ]
+    }
+  ],
+  "inactive_city": {
+    "city": 1,
+    "switch_to": 2,
+    "closed_at": 604800,
+    "opened_at": 691200
+  }
+}

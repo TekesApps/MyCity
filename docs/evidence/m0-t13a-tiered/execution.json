@@ -1,0 +1,53 @@
+[
+  {
+    "tier": "small",
+    "exit_code": 0,
+    "wall_seconds": 244.383468375,
+    "command": [
+      "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+      "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-layout/observe.py",
+      "/Users/frankqin/dev/MyCity/work/t13a2d-tiered-01/small",
+      "--artifacts-root",
+      "/Users/frankqin/dev/MyCity/work/t13a2d-tiered-01",
+      "--",
+      "/Users/frankqin/dev/MyCity/target/release/mycity-headless",
+      "scale-sim-probe",
+      "/Users/frankqin/dev/MyCity/work/t13a2d-tiered-01/small/model",
+      "small"
+    ]
+  },
+  {
+    "tier": "medium",
+    "exit_code": 0,
+    "wall_seconds": 244.86693000000002,
+    "command": [
+      "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+      "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-layout/observe.py",
+      "/Users/frankqin/dev/MyCity/work/t13a2d-tiered-01/medium",
+      "--artifacts-root",
+      "/Users/frankqin/dev/MyCity/work/t13a2d-tiered-01",
+      "--",
+      "/Users/frankqin/dev/MyCity/target/release/mycity-headless",
+      "scale-sim-probe",
+      "/Users/frankqin/dev/MyCity/work/t13a2d-tiered-01/medium/model",
+      "medium"
+    ]
+  },
+  {
+    "tier": "full",
+    "exit_code": 0,
+    "wall_seconds": 262.11640099999994,
+    "command": [
+      "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+      "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-layout/observe.py",
+      "/Users/frankqin/dev/MyCity/work/t13a2d-tiered-01/full",
+      "--artifacts-root",
+      "/Users/frankqin/dev/MyCity/work/t13a2d-tiered-01",
+      "--",
+      "/Users/frankqin/dev/MyCity/target/release/mycity-headless",
+      "scale-sim-probe",
+      "/Users/frankqin/dev/MyCity/work/t13a2d-tiered-01/full/model",
+      "full"
+    ]
+  }
+]

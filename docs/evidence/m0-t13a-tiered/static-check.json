@@ -1,0 +1,7 @@
+{
+  "local_links_checked": 176,
+  "release": "v0.5.36",
+  "all_compiled_source_preimage_unchanged": true,
+  "frozen_acceptance_unchanged": true,
+  "memory_and_performance_gates": "not_passed_by_static_checks"
+}

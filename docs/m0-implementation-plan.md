@@ -254,3 +254,6 @@ v0.5.34的T13A-2b[拆分World／原票与同满级96保存](evidence/m0-t13a-sto
 
 
 v0.5.35的T13A-2c[满级真实30日Sim／worker／v2Store](evidence/m0-t13a-full-sim/STATUS.md)已完成原冻结经营轨迹、关键目标全量对照、完整冷开与最早原票重试；真实Receipt链增长已实际观测，但本次未装配96次定期保存／L1同行。接下来按实测查询／协调开销推进分级计时与安全优化，然后执行既定三轮稳态及8h，不以本次接入诊断替代性能门。
+
+
+v0.5.36的T13A-2d[具名small／medium／full真实30日与Progress优化](evidence/m0-t13a-tiered/STATUS.md)已完成全部关键目标、独立oracle／完整期末及冷开原票对照；full期初和完整Engine与v0.5.35不变，实际单次推进由342.13到227.99秒。三档诊断不替代集中到期、10类计算计时、四档实际速度、联合预算、三轮稳态或8h。下一依赖为固定大小的瞬时批次埋点，区分quote／replay／实际提交及worker／接纳复算，再按原冻结门继续。

@@ -1,0 +1,85 @@
+{
+  "schema": "mycity-t13a-named-tiers-v1",
+  "acceptance_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+  "unchanged_common": {
+    "cities": 8,
+    "resources": 8,
+    "periodic_obligations": 16,
+    "freight_quotes": 8,
+    "maximum_simultaneous_freight": 4,
+    "hours": 720,
+    "drive_targets": 723,
+    "air_windows": 724,
+    "timeline_page_limit": 8192,
+    "air_step_seconds": 60
+  },
+  "generation_only": "static legal fixtures; runtime never truncates full records; household payees wrap within each named roster",
+  "tiers": [
+    {
+      "name": "small",
+      "counts": {
+        "accounts": 16,
+        "stocks": 32,
+        "payroll": 8,
+        "claims": 2000
+      },
+      "files": {
+        "opening": "m0-t13a-small-opening.json",
+        "policy": "m0-t13a-small-policy.json",
+        "oracle": "m0-t13a-small-oracle.json"
+      },
+      "sha256": {
+        "opening": "ade6196df652a917c800fbefbf89d0e97da4188012abf367713e074f9c8103ae",
+        "policy": "6a8380c45aa15699d6bb228bc49e9e8798666199d9cc5a794ad44cd1e5395065",
+        "oracle": "818110310f8d4d4ee9f6d188487f67bb44a35c238a20920e388a8e86a9578196"
+      },
+      "cash_total": 3000000,
+      "wages_paid": 15080,
+      "claims_paid": 2000
+    },
+    {
+      "name": "medium",
+      "counts": {
+        "accounts": 32,
+        "stocks": 64,
+        "payroll": 32,
+        "claims": 10000
+      },
+      "files": {
+        "opening": "m0-t13a-medium-opening.json",
+        "policy": "m0-t13a-medium-policy.json",
+        "oracle": "m0-t13a-medium-oracle.json"
+      },
+      "sha256": {
+        "opening": "14bd82d8d1e196d810fa8fbdf25bf67da6092f24496b6581aa6dbe8ff825f144",
+        "policy": "f12c78b6baff5313c99a43085b9e6355d938123e322f724c68bd575b6daa69a1",
+        "oracle": "ee45d61e7492cd33d779478920832504d608cddbac6760828df365ef5cb476e3"
+      },
+      "cash_total": 3000000,
+      "wages_paid": 59624,
+      "claims_paid": 10000
+    },
+    {
+      "name": "full",
+      "counts": {
+        "accounts": 64,
+        "stocks": 128,
+        "payroll": 64,
+        "claims": 20000
+      },
+      "files": {
+        "opening": "m0-t13a-full-opening-candidate.json",
+        "policy": "m0-t13a-real-policy-candidate.json",
+        "oracle": "m0-t13a-expected-oracle-candidate.json"
+      },
+      "sha256": {
+        "opening": "04c113c62b0b682f94f9abfbde7618b87bd972f3931504366be9e07c130b4726",
+        "policy": "614ac01e912bf932fad4f5bb33f8254b03f1ac3cba71c93106d2739655dfd4b0",
+        "oracle": "00fa0827d11023bab75571c83d586d9436e4f72c93300be20c5fd9ab4cd1ed8f"
+      },
+      "cash_total": 3000000,
+      "wages_paid": 118784,
+      "claims_paid": 20000
+    }
+  ]
+}

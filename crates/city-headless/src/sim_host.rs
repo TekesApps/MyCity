@@ -28,6 +28,7 @@ pub struct Request {
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum Command {
     Status,
+    Progress,
     Execute { envelope: Envelope },
     RunRequired { job: u64 },
     ProbeRequired { job: u64, point: ProbePoint },
@@ -101,7 +102,7 @@ fn event(w: &mut impl Write, id: u64, kind: &str, payload: Value) -> Result<(), 
 pub(crate) enum Profile {
     Base,
     Joint,
-    ScaleFull,
+    Scale(crate::scale_reference::Tier),
 }
 impl Profile {
     pub(crate) fn command(self, probe: bool) -> &'static str {
@@ -110,18 +111,37 @@ impl Profile {
             (Self::Base, true) => "sim-host-probe",
             (Self::Joint, false) => "sim-host-joint",
             (Self::Joint, true) => "sim-host-joint-probe",
-            (Self::ScaleFull, false) => "sim-host-scale-full",
-            (Self::ScaleFull, true) => "sim-host-scale-full-probe",
+            (Self::Scale(crate::scale_reference::Tier::Full), false) => "sim-host-scale-full",
+            (Self::Scale(crate::scale_reference::Tier::Full), true) => "sim-host-scale-full-probe",
+            (Self::Scale(crate::scale_reference::Tier::Small), false) => "sim-host-scale-small",
+            (Self::Scale(crate::scale_reference::Tier::Small), true) => {
+                "sim-host-scale-small-probe"
+            }
+            (Self::Scale(crate::scale_reference::Tier::Medium), false) => "sim-host-scale-medium",
+            (Self::Scale(crate::scale_reference::Tier::Medium), true) => {
+                "sim-host-scale-medium-probe"
+            }
         }
     }
     fn rules(self) -> String {
         let name = match self {
             Self::Base => "sim-w3",
             Self::Joint => "sim-w4",
-            Self::ScaleFull => "sim-t13a-full-v2",
+            Self::Scale(crate::scale_reference::Tier::Full) => "sim-t13a-full-v2",
+            Self::Scale(crate::scale_reference::Tier::Small) => "sim-t13a-small-v2",
+            Self::Scale(crate::scale_reference::Tier::Medium) => "sim-t13a-medium-v2",
         };
         format!("{name}:{}", env!("MYCITY_SOURCE_SHA256"))
     }
+}
+fn progress(store: &Store) -> Result<Value, String> {
+    let e = store.engine().map_err(err)?;
+    Ok(
+        json!({"revision":e.world().view().revision,"sequence":store.committed_sequence(),
+        "timeline":e.timeline().map(|t|t.progress),
+        "background":e.background().map(|b|json!({"version":b.version(),"time":b.time(),
+            "pending":b.pending().map(|p|json!({"id":p.id,"generation":p.generation,"incarnation":p.incarnation,"attempt":p.attempt,"failure":p.failure}))}))}),
+    )
 }
 fn status(store: &Store, worker: &Option<Worker>) -> Result<Value, String> {
     let e = store.engine().map_err(err)?;
@@ -427,7 +447,15 @@ pub fn run_joint(world: &Path, create: bool, probe: bool) -> Result<(), String> 
     run_inner(world, create, probe, Profile::Joint)
 }
 pub fn run_scale_full(world: &Path, create: bool, probe: bool) -> Result<(), String> {
-    run_inner(world, create, probe, Profile::ScaleFull)
+    run_scale(world, create, probe, crate::scale_reference::Tier::Full)
+}
+pub fn run_scale(
+    world: &Path,
+    create: bool,
+    probe: bool,
+    tier: crate::scale_reference::Tier,
+) -> Result<(), String> {
+    run_inner(world, create, probe, Profile::Scale(tier))
 }
 fn run_inner(
     world: &Path,
@@ -438,10 +466,7 @@ fn run_inner(
     let rules = profile.rules();
     let mut store = if create {
         let (opening, resources) = match profile {
-            Profile::ScaleFull => (
-                crate::scale_reference::OPENING,
-                crate::scale_reference::resources()?,
-            ),
+            Profile::Scale(tier) => (tier.opening(), crate::scale_reference::resources()?),
             Profile::Joint => (
                 crate::joint_reference::OPENING,
                 crate::joint_reference::resources()?,
@@ -451,7 +476,7 @@ fn run_inner(
                 crate::joint_reference::resources()?,
             ),
         };
-        let constructor = if matches!(profile, Profile::ScaleFull) {
+        let constructor = if matches!(profile, Profile::Scale(_)) {
             Store::create_spatial_v2
         } else {
             Store::create_spatial
@@ -482,6 +507,7 @@ fn run_inner(
         let stop = matches!(request.command, Command::Stop);
         let outcome = match request.command {
             Command::Status => status(&store, &worker),
+            Command::Progress => progress(&store),
             Command::ReceiptProof { operation } => store.receipt(operation).map_err(err).and_then(|record| {
                 let bytes = serde_json::to_vec(&record).map_err(err)?;
                 Ok(json!({"operation":operation,"present":record.is_some(),"sha256":sha256(&bytes),"bytes":bytes.len()}))

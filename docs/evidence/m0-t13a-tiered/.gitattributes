@@ -1,0 +1,2 @@
+# Preserve byte-exact captured test output, including Cargo's trailing blank lines.
+tests-*.txt -whitespace

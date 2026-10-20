@@ -1,0 +1,183 @@
+{
+  "scope": "independent_expected_arithmetic_only_not_runtime",
+  "expected_work_seconds_each": 835200,
+  "expected_payroll_paid": [
+    1856,
+    2088,
+    1624,
+    1856,
+    2088,
+    1624,
+    1856,
+    2088,
+    1624,
+    1856,
+    2088,
+    1624,
+    1856,
+    2088,
+    1624,
+    1856,
+    2088,
+    1624,
+    1856,
+    2088,
+    1624,
+    1856,
+    2088,
+    1624,
+    1856,
+    2088,
+    1624,
+    1856,
+    2088,
+    1624,
+    1856,
+    2088
+  ],
+  "expected_wages_paid_total": 59624,
+  "expected_claims_paid_total": 10000,
+  "expected_tax_paid": 48000,
+  "expected_boot_fees": 500,
+  "expected_freight_invoices": 16000,
+  "expected_freight_fees": 160,
+  "expected_inbox_fees": 40,
+  "expected_raw_source_quantity": 12000,
+  "expected_raw_source_basis": 4800,
+  "expected_extra_stock_15": {
+    "quantity": 1000,
+    "basis": 300
+  },
+  "expected_cash_accounts": [
+    {
+      "id": 1,
+      "cash": 1048000
+    },
+    {
+      "id": 2,
+      "cash": 183800
+    },
+    {
+      "id": 3,
+      "cash": 481876
+    },
+    {
+      "id": 4,
+      "cash": 1216700
+    },
+    {
+      "id": 5,
+      "cash": 4444
+    },
+    {
+      "id": 6,
+      "cash": 4212
+    },
+    {
+      "id": 7,
+      "cash": 3980
+    },
+    {
+      "id": 8,
+      "cash": 4444
+    },
+    {
+      "id": 9,
+      "cash": 2588
+    },
+    {
+      "id": 10,
+      "cash": 2124
+    },
+    {
+      "id": 11,
+      "cash": 2356
+    },
+    {
+      "id": 12,
+      "cash": 2588
+    },
+    {
+      "id": 13,
+      "cash": 2124
+    },
+    {
+      "id": 14,
+      "cash": 2356
+    },
+    {
+      "id": 15,
+      "cash": 2588
+    },
+    {
+      "id": 16,
+      "cash": 2124
+    },
+    {
+      "id": 17,
+      "cash": 2356
+    },
+    {
+      "id": 18,
+      "cash": 2588
+    },
+    {
+      "id": 19,
+      "cash": 2124
+    },
+    {
+      "id": 20,
+      "cash": 2356
+    },
+    {
+      "id": 21,
+      "cash": 2588
+    },
+    {
+      "id": 22,
+      "cash": 2124
+    },
+    {
+      "id": 23,
+      "cash": 2356
+    },
+    {
+      "id": 24,
+      "cash": 2588
+    },
+    {
+      "id": 25,
+      "cash": 1624
+    },
+    {
+      "id": 26,
+      "cash": 1856
+    },
+    {
+      "id": 27,
+      "cash": 2088
+    },
+    {
+      "id": 28,
+      "cash": 1624
+    },
+    {
+      "id": 29,
+      "cash": 1856
+    },
+    {
+      "id": 30,
+      "cash": 2088
+    },
+    {
+      "id": 31,
+      "cash": 1624
+    },
+    {
+      "id": 32,
+      "cash": 1856
+    }
+  ],
+  "expected_cash_total": 3000000,
+  "acceptance_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508"
+}

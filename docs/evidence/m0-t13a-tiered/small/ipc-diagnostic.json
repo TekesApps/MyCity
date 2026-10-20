@@ -1,0 +1,208 @@
+{
+  "scope": "elapsed after submit returns through result processing; excludes request encode/submit; includes persistence and worker; not compute batch acceptance",
+  "ipc_calls": {
+    "progress": {
+      "samples": 2954,
+      "sum_seconds": 0.08429442799999999,
+      "p95_seconds": 5.0834e-05,
+      "p99_seconds": 7.8375e-05,
+      "maximum_seconds": 0.003361
+    },
+    "execute": {
+      "samples": 1508,
+      "sum_seconds": 55.85086699799995,
+      "p95_seconds": 0.055397958,
+      "p99_seconds": 0.135941791,
+      "maximum_seconds": 0.302568
+    },
+    "receipt_proof": {
+      "samples": 2,
+      "sum_seconds": 0.0013154999999999998,
+      "p95_seconds": 0.00128025,
+      "p99_seconds": 0.00128025,
+      "maximum_seconds": 0.00128025
+    },
+    "run_required": {
+      "samples": 724,
+      "sum_seconds": 156.40084259,
+      "p95_seconds": 0.258717875,
+      "p99_seconds": 0.304536583,
+      "maximum_seconds": 0.794912958
+    },
+    "status": {
+      "samples": 726,
+      "sum_seconds": 6.009860392000002,
+      "p95_seconds": 0.009093208,
+      "p99_seconds": 0.014194458,
+      "maximum_seconds": 0.021906291
+    },
+    "checkpoint": {
+      "samples": 2,
+      "sum_seconds": 0.163005625,
+      "p95_seconds": 0.095606625,
+      "p99_seconds": 0.095606625,
+      "maximum_seconds": 0.095606625
+    }
+  },
+  "complete_drive": {
+    "samples": 723,
+    "sum_seconds": 216.57005081600005,
+    "p95_seconds": 0.372679375,
+    "p99_seconds": 0.467394333,
+    "maximum_seconds": 0.979638833
+  },
+  "day_targets": [
+    {
+      "game_day": 1,
+      "elapsed_since_sim_ready_seconds": 10.045178708,
+      "since_previous_day_seconds": 10.045178708
+    },
+    {
+      "game_day": 2,
+      "elapsed_since_sim_ready_seconds": 17.406945583,
+      "since_previous_day_seconds": 7.361766874999999
+    },
+    {
+      "game_day": 3,
+      "elapsed_since_sim_ready_seconds": 25.522093041,
+      "since_previous_day_seconds": 8.115147458000003
+    },
+    {
+      "game_day": 4,
+      "elapsed_since_sim_ready_seconds": 33.313396916,
+      "since_previous_day_seconds": 7.7913038750000005
+    },
+    {
+      "game_day": 5,
+      "elapsed_since_sim_ready_seconds": 40.562908458,
+      "since_previous_day_seconds": 7.2495115420000005
+    },
+    {
+      "game_day": 6,
+      "elapsed_since_sim_ready_seconds": 47.731361375,
+      "since_previous_day_seconds": 7.168452916999996
+    },
+    {
+      "game_day": 7,
+      "elapsed_since_sim_ready_seconds": 55.002928875,
+      "since_previous_day_seconds": 7.271567500000003
+    },
+    {
+      "game_day": 8,
+      "elapsed_since_sim_ready_seconds": 62.52446975,
+      "since_previous_day_seconds": 7.5215408749999995
+    },
+    {
+      "game_day": 9,
+      "elapsed_since_sim_ready_seconds": 69.562714958,
+      "since_previous_day_seconds": 7.038245207999999
+    },
+    {
+      "game_day": 10,
+      "elapsed_since_sim_ready_seconds": 76.289146208,
+      "since_previous_day_seconds": 6.7264312500000045
+    },
+    {
+      "game_day": 11,
+      "elapsed_since_sim_ready_seconds": 83.05346825,
+      "since_previous_day_seconds": 6.764322041999989
+    },
+    {
+      "game_day": 12,
+      "elapsed_since_sim_ready_seconds": 90.23155575,
+      "since_previous_day_seconds": 7.178087500000004
+    },
+    {
+      "game_day": 13,
+      "elapsed_since_sim_ready_seconds": 97.37990875,
+      "since_previous_day_seconds": 7.148353
+    },
+    {
+      "game_day": 14,
+      "elapsed_since_sim_ready_seconds": 104.016305333,
+      "since_previous_day_seconds": 6.636396583000007
+    },
+    {
+      "game_day": 15,
+      "elapsed_since_sim_ready_seconds": 110.547659583,
+      "since_previous_day_seconds": 6.531354249999993
+    },
+    {
+      "game_day": 16,
+      "elapsed_since_sim_ready_seconds": 118.352913583,
+      "since_previous_day_seconds": 7.805254000000005
+    },
+    {
+      "game_day": 17,
+      "elapsed_since_sim_ready_seconds": 124.96967275,
+      "since_previous_day_seconds": 6.616759166999998
+    },
+    {
+      "game_day": 18,
+      "elapsed_since_sim_ready_seconds": 131.74748962500001,
+      "since_previous_day_seconds": 6.777816875000013
+    },
+    {
+      "game_day": 19,
+      "elapsed_since_sim_ready_seconds": 138.457738083,
+      "since_previous_day_seconds": 6.710248457999995
+    },
+    {
+      "game_day": 20,
+      "elapsed_since_sim_ready_seconds": 146.32765075,
+      "since_previous_day_seconds": 7.869912666999994
+    },
+    {
+      "game_day": 21,
+      "elapsed_since_sim_ready_seconds": 154.147347166,
+      "since_previous_day_seconds": 7.819696415999999
+    },
+    {
+      "game_day": 22,
+      "elapsed_since_sim_ready_seconds": 162.231797916,
+      "since_previous_day_seconds": 8.084450750000002
+    },
+    {
+      "game_day": 23,
+      "elapsed_since_sim_ready_seconds": 170.070492541,
+      "since_previous_day_seconds": 7.838694624999988
+    },
+    {
+      "game_day": 24,
+      "elapsed_since_sim_ready_seconds": 178.208152541,
+      "since_previous_day_seconds": 8.137660000000011
+    },
+    {
+      "game_day": 25,
+      "elapsed_since_sim_ready_seconds": 184.765848833,
+      "since_previous_day_seconds": 6.557696292000003
+    },
+    {
+      "game_day": 26,
+      "elapsed_since_sim_ready_seconds": 191.439875166,
+      "since_previous_day_seconds": 6.6740263330000005
+    },
+    {
+      "game_day": 27,
+      "elapsed_since_sim_ready_seconds": 198.36466975,
+      "since_previous_day_seconds": 6.924794583999983
+    },
+    {
+      "game_day": 28,
+      "elapsed_since_sim_ready_seconds": 205.178717916,
+      "since_previous_day_seconds": 6.8140481660000205
+    },
+    {
+      "game_day": 29,
+      "elapsed_since_sim_ready_seconds": 211.7583575,
+      "since_previous_day_seconds": 6.5796395839999775
+    },
+    {
+      "game_day": 30,
+      "elapsed_since_sim_ready_seconds": 218.569646416,
+      "since_previous_day_seconds": 6.811288916000024
+    }
+  ],
+  "paced_speed_gates": "not_run",
+  "P_E0_30day_gate": "not_run"
+}

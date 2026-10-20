@@ -42,7 +42,22 @@ impl Client {
         create: bool,
         probe: bool,
     ) -> Result<Self, String> {
-        Self::spawn_inner(executable, world, create, probe, Profile::ScaleFull)
+        Self::spawn_scale(
+            executable,
+            world,
+            create,
+            probe,
+            crate::scale_reference::Tier::Full,
+        )
+    }
+    pub fn spawn_scale(
+        executable: &Path,
+        world: &Path,
+        create: bool,
+        probe: bool,
+        tier: crate::scale_reference::Tier,
+    ) -> Result<Self, String> {
+        Self::spawn_inner(executable, world, create, probe, Profile::Scale(tier))
     }
     fn spawn_inner(
         executable: &Path,

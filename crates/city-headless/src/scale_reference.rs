@@ -15,6 +15,57 @@ pub const OPENING: &[u8] = include_bytes!("../../../fixtures/m0-t13a-full-openin
 pub const POLICY: &[u8] = include_bytes!("../../../fixtures/m0-t13a-real-policy-candidate.json");
 pub const ORACLE: &[u8] =
     include_bytes!("../../../fixtures/m0-t13a-expected-oracle-candidate.json");
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Tier {
+    Small,
+    Medium,
+    Full,
+}
+impl Tier {
+    pub fn parse(name: &str) -> Result<Self, String> {
+        match name {
+            "small" => Ok(Self::Small),
+            "medium" => Ok(Self::Medium),
+            "full" => Ok(Self::Full),
+            _ => Err("scale_tier_name".into()),
+        }
+    }
+    pub fn name(self) -> &'static str {
+        match self {
+            Self::Small => "small",
+            Self::Medium => "medium",
+            Self::Full => "full",
+        }
+    }
+    pub fn counts(self) -> (usize, usize, usize, usize) {
+        match self {
+            Self::Small => (16, 32, 8, 2000),
+            Self::Medium => (32, 64, 32, 10000),
+            Self::Full => (64, 128, 64, 20000),
+        }
+    }
+    pub fn opening(self) -> &'static [u8] {
+        match self {
+            Self::Full => OPENING,
+            Self::Small => include_bytes!("../../../fixtures/m0-t13a-small-opening.json"),
+            Self::Medium => include_bytes!("../../../fixtures/m0-t13a-medium-opening.json"),
+        }
+    }
+    pub fn policy(self) -> &'static [u8] {
+        match self {
+            Self::Full => POLICY,
+            Self::Small => include_bytes!("../../../fixtures/m0-t13a-small-policy.json"),
+            Self::Medium => include_bytes!("../../../fixtures/m0-t13a-medium-policy.json"),
+        }
+    }
+    pub fn oracle(self) -> &'static [u8] {
+        match self {
+            Self::Full => ORACLE,
+            Self::Small => include_bytes!("../../../fixtures/m0-t13a-small-oracle.json"),
+            Self::Medium => include_bytes!("../../../fixtures/m0-t13a-medium-oracle.json"),
+        }
+    }
+}
 fn err(e: impl std::fmt::Debug) -> String {
     format!("{e:?}")
 }
@@ -77,8 +128,14 @@ pub enum Step {
     HourComplete,
 }
 /// Frozen input order shared by independent CPU and process executions.
-pub fn walk(mut step: impl FnMut(Step) -> Result<(), String>) -> Result<(), String> {
-    let policy: Value = serde_json::from_slice(POLICY).map_err(err)?;
+pub fn walk(step: impl FnMut(Step) -> Result<(), String>) -> Result<(), String> {
+    walk_tier(Tier::Full, step)
+}
+pub fn walk_tier(
+    tier: Tier,
+    mut step: impl FnMut(Step) -> Result<(), String>,
+) -> Result<(), String> {
+    let policy: Value = serde_json::from_slice(tier.policy()).map_err(err)?;
     if policy["boot_start_seconds"] != json!({"pump":0,"generator":60})
         || policy["first_group_settle_seconds"] != 180
         || policy["freight_dispatch"]
@@ -149,16 +206,23 @@ pub fn run() -> Result<(Reference, Value), String> {
 }
 /// Observer receives actual CPU results; it cannot alter the frozen inputs.
 pub fn run_observed(
+    observe: impl FnMut(&Reference, &Step) -> Result<(), String>,
+) -> Result<(Reference, Value), String> {
+    run_tier_observed(Tier::Full, observe)
+}
+pub fn run_tier_observed(
+    tier: Tier,
     mut observe: impl FnMut(&Reference, &Step) -> Result<(), String>,
 ) -> Result<(Reference, Value), String> {
     let started = Instant::now();
-    let oracle: Value = serde_json::from_slice(ORACLE).map_err(err)?;
+    let oracle: Value = serde_json::from_slice(tier.oracle()).map_err(err)?;
+    let (account_count, stock_count, payroll_count, claim_count) = tier.counts();
     let mut r = Reference::from_unstarted_engine(
-        Engine::new(assemble(OPENING)?, resources()?).map_err(err)?,
+        Engine::new(assemble(tier.opening())?, resources()?).map_err(err)?,
     )?;
     let initial = r.engine.world().view();
     let initial_extra = serde_json::to_value(&initial.stocks[14..]).map_err(err)?;
-    if (initial.accounts.len(), initial.stocks.len()) != (64, 128)
+    if (initial.accounts.len(), initial.stocks.len()) != (account_count, stock_count)
         || initial
             .region
             .as_ref()
@@ -181,7 +245,7 @@ pub fn run_observed(
     let mut initialized_owned = 0;
     let mut peak_shipments = 0;
     let mut completed_hours = 0;
-    walk(|step| {
+    walk_tier(tier, |step| {
         match &step {
             Step::Action(action) => {
                 r.execute(vec![*action])?;
@@ -210,8 +274,8 @@ pub fn run_observed(
     let view = r.engine.world().view();
     let t = r.engine.timeline().ok_or("scale_timeline")?;
     let x = view.exchange.as_ref().ok_or("scale_exchange")?;
-    if t.claims.len() != 20000
-        || t.payroll.len() != 64
+    if t.claims.len() != claim_count
+        || t.payroll.len() != payroll_count
         || t.claims
             .iter()
             .any(|c| !c.processed || c.paid != c.principal)
@@ -325,15 +389,15 @@ pub fn run_observed(
         return Err("scale_final_checkpoint_mismatch".into());
     }
     let report = json!({"schema":"mycity-scale-reference-v1","source_sha256":env!("MYCITY_SOURCE_SHA256"),
-        "opening_sha256":mycity_core::sha256(OPENING),"policy_sha256":mycity_core::sha256(POLICY),"oracle_sha256":mycity_core::sha256(ORACLE),
-        "scope":"full_current_engine_direct_cpu_model_only","work_wall_seconds":started.elapsed().as_secs_f64(),
-        "counts":{"accounts":64,"stocks":128,"cities":8,"payroll":64,"claims":20000,"quotes":8,"inflight_peak":peak_shipments},
+        "opening_sha256":mycity_core::sha256(tier.opening()),"policy_sha256":mycity_core::sha256(tier.policy()),"oracle_sha256":mycity_core::sha256(tier.oracle()),"tier":tier.name(),
+        "scope":"named_tier_direct_cpu_model_only","work_wall_seconds":started.elapsed().as_secs_f64(),
+        "counts":{"accounts":account_count,"stocks":stock_count,"cities":8,"payroll":payroll_count,"claims":claim_count,"quotes":8,"inflight_peak":peak_shipments},
         "game_seconds":30*86400,"completed_hour_targets":completed_hours,"air_windows":r.windows,"field":field,
         "initial_owned_capacity_bytes":initialized_owned,"final_owned_capacity_bytes":r.engine.owned_capacity_bytes(),
         "business_sha256":joint_reference::business_digest(&r.engine)?,"cash_accounts":actual_accounts,
         "wages_paid_total":t.payroll.iter().map(|p|p.paid.value()).sum::<i64>(),
         "claims_paid_total":t.claims.iter().map(|c|c.paid.value()).sum::<i64>(),
-        "inbox":x.inbox,"destination_pools":view.stocks[7..11],"periodic_obligations":obligations,"delivery_contracts":x.quotes,"managed_stock_records":14,"extra_stock_records":114,"extra_stock_nonzero_records":1,
+        "inbox":x.inbox,"destination_pools":view.stocks[7..11],"periodic_obligations":obligations,"delivery_contracts":x.quotes,"managed_stock_records":14,"extra_stock_records":stock_count-14,"extra_stock_nonzero_records":1,
         "reference_arithmetic_and_checkpoint":"passed","performance_acceptance":"not_run","eight_hour_gate":"not_run","memory_16gb_gate":"not_run","full_M0":"not_accepted"});
     Ok((r, report))
 }

@@ -78,14 +78,20 @@ fn run() -> Result<(), String> {
         return Ok(());
     }
     if args.get(1).is_some_and(|a| a == "scale-sim-probe") {
-        if args.len() != 3 {
-            return Err("usage: mycity-headless scale-sim-probe NEW_DIR".into());
+        if !(3..=4).contains(&args.len()) {
+            return Err(
+                "usage: mycity-headless scale-sim-probe NEW_DIR [small|medium|full]".into(),
+            );
         }
+        let tier = mycity_headless::scale_reference::Tier::parse(
+            args.get(3).map_or("full", String::as_str),
+        )?;
         println!(
             "{}",
-            serde_json::to_string_pretty(&mycity_headless::scale_sim::run(std::path::Path::new(
-                &args[2]
-            ))?)
+            serde_json::to_string_pretty(&mycity_headless::scale_sim::run_tier(
+                std::path::Path::new(&args[2]),
+                tier
+            )?)
             .map_err(|e| e.to_string())?
         );
         return Ok(());
@@ -93,18 +99,28 @@ fn run() -> Result<(), String> {
     if args.get(1).is_some_and(|a| {
         matches!(
             a.as_str(),
-            "sim-host-scale-full" | "sim-host-scale-full-probe"
+            "sim-host-scale-full"
+                | "sim-host-scale-full-probe"
+                | "sim-host-scale-small"
+                | "sim-host-scale-small-probe"
+                | "sim-host-scale-medium"
+                | "sim-host-scale-medium-probe"
         )
     }) {
         if args.len() != 4 || !matches!(args[2].as_str(), "create" | "open") {
             return Err(
-                "usage: mycity-headless sim-host-scale-full[-probe] create|open WORLD".into(),
+                "usage: mycity-headless sim-host-scale-TIER[-probe] create|open WORLD".into(),
             );
         }
-        return mycity_headless::sim_host::run_scale_full(
+        let name = args[1]
+            .trim_start_matches("sim-host-scale-")
+            .trim_end_matches("-probe");
+        let tier = mycity_headless::scale_reference::Tier::parse(name)?;
+        return mycity_headless::sim_host::run_scale(
             std::path::Path::new(&args[3]),
             args[2] == "create",
             args[1].ends_with("probe"),
+            tier,
         );
     }
     if args.get(1).is_some_and(|a| a == "scale-store-probe-v2") {

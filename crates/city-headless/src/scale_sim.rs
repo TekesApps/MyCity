@@ -1,7 +1,7 @@
 //! Full frozen input through the existing sole-writer Sim and worker, not an 8h gate.
 use crate::{
     joint_reference::business_digest,
-    scale_reference::{self, Step},
+    scale_reference::{self, Step, Tier},
     sim_client::Client,
     sim_host::Command,
 };
@@ -80,7 +80,10 @@ impl Experiment {
         Err("scale_sim_event_bound".into())
     }
     fn raw(&mut self, actions: Vec<Action>) -> Result<Envelope, String> {
-        let state = self.call(Command::Status)?;
+        let state = self.call(Command::Progress)?;
+        self.raw_at(&state, actions)
+    }
+    fn raw_at(&mut self, state: &Value, actions: Vec<Action>) -> Result<Envelope, String> {
         let envelope = Envelope {
             world: 1,
             branch: 1,
@@ -103,9 +106,15 @@ impl Experiment {
     fn drive(&mut self, target: u64, expected: &Value) -> Result<(), String> {
         let started = Instant::now();
         for _ in 0..10000 {
-            let state = self.call(Command::Status)?;
+            let state = self.call(Command::Progress)?;
             if state["timeline"]["target"].is_null() && state["timeline"]["last_complete"] == target
             {
+                let state = self.call(Command::Status)?;
+                if !state["timeline"]["target"].is_null()
+                    || state["timeline"]["last_complete"] != target
+                {
+                    return Err("scale_sim_complete_changed".into());
+                }
                 if expected["target"] != target
                     || state["business_sha256"] != expected["business_sha256"]
                     || state["background"]["state_sha256"] != expected["air_sha256"]
@@ -132,12 +141,15 @@ impl Experiment {
                 self.call(Command::RunRequired { job })?;
                 self.windows += 1;
             } else {
-                self.raw(vec![Action::Timeline {
-                    command: Timeline::Advance {
-                        target,
-                        limit: 8192,
-                    },
-                }])?;
+                self.raw_at(
+                    &state,
+                    vec![Action::Timeline {
+                        command: Timeline::Advance {
+                            target,
+                            limit: 8192,
+                        },
+                    }],
+                )?;
             }
         }
         Err("scale_sim_drive_bound".into())
@@ -180,9 +192,12 @@ fn image(world: &Path) -> Result<(Vec<u8>, Value), String> {
     Ok((bytes, root))
 }
 pub fn run(dir: &Path) -> Result<Value, String> {
+    run_tier(dir, Tier::Full)
+}
+pub fn run_tier(dir: &Path, tier: Tier) -> Result<Value, String> {
     fs::create_dir(dir).map_err(err)?;
     let dir = dir.canonicalize().map_err(err)?;
-    let result = run_inner(&dir);
+    let result = run_inner(&dir, tier);
     if let Err(error) = &result {
         write_json(
             &dir.join("failure.json"),
@@ -191,10 +206,10 @@ pub fn run(dir: &Path) -> Result<Value, String> {
     }
     result
 }
-fn run_inner(dir: &Path) -> Result<Value, String> {
+fn run_inner(dir: &Path, tier: Tier) -> Result<Value, String> {
     // CPU and persisted branches run separately; no joint reference residency claim.
     let mut golden = BufWriter::new(File::create_new(dir.join("cpu-targets.jsonl")).map_err(err)?);
-    let (reference, oracle) = scale_reference::run_observed(|r, step| {
+    let (reference, oracle) = scale_reference::run_tier_observed(tier, |r, step| {
         if let Step::Drive(target) = step {
             let air = r
                 .engine
@@ -218,7 +233,7 @@ fn run_inner(dir: &Path) -> Result<Value, String> {
     drop(golden);
     let exe = std::env::current_exe().map_err(err)?;
     let world: PathBuf = dir.join("world");
-    let mut client = Client::spawn_scale_full(&exe, &world, true, false)?;
+    let mut client = Client::spawn_scale(&exe, &world, true, false, tier)?;
     if client.next(Duration::from_secs(35))?.kind != "ready" {
         return Err("scale_sim_not_ready".into());
     }
@@ -240,7 +255,7 @@ fn run_inner(dir: &Path) -> Result<Value, String> {
     let mut first = None;
     let mut first_proof = None;
     let mut hours = 0;
-    scale_reference::walk(|step| {
+    scale_reference::walk_tier(tier, |step| {
         match step {
             Step::Action(action) => {
                 let envelope = e.raw(vec![action])?;
@@ -280,7 +295,7 @@ fn run_inner(dir: &Path) -> Result<Value, String> {
     let before_sha = sha256(&before_bytes);
     drop(before_bytes);
     let cold_started = Instant::now();
-    e.client = Client::spawn_scale_full(&exe, &world, false, false)?;
+    e.client = Client::spawn_scale(&exe, &world, false, false, tier)?;
     let ready = e.client.next(Duration::from_secs(35))?;
     if ready.kind != "ready" {
         return Err("scale_sim_cold_ready".into());
@@ -339,7 +354,7 @@ fn run_inner(dir: &Path) -> Result<Value, String> {
     }
     e.log.flush().map_err(err)?;
     e.log.get_ref().sync_all().map_err(err)?;
-    let report = json!({"schema":"mycity-t13a-full-sim-assembly-v1","source_sha256":env!("MYCITY_SOURCE_SHA256"),"opening_sha256":sha256(scale_reference::OPENING),"policy_sha256":sha256(scale_reference::POLICY),"oracle_sha256":sha256(scale_reference::ORACLE),"scope":"full_real_30day_sim_worker_v2_store_diagnostic_only","cpu_oracle":oracle,"completed_hour_targets":hours,"verified_drive_targets":e.verified,"actual_worker_windows":e.windows,"attempt_failures":e.failed_attempts,"business_sha256":business_digest(&actual)?,"final_air_sha256":after["background"]["state_sha256"],"sim_work_wall_seconds_including_ipc_and_persistence":work_seconds,"maximum_complete_drive_seconds":e.max_boundary_seconds,"cold_ready_seconds":cold_seconds,"oldest_receipt_retry":"passed_without_side_effect","complete_final_business_and_air":"passed","cold_complete_image_unchanged":true,"saved_sequence":root["sequence"],"final_root":final_root,"transcript_bytes":e.log_bytes,"performance_acceptance":"not_run","steady_three_runs":"not_run","eight_hour_gate":"not_run","memory_16gb_gate":"not_run","full_M0":"not_accepted"});
+    let report = json!({"schema":"mycity-t13a-full-sim-assembly-v1","source_sha256":env!("MYCITY_SOURCE_SHA256"),"opening_sha256":sha256(tier.opening()),"policy_sha256":sha256(tier.policy()),"oracle_sha256":sha256(tier.oracle()),"tier":tier.name(),"scope":"named_tier_real_30day_sim_worker_v2_store_diagnostic_only","cpu_oracle":oracle,"completed_hour_targets":hours,"verified_drive_targets":e.verified,"actual_worker_windows":e.windows,"attempt_failures":e.failed_attempts,"business_sha256":business_digest(&actual)?,"final_air_sha256":after["background"]["state_sha256"],"sim_work_wall_seconds_including_ipc_and_persistence":work_seconds,"maximum_complete_drive_seconds":e.max_boundary_seconds,"cold_ready_seconds":cold_seconds,"oldest_receipt_retry":"passed_without_side_effect","complete_final_business_and_air":"passed","cold_complete_image_unchanged":true,"saved_sequence":root["sequence"],"final_root":final_root,"transcript_bytes":e.log_bytes,"performance_acceptance":"not_run","steady_three_runs":"not_run","eight_hour_gate":"not_run","memory_16gb_gate":"not_run","full_M0":"not_accepted"});
     write_json(&dir.join("report.json"), &report)?;
     Ok(report)
 }

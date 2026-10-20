@@ -1,0 +1,163 @@
+{
+  "schema": "mycity-bounded-group-observer-v1",
+  "host": {
+    "hardware_model": "Mac16,1",
+    "cpu": "Apple M4",
+    "logical_cpus": 10,
+    "physical_memory_bytes": 34359738368,
+    "os": "26.6.2",
+    "architecture": "arm64"
+  },
+  "observer_source_sha256": "d274df554e4ef9ec35c71b794e83b3f721dfd3329394a97983bb9cedd1c3a7ea",
+  "observer_source_unchanged": true,
+  "status": "passed_measurement_wrapper",
+  "reason": null,
+  "command": [
+    "/Users/frankqin/dev/MyCity/target/release/mycity-headless",
+    "scale-sim-probe",
+    "/Users/frankqin/dev/MyCity/work/t13a2d-tiered-01/full/model",
+    "full"
+  ],
+  "artifacts_root": "/Users/frankqin/dev/MyCity/work/t13a2d-tiered-01",
+  "model_exit_code": 0,
+  "actual_wall_seconds": 262.07335962499997,
+  "samples": 1049,
+  "sample_log_bytes": 616982,
+  "maximum_sample_gap_seconds": 0.2966444999999851,
+  "maximum_capture_window_seconds": 0.08826724999997282,
+  "peak_simultaneous_rss_bytes": 110133248,
+  "peak_simultaneous_footprint_bytes": 52282712,
+  "peak_rss_frame": {
+    "t": 170.782090375,
+    "window_s": 0.03097004200000697,
+    "rss_bytes": 110133248,
+    "phys_footprint_bytes": 44483928,
+    "missing_footprint": 1,
+    "members": [
+      [
+        57133,
+        42432,
+        21897844509240,
+        17432576,
+        "observer"
+      ],
+      [
+        57134,
+        57133,
+        21897845397305,
+        41451520,
+        "mycity-headless"
+      ],
+      [
+        57346,
+        57134,
+        21898634802087,
+        43483136,
+        "mycity-headless"
+      ],
+      [
+        61358,
+        57346,
+        21901941120833,
+        5931008,
+        "mycity-headless"
+      ],
+      [
+        61359,
+        57133,
+        null,
+        1835008,
+        "sampler_ps"
+      ]
+    ],
+    "pressure_dispatch_flag": 1,
+    "swap_used_bytes": 640548864,
+    "observer_hot_bound_bytes": 1886026,
+    "observer_traced_current_bytes": 988282,
+    "observer_traced_peak_bytes": 1588890,
+    "observer_trace_metadata_bytes": 297136
+  },
+  "peak_footprint_frame": {
+    "t": 91.030330875,
+    "window_s": 0.025587083000004895,
+    "rss_bytes": 109871104,
+    "phys_footprint_bytes": 52282712,
+    "missing_footprint": 1,
+    "members": [
+      [
+        57133,
+        42432,
+        21897844509240,
+        17432576,
+        "observer"
+      ],
+      [
+        57134,
+        57133,
+        21897845397305,
+        41435136,
+        "mycity-headless"
+      ],
+      [
+        57346,
+        57134,
+        21898634802087,
+        43401216,
+        "mycity-headless"
+      ],
+      [
+        59037,
+        57346,
+        21900024207519,
+        5767168,
+        "mycity-headless"
+      ],
+      [
+        59038,
+        57133,
+        null,
+        1835008,
+        "sampler_ps"
+      ]
+    ],
+    "pressure_dispatch_flag": 1,
+    "swap_used_bytes": 640548864,
+    "observer_hot_bound_bytes": 1885354,
+    "observer_traced_current_bytes": 988184,
+    "observer_traced_peak_bytes": 1588890,
+    "observer_trace_metadata_bytes": 296464
+  },
+  "missing_footprint_process_samples": 1126,
+  "peak_world_logical_bytes": 63792395,
+  "disk_warning_16gib_observed": false,
+  "maximum_live_tracked_identities": 4,
+  "identities_recorded": 631,
+  "identities_retired": 630,
+  "final_live_identity_count": 1,
+  "observer_hot_bound_bytes": 1904566,
+  "other_diagnostic_owned_bytes": 0,
+  "combined_diagnostic_hot_bound_bytes": 1904566,
+  "swap_initial_bytes": 640548864,
+  "swap_max_bytes": 640548864,
+  "maximum_observed_swap_net_growth_bytes": 0,
+  "maximum_sampled_non_normal_pressure_seconds": 0,
+  "pressure_duration_definition": "conservative interval from preceding normal poll through next observed normal poll",
+  "pressure_semantics": "sysctl returns dispatch flags; normal=1, warning=2, critical=4, not internal enum 0..3",
+  "mach_timebase": {
+    "numer": 125,
+    "denom": 3
+  },
+  "sdk_resource_header_sha256": "1067178025c5fd88c9a1b8206a07c2695ef94dd471fe2783f06c512995382961",
+  "sdk_sysctl_header_sha256": "d6d627d3353607f4078079051e09ea0e9a3b32a6771934be1ac5d89fbe93b1c7",
+  "binary_sha256": "9a5e445365aa1983b89816189b1284ce05fe77d3532d0476ae9844f51a345baf",
+  "binary_unchanged": true,
+  "cpu_children_at_end": {
+    "user_seconds": 130.756652,
+    "system_seconds": 27.665519
+  },
+  "short_helper_peak_completeness": "not_proven; actual helper sample windows and misses retained",
+  "sampler_scope": "observer + model process tree + observed orphans by PID/Mach birth; helper identities retired, not accumulated",
+  "memory_16gb_gate": "not_run",
+  "eight_hour_gate": "not_run",
+  "full_M0": "not_accepted"
+}

@@ -1,0 +1,23 @@
+{
+  "release_workspace_tests_passed": 253,
+  "fmt": "passed",
+  "clippy": "passed",
+  "advisor_stage_review": "completed_read_only_no_stage_blocker",
+  "named_small_medium_full_30day_sim_worker_v2_store": "passed_diagnostics",
+  "full_input_and_complete_engine_unchanged_from_v0_5_35": true,
+  "full_query_optimization_single_diagnostic_seconds": {
+    "before": 342.132092291,
+    "after": 227.992519875
+  },
+  "ten_compute_classes": "not_run",
+  "four_paced_speeds": "not_run",
+  "steady_three_runs": "not_run",
+  "eight_hour": "not_run",
+  "real_16gb": "not_run",
+  "full_M0": "not_accepted",
+  "logs_sha256": {
+    "tests-release.txt": "6348a3a1b53dea7b6afbd263df183687c0f9e9968ef9b138e94cfb6896fa4366",
+    "fmt.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "clippy.txt": "9f4f36c4eff0ad5648ab68de531b6b6a90ef3d868466048ce2f315de7bb113c6"
+  }
+}

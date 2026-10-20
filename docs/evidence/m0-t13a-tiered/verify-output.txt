@@ -1,0 +1,45 @@
+{
+  "source_sha256": "5de330d52839f8decd61193bca0cf34371857f8a18ce921a19f0355ea72faa0e",
+  "tiers": {
+    "small": {
+      "files_checked": 61,
+      "world_bytes": 6157395,
+      "complete_state_equal_except_revision_and_incarnation": true,
+      "full_business_oracle": "passed",
+      "verified_targets": 723,
+      "original_receipts": 2955,
+      "receipt_segments": 23,
+      "sim_work_seconds": 218.569667875,
+      "full_status_calls": 726,
+      "progress_calls": 2954
+    },
+    "medium": {
+      "files_checked": 61,
+      "world_bytes": 7636588,
+      "complete_state_equal_except_revision_and_incarnation": true,
+      "full_business_oracle": "passed",
+      "verified_targets": 723,
+      "original_receipts": 2979,
+      "receipt_segments": 23,
+      "sim_work_seconds": 216.616185709,
+      "full_status_calls": 726,
+      "progress_calls": 2978
+    },
+    "full": {
+      "files_checked": 61,
+      "world_bytes": 9481433,
+      "complete_state_equal_except_revision_and_incarnation": true,
+      "full_business_oracle": "passed",
+      "verified_targets": 723,
+      "original_receipts": 3011,
+      "receipt_segments": 23,
+      "sim_work_seconds": 227.992519875,
+      "full_status_calls": 726,
+      "progress_calls": 3010
+    }
+  },
+  "performance_acceptance": "not_run",
+  "eight_hour_gate": "not_run",
+  "memory_16gb_gate": "not_run",
+  "full_M0": "not_accepted"
+}

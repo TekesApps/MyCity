@@ -1,0 +1,8 @@
+{
+  "before_sim_seconds": 342.132092291,
+  "after_sim_seconds": 227.992519875,
+  "samples_per_version": 1,
+  "same_frozen_full_input_and_complete_final_engine": "verified_separately_by_verify.py",
+  "formal_speed_gate": "not_run",
+  "not_a_controlled_three_run_benchmark": true
+}
