@@ -1,0 +1,81 @@
+{
+  "schema": "mycity-exact-latency-audit-v1",
+  "raw_sha256": "16396c561500c2b29ce148e00433b7a5daf84ec757724704af0cb9e500fd7659",
+  "raw_bytes": 29025,
+  "quantiles": "exact nearest rank ceil(n*p); original ns values",
+  "sort_chunk_records": 8192,
+  "merge_fan_in": 32,
+  "scratch_is_not_a_gameplay_world": true,
+  "classes": {
+    "L0_pe0_model_transaction": {
+      "samples": 0,
+      "p95_ns": null,
+      "p99_ns": null,
+      "maximum_ns": 0,
+      "gate": "not_passed_insufficient_samples"
+    },
+    "L0_pe1_model_transaction": {
+      "samples": 0,
+      "p95_ns": null,
+      "p99_ns": null,
+      "maximum_ns": 0,
+      "gate": "not_passed_insufficient_samples"
+    },
+    "L2_claims_batch": {
+      "samples": 0,
+      "p95_ns": null,
+      "p99_ns": null,
+      "maximum_ns": 0,
+      "gate": "not_passed_insufficient_samples"
+    },
+    "L2_payroll_batch": {
+      "samples": 0,
+      "p95_ns": null,
+      "p99_ns": null,
+      "maximum_ns": 0,
+      "gate": "not_passed_insufficient_samples"
+    },
+    "L2_region_exchange_boot_batch": {
+      "samples": 0,
+      "p95_ns": null,
+      "p99_ns": null,
+      "maximum_ns": 0,
+      "gate": "not_passed_insufficient_samples"
+    },
+    "L2_background_capture_admit_cpu": {
+      "samples": 0,
+      "p95_ns": null,
+      "p99_ns": null,
+      "maximum_ns": 0,
+      "gate": "not_passed_insufficient_samples"
+    },
+    "air_source_page": {
+      "samples": 0,
+      "p95_ns": null,
+      "p99_ns": null,
+      "maximum_ns": 0,
+      "gate": "not_passed_insufficient_samples"
+    },
+    "air_cell_page": {
+      "samples": 0,
+      "p95_ns": null,
+      "p99_ns": null,
+      "maximum_ns": 0,
+      "gate": "not_passed_insufficient_samples"
+    },
+    "L1_native_record_index_page": {
+      "samples": 705,
+      "p95_ns": 69333,
+      "p99_ns": 1255459,
+      "maximum_ns": 77215917,
+      "gate": "passed"
+    },
+    "L1_stub_record_index_page": {
+      "samples": 2520,
+      "p95_ns": 57792,
+      "p99_ns": 205541,
+      "maximum_ns": 11404750,
+      "gate": "passed"
+    }
+  }
+}

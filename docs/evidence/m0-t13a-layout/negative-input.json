@@ -1,0 +1,9 @@
+{
+  "source": "/Users/frankqin/dev/MyCity/work/t13a1b-layout-full-01/model/snapshots/snapshot-000002",
+  "original_index_sha256": "1d5b8aedb50709f2d01ae67efc3a79a3c84930a01960382c6aaa803c6c443ba1",
+  "source_bytes_unchanged": true,
+  "mutated_field": "files[native.json].sha256",
+  "expected_error": "layout_restore_checksum:native.json",
+  "payloads_are_immutable_hardlinks": true,
+  "financial_world": false
+}

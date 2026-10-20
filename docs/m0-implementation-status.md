@@ -28,7 +28,7 @@ v0.5.23增加[T12-A纯数值参考](m0-air-cpu-reference.md)，尚未写入城�
 | T10 | T10-A有限CLI已实测；完整协议未完成 | 暂停／单步／四档实际等待、分页／热冷原票；当前profile接入T05-B step；目标对象revision／UI仍缺 |
 | T11 | deferred_by_user_scope | 原生UI／绘图／窗口／输入，不算通过 |
 | T12 | T12-A空气CPU有限参考已实测，v0.5.23 | 单通道32m EI、源／tile分页、任务检查点与新进程恢复、独立f64对照；未接世界／真实源投影／阈值，W1独立纯worker及W2有限场接纳已实测；独立Sim有限实现见W3；GPU仍未完成 |
-| T13 | T13A-0冻结＋T13A-1a满级CPU参考／native布局已实测，v0.5.31；性能运行门未测 | [T13-A](m0-model-scale-performance.md)分真实业务与布局压力，满级64账户／128库存／64工资／20000 Claims，[64／128／8城／64工资／2万债项实际30日与部分native布局](evidence/m0-t13a-assembly/STATUS.md)已验证；完整L1与长时观测尚未完成，三轮稳态及8h待实际执行；原真实16GB／图形联合仍未通过 |
+| T13 | T13A-0冻结、1a真实CPU参考、1b完整L1短诊断已实测，v0.5.32；正式性能门未完成 | [T13-A](m0-model-scale-performance.md)分真实业务与布局压力；[64／128／8城／64工资／2万债项实际30日](evidence/m0-t13a-assembly/STATUS.md)及[完整3.10GiB L1／连续快照／冷开与有界观测](evidence/m0-t13a-layout/STATUS.md)有独立证据；真实业务持久性能、三轮稳态、8h及真实16GB／图形联合仍未通过 |
 | T14 | not_accepted | 不把headless子阶段签收等同完整M0 |
 
 ## 3. T01：构建和证据基线

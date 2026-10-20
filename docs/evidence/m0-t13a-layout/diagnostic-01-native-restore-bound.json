@@ -1,0 +1,6 @@
+{
+  "decoded_owned_bytes": 37488560,
+  "largest_replacement_bytes": 12582912,
+  "parser_io_stack_slack_bytes": 6291456,
+  "conservative_transient_bound_bytes": 56362928
+}

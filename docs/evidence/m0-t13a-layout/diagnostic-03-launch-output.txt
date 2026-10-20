@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-layout/observe.py", line 175, in main
+    if observer_hot>2*1024**2 or observer_hot+other_hot>8*1024**2:raise RuntimeError('observer hot-data bound')
+RuntimeError: observer hot-data bound
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-layout/observe.py", line 221, in <module>
+    if __name__=='__main__':main()
+  File "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-layout/observe.py", line 211, in main
+    os.killpg(child.pid,signal.SIGTERM)
+PermissionError: [Errno 1] Operation not permitted

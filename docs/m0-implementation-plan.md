@@ -242,3 +242,6 @@ v0.5.30执行切片：[M0-T13-A冻结验收](m0-model-scale-performance.md)只�
 
 
 v0.5.31执行子阶段T13A-1a：[真实满级CPU参考与native布局](evidence/m0-t13a-assembly/STATUS.md)通过完整30日业务／原票来源核对和检查点恢复；完整L1、长观测、分级性能、三轮稳态及8h仍未测，不能从32GiB单次参考耗时签收经营速度或16GB。
+
+
+v0.5.32的T13A-1b实现[完整L1布局与有界观测](evidence/m0-t13a-layout/STATUS.md)，仅签完整布局短诊断及恢复证据，不签正式稳态／8h。后续先测真实L2 Store满级保存增长与冷重开，再修瓶颈、跑分级及四档速度，原冻结数量和长跑门不变。

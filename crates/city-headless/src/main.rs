@@ -26,6 +26,57 @@ fn system(command: &str, args: &[&str]) -> Option<String> {
 
 fn run() -> Result<(), String> {
     let args: Vec<_> = env::args().collect();
+    if args.get(1).is_some_and(|a| a == "layout-load-only") {
+        if args.len() != 4 {
+            return Err(
+                "usage: mycity-headless layout-load-only EXISTING_SNAPSHOT NEW_REPORT_DIR".into(),
+            );
+        }
+        let report = mycity_headless::layout_load::load_only(
+            std::path::Path::new(&args[2]),
+            std::path::Path::new(&args[3]),
+        )?;
+        println!(
+            "{}",
+            serde_json::to_string_pretty(&report).map_err(|e| e.to_string())?
+        );
+        return Ok(());
+    }
+    if args.get(1).is_some_and(|a| a == "layout-reopen") {
+        if args.len() != 4 {
+            return Err(
+                "usage: mycity-headless layout-reopen EXISTING_SNAPSHOT NEW_REPORT_DIR".into(),
+            );
+        }
+        let report = mycity_headless::layout_load::reopen(
+            std::path::Path::new(&args[2]),
+            std::path::Path::new(&args[3]),
+        )?;
+        println!(
+            "{}",
+            serde_json::to_string_pretty(&report).map_err(|e| e.to_string())?
+        );
+        return Ok(());
+    }
+    if args.get(1).is_some_and(|a| a == "layout-probe") {
+        if args.len() != 5 {
+            return Err("usage: mycity-headless layout-probe NEW_DIR WALL_SECONDS SNAPSHOT_SECONDS (>=2100s requires 300s snapshots)".into());
+        }
+        let report = mycity_headless::layout_load::probe(
+            std::path::Path::new(&args[2]),
+            args[3]
+                .parse()
+                .map_err(|e: std::num::ParseIntError| e.to_string())?,
+            args[4]
+                .parse()
+                .map_err(|e: std::num::ParseIntError| e.to_string())?,
+        )?;
+        println!(
+            "{}",
+            serde_json::to_string_pretty(&report).map_err(|e| e.to_string())?
+        );
+        return Ok(());
+    }
     if args.get(1).is_some_and(|a| a == "scale-reference") {
         if args.len() != 3 {
             return Err("usage: mycity-headless scale-reference NEW_DIR".into());

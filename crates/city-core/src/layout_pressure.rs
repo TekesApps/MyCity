@@ -32,6 +32,16 @@ pub struct Manifest {
     pub vectors: Vec<(&'static str, usize, usize, usize)>,
     pub owned_capacity_bytes: usize,
 }
+/// A conservative capacity proof for this fixed, hash-verified native fixture.
+/// Includes the whole decoded graph, one full buffer replacement, and 6MiB for
+/// parser/IO/stack slack. This is not an allocator measurement of arbitrary JSON.
+#[derive(Serialize)]
+pub struct RestoreBound {
+    pub decoded_owned_bytes: usize,
+    pub largest_replacement_bytes: usize,
+    pub parser_io_stack_slack_bytes: usize,
+    pub conservative_transient_bound_bytes: usize,
+}
 fn fail(e: impl std::fmt::Debug) -> String {
     format!("{e:?}")
 }
@@ -265,8 +275,38 @@ impl NativePressure {
     }
     /// Diagnostic snapshot only; never restores a World or authorizes gameplay state.
     pub fn restore_checkpoint(reader: impl std::io::Read) -> Result<Self, String> {
+        Self::restore_checkpoint_profiled(reader).map(|(candidate, _)| candidate)
+    }
+    pub fn restore_checkpoint_profiled(
+        reader: impl std::io::Read,
+    ) -> Result<(Self, RestoreBound), String> {
         let mut restored: Self =
             serde_json::from_reader(reader.take(128 * 1024 * 1024)).map_err(fail)?;
+        let decoded = restored.manifest();
+        let largest_replacement_bytes = decoded
+            .vectors
+            .iter()
+            .map(|(_, _, cap, width)| cap * width)
+            .chain([
+                decoded.account_arena.slots_capacity * decoded.account_arena.slot_bytes,
+                decoded.inventory_arena.slots_capacity * decoded.inventory_arena.slot_bytes,
+                // Both destination arena buffers can coexist during repacking.
+                110000 * (decoded.inventory_arena.slot_bytes + 4)
+                    + decoded.inventory_arena.header_bytes,
+            ])
+            .max()
+            .ok_or("native_restore_bound")?;
+        let bound = RestoreBound {
+            decoded_owned_bytes: decoded.owned_capacity_bytes,
+            largest_replacement_bytes,
+            parser_io_stack_slack_bytes: 6 * 1024 * 1024,
+            conservative_transient_bound_bytes: decoded.owned_capacity_bytes
+                + largest_replacement_bytes
+                + 6 * 1024 * 1024,
+        };
+        if bound.conservative_transient_bound_bytes > 64 * 1024 * 1024 {
+            return Err("native_restore_work_bound_exceeded".into());
+        }
         let scope = Scope::new(0x5441, 1).map_err(fail)?;
         restored
             .accounts
@@ -315,7 +355,7 @@ impl NativePressure {
         if restored.manifest().owned_capacity_bytes > 64 * 1024 * 1024 {
             return Err("native_layout_budget".into());
         }
-        Ok(restored)
+        Ok((restored, bound))
     }
     pub fn write_checkpoint(&self, writer: impl std::io::Write) -> Result<(), String> {
         serde_json::to_writer(writer, self).map_err(fail)

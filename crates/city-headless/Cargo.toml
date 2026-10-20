@@ -13,6 +13,7 @@ mycity-storage = { path = "../city-storage" }
 serde_json.workspace = true
 serde.workspace = true
 fs2.workspace = true
+sha2.workspace = true
 
 [build-dependencies]
 sha2.workspace = true

@@ -1,0 +1,1 @@
+PASS: two restore points, exact +1MiB mutation, immutable native/stubs, complete file hashes

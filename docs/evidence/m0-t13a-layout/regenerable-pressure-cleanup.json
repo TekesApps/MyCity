@@ -1,0 +1,15 @@
+{
+  "reason": "free disk for unchanged full-load rerun",
+  "paths": [
+    "/Users/frankqin/dev/MyCity/work/t13a1b-layout-full-03/model/snapshots/snapshot-000002",
+    "/Users/frankqin/dev/MyCity/work/t13a1b-layout-full-03/model/snapshots/snapshot-000003",
+    "/Users/frankqin/dev/MyCity/work/t13a1b-layout-full-04/model/snapshots/snapshot-000002",
+    "/Users/frankqin/dev/MyCity/work/t13a1b-layout-full-06/model/snapshots/snapshot-000001",
+    "/Users/frankqin/dev/MyCity/work/t13a1b-layout-full-08/model/snapshots/snapshot-000001",
+    "/Users/frankqin/dev/MyCity/work/t13a1b-layout-full-08/model/snapshots/snapshot-000002"
+  ],
+  "payload_sha_proof": "diagnostic-03-failed-payload-audit.json",
+  "financial_receipts_deleted": false,
+  "only_owned_failed_layout_pressure": true,
+  "failed04_proof": "published indexes retain original writer/readback checksums; no independent rehash claim"
+}

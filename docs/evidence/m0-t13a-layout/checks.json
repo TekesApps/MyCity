@@ -1,0 +1,10 @@
+{
+  "source_sha256": "f1f506531ee649cce694ef20c453170d41eff26a9817ae6abff1e5d05fad1dd8",
+  "layout_diagnostic": "passed",
+  "same_source_cold_seconds": 7.922680334,
+  "cold_10s_gate": "passed_single_diagnostic",
+  "steady": "not_run",
+  "eight_hour": "not_run",
+  "real_16gb": "not_run",
+  "full_M0": "not_accepted"
+}

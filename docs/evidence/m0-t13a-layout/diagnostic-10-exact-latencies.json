@@ -1,0 +1,82 @@
+{
+  "schema": "mycity-exact-latency-audit-v1",
+  "audit_source_sha256": "801464d98b38985c2d49196a30bd4d0cf20c223bc810f450088c034a4fe3844a",
+  "raw_sha256": "ea6de67e956081b5494bca9f743637303a78f0609185cd743b8f8db71aad1fdc",
+  "raw_bytes": 174150,
+  "quantiles": "exact nearest rank ceil(n*p); original ns values",
+  "sort_chunk_records": 8192,
+  "merge_fan_in": 32,
+  "scratch_is_not_a_gameplay_world": true,
+  "classes": {
+    "L0_pe0_model_transaction": {
+      "samples": 0,
+      "p95_ns": null,
+      "p99_ns": null,
+      "maximum_ns": 0,
+      "gate": "not_passed_insufficient_samples"
+    },
+    "L0_pe1_model_transaction": {
+      "samples": 0,
+      "p95_ns": null,
+      "p99_ns": null,
+      "maximum_ns": 0,
+      "gate": "not_passed_insufficient_samples"
+    },
+    "L2_claims_batch": {
+      "samples": 0,
+      "p95_ns": null,
+      "p99_ns": null,
+      "maximum_ns": 0,
+      "gate": "not_passed_insufficient_samples"
+    },
+    "L2_payroll_batch": {
+      "samples": 0,
+      "p95_ns": null,
+      "p99_ns": null,
+      "maximum_ns": 0,
+      "gate": "not_passed_insufficient_samples"
+    },
+    "L2_region_exchange_boot_batch": {
+      "samples": 0,
+      "p95_ns": null,
+      "p99_ns": null,
+      "maximum_ns": 0,
+      "gate": "not_passed_insufficient_samples"
+    },
+    "L2_background_capture_admit_cpu": {
+      "samples": 0,
+      "p95_ns": null,
+      "p99_ns": null,
+      "maximum_ns": 0,
+      "gate": "not_passed_insufficient_samples"
+    },
+    "air_source_page": {
+      "samples": 0,
+      "p95_ns": null,
+      "p99_ns": null,
+      "maximum_ns": 0,
+      "gate": "not_passed_insufficient_samples"
+    },
+    "air_cell_page": {
+      "samples": 0,
+      "p95_ns": null,
+      "p99_ns": null,
+      "maximum_ns": 0,
+      "gate": "not_passed_insufficient_samples"
+    },
+    "L1_native_record_index_page": {
+      "samples": 4230,
+      "p95_ns": 37750,
+      "p99_ns": 54417,
+      "maximum_ns": 1406125,
+      "gate": "passed"
+    },
+    "L1_stub_record_index_page": {
+      "samples": 15120,
+      "p95_ns": 56208,
+      "p99_ns": 81959,
+      "maximum_ns": 2914000,
+      "gate": "passed"
+    }
+  }
+}

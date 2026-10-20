@@ -1,0 +1,1 @@
+PASS: 37x9 source locations; REQ01..61; 236MiB / 3.10GiB and joint caps; 13 facility families / 9 support packs; meal/heat/water/tax/fuel/safety arithmetic. Static design evidence only.

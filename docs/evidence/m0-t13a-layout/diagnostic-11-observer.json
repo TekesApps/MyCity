@@ -1,0 +1,135 @@
+{
+  "schema": "mycity-bounded-group-observer-v1",
+  "host": {
+    "hardware_model": "Mac16,1",
+    "cpu": "Apple M4",
+    "logical_cpus": 10,
+    "physical_memory_bytes": 34359738368,
+    "os": "26.6.2",
+    "architecture": "arm64"
+  },
+  "observer_source_sha256": "d274df554e4ef9ec35c71b794e83b3f721dfd3329394a97983bb9cedd1c3a7ea",
+  "observer_source_unchanged": true,
+  "status": "passed_measurement_wrapper",
+  "reason": null,
+  "command": [
+    "target/release/mycity-headless",
+    "layout-reopen",
+    "work/t13a1b-layout-full-10/model/snapshots/snapshot-000003",
+    "work/t13a1b-layout-cold-11/model"
+  ],
+  "artifacts_root": "/Users/frankqin/dev/MyCity/work/t13a1b-layout-full-10",
+  "model_exit_code": 0,
+  "actual_wall_seconds": 28.309441875,
+  "samples": 114,
+  "sample_log_bytes": 58185,
+  "maximum_sample_gap_seconds": 0.36667879200000186,
+  "maximum_capture_window_seconds": 0.14794154200000165,
+  "peak_simultaneous_rss_bytes": 3438100480,
+  "peak_simultaneous_footprint_bytes": 3431173192,
+  "peak_rss_frame": {
+    "t": 27.654084500000003,
+    "window_s": 0.14794154200000165,
+    "rss_bytes": 3438100480,
+    "phys_footprint_bytes": 12632376,
+    "missing_footprint": 1,
+    "members": [
+      [
+        90044,
+        69823,
+        21774401171633,
+        17154048,
+        "observer"
+      ],
+      [
+        90056,
+        90044,
+        21774403610805,
+        3419062272,
+        "mycity-headless"
+      ],
+      [
+        90443,
+        90044,
+        null,
+        1884160,
+        "sampler_ps"
+      ]
+    ],
+    "pressure_dispatch_flag": 1,
+    "swap_used_bytes": 640548864,
+    "observer_hot_bound_bytes": 1503321,
+    "observer_traced_current_bytes": 992482,
+    "observer_traced_peak_bytes": 1203913,
+    "observer_trace_metadata_bytes": 299408
+  },
+  "peak_footprint_frame": {
+    "t": 21.822138792,
+    "window_s": 0.0643524169999985,
+    "rss_bytes": 3437789184,
+    "phys_footprint_bytes": 3431173192,
+    "missing_footprint": 1,
+    "members": [
+      [
+        90044,
+        69823,
+        21774401171633,
+        17154048,
+        "observer"
+      ],
+      [
+        90056,
+        90044,
+        21774403610805,
+        3418767360,
+        "mycity-headless"
+      ],
+      [
+        90363,
+        90044,
+        null,
+        1867776,
+        "sampler_ps"
+      ]
+    ],
+    "pressure_dispatch_flag": 1,
+    "swap_used_bytes": 640548864,
+    "observer_hot_bound_bytes": 1500635,
+    "observer_traced_current_bytes": 987980,
+    "observer_traced_peak_bytes": 1203531,
+    "observer_trace_metadata_bytes": 297104
+  },
+  "missing_footprint_process_samples": 115,
+  "peak_world_logical_bytes": 10367230292,
+  "disk_warning_16gib_observed": false,
+  "maximum_live_tracked_identities": 2,
+  "identities_recorded": 2,
+  "identities_retired": 1,
+  "final_live_identity_count": 1,
+  "observer_hot_bound_bytes": 1505113,
+  "other_diagnostic_owned_bytes": 0,
+  "combined_diagnostic_hot_bound_bytes": 1505113,
+  "swap_initial_bytes": 640548864,
+  "swap_max_bytes": 640548864,
+  "maximum_observed_swap_net_growth_bytes": 0,
+  "maximum_sampled_non_normal_pressure_seconds": 0,
+  "pressure_duration_definition": "conservative interval from preceding normal poll through next observed normal poll",
+  "pressure_semantics": "sysctl returns dispatch flags; normal=1, warning=2, critical=4, not internal enum 0..3",
+  "mach_timebase": {
+    "numer": 125,
+    "denom": 3
+  },
+  "sdk_resource_header_sha256": "1067178025c5fd88c9a1b8206a07c2695ef94dd471fe2783f06c512995382961",
+  "sdk_sysctl_header_sha256": "d6d627d3353607f4078079051e09ea0e9a3b32a6771934be1ac5d89fbe93b1c7",
+  "binary_sha256": "9baf1b18c8f6b8b0dafc7b6be27ac70b86edc97eaebdabee872cd5b9fbe45212",
+  "binary_unchanged": true,
+  "cpu_children_at_end": {
+    "user_seconds": 23.578899,
+    "system_seconds": 4.410973
+  },
+  "short_helper_peak_completeness": "not_proven; actual helper sample windows and misses retained",
+  "sampler_scope": "observer + model process tree + observed orphans by PID/Mach birth; helper identities retired, not accumulated",
+  "memory_16gb_gate": "not_run",
+  "eight_hour_gate": "not_run",
+  "full_M0": "not_accepted"
+}
