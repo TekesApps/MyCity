@@ -38,6 +38,7 @@ fn instance_dir(
     Err("cpu_instance_collision_limit".into())
 }
 pub struct CpuLog {
+    external_diagnostics_owned_bytes: usize,
     instance: u64,
     root: PathBuf,
     budget: PathBuf,
@@ -67,6 +68,7 @@ impl CpuLog {
             ms.push(Metrics::create(&d.join("compute-durations.bin"))?);
         }
         Ok(Self {
+            external_diagnostics_owned_bytes: 0,
             instance,
             producer: kind,
             log: BufWriter::with_capacity(
@@ -87,6 +89,16 @@ impl CpuLog {
             last_error: None,
             l0: None,
         })
+    }
+    pub fn set_external_diagnostics_owned_bytes(&mut self, bytes: usize) -> Result<(), String> {
+        self.external_diagnostics_owned_bytes = bytes;
+        self.check()
+    }
+    pub fn worker_controlled_slots(
+        &mut self,
+        report: &crate::worker_slots::Report<'_>,
+    ) -> Result<(), String> {
+        self.write(json!({"phase":"worker_controlled_slots","owner":report}))
     }
     pub fn set_l0_class(&mut self, class: &'static str) -> Result<(), String> {
         if !matches!(
@@ -296,7 +308,7 @@ impl CpuLog {
         let report = json!({"schema":"mycity-cpu-regions-v1","producer":self.producer,"process_pid":std::process::id(),"process_instance_unix_ns":crate::heap_meter::process_instance(),"producer_instance":self.instance,"producer_directory":self.root.file_name().and_then(|s|s.to_str()),"source_sha256":env!("MYCITY_SOURCE_SHA256"),"roles":["execution","quote","replay"],"classes":mycity_core::diagnostics::CLASSES,"payroll_subtypes":["accrual","billing"],"region_subtypes":["clock","expiry","obligation","boot_finish","freight_arrival","population_arrival","economy_phase","direct_command"],
             "role_compute":reports,"nonempty_air_page_counts":self.page_counts,"empty_or_failed_pages":self.empty_pages,
             "air_page_limit_bounds_role_source_cell_min_max":self.page_limits,"air_processed_items_role_source_cell":self.page_items,
-            "transaction_log_bytes":self.bytes,"owned_diagnostics_bytes":self.owned_bytes(),"transient_reservation_bytes":256*1024,"charged_diagnostics_bound_bytes":self.owned_bytes()+256*1024,
+            "transaction_log_bytes":self.bytes,"owned_diagnostics_bytes":self.owned_bytes(),"external_diagnostics_owned_bytes":self.external_diagnostics_owned_bytes,"transient_reservation_bytes":256*1024,"charged_diagnostics_bound_bytes":self.owned_bytes()+256*1024,
             "whole_process_rust_heap":crate::heap_meter::snapshot(),"clock":"elapsed compute-region Instant; excludes page sink callback; includes preemption, not thread CPU clock",
             "overlap":"prepare includes child regions; region P0 includes capture; admit includes admission air pages; do not sum overlapping counters",
             "air_samples":"pure computation attempts; raw ranges bind to transaction outcome or worker ticket; not committed/admitted sample gates",
@@ -310,6 +322,7 @@ impl CpuLog {
     }
     pub fn owned_bytes(&self) -> usize {
         std::mem::size_of::<Self>()
+            + self.external_diagnostics_owned_bytes
             + self.root.capacity()
             + self.budget.capacity()
             + self.log.capacity()

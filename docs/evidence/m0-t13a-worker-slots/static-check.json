@@ -1,0 +1,14 @@
+{
+  "source_sha256": "53068b4764589bfdbe659c9f7a80523e70730da24dcd215249d7dd1ab5974b05",
+  "binary_sha256": "209c28f5b1a2053c286e4d9499f91ac15c0edde4faa55b96d26578d379371bc0",
+  "source_files_verified": 133,
+  "packets": {
+    "t13a3d-slots-01": {
+      "files": 1998,
+      "observer_status": "failed"
+    }
+  },
+  "frozen_acceptance_unchanged": true,
+  "all_payload_in_archive": true,
+  "source_support_verified": true
+}

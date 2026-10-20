@@ -6,7 +6,7 @@ use mycity_core::{
 use serde::{Deserialize, Serialize};
 use std::{
     fs::{self, File, OpenOptions},
-    io::{BufRead, BufReader, Write},
+    io::{BufRead, BufReader, Read, Write},
     path::{Path, PathBuf},
     process::{Child, ChildStdin, Command, ExitStatus, Stdio},
     sync::mpsc::{self, Receiver},
@@ -152,6 +152,36 @@ pub fn read_asset(dir: &Path, hash: &str) -> Result<Vec<u8>, String> {
     }
     Ok(bytes)
 }
+/// Idempotent publication verifies every byte without a second owned checkpoint.
+fn verify_asset_stream(dir: &Path, hash: &str) -> Result<(), String> {
+    use sha2::{Digest, Sha256};
+    let path = dir.join(format!("{hash}.air"));
+    if !fs::symlink_metadata(&path)
+        .map_err(|e| e.to_string())?
+        .is_file()
+    {
+        return Err("worker_nonregular_asset".into());
+    }
+    let mut file = File::open(path).map_err(|e| e.to_string())?;
+    let mut hash_state = Sha256::new();
+    let mut buffer = [0u8; 64 * 1024];
+    let mut size = 0usize;
+    loop {
+        let n = file.read(&mut buffer).map_err(|e| e.to_string())?;
+        if n == 0 {
+            break;
+        }
+        size = size.checked_add(n).ok_or("worker_asset_bytes")?;
+        if size > CHECKPOINT_BYTES {
+            return Err("worker_asset_bytes".into());
+        }
+        hash_state.update(&buffer[..n]);
+    }
+    if format!("{:x}", hash_state.finalize()) != hash {
+        return Err("worker_asset_checksum".into());
+    }
+    Ok(())
+}
 /// Immutable, durable publish. Existing equal content is idempotent, never replaced.
 pub fn publish(dir: &Path, bytes: &[u8]) -> Result<String, String> {
     if bytes.len() > CHECKPOINT_BYTES {
@@ -160,7 +190,7 @@ pub fn publish(dir: &Path, bytes: &[u8]) -> Result<String, String> {
     let hash = sha256(bytes);
     let target = dir.join(format!("{hash}.air"));
     if target.exists() {
-        read_asset(dir, &hash)?;
+        verify_asset_stream(dir, &hash)?;
         File::open(&target)
             .and_then(|f| f.sync_all())
             .map_err(|e| e.to_string())?;
@@ -194,7 +224,7 @@ pub fn publish(dir: &Path, bytes: &[u8]) -> Result<String, String> {
         match fs::hard_link(&temporary, &target) {
             Ok(()) => (),
             Err(e) if e.kind() == std::io::ErrorKind::AlreadyExists => {
-                read_asset(dir, &hash)?;
+                verify_asset_stream(dir, &hash)?;
             }
             Err(e) => return Err(e.to_string()),
         }
@@ -209,7 +239,11 @@ pub fn publish(dir: &Path, bytes: &[u8]) -> Result<String, String> {
     }
     result
 }
-fn input(root: &Path, request: &Request) -> Result<State, String> {
+fn input(
+    root: &Path,
+    request: &Request,
+    slots: Option<&mut crate::worker_slots::Owner>,
+) -> Result<State, String> {
     let t = &request.ticket;
     if request.protocol != PROTOCOL
         || request.strategy != STRATEGY
@@ -228,7 +262,26 @@ fn input(root: &Path, request: &Request) -> Result<State, String> {
         return Err("worker_ticket".into());
     }
     directory_usage(&root.join("inputs"))?;
-    let state = State::restore(&read_asset(&root.join("inputs"), &t.checkpoint_sha256)?)?;
+    let state = if let Some(owner) = slots {
+        owner.with_slot(crate::worker_slots::Kind::Input, |bytes| {
+            let path = root
+                .join("inputs")
+                .join(format!("{}.air", t.checkpoint_sha256));
+            if !fs::symlink_metadata(&path)
+                .map_err(|e| e.to_string())?
+                .is_file()
+            {
+                return Err("worker_nonregular_asset".into());
+            }
+            bytes.read_from(File::open(path).map_err(|e| e.to_string())?)?;
+            if sha256(bytes.as_slice()) != t.checkpoint_sha256 {
+                return Err("worker_asset_checksum".into());
+            }
+            State::restore(bytes.as_slice())
+        })?
+    } else {
+        State::restore(&read_asset(&root.join("inputs"), &t.checkpoint_sha256)?)?
+    };
     let report = state.report();
     if report.time != t.start
         || state.input().target != t.end
@@ -326,7 +379,20 @@ fn run_inner(root: &Path, gated: bool, bounded: bool) -> Result<(), String> {
                 return Err("cache_input_bytes".into());
             }
         }
-        let mut state = input(root, &request)?;
+        let mut slots = if bounded {
+            Some(crate::worker_slots::Owner::new(
+                request.ticket.incarnation,
+                request.ticket.job,
+                request.ticket.generation,
+                request.ticket.attempt,
+            )?)
+        } else {
+            None
+        };
+        if let (Some(log), Some(owner)) = (diag.as_mut(), slots.as_ref()) {
+            log.set_external_diagnostics_owned_bytes(owner.metadata_charge_bytes())?;
+        }
+        let mut state = input(root, &request, slots.as_mut())?;
         if let Some(log) = diag.as_mut() {
             log.begin(serde_json::json!({"ticket":request.ticket,"kind":"worker_computation"}))?;
         }
@@ -353,21 +419,32 @@ fn run_inner(root: &Path, gated: bool, bounded: bool) -> Result<(), String> {
                 }
             }
         }
-        let bytes = state.checkpoint()?;
-        let hash = if bounded {
-            crate::worker_cache::publish(root, "candidates", &bytes)?
+        let (hash, size) = if let Some(owner) = slots.as_mut() {
+            owner.with_slot(crate::worker_slots::Kind::Candidate, |bytes| {
+                let size = state.checkpoint_to(bytes)?;
+                let hash = crate::worker_cache::publish(root, "candidates", bytes.as_slice())?;
+                Ok((hash, size))
+            })?
         } else {
-            publish(&root.join("candidates"), &bytes)?
+            let bytes = state.checkpoint()?;
+            let hash = publish(&root.join("candidates"), &bytes)?;
+            (hash, bytes.len())
         };
         emit(
             &mut writer,
             &request.ticket,
             Stage::Published,
             Some(&hash),
-            bytes.len(),
+            size,
             None,
         )?;
         gate(&mut reader, &request, Stage::Published, gated)?;
+        if let Some(owner) = slots.as_ref() {
+            owner.check_balance()?;
+            if let Some(log) = diag.as_mut() {
+                log.worker_controlled_slots(&owner.report()?)?;
+            }
+        }
         if let Some(log) = diag.as_mut() {
             log.worker_complete(
                 serde_json::json!({"ticket":request.ticket,"candidate_sha256":hash}),
@@ -378,7 +455,7 @@ fn run_inner(root: &Path, gated: bool, bounded: bool) -> Result<(), String> {
             &request.ticket,
             Stage::Complete,
             Some(&hash),
-            bytes.len(),
+            size,
             None,
         )?;
     }

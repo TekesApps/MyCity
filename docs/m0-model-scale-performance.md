@@ -149,3 +149,6 @@ v0.5.41的T13A-3b[诊断费用与进程堆证据](evidence/m0-t13a-budgets/STATU
 
 
 v0.5.42的T13A-3c[实例身份与驱动复制收敛](evidence/m0-t13a-process-instances/STATUS.md)：原子创建日志实例目录，保留原预算及部分初始化目录；显式实例配对取代仅PID关联，固定日志／参考行容量并减少响应副本。原full30日单独实测完成，723目标／724worker／3011票及完整Engine含metadata与CPU一致，726报告与727退出记录独立核验通过；34项定向／共享调用回归及advisor终审通过。当前没有L1同行，不作为联合压力或旧版提速对比；诊断总账、64MiB占位、四速度、正式三轮、8h仍未通过，真实16GB not_run，M0 not_accepted。下一依赖是受控owner的额度、真实容量和已触页余额，而不是再次复核本阶段。
+
+
+v0.5.43的T13A-3d[worker固定槽及失败实测](evidence/m0-t13a-worker-slots/STATUS.md)：真实输入／候选接两个已触页2MiB槽，借用／归还不重新分配；metadata另计，core借用codec保持字节兼容并移除整份State克隆，既有候选流式校验。全仓含借用compile_fail及clippy通过；原full在216.89秒因系统非正常pressure持续60.197秒保护终止，382个正常worker局部余额与旧hash核验通过但**完整30日／724窗口not_completed，本次实测failed**。383报告中1缺footer保持缺测，5分钟观察未恢复normal，未重试／减负载／停其他应用。advisor准许按实现与回归完成、实测未完成提交；64MiB总池、诊断总账、四档、正式稳态、8h及16GB仍未通过，M0 not_accepted。继续其他代码依赖，条件满足后补完整测量。

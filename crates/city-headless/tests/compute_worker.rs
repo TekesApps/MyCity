@@ -365,3 +365,105 @@ fn completed_worker_can_exit_on_eof_while_active_stop_still_kills() {
         .unwrap()
         .success());
 }
+
+#[test]
+fn actual_bounded_worker_reuses_local_slots_and_existing_candidate_without_tail_bytes() {
+    use std::io::{BufRead, BufReader};
+    let t = Temp::new();
+    let world = t.0.join("world");
+    fs::create_dir(&world).unwrap();
+    let root = world.join("air-worker");
+    mycity_headless::worker_cache::reset_after_worker_stopped(&root).unwrap();
+    let initial = state();
+    let req = request(&root, &initial);
+    let mut expected = initial.clone();
+    while !expected.complete() {
+        expected.page(256, 256).unwrap();
+    }
+    let expected_bytes = expected.checkpoint().unwrap();
+    let mut child = Command::new(executable())
+        .arg("compute-worker-bounded")
+        .arg(&root)
+        .env("MYCITY_DIAGNOSTICS", "1")
+        .env("MYCITY_HEAP_LOG", t.0.join("heaps.jsonl"))
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
+        .stderr(Stdio::null())
+        .spawn()
+        .unwrap();
+    let mut input = child.stdin.take().unwrap();
+    let mut output = BufReader::new(child.stdout.take().unwrap());
+    for _ in 0..2 {
+        serde_json::to_writer(&mut input, &req).unwrap();
+        input.write_all(b"\n").unwrap();
+        input.flush().unwrap();
+        loop {
+            let mut line = String::new();
+            assert!(output.read_line(&mut line).unwrap() > 0);
+            let event: protocol::Event = serde_json::from_str(&line).unwrap();
+            assert_eq!(event.pid, child.id());
+            if event.stage == Stage::Complete {
+                assert_eq!(event.candidate_bytes, expected_bytes.len());
+                assert_eq!(
+                    protocol::read_asset(
+                        &root.join("candidates"),
+                        event.candidate_sha256.as_ref().unwrap()
+                    )
+                    .unwrap(),
+                    expected_bytes
+                );
+                break;
+            }
+        }
+    }
+    drop(input);
+    assert!(child.wait().unwrap().success());
+    let mut reports = Vec::new();
+    for entry in fs::read_dir(t.0.join("diagnostics")).unwrap() {
+        let path = entry.unwrap().path().join("transactions.jsonl");
+        if !path.exists() {
+            continue;
+        }
+        for line in fs::read_to_string(path).unwrap().lines() {
+            let v: Value = serde_json::from_str(line).unwrap();
+            if v["phase"] == "worker_controlled_slots" {
+                reports.push(v["owner"].clone());
+            }
+        }
+    }
+    assert_eq!(reports.len(), 2);
+    assert_ne!(
+        reports[0]["identity"]["owner_instance"],
+        reports[1]["identity"]["owner_instance"]
+    );
+    for r in reports {
+        assert_eq!(r["owner_capacity_bytes"], 4 * 1024 * 1024);
+        assert_eq!(r["available_touched_bytes"], 4 * 1024 * 1024);
+        assert_eq!(r["lent_capacity_bytes"], 0);
+        assert_eq!(r["full_balance_scan_passed"], true);
+        assert_eq!(r["transitions"].as_array().unwrap().len(), 4);
+        assert_eq!(
+            r["slots"][0]["maximum_payload_bytes"],
+            initial.checkpoint().unwrap().len()
+        );
+        assert_eq!(r["slots"][1]["maximum_payload_bytes"], expected_bytes.len());
+        for slot in r["slots"].as_array().unwrap() {
+            assert_eq!(slot["claims"], 1);
+            assert_eq!(slot["returns"], 1);
+        }
+    }
+}
+
+#[test]
+fn existing_candidate_corruption_is_rejected_without_replacing_it() {
+    let t = Temp::new();
+    let root = t.task_root();
+    let original = b"immutable original";
+    let hash = protocol::publish(&root.join("candidates"), original).unwrap();
+    let path = root.join("candidates").join(format!("{hash}.air"));
+    fs::write(&path, b"corrupted").unwrap();
+    assert!(protocol::publish(&root.join("candidates"), original)
+        .unwrap_err()
+        .contains("worker_asset_checksum"));
+    assert_eq!(fs::read(path).unwrap(), b"corrupted");
+}

@@ -1,11 +1,51 @@
 //! RUN36 single-channel CPU reference. Pure laboratory task, no business effects.
 use crate::sha256;
 use serde::{Deserialize, Serialize};
-use std::mem::size_of;
+use sha2::{Digest, Sha256};
+use std::{
+    io::{self, Write},
+    mem::size_of,
+};
 pub const STRATEGY: &str = "run36-air-f32-v1";
 pub const INPUT_BYTES: usize = 4 * 1024 * 1024;
 pub const CHECKPOINT_BYTES: usize = 8 * 1024 * 1024;
 pub const OWNED_BYTES: usize = 2 * 1024 * 1024;
+struct BoundedEncoding<'a, W> {
+    inner: &'a mut W,
+    bytes: usize,
+}
+impl<W: Write> Write for BoundedEncoding<'_, W> {
+    fn write(&mut self, bytes: &[u8]) -> io::Result<usize> {
+        if self.bytes.saturating_add(bytes.len()) > CHECKPOINT_BYTES {
+            return Err(io::Error::other("air_checkpoint_bytes"));
+        }
+        let n = self.inner.write(bytes)?;
+        self.bytes += n;
+        Ok(n)
+    }
+    fn flush(&mut self) -> io::Result<()> {
+        self.inner.flush()
+    }
+}
+fn payload_hash(state: &State) -> Result<String, String> {
+    struct HashWriter(Sha256);
+    impl Write for HashWriter {
+        fn write(&mut self, bytes: &[u8]) -> io::Result<usize> {
+            self.0.update(bytes);
+            Ok(bytes.len())
+        }
+        fn flush(&mut self) -> io::Result<()> {
+            Ok(())
+        }
+    }
+    let mut hash = HashWriter(Sha256::new());
+    let mut bounded = BoundedEncoding {
+        inner: &mut hash,
+        bytes: 0,
+    };
+    serde_json::to_writer(&mut bounded, state).map_err(|e| e.to_string())?;
+    Ok(format!("{:x}", hash.0.finalize()))
+}
 const MICRO: f32 = 1_000_000.0;
 const MAX_MICRO: u64 = 1_000_000_000_000;
 // Enforce row caps during decoding, before an untrusted checkpoint can allocate huge Vecs.
@@ -549,18 +589,31 @@ impl State {
         self.progress = None;
         Ok(())
     }
-    pub fn checkpoint(&self) -> Result<Vec<u8>, String> {
+    /// Same immutable checkpoint wire format; stream into an unpublished bounded
+    /// destination. An I/O failure may leave a prefix, never a valid publication.
+    pub fn checkpoint_to(&self, writer: &mut impl Write) -> Result<usize, String> {
         self.validate()?;
-        let payload = serde_json::to_vec(self).map_err(|e| e.to_string())?;
-        let cp = Checkpoint {
-            schema: STRATEGY.into(),
-            sha256: sha256(&payload),
-            payload: self.clone(),
-        };
-        let bytes = serde_json::to_vec(&cp).map_err(|e| e.to_string())?;
-        if bytes.len() > CHECKPOINT_BYTES {
-            return Err("air_checkpoint_bytes".into());
+        #[derive(Serialize)]
+        struct Borrowed<'a> {
+            schema: &'static str,
+            sha256: String,
+            payload: &'a State,
         }
+        let cp = Borrowed {
+            schema: STRATEGY,
+            sha256: payload_hash(self)?,
+            payload: self,
+        };
+        let mut bounded = BoundedEncoding {
+            inner: writer,
+            bytes: 0,
+        };
+        serde_json::to_writer(&mut bounded, &cp).map_err(|e| e.to_string())?;
+        Ok(bounded.bytes)
+    }
+    pub fn checkpoint(&self) -> Result<Vec<u8>, String> {
+        let mut bytes = Vec::new();
+        self.checkpoint_to(&mut bytes)?;
         Ok(bytes)
     }
     pub fn restore(bytes: &[u8]) -> Result<Self, String> {
@@ -568,9 +621,7 @@ impl State {
             return Err("air_checkpoint_bytes".into());
         }
         let cp: Checkpoint = serde_json::from_slice(bytes).map_err(|e| e.to_string())?;
-        if cp.schema != STRATEGY
-            || cp.sha256 != sha256(&serde_json::to_vec(&cp.payload).map_err(|e| e.to_string())?)
-        {
+        if cp.schema != STRATEGY || cp.sha256 != payload_hash(&cp.payload)? {
             return Err("air_checkpoint_checksum".into());
         }
         cp.payload.validate()?;

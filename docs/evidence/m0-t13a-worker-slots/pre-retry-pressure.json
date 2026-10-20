@@ -1,0 +1,130 @@
+{
+  "status": "not_stable",
+  "samples": [
+    {
+      "elapsed_seconds": 0.004650541000000001,
+      "dispatch_pressure_flag": 2
+    },
+    {
+      "elapsed_seconds": 10.012957125000002,
+      "dispatch_pressure_flag": 2
+    },
+    {
+      "elapsed_seconds": 20.025136208,
+      "dispatch_pressure_flag": 2
+    },
+    {
+      "elapsed_seconds": 30.0344365,
+      "dispatch_pressure_flag": 2
+    },
+    {
+      "elapsed_seconds": 40.043904333,
+      "dispatch_pressure_flag": 2
+    },
+    {
+      "elapsed_seconds": 50.049854541,
+      "dispatch_pressure_flag": 2
+    },
+    {
+      "elapsed_seconds": 60.056022583,
+      "dispatch_pressure_flag": 2
+    },
+    {
+      "elapsed_seconds": 70.065308,
+      "dispatch_pressure_flag": 2
+    },
+    {
+      "elapsed_seconds": 80.074921833,
+      "dispatch_pressure_flag": 2
+    },
+    {
+      "elapsed_seconds": 90.085843041,
+      "dispatch_pressure_flag": 2
+    },
+    {
+      "elapsed_seconds": 100.091127541,
+      "dispatch_pressure_flag": 2
+    },
+    {
+      "elapsed_seconds": 110.097961583,
+      "dispatch_pressure_flag": 2
+    },
+    {
+      "elapsed_seconds": 120.108026,
+      "dispatch_pressure_flag": 2
+    },
+    {
+      "elapsed_seconds": 130.112757916,
+      "dispatch_pressure_flag": 2
+    },
+    {
+      "elapsed_seconds": 140.119973083,
+      "dispatch_pressure_flag": 2
+    },
+    {
+      "elapsed_seconds": 150.124723583,
+      "dispatch_pressure_flag": 2
+    },
+    {
+      "elapsed_seconds": 160.135560208,
+      "dispatch_pressure_flag": 2
+    },
+    {
+      "elapsed_seconds": 170.14274579099998,
+      "dispatch_pressure_flag": 2
+    },
+    {
+      "elapsed_seconds": 180.152271625,
+      "dispatch_pressure_flag": 2
+    },
+    {
+      "elapsed_seconds": 190.161248,
+      "dispatch_pressure_flag": 2
+    },
+    {
+      "elapsed_seconds": 200.1682985,
+      "dispatch_pressure_flag": 2
+    },
+    {
+      "elapsed_seconds": 210.17783041599998,
+      "dispatch_pressure_flag": 2
+    },
+    {
+      "elapsed_seconds": 220.18658683299998,
+      "dispatch_pressure_flag": 2
+    },
+    {
+      "elapsed_seconds": 230.195975625,
+      "dispatch_pressure_flag": 2
+    },
+    {
+      "elapsed_seconds": 240.20221249999997,
+      "dispatch_pressure_flag": 2
+    },
+    {
+      "elapsed_seconds": 250.210440541,
+      "dispatch_pressure_flag": 2
+    },
+    {
+      "elapsed_seconds": 260.220928583,
+      "dispatch_pressure_flag": 2
+    },
+    {
+      "elapsed_seconds": 270.224992125,
+      "dispatch_pressure_flag": 2
+    },
+    {
+      "elapsed_seconds": 280.238977583,
+      "dispatch_pressure_flag": 2
+    },
+    {
+      "elapsed_seconds": 290.252752041,
+      "dispatch_pressure_flag": 2
+    },
+    {
+      "elapsed_seconds": 300.261381708,
+      "dispatch_pressure_flag": 2
+    }
+  ],
+  "unrelated_apps_untouched": true
+}

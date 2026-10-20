@@ -1,0 +1,113 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+    Finished `release` profile [optimized] target(s) in 20.25s
+     Running unittests src/lib.rs (target/release/deps/mycity_core-d9714c4df210afe2)
+
+running 39 tests
+test arena::tests::full_tables_preserve_existing_state_and_owned_capacity ... ok
+test arena::tests::generation_exhaustion_retires_slot_instead_of_resurrecting_old_handle ... ok
+test arena::checkpoint_tests::checkpoint_preserves_free_stack_generation_and_retired_slots ... ok
+test arena::tests::wrong_world_branch_domain_and_generation_are_rejected ... ok
+test calendar::tests::dates_round_trip_and_reject_invalid_bounds ... ok
+test calendar::tests::month_anchor_does_not_drift_after_february ... ok
+test calendar::tests::rent_30_days_is_not_calendar_month_or_four_weeks ... ok
+test assembly::tests::sources_and_independent_initial_worlds_are_exact ... ok
+test assembly::tests::duplicate_sources_missing_owners_and_cost_mismatches_reject ... ok
+test assembly::tests::oversized_counts_and_unspent_initial_sources_do_not_publish_a_world ... ok
+test assembly::tests::input_order_does_not_change_world_identity_or_hash ... ok
+test schedule::tests::pause_and_old_ack_do_not_change_cursor_or_time ... ok
+test schedule::tests::phase_order_and_interval_cap_are_independent_of_input_order ... ok
+test tests::digest_has_known_reference_value ... ok
+test tests::stream_bound_does_not_depend_on_file_metadata ... ok
+test tests::unsupported_or_ambiguous_bootstrap_is_rejected ... ok
+test transaction::tests::account_cannot_unprotect_or_redirect_reserved_funds ... ok
+test transaction::tests::capacity_lifecycle_releases_once_and_never_reuses_token ... ok
+test transaction::tests::failed_late_action_leaves_no_partial_cash_or_capacity ... ok
+test transaction::tests::foreign_capacity_reference_cannot_resolve_same_number_in_another_world ... ok
+test transaction::tests::lot_cost_is_invariant_under_splitting_and_internal_transfer ... ok
+test transaction::tests::persistence_hook_failure_publishes_neither_model_changes_nor_receipt ... ok
+test transaction::tests::protection_is_not_new_cash_and_payment_converts_once ... ok
+test transaction::tests::retry_is_exact_and_changed_payload_or_actor_cannot_reuse_receipt ... ok
+test schedule::tests::large_same_time_source_pages_finish_before_advancing_world ... ok
+test transaction::tests::stale_revision_scope_and_foreign_handles_do_not_write ... ok
+test transaction::tests::stock_and_payment_commit_as_one_with_conserved_quantity_and_basis ... ok
+test transaction::tests::two_resource_request_does_not_hold_one_when_second_is_unavailable ... ok
+test units::tests::failed_accrual_preserves_carry ... ok
+test units::tests::negative_values_and_overflow_cannot_enter_exact_units ... ok
+test transaction::tests::full_journal_backpressures_without_erasing_prior_receipts ... ok
+test schedule::tests::bookmark_continues_remaining_pages_without_reprocessing_old_sources ... ok
+test units::tests::splitting_and_restoring_time_does_not_drop_fractional_cost ... ok
+test schedule::tests::per_source_randomness_ignores_paging_and_is_domain_separated ... ok
+test schedule::tests::malformed_bookmarks_and_changed_sources_reject ... ok
+test schedule::tests::bookmark_cannot_be_loaded_into_another_world_or_branch ... ok
+test background::tests::real_dispatched_freight_produces_bounded_source_but_paused_link_does_not ... ok
+test background::tests::three_failed_attempts_or_bad_input_leave_required_job_without_unbounded_retry ... ok
+test background::tests::restart_fences_old_attempt_and_preserves_continuous_committed_field ... ok
+
+test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/air.rs (target/release/deps/air-4328a69a2e36bc3f)
+
+running 12 tests
+test partial_candidate_never_publishes_field_integral_time_or_diagnostics ... ok
+test pulse_spreads_from_a_single_cell_on_later_steps ... ok
+test unknown_boundary_bad_sources_and_limits_do_not_silently_substitute_zero ... ok
+test checksum_stale_identity_invalid_cursor_and_nonfinite_restore_are_rejected ... ok
+test continuous_windows_preserve_field_integral_and_source_ledger ... ok
+test streamed_checkpoint_handles_partial_writers_exact_size_and_interrupted_output ... ok
+test decoder_rejects_excess_rows_before_accepting_source_or_checkpoint_vectors ... ok
+test diagnostics_keep_air_checkpoint_exact_and_exclude_page_sink_from_parent_clock ... ok
+test dense_source_pages_and_mid_source_mid_tile_checkpoints_are_bit_exact ... ok
+test constant_background_is_exact_for_all_map_sizes_and_full_day_integral ... ok
+test streamed_borrowed_checkpoints_are_byte_identical_to_legacy_owned_format ... ok
+test independent_f64_single_step_day_and_fixed_thirty_day_window ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+
+     Running unittests src/lib.rs (target/release/deps/mycity_headless-50f2d753a50ef36d)
+
+running 18 tests
+test scale_metrics::tests::compact_bucket_refuses_overflow_without_corrupting_quantile_or_count ... ok
+test layout_load::tests::eight_hour_snapshot_summaries_do_not_retain_file_trees ... ok
+test scale_metrics::tests::inactive_histograms_allocate_no_bins ... ok
+test layout_load::tests::external_component_reservation_rejects_oversize_before_allocation ... ok
+test scale_metrics::tests::quantile_does_not_hide_tail_or_sparse_class ... ok
+test scale_sim::buffer_tests::golden_line_reader_is_bounded_before_allocation_and_rejects_truncation ... ok
+test scale_sim::buffer_tests::diagnostic_buffer_refuses_growth_before_limit_and_keeps_previous_bytes ... ok
+test scale_sim::buffer_tests::streaming_payload_digest_preserves_exact_old_wire_hash_and_length ... ok
+test cpu_log::tests::instance_creation_does_not_retry_io_errors_or_wrap_counter ... ok
+test layout_load::tests::real_cow_releases_placeholder_before_copy_and_preserves_snapshot ... ok
+test worker_slots::tests::duplicate_wrong_slot_old_epoch_and_generation_cannot_refund_a_live_slot ... ok
+test worker_slots::tests::exact_capacity_prefix_and_one_byte_overflow_never_grow_or_publish_tail ... ok
+test layout_load::tests::all_stub_counts_widths_population_and_references_are_real_records ... ok
+test worker_slots::tests::read_failure_encoding_failure_and_unwind_restore_touched_balance ... ok
+test layout_load::tests::restore_rejects_component_reservation_before_loading_any_large_file ... ok
+test cpu_log::tests::reused_pid_and_partial_initialization_skip_existing_directories_atomically ... ok
+test cpu_log::tests::failed_transaction_batches_never_fill_success_histogram_and_raw_pages_remain_attempts ... ok
+test cpu_log::tests::same_pid_logs_keep_original_files_and_shared_quota_across_instances ... ok
+
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+     Running tests/air.rs (target/release/deps/air-b1af4f853784e279)
+
+running 2 tests
+test cpu_suite_reopens_five_file_checkpoints_in_new_processes_and_reports_real_scope ... ok
+test stale_source_input_corruption_and_existing_output_cannot_publish_a_new_candidate ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.77s
+
+     Running tests/compute_worker.rs (target/release/deps/compute_worker-145f5246832e3aa7)
+
+running 10 tests
+test existing_candidate_corruption_is_rejected_without_replacing_it ... ok
+test completed_worker_can_exit_on_eof_while_active_stop_still_kills ... ok
+test stopping_worker_without_draining_its_response_reaps_child ... ok
+test complete_but_forged_finite_candidate_is_rejected_by_full_cpu_check ... ok
+test bounded_cache_clears_retry_residue_and_real_worker_stays_within_charge ... ok
+test oversized_or_truncated_control_and_directory_quota_fail_closed ... ok
+test stale_source_unknown_schema_wrong_input_and_attempt_overflow_fail_without_candidate ... ok
+test actual_bounded_worker_reuses_local_slots_and_existing_candidate_without_tail_bytes ... ok
+test actual_freight_drives_worker_field_and_sim_store_commits_then_reopens_original_receipt ... ok
+test actual_persistent_worker_and_gated_sigkill_recovery_match_full_cpu_state ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.46s
+

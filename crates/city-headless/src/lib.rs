@@ -30,3 +30,5 @@ pub mod scale_rare;
 pub mod joint_driver;
 
 pub mod heap_meter;
+
+pub mod worker_slots;

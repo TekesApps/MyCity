@@ -1,0 +1,21 @@
+{
+  "status": "copied_partial_world_cold_read_passed",
+  "source_original_files_unchanged": 68,
+  "excluded_disposable_runtime_names": [
+    "LOCK",
+    "air-worker",
+    "air-worker-owner.json",
+    "air-worker.lock"
+  ],
+  "recovered_sequence": 1648,
+  "oldest_original_receipt_proof_hash_equal": true,
+  "observation_changes_no_progress": true,
+  "commands": [
+    "progress",
+    "receipt_proof(1)",
+    "progress",
+    "stop"
+  ],
+  "game_advance_performed": false,
+  "scope": "functional cold read on copy only; no 30day completion, perf, pressure or 8h pass"
+}

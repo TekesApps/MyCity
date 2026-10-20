@@ -406,3 +406,91 @@ fn diagnostics_keep_air_checkpoint_exact_and_exclude_page_sink_from_parent_clock
         assert_eq!(nonempty_sources, u64::from(with_source));
     }
 }
+
+#[test]
+fn streamed_borrowed_checkpoints_are_byte_identical_to_legacy_owned_format() {
+    #[derive(serde::Serialize, serde::Deserialize)]
+    struct Legacy {
+        schema: String,
+        sha256: String,
+        payload: State,
+    }
+    for source_count in [0, 1, 20000] {
+        let mut i = input(120);
+        i.side = 128;
+        i.sources = (0..source_count)
+            .map(|n| Source {
+                id: n + 1,
+                cell: n % 16384,
+                start: 0,
+                end: 120,
+                rate_micro: 1,
+            })
+            .collect();
+        let mut s = State::new(i).unwrap();
+        for _ in 0..3 {
+            let payload = serde_json::to_vec(&s).unwrap();
+            let legacy = serde_json::to_vec(&Legacy {
+                schema: STRATEGY.into(),
+                sha256: mycity_core::sha256(&payload),
+                payload: s.clone(),
+            })
+            .unwrap();
+            let current = s.checkpoint().unwrap();
+            assert_eq!(current, legacy);
+            let old: Legacy = serde_json::from_slice(&current).unwrap();
+            assert_eq!(
+                old.sha256,
+                mycity_core::sha256(&serde_json::to_vec(&old.payload).unwrap())
+            );
+            assert_eq!(old.payload.checkpoint().unwrap(), legacy);
+            assert_eq!(
+                State::restore(&legacy).unwrap().checkpoint().unwrap(),
+                legacy
+            );
+            s.page(256, 256).unwrap();
+        }
+    }
+}
+#[test]
+fn streamed_checkpoint_handles_partial_writers_exact_size_and_interrupted_output() {
+    use std::io::{self, Write};
+    struct Cut {
+        data: Vec<u8>,
+        limit: usize,
+        chunk: usize,
+    }
+    impl Write for Cut {
+        fn write(&mut self, b: &[u8]) -> io::Result<usize> {
+            let n = b.len().min(self.chunk).min(self.limit - self.data.len());
+            if n == 0 {
+                return Err(io::Error::other("cut"));
+            }
+            self.data.extend_from_slice(&b[..n]);
+            Ok(n)
+        }
+        fn flush(&mut self) -> io::Result<()> {
+            Ok(())
+        }
+    }
+    let s = State::new(input(60)).unwrap();
+    let original = s.checkpoint().unwrap();
+    for chunk in [1, 17, 4097] {
+        let mut good = Cut {
+            data: Vec::new(),
+            limit: original.len(),
+            chunk,
+        };
+        assert_eq!(s.checkpoint_to(&mut good).unwrap(), original.len());
+        assert_eq!(good.data, original);
+        let mut bad = Cut {
+            data: Vec::new(),
+            limit: original.len() - 1,
+            chunk,
+        };
+        assert!(s.checkpoint_to(&mut bad).unwrap_err().contains("cut"));
+        assert_eq!(bad.data, original[..original.len() - 1]);
+        assert!(State::restore(&bad.data).is_err());
+    }
+    assert_eq!(s.checkpoint().unwrap(), original);
+}

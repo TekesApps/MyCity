@@ -1,0 +1,108 @@
+{
+  "pressure": "kern.memorystatus_vm_pressure_level: 2\n",
+  "swap": "vm.swapusage: total = 2048.00M  used = 594.88M  free = 1453.12M  (encrypted)\n",
+  "vm_stat": "Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free:                                     5835.\nPages active:                                 525361.\nPages inactive:                               524541.\nPages speculative:                              4188.\nPages throttled:                                   0.\nPages wired down:                             241432.\nPages purgeable:                                1838.\n\"Translation faults\":                    26003090835.\nPages copy-on-write:                      1024802605.\nPages zero filled:                       18554146837.\nPages reactivated:                        1488252862.\nPages purged:                               95280128.\nFile-backed pages:                            414546.\nAnonymous pages:                              639544.\nPages stored in compressor:                  1594624.\nPages occupied by compressor:                 742048.\nDecompressions:                           1242213267.\nCompressions:                             1697125357.\nPageins:                                  1152828256.\nPageouts:                                    3743210.\nSwapins:                                     3843398.\nSwapouts:                                    6540164.\n",
+  "largest_rss_basename_only": [
+    {
+      "pid": 47303,
+      "rss_bytes": 4115349504,
+      "executable_basename": "xctrace"
+    },
+    {
+      "pid": 69817,
+      "rss_bytes": 2284568576,
+      "executable_basename": "Codex (Renderer)"
+    },
+    {
+      "pid": 73000,
+      "rss_bytes": 1651785728,
+      "executable_basename": "qemu-system-aarch64"
+    },
+    {
+      "pid": 69823,
+      "rss_bytes": 575930368,
+      "executable_basename": "codex"
+    },
+    {
+      "pid": 69770,
+      "rss_bytes": 455999488,
+      "executable_basename": "ChatGPT"
+    },
+    {
+      "pid": 69816,
+      "rss_bytes": 426721280,
+      "executable_basename": "Codex (Renderer)"
+    },
+    {
+      "pid": 30333,
+      "rss_bytes": 279871488,
+      "executable_basename": "Browser Helper (Renderer)"
+    },
+    {
+      "pid": 30172,
+      "rss_bytes": 243367936,
+      "executable_basename": "Arc"
+    },
+    {
+      "pid": 41537,
+      "rss_bytes": 224378880,
+      "executable_basename": "Browser Helper (Renderer)"
+    },
+    {
+      "pid": 14407,
+      "rss_bytes": 201015296,
+      "executable_basename": "java"
+    },
+    {
+      "pid": 70018,
+      "rss_bytes": 153616384,
+      "executable_basename": "Codex (Renderer)"
+    },
+    {
+      "pid": 69180,
+      "rss_bytes": 120160256,
+      "executable_basename": "WeChat"
+    },
+    {
+      "pid": 68332,
+      "rss_bytes": 114884608,
+      "executable_basename": "mds_stores"
+    },
+    {
+      "pid": 88072,
+      "rss_bytes": 110755840,
+      "executable_basename": "Browser Helper (Renderer)"
+    },
+    {
+      "pid": 47357,
+      "rss_bytes": 92209152,
+      "executable_basename": "com.apple.dt.instruments.dtsecurity"
+    },
+    {
+      "pid": 68279,
+      "rss_bytes": 90783744,
+      "executable_basename": "WindowServer"
+    },
+    {
+      "pid": 30176,
+      "rss_bytes": 85934080,
+      "executable_basename": "Browser Helper"
+    },
+    {
+      "pid": 69780,
+      "rss_bytes": 80969728,
+      "executable_basename": "Codex (Service)"
+    },
+    {
+      "pid": 69183,
+      "rss_bytes": 75153408,
+      "executable_basename": "Activity Monitor"
+    },
+    {
+      "pid": 70321,
+      "rss_bytes": 72089600,
+      "executable_basename": "Codex (Renderer)"
+    }
+  ],
+  "causation": "No individual process assigned as cause; unrelated apps untouched."
+}

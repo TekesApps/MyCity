@@ -1,0 +1,14 @@
+{
+  "partial_worker_hash_pairs_equal_v42": 382,
+  "RSS_frames_checked": 868,
+  "status": "pressure_failure_retained",
+  "wall_seconds": 216.889650375,
+  "maximum_non_normal_pressure_seconds": 60.19743675000001,
+  "complete_worker_exit_records": 382,
+  "paired_complete_local_owners": 382,
+  "sealed_worker_reports": 383,
+  "partial_report_files": [],
+  "missing_parent_or_active_process_records": "SIGTERM leaves unmeasured records, never counted as zero",
+  "full_30days": "not_completed",
+  "formal_gate": "failed"
+}
