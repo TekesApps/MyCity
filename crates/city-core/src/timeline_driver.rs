@@ -97,6 +97,42 @@ impl Frame<'_> {
                 }
                 t.progress.target = None;
             }
+            C::Lend {
+                id,
+                lender,
+                borrower,
+                principal,
+                due,
+            } => {
+                self.parties(lender, borrower)?;
+                check_time(due)?;
+                if id == 0
+                    || due <= t.progress.last_complete
+                    || principal == Money::ZERO
+                    || t.claims.len() == t::CLAIM_LIMIT
+                    || t.claims.last().is_some_and(|c| c.id >= id)
+                {
+                    return Err(err(E::Input));
+                }
+                t.claims
+                    .try_reserve_exact(1)
+                    .map_err(|_| TxError::WorkingLimit)?;
+                let mut ledger = EconomicLedger {
+                    world: self.world,
+                    accounts: self.accounts,
+                    stocks: self.stocks,
+                };
+                crate::economy::Ledger::pay(&mut ledger, lender, borrower, principal, false)?;
+                t.claims.push(t::Claim {
+                    id,
+                    payer: borrower,
+                    payee: lender,
+                    due,
+                    principal,
+                    paid: Money::ZERO,
+                    processed: false,
+                });
+            }
             C::Claims {
                 first_id,
                 count,

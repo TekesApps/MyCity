@@ -1,0 +1,134 @@
+{
+  "group-samples.jsonl": {
+    "bytes": 4431903,
+    "sha256": "1217cebc5192f1c6c318ed36fff8321af9573bb73eaa04d76dfacb289c7402ef"
+  },
+  "progress.json": {
+    "bytes": 87,
+    "sha256": "5024de7c3aec27f36c48340dbdae790d59d4415c60d8532a9c76d592e47c10c8"
+  },
+  "reference-engine.json": {
+    "bytes": 703871,
+    "sha256": "5ab24932bfc1bbf4ca156f7428e1b61e0df539340e5fe9507434d308c7ad0664"
+  },
+  "report.json": {
+    "bytes": 774673,
+    "sha256": "fcd4620038cff99a2841ded796f18e1256b42e9f5c10004391daa5dfd73a2e70"
+  },
+  "transcript.jsonl": {
+    "bytes": 5759286,
+    "sha256": "97e8e0722cdf1fceb6563df855448c7163b62a8b900acdc0931fa0d19dce6bcf"
+  },
+  "world/CURRENT.json": {
+    "bytes": 123,
+    "sha256": "7be5191ff469e51696fb85852c52fe468d9efdd340dfe8a999135c9bdad88007"
+  },
+  "world/LOCK": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "world/air-worker-owner.json": {
+    "bytes": 161,
+    "sha256": "985f0f8a221df78af5ceb0dbe3afc53e395a0e39cf2c8600e4856c4ebc0c4004"
+  },
+  "world/air-worker.lock": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "world/air-worker/candidates/bc736a94d7784d99561f922f9a5ba059edf9bb965046d48ab50f79513516f28a.air": {
+    "bytes": 688858,
+    "sha256": "bc736a94d7784d99561f922f9a5ba059edf9bb965046d48ab50f79513516f28a"
+  },
+  "world/air-worker/inputs/43ef5f9c681c40aa45912b9d22248f89de519b3390e8de73001b6959fc1d10e9.air": {
+    "bytes": 688858,
+    "sha256": "43ef5f9c681c40aa45912b9d22248f89de519b3390e8de73001b6959fc1d10e9"
+  },
+  "world/checkpoint-163.json": {
+    "bytes": 2245118,
+    "sha256": "8efbbc671f75e2b49b23ea1de059a7ffb3eeb6a6cd36d1c683d79ae9be79dd43"
+  },
+  "world/checkpoint-285.json": {
+    "bytes": 2213105,
+    "sha256": "06f3cad5aa4ed88c7f253497bc835c5a55e79061b9ed2f95f4ccb314810d06cf"
+  },
+  "world/checkpoint-407.json": {
+    "bytes": 2213103,
+    "sha256": "12be0ecce84185ea07e3bb5aa3c0aa847be2440e8491fb611b3da097e3a734aa"
+  },
+  "world/checkpoint-530.json": {
+    "bytes": 2214484,
+    "sha256": "15547a9ebafad2770a193038945d6910e8beb0bd439a90682a8cb137fcf6c29e"
+  },
+  "world/checkpoint-651.json": {
+    "bytes": 2212681,
+    "sha256": "764af34bd4c76a3f6123e15183b92025113c27f5578c2d9c537ae98178b61f60"
+  },
+  "world/checkpoint-772.json": {
+    "bytes": 2212730,
+    "sha256": "f997817c40e0be10edcc042533d4db30a732f82e1b21010f1fd7d06379115868"
+  },
+  "world/checkpoint-893.json": {
+    "bytes": 2212764,
+    "sha256": "68653e6f06a51c912e2240eeef18f96b601f058ed2550f8dc7e5c6faac91130f"
+  },
+  "world/checkpoint-894.json": {
+    "bytes": 2119702,
+    "sha256": "a038b269a94779e9d3babdfcfd5d62b55096b74d41a105f4f115b7c9a614b5f0"
+  },
+  "world/checkpoint-index-163.json": {
+    "bytes": 1597,
+    "sha256": "0c258558ab2ef16d2b580ff201f37d4cbce45747576976e8be9ab34c2c6112a6"
+  },
+  "world/checkpoint-index-285.json": {
+    "bytes": 1407,
+    "sha256": "863a8caa9c2988069b79882fcb6da596253effdc6edea9f16eb184dcd106b258"
+  },
+  "world/checkpoint-index-407.json": {
+    "bytes": 1407,
+    "sha256": "86f82fb08563474e49747bc9bfe3760263600647bb3092f560b8e313910ecfb0"
+  },
+  "world/checkpoint-index-530.json": {
+    "bytes": 1411,
+    "sha256": "4af1aa5a825834542a7c7c15beecffe689801ebcb7a5d35760fda73f96d371fe"
+  },
+  "world/checkpoint-index-651.json": {
+    "bytes": 1403,
+    "sha256": "9fb21d2a2e0ca7975d1b78b166fc37633ed2af6aafc3439ba80ce83d99eb3663"
+  },
+  "world/checkpoint-index-772.json": {
+    "bytes": 1403,
+    "sha256": "2e2a7e33a4b6e692a4127a1ec40ae02686b272b9b1627f8468ea833964f3c8c1"
+  },
+  "world/checkpoint-index-893.json": {
+    "bytes": 1403,
+    "sha256": "0480aae81cf977d8adf63a038d010668436141b734f5893d5c681f4b759d627d"
+  },
+  "world/checkpoint-index-894.json": {
+    "bytes": 204,
+    "sha256": "8e70a56c11710de3d42eca71e830254248f22b360677008cab64ae97dfa7e15a"
+  },
+  "world/genesis.json": {
+    "bytes": 44519,
+    "sha256": "52e121ec9df81b5d5a84064b18f0a08d074d24c175fdd0d44d43c322c2f844ba"
+  },
+  "world/root-0.json": {
+    "bytes": 523,
+    "sha256": "7f490cea353ffa1bbace4e435b5d5aabd74bf62d9504fc3c30319984d5de7cab"
+  },
+  "world/root-1.json": {
+    "bytes": 523,
+    "sha256": "991ba98444d37a00d63d28142005160791c7b6bf076df62021c92c3cd3e3de52"
+  },
+  "world/spatial-height.png": {
+    "bytes": 207,
+    "sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8"
+  },
+  "world/spatial-input.json": {
+    "bytes": 3679,
+    "sha256": "1891b68e1190fac29e3dc83a1d5d96ba3fa972cc7594fb8106ccbe179cdd29d6"
+  },
+  "world/wal-894.bin": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

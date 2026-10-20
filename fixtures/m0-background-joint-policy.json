@@ -1,0 +1,71 @@
+{
+  "schema": "mycity-background-joint-policy-v1",
+  "game_seconds": 604800,
+  "minimum_wall_seconds": 1800,
+  "maximum_window_seconds": 3600,
+  "tax": {
+    "kind": "fixed_daily_business_tax",
+    "obligation_id": 1,
+    "payer": 3,
+    "treasury": 1,
+    "amount_cents": 200000,
+    "effective_at": 0,
+    "first_due": 86400,
+    "period_seconds": 86400,
+    "ends_at": 604800,
+    "opening_arrears_cents": 0
+  },
+  "payroll": [
+    {
+      "id": 1,
+      "payer": 3,
+      "payee": 5,
+      "home_city": 1,
+      "hourly_cents": 7,
+      "cycle": {
+        "kind": "daily"
+      },
+      "ends_at": 604800
+    },
+    {
+      "id": 2,
+      "payer": 3,
+      "payee": 6,
+      "home_city": 1,
+      "hourly_cents": 11,
+      "cycle": {
+        "kind": "weekly"
+      },
+      "ends_at": 604800
+    }
+  ],
+  "contract": {
+    "id": 1,
+    "payer": 3,
+    "payee": 2,
+    "principal_cents": 1000,
+    "due": 172800
+  },
+  "loan": {
+    "claim_id": 100,
+    "lender": 4,
+    "borrower": 3,
+    "principal_cents": 850000,
+    "issued_at": 345600,
+    "due": 864000
+  },
+  "inactive_city": {
+    "city": 1,
+    "switch_to": 2,
+    "closed_at": 172800,
+    "opened_at": 259200
+  },
+  "freight_quotes": [
+    1,
+    2
+  ],
+  "inbox_delivery_sequences": [
+    1,
+    2
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "source_sha256": "829b88384cd243bdb66f4c4c9deff59c764067412d5dc2c856bef21149cf7417",
+  "mode": "endurance",
+  "endurance_1800_seconds": "passed",
+  "work_wall_seconds": 1800.435030958,
+  "comparison_checkpoints": 170,
+  "air_windows": 173,
+  "actual_faults": 2,
+  "complete_durable_business_and_air_match": true,
+  "checkpoint_archives": 8,
+  "durable_receipts": 712,
+  "snapshots": 6419,
+  "observed_peak_sum_rss_bytes": 49823744,
+  "maximum_sampling_gap_seconds": 0.4179306660000748,
+  "unobserved_declared_pids": [
+    31138,
+    38319
+  ],
+  "memory_16gb_gate": "not_run",
+  "full_M0": "not_accepted",
+  "rss_limit": "same-snapshot RSS sums; shared pages may double count; between-sample peaks may be missed",
+  "release_tests_passed": 232,
+  "run_zip_sha256": "77d85740ea74c14b2d2978fe341e874b02c2a5a618b571999ce1a925ac47b192",
+  "verifier_sha256": "694bbeca534d8eca135f6987fccbcd1fd6c38e9a5b55857d9785ecd93cd78b39"
+}

@@ -23,23 +23,37 @@ pub struct Client {
 }
 impl Client {
     pub fn spawn(executable: &Path, world: &Path, create: bool) -> Result<Self, String> {
-        Self::spawn_inner(executable, world, create, false)
+        Self::spawn_inner(executable, world, create, false, false)
     }
     pub fn spawn_probe(executable: &Path, world: &Path, create: bool) -> Result<Self, String> {
-        Self::spawn_inner(executable, world, create, true)
+        Self::spawn_inner(executable, world, create, true, false)
+    }
+    pub fn spawn_joint(
+        executable: &Path,
+        world: &Path,
+        create: bool,
+        probe: bool,
+    ) -> Result<Self, String> {
+        Self::spawn_inner(executable, world, create, probe, true)
     }
     fn spawn_inner(
         executable: &Path,
         world: &Path,
         create: bool,
         probe: bool,
+        joint: bool,
     ) -> Result<Self, String> {
         if !world.is_absolute() {
             return Err("sim_world_absolute_path_required".into());
         }
         let executable = executable.canonicalize().map_err(|e| e.to_string())?;
         let mut child = Command::new(&executable)
-            .arg(if probe { "sim-host-probe" } else { "sim-host" })
+            .arg(match (joint, probe) {
+                (false, false) => "sim-host",
+                (false, true) => "sim-host-probe",
+                (true, false) => "sim-host-joint",
+                (true, true) => "sim-host-joint-probe",
+            })
             .arg(if create { "create" } else { "open" })
             .arg(world)
             .stdin(Stdio::piped())

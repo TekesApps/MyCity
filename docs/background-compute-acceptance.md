@@ -73,3 +73,6 @@ v0.5.27执行登记：[W2运行专题](background-store-runtime.md)接入实际�
 
 
 v0.5.28执行登记：[W3运行专题](background-sim-runtime.md)接入独立Sim／宿主控制、原子重试、固定原票、worker持久身份／OS缓存栅栏和有界charge；真实worker／Sim故障及八分支同态恢复有可复跑证据。[W4实验细化](background-joint-experiment-plan.md)保持本篇全部联合时长／实际业务／全组测量／最终advisor门，尚未通过，不随阶段完成降低。
+
+
+v0.5.29执行登记：[W4正式联合](background-joint-runtime.md)实际推进1800.435030958秒并完成worker／Sim故障、工资税债／Boot／跨城／收件责任、完整业务／空气对照和6419帧同刻进程组观察；[最终独立审查](evidence/background-joint-w4/advisor-final-review.md)无阻断，[逐项完成审计](background-compute-completion-audit.md)覆盖本篇要求。两短命worker漏采及0.418秒最大间隔明确保留，不称严格峰值；32GiB宿主不接受16GB，完整M0和经济均衡仍未通过。本篇W0冻结门不回改，先前版本“尚待”按历史含义保留。

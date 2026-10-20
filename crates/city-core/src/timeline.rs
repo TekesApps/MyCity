@@ -197,6 +197,14 @@ pub enum Command {
         amount: Money,
         due: u64,
     },
+    /// Finite zero-interest principal contract: cash disbursement and debt are atomic.
+    Lend {
+        id: u64,
+        lender: u32,
+        borrower: u32,
+        principal: Money,
+        due: u64,
+    },
     AddPayroll {
         spec: PayrollSpec,
     },

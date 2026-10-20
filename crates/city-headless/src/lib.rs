@@ -6,3 +6,9 @@ pub mod worker_cache;
 
 pub mod sim_client;
 pub mod sim_probe;
+
+pub mod joint_reference;
+
+pub mod group_sampler;
+
+pub mod joint_probe;

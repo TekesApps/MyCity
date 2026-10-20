@@ -1,0 +1,17 @@
+{
+  "schema": "mycity-w4-launch-v1",
+  "command": [
+    "/Users/frankqin/dev/MyCity/target/release/mycity-headless",
+    "joint-probe",
+    "/tmp/mycity-w4-endurance-01",
+    "1800"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity",
+  "started_utc": "2026-10-20T06:45:38.188294+00:00",
+  "binary_sha256": "b4528c1580360e99ac0d35d14599e7aa12ebf906dd566c9a28f250ad6d1db592",
+  "source_sha256": "829b88384cd243bdb66f4c4c9deff59c764067412d5dc2c856bef21149cf7417",
+  "host_pid": 30439,
+  "exit_code": 0,
+  "command_wall_seconds": 1801.2170389999999,
+  "ended_utc": "2026-10-20T07:15:39.450317+00:00"
+}

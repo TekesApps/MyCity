@@ -4,7 +4,7 @@
 
 v0.5.23增加[T12-A纯数值参考](m0-air-cpu-reference.md)，尚未写入城市世界；业务协调器为v0.5.21的[T05-B](m0-timeline-runtime.md)接入当前实验profile的真实来源、日历及持久游标；Region／Boot／Exchange／Payroll可联合，旧[T08经济](m0-economy-runtime.md)仍为独立profile，不能与区域重复计劳动。后文按阶段保留，旧not_run为当时状态；有限通过不能扩大为全部M0、真实公用网或16GB通过。
 
-当前后台计算连续目标的冻结标准见[W0—W4验收](background-compute-acceptance.md)（v0.5.25）；[W1独立纯worker](background-worker-runtime.md)见v0.5.26，[W2城市接纳](background-store-runtime.md)见v0.5.27；[W3独立Sim／恢复](background-sim-runtime.md)见v0.5.28，1800秒联合门仍未通过。
+当前后台计算连续目标的冻结标准见[W0—W4验收](background-compute-acceptance.md)（v0.5.25）；[W1独立纯worker](background-worker-runtime.md)见v0.5.26，[W2城市接纳](background-store-runtime.md)见v0.5.27；[W3独立Sim／恢复](background-sim-runtime.md)见v0.5.28；v0.5.29的[W4正式联合](background-joint-runtime.md)完成1800.435秒、实际故障、完整业务／空气对照和同刻全进程组观察，16GB及整个M0未通过。
 
 ## 1. 本轮范围覆盖
 
@@ -285,3 +285,14 @@ core.air用f32／f64位整数保存完整旧场、候选源累加／tile、积�
 [运行契约](background-sim-runtime.md)接入Rust独立Sim／有界宿主IPC和纯worker。RebindLease原子换代、最终Accept固定ID及成功才占票；D域防抢占；6MiB缓存持久charge、每attempt清理与跨Sim OS锁／owner登记避免旧worker并发复用。实际源／Cells杀worker、直接从外部杀Sim后全新监督端重开、候选发布及回复丢失、取消与三次封顶均有执行证据。
 
 [八分支CLI工件与核验](evidence/background-sim-w3/verify.py)比较完整空气State及规范化revision后的完整业务状态，原冷热票保持；全仓库门和工件复跑完成后才发布。本阶段没有1800秒联合、全进程组RSS或16GB设备证据；[W4具体计划](background-joint-experiment-plan.md)继续真实日／周工资、固定额营业税及合同债务／履约／空气联动。此前各版本not_run按历史保留，不将W3改称全部M0通过。
+
+
+## 28. v0.5.29：W4有限联合与后台计算目标收口
+
+[W4运行](background-joint-runtime.md)冻结Joint期初／策略，Rust宿主监督独立Sim和一个纯空气worker。七日按真实1800.435秒分批推进，170点／173窗口的完整World、resources、leases、next_token、Timeline（仅归零revision）及完整空气与独立直接CPU一致。实际job2杀worker换代、job29根提交后丢回复杀Sim，全新客户端恢复原票；每日检查点及最终冷重开保留712原回执，不重复钱物／劳动／责任。
+
+真实日／周工资336／528分，固定营业税实收1400000分；曾欠201612分，第4日实际借入850000分后清偿，借款仍为第10日到期负债，原合同1000分已付。两个货运实际交付，泵机启动、水电／废物库存、费用和容量释放均核实；收件费10分实际结清归档。新增Lend只把已有资金放款和Claims债权原子化，不扩通用银行或完整产业经济。
+
+[完整核验](evidence/background-joint-w4/checks.json)含6419同刻采样，观察RSS和峰49823744B（47.515625MiB），最大采样间隔0.417930666秒，两短命worker漏采已披露；最后无Sim／worker／已知孤儿。最大必要任务往返1.169667583秒，实际队列峰值未插桩。实验只用M4／32GiB，不以这个有限小样本接受16GB、全城、8小时、经济均衡、真实污染或GPU。
+
+当前完整232项Release离线测试、fmt／Clippy和文档检查通过；[最终advisor](evidence/background-joint-w4/advisor-final-review.md)只读核查原始工件、完整持久状态及测试记录，无阻断，未自己重跑实验。[逐项完成审计](background-compute-completion-audit.md)保留所有原目标与证据边界；后台计算有限闭环可以收口，整个M0仍未接受。总体架构已按实际独立Sim／worker更新，不再把它们写成尚无实现；通用池、UI、渲染、GPU和AgentKit未展开。

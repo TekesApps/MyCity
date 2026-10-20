@@ -322,6 +322,18 @@ impl Engine {
         value["journal"] = serde_json::json!([]);
         serde_json::to_vec(&value).map_err(|e| e.to_string())
     }
+    /// Diagnostic comparison of ALL business state. Excludes only hot receipts,
+    /// world revision, and background execution metadata (air is compared separately).
+    pub fn business_comparison_checkpoint(&self) -> Result<Vec<u8>, String> {
+        let mut world = serde_json::to_value(&self.world).map_err(|e| e.to_string())?;
+        world["revision"] = serde_json::json!(0);
+        serde_json::to_vec(
+            &serde_json::json!({"schema":"mycity-business-comparison-v1",
+            "world":world,"resources":self.resources,"leases":self.leases,
+            "next_token":self.next_token,"timeline":self.timeline}),
+        )
+        .map_err(|e| e.to_string())
+    }
     /// Only a hash-verified, rules-bound storage dependency may enter this boundary.
     pub fn restore_checkpoint(bytes: &[u8]) -> Result<Self, String> {
         if bytes.len() > 4 * 1024 * 1024 {
@@ -2000,6 +2012,7 @@ impl Action {
                 command: crate::background::Command::Enable
             } | Self::Timeline {
                 command: crate::timeline::Command::Claims { .. }
+                    | crate::timeline::Command::Lend { .. }
                     | crate::timeline::Command::AddPayroll { .. }
             } | Self::Exchange {
                 command: crate::exchange::Command::Dispatch { .. }

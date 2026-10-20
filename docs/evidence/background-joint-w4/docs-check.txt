@@ -1,0 +1,2 @@
+Checked 151 Markdown files, 1453 relative links, 421 JSON files; ID sets, 13 templates / 12 operating profiles, arithmetic and 31 budget rows passed.
+All static checks passed.

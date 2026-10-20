@@ -1,0 +1,50 @@
+{
+  "schema": "mycity-background-phase-integrity-v1",
+  "scope": "published W1-W3 source/evidence binding and artifact integrity, not a new runtime or endurance test",
+  "phases": [
+    {
+      "tag": "v0.5.26",
+      "commit": "e4176a0ee0feca7d28a969a3e7bca7fbbf294156",
+      "source_sha256": "f94333856ddab7a0265419adf259da198bbb216d98b3d09ebdbeaa6a45c22376",
+      "release_tests_passed": 201,
+      "artifacts": {
+        "tasks.zip": {
+          "sha256": "8e7566565645111340452ee6deec7365411b0b2abf1b4417e0e9ac9cae374865",
+          "bytes": 576778,
+          "matches_published_tag": true
+        }
+      }
+    },
+    {
+      "tag": "v0.5.27",
+      "commit": "df29dc5b2c5c61c58cd0c2a900c6e438edca1dce",
+      "source_sha256": "268fa1419b3527b4cbd3303aa0f0068d1c0238cf4038e54d22735e0bbc0216bd",
+      "release_tests_passed": 216,
+      "artifacts": {
+        "tasks.zip": {
+          "sha256": "59b715247492f50cab6369dee1e04772e5d0b8eaca3d0101ae086c3f6e6e0540",
+          "bytes": 18726,
+          "matches_published_tag": true
+        },
+        "world.zip": {
+          "sha256": "320d8e8f3d437388b10306576153f18323921cd6d353c0ba54f13938100ac770",
+          "bytes": 19854,
+          "matches_published_tag": true
+        }
+      }
+    },
+    {
+      "tag": "v0.5.28",
+      "commit": "091d21aad0ffde4e82b2379316d0363758326f7e",
+      "source_sha256": "b31269a45648b77f51c8d5e9102900b1137921dbdcf645525e243974371dbeb6",
+      "release_tests_passed": 227,
+      "artifacts": {
+        "runs.zip": {
+          "sha256": "240dddeb13952264e8ee8ea17b4bda0808a0149a04f0ca78567cb94500840e91",
+          "bytes": 207823,
+          "matches_published_tag": true
+        }
+      }
+    }
+  ]
+}

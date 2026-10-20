@@ -26,6 +26,34 @@ fn system(command: &str, args: &[&str]) -> Option<String> {
 
 fn run() -> Result<(), String> {
     let args: Vec<_> = env::args().collect();
+    if args.get(1).is_some_and(|a| a == "joint-probe") {
+        if args.len() != 4 {
+            return Err("usage: mycity-headless joint-probe NEW_DIR WALL_SECONDS (0=dry; 1800..2100=endurance)".into());
+        }
+        let wall = args[3].parse::<u64>().map_err(|e| e.to_string())?;
+        println!(
+            "{}",
+            serde_json::to_string_pretty(&mycity_headless::joint_probe::run(
+                std::path::Path::new(&args[2]),
+                wall
+            )?)
+            .map_err(|e| e.to_string())?
+        );
+        return Ok(());
+    }
+    if args
+        .get(1)
+        .is_some_and(|a| matches!(a.as_str(), "sim-host-joint" | "sim-host-joint-probe"))
+    {
+        if args.len() != 4 || !matches!(args[2].as_str(), "create" | "open") {
+            return Err("usage: mycity-headless sim-host-joint[-probe] create|open WORLD".into());
+        }
+        return mycity_headless::sim_host::run_joint(
+            std::path::Path::new(&args[3]),
+            args[2] == "create",
+            args[1].ends_with("probe"),
+        );
+    }
     if args.get(1).is_some_and(|a| a == "sim-probe") {
         if args.len() != 3 {
             return Err("usage: mycity-headless sim-probe NEW_DIR".into());

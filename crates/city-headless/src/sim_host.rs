@@ -96,15 +96,26 @@ fn event(w: &mut impl Write, id: u64, kind: &str, payload: Value) -> Result<(), 
         },
     )
 }
-fn rules() -> String {
-    format!("sim-w3:{}", env!("MYCITY_SOURCE_SHA256"))
+fn rules(joint: bool) -> String {
+    format!(
+        "{}:{}",
+        if joint { "sim-w4" } else { "sim-w3" },
+        env!("MYCITY_SOURCE_SHA256")
+    )
 }
 fn status(store: &Store, worker: &Option<Worker>) -> Result<Value, String> {
     let e = store.engine().map_err(err)?;
     let b = e.background();
+    let view = e.world().view();
+    let air_sha = b
+        .and_then(|b| b.field())
+        .map(|f| f.checkpoint().map(|b| sha256(&b)))
+        .transpose()?;
+    let runtime = json!({"accounts":view.accounts,"boot":view.boot,"active_city":view.region.as_ref().map(|r|r.active_city),"obligations":view.region.as_ref().map(|r|r.obligations),"payroll":e.timeline().map(|t|t.payroll.iter().take(8).collect::<Vec<_>>()),"claims":e.timeline().map(|t|t.claims.iter().take(8).collect::<Vec<_>>()),"claim_count":e.timeline().map(|t|t.claims.len()),"payroll_count":e.timeline().map(|t|t.payroll.len()),"resources":e.resources(),"store_owned_bytes":store.owned_capacity_bytes().map_err(err)?});
+
     Ok(
-        json!({"revision":e.world().view().revision,"sequence":store.committed_sequence(),"timeline":e.timeline().map(|t|t.progress),
- "background":b.map(|b|json!({"version":b.version(),"time":b.time(),"incarnation":b.incarnation(),"pending":b.pending().map(|j|json!({"id":j.id,"generation":j.generation,"attempt":j.attempt,"running":j.running,"failure":j.failure,"start":j.start,"end":j.end})),"field":b.field().map(|f|f.report())})),
+        json!({"revision":view.revision,"sequence":store.committed_sequence(),"business_sha256":crate::joint_reference::business_digest(e)?,"runtime":runtime,"timeline":e.timeline().map(|t|t.progress),
+ "background":b.map(|b|json!({"version":b.version(),"time":b.time(),"incarnation":b.incarnation(),"pending":b.pending().map(|j|json!({"id":j.id,"generation":j.generation,"attempt":j.attempt,"running":j.running,"failure":j.failure,"start":j.start,"end":j.end})),"field":b.field().map(|f|f.report()),"state_sha256":air_sha})),
  "state_sha256":store.state_hash().map_err(err)?,"capacity":store.capacity_status().map_err(err)?,"worker_pid":worker.as_ref().map(|w|w.pid()),"source_sha256":env!("MYCITY_SOURCE_SHA256"),"memory_16gb_gate":"not_run"}),
     )
 }
@@ -130,15 +141,20 @@ fn control(store: &mut Store, command: B) -> Result<(), String> {
         .map_err(err)?;
     Ok(())
 }
+struct Required<'a> {
+    id: u64,
+    job: u64,
+    rules: &'a str,
+}
 fn required(
     store: &mut Store,
     worker: &mut Option<Worker>,
-    id: u64,
-    job: u64,
+    context: Required<'_>,
     w: &mut impl Write,
     reader: &mut impl BufRead,
     mut probe: Option<ProbePoint>,
 ) -> Result<Value, String> {
+    let Required { id, job, rules } = context;
     let operation = background::accept_operation_id(job)?;
     // Return the ORIGINAL persisted record; never rebuild an Envelope after lost ACK.
     if let Some(record) = store.receipt(operation).map_err(err)? {
@@ -189,7 +205,7 @@ fn required(
                 field_version: pending.field_version,
                 start: pending.start,
                 end: pending.end,
-                rules_sha256: sha256(rules().as_bytes()),
+                rules_sha256: sha256(rules.as_bytes()),
                 source_sha256: env!("MYCITY_SOURCE_SHA256").into(),
                 input_sha256: pending.input.identity(),
                 checkpoint_sha256: checkpoint,
@@ -382,17 +398,24 @@ fn required(
     }
 }
 pub fn run(world: &Path, create: bool) -> Result<(), String> {
-    run_inner(world, create, false)
+    run_inner(world, create, false, false)
 }
 pub fn run_probe(world: &Path, create: bool) -> Result<(), String> {
-    run_inner(world, create, true)
+    run_inner(world, create, true, false)
 }
-fn run_inner(world: &Path, create: bool, probe_enabled: bool) -> Result<(), String> {
-    let rules = rules();
+pub fn run_joint(world: &Path, create: bool, probe: bool) -> Result<(), String> {
+    run_inner(world, create, probe, true)
+}
+fn run_inner(world: &Path, create: bool, probe_enabled: bool, joint: bool) -> Result<(), String> {
+    let rules = rules(joint);
     let mut store = if create {
         Store::create_spatial(
             world,
-            include_bytes!("../../../fixtures/m0-exchange-opening.json"),
+            if joint {
+                crate::joint_reference::OPENING
+            } else {
+                include_bytes!("../../../fixtures/m0-exchange-opening.json")
+            },
             [
                 (101, 1),
                 (102, 1),
@@ -445,8 +468,11 @@ fn run_inner(world: &Path, create: bool, probe_enabled: bool) -> Result<(), Stri
             Command::RunRequired { job } => required(
                 &mut store,
                 &mut worker,
-                request.id,
-                job,
+                Required {
+                    id: request.id,
+                    job,
+                    rules: &rules,
+                },
                 &mut writer,
                 &mut reader,
                 None,
@@ -454,8 +480,11 @@ fn run_inner(world: &Path, create: bool, probe_enabled: bool) -> Result<(), Stri
             Command::ProbeRequired { job, point } if probe_enabled => required(
                 &mut store,
                 &mut worker,
-                request.id,
-                job,
+                Required {
+                    id: request.id,
+                    job,
+                    rules: &rules,
+                },
                 &mut writer,
                 &mut reader,
                 Some(point),

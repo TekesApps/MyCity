@@ -1,0 +1,71 @@
+{
+  "schema": "mycity-w4-verifier-counterexamples-v1",
+  "source_sha256": "829b88384cd243bdb66f4c4c9deff59c764067412d5dc2c856bef21149cf7417",
+  "input_scope": "developer dry run only; no endurance acceptance",
+  "valid_dry_check": {
+    "source_sha256": "829b88384cd243bdb66f4c4c9deff59c764067412d5dc2c856bef21149cf7417",
+    "mode": "dry",
+    "endurance_1800_seconds": "not_run_dry",
+    "work_wall_seconds": 122.701133416,
+    "comparison_checkpoints": 170,
+    "air_windows": 173,
+    "actual_faults": 2,
+    "complete_durable_business_and_air_match": true,
+    "checkpoint_archives": 8,
+    "durable_receipts": 712,
+    "snapshots": 425,
+    "observed_peak_sum_rss_bytes": 48939008,
+    "maximum_sampling_gap_seconds": 0.4159757500000012,
+    "unobserved_declared_pids": [],
+    "memory_16gb_gate": "not_run",
+    "full_M0": "not_accepted",
+    "rss_limit": "same-snapshot RSS sums; shared pages may double count; between-sample peaks may be missed"
+  },
+  "rejected_counterexamples": [
+    {
+      "case": "short_run_cannot_pass_endurance",
+      "rejected": true,
+      "reason": "actual endurance absent"
+    },
+    {
+      "case": "forged_wall_duration",
+      "rejected": true,
+      "reason": "endurance padded after game completion"
+    },
+    {
+      "case": "missing_hourly_comparison",
+      "rejected": true,
+      "reason": "missing comparison checkpoints"
+    },
+    {
+      "case": "individual_peak_substituted_for_same_snapshot",
+      "rejected": true,
+      "reason": "RSS peak receipt differs"
+    },
+    {
+      "case": "reference_capacity_diverges_with_unchanged_accounts",
+      "rejected": true,
+      "reason": "entire committed business differs from direct CPU reference"
+    },
+    {
+      "case": "raw_sample_sum_not_same_snapshot",
+      "rejected": true,
+      "reason": "RSS not from same snapshot"
+    },
+    {
+      "case": "committed_checkpoint_corrupted",
+      "rejected": true,
+      "reason": "checkpoint data hash"
+    },
+    {
+      "case": "false_16gb_acceptance",
+      "rejected": true,
+      "reason": "scope overclaim"
+    },
+    {
+      "case": "future_loan_falsely_paid",
+      "rejected": true,
+      "reason": "future loan falsely revenue or repaid"
+    }
+  ]
+}
