@@ -152,3 +152,6 @@ T05-B另明确Timeline最多2MiB常驻、普通事务副本2MiB运行时份额�
 v0.5.23执行更新：[T12-A](m0-air-cpu-reference.md)新增core.air纯数值任务与CLI工件恢复，模块／唯一writer职责不变；它不是独立计算worker或城市环境writer。上文v0.5.22静态证据保留其冻结版本含义，当前模型证据按新运行专题分别登记。
 
 v0.5.26执行更新：[W1](background-worker-runtime.md)新增真实独立、可复用的空气worker和有界JSONL／候选文件交换，连续场及探针握手故障已进入本版运行验证。上文“设计／尚无共享API”描述的是v0.5.22基线；目前纯任务输入输出已实现，但世界持久ticket、独立Sim、P4屏障及全进程联合运行仍待W2—W4，不改变Sim唯一写入目标。
+
+
+v0.5.27执行登记：[W2运行专题](background-store-runtime.md)接入实际货运输入、Core任务／P4屏障、Sim不可变候选资产与小WAL同根提交、预留和恢复。当前Sim职责仍在CLI中；独立Sim／监督、统一worker缓存及1800秒联合进程组验证仍须W3—W4实测，不能用阶段提交替代。

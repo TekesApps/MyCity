@@ -62,7 +62,7 @@ fn cpu_suite_reopens_five_file_checkpoints_in_new_processes_and_reports_real_sco
     assert_eq!(v["cases"][3]["report"]["time"], 30 * 86400);
     assert_eq!(v["cases"][4]["source_count"], 20000);
     assert_eq!(v["source_sha256"], env!("MYCITY_SOURCE_SHA256"));
-    assert_eq!(v["world_store_integration"], "not_implemented");
+    assert_eq!(v["world_store_integration"], "not_exercised_in_this_probe");
     assert_eq!(v["memory_16gb_gate"], "not_run");
     assert_eq!(v["gpu"], "not_run");
 }

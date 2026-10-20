@@ -2,9 +2,9 @@
 
 记录起于v0.5.4，2026-10-19。用户授权从M0-T01按依赖写Rust，并明确本轮只做模型、不做UI。版本tag是仓库阶段发布，不是游戏0.1已经发布；所有阶段验证后提交、递增附注tag并推送。
 
-当前发布v0.5.23增加[T12-A纯数值参考](m0-air-cpu-reference.md)，尚未写入城市世界；业务协调器为v0.5.21的[T05-B](m0-timeline-runtime.md)接入当前实验profile的真实来源、日历及持久游标；Region／Boot／Exchange／Payroll可联合，旧[T08经济](m0-economy-runtime.md)仍为独立profile，不能与区域重复计劳动。后文按阶段保留，旧not_run为当时状态；有限通过不能扩大为全部M0、真实公用网或16GB通过。
+v0.5.23增加[T12-A纯数值参考](m0-air-cpu-reference.md)，尚未写入城市世界；业务协调器为v0.5.21的[T05-B](m0-timeline-runtime.md)接入当前实验profile的真实来源、日历及持久游标；Region／Boot／Exchange／Payroll可联合，旧[T08经济](m0-economy-runtime.md)仍为独立profile，不能与区域重复计劳动。后文按阶段保留，旧not_run为当时状态；有限通过不能扩大为全部M0、真实公用网或16GB通过。
 
-当前后台计算连续目标的冻结标准见[W0—W4验收](background-compute-acceptance.md)（v0.5.25）；[W1独立纯worker](background-worker-runtime.md)见v0.5.26，世界接纳及联合门仍未通过。
+当前后台计算连续目标的冻结标准见[W0—W4验收](background-compute-acceptance.md)（v0.5.25）；[W1独立纯worker](background-worker-runtime.md)见v0.5.26，[W2城市接纳](background-store-runtime.md)见v0.5.27；独立Sim及联合门仍未通过。
 
 ## 1. 本轮范围覆盖
 
@@ -27,7 +27,7 @@
 | T09 | 实际履约、收件背压／追收／连续性有限子阶段通过，v0.5.15—18 | 三城共池、交付费用／损耗、持久收件／应急退出及30分钟连续实测；永久断链、破产、真实车辆／潮流水力、具名权益及完整P-CAP／P-XMAP仍未验 |
 | T10 | T10-A有限CLI已实测；完整协议未完成 | 暂停／单步／四档实际等待、分页／热冷原票；当前profile接入T05-B step；目标对象revision／UI仍缺 |
 | T11 | deferred_by_user_scope | 原生UI／绘图／窗口／输入，不算通过 |
-| T12 | T12-A空气CPU有限参考已实测，v0.5.23 | 单通道32m EI、源／tile分页、任务检查点与新进程恢复、独立f64对照；未接世界／真实源投影／阈值，独立纯worker见W1，世界接纳／GPU仍未完成 |
+| T12 | T12-A空气CPU有限参考已实测，v0.5.23 | 单通道32m EI、源／tile分页、任务检查点与新进程恢复、独立f64对照；未接世界／真实源投影／阈值，W1独立纯worker及W2有限场接纳已实测；独立Sim／GPU仍未完成 |
 | T13 | 有限模型30分钟连续性实测，完整联合未验 | v0.5.18取得32GiB宿主有限实验RSS与冷档案增长；真实16GB大城／显示联合／8h长跑仍未运行 |
 | T14 | not_accepted | 不把headless子阶段签收等同完整M0 |
 

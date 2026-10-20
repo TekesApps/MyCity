@@ -1,0 +1,491 @@
+//! Sim-owned immutable air assets and a finite normal-funded background obligation.
+use super::*;
+use mycity_core::{
+    air::State,
+    background::{Command as B, ASSET_LIMIT},
+    transaction::Action,
+};
+pub const BACKGROUND_SLOTS: u8 = 16;
+pub const BACKGROUND_ASSET_RESERVE: u64 = 10 * 1024 * 1024;
+pub const BACKGROUND_LIVE_ASSETS: usize = 32;
+const PREFIX: &str = "air-result-";
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct BackgroundReserve {
+    pub start: u64,
+    pub at: u64,
+    pub slots: u8,
+    pub staged_sha256: Option<[u8; 32]>,
+    pub staged_bytes: u64,
+}
+impl BackgroundReserve {
+    pub fn remaining_bytes(&self) -> u64 {
+        BACKGROUND_ASSET_RESERVE - self.staged_bytes
+            + u64::from(self.slots) * CONTINUATION_PAGE_BYTES
+    }
+    pub(super) fn valid(&self) -> bool {
+        self.start < self.at
+            && self.at - self.start <= 3600
+            && self.slots > 0
+            && self.slots <= BACKGROUND_SLOTS
+            && self.staged_bytes <= ASSET_LIMIT as u64
+            && self.staged_sha256.is_some() == (self.staged_bytes > 0)
+    }
+}
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum BackgroundPoint {
+    Validated,
+    AssetHalf,
+    AssetSynced,
+    AssetPublished,
+    StagedRootPublished,
+    StagedCurrentRenamed,
+    StagedCurrentSynced,
+}
+pub(super) struct Plan {
+    pub initial: Option<BackgroundReserve>,
+    pub funded: bool,
+}
+fn asset_name(hash: &[u8; 32]) -> String {
+    format!("{PREFIX}{}.air", hex(hash))
+}
+pub(super) fn successful_hash(envelope: &Envelope, success: bool) -> Option<[u8; 32]> {
+    if !success {
+        return None;
+    }
+    match envelope.actions.as_slice() {
+        [Action::Background {
+            command: B::Accept {
+                candidate_sha256, ..
+            },
+        }] => Some(*candidate_sha256),
+        _ => None,
+    }
+}
+pub(super) fn load_asset(dir: &Path, hash: &[u8; 32]) -> Result<State, Error> {
+    let bytes = read_file(&dir.join(asset_name(hash)), ASSET_LIMIT as u64)?;
+    if digest(&bytes) != *hash {
+        return Err(Error::Invalid("background_asset_checksum"));
+    }
+    let state = State::restore(&bytes).map_err(Error::Model)?;
+    if !state.complete() {
+        return Err(Error::Invalid("background_asset_partial"));
+    }
+    Ok(state)
+}
+pub(super) fn remember(live: &mut Vec<[u8; 32]>, hash: [u8; 32]) -> Result<(), Error> {
+    if !live.contains(&hash) {
+        if live.len() == BACKGROUND_LIVE_ASSETS {
+            return Err(Error::Invalid("background_live_asset_limit"));
+        }
+        live.push(hash);
+    }
+    Ok(())
+}
+/// Call only after validating CURRENT, checkpoints and every committed replay dependency.
+pub(super) fn gc(dir: &Path, root: &Root, live: &[[u8; 32]]) -> Result<(), Error> {
+    let staged = root
+        .background_reserve
+        .as_ref()
+        .and_then(|r| r.staged_sha256);
+    let mut cleaned = false;
+    for entry in fs::read_dir(dir)? {
+        let entry = entry?;
+        let name = entry.file_name();
+        let name = name.to_string_lossy();
+        let owned_asset = name
+            .strip_prefix(PREFIX)
+            .and_then(|s| s.strip_suffix(".air"));
+        let owned_temp = name.starts_with(".air-import-") && name.ends_with(".tmp");
+        if let Some(hash) = owned_asset {
+            if hash.len() != 64
+                || !hash
+                    .bytes()
+                    .all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b))
+            {
+                continue;
+            }
+            let retained =
+                staged.is_some_and(|s| hex(&s) == hash) || live.iter().any(|s| hex(s) == hash);
+            if retained {
+                continue;
+            }
+        } else if !owned_temp {
+            continue;
+        }
+        if !entry.file_type()?.is_file() {
+            return Err(Error::Invalid("background_gc_nonregular"));
+        }
+        fs::remove_file(entry.path())?;
+        cleaned = true;
+    }
+    if cleaned {
+        sync_directory(dir)?;
+    }
+    Ok(())
+}
+impl Store {
+    pub fn background_reserve(&self) -> Result<Option<BackgroundReserve>, Error> {
+        self.engine()?;
+        Ok(self.io.root.background_reserve.clone())
+    }
+    pub(super) fn validate_background(
+        engine: &Engine,
+        dir: &Path,
+        root: &Root,
+    ) -> Result<(), Error> {
+        let required = engine.background().is_some()
+            && engine.timeline().is_some_and(|t| {
+                t.progress.phase.is_some()
+                    && t.progress.at > t.progress.last_complete
+                    && engine.background().is_some_and(|b| {
+                        b.pending().is_some() || u64::from(b.time()) < t.progress.at
+                    })
+            });
+        match (&root.background_reserve, required) {
+            (None, false) => Ok(()),
+            (Some(r), true) if r.valid() => {
+                let p = engine.timeline().expect("required timeline").progress;
+                if r.start != p.last_complete || r.at != p.at {
+                    return Err(Error::Invalid("background_reserve_window"));
+                }
+                if let Some(hash) = r.staged_sha256 {
+                    let state = load_asset(dir, &hash)?;
+                    if state.checkpoint().map_err(Error::Model)?.len() as u64 != r.staged_bytes {
+                        return Err(Error::Invalid("background_staged_length"));
+                    }
+                    let b = engine.background().expect("required background");
+                    let mut reference = b.frozen_input().map_err(Error::Model)?;
+                    while !reference.complete() {
+                        reference.page(8192, 1024).map_err(Error::Model)?;
+                    }
+                    if reference != state {
+                        return Err(Error::Invalid("background_staged_input"));
+                    }
+                }
+                Ok(())
+            }
+            _ => Err(Error::Invalid("background_reserve_state")),
+        }
+    }
+    pub(super) fn background_attachment(
+        &self,
+        caller: Caller,
+        envelope: &Envelope,
+    ) -> Result<Option<State>, Error> {
+        match (
+            envelope.actions.as_slice(),
+            self.io.root.background_reserve.as_ref(),
+        ) {
+            (
+                [Action::Background {
+                    command:
+                        B::Accept {
+                            candidate_sha256, ..
+                        },
+                }],
+                Some(r),
+            ) if r.staged_sha256 == Some(*candidate_sha256) => {
+                let state = load_asset(&self.io.dir, candidate_sha256)?;
+                // Failure receipts are evaluated without attachments, hence their replay
+                // never depends on a payload that was not admitted into the model.
+                if self
+                    .engine
+                    .background_control_quote(caller, envelope, Some(&state))
+                {
+                    Ok(Some(state))
+                } else {
+                    Ok(None)
+                }
+            }
+            _ => Ok(None),
+        }
+    }
+    pub(super) fn background_funded_quote(
+        &self,
+        caller: Caller,
+        env: &Envelope,
+        candidate: Option<&State>,
+    ) -> bool {
+        let restart_needed = match env.actions.as_slice() {
+            [Action::Background {
+                command: B::Restart,
+            }] => self
+                .engine
+                .background()
+                .is_some_and(|b| b.incarnation() == 0 || b.pending().is_some_and(|j| j.running)),
+            _ => true,
+        };
+        self.io.root.background_reserve.is_some()
+            && restart_needed
+            && self.engine.background_control_quote(caller, env, candidate)
+    }
+    pub(super) fn prepare_background(
+        &mut self,
+        caller: Caller,
+        env: &Envelope,
+        continuation: Option<&Continuation>,
+        funded: bool,
+    ) -> Result<Plan, Error> {
+        let initial = if self.engine.background().is_some()
+            && self.io.root.background_reserve.is_none()
+            && self
+                .engine
+                .timeline()
+                .is_some_and(|t| t.progress.phase.is_none())
+        {
+            if let Some(c) = continuation.filter(|c| c.at > c.start) {
+                if self.io.background_live.len() >= BACKGROUND_LIVE_ASSETS {
+                    self.checkpoint()?;
+                }
+                Some(BackgroundReserve {
+                    start: c.start,
+                    at: c.at,
+                    slots: BACKGROUND_SLOTS,
+                    staged_sha256: None,
+                    staged_bytes: 0,
+                })
+            } else {
+                None
+            }
+        } else {
+            None
+        };
+        let held = initial
+            .clone()
+            .or_else(|| self.io.root.background_reserve.clone());
+        if let Some(r) = held {
+            if funded
+                && r.slots <= 1
+                && !matches!(
+                    env.actions.as_slice(),
+                    [Action::Background {
+                        command: B::Accept { .. }
+                    }]
+                )
+            {
+                return Err(Error::Invalid("background_control_reserve_exhausted"));
+            }
+            let clock = continuation.is_some();
+            let existing = self.engine.can_advance_existing_responsibility(caller, env);
+            let floor = usize::from(r.slots) - usize::from(funded)
+                + continuation
+                    .or(self.io.root.continuation.as_ref())
+                    .map_or(0, |c| c.remaining_pages as usize)
+                + if clock || existing || funded { 0 } else { 64 };
+            if self.engine.journal().len() + 1 + floor > MAX_RECEIPTS {
+                if initial.is_some() {
+                    self.checkpoint()?;
+                } else {
+                    return Err(Error::Invalid("background_receipt_reserve"));
+                }
+            }
+            if initial.is_some() {
+                let timeline_bytes = continuation
+                    .or(self.io.root.continuation.as_ref())
+                    .map_or(0, |c| c.remaining_bytes);
+                capacity::admit_with_reserve(
+                    &self.io.dir,
+                    self.io.root.capacity,
+                    CONTINUATION_PAGE_BYTES,
+                    false,
+                    timeline_bytes + r.remaining_bytes(),
+                )?;
+            }
+        }
+        Ok(Plan { initial, funded })
+    }
+    pub fn import_background_candidate(
+        &mut self,
+        job: u64,
+        generation: u32,
+        bytes: &[u8],
+    ) -> Result<[u8; 32], Error> {
+        self.import_background_candidate_with_observer(job, generation, bytes, |_| Ok(()))
+    }
+    /// Trusted Sim boundary. It copies worker bytes and never retains a worker path.
+    pub fn import_background_candidate_with_observer(
+        &mut self,
+        job: u64,
+        generation: u32,
+        bytes: &[u8],
+        mut observer: impl FnMut(BackgroundPoint) -> io::Result<()>,
+    ) -> Result<[u8; 32], Error> {
+        self.engine()?;
+        if bytes.len() > ASSET_LIMIT {
+            return Err(Error::Invalid("background_asset_bytes"));
+        }
+        let hash = digest(bytes);
+        let state = State::restore(bytes).map_err(Error::Model)?;
+        let view = self.engine.world().view();
+        let envelope = Envelope {
+            world: view.scope.world(),
+            branch: view.scope.branch(),
+            operation_id: u64::MAX - 1,
+            expected_revision: view.revision,
+            actions: vec![Action::Background {
+                command: B::Accept {
+                    job,
+                    generation,
+                    candidate_sha256: hash,
+                },
+            }],
+        };
+        // The pure quote deliberately skips the reserved operation-ID namespace check.
+        if !self
+            .engine
+            .background_control_quote(Caller::System, &envelope, Some(&state))
+        {
+            return Err(Error::Invalid("background_candidate_rejected"));
+        }
+        let current = self
+            .io
+            .root
+            .background_reserve
+            .as_ref()
+            .ok_or(Error::Invalid("background_reserve_missing"))?;
+        if let Some(existing) = current.staged_sha256 {
+            if existing != hash {
+                return Err(Error::Invalid("background_candidate_already_staged"));
+            }
+            let result = (|| {
+                load_asset(&self.io.dir, &hash)?;
+                File::open(self.io.dir.join(asset_name(&hash)))?.sync_all()?;
+                sync_directory(&self.io.dir)?;
+                Ok(hash)
+            })();
+            if result.is_err() {
+                self.io.poisoned = true;
+            }
+            return result;
+        }
+        if current.slots < 2 {
+            return Err(Error::Invalid("background_control_reserve_exhausted"));
+        }
+        let floor = usize::from(current.slots)
+            + self
+                .io
+                .root
+                .continuation
+                .as_ref()
+                .map_or(0, |c| c.remaining_pages as usize);
+        if self.engine.journal().len() + floor > MAX_RECEIPTS {
+            return Err(Error::Invalid("background_receipt_reserve"));
+        }
+        if self.io.background_live.len() >= BACKGROUND_LIVE_ASSETS
+            && !self.io.background_live.contains(&hash)
+        {
+            return Err(Error::Invalid("background_live_asset_limit"));
+        }
+        observer(BackgroundPoint::Validated)?;
+        let mut root = self.io.root.clone();
+        let staged = root
+            .background_reserve
+            .as_mut()
+            .expect("checked reservation");
+        staged.slots -= 1;
+        staged.staged_sha256 = Some(hash);
+        staged.staged_bytes = bytes.len() as u64;
+        let transient_held = self
+            .io
+            .root
+            .continuation
+            .as_ref()
+            .map_or(0, |c| c.remaining_bytes)
+            + current.remaining_bytes()
+            - 2 * bytes.len() as u64
+            - CONTINUATION_PAGE_BYTES;
+        capacity::admit_with_reserve(
+            &self.io.dir,
+            self.io.root.capacity,
+            2 * bytes.len() as u64 + 2 * META_LIMIT,
+            true,
+            transient_held,
+        )?;
+        let result = (|| {
+            let id = TEMP_ID.fetch_add(1, Ordering::Relaxed);
+            let temp = format!(".air-import-{}-{id}.tmp", std::process::id());
+            let mut file = OpenOptions::new()
+                .create_new(true)
+                .write(true)
+                .open(self.io.dir.join(&temp))?;
+            let half = bytes.len() / 2;
+            file.write_all(&bytes[..half])?;
+            observer(BackgroundPoint::AssetHalf)?;
+            file.write_all(&bytes[half..])?;
+            file.sync_all()?;
+            observer(BackgroundPoint::AssetSynced)?;
+            let target = self.io.dir.join(asset_name(&hash));
+            match fs::hard_link(self.io.dir.join(&temp), &target) {
+                Ok(()) => (),
+                Err(e) if e.kind() == io::ErrorKind::AlreadyExists => {
+                    load_asset(&self.io.dir, &hash)?;
+                    File::open(&target)?.sync_all()?;
+                }
+                Err(e) => return Err(e.into()),
+            }
+            fs::remove_file(self.io.dir.join(&temp))?;
+            sync_directory(&self.io.dir)?;
+            observer(BackgroundPoint::AssetPublished)?;
+            root.generation = root
+                .generation
+                .checked_add(1)
+                .ok_or(Error::Invalid("publication_overflow"))?;
+            let encoded = json(&root)?;
+            let slot = (root.generation % 2) as u8;
+            atomic_file(&self.io.dir, &format!("root-{slot}.json"), &encoded, || {
+                Ok(())
+            })?;
+            observer(BackgroundPoint::StagedRootPublished)?;
+            atomic_file(
+                &self.io.dir,
+                "CURRENT.json",
+                &json(&Current {
+                    schema: "mycity-m0-current-v1".into(),
+                    slot,
+                    root_sha256: sha256(&encoded),
+                })?,
+                || observer(BackgroundPoint::StagedCurrentRenamed),
+            )?;
+            observer(BackgroundPoint::StagedCurrentSynced)?;
+            self.io.root = root;
+            Ok(hash)
+        })();
+        if result.is_err() {
+            self.io.poisoned = true;
+        }
+        result
+    }
+}
+impl Persistence {
+    pub(super) fn next_background(
+        &self,
+        plan: &Plan,
+        env: &Envelope,
+        record: &JournalRecord,
+    ) -> Result<Option<BackgroundReserve>, Error> {
+        if record.outcome.is_err() {
+            return Ok(self.root.background_reserve.clone());
+        }
+        if let Some(initial) = &plan.initial {
+            return Ok(Some(initial.clone()));
+        }
+        if !plan.funded {
+            return Ok(self.root.background_reserve.clone());
+        }
+        if successful_hash(env, true).is_some() {
+            return Ok(None);
+        }
+        let mut next = self
+            .root
+            .background_reserve
+            .clone()
+            .ok_or(Error::Invalid("background_reserve_missing"))?;
+        next.slots = next
+            .slots
+            .checked_sub(1)
+            .filter(|n| *n > 0)
+            .ok_or(Error::Invalid("background_control_reserve_exhausted"))?;
+        Ok(Some(next))
+    }
+}

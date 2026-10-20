@@ -284,6 +284,9 @@ impl State {
         next.validate()?;
         Ok(next)
     }
+    pub fn time(&self) -> u32 {
+        self.time
+    }
     pub fn input(&self) -> &Input {
         &self.input
     }

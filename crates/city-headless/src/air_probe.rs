@@ -229,6 +229,6 @@ pub fn run(input_path: &Path, root: &Path) -> Result<Value, String> {
         .collect();
     cases.push(case(root, "dense-20000", dense)?);
     Ok(
-        json!({"schema":"mycity-air-cpu-evidence-v1","source_sha256":env!("MYCITY_SOURCE_SHA256"),"lock_sha256":env!("MYCITY_LOCK_SHA256"),"wall_seconds":started.elapsed().as_secs_f64(),"cases":cases,"world_store_integration":"not_implemented","physical_pollution_accuracy":"not_verified","worker_pool":"not_implemented","gpu":"not_run","memory_16gb_gate":"not_run","process_memory_scope":"parent /usr/bin/time; child peak and combined footprint not measured"}),
+        json!({"schema":"mycity-air-cpu-evidence-v1","source_sha256":env!("MYCITY_SOURCE_SHA256"),"lock_sha256":env!("MYCITY_LOCK_SHA256"),"wall_seconds":started.elapsed().as_secs_f64(),"cases":cases,"world_store_integration":"not_exercised_in_this_probe","physical_pollution_accuracy":"not_verified","worker_pool":"not_implemented","gpu":"not_run","memory_16gb_gate":"not_run","process_memory_scope":"parent /usr/bin/time; child peak and combined footprint not measured"}),
     )
 }

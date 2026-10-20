@@ -188,6 +188,6 @@ pub fn run(dir: &Path) -> Result<Value, String> {
         json!({"schema":"mycity-worker-probe-v1","source_sha256":env!("MYCITY_SOURCE_SHA256"),"protocol":PROTOCOL,
         "persistent_worker_pid":pid,"two_jobs_same_process":true,"fault_stage_barrier":true,"continuous_report":final_state.report(),"faults":faults,"wall_seconds":started.elapsed().as_secs_f64(),
         "max_inflight":1,"reader_queue_frames":4,"control_bytes":protocol::CONTROL_BYTES,"asset_bytes":mycity_core::air::CHECKPOINT_BYTES,
-        "world_store_integration":"not_implemented","sim_process":"not_implemented","group_resource_measurement":"not_run","memory_16gb_gate":"not_run"}),
+        "world_store_integration":"not_exercised_in_this_probe","sim_process":"not_implemented","group_resource_measurement":"not_run","memory_16gb_gate":"not_run"}),
     )
 }

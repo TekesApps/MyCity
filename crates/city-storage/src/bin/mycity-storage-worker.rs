@@ -61,6 +61,34 @@ fn run() -> Result<(), String> {
         return Ok(());
     }
     let mut store = Store::open(dir, RULES).map_err(err)?;
+    if args[1] == "background-import" {
+        let job = args
+            .get(3)
+            .ok_or("missing_job")?
+            .parse::<u64>()
+            .map_err(err)?;
+        let generation = args
+            .get(4)
+            .ok_or("missing_generation")?
+            .parse::<u32>()
+            .map_err(err)?;
+        let bytes = mycity_core::read_bounded(
+            std::fs::File::open(args.get(5).ok_or("missing_candidate")?).map_err(err)?,
+            mycity_core::background::ASSET_LIMIT as u64,
+        )
+        .map_err(err)?;
+        let crash = args.get(6).map(String::as_str).unwrap_or("none");
+        let hash = store
+            .import_background_candidate_with_observer(job, generation, &bytes, |point| {
+                if format!("{point:?}") == crash {
+                    std::process::exit(97);
+                }
+                Ok(())
+            })
+            .map_err(err)?;
+        println!("{}", serde_json::json!({"candidate_sha256":hash}));
+        return Ok(());
+    }
     if args[1] == "source-queue" || args[1] == "source-receive" {
         let fact: mycity_core::inbox::ExternalFact = serde_json::from_slice(
             &std::fs::read(args.get(3).ok_or("missing_fact")?).map_err(err)?,

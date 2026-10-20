@@ -1,5 +1,10 @@
 //! Laboratory persistence: one writer, bounded replay, WAL + explicit committed boundary.
 //! No historical migration, power-loss certification or automatic fallback of confirmed data.
+mod background;
+pub use background::{
+    BackgroundPoint, BackgroundReserve, BACKGROUND_ASSET_RESERVE, BACKGROUND_LIVE_ASSETS,
+    BACKGROUND_SLOTS,
+};
 mod capacity;
 mod continuation;
 pub use continuation::{Continuation, CONTINUATION_MAX_PAGES, CONTINUATION_PAGE_BYTES};
@@ -96,6 +101,7 @@ struct Root {
     capacity: CapacityPolicy,
     source_registered: bool,
     continuation: Option<Continuation>,
+    background_reserve: Option<BackgroundReserve>,
     checkpoint: Option<checkpoint::Reference>,
     segment: u64,
     wal_end: u64,
@@ -133,6 +139,7 @@ struct Persistence {
     root: Root,
     poisoned: bool,
     source_reconciled: bool,
+    background_live: Vec<[u8; 32]>,
 }
 impl Drop for Persistence {
     fn drop(&mut self) {
@@ -328,6 +335,7 @@ impl Store {
             capacity: CapacityPolicy::default(),
             source_registered: false,
             continuation: None,
+            background_reserve: None,
             checkpoint: None,
             segment: 0,
             wal_end: 0,
@@ -363,6 +371,7 @@ impl Store {
                 root,
                 poisoned: false,
                 source_reconciled: !outbox::exists(dir),
+                background_live: Vec::with_capacity(BACKGROUND_LIVE_ASSETS),
             },
         })
     }
@@ -446,6 +455,7 @@ impl Store {
         } else {
             (0, root.genesis_sha256.clone())
         };
+        let mut background_live = Vec::with_capacity(BACKGROUND_LIVE_ASSETS);
         while pos < root.wal_end {
             if root.wal_end - pos < 4 {
                 return Err(Error::Invalid("committed_header_truncated"));
@@ -481,10 +491,21 @@ impl Store {
             } else {
                 Caller::Account(actor)
             };
+            let record: JournalRecord = serde_json::from_value(entry.record.clone())?;
+            let candidate_hash =
+                background::successful_hash(&entry.envelope, record.outcome.is_ok());
+            let candidate = candidate_hash
+                .as_ref()
+                .map(|h| background::load_asset(dir, h))
+                .transpose()?;
+            if let Some(hash) = candidate_hash {
+                background::remember(&mut background_live, hash)?;
+            }
             let mut called = false;
-            let _ = engine.execute_recorded(
+            let _ = engine.execute_recorded_with_background(
                 caller,
                 entry.envelope,
+                candidate.as_ref(),
                 |_, record| -> Result<(), Error> {
                     called = true;
                     if serde_json::to_value(record)? != entry.record {
@@ -503,6 +524,7 @@ impl Store {
             return Err(Error::Invalid("committed_boundary_mismatch"));
         }
         Self::validate_continuation(&engine, &root)?;
+        Self::validate_background(&engine, dir, &root)?;
         // Only bytes provably beyond CURRENT's validated committed boundary are removable.
         if wal_length > root.wal_end {
             wal.set_len(root.wal_end)?;
@@ -529,6 +551,7 @@ impl Store {
         if cleaned {
             sync_directory(dir)?;
         }
+        background::gc(dir, &root, &background_live)?;
         wal.seek(SeekFrom::Start(root.wal_end))?;
         Ok(Self {
             engine,
@@ -542,6 +565,7 @@ impl Store {
                 root,
                 poisoned: false,
                 source_reconciled: !outbox::exists(dir),
+                background_live,
             },
         })
     }
@@ -572,6 +596,7 @@ impl Store {
         Ok(std::mem::size_of::<Self>() - std::mem::size_of::<Engine>()
             + self.engine()?.owned_capacity_bytes()
             + self.io.dir.capacity()
+            + self.io.background_live.capacity() * std::mem::size_of::<[u8; 32]>()
             + self.io.root.schema.capacity()
             + self.io.root.wal_chain.capacity()
             + self.io.root.genesis_sha256.capacity()
@@ -660,12 +685,26 @@ impl Store {
         {
             return Err(Error::SourceSyncRequired);
         }
-        let continuation_plan = self.prepare_continuation(caller, &envelope)?;
+        let candidate = match self.background_attachment(caller, &envelope) {
+            Ok(c) => c,
+            Err(e) => {
+                self.io.poisoned = true;
+                return Err(e);
+            }
+        };
+        let background_funded = self.background_funded_quote(caller, &envelope, candidate.as_ref());
+        let continuation_plan = self.prepare_continuation(caller, &envelope, background_funded)?;
+        let background_plan = self.prepare_background(
+            caller,
+            &envelope,
+            continuation_plan.as_ref(),
+            background_funded,
+        )?;
         let control = envelope
             .actions
             .iter()
             .all(mycity_core::transaction::Action::is_responsibility_control);
-        if !control {
+        if !control && !background_plan.funded {
             capacity::admit(
                 &self.io.dir,
                 self.io.root.capacity,
@@ -697,11 +736,20 @@ impl Store {
             }
         }
         let io = &mut self.io;
-        let result = self
-            .engine
-            .execute_recorded(caller, envelope, |env, record| {
-                io.append(env, record, continuation_plan.as_ref(), &mut observer)
-            });
+        let result = self.engine.execute_recorded_with_background(
+            caller,
+            envelope,
+            candidate.as_ref(),
+            |env, record| {
+                io.append(
+                    env,
+                    record,
+                    continuation_plan.as_ref(),
+                    &background_plan,
+                    &mut observer,
+                )
+            },
+        );
         let result = match result {
             Ok(r) => r,
             Err(e) => {
@@ -735,6 +783,7 @@ impl Persistence {
         envelope: &Envelope,
         record: &JournalRecord,
         continuation_plan: Option<&Continuation>,
+        background_plan: &background::Plan,
         observer: &mut impl FnMut(WritePoint) -> io::Result<()>,
     ) -> Result<(), Error> {
         if envelope.actions.iter().any(|a| {
@@ -777,15 +826,18 @@ impl Persistence {
             return Err(Error::Invalid("wal_limit"));
         }
         let next_continuation = self.next_continuation(continuation_plan, record)?;
+        let next_background = self.next_background(background_plan, envelope, record)?;
         capacity::admit_with_reserve(
             &self.dir,
             self.root.capacity,
             check.len() as u64 + 32 + 2 * META_LIMIT,
             record.emergency_eligible
+                || background_plan.funded && record.outcome.is_ok()
                 || self.root.continuation.is_some()
                     && continuation_plan.is_some()
                     && record.outcome.is_ok(),
-            next_continuation.as_ref().map_or(0, |c| c.remaining_bytes),
+            next_continuation.as_ref().map_or(0, |c| c.remaining_bytes)
+                + next_background.as_ref().map_or(0, |b| b.remaining_bytes()),
         )?;
         self.wal.write_all(&length[..2])?;
         observer(WritePoint::WalHeaderHalf)?;
@@ -806,6 +858,7 @@ impl Persistence {
             capacity: self.root.capacity,
             source_registered: self.root.source_registered,
             continuation: next_continuation,
+            background_reserve: next_background,
             generation: self
                 .root
                 .generation
@@ -833,6 +886,9 @@ impl Persistence {
         })?;
         observer(WritePoint::CurrentSynced)?;
         self.root = root;
+        if let Some(hash) = background::successful_hash(envelope, record.outcome.is_ok()) {
+            background::remember(&mut self.background_live, hash)?;
+        }
         Ok(())
     }
 }

@@ -331,6 +331,8 @@ impl Store {
             self.io.root = root;
             self.io.wal = new_wal;
             self.engine.retire_checkpointed_journal();
+            self.io.background_live.clear();
+            background::gc(&self.io.dir, &self.io.root, &self.io.background_live)?;
             // Exact outcomes are retained in the immutable chain before removing old frames.
             fs::remove_file(self.io.dir.join(wal_name(old_segment)))?;
             sync_directory(&self.io.dir)?;

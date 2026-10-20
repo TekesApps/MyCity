@@ -1,0 +1,16 @@
+{
+  "source_sha256": "268fa1419b3527b4cbd3303aa0f0068d1c0238cf4038e54d22735e0bbc0216bd",
+  "release_tests_passed": 216,
+  "reference": {
+    "scope": "independent continuous f64 numerical reference only",
+    "max_absolute_field_error": 2.613400784667874e-07,
+    "max_absolute_time_mean_error": 6.338552675326052e-08,
+    "emitted_micro": 120000,
+    "physical_accuracy": "not_verified"
+  },
+  "verifier_sha256": "89b4ada96c5cc218a80cac843df89f8b865c48335d634bce5c85b2a676864e76",
+  "tasks_zip_sha256": "59b715247492f50cab6369dee1e04772e5d0b8eaca3d0101ae086c3f6e6e0540",
+  "world_zip_sha256": "320d8e8f3d437388b10306576153f18323921cd6d353c0ba54f13938100ac770",
+  "memory_16gb_gate": "not_run",
+  "W3_W4": "not_accepted"
+}

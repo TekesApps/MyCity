@@ -105,7 +105,7 @@ fn actual_persistent_worker_and_gated_sigkill_recovery_match_full_cpu_state() {
         assert_eq!(fault["recomputed_exact_cpu_state"], true);
     }
     assert_eq!(v["faults"].as_array().unwrap().len(), 3);
-    assert_eq!(v["world_store_integration"], "not_implemented");
+    assert_eq!(v["world_store_integration"], "not_exercised_in_this_probe");
     assert_eq!(v["memory_16gb_gate"], "not_run");
 }
 #[test]
@@ -254,4 +254,43 @@ fn stopping_worker_without_draining_its_response_reaps_child() {
     // Stop without draining this second response. A bounded reader must not hang its join.
     let status = worker.stop().unwrap();
     assert!(status.code().is_none());
+}
+
+#[test]
+fn actual_freight_drives_worker_field_and_sim_store_commits_then_reopens_original_receipt() {
+    let t = Temp::new();
+    let out = Command::new(executable())
+        .arg("background-probe")
+        .arg(t.0.join("world-suite"))
+        .output()
+        .unwrap();
+    assert!(
+        out.status.success(),
+        "{}",
+        String::from_utf8_lossy(&out.stderr)
+    );
+    let report: Value = serde_json::from_slice(&out.stdout).unwrap();
+    assert_eq!(report["source_sha256"], env!("MYCITY_SOURCE_SHA256"));
+    assert_eq!(report["jobs"].as_array().unwrap().len(), 4);
+    assert_eq!(report["field"]["time"], 120);
+    assert_eq!(report["field"]["emitted_micro"], 120000);
+    assert_eq!(report["quote1"]["status"], "Delivered");
+    assert_eq!(report["quote1"]["invoice"], 2000);
+    assert_eq!(report["quote1"]["freight"], 20);
+    assert_eq!(report["checkpoint_reopen_original_receipt"], true);
+    assert_eq!(
+        report["capacity_after_checkpoint"]["background_reserved_bytes"],
+        0
+    );
+    for (i, job) in report["jobs"].as_array().unwrap().iter().enumerate() {
+        assert_eq!(job["ticket"]["field_version"], i as u64);
+        assert!(
+            job["ticket"]["base_revision"].as_u64().unwrap()
+                < job["accept"]["expected_revision"].as_u64().unwrap()
+        );
+    }
+    assert_eq!(report["independent_sim"], "not_implemented");
+    assert_eq!(report["joint_1800_seconds"], "not_run");
+    assert_eq!(report["whole_process_group_resources"], "not_run");
+    assert_eq!(report["memory_16gb_gate"], "not_run");
 }

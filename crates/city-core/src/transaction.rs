@@ -45,6 +45,9 @@ impl Caller {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum Action {
+    Background {
+        command: crate::background::Command,
+    },
     Timeline {
         command: crate::timeline::Command,
     },
@@ -132,6 +135,7 @@ pub enum TxError {
     InboxFull,
     UnsettledResponsibility,
     StaleRevision,
+    BackgroundRequired,
     InvalidHandle,
     InsufficientFunds,
     Protection,
@@ -211,10 +215,12 @@ pub struct Engine {
     next_token: u64,
     journal: Vec<JournalRecord>,
     timeline: Option<crate::timeline::Timeline>,
+    background: Option<crate::background::Background>,
 }
 
 struct Prepared {
     timeline: Option<crate::timeline::Timeline>,
+    background: Option<crate::background::Background>,
     exchange: Option<crate::exchange::Exchange>,
     boot: Option<crate::boot::Boot>,
     economy: Option<crate::economy::Economy>,
@@ -276,6 +282,7 @@ impl Engine {
             next_token: 1,
             journal,
             timeline: None,
+            background: None,
         };
         if engine.owned_capacity_bytes() > ENGINE_BYTE_BUDGET {
             return Err(TxError::WorkingLimit);
@@ -302,6 +309,20 @@ impl Engine {
             return Err("checkpoint_collection_limits".into());
         }
         candidate.world.restore_capacity()?;
+        if let Some(b) = &candidate.background {
+            b.validate()?;
+            let t = candidate.timeline.as_ref().ok_or("background_timeline")?;
+            b.validate_timeline(t, candidate.world.revision)?;
+            if candidate.world.exchange.is_none()
+                || candidate.world.region.is_none()
+                || b.pending()
+                    .is_some_and(|j| j.base_revision > candidate.world.revision)
+                || u64::from(b.time()) < t.progress.last_complete
+                || u64::from(b.time()) > t.progress.at.max(t.progress.last_complete)
+            {
+                return Err("background_restore_clock".into());
+            }
+        }
         if let Some(t) = candidate.timeline.as_mut() {
             t.claims.shrink_to_fit();
             t.payroll.shrink_to_fit();
@@ -501,11 +522,31 @@ impl Engine {
             + 32;
         Some((progress, steps))
     }
+    /// Pure quote for funding a dedicated background control slot before persistence.
+    pub fn background_control_quote(
+        &self,
+        caller: Caller,
+        env: &Envelope,
+        candidate: Option<&crate::air::State>,
+    ) -> bool {
+        matches!(caller, Caller::System)
+            && env.world == self.world.scope.world()
+            && env.branch == self.world.scope.branch()
+            && env.expected_revision == self.world.revision
+            && matches!(env.actions.as_slice(), [Action::Background { command }] if !matches!(command, crate::background::Command::Enable))
+            && self.prepare_with_background(caller, env, candidate).is_ok()
+    }
+    pub fn background(&self) -> Option<&crate::background::Background> {
+        self.background.as_ref()
+    }
     pub fn timeline(&self) -> Option<&crate::timeline::Timeline> {
         self.timeline.as_ref()
     }
     pub fn owned_capacity_bytes(&self) -> usize {
-        let extra = self.timeline.as_ref().map_or(0, |t| t.owned_bytes());
+        let extra = self.timeline.as_ref().map_or(0, |t| t.owned_bytes())
+            + self.background.as_ref().map_or(0, |b| {
+                b.owned_bytes() - size_of::<crate::background::Background>()
+            });
         extra + size_of::<Self>() - size_of::<World>()
             + self.world.layout()["owned_capacity_bytes"]
                 .as_u64()
@@ -515,7 +556,7 @@ impl Engine {
             + self.journal.capacity() * size_of::<JournalRecord>()
     }
     pub fn state_hash(&self) -> String {
-        sha256(&serde_json::to_vec(&serde_json::json!({"world":self.world.view(),"resources":self.resources,"leases":self.leases,"next_token":self.next_token,"timeline":self.timeline})).expect("exact state"))
+        sha256(&serde_json::to_vec(&serde_json::json!({"world":self.world.view(),"resources":self.resources,"leases":self.leases,"next_token":self.next_token,"timeline":self.timeline,"background":self.background})).expect("exact state"))
     }
     pub fn execute(&mut self, caller: Caller, env: Envelope) -> Result<Receipt, TxError> {
         self.execute_recorded(caller, env, |_, _| Ok::<(), std::convert::Infallible>(()))
@@ -529,6 +570,16 @@ impl Engine {
         &mut self,
         caller: Caller,
         env: Envelope,
+        persist: impl FnOnce(&Envelope, &JournalRecord) -> Result<(), E>,
+    ) -> Result<Result<Receipt, TxError>, E> {
+        self.execute_recorded_with_background(caller, env, None, persist)
+    }
+    /// Store supplies a hash-verified immutable candidate, including during WAL replay.
+    pub fn execute_recorded_with_background<E>(
+        &mut self,
+        caller: Caller,
+        env: Envelope,
+        candidate: Option<&crate::air::State>,
         persist: impl FnOnce(&Envelope, &JournalRecord) -> Result<(), E>,
     ) -> Result<Result<Receipt, TxError>, E> {
         if env.world != self.world.scope.world() || env.branch != self.world.scope.branch() {
@@ -583,7 +634,7 @@ impl Engine {
         } else if env.expected_revision != self.world.revision {
             Err(TxError::StaleRevision)
         } else {
-            self.prepare(caller, &env)
+            self.prepare_with_background(caller, &env, candidate)
         };
         let outcome = prepared.as_ref().map(|p| p.receipt).map_err(|e| *e);
         let mut actions = [None; MAX_ACTIONS];
@@ -721,6 +772,14 @@ impl Engine {
         }
     }
     fn prepare(&self, caller: Caller, env: &Envelope) -> Result<Prepared, TxError> {
+        self.prepare_with_background(caller, env, None)
+    }
+    fn prepare_with_background(
+        &self,
+        caller: Caller,
+        env: &Envelope,
+        candidate: Option<&crate::air::State>,
+    ) -> Result<Prepared, TxError> {
         let next_revision = self
             .world
             .revision
@@ -741,18 +800,21 @@ impl Engine {
         let mut boot = self.world.boot;
         let mut exchange = self.world.exchange;
         let mut timeline = self.timeline.clone();
+        let mut background = self.background.clone();
         for (action_index, action) in env.actions.iter().enumerate() {
             if timeline
                 .as_ref()
                 .is_some_and(|t| t.progress.target.is_some())
                 && !matches!(
                     action,
-                    Action::Timeline {
-                        command: crate::timeline::Command::Advance { .. }
-                            | crate::timeline::Command::CancelAdvance
-                    } | Action::Inbox {
-                        command: crate::inbox::Command::External { .. }
-                    }
+                    Action::Background { .. }
+                        | Action::Timeline {
+                            command: crate::timeline::Command::Advance { .. }
+                                | crate::timeline::Command::CancelAdvance
+                        }
+                        | Action::Inbox {
+                            command: crate::inbox::Command::External { .. }
+                        }
                 )
                 && !safe_inbox_release(action, exchange.as_ref())
             {
@@ -773,6 +835,48 @@ impl Engine {
                 return Err(TxError::Timeline(crate::timeline::Error::LegacyClock));
             }
             match *action {
+                Action::Background { command } => {
+                    if !matches!(caller, Caller::System) {
+                        return Err(TxError::Unauthorized);
+                    }
+                    if env.actions.len() != 1 {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    if matches!(command, crate::background::Command::Enable) {
+                        let t = timeline.as_ref().ok_or(TxError::InvalidOperation)?;
+                        if background.is_some()
+                            || region.is_none()
+                            || exchange.as_ref().is_none_or(|x| {
+                                x.maps.iter().any(|m| {
+                                    m.origin_x_cm < 0
+                                        || m.origin_x_cm
+                                            > i64::from(crate::background::SIDE) * 3200 - 102400
+                                }) || x.quotes.iter().any(|q| {
+                                    q.spec.kind == crate::exchange::Kind::Freight
+                                        && q.spec.quantity.value() > 1_000_000
+                                })
+                            })
+                            || t.progress.target.is_some()
+                            || t.progress.last_complete != 0
+                        {
+                            return Err(TxError::InvalidOperation);
+                        }
+                        background = Some(crate::background::Background::new());
+                    } else {
+                        if !matches!(command, crate::background::Command::Restart)
+                            && timeline.as_ref().is_none_or(|t| {
+                                t.progress.phase != Some(crate::schedule::Phase::P4)
+                            })
+                        {
+                            return Err(TxError::InvalidOperation);
+                        }
+                        background
+                            .as_mut()
+                            .ok_or(TxError::InvalidOperation)?
+                            .command(command, candidate)
+                            .map_err(|_| TxError::InvalidOperation)?;
+                    }
+                }
                 Action::Timeline { command } => {
                     if !matches!(caller, Caller::System) {
                         return Err(TxError::Unauthorized);
@@ -782,6 +886,7 @@ impl Engine {
                     }
                     timeline_driver::Frame {
                         world: &self.world,
+                        background: &mut background,
                         region: &mut region,
                         economy: &mut economy,
                         boot: &mut boot,
@@ -1386,8 +1491,30 @@ impl Engine {
         } else {
             None
         };
+        if let Some(b) = &background {
+            b.validate_timeline(
+                timeline.as_ref().ok_or(TxError::InvalidOperation)?,
+                next_revision,
+            )
+            .map_err(|_| TxError::InvalidOperation)?;
+        }
+        let bg_heap = |b: &Option<crate::background::Background>| {
+            b.as_ref().map_or(0, |v| {
+                v.owned_bytes() - size_of::<crate::background::Background>()
+            })
+        };
+        let projected = self
+            .owned_capacity_bytes()
+            .saturating_sub(bg_heap(&self.background))
+            .saturating_sub(self.timeline.as_ref().map_or(0, |t| t.owned_bytes()))
+            + bg_heap(&background)
+            + timeline.as_ref().map_or(0, |t| t.owned_bytes());
+        if projected > ENGINE_BYTE_BUDGET {
+            return Err(TxError::WorkingLimit);
+        }
         Ok(Prepared {
             timeline,
+            background,
             exchange,
             boot,
             economy,
@@ -1425,6 +1552,7 @@ impl Engine {
                 .expect("validated commit handle");
         }
         self.timeline = prepared.timeline;
+        self.background = prepared.background;
         self.world.exchange = prepared.exchange;
         self.world.boot = prepared.boot;
         self.world.economy = prepared.economy;
@@ -1828,7 +1956,9 @@ impl Action {
     pub fn is_new_commitment(&self) -> bool {
         matches!(
             self,
-            Self::Timeline {
+            Self::Background {
+                command: crate::background::Command::Enable
+            } | Self::Timeline {
                 command: crate::timeline::Command::Claims { .. }
                     | crate::timeline::Command::AddPayroll { .. }
             } | Self::Exchange {

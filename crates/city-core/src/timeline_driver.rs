@@ -31,6 +31,7 @@ fn check_time(at: u64) -> Result<(), TxError> {
 }
 pub(super) struct Frame<'a> {
     pub world: &'a World,
+    pub background: &'a mut Option<crate::background::Background>,
     pub region: &'a mut Option<crate::region::Region>,
     pub economy: &'a mut Option<crate::economy::Economy>,
     pub boot: &'a mut Option<crate::boot::Boot>,
@@ -254,7 +255,17 @@ impl Frame<'_> {
                     t.progress.target = Some(target);
                     self.boundary(t)?;
                 }
-                for _ in 0..limit {
+                for page_step in 0..limit {
+                    if t.progress.phase == Some(P::P4)
+                        && self.background.as_ref().is_some_and(|b| {
+                            u64::from(b.time()) != t.progress.at || b.pending().is_some()
+                        })
+                    {
+                        if page_step == 0 {
+                            return Err(TxError::BackgroundRequired);
+                        }
+                        break;
+                    }
                     self.one(t)?;
                     if t.progress.phase.is_none() {
                         break;
@@ -376,6 +387,18 @@ impl Frame<'_> {
                     t.progress.cursor += 1;
                 } else {
                     let delta = at - p.last_complete;
+                    if let Some(b) = self.background.as_mut().filter(|_| delta > 0) {
+                        b.capture(
+                            self.exchange.as_ref().ok_or(TxError::InvalidOperation)?,
+                            p.last_complete,
+                            at,
+                            self.world
+                                .revision
+                                .checked_add(1)
+                                .ok_or(TxError::Overflow)?,
+                        )
+                        .map_err(|_| TxError::InvalidOperation)?;
+                    }
                     if let Some(r) = self.region.as_mut() {
                         if delta > 0 {
                             r.bump().map_err(TxError::Region)?;

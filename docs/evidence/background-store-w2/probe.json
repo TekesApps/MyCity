@@ -1,0 +1,1563 @@
+{
+  "capacity_after_checkpoint": {
+    "background_reserved_bytes": 0,
+    "continuation_reserved_bytes": 0,
+    "hard_blocked": false,
+    "normal_blocked": false,
+    "normal_limit": 125829120,
+    "reason": null,
+    "total_bytes": 134217728,
+    "used_bytes": 2182017
+  },
+  "capacity_before_checkpoint": {
+    "background_reserved_bytes": 0,
+    "continuation_reserved_bytes": 0,
+    "hard_blocked": false,
+    "normal_blocked": false,
+    "normal_limit": 125829120,
+    "reason": null,
+    "total_bytes": 134217728,
+    "used_bytes": 2828709
+  },
+  "checkpoint": {
+    "archive_bytes": 2182017,
+    "archive_limit": 134217728,
+    "generation": 25,
+    "hot_receipts": 0,
+    "sequence": 20,
+    "wal_bytes": 0
+  },
+  "checkpoint_reopen_original_receipt": true,
+  "controller_pid": 76596,
+  "engine_owned_bytes": 2948980,
+  "field": {
+    "background": 655.3599853515625,
+    "boundary_exchange": 0.0,
+    "complete": true,
+    "decay": 655.3608823537627,
+    "emitted_micro": 120000,
+    "field_sha256": "6f7400304380b9290e9ea58a6a14ad097cd6b33072cb610b351e247ccc4a6a20",
+    "input_sha256": "e5307e7912a32c31844887fac36407b71001efc64ee2268413b84ddca8868b5b",
+    "integral_sha256": "c0a3b9abd28e8176c98c31ec76ec3cf7c21de5ec863960345a491410c6065e29",
+    "maximum": 2.11221981048584,
+    "minimum": 2.0,
+    "owned_bytes": 262580,
+    "progress": null,
+    "rounding_residual": -5.197725506667084e-7,
+    "side": 128,
+    "steps": 4,
+    "strategy": "run36-air-f32-v1",
+    "sum": 32768.11910247803,
+    "target": 120,
+    "time": 120
+  },
+  "independent_sim": "not_implemented",
+  "initial_total_cash_cents": 3000000,
+  "jobs": [
+    {
+      "accept": {
+        "actions": [
+          {
+            "command": {
+              "candidate_sha256": [
+                228,
+                44,
+                142,
+                17,
+                240,
+                201,
+                32,
+                46,
+                174,
+                197,
+                203,
+                225,
+                249,
+                171,
+                238,
+                154,
+                226,
+                104,
+                22,
+                157,
+                221,
+                249,
+                38,
+                204,
+                253,
+                23,
+                99,
+                137,
+                15,
+                204,
+                164,
+                184
+              ],
+              "generation": 1,
+              "job": 1,
+              "kind": "accept"
+            },
+            "kind": "background"
+          }
+        ],
+        "branch": 1,
+        "expected_revision": 6,
+        "operation_id": 7,
+        "world": 1
+      },
+      "candidate_sha256": "e42c8e11f0c9202eaec5cbe1f9abee9ae268169dddf926ccfd1763890fcca4b8",
+      "result": {
+        "background": 163.83999633789062,
+        "boundary_exchange": 0.0,
+        "complete": true,
+        "decay": 163.83999633789062,
+        "emitted_micro": 30000,
+        "field_sha256": "26ddf04d8b53cea1150082375f5c514674e1d379a634539d74268fb4861e1e75",
+        "input_sha256": "32c6504db55c85696df4dde505a998e86b63f215495fbfb1bafa7565d48e8931",
+        "integral_sha256": "e903a2ebdba94530a3309bae884636f24763c5e83112ab27551343ebe30f11ad",
+        "maximum": 2.0299999713897705,
+        "minimum": 2.0,
+        "owned_bytes": 262580,
+        "progress": null,
+        "rounding_residual": -2.8610229491077277e-8,
+        "side": 128,
+        "steps": 1,
+        "strategy": "run36-air-f32-v1",
+        "sum": 32768.02999997139,
+        "target": 30,
+        "time": 30
+      },
+      "ticket": {
+        "attempt": 1,
+        "base_revision": 5,
+        "branch": 1,
+        "checkpoint_sha256": "02eb51ed6eff23b62674941f17ad62433c976a0469a9da873e938db9e0be342f",
+        "end": 30,
+        "field_version": 0,
+        "generation": 1,
+        "incarnation": 1,
+        "input_sha256": "32c6504db55c85696df4dde505a998e86b63f215495fbfb1bafa7565d48e8931",
+        "job": 1,
+        "rules_sha256": "11f47af45a64e00ea3c7a8f0439062a0360e947acdce9de96505b295a9e6fb61",
+        "source_sha256": "268fa1419b3527b4cbd3303aa0f0068d1c0238cf4038e54d22735e0bbc0216bd",
+        "start": 0,
+        "world": 1
+      }
+    },
+    {
+      "accept": {
+        "actions": [
+          {
+            "command": {
+              "candidate_sha256": [
+                150,
+                97,
+                100,
+                28,
+                230,
+                108,
+                122,
+                203,
+                110,
+                187,
+                103,
+                67,
+                161,
+                110,
+                24,
+                14,
+                204,
+                183,
+                210,
+                141,
+                247,
+                69,
+                121,
+                62,
+                128,
+                127,
+                100,
+                131,
+                30,
+                236,
+                142,
+                185
+              ],
+              "generation": 1,
+              "job": 2,
+              "kind": "accept"
+            },
+            "kind": "background"
+          }
+        ],
+        "branch": 1,
+        "expected_revision": 10,
+        "operation_id": 11,
+        "world": 1
+      },
+      "candidate_sha256": "9661641ce66c7acb6ebb6743a16e180eccb7d28df745793e807f64831eec8eb9",
+      "result": {
+        "background": 327.67999267578125,
+        "boundary_exchange": 0.0,
+        "complete": true,
+        "decay": 327.68014267563484,
+        "emitted_micro": 60000,
+        "field_sha256": "443f184f78b0a800dd695d4b1480461a1a5dd7411d17cf3034f87723a9169586",
+        "input_sha256": "93704d0ab2648ef9751d3ecee07e9f9a08d5a1ca265bd1676ff35ff263088327",
+        "integral_sha256": "69d018dc79b03408bafad54139b76431fd23a9ebf0feef8c89bdb930479d0804",
+        "maximum": 2.0586559772491455,
+        "minimum": 2.0,
+        "owned_bytes": 262580,
+        "progress": null,
+        "rounding_residual": -2.265311666027614e-8,
+        "side": 128,
+        "steps": 2,
+        "strategy": "run36-air-f32-v1",
+        "sum": 32768.05984997749,
+        "target": 60,
+        "time": 60
+      },
+      "ticket": {
+        "attempt": 1,
+        "base_revision": 9,
+        "branch": 1,
+        "checkpoint_sha256": "3c28e3629806b0a1e9badbf0da7b6725ac75c1e69991ff27809bbc73673499ee",
+        "end": 60,
+        "field_version": 1,
+        "generation": 1,
+        "incarnation": 1,
+        "input_sha256": "93704d0ab2648ef9751d3ecee07e9f9a08d5a1ca265bd1676ff35ff263088327",
+        "job": 2,
+        "rules_sha256": "11f47af45a64e00ea3c7a8f0439062a0360e947acdce9de96505b295a9e6fb61",
+        "source_sha256": "268fa1419b3527b4cbd3303aa0f0068d1c0238cf4038e54d22735e0bbc0216bd",
+        "start": 30,
+        "world": 1
+      }
+    },
+    {
+      "accept": {
+        "actions": [
+          {
+            "command": {
+              "candidate_sha256": [
+                154,
+                118,
+                87,
+                171,
+                172,
+                143,
+                14,
+                209,
+                176,
+                238,
+                47,
+                106,
+                6,
+                157,
+                188,
+                206,
+                27,
+                173,
+                114,
+                100,
+                89,
+                206,
+                86,
+                174,
+                87,
+                48,
+                247,
+                127,
+                239,
+                158,
+                54,
+                117
+              ],
+              "generation": 1,
+              "job": 3,
+              "kind": "accept"
+            },
+            "kind": "background"
+          }
+        ],
+        "branch": 1,
+        "expected_revision": 14,
+        "operation_id": 15,
+        "world": 1
+      },
+      "candidate_sha256": "9a7657abac8f0ed1b0ee2f6a069dbcce1bad726459ce56ae5730f77fef9e3675",
+      "result": {
+        "background": 491.5199890136719,
+        "boundary_exchange": 0.0,
+        "complete": true,
+        "decay": 491.5204382634063,
+        "emitted_micro": 90000,
+        "field_sha256": "a63aa106d43c552489fb4629323bcef3c861e4c6cee6458019e7f219c7595248",
+        "input_sha256": "6e1e29f4c0ecf9625608a227d5956debaecfdd389d127d0bfdb772bea6d6683e",
+        "integral_sha256": "eb8db368525378d12590ee6e7b733a26050c5e5075e395ea004792fbac4b7984",
+        "maximum": 2.0860400199890137,
+        "minimum": 2.0,
+        "owned_bytes": 262580,
+        "progress": null,
+        "rounding_residual": -2.551179184850927e-7,
+        "side": 128,
+        "steps": 3,
+        "strategy": "run36-air-f32-v1",
+        "sum": 32768.08955049515,
+        "target": 90,
+        "time": 90
+      },
+      "ticket": {
+        "attempt": 1,
+        "base_revision": 13,
+        "branch": 1,
+        "checkpoint_sha256": "1976dc92f27a892c328a80128c0ce9769e6a59bfe3ea7c0832bcf66fd912bd7e",
+        "end": 90,
+        "field_version": 2,
+        "generation": 1,
+        "incarnation": 1,
+        "input_sha256": "6e1e29f4c0ecf9625608a227d5956debaecfdd389d127d0bfdb772bea6d6683e",
+        "job": 3,
+        "rules_sha256": "11f47af45a64e00ea3c7a8f0439062a0360e947acdce9de96505b295a9e6fb61",
+        "source_sha256": "268fa1419b3527b4cbd3303aa0f0068d1c0238cf4038e54d22735e0bbc0216bd",
+        "start": 60,
+        "world": 1
+      }
+    },
+    {
+      "accept": {
+        "actions": [
+          {
+            "command": {
+              "candidate_sha256": [
+                88,
+                30,
+                254,
+                249,
+                22,
+                116,
+                63,
+                109,
+                72,
+                91,
+                127,
+                217,
+                55,
+                204,
+                149,
+                198,
+                149,
+                157,
+                83,
+                150,
+                101,
+                47,
+                210,
+                180,
+                167,
+                79,
+                60,
+                181,
+                254,
+                95,
+                76,
+                62
+              ],
+              "generation": 1,
+              "job": 4,
+              "kind": "accept"
+            },
+            "kind": "background"
+          }
+        ],
+        "branch": 1,
+        "expected_revision": 18,
+        "operation_id": 19,
+        "world": 1
+      },
+      "candidate_sha256": "581efef916743f6d485b7fd937cc95c6959d5396652fd2b4a74f3cb5fe5f4c3e",
+      "result": {
+        "background": 655.3599853515625,
+        "boundary_exchange": 0.0,
+        "complete": true,
+        "decay": 655.3608823537627,
+        "emitted_micro": 120000,
+        "field_sha256": "6f7400304380b9290e9ea58a6a14ad097cd6b33072cb610b351e247ccc4a6a20",
+        "input_sha256": "e5307e7912a32c31844887fac36407b71001efc64ee2268413b84ddca8868b5b",
+        "integral_sha256": "c0a3b9abd28e8176c98c31ec76ec3cf7c21de5ec863960345a491410c6065e29",
+        "maximum": 2.11221981048584,
+        "minimum": 2.0,
+        "owned_bytes": 262580,
+        "progress": null,
+        "rounding_residual": -5.197725506667084e-7,
+        "side": 128,
+        "steps": 4,
+        "strategy": "run36-air-f32-v1",
+        "sum": 32768.11910247803,
+        "target": 120,
+        "time": 120
+      },
+      "ticket": {
+        "attempt": 1,
+        "base_revision": 17,
+        "branch": 1,
+        "checkpoint_sha256": "aa2a7b72f848c9178acf42b6a1e0a1cf79daccd94db7dd9a95ef74e0afbfe582",
+        "end": 120,
+        "field_version": 3,
+        "generation": 1,
+        "incarnation": 1,
+        "input_sha256": "e5307e7912a32c31844887fac36407b71001efc64ee2268413b84ddca8868b5b",
+        "job": 4,
+        "rules_sha256": "11f47af45a64e00ea3c7a8f0439062a0360e947acdce9de96505b295a9e6fb61",
+        "source_sha256": "268fa1419b3527b4cbd3303aa0f0068d1c0238cf4038e54d22735e0bbc0216bd",
+        "start": 90,
+        "world": 1
+      }
+    }
+  ],
+  "joint_1800_seconds": "not_run",
+  "memory_16gb_gate": "not_run",
+  "quote1": {
+    "delivered": 1000,
+    "freight": 20,
+    "invoice": 2000,
+    "status": "Delivered"
+  },
+  "rules_identity": "background-w2:268fa1419b3527b4cbd3303aa0f0068d1c0238cf4038e54d22735e0bbc0216bd",
+  "schema": "mycity-background-store-probe-v1",
+  "source_sha256": "268fa1419b3527b4cbd3303aa0f0068d1c0238cf4038e54d22735e0bbc0216bd",
+  "state_sha256": "9256cebae31acc6841cc5ee8cf6d8ab09ad56dac17473b17fc3714aed3901d84",
+  "timeline": {
+    "at": 120,
+    "cursor": 0,
+    "lane": 0,
+    "last_complete": 120,
+    "page_paid": 0,
+    "page_sources": 0,
+    "phase": null,
+    "serial": 8,
+    "target": null
+  },
+  "wall_seconds": 1.801132459,
+  "whole_process_group_resources": "not_run",
+  "worker_pid": 76597,
+  "world": {
+    "accounts": [
+      {
+        "cash": 1000000,
+        "id": 1,
+        "protected": 0,
+        "role": "treasury"
+      },
+      {
+        "cash": 200980,
+        "id": 2,
+        "protected": 0,
+        "role": "company"
+      },
+      {
+        "cash": 597000,
+        "id": 3,
+        "protected": 0,
+        "role": "company"
+      },
+      {
+        "cash": 1202020,
+        "id": 4,
+        "protected": 0,
+        "role": "supplier"
+      }
+    ],
+    "boot": {
+      "contractor": 4,
+      "exported_basis": 0,
+      "exports": [
+        0,
+        0
+      ],
+      "failed_expense": 0,
+      "fees": 0,
+      "fuel_used": 0,
+      "initial": [
+        5000,
+        100000,
+        0,
+        6000000,
+        0,
+        0
+      ],
+      "initial_basis": 2100,
+      "initial_cash": 3000000,
+      "jobs": [
+        {
+          "completed": 0,
+          "cost": 0,
+          "due": 0,
+          "failed": 0,
+          "identity": 0,
+          "inputs": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "phase": "Idle",
+          "started": 0,
+          "tokens": [
+            0,
+            0
+          ]
+        },
+        {
+          "completed": 0,
+          "cost": 0,
+          "due": 0,
+          "failed": 0,
+          "identity": 0,
+          "inputs": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "phase": "Idle",
+          "started": 0,
+          "tokens": [
+            0,
+            0
+          ]
+        }
+      ],
+      "limits": [
+        5000,
+        2000000,
+        6000000,
+        6000000,
+        6000000,
+        10000000
+      ],
+      "next_job": 1,
+      "operator": 3,
+      "profile": "pboot-cold-micro-v1",
+      "resources": [
+        101,
+        102
+      ],
+      "stocks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "time": 120
+    },
+    "economy": null,
+    "exchange": {
+      "accounts": [
+        {
+          "account": 1,
+          "city": 3
+        },
+        {
+          "account": 2,
+          "city": 2
+        },
+        {
+          "account": 3,
+          "city": 1
+        },
+        {
+          "account": 4,
+          "city": 1
+        }
+      ],
+      "cogs": 400,
+      "edges": [
+        {
+          "a_cm": [
+            51200,
+            51200,
+            0
+          ],
+          "b_cm": [
+            153600,
+            51200,
+            0
+          ],
+          "from": 1,
+          "id": 1,
+          "kind": "freight",
+          "population_route": 1,
+          "resource": 201,
+          "to": 3,
+          "travel_seconds": 60
+        },
+        {
+          "a_cm": [
+            153600,
+            51200,
+            0
+          ],
+          "b_cm": [
+            256000,
+            51200,
+            0
+          ],
+          "from": 3,
+          "id": 2,
+          "kind": "freight",
+          "population_route": 2,
+          "resource": 202,
+          "to": 2,
+          "travel_seconds": 60
+        },
+        {
+          "a_cm": [
+            51200,
+            51200,
+            500
+          ],
+          "b_cm": [
+            153600,
+            51200,
+            500
+          ],
+          "from": 1,
+          "id": 3,
+          "kind": "electricity",
+          "population_route": null,
+          "resource": 101,
+          "to": 3,
+          "travel_seconds": 1
+        },
+        {
+          "a_cm": [
+            153600,
+            51200,
+            500
+          ],
+          "b_cm": [
+            256000,
+            51200,
+            500
+          ],
+          "from": 3,
+          "id": 4,
+          "kind": "electricity",
+          "population_route": null,
+          "resource": 103,
+          "to": 2,
+          "travel_seconds": 1
+        },
+        {
+          "a_cm": [
+            51200,
+            51200,
+            -300
+          ],
+          "b_cm": [
+            153600,
+            51200,
+            -300
+          ],
+          "from": 1,
+          "id": 5,
+          "kind": "water",
+          "population_route": null,
+          "resource": 102,
+          "to": 3,
+          "travel_seconds": 512
+        },
+        {
+          "a_cm": [
+            153600,
+            51200,
+            -300
+          ],
+          "b_cm": [
+            256000,
+            51200,
+            -300
+          ],
+          "from": 3,
+          "id": 6,
+          "kind": "water",
+          "population_route": null,
+          "resource": 104,
+          "to": 2,
+          "travel_seconds": 512
+        }
+      ],
+      "energy_loss": 0,
+      "energy_loss_limit": 100000,
+      "freight_income": 20,
+      "home_city": 1,
+      "inbox": {
+        "accrued": 0,
+        "closed": 0,
+        "enabled": false,
+        "external_next": 1,
+        "facts": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "incident_seen": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "next_sequence": 1,
+        "paid": 0,
+        "retained": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "initial_basis": 4100,
+      "initial_raw": 5000,
+      "link_faults": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "link_repairs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "loss_expense": 0,
+      "maps": [
+        {
+          "city": 1,
+          "origin_x_cm": 0
+        },
+        {
+          "city": 2,
+          "origin_x_cm": 204800
+        },
+        {
+          "city": 3,
+          "origin_x_cm": 102400
+        }
+      ],
+      "open": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "population_link_controls": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "profile": "regional-fulfilment-v1",
+      "quotes": [
+        {
+          "delivered": 1000,
+          "freight": 20,
+          "invoice": 2000,
+          "loss_cost": 0,
+          "source_cost": 400,
+          "source_fragment": {
+            "basis": 400,
+            "lot_id": 11,
+            "offset": 0,
+            "origin_basis": 2000,
+            "origin_quantity": 5000,
+            "quantity": 1000
+          },
+          "spec": {
+            "buyer": 2,
+            "carrier": 4,
+            "destination": 8,
+            "edges": [
+              1,
+              2,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "expires_at": 2000,
+            "from": 1,
+            "id": 1,
+            "kind": "freight",
+            "max_distance_m": 2048,
+            "quantity": 1000,
+            "seller": 4,
+            "source": 7,
+            "to": 2,
+            "unit_price": 2000
+          },
+          "status": "Delivered"
+        },
+        {
+          "delivered": 0,
+          "freight": 0,
+          "invoice": 0,
+          "loss_cost": 0,
+          "source_cost": 0,
+          "source_fragment": null,
+          "spec": {
+            "buyer": 2,
+            "carrier": 4,
+            "destination": 9,
+            "edges": [
+              1,
+              2,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "expires_at": 2000,
+            "from": 1,
+            "id": 2,
+            "kind": "freight",
+            "max_distance_m": 2048,
+            "quantity": 1000,
+            "seller": 4,
+            "source": 7,
+            "to": 2,
+            "unit_price": 2000
+          },
+          "status": "Pending"
+        },
+        {
+          "delivered": 0,
+          "freight": 0,
+          "invoice": 0,
+          "loss_cost": 0,
+          "source_cost": 0,
+          "source_fragment": null,
+          "spec": {
+            "buyer": 2,
+            "carrier": 4,
+            "destination": 10,
+            "edges": [
+              1,
+              2,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "expires_at": 2000,
+            "from": 1,
+            "id": 3,
+            "kind": "freight",
+            "max_distance_m": 2048,
+            "quantity": 1000,
+            "seller": 4,
+            "source": 7,
+            "to": 2,
+            "unit_price": 2000
+          },
+          "status": "Pending"
+        },
+        {
+          "delivered": 0,
+          "freight": 0,
+          "invoice": 0,
+          "loss_cost": 0,
+          "source_cost": 0,
+          "source_fragment": null,
+          "spec": {
+            "buyer": 2,
+            "carrier": 4,
+            "destination": 11,
+            "edges": [
+              1,
+              2,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "expires_at": 2000,
+            "from": 1,
+            "id": 4,
+            "kind": "freight",
+            "max_distance_m": 2048,
+            "quantity": 1000,
+            "seller": 4,
+            "source": 7,
+            "to": 2,
+            "unit_price": 2000
+          },
+          "status": "Pending"
+        },
+        {
+          "delivered": 0,
+          "freight": 0,
+          "invoice": 0,
+          "loss_cost": 0,
+          "source_cost": 0,
+          "source_fragment": null,
+          "spec": {
+            "buyer": 2,
+            "carrier": 4,
+            "destination": 12,
+            "edges": [
+              1,
+              2,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "expires_at": 30,
+            "from": 1,
+            "id": 5,
+            "kind": "freight",
+            "max_distance_m": 2048,
+            "quantity": 1000,
+            "seller": 4,
+            "source": 7,
+            "to": 2,
+            "unit_price": 2000
+          },
+          "status": "Expired"
+        },
+        {
+          "delivered": 0,
+          "freight": 0,
+          "invoice": 0,
+          "loss_cost": 0,
+          "source_cost": 0,
+          "source_fragment": null,
+          "spec": {
+            "buyer": 2,
+            "carrier": 4,
+            "destination": 13,
+            "edges": [
+              3,
+              4,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "expires_at": 190,
+            "from": 1,
+            "id": 6,
+            "kind": "electricity",
+            "max_distance_m": 2048,
+            "quantity": 100000,
+            "seller": 3,
+            "source": 2,
+            "to": 2,
+            "unit_price": 1
+          },
+          "status": "Pending"
+        },
+        {
+          "delivered": 0,
+          "freight": 0,
+          "invoice": 0,
+          "loss_cost": 0,
+          "source_cost": 0,
+          "source_fragment": null,
+          "spec": {
+            "buyer": 2,
+            "carrier": 4,
+            "destination": 14,
+            "edges": [
+              5,
+              6,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "expires_at": 2000,
+            "from": 1,
+            "id": 7,
+            "kind": "water",
+            "max_distance_m": 2048,
+            "quantity": 100000,
+            "seller": 3,
+            "source": 3,
+            "to": 2,
+            "unit_price": 2
+          },
+          "status": "Pending"
+        },
+        {
+          "delivered": 0,
+          "freight": 0,
+          "invoice": 0,
+          "loss_cost": 0,
+          "source_cost": 0,
+          "source_fragment": null,
+          "spec": {
+            "buyer": 2,
+            "carrier": 4,
+            "destination": 13,
+            "edges": [
+              3,
+              4,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "expires_at": 2000,
+            "from": 1,
+            "id": 8,
+            "kind": "electricity",
+            "max_distance_m": 1000,
+            "quantity": 100000,
+            "seller": 3,
+            "source": 2,
+            "to": 2,
+            "unit_price": 1
+          },
+          "status": "Pending"
+        }
+      ],
+      "sales": 2000,
+      "shipments": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "stocks": [
+        {
+          "city": 1,
+          "limit": 5000,
+          "stock": 1
+        },
+        {
+          "city": 1,
+          "limit": 2000000,
+          "stock": 2
+        },
+        {
+          "city": 1,
+          "limit": 6000000,
+          "stock": 3
+        },
+        {
+          "city": 1,
+          "limit": 6000000,
+          "stock": 4
+        },
+        {
+          "city": 1,
+          "limit": 6000000,
+          "stock": 5
+        },
+        {
+          "city": 1,
+          "limit": 10000000,
+          "stock": 6
+        },
+        {
+          "city": 1,
+          "limit": 5000,
+          "stock": 7
+        },
+        {
+          "city": 2,
+          "limit": 10000,
+          "stock": 8
+        },
+        {
+          "city": 2,
+          "limit": 10000,
+          "stock": 9
+        },
+        {
+          "city": 2,
+          "limit": 10000,
+          "stock": 10
+        },
+        {
+          "city": 2,
+          "limit": 10000,
+          "stock": 11
+        },
+        {
+          "city": 2,
+          "limit": 10000,
+          "stock": 12
+        },
+        {
+          "city": 2,
+          "limit": 1000000,
+          "stock": 13
+        },
+        {
+          "city": 2,
+          "limit": 1000000,
+          "stock": 14
+        }
+      ],
+      "water_loss": 0,
+      "water_loss_limit": 100000
+    },
+    "opening_sources": [
+      {
+        "amount": 1000000,
+        "id": 1,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 200000,
+        "id": 2,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 600000,
+        "id": 3,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 1200000,
+        "id": 4,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 2000,
+        "id": 5,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 100,
+        "id": 6,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 7,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 8,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 9,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 10,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 2000,
+        "id": 11,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 12,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 13,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 14,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 15,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 16,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 17,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 18,
+        "kind": "inventory_capital"
+      }
+    ],
+    "region": {
+      "active_city": 1,
+      "cities": [
+        {
+          "development_elapsed": 3153600120,
+          "housing_capacity": 10000,
+          "id": 1,
+          "population": 4000,
+          "willing": 1998
+        },
+        {
+          "development_elapsed": 0,
+          "housing_capacity": 10000,
+          "id": 2,
+          "population": 100,
+          "willing": 0
+        },
+        {
+          "development_elapsed": 4000,
+          "housing_capacity": 10000,
+          "id": 3,
+          "population": 300,
+          "willing": 100
+        },
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "interaction_time": 120,
+      "next_transit": 1,
+      "obligations": [
+        {
+          "amount": 1000,
+          "arrears": 0,
+          "expires_at": 90,
+          "id": 1,
+          "next_due": null,
+          "payee": 2,
+          "payer": 3,
+          "period_seconds": 30
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "routes": [
+        {
+          "capacity_people": 2000,
+          "distance_m": 1024,
+          "from": 1,
+          "id": 1,
+          "to": 3,
+          "travel_seconds": 60
+        },
+        {
+          "capacity_people": 2000,
+          "distance_m": 1024,
+          "from": 3,
+          "id": 2,
+          "to": 2,
+          "travel_seconds": 60
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "sequence": 6,
+      "snapshots": [
+        {
+          "applied_sequence": 0,
+          "city": 1,
+          "observed_at": 0,
+          "population": 4000,
+          "version": 1
+        },
+        {
+          "applied_sequence": 0,
+          "city": 2,
+          "observed_at": 0,
+          "population": 100,
+          "version": 1
+        },
+        {
+          "applied_sequence": 0,
+          "city": 3,
+          "observed_at": 0,
+          "population": 300,
+          "version": 1
+        },
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "transits": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "revision": 20,
+    "schema": "mycity-m0-state-v6",
+    "scope": {
+      "branch": 1,
+      "world": 1
+    },
+    "seed": 7,
+    "stocks": [
+      {
+        "basis": 2000,
+        "commodity": "fuel",
+        "id": 1,
+        "lot_id": 5,
+        "offset": 0,
+        "origin_basis": 2000,
+        "origin_quantity": 5000,
+        "owner": 3,
+        "quantity": 5000
+      },
+      {
+        "basis": 100,
+        "commodity": "electricity",
+        "id": 2,
+        "lot_id": 6,
+        "offset": 0,
+        "origin_basis": 100,
+        "origin_quantity": 100000,
+        "owner": 3,
+        "quantity": 100000
+      },
+      {
+        "basis": 0,
+        "commodity": "water",
+        "id": 3,
+        "lot_id": 7,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw_water",
+        "id": 4,
+        "lot_id": 8,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 6000000,
+        "owner": 3,
+        "quantity": 6000000
+      },
+      {
+        "basis": 0,
+        "commodity": "waste_water",
+        "id": 5,
+        "lot_id": 9,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "heat",
+        "id": 6,
+        "lot_id": 10,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 1600,
+        "commodity": "raw",
+        "id": 7,
+        "lot_id": 11,
+        "offset": 1000,
+        "origin_basis": 2000,
+        "origin_quantity": 5000,
+        "owner": 4,
+        "quantity": 4000
+      },
+      {
+        "basis": 2020,
+        "commodity": "raw",
+        "id": 8,
+        "lot_id": 3221225473,
+        "offset": 0,
+        "origin_basis": 2020,
+        "origin_quantity": 1000,
+        "owner": 2,
+        "quantity": 1000
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 9,
+        "lot_id": 13,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 2,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 10,
+        "lot_id": 14,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 2,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 11,
+        "lot_id": 15,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 2,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 12,
+        "lot_id": 16,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 2,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "electricity",
+        "id": 13,
+        "lot_id": 17,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 2,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "water",
+        "id": 14,
+        "lot_id": 18,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 2,
+        "quantity": 0
+      }
+    ]
+  }
+}

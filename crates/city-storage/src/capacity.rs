@@ -18,6 +18,7 @@ impl Default for CapacityPolicy {
 pub struct CapacityStatus {
     pub used_bytes: u64,
     pub continuation_reserved_bytes: u64,
+    pub background_reserved_bytes: u64,
     pub total_bytes: u64,
     pub normal_limit: u64,
     pub normal_blocked: bool,
@@ -73,7 +74,14 @@ pub(super) fn persisted_reserve(dir: &Path) -> Result<u64, Error> {
     if root.continuation.as_ref().is_some_and(|c| !c.valid()) {
         return Err(Error::Invalid("timeline_ticket"));
     }
-    Ok(root.continuation.as_ref().map_or(0, |c| c.remaining_bytes))
+    if root.background_reserve.as_ref().is_some_and(|r| !r.valid()) {
+        return Err(Error::Invalid("background_reserve"));
+    }
+    Ok(root.continuation.as_ref().map_or(0, |c| c.remaining_bytes)
+        + root
+            .background_reserve
+            .as_ref()
+            .map_or(0, |r| r.remaining_bytes()))
 }
 pub(super) fn admit_with_reserve(
     dir: &Path,
@@ -170,11 +178,26 @@ impl Store {
             .continuation
             .as_ref()
             .map_or(0, |c| c.remaining_bytes);
-        let normal_blocked = used.saturating_add(reserved).saturating_add(next) > normal_limit;
-        let hard_blocked = used.saturating_add(reserved).saturating_add(next) > p.total_bytes;
+        let background_reserved = self
+            .io
+            .root
+            .background_reserve
+            .as_ref()
+            .map_or(0, |r| r.remaining_bytes());
+        let normal_blocked = used
+            .saturating_add(reserved)
+            .saturating_add(background_reserved)
+            .saturating_add(next)
+            > normal_limit;
+        let hard_blocked = used
+            .saturating_add(reserved)
+            .saturating_add(background_reserved)
+            .saturating_add(next)
+            > p.total_bytes;
         Ok(CapacityStatus {
             used_bytes: used,
             continuation_reserved_bytes: reserved,
+            background_reserved_bytes: background_reserved,
             total_bytes: p.total_bytes,
             normal_limit,
             normal_blocked,

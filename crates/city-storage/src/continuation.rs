@@ -52,6 +52,7 @@ impl Store {
         &mut self,
         caller: Caller,
         env: &Envelope,
+        background_funded: bool,
     ) -> Result<Option<Continuation>, Error> {
         let limit = match env.actions.as_slice() {
             [Action::Timeline {
@@ -78,7 +79,8 @@ impl Store {
             }
             // Keep sufficient receipt slots for the clock, plus a separate finite reserve for
             // real source/cleanup progress. Failed or unrelated requests cannot spend that reserve.
-            let eligible = self.engine.can_advance_existing_responsibility(caller, env);
+            let eligible =
+                background_funded || self.engine.can_advance_existing_responsibility(caller, env);
             let floor = c.remaining_pages as usize + if eligible { 0 } else { CONTROL_SLOTS };
             if self.engine.journal().len() + 1 + floor > MAX_RECEIPTS {
                 return Err(Error::Invalid("timeline_receipt_reserve"));
@@ -89,7 +91,18 @@ impl Store {
         let Some((progress, steps)) = self.engine.timeline_quote(caller, env) else {
             return Ok(None);
         };
-        let pages = steps.div_ceil(usize::from(limit));
+        // P4 forces one extra page boundary independent of the requested page width.
+        let barrier = usize::from(
+            self.engine.background().is_some()
+                && progress.at
+                    > self
+                        .engine
+                        .timeline()
+                        .expect("quoted timeline")
+                        .progress
+                        .last_complete,
+        );
+        let pages = steps.div_ceil(usize::from(limit)) + barrier;
         if pages == 0 || pages > CONTINUATION_MAX_PAGES as usize {
             return Err(Error::Invalid("timeline_page_limit_too_small"));
         }

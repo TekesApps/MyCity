@@ -134,3 +134,5 @@ impl<'de> Deserialize<'de> for FrozenLabel {
 }
 
 pub mod timeline;
+
+pub mod background;
