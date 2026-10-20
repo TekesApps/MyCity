@@ -203,8 +203,8 @@ pub fn run_measured(dir: &Path, tier: Tier, measured: bool) -> Result<Value, Str
     if measured {
         write_json(
             &dir.join("manifest.json"),
-            &json!({"external_owned_charge_bytes":6*1024*1024,
-            "scope":"conservative diagnostic reservation: one Sim <=5MiB plus one worker <=1MiB; L1 absent; observer separate",
+            &json!({"external_owned_charge_bytes":4*1024*1024,
+            "scope":"conservative diagnostic reservation: one Sim <=3MiB plus one worker <=1MiB; L1 absent; observer separate",
             "budget_acceptance":"not_accepted_until_full_observation"}),
         )?;
     }

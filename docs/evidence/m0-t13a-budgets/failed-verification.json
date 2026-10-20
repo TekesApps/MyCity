@@ -1,0 +1,10 @@
+{
+  "status": "protected_failed_attempt_retained_not_accepted",
+  "reason": "system non-normal pressure exceeded 60 seconds",
+  "wall_seconds": 205.3163475,
+  "complete_worker_exit_records": 110,
+  "paired_worker_reports": 110,
+  "maximum_completed_worker_diagnostic_charge": 846892,
+  "missing_other_exit_records": "expected after SIGTERM; unmeasured not zero",
+  "formal_gate": "failed"
+}

@@ -227,7 +227,7 @@ fn required(
         }
         // Old process is reaped before clearing any file or binding a new execution epoch.
         if let Some(mut old) = worker.take() {
-            old.stop()?;
+            old.stop_when_idle(Duration::from_secs(1))?;
         }
         let cache = store.prepare_worker_cache().map_err(err)?;
         let exe = std::env::current_exe().map_err(err)?;
@@ -600,7 +600,7 @@ fn run_inner(
         }
     }
     if let Some(mut old) = worker.take() {
-        old.stop()?;
+        old.stop_when_idle(Duration::from_secs(1))?;
     }
     if let Some(log) = diag.as_mut() {
         log.finish()?;

@@ -1,0 +1,18 @@
+   Compiling peak_alloc v0.3.0
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+    Finished `release` profile [optimized] target(s) in 5.30s
+     Running unittests src/lib.rs (target/release/deps/mycity_headless-50f2d753a50ef36d)
+
+running 9 tests
+test layout_load::tests::external_component_reservation_rejects_oversize_before_allocation ... ok
+test scale_metrics::tests::compact_bucket_refuses_overflow_without_corrupting_quantile_or_count ... ok
+test scale_metrics::tests::inactive_histograms_allocate_no_bins ... ok
+test scale_metrics::tests::quantile_does_not_hide_tail_or_sparse_class ... ok
+test layout_load::tests::eight_hour_snapshot_summaries_do_not_retain_file_trees ... ok
+test layout_load::tests::real_cow_releases_placeholder_before_copy_and_preserves_snapshot ... ok
+test layout_load::tests::restore_rejects_component_reservation_before_loading_any_large_file ... ok
+test layout_load::tests::all_stub_counts_widths_population_and_references_are_real_records ... ok
+test cpu_log::tests::failed_transaction_batches_never_fill_success_histogram_and_raw_pages_remain_attempts ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+

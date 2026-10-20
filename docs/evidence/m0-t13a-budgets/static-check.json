@@ -1,0 +1,8 @@
+{
+  "source_sha256": "fad9b177641404fa734639a47ec82d34608abc988cb6a249bc115f7e7ee31cd8",
+  "binary_sha256": "95067b6c99bd39597f494a952c8e616b4866d17ce868fe7ef1f9fc7e64f2d826",
+  "same_source_for_failed_and_retry": true,
+  "frozen_acceptance_unchanged": true,
+  "all_packet_bytes_verified": true,
+  "dependency_checksum_verified": "ccc90935a8dd139fdf341762773687a1e361d3f54b396a55d9dd1f7001e484bb"
+}

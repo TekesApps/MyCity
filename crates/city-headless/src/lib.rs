@@ -26,3 +26,7 @@ pub mod scale_sim;
 pub mod cpu_log;
 
 pub mod scale_rare;
+
+pub mod joint_driver;
+
+pub mod heap_meter;

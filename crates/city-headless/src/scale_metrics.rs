@@ -19,7 +19,7 @@ pub const CLASSES: [&str; 10] = [
     "L1_stub_record_index_page",
 ];
 struct Histogram {
-    bins: Vec<u64>,
+    bins: Vec<u32>,
     count: u64,
     overflow: u64,
     max_ns: u64,
@@ -33,18 +33,24 @@ impl Histogram {
             max_ns: 0,
         }
     }
-    fn add(&mut self, ns: u64) {
+    fn add(&mut self, ns: u64) -> bool {
         if self.bins.is_empty() {
             self.bins.resize(LIMIT_US + 1, 0);
         }
+        let us = ns.div_ceil(1000);
+        // Four billion observations in ONE microsecond bucket is outside the
+        // frozen run, but still refuse explicitly rather than wrapping/saturating.
+        if us <= LIMIT_US as u64 {
+            let Some(next) = self.bins[us as usize].checked_add(1) else {
+                return false;
+            };
+            self.bins[us as usize] = next;
+        } else {
+            self.overflow += 1;
+        }
         self.count += 1;
         self.max_ns = self.max_ns.max(ns);
-        let us = ns.div_ceil(1000);
-        if us > LIMIT_US as u64 {
-            self.overflow += 1;
-        } else {
-            self.bins[us as usize] += 1;
-        }
+        true
     }
     fn quantile(&self, percent: u64) -> Value {
         if self.count == 0 {
@@ -53,7 +59,7 @@ impl Histogram {
         let rank = (self.count * percent).div_ceil(100);
         let mut n = 0;
         for (us, count) in self.bins.iter().enumerate() {
-            n += count;
+            n += u64::from(*count);
             if n >= rank {
                 return json!({"nearest_rank":rank,"lower_exclusive_ns":(us as u64).saturating_sub(1)*1000,"upper_inclusive_ns":us as u64*1000});
             }
@@ -97,7 +103,7 @@ impl Metrics {
             + self
                 .classes
                 .iter()
-                .map(|h| h.bins.capacity() * 8)
+                .map(|h| h.bins.capacity() * std::mem::size_of::<u32>())
                 .sum::<usize>()
             + self.file.capacity()
     }
@@ -109,7 +115,10 @@ impl Metrics {
             self.error = Some("metrics_unknown_class".into());
             return;
         };
-        self.classes[index].add(ns);
+        if !self.classes[index].add(ns) {
+            self.error = Some("metrics_bucket_count_overflow".into());
+            return;
+        }
         if self.bytes + 9 > 128 * 1024 * 1024 {
             self.error = Some("metrics_raw_cap".into());
             return;
@@ -143,6 +152,19 @@ impl Metrics {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn compact_bucket_refuses_overflow_without_corrupting_quantile_or_count() {
+        let mut h = Histogram::new();
+        assert!(h.add(1000));
+        h.bins[1] = u32::MAX;
+        h.count = u64::from(u32::MAX);
+        assert!(!h.add(1000));
+        assert_eq!(h.count, u64::from(u32::MAX));
+        assert_eq!(h.bins[1], u32::MAX);
+        assert_eq!(h.quantile(99)["upper_inclusive_ns"], 1000);
+        assert!(h.add(40_000_001));
+        assert_eq!(h.count, u64::from(u32::MAX) + 1);
+    }
     #[test]
     fn inactive_histograms_allocate_no_bins() {
         let mut h = Histogram::new();

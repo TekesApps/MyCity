@@ -1,6 +1,6 @@
 # MyCity
 
-仓库发布版本：`v0.5.40`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.41`。已开始Rust模型与headless CLI，当前不做UI。
 
 **软件结构先读[总体架构](docs/SOFTWARE_ARCHITECTURE.md)：当前代码、主体与事件、单writer、多进程目标、数据文件和预算。**
 

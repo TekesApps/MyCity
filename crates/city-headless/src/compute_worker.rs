@@ -525,6 +525,28 @@ impl Worker {
         }
         Ok(event)
     }
+    /// Completed workers may close stdin and flush their final evidence. Active
+    /// jobs retain the existing kill path. Deadline expiry is still a real kill.
+    pub fn stop_when_idle(&mut self, timeout: Duration) -> Result<ExitStatus, String> {
+        if self.outstanding.is_some() {
+            return self.stop();
+        }
+        self.stdin.take();
+        self.receiver.take();
+        let deadline = std::time::Instant::now() + timeout;
+        loop {
+            if let Some(status) = self.child.try_wait().map_err(|e| e.to_string())? {
+                if let Some(reader) = self.reader.take() {
+                    reader.join().map_err(|_| "worker_reader_panic")?;
+                }
+                return Ok(status);
+            }
+            if std::time::Instant::now() >= deadline {
+                return self.stop();
+            }
+            std::thread::sleep(Duration::from_millis(2));
+        }
+    }
     pub fn stop(&mut self) -> Result<ExitStatus, String> {
         // Kill also interrupts an executing job; no cooperative cancellation assumption.
         if self.child.try_wait().map_err(|e| e.to_string())?.is_none() {

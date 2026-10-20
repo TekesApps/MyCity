@@ -1,0 +1,128 @@
+{
+  "observed_unix_seconds": 1792509494.371267,
+  "scope": "background state after protected shutdown; RSS rows are not exclusive physical ownership or causal proof",
+  "largest_20_rss_rows": [
+    {
+      "pid": 69817,
+      "parent": 69770,
+      "rss_bytes": 2441986048,
+      "binary": "Codex (Renderer)"
+    },
+    {
+      "pid": 73000,
+      "parent": 1,
+      "rss_bytes": 2091679744,
+      "binary": "qemu-system-aarch64"
+    },
+    {
+      "pid": 69823,
+      "parent": 69770,
+      "rss_bytes": 522436608,
+      "binary": "codex"
+    },
+    {
+      "pid": 69816,
+      "parent": 69770,
+      "rss_bytes": 479215616,
+      "binary": "Codex (Renderer)"
+    },
+    {
+      "pid": 69770,
+      "parent": 1,
+      "rss_bytes": 448413696,
+      "binary": "ChatGPT"
+    },
+    {
+      "pid": 65091,
+      "parent": 30172,
+      "rss_bytes": 275972096,
+      "binary": "Browser Helper (Renderer)"
+    },
+    {
+      "pid": 30333,
+      "parent": 30172,
+      "rss_bytes": 259538944,
+      "binary": "Browser Helper (Renderer)"
+    },
+    {
+      "pid": 30172,
+      "parent": 1,
+      "rss_bytes": 237486080,
+      "binary": "Arc"
+    },
+    {
+      "pid": 70018,
+      "parent": 69770,
+      "rss_bytes": 143147008,
+      "binary": "Codex (Renderer)"
+    },
+    {
+      "pid": 69180,
+      "parent": 1,
+      "rss_bytes": 121946112,
+      "binary": "WeChat"
+    },
+    {
+      "pid": 77172,
+      "parent": 1,
+      "rss_bytes": 97386496,
+      "binary": "Electron"
+    },
+    {
+      "pid": 69780,
+      "parent": 69770,
+      "rss_bytes": 88801280,
+      "binary": "Codex (Service)"
+    },
+    {
+      "pid": 68279,
+      "parent": 1,
+      "rss_bytes": 87736320,
+      "binary": "WindowServer"
+    },
+    {
+      "pid": 70321,
+      "parent": 69770,
+      "rss_bytes": 80691200,
+      "binary": "Codex (Renderer)"
+    },
+    {
+      "pid": 68332,
+      "parent": 1,
+      "rss_bytes": 78430208,
+      "binary": "mds_stores"
+    },
+    {
+      "pid": 30176,
+      "parent": 30172,
+      "rss_bytes": 75382784,
+      "binary": "Browser Helper"
+    },
+    {
+      "pid": 83158,
+      "parent": 69823,
+      "rss_bytes": 74842112,
+      "binary": "node"
+    },
+    {
+      "pid": 69230,
+      "parent": 1,
+      "rss_bytes": 61440000,
+      "binary": "Finder"
+    },
+    {
+      "pid": 69781,
+      "parent": 69770,
+      "rss_bytes": 59572224,
+      "binary": "Codex (Service)"
+    },
+    {
+      "pid": 30177,
+      "parent": 30172,
+      "rss_bytes": 59359232,
+      "binary": "Browser Helper"
+    }
+  ],
+  "pressure": "kern.memorystatus_vm_pressure_level: 1\nvm.swapusage: total = 2048.00M  used = 602.88M  free = 1445.12M  (encrypted)\n",
+  "vm_stat": "Mach Virtual Memory Statistics: (page size of 16384 bytes)\nPages free:                                    46794.\nPages active:                                 534579.\nPages inactive:                               479871.\nPages speculative:                             53913.\nPages throttled:                                   0.\nPages wired down:                             250032.\nPages purgeable:                                7960.\n\"Translation faults\":                    25787360028.\nPages copy-on-write:                      1019380034.\nPages zero filled:                       18438449381.\nPages reactivated:                        1482570729.\nPages purged:                               94599889.\nFile-backed pages:                            560818.\nAnonymous pages:                              507545.\nPages stored in compressor:                  1485340.\nPages occupied by compressor:                 677295.\nDecompressions:                           1238611604.\nCompressions:                             1692664529.\nPageins:                                  1146170264.\nPageouts:                                    3641826.\nSwapins:                                     3843065.\nSwapouts:                                    6540164.\n"
+}

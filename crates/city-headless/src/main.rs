@@ -127,6 +127,20 @@ fn run() -> Result<(), String> {
         );
         return Ok(());
     }
+    if args.get(1).is_some_and(|a| a == "heap-meter-probe") {
+        if args.len() != 3 {
+            return Err("usage: mycity-headless heap-meter-probe NEW_DIR".into());
+        }
+        mycity_headless::heap_meter::probe(std::path::Path::new(&args[2]))?;
+        return Ok(());
+    }
+    if args.get(1).is_some_and(|a| a == "joint-budget-probe") {
+        if args.len() != 3 {
+            return Err("usage: mycity-headless joint-budget-probe NEW_DIR".into());
+        }
+        mycity_headless::joint_driver::run(std::path::Path::new(&args[2]))?;
+        return Ok(());
+    }
     if args.get(1).is_some_and(|a| a == "layout-charged-probe") {
         if args.len() != 6 {
             return Err("usage: mycity-headless layout-charged-probe NEW_DIR WALL_SECONDS SNAPSHOT_SECONDS EXTERNAL_BYTES".into());
@@ -876,7 +890,10 @@ fn regional_probe(input: &[u8], dir: &std::path::Path) -> Result<serde_json::Val
 }
 
 fn main() {
-    if let Err(error) = run() {
+    let heap = mycity_headless::heap_meter::Recorder::from_env();
+    let result = run();
+    let measurement = heap.finish(result.is_ok());
+    if let Err(error) = result.and(measurement) {
         eprintln!("{error}");
         std::process::exit(2);
     }

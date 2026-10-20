@@ -343,3 +343,25 @@ fn bounded_cache_clears_retry_residue_and_real_worker_stays_within_charge() {
         b"keep"
     );
 }
+
+#[test]
+fn completed_worker_can_exit_on_eof_while_active_stop_still_kills() {
+    let temp = Temp::new();
+    let root = temp.task_root();
+    let base = state();
+    let task = request(&root, &base);
+    let mut worker = Worker::spawn(executable(), &root).unwrap();
+    worker.submit(&task).unwrap();
+    let mut complete = false;
+    for _ in 0..8 {
+        if worker.next(Duration::from_secs(5)).unwrap().stage == Stage::Complete {
+            complete = true;
+            break;
+        }
+    }
+    assert!(complete);
+    assert!(worker
+        .stop_when_idle(Duration::from_secs(5))
+        .unwrap()
+        .success());
+}

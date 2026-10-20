@@ -162,6 +162,7 @@ dependencies = [
  "mycity-core",
  "mycity-map",
  "mycity-storage",
+ "peak_alloc",
  "serde",
  "serde_json",
  "sha2",
@@ -190,6 +191,12 @@ dependencies = [
  "serde_json",
  "sha2",
 ]
+
+[[package]]
+name = "peak_alloc"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ccc90935a8dd139fdf341762773687a1e361d3f54b396a55d9dd1f7001e484bb"
 
 [[package]]
 name = "png"

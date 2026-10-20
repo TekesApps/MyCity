@@ -1,0 +1,16 @@
+    Updating crates.io index
+ Downloading crates ...
+  Downloaded tracking-allocator v0.4.0
+tracking-allocator #allocation #observability #memory
+global allocator that provides hooks for tracking allocation events
+version: 0.4.0
+license: MPL-2.0
+rust-version: unknown
+documentation: https://docs.rs/tracking-allocator/0.4.0
+repository: https://github.com/tobz/tracking-allocator
+crates.io: https://crates.io/crates/tracking-allocator/0.4.0
+features:
+ +default            = [tracing-compat]
+  tracing            = [dep:tracing]
+  tracing-compat     = [tracing, tracing-subscriber, tracing-subscriber/std]
+  tracing-subscriber = [dep:tracing-subscriber]

@@ -1,0 +1,58 @@
+{
+  "scope": "pre-retry baseline only; no application stopped and no model load reduced",
+  "samples": [
+    {
+      "elapsed_seconds": 0.0028787499999999994,
+      "pressure_flag": 1
+    },
+    {
+      "elapsed_seconds": 10.009678749999999,
+      "pressure_flag": 1
+    },
+    {
+      "elapsed_seconds": 20.017749791,
+      "pressure_flag": 1
+    },
+    {
+      "elapsed_seconds": 30.02576875,
+      "pressure_flag": 1
+    },
+    {
+      "elapsed_seconds": 40.033003916,
+      "pressure_flag": 1
+    },
+    {
+      "elapsed_seconds": 50.03781125,
+      "pressure_flag": 1
+    },
+    {
+      "elapsed_seconds": 60.044938374999994,
+      "pressure_flag": 1
+    },
+    {
+      "elapsed_seconds": 70.049470791,
+      "pressure_flag": 1
+    },
+    {
+      "elapsed_seconds": 80.05293066600001,
+      "pressure_flag": 1
+    },
+    {
+      "elapsed_seconds": 90.05974325000001,
+      "pressure_flag": 1
+    },
+    {
+      "elapsed_seconds": 100.070301583,
+      "pressure_flag": 1
+    },
+    {
+      "elapsed_seconds": 110.07779108300001,
+      "pressure_flag": 1
+    },
+    {
+      "elapsed_seconds": 120.08444970800001,
+      "pressure_flag": 1
+    }
+  ],
+  "all_normal": true
+}

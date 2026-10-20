@@ -1,0 +1,152 @@
+[
+  {
+    "path": "model/layout/snapshots/snapshot-000001/analysis_tasks.json",
+    "bytes": 22170,
+    "integrity": "hash stored by snapshot index; actual full restore verified; original remains in ignored work"
+  },
+  {
+    "path": "model/layout/snapshots/snapshot-000001/bills.json",
+    "bytes": 11091,
+    "integrity": "hash stored by snapshot index; actual full restore verified; original remains in ignored work"
+  },
+  {
+    "path": "model/layout/snapshots/snapshot-000001/bus_train_vehicles.json",
+    "bytes": 736200,
+    "integrity": "hash stored by snapshot index; actual full restore verified; original remains in ignored work"
+  },
+  {
+    "path": "model/layout/snapshots/snapshot-000001/car_vehicles.json",
+    "bytes": 6209212,
+    "integrity": "hash stored by snapshot index; actual full restore verified; original remains in ignored work"
+  },
+  {
+    "path": "model/layout/snapshots/snapshot-000001/cargo_batches.json",
+    "bytes": 3131844,
+    "integrity": "hash stored by snapshot index; actual full restore verified; original remains in ignored work"
+  },
+  {
+    "path": "model/layout/snapshots/snapshot-000001/cases.json",
+    "bytes": 24909,
+    "integrity": "hash stored by snapshot index; actual full restore verified; original remains in ignored work"
+  },
+  {
+    "path": "model/layout/snapshots/snapshot-000001/current_services.json",
+    "bytes": 551619,
+    "integrity": "hash stored by snapshot index; actual full restore verified; original remains in ignored work"
+  },
+  {
+    "path": "model/layout/snapshots/snapshot-000001/entities.json",
+    "bytes": 1368255,
+    "integrity": "hash stored by snapshot index; actual full restore verified; original remains in ignored work"
+  },
+  {
+    "path": "model/layout/snapshots/snapshot-000001/equity_links.json",
+    "bytes": 2453947,
+    "integrity": "hash stored by snapshot index; actual full restore verified; original remains in ignored work"
+  },
+  {
+    "path": "model/layout/snapshots/snapshot-000001/general_contracts.json",
+    "bytes": 1101276,
+    "integrity": "hash stored by snapshot index; actual full restore verified; original remains in ignored work"
+  },
+  {
+    "path": "model/layout/snapshots/snapshot-000001/hosts.json",
+    "bytes": 1419868,
+    "integrity": "hash stored by snapshot index; actual full restore verified; original remains in ignored work"
+  },
+  {
+    "path": "model/layout/snapshots/snapshot-000001/households.json",
+    "bytes": 15359282,
+    "integrity": "hash stored by snapshot index; actual full restore verified; original remains in ignored work"
+  },
+  {
+    "path": "model/layout/snapshots/snapshot-000001/housing.json",
+    "bytes": 16677375,
+    "integrity": "hash stored by snapshot index; actual full restore verified; original remains in ignored work"
+  },
+  {
+    "path": "model/layout/snapshots/snapshot-000001/maps.json",
+    "bytes": 2942,
+    "integrity": "hash stored by snapshot index; actual full restore verified; original remains in ignored work"
+  },
+  {
+    "path": "model/layout/snapshots/snapshot-000001/matters.json",
+    "bytes": 82934,
+    "integrity": "hash stored by snapshot index; actual full restore verified; original remains in ignored work"
+  },
+  {
+    "path": "model/layout/snapshots/snapshot-000001/meter.json",
+    "bytes": 59090761,
+    "integrity": "hash stored by snapshot index; actual full restore verified; original remains in ignored work"
+  },
+  {
+    "path": "model/layout/snapshots/snapshot-000001/models.json",
+    "bytes": 399,
+    "integrity": "hash stored by snapshot index; actual full restore verified; original remains in ignored work"
+  },
+  {
+    "path": "model/layout/snapshots/snapshot-000001/native-restore-bound.json",
+    "bytes": 170,
+    "integrity": "hash stored by snapshot index; actual full restore verified; original remains in ignored work"
+  },
+  {
+    "path": "model/layout/snapshots/snapshot-000001/native.json",
+    "bytes": 65299383,
+    "integrity": "hash stored by snapshot index; actual full restore verified; original remains in ignored work"
+  },
+  {
+    "path": "model/layout/snapshots/snapshot-000001/od.json",
+    "bytes": 5423128,
+    "integrity": "hash stored by snapshot index; actual full restore verified; original remains in ignored work"
+  },
+  {
+    "path": "model/layout/snapshots/snapshot-000001/operators.json",
+    "bytes": 917651,
+    "integrity": "hash stored by snapshot index; actual full restore verified; original remains in ignored work"
+  },
+  {
+    "path": "model/layout/snapshots/snapshot-000001/passenger_batches.json",
+    "bytes": 14813630,
+    "integrity": "hash stored by snapshot index; actual full restore verified; original remains in ignored work"
+  },
+  {
+    "path": "model/layout/snapshots/snapshot-000001/path_refs.json",
+    "bytes": 4722328,
+    "integrity": "hash stored by snapshot index; actual full restore verified; original remains in ignored work"
+  },
+  {
+    "path": "model/layout/snapshots/snapshot-000001/pressure.bin",
+    "bytes": 3044040310,
+    "integrity": "hash stored by snapshot index; actual full restore verified; original remains in ignored work"
+  },
+  {
+    "path": "model/layout/snapshots/snapshot-000001/preview.json",
+    "bytes": 399,
+    "integrity": "hash stored by snapshot index; actual full restore verified; original remains in ignored work"
+  },
+  {
+    "path": "model/layout/snapshots/snapshot-000001/ship_aircraft_vehicles.json",
+    "bytes": 183429,
+    "integrity": "hash stored by snapshot index; actual full restore verified; original remains in ignored work"
+  },
+  {
+    "path": "model/layout/snapshots/snapshot-000001/teaching_batches.json",
+    "bytes": 220123,
+    "integrity": "hash stored by snapshot index; actual full restore verified; original remains in ignored work"
+  },
+  {
+    "path": "model/layout/snapshots/snapshot-000001/team_members.json",
+    "bytes": 11688,
+    "integrity": "hash stored by snapshot index; actual full restore verified; original remains in ignored work"
+  },
+  {
+    "path": "model/layout/snapshots/snapshot-000001/visitors.json",
+    "bytes": 690521,
+    "integrity": "hash stored by snapshot index; actual full restore verified; original remains in ignored work"
+  },
+  {
+    "path": "model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "bytes": 134217728,
+    "integrity": "hash stored by snapshot index; actual full restore verified; original remains in ignored work"
+  }
+]

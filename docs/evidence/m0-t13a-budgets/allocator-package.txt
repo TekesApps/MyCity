@@ -1,0 +1,11 @@
+    Updating crates.io index
+ Downloading crates ...
+  Downloaded peak_alloc v0.3.0
+peak_alloc #memory-usage #peak-memory #allocator
+An allocator to keep track of (the max) allocated memory
+version: 0.3.0
+license: MIT
+rust-version: unknown
+documentation: https://docs.rs/peak_alloc/0.3.0
+repository: https://github.com/xgillard/peak_alloc
+crates.io: https://crates.io/crates/peak_alloc/0.3.0

@@ -250,9 +250,9 @@ impl CpuLog {
         let cap = if self.producer == "worker" {
             1024 * 1024
         } else {
-            5 * 1024 * 1024
+            3 * 1024 * 1024
         };
-        if self.owned_bytes() > cap {
+        if self.owned_bytes().saturating_add(256 * 1024) > cap {
             return Err("cpu_producer_hot_quota".into());
         }
         for m in &self.metrics {
@@ -271,8 +271,8 @@ impl CpuLog {
         let report = json!({"schema":"mycity-cpu-regions-v1","producer":self.producer,"source_sha256":env!("MYCITY_SOURCE_SHA256"),"roles":["execution","quote","replay"],"classes":mycity_core::diagnostics::CLASSES,"payroll_subtypes":["accrual","billing"],"region_subtypes":["clock","expiry","obligation","boot_finish","freight_arrival","population_arrival","economy_phase","direct_command"],
             "role_compute":reports,"nonempty_air_page_counts":self.page_counts,"empty_or_failed_pages":self.empty_pages,
             "air_page_limit_bounds_role_source_cell_min_max":self.page_limits,"air_processed_items_role_source_cell":self.page_items,
-            "transaction_log_bytes":self.bytes,"owned_diagnostics_bytes":self.owned_bytes(),
-            "clock":"elapsed compute-region Instant; excludes page sink callback; includes preemption, not thread CPU clock",
+            "transaction_log_bytes":self.bytes,"owned_diagnostics_bytes":self.owned_bytes(),"transient_reservation_bytes":256*1024,"charged_diagnostics_bound_bytes":self.owned_bytes()+256*1024,
+            "whole_process_rust_heap":crate::heap_meter::snapshot(),"clock":"elapsed compute-region Instant; excludes page sink callback; includes preemption, not thread CPU clock",
             "overlap":"prepare includes child regions; region P0 includes capture; admit includes admission air pages; do not sum overlapping counters",
             "air_samples":"pure computation attempts; raw ranges bind to transaction outcome or worker ticket; not committed/admitted sample gates",
             "replay":"not instrumented by cold Store open; empty replay strata are unmeasured, not zero cost",
@@ -418,7 +418,7 @@ mod tests {
             .as_str()
             .unwrap()
             .contains("not committed"));
-        assert!(report["owned_diagnostics_bytes"].as_u64().unwrap() < 5 * 1024 * 1024);
+        assert!(report["owned_diagnostics_bytes"].as_u64().unwrap() < 3 * 1024 * 1024);
         drop(log);
         fs::remove_dir_all(root).unwrap();
     }

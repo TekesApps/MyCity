@@ -732,6 +732,41 @@ impl Snapshot {
     }
 }
 
+// Retain fixed-width summaries, not every 29-file JSON tree for the 8h run.
+// Full per-file evidence is streamed to events and retained snapshot indices.
+#[derive(Serialize)]
+struct SnapshotSummary {
+    generation: u64,
+    durable_complete_seconds: f64,
+    write_fsync_seconds: f64,
+    file_count: usize,
+    file_bytes: u64,
+    record_restore_passed: bool,
+    pressure_readback_passed: bool,
+}
+impl SnapshotSummary {
+    fn from_result(value: &Value) -> Result<Self, String> {
+        let files = value["files"].as_array().ok_or("snapshot_summary_files")?;
+        Ok(Self {
+            generation: value["generation"]
+                .as_u64()
+                .ok_or("snapshot_summary_generation")?,
+            durable_complete_seconds: value["durable_complete_seconds"]
+                .as_f64()
+                .ok_or("snapshot_summary_duration")?,
+            write_fsync_seconds: value["write_fsync_seconds"]
+                .as_f64()
+                .ok_or("snapshot_summary_fsync")?,
+            file_count: files.len(),
+            file_bytes: files.iter().try_fold(0u64, |n, f| {
+                n.checked_add(f["bytes"].as_u64().ok_or("snapshot_summary_bytes")?)
+                    .ok_or("snapshot_summary_overflow")
+            })?,
+            record_restore_passed: value["complete_record_restore"] == "passed",
+            pressure_readback_passed: value["full_pressure_file_readback"] == "passed",
+        })
+    }
+}
 /// Diagnostic or frozen standalone L1 run. Duration<2100s cannot pass steady gates.
 pub fn probe(dir: &Path, wall_seconds: u64, snapshot_seconds: u64) -> Result<Value, String> {
     probe_charged(dir, wall_seconds, snapshot_seconds, None)
@@ -749,6 +784,7 @@ pub fn probe_charged(
     if wall_seconds > 28800
         || snapshot_seconds == 0
         || (wall_seconds >= 2100 && snapshot_seconds != 300)
+        || (snapshot_seconds > 0 && wall_seconds.max(1).div_ceil(snapshot_seconds) > 128)
     {
         return Err("layout_probe_schedule".into());
     }
@@ -756,17 +792,16 @@ pub fn probe_charged(
     let mut metrics = Metrics::create(&dir.join("compute-durations.bin"))?;
     let initial = Instant::now();
     // Both active L1 histograms may allocate lazily after construction.
-    let metric_reserve = metrics.owned_bytes() + 2 * 40001 * std::mem::size_of::<u64>();
+    let metric_reserve = metrics.owned_bytes() + 2 * 40001 * std::mem::size_of::<u32>();
     let charge = external_charge.unwrap_or(metric_reserve);
     if charge < metric_reserve {
         return Err("layout_external_diagnostics_reservation".into());
     }
     let mut load = Load::full(&dir.join("snapshots"), charge)?;
     let init_seconds = initial.elapsed().as_secs_f64();
-    let manifest = load.manifest();
     fs::write(
         dir.join("manifest.json"),
-        serde_json::to_vec_pretty(&manifest).map_err(err)?,
+        serde_json::to_vec_pretty(&load.manifest()).map_err(err)?,
     )
     .map_err(err)?;
     let mut events =
@@ -784,7 +819,7 @@ pub fn probe_charged(
                 serde_json::to_writer(&mut events,&json!({"elapsed_seconds":started.elapsed().as_secs_f64(),"snapshot_durable":result})).map_err(err)?;
                 events.write_all(b"\n").map_err(err)?;
                 events.flush().map_err(err)?;
-                snapshots.push(result);
+                snapshots.push(SnapshotSummary::from_result(&result)?);
             }
             let elapsed = started.elapsed().as_secs_f64();
             if scans > 0 && elapsed >= wall_seconds as f64 {
@@ -815,14 +850,24 @@ pub fn probe_charged(
             std::thread::sleep(Duration::from_millis(10));
         }
         if let Some(result) = load.finish_snapshot()? {
-            snapshots.push(result);
+            serde_json::to_writer(&mut events,&json!({"elapsed_seconds":started.elapsed().as_secs_f64(),"snapshot_durable":result})).map_err(err)?;
+            events.write_all(b"\n").map_err(err)?;
+            snapshots.push(SnapshotSummary::from_result(&result)?);
         }
         Ok::<(), String>(())
     })();
     events.flush().map_err(err)?;
     events.get_ref().sync_all().map_err(err)?;
+    let diagnostic_allocated = metrics.owned_bytes()
+        + events.capacity()
+        + snapshots.capacity() * size_of::<SnapshotSummary>();
+    let diagnostic_charged = diagnostic_allocated + 256 * 1024;
+    if diagnostic_charged > MIB {
+        return Err("layout_complete_diagnostics_cap".into());
+    }
     let metrics = metrics.report()?;
-    let report = json!({"schema":"mycity-layout-probe-v1","source_sha256":env!("MYCITY_SOURCE_SHA256"),"requested_wall_seconds":wall_seconds,"work_wall_seconds":started.elapsed().as_secs_f64(),"initialization_seconds":init_seconds,"snapshot_interval_seconds":snapshot_seconds,"scans":scans,"expected_published_scans":wall_seconds.max(1),"all_published_scans_completed":scans==wall_seconds.max(1),"manifest":manifest,"snapshots":snapshots,"maximum_scan_ready_age_seconds":maximum_scan_lateness,"maximum_snapshot_start_lateness_seconds":maximum_snapshot_start_lateness,"compute":metrics,"diagnostic_outcome":outcome,"full_layout_assembled":true,"steady_gate":"not_accepted_requires_three_runs_and_group_system_measurements","eight_hour_gate":"not_run","memory_16gb_gate":"not_run","full_M0":"not_accepted"});
+    let manifest = load.manifest();
+    let report = json!({"schema":"mycity-layout-probe-v2","snapshot_summaries_only":true,"diagnostics":{"allocated_owned_bytes":diagnostic_allocated,"transient_reservation_bytes":256*1024,"charged_bound_bytes":diagnostic_charged,"cap_bytes":MIB,"full_snapshot_file_details":"events.jsonl and retained snapshot indices"},"source_sha256":env!("MYCITY_SOURCE_SHA256"),"requested_wall_seconds":wall_seconds,"work_wall_seconds":started.elapsed().as_secs_f64(),"initialization_seconds":init_seconds,"snapshot_interval_seconds":snapshot_seconds,"scans":scans,"expected_published_scans":wall_seconds.max(1),"all_published_scans_completed":scans==wall_seconds.max(1),"manifest":manifest,"snapshots":snapshots,"maximum_scan_ready_age_seconds":maximum_scan_lateness,"maximum_snapshot_start_lateness_seconds":maximum_snapshot_start_lateness,"compute":metrics,"diagnostic_outcome":outcome,"full_layout_assembled":true,"steady_gate":"not_accepted_requires_three_runs_and_group_system_measurements","eight_hour_gate":"not_run","memory_16gb_gate":"not_run","full_M0":"not_accepted"});
     let mut file = File::create(dir.join("report.json")).map_err(err)?;
     serde_json::to_writer_pretty(&mut file, &report).map_err(err)?;
     file.sync_all().map_err(err)?;
@@ -1115,6 +1160,20 @@ mod tests {
             );
         }
         fs::remove_dir_all(root).unwrap();
+    }
+    #[test]
+    fn eight_hour_snapshot_summaries_do_not_retain_file_trees() {
+        let full = json!({"generation":1,"durable_complete_seconds":1.25,"write_fsync_seconds":0.75,
+            "files":(0..29).map(|_|json!({"bytes":123,"name":"x".repeat(4096)})).collect::<Vec<_>>(),
+            "complete_record_restore":"passed","full_pressure_file_readback":"passed"});
+        let mut summaries = Vec::with_capacity(128);
+        for _ in 0..96 {
+            summaries.push(SnapshotSummary::from_result(&full).unwrap());
+        }
+        assert!(summaries.capacity() * size_of::<SnapshotSummary>() <= 8192);
+        assert!(serde_json::to_vec(&summaries).unwrap().len() < 32768);
+        assert_eq!(summaries[95].file_bytes, 29 * 123);
+        assert!(summaries[95].record_restore_passed && summaries[95].pressure_readback_passed);
     }
     #[test]
     fn all_stub_counts_widths_population_and_references_are_real_records() {

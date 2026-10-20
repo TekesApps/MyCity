@@ -1,0 +1,14 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+error[E0502]: cannot borrow `*self` as immutable because it is also borrowed as mutable
+  --> crates/city-headless/src/joint_driver.rs:72:30
+   |
+68 |         serde_json::to_writer(
+   |         --------------------- mutable borrow later used by call
+69 |             &mut self.events,
+   |             ---------------- mutable borrow occurs here
+...
+72 |                 observed_ns: self.now(),
+   |                              ^^^^ immutable borrow occurs here
+
+For more information about this error, try `rustc --explain E0502`.
+error: could not compile `mycity-headless` (lib test) due to 1 previous error

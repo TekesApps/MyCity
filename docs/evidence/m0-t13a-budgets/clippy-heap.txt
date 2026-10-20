@@ -1,0 +1,3 @@
+    Checking peak_alloc v0.3.0
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+    Finished `release` profile [optimized] target(s) in 2.52s

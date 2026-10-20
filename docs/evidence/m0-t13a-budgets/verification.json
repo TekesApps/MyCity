@@ -1,0 +1,151 @@
+{
+  "schema": "mycity-t13a-budget-audit-v1",
+  "status": "same_source_concurrent_diagnostic_completed",
+  "process_records": {
+    "compute-worker-bounded": 724,
+    "sim-host-scale-full": 2,
+    "scale-sim-probe": 1,
+    "layout-charged-probe": 1,
+    "layout-load-only": 1,
+    "joint-budget-probe": 1
+  },
+  "requested_Rust_heap_peaks_by_role": {
+    "compute-worker-bounded": 3753799,
+    "sim-host-scale-full": 29442298,
+    "scale-sim-probe": 33953564,
+    "layout-charged-probe": 3259054615,
+    "layout-load-only": 3258607128,
+    "joint-budget-probe": 115475
+  },
+  "L1_payload_hashes_equal_v40": true,
+  "original_receipts_verified": 3011,
+  "RSS_frames_checked": 2447,
+  "charged_observed_components_bytes": {
+    "sim": 2446932,
+    "worker": 846892,
+    "L1": 719936,
+    "observer": 617755,
+    "supervisor_including_tail": 181011
+  },
+  "component_sum_without_business_driver_diagnostic_allowance": 4812526,
+  "business_driver_diagnostics_and_native_overhead": "requires separately justified bound; full external owned and full-pressure gate not accepted",
+  "raw_bytes": 50986692,
+  "role_raw_compute": {
+    "worker/execution/air_cell_page": {
+      "samples": 2764800,
+      "p95_conservative_upper_ns": 1000,
+      "p99_conservative_upper_ns": 15000,
+      "max_ns": 4298875,
+      "gate": "passed"
+    },
+    "worker/execution/air_source_page": {
+      "samples": 4,
+      "p95_conservative_upper_ns": 1000,
+      "p99_conservative_upper_ns": 1000,
+      "max_ns": 708,
+      "gate": "insufficient"
+    },
+    "sim/execution/L2_region_exchange_boot_batch": {
+      "samples": 736,
+      "p95_conservative_upper_ns": 6445000,
+      "p99_conservative_upper_ns": 8625000,
+      "max_ns": 30881708,
+      "gate": "passed"
+    },
+    "sim/execution/L2_payroll_batch": {
+      "samples": 724,
+      "p95_conservative_upper_ns": 4000,
+      "p99_conservative_upper_ns": 6000,
+      "max_ns": 7959,
+      "gate": "passed"
+    },
+    "sim/execution/L2_background_capture_admit_cpu": {
+      "samples": 1448,
+      "p95_conservative_upper_ns": 10542000,
+      "p99_conservative_upper_ns": 12929000,
+      "max_ns": 47820140,
+      "gate": "passed"
+    },
+    "sim/execution/air_cell_page": {
+      "samples": 691200,
+      "p95_conservative_upper_ns": 18000,
+      "p99_conservative_upper_ns": 18000,
+      "max_ns": 11515042,
+      "gate": "passed"
+    },
+    "sim/execution/air_source_page": {
+      "samples": 4,
+      "p95_conservative_upper_ns": 2000,
+      "p99_conservative_upper_ns": 2000,
+      "max_ns": 1583,
+      "gate": "insufficient"
+    },
+    "sim/execution/L2_claims_batch": {
+      "samples": 20,
+      "p95_conservative_upper_ns": 52000,
+      "p99_conservative_upper_ns": 57000,
+      "max_ns": 56711,
+      "gate": "insufficient"
+    },
+    "sim/quote/L2_payroll_batch": {
+      "samples": 724,
+      "p95_conservative_upper_ns": 7000,
+      "p99_conservative_upper_ns": 12000,
+      "max_ns": 18038,
+      "gate": "passed"
+    },
+    "sim/quote/L2_region_exchange_boot_batch": {
+      "samples": 724,
+      "p95_conservative_upper_ns": 12803000,
+      "p99_conservative_upper_ns": 16846000,
+      "max_ns": 55430832,
+      "gate": "passed"
+    },
+    "sim/quote/L2_background_capture_admit_cpu": {
+      "samples": 2172,
+      "p95_conservative_upper_ns": 20930000,
+      "p99_conservative_upper_ns": 23775000,
+      "max_ns": 130018039,
+      "gate": "failed"
+    },
+    "sim/quote/air_cell_page": {
+      "samples": 2073600,
+      "p95_conservative_upper_ns": 18000,
+      "p99_conservative_upper_ns": 18000,
+      "max_ns": 10402084,
+      "gate": "passed"
+    },
+    "sim/quote/air_source_page": {
+      "samples": 12,
+      "p95_conservative_upper_ns": 4000,
+      "p99_conservative_upper_ns": 4000,
+      "max_ns": 3291,
+      "gate": "insufficient"
+    },
+    "sim/quote/L2_claims_batch": {
+      "samples": 20,
+      "p95_conservative_upper_ns": 99000,
+      "p99_conservative_upper_ns": 100000,
+      "max_ns": 99866,
+      "gate": "insufficient"
+    },
+    "layout/execution/L1_native_record_index_page": {
+      "samples": 28200,
+      "p95_conservative_upper_ns": 32000,
+      "p99_conservative_upper_ns": 44000,
+      "max_ns": 565000,
+      "gate": "passed"
+    },
+    "layout/execution/L1_stub_record_index_page": {
+      "samples": 100800,
+      "p95_conservative_upper_ns": 51000,
+      "p99_conservative_upper_ns": 79000,
+      "max_ns": 1216041,
+      "gate": "passed"
+    }
+  },
+  "full_joint_owned": "not_accepted",
+  "formal_steady": "not_run",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run"
+}
