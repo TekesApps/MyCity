@@ -1,6 +1,6 @@
 //! Full frozen input through the existing sole-writer Sim and worker, not an 8h gate.
 use crate::{
-    joint_reference::business_digest,
+    scale_model_task::{self, Mode},
     scale_reference::{self, Step, Tier},
     sim_client::Client,
     sim_host::Command,
@@ -10,7 +10,7 @@ use mycity_core::{
     schedule::Phase,
     sha256,
     timeline::Command as Timeline,
-    transaction::{Action, Engine, Envelope},
+    transaction::{Action, Envelope},
 };
 use serde::Serialize;
 use serde_json::{json, Value};
@@ -283,7 +283,8 @@ pub fn run_measured(dir: &Path, tier: Tier, measured: bool) -> Result<Value, Str
             &dir.join("manifest.json"),
             &json!({"external_owned_charge_bytes":4*1024*1024,
             "scope":"conservative diagnostic reservation: one Sim <=3MiB plus one worker <=1MiB; L1 absent; observer separate",
-            "budget_acceptance":"not_accepted_until_full_observation"}),
+            "unclosed_diagnostics":["business_driver_whole_heap","model_helper_diagnostics"],
+            "budget_acceptance":"not_accepted_driver_and_helper_fees_unclosed"}),
         )?;
     }
     let result = run_inner(&dir, tier, measured);
@@ -309,30 +310,10 @@ fn spawn(
     }
 }
 fn run_inner(dir: &Path, tier: Tier, measured: bool) -> Result<Value, String> {
-    // CPU and persisted branches run separately; no joint reference residency claim.
-    let mut golden = BufWriter::new(File::create_new(dir.join("cpu-targets.jsonl")).map_err(err)?);
-    let (reference, oracle) = scale_reference::run_tier_observed(tier, |r, step| {
-        if let Step::Drive(target) = step {
-            let air = r
-                .engine
-                .background()
-                .and_then(|b| b.field())
-                .ok_or("scale_sim_cpu_field")?;
-            serde_json::to_writer(&mut golden,&json!({"target":target,"business_sha256":business_digest(&r.engine)?,"air_sha256":sha256(&air.checkpoint()?),"windows":r.windows})).map_err(err)?;
-            golden.write_all(b"\n").map_err(err)?;
-        }
-        Ok(())
-    })?;
-    golden.flush().map_err(err)?;
-    golden.get_ref().sync_all().map_err(err)?;
-    let cpu_bytes = reference.engine.export_checkpoint()?;
-    let mut f = File::create_new(dir.join("cpu-final-engine.json")).map_err(err)?;
-    f.write_all(&cpu_bytes).map_err(err)?;
-    f.sync_all().map_err(err)?;
-    write_json(&dir.join("cpu-report.json"), &oracle)?;
-    drop(reference);
-    drop(cpu_bytes);
-    drop(golden);
+    // Model proof children remain in the observed process tree and budget.
+    scale_model_task::run(dir, tier, Mode::Reference)?;
+    let oracle: Value =
+        serde_json::from_slice(&read(&dir.join("cpu-report.json"), 65536)?).map_err(err)?;
     let exe = std::env::current_exe().map_err(err)?;
     let world: PathBuf = dir.join("world");
     let mut client = spawn(&exe, &world, true, tier, measured)?;
@@ -390,9 +371,8 @@ fn run_inner(dir: &Path, tier: Tier, measured: bool) -> Result<Value, String> {
     e.call(Command::Checkpoint)?;
     let saved = e.call(Command::Status)?;
     e.client.stop()?;
-    let (before_bytes, root) = image(&world)?;
-    let before_sha = sha256(&before_bytes);
-    drop(before_bytes);
+    let before = scale_model_task::run(dir, tier, Mode::BeforeReopen)?;
+    let root = before.root.ok_or("scale_sim_before_root")?;
     let cold_started = Instant::now();
     e.client = spawn(&exe, &world, false, tier, measured)?;
     let ready = e.client.next(Duration::from_secs(35))?;
@@ -439,31 +419,12 @@ fn run_inner(dir: &Path, tier: Tier, measured: bool) -> Result<Value, String> {
     drop(after);
     e.call(Command::Checkpoint)?;
     e.client.stop()?;
-    let (actual_bytes, final_root) = image(&world)?;
-    if sha256(&actual_bytes) != before_sha {
-        return Err("scale_sim_saved_image_changed".into());
-    }
-    let actual = Engine::restore_checkpoint(&actual_bytes)?;
-    drop(actual_bytes);
-    let expected =
-        Engine::restore_checkpoint(&read(&dir.join("cpu-final-engine.json"), 4 * 1024 * 1024)?)?;
-    if actual.business_comparison_checkpoint()? != expected.business_comparison_checkpoint()?
-        || actual
-            .background()
-            .and_then(|b| b.field())
-            .ok_or("scale_sim_actual_field")?
-            .checkpoint()?
-            != expected
-                .background()
-                .and_then(|b| b.field())
-                .ok_or("scale_sim_expected_field")?
-                .checkpoint()?
-    {
-        return Err("scale_sim_full_final_comparison".into());
-    }
+    let compared = scale_model_task::run(dir, tier, Mode::Compare)?;
+    let final_root = compared.root.ok_or("scale_sim_final_root")?;
+    let final_business_sha256 = compared.business_sha256.ok_or("scale_sim_final_business")?;
     e.log.flush().map_err(err)?;
     e.log.get_ref().sync_all().map_err(err)?;
-    let report = json!({"schema":"mycity-t13a-full-sim-assembly-v1","compute_diagnostics_enabled":measured,"source_sha256":env!("MYCITY_SOURCE_SHA256"),"opening_sha256":sha256(tier.opening()),"policy_sha256":sha256(tier.policy()),"oracle_sha256":sha256(tier.oracle()),"tier":tier.name(),"scope":"named_tier_real_30day_sim_worker_v2_store_diagnostic_only","cpu_oracle":oracle,"completed_hour_targets":hours,"verified_drive_targets":e.verified,"actual_worker_windows":e.windows,"attempt_failures":e.failed_attempts,"business_sha256":business_digest(&actual)?,"final_air_sha256":final_air_sha256,"sim_work_wall_seconds_including_ipc_and_persistence":work_seconds,"maximum_complete_drive_seconds":e.max_boundary_seconds,"cold_ready_seconds":cold_seconds,"oldest_receipt_retry":"passed_without_side_effect","complete_final_business_and_air":"passed","cold_complete_image_unchanged":true,"saved_sequence":root["sequence"],"final_root":final_root,"transcript_bytes":e.log_bytes,"performance_acceptance":"not_run","steady_three_runs":"not_run","eight_hour_gate":"not_run","memory_16gb_gate":"not_run","full_M0":"not_accepted"});
+    let report = json!({"schema":"mycity-t13a-full-sim-assembly-v1","compute_diagnostics_enabled":measured,"source_sha256":env!("MYCITY_SOURCE_SHA256"),"opening_sha256":sha256(tier.opening()),"policy_sha256":sha256(tier.policy()),"oracle_sha256":sha256(tier.oracle()),"tier":tier.name(),"scope":"named_tier_real_30day_sim_worker_v2_store_diagnostic_only","cpu_oracle":oracle,"completed_hour_targets":hours,"verified_drive_targets":e.verified,"actual_worker_windows":e.windows,"attempt_failures":e.failed_attempts,"business_sha256":final_business_sha256,"final_air_sha256":final_air_sha256,"sim_work_wall_seconds_including_ipc_and_persistence":work_seconds,"maximum_complete_drive_seconds":e.max_boundary_seconds,"cold_ready_seconds":cold_seconds,"oldest_receipt_retry":"passed_without_side_effect","complete_final_business_and_air":"passed","cold_complete_image_unchanged":true,"saved_sequence":root["sequence"],"final_root":final_root,"transcript_bytes":e.log_bytes,"performance_acceptance":"not_run","steady_three_runs":"not_run","eight_hour_gate":"not_run","memory_16gb_gate":"not_run","full_M0":"not_accepted"});
     write_json(&dir.join("report.json"), &report)?;
     Ok(report)
 }

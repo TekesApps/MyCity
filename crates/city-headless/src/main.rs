@@ -184,6 +184,33 @@ fn run() -> Result<(), String> {
         );
         return Ok(());
     }
+    if args.get(1).is_some_and(|a| a == "scale-model-task") {
+        if !(3..=4).contains(&args.len()) || args.get(3).is_some_and(|s| s != "parent-pipe") {
+            return Err("usage: mycity-headless scale-model-task TASK_DIR [parent-pipe]".into());
+        }
+        if args.len() == 4 {
+            mycity_headless::scale_model_task::watch_parent_pipe()?;
+        }
+        mycity_headless::scale_model_task::execute(std::path::Path::new(&args[2]))?;
+        return Ok(());
+    }
+    if args
+        .get(1)
+        .is_some_and(|a| a == "scale-model-reference-probe")
+    {
+        if args.len() != 4 {
+            return Err("usage: mycity-headless scale-model-reference-probe NEW_DIR TIER".into());
+        }
+        let report = mycity_headless::scale_model_task::reference_probe(
+            std::path::Path::new(&args[2]),
+            mycity_headless::scale_reference::Tier::parse(&args[3])?,
+        )?;
+        println!(
+            "{}",
+            serde_json::to_string_pretty(&report).map_err(|e| e.to_string())?
+        );
+        return Ok(());
+    }
     if args.get(1).is_some_and(|a| a == "scale-sim-probe") {
         if !(3..=5).contains(&args.len()) {
             return Err(

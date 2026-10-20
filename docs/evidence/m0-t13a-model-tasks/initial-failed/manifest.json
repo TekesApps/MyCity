@@ -1,0 +1,82 @@
+[
+  {
+    "path": "events.json",
+    "bytes": 163,
+    "sha256": "f3f9e573c14a240b0a7ba935237dd162a96192aa6df79ea4cd798f8d4993a574"
+  },
+  {
+    "path": "heaps.jsonl",
+    "bytes": 977,
+    "sha256": "e94835bae46c2da6ba891d687fcef2f46dd53b4ffd2e9b749230e419cd85bbdd"
+  },
+  {
+    "path": "model/cpu-final-engine.json",
+    "bytes": 2507418,
+    "sha256": "375065b04ead72b347babf37e1e212455170737057c245d96fe710212f34034c"
+  },
+  {
+    "path": "model/cpu-report.json",
+    "bytes": 9515,
+    "sha256": "149a52e0d8060d7909515e219effac351da5dd29d903696bfac77d5617fd9c58"
+  },
+  {
+    "path": "model/cpu-targets.jsonl",
+    "bytes": 142733,
+    "sha256": "7e4fa48ef7b6925a0dafc564c0ad51dbad2f8a59ab9193e88cdd2ea1c2e9f1e1"
+  },
+  {
+    "path": "model/reference/child.json",
+    "bytes": 32,
+    "sha256": "c96efe1a56fd9f9baca6e996482f04a85c3e38b5594e75a05e8d968ad79b43f5"
+  },
+  {
+    "path": "model/reference/cpu-final-engine.json",
+    "bytes": 2507418,
+    "sha256": "375065b04ead72b347babf37e1e212455170737057c245d96fe710212f34034c"
+  },
+  {
+    "path": "model/reference/cpu-report.json",
+    "bytes": 9515,
+    "sha256": "149a52e0d8060d7909515e219effac351da5dd29d903696bfac77d5617fd9c58"
+  },
+  {
+    "path": "model/reference/cpu-targets.jsonl",
+    "bytes": 142733,
+    "sha256": "7e4fa48ef7b6925a0dafc564c0ad51dbad2f8a59ab9193e88cdd2ea1c2e9f1e1"
+  },
+  {
+    "path": "model/reference/request.json",
+    "bytes": 484,
+    "sha256": "25383a17b5dc39b91715cfc78d93ccb1af536ec6b5ce013d2abc7b2a64a431b7"
+  },
+  {
+    "path": "model/reference/result.json",
+    "bytes": 799,
+    "sha256": "ac67175c32d2ebdbe6bdb2a497cb723eca4210b7538d4f889e543d1d57941e7b"
+  },
+  {
+    "path": "model/reference/stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model/reference/stdout",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "numeric-compatibility-failure.json",
+    "bytes": 367,
+    "sha256": "718ce8716ea05395bdf8ee043279b10685c1eb92dfad80b1085a28d1a8407369"
+  },
+  {
+    "path": "reference-full.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "reference-full.stdout",
+    "bytes": 954,
+    "sha256": "b5bbfb7a368a5768ac646fb40a92b2de237f00d7e87e702959fe68da9f87b01d"
+  }
+]

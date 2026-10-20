@@ -9,7 +9,8 @@ use mycity_core::{
     timeline::{Command as Timeline, PayrollSpec},
     transaction::{Action, Engine, Resource},
 };
-use serde_json::{json, Value};
+use serde::Serialize;
+use serde_json::{json, Map, Value};
 use std::time::Instant;
 pub const OPENING: &[u8] = include_bytes!("../../../fixtures/m0-t13a-full-opening-candidate.json");
 pub const POLICY: &[u8] = include_bytes!("../../../fixtures/m0-t13a-real-policy-candidate.json");
@@ -210,10 +211,66 @@ pub fn run_observed(
 ) -> Result<(Reference, Value), String> {
     run_tier_observed(Tier::Full, observe)
 }
+// Two report destinations share the same model work. The compatibility API
+// builds its original Value directly; the helper streams without a full tree.
+trait ReportSink {
+    fn field(&mut self, key: &str, value: &(impl Serialize + ?Sized)) -> Result<(), String>;
+}
+struct ValueReport(Map<String, Value>);
+impl ReportSink for ValueReport {
+    fn field(&mut self, key: &str, value: &(impl Serialize + ?Sized)) -> Result<(), String> {
+        self.0
+            .insert(key.into(), serde_json::to_value(value).map_err(err)?);
+        Ok(())
+    }
+}
+struct StreamReport<'a, W> {
+    writer: &'a mut W,
+    first: bool,
+}
+impl<W: std::io::Write> ReportSink for StreamReport<'_, W> {
+    fn field(&mut self, key: &str, value: &(impl Serialize + ?Sized)) -> Result<(), String> {
+        if !self.first {
+            self.writer.write_all(b",").map_err(err)?;
+        }
+        self.first = false;
+        serde_json::to_writer(&mut *self.writer, key).map_err(err)?;
+        self.writer.write_all(b":").map_err(err)?;
+        serde_json::to_writer(&mut *self.writer, value).map_err(err)
+    }
+}
 pub fn run_tier_observed(
     tier: Tier,
-    mut observe: impl FnMut(&Reference, &Step) -> Result<(), String>,
+    observe: impl FnMut(&Reference, &Step) -> Result<(), String>,
 ) -> Result<(Reference, Value), String> {
+    let mut report = ValueReport(Map::new());
+    let reference = run_tier_report(tier, observe, &mut report)?;
+    Ok((reference, Value::Object(report.0)))
+}
+/// Same oracle and model work, with borrowed report fields serialized directly.
+/// The caller owns and bounds the output; no full diagnostic Value is built here.
+pub fn run_tier_streamed(
+    tier: Tier,
+    observe: impl FnMut(&Reference, &Step) -> Result<(), String>,
+    report: &mut impl std::io::Write,
+) -> Result<Reference, String> {
+    report.write_all(b"{").map_err(err)?;
+    let reference = run_tier_report(
+        tier,
+        observe,
+        &mut StreamReport {
+            writer: report,
+            first: true,
+        },
+    )?;
+    report.write_all(b"}").map_err(err)?;
+    Ok(reference)
+}
+fn run_tier_report(
+    tier: Tier,
+    mut observe: impl FnMut(&Reference, &Step) -> Result<(), String>,
+    report: &mut impl ReportSink,
+) -> Result<Reference, String> {
     let started = Instant::now();
     let oracle: Value = serde_json::from_slice(tier.oracle()).map_err(err)?;
     let (account_count, stock_count, payroll_count, claim_count) = tier.counts();
@@ -388,18 +445,35 @@ pub fn run_tier_observed(
     {
         return Err("scale_final_checkpoint_mismatch".into());
     }
-    let report = json!({"schema":"mycity-scale-reference-v1","source_sha256":env!("MYCITY_SOURCE_SHA256"),
-        "opening_sha256":mycity_core::sha256(tier.opening()),"policy_sha256":mycity_core::sha256(tier.policy()),"oracle_sha256":mycity_core::sha256(tier.oracle()),"tier":tier.name(),
-        "scope":"named_tier_direct_cpu_model_only","work_wall_seconds":started.elapsed().as_secs_f64(),
-        "counts":{"accounts":account_count,"stocks":stock_count,"cities":8,"payroll":payroll_count,"claims":claim_count,"quotes":8,"inflight_peak":peak_shipments},
-        "game_seconds":30*86400,"completed_hour_targets":completed_hours,"air_windows":r.windows,"field":field,
-        "initial_owned_capacity_bytes":initialized_owned,"final_owned_capacity_bytes":r.engine.owned_capacity_bytes(),
-        "business_sha256":joint_reference::business_digest(&r.engine)?,"cash_accounts":actual_accounts,
-        "wages_paid_total":t.payroll.iter().map(|p|p.paid.value()).sum::<i64>(),
-        "claims_paid_total":t.claims.iter().map(|c|c.paid.value()).sum::<i64>(),
-        "inbox":x.inbox,"destination_pools":view.stocks[7..11],"periodic_obligations":obligations,"delivery_contracts":x.quotes,"managed_stock_records":14,"extra_stock_records":stock_count-14,"extra_stock_nonzero_records":1,
-        "reference_arithmetic_and_checkpoint":"passed","performance_acceptance":"not_run","eight_hour_gate":"not_run","memory_16gb_gate":"not_run","full_M0":"not_accepted"});
-    Ok((r, report))
+    // Hashing the full business state is part of the independent model proof,
+    // not a report buffer. Compute it before serializing the bounded report.
+    let business_sha256 = joint_reference::business_digest(&r.engine)?;
+    // Preserve the old json! report's f32 -> JSON Number(f64) conversion.
+    // This fixed 19-field scalar summary is diagnostic data; the full report
+    // and model arrays remain borrowed/streamed, not a second Value tree.
+    let field = serde_json::to_value(field).map_err(err)?;
+    macro_rules! report_fields {
+        ($($key:literal: $value:expr),+ $(,)?) => {
+            $(report.field($key, &$value)?;)+
+        };
+    }
+    report_fields! {
+        "schema": "mycity-scale-reference-v1", "source_sha256": env!("MYCITY_SOURCE_SHA256"),
+        "opening_sha256": mycity_core::sha256(tier.opening()),
+        "policy_sha256": mycity_core::sha256(tier.policy()), "oracle_sha256": mycity_core::sha256(tier.oracle()),
+        "tier": tier.name(), "scope": "named_tier_direct_cpu_model_only", "work_wall_seconds": started.elapsed().as_secs_f64(),
+        "counts": json!({"accounts":account_count,"stocks":stock_count,"cities":8,"payroll":payroll_count,"claims":claim_count,"quotes":8,"inflight_peak":peak_shipments}),
+        "game_seconds": 30*86400, "completed_hour_targets": completed_hours, "air_windows": r.windows, "field": field,
+        "initial_owned_capacity_bytes": initialized_owned, "final_owned_capacity_bytes": r.engine.owned_capacity_bytes(),
+        "business_sha256": business_sha256, "cash_accounts": actual_accounts,
+        "wages_paid_total": t.payroll.iter().map(|p|p.paid.value()).sum::<i64>(),
+        "claims_paid_total": t.claims.iter().map(|c|c.paid.value()).sum::<i64>(),
+        "inbox": x.inbox, "destination_pools": view.stocks[7..11], "periodic_obligations": obligations,
+        "delivery_contracts": x.quotes, "managed_stock_records":14, "extra_stock_records": stock_count-14,"extra_stock_nonzero_records":1,
+        "reference_arithmetic_and_checkpoint":"passed", "performance_acceptance":"not_run",
+        "eight_hour_gate":"not_run", "memory_16gb_gate":"not_run", "full_M0":"not_accepted"
+    }
+    Ok(r)
 }
 
 /// Export the actual direct-CPU reference for later independent process comparison.

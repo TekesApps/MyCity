@@ -1,0 +1,6 @@
+{
+  "source_sha256": "22778fb96a6ef6edacd62c8c9cab174ad8d64fb71babe9f5ec42de2311ff1945",
+  "binary_sha256": "c8117a5f2874786eed07494998c044ad6f08bdadb5ddffd88ec462a99ceb48dc",
+  "files": 135,
+  "status": "full_CPU_wire_compatibility_passed_but_Rust_Value_test_failed_f64_reparse_precision"
+}

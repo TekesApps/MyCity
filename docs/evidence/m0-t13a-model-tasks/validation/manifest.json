@@ -1,0 +1,82 @@
+[
+  {
+    "path": "clippy-after-float-fix.txt",
+    "bytes": 148,
+    "sha256": "e70e3fdea29df52c372d8228745235b1b27161caa419ee1296434c81ce84e857"
+  },
+  {
+    "path": "clippy-final-fixed.txt",
+    "bytes": 202,
+    "sha256": "f52f32b7942368feb70e6c3f648271545da850a5bdb616c8ec979c15d3c06eb6"
+  },
+  {
+    "path": "clippy-final-source.txt",
+    "bytes": 2141,
+    "sha256": "6846df2e3ad8f658d421572f9361ca1a5c0c26e0b4ea305039d73e38b724bd95"
+  },
+  {
+    "path": "clippy-final.txt",
+    "bytes": 148,
+    "sha256": "a6b07e5c09772e843e0123adfb25af6a5d8e73e0aed267aad8007b3a2d0c61d2"
+  },
+  {
+    "path": "clippy.txt",
+    "bytes": 1006,
+    "sha256": "e57ddfe4bba7567ef31846f149c16c1e60abf9d47a1bed20754ef1a87883bc1d"
+  },
+  {
+    "path": "fmt-after-report-sinks.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "fmt-final-source.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "fmt-final.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "functional-final-output.txt",
+    "bytes": 801,
+    "sha256": "6af57e7c57408077e179792990694e32a77f191bfba418b099cb1b7c51601977"
+  },
+  {
+    "path": "functional-final-source-output.txt",
+    "bytes": 801,
+    "sha256": "39517849d2eb62ceaca5c0d1b057adaa2710047a98e02389cc824b61489ee83d"
+  },
+  {
+    "path": "functional-output.txt",
+    "bytes": 176,
+    "sha256": "adc0f00c157ce9d8580209c6f0b84a6ea1a21b3b81a3e4b47b06ec83a39b9608"
+  },
+  {
+    "path": "task-tests-final.txt",
+    "bytes": 2875,
+    "sha256": "8e6240c1c6e764ce6bb8cda2377f97f4a5211f102e2613b841878427b2dccff3"
+  },
+  {
+    "path": "task-tests.txt",
+    "bytes": 658,
+    "sha256": "051f0a3fd63e99f349d0cf3f8fa8897da74b7081a7620923f03574881b68eacd"
+  },
+  {
+    "path": "tests-final-focused.txt",
+    "bytes": 1928,
+    "sha256": "86fa67876895b3ce8da2a8941cd311a6ecea3916e2ac919c285bd1999942f99b"
+  },
+  {
+    "path": "tests-final-source.txt",
+    "bytes": 1038,
+    "sha256": "9651dc63af13227895f2109945fe58964bb6877b4d4cc38ddc78fc371a99826b"
+  },
+  {
+    "path": "tests-workspace.txt",
+    "bytes": 34190,
+    "sha256": "5caea0642ac80c5ee2d919e6f2578b3abf364b94fd4d7aa4a781e4151cc6b880"
+  }
+]

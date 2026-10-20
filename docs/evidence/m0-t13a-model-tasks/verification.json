@@ -1,0 +1,18 @@
+{
+  "source_sha256": "6d7abef05ed9cf08984b1ae263d7b63336e792d9d1a7a7d1f430102da04757d5",
+  "packets": {
+    "initial-failed": 16,
+    "second-wire-pass": 36,
+    "final-functional": 36,
+    "validation": 16
+  },
+  "full_CPU_723_targets_and_engine_exact_v42": true,
+  "final_report_fields_match_except_source_and_wall": true,
+  "initial_failure_preserved": true,
+  "synthetic_comparison_only": true,
+  "final_source_focused_tests": 6,
+  "full_Sim_this_source": "not_run",
+  "eight_hour_gate": "not_run",
+  "memory_16gb_gate": "not_run",
+  "full_M0": "not_accepted"
+}

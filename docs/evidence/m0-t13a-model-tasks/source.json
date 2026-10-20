@@ -1,0 +1,9 @@
+{
+  "source_sha256": "6d7abef05ed9cf08984b1ae263d7b63336e792d9d1a7a7d1f430102da04757d5",
+  "binary_sha256": "b70ba883a43fe2fc42bdf2a0b6920af50653dab779f7d2756e700200b1b5fa1c",
+  "source_files": 135,
+  "source_support_sha256": "6d886faa53a8b86966c6c1367f026320f4e9a657e1f2791c129602025ada04fe",
+  "functional_harness_sha256": "e03ea8f392a02fcc3f2bd6d5a07cd69ef971fbe928d1ed371abeb277871b4b1b",
+  "rust": "1.85.1",
+  "scope": "final source focused regressions and independent full CPU comparison; no final-source full workspace rerun or full Sim performance gate"
+}

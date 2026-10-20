@@ -1,6 +1,6 @@
 # MyCity
 
-仓库发布版本：`v0.5.43`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.44`。已开始Rust模型与headless CLI，当前不做UI。
 
 **软件结构先读[总体架构](docs/SOFTWARE_ARCHITECTURE.md)：当前代码、主体与事件、单writer、多进程目标、数据文件和预算。**
 
@@ -39,3 +39,5 @@
 总体方案D_full已交付；当前按M0实施模型。完整场景装配、真实Agent／语音、经济平衡、性能和可玩性仍需原型；16GB预算不是实测通过记录。
 
 [原首期实施切片](docs/FIRST_RELEASE_BASELINE.md)／[历史资料](DOCUMENT_HISTORY.md)保留为来源，不覆盖新总体目标。仓库：[TekesApps/MyCity](https://github.com/TekesApps/MyCity)，公开、[MIT License](LICENSE)。每次文档提交递增附注tag并推送，见[协作规范](AGENTS.md)。
+
+最新有限阶段：[独立模型证明helper及报告兼容](docs/evidence/m0-t13a-model-tasks/STATUS.md)。最终来源full CPU的723目标和完整Engine与旧版逐项一致；构造image链不冒充Store冷开。诊断总账、64MiB、正式性能、8h和16GB仍未通过。

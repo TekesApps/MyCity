@@ -332,3 +332,5 @@ v0.5.42的T13A-3c[实例身份与驱动复制收敛](evidence/m0-t13a-process-in
 
 
 v0.5.43的T13A-3d[worker固定槽及失败实测](evidence/m0-t13a-worker-slots/STATUS.md)：真实输入／候选接两个已触页2MiB槽，借用／归还不重新分配；metadata另计，core借用codec保持字节兼容并移除整份State克隆，既有候选流式校验。全仓含借用compile_fail及clippy通过；原full在216.89秒因系统非正常pressure持续60.197秒保护终止，382个正常worker局部余额与旧hash核验通过但**完整30日／724窗口not_completed，本次实测failed**。383报告中1缺footer保持缺测，5分钟观察未恢复normal，未重试／减负载／停其他应用。advisor准许按实现与回归完成、实测未完成提交；64MiB总池、诊断总账、四档、正式稳态、8h及16GB仍未通过，M0 not_accepted。继续其他代码依赖，条件满足后补完整测量。
+
+v0.5.44的T13A-3e[独立模型证明helper](evidence/m0-t13a-model-tasks/STATUS.md)：参考／image验证／完整期末比较移出驱动，成功退出及文件hash交接、父管道断开回收接入。最终6项目标回归／全target clippy及full CPU的723目标、完整Engine和参考报告对旧版核验通过，初次f32报告兼容失败保留。初版全仓与最终目标回归分来源，不拼最终全仓通过；构造image链不是实际Store冷开。最终来源完整Sim、驱动／helper诊断总账、64MiB grant、正式性能／8h／16GB仍未通过，M0 not_accepted。
