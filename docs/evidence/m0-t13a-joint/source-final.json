@@ -1,0 +1,7 @@
+{
+  "source_sha256": "2fc753132120ff90a35410da6e3235915c3937456bda25173a959c032a857aff",
+  "binary_sha256": "630345fcc09785992ffeeb1ec32e96555628f5beef497d2f4679b6810bf912b4",
+  "files": 129,
+  "rust": "1.85.1",
+  "support_archive": "source-support.zip"
+}

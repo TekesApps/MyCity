@@ -127,6 +127,30 @@ fn run() -> Result<(), String> {
         );
         return Ok(());
     }
+    if args.get(1).is_some_and(|a| a == "layout-charged-probe") {
+        if args.len() != 6 {
+            return Err("usage: mycity-headless layout-charged-probe NEW_DIR WALL_SECONDS SNAPSHOT_SECONDS EXTERNAL_BYTES".into());
+        }
+        let report = mycity_headless::layout_load::probe_charged(
+            std::path::Path::new(&args[2]),
+            args[3]
+                .parse()
+                .map_err(|e: std::num::ParseIntError| e.to_string())?,
+            args[4]
+                .parse()
+                .map_err(|e: std::num::ParseIntError| e.to_string())?,
+            Some(
+                args[5]
+                    .parse()
+                    .map_err(|e: std::num::ParseIntError| e.to_string())?,
+            ),
+        )?;
+        println!(
+            "{}",
+            serde_json::to_string_pretty(&report).map_err(|e| e.to_string())?
+        );
+        return Ok(());
+    }
     if args.get(1).is_some_and(|a| a == "layout-probe") {
         if args.len() != 5 {
             return Err("usage: mycity-headless layout-probe NEW_DIR WALL_SECONDS SNAPSHOT_SECONDS (>=2100s requires 300s snapshots)".into());

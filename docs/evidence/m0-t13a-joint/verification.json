@@ -1,0 +1,25 @@
+{
+  "status": "original_joint_run_failed_restore_guard; fixed_reader_same_snapshot_verified",
+  "snapshot_files_checked": 58,
+  "snapshot_bytes_checked": 6757568804,
+  "L1_scan_count": 600,
+  "native_samples_expected": 28200,
+  "stub_samples_expected": 100800,
+  "second_snapshot_L1_clock_interval": [
+    300.0079555,
+    324.922865791
+  ],
+  "business_receipt_chain_checked": 3011,
+  "business_verified_targets": 723,
+  "RSS_frames_checked": 2415,
+  "sampled_group_peak_rss_bytes": 3465199616,
+  "actual_overlap_witness": {
+    "durable_sequence_before": 1813,
+    "durable_sequence_after": 1815,
+    "complete_targets": 1,
+    "outside_measured_tree": true
+  },
+  "pressure_budget": "not_accepted; 64MiB unused reservation not filled and complete external owned missing",
+  "memory_16gb_gate": "not_run",
+  "eight_hour_gate": "not_run"
+}

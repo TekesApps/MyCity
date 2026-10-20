@@ -1,0 +1,8 @@
+{
+  "source_sha256": "4af3deebb980720bfc86df83f581ed1157e16851e15a1a15b00f546f524b902a",
+  "binary_sha256": "87484526258eae4b9a1e9b97a337e96cbb50f743e3ae685ce9d8d690c9420065",
+  "files": 129,
+  "rust": "1.85.1",
+  "source_support_sha256": "6d886faa53a8b86966c6c1367f026320f4e9a657e1f2791c129602025ada04fe",
+  "support_reason": "historical World include_str used by economy_short integration test; outside compile fingerprint file list"
+}

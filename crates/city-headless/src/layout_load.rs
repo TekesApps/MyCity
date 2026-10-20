@@ -361,6 +361,11 @@ impl Load {
         Self::construct(root, NORMAL_BYTES, external_owned_charge_bytes)
     }
     fn construct(root: &Path, normal_bytes: usize, external_charge: usize) -> Result<Self, String> {
+        // Shared reservation includes model/IPC components, not only diagnostics.
+        // The independent diagnostic hot-data cap remains 8MiB.
+        if external_charge > 64 * MIB {
+            return Err("layout_external_reservation_limit".into());
+        }
         fs::create_dir(root).map_err(err)?;
         let root_lock = OpenOptions::new()
             .read(true)
@@ -729,6 +734,16 @@ impl Snapshot {
 
 /// Diagnostic or frozen standalone L1 run. Duration<2100s cannot pass steady gates.
 pub fn probe(dir: &Path, wall_seconds: u64, snapshot_seconds: u64) -> Result<Value, String> {
+    probe_charged(dir, wall_seconds, snapshot_seconds, None)
+}
+/// Joint diagnostic reservation replaces padding; it never removes native/stub records.
+/// This is a budget reservation, not proof of complete external allocation accounting.
+pub fn probe_charged(
+    dir: &Path,
+    wall_seconds: u64,
+    snapshot_seconds: u64,
+    external_charge: Option<usize>,
+) -> Result<Value, String> {
     use crate::scale_metrics::Metrics;
     use std::time::Duration;
     if wall_seconds > 28800
@@ -740,7 +755,13 @@ pub fn probe(dir: &Path, wall_seconds: u64, snapshot_seconds: u64) -> Result<Val
     fs::create_dir(dir).map_err(err)?;
     let mut metrics = Metrics::create(&dir.join("compute-durations.bin"))?;
     let initial = Instant::now();
-    let mut load = Load::full(&dir.join("snapshots"), metrics.owned_bytes())?;
+    // Both active L1 histograms may allocate lazily after construction.
+    let metric_reserve = metrics.owned_bytes() + 2 * 40001 * std::mem::size_of::<u64>();
+    let charge = external_charge.unwrap_or(metric_reserve);
+    if charge < metric_reserve {
+        return Err("layout_external_diagnostics_reservation".into());
+    }
+    let mut load = Load::full(&dir.join("snapshots"), charge)?;
     let init_seconds = initial.elapsed().as_secs_f64();
     let manifest = load.manifest();
     fs::write(
@@ -782,6 +803,9 @@ pub fn probe(dir: &Path, wall_seconds: u64, snapshot_seconds: u64) -> Result<Val
                 maximum_scan_lateness = maximum_scan_lateness.max(lateness);
                 let scan = load.scan(|class, _, ns| metrics.observe(class, ns))?;
                 metrics.check()?;
+                if metrics.owned_bytes() > charge {
+                    return Err("layout_diagnostics_exceeds_charge".into());
+                }
                 serde_json::to_writer(&mut events,&json!({"elapsed_seconds":started.elapsed().as_secs_f64(),"scan_deadline_seconds":next_scan,"scan_ready_age_seconds":lateness,"scan":scan})).map_err(err)?;
                 events.write_all(b"\n").map_err(err)?;
                 events.flush().map_err(err)?;
@@ -854,6 +878,18 @@ impl Load {
         if normal_bytes != NORMAL_BYTES {
             return Err("layout_restore_full_scope".into());
         }
+        let external_charge = manifest["external_owned_charge_bytes"]
+            .as_u64()
+            .ok_or("layout_restore_external")? as usize;
+        let metadata_charge = manifest["metadata_and_io_charge_bytes"]
+            .as_u64()
+            .ok_or("layout_restore_metadata")? as usize;
+        if metadata_charge != 4 * MIB
+            || external_charge > 64 * MIB
+            || manifest["cow_reserve_bytes"] != (COW_PAGES * MIB) as u64
+        {
+            return Err("layout_restore_work_budget".into());
+        }
         let iterations = manifest["mutation_iteration"]
             .as_u64()
             .ok_or("layout_restore_missing_iteration")?;
@@ -915,18 +951,6 @@ impl Load {
             .ok_or("layout_restore_padding")?;
         if payload.len() != 7 {
             return Err("layout_restore_domain_count".into());
-        }
-        let external_charge = manifest["external_owned_charge_bytes"]
-            .as_u64()
-            .ok_or("layout_restore_external")? as usize;
-        let metadata_charge = manifest["metadata_and_io_charge_bytes"]
-            .as_u64()
-            .ok_or("layout_restore_metadata")? as usize;
-        if metadata_charge != 4 * MIB
-            || external_charge > 8 * MIB
-            || manifest["cow_reserve_bytes"] != (COW_PAGES * MIB) as u64
-        {
-            return Err("layout_restore_work_budget".into());
         }
         let total_payload: usize = payload
             .iter()
@@ -1049,6 +1073,49 @@ fn reopen_inner(snapshot_dir: &Path, report_dir: &Path, save: bool) -> Result<Va
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn external_component_reservation_rejects_oversize_before_allocation() {
+        let root =
+            std::env::temp_dir().join(format!("mycity-layout-external-{}", std::process::id()));
+        assert!(!root.exists());
+        for charge in [64 * MIB + 1, usize::MAX] {
+            assert!(
+                matches!(Load::full(&root, charge), Err(e) if e == "layout_external_reservation_limit")
+            );
+            assert!(!root.exists());
+        }
+    }
+    #[test]
+    fn restore_rejects_component_reservation_before_loading_any_large_file() {
+        let root = std::env::temp_dir().join(format!(
+            "mycity-layout-restore-budget-{}",
+            std::process::id()
+        ));
+        let snapshot = root.join("snapshot-000001");
+        fs::create_dir_all(&snapshot).unwrap();
+        for (charge, metadata, cow) in [
+            (64 * MIB + 1, 4 * MIB, COW_PAGES * MIB),
+            (usize::MAX, 4 * MIB, COW_PAGES * MIB),
+            (64 * MIB, 0, COW_PAGES * MIB),
+            (64 * MIB, 4 * MIB, 0),
+        ] {
+            // Deliberately omit every large file and even file entries. Budget
+            // rejection must happen before file-set checks, tables() or decoding.
+            let index = json!({"schema":"mycity-layout-snapshot-v2","manifest":{
+                "schema":"mycity-l1-layout-v1","acceptance_sha256":mycity_core::sha256(ACCEPTANCE),
+                "normal_joint_budget_bytes":NORMAL_BYTES,"external_owned_charge_bytes":charge,
+                "metadata_and_io_charge_bytes":metadata,"cow_reserve_bytes":cow}});
+            fs::write(
+                snapshot.join("index.json"),
+                serde_json::to_vec(&index).unwrap(),
+            )
+            .unwrap();
+            assert!(
+                matches!(Load::restore(&snapshot), Err(e) if e == "layout_restore_work_budget")
+            );
+        }
+        fs::remove_dir_all(root).unwrap();
+    }
     #[test]
     fn all_stub_counts_widths_population_and_references_are_real_records() {
         let tables = tables().unwrap();

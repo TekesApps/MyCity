@@ -1,0 +1,12 @@
+{
+  "source_chain": {
+    "source": "4af3deebb980720bfc86df83f581ed1157e16851e15a1a15b00f546f524b902a",
+    "source-reader-b": "ff52b2532f5668212fc1f20ddb0c2b74081bc46670a854b52b4c6dcd15c69de5",
+    "source-final": "2fc753132120ff90a35410da6e3235915c3937456bda25173a959c032a857aff"
+  },
+  "original_failure_preserved": true,
+  "final_source_matches_worktree": true,
+  "frozen_input_unchanged": true,
+  "outer_archives_verified": true,
+  "source_support_verified": true
+}
