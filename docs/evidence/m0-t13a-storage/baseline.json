@@ -1,0 +1,335 @@
+{
+  "business_time_advanced": false,
+  "claims": 20000,
+  "cold_samples": [
+    {
+      "absent_receipt_lookup_seconds": 0.000059208,
+      "after_save": 1,
+      "cold_seconds": 0.091241375,
+      "full_checkpoint_state_equal": true,
+      "oldest_receipt_seconds": 0.030441083,
+      "original_command_retry_seconds": 0.028416875,
+      "original_receipt_equal": true
+    },
+    {
+      "absent_receipt_lookup_seconds": 0.000082209,
+      "after_save": 2,
+      "cold_seconds": 0.1181795,
+      "full_checkpoint_state_equal": true,
+      "oldest_receipt_seconds": 0.028273042,
+      "original_command_retry_seconds": 0.028176333,
+      "original_receipt_equal": true
+    },
+    {
+      "absent_receipt_lookup_seconds": 0.0001095,
+      "after_save": 4,
+      "cold_seconds": 0.169798125,
+      "full_checkpoint_state_equal": true,
+      "oldest_receipt_seconds": 0.02777025,
+      "original_command_retry_seconds": 0.027894542,
+      "original_receipt_equal": true
+    },
+    {
+      "absent_receipt_lookup_seconds": 0.000146416,
+      "after_save": 8,
+      "cold_seconds": 0.279521125,
+      "full_checkpoint_state_equal": true,
+      "oldest_receipt_seconds": 0.03038875,
+      "original_command_retry_seconds": 0.028400291,
+      "original_receipt_equal": true
+    },
+    {
+      "absent_receipt_lookup_seconds": 0.000239875,
+      "after_save": 12,
+      "cold_seconds": 0.423596958,
+      "full_checkpoint_state_equal": true,
+      "oldest_receipt_seconds": 0.026983792,
+      "original_command_retry_seconds": 0.026514708,
+      "original_receipt_equal": true
+    },
+    {
+      "absent_receipt_lookup_seconds": 0.000532042,
+      "after_save": 16,
+      "cold_seconds": 0.519801,
+      "full_checkpoint_state_equal": true,
+      "oldest_receipt_seconds": 0.030562833,
+      "original_command_retry_seconds": 0.055560542,
+      "original_receipt_equal": true
+    },
+    {
+      "after_rejected_save": 20,
+      "seconds": 0.603665541
+    }
+  ],
+  "committed_startup_commands": 88,
+  "completed_saves": 19,
+  "eight_hour_gate": "not_run",
+  "engine_checkpoint_bytes": 1836348,
+  "final_state_equal": true,
+  "final_status": {
+    "archive_bytes": 119735224,
+    "archive_limit": 134217728,
+    "generation": 107,
+    "hot_receipts": 0,
+    "sequence": 88,
+    "wal_bytes": 0
+  },
+  "full_M0": "not_accepted",
+  "full_initial_accounts": 64,
+  "full_initial_stocks": 128,
+  "initialization_seconds": 2.30209275,
+  "memory_16gb_gate": "not_run",
+  "ninety_six_save_gate": "failed_lower_bound",
+  "opening_sha256": "04c113c62b0b682f94f9abfbde7618b87bd972f3931504366be9e07c130b4726",
+  "original_engine_checkpoint_sha256": "8bf8353e3f39c1d77751467300e4a5332976675cfdcf263ef50d1cc56e1b81c2",
+  "payroll": 64,
+  "policy_sha256": "614ac01e912bf932fad4f5bb33f8254b03f1ac3cba71c93106d2739655dfd4b0",
+  "rejected_save": {
+    "error": "Capacity { used_bytes: 119735224, limit_bytes: 125829120, required_bytes: 6332185, emergency: false }",
+    "last_good_status": {
+      "archive_bytes": 119735224,
+      "archive_limit": 134217728,
+      "generation": 107,
+      "hot_receipts": 0,
+      "sequence": 88,
+      "wal_bytes": 0
+    },
+    "requested_save": 20,
+    "seconds": 0.015757292
+  },
+  "requested_saves": 96,
+  "saves": [
+    {
+      "save": 1,
+      "seconds": 0.09616575,
+      "status": {
+        "archive_bytes": 6489433,
+        "archive_limit": 134217728,
+        "generation": 89,
+        "hot_receipts": 0,
+        "sequence": 88,
+        "wal_bytes": 0
+      }
+    },
+    {
+      "save": 2,
+      "seconds": 0.086903916,
+      "status": {
+        "archive_bytes": 12780945,
+        "archive_limit": 134217728,
+        "generation": 90,
+        "hot_receipts": 0,
+        "sequence": 88,
+        "wal_bytes": 0
+      }
+    },
+    {
+      "save": 3,
+      "seconds": 0.10333325,
+      "status": {
+        "archive_bytes": 19072372,
+        "archive_limit": 134217728,
+        "generation": 91,
+        "hot_receipts": 0,
+        "sequence": 88,
+        "wal_bytes": 0
+      }
+    },
+    {
+      "save": 4,
+      "seconds": 0.089802708,
+      "status": {
+        "archive_bytes": 25363799,
+        "archive_limit": 134217728,
+        "generation": 92,
+        "hot_receipts": 0,
+        "sequence": 88,
+        "wal_bytes": 0
+      }
+    },
+    {
+      "save": 5,
+      "seconds": 0.086389625,
+      "status": {
+        "archive_bytes": 31655226,
+        "archive_limit": 134217728,
+        "generation": 93,
+        "hot_receipts": 0,
+        "sequence": 88,
+        "wal_bytes": 0
+      }
+    },
+    {
+      "save": 6,
+      "seconds": 0.083705959,
+      "status": {
+        "archive_bytes": 37946653,
+        "archive_limit": 134217728,
+        "generation": 94,
+        "hot_receipts": 0,
+        "sequence": 88,
+        "wal_bytes": 0
+      }
+    },
+    {
+      "save": 7,
+      "seconds": 0.103697459,
+      "status": {
+        "archive_bytes": 44238080,
+        "archive_limit": 134217728,
+        "generation": 95,
+        "hot_receipts": 0,
+        "sequence": 88,
+        "wal_bytes": 0
+      }
+    },
+    {
+      "save": 8,
+      "seconds": 0.086600459,
+      "status": {
+        "archive_bytes": 50529507,
+        "archive_limit": 134217728,
+        "generation": 96,
+        "hot_receipts": 0,
+        "sequence": 88,
+        "wal_bytes": 0
+      }
+    },
+    {
+      "save": 9,
+      "seconds": 0.086505,
+      "status": {
+        "archive_bytes": 56820934,
+        "archive_limit": 134217728,
+        "generation": 97,
+        "hot_receipts": 0,
+        "sequence": 88,
+        "wal_bytes": 0
+      }
+    },
+    {
+      "save": 10,
+      "seconds": 0.086382209,
+      "status": {
+        "archive_bytes": 63112361,
+        "archive_limit": 134217728,
+        "generation": 98,
+        "hot_receipts": 0,
+        "sequence": 88,
+        "wal_bytes": 0
+      }
+    },
+    {
+      "save": 11,
+      "seconds": 0.089810791,
+      "status": {
+        "archive_bytes": 69403788,
+        "archive_limit": 134217728,
+        "generation": 99,
+        "hot_receipts": 0,
+        "sequence": 88,
+        "wal_bytes": 0
+      }
+    },
+    {
+      "save": 12,
+      "seconds": 0.095664625,
+      "status": {
+        "archive_bytes": 75695218,
+        "archive_limit": 134217728,
+        "generation": 100,
+        "hot_receipts": 0,
+        "sequence": 88,
+        "wal_bytes": 0
+      }
+    },
+    {
+      "save": 13,
+      "seconds": 0.220932792,
+      "status": {
+        "archive_bytes": 81986650,
+        "archive_limit": 134217728,
+        "generation": 101,
+        "hot_receipts": 0,
+        "sequence": 88,
+        "wal_bytes": 0
+      }
+    },
+    {
+      "save": 14,
+      "seconds": 0.222050916,
+      "status": {
+        "archive_bytes": 88278079,
+        "archive_limit": 134217728,
+        "generation": 102,
+        "hot_receipts": 0,
+        "sequence": 88,
+        "wal_bytes": 0
+      }
+    },
+    {
+      "save": 15,
+      "seconds": 0.127210917,
+      "status": {
+        "archive_bytes": 94569508,
+        "archive_limit": 134217728,
+        "generation": 103,
+        "hot_receipts": 0,
+        "sequence": 88,
+        "wal_bytes": 0
+      }
+    },
+    {
+      "save": 16,
+      "seconds": 0.085684542,
+      "status": {
+        "archive_bytes": 100860937,
+        "archive_limit": 134217728,
+        "generation": 104,
+        "hot_receipts": 0,
+        "sequence": 88,
+        "wal_bytes": 0
+      }
+    },
+    {
+      "save": 17,
+      "seconds": 0.105904792,
+      "status": {
+        "archive_bytes": 107152366,
+        "archive_limit": 134217728,
+        "generation": 105,
+        "hot_receipts": 0,
+        "sequence": 88,
+        "wal_bytes": 0
+      }
+    },
+    {
+      "save": 18,
+      "seconds": 0.088771209,
+      "status": {
+        "archive_bytes": 113443795,
+        "archive_limit": 134217728,
+        "generation": 106,
+        "hot_receipts": 0,
+        "sequence": 88,
+        "wal_bytes": 0
+      }
+    },
+    {
+      "save": 19,
+      "seconds": 0.090457791,
+      "status": {
+        "archive_bytes": 119735224,
+        "archive_limit": 134217728,
+        "generation": 107,
+        "hot_receipts": 0,
+        "sequence": 88,
+        "wal_bytes": 0
+      }
+    }
+  ],
+  "schema": "mycity-full-storage-growth-lower-bound-v1",
+  "scope": "paused full initial world; lower bound, not full L2 business/IPC, no fabricated throughput acceptance",
+  "source_sha256": "cab9f379421144408c67bd090d5d5a2ddeb4a99bb13b612a00fc20b46d14ad29",
+  "wall_seconds": 7.103044875
+}

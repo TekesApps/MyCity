@@ -55,6 +55,41 @@ fn settle(r: &mut Reference, sequences: std::ops::RangeInclusive<u64>) -> Result
     }
     Ok(())
 }
+/// Exact startup shared by direct reference and storage diagnostics; no time advance.
+pub fn startup_actions(policy: &Value) -> Result<Vec<Action>, String> {
+    let mut actions = vec![
+        Action::Inbox {
+            command: Inbox::Enable,
+        },
+        Action::Boot {
+            command: Boot::Start {
+                facility: Facility::Pump,
+                reverse_request: false,
+            },
+        },
+        Action::Timeline {
+            command: Timeline::Enable,
+        },
+    ];
+    for value in policy["payroll"].as_array().ok_or("scale_payroll_policy")? {
+        actions.push(Action::Timeline {
+            command: Timeline::AddPayroll {
+                spec: serde_json::from_value::<PayrollSpec>(value.clone()).map_err(err)?,
+            },
+        });
+    }
+    for value in policy["claims"].as_array().ok_or("scale_claim_policy")? {
+        let mut command = value.clone();
+        command["kind"] = json!("claims");
+        actions.push(Action::Timeline {
+            command: serde_json::from_value(command).map_err(err)?,
+        });
+    }
+    actions.push(Action::Background {
+        command: Background::Enable,
+    });
+    Ok(actions)
+}
 pub fn run() -> Result<(Reference, Value), String> {
     let started = Instant::now();
     let policy: Value = serde_json::from_slice(POLICY).map_err(err)?;
@@ -95,52 +130,9 @@ pub fn run() -> Result<(Reference, Value), String> {
     {
         return Err("scale_full_counts".into());
     }
-    execute(
-        &mut r,
-        Action::Inbox {
-            command: Inbox::Enable,
-        },
-    )?;
-    execute(
-        &mut r,
-        Action::Boot {
-            command: Boot::Start {
-                facility: Facility::Pump,
-                reverse_request: false,
-            },
-        },
-    )?;
-    execute(
-        &mut r,
-        Action::Timeline {
-            command: Timeline::Enable,
-        },
-    )?;
-    for value in policy["payroll"].as_array().ok_or("scale_payroll_policy")? {
-        let spec: PayrollSpec = serde_json::from_value(value.clone()).map_err(err)?;
-        execute(
-            &mut r,
-            Action::Timeline {
-                command: Timeline::AddPayroll { spec },
-            },
-        )?;
+    for action in startup_actions(&policy)? {
+        execute(&mut r, action)?;
     }
-    for value in policy["claims"].as_array().ok_or("scale_claim_policy")? {
-        let mut command = value.clone();
-        command["kind"] = json!("claims");
-        execute(
-            &mut r,
-            Action::Timeline {
-                command: serde_json::from_value(command).map_err(err)?,
-            },
-        )?;
-    }
-    execute(
-        &mut r,
-        Action::Background {
-            command: Background::Enable,
-        },
-    )?;
     let initialized_owned = r.engine.owned_capacity_bytes();
     r.drive(60)?;
     execute(

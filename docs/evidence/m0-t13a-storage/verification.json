@@ -1,0 +1,8 @@
+{
+  "release_workspace_tests_passed": 246,
+  "fmt": "passed",
+  "clippy_warnings_denied": "passed",
+  "archived_world_chain_audit": "passed",
+  "storage_96_save_gate": "failed_lower_bound",
+  "full_M0": "not_accepted"
+}

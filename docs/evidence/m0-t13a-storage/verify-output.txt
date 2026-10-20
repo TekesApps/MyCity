@@ -1,0 +1,15 @@
+{
+  "actual_successful_saves": 19,
+  "rejected_request": 20,
+  "normal_limit_bytes": 125829120,
+  "unchanged_engine_bytes": 1836348,
+  "repeated_world_checkpoint_bytes": 6291224,
+  "world_only_96_save_lower_bound_bytes": 604048802,
+  "all_88_original_success_receipts_preserved": true,
+  "all_19_world_images_exactly_equal": true,
+  "post_refactor_30_day_business_digest_equal": true,
+  "storage_96_gate": "failed_lower_bound",
+  "eight_hour": "not_run",
+  "real_16gb": "not_run",
+  "full_M0": "not_accepted"
+}

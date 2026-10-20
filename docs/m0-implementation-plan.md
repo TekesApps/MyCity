@@ -245,3 +245,6 @@ v0.5.31执行子阶段T13A-1a：[真实满级CPU参考与native布局](evidence/
 
 
 v0.5.32的T13A-1b实现[完整L1布局与有界观测](evidence/m0-t13a-layout/STATUS.md)，仅签完整布局短诊断及恢复证据，不签正式稳态／8h。后续先测真实L2 Store满级保存增长与冷重开，再修瓶颈、跑分级及四档速度，原冻结数量和长跑门不变。
+
+
+v0.5.33完成T13A-2a[Store增长下界诊断](evidence/m0-t13a-storage/STATUS.md)，实际19保存成功／第20次容量拒绝，96保存未过。下一依赖为[存档格式修复](m0-scale-checkpoint-format.md)，原负载／原票及默认配额对照后，才继续真实L2全源性能和联合长跑。

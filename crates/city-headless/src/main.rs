@@ -77,6 +77,17 @@ fn run() -> Result<(), String> {
         );
         return Ok(());
     }
+    if args.get(1).is_some_and(|a| a == "scale-store-probe") {
+        if args.len() != 3 {
+            return Err("usage: mycity-headless scale-store-probe NEW_DIR".into());
+        }
+        let report = mycity_headless::scale_storage::run(std::path::Path::new(&args[2]))?;
+        println!(
+            "{}",
+            serde_json::to_string_pretty(&report).map_err(|e| e.to_string())?
+        );
+        return Ok(());
+    }
     if args.get(1).is_some_and(|a| a == "scale-reference") {
         if args.len() != 3 {
             return Err("usage: mycity-headless scale-reference NEW_DIR".into());
