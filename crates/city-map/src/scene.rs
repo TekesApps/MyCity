@@ -1,11 +1,14 @@
 //! One immutable, validated local scene; deliberately not a city construction transaction.
+mod workspace;
 use crate::{geometry::*, terrain::Terrain, Error, Frame, Point, GEOMETRY_BUDGET_BYTES};
 use mycity_core::sha256;
 use serde::{Deserialize, Serialize};
 use std::mem::size_of;
+pub use workspace::{SceneWorkspace, SceneWorkspaceIdentity};
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Input {
+    #[serde(deserialize_with = "crate::bounded::text::<_, 64>")]
     pub schema: String,
     pub geometry_revision: u64,
     pub terrain_revision: u64,
@@ -16,12 +19,15 @@ pub struct Input {
     pub ground_z_cm: i64,
     pub door: Port,
     pub anchor: Port,
+    #[serde(deserialize_with = "crate::bounded::vector::<_, _, 32>")]
     pub connector: Vec<Point>,
     pub connector_width_cm: i64,
     pub road: Quadratic,
     pub road_width_cm: i64,
     pub road_mode: Mode,
+    #[serde(deserialize_with = "crate::bounded::vector::<_, _, 64>")]
     pub obstacles: Vec<Prism>,
+    #[serde(deserialize_with = "crate::bounded::vector::<_, _, 64>")]
     pub neighbor_obstacles: Vec<Prism>,
     pub seam_from: Port,
     pub seam_to: Port,
@@ -39,6 +45,27 @@ impl Scene {
         terrain: &Terrain,
         neighbor_terrain: &Terrain,
     ) -> Result<Self, Error> {
+        Self::assemble_internal(input, terrain, neighbor_terrain, None)
+    }
+    pub fn assemble_in_workspace(
+        input: Input,
+        terrain: &Terrain,
+        neighbor_terrain: &Terrain,
+        workspace: SceneWorkspace,
+    ) -> Result<Self, Error> {
+        Self::assemble_internal(input, terrain, neighbor_terrain, Some(workspace))
+    }
+    fn assemble_internal(
+        input: Input,
+        terrain: &Terrain,
+        neighbor_terrain: &Terrain,
+        mut workspace: Option<SceneWorkspace>,
+    ) -> Result<Self, Error> {
+        let input = if let Some(w) = workspace.as_mut() {
+            w.retain_input(input)?
+        } else {
+            input
+        };
         if input.schema != "mycity-m0-geometry-v1" || input.geometry_revision == 0 {
             return Err(Error::Input);
         }
@@ -79,7 +106,11 @@ impl Scene {
             return Err(Error::NeedsDetailedValidation);
         }
         terrain.flat_platform(input.building.footprint, input.ground_z_cm)?;
-        let road = Corridor::quadratic(input.road, input.road_width_cm)?;
+        let road = if let Some(w) = workspace.as_mut() {
+            Corridor::quadratic_in(input.road, input.road_width_cm, std::mem::take(&mut w.road))?
+        } else {
+            Corridor::quadratic(input.road, input.road_width_cm)?
+        };
         road.validate_region(&input.region)?;
         // Flat support proof is conservative. No claim of grade, earthworks or bridge solver.
         terrain.flat_platform(road.bounds()?, input.ground_z_cm)?;
@@ -103,7 +134,15 @@ impl Scene {
                 return Err(Error::NeedsDetailedValidation);
             }
         }
-        let connector = Corridor::from_polyline(&input.connector, input.connector_width_cm)?;
+        let connector = if let Some(w) = workspace.as_mut() {
+            Corridor::polyline_in(
+                &input.connector,
+                input.connector_width_cm,
+                std::mem::take(&mut w.connector),
+            )?
+        } else {
+            Corridor::from_polyline(&input.connector, input.connector_width_cm)?
+        };
         terrain.flat_platform(connector.bounds()?, input.ground_z_cm)?;
         entrance(
             input.building,
@@ -190,12 +229,15 @@ impl Scene {
                 }
             }
         }
-        let terrain_sha256 = terrain.state_hash();
-        let neighbor_terrain_sha256 = if std::ptr::eq(terrain, neighbor_terrain) {
+        let mut terrain_sha256 = terrain.state_hash();
+        let mut neighbor_terrain_sha256 = if std::ptr::eq(terrain, neighbor_terrain) {
             terrain_sha256.clone()
         } else {
             neighbor_terrain.state_hash()
         };
+        if let Some(w) = workspace.as_mut() {
+            w.retain_hashes(&mut terrain_sha256, &mut neighbor_terrain_sha256)?;
+        }
         let result = Self {
             terrain_sha256,
             neighbor_terrain_sha256,

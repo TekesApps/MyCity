@@ -1,0 +1,8 @@
+{
+  "source_sha256": "12f86a5e6acb7186261530945e3bc56b2fc7e46daca0977865782d846e6a397f",
+  "source_files": 174,
+  "binary": "work/candidate-binaries/role-workspace-construction/mycity-headless",
+  "binary_sha256": "00f5a497464f83cd4bc574917b078bb94f722509fccd673b2039b7a8ccb840cf",
+  "lock_sha256": "eb5e290ac92ebe46ebe87d3db56db4221c925ebca8e0bdb1102987bd32314e6c",
+  "scope": "Construction development evidence only, not whole role stage freeze or acceptance; current source may advance"
+}

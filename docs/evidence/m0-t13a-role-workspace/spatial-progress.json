@@ -1,0 +1,28 @@
+{
+  "goal_turn_classification": "progress",
+  "observed_unix_ns": 1792588360666933000,
+  "running": {
+    "controller_pid": 48053,
+    "pid": 48065,
+    "name": "spatial-workspace-final",
+    "command": [
+      "cargo",
+      "test",
+      "--workspace",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "source_sha256": "54dc5cf342e207a3808d6accbac14f82ac2f97eae3d3368087937818e7e23e4f"
+  },
+  "process_snapshot": "  PID  PPID STARTED                      ELAPSED COMM\n48053 69823 Wed Oct 21 21:05:57 2026       06:43 /Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python\n48065 48053 Wed Oct 21 21:05:57 2026       06:43 /Users/frankqin/.rustup/toolchains/1.85.1-aarch64-apple-darwin/bin/cargo\n",
+  "completed_harnesses": 40,
+  "passed_harness_test_entries_so_far": 335,
+  "regression_terminal": false,
+  "eight_hour_gate": "not_run",
+  "memory_16gb_gate": "not_run",
+  "whole_role_grant_accepted": false,
+  "source_frozen_no_code_edits_during_run": true,
+  "new_target": false,
+  "goal": "active"
+}

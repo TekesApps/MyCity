@@ -1,0 +1,21 @@
+{
+  "command": [
+    "rustc",
+    "--edition=2021",
+    "-O",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-role-workspace/spatial-compat.rs",
+    "-L",
+    "dependency=/Users/frankqin/dev/MyCity/target/release/deps",
+    "--extern",
+    "mycity_core=/Users/frankqin/dev/MyCity/target/release/libmycity_core.rlib",
+    "--extern",
+    "mycity_map=/Users/frankqin/dev/MyCity/target/release/libmycity_map.rlib",
+    "--extern",
+    "mycity_storage=/Users/frankqin/dev/MyCity/target/release/libmycity_storage.rlib",
+    "-o",
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/role-workspace-spatial/spatial-compat"
+  ],
+  "exit_code": 0,
+  "seconds": 0.24314170800005286,
+  "source_sha256": "54dc5cf342e207a3808d6accbac14f82ac2f97eae3d3368087937818e7e23e4f"
+}

@@ -1,0 +1,7 @@
+   Compiling sha2-asm v0.6.4
+   Compiling sha2 v0.10.9
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+    Finished `release` profile [optimized] target(s) in 16.32s
+     Running unittests src/lib.rs (target/release/deps/mycity_map-5dfdd7e42e89fe43)
+error: test failed, to rerun pass `-p mycity-map --lib`

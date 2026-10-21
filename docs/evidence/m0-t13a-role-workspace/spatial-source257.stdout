@@ -1,0 +1,21 @@
+
+running 4 tests
+test terrain::small_png::tests::compressed_row_overflow_concatenated_stream_invalid_filter_and_split_chunks ... ok
+test terrain::workspace::tests::rejected_source_never_exposes_old_candidate_and_same_backing_accepts_next_legal_source ... ok
+test terrain::workspace::tests::original_frozen_207_byte_source_matches_general_import_for_all_output_maps ... ok
+test terrain::workspace::tests::both_depths_every_filter_and_all_output_sizes_match_general_decoder_and_reuse_large_backing ... FAILED
+
+failures:
+
+---- terrain::workspace::tests::both_depths_every_filter_and_all_output_sizes_match_general_decoder_and_reuse_large_backing stdout ----
+
+thread 'terrain::workspace::tests::both_depths_every_filter_and_all_output_sizes_match_general_decoder_and_reuse_large_backing' panicked at crates/city-map/src/terrain/workspace.rs:155:57:
+called `Result::unwrap()` on an `Err` value: Limit
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    terrain::workspace::tests::both_depths_every_filter_and_all_output_sizes_match_general_decoder_and_reuse_large_backing
+
+test result: FAILED. 3 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.64s
+

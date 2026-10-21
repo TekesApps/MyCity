@@ -1,0 +1,14 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "mycity-map",
+    "--lib",
+    "--release",
+    "--locked",
+    "--offline"
+  ],
+  "seconds": 28.814979667,
+  "exit_code": 101
+}

@@ -1,0 +1,53 @@
+
+running 8 tests
+test streamed_v2_capacity_rejection_before_any_output_remains_usable ... ok
+test borrowed_checkpoint_has_all_fields_and_excludes_only_hot_journal ... ok
+test prebuilt_workspace_is_consumed_by_create_and_cold_open_without_replacing_roots ... ok
+
+running 1 test
+test repeated_real_v2_save_and_reopen_reuse_same_validation_slot_backing ... ok
+
+running 1 test
+test streamed_checkpoint_unwind_never_leaves_a_usable_stale_store ... ok
+
+running 1 test
+test current_world_history_and_receipt_corruption_are_rejected_without_rollback ... ok
+
+running 1 test
+
+running 1 test
+
+running 1 test
+
+running 1 test
+
+running 1 test
+
+running 1 test
+
+running 1 test
+test real_process_exit_at_each_v2_publication_and_gc_boundary_keeps_full_state ... ok
+test multiple_hot_windows_failed_receipts_queries_and_empty_saves_keep_originals ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 32.63s
+
+
+running 15 tests
+test oversized_command_is_rejected_before_serializing_and_never_changes_storage ... ok
+test incompatible_rules_reject_instead_of_recalculating_history ... ok
+test borrowed_store_hash_preserves_old_outer_value_and_reuses_wal_workspace ... ok
+test acknowledged_success_and_operation_coverage_survive_reopen_without_double_payment ... ok
+test only_tail_outside_the_validated_committed_boundary_is_truncated ... ok
+test recovery_reclaims_only_known_unreferenced_atomic_temp_files ... ok
+test regional_clocks_migrants_debt_and_snapshot_watermarks_recover_atomically_once ... ok
+test publication_callback_unwind_requires_recovery_and_preserves_committed_receipt ... ok
+test store_ownership_handoff_reopens_immediately_during_parallel_process_spawn ... ok
+test a_second_process_cannot_open_a_world_while_writer_lock_is_held ... ok
+test injected_io_uncertainty_poisoning_prevents_further_writes_until_recovery ... ok
+test committed_corruption_or_missing_dependency_never_falls_back_to_old_root ... ok
+test replay_preserves_old_value_last_key_and_rejects_ignored_unknown_fields_before_tail_gc ... ok
+test regional_process_exit_never_publishes_half_population_half_clock_or_half_payment ... ok
+test abrupt_process_exit_at_each_boundary_retains_exactly_the_published_operation ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.90s
+

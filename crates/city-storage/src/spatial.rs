@@ -21,16 +21,21 @@ pub struct SpatialReference {
     seed: u64,
 }
 impl SpatialReference {
-    pub(crate) fn prepare(
+    pub(crate) fn prepare_with_workspace(
         input: &[u8],
         png: &[u8],
         identity: &Bootstrap,
+        workspace: Option<mycity_map::assets::SpatialWorkspace>,
     ) -> Result<(Self, SpatialAssets), Error> {
         if input.len() as u64 > INPUT_LIMIT || png.len() as u64 > SOURCE_BYTE_LIMIT {
             return Err(Error::Invalid("spatial_input_limit"));
         }
-        let assets = SpatialAssets::from_bytes(input, png, identity)
-            .map_err(|e| Error::Model(format!("spatial_{e:?}")))?;
+        let assets = if let Some(w) = workspace {
+            w.from_bytes(input, png, identity)
+        } else {
+            SpatialAssets::from_bytes(input, png, identity)
+        }
+        .map_err(|e| Error::Model(format!("spatial_{e:?}")))?;
         let reference = Self {
             schema: "mycity-m0-spatial-ref-v1".into(),
             input_bytes: input.len() as u64,
@@ -45,7 +50,18 @@ impl SpatialReference {
         };
         Ok((reference, assets))
     }
-    pub(crate) fn load(&self, dir: &Path, identity: &Bootstrap) -> Result<SpatialAssets, Error> {
+    pub(crate) fn load_with_workspace(
+        &self,
+        dir: &Path,
+        identity: &Bootstrap,
+        workspace: Option<mycity_map::assets::SpatialWorkspace>,
+    ) -> Result<SpatialAssets, Error> {
+        if workspace.is_some()
+            && (self.input_bytes > mycity_map::assets::NORMAL_INPUT_BYTES as u64
+                || self.png_bytes > mycity_map::assets::NORMAL_PNG_BYTES as u64)
+        {
+            return Err(Error::Invalid("spatial_normal_source_limit"));
+        }
         if self.schema != "mycity-m0-spatial-ref-v1"
             || self.input_bytes == 0
             || self.input_bytes > INPUT_LIMIT
@@ -79,8 +95,12 @@ impl SpatialReference {
         if png.len() as u64 != self.png_bytes || sha256(&png) != self.png_sha256 {
             return Err(Error::Invalid("spatial_png_corrupt"));
         }
-        let assets = SpatialAssets::from_bytes(&input, &png, identity)
-            .map_err(|e| Error::Model(format!("spatial_{e:?}")))?;
+        let assets = if let Some(w) = workspace {
+            w.from_bytes(&input, &png, identity)
+        } else {
+            SpatialAssets::from_bytes(&input, &png, identity)
+        }
+        .map_err(|e| Error::Model(format!("spatial_{e:?}")))?;
         if assets.terrain().state_hash() != self.terrain_sha256
             || assets.scene().state_hash() != self.geometry_sha256
         {

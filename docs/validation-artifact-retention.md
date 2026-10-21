@@ -31,3 +31,5 @@
 [重复组件集中回收](evidence/disk-reclamation-duplicate-components/STATUS.md)覆盖旧报告中“全部历史 native／meter 原路径继续保留”的承诺，仅限其精确清单。已退役 pressure 的旧正常快照可以移除经逐字节确认重复的组件原路径，但须先将完整组件无损归档、实际解压核对长度及 SHA，持久化归档及父目录、逐路径映射／原 index hash／审查记录，再删除。完整原字节归档与单纯保存 hash 不同；已退役目录仍不能直接完整恢复。当前完整恢复基线、旧格式兼容输入、故障 .pending、negative fixture、共享 inode 及业务文件不随此规则连带退役。历史脚本中仍有效的 business／fault-reference 依赖继续保留。
 
 阶段结束的回收记录必须列出：本阶段新增目录和用途、下一阶段精确依赖、立即退役项、保留项的解除条件、唯一共享 target，以及扣除新增归档后的净分配空间。重复载荷先检查是否能直接复用已有输入；必须复制时记录复制理由和终态回收条件。留存必要的故障／验收数据，不让每次验证默认永久保留一个完整工作目录。用途不明先保留并记录，不能只依前缀或 mtime 判断。不得清理其他项目、全局 Cargo 缓存，也不删除马上需重建的共享 target 来制造成果。
+
+[v0.5.79构造基础终态回收](evidence/m0-t13a-role-workspace/spatial-retention-result.json)：全部验证终态、work/target无占用；本次新增删除0B。唯一新完整业务world保留给Meta／role下一阶段恢复；未复制L1／未新建target。现存完整布局、旧业务兼容及已无损归档的证据继续保留；df变化不归于清理。

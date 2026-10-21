@@ -22,7 +22,6 @@ mod spatial;
 pub use checkpoint::{CheckpointPoint, CheckpointStatus};
 use fs2::FileExt;
 use mycity_core::{
-    assembly::assemble,
     read_bounded, sha256,
     transaction::{
         Caller, Engine, Envelope, JournalRecord, Receipt, Resource, TxError, MAX_RECEIPTS,
@@ -299,6 +298,76 @@ impl Store {
         rules_identity: &str,
         bundle: Option<(&[u8], &[u8])>,
         checkpoint_layout: u8,
+        observer: impl FnMut(CreatePoint) -> io::Result<()>,
+    ) -> Result<Self, Error> {
+        Self::create_in_workspace(
+            dir,
+            opening,
+            resources,
+            rules_identity,
+            bundle,
+            (
+                checkpoint_layout,
+                mycity_core::transaction::EngineWorkspace::new().map_err(Error::Model)?,
+                None,
+            ),
+            observer,
+        )
+    }
+    /// Explicit role-owned backing. The bool chooses the already supported v1/v2 layout.
+    pub fn create_spatial_in_workspace(
+        dir: &Path,
+        opening: &[u8],
+        resources: Vec<Resource>,
+        rules_identity: &str,
+        bundle: (&[u8], &[u8]),
+        v2: bool,
+        workspace: mycity_core::transaction::EngineWorkspace,
+    ) -> Result<Self, Error> {
+        Self::create_in_workspace(
+            dir,
+            opening,
+            resources,
+            rules_identity,
+            Some(bundle),
+            (if v2 { 2 } else { 0 }, workspace, None),
+            |_| Ok(()),
+        )
+    }
+    /// Consume prepared core AND spatial backing; over-profile sources never fall back.
+    pub fn create_spatial_in_role_workspace(
+        dir: &Path,
+        opening: &[u8],
+        resources: Vec<Resource>,
+        rules_identity: &str,
+        bundle: (&[u8], &[u8]),
+        v2: bool,
+        workspace: (
+            mycity_core::transaction::EngineWorkspace,
+            mycity_map::assets::SpatialWorkspace,
+        ),
+    ) -> Result<Self, Error> {
+        Self::create_in_workspace(
+            dir,
+            opening,
+            resources,
+            rules_identity,
+            Some(bundle),
+            (if v2 { 2 } else { 0 }, workspace.0, Some(workspace.1)),
+            |_| Ok(()),
+        )
+    }
+    fn create_in_workspace(
+        dir: &Path,
+        opening: &[u8],
+        resources: Vec<Resource>,
+        rules_identity: &str,
+        bundle: Option<(&[u8], &[u8])>,
+        setup: (
+            u8,
+            mycity_core::transaction::EngineWorkspace,
+            Option<mycity_map::assets::SpatialWorkspace>,
+        ),
         mut observer: impl FnMut(CreatePoint) -> io::Result<()>,
     ) -> Result<Self, Error> {
         if opening.len() as u64 > INPUT_LIMIT
@@ -307,21 +376,22 @@ impl Store {
         {
             return Err(Error::Invalid("genesis_input_limit"));
         }
-        let engine = Engine::new(assemble(opening).map_err(Error::Model)?, resources.clone())
-            .map_err(|e| Error::Model(format!("{e:?}")))?;
-        let restore_workspace =
-            mycity_core::transaction::EngineSlot::new().map_err(Error::Model)?;
-        let air_candidate = mycity_core::air::BackgroundStateSlot::new();
+        let (checkpoint_layout, workspace, spatial_workspace) = setup;
+        let (mut initial, restore_workspace, air_candidate, codec) = workspace.into_parts();
+        initial
+            .initialize_into(opening, &resources)
+            .map_err(Error::Model)?;
+        let engine = initial.into_engine().map_err(Error::Model)?;
         let identity = identity(&engine);
         let (spatial_ref, spatial) = if let Some((input, png)) = bundle {
-            let (reference, assets) = SpatialReference::prepare(input, png, &identity)?;
+            let (reference, assets) =
+                SpatialReference::prepare_with_workspace(input, png, &identity, spatial_workspace)?;
             (Some(reference), Some(assets))
         } else {
             (None, None)
         };
         spatial::validate_exchange_binding(&engine, spatial.as_ref())?;
-        let canonical =
-            std::cell::RefCell::new(mycity_core::canonical::Codec::new().map_err(Error::Model)?);
+        let canonical = std::cell::RefCell::new(codec);
         observer(CreatePoint::Validated)?;
         fs::create_dir(dir)?;
         let lock = lock(dir)?;
@@ -424,6 +494,36 @@ impl Store {
     }
 
     pub fn open(dir: &Path, rules_identity: &str) -> Result<Self, Error> {
+        Self::open_in_workspace(
+            dir,
+            rules_identity,
+            mycity_core::transaction::EngineWorkspace::new().map_err(Error::Model)?,
+        )
+    }
+    pub fn open_in_workspace(
+        dir: &Path,
+        rules_identity: &str,
+        workspace: mycity_core::transaction::EngineWorkspace,
+    ) -> Result<Self, Error> {
+        Self::open_with_workspaces(dir, rules_identity, workspace, None)
+    }
+    pub fn open_in_role_workspace(
+        dir: &Path,
+        rules_identity: &str,
+        workspace: (
+            mycity_core::transaction::EngineWorkspace,
+            mycity_map::assets::SpatialWorkspace,
+        ),
+    ) -> Result<Self, Error> {
+        Self::open_with_workspaces(dir, rules_identity, workspace.0, Some(workspace.1))
+    }
+    fn open_with_workspaces(
+        dir: &Path,
+        rules_identity: &str,
+        workspace: mycity_core::transaction::EngineWorkspace,
+        spatial_workspace: Option<mycity_map::assets::SpatialWorkspace>,
+    ) -> Result<Self, Error> {
+        let (mut initial, mut restore_workspace, mut air_candidate, codec) = workspace.into_parts();
         if fs::symlink_metadata(dir)?.file_type().is_symlink() {
             return Err(Error::Invalid("symlink_world"));
         }
@@ -463,11 +563,10 @@ impl Store {
             return Err(Error::Invalid("unsupported_rules_or_schema"));
         }
         // Fresh reconstruction of the recorded genesis, not a gift to an existing world.
-        let mut genesis_engine = Engine::new(
-            assemble(&genesis.opening).map_err(Error::Model)?,
-            genesis.resources,
-        )
-        .map_err(|e| Error::Model(format!("{e:?}")))?;
+        initial
+            .initialize_into(&genesis.opening, &genesis.resources)
+            .map_err(Error::Model)?;
+        let mut genesis_engine = initial.into_engine().map_err(Error::Model)?;
         if root.checkpoint_layout != genesis.checkpoint_layout
             || !matches!(root.checkpoint_layout, 0 | 2)
             || root.checkpoint_layout == 0 && root.checkpoint_v2.is_some()
@@ -475,8 +574,6 @@ impl Store {
         {
             return Err(Error::Invalid("checkpoint_layout_binding"));
         }
-        let mut restore_workspace =
-            mycity_core::transaction::EngineSlot::new().map_err(Error::Model)?;
         let (mut sequence, mut chain) = if let Some(reference) = &root.checkpoint_v2 {
             let (sequence, chain) = checkpoint_v2::open_into(
                 dir,
@@ -510,7 +607,7 @@ impl Store {
         let spatial_ref = genesis.spatial;
         let spatial = spatial_ref
             .as_ref()
-            .map(|r| r.load(dir, &identity(&engine)))
+            .map(|r| r.load_with_workspace(dir, &identity(&engine), spatial_workspace))
             .transpose()?;
         spatial::validate_exchange_binding(&engine, spatial.as_ref())?;
         let wal_path = dir.join(checkpoint::wal_name(root.segment));
@@ -522,12 +619,10 @@ impl Store {
         if root.wal_end > wal_length {
             return Err(Error::Invalid("committed_wal_truncated"));
         }
-        let mut canonical =
-            std::cell::RefCell::new(mycity_core::canonical::Codec::new().map_err(Error::Model)?);
+        let mut canonical = std::cell::RefCell::new(codec);
         let mut buffers = wal::Buffers::new();
         let mut pos = 0u64;
         let mut background_live = Vec::with_capacity(BACKGROUND_LIVE_ASSETS);
-        let mut air_candidate = mycity_core::air::BackgroundStateSlot::new();
         while pos < root.wal_end {
             if root.wal_end - pos < 4 {
                 return Err(Error::Invalid("committed_header_truncated"));
@@ -676,6 +771,25 @@ impl Store {
     ) -> Result<mycity_core::air::StateSlotIdentity, Error> {
         self.engine()?;
         Ok(self.air_candidate.identity())
+    }
+    pub fn model_workspace_identity(
+        &self,
+    ) -> Result<mycity_core::transaction::EngineWorkspaceIdentity, Error> {
+        self.engine()?;
+        let initial = self.engine.backing_identity().map_err(Error::Model)?;
+        let restore = self.restore_workspace.identity().map_err(Error::Model)?;
+        let candidate = self.air_candidate.identity();
+        let codec = self.io.canonical.borrow().identity();
+        let owned_bytes = mycity_core::transaction::EngineWorkspace::capacity_from_parts(
+            &initial, &restore, &candidate, &codec,
+        );
+        Ok(mycity_core::transaction::EngineWorkspaceIdentity {
+            initial,
+            restore,
+            candidate,
+            codec,
+            owned_bytes,
+        })
     }
     pub fn spatial(&self) -> Result<Option<&SpatialAssets>, Error> {
         self.engine()?;

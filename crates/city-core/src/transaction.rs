@@ -7,7 +7,9 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 use std::mem::size_of;
+mod bundle;
 mod slots;
+pub use bundle::{EngineWorkspace, EngineWorkspaceIdentity};
 #[path = "timeline_driver.rs"]
 mod timeline_driver;
 mod workspace;

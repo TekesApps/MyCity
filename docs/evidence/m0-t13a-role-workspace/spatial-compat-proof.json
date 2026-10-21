@@ -1,0 +1,32 @@
+{
+  "result": {
+    "schema": "mycity-role-spatial-old-store-proof-v1",
+    "complete_engine_equal": true,
+    "bytes": 2507418,
+    "sha256": "f4c922bfc7a6a214e73d1c69c26386b3faa2465794dc9f77f99793a554246e02",
+    "sequence": 3013,
+    "core_owned_bytes": 16069096,
+    "spatial_prepared_owned_bytes": 9870823,
+    "spatial_live_owned_bytes": 9879549,
+    "prepared_backings_preserved": true,
+    "runtime_grant_accepted": false
+  },
+  "source_sha256": "54dc5cf342e207a3808d6accbac14f82ac2f97eae3d3368087937818e7e23e4f",
+  "helper_sha256": "0648273c20af0eb44e123cc08e5235206820b50d75f3293298561a76897d88f4",
+  "helper_source_sha256": "8ae53c80f40815903fdc158a28f1ae5fbde638415b2a2090acc8f3c7ba5147d3",
+  "original_and_copy_files_verified_unchanged": 243,
+  "linked_libraries": {
+    "mycity_core": {
+      "path": "/Users/frankqin/dev/MyCity/target/release/libmycity_core.rlib",
+      "sha256": "86de485b99ace1791e0b6e50d3f527286d5e4be6c27fb524357944be80910ba9"
+    },
+    "mycity_map": {
+      "path": "/Users/frankqin/dev/MyCity/target/release/libmycity_map.rlib",
+      "sha256": "06ba4c8cd65ecd195f126a416a7a75f0fed0ddb85d35d23c42a2a8815e8a3200"
+    },
+    "mycity_storage": {
+      "path": "/Users/frankqin/dev/MyCity/target/release/libmycity_storage.rlib",
+      "sha256": "6d9f74e02290a128c2a42a9b2b477908df60b211299f96331c73f3bcded47910"
+    }
+  }
+}

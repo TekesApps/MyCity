@@ -1,0 +1,39 @@
+[
+  {
+    "name": "spatial-store",
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "mycity-map",
+      "-p",
+      "mycity-storage",
+      "--test",
+      "spatial",
+      "--test",
+      "checkpoint_v2",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "seconds": 57.916713458000004,
+    "exit_code": 0
+  },
+  {
+    "name": "spatial-clippy",
+    "command": [
+      "cargo",
+      "clippy",
+      "--workspace",
+      "--all-targets",
+      "--release",
+      "--locked",
+      "--offline",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "seconds": 3.557502249999999,
+    "exit_code": 101
+  }
+]

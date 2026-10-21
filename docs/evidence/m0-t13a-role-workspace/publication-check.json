@@ -1,0 +1,13 @@
+{
+  "frozen_source_zip_and_current_code_identical": true,
+  "source_sha256": "54dc5cf342e207a3808d6accbac14f82ac2f97eae3d3368087937818e7e23e4f",
+  "fixed_binary_sha256_matches": true,
+  "json_valid": true,
+  "markdown_files_checked": 7,
+  "git_diff_check": true,
+  "runtime_full_role_accepted": false,
+  "formal_performance_accepted": false,
+  "real_16gb": "not_run",
+  "raw_stdout_preserved_verbatim": true,
+  "git_whitespace_exception": ".gitattributes limits -blank-at-eof to captured role-workspace stdout only"
+}

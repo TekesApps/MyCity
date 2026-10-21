@@ -1,0 +1,13 @@
+{
+  "controller_pid": 48053,
+  "pid": 55767,
+  "name": "spatial-full-business",
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/role-workspace-spatial/mycity-headless",
+    "scale-sim-probe",
+    "/Users/frankqin/dev/MyCity/work/t13a-role-spatial-business-01",
+    "full",
+    "measure"
+  ],
+  "source_sha256": "54dc5cf342e207a3808d6accbac14f82ac2f97eae3d3368087937818e7e23e4f"
+}

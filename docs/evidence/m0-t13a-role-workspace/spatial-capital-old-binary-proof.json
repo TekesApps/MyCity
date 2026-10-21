@@ -1,0 +1,17 @@
+[
+  {
+    "size": "small",
+    "complete_world_state_and_layout_equal_published_v77": true,
+    "new_source_sha256": "54dc5cf342e207a3808d6accbac14f82ac2f97eae3d3368087937818e7e23e4f"
+  },
+  {
+    "size": "medium",
+    "complete_world_state_and_layout_equal_published_v77": true,
+    "new_source_sha256": "54dc5cf342e207a3808d6accbac14f82ac2f97eae3d3368087937818e7e23e4f"
+  },
+  {
+    "size": "full",
+    "complete_world_state_and_layout_equal_published_v77": true,
+    "new_source_sha256": "54dc5cf342e207a3808d6accbac14f82ac2f97eae3d3368087937818e7e23e4f"
+  }
+]

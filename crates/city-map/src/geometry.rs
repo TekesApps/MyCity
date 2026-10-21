@@ -12,6 +12,7 @@ const SCALE: i128 = 1i128 << 32;
 #[serde(deny_unknown_fields)]
 pub struct Region {
     pub outer: Rect,
+    #[serde(deserialize_with = "crate::bounded::vector::<_, _, MAX_HOLES>")]
     pub holes: Vec<Rect>,
 }
 impl Region {
@@ -112,6 +113,24 @@ impl Corridor {
         }
         Self::make(points.to_vec(), width_cm, 0)
     }
+    pub(crate) fn polyline_in(
+        points: &[Point],
+        width_cm: i64,
+        mut backing: Vec<Point>,
+    ) -> Result<Self, Error> {
+        if points.len() > MAX_VERTICES || backing.capacity() < points.len() {
+            return Err(Error::Limit);
+        }
+        backing.clear();
+        backing.extend_from_slice(points);
+        Self::make(backing, width_cm, 0)
+    }
+    pub(crate) fn backing_identity(&self) -> (usize, usize) {
+        (
+            self.points.as_ptr() as usize,
+            self.points.capacity() * size_of::<Point>(),
+        )
+    }
     fn make(points: Vec<Point>, width_cm: i64, error_cm: i64) -> Result<Self, Error> {
         if points.len() < 2 || points.len() > MAX_VERTICES || !(1..=20000).contains(&width_cm) {
             return Err(Error::Limit);
@@ -133,6 +152,17 @@ impl Corridor {
         Ok(result)
     }
     pub fn quadratic(q: Quadratic, width_cm: i64) -> Result<Self, Error> {
+        Self::quadratic_in(q, width_cm, Vec::with_capacity(MAX_VERTICES))
+    }
+    pub(crate) fn quadratic_in(
+        q: Quadratic,
+        width_cm: i64,
+        mut points: Vec<Point>,
+    ) -> Result<Self, Error> {
+        if points.capacity() < MAX_VERTICES {
+            return Err(Error::Limit);
+        }
+        points.clear();
         for p in [q.start, q.control, q.end] {
             p.validate()?;
         }
@@ -169,7 +199,6 @@ impl Corridor {
             subdivide(a, ab, mid, depth + 1, out)?;
             subdivide(mid, bc, c, depth + 1, out)
         }
-        let mut points = Vec::with_capacity(MAX_VERTICES);
         points.push(q.start);
         let p = |p: Point| (i128::from(p.x) * SCALE, i128::from(p.y) * SCALE);
         subdivide(p(q.start), p(q.control), p(q.end), 0, &mut points)?;

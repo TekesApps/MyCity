@@ -1,0 +1,9 @@
+   Compiling sha2-asm v0.6.4
+   Compiling sha2 v0.10.9
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+    Finished `release` profile [optimized] target(s) in 21.11s
+     Running unittests src/lib.rs (target/release/deps/mycity_map-5dfdd7e42e89fe43)
+     Running tests/spatial.rs (target/release/deps/spatial-a648c77dd172968c)
+     Running tests/workspace.rs (target/release/deps/workspace-4faf0c2d84265d72)
+   Doc-tests mycity_map

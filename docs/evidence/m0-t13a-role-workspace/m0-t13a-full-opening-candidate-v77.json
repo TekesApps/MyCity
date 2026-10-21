@@ -1,0 +1,3882 @@
+{
+  "build": {
+    "profile": "release",
+    "rustc": "rustc 1.85.1 (4eb161250 2025-03-15)",
+    "target": "aarch64-apple-darwin"
+  },
+  "economic_prototypes": "not_run",
+  "gpu": "not_implemented",
+  "host": {
+    "arch": "aarch64",
+    "chip": "Apple M4",
+    "memory_bytes": "34359738368",
+    "os": "macos",
+    "os_version": "26.6.2"
+  },
+  "input": {
+    "branch": 1,
+    "laboratory_only": true,
+    "schema": "mycity-m0-bootstrap-v1",
+    "seed": 7,
+    "world": 1
+  },
+  "input_sha256": "04c113c62b0b682f94f9abfbde7618b87bd972f3931504366be9e07c130b4726",
+  "layout": {
+    "accounts": {
+      "free_index_capacity": 64,
+      "header_bytes": 80,
+      "live_records": 64,
+      "owned_capacity_bytes": 2384,
+      "record_bytes": 24,
+      "slot_bytes": 32,
+      "slots_capacity": 64
+    },
+    "allocator_metadata_included": false,
+    "index_capacity_bytes": 7680,
+    "opening_sources_capacity_bytes": 3072,
+    "owned_capacity_bytes": 47952,
+    "stocks": {
+      "free_index_capacity": 128,
+      "header_bytes": 80,
+      "live_records": 128,
+      "owned_capacity_bytes": 12880,
+      "record_bytes": 88,
+      "slot_bytes": 96,
+      "slots_capacity": 128
+    },
+    "temporary_parse_and_view_pages_included": false,
+    "world_remaining_header_bytes": 21936
+  },
+  "lock_sha256": "eb5e290ac92ebe46ebe87d3db56db4221c925ebca8e0bdb1102987bd32314e6c",
+  "memory_16gb_gate": "not_run",
+  "report_schema": "mycity-m0-evidence-v1",
+  "result": "opening_assembled_not_simulated",
+  "rules": {
+    "input_limit_bytes": 65536,
+    "max_accounts": 64,
+    "max_sources": 192,
+    "max_stocks": 128,
+    "mode": "headless_laboratory",
+    "numeric_strategy": "checked-integer-v1",
+    "opening_schema": "mycity-m0-opening-v1",
+    "schema": "mycity-m0-bootstrap-v1",
+    "world_byte_budget": 131072
+  },
+  "rules_sha256": "8725182dc6252969d7f921550e81952a1822331787bac179988b2c78f11847a7",
+  "run_id": "14744-1792585535421159000",
+  "source_sha256": "68d0247291c48fc595ccd1604761e32651f4c1dcd00f116c175239a4b81f7a6c",
+  "state_sha256": "b5f6784c48c064ad54001a5ad8c6e78ed0ef6a33f10cc8eec399896d72ff43f1",
+  "task": "M0-T03",
+  "ui": "not_implemented_by_scope",
+  "world": {
+    "accounts": [
+      {
+        "cash": 1000000,
+        "id": 1,
+        "protected": 0,
+        "role": "treasury"
+      },
+      {
+        "cash": 200000,
+        "id": 2,
+        "protected": 0,
+        "role": "company"
+      },
+      {
+        "cash": 600000,
+        "id": 3,
+        "protected": 0,
+        "role": "company"
+      },
+      {
+        "cash": 1200000,
+        "id": 4,
+        "protected": 0,
+        "role": "supplier"
+      },
+      {
+        "cash": 0,
+        "id": 5,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 6,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 7,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 8,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 9,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 10,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 11,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 12,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 13,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 14,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 15,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 16,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 17,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 18,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 19,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 20,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 21,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 22,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 23,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 24,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 25,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 26,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 27,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 28,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 29,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 30,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 31,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 32,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 33,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 34,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 35,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 36,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 37,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 38,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 39,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 40,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 41,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 42,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 43,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 44,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 45,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 46,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 47,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 48,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 49,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 50,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 51,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 52,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 53,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 54,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 55,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 56,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 57,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 58,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 59,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 60,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 61,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 62,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 63,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 0,
+        "id": 64,
+        "protected": 0,
+        "role": "household"
+      }
+    ],
+    "boot": {
+      "contractor": 4,
+      "exported_basis": 0,
+      "exports": [
+        0,
+        0
+      ],
+      "failed_expense": 0,
+      "fees": 0,
+      "fuel_used": 0,
+      "initial": [
+        5000,
+        100000,
+        0,
+        6000000,
+        0,
+        0
+      ],
+      "initial_basis": 2100,
+      "initial_cash": 3000000,
+      "jobs": [
+        {
+          "completed": 0,
+          "cost": 0,
+          "due": 0,
+          "failed": 0,
+          "identity": 0,
+          "inputs": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "phase": "Idle",
+          "started": 0,
+          "tokens": [
+            0,
+            0
+          ]
+        },
+        {
+          "completed": 0,
+          "cost": 0,
+          "due": 0,
+          "failed": 0,
+          "identity": 0,
+          "inputs": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "phase": "Idle",
+          "started": 0,
+          "tokens": [
+            0,
+            0
+          ]
+        }
+      ],
+      "limits": [
+        5000,
+        2000000,
+        6000000,
+        6000000,
+        6000000,
+        10000000
+      ],
+      "next_job": 1,
+      "operator": 3,
+      "profile": "pboot-cold-scale-v1",
+      "resources": [
+        101,
+        102
+      ],
+      "stocks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "time": 0
+    },
+    "economy": null,
+    "exchange": {
+      "accounts": [
+        {
+          "account": 1,
+          "city": 3
+        },
+        {
+          "account": 2,
+          "city": 2
+        },
+        {
+          "account": 3,
+          "city": 1
+        },
+        {
+          "account": 4,
+          "city": 1
+        }
+      ],
+      "cogs": 0,
+      "edges": [
+        {
+          "a_cm": [
+            51200,
+            51200,
+            0
+          ],
+          "b_cm": [
+            153600,
+            51200,
+            0
+          ],
+          "from": 1,
+          "id": 1,
+          "kind": "freight",
+          "population_route": 1,
+          "resource": 201,
+          "to": 3,
+          "travel_seconds": 60
+        },
+        {
+          "a_cm": [
+            153600,
+            51200,
+            0
+          ],
+          "b_cm": [
+            256000,
+            51200,
+            0
+          ],
+          "from": 3,
+          "id": 2,
+          "kind": "freight",
+          "population_route": 2,
+          "resource": 202,
+          "to": 2,
+          "travel_seconds": 60
+        },
+        {
+          "a_cm": [
+            51200,
+            51200,
+            500
+          ],
+          "b_cm": [
+            153600,
+            51200,
+            500
+          ],
+          "from": 1,
+          "id": 3,
+          "kind": "electricity",
+          "population_route": null,
+          "resource": 101,
+          "to": 3,
+          "travel_seconds": 1
+        },
+        {
+          "a_cm": [
+            153600,
+            51200,
+            500
+          ],
+          "b_cm": [
+            256000,
+            51200,
+            500
+          ],
+          "from": 3,
+          "id": 4,
+          "kind": "electricity",
+          "population_route": null,
+          "resource": 103,
+          "to": 2,
+          "travel_seconds": 1
+        },
+        {
+          "a_cm": [
+            51200,
+            51200,
+            -300
+          ],
+          "b_cm": [
+            153600,
+            51200,
+            -300
+          ],
+          "from": 1,
+          "id": 5,
+          "kind": "water",
+          "population_route": null,
+          "resource": 102,
+          "to": 3,
+          "travel_seconds": 512
+        },
+        {
+          "a_cm": [
+            153600,
+            51200,
+            -300
+          ],
+          "b_cm": [
+            256000,
+            51200,
+            -300
+          ],
+          "from": 3,
+          "id": 6,
+          "kind": "water",
+          "population_route": null,
+          "resource": 104,
+          "to": 2,
+          "travel_seconds": 512
+        }
+      ],
+      "energy_loss": 0,
+      "energy_loss_limit": 100000,
+      "freight_income": 0,
+      "home_city": 1,
+      "inbox": {
+        "accrued": 0,
+        "closed": 0,
+        "enabled": false,
+        "external_next": 1,
+        "facts": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "incident_seen": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "next_sequence": 1,
+        "paid": 0,
+        "retained": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+      "initial_basis": 10100,
+      "initial_raw": 20000,
+      "link_faults": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "link_repairs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "loss_expense": 0,
+      "maps": [
+        {
+          "city": 1,
+          "origin_x_cm": 0
+        },
+        {
+          "city": 2,
+          "origin_x_cm": 204800
+        },
+        {
+          "city": 3,
+          "origin_x_cm": 102400
+        },
+        {
+          "city": 4,
+          "origin_x_cm": 307200
+        },
+        {
+          "city": 5,
+          "origin_x_cm": 409600
+        },
+        {
+          "city": 6,
+          "origin_x_cm": 512000
+        },
+        {
+          "city": 7,
+          "origin_x_cm": 614400
+        },
+        {
+          "city": 8,
+          "origin_x_cm": 716800
+        }
+      ],
+      "open": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "population_link_controls": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "profile": "regional-fulfilment-scale-v1",
+      "quotes": [
+        {
+          "delivered": 0,
+          "freight": 0,
+          "invoice": 0,
+          "loss_cost": 0,
+          "source_cost": 0,
+          "source_fragment": null,
+          "spec": {
+            "buyer": 2,
+            "carrier": 4,
+            "destination": 8,
+            "edges": [
+              1,
+              2,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "expires_at": 1382400,
+            "from": 1,
+            "id": 1,
+            "kind": "freight",
+            "max_distance_m": 2048,
+            "quantity": 1000,
+            "seller": 4,
+            "source": 7,
+            "to": 2,
+            "unit_price": 2000
+          },
+          "status": "Pending"
+        },
+        {
+          "delivered": 0,
+          "freight": 0,
+          "invoice": 0,
+          "loss_cost": 0,
+          "source_cost": 0,
+          "source_fragment": null,
+          "spec": {
+            "buyer": 2,
+            "carrier": 4,
+            "destination": 9,
+            "edges": [
+              1,
+              2,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "expires_at": 1382400,
+            "from": 1,
+            "id": 2,
+            "kind": "freight",
+            "max_distance_m": 2048,
+            "quantity": 1000,
+            "seller": 4,
+            "source": 7,
+            "to": 2,
+            "unit_price": 2000
+          },
+          "status": "Pending"
+        },
+        {
+          "delivered": 0,
+          "freight": 0,
+          "invoice": 0,
+          "loss_cost": 0,
+          "source_cost": 0,
+          "source_fragment": null,
+          "spec": {
+            "buyer": 2,
+            "carrier": 4,
+            "destination": 10,
+            "edges": [
+              1,
+              2,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "expires_at": 1382400,
+            "from": 1,
+            "id": 3,
+            "kind": "freight",
+            "max_distance_m": 2048,
+            "quantity": 1000,
+            "seller": 4,
+            "source": 7,
+            "to": 2,
+            "unit_price": 2000
+          },
+          "status": "Pending"
+        },
+        {
+          "delivered": 0,
+          "freight": 0,
+          "invoice": 0,
+          "loss_cost": 0,
+          "source_cost": 0,
+          "source_fragment": null,
+          "spec": {
+            "buyer": 2,
+            "carrier": 4,
+            "destination": 11,
+            "edges": [
+              1,
+              2,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "expires_at": 1382400,
+            "from": 1,
+            "id": 4,
+            "kind": "freight",
+            "max_distance_m": 2048,
+            "quantity": 1000,
+            "seller": 4,
+            "source": 7,
+            "to": 2,
+            "unit_price": 2000
+          },
+          "status": "Pending"
+        },
+        {
+          "delivered": 0,
+          "freight": 0,
+          "invoice": 0,
+          "loss_cost": 0,
+          "source_cost": 0,
+          "source_fragment": null,
+          "spec": {
+            "buyer": 2,
+            "carrier": 4,
+            "destination": 8,
+            "edges": [
+              1,
+              2,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "expires_at": 1382400,
+            "from": 1,
+            "id": 5,
+            "kind": "freight",
+            "max_distance_m": 2048,
+            "quantity": 1000,
+            "seller": 4,
+            "source": 7,
+            "to": 2,
+            "unit_price": 2000
+          },
+          "status": "Pending"
+        },
+        {
+          "delivered": 0,
+          "freight": 0,
+          "invoice": 0,
+          "loss_cost": 0,
+          "source_cost": 0,
+          "source_fragment": null,
+          "spec": {
+            "buyer": 2,
+            "carrier": 4,
+            "destination": 9,
+            "edges": [
+              1,
+              2,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "expires_at": 1382400,
+            "from": 1,
+            "id": 6,
+            "kind": "freight",
+            "max_distance_m": 2048,
+            "quantity": 1000,
+            "seller": 4,
+            "source": 7,
+            "to": 2,
+            "unit_price": 2000
+          },
+          "status": "Pending"
+        },
+        {
+          "delivered": 0,
+          "freight": 0,
+          "invoice": 0,
+          "loss_cost": 0,
+          "source_cost": 0,
+          "source_fragment": null,
+          "spec": {
+            "buyer": 2,
+            "carrier": 4,
+            "destination": 10,
+            "edges": [
+              1,
+              2,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "expires_at": 1382400,
+            "from": 1,
+            "id": 7,
+            "kind": "freight",
+            "max_distance_m": 2048,
+            "quantity": 1000,
+            "seller": 4,
+            "source": 7,
+            "to": 2,
+            "unit_price": 2000
+          },
+          "status": "Pending"
+        },
+        {
+          "delivered": 0,
+          "freight": 0,
+          "invoice": 0,
+          "loss_cost": 0,
+          "source_cost": 0,
+          "source_fragment": null,
+          "spec": {
+            "buyer": 2,
+            "carrier": 4,
+            "destination": 11,
+            "edges": [
+              1,
+              2,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "expires_at": 1382400,
+            "from": 1,
+            "id": 8,
+            "kind": "freight",
+            "max_distance_m": 2048,
+            "quantity": 1000,
+            "seller": 4,
+            "source": 7,
+            "to": 2,
+            "unit_price": 2000
+          },
+          "status": "Pending"
+        }
+      ],
+      "sales": 0,
+      "shipments": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "stocks": [
+        {
+          "city": 1,
+          "limit": 5000,
+          "stock": 1
+        },
+        {
+          "city": 1,
+          "limit": 2000000,
+          "stock": 2
+        },
+        {
+          "city": 1,
+          "limit": 6000000,
+          "stock": 3
+        },
+        {
+          "city": 1,
+          "limit": 6000000,
+          "stock": 4
+        },
+        {
+          "city": 1,
+          "limit": 6000000,
+          "stock": 5
+        },
+        {
+          "city": 1,
+          "limit": 10000000,
+          "stock": 6
+        },
+        {
+          "city": 1,
+          "limit": 20000,
+          "stock": 7
+        },
+        {
+          "city": 2,
+          "limit": 10000,
+          "stock": 8
+        },
+        {
+          "city": 2,
+          "limit": 10000,
+          "stock": 9
+        },
+        {
+          "city": 2,
+          "limit": 10000,
+          "stock": 10
+        },
+        {
+          "city": 2,
+          "limit": 10000,
+          "stock": 11
+        },
+        {
+          "city": 2,
+          "limit": 10000,
+          "stock": 12
+        },
+        {
+          "city": 2,
+          "limit": 1000000,
+          "stock": 13
+        },
+        {
+          "city": 2,
+          "limit": 1000000,
+          "stock": 14
+        }
+      ],
+      "water_loss": 0,
+      "water_loss_limit": 100000
+    },
+    "opening_sources": [
+      {
+        "amount": 1000000,
+        "id": 1,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 200000,
+        "id": 2,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 600000,
+        "id": 3,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 1200000,
+        "id": 4,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 5,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 6,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 7,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 8,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 9,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 10,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 11,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 12,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 13,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 14,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 15,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 16,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 17,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 18,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 19,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 20,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 21,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 22,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 23,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 24,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 25,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 26,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 27,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 28,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 29,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 30,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 31,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 32,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 33,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 34,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 35,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 36,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 37,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 38,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 39,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 40,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 41,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 42,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 43,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 44,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 45,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 46,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 47,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 48,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 49,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 50,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 51,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 52,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 53,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 54,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 55,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 56,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 57,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 58,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 59,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 60,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 61,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 62,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 63,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 0,
+        "id": 64,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 2000,
+        "id": 1001,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 100,
+        "id": 1002,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1003,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1004,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1005,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1006,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 8000,
+        "id": 1007,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1008,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1009,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1010,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1011,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1012,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1013,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1014,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 300,
+        "id": 1015,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1016,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1017,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1018,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1019,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1020,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1021,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1022,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1023,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1024,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1025,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1026,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1027,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1028,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1029,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1030,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1031,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1032,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1033,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1034,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1035,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1036,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1037,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1038,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1039,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1040,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1041,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1042,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1043,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1044,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1045,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1046,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1047,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1048,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1049,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1050,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1051,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1052,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1053,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1054,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1055,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1056,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1057,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1058,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1059,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1060,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1061,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1062,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1063,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1064,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1065,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1066,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1067,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1068,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1069,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1070,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1071,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1072,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1073,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1074,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1075,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1076,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1077,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1078,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1079,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1080,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1081,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1082,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1083,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1084,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1085,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1086,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1087,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1088,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1089,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1090,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1091,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1092,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1093,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1094,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1095,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1096,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1097,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1098,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1099,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1100,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1101,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1102,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1103,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1104,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1105,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1106,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1107,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1108,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1109,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1110,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1111,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1112,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1113,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1114,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1115,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1116,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1117,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1118,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1119,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1120,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1121,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1122,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1123,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1124,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1125,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1126,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1127,
+        "kind": "inventory_capital"
+      },
+      {
+        "amount": 0,
+        "id": 1128,
+        "kind": "inventory_capital"
+      }
+    ],
+    "region": {
+      "active_city": 1,
+      "cities": [
+        {
+          "development_elapsed": 3153600000,
+          "housing_capacity": 10000,
+          "id": 1,
+          "population": 4000,
+          "willing": 1998
+        },
+        {
+          "development_elapsed": 0,
+          "housing_capacity": 10000,
+          "id": 2,
+          "population": 100,
+          "willing": 0
+        },
+        {
+          "development_elapsed": 4000,
+          "housing_capacity": 10000,
+          "id": 3,
+          "population": 300,
+          "willing": 100
+        },
+        {
+          "development_elapsed": 0,
+          "housing_capacity": 1000,
+          "id": 4,
+          "population": 100,
+          "willing": 0
+        },
+        {
+          "development_elapsed": 0,
+          "housing_capacity": 1000,
+          "id": 5,
+          "population": 100,
+          "willing": 0
+        },
+        {
+          "development_elapsed": 0,
+          "housing_capacity": 1000,
+          "id": 6,
+          "population": 100,
+          "willing": 0
+        },
+        {
+          "development_elapsed": 0,
+          "housing_capacity": 1000,
+          "id": 7,
+          "population": 100,
+          "willing": 0
+        },
+        {
+          "development_elapsed": 0,
+          "housing_capacity": 1000,
+          "id": 8,
+          "population": 100,
+          "willing": 0
+        }
+      ],
+      "interaction_time": 0,
+      "next_transit": 1,
+      "obligations": [
+        {
+          "amount": 100,
+          "arrears": 0,
+          "expires_at": 2592000,
+          "id": 1,
+          "next_due": 86400,
+          "payee": 1,
+          "payer": 3,
+          "period_seconds": 86400
+        },
+        {
+          "amount": 100,
+          "arrears": 0,
+          "expires_at": 2592000,
+          "id": 2,
+          "next_due": 86400,
+          "payee": 1,
+          "payer": 3,
+          "period_seconds": 86400
+        },
+        {
+          "amount": 100,
+          "arrears": 0,
+          "expires_at": 2592000,
+          "id": 3,
+          "next_due": 86400,
+          "payee": 1,
+          "payer": 3,
+          "period_seconds": 86400
+        },
+        {
+          "amount": 100,
+          "arrears": 0,
+          "expires_at": 2592000,
+          "id": 4,
+          "next_due": 86400,
+          "payee": 1,
+          "payer": 3,
+          "period_seconds": 86400
+        },
+        {
+          "amount": 100,
+          "arrears": 0,
+          "expires_at": 2592000,
+          "id": 5,
+          "next_due": 86400,
+          "payee": 1,
+          "payer": 3,
+          "period_seconds": 86400
+        },
+        {
+          "amount": 100,
+          "arrears": 0,
+          "expires_at": 2592000,
+          "id": 6,
+          "next_due": 86400,
+          "payee": 1,
+          "payer": 3,
+          "period_seconds": 86400
+        },
+        {
+          "amount": 100,
+          "arrears": 0,
+          "expires_at": 2592000,
+          "id": 7,
+          "next_due": 86400,
+          "payee": 1,
+          "payer": 3,
+          "period_seconds": 86400
+        },
+        {
+          "amount": 100,
+          "arrears": 0,
+          "expires_at": 2592000,
+          "id": 8,
+          "next_due": 86400,
+          "payee": 1,
+          "payer": 3,
+          "period_seconds": 86400
+        },
+        {
+          "amount": 100,
+          "arrears": 0,
+          "expires_at": 2592000,
+          "id": 9,
+          "next_due": 86400,
+          "payee": 1,
+          "payer": 3,
+          "period_seconds": 86400
+        },
+        {
+          "amount": 100,
+          "arrears": 0,
+          "expires_at": 2592000,
+          "id": 10,
+          "next_due": 86400,
+          "payee": 1,
+          "payer": 3,
+          "period_seconds": 86400
+        },
+        {
+          "amount": 100,
+          "arrears": 0,
+          "expires_at": 2592000,
+          "id": 11,
+          "next_due": 86400,
+          "payee": 1,
+          "payer": 3,
+          "period_seconds": 86400
+        },
+        {
+          "amount": 100,
+          "arrears": 0,
+          "expires_at": 2592000,
+          "id": 12,
+          "next_due": 86400,
+          "payee": 1,
+          "payer": 3,
+          "period_seconds": 86400
+        },
+        {
+          "amount": 100,
+          "arrears": 0,
+          "expires_at": 2592000,
+          "id": 13,
+          "next_due": 86400,
+          "payee": 1,
+          "payer": 3,
+          "period_seconds": 86400
+        },
+        {
+          "amount": 100,
+          "arrears": 0,
+          "expires_at": 2592000,
+          "id": 14,
+          "next_due": 86400,
+          "payee": 1,
+          "payer": 3,
+          "period_seconds": 86400
+        },
+        {
+          "amount": 100,
+          "arrears": 0,
+          "expires_at": 2592000,
+          "id": 15,
+          "next_due": 86400,
+          "payee": 1,
+          "payer": 3,
+          "period_seconds": 86400
+        },
+        {
+          "amount": 100,
+          "arrears": 0,
+          "expires_at": 2592000,
+          "id": 16,
+          "next_due": 86400,
+          "payee": 1,
+          "payer": 3,
+          "period_seconds": 86400
+        }
+      ],
+      "routes": [
+        {
+          "capacity_people": 2000,
+          "distance_m": 1024,
+          "from": 1,
+          "id": 1,
+          "to": 3,
+          "travel_seconds": 60
+        },
+        {
+          "capacity_people": 2000,
+          "distance_m": 1024,
+          "from": 3,
+          "id": 2,
+          "to": 2,
+          "travel_seconds": 60
+        },
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "sequence": 0,
+      "snapshots": [
+        {
+          "applied_sequence": 0,
+          "city": 1,
+          "observed_at": 0,
+          "population": 4000,
+          "version": 1
+        },
+        {
+          "applied_sequence": 0,
+          "city": 2,
+          "observed_at": 0,
+          "population": 100,
+          "version": 1
+        },
+        {
+          "applied_sequence": 0,
+          "city": 3,
+          "observed_at": 0,
+          "population": 300,
+          "version": 1
+        },
+        {
+          "applied_sequence": 0,
+          "city": 4,
+          "observed_at": 0,
+          "population": 100,
+          "version": 1
+        },
+        {
+          "applied_sequence": 0,
+          "city": 5,
+          "observed_at": 0,
+          "population": 100,
+          "version": 1
+        },
+        {
+          "applied_sequence": 0,
+          "city": 6,
+          "observed_at": 0,
+          "population": 100,
+          "version": 1
+        },
+        {
+          "applied_sequence": 0,
+          "city": 7,
+          "observed_at": 0,
+          "population": 100,
+          "version": 1
+        },
+        {
+          "applied_sequence": 0,
+          "city": 8,
+          "observed_at": 0,
+          "population": 100,
+          "version": 1
+        }
+      ],
+      "transits": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    "revision": 0,
+    "schema": "mycity-m0-state-v6",
+    "scope": {
+      "branch": 1,
+      "world": 1
+    },
+    "seed": 7,
+    "stocks": [
+      {
+        "basis": 2000,
+        "commodity": "fuel",
+        "id": 1,
+        "lot_id": 1001,
+        "offset": 0,
+        "origin_basis": 2000,
+        "origin_quantity": 5000,
+        "owner": 3,
+        "quantity": 5000
+      },
+      {
+        "basis": 100,
+        "commodity": "electricity",
+        "id": 2,
+        "lot_id": 1002,
+        "offset": 0,
+        "origin_basis": 100,
+        "origin_quantity": 100000,
+        "owner": 3,
+        "quantity": 100000
+      },
+      {
+        "basis": 0,
+        "commodity": "water",
+        "id": 3,
+        "lot_id": 1003,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw_water",
+        "id": 4,
+        "lot_id": 1004,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 6000000,
+        "owner": 3,
+        "quantity": 6000000
+      },
+      {
+        "basis": 0,
+        "commodity": "waste_water",
+        "id": 5,
+        "lot_id": 1005,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "heat",
+        "id": 6,
+        "lot_id": 1006,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 8000,
+        "commodity": "raw",
+        "id": 7,
+        "lot_id": 1007,
+        "offset": 0,
+        "origin_basis": 8000,
+        "origin_quantity": 20000,
+        "owner": 4,
+        "quantity": 20000
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 8,
+        "lot_id": 1008,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 2,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 9,
+        "lot_id": 1009,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 2,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 10,
+        "lot_id": 1010,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 2,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 11,
+        "lot_id": 1011,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 2,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 12,
+        "lot_id": 1012,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 2,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "electricity",
+        "id": 13,
+        "lot_id": 1013,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 2,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "water",
+        "id": 14,
+        "lot_id": 1014,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 2,
+        "quantity": 0
+      },
+      {
+        "basis": 300,
+        "commodity": "raw",
+        "id": 15,
+        "lot_id": 1015,
+        "offset": 0,
+        "origin_basis": 300,
+        "origin_quantity": 1000,
+        "owner": 3,
+        "quantity": 1000
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 16,
+        "lot_id": 1016,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 17,
+        "lot_id": 1017,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 18,
+        "lot_id": 1018,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 19,
+        "lot_id": 1019,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 20,
+        "lot_id": 1020,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 21,
+        "lot_id": 1021,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 22,
+        "lot_id": 1022,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 23,
+        "lot_id": 1023,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 24,
+        "lot_id": 1024,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 25,
+        "lot_id": 1025,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 26,
+        "lot_id": 1026,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 27,
+        "lot_id": 1027,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 28,
+        "lot_id": 1028,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 29,
+        "lot_id": 1029,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 30,
+        "lot_id": 1030,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 31,
+        "lot_id": 1031,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 32,
+        "lot_id": 1032,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 33,
+        "lot_id": 1033,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 34,
+        "lot_id": 1034,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 35,
+        "lot_id": 1035,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 36,
+        "lot_id": 1036,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 37,
+        "lot_id": 1037,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 38,
+        "lot_id": 1038,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 39,
+        "lot_id": 1039,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 40,
+        "lot_id": 1040,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 41,
+        "lot_id": 1041,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 42,
+        "lot_id": 1042,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 43,
+        "lot_id": 1043,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 44,
+        "lot_id": 1044,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 45,
+        "lot_id": 1045,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 46,
+        "lot_id": 1046,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 47,
+        "lot_id": 1047,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 48,
+        "lot_id": 1048,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 49,
+        "lot_id": 1049,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 50,
+        "lot_id": 1050,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 51,
+        "lot_id": 1051,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 52,
+        "lot_id": 1052,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 53,
+        "lot_id": 1053,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 54,
+        "lot_id": 1054,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 55,
+        "lot_id": 1055,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 56,
+        "lot_id": 1056,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 57,
+        "lot_id": 1057,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 58,
+        "lot_id": 1058,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 59,
+        "lot_id": 1059,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 60,
+        "lot_id": 1060,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 61,
+        "lot_id": 1061,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 62,
+        "lot_id": 1062,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 63,
+        "lot_id": 1063,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 64,
+        "lot_id": 1064,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 65,
+        "lot_id": 1065,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 66,
+        "lot_id": 1066,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 67,
+        "lot_id": 1067,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 68,
+        "lot_id": 1068,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 69,
+        "lot_id": 1069,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 70,
+        "lot_id": 1070,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 71,
+        "lot_id": 1071,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 72,
+        "lot_id": 1072,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 73,
+        "lot_id": 1073,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 74,
+        "lot_id": 1074,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 75,
+        "lot_id": 1075,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 76,
+        "lot_id": 1076,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 77,
+        "lot_id": 1077,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 78,
+        "lot_id": 1078,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 79,
+        "lot_id": 1079,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 80,
+        "lot_id": 1080,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 81,
+        "lot_id": 1081,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 82,
+        "lot_id": 1082,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 83,
+        "lot_id": 1083,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 84,
+        "lot_id": 1084,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 85,
+        "lot_id": 1085,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 86,
+        "lot_id": 1086,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 87,
+        "lot_id": 1087,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 88,
+        "lot_id": 1088,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 89,
+        "lot_id": 1089,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 90,
+        "lot_id": 1090,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 91,
+        "lot_id": 1091,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 92,
+        "lot_id": 1092,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 93,
+        "lot_id": 1093,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 94,
+        "lot_id": 1094,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 95,
+        "lot_id": 1095,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 96,
+        "lot_id": 1096,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 97,
+        "lot_id": 1097,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 98,
+        "lot_id": 1098,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 99,
+        "lot_id": 1099,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 100,
+        "lot_id": 1100,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 101,
+        "lot_id": 1101,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 102,
+        "lot_id": 1102,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 103,
+        "lot_id": 1103,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 104,
+        "lot_id": 1104,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 105,
+        "lot_id": 1105,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 106,
+        "lot_id": 1106,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 107,
+        "lot_id": 1107,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 108,
+        "lot_id": 1108,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 109,
+        "lot_id": 1109,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 110,
+        "lot_id": 1110,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 111,
+        "lot_id": 1111,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 112,
+        "lot_id": 1112,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 113,
+        "lot_id": 1113,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 114,
+        "lot_id": 1114,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 115,
+        "lot_id": 1115,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 116,
+        "lot_id": 1116,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 117,
+        "lot_id": 1117,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 118,
+        "lot_id": 1118,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 119,
+        "lot_id": 1119,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 120,
+        "lot_id": 1120,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 121,
+        "lot_id": 1121,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 122,
+        "lot_id": 1122,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 123,
+        "lot_id": 1123,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 124,
+        "lot_id": 1124,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 125,
+        "lot_id": 1125,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 126,
+        "lot_id": 1126,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 127,
+        "lot_id": 1127,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      },
+      {
+        "basis": 0,
+        "commodity": "raw",
+        "id": 128,
+        "lot_id": 1128,
+        "offset": 0,
+        "origin_basis": 0,
+        "origin_quantity": 0,
+        "owner": 3,
+        "quantity": 0
+      }
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+
+running 3 tests
+test terrain::small_png::tests::compressed_row_overflow_concatenated_stream_invalid_filter_and_split_chunks ... FAILED
+test terrain::workspace::tests::rejected_source_never_exposes_old_candidate_and_same_backing_accepts_next_legal_source ... FAILED
+test terrain::workspace::tests::both_depths_every_filter_and_all_output_sizes_match_general_decoder_and_reuse_large_backing ... ok
+
+failures:
+
+---- terrain::small_png::tests::compressed_row_overflow_concatenated_stream_invalid_filter_and_split_chunks stdout ----
+
+thread 'terrain::small_png::tests::compressed_row_overflow_concatenated_stream_invalid_filter_and_split_chunks' panicked at crates/city-map/src/terrain/small_png.rs:189:47:
+called `Result::unwrap()` on an `Err` value: Limit
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- terrain::workspace::tests::rejected_source_never_exposes_old_candidate_and_same_backing_accepts_next_legal_source stdout ----
+
+thread 'terrain::workspace::tests::rejected_source_never_exposes_old_candidate_and_same_backing_accepts_next_legal_source' panicked at crates/city-map/src/terrain/workspace.rs:178:41:
+called `Result::unwrap()` on an `Err` value: Limit
+
+
+failures:
+    terrain::small_png::tests::compressed_row_overflow_concatenated_stream_invalid_filter_and_split_chunks
+    terrain::workspace::tests::rejected_source_never_exposes_old_candidate_and_same_backing_accepts_next_legal_source
+
+test result: FAILED. 1 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.43s
+

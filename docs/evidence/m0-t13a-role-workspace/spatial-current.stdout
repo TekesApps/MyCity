@@ -1,0 +1,239 @@
+
+running 4 tests
+test terrain::small_png::tests::compressed_row_overflow_concatenated_stream_invalid_filter_and_split_chunks ... ok
+test terrain::workspace::tests::rejected_source_never_exposes_old_candidate_and_same_backing_accepts_next_legal_source ... ok
+test terrain::workspace::tests::original_frozen_207_byte_source_matches_general_import_for_all_output_maps ... ok
+test terrain::workspace::tests::both_depths_every_filter_and_all_output_sizes_match_general_decoder_and_reuse_large_backing ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.78s
+
+
+running 16 tests
+test maps_keep_one_grid_format_exact_global_coordinates_and_nonoverlapping_cells ... ok
+test entrance_checks_first_normal_full_route_obstacles_modes_and_exact_anchor ... ok
+test decode_rejects_mismatches_corruption_unsupported_semantics_and_peak_overcommit ... ok
+test one_centimeter_invasion_holes_width_and_vertical_overlap_are_not_waived_by_grid_or_layer ... ok
+test runtime_uses_sw_ne_triangles_and_platform_proof_checks_internal_peaks ... ok
+test gpu_bytes_have_wgsl_offsets_soa_strides_versions_and_no_global_float_coordinates ... ok
+test seams_require_real_global_adjacency_same_height_frame_mode_permission_and_direction ... ok
+test transparency_color_and_unbounded_metadata_are_never_reinterpreted_as_height ... ok
+test joint_scene_uses_support_whole_paths_revisions_and_real_neighbor_frames ... ok
+test grayscale_8_and_16_north_orientation_and_negative_half_rounding_are_explicit ... ok
+test black_is_valid_no_data_never_becomes_zero_and_water_is_a_separate_mask ... ok
+test metadata_and_overexpanded_streams_reject_and_known_narrow_water_is_not_lost ... ok
+test joint_seam_rejects_water_off_center_cliff_neighbor_obstacle_and_unsupported_modes ... ok
+test quadratic_has_independently_sampled_error_below_five_cm_and_no_silent_budget_downgrade ... ok
+test gpu_height_projection_stays_within_declared_half_cm_on_nonflat_signed_data ... ok
+test all_map_sizes_and_maximum_source_are_actually_decoded_with_bounded_owned_storage ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+
+running 4 tests
+test rects_before_kind_is_stream_bounded_and_original_mask_wire_stays_compatible ... ok
+test json_limits_are_enforced_before_excess_rows_or_oversize_strings_are_owned ... ok
+test oversize_or_invalid_inputs_never_publish_a_normal_scene ... ok
+test frozen_source_and_all_output_maps_keep_full_scene_hash_and_exact_prepared_backings ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+
+running 9 tests
+test model_capacity::tests::feasibility_boundary_never_authorizes_current_runtime ... ok
+test checkpoint_v2::receipts::tests::index_overflow_is_rejected_before_extra_record_materializes ... ok
+test wal::tests::persisted_envelope_overflow_rejects_before_extra_action_decode ... ok
+test wal::tests::every_produced_sample_matches_old_frame_bytes_and_split_checksum ... ok
+test checkpoint_v2::receipts::tests::borrowed_receipt_wire_matches_owned_legacy_and_arbitrary_field_order ... ok
+test stream::tests::complete_stream_hash_length_and_unconsumed_tail_are_required ... ok
+test checkpoint_v2::receipts::tests::authenticated_but_malformed_body_tail_metadata_and_count_cannot_pass ... ok
+test stream::tests::second_pass_or_validation_failure_cannot_publish_and_tmp_is_reclaimed ... ok
+test background::slot_load_tests::outer_hash_failure_invalidates_otherwise_valid_decoded_candidate ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 12 tests
+test canonical_accept_rejections_do_not_create_wal_or_cold_failed_receipts ... ok
+test retained_candidate_slot_spans_bad_import_staged_checkpoint_wal_reopen_and_retry ... ok
+test normal_disk_exhaustion_preserves_background_and_timeline_funding ... ok
+test staged_asset_survives_midflight_checkpoint_restart_and_generation_rebind ... ok
+test committed_missing_or_corrupt_asset_is_rejected_before_tail_truncation_and_gc ... ok
+test v2_staged_asset_checkpoint_reopen_accept_and_gc_preserve_original_receipts ... ok
+test worker_cache_charge_survives_missing_files_and_moves_out_of_task_reserve_once ... ok
+test wrong_window_finite_forgery_and_old_job_cannot_consume_reservation_or_replace_field ... ok
+test empty_and_real_freight_large_pages_have_funded_barrier_and_restore_exactly_once ... ok
+test result_reference_limit_checkpoints_before_new_obligation_and_keeps_cold_receipts ... ok
+test actual_process_exit_at_every_import_and_accept_boundary_restores_original_result ... ok
+test failed_operation_flood_cannot_consume_dedicated_control_or_receipt_slots ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 35.28s
+
+
+running 2 tests
+test startup_wip_and_leases_restore_with_immutable_spatial_assets_and_uncertain_io ... ok
+test pump_and_generator_start_complete_fault_and_cleanup_survive_88_real_process_exits ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.48s
+
+
+running 6 tests
+test capacity_rejection_before_checkpoint_io_does_not_poison ... ok
+test committed_archive_corruption_stops_recovery_and_does_not_fall_back ... ok
+test checkpoint_unwind_requires_reopen_even_after_current_or_retirement ... ok
+test actual_process_exit_at_every_checkpoint_publication_boundary ... ok
+test retry_at_exact_rotation_threshold_does_not_become_a_new_operation ... ok
+test more_than_two_hot_windows_exact_success_and_failure_retry_after_restart has been running for over 60 seconds
+test more_than_two_hot_windows_exact_success_and_failure_retry_after_restart ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 66.16s
+
+
+running 8 tests
+test streamed_v2_capacity_rejection_before_any_output_remains_usable ... ok
+test prebuilt_workspace_is_consumed_by_create_and_cold_open_without_replacing_roots ... ok
+test borrowed_checkpoint_has_all_fields_and_excludes_only_hot_journal ... ok
+
+running 1 test
+test repeated_real_v2_save_and_reopen_reuse_same_validation_slot_backing ... ok
+
+running 1 test
+test streamed_checkpoint_unwind_never_leaves_a_usable_stale_store ... ok
+
+running 1 test
+test current_world_history_and_receipt_corruption_are_rejected_without_rollback ... ok
+
+running 1 test
+
+running 1 test
+
+running 1 test
+
+running 1 test
+
+running 1 test
+
+running 1 test
+
+running 1 test
+test real_process_exit_at_each_v2_publication_and_gc_boundary_keeps_full_state ... ok
+test multiple_hot_windows_failed_receipts_queries_and_empty_saves_keep_originals ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 32.05s
+
+
+running 2 tests
+test economic_io_uncertainty_hides_state_until_reopen_then_retry_is_exactly_once ... ok
+test economic_transactions_survive_process_exit_at_every_wal_and_response_boundary ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 21.82s
+
+
+running 4 tests
+test regional_store_requires_bound_spatial_frames_and_flat_template_before_creating_directory ... ok
+test uncertain_arrival_settlement_hides_writer_and_recovers_once_with_provenance ... ok
+test full_checkpoints_keep_running_failed_and_paused_physical_state ... ok
+test regional_fulfilment_recovers_joint_old_or_new_state_at_121_actual_process_exits ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.83s
+
+
+running 14 tests
+test no_room_for_necessary_fact_stops_advancement_and_retains_source_without_false_ack ... ok
+test archived_fact_creation_and_actual_cash_settlement_remain_directly_traceable ... ok
+test paused_clock_and_repeated_link_toggles_are_not_unbounded_emergency_work ... ok
+test actual_external_producer_and_ack_process_exits_preserve_exactly_once ... ok
+test producer_is_bounded_and_pauses_without_dropping_the_seventeenth_fact ... ok
+test external_cannot_bypass_registered_pending_or_take_the_incident_reserve ... ok
+test invalid_and_unchanged_controls_cannot_spend_emergency_storage ... ok
+test external_pending_full_inbox_restart_unpaid_handoff_and_source_alignment ... ok
+test query_pages_are_complete_provenanced_and_reject_stale_cursor ... ok
+test source_publication_crashes_retry_from_durable_pending_and_missing_source_is_not_ignored ... ok
+test full_inbox_retains_obligations_handoff_does_not_erase_debt_and_delivery_uses_reserved_slots ... ok
+test normal_disk_exhaustion_preserves_emergency_exit_and_quota_on_reopen ... ok
+test physical_facts_and_exit_survive_real_process_exits_and_exact_retries ... ok
+test normal_rotation_at_threshold_cannot_consume_the_emergency_reserve ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 21.13s
+
+
+running 15 tests
+test incompatible_rules_reject_instead_of_recalculating_history ... ok
+test a_second_process_cannot_open_a_world_while_writer_lock_is_held ... ok
+test oversized_command_is_rejected_before_serializing_and_never_changes_storage ... ok
+test borrowed_store_hash_preserves_old_outer_value_and_reuses_wal_workspace ... ok
+test acknowledged_success_and_operation_coverage_survive_reopen_without_double_payment ... ok
+test only_tail_outside_the_validated_committed_boundary_is_truncated ... ok
+test recovery_reclaims_only_known_unreferenced_atomic_temp_files ... ok
+test regional_clocks_migrants_debt_and_snapshot_watermarks_recover_atomically_once ... ok
+test publication_callback_unwind_requires_recovery_and_preserves_committed_receipt ... ok
+test store_ownership_handoff_reopens_immediately_during_parallel_process_spawn ... ok
+test injected_io_uncertainty_poisoning_prevents_further_writes_until_recovery ... ok
+test committed_corruption_or_missing_dependency_never_falls_back_to_old_root ... ok
+test replay_preserves_old_value_last_key_and_rejects_ignored_unknown_fields_before_tail_gc ... ok
+test abrupt_process_exit_at_each_boundary_retains_exactly_the_published_operation ... ok
+test regional_process_exit_never_publishes_half_population_half_clock_or_half_payment ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.87s
+
+
+running 2 tests
+
+running 1 test
+test nonzero_extra_stock_indices_lots_and_original_receipts_survive_wal_and_cold_checkpoint_reopen ... ok
+
+running 1 test
+
+running 1 test
+
+running 1 test
+
+running 1 test
+
+running 1 test
+
+running 1 test
+test actual_process_exits_keep_scaled_extra_stock_old_or_new_and_retry_once ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.77s
+
+
+running 9 tests
+test invalid_sources_and_cross_world_branch_or_seed_fail_before_any_directory_is_created ... ok
+test spatial_financial_and_regional_state_restore_under_one_root_without_double_capital_or_payment ... ok
+test uncertain_transaction_hides_both_model_and_space_until_joint_recovery ... ok
+test create_io_failure_before_publication_retains_incomplete_directory_and_after_publication_requires_reopen ... ok
+test matching_file_checksums_cannot_hide_wrong_identity_or_terrain_interpretation ... ok
+test v1_v2_schema_and_derived_hash_gates_do_not_silently_drop_space ... ok
+test corrupt_missing_nonregular_or_symlink_space_never_opens_or_truncates_wal_tail ... ok
+test abrupt_creation_exit_publishes_all_dependencies_and_capital_or_no_world ... ok
+test abrupt_transaction_exit_preserves_space_with_the_correct_financial_and_regional_root ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.95s
+
+
+running 7 tests
+test continuation_limit_and_receipt_reserve_are_bound_and_retry_never_spends_twice ... ok
+test reserved_pure_phase_and_zero_cash_debt_pages_finish_when_normal_full_then_stop ... ok
+test full_fact_inbox_during_boundary_allows_safe_handoff_and_source_reconciliation ... ok
+test calendar_payroll_old_interval_and_partial_debt_survive_real_checkpoint_and_reopen ... ok
+test dense_actual_payments_checkpoint_mid_page_retry_and_bounded_query ... ok
+test actual_process_exits_preserve_pure_cursor_zero_cash_and_final_ticket_release ... ok
+test stale_advance_flood_cannot_spend_live_ticket_receipt_slots ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 36.27s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

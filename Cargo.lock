@@ -189,6 +189,7 @@ name = "mycity-map"
 version = "0.1.0"
 dependencies = [
  "flate2",
+ "miniz_oxide 0.8.9",
  "mycity-core",
  "png",
  "serde",

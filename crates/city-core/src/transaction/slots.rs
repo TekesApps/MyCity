@@ -25,32 +25,68 @@ impl EngineSlot {
             valid: false,
         })
     }
+    /// Initialize fresh recorded capital into this slot; never call during replay.
+    pub fn initialize_into(
+        &mut self,
+        opening: &[u8],
+        resources: &[Resource],
+    ) -> Result<(), String> {
+        self.reset_preserving_capacity();
+        let result = (|| {
+            if resources.len() > MAX_RESOURCES {
+                return Err("initial_resource_limit".into());
+            }
+            crate::assembly::assemble_into(opening, &mut self.engine.world)?;
+            for r in resources {
+                self.engine.resources.push(*r);
+            }
+            self.engine.resources.sort_by_key(|r| r.id);
+            let resources = &self.engine.resources;
+            let world = &self.engine.world;
+            if world.economy.is_some() && !resources.is_empty()
+                || resources
+                    .iter()
+                    .any(|r| r.id == 0 || r.reserved != 0 || r.occupied != 0)
+                || resources.windows(2).any(|w| w[0].id == w[1].id)
+                || world.exchange.is_some_and(|e| {
+                    e.edges.iter().any(|e| {
+                        !resources
+                            .iter()
+                            .any(|r| r.id == e.resource && r.capacity > 0)
+                    })
+                })
+                || world.boot.is_some_and(|b| {
+                    b.resources
+                        .iter()
+                        .any(|id| !resources.iter().any(|r| r.id == *id && r.capacity > 0))
+                })
+            {
+                return Err("initial_resources".into());
+            }
+            self.engine.leases.resize(MAX_LEASES, None);
+            self.engine.validate_resident()
+        })();
+        match result {
+            Ok(()) => {
+                self.valid = true;
+                Ok(())
+            }
+            Err(e) => {
+                self.reset_preserving_capacity();
+                Err(e)
+            }
+        }
+    }
+    /// Move the initialized root to its single writer without allocating another root.
+    pub fn into_engine(self) -> Result<Engine, String> {
+        if self.valid {
+            Ok(self.engine)
+        } else {
+            Err("unpublished_engine_slot".into())
+        }
+    }
     pub fn identity(&self) -> Result<SlotIdentity, String> {
-        Ok(SlotIdentity {
-            world: self.engine.world.as_ref() as *const World as usize,
-            world_tables: self.engine.world.backing_ids(),
-            engine_tables: [
-                self.engine.resources.allocation(),
-                self.engine.leases.allocation(),
-                self.engine.journal.allocation(),
-            ],
-            timeline_tables: [
-                self.engine.timeline.backing().claims.allocation(),
-                self.engine.timeline.backing().payroll.allocation(),
-            ],
-            background_tables: self.engine.background.backing().backing_ids(),
-            preparation_backing: self
-                .engine
-                .preparation_workspace
-                .as_ref()
-                .ok_or("missing_workspace")?
-                .backing_ids()?,
-            owned_model_bytes: self.engine.owned_capacity_bytes(),
-            retained_prepare_bytes: {
-                let (a, b, c) = preparation_workspace_capacity();
-                a + b + c
-            },
-        })
+        self.engine.backing_identity()
     }
     pub fn reset_preserving_capacity(&mut self) {
         self.valid = false;
@@ -151,6 +187,34 @@ impl EngineSlot {
         std::mem::swap(&mut self.engine, active);
         self.valid = false;
         Ok(())
+    }
+}
+impl Engine {
+    pub fn backing_identity(&self) -> Result<SlotIdentity, String> {
+        Ok(SlotIdentity {
+            world: self.world.as_ref() as *const World as usize,
+            world_tables: self.world.backing_ids(),
+            engine_tables: [
+                self.resources.allocation(),
+                self.leases.allocation(),
+                self.journal.allocation(),
+            ],
+            timeline_tables: [
+                self.timeline.backing().claims.allocation(),
+                self.timeline.backing().payroll.allocation(),
+            ],
+            background_tables: self.background.backing().backing_ids(),
+            preparation_backing: self
+                .preparation_workspace
+                .as_ref()
+                .ok_or("missing_workspace")?
+                .backing_ids()?,
+            owned_model_bytes: self.owned_capacity_bytes(),
+            retained_prepare_bytes: {
+                let (a, b, c) = preparation_workspace_capacity();
+                a + b + c
+            },
+        })
     }
 }
 impl Restore for Engine {

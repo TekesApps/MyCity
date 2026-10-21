@@ -1,0 +1,3 @@
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+    Finished `release` profile [optimized] target(s) in 7.83s
+     Running unittests src/lib.rs (target/release/deps/mycity_map-5dfdd7e42e89fe43)

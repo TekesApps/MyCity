@@ -1,0 +1,28 @@
+{
+  "old_binary": "work/candidate-binaries/air-candidate-slots/mycity-headless",
+  "old_binary_sha256": "4aaa1927b21161bb53dbe13fe025ace828b4107300676617581a598cf3456f10",
+  "candidate_binary": "work/candidate-binaries/role-workspace-construction/mycity-headless",
+  "candidate_binary_sha256": "00f5a497464f83cd4bc574917b078bb94f722509fccd673b2039b7a8ccb840cf",
+  "cases": [
+    {
+      "fixture": "fixtures/m0-t13a-small-opening.json",
+      "fixture_sha256": "ade6196df652a917c800fbefbf89d0e97da4188012abf367713e074f9c8103ae",
+      "world_state_and_layout_equal": true,
+      "state_sha256": "909da0a823fa5645d63b47375189d89cf4d40b0800549369bcc609c844f280e9"
+    },
+    {
+      "fixture": "fixtures/m0-t13a-medium-opening.json",
+      "fixture_sha256": "14bd82d8d1e196d810fa8fbdf25bf67da6092f24496b6581aa6dbe8ff825f144",
+      "world_state_and_layout_equal": true,
+      "state_sha256": "fcdd2ed3b43f901300b475fab3f5f498ba6b0e8249fa8b4dc13c8a7d9d6e6c30"
+    },
+    {
+      "fixture": "fixtures/m0-t13a-full-opening-candidate.json",
+      "fixture_sha256": "04c113c62b0b682f94f9abfbde7618b87bd972f3931504366be9e07c130b4726",
+      "world_state_and_layout_equal": true,
+      "state_sha256": "b5f6784c48c064ad54001a5ad8c6e78ed0ef6a33f10cc8eec399896d72ff43f1"
+    }
+  ],
+  "scope": "Independent already published v77 initializer vs current actual CLI; not full role budget or full regression",
+  "candidate_source_sha256": "12f86a5e6acb7186261530945e3bc56b2fc7e46daca0977865782d846e6a397f"
+}

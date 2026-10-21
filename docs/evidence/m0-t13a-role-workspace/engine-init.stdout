@@ -1,0 +1,15 @@
+
+running 4 tests
+test initializing_fresh_capital_in_existing_slot_never_replaces_backing_and_failure_is_unpublished ... ok
+test optional_world_fields_default_after_reuse_and_duplicate_or_unknown_fields_stay_unpublished ... ok
+test failed_candidate_never_replaces_active_root_and_swap_only_moves_existing_backing ... ok
+test full_reader_restore_copy_null_failure_and_reset_retain_every_backing ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+
+
+running 1 test
+test full_64_payroll_20000_claims_and_eight_real_deliveries_match_independent_30day_oracle ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 11.96s
+

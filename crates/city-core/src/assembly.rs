@@ -490,6 +490,12 @@ impl World {
 }
 
 pub fn assemble(bytes: &[u8]) -> Result<World, String> {
+    let mut world = World::restore_empty()?;
+    assemble_into(bytes, &mut world)?;
+    Ok(world)
+}
+/// Initial capital only, into an unpublished caller-owned root. Never for restore.
+pub(crate) fn assemble_into(bytes: &[u8], world: &mut World) -> Result<(), String> {
     if bytes.len() as u64 > INPUT_LIMIT {
         return Err("input_too_large".into());
     }
@@ -570,26 +576,17 @@ pub fn assemble(bytes: &[u8]) -> Result<World, String> {
     }
     let scope =
         Scope::new(input.bootstrap.world, input.bootstrap.branch).map_err(|e| format!("{e:?}"))?;
-    let mut world = World {
-        scope,
-        seed: input.bootstrap.seed,
-        revision: 0,
-        accounts: Arena::new(scope, MAX_ACCOUNTS as u32, WORLD_BYTE_BUDGET / 2)
-            .map_err(|e| format!("{e:?}"))?,
-        stocks: Arena::new(scope, MAX_STOCKS as u32, WORLD_BYTE_BUDGET / 2)
-            .map_err(|e| format!("{e:?}"))?,
-        account_ids: Rows::new().map_err(str::to_owned)?,
-        stock_ids: Rows::new().map_err(str::to_owned)?,
-        sources: input.sources,
-        economy: None,
-        boot: None,
-        exchange: None,
-        region: input
-            .region
-            .map(crate::region::Region::new)
-            .transpose()
-            .map_err(|e| format!("region_{e:?}"))?,
-    };
+    world.reset_backing();
+    world.scope = scope;
+    world.seed = input.bootstrap.seed;
+    world.accounts.initialize_scope(scope);
+    world.stocks.initialize_scope(scope);
+    world.sources.copy_active_from(&input.sources);
+    world.region = input
+        .region
+        .map(crate::region::Region::new)
+        .transpose()
+        .map_err(|e| format!("region_{e:?}"))?;
     for a in &input.accounts {
         let h = world
             .accounts
@@ -627,17 +624,17 @@ pub fn assemble(bytes: &[u8]) -> Result<World, String> {
         }
     }
     if let Some(economy) = input.economy {
-        world.economy = Some(crate::economy::Economy::new(economy, &world)?);
+        world.economy = Some(crate::economy::Economy::new(economy, world)?);
     }
     if let Some(boot) = input.boot {
         world.boot = Some(crate::boot::Boot::new(
             boot,
-            &world,
+            world,
             input.exchange.is_some(),
         )?);
     }
     if let Some(exchange) = input.exchange {
-        world.exchange = Some(crate::exchange::Exchange::new(exchange, &world)?);
+        world.exchange = Some(crate::exchange::Exchange::new(exchange, world)?);
     }
     if world.owned_capacity_bytes() > WORLD_BYTE_BUDGET {
         return Err("world_byte_limit".into());
@@ -646,7 +643,7 @@ pub fn assemble(bytes: &[u8]) -> Result<World, String> {
     for (id, _) in &world.stock_ids {
         world.stock_handle(*id)?;
     }
-    Ok(world)
+    Ok(())
 }
 
 impl crate::restore_into::Restore for World {

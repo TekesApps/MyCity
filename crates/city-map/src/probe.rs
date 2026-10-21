@@ -5,6 +5,7 @@ use serde_json::{json, Value};
 #[derive(Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Input {
+    #[serde(deserialize_with = "crate::bounded::text::<_, 64>")]
     pub schema: String,
     pub bootstrap: mycity_core::Bootstrap,
     pub terrain: terrain::Manifest,

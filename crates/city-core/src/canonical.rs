@@ -318,6 +318,12 @@ impl Workspace {
 }
 /// Explicit caller-owned model comparison slot. Reuse serially across engines;
 /// never store one per Engine. Not a pool grant or arbitrary-JSON serializer.
+#[derive(Debug, PartialEq, Eq, Serialize)]
+pub struct CodecIdentity {
+    pub byte_backing: usize,
+    pub traversal_backing: usize,
+    pub backing_bytes: usize,
+}
 pub struct Codec {
     bytes: Vec<u8>,
     pub workspace: Workspace,
@@ -337,6 +343,13 @@ impl Codec {
             bytes,
             workspace: Workspace::new()?,
         })
+    }
+    pub fn identity(&self) -> CodecIdentity {
+        CodecIdentity {
+            byte_backing: self.bytes.as_ptr() as usize,
+            traversal_backing: self.workspace.frames.as_ptr() as usize,
+            backing_bytes: self.backing_capacity_bytes(),
+        }
     }
     pub fn owned_capacity_bytes(&self) -> usize {
         size_of::<Self>() + self.backing_capacity_bytes()

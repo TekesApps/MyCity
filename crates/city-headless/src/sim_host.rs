@@ -527,6 +527,10 @@ fn run_inner(
     profile: Profile,
 ) -> Result<(), String> {
     let mut codec = Codec::new()?;
+    let workspace = (
+        mycity_core::transaction::EngineWorkspace::new()?,
+        mycity_map::assets::SpatialWorkspace::new().map_err(err)?,
+    );
     let rules = profile.rules();
     let mut store = if create {
         let (opening, resources) = match profile {
@@ -540,22 +544,21 @@ fn run_inner(
                 crate::joint_reference::resources()?,
             ),
         };
-        let constructor = if matches!(profile, Profile::Scale(_)) {
-            Store::create_spatial_v2
-        } else {
-            Store::create_spatial
-        };
-        constructor(
+        Store::create_spatial_in_role_workspace(
             world,
             opening,
             resources,
             &rules,
-            include_bytes!("../../../fixtures/m0-exchange-spatial.json"),
-            include_bytes!("../../../fixtures/terrain/m0-flat16.png"),
+            (
+                include_bytes!("../../../fixtures/m0-exchange-spatial.json"),
+                include_bytes!("../../../fixtures/terrain/m0-flat16.png"),
+            ),
+            matches!(profile, Profile::Scale(_)),
+            workspace,
         )
         .map_err(err)?
     } else {
-        Store::open(world, &rules).map_err(err)?
+        Store::open_in_role_workspace(world, &rules, workspace).map_err(err)?
     };
     let mut diag = if crate::cpu_log::enabled() {
         Some(crate::cpu_log::CpuLog::create(

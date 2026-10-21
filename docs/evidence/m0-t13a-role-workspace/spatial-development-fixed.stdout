@@ -1,0 +1,8 @@
+
+running 3 tests
+test terrain::small_png::tests::compressed_row_overflow_concatenated_stream_invalid_filter_and_split_chunks ... ok
+test terrain::workspace::tests::rejected_source_never_exposes_old_candidate_and_same_backing_accepts_next_legal_source ... ok
+test terrain::workspace::tests::both_depths_every_filter_and_all_output_sizes_match_general_decoder_and_reuse_large_backing ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.64s
+

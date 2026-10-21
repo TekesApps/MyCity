@@ -1,0 +1,2 @@
+# Preserve captured stdout verbatim, including Cargo's trailing blank lines.
+docs/evidence/m0-t13a-role-workspace/*.stdout whitespace=-blank-at-eof

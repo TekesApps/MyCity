@@ -2,6 +2,8 @@
 
 冻结方案T13A-0，发布v0.5.30。当前只做Rust模型／CLI，不做UI、GPU或AgentKit。用户要求实际完成分级规模、瓶颈修复和8现实小时联合运行；不以计划、替身或小负载代替验收。机器现为M4／32GiB；真实16GB门保持未测，整个M0不签收。
 
+v0.5.79[模型＋空间预建构造基础](evidence/m0-t13a-role-workspace/STATUS.md)已实证：消费已有双root／准备区／候选／codec及固定空间背板，同源全仓、旧完整world逐字节与背板身份、原full30日实际Sim／worker和冷重试通过；不改冻结负载／性能标准。原full诊断没有L1或normal pool，Meta／legacy／控制暂存与完整broker授权仍未完成，不能据此签normal64/common8或正式性能／稳态／8h。当前真实16GB门继续not_run。
+
 本契约保留[原M0计划第6节](m0-implementation-plan.md#6-16gb与cpugpu要测什么才能作出什么结论)与[R03现行预算](product-runtime-budget-and-versions.md)。旧performance-budget的2.65／3GiB是历史值，不能覆盖现行3.10／3.5／4GiB。机器可读参数为[acceptance-v1](../fixtures/m0-t13a-acceptance.json)；验收前冻结数量、时长、指标和失败规则，后续源码版本可变，失败数据不覆盖。修改负载或阈值必须有新方案版本及独立理由，原负载失败结果保留，不能缩范围制造通过。
 
 ## 1. 证据分三类

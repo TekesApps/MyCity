@@ -1,0 +1,9 @@
+   Compiling sha2-asm v0.6.4
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+   Compiling sha2 v0.10.9
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 24.56s
+     Running tests/engine_slot.rs (target/release/deps/engine_slot-52d0428c25a93dba)
+     Running tests/scale_reference.rs (target/release/deps/scale_reference-b31eec9a4bf451f7)

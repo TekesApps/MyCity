@@ -1,0 +1,36 @@
+{
+  "engine-init": {
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "mycity-headless",
+      "--test",
+      "engine_slot",
+      "--test",
+      "scale_reference",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "exit": 0,
+    "seconds": 37.645377708
+  },
+  "store-package": {
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "mycity-storage",
+      "--test",
+      "checkpoint_v2",
+      "--test",
+      "recovery",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "exit": 0,
+    "seconds": 39.731946083
+  }
+}

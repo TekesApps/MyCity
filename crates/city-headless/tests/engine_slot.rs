@@ -144,3 +144,36 @@ fn optional_world_fields_default_after_reuse_and_duplicate_or_unknown_fields_sta
     slot.restore_into(&bytes).unwrap();
     assert_eq!(slot.identity().unwrap(), identity);
 }
+
+#[test]
+fn initializing_fresh_capital_in_existing_slot_never_replaces_backing_and_failure_is_unpublished() {
+    let mut slot = EngineSlot::new().unwrap();
+    let id = slot.identity().unwrap();
+    let resources = scale_reference::resources().unwrap();
+    for opening in [
+        scale_reference::Tier::Full.opening(),
+        scale_reference::Tier::Small.opening(),
+        scale_reference::Tier::Medium.opening(),
+    ] {
+        let old = Engine::new(assemble(opening).unwrap(), resources.clone()).unwrap();
+        slot.initialize_into(opening, &resources).unwrap();
+        assert_eq!(
+            slot.engine().unwrap().export_checkpoint().unwrap(),
+            old.export_checkpoint().unwrap()
+        );
+        assert_eq!(slot.identity().unwrap(), id);
+        assert!(slot.initialize_into(opening, &resources[..1]).is_err());
+        assert!(slot.engine().is_err());
+        assert_eq!(slot.identity().unwrap(), id);
+    }
+    let mut opening: serde_json::Value = serde_json::from_slice(scale_reference::OPENING).unwrap();
+    opening["bootstrap"]["world"] = 9.into();
+    opening["bootstrap"]["branch"] = 7.into();
+    let bytes = serde_json::to_vec(&opening).unwrap();
+    slot.initialize_into(&bytes, &resources).unwrap();
+    assert_eq!(slot.identity().unwrap(), id);
+    assert_eq!(slot.engine().unwrap().world().view().scope.world(), 9);
+    assert_eq!(slot.engine().unwrap().world().view().scope.branch(), 7);
+    let engine = slot.into_engine().unwrap();
+    assert_eq!(engine.backing_identity().unwrap(), id);
+}

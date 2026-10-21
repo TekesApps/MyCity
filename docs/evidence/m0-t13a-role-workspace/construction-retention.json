@@ -1,0 +1,11 @@
+{
+  "deleted_paths": [],
+  "deleted_inode_allocated_bytes": 0,
+  "work_du_kib": 18294796,
+  "shared_target_du_kib": 1085420,
+  "filesystem_available_bytes": 116207562752,
+  "df_gain_attributed": 0,
+  "phase": "Construction development complete; full role stage still WIP",
+  "retained_reason": "Preserve original complete worlds, source/dependency snapshots and fixed current construction executable. No new L1 pressure or separate target. No unused cache dependency proved removable.",
+  "target_created": false
+}

@@ -1,0 +1,22 @@
+{
+  "roles": {
+    "scale-model-task": {
+      "processes": 3,
+      "max_requested_peak_plus_tail_bytes": 16502731
+    },
+    "compute-worker-bounded": {
+      "processes": 724,
+      "max_requested_peak_plus_tail_bytes": 5980225
+    },
+    "sim-host-scale-full": {
+      "processes": 2,
+      "max_requested_peak_plus_tail_bytes": 34264757
+    },
+    "scale-sim-probe": {
+      "processes": 1,
+      "max_requested_peak_plus_tail_bytes": 614532
+    }
+  },
+  "records": 730,
+  "scope": "Rust heap diagnostics, no synchronized physical or normal grant acceptance"
+}

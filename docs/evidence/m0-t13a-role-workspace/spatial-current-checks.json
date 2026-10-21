@@ -1,0 +1,35 @@
+[
+  {
+    "name": "spatial-current",
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "mycity-map",
+      "-p",
+      "mycity-storage",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "seconds": 258.73249754200003,
+    "exit_code": 0
+  },
+  {
+    "name": "spatial-clippy-corrected",
+    "command": [
+      "cargo",
+      "clippy",
+      "--workspace",
+      "--all-targets",
+      "--release",
+      "--locked",
+      "--offline",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "seconds": 4.354739584000015,
+    "exit_code": 0
+  }
+]

@@ -306,6 +306,14 @@ pub fn execute(dir: &Path) -> Result<(), String> {
         diagnostic_budget_acceptance: Text::new("fixed-control-v2-not-global-acceptance")?,
         diagnostic_capacity: control_data::capacity(),
     };
+    let mut workspace = if matches!(
+        r.mode,
+        Mode::Reference | Mode::FaultReference | Mode::Compare
+    ) {
+        Some(mycity_core::transaction::EngineWorkspace::new()?)
+    } else {
+        None
+    };
     match r.mode {
         Mode::Reference | Mode::FaultReference => {
             if (r.mode == Mode::FaultReference) != r.retry_job.is_some() {
@@ -319,9 +327,10 @@ pub fn execute(dir: &Path) -> Result<(), String> {
                     return Err("model_golden_capacity".into());
                 }
                 publish(&dir, "cpu-report.json", 65536, |report| {
-                    reference = Some(scale_reference::run_tier_streamed_retry(
+                    reference = Some(scale_reference::run_tier_streamed_in_workspace(
                         tier,
                         r.retry_job,
+                        workspace.take().ok_or("model_task_workspace_consumed")?,
                         |state, step| {
                             if let Step::Drive(target) = step {
                                 let air = state
@@ -370,9 +379,10 @@ pub fn execute(dir: &Path) -> Result<(), String> {
         }
         Mode::Compare => {
             // All principal destinations exist before reading or decoding the images.
-            let mut actual_slot = mycity_core::transaction::EngineSlot::new()?;
-            let mut expected_slot = mycity_core::transaction::EngineSlot::new()?;
-            let mut comparison = mycity_core::canonical::Codec::new()?;
+            let (mut actual_slot, mut expected_slot, air_candidate, mut comparison) = workspace
+                .take()
+                .ok_or("model_task_workspace_consumed")?
+                .into_parts();
             let decoded = control_data::root_decode(r.root.as_str())?;
             let root = Path::new(decoded.as_str());
             let (image, root_bytes, stamp) =
@@ -420,6 +430,7 @@ pub fn execute(dir: &Path) -> Result<(), String> {
             )?;
             result.business_sha256 =
                 Some(Text::new(&actual.business_digest_with(&mut comparison)?)?);
+            std::hint::black_box(&air_candidate);
         }
     }
     if !control_data::idle() {

@@ -309,15 +309,28 @@ pub struct Reference {
 }
 impl Reference {
     pub fn new() -> Result<Self, String> {
+        Self::from_workspace(
+            OPENING,
+            &resources()?,
+            mycity_core::transaction::EngineWorkspace::new()?,
+        )
+    }
+    pub fn from_workspace(
+        opening: &[u8],
+        resources: &[Resource],
+        workspace: mycity_core::transaction::EngineWorkspace,
+    ) -> Result<Self, String> {
+        let (mut initial, restore, air_candidate, comparison) = workspace.into_parts();
+        initial.initialize_into(opening, resources)?;
         Ok(Self {
-            engine: engine()?,
+            engine: initial.into_engine()?,
             next_operation: 1,
             windows: 0,
             retry_job: None,
             retried: false,
-            air_candidate: mycity_core::air::BackgroundStateSlot::new(),
-            comparison: std::cell::RefCell::new(mycity_core::canonical::Codec::new()?),
-            restore: std::cell::RefCell::new(mycity_core::transaction::EngineSlot::new()?),
+            air_candidate,
+            comparison: std::cell::RefCell::new(comparison),
+            restore: std::cell::RefCell::new(restore),
         })
     }
     /// Fresh diagnostic reference only; never restores or writes a Store.

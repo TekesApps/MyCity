@@ -1,0 +1,23 @@
+    Checking sha2-asm v0.6.4
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+    Checking sha2 v0.10.9
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+    Checking mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+error: the following explicit lifetimes could be elided: 'de
+  --> crates/city-map/src/bounded.rs:41:10
+   |
+41 |     impl<'de, const N: usize> Visitor<'de> for Text<N> {
+   |          ^^^                          ^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_lifetimes
+   = note: `-D clippy::needless-lifetimes` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::needless_lifetimes)]`
+help: elide the lifetimes
+   |
+41 -     impl<'de, const N: usize> Visitor<'de> for Text<N> {
+41 +     impl<const N: usize> Visitor<'_> for Text<N> {
+   |
+
+error: could not compile `mycity-map` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `mycity-map` (lib test) due to 1 previous error

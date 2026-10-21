@@ -1,0 +1,8 @@
+{
+  "source_sha256": "54dc5cf342e207a3808d6accbac14f82ac2f97eae3d3368087937818e7e23e4f",
+  "source_files": 180,
+  "binary": "work/candidate-binaries/role-workspace-spatial/mycity-headless",
+  "binary_sha256": "dc356fe87ecdff26525fade58e2dcdc0530a58d78b45967266c88d61a251896f",
+  "lock_sha256": "bbf3ec2da618221730acad2379495bac4f78077e14824f7c3f27e8cb62dbbf7a",
+  "scope": "Spatial construction proof; whole role broker, formal joint performance and 8h not accepted"
+}

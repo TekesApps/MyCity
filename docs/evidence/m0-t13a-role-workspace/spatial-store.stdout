@@ -1,0 +1,68 @@
+
+running 16 tests
+test maps_keep_one_grid_format_exact_global_coordinates_and_nonoverlapping_cells ... ok
+test entrance_checks_first_normal_full_route_obstacles_modes_and_exact_anchor ... ok
+test decode_rejects_mismatches_corruption_unsupported_semantics_and_peak_overcommit ... ok
+test one_centimeter_invasion_holes_width_and_vertical_overlap_are_not_waived_by_grid_or_layer ... ok
+test joint_scene_uses_support_whole_paths_revisions_and_real_neighbor_frames ... ok
+test metadata_and_overexpanded_streams_reject_and_known_narrow_water_is_not_lost ... ok
+test seams_require_real_global_adjacency_same_height_frame_mode_permission_and_direction ... ok
+test grayscale_8_and_16_north_orientation_and_negative_half_rounding_are_explicit ... ok
+test gpu_bytes_have_wgsl_offsets_soa_strides_versions_and_no_global_float_coordinates ... ok
+test transparency_color_and_unbounded_metadata_are_never_reinterpreted_as_height ... ok
+test joint_seam_rejects_water_off_center_cliff_neighbor_obstacle_and_unsupported_modes ... ok
+test quadratic_has_independently_sampled_error_below_five_cm_and_no_silent_budget_downgrade ... ok
+test black_is_valid_no_data_never_becomes_zero_and_water_is_a_separate_mask ... ok
+test runtime_uses_sw_ne_triangles_and_platform_proof_checks_internal_peaks ... ok
+test gpu_height_projection_stays_within_declared_half_cm_on_nonflat_signed_data ... ok
+test all_map_sizes_and_maximum_source_are_actually_decoded_with_bounded_owned_storage ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+
+running 8 tests
+test streamed_v2_capacity_rejection_before_any_output_remains_usable ... ok
+test borrowed_checkpoint_has_all_fields_and_excludes_only_hot_journal ... ok
+test prebuilt_workspace_is_consumed_by_create_and_cold_open_without_replacing_roots ... ok
+
+running 1 test
+test repeated_real_v2_save_and_reopen_reuse_same_validation_slot_backing ... ok
+
+running 1 test
+test streamed_checkpoint_unwind_never_leaves_a_usable_stale_store ... ok
+
+running 1 test
+test current_world_history_and_receipt_corruption_are_rejected_without_rollback ... ok
+
+running 1 test
+
+running 1 test
+
+running 1 test
+
+running 1 test
+
+running 1 test
+
+running 1 test
+
+running 1 test
+test real_process_exit_at_each_v2_publication_and_gc_boundary_keeps_full_state ... ok
+test multiple_hot_windows_failed_receipts_queries_and_empty_saves_keep_originals ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 32.70s
+
+
+running 9 tests
+test invalid_sources_and_cross_world_branch_or_seed_fail_before_any_directory_is_created ... ok
+test uncertain_transaction_hides_both_model_and_space_until_joint_recovery ... ok
+test spatial_financial_and_regional_state_restore_under_one_root_without_double_capital_or_payment ... ok
+test create_io_failure_before_publication_retains_incomplete_directory_and_after_publication_requires_reopen ... ok
+test matching_file_checksums_cannot_hide_wrong_identity_or_terrain_interpretation ... ok
+test v1_v2_schema_and_derived_hash_gates_do_not_silently_drop_space ... ok
+test corrupt_missing_nonregular_or_symlink_space_never_opens_or_truncates_wal_tail ... ok
+test abrupt_creation_exit_publishes_all_dependencies_and_capital_or_no_world ... ok
+test abrupt_transaction_exit_preserves_space_with_the_correct_financial_and_regional_root ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.07s
+

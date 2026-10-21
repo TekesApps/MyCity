@@ -1,4 +1,6 @@
 //! Raw grayscale samples, bilinear resampling, then one immutable triangulated surface.
+mod small_png;
+mod workspace;
 use crate::{
     round_ratio, Error, MapSize, Point, Rect, GEOMETRY_BUDGET_BYTES, IMPORT_PEAK_BUDGET_BYTES,
     TERRAIN_RESIDENT_BUDGET_BYTES, TERRAIN_STEP_CM, Z_LIMIT_CM,
@@ -10,6 +12,7 @@ use std::{
     io::{Cursor, Read},
     mem::size_of,
 };
+pub use workspace::{DecoderReserve, TerrainWorkspace, TerrainWorkspaceIdentity};
 pub const SOURCE_BYTE_LIMIT: u64 = 16 * 1024 * 1024;
 pub const DECODER_BYTE_LIMIT: usize = 40 * 1024 * 1024;
 pub const MAX_SOURCE_SIDE: u32 = 4097;
@@ -33,38 +36,80 @@ impl PixelRect {
         x >= self.x0 && x < self.x1 && y >= self.y0 && y < self.y1
     }
 }
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum Validity {
     AllValid,
     InvalidRects { rects: Vec<PixelRect> },
 }
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum Water {
     AllDry,
     AllWet,
     WetRects { rects: Vec<PixelRect> },
 }
+// A plain struct parses in either field order without serde's internally-tagged
+// Content buffer. Even rects before kind is bounded before excess materialization.
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct MaskWire {
+    #[serde(deserialize_with = "crate::bounded::text::<_, 64>")]
+    kind: String,
+    #[serde(default, deserialize_with = "mask_rects")]
+    rects: Option<Vec<PixelRect>>,
+}
+fn mask_rects<'de, D: serde::Deserializer<'de>>(d: D) -> Result<Option<Vec<PixelRect>>, D::Error> {
+    crate::bounded::vector::<_, _, MAX_MASK_RECTS>(d).map(Some)
+}
+impl<'de> Deserialize<'de> for Validity {
+    fn deserialize<D: serde::Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        let wire = MaskWire::deserialize(d)?;
+        match (wire.kind.as_str(), wire.rects) {
+            ("all_valid", None) => Ok(Self::AllValid),
+            ("invalid_rects", Some(rects)) => Ok(Self::InvalidRects { rects }),
+            _ => Err(serde::de::Error::custom("invalid validity kind or fields")),
+        }
+    }
+}
+impl<'de> Deserialize<'de> for Water {
+    fn deserialize<D: serde::Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        let wire = MaskWire::deserialize(d)?;
+        match (wire.kind.as_str(), wire.rects) {
+            ("all_dry", None) => Ok(Self::AllDry),
+            ("all_wet", None) => Ok(Self::AllWet),
+            ("wet_rects", Some(rects)) => Ok(Self::WetRects { rects }),
+            _ => Err(serde::de::Error::custom("invalid water kind or fields")),
+        }
+    }
+}
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Manifest {
+    #[serde(deserialize_with = "crate::bounded::text::<_, 1024>")]
     pub schema: String,
+    #[serde(deserialize_with = "crate::bounded::text::<_, 1024>")]
     pub source_sha256: String,
     pub width: u32,
     pub height: u32,
     pub bit_depth: u8,
     pub size: MapSize,
+    #[serde(deserialize_with = "crate::bounded::text::<_, 1024>")]
     pub sample_semantics: String,
+    #[serde(deserialize_with = "crate::bounded::text::<_, 1024>")]
     pub row0: String,
     pub z_min_cm: i64,
     pub z_max_cm: i64,
+    #[serde(deserialize_with = "crate::bounded::text::<_, 1024>")]
     pub vertical_datum: String,
     pub source_resolution_cm: u32,
     pub source_accuracy_cm: Option<u32>,
     pub synthetic: bool,
+    #[serde(deserialize_with = "crate::bounded::text::<_, 1024>")]
     pub georeferencing: String,
+    #[serde(deserialize_with = "crate::bounded::text::<_, 1024>")]
     pub processing_version: String,
+    #[serde(deserialize_with = "crate::bounded::text::<_, 1024>")]
     pub license: String,
     pub validity: Validity,
     pub water: Water,
@@ -85,6 +130,12 @@ impl Terrain {
     }
     pub fn heights(&self) -> &[i64] {
         &self.heights
+    }
+    pub fn grid_backing_identity(&self) -> ([usize; 2], usize) {
+        (
+            [self.heights.as_ptr() as usize, self.water.as_ptr() as usize],
+            self.heights.capacity() * size_of::<i64>() + self.water.capacity(),
+        )
     }
     pub fn owned_capacity_bytes(&self) -> usize {
         size_of::<Self>()
@@ -185,7 +236,7 @@ impl Terrain {
         Ok(())
     }
 }
-fn validate_manifest(m: &Manifest) -> Result<(), Error> {
+pub(crate) fn validate_manifest(m: &Manifest) -> Result<(), Error> {
     if m.schema != "mycity-heightmap-v1"
         || !(2..=MAX_SOURCE_SIDE).contains(&m.width)
         || !(2..=MAX_SOURCE_SIDE).contains(&m.height)
@@ -250,7 +301,7 @@ fn validate_manifest(m: &Manifest) -> Result<(), Error> {
 /// Structural allow-list before entering the decoder. Reject animation/transparency/metadata.
 /// This narrow native format accepts only IHDR, consecutive IDAT, IEND; external conversion
 /// is explicit. CRCs and compressed-stream validity are still checked by the PNG decoder.
-fn preflight(bytes: &[u8], m: &Manifest) -> Result<(), Error> {
+pub(crate) fn preflight(bytes: &[u8], m: &Manifest) -> Result<(), Error> {
     if bytes.len() as u64 > SOURCE_BYTE_LIMIT {
         return Err(Error::Limit);
     }
@@ -376,6 +427,33 @@ pub fn import(
         return Err(Error::Png);
     }
     reader.finish().map_err(|_| Error::Png)?;
+    let mut heights = Vec::with_capacity(count);
+    let mut water = Vec::with_capacity(count);
+    resample(&m, &raw, &mut heights, &mut water)?;
+    let terrain = Terrain {
+        manifest: m,
+        heights,
+        water,
+        revision,
+    };
+    if terrain.owned_capacity_bytes() > TERRAIN_RESIDENT_BUDGET_BYTES {
+        return Err(Error::Limit);
+    }
+    Ok(terrain)
+}
+/// Shared physical kernel: both general and normal-role imports write identical samples.
+fn resample(
+    m: &Manifest,
+    raw: &[u8],
+    heights: &mut Vec<i64>,
+    water: &mut Vec<u8>,
+) -> Result<(), Error> {
+    let count = m.size.vertices().pow(2);
+    if heights.capacity() < count || water.capacity() < count {
+        return Err(Error::Limit);
+    }
+    heights.clear();
+    water.clear();
     let n = m.size.vertices();
     let den = (n - 1) as u64;
     let max_gray = if m.bit_depth == 8 { 255i128 } else { 65535 };
@@ -387,8 +465,6 @@ pub fn import(
             i128::from(u16::from_be_bytes([raw[i], raw[i + 1]]))
         }
     };
-    let mut heights = Vec::with_capacity(count);
-    let mut water = Vec::with_capacity(count);
     for y in 0..n {
         for x in 0..n {
             // Internal grid row 0 is south; PNG row 0 is north.
@@ -420,16 +496,7 @@ pub fn import(
             }));
         }
     }
-    let terrain = Terrain {
-        manifest: m,
-        heights,
-        water,
-        revision,
-    };
-    if terrain.owned_capacity_bytes() > TERRAIN_RESIDENT_BUDGET_BYTES {
-        return Err(Error::Limit);
-    }
-    Ok(terrain)
+    Ok(())
 }
 #[derive(Debug, Serialize)]
 pub struct ImportBudget {

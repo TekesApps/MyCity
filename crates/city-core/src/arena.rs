@@ -283,6 +283,10 @@ impl<D: Domain, T: Copy> Arena<D, T> {
         self.max = D::RESTORE_LIMIT as u32;
         self.live = 0;
     }
+    pub(crate) fn initialize_scope(&mut self, scope: Scope) {
+        self.reset_backing();
+        self.scope = scope;
+    }
     pub(crate) fn copy_into(&self, target: &mut Self) -> Result<(), String> {
         if target.slots.capacity() != D::RESTORE_LIMIT
             || target.free.capacity() != D::RESTORE_LIMIT

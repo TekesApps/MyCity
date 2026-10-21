@@ -368,3 +368,71 @@ fn repeated_real_v2_save_and_reopen_reuse_same_validation_slot_backing() {
     }
     assert_eq!(store.state_hash().unwrap(), expected);
 }
+
+#[test]
+fn prebuilt_workspace_is_consumed_by_create_and_cold_open_without_replacing_roots() {
+    let t = Temp::new();
+    let workspace = mycity_core::transaction::EngineWorkspace::new().unwrap();
+    let original = workspace.identity().unwrap();
+    let spatial = mycity_map::assets::SpatialWorkspace::new().unwrap();
+    let prepared_spatial = spatial.identity();
+    let mut s = Store::create_spatial_in_role_workspace(
+        &t.world(),
+        include_bytes!("../../../fixtures/m0-exchange-opening.json"),
+        [
+            (101, 1),
+            (102, 1),
+            (103, 1),
+            (104, 1),
+            (201, 2000),
+            (202, 2000),
+        ]
+        .into_iter()
+        .map(|(id, c)| Resource::new(id, c).unwrap())
+        .collect(),
+        RULES,
+        (
+            include_bytes!("../../../fixtures/m0-exchange-spatial.json"),
+            include_bytes!("../../../fixtures/terrain/m0-flat16.png"),
+        ),
+        true,
+        (workspace, spatial),
+    )
+    .unwrap();
+    assert_eq!(s.model_workspace_identity().unwrap(), original);
+    let assets = s.spatial().unwrap().unwrap();
+    assert_eq!(assets.scene().workspace_identity(), prepared_spatial.scene);
+    assert_eq!(
+        assets.terrain().grid_backing_identity().0,
+        prepared_spatial.terrain.grid_backing
+    );
+    assert_eq!(
+        assets.normal_backing_identity().unwrap().1 .0,
+        prepared_spatial.terrain.decoder_backing
+    );
+    s.checkpoint().unwrap();
+    let digest = s.state_hash().unwrap();
+    drop(s);
+    let workspace = mycity_core::transaction::EngineWorkspace::new().unwrap();
+    let original = workspace.identity().unwrap();
+    let spatial = mycity_map::assets::SpatialWorkspace::new().unwrap();
+    let prepared_spatial = spatial.identity();
+    let s = Store::open_in_role_workspace(&t.world(), RULES, (workspace, spatial)).unwrap();
+    let assets = s.spatial().unwrap().unwrap();
+    assert_eq!(assets.scene().workspace_identity(), prepared_spatial.scene);
+    assert_eq!(
+        assets.terrain().grid_backing_identity().0,
+        prepared_spatial.terrain.grid_backing
+    );
+    assert_eq!(
+        assets.normal_backing_identity().unwrap().1 .0,
+        prepared_spatial.terrain.decoder_backing
+    );
+    let actual = s.model_workspace_identity().unwrap();
+    assert_eq!(s.state_hash().unwrap(), digest);
+    assert_eq!(original.initial, actual.restore);
+    assert_eq!(original.restore, actual.initial);
+    assert_eq!(original.candidate, actual.candidate);
+    assert_eq!(original.codec, actual.codec);
+    assert_eq!(original.owned_bytes, actual.owned_bytes);
+}

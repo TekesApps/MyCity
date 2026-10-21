@@ -1,6 +1,7 @@
 //! Immutable, bounded spatial laboratory. No UI or implicit construction authority.
 use serde::{Deserialize, Serialize};
 pub mod assets;
+mod bounded;
 pub mod geometry;
 pub mod gpu_layout;
 pub mod probe;
@@ -132,7 +133,9 @@ pub struct Frame {
     pub map: u32,
     pub size: MapSize,
     pub origin: Point,
+    #[serde(deserialize_with = "crate::bounded::text::<_, 64>")]
     pub metric_frame: String,
+    #[serde(deserialize_with = "crate::bounded::text::<_, 64>")]
     pub vertical_datum: String,
 }
 impl Frame {

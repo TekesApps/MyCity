@@ -1,13 +1,12 @@
 //! Frozen full table counts through real model rules, not an endurance/performance claim.
 use crate::joint_reference::Reference;
 use mycity_core::{
-    assembly::assemble,
     background::Command as Background,
     boot::{Command as Boot, Facility},
     exchange::{Command as Exchange, Status},
     inbox::Command as Inbox,
     timeline::{Command as Timeline, PayrollSpec},
-    transaction::{Action, Engine, Resource},
+    transaction::{Action, Resource},
 };
 use serde::Serialize;
 use serde_json::{json, Map, Value};
@@ -269,7 +268,13 @@ pub fn run_tier_observed(
     observe: impl FnMut(&Reference, &Step) -> Result<(), String>,
 ) -> Result<(Reference, Value), String> {
     let mut report = ValueReport(Map::new());
-    let reference = run_tier_report(tier, None, observe, &mut report)?;
+    let reference = run_tier_report(
+        tier,
+        None,
+        observe,
+        &mut report,
+        mycity_core::transaction::EngineWorkspace::new()?,
+    )?;
     Ok((reference, Value::Object(report.0)))
 }
 /// Same oracle and model work, with borrowed report fields serialized directly.
@@ -287,6 +292,21 @@ pub(crate) fn run_tier_streamed_retry(
     observe: impl FnMut(&Reference, &Step) -> Result<(), String>,
     report: &mut impl std::io::Write,
 ) -> Result<Reference, String> {
+    run_tier_streamed_in_workspace(
+        tier,
+        retry_job,
+        mycity_core::transaction::EngineWorkspace::new()?,
+        observe,
+        report,
+    )
+}
+pub(crate) fn run_tier_streamed_in_workspace(
+    tier: Tier,
+    retry_job: Option<u64>,
+    workspace: mycity_core::transaction::EngineWorkspace,
+    observe: impl FnMut(&Reference, &Step) -> Result<(), String>,
+    report: &mut impl std::io::Write,
+) -> Result<Reference, String> {
     report.write_all(b"{").map_err(err)?;
     let reference = run_tier_report(
         tier,
@@ -296,6 +316,7 @@ pub(crate) fn run_tier_streamed_retry(
             writer: report,
             first: true,
         },
+        workspace,
     )?;
     report.write_all(b"}").map_err(err)?;
     Ok(reference)
@@ -305,13 +326,12 @@ fn run_tier_report(
     retry_job: Option<u64>,
     mut observe: impl FnMut(&Reference, &Step) -> Result<(), String>,
     report: &mut impl ReportSink,
+    workspace: mycity_core::transaction::EngineWorkspace,
 ) -> Result<Reference, String> {
     let started = Instant::now();
     let oracle: Value = serde_json::from_slice(tier.oracle()).map_err(err)?;
     let (account_count, stock_count, payroll_count, claim_count) = tier.counts();
-    let mut r = Reference::from_unstarted_engine(
-        Engine::new(assemble(tier.opening())?, resources()?).map_err(err)?,
-    )?;
+    let mut r = Reference::from_workspace(tier.opening(), &resources()?, workspace)?;
     if let Some(job) = retry_job {
         r.expect_worker_retry(job)?;
     }
