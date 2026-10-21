@@ -1,6 +1,8 @@
 //! Fixed-record, counted storage. A domain has exactly one table in a logical world.
 use serde::{Deserialize, Serialize};
+mod layout_into;
 mod restore;
+pub(crate) use layout_into::LayoutInto;
 use std::{marker::PhantomData, mem::size_of};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
@@ -306,6 +308,20 @@ impl<D: Domain, T: Copy> Arena<D, T> {
     }
     pub(crate) fn backing_ids(&self) -> [usize; 2] {
         [self.slots.as_ptr() as usize, self.free.as_ptr() as usize]
+    }
+    /// Diagnostic full arena only: observe its initialized inactive free-list
+    /// capacity without unsafe reads or changing its canonical empty list.
+    pub(crate) fn touch_empty_free_backing(&mut self) -> Result<u64, String> {
+        if !self.free.is_empty() {
+            return Err("native_work_free_not_empty".into());
+        }
+        let capacity = self.free.capacity();
+        self.free.resize(capacity, 0);
+        let sum = self.free.iter().step_by(1024).fold(0u64, |sum, value| {
+            sum.wrapping_add(u64::from(std::hint::black_box(*value)))
+        });
+        self.free.clear();
+        Ok(sum)
     }
     pub fn owned_bytes(&self) -> usize {
         size_of::<Self>()

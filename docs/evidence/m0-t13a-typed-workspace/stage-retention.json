@@ -1,0 +1,16 @@
+{
+  "stage": "typed workspace functional validation terminal before original formal experiment",
+  "deleted": [],
+  "allocated_bytes_deleted": 0,
+  "du_kib": {
+    "work": 25603364,
+    "target": 1403492
+  },
+  "filesystem_available_bytes_observed": 101453742080,
+  "filesystem_delta_not_attributed": true,
+  "shared_target": "target/release",
+  "no_independent_target_created": true,
+  "cache_reason": "Current full-workspace and all-target graphs differ. All libraries outside their union retain matching rmeta; no proof they are obsolete for current clippy/CLI profiles. Preserve rather than delete and immediately recompile. No executable/source/dependency/evidence removed.",
+  "new_artifacts": "frozen source zip, fixed executable hardlink, 436KiB type probe executable, small cold reports/logs; no new pressure copy",
+  "next_measurement": "work/typed-workspace-formal-l1-01 not yet started; original complete restore inputs and latest pending remain protected"
+}

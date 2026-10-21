@@ -20,6 +20,37 @@ pub struct Records<T: Copy> {
     marker: PhantomData<T>,
 }
 
+/// Decode exactly one fixed record into each already initialized slot. This
+/// seed owns no allocation and never grows/replaces a collection. A failure may
+/// partially overwrite the diagnostic destination; callers must not publish it
+/// and may retry into the same backing. T cannot hide heap-owning fields.
+pub struct ExactSlice<'a, T: Copy> {
+    pub target: &'a mut [T],
+}
+impl<'de, T: Copy + Deserialize<'de>> DeserializeSeed<'de> for ExactSlice<'_, T> {
+    type Value = ();
+    fn deserialize<D: Deserializer<'de>>(self, d: D) -> Result<(), D::Error> {
+        d.deserialize_seq(self)
+    }
+}
+impl<'de, T: Copy + Deserialize<'de>> Visitor<'de> for ExactSlice<'_, T> {
+    type Value = ();
+    fn expecting(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "exactly {} initialized fixed slots", self.target.len())
+    }
+    fn visit_seq<A: SeqAccess<'de>>(self, mut seq: A) -> Result<(), A::Error> {
+        let count = self.target.len();
+        for (i, slot) in self.target.iter_mut().enumerate() {
+            *slot = seq.next_element()?.ok_or_else(|| {
+                de::Error::custom(format_args!("fixed_slice_missing_record:{i}/{count}"))
+            })?;
+        }
+        // Never deserialize an excess value, even a nested/oversized object.
+        seq.next_element_seed(RejectExtra)?;
+        Ok(())
+    }
+}
+
 impl<T: Copy> Records<T> {
     pub fn new(count: usize) -> Self {
         Self {
@@ -241,5 +272,37 @@ mod tests {
             .unwrap_err()
             .contains("budget_before_allocation"));
         assert!(decode::<u64>("[]", 0).unwrap().is_empty());
+    }
+    #[test]
+    fn existing_slice_survives_partial_failure_and_retry_without_replacement() {
+        let mut target = [0u64; 3];
+        let identity = target.as_ptr();
+        for (input, success) in [
+            ("[1,2]", false),
+            ("[1,2,3,{\"unbounded\":[[[4]]]}]", false),
+            ("[4,5,6]", true),
+            ("[7,8,9] false", false),
+            ("[10,11,12]", true),
+        ] {
+            let mut d = serde_json::Deserializer::from_reader(JsonReader::new(input.as_bytes()));
+            let result = ExactSlice {
+                target: &mut target,
+            }
+            .deserialize(&mut d)
+            .and_then(|_| d.end());
+            assert_eq!(result.is_ok(), success, "{input}");
+            if input.contains("unbounded") {
+                assert!(result.unwrap_err().to_string().contains("extra_record"));
+            }
+            assert_eq!(identity, target.as_ptr());
+        }
+        assert_eq!(target, [10, 11, 12]);
+        let mut empty: [u64; 0] = [];
+        assert!(ExactSlice { target: &mut empty }
+            .deserialize(&mut serde_json::Deserializer::from_str("[]"))
+            .is_ok());
+        assert!(ExactSlice { target: &mut empty }
+            .deserialize(&mut serde_json::Deserializer::from_str("[{}]"))
+            .is_err());
     }
 }

@@ -1,0 +1,8 @@
+{
+  "source_sha256": "757907bccc82ec1dc13c28f11324914c6def755366e50156a093fef9c7a8d588",
+  "source_files": 205,
+  "binary": "/Users/frankqin/dev/MyCity/work/candidate-binaries/typed-workspace/mycity-headless",
+  "binary_sha256": "178c3a709ef3cc5d69e166bd2da60bcb43f0ae804fac27c53dae55514e9be2ac",
+  "lock_sha256": "8e10b63f3a4bb19bcbec6229e5d7939d696f3b3b55b076e7e885027ec778d95d",
+  "scope": "Frozen typed-workspace cold-compatibility experiment; metadata proof and full same-source regression incomplete"
+}

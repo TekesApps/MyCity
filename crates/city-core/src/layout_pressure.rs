@@ -1,5 +1,6 @@
 //! Diagnostic native storage only. This cannot be installed into an authoritative World.
 //! Counts exceed gameplay caps deliberately; no business outcome is inferred from these scans.
+mod restore_into;
 use crate::{
     arena::{AccountDomain, Arena, Handle, InventoryDomain, Layout, Scope},
     assembly::{Account, Commodity, Role, Stock},
@@ -231,6 +232,18 @@ impl NativePressure {
             vectors,
             owned_capacity_bytes,
         }
+    }
+    /// Actual retained backing, without allocating a manifest/report tree.
+    pub fn owned_capacity_bytes(&self) -> usize {
+        size_of::<Self>() + self.accounts.owned_bytes() - size_of::<Arena<AccountDomain, Account>>()
+            + self.inventory.owned_bytes()
+            - size_of::<Arena<InventoryDomain, Stock>>()
+            + self.account_index.capacity() * size_of::<Handle<AccountDomain>>()
+            + self.inventory_index.capacity() * size_of::<Handle<InventoryDomain>>()
+            + self.claims.capacity() * size_of::<Claim>()
+            + self.payroll.capacity() * size_of::<Payroll>()
+            + self.resources.capacity() * size_of::<Resource>()
+            + self.leases.capacity() * size_of::<Lease>()
     }
     /// Scan ALL records and external indexes, with fixed 8192-record page boundaries.
     pub fn scan(&self, mut page: impl FnMut(usize, u64)) -> Result<u64, String> {

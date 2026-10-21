@@ -1,0 +1,21 @@
+
+running 16 tests
+test layout_load::reusable_io::tests::flush_errors_propagate_without_drop_retry ... ok
+test layout_load::reusable_io::tests::short_io_empty_reads_and_file_switch_preserve_backing_and_bytes ... ok
+test layout_load::tests::owner_stop_requires_explicit_byte_and_publication_cutoff_is_fixed ... ok
+test layout_load::tests::external_component_reservation_rejects_oversize_before_allocation ... ok
+test layout_load::bounded_table::tests::duplicate_missing_wrong_fields_extra_records_and_tokens_reject ... ok
+test layout_load::tests::page_return_cannot_cancel_decode_debt_or_fabricate_missing_pages ... ok
+test layout_load::bounded_table::tests::all_variants_restore_exactly_and_accept_records_before_tag ... ok
+test layout_load::tests::real_cow_transfers_existing_reserve_allocation_and_preserves_snapshot ... ok
+test layout_load::tests::eight_hour_snapshot_summaries_do_not_retain_file_trees ... ok
+test layout_load::tests::restore_rejects_component_reservation_before_loading_any_large_file ... ok
+test layout_load::bounded_table::inplace::tests::each_type_reuses_max_backing_across_counts_order_failures_and_retry ... ok
+test layout_load::tests::all_stub_counts_widths_population_and_references_are_real_records ... ok
+test layout_load::tests::snapshot_error_returns_pages_after_join_and_keeps_shared_pages_world_owned ... ok
+test layout_load::tests::borrowed_file_buffers_reset_hashes_verify_eof_and_keep_addresses ... ok
+test layout_load::tests::persistent_decode_borrow_preserves_all_sixty_four_concurrent_cow_pages ... ok
+test layout_load::decode_workspace::tests::frozen_native_all_table_types_and_initialized_tail_fit_and_reuse ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 42 filtered out; finished in 1.02s
+

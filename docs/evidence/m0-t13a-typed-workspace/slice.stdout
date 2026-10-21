@@ -1,0 +1,10 @@
+
+running 5 tests
+test fixed_restore::tests::existing_slice_survives_partial_failure_and_retry_without_replacement ... ok
+test fixed_restore::tests::record_budget_is_checked_before_reservation ... ok
+test fixed_restore::tests::capacity_overflow_and_extra_record_reject_before_record_decode ... ok
+test fixed_restore::tests::nested_ignored_field_is_bounded_before_parser_scratch_can_grow ... ok
+test fixed_restore::tests::fixed_counts_eof_and_token_limits_reject_malformed_streams ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 62 filtered out; finished in 0.00s
+

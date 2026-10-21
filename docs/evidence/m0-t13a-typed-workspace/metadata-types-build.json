@@ -1,0 +1,22 @@
+{
+  "command": [
+    "rustup",
+    "run",
+    "1.85.1",
+    "rustc",
+    "--edition=2021",
+    "--crate-name",
+    "metadata_types",
+    "docs/evidence/m0-t13a-typed-workspace/metadata-types.rs",
+    "-L",
+    "dependency=target/release/deps",
+    "--extern",
+    "serde_json=target/release/deps/libserde_json-739cab3222a3d08f.rlib",
+    "-o",
+    "docs/evidence/m0-t13a-typed-workspace/metadata-types"
+  ],
+  "exit_code": 0,
+  "subsequent_move": "work/candidate-binaries/typed-workspace-metadata/metadata-types",
+  "executable_sha256": "fc4a3af2286386dd52c230bee263451cf0c3773bf845123325979cfcb09d9efc",
+  "scope": "public type size probe only; not model performance or private-layout introspection"
+}

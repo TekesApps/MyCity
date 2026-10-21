@@ -1,0 +1,16 @@
+{
+  "source_sha256": "757907bccc82ec1dc13c28f11324914c6def755366e50156a093fef9c7a8d588",
+  "canonical_external_admission_approved": true,
+  "maximum_stage_upper_bytes": 3714560,
+  "cap_bytes": 4194304,
+  "margin_bytes": 479744,
+  "reviewer": "boot_advisor",
+  "review": "advisor-metadata-review.md",
+  "scope": "frozen canonical v1/v2 CLI input and fixed-path external arithmetic admission only",
+  "physical_memory": "not_accepted",
+  "runtime_hard_cap": "not_proven",
+  "arbitrary_invalid_index_failure_budget": "not_proven",
+  "formal_performance": "not_run",
+  "eight_hour": "not_run",
+  "real16gb": "not_run"
+}

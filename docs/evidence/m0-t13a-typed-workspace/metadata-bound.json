@@ -1,0 +1,44 @@
+{
+  "scope": "frozen canonical v1/v2 profile arithmetic; NOT physical memory or malformed-input proof",
+  "source_sha256": "757907bccc82ec1dc13c28f11324914c6def755366e50156a093fef9c7a8d588",
+  "io_backings_bytes": 2097152,
+  "structure_upper_bytes": 398720,
+  "maximum_pressure_index_capacity": 2911,
+  "manifest_tree_upper_bytes": 104160,
+  "snapshot_result_tree_upper_bytes": 44288,
+  "native_tree_upper_bytes": 15424,
+  "scan_event_tree_upper_bytes": 14832,
+  "control_items": {
+    "paths_and_arguments": 32768,
+    "scan_event": 32768,
+    "bounded_status_strings": 4096,
+    "thread_and_format_control": 16384,
+    "btree_insert_transients": 16384
+  },
+  "canonical_string_construction": "to_owned/format of bounded fixed identifiers; no previously grown/shrunk String credited by final length",
+  "array_construction": "fixed arrays and fixed iterator collect; 2x power-of-two capacity includes a growth overlap",
+  "stage_upper_bytes": {
+    "snapshot": 2807392,
+    "cold_restore": 3714560,
+    "final_report": 3245520
+  },
+  "cap_bytes": 4194304,
+  "margin_bytes": 479744,
+  "btree_source_sha256": "e081262af48616b280da958fd40aa392812677b2cffcf6e331bc03aa711bcef8",
+  "inputs_sha256": {
+    "docs/evidence/m0-t13a-typed-workspace/cold-latest82/report.json": "12745a372f3cd6cfa456a9abfec9f5e344a090020f194f13a164451e6a907479",
+    "work/report-lifetime-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json": "878d0df784e493e0ca15b85a59223c64bb52f02fa23081a34032fea51ea7617f",
+    "docs/evidence/m0-t13a-typed-workspace/metadata-types.json": "dcaaad41e3d11b58f4344e4f7620149e4c4223c3a7d8084f2ee72882e0e0cfa3",
+    "docs/evidence/m0-t13a-typed-workspace/metadata-types.rs": "d7d6f73925b66035476b137b619667fa2f9a1d5cebc51e8cc4bf945d44d2f8ce",
+    "docs/evidence/m0-t13a-typed-workspace/metadata-rustc.txt": "c4daff6ff615863600926bc149a5b0d92907859a57e352c39fa035a86dff05ff",
+    "work/candidate-binaries/typed-workspace-metadata/metadata-types": "fc4a3af2286386dd52c230bee263451cf0c3773bf845123325979cfcb09d9efc"
+  },
+  "canonical_scan_event_line_sha256": "7cfe6b8b2da3513c595ff763ff2efd0c3df85e82c795708094953cc131e6525e",
+  "node_field_sum_bytes": 724,
+  "charged_node_bytes": 1024,
+  "physical_memory_gate": "not_accepted",
+  "error_path_budget": "not_proven",
+  "runtime_guard": "external preflight only; not a general CLI allocation limit",
+  "native_thread_stacks": "excluded from Rust metadata; physical gate still required",
+  "diagnostics": "histograms/events/summary backing remain in original separate charge; no credit subtracted here"
+}

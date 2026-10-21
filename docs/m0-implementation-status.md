@@ -1,5 +1,7 @@
 # M0 Rust模型：当前范围、运行方法与验收状态
 
+v0.5.97：[常驻解码工作区与原快照格式兼容](evidence/m0-t13a-typed-workspace/STATUS.md)完成同源全仓713.986秒、60个harness汇总/442条通过记录（含nested，不称唯一测试数），严格clippy/fmt/build及三份完整冷恢复。advisor认可冻结规范profile外部4MiB分账和有限功能发布；64MiB typed+64MiB并发COW仍在原128MiB内。下一步原参数多代formal；旧物理超界不撤销，三轮/四速/8h未完成，真实16GB not_run，不签完整M0。
+
 v0.5.91：[固定L1区域与真实因果校准](evidence/m0-t13a-causal-clock/STATUS.md)完成同源全仓、原规模L1短测及新旧完整冷恢复；28帧同相位footprint超normal约18.57MiB，维持failed observed。下一步[原正式L1多轮快照](evidence/m0-t13a-causal-clock/NEXT.md)，不改负载／预算；三轮／四速／8h未完成，真实16GB not_run。
 
 v0.5.89：[实际边界计数与native观测](evidence/m0-t13a-native-boundaries/STATUS.md)完成同源全仓及原规模L1短测／完整冷恢复；观察到同相位物理驻留高于3.10GiB，未归因为System缓存。下一步实验L1固定区域复用，原负载／预算不变。正式三轮／四速／8h未完成，16GB为not_run。

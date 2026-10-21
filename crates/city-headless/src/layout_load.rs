@@ -1,6 +1,9 @@
 //! Full frozen JPROD storage pressure. Missing business domains remain typed stubs.
 //! This module cannot mutate or install a gameplay World.
 mod bounded_table;
+mod decode_workspace;
+use decode_workspace::{DecodeWorkspace, DECODE_BYTES};
+mod restore_index;
 mod reusable_io;
 use mycity_core::layout_pressure::NativePressure;
 use serde::{Deserialize, Serialize};
@@ -11,12 +14,13 @@ use std::{
     io::{BufWriter, Read, Write},
     mem::size_of,
     path::{Path, PathBuf},
-    sync::{Arc, Mutex},
+    sync::{Arc, Mutex, TryLockError},
     thread::{self, JoinHandle},
     time::Instant,
 };
 const MIB: usize = 1024 * 1024;
-const COW_PAGES: usize = 128;
+const WORK_PAGES: usize = 128;
+const COW_PAGES: usize = 64;
 const PAGE: usize = 8192;
 pub const NORMAL_BYTES: usize = 310 * 1024 * 1024 * 1024usize / 100;
 const FREE_FLOOR: u64 = 2 * 1024 * 1024 * 1024;
@@ -222,8 +226,10 @@ struct PressurePage {
 #[derive(Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 struct FileEntry {
+    #[serde(deserialize_with = "restore_index::bounded_text")]
     name: String,
     bytes: u64,
+    #[serde(deserialize_with = "restore_index::bounded_text")]
     sha256: String,
 }
 struct HashWriter<W> {
@@ -334,33 +340,21 @@ impl Reserve {
         self.loan_pages += 1;
         Ok(page)
     }
-    fn loan(&mut self, n: usize) -> Result<(), String> {
-        if self.pages.len() < n {
-            return Err("layout_cow_backpressure".into());
+    fn begin_decode(&mut self) -> Result<(), String> {
+        if self.decode_loan_pages != 0 {
+            return Err("layout_decode_busy".into());
         }
-        for _ in 0..n {
-            self.pages.pop();
-        }
-        self.loan_pages += n;
-        self.decode_loan_pages += n;
+        self.decode_loan_pages = DECODE_BYTES / MIB;
+        self.loan_pages += self.decode_loan_pages;
         Ok(())
     }
-    fn repay(&mut self, n: usize, trace: &mut AllocationTrace) -> Result<(), String> {
-        if self.decode_loan_pages < n || self.loan_pages < n {
-            return Err("layout_decode_loan".into());
+    fn end_decode(&mut self) -> Result<(), String> {
+        if self.decode_loan_pages != DECODE_BYTES / MIB || self.loan_pages < self.decode_loan_pages
+        {
+            return Err("layout_decode_borrow".into());
         }
-        for index in 0..n {
-            trace.mark(8, index as u64, MIB, self)?;
-            let mut page = Vec::new();
-            page.try_reserve_exact(MIB)
-                .map_err(|_| "layout_decode_repay_allocation")?;
-            page.resize(MIB, 0xa5);
-            self.pages.push(page);
-            // A fallible partial repayment has truthful accounting, never a
-            // numerical credit for pages that were not actually restored.
-            self.loan_pages -= 1;
-            self.decode_loan_pages -= 1;
-        }
+        self.loan_pages -= self.decode_loan_pages;
+        self.decode_loan_pages = 0;
         Ok(())
     }
     fn reclaim_cow(&mut self, pages: Vec<PressurePage>, expected: usize) -> Result<(), String> {
@@ -403,6 +397,8 @@ pub struct Scan {
     pub native_records: usize,
     pub stub_records: usize,
     pub touched_pressure_bytes: usize,
+    pub decode_workspace_scanned_bytes: usize,
+    pub decode_workspace_borrowed_bytes: usize,
     pub dirty_bytes: usize,
     pub checksum: u64,
     pub wall_seconds: f64,
@@ -420,6 +416,7 @@ pub struct Load {
     metadata_charge: usize,
     job: Option<JoinHandle<SnapshotCompletion>>,
     snapshot_buffers: Arc<Mutex<SnapshotBuffers>>,
+    decode_workspace: Arc<Mutex<DecodeWorkspace>>,
     root: PathBuf,
     generation: u64,
     _root_lock: File,
@@ -459,6 +456,7 @@ impl Load {
         let snapshot_buffers = Arc::new(Mutex::new(SnapshotBuffers::new()));
         let native = Arc::new(NativePressure::jprod()?);
         let tables = Arc::new(tables()?);
+        let decode_workspace = Arc::new(Mutex::new(DecodeWorkspace::new(&tables)?));
         let native_bytes = native.manifest().owned_capacity_bytes;
         let table_bytes = tables.iter().map(|t| t.table.owned()).sum::<usize>();
         // Headers, 1MiB IO buffer, manifest, Arc controls and maximum clone-index
@@ -466,7 +464,7 @@ impl Load {
         // shares this budget instead of being added to a 3.10GiB padding block.
         let metadata_charge = 4 * MIB;
         let minimum =
-            native_bytes + table_bytes + COW_PAGES * MIB + metadata_charge + external_charge;
+            native_bytes + table_bytes + WORK_PAGES * MIB + metadata_charge + external_charge;
         let padding = normal_bytes
             .checked_sub(minimum)
             .ok_or("layout_budget_too_small")?;
@@ -482,7 +480,7 @@ impl Load {
             let charge = if domain == 0 {
                 native_bytes + table_bytes
             } else if domain == 6 {
-                COW_PAGES * MIB + metadata_charge + external_charge
+                WORK_PAGES * MIB + metadata_charge + external_charge
             } else {
                 0
             };
@@ -512,6 +510,7 @@ impl Load {
             external_charge,
             metadata_charge,
             snapshot_buffers,
+            decode_workspace,
             job: None,
             root: root.into(),
             generation: 0,
@@ -519,6 +518,11 @@ impl Load {
         })
     }
     pub fn manifest(&self) -> Value {
+        let work = self
+            .decode_workspace
+            .try_lock()
+            .map(|w| w.manifest())
+            .unwrap_or_else(|_| json!({"state":"busy_or_poisoned","owned_bytes":DECODE_BYTES}));
         let domains:Vec<_>=self.tables.iter().map(|t|json!({"domain":t.name,"source_kind":t.kind,"source":"layout_stub_not_functional","schema_version":1,"count":t.table.count(),"record_bytes":t.width,"owned_capacity_bytes":t.table.owned(),"owner_bound":t.owners,"index":"record_id_1_based_contiguous; path_refs_zero_based_OD_index"})).collect();
         let mut by_domain = [0usize; 7];
         for p in &self.pages {
@@ -527,7 +531,7 @@ impl Load {
         json!({"schema":"mycity-l1-layout-v1","source_sha256":env!("MYCITY_SOURCE_SHA256"),"acceptance_sha256":mycity_core::sha256(ACCEPTANCE),"native":self.native.manifest(),"stubs":domains,
             "population":{"total":57000,"representation":"22800 household stub members; 11400*3 + 11400*2","actors":0},
             "padding_payload_bytes":by_domain,"padding_payload_total_bytes":self.pages.iter().map(|p|p.bytes.capacity()).sum::<usize>(),"pressure_page_bytes":MIB,"mutation_iteration":self.iterations,"pressure_pattern":"splitmix64-init-v1; affine-u64-dirty-v1",
-            "cow_reserve_bytes":COW_PAGES*MIB,"metadata_and_io_charge_bytes":self.metadata_charge,"external_owned_charge_bytes":self.external_charge,"normal_joint_budget_bytes":self.normal_bytes,
+            "cow_reserve_bytes":WORK_PAGES*MIB,"cow_concurrent_pages":COW_PAGES,"decode_workspace":work,"metadata_and_io_charge_bytes":self.metadata_charge,"external_owned_charge_bytes":self.external_charge,"normal_joint_budget_bytes":self.normal_bytes,
             "solver_preview":"192MiB preview and 32MiB compute are pressure pages within solver share; no algorithms/GPU/UI",
             "layout_not_business":true,"full_M0":"not_accepted","memory_16gb_gate":"not_run"})
     }
@@ -570,6 +574,15 @@ impl Load {
                 touched += p.len();
             }
         }
+        let (decode_scanned, decode_borrowed) = match self.decode_workspace.try_lock() {
+            Ok(mut workspace) => {
+                checksum = checksum.wrapping_add(workspace.touch()?);
+                touched += workspace.owned_bytes();
+                (workspace.owned_bytes(), 0)
+            }
+            Err(TryLockError::WouldBlock) => (0, DECODE_BYTES),
+            Err(TryLockError::Poisoned(_)) => return Err("layout_decode_workspace_poisoned".into()),
+        };
         // Exactly one full MiB, avoiding the possible short final pressure page.
         let mut index = self.iterations as usize % self.pages.len();
         while self.pages[index].bytes.len() != MIB {
@@ -599,6 +612,8 @@ impl Load {
             native_records,
             stub_records,
             touched_pressure_bytes: touched,
+            decode_workspace_scanned_bytes: decode_scanned,
+            decode_workspace_borrowed_bytes: decode_borrowed,
             dirty_bytes: dirty.len(),
             checksum: checksum.wrapping_add(u64::from(value)),
             wall_seconds: started.elapsed().as_secs_f64(),
@@ -631,6 +646,7 @@ impl Load {
         let tables = self.tables.clone();
         let reserve = self.reserve.clone();
         let buffers = self.snapshot_buffers.clone();
+        let decode_workspace = self.decode_workspace.clone();
         let root = self.root.clone();
         let manifest = self.manifest();
         self.job = Some(
@@ -647,6 +663,7 @@ impl Load {
                         tables,
                         reserve,
                         buffers,
+                        decode_workspace,
                         manifest,
                     }
                     .run()
@@ -768,6 +785,14 @@ struct Snapshot {
     reserve: Arc<Mutex<Reserve>>,
     manifest: Value,
     buffers: Arc<Mutex<SnapshotBuffers>>,
+    decode_workspace: Arc<Mutex<DecodeWorkspace>>,
+}
+#[derive(Serialize)]
+struct SnapshotIndex<'a> {
+    schema: &'static str,
+    generation: u64,
+    manifest: &'a Value,
+    files: &'a [FileEntry],
 }
 impl Snapshot {
     fn run(self) -> SnapshotCompletion {
@@ -788,6 +813,7 @@ impl Snapshot {
             reserve,
             manifest,
             buffers,
+            decode_workspace,
         } = self;
         let mut buffers = buffers.lock().map_err(err)?;
         let SnapshotBuffers { io, compare } = &mut *buffers;
@@ -821,16 +847,18 @@ impl Snapshot {
         entries.push(write_file(dir, "work-reserve.bin", io, |w| {
             let spare = reserve.lock().map_err(err)?;
             let page = spare.pages.first().ok_or("layout_no_spare")?;
-            for _ in 0..COW_PAGES {
+            for _ in 0..WORK_PAGES {
                 w.write_all(page).map_err(err)?;
             }
             Ok(())
         })?);
         let write_fsync_seconds = start.elapsed().as_secs_f64();
-        // Fund the full transient decode from the SAME 128MiB COW reserve. No full
-        // padding/world clone is allocated; each domain is restored and released.
-        trace.mark(2, 0, 64 * MIB, &*reserve.lock().map_err(err)?)?;
-        reserve.lock().map_err(err)?.loan(64)?;
+        // Borrow the same initialized 64MiB typed workspace on every generation.
+        // No page is dropped or reallocated; the other 64MiB remains for COW.
+        let mut decoded = decode_workspace.lock().map_err(err)?;
+        decoded.valid = false;
+        trace.mark(2, 0, DECODE_BYTES, &*reserve.lock().map_err(err)?)?;
+        reserve.lock().map_err(err)?.begin_decode()?;
         let restore = (|| {
             let entry = |name: &str| {
                 entries
@@ -839,15 +867,15 @@ impl Snapshot {
                     .ok_or_else(|| format!("layout_snapshot_entry:{name}"))
             };
             trace.mark(3, 0, 0, &*reserve.lock().map_err(err)?)?;
-            let (candidate, native_restore_bound) = read_verified_buffered(
+            let native_restore_bound = read_verified_buffered(
                 &dir.join("native.json"),
                 entry("native.json")?,
                 io,
-                |reader| NativePressure::restore_checkpoint_profiled(reader),
+                |reader| decoded.native.restore_checkpoint_into(reader),
             )?;
             trace.mark(4, 0, 0, &*reserve.lock().map_err(err)?)?;
             let original_hash = write_file(dir, "native-roundtrip.json", io, |w| {
-                candidate.write_checkpoint(w)
+                decoded.native.write_checkpoint(w)
             })?;
             if original_hash.sha256 != entries[0].sha256 || original_hash.bytes != entries[0].bytes
             {
@@ -857,18 +885,13 @@ impl Snapshot {
                 File::create(dir.join("native-restore-bound.json")).map_err(err)?;
             serde_json::to_writer_pretty(&mut bound_file, &native_restore_bound).map_err(err)?;
             bound_file.sync_all().map_err(err)?;
-            drop(candidate);
             fs::remove_file(dir.join("native-roundtrip.json")).map_err(err)?;
             for (i, table) in tables.iter().enumerate() {
                 trace.mark(5, i as u64 + 1, 0, &*reserve.lock().map_err(err)?)?;
                 let name = format!("{}.json", table.name);
-                let candidate: Table =
-                    read_verified_buffered(&dir.join(&name), entry(&name)?, io, |reader| {
-                        bounded_table::decode(reader, &table.table)
-                    })?;
-                if candidate != table.table {
-                    return Err("layout_stub_restore_changed".into());
-                }
+                read_verified_buffered(&dir.join(&name), entry(&name)?, io, |reader| {
+                    decoded.decode_table(reader, &table.table)
+                })?;
             }
             trace.mark(6, 27, 0, &*reserve.lock().map_err(err)?)?;
             read_verified_buffered(
@@ -895,7 +918,7 @@ impl Snapshot {
                 io,
                 |reader| {
                     let buf = &mut *compare;
-                    for _ in 0..COW_PAGES {
+                    for _ in 0..WORK_PAGES {
                         reader.read_exact(buf).map_err(err)?;
                         if buf.iter().any(|b| *b != 0xa5) {
                             return Err("layout_work_restore_changed".into());
@@ -904,12 +927,23 @@ impl Snapshot {
                     Ok(())
                 },
             )?;
-            serde_json::to_value(native_restore_bound).map_err(err)
+            // Keep this bounded result on the stack; the persistent workspace
+            // remains allocated across generations, including failures.
+            Ok::<_, String>(native_restore_bound)
         })();
-        reserve.lock().map_err(err)?.repay(64, &mut trace)?;
+        decoded.valid = restore.is_ok();
+        drop(decoded);
+        reserve.lock().map_err(err)?.end_decode()?;
         trace.mark(9, 0, 0, &*reserve.lock().map_err(err)?)?;
         let native_restore_bound = restore?;
-        let index = json!({"schema":"mycity-layout-snapshot-v2","generation":generation,"manifest":manifest,"files":entries});
+        // Serialize borrowed metadata rather than cloning the complete manifest
+        // and all entries into a second Value tree during publication.
+        let index = SnapshotIndex {
+            schema: "mycity-layout-snapshot-v2",
+            generation: *generation,
+            manifest,
+            files: &entries,
+        };
         let mut f = File::create(dir.join("index.json")).map_err(err)?;
         serde_json::to_writer_pretty(&mut f, &index).map_err(err)?;
         f.sync_all().map_err(err)?;
@@ -1185,16 +1219,6 @@ fn probe_schedule(
     Ok(report)
 }
 
-impl Table {
-    fn exact(self) -> Self {
-        match self {
-            Self::W64(v) => Self::W64(v.into_boxed_slice().into_vec()),
-            Self::W128(v) => Self::W128(v.into_boxed_slice().into_vec()),
-            Self::W256(v) => Self::W256(v.into_boxed_slice().into_vec()),
-            Self::PathRefs(v) => Self::PathRefs(v.into_boxed_slice().into_vec()),
-        }
-    }
-}
 impl Load {
     /// Cold, file-backed restoration of the entire layout, not only hash readback.
     /// This diagnostic codec has no authority over a gameplay World. Compatible
@@ -1210,68 +1234,58 @@ impl Load {
             .open(root.join("layout.lock"))
             .map_err(err)?;
         fs2::FileExt::try_lock_exclusive(&root_lock).map_err(err)?;
-        let raw = mycity_core::read_bounded(
-            File::open(snapshot_dir.join("index.json")).map_err(err)?,
-            256 * 1024,
-        )
-        .map_err(err)?;
-        let index: Value = serde_json::from_slice(&raw).map_err(err)?;
-        let manifest = &index["manifest"];
+        let raw =
+            restore_index::read_raw(File::open(snapshot_dir.join("index.json")).map_err(err)?)?;
+        let index = restore_index::decode(&raw)?;
+        let manifest = &index.manifest;
         if !["mycity-layout-snapshot-v1", "mycity-layout-snapshot-v2"]
             .iter()
-            .any(|version| index["schema"] == *version)
-            || manifest["schema"] != "mycity-l1-layout-v1"
-            || manifest["acceptance_sha256"] != mycity_core::sha256(ACCEPTANCE)
+            .any(|version| index.schema == *version)
+            || manifest.schema != "mycity-l1-layout-v1"
+            || manifest.acceptance_sha256 != mycity_core::sha256(ACCEPTANCE)
         {
             return Err("layout_restore_schema".into());
         }
-        let normal_bytes = manifest["normal_joint_budget_bytes"]
-            .as_u64()
-            .ok_or("layout_restore_normal")? as usize;
+        let normal_bytes = manifest.normal_joint_budget_bytes;
         if normal_bytes != NORMAL_BYTES {
             return Err("layout_restore_full_scope".into());
         }
-        let external_charge = manifest["external_owned_charge_bytes"]
-            .as_u64()
-            .ok_or("layout_restore_external")? as usize;
-        let metadata_charge = manifest["metadata_and_io_charge_bytes"]
-            .as_u64()
-            .ok_or("layout_restore_metadata")? as usize;
+        let external_charge = manifest.external_owned_charge_bytes;
+        let metadata_charge = manifest.metadata_and_io_charge_bytes;
         if metadata_charge != 4 * MIB
             || external_charge > 64 * MIB
-            || manifest["cow_reserve_bytes"] != (COW_PAGES * MIB) as u64
+            || manifest.cow_reserve_bytes != WORK_PAGES * MIB
         {
             return Err("layout_restore_work_budget".into());
         }
-        let iterations = manifest["mutation_iteration"]
-            .as_u64()
+        let iterations = manifest
+            .mutation_iteration
             .ok_or("layout_restore_missing_iteration")?;
         if iterations > 31 * 86400 {
             return Err("layout_restore_diagnostic_horizon".into());
         }
-        let entries: Vec<FileEntry> =
-            serde_json::from_value(index["files"].clone()).map_err(err)?;
+        let entries = &index.files;
         // Only the full cold-layout path owns a full region. Records-only
         // compatibility decoding below deliberately does not activate it.
         // Schema/work-budget rejection precedes this process-lifetime switch.
         activate_layout_region(normal_bytes, external_charge)?;
         let snapshot_buffers = Arc::new(Mutex::new(SnapshotBuffers::new()));
         let mut buffers = snapshot_buffers.lock().map_err(err)?;
-        let io = &mut buffers.io;
+        let SnapshotBuffers { io, compare } = &mut *buffers;
         let mut tables = tables()?;
-        let mut expected = vec![
-            "native.json".to_string(),
-            "pressure.bin".into(),
-            "work-reserve.bin".into(),
-        ];
-        expected.extend(tables.iter().map(|t| format!("{}.json", t.name)));
-        expected.sort();
-        let mut actual: Vec<_> = entries.iter().map(|e| e.name.clone()).collect();
-        actual.sort();
-        if actual != expected {
+        let decode_workspace = Arc::new(Mutex::new(DecodeWorkspace::new(&tables)?));
+        let exactly_once = |name: &str| entries.iter().filter(|e| e.name == name).count() == 1;
+        if entries.len() != tables.len() + 3
+            || !["native.json", "pressure.bin", "work-reserve.bin"]
+                .iter()
+                .all(|name| exactly_once(name))
+            || !tables
+                .iter()
+                .all(|table| exactly_once(&format!("{}.json", table.name)))
+        {
             return Err("layout_restore_file_set".into());
         }
-        for entry in &entries {
+        for entry in entries {
             let path = snapshot_dir.join(&entry.name);
             let metadata = fs::symlink_metadata(&path).map_err(err)?;
             if !metadata.file_type().is_file()
@@ -1287,50 +1301,49 @@ impl Load {
                 .find(|e| e.name == name)
                 .ok_or_else(|| format!("layout_restore_entry:{name}"))
         };
-        let (native, bound) = read_verified_buffered(
+        let mut native = NativePressure::jprod()?;
+        let bound = read_verified_buffered(
             &snapshot_dir.join("native.json"),
             entry("native.json")?,
             io,
-            |reader| NativePressure::restore_checkpoint_profiled(reader),
+            |reader| native.restore_checkpoint_into(reader),
         )?;
-        if serde_json::to_value(native.manifest()).map_err(err)? != manifest["native"] {
+        if serde_json::to_value(native.manifest()).map_err(err)?
+            != serde_json::to_value(
+                manifest
+                    .native
+                    .as_ref()
+                    .ok_or("layout_restore_native_shape")?,
+            )
+            .map_err(err)?
+        {
             return Err("layout_restore_native_shape".into());
         }
+        let mut decoded = decode_workspace.lock().map_err(err)?;
         for table in &mut tables {
             let name = format!("{}.json", table.name);
-            let candidate: Table =
-                read_verified_buffered(&snapshot_dir.join(&name), entry(&name)?, io, |reader| {
-                    bounded_table::decode(reader, &table.table)
-                })?;
-            if candidate != table.table {
-                return Err(format!("layout_restore_stub:{}", table.name));
-            }
-            table.table = candidate.exact();
+            read_verified_buffered(&snapshot_dir.join(&name), entry(&name)?, io, |reader| {
+                decoded.decode_table(reader, &table.table)
+            })?;
+            decoded.copy_decoded_table(&mut table.table)?;
         }
-        let payload = manifest["padding_payload_bytes"]
-            .as_array()
+        decoded.valid = true;
+        drop(decoded);
+        let payload = manifest
+            .padding_payload_bytes
+            .as_ref()
             .ok_or("layout_restore_padding")?;
-        if payload.len() != 7 {
-            return Err("layout_restore_domain_count".into());
-        }
-        let total_payload: usize = payload
-            .iter()
-            .map(|v| {
-                v.as_u64()
-                    .map(|n| n as usize)
-                    .ok_or("layout_restore_payload_number")
-            })
-            .collect::<Result<Vec<_>, _>>()?
-            .into_iter()
-            .sum();
-        if total_payload
-            + native.manifest().owned_capacity_bytes
+        let total_payload = payload.iter().try_fold(0usize, |total, value| {
+            total
+                .checked_add(*value)
+                .ok_or("layout_restore_payload_overflow")
+        })?;
+        let fixed_bytes = native.manifest().owned_capacity_bytes
             + tables.iter().map(|t| t.table.owned()).sum::<usize>()
-            + COW_PAGES * MIB
+            + WORK_PAGES * MIB
             + metadata_charge
-            + external_charge
-            != normal_bytes
-        {
+            + external_charge;
+        if Some(total_payload) != normal_bytes.checked_sub(fixed_bytes) {
             return Err("layout_restore_joint_budget".into());
         }
         let pages = read_verified_buffered(
@@ -1340,8 +1353,7 @@ impl Load {
             |reader| {
                 let mut pages = Vec::with_capacity(total_payload.div_ceil(MIB) + 7);
                 for (domain, bytes) in payload.iter().enumerate() {
-                    let mut remaining =
-                        bytes.as_u64().ok_or("layout_restore_domain_payload")? as usize;
+                    let mut remaining = *bytes;
                     while remaining > 0 {
                         let n = remaining.min(MIB);
                         let mut data = vec![0u8; n];
@@ -1356,7 +1368,7 @@ impl Load {
                 Ok(pages)
             },
         )?;
-        if entry("work-reserve.bin")?.bytes != (COW_PAGES * MIB) as u64 {
+        if entry("work-reserve.bin")?.bytes != (WORK_PAGES * MIB) as u64 {
             return Err("layout_restore_work_size".into());
         }
         let reserve_pages = read_verified_buffered(
@@ -1373,16 +1385,22 @@ impl Load {
                     }
                     pages.push(data);
                 }
+                // The remaining half is a canonical reserve image, verified in
+                // full. Live initialized typed storage was prebuilt above.
+                for _ in COW_PAGES..WORK_PAGES {
+                    reader.read_exact(compare).map_err(err)?;
+                    if compare.iter().any(|b| *b != 0xa5) {
+                        return Err("layout_restore_work_pattern".into());
+                    }
+                }
                 Ok(pages)
             },
         )?;
-        let generation = index["generation"]
-            .as_u64()
-            .ok_or("layout_restore_generation")?;
+        let generation = index.generation;
         if generation == 0 {
             return Err("layout_restore_zero_generation".into());
         }
-        let report = json!({"cold_restore_seconds":started.elapsed().as_secs_f64(),"native_restore_bound":bound,"producer_source_sha256":manifest["source_sha256"],"reader_source_sha256":env!("MYCITY_SOURCE_SHA256"),"same_source":manifest["source_sha256"]==env!("MYCITY_SOURCE_SHA256"),"codec":"layout-v2; full native shape/capacity and immutable stub equality; explicit mutation counter required; one-pass hash+load","restored_generation":generation,"restored_mutation_iteration":iterations,"all_payload_files_hashed_and_loaded":true,"byte_length":entries.iter().map(|e|e.bytes).sum::<u64>()});
+        let report = json!({"cold_restore_seconds":started.elapsed().as_secs_f64(),"native_restore_bound":bound,"producer_source_sha256":manifest.source_sha256,"reader_source_sha256":env!("MYCITY_SOURCE_SHA256"),"same_source":manifest.source_sha256.as_deref()==Some(env!("MYCITY_SOURCE_SHA256")),"codec":"canonical layout-v1/v2 generator profile; bounded typed index; full native shape/capacity and immutable stub equality; explicit mutation counter required; one-pass hash+load","restored_generation":generation,"restored_mutation_iteration":iterations,"all_payload_files_hashed_and_loaded":true,"byte_length":entries.iter().map(|e|e.bytes).sum::<u64>()});
         drop(buffers);
         Ok((
             Self {
@@ -1400,6 +1418,7 @@ impl Load {
                 external_charge,
                 metadata_charge,
                 snapshot_buffers,
+                decode_workspace,
                 job: None,
                 root: root.into(),
                 generation,
@@ -1550,6 +1569,34 @@ mod tests {
     }
     use super::*;
     #[test]
+    fn borrowed_snapshot_index_preserves_existing_disk_schema_and_file_order() {
+        let manifest = json!({"native":{"fields":[["accounts",40000]]},"mutation_iteration":7});
+        let entries = vec![
+            FileEntry {
+                name: "native.json".into(),
+                bytes: 123,
+                sha256: "a".repeat(64),
+            },
+            FileEntry {
+                name: "pressure.bin".into(),
+                bytes: 456,
+                sha256: "b".repeat(64),
+            },
+        ];
+        let old = json!({"schema":"mycity-layout-snapshot-v2","generation":2,"manifest":manifest,"files":entries});
+        let borrowed = SnapshotIndex {
+            schema: "mycity-layout-snapshot-v2",
+            generation: 2,
+            manifest: &manifest,
+            files: &entries,
+        };
+        let encoded = serde_json::to_vec(&borrowed).unwrap();
+        let decoded: Value = serde_json::from_slice(&encoded).unwrap();
+        assert_eq!(decoded, old);
+        assert_eq!(entries[0].name, "native.json");
+        assert_eq!(entries[1].name, "pressure.bin");
+    }
+    #[test]
     fn external_component_reservation_rejects_oversize_before_allocation() {
         let root =
             std::env::temp_dir().join(format!("mycity-layout-external-{}", std::process::id()));
@@ -1570,9 +1617,9 @@ mod tests {
         let snapshot = root.join("snapshot-000001");
         fs::create_dir_all(&snapshot).unwrap();
         for (charge, metadata, cow) in [
-            (64 * MIB + 1, 4 * MIB, COW_PAGES * MIB),
-            (usize::MAX, 4 * MIB, COW_PAGES * MIB),
-            (64 * MIB, 0, COW_PAGES * MIB),
+            (64 * MIB + 1, 4 * MIB, WORK_PAGES * MIB),
+            (usize::MAX, 4 * MIB, WORK_PAGES * MIB),
+            (64 * MIB, 0, WORK_PAGES * MIB),
             (64 * MIB, 4 * MIB, 0),
         ] {
             // Deliberately omit every large file and even file entries. Budget
@@ -1642,7 +1689,7 @@ mod tests {
             loan_pages: 0,
             decode_loan_pages: 0,
         };
-        assert!(reserve.loan(3).is_err());
+        assert!(reserve.copy_page(&[0; 7]).is_err());
         assert_eq!(reserve.pages.len(), 2);
         let existing_allocation = reserve.pages.last().unwrap().as_ptr();
         assert!(reserve.copy_page(&[0u8; 7]).is_err());
@@ -1723,16 +1770,55 @@ mod tests {
             loan_pages: 0,
             decode_loan_pages: 0,
         };
-        reserve.loan(1).unwrap();
+        reserve.begin_decode().unwrap();
         let available = reserve.pages.len();
         assert!(reserve.reclaim_cow(Vec::new(), 1).is_err());
         assert_eq!(reserve.pages.len(), available);
-        assert_eq!(reserve.decode_loan_pages, 1);
+        assert_eq!(reserve.decode_loan_pages, DECODE_BYTES / MIB);
+        reserve.end_decode().unwrap();
         // A missing actual COW backing may not be replaced with a fresh Vec.
-        reserve.decode_loan_pages = 0;
+        reserve.pages.pop();
+        reserve.loan_pages = 1;
         assert!(reserve.reclaim_cow(Vec::new(), 1).is_err());
-        assert_eq!(reserve.pages.len(), available);
+        assert_eq!(reserve.pages.len(), available - 1);
         assert_eq!(reserve.loan_pages, 1);
+    }
+    #[test]
+    fn persistent_decode_borrow_preserves_all_sixty_four_concurrent_cow_pages() {
+        assert_eq!(WORK_PAGES * MIB, 128 * MIB);
+        assert_eq!(COW_PAGES * MIB, 64 * MIB);
+        assert_eq!(DECODE_BYTES + COW_PAGES * MIB, WORK_PAGES * MIB);
+        let mut reserve = Reserve {
+            pages: (0..COW_PAGES).map(|_| vec![0xa5; MIB]).collect(),
+            loan_pages: 0,
+            decode_loan_pages: 0,
+        };
+        let mut world: Vec<_> = (0..COW_PAGES)
+            .map(|i| PressurePage {
+                domain: 0,
+                bytes: Arc::new(vec![i as u8; MIB]),
+            })
+            .collect();
+        let snapshot = world.clone();
+        let old_ids: Vec<_> = snapshot.iter().map(|p| p.bytes.as_ptr()).collect();
+        reserve.begin_decode().unwrap();
+        assert!(reserve.begin_decode().is_err());
+        for page in &mut world {
+            page.bytes = Arc::new(reserve.copy_page(&page.bytes).unwrap());
+        }
+        assert!(reserve.pages.is_empty());
+        assert!(reserve.copy_page(&snapshot[0].bytes).is_err());
+        assert_eq!(reserve.loan_pages, WORK_PAGES);
+        reserve.end_decode().unwrap();
+        assert!(reserve.end_decode().is_err());
+        reserve.reclaim_cow(snapshot, COW_PAGES).unwrap();
+        assert_eq!(reserve.loan_pages, 0);
+        assert_eq!(reserve.pages.len(), COW_PAGES);
+        let returned: Vec<_> = reserve.pages.iter().map(|p| p.as_ptr()).collect();
+        assert_eq!(returned, old_ids);
+        for (i, page) in world.iter().enumerate() {
+            assert_eq!(page.bytes[0], i as u8);
+        }
     }
     #[test]
     fn borrowed_file_buffers_reset_hashes_verify_eof_and_keep_addresses() {

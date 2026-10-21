@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.96`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.97`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.97完成[常驻解码工作区与原快照格式兼容的实现验证](docs/evidence/m0-t13a-typed-workspace/STATUS.md)：同源全仓回归、严格检查及三份完整旧原件冷恢复通过；advisor认可冻结规范输入的4MiB外部算术准入。64MiB typed＋64MiB并发COW保持原128MiB工作预留；原参数多代正式快照、物理预算、8h与真实16GB尚未通过。
 
 v0.5.96更正进程记录表述：曾短暂观察到1.95工具链Cargo，无本项目work/target文件占用，未停止该进程。v0.5.95完成[集中回收后的当前复查](docs/evidence/disk-reclamation-current-recheck/STATUS.md)：work24.40GiB、共享target1.34GiB，本次无新增安全退役项、释放0B；完整恢复及故障原件保留，历史回收不重复计入。模型WIP及性能验收状态不变。
 

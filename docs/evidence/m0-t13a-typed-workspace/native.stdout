@@ -1,0 +1,6 @@
+
+running 1 test
+test layout_pressure::restore_into::tests::full_native_target_reuses_all_ten_backings_after_errors_and_reordered_fields ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 67 filtered out; finished in 3.41s
+

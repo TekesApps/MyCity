@@ -1,0 +1,56 @@
+[
+  {
+    "case": "latest82",
+    "input": "work/report-lifetime-formal-l1-01/observed/model/layout/snapshots/snapshot-000001",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/typed-workspace/mycity-headless",
+      "layout-load-only",
+      "/Users/frankqin/dev/MyCity/work/report-lifetime-formal-l1-01/observed/model/layout/snapshots/snapshot-000001",
+      "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-typed-workspace/cold-latest82"
+    ],
+    "exit_code": 0,
+    "seconds": 4.256137125,
+    "source_sha256": "757907bccc82ec1dc13c28f11324914c6def755366e50156a093fef9c7a8d588",
+    "index_sha256": "878d0df784e493e0ca15b85a59223c64bb52f02fa23081a34032fea51ea7617f",
+    "original_index_unchanged": true,
+    "new_pressure_copy": false,
+    "memory_16gb_gate": "not_run",
+    "full_M0": "not_accepted"
+  },
+  {
+    "case": "legacy50",
+    "input": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/typed-workspace/mycity-headless",
+      "layout-load-only",
+      "/Users/frankqin/dev/MyCity/work/t13a50-joint-01/model/layout/snapshots/snapshot-000001",
+      "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-typed-workspace/cold-legacy50"
+    ],
+    "exit_code": 0,
+    "seconds": 4.054821583,
+    "source_sha256": "757907bccc82ec1dc13c28f11324914c6def755366e50156a093fef9c7a8d588",
+    "index_sha256": "43f83f0a14e8e1962370a1d6bdf26424671660e3679e48d94b864bd1be47728c",
+    "original_index_unchanged": true,
+    "new_pressure_copy": false,
+    "memory_16gb_gate": "not_run",
+    "full_M0": "not_accepted"
+  },
+  {
+    "case": "formal8",
+    "input": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000008",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/typed-workspace/mycity-headless",
+      "layout-load-only",
+      "/Users/frankqin/dev/MyCity/work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000008",
+      "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-typed-workspace/cold-formal8"
+    ],
+    "exit_code": 0,
+    "seconds": 4.829859000000001,
+    "source_sha256": "757907bccc82ec1dc13c28f11324914c6def755366e50156a093fef9c7a8d588",
+    "index_sha256": "39c38b2bd9262de5ed6176d4681d47f0a373f073cf7293d4988e9c84c519de74",
+    "original_index_unchanged": true,
+    "new_pressure_copy": false,
+    "memory_16gb_gate": "not_run",
+    "full_M0": "not_accepted"
+  }
+]

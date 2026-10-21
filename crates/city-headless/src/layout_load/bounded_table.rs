@@ -1,5 +1,7 @@
 //! Fixed L1 diagnostic table decoder. No gameplay World authority.
+mod inplace;
 use super::{Stub, Table};
+pub(super) use inplace::decode_into;
 use mycity_core::fixed_restore::{JsonReader, Records};
 use serde::de::{self, DeserializeSeed, MapAccess, Visitor};
 use serde::{Deserialize, Deserializer};
