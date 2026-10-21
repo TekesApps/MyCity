@@ -1,0 +1,8 @@
+{
+  "as_of": "2026-10-21",
+  "authority": "docs/evidence/disk-reclamation-2026-10-21/deletion-result.json",
+  "removed_files": [
+    "work/t13a50-joint-01/model/layout/snapshots/snapshot-000002.pending/pressure.bin"
+  ],
+  "current_availability": "Listed snapshots are NOT directly full-restorable. Original indexes/hashes and business/native/stub evidence remain. Historical restores are historical evidence only. Unlisted snapshots unaffected. t13a50 snapshot-000001 remains complete; only snapshot-000002.pending pressure retired."
+}

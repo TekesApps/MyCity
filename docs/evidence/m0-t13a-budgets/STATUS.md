@@ -1,3 +1,7 @@
+> **2026-10-21 availability update:** Selected historical synthetic pressure payloads retired; listed snapshots are NOT directly full-restorable. Business/component evidence and original indexes remain. This supersedes older retention promises below. See [availability](t13a3b-budget-01/artifact-availability-2026-10-21.json) and [cleanup record](../disk-reclamation-2026-10-21/STATUS.md).
+
+> **2026-10-21 availability update:** Selected historical synthetic pressure payloads retired; listed snapshots are NOT directly full-restorable. Business/component evidence and original indexes remain. This supersedes older retention promises below. See [availability](t13a3b-budget-02/artifact-availability-2026-10-21.json) and [cleanup record](../disk-reclamation-2026-10-21/STATUS.md).
+
 # T13A-3b：诊断费用与完整Rust进程堆证据
 
 限定阶段已实测、advisor独立审查通过；不签完整8MiB诊断、满压力联合、正式稳态、8小时或16GB。发布v0.5.41。冻结标准、720小时目标、8192页、空气60秒数值步长、723目标／724窗口／3011原票均不变。

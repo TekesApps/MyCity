@@ -1,3 +1,5 @@
+> **2026-10-21 availability update:** Selected historical synthetic pressure payloads retired; listed snapshots are NOT directly full-restorable. Business/component evidence and original indexes remain. This supersedes older retention promises below. See [availability](t13a3g-joint-01/artifact-availability-2026-10-21.json) and [cleanup record](../disk-reclamation-2026-10-21/STATUS.md).
+
 # T13A-3g：有界诊断实现通过，原联合实测保护失败
 
 本阶段只交付有界控制数据、共同候选份额实现及其功能证据；**同来源完整联合运行未完成，共同8MiB尚未签收**。仍只做Rust模型和CLI。

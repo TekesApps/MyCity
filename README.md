@@ -1,6 +1,6 @@
 # MyCity
 
-仓库发布版本：`v0.5.64`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.65`。已开始Rust模型与headless CLI，当前不做UI。
 
 **软件结构先读[总体架构](docs/SOFTWARE_ARCHITECTURE.md)：当前代码、主体与事件、单writer、多进程目标、数据文件和预算。**
 
@@ -48,3 +48,5 @@
 本阶段v0.5.47：[64MiB实体余额与724次真实worker借还](docs/evidence/m0-t13a-normal-pool/STATUS.md)。同源303项回归通过，修复accepted socket分片误拒；无L1的原full30日、完整CPU／原票／候选hash和731正常实例核验通过。原联合压力失败及首个功能失败保留；共同内存预算、四档、正式稳态、8h及真实16GB仍未签收。
 
 本阶段v0.5.48：[CPU broker实际持有worker及有限恢复](docs/evidence/m0-t13a-broker/STATUS.md)。312项同源回归、原full30日／724次真实借还／完整Engine核验通过；旧启动超时与测试失败保留。实际8h及联合性能仍未签，下一步实现原长时控制器并实跑。
+
+[Validation artifact retention](docs/validation-artifact-retention.md) / [2026-10-21 cleanup](docs/evidence/disk-reclamation-2026-10-21/STATUS.md)

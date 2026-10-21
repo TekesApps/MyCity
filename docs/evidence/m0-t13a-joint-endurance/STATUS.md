@@ -1,3 +1,5 @@
+> **2026-10-21 availability update:** Selected historical synthetic pressure payloads retired; listed snapshots are NOT directly full-restorable. Business/component evidence and original indexes remain. This supersedes older retention promises below. See [availability](t13a50-joint-01/artifact-availability-2026-10-21.json) and [cleanup record](../disk-reclamation-2026-10-21/STATUS.md).
+
 # T13A-3k：Rust联合托管接入与原负载保护失败
 
 v0.5.50只交付接入实现及部分联合失败证据，不宣称完整联合通过。只Rust模型/CLI，不做UI/GPU/AgentKit。

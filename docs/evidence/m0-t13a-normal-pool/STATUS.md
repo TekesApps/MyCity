@@ -1,3 +1,5 @@
+> **2026-10-21 availability update:** Selected historical synthetic pressure payloads retired; listed snapshots are NOT directly full-restorable. Business/component evidence and original indexes remain. This supersedes older retention promises below. See [availability](t13a3h-joint-01/artifact-availability-2026-10-21.json) and [cleanup record](../disk-reclamation-2026-10-21/STATUS.md).
+
 # T13A-3h：实体余额、真实借还与传输修复
 
 版本v0.5.47。只签本阶段实现／回归及**无L1的原full30日功能装配**；不签联合性能、共同8MiB、精确64MiB常规工作区、正式三轮稳态、四档、8h或真实16GB。原负载和保护阈值未改。

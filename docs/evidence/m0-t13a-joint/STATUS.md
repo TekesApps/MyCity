@@ -1,3 +1,5 @@
+> **2026-10-21 availability update:** Selected historical synthetic pressure payloads retired; listed snapshots are NOT directly full-restorable. Business/component evidence and original indexes remain. This supersedes older retention promises below. See [availability](t13a3a-joint-01/artifact-availability-2026-10-21.json) and [cleanup record](../disk-reclamation-2026-10-21/STATUS.md).
+
 # T13A-3a：并发接入诊断失败留证与同快照恢复修复
 
 本阶段没有签满级联合性能门。source A实际运行完整L1记录＋真实full业务：600次每秒扫描、0／300秒两份快照；实际30日723目标／724 worker窗口／3011原票，完整业务和空气与CPU参考一致，业务存档冷开与最早原票重试无副作用。Sim推进259.796907041秒，含IPC与持久化；不是受控提速比较。L1扫描最大ready age0.014944秒，保存开始最大迟到0.007956秒；两次持久完成14.482036125／24.903494291秒。第二次快照期间只读见证记录CURRENT/root合法链序号1813→1815及1个完整目标，证明实际提交重叠；见证在原采样树外，不纳入原性能门。

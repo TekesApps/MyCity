@@ -1,3 +1,5 @@
+> **2026-10-21 availability update:** Selected historical synthetic pressure payloads retired; listed snapshots are NOT directly full-restorable. Business/component evidence and original indexes remain. This supersedes older retention promises below. See [availability](t13a62-joint-01/artifact-availability-2026-10-21.json) and [cleanup record](../disk-reclamation-2026-10-21/STATUS.md).
+
 # 接纳校验的固定缓冲流式摘要
 
 v0.5.62候选。仅Rust模型与CLI，改动前[计划](PLAN.md)保持原full负载/CPU参考/保护门；没有引入UI、GPU、AgentKit或概率。确定性校验不需要随机策略。[advisor代码审查](advisor-code-review.md)未发现生产逻辑/限额/分块哈希阻断。

@@ -1,0 +1,3161 @@
+{
+  "measured_unix_ns": 1792560370296851000,
+  "work_logical_bytes": 93021007459,
+  "work_file_allocated_bytes": 93118373888,
+  "filesystem_available_bytes": 58799833088,
+  "accounting": "sum st_blocks*512 over files; APFS clones/shared extents may not equal exclusively reclaimable physical space",
+  "runs": {
+    "accepted-binaries": {
+      "files": 8,
+      "logical_bytes": 49160834,
+      "allocated_bytes": 49180672,
+      "large_files": []
+    },
+    "build-cache-cleanup-20261021.json": {
+      "files": 1,
+      "logical_bytes": 1061,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "candidate-binaries": {
+      "files": 9,
+      "logical_bytes": 47214662,
+      "allocated_bytes": 47239168,
+      "large_files": []
+    },
+    "layout_bounded_table_draft.rs": {
+      "files": 1,
+      "logical_bytes": 6305,
+      "allocated_bytes": 8192,
+      "large_files": []
+    },
+    "pacing-release-drift-next.md": {
+      "files": 1,
+      "logical_bytes": 1580,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "steady-controller-next.md": {
+      "files": 1,
+      "logical_bytes": 1707,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a1a-reference": {
+      "files": 2,
+      "logical_bytes": 2524116,
+      "allocated_bytes": 2531328,
+      "large_files": []
+    },
+    "t13a1b-frozen-slow-reader": {
+      "files": 1,
+      "logical_bytes": 7726416,
+      "allocated_bytes": 7729152,
+      "large_files": []
+    },
+    "t13a1b-layout-cold-02": {
+      "files": 5,
+      "logical_bytes": 96205,
+      "allocated_bytes": 102400,
+      "large_files": []
+    },
+    "t13a1b-layout-cold-11": {
+      "files": 5,
+      "logical_bytes": 101015,
+      "allocated_bytes": 110592,
+      "large_files": []
+    },
+    "t13a1b-layout-cold-after-02c": {
+      "files": 5,
+      "logical_bytes": 50245,
+      "allocated_bytes": 57344,
+      "large_files": []
+    },
+    "t13a1b-layout-cold-before-02b": {
+      "files": 5,
+      "logical_bytes": 119913,
+      "allocated_bytes": 126976,
+      "large_files": []
+    },
+    "t13a1b-layout-full-01": {
+      "files": 72,
+      "logical_bytes": 6885413769,
+      "allocated_bytes": 6885560320,
+      "large_files": [
+        {
+          "path": "work/t13a1b-layout-full-01/model/snapshots/snapshot-000002/work-reserve.bin",
+          "bytes": 134217728,
+          "allocated_bytes": 134217728,
+          "inode": 400620405,
+          "device": 16777231,
+          "links": 2,
+          "mtime_ns": 1792492278098256241
+        },
+        {
+          "path": "work/t13a1b-layout-full-01/model/snapshots/snapshot-000002/pressure.bin",
+          "bytes": 3107882990,
+          "allocated_bytes": 3107885056,
+          "inode": 400620395,
+          "device": 16777231,
+          "links": 2,
+          "mtime_ns": 1792492277705142852
+        },
+        {
+          "path": "work/t13a1b-layout-full-01/model/snapshots/snapshot-000002/meter.json",
+          "bytes": 59090761,
+          "allocated_bytes": 59092992,
+          "inode": 400620351,
+          "device": 16777231,
+          "links": 2,
+          "mtime_ns": 1792492268443593868
+        },
+        {
+          "path": "work/t13a1b-layout-full-01/model/snapshots/snapshot-000002/native.json",
+          "bytes": 65299383,
+          "allocated_bytes": 65302528,
+          "inode": 400620334,
+          "device": 16777231,
+          "links": 2,
+          "mtime_ns": 1792492267905608088
+        },
+        {
+          "path": "work/t13a1b-layout-full-01/model/snapshots/snapshot-000003/work-reserve.bin",
+          "bytes": 134217728,
+          "allocated_bytes": 134217728,
+          "inode": 400632434,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792492476923705752
+        },
+        {
+          "path": "work/t13a1b-layout-full-01/model/snapshots/snapshot-000003/pressure.bin",
+          "bytes": 3107882990,
+          "allocated_bytes": 3107885056,
+          "inode": 400631283,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792492476051243653
+        },
+        {
+          "path": "work/t13a1b-layout-full-01/model/snapshots/snapshot-000003/meter.json",
+          "bytes": 59090761,
+          "allocated_bytes": 59092992,
+          "inode": 400631263,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792492462786388327
+        },
+        {
+          "path": "work/t13a1b-layout-full-01/model/snapshots/snapshot-000003/native.json",
+          "bytes": 65299383,
+          "allocated_bytes": 65302528,
+          "inode": 400631255,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792492462119969362
+        }
+      ]
+    },
+    "t13a1b-layout-full-03": {
+      "files": 7,
+      "logical_bytes": 313623,
+      "allocated_bytes": 319488,
+      "large_files": []
+    },
+    "t13a1b-layout-full-04": {
+      "files": 70,
+      "logical_bytes": 6885630628,
+      "allocated_bytes": 6885765120,
+      "large_files": [
+        {
+          "path": "work/t13a1b-layout-full-04/model/snapshots/snapshot-000001/work-reserve.bin",
+          "bytes": 134217728,
+          "allocated_bytes": 134217728,
+          "inode": 400864089,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792494490275828385
+        },
+        {
+          "path": "work/t13a1b-layout-full-04/model/snapshots/snapshot-000001/pressure.bin",
+          "bytes": 3107882990,
+          "allocated_bytes": 3107885056,
+          "inode": 400856671,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792494489659498802
+        },
+        {
+          "path": "work/t13a1b-layout-full-04/model/snapshots/snapshot-000001/meter.json",
+          "bytes": 59090761,
+          "allocated_bytes": 59092992,
+          "inode": 400856649,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792494481870866132
+        },
+        {
+          "path": "work/t13a1b-layout-full-04/model/snapshots/snapshot-000001/native.json",
+          "bytes": 65299383,
+          "allocated_bytes": 65302528,
+          "inode": 400856624,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792494481494502370
+        },
+        {
+          "path": "work/t13a1b-layout-full-04/model/snapshots/snapshot-000003.pending/work-reserve.bin",
+          "bytes": 134217728,
+          "allocated_bytes": 134217728,
+          "inode": 400881660,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792494555378459963
+        },
+        {
+          "path": "work/t13a1b-layout-full-04/model/snapshots/snapshot-000003.pending/pressure.bin",
+          "bytes": 3107882990,
+          "allocated_bytes": 3107885056,
+          "inode": 400881625,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792494554816499566
+        },
+        {
+          "path": "work/t13a1b-layout-full-04/model/snapshots/snapshot-000003.pending/meter.json",
+          "bytes": 59090761,
+          "allocated_bytes": 59092992,
+          "inode": 400881606,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792494541899432664
+        },
+        {
+          "path": "work/t13a1b-layout-full-04/model/snapshots/snapshot-000003.pending/native.json",
+          "bytes": 65299383,
+          "allocated_bytes": 65302528,
+          "inode": 400881598,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792494541487331848
+        }
+      ]
+    },
+    "t13a1b-layout-full-06": {
+      "files": 9,
+      "logical_bytes": 168067,
+      "allocated_bytes": 180224,
+      "large_files": []
+    },
+    "t13a1b-layout-full-08": {
+      "files": 9,
+      "logical_bytes": 311503,
+      "allocated_bytes": 323584,
+      "large_files": []
+    },
+    "t13a1b-layout-full-10": {
+      "files": 72,
+      "logical_bytes": 6885771377,
+      "allocated_bytes": 6885908480,
+      "large_files": [
+        {
+          "path": "work/t13a1b-layout-full-10/model/snapshots/snapshot-000003/work-reserve.bin",
+          "bytes": 134217728,
+          "allocated_bytes": 134217728,
+          "inode": 400917664,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792494866096054967
+        },
+        {
+          "path": "work/t13a1b-layout-full-10/model/snapshots/snapshot-000003/pressure.bin",
+          "bytes": 3107882990,
+          "allocated_bytes": 3107885056,
+          "inode": 400916945,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792494865626132222
+        },
+        {
+          "path": "work/t13a1b-layout-full-10/model/snapshots/snapshot-000003/meter.json",
+          "bytes": 59090761,
+          "allocated_bytes": 59092992,
+          "inode": 400916902,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792494851248110349
+        },
+        {
+          "path": "work/t13a1b-layout-full-10/model/snapshots/snapshot-000003/native.json",
+          "bytes": 65299383,
+          "allocated_bytes": 65302528,
+          "inode": 400916888,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792494850751690907
+        },
+        {
+          "path": "work/t13a1b-layout-full-10/model/snapshots/snapshot-000004/work-reserve.bin",
+          "bytes": 134217728,
+          "allocated_bytes": 134217728,
+          "inode": 400921215,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792494922891201408
+        },
+        {
+          "path": "work/t13a1b-layout-full-10/model/snapshots/snapshot-000004/pressure.bin",
+          "bytes": 3107882990,
+          "allocated_bytes": 3107885056,
+          "inode": 400921141,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792494922424558699
+        },
+        {
+          "path": "work/t13a1b-layout-full-10/model/snapshots/snapshot-000004/meter.json",
+          "bytes": 59090761,
+          "allocated_bytes": 59092992,
+          "inode": 400921122,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792494915907284569
+        },
+        {
+          "path": "work/t13a1b-layout-full-10/model/snapshots/snapshot-000004/native.json",
+          "bytes": 65299383,
+          "allocated_bytes": 65302528,
+          "inode": 400921114,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792494915531985639
+        }
+      ]
+    },
+    "t13a1b-layout-negative-03": {
+      "files": 4,
+      "logical_bytes": 8835,
+      "allocated_bytes": 16384,
+      "large_files": []
+    },
+    "t13a1b-layout-negative-fixture": {
+      "files": 32,
+      "logical_bytes": 3442644320,
+      "allocated_bytes": 3442708480,
+      "large_files": [
+        {
+          "path": "work/t13a1b-layout-negative-fixture/snapshot/work-reserve.bin",
+          "bytes": 134217728,
+          "allocated_bytes": 134217728,
+          "inode": 400620405,
+          "device": 16777231,
+          "links": 2,
+          "mtime_ns": 1792492278098256241
+        },
+        {
+          "path": "work/t13a1b-layout-negative-fixture/snapshot/pressure.bin",
+          "bytes": 3107882990,
+          "allocated_bytes": 3107885056,
+          "inode": 400620395,
+          "device": 16777231,
+          "links": 2,
+          "mtime_ns": 1792492277705142852
+        },
+        {
+          "path": "work/t13a1b-layout-negative-fixture/snapshot/meter.json",
+          "bytes": 59090761,
+          "allocated_bytes": 59092992,
+          "inode": 400620351,
+          "device": 16777231,
+          "links": 2,
+          "mtime_ns": 1792492268443593868
+        },
+        {
+          "path": "work/t13a1b-layout-negative-fixture/snapshot/native.json",
+          "bytes": 65299383,
+          "allocated_bytes": 65302528,
+          "inode": 400620334,
+          "device": 16777231,
+          "links": 2,
+          "mtime_ns": 1792492267905608088
+        }
+      ]
+    },
+    "t13a2-budget-check.txt": {
+      "files": 1,
+      "logical_bytes": 186,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a2-docs-check.txt": {
+      "files": 1,
+      "logical_bytes": 176,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a2-full-sim-01": {
+      "files": 70,
+      "logical_bytes": 16386712,
+      "allocated_bytes": 16539648,
+      "large_files": []
+    },
+    "t13a2-startup-refactor-reference": {
+      "files": 2,
+      "logical_bytes": 2524116,
+      "allocated_bytes": 2531328,
+      "large_files": []
+    },
+    "t13a2-startup-refactor-reference-output.json": {
+      "files": 1,
+      "logical_bytes": 16698,
+      "allocated_bytes": 20480,
+      "large_files": []
+    },
+    "t13a2-storage-build.txt": {
+      "files": 1,
+      "logical_bytes": 149,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a2-storage-clippy.txt": {
+      "files": 1,
+      "logical_bytes": 148,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a2-store-baseline-01": {
+      "files": 52,
+      "logical_bytes": 119768281,
+      "allocated_bytes": 119877632,
+      "large_files": []
+    },
+    "t13a2-store-baseline-01-launch.txt": {
+      "files": 1,
+      "logical_bytes": 2478,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a2-store-borrowed-v1-02": {
+      "files": 52,
+      "logical_bytes": 119768774,
+      "allocated_bytes": 119877632,
+      "large_files": []
+    },
+    "t13a2-store-borrowed-v1-02-launch.txt": {
+      "files": 1,
+      "logical_bytes": 2468,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a2-store-v2-03": {
+      "files": 19,
+      "logical_bytes": 3974462,
+      "allocated_bytes": 4018176,
+      "large_files": []
+    },
+    "t13a2-store-v2-03-launch.txt": {
+      "files": 1,
+      "logical_bytes": 2480,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a2-tests-release.txt": {
+      "files": 1,
+      "logical_bytes": 29326,
+      "allocated_bytes": 32768,
+      "large_files": []
+    },
+    "t13a2-v1-compatibility": {
+      "files": 48,
+      "logical_bytes": 125700911,
+      "allocated_bytes": 125800448,
+      "large_files": []
+    },
+    "t13a2-v2-background-compile-failed.txt": {
+      "files": 1,
+      "logical_bytes": 1693,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a2-v2-background-test.txt": {
+      "files": 1,
+      "logical_bytes": 429,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a2-v2-build.txt": {
+      "files": 1,
+      "logical_bytes": 233,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a2-v2-check.txt": {
+      "files": 1,
+      "logical_bytes": 386,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a2-v2-clippy-preliminary.txt": {
+      "files": 1,
+      "logical_bytes": 1070,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a2-v2-clippy.txt": {
+      "files": 1,
+      "logical_bytes": 232,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a2-v2-compatibility-output.txt": {
+      "files": 1,
+      "logical_bytes": 1416,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a2-v2-reference": {
+      "files": 2,
+      "logical_bytes": 2524116,
+      "allocated_bytes": 2531328,
+      "large_files": []
+    },
+    "t13a2-v2-reference-output.json": {
+      "files": 1,
+      "logical_bytes": 16698,
+      "allocated_bytes": 20480,
+      "large_files": []
+    },
+    "t13a2-v2-tests-input-failed.txt": {
+      "files": 1,
+      "logical_bytes": 1789,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a2-v2-tests-release.txt": {
+      "files": 1,
+      "logical_bytes": 30353,
+      "allocated_bytes": 32768,
+      "large_files": []
+    },
+    "t13a2-v2-tests.txt": {
+      "files": 1,
+      "logical_bytes": 847,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a2d-tiered-01": {
+      "files": 214,
+      "logical_bytes": 39708886,
+      "allocated_bytes": 40161280,
+      "large_files": []
+    },
+    "t13a2e-full-01": {
+      "files": 2123,
+      "logical_bytes": 69000878,
+      "allocated_bytes": 72146944,
+      "large_files": []
+    },
+    "t13a2e-full-01-observer.stdout": {
+      "files": 1,
+      "logical_bytes": 2634,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a2e-full-02": {
+      "files": 3702,
+      "logical_bytes": 84500610,
+      "allocated_bytes": 89890816,
+      "large_files": [
+        {
+          "path": "work/t13a2e-full-02/model/diagnostics/sim-11436/quote/compute-durations.bin",
+          "bytes": 18695268,
+          "allocated_bytes": 18698240,
+          "inode": 402018259,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792503636797419688
+        }
+      ]
+    },
+    "t13a2e-full-02-observer.stdout": {
+      "files": 1,
+      "logical_bytes": 2592,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a2e-l0-01": {
+      "files": 96,
+      "logical_bytes": 9638135,
+      "allocated_bytes": 9842688,
+      "large_files": []
+    },
+    "t13a2e-l0-01-observer.stdout": {
+      "files": 1,
+      "logical_bytes": 2581,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a2f-full-01": {
+      "files": 128,
+      "logical_bytes": 30373485,
+      "allocated_bytes": 30625792,
+      "large_files": []
+    },
+    "t13a2f-full-01-observer.stdout": {
+      "files": 1,
+      "logical_bytes": 2624,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a2f-full-02": {
+      "files": 350,
+      "logical_bytes": 74749520,
+      "allocated_bytes": 75247616,
+      "large_files": []
+    },
+    "t13a2f-full-02-observer.stdout": {
+      "files": 1,
+      "logical_bytes": 2576,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a2f-pilot-01": {
+      "files": 52,
+      "logical_bytes": 16089397,
+      "allocated_bytes": 16207872,
+      "large_files": []
+    },
+    "t13a2f-pilot-01-observer.stdout": {
+      "files": 1,
+      "logical_bytes": 2566,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a2f-pilot-02": {
+      "files": 52,
+      "logical_bytes": 16093591,
+      "allocated_bytes": 16211968,
+      "large_files": []
+    },
+    "t13a2f-pilot-02-observer.stdout": {
+      "files": 1,
+      "logical_bytes": 2571,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a2g-full-01": {
+      "files": 287,
+      "logical_bytes": 2974623,
+      "allocated_bytes": 3452928,
+      "large_files": []
+    },
+    "t13a2g-pilot-01": {
+      "files": 9,
+      "logical_bytes": 18837,
+      "allocated_bytes": 36864,
+      "large_files": []
+    },
+    "t13a2g-pilot-02": {
+      "files": 19,
+      "logical_bytes": 185381,
+      "allocated_bytes": 225280,
+      "large_files": []
+    },
+    "t13a3a-joint-01": {
+      "files": 3779,
+      "logical_bytes": 6844341760,
+      "allocated_bytes": 6849892352,
+      "large_files": [
+        {
+          "path": "work/t13a3a-joint-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+          "bytes": 134217728,
+          "allocated_bytes": 134217728,
+          "inode": 402535202,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792506845923937787
+        },
+        {
+          "path": "work/t13a3a-joint-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+          "bytes": 3044040310,
+          "allocated_bytes": 3044040704,
+          "inode": 402535196,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792506845668209465
+        },
+        {
+          "path": "work/t13a3a-joint-01/model/layout/snapshots/snapshot-000001/meter.json",
+          "bytes": 59090761,
+          "allocated_bytes": 59092992,
+          "inode": 402535177,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792506839907784808
+        },
+        {
+          "path": "work/t13a3a-joint-01/model/layout/snapshots/snapshot-000001/native.json",
+          "bytes": 65299383,
+          "allocated_bytes": 65302528,
+          "inode": 402535168,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792506839561365477
+        },
+        {
+          "path": "work/t13a3a-joint-01/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+          "bytes": 134217728,
+          "allocated_bytes": 134217728,
+          "inode": 402555703,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792507154900522611
+        },
+        {
+          "path": "work/t13a3a-joint-01/model/layout/snapshots/snapshot-000002/pressure.bin",
+          "bytes": 3044040310,
+          "allocated_bytes": 3044040704,
+          "inode": 402551598,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792507154111937635
+        },
+        {
+          "path": "work/t13a3a-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+          "bytes": 59090761,
+          "allocated_bytes": 59092992,
+          "inode": 402551518,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792507140417819804
+        },
+        {
+          "path": "work/t13a3a-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+          "bytes": 65299383,
+          "allocated_bytes": 65302528,
+          "inode": 402551446,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792507139761499771
+        },
+        {
+          "path": "work/t13a3a-joint-01/model/business/diagnostics/sim-55020/quote/compute-durations.bin",
+          "bytes": 18695268,
+          "allocated_bytes": 18698240,
+          "inode": 402537084,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792507249914865395
+        }
+      ]
+    },
+    "t13a3a-l1-raw-audit-01": {
+      "files": 1,
+      "logical_bytes": 2143,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3a-recovery-01": {
+      "files": 5,
+      "logical_bytes": 53938,
+      "allocated_bytes": 61440,
+      "large_files": []
+    },
+    "t13a3a-recovery-02": {
+      "files": 5,
+      "logical_bytes": 50475,
+      "allocated_bytes": 57344,
+      "large_files": []
+    },
+    "t13a3b-budget-01": {
+      "files": 647,
+      "logical_bytes": 3410910159,
+      "allocated_bytes": 3411898368,
+      "large_files": [
+        {
+          "path": "work/t13a3b-budget-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+          "bytes": 134217728,
+          "allocated_bytes": 134217728,
+          "inode": 402940376,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792509162913849451
+        },
+        {
+          "path": "work/t13a3b-budget-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+          "bytes": 3044040310,
+          "allocated_bytes": 3044040704,
+          "inode": 402940237,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792509162519065795
+        },
+        {
+          "path": "work/t13a3b-budget-01/model/layout/snapshots/snapshot-000001/meter.json",
+          "bytes": 59090761,
+          "allocated_bytes": 59092992,
+          "inode": 402940207,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792509152670057230
+        },
+        {
+          "path": "work/t13a3b-budget-01/model/layout/snapshots/snapshot-000001/native.json",
+          "bytes": 65299383,
+          "allocated_bytes": 65302528,
+          "inode": 402940190,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792509152223325407
+        }
+      ]
+    },
+    "t13a3b-budget-02": {
+      "files": 3781,
+      "logical_bytes": 6844896535,
+      "allocated_bytes": 6850297856,
+      "large_files": [
+        {
+          "path": "work/t13a3b-budget-02/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+          "bytes": 134217728,
+          "allocated_bytes": 134217728,
+          "inode": 402994564,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792509766810689613
+        },
+        {
+          "path": "work/t13a3b-budget-02/model/layout/snapshots/snapshot-000001/pressure.bin",
+          "bytes": 3044040310,
+          "allocated_bytes": 3044040704,
+          "inode": 402994066,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792509766394974155
+        },
+        {
+          "path": "work/t13a3b-budget-02/model/layout/snapshots/snapshot-000001/meter.json",
+          "bytes": 59090761,
+          "allocated_bytes": 59092992,
+          "inode": 402994043,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792509756494300139
+        },
+        {
+          "path": "work/t13a3b-budget-02/model/layout/snapshots/snapshot-000001/native.json",
+          "bytes": 65299383,
+          "allocated_bytes": 65302528,
+          "inode": 402994035,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792509756130018929
+        },
+        {
+          "path": "work/t13a3b-budget-02/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+          "bytes": 134217728,
+          "allocated_bytes": 134217728,
+          "inode": 403049197,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792510073074585699
+        },
+        {
+          "path": "work/t13a3b-budget-02/model/layout/snapshots/snapshot-000002/pressure.bin",
+          "bytes": 3044040310,
+          "allocated_bytes": 3044040704,
+          "inode": 403048098,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792510072373682207
+        },
+        {
+          "path": "work/t13a3b-budget-02/model/layout/snapshots/snapshot-000002/meter.json",
+          "bytes": 59090761,
+          "allocated_bytes": 59092992,
+          "inode": 403048015,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792510056683516524
+        },
+        {
+          "path": "work/t13a3b-budget-02/model/layout/snapshots/snapshot-000002/native.json",
+          "bytes": 65299383,
+          "allocated_bytes": 65302528,
+          "inode": 403047952,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792510056204541540
+        },
+        {
+          "path": "work/t13a3b-budget-02/model/business/diagnostics/sim-92367/quote/compute-durations.bin",
+          "bytes": 18695268,
+          "allocated_bytes": 18698240,
+          "inode": 403023453,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792510207099608401
+        }
+      ]
+    },
+    "t13a3c-instances-01": {
+      "files": 3703,
+      "logical_bytes": 85273262,
+      "allocated_bytes": 90406912,
+      "large_files": [
+        {
+          "path": "work/t13a3c-instances-01/model/diagnostics/sim-19774-0/quote/compute-durations.bin",
+          "bytes": 18695268,
+          "allocated_bytes": 18698240,
+          "inode": 403289702,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792512091431225348
+        }
+      ]
+    },
+    "t13a3d-partial-recovery-01": {
+      "files": 67,
+      "logical_bytes": 28175540,
+      "allocated_bytes": 28360704,
+      "large_files": []
+    },
+    "t13a3d-slots-01": {
+      "files": 1998,
+      "logical_bytes": 71596803,
+      "allocated_bytes": 73732096,
+      "large_files": []
+    },
+    "t13a3e-model-tasks-functional": {
+      "files": 16,
+      "logical_bytes": 5323108,
+      "allocated_bytes": 5361664,
+      "large_files": []
+    },
+    "t13a3e-model-tasks-functional-02": {
+      "files": 36,
+      "logical_bytes": 7837833,
+      "allocated_bytes": 7917568,
+      "large_files": []
+    },
+    "t13a3e-model-tasks-functional-03": {
+      "files": 36,
+      "logical_bytes": 7837835,
+      "allocated_bytes": 7917568,
+      "large_files": []
+    },
+    "t13a3e-model-tasks-validation": {
+      "files": 16,
+      "logical_bytes": 46112,
+      "allocated_bytes": 86016,
+      "large_files": []
+    },
+    "t13a3f-full-01": {
+      "files": 3721,
+      "logical_bytes": 89163800,
+      "allocated_bytes": 92995584,
+      "large_files": [
+        {
+          "path": "work/t13a3f-full-01/model/diagnostics/sim-73282-0/quote/compute-durations.bin",
+          "bytes": 18695268,
+          "allocated_bytes": 18698240,
+          "inode": 403774841,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792516934124608330
+        }
+      ]
+    },
+    "t13a3f-readiness": {
+      "files": 3,
+      "logical_bytes": 5988,
+      "allocated_bytes": 12288,
+      "large_files": []
+    },
+    "t13a3g-joint-01": {
+      "files": 43,
+      "logical_bytes": 3379044109,
+      "allocated_bytes": 3379122176,
+      "large_files": [
+        {
+          "path": "work/t13a3g-joint-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+          "bytes": 134217728,
+          "allocated_bytes": 134217728,
+          "inode": 404113790,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792518845513265307
+        },
+        {
+          "path": "work/t13a3g-joint-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+          "bytes": 3044040310,
+          "allocated_bytes": 3044040704,
+          "inode": 404113771,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792518845132418275
+        },
+        {
+          "path": "work/t13a3g-joint-01/model/layout/snapshots/snapshot-000001/meter.json",
+          "bytes": 59090761,
+          "allocated_bytes": 59092992,
+          "inode": 404113752,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792518837336453786
+        },
+        {
+          "path": "work/t13a3g-joint-01/model/layout/snapshots/snapshot-000001/native.json",
+          "bytes": 65299383,
+          "allocated_bytes": 65302528,
+          "inode": 404113744,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792518836953162106
+        }
+      ]
+    },
+    "t13a3g-model-tasks-functional": {
+      "files": 42,
+      "logical_bytes": 7841199,
+      "allocated_bytes": 7942144,
+      "large_files": []
+    },
+    "t13a3g-validation": {
+      "files": 11,
+      "logical_bytes": 50170,
+      "allocated_bytes": 73728,
+      "large_files": []
+    },
+    "t13a3h-check.txt": {
+      "files": 1,
+      "logical_bytes": 4385,
+      "allocated_bytes": 8192,
+      "large_files": []
+    },
+    "t13a3h-check2.txt": {
+      "files": 1,
+      "logical_bytes": 148,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3h-check3.txt": {
+      "files": 1,
+      "logical_bytes": 148,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3h-check4.txt": {
+      "files": 1,
+      "logical_bytes": 1473,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3h-check5.txt": {
+      "files": 1,
+      "logical_bytes": 148,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3h-clippy.txt": {
+      "files": 1,
+      "logical_bytes": 852,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3h-clippy2.txt": {
+      "files": 1,
+      "logical_bytes": 725,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3h-codec-probe": {
+      "files": 7,
+      "logical_bytes": 780928,
+      "allocated_bytes": 794624,
+      "large_files": []
+    },
+    "t13a3h-codec-probe.py": {
+      "files": 1,
+      "logical_bytes": 1959,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3h-functional-01": {
+      "files": 707,
+      "logical_bytes": 45169098,
+      "allocated_bytes": 46014464,
+      "large_files": []
+    },
+    "t13a3h-functional-preflight": {
+      "files": 6,
+      "logical_bytes": 7595,
+      "allocated_bytes": 20480,
+      "large_files": []
+    },
+    "t13a3h-joint-01": {
+      "files": 47,
+      "logical_bytes": 3379210114,
+      "allocated_bytes": 3379290112,
+      "large_files": [
+        {
+          "path": "work/t13a3h-joint-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+          "bytes": 134217728,
+          "allocated_bytes": 134217728,
+          "inode": 404261802,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792521393127782997
+        },
+        {
+          "path": "work/t13a3h-joint-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+          "bytes": 3044040310,
+          "allocated_bytes": 3044040704,
+          "inode": 404261785,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792521392618274536
+        },
+        {
+          "path": "work/t13a3h-joint-01/model/layout/snapshots/snapshot-000001/meter.json",
+          "bytes": 59090761,
+          "allocated_bytes": 59092992,
+          "inode": 404261766,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792521381431124252
+        },
+        {
+          "path": "work/t13a3h-joint-01/model/layout/snapshots/snapshot-000001/native.json",
+          "bytes": 65299383,
+          "allocated_bytes": 65302528,
+          "inode": 404261758,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792521381044866509
+        }
+      ]
+    },
+    "t13a3h-prefix-before": {
+      "files": 7,
+      "logical_bytes": 3318,
+      "allocated_bytes": 16384,
+      "large_files": []
+    },
+    "t13a3h-prefix-probe.py": {
+      "files": 1,
+      "logical_bytes": 1495,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3h-scale-assembly-fixed.txt": {
+      "files": 1,
+      "logical_bytes": 651,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3h-targeted.txt": {
+      "files": 1,
+      "logical_bytes": 5511,
+      "allocated_bytes": 8192,
+      "large_files": []
+    },
+    "t13a3h-targeted2.txt": {
+      "files": 1,
+      "logical_bytes": 4815,
+      "allocated_bytes": 8192,
+      "large_files": []
+    },
+    "t13a3h-validation": {
+      "files": 8,
+      "logical_bytes": 46195,
+      "allocated_bytes": 65536,
+      "large_files": []
+    },
+    "t13a3h-validation2": {
+      "files": 10,
+      "logical_bytes": 50188,
+      "allocated_bytes": 73728,
+      "large_files": []
+    },
+    "t13a3i-build.txt": {
+      "files": 1,
+      "logical_bytes": 62,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3i-clippy.txt": {
+      "files": 1,
+      "logical_bytes": 148,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3i-codec-probe": {
+      "files": 7,
+      "logical_bytes": 889495,
+      "allocated_bytes": 901120,
+      "large_files": []
+    },
+    "t13a3i-codec-probe.py": {
+      "files": 1,
+      "logical_bytes": 1959,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3i-fmt.txt": {
+      "files": 1,
+      "logical_bytes": 0,
+      "allocated_bytes": 0,
+      "large_files": []
+    },
+    "t13a3i-functional-01": {
+      "files": 3733,
+      "logical_bytes": 91607158,
+      "allocated_bytes": 95453184,
+      "large_files": [
+        {
+          "path": "work/t13a3i-functional-01/model/business/diagnostics/sim-33310-0/quote/compute-durations.bin",
+          "bytes": 18695268,
+          "allocated_bytes": 18698240,
+          "inode": 404374213,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792523358322747989
+        }
+      ]
+    },
+    "t13a3i-functional-launch.txt": {
+      "files": 1,
+      "logical_bytes": 2613,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3i-prefix-after": {
+      "files": 7,
+      "logical_bytes": 3434,
+      "allocated_bytes": 16384,
+      "large_files": []
+    },
+    "t13a3i-prefix-probe.py": {
+      "files": 1,
+      "logical_bytes": 1494,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3i-static-check.txt": {
+      "files": 1,
+      "logical_bytes": 1615,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3i-targeted.txt": {
+      "files": 1,
+      "logical_bytes": 876,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3i-tests-workspace.txt": {
+      "files": 1,
+      "logical_bytes": 36047,
+      "allocated_bytes": 36864,
+      "large_files": []
+    },
+    "t13a3i-validation": {
+      "files": 4,
+      "logical_bytes": 11964,
+      "allocated_bytes": 20480,
+      "large_files": []
+    },
+    "t13a3j-broker-tests.txt": {
+      "files": 1,
+      "logical_bytes": 504,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3j-broker-tests3.txt": {
+      "files": 1,
+      "logical_bytes": 781,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3j-broker-tests4.txt": {
+      "files": 1,
+      "logical_bytes": 941,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3j-build-final.txt": {
+      "files": 1,
+      "logical_bytes": 62,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3j-check.txt": {
+      "files": 1,
+      "logical_bytes": 1030,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3j-check2.txt": {
+      "files": 1,
+      "logical_bytes": 148,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3j-clippy-final.txt": {
+      "files": 1,
+      "logical_bytes": 148,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3j-clippy.txt": {
+      "files": 1,
+      "logical_bytes": 3601,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3j-clippy2.txt": {
+      "files": 1,
+      "logical_bytes": 840,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3j-faults": {
+      "files": 381,
+      "logical_bytes": 22834858,
+      "allocated_bytes": 23691264,
+      "large_files": []
+    },
+    "t13a3j-final-faults": {
+      "files": 204,
+      "logical_bytes": 11601260,
+      "allocated_bytes": 12058624,
+      "large_files": []
+    },
+    "t13a3j-fmt-final.txt": {
+      "files": 1,
+      "logical_bytes": 0,
+      "allocated_bytes": 0,
+      "large_files": []
+    },
+    "t13a3j-functional-01": {
+      "files": 3733,
+      "logical_bytes": 91803255,
+      "allocated_bytes": 95645696,
+      "large_files": [
+        {
+          "path": "work/t13a3j-functional-01/model/business/diagnostics/sim-53098-0/quote/compute-durations.bin",
+          "bytes": 18695268,
+          "allocated_bytes": 18698240,
+          "inode": 404497528,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792525561695261481
+        }
+      ]
+    },
+    "t13a3j-functional-launch.txt": {
+      "files": 1,
+      "logical_bytes": 2623,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3j-late-ack-before": {
+      "files": 6,
+      "logical_bytes": 2082,
+      "allocated_bytes": 12288,
+      "large_files": []
+    },
+    "t13a3j-late-ack-before2": {
+      "files": 7,
+      "logical_bytes": 4955,
+      "allocated_bytes": 16384,
+      "large_files": []
+    },
+    "t13a3j-late-ack.py": {
+      "files": 1,
+      "logical_bytes": 2185,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3j-targeted-final.txt": {
+      "files": 1,
+      "logical_bytes": 5916,
+      "allocated_bytes": 8192,
+      "large_files": []
+    },
+    "t13a3j-targeted2.txt": {
+      "files": 1,
+      "logical_bytes": 2269,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3j-validation": {
+      "files": 4,
+      "logical_bytes": 12021,
+      "allocated_bytes": 20480,
+      "large_files": []
+    },
+    "t13a3j-workspace-final.txt": {
+      "files": 1,
+      "logical_bytes": 37056,
+      "allocated_bytes": 40960,
+      "large_files": []
+    },
+    "t13a3k-broker-retry.txt": {
+      "files": 1,
+      "logical_bytes": 854,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3k-clippy-final.txt": {
+      "files": 1,
+      "logical_bytes": 149,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3k-default-temp-probe.txt": {
+      "files": 1,
+      "logical_bytes": 326,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3k-fault-retry": {
+      "files": 204,
+      "logical_bytes": 11601239,
+      "allocated_bytes": 12058624,
+      "large_files": []
+    },
+    "t13a3k-fmt-final.txt": {
+      "files": 1,
+      "logical_bytes": 0,
+      "allocated_bytes": 0,
+      "large_files": []
+    },
+    "t13a3k-late-ack-after-attempt1": {
+      "files": 7,
+      "logical_bytes": 4382,
+      "allocated_bytes": 16384,
+      "large_files": []
+    },
+    "t13a3k-targeted.txt": {
+      "files": 1,
+      "logical_bytes": 6999,
+      "allocated_bytes": 8192,
+      "large_files": []
+    },
+    "t13a3k-validation": {
+      "files": 2,
+      "logical_bytes": 15130,
+      "allocated_bytes": 20480,
+      "large_files": []
+    },
+    "t13a3k-workspace-final.txt": {
+      "files": 1,
+      "logical_bytes": 22326,
+      "allocated_bytes": 24576,
+      "large_files": []
+    },
+    "t13a3l-targeted.txt": {
+      "files": 1,
+      "logical_bytes": 4878,
+      "allocated_bytes": 8192,
+      "large_files": []
+    },
+    "t13a3m-admission2": {
+      "files": 4,
+      "logical_bytes": 5011,
+      "allocated_bytes": 12288,
+      "large_files": []
+    },
+    "t13a3m-build-final.txt": {
+      "files": 1,
+      "logical_bytes": 116,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3m-clippy-final.txt": {
+      "files": 1,
+      "logical_bytes": 148,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3m-fault-artifacts.txt": {
+      "files": 1,
+      "logical_bytes": 855,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3m-final-faults": {
+      "files": 204,
+      "logical_bytes": 11601238,
+      "allocated_bytes": 12058624,
+      "large_files": []
+    },
+    "t13a3m-fmt-final.txt": {
+      "files": 1,
+      "logical_bytes": 0,
+      "allocated_bytes": 0,
+      "large_files": []
+    },
+    "t13a3m-functional-01": {
+      "files": 3733,
+      "logical_bytes": 91713377,
+      "allocated_bytes": 95563776,
+      "large_files": [
+        {
+          "path": "work/t13a3m-functional-01/model/business/diagnostics/sim-82202-0/quote/compute-durations.bin",
+          "bytes": 18695268,
+          "allocated_bytes": 18698240,
+          "inode": 404719060,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792527737838227285
+        }
+      ]
+    },
+    "t13a3m-functional-launch.txt": {
+      "files": 1,
+      "logical_bytes": 2613,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a3m-late-ack-after": {
+      "files": 7,
+      "logical_bytes": 4382,
+      "allocated_bytes": 16384,
+      "large_files": []
+    },
+    "t13a3m-validation": {
+      "files": 4,
+      "logical_bytes": 11460,
+      "allocated_bytes": 20480,
+      "large_files": []
+    },
+    "t13a3m-workspace-final.txt": {
+      "files": 1,
+      "logical_bytes": 37056,
+      "allocated_bytes": 40960,
+      "large_files": []
+    },
+    "t13a49-admission1": {
+      "files": 4,
+      "logical_bytes": 5378,
+      "allocated_bytes": 12288,
+      "large_files": []
+    },
+    "t13a49-admission2": {
+      "files": 4,
+      "logical_bytes": 9361,
+      "allocated_bytes": 16384,
+      "large_files": []
+    },
+    "t13a49-boxed-build.txt": {
+      "files": 1,
+      "logical_bytes": 62,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a49-boxed-clippy.txt": {
+      "files": 1,
+      "logical_bytes": 396,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a49-boxed-fmt.txt": {
+      "files": 1,
+      "logical_bytes": 0,
+      "allocated_bytes": 0,
+      "large_files": []
+    },
+    "t13a49-build1.txt": {
+      "files": 1,
+      "logical_bytes": 149,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a49-clippy-final.txt": {
+      "files": 1,
+      "logical_bytes": 158,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a49-clippy1.txt": {
+      "files": 1,
+      "logical_bytes": 396,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a49-smoke01": {
+      "files": 3938,
+      "logical_bytes": 103731464,
+      "allocated_bytes": 108208128,
+      "large_files": []
+    },
+    "t13a49-smoke02": {
+      "files": 3936,
+      "logical_bytes": 103685798,
+      "allocated_bytes": 108150784,
+      "large_files": []
+    },
+    "t13a49-stack-original-debug.txt": {
+      "files": 1,
+      "logical_bytes": 548,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a49-stack1.txt": {
+      "files": 1,
+      "logical_bytes": 937,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a49-stack2.txt": {
+      "files": 1,
+      "logical_bytes": 686,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a49-static-before-smoke2.json": {
+      "files": 1,
+      "logical_bytes": 818,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a49-static-boxed.json": {
+      "files": 1,
+      "logical_bytes": 253,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a49-static-final-preflight.json": {
+      "files": 1,
+      "logical_bytes": 818,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a49-verification1.json": {
+      "files": 1,
+      "logical_bytes": 0,
+      "allocated_bytes": 0,
+      "large_files": []
+    },
+    "t13a49-verification2.json": {
+      "files": 1,
+      "logical_bytes": 1344,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a49-workspace-release.txt": {
+      "files": 1,
+      "logical_bytes": 37915,
+      "allocated_bytes": 40960,
+      "large_files": []
+    },
+    "t13a49-workspace1.txt": {
+      "files": 1,
+      "logical_bytes": 24467,
+      "allocated_bytes": 24576,
+      "large_files": []
+    },
+    "t13a50-admission": {
+      "files": 4,
+      "logical_bytes": 4938,
+      "allocated_bytes": 12288,
+      "large_files": []
+    },
+    "t13a50-admission.txt": {
+      "files": 1,
+      "logical_bytes": 35,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a50-clippy.txt": {
+      "files": 1,
+      "logical_bytes": 158,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a50-cpu-test.txt": {
+      "files": 1,
+      "logical_bytes": 760,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a50-final-build.txt": {
+      "files": 1,
+      "logical_bytes": 116,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a50-final-clippy.txt": {
+      "files": 1,
+      "logical_bytes": 158,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a50-final-fmt.txt": {
+      "files": 1,
+      "logical_bytes": 0,
+      "allocated_bytes": 0,
+      "large_files": []
+    },
+    "t13a50-final-targets.txt": {
+      "files": 1,
+      "logical_bytes": 4825,
+      "allocated_bytes": 8192,
+      "large_files": []
+    },
+    "t13a50-joint-01": {
+      "files": 2611,
+      "logical_bytes": 5341155879,
+      "allocated_bytes": 5344227328,
+      "large_files": [
+        {
+          "path": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+          "bytes": 134217728,
+          "allocated_bytes": 134217728,
+          "inode": 405281350,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792533118677734209
+        },
+        {
+          "path": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+          "bytes": 3044040310,
+          "allocated_bytes": 3044040704,
+          "inode": 405281271,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792533118163479344
+        },
+        {
+          "path": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001/meter.json",
+          "bytes": 59090761,
+          "allocated_bytes": 59092992,
+          "inode": 405281249,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792533106207688133
+        },
+        {
+          "path": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001/native.json",
+          "bytes": 65299383,
+          "allocated_bytes": 65302528,
+          "inode": 405281219,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792533105814027619
+        },
+        {
+          "path": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000002.pending/pressure.bin",
+          "bytes": 1679004073,
+          "allocated_bytes": 1679007744,
+          "inode": 405328913,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792533420836163558
+        },
+        {
+          "path": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000002.pending/meter.json",
+          "bytes": 59090761,
+          "allocated_bytes": 59092992,
+          "inode": 405328823,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792533407028709694
+        },
+        {
+          "path": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000002.pending/native.json",
+          "bytes": 65299383,
+          "allocated_bytes": 65302528,
+          "inode": 405328738,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792533406057944964
+        }
+      ]
+    },
+    "t13a50-release-tests.txt": {
+      "files": 1,
+      "logical_bytes": 37775,
+      "allocated_bytes": 40960,
+      "large_files": []
+    },
+    "t13a51-admission1": {
+      "files": 4,
+      "logical_bytes": 4972,
+      "allocated_bytes": 12288,
+      "large_files": []
+    },
+    "t13a51-admission1.txt": {
+      "files": 1,
+      "logical_bytes": 35,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a51-admission2": {
+      "files": 4,
+      "logical_bytes": 4969,
+      "allocated_bytes": 12288,
+      "large_files": []
+    },
+    "t13a51-admission2.txt": {
+      "files": 1,
+      "logical_bytes": 30,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a51-admission3": {
+      "files": 4,
+      "logical_bytes": 4999,
+      "allocated_bytes": 12288,
+      "large_files": []
+    },
+    "t13a51-admission3.txt": {
+      "files": 1,
+      "logical_bytes": 30,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a51-build.txt": {
+      "files": 1,
+      "logical_bytes": 62,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a51-check.txt": {
+      "files": 1,
+      "logical_bytes": 158,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a51-clippy.txt": {
+      "files": 1,
+      "logical_bytes": 158,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a51-final-build.txt": {
+      "files": 1,
+      "logical_bytes": 149,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a51-final-build2.txt": {
+      "files": 1,
+      "logical_bytes": 1533,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a51-final-build3.txt": {
+      "files": 1,
+      "logical_bytes": 62,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a51-final-clippy.txt": {
+      "files": 1,
+      "logical_bytes": 158,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a51-final-clippy3.txt": {
+      "files": 1,
+      "logical_bytes": 158,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a51-final-lib.txt": {
+      "files": 1,
+      "logical_bytes": 3886,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a51-final-model-tests.txt": {
+      "files": 1,
+      "logical_bytes": 733,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a51-final-tests2.txt": {
+      "files": 1,
+      "logical_bytes": 1670,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a51-final-tests3.txt": {
+      "files": 1,
+      "logical_bytes": 4472,
+      "allocated_bytes": 8192,
+      "large_files": []
+    },
+    "t13a51-fmt.txt": {
+      "files": 1,
+      "logical_bytes": 0,
+      "allocated_bytes": 0,
+      "large_files": []
+    },
+    "t13a51-scoped-build.txt": {
+      "files": 1,
+      "logical_bytes": 1533,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a51-scoped-clippy.txt": {
+      "files": 1,
+      "logical_bytes": 1670,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a51-scoped-tests.txt": {
+      "files": 1,
+      "logical_bytes": 1670,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a51-target-tests.txt": {
+      "files": 1,
+      "logical_bytes": 4472,
+      "allocated_bytes": 8192,
+      "large_files": []
+    },
+    "t13a51-unpaced-01": {
+      "files": 3734,
+      "logical_bytes": 92010767,
+      "allocated_bytes": 95666176,
+      "large_files": [
+        {
+          "path": "work/t13a51-unpaced-01/model/business/diagnostics/sim-75800-0/quote/compute-durations.bin",
+          "bytes": 18695268,
+          "allocated_bytes": 18698240,
+          "inode": 405485744,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792535242544371182
+        }
+      ]
+    },
+    "t13a52-build.txt": {
+      "files": 1,
+      "logical_bytes": 62,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a52-clippy.txt": {
+      "files": 1,
+      "logical_bytes": 158,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a52-final-session-tests.txt": {
+      "files": 1,
+      "logical_bytes": 2251,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a52-fmt.txt": {
+      "files": 1,
+      "logical_bytes": 0,
+      "allocated_bytes": 0,
+      "large_files": []
+    },
+    "t13a52-replay-test.txt": {
+      "files": 1,
+      "logical_bytes": 410,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a52-session-tests.txt": {
+      "files": 1,
+      "logical_bytes": 2698,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a53-build.txt": {
+      "files": 1,
+      "logical_bytes": 62,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a53-check.txt": {
+      "files": 1,
+      "logical_bytes": 1000,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a53-check2.txt": {
+      "files": 1,
+      "logical_bytes": 148,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a53-clippy.txt": {
+      "files": 1,
+      "logical_bytes": 883,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a53-final-build.txt": {
+      "files": 1,
+      "logical_bytes": 62,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a53-final-build2.txt": {
+      "files": 1,
+      "logical_bytes": 62,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a53-final-clippy.txt": {
+      "files": 1,
+      "logical_bytes": 158,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a53-final-clippy2.txt": {
+      "files": 1,
+      "logical_bytes": 158,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a53-final-fmt.txt": {
+      "files": 1,
+      "logical_bytes": 0,
+      "allocated_bytes": 0,
+      "large_files": []
+    },
+    "t13a53-final-fmt2.txt": {
+      "files": 1,
+      "logical_bytes": 0,
+      "allocated_bytes": 0,
+      "large_files": []
+    },
+    "t13a53-final-tests.txt": {
+      "files": 1,
+      "logical_bytes": 6553,
+      "allocated_bytes": 8192,
+      "large_files": []
+    },
+    "t13a53-final-tests2.txt": {
+      "files": 1,
+      "logical_bytes": 6553,
+      "allocated_bytes": 8192,
+      "large_files": []
+    },
+    "t13a53-fmt.txt": {
+      "files": 1,
+      "logical_bytes": 0,
+      "allocated_bytes": 0,
+      "large_files": []
+    },
+    "t13a53-paced-01": {
+      "files": 28,
+      "logical_bytes": 6861288,
+      "allocated_bytes": 6918144,
+      "large_files": []
+    },
+    "t13a53-paced-admission": {
+      "files": 4,
+      "logical_bytes": 4966,
+      "allocated_bytes": 12288,
+      "large_files": []
+    },
+    "t13a53-paced-partial-drift.json": {
+      "files": 1,
+      "logical_bytes": 916,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a53-paced-progress.py": {
+      "files": 1,
+      "logical_bytes": 1011,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a53-paced-readiness.json": {
+      "files": 1,
+      "logical_bytes": 2816,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a53-step-01": {
+      "files": 21,
+      "logical_bytes": 242681,
+      "allocated_bytes": 294912,
+      "large_files": []
+    },
+    "t13a53-step-02": {
+      "files": 28,
+      "logical_bytes": 2500875,
+      "allocated_bytes": 2555904,
+      "large_files": []
+    },
+    "t13a53-step-admission": {
+      "files": 4,
+      "logical_bytes": 4917,
+      "allocated_bytes": 12288,
+      "large_files": []
+    },
+    "t13a53-step-admission2": {
+      "files": 4,
+      "logical_bytes": 4970,
+      "allocated_bytes": 12288,
+      "large_files": []
+    },
+    "t13a53-tests.txt": {
+      "files": 1,
+      "logical_bytes": 6553,
+      "allocated_bytes": 8192,
+      "large_files": []
+    },
+    "t13a55-build.txt": {
+      "files": 1,
+      "logical_bytes": 62,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a55-clippy.txt": {
+      "files": 1,
+      "logical_bytes": 158,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a55-fmt.txt": {
+      "files": 1,
+      "logical_bytes": 0,
+      "allocated_bytes": 0,
+      "large_files": []
+    },
+    "t13a55-paced-01": {
+      "files": 28,
+      "logical_bytes": 6916411,
+      "allocated_bytes": 6971392,
+      "large_files": []
+    },
+    "t13a55-paced-admission": {
+      "files": 4,
+      "logical_bytes": 4943,
+      "allocated_bytes": 12288,
+      "large_files": []
+    },
+    "t13a55-paced-progress.py": {
+      "files": 1,
+      "logical_bytes": 1011,
+      "allocated_bytes": 4096,
+      "large_files": []
+    },
+    "t13a55-step-01": {
+      "files": 28,
+      "logical_bytes": 2558131,
+      "allocated_bytes": 2613248,
+      "large_files": []
+    },
+    "t13a55-step-admission": {
+      "files": 4,
+      "logical_bytes": 4941,
+      "allocated_bytes": 12288,
+      "large_files": []
+    },
+    "t13a55-tests.txt": {
+      "files": 1,
+      "logical_bytes": 6651,
+      "allocated_bytes": 8192,
+      "large_files": []
+    },
+    "t13a56-records-01": {
+      "files": 6,
+      "logical_bytes": 27905,
+      "allocated_bytes": 40960,
+      "large_files": []
+    },
+    "t13a56-records-admission": {
+      "files": 6,
+      "logical_bytes": 5029,
+      "allocated_bytes": 16384,
+      "large_files": []
+    },
+    "t13a58-admission-01": {
+      "files": 4,
+      "logical_bytes": 4945,
+      "allocated_bytes": 12288,
+      "large_files": []
+    },
+    "t13a58-unpaced-01": {
+      "files": 3732,
+      "logical_bytes": 94657081,
+      "allocated_bytes": 98308096,
+      "large_files": [
+        {
+          "path": "work/t13a58-unpaced-01/model/business/diagnostics/sim-82137-0/quote/compute-durations.bin",
+          "bytes": 18695268,
+          "allocated_bytes": 18698240,
+          "inode": 405930868,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792544859048497703
+        }
+      ]
+    },
+    "t13a60-admission-01": {
+      "files": 4,
+      "logical_bytes": 4949,
+      "allocated_bytes": 12288,
+      "large_files": []
+    },
+    "t13a60-joint-01": {
+      "files": 4009,
+      "logical_bytes": 6867394089,
+      "allocated_bytes": 6871834624,
+      "large_files": [
+        {
+          "path": "work/t13a60-joint-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+          "bytes": 134217728,
+          "allocated_bytes": 134217728,
+          "inode": 405971355,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792545237656105458
+        },
+        {
+          "path": "work/t13a60-joint-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+          "bytes": 3044040310,
+          "allocated_bytes": 3044040704,
+          "inode": 405970540,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792545237128450704
+        },
+        {
+          "path": "work/t13a60-joint-01/model/layout/snapshots/snapshot-000001/meter.json",
+          "bytes": 59090761,
+          "allocated_bytes": 59092992,
+          "inode": 405970444,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792545225843411778
+        },
+        {
+          "path": "work/t13a60-joint-01/model/layout/snapshots/snapshot-000001/native.json",
+          "bytes": 65299383,
+          "allocated_bytes": 65302528,
+          "inode": 405970391,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792545225263030253
+        },
+        {
+          "path": "work/t13a60-joint-01/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+          "bytes": 134217728,
+          "allocated_bytes": 134217728,
+          "inode": 405991717,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792545538588836365
+        },
+        {
+          "path": "work/t13a60-joint-01/model/layout/snapshots/snapshot-000002/pressure.bin",
+          "bytes": 3044040310,
+          "allocated_bytes": 3044040704,
+          "inode": 405990880,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792545538029128113
+        },
+        {
+          "path": "work/t13a60-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+          "bytes": 59090761,
+          "allocated_bytes": 59092992,
+          "inode": 405990825,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792545525644190705
+        },
+        {
+          "path": "work/t13a60-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+          "bytes": 65299383,
+          "allocated_bytes": 65302528,
+          "inode": 405990772,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792545525121652686
+        }
+      ]
+    },
+    "t13a62-admission-01": {
+      "files": 4,
+      "logical_bytes": 4970,
+      "allocated_bytes": 12288,
+      "large_files": []
+    },
+    "t13a62-joint-01": {
+      "files": 4011,
+      "logical_bytes": 6867391186,
+      "allocated_bytes": 6871789568,
+      "large_files": [
+        {
+          "path": "work/t13a62-joint-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+          "bytes": 134217728,
+          "allocated_bytes": 134217728,
+          "inode": 406166599,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792547195021820658
+        },
+        {
+          "path": "work/t13a62-joint-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+          "bytes": 3044040310,
+          "allocated_bytes": 3044040704,
+          "inode": 406166591,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792547194609375654
+        },
+        {
+          "path": "work/t13a62-joint-01/model/layout/snapshots/snapshot-000001/meter.json",
+          "bytes": 59090761,
+          "allocated_bytes": 59092992,
+          "inode": 406166572,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792547187165063036
+        },
+        {
+          "path": "work/t13a62-joint-01/model/layout/snapshots/snapshot-000001/native.json",
+          "bytes": 65299383,
+          "allocated_bytes": 65302528,
+          "inode": 406166549,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792547186803801712
+        },
+        {
+          "path": "work/t13a62-joint-01/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+          "bytes": 134217728,
+          "allocated_bytes": 134217728,
+          "inode": 406186429,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792547499999540896
+        },
+        {
+          "path": "work/t13a62-joint-01/model/layout/snapshots/snapshot-000002/pressure.bin",
+          "bytes": 3044040310,
+          "allocated_bytes": 3044040704,
+          "inode": 406185777,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792547499497637703
+        },
+        {
+          "path": "work/t13a62-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+          "bytes": 59090761,
+          "allocated_bytes": 59092992,
+          "inode": 406185728,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792547487417775376
+        },
+        {
+          "path": "work/t13a62-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+          "bytes": 65299383,
+          "allocated_bytes": 65302528,
+          "inode": 406185684,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792547486920743132
+        }
+      ]
+    },
+    "t13a63-joint-01": {
+      "files": 4001,
+      "logical_bytes": 6868100563,
+      "allocated_bytes": 6872018944,
+      "large_files": [
+        {
+          "path": "work/t13a63-joint-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+          "bytes": 134217728,
+          "allocated_bytes": 134217728,
+          "inode": 406326886,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792552239715013774
+        },
+        {
+          "path": "work/t13a63-joint-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+          "bytes": 3044040310,
+          "allocated_bytes": 3044040704,
+          "inode": 406326478,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792552239329138269
+        },
+        {
+          "path": "work/t13a63-joint-01/model/layout/snapshots/snapshot-000001/meter.json",
+          "bytes": 59090761,
+          "allocated_bytes": 59092992,
+          "inode": 406326432,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792552230398207557
+        },
+        {
+          "path": "work/t13a63-joint-01/model/layout/snapshots/snapshot-000001/native.json",
+          "bytes": 65299383,
+          "allocated_bytes": 65302528,
+          "inode": 406326379,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792552229895166497
+        },
+        {
+          "path": "work/t13a63-joint-01/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+          "bytes": 134217728,
+          "allocated_bytes": 134217728,
+          "inode": 406355280,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792552542956943273
+        },
+        {
+          "path": "work/t13a63-joint-01/model/layout/snapshots/snapshot-000002/pressure.bin",
+          "bytes": 3044040310,
+          "allocated_bytes": 3044040704,
+          "inode": 406354662,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792552542414276925
+        },
+        {
+          "path": "work/t13a63-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+          "bytes": 59090761,
+          "allocated_bytes": 59092992,
+          "inode": 406354612,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792552530388224703
+        },
+        {
+          "path": "work/t13a63-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+          "bytes": 65299383,
+          "allocated_bytes": 65302528,
+          "inode": 406354567,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792552529864070280
+        }
+      ]
+    },
+    "t13a63-preflight": {
+      "files": 4,
+      "logical_bytes": 4983,
+      "allocated_bytes": 12288,
+      "large_files": []
+    },
+    "t13a64-hotpath-inputs": {
+      "files": 2,
+      "logical_bytes": 5053508,
+      "allocated_bytes": 5058560,
+      "large_files": []
+    },
+    "t13a64-joint-01": {
+      "files": 4007,
+      "logical_bytes": 6867916487,
+      "allocated_bytes": 6871703552,
+      "large_files": [
+        {
+          "path": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+          "bytes": 134217728,
+          "allocated_bytes": 134217728,
+          "inode": 406712763,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792555295476971897
+        },
+        {
+          "path": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+          "bytes": 3044040310,
+          "allocated_bytes": 3044040704,
+          "inode": 406712649,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792555295384466374
+        },
+        {
+          "path": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000001/meter.json",
+          "bytes": 59090761,
+          "allocated_bytes": 59092992,
+          "inode": 406712611,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792555292859723197
+        },
+        {
+          "path": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000001/native.json",
+          "bytes": 65299383,
+          "allocated_bytes": 65302528,
+          "inode": 406712570,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792555292610223073
+        },
+        {
+          "path": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+          "bytes": 134217728,
+          "allocated_bytes": 134217728,
+          "inode": 406736518,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792555598691971357
+        },
+        {
+          "path": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000002/pressure.bin",
+          "bytes": 3044040310,
+          "allocated_bytes": 3044040704,
+          "inode": 406736242,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792555598492519775
+        },
+        {
+          "path": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+          "bytes": 59090761,
+          "allocated_bytes": 59092992,
+          "inode": 406736196,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792555593474703856
+        },
+        {
+          "path": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+          "bytes": 65299383,
+          "allocated_bytes": 65302528,
+          "inode": 406736153,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792555593107078170
+        }
+      ]
+    },
+    "t13a64-preflight": {
+      "files": 4,
+      "logical_bytes": 4980,
+      "allocated_bytes": 12288,
+      "large_files": []
+    },
+    "t13a65-joint-01": {
+      "files": 4009,
+      "logical_bytes": 6868003591,
+      "allocated_bytes": 6871851008,
+      "large_files": [
+        {
+          "path": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+          "bytes": 134217728,
+          "allocated_bytes": 134217728,
+          "inode": 406942529,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792559202283022649
+        },
+        {
+          "path": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+          "bytes": 3044040310,
+          "allocated_bytes": 3044040704,
+          "inode": 406942516,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792559202134622333
+        },
+        {
+          "path": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000001/meter.json",
+          "bytes": 59090761,
+          "allocated_bytes": 59092992,
+          "inode": 406942496,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792559197420443854
+        },
+        {
+          "path": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000001/native.json",
+          "bytes": 65299383,
+          "allocated_bytes": 65302528,
+          "inode": 406942473,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792559197098815169
+        },
+        {
+          "path": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+          "bytes": 134217728,
+          "allocated_bytes": 134217728,
+          "inode": 406980918,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792559504211988319
+        },
+        {
+          "path": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000002/pressure.bin",
+          "bytes": 3044040310,
+          "allocated_bytes": 3044040704,
+          "inode": 406980572,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792559503932384355
+        },
+        {
+          "path": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+          "bytes": 59090761,
+          "allocated_bytes": 59092992,
+          "inode": 406980508,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792559497685895974
+        },
+        {
+          "path": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+          "bytes": 65299383,
+          "allocated_bytes": 65302528,
+          "inode": 406980457,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792559497224272657
+        }
+      ]
+    },
+    "t13a65-joint-02": {
+      "files": 1984,
+      "logical_bytes": 3439504040,
+      "allocated_bytes": 3445878784,
+      "large_files": [
+        {
+          "path": "work/t13a65-joint-02/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+          "bytes": 134217728,
+          "allocated_bytes": 134217728,
+          "inode": 407014311,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792560187575410666
+        },
+        {
+          "path": "work/t13a65-joint-02/model/layout/snapshots/snapshot-000001/pressure.bin",
+          "bytes": 3044040310,
+          "allocated_bytes": 3045089280,
+          "inode": 407014256,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792560187388196536
+        },
+        {
+          "path": "work/t13a65-joint-02/model/layout/snapshots/snapshot-000001/meter.json",
+          "bytes": 59090761,
+          "allocated_bytes": 59092992,
+          "inode": 407014237,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792560182355033587
+        },
+        {
+          "path": "work/t13a65-joint-02/model/layout/snapshots/snapshot-000001/native.json",
+          "bytes": 65299383,
+          "allocated_bytes": 65302528,
+          "inode": 407014213,
+          "device": 16777231,
+          "links": 1,
+          "mtime_ns": 1792560182065571695
+        }
+      ]
+    },
+    "t13a65-preflight": {
+      "files": 4,
+      "logical_bytes": 4913,
+      "allocated_bytes": 12288,
+      "large_files": []
+    },
+    "t13a65-preflight-02": {
+      "files": 4,
+      "logical_bytes": 5034,
+      "allocated_bytes": 12288,
+      "large_files": []
+    }
+  },
+  "large_pressure_candidates": [
+    {
+      "path": "work/t13a63-joint-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "inode": 406326886,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792552239715013774
+    },
+    {
+      "path": "work/t13a63-joint-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "inode": 406326478,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792552239329138269
+    },
+    {
+      "path": "work/t13a63-joint-01/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "inode": 406355280,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792552542956943273
+    },
+    {
+      "path": "work/t13a63-joint-01/model/layout/snapshots/snapshot-000002/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "inode": 406354662,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792552542414276925
+    },
+    {
+      "path": "work/t13a62-joint-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "inode": 406166599,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792547195021820658
+    },
+    {
+      "path": "work/t13a62-joint-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "inode": 406166591,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792547194609375654
+    },
+    {
+      "path": "work/t13a62-joint-01/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "inode": 406186429,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792547499999540896
+    },
+    {
+      "path": "work/t13a62-joint-01/model/layout/snapshots/snapshot-000002/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "inode": 406185777,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792547499497637703
+    },
+    {
+      "path": "work/t13a3h-joint-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "inode": 404261802,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792521393127782997
+    },
+    {
+      "path": "work/t13a3h-joint-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "inode": 404261785,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792521392618274536
+    },
+    {
+      "path": "work/t13a1b-layout-full-01/model/snapshots/snapshot-000002/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "inode": 400620405,
+      "device": 16777231,
+      "links": 2,
+      "mtime_ns": 1792492278098256241
+    },
+    {
+      "path": "work/t13a1b-layout-full-01/model/snapshots/snapshot-000002/pressure.bin",
+      "bytes": 3107882990,
+      "allocated_bytes": 3107885056,
+      "inode": 400620395,
+      "device": 16777231,
+      "links": 2,
+      "mtime_ns": 1792492277705142852
+    },
+    {
+      "path": "work/t13a1b-layout-full-01/model/snapshots/snapshot-000003/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "inode": 400632434,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792492476923705752
+    },
+    {
+      "path": "work/t13a1b-layout-full-01/model/snapshots/snapshot-000003/pressure.bin",
+      "bytes": 3107882990,
+      "allocated_bytes": 3107885056,
+      "inode": 400631283,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792492476051243653
+    },
+    {
+      "path": "work/t13a3b-budget-02/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "inode": 402994564,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792509766810689613
+    },
+    {
+      "path": "work/t13a3b-budget-02/model/layout/snapshots/snapshot-000001/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "inode": 402994066,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792509766394974155
+    },
+    {
+      "path": "work/t13a3b-budget-02/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "inode": 403049197,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792510073074585699
+    },
+    {
+      "path": "work/t13a3b-budget-02/model/layout/snapshots/snapshot-000002/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "inode": 403048098,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792510072373682207
+    },
+    {
+      "path": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "inode": 405281350,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792533118677734209
+    },
+    {
+      "path": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "inode": 405281271,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792533118163479344
+    },
+    {
+      "path": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000002.pending/pressure.bin",
+      "bytes": 1679004073,
+      "allocated_bytes": 1679007744,
+      "inode": 405328913,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792533420836163558
+    },
+    {
+      "path": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "inode": 406712763,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792555295476971897
+    },
+    {
+      "path": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "inode": 406712649,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792555295384466374
+    },
+    {
+      "path": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "inode": 406736518,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792555598691971357
+    },
+    {
+      "path": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000002/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "inode": 406736242,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792555598492519775
+    },
+    {
+      "path": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "inode": 406942529,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792559202283022649
+    },
+    {
+      "path": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "inode": 406942516,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792559202134622333
+    },
+    {
+      "path": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "inode": 406980918,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792559504211988319
+    },
+    {
+      "path": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000002/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "inode": 406980572,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792559503932384355
+    },
+    {
+      "path": "work/t13a3a-joint-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "inode": 402535202,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792506845923937787
+    },
+    {
+      "path": "work/t13a3a-joint-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "inode": 402535196,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792506845668209465
+    },
+    {
+      "path": "work/t13a3a-joint-01/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "inode": 402555703,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792507154900522611
+    },
+    {
+      "path": "work/t13a3a-joint-01/model/layout/snapshots/snapshot-000002/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "inode": 402551598,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792507154111937635
+    },
+    {
+      "path": "work/t13a60-joint-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "inode": 405971355,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792545237656105458
+    },
+    {
+      "path": "work/t13a60-joint-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "inode": 405970540,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792545237128450704
+    },
+    {
+      "path": "work/t13a60-joint-01/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "inode": 405991717,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792545538588836365
+    },
+    {
+      "path": "work/t13a60-joint-01/model/layout/snapshots/snapshot-000002/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "inode": 405990880,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792545538029128113
+    },
+    {
+      "path": "work/t13a1b-layout-full-10/model/snapshots/snapshot-000003/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "inode": 400917664,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792494866096054967
+    },
+    {
+      "path": "work/t13a1b-layout-full-10/model/snapshots/snapshot-000003/pressure.bin",
+      "bytes": 3107882990,
+      "allocated_bytes": 3107885056,
+      "inode": 400916945,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792494865626132222
+    },
+    {
+      "path": "work/t13a1b-layout-full-10/model/snapshots/snapshot-000004/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "inode": 400921215,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792494922891201408
+    },
+    {
+      "path": "work/t13a1b-layout-full-10/model/snapshots/snapshot-000004/pressure.bin",
+      "bytes": 3107882990,
+      "allocated_bytes": 3107885056,
+      "inode": 400921141,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792494922424558699
+    },
+    {
+      "path": "work/t13a1b-layout-full-04/model/snapshots/snapshot-000001/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "inode": 400864089,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792494490275828385
+    },
+    {
+      "path": "work/t13a1b-layout-full-04/model/snapshots/snapshot-000001/pressure.bin",
+      "bytes": 3107882990,
+      "allocated_bytes": 3107885056,
+      "inode": 400856671,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792494489659498802
+    },
+    {
+      "path": "work/t13a1b-layout-full-04/model/snapshots/snapshot-000003.pending/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "inode": 400881660,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792494555378459963
+    },
+    {
+      "path": "work/t13a1b-layout-full-04/model/snapshots/snapshot-000003.pending/pressure.bin",
+      "bytes": 3107882990,
+      "allocated_bytes": 3107885056,
+      "inode": 400881625,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792494554816499566
+    },
+    {
+      "path": "work/t13a3b-budget-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "inode": 402940376,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792509162913849451
+    },
+    {
+      "path": "work/t13a3b-budget-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "inode": 402940237,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792509162519065795
+    },
+    {
+      "path": "work/t13a65-joint-02/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "inode": 407014311,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792560187575410666
+    },
+    {
+      "path": "work/t13a65-joint-02/model/layout/snapshots/snapshot-000001/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3045089280,
+      "inode": 407014256,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792560187388196536
+    },
+    {
+      "path": "work/t13a1b-layout-negative-fixture/snapshot/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "inode": 400620405,
+      "device": 16777231,
+      "links": 2,
+      "mtime_ns": 1792492278098256241
+    },
+    {
+      "path": "work/t13a1b-layout-negative-fixture/snapshot/pressure.bin",
+      "bytes": 3107882990,
+      "allocated_bytes": 3107885056,
+      "inode": 400620395,
+      "device": 16777231,
+      "links": 2,
+      "mtime_ns": 1792492277705142852
+    },
+    {
+      "path": "work/t13a3g-joint-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "inode": 404113790,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792518845513265307
+    },
+    {
+      "path": "work/t13a3g-joint-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "inode": 404113771,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792518845132418275
+    }
+  ]
+}

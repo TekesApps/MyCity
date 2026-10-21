@@ -1,0 +1,21 @@
+{
+  "as_of": "2026-10-21",
+  "authority": "docs/evidence/disk-reclamation-2026-10-21/deletion-result.json",
+  "removed_files": [
+    "work/t13a1b-layout-full-01/model/snapshots/snapshot-000002/work-reserve.bin",
+    "work/t13a1b-layout-full-01/model/snapshots/snapshot-000002/pressure.bin",
+    "work/t13a1b-layout-full-01/model/snapshots/snapshot-000003/work-reserve.bin",
+    "work/t13a1b-layout-full-01/model/snapshots/snapshot-000003/pressure.bin",
+    "work/t13a1b-layout-full-10/model/snapshots/snapshot-000003/work-reserve.bin",
+    "work/t13a1b-layout-full-10/model/snapshots/snapshot-000003/pressure.bin",
+    "work/t13a1b-layout-full-10/model/snapshots/snapshot-000004/work-reserve.bin",
+    "work/t13a1b-layout-full-10/model/snapshots/snapshot-000004/pressure.bin",
+    "work/t13a1b-layout-full-04/model/snapshots/snapshot-000001/work-reserve.bin",
+    "work/t13a1b-layout-full-04/model/snapshots/snapshot-000001/pressure.bin",
+    "work/t13a1b-layout-full-04/model/snapshots/snapshot-000003.pending/work-reserve.bin",
+    "work/t13a1b-layout-full-04/model/snapshots/snapshot-000003.pending/pressure.bin",
+    "work/t13a1b-layout-negative-fixture/snapshot/work-reserve.bin",
+    "work/t13a1b-layout-negative-fixture/snapshot/pressure.bin"
+  ],
+  "current_availability": "Listed snapshots are NOT directly full-restorable. Original indexes/hashes and business/native/stub evidence remain. Historical restores are historical evidence only. Unlisted snapshots unaffected. t13a50 snapshot-000001 remains complete; only snapshot-000002.pending pressure retired."
+}

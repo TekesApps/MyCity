@@ -1,0 +1,44 @@
+[
+  {
+    "index": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "indexed_files": 29,
+    "all_present_original_length": true,
+    "note": "Existence/length and pre/post unchanged metadata; not a fresh restore or full rehash"
+  },
+  {
+    "index": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "indexed_files": 29,
+    "all_present_original_length": true,
+    "note": "Existence/length and pre/post unchanged metadata; not a fresh restore or full rehash"
+  },
+  {
+    "index": "work/t13a65-joint-02/model/layout/snapshots/snapshot-000001/index.json",
+    "indexed_files": 29,
+    "all_present_original_length": true,
+    "note": "Existence/length and pre/post unchanged metadata; not a fresh restore or full rehash"
+  },
+  {
+    "index": "work/t13a65-joint-02/model/layout/snapshots/snapshot-000002/index.json",
+    "indexed_files": 29,
+    "all_present_original_length": true,
+    "note": "Existence/length and pre/post unchanged metadata; not a fresh restore or full rehash"
+  },
+  {
+    "index": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "indexed_files": 29,
+    "all_present_original_length": true,
+    "note": "Existence/length and pre/post unchanged metadata; not a fresh restore or full rehash"
+  },
+  {
+    "index": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "indexed_files": 29,
+    "all_present_original_length": true,
+    "note": "Existence/length and pre/post unchanged metadata; not a fresh restore or full rehash"
+  },
+  {
+    "index": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "indexed_files": 29,
+    "all_present_original_length": true,
+    "note": "Existence/length and pre/post unchanged metadata; not a fresh restore or full rehash"
+  }
+]

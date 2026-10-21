@@ -1,3 +1,5 @@
+> **2026-10-21 availability update:** Selected historical synthetic pressure payloads retired; listed snapshots are NOT directly full-restorable. Business/component evidence and original indexes remain. This supersedes older retention promises below. See [availability](t13a63-joint-01/artifact-availability-2026-10-21.json) and [cleanup record](../disk-reclamation-2026-10-21/STATUS.md).
+
 # Worker固定空气模型背板及实际借还
 
 v0.5.63阶段发布，仅Rust模型/CLI。原[计划](PLAN.md)不改变冻结负载、CPU参考、规范字节或保护门；[边界](DESIGN.md)与[advisor代码审查](advisor-code-review.md)明确限制。没有新增UI/GPU/AgentKit或概率策略。

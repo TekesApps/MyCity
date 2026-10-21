@@ -1,3 +1,5 @@
+> **2026-10-21 availability update:** Selected historical synthetic pressure payloads retired; listed snapshots are NOT directly full-restorable. Business/component evidence and original indexes remain. This supersedes older retention promises below. See [availability](t13a60-joint-01/artifact-availability-2026-10-21.json) and [cleanup record](../disk-reclamation-2026-10-21/STATUS.md).
+
 # 原完整L1＋L2短联合重新实测
 
 v0.5.61候选。仅Rust模型与CLI，本阶段只增加真实联合证据，无代码改动，不重跑旧定向测试。[来源](source.json)为已发布v0.5.59的e6dd2bad02f0816f78ebc5d2d0794baac07e0f9dd8c12bbf16282965cd01acab／149文件；启动保存的binary f26244705a1fc53cf874eaca24884b11dfdb96eae8939629191a4c9ec48bc7c0。继承[原方案](PLAN.md)及[advisor启动审查](advisor-plan-review.md)，原acceptance SHA/数量/保护门不变。

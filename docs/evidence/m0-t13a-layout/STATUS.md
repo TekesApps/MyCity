@@ -1,3 +1,5 @@
+> **2026-10-21 availability update:** Selected historical synthetic pressure payloads retired; listed snapshots are NOT directly full-restorable. Business/component evidence and original indexes remain. This supersedes older retention promises below. See [availability](artifact-availability-2026-10-21.json) and [cleanup record](../disk-reclamation-2026-10-21/STATUS.md).
+
 # T13A-1b：完整L1布局、流式快照和有界观测
 
 本阶段仅验证布局压力替身，非完整城市业务。冻结负载SHA256仍为876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508；没有削减记录数、七域3.10GiB、8192页或8小时标准。当前机器M4／32GiB；真实16GB为not_run。
