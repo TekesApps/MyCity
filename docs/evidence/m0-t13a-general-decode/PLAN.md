@@ -1,0 +1,13 @@
+# 一般模型有界解码：实现阶段
+
+继承原fixture及全部记录数／CPU数值步／原门，保持Rust模型与CLI。目标是消除普通Arena恢复时按文件增长再复制、World/Opening动态行数后验检查和长标签在语法解析前无界积累；不是新一轮小规模替身性能验收。
+
+Arena普通visitor按可信Domain64/128预建，再逐记录写入；不读文件max决定分配，不信size_hint，N+1在解码多余记录前拒绝。declared max仍约束逻辑插入，free顺序／generation／scope及旧canonical保留。MAX空槽且在free表示最后一代尚可用，不在free才是退休；不可一律拒绝MAX free。restore_capacity改为纯验证、不再重建或分配。私有Vec保留原结构尺寸和L1原owned计量；预填并观测后clear只证明分配预触，不宣称其尾部仍可安全借作typed活动记录。
+
+World索引／sources、Opening根与region数组改现有固定Rows；通用空气解码source20000及field/integral16384也直接写预留typed背板，避免边读边增容且保留原air_rows错误。普通Input push/clear在cap内保持可用。标签decoded64B、lexical384B（允许64 ASCII的unicode转义）、depth128，保护先于serde scratch。FrozenLabel只匹配静态label。
+
+全仓release／clippy／fmt／build按同源冻结实际终态，兼容CLI用当前确切库实际打开已有完整旧rules world副本，比较全部原始Engine字节。测试覆盖稀疏/free/最后代次、字段顺序、真实预算、超额malformed row前拒绝、标签转义／超长／深嵌套，以及原密集空气数值与恢复、30日经济和真实进程故障。advisor独立代码与最终结果审查。
+
+一般Background仍经Raw后归一化，旧／新对象重叠和公共拥有式入口尚未统一pool；新增固定容量按真实容量报告，不能按active数收费。原64MiB和Engine4MiB不扩，恢复中额外临时归一化对象单独估计；目标fit不等于实际grant／RSS／16GB。完成本实现阶段后直接推进Store流式WAL／receipt／canonical及整图池，避免每一局部都重复同一600秒诊断；最终正式分级／原完整联合／四档／3x3稳态／真正8h仍完整保留，未测不算通过。
+
+复用共享target；本轮不生成新的L1压力副本。继续保留t13a70-joint-01两代完整布局基线、v50旧格式依赖、全部业务world／完整兼容副本及源码／依赖／验收exe／日志。终态后按依赖盘点回收，不动当前构建和其他项目。

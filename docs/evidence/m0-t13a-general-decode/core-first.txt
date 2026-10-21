@@ -1,0 +1,98 @@
+   Compiling sha2-asm v0.6.4
+   Compiling sha2 v0.10.9
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+    Finished `release` profile [optimized] target(s) in 26.13s
+     Running unittests src/lib.rs (target/release/deps/mycity_core-2f19e129d35b0fee)
+
+running 56 tests
+test arena::tests::full_tables_preserve_existing_state_and_owned_capacity ... ok
+test arena::tests::generation_exhaustion_retires_slot_instead_of_resurrecting_old_handle ... ok
+test arena::tests::wrong_world_branch_domain_and_generation_are_rejected ... ok
+test arena::checkpoint_tests::checkpoint_preserves_free_stack_generation_and_retired_slots ... ok
+test arena::tests::fixed_diagnostic_arena_rejects_shape_and_preserves_handles ... ok
+test air::wire::tests::short_writes_errors_and_original_byte_bound_are_not_bypassed ... ok
+test assembly::tests::oversized_counts_and_unspent_initial_sources_do_not_publish_a_world ... ok
+test assembly::tests::input_order_does_not_change_world_identity_or_hash ... ok
+test assembly::tests::sources_and_independent_initial_worlds_are_exact ... ok
+test assembly::tests::duplicate_sources_missing_owners_and_cost_mismatches_reject ... ok
+test calendar::tests::dates_round_trip_and_reject_invalid_bounds ... ok
+test calendar::tests::month_anchor_does_not_drift_after_february ... ok
+test air::report_hash_tests::fixed_scratch_report_matches_the_previous_complete_wire_hashes ... ok
+test calendar::tests::rent_30_days_is_not_calendar_month_or_four_weeks ... ok
+test fixed_restore::tests::capacity_overflow_and_extra_record_reject_before_record_decode ... ok
+test fixed_restore::tests::nested_ignored_field_is_bounded_before_parser_scratch_can_grow ... ok
+test fixed_restore::tests::fixed_counts_eof_and_token_limits_reject_malformed_streams ... ok
+test air::report_hash_tests::fixed_buffer_hash_is_chunk_and_flush_independent ... ok
+test fixed_restore::tests::record_budget_is_checked_before_reservation ... ok
+test model_capacity::tests::every_domain_copy_and_full_dirty_stock_table_is_included ... ok
+test model_rows::tests::copy_reset_and_shorter_restore_keep_full_backing_and_wire ... ok
+test model_rows::tests::overflow_rejected_before_decoding_the_extra_value ... ok
+test model_rows::tests::inactive_timeline_retains_capacity_and_enable_does_not_allocate_rows ... ok
+test schedule::tests::pause_and_old_ack_do_not_change_cursor_or_time ... ok
+test air::wire::tests::every_decimal_boundary_and_chunk_tail_matches_independent_serde ... ok
+test schedule::tests::phase_order_and_interval_cap_are_independent_of_input_order ... ok
+test schedule::tests::large_same_time_source_pages_finish_before_advancing_world ... ok
+test tests::digest_has_known_reference_value ... ok
+test schedule::tests::bookmark_continues_remaining_pages_without_reprocessing_old_sources ... ok
+test schedule::tests::per_source_randomness_ignores_paging_and_is_domain_separated ... ok
+test tests::stream_bound_does_not_depend_on_file_metadata ... ok
+test background::tests::real_dispatched_freight_produces_bounded_source_but_paused_link_does_not ... ok
+test schedule::tests::malformed_bookmarks_and_changed_sources_reject ... ok
+test timeline::fixed_cycle_decode_tests::cycle_field_order_and_canonical_bytes_stay_compatible_without_content ... ok
+test tests::unsupported_or_ambiguous_bootstrap_is_rejected ... ok
+test schedule::tests::bookmark_cannot_be_loaded_into_another_world_or_branch ... ok
+test transaction::tests::foreign_capacity_reference_cannot_resolve_same_number_in_another_world ... ok
+test transaction::tests::capacity_lifecycle_releases_once_and_never_reuses_token ... ok
+test transaction::tests::lot_cost_is_invariant_under_splitting_and_internal_transfer ... ok
+test transaction::tests::account_cannot_unprotect_or_redirect_reserved_funds ... ok
+test transaction::tests::persistence_hook_failure_publishes_neither_model_changes_nor_receipt ... ok
+test transaction::tests::failed_late_action_leaves_no_partial_cash_or_capacity ... ok
+test transaction::tests::retry_is_exact_and_changed_payload_or_actor_cannot_reuse_receipt ... ok
+test transaction::tests::stale_revision_scope_and_foreign_handles_do_not_write ... ok
+test transaction::tests::protection_is_not_new_cash_and_payment_converts_once ... ok
+test transaction::tests::stock_and_payment_commit_as_one_with_conserved_quantity_and_basis ... ok
+test transaction::workspace::tests::reentry_is_rejected_and_unwind_returns_same_initialized_rows ... ok
+test units::tests::failed_accrual_preserves_carry ... ok
+test units::tests::negative_values_and_overflow_cannot_enter_exact_units ... ok
+test units::tests::splitting_and_restoring_time_does_not_drop_fractional_cost ... ok
+test transaction::tests::two_resource_request_does_not_hold_one_when_second_is_unavailable ... ok
+test transaction::workspace::tests::failed_or_unwound_hook_preserves_authority_then_commit_swaps_backing ... ok
+test background::tests::three_failed_attempts_or_bad_input_leave_required_job_without_unbounded_retry ... ok
+test transaction::tests::full_journal_backpressures_without_erasing_prior_receipts ... ok
+test background::tests::restart_fences_old_attempt_and_preserves_continuous_committed_field ... ok
+test background::tests::fixed_background_lifecycle_keeps_all_backings_and_old_numerical_bytes ... ok
+
+test result: ok. 56 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/air.rs (target/release/deps/air-a03480c851dd04f7)
+
+running 13 tests
+test partial_candidate_never_publishes_field_integral_time_or_diagnostics ... ok
+test pulse_spreads_from_a_single_cell_on_later_steps ... ok
+test continuous_windows_preserve_field_integral_and_source_ledger ... ok
+test streamed_checkpoint_handles_partial_writers_exact_size_and_interrupted_output ... ok
+test checksum_stale_identity_invalid_cursor_and_nonfinite_restore_are_rejected ... ok
+test unknown_boundary_bad_sources_and_limits_do_not_silently_substitute_zero ... ok
+test decoder_rejects_excess_rows_before_accepting_source_or_checkpoint_vectors ... FAILED
+test diagnostics_keep_air_checkpoint_exact_and_exclude_page_sink_from_parent_clock ... ok
+test checkpoint_digest_preserves_complete_and_continued_state_identity ... ok
+test dense_source_pages_and_mid_source_mid_tile_checkpoints_are_bit_exact ... ok
+test constant_background_is_exact_for_all_map_sizes_and_full_day_integral ... ok
+test independent_f64_single_step_day_and_fixed_thirty_day_window ... ok
+test streamed_borrowed_checkpoints_are_byte_identical_to_legacy_owned_format ... ok
+
+failures:
+
+---- decoder_rejects_excess_rows_before_accepting_source_or_checkpoint_vectors stdout ----
+
+thread 'decoder_rejects_excess_rows_before_accepting_source_or_checkpoint_vectors' panicked at crates/city-core/tests/air.rs:314:5:
+model_rows_extra_record at line 1 column 1109051
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    decoder_rejects_excess_rows_before_accepting_source_or_checkpoint_vectors
+
+test result: FAILED. 12 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.02s
+
+error: test failed, to rerun pass `-p mycity-core --test air`

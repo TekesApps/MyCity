@@ -1,5 +1,6 @@
 //! Fixed-record, counted storage. A domain has exactly one table in a logical world.
 use serde::{Deserialize, Serialize};
+mod restore;
 use std::{marker::PhantomData, mem::size_of};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
@@ -48,6 +49,8 @@ pub struct RawHandle {
 
 pub trait Domain: Copy {
     const ID: u16;
+    /// Ordinary model restore only. Large L1 capacities use an explicit trusted decoder.
+    const RESTORE_LIMIT: usize = 0;
 }
 
 #[derive(Clone, Copy, Debug, Serialize, PartialEq, Eq)]
@@ -64,11 +67,13 @@ pub struct Layout {
 pub struct AccountDomain;
 impl Domain for AccountDomain {
     const ID: u16 = 1;
+    const RESTORE_LIMIT: usize = crate::assembly::MAX_ACCOUNTS;
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct InventoryDomain;
 impl Domain for InventoryDomain {
     const ID: u16 = 2;
+    const RESTORE_LIMIT: usize = crate::assembly::MAX_STOCKS;
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -114,11 +119,8 @@ struct Slot<T: Copy> {
 }
 
 /// Owns only fixed-size records: T must not hide owned heap storage or borrowed world state.
-#[derive(Serialize, Deserialize)]
-#[serde(
-    bound(serialize = "T: Serialize", deserialize = "T: Deserialize<'de>"),
-    deny_unknown_fields
-)]
+#[derive(Serialize)]
+#[serde(bound(serialize = "T: Serialize"))]
 pub struct Arena<D: Domain, T: Copy> {
     scope: Scope,
     slots: Vec<Slot<T>>,
@@ -197,6 +199,32 @@ impl<D: Domain, T: Copy> Arena<D, T> {
             .map_err(|_| ArenaError::Allocation)?;
         free.try_reserve_exact(max as usize)
             .map_err(|_| ArenaError::Allocation)?;
+        if slots.capacity() != max as usize || free.capacity() != max as usize {
+            return Err(ArenaError::Allocation);
+        }
+        // Initialize and observe the allocation before use, without changing Vec/header
+        // shape or L1 accounting. Clear leaves no safely borrowable typed inactive tail.
+        slots.resize(
+            max as usize,
+            Slot {
+                generation: 0,
+                value: None,
+            },
+        );
+        let scan = std::hint::black_box(slots.as_slice())
+            .iter()
+            .fold(0u64, |a, s| {
+                a.wrapping_add(u64::from(s.generation) + u64::from(s.value.is_some()))
+            });
+        std::hint::black_box(scan);
+        slots.clear();
+        free.resize(max as usize, 0);
+        std::hint::black_box(
+            std::hint::black_box(free.as_slice())
+                .iter()
+                .fold(0u64, |a, v| a.wrapping_add(u64::from(*v))),
+        );
+        free.clear();
         let table = Self {
             scope,
             slots,
@@ -240,11 +268,12 @@ impl<D: Domain, T: Copy> Arena<D, T> {
                 return Err(ArenaError::StaleHandle);
             }
         }
-        let mut restored = Self::new(scope, max, budget)?;
-        restored.slots.extend_from_slice(&self.slots);
-        restored.free.extend_from_slice(&self.free);
-        restored.live = self.live;
-        *self = restored;
+        if self.slots.capacity() < max as usize
+            || self.free.capacity() < max as usize
+            || self.owned_bytes() > budget
+        {
+            return Err(ArenaError::Budget);
+        }
         Ok(())
     }
     pub fn owned_bytes(&self) -> usize {
@@ -274,7 +303,7 @@ impl<D: Domain, T: Copy> Arena<D, T> {
             self.slots[index as usize].value = Some(value);
             index
         } else {
-            if self.slots.len() >= self.max as usize {
+            if self.slots.len() >= self.max as usize || self.slots.len() >= self.slots.capacity() {
                 return Err(ArenaError::Full);
             }
             let index = self.slots.len() as u32;
@@ -334,6 +363,10 @@ impl<D: Domain, T: Copy> Arena<D, T> {
         self.live -= 1;
         if let Some(next) = slot.generation.checked_add(1) {
             slot.generation = next;
+            assert!(
+                self.free.len() < self.free.capacity(),
+                "validated bounded free stack"
+            );
             self.free.push(handle.raw.index);
         } // Exhausted generation is retired; never wrap to an old live identity.
         Ok(value)
@@ -473,5 +506,81 @@ mod checkpoint_tests {
         let mut restored: Arena<AccountDomain, u64> = serde_json::from_slice(&bytes).unwrap();
         restored.restore_capacity(scope, 3, 4096).unwrap();
         assert_eq!(restored.insert(9), Err(ArenaError::Full));
+    }
+    #[test]
+    fn general_restore_is_order_independent_bounded_and_never_reallocates_or_expands_max() {
+        let scope = Scope::new(1, 1).unwrap();
+        let mut original = Arena::<AccountDomain, u64>::new(scope, 3, 4096).unwrap();
+        let a = original.insert(1).unwrap();
+        let b = original.insert(2).unwrap();
+        let c = original.insert(3).unwrap();
+        original.remove(b).unwrap();
+        original.remove(a).unwrap();
+        // Value's sorted keys put max after free; capacity cannot depend on that order.
+        let json = serde_json::to_value(&original).unwrap();
+        let mut restored: Arena<AccountDomain, u64> = serde_json::from_value(json.clone()).unwrap();
+        let ids = (restored.slots.as_ptr(), restored.free.as_ptr());
+        assert_eq!(restored.slots.capacity(), AccountDomain::RESTORE_LIMIT);
+        assert_eq!(restored.free.capacity(), AccountDomain::RESTORE_LIMIT);
+        assert_eq!(
+            serde_json::to_vec(&restored).unwrap(),
+            serde_json::to_vec(&original).unwrap()
+        );
+        restored.restore_capacity(scope, 3, 4096).unwrap();
+        assert_eq!(ids, (restored.slots.as_ptr(), restored.free.as_ptr()));
+        assert_eq!(
+            restored.restore_capacity(scope, 3, 512),
+            Err(ArenaError::Budget)
+        );
+        assert_eq!(
+            original.insert(4).unwrap().raw(),
+            restored.insert(4).unwrap().raw()
+        );
+        assert_eq!(
+            original.insert(5).unwrap().raw(),
+            restored.insert(5).unwrap().raw()
+        );
+        assert_eq!(restored.insert(6), Err(ArenaError::Full));
+        assert_eq!(*restored.get(c).unwrap(), 3);
+        let mut corrupt = json;
+        corrupt["free"] = serde_json::json!([1, 1]);
+        assert!(serde_json::from_value::<Arena<AccountDomain, u64>>(corrupt).is_err());
+        let rows = vec![r#"{"generation":1,"value":7}"#; AccountDomain::RESTORE_LIMIT].join(",");
+        let extra = format!(
+            r#"{{"slots":[{rows},{{"value":{{"deep":[[]]}}}}],"free":[],"scope":{{"world":1,"branch":1}},"max":64,"live":64}}"#
+        );
+        let err = match serde_json::from_str::<Arena<AccountDomain, u64>>(&extra) {
+            Ok(_) => panic!("accepted extra slot"),
+            Err(e) => e.to_string(),
+        };
+        assert!(err.contains("model_rows_extra_record"), "{err}");
+    }
+    #[test]
+    fn last_generation_free_survives_reopen_then_exhausted_slot_stays_retired() {
+        let scope = Scope::new(1, 1).unwrap();
+        let mut a = Arena::<AccountDomain, u64>::new(scope, 1, 4096).unwrap();
+        let h = a.insert(7).unwrap();
+        a.slots[0].generation = u32::MAX - 1;
+        let before_last = a
+            .resolve(RawHandle {
+                generation: u32::MAX - 1,
+                ..h.raw()
+            })
+            .unwrap();
+        a.remove(before_last).unwrap();
+        assert_eq!(a.free.as_slice(), &[0]);
+        let mut b: Arena<AccountDomain, u64> =
+            serde_json::from_slice(&serde_json::to_vec(&a).unwrap()).unwrap();
+        b.restore_capacity(scope, 1, 4096).unwrap();
+        let last = b.insert(9).unwrap();
+        assert_eq!(last.raw().generation, u32::MAX);
+        assert!(b.get(before_last).is_err());
+        b.remove(last).unwrap();
+        assert!(b.free.is_empty());
+        let mut c: Arena<AccountDomain, u64> =
+            serde_json::from_slice(&serde_json::to_vec(&b).unwrap()).unwrap();
+        c.restore_capacity(scope, 1, 4096).unwrap();
+        assert_eq!(c.insert(10), Err(ArenaError::Full));
+        assert!(c.get(last).is_err());
     }
 }

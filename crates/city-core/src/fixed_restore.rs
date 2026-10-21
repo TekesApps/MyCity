@@ -1,4 +1,5 @@
-//! Bounded decoding for fixed diagnostic records, not a gameplay schema.
+//! Fixed diagnostic record decoding and shared lexical limits.
+//! General model record visitors live in bounded_decode/arena, not in this schema.
 use serde::de::{self, DeserializeSeed, SeqAccess, Visitor};
 use serde::{Deserialize, Deserializer};
 use std::{
@@ -86,17 +87,22 @@ pub struct JsonReader<R> {
     quoted: bool,
     escaped: bool,
     string_bytes: usize,
+    string_limit: usize,
     digits: usize,
     bytes: usize,
     depth: usize,
 }
 impl<R: Read> JsonReader<R> {
     pub fn new(reader: R) -> Self {
+        Self::with_string_limit(reader, 128)
+    }
+    pub(crate) fn with_string_limit(reader: R, string_limit: usize) -> Self {
         Self {
             reader,
             quoted: false,
             escaped: false,
             string_bytes: 0,
+            string_limit,
             digits: 0,
             bytes: 0,
             depth: 0,
@@ -117,7 +123,7 @@ impl<R: Read> Read for JsonReader<R> {
         for &b in &out[..n] {
             if self.quoted {
                 self.string_bytes += 1;
-                if self.string_bytes > 128 {
+                if self.string_bytes > self.string_limit {
                     return Err(io::Error::other("fixed_restore_string"));
                 }
                 if self.escaped {

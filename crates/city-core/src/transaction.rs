@@ -412,6 +412,7 @@ impl Engine {
         if bytes.len() > 4 * 1024 * 1024 {
             return Err("checkpoint_byte_limit".into());
         }
+        crate::bounded_decode::guard(bytes)?;
         let mut candidate: Self = serde_json::from_slice(bytes).map_err(|e| e.to_string())?;
         // Explicit scratch construction, not a serde default which silently allocates.
         // Whole-graph seed/authorization is still being migrated in this phase.
@@ -727,9 +728,7 @@ impl Engine {
             - size_of::<crate::background::Background>();
         extra
             + size_of::<Self>()
-            + self.world.layout()["owned_capacity_bytes"]
-                .as_u64()
-                .expect("world layout") as usize
+            + self.world.owned_capacity_bytes()
             + self.resources.capacity() * size_of::<Resource>()
             + self.leases.capacity() * size_of::<Option<Lease>>()
             + self.journal.capacity() * size_of::<JournalRecord>()

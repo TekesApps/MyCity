@@ -1,0 +1,10 @@
+{
+  "unix_ns": 1792570426151970000,
+  "work_du_kib": 18785240,
+  "target_du_kib": 759080,
+  "filesystem_available_bytes": 118369452032,
+  "new_independent_target": false,
+  "new_pressure_snapshots": false,
+  "explicit_cache_deleted_bytes": 0,
+  "reason": "Shared target/current graph retained; no unneeded independent cache generated. Reused complete old compatibility copy; preserved full current and legacy restoration dependencies. No deletion/df delta attributed to this phase."
+}

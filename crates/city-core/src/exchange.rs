@@ -138,7 +138,9 @@ pub struct QuoteSpec {
 #[derive(Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Opening {
+    #[serde(deserialize_with = "crate::bounded_decode::text64")]
     pub schema: String,
+    #[serde(deserialize_with = "crate::bounded_decode::text64")]
     pub profile: String,
     pub home_city: u32,
     pub maps: MapPlacements,

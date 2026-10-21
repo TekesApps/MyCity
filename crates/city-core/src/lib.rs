@@ -8,6 +8,7 @@ pub mod air;
 pub mod arena;
 pub mod assembly;
 pub mod boot;
+mod bounded_decode;
 pub mod calendar;
 pub mod diagnostics;
 pub mod economy;
@@ -30,6 +31,7 @@ pub const INPUT_LIMIT: u64 = 64 * 1024;
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(deny_unknown_fields)]
 pub struct Bootstrap {
+    #[serde(deserialize_with = "crate::bounded_decode::text64")]
     pub schema: String,
     pub world: u64,
     pub branch: u64,
@@ -76,6 +78,7 @@ pub fn parse_bootstrap(bytes: &[u8]) -> Result<Bootstrap, String> {
     if bytes.len() as u64 > INPUT_LIMIT {
         return Err("input_too_large".into());
     }
+    crate::bounded_decode::guard(bytes)?;
     let input: Bootstrap = serde_json::from_slice(bytes).map_err(|e| e.to_string())?;
     input.validate().map_err(str::to_owned)?;
     Ok(input)
@@ -132,16 +135,27 @@ impl FrozenLabel {
 }
 impl<'de> Deserialize<'de> for FrozenLabel {
     fn deserialize<D: serde::Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        let s = String::deserialize(d)?;
-        match s.as_str() {
-            "pe0-30d-v1" => Ok(Self("pe0-30d-v1")),
-            "regional-fulfilment-v1" => Ok(Self("regional-fulfilment-v1")),
-            "regional-fulfilment-scale-v1" => Ok(Self("regional-fulfilment-scale-v1")),
-            "pboot-cold-scale-v1" => Ok(Self("pboot-cold-scale-v1")),
-            "pboot-cold-micro-v1" => Ok(Self("pboot-cold-micro-v1")),
-            "volatile_only" => Ok(Self("volatile_only")),
-            _ => Err(serde::de::Error::custom("unsupported_frozen_label")),
+        struct Label;
+        impl serde::de::Visitor<'_> for Label {
+            type Value = FrozenLabel;
+            fn expecting(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+                f.write_str("a known finite model label")
+            }
+            fn visit_str<E: serde::de::Error>(self, s: &str) -> Result<FrozenLabel, E> {
+                match s {
+                    "pe0-30d-v1" => Ok(FrozenLabel("pe0-30d-v1")),
+                    "regional-fulfilment-v1" => Ok(FrozenLabel("regional-fulfilment-v1")),
+                    "regional-fulfilment-scale-v1" => {
+                        Ok(FrozenLabel("regional-fulfilment-scale-v1"))
+                    }
+                    "pboot-cold-scale-v1" => Ok(FrozenLabel("pboot-cold-scale-v1")),
+                    "pboot-cold-micro-v1" => Ok(FrozenLabel("pboot-cold-micro-v1")),
+                    "volatile_only" => Ok(FrozenLabel("volatile_only")),
+                    _ => Err(E::custom("unsupported_frozen_label")),
+                }
+            }
         }
+        d.deserialize_str(Label)
     }
 }
 

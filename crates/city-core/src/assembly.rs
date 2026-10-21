@@ -1,7 +1,8 @@
 //! Bounded initial capital and stock assembly. Restores must not call this initializer.
+use crate::model_rows::{Record, Rows};
 use crate::{
     arena::{AccountDomain, Arena, Handle, InventoryDomain, Scope},
-    parse_bootstrap, sha256,
+    sha256,
     units::{Money, Quantity},
     Bootstrap, INPUT_LIMIT,
 };
@@ -70,11 +71,12 @@ pub struct OpeningStock {
 #[derive(Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Opening {
+    #[serde(deserialize_with = "crate::bounded_decode::text64")]
     pub schema: String,
     pub bootstrap: Bootstrap,
-    pub sources: Vec<OpeningSource>,
-    pub accounts: Vec<OpeningAccount>,
-    pub stocks: Vec<OpeningStock>,
+    pub sources: Rows<OpeningSource, MAX_SOURCES>,
+    pub accounts: Rows<OpeningAccount, MAX_ACCOUNTS>,
+    pub stocks: Rows<OpeningStock, MAX_STOCKS>,
     pub region: Option<crate::region::Opening>,
     pub economy: Option<crate::economy::Opening>,
     pub boot: Option<crate::boot::Opening>,
@@ -109,9 +111,9 @@ pub struct World {
     pub(crate) revision: u64,
     pub(crate) accounts: Arena<AccountDomain, Account>,
     pub(crate) stocks: Arena<InventoryDomain, Stock>,
-    pub(crate) account_ids: Vec<(u32, Handle<AccountDomain>)>,
-    pub(crate) stock_ids: Vec<(u32, Handle<InventoryDomain>)>,
-    sources: Vec<OpeningSource>,
+    pub(crate) account_ids: Rows<(u32, Handle<AccountDomain>), MAX_ACCOUNTS>,
+    pub(crate) stock_ids: Rows<(u32, Handle<InventoryDomain>), MAX_STOCKS>,
+    sources: Rows<OpeningSource, MAX_SOURCES>,
     pub(crate) region: Option<crate::region::Region>,
     pub(crate) economy: Option<crate::economy::Economy>,
     pub(crate) boot: Option<crate::boot::Boot>,
@@ -152,6 +154,42 @@ pub struct WorldView {
     pub exchange: Option<crate::exchange::Exchange>,
 }
 
+impl Record for OpeningSource {
+    fn inactive() -> Self {
+        Self {
+            id: 0,
+            kind: SourceKind::CashCapital,
+            amount: Money::ZERO,
+        }
+    }
+}
+impl Record for OpeningAccount {
+    fn inactive() -> Self {
+        Self {
+            id: 0,
+            role: Role::Treasury,
+            cash: Money::ZERO,
+            source: 0,
+        }
+    }
+}
+impl Record for OpeningStock {
+    fn inactive() -> Self {
+        Self {
+            id: 0,
+            owner: 0,
+            commodity: Commodity::Raw,
+            quantity: Quantity::ZERO,
+            basis: Money::ZERO,
+            source: 0,
+        }
+    }
+}
+impl<D: crate::arena::Domain> Record for (u32, Handle<D>) {
+    fn inactive() -> Self {
+        (0, Handle::inactive())
+    }
+}
 impl World {
     pub(crate) fn restore_capacity(&mut self) -> Result<(), String> {
         self.accounts
@@ -160,7 +198,13 @@ impl World {
         self.stocks
             .restore_capacity(self.scope, MAX_STOCKS as u32, WORLD_BYTE_BUDGET / 2)
             .map_err(|_| "checkpoint_stock_arena")?;
-        if self.account_ids.len() != self.accounts.len()
+        if self.account_ids.first().is_some_and(|x| x.0 == 0)
+            || self.stock_ids.first().is_some_and(|x| x.0 == 0)
+            || self.account_ids.windows(2).any(|w| w[0].0 >= w[1].0)
+            || self.stock_ids.windows(2).any(|w| w[0].0 >= w[1].0)
+            || self.sources.windows(2).any(|w| w[0].id >= w[1].id)
+            || self.sources.first().is_some_and(|s| s.id == 0)
+            || self.account_ids.len() != self.accounts.len()
             || self.stock_ids.len() != self.stocks.len()
             || self.sources.len() > MAX_SOURCES
         {
@@ -192,7 +236,7 @@ impl World {
         {
             return Err("checkpoint_runtime_combination".into());
         }
-        if self.layout()["owned_capacity_bytes"].as_u64().unwrap() > WORLD_BYTE_BUDGET as u64 {
+        if self.owned_capacity_bytes() > WORLD_BYTE_BUDGET {
             return Err("checkpoint_world_budget".into());
         }
         Ok(())
@@ -252,7 +296,7 @@ impl World {
                     }
                 })
                 .collect(),
-            opening_sources: self.sources.clone(),
+            opening_sources: self.sources.to_vec(),
             region: self.region,
             economy: self.economy,
             boot: self.boot,
@@ -261,6 +305,16 @@ impl World {
     }
     pub fn state_hash(&self) -> String {
         sha256(&serde_json::to_vec(&self.view()).expect("finite exact world"))
+    }
+    pub(crate) fn owned_capacity_bytes(&self) -> usize {
+        self.accounts.owned_bytes()
+            + self.stocks.owned_bytes()
+            + self.account_ids.capacity() * size_of::<(u32, Handle<AccountDomain>)>()
+            + self.stock_ids.capacity() * size_of::<(u32, Handle<InventoryDomain>)>()
+            + self.sources.capacity() * size_of::<OpeningSource>()
+            + size_of::<Self>()
+            - size_of::<Arena<AccountDomain, Account>>()
+            - size_of::<Arena<InventoryDomain, Stock>>()
     }
     pub fn layout(&self) -> serde_json::Value {
         let index_bytes = self.account_ids.capacity() * size_of::<(u32, Handle<AccountDomain>)>()
@@ -277,12 +331,19 @@ pub fn assemble(bytes: &[u8]) -> Result<World, String> {
     if bytes.len() as u64 > INPUT_LIMIT {
         return Err("input_too_large".into());
     }
-    let mut input: Opening = serde_json::from_slice(bytes).map_err(|e| e.to_string())?;
+    crate::bounded_decode::guard(bytes)?;
+    let mut input: Opening = serde_json::from_slice(bytes).map_err(|e| {
+        if e.to_string().contains("model_rows_extra_record") {
+            "opening_count_limit".to_owned()
+        } else {
+            e.to_string()
+        }
+    })?;
     if input.schema != ASSEMBLY_SCHEMA {
         return Err("unsupported_opening_schema".into());
     }
     // Share all bootstrap semantics, including the laboratory-only guard.
-    parse_bootstrap(&serde_json::to_vec(&input.bootstrap).map_err(|e| e.to_string())?)?;
+    input.bootstrap.validate().map_err(str::to_owned)?;
     if input.accounts.is_empty()
         || input.accounts.len() > MAX_ACCOUNTS
         || input.stocks.len() > MAX_STOCKS
@@ -293,16 +354,23 @@ pub fn assemble(bytes: &[u8]) -> Result<World, String> {
     input.accounts.sort_by_key(|a| a.id);
     input.stocks.sort_by_key(|s| s.id);
     input.sources.sort_by_key(|s| s.id);
-    for ids in [
-        input.accounts.iter().map(|a| a.id).collect::<Vec<_>>(),
-        input.stocks.iter().map(|s| s.id).collect(),
-        input.sources.iter().map(|s| s.id).collect(),
-    ] {
-        if ids.first() == Some(&0) || ids.windows(2).any(|w| w[0] == w[1]) {
-            return Err("duplicate_or_zero_id".into());
+    fn valid_ids(ids: impl Iterator<Item = u32>) -> bool {
+        let mut previous = 0;
+        for id in ids {
+            if id <= previous {
+                return false;
+            }
+            previous = id;
         }
+        true
     }
-    let mut used = vec![false; input.sources.len()];
+    if !valid_ids(input.accounts.iter().map(|a| a.id))
+        || !valid_ids(input.stocks.iter().map(|a| a.id))
+        || !valid_ids(input.sources.iter().map(|a| a.id))
+    {
+        return Err("duplicate_or_zero_id".into());
+    }
+    let mut used = [false; MAX_SOURCES];
     let mut consume_source = |id: u32, kind: SourceKind, amount: Money| -> Result<(), String> {
         let index = input
             .sources
@@ -335,7 +403,7 @@ pub fn assemble(bytes: &[u8]) -> Result<World, String> {
         }
         consume_source(s.source, SourceKind::InventoryCapital, s.basis)?;
     }
-    if used.iter().any(|x| !*x) {
+    if used[..input.sources.len()].iter().any(|x| !*x) {
         return Err("unused_capital_source".into());
     }
     let scope =
@@ -348,8 +416,8 @@ pub fn assemble(bytes: &[u8]) -> Result<World, String> {
             .map_err(|e| format!("{e:?}"))?,
         stocks: Arena::new(scope, MAX_STOCKS as u32, WORLD_BYTE_BUDGET / 2)
             .map_err(|e| format!("{e:?}"))?,
-        account_ids: Vec::with_capacity(input.accounts.len()),
-        stock_ids: Vec::with_capacity(input.stocks.len()),
+        account_ids: Rows::new().map_err(str::to_owned)?,
+        stock_ids: Rows::new().map_err(str::to_owned)?,
         sources: input.sources,
         economy: None,
         boot: None,
@@ -360,7 +428,7 @@ pub fn assemble(bytes: &[u8]) -> Result<World, String> {
             .transpose()
             .map_err(|e| format!("region_{e:?}"))?,
     };
-    for a in input.accounts {
+    for a in &input.accounts {
         let h = world
             .accounts
             .insert(Account {
@@ -372,7 +440,7 @@ pub fn assemble(bytes: &[u8]) -> Result<World, String> {
             .map_err(|e| format!("{e:?}"))?;
         world.account_ids.push((a.id, h));
     }
-    for s in input.stocks {
+    for s in &input.stocks {
         let owner = world.account_handle(s.owner)?;
         let h = world
             .stocks
@@ -409,7 +477,7 @@ pub fn assemble(bytes: &[u8]) -> Result<World, String> {
     if let Some(exchange) = input.exchange {
         world.exchange = Some(crate::exchange::Exchange::new(exchange, &world)?);
     }
-    if world.layout()["owned_capacity_bytes"].as_u64().unwrap() > WORLD_BYTE_BUDGET as u64 {
+    if world.owned_capacity_bytes() > WORLD_BYTE_BUDGET {
         return Err("world_byte_limit".into());
     }
     // Exercise the same checked ID index used by subsequent model commands.

@@ -25,12 +25,15 @@ pub struct DebtInput {
 #[derive(Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Opening {
+    #[serde(deserialize_with = "crate::bounded_decode::text64")]
     pub schema: String,
+    #[serde(deserialize_with = "crate::bounded_decode::text64")]
     pub profile: String,
     pub accounts: [u32; 4],
     pub supplier_stock: u32,
     pub raw_stock: u32,
     pub product_stocks: [u32; DAYS],
+    #[serde(deserialize_with = "crate::bounded_decode::text64")]
     pub transport_source: String,
     pub distance_m: u32,
     pub travel_seconds: u32,

@@ -1,0 +1,23 @@
+{
+  "source_sha256": "87796b6e784d1f124b96d7abb45d3898ae9b712dbba8007ea17f76d92bd8d892",
+  "source_and_binary_match": true,
+  "fixture_sha256_unchanged": true,
+  "protected_snapshots": [
+    {
+      "index": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+      "indexed_files": 29,
+      "all_original_files_present_and_length_match": true
+    },
+    {
+      "index": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+      "indexed_files": 29,
+      "all_original_files_present_and_length_match": true
+    },
+    {
+      "index": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+      "indexed_files": 29,
+      "all_original_files_present_and_length_match": true
+    }
+  ],
+  "scope": "Static/source integrity, existence/length; not a new full layout restore, performance or physical-memory gate"
+}

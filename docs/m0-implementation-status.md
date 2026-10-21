@@ -393,3 +393,6 @@ v0.5.69：[固定核心表与事务准备租约](evidence/m0-t13a-model-workspac
 
 
 v0.5.70：[Background常驻背板与显式计算槽](evidence/m0-t13a-background-resident/STATUS.md)。field/pending固定、prepare lease复制活动数据、持久后交换，capture/validate/Accept及Store staged/恢复显式借单Work，保持原数值及规范字节。926a61…同源全仓Release95173终态0／359 harness含nested，clippy/fmt/build0；旧规则world完整重开／3013seq／2,507,418字节相等。原full联合27370实际605.689秒、723目标／3013原票／724旧hash／725借还／600扫描两代及最新完整cold通过，五audit0及advisor独立认可有限发布。每Engine工作区重计后目标43,964,888B仍fit原64MiB，runtimeGrantfalse；普通恢复/拥有式入口及池图未闭合，normal64/common8／正式性能／四档／稳态／8h仍未签，16GB not_run，M0 not_accepted。末尾退役旧v66两压力5.67GiB，新完整基线及业务兼容依赖保留，复用共享target。
+
+
+v0.5.71：[一般模型有界解码](evidence/m0-t13a-general-decode/STATUS.md)。普通Arena可信Domain64/128 visitor直写、不信文件max/size_hint，restore_capacity纯验证，保留稀疏free顺序与MAX最后代次；World/Opening/region及通用空气数组固定Rows，标签64B和lexical384B/depth128先于serde scratch，L1结构及负载不变。87796b…同源全仓92234终态0，362 harness含nested，clippy/fmt/build0；当前库旧规则完整world实际重开／3013seq／2507418字节全等，advisor独立认可。Raw串行归一化补两最大State后目标45,290,256B<原64MiB但runtimeGrantfalse。未重复新联合或正式性能；Store流式及整图池继续，normal64/common8/四档/稳态/8h未签，16GB not_run、M0 not_accepted。共享target复用、无新压力副本，完整当前／旧格式／业务恢复依赖保留。

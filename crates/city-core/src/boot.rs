@@ -11,7 +11,9 @@ pub const SECONDS: u64 = 60;
 #[derive(Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Opening {
+    #[serde(deserialize_with = "crate::bounded_decode::text64")]
     pub schema: String,
+    #[serde(deserialize_with = "crate::bounded_decode::text64")]
     pub profile: String,
     pub operator: u32,
     pub contractor: u32,

@@ -94,49 +94,46 @@ fn payload_hash(state: &State) -> Result<String, String> {
 const MICRO: f32 = 1_000_000.0;
 const MAX_MICRO: u64 = 1_000_000_000_000;
 // Enforce row caps during decoding, before an untrusted checkpoint can allocate huge Vecs.
-fn bounded<'de, D, T, const N: usize>(deserializer: D) -> Result<Vec<T>, D::Error>
+fn bounded<'de, D, T, const N: usize>(d: D) -> Result<Rows<T>, D::Error>
 where
     D: serde::Deserializer<'de>,
-    T: Deserialize<'de>,
+    T: crate::model_rows::Record + Deserialize<'de>,
 {
-    struct Rows<T, const N: usize>(std::marker::PhantomData<T>);
-    impl<'de, T: Deserialize<'de>, const N: usize> serde::de::Visitor<'de> for Rows<T, N> {
-        type Value = Vec<T>;
+    struct Decode<T, const N: usize>(std::marker::PhantomData<T>);
+    impl<'de, T: crate::model_rows::Record + Deserialize<'de>, const N: usize>
+        serde::de::Visitor<'de> for Decode<T, N>
+    {
+        type Value = Rows<T>;
         fn expecting(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-            write!(f, "at most {N} rows")
+            write!(f, "at most {N} fixed air records")
         }
         fn visit_seq<A: serde::de::SeqAccess<'de>>(
             self,
             mut seq: A,
         ) -> Result<Self::Value, A::Error> {
-            if seq.size_hint().is_some_and(|n| n > N) {
-                return Err(serde::de::Error::custom("air_rows"));
-            }
-            let mut rows = Vec::new();
-            while let Some(value) = seq.next_element()? {
-                if rows.len() == N {
-                    return Err(serde::de::Error::custom("air_rows"));
+            let mut out = Rows::fixed(N, T::inactive()).map_err(serde::de::Error::custom)?;
+            for _ in 0..N {
+                match seq.next_element()? {
+                    Some(v) => out.write_next(v).map_err(serde::de::Error::custom)?,
+                    None => return Ok(out),
                 }
-                if rows.len() == rows.capacity() {
-                    rows.reserve_exact((N - rows.len()).min(256));
-                }
-                rows.push(value);
             }
-            Ok(rows)
+            seq.next_element_seed(crate::bounded_decode::RejectExtra("air_rows"))?;
+            Ok(out)
         }
     }
-    deserializer.deserialize_seq(Rows::<T, N>(std::marker::PhantomData))
+    d.deserialize_seq(Decode::<T, N>(std::marker::PhantomData))
 }
 fn source_rows<'de, D: serde::Deserializer<'de>>(d: D) -> Result<Rows<Source>, D::Error> {
-    bounded::<D, Source, 20000>(d).map(Into::into)
+    bounded::<D, Source, 20000>(d)
 }
 fn field_rows<'de, D: serde::Deserializer<'de>>(d: D) -> Result<Rows<u32>, D::Error> {
-    bounded::<D, u32, 16384>(d).map(Into::into)
+    bounded::<D, u32, 16384>(d)
 }
 fn integral_rows<'de, D: serde::Deserializer<'de>>(d: D) -> Result<Rows<u64>, D::Error> {
-    bounded::<D, u64, 16384>(d).map(Into::into)
+    bounded::<D, u64, 16384>(d)
 }
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(deny_unknown_fields)]
 pub struct Source {
     pub id: u32,
@@ -148,6 +145,7 @@ pub struct Source {
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(deny_unknown_fields)]
 pub struct Input {
+    #[serde(deserialize_with = "crate::bounded_decode::text64")]
     pub schema: String,
     pub side: u16,
     pub target: u32,
@@ -158,11 +156,33 @@ pub struct Input {
     #[serde(deserialize_with = "source_rows")]
     pub sources: Rows<Source>,
 }
+impl crate::model_rows::Record for Source {
+    fn inactive() -> Self {
+        Self {
+            id: 0,
+            cell: 0,
+            start: 0,
+            end: 0,
+            rate_micro: 0,
+        }
+    }
+}
+impl crate::model_rows::Record for u32 {
+    fn inactive() -> Self {
+        0
+    }
+}
+impl crate::model_rows::Record for u64 {
+    fn inactive() -> Self {
+        0
+    }
+}
 impl Input {
     pub fn parse(bytes: &[u8]) -> Result<Self, String> {
         if bytes.len() > INPUT_BYTES {
             return Err("air_input_bytes".into());
         }
+        crate::bounded_decode::guard(bytes)?;
         let input: Self = serde_json::from_slice(bytes).map_err(|e| e.to_string())?;
         input.validate()?;
         Ok(input)
@@ -203,10 +223,19 @@ impl Input {
         format!("{:x}", hash.finish())
     }
     pub fn push_source(&mut self, source: Source) -> Result<(), String> {
-        self.sources.push_owned(source)
+        if self.sources.fixed_shape(self.sources.capacity()) {
+            self.sources.write_next(source)
+        } else {
+            self.sources.push_owned(source)
+        }
     }
     pub fn clear_sources(&mut self) -> Result<(), String> {
-        self.sources.clear_owned()
+        if self.sources.fixed_shape(self.sources.capacity()) {
+            self.sources
+                .reset(<Source as crate::model_rows::Record>::inactive())
+        } else {
+            self.sources.clear_owned()
+        }
     }
 }
 #[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
@@ -259,6 +288,7 @@ impl Totals {
 #[serde(deny_unknown_fields, try_from = "UncheckedState")]
 pub struct State {
     input: Input,
+    #[serde(deserialize_with = "crate::bounded_decode::text64")]
     input_sha256: String,
     time: u32,
     #[serde(deserialize_with = "field_rows")]
@@ -276,6 +306,7 @@ pub struct State {
 #[serde(deny_unknown_fields)]
 struct UncheckedState {
     input: Input,
+    #[serde(deserialize_with = "crate::bounded_decode::text64")]
     input_sha256: String,
     time: u32,
     #[serde(deserialize_with = "field_rows")]
@@ -312,7 +343,9 @@ impl TryFrom<UncheckedState> for State {
 #[derive(Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 struct Checkpoint {
+    #[serde(deserialize_with = "crate::bounded_decode::text64")]
     schema: String,
+    #[serde(deserialize_with = "crate::bounded_decode::text64")]
     sha256: String,
     payload: State,
 }
@@ -682,6 +715,7 @@ impl State {
         if bytes.len() > CHECKPOINT_BYTES {
             return Err("air_checkpoint_bytes".into());
         }
+        crate::bounded_decode::guard(bytes)?;
         let cp: Checkpoint = serde_json::from_slice(bytes).map_err(|e| e.to_string())?;
         if cp.schema != STRATEGY || cp.sha256 != payload_hash(&cp.payload)? {
             return Err("air_checkpoint_checksum".into());

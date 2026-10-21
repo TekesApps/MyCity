@@ -1,0 +1,11 @@
+{
+  "base_target_bytes": 43965008,
+  "extra_raw_decode_normalization_state_equivalents": 2,
+  "bytes_per_equivalent": 662624,
+  "extra_bytes": 1325248,
+  "conservative_combined_bytes": 45290256,
+  "original_budget_bytes": 67108864,
+  "arithmetic_fits": true,
+  "scope": "Conservative interim arithmetic: one Raw State plus one Raw pending Input charged as two full max typed State graphs; no actual allocation owner/grant, physical-memory or performance acceptance. Existing five general Air targets remain reserved; do not subtract them.",
+  "runtime_grant_accepted": false
+}

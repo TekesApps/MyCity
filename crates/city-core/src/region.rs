@@ -1,4 +1,5 @@
 //! Bounded snapshot/interaction laboratory. No implicit offscreen production.
+use crate::model_rows::{Record, Rows};
 use crate::units::Money;
 use serde::{Deserialize, Serialize};
 
@@ -44,11 +45,12 @@ pub struct Obligation {
 #[derive(Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Opening {
+    #[serde(deserialize_with = "crate::bounded_decode::text64")]
     pub schema: String,
     pub active_city: u32,
-    pub cities: Vec<City>,
-    pub routes: Vec<Route>,
-    pub obligations: Vec<Obligation>,
+    pub cities: Rows<City, MAX_CITIES>,
+    pub routes: Rows<Route, MAX_ROUTES>,
+    pub obligations: Rows<Obligation, MAX_OBLIGATIONS>,
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Snapshot {
@@ -99,6 +101,43 @@ pub struct Candidate {
     pub distance_m: u64,
     pub travel_seconds: u64,
 }
+impl Record for City {
+    fn inactive() -> Self {
+        Self {
+            id: 0,
+            development_elapsed: 0,
+            population: 0,
+            willing: 0,
+            housing_capacity: 0,
+        }
+    }
+}
+impl Record for Route {
+    fn inactive() -> Self {
+        Self {
+            id: 0,
+            from: 0,
+            to: 0,
+            distance_m: 0,
+            travel_seconds: 0,
+            capacity_people: 0,
+        }
+    }
+}
+impl Record for Obligation {
+    fn inactive() -> Self {
+        Self {
+            id: 0,
+            payer: 0,
+            payee: 0,
+            period_seconds: 0,
+            amount: Money::ZERO,
+            next_due: None,
+            expires_at: 0,
+            arrears: Money::ZERO,
+        }
+    }
+}
 impl Region {
     pub fn new(mut opening: Opening) -> Result<Self, Error> {
         if opening.schema != "mycity-m0-region-v1"
@@ -129,7 +168,7 @@ impl Region {
             obligations: [None; MAX_OBLIGATIONS],
             next_transit: 1,
         };
-        for (i, city) in opening.cities.into_iter().enumerate() {
+        for (i, city) in opening.cities.iter().copied().enumerate() {
             if city.id == 0
                 || city.willing > city.population
                 || city.population > city.housing_capacity
@@ -146,7 +185,7 @@ impl Region {
             });
         }
         result.index(result.active_city)?;
-        for (i, route) in opening.routes.into_iter().enumerate() {
+        for (i, route) in opening.routes.iter().copied().enumerate() {
             result.index(route.from)?;
             result.index(route.to)?;
             if route.id == 0
@@ -159,7 +198,7 @@ impl Region {
             }
             result.routes[i] = Some(route);
         }
-        for (i, obligation) in opening.obligations.into_iter().enumerate() {
+        for (i, obligation) in opening.obligations.iter().copied().enumerate() {
             if obligation.id == 0
                 || obligation.payer == 0
                 || obligation.payee == 0
