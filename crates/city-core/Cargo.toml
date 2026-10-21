@@ -12,3 +12,8 @@ sha2.workspace = true
 
 [lints]
 workspace = true
+
+# sha2 0.10.9 gates its runtime-dispatched ARM SHA2 backend behind this feature.
+# Other target architectures retain their existing default backend selection.
+[target.'cfg(target_arch = "aarch64")'.dependencies]
+sha2 = { workspace = true, features = ["asm"] }

@@ -1,0 +1,11 @@
+{
+  "links_checked": 224,
+  "broken": [],
+  "staged_diff_check": {
+    "raw_log_eof_warnings_preserved": [
+      "core-tests-initial.txt:85",
+      "workspace-tests.txt:684"
+    ],
+    "all_other_staged_paths_exit": 0
+  }
+}

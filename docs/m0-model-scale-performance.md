@@ -192,3 +192,5 @@ v0.5.56：[固定L1诊断恢复与旧组件兼容](evidence/m0-t13a-bounded-rest
 
 
 v0.5.63的[worker类型化空气工作区](evidence/m0-t13a-air-workspace/STATUS.md)把20000源/128²三数组、持久字符串和padding转为固定1MiB并seed直写恢复，保持原数值内核及规范字节；原IO4MiB与typed1MiB同child实际预留/Filled/wait，双owner池55MiB、总池64MiB不变。State私有且无fixed克隆逃逸，同进程跨job复用。解析/栈/控制/其余模型仍EXTRA；验收与来源分层以阶段状态为准，不把当前范围外预算或正式稳态/8h/真实16GB签过。
+
+v0.5.64的[规范编码与ARM SHA联合实测](evidence/m0-t13a-hotpath/STATUS.md)保留原冻结完整负载、每个数值步与独立CPU参考、724份旧hash。最终同源全仓Release及原联合运行实际通过功能核验，执行/报价sealed观察分位落入20/40ms；fault job及样本环境与v63不同，不拼接样本或宣称正式性能总门通过。32GiB M4的RSS采样峰3480223744B，footprint取得峰3463533224B且2523次缺测，swap初始5283840000B/净增0；硬件SHA和固定编码缓冲不自动关闭其余Engine/Prepared/Store/解析/栈/helper的EXTRA。normal64/common8、四档、三场景各三轮正式稳态、真正28800秒及真实16GB仍未签；后者not_run，M0 not_accepted。

@@ -1,0 +1,60 @@
+{
+  "source_sha256": "895abc10f694812e9055774535bb0dcec48670715a2df074a3c14209ac3c3ba2",
+  "scope": "full actual business with full L1 layout pressure; independent joint audit",
+  "formal": false,
+  "clock": {
+    "actual_wall_seconds": 304.118845,
+    "committed_job": 85,
+    "formal": false,
+    "hours": 720,
+    "max_query_completion_lateness_seconds": 0.880258833,
+    "max_save_completion_lateness_seconds": 0.905205291,
+    "queries_completed": 2880,
+    "required_wall_seconds": 72.0,
+    "retry_job": 45,
+    "saves_completed": 96,
+    "scheduled_cold_reopen": true,
+    "targets": 723
+  },
+  "exact_final_engine_equal_fault_reference": true,
+  "metadata_delta_from_normal": {
+    "world.revision": 2,
+    "background.incarnation": 1
+  },
+  "receipts": 3013,
+  "normal_heap_records": {
+    "scale-model-task": 4,
+    "compute-worker-bounded": 723,
+    "sim-host-scale-full-probe": 3,
+    "scale-endurance": 1,
+    "layout-session": 1,
+    "layout-load-only": 1,
+    "normal-pool-host": 1,
+    "joint-endurance": 1
+  },
+  "deliberately_killed_processes_without_footer": {
+    "Sim": 1,
+    "worker": 2
+  },
+  "normal_diagnostic_producers": 727,
+  "pool_grants_returned": 725,
+  "all_724_logical_input_candidate_hashes_equal_v48": true,
+  "broker_sessions": 4,
+  "failed_worker_OS_waits": 2,
+  "producer_pairing": "persistent first-line PID plus process instance; no PID-only missing-footer inference",
+  "partial_producers_without_report": [
+    "sim-34452-0",
+    "worker-35036-0"
+  ],
+  "eight_hour": "not_run",
+  "real_16GB": "not_run",
+  "full_M0": "not_accepted",
+  "L1_scans": 600,
+  "L1_snapshots": 2,
+  "L1_coverage": "ready-before-spawn to complete-business-exit-before-stop",
+  "latest_full_layout_cold_restore": true,
+  "common_8MiB": "not_accepted",
+  "normal_3_10GiB": "not_accepted; unconverted Engine still EXTRA",
+  "formal_steady": "not_run",
+  "four_speeds": "not_run"
+}

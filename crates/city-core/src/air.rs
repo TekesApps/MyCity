@@ -8,6 +8,7 @@ use std::{
     mem::size_of,
 };
 mod rows;
+mod wire;
 pub use rows::Rows;
 mod workspace;
 pub use workspace::{AirWorkspace, WorkspaceReport, WORKSPACE_BYTES};
@@ -86,7 +87,7 @@ fn payload_hash(state: &State) -> Result<String, String> {
         inner: &mut hash,
         bytes: 0,
     };
-    serde_json::to_writer(&mut bounded, state).map_err(|e| e.to_string())?;
+    wire::payload(&mut bounded, state)?;
     Ok(format!("{:x}", hash.finish()))
 }
 const MICRO: f32 = 1_000_000.0;
@@ -644,22 +645,24 @@ impl State {
     /// destination. An I/O failure may leave a prefix, never a valid publication.
     pub fn checkpoint_to(&self, writer: &mut impl Write) -> Result<usize, String> {
         self.validate()?;
-        #[derive(Serialize)]
-        struct Borrowed<'a> {
-            schema: &'static str,
-            sha256: String,
-            payload: &'a State,
-        }
-        let cp = Borrowed {
-            schema: STRATEGY,
-            sha256: payload_hash(self)?,
-            payload: self,
-        };
+        let hash = payload_hash(self)?;
         let mut bounded = BoundedEncoding {
             inner: writer,
             bytes: 0,
         };
-        serde_json::to_writer(&mut bounded, &cp).map_err(|e| e.to_string())?;
+        bounded
+            .write_all(b"{\"schema\":")
+            .map_err(|e| e.to_string())?;
+        serde_json::to_writer(&mut bounded, STRATEGY).map_err(|e| e.to_string())?;
+        bounded
+            .write_all(b",\"sha256\":")
+            .map_err(|e| e.to_string())?;
+        serde_json::to_writer(&mut bounded, &hash).map_err(|e| e.to_string())?;
+        bounded
+            .write_all(b",\"payload\":")
+            .map_err(|e| e.to_string())?;
+        wire::payload(&mut bounded, self)?;
+        bounded.write_all(b"}").map_err(|e| e.to_string())?;
         Ok(bounded.bytes)
     }
     pub fn checkpoint(&self) -> Result<Vec<u8>, String> {

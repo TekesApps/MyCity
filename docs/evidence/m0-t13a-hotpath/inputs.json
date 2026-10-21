@@ -1,0 +1,18 @@
+[
+  {
+    "kind": "source",
+    "source_world": "/Users/frankqin/dev/MyCity/work/t13a2f-full-02/model/anchors/source/world",
+    "root_sha256": "6ef21079752d8ef07bde55cf64cad9c6612a65ca4550138b7f0b59d45d425ae1",
+    "image_sha256": "090a8ddcbf95956cb58f47952e0510e84b709f8167070d09156109a5411bddcc",
+    "image_bytes": 2527389,
+    "copied_to": "/Users/frankqin/dev/MyCity/work/t13a64-hotpath-inputs/source.json"
+  },
+  {
+    "kind": "claims",
+    "source_world": "/Users/frankqin/dev/MyCity/work/t13a2f-full-02/model/anchors/claims/world",
+    "root_sha256": "f01f2f28212608c4d3934e2f247a6a941c37cb4eb1a448a3bd4647f330d34c36",
+    "image_sha256": "78bf74094397643cd76b9071aa8b98aa2610621d4ab921ac17e26d8d4e36013d",
+    "image_bytes": 2526119,
+    "copied_to": "/Users/frankqin/dev/MyCity/work/t13a64-hotpath-inputs/claims.json"
+  }
+]

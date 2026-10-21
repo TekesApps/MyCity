@@ -1,0 +1,22 @@
+{
+  "joint_session": 28854,
+  "joint_exit": 0,
+  "verify_session": 61716,
+  "verify_exit": 0,
+  "workspace_session": 74141,
+  "workspace_exit": 0,
+  "coverage_exit": 0,
+  "diagnostic_exit": 0,
+  "latency_session": 50954,
+  "latency_exit": 0,
+  "collect_session": 5176,
+  "collect_exit": 0,
+  "static_exit": 0,
+  "compare_diagnostic_exit": 0,
+  "advisor_final_reruns": {
+    "verify": 0,
+    "workspace_audit": 0,
+    "static_check": 0,
+    "compare_diagnostic": 0
+  }
+}

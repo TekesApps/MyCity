@@ -1,0 +1,29 @@
+sha2 v0.10.9
+├── sha2 feature "asm"
+│   └── mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+│       └── mycity-core feature "default" (command-line)
+│           ├── mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+│           │   └── mycity-headless feature "default" (command-line)
+│           ├── mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+│           │   └── mycity-map feature "default" (command-line)
+│           │       ├── mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless) (*)
+│           │       └── mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+│           │           └── mycity-storage feature "default" (command-line)
+│           │               └── mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless) (*)
+│           └── mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage) (*)
+├── sha2 feature "default"
+│   ├── mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core) (*)
+│   ├── mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless) (*)
+│   ├── mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map) (*)
+│   └── mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage) (*)
+├── sha2 feature "sha2-asm"
+│   └── sha2 feature "asm" (*)
+└── sha2 feature "std"
+    └── sha2 feature "default" (*)
+
+sha2 v0.10.9
+├── sha2 feature "default"
+│   [build-dependencies]
+│   └── mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless) (*)
+└── sha2 feature "std"
+    └── sha2 feature "default" (*)

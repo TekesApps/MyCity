@@ -441,7 +441,7 @@ fn streamed_borrowed_checkpoints_are_byte_identical_to_legacy_owned_format() {
             })
             .collect();
         let mut s = State::new(i).unwrap();
-        for _ in 0..3 {
+        loop {
             let payload = serde_json::to_vec(&s).unwrap();
             let legacy = serde_json::to_vec(&Legacy {
                 schema: STRATEGY.into(),
@@ -464,7 +464,10 @@ fn streamed_borrowed_checkpoints_are_byte_identical_to_legacy_owned_format() {
                 State::restore(&legacy).unwrap().checkpoint().unwrap(),
                 legacy
             );
-            s.page(256, 256).unwrap();
+            if s.complete() {
+                break;
+            }
+            s.page(8192, 1024).unwrap();
         }
     }
 }

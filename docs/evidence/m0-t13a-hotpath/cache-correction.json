@@ -1,0 +1,104 @@
+{
+  "mistake": "Cargo aliases omitted dependency rlibs from filename-only set; corresponding rmeta paths now protect rlib siblings",
+  "rebuilt_current_libraries": [
+    {
+      "path": "target/release/deps/libmycity_headless-35abca32ccd4950a.rlib",
+      "bytes": 12399480,
+      "allocated": 12402688,
+      "links": 1
+    },
+    {
+      "path": "target/release/deps/libmycity_core-79132aa13a78ad29.rlib",
+      "bytes": 12635440,
+      "allocated": 12636160,
+      "links": 1
+    },
+    {
+      "path": "target/release/deps/libmycity_map-56289f564dd0f98f.rlib",
+      "bytes": 1735808,
+      "allocated": 1736704,
+      "links": 1
+    },
+    {
+      "path": "target/release/deps/libmycity_storage-4a2b4628ede69a73.rlib",
+      "bytes": 4544312,
+      "allocated": 4546560,
+      "links": 1
+    }
+  ],
+  "actual_obsolete_libraries_removed": [
+    {
+      "path": "target/release/deps/libmycity_headless-96728d0bab43c414.rlib",
+      "bytes": 12399360,
+      "allocated": 12402688,
+      "links": 1
+    },
+    {
+      "path": "target/release/deps/libmycity_storage-8f05ae956cc5f9be.rlib",
+      "bytes": 972544,
+      "allocated": 974848,
+      "links": 1
+    },
+    {
+      "path": "target/release/deps/libmycity_storage-5012fbf703564f6f.rlib",
+      "bytes": 4545424,
+      "allocated": 4546560,
+      "links": 1
+    },
+    {
+      "path": "target/release/deps/libmycity_core-9950064af9b18981.rlib",
+      "bytes": 12635376,
+      "allocated": 12636160,
+      "links": 1
+    },
+    {
+      "path": "target/release/deps/libmycity_map-ba2c3a9a378694b7.rlib",
+      "bytes": 1735464,
+      "allocated": 1736704,
+      "links": 1
+    },
+    {
+      "path": "target/release/deps/libmycity_map-3d076e6a4f203328.rlib",
+      "bytes": 1264096,
+      "allocated": 1265664,
+      "links": 1
+    },
+    {
+      "path": "target/release/deps/libmycity_core-2044cae9bbb50e9a.rlib",
+      "bytes": 12634848,
+      "allocated": 12636160,
+      "links": 1
+    },
+    {
+      "path": "target/release/deps/libmycity_headless-8e5c0daf4164954a.rlib",
+      "bytes": 7756664,
+      "allocated": 7757824,
+      "links": 1
+    },
+    {
+      "path": "target/release/deps/libmycity_map-b421b14eee0963b1.rlib",
+      "bytes": 914232,
+      "allocated": 917504,
+      "links": 1
+    },
+    {
+      "path": "target/release/deps/libmycity_headless-4c77855ba80b6cd2.rlib",
+      "bytes": 4848432,
+      "allocated": 4849664,
+      "links": 1
+    },
+    {
+      "path": "target/release/deps/libmycity_headless-886ed5ad7b9045b0.rlib",
+      "bytes": 2846272,
+      "allocated": 2846720,
+      "links": 1
+    }
+  ],
+  "actual_obsolete_allocated_bytes": 62570496,
+  "current_rlib_paths_restored": true,
+  "hardware_diagnostic_binary_exact_sha_unchanged_after_rebuild": true,
+  "preserved": "source, WIP, dependencies, all executable and acceptance evidence unchanged",
+  "future_current_all_target_recheck_entirely_fresh": true,
+  "free_bytes_after_rebuild": 81170214912,
+  "free_delta_from_initial_before_bytes": 975888384
+}

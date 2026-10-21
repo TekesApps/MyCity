@@ -1,0 +1,15 @@
+{
+  "binary_sha256": "654e378d4e48b210421b9536a817da061bd93fcd9f65bb18e6a1b83cf32a93e9",
+  "results": [
+    {
+      "kind": "source",
+      "exit_code": 0,
+      "wall_seconds": 1.192043708
+    },
+    {
+      "kind": "claims",
+      "exit_code": 0,
+      "wall_seconds": 0.7297371670000001
+    }
+  ]
+}

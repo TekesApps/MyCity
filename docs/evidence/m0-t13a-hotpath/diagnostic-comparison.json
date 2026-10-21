@@ -1,0 +1,348 @@
+{
+  "scope": "40-repeat offline descriptive diagnostic; canonical+software and hardware changes separated; no formal or simultaneous-load acceptance",
+  "cases": [
+    {
+      "anchor": "source",
+      "identities": {
+        "image_sha256": "090a8ddcbf95956cb58f47952e0510e84b709f8167070d09156109a5411bddcc",
+        "air_sha256": "fa2513b01f6a25277e056fe0e96c36db109482c6c9d99252ae35e24c56ded726",
+        "air_bytes": 688805,
+        "source_count": 0,
+        "last_complete": 60,
+        "target": 3660,
+        "quoted": [
+          {
+            "at": 120,
+            "cursor": 0,
+            "lane": 0,
+            "last_complete": 60,
+            "page_paid": 0,
+            "page_sources": 1,
+            "phase": "P4",
+            "serial": 3,
+            "target": 3660
+          },
+          214
+        ]
+      },
+      "sources": {
+        "baseline": "57a586ce75ea160195345cf54cfb373967808b01d3cea602357250ab661bfc7d",
+        "candidate": "716076affb5a66994b40e9e8bfb85a28b6e576983165191d0fd8cc4116e98106",
+        "software": "5120026807ce3932936d7bb5e26183417688fd0ffa0138284a1f3aa81fca9a81",
+        "hardware": "895abc10f694812e9055774535bb0dcec48670715a2df074a3c14209ac3c3ba2"
+      },
+      "metrics": {
+        "baseline": {
+          "State clone": {
+            "p50_ns": 4125,
+            "p95_ns": 4375,
+            "p99_ns": 4458
+          },
+          "Input identity": {
+            "p50_ns": 750,
+            "p95_ns": 750,
+            "p99_ns": 792
+          },
+          "State checkpoint digest": {
+            "p50_ns": 3609250,
+            "p95_ns": 3938334,
+            "p99_ns": 4012500
+          },
+          "State checkpoint bytes": {
+            "p50_ns": 2165917,
+            "p95_ns": 2454875,
+            "p99_ns": 3272875
+          },
+          "State restore": {
+            "p50_ns": 2473500,
+            "p95_ns": 3054084,
+            "p99_ns": 3091625
+          },
+          "Engine timeline quote": {
+            "p50_ns": 7535084,
+            "p95_ns": 8347917,
+            "p99_ns": 10033875
+          }
+        },
+        "candidate": {
+          "State clone": {
+            "p50_ns": 3875,
+            "p95_ns": 4542,
+            "p99_ns": 4625
+          },
+          "Input identity": {
+            "p50_ns": 750,
+            "p95_ns": 792,
+            "p99_ns": 792
+          },
+          "State checkpoint digest": {
+            "p50_ns": 3058917,
+            "p95_ns": 3179292,
+            "p99_ns": 3346750
+          },
+          "State checkpoint bytes": {
+            "p50_ns": 1807083,
+            "p95_ns": 1934375,
+            "p99_ns": 1960000
+          },
+          "State restore": {
+            "p50_ns": 2205583,
+            "p95_ns": 2310250,
+            "p99_ns": 2421875
+          },
+          "Engine timeline quote": {
+            "p50_ns": 6355959,
+            "p95_ns": 6760666,
+            "p99_ns": 8510708
+          }
+        },
+        "software": {
+          "State clone": {
+            "p50_ns": 5792,
+            "p95_ns": 5875,
+            "p99_ns": 12667
+          },
+          "Input identity": {
+            "p50_ns": 1292,
+            "p95_ns": 1375,
+            "p99_ns": 4583
+          },
+          "SHA256 checkpoint bytes": {
+            "p50_ns": 1293000,
+            "p95_ns": 1573584,
+            "p99_ns": 1678333
+          },
+          "State checkpoint digest": {
+            "p50_ns": 2906000,
+            "p95_ns": 3080625,
+            "p99_ns": 4099792
+          },
+          "State checkpoint bytes": {
+            "p50_ns": 1738625,
+            "p95_ns": 1791250,
+            "p99_ns": 1835958
+          },
+          "State restore": {
+            "p50_ns": 2083542,
+            "p95_ns": 2152583,
+            "p99_ns": 2174333
+          },
+          "Engine timeline quote": {
+            "p50_ns": 6073083,
+            "p95_ns": 6254666,
+            "p99_ns": 6525167
+          }
+        },
+        "hardware": {
+          "State clone": {
+            "p50_ns": 4792,
+            "p95_ns": 5042,
+            "p99_ns": 8750
+          },
+          "Input identity": {
+            "p50_ns": 667,
+            "p95_ns": 709,
+            "p99_ns": 2208
+          },
+          "SHA256 checkpoint bytes": {
+            "p50_ns": 337916,
+            "p95_ns": 361542,
+            "p99_ns": 385833
+          },
+          "State checkpoint digest": {
+            "p50_ns": 1075542,
+            "p95_ns": 1173792,
+            "p99_ns": 1193083
+          },
+          "State checkpoint bytes": {
+            "p50_ns": 817792,
+            "p95_ns": 845042,
+            "p99_ns": 856750
+          },
+          "State restore": {
+            "p50_ns": 1165208,
+            "p95_ns": 1199000,
+            "p99_ns": 1206417
+          },
+          "Engine timeline quote": {
+            "p50_ns": 2292167,
+            "p95_ns": 2343167,
+            "p99_ns": 2459667
+          }
+        }
+      }
+    },
+    {
+      "anchor": "claims",
+      "identities": {
+        "image_sha256": "78bf74094397643cd76b9071aa8b98aa2610621d4ab921ac17e26d8d4e36013d",
+        "air_sha256": "6aa80676be1a64f1c528d298c53c48974f10e4e96a8477e2e89add55f5e4eb5d",
+        "air_bytes": 688855,
+        "source_count": 0,
+        "last_complete": 82800,
+        "target": 86400,
+        "quoted": [
+          {
+            "at": 86400,
+            "cursor": 0,
+            "lane": 0,
+            "last_complete": 82800,
+            "page_paid": 4008,
+            "page_sources": 1038,
+            "phase": "P4",
+            "serial": 53,
+            "target": 86400
+          },
+          1214
+        ]
+      },
+      "sources": {
+        "baseline": "57a586ce75ea160195345cf54cfb373967808b01d3cea602357250ab661bfc7d",
+        "candidate": "716076affb5a66994b40e9e8bfb85a28b6e576983165191d0fd8cc4116e98106",
+        "software": "5120026807ce3932936d7bb5e26183417688fd0ffa0138284a1f3aa81fca9a81",
+        "hardware": "895abc10f694812e9055774535bb0dcec48670715a2df074a3c14209ac3c3ba2"
+      },
+      "metrics": {
+        "baseline": {
+          "State clone": {
+            "p50_ns": 4209,
+            "p95_ns": 4708,
+            "p99_ns": 12250
+          },
+          "Input identity": {
+            "p50_ns": 958,
+            "p95_ns": 1000,
+            "p99_ns": 1000
+          },
+          "State checkpoint digest": {
+            "p50_ns": 3620166,
+            "p95_ns": 3791583,
+            "p99_ns": 3852541
+          },
+          "State checkpoint bytes": {
+            "p50_ns": 2182125,
+            "p95_ns": 2297917,
+            "p99_ns": 2605959
+          },
+          "State restore": {
+            "p50_ns": 2473833,
+            "p95_ns": 2584333,
+            "p99_ns": 2716083
+          },
+          "Engine timeline quote": {
+            "p50_ns": 7343250,
+            "p95_ns": 7674875,
+            "p99_ns": 7815584
+          }
+        },
+        "candidate": {
+          "State clone": {
+            "p50_ns": 3917,
+            "p95_ns": 4333,
+            "p99_ns": 4792
+          },
+          "Input identity": {
+            "p50_ns": 750,
+            "p95_ns": 792,
+            "p99_ns": 875
+          },
+          "State checkpoint digest": {
+            "p50_ns": 3056250,
+            "p95_ns": 3176916,
+            "p99_ns": 3187917
+          },
+          "State checkpoint bytes": {
+            "p50_ns": 1804833,
+            "p95_ns": 1947250,
+            "p99_ns": 2006875
+          },
+          "State restore": {
+            "p50_ns": 2182792,
+            "p95_ns": 2320917,
+            "p99_ns": 2433292
+          },
+          "Engine timeline quote": {
+            "p50_ns": 6353542,
+            "p95_ns": 6557834,
+            "p99_ns": 6627667
+          }
+        },
+        "software": {
+          "State clone": {
+            "p50_ns": 4291,
+            "p95_ns": 10500,
+            "p99_ns": 53709
+          },
+          "Input identity": {
+            "p50_ns": 791,
+            "p95_ns": 834,
+            "p99_ns": 2917
+          },
+          "SHA256 checkpoint bytes": {
+            "p50_ns": 1227042,
+            "p95_ns": 1459833,
+            "p99_ns": 1800916
+          },
+          "State checkpoint digest": {
+            "p50_ns": 2945292,
+            "p95_ns": 3103541,
+            "p99_ns": 3269500
+          },
+          "State checkpoint bytes": {
+            "p50_ns": 1735750,
+            "p95_ns": 1781083,
+            "p99_ns": 1834375
+          },
+          "State restore": {
+            "p50_ns": 2123458,
+            "p95_ns": 2191000,
+            "p99_ns": 2230208
+          },
+          "Engine timeline quote": {
+            "p50_ns": 6146709,
+            "p95_ns": 6389291,
+            "p99_ns": 6745667
+          }
+        },
+        "hardware": {
+          "State clone": {
+            "p50_ns": 3542,
+            "p95_ns": 3667,
+            "p99_ns": 22333
+          },
+          "Input identity": {
+            "p50_ns": 500,
+            "p95_ns": 542,
+            "p99_ns": 1792
+          },
+          "SHA256 checkpoint bytes": {
+            "p50_ns": 262709,
+            "p95_ns": 272875,
+            "p99_ns": 286417
+          },
+          "State checkpoint digest": {
+            "p50_ns": 1060292,
+            "p95_ns": 1088875,
+            "p99_ns": 1097000
+          },
+          "State checkpoint bytes": {
+            "p50_ns": 815042,
+            "p95_ns": 856583,
+            "p99_ns": 879459
+          },
+          "State restore": {
+            "p50_ns": 1178000,
+            "p95_ns": 1209333,
+            "p99_ns": 1217542
+          },
+          "Engine timeline quote": {
+            "p50_ns": 2350167,
+            "p95_ns": 2693250,
+            "p99_ns": 2965250
+          }
+        }
+      }
+    }
+  ],
+  "known_limitations": "sequential executions; elapsed wall including preemption and return drop; not a controlled thermal/environment causal speedup claim"
+}

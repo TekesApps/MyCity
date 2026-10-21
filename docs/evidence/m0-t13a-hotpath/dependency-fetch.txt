@@ -1,0 +1,10 @@
+    Updating crates.io index
+     Locking 4 packages to latest compatible versions
+      Adding cc v1.9.0
+      Adding find-msvc-tools v0.1.15
+      Adding sha2-asm v0.6.4
+      Adding shlex v2.0.1
+ Downloading crates ...
+  Downloaded sha2-asm v0.6.4
+  Downloaded find-msvc-tools v0.1.15
+  Downloaded cc v1.9.0

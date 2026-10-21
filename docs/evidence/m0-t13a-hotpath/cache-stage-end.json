@@ -1,0 +1,17 @@
+{
+  "further_deleted_files": 0,
+  "reason": "Current shared target retained for next phase; no additional confirmed obsolete caches. Prior corrected effective deletion is in cache-correction.json.",
+  "target_du_kib": 696844,
+  "incremental_dirs": [
+    "target/release/incremental"
+  ],
+  "occupancy_check": "ps showed no cargo/rustc/mycity-headless/air_hotpath jobs; lsof +D target showed no open files.",
+  "preserved": [
+    "source",
+    "WIP",
+    "dependency snapshots",
+    "acceptance logs and receipts",
+    "accepted binaries",
+    "current shared target"
+  ]
+}

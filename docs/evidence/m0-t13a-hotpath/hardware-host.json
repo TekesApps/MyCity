@@ -1,0 +1,9 @@
+{
+  "architecture": "arm64",
+  "macos": "26.6.2",
+  "model": "Mac16,1",
+  "cpu": "Apple M4",
+  "memory_bytes": 34359738368,
+  "FEAT_SHA256": "1",
+  "feature_evidence": "features-aarch64.txt; compiled dependency runtime dispatch; non-native builds and forced soft-fallback execution not_run"
+}

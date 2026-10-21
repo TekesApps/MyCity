@@ -1,0 +1,13 @@
+{
+  "binary_sha256": "9d58ac3f0c69af53ec2896d720f527016bfe732412f5ba8d1339c56f726a4a37",
+  "results": [
+    {
+      "kind": "source",
+      "exit_code": 0
+    },
+    {
+      "kind": "claims",
+      "exit_code": 0
+    }
+  ]
+}
