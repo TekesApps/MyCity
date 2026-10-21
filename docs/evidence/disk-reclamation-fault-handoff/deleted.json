@@ -1,0 +1,182 @@
+[
+  {
+    "path": "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/pressure.bin",
+    "round": "layout-region-l1-smoke-01",
+    "generation": "snapshot-000001.pending",
+    "metadata": [
+      16777231,
+      409323262,
+      1997142031,
+      1792611974737473774,
+      1997144064,
+      1
+    ],
+    "sha256": "c93a5ab5078b5a2652a96e52a66c284b6adb5b918d5586c14eb7a9311f0c9c9b",
+    "equivalent_to": "work/report-lifetime-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "byte_comparison": "exact prefix",
+    "reason": "Old synthetic load no longer required after actual latest full cold restore and independent handoff; old source/exe/raw/index/components/phase evidence retained",
+    "evidence": "docs/evidence/disk-reclamation-fault-handoff/cold-report.json; original round docs/evidence and work raw files",
+    "directly_restorable_after": false,
+    "full_fault_payload_preserved_after": false
+  },
+  {
+    "path": "work/causal-clock-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "round": "causal-clock-formal-l1-01",
+    "generation": "snapshot-000001",
+    "metadata": [
+      16777231,
+      409448545,
+      3044040310,
+      1792615434002902277,
+      3044040704,
+      1
+    ],
+    "sha256": "b54b320a49eda0e4d1fbb2ba6d8dfb7fdf33d228b6397bace5cf6bf95bf507be",
+    "equivalent_to": "work/report-lifetime-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "byte_comparison": "complete byte-for-byte",
+    "reason": "Old synthetic load no longer required after actual latest full cold restore and independent handoff; old source/exe/raw/index/components/phase evidence retained",
+    "evidence": "docs/evidence/disk-reclamation-fault-handoff/cold-report.json; original round docs/evidence and work raw files",
+    "directly_restorable_after": false,
+    "full_fault_payload_preserved_after": false
+  },
+  {
+    "path": "work/causal-clock-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "round": "causal-clock-formal-l1-01",
+    "generation": "snapshot-000001",
+    "metadata": [
+      16777231,
+      409448549,
+      134217728,
+      1792615434167079795,
+      134217728,
+      1
+    ],
+    "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee",
+    "equivalent_to": "work/report-lifetime-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "byte_comparison": "complete byte-for-byte",
+    "reason": "Old synthetic load no longer required after actual latest full cold restore and independent handoff; old source/exe/raw/index/components/phase evidence retained",
+    "evidence": "docs/evidence/disk-reclamation-fault-handoff/cold-report.json; original round docs/evidence and work raw files",
+    "directly_restorable_after": false,
+    "full_fault_payload_preserved_after": false
+  },
+  {
+    "path": "work/causal-clock-formal-l1-01/observed/model/layout/snapshots/snapshot-000002.pending/pressure.bin",
+    "round": "causal-clock-formal-l1-01",
+    "generation": "snapshot-000002.pending",
+    "metadata": [
+      16777231,
+      409452354,
+      3044040310,
+      1792615733023421054,
+      3044040704,
+      1
+    ],
+    "sha256": "295aa5513563576511be04259ebbd9106037e84315e6ca79f99a0765d025c428",
+    "equivalent_to": "work/report-lifetime-formal-l1-01/observed/model/layout/snapshots/snapshot-000002.pending/pressure.bin",
+    "byte_comparison": "complete byte-for-byte",
+    "reason": "Old synthetic load no longer required after actual latest full cold restore and independent handoff; old source/exe/raw/index/components/phase evidence retained",
+    "evidence": "docs/evidence/disk-reclamation-fault-handoff/cold-report.json; original round docs/evidence and work raw files",
+    "directly_restorable_after": false,
+    "full_fault_payload_preserved_after": false
+  },
+  {
+    "path": "work/causal-clock-formal-l1-01/observed/model/layout/snapshots/snapshot-000002.pending/work-reserve.bin",
+    "round": "causal-clock-formal-l1-01",
+    "generation": "snapshot-000002.pending",
+    "metadata": [
+      16777231,
+      409452357,
+      134217728,
+      1792615733155368647,
+      134217728,
+      1
+    ],
+    "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee",
+    "equivalent_to": "work/report-lifetime-formal-l1-01/observed/model/layout/snapshots/snapshot-000002.pending/work-reserve.bin",
+    "byte_comparison": "complete byte-for-byte",
+    "reason": "Old synthetic load no longer required after actual latest full cold restore and independent handoff; old source/exe/raw/index/components/phase evidence retained",
+    "evidence": "docs/evidence/disk-reclamation-fault-handoff/cold-report.json; original round docs/evidence and work raw files",
+    "directly_restorable_after": false,
+    "full_fault_payload_preserved_after": false
+  },
+  {
+    "path": "work/snapshot-backing-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "round": "snapshot-backing-formal-l1-01",
+    "generation": "snapshot-000001",
+    "metadata": [
+      16777231,
+      409522848,
+      3044040310,
+      1792617920201008673,
+      3044040704,
+      1
+    ],
+    "sha256": "b54b320a49eda0e4d1fbb2ba6d8dfb7fdf33d228b6397bace5cf6bf95bf507be",
+    "equivalent_to": "work/report-lifetime-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "byte_comparison": "complete byte-for-byte",
+    "reason": "Old synthetic load no longer required after actual latest full cold restore and independent handoff; old source/exe/raw/index/components/phase evidence retained",
+    "evidence": "docs/evidence/disk-reclamation-fault-handoff/cold-report.json; original round docs/evidence and work raw files",
+    "directly_restorable_after": false,
+    "full_fault_payload_preserved_after": false
+  },
+  {
+    "path": "work/snapshot-backing-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "round": "snapshot-backing-formal-l1-01",
+    "generation": "snapshot-000001",
+    "metadata": [
+      16777231,
+      409522851,
+      134217728,
+      1792617920333759923,
+      134217728,
+      1
+    ],
+    "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee",
+    "equivalent_to": "work/report-lifetime-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "byte_comparison": "complete byte-for-byte",
+    "reason": "Old synthetic load no longer required after actual latest full cold restore and independent handoff; old source/exe/raw/index/components/phase evidence retained",
+    "evidence": "docs/evidence/disk-reclamation-fault-handoff/cold-report.json; original round docs/evidence and work raw files",
+    "directly_restorable_after": false,
+    "full_fault_payload_preserved_after": false
+  },
+  {
+    "path": "work/snapshot-backing-formal-l1-01/observed/model/layout/snapshots/snapshot-000002.pending/pressure.bin",
+    "round": "snapshot-backing-formal-l1-01",
+    "generation": "snapshot-000002.pending",
+    "metadata": [
+      16777231,
+      409525099,
+      3044040310,
+      1792618219924542099,
+      3044040704,
+      1
+    ],
+    "sha256": "295aa5513563576511be04259ebbd9106037e84315e6ca79f99a0765d025c428",
+    "equivalent_to": "work/report-lifetime-formal-l1-01/observed/model/layout/snapshots/snapshot-000002.pending/pressure.bin",
+    "byte_comparison": "complete byte-for-byte",
+    "reason": "Old synthetic load no longer required after actual latest full cold restore and independent handoff; old source/exe/raw/index/components/phase evidence retained",
+    "evidence": "docs/evidence/disk-reclamation-fault-handoff/cold-report.json; original round docs/evidence and work raw files",
+    "directly_restorable_after": false,
+    "full_fault_payload_preserved_after": false
+  },
+  {
+    "path": "work/snapshot-backing-formal-l1-01/observed/model/layout/snapshots/snapshot-000002.pending/work-reserve.bin",
+    "round": "snapshot-backing-formal-l1-01",
+    "generation": "snapshot-000002.pending",
+    "metadata": [
+      16777231,
+      409525103,
+      134217728,
+      1792618220103398860,
+      134217728,
+      1
+    ],
+    "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee",
+    "equivalent_to": "work/report-lifetime-formal-l1-01/observed/model/layout/snapshots/snapshot-000002.pending/work-reserve.bin",
+    "byte_comparison": "complete byte-for-byte",
+    "reason": "Old synthetic load no longer required after actual latest full cold restore and independent handoff; old source/exe/raw/index/components/phase evidence retained",
+    "evidence": "docs/evidence/disk-reclamation-fault-handoff/cold-report.json; original round docs/evidence and work raw files",
+    "directly_restorable_after": false,
+    "full_fault_payload_preserved_after": false
+  }
+]

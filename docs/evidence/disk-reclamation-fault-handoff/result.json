@@ -1,0 +1,25 @@
+{
+  "before": {
+    "time_ns": 1792619608118282000,
+    "work_du_kib": 39971992,
+    "target_du_kib": 1400732,
+    "filesystem_available_bytes": 88162131968
+  },
+  "after": {
+    "time_ns": 1792619611743424000,
+    "work_du_kib": 25606584,
+    "target_du_kib": 1400732,
+    "filesystem_available_bytes": 102872944640
+  },
+  "deleted_files": 9,
+  "deleted_single_link_inode_allocated_bytes": 14710177792,
+  "target_deleted_bytes": 0,
+  "new_pressure_archive_bytes": 0,
+  "retained_files": 119103,
+  "retained_content_identity_length_mtime_links_unchanged": true,
+  "retained_allocation_differences": 0,
+  "observed_filesystem_available_delta_bytes": 14710812672,
+  "filesystem_delta_attributed_to_cleanup_bytes": null,
+  "accounting": "st_blocks is not exclusive physical APFS blocks; df influenced by shared blocks/snapshots/other tasks; do not credit historical reclamations",
+  "source_wip_preserved": true
+}

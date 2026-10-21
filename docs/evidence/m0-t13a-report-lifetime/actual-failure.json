@@ -1,0 +1,30 @@
+{
+  "source_sha256": "82a80787ede81ea6846d64cae956950a3dfaf2c54f8d07ef18426c28995c3a71",
+  "actual_wall_seconds": 310.533594,
+  "status": "model_failed",
+  "model_exit_code": 2,
+  "last_pre_operation": {
+    "magic": 5573560043284022017,
+    "sequence": 123,
+    "generation": 2,
+    "phase": 8,
+    "index": 63,
+    "request_bytes": 1048576,
+    "requested": 3259062551,
+    "arena_used": 3258998736,
+    "arena_free": 2425304,
+    "allocation_failures": 0,
+    "reserve_available_pages": 119,
+    "total_loan_pages": 9,
+    "decode_loan_pages": 1,
+    "elapsed_ns": 307951332417,
+    "reserved_0": 0,
+    "reserved_1": 0,
+    "phase_name": "decode_repay_before_page"
+  },
+  "error": "layout_probe_failed:layout_cow_outstanding_decode_or_count:snapshot_outcome=Err(\"layout_decode_repay_allocation\")\n",
+  "full_workspace": "not_run_no_acceptance_claim",
+  "root_cause_hypothesis_sufficient": false,
+  "original_parameters_unchanged": true,
+  "raw_root": "work/report-lifetime-formal-l1-01/observed"
+}

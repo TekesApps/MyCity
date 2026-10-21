@@ -1,0 +1,83 @@
+[
+  {
+    "path": "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/pressure.bin",
+    "round": "layout-region-l1-smoke-01",
+    "generation": "snapshot-000001.pending",
+    "directly_restorable": false,
+    "full_old_fault_payload_preserved": false,
+    "latest_originals": "work/report-lifetime-formal-l1-01/observed/model/layout/snapshots",
+    "evidence": "docs/evidence/disk-reclamation-fault-handoff/cold-report.json; original round docs/evidence and work raw files"
+  },
+  {
+    "path": "work/causal-clock-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "round": "causal-clock-formal-l1-01",
+    "generation": "snapshot-000001",
+    "directly_restorable": false,
+    "full_old_fault_payload_preserved": false,
+    "latest_originals": "work/report-lifetime-formal-l1-01/observed/model/layout/snapshots",
+    "evidence": "docs/evidence/disk-reclamation-fault-handoff/cold-report.json; original round docs/evidence and work raw files"
+  },
+  {
+    "path": "work/causal-clock-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "round": "causal-clock-formal-l1-01",
+    "generation": "snapshot-000001",
+    "directly_restorable": false,
+    "full_old_fault_payload_preserved": false,
+    "latest_originals": "work/report-lifetime-formal-l1-01/observed/model/layout/snapshots",
+    "evidence": "docs/evidence/disk-reclamation-fault-handoff/cold-report.json; original round docs/evidence and work raw files"
+  },
+  {
+    "path": "work/causal-clock-formal-l1-01/observed/model/layout/snapshots/snapshot-000002.pending/pressure.bin",
+    "round": "causal-clock-formal-l1-01",
+    "generation": "snapshot-000002.pending",
+    "directly_restorable": false,
+    "full_old_fault_payload_preserved": false,
+    "latest_originals": "work/report-lifetime-formal-l1-01/observed/model/layout/snapshots",
+    "evidence": "docs/evidence/disk-reclamation-fault-handoff/cold-report.json; original round docs/evidence and work raw files"
+  },
+  {
+    "path": "work/causal-clock-formal-l1-01/observed/model/layout/snapshots/snapshot-000002.pending/work-reserve.bin",
+    "round": "causal-clock-formal-l1-01",
+    "generation": "snapshot-000002.pending",
+    "directly_restorable": false,
+    "full_old_fault_payload_preserved": false,
+    "latest_originals": "work/report-lifetime-formal-l1-01/observed/model/layout/snapshots",
+    "evidence": "docs/evidence/disk-reclamation-fault-handoff/cold-report.json; original round docs/evidence and work raw files"
+  },
+  {
+    "path": "work/snapshot-backing-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "round": "snapshot-backing-formal-l1-01",
+    "generation": "snapshot-000001",
+    "directly_restorable": false,
+    "full_old_fault_payload_preserved": false,
+    "latest_originals": "work/report-lifetime-formal-l1-01/observed/model/layout/snapshots",
+    "evidence": "docs/evidence/disk-reclamation-fault-handoff/cold-report.json; original round docs/evidence and work raw files"
+  },
+  {
+    "path": "work/snapshot-backing-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "round": "snapshot-backing-formal-l1-01",
+    "generation": "snapshot-000001",
+    "directly_restorable": false,
+    "full_old_fault_payload_preserved": false,
+    "latest_originals": "work/report-lifetime-formal-l1-01/observed/model/layout/snapshots",
+    "evidence": "docs/evidence/disk-reclamation-fault-handoff/cold-report.json; original round docs/evidence and work raw files"
+  },
+  {
+    "path": "work/snapshot-backing-formal-l1-01/observed/model/layout/snapshots/snapshot-000002.pending/pressure.bin",
+    "round": "snapshot-backing-formal-l1-01",
+    "generation": "snapshot-000002.pending",
+    "directly_restorable": false,
+    "full_old_fault_payload_preserved": false,
+    "latest_originals": "work/report-lifetime-formal-l1-01/observed/model/layout/snapshots",
+    "evidence": "docs/evidence/disk-reclamation-fault-handoff/cold-report.json; original round docs/evidence and work raw files"
+  },
+  {
+    "path": "work/snapshot-backing-formal-l1-01/observed/model/layout/snapshots/snapshot-000002.pending/work-reserve.bin",
+    "round": "snapshot-backing-formal-l1-01",
+    "generation": "snapshot-000002.pending",
+    "directly_restorable": false,
+    "full_old_fault_payload_preserved": false,
+    "latest_originals": "work/report-lifetime-formal-l1-01/observed/model/layout/snapshots",
+    "evidence": "docs/evidence/disk-reclamation-fault-handoff/cold-report.json; original round docs/evidence and work raw files"
+  }
+]

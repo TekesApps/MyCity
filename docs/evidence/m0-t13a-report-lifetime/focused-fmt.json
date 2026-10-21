@@ -1,0 +1,12 @@
+{
+  "command": [
+    "cargo",
+    "fmt",
+    "--all",
+    "--",
+    "--check"
+  ],
+  "exit_code": 0,
+  "seconds": 0.4136988749999997,
+  "source_sha256": "82a80787ede81ea6846d64cae956950a3dfaf2c54f8d07ef18426c28995c3a71"
+}

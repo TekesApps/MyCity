@@ -1,0 +1,23 @@
+{
+  "pid": 29894,
+  "phase": "exec observer after actual admission; no parked orchestration parent",
+  "command": [
+    "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-report-lifetime/observe.py",
+    "/Users/frankqin/dev/MyCity/work/report-lifetime-formal-l1-01/observed",
+    "--",
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/report-lifetime/mycity-headless",
+    "steady-run",
+    "/Users/frankqin/dev/MyCity/work/report-lifetime-formal-l1-01/observed/model",
+    "l1",
+    "formal"
+  ],
+  "source_sha256": "82a80787ede81ea6846d64cae956950a3dfaf2c54f8d07ef18426c28995c3a71",
+  "support_sha256": {
+    "docs/evidence/m0-t13a-report-lifetime/observe.py": "6bc89147a64894599d7eea1f6762fbb01f4119d606842ce475ba2c2f7215c98a",
+    "docs/evidence/m0-t13a-report-lifetime/native_metrics.py": "917b184e339649acd7b79797cf77f2b2db4f5128f33fdaf8759c162672fa34ca",
+    "docs/evidence/m0-t13a-report-lifetime/clock_exchange.py": "534642a6854928e5253521862b18b33d19ebc0d777f5a0695321adeddea264b5",
+    "docs/evidence/m0-t13a-report-lifetime/readiness.py": "88ae51f35cabba9cf5660cf6a6d7a7e29b3268b253b2e80583fa005b69dbee6a",
+    "docs/evidence/m0-t13a-report-lifetime/run-formal.py": "85b1c44f8fcaabc248d79d49229f6cfbd4459820fc146f680a2b39ece26ce5b1"
+  }
+}

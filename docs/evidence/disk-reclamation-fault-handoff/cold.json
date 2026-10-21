@@ -1,0 +1,13 @@
+{
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/report-lifetime/mycity-headless",
+    "layout-load-only",
+    "work/report-lifetime-formal-l1-01/observed/model/layout/snapshots/snapshot-000001",
+    "work/report-lifetime-handoff-cold-01"
+  ],
+  "exit_code": 0,
+  "seconds": 3.649715209,
+  "fixed_reader_source": "82a80787ede81ea6846d64cae956950a3dfaf2c54f8d07ef18426c28995c3a71",
+  "working_source": "in-progress typed foundations; not used for this cold restore",
+  "new_pressure_copy": false
+}
