@@ -1,0 +1,202 @@
+[
+  {
+    "name": "pressure.bin",
+    "inodes": 3,
+    "allocated_bytes": 9132122112
+  },
+  {
+    "name": "compute-durations.bin",
+    "inodes": 52510,
+    "allocated_bytes": 1249452032
+  },
+  {
+    "name": "housing.json",
+    "inodes": 29,
+    "allocated_bytes": 483688448
+  },
+  {
+    "name": "households.json",
+    "inodes": 29,
+    "allocated_bytes": 445440000
+  },
+  {
+    "name": "passenger_batches.json",
+    "inodes": 29,
+    "allocated_bytes": 429641728
+  },
+  {
+    "name": "work-reserve.bin",
+    "inodes": 3,
+    "allocated_bytes": 402653184
+  },
+  {
+    "name": "native.json",
+    "inodes": 6,
+    "allocated_bytes": 391815168
+  },
+  {
+    "name": "meter.json",
+    "inodes": 6,
+    "allocated_bytes": 354557952
+  },
+  {
+    "name": "transactions.jsonl",
+    "inodes": 17497,
+    "allocated_bytes": 349454336
+  },
+  {
+    "name": "report.json",
+    "inodes": 17635,
+    "allocated_bytes": 216326144
+  },
+  {
+    "name": "transcript.jsonl",
+    "inodes": 44,
+    "allocated_bytes": 194801664
+  },
+  {
+    "name": "mycity-headless",
+    "inodes": 17,
+    "allocated_bytes": 183115776
+  },
+  {
+    "name": "car_vehicles.json",
+    "inodes": 29,
+    "allocated_bytes": 180076544
+  },
+  {
+    "name": "od.json",
+    "inodes": 29,
+    "allocated_bytes": 157388800
+  },
+  {
+    "name": "path_refs.json",
+    "inodes": 29,
+    "allocated_bytes": 136957952
+  },
+  {
+    "name": "cpu-final-engine.json",
+    "inodes": 44,
+    "allocated_bytes": 107945984
+  },
+  {
+    "name": "cargo_batches.json",
+    "inodes": 29,
+    "allocated_bytes": 90869760
+  },
+  {
+    "name": "equity_links.json",
+    "inodes": 29,
+    "allocated_bytes": 71270400
+  },
+  {
+    "name": "host-samples.jsonl",
+    "inodes": 57,
+    "allocated_bytes": 42397696
+  },
+  {
+    "name": "hosts.json",
+    "inodes": 29,
+    "allocated_bytes": 41218048
+  },
+  {
+    "name": "events.jsonl",
+    "inodes": 106,
+    "allocated_bytes": 40144896
+  },
+  {
+    "name": "entities.json",
+    "inodes": 29,
+    "allocated_bytes": 39792640
+  },
+  {
+    "name": "world-3760.json",
+    "inodes": 15,
+    "allocated_bytes": 37662720
+  },
+  {
+    "name": "world-3759.json",
+    "inodes": 14,
+    "allocated_bytes": 35151872
+  },
+  {
+    "name": "compat-restore",
+    "inodes": 8,
+    "allocated_bytes": 33157120
+  },
+  {
+    "name": "general_contracts.json",
+    "inodes": 29,
+    "allocated_bytes": 31952896
+  },
+  {
+    "name": "operators.json",
+    "inodes": 29,
+    "allocated_bytes": 26726400
+  },
+  {
+    "name": "world-3855.json",
+    "inodes": 9,
+    "allocated_bytes": 22597632
+  },
+  {
+    "name": "world-3854.json",
+    "inodes": 9,
+    "allocated_bytes": 22597632
+  },
+  {
+    "name": "meter.json.gz",
+    "inodes": 1,
+    "allocated_bytes": 22401024
+  },
+  {
+    "name": "bus_train_vehicles.json",
+    "inodes": 29,
+    "allocated_bytes": 21381120
+  },
+  {
+    "name": "air-result-bf83c94575957c72b9340a087add4895776b5829d0922f237777c2de53f5e7e3.air",
+    "inodes": 30,
+    "allocated_bytes": 20766720
+  },
+  {
+    "name": "bf83c94575957c72b9340a087add4895776b5829d0922f237777c2de53f5e7e3.air",
+    "inodes": 30,
+    "allocated_bytes": 20766720
+  },
+  {
+    "name": "world-100.json",
+    "inodes": 8,
+    "allocated_bytes": 20250624
+  },
+  {
+    "name": "expected-engine.json",
+    "inodes": 8,
+    "allocated_bytes": 20217856
+  },
+  {
+    "name": "visitors.json",
+    "inodes": 29,
+    "allocated_bytes": 20074496
+  },
+  {
+    "name": "checkpoint-89.json",
+    "inodes": 3,
+    "allocated_bytes": 19156992
+  },
+  {
+    "name": "checkpoint-107.json",
+    "inodes": 3,
+    "allocated_bytes": 18874368
+  },
+  {
+    "name": "checkpoint-93.json",
+    "inodes": 3,
+    "allocated_bytes": 18874368
+  },
+  {
+    "name": "checkpoint-92.json",
+    "inodes": 3,
+    "allocated_bytes": 18874368
+  }
+]

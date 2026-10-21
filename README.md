@@ -1,8 +1,10 @@
 # MyCity
 
-仓库发布版本：`v0.5.79`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.80`。已开始Rust模型与headless CLI，当前不做UI。
 
 v0.5.78完成[历史验证重复组件回收](docs/evidence/disk-reclamation-duplicate-components/STATUS.md)：扣除无损证据归档后净减少约2.64GiB文件分配空间；完整恢复输入保留，未完成的模型工作不计为通过。
+
+v0.5.80完成[历史产物集中复查](docs/evidence/disk-reclamation-final-recheck/STATUS.md)：work实测14.907GiB，现存三份完整压力恢复输入及业务／故障证据继续保留；本次新增删除0B，未重复计历史回收，未运行模型验收。
 
 v0.5.79完成[模型与空间预建工作区构造接入基础](docs/evidence/m0-t13a-role-workspace/STATUS.md)：双root及准备区、候选、codec、原257×257灰度源和Large输出背板、固定几何背板接入实际创建／冷开；同源全仓、旧完整存档与原full30日业务已实测。Meta／legacy暂存、整角色broker、normal64/common8、正式性能与8h仍未验收，真实16GB保持not_run。上段回收记录属于v0.5.78，不重复计入本次成果。
 

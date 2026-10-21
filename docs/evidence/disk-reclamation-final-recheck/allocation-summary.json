@@ -1,0 +1,6 @@
+{
+  "unique_inodes": 96154,
+  "allocated_bytes": 16006414336,
+  "work_files": 96256,
+  "note": "st_blocks allocation, not exclusive APFS physical blocks"
+}
