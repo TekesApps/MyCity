@@ -75,6 +75,7 @@ pub struct Background {
     next_job: u64,
     incarnation: u64,
 }
+#[cfg(test)]
 fn hash(bytes: &[u8]) -> [u8; 32] {
     use sha2::{Digest, Sha256};
     Sha256::digest(bytes).into()
@@ -113,7 +114,7 @@ impl Background {
     pub fn frozen_input(&self) -> Result<State, String> {
         let job = self.pending.as_ref().ok_or("background_no_job")?;
         let state = self.build_input_state(job.input.clone())?;
-        if hash(&state.checkpoint()?) != job.checkpoint_sha256 {
+        if state.checkpoint_digest()?.1 != job.checkpoint_sha256 {
             return Err("background_input_checksum".into());
         }
         Ok(state)
@@ -188,8 +189,8 @@ impl Background {
             sources,
         };
         let state = self.build_input_state(input.clone())?;
-        let bytes = state.checkpoint()?;
-        if bytes.len() > ASSET_LIMIT {
+        let (bytes, checkpoint_sha256) = state.checkpoint_digest()?;
+        if bytes > ASSET_LIMIT {
             return Err("background_asset_bytes".into());
         }
         self.pending = Some(Job {
@@ -199,7 +200,7 @@ impl Background {
             start: start as u32,
             end: end as u32,
             input,
-            checkpoint_sha256: hash(&bytes),
+            checkpoint_sha256,
             incarnation: 0,
             generation: 0,
             attempt: 0,
@@ -312,9 +313,9 @@ impl Background {
                     return Err("background_stale_attempt".into());
                 }
                 let result = candidate.ok_or("background_candidate_missing")?;
-                let bytes = result.checkpoint()?;
-                if bytes.len() > ASSET_LIMIT
-                    || hash(&bytes) != candidate_sha256
+                let (bytes, actual_sha256) = result.checkpoint_digest()?;
+                if bytes > ASSET_LIMIT
+                    || actual_sha256 != candidate_sha256
                     || !result.complete()
                     || result.input() != &job.input
                 {

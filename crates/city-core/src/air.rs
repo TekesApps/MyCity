@@ -27,24 +27,61 @@ impl<W: Write> Write for BoundedEncoding<'_, W> {
         self.inner.flush()
     }
 }
-fn payload_hash(state: &State) -> Result<String, String> {
-    struct HashWriter(Sha256);
-    impl Write for HashWriter {
-        fn write(&mut self, bytes: &[u8]) -> io::Result<usize> {
-            self.0.update(bytes);
-            Ok(bytes.len())
-        }
-        fn flush(&mut self) -> io::Result<()> {
-            Ok(())
+// Serialization emits many tiny writes. Batch them without owning an encoded State.
+// A checkpoint digest nests its payload digest, so at most two 8KiB buffers coexist.
+struct HashWriter {
+    hash: Sha256,
+    buffer: [u8; 8192],
+    used: usize,
+}
+impl HashWriter {
+    fn new() -> Self {
+        Self {
+            hash: Sha256::new(),
+            buffer: [0; 8192],
+            used: 0,
         }
     }
-    let mut hash = HashWriter(Sha256::new());
+    fn drain(&mut self) {
+        self.hash.update(&self.buffer[..self.used]);
+        self.used = 0;
+    }
+    fn finish(mut self) -> sha2::digest::Output<Sha256> {
+        self.drain();
+        self.hash.finalize()
+    }
+}
+impl Write for HashWriter {
+    fn write(&mut self, mut bytes: &[u8]) -> io::Result<usize> {
+        let count = bytes.len();
+        while !bytes.is_empty() {
+            if self.used == 0 && bytes.len() >= self.buffer.len() {
+                self.hash.update(bytes);
+                break;
+            }
+            let n = bytes.len().min(self.buffer.len() - self.used);
+            self.buffer[self.used..self.used + n].copy_from_slice(&bytes[..n]);
+            self.used += n;
+            bytes = &bytes[n..];
+            if self.used == self.buffer.len() {
+                self.drain();
+            }
+        }
+        Ok(count)
+    }
+    fn flush(&mut self) -> io::Result<()> {
+        self.drain();
+        Ok(())
+    }
+}
+fn payload_hash(state: &State) -> Result<String, String> {
+    let mut hash = HashWriter::new();
     let mut bounded = BoundedEncoding {
         inner: &mut hash,
         bytes: 0,
     };
     serde_json::to_writer(&mut bounded, state).map_err(|e| e.to_string())?;
-    Ok(format!("{:x}", hash.0.finalize()))
+    Ok(format!("{:x}", hash.finish()))
 }
 const MICRO: f32 = 1_000_000.0;
 const MAX_MICRO: u64 = 1_000_000_000_000;
@@ -616,6 +653,13 @@ impl State {
         self.checkpoint_to(&mut bytes)?;
         Ok(bytes)
     }
+    /// Canonical checkpoint byte count and SHA-256 without a full encoding Vec.
+    /// This preserves checkpoint_to's validation, size bound and exact wire bytes.
+    pub fn checkpoint_digest(&self) -> Result<(usize, [u8; 32]), String> {
+        let mut hash = HashWriter::new();
+        let bytes = self.checkpoint_to(&mut hash)?;
+        Ok((bytes, hash.finish().into()))
+    }
     pub fn restore(bytes: &[u8]) -> Result<Self, String> {
         if bytes.len() > CHECKPOINT_BYTES {
             return Err("air_checkpoint_bytes".into());
@@ -683,6 +727,23 @@ impl State {
 #[cfg(test)]
 mod report_hash_tests {
     use super::*;
+    #[test]
+    fn fixed_buffer_hash_is_chunk_and_flush_independent() {
+        for len in [0, 1, 8191, 8192, 8193, 32769] {
+            let bytes: Vec<u8> = (0..len).map(|n| (n % 251) as u8).collect();
+            for chunk in [1, 7, 8191, 8192, 8193, 65536] {
+                let mut hash = HashWriter::new();
+                hash.write_all(&[]).unwrap();
+                for (i, part) in bytes.chunks(chunk).enumerate() {
+                    hash.write_all(part).unwrap();
+                    if i % 3 == 0 {
+                        hash.flush().unwrap();
+                    }
+                }
+                assert_eq!(hash.finish(), Sha256::digest(&bytes));
+            }
+        }
+    }
     #[test]
     fn fixed_scratch_report_matches_the_previous_complete_wire_hashes() {
         for side in [32, 128] {

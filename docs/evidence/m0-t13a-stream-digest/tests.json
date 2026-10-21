@@ -1,0 +1,351 @@
+{
+  "source_sha256": "5347b7f0fc22d5cfd6c9badb230b7c2337f181e44a3842e52137fe8cb7978c35",
+  "workspace_actual_session": 81774,
+  "workspace_exit_code": 0,
+  "command": "cargo test --release --locked --offline --workspace",
+  "harness_passed_sum": 337,
+  "count_scope": "harness summaries including nested test invocations, not deduplicated unique test count",
+  "summaries": [
+    {
+      "line": 55,
+      "status": "ok",
+      "passed": 47,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 74,
+      "status": "ok",
+      "passed": 13,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 85,
+      "status": "ok",
+      "passed": 5,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 104,
+      "status": "ok",
+      "passed": 13,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 123,
+      "status": "ok",
+      "passed": 13,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 141,
+      "status": "ok",
+      "passed": 12,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 149,
+      "status": "ok",
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 160,
+      "status": "ok",
+      "passed": 5,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 172,
+      "status": "ok",
+      "passed": 6,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 189,
+      "status": "ok",
+      "passed": 11,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 237,
+      "status": "ok",
+      "passed": 42,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 245,
+      "status": "ok",
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 253,
+      "status": "ok",
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 272,
+      "status": "ok",
+      "passed": 12,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 286,
+      "status": "ok",
+      "passed": 8,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 302,
+      "status": "ok",
+      "passed": 10,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 309,
+      "status": "ok",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 316,
+      "status": "ok",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 323,
+      "status": "ok",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 332,
+      "status": "ok",
+      "passed": 3,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 340,
+      "status": "ok",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 352,
+      "status": "ok",
+      "passed": 6,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 363,
+      "status": "ok",
+      "passed": 5,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 370,
+      "status": "ok",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 377,
+      "status": "ok",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 385,
+      "status": "ok",
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 407,
+      "status": "ok",
+      "passed": 16,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 419,
+      "status": "ok",
+      "passed": 6,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 426,
+      "status": "ok",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 432,
+      "status": "ok",
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 454,
+      "status": "ok",
+      "passed": 16,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 460,
+      "status": "ok",
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 466,
+      "status": "ok",
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 483,
+      "status": "ok",
+      "passed": 11,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 491,
+      "status": "ok",
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 502,
+      "status": "ok",
+      "passed": 4,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 532,
+      "status": "ok",
+      "passed": 4,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 540,
+      "status": "ok",
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 550,
+      "status": "ok",
+      "passed": 4,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 570,
+      "status": "ok",
+      "passed": 14,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 588,
+      "status": "ok",
+      "passed": 12,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 610,
+      "status": "ok",
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 625,
+      "status": "ok",
+      "passed": 9,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 638,
+      "status": "ok",
+      "passed": 7,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 645,
+      "status": "ok",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 652,
+      "status": "ok",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 658,
+      "status": "ok",
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 664,
+      "status": "ok",
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    }
+  ],
+  "clippy_actual_session": 70079,
+  "clippy_exit_code": 0,
+  "fmt_exit_code": 0,
+  "build_exit_code": 0,
+  "build_log": "build.txt"
+}

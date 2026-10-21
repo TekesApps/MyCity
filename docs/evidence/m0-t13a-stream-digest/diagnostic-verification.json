@@ -1,0 +1,168 @@
+{
+  "source_sha256": "5347b7f0fc22d5cfd6c9badb230b7c2337f181e44a3842e52137fe8cb7978c35",
+  "scope": "same-source full-controller joint smoke diagnostic audit, full L1 pressure present",
+  "normal_heap_records": 735,
+  "normal_component_evidence": {
+    "sim": {
+      "reports": 3,
+      "maximum_reported_component_charge_bytes": 2448112,
+      "component_cap_bytes": 2621440,
+      "scope": "sealed component capacity evidence; not whole process or missing-process proof"
+    },
+    "worker": {
+      "reports": 724,
+      "maximum_reported_component_charge_bytes": 848056,
+      "component_cap_bytes": 1048576,
+      "scope": "sealed component capacity evidence; not whole process or missing-process proof"
+    },
+    "driver": {
+      "whole_Rust_heap_peak_plus_tail_bytes": 858017,
+      "cap_bytes": 1048576,
+      "native_stack_foreign": "separate"
+    },
+    "helper": [
+      {
+        "mode": "reference",
+        "control_capacity": {
+          "limit_bytes": 262144,
+          "control_slots_bytes": 24576,
+          "parser_error_scratch_bytes": 40960,
+          "paths_and_metadata_bytes": 65536,
+          "golden_or_hash_bytes": 65536,
+          "exit_tail_bytes": 65536,
+          "usage": {
+            "control_peak_owners": 1,
+            "path_peak_owners": 3,
+            "golden_peak_owners": 1,
+            "hash_peak_owners": 1
+          }
+        },
+        "whole_Rust_heap_peak_plus_tail_bytes_including_model_work": 29550682,
+        "scope": "static diagnostic owners separately counted; whole model peak is EXTRA, never deducted from pool"
+      },
+      {
+        "mode": "fault-reference",
+        "control_capacity": {
+          "limit_bytes": 262144,
+          "control_slots_bytes": 24576,
+          "parser_error_scratch_bytes": 40960,
+          "paths_and_metadata_bytes": 65536,
+          "golden_or_hash_bytes": 65536,
+          "exit_tail_bytes": 65536,
+          "usage": {
+            "control_peak_owners": 1,
+            "path_peak_owners": 3,
+            "golden_peak_owners": 1,
+            "hash_peak_owners": 1
+          }
+        },
+        "whole_Rust_heap_peak_plus_tail_bytes_including_model_work": 29550694,
+        "scope": "static diagnostic owners separately counted; whole model peak is EXTRA, never deducted from pool"
+      },
+      {
+        "mode": "before-reopen",
+        "control_capacity": {
+          "limit_bytes": 262144,
+          "control_slots_bytes": 24576,
+          "parser_error_scratch_bytes": 40960,
+          "paths_and_metadata_bytes": 65536,
+          "golden_or_hash_bytes": 65536,
+          "exit_tail_bytes": 65536,
+          "usage": {
+            "control_peak_owners": 2,
+            "path_peak_owners": 2,
+            "golden_peak_owners": 0,
+            "hash_peak_owners": 1
+          }
+        },
+        "whole_Rust_heap_peak_plus_tail_bytes_including_model_work": 6390668,
+        "scope": "static diagnostic owners separately counted; whole model peak is EXTRA, never deducted from pool"
+      },
+      {
+        "mode": "compare-endurance",
+        "control_capacity": {
+          "limit_bytes": 262144,
+          "control_slots_bytes": 24576,
+          "parser_error_scratch_bytes": 40960,
+          "paths_and_metadata_bytes": 65536,
+          "golden_or_hash_bytes": 65536,
+          "exit_tail_bytes": 65536,
+          "usage": {
+            "control_peak_owners": 2,
+            "path_peak_owners": 2,
+            "golden_peak_owners": 0,
+            "hash_peak_owners": 1
+          }
+        },
+        "whole_Rust_heap_peak_plus_tail_bytes_including_model_work": 29270222,
+        "scope": "static diagnostic owners separately counted; whole model peak is EXTRA, never deducted from pool"
+      }
+    ],
+    "pool": {
+      "whole_Rust_heap_peak_plus_tail_bytes": 67191801,
+      "whole_upper_bound_bytes": 67371008,
+      "diagnostic_0_25MiB_separate_proof": "not_closed; no subtraction of lifetime peaks while pages are lent"
+    },
+    "observer": {
+      "observed_hot_trace_bound_bytes": 707718,
+      "cap_bytes": 2097152,
+      "startup_native_foreign": "not_proven_by_hot_tracemalloc"
+    },
+    "Rust_supervisor": {
+      "whole_Rust_heap_peak_plus_tail_bytes": 181004,
+      "cap_bytes": 262144,
+      "native_stack_foreign": "separate"
+    },
+    "layout": {
+      "allocated_owned_bytes": 461888,
+      "cap_bytes": 786432,
+      "charged_bound_bytes": 724032,
+      "full_snapshot_file_details": "events.jsonl and retained snapshot indices",
+      "transient_reservation_bytes": 262144
+    }
+  },
+  "fault_instances_without_normal_heap_footer": [
+    {
+      "producer": "worker-32232-0",
+      "pid": 32232,
+      "process_instance_unix_ns": 1792547261070534000,
+      "sealed_component_report_present": true,
+      "normal_heap_footer": "absent; not zero"
+    },
+    {
+      "producer": "sim-31469-0",
+      "pid": 31469,
+      "process_instance_unix_ns": 1792547222437918000,
+      "sealed_component_report_present": false,
+      "normal_heap_footer": "absent; not zero"
+    },
+    {
+      "producer": "worker-31873-0",
+      "pid": 31873,
+      "process_instance_unix_ns": 1792547243409904000,
+      "sealed_component_report_present": false,
+      "normal_heap_footer": "absent; not zero"
+    }
+  ],
+  "role_whole_Rust_heap_peaks_plus_tail_including_model_work": {
+    "scale-model-task": 29550694,
+    "compute-worker-bounded": 5199029,
+    "sim-host-scale-full-probe": 33749826,
+    "scale-endurance": 858017,
+    "layout-session": 3259129064,
+    "layout-load-only": 3258672682,
+    "normal-pool-host": 67191801,
+    "joint-endurance": 181004
+  },
+  "component_caps_addition_only": {
+    "formal_Rust_joint_nominal_bytes": 8388608,
+    "not_measured_joint_proof": true
+  },
+  "shared_8MiB_joint": "not_accepted",
+  "normal_3_10GiB": "not_accepted; all ordinary Engine/serde/helper allocations remain extra",
+  "L1_joint": "present; pressure substitute is not product functionality",
+  "formal_latency": "not_accepted; shortened cadence; execution concurrency conditions recorded in STATUS.md",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run",
+  "full_M0": "not_accepted"
+}

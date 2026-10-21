@@ -375,3 +375,6 @@ v0.5.59：[Sim具名固定编码／候选owner](evidence/m0-t13a-sim-workspace/S
 
 
 v0.5.61：[原完整L1＋L2联合smoke](evidence/m0-t13a-joint-recheck/STATUS.md)本源重新实测完成，无代码改动。e6dd…/f262…来源实际613.3965335秒，完整723目标/3013票/724逻辑窗口及故障reference完整Engine一致，725worker/4Sim分别归还；L1全600scan、两代快照及最新新进程冷装9.247892333秒。监督heap本轮齐，实际kill缺footer及2560footprint缺测分别保留；RSS3576922112B/已得footprint3538866544B，normal/swap净0但初始已有6706692096B。execution接纳p99=45.111834ms、quote分位超门，正式十类仍失败；Engine/serde/helper/worker计算数组EXTRA，normal64/common8未闭合。正式四档/三轮稳态/真正8h未完成，真实16GB not_run、M0 not_accepted。advisor实际独立重核有限发布，旧v50失败不改写。
+
+
+v0.5.62：[接纳校验流式摘要](evidence/m0-t13a-stream-digest/STATUS.md)。固定8KiB批量摘要复用原规范checkpoint，捕获/冻结/Accept/staged长度不造整份编码Vec；原schema/hash/CPU比对保持。最终5347…/66f4…来源全仓Release81774终态0，harness337含nested，clippy/fmt/build0；两次测试失败分源保留。原full联合43204实际610.629363208秒、经营356.202284167秒，全部业务/恢复/725worker4Sim/L1全600scan两快照及最新冷装8.226595334秒核验一致。sealed execution p99观察13.642998ms，quote p95仍23.801760ms超20；样本/faultjob/背景差异明确，不拼正式门。normal64/common8/State等EXTRA未闭合，正式四档/三轮稳态/真正8h/真实16GB未完成，M0 not_accepted。advisor实际独立重核有限发布。

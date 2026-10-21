@@ -1,0 +1,19 @@
+{
+  "all_exist": true,
+  "checked": [
+    "docs/evidence/m0-t13a-stream-digest/PLAN.md",
+    "docs/evidence/m0-t13a-stream-digest/advisor-code-review.md",
+    "docs/evidence/m0-t13a-stream-digest/source.json",
+    "docs/evidence/m0-t13a-stream-digest/tests.json",
+    "docs/evidence/m0-t13a-stream-digest/failed-attempts.json",
+    "docs/evidence/m0-t13a-stream-digest/verification.json",
+    "docs/evidence/m0-t13a-stream-digest/workspace-verification.json",
+    "docs/evidence/m0-t13a-stream-digest/latency.json",
+    "docs/evidence/m0-t13a-stream-digest/comparison.json",
+    "docs/evidence/m0-t13a-stream-digest/coverage.json",
+    "docs/evidence/m0-t13a-stream-digest/diagnostic-verification.json",
+    "docs/evidence/m0-t13a-stream-digest/t13a62-joint-01/manifest.json",
+    "docs/evidence/m0-t13a-stream-digest/static-verification.json",
+    "docs/evidence/m0-t13a-stream-digest/next-workspace-route.md"
+  ]
+}

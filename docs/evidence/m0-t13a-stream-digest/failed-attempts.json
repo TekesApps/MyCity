@@ -1,0 +1,22 @@
+{
+  "attempts": [
+    {
+      "source": "candidate/source.json",
+      "source_sha256": "c75a4d7b7d88ec08a60bd5405cb1598e7b0356187a5fef3cfec524c8afa0a1bd",
+      "actual_session": 41732,
+      "exit_code": 101,
+      "log": "workspace-tests.txt",
+      "reason": "new integration test used private background hash; production API was not opened; old private hash production-use removed so cfg(test) applied"
+    },
+    {
+      "source": "independent-reference/source.json",
+      "source_sha256": "7b57e05715fb733a2ff7b8bbf5be43e5efd768c5688eeeca5e6e6ce6265c58bd",
+      "actual_session": 52758,
+      "exit_code": 101,
+      "log": "workspace-tests-independent-reference.txt",
+      "reason": "new test used illegal cells page8192; air_page_limit rejected; fixture corrected to original1024 without changing production limit"
+    }
+  ],
+  "final_candidate": "legal-page-fixture/source.json",
+  "final_tests": "actual81774 terminal0, full workspace exact final source; see tests.json"
+}

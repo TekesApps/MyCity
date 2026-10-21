@@ -1,0 +1,52 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+warning: function `hash` is never used
+  --> crates/city-core/src/background.rs:78:4
+   |
+78 | fn hash(bytes: &[u8]) -> [u8; 32] {
+   |    ^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+warning: `mycity-core` (lib) generated 1 warning
+error[E0603]: function `hash` is private
+   --> crates/city-core/tests/air.rs:443:57
+    |
+443 |             assert_eq!(digest, mycity_core::background::hash(&legacy));
+    |                                                         ^^^^ private function
+    |
+note: the function `hash` is defined here
+   --> /Users/frankqin/dev/MyCity/crates/city-core/src/background.rs:78:1
+    |
+78  | fn hash(bytes: &[u8]) -> [u8; 32] {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0603]: function `hash` is private
+   --> crates/city-core/tests/air.rs:475:50
+    |
+475 |             (raw.len(), mycity_core::background::hash(&raw))
+    |                                                  ^^^^ private function
+    |
+note: the function `hash` is defined here
+   --> /Users/frankqin/dev/MyCity/crates/city-core/src/background.rs:78:1
+    |
+78  | fn hash(bytes: &[u8]) -> [u8; 32] {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0603]: function `hash` is private
+   --> crates/city-core/tests/air.rs:486:46
+    |
+486 |         (raw.len(), mycity_core::background::hash(&raw))
+    |                                              ^^^^ private function
+    |
+note: the function `hash` is defined here
+   --> /Users/frankqin/dev/MyCity/crates/city-core/src/background.rs:78:1
+    |
+78  | fn hash(bytes: &[u8]) -> [u8; 32] {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For more information about this error, try `rustc --explain E0603`.
+error: could not compile `mycity-core` (test "air") due to 3 previous errors
+warning: build failed, waiting for other jobs to finish...

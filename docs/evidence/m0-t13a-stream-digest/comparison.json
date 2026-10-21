@@ -1,0 +1,77 @@
+{
+  "scope": "independent original full-joint smoke runs; not source pooling or formal gate",
+  "before_source": "e6dd2bad02f0816f78ebc5d2d0794baac07e0f9dd8c12bbf16282965cd01acab",
+  "after_source": "5347b7f0fc22d5cfd6c9badb230b7c2337f181e44a3842e52137fe8cb7978c35",
+  "capture_admit_by_role": {
+    "execution": {
+      "before": {
+        "record_state": "sealed",
+        "producer": "sim",
+        "role": "execution",
+        "class": "L2_background_capture_admit_cpu",
+        "samples": 1318,
+        "maximum_ns": 193468337,
+        "p95_ns": 16682350,
+        "p99_ns": 45111834,
+        "minimum_samples_met": true,
+        "observed_p95_p99_thresholds_met": false
+      },
+      "after": {
+        "record_state": "sealed",
+        "producer": "sim",
+        "role": "execution",
+        "class": "L2_background_capture_admit_cpu",
+        "samples": 1304,
+        "maximum_ns": 107603285,
+        "p95_ns": 12009171,
+        "p99_ns": 13642998,
+        "minimum_samples_met": true,
+        "observed_p95_p99_thresholds_met": true
+      }
+    },
+    "quote": {
+      "before": {
+        "record_state": "sealed",
+        "producer": "sim",
+        "role": "quote",
+        "class": "L2_background_capture_admit_cpu",
+        "samples": 1977,
+        "maximum_ns": 234913298,
+        "p95_ns": 29304506,
+        "p99_ns": 60467261,
+        "minimum_samples_met": true,
+        "observed_p95_p99_thresholds_met": false
+      },
+      "after": {
+        "record_state": "sealed",
+        "producer": "sim",
+        "role": "quote",
+        "class": "L2_background_capture_admit_cpu",
+        "samples": 1956,
+        "maximum_ns": 50984517,
+        "p95_ns": 23801760,
+        "p99_ns": 25323174,
+        "minimum_samples_met": true,
+        "observed_p95_p99_thresholds_met": false
+      }
+    }
+  },
+  "business_wall_seconds": {
+    "before": 385.62097275,
+    "after": 356.202284167
+  },
+  "dynamic_fault_jobs": {
+    "before": [
+      32,
+      65
+    ],
+    "after": [
+      38,
+      72
+    ]
+  },
+  "sample_and_background_limitation": "same frozen load and observer, distinct source/run; fault-selected sealed populations and external background differ, so no strict isolated causal or formal statistical conclusion",
+  "formal_10class": "not_accepted; quote p95 still exceeds20ms, missing L0/rare and steady protocol",
+  "normal64_common8": "not_accepted",
+  "eight_hour_real16GB": "not_run"
+}

@@ -1,0 +1,9 @@
+# 后续正常工作内存的实施路线：advisor只读结论
+
+本页不是实现或验收。当前运行43204期间仅讨论，源码保持冻结。
+
+Cargo.toml的unsafe_code=forbid。不要把普通Engine透明搬入通用进程arena：现有Vec/Box/serde不会自动使用它；allocator接管存在对齐、析构、线程和第三方归属问题，即使安全封装也不能证明全路径已接管。选择类型化固定容量工作区，并复用已实现的固定恢复seed/具名池生命周期。
+
+首个完整生命周期应覆盖bounded worker单次空气任务的field/scratch/integral、固定sources/progress和明确解码临时。broker先准入再创建/初始化/触页全部最大合法容量；活动长度分开，未用尾部仍填充。原4MiB字节槽独立，不能重复抵扣。seed直接写活动范围，不能先普通State反序列化后复制；算子借用切片，只序列化活动元素，原checkpoint字节保持。工作区不提供普通Clone，第二副本用第二具名已准入槽copy_into；跨任务复用，失败清场回填，真实Child wait才归还。
+
+工作数据从原64MiB正常池记账；票据/日志/统计沿原共同诊断份额，栈/OS/allocator费用另测。try_reserve_exact或try_clone单独不足，还要阻止后续扩容和真实填充未用容量。通过此场景仍不能签Sim常驻Engine/Prepared/候选reference/helper双Engine，后续沿同一类型化方法闭合总账，不扩预算/缩负载。advisor没有改文件或运行负载。

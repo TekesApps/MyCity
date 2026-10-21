@@ -1,0 +1,20 @@
+{
+  "existing_target_reused": true,
+  "target_allocated_kib": 606588,
+  "new_independent_targets": 0,
+  "debug_incremental_exists": false,
+  "own_benchmark_actual_session": 43204,
+  "own_benchmark_exit_code": 0,
+  "target_open_files_found": false,
+  "lsof_exit_code": 1,
+  "lsof_stderr_bytes": 0,
+  "removed_cache_paths": [],
+  "actual_freed_bytes": 0,
+  "retained": [
+    "source/WIP",
+    "fixed dependencies/source archives",
+    "raw failure and success evidence",
+    "actual candidate executable and accepted binary alias",
+    "unique full L1 snapshots; acceptance evidence not cache"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "raw_test_log_EOF_blank_line_preserved": [
+    "docs/evidence/m0-t13a-stream-digest/workspace-tests-final.txt:665: new blank line at EOF."
+  ],
+  "other_findings": [],
+  "scope": "staged git diff check; raw test evidence is not normalized"
+}

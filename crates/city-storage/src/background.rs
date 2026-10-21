@@ -155,7 +155,7 @@ impl Store {
                 }
                 if let Some(hash) = r.staged_sha256 {
                     let state = load_asset(dir, &hash)?;
-                    if state.checkpoint().map_err(Error::Model)?.len() as u64 != r.staged_bytes {
+                    if state.checkpoint_digest().map_err(Error::Model)?.0 as u64 != r.staged_bytes {
                         return Err(Error::Invalid("background_staged_length"));
                     }
                     let b = engine.background().expect("required background");

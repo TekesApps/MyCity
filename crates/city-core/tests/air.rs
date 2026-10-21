@@ -1,5 +1,9 @@
 use mycity_core::air::{Input, Phase, Source, State, OWNED_BYTES, STRATEGY};
 use serde_json::{json, Value};
+fn checkpoint_hash(bytes: &[u8]) -> [u8; 32] {
+    use sha2::Digest;
+    sha2::Sha256::digest(bytes).into()
+}
 fn input(target: u32) -> Input {
     Input {
         schema: STRATEGY.into(),
@@ -438,6 +442,9 @@ fn streamed_borrowed_checkpoints_are_byte_identical_to_legacy_owned_format() {
             .unwrap();
             let current = s.checkpoint().unwrap();
             assert_eq!(current, legacy);
+            let (count, digest) = s.checkpoint_digest().unwrap();
+            assert_eq!(count, legacy.len());
+            assert_eq!(digest, checkpoint_hash(&legacy));
             let old: Legacy = serde_json::from_slice(&current).unwrap();
             assert_eq!(
                 old.sha256,
@@ -451,6 +458,41 @@ fn streamed_borrowed_checkpoints_are_byte_identical_to_legacy_owned_format() {
             s.page(256, 256).unwrap();
         }
     }
+}
+#[test]
+fn checkpoint_digest_preserves_complete_and_continued_state_identity() {
+    let mut i = input(120);
+    i.side = 128;
+    i.sources = vec![Source {
+        id: 1,
+        cell: 16,
+        start: 0,
+        end: 120,
+        rate_micro: 1,
+    }];
+    let mut s = State::new(i.clone()).unwrap();
+    while !s.complete() {
+        s.page(1, 1024).unwrap();
+        let raw = s.checkpoint().unwrap();
+        assert_eq!(
+            s.checkpoint_digest().unwrap(),
+            (raw.len(), checkpoint_hash(&raw))
+        );
+    }
+    i.target = 180;
+    i.boundary_until = 180;
+    i.sources[0].start = 120;
+    i.sources[0].end = 180;
+    let continued = s.continue_from_boundary(i).unwrap();
+    let raw = continued.checkpoint().unwrap();
+    assert_eq!(
+        continued.checkpoint_digest().unwrap(),
+        (raw.len(), checkpoint_hash(&raw))
+    );
+    assert_eq!(
+        State::restore(&raw).unwrap().checkpoint_digest().unwrap(),
+        continued.checkpoint_digest().unwrap()
+    );
 }
 #[test]
 fn streamed_checkpoint_handles_partial_writers_exact_size_and_interrupted_output() {
