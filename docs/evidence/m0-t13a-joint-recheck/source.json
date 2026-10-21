@@ -1,0 +1,11 @@
+{
+  "source_sha256": "e6dd2bad02f0816f78ebc5d2d0794baac07e0f9dd8c12bbf16282965cd01acab",
+  "source_files": 149,
+  "binary_sha256": "f26244705a1fc53cf874eaca24884b11dfdb96eae8939629191a4c9ec48bc7c0",
+  "frozen_acceptance_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+  "observer_sha256": "9fcb2290b7837fff0e73eefae0e761237fa90e9c03f8d53d96b8388647bc5ac1",
+  "source_support_sha256": "6d886faa53a8b86966c6c1367f026320f4e9a657e1f2791c129602025ada04fe",
+  "rust": "1.85.1",
+  "benchmark_binary_path": "work/accepted-binaries/v0.5.59/mycity-headless",
+  "code_change_this_stage": false
+}

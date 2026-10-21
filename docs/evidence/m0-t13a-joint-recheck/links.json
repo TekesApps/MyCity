@@ -1,0 +1,17 @@
+{
+  "all_exist": true,
+  "checked": [
+    "docs/evidence/m0-t13a-joint-recheck/source.json",
+    "docs/evidence/m0-t13a-joint-recheck/PLAN.md",
+    "docs/evidence/m0-t13a-joint-recheck/advisor-plan-review.md",
+    "docs/evidence/m0-t13a-joint-recheck/verification.json",
+    "docs/evidence/m0-t13a-joint-recheck/workspace-verification.json",
+    "docs/evidence/m0-t13a-joint-recheck/timing-summary.json",
+    "docs/evidence/m0-t13a-joint-recheck/coverage.json",
+    "docs/evidence/m0-t13a-joint-recheck/diagnostic-verification.json",
+    "docs/evidence/m0-t13a-joint-recheck/latency.json",
+    "docs/evidence/m0-t13a-joint-recheck/t13a60-joint-01/manifest.json",
+    "docs/evidence/m0-t13a-joint-recheck/static-verification.json",
+    "docs/evidence/m0-t13a-joint-recheck/next-allocation-paths.md"
+  ]
+}

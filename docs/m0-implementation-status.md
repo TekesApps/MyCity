@@ -372,3 +372,6 @@ v0.5.56：[固定L1诊断恢复与旧组件兼容](evidence/m0-t13a-bounded-rest
 
 
 v0.5.59：[Sim具名固定编码／候选owner](evidence/m0-t13a-sim-workspace/STATUS.md)。4MiB实际双槽先释放再Filled、实际Child wait归还、部分补页失败不发信用，原64MiB池及诊断上限未扩大。最终e6dd…来源56定向/clippy/fmt/build0；原full L2实际30日经营343.253854834秒，723目标/3011票/完整Engine及冷恢复核验一致，2代Sim和724worker分别平衡，双owner池56MiB。漏顶层heap env导致缺1份监督者记录，原核验失败保留，完整遥测门不签；quote p95=24.811810ms失败/稀有样本不足，不签正式分位。Engine/serde/helper仍EXTRA，L1/共同预算/四档稳态/真正8h/真实16GB未签，M0 not_accepted。
+
+
+v0.5.61：[原完整L1＋L2联合smoke](evidence/m0-t13a-joint-recheck/STATUS.md)本源重新实测完成，无代码改动。e6dd…/f262…来源实际613.3965335秒，完整723目标/3013票/724逻辑窗口及故障reference完整Engine一致，725worker/4Sim分别归还；L1全600scan、两代快照及最新新进程冷装9.247892333秒。监督heap本轮齐，实际kill缺footer及2560footprint缺测分别保留；RSS3576922112B/已得footprint3538866544B，normal/swap净0但初始已有6706692096B。execution接纳p99=45.111834ms、quote分位超门，正式十类仍失败；Engine/serde/helper/worker计算数组EXTRA，normal64/common8未闭合。正式四档/三轮稳态/真正8h未完成，真实16GB not_run、M0 not_accepted。advisor实际独立重核有限发布，旧v50失败不改写。

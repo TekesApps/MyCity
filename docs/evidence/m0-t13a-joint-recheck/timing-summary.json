@@ -1,0 +1,17 @@
+{
+  "source_sha256": "e6dd2bad02f0816f78ebc5d2d0794baac07e0f9dd8c12bbf16282965cd01acab",
+  "run_actual_session": 80279,
+  "exit_code": 0,
+  "smoke_not_formal": true,
+  "latest_cold_restore_supervisor_elapsed_seconds": 9.247892333,
+  "cold_restore_10s_threshold_observed_met_this_run": true,
+  "snapshot_durable_seconds": [
+    25.956753792,
+    23.705139833
+  ],
+  "snapshot_60s_threshold_observed_met_this_run": true,
+  "snapshot_start_max_lateness_seconds": 0.0009626249999996617,
+  "save_completion_max_lateness_seconds": 1.237808542,
+  "query_completion_max_lateness_seconds": 1.071743917,
+  "formal_queue_recovery_save_latency_gate": "not_accepted_by_smoke; formal unchanged protocol still required"
+}

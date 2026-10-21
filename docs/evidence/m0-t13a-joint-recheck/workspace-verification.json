@@ -1,0 +1,60 @@
+{
+  "actual_sim_epochs": [
+    {
+      "generation": 1,
+      "prepared_to_filled_ns": 30265709,
+      "observed_return_ns": 97366103292
+    },
+    {
+      "generation": 2,
+      "prepared_to_filled_ns": 23161625,
+      "observed_return_ns": 115027909917
+    },
+    {
+      "generation": 3,
+      "prepared_to_filled_ns": 21986875,
+      "observed_return_ns": 446563404542
+    },
+    {
+      "generation": 4,
+      "prepared_to_filled_ns": 24530375,
+      "observed_return_ns": 486180932458
+    }
+  ],
+  "actual_sim_traces": [
+    {
+      "pid": 96542,
+      "instance": 1792545337507480000,
+      "slot_reports": 1267,
+      "complete_slot_trace_jobs": 633,
+      "sealed": true
+    },
+    {
+      "pid": 95287,
+      "instance": 1792545280650820000,
+      "slot_reports": 130,
+      "complete_slot_trace_jobs": 63,
+      "sealed": false
+    },
+    {
+      "pid": 8739,
+      "instance": 1792545707841355000,
+      "slot_reports": 1,
+      "complete_slot_trace_jobs": 0,
+      "sealed": true
+    },
+    {
+      "pid": 96117,
+      "instance": 1792545319846016000,
+      "slot_reports": 53,
+      "complete_slot_trace_jobs": 26,
+      "sealed": true
+    }
+  ],
+  "logical_windows": 724,
+  "worker_grants_including_fault_attempt": 725,
+  "fault_trace_completeness": "killed process may lack final slot trace or footer; not inferred zero or complete",
+  "dual_owner_pool_bytes": 58720256,
+  "final_pool_bytes": 67108864,
+  "normal64_common8": "not_accepted; Engine/serde/helper EXTRA"
+}
