@@ -1,0 +1,251 @@
+{
+  "before": {
+    "time_ns": 1792582246455201000,
+    "work_du_kib": 18144316,
+    "target_du_kib": 1034288,
+    "filesystem_available_bytes": 115525414912
+  },
+  "after": {
+    "time_ns": 1792582253805451000,
+    "work_du_kib": 18154064,
+    "target_du_kib": 1034288,
+    "filesystem_available_bytes": 115534729216
+  },
+  "observed_df_available_delta": 9314304,
+  "deleted_paths": [],
+  "deleted_inode_allocated_bytes": 0,
+  "attributed_disk_free_gain": 0,
+  "files_observed_non_atomic_live_inventory": 87504,
+  "active_run": "work/t13a76-full-business-01",
+  "active_run_pid_at_start": 84121,
+  "no_process_stopped": true,
+  "no_build_or_new_validation_launched": true,
+  "no_target_created": true,
+  "lsof_exit": 0,
+  "protected": [
+    {
+      "path": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000001",
+      "indexed_original_files_present_and_lengths_match": 29,
+      "content_hash_rechecked_this_turn": false,
+      "previous_hash_evidence": "docs/evidence/disk-reclamation-current-audit/protected-inputs.json",
+      "reason": "Future joint/old-format recovery dependency; hash cannot replace originals"
+    },
+    {
+      "path": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002",
+      "indexed_original_files_present_and_lengths_match": 29,
+      "content_hash_rechecked_this_turn": false,
+      "previous_hash_evidence": "docs/evidence/disk-reclamation-current-audit/protected-inputs.json",
+      "reason": "Future joint/old-format recovery dependency; hash cannot replace originals"
+    },
+    {
+      "path": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001",
+      "indexed_original_files_present_and_lengths_match": 29,
+      "content_hash_rechecked_this_turn": false,
+      "previous_hash_evidence": "docs/evidence/disk-reclamation-current-audit/protected-inputs.json",
+      "reason": "Future joint/old-format recovery dependency; hash cannot replace originals"
+    }
+  ],
+  "large_files": [
+    {
+      "path": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "links": 1,
+      "inode": 405281350,
+      "action": "retain: required complete restore input"
+    },
+    {
+      "path": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "links": 1,
+      "inode": 405281271,
+      "action": "retain: required complete restore input"
+    },
+    {
+      "path": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "links": 1,
+      "inode": 407400880,
+      "action": "retain: required complete restore input"
+    },
+    {
+      "path": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "links": 1,
+      "inode": 407400878,
+      "action": "retain: required complete restore input"
+    },
+    {
+      "path": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "links": 1,
+      "inode": 407431464,
+      "action": "retain: required complete restore input"
+    },
+    {
+      "path": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "links": 1,
+      "inode": 407431142,
+      "action": "retain: required complete restore input"
+    }
+  ],
+  "largest_groups": [
+    {
+      "name": "pressure.bin",
+      "inodes": 3,
+      "logical_bytes": 9132120930,
+      "allocated_bytes": 9132122112
+    },
+    {
+      "name": "native.json",
+      "inodes": 29,
+      "logical_bytes": 1893682107,
+      "allocated_bytes": 1893773312
+    },
+    {
+      "name": "meter.json",
+      "inodes": 29,
+      "logical_bytes": 1713632069,
+      "allocated_bytes": 1713696768
+    },
+    {
+      "name": "compute-durations.bin",
+      "inodes": 47356,
+      "logical_bytes": 1090882197,
+      "allocated_bytes": 1128628224
+    },
+    {
+      "name": "housing.json",
+      "inodes": 29,
+      "logical_bytes": 483643875,
+      "allocated_bytes": 483688448
+    },
+    {
+      "name": "households.json",
+      "inodes": 29,
+      "logical_bytes": 445419178,
+      "allocated_bytes": 445440000
+    },
+    {
+      "name": "passenger_batches.json",
+      "inodes": 29,
+      "logical_bytes": 429595270,
+      "allocated_bytes": 429641728
+    },
+    {
+      "name": "work-reserve.bin",
+      "inodes": 3,
+      "logical_bytes": 402653184,
+      "allocated_bytes": 402653184
+    },
+    {
+      "name": "transactions.jsonl",
+      "inodes": 15779,
+      "logical_bytes": 295493000,
+      "allocated_bytes": 313425920
+    },
+    {
+      "name": "report.json",
+      "inodes": 15913,
+      "logical_bytes": 167712362,
+      "allocated_bytes": 195129344
+    },
+    {
+      "name": "transcript.jsonl",
+      "inodes": 42,
+      "logical_bytes": 187220896,
+      "allocated_bytes": 187367424
+    },
+    {
+      "name": "car_vehicles.json",
+      "inodes": 29,
+      "logical_bytes": 180067148,
+      "allocated_bytes": 180076544
+    },
+    {
+      "name": "od.json",
+      "inodes": 29,
+      "logical_bytes": 157270712,
+      "allocated_bytes": 157388800
+    },
+    {
+      "name": "mycity-headless",
+      "inodes": 14,
+      "logical_bytes": 145562304,
+      "allocated_bytes": 145584128
+    },
+    {
+      "name": "path_refs.json",
+      "inodes": 29,
+      "logical_bytes": 136947512,
+      "allocated_bytes": 136957952
+    },
+    {
+      "name": "cpu-final-engine.json",
+      "inodes": 42,
+      "logical_bytes": 102782834,
+      "allocated_bytes": 102924288
+    },
+    {
+      "name": "cargo_batches.json",
+      "inodes": 29,
+      "logical_bytes": 90823476,
+      "allocated_bytes": 90869760
+    },
+    {
+      "name": "equity_links.json",
+      "inodes": 29,
+      "logical_bytes": 71164463,
+      "allocated_bytes": 71270400
+    },
+    {
+      "name": "host-samples.jsonl",
+      "inodes": 57,
+      "logical_bytes": 42283428,
+      "allocated_bytes": 42397696
+    },
+    {
+      "name": "hosts.json",
+      "inodes": 29,
+      "logical_bytes": 41176172,
+      "allocated_bytes": 41218048
+    },
+    {
+      "name": "events.jsonl",
+      "inodes": 106,
+      "logical_bytes": 39907351,
+      "allocated_bytes": 40144896
+    },
+    {
+      "name": "entities.json",
+      "inodes": 29,
+      "logical_bytes": 39679395,
+      "allocated_bytes": 39792640
+    },
+    {
+      "name": "general_contracts.json",
+      "inodes": 29,
+      "logical_bytes": 31937004,
+      "allocated_bytes": 31952896
+    },
+    {
+      "name": "world-3760.json",
+      "inodes": 12,
+      "logical_bytes": 30089016,
+      "allocated_bytes": 30130176
+    },
+    {
+      "name": "compat-restore",
+      "inodes": 7,
+      "logical_bytes": 28700752,
+      "allocated_bytes": 28717056
+    }
+  ],
+  "note": "Live run can create/remove files; metadata inventory is not an atomic snapshot. No large content hashes read during measurement. df changes not cleanup achievements."
+}

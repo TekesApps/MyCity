@@ -1,0 +1,5 @@
+{
+  "pid": 79358,
+  "lstart": "Wed Oct 21 19:17:33 2026",
+  "scope": "Wait exact existing regression86665; never restart on observation timeout"
+}

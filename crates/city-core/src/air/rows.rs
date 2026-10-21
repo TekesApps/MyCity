@@ -132,3 +132,34 @@ impl<T: Clone> Rows<T> {
         self.storage.as_ptr() as usize
     }
 }
+
+impl<T: crate::model_rows::Record + for<'de> serde::Deserialize<'de>> crate::restore_into::Restore
+    for Rows<T>
+{
+    fn restore<'de, D: serde::Deserializer<'de>>(&mut self, d: D) -> Result<(), D::Error> {
+        struct Read<'a, T>(&'a mut Rows<T>);
+        impl<'de, T: crate::model_rows::Record + serde::Deserialize<'de>> serde::de::Visitor<'de>
+            for Read<'_, T>
+        {
+            type Value = ();
+            fn expecting(&self, f: &mut fmt::Formatter) -> fmt::Result {
+                f.write_str("existing fixed air rows")
+            }
+            fn visit_seq<A: serde::de::SeqAccess<'de>>(self, mut a: A) -> Result<(), A::Error> {
+                let n = self.0.capacity();
+                self.0
+                    .reset(T::inactive())
+                    .map_err(serde::de::Error::custom)?;
+                for _ in 0..n {
+                    match a.next_element()? {
+                        Some(v) => self.0.write_next(v).map_err(serde::de::Error::custom)?,
+                        None => return Ok(()),
+                    }
+                }
+                a.next_element_seed(crate::bounded_decode::RejectExtra("air_rows"))?;
+                Ok(())
+            }
+        }
+        d.deserialize_seq(Read(self))
+    }
+}

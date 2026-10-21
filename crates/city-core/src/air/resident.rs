@@ -24,6 +24,10 @@ impl<T: Clone> Rows<T> {
     }
 }
 impl Input {
+    pub(crate) fn background_source_allocation(&self) -> usize {
+        self.sources.allocation()
+    }
+
     pub(crate) fn background_empty() -> Self {
         Self {
             schema: STRATEGY.into(),
@@ -140,7 +144,6 @@ impl State {
         self.input_sha256.clone_from(&input.identity());
         self.validate()
     }
-    #[cfg(test)]
     pub(crate) fn background_allocations(&self) -> [usize; 6] {
         let mut ids = [
             self.field.allocation(),

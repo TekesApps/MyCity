@@ -1,0 +1,13 @@
+{
+  "controller_pid": 79358,
+  "child_pid": 84100,
+  "name": "build-final",
+  "command": [
+    "cargo",
+    "build",
+    "--workspace",
+    "--release",
+    "--locked",
+    "--offline"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "source_sha256": "920a75746d3919b9ea4e6edc976c261cb6f97f119f3292267928bea0dc6e33a1",
+  "source_files": 172,
+  "lock_sha256": "eb5e290ac92ebe46ebe87d3db56db4221c925ebca8e0bdb1102987bd32314e6c",
+  "fixture_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+  "opening_fixture_sha256": "04c113c62b0b682f94f9abfbde7618b87bd972f3931504366be9e07c130b4726",
+  "controller_pid": 79358,
+  "started_unix_ns": 1792581453942998000,
+  "new_target": false,
+  "binary": "work/candidate-binaries/role-slots/mycity-headless",
+  "binary_sha256": "5e0efbdc2d66fe776cc30657fa8d984b8fe199fbb5db0b29d89f9c1962909721",
+  "scope": "Final exact regression/build; no new joint/performance gate accepted"
+}

@@ -21,3 +21,5 @@
 阶段结束必须执行以下顺序：终态确认 → 保存日志／收据／故障及固定源码、依赖和可执行文件 → 核查下一阶段恢复输入 → 复查进程、cwd、占用与硬链接 → 精确清单清理 → 核验保护文件 → 记录分配空间和独立df变化。当前完整基线只有在替代基线真实通过且依赖解除后才可退役；用途不明确的产物写明保留理由和复查条件。共享target继续复用，禁止用删除后重建同样缓存制造回收成果。
 
 [当前集中复查](evidence/disk-reclamation-current-audit/STATUS.md)：work约17.204GiB，三份完整布局及业务兼容输入保留；本阶段临时WAL fork退役9.734MiB，复查无追加删除。旧清理不重复计入，全部已退役副本不可直接恢复。
+
+[v0.5.76终态回收](evidence/m0-t13a-role-slots/retention-result.json)：当前验证进程已退出、work/target无占用，新增删除0B；新完整业务world保留为下一阶段恢复输入，旧完整布局及必要证据不变。运行中的[集中只读核查](evidence/disk-reclamation-live-recheck/STATUS.md)不计历史回收或df增量为本次成果。

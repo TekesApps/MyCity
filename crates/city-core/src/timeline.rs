@@ -456,6 +456,17 @@ impl Timeline {
     }
 }
 
+impl crate::restore_into::Restore for Timeline {
+    fn restore<'de, D: serde::Deserializer<'de>>(&mut self, d: D) -> Result<(), D::Error> {
+        crate::restore_into::object!(d,self,Timeline,7u64,{
+        progress,0=>Copy,
+        claims,1=>Into,
+        payroll,2=>Into,
+        })?;
+        Ok(())
+    }
+}
+
 #[cfg(test)]
 mod fixed_cycle_decode_tests {
     use super::*;

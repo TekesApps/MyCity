@@ -347,3 +347,24 @@ fn streamed_v2_capacity_rejection_before_any_output_remains_usable() {
     ));
     assert!(s.engine().is_ok());
 }
+
+#[test]
+fn repeated_real_v2_save_and_reopen_reuse_same_validation_slot_backing() {
+    let t = Temp::new();
+    let mut store = create(&t.world());
+    let identity = store.restore_workspace_identity().unwrap();
+    for _ in 0..3 {
+        store.checkpoint().unwrap();
+        assert_eq!(store.restore_workspace_identity().unwrap(), identity);
+    }
+    let expected = store.state_hash().unwrap();
+    drop(store);
+    let mut store = Store::open(&t.world(), RULES).unwrap();
+    assert_eq!(store.state_hash().unwrap(), expected);
+    let identity = store.restore_workspace_identity().unwrap();
+    for _ in 0..3 {
+        store.checkpoint().unwrap();
+        assert_eq!(store.restore_workspace_identity().unwrap(), identity);
+    }
+    assert_eq!(store.state_hash().unwrap(), expected);
+}

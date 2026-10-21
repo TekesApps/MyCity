@@ -97,11 +97,20 @@ fn world_identity(p: &WorldPoint) -> stream::Identity {
         sha256: p.sha256.clone(),
     }
 }
-fn restore_world(path: &Path, identity: &stream::Identity) -> Result<Engine, Error> {
-    stream::verified(path, identity, 4 * 1024 * 1024, |reader| {
-        Engine::restore_checkpoint_reader(reader).map_err(Error::Model)
-    })
+fn restore_world_into(
+    path: &Path,
+    identity: &stream::Identity,
+    slot: &mut mycity_core::transaction::EngineSlot,
+) -> Result<(), Error> {
+    let result = stream::verified(path, identity, 4 * 1024 * 1024, |reader| {
+        slot.restore_reader_into(reader).map_err(Error::Model)
+    });
+    if result.is_err() {
+        slot.reset_preserving_capacity();
+    }
+    result
 }
+
 fn index(dir: &Path, r: &Reference) -> Result<ReceiptIndex, Error> {
     let bytes = read_file(&dir.join(index_name(r.generation)), 32 * 1024)?;
     if sha256(&bytes) != r.sha256 {
@@ -129,12 +138,13 @@ fn index(dir: &Path, r: &Reference) -> Result<ReceiptIndex, Error> {
     }
     Ok(i)
 }
-pub(super) fn open(
+pub(super) fn open_into(
     dir: &Path,
     r: &Reference,
     genesis: &str,
     ceiling: u64,
-) -> Result<(Engine, u64, String), Error> {
+    slot: &mut mycity_core::transaction::EngineSlot,
+) -> Result<(u64, String), Error> {
     let s = snapshot(dir, r)?;
     if s.genesis_sha256 != genesis || s.current.sequence > ceiling {
         return Err(Error::Invalid("v2_world_boundary"));
@@ -161,11 +171,12 @@ pub(super) fn open(
             4 * 1024 * 1024,
         )?;
     }
-    let engine = restore_world(
+    restore_world_into(
         &dir.join(world_name(s.current.generation)),
         &world_identity(&s.current),
+        slot,
     )?;
-    Ok((engine, s.current.sequence, s.current.chain))
+    Ok((s.current.sequence, s.current.chain))
 }
 pub(super) fn lookup(
     dir: &Path,
@@ -415,7 +426,7 @@ impl Store {
                 &image,
                 4 * 1024 * 1024,
                 |writer| self.engine.write_checkpoint(writer).map_err(Error::Model),
-                |path| restore_world(path, &image).map(drop),
+                |path| restore_world_into(path, &image, &mut self.restore_workspace),
             )?;
             observer(Point::WorldSynced)?;
             if let Some((body, identity, i)) = receipt {

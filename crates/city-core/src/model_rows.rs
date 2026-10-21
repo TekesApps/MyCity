@@ -165,6 +165,32 @@ impl<'de, T: Record + Deserialize<'de>, const N: usize> Deserialize<'de> for Row
     }
 }
 
+impl<T: Record + for<'de> Deserialize<'de>, const N: usize> crate::restore_into::Restore
+    for Rows<T, N>
+{
+    fn restore<'de, D: Deserializer<'de>>(&mut self, d: D) -> Result<(), D::Error> {
+        struct Read<'a, T: Record, const N: usize>(&'a mut Rows<T, N>);
+        impl<'de, T: Record + Deserialize<'de>, const N: usize> Visitor<'de> for Read<'_, T, N> {
+            type Value = ();
+            fn expecting(&self, f: &mut fmt::Formatter) -> fmt::Result {
+                f.write_str("preallocated rows")
+            }
+            fn visit_seq<A: SeqAccess<'de>>(self, mut a: A) -> Result<(), A::Error> {
+                self.0.clear();
+                for _ in 0..N {
+                    match a.next_element()? {
+                        Some(v) => self.0.try_push(v).map_err(de::Error::custom)?,
+                        None => return Ok(()),
+                    }
+                }
+                a.next_element_seed(RejectExtra)?;
+                Ok(())
+            }
+        }
+        d.deserialize_seq(Read(self))
+    }
+}
+
 /// Logical null retains its fully allocated storage. No owning Option::take API.
 #[derive(Debug)]
 pub(crate) struct Resident<T> {
@@ -249,6 +275,32 @@ impl<'de, T: ResidentValue + Deserialize<'de>> Deserialize<'de> for Resident<T> 
             }
         }
         d.deserialize_option(ReadResident(std::marker::PhantomData))
+    }
+}
+
+impl<T: ResidentValue + crate::restore_into::Restore> crate::restore_into::Restore for Resident<T> {
+    fn restore<'de, D: Deserializer<'de>>(&mut self, d: D) -> Result<(), D::Error> {
+        struct Read<'a, T>(&'a mut Resident<T>);
+        impl<'de, T: ResidentValue + crate::restore_into::Restore> Visitor<'de> for Read<'_, T> {
+            type Value = ();
+            fn expecting(&self, f: &mut fmt::Formatter) -> fmt::Result {
+                f.write_str("in-place resident")
+            }
+            fn visit_none<E: de::Error>(self) -> Result<(), E> {
+                self.0.deactivate();
+                Ok(())
+            }
+            fn visit_unit<E: de::Error>(self) -> Result<(), E> {
+                self.visit_none()
+            }
+            fn visit_some<D: Deserializer<'de>>(self, d: D) -> Result<(), D::Error> {
+                self.0.deactivate();
+                self.0.value.restore(d)?;
+                self.0.present = true;
+                Ok(())
+            }
+        }
+        d.deserialize_option(Read(self))
     }
 }
 

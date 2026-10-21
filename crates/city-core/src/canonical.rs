@@ -372,6 +372,17 @@ impl Codec {
             },
         )
     }
+    /// Reuse the same initialized byte slot for a typed checkpoint and its seed.
+    /// Result cannot borrow the input. No second encoded-body buffer is created.
+    pub fn with_encoded<T>(
+        &mut self,
+        encode: impl FnOnce(&mut FixedWriter<'_>) -> Result<(), String>,
+        consume: impl FnOnce(&[u8]) -> Result<T, String>,
+    ) -> Result<T, String> {
+        let mut input = FixedWriter::new(&mut self.bytes);
+        encode(&mut input)?;
+        consume(input.as_slice())
+    }
     pub fn hash(&mut self, value: &impl Serialize) -> Result<String, String> {
         use sha2::{Digest, Sha256};
         struct Hash(Sha256);

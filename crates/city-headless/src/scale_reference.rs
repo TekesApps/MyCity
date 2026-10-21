@@ -346,9 +346,7 @@ fn run_tier_report(
                 r.execute(vec![*action])?;
             }
             Step::Drive(target) => r.drive(*target)?,
-            Step::Initialized => {
-                initialized_owned = r.engine.owned_capacity_bytes() + r.comparison_capacity_bytes()
-            }
+            Step::Initialized => initialized_owned = r.retained_model_capacity_bytes()?,
             Step::PeakShipments => {
                 peak_shipments = r
                     .engine
@@ -481,11 +479,7 @@ fn run_tier_report(
     if field.emitted_micro != 960000 {
         return Err("scale_actual_emissions".into());
     }
-    let restored = Engine::restore_checkpoint(&r.engine.export_checkpoint()?)?;
-    r.compare_business(&restored)?;
-    if restored.world().view() != view {
-        return Err("scale_final_checkpoint_mismatch".into());
-    }
+    r.verify_checkpoint_roundtrip()?;
     // Hashing the full business state is part of the independent model proof,
     // not a report buffer. Compute it before serializing the bounded report.
     let business_sha256 = r.business_digest()?;
@@ -505,7 +499,7 @@ fn run_tier_report(
         "tier": tier.name(), "scope": "named_tier_direct_cpu_model_only", "work_wall_seconds": started.elapsed().as_secs_f64(),
         "counts": ReferenceCounts{accounts:account_count,stocks:stock_count,cities:8,payroll:payroll_count,claims:claim_count,quotes:8,inflight_peak:peak_shipments},
         "game_seconds": 30*86400, "completed_hour_targets": completed_hours, "air_windows": r.windows, "field": field,
-        "initial_owned_capacity_bytes": initialized_owned, "final_owned_capacity_bytes": r.engine.owned_capacity_bytes() + r.comparison_capacity_bytes(),
+        "initial_owned_capacity_bytes": initialized_owned, "final_owned_capacity_bytes": r.retained_model_capacity_bytes()?,
         "business_sha256": business_sha256, "cash_accounts": actual_accounts,
         "wages_paid_total": t.payroll.iter().map(|p|p.paid.value()).sum::<i64>(),
         "claims_paid_total": t.claims.iter().map(|c|c.paid.value()).sum::<i64>(),

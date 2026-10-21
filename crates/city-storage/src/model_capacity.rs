@@ -23,9 +23,9 @@ pub struct MetadataPart {
 fn metadata() -> Vec<MetadataPart> {
     let specs = [
         (
-            "store_root_and_inline_headers_excluding_engine",
+            "store_root_and_inline_headers_excluding_two_engine_roots",
             1,
-            size_of::<Store>() - size_of::<Engine>(),
+            size_of::<Store>() - 2 * size_of::<Engine>(),
         ),
         ("candidate_root_and_verification_root", 2, size_of::<Root>()),
         (
@@ -260,7 +260,7 @@ pub fn plan(budget: usize) -> Plan {
     ];
     let required = scenarios.iter().map(|s| s.total_bytes).max().unwrap();
     Plan { schema: "mycity-model-workspace-capacity-plan-v1", pointer_width_bits: usize::BITS as usize,
-        core: i, metadata, metadata_bytes, store_inline_non_engine_bytes: size_of::<Store>() - size_of::<Engine>(),
+        core: i, metadata, metadata_bytes, store_inline_non_engine_bytes: size_of::<Store>() - 2 * size_of::<Engine>(),
         persistence_inline_bytes_already_in_store: size_of::<Persistence>(), scenarios,
         required_bytes: required, budget_bytes: budget, target_slots_fit: required <= budget,
         runtime_grant_accepted: false,

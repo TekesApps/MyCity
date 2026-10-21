@@ -304,6 +304,7 @@ pub struct Reference {
     retry_job: Option<u64>,
     retried: bool,
     comparison: std::cell::RefCell<mycity_core::canonical::Codec>,
+    restore: std::cell::RefCell<mycity_core::transaction::EngineSlot>,
 }
 impl Reference {
     pub fn new() -> Result<Self, String> {
@@ -314,6 +315,7 @@ impl Reference {
             retry_job: None,
             retried: false,
             comparison: std::cell::RefCell::new(mycity_core::canonical::Codec::new()?),
+            restore: std::cell::RefCell::new(mycity_core::transaction::EngineSlot::new()?),
         })
     }
     /// Fresh diagnostic reference only; never restores or writes a Store.
@@ -332,6 +334,7 @@ impl Reference {
             retry_job: None,
             retried: false,
             comparison: std::cell::RefCell::new(mycity_core::canonical::Codec::new()?),
+            restore: std::cell::RefCell::new(mycity_core::transaction::EngineSlot::new()?),
         })
     }
     pub fn business_digest(&self) -> Result<String, String> {
@@ -342,8 +345,42 @@ impl Reference {
         self.engine.business_digest_with(&mut codec)
     }
     pub fn comparison_capacity_bytes(&self) -> usize {
-        std::mem::size_of::<Self>() - std::mem::size_of::<Engine>()
+        std::mem::size_of::<Self>() - 2 * std::mem::size_of::<Engine>()
             + self.comparison.borrow().backing_capacity_bytes()
+    }
+    pub fn retained_model_capacity_bytes(&self) -> Result<usize, String> {
+        let slot = self
+            .restore
+            .try_borrow()
+            .map_err(|_| "reference_restore_busy")?
+            .identity()?;
+        Ok(self.engine.owned_capacity_bytes()
+            + self.comparison_capacity_bytes()
+            + slot.owned_model_bytes
+            + 2 * slot.retained_prepare_bytes)
+    }
+    pub fn verify_checkpoint_roundtrip(&self) -> Result<(), String> {
+        let mut slot = self
+            .restore
+            .try_borrow_mut()
+            .map_err(|_| "reference_restore_busy")?;
+        let mut codec = self
+            .comparison
+            .try_borrow_mut()
+            .map_err(|_| "reference_comparison_busy")?;
+        let before = slot.identity()?;
+        codec.with_encoded(
+            |writer| self.engine.write_checkpoint(writer),
+            |bytes| slot.restore_into(bytes),
+        )?;
+        if slot.engine()?.world().view() != self.engine.world().view() {
+            return Err("reference_roundtrip_world".into());
+        }
+        crate::model_compare::business(&self.engine, slot.engine()?, &mut codec)?;
+        if slot.identity()? != before {
+            return Err("reference_restore_backing_changed".into());
+        }
+        Ok(())
     }
     pub fn compare_business(&self, other: &Engine) -> Result<(), String> {
         let mut codec = self

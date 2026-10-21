@@ -167,6 +167,7 @@ impl Drop for Persistence {
 }
 pub struct Store {
     engine: Engine,
+    restore_workspace: mycity_core::transaction::EngineSlot,
     spatial: Option<SpatialAssets>,
     spatial_ref: Option<SpatialReference>,
     io: Persistence,
@@ -307,6 +308,8 @@ impl Store {
         }
         let engine = Engine::new(assemble(opening).map_err(Error::Model)?, resources.clone())
             .map_err(|e| Error::Model(format!("{e:?}")))?;
+        let restore_workspace =
+            mycity_core::transaction::EngineSlot::new().map_err(Error::Model)?;
         let identity = identity(&engine);
         let (spatial_ref, spatial) = if let Some((input, png)) = bundle {
             let (reference, assets) = SpatialReference::prepare(input, png, &identity)?;
@@ -400,6 +403,7 @@ impl Store {
         observer(CreatePoint::Ready)?;
         Ok(Self {
             engine,
+            restore_workspace,
             spatial,
             spatial_ref,
             io: Persistence {
@@ -456,7 +460,7 @@ impl Store {
             return Err(Error::Invalid("unsupported_rules_or_schema"));
         }
         // Fresh reconstruction of the recorded genesis, not a gift to an existing world.
-        let genesis_engine = Engine::new(
+        let mut genesis_engine = Engine::new(
             assemble(&genesis.opening).map_err(Error::Model)?,
             genesis.resources,
         )
@@ -468,22 +472,37 @@ impl Store {
         {
             return Err(Error::Invalid("checkpoint_layout_binding"));
         }
-        let (mut engine, mut sequence, mut chain) = if let Some(reference) = &root.checkpoint_v2 {
-            checkpoint_v2::open(dir, reference, &root.genesis_sha256, root.sequence)?
+        let mut restore_workspace =
+            mycity_core::transaction::EngineSlot::new().map_err(Error::Model)?;
+        let (mut sequence, mut chain) = if let Some(reference) = &root.checkpoint_v2 {
+            let (sequence, chain) = checkpoint_v2::open_into(
+                dir,
+                reference,
+                &root.genesis_sha256,
+                root.sequence,
+                &mut restore_workspace,
+            )?;
+            restore_workspace
+                .publish_swap(&mut genesis_engine)
+                .map_err(Error::Model)?;
+            (sequence, chain)
         } else if let Some(reference) = &root.checkpoint {
             let cp = checkpoint::load(dir, reference)?;
             if cp.sequence > root.sequence || cp.genesis_sha256 != root.genesis_sha256 {
                 return Err(Error::Invalid("checkpoint_boundary"));
             }
             checkpoint::verify_archive(dir, reference, &root.genesis_sha256)?;
-            (
-                Engine::restore_checkpoint(&cp.engine).map_err(Error::Model)?,
-                cp.sequence,
-                cp.chain,
-            )
+            restore_workspace
+                .restore_into(&cp.engine)
+                .map_err(Error::Model)?;
+            restore_workspace
+                .publish_swap(&mut genesis_engine)
+                .map_err(Error::Model)?;
+            (cp.sequence, cp.chain)
         } else {
-            (genesis_engine, 0, root.genesis_sha256.clone())
+            (0, root.genesis_sha256.clone())
         };
+        let mut engine = genesis_engine;
         outbox::verify(dir, engine.world().view().scope)?;
         let spatial_ref = genesis.spatial;
         let spatial = spatial_ref
@@ -613,6 +632,7 @@ impl Store {
         wal.seek(SeekFrom::Start(root.wal_end))?;
         Ok(Self {
             engine,
+            restore_workspace,
             spatial,
             spatial_ref,
             io: Persistence {
@@ -635,6 +655,13 @@ impl Store {
         } else {
             Ok(&self.engine)
         }
+    }
+    /// Stable validation destination, not a broker Filled or physical-memory proof.
+    pub fn restore_workspace_identity(
+        &self,
+    ) -> Result<mycity_core::transaction::SlotIdentity, Error> {
+        self.engine()?;
+        self.restore_workspace.identity().map_err(Error::Model)
     }
     pub fn spatial(&self) -> Result<Option<&SpatialAssets>, Error> {
         self.engine()?;
@@ -683,6 +710,12 @@ impl Store {
     pub fn owned_capacity_bytes(&self) -> Result<usize, Error> {
         Ok(std::mem::size_of::<Self>() - std::mem::size_of::<Engine>()
             + self.engine()?.owned_capacity_bytes()
+            + self
+                .restore_workspace
+                .identity()
+                .map_err(Error::Model)?
+                .owned_model_bytes
+            - std::mem::size_of::<Engine>()
             + self.io.dir.capacity()
             + self.io.background_live.capacity() * std::mem::size_of::<[u8; 32]>()
             + self.io.canonical.borrow().backing_capacity_bytes()

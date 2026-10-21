@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/role-slots/mycity-headless",
+    "scale-sim-probe",
+    "/Users/frankqin/dev/MyCity/work/t13a76-full-business-01",
+    "full",
+    "measure"
+  ],
+  "exit": 0,
+  "seconds": 327.077165125,
+  "run": "work/t13a76-full-business-01",
+  "source_sha256": "920a75746d3919b9ea4e6edc976c261cb6f97f119f3292267928bea0dc6e33a1",
+  "l1_pressure_included": false,
+  "normal_pool_authorization_accepted": false,
+  "performance_accepted": false,
+  "eight_hours_accepted": false,
+  "memory_16gb_gate": "not_run"
+}

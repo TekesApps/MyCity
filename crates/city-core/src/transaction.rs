@@ -7,9 +7,11 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 use std::mem::size_of;
+mod slots;
 #[path = "timeline_driver.rs"]
 mod timeline_driver;
 mod workspace;
+pub use slots::{EngineSlot, SlotIdentity};
 
 pub const MAX_ACTIONS: usize = 16;
 pub const MAX_RECEIPTS: usize = 1024;
@@ -474,6 +476,11 @@ impl Engine {
         // Whole-graph seed/authorization is still being migrated in this phase.
         candidate.preparation_workspace =
             Some(workspace::reserve().map_err(|e| format!("workspace:{e:?}"))?);
+        candidate.validate_resident()?;
+        Ok(candidate)
+    }
+    fn validate_resident(&mut self) -> Result<(), String> {
+        let candidate = self;
         if !candidate.journal.is_empty()
             || candidate.resources.len() > MAX_RESOURCES
             || candidate.leases.len() != MAX_LEASES
@@ -590,7 +597,7 @@ impl Engine {
         if candidate.owned_capacity_bytes() > ENGINE_BYTE_BUDGET {
             return Err("checkpoint_engine_budget".into());
         }
-        Ok(candidate)
+        Ok(())
     }
     fn validate_checkpoint_runtime(&self) -> Result<(), TxError> {
         if let Some(t) = self.timeline.as_ref() {

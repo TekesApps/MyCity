@@ -1,0 +1,5 @@
+  PID  PPID STARTED                      COMMAND
+79957 69823 Wed Oct 21 19:19:00 2026     /Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python docs/evidence/m0-t13a-role-slots/finish_validation.py
+84121 79957 Wed Oct 21 19:27:10 2026     /Users/frankqin/dev/MyCity/work/candidate-binaries/role-slots/mycity-headless scale-sim-probe /Users/frankqin/dev/MyCity/work/t13a76-full-business-01 full measure
+84226 84121 Wed Oct 21 19:27:48 2026     /Users/frankqin/dev/MyCity/work/candidate-binaries/role-slots/mycity-headless sim-host-scale-full create /Users/frankqin/dev/MyCity/work/t13a76-full-business-01/world
+87991 84226 Wed Oct 21 19:30:53 2026     /Users/frankqin/dev/MyCity/work/candidate-binaries/role-slots/mycity-headless compute-worker-bounded /Users/frankqin/dev/MyCity/work/t13a76-full-business-01/world/air-worker

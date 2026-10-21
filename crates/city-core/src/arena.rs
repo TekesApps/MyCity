@@ -276,6 +276,33 @@ impl<D: Domain, T: Copy> Arena<D, T> {
         }
         Ok(())
     }
+    pub(crate) fn reset_backing(&mut self) {
+        self.slots.clear();
+        self.free.clear();
+        self.scope = Scope::new(1, 1).expect("internal scope");
+        self.max = D::RESTORE_LIMIT as u32;
+        self.live = 0;
+    }
+    pub(crate) fn copy_into(&self, target: &mut Self) -> Result<(), String> {
+        if target.slots.capacity() != D::RESTORE_LIMIT
+            || target.free.capacity() != D::RESTORE_LIMIT
+            || self.slots.len() > D::RESTORE_LIMIT
+            || self.free.len() > D::RESTORE_LIMIT
+        {
+            return Err("arena_copy_backing".into());
+        }
+        target.slots.clear();
+        target.free.clear();
+        target.slots.extend_from_slice(&self.slots);
+        target.free.extend_from_slice(&self.free);
+        target.scope = self.scope;
+        target.max = self.max;
+        target.live = self.live;
+        Ok(())
+    }
+    pub(crate) fn backing_ids(&self) -> [usize; 2] {
+        [self.slots.as_ptr() as usize, self.free.as_ptr() as usize]
+    }
     pub fn owned_bytes(&self) -> usize {
         size_of::<Self>()
             + self.slots.capacity() * size_of::<Slot<T>>()

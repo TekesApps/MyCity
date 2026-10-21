@@ -261,6 +261,67 @@ impl Serialize for StockViews<'_> {
     }
 }
 impl World {
+    pub(crate) fn restore_empty() -> Result<Self, String> {
+        let scope = Scope::new(1, 1).expect("internal scope");
+        Ok(Self {
+            scope,
+            seed: 0,
+            revision: 0,
+            accounts: Arena::new(scope, MAX_ACCOUNTS as u32, WORLD_BYTE_BUDGET / 2)
+                .map_err(|e| format!("{e:?}"))?,
+            stocks: Arena::new(scope, MAX_STOCKS as u32, WORLD_BYTE_BUDGET / 2)
+                .map_err(|e| format!("{e:?}"))?,
+            account_ids: Rows::new().map_err(str::to_owned)?,
+            stock_ids: Rows::new().map_err(str::to_owned)?,
+            sources: Rows::new().map_err(str::to_owned)?,
+            region: None,
+            economy: None,
+            boot: None,
+            exchange: None,
+        })
+    }
+    pub(crate) fn reset_backing(&mut self) {
+        self.accounts.reset_backing();
+        self.stocks.reset_backing();
+        self.account_ids.clear();
+        self.stock_ids.clear();
+        self.sources.clear();
+        self.scope = Scope::new(1, 1).expect("internal scope");
+        self.seed = 0;
+        self.revision = 0;
+        self.region = None;
+        self.economy = None;
+        self.boot = None;
+        self.exchange = None;
+    }
+    pub(crate) fn copy_into(&self, target: &mut Self) -> Result<(), String> {
+        self.accounts.copy_into(&mut target.accounts)?;
+        self.stocks.copy_into(&mut target.stocks)?;
+        target.account_ids.copy_active_from(&self.account_ids);
+        target.stock_ids.copy_active_from(&self.stock_ids);
+        target.sources.copy_active_from(&self.sources);
+        target.scope = self.scope;
+        target.seed = self.seed;
+        target.revision = self.revision;
+        target.region = self.region;
+        target.economy = self.economy;
+        target.boot = self.boot;
+        target.exchange = self.exchange;
+        Ok(())
+    }
+    pub(crate) fn backing_ids(&self) -> [usize; 7] {
+        let a = self.accounts.backing_ids();
+        let b = self.stocks.backing_ids();
+        [
+            a[0],
+            a[1],
+            b[0],
+            b[1],
+            self.account_ids.allocation(),
+            self.stock_ids.allocation(),
+            self.sources.allocation(),
+        ]
+    }
     pub(crate) fn business_world(&self) -> BusinessWorld<'_> {
         BusinessWorld {
             scope: self.scope,
@@ -586,6 +647,26 @@ pub fn assemble(bytes: &[u8]) -> Result<World, String> {
         world.stock_handle(*id)?;
     }
     Ok(world)
+}
+
+impl crate::restore_into::Restore for World {
+    fn restore<'de, D: serde::Deserializer<'de>>(&mut self, d: D) -> Result<(), D::Error> {
+        crate::restore_into::object!(d,self,World,255u64,{
+        scope,0=>Copy,
+        seed,1=>Copy,
+        revision,2=>Copy,
+        accounts,3=>Into,
+        stocks,4=>Into,
+        account_ids,5=>Into,
+        stock_ids,6=>Into,
+        sources,7=>Into,
+        region,8=>Copy,
+        economy,9=>Copy,
+        boot,10=>Copy,
+        exchange,11=>Copy,
+        })?;
+        Ok(())
+    }
 }
 
 #[cfg(test)]

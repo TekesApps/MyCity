@@ -1,0 +1,8 @@
+{
+  "command": [
+    "python3",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-role-slots/verify_legacy.py"
+  ],
+  "exit": 0,
+  "seconds": 1.2207152919999658
+}

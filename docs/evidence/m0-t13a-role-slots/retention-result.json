@@ -1,0 +1,19 @@
+{
+  "metrics": {
+    "work_du_kib": 18172168,
+    "target_du_kib": 1034288,
+    "filesystem_available_bytes": 115490279424
+  },
+  "deleted_paths": [],
+  "deleted_inode_allocated_bytes": 0,
+  "no_occupied_work_or_target": true,
+  "active_run_terminal_pids": [
+    79957,
+    84121,
+    84226
+  ],
+  "retained_new_world": "work/t13a76-full-business-01/world",
+  "reason": "Complete current world needed as next-stage candidate restore/replay input; keep raw diagnostics and receipts. No additional cache proved unneeded. Shared target reused; no isolated target.",
+  "prior_live_audit": "docs/evidence/disk-reclamation-live-recheck/STATUS.md",
+  "df_gain_attributed": 0
+}

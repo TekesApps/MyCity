@@ -81,6 +81,10 @@ pub(crate) struct Work {
     state: State,
 }
 impl Work {
+    pub(crate) fn backing_ids(&self) -> [usize; 6] {
+        self.state.background_allocations()
+    }
+
     pub(crate) fn new() -> Self {
         let work = Self {
             state: State::background_empty(),
@@ -203,6 +207,20 @@ fn hash(bytes: &[u8]) -> [u8; 32] {
     Sha256::digest(bytes).into()
 }
 impl Background {
+    pub(crate) fn backing_ids(&self) -> [usize; 8] {
+        let state = self.field.backing().background_allocations();
+        [
+            state[0],
+            state[1],
+            state[2],
+            state[3],
+            state[4],
+            state[5],
+            self.pending.backing().input.background_source_allocation(),
+            self.pending.backing().input.schema.as_ptr() as usize,
+        ]
+    }
+
     pub fn new() -> Self {
         Self {
             field: Resident::empty(),
@@ -580,6 +598,39 @@ impl Background {
 impl Default for Background {
     fn default() -> Self {
         Self::new()
+    }
+}
+
+impl crate::restore_into::Restore for Background {
+    fn restore<'de, D: serde::Deserializer<'de>>(&mut self, d: D) -> Result<(), D::Error> {
+        crate::restore_into::object!(d,self,Background,28u64,{
+        field,0=>Into,
+        pending,1=>Into,
+        version,2=>Copy,
+        next_job,3=>Copy,
+        incarnation,4=>Copy,
+        })?;
+        Ok(())
+    }
+}
+
+impl crate::restore_into::Restore for Job {
+    fn restore<'de, D: serde::Deserializer<'de>>(&mut self, d: D) -> Result<(), D::Error> {
+        crate::restore_into::object!(d,self,Job,2047u64,{
+        id,0=>Copy,
+        base_revision,1=>Copy,
+        field_version,2=>Copy,
+        start,3=>Copy,
+        end,4=>Copy,
+        input,5=>Into,
+        checkpoint_sha256,6=>Copy,
+        incarnation,7=>Copy,
+        generation,8=>Copy,
+        attempt,9=>Copy,
+        running,10=>Copy,
+        failure,11=>Copy,
+        })?;
+        Ok(())
     }
 }
 

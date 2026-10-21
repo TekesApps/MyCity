@@ -776,6 +776,54 @@ impl State {
     }
 }
 
+impl crate::restore_into::Restore for Input {
+    fn restore<'de, D: serde::Deserializer<'de>>(&mut self, d: D) -> Result<(), D::Error> {
+        crate::restore_into::object!(d,self,Input,127u64,{
+        schema,0=>Text,
+        side,1=>Copy,
+        target,2=>Copy,
+        initial_micro,3=>Copy,
+        boundary_micro,4=>Copy,
+        boundary_until,5=>Copy,
+        sources,6=>Into,
+        })?;
+        self.validate().map_err(serde::de::Error::custom)?;
+        if self.side != 128 {
+            return Err(serde::de::Error::custom("background_fixed_input"));
+        }
+        Ok(())
+    }
+}
+
+impl crate::restore_into::Restore for State {
+    fn restore<'de, D: serde::Deserializer<'de>>(&mut self, d: D) -> Result<(), D::Error> {
+        crate::restore_into::object!(d,self,State,959u64,{
+        input,0=>Into,
+        input_sha256,1=>Text,
+        time,2=>Copy,
+        field,3=>Into,
+        scratch,4=>Into,
+        integral,5=>Into,
+        progress,6=>Flat,
+        totals,7=>Flat,
+        pending,8=>Flat,
+        steps,9=>Copy,
+        })?;
+        self.validate().map_err(serde::de::Error::custom)?;
+        if self.input.side != 128
+            || self.field.len() != 16384
+            || self.scratch.len() != 16384
+            || self.integral.len() != 16384
+        {
+            return Err(serde::de::Error::custom("background_fixed_state"));
+        }
+        Ok(())
+    }
+}
+
+impl crate::restore_into::FlatValue for Option<Progress> {}
+impl crate::restore_into::FlatValue for Totals {}
+
 #[cfg(test)]
 mod report_hash_tests {
     use super::*;

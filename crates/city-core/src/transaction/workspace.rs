@@ -25,6 +25,59 @@ pub(super) struct PreparationWorkspace {
     pub resources: Owner<ResourceRows>,
     pub leases: Owner<LeaseRows>,
 }
+impl PreparationWorkspace {
+    pub(super) fn backing_ids(&self) -> Result<[usize; 27], String> {
+        let t = self.timeline.lock().map_err(|_| "timeline_slot_poison")?;
+        let b = self
+            .background
+            .lock()
+            .map_err(|_| "background_slot_poison")?;
+        let w = self
+            .background_work
+            .lock()
+            .map_err(|_| "background_work_poison")?;
+        let a = self.accounts.lock().map_err(|_| "accounts_slot_poison")?;
+        let s = self.stocks.lock().map_err(|_| "stocks_slot_poison")?;
+        let r = self.resources.lock().map_err(|_| "resources_slot_poison")?;
+        let l = self.leases.lock().map_err(|_| "leases_slot_poison")?;
+        let t = t.as_ref().ok_or("timeline_slot_busy")?.backing();
+        let b = b
+            .as_ref()
+            .ok_or("background_slot_busy")?
+            .backing()
+            .backing_ids();
+        let w = w.as_ref().ok_or("background_work_busy")?.backing_ids();
+        Ok([
+            t.claims.allocation(),
+            t.payroll.allocation(),
+            b[0],
+            b[1],
+            b[2],
+            b[3],
+            b[4],
+            b[5],
+            b[6],
+            b[7],
+            w[0],
+            w[1],
+            w[2],
+            w[3],
+            w[4],
+            w[5],
+            a.as_ref().ok_or("accounts_slot_busy")?.allocation(),
+            s.as_ref().ok_or("stocks_slot_busy")?.allocation(),
+            r.as_ref().ok_or("resources_slot_busy")?.allocation(),
+            l.as_ref().ok_or("leases_slot_busy")?.allocation(),
+            Arc::as_ptr(&self.timeline) as usize,
+            Arc::as_ptr(&self.background) as usize,
+            Arc::as_ptr(&self.background_work) as usize,
+            Arc::as_ptr(&self.accounts) as usize,
+            Arc::as_ptr(&self.stocks) as usize,
+            Arc::as_ptr(&self.resources) as usize,
+            Arc::as_ptr(&self.leases) as usize,
+        ])
+    }
+}
 /// Current per-Engine retained preparation storage, not just one active Prepared.
 /// 256B/slot conservatively covers Arc counts/alignment; not allocator/RSS evidence.
 pub(super) fn capacity_inventory() -> (usize, usize, usize) {

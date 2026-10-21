@@ -5,7 +5,7 @@ use crate::{
     heap_meter,
     scale_reference::{self, Step, Tier},
 };
-use mycity_core::{read_bounded, sha256, transaction::Engine};
+use mycity_core::sha256;
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::{
@@ -116,7 +116,36 @@ struct ImagePoint {
 struct Index {
     current: ImagePoint,
 }
-fn checked_image(world: &Path) -> Result<(Vec<u8>, Bytes, RootStamp), String> {
+fn restore_file_into(
+    path: &Path,
+    bytes: u64,
+    expected: &str,
+    slot: &mut mycity_core::transaction::EngineSlot,
+    codec: &mut mycity_core::canonical::Codec,
+) -> Result<(), String> {
+    slot.reset_preserving_capacity();
+    if bytes == 0 || bytes > FILE_LIMIT {
+        return Err("model_compare_image_bound".into());
+    }
+    codec.with_encoded(
+        |writer| {
+            let mut file = File::open(path).map_err(err)?.take(FILE_LIMIT + 1);
+            std::io::copy(&mut file, writer).map_err(err)?;
+            Ok(())
+        },
+        |input| {
+            if input.len() as u64 != bytes || sha256(input) != expected {
+                return Err("scale_sim_world_hash".into());
+            }
+            slot.restore_into(input)
+        },
+    )
+}
+fn checked_image(
+    world: &Path,
+    slot: &mut mycity_core::transaction::EngineSlot,
+    codec: &mut mycity_core::canonical::Codec,
+) -> Result<(Text<64>, Bytes, RootStamp), String> {
     let current: Current = control_data::parse(&joined(world, "CURRENT.json")?)?;
     if current.slot > 1 {
         return Err("scale_sim_root_slot".into());
@@ -143,23 +172,19 @@ fn checked_image(world: &Path) -> Result<(Vec<u8>, Bytes, RootStamp), String> {
         return Err("scale_sim_not_at_saved_boundary".into());
     }
     drop(index_bytes);
-    let bytes = read(
+    restore_file_into(
         &joined(world, &format!("world-{}.json", index.current.generation))?,
-        FILE_LIMIT,
+        index.current.bytes,
+        index.current.sha256.as_str(),
+        slot,
+        codec,
     )?;
-    if bytes.len() as u64 != index.current.bytes || sha256(&bytes) != index.current.sha256.as_str()
-    {
-        return Err("scale_sim_world_hash".into());
-    }
     let stamp = RootStamp {
         sequence: root.sequence,
         bytes: root_bytes.as_slice().len() as u64,
         sha256: Text::new(&sha256(root_bytes.as_slice()))?,
     };
-    Ok((bytes, root_bytes, stamp))
-}
-fn read(path: &Path, limit: u64) -> Result<Vec<u8>, String> {
-    read_bounded(File::open(path).map_err(err)?, limit).map_err(err)
+    Ok((index.current.sha256, root_bytes, stamp))
 }
 /// Fixed stack readback; limits are enforced before accepting the artifact.
 pub fn fingerprint(path: &Path, limit: u64) -> Result<(u64, String), String> {
@@ -330,8 +355,7 @@ pub fn execute(dir: &Path) -> Result<(), String> {
             })?;
             let reference = reference.ok_or("model_task_reference_missing")?;
             publish(&dir, "cpu-final-engine.json", FILE_LIMIT, |file| {
-                file.write_all(&reference.engine.export_checkpoint()?)
-                    .map_err(err)
+                reference.engine.write_checkpoint(file)
             })?;
             for (slot, name) in result.artifacts.iter_mut().zip([
                 "cpu-targets.jsonl",
@@ -345,62 +369,57 @@ pub fn execute(dir: &Path) -> Result<(), String> {
             stream::execute(&dir, &r, tier, &mut result)?;
         }
         Mode::Compare => {
+            // All principal destinations exist before reading or decoding the images.
+            let mut actual_slot = mycity_core::transaction::EngineSlot::new()?;
+            let mut expected_slot = mycity_core::transaction::EngineSlot::new()?;
+            let mut comparison = mycity_core::canonical::Codec::new()?;
             let decoded = control_data::root_decode(r.root.as_str())?;
             let root = Path::new(decoded.as_str());
-            let (bytes, root_bytes, stamp) = checked_image(&joined(root, "world")?)?;
-            result.image_sha256 = Some(Text::new(&sha256(&bytes))?);
+            let (image, root_bytes, stamp) =
+                checked_image(&joined(root, "world")?, &mut actual_slot, &mut comparison)?;
+            result.image_sha256 = Some(image);
             publish(&dir, "root.json", 8192, |file| {
                 file.write_all(root_bytes.as_slice()).map_err(err)
             })?;
             drop(root_bytes);
             result.root = Some(stamp);
             result.artifacts[0] = Some(artifact(&dir, "root.json")?);
-            if matches!(
-                r.mode,
-                Mode::Compare | Mode::CompareEndurance | Mode::CompareSpeed
-            ) {
-                let before = validate(&joined(root, Mode::BeforeReopen.name())?)?;
-                if before.image_sha256 != result.image_sha256 {
-                    return Err("scale_sim_saved_image_changed".into());
-                }
-                let reference_mode = if r.mode == Mode::CompareEndurance {
-                    Mode::FaultReference
-                } else {
-                    Mode::Reference
-                };
-                validate(&joined(root, reference_mode.name())?)?;
-                let actual = Engine::restore_checkpoint(&bytes)?;
-                drop(bytes);
-                let expected = Engine::restore_checkpoint(&read(
-                    &joined(
-                        &joined(root, reference_mode.name())?,
-                        "cpu-final-engine.json",
-                    )?,
-                    FILE_LIMIT,
-                )?)?;
-                if matches!(r.mode, Mode::CompareEndurance | Mode::CompareSpeed)
-                    && actual.export_checkpoint()? != expected.export_checkpoint()?
-                {
-                    return Err("endurance_entire_engine_including_metadata".into());
-                }
-                let mut comparison = mycity_core::canonical::Codec::new()?;
-                crate::model_compare::business(&actual, &expected, &mut comparison)?;
-                if actual
+            let before = validate(&joined(root, Mode::BeforeReopen.name())?)?;
+            if before.image_sha256 != result.image_sha256 {
+                return Err("scale_sim_saved_image_changed".into());
+            }
+            let reference = validate(&joined(root, Mode::Reference.name())?)?;
+            let expected = reference
+                .artifacts
+                .iter()
+                .flatten()
+                .find(|a| a.name.as_str() == "cpu-final-engine.json")
+                .ok_or("model_reference_engine_artifact")?;
+            restore_file_into(
+                &joined(
+                    &joined(root, Mode::Reference.name())?,
+                    "cpu-final-engine.json",
+                )?,
+                expected.bytes,
+                expected.sha256.as_str(),
+                &mut expected_slot,
+                &mut comparison,
+            )?;
+            let actual = actual_slot.engine()?;
+            let expected = expected_slot.engine()?;
+            crate::model_compare::business(actual, expected, &mut comparison)?;
+            crate::model_compare::air(
+                actual
                     .background()
                     .and_then(|b| b.field())
-                    .ok_or("scale_sim_actual_field")?
-                    .checkpoint()?
-                    != expected
-                        .background()
-                        .and_then(|b| b.field())
-                        .ok_or("scale_sim_expected_field")?
-                        .checkpoint()?
-                {
-                    return Err("scale_sim_full_final_comparison".into());
-                }
-                result.business_sha256 =
-                    Some(Text::new(&actual.business_digest_with(&mut comparison)?)?);
-            }
+                    .ok_or("scale_sim_actual_field")?,
+                expected
+                    .background()
+                    .and_then(|b| b.field())
+                    .ok_or("scale_sim_expected_field")?,
+            )?;
+            result.business_sha256 =
+                Some(Text::new(&actual.business_digest_with(&mut comparison)?)?);
         }
     }
     if !control_data::idle() {
