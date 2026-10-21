@@ -3,10 +3,12 @@
 use super::*;
 
 pub(super) const BYTES: usize = worker_slots::OWNER_BYTES;
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize, Default)]
 #[serde(rename_all = "snake_case")]
-pub(super) enum Kind {
+pub enum Kind {
+    #[default]
     SimCodec,
+    HelperCompare,
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "snake_case")]
@@ -60,7 +62,7 @@ impl Pool {
             pool_touched_bytes: self.pages.iter().flatten().map(Vec::capacity).sum(),
         })
     }
-    pub(super) fn prepare_codec(&mut self, generation: u64) -> Result<(), String> {
+    pub(super) fn prepare_codec(&mut self, generation: u64, kind: Kind) -> Result<(), String> {
         if self
             .workspaces
             .iter()
@@ -85,7 +87,7 @@ impl Pool {
         }
         let e = Entry {
             generation,
-            kind: Kind::SimCodec,
+            kind,
             phase: Phase::Prepared,
             pid: None,
             identity: None,
@@ -97,7 +99,13 @@ impl Pool {
         self.summary.available_touched_bytes -= BYTES;
         self.summary.granted_capacity_bytes += BYTES;
         self.scan()?;
-        self.workspace_event("prepared_before_sim_spawn", e)
+        self.workspace_event(
+            match e.kind {
+                Kind::SimCodec => "prepared_before_sim_spawn",
+                Kind::HelperCompare => "prepared_before_helper_spawn",
+            },
+            e,
+        )
     }
     pub(super) fn codec_ready(&self, generation: u64, pid: u32) -> bool {
         self.workspaces.iter().flatten().any(|e| {
@@ -167,7 +175,13 @@ impl Pool {
             .summary
             .maximum_prepare_to_fill_or_reap_ns
             .max(self.now() - e.released_ns);
-        self.workspace_event("sim_actual_codec_slots_filled", e)?;
+        self.workspace_event(
+            match e.kind {
+                Kind::SimCodec => "sim_actual_codec_slots_filled",
+                Kind::HelperCompare => "helper_actual_compare_slots_filled",
+            },
+            e,
+        )?;
         Ok(())
     }
     /// Caller is exclusively broker Cancel-before-spawn / Revoke-after-Child-wait.
@@ -180,7 +194,13 @@ impl Pool {
         let mut e = self.workspaces[slot].expect("found");
         e.phase = Phase::Retiring;
         self.workspaces[slot] = Some(e);
-        self.workspace_event("retiring_after_sim_wait_or_cancel", e)?;
+        self.workspace_event(
+            match e.kind {
+                Kind::SimCodec => "retiring_after_sim_wait_or_cancel",
+                Kind::HelperCompare => "retiring_after_helper_wait_or_cancel",
+            },
+            e,
+        )?;
         let end = WORKER_START_PAGE - slot * 4;
         // Do not publish credit until every replacement page has been touched.
         for i in end - 4..end {
@@ -207,7 +227,13 @@ impl Pool {
         }
         self.scan()?;
         e.phase = Phase::Returned;
-        self.workspace_event("returned_after_sim_wait_or_cancel", e)
+        self.workspace_event(
+            match e.kind {
+                Kind::SimCodec => "returned_after_sim_wait_or_cancel",
+                Kind::HelperCompare => "returned_after_helper_wait_or_cancel",
+            },
+            e,
+        )
     }
 }
 
@@ -227,7 +253,7 @@ mod tests {
     #[test]
     fn sim_and_worker_use_distinct_real_pages_and_do_not_return_each_others_capacity() {
         let (root, mut p) = pool();
-        p.prepare_codec(1).unwrap();
+        p.prepare_codec(1, Kind::SimCodec).unwrap();
         assert_eq!(
             p.summary.available_touched_bytes,
             super::super::BYTES - BYTES
@@ -320,16 +346,16 @@ mod tests {
     fn bounded_table_overflow_duplicate_generation_and_partial_refill_fail_closed() {
         let (root, mut p) = pool();
         for generation in 1..=4 {
-            p.prepare_codec(generation).unwrap();
+            p.prepare_codec(generation, Kind::SimCodec).unwrap();
         }
-        assert!(p.prepare_codec(1).is_err());
-        assert!(p.prepare_codec(5).is_err());
+        assert!(p.prepare_codec(1, Kind::SimCodec).is_err());
+        assert!(p.prepare_codec(5, Kind::SimCodec).is_err());
         assert!(p.retire_codec(5).is_err());
         for generation in 1..=4 {
             p.retire_codec(generation).unwrap();
         }
         assert_eq!(p.summary.available_touched_bytes, super::super::BYTES);
-        p.prepare_codec(5).unwrap();
+        p.prepare_codec(5, Kind::SimCodec).unwrap();
         p.fault = Some(Fault::WorkspaceReturnSecondPage);
         assert!(p.retire_codec(5).is_err());
         assert_eq!(p.summary.workspace_returns, 4);

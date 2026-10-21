@@ -16,6 +16,7 @@ use std::{
     process::{Child, Command, Stdio},
     time::{Duration, Instant},
 };
+mod stream;
 const SOURCE: &str = env!("MYCITY_SOURCE_SHA256");
 const FILE_LIMIT: u64 = 4 * 1024 * 1024;
 fn err(e: impl std::fmt::Display) -> String {
@@ -81,6 +82,8 @@ pub struct ResultRecord {
     pub pid: u32,
     pub instance_unix_ns: u128,
     pub artifacts: [Option<Artifact>; 3],
+    #[serde(default)]
+    comparison_proof: Option<stream::Proof>,
     pub image_sha256: Option<Text<64>>,
     pub business_sha256: Option<Text<64>>,
     pub root: Option<RootStamp>,
@@ -272,6 +275,7 @@ pub fn execute(dir: &Path) -> Result<(), String> {
         pid: std::process::id(),
         instance_unix_ns: heap_meter::process_instance(),
         artifacts: [None; 3],
+        comparison_proof: None,
         image_sha256: None,
         business_sha256: None,
         root: None,
@@ -338,7 +342,10 @@ pub fn execute(dir: &Path) -> Result<(), String> {
                 *slot = Some(artifact(&dir, name)?);
             }
         }
-        Mode::BeforeReopen | Mode::Compare | Mode::CompareEndurance | Mode::CompareSpeed => {
+        Mode::BeforeReopen | Mode::CompareEndurance | Mode::CompareSpeed => {
+            stream::execute(&dir, &r, tier, &mut result)?;
+        }
+        Mode::Compare => {
             let decoded = control_data::root_decode(r.root.as_str())?;
             let root = Path::new(decoded.as_str());
             let (bytes, root_bytes, stamp) = checked_image(&joined(root, "world")?)?;
@@ -406,7 +413,7 @@ pub fn execute(dir: &Path) -> Result<(), String> {
 }
 /// Check source, request, exact artifact list, sizes and hashes after a successful exit.
 pub fn validate(dir: &Path) -> Result<ResultRecord, String> {
-    let (r, digest, _) = request(dir)?;
+    let (r, digest, tier) = request(dir)?;
     let result: ResultRecord = control_data::parse(&joined(dir, "result.json")?)?;
     if result.schema.as_str() != "mycity-model-task-result-v2"
         || result.source_sha256.as_str() != SOURCE
@@ -425,6 +432,9 @@ pub fn validate(dir: &Path) -> Result<ResultRecord, String> {
             "cpu-report.json",
             "cpu-final-engine.json",
         ],
+        Mode::BeforeReopen | Mode::CompareEndurance | Mode::CompareSpeed => {
+            &["root.json", "workspace.json"]
+        }
         _ => &["root.json"],
     };
     for (index, slot) in result.artifacts.iter().enumerate() {
@@ -491,6 +501,7 @@ pub fn validate(dir: &Path) -> Result<ResultRecord, String> {
                 } => {}
         _ => return Err("model_task_result_shape".into()),
     }
+    stream::validate_proof(dir, &r, tier, &result)?;
     Ok(result)
 }
 struct Job(Child);
@@ -543,7 +554,28 @@ pub(crate) fn run_retry(
     retry_job: Option<u64>,
 ) -> Result<ResultRecord, String> {
     let dir = prepare_retry(root, tier, mode, retry_job)?;
-    let mut job = Job(Command::new(std::env::current_exe().map_err(err)?)
+    // Register releases the exact pages before child allocation. Supervisor is
+    // declared before Job; Job must kill+wait before any explicit credit return.
+    let fixed = matches!(
+        mode,
+        Mode::BeforeReopen | Mode::CompareEndurance | Mode::CompareSpeed
+    );
+    let mut supervisor = if fixed {
+        std::env::var_os("MYCITY_NORMAL_POOL")
+            .map(|p| crate::normal_pool::broker::Supervisor::register_helper(Path::new(&p)))
+            .transpose()?
+    } else {
+        None
+    };
+    let mut command = Command::new(std::env::current_exe().map_err(err)?);
+    if let Some(s) = supervisor.as_ref() {
+        s.configure(&mut command)?;
+    }
+    // Non-fixed reference work remains EXTRA; it must not inherit a Sim lease.
+    else {
+        command.env_remove("MYCITY_BROKER_SESSION");
+    }
+    let mut job = Job(command
         .arg("scale-model-task")
         .arg(&dir)
         .arg("parent-pipe")
@@ -556,31 +588,56 @@ pub(crate) fn run_retry(
         ))
         .spawn()
         .map_err(err)?);
+    if let Some(s) = supervisor.as_mut() {
+        if let Err(error) = s.bind(job.0.id()) {
+            let _ = job.0.kill();
+            let status = job.0.wait().map_err(err)?;
+            s.after_sim_wait(job.0.id(), status)?;
+            return Err(error);
+        }
+    }
     // Publish identity before releasing the child to model work. Keep stdin
     // alive until child exit; abrupt parent death closes it at the kernel.
-    publish(&dir, "child.json", 4096, |file| {
-        serde_json::to_writer(
-            file,
-            &serde_json::json!({"pid":job.0.id(),"parent_pid":std::process::id()}),
-        )
-        .map_err(err)
-    })?;
-    job.0
-        .stdin
-        .as_mut()
-        .ok_or("model_task_parent_pipe")?
-        .write_all(b"1")
-        .map_err(err)?;
-    let began = Instant::now();
-    let status = loop {
-        if let Some(status) = job.0.try_wait().map_err(err)? {
-            break status;
+    let outcome = (|| {
+        publish(&dir, "child.json", 4096, |file| {
+            serde_json::to_writer(
+                file,
+                &serde_json::json!({"pid":job.0.id(),"parent_pid":std::process::id()}),
+            )
+            .map_err(err)
+        })?;
+        job.0
+            .stdin
+            .as_mut()
+            .ok_or("model_task_parent_pipe")?
+            .write_all(b"1")
+            .map_err(err)?;
+        let began = Instant::now();
+        let status = loop {
+            if let Some(status) = job.0.try_wait().map_err(err)? {
+                break status;
+            }
+            if began.elapsed() > Duration::from_secs(600) {
+                return Err("model_task_timeout".into());
+            }
+            std::thread::sleep(Duration::from_millis(10));
+        };
+        Ok::<_, String>(status)
+    })();
+    let status = match outcome {
+        Ok(status) => status,
+        Err(error) => {
+            let _ = job.0.kill();
+            let status = job.0.wait().map_err(err)?;
+            if let Some(s) = supervisor.as_mut() {
+                s.after_sim_wait(job.0.id(), status)?;
+            }
+            return Err(error);
         }
-        if began.elapsed() > Duration::from_secs(600) {
-            return Err("model_task_timeout".into());
-        }
-        std::thread::sleep(Duration::from_millis(10));
     };
+    if let Some(s) = supervisor.as_mut() {
+        s.after_sim_wait(job.0.id(), status)?;
+    }
     if !status.success() {
         return Err(format!("model_task_child_failed:{}:{status}", job.0.id()));
     }

@@ -1,0 +1,9 @@
+{
+  "source_sha256": "9deedcb11bce7d2d431d4fd8fabad6342fc17a5772cb3de1b7d60ab345aaab82",
+  "source_files": 156,
+  "full_workspace_actual_session": 10241,
+  "clippy_actual_session": 19040,
+  "clippy_exit": 0,
+  "source_frozen_until_terminal": true,
+  "scope": "includes driver test normal fallback try_wait; no pass receipt for full test"
+}

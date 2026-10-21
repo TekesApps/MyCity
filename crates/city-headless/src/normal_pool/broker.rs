@@ -13,6 +13,8 @@ use std::os::{
 pub(super) enum Op {
     Register {
         supervisor: Text<64>,
+        #[serde(default)]
+        kind: workspace::Kind,
     },
     Bind {
         generation: u64,
@@ -73,6 +75,7 @@ pub(super) enum Receipt {
 }
 #[derive(Clone, Copy)]
 struct Session {
+    kind: workspace::Kind,
     generation: u64,
     supervisor: Text<64>,
     key: Text<64>,
@@ -180,7 +183,7 @@ impl Pool {
     }
     pub(super) fn broker_action(&mut self, op: Op) -> Result<Receipt, ActionError> {
         match op {
-            Op::Register { supervisor } => {
+            Op::Register { supervisor, kind } => {
                 if self.broker.registered() || self.active.is_some() {
                     return Err(ActionError::Rejected("normal_broker_session_busy"));
                 }
@@ -189,8 +192,9 @@ impl Pool {
                 }
                 let generation = self.broker.next + 1;
                 let key = secret()?;
-                self.prepare_codec(generation)?;
+                self.prepare_codec(generation, kind)?;
                 self.broker.session = Some(Session {
+                    kind,
                     generation,
                     supervisor,
                     key,
@@ -212,7 +216,14 @@ impl Pool {
                 }
                 self.bind_codec(generation, pid)?;
                 self.broker.session.as_mut().expect("validated").pid = Some(pid);
-                self.event("broker_sim_bound", None)?;
+                self.event(
+                    if s.kind == workspace::Kind::SimCodec {
+                        "broker_sim_bound"
+                    } else {
+                        "broker_helper_bound"
+                    },
+                    None,
+                )?;
                 Ok(Receipt::Bound { generation })
             }
             Op::Cancel { generation, key } => {
@@ -290,6 +301,11 @@ impl Pool {
                 diagnostics,
             } => {
                 let s = self.broker.session(generation, key, false)?;
+                if s.kind != workspace::Kind::SimCodec {
+                    return Err(ActionError::Rejected(
+                        "normal_broker_helper_cannot_start_worker",
+                    ));
+                }
                 let pid = s
                     .pid
                     .ok_or(ActionError::Rejected("normal_broker_sim_unbound"))?;
@@ -461,12 +477,25 @@ impl Supervisor {
             .transpose()
     }
     pub fn register(root: &Path) -> Result<Self, String> {
+        Self::register_kind(root, workspace::Kind::SimCodec)
+    }
+    pub fn register_helper(root: &Path) -> Result<Self, String> {
+        Self::register_kind(root, workspace::Kind::HelperCompare)
+    }
+    fn register_kind(root: &Path, kind: workspace::Kind) -> Result<Self, String> {
         let ready = ready(root)?;
         let key = secret()?;
         let Receipt::Registered {
             generation,
             key: sim_key,
-        } = rpc(root, ready, Op::Register { supervisor: key })?
+        } = rpc(
+            root,
+            ready,
+            Op::Register {
+                supervisor: key,
+                kind,
+            },
+        )?
         else {
             return Err("normal_broker_register_receipt".into());
         };
@@ -743,6 +772,54 @@ impl Lease {
 mod tests {
     use super::*;
     #[test]
+    fn helper_capability_cannot_start_worker_or_overlap_a_live_session() {
+        let root = std::env::temp_dir().join(format!(
+            "mc-helper-auth-{}-{}",
+            std::process::id(),
+            heap_meter::process_instance()
+        ));
+        fs::create_dir(&root).unwrap();
+        let mut pool = Pool::new(&root).unwrap();
+        let supervisor = secret().unwrap();
+        let Receipt::Registered { generation, key } = pool
+            .broker_action(Op::Register {
+                supervisor,
+                kind: workspace::Kind::HelperCompare,
+            })
+            .unwrap()
+        else {
+            panic!("register")
+        };
+        assert!(matches!(
+            pool.broker_action(Op::Start {
+                generation,
+                key,
+                endpoint: Text::new("/tmp/unused").unwrap(),
+                root: Text::new("/tmp").unwrap(),
+                instance: 1,
+                gated: false,
+                diagnostics: false
+            }),
+            Err(ActionError::Rejected(
+                "normal_broker_helper_cannot_start_worker"
+            ))
+        ));
+        assert!(pool
+            .broker_action(Op::Register {
+                supervisor: secret().unwrap(),
+                kind: workspace::Kind::SimCodec
+            })
+            .is_err());
+        pool.broker_action(Op::Cancel {
+            generation,
+            key: supervisor,
+        })
+        .unwrap();
+        assert_eq!(pool.summary.available_touched_bytes, BYTES);
+        drop(pool);
+        fs::remove_dir_all(root).unwrap();
+    }
+    #[test]
     fn old_generation_capabilities_and_legacy_calls_cannot_touch_new_registration() {
         let root = std::env::temp_dir().join(format!(
             "mc-broker-auth-{}-{}",
@@ -755,7 +832,12 @@ mod tests {
         let Receipt::Registered {
             generation: old,
             key: old_key,
-        } = pool.broker_action(Op::Register { supervisor }).unwrap()
+        } = pool
+            .broker_action(Op::Register {
+                supervisor,
+                kind: workspace::Kind::SimCodec,
+            })
+            .unwrap()
         else {
             panic!("register");
         };
@@ -771,6 +853,7 @@ mod tests {
         } = pool
             .broker_action(Op::Register {
                 supervisor: supervisor2,
+                kind: workspace::Kind::SimCodec,
             })
             .unwrap()
         else {

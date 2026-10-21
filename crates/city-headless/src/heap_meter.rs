@@ -20,6 +20,11 @@ pub fn process_instance() -> u128 {
             .map_or(0, |d| d.as_nanos())
     })
 }
+static FIXED_HELPER: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
+/// Called before fixed helper workspace creation. No peak reset or subtraction.
+pub(crate) fn fixed_helper() {
+    FIXED_HELPER.store(true, std::sync::atomic::Ordering::Relaxed);
+}
 pub const TAIL_RESERVED_BYTES: usize = 64 * 1024;
 #[global_allocator]
 static ALLOCATOR: peak_alloc::PeakAlloc = peak_alloc::PeakAlloc;
@@ -67,6 +72,9 @@ impl Recorder {
     }
     pub fn finish(&self, success: bool) -> Result<(), String> {
         let cap = match self.role.as_str() {
+            "scale-model-task" if FIXED_HELPER.load(std::sync::atomic::Ordering::Relaxed) => {
+                Some(crate::worker_slots::OWNER_BYTES + crate::diagnostic_contract::HELPER)
+            }
             "scale-sim-probe" | "scale-endurance" | "speed-driver" => {
                 Some(crate::diagnostic_contract::DRIVER)
             }

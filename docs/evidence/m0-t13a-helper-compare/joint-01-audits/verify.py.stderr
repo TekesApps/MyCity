@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-helper-compare/verify.py", line 71, in <module>
+    assert {k:v for k,v in roles.items() if k!='compute-worker-bounded'}=={'normal-pool-host':1,'scale-endurance':1,'scale-model-task':4,'sim-host-scale-full-probe':3,'joint-endurance':1,'layout-session':1,'layout-load-only':1},roles
+AssertionError: Counter({'compute-worker-bounded': 723, 'scale-model-task': 4, 'sim-host-scale-full-probe': 3, 'scale-endurance': 1, 'layout-session': 1, 'layout-load-only': 1, 'normal-pool-host': 1})

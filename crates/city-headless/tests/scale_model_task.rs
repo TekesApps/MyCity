@@ -187,3 +187,216 @@ fn killing_supervisor_closes_parent_pipe_and_stops_reference_child() {
     assert!(task::validate(&dir).is_err());
     assert!(!root.join("cpu-final-engine.json").exists());
 }
+
+#[test]
+fn fixed_before_reopen_borrows_real_pool_pages_and_returns_only_after_wait() {
+    use mycity_headless::{
+        normal_pool::{broker::Supervisor, Process},
+        sim_client::Client,
+    };
+    let t = Temp::new();
+    let mut sim = Client::spawn_scale(
+        std::path::Path::new(exe()),
+        &t.0.join("world"),
+        true,
+        false,
+        Tier::Small,
+    )
+    .unwrap();
+    assert_eq!(sim.next(Duration::from_secs(10)).unwrap().kind, "ready");
+    sim.submit(1, mycity_headless::sim_host::Command::Checkpoint)
+        .unwrap();
+    let reply = sim.next(Duration::from_secs(10)).unwrap();
+    assert!(reply.payload.get("Ok").is_some(), "{reply:?}");
+    sim.stop().unwrap();
+    let mut pool = Process::spawn(std::path::Path::new(exe()), &t.0.join("pool"), None).unwrap();
+    let dir = task::prepare(&t.0, Tier::Small, Mode::BeforeReopen).unwrap();
+    let mut supervisor = Supervisor::register_helper(pool.root()).unwrap();
+    let mut cmd = Command::new(exe());
+    supervisor.configure(&mut cmd).unwrap();
+    let child = cmd
+        .arg("scale-model-task")
+        .arg(&dir)
+        .stdout(Stdio::null())
+        .stderr(Stdio::piped())
+        .spawn()
+        .unwrap();
+    supervisor.bind(child.id()).unwrap();
+    let pid = child.id();
+    let output = child.wait_with_output().unwrap();
+    assert!(
+        output.status.success(),
+        "{}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    let records = || {
+        fs::read_to_string(pool.root().join("events.jsonl"))
+            .unwrap()
+            .lines()
+            .map(|l| serde_json::from_str::<Value>(l).unwrap())
+            .collect::<Vec<_>>()
+    };
+    // Even successful process exit is not credited until the real parent's explicit wait/revoke.
+    assert!(!records()
+        .iter()
+        .any(|v| v["kind"] == "returned_after_helper_wait_or_cancel"));
+    supervisor.after_sim_wait(pid, output.status).unwrap();
+    task::validate(&dir).unwrap();
+    let workspace: Value =
+        serde_json::from_slice(&fs::read(dir.join("workspace.json")).unwrap()).unwrap();
+    assert_eq!(workspace["owner_capacity_bytes"], 4 * 1024 * 1024);
+    assert_eq!(workspace["available_touched_bytes"], 4 * 1024 * 1024);
+    assert_eq!(workspace["full_balance_scan_passed"], true);
+    let events = records();
+    let names: Vec<_> = events
+        .iter()
+        .filter(|v| v["owner_kind"] == "helper_compare")
+        .map(|v| v["kind"].as_str().unwrap())
+        .collect();
+    assert_eq!(
+        names,
+        [
+            "prepared_before_helper_spawn",
+            "helper_actual_compare_slots_filled",
+            "retiring_after_helper_wait_or_cancel",
+            "returned_after_helper_wait_or_cancel"
+        ]
+    );
+    pool.finish().unwrap();
+}
+#[test]
+fn helper_killed_before_allocation_keeps_grant_until_real_wait_and_can_cancel_unspawned() {
+    use mycity_headless::normal_pool::{broker::Supervisor, Process};
+    let t = Temp::new();
+    let mut pool = Process::spawn(std::path::Path::new(exe()), &t.0.join("pool"), None).unwrap();
+    // An unspawned supervisor Drop must use Cancel, not fake a successful wait.
+    drop(Supervisor::register_helper(pool.root()).unwrap());
+    let dir = task::prepare(&t.0, Tier::Small, Mode::BeforeReopen).unwrap();
+    let mut supervisor = Supervisor::register_helper(pool.root()).unwrap();
+    let mut cmd = Command::new(exe());
+    supervisor.configure(&mut cmd).unwrap();
+    // Parent pipe gate keeps this real child before Owner allocation/Filled.
+    let mut child = cmd
+        .arg("scale-model-task")
+        .arg(&dir)
+        .arg("parent-pipe")
+        .stdin(Stdio::piped())
+        .stdout(Stdio::null())
+        .stderr(Stdio::null())
+        .spawn()
+        .unwrap();
+    supervisor.bind(child.id()).unwrap();
+    child.kill().unwrap();
+    let status = child.wait().unwrap();
+    assert!(!status.success());
+    assert!(Supervisor::register_helper(pool.root()).is_err());
+    supervisor.after_sim_wait(child.id(), status).unwrap();
+    drop(Supervisor::register_helper(pool.root()).unwrap());
+    assert!(!dir.join("result.json").exists());
+    pool.finish().unwrap();
+}
+
+#[test]
+fn filled_helper_death_and_parent_sigkill_never_credit_without_actual_wait() {
+    use mycity_headless::normal_pool::{broker::Supervisor, Process};
+    use std::io::Write;
+    use std::os::unix::process::ExitStatusExt;
+    // The same harness runs this small supervisor in a real separate process.
+    if let Some(root) = std::env::var_os("MYCITY_HELPER_PARENT_DRIVER") {
+        let root = PathBuf::from(root);
+        let mut supervisor = Supervisor::register_helper(&root.join("pool")).unwrap();
+        let dir = root.join("before-reopen");
+        let mut cmd = Command::new(exe());
+        supervisor.configure(&mut cmd).unwrap();
+        let mut child = cmd
+            .arg("scale-model-task")
+            .arg(&dir)
+            .arg("parent-pipe")
+            .env("MYCITY_HELPER_COMPARE_PROBE", "filled")
+            .stdin(Stdio::piped())
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .spawn()
+            .unwrap();
+        supervisor.bind(child.id()).unwrap();
+        child.stdin.as_mut().unwrap().write_all(b"1").unwrap();
+        fs::write(root.join("helper-pid"), child.id().to_string()).unwrap();
+        // Parent is deliberately SIGKILLed by the outer test; no Drop or fake wait.
+        loop {
+            // A normal timeout/failure still reaps; the intended test SIGKILL
+            // happens while the helper is gated and therefore never reaches this.
+            if let Some(status) = child.try_wait().unwrap() {
+                supervisor.after_sim_wait(child.id(), status).unwrap();
+                return;
+            }
+            std::thread::sleep(Duration::from_millis(100));
+        }
+    }
+    let t = Temp::new();
+    let mut pool = Process::spawn(std::path::Path::new(exe()), &t.0.join("pool"), None).unwrap();
+    let dir = task::prepare(&t.0, Tier::Small, Mode::BeforeReopen).unwrap();
+    let mut supervisor = Supervisor::register_helper(pool.root()).unwrap();
+    let mut cmd = Command::new(exe());
+    supervisor.configure(&mut cmd).unwrap();
+    let mut child = cmd
+        .arg("scale-model-task")
+        .arg(&dir)
+        .env("MYCITY_HELPER_COMPARE_PROBE", "filled")
+        .stdout(Stdio::null())
+        .stderr(Stdio::null())
+        .spawn()
+        .unwrap();
+    supervisor.bind(child.id()).unwrap();
+    let wait_filled = |dir: &std::path::Path| {
+        let start = Instant::now();
+        while !dir.join("filled-probe.json").exists() {
+            assert!(start.elapsed() < Duration::from_secs(10));
+            std::thread::sleep(Duration::from_millis(2));
+        }
+    };
+    wait_filled(&dir);
+    child.kill().unwrap();
+    let status = child.wait().unwrap();
+    assert_eq!(status.signal(), Some(9));
+    assert!(Supervisor::register_helper(pool.root()).is_err());
+    supervisor.after_sim_wait(child.id(), status).unwrap();
+    supervisor.after_sim_wait(child.id(), status).unwrap(); // idempotent credit
+    pool.finish().unwrap();
+    let lines = fs::read_to_string(t.0.join("pool/events.jsonl")).unwrap();
+    assert_eq!(
+        lines
+            .lines()
+            .map(|l| serde_json::from_str::<Value>(l).unwrap())
+            .filter(|v| v["kind"] == "returned_after_helper_wait_or_cancel")
+            .count(),
+        1
+    );
+
+    let orphan = Temp::new();
+    let mut pool =
+        Process::spawn(std::path::Path::new(exe()), &orphan.0.join("pool"), None).unwrap();
+    let dir = task::prepare(&orphan.0, Tier::Small, Mode::BeforeReopen).unwrap();
+    let mut parent = Command::new(std::env::current_exe().unwrap())
+        .args([
+            "--exact",
+            "filled_helper_death_and_parent_sigkill_never_credit_without_actual_wait",
+        ])
+        .env("MYCITY_HELPER_PARENT_DRIVER", &orphan.0)
+        .stdout(Stdio::null())
+        .stderr(Stdio::null())
+        .spawn()
+        .unwrap();
+    wait_filled(&dir);
+    parent.kill().unwrap();
+    assert_eq!(parent.wait().unwrap().signal(), Some(9));
+    // EOF asks helper to exit but is never accepted as proof that grants can return.
+    std::thread::sleep(Duration::from_millis(100));
+    assert!(Supervisor::register_helper(pool.root()).is_err());
+    assert!(!dir.join("result.json").exists());
+    assert!(pool.finish().unwrap_err().contains("normal_pool_exit"));
+    let lines = fs::read_to_string(orphan.0.join("pool/events.jsonl")).unwrap();
+    assert!(!lines
+        .lines()
+        .map(|l| serde_json::from_str::<Value>(l).unwrap())
+        .any(|v| v["kind"] == "returned_after_helper_wait_or_cancel"));
+}

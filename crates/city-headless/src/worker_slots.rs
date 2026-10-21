@@ -45,6 +45,7 @@ pub struct Ticket {
 pub struct Bytes {
     data: Vec<u8>,
     used: usize,
+    high_water: usize,
 }
 impl Bytes {
     fn new() -> Result<Self, String> {
@@ -55,7 +56,11 @@ impl Bytes {
             return Err("worker_slot_capacity".into());
         }
         data.resize(SLOT_BYTES, FILL);
-        Ok(Self { data, used: 0 })
+        Ok(Self {
+            data,
+            used: 0,
+            high_water: 0,
+        })
     }
     pub fn as_slice(&self) -> &[u8] {
         &self.data[..self.used]
@@ -65,7 +70,10 @@ impl Bytes {
         while self.used < SLOT_BYTES {
             match source.read(&mut self.data[self.used..]) {
                 Ok(0) => return Ok(self.used),
-                Ok(n) => self.used += n,
+                Ok(n) => {
+                    self.used += n;
+                    self.high_water = self.high_water.max(self.used);
+                }
                 Err(e) if e.kind() == io::ErrorKind::Interrupted => (),
                 Err(e) => return Err(e.to_string()),
             }
@@ -83,6 +91,7 @@ impl Bytes {
     fn reset(&mut self) {
         self.data.fill(FILL);
         self.used = 0;
+        self.high_water = 0;
     }
 }
 impl Write for Bytes {
@@ -92,6 +101,7 @@ impl Write for Bytes {
         }
         self.data[self.used..self.used + bytes.len()].copy_from_slice(bytes);
         self.used += bytes.len();
+        self.high_water = self.high_water.max(self.used);
         Ok(bytes.len())
     }
     fn flush(&mut self) -> io::Result<()> {
@@ -121,7 +131,7 @@ impl Slot {
         if self.ticket != Some(ticket) {
             return Err("worker_slot_stale_or_wrong_ticket".into());
         }
-        self.maximum_payload_bytes = self.maximum_payload_bytes.max(self.bytes.used);
+        self.maximum_payload_bytes = self.maximum_payload_bytes.max(self.bytes.high_water);
         self.bytes.reset();
         self.ticket = None;
         self.returns = self.returns.checked_add(1).ok_or("worker_slot_counter")?;
@@ -293,6 +303,47 @@ impl Owner {
         self.check_balance()?;
         result
     }
+    /// Two simultaneous fixed loans; neither slice can escape the closure.
+    pub fn with_pair<T>(
+        &mut self,
+        work: impl FnOnce(&mut Bytes, &mut Bytes) -> Result<T, String>,
+    ) -> Result<T, String> {
+        self.check_balance()?;
+        if self.event_count + 4 > self.events.len() {
+            return Err("worker_slot_trace_limit".into());
+        }
+        let next = self.next.checked_add(2).ok_or("worker_slot_counter")?;
+        let tickets = [Kind::Input, Kind::Candidate].map(|slot| Ticket {
+            identity: self.identity,
+            slot,
+            sequence: self.next + slot.index() as u64,
+        });
+        for (slot, ticket) in self.slots.iter_mut().zip(tickets) {
+            slot.claims = slot.claims.checked_add(1).ok_or("worker_slot_counter")?;
+            slot.ticket = Some(ticket);
+        }
+        self.next = next;
+        for t in tickets {
+            self.event(t, true, None);
+        }
+        let result = {
+            let [a, b] = &mut self.slots;
+            let a = Loan {
+                slot: a,
+                ticket: tickets[0],
+            };
+            let b = Loan {
+                slot: b,
+                ticket: tickets[1],
+            };
+            work(&mut a.slot.bytes, &mut b.slot.bytes)
+        };
+        for t in tickets {
+            self.event(t, false, Some(result.is_ok()));
+        }
+        self.check_balance()?;
+        result
+    }
     pub fn check_balance(&self) -> Result<(), String> {
         for slot in &self.slots {
             if slot.poisoned
@@ -313,12 +364,23 @@ impl Owner {
         if self.event_count % 2 != 0 {
             return Err("worker_slot_incomplete_trace".into());
         }
-        for pair in self.events[..self.event_count].chunks_exact(2) {
-            let a = pair[0].ok_or("worker_slot_trace")?;
-            let b = pair[1].ok_or("worker_slot_trace")?;
-            if a.ticket != b.ticket || !a.borrowed || b.borrowed || b.observed_ns < a.observed_ns {
-                return Err("worker_slot_trace".into());
+        let mut live = [None; 2];
+        for e in self.events[..self.event_count].iter().flatten() {
+            let slot = &mut live[e.ticket.slot.index()];
+            if e.borrowed {
+                if slot.is_some() {
+                    return Err("worker_slot_trace".into());
+                }
+                *slot = Some((e.ticket, e.observed_ns));
+            } else {
+                let (ticket, began) = slot.take().ok_or("worker_slot_trace")?;
+                if ticket != e.ticket || e.observed_ns < began {
+                    return Err("worker_slot_trace".into());
+                }
             }
+        }
+        if live.iter().any(Option::is_some) {
+            return Err("worker_slot_trace".into());
         }
         let slot_report = |kind: Kind| {
             let s = &self.slots[kind.index()];
@@ -444,5 +506,30 @@ mod retention_tests {
         assert!(o.rebind(0, 3, 4, 2).is_err());
         o.slots[0].poisoned = true;
         assert!(o.rebind(2, 4, 4, 2).is_err());
+    }
+    #[test]
+    fn repeated_reads_in_one_loan_preserve_payload_high_water_and_reset_backing() {
+        let mut o = Owner::new(1, 1, 1, 1).unwrap();
+        o.with_pair(|a, b| {
+            a.read_from(io::repeat(7).take(SLOT_BYTES as u64))?;
+            a.read_from(io::Cursor::new([8]))?;
+            b.read_from(io::Cursor::new([1, 2]))?;
+            b.read_from(io::Cursor::new([]))?;
+            Ok(())
+        })
+        .unwrap();
+        let r = o.report().unwrap();
+        assert_eq!(r.slots[0].maximum_payload_bytes, SLOT_BYTES);
+        assert_eq!(r.slots[1].maximum_payload_bytes, 2);
+        o.check_balance().unwrap();
+        o.with_slot(Kind::Input, |a| {
+            a.read_from(io::Cursor::new([0]))?;
+            Ok(())
+        })
+        .unwrap();
+        assert_eq!(
+            o.report().unwrap().slots[0].maximum_payload_bytes,
+            SLOT_BYTES
+        );
     }
 }

@@ -1,0 +1,30 @@
+{
+  "joint_session": 1286,
+  "joint_exit": 0,
+  "collected_session": 50958,
+  "collected_exit": 0,
+  "verify": {
+    "exit": 0,
+    "wall_seconds": 1.2842319011688232
+  },
+  "workspace_audit": {
+    "exit": 0,
+    "wall_seconds": 0.9796762466430664
+  },
+  "coverage": {
+    "exit": 0,
+    "wall_seconds": 0.11408686637878418
+  },
+  "diagnostic_audit": {
+    "exit": 0,
+    "wall_seconds": 0.16099190711975098
+  },
+  "latency_audit": {
+    "exit": 0,
+    "wall_seconds": 3.454335927963257
+  },
+  "static_check": {
+    "exit": 0,
+    "wall_seconds": 0.39193201065063477
+  }
+}

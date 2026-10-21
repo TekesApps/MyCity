@@ -1,0 +1,12 @@
+{
+  "joint_session": 93103,
+  "joint_exit": 0,
+  "verify_exit": 1,
+  "workspace_session": 17468,
+  "workspace_exit": 0,
+  "coverage_exit": 0,
+  "diagnostic_exit": 1,
+  "latency_session": 69297,
+  "latency_exit": 0,
+  "reason": "Top-level supervisor heap log environment absent; missing normal footer, not inferred zero; repeat original load with log env set."
+}

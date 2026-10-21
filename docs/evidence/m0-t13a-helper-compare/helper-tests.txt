@@ -1,0 +1,40 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+warning: variable does not need to be mutable
+   --> crates/city-headless/tests/scale_model_task.rs:213:9
+    |
+213 |     let mut child = cmd
+    |         ----^^^^^
+    |         |
+    |         help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` on by default
+
+warning: `mycity-headless` (test "scale_model_task") generated 1 warning (run `cargo fix --test "scale_model_task"` to apply 1 suggestion)
+    Finished `release` profile [optimized] target(s) in 15.64s
+     Running tests/scale_model_task.rs (target/release/deps/scale_model_task-9c8f5e4ecb9acfe6)
+
+running 7 tests
+test fingerprint_enforces_the_bound_and_exact_bytes ... ok
+test killed_reference_leaves_no_authoritative_result_or_parent_artifacts ... ok
+test invalid_source_partial_and_old_result_never_authorize_a_task ... ok
+test killing_supervisor_closes_parent_pipe_and_stops_reference_child ... ok
+test fixed_before_reopen_borrows_real_pool_pages_and_returns_only_after_wait ... FAILED
+test helper_killed_before_allocation_keeps_grant_until_real_wait_and_can_cancel_unspawned ... ok
+test streamed_reference_keeps_frozen_small_oracle_and_rejects_corrupted_artifact ... ok
+
+failures:
+
+---- fixed_before_reopen_borrows_real_pool_pages_and_returns_only_after_wait stdout ----
+
+thread 'fixed_before_reopen_borrows_real_pool_pages_and_returns_only_after_wait' panicked at crates/city-headless/tests/scale_model_task.rs:223:5:
+model_control_json
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    fixed_before_reopen_borrows_real_pool_pages_and_returns_only_after_wait
+
+test result: FAILED. 6 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 14.25s
+
+error: test failed, to rerun pass `-p mycity-headless --test scale_model_task`

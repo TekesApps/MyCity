@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-helper-compare/diagnostic_audit.py", line 32, in <module>
+    supervisor=next(h for h in heaps if h['role']=='joint-endurance');assert peak(supervisor)<=MiB//4
+StopIteration

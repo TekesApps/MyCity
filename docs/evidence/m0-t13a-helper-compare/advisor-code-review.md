@@ -1,0 +1,13 @@
+# 独立方案与代码审查（阶段实测仍待完成）
+
+/root/boot_advisor本轮只读检查helper原路径后建议：仅对原先要求完整Engine字节相等的Speed/Endurance，改为受控文件流式比较；BeforeReopen流式hash；普通Compare保留原metadata差异规则。不得以此代替真实Store冷开，business hash引用须显式标明且绑定参考资产。
+
+初版代码审查发现business报告裸from_reader绕过token/depth门，总64KiB上限不能证明40KiB parser/error子预算。已接既有JsonReader，增加长key/长已知值/深unknown/尾随JSON反例。advisor随后只读确认该阻断已修，没有新的必须修改项。
+
+权限与生命周期：Register固定HelperCompare kind，Start明确拒绝；父在分配前登记，Bind失败和后续错误均先真实kill/wait再撤销；Supervisor Drop不凭绑定PID退款。固定双槽真正借用背板，长度/内容/hash/文件身份全检。原真实Store恢复保留。business proof是完整相等后引用已验证参考报告，不冒充helper重算。
+
+advisor要求真实Filled后杀helper和父SIGKILL不自动退款的证明。新增8项helper回归（46859终态0）已包括这两项实际SIGKILL，另有分配前杀、未spawn Cancel、成功后wait前无退款、wait后一次退款。最终全仓终态另记；这里不签正式性能/normal64/common8。
+
+fixed_helper在Owner分配前标记；整堆生命周期峰+64KiB尾部受4MiB+256KiB检查，无reset或峰相减。Reference/FaultReference继续EXTRA。父被杀后EOF仅促退出，池保持fail-closed，不宣称自动孤儿回收已实现。
+
+其后主任务发现并修正连续多块读的最大payload记录（只记录末块的问题），增加每loan高水位及重复读/短尾/EOF反例。该修正由最终源码回归和最终独立审查覆盖，不把前一来源全仓结果当作最终来源。未运行正式负载前的审查不是实测签收。

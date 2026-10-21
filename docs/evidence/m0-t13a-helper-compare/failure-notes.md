@@ -1,0 +1,11 @@
+# 实际失败记录
+
+initial-tests.txt：命令误用package名city-headless，Cargo拒绝，未执行测试；更正为mycity-headless。
+
+helper-tests.txt：7项中6通过，fixed_before_reopen失败model_control_json。原因是测试只create/stop了Store，未发布checkpoint_v2，原checked_image边界同样要求已保存的image。测试补发真实Checkpoint并核对实际结果后才stop，不放宽生产读取规则。修复后的结果另存，不覆盖原失败日志。
+
+早期阶段/源码的局部测试不冒充最终来源全仓结果。unit-tests包含lib44项实际通过；最终来源仍需完整回归和原联合运行。
+
+pre-driver-reap/clippy-final.txt：最终高水位版全仓7423终态0、350条harness记录后，clippy发现SIGKILL测试内部父driver的备用路径没有wait。补上循环try_wait：当helper在未被SIGKILL的正常超时/失败路径退出，父driver实际回收后撤销；真实父SIGKILL测试仍发生在helper gate内，不靠该路径提前退额度。未用allow压制。修复后clippy19040终态0，新来源全仓10241重新验证。前一来源freeze/source.zip/完整回归和clippy失败独立保留，不拼接成最终来源通过。
+
+首次联合93103终态0，实际607.619664708秒；业务/两份快照/工作区轨迹完成，但独立verify和diagnostic失败：启动observe时漏传最外层MYCITY_HEAP_LOG，缺joint-endurance正常退出footer。不能用report中的中途峰值或exit0上界替代该原始记录，也不修改原核验要求掩盖缺测。该轮保留为观测不完整；workspace/coverage/latency实际0，原失败输出在joint-01-audits/。复测仍同一源码/原完整负载，不重跑已经通过的代码回归；只为最外层设置实际日志路径，重新满足120秒normal，再创建全新世界t13a65-joint-02。

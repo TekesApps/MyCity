@@ -1,0 +1,23 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+error: spawned process is never `wait()`ed on
+   --> crates/city-headless/tests/scale_model_task.rs:311:25
+    |
+311 |           let mut child = cmd
+    |  _________________________^
+312 | |             .arg("scale-model-task")
+313 | |             .arg(&dir)
+314 | |             .arg("parent-pipe")
+...   |
+319 | |             .spawn()
+320 | |             .unwrap();
+    | |_____________________^
+    |
+    = help: consider calling `.wait()`
+    = note: not doing so might leave behind zombie processes
+    = note: see https://doc.rust-lang.org/stable/std/process/struct.Child.html#warning
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#zombie_processes
+    = note: `-D clippy::zombie-processes` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::zombie_processes)]`
+
+error: could not compile `mycity-headless` (test "scale_model_task") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

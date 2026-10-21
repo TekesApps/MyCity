@@ -1,0 +1,145 @@
+{
+  "release": "v0.5.66",
+  "experiment_run_id": "t13a65-joint-02 (run ID predates cleanup-only v0.5.65; not a release version)",
+  "source_sha256": "9deedcb11bce7d2d431d4fd8fabad6342fc17a5772cb3de1b7d60ab345aaab82",
+  "model_seconds": 607.373279208,
+  "observer_seconds": 608.2749355420001,
+  "business": {
+    "actual_wall_seconds": 331.196609167,
+    "committed_job": 75,
+    "formal": false,
+    "hours": 720,
+    "max_query_completion_lateness_seconds": 0.882630959,
+    "max_save_completion_lateness_seconds": 0.802310584,
+    "queries_completed": 2880,
+    "required_wall_seconds": 72.0,
+    "retry_job": 39,
+    "saves_completed": 96,
+    "scheduled_cold_reopen": true,
+    "targets": 723
+  },
+  "receipts": 3013,
+  "worker_returns": 725,
+  "broker_sessions": 6,
+  "snapshots": [
+    {
+      "generation": 1,
+      "durable_complete_seconds": 11.569796916,
+      "complete_record_restore": "passed",
+      "full_pressure_file_readback": "passed",
+      "files": 29,
+      "bytes": 3378784402
+    },
+    {
+      "generation": 2,
+      "durable_complete_seconds": 11.207266583,
+      "complete_record_restore": "passed",
+      "full_pressure_file_readback": "passed",
+      "files": 29,
+      "bytes": 3378784402
+    }
+  ],
+  "fixed_helpers": [
+    {
+      "mode": "before-reopen",
+      "generation": 4,
+      "whole_heap_plus_tail": 4309977,
+      "owner_bytes": 4194304
+    },
+    {
+      "mode": "compare-endurance",
+      "generation": 6,
+      "whole_heap_plus_tail": 4310063,
+      "owner_bytes": 4194304
+    }
+  ],
+  "rss_sampled_peak_bytes": 3481731072,
+  "footprint_obtained_peak_bytes": 3470103160,
+  "missing_footprint_process_samples": 2522,
+  "swap_initial_bytes": 4964810752,
+  "swap_net_growth_bytes": 0,
+  "non_normal_pressure_seconds": 3.1829835409999987,
+  "sealed_sim_execution_strata": [
+    {
+      "record_state": "sealed",
+      "producer": "sim",
+      "role": "execution",
+      "class": "L2_background_capture_admit_cpu",
+      "samples": 1298,
+      "maximum_ns": 17711307,
+      "p95_ns": 7225702,
+      "p99_ns": 12416947,
+      "minimum_samples_met": true,
+      "observed_p95_p99_thresholds_met": true
+    },
+    {
+      "record_state": "sealed",
+      "producer": "sim",
+      "role": "execution",
+      "class": "L2_claims_batch",
+      "samples": 17,
+      "maximum_ns": 77505,
+      "p95_ns": 77505,
+      "p99_ns": 77505,
+      "minimum_samples_met": false,
+      "observed_p95_p99_thresholds_met": null
+    },
+    {
+      "record_state": "sealed",
+      "producer": "sim",
+      "role": "execution",
+      "class": "L2_payroll_batch",
+      "samples": 649,
+      "maximum_ns": 126209,
+      "p95_ns": 3791,
+      "p99_ns": 5625,
+      "minimum_samples_met": true,
+      "observed_p95_p99_thresholds_met": true
+    },
+    {
+      "record_state": "sealed",
+      "producer": "sim",
+      "role": "execution",
+      "class": "L2_region_exchange_boot_batch",
+      "samples": 655,
+      "maximum_ns": 9779416,
+      "p95_ns": 2785084,
+      "p99_ns": 4238625,
+      "minimum_samples_met": true,
+      "observed_p95_p99_thresholds_met": true
+    },
+    {
+      "record_state": "sealed",
+      "producer": "sim",
+      "role": "execution",
+      "class": "air_cell_page",
+      "samples": 622080,
+      "maximum_ns": 2330416,
+      "p95_ns": 18125,
+      "p99_ns": 20584,
+      "minimum_samples_met": true,
+      "observed_p95_p99_thresholds_met": true
+    },
+    {
+      "record_state": "sealed",
+      "producer": "sim",
+      "role": "execution",
+      "class": "air_source_page",
+      "samples": 2,
+      "maximum_ns": 625,
+      "p95_ns": 625,
+      "p99_ns": 625,
+      "minimum_samples_met": false,
+      "observed_p95_p99_thresholds_met": null
+    }
+  ],
+  "formal_latency": "not_accepted; missing L0/rare strata and formal same-source joint protocol",
+  "all_six_offline_audits_exit_0": true,
+  "normal64": "not_accepted",
+  "common8": "not_accepted",
+  "formal_steady": "not_run",
+  "four_speeds": "not_run",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run",
+  "M0": "not_accepted"
+}
