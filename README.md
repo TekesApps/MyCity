@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.77`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.78`。已开始Rust模型与headless CLI，当前不做UI。
+
+本次发布为[历史验证重复组件回收](docs/evidence/disk-reclamation-duplicate-components/STATUS.md)：扣除无损证据归档后净减少约2.64GiB文件分配空间；完整恢复输入保留，未完成的模型工作不计为通过。
 
 **软件结构先读[总体架构](docs/SOFTWARE_ARCHITECTURE.md)：当前代码、主体与事件、单writer、多进程目标、数据文件和预算。**
 

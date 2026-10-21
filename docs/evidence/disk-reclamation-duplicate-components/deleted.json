@@ -1,0 +1,1198 @@
+[
+  {
+    "path": "work/t13a1b-layout-full-01/model/snapshots/snapshot-000003/native.json",
+    "round": "t13a1b-layout-full-01",
+    "metadata": [
+      16777231,
+      400631255,
+      65299383,
+      1792492462119969362,
+      65302528,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+      "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+      "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+      "bytes": 65299383,
+      "archive_allocated_bytes": 4009984
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a1b-layout-full-01/model/snapshots/snapshot-000003",
+    "original_index": "work/t13a1b-layout-full-01/model/snapshots/snapshot-000003/index.json",
+    "original_index_sha256": "77289f7a021e6e81cd63487e3effae05b616dc1fc5eb81e1872378b2efb543a5"
+  },
+  {
+    "path": "work/t13a1b-layout-full-01/model/snapshots/snapshot-000003/meter.json",
+    "round": "t13a1b-layout-full-01",
+    "metadata": [
+      16777231,
+      400631263,
+      59090761,
+      1792492462786388327,
+      59092992,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+      "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+      "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+      "bytes": 59090761,
+      "archive_allocated_bytes": 22708224
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a1b-layout-full-01/model/snapshots/snapshot-000003",
+    "original_index": "work/t13a1b-layout-full-01/model/snapshots/snapshot-000003/index.json",
+    "original_index_sha256": "77289f7a021e6e81cd63487e3effae05b616dc1fc5eb81e1872378b2efb543a5"
+  },
+  {
+    "path": "work/t13a1b-layout-full-04/model/snapshots/snapshot-000001/native.json",
+    "round": "t13a1b-layout-full-04",
+    "metadata": [
+      16777231,
+      400856624,
+      65299383,
+      1792494481494502370,
+      65302528,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+      "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+      "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+      "bytes": 65299383,
+      "archive_allocated_bytes": 4009984
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a1b-layout-full-04/model/snapshots/snapshot-000001",
+    "original_index": "work/t13a1b-layout-full-04/model/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "a887dfbfc9b9189847ac931bed5e864a039f70d5ae81ece4441ff24c4f379ea2"
+  },
+  {
+    "path": "work/t13a1b-layout-full-04/model/snapshots/snapshot-000001/meter.json",
+    "round": "t13a1b-layout-full-04",
+    "metadata": [
+      16777231,
+      400856649,
+      59090761,
+      1792494481870866132,
+      59092992,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+      "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+      "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+      "bytes": 59090761,
+      "archive_allocated_bytes": 22708224
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a1b-layout-full-04/model/snapshots/snapshot-000001",
+    "original_index": "work/t13a1b-layout-full-04/model/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "a887dfbfc9b9189847ac931bed5e864a039f70d5ae81ece4441ff24c4f379ea2"
+  },
+  {
+    "path": "work/t13a1b-layout-full-10/model/snapshots/snapshot-000003/native.json",
+    "round": "t13a1b-layout-full-10",
+    "metadata": [
+      16777231,
+      400916888,
+      65299383,
+      1792494850751690907,
+      65302528,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+      "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+      "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+      "bytes": 65299383,
+      "archive_allocated_bytes": 4009984
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a1b-layout-full-10/model/snapshots/snapshot-000003",
+    "original_index": "work/t13a1b-layout-full-10/model/snapshots/snapshot-000003/index.json",
+    "original_index_sha256": "4fa13d85bc610358cc0a13d060039162fc41c9e94574bf5542c854a2df33abec"
+  },
+  {
+    "path": "work/t13a1b-layout-full-10/model/snapshots/snapshot-000004/native.json",
+    "round": "t13a1b-layout-full-10",
+    "metadata": [
+      16777231,
+      400921114,
+      65299383,
+      1792494915531985639,
+      65302528,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+      "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+      "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+      "bytes": 65299383,
+      "archive_allocated_bytes": 4009984
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a1b-layout-full-10/model/snapshots/snapshot-000004",
+    "original_index": "work/t13a1b-layout-full-10/model/snapshots/snapshot-000004/index.json",
+    "original_index_sha256": "97a43446b8131b882c62be83f0609cd549d871c8c1b77c3f141899e548893f6e"
+  },
+  {
+    "path": "work/t13a1b-layout-full-10/model/snapshots/snapshot-000003/meter.json",
+    "round": "t13a1b-layout-full-10",
+    "metadata": [
+      16777231,
+      400916902,
+      59090761,
+      1792494851248110349,
+      59092992,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+      "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+      "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+      "bytes": 59090761,
+      "archive_allocated_bytes": 22708224
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a1b-layout-full-10/model/snapshots/snapshot-000003",
+    "original_index": "work/t13a1b-layout-full-10/model/snapshots/snapshot-000003/index.json",
+    "original_index_sha256": "4fa13d85bc610358cc0a13d060039162fc41c9e94574bf5542c854a2df33abec"
+  },
+  {
+    "path": "work/t13a1b-layout-full-10/model/snapshots/snapshot-000004/meter.json",
+    "round": "t13a1b-layout-full-10",
+    "metadata": [
+      16777231,
+      400921122,
+      59090761,
+      1792494915907284569,
+      59092992,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+      "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+      "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+      "bytes": 59090761,
+      "archive_allocated_bytes": 22708224
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a1b-layout-full-10/model/snapshots/snapshot-000004",
+    "original_index": "work/t13a1b-layout-full-10/model/snapshots/snapshot-000004/index.json",
+    "original_index_sha256": "97a43446b8131b882c62be83f0609cd549d871c8c1b77c3f141899e548893f6e"
+  },
+  {
+    "path": "work/t13a3a-joint-01/model/layout/snapshots/snapshot-000001/native.json",
+    "round": "t13a3a-joint-01",
+    "metadata": [
+      16777231,
+      402535168,
+      65299383,
+      1792506839561365477,
+      65302528,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+      "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+      "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+      "bytes": 65299383,
+      "archive_allocated_bytes": 4009984
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a3a-joint-01/model/layout/snapshots/snapshot-000001",
+    "original_index": "work/t13a3a-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "a106e755153bd4ee00d351dc8674011ae3a699c6a263ecac00c064666954de9e"
+  },
+  {
+    "path": "work/t13a3a-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+    "round": "t13a3a-joint-01",
+    "metadata": [
+      16777231,
+      402551446,
+      65299383,
+      1792507139761499771,
+      65302528,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+      "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+      "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+      "bytes": 65299383,
+      "archive_allocated_bytes": 4009984
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a3a-joint-01/model/layout/snapshots/snapshot-000002",
+    "original_index": "work/t13a3a-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "ab1a7f2e3f351da0c44e5054b0ec2c31286827f0c4c26dbbaa613def2711fb75"
+  },
+  {
+    "path": "work/t13a3a-joint-01/model/layout/snapshots/snapshot-000001/meter.json",
+    "round": "t13a3a-joint-01",
+    "metadata": [
+      16777231,
+      402535177,
+      59090761,
+      1792506839907784808,
+      59092992,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+      "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+      "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+      "bytes": 59090761,
+      "archive_allocated_bytes": 22708224
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a3a-joint-01/model/layout/snapshots/snapshot-000001",
+    "original_index": "work/t13a3a-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "a106e755153bd4ee00d351dc8674011ae3a699c6a263ecac00c064666954de9e"
+  },
+  {
+    "path": "work/t13a3a-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+    "round": "t13a3a-joint-01",
+    "metadata": [
+      16777231,
+      402551518,
+      59090761,
+      1792507140417819804,
+      59092992,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+      "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+      "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+      "bytes": 59090761,
+      "archive_allocated_bytes": 22708224
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a3a-joint-01/model/layout/snapshots/snapshot-000002",
+    "original_index": "work/t13a3a-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "ab1a7f2e3f351da0c44e5054b0ec2c31286827f0c4c26dbbaa613def2711fb75"
+  },
+  {
+    "path": "work/t13a3b-budget-01/model/layout/snapshots/snapshot-000001/native.json",
+    "round": "t13a3b-budget-01",
+    "metadata": [
+      16777231,
+      402940190,
+      65299383,
+      1792509152223325407,
+      65302528,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+      "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+      "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+      "bytes": 65299383,
+      "archive_allocated_bytes": 4009984
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a3b-budget-01/model/layout/snapshots/snapshot-000001",
+    "original_index": "work/t13a3b-budget-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "6649a61c29779c42a0fe25f2e212252fa4f9a1d23a581f1ac4a279701a707a0f"
+  },
+  {
+    "path": "work/t13a3b-budget-01/model/layout/snapshots/snapshot-000001/meter.json",
+    "round": "t13a3b-budget-01",
+    "metadata": [
+      16777231,
+      402940207,
+      59090761,
+      1792509152670057230,
+      59092992,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+      "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+      "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+      "bytes": 59090761,
+      "archive_allocated_bytes": 22708224
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a3b-budget-01/model/layout/snapshots/snapshot-000001",
+    "original_index": "work/t13a3b-budget-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "6649a61c29779c42a0fe25f2e212252fa4f9a1d23a581f1ac4a279701a707a0f"
+  },
+  {
+    "path": "work/t13a3b-budget-02/model/layout/snapshots/snapshot-000001/native.json",
+    "round": "t13a3b-budget-02",
+    "metadata": [
+      16777231,
+      402994035,
+      65299383,
+      1792509756130018929,
+      65302528,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+      "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+      "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+      "bytes": 65299383,
+      "archive_allocated_bytes": 4009984
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a3b-budget-02/model/layout/snapshots/snapshot-000001",
+    "original_index": "work/t13a3b-budget-02/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "6649a61c29779c42a0fe25f2e212252fa4f9a1d23a581f1ac4a279701a707a0f"
+  },
+  {
+    "path": "work/t13a3b-budget-02/model/layout/snapshots/snapshot-000002/native.json",
+    "round": "t13a3b-budget-02",
+    "metadata": [
+      16777231,
+      403047952,
+      65299383,
+      1792510056204541540,
+      65302528,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+      "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+      "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+      "bytes": 65299383,
+      "archive_allocated_bytes": 4009984
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a3b-budget-02/model/layout/snapshots/snapshot-000002",
+    "original_index": "work/t13a3b-budget-02/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "0c177f2bddf534051ca8d79597bb7d6362889e34688db88e828d18e22f9c360f"
+  },
+  {
+    "path": "work/t13a3b-budget-02/model/layout/snapshots/snapshot-000001/meter.json",
+    "round": "t13a3b-budget-02",
+    "metadata": [
+      16777231,
+      402994043,
+      59090761,
+      1792509756494300139,
+      59092992,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+      "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+      "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+      "bytes": 59090761,
+      "archive_allocated_bytes": 22708224
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a3b-budget-02/model/layout/snapshots/snapshot-000001",
+    "original_index": "work/t13a3b-budget-02/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "6649a61c29779c42a0fe25f2e212252fa4f9a1d23a581f1ac4a279701a707a0f"
+  },
+  {
+    "path": "work/t13a3b-budget-02/model/layout/snapshots/snapshot-000002/meter.json",
+    "round": "t13a3b-budget-02",
+    "metadata": [
+      16777231,
+      403048015,
+      59090761,
+      1792510056683516524,
+      59092992,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+      "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+      "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+      "bytes": 59090761,
+      "archive_allocated_bytes": 22708224
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a3b-budget-02/model/layout/snapshots/snapshot-000002",
+    "original_index": "work/t13a3b-budget-02/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "0c177f2bddf534051ca8d79597bb7d6362889e34688db88e828d18e22f9c360f"
+  },
+  {
+    "path": "work/t13a3g-joint-01/model/layout/snapshots/snapshot-000001/native.json",
+    "round": "t13a3g-joint-01",
+    "metadata": [
+      16777231,
+      404113744,
+      65299383,
+      1792518836953162106,
+      65302528,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+      "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+      "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+      "bytes": 65299383,
+      "archive_allocated_bytes": 4009984
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a3g-joint-01/model/layout/snapshots/snapshot-000001",
+    "original_index": "work/t13a3g-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "3a9ee0cfa77bb9e2bf559c3b9ebd9cc3f7f48e1330150345896a8ae1e6a679dc"
+  },
+  {
+    "path": "work/t13a3g-joint-01/model/layout/snapshots/snapshot-000001/meter.json",
+    "round": "t13a3g-joint-01",
+    "metadata": [
+      16777231,
+      404113752,
+      59090761,
+      1792518837336453786,
+      59092992,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+      "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+      "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+      "bytes": 59090761,
+      "archive_allocated_bytes": 22708224
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a3g-joint-01/model/layout/snapshots/snapshot-000001",
+    "original_index": "work/t13a3g-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "3a9ee0cfa77bb9e2bf559c3b9ebd9cc3f7f48e1330150345896a8ae1e6a679dc"
+  },
+  {
+    "path": "work/t13a3h-joint-01/model/layout/snapshots/snapshot-000001/native.json",
+    "round": "t13a3h-joint-01",
+    "metadata": [
+      16777231,
+      404261758,
+      65299383,
+      1792521381044866509,
+      65302528,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+      "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+      "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+      "bytes": 65299383,
+      "archive_allocated_bytes": 4009984
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a3h-joint-01/model/layout/snapshots/snapshot-000001",
+    "original_index": "work/t13a3h-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "b6196eba83ae638b95502bb3a4d9745f897e383ee6d1ba28f365f4f2abed3059"
+  },
+  {
+    "path": "work/t13a3h-joint-01/model/layout/snapshots/snapshot-000001/meter.json",
+    "round": "t13a3h-joint-01",
+    "metadata": [
+      16777231,
+      404261766,
+      59090761,
+      1792521381431124252,
+      59092992,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+      "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+      "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+      "bytes": 59090761,
+      "archive_allocated_bytes": 22708224
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a3h-joint-01/model/layout/snapshots/snapshot-000001",
+    "original_index": "work/t13a3h-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "b6196eba83ae638b95502bb3a4d9745f897e383ee6d1ba28f365f4f2abed3059"
+  },
+  {
+    "path": "work/t13a60-joint-01/model/layout/snapshots/snapshot-000001/native.json",
+    "round": "t13a60-joint-01",
+    "metadata": [
+      16777231,
+      405970391,
+      65299383,
+      1792545225263030253,
+      65302528,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+      "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+      "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+      "bytes": 65299383,
+      "archive_allocated_bytes": 4009984
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a60-joint-01/model/layout/snapshots/snapshot-000001",
+    "original_index": "work/t13a60-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "c2645b4fd84d9fdd482c270fa6b81c5d54f40a92ba63c66248fc7cac8670a294"
+  },
+  {
+    "path": "work/t13a60-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+    "round": "t13a60-joint-01",
+    "metadata": [
+      16777231,
+      405990772,
+      65299383,
+      1792545525121652686,
+      65302528,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+      "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+      "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+      "bytes": 65299383,
+      "archive_allocated_bytes": 4009984
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a60-joint-01/model/layout/snapshots/snapshot-000002",
+    "original_index": "work/t13a60-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "b19991f7d5aa8293333f7c8a51d568fa250092835396e67e25c7ad2af8a57e87"
+  },
+  {
+    "path": "work/t13a60-joint-01/model/layout/snapshots/snapshot-000001/meter.json",
+    "round": "t13a60-joint-01",
+    "metadata": [
+      16777231,
+      405970444,
+      59090761,
+      1792545225843411778,
+      59092992,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+      "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+      "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+      "bytes": 59090761,
+      "archive_allocated_bytes": 22708224
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a60-joint-01/model/layout/snapshots/snapshot-000001",
+    "original_index": "work/t13a60-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "c2645b4fd84d9fdd482c270fa6b81c5d54f40a92ba63c66248fc7cac8670a294"
+  },
+  {
+    "path": "work/t13a60-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+    "round": "t13a60-joint-01",
+    "metadata": [
+      16777231,
+      405990825,
+      59090761,
+      1792545525644190705,
+      59092992,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+      "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+      "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+      "bytes": 59090761,
+      "archive_allocated_bytes": 22708224
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a60-joint-01/model/layout/snapshots/snapshot-000002",
+    "original_index": "work/t13a60-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "b19991f7d5aa8293333f7c8a51d568fa250092835396e67e25c7ad2af8a57e87"
+  },
+  {
+    "path": "work/t13a62-joint-01/model/layout/snapshots/snapshot-000001/native.json",
+    "round": "t13a62-joint-01",
+    "metadata": [
+      16777231,
+      406166549,
+      65299383,
+      1792547186803801712,
+      65302528,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+      "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+      "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+      "bytes": 65299383,
+      "archive_allocated_bytes": 4009984
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a62-joint-01/model/layout/snapshots/snapshot-000001",
+    "original_index": "work/t13a62-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "11df37ec265707d816509b3df8ed5625dfd5075bd43ad982cfd84bfaf67546ea"
+  },
+  {
+    "path": "work/t13a62-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+    "round": "t13a62-joint-01",
+    "metadata": [
+      16777231,
+      406185684,
+      65299383,
+      1792547486920743132,
+      65302528,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+      "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+      "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+      "bytes": 65299383,
+      "archive_allocated_bytes": 4009984
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a62-joint-01/model/layout/snapshots/snapshot-000002",
+    "original_index": "work/t13a62-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "e34c92ce8fe4ca41c1cf1d8dd26a2ebc0a250356876175417384395296d16c95"
+  },
+  {
+    "path": "work/t13a62-joint-01/model/layout/snapshots/snapshot-000001/meter.json",
+    "round": "t13a62-joint-01",
+    "metadata": [
+      16777231,
+      406166572,
+      59090761,
+      1792547187165063036,
+      59092992,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+      "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+      "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+      "bytes": 59090761,
+      "archive_allocated_bytes": 22708224
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a62-joint-01/model/layout/snapshots/snapshot-000001",
+    "original_index": "work/t13a62-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "11df37ec265707d816509b3df8ed5625dfd5075bd43ad982cfd84bfaf67546ea"
+  },
+  {
+    "path": "work/t13a62-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+    "round": "t13a62-joint-01",
+    "metadata": [
+      16777231,
+      406185728,
+      59090761,
+      1792547487417775376,
+      59092992,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+      "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+      "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+      "bytes": 59090761,
+      "archive_allocated_bytes": 22708224
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a62-joint-01/model/layout/snapshots/snapshot-000002",
+    "original_index": "work/t13a62-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "e34c92ce8fe4ca41c1cf1d8dd26a2ebc0a250356876175417384395296d16c95"
+  },
+  {
+    "path": "work/t13a63-joint-01/model/layout/snapshots/snapshot-000001/native.json",
+    "round": "t13a63-joint-01",
+    "metadata": [
+      16777231,
+      406326379,
+      65299383,
+      1792552229895166497,
+      65302528,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+      "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+      "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+      "bytes": 65299383,
+      "archive_allocated_bytes": 4009984
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a63-joint-01/model/layout/snapshots/snapshot-000001",
+    "original_index": "work/t13a63-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "e8f99b4728d82e48320091e390e3069cf2f7d23aed0a629f473bbd167e30d23f"
+  },
+  {
+    "path": "work/t13a63-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+    "round": "t13a63-joint-01",
+    "metadata": [
+      16777231,
+      406354567,
+      65299383,
+      1792552529864070280,
+      65302528,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+      "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+      "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+      "bytes": 65299383,
+      "archive_allocated_bytes": 4009984
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a63-joint-01/model/layout/snapshots/snapshot-000002",
+    "original_index": "work/t13a63-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "1b6e30f052cc3b3f5c8b56f3a59cc441bba93fdd938bc65a6fc3bcf4a094867d"
+  },
+  {
+    "path": "work/t13a63-joint-01/model/layout/snapshots/snapshot-000001/meter.json",
+    "round": "t13a63-joint-01",
+    "metadata": [
+      16777231,
+      406326432,
+      59090761,
+      1792552230398207557,
+      59092992,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+      "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+      "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+      "bytes": 59090761,
+      "archive_allocated_bytes": 22708224
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a63-joint-01/model/layout/snapshots/snapshot-000001",
+    "original_index": "work/t13a63-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "e8f99b4728d82e48320091e390e3069cf2f7d23aed0a629f473bbd167e30d23f"
+  },
+  {
+    "path": "work/t13a63-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+    "round": "t13a63-joint-01",
+    "metadata": [
+      16777231,
+      406354612,
+      59090761,
+      1792552530388224703,
+      59092992,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+      "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+      "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+      "bytes": 59090761,
+      "archive_allocated_bytes": 22708224
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a63-joint-01/model/layout/snapshots/snapshot-000002",
+    "original_index": "work/t13a63-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "1b6e30f052cc3b3f5c8b56f3a59cc441bba93fdd938bc65a6fc3bcf4a094867d"
+  },
+  {
+    "path": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000001/native.json",
+    "round": "t13a64-joint-01",
+    "metadata": [
+      16777231,
+      406712570,
+      65299383,
+      1792555292610223073,
+      65302528,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+      "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+      "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+      "bytes": 65299383,
+      "archive_allocated_bytes": 4009984
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000001",
+    "original_index": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "a38438ccb7e18b1b1811059d8f3d133a56028e85a5fbacf9a0df94a88a51ab45"
+  },
+  {
+    "path": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+    "round": "t13a64-joint-01",
+    "metadata": [
+      16777231,
+      406736153,
+      65299383,
+      1792555593107078170,
+      65302528,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+      "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+      "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+      "bytes": 65299383,
+      "archive_allocated_bytes": 4009984
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000002",
+    "original_index": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "e2b2704b5cb57ed045411d8931e35f3af779d757ba2f84f4888f5779c6057072"
+  },
+  {
+    "path": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000001/meter.json",
+    "round": "t13a64-joint-01",
+    "metadata": [
+      16777231,
+      406712611,
+      59090761,
+      1792555292859723197,
+      59092992,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+      "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+      "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+      "bytes": 59090761,
+      "archive_allocated_bytes": 22708224
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000001",
+    "original_index": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "a38438ccb7e18b1b1811059d8f3d133a56028e85a5fbacf9a0df94a88a51ab45"
+  },
+  {
+    "path": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+    "round": "t13a64-joint-01",
+    "metadata": [
+      16777231,
+      406736196,
+      59090761,
+      1792555593474703856,
+      59092992,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+      "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+      "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+      "bytes": 59090761,
+      "archive_allocated_bytes": 22708224
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000002",
+    "original_index": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "e2b2704b5cb57ed045411d8931e35f3af779d757ba2f84f4888f5779c6057072"
+  },
+  {
+    "path": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000001/native.json",
+    "round": "t13a65-joint-01",
+    "metadata": [
+      16777231,
+      406942473,
+      65299383,
+      1792559197098815169,
+      65302528,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+      "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+      "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+      "bytes": 65299383,
+      "archive_allocated_bytes": 4009984
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000001",
+    "original_index": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "d58fc01741be3e0180f2136b81724a01bbcfb72b206b7d3e0484dfd341d13c0d"
+  },
+  {
+    "path": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+    "round": "t13a65-joint-01",
+    "metadata": [
+      16777231,
+      406980457,
+      65299383,
+      1792559497224272657,
+      65302528,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+      "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+      "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+      "bytes": 65299383,
+      "archive_allocated_bytes": 4009984
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000002",
+    "original_index": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "ce3dce955d807d07430b95f383a5bb0663ebe72b1f5b656efaf7b18d05de97ed"
+  },
+  {
+    "path": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000001/meter.json",
+    "round": "t13a65-joint-01",
+    "metadata": [
+      16777231,
+      406942496,
+      59090761,
+      1792559197420443854,
+      59092992,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+      "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+      "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+      "bytes": 59090761,
+      "archive_allocated_bytes": 22708224
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000001",
+    "original_index": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "d58fc01741be3e0180f2136b81724a01bbcfb72b206b7d3e0484dfd341d13c0d"
+  },
+  {
+    "path": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+    "round": "t13a65-joint-01",
+    "metadata": [
+      16777231,
+      406980508,
+      59090761,
+      1792559497685895974,
+      59092992,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+      "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+      "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+      "bytes": 59090761,
+      "archive_allocated_bytes": 22708224
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000002",
+    "original_index": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "ce3dce955d807d07430b95f383a5bb0663ebe72b1f5b656efaf7b18d05de97ed"
+  },
+  {
+    "path": "work/t13a65-joint-02/model/layout/snapshots/snapshot-000001/native.json",
+    "round": "t13a65-joint-02",
+    "metadata": [
+      16777231,
+      407014213,
+      65299383,
+      1792560182065571695,
+      65302528,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+      "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+      "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+      "bytes": 65299383,
+      "archive_allocated_bytes": 4009984
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a65-joint-02/model/layout/snapshots/snapshot-000001",
+    "original_index": "work/t13a65-joint-02/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "d58fc01741be3e0180f2136b81724a01bbcfb72b206b7d3e0484dfd341d13c0d"
+  },
+  {
+    "path": "work/t13a65-joint-02/model/layout/snapshots/snapshot-000002/native.json",
+    "round": "t13a65-joint-02",
+    "metadata": [
+      16777231,
+      407040612,
+      65299383,
+      1792560482131302250,
+      65302528,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+      "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+      "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+      "bytes": 65299383,
+      "archive_allocated_bytes": 4009984
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a65-joint-02/model/layout/snapshots/snapshot-000002",
+    "original_index": "work/t13a65-joint-02/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "ce3dce955d807d07430b95f383a5bb0663ebe72b1f5b656efaf7b18d05de97ed"
+  },
+  {
+    "path": "work/t13a65-joint-02/model/layout/snapshots/snapshot-000001/meter.json",
+    "round": "t13a65-joint-02",
+    "metadata": [
+      16777231,
+      407014237,
+      59090761,
+      1792560182355033587,
+      59092992,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+      "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+      "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+      "bytes": 59090761,
+      "archive_allocated_bytes": 22708224
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a65-joint-02/model/layout/snapshots/snapshot-000001",
+    "original_index": "work/t13a65-joint-02/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "d58fc01741be3e0180f2136b81724a01bbcfb72b206b7d3e0484dfd341d13c0d"
+  },
+  {
+    "path": "work/t13a65-joint-02/model/layout/snapshots/snapshot-000002/meter.json",
+    "round": "t13a65-joint-02",
+    "metadata": [
+      16777231,
+      407040656,
+      59090761,
+      1792560482628350641,
+      59092992,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "retained": {
+      "canonical": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+      "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+      "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+      "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+      "bytes": 59090761,
+      "archive_allocated_bytes": 22708224
+    },
+    "reason": "Retired pressure layout; byte-identical immutable component retained in full canonical and lossless archive; no active restore input.",
+    "directly_restorable_after": false,
+    "snapshot": "work/t13a65-joint-02/model/layout/snapshots/snapshot-000002",
+    "original_index": "work/t13a65-joint-02/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "ce3dce955d807d07430b95f383a5bb0663ebe72b1f5b656efaf7b18d05de97ed"
+  }
+]

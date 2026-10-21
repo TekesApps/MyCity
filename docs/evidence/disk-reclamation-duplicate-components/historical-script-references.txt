@@ -1,0 +1,23 @@
+docs/evidence/m0-t13a-air-candidate-slots/verify_legacy.py:33:args=[str(exe),str(copy),before['rules_identity_unchanged'],str(R/'work/t13a65-joint-02/model/business/fault-reference/cpu-final-engine.json')]
+docs/evidence/m0-t13a-role-slots/verify_legacy.py:33:args=[str(exe),str(copy),before['rules_identity_unchanged'],str(R/'work/t13a65-joint-02/model/business/fault-reference/cpu-final-engine.json')]
+docs/evidence/m0-t13a-budgets/verify.py:13:old=Path(__file__).resolve().parents[1]/'m0-t13a-joint/t13a3a-joint-01/artifacts.zip'
+docs/evidence/m0-t13a-air-candidate-slots/verify_codec.py:24:args=[str(exe),str(R/p['copy_complete_retained_at']),p['rules_identity_unchanged'],str(R/'work/t13a65-joint-02/model/business/fault-reference/cpu-final-engine.json')]
+docs/evidence/m0-t13a-role-slots/verify_codec.py:24:args=[str(exe),str(R/p['copy_complete_retained_at']),p['rules_identity_unchanged'],str(R/'work/t13a65-joint-02/model/business/fault-reference/cpu-final-engine.json')]
+docs/evidence/m0-t13a-helper-compare/static_check.py:22:assert sorted(x['name'] for x in archives)==['t13a65-joint-01','t13a65-joint-02']
+docs/evidence/m0-t13a-comparison-codec/verify_legacy.py:33:args=[str(exe),str(copy),before['rules_identity_unchanged'],str(R/'work/t13a65-joint-02/model/business/fault-reference/cpu-final-engine.json')]
+docs/evidence/m0-t13a-comparison-codec/verify_codec.py:24:args=[str(exe),str(R/p['copy_complete_retained_at']),p['rules_identity_unchanged'],str(R/'work/t13a65-joint-02/model/business/fault-reference/cpu-final-engine.json')]
+docs/evidence/m0-t13a-store-stream/verify_legacy.py:33:args=[str(exe),str(copy),before['rules_identity_unchanged'],str(R/'work/t13a65-joint-02/model/business/fault-reference/cpu-final-engine.json')]
+docs/evidence/m0-t13a-background-resident/verify_legacy.py:33:args=[str(exe),str(copy),before['rules_identity_unchanged'],str(R/'work/t13a65-joint-02/model/business/fault-reference/cpu-final-engine.json')]
+docs/evidence/m0-t13a-normal-pool/static_check.py:18:p=D/'t13a3h-joint-01';rows=load(p/'manifest.json')
+docs/evidence/disk-reclamation-2026-10-21-reserves/reclaim.py:29: 'work/t13a65-joint-02/model/business',
+docs/evidence/disk-reclamation-2026-10-21-reserves/reclaim.py:35: ('t13a64-joint-01','docs/evidence/m0-t13a-hotpath'),
+docs/evidence/disk-reclamation-2026-10-21-reserves/reclaim.py:36: ('t13a65-joint-01','docs/evidence/m0-t13a-helper-compare/failure-notes.md'),
+docs/evidence/disk-reclamation-2026-10-21-reserves/reclaim.py:37: ('t13a65-joint-02','docs/evidence/m0-t13a-helper-compare/t13a65-joint-02')]:
+docs/evidence/disk-reclamation-current-audit/audit.py:43:for root in [Path('work/t13a65-joint-02/model/business/world'),Path('work/t13a68-legacy-reopen/world')]:
+docs/evidence/m0-t13a-normal-pool/verify_joint.py:13:old=Path(__file__).resolve().parents[1]/'m0-t13a-joint/t13a3a-joint-01/artifacts.zip'
+docs/evidence/m0-t13a-general-decode/verify_legacy.py:33:args=[str(exe),str(copy),before['rules_identity_unchanged'],str(R/'work/t13a65-joint-02/model/business/fault-reference/cpu-final-engine.json')]
+docs/evidence/m0-t13a-store-stream/verify_roundtrip.py:21:args=[str(exe),str(fork),proof['rules_identity_unchanged'],str(R/'work/t13a65-joint-02/model/business/fault-reference/cpu-final-engine.json')]
+docs/evidence/m0-t13a-bounded-diagnostics/static_check.py:18:for folder in ['t13a3g-model-tasks-functional','t13a3g-joint-01']:
+docs/evidence/m0-t13a-bounded-diagnostics/verify_joint.py:13:old=Path(__file__).resolve().parents[1]/'m0-t13a-joint/t13a3a-joint-01/artifacts.zip'
+docs/evidence/m0-t13a-wal-canonical/verify_roundtrip.py:21:args=[str(exe),str(fork),proof['rules_identity_unchanged'],str(R/'work/t13a65-joint-02/model/business/fault-reference/cpu-final-engine.json')]
+docs/evidence/m0-t13a-wal-canonical/verify_legacy.py:33:args=[str(exe),str(copy),before['rules_identity_unchanged'],str(R/'work/t13a65-joint-02/model/business/fault-reference/cpu-final-engine.json')]

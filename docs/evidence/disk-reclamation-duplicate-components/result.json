@@ -1,0 +1,28 @@
+{
+  "before": {
+    "time_ns": 1792586587677204000,
+    "work_du_kib": 18319656,
+    "target_du_kib": 1090804,
+    "filesystem_available_bytes": 114251296768
+  },
+  "after": {
+    "time_ns": 1792586589754692000,
+    "work_du_kib": 15525616,
+    "target_du_kib": 1090804,
+    "filesystem_available_bytes": 117111406592
+  },
+  "deleted_files": 46,
+  "removed_unique_inodes": 46,
+  "deleted_allocated_bytes": 2861096960,
+  "retained_archive_allocated_bytes": 26718208,
+  "net_allocated_reduction_including_archive": 2834378752,
+  "df_available_delta_observed": 2860109824,
+  "retained_existing_work_files_unchanged": 92533,
+  "retained_archive_new_files": [
+    "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+    "work/retained-component-evidence/duplicate-components-v1/meter.json.gz"
+  ],
+  "target_deleted_bytes": 0,
+  "independent_target_created": false,
+  "accounting": "st_blocks inode-deduplicated allocation is not APFS exclusive physical reclaimed space. df delta includes unrelated activity; not wholly attributable. Prior deletions excluded."
+}

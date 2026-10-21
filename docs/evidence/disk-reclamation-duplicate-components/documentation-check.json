@@ -1,0 +1,9 @@
+{
+  "json_valid": true,
+  "reclaim_script_syntax_valid": true,
+  "markdown_link_files_checked": 5,
+  "plan_equals_deleted": true,
+  "space_arithmetic_checked": true,
+  "git_diff_check": true,
+  "model_tests_run": false
+}

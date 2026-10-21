@@ -1,0 +1,9 @@
+{
+  "status": " M Cargo.lock\n M crates/city-core/src/arena.rs\n M crates/city-core/src/assembly.rs\n M crates/city-core/src/canonical.rs\n M crates/city-core/src/transaction.rs\n M crates/city-core/src/transaction/slots.rs\n M crates/city-headless/src/joint_reference.rs\n M crates/city-headless/src/scale_model_task.rs\n M crates/city-headless/src/scale_reference.rs\n M crates/city-headless/src/sim_host.rs\n M crates/city-headless/tests/engine_slot.rs\n M crates/city-map/Cargo.toml\n M crates/city-map/src/terrain.rs\n M crates/city-storage/src/lib.rs\n M crates/city-storage/tests/checkpoint_v2.rs\n?? crates/city-core/src/transaction/bundle.rs\n?? crates/city-map/src/terrain/\n",
+  "tracked_diff_sha256": "5b8694b5c71006ad68499a6c530cb04ba53929353f3d64ab0feb8661e21454c4",
+  "untracked_sha256": {
+    "crates/city-core/src/transaction/bundle.rs": "405961995b104d3ed2a27769ec4b067d01ee0dd4d6c5713c82cdc42f9c509030",
+    "crates/city-map/src/terrain/workspace.rs": "a84ac12a7cbc9aad0569ef3d0051411ad2e1be1c5cb92d427a014b2484609237",
+    "crates/city-map/src/terrain/small_png.rs": "0dbcb72e526cdeb97b5e42ae57cc75aefc3d3e869f274515d3d63208181976f1"
+  }
+}
