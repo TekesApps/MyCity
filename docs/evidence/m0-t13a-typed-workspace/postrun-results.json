@@ -1,0 +1,20 @@
+[
+  {
+    "script": "window_audit.py",
+    "sha256": "64e29a3edb19a2f8acaa919992b1db466ce8c98ca4cd8cf20294634bc0c0ce80",
+    "exit_code": 0,
+    "seconds": 0.6744339580000001
+  },
+  {
+    "script": "resource_window_audit.py",
+    "sha256": "288fdc868b6e07092162dae213623e85fba2cf026df83b7ea3e6287210027e69",
+    "exit_code": 0,
+    "seconds": 0.16358162499999995
+  },
+  {
+    "script": "quiescent_audit.py",
+    "sha256": "295605d5369b68a3f9fac14968800777b62113101f076f1a78aafda3bc2a72f4",
+    "exit_code": 1,
+    "seconds": 0.07455599999999996
+  }
+]

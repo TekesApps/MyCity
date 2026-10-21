@@ -1,5 +1,7 @@
 # v0.5.97：常驻解码工作区与原快照格式兼容的实现验证
 
+**后续v0.5.98实测**：[原参数L1单轮](FORMAL-STATUS.md)已完成8代读回，但normal物理门仍失败。恢复可用性以该报告及其availability为准；下文为v0.5.97功能阶段范围。
+
 当前固定源码SHA为`757907bccc82ec1dc13c28f11324914c6def755366e50156a093fef9c7a8d588`，205文件；见[源码/可执行文件身份](source.json)、[冻结账](freeze.json)和完整源码zip。原acceptance、opening和Cargo.lock的SHA均保持。唯一共享target继续复用，没有新独立编译缓存。
 
 ## 本轮已实现与实际证据

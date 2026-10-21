@@ -1,5 +1,7 @@
 # 验证产物回收规则
 
+**最新恢复可用性（v0.5.98）**：[原L1终态交接](evidence/m0-t13a-typed-workspace/FORMAL-STATUS.md)及[availability](evidence/m0-t13a-typed-workspace/formal-retirement/availability.json)覆盖旧steady-controller-formal-l2-01第7/8代完整保留承诺。新typed-workspace正式第7/8代实际完整冷恢复并继续扫描、独立释放依赖后，旧两代仅4份pressure/reserve退役，分配空间6,356,516,864B，work剩24.806GiB；旧两代不可直接完整恢复。新两代、v50、最新82故障原件完整保留，旧L2业务/WAL/组件/索引/raw/源/exe不删。回收后置检查遇未归属Cargo而保守退出，已用无删除finalizer复核收尾，原错误留存。df变化独立报告；target继续复用。
+
 **v0.5.97功能阶段终态**：[typed工作区阶段留存](evidence/m0-t13a-typed-workspace/stage-retention.json)新增删除0B；完整冷恢复复用既有原件，无新压力副本，无独立target。当前workspace/all-target及clippy/CLI profile缓存尚有依赖，未以单一构建图武断删除其他有效profile；固定源/exe/日志/原完整恢复基线继续保留。原formal实验另立用途/峰值及退役条件，测量期间不清理。
 
 **当前复查（v0.5.96更正）**：[集中回收后盘点](evidence/disk-reclamation-current-recheck/STATUS.md)实测work24.40GiB、共享target1.34GiB；无本项目work/target文件占用，另观察到短暂1.95工具链Cargo，未停止；125,304项文件元数据不变。本次新增删除0B，12份pressure/reserve仍为完整恢复及故障依赖，保留原件；v0.5.94历史回收不重复计入。旧退役状态不变，下一阶段继续复用唯一target，先完成依赖交接再退役新旧副本。

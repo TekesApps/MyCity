@@ -1,0 +1,117 @@
+{
+  "schema": "mycity-steady-window-raw-audit-v1",
+  "source_sha256": "757907bccc82ec1dc13c28f11324914c6def755366e50156a093fef9c7a8d588",
+  "formal": true,
+  "measurement_driver_ns": [
+    300000000000,
+    2100000000000
+  ],
+  "clock_mappings": 0,
+  "worker_request_intervals": 0,
+  "raw_files_accounted": 1,
+  "raw_universe_fully_accounted": true,
+  "unbound_raw_files": [],
+  "raw_bytes_accounted": 4065435,
+  "batch_intervals": [
+    {
+      "key": [
+        "sealed",
+        "layout",
+        "execution",
+        "before",
+        "scan_complete",
+        "L1/full_jprod1"
+      ],
+      "count": 301
+    },
+    {
+      "key": [
+        "sealed",
+        "layout",
+        "execution",
+        "inside",
+        "scan_complete",
+        "L1/full_jprod1"
+      ],
+      "count": 1800
+    }
+  ],
+  "strata": [
+    {
+      "record_state": "sealed",
+      "producer": "layout",
+      "role": "execution",
+      "window": "before",
+      "admission": "scan_complete",
+      "case": "L1/full_jprod1",
+      "class": "L1_native_record_index_page",
+      "page_spec": "not_air",
+      "samples": 14147,
+      "maximum_ns": 276708,
+      "p95_ns": 85000,
+      "p99_ns": 97750,
+      "minimum_samples_met": true,
+      "thresholds_met": true
+    },
+    {
+      "record_state": "sealed",
+      "producer": "layout",
+      "role": "execution",
+      "window": "before",
+      "admission": "scan_complete",
+      "case": "L1/full_jprod1",
+      "class": "L1_stub_record_index_page",
+      "page_spec": "not_air",
+      "samples": 50568,
+      "maximum_ns": 573375,
+      "p95_ns": 103708,
+      "p99_ns": 229584,
+      "minimum_samples_met": true,
+      "thresholds_met": true
+    },
+    {
+      "record_state": "sealed",
+      "producer": "layout",
+      "role": "execution",
+      "window": "inside",
+      "admission": "scan_complete",
+      "case": "L1/full_jprod1",
+      "class": "L1_native_record_index_page",
+      "page_spec": "not_air",
+      "samples": 84600,
+      "maximum_ns": 8083667,
+      "p95_ns": 62208,
+      "p99_ns": 91916,
+      "minimum_samples_met": true,
+      "thresholds_met": true
+    },
+    {
+      "record_state": "sealed",
+      "producer": "layout",
+      "role": "execution",
+      "window": "inside",
+      "admission": "scan_complete",
+      "case": "L1/full_jprod1",
+      "class": "L1_stub_record_index_page",
+      "page_spec": "not_air",
+      "samples": 302400,
+      "maximum_ns": 7104500,
+      "p95_ns": 75125,
+      "p99_ns": 141791,
+      "minimum_samples_met": true,
+      "thresholds_met": true
+    }
+  ],
+  "expected_classes": [
+    "L1_native_record_index_page",
+    "L1_stub_record_index_page"
+  ],
+  "eligible_window_class_minimums_met": true,
+  "observed_window_thresholds_met": true,
+  "formal_latency": "requires_same_source_rare_strata_and_final_review",
+  "three_rounds": "not_accepted_by_single_round",
+  "resource_and_queue": "not_assessed_by_raw_selector",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run",
+  "full_M0": "not_accepted"
+}

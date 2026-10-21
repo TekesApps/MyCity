@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.97`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.98`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.98完成[原300+1800秒L1单轮实测](docs/evidence/m0-t13a-typed-workspace/FORMAL-STATUS.md)：2101扫描、8代恢复/读回、当前两代完整冷恢复通过；两类L1页计算观察分位满足原阈值。完整帧footprint仍超normal约18.49MiB，物理门失败，三轮/四速/8h/真实16GB未通过。旧基线4份合成载荷退役5.920GiB，work剩24.806GiB；下一步独立VM归因，不能按超额直接削压力。
 
 v0.5.97完成[常驻解码工作区与原快照格式兼容的实现验证](docs/evidence/m0-t13a-typed-workspace/STATUS.md)：同源全仓回归、严格检查及三份完整旧原件冷恢复通过；advisor认可冻结规范输入的4MiB外部算术准入。64MiB typed＋64MiB并发COW保持原128MiB工作预留；原参数多代正式快照、物理预算、8h与真实16GB尚未通过。
 

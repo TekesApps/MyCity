@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-typed-workspace/reclaim-formal-baseline.py", line 87, in <module>
+    occupancy('after')
+  File "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-typed-workspace/reclaim-formal-baseline.py", line 44, in occupancy
+    assert not relevant,relevant
+AssertionError: ['65924 65911 /Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo']

@@ -1,0 +1,38 @@
+[
+  {
+    "case": "current7",
+    "input": "work/typed-workspace-formal-l1-01/observed/model/layout/snapshots/snapshot-000007",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/typed-workspace/mycity-headless",
+      "layout-load-only",
+      "/Users/frankqin/dev/MyCity/work/typed-workspace-formal-l1-01/observed/model/layout/snapshots/snapshot-000007",
+      "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-typed-workspace/cold-current7"
+    ],
+    "exit_code": 0,
+    "seconds": 4.708432208,
+    "source_sha256": "757907bccc82ec1dc13c28f11324914c6def755366e50156a093fef9c7a8d588",
+    "index_sha256": "a8c7e12a487d0106477ca4a12d34a1ef75e406a0911e3598267d77f3de3040a0",
+    "original_index_unchanged": true,
+    "new_pressure_copy": false,
+    "memory_16gb_gate": "not_run",
+    "full_M0": "not_accepted"
+  },
+  {
+    "case": "current8",
+    "input": "work/typed-workspace-formal-l1-01/observed/model/layout/snapshots/snapshot-000008",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/typed-workspace/mycity-headless",
+      "layout-load-only",
+      "/Users/frankqin/dev/MyCity/work/typed-workspace-formal-l1-01/observed/model/layout/snapshots/snapshot-000008",
+      "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-typed-workspace/cold-current8"
+    ],
+    "exit_code": 0,
+    "seconds": 4.615788332999999,
+    "source_sha256": "757907bccc82ec1dc13c28f11324914c6def755366e50156a093fef9c7a8d588",
+    "index_sha256": "6952f795035a41ae0bf2b9ecedb50590fac2d3d4c1a58ef43c3eb0603a6f351c",
+    "original_index_unchanged": true,
+    "new_pressure_copy": false,
+    "memory_16gb_gate": "not_run",
+    "full_M0": "not_accepted"
+  }
+]

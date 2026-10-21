@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-typed-workspace/quiescent_audit.py", line 109, in <module>
+    if __name__=='__main__':main(Path(sys.argv[1]))
+  File "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-typed-workspace/quiescent_audit.py", line 71, in main
+    transcript=(json.loads(x) for x in (M/'business/measurement/transcript.jsonl').open())
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1242, in open
+    return io.open(self, mode, buffering, encoding, errors, newline,
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1110, in _opener
+    return self._accessor.open(self, flags, mode)
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/frankqin/dev/MyCity/work/typed-workspace-formal-l1-01/observed/model/business/measurement/transcript.jsonl'

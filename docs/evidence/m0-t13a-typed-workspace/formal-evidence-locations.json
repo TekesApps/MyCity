@@ -1,0 +1,84 @@
+{
+  "source_sha256": "757907bccc82ec1dc13c28f11324914c6def755366e50156a093fef9c7a8d588",
+  "original_files": [
+    {
+      "path": "work/typed-workspace-formal-l1-01/observed/observer-report.json",
+      "bytes": 7442,
+      "sha256": "70b56b78ef300079e073c97f81684caf98f30d8d5a749f4dba382e9bf6da1e63",
+      "retention": "protected original acceptance evidence; hash is identity only, not replacement"
+    },
+    {
+      "path": "work/typed-workspace-formal-l1-01/observed/observer-clock-map.json",
+      "bytes": 869,
+      "sha256": "b33659231e5e9e0fd878866fe24c11bff1042a158335c06de376e6d232f63b43",
+      "retention": "protected original acceptance evidence; hash is identity only, not replacement"
+    },
+    {
+      "path": "work/typed-workspace-formal-l1-01/observed/host-samples.jsonl",
+      "bytes": 8870011,
+      "sha256": "afaee1901f772efd31012f0f71a1aec954085e47d1668adff37dc7966af9c5a9",
+      "retention": "protected original acceptance evidence; hash is identity only, not replacement"
+    },
+    {
+      "path": "work/typed-workspace-formal-l1-01/observed/model/report.json",
+      "bytes": 489,
+      "sha256": "a60579b61c6c9dd19b0ce469a908ee7eb0670e5d5c872db49f3e9b54843bf085",
+      "retention": "protected original acceptance evidence; hash is identity only, not replacement"
+    },
+    {
+      "path": "work/typed-workspace-formal-l1-01/observed/model/heaps.jsonl",
+      "bytes": 4236,
+      "sha256": "bf471e29869bc17fcd5eb61d414f7da106b516bdf79966ef78b95da3434caf30",
+      "retention": "protected original acceptance evidence; hash is identity only, not replacement"
+    },
+    {
+      "path": "work/typed-workspace-formal-l1-01/observed/model/clock-map.json",
+      "bytes": 214,
+      "sha256": "228d217633a01a6d1cf0ee93eb3240baddd111a27a45abe4d404271204386972",
+      "retention": "protected original acceptance evidence; hash is identity only, not replacement"
+    },
+    {
+      "path": "work/typed-workspace-formal-l1-01/observed/model/layout-clock-map.json",
+      "bytes": 295,
+      "sha256": "d35ad9a4fd45cb2e0f0b26a1ebae05af7f76d29489b96f20d233adae01a18db5",
+      "retention": "protected original acceptance evidence; hash is identity only, not replacement"
+    },
+    {
+      "path": "work/typed-workspace-formal-l1-01/observed/model/layout/events.jsonl",
+      "bytes": 2659209,
+      "sha256": "89bf3020cf0e576a24abe6b02d6c4ac8b44efa1b634f008ee8973bc50ca7702c",
+      "retention": "protected original acceptance evidence; hash is identity only, not replacement"
+    },
+    {
+      "path": "work/typed-workspace-formal-l1-01/observed/model/layout/report.json",
+      "bytes": 19369,
+      "sha256": "c5029ffdcc49dc1407fb009fc4414ab78c52d0cf1b389e90700e5c60d1d550a9",
+      "retention": "protected original acceptance evidence; hash is identity only, not replacement"
+    },
+    {
+      "path": "work/typed-workspace-formal-l1-01/observed/model/layout/compute-durations.bin",
+      "bytes": 4065435,
+      "sha256": "8ca7a993f5eef82f8a1275650a586bb15b08569f8861c66428bc8a3f5f6a364f",
+      "retention": "protected original acceptance evidence; hash is identity only, not replacement"
+    },
+    {
+      "path": "work/typed-workspace-formal-l1-01/observed/model/business/report.json",
+      "bytes": 804,
+      "sha256": "431c0e9456254013ecc42418418910287cfd2829a359f0e60416517994fda483",
+      "retention": "protected original acceptance evidence; hash is identity only, not replacement"
+    },
+    {
+      "path": "work/typed-workspace-formal-l1-01/observed/model/business/window-events.jsonl",
+      "bytes": 614,
+      "sha256": "b587cda0172f25806b7c246a941f71971685f5b09df1bdb93715e62bc2f9efc2",
+      "retention": "protected original acceptance evidence; hash is identity only, not replacement"
+    },
+    {
+      "path": "work/typed-workspace-formal-l1-01/observed/model/normal-pool/events.jsonl",
+      "bytes": 42464,
+      "sha256": "46ed4aaa59460ff7f8af9465f5e647fba03d525279aeb463e1b56d91d6b487ab",
+      "retention": "protected original acceptance evidence; hash is identity only, not replacement"
+    }
+  ],
+  "snapshot_originals": "current generation7/8 complete; see cold-current-results.json and formal-retirement/before.json protected list"
+}

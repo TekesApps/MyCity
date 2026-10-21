@@ -1,0 +1,27 @@
+{
+  "before": {
+    "du_kib": {
+      "work": 32218164,
+      "target": 1403104
+    },
+    "filesystem_available_bytes": 93812617216
+  },
+  "after": {
+    "du_kib": {
+      "work": 26010628,
+      "target": 1403104
+    },
+    "filesystem_available_bytes": 100060307456
+  },
+  "deleted_files": 4,
+  "allocated_bytes_removed": 6356516864,
+  "available_delta_bytes": 6247690240,
+  "attribution": "st_blocks is not APFS exclusive physical space; df change separately observed, not fully credited",
+  "other_work_file_identity_size_mtime_links_unchanged": true,
+  "protected_current_files_rehashed": 58,
+  "shared_target_preserved": true,
+  "source_exe_logs_business_wal_preserved": true,
+  "original_script_exit": 1,
+  "original_script_stop": "post-delete assertion saw unattributed 1.95 Cargo process after successful metadata and hash verification; no project file occupancy",
+  "finalization": "no additional deletion; full other-work metadata and protected SHA checks repeated; directory occupancy empty"
+}

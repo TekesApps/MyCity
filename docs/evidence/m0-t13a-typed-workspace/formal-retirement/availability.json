@@ -1,0 +1,22 @@
+[
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000007/pressure.bin",
+    "state": "retired; not directly fully restorable",
+    "reason": "pure synthetic payload; replaced by actual current7/8 full recovery and advisor dependency release"
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000007/work-reserve.bin",
+    "state": "retired; not directly fully restorable",
+    "reason": "pure synthetic payload; replaced by actual current7/8 full recovery and advisor dependency release"
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000008/pressure.bin",
+    "state": "retired; not directly fully restorable",
+    "reason": "pure synthetic payload; replaced by actual current7/8 full recovery and advisor dependency release"
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000008/work-reserve.bin",
+    "state": "retired; not directly fully restorable",
+    "reason": "pure synthetic payload; replaced by actual current7/8 full recovery and advisor dependency release"
+  }
+]

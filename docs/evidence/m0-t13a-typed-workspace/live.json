@@ -1,0 +1,26 @@
+{
+  "pid": 45912,
+  "phase": "exec observer after actual admission; no parked orchestration parent",
+  "command": [
+    "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-typed-workspace/observe.py",
+    "/Users/frankqin/dev/MyCity/work/typed-workspace-formal-l1-01/observed",
+    "--",
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/typed-workspace/mycity-headless",
+    "steady-run",
+    "/Users/frankqin/dev/MyCity/work/typed-workspace-formal-l1-01/observed/model",
+    "l1",
+    "formal"
+  ],
+  "source_sha256": "757907bccc82ec1dc13c28f11324914c6def755366e50156a093fef9c7a8d588",
+  "support_sha256": {
+    "docs/evidence/m0-t13a-typed-workspace/observe.py": "6bc89147a64894599d7eea1f6762fbb01f4119d606842ce475ba2c2f7215c98a",
+    "docs/evidence/m0-t13a-typed-workspace/native_metrics.py": "917b184e339649acd7b79797cf77f2b2db4f5128f33fdaf8759c162672fa34ca",
+    "docs/evidence/m0-t13a-typed-workspace/clock_exchange.py": "534642a6854928e5253521862b18b33d19ebc0d777f5a0695321adeddea264b5",
+    "docs/evidence/m0-t13a-typed-workspace/readiness.py": "88ae51f35cabba9cf5660cf6a6d7a7e29b3268b253b2e80583fa005b69dbee6a",
+    "docs/evidence/m0-t13a-typed-workspace/metadata_bound.py": "4ce32565ce8df821edf72b9b492aca3b552b7ba97168da0c8cbe88c4c977f2a5",
+    "docs/evidence/m0-t13a-typed-workspace/metadata-bound.json": "27665548d57a02e6d13b4187e265a98a67ed5baa2bb706e643aacf2fb26fbe06",
+    "docs/evidence/m0-t13a-typed-workspace/advisor-metadata-admission.json": "1752b6812b97b4c2fd979b3e26b92628bcc403eca953de55c08a27a3c33989cb",
+    "docs/evidence/m0-t13a-typed-workspace/run-formal.py": "eb7349d81bcdd3a7368b0cd7e695eed6e3eab48551f5fd6c2635efbd47a833c3"
+  }
+}

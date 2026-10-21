@@ -1,0 +1,58 @@
+[
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000007/pressure.bin",
+    "run": "steady-controller-formal-l2-01",
+    "generation": 7,
+    "dev": 16777231,
+    "inode": 409227468,
+    "bytes": 3044040310,
+    "mtime_ns": 1792608326784802937,
+    "allocated_bytes": 3044040704,
+    "links": 1,
+    "sha256": "d793efcd815fe3f1e0f23af87b79b0caac4d58f2d870f7e9eac8dfb9e45e5949",
+    "reason": "pure synthetic payload; replaced by actual current7/8 full recovery and advisor dependency release",
+    "retained_evidence": "original index, typed components, L2 business/WAL, raw observer/model logs and fixed source/exe remain; docs/evidence/m0-t13a-typed-workspace/advisor-formal-review.md"
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000007/work-reserve.bin",
+    "run": "steady-controller-formal-l2-01",
+    "generation": 7,
+    "dev": 16777231,
+    "inode": 409227537,
+    "bytes": 134217728,
+    "mtime_ns": 1792608326916459283,
+    "allocated_bytes": 134217728,
+    "links": 1,
+    "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee",
+    "reason": "pure synthetic payload; replaced by actual current7/8 full recovery and advisor dependency release",
+    "retained_evidence": "original index, typed components, L2 business/WAL, raw observer/model logs and fixed source/exe remain; docs/evidence/m0-t13a-typed-workspace/advisor-formal-review.md"
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000008/pressure.bin",
+    "run": "steady-controller-formal-l2-01",
+    "generation": 8,
+    "dev": 16777231,
+    "inode": 409233196,
+    "bytes": 3044040310,
+    "mtime_ns": 1792608626955882175,
+    "allocated_bytes": 3044040704,
+    "links": 1,
+    "sha256": "60a66f08290d2eea90b8eada7f12ffdb252e6d23d4d394df2f48360fbe7a2b43",
+    "reason": "pure synthetic payload; replaced by actual current7/8 full recovery and advisor dependency release",
+    "retained_evidence": "original index, typed components, L2 business/WAL, raw observer/model logs and fixed source/exe remain; docs/evidence/m0-t13a-typed-workspace/advisor-formal-review.md"
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000008/work-reserve.bin",
+    "run": "steady-controller-formal-l2-01",
+    "generation": 8,
+    "dev": 16777231,
+    "inode": 409233255,
+    "bytes": 134217728,
+    "mtime_ns": 1792608627080217997,
+    "allocated_bytes": 134217728,
+    "links": 1,
+    "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee",
+    "reason": "pure synthetic payload; replaced by actual current7/8 full recovery and advisor dependency release",
+    "retained_evidence": "original index, typed components, L2 business/WAL, raw observer/model logs and fixed source/exe remain; docs/evidence/m0-t13a-typed-workspace/advisor-formal-review.md"
+  }
+]

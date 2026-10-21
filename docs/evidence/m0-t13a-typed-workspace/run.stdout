@@ -1,0 +1,131 @@
+{
+  "scope": "frozen canonical v1/v2 profile arithmetic; NOT physical memory or malformed-input proof",
+  "source_sha256": "757907bccc82ec1dc13c28f11324914c6def755366e50156a093fef9c7a8d588",
+  "io_backings_bytes": 2097152,
+  "structure_upper_bytes": 398720,
+  "maximum_pressure_index_capacity": 2911,
+  "manifest_tree_upper_bytes": 104160,
+  "snapshot_result_tree_upper_bytes": 44288,
+  "native_tree_upper_bytes": 15424,
+  "scan_event_tree_upper_bytes": 14832,
+  "control_items": {
+    "paths_and_arguments": 32768,
+    "scan_event": 32768,
+    "bounded_status_strings": 4096,
+    "thread_and_format_control": 16384,
+    "btree_insert_transients": 16384
+  },
+  "canonical_string_construction": "to_owned/format of bounded fixed identifiers; no previously grown/shrunk String credited by final length",
+  "array_construction": "fixed arrays and fixed iterator collect; 2x power-of-two capacity includes a growth overlap",
+  "stage_upper_bytes": {
+    "snapshot": 2807392,
+    "cold_restore": 3714560,
+    "final_report": 3245520
+  },
+  "cap_bytes": 4194304,
+  "margin_bytes": 479744,
+  "btree_source_sha256": "e081262af48616b280da958fd40aa392812677b2cffcf6e331bc03aa711bcef8",
+  "inputs_sha256": {
+    "docs/evidence/m0-t13a-typed-workspace/cold-latest82/report.json": "12745a372f3cd6cfa456a9abfec9f5e344a090020f194f13a164451e6a907479",
+    "work/report-lifetime-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json": "878d0df784e493e0ca15b85a59223c64bb52f02fa23081a34032fea51ea7617f",
+    "docs/evidence/m0-t13a-typed-workspace/metadata-types.json": "dcaaad41e3d11b58f4344e4f7620149e4c4223c3a7d8084f2ee72882e0e0cfa3",
+    "docs/evidence/m0-t13a-typed-workspace/metadata-types.rs": "d7d6f73925b66035476b137b619667fa2f9a1d5cebc51e8cc4bf945d44d2f8ce",
+    "docs/evidence/m0-t13a-typed-workspace/metadata-rustc.txt": "c4daff6ff615863600926bc149a5b0d92907859a57e352c39fa035a86dff05ff",
+    "work/candidate-binaries/typed-workspace-metadata/metadata-types": "fc4a3af2286386dd52c230bee263451cf0c3773bf845123325979cfcb09d9efc"
+  },
+  "canonical_scan_event_line_sha256": "7cfe6b8b2da3513c595ff763ff2efd0c3df85e82c795708094953cc131e6525e",
+  "node_field_sum_bytes": 724,
+  "charged_node_bytes": 1024,
+  "physical_memory_gate": "not_accepted",
+  "error_path_budget": "not_proven",
+  "runtime_guard": "external preflight only; not a general CLI allocation limit",
+  "native_thread_stacks": "excluded from Rust metadata; physical gate still required",
+  "diagnostics": "histograms/events/summary backing remain in original separate charge; no credit subtracted here"
+}
+{
+  "schema": "mycity-bounded-group-observer-v1",
+  "host": {
+    "hardware_model": "Mac16,1",
+    "cpu": "Apple M4",
+    "logical_cpus": 10,
+    "physical_memory_bytes": 34359738368,
+    "os": "26.6.2",
+    "architecture": "arm64"
+  },
+  "observer_source_sha256": "6bc89147a64894599d7eea1f6762fbb01f4119d606842ce475ba2c2f7215c98a",
+  "observer_source_unchanged": true,
+  "status": "passed_measurement_wrapper",
+  "reason": null,
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/typed-workspace/mycity-headless",
+    "steady-run",
+    "/Users/frankqin/dev/MyCity/work/typed-workspace-formal-l1-01/observed/model",
+    "l1",
+    "formal"
+  ],
+  "artifacts_root": "/Users/frankqin/dev/MyCity/work/typed-workspace-formal-l1-01/observed",
+  "model_exit_code": 0,
+  "actual_wall_seconds": 2115.5161741670004,
+  "samples": 8463,
+  "sample_log_bytes": 8870011,
+  "maximum_sample_gap_seconds": 0.38951750000001084,
+  "maximum_capture_window_seconds": 0.14098295899998448,
+  "peak_simultaneous_rss_bytes": 3358785536,
+  "peak_simultaneous_footprint_bytes": 3348025160,
+  "missing_footprint_process_samples": 1,
+  "missing_rss_process_samples": 1,
+  "native_metrics": {
+    "method": "public local SDK proc_listpids/proc_pidinfo and host_statistics64",
+    "headers_sha256": {
+      "libproc.h": "246d87709fc6b9157ce5cf3c475656ac48e0e1ae8bbdc46cf45acd34294448cd",
+      "sys/proc_info.h": "e427fa96b348537b21552b9de71e01039410bcad2cedee5584c5e5fddafd70fc",
+      "sys/param.h": "10d7a9553d341c5bc0b473444802920a7ec2e6222281eeaeb61b32dfff29c4b4",
+      "mach/vm_statistics.h": "b2b81f9e7efff57b648b4705a1ad08ffb55b99d0966b02c110f95fa454e175b7",
+      "mach/host_info.h": "4b0d40d08ea62da23ed80a6cce3f0cc45bd595a81b17c86348a289342983e1b0"
+    },
+    "struct_sizes": {
+      "proc_bsdshortinfo": 64,
+      "proc_taskinfo": 96,
+      "vm_statistics64": 416
+    },
+    "pid_capacity": 8192,
+    "fixed_control_charge_bytes": 65536,
+    "no_sampler_child": true,
+    "status": "candidate; requires actual ABI and live capture validation before formal use"
+  },
+  "native_metrics_source_sha256": "917b184e339649acd7b79797cf77f2b2db4f5128f33fdaf8759c162672fa34ca",
+  "native_metrics_source_unchanged": true,
+  "identity_completeness": "per-frame enumerated and captured instances only; birth/relation brackets required, unknowns retained. Does not prove capture of all short-lived processes; model identity roster must also be audited",
+  "peak_world_logical_bytes": 10198927146,
+  "disk_warning_16gib_observed": false,
+  "maximum_live_tracked_identities": 5,
+  "identities_recorded": 6,
+  "identities_retired": 5,
+  "final_live_identity_count": 1,
+  "observer_hot_bound_bytes": 1258137,
+  "other_diagnostic_owned_bytes": 3407872,
+  "combined_diagnostic_hot_bound_bytes": 4666009,
+  "swap_initial_bytes": 3325755392,
+  "swap_max_bytes": 3325755392,
+  "maximum_observed_swap_net_growth_bytes": 0,
+  "maximum_sampled_non_normal_pressure_seconds": 0,
+  "pressure_duration_definition": "conservative interval from preceding normal poll through next observed normal poll",
+  "pressure_semantics": "sysctl returns dispatch flags; normal=1, warning=2, critical=4, not internal enum 0..3",
+  "mach_timebase": {
+    "numer": 125,
+    "denom": 3
+  },
+  "sdk_resource_header_sha256": "1067178025c5fd88c9a1b8206a07c2695ef94dd471fe2783f06c512995382961",
+  "sdk_sysctl_header_sha256": "d6d627d3353607f4078079051e09ea0e9a3b32a6771934be1ac5d89fbe93b1c7",
+  "binary_sha256": "178c3a709ef3cc5d69e166bd2da60bcb43f0ae804fac27c53dae55514e9be2ac",
+  "binary_unchanged": true,
+  "cpu_children_at_end": {
+    "user_seconds": 122.248377,
+    "system_seconds": 18.481908
+  },
+  "short_helper_peak_completeness": "no sampler ps/vm_stat child; short model helpers remain subject to actual capture/missing disclosure",
+  "sampler_scope": "native observer + actual model process tree + observed orphans by PID/Mach birth; unavailable RSS/footprint retained as missing, not zero",
+  "memory_16gb_gate": "not_run",
+  "eight_hour_gate": "not_run",
+  "full_M0": "not_accepted"
+}

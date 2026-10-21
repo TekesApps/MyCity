@@ -1,0 +1,169 @@
+{
+  "source_sha256": "757907bccc82ec1dc13c28f11324914c6def755366e50156a093fef9c7a8d588",
+  "binary_sha256": "178c3a709ef3cc5d69e166bd2da60bcb43f0ae804fac27c53dae55514e9be2ac",
+  "source_unchanged": true,
+  "actual_observer_seconds": 2115.5161741670004,
+  "actual_supervisor_seconds": 2114.862547042,
+  "actual_warmup_seconds": 300,
+  "actual_measurement_seconds": 1800,
+  "model_exit_code": 0,
+  "evidence_class": "L1 storage-pressure substitute; NOT L2 business, traffic or complete-city scale",
+  "scan_count": 2101,
+  "native_records_per_scan": 361272,
+  "stub_records_per_scan": 1232426,
+  "maximum_full_scan_wall_seconds": 0.202303667,
+  "maximum_scan_ready_age_seconds": 0.02246695799999543,
+  "complete_snapshots": 8,
+  "snapshot_durations_seconds": [
+    6.921500625,
+    7.820868375,
+    8.246231042,
+    9.342637916,
+    8.635011458,
+    7.592215959,
+    8.771280708,
+    9.271959625
+  ],
+  "actual_cow_backings_returned": [
+    7,
+    8,
+    9,
+    10,
+    9,
+    8,
+    9,
+    1
+  ],
+  "allocation_failures": 0,
+  "original_raw_universe_fully_accounted": true,
+  "eligible_window_classes": [
+    {
+      "record_state": "sealed",
+      "producer": "layout",
+      "role": "execution",
+      "window": "inside",
+      "admission": "scan_complete",
+      "case": "L1/full_jprod1",
+      "class": "L1_native_record_index_page",
+      "page_spec": "not_air",
+      "samples": 84600,
+      "maximum_ns": 8083667,
+      "p95_ns": 62208,
+      "p99_ns": 91916,
+      "minimum_samples_met": true,
+      "thresholds_met": true
+    },
+    {
+      "record_state": "sealed",
+      "producer": "layout",
+      "role": "execution",
+      "window": "inside",
+      "admission": "scan_complete",
+      "case": "L1/full_jprod1",
+      "class": "L1_stub_record_index_page",
+      "page_spec": "not_air",
+      "samples": 302400,
+      "maximum_ns": 7104500,
+      "p95_ns": 75125,
+      "p99_ns": 141791,
+      "minimum_samples_met": true,
+      "thresholds_met": true
+    }
+  ],
+  "observed_single_round_compute_thresholds_met": true,
+  "inside_complete_capture_frames": 7114,
+  "inside_incomplete_capture_frames": 86,
+  "incomplete_capture_examples": [
+    {
+      "t": 365.009628834,
+      "pending_identities": [],
+      "missing_selected_processes": [],
+      "identity_uncertainties": [],
+      "enumeration_failures": [
+        {
+          "pid": 46964,
+          "errno": 3,
+          "error": "ESRCH",
+          "confirmed_absent_after_query": true,
+          "ancestry": "unresolved; cannot silently remove from group completeness"
+        }
+      ],
+      "missing_footprint": 0,
+      "missing_rss": 0
+    },
+    {
+      "t": 424.010332709,
+      "pending_identities": [],
+      "missing_selected_processes": [],
+      "identity_uncertainties": [],
+      "enumeration_failures": [
+        {
+          "pid": 46960,
+          "errno": 3,
+          "error": "ESRCH",
+          "confirmed_absent_after_query": false,
+          "ancestry": "unresolved; cannot silently remove from group completeness"
+        },
+        {
+          "pid": 46959,
+          "errno": 3,
+          "error": "ESRCH",
+          "confirmed_absent_after_query": false,
+          "ancestry": "unresolved; cannot silently remove from group completeness"
+        }
+      ],
+      "missing_footprint": 0,
+      "missing_rss": 0
+    },
+    {
+      "t": 437.510244209,
+      "pending_identities": [],
+      "missing_selected_processes": [],
+      "identity_uncertainties": [],
+      "enumeration_failures": [
+        {
+          "pid": 47731,
+          "errno": 3,
+          "error": "ESRCH",
+          "confirmed_absent_after_query": true,
+          "ancestry": "unresolved; cannot silently remove from group completeness"
+        }
+      ],
+      "missing_footprint": 0,
+      "missing_rss": 0
+    }
+  ],
+  "complete_inside_group_rss_peak_bytes": 3358785536,
+  "complete_inside_group_footprint_peak_bytes": 3347992392,
+  "whole_missing_samples": 1,
+  "missing_samples_never_imputed": true,
+  "normal_cap_bytes": 3328599654,
+  "inside_group_footprint_peak_bytes": 3347992392,
+  "inside_group_rss_peak_bytes": 3358785536,
+  "footprint_excess_bytes": 19392738,
+  "rss_excess_bytes": 30185882,
+  "normal_physical_gate": "failed_observed; observer not subtracted; 16MiB drift tolerance not added to cap",
+  "diagnostic_hot_bound_bytes": 4666009,
+  "diagnostic_cap_bytes": 8388608,
+  "swap_net_growth_bytes": 0,
+  "non_normal_pressure_seconds": 0,
+  "world_peak_logical_bytes": 10198927146,
+  "same_phase_idle_gaps": 2038,
+  "same_phase_complete_frames": 8074,
+  "idle_current_requested_delta_bytes": 0,
+  "idle_arena_used_delta_bytes": 0,
+  "idle_bootstrap_quarantined_delta_bytes": 0,
+  "leakage_gate": "not_accepted; L1 idle counters only, no L2 business day-boundary evidence",
+  "current_complete_restore_points": [
+    "work/typed-workspace-formal-l1-01/observed/model/layout/snapshots/snapshot-000007",
+    "work/typed-workspace-formal-l1-01/observed/model/layout/snapshots/snapshot-000008"
+  ],
+  "earlier_current_run_generations": "1..6 retired by two-generation policy; not directly restorable",
+  "current_two_full_cold_restores": "passed; full byte input, no reconstructed replacement",
+  "audit_scope_correction": "quiescent_audit attempt failed because L1 has no L2 business transcript; original stderr retained, not counted as pass",
+  "same_source_three_rounds": "not_complete",
+  "four_speeds": "not_run_this_source",
+  "eight_hour": "not_run",
+  "real16gb": "not_run",
+  "full_M0": "not_accepted"
+}
