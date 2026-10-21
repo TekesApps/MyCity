@@ -288,3 +288,62 @@ fn current_world_history_and_receipt_corruption_are_rejected_without_rollback() 
         assert!(Store::open(&t.world(), RULES).is_err(), "{prefix}");
     }
 }
+
+#[test]
+fn streamed_checkpoint_unwind_never_leaves_a_usable_stale_store() {
+    use std::panic::{catch_unwind, AssertUnwindSafe};
+    for point in [
+        CheckpointPoint::WorldSynced,
+        CheckpointPoint::ReceiptsSynced,
+        CheckpointPoint::RootPublished,
+        CheckpointPoint::CurrentSynced,
+        CheckpointPoint::Retired,
+    ] {
+        let t = Temp::new();
+        let mut s = create(&t.world());
+        let (failed, good) = start(&mut s);
+        let before = s.engine().unwrap().export_checkpoint().unwrap();
+        assert!(catch_unwind(AssertUnwindSafe(|| {
+            let _ = s.checkpoint_with_observer(|p| {
+                if p == point {
+                    panic!("checkpoint unwind {point:?}");
+                }
+                Ok(())
+            });
+        }))
+        .is_err());
+        assert!(matches!(
+            s.engine(),
+            Err(mycity_storage::Error::RecoveryRequired)
+        ));
+        assert!(matches!(
+            s.checkpoint(),
+            Err(mycity_storage::Error::RecoveryRequired)
+        ));
+        drop(s);
+        let mut s = Store::open(&t.world(), RULES).unwrap();
+        assert_eq!(s.engine().unwrap().export_checkpoint().unwrap(), before);
+        assert_eq!(
+            s.execute(Caller::System, failed).unwrap().model,
+            Err(TxError::StaleRevision)
+        );
+        assert!(s.execute(Caller::System, good).unwrap().model.is_ok());
+        assert_eq!(s.committed_sequence(), 2);
+    }
+}
+#[test]
+fn streamed_v2_capacity_rejection_before_any_output_remains_usable() {
+    let t = Temp::new();
+    let mut s = create(&t.world());
+    let used = s.capacity_status().unwrap().used_bytes;
+    s.reduce_capacity_policy(mycity_storage::CapacityPolicy {
+        total_bytes: used + 32768,
+        emergency_bytes: 32768,
+    })
+    .unwrap();
+    assert!(matches!(
+        s.checkpoint(),
+        Err(mycity_storage::Error::Capacity { .. })
+    ));
+    assert!(s.engine().is_ok());
+}

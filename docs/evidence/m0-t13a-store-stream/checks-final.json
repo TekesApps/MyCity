@@ -1,0 +1,57 @@
+{
+  "workspace-release": {
+    "command": [
+      "cargo",
+      "test",
+      "--workspace",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "exit": 0,
+    "seconds": 593.984450083,
+    "source_sha256": "326a47fa83ee9b717025edce88cf817c8da47e67f49c0cbd1a9f5baa44d46edc"
+  },
+  "clippy-final": {
+    "command": [
+      "cargo",
+      "clippy",
+      "--workspace",
+      "--all-targets",
+      "--release",
+      "--locked",
+      "--offline",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit": 0,
+    "seconds": 8.043601082999999,
+    "source_sha256": "326a47fa83ee9b717025edce88cf817c8da47e67f49c0cbd1a9f5baa44d46edc"
+  },
+  "fmt-final": {
+    "command": [
+      "cargo",
+      "fmt",
+      "--all",
+      "--",
+      "--check"
+    ],
+    "exit": 0,
+    "seconds": 0.3966689580000775,
+    "source_sha256": "326a47fa83ee9b717025edce88cf817c8da47e67f49c0cbd1a9f5baa44d46edc"
+  },
+  "build-final": {
+    "command": [
+      "cargo",
+      "build",
+      "--workspace",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "exit": 0,
+    "seconds": 0.10090745800005152,
+    "source_sha256": "326a47fa83ee9b717025edce88cf817c8da47e67f49c0cbd1a9f5baa44d46edc"
+  }
+}

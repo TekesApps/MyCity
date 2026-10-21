@@ -1,0 +1,13 @@
+{
+  "source_sha256": "326a47fa83ee9b717025edce88cf817c8da47e67f49c0cbd1a9f5baa44d46edc",
+  "source_files": 165,
+  "lock_sha256": "eb5e290ac92ebe46ebe87d3db56db4221c925ebca8e0bdb1102987bd32314e6c",
+  "fixture_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+  "controller_pid": 66336,
+  "started_unix_ns": 1792572120988822000,
+  "new_target": false,
+  "opening_fixture_sha256": "04c113c62b0b682f94f9abfbde7618b87bd972f3931504366be9e07c130b4726",
+  "binary": "work/candidate-binaries/store-stream/mycity-headless",
+  "binary_sha256": "d7935994fd7378a13c4714a9dee40c5d39581f9e57f838accaa0b2a5b0853a37",
+  "scope": "Final exact regression/build; no new joint/performance gate accepted"
+}

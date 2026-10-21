@@ -1,0 +1,11 @@
+{
+  "unix_ns": 1792572961812538000,
+  "filesystem_available_bytes": 128228106240,
+  "work_du_kib": 18018628,
+  "target_du_kib": 780764,
+  "new_independent_target": false,
+  "new_pressure_snapshots": false,
+  "explicit_cache_deleted_bytes": 0,
+  "temporary_roundtrip_allocated_bytes_deleted": 10199040,
+  "reason": "Reuse shared target/current libraries; retain full current and legacy restore dependencies, source/exe/log/receipts. Successful disposable roundtrip fork retired by exact file allowlist; df delta not attributed as allocation reclamation."
+}

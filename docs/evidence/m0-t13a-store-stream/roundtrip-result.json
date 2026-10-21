@@ -1,0 +1,8 @@
+{
+  "command": [
+    "python3",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-store-stream/verify_roundtrip.py"
+  ],
+  "exit": 0,
+  "seconds": 4.5096672090000425
+}

@@ -413,7 +413,36 @@ impl Engine {
             return Err("checkpoint_byte_limit".into());
         }
         crate::bounded_decode::guard(bytes)?;
-        let mut candidate: Self = serde_json::from_slice(bytes).map_err(|e| e.to_string())?;
+        let candidate: Self = serde_json::from_slice(bytes).map_err(|e| e.to_string())?;
+        Self::validate_restored(candidate)
+    }
+    /// Streaming counterpart of restore_checkpoint. The caller must additionally
+    /// bind the complete input to its trusted length/hash before publishing it.
+    /// Lexical and byte limits run before serde accumulates tokens or records.
+    pub fn restore_checkpoint_reader(reader: impl std::io::Read) -> Result<Self, String> {
+        struct Limited<R> {
+            reader: R,
+            bytes: usize,
+        }
+        impl<R: std::io::Read> std::io::Read for Limited<R> {
+            fn read(&mut self, out: &mut [u8]) -> std::io::Result<usize> {
+                let size = out.len().min(4 * 1024 * 1024 + 1 - self.bytes);
+                let n = self.reader.read(&mut out[..size])?;
+                self.bytes += n;
+                if self.bytes > 4 * 1024 * 1024 {
+                    return Err(std::io::Error::other("checkpoint_byte_limit"));
+                }
+                Ok(n)
+            }
+        }
+        let reader =
+            crate::fixed_restore::JsonReader::with_string_limit(Limited { reader, bytes: 0 }, 384);
+        let mut decoder = serde_json::Deserializer::from_reader(reader);
+        let candidate = Self::deserialize(&mut decoder).map_err(|e| e.to_string())?;
+        decoder.end().map_err(|e| e.to_string())?;
+        Self::validate_restored(candidate)
+    }
+    fn validate_restored(mut candidate: Self) -> Result<Self, String> {
         // Explicit scratch construction, not a serde default which silently allocates.
         // Whole-graph seed/authorization is still being migrated in this phase.
         candidate.preparation_workspace =

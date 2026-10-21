@@ -272,13 +272,32 @@ impl Store {
     fn checkpoint_internal(
         &mut self,
         emergency: bool,
-        mut observer: impl FnMut(CheckpointPoint) -> io::Result<()>,
+        observer: impl FnMut(CheckpointPoint) -> io::Result<()>,
     ) -> Result<(), Error> {
         self.engine()?;
-        if self.io.root.checkpoint_layout == 2 {
-            return self.checkpoint_v2(emergency, observer);
+        // Arm before any observer or persistent publication. Unwinding cannot
+        // leave an apparently usable Store with a newer durable CURRENT.
+        self.io.poisoned = true;
+        let mut publication_started = false;
+        let result = if self.io.root.checkpoint_layout == 2 {
+            self.checkpoint_v2(emergency, observer, &mut publication_started)
+        } else {
+            self.checkpoint_legacy_inner(emergency, observer, &mut publication_started)
+        };
+        if result.is_ok()
+            || (!publication_started && matches!(&result, Err(Error::Capacity { .. })))
+        {
+            self.io.poisoned = false;
         }
-        let result = (|| {
+        result
+    }
+    fn checkpoint_legacy_inner(
+        &mut self,
+        emergency: bool,
+        mut observer: impl FnMut(CheckpointPoint) -> io::Result<()>,
+        publication_started: &mut bool,
+    ) -> Result<(), Error> {
+        (|| {
             let generation = self
                 .io
                 .root
@@ -311,6 +330,7 @@ impl Store {
             }
             // An orphan with this generation may exist after an interrupted attempt. It is
             // never referenced by CURRENT; replace atomically, never truncate a live dependency.
+            *publication_started = true;
             atomic_file(&self.io.dir, &cp_name(generation), &bytes, || Ok(()))?;
             let index = json(&Index {
                 data_sha256: sha256(&bytes),
@@ -363,13 +383,6 @@ impl Store {
             sync_directory(&self.io.dir)?;
             observer(CheckpointPoint::Retired)?;
             Ok(())
-        })();
-        if result
-            .as_ref()
-            .is_err_and(|e| !matches!(e, Error::Capacity { .. }))
-        {
-            self.io.poisoned = true;
-        }
-        result
+        })()
     }
 }

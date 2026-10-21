@@ -1,6 +1,7 @@
 //! Raw bounded world images plus a permanent, separately verified original-receipt chain.
 //! The previous Engine image is historical; no silent rollback or WAL-bridge recovery.
 use super::*;
+mod receipts;
 use checkpoint::{CheckpointPoint as Point, CHECKPOINT_LIMIT};
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -35,24 +36,24 @@ struct ReceiptIndex {
     last: u64,
     body_bytes: u64,
     body_sha256: String,
+    #[serde(deserialize_with = "receipts::operations")]
     operations: Vec<u64>,
     previous: Option<Reference>,
 }
-#[derive(Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-struct ReceiptBody {
-    schema: String,
-    genesis_sha256: String,
+#[derive(Serialize)]
+struct ReceiptBody<'a> {
+    schema: &'a str,
+    genesis_sha256: &'a str,
     first: u64,
     last: u64,
-    previous: Option<Reference>,
-    receipts: Vec<JournalRecord>,
+    previous: Option<&'a Reference>,
+    receipts: &'a [JournalRecord],
 }
 
 pub(super) const fn capacity_metadata_headers() -> usize {
     std::mem::size_of::<Snapshot>()
         + std::mem::size_of::<ReceiptIndex>()
-        + std::mem::size_of::<ReceiptBody>()
+        + std::mem::size_of::<ReceiptBody<'_>>()
 }
 fn world_name(g: u64) -> String {
     format!("world-{g}.json")
@@ -90,12 +91,16 @@ fn snapshot(dir: &Path, r: &Reference) -> Result<Snapshot, Error> {
     }
     Ok(s)
 }
-fn world_bytes(dir: &Path, p: &WorldPoint) -> Result<Vec<u8>, Error> {
-    let bytes = read_file(&dir.join(world_name(p.generation)), 4 * 1024 * 1024)?;
-    if bytes.len() as u64 != p.bytes || sha256(&bytes) != p.sha256 {
-        return Err(Error::Invalid("v2_world_checksum"));
+fn world_identity(p: &WorldPoint) -> stream::Identity {
+    stream::Identity {
+        bytes: p.bytes,
+        sha256: p.sha256.clone(),
     }
-    Ok(bytes)
+}
+fn restore_world(path: &Path, identity: &stream::Identity) -> Result<Engine, Error> {
+    stream::verified(path, identity, 4 * 1024 * 1024, |reader| {
+        Engine::restore_checkpoint_reader(reader).map_err(Error::Model)
+    })
 }
 fn index(dir: &Path, r: &Reference) -> Result<ReceiptIndex, Error> {
     let bytes = read_file(&dir.join(index_name(r.generation)), 32 * 1024)?;
@@ -124,27 +129,6 @@ fn index(dir: &Path, r: &Reference) -> Result<ReceiptIndex, Error> {
     }
     Ok(i)
 }
-fn body(dir: &Path, r: &Reference, i: &ReceiptIndex) -> Result<ReceiptBody, Error> {
-    let bytes = read_file(&dir.join(body_name(r.generation)), CHECKPOINT_LIMIT)?;
-    if bytes.len() as u64 != i.body_bytes || sha256(&bytes) != i.body_sha256 {
-        return Err(Error::Invalid("v2_receipt_checksum"));
-    }
-    let b: ReceiptBody = serde_json::from_slice(&bytes)?;
-    if b.schema != "mycity-receipts-v2"
-        || b.genesis_sha256 != i.genesis_sha256
-        || b.first != i.first
-        || b.last != i.last
-        || b.previous != i.previous
-        || b.receipts.len() != i.operations.len()
-        || b.receipts
-            .iter()
-            .zip(&i.operations)
-            .any(|(r, id)| r.operation_id != *id)
-    {
-        return Err(Error::Invalid("v2_receipt_index_content"));
-    }
-    Ok(b)
-}
 pub(super) fn open(
     dir: &Path,
     r: &Reference,
@@ -162,7 +146,7 @@ pub(super) fn open(
         if i.genesis_sha256 != genesis || i.last != next {
             return Err(Error::Invalid("v2_receipt_sequence_chain"));
         }
-        let _validated = body(dir, &r, &i)?;
+        receipts::scan(dir, &r, &i, |_, _| {})?;
         next = i.first - 1;
         cursor = i.previous;
     }
@@ -171,10 +155,16 @@ pub(super) fn open(
     }
     // Historical bytes must remain intact. They are not an automatic fallback.
     if let Some(p) = &s.previous {
-        drop(world_bytes(dir, p)?);
+        stream::verify_bytes(
+            &dir.join(world_name(p.generation)),
+            &world_identity(p),
+            4 * 1024 * 1024,
+        )?;
     }
-    let engine =
-        Engine::restore_checkpoint(&world_bytes(dir, &s.current)?).map_err(Error::Model)?;
+    let engine = restore_world(
+        &dir.join(world_name(s.current.generation)),
+        &world_identity(&s.current),
+    )?;
     Ok((engine, s.current.sequence, s.current.chain))
 }
 pub(super) fn lookup(
@@ -190,16 +180,21 @@ pub(super) fn lookup(
     while let Some(r) = cursor {
         let i = index(dir, &r)?;
         if i.operations.contains(&operation) {
-            return body(dir, &r, &i)?
-                .receipts
-                .into_iter()
-                .find(|r| r.operation_id == operation)
-                .map(Some)
-                .ok_or(Error::Invalid("v2_receipt_missing"));
+            let mut found = None;
+            receipts::scan(dir, &r, &i, |_, record| {
+                if record.operation_id == operation {
+                    found = Some(record);
+                }
+            })?;
+            return found.map(Some).ok_or(Error::Invalid("v2_receipt_missing"));
         }
         cursor = i.previous;
     }
     Ok(None)
+}
+type ReceiptPage = [Option<(usize, JournalRecord)>; 64];
+pub(super) const fn receipt_page_staging_bytes() -> usize {
+    std::mem::size_of::<ReceiptPage>()
 }
 pub(super) fn rows(
     dir: &Path,
@@ -208,6 +203,9 @@ pub(super) fn rows(
     limit: usize,
     rows: &mut Vec<serde_json::Value>,
 ) -> Result<(), Error> {
+    if limit > 64 || rows.len() > limit {
+        return Err(Error::Invalid("query_page_limit"));
+    }
     let Some(r) = r else {
         return Ok(());
     };
@@ -222,16 +220,19 @@ pub(super) fn rows(
             cursor = i.previous;
             continue;
         }
-        let b = body(dir, &r, &i)?;
-        for (n, r) in b.receipts.iter().enumerate().rev() {
-            if *skip > 0 {
-                *skip -= 1;
-                continue;
+        let end = i.operations.len() - *skip;
+        let begin = end.saturating_sub(limit - rows.len());
+        let mut page: ReceiptPage = [None; 64];
+        receipts::scan(dir, &r, &i, |n, record| {
+            if (begin..end).contains(&n) {
+                page[n - begin] = Some((n, record));
             }
-            if rows.len() == limit {
-                break;
-            }
-            rows.push(serde_json::json!({"committed_sequence":b.first+n as u64,"record":r}));
+        })?;
+        // Publish a page only after the complete archive (including its tail)
+        // passes metadata, sequence, EOF, length and checksum validation.
+        *skip = 0;
+        for (n, record) in page.into_iter().take(end - begin).rev().flatten() {
+            rows.push(serde_json::json!({"committed_sequence":i.first+n as u64,"record":record}));
         }
         cursor = i.previous;
     }
@@ -314,8 +315,9 @@ impl Store {
         &mut self,
         emergency: bool,
         mut observer: impl FnMut(Point) -> io::Result<()>,
+        publication_started: &mut bool,
     ) -> Result<(), Error> {
-        let result = (|| {
+        (|| {
             let generation = self
                 .io
                 .root
@@ -329,15 +331,15 @@ impl Store {
                 .as_ref()
                 .map(|r| snapshot(&self.io.dir, r))
                 .transpose()?;
-            let bytes = self.engine.export_checkpoint().map_err(Error::Model)?;
-            // Validate the exact complete serialized image, without a JSON Value tree.
-            drop(Engine::restore_checkpoint(&bytes).map_err(Error::Model)?);
+            let image = stream::measure(4 * 1024 * 1024, |writer| {
+                self.engine.write_checkpoint(writer).map_err(Error::Model)
+            })?;
             let point = WorldPoint {
                 generation,
                 sequence: self.io.root.sequence,
                 chain: self.io.root.wal_chain.clone(),
-                bytes: bytes.len() as u64,
-                sha256: sha256(&bytes),
+                bytes: image.bytes,
+                sha256: image.sha256.clone(),
             };
             let prior_receipts = previous.as_ref().and_then(|s| s.receipts.clone());
             let journal = self.engine.journal();
@@ -353,39 +355,38 @@ impl Store {
                     .and_then(|x| x.checked_add(1))
                     .ok_or(Error::Invalid("v2_receipt_count"))?;
                 let b = ReceiptBody {
-                    schema: "mycity-receipts-v2".into(),
-                    genesis_sha256: self.io.root.genesis_sha256.clone(),
+                    schema: "mycity-receipts-v2",
+                    genesis_sha256: &self.io.root.genesis_sha256,
                     first,
                     last: self.io.root.sequence,
-                    previous: prior_receipts.clone(),
-                    receipts: journal.to_vec(),
+                    previous: prior_receipts.as_ref(),
+                    receipts: journal,
                 };
-                let body = json(&b)?;
-                if body.len() as u64 > CHECKPOINT_LIMIT {
-                    return Err(Error::Invalid("v2_receipt_bytes"));
-                }
+                let body = stream::measure(CHECKPOINT_LIMIT, |writer| {
+                    serde_json::to_writer(writer, &b).map_err(Error::from)
+                })?;
                 let i = json(&ReceiptIndex {
                     schema: "mycity-receipt-index-v2".into(),
-                    genesis_sha256: b.genesis_sha256,
+                    genesis_sha256: b.genesis_sha256.to_owned(),
                     first,
                     last: b.last,
-                    body_bytes: body.len() as u64,
-                    body_sha256: sha256(&body),
+                    body_bytes: body.bytes,
+                    body_sha256: body.sha256.clone(),
                     operations: journal.iter().map(|r| r.operation_id).collect(),
                     previous: prior_receipts.clone(),
                 })?;
                 if i.len() > 32 * 1024 {
                     return Err(Error::Invalid("v2_receipt_index_bytes"));
                 }
-                Some((body, i))
+                Some((b, body, i))
             };
             let head = receipt
                 .as_ref()
-                .map(|(_, i)| Reference {
+                .map(|(_, _, i)| Reference {
                     generation,
                     sha256: sha256(i),
                 })
-                .or(prior_receipts);
+                .or_else(|| prior_receipts.clone());
             let manifest = json(&Snapshot {
                 schema: "mycity-world-snapshot-v2".into(),
                 genesis_sha256: self.io.root.genesis_sha256.clone(),
@@ -396,21 +397,36 @@ impl Store {
             if manifest.len() > 32 * 1024 {
                 return Err(Error::Invalid("v2_world_index_bytes"));
             }
-            let required = bytes.len() as u64
+            let required = image.bytes
                 + manifest.len() as u64
                 + receipt
                     .as_ref()
-                    .map_or(0, |(b, i)| (b.len() + i.len()) as u64)
+                    .map_or(0, |(_, b, i)| b.bytes + i.len() as u64)
                 + 2 * META_LIMIT;
             capacity::admit(&self.io.dir, self.io.root.capacity, required, emergency)?;
             let available = fs2::available_space(&self.io.dir)?;
             if available < required + 2 * 1024 * 1024 * 1024 {
                 return Err(Error::Invalid("v2_disk_free_floor"));
             }
-            atomic_file(&self.io.dir, &world_name(generation), &bytes, || Ok(()))?;
+            *publication_started = true;
+            stream::atomic(
+                &self.io.dir,
+                &world_name(generation),
+                &image,
+                4 * 1024 * 1024,
+                |writer| self.engine.write_checkpoint(writer).map_err(Error::Model),
+                |path| restore_world(path, &image).map(drop),
+            )?;
             observer(Point::WorldSynced)?;
-            if let Some((b, i)) = receipt {
-                atomic_file(&self.io.dir, &body_name(generation), &b, || Ok(()))?;
+            if let Some((body, identity, i)) = receipt {
+                stream::atomic(
+                    &self.io.dir,
+                    &body_name(generation),
+                    &identity,
+                    CHECKPOINT_LIMIT,
+                    |writer| serde_json::to_writer(writer, &body).map_err(Error::from),
+                    |path| stream::verify_bytes(path, &identity, CHECKPOINT_LIMIT),
+                )?;
                 observer(Point::ReceiptsSynced)?;
                 atomic_file(&self.io.dir, &index_name(generation), &i, || Ok(()))?;
                 observer(Point::ReceiptIndexSynced)?;
@@ -472,13 +488,6 @@ impl Store {
             sync_directory(&self.io.dir)?;
             observer(Point::Retired)?;
             Ok(())
-        })();
-        if result
-            .as_ref()
-            .is_err_and(|e| !matches!(e, Error::Capacity { .. }))
-        {
-            self.io.poisoned = true;
-        }
-        result
+        })()
     }
 }

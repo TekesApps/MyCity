@@ -45,6 +45,11 @@ fn metadata() -> Vec<MetadataPart> {
         ),
         ("receipt_operations_index", MAX_RECEIPTS, size_of::<u64>()),
         (
+            "receipt_page_fixed_staging",
+            1,
+            super::checkpoint_v2::receipt_page_staging_bytes(),
+        ),
+        (
             "current_and_replay_journal_records",
             2,
             size_of::<JournalRecord>(),
@@ -104,6 +109,11 @@ fn metadata() -> Vec<MetadataPart> {
         ("bounded_path_slots", 8, 4096),
         ("bounded_metadata_hash_or_schema_strings", 64, 64),
         ("stream_parser_scratch", 1, 64 * 1024),
+        (
+            "verified_input_output_controls_and_buffers",
+            1,
+            super::stream::capacity_metadata_bytes(),
+        ),
         ("bounded_token_scratch", 1, 4096),
     ];
     specs

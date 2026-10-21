@@ -182,3 +182,57 @@ fn retry_at_exact_rotation_threshold_does_not_become_a_new_operation() {
     assert_eq!(s.state_hash().unwrap(), hash);
     assert_eq!(s.committed_sequence(), 512);
 }
+
+#[test]
+fn checkpoint_unwind_requires_reopen_even_after_current_or_retirement() {
+    use std::panic::{catch_unwind, AssertUnwindSafe};
+    for point in [
+        CheckpointPoint::SnapshotSynced,
+        CheckpointPoint::CurrentSynced,
+        CheckpointPoint::Retired,
+    ] {
+        let t = Temp::new();
+        let mut s = create(&t);
+        let request = env(&s, 1);
+        let original = s.execute(Caller::System, request.clone()).unwrap().model;
+        let before = s.engine().unwrap().export_checkpoint().unwrap();
+        assert!(catch_unwind(AssertUnwindSafe(|| {
+            let _ = s.checkpoint_with_observer(|p| {
+                if p == point {
+                    panic!("checkpoint unwind {point:?}");
+                }
+                Ok(())
+            });
+        }))
+        .is_err());
+        assert!(matches!(
+            s.engine(),
+            Err(mycity_storage::Error::RecoveryRequired)
+        ));
+        assert!(matches!(
+            s.checkpoint(),
+            Err(mycity_storage::Error::RecoveryRequired)
+        ));
+        drop(s);
+        let mut s = Store::open(&t.world(), RULES).unwrap();
+        assert_eq!(s.engine().unwrap().export_checkpoint().unwrap(), before);
+        assert_eq!(s.execute(Caller::System, request).unwrap().model, original);
+        assert_eq!(s.committed_sequence(), 1);
+    }
+}
+#[test]
+fn capacity_rejection_before_checkpoint_io_does_not_poison() {
+    let t = Temp::new();
+    let mut s = create(&t);
+    let used = s.capacity_status().unwrap().used_bytes;
+    s.reduce_capacity_policy(mycity_storage::CapacityPolicy {
+        total_bytes: used + 32768,
+        emergency_bytes: 32768,
+    })
+    .unwrap();
+    assert!(matches!(
+        s.checkpoint(),
+        Err(mycity_storage::Error::Capacity { .. })
+    ));
+    assert!(s.engine().is_ok());
+}

@@ -96,7 +96,8 @@ impl<R: Read> JsonReader<R> {
     pub fn new(reader: R) -> Self {
         Self::with_string_limit(reader, 128)
     }
-    pub(crate) fn with_string_limit(reader: R, string_limit: usize) -> Self {
+    /// Trusted caller selects a lexical token bound before deserialization.
+    pub fn with_string_limit(reader: R, string_limit: usize) -> Self {
         Self {
             reader,
             quoted: false,

@@ -1,0 +1,8 @@
+{
+  "command": [
+    "python3",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-store-stream/verify_legacy.py"
+  ],
+  "exit": 0,
+  "seconds": 1.3672824170000126
+}

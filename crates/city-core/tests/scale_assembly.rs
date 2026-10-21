@@ -132,7 +132,9 @@ fn scaled_shape_is_bounded_and_invalid_structure_rejects_both_initialization_and
     ] {
         let mut v = checkpoint.clone();
         mutate(&mut v);
-        assert!(Engine::restore_checkpoint(&serde_json::to_vec(&v).unwrap()).is_err());
+        let bytes = serde_json::to_vec(&v).unwrap();
+        assert!(Engine::restore_checkpoint(&bytes).is_err());
+        assert!(Engine::restore_checkpoint_reader(bytes.as_slice()).is_err());
     }
 }
 #[test]
@@ -320,4 +322,64 @@ fn scale_air_rejects_a_freight_source_outside_finite_field_but_not_unemitting_fr
     let mut valid = engine();
     apply(&mut valid, Action::Timeline { command: T::Enable });
     apply(&mut valid, Action::Background { command: B::Enable });
+}
+
+#[test]
+fn stream_restore_matches_full_image_and_rejects_bad_tail_io_and_limits() {
+    use std::io::{self, Read};
+    let bytes = engine().export_checkpoint().unwrap();
+    struct Chunks<'a> {
+        bytes: &'a [u8],
+        chunk: usize,
+    }
+    impl Read for Chunks<'_> {
+        fn read(&mut self, out: &mut [u8]) -> io::Result<usize> {
+            let n = self.chunk.min(out.len()).min(self.bytes.len());
+            out[..n].copy_from_slice(&self.bytes[..n]);
+            self.bytes = &self.bytes[n..];
+            Ok(n)
+        }
+    }
+    for chunk in [1, 17, 8192] {
+        assert_eq!(
+            Engine::restore_checkpoint_reader(Chunks {
+                bytes: &bytes,
+                chunk
+            })
+            .unwrap()
+            .export_checkpoint()
+            .unwrap(),
+            bytes
+        );
+    }
+    for tail in [b" garbage".as_slice(), b" {}", b"\x00"] {
+        let mut bad = bytes.clone();
+        bad.extend_from_slice(tail);
+        assert!(Engine::restore_checkpoint_reader(bad.as_slice()).is_err());
+    }
+    assert!(Engine::restore_checkpoint_reader(&bytes[..bytes.len() - 1]).is_err());
+    struct FailAtEof<'a>(&'a [u8]);
+    impl Read for FailAtEof<'_> {
+        fn read(&mut self, out: &mut [u8]) -> io::Result<usize> {
+            if self.0.is_empty() {
+                return Err(io::Error::other("injected read failure"));
+            }
+            self.0.read(out)
+        }
+    }
+    assert!(Engine::restore_checkpoint_reader(FailAtEof(&bytes)).is_err());
+    let mut long = bytes.clone();
+    long.resize(4 * 1024 * 1024 + 1, b' ');
+    assert!(Engine::restore_checkpoint_reader(long.as_slice())
+        .err()
+        .unwrap()
+        .contains("checkpoint_byte_limit"));
+    let mut value: Value = serde_json::from_slice(&bytes).unwrap();
+    value["world"]["boot"]["profile"] = json!("x".repeat(4096));
+    assert!(
+        Engine::restore_checkpoint_reader(serde_json::to_vec(&value).unwrap().as_slice())
+            .err()
+            .unwrap()
+            .contains("fixed_restore_string")
+    );
 }

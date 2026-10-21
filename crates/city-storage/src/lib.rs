@@ -15,6 +15,7 @@ pub use outbox::{SourcePoint, SourceStatus};
 pub use query::{Page, Query};
 mod checkpoint;
 mod checkpoint_v2;
+mod stream;
 pub use capacity::{CapacityPolicy, CapacityStatus};
 mod spatial;
 pub use checkpoint::{CheckpointPoint, CheckpointStatus};

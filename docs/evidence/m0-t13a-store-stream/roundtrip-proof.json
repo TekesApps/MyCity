@@ -1,0 +1,42 @@
+{
+  "command": [
+    "rustc",
+    "--edition=2021",
+    "-O",
+    "--forbid",
+    "unsafe_code",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-store-stream/roundtrip.rs",
+    "-L",
+    "dependency=/Users/frankqin/dev/MyCity/target/release/deps",
+    "--extern",
+    "serde_json=/Users/frankqin/dev/MyCity/target/release/deps/libserde_json-53d8ad5e673e85b4.rlib",
+    "--extern",
+    "mycity_core=/Users/frankqin/dev/MyCity/target/release/deps/libmycity_core-79132aa13a78ad29.rlib",
+    "--extern",
+    "mycity_storage=/Users/frankqin/dev/MyCity/target/release/libmycity_storage.rlib",
+    "-o",
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/store-stream/roundtrip"
+  ],
+  "run": [
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/store-stream/roundtrip",
+    "/Users/frankqin/dev/MyCity/work/t13a73-checkpoint-roundtrip/world",
+    "sim-t13a-full-v2:9deedcb11bce7d2d431d4fd8fabad6342fc17a5772cb3de1b7d60ab345aaab82",
+    "/Users/frankqin/dev/MyCity/work/t13a65-joint-02/model/business/fault-reference/cpu-final-engine.json"
+  ],
+  "exit": 0,
+  "executable_sha256": "6c8e5fe75bde83e692d7b9c5cf60c4d430fdebfee2b173845eb3f4d20df2f913",
+  "world": "work/t13a73-checkpoint-roundtrip/world",
+  "result": {
+    "schema": "mycity-streamed-checkpoint-full-roundtrip-v1",
+    "sequence": 3013,
+    "engine_bytes": 2507418,
+    "engine_sha256": "f4c922bfc7a6a214e73d1c69c26386b3faa2465794dc9f77f99793a554246e02",
+    "receipt_rows": 3013,
+    "receipt_page_hash": "626a5c302f164806040a615e2fab8f0470bb262f6402bec07cd05b19d12e1b56",
+    "saves": 2,
+    "save_seconds_diagnostic_only": 0.942784333,
+    "restore_seconds_diagnostic_only": 0.428026042,
+    "performance_accepted": false
+  },
+  "scope": "Correctness diagnostic of full old world and actual new streaming checkpoint; no performance/load gate accepted"
+}

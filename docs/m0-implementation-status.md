@@ -396,3 +396,5 @@ v0.5.70：[Background常驻背板与显式计算槽](evidence/m0-t13a-background
 
 
 v0.5.71：[一般模型有界解码](evidence/m0-t13a-general-decode/STATUS.md)。普通Arena可信Domain64/128 visitor直写、不信文件max/size_hint，restore_capacity纯验证，保留稀疏free顺序与MAX最后代次；World/Opening/region及通用空气数组固定Rows，标签64B和lexical384B/depth128先于serde scratch，L1结构及负载不变。87796b…同源全仓92234终态0，362 harness含nested，clippy/fmt/build0；当前库旧规则完整world实际重开／3013seq／2507418字节全等，advisor独立认可。Raw串行归一化补两最大State后目标45,290,256B<原64MiB但runtimeGrantfalse。未重复新联合或正式性能；Store流式及整图池继续，normal64/common8/四档/稳态/8h未签，16GB not_run、M0 not_accepted。共享target复用、无新压力副本，完整当前／旧格式／业务恢复依赖保留。
+
+v0.5.73：[Store流式检查点与回执](evidence/m0-t13a-store-stream/STATUS.md)。v2 world与receipt两遍输出，实际tmp完整恢复后发布；8KiB有界I/O、逐条receipt seed、可信1024索引和固定64条页暂存，v1/v2 checkpoint展开后持续poison至退役完成。source326a47fa同源全仓83997终态0，593.984秒，372 harness pass含nested，clippy/fmt/build0。当前库旧rules完整243文件world实际重开，3013序列和2507418字节全等；临时副本保存两次并重开，全部3013回执页相同，advisor独立认可。基础容量44147720B加Raw Air暂态1325248B等于45472968B，小于64MiB但仍仅目标算术，runtimeGrantfalse。WAL、legacy、comparison及整图Pool继续；正式分级、四档、稳态、联合与8h未签，16GB not_run，M0 not_accepted。复用target，临时往返副本逐文件退役9.727MiB，完整业务及兼容恢复依赖保留。
