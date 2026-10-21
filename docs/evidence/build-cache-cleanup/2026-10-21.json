@@ -1,0 +1,21 @@
+{
+  "timestamp_unix": 1792543134.252358,
+  "files_removed": 303,
+  "apparent_bytes_removed": 199912588,
+  "allocated_bytes_reported_for_removed_files": 200531968,
+  "filesystem_available_before_bytes": 30766190592,
+  "filesystem_available_after_bytes": 30966657024,
+  "observed_filesystem_available_delta_bytes": 200466432,
+  "acceptance_binary_sha256_preserved": "ef228c12042b3ec4a1062e57cf4602d7d607451e5da73fec0d016e3ad5c2ee2a",
+  "removed_scope": "target/debug/incremental",
+  "project_process_and_file_occupancy_checked": true,
+  "unrelated_build_observed_and_left_untouched": true,
+  "retained": [
+    "source/WIP",
+    "fixed dependencies and source snapshots",
+    "all acceptance evidence",
+    "release target and all executables",
+    "debug build/deps caches for reuse"
+  ],
+  "scope": "cache housekeeping only; no model or performance acceptance"
+}
