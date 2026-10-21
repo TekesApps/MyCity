@@ -316,6 +316,79 @@ impl Workspace {
         }
     }
 }
+/// Explicit caller-owned model comparison slot. Reuse serially across engines;
+/// never store one per Engine. Not a pool grant or arbitrary-JSON serializer.
+pub struct Codec {
+    bytes: Vec<u8>,
+    pub workspace: Workspace,
+}
+impl Codec {
+    pub const LIMIT: usize = 4 * 1024 * 1024;
+    pub fn new() -> Result<Self, String> {
+        let mut bytes = Vec::new();
+        bytes
+            .try_reserve_exact(Self::LIMIT)
+            .map_err(|e| e.to_string())?;
+        if bytes.capacity() != Self::LIMIT {
+            return Err("comparison_capacity".into());
+        }
+        bytes.resize(Self::LIMIT, 0);
+        Ok(Self {
+            bytes,
+            workspace: Workspace::new()?,
+        })
+    }
+    pub fn owned_capacity_bytes(&self) -> usize {
+        size_of::<Self>() + self.backing_capacity_bytes()
+    }
+    pub fn backing_capacity_bytes(&self) -> usize {
+        self.bytes.capacity() + Workspace::backing_bytes()
+    }
+    pub fn write(&mut self, value: &impl Serialize, writer: impl Write) -> Result<(), String> {
+        let mut input = FixedWriter::new(&mut self.bytes);
+        serde_json::to_writer(&mut input, value).map_err(|e| e.to_string())?;
+        struct Limited<W> {
+            inner: W,
+            bytes: usize,
+        }
+        impl<W: Write> Write for Limited<W> {
+            fn write(&mut self, b: &[u8]) -> io::Result<usize> {
+                if b.len() > Codec::LIMIT - self.bytes {
+                    return Err(io::Error::other("comparison_output_bound"));
+                }
+                let n = self.inner.write(b)?;
+                self.bytes += n;
+                Ok(n)
+            }
+            fn flush(&mut self) -> io::Result<()> {
+                self.inner.flush()
+            }
+        }
+        self.workspace.write(
+            input.as_slice(),
+            Limited {
+                inner: writer,
+                bytes: 0,
+            },
+        )
+    }
+    pub fn hash(&mut self, value: &impl Serialize) -> Result<String, String> {
+        use sha2::{Digest, Sha256};
+        struct Hash(Sha256);
+        impl Write for Hash {
+            fn write(&mut self, b: &[u8]) -> io::Result<usize> {
+                self.0.update(b);
+                Ok(b.len())
+            }
+            fn flush(&mut self) -> io::Result<()> {
+                Ok(())
+            }
+        }
+        let mut hash = Hash(Sha256::new());
+        self.write(value, &mut hash)?;
+        Ok(format!("{:x}", hash.0.finalize()))
+    }
+}
 /// Borrow an already allocated codec slot. Never grow or allocate on overflow.
 pub struct FixedWriter<'a> {
     bytes: &'a mut [u8],

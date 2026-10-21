@@ -1,0 +1,10 @@
+{
+  "source_sha256": "1b31214ad930d89b875f699b9b762a8da33c597b13a40f8db2f73ccf821336df",
+  "source_files": 169,
+  "lock_sha256": "eb5e290ac92ebe46ebe87d3db56db4221c925ebca8e0bdb1102987bd32314e6c",
+  "fixture_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+  "opening_fixture_sha256": "04c113c62b0b682f94f9abfbde7618b87bd972f3931504366be9e07c130b4726",
+  "controller_pid": 34561,
+  "started_unix_ns": 1792578062268769000,
+  "new_target": false
+}

@@ -151,7 +151,7 @@ struct Persistence {
     poisoned: bool,
     source_reconciled: bool,
     background_live: Vec<[u8; 32]>,
-    canonical: mycity_core::canonical::Workspace,
+    canonical: std::cell::RefCell<mycity_core::canonical::Codec>,
 }
 impl Drop for Persistence {
     fn drop(&mut self) {
@@ -315,7 +315,8 @@ impl Store {
             (None, None)
         };
         spatial::validate_exchange_binding(&engine, spatial.as_ref())?;
-        let canonical = mycity_core::canonical::Workspace::new().map_err(Error::Model)?;
+        let canonical =
+            std::cell::RefCell::new(mycity_core::canonical::Codec::new().map_err(Error::Model)?);
         observer(CreatePoint::Validated)?;
         fs::create_dir(dir)?;
         let lock = lock(dir)?;
@@ -499,7 +500,8 @@ impl Store {
         if root.wal_end > wal_length {
             return Err(Error::Invalid("committed_wal_truncated"));
         }
-        let mut canonical = mycity_core::canonical::Workspace::new().map_err(Error::Model)?;
+        let mut canonical =
+            std::cell::RefCell::new(mycity_core::canonical::Codec::new().map_err(Error::Model)?);
         let mut buffers = wal::Buffers::new();
         let mut pos = 0u64;
         let mut background_live = Vec::with_capacity(BACKGROUND_LIVE_ASSETS);
@@ -528,6 +530,8 @@ impl Store {
             }
             let mut normalized = mycity_core::canonical::FixedWriter::new(&mut buffers.record);
             canonical
+                .get_mut()
+                .workspace
                 .write(entry.record.get().as_bytes(), &mut normalized)
                 .map_err(Error::Model)?;
             // Normalize first: the old Value path used the last duplicate key.
@@ -555,7 +559,7 @@ impl Store {
                 |_, record| -> Result<(), Error> {
                     called = true;
                     if !wal::matches(
-                        &mut canonical,
+                        &mut canonical.get_mut().workspace,
                         record,
                         &mut buffers.frame,
                         normalized.as_slice(),
@@ -641,10 +645,39 @@ impl Store {
         Ok(self.spatial_ref.as_ref())
     }
     /// Joint identity of financial/runtime state and immutable CPU spatial dependencies.
+    pub fn business_digest(&self) -> Result<String, Error> {
+        let mut codec = self
+            .io
+            .canonical
+            .try_borrow_mut()
+            .map_err(|_| Error::Model("store_comparison_busy".into()))?;
+        self.engine()?
+            .business_digest_with(&mut codec)
+            .map_err(Error::Model)
+    }
     pub fn state_hash(&self) -> Result<String, Error> {
-        Ok(sha256(&json(
-            &serde_json::json!({"schema":"mycity-m0-store-state-v1","engine":self.engine()?.state_hash(),"spatial":self.spatial_reference()?}),
-        )?))
+        #[derive(Serialize)]
+        struct View<'a> {
+            schema: &'static str,
+            engine: String,
+            spatial: Option<&'a SpatialReference>,
+        }
+        let mut codec = self
+            .io
+            .canonical
+            .try_borrow_mut()
+            .map_err(|_| Error::Model("store_comparison_busy".into()))?;
+        let engine = self
+            .engine()?
+            .state_hash_with(&mut codec)
+            .map_err(Error::Model)?;
+        codec
+            .hash(&View {
+                schema: "mycity-m0-store-state-v1",
+                engine,
+                spatial: self.spatial_reference()?,
+            })
+            .map_err(Error::Model)
     }
     /// Owned Rust capacities only; excludes allocator/kernel/OS pages and transient replay.
     pub fn owned_capacity_bytes(&self) -> Result<usize, Error> {
@@ -652,8 +685,7 @@ impl Store {
             + self.engine()?.owned_capacity_bytes()
             + self.io.dir.capacity()
             + self.io.background_live.capacity() * std::mem::size_of::<[u8; 32]>()
-            + self.io.canonical.owned_capacity_bytes()
-            - std::mem::size_of::<mycity_core::canonical::Workspace>()
+            + self.io.canonical.borrow().backing_capacity_bytes()
             + self.io.root.schema.capacity()
             + self.io.root.wal_chain.capacity()
             + self.io.root.genesis_sha256.capacity()
@@ -915,7 +947,7 @@ impl Persistence {
             .ok_or(Error::Invalid("sequence_overflow"))?;
         let mut buffers = wal::Buffers::new();
         let payload = wal::encode(
-            &mut self.canonical,
+            &mut self.canonical.get_mut().workspace,
             &mut buffers,
             sequence,
             &self.root.wal_chain,

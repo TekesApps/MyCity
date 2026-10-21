@@ -3,7 +3,6 @@ use crate::diagnostics::{Class, Role, Trace};
 use crate::{
     arena::{AccountDomain, Handle, InventoryDomain, RawHandle},
     assembly::{Account, Stock, World},
-    sha256,
     units::{Money, Quantity},
 };
 use serde::{Deserialize, Serialize};
@@ -395,17 +394,45 @@ impl Engine {
         .map_err(|e| e.to_string())
     }
 
-    /// Diagnostic comparison of ALL business state. Excludes only hot receipts,
-    /// world revision, and background execution metadata (air is compared separately).
+    fn business_view(&self) -> impl Serialize + '_ {
+        #[derive(Serialize)]
+        struct View<'a> {
+            schema: &'static str,
+            world: crate::assembly::BusinessWorld<'a>,
+            resources: &'a [Resource],
+            leases: &'a [Option<Lease>],
+            next_token: u64,
+            timeline: &'a crate::model_rows::Resident<crate::timeline::Timeline>,
+        }
+        View {
+            schema: "mycity-business-comparison-v1",
+            world: self.world.business_world(),
+            resources: &self.resources,
+            leases: &self.leases,
+            next_token: self.next_token,
+            timeline: &self.timeline,
+        }
+    }
+    /// All business bytes, with only hot receipts/revision/background excluded.
+    /// Caller owns the serial codec and output; no hidden Engine workspace.
+    pub fn write_business_comparison(
+        &self,
+        codec: &mut crate::canonical::Codec,
+        writer: impl std::io::Write,
+    ) -> Result<(), String> {
+        codec.write(&self.business_view(), writer)
+    }
+    pub fn business_digest_with(
+        &self,
+        codec: &mut crate::canonical::Codec,
+    ) -> Result<String, String> {
+        codec.hash(&self.business_view())
+    }
+    /// Diagnostic allocating wrapper, excluded from pooled hot paths.
     pub fn business_comparison_checkpoint(&self) -> Result<Vec<u8>, String> {
-        let mut world = serde_json::to_value(&self.world).map_err(|e| e.to_string())?;
-        world["revision"] = serde_json::json!(0);
-        serde_json::to_vec(
-            &serde_json::json!({"schema":"mycity-business-comparison-v1",
-            "world":world,"resources":self.resources,"leases":self.leases,
-            "next_token":self.next_token,"timeline":self.timeline}),
-        )
-        .map_err(|e| e.to_string())
+        let mut bytes = Vec::new();
+        self.write_business_comparison(&mut crate::canonical::Codec::new()?, &mut bytes)?;
+        Ok(bytes)
     }
     /// Only a hash-verified, rules-bound storage dependency may enter this boundary.
     pub fn restore_checkpoint(bytes: &[u8]) -> Result<Self, String> {
@@ -762,8 +789,39 @@ impl Engine {
             + self.leases.capacity() * size_of::<Option<Lease>>()
             + self.journal.capacity() * size_of::<JournalRecord>()
     }
+    fn state_view(&self) -> impl Serialize + '_ {
+        #[derive(Serialize)]
+        struct View<'a> {
+            world: crate::assembly::BorrowedWorldView<'a>,
+            resources: &'a [Resource],
+            leases: &'a [Option<Lease>],
+            next_token: u64,
+            timeline: &'a crate::model_rows::Resident<crate::timeline::Timeline>,
+            background: &'a crate::model_rows::Resident<crate::background::Background>,
+        }
+        View {
+            world: self.world.borrowed_view(),
+            resources: &self.resources,
+            leases: &self.leases,
+            next_token: self.next_token,
+            timeline: &self.timeline,
+            background: &self.background,
+        }
+    }
+    pub fn write_state_comparison(
+        &self,
+        codec: &mut crate::canonical::Codec,
+        writer: impl std::io::Write,
+    ) -> Result<(), String> {
+        codec.write(&self.state_view(), writer)
+    }
+    pub fn state_hash_with(&self, codec: &mut crate::canonical::Codec) -> Result<String, String> {
+        codec.hash(&self.state_view())
+    }
+    /// Diagnostic convenience wrapper; production roles retain one caller codec.
     pub fn state_hash(&self) -> String {
-        sha256(&serde_json::to_vec(&serde_json::json!({"world":self.world.view(),"resources":self.resources,"leases":self.leases,"next_token":self.next_token,"timeline":self.timeline,"background":self.background})).expect("exact state"))
+        self.state_hash_with(&mut crate::canonical::Codec::new().expect("state codec"))
+            .expect("exact state")
     }
     pub fn execute(&mut self, caller: Caller, env: Envelope) -> Result<Receipt, TxError> {
         self.execute_recorded(caller, env, |_, _| Ok::<(), std::convert::Infallible>(()))

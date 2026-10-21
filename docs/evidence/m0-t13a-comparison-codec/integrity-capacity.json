@@ -1,0 +1,18 @@
+{
+  "source_archive_current_equal": true,
+  "source_sha256": "1b31214ad930d89b875f699b9b762a8da33c597b13a40f8db2f73ccf821336df",
+  "fixed_binary_equal": true,
+  "old_fixed_binaries_unchanged": [
+    "work/candidate-binaries/background-resident/mycity-headless",
+    "work/candidate-binaries/general-decode/mycity-headless",
+    "work/candidate-binaries/store-stream/mycity-headless",
+    "work/candidate-binaries/wal-canonical/mycity-headless"
+  ],
+  "lock_unchanged": true,
+  "base_target_bytes": 54078832,
+  "two_raw_air_normalization_bytes": 1325248,
+  "conservative_target_bytes": 55404080,
+  "original_budget_bytes": 67108864,
+  "margin_bytes": 11704784,
+  "runtime_pool_accepted": false
+}

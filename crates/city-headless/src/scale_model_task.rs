@@ -3,7 +3,6 @@
 use crate::{
     control_data::{self, joined, Bytes, Capacity, Scratch, Text},
     heap_meter,
-    joint_reference::business_digest,
     scale_reference::{self, Step, Tier},
 };
 use mycity_core::{read_bounded, sha256, transaction::Engine};
@@ -314,7 +313,7 @@ pub fn execute(dir: &Path) -> Result<(), String> {
                                 }
                                 let row = Target {
                                     air_sha256: sha256(&air.checkpoint()?),
-                                    business_sha256: business_digest(&state.engine)?,
+                                    business_sha256: state.business_digest()?,
                                     target: *target,
                                     windows: state.windows,
                                 };
@@ -384,22 +383,23 @@ pub fn execute(dir: &Path) -> Result<(), String> {
                 {
                     return Err("endurance_entire_engine_including_metadata".into());
                 }
-                if actual.business_comparison_checkpoint()?
-                    != expected.business_comparison_checkpoint()?
-                    || actual
+                let mut comparison = mycity_core::canonical::Codec::new()?;
+                crate::model_compare::business(&actual, &expected, &mut comparison)?;
+                if actual
+                    .background()
+                    .and_then(|b| b.field())
+                    .ok_or("scale_sim_actual_field")?
+                    .checkpoint()?
+                    != expected
                         .background()
                         .and_then(|b| b.field())
-                        .ok_or("scale_sim_actual_field")?
+                        .ok_or("scale_sim_expected_field")?
                         .checkpoint()?
-                        != expected
-                            .background()
-                            .and_then(|b| b.field())
-                            .ok_or("scale_sim_expected_field")?
-                            .checkpoint()?
                 {
                     return Err("scale_sim_full_final_comparison".into());
                 }
-                result.business_sha256 = Some(Text::new(&business_digest(&actual)?)?);
+                result.business_sha256 =
+                    Some(Text::new(&actual.business_digest_with(&mut comparison)?)?);
             }
         }
     }

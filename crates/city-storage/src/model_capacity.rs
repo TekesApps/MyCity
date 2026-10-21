@@ -115,6 +115,24 @@ fn metadata() -> Vec<MetadataPart> {
             mycity_core::canonical::Workspace::backing_bytes(),
         ),
         (
+            "reference_comparison_codec_conservative_overlap",
+            1,
+            mycity_core::canonical::Codec::LIMIT
+                + mycity_core::canonical::Workspace::backing_bytes()
+                + size_of::<mycity_core::canonical::Codec>(),
+        ),
+        (
+            "reference_additional_control_headers_conservative_bound",
+            1,
+            256,
+        ),
+        ("comparison_file_read_write_stack_scratch", 1, 3 * 8192),
+        (
+            "store_comparison_codec_backing_additional_to_role_io",
+            1,
+            mycity_core::canonical::Codec::LIMIT,
+        ),
+        (
             "wal_frame_and_record_buffers",
             1,
             std::mem::size_of::<super::wal::Buffers>(),
@@ -252,7 +270,7 @@ pub fn plan(budget: usize) -> Plan {
             "Charge all per-Engine retained prepare tables/background scratch and controls; extra active Prepared target is conservatively retained; durable-before-publish/full rollback",
             "Streaming seed restore with token/depth/sequence bounds before materialization; no old/new Vec capacity overlap",
             "Stream WAL, receipt archive, hashes and canonical borrowed views; no Value or full encoded-body Vec",
-            "One 4MiB codec reused across serial paths, including legacy checkpoint decoding; no live nested codec borrow",
+            "Transitional Store comparison4MiB and Reference codec are charged separately from role IO4MiB; final broker must grant all actual backing before allocation and eliminate redundant slots without double credit",
             "Typed metadata rows must use exact backing; enforce path4096/token4096/schema-or-hash64 limits before allocation",
             "Actual broker grants before all allocations, touch all backing, real child wait before credit return",
         ],

@@ -1,0 +1,13 @@
+{
+  "metrics": {
+    "time_ns": 1792578731574920000,
+    "work_du_kib": 18060080,
+    "target_du_kib": 1023380,
+    "filesystem_available_bytes": 120962629632
+  },
+  "deleted_paths": [],
+  "deleted_allocated_bytes": 0,
+  "new_independent_target": false,
+  "new_pressure_copies": false,
+  "reason": "No disposable full test world created. Shared target retained for next builds; fixed executables, complete restore inputs, old component/fault evidence and unresolved historical libraries retained. No blanket cache deletion; no df movement attributed to cleanup."
+}

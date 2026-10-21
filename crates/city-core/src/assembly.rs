@@ -190,7 +190,108 @@ impl<D: crate::arena::Domain> Record for (u32, Handle<D>) {
         (0, Handle::inactive())
     }
 }
+/// Full checkpoint world with a deliberately zeroed revision, borrowing all tables.
+/// Keep distinct from the observable WorldView (which translates inventory owners).
+#[derive(Serialize)]
+pub(crate) struct BusinessWorld<'a> {
+    scope: Scope,
+    seed: u64,
+    revision: u64,
+    accounts: &'a Arena<AccountDomain, Account>,
+    stocks: &'a Arena<InventoryDomain, Stock>,
+    account_ids: &'a Rows<(u32, Handle<AccountDomain>), MAX_ACCOUNTS>,
+    stock_ids: &'a Rows<(u32, Handle<InventoryDomain>), MAX_STOCKS>,
+    sources: &'a Rows<OpeningSource, MAX_SOURCES>,
+    region: &'a Option<crate::region::Region>,
+    economy: &'a Option<crate::economy::Economy>,
+    boot: &'a Option<crate::boot::Boot>,
+    exchange: &'a Option<crate::exchange::Exchange>,
+}
+#[derive(Serialize)]
+pub(crate) struct BorrowedWorldView<'a> {
+    schema: &'static str,
+    scope: Scope,
+    seed: u64,
+    revision: u64,
+    accounts: AccountViews<'a>,
+    stocks: StockViews<'a>,
+    opening_sources: &'a Rows<OpeningSource, MAX_SOURCES>,
+    region: &'a Option<crate::region::Region>,
+    economy: &'a Option<crate::economy::Economy>,
+    boot: &'a Option<crate::boot::Boot>,
+    exchange: &'a Option<crate::exchange::Exchange>,
+}
+struct AccountViews<'a>(&'a World);
+impl Serialize for AccountViews<'_> {
+    fn serialize<S: serde::Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
+        use serde::ser::SerializeSeq;
+        let mut seq = s.serialize_seq(Some(self.0.account_ids.len()))?;
+        for (_, h) in self.0.account_ids.iter() {
+            let a = self.0.accounts.get(*h).expect("validated world");
+            seq.serialize_element(&AccountView {
+                id: a.id,
+                role: a.role,
+                cash: a.cash,
+                protected: a.protected,
+            })?;
+        }
+        seq.end()
+    }
+}
+struct StockViews<'a>(&'a World);
+impl Serialize for StockViews<'_> {
+    fn serialize<S: serde::Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
+        use serde::ser::SerializeSeq;
+        let mut seq = s.serialize_seq(Some(self.0.stock_ids.len()))?;
+        for (_, h) in self.0.stock_ids.iter() {
+            let v = self.0.stocks.get(*h).expect("validated world");
+            seq.serialize_element(&StockView {
+                id: v.id,
+                owner: self.0.accounts.get(v.owner).expect("validated owner").id,
+                commodity: v.commodity,
+                quantity: v.quantity,
+                basis: v.basis,
+                lot_id: v.lot_id,
+                origin_quantity: v.origin_quantity,
+                origin_basis: v.origin_basis,
+                offset: v.offset,
+            })?;
+        }
+        seq.end()
+    }
+}
 impl World {
+    pub(crate) fn business_world(&self) -> BusinessWorld<'_> {
+        BusinessWorld {
+            scope: self.scope,
+            seed: self.seed,
+            revision: 0,
+            accounts: &self.accounts,
+            stocks: &self.stocks,
+            account_ids: &self.account_ids,
+            stock_ids: &self.stock_ids,
+            sources: &self.sources,
+            region: &self.region,
+            economy: &self.economy,
+            boot: &self.boot,
+            exchange: &self.exchange,
+        }
+    }
+    pub(crate) fn borrowed_view(&self) -> BorrowedWorldView<'_> {
+        BorrowedWorldView {
+            schema: "mycity-m0-state-v6",
+            scope: self.scope,
+            seed: self.seed,
+            revision: self.revision,
+            accounts: AccountViews(self),
+            stocks: StockViews(self),
+            opening_sources: &self.sources,
+            region: &self.region,
+            economy: &self.economy,
+            boot: &self.boot,
+            exchange: &self.exchange,
+        }
+    }
     pub(crate) fn restore_capacity(&mut self) -> Result<(), String> {
         self.accounts
             .restore_capacity(self.scope, MAX_ACCOUNTS as u32, WORLD_BYTE_BUDGET / 2)

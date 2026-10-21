@@ -1,0 +1,9 @@
+# 修复与未通过边界
+
+开发期首次check暴露资源／租约适配器使用Vec引用而实际类型已是Rows，修成借用slice；初版测试旧state oracle返回类型转换未完整更新，定向重跑及最终冻结全仓覆盖。以上不当成已通过验证。
+
+advisor发现Store owned统计抵扣RefCell头会漏借用状态，改为只追加Codec实际背板；再次只读确认具体阻断消除。Reference非Engine头也列账，并通过实际类型上界测试，目标另加保守256B。
+
+最终源码freeze1b31214a…全仓及三个实际后续证明均0，无跳过失败；原raw stdout保留工具产生的末尾空行，不为git whitespace外观改写原始日志。源／说明diff的检查与raw证据分别报告。
+
+新比较结构仍未接全图broker，已知额外codec与旧IO槽同时列账；ordinary Compare完整Engine/空气Vec及legacy仍在。十次hash诊断和全仓耗时不算正式p95/p99或快进性能。没有新增联合full、三轮稳态、四速、8小时或16GB通过。

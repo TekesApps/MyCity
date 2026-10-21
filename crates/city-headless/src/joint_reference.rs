@@ -178,7 +178,7 @@ pub fn loan(p: &Policy) -> Result<Vec<Action>, String> {
     }])
 }
 pub fn business_digest(e: &Engine) -> Result<String, String> {
-    Ok(sha256(&e.business_comparison_checkpoint()?))
+    e.business_digest_with(&mut mycity_core::canonical::Codec::new()?)
 }
 /// Independent finite outcome requirements, in addition to branch equality.
 pub fn final_facts(e: &Engine, p: &Policy) -> Result<Value, String> {
@@ -303,6 +303,7 @@ pub struct Reference {
     pub windows: u64,
     retry_job: Option<u64>,
     retried: bool,
+    comparison: std::cell::RefCell<mycity_core::canonical::Codec>,
 }
 impl Reference {
     pub fn new() -> Result<Self, String> {
@@ -312,6 +313,7 @@ impl Reference {
             windows: 0,
             retry_job: None,
             retried: false,
+            comparison: std::cell::RefCell::new(mycity_core::canonical::Codec::new()?),
         })
     }
     /// Fresh diagnostic reference only; never restores or writes a Store.
@@ -329,7 +331,26 @@ impl Reference {
             windows: 0,
             retry_job: None,
             retried: false,
+            comparison: std::cell::RefCell::new(mycity_core::canonical::Codec::new()?),
         })
+    }
+    pub fn business_digest(&self) -> Result<String, String> {
+        let mut codec = self
+            .comparison
+            .try_borrow_mut()
+            .map_err(|_| "reference_comparison_busy")?;
+        self.engine.business_digest_with(&mut codec)
+    }
+    pub fn comparison_capacity_bytes(&self) -> usize {
+        std::mem::size_of::<Self>() - std::mem::size_of::<Engine>()
+            + self.comparison.borrow().backing_capacity_bytes()
+    }
+    pub fn compare_business(&self, other: &Engine) -> Result<(), String> {
+        let mut codec = self
+            .comparison
+            .try_borrow_mut()
+            .map_err(|_| "reference_comparison_busy")?;
+        crate::model_compare::business(&self.engine, other, &mut codec)
     }
     pub fn execute(&mut self, actions: Vec<Action>) -> Result<Receipt, String> {
         if self.engine.journal().len() >= 512 {
@@ -472,7 +493,7 @@ impl Reference {
             .ok_or("joint_tax_overflow")?;
         let t = self.engine.timeline().ok_or("joint_timeline")?;
         Ok(
-            json!({"time":region.interaction_time,"tax":{"occurrences":occurrences,"accrued_cents":accrued,"arrears_cents":tax.arrears.value(),"paid_cents":accrued-tax.arrears.value()},"payroll":t.payroll,"claims":t.claims,"accounts":view.accounts,"cash_total":view.accounts.iter().map(|a|a.cash.value()).sum::<i64>(),"background_windows":self.windows,"business_sha256":business_digest(&self.engine)?,"air_sha256":self.engine.background().and_then(|b|b.field()).map(|s|s.checkpoint().map(|b|sha256(&b))).transpose()?}),
+            json!({"time":region.interaction_time,"tax":{"occurrences":occurrences,"accrued_cents":accrued,"arrears_cents":tax.arrears.value(),"paid_cents":accrued-tax.arrears.value()},"payroll":t.payroll,"claims":t.claims,"accounts":view.accounts,"cash_total":view.accounts.iter().map(|a|a.cash.value()).sum::<i64>(),"background_windows":self.windows,"business_sha256":self.business_digest()?,"air_sha256":self.engine.background().and_then(|b|b.field()).map(|s|s.checkpoint().map(|b|sha256(&b))).transpose()?}),
         )
     }
 }

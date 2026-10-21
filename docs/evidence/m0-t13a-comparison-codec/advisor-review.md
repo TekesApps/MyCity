@@ -1,0 +1,9 @@
+# 独立实现审查
+
+现有boot_advisor只读审查当前diff，没有运行测试或构建。
+
+初次结论发现Store owned_capacity_bytes抵扣整个RefCell而Codec owned只含Codec头，少计借用状态；建议只追加纯背板。已实现Codec::backing_capacity_bytes，Store完整头只计一次并追加背板。Reference非Engine头及背板也列入报告；目标表保守增加控制头界。advisor再次只核对该具体修复，确认阻断消除。
+
+其余有限范围未发现新具体阻断：业务完整World/revision0与状态WorldView有区别；Store schema/spatial及显式失败借用保留；文件比较完整核对短输入／不同内容／尾随数据，错误不报告相等；4MiB Store、Reference及角色IO分别列账。
+
+未关闭的ordinary Compare完整Engine/空气Vec、便利API临时codec、legacy及实际全图池明确保留。最终全仓、旧Value完整字节和Store联合hash必须以终态实测为准，静态意见不证明性能或池授权通过。

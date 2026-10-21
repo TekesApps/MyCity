@@ -528,3 +528,25 @@ fn replay_preserves_old_value_last_key_and_rejects_ignored_unknown_fields_before
         }
     }
 }
+
+#[test]
+fn borrowed_store_hash_preserves_old_outer_value_and_reuses_wal_workspace() {
+    let temp = Temp::new();
+    let mut store =
+        Store::create(&temp.world(), INPUT, vec![], "comparison-codec-test-v1").unwrap();
+    let old = |s: &Store| {
+        mycity_core::sha256(&serde_json::to_vec(&serde_json::json!({"schema":"mycity-m0-store-state-v1","engine":s.engine().unwrap().state_hash(),"spatial":s.spatial_reference().unwrap()})).unwrap())
+    };
+    let before = store.owned_capacity_bytes().unwrap();
+    assert_eq!(store.state_hash().unwrap(), old(&store));
+    let env = command(&store);
+    store.execute(Caller::System, env.clone()).unwrap();
+    assert_eq!(store.state_hash().unwrap(), old(&store));
+    let expected = store.state_hash().unwrap();
+    drop(store);
+    let mut store = Store::open(&temp.world(), "comparison-codec-test-v1").unwrap();
+    assert_eq!(store.state_hash().unwrap(), expected);
+    store.execute(Caller::System, env).unwrap();
+    assert_eq!(store.state_hash().unwrap(), expected);
+    assert!(store.owned_capacity_bytes().unwrap() >= before);
+}
