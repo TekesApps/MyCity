@@ -1,0 +1,5 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 32.15s

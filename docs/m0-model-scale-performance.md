@@ -189,3 +189,6 @@ v0.5.55：[P-E0计划释放节拍及完整30日重测](evidence/m0-t13a-queued-p
 
 
 v0.5.56：[固定L1诊断恢复与旧组件兼容](evidence/m0-t13a-bounded-restore/STATUS.md)。固定记录先算完整graph/容量、一次预分配及token/嵌套上限，表任意字段顺序无整表Content；Arena引用语义保留，写入codec不变。最终fd551…来源87相关/clippy/fmt/build通过；前一15166…来源全仓Release0单列，原clippy/深度反例失败分源保留。实际读旧v50全部27组件200526364B、native361272/stub1232426并重编码hash一致，native保守界35917424B；未加载压力/reserve，不能签完整L1或常规64MiB/共同8MiB。32GiB采样normal/swap净0但基线已有9147187200B，不能称无swap。full四档/正式稳态/真正8h/真实16GB仍未签，M0 not_accepted。
+
+
+v0.5.63的[worker类型化空气工作区](evidence/m0-t13a-air-workspace/STATUS.md)把20000源/128²三数组、持久字符串和padding转为固定1MiB并seed直写恢复，保持原数值内核及规范字节；原IO4MiB与typed1MiB同child实际预留/Filled/wait，双owner池55MiB、总池64MiB不变。State私有且无fixed克隆逃逸，同进程跨job复用。解析/栈/控制/其余模型仍EXTRA；验收与来源分层以阶段状态为准，不把当前范围外预算或正式稳态/8h/真实16GB签过。

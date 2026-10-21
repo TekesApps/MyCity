@@ -378,3 +378,6 @@ v0.5.61：[原完整L1＋L2联合smoke](evidence/m0-t13a-joint-recheck/STATUS.md
 
 
 v0.5.62：[接纳校验流式摘要](evidence/m0-t13a-stream-digest/STATUS.md)。固定8KiB批量摘要复用原规范checkpoint，捕获/冻结/Accept/staged长度不造整份编码Vec；原schema/hash/CPU比对保持。最终5347…/66f4…来源全仓Release81774终态0，harness337含nested，clippy/fmt/build0；两次测试失败分源保留。原full联合43204实际610.629363208秒、经营356.202284167秒，全部业务/恢复/725worker4Sim/L1全600scan两快照及最新冷装8.226595334秒核验一致。sealed execution p99观察13.642998ms，quote p95仍23.801760ms超20；样本/faultjob/背景差异明确，不拼正式门。normal64/common8/State等EXTRA未闭合，正式四档/三轮稳态/真正8h/真实16GB未完成，M0 not_accepted。advisor实际独立重核有限发布。
+
+
+v0.5.63：[worker固定空气模型背板及实际借还](evidence/m0-t13a-air-workspace/STATUS.md)。20000源/128²三数组与持久字符串/padding使用1MiB固定背板，seed直接恢复，共用原State算子；无fixed State/Input/Vec克隆逃逸，同进程跨job复用。IO4＋typed1实际预留/Filled/wait共5MiB，Sim4MiB独立，双owner池55MiB、最终64MiB；原上限不扩。ee8af3全仓Release44351终态0/harness340含nested；最终c23947仅省略两处显式生命周期，精确差异留证，最终131定向/clippy/fmt/build0，不借作最终全仓。原full联合84790终态0/610.372237708秒，经营417.637036542秒，3013原票/完整Engine含metadata/724旧hash/725worker4Sim/724 loaded-reset/600L1两快照及最新冷装7.926647875秒独立核验。sealed执行p95/p99=22.185695/46.696616ms、报价38.140652/82.436250ms均失败，观察较v62慢；不宣称性能通过/提速。其余模型/解析/栈/helper仍EXTRA，normal64/common8、正式四档/稳态/真正8h/真实16GB未签，M0 not_accepted。已无占用清理705个旧debug缓存文件，allocated约58.0MiB/可用实增约52.2MiB；共享Release及所有验收证据/源码/WIP保留。

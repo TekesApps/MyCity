@@ -60,6 +60,7 @@ fn task(target: u32, dense: bool) -> Input {
                 end: target,
                 rate_micro: 10000,
             }]
+            .into()
         },
     }
 }
@@ -109,7 +110,7 @@ pub fn run(dir: &Path) -> Result<Value, String> {
     let e = until(&mut worker, Stage::Complete, &mut events)?;
     let result = candidate(&persistent, &first, &base, &e)?;
     let mut next_input = task(180, false);
-    next_input.sources.clear();
+    next_input.clear_sources()?;
     let next = result.continue_from_boundary(next_input)?;
     let second = request(&persistent, &next, 2, 1)?;
     worker.submit(&second)?;

@@ -177,3 +177,12 @@ v0.5.21执行更新：上列是v0.5.20时点的阻断记录；修复与有限联
 ## 11. W3实际进程链（v0.5.28）
 
 [独立Sim实现与边界](background-sim-runtime.md)已提供Rust宿主Client→独立Sim唯一Store writer→bounded纯worker，并实测进程故障／原票恢复。每次attempt可停止／重建worker，尚不是通用worker池；正常常驻纯worker的复用证据仍见W1。缓存跨Sim复用先核持久owner并取得OS锁；不能只信旧App内存PID。Unix宿主实验、6MiB磁盘charge及具体帧限制不代替全进程内存实测，完整资源与实际经济长跑留W4；Render／UI／GPU和AgentKit保持当前范围之外。
+
+
+## T13-A固定空气工作区的有限落地
+
+v0.5.63阶段证据见[工作区范围](evidence/m0-t13a-air-workspace/DESIGN.md)及[实测状态](evidence/m0-t13a-air-workspace/STATUS.md)。当前bounded空气worker将20000源和128²格的三块数值数组、持久字符串及padding放进固定1MiB背板，seed直写恢复、活动切片运行/编码；同进程跨任务复用，成功reset后再Complete。原CPU/Sim owned适配器继续使用同一数值内核。
+
+启动前池实际释放5MiB（IO4＋typed1），两者创建扫描并绑定实际child后Filled；进程仍在时不归还，实际wait后补足5页才发布信用，初始化/部分补页失败保持关闭。首个Sim编码槽4MiB在worker页以下，正常双owner池余额55MiB；原64MiB总池没有扩大。
+
+这不是通用进程全堆arena，也不证明全部模型/控制解析/原生栈、helper或共同8MiB已闭合；无unsafe透明allocator。报告/故障/预算及验收限制以本阶段原始证据为准，渲染/UI/AgentKit和真实16GB设备仍未验。

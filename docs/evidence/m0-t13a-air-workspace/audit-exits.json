@@ -1,0 +1,20 @@
+{
+  "joint_actual_session": 84790,
+  "joint_exit_code": 0,
+  "verify_session": 97225,
+  "verify_exit_code": 0,
+  "workspace_audit_session": 44154,
+  "workspace_audit_exit_code": 0,
+  "coverage_exit_code": 0,
+  "diagnostic_audit_exit_code": 0,
+  "latency_audit_session": 25796,
+  "latency_audit_exit_code": 0,
+  "collect_session": 74722,
+  "collect_exit_code": 0,
+  "static_check_exit_code": 0,
+  "advisor_independent_reruns": {
+    "verify": 0,
+    "workspace_audit": 0,
+    "static_check": 0
+  }
+}

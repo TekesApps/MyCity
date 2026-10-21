@@ -1,0 +1,63 @@
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+warning: unused import: `crate::sha256`
+ --> crates/city-core/src/air.rs:2:5
+  |
+2 | use crate::sha256;
+  |     ^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: associated items `fixed`, `reset`, `write_next`, `fixed_shape`, `tail`, and `allocation` are never used
+   --> crates/city-core/src/air/rows.rs:91:19
+    |
+90  | impl<T: Clone> Rows<T> {
+    | ---------------------- associated items in this implementation
+91  |     pub(super) fn fixed(count: usize, fill: T) -> Result<Self, String> {
+    |                   ^^^^^
+...
+106 |     pub(super) fn reset(&mut self, fill: T) -> Result<(), String> {
+    |                   ^^^^^
+...
+114 |     pub(super) fn write_next(&mut self, value: T) -> Result<(), String> {
+    |                   ^^^^^^^^^^
+...
+122 |     pub(super) fn fixed_shape(&self, count: usize) -> bool {
+    |                   ^^^^^^^^^^^
+...
+128 |     pub(super) fn tail(&self) -> &[T] {
+    |                   ^^^^
+...
+131 |     pub(super) fn allocation(&self) -> usize {
+    |                   ^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` on by default
+
+warning: `mycity-core` (lib test) generated 1 warning (1 duplicate)
+warning: `mycity-core` (lib) generated 2 warnings (run `cargo fix --lib -p mycity-core` to apply 1 suggestion)
+    Checking mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+    Checking mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+error[E0308]: mismatched types
+  --> crates/city-headless/src/worker_probe.rs:56:13
+   |
+56 | /             vec![Source {
+57 | |                 id: 1,
+58 | |                 cell: 8256,
+59 | |                 start: 0,
+60 | |                 end: target,
+61 | |                 rate_micro: 10000,
+62 | |             }]
+   | |______________^ expected `Rows<Source>`, found `Vec<Source>`
+   |
+   = note: expected struct `Rows<Source>`
+              found struct `Vec<Source>`
+   = note: this error originates in the macro `vec` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: call `Into::into` on this expression to convert `Vec<Source>` into `Rows<Source>`
+   |
+62 |             }].into()
+   |               +++++++
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `mycity-headless` (bin "mycity-headless") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `mycity-headless` (bin "mycity-headless" test) due to 1 previous error

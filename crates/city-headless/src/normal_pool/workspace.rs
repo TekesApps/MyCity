@@ -75,8 +75,8 @@ impl Pool {
             .iter()
             .position(Option::is_none)
             .ok_or("normal_workspace_table_full")?;
-        // Four pages per entry; worker pages60..64 remain independent.
-        let end = 60 - slot * 4;
+        // Four pages per entry, below the separate five-page worker grant.
+        let end = WORKER_START_PAGE - slot * 4;
         if self.pages[end - 4..end].iter().any(Option::is_none) {
             return Err("normal_workspace_page_overlap".into());
         }
@@ -181,7 +181,7 @@ impl Pool {
         e.phase = Phase::Retiring;
         self.workspaces[slot] = Some(e);
         self.workspace_event("retiring_after_sim_wait_or_cancel", e)?;
-        let end = 60 - slot * 4;
+        let end = WORKER_START_PAGE - slot * 4;
         // Do not publish credit until every replacement page has been touched.
         for i in end - 4..end {
             if self.pages[i].is_some() {
@@ -281,6 +281,8 @@ mod tests {
         .unwrap();
         let worker = worker_slots::Owner::new(2, 1, 1, 1).unwrap();
         let r = worker.report().unwrap();
+        let air = mycity_core::air::AirWorkspace::new().unwrap();
+        let typed = air.report().unwrap();
         p.legacy_action(Op::Filled {
             id: id.unwrap(),
             key: active.worker_key,
@@ -288,15 +290,20 @@ mod tests {
             capacity_bytes: r.owner_capacity_bytes,
             available_touched_bytes: r.available_touched_bytes,
             full_balance_scan_passed: true,
+            typed_instance: typed.workspace_instance,
+            typed_capacity: typed.payload_capacity_bytes,
+            typed_scan_passed: typed.full_fill_scan_passed,
         })
         .unwrap();
-        assert_eq!(p.summary.granted_capacity_bytes, 2 * BYTES);
+        assert_eq!(p.summary.granted_capacity_bytes, BYTES + GRANT_BYTES);
         assert_eq!(
             p.summary.available_touched_bytes
                 + codec.report().unwrap().owner_capacity_bytes
-                + worker.report().unwrap().owner_capacity_bytes,
+                + worker.report().unwrap().owner_capacity_bytes
+                + air.report().unwrap().payload_capacity_bytes,
             super::super::BYTES
         );
+        drop(air);
         drop(worker); // local allocation test; real Child waits are covered by broker integration.
         p.give_back(p.active.unwrap()).unwrap();
         assert_eq!(p.summary.workspace_capacity_bytes, BYTES);

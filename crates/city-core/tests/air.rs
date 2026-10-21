@@ -12,7 +12,7 @@ fn input(target: u32) -> Input {
         initial_micro: 2_000_000,
         boundary_micro: [Some(2_000_000); 4],
         boundary_until: target,
-        sources: vec![],
+        sources: vec![].into(),
     }
 }
 fn finish(s: &mut State, source: u32, cells: u32) {
@@ -110,7 +110,8 @@ fn independent_f64_single_step_day_and_fixed_thirty_day_window() {
                 end: target,
                 rate_micro: 2500,
             },
-        ];
+        ]
+        .into();
         let expected = reference(&i);
         let mut s = State::new(i).unwrap();
         finish(&mut s, 7, 113);
@@ -194,7 +195,8 @@ fn partial_candidate_never_publishes_field_integral_time_or_diagnostics() {
         start: 0,
         end: 60,
         rate_micro: 10000,
-    }];
+    }]
+    .into();
     let mut s = State::new(i).unwrap();
     let before = s.report();
     s.page(1, 1).unwrap();
@@ -252,6 +254,7 @@ fn unknown_boundary_bad_sources_and_limits_do_not_silently_substitute_zero() {
                     end: 60,
                     rate_micro: 1,
                 }]
+                .into()
             }
             5 => {
                 i.sources = vec![Source {
@@ -261,6 +264,7 @@ fn unknown_boundary_bad_sources_and_limits_do_not_silently_substitute_zero() {
                     end: 60,
                     rate_micro: 0,
                 }]
+                .into()
             }
             _ => i.initial_micro = u64::MAX,
         };
@@ -282,7 +286,8 @@ fn pulse_spreads_from_a_single_cell_on_later_steps() {
         start: 0,
         end: 60,
         rate_micro: 1_000_000,
-    }];
+    }]
+    .into();
     let mut s = State::new(i).unwrap();
     while s.report().time < 60 {
         s.page(8192, 1024).unwrap();
@@ -319,13 +324,15 @@ fn decoder_rejects_excess_rows_before_accepting_source_or_checkpoint_vectors() {
 #[test]
 fn continuous_windows_preserve_field_integral_and_source_ledger() {
     let mut first = input(60);
-    first.sources.push(Source {
-        id: 1,
-        cell: 528,
-        start: 0,
-        end: 60,
-        rate_micro: 10000,
-    });
+    first
+        .push_source(Source {
+            id: 1,
+            cell: 528,
+            start: 0,
+            end: 60,
+            rate_micro: 10000,
+        })
+        .unwrap();
     let mut full = first.clone();
     full.target = 180;
     full.boundary_until = 180;
@@ -336,7 +343,7 @@ fn continuous_windows_preserve_field_integral_and_source_ledger() {
     let field = state.field_bits().to_vec();
     let integral = state.integral_bits().to_vec();
     let mut next = input(180);
-    next.sources.clear();
+    next.clear_sources().unwrap();
     let mut continued = state.continue_from_boundary(next.clone()).unwrap();
     assert_eq!(continued.field_bits(), field);
     assert_eq!(continued.integral_bits(), integral);
@@ -358,13 +365,14 @@ fn continuous_windows_preserve_field_integral_and_source_ledger() {
     bad.boundary_micro[0] = Some(0);
     assert!(state.continue_from_boundary(bad).is_err());
     let mut bad = next.clone();
-    bad.sources.push(Source {
+    bad.push_source(Source {
         id: 1,
         cell: 1,
         start: 59,
         end: 61,
         rate_micro: 1,
-    });
+    })
+    .unwrap();
     assert!(state.continue_from_boundary(bad).is_err());
     let unfinished = State::new(next).unwrap();
     assert!(unfinished.continue_from_boundary(input(200)).is_err());
@@ -378,13 +386,14 @@ fn diagnostics_keep_air_checkpoint_exact_and_exclude_page_sink_from_parent_clock
     for with_source in [false, true] {
         let mut i = input(60);
         if with_source {
-            i.sources.push(Source {
+            i.push_source(Source {
                 id: 1,
                 cell: 12,
                 start: 0,
                 end: 60,
                 rate_micro: 100,
-            });
+            })
+            .unwrap();
         }
         let mut plain = State::new(i.clone()).unwrap();
         let mut measured = State::new(i).unwrap();
@@ -469,7 +478,8 @@ fn checkpoint_digest_preserves_complete_and_continued_state_identity() {
         start: 0,
         end: 120,
         rate_micro: 1,
-    }];
+    }]
+    .into();
     let mut s = State::new(i.clone()).unwrap();
     while !s.complete() {
         s.page(1, 1024).unwrap();

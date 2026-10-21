@@ -139,6 +139,20 @@ fn real_worker_retains_and_reuses_slots_until_owned_wait_then_returns_actual_pag
     let r: serde_json::Value =
         serde_json::from_slice(&fs::read(root.join("report.json")).unwrap()).unwrap();
     assert_eq!(r["balanced_after_owned_wait"], true);
+    let events = fs::read_to_string(root.join("events.jsonl")).unwrap();
+    let fills: Vec<serde_json::Value> = events
+        .lines()
+        .map(|l| serde_json::from_str(l).unwrap())
+        .filter(|e: &serde_json::Value| e["kind"] == "worker_actual_slots_filled")
+        .collect();
+    assert_eq!(fills.len(), 1);
+    assert!(fills[0]["typed_instance"].as_u64().unwrap() > 0);
+    assert_eq!(
+        fills[0]["typed_capacity"],
+        mycity_core::air::WORKSPACE_BYTES
+    );
+    assert_eq!(fills[0]["summary"]["granted_capacity_bytes"], GRANT_BYTES);
+    assert_eq!(GRANT_BYTES, 5 * 1024 * 1024);
     assert!(r["normal_owned_acceptance"]
         .as_str()
         .unwrap()
@@ -335,7 +349,10 @@ fn internal_mutation_failures_terminate_service_without_publishing_balanced_cred
                 .map(|s| serde_json::from_str(s).unwrap())
                 .find(|v: &serde_json::Value| v["kind"] == "injected_partial_return_failure")
                 .unwrap();
-            assert_eq!(failure["owner_actual_capacity_bytes"], 61 * 1024 * 1024);
+            assert_eq!(
+                failure["owner_actual_capacity_bytes"],
+                BYTES - GRANT_BYTES + 1024 * 1024
+            );
             assert_eq!(failure["summary"]["returns"], 0);
         }
     }

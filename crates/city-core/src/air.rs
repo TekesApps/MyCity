@@ -1,4 +1,5 @@
 //! RUN36 single-channel CPU reference. Pure laboratory task, no business effects.
+#[cfg(test)]
 use crate::sha256;
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
@@ -6,6 +7,11 @@ use std::{
     io::{self, Write},
     mem::size_of,
 };
+mod rows;
+pub use rows::Rows;
+mod workspace;
+pub use workspace::{AirWorkspace, WorkspaceReport, WORKSPACE_BYTES};
+
 pub const STRATEGY: &str = "run36-air-f32-v1";
 pub const INPUT_BYTES: usize = 4 * 1024 * 1024;
 pub const CHECKPOINT_BYTES: usize = 8 * 1024 * 1024;
@@ -119,14 +125,14 @@ where
     }
     deserializer.deserialize_seq(Rows::<T, N>(std::marker::PhantomData))
 }
-fn source_rows<'de, D: serde::Deserializer<'de>>(d: D) -> Result<Vec<Source>, D::Error> {
-    bounded::<D, Source, 20000>(d)
+fn source_rows<'de, D: serde::Deserializer<'de>>(d: D) -> Result<Rows<Source>, D::Error> {
+    bounded::<D, Source, 20000>(d).map(Into::into)
 }
-fn field_rows<'de, D: serde::Deserializer<'de>>(d: D) -> Result<Vec<u32>, D::Error> {
-    bounded::<D, u32, 16384>(d)
+fn field_rows<'de, D: serde::Deserializer<'de>>(d: D) -> Result<Rows<u32>, D::Error> {
+    bounded::<D, u32, 16384>(d).map(Into::into)
 }
-fn integral_rows<'de, D: serde::Deserializer<'de>>(d: D) -> Result<Vec<u64>, D::Error> {
-    bounded::<D, u64, 16384>(d)
+fn integral_rows<'de, D: serde::Deserializer<'de>>(d: D) -> Result<Rows<u64>, D::Error> {
+    bounded::<D, u64, 16384>(d).map(Into::into)
 }
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(deny_unknown_fields)]
@@ -148,7 +154,7 @@ pub struct Input {
     pub boundary_micro: [Option<u64>; 4],
     pub boundary_until: u32,
     #[serde(deserialize_with = "source_rows")]
-    pub sources: Vec<Source>,
+    pub sources: Rows<Source>,
 }
 impl Input {
     pub fn parse(bytes: &[u8]) -> Result<Self, String> {
@@ -190,7 +196,15 @@ impl Input {
         Ok(())
     }
     pub fn identity(&self) -> String {
-        sha256(&serde_json::to_vec(self).expect("integer input"))
+        let mut hash = HashWriter::new();
+        serde_json::to_writer(&mut hash, self).expect("integer input");
+        format!("{:x}", hash.finish())
+    }
+    pub fn push_source(&mut self, source: Source) -> Result<(), String> {
+        self.sources.push_owned(source)
+    }
+    pub fn clear_sources(&mut self) -> Result<(), String> {
+        self.sources.clear_owned()
     }
 }
 #[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
@@ -246,11 +260,11 @@ pub struct State {
     input_sha256: String,
     time: u32,
     #[serde(deserialize_with = "field_rows")]
-    field: Vec<u32>,
+    field: Rows<u32>,
     #[serde(deserialize_with = "field_rows")]
-    scratch: Vec<u32>,
+    scratch: Rows<u32>,
     #[serde(deserialize_with = "integral_rows")]
-    integral: Vec<u64>,
+    integral: Rows<u64>,
     progress: Option<Progress>,
     totals: Totals,
     pending: Totals,
@@ -263,11 +277,11 @@ struct UncheckedState {
     input_sha256: String,
     time: u32,
     #[serde(deserialize_with = "field_rows")]
-    field: Vec<u32>,
+    field: Rows<u32>,
     #[serde(deserialize_with = "field_rows")]
-    scratch: Vec<u32>,
+    scratch: Rows<u32>,
     #[serde(deserialize_with = "integral_rows")]
-    integral: Vec<u64>,
+    integral: Rows<u64>,
     progress: Option<Progress>,
     totals: Totals,
     pending: Totals,
@@ -331,9 +345,9 @@ impl State {
             input_sha256: input.identity(),
             input,
             time: 0,
-            field: vec![value; n],
-            scratch: vec![0; n],
-            integral: vec![0; n],
+            field: vec![value; n].into(),
+            scratch: vec![0; n].into(),
+            integral: vec![0; n].into(),
             progress: None,
             totals: Totals::default(),
             pending: Totals::default(),
@@ -754,7 +768,7 @@ mod report_hash_tests {
                 initial_micro: 2_000_000,
                 boundary_micro: [Some(2_000_000); 4],
                 boundary_until: 120,
-                sources: vec![],
+                sources: vec![].into(),
             })
             .unwrap();
             for (i, v) in state.field.iter_mut().enumerate() {

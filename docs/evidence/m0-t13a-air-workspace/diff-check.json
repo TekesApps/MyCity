@@ -1,0 +1,13 @@
+{
+  "scope": "full staged-equivalent commit diff against parent; raw acceptance logs retained byte-for-byte",
+  "whole_diff_exit_code": 2,
+  "raw_log_EOF_blank_warnings": [
+    "docs/evidence/m0-t13a-air-workspace/core-tests.txt:83: new blank line at EOF.",
+    "docs/evidence/m0-t13a-air-workspace/final-targeted-tests.txt:196: new blank line at EOF.",
+    "docs/evidence/m0-t13a-air-workspace/integration-tests/tests.txt:196: new blank line at EOF.",
+    "docs/evidence/m0-t13a-air-workspace/workspace-tests.txt:676: new blank line at EOF."
+  ],
+  "other_files_check_exit_code": 0,
+  "other_files_output": "",
+  "raw_log_whitespace_accepted_as_evidence_not_rewritten": true
+}

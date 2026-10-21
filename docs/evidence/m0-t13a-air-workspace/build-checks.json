@@ -1,0 +1,44 @@
+[
+  {
+    "name": "clippy",
+    "command": [
+      "cargo",
+      "clippy",
+      "--workspace",
+      "--all-targets",
+      "--release",
+      "--locked",
+      "--offline",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 9.828231833
+  },
+  {
+    "name": "fmt",
+    "command": [
+      "cargo",
+      "fmt",
+      "--all",
+      "--",
+      "--check"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 0.4642867079999995
+  },
+  {
+    "name": "build",
+    "command": [
+      "cargo",
+      "build",
+      "--workspace",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 32.195899583
+  }
+]

@@ -1,0 +1,361 @@
+{
+  "source_sha256": "ee8af3e54b963022777f34e8194c8626fd8bfed4eafc722bd617d95cb69f6032",
+  "full_workspace_actual_session": 44351,
+  "full_workspace_exit_code": 0,
+  "targeted_actual_session": 14439,
+  "targeted_exit_code": 0,
+  "harness_passed_sum": 340,
+  "count_scope": "harness summaries including nested test invocations, not deduplicated unique tests",
+  "summaries": [
+    {
+      "line": 57,
+      "status": "ok",
+      "passed": 47,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 76,
+      "status": "ok",
+      "passed": 13,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 85,
+      "status": "ok",
+      "passed": 3,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 96,
+      "status": "ok",
+      "passed": 5,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 115,
+      "status": "ok",
+      "passed": 13,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 134,
+      "status": "ok",
+      "passed": 13,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 152,
+      "status": "ok",
+      "passed": 12,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 160,
+      "status": "ok",
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 171,
+      "status": "ok",
+      "passed": 5,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 183,
+      "status": "ok",
+      "passed": 6,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 200,
+      "status": "ok",
+      "passed": 11,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 248,
+      "status": "ok",
+      "passed": 42,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 256,
+      "status": "ok",
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 264,
+      "status": "ok",
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 283,
+      "status": "ok",
+      "passed": 12,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 297,
+      "status": "ok",
+      "passed": 8,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 313,
+      "status": "ok",
+      "passed": 10,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 320,
+      "status": "ok",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 327,
+      "status": "ok",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 334,
+      "status": "ok",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 343,
+      "status": "ok",
+      "passed": 3,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 351,
+      "status": "ok",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 363,
+      "status": "ok",
+      "passed": 6,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 374,
+      "status": "ok",
+      "passed": 5,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 381,
+      "status": "ok",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 388,
+      "status": "ok",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 396,
+      "status": "ok",
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 418,
+      "status": "ok",
+      "passed": 16,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 430,
+      "status": "ok",
+      "passed": 6,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 437,
+      "status": "ok",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 443,
+      "status": "ok",
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 465,
+      "status": "ok",
+      "passed": 16,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 471,
+      "status": "ok",
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 477,
+      "status": "ok",
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 494,
+      "status": "ok",
+      "passed": 11,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 502,
+      "status": "ok",
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 513,
+      "status": "ok",
+      "passed": 4,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 543,
+      "status": "ok",
+      "passed": 4,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 551,
+      "status": "ok",
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 561,
+      "status": "ok",
+      "passed": 4,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 581,
+      "status": "ok",
+      "passed": 14,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 599,
+      "status": "ok",
+      "passed": 12,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 621,
+      "status": "ok",
+      "passed": 2,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 636,
+      "status": "ok",
+      "passed": 9,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 649,
+      "status": "ok",
+      "passed": 7,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 656,
+      "status": "ok",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 663,
+      "status": "ok",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 669,
+      "status": "ok",
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "line": 675,
+      "status": "ok",
+      "passed": 0,
+      "failed": 0,
+      "ignored": 0
+    }
+  ],
+  "full_source_vs_final": "lifetime-only.diff: exactly two needless lifetime spellings elided; full workspace not rerun on final source, final targeted below",
+  "final_source_sha256": "c23947ba5450b674ed391e83e9595e1ad8fcd24552adbb0bc55a1aeea4e1da4b",
+  "final_targeted_actual_session": 83177,
+  "final_targeted_exit_code": 0,
+  "final_targeted_harness_passed_sum": 131,
+  "final_check_build_actual_session": 55299,
+  "final_check_build_exit_code": 0
+}

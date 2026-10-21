@@ -1,6 +1,6 @@
 //! A pure, persistent air worker. No Store handle or business command is available here.
 use mycity_core::{
-    air::{Phase, State, CHECKPOINT_BYTES, STRATEGY},
+    air::{AirWorkspace, Phase, Progress, State, CHECKPOINT_BYTES, STRATEGY},
     read_bounded, sha256,
 };
 use serde::{Deserialize, Serialize};
@@ -261,11 +261,73 @@ pub fn publish(dir: &Path, bytes: &[u8]) -> Result<String, String> {
     }
     result
 }
-fn input(
+// The bounded branch borrows its private fixed kernel; no owned State escapes it.
+// Keep the legacy owned adapter inline rather than adding a Box allocation.
+#[allow(clippy::large_enum_variant)]
+enum TaskState<'a> {
+    Owned(State),
+    Fixed(&'a mut AirWorkspace),
+}
+impl TaskState<'_> {
+    fn complete(&self) -> bool {
+        match self {
+            Self::Owned(s) => s.complete(),
+            Self::Fixed(s) => s.complete(),
+        }
+    }
+    fn progress(&self) -> Option<Progress> {
+        match self {
+            Self::Owned(s) => s.progress().cloned(),
+            Self::Fixed(s) => s.progress(),
+        }
+    }
+    fn page(&mut self, sources: u32, cells: u32) -> Result<(), String> {
+        match self {
+            Self::Owned(s) => s.page(sources, cells),
+            Self::Fixed(s) => s.page(sources, cells),
+        }
+    }
+    fn page_diagnosed(
+        &mut self,
+        sources: u32,
+        cells: u32,
+        trace: &mut mycity_core::diagnostics::Trace<'_>,
+    ) -> Result<(), String> {
+        match self {
+            Self::Owned(s) => s.page_diagnosed(sources, cells, trace),
+            Self::Fixed(s) => s.page_diagnosed(sources, cells, trace),
+        }
+    }
+    fn checkpoint_to(&mut self, writer: &mut impl Write) -> Result<usize, String> {
+        match self {
+            Self::Owned(s) => s.checkpoint_to(writer),
+            Self::Fixed(s) => s.checkpoint_to(writer),
+        }
+    }
+    fn legacy_checkpoint(&self) -> Result<Vec<u8>, String> {
+        match self {
+            Self::Owned(s) => s.checkpoint(),
+            Self::Fixed(_) => Err("worker_fixed_owned_checkpoint_forbidden".into()),
+        }
+    }
+    fn finish(&mut self, log: Option<&mut crate::cpu_log::CpuLog>) -> Result<(), String> {
+        if let Self::Fixed(s) = self {
+            let loaded = s.report()?;
+            s.reset()?;
+            let reset = s.report()?;
+            if let Some(log) = log {
+                log.worker_air_workspace(&loaded, &reset)?;
+            }
+        }
+        Ok(())
+    }
+}
+fn input<'a>(
     root: &Path,
     request: &Request,
     slots: Option<&mut crate::worker_slots::Owner>,
-) -> Result<State, String> {
+    kernel: Option<&'a mut AirWorkspace>,
+) -> Result<TaskState<'a>, String> {
     let t = &request.ticket;
     if request.protocol != PROTOCOL
         || request.strategy != STRATEGY
@@ -284,36 +346,32 @@ fn input(
         return Err("worker_ticket".into());
     }
     directory_usage(&root.join("inputs"))?;
-    let state = if let Some(owner) = slots {
-        owner.with_slot(crate::worker_slots::Kind::Input, |bytes| {
-            let path = root
-                .join("inputs")
-                .join(format!("{}.air", t.checkpoint_sha256));
-            if !fs::symlink_metadata(&path)
-                .map_err(|e| e.to_string())?
-                .is_file()
+    match (slots, kernel) {
+        (Some(owner), Some(kernel)) => {
+            owner.with_slot(crate::worker_slots::Kind::Input, |bytes| {
+                read_asset_into(&root.join("inputs"), &t.checkpoint_sha256, bytes)?;
+                kernel.restore(bytes.as_slice())
+            })?;
+            if !kernel.matches_input(t.start, t.end, &t.input_sha256) {
+                kernel.reset()?;
+                return Err("worker_frozen_input".into());
+            }
+            Ok(TaskState::Fixed(kernel))
+        }
+        (None, None) => {
+            let state = State::restore(&read_asset(&root.join("inputs"), &t.checkpoint_sha256)?)?;
+            if state.report().time != t.start
+                || state.input().target != t.end
+                || state.progress().is_some()
+                || state.input().identity() != t.input_sha256
+                || state.complete()
             {
-                return Err("worker_nonregular_asset".into());
+                return Err("worker_frozen_input".into());
             }
-            bytes.read_from(File::open(path).map_err(|e| e.to_string())?)?;
-            if sha256(bytes.as_slice()) != t.checkpoint_sha256 {
-                return Err("worker_asset_checksum".into());
-            }
-            State::restore(bytes.as_slice())
-        })?
-    } else {
-        State::restore(&read_asset(&root.join("inputs"), &t.checkpoint_sha256)?)?
-    };
-    let report = state.report();
-    if report.time != t.start
-        || state.input().target != t.end
-        || state.progress().is_some()
-        || state.input().identity() != t.input_sha256
-        || state.complete()
-    {
-        return Err("worker_frozen_input".into());
+            Ok(TaskState::Owned(state))
+        }
+        _ => Err("worker_fixed_workspace_pair".into()),
     }
-    Ok(state)
 }
 fn emit(
     w: &mut impl Write,
@@ -384,6 +442,7 @@ fn run_inner(root: &Path, gated: bool, bounded: bool) -> Result<(), String> {
         None
     };
     let mut slots: Option<crate::worker_slots::Owner> = None;
+    let mut kernel: Option<AirWorkspace> = None;
     let pool_grant = if bounded {
         crate::normal_pool::WorkerGrant::from_env()?
     } else {
@@ -422,16 +481,18 @@ fn run_inner(root: &Path, gated: bool, bounded: bool) -> Result<(), String> {
                     request.ticket.generation,
                     request.ticket.attempt,
                 )?;
+                let air = AirWorkspace::new()?;
                 if let Some(grant) = pool_grant.as_ref() {
-                    grant.filled(&owner)?;
+                    grant.filled(&owner, &air)?;
                 }
                 slots = Some(owner);
+                kernel = Some(air);
             }
         }
         if let (Some(log), Some(owner)) = (diag.as_mut(), slots.as_ref()) {
             log.set_external_diagnostics_owned_bytes(owner.metadata_charge_bytes())?;
         }
-        let mut state = input(root, &request, slots.as_mut())?;
+        let mut state = input(root, &request, slots.as_mut(), kernel.as_mut())?;
         if let Some(log) = diag.as_mut() {
             log.begin(serde_json::json!({"ticket":request.ticket,"kind":"worker_computation"}))?;
         }
@@ -465,7 +526,7 @@ fn run_inner(root: &Path, gated: bool, bounded: bool) -> Result<(), String> {
                 Ok((hash, size))
             })?
         } else {
-            let bytes = state.checkpoint()?;
+            let bytes = state.legacy_checkpoint()?;
             let hash = publish(&root.join("candidates"), &bytes)?;
             (hash, bytes.len())
         };
@@ -478,6 +539,7 @@ fn run_inner(root: &Path, gated: bool, bounded: bool) -> Result<(), String> {
             None,
         )?;
         gate(&mut reader, &request, Stage::Published, gated)?;
+        state.finish(diag.as_mut())?;
         if let Some(owner) = slots.as_ref() {
             owner.check_balance()?;
             if let Some(log) = diag.as_mut() {

@@ -186,7 +186,7 @@ impl Background {
             initial_micro: 2_000_000,
             boundary_micro: [Some(2_000_000); 4],
             boundary_until: END_LIMIT,
-            sources,
+            sources: sources.into(),
         };
         let state = self.build_input_state(input.clone())?;
         let (bytes, checkpoint_sha256) = state.checkpoint_digest()?;

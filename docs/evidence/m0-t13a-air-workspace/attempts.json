@@ -1,0 +1,46 @@
+{
+  "failed_attempts": [
+    {
+      "source": {
+        "source_sha256": "0bd20c6047c63ef04db135dc83589bb4aacebd7074d8f8f1f570a01a98bf6476",
+        "files": 150
+      },
+      "actual_session": 28174,
+      "exit_code": 101,
+      "log": "check-rows.txt",
+      "reason": "worker_probe conditional Vec<Source> branch missing .into(); fixed before subsequent checks/tests"
+    },
+    {
+      "source": {
+        "source_sha256": "ee8af3e54b963022777f34e8194c8626fd8bfed4eafc722bd617d95cb69f6032",
+        "files": 152
+      },
+      "actual_session": 89256,
+      "exit_code": 101,
+      "log": "clippy-initial.txt",
+      "reason": "needless_lifetimes in HashSeed and Schema Visitor impl; final diff only elides two lifetimes, no algorithm or fixture change"
+    }
+  ],
+  "earlier_successes": [
+    {
+      "source": {
+        "source_sha256": "4456f3ece8e063724cd029d06bc3d0dc7723a9b28b393c316f947d0241542b20",
+        "files": 152
+      },
+      "actual_session": 39748,
+      "exit_code": 0,
+      "log": "core-tests.txt",
+      "scope": "core tests before loaded report State.validate addition; not final source proof"
+    },
+    {
+      "source": {
+        "source_sha256": "29c9f4be5689b848b71ddb833815a9d1cec7cb13f0efee392b1fe4a9c3fb4c7f",
+        "files": 152
+      },
+      "actual_session": 48806,
+      "exit_code": 0,
+      "log": "broker-integration/check.txt",
+      "scope": "workspace all-targets compile; not final tests"
+    }
+  ]
+}

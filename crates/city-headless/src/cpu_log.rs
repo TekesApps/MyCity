@@ -119,6 +119,13 @@ impl CpuLog {
     ) -> Result<(), String> {
         self.write(json!({"phase":"worker_controlled_slots","owner":report}))
     }
+    pub fn worker_air_workspace(
+        &mut self,
+        loaded: &mycity_core::air::WorkspaceReport,
+        reset: &mycity_core::air::WorkspaceReport,
+    ) -> Result<(), String> {
+        self.write(json!({"phase":"worker_air_workspace","loaded":loaded,"reset":reset}))
+    }
     pub fn sim_controlled_slots(
         &mut self,
         report: &crate::worker_slots::Report<'_>,

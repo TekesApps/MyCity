@@ -1,0 +1,39 @@
+{
+  "schema": "mycity-stage-cache-cleanup-v1",
+  "checked_unix_ns": 1792552072588947000,
+  "paths": [
+    "target/debug/.fingerprint",
+    "target/debug/build",
+    "target/debug/deps"
+  ],
+  "process_debug_path_matches": [],
+  "lsof_exit": 1,
+  "open_debug_files": [],
+  "future_validation": "all planned/current cargo commands use --release and shared target/release; debug caches are not dependencies",
+  "preserved": [
+    "source and WIP",
+    "Cargo.lock and frozen source/dependency snapshots",
+    "target/release shared future cache and binaries",
+    "work candidate/accepted executables",
+    "all acceptance logs/receipts/artifacts and unique L1 snapshots"
+  ],
+  "file_count": 705,
+  "file_bytes": 58565063,
+  "file_allocated_bytes": 60801024,
+  "directory_allocated_bytes": 0,
+  "file_suffix_counts": {
+    ".json": 113,
+    "": 270,
+    ".timestamp": 113,
+    ".d": 102,
+    ".rs": 2,
+    ".rmeta": 90,
+    ".rlib": 14,
+    ".dylib": 1
+  },
+  "free_bytes_before": 64114282496,
+  "deleted_paths_absent": true,
+  "free_bytes_after": 64169033728,
+  "filesystem_available_delta_bytes": 54751232,
+  "space_semantics": "removed unique file allocated blocks plus directory blocks; filesystem free delta independently measured and may include unrelated activity/APFS effects"
+}

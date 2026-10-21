@@ -54,7 +54,8 @@ fn state() -> State {
             start: 0,
             end: 120,
             rate_micro: 10000,
-        }],
+        }]
+        .into(),
     })
     .unwrap()
 }

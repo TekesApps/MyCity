@@ -1,0 +1,33 @@
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+error: the following explicit lifetimes could be elided: 'de
+   --> crates/city-core/src/air/workspace.rs:333:6
+    |
+333 | impl<'de> Visitor<'de> for HashSeed<'_> {
+    |      ^^^          ^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_lifetimes
+    = note: `-D clippy::needless-lifetimes` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::needless_lifetimes)]`
+help: elide the lifetimes
+    |
+333 - impl<'de> Visitor<'de> for HashSeed<'_> {
+333 + impl Visitor<'_> for HashSeed<'_> {
+    |
+
+error: the following explicit lifetimes could be elided: 'de
+   --> crates/city-core/src/air/workspace.rs:359:6
+    |
+359 | impl<'de> Visitor<'de> for Schema {
+    |      ^^^          ^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_lifetimes
+help: elide the lifetimes
+    |
+359 - impl<'de> Visitor<'de> for Schema {
+359 + impl Visitor<'_> for Schema {
+    |
+
+error: could not compile `mycity-core` (lib) due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `mycity-core` (lib test) due to 2 previous errors

@@ -1,0 +1,13 @@
+{
+  "source_sha256": "c23947ba5450b674ed391e83e9595e1ad8fcd24552adbb0bc55a1aeea4e1da4b",
+  "source_and_binary_match": true,
+  "frozen_acceptance_unchanged": true,
+  "observer_unchanged": true,
+  "archives": [
+    {
+      "name": "t13a63-joint-01",
+      "files": 3940
+    }
+  ],
+  "scope": "static integrity only; no runtime/performance acceptance"
+}

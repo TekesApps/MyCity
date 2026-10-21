@@ -1,4 +1,4 @@
-//! Actual external balance. Only worker byte slots are converted into grants.
+//! Actual external balance. Worker I/O and typed air backings share a pre-spawn grant.
 //! Ordinary Engine allocations remain EXTRA pressure, never subtracted from this pool.
 pub mod broker;
 mod workspace;
@@ -19,7 +19,8 @@ use std::{
 const SOURCE: &str = env!("MYCITY_SOURCE_SHA256");
 const MIB: usize = 1024 * 1024;
 pub const BYTES: usize = 64 * MIB;
-pub const GRANT_BYTES: usize = worker_slots::OWNER_BYTES;
+pub const GRANT_BYTES: usize = worker_slots::OWNER_BYTES + mycity_core::air::WORKSPACE_BYTES;
+const WORKER_START_PAGE: usize = 64 - GRANT_BYTES / MIB;
 pub const DIAGNOSTIC_BYTES: usize = 256 * 1024;
 const FILL: u8 = 0xa7;
 const CONTROL: usize = 8192;
@@ -87,6 +88,9 @@ enum Op {
         capacity_bytes: usize,
         available_touched_bytes: usize,
         full_balance_scan_passed: bool,
+        typed_instance: u64,
+        typed_capacity: usize,
+        typed_scan_passed: bool,
     },
     Reap {
         id: u64,
@@ -127,6 +131,7 @@ struct Active {
     worker_key: Text<64>,
     pid: Option<u32>,
     filled: Option<worker_slots::Identity>,
+    typed_instance: Option<u64>,
     released_ns: u64,
 }
 #[derive(Clone, Copy)]
@@ -147,6 +152,8 @@ struct Event {
     parent_instance: Option<u128>,
     pid: Option<u32>,
     worker_identity: Option<worker_slots::Identity>,
+    typed_instance: Option<u64>,
+    typed_capacity: usize,
     summary: Summary,
     owner_actual_capacity_bytes: usize,
 }
@@ -305,6 +312,12 @@ impl Pool {
             parent_instance: a.map(|v| v.parent_instance),
             pid: a.and_then(|v| v.pid),
             worker_identity: a.and_then(|v| v.filled),
+            typed_instance: a.and_then(|v| v.typed_instance),
+            typed_capacity: if a.is_some_and(|v| v.typed_instance.is_some()) {
+                mycity_core::air::WORKSPACE_BYTES
+            } else {
+                0
+            },
             summary: self.summary,
             owner_actual_capacity_bytes: self.pages.iter().flatten().map(Vec::capacity).sum(),
         };
@@ -357,11 +370,11 @@ impl Pool {
     fn give_back(&mut self, a: Active) -> Result<(), String> {
         // Keep the active grant until ALL replacement pages have been built.
         // Allocation failure stops the pool rather than publishing false credit.
-        for i in 60..64 {
+        for i in WORKER_START_PAGE..64 {
             if self.pages[i].is_some() {
                 return Err("normal_pool_duplicate_page".into());
             }
-            if i == 61 && self.fault == Some(Fault::ReturnSecondPage) {
+            if i == WORKER_START_PAGE + 1 && self.fault == Some(Fault::ReturnSecondPage) {
                 self.fault = None;
                 self.event("injected_partial_return_failure", Some(a))?;
                 return Err("normal_pool_injected_return_page_failure".into());
@@ -420,9 +433,10 @@ impl Pool {
                     worker_key: secret()?,
                     pid: None,
                     filled: None,
+                    typed_instance: None,
                     released_ns: self.now(),
                 };
-                for i in 60..64 {
+                for i in WORKER_START_PAGE..64 {
                     self.pages[i].take();
                 }
                 self.active = Some(a);
@@ -452,6 +466,9 @@ impl Pool {
                 capacity_bytes,
                 available_touched_bytes,
                 full_balance_scan_passed,
+                typed_instance,
+                typed_capacity,
+                typed_scan_passed,
             } => {
                 let mut a = self.active(id, key, true)?;
                 if a.pid != Some(identity.process_pid)
@@ -460,19 +477,23 @@ impl Pool {
                     || identity.job == 0
                     || identity.generation == 0
                     || !(1..=3).contains(&identity.attempt)
-                    || capacity_bytes != GRANT_BYTES
-                    || available_touched_bytes != GRANT_BYTES
+                    || capacity_bytes != worker_slots::OWNER_BYTES
+                    || available_touched_bytes != worker_slots::OWNER_BYTES
+                    || typed_instance == 0
+                    || typed_capacity != mycity_core::air::WORKSPACE_BYTES
+                    || !typed_scan_passed
                     || !full_balance_scan_passed
                 {
                     return Err(ActionError::Rejected("normal_pool_worker_fill_identity"));
                 }
                 if let Some(old) = a.filled {
-                    if old != identity {
+                    if old != identity || a.typed_instance != Some(typed_instance) {
                         return Err(ActionError::Rejected("normal_pool_fill_already_bound"));
                     }
                     return Ok((Some(id), None));
                 }
                 a.filled = Some(identity);
+                a.typed_instance = Some(typed_instance);
                 self.active = Some(a);
                 self.summary.fill_acknowledgements += 1;
                 self.summary.maximum_prepare_to_fill_or_reap_ns = self
@@ -748,8 +769,16 @@ impl WorkerGrant {
             binding,
         }))
     }
-    pub fn filled(&self, owner: &worker_slots::Owner) -> Result<(), String> {
+    pub fn filled(
+        &self,
+        owner: &worker_slots::Owner,
+        air: &mycity_core::air::AirWorkspace,
+    ) -> Result<(), String> {
         let r = owner.report()?;
+        let typed = air.report()?;
+        if typed.loaded || !typed.allocation_set_stable {
+            return Err("normal_pool_typed_initial_state".into());
+        }
         let begin = Instant::now();
         loop {
             match call(
@@ -762,6 +791,9 @@ impl WorkerGrant {
                     capacity_bytes: r.owner_capacity_bytes,
                     available_touched_bytes: r.available_touched_bytes,
                     full_balance_scan_passed: r.full_balance_scan_passed,
+                    typed_instance: typed.workspace_instance,
+                    typed_capacity: typed.payload_capacity_bytes,
+                    typed_scan_passed: typed.full_fill_scan_passed,
                 },
             ) {
                 Err(e)
@@ -1062,21 +1094,60 @@ mod tests {
             id,
             key: w,
             identity,
-            capacity_bytes: GRANT_BYTES,
-            available_touched_bytes: GRANT_BYTES,
+            capacity_bytes: worker_slots::OWNER_BYTES,
+            available_touched_bytes: worker_slots::OWNER_BYTES,
             full_balance_scan_passed: true,
+            typed_instance: 1,
+            typed_capacity: mycity_core::air::WORKSPACE_BYTES,
+            typed_scan_passed: true,
         };
         assert!(p
             .action(Op::Filled {
                 id,
                 key,
                 identity,
-                capacity_bytes: GRANT_BYTES,
-                available_touched_bytes: GRANT_BYTES,
-                full_balance_scan_passed: true
+                capacity_bytes: worker_slots::OWNER_BYTES,
+                available_touched_bytes: worker_slots::OWNER_BYTES,
+                full_balance_scan_passed: true,
+                typed_instance: 1,
+                typed_capacity: mycity_core::air::WORKSPACE_BYTES,
+                typed_scan_passed: true,
             })
             .is_err());
+        for (typed_instance, typed_capacity, typed_scan_passed) in [
+            (0, mycity_core::air::WORKSPACE_BYTES, true),
+            (1, mycity_core::air::WORKSPACE_BYTES - 1, true),
+            (1, mycity_core::air::WORKSPACE_BYTES, false),
+        ] {
+            assert!(p
+                .action(Op::Filled {
+                    id,
+                    key: w,
+                    identity,
+                    capacity_bytes: worker_slots::OWNER_BYTES,
+                    available_touched_bytes: worker_slots::OWNER_BYTES,
+                    full_balance_scan_passed: true,
+                    typed_instance,
+                    typed_capacity,
+                    typed_scan_passed,
+                })
+                .is_err());
+            assert_eq!(p.summary.fill_acknowledgements, 0);
+        }
         p.action(fill).unwrap();
+        assert!(p
+            .action(Op::Filled {
+                id,
+                key: w,
+                identity,
+                capacity_bytes: worker_slots::OWNER_BYTES,
+                available_touched_bytes: worker_slots::OWNER_BYTES,
+                full_balance_scan_passed: true,
+                typed_instance: 2,
+                typed_capacity: mycity_core::air::WORKSPACE_BYTES,
+                typed_scan_passed: true,
+            })
+            .is_err());
         p.action(fill).unwrap();
         assert_eq!(p.summary.fill_acknowledgements, 1);
         assert!(p
@@ -1148,9 +1219,12 @@ mod tests {
                 id: 1,
                 key,
                 identity,
-                capacity_bytes: GRANT_BYTES,
-                available_touched_bytes: GRANT_BYTES,
+                capacity_bytes: worker_slots::OWNER_BYTES,
+                available_touched_bytes: worker_slots::OWNER_BYTES,
                 full_balance_scan_passed: true,
+                typed_instance: 1,
+                typed_capacity: mycity_core::air::WORKSPACE_BYTES,
+                typed_scan_passed: true,
             },
             Op::Reap {
                 id: 1,
@@ -1215,6 +1289,8 @@ mod tests {
                 generation: u32::MAX,
                 attempt: u8::MAX,
             }),
+            typed_instance: Some(u64::MAX),
+            typed_capacity: usize::MAX,
             summary: Summary {
                 capacity_bytes: usize::MAX,
                 available_touched_bytes: usize::MAX,
