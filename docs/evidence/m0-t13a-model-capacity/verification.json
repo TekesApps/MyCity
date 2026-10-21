@@ -1,0 +1,14 @@
+{
+  "source": {
+    "source_sha256": "5877f0c624fd993ecbd3afd3b4c469e51175e6dac7d314f5f412f46c4c82aa0f",
+    "source_files": 158,
+    "binary_sha256": "7453fe14af0f45f1a2286aa2aca3967baec71128d2e0e6e0a4b6998be77078b6",
+    "binary": "work/candidate-binaries/model-capacity/mycity-headless",
+    "fixture_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+    "scope": "typed design-capacity inventory CLI only, NOT runtime budget or performance acceptance"
+  },
+  "required_bytes": 39415656,
+  "remaining_bytes": 27693208,
+  "runtime_accepted": false,
+  "checks": "real CLI success/error, per-row arithmetic and scenarios recomputed"
+}

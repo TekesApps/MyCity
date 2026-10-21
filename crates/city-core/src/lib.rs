@@ -15,6 +15,7 @@ pub mod exchange;
 pub mod fixed_restore;
 pub mod inbox;
 pub mod layout_pressure;
+pub mod model_capacity;
 pub mod probes;
 pub mod region;
 pub mod schedule;

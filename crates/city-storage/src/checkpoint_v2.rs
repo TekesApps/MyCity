@@ -48,6 +48,12 @@ struct ReceiptBody {
     previous: Option<Reference>,
     receipts: Vec<JournalRecord>,
 }
+
+pub(super) const fn capacity_metadata_headers() -> usize {
+    std::mem::size_of::<Snapshot>()
+        + std::mem::size_of::<ReceiptIndex>()
+        + std::mem::size_of::<ReceiptBody>()
+}
 fn world_name(g: u64) -> String {
     format!("world-{g}.json")
 }

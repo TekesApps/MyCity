@@ -1,0 +1,9 @@
+{
+  "measured_unix_ns": 1792562170460571000,
+  "work_du_kib": 29862972,
+  "target_du_kib": 698492,
+  "new_independent_target_dirs": 0,
+  "new_pressure_snapshots": 0,
+  "deleted_cache_bytes": 0,
+  "retention": "Shared target current dependency graph retained; no newly identified obsolete independent cache. New immutable executable retained for acceptance provenance. Historical complete restore dependencies unchanged; no cleanup during measurement."
+}

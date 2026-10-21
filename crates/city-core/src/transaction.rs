@@ -261,6 +261,10 @@ struct Prepared {
     receipt: Receipt,
 }
 
+pub(crate) const fn prepared_header_bytes() -> usize {
+    size_of::<Prepared>()
+}
+
 impl Engine {
     pub fn new(world: World, mut resources: Vec<Resource>) -> Result<Self, TxError> {
         if world.economy.is_some() && !resources.is_empty() {

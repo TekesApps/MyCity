@@ -1,0 +1,17 @@
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+    Checking mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+    Checking mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+error: usage of `mem::size_of::<T>()` to obtain the size of `T` in bits
+   --> crates/city-storage/src/model_capacity.rs:218:83
+    |
+218 |     Plan { schema: "mycity-model-workspace-capacity-plan-v1", pointer_width_bits: size_of::<usize>() * 8,
+    |                                                                                   ^^^^^^^^^^^^^^^^^^^^^^ help: consider using: `usize::BITS as usize`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#manual_bits
+    = note: `-D clippy::manual-bits` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::manual_bits)]`
+
+error: could not compile `mycity-storage` (lib test) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `mycity-storage` (lib) due to 1 previous error

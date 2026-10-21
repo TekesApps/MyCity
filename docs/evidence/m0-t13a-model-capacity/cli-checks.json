@@ -1,0 +1,15 @@
+{
+  "plan": {
+    "args": [
+      "model-capacity-plan"
+    ],
+    "exit": 0
+  },
+  "invalid-args": {
+    "args": [
+      "model-capacity-plan",
+      "unexpected"
+    ],
+    "exit": 2
+  }
+}

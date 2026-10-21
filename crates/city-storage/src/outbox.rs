@@ -21,6 +21,10 @@ struct FileRecord {
     checksum: String,
     payload: Queue,
 }
+
+pub(super) const fn capacity_metadata_headers() -> usize {
+    std::mem::size_of::<FileRecord>()
+}
 #[derive(Debug, Serialize)]
 pub struct SourceStatus {
     pub registered: bool,

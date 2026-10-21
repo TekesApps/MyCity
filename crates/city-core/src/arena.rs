@@ -118,6 +118,10 @@ pub struct Arena<D: Domain, T: Copy> {
 }
 
 impl<D: Domain, T: Copy> Arena<D, T> {
+    /// Type-derived backing requirement; does not allocate or certify a runtime owner.
+    pub(crate) const fn fixed_payload_bytes(max: usize) -> usize {
+        max * (size_of::<Slot<T>>() + size_of::<u32>())
+    }
     /// Fixed diagnostic snapshot only: all slots live and free list empty.
     /// This must never replace the general World/Arena deserializer.
     pub(crate) fn deserialize_layout<'de, S, const N: usize>(d: S) -> Result<Self, S::Error>

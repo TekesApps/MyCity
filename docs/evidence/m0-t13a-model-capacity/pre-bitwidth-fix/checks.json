@@ -1,0 +1,49 @@
+{
+  "tests-final": {
+    "command": [
+      "cargo",
+      "test",
+      "--release",
+      "--locked",
+      "--offline",
+      "-p",
+      "mycity-core",
+      "-p",
+      "mycity-storage",
+      "model_capacity"
+    ],
+    "exit": 0,
+    "wall_seconds": 49.00807499885559
+  },
+  "build-final": {
+    "command": [
+      "cargo",
+      "build",
+      "--release",
+      "--locked",
+      "--offline",
+      "-p",
+      "mycity-headless",
+      "--bin",
+      "mycity-headless"
+    ],
+    "exit": 0,
+    "wall_seconds": 18.331688165664673
+  },
+  "clippy-final": {
+    "command": [
+      "cargo",
+      "clippy",
+      "--release",
+      "--locked",
+      "--offline",
+      "--workspace",
+      "--all-targets",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit": 101,
+    "wall_seconds": 4.9415342807769775
+  }
+}

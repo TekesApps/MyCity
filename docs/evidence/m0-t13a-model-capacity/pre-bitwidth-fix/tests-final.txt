@@ -1,0 +1,156 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 34.76s
+     Running unittests src/lib.rs (target/release/deps/mycity_core-7a11c9098f0de27e)
+
+running 1 test
+test model_capacity::tests::every_domain_copy_and_full_dirty_stock_table_is_included ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 49 filtered out; finished in 0.00s
+
+     Running tests/air.rs (target/release/deps/air-5682499877d3af64)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 0.00s
+
+     Running tests/air_workspace.rs (target/release/deps/air_workspace-4eaf3c8ba8deb925)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.00s
+
+     Running tests/background.rs (target/release/deps/background-390cd8628a00037e)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.00s
+
+     Running tests/boot.rs (target/release/deps/boot-0d87af4a0579081e)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 0.00s
+
+     Running tests/economy.rs (target/release/deps/economy-b8d232ae8837882f)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 0.00s
+
+     Running tests/exchange.rs (target/release/deps/exchange-ed3b424b214308ac)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 12 filtered out; finished in 0.00s
+
+     Running tests/layout_pressure.rs (target/release/deps/layout_pressure-3e35a5b96f7af294)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+
+     Running tests/region.rs (target/release/deps/region-e7b4ba7867747867)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.00s
+
+     Running tests/scale_assembly.rs (target/release/deps/scale_assembly-5b1cb2948582bd68)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.00s
+
+     Running tests/sha256_vectors.rs (target/release/deps/sha256_vectors-4bddc67bbdccc8f6)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/timeline.rs (target/release/deps/timeline-21ba3464227ef5a2)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 11 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/release/deps/mycity_storage-116aef26860de15c)
+
+running 1 test
+test model_capacity::tests::feasibility_boundary_never_authorizes_current_runtime ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/mycity-storage-worker.rs (target/release/deps/mycity_storage_worker-a219507ad55eaec6)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/background.rs (target/release/deps/background-d68a5605a004c6dc)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 11 filtered out; finished in 0.00s
+
+     Running tests/boot.rs (target/release/deps/boot-ec60fd0dddfedb7e)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+
+     Running tests/checkpoint.rs (target/release/deps/checkpoint-e4a4df3aa806f716)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+     Running tests/checkpoint_v2.rs (target/release/deps/checkpoint_v2-fa186dbd065db725)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+     Running tests/economy.rs (target/release/deps/economy-6f2196b3cdbb25fc)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+
+     Running tests/exchange.rs (target/release/deps/exchange-961f560e448093b3)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+     Running tests/inbox.rs (target/release/deps/inbox-e0ef263304eafca4)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 14 filtered out; finished in 0.00s
+
+     Running tests/recovery.rs (target/release/deps/recovery-44838a0f7edd49f5)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 12 filtered out; finished in 0.00s
+
+     Running tests/scale_assembly.rs (target/release/deps/scale_assembly-7ff77d4c51963701)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+
+     Running tests/spatial.rs (target/release/deps/spatial-182bfd8c072d87b8)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 9 filtered out; finished in 0.00s
+
+     Running tests/timeline.rs (target/release/deps/timeline-35b9ceef76f0acb7)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 7 filtered out; finished in 0.00s
+

@@ -1,0 +1,14 @@
+{
+  "tests-final": {
+    "exit": 0,
+    "wall_seconds": 34.9176299571991
+  },
+  "build-final": {
+    "exit": 0,
+    "wall_seconds": 13.491856336593628
+  },
+  "clippy-final": {
+    "exit": 101,
+    "wall_seconds": 3.5047271251678467
+  }
+}

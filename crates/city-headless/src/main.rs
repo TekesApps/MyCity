@@ -26,6 +26,19 @@ fn system(command: &str, args: &[&str]) -> Option<String> {
 
 fn run() -> Result<(), String> {
     let args: Vec<_> = env::args().collect();
+    if args.get(1).is_some_and(|a| a == "model-capacity-plan") {
+        if args.len() != 2 {
+            return Err("usage: mycity-headless model-capacity-plan".into());
+        }
+        println!(
+            "{}",
+            serde_json::to_string_pretty(&mycity_storage::model_capacity::plan(
+                mycity_storage::model_capacity::ORIGINAL_NORMAL_BYTES
+            ))
+            .map_err(|e| e.to_string())?
+        );
+        return Ok(());
+    }
     if args
         .get(1)
         .is_some_and(|a| a == "pe0-speed-probe" || a == "pe0-speed-driver")

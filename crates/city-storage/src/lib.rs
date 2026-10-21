@@ -7,6 +7,7 @@ pub use background::{
 };
 mod capacity;
 mod continuation;
+pub mod model_capacity;
 pub use continuation::{Continuation, CONTINUATION_MAX_PAGES, CONTINUATION_PAGE_BYTES};
 mod outbox;
 mod query;
