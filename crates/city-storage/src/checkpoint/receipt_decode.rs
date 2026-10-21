@@ -1,122 +1,89 @@
-//! Legacy receipt decoding without internally tagged serde Content graphs.
-//! Raw values borrow the retained file; original unknown/duplicate field semantics
-//! are preserved. Whitespace and ignored JournalRecord fields are not WAL frames.
+//! Legacy receipt decoding with fixed lexical backing and borrowed spans.
 use super::*;
-use mycity_core::transaction::{Action, Receipt, TxError, MAX_ACTIONS};
-use serde::de::{self, MapAccess, Visitor};
-use serde_json::value::RawValue;
-use std::fmt;
+use crate::metadata::{
+    lexical::{validate_content, Array, Fields, Raw, Scratch},
+    reader,
+};
+#[cfg(test)]
+use mycity_core::transaction::Action;
+use mycity_core::transaction::MAX_ACTIONS;
+use serde::de;
 
-#[derive(Deserialize)]
-struct Record {
-    actor: u32,
-    emergency_eligible: bool,
-    operation_id: u64,
-    expected_revision: u64,
-    payload_sha256: [u8; 32],
-    outcome: Result<Receipt, TxError>,
-    actions: [Option<SafeAction>; MAX_ACTIONS],
-}
-struct SafeAction(Action);
-impl<'de> Deserialize<'de> for SafeAction {
-    fn deserialize<D: serde::Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        let raw = <&RawValue>::deserialize(d)?;
-        action(raw.get()).map(Self).map_err(de::Error::custom)
+pub(crate) fn decode_raw(
+    raw: Raw<'_>,
+    scratch: &mut Scratch,
+) -> Result<JournalRecord, serde_json::Error> {
+    let fields = Fields::parse(
+        raw,
+        &[
+            "actor",
+            "emergency_eligible",
+            "operation_id",
+            "expected_revision",
+            "payload_sha256",
+            "outcome",
+            "actions",
+        ],
+        true,
+        scratch,
+    )?;
+    let mut actions = [None; MAX_ACTIONS];
+    let mut array = Array::new(fields.raw(6)?)?;
+    for slot in &mut actions {
+        let raw = array
+            .next(scratch)?
+            .ok_or_else(|| crate::metadata::lexical::error("receipt_action_count"))?;
+        if raw.bytes != b"null" {
+            *slot = Some(action_raw(raw, scratch)?);
+        }
     }
-}
-pub(super) fn decode(raw: &str) -> Result<JournalRecord, serde_json::Error> {
-    let r: Record = serde_json::from_str(raw)?;
+    if array.next(scratch)?.is_some() {
+        return Err(crate::metadata::lexical::error("receipt_action_count"));
+    }
     Ok(JournalRecord {
-        actor: r.actor,
-        emergency_eligible: r.emergency_eligible,
-        operation_id: r.operation_id,
-        expected_revision: r.expected_revision,
-        payload_sha256: r.payload_sha256,
-        outcome: r.outcome,
-        actions: r.actions.map(|a| a.map(|a| a.0)),
+        actor: fields.get(0, scratch)?,
+        emergency_eligible: fields.get(1, scratch)?,
+        operation_id: fields.get(2, scratch)?,
+        expected_revision: fields.get(3, scratch)?,
+        payload_sha256: fields.get(4, scratch)?,
+        outcome: fields.get(5, scratch)?,
+        actions,
     })
 }
-struct Fields<'a, const N: usize> {
-    names: &'static [&'static str; N],
-    values: [Option<&'a RawValue>; N],
+#[cfg(test)]
+fn decode(raw: &str) -> Result<JournalRecord, serde_json::Error> {
+    decode_raw(Raw::root(raw.as_bytes()), &mut Scratch::new()?)
 }
-impl<'a, const N: usize> Fields<'a, N> {
-    fn get<T: Deserialize<'a>>(&self, index: usize) -> Result<T, serde_json::Error> {
-        serde_json::from_str(self.raw(index)?)
-    }
-    fn raw(&self, index: usize) -> Result<&'a str, serde_json::Error> {
-        self.values[index]
-            .map(|v| v.get())
-            .ok_or_else(|| de::Error::missing_field(self.names[index]))
+#[cfg(test)]
+fn action(raw: &str) -> Result<Action, serde_json::Error> {
+    action_raw(Raw::root(raw.as_bytes()), &mut Scratch::new()?)
+}
+fn tag<'de, T: Deserialize<'de>>(
+    raw: Raw<'de>,
+    scratch: &mut Scratch,
+) -> Result<T, serde_json::Error> {
+    let mut cursor = crate::metadata::lexical::Cursor::new(raw)?;
+    if cursor.peek() == Some(b'[') {
+        let mut array = Array::new(raw)?;
+        let first = array
+            .next(scratch)?
+            .ok_or_else(|| de::Error::missing_field("kind"))?;
+        reader::decode(first, scratch)
+    } else {
+        Fields::parse(raw, &["kind"], true, scratch)?.get(0, scratch)
     }
 }
-fn fields<'a, const N: usize>(
-    raw: &'a str,
-    names: &'static [&'static str; N],
-) -> Result<Fields<'a, N>, serde_json::Error> {
-    struct Object<const N: usize>(&'static [&'static str; N]);
-    impl<'de, const N: usize> Visitor<'de> for Object<N> {
-        type Value = Fields<'de, N>;
-        fn expecting(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            f.write_str("original tagged object")
-        }
-        fn visit_seq<A: serde::de::SeqAccess<'de>>(
-            self,
-            mut seq: A,
-        ) -> Result<Self::Value, A::Error> {
-            let mut result = Fields {
-                names: self.0,
-                values: [None; N],
-            };
-            for (i, value) in result.values.iter_mut().enumerate() {
-                *value = Some(
-                    seq.next_element()?
-                        .ok_or_else(|| de::Error::missing_field(self.0[i]))?,
-                );
-            }
-            seq.next_element_seed(crate::metadata::RejectExtra)?;
-            Ok(result)
-        }
-        fn visit_map<A: MapAccess<'de>>(self, mut map: A) -> Result<Self::Value, A::Error> {
-            struct Key<const N: usize>(&'static [&'static str; N]);
-            impl<'de, const N: usize> serde::de::DeserializeSeed<'de> for Key<N> {
-                type Value = usize;
-                fn deserialize<D: serde::Deserializer<'de>>(self, d: D) -> Result<usize, D::Error> {
-                    d.deserialize_identifier(self)
-                }
-            }
-            impl<const N: usize> Visitor<'_> for Key<N> {
-                type Value = usize;
-                fn expecting(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                    f.write_str("known tagged field")
-                }
-                fn visit_str<E: de::Error>(self, v: &str) -> Result<usize, E> {
-                    self.0
-                        .iter()
-                        .position(|n| *n == v)
-                        .ok_or_else(|| E::custom("unknown tagged field"))
-                }
-            }
-            let mut result = Fields {
-                names: self.0,
-                values: [None; N],
-            };
-            while let Some(i) = map.next_key_seed(Key(self.0))? {
-                if result.values[i].is_some() {
-                    return Err(de::Error::duplicate_field(self.0[i]));
-                }
-                result.values[i] = Some(map.next_value()?);
-            }
-            Ok(result)
-        }
+fn unit(raw: Raw<'_>, scratch: &mut Scratch) -> Result<(), serde_json::Error> {
+    let mut cursor = crate::metadata::lexical::Cursor::new(raw)?;
+    if cursor.peek() == Some(b'[') {
+        let _ = Fields::parse(raw, &["kind"], false, scratch)?;
     }
-    let mut d = serde_json::Deserializer::from_str(raw);
-    let result = serde::Deserializer::deserialize_any(&mut d, Object(names))?;
-    d.end()?;
-    Ok(result)
+    Ok(())
 }
-
-fn action(raw: &str) -> Result<mycity_core::transaction::Action, serde_json::Error> {
+fn action_raw(
+    raw: Raw<'_>,
+    scratch: &mut Scratch,
+) -> Result<mycity_core::transaction::Action, serde_json::Error> {
     use mycity_core::transaction::Action as Output;
     #[derive(Deserialize)]
     #[serde(rename_all = "snake_case")]
@@ -140,133 +107,141 @@ fn action(raw: &str) -> Result<mycity_core::transaction::Action, serde_json::Err
         OccupyCapacity,
         ReleaseCapacity,
     }
-    validate(raw)?;
-    let kind: Kind = tag(raw)?;
+    validate_content(raw, scratch)?;
+    let kind: Kind = tag(raw, scratch)?;
     match kind {
         Kind::Background => {
-            let fields = fields(raw, &["kind", "command"])?;
+            let fields = Fields::parse(raw, &["kind", "command"], false, scratch)?;
             Ok(Output::Background {
-                command: background(fields.raw(1)?)?,
+                command: background(fields.raw(1)?, scratch)?,
             })
         }
         Kind::Timeline => {
-            let fields = fields(raw, &["kind", "command"])?;
+            let fields = Fields::parse(raw, &["kind", "command"], false, scratch)?;
             Ok(Output::Timeline {
-                command: timeline(fields.raw(1)?)?,
+                command: timeline(fields.raw(1)?, scratch)?,
             })
         }
         Kind::Inbox => {
-            let fields = fields(raw, &["kind", "command"])?;
+            let fields = Fields::parse(raw, &["kind", "command"], false, scratch)?;
             Ok(Output::Inbox {
-                command: inbox(fields.raw(1)?)?,
+                command: inbox(fields.raw(1)?, scratch)?,
             })
         }
         Kind::Exchange => {
-            let fields = fields(raw, &["kind", "command"])?;
+            let fields = Fields::parse(raw, &["kind", "command"], false, scratch)?;
             Ok(Output::Exchange {
-                command: exchange(fields.raw(1)?)?,
+                command: exchange(fields.raw(1)?, scratch)?,
             })
         }
         Kind::Boot => {
-            let fields = fields(raw, &["kind", "command"])?;
+            let fields = Fields::parse(raw, &["kind", "command"], false, scratch)?;
             Ok(Output::Boot {
-                command: boot(fields.raw(1)?)?,
+                command: boot(fields.raw(1)?, scratch)?,
             })
         }
         Kind::Economy => {
-            let fields = fields(raw, &["kind", "command"])?;
+            let fields = Fields::parse(raw, &["kind", "command"], false, scratch)?;
             Ok(Output::Economy {
-                command: economy(fields.raw(1)?)?,
+                command: economy(fields.raw(1)?, scratch)?,
             })
         }
         Kind::RegionSettleDebt => {
-            let fields = fields(raw, &["kind", "obligation"])?;
+            let fields = Fields::parse(raw, &["kind", "obligation"], false, scratch)?;
             Ok(Output::RegionSettleDebt {
-                obligation: fields.get(1)?,
+                obligation: fields.get(1, scratch)?,
             })
         }
         Kind::RegionActivate => {
-            let fields = fields(raw, &["kind", "city"])?;
+            let fields = Fields::parse(raw, &["kind", "city"], false, scratch)?;
             Ok(Output::RegionActivate {
-                city: fields.get(1)?,
+                city: fields.get(1, scratch)?,
             })
         }
         Kind::RegionAdvance => {
-            let fields = fields(raw, &["kind", "seconds"])?;
+            let fields = Fields::parse(raw, &["kind", "seconds"], false, scratch)?;
             Ok(Output::RegionAdvance {
-                seconds: fields.get(1)?,
+                seconds: fields.get(1, scratch)?,
             })
         }
         Kind::RegionMigrate => {
-            let fields = fields(raw, &["kind", "from", "to", "requested", "tolerance"])?;
+            let fields = Fields::parse(
+                raw,
+                &["kind", "from", "to", "requested", "tolerance"],
+                false,
+                scratch,
+            )?;
             Ok(Output::RegionMigrate {
-                from: fields.get(1)?,
-                to: fields.get(2)?,
-                requested: fields.get(3)?,
-                tolerance: fields.get(4)?,
+                from: fields.get(1, scratch)?,
+                to: fields.get(2, scratch)?,
+                requested: fields.get(3, scratch)?,
+                tolerance: fields.get(4, scratch)?,
             })
         }
         Kind::Transfer => {
-            let fields = fields(raw, &["kind", "from", "to", "amount"])?;
+            let fields = Fields::parse(raw, &["kind", "from", "to", "amount"], false, scratch)?;
             Ok(Output::Transfer {
-                from: fields.get(1)?,
-                to: fields.get(2)?,
-                amount: fields.get(3)?,
+                from: fields.get(1, scratch)?,
+                to: fields.get(2, scratch)?,
+                amount: fields.get(3, scratch)?,
             })
         }
         Kind::Protect => {
-            let fields = fields(raw, &["kind", "account", "amount"])?;
+            let fields = Fields::parse(raw, &["kind", "account", "amount"], false, scratch)?;
             Ok(Output::Protect {
-                account: fields.get(1)?,
-                amount: fields.get(2)?,
+                account: fields.get(1, scratch)?,
+                amount: fields.get(2, scratch)?,
             })
         }
         Kind::ReleaseProtection => {
-            let fields = fields(raw, &["kind", "account", "amount"])?;
+            let fields = Fields::parse(raw, &["kind", "account", "amount"], false, scratch)?;
             Ok(Output::ReleaseProtection {
-                account: fields.get(1)?,
-                amount: fields.get(2)?,
+                account: fields.get(1, scratch)?,
+                amount: fields.get(2, scratch)?,
             })
         }
         Kind::PayProtected => {
-            let fields = fields(raw, &["kind", "from", "to", "amount"])?;
+            let fields = Fields::parse(raw, &["kind", "from", "to", "amount"], false, scratch)?;
             Ok(Output::PayProtected {
-                from: fields.get(1)?,
-                to: fields.get(2)?,
-                amount: fields.get(3)?,
+                from: fields.get(1, scratch)?,
+                to: fields.get(2, scratch)?,
+                amount: fields.get(3, scratch)?,
             })
         }
         Kind::MoveStock => {
-            let fields = fields(raw, &["kind", "from", "to", "quantity"])?;
+            let fields = Fields::parse(raw, &["kind", "from", "to", "quantity"], false, scratch)?;
             Ok(Output::MoveStock {
-                from: fields.get(1)?,
-                to: fields.get(2)?,
-                quantity: fields.get(3)?,
+                from: fields.get(1, scratch)?,
+                to: fields.get(2, scratch)?,
+                quantity: fields.get(3, scratch)?,
             })
         }
         Kind::ReserveCapacity => {
-            let fields = fields(raw, &["kind", "resource", "units"])?;
+            let fields = Fields::parse(raw, &["kind", "resource", "units"], false, scratch)?;
             Ok(Output::ReserveCapacity {
-                resource: fields.get(1)?,
-                units: fields.get(2)?,
+                resource: fields.get(1, scratch)?,
+                units: fields.get(2, scratch)?,
             })
         }
         Kind::OccupyCapacity => {
-            let fields = fields(raw, &["kind", "token"])?;
+            let fields = Fields::parse(raw, &["kind", "token"], false, scratch)?;
             Ok(Output::OccupyCapacity {
-                token: fields.get(1)?,
+                token: fields.get(1, scratch)?,
             })
         }
         Kind::ReleaseCapacity => {
-            let fields = fields(raw, &["kind", "token"])?;
+            let fields = Fields::parse(raw, &["kind", "token"], false, scratch)?;
             Ok(Output::ReleaseCapacity {
-                token: fields.get(1)?,
+                token: fields.get(1, scratch)?,
             })
         }
     }
 }
 
-fn background(raw: &str) -> Result<mycity_core::background::Command, serde_json::Error> {
+fn background(
+    raw: Raw<'_>,
+    scratch: &mut Scratch,
+) -> Result<mycity_core::background::Command, serde_json::Error> {
     use mycity_core::background::Command as Output;
     #[derive(Deserialize)]
     #[serde(rename_all = "snake_case")]
@@ -278,49 +253,62 @@ fn background(raw: &str) -> Result<mycity_core::background::Command, serde_json:
         Fail,
         Accept,
     }
-    validate(raw)?;
-    let kind: Kind = tag(raw)?;
+    validate_content(raw, scratch)?;
+    let kind: Kind = tag(raw, scratch)?;
     match kind {
         Kind::Enable => {
-            unit(raw)?;
+            unit(raw, scratch)?;
             Ok(Output::Enable)
         }
         Kind::Restart => {
-            unit(raw)?;
+            unit(raw, scratch)?;
             Ok(Output::Restart)
         }
         Kind::Lease => {
-            let fields = fields(raw, &["kind", "job"])?;
+            let fields = Fields::parse(raw, &["kind", "job"], false, scratch)?;
             Ok(Output::Lease {
-                job: fields.get(1)?,
+                job: fields.get(1, scratch)?,
             })
         }
         Kind::RebindLease => {
-            let fields = fields(raw, &["kind", "job"])?;
+            let fields = Fields::parse(raw, &["kind", "job"], false, scratch)?;
             Ok(Output::RebindLease {
-                job: fields.get(1)?,
+                job: fields.get(1, scratch)?,
             })
         }
         Kind::Fail => {
-            let fields = fields(raw, &["kind", "job", "generation", "failure"])?;
+            let fields = Fields::parse(
+                raw,
+                &["kind", "job", "generation", "failure"],
+                false,
+                scratch,
+            )?;
             Ok(Output::Fail {
-                job: fields.get(1)?,
-                generation: fields.get(2)?,
-                failure: fields.get(3)?,
+                job: fields.get(1, scratch)?,
+                generation: fields.get(2, scratch)?,
+                failure: fields.get(3, scratch)?,
             })
         }
         Kind::Accept => {
-            let fields = fields(raw, &["kind", "job", "generation", "candidate_sha256"])?;
+            let fields = Fields::parse(
+                raw,
+                &["kind", "job", "generation", "candidate_sha256"],
+                false,
+                scratch,
+            )?;
             Ok(Output::Accept {
-                job: fields.get(1)?,
-                generation: fields.get(2)?,
-                candidate_sha256: fields.get(3)?,
+                job: fields.get(1, scratch)?,
+                generation: fields.get(2, scratch)?,
+                candidate_sha256: fields.get(3, scratch)?,
             })
         }
     }
 }
 
-fn timeline(raw: &str) -> Result<mycity_core::timeline::Command, serde_json::Error> {
+fn timeline(
+    raw: Raw<'_>,
+    scratch: &mut Scratch,
+) -> Result<mycity_core::timeline::Command, serde_json::Error> {
     use mycity_core::timeline::Command as Output;
     #[derive(Deserialize)]
     #[serde(rename_all = "snake_case")]
@@ -337,86 +325,101 @@ fn timeline(raw: &str) -> Result<mycity_core::timeline::Command, serde_json::Err
         SettlePayroll,
         Advance,
     }
-    validate(raw)?;
-    let kind: Kind = tag(raw)?;
+    validate_content(raw, scratch)?;
+    let kind: Kind = tag(raw, scratch)?;
     match kind {
         Kind::Enable => {
-            unit(raw)?;
+            unit(raw, scratch)?;
             Ok(Output::Enable)
         }
         Kind::CancelAdvance => {
-            unit(raw)?;
+            unit(raw, scratch)?;
             Ok(Output::CancelAdvance)
         }
         Kind::Claims => {
-            let fields = fields(
+            let fields = Fields::parse(
                 raw,
                 &[
                     "kind", "first_id", "count", "payer", "payee", "amount", "due",
                 ],
+                false,
+                scratch,
             )?;
             Ok(Output::Claims {
-                first_id: fields.get(1)?,
-                count: fields.get(2)?,
-                payer: fields.get(3)?,
-                payee: fields.get(4)?,
-                amount: fields.get(5)?,
-                due: fields.get(6)?,
+                first_id: fields.get(1, scratch)?,
+                count: fields.get(2, scratch)?,
+                payer: fields.get(3, scratch)?,
+                payee: fields.get(4, scratch)?,
+                amount: fields.get(5, scratch)?,
+                due: fields.get(6, scratch)?,
             })
         }
         Kind::Lend => {
-            let fields = fields(
+            let fields = Fields::parse(
                 raw,
                 &["kind", "id", "lender", "borrower", "principal", "due"],
+                false,
+                scratch,
             )?;
             Ok(Output::Lend {
-                id: fields.get(1)?,
-                lender: fields.get(2)?,
-                borrower: fields.get(3)?,
-                principal: fields.get(4)?,
-                due: fields.get(5)?,
+                id: fields.get(1, scratch)?,
+                lender: fields.get(2, scratch)?,
+                borrower: fields.get(3, scratch)?,
+                principal: fields.get(4, scratch)?,
+                due: fields.get(5, scratch)?,
             })
         }
         Kind::AddPayroll => {
-            let fields = fields(raw, &["kind", "spec"])?;
+            let fields = Fields::parse(raw, &["kind", "spec"], false, scratch)?;
             Ok(Output::AddPayroll {
-                spec: fields.get(1)?,
+                spec: fields.get(1, scratch)?,
             })
         }
         Kind::StopWork => {
-            let fields = fields(raw, &["kind", "id"])?;
-            Ok(Output::StopWork { id: fields.get(1)? })
+            let fields = Fields::parse(raw, &["kind", "id"], false, scratch)?;
+            Ok(Output::StopWork {
+                id: fields.get(1, scratch)?,
+            })
         }
         Kind::ChangeCycle => {
-            let fields = fields(raw, &["kind", "id", "cycle"])?;
+            let fields = Fields::parse(raw, &["kind", "id", "cycle"], false, scratch)?;
             Ok(Output::ChangeCycle {
-                id: fields.get(1)?,
-                cycle: fields.get(2)?,
+                id: fields.get(1, scratch)?,
+                cycle: fields.get(2, scratch)?,
             })
         }
         Kind::Terminate => {
-            let fields = fields(raw, &["kind", "id"])?;
-            Ok(Output::Terminate { id: fields.get(1)? })
+            let fields = Fields::parse(raw, &["kind", "id"], false, scratch)?;
+            Ok(Output::Terminate {
+                id: fields.get(1, scratch)?,
+            })
         }
         Kind::SettleClaim => {
-            let fields = fields(raw, &["kind", "id"])?;
-            Ok(Output::SettleClaim { id: fields.get(1)? })
+            let fields = Fields::parse(raw, &["kind", "id"], false, scratch)?;
+            Ok(Output::SettleClaim {
+                id: fields.get(1, scratch)?,
+            })
         }
         Kind::SettlePayroll => {
-            let fields = fields(raw, &["kind", "id"])?;
-            Ok(Output::SettlePayroll { id: fields.get(1)? })
+            let fields = Fields::parse(raw, &["kind", "id"], false, scratch)?;
+            Ok(Output::SettlePayroll {
+                id: fields.get(1, scratch)?,
+            })
         }
         Kind::Advance => {
-            let fields = fields(raw, &["kind", "target", "limit"])?;
+            let fields = Fields::parse(raw, &["kind", "target", "limit"], false, scratch)?;
             Ok(Output::Advance {
-                target: fields.get(1)?,
-                limit: fields.get(2)?,
+                target: fields.get(1, scratch)?,
+                limit: fields.get(2, scratch)?,
             })
         }
     }
 }
 
-fn inbox(raw: &str) -> Result<mycity_core::inbox::Command, serde_json::Error> {
+fn inbox(
+    raw: Raw<'_>,
+    scratch: &mut Scratch,
+) -> Result<mycity_core::inbox::Command, serde_json::Error> {
     use mycity_core::inbox::Command as Output;
     #[derive(Deserialize)]
     #[serde(rename_all = "snake_case")]
@@ -429,54 +432,57 @@ fn inbox(raw: &str) -> Result<mycity_core::inbox::Command, serde_json::Error> {
         Handoff,
         Archive,
     }
-    validate(raw)?;
-    let kind: Kind = tag(raw)?;
+    validate_content(raw, scratch)?;
+    let kind: Kind = tag(raw, scratch)?;
     match kind {
         Kind::Enable => {
-            unit(raw)?;
+            unit(raw, scratch)?;
             Ok(Output::Enable)
         }
         Kind::External => {
-            let fields = fields(raw, &["kind", "fact"])?;
+            let fields = Fields::parse(raw, &["kind", "fact"], false, scratch)?;
             Ok(Output::External {
-                fact: fields.get(1)?,
+                fact: fields.get(1, scratch)?,
             })
         }
         Kind::Receive => {
-            let fields = fields(raw, &["kind", "quote"])?;
+            let fields = Fields::parse(raw, &["kind", "quote"], false, scratch)?;
             Ok(Output::Receive {
-                quote: fields.get(1)?,
+                quote: fields.get(1, scratch)?,
             })
         }
         Kind::Incident => {
-            let fields = fields(raw, &["kind", "quote"])?;
+            let fields = Fields::parse(raw, &["kind", "quote"], false, scratch)?;
             Ok(Output::Incident {
-                quote: fields.get(1)?,
+                quote: fields.get(1, scratch)?,
             })
         }
         Kind::Settle => {
-            let fields = fields(raw, &["kind", "sequence"])?;
+            let fields = Fields::parse(raw, &["kind", "sequence"], false, scratch)?;
             Ok(Output::Settle {
-                sequence: fields.get(1)?,
+                sequence: fields.get(1, scratch)?,
             })
         }
         Kind::Handoff => {
-            let fields = fields(raw, &["kind", "sequence", "manager"])?;
+            let fields = Fields::parse(raw, &["kind", "sequence", "manager"], false, scratch)?;
             Ok(Output::Handoff {
-                sequence: fields.get(1)?,
-                manager: fields.get(2)?,
+                sequence: fields.get(1, scratch)?,
+                manager: fields.get(2, scratch)?,
             })
         }
         Kind::Archive => {
-            let fields = fields(raw, &["kind", "sequence"])?;
+            let fields = Fields::parse(raw, &["kind", "sequence"], false, scratch)?;
             Ok(Output::Archive {
-                sequence: fields.get(1)?,
+                sequence: fields.get(1, scratch)?,
             })
         }
     }
 }
 
-fn exchange(raw: &str) -> Result<mycity_core::exchange::Command, serde_json::Error> {
+fn exchange(
+    raw: Raw<'_>,
+    scratch: &mut Scratch,
+) -> Result<mycity_core::exchange::Command, serde_json::Error> {
     use mycity_core::exchange::Command as Output;
     #[derive(Deserialize)]
     #[serde(rename_all = "snake_case")]
@@ -485,32 +491,35 @@ fn exchange(raw: &str) -> Result<mycity_core::exchange::Command, serde_json::Err
         SetLink,
         Cancel,
     }
-    validate(raw)?;
-    let kind: Kind = tag(raw)?;
+    validate_content(raw, scratch)?;
+    let kind: Kind = tag(raw, scratch)?;
     match kind {
         Kind::Dispatch => {
-            let fields = fields(raw, &["kind", "quote"])?;
+            let fields = Fields::parse(raw, &["kind", "quote"], false, scratch)?;
             Ok(Output::Dispatch {
-                quote: fields.get(1)?,
+                quote: fields.get(1, scratch)?,
             })
         }
         Kind::SetLink => {
-            let fields = fields(raw, &["kind", "edge", "open"])?;
+            let fields = Fields::parse(raw, &["kind", "edge", "open"], false, scratch)?;
             Ok(Output::SetLink {
-                edge: fields.get(1)?,
-                open: fields.get(2)?,
+                edge: fields.get(1, scratch)?,
+                open: fields.get(2, scratch)?,
             })
         }
         Kind::Cancel => {
-            let fields = fields(raw, &["kind", "quote"])?;
+            let fields = Fields::parse(raw, &["kind", "quote"], false, scratch)?;
             Ok(Output::Cancel {
-                quote: fields.get(1)?,
+                quote: fields.get(1, scratch)?,
             })
         }
     }
 }
 
-fn boot(raw: &str) -> Result<mycity_core::boot::Command, serde_json::Error> {
+fn boot(
+    raw: Raw<'_>,
+    scratch: &mut Scratch,
+) -> Result<mycity_core::boot::Command, serde_json::Error> {
     use mycity_core::boot::Command as Output;
     #[derive(Deserialize)]
     #[serde(rename_all = "snake_case")]
@@ -520,38 +529,46 @@ fn boot(raw: &str) -> Result<mycity_core::boot::Command, serde_json::Error> {
         Fault,
         ClearFailure,
     }
-    validate(raw)?;
-    let kind: Kind = tag(raw)?;
+    validate_content(raw, scratch)?;
+    let kind: Kind = tag(raw, scratch)?;
     match kind {
         Kind::Start => {
-            let fields = fields(raw, &["kind", "facility", "reverse_request"])?;
+            let fields = Fields::parse(
+                raw,
+                &["kind", "facility", "reverse_request"],
+                false,
+                scratch,
+            )?;
             Ok(Output::Start {
-                facility: fields.get(1)?,
-                reverse_request: fields.get(2)?,
+                facility: fields.get(1, scratch)?,
+                reverse_request: fields.get(2, scratch)?,
             })
         }
         Kind::Advance => {
-            let fields = fields(raw, &["kind", "seconds"])?;
+            let fields = Fields::parse(raw, &["kind", "seconds"], false, scratch)?;
             Ok(Output::Advance {
-                seconds: fields.get(1)?,
+                seconds: fields.get(1, scratch)?,
             })
         }
         Kind::Fault => {
-            let fields = fields(raw, &["kind", "facility"])?;
+            let fields = Fields::parse(raw, &["kind", "facility"], false, scratch)?;
             Ok(Output::Fault {
-                facility: fields.get(1)?,
+                facility: fields.get(1, scratch)?,
             })
         }
         Kind::ClearFailure => {
-            let fields = fields(raw, &["kind", "facility"])?;
+            let fields = Fields::parse(raw, &["kind", "facility"], false, scratch)?;
             Ok(Output::ClearFailure {
-                facility: fields.get(1)?,
+                facility: fields.get(1, scratch)?,
             })
         }
     }
 }
 
-fn economy(raw: &str) -> Result<mycity_core::economy::Command, serde_json::Error> {
+fn economy(
+    raw: Raw<'_>,
+    scratch: &mut Scratch,
+) -> Result<mycity_core::economy::Command, serde_json::Error> {
     use mycity_core::economy::Command as Output;
     #[derive(Deserialize)]
     #[serde(rename_all = "snake_case")]
@@ -565,164 +582,58 @@ fn economy(raw: &str) -> Result<mycity_core::economy::Command, serde_json::Error
         BeginExit,
         Close,
     }
-    validate(raw)?;
-    let kind: Kind = tag(raw)?;
+    validate_content(raw, scratch)?;
+    let kind: Kind = tag(raw, scratch)?;
     match kind {
         Kind::Advance => {
-            let fields = fields(raw, &["kind", "seconds"])?;
+            let fields = Fields::parse(raw, &["kind", "seconds"], false, scratch)?;
             Ok(Output::Advance {
-                seconds: fields.get(1)?,
+                seconds: fields.get(1, scratch)?,
             })
         }
         Kind::SuspendShift => {
-            unit(raw)?;
+            unit(raw, scratch)?;
             Ok(Output::SuspendShift)
         }
         Kind::Prepay => {
-            let fields = fields(raw, &["kind", "quantity"])?;
+            let fields = Fields::parse(raw, &["kind", "quantity"], false, scratch)?;
             Ok(Output::Prepay {
-                quantity: fields.get(1)?,
+                quantity: fields.get(1, scratch)?,
             })
         }
         Kind::CancelFuture => {
-            unit(raw)?;
+            unit(raw, scratch)?;
             Ok(Output::CancelFuture)
         }
         Kind::SettleDebt => {
-            let fields = fields(raw, &["kind", "claim"])?;
+            let fields = Fields::parse(raw, &["kind", "claim"], false, scratch)?;
             Ok(Output::SettleDebt {
-                claim: fields.get(1)?,
+                claim: fields.get(1, scratch)?,
             })
         }
         Kind::HandoffDebt => {
-            let fields = fields(raw, &["kind", "claim"])?;
+            let fields = Fields::parse(raw, &["kind", "claim"], false, scratch)?;
             Ok(Output::HandoffDebt {
-                claim: fields.get(1)?,
+                claim: fields.get(1, scratch)?,
             })
         }
         Kind::BeginExit => {
-            unit(raw)?;
+            unit(raw, scratch)?;
             Ok(Output::BeginExit)
         }
         Kind::Close => {
-            unit(raw)?;
+            unit(raw, scratch)?;
             Ok(Output::Close)
         }
     }
 }
 
-// This streaming validation mirrors Content's scalar decoding, without building a
-// Content tree. RawValue/IgnoredAny alone can overlook an overflowing float or a
-// malformed surrogate in a subtree that an internally tagged unit later ignores.
-fn validate(raw: &str) -> Result<(), serde_json::Error> {
-    struct Check;
-    impl<'de> serde::de::DeserializeSeed<'de> for Check {
-        type Value = ();
-        fn deserialize<D: serde::Deserializer<'de>>(self, d: D) -> Result<(), D::Error> {
-            d.deserialize_any(self)
-        }
-    }
-    impl<'de> Visitor<'de> for Check {
-        type Value = ();
-        fn expecting(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            f.write_str("valid Content scalar or container")
-        }
-        fn visit_bool<E: de::Error>(self, _: bool) -> Result<(), E> {
-            Ok(())
-        }
-        fn visit_i64<E: de::Error>(self, _: i64) -> Result<(), E> {
-            Ok(())
-        }
-        fn visit_u64<E: de::Error>(self, _: u64) -> Result<(), E> {
-            Ok(())
-        }
-        fn visit_f64<E: de::Error>(self, _: f64) -> Result<(), E> {
-            Ok(())
-        }
-        fn visit_str<E: de::Error>(self, _: &str) -> Result<(), E> {
-            Ok(())
-        }
-        fn visit_unit<E: de::Error>(self) -> Result<(), E> {
-            Ok(())
-        }
-        fn visit_seq<A: serde::de::SeqAccess<'de>>(self, mut seq: A) -> Result<(), A::Error> {
-            while seq.next_element_seed(Check)?.is_some() {}
-            Ok(())
-        }
-        fn visit_map<A: MapAccess<'de>>(self, mut map: A) -> Result<(), A::Error> {
-            while map.next_key_seed(Check)?.is_some() {
-                map.next_value_seed(Check)?;
-            }
-            Ok(())
-        }
-    }
-    let mut d = serde_json::Deserializer::from_str(raw);
-    serde::de::DeserializeSeed::deserialize(Check, &mut d)?;
-    d.end()
-}
-fn tag<'de, T: Deserialize<'de>>(raw: &'de str) -> Result<T, serde_json::Error> {
-    struct Tag<T>(std::marker::PhantomData<T>);
-    impl<'de, T: Deserialize<'de>> Visitor<'de> for Tag<T> {
-        type Value = T;
-        fn expecting(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            f.write_str("internally tagged map or sequence")
-        }
-        fn visit_seq<A: serde::de::SeqAccess<'de>>(self, mut seq: A) -> Result<T, A::Error> {
-            let tag = seq
-                .next_element()?
-                .ok_or_else(|| de::Error::missing_field("kind"))?;
-            while seq.next_element::<&RawValue>()?.is_some() {}
-            Ok(tag)
-        }
-        fn visit_map<A: MapAccess<'de>>(self, mut map: A) -> Result<T, A::Error> {
-            struct KeyVisitor;
-            impl Visitor<'_> for KeyVisitor {
-                type Value = bool;
-                fn expecting(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                    f.write_str("tag or content key")
-                }
-                fn visit_str<E: de::Error>(self, v: &str) -> Result<bool, E> {
-                    Ok(v == "kind")
-                }
-            }
-            struct KeySeed;
-            impl<'de> serde::de::DeserializeSeed<'de> for KeySeed {
-                type Value = bool;
-                fn deserialize<D: serde::Deserializer<'de>>(self, d: D) -> Result<bool, D::Error> {
-                    d.deserialize_identifier(KeyVisitor)
-                }
-            }
-            let mut tag = None;
-            while let Some(is_kind) = map.next_key_seed(KeySeed)? {
-                if is_kind {
-                    if tag.is_some() {
-                        return Err(de::Error::duplicate_field("kind"));
-                    }
-                    tag = Some(map.next_value()?);
-                } else {
-                    let _ = map.next_value::<&RawValue>()?;
-                }
-            }
-            tag.ok_or_else(|| de::Error::missing_field("kind"))
-        }
-    }
-    let mut d = serde_json::Deserializer::from_str(raw);
-    let result = serde::Deserializer::deserialize_any(&mut d, Tag(std::marker::PhantomData))?;
-    d.end()?;
-    Ok(result)
-}
-fn unit(raw: &str) -> Result<(), serde_json::Error> {
-    // Map unit variants ignore arbitrary fields, but duplicate tags were already
-    // rejected. Content's sequence end check accepts only the tag with no tail.
-    if raw.trim_start().starts_with('[') {
-        let _ = fields(raw, &["kind"])?;
-    }
-    Ok(())
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
+    use serde::de::{MapAccess, Visitor};
+    use serde_json::value::RawValue;
+    use std::fmt;
     fn compare_action(raw: &str) {
         let old = serde_json::from_str::<Action>(raw);
         let new = action(raw);
@@ -843,8 +754,14 @@ mod tests {
                 let cmd = command.as_object().unwrap();
                 let kind = cmd["kind"].as_str().unwrap();
                 let domain = value["kind"].as_str().unwrap();
-                let source = fields(raw, &["kind", "command"]).unwrap();
-                let mut parser = serde_json::Deserializer::from_str(source.raw(1).unwrap());
+                let source = Fields::parse(
+                    Raw::root(raw.as_bytes()),
+                    &["kind", "command"],
+                    false,
+                    &mut Scratch::new().unwrap(),
+                )
+                .unwrap();
+                let mut parser = serde_json::Deserializer::from_slice(source.raw(1).unwrap().bytes);
                 let values = serde::Deserializer::deserialize_map(&mut parser, Pairs).unwrap();
                 let sequence = format!(
                     "[{}]",
@@ -903,5 +820,76 @@ mod tests {
         ] {
             compare_action(&format!("{{\"command\":{body},\"kind\":\"background\"}}"));
         }
+    }
+}
+
+#[cfg(test)]
+mod context_tests {
+    use super::*;
+    #[derive(Deserialize)]
+    struct OriginalCheckpointPrefix {
+        receipts: Vec<JournalRecord>,
+    }
+    #[test]
+    fn original_checkpoint_depth_context_and_ignored_depth_are_preserved() {
+        let mut scratch = Scratch::new().unwrap();
+        let record = JournalRecord {
+            actor: 0,
+            emergency_eligible: false,
+            operation_id: 1,
+            expected_revision: 0,
+            payload_sha256: [0; 32],
+            outcome: Err(TxError::StaleRevision),
+            actions: [None; MAX_ACTIONS],
+        };
+        let mut value = serde_json::to_value(record).unwrap();
+        for depth in 116..=132 {
+            let nested = format!("{}0{}", "[".repeat(depth), "]".repeat(depth));
+            // Construct the actual wire without a DOM parser's own depth gate.
+            value["actions"][0] = serde_json::Value::Null;
+            let raw = serde_json::to_string(&value).unwrap();
+            let replacement=format!("\"actions\":[{{\"command\":{{\"junk\":{nested},\"kind\":\"enable\"}},\"kind\":\"background\"}},");
+            let raw = raw.replacen("\"actions\":[null,", &replacement, 1);
+            let cp = format!("{{\"receipts\":[{raw}]}}");
+            let old = serde_json::from_str::<OriginalCheckpointPrefix>(&cp);
+            let new = decode_raw(
+                Raw {
+                    bytes: raw.as_bytes(),
+                    depth: 2,
+                },
+                &mut scratch,
+            );
+            assert_eq!(
+                old.is_ok(),
+                new.is_ok(),
+                "CP depth {depth}; old={:?}; new={new:?}",
+                old.as_ref().err()
+            );
+            if let Ok(old) = old {
+                assert_eq!(
+                    serde_json::to_value(old.receipts[0]).unwrap(),
+                    serde_json::to_value(new.unwrap()).unwrap()
+                );
+            }
+        }
+        // Ordinary struct unknown content has the old unbounded Ignore depth,
+        // rather than Content's 128-level gate.
+        let raw = serde_json::to_string(&value).unwrap();
+        let nested = format!("{}0{}", "[".repeat(4096), "]".repeat(4096));
+        let raw = format!("{{\"unknown\":{nested},{}", &raw[1..]);
+        let cp = format!("{{\"receipts\":[{raw}]}}");
+        let old = serde_json::from_str::<OriginalCheckpointPrefix>(&cp).unwrap();
+        let new = decode_raw(
+            Raw {
+                bytes: raw.as_bytes(),
+                depth: 2,
+            },
+            &mut scratch,
+        )
+        .unwrap();
+        assert_eq!(
+            serde_json::to_value(old.receipts[0]).unwrap(),
+            serde_json::to_value(new).unwrap()
+        );
     }
 }

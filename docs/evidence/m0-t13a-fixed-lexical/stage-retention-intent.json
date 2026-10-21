@@ -1,0 +1,32 @@
+{
+  "target": "target",
+  "new_target": false,
+  "new_l1_copy": false,
+  "new_directories": [
+    {
+      "path": "work/t13a-lexical-parser-inputs",
+      "purpose": "Deterministic synthetic JSON boundary bytes generated outside measured processes; not business archives and patched synthetic v1 world; retained base originals unchanged",
+      "release_condition": "All parser probes terminal, logs and generator frozen, no further recovery dependency; exact generated files may be deleted"
+    },
+    {
+      "path": "work/t13a-role-lexical-business-01",
+      "purpose": "Unchanged original full 30-day actual Sim/worker diagnostic from current source; independent run required after parser replacement",
+      "release_condition": "Passed world retained as next Role recovery input; explicit later validated substitute and dependency removal required"
+    },
+    {
+      "path": "work/candidate-binaries/role-workspace-lexical",
+      "purpose": "Frozen acceptance executable, compatibility and fixed parser heap helpers",
+      "release_condition": "Keep acceptance executable and frozen source as evidence"
+    }
+  ],
+  "reuse_inputs": [
+    "work/t13a68-legacy-reopen/world",
+    "work/t13a-role-metadata-v1-proof/world"
+  ],
+  "protect_layouts": [
+    "work/t13a70-joint-01/model/layout/snapshots/snapshot-000001",
+    "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002",
+    "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001"
+  ],
+  "cleanup_during_measurements": false
+}

@@ -1,0 +1,52 @@
+
+running 6 tests
+test capacity_rejection_before_checkpoint_io_does_not_poison ... ok
+test committed_archive_corruption_stops_recovery_and_does_not_fall_back ... ok
+test checkpoint_unwind_requires_reopen_even_after_current_or_retirement ... ok
+test actual_process_exit_at_every_checkpoint_publication_boundary ... ok
+test retry_at_exact_rotation_threshold_does_not_become_a_new_operation ... ok
+test more_than_two_hot_windows_exact_success_and_failure_retry_after_restart has been running for over 60 seconds
+test more_than_two_hot_windows_exact_success_and_failure_retry_after_restart ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 68.13s
+
+
+running 8 tests
+test streamed_v2_capacity_rejection_before_any_output_remains_usable ... ok
+test prebuilt_workspace_is_consumed_by_create_and_cold_open_without_replacing_roots ... ok
+test borrowed_checkpoint_has_all_fields_and_excludes_only_hot_journal ... ok
+
+running 1 test
+test repeated_real_v2_save_and_reopen_reuse_same_validation_slot_backing ... ok
+
+running 1 test
+test streamed_checkpoint_unwind_never_leaves_a_usable_stale_store ... ok
+
+running 1 test
+test current_world_history_and_receipt_corruption_are_rejected_without_rollback ... ok
+
+running 1 test
+
+running 1 test
+
+running 1 test
+
+running 1 test
+
+running 1 test
+
+running 1 test
+
+running 1 test
+test real_process_exit_at_each_v2_publication_and_gc_boundary_keeps_full_state ... ok
+test multiple_hot_windows_failed_receipts_queries_and_empty_saves_keep_originals ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 33.42s
+
+
+running 2 tests
+test original_legacy_checkpoint_with_large_ignored_receipt_data_and_positional_headers_reopens ... ok
+test prepared_metadata_is_consumed_and_reused_for_both_formats_save_archive_query_and_cold_open ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.08s
+

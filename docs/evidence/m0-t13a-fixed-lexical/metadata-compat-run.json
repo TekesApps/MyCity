@@ -1,0 +1,11 @@
+{
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/role-workspace-lexical/metadata-compat",
+    "/Users/frankqin/dev/MyCity/work/t13a68-legacy-reopen/world",
+    "sim-t13a-full-v2:9deedcb11bce7d2d431d4fd8fabad6342fc17a5772cb3de1b7d60ab345aaab82",
+    "/Users/frankqin/dev/MyCity/work/t13a65-joint-02/model/business/fault-reference/cpu-final-engine.json"
+  ],
+  "exit_code": 0,
+  "seconds": 1.2151938329999439,
+  "source_sha256": "25326e509d9a64b818ab2b9b220d8fc21235cc327e4d03d50bf9513fbc484ba7"
+}

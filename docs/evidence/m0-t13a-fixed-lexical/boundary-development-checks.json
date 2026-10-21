@@ -1,0 +1,38 @@
+[
+  {
+    "name": "lexical-boundaries",
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "mycity-storage",
+      "--lib",
+      "metadata::lexical::tests",
+      "--release",
+      "--locked",
+      "--offline",
+      "--",
+      "--test-threads=1"
+    ],
+    "exit_code": 0,
+    "seconds": 4.94568325
+  },
+  {
+    "name": "context-boundaries",
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "mycity-storage",
+      "--lib",
+      "checkpoint::receipt_decode",
+      "--release",
+      "--locked",
+      "--offline",
+      "--",
+      "--test-threads=1"
+    ],
+    "exit_code": 0,
+    "seconds": 0.21221195899999934
+  }
+]

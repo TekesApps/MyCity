@@ -1,17 +1,7 @@
 //! Validate an archive one typed record at a time; no body image or receipt Vec.
 use super::*;
-use serde::de::{self, DeserializeSeed, MapAccess, SeqAccess, Visitor};
+use serde::de::{self, DeserializeSeed, SeqAccess, Visitor};
 use std::fmt;
-#[derive(Deserialize)]
-#[serde(field_identifier, rename_all = "snake_case")]
-enum Field {
-    Schema,
-    GenesisSha256,
-    First,
-    Last,
-    Previous,
-    Receipts,
-}
 struct Extra;
 impl<'de> DeserializeSeed<'de> for Extra {
     type Value = ();
@@ -45,116 +35,68 @@ pub(super) fn operations<'de, D: serde::Deserializer<'de>>(d: D) -> Result<Vec<u
     }
     d.deserialize_seq(Operations)
 }
-struct Records<'a, F> {
-    index: &'a ReceiptIndex,
-    visit: &'a mut F,
-}
-impl<'de, F: FnMut(usize, JournalRecord)> DeserializeSeed<'de> for Records<'_, F> {
-    type Value = ();
-    fn deserialize<D: serde::Deserializer<'de>>(self, d: D) -> Result<(), D::Error> {
-        d.deserialize_seq(self)
-    }
-}
-impl<'de, F: FnMut(usize, JournalRecord)> Visitor<'de> for Records<'_, F> {
-    type Value = ();
-    fn expecting(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("indexed receipts")
-    }
-    fn visit_seq<A: SeqAccess<'de>>(self, mut a: A) -> Result<(), A::Error> {
-        for (n, id) in self.index.operations.iter().enumerate() {
-            let record: JournalRecord = a
-                .next_element()?
-                .ok_or_else(|| de::Error::custom("v2_receipt_short"))?;
-            if record.operation_id != *id {
-                return Err(de::Error::custom("v2_receipt_operation"));
-            }
-            (self.visit)(n, record);
-        }
-        a.next_element_seed(Extra)?;
-        Ok(())
-    }
-}
-struct Body<'a, F> {
-    index: &'a ReceiptIndex,
-    visit: &'a mut F,
-}
-impl<'de, F: FnMut(usize, JournalRecord)> DeserializeSeed<'de> for Body<'_, F> {
-    type Value = ();
-    fn deserialize<D: serde::Deserializer<'de>>(self, d: D) -> Result<(), D::Error> {
-        d.deserialize_map(self)
-    }
-}
-impl<'de, F: FnMut(usize, JournalRecord)> Visitor<'de> for Body<'_, F> {
-    type Value = ();
-    fn expecting(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        f.write_str("complete indexed receipt body")
-    }
-    fn visit_map<A: MapAccess<'de>>(self, mut a: A) -> Result<(), A::Error> {
-        let mut fields = 0u8;
-        while let Some(field) = a.next_key::<Field>()? {
-            let bit = match field {
-                Field::Schema => 1,
-                Field::GenesisSha256 => 2,
-                Field::First => 4,
-                Field::Last => 8,
-                Field::Previous => 16,
-                Field::Receipts => 32,
-            };
-            if fields & bit != 0 {
-                return Err(de::Error::custom("v2_receipt_duplicate"));
-            }
-            fields |= bit;
-            let valid = match field {
-                Field::Schema => a.next_value::<String>()? == "mycity-receipts-v2",
-                Field::GenesisSha256 => a.next_value::<String>()? == self.index.genesis_sha256,
-                Field::First => a.next_value::<u64>()? == self.index.first,
-                Field::Last => a.next_value::<u64>()? == self.index.last,
-                Field::Previous => a.next_value::<Option<Reference>>()? == self.index.previous,
-                Field::Receipts => {
-                    a.next_value_seed(Records {
-                        index: self.index,
-                        visit: self.visit,
-                    })?;
-                    true
-                }
-            };
-            if !valid {
-                return Err(de::Error::custom("v2_receipt_index_content"));
-            }
-        }
-        // serde's old Option<Reference> field permits an omitted null previous.
-        if fields | 16 != 63 || (fields & 16 == 0 && self.index.previous.is_some()) {
-            return Err(de::Error::custom("v2_receipt_missing_field"));
-        }
-        Ok(())
-    }
-}
 pub(super) fn scan(
     dir: &Path,
     reference: &Reference,
     index: &ReceiptIndex,
+    meta: &mut MetadataWorkspace,
     mut visit: impl FnMut(usize, JournalRecord),
 ) -> Result<(), Error> {
-    let identity = stream::Identity {
-        bytes: index.body_bytes,
-        sha256: index.body_sha256.clone(),
-    };
-    stream::verified(
+    use crate::metadata::lexical::{Array, Cursor, Fields, Raw};
+    meta.file.read(
         &dir.join(body_name(reference.generation)),
-        &identity,
-        CHECKPOINT_LIMIT,
-        |reader| {
-            let guarded = mycity_core::fixed_restore::JsonReader::with_string_limit(reader, 384);
-            let mut decoder = serde_json::Deserializer::from_reader(guarded);
-            Body {
-                index,
-                visit: &mut visit,
-            }
-            .deserialize(&mut decoder)?;
-            decoder.end()?;
-            Ok(())
-        },
-    )
+        CHECKPOINT_LIMIT as usize,
+    )?;
+    let bytes = meta.file.as_slice();
+    if bytes.len() as u64 != index.body_bytes || sha256(bytes) != index.body_sha256 {
+        return Err(Error::Invalid("v2_receipt_body_identity"));
+    }
+    let raw = Raw::root(bytes);
+    let mut cursor = Cursor::new(raw)?;
+    if cursor.peek() != Some(b'{') {
+        return Err(Error::Invalid("v2_receipt_body_object"));
+    }
+    let fields = Fields::parse(
+        raw,
+        &[
+            "schema",
+            "genesis_sha256",
+            "first",
+            "last",
+            "previous",
+            "receipts",
+        ],
+        false,
+        &mut meta.parser,
+    )?;
+    let schema: String = fields.get(0, &mut meta.parser)?;
+    let genesis: String = fields.get(1, &mut meta.parser)?;
+    let first: u64 = fields.get(2, &mut meta.parser)?;
+    let last: u64 = fields.get(3, &mut meta.parser)?;
+    let previous: Option<Reference> = fields.optional(4, &mut meta.parser)?;
+    if schema != "mycity-receipts-v2"
+        || genesis != index.genesis_sha256
+        || first != index.first
+        || last != index.last
+        || previous != index.previous
+    {
+        return Err(Error::Invalid("v2_receipt_index_content"));
+    }
+    let mut array = Array::new(fields.raw(5)?)?;
+    for (n, id) in index.operations.iter().enumerate() {
+        let raw = array
+            .next(&mut meta.parser)?
+            .ok_or(Error::Invalid("v2_receipt_short"))?;
+        let record = crate::checkpoint::receipt_decode::decode_raw(raw, &mut meta.parser)?;
+        if record.operation_id != *id {
+            return Err(Error::Invalid("v2_receipt_operation"));
+        }
+        visit(n, record);
+    }
+    if array.next(&mut meta.parser)?.is_some() {
+        return Err(Error::Invalid("v2_receipt_extra"));
+    }
+    Ok(())
 }
 
 #[cfg(test)]
@@ -241,15 +183,26 @@ mod tests {
         assert_eq!(bytes, json(&old).unwrap());
         write(&dir.0, &mut index, &bytes);
         let mut seen = Vec::new();
-        scan(&dir.0, &reference, &index, |n, r| {
-            seen.push((n, r.operation_id))
-        })
+        scan(
+            &dir.0,
+            &reference,
+            &index,
+            &mut MetadataWorkspace::new().unwrap(),
+            |n, r| seen.push((n, r.operation_id)),
+        )
         .unwrap();
         assert_eq!(seen, [(0, 1)]);
         let mut sorted: serde_json::Value = serde_json::from_slice(&bytes).unwrap();
         sorted.as_object_mut().unwrap().remove("previous"); // Old serde Option accepts missing null.
         write(&dir.0, &mut index, &json(&sorted).unwrap());
-        scan(&dir.0, &reference, &index, |_, _| {}).unwrap();
+        scan(
+            &dir.0,
+            &reference,
+            &index,
+            &mut MetadataWorkspace::new().unwrap(),
+            |_, _| {},
+        )
+        .unwrap();
     }
     #[test]
     fn authenticated_but_malformed_body_tail_metadata_and_count_cannot_pass() {
@@ -271,7 +224,14 @@ mod tests {
             [bytes[..bytes.len() - 1].as_ref(), b",\"unknown\":0}"].concat(),
         ] {
             write(&dir.0, &mut index, &bad);
-            assert!(scan(&dir.0, &reference, &index, |_, _| {}).is_err());
+            assert!(scan(
+                &dir.0,
+                &reference,
+                &index,
+                &mut MetadataWorkspace::new().unwrap(),
+                |_, _| {}
+            )
+            .is_err());
         }
         let base: serde_json::Value = serde_json::from_slice(&bytes).unwrap();
         for mutate in [
@@ -289,7 +249,14 @@ mod tests {
             let mut bad = base.clone();
             mutate(&mut bad);
             write(&dir.0, &mut index, &json(&bad).unwrap());
-            assert!(scan(&dir.0, &reference, &index, |_, _| {}).is_err());
+            assert!(scan(
+                &dir.0,
+                &reference,
+                &index,
+                &mut MetadataWorkspace::new().unwrap(),
+                |_, _| {}
+            )
+            .is_err());
         }
     }
     #[test]

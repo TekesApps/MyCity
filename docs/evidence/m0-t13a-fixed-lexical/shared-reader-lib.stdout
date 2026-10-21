@@ -1,0 +1,23 @@
+
+running 18 tests
+test checkpoint_v2::receipts::tests::index_overflow_is_rejected_before_extra_record_materializes ... ok
+test metadata::lexical::tests::ignore_and_content_keep_distinct_old_scalar_grammars ... ok
+test checkpoint::receipt_decode::context_tests::original_checkpoint_depth_context_and_ignored_depth_are_preserved ... ok
+test metadata::tests::strict_bytes_reject_before_extra_decode_and_writer_failure_preserves_backing ... ok
+test model_capacity::tests::feasibility_boundary_never_authorizes_current_runtime ... ok
+test stream::tests::complete_stream_hash_length_and_unconsumed_tail_are_required ... ok
+test metadata::tests::metadata_counts_full_receipts_and_all_retained_file_slots ... ok
+test checkpoint::receipt_decode::tests::large_whitespace_ignored_fields_and_tag_last_keep_legacy_semantics ... ok
+test wal::tests::persisted_envelope_overflow_rejects_before_extra_action_decode ... ok
+test wal::tests::every_produced_sample_matches_old_frame_bytes_and_split_checksum ... ok
+test checkpoint_v2::receipts::tests::borrowed_receipt_wire_matches_owned_legacy_and_arbitrary_field_order ... ok
+test stream::tests::second_pass_or_validation_failure_cannot_publish_and_tmp_is_reclaimed ... ok
+test background::slot_load_tests::outer_hash_failure_invalidates_otherwise_valid_decoded_candidate ... ok
+test metadata::lexical::tests::long_escaped_keys_do_not_alias_known_identifiers_or_skip_late_errors ... ok
+test checkpoint_v2::receipts::tests::authenticated_but_malformed_body_tail_metadata_and_count_cannot_pass ... ok
+test metadata::lexical::tests::full_16mib_ignored_nesting_fits_one_initialized_bit_stack_and_overflow_recovers ... ok
+test metadata::lexical::tests::finite_known_values_reject_long_wrong_types_without_old_string_fallback ... ok
+test checkpoint::receipt_decode::tests::all_variants_match_original_typed_reader_for_map_sequence_and_bad_fields ... ok
+
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.19s
+

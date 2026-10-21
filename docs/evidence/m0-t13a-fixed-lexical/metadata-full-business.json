@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/role-workspace-lexical/mycity-headless",
+    "scale-sim-probe",
+    "/Users/frankqin/dev/MyCity/work/t13a-role-lexical-business-01",
+    "full",
+    "measure"
+  ],
+  "exit_code": 0,
+  "seconds": 334.63993875000006,
+  "source_sha256": "25326e509d9a64b818ab2b9b220d8fc21235cc327e4d03d50bf9513fbc484ba7"
+}

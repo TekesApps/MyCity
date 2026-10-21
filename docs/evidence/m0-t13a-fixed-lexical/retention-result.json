@@ -1,0 +1,39 @@
+{
+  "before": {
+    "time_ns": 1792597131643828000,
+    "work_du_kib": 15953892,
+    "target_du_kib": 1296244,
+    "filesystem_available_bytes": 110176083968
+  },
+  "after": {
+    "time_ns": 1792597135807122000,
+    "work_du_kib": 15854716,
+    "target_du_kib": 1296244,
+    "filesystem_available_bytes": 110275072000
+  },
+  "files_deleted": 20,
+  "deleted_inode_deduplicated_allocated_bytes": 101556224,
+  "target_files_deleted": 0,
+  "new_independent_target": false,
+  "new_l1_copy": false,
+  "temporary_input_direct_recovery": false,
+  "all_probes_terminal": true,
+  "observed_filesystem_available_delta": 98988032,
+  "accounting": "File allocation st_blocks*512, one link per inode checked; not APFS exclusive physical bytes. du includes directories. df independent, not attributed as freed bytes. Full required originals retained, synthetic path not directly restorable.",
+  "retained_new_directories": [
+    {
+      "path": "work/t13a-role-lexical-business-01",
+      "files": 3719,
+      "du_kib": 90832,
+      "reason": "Latest original full30d actual Sim/worker world for next full Role recovery/compatibility check",
+      "release_condition": "Later actually verified substitute plus explicit dependency removal; fixed executables retained per evidence policy"
+    },
+    {
+      "path": "work/candidate-binaries/role-workspace-lexical",
+      "files": 4,
+      "du_kib": 21976,
+      "reason": "Fixed acceptance executable and compiled proof helpers, keep as evidence",
+      "release_condition": "Later actually verified substitute plus explicit dependency removal; fixed executables retained per evidence policy"
+    }
+  ]
+}

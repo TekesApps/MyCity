@@ -1,0 +1,31 @@
+{
+  "source_sha256": "25326e509d9a64b818ab2b9b220d8fc21235cc327e4d03d50bf9513fbc484ba7",
+  "workspace_harness_groups": 54,
+  "passed_harness_entries": 415,
+  "not_independent_business_sample_count": true,
+  "heap_records": 730,
+  "roles": {
+    "scale-model-task": {
+      "records": 3,
+      "max_lifetime_requested_plus_64k_tail": 16502731
+    },
+    "compute-worker-bounded": {
+      "records": 724,
+      "max_lifetime_requested_plus_64k_tail": 5980225
+    },
+    "sim-host-scale-full": {
+      "records": 2,
+      "max_lifetime_requested_plus_64k_tail": 59168565
+    },
+    "scale-sim-probe": {
+      "records": 1,
+      "max_lifetime_requested_plus_64k_tail": 614532
+    }
+  },
+  "formal_performance": "not_run",
+  "normal64": "not_accepted",
+  "common8": "not_accepted",
+  "eight_hour": "not_run",
+  "real16gb": "not_run",
+  "full_m0": "not_accepted"
+}

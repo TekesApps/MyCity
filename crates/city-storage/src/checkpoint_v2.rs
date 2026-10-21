@@ -149,6 +149,7 @@ pub(super) fn open_into(
     genesis: &str,
     ceiling: u64,
     slot: &mut mycity_core::transaction::EngineSlot,
+    meta: &mut MetadataWorkspace,
 ) -> Result<(u64, String), Error> {
     let s = snapshot(dir, r)?;
     if s.genesis_sha256 != genesis || s.current.sequence > ceiling {
@@ -161,7 +162,7 @@ pub(super) fn open_into(
         if i.genesis_sha256 != genesis || i.last != next {
             return Err(Error::Invalid("v2_receipt_sequence_chain"));
         }
-        receipts::scan(dir, &r, &i, |_, _| {})?;
+        receipts::scan(dir, &r, &i, meta, |_, _| {})?;
         next = i.first - 1;
         cursor = i.previous;
     }
@@ -187,6 +188,7 @@ pub(super) fn lookup(
     dir: &Path,
     r: Option<&Reference>,
     operation: u64,
+    meta: &mut MetadataWorkspace,
 ) -> Result<Option<JournalRecord>, Error> {
     let Some(r) = r else {
         return Ok(None);
@@ -197,7 +199,7 @@ pub(super) fn lookup(
         let i = index(dir, &r)?;
         if i.operations.contains(&operation) {
             let mut found = None;
-            receipts::scan(dir, &r, &i, |_, record| {
+            receipts::scan(dir, &r, &i, meta, |_, record| {
                 if record.operation_id == operation {
                     found = Some(record);
                 }
@@ -218,6 +220,7 @@ pub(super) fn rows(
     skip: &mut usize,
     limit: usize,
     rows: &mut Vec<serde_json::Value>,
+    meta: &mut MetadataWorkspace,
 ) -> Result<(), Error> {
     if limit > 64 || rows.len() > limit {
         return Err(Error::Invalid("query_page_limit"));
@@ -239,7 +242,7 @@ pub(super) fn rows(
         let end = i.operations.len() - *skip;
         let begin = end.saturating_sub(limit - rows.len());
         let mut page: ReceiptPage = [None; 64];
-        receipts::scan(dir, &r, &i, |n, record| {
+        receipts::scan(dir, &r, &i, meta, |n, record| {
             if (begin..end).contains(&n) {
                 page[n - begin] = Some((n, record));
             }

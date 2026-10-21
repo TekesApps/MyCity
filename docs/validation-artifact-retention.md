@@ -39,3 +39,5 @@
 [v0.5.81 Meta／legacy阶段回收](evidence/m0-t13a-metadata-workspace/retention-result.json)：全部实际验证终态、work／target无占用；新增删除0B，无独立target或L1副本。新增完整业务恢复输入、小型v1兼容原件和固定exe目录按[预先用途与解除条件](evidence/m0-t13a-metadata-workspace/stage-retention-intent.json)保留。不是每轮默认永久留存；下次全Role验证优先复用这些输入，仍需原完整布局和旧兼容原件。df变化独立记录，不计回收成果。
 
 [本次用户指定集中复查](evidence/disk-reclamation-current-request/STATUS.md)：当前work实测15.013GiB，完整恢复输入逐文件复核；无新增可确认安全退役项，删除0B。固定依赖／exe／故障及延时原样保留，当前词法解析阶段终态后、创建新负载目录前再按精确依赖复查。
+
+[v0.5.83固定词法终态回收](evidence/m0-t13a-fixed-lexical/retention-result.json)：验证及独立审查终态、占用和完整原件复核后，按精确清单删除11份合成JSON及patched world内9份文件，分配空间101,556,224B。临时输入不能直接恢复；原v81完整v1、原布局、新完整30日world与源码／exe／原始日志保留。无新独立target或L1副本，df变化单独报告。

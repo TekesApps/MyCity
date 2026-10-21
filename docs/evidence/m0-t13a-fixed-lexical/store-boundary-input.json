@@ -1,0 +1,59 @@
+{
+  "base": "work/t13a-role-metadata-v1-proof",
+  "base_sha256": {
+    "expected-engine.json": "1b22d61c94715f83c8011322c468217b6e85f03c79490670a92df5139ba067b4",
+    "world/genesis.json": "c07054ef262557472c2bc6e83a583849a6171a374d1febfd19c97c1d6dc9d5d6",
+    "world/checkpoint-3.json": "8f8d9e4b618411618603cfafb7700757b6b670b1c50085c5212d861b7b4b94fd",
+    "world/LOCK": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "world/spatial-height.png": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8",
+    "world/spatial-input.json": "d7a3d9ebeeb2c92ac0a6dba3ac0683639c3cc360d7d1cf1c01d249ecb82b8da2",
+    "world/root-0.json": "742ba2e470835f6133d4547d130604a5a2c090e5a01f9e26644c84e5e343f29d",
+    "world/root-1.json": "b4d36de3f1a4c5cdc84e0380625fd096fc5ddab98f746af230967a9daccfd5ac",
+    "world/CURRENT.json": "a38a064a67abb067833b8361125decd04effaf37671d1b3de21b6fecba6dab97",
+    "world/checkpoint-index-3.json": "0b84b9962007255af1f78297ff2c026aeb128ce11308f978c4686c301e424c53",
+    "world/wal-3.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "synthetic_world": "work/t13a-lexical-parser-inputs/store-escaped-key",
+  "checkpoint_bytes": 16777215,
+  "only_selected_root": true,
+  "files": {
+    "genesis.json": {
+      "bytes": 3434,
+      "sha256": "c07054ef262557472c2bc6e83a583849a6171a374d1febfd19c97c1d6dc9d5d6"
+    },
+    "checkpoint-3.json": {
+      "bytes": 16777215,
+      "sha256": "2a507df102145d5565d73f2861fd21142b1e68fba0142559735481fff0cf29bf"
+    },
+    "LOCK": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "spatial-height.png": {
+      "bytes": 207,
+      "sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8"
+    },
+    "spatial-input.json": {
+      "bytes": 3679,
+      "sha256": "d7a3d9ebeeb2c92ac0a6dba3ac0683639c3cc360d7d1cf1c01d249ecb82b8da2"
+    },
+    "root-1.json": {
+      "bytes": 509,
+      "sha256": "dcaa24195579a4e79bbf2b768dc4ea7d58ad437504bec65a34311954a37559b3"
+    },
+    "CURRENT.json": {
+      "bytes": 123,
+      "sha256": "d81a7a215a2d959a8bdb0c0eb957527c63f0d474a9e929cd37a71acb813b160f"
+    },
+    "checkpoint-index-3.json": {
+      "bytes": 117,
+      "sha256": "7709864c1632ffb3f3d5dae0496563116c67fcc95f1b95ec1834540ac458a718"
+    },
+    "wal-3.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "not_a_new_business_save": true,
+  "retirement": "After old/new actual cold-open probes terminal and files unchanged; base v1 originals retained. Synthetic copy has no downstream recovery dependency."
+}

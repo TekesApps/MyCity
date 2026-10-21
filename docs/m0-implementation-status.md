@@ -2,6 +2,8 @@
 
 记录起于v0.5.4，2026-10-19。用户授权从M0-T01按依赖写Rust，并明确本轮只做模型、不做UI。版本tag是仓库阶段发布，不是游戏0.1已经发布；所有阶段验证后提交、递增附注tag并推送。
 
+v0.5.83的[固定词法解析](evidence/m0-t13a-fixed-lexical/STATUS.md)已接v1／genesis／v2正文，共用1MiB预建且计入owned的bit栈，保留旧有效范围和Ignore／Content差别。冻结源码全仓54组／415条通过记录、原full30日720小时／724worker、旧完整world及近16MiB合成CP实际新旧Store冷开通过；解析压力峰值单列，非业务规模或内存降幅。整Role控制暂态／broker及normal64/common8、原联合负载、分级／四速／稳态／8h仍未通过，真实16GB为not_run。下一步见[整Role准入与联合实测](evidence/m0-t13a-fixed-lexical/NEXT.md)。下列早期阶段段落保留其发布时范围。
+
 v0.5.81的[Meta／legacy保留工作区](evidence/m0-t13a-metadata-workspace/STATUS.md)已消费实际预建文件、Engine字节及完整收据／控制表；保留原legacy有效大收据并移除Content树。冻结同源全仓54组／410条harness记录、旧完整存档、固定旧reader读取新v1输出及原full30日720小时／724真实worker与完整业务空气对照通过。Meta全部heap纳入保守表后旧拓扑显式不fit64MiB；实际角色账、逃逸scratch、broker/Filled、normal64/common8与正式分级／四档／稳态／8h继续实现，真实16GB保持not_run。下一步见[实际角色分配边界](evidence/m0-t13a-metadata-workspace/ROLE-ALLOCATION-NEXT.md)。
 
 v0.5.79的[T13-A预建构造基础](evidence/m0-t13a-role-workspace/STATUS.md)已接实际Store／Sim／Reference：core双root与准备区、候选及codec，原257×257／16位源的固定解码、Large输出和几何背板；同源全仓404条harness记录、旧完整world逐字节与背板身份、原full30日720小时／724worker及独立完整业务空气对照通过。该轮无L1／normal pool，不是完整Role预算或性能门；Meta／legacy／控制暂存及整包授权继续实现，原分级／四速／稳态／8h和真实16GB仍未签收。

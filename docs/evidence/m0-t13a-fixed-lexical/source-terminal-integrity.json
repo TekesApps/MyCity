@@ -1,0 +1,8 @@
+{
+  "source_sha256": "25326e509d9a64b818ab2b9b220d8fc21235cc327e4d03d50bf9513fbc484ba7",
+  "files": 188,
+  "all_frozen_source_bytes_equal_worktree": true,
+  "fixed_binary_sha256": "2fb805c5e13d5159988399421209d03dd8ab56ee05db78ea41a62f6fab3a4895",
+  "source_identity_embedded_in_fixed_cli": true,
+  "lock_unchanged": true
+}

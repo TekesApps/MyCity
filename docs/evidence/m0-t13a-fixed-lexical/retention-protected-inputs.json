@@ -1,0 +1,24 @@
+{
+  "layouts": [
+    {
+      "path": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000001",
+      "indexed_files": 29,
+      "complete_originals_present": true,
+      "sha256_match": true
+    },
+    {
+      "path": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002",
+      "indexed_files": 29,
+      "complete_originals_present": true,
+      "sha256_match": true
+    },
+    {
+      "path": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001",
+      "indexed_files": 29,
+      "complete_originals_present": true,
+      "sha256_match": true
+    }
+  ],
+  "original_v1_complete_and_unchanged": true,
+  "new_30day_world_retained": "work/t13a-role-lexical-business-01/world"
+}

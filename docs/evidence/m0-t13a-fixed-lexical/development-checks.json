@@ -1,0 +1,34 @@
+[
+  {
+    "name": "initial-receipt-oracle",
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "mycity-storage",
+      "--lib",
+      "checkpoint::receipt_decode::tests",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "exit_code": 0,
+    "seconds": 18.974299584
+  },
+  {
+    "name": "initial-metadata-roundtrip",
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "mycity-storage",
+      "--test",
+      "metadata",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "exit_code": 0,
+    "seconds": 14.333212083999996
+  }
+]

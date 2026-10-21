@@ -1,0 +1,40 @@
+{
+  "result": {
+    "before_current": 50840274,
+    "before_lifetime_peak": 50840274,
+    "after_current": 50850077,
+    "after_lifetime_peak": 50893320,
+    "metadata_owned_bytes": 24904104,
+    "lexical_capacity": 1048576,
+    "backings_unchanged": true,
+    "full_engine_equal": true,
+    "engine_bytes": 1882,
+    "engine_sha256": "1b22d61c94715f83c8011322c468217b6e85f03c79490670a92df5139ba067b4",
+    "sequence": 2,
+    "peak_reset": false,
+    "whole_role_accepted": false
+  },
+  "old_reader_sha256": "5e648089c05725134492c78d5566cdcdf8afc4eeaf9b2e1c5261adbecaa8623a",
+  "new_reader_sha256": "79a7e0d92327ba2aac08ba4a4846220f49b4343cf2768b62770aac8c596ccd6f",
+  "helper_source_sha256": "2e6e896a5aad55379e787567bbea223346993b05304a4b446c58392da91a6940",
+  "linked_libraries": {
+    "peak_alloc": {
+      "path": "/Users/frankqin/dev/MyCity/target/release/deps/libpeak_alloc-4d72c28052f92821.rlib",
+      "sha256": "9e16f43a93b62cbb074ed0f40a9b1b445df2d50ef1e3067fe1fa24ed0dedd4a1"
+    },
+    "mycity_core": {
+      "path": "/Users/frankqin/dev/MyCity/target/release/libmycity_core.rlib",
+      "sha256": "86de485b99ace1791e0b6e50d3f527286d5e4be6c27fb524357944be80910ba9"
+    },
+    "mycity_map": {
+      "path": "/Users/frankqin/dev/MyCity/target/release/libmycity_map.rlib",
+      "sha256": "06ba4c8cd65ecd195f126a416a7a75f0fed0ddb85d35d23c42a2a8815e8a3200"
+    },
+    "mycity_storage": {
+      "path": "/Users/frankqin/dev/MyCity/target/release/libmycity_storage.rlib",
+      "sha256": "2c70f4e802c52d96f952710c20c597cb68ef8f3c59bcde56d8625424169392fd"
+    }
+  },
+  "synthetic_world_and_base_unchanged": true,
+  "scope": "Actual normal-prepared Store old/new legacy open of a near-16MiB synthetic CP; old/new full Engine and sequence equal, no fallback root. New process requested heap includes entire construction/open lifetime, no reset. Does not grant normal64/common8 or physical memory acceptance."
+}

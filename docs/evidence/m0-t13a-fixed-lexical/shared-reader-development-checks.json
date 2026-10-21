@@ -1,0 +1,54 @@
+[
+  {
+    "name": "shared-reader-lib",
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "mycity-storage",
+      "--lib",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "exit_code": 0,
+    "seconds": 21.054835667000003
+  },
+  {
+    "name": "shared-reader-persistence",
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "mycity-storage",
+      "--test",
+      "metadata",
+      "--test",
+      "checkpoint",
+      "--test",
+      "checkpoint_v2",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "exit_code": 0,
+    "seconds": 118.597108042
+  },
+  {
+    "name": "shared-reader-clippy",
+    "command": [
+      "cargo",
+      "clippy",
+      "--workspace",
+      "--all-targets",
+      "--release",
+      "--locked",
+      "--offline",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit_code": 101,
+    "seconds": 4.7547663330000205
+  }
+]

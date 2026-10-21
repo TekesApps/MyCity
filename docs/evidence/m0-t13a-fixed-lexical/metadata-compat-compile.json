@@ -1,0 +1,21 @@
+{
+  "command": [
+    "rustc",
+    "--edition=2021",
+    "-O",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-metadata-workspace/metadata-compat.rs",
+    "-L",
+    "dependency=/Users/frankqin/dev/MyCity/target/release/deps",
+    "--extern",
+    "mycity_core=/Users/frankqin/dev/MyCity/target/release/libmycity_core.rlib",
+    "--extern",
+    "mycity_map=/Users/frankqin/dev/MyCity/target/release/libmycity_map.rlib",
+    "--extern",
+    "mycity_storage=/Users/frankqin/dev/MyCity/target/release/libmycity_storage.rlib",
+    "-o",
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/role-workspace-lexical/metadata-compat"
+  ],
+  "exit_code": 0,
+  "seconds": 0.19376724999995076,
+  "source_sha256": "25326e509d9a64b818ab2b9b220d8fc21235cc327e4d03d50bf9513fbc484ba7"
+}

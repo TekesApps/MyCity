@@ -14,7 +14,7 @@ impl Reference {
         self.sha256.capacity()
     }
 }
-mod receipt_decode;
+pub(super) mod receipt_decode;
 mod retained;
 use retained::load_index;
 pub(super) use retained::{load, verify_archive};
@@ -85,8 +85,12 @@ impl Store {
         operation: u64,
     ) -> Result<Option<JournalRecord>, Error> {
         if self.io.root.checkpoint_layout == 2 {
-            let result =
-                checkpoint_v2::lookup(&self.io.dir, self.io.root.checkpoint_v2.as_ref(), operation);
+            let result = checkpoint_v2::lookup(
+                &self.io.dir,
+                self.io.root.checkpoint_v2.as_ref(),
+                operation,
+                &mut self.io.metadata,
+            );
             if result.is_err() {
                 self.io.poisoned = true;
             }
@@ -147,6 +151,7 @@ impl Store {
                     &mut skipped,
                     limit,
                     &mut rows,
+                    &mut self.io.metadata,
                 )?;
                 return Ok((rows, total));
             }

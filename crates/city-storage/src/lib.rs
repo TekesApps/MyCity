@@ -664,6 +664,7 @@ impl Store {
                 &root.genesis_sha256,
                 root.sequence,
                 &mut restore_workspace,
+                &mut metadata,
             )?;
             restore_workspace
                 .publish_swap(&mut genesis_engine)

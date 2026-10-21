@@ -1,4 +1,6 @@
 //! Retained file and decoded-field backing. No broker authorization is implied.
+pub(crate) mod lexical;
+pub(crate) mod reader;
 use super::*;
 use serde::de::{self, DeserializeSeed, SeqAccess, Visitor};
 use std::{fmt, mem::size_of};
@@ -180,20 +182,23 @@ pub struct MetadataWorkspace {
     pub(crate) receipts: Vec<JournalRecord>,
     pub(crate) operations: Vec<u64>,
     pub(crate) resources: Vec<Resource>,
+    pub(crate) parser: lexical::Scratch,
 }
 #[derive(Debug, PartialEq, Eq, Serialize)]
 pub struct MetadataIdentity {
-    pub backings: [usize; 9],
+    pub backings: [usize; 10],
     pub byte_capacities: [usize; 6],
     pub receipt_capacity_bytes: usize,
     pub operations_capacity_bytes: usize,
     pub resource_capacity_bytes: usize,
+    pub lexical_capacity_bytes: usize,
     pub owned_bytes: usize,
 }
 impl MetadataWorkspace {
     /// Declared retained heap payload; no allocation or profile-derived credit.
     pub(crate) fn planned_heap_bytes() -> usize {
-        checkpoint::CHECKPOINT_LIMIT as usize
+        lexical::STACK_BYTES
+            + checkpoint::CHECKPOINT_LIMIT as usize
             + mycity_core::transaction::ENGINE_BYTE_BUDGET
             + 32 * 1024
             + mycity_map::assets::NORMAL_INPUT_BYTES
@@ -221,6 +226,7 @@ impl MetadataWorkspace {
             opening: Bytes::new(INPUT_LIMIT as usize)?,
             receipts: rows(empty, MAX_RECEIPTS)?,
             operations: rows(0, MAX_RECEIPTS)?,
+            parser: lexical::Scratch::new()?,
             resources: rows(
                 Resource::new(1, 1).map_err(|_| Error::Invalid("metadata_resource_seed"))?,
                 mycity_core::transaction::MAX_RESOURCES,
@@ -240,6 +246,7 @@ impl MetadataWorkspace {
         let receipt_capacity_bytes = self.receipts.capacity() * size_of::<JournalRecord>();
         let operations_capacity_bytes = self.operations.capacity() * size_of::<u64>();
         let resource_capacity_bytes = self.resources.capacity() * size_of::<Resource>();
+        let (parser_address, lexical_capacity_bytes) = self.parser.identity();
         MetadataIdentity {
             backings: [
                 slots[0].0,
@@ -251,16 +258,19 @@ impl MetadataWorkspace {
                 self.receipts.as_ptr() as usize,
                 self.operations.as_ptr() as usize,
                 self.resources.as_ptr() as usize,
+                parser_address,
             ],
             byte_capacities,
             receipt_capacity_bytes,
             operations_capacity_bytes,
             resource_capacity_bytes,
+            lexical_capacity_bytes,
             owned_bytes: size_of::<Self>()
                 + byte_capacities.iter().sum::<usize>()
                 + receipt_capacity_bytes
                 + operations_capacity_bytes
-                + resource_capacity_bytes,
+                + resource_capacity_bytes
+                + lexical_capacity_bytes,
         }
     }
 }
@@ -323,6 +333,7 @@ mod tests {
                 + id.receipt_capacity_bytes
                 + id.operations_capacity_bytes
                 + id.resource_capacity_bytes
+                + id.lexical_capacity_bytes
         );
         assert_eq!(
             id.owned_bytes - size_of::<MetadataWorkspace>(),
