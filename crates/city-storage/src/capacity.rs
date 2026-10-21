@@ -143,24 +143,30 @@ impl Store {
                 .checked_add(1)
                 .ok_or(Error::Invalid("publication_overflow"))?;
             let slot = (root.generation % 2) as u8;
-            let encoded = json(&root)?;
+            self.io.metadata.small.encode(&root, META_LIMIT as usize)?;
+            let encoded = self.io.metadata.small.as_slice();
             admit(
                 &self.io.dir,
                 policy,
                 encoded.len() as u64 + META_LIMIT,
                 true,
             )?;
-            atomic_file(&self.io.dir, &format!("root-{slot}.json"), &encoded, || {
+            atomic_file(&self.io.dir, &format!("root-{slot}.json"), encoded, || {
                 Ok(())
             })?;
+            let current = Current {
+                schema: "mycity-m0-current-v1".into(),
+                slot,
+                root_sha256: sha256(encoded),
+            };
+            self.io
+                .metadata
+                .small
+                .encode(&current, META_LIMIT as usize)?;
             atomic_file(
                 &self.io.dir,
                 "CURRENT.json",
-                &json(&Current {
-                    schema: "mycity-m0-current-v1".into(),
-                    slot,
-                    root_sha256: sha256(&encoded),
-                })?,
+                self.io.metadata.small.as_slice(),
                 || Ok(()),
             )?;
             self.io.root = root;

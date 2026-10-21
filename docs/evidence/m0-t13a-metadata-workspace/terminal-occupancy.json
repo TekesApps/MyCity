@@ -1,0 +1,7 @@
+{
+  "work_or_target_open": [],
+  "compiler_or_model_processes_observed": [
+    "99858 69823       00:08 /Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo"
+  ],
+  "stopped": []
+}

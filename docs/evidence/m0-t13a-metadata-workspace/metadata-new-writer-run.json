@@ -1,0 +1,10 @@
+{
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/role-workspace-metadata/new-writer",
+    "/Users/frankqin/dev/MyCity/work/t13a-role-metadata-v1-proof/world",
+    "/Users/frankqin/dev/MyCity/work/t13a-role-metadata-v1-proof/expected-engine.json"
+  ],
+  "exit_code": 0,
+  "seconds": 0.6064276250000376,
+  "source_sha256": "ece8cc51d70a0a3622f9260771084362389c53fc6cc70f18faf68148d559b5e5"
+}

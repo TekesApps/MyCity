@@ -35,3 +35,5 @@
 [v0.5.79构造基础终态回收](evidence/m0-t13a-role-workspace/spatial-retention-result.json)：全部验证终态、work/target无占用；本次新增删除0B。唯一新完整业务world保留给Meta／role下一阶段恢复；未复制L1／未新建target。现存完整布局、旧业务兼容及已无损归档的证据继续保留；df变化不归于清理。
 
 [最新集中复查（v0.5.80）](evidence/disk-reclamation-final-recheck/STATUS.md)：work实测14.907GiB，剩余三份pressure均属完整恢复依赖；无新可确认退役项，删除0B。逐原文件校验三份布局及两份旧业务输入，保留当前Meta未提交工作；原始延时样本、故障现场及共享target不作为缓存删除。新增测试目录创建前应写明用途、下游依赖及终态回收条件，不以轮次默认永久保留。
+
+[v0.5.81 Meta／legacy阶段回收](evidence/m0-t13a-metadata-workspace/retention-result.json)：全部实际验证终态、work／target无占用；新增删除0B，无独立target或L1副本。新增完整业务恢复输入、小型v1兼容原件和固定exe目录按[预先用途与解除条件](evidence/m0-t13a-metadata-workspace/stage-retention-intent.json)保留。不是每轮默认永久留存；下次全Role验证优先复用这些输入，仍需原完整布局和旧兼容原件。df变化独立记录，不计回收成果。

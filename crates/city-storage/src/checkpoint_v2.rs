@@ -9,6 +9,11 @@ pub(super) struct Reference {
     generation: u64,
     sha256: String,
 }
+impl Reference {
+    pub(super) fn heap_capacity_bytes(&self) -> usize {
+        self.sha256.capacity()
+    }
+}
 #[derive(Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 struct WorldPoint {
@@ -463,22 +468,28 @@ impl Store {
                 sha256: sha256(&manifest),
             });
             let slot = (generation % 2) as u8;
-            let root_bytes = json(&root)?;
+            self.io.metadata.small.encode(&root, META_LIMIT as usize)?;
+            let root_bytes = self.io.metadata.small.as_slice();
             atomic_file(
                 &self.io.dir,
                 &format!("root-{slot}.json"),
-                &root_bytes,
+                root_bytes,
                 || Ok(()),
             )?;
             observer(Point::RootPublished)?;
+            let current = Current {
+                schema: "mycity-m0-current-v1".into(),
+                slot,
+                root_sha256: sha256(root_bytes),
+            };
+            self.io
+                .metadata
+                .small
+                .encode(&current, META_LIMIT as usize)?;
             atomic_file(
                 &self.io.dir,
                 "CURRENT.json",
-                &json(&Current {
-                    schema: "mycity-m0-current-v1".into(),
-                    slot,
-                    root_sha256: sha256(&root_bytes),
-                })?,
+                self.io.metadata.small.as_slice(),
                 || observer(Point::CurrentRenamed),
             )?;
             observer(Point::CurrentSynced)?;

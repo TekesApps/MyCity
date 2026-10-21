@@ -1,0 +1,49 @@
+[
+  {
+    "name": "metadata-and-capacity",
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "mycity-storage",
+      "--lib",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "exit_code": 0,
+    "seconds": 4.788913041
+  },
+  {
+    "name": "runtime-publication-recovery",
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "mycity-storage",
+      "--tests",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "exit_code": 0,
+    "seconds": 265.66485675
+  },
+  {
+    "name": "metadata-clippy",
+    "command": [
+      "cargo",
+      "clippy",
+      "--workspace",
+      "--all-targets",
+      "--release",
+      "--locked",
+      "--offline",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit_code": 101,
+    "seconds": 4.319887832999996
+  }
+]

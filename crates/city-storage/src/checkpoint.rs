@@ -6,44 +6,20 @@ pub const ARCHIVE_LIMIT: u64 = 128 * 1024 * 1024;
 #[serde(deny_unknown_fields)]
 pub(super) struct Reference {
     generation: u64,
+    #[serde(deserialize_with = "crate::metadata::text::<_,64>")]
     sha256: String,
 }
-#[derive(Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-pub(super) struct Checkpoint {
-    schema: String,
-    pub sequence: u64,
-    pub chain: String,
-    pub genesis_sha256: String,
-    pub engine: Vec<u8>,
-    receipts: Vec<JournalRecord>,
-    previous: Option<Reference>,
+impl Reference {
+    pub(super) fn heap_capacity_bytes(&self) -> usize {
+        self.sha256.capacity()
+    }
 }
-#[derive(Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-struct Index {
-    data_sha256: String,
-    operations: Vec<u64>,
-    previous: Option<Reference>,
-}
+mod receipt_decode;
+mod retained;
+use retained::load_index;
+pub(super) use retained::{load, verify_archive};
 fn index_name(generation: u64) -> String {
     format!("checkpoint-index-{generation}.json")
-}
-fn load_index(dir: &Path, r: &Reference) -> Result<Index, Error> {
-    let bytes = read_file(&dir.join(index_name(r.generation)), 32 * 1024)?;
-    if sha256(&bytes) != r.sha256 {
-        return Err(Error::Invalid("checkpoint_index_checksum"));
-    }
-    let index: Index = serde_json::from_slice(&bytes)?;
-    if index.operations.len() > MAX_RECEIPTS
-        || index
-            .previous
-            .as_ref()
-            .is_some_and(|p| p.generation >= r.generation)
-    {
-        return Err(Error::Invalid("checkpoint_index_limits"));
-    }
-    Ok(index)
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum CheckpointPoint {
@@ -76,46 +52,6 @@ pub(super) fn wal_name(segment: u64) -> String {
 }
 fn cp_name(generation: u64) -> String {
     format!("checkpoint-{generation}.json")
-}
-pub(super) fn load(dir: &Path, r: &Reference) -> Result<Checkpoint, Error> {
-    let index = load_index(dir, r)?;
-    let bytes = read_file(&dir.join(cp_name(r.generation)), CHECKPOINT_LIMIT)?;
-    if sha256(&bytes) != index.data_sha256 {
-        return Err(Error::Invalid("checkpoint_checksum"));
-    }
-    let cp: Checkpoint = serde_json::from_slice(&bytes)?;
-    if cp.schema != "mycity-m0-checkpoint-v1" || cp.receipts.len() > MAX_RECEIPTS {
-        return Err(Error::Invalid("checkpoint_schema_or_receipts"));
-    }
-    if cp.previous != index.previous
-        || cp
-            .receipts
-            .iter()
-            .map(|r| r.operation_id)
-            .collect::<Vec<_>>()
-            != index.operations
-    {
-        return Err(Error::Invalid("checkpoint_index_content"));
-    }
-    if let Some(previous) = &cp.previous {
-        if previous.generation >= r.generation {
-            return Err(Error::Invalid("checkpoint_archive_cycle"));
-        }
-    }
-    Ok(cp)
-}
-pub(super) fn verify_archive(dir: &Path, r: &Reference, genesis: &str) -> Result<(), Error> {
-    let mut cursor = Some(r.clone());
-    let mut ceiling = u64::MAX;
-    while let Some(r) = cursor {
-        let cp = load(dir, &r)?;
-        if cp.genesis_sha256 != genesis || cp.sequence > ceiling {
-            return Err(Error::Invalid("receipt_archive_chain"));
-        }
-        ceiling = cp.sequence;
-        cursor = cp.previous;
-    }
-    Ok(())
 }
 fn archive_bytes(dir: &Path) -> Result<u64, Error> {
     let mut total = 0u64;
@@ -159,10 +95,12 @@ impl Store {
         let result = (|| {
             let mut cursor = self.io.root.checkpoint.clone();
             while let Some(r) = cursor {
-                let index = load_index(&self.io.dir, &r)?;
-                if index.operations.contains(&operation) {
-                    let cp = load(&self.io.dir, &r)?;
-                    return cp
+                let index = load_index(&self.io.dir, &r, &mut self.io.metadata)?;
+                if self.io.metadata.operations.contains(&operation) {
+                    load(&self.io.dir, &r, &mut self.io.metadata)?;
+                    return self
+                        .io
+                        .metadata
                         .receipts
                         .iter()
                         .find(|r| r.operation_id == operation)
@@ -217,14 +155,14 @@ impl Store {
                 let Some(r) = cursor else {
                     break;
                 };
-                let index = load_index(&self.io.dir, &r)?;
-                if skipped >= index.operations.len() {
-                    skipped -= index.operations.len();
+                let index = load_index(&self.io.dir, &r, &mut self.io.metadata)?;
+                if skipped >= self.io.metadata.operations.len() {
+                    skipped -= self.io.metadata.operations.len();
                     cursor = index.previous;
                     continue;
                 }
-                let cp = load(&self.io.dir, &r)?;
-                for (i, record) in cp.receipts.iter().enumerate().rev() {
+                let cp = load(&self.io.dir, &r, &mut self.io.metadata)?;
+                for (i, record) in self.io.metadata.receipts.iter().enumerate().rev() {
                     if skipped > 0 {
                         skipped -= 1;
                         continue;
@@ -232,7 +170,7 @@ impl Store {
                     if rows.len() == limit {
                         break;
                     }
-                    rows.push(serde_json::json!({"committed_sequence":cp.sequence-cp.receipts.len()as u64+i as u64+1,"record":record}));
+                    rows.push(serde_json::json!({"committed_sequence":cp.sequence-self.io.metadata.receipts.len()as u64+i as u64+1,"record":record}));
                 }
                 cursor = cp.previous;
             }
@@ -304,40 +242,74 @@ impl Store {
                 .generation
                 .checked_add(1)
                 .ok_or(Error::Invalid("publication_overflow"))?;
-            let cp = Checkpoint {
-                schema: "mycity-m0-checkpoint-v1".into(),
+            #[derive(Serialize)]
+            struct View<'a> {
+                schema: &'a str,
+                sequence: u64,
+                chain: &'a str,
+                genesis_sha256: &'a str,
+                engine: &'a [u8],
+                receipts: &'a [JournalRecord],
+                previous: Option<&'a Reference>,
+            }
+            #[derive(Serialize)]
+            struct IndexView<'a> {
+                data_sha256: String,
+                operations: &'a [u64],
+                previous: Option<&'a Reference>,
+            }
+            let meta = &mut self.io.metadata;
+            meta.engine
+                .write_with(mycity_core::transaction::ENGINE_BYTE_BUDGET, |out| {
+                    self.engine.write_checkpoint(out).map_err(Error::Model)
+                })?;
+            let cp = View {
+                schema: "mycity-m0-checkpoint-v1",
                 sequence: self.io.root.sequence,
-                chain: self.io.root.wal_chain.clone(),
-                genesis_sha256: self.io.root.genesis_sha256.clone(),
-                engine: self.engine.export_checkpoint().map_err(Error::Model)?,
-                receipts: self.engine.journal().to_vec(),
-                previous: self.io.root.checkpoint.clone(),
+                chain: &self.io.root.wal_chain,
+                genesis_sha256: &self.io.root.genesis_sha256,
+                engine: meta.engine.as_slice(),
+                receipts: self.engine.journal(),
+                previous: self.io.root.checkpoint.as_ref(),
             };
-            let bytes = json(&cp)?;
+            meta.file.encode(&cp, CHECKPOINT_LIMIT as usize)?;
+            let bytes = meta.file.as_slice();
             capacity::admit(
                 &self.io.dir,
                 self.io.root.capacity,
                 bytes.len() as u64 + 32 * 1024 + 2 * META_LIMIT,
                 emergency,
             )?;
-            if bytes.len() as u64 > CHECKPOINT_LIMIT
-                || archive_bytes(&self.io.dir)?
-                    .checked_add(bytes.len() as u64)
-                    .ok_or(Error::Invalid("archive_size_overflow"))?
-                    > ARCHIVE_LIMIT
+            if archive_bytes(&self.io.dir)?
+                .checked_add(bytes.len() as u64)
+                .ok_or(Error::Invalid("archive_size_overflow"))?
+                > ARCHIVE_LIMIT
             {
                 return Err(Error::Invalid("archive_capacity"));
             }
-            // An orphan with this generation may exist after an interrupted attempt. It is
-            // never referenced by CURRENT; replace atomically, never truncate a live dependency.
             *publication_started = true;
-            atomic_file(&self.io.dir, &cp_name(generation), &bytes, || Ok(()))?;
-            let index = json(&Index {
-                data_sha256: sha256(&bytes),
-                operations: cp.receipts.iter().map(|r| r.operation_id).collect(),
-                previous: cp.previous.clone(),
-            })?;
-            atomic_file(&self.io.dir, &index_name(generation), &index, || Ok(()))?;
+            atomic_file(&self.io.dir, &cp_name(generation), bytes, || Ok(()))?;
+            if self.engine.journal().len() > meta.operations.capacity() {
+                return Err(Error::Invalid("checkpoint_operations_capacity"));
+            }
+            meta.operations.clear();
+            meta.operations
+                .extend(self.engine.journal().iter().map(|r| r.operation_id));
+            meta.small.encode(
+                &IndexView {
+                    data_sha256: sha256(bytes),
+                    operations: &meta.operations,
+                    previous: self.io.root.checkpoint.as_ref(),
+                },
+                32 * 1024,
+            )?;
+            atomic_file(
+                &self.io.dir,
+                &index_name(generation),
+                meta.small.as_slice(),
+                || Ok(()),
+            )?;
+            let index_hash = sha256(meta.small.as_slice());
             observer(CheckpointPoint::SnapshotSynced)?;
             let new_name = wal_name(generation);
             atomic_file(&self.io.dir, &new_name, &[], || Ok(()))?;
@@ -353,23 +325,25 @@ impl Store {
             root.wal_end = 0;
             root.checkpoint = Some(Reference {
                 generation,
-                sha256: sha256(&index),
+                sha256: index_hash,
             });
-            let root_bytes = json(&root)?;
+            meta.small.encode(&root, META_LIMIT as usize)?;
+            let root_bytes = meta.small.as_slice();
             let slot = (generation % 2) as u8;
             atomic_file(
                 &self.io.dir,
                 &format!("root-{slot}.json"),
-                &root_bytes,
+                root_bytes,
                 || Ok(()),
             )?;
             observer(CheckpointPoint::RootPublished)?;
             let current = Current {
                 schema: "mycity-m0-current-v1".into(),
                 slot,
-                root_sha256: sha256(&root_bytes),
+                root_sha256: sha256(root_bytes),
             };
-            atomic_file(&self.io.dir, "CURRENT.json", &json(&current)?, || {
+            meta.small.encode(&current, META_LIMIT as usize)?;
+            atomic_file(&self.io.dir, "CURRENT.json", meta.small.as_slice(), || {
                 observer(CheckpointPoint::CurrentRenamed)
             })?;
             observer(CheckpointPoint::CurrentSynced)?;

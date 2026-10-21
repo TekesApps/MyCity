@@ -1,0 +1,21 @@
+{
+  "command": [
+    "rustc",
+    "--edition=2021",
+    "-O",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-metadata-workspace/new-writer.rs",
+    "-L",
+    "dependency=/Users/frankqin/dev/MyCity/target/release/deps",
+    "--extern",
+    "mycity_core=/Users/frankqin/dev/MyCity/target/release/libmycity_core.rlib",
+    "--extern",
+    "mycity_map=/Users/frankqin/dev/MyCity/target/release/libmycity_map.rlib",
+    "--extern",
+    "mycity_storage=/Users/frankqin/dev/MyCity/target/release/libmycity_storage.rlib",
+    "-o",
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/role-workspace-metadata/new-writer"
+  ],
+  "exit_code": 0,
+  "seconds": 0.18270875000007436,
+  "source_sha256": "ece8cc51d70a0a3622f9260771084362389c53fc6cc70f18faf68148d559b5e5"
+}

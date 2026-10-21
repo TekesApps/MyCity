@@ -527,10 +527,7 @@ fn run_inner(
     profile: Profile,
 ) -> Result<(), String> {
     let mut codec = Codec::new()?;
-    let workspace = (
-        mycity_core::transaction::EngineWorkspace::new()?,
-        mycity_map::assets::SpatialWorkspace::new().map_err(err)?,
-    );
+    let workspace = mycity_storage::StoreWorkspace::new().map_err(err)?;
     let rules = profile.rules();
     let mut store = if create {
         let (opening, resources) = match profile {
@@ -544,7 +541,7 @@ fn run_inner(
                 crate::joint_reference::resources()?,
             ),
         };
-        Store::create_spatial_in_role_workspace(
+        Store::create_spatial_in_prepared_workspace(
             world,
             opening,
             resources,
@@ -558,7 +555,7 @@ fn run_inner(
         )
         .map_err(err)?
     } else {
-        Store::open_in_role_workspace(world, &rules, workspace).map_err(err)?
+        Store::open_in_prepared_workspace(world, &rules, workspace).map_err(err)?
     };
     let mut diag = if crate::cpu_log::enabled() {
         Some(crate::cpu_log::CpuLog::create(

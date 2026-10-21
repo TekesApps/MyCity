@@ -1,0 +1,38 @@
+{
+  "new_target": false,
+  "build_cache": "target",
+  "new_l1_pressure_copies": 0,
+  "new_directories": [
+    {
+      "path": "work/t13a-role-metadata-business-01",
+      "purpose": "Original 30-day actual Sim/worker functional trajectory from frozen source",
+      "retain_if_passed": "Complete world becomes next full Role cold-open and recovery input; keep raw reports and receipts",
+      "release_condition": "A later actually verified substitute and explicit removal of business/recovery dependencies; never delete by directory age"
+    },
+    {
+      "path": "work/t13a-role-metadata-v1-proof",
+      "purpose": "New actual v1 writer read by fixed v0.5.79 reader and new reader",
+      "retain_if_passed": "Complete legacy v1 role compatibility input, expected full Engine bytes",
+      "release_condition": "Full Role legacy compatibility verification completed and exact downstream dependency review permits retirement"
+    },
+    {
+      "path": "work/candidate-binaries/role-workspace-metadata",
+      "purpose": "Fixed acceptance executable and compatibility helpers",
+      "retain_if_passed": "Acceptance evidence; source and lock are frozen in metadata-source.zip",
+      "release_condition": "Preserve per evidence policy, not build cache"
+    }
+  ],
+  "protect": [
+    "work/t13a70-joint-01/model/layout/snapshots/snapshot-000001",
+    "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002",
+    "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001",
+    "work/t13a65-joint-02/model/business/world",
+    "work/t13a68-legacy-reopen/world",
+    "work/t13a-role-spatial-business-01/world",
+    "work/retained-component-evidence/duplicate-components-v1"
+  ],
+  "cleanup_after_terminal": [
+    "docs/evidence/m0-t13a-metadata-workspace/__pycache__ (pure py_compile cache; exact files after occupancy check)"
+  ],
+  "no_cleanup_during_measurement": true
+}

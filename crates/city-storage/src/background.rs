@@ -482,20 +482,26 @@ impl Store {
                 .generation
                 .checked_add(1)
                 .ok_or(Error::Invalid("publication_overflow"))?;
-            let encoded = json(&root)?;
+            self.io.metadata.small.encode(&root, META_LIMIT as usize)?;
+            let encoded = self.io.metadata.small.as_slice();
             let slot = (root.generation % 2) as u8;
-            atomic_file(&self.io.dir, &format!("root-{slot}.json"), &encoded, || {
+            atomic_file(&self.io.dir, &format!("root-{slot}.json"), encoded, || {
                 Ok(())
             })?;
             observer(BackgroundPoint::StagedRootPublished)?;
+            let current = Current {
+                schema: "mycity-m0-current-v1".into(),
+                slot,
+                root_sha256: sha256(encoded),
+            };
+            self.io
+                .metadata
+                .small
+                .encode(&current, META_LIMIT as usize)?;
             atomic_file(
                 &self.io.dir,
                 "CURRENT.json",
-                &json(&Current {
-                    schema: "mycity-m0-current-v1".into(),
-                    slot,
-                    root_sha256: sha256(&encoded),
-                })?,
+                self.io.metadata.small.as_slice(),
                 || observer(BackgroundPoint::StagedCurrentRenamed),
             )?;
             observer(BackgroundPoint::StagedCurrentSynced)?;
@@ -636,19 +642,25 @@ impl Store {
             held,
         )?;
         let result = (|| {
-            let encoded = json(&root)?;
+            self.io.metadata.small.encode(&root, META_LIMIT as usize)?;
+            let encoded = self.io.metadata.small.as_slice();
             let slot = (root.generation % 2) as u8;
-            atomic_file(&self.io.dir, &format!("root-{slot}.json"), &encoded, || {
+            atomic_file(&self.io.dir, &format!("root-{slot}.json"), encoded, || {
                 Ok(())
             })?;
+            let current = Current {
+                schema: "mycity-m0-current-v1".into(),
+                slot,
+                root_sha256: sha256(encoded),
+            };
+            self.io
+                .metadata
+                .small
+                .encode(&current, META_LIMIT as usize)?;
             atomic_file(
                 &self.io.dir,
                 "CURRENT.json",
-                &json(&Current {
-                    schema: "mycity-m0-current-v1".into(),
-                    slot,
-                    root_sha256: sha256(&encoded),
-                })?,
+                self.io.metadata.small.as_slice(),
                 || Ok(()),
             )?;
             self.io.root = root;

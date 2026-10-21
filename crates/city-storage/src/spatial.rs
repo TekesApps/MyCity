@@ -9,12 +9,17 @@ pub(crate) const PNG_FILE: &str = "spatial-height.png";
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct SpatialReference {
+    #[serde(deserialize_with = "crate::metadata::text::<_,64>")]
     schema: String,
     input_bytes: u64,
+    #[serde(deserialize_with = "crate::metadata::text::<_,64>")]
     input_sha256: String,
     png_bytes: u64,
+    #[serde(deserialize_with = "crate::metadata::text::<_,64>")]
     png_sha256: String,
+    #[serde(deserialize_with = "crate::metadata::text::<_,64>")]
     terrain_sha256: String,
+    #[serde(deserialize_with = "crate::metadata::text::<_,64>")]
     geometry_sha256: String,
     world: u64,
     branch: u64,
@@ -55,6 +60,7 @@ impl SpatialReference {
         dir: &Path,
         identity: &Bootstrap,
         workspace: Option<mycity_map::assets::SpatialWorkspace>,
+        metadata: Option<&mut crate::MetadataWorkspace>,
     ) -> Result<SpatialAssets, Error> {
         if workspace.is_some()
             && (self.input_bytes > mycity_map::assets::NORMAL_INPUT_BYTES as u64
@@ -86,7 +92,27 @@ impl SpatialReference {
         {
             return Err(Error::Invalid("spatial_reference_invalid"));
         }
-        // One bounded read per dependency; these exact buffers are both checked and decoded.
+        if let Some(w) = workspace {
+            let meta = metadata.ok_or(Error::Invalid("spatial_normal_metadata_missing"))?;
+            meta.spatial_input
+                .read(&dir.join(INPUT_FILE), self.input_bytes as usize)?;
+            meta.png
+                .read(&dir.join(PNG_FILE), self.png_bytes as usize)?;
+            let input = meta.spatial_input.as_slice();
+            let png = meta.png.as_slice();
+            if input.len() as u64 != self.input_bytes || sha256(input) != self.input_sha256 {
+                return Err(Error::Invalid("spatial_input_corrupt"));
+            }
+            if png.len() as u64 != self.png_bytes || sha256(png) != self.png_sha256 {
+                return Err(Error::Invalid("spatial_png_corrupt"));
+            }
+            let assets = w
+                .from_bytes(input, png, identity)
+                .map_err(|e| Error::Model(format!("spatial_{e:?}")))?;
+            self.verify_derived(&assets)?;
+            return Ok(assets);
+        }
+        // General importer remains independent of the normal role's source profile.
         let input = read_file(&dir.join(INPUT_FILE), self.input_bytes)?;
         if input.len() as u64 != self.input_bytes || sha256(&input) != self.input_sha256 {
             return Err(Error::Invalid("spatial_input_corrupt"));
@@ -95,18 +121,18 @@ impl SpatialReference {
         if png.len() as u64 != self.png_bytes || sha256(&png) != self.png_sha256 {
             return Err(Error::Invalid("spatial_png_corrupt"));
         }
-        let assets = if let Some(w) = workspace {
-            w.from_bytes(&input, &png, identity)
-        } else {
-            SpatialAssets::from_bytes(&input, &png, identity)
-        }
-        .map_err(|e| Error::Model(format!("spatial_{e:?}")))?;
+        let assets = SpatialAssets::from_bytes(&input, &png, identity)
+            .map_err(|e| Error::Model(format!("spatial_{e:?}")))?;
+        self.verify_derived(&assets)?;
+        Ok(assets)
+    }
+    fn verify_derived(&self, assets: &SpatialAssets) -> Result<(), Error> {
         if assets.terrain().state_hash() != self.terrain_sha256
             || assets.scene().state_hash() != self.geometry_sha256
         {
             return Err(Error::Invalid("spatial_derived_state_mismatch"));
         }
-        Ok(assets)
+        Ok(())
     }
     pub fn terrain_sha256(&self) -> &str {
         &self.terrain_sha256

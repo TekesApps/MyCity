@@ -1,0 +1,6 @@
+{
+  "harness_groups": 54,
+  "reported_passed_entries": 410,
+  "reported_failed_entries": 0,
+  "note": "Nested subprocess harness records included; not independent business samples"
+}

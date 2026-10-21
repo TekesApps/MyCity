@@ -143,6 +143,13 @@ fn metadata() -> Vec<MetadataPart> {
             super::stream::capacity_metadata_bytes(),
         ),
         ("bounded_token_scratch", 1, 4096),
+        // Existing topology is intentionally conservative and still overlaps
+        // historical slots. It must nevertheless charge every new retained cache.
+        (
+            "retained_metadata_file_engine_receipts_and_control_backings",
+            1,
+            super::MetadataWorkspace::planned_heap_bytes(),
+        ),
     ];
     specs
         .into_iter()
@@ -278,7 +285,7 @@ pub fn plan(budget: usize) -> Plan {
             "Actual broker grants before all allocations, touch all backing, real child wait before credit return",
         ],
         exclusions: [
-            "Current legacy dynamic parser/DOM/clone allocations remain unbounded by this target plan",
+            "Legacy receipt Content is removed, but escaped-key/token scratch and other control parsing allocations remain unaccepted by this conservative topology",
             "Terrain import transient up to128MiB is not a resident Store operation and is NOT accepted under this64MiB plan",
             "L1 layout pressure remains separately charged, not another64MiB model slot",
             "Stack, allocator metadata and foreign libraries need separate joint physical accounting",
@@ -293,10 +300,13 @@ mod tests {
     fn feasibility_boundary_never_authorizes_current_runtime() {
         let p = plan(ORIGINAL_NORMAL_BYTES);
         assert!(
-            p.target_slots_fit,
-            "full proposed topology exceeds original64MiB: {}",
-            p.required_bytes
+            !p.target_slots_fit,
+            "new retained caches must not disappear from the conservative topology"
         );
+        assert!(p.required_bytes > ORIGINAL_NORMAL_BYTES);
+        assert!(p.metadata.iter().any(|part| part.name
+            == "retained_metadata_file_engine_receipts_and_control_backings"
+            && part.bytes == super::super::MetadataWorkspace::planned_heap_bytes()));
         assert!(plan(p.required_bytes).target_slots_fit);
         assert!(!plan(p.required_bytes - 1).target_slots_fit);
         assert!(!p.runtime_grant_accepted);

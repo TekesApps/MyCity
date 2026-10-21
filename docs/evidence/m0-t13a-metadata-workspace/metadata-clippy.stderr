@@ -1,0 +1,115 @@
+    Checking sha2-asm v0.6.4
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+    Checking sha2 v0.10.9
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+    Checking mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+    Checking mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+error: this expression creates a reference which is immediately dereferenced by the compiler
+   --> crates/city-storage/src/background.rs:488:69
+    |
+488 |             atomic_file(&self.io.dir, &format!("root-{slot}.json"), &encoded, || {
+    |                                                                     ^^^^^^^^ help: change this to: `encoded`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_borrow
+    = note: `-D clippy::needless-borrow` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::needless_borrow)]`
+
+error: this expression creates a reference which is immediately dereferenced by the compiler
+   --> crates/city-storage/src/background.rs:648:69
+    |
+648 |             atomic_file(&self.io.dir, &format!("root-{slot}.json"), &encoded, || {
+    |                                                                     ^^^^^^^^ help: change this to: `encoded`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_borrow
+
+error: this expression creates a reference which is immediately dereferenced by the compiler
+   --> crates/city-storage/src/capacity.rs:154:69
+    |
+154 |             atomic_file(&self.io.dir, &format!("root-{slot}.json"), &encoded, || {
+    |                                                                     ^^^^^^^^ help: change this to: `encoded`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_borrow
+
+error: this expression creates a reference which is immediately dereferenced by the compiler
+   --> crates/city-storage/src/outbox.rs:168:21
+    |
+168 |                     &bytes,
+    |                     ^^^^^^ help: change this to: `bytes`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_borrow
+
+error: this expression creates a reference which is immediately dereferenced by the compiler
+   --> crates/city-storage/src/checkpoint.rs:336:17
+    |
+336 |                 &root_bytes,
+    |                 ^^^^^^^^^^^ help: change this to: `root_bytes`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_borrow
+
+error: this expression creates a reference which is immediately dereferenced by the compiler
+   --> crates/city-storage/src/checkpoint.rs:343:37
+    |
+343 |                 root_sha256: sha256(&root_bytes),
+    |                                     ^^^^^^^^^^^ help: change this to: `root_bytes`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_borrow
+
+error: this expression creates a reference which is immediately dereferenced by the compiler
+   --> crates/city-storage/src/checkpoint_v2.rs:476:17
+    |
+476 |                 &root_bytes,
+    |                 ^^^^^^^^^^^ help: change this to: `root_bytes`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_borrow
+
+error: this expression creates a reference which is immediately dereferenced by the compiler
+   --> crates/city-storage/src/lib.rs:487:37
+    |
+487 |         let genesis_sha256 = sha256(&genesis);
+    |                                     ^^^^^^^^ help: change this to: `genesis`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_borrow
+
+error: this expression creates a reference which is immediately dereferenced by the compiler
+   --> crates/city-storage/src/lib.rs:617:19
+    |
+617 |         if sha256(&root_bytes) != current.root_sha256 {
+    |                   ^^^^^^^^^^^ help: change this to: `root_bytes`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_borrow
+
+error: this expression creates a reference which is immediately dereferenced by the compiler
+   --> crates/city-storage/src/lib.rs:637:19
+    |
+637 |         if sha256(&genesis_bytes) != root.genesis_sha256 {
+    |                   ^^^^^^^^^^^^^^ help: change this to: `genesis_bytes`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_borrow
+
+error: this expression creates a reference which is immediately dereferenced by the compiler
+    --> crates/city-storage/src/lib.rs:1310:62
+     |
+1310 |         atomic_file(&self.dir, &format!("root-{slot}.json"), &root_bytes, || {
+     |                                                              ^^^^^^^^^^^ help: change this to: `root_bytes`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_borrow
+
+error: this expression creates a reference which is immediately dereferenced by the compiler
+    --> crates/city-storage/src/lib.rs:1317:33
+     |
+1317 |             root_sha256: sha256(&root_bytes),
+     |                                 ^^^^^^^^^^^ help: change this to: `root_bytes`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_borrow
+
+error: this expression creates a reference which is immediately dereferenced by the compiler
+    --> crates/city-storage/src/lib.rs:1322:48
+     |
+1322 |         atomic_file(&self.dir, "CURRENT.json", &current_bytes, || {
+     |                                                ^^^^^^^^^^^^^^ help: change this to: `current_bytes`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_borrow
+
+error: could not compile `mycity-storage` (lib) due to 13 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `mycity-storage` (lib test) due to 13 previous errors

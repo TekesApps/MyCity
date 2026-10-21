@@ -1,0 +1,15 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "mycity-storage",
+    "--lib",
+    "checkpoint::receipt_decode::tests",
+    "--release",
+    "--locked",
+    "--offline"
+  ],
+  "exit_code": 101,
+  "seconds": 5.3858109160000005
+}

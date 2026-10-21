@@ -6,6 +6,11 @@ pub use background::{
     BACKGROUND_SLOTS,
 };
 mod capacity;
+mod genesis;
+mod metadata;
+mod prepared;
+pub use metadata::{MetadataIdentity, MetadataWorkspace};
+pub use prepared::{StoreWorkspace, StoreWorkspaceIdentity};
 mod continuation;
 pub mod model_capacity;
 pub use continuation::{Continuation, CONTINUATION_MAX_PAGES, CONTINUATION_PAGE_BYTES};
@@ -92,21 +97,21 @@ pub enum WritePoint {
 fn is_zero(n: &u8) -> bool {
     *n == 0
 }
-#[derive(Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-struct Genesis {
-    schema: String,
-    rules_identity: String,
+#[derive(Serialize)]
+struct Genesis<'a> {
+    schema: &'a str,
+    rules_identity: &'a str,
     #[serde(default, skip_serializing_if = "is_zero")]
     checkpoint_layout: u8,
-    opening: Vec<u8>,
-    resources: Vec<Resource>,
+    opening: &'a [u8],
+    resources: &'a [Resource],
     #[serde(skip_serializing_if = "Option::is_none")]
-    spatial: Option<SpatialReference>,
+    spatial: Option<&'a SpatialReference>,
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 struct Root {
+    #[serde(deserialize_with = "metadata::text::<_,64>")]
     schema: String,
     sequence: u64,
     generation: u64,
@@ -123,14 +128,18 @@ struct Root {
     checkpoint_v2: Option<checkpoint_v2::Reference>,
     segment: u64,
     wal_end: u64,
+    #[serde(deserialize_with = "metadata::text::<_,64>")]
     wal_chain: String,
+    #[serde(deserialize_with = "metadata::text::<_,64>")]
     genesis_sha256: String,
 }
 #[derive(Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 struct Current {
+    #[serde(deserialize_with = "metadata::text::<_,64>")]
     schema: String,
     slot: u8,
+    #[serde(deserialize_with = "metadata::text::<_,64>")]
     root_sha256: String,
 }
 
@@ -151,6 +160,7 @@ struct Persistence {
     source_reconciled: bool,
     background_live: Vec<[u8; 32]>,
     canonical: std::cell::RefCell<mycity_core::canonical::Codec>,
+    metadata: MetadataWorkspace,
 }
 impl Drop for Persistence {
     fn drop(&mut self) {
@@ -310,6 +320,7 @@ impl Store {
                 checkpoint_layout,
                 mycity_core::transaction::EngineWorkspace::new().map_err(Error::Model)?,
                 None,
+                MetadataWorkspace::new()?,
             ),
             observer,
         )
@@ -330,7 +341,12 @@ impl Store {
             resources,
             rules_identity,
             Some(bundle),
-            (if v2 { 2 } else { 0 }, workspace, None),
+            (
+                if v2 { 2 } else { 0 },
+                workspace,
+                None,
+                MetadataWorkspace::new()?,
+            ),
             |_| Ok(()),
         )
     }
@@ -353,7 +369,36 @@ impl Store {
             resources,
             rules_identity,
             Some(bundle),
-            (if v2 { 2 } else { 0 }, workspace.0, Some(workspace.1)),
+            (
+                if v2 { 2 } else { 0 },
+                workspace.0,
+                Some(workspace.1),
+                MetadataWorkspace::new()?,
+            ),
+            |_| Ok(()),
+        )
+    }
+    pub fn create_spatial_in_prepared_workspace(
+        dir: &Path,
+        opening: &[u8],
+        resources: Vec<Resource>,
+        rules_identity: &str,
+        bundle: (&[u8], &[u8]),
+        v2: bool,
+        workspace: StoreWorkspace,
+    ) -> Result<Self, Error> {
+        Self::create_in_workspace(
+            dir,
+            opening,
+            resources,
+            rules_identity,
+            Some(bundle),
+            (
+                if v2 { 2 } else { 0 },
+                workspace.model,
+                Some(workspace.spatial),
+                workspace.metadata,
+            ),
             |_| Ok(()),
         )
     }
@@ -367,6 +412,7 @@ impl Store {
             u8,
             mycity_core::transaction::EngineWorkspace,
             Option<mycity_map::assets::SpatialWorkspace>,
+            MetadataWorkspace,
         ),
         mut observer: impl FnMut(CreatePoint) -> io::Result<()>,
     ) -> Result<Self, Error> {
@@ -376,7 +422,7 @@ impl Store {
         {
             return Err(Error::Invalid("genesis_input_limit"));
         }
-        let (checkpoint_layout, workspace, spatial_workspace) = setup;
+        let (checkpoint_layout, workspace, spatial_workspace, mut metadata) = setup;
         let (mut initial, restore_workspace, air_candidate, codec) = workspace.into_parts();
         initial
             .initialize_into(opening, &resources)
@@ -413,23 +459,23 @@ impl Store {
                 &mut observer,
             )?;
         }
-        let genesis = json(&Genesis {
-            schema: if spatial_ref.is_some() {
-                "mycity-m0-genesis-v2"
-            } else {
-                "mycity-m0-genesis-v1"
-            }
-            .into(),
-            rules_identity: rules_identity.into(),
-            checkpoint_layout,
-            opening: opening.to_vec(),
-            resources,
-            spatial: spatial_ref.clone(),
-        })?;
-        if genesis.len() as u64 > GENESIS_LIMIT {
-            return Err(Error::Invalid("genesis_encoded_limit"));
-        }
-        atomic_file(dir, "genesis.json", &genesis, || Ok(()))?;
+        metadata.file.encode(
+            &Genesis {
+                schema: if spatial_ref.is_some() {
+                    "mycity-m0-genesis-v2"
+                } else {
+                    "mycity-m0-genesis-v1"
+                },
+                rules_identity,
+                checkpoint_layout,
+                opening,
+                resources: &resources,
+                spatial: spatial_ref.as_ref(),
+            },
+            GENESIS_LIMIT as usize,
+        )?;
+        let genesis = metadata.file.as_slice();
+        atomic_file(dir, "genesis.json", genesis, || Ok(()))?;
         observer(CreatePoint::GenesisSynced)?;
         let wal = OpenOptions::new()
             .read(true)
@@ -438,7 +484,7 @@ impl Store {
             .open(dir.join("wal.bin"))?;
         wal.sync_all()?;
         observer(CreatePoint::WalSynced)?;
-        let genesis_sha256 = sha256(&genesis);
+        let genesis_sha256 = sha256(genesis);
         let root = Root {
             schema: "mycity-m0-root-v1".into(),
             sequence: 0,
@@ -456,19 +502,19 @@ impl Store {
             wal_chain: genesis_sha256.clone(),
             genesis_sha256,
         };
-        let root_bytes = json(&root)?;
-        atomic_file(dir, "root-0.json", &root_bytes, || Ok(()))?;
+        metadata.small.encode(&root, META_LIMIT as usize)?;
+        let root_bytes = metadata.small.as_slice();
+        atomic_file(dir, "root-0.json", root_bytes, || Ok(()))?;
         observer(CreatePoint::RootSynced)?;
-        atomic_file(
-            dir,
-            "CURRENT.json",
-            &json(&Current {
-                schema: "mycity-m0-current-v1".into(),
-                slot: 0,
-                root_sha256: sha256(&root_bytes),
-            })?,
-            || observer(CreatePoint::CurrentRenamed),
-        )?;
+        let current = Current {
+            schema: "mycity-m0-current-v1".into(),
+            slot: 0,
+            root_sha256: sha256(root_bytes),
+        };
+        metadata.small.encode(&current, META_LIMIT as usize)?;
+        atomic_file(dir, "CURRENT.json", metadata.small.as_slice(), || {
+            observer(CreatePoint::CurrentRenamed)
+        })?;
         observer(CreatePoint::CurrentSynced)?;
         sync_directory(dir.parent().unwrap_or(Path::new(".")))?;
         observer(CreatePoint::DirectorySynced)?;
@@ -489,6 +535,7 @@ impl Store {
                 source_reconciled: !outbox::exists(dir),
                 background_live: Vec::with_capacity(BACKGROUND_LIVE_ASSETS),
                 canonical,
+                metadata,
             },
         })
     }
@@ -505,7 +552,13 @@ impl Store {
         rules_identity: &str,
         workspace: mycity_core::transaction::EngineWorkspace,
     ) -> Result<Self, Error> {
-        Self::open_with_workspaces(dir, rules_identity, workspace, None)
+        Self::open_with_workspaces(
+            dir,
+            rules_identity,
+            workspace,
+            None,
+            MetadataWorkspace::new()?,
+        )
     }
     pub fn open_in_role_workspace(
         dir: &Path,
@@ -515,29 +568,57 @@ impl Store {
             mycity_map::assets::SpatialWorkspace,
         ),
     ) -> Result<Self, Error> {
-        Self::open_with_workspaces(dir, rules_identity, workspace.0, Some(workspace.1))
+        Self::open_with_workspaces(
+            dir,
+            rules_identity,
+            workspace.0,
+            Some(workspace.1),
+            MetadataWorkspace::new()?,
+        )
+    }
+    pub fn open_in_prepared_workspace(
+        dir: &Path,
+        rules_identity: &str,
+        workspace: StoreWorkspace,
+    ) -> Result<Self, Error> {
+        Self::open_with_workspaces(
+            dir,
+            rules_identity,
+            workspace.model,
+            Some(workspace.spatial),
+            workspace.metadata,
+        )
     }
     fn open_with_workspaces(
         dir: &Path,
         rules_identity: &str,
         workspace: mycity_core::transaction::EngineWorkspace,
         spatial_workspace: Option<mycity_map::assets::SpatialWorkspace>,
+        mut metadata: MetadataWorkspace,
     ) -> Result<Self, Error> {
         let (mut initial, mut restore_workspace, mut air_candidate, codec) = workspace.into_parts();
         if fs::symlink_metadata(dir)?.file_type().is_symlink() {
             return Err(Error::Invalid("symlink_world"));
         }
         let lock = lock(dir)?;
-        let current: Current =
-            serde_json::from_slice(&read_file(&dir.join("CURRENT.json"), META_LIMIT)?)?;
+        metadata
+            .small
+            .read(&dir.join("CURRENT.json"), META_LIMIT as usize)?;
+        metadata::guard(metadata.small.as_slice(), 768)?;
+        let current: Current = serde_json::from_slice(metadata.small.as_slice())?;
         if current.schema != "mycity-m0-current-v1" || current.slot > 1 {
             return Err(Error::Invalid("current_schema_or_slot"));
         }
-        let root_bytes = read_file(&dir.join(format!("root-{}.json", current.slot)), META_LIMIT)?;
-        if sha256(&root_bytes) != current.root_sha256 {
+        metadata.small.read(
+            &dir.join(format!("root-{}.json", current.slot)),
+            META_LIMIT as usize,
+        )?;
+        let root_bytes = metadata.small.as_slice();
+        if sha256(root_bytes) != current.root_sha256 {
             return Err(Error::Invalid("committed_root_corrupt"));
         }
-        let root: Root = serde_json::from_slice(&root_bytes)?;
+        metadata::guard(root_bytes, 768)?;
+        let root: Root = serde_json::from_slice(root_bytes)?;
         if root.generation % 2 != u64::from(current.slot)
             || root.schema != "mycity-m0-root-v1"
             || root.wal_end > WAL_LIMIT
@@ -549,12 +630,14 @@ impl Store {
         if root.source_registered && !outbox::exists(dir) {
             return Err(Error::Invalid("registered_source_missing"));
         }
-        let genesis_bytes = read_file(&dir.join("genesis.json"), GENESIS_LIMIT)?;
-        if sha256(&genesis_bytes) != root.genesis_sha256 {
+        metadata
+            .file
+            .read(&dir.join("genesis.json"), GENESIS_LIMIT as usize)?;
+        let genesis_bytes = metadata.file.as_slice();
+        if sha256(genesis_bytes) != root.genesis_sha256 {
             return Err(Error::Invalid("genesis_corrupt"));
         }
-        let genesis: Genesis = serde_json::from_slice(&genesis_bytes)?;
-        drop(genesis_bytes);
+        let genesis = genesis::decode(&mut metadata)?;
         let valid_schema = matches!(
             (genesis.schema.as_str(), genesis.spatial.is_some()),
             ("mycity-m0-genesis-v1", false) | ("mycity-m0-genesis-v2", true)
@@ -564,7 +647,7 @@ impl Store {
         }
         // Fresh reconstruction of the recorded genesis, not a gift to an existing world.
         initial
-            .initialize_into(&genesis.opening, &genesis.resources)
+            .initialize_into(metadata.opening.as_slice(), &metadata.resources)
             .map_err(Error::Model)?;
         let mut genesis_engine = initial.into_engine().map_err(Error::Model)?;
         if root.checkpoint_layout != genesis.checkpoint_layout
@@ -587,14 +670,14 @@ impl Store {
                 .map_err(Error::Model)?;
             (sequence, chain)
         } else if let Some(reference) = &root.checkpoint {
-            let cp = checkpoint::load(dir, reference)?;
+            let cp = checkpoint::load(dir, reference, &mut metadata)?;
             if cp.sequence > root.sequence || cp.genesis_sha256 != root.genesis_sha256 {
                 return Err(Error::Invalid("checkpoint_boundary"));
             }
-            checkpoint::verify_archive(dir, reference, &root.genesis_sha256)?;
             restore_workspace
-                .restore_into(&cp.engine)
+                .restore_into(metadata.engine.as_slice())
                 .map_err(Error::Model)?;
+            checkpoint::verify_archive(dir, reference, &root.genesis_sha256, &mut metadata)?;
             restore_workspace
                 .publish_swap(&mut genesis_engine)
                 .map_err(Error::Model)?;
@@ -607,7 +690,14 @@ impl Store {
         let spatial_ref = genesis.spatial;
         let spatial = spatial_ref
             .as_ref()
-            .map(|r| r.load_with_workspace(dir, &identity(&engine), spatial_workspace))
+            .map(|r| {
+                r.load_with_workspace(
+                    dir,
+                    &identity(&engine),
+                    spatial_workspace,
+                    Some(&mut metadata),
+                )
+            })
             .transpose()?;
         spatial::validate_exchange_binding(&engine, spatial.as_ref())?;
         let wal_path = dir.join(checkpoint::wal_name(root.segment));
@@ -747,6 +837,7 @@ impl Store {
                 source_reconciled: !outbox::exists(dir),
                 background_live,
                 canonical,
+                metadata,
             },
         })
     }
@@ -836,19 +927,33 @@ impl Store {
     }
     /// Owned Rust capacities only; excludes allocator/kernel/OS pages and transient replay.
     pub fn owned_capacity_bytes(&self) -> Result<usize, Error> {
+        let initial = self.engine()?.backing_identity().map_err(Error::Model)?;
+        let spare = self.restore_workspace.identity().map_err(Error::Model)?;
         Ok(std::mem::size_of::<Self>() - std::mem::size_of::<Engine>()
             + self.engine()?.owned_capacity_bytes()
-            + self
-                .restore_workspace
-                .identity()
-                .map_err(Error::Model)?
-                .owned_model_bytes
+            + spare.owned_model_bytes
             - std::mem::size_of::<Engine>()
+            + initial.retained_prepare_bytes
+            + spare.retained_prepare_bytes
+            + self
+                .io
+                .root
+                .checkpoint
+                .as_ref()
+                .map_or(0, |r| r.heap_capacity_bytes())
+            + self
+                .io
+                .root
+                .checkpoint_v2
+                .as_ref()
+                .map_or(0, |r| r.heap_capacity_bytes())
             + self.air_candidate.owned_bytes()
             - std::mem::size_of::<mycity_core::air::BackgroundStateSlot>()
             + self.io.dir.capacity()
             + self.io.background_live.capacity() * std::mem::size_of::<[u8; 32]>()
             + self.io.canonical.borrow().backing_capacity_bytes()
+            + self.io.metadata.identity().owned_bytes
+            - std::mem::size_of::<MetadataWorkspace>()
             + self.io.root.schema.capacity()
             + self.io.root.wal_chain.capacity()
             + self.io.root.genesis_sha256.capacity()
@@ -861,6 +966,10 @@ impl Store {
     }
     pub fn committed_sequence(&self) -> u64 {
         self.io.root.sequence
+    }
+    pub fn metadata_workspace_identity(&self) -> Result<MetadataIdentity, Error> {
+        self.engine()?;
+        Ok(self.io.metadata.identity())
     }
     pub fn execute(&mut self, caller: Caller, envelope: Envelope) -> Result<Outcome, Error> {
         self.execute_with_observer(caller, envelope, |_| Ok(()))
@@ -1191,20 +1300,22 @@ impl Persistence {
             genesis_sha256: self.root.genesis_sha256.clone(),
         };
         let slot = (root.generation % 2) as u8;
-        let root_bytes = json(&root)?;
+        self.metadata.small.encode(&root, META_LIMIT as usize)?;
+        let root_bytes = self.metadata.small.as_slice();
         observer(WritePoint::RootEncoded)?;
-        atomic_file(&self.dir, &format!("root-{slot}.json"), &root_bytes, || {
+        atomic_file(&self.dir, &format!("root-{slot}.json"), root_bytes, || {
             Ok(())
         })?;
         observer(WritePoint::RootPublished)?;
         let current = Current {
             schema: "mycity-m0-current-v1".into(),
             slot,
-            root_sha256: sha256(&root_bytes),
+            root_sha256: sha256(root_bytes),
         };
-        let current_bytes = json(&current)?;
+        self.metadata.small.encode(&current, META_LIMIT as usize)?;
+        let current_bytes = self.metadata.small.as_slice();
         observer(WritePoint::CurrentEncoded)?;
-        atomic_file(&self.dir, "CURRENT.json", &current_bytes, || {
+        atomic_file(&self.dir, "CURRENT.json", current_bytes, || {
             observer(WritePoint::CurrentRenamed)
         })?;
         observer(WritePoint::CurrentSynced)?;

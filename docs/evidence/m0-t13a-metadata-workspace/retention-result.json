@@ -1,0 +1,46 @@
+{
+  "before": {
+    "time_ns": 1792593380754662000,
+    "work_du_kib": 15744376,
+    "target_du_kib": 1301208,
+    "filesystem_available_bytes": 113663582208
+  },
+  "after": {
+    "time_ns": 1792593384317142000,
+    "work_du_kib": 15744376,
+    "target_du_kib": 1301208,
+    "filesystem_available_bytes": 113663459328
+  },
+  "deleted": [],
+  "deleted_allocated_bytes": 0,
+  "work_files_deleted": 0,
+  "target_files_deleted": 0,
+  "new_independent_target": false,
+  "new_l1_copies": 0,
+  "retained_new_directories": [
+    {
+      "path": "work/t13a-role-metadata-business-01",
+      "files": 3719,
+      "du_kib": 91752,
+      "reason": "Next full Role compatibility/recovery input or frozen executable evidence",
+      "release_condition": "See stage-retention-intent.json; no automatic per-round deletion"
+    },
+    {
+      "path": "work/t13a-role-metadata-v1-proof",
+      "files": 11,
+      "du_kib": 44,
+      "reason": "Next full Role compatibility/recovery input or frozen executable evidence",
+      "release_condition": "See stage-retention-intent.json; no automatic per-round deletion"
+    },
+    {
+      "path": "work/candidate-binaries/role-workspace-metadata",
+      "files": 3,
+      "du_kib": 21316,
+      "reason": "Next full Role compatibility/recovery input or frozen executable evidence",
+      "release_condition": "See stage-retention-intent.json; no automatic per-round deletion"
+    }
+  ],
+  "existing_full_layout_originals_present": true,
+  "df_observation_delta": -122880,
+  "accounting": "File st_blocks allocation only. df is independent APFS/other-task observation and not attributed to cleanup; new evidence retained per declared dependencies."
+}

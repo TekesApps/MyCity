@@ -1,0 +1,8 @@
+{
+  "source_sha256": "ece8cc51d70a0a3622f9260771084362389c53fc6cc70f18faf68148d559b5e5",
+  "source_files": 186,
+  "binary": "work/candidate-binaries/role-workspace-metadata/mycity-headless",
+  "binary_sha256": "63ed039b717034adb087d00702b0e738039c77add81c82c1a1c32bb7e005c68e",
+  "lock_sha256": "bbf3ec2da618221730acad2379495bac4f78077e14824f7c3f27e8cb62dbbf7a",
+  "scope": "Metadata construction proof; whole role broker, formal joint performance and 8h not accepted"
+}

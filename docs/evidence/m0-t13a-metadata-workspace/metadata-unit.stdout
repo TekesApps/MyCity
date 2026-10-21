@@ -1,0 +1,7 @@
+
+running 2 tests
+test metadata::tests::strict_bytes_reject_before_extra_decode_and_writer_failure_preserves_backing ... ok
+test metadata::tests::metadata_counts_full_receipts_and_all_retained_file_slots ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 9 filtered out; finished in 0.02s
+

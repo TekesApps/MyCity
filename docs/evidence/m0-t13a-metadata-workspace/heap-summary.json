@@ -1,0 +1,26 @@
+{
+  "records": 730,
+  "roles": {
+    "scale-model-task": {
+      "records": 3,
+      "max_lifetime_requested_bytes": 16437203,
+      "max_requested_plus_reserved_tail_bytes": 16502739
+    },
+    "compute-worker-bounded": {
+      "records": 724,
+      "max_lifetime_requested_bytes": 5914703,
+      "max_requested_plus_reserved_tail_bytes": 5980239
+    },
+    "sim-host-scale-full": {
+      "records": 2,
+      "max_lifetime_requested_bytes": 58054553,
+      "max_requested_plus_reserved_tail_bytes": 58120089
+    },
+    "scale-sim-probe": {
+      "records": 1,
+      "max_lifetime_requested_bytes": 549010,
+      "max_requested_plus_reserved_tail_bytes": 614546
+    }
+  },
+  "scope": "Per-process Rust heap lifetime maxima; not simultaneous totals, broker grants, RSS, physical memory, stack, mapped or foreign memory; tail reserved not exact exit peak"
+}

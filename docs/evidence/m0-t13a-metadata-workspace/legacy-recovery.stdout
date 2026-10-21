@@ -1,0 +1,46 @@
+
+running 6 tests
+test capacity_rejection_before_checkpoint_io_does_not_poison ... ok
+test committed_archive_corruption_stops_recovery_and_does_not_fall_back ... ok
+test checkpoint_unwind_requires_reopen_even_after_current_or_retirement ... ok
+test actual_process_exit_at_every_checkpoint_publication_boundary ... ok
+test retry_at_exact_rotation_threshold_does_not_become_a_new_operation ... ok
+test more_than_two_hot_windows_exact_success_and_failure_retry_after_restart has been running for over 60 seconds
+test more_than_two_hot_windows_exact_success_and_failure_retry_after_restart ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 67.84s
+
+
+running 15 tests
+test oversized_command_is_rejected_before_serializing_and_never_changes_storage ... ok
+test incompatible_rules_reject_instead_of_recalculating_history ... ok
+test a_second_process_cannot_open_a_world_while_writer_lock_is_held ... ok
+test only_tail_outside_the_validated_committed_boundary_is_truncated ... ok
+test borrowed_store_hash_preserves_old_outer_value_and_reuses_wal_workspace ... ok
+test acknowledged_success_and_operation_coverage_survive_reopen_without_double_payment ... ok
+test recovery_reclaims_only_known_unreferenced_atomic_temp_files ... ok
+test regional_clocks_migrants_debt_and_snapshot_watermarks_recover_atomically_once ... ok
+test publication_callback_unwind_requires_recovery_and_preserves_committed_receipt ... ok
+test injected_io_uncertainty_poisoning_prevents_further_writes_until_recovery ... ok
+test committed_corruption_or_missing_dependency_never_falls_back_to_old_root ... ok
+test store_ownership_handoff_reopens_immediately_during_parallel_process_spawn ... ok
+test replay_preserves_old_value_last_key_and_rejects_ignored_unknown_fields_before_tail_gc ... ok
+test abrupt_process_exit_at_each_boundary_retains_exactly_the_published_operation ... ok
+test regional_process_exit_never_publishes_half_population_half_clock_or_half_payment ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.96s
+
+
+running 9 tests
+test invalid_sources_and_cross_world_branch_or_seed_fail_before_any_directory_is_created ... ok
+test uncertain_transaction_hides_both_model_and_space_until_joint_recovery ... ok
+test spatial_financial_and_regional_state_restore_under_one_root_without_double_capital_or_payment ... ok
+test matching_file_checksums_cannot_hide_wrong_identity_or_terrain_interpretation ... ok
+test create_io_failure_before_publication_retains_incomplete_directory_and_after_publication_requires_reopen ... ok
+test v1_v2_schema_and_derived_hash_gates_do_not_silently_drop_space ... ok
+test corrupt_missing_nonregular_or_symlink_space_never_opens_or_truncates_wal_tail ... ok
+test abrupt_creation_exit_publishes_all_dependencies_and_capital_or_no_world ... ok
+test abrupt_transaction_exit_preserves_space_with_the_correct_financial_and_regional_root ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.23s
+

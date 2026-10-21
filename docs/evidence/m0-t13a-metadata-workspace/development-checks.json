@@ -1,0 +1,54 @@
+[
+  {
+    "name": "metadata-unit",
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "mycity-storage",
+      "--lib",
+      "metadata::tests",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "exit_code": 0,
+    "seconds": 18.855546375
+  },
+  {
+    "name": "metadata-roundtrip",
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "mycity-storage",
+      "--test",
+      "metadata",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "exit_code": 0,
+    "seconds": 13.893818499999998
+  },
+  {
+    "name": "legacy-recovery",
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "mycity-storage",
+      "--test",
+      "checkpoint",
+      "--test",
+      "recovery",
+      "--test",
+      "spatial",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "exit_code": 0,
+    "seconds": 76.984707792
+  }
+]

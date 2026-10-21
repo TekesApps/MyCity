@@ -1,0 +1,17 @@
+{
+  "source_sha256": "ece8cc51d70a0a3622f9260771084362389c53fc6cc70f18faf68148d559b5e5",
+  "source_files": 186,
+  "lock_sha256": "bbf3ec2da618221730acad2379495bac4f78077e14824f7c3f27e8cb62dbbf7a",
+  "fixture_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+  "opening_sha256": "04c113c62b0b682f94f9abfbde7618b87bd972f3931504366be9e07c130b4726",
+  "source_png_sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8",
+  "source_png_bytes": 207,
+  "source_png_dimensions": [
+    257,
+    257
+  ],
+  "source_png_bit_depth": 16,
+  "controller_pid": 85065,
+  "started_unix_ns": 1792592318155567000,
+  "new_target": false
+}

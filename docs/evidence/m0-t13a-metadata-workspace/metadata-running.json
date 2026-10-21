@@ -1,0 +1,12 @@
+{
+  "controller_pid": 85065,
+  "pid": 99306,
+  "name": "metadata-new-reader-new-output",
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/role-workspace-metadata/metadata-compat",
+    "/Users/frankqin/dev/MyCity/work/t13a-role-metadata-v1-proof/world",
+    "metadata-compat-proof-v1",
+    "/Users/frankqin/dev/MyCity/work/t13a-role-metadata-v1-proof/expected-engine.json"
+  ],
+  "source_sha256": "ece8cc51d70a0a3622f9260771084362389c53fc6cc70f18faf68148d559b5e5"
+}

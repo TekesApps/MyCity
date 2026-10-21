@@ -1,0 +1,5 @@
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 2.33s
+     Running tests/checkpoint.rs (target/release/deps/checkpoint-6c4c2cffa1ce5771)
+     Running tests/recovery.rs (target/release/deps/recovery-0043ba2393ad768b)
+     Running tests/spatial.rs (target/release/deps/spatial-4d85089d963c6ad0)

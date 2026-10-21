@@ -1,0 +1,11 @@
+{
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/role-workspace-spatial/spatial-compat",
+    "/Users/frankqin/dev/MyCity/work/t13a-role-metadata-v1-proof/world",
+    "metadata-compat-proof-v1",
+    "/Users/frankqin/dev/MyCity/work/t13a-role-metadata-v1-proof/expected-engine.json"
+  ],
+  "exit_code": 0,
+  "seconds": 0.02993745800006309,
+  "source_sha256": "ece8cc51d70a0a3622f9260771084362389c53fc6cc70f18faf68148d559b5e5"
+}

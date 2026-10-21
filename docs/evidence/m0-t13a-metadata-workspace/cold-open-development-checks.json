@@ -1,0 +1,35 @@
+[
+  {
+    "name": "metadata-cold-open-final-dev",
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "mycity-storage",
+      "--test",
+      "metadata",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "exit_code": 0,
+    "seconds": 15.615625290999999
+  },
+  {
+    "name": "metadata-clippy-v2",
+    "command": [
+      "cargo",
+      "clippy",
+      "--workspace",
+      "--all-targets",
+      "--release",
+      "--locked",
+      "--offline",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit_code": 0,
+    "seconds": 3.7135902079999994
+  }
+]
