@@ -1,0 +1,14 @@
+{
+  "observer_exit": 0,
+  "actual_seconds": 21.5956815,
+  "labels": [
+    "idle",
+    "inflight"
+  ],
+  "captures": 10,
+  "all_identity_unchanged": true,
+  "all_vmmap_exit_zero": true,
+  "formal_acceptance": "not_accepted",
+  "threshold_or_workload_change": false,
+  "binary_unchanged": true
+}

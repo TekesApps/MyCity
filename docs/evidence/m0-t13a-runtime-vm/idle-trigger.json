@@ -1,0 +1,150 @@
+{
+  "monotonic_ns": 13043847666,
+  "roster": {
+    "observer": 68627,
+    "root": 68628,
+    "pool": 68629,
+    "layout": 68632,
+    "driver": 68641
+  },
+  "frame": {
+    "clock_begin_ns": 12755016000,
+    "clock_end_ns": 12759818458,
+    "t": 12.759676541,
+    "window_s": 0.004652625000000299,
+    "rss_bytes": 3349430272,
+    "phys_footprint_bytes": 3347189600,
+    "missing_footprint": 0,
+    "missing_rss": 0,
+    "pending_identities": [],
+    "missing_selected_processes": [],
+    "identity_uncertainties": [],
+    "enumeration_failures": [],
+    "group_capture_complete": true,
+    "members": [
+      [
+        68627,
+        68611,
+        24847934762505,
+        13058048,
+        "observer"
+      ],
+      [
+        68628,
+        68627,
+        24847935775714,
+        2179072,
+        "mycity-headless"
+      ],
+      [
+        68629,
+        68628,
+        24847953119497,
+        69042176,
+        "mycity-headless"
+      ],
+      [
+        68632,
+        68628,
+        24847954000750,
+        3263234048,
+        "mycity-headless"
+      ],
+      [
+        68641,
+        68628,
+        24847980882257,
+        1916928,
+        "mycity-headless"
+      ]
+    ],
+    "member_footprints_pid_birth_bytes": [
+      [
+        68627,
+        24847934762505,
+        12075320
+      ],
+      [
+        68628,
+        24847935775714,
+        1360184
+      ],
+      [
+        68629,
+        24847953119497,
+        68518248
+      ],
+      [
+        68632,
+        24847954000750,
+        3264203368
+      ],
+      [
+        68641,
+        24847980882257,
+        1032480
+      ]
+    ],
+    "pressure_dispatch_flag": 1,
+    "swap_used_bytes": 3267035136,
+    "observer_hot_bound_bytes": 963687,
+    "observer_traced_current_bytes": 355454,
+    "observer_traced_peak_bytes": 612663,
+    "observer_trace_metadata_bytes": 285488
+  },
+  "event": {
+    "allocator_after_scan": {
+      "activation": {
+        "adapter_header_bytes": 160,
+        "arena_bytes": 3261424096,
+        "arena_start": 24729616384,
+        "bootstrap_charged_bytes": 66534,
+        "grant_bytes": 3261490790,
+        "initialized_bytes": 3261424096,
+        "pid": 68632
+      },
+      "allocation_failures": 0,
+      "arena_free_bytes": 1462560,
+      "arena_usable_bytes": 3261424096,
+      "arena_used_bytes": 3259961536,
+      "bootstrap_live_bytes": 66394,
+      "bootstrap_peak_bytes": 66774,
+      "bootstrap_quarantined_bytes": 140,
+      "current_requested_bytes": 3260027897,
+      "lifetime_peak_requested_bytes": 3260137783
+    },
+    "allocator_after_scan_clock": {
+      "elapsed_ns": 11012276208,
+      "instance_unix_ns": 1792625567203997000,
+      "pid": 68632
+    },
+    "clock_begin": {
+      "elapsed_ns": 11001634291,
+      "instance_unix_ns": 1792625567203997000,
+      "pid": 68632
+    },
+    "clock_end": {
+      "elapsed_ns": 11012276000,
+      "instance_unix_ns": 1792625567203997000,
+      "pid": 68632
+    },
+    "elapsed_seconds": 11.012456458,
+    "raw_begin": 21285,
+    "raw_end": 23220,
+    "scan": {
+      "checksum": 10412027265265427510,
+      "cow_pages": 0,
+      "decode_workspace_borrowed_bytes": 0,
+      "decode_workspace_scanned_bytes": 67108864,
+      "dirty_bytes": 1048576,
+      "iteration": 12,
+      "native_records": 361272,
+      "stub_records": 1232426,
+      "touched_pressure_bytes": 3178258038,
+      "wall_seconds": 0.0106415
+    },
+    "scan_deadline_seconds": 11,
+    "scan_ready_age_seconds": 0.0018122500000004038,
+    "snapshot_inflight": false
+  }
+}

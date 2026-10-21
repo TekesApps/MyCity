@@ -1,5 +1,7 @@
 # M0 Rust模型：当前范围、运行方法与验收状态
 
+v0.5.99：[独立VM地址归因](evidence/m0-t13a-runtime-vm/STATUS.md)完成同冻结exe原满级L1一次15秒smoke、10份目标身份夹取/映射读取及完整冷恢复。arena3,261,424,096B地址全覆盖；原normal超限仍failed observed，可置换字节0，工具自身资源账缺项不签。只退役本轮两份合成载荷，原恢复基线完整保留；尚未完成正式三轮/四速/8h，真实16GB not_run，完整M0不签。
+
 v0.5.98：[原L1正式单轮](evidence/m0-t13a-typed-workspace/FORMAL-STATUS.md)完成300+1800秒、2101扫描/8代恢复读回及最新7/8完整冷开；同源两类页分位满足观察门限，非完整业务吞吐。窗口7114完整/86 unknown帧，完整footprint仍超normal19,392,738B，failed observed；idle requested/arena/隔离delta0不签业务泄漏。旧基线4纯合成文件5.920GiB已退役，原始业务/故障/源/exe保留。先做独立VM组件归因，三轮/四速/8h未完成，真实16GB not_run，M0 not_accepted。
 
 v0.5.97：[常驻解码工作区与原快照格式兼容](evidence/m0-t13a-typed-workspace/STATUS.md)完成同源全仓713.986秒、60个harness汇总/442条通过记录（含nested，不称唯一测试数），严格clippy/fmt/build及三份完整冷恢复。advisor认可冻结规范profile外部4MiB分账和有限功能发布；64MiB typed+64MiB并发COW仍在原128MiB内。下一步原参数多代formal；旧物理超界不撤销，三轮/四速/8h未完成，真实16GB not_run，不签完整M0。

@@ -1,0 +1,36 @@
+[
+  {
+    "path": "work/runtime-vm-l1-01/observed/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "run": "runtime-vm-l1-01",
+    "generation": 1,
+    "metadata": [
+      16777231,
+      409666073,
+      33188,
+      3044040310,
+      1792625573006272855,
+      1
+    ],
+    "allocated_bytes": 3045302272,
+    "sha256": "b54b320a49eda0e4d1fbb2ba6d8dfb7fdf33d228b6397bace5cf6bf95bf507be",
+    "reason": "pure synthetic payload, terminal actual readback+cold recovery passed, advisor released all recovery dependencies",
+    "retained_evidence": "docs/evidence/m0-t13a-runtime-vm; original snapshot index/components and observed raw remain"
+  },
+  {
+    "path": "work/runtime-vm-l1-01/observed/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "run": "runtime-vm-l1-01",
+    "generation": 1,
+    "metadata": [
+      16777231,
+      409666093,
+      33188,
+      134217728,
+      1792625573246074299,
+      1
+    ],
+    "allocated_bytes": 134217728,
+    "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee",
+    "reason": "pure synthetic payload, terminal actual readback+cold recovery passed, advisor released all recovery dependencies",
+    "retained_evidence": "docs/evidence/m0-t13a-runtime-vm; original snapshot index/components and observed raw remain"
+  }
+]

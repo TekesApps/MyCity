@@ -1,0 +1,10 @@
+[
+  {
+    "path": "work/runtime-vm-l1-01/observed/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "state": "retired; not directly fully restorable; index/hash do not replace original"
+  },
+  {
+    "path": "work/runtime-vm-l1-01/observed/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "state": "retired; not directly fully restorable; index/hash do not replace original"
+  }
+]

@@ -1,0 +1,187 @@
+{
+  "label": "inflight",
+  "role": "root",
+  "pid": 68628,
+  "before": {
+    "pid": 68628,
+    "begin_monotonic_ns": 2228322500,
+    "end_monotonic_ns": 2228364958,
+    "first": {
+      "pid": 68628,
+      "start_abstime": 24847935775714,
+      "rss_bytes": 3096576,
+      "phys_footprint_bytes": 1376568,
+      "user_time_ns": 2394000,
+      "system_time_ns": 7358708,
+      "disk_bytes_read": 0,
+      "disk_bytes_written": 20480
+    },
+    "last": {
+      "pid": 68628,
+      "start_abstime": 24847935775714,
+      "rss_bytes": 3096576,
+      "phys_footprint_bytes": 1376568,
+      "user_time_ns": 2394000,
+      "system_time_ns": 7358708,
+      "disk_bytes_read": 0,
+      "disk_bytes_written": 20480
+    },
+    "relation": [
+      68627,
+      null,
+      "2",
+      "mycity-headless"
+    ],
+    "identity_bound": true
+  },
+  "after": {
+    "pid": 68628,
+    "begin_monotonic_ns": 3531662666,
+    "end_monotonic_ns": 3531698833,
+    "first": {
+      "pid": 68628,
+      "start_abstime": 24847935775714,
+      "rss_bytes": 3096576,
+      "phys_footprint_bytes": 1376568,
+      "user_time_ns": 2420958,
+      "system_time_ns": 7463875,
+      "disk_bytes_read": 0,
+      "disk_bytes_written": 20480
+    },
+    "last": {
+      "pid": 68628,
+      "start_abstime": 24847935775714,
+      "rss_bytes": 3096576,
+      "phys_footprint_bytes": 1376568,
+      "user_time_ns": 2420958,
+      "system_time_ns": 7463875,
+      "disk_bytes_read": 0,
+      "disk_bytes_written": 20480
+    },
+    "relation": [
+      68627,
+      null,
+      "2",
+      "mycity-headless"
+    ],
+    "identity_bound": true
+  },
+  "tool_begin_monotonic_ns": 2228837208,
+  "tool_end_monotonic_ns": 3531662000,
+  "exit_code": 0,
+  "error": null,
+  "identity_unchanged": true,
+  "event_before": {
+    "allocator_after_scan": {
+      "activation": {
+        "adapter_header_bytes": 160,
+        "arena_bytes": 3261424096,
+        "arena_start": 24729616384,
+        "bootstrap_charged_bytes": 66534,
+        "grant_bytes": 3261490790,
+        "initialized_bytes": 3261424096,
+        "pid": 68632
+      },
+      "allocation_failures": 0,
+      "arena_free_bytes": 1376520,
+      "arena_usable_bytes": 3261424096,
+      "arena_used_bytes": 3260047576,
+      "bootstrap_live_bytes": 66394,
+      "bootstrap_peak_bytes": 66774,
+      "bootstrap_quarantined_bytes": 140,
+      "current_requested_bytes": 3260111380,
+      "lifetime_peak_requested_bytes": 3260112846
+    },
+    "allocator_after_scan_clock": {
+      "elapsed_ns": 8589875,
+      "instance_unix_ns": 1792625567203997000,
+      "pid": 68632
+    },
+    "clock_begin": {
+      "elapsed_ns": 41,
+      "instance_unix_ns": 1792625567203997000,
+      "pid": 68632
+    },
+    "clock_end": {
+      "elapsed_ns": 8589708,
+      "instance_unix_ns": 1792625567203997000,
+      "pid": 68632
+    },
+    "elapsed_seconds": 0.008769791,
+    "raw_begin": 0,
+    "raw_end": 1935,
+    "scan": {
+      "checksum": 10412027265726111632,
+      "cow_pages": 1,
+      "decode_workspace_borrowed_bytes": 0,
+      "decode_workspace_scanned_bytes": 67108864,
+      "dirty_bytes": 1048576,
+      "iteration": 1,
+      "native_records": 361272,
+      "stub_records": 1232426,
+      "touched_pressure_bytes": 3178258038,
+      "wall_seconds": 0.008589584
+    },
+    "scan_deadline_seconds": 0,
+    "scan_ready_age_seconds": 3.75e-05,
+    "snapshot_inflight": true
+  },
+  "event_after": {
+    "allocator_after_scan": {
+      "activation": {
+        "adapter_header_bytes": 160,
+        "arena_bytes": 3261424096,
+        "arena_start": 24729616384,
+        "bootstrap_charged_bytes": 66534,
+        "grant_bytes": 3261490790,
+        "initialized_bytes": 3261424096,
+        "pid": 68632
+      },
+      "allocation_failures": 0,
+      "arena_free_bytes": 1376520,
+      "arena_usable_bytes": 3261424096,
+      "arena_used_bytes": 3260047576,
+      "bootstrap_live_bytes": 66394,
+      "bootstrap_peak_bytes": 66774,
+      "bootstrap_quarantined_bytes": 140,
+      "current_requested_bytes": 3260111380,
+      "lifetime_peak_requested_bytes": 3260112846
+    },
+    "allocator_after_scan_clock": {
+      "elapsed_ns": 8589875,
+      "instance_unix_ns": 1792625567203997000,
+      "pid": 68632
+    },
+    "clock_begin": {
+      "elapsed_ns": 41,
+      "instance_unix_ns": 1792625567203997000,
+      "pid": 68632
+    },
+    "clock_end": {
+      "elapsed_ns": 8589708,
+      "instance_unix_ns": 1792625567203997000,
+      "pid": 68632
+    },
+    "elapsed_seconds": 0.008769791,
+    "raw_begin": 0,
+    "raw_end": 1935,
+    "scan": {
+      "checksum": 10412027265726111632,
+      "cow_pages": 1,
+      "decode_workspace_borrowed_bytes": 0,
+      "decode_workspace_scanned_bytes": 67108864,
+      "dirty_bytes": 1048576,
+      "iteration": 1,
+      "native_records": 361272,
+      "stub_records": 1232426,
+      "touched_pressure_bytes": 3178258038,
+      "wall_seconds": 0.008589584
+    },
+    "scan_deadline_seconds": 0,
+    "scan_ready_age_seconds": 3.75e-05,
+    "snapshot_inflight": true
+  },
+  "stdout": "docs/evidence/m0-t13a-runtime-vm/inflight-root-68628.stdout",
+  "stderr": "docs/evidence/m0-t13a-runtime-vm/inflight-root-68628.stderr",
+  "ownership": "raw mapping evidence only; no pressure replacement granted"
+}

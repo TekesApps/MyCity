@@ -1,0 +1,15 @@
+{
+  "model_source_sha256": "757907bccc82ec1dc13c28f11324914c6def755366e50156a093fef9c7a8d588",
+  "model_binary": "/Users/frankqin/dev/MyCity/work/candidate-binaries/typed-workspace/mycity-headless",
+  "model_binary_sha256": "178c3a709ef3cc5d69e166bd2da60bcb43f0ae804fac27c53dae55514e9be2ac",
+  "support_sha256": {
+    "docs/evidence/m0-t13a-runtime-vm/run.py": "1b05643e44cef58e5c76cbd8ffaeb8404138261eeb906b35dbca30711e312b27",
+    "docs/evidence/m0-t13a-runtime-vm/analyze.py": "d2d9ef462d329848fd1216be7fbfcc8a4e9060603784ce348f7cd3faa893418f",
+    "docs/evidence/m0-t13a-typed-workspace/observe.py": "6bc89147a64894599d7eea1f6762fbb01f4119d606842ce475ba2c2f7215c98a",
+    "docs/evidence/m0-t13a-typed-workspace/native_metrics.py": "917b184e339649acd7b79797cf77f2b2db4f5128f33fdaf8759c162672fa34ca",
+    "docs/evidence/m0-t13a-typed-workspace/clock_exchange.py": "534642a6854928e5253521862b18b33d19ebc0d777f5a0695321adeddea264b5"
+  },
+  "scope": "read-only diagnosis on original executable; no code build, source change, workload or threshold change",
+  "runtime_originals": "work/runtime-vm-l1-01/observed",
+  "current_availability": "retirement/availability.json"
+}

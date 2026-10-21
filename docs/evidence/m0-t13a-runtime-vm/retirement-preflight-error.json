@@ -1,0 +1,6 @@
+{
+  "stage": "before any deletion",
+  "error": "assert protected count58 failed: all files include index + two auxiliary diagnostic files per generation, actual64 versus58 indexed payload files",
+  "deleted_files": 0,
+  "fix": "protect and rehash all64 original files, no exclusions"
+}

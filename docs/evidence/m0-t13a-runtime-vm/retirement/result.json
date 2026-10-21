@@ -1,0 +1,31 @@
+{
+  "before": {
+    "du_kib": {
+      "work": 29311840,
+      "target": 1403104
+    },
+    "filesystem_available_bytes": 97799266304
+  },
+  "after": {
+    "du_kib": {
+      "work": 26206840,
+      "target": 1403104
+    },
+    "filesystem_available_bytes": 100970606592
+  },
+  "deleted_files": 2,
+  "allocated_bytes_removed": 3179520000,
+  "filesystem_available_delta_bytes": 3171340288,
+  "attribution": "inode allocated bytes, not APFS exclusive physical bytes; filesystem delta separately observed, not fully credited",
+  "all_other_work_file_metadata_unchanged": true,
+  "protected_current_files_rehashed": 64,
+  "source_exe_business_wal_raw_preserved": true,
+  "target_reused": true,
+  "post_occupancy": {
+    "command": "lsof -nP +D work +D target",
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "",
+    "monotonic_ns": 38990571666
+  }
+}

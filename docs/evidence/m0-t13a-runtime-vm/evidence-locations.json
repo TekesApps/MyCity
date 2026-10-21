@@ -1,0 +1,74 @@
+[
+  {
+    "path": "work/runtime-vm-l1-01/observed/observer-report.json",
+    "bytes": 7406,
+    "sha256": "1133cac3cd95c842aab9feb49cec46586c60e7ee9a244ee98ef0b9367dd8bb53",
+    "retained_original": true
+  },
+  {
+    "path": "work/runtime-vm-l1-01/observed/host-samples.jsonl",
+    "bytes": 90816,
+    "sha256": "07f5401a0deaf37e23032c64c01d8e3677e95c9698f2d950cf2ace0bbe591a64",
+    "retained_original": true
+  },
+  {
+    "path": "work/runtime-vm-l1-01/observed/model/report.json",
+    "bytes": 488,
+    "sha256": "f21175b19c76452b0cb93f702f554681b978c3962ef4a3c1051fdaa14bcedb8d",
+    "retained_original": true
+  },
+  {
+    "path": "work/runtime-vm-l1-01/observed/model/manifest.json",
+    "bytes": 466,
+    "sha256": "49caa444224803617eeea34baa6a6b33c64ba1a1ddb86e165aeb89c45b1e8fae",
+    "retained_original": true
+  },
+  {
+    "path": "work/runtime-vm-l1-01/observed/model/common-events.jsonl",
+    "bytes": 635,
+    "sha256": "c3a2ff037cff75e96d6ede7d363c805dac832de1268070f8dba7267126395d12",
+    "retained_original": true
+  },
+  {
+    "path": "work/runtime-vm-l1-01/observed/model/heaps.jsonl",
+    "bytes": 4232,
+    "sha256": "d429dbf4a0f20b843bf1f1532187ebfb8fe5c89dd8334d83616d181e77acf848",
+    "retained_original": true
+  },
+  {
+    "path": "work/runtime-vm-l1-01/observed/model/layout/report.json",
+    "bytes": 17521,
+    "sha256": "4d2f34500b559e21306a38933a943b0573cfe650a37d9335717307f49012e132",
+    "retained_original": true
+  },
+  {
+    "path": "work/runtime-vm-l1-01/observed/model/layout/manifest.json",
+    "bytes": 12259,
+    "sha256": "c6c6475a87e1c1544d7e50bc0c775e9aaa6915d3e02d4d725894575c91ef795b",
+    "retained_original": true
+  },
+  {
+    "path": "work/runtime-vm-l1-01/observed/model/layout/events.jsonl",
+    "bytes": 23910,
+    "sha256": "e943dba379913fd3b2fc04aae9f26f9a6fe14d1ca7d690617b884c0618735f45",
+    "retained_original": true
+  },
+  {
+    "path": "work/runtime-vm-l1-01/observed/model/layout/compute-durations.bin",
+    "bytes": 30960,
+    "sha256": "4f4832d2b9fc96141f8e2066af04eb75724af00e790d1989ec604647ffacf4fe",
+    "retained_original": true
+  },
+  {
+    "path": "work/runtime-vm-l1-01/observed/model/layout-restored/report.json",
+    "bytes": 14652,
+    "sha256": "b50a4fe2d9f79660451ebbd471792a52f18f198cd102dc3694d17a5999c6a18e",
+    "retained_original": true
+  },
+  {
+    "path": "work/runtime-vm-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "bytes": 17698,
+    "sha256": "011b9b9ab63c9956be24a4a138822f5615f5936eef7fb0c9010e22b7280ba019",
+    "retained_original": true
+  }
+]

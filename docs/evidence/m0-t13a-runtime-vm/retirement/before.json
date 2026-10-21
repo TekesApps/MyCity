@@ -1,0 +1,18 @@
+{
+  "disk": {
+    "du_kib": {
+      "work": 29311840,
+      "target": 1403104
+    },
+    "filesystem_available_bytes": 97799266304
+  },
+  "occupancy": {
+    "command": "lsof -nP +D work +D target",
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "",
+    "monotonic_ns": 16100269708
+  },
+  "protected_count": 64,
+  "other_file_count": 119176
+}

@@ -1,0 +1,16 @@
+{
+  "schema": "mycity-vm-diagnostic-intent-v1",
+  "source_sha256": "757907bccc82ec1dc13c28f11324914c6def755366e50156a093fef9c7a8d588",
+  "binary_sha256": "178c3a709ef3cc5d69e166bd2da60bcb43f0ae804fac27c53dae55514e9be2ac",
+  "scope": "Original L1 full records, 15s existing smoke, NOT formal performance acceptance. VM tools perturb this run.",
+  "estimated_peak_bytes": 10539006390,
+  "filesystem_available_before_bytes": 101203292160,
+  "no_new_target": true,
+  "retention": "No new recovery baseline. Terminal synthetic pressure/reserve and duplicate components eligible for exact retirement after report/readback/dependency audit; keep raw VM, raw measurement, index, logs, source/exe; protected prior current7/8 untouched.",
+  "protected_existing": [
+    "work/typed-workspace-formal-l1-01/observed/model/layout/snapshots/snapshot-000007",
+    "work/typed-workspace-formal-l1-01/observed/model/layout/snapshots/snapshot-000008"
+  ],
+  "tool": "vmmap -wide -pages -interleaved; no forkCorpse",
+  "threshold_or_workload_change": false
+}

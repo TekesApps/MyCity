@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.98`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.99`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.99完成[独立运行时VM地址诊断](docs/evidence/m0-t13a-runtime-vm/STATUS.md)：原满级L1单次smoke、10份vmmap与实际完整冷恢复通过；arena地址全部落实际MALLOC_LARGE。诊断工具有扰动，组件可置换额度仍为0，不改变上轮normal失败。原3+12秒smoke不是600秒；未取得末尾快照组，三轮/四速/8h/真实16GB仍未通过。本轮两份无后续恢复依赖合成载荷按精确清单退役。
 
 v0.5.98完成[原300+1800秒L1单轮实测](docs/evidence/m0-t13a-typed-workspace/FORMAL-STATUS.md)：2101扫描、8代恢复/读回、当前两代完整冷恢复通过；两类L1页计算观察分位满足原阈值。完整帧footprint仍超normal约18.49MiB，物理门失败，三轮/四速/8h/真实16GB未通过。旧基线4份合成载荷退役5.920GiB，work剩24.806GiB；下一步独立VM归因，不能按超额直接削压力。
 

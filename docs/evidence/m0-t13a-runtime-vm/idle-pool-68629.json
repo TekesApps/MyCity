@@ -1,0 +1,187 @@
+{
+  "label": "idle",
+  "role": "pool",
+  "pid": 68629,
+  "before": {
+    "pid": 68629,
+    "begin_monotonic_ns": 13044553875,
+    "end_monotonic_ns": 13044624583,
+    "first": {
+      "pid": 68629,
+      "start_abstime": 24847953119497,
+      "rss_bytes": 69042176,
+      "phys_footprint_bytes": 68518248,
+      "user_time_ns": 247540083,
+      "system_time_ns": 47199750,
+      "disk_bytes_read": 0,
+      "disk_bytes_written": 4096
+    },
+    "last": {
+      "pid": 68629,
+      "start_abstime": 24847953119497,
+      "rss_bytes": 69042176,
+      "phys_footprint_bytes": 68518248,
+      "user_time_ns": 247540083,
+      "system_time_ns": 47199750,
+      "disk_bytes_read": 0,
+      "disk_bytes_written": 4096
+    },
+    "relation": [
+      68628,
+      null,
+      "2",
+      "mycity-headless"
+    ],
+    "identity_bound": true
+  },
+  "after": {
+    "pid": 68629,
+    "begin_monotonic_ns": 13750050416,
+    "end_monotonic_ns": 13750156791,
+    "first": {
+      "pid": 68629,
+      "start_abstime": 24847953119497,
+      "rss_bytes": 69058560,
+      "phys_footprint_bytes": 68518248,
+      "user_time_ns": 261166708,
+      "system_time_ns": 47475916,
+      "disk_bytes_read": 0,
+      "disk_bytes_written": 4096
+    },
+    "last": {
+      "pid": 68629,
+      "start_abstime": 24847953119497,
+      "rss_bytes": 69058560,
+      "phys_footprint_bytes": 68518248,
+      "user_time_ns": 261166708,
+      "system_time_ns": 47475916,
+      "disk_bytes_read": 0,
+      "disk_bytes_written": 4096
+    },
+    "relation": [
+      68628,
+      null,
+      "2",
+      "mycity-headless"
+    ],
+    "identity_bound": true
+  },
+  "tool_begin_monotonic_ns": 13045426125,
+  "tool_end_monotonic_ns": 13750028000,
+  "exit_code": 0,
+  "error": null,
+  "identity_unchanged": true,
+  "event_before": {
+    "allocator_after_scan": {
+      "activation": {
+        "adapter_header_bytes": 160,
+        "arena_bytes": 3261424096,
+        "arena_start": 24729616384,
+        "bootstrap_charged_bytes": 66534,
+        "grant_bytes": 3261490790,
+        "initialized_bytes": 3261424096,
+        "pid": 68632
+      },
+      "allocation_failures": 0,
+      "arena_free_bytes": 1462560,
+      "arena_usable_bytes": 3261424096,
+      "arena_used_bytes": 3259961536,
+      "bootstrap_live_bytes": 66394,
+      "bootstrap_peak_bytes": 66774,
+      "bootstrap_quarantined_bytes": 140,
+      "current_requested_bytes": 3260027897,
+      "lifetime_peak_requested_bytes": 3260137783
+    },
+    "allocator_after_scan_clock": {
+      "elapsed_ns": 11012276208,
+      "instance_unix_ns": 1792625567203997000,
+      "pid": 68632
+    },
+    "clock_begin": {
+      "elapsed_ns": 11001634291,
+      "instance_unix_ns": 1792625567203997000,
+      "pid": 68632
+    },
+    "clock_end": {
+      "elapsed_ns": 11012276000,
+      "instance_unix_ns": 1792625567203997000,
+      "pid": 68632
+    },
+    "elapsed_seconds": 11.012456458,
+    "raw_begin": 21285,
+    "raw_end": 23220,
+    "scan": {
+      "checksum": 10412027265265427510,
+      "cow_pages": 0,
+      "decode_workspace_borrowed_bytes": 0,
+      "decode_workspace_scanned_bytes": 67108864,
+      "dirty_bytes": 1048576,
+      "iteration": 12,
+      "native_records": 361272,
+      "stub_records": 1232426,
+      "touched_pressure_bytes": 3178258038,
+      "wall_seconds": 0.0106415
+    },
+    "scan_deadline_seconds": 11,
+    "scan_ready_age_seconds": 0.0018122500000004038,
+    "snapshot_inflight": false
+  },
+  "event_after": {
+    "allocator_after_scan": {
+      "activation": {
+        "adapter_header_bytes": 160,
+        "arena_bytes": 3261424096,
+        "arena_start": 24729616384,
+        "bootstrap_charged_bytes": 66534,
+        "grant_bytes": 3261490790,
+        "initialized_bytes": 3261424096,
+        "pid": 68632
+      },
+      "allocation_failures": 0,
+      "arena_free_bytes": 1462560,
+      "arena_usable_bytes": 3261424096,
+      "arena_used_bytes": 3259961536,
+      "bootstrap_live_bytes": 66394,
+      "bootstrap_peak_bytes": 66774,
+      "bootstrap_quarantined_bytes": 140,
+      "current_requested_bytes": 3260027897,
+      "lifetime_peak_requested_bytes": 3260137783
+    },
+    "allocator_after_scan_clock": {
+      "elapsed_ns": 11012276208,
+      "instance_unix_ns": 1792625567203997000,
+      "pid": 68632
+    },
+    "clock_begin": {
+      "elapsed_ns": 11001634291,
+      "instance_unix_ns": 1792625567203997000,
+      "pid": 68632
+    },
+    "clock_end": {
+      "elapsed_ns": 11012276000,
+      "instance_unix_ns": 1792625567203997000,
+      "pid": 68632
+    },
+    "elapsed_seconds": 11.012456458,
+    "raw_begin": 21285,
+    "raw_end": 23220,
+    "scan": {
+      "checksum": 10412027265265427510,
+      "cow_pages": 0,
+      "decode_workspace_borrowed_bytes": 0,
+      "decode_workspace_scanned_bytes": 67108864,
+      "dirty_bytes": 1048576,
+      "iteration": 12,
+      "native_records": 361272,
+      "stub_records": 1232426,
+      "touched_pressure_bytes": 3178258038,
+      "wall_seconds": 0.0106415
+    },
+    "scan_deadline_seconds": 11,
+    "scan_ready_age_seconds": 0.0018122500000004038,
+    "snapshot_inflight": false
+  },
+  "stdout": "docs/evidence/m0-t13a-runtime-vm/idle-pool-68629.stdout",
+  "stderr": "docs/evidence/m0-t13a-runtime-vm/idle-pool-68629.stderr",
+  "ownership": "raw mapping evidence only; no pressure replacement granted"
+}

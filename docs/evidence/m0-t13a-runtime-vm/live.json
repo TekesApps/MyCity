@@ -1,0 +1,15 @@
+{
+  "pid": 68611,
+  "command": [
+    "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-typed-workspace/observe.py",
+    "/Users/frankqin/dev/MyCity/work/runtime-vm-l1-01/observed",
+    "--",
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/typed-workspace/mycity-headless",
+    "steady-run",
+    "/Users/frankqin/dev/MyCity/work/runtime-vm-l1-01/observed/model",
+    "l1",
+    "smoke"
+  ],
+  "start_monotonic_ns": 112320625
+}

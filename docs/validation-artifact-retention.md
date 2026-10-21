@@ -1,5 +1,7 @@
 # 验证产物回收规则
 
+**v0.5.99 VM诊断终态**：[本轮留存与精确清单](evidence/m0-t13a-runtime-vm/STATUS.md)仅退役runtime-vm-l1-01唯一snapshot的pressure/reserve，不可直接完整恢复；组件/index/VM原文/实际恢复报告与原current7/8保留。预检58数量与实际64全文件不符，在删除前停止并修正；后续保护全部64原文件。实际分配空间及独立df变化见该轮retirement/result，不重复计入v98回收。共享target复用，无构建。
+
 **最新恢复可用性（v0.5.98）**：[原L1终态交接](evidence/m0-t13a-typed-workspace/FORMAL-STATUS.md)及[availability](evidence/m0-t13a-typed-workspace/formal-retirement/availability.json)覆盖旧steady-controller-formal-l2-01第7/8代完整保留承诺。新typed-workspace正式第7/8代实际完整冷恢复并继续扫描、独立释放依赖后，旧两代仅4份pressure/reserve退役，分配空间6,356,516,864B，work剩24.806GiB；旧两代不可直接完整恢复。新两代、v50、最新82故障原件完整保留，旧L2业务/WAL/组件/索引/raw/源/exe不删。回收后置检查遇未归属Cargo而保守退出，已用无删除finalizer复核收尾，原错误留存。df变化独立报告；target继续复用。
 
 **v0.5.97功能阶段终态**：[typed工作区阶段留存](evidence/m0-t13a-typed-workspace/stage-retention.json)新增删除0B；完整冷恢复复用既有原件，无新压力副本，无独立target。当前workspace/all-target及clippy/CLI profile缓存尚有依赖，未以单一构建图武断删除其他有效profile；固定源/exe/日志/原完整恢复基线继续保留。原formal实验另立用途/峰值及退役条件，测量期间不清理。

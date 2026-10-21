@@ -1,0 +1,35 @@
+{
+  "pid": 68627,
+  "identity": {
+    "pid": 68627,
+    "begin_monotonic_ns": 113943000,
+    "end_monotonic_ns": 114000083,
+    "first": {
+      "pid": 68627,
+      "start_abstime": 24847934762505,
+      "rss_bytes": 655360,
+      "phys_footprint_bytes": 196680,
+      "user_time_ns": 84250,
+      "system_time_ns": 442458,
+      "disk_bytes_read": 0,
+      "disk_bytes_written": 0
+    },
+    "last": {
+      "pid": 68627,
+      "start_abstime": 24847934762505,
+      "rss_bytes": 655360,
+      "phys_footprint_bytes": 180296,
+      "user_time_ns": 116916,
+      "system_time_ns": 446500,
+      "disk_bytes_read": 0,
+      "disk_bytes_written": 0
+    },
+    "relation": [
+      68611,
+      null,
+      "2",
+      "python3.9"
+    ],
+    "identity_bound": true
+  }
+}

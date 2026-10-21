@@ -1,0 +1,9 @@
+{
+  "python_ast": "passed",
+  "json_parse": "passed",
+  "updated_entry_links": "passed",
+  "runtime_evidence": "10 target identities and all arena mapping bytes verified; original full cold restore passed",
+  "retirement": "2 exact files removed, 64 protected originals checked",
+  "cargo": "not_run: no Rust source changed, fixed v97 executable used",
+  "formal_performance": "not_accepted"
+}
