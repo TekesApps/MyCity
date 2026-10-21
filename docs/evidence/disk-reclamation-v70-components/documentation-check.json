@@ -1,0 +1,9 @@
+{
+  "local_links_checked": 103,
+  "exact_deleted_manifest_matches_plan": true,
+  "all_50_original_paths_absent": true,
+  "protected_3_full_layout_hash_reports_equal": true,
+  "source_wip_hash_reports_equal": true,
+  "python_syntax_and_json": "passed",
+  "scope": "documentation and cleanup verification; no model or performance test"
+}

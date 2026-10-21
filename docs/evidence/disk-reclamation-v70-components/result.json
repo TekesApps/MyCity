@@ -1,0 +1,25 @@
+{
+  "before": {
+    "time_ns": 1792604291989118000,
+    "work_du_kib": 14781776,
+    "target_du_kib": 1399788,
+    "filesystem_available_bytes": 119466823680
+  },
+  "after": {
+    "time_ns": 1792604293784565000,
+    "work_du_kib": 14390032,
+    "target_du_kib": 1399788,
+    "filesystem_available_bytes": 119868055552
+  },
+  "deleted_files": 50,
+  "deleted_single_link_inode_allocated_bytes": 401145856,
+  "new_work_archive_bytes": 0,
+  "net_file_allocation_removed_bytes": 401145856,
+  "target_deleted_bytes": 0,
+  "retained_files_identity_length_mtime_links_unchanged": 110899,
+  "retained_allocation_only_differences": 0,
+  "observed_df_available_delta": 401231872,
+  "df_delta_attributable_to_cleanup": null,
+  "availability": "v70 old layouts already incomplete; now 50 original component paths retired too. Existing full byte gzip archives retained. v85 two full generations plus v50 full old-format original unchanged.",
+  "accounting": "st_blocks allocation is not exclusive APFS physical storage. No other task or historical reclaim counted."
+}

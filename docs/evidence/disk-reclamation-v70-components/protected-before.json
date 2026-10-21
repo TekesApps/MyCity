@@ -1,0 +1,20 @@
+[
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001",
+    "index_sha256": "f73ce2febd21a8ee01f9f8b1c341591b9d78fc6135dc6f1fa1613df04ae2aff4",
+    "indexed_files": 29,
+    "full_original_bytes_verified": true
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002",
+    "index_sha256": "8cb5f0ce2fadbeaf47e4a0def1fa59548acc40c61a7ad13aad4820f136a3f446",
+    "indexed_files": 29,
+    "full_original_bytes_verified": true
+  },
+  {
+    "path": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001",
+    "index_sha256": "43f83f0a14e8e1962370a1d6bdf26424671660e3679e48d94b864bd1be47728c",
+    "indexed_files": 29,
+    "full_original_bytes_verified": true
+  }
+]
