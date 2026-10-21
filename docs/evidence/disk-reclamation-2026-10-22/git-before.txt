@@ -1,0 +1,20 @@
+ M AGENTS.md
+ M Cargo.lock
+ M Cargo.toml
+ M THIRD_PARTY.md
+ M crates/city-headless/Cargo.toml
+ M crates/city-headless/src/diagnostic_contract.rs
+ M crates/city-headless/src/heap_meter.rs
+ M crates/city-headless/src/joint_driver.rs
+ M crates/city-headless/src/normal_pool.rs
+ M crates/city-headless/src/normal_pool/broker.rs
+ M crates/city-headless/src/normal_pool/workspace.rs
+ M crates/city-headless/src/scale_model_task.rs
+ M crates/city-headless/src/scale_model_task/stream.rs
+ M crates/city-headless/src/scale_sim.rs
+ M crates/city-headless/src/scale_speed.rs
+ M crates/city-headless/src/sim_host.rs
+?? crates/city-headless/tests/role_arena.rs
+?? crates/city-role-allocator/
+?? docs/evidence/disk-reclamation-2026-10-22/
+?? docs/evidence/m0-t13a-role-arena/

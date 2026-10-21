@@ -1,0 +1,49 @@
+{
+  "before": {
+    "time_ns": 1792599943808202000,
+    "work_du_kib": 15882116,
+    "target_du_kib": 1350904,
+    "filesystem_available_bytes": 121106780160
+  },
+  "after": {
+    "time_ns": 1792599947160770000,
+    "work_du_kib": 14171100,
+    "target_du_kib": 1350904,
+    "filesystem_available_bytes": 122858520576
+  },
+  "deleted_files": 529,
+  "removed_unique_inodes": 529,
+  "deleted_allocated_bytes": 1752080384,
+  "retained_archive_allocated_bytes": 29638656,
+  "net_allocated_reduction_including_archive": 1722441728,
+  "df_available_delta_observed": 1751740416,
+  "retained_existing_work_files_unchanged": 103183,
+  "retained_archive_new_files": [
+    "work/retained-component-evidence/duplicate-stubs-v1/maps.json.gz",
+    "work/retained-component-evidence/duplicate-stubs-v1/households.json.gz",
+    "work/retained-component-evidence/duplicate-stubs-v1/housing.json.gz",
+    "work/retained-component-evidence/duplicate-stubs-v1/visitors.json.gz",
+    "work/retained-component-evidence/duplicate-stubs-v1/operators.json.gz",
+    "work/retained-component-evidence/duplicate-stubs-v1/entities.json.gz",
+    "work/retained-component-evidence/duplicate-stubs-v1/equity_links.json.gz",
+    "work/retained-component-evidence/duplicate-stubs-v1/general_contracts.json.gz",
+    "work/retained-component-evidence/duplicate-stubs-v1/od.json.gz",
+    "work/retained-component-evidence/duplicate-stubs-v1/path_refs.json.gz",
+    "work/retained-component-evidence/duplicate-stubs-v1/cargo_batches.json.gz",
+    "work/retained-component-evidence/duplicate-stubs-v1/passenger_batches.json.gz",
+    "work/retained-component-evidence/duplicate-stubs-v1/bus_train_vehicles.json.gz",
+    "work/retained-component-evidence/duplicate-stubs-v1/ship_aircraft_vehicles.json.gz",
+    "work/retained-component-evidence/duplicate-stubs-v1/car_vehicles.json.gz",
+    "work/retained-component-evidence/duplicate-stubs-v1/matters.json.gz",
+    "work/retained-component-evidence/duplicate-stubs-v1/team_members.json.gz",
+    "work/retained-component-evidence/duplicate-stubs-v1/analysis_tasks.json.gz",
+    "work/retained-component-evidence/duplicate-stubs-v1/hosts.json.gz",
+    "work/retained-component-evidence/duplicate-stubs-v1/teaching_batches.json.gz",
+    "work/retained-component-evidence/duplicate-stubs-v1/current_services.json.gz",
+    "work/retained-component-evidence/duplicate-stubs-v1/cases.json.gz",
+    "work/retained-component-evidence/duplicate-stubs-v1/bills.json.gz"
+  ],
+  "target_deleted_bytes": 0,
+  "independent_target_created": false,
+  "accounting": "st_blocks inode-deduplicated allocation is not APFS exclusive physical reclaimed space. df delta includes unrelated activity; not wholly attributable. Prior deletions excluded."
+}

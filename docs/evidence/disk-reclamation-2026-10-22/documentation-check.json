@@ -1,0 +1,8 @@
+{
+  "script_syntax": true,
+  "deleted_manifest_matches_plan": true,
+  "deleted_paths_absent": true,
+  "source_unchanged": true,
+  "local_links": true,
+  "not_model_test": true
+}

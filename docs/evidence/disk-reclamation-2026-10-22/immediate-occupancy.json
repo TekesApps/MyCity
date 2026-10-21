@@ -1,0 +1,14 @@
+[
+  {
+    "pid": "61929",
+    "command": "Python",
+    "fd": "cwd",
+    "path": "/Users/frankqin/dev/MyCity"
+  },
+  {
+    "pid": "61965",
+    "command": "lsof",
+    "fd": "cwd",
+    "path": "/Users/frankqin/dev/MyCity"
+  }
+]

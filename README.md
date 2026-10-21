@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.83`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.84`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.84完成[历史产物集中回收](docs/evidence/disk-reclamation-2026-10-22/STATUS.md)：退役529份旧重复合成组件，扣除完整无损归档后净减少1.604GiB文件分配空间；完整恢复输入和Rust未提交工作保留，性能验收状态不变。
 
 v0.5.83完成[固定词法容量与完整业务兼容](docs/evidence/m0-t13a-fixed-lexical/STATUS.md)：legacy／v2收据正文共用1MiB固定扫描栈；冻结同源全仓、近16MiB实际Store新旧reader及原full30日真实业务通过，解析压力单列。整Role授权、normal64/common8及原联合性能／8h仍未通过；临时压力副本已回收96.85MiB分配空间，真实16GB保持not_run。
 
