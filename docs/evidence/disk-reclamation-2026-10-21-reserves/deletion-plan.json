@@ -1,0 +1,102 @@
+{
+  "protected": [
+    "work/t13a70-joint-01",
+    "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001",
+    "work/t13a65-joint-02/model/business",
+    "work/t13a68-legacy-reopen",
+    "work/accepted-binaries",
+    "work/candidate-binaries"
+  ],
+  "files": [
+    {
+      "path": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+      "identity": [
+        16777231,
+        406712763,
+        134217728,
+        1792555295476971897,
+        134217728,
+        1
+      ],
+      "run": "t13a64-joint-01",
+      "reason": "Obsolete synthetic reserve; pressure already retired; superseded by complete v70 baseline; no future restore dependency.",
+      "retained_evidence": "docs/evidence/m0-t13a-hotpath",
+      "availability_after": "Already incomplete layout remains NOT directly full-restorable; native/meter/index/fault evidence retained."
+    },
+    {
+      "path": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+      "identity": [
+        16777231,
+        406736518,
+        134217728,
+        1792555598691971357,
+        134217728,
+        1
+      ],
+      "run": "t13a64-joint-01",
+      "reason": "Obsolete synthetic reserve; pressure already retired; superseded by complete v70 baseline; no future restore dependency.",
+      "retained_evidence": "docs/evidence/m0-t13a-hotpath",
+      "availability_after": "Already incomplete layout remains NOT directly full-restorable; native/meter/index/fault evidence retained."
+    },
+    {
+      "path": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+      "identity": [
+        16777231,
+        406942529,
+        134217728,
+        1792559202283022649,
+        134217728,
+        1
+      ],
+      "run": "t13a65-joint-01",
+      "reason": "Obsolete synthetic reserve; pressure already retired; superseded by complete v70 baseline; no future restore dependency.",
+      "retained_evidence": "docs/evidence/m0-t13a-helper-compare/failure-notes.md",
+      "availability_after": "Already incomplete layout remains NOT directly full-restorable; native/meter/index/fault evidence retained."
+    },
+    {
+      "path": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+      "identity": [
+        16777231,
+        406980918,
+        134217728,
+        1792559504211988319,
+        134217728,
+        1
+      ],
+      "run": "t13a65-joint-01",
+      "reason": "Obsolete synthetic reserve; pressure already retired; superseded by complete v70 baseline; no future restore dependency.",
+      "retained_evidence": "docs/evidence/m0-t13a-helper-compare/failure-notes.md",
+      "availability_after": "Already incomplete layout remains NOT directly full-restorable; native/meter/index/fault evidence retained."
+    },
+    {
+      "path": "work/t13a65-joint-02/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+      "identity": [
+        16777231,
+        407014311,
+        134217728,
+        1792560187575410666,
+        134217728,
+        1
+      ],
+      "run": "t13a65-joint-02",
+      "reason": "Obsolete synthetic reserve; pressure already retired; superseded by complete v70 baseline; no future restore dependency.",
+      "retained_evidence": "docs/evidence/m0-t13a-helper-compare/t13a65-joint-02",
+      "availability_after": "Already incomplete layout remains NOT directly full-restorable; native/meter/index/fault evidence retained."
+    },
+    {
+      "path": "work/t13a65-joint-02/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+      "identity": [
+        16777231,
+        407041046,
+        134217728,
+        1792560489040644947,
+        134217728,
+        1
+      ],
+      "run": "t13a65-joint-02",
+      "reason": "Obsolete synthetic reserve; pressure already retired; superseded by complete v70 baseline; no future restore dependency.",
+      "retained_evidence": "docs/evidence/m0-t13a-helper-compare/t13a65-joint-02",
+      "availability_after": "Already incomplete layout remains NOT directly full-restorable; native/meter/index/fault evidence retained."
+    }
+  ]
+}

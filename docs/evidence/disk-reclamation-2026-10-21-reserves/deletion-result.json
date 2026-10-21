@@ -1,0 +1,114 @@
+{
+  "before": {
+    "unix_ns": 1792571273567057000,
+    "filesystem_available_bytes": 117478440960,
+    "work_du_kib": 18785240,
+    "target_du_kib": 758160
+  },
+  "after": {
+    "unix_ns": 1792571276969561000,
+    "filesystem_available_bytes": 118283776000,
+    "work_du_kib": 17998808,
+    "target_du_kib": 758160
+  },
+  "removed_paths": 6,
+  "removed_unique_inodes": 6,
+  "removed_unique_allocated_bytes": 805306368,
+  "removed_unique_logical_bytes": 805306368,
+  "filesystem_available_delta_bytes": 805335040,
+  "work_du_delta_bytes": 805306368,
+  "retained_work_files_stat_unchanged": 85125,
+  "files": [
+    {
+      "path": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+      "identity": [
+        16777231,
+        406712763,
+        134217728,
+        1792555295476971897,
+        134217728,
+        1
+      ],
+      "run": "t13a64-joint-01",
+      "reason": "Obsolete synthetic reserve; pressure already retired; superseded by complete v70 baseline; no future restore dependency.",
+      "retained_evidence": "docs/evidence/m0-t13a-hotpath",
+      "availability_after": "Already incomplete layout remains NOT directly full-restorable; native/meter/index/fault evidence retained."
+    },
+    {
+      "path": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+      "identity": [
+        16777231,
+        406736518,
+        134217728,
+        1792555598691971357,
+        134217728,
+        1
+      ],
+      "run": "t13a64-joint-01",
+      "reason": "Obsolete synthetic reserve; pressure already retired; superseded by complete v70 baseline; no future restore dependency.",
+      "retained_evidence": "docs/evidence/m0-t13a-hotpath",
+      "availability_after": "Already incomplete layout remains NOT directly full-restorable; native/meter/index/fault evidence retained."
+    },
+    {
+      "path": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+      "identity": [
+        16777231,
+        406942529,
+        134217728,
+        1792559202283022649,
+        134217728,
+        1
+      ],
+      "run": "t13a65-joint-01",
+      "reason": "Obsolete synthetic reserve; pressure already retired; superseded by complete v70 baseline; no future restore dependency.",
+      "retained_evidence": "docs/evidence/m0-t13a-helper-compare/failure-notes.md",
+      "availability_after": "Already incomplete layout remains NOT directly full-restorable; native/meter/index/fault evidence retained."
+    },
+    {
+      "path": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+      "identity": [
+        16777231,
+        406980918,
+        134217728,
+        1792559504211988319,
+        134217728,
+        1
+      ],
+      "run": "t13a65-joint-01",
+      "reason": "Obsolete synthetic reserve; pressure already retired; superseded by complete v70 baseline; no future restore dependency.",
+      "retained_evidence": "docs/evidence/m0-t13a-helper-compare/failure-notes.md",
+      "availability_after": "Already incomplete layout remains NOT directly full-restorable; native/meter/index/fault evidence retained."
+    },
+    {
+      "path": "work/t13a65-joint-02/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+      "identity": [
+        16777231,
+        407014311,
+        134217728,
+        1792560187575410666,
+        134217728,
+        1
+      ],
+      "run": "t13a65-joint-02",
+      "reason": "Obsolete synthetic reserve; pressure already retired; superseded by complete v70 baseline; no future restore dependency.",
+      "retained_evidence": "docs/evidence/m0-t13a-helper-compare/t13a65-joint-02",
+      "availability_after": "Already incomplete layout remains NOT directly full-restorable; native/meter/index/fault evidence retained."
+    },
+    {
+      "path": "work/t13a65-joint-02/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+      "identity": [
+        16777231,
+        407041046,
+        134217728,
+        1792560489040644947,
+        134217728,
+        1
+      ],
+      "run": "t13a65-joint-02",
+      "reason": "Obsolete synthetic reserve; pressure already retired; superseded by complete v70 baseline; no future restore dependency.",
+      "retained_evidence": "docs/evidence/m0-t13a-helper-compare/t13a65-joint-02",
+      "availability_after": "Already incomplete layout remains NOT directly full-restorable; native/meter/index/fault evidence retained."
+    }
+  ],
+  "accounting": "Device/inode deduplicated st_blocks. Not exclusive APFS extents; observed df delta is not fully attributable to deletion. Shared target retained, no cache deleted."
+}
