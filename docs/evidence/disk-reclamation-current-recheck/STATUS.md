@@ -1,4 +1,4 @@
-# 集中回收后的当前复查（v0.5.95）
+# 集中回收后的当前复查（v0.5.96，更正进程表述）
 
 本次先暂停模型开发，核查实际目录、历史退役清单、当前恢复依赖、进程和文件占用。当前无新增可确认安全退役项，删除0文件、文件分配空间回收0B。历史74GB不是本次起点；v0.5.94已删除9个旧合成载荷、分配空间14,710,177,792B，详见[原清单与恢复状态](../disk-reclamation-fault-handoff/STATUS.md)，不重复计入本次成果。
 
@@ -10,7 +10,7 @@
 
 work约24.40GiB，target约1.34GiB。df减少1,806,336B，仅为观察值；本轮没有删除，不能归因本轮回收。APFS共享块、快照、审计记录和其他任务均可能影响可用空间，文件st_blocks也不等于独占物理空间。
 
-[只读脚本](audit.py)、[结果](result.json)、[删除清单](deleted.json)、[完整元数据](inventory-before.json.gz)和[12份载荷原路径](retained-payloads.json)保留。125,304项work/target文件的设备、inode、类型、长度、mtime、分配块和链接数前后一致。进程检查无MyCity模型、Cargo或rustc；前后lsof均退出1且无输出/错误，表示未发现目录内打开文件。没有终止任何进程，没有运行构建或恢复测试，也未修改游戏代码/WIP。
+[只读脚本](audit.py)、[结果](result.json)、[删除清单](deleted.json)、[完整元数据](inventory-before.json.gz)和[12份载荷原路径](retained-payloads.json)保留。125,304项work/target文件的设备、inode、类型、长度、mtime、分配块和链接数前后一致。进程检查未见MyCity模型；before记录曾观察到一个1.95工具链Cargo进程，after已退出，未据此推断其所属项目。前后lsof均退出1且无输出/错误，表示未发现本项目work/target内打开文件。没有终止任何进程，没有运行构建或恢复测试，也未修改游戏代码/WIP。
 
 ## 保留与后续解除条件
 
