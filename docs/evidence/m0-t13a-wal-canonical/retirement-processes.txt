@@ -1,0 +1,814 @@
+  PID  PPID STARTED                      COMM
+    1     0 Thu Oct  8 10:46:41 2026     /sbin/launchd
+  146     1 Wed Oct 21 17:15:10 2026     /usr/libexec/aned
+  272     1 Wed Oct 21 17:15:16 2026     /System/Library/PrivateFrameworks/GeoServices.framework/Versions/A/XPCServices/com.apple.geod.xpc/Contents/MacOS/com.apple.geod
+  278     1 Wed Oct 21 17:15:16 2026     /usr/libexec/containermanagerd
+  281     1 Wed Oct 21 17:15:16 2026     /System/Library/PrivateFrameworks/GeoServices.framework/Versions/A/XPCServices/com.apple.geod.xpc/Contents/MacOS/com.apple.geod
+  286     1 Wed Oct 21 17:15:16 2026     /usr/libexec/trustd
+  290     1 Wed Oct 21 17:15:16 2026     /usr/libexec/containermanagerd
+  327     1 Thu Oct  8 10:47:56 2026     /usr/libexec/logd
+  329     1 Thu Oct  8 10:47:56 2026     /usr/libexec/UserEventAgent
+  331     1 Thu Oct  8 10:47:56 2026     /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+  335     1 Thu Oct  8 10:47:56 2026     /usr/sbin/systemstats
+  339     1 Thu Oct  8 10:47:56 2026     /usr/libexec/configd
+  341     1 Thu Oct  8 10:47:56 2026     /System/Library/CoreServices/powerd.bundle/powerd
+  342     1 Thu Oct  8 10:47:56 2026     /usr/libexec/IOMFB_bics_daemon
+  346     1 Thu Oct  8 10:47:56 2026     /usr/libexec/remoted
+  350     1 Thu Oct  8 10:47:56 2026     /System/Library/PrivateFrameworks/CoreSpeech.framework/corespeechd_system
+  352     1 Thu Oct  8 10:47:56 2026     /usr/libexec/watchdogd
+  358     1 Thu Oct  8 10:47:56 2026     /usr/libexec/kernelmanagerd
+  359     1 Thu Oct  8 10:47:56 2026     /usr/libexec/diskarbitrationd
+  363     1 Thu Oct  8 10:47:56 2026     /usr/sbin/syslogd
+  365     1 Thu Oct  8 10:47:56 2026     /usr/libexec/thermalmonitord
+  367     1 Thu Oct  8 10:47:56 2026     /usr/libexec/xprotectd
+  368     1 Thu Oct  8 10:47:56 2026     /usr/libexec/opendirectoryd
+  369     1 Thu Oct  8 10:47:56 2026     /System/Library/PrivateFrameworks/ApplePushService.framework/apsd
+  371     1 Thu Oct  8 10:47:56 2026     /usr/libexec/timed
+  372     1 Thu Oct  8 10:47:56 2026     /System/Library/PrivateFrameworks/MobileDevice.framework/Versions/A/Resources/usbmuxd
+  373     1 Thu Oct  8 10:47:56 2026     /usr/sbin/securityd
+  375     1 Thu Oct  8 10:47:56 2026     /usr/libexec/locationd
+  376     1 Thu Oct  8 10:47:56 2026     /usr/libexec/nesessionmanager
+  378     1 Thu Oct  8 10:47:56 2026     autofsd
+  379     1 Thu Oct  8 10:47:56 2026     /usr/libexec/dasd
+  380     1 Thu Oct  8 10:47:56 2026     /usr/libexec/corerepaird
+  382     1 Thu Oct  8 10:47:56 2026     /usr/sbin/distnoted
+  386     1 Thu Oct  8 10:47:56 2026     /System/Library/CoreServices/logind
+  387     1 Thu Oct  8 10:47:56 2026     /System/Library/PrivateFrameworks/GenerationalStorage.framework/Versions/A/Support/revisiond
+  388     1 Thu Oct  8 10:47:56 2026     /usr/sbin/KernelEventAgent
+  393     1 Thu Oct  8 10:47:56 2026     /usr/sbin/notifyd
+  395     1 Thu Oct  8 10:47:56 2026     /usr/libexec/corebrightnessd
+  396     1 Thu Oct  8 10:47:56 2026     /usr/libexec/AirPlayXPCHelper
+  397     1 Thu Oct  8 10:47:56 2026     /System/Library/Frameworks/CoreMediaIO.framework/Versions/A/Resources/com.apple.cmio.registerassistantservice
+  401     1 Thu Oct  8 10:47:56 2026     /System/Library/PrivateFrameworks/TCC.framework/Support/tccd
+  402     1 Thu Oct  8 10:47:56 2026     /usr/sbin/cfprefsd
+  407     1 Thu Oct  8 10:47:56 2026     /System/Library/CoreServices/coreservicesd
+  408     1 Thu Oct  8 10:47:56 2026     /usr/libexec/runningboardd
+  410     1 Thu Oct  8 10:47:57 2026     /usr/libexec/trustd
+  411     1 Thu Oct  8 10:47:57 2026     /usr/sbin/coreaudiod
+  412     1 Thu Oct  8 10:47:57 2026     /System/Library/PrivateFrameworks/CoreAnalytics.framework/Support/analyticsd
+  413     1 Thu Oct  8 10:47:57 2026     /usr/libexec/lsd
+  419     1 Thu Oct  8 10:47:57 2026     /usr/libexec/apfsd
+  420     1 Thu Oct  8 10:47:57 2026     /usr/libexec/nsurlsessiond
+  424     1 Thu Oct  8 10:47:57 2026     /usr/libexec/eligibilityd
+  425     1 Wed Oct 21 17:15:21 2026     /System/Library/PrivateFrameworks/TextToSpeechVoiceBankingSupport.framework/Support/voicebankingd
+  436     1 Wed Oct 21 17:15:21 2026     /usr/libexec/containermanagerd_system
+  437     1 Thu Oct  8 10:47:57 2026     /usr/sbin/distnoted
+  438     1 Thu Oct  8 10:47:57 2026     /usr/sbin/distnoted
+  439     1 Thu Oct  8 10:47:57 2026     /System/Library/Frameworks/Security.framework/Versions/A/XPCServices/authd.xpc/Contents/MacOS/authd
+  441     1 Thu Oct  8 10:47:57 2026     /usr/sbin/distnoted
+  493     1 Thu Oct  8 10:47:57 2026     /usr/sbin/mDNSResponder
+  495     1 Thu Oct  8 10:47:57 2026     /usr/libexec/syspolicyd
+  500     1 Thu Oct  8 10:47:57 2026     Core Audio Driver (ParrotAudioPlugin.driver)
+  502     1 Thu Oct  8 10:47:57 2026     /usr/libexec/audiomxd
+  503     1 Thu Oct  8 10:47:57 2026     /usr/sbin/WirelessRadioManagerd
+  509     1 Thu Oct  8 10:47:57 2026     /usr/libexec/audioclocksyncd
+  511     1 Thu Oct  8 10:47:57 2026     /usr/sbin/mDNSResponderHelper
+  514     1 Thu Oct  8 10:47:57 2026     /usr/libexec/ApplicationFirewall/socketfilterfw
+  515     1 Thu Oct  8 10:47:57 2026     /usr/sbin/distnoted
+  528     1 Thu Oct  8 10:47:57 2026     /usr/libexec/modelmanagerd
+  529     1 Thu Oct  8 10:47:57 2026     /usr/libexec/com.apple.cmio.videodriverkithostextension.systemextension/Contents/MacOS/com.apple.cmio.videodriverkithostextension
+  530     1 Thu Oct  8 10:47:57 2026     /usr/sbin/distnoted
+  532     1 Thu Oct  8 10:47:58 2026     /usr/libexec/cameracaptured
+  533     1 Thu Oct  8 10:47:58 2026     /System/Library/Frameworks/CoreMediaIO.framework/Versions/A/Resources/UVCAssistant.systemextension/Contents/MacOS/UVCAssistant
+  540     1 Thu Oct  8 10:47:58 2026     /System/Library/CoreServices/appleeventsd
+  554     1 Thu Oct  8 10:47:58 2026     /System/Library/DriverExtensions/com.apple.DriverKit-AppleBCMWLAN.dext/com.apple.DriverKit-AppleBCMWLAN
+  555     1 Thu Oct  8 10:47:58 2026     /System/Library/DriverExtensions/com.apple.DriverKit-IOUserDockChannelSerial.dext/com.apple.DriverKit-IOUserDockChannelSerial
+  556     1 Thu Oct  8 10:47:58 2026     /usr/sbin/distnoted
+  560     1 Thu Oct  8 10:47:58 2026     /System/Library/DriverExtensions/com.apple.AppleUserHIDDrivers.dext/com.apple.AppleUserHIDDrivers
+  570     1 Thu Oct  8 10:47:58 2026     /usr/sbin/distnoted
+  584     1 Thu Oct  8 10:47:59 2026     /usr/sbin/distnoted
+  591     1 Thu Oct  8 10:47:59 2026     /System/Library/Frameworks/LocalAuthentication.framework/Support/coreauthd
+  593     1 Thu Oct  8 10:47:59 2026     /usr/sbin/distnoted
+  594     1 Thu Oct  8 10:47:59 2026     /usr/sbin/distnoted
+  596     1 Thu Oct  8 10:47:59 2026     /usr/libexec/secd
+  597     1 Thu Oct  8 10:47:59 2026     /usr/sbin/cfprefsd
+  614     1 Thu Oct  8 10:47:59 2026     /usr/libexec/lsd
+  626     1 Thu Oct  8 10:48:00 2026     /usr/libexec/trustd
+  627     1 Thu Oct  8 10:48:00 2026     /usr/sbin/distnoted
+  655     1 Thu Oct  8 10:48:00 2026     /System/Library/Frameworks/CryptoTokenKit.framework/ctkd
+  666     1 Thu Oct  8 10:48:00 2026     /usr/sbin/filecoordinationd
+  670     1 Thu Oct  8 10:48:00 2026     automountd
+  701     1 Thu Oct  8 10:48:01 2026     /usr/libexec/rosetta/oahd
+  810     1 Thu Oct  8 10:48:05 2026     /System/Library/CoreServices/SubmitDiagInfo
+  827     1 Fri Oct 16 01:14:22 2026     /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.40/Helpers/browser_crashpad_handler
+  829     1 Thu Oct  8 10:48:06 2026     /usr/sbin/distnoted
+  869     1 Thu Oct  8 10:48:08 2026     /System/Library/Frameworks/CryptoTokenKit.framework/ctkahp.bundle/Contents/MacOS/ctkahp
+  889     1 Thu Oct  8 10:48:09 2026     /usr/sbin/distnoted
+  893     1 Thu Oct  8 10:48:09 2026     /usr/sbin/distnoted
+  906     1 Thu Oct  8 10:48:09 2026     /System/Library/PrivateFrameworks/CoreFP.framework/Versions/A/fairplayd
+  932     1 Thu Oct  8 10:48:10 2026     /usr/sbin/distnoted
+  933     1 Thu Oct  8 10:48:10 2026     /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdbulkimport
+ 1026     1 Wed Oct 21 17:15:48 2026     /System/Library/PrivateFrameworks/EmailDaemon.framework/Versions/A/maild
+ 1263     1 Mon Oct 19 14:25:29 2026     /System/Library/PrivateFrameworks/BiomeStreams.framework/Support/biomed
+ 1301   335 Thu Oct  8 10:48:24 2026     /usr/sbin/systemstats
+ 1315     1 Thu Oct  8 10:48:32 2026     /System/Library/CoreServices/CrashReporterSupportHelper
+ 1345     1 Thu Oct  8 10:48:39 2026     /usr/sbin/distnoted
+ 1404     1 Thu Oct  8 10:50:05 2026     /usr/sbin/distnoted
+ 2220     1 Wed Oct 21 17:16:43 2026     /usr/libexec/powerexperienced
+ 2227     1 Wed Oct 21 17:16:43 2026     /usr/libexec/colorsync.displayservices
+ 2230     1 Wed Oct 21 17:16:44 2026     /usr/libexec/colorsyncd
+ 2243     1 Wed Oct 21 17:16:45 2026     /System/Library/PrivateFrameworks/AppleCredentialManager.framework/AppleCredentialManagerDaemon
+ 2244     1 Wed Oct 21 17:16:45 2026     /System/Library/Frameworks/VideoToolbox.framework/Versions/A/XPCServices/VTDecoderXPCService.xpc/Contents/MacOS/VTDecoderXPCService
+ 2248     1 Wed Oct 21 17:16:45 2026     /System/Library/CoreServices/Software Update.app/Contents/Resources/softwareupdated
+ 2249     1 Wed Oct 21 17:16:45 2026     /System/Library/Frameworks/Metal.framework/Versions/A/XPCServices/MTLCompilerService.xpc/Contents/MacOS/MTLCompilerService
+ 2250     1 Wed Oct 21 17:16:45 2026     /System/Library/Frameworks/Metal.framework/Versions/A/XPCServices/MTLCompilerService.xpc/Contents/MacOS/MTLCompilerService
+ 2252     1 Wed Oct 21 17:16:45 2026     /usr/libexec/inputanalyticsd
+ 2254     1 Wed Oct 21 17:16:45 2026     /System/Library/PrivateFrameworks/MobileAssetDaemon.framework/Versions/A/XPCServices/com.apple.MobileAsset.DownloadService.Builtin.xpc/Contents/MacOS/com.apple.MobileAsset.DownloadService.Builtin
+ 2290     1 Wed Oct 21 17:16:46 2026     /System/Library/PrivateFrameworks/IntlPreferences.framework/Support/localizationswitcherd
+ 2299     1 Wed Oct 21 17:16:47 2026     /System/Library/PrivateFrameworks/MobileAccessoryUpdater.framework/Support/accessoryupdaterd
+ 2303     1 Wed Oct 21 17:16:47 2026     /System/Library/PrivateFrameworks/MobileAccessoryUpdater.framework/XPCServices/UARPUpdaterServiceUSBPD.xpc/Contents/MacOS/UARPUpdaterServiceUSBPD
+ 2305     1 Wed Oct 21 17:16:47 2026     /usr/libexec/milod
+ 2312     1 Wed Oct 21 17:16:47 2026     /System/Library/PrivateFrameworks/JetCore.framework/Support/jetpackassetd
+ 2314     1 Wed Oct 21 17:16:47 2026     /System/Library/Frameworks/ManagedAppDistribution.framework/Support/managedappdistributiond
+ 2317     1 Wed Oct 21 17:16:47 2026     /System/Library/PrivateFrameworks/PhotoLibraryServices.framework/Versions/A/Support/photolibraryd
+ 2318     1 Wed Oct 21 17:16:47 2026     /usr/libexec/symptomsd-diag
+ 2337     1 Wed Oct 21 17:16:47 2026     /usr/sbin/cfprefsd
+ 2345     1 Wed Oct 21 17:16:48 2026     /System/Library/PrivateFrameworks/MobileSoftwareUpdate.framework/Support/softwareupdated
+ 2362     1 Wed Oct 21 17:16:48 2026     /System/Library/CoreServices/liquiddetectiond.app/liquiddetectiond
+ 2368     1 Wed Oct 21 17:16:48 2026     /System/Library/Frameworks/DiskArbitration.framework/Versions/A/Support/DiskArbitrationAgent
+ 2369     1 Wed Oct 21 17:16:48 2026     /System/Library/Frameworks/NetFS.framework/Versions/A/XPCServices/PlugInLibraryService.xpc/Contents/MacOS/PlugInLibraryService
+ 2380     1 Wed Oct 21 17:16:49 2026     /System/Library/PrivateFrameworks/MobileSoftwareUpdate.framework/Versions/A/XPCServices/com.apple.MobileSoftwareUpdate.CleanupPreparePathService.xpc/Contents/MacOS/com.apple.MobileSoftwareUpdate.CleanupPreparePathService
+ 2389     1 Wed Oct 21 17:16:49 2026     /System/Library/Frameworks/GSS.framework/Helpers/GSSCred
+ 2394     1 Wed Oct 21 17:16:49 2026     /System/Library/PrivateFrameworks/InstallCoordination.framework/Support/installcoordinationd
+ 2427     1 Wed Oct 21 17:16:50 2026     /usr/libexec/misagent
+ 2435     1 Wed Oct 21 17:16:51 2026     /System/Library/PrivateFrameworks/MapsSync.framework/mapssyncd
+ 2585     1 Wed Oct 21 17:16:58 2026     /System/Library/PrivateFrameworks/GeoServices.framework/Versions/A/XPCServices/com.apple.geod.xpc/Contents/MacOS/com.apple.geod
+ 2586     1 Wed Oct 21 17:16:58 2026     /usr/libexec/secinitd
+ 2588     1 Wed Oct 21 17:16:58 2026     /usr/sbin/cfprefsd
+ 2590     1 Wed Oct 21 17:16:58 2026     /usr/libexec/containermanagerd
+ 2614     1 Wed Oct 21 17:16:59 2026     cloudphotod
+ 2615     1 Wed Oct 21 17:16:59 2026     /usr/libexec/promotedcontentd
+ 2617     1 Wed Oct 21 17:16:59 2026     /System/Library/PrivateFrameworks/MobileTimer.framework/Executables/mobiletimerd
+ 2620     1 Wed Oct 21 17:16:59 2026     /Library/Apple/System/Library/CoreServices/XProtect.app/Contents/MacOS/XProtect
+ 2622     1 Wed Oct 21 17:16:59 2026     /usr/libexec/fairplaydeviceidentityd
+ 2628     1 Wed Oct 21 17:16:59 2026     /Library/Apple/System/Library/CoreServices/XProtect.app/Contents/XPCServices/XProtectPluginService.xpc/Contents/MacOS/XProtectPluginService
+ 2750     1 Wed Oct 21 17:25:18 2026     /System/Library/Frameworks/ExtensionFoundation.framework/Versions/A/XPCServices/extensionkitservice.xpc/Contents/MacOS/extensionkitservice
+ 2803     1 Wed Oct 21 17:25:20 2026     /System/Library/PrivateFrameworks/PowerLog.framework/Versions/A/XPCServices/PerfPowerTelemetryClientRegistrationService.xpc/Contents/MacOS/PerfPowerTelemetryClientRegistrationService
+ 2820     1 Wed Oct 21 17:25:21 2026     /System/Library/PrivateFrameworks/CoreEmbeddedSpeechRecognition.framework/Versions/A/XPCServices/com.apple.siri.embeddedspeech.xpc/Contents/MacOS/com.apple.siri.embeddedspeech
+ 2962     1 Thu Oct  8 10:52:01 2026     /Library/Developer/PrivateFrameworks/CoreSimulator.framework/Resources/bin/simdiskimaged
+ 2992     1 Thu Oct  8 10:52:01 2026     /Library/Developer/PrivateFrameworks/CoreSimulator.framework/Versions/A/XPCServices/SimLaunchHost.arm64.xpc/Contents/MacOS/SimLaunchHost.arm64
+ 3027     1 Thu Oct  8 10:52:02 2026     /usr/libexec/diskimagesiod
+ 3212     1 Wed Oct 21 17:30:27 2026     /System/Library/Frameworks/LocalAuthentication.framework/Support/coreautha.bundle/Contents/MacOS/coreautha
+ 3221     1 Wed Oct 21 17:30:27 2026     /usr/sbin/BTLEServerAgent
+ 3264     1 Thu Oct  8 10:52:08 2026     /usr/libexec/diskimagesiod
+ 3276     1 Wed Oct 21 17:30:30 2026     /usr/libexec/metrickitd
+ 3279     1 Wed Oct 21 17:30:30 2026     /usr/libexec/PerfPowerServices
+ 3311     1 Wed Oct 21 17:30:32 2026     /usr/libexec/appleaccountd
+ 3315     1 Wed Oct 21 17:30:32 2026     /System/Library/Frameworks/Metal.framework/Versions/A/XPCServices/MTLCompilerService.xpc/Contents/MacOS/MTLCompilerService
+ 3395     1 Wed Oct 21 17:30:36 2026     /usr/libexec/findmydeviced
+ 3396     1 Wed Oct 21 17:30:36 2026     /usr/libexec/findmydevice-user-agent
+ 3398     1 Wed Oct 21 17:30:36 2026     /usr/libexec/applekeystored
+ 3400     1 Wed Oct 21 17:30:37 2026     /System/Library/PrivateFrameworks/CloudServices.framework/Helpers/com.apple.sbd
+ 3402     1 Wed Oct 21 17:30:37 2026     /usr/libexec/keychainsharingmessagingd
+ 3654     1 Wed Oct 21 17:30:51 2026     /usr/libexec/wifivelocityd
+ 3721     1 Wed Oct 21 17:30:55 2026     /usr/libexec/captiveagent
+ 3797     1 Wed Oct 21 17:30:59 2026     /System/Applications/Weather.app/Contents/PlugIns/WeatherWidget.appex/Contents/MacOS/WeatherWidget
+ 3818     1 Tue Oct 13 13:28:00 2026     /usr/libexec/corercd
+ 4016     1 Thu Oct  8 10:52:19 2026     /System/Library/Frameworks/Security.framework/Versions/A/XPCServices/XPCTimeStampingService.xpc/Contents/MacOS/XPCTimeStampingService
+ 4056     1 Wed Oct 21 17:31:12 2026     /usr/libexec/countryd
+ 4267     1 Fri Oct 16 00:04:06 2026     /Users/frankqin/dev/TekesCADPlugin/target/debug/cadtools-supervisor
+ 4293     1 Tue Oct 20 16:20:17 2026     /usr/bin/ssh-agent
+ 4798 69823 Wed Oct 21 15:23:25 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+ 4799 69823 Wed Oct 21 15:23:25 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+ 4800 69823 Wed Oct 21 15:23:25 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+ 4801 69823 Wed Oct 21 15:23:25 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+ 4802 69823 Wed Oct 21 15:23:25 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+ 4851  4801 Wed Oct 21 15:23:26 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+ 5368 69823 Tue Oct 20 14:19:14 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+ 5369 69823 Tue Oct 20 14:19:14 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+ 5549     1 Wed Oct 21 17:32:22 2026     /usr/libexec/assessmentagent
+ 5571     1 Wed Oct 21 17:32:23 2026     /usr/libexec/feedbackd
+ 5622     1 Wed Oct 21 17:32:25 2026     /usr/libexec/nfcd
+ 5630     1 Wed Oct 21 17:32:25 2026     /System/Library/PrivateFrameworks/NearFieldPrivateServices.framework/Versions/A/XPCServices/NFStorageServer.xpc/Contents/MacOS/NFStorageServer
+ 6236     1 Sun Oct 18 14:32:18 2026     /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/browser_crashpad_handler
+ 6238     1 Sun Oct 18 14:32:18 2026     /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/browser_crashpad_handler
+ 6265     1 Sun Oct 18 14:32:21 2026     /Applications/ChatGPT.app/Contents/Resources/native/bare-modifier-monitor
+ 6300     1 Wed Oct 21 17:33:09 2026     /usr/libexec/dmd
+ 6301     1 Wed Oct 21 17:33:09 2026     /System/Library/Frameworks/ManagedSettings.framework/Versions/A/ManagedSettingsAgent
+ 6503     1 Wed Oct 21 17:33:41 2026     /usr/libexec/MTLAssetUpgraderD
+ 6504     1 Wed Oct 21 17:33:41 2026     /usr/libexec/swcd
+ 6505     1 Wed Oct 21 17:33:41 2026     /System/Library/Frameworks/MediaExtension.framework/Versions/A/Helpers/MENotificationAgent
+ 6506     1 Wed Oct 21 17:33:41 2026     /usr/libexec/siriknowledged
+ 6512     1 Wed Oct 21 17:33:41 2026     /System/Library/PrivateFrameworks/CascadeSets.framework/Versions/A/XPCServices/SetStoreUpdateService.xpc/Contents/MacOS/SetStoreUpdateService
+ 6577     1 Wed Oct 21 17:33:51 2026     /System/Library/PrivateFrameworks/AXAssetLoader.framework/Support/axassetsd
+ 6578     1 Wed Oct 21 17:33:51 2026     /System/Library/CoreServices/pbs
+ 6581     1 Wed Oct 21 17:33:52 2026     /System/Library/PrivateFrameworks/BackgroundTaskManagement.framework/Resources/backgroundtaskmanagementd
+ 6694     1 Wed Oct 21 17:33:57 2026     /System/Library/PrivateFrameworks/XprotectFramework.framework/Versions/A/XPCServices/XprotectService.xpc/Contents/MacOS/XprotectService
+ 6695     1 Wed Oct 21 17:33:57 2026     /System/Library/CoreServices/ReportCrash
+ 7600     1 Wed Oct 21 17:35:32 2026     /System/Library/PrivateFrameworks/SiriAnalytics.framework/Versions/A/XPCServices/SAExtensionOrchestrator.xpc/Contents/MacOS/SAExtensionOrchestrator
+ 7601     1 Wed Oct 21 17:35:33 2026     /System/Library/Frameworks/ExtensionFoundation.framework/Versions/A/XPCServices/extensionkitservice.xpc/Contents/MacOS/extensionkitservice
+ 7602     1 Wed Oct 21 17:35:33 2026     /System/Library/ExtensionKit/Extensions/BiomeSELFIngestor.appex/Contents/MacOS/BiomeSELFIngestor
+ 7608     1 Tue Oct 20 23:39:08 2026     /System/Library/Frameworks/AppKit.framework/Versions/C/XPCServices/ThemeWidgetControlViewService.xpc/Contents/MacOS/ThemeWidgetControlViewService
+ 7620     1 Wed Oct 21 17:35:33 2026     /System/Library/ExtensionKit/Extensions/IFTelemetrySELFIngestor.appex/Contents/MacOS/IFTelemetrySELFIngestor
+ 7657     1 Wed Oct 21 17:35:33 2026     /System/Library/ExtensionKit/Extensions/GMSSELFIngestor.appex/Contents/MacOS/GMSSELFIngestor
+ 7658     1 Wed Oct 21 17:35:34 2026     /System/Library/ExtensionKit/Extensions/IFTranscriptSELFIngestor.appex/Contents/MacOS/IFTranscriptSELFIngestor
+ 7815     1 Sun Oct 18 18:15:44 2026     /usr/libexec/ioupsd
+ 7884     1 Sun Oct 18 18:15:52 2026     /usr/libexec/airportd
+ 7891     1 Sun Oct 18 18:15:54 2026     /usr/libexec/nearbyd
+ 7894     1 Sun Oct 18 18:15:54 2026     /usr/libexec/wifip2pd
+ 7899     1 Sun Oct 18 18:15:54 2026     /usr/sbin/bluetoothd
+ 7923     1 Sun Oct 18 18:15:56 2026     /System/Library/CoreServices/Software Update.app/Contents/Resources/suhelperd
+ 7940     1 Sun Oct 18 18:16:07 2026     /System/Library/DriverExtensions/IOUserBluetoothSerialDriver.dext/IOUserBluetoothSerialDriver
+ 9698     1 Wed Oct 21 07:12:52 2026     /System/Library/ExtensionKit/Extensions/TextThumbnailExtension.appex/Contents/MacOS/TextThumbnailExtension
+10177 30172 Wed Oct 21 11:25:25 2026     /Applications/Arc.app/Contents/Frameworks/ArcCore.framework/Helpers/Browser Helper (Renderer).app/Contents/MacOS/Browser Helper (Renderer)
+11133     1 Thu Oct  8 10:57:02 2026     /usr/libexec/taskgated
+11154     1 Thu Oct  8 10:57:06 2026     /Users/frankqin/Library/Application Support/Tekes/BuiltIn/mcp/memory-12b9919ab11a13dc4446f2e5e23cdc9d6760b8555343d14d513754ebe2326335/tekes-memory
+11199     1 Thu Oct  8 10:57:08 2026     /Users/frankqin/Library/Application Support/Tekes/BuiltIn/dsh-0.2.0-rc.2-node-24.20.0-pnpm-11.7.0/node/bin/node
+11527     1 Mon Oct 19 05:51:10 2026     /Applications/ChatGPT.app/Contents/Resources/native/bare-modifier-monitor
+11707     1 Mon Oct 19 05:51:19 2026     /Applications/ChatGPT.app/Contents/Resources/native/bare-modifier-monitor
+12543     1 Wed Oct 21 17:40:27 2026     /System/Library/PrivateFrameworks/CacheDelete.framework/deleted_helper
+12547     1 Wed Oct 21 17:40:27 2026     /System/Library/PrivateFrameworks/GeoServices.framework/geodMachServiceBridge
+12548     1 Wed Oct 21 17:40:27 2026     /System/Library/PrivateFrameworks/CloudKitDaemon.framework/Support/cloudd
+12567 30172 Tue Oct 20 16:36:24 2026     /Applications/Arc.app/Contents/Frameworks/ArcCore.framework/Helpers/Browser Helper.app/Contents/MacOS/Browser Helper
+12568 30172 Tue Oct 20 16:36:24 2026     /Applications/Arc.app/Contents/Frameworks/ArcCore.framework/Helpers/Browser Helper.app/Contents/MacOS/Browser Helper
+13091     1 Tue Oct 20 21:37:08 2026     /usr/libexec/SidecarRelay
+13250     1 Tue Oct 20 06:17:52 2026     /System/Library/CoreServices/ControlCenter.app/Contents/PlugIns/DisplayControls.appex/Contents/MacOS/DisplayControls
+13608     1 Wed Oct 21 17:40:46 2026     /System/Library/PrivateFrameworks/Categories.framework/Versions/A/XPCServices/CategoriesService.xpc/Contents/MacOS/CategoriesService
+13638     1 Wed Oct 21 17:40:47 2026     /System/Library/PrivateFrameworks/ContextKit.framework/Versions/A/XPCServices/ContextService.xpc/Contents/MacOS/ContextService
+13639     1 Wed Oct 21 17:40:47 2026     /System/Library/PrivateFrameworks/ContextKit.framework/Versions/A/XPCServices/ContextService.xpc/Contents/MacOS/ContextService
+14042     1 Fri Oct  9 02:23:14 2026     /usr/sbin/distnoted
+14198     1 Tue Oct 20 06:23:03 2026     /System/Library/Input Methods/JapaneseIM-RomajiTyping.app/Contents/PlugIns/JapaneseIM-RomajiTyping.appex/Contents/MacOS/JapaneseIM-RomajiTyping
+14346     1 Mon Oct 19 21:31:23 2026     /Users/frankqin/dev/TekesCADPlugin/target/debug/cadtools-supervisor
+14347     1 Mon Oct 19 21:31:23 2026     /Users/frankqin/dev/TekesCADPlugin/target/debug/cadtools-supervisor
+14348     1 Mon Oct 19 21:31:23 2026     /Users/frankqin/dev/TekesCADPlugin/target/debug/cadtools-supervisor
+14349     1 Mon Oct 19 21:31:23 2026     /Users/frankqin/dev/TekesCADPlugin/target/debug/cadtools-supervisor
+14350     1 Mon Oct 19 21:31:23 2026     /Users/frankqin/dev/TekesCADPlugin/target/debug/cadtools-supervisor
+14351     1 Mon Oct 19 21:31:23 2026     /Users/frankqin/dev/TekesCADPlugin/target/debug/cadtools-supervisor
+14352     1 Mon Oct 19 21:31:23 2026     /Users/frankqin/dev/TekesCADPlugin/target/debug/cadtools-supervisor
+14353     1 Mon Oct 19 21:31:23 2026     /Users/frankqin/dev/TekesCADPlugin/target/debug/cadtools-supervisor
+14354     1 Mon Oct 19 21:31:23 2026     /Users/frankqin/dev/TekesCADPlugin/target/debug/cadtools-supervisor
+14355     1 Mon Oct 19 21:31:23 2026     /Users/frankqin/dev/TekesCADPlugin/target/debug/cadtools-supervisor
+15484     1 Wed Oct 21 17:43:28 2026     /Users/frankqin/.codex/worktrees/gallery-design-baseline/TekesUI/target/apphost-native/navigation-prototype/TekesAppHost.app/Contents/MacOS/TekesAppHost
+15485 15484 Wed Oct 21 17:43:29 2026     /Users/frankqin/.codex/worktrees/gallery-design-baseline/TekesUI/target/apphost-native/navigation-prototype/TekesAppHost.app/Contents/MacOS/TekesAppHost
+15486 15484 Wed Oct 21 17:43:29 2026     /Users/frankqin/.codex/worktrees/gallery-design-baseline/TekesUI/target/apphost-native/navigation-prototype/TekesAppHost.app/Contents/MacOS/TekesAppHost
+15487 15484 Wed Oct 21 17:43:29 2026     /Users/frankqin/.codex/worktrees/gallery-design-baseline/TekesUI/target/apphost-native/navigation-prototype/TekesAppHost.app/Contents/MacOS/TekesAppHost
+15488 15484 Wed Oct 21 17:43:29 2026     /Users/frankqin/.codex/worktrees/gallery-design-baseline/TekesUI/target/apphost-native/navigation-prototype/TekesAppHost.app/Contents/MacOS/TekesAppHost
+15489     1 Wed Oct 21 17:43:29 2026     /System/Library/Frameworks/Metal.framework/Versions/A/XPCServices/MTLCompilerService.xpc/Contents/MacOS/MTLCompilerService
+15490     1 Wed Oct 21 17:43:29 2026     /System/Library/PrivateFrameworks/SafariPlatformSupport.framework/Versions/A/XPCServices/com.apple.SafariPlatformSupport.Helper.xpc/Contents/MacOS/com.apple.SafariPlatformSupport.Helper
+15491     1 Wed Oct 21 17:43:29 2026     /System/Library/Frameworks/AppKit.framework/Versions/C/XPCServices/ThemeWidgetControlViewService.xpc/Contents/MacOS/ThemeWidgetControlViewService
+16367     1 Wed Oct 21 17:44:24 2026     /System/Library/PrivateFrameworks/AOSKit.framework/Versions/A/XPCServices/com.apple.iCloudHelper.xpc/Contents/MacOS/com.apple.iCloudHelper
+16376     1 Wed Oct 21 17:44:26 2026     /System/Library/PrivateFrameworks/ReplicatorCore.framework/Support/replicatord
+16479     1 Wed Oct 21 17:44:46 2026     /usr/libexec/seputil
+16734     1 Tue Oct 20 06:33:04 2026     /System/Applications/Mail.app/Contents/PlugIns/com.apple.mail.SpotlightIndexExtension.appex/Contents/MacOS/com.apple.mail.SpotlightIndexExtension
+16865     1 Wed Oct 21 17:45:27 2026     /usr/libexec/keyboardservicesd
+17390 69823 Wed Oct 21 17:45:49 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+17391 69823 Wed Oct 21 17:45:49 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+17392 69823 Wed Oct 21 17:45:49 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+17393 69823 Wed Oct 21 17:45:49 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+17394 69823 Wed Oct 21 17:45:49 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+17397 17390 Wed Oct 21 17:45:49 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+17431 69823 Wed Oct 21 17:45:50 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+17678     1 Mon Oct 19 07:54:17 2026     /System/Library/PrivateFrameworks/CloudTelemetry.framework/Versions/A/XPCServices/CloudTelemetryService.xpc/Contents/MacOS/CloudTelemetryService
+17997 69823 Wed Oct 21 17:46:07 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+18350     1 Wed Oct 21 05:01:30 2026     /System/Library/PrivateFrameworks/AppStoreDaemon.framework/Support/appstoreagent
+18654 69823 Tue Oct 20 06:37:32 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+18655 69823 Tue Oct 20 06:37:32 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+18656 69823 Tue Oct 20 06:37:32 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+18684 18656 Tue Oct 20 06:37:32 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+18790 69823 Wed Oct 21 17:46:23 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+18791 69823 Wed Oct 21 17:46:23 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+18792 69823 Wed Oct 21 17:46:23 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+18793 69823 Wed Oct 21 17:46:23 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+18794 69823 Wed Oct 21 17:46:23 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+18795 18791 Wed Oct 21 17:46:23 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+18799 69823 Wed Oct 21 17:46:24 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+18948 69823 Wed Oct 21 17:46:24 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+18949 69823 Wed Oct 21 17:46:24 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+18950 69823 Wed Oct 21 17:46:24 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+18951 69823 Wed Oct 21 17:46:24 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+18952 69823 Wed Oct 21 17:46:24 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+18972 18951 Wed Oct 21 17:46:24 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+19117 69823 Wed Oct 21 17:46:42 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+19676     1 Wed Oct 21 13:30:49 2026     /Applications/wechatwebdevtools.app/Contents/MacOS/Electron
+19679 19676 Wed Oct 21 13:30:49 2026     /Applications/wechatwebdevtools.app/Contents/Frameworks/wechatwebdevtools Helper (GPU).app/Contents/MacOS/wechatwebdevtools Helper (GPU)
+19681 19676 Wed Oct 21 13:30:49 2026     /Applications/wechatwebdevtools.app/Contents/Frameworks/wechatwebdevtools Helper.app/Contents/MacOS/wechatwebdevtools Helper
+19689     1 Wed Oct 21 13:30:50 2026     /Applications/wechatwebdevtools.app/Contents/Frameworks/Electron Framework.framework/Helpers/chrome_crashpad_handler
+20045 69823 Wed Oct 21 17:47:55 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+20046 69823 Wed Oct 21 17:47:55 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+20047 69823 Wed Oct 21 17:47:55 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+20048 69823 Wed Oct 21 17:47:55 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+20049 69823 Wed Oct 21 17:47:55 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+20071 20046 Wed Oct 21 17:47:55 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+20463 69823 Wed Oct 21 17:48:03 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+20465 69823 Wed Oct 21 17:48:03 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+20466 69823 Wed Oct 21 17:48:03 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+20467 69823 Wed Oct 21 17:48:03 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+20468 69823 Wed Oct 21 17:48:03 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+20487 20467 Wed Oct 21 17:48:03 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+21410 69823 Wed Oct 21 11:45:54 2026     /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+21489 66980 Wed Oct 21 13:32:55 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+21490 66980 Wed Oct 21 13:32:55 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+21492 66980 Wed Oct 21 13:32:55 2026     /Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex
+21778     1 Wed Oct 21 17:49:24 2026     /System/Library/CoreServices/ReportCrash
+21819     1 Tue Oct 13 13:43:50 2026     /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+21820     1 Tue Oct 13 13:43:50 2026     /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+21821     1 Tue Oct 13 13:43:50 2026     /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+21822     1 Tue Oct 13 13:43:50 2026     /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+21823     1 Tue Oct 13 13:43:50 2026     /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+21845     1 Wed Oct 21 17:49:27 2026     /System/Library/CoreServices/diagnosticservicesd
+22011 69823 Wed Oct 21 17:50:01 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+22012 69823 Wed Oct 21 17:50:01 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+22013 69823 Wed Oct 21 17:50:01 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+22014 69823 Wed Oct 21 17:50:01 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+22015 69823 Wed Oct 21 17:50:01 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+22035 22013 Wed Oct 21 17:50:01 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+22089     1 Wed Oct 21 17:50:23 2026     /System/Library/PrivateFrameworks/IMTransferServices.framework/IMTransferAgent.app/Contents/MacOS/IMTransferAgent
+22099     1 Wed Oct 21 17:50:28 2026     /usr/sbin/netbiosd
+22118 30172 Wed Oct 21 13:34:11 2026     /Applications/Arc.app/Contents/Frameworks/ArcCore.framework/Helpers/Browser Helper (Renderer).app/Contents/MacOS/Browser Helper (Renderer)
+22123     1 Wed Oct 21 17:55:54 2026     /System/Library/PrivateFrameworks/Categories.framework/Versions/A/XPCServices/CategoriesService.xpc/Contents/MacOS/CategoriesService
+22129     1 Wed Oct 21 17:55:55 2026     /System/Library/CoreServices/ScopedBookmarkAgent
+22134     1 Wed Oct 21 17:55:56 2026     /usr/libexec/keybagd
+22139     1 Wed Oct 21 17:55:56 2026     /System/Library/Frameworks/NetFS.framework/Versions/A/XPCServices/PlugInLibraryService.xpc/Contents/MacOS/PlugInLibraryService
+22141     1 Wed Oct 21 17:55:59 2026     /System/Library/Frameworks/Metal.framework/Versions/A/XPCServices/MTLCompilerService.xpc/Contents/MacOS/MTLCompilerService
+22142     1 Wed Oct 21 17:55:59 2026     /System/Library/Frameworks/ColorSync.framework/Versions/A/XPCServices/com.apple.ColorSyncXPCAgent.xpc/Contents/MacOS/com.apple.ColorSyncXPCAgent
+22143     1 Wed Oct 21 17:56:00 2026     /System/Library/Frameworks/ColorSync.framework/Support/colorsync.useragent
+22144     1 Wed Oct 21 17:56:00 2026     /System/Library/Frameworks/ColorSync.framework/Versions/A/XPCServices/com.apple.ColorSyncXPCAgent.xpc/Contents/MacOS/com.apple.ColorSyncXPCAgent
+22295     1 Wed Oct 21 13:34:43 2026     /System/Library/ExtensionKit/Extensions/ImageThumbnailExtension.appex/Contents/MacOS/ImageThumbnailExtension
+22462 69823 Tue Oct 20 21:48:03 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+22463 69823 Tue Oct 20 21:48:03 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+22465     1 Wed Oct 21 13:35:00 2026     /System/Library/Frameworks/QuickLookUI.framework/Versions/A/XPCServices/QuickLookUIService.xpc/Contents/MacOS/QuickLookUIService
+22544     1 Wed Oct 21 17:56:47 2026     /usr/libexec/aneuserd
+22546     1 Wed Oct 21 17:56:47 2026     /System/Library/PrivateFrameworks/CoreEmbeddedSpeechRecognition.framework/Versions/A/XPCServices/com.apple.siri.embeddedspeech.xpc/Contents/MacOS/com.apple.siri.embeddedspeech
+22573     1 Wed Oct 21 17:56:48 2026     /System/Library/PrivateFrameworks/UniversalAccess.framework/Versions/A/Resources/universalAccessAuthWarn.app/Contents/MacOS/universalAccessAuthWarn
+22574     1 Wed Oct 21 17:56:48 2026     /System/Library/Frameworks/SystemExtensions.framework/Versions/A/Helpers/sysextd
+22617     1 Wed Oct 21 17:56:56 2026     /System/Applications/System Settings.app/Contents/MacOS/System Settings
+22618     1 Wed Oct 21 17:56:56 2026     /System/Library/Frameworks/ExtensionFoundation.framework/Versions/A/XPCServices/extensionkitservice.xpc/Contents/MacOS/extensionkitservice
+22619     1 Wed Oct 21 17:56:56 2026     /System/Library/ExtensionKit/Extensions/AppleIDSettings.appex/Contents/MacOS/AppleIDSettings
+22620     1 Wed Oct 21 17:56:56 2026     /System/Library/ExtensionKit/Extensions/SecurityPrivacyExtension.appex/Contents/MacOS/SecurityPrivacyExtension
+22621     1 Wed Oct 21 17:56:56 2026     /System/Library/PrivateFrameworks/CommunicationTrust.framework/Support/communicationtrustd
+22636     1 Wed Oct 21 17:56:56 2026     /System/Library/PrivateFrameworks/CloudPhotoServices.framework/Versions/A/XPCServices/com.apple.CloudPhotosConfiguration.xpc/Contents/MacOS/com.apple.CloudPhotosConfiguration
+22637     1 Wed Oct 21 17:56:56 2026     /System/Library/PrivateFrameworks/CloudSubscriptionFeatures.framework/FeatureAccessAgent
+22639     1 Wed Oct 21 17:56:57 2026     /usr/libexec/icloudwebd
+22640     1 Wed Oct 21 17:56:57 2026     /usr/libexec/dirhelper
+22641     1 Wed Oct 21 17:56:57 2026     /System/Library/ExtensionKit/Extensions/FollowUpSettingsExtension.appex/Contents/MacOS/FollowUpSettingsExtension
+22642     1 Wed Oct 21 17:56:57 2026     /System/Library/ExtensionKit/Extensions/VPN.appex/Contents/MacOS/VPN
+22643     1 Wed Oct 21 17:56:57 2026     /System/Library/ExtensionKit/Extensions/HeadphoneSettingsExtension.appex/Contents/MacOS/HeadphoneSettingsExtension
+22644     1 Wed Oct 21 17:56:57 2026     /System/Library/ExtensionKit/Extensions/FamilySettings.appex/Contents/MacOS/FamilySettings
+22645     1 Wed Oct 21 17:56:57 2026     /System/Library/ExtensionKit/Extensions/ClassroomSettings.appex/Contents/MacOS/ClassroomSettings
+22662     1 Wed Oct 21 17:56:58 2026     /usr/libexec/findmylocateagent
+22680     1 Wed Oct 21 17:57:03 2026     /System/Library/PrivateFrameworks/LocalAuthenticationUI.framework/Versions/A/XPCServices/LocalAuthenticationRemoteService.xpc/Contents/MacOS/LocalAuthenticationRemoteService
+22696     1 Wed Oct 21 17:57:06 2026     /System/Library/PrivateFrameworks/SystemAdministration.framework/XPCServices/writeconfig.xpc/Contents/MacOS/writeconfig
+22837     1 Wed Oct 21 17:57:47 2026     /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+23340 69823 Wed Oct 21 17:58:07 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+23341 69823 Wed Oct 21 17:58:07 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+23342 69823 Wed Oct 21 17:58:07 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+23343 69823 Wed Oct 21 17:58:07 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+23344 69823 Wed Oct 21 17:58:07 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+23364 23343 Wed Oct 21 17:58:07 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+23471     1 Wed Oct 21 17:58:11 2026     /System/Library/PrivateFrameworks/UniversalAccess.framework/Versions/A/Resources/AXVisualSupportAgent.app/Contents/MacOS/AXVisualSupportAgent
+23682 18795 Wed Oct 21 17:58:26 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+23683 18795 Wed Oct 21 17:58:26 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+23698 18795 Wed Oct 21 17:58:26 2026     /Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex
+23702     1 Wed Oct 21 17:58:28 2026     /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+23704 69823 Wed Oct 21 17:58:30 2026     /Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo
+24021     1 Wed Oct 21 02:47:50 2026     /usr/libexec/replayd
+24048     1 Wed Oct 21 17:58:34 2026     /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+24068 69823 Wed Oct 21 17:58:41 2026     /Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python
+24082 24068 Wed Oct 21 17:58:41 2026     /Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo
+24083 24082 Wed Oct 21 17:58:41 2026     /Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc
+24084 24082 Wed Oct 21 17:58:41 2026     /Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc
+24086 24082 Wed Oct 21 17:58:42 2026     /Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc
+24087 23704 Wed Oct 21 17:58:42 2026     /Users/frankqin/.codex/worktrees/gallery-design-baseline/TekesUI/target/debug/deps/field_contract-a34295188f948911
+24088 69823 Wed Oct 21 17:58:42 2026     /Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python
+24101 24088 Wed Oct 21 17:58:42 2026     ps
+24272     1 Wed Oct 21 02:48:12 2026     /usr/libexec/secinitd
+24327     1 Wed Oct 21 02:48:23 2026     /System/Library/CoreServices/Siri.app/Contents/MacOS/Siri
+24343     1 Wed Oct 21 02:48:24 2026     /System/Library/PrivateFrameworks/StatusKit.framework/StatusKitAgent
+24344     1 Wed Oct 21 02:48:24 2026     /System/Library/PrivateFrameworks/CloudKitDaemon.framework/Support/cloudd
+24346     1 Wed Oct 21 02:48:25 2026     /usr/libexec/usermanagerd
+24351     1 Wed Oct 21 02:48:25 2026     /System/Library/CoreServices/UniversalControl.app/Contents/MacOS/UniversalControl
+24481     1 Wed Oct 21 02:48:53 2026     /System/Library/PrivateFrameworks/DoNotDisturbServer.framework/Support/donotdisturbd
+24503     1 Wed Oct 21 02:48:54 2026     /System/Library/PrivateFrameworks/SystemStatusServer.framework/Support/systemstatusd
+24512     1 Wed Oct 21 02:48:56 2026     /System/Library/PrivateFrameworks/CacheDelete.framework/deleted
+24519     1 Wed Oct 21 02:48:58 2026     /usr/libexec/spotlightknowledged.updater
+24523     1 Wed Oct 21 02:48:58 2026     /System/Library/Frameworks/QuickLookThumbnailing.framework/Support/com.apple.quicklook.ThumbnailsAgent
+25183     1 Wed Oct 21 02:49:27 2026     /System/Library/CoreServices/Siri.app/Contents/XPCServices/SiriNCService.xpc/Contents/MacOS/SiriNCService
+26030     1 Tue Oct 13 11:09:08 2026     /usr/libexec/rtcreportingd
+26147     1 Mon Oct 19 08:01:35 2026     /usr/libexec/triald_system
+26619     1 Wed Oct 21 11:49:41 2026     adb
+26924 69823 Tue Oct 20 11:55:39 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+26925 69823 Tue Oct 20 11:55:39 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+26979 97759 Tue Oct 20 00:01:11 2026     pi
+27417     1 Thu Oct  8 12:39:10 2026     /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/CVMServer
+28247     1 Sat Oct 17 03:03:48 2026     /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.40/Helpers/browser_crashpad_handler
+28249     1 Sat Oct 17 03:03:48 2026     /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.40/Helpers/browser_crashpad_handler
+29243     1 Wed Oct 21 13:48:51 2026     /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/browser_crashpad_handler
+29248     1 Wed Oct 21 13:48:51 2026     /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/browser_crashpad_handler
+29447     1 Thu Oct  8 16:35:45 2026     /usr/sbin/distnoted
+29550     1 Tue Oct 20 00:07:12 2026     /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/browser_crashpad_handler
+29552     1 Tue Oct 20 00:07:12 2026     /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/browser_crashpad_handler
+30172     1 Tue Oct 20 11:59:04 2026     /Applications/Arc.app/Contents/MacOS/Arc
+30176 30172 Tue Oct 20 11:59:04 2026     /Applications/Arc.app/Contents/Frameworks/ArcCore.framework/Helpers/Browser Helper.app/Contents/MacOS/Browser Helper
+30177 30172 Tue Oct 20 11:59:04 2026     /Applications/Arc.app/Contents/Frameworks/ArcCore.framework/Helpers/Browser Helper.app/Contents/MacOS/Browser Helper
+30178 30172 Tue Oct 20 11:59:04 2026     /Applications/Arc.app/Contents/Frameworks/ArcCore.framework/Helpers/Browser Helper.app/Contents/MacOS/Browser Helper
+30183     1 Tue Oct 20 11:59:07 2026     /System/Library/PrivateFrameworks/SafariPlatformSupport.framework/Versions/A/XPCServices/com.apple.SafariPlatformSupport.Helper.xpc/Contents/MacOS/com.apple.SafariPlatformSupport.Helper
+30201     1 Wed Oct 21 02:57:08 2026     /usr/libexec/routined
+30575     1 Sun Oct 11 10:11:20 2026     /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.40/Helpers/browser_crashpad_handler
+30577     1 Sun Oct 11 10:11:20 2026     /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.40/Helpers/browser_crashpad_handler
+33340 69823 Wed Oct 21 16:03:59 2026     /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+33868     1 Fri Oct 16 00:28:21 2026     /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.40/Helpers/browser_crashpad_handler
+33898 69391 Tue Oct 20 17:10:03 2026     /Applications/WeChat.app/Contents/MacOS/WeChatAppEx.app/Contents/Frameworks/WeChatAppEx Framework.framework/Versions/C/Helpers/WeChatAppEx Helper (Renderer).app/Contents/MacOS/WeChatAppEx Helper (Renderer)
+34145     1 Tue Oct 13 13:52:12 2026     /usr/libexec/trustd
+34196     1 Wed Oct 21 05:25:52 2026     /usr/libexec/intelligentroutingd
+34481     1 Sat Oct 17 08:58:21 2026     /opt/homebrew/lib/node_modules/agent-browser/bin/agent-browser-darwin-arm64
+35183 69823 Tue Oct 20 12:10:19 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+35184 69823 Tue Oct 20 12:10:19 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+35185 69823 Tue Oct 20 12:10:19 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+35186 35183 Tue Oct 20 12:10:19 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+37770 30172 Wed Oct 21 16:12:24 2026     /Applications/Arc.app/Contents/Frameworks/ArcCore.framework/Helpers/Browser Helper (Renderer).app/Contents/MacOS/Browser Helper (Renderer)
+37940     1 Wed Oct 21 16:13:31 2026     /System/Library/PrivateFrameworks/AppleMediaServicesUI.framework/amsengagementd
+38763     1 Wed Oct 14 14:32:00 2026     /usr/libexec/assetsubscriptiond
+39728 69823 Tue Oct 20 20:26:39 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+39729 69823 Tue Oct 20 20:26:39 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+40081     1 Sat Oct 17 16:14:25 2026     /usr/libexec/trustd
+40152     1 Thu Oct 15 01:37:27 2026     /Library/Apple/System/Library/PrivateFrameworks/RemotePairing.framework/Versions/A/XPCServices/remotepairingd.xpc/Contents/MacOS/remotepairingd
+41092     1 Sat Oct 17 16:15:03 2026     /usr/libexec/containermanagerd
+41831     1 Mon Oct 19 18:53:22 2026     /usr/libexec/logd_helper
+42178     1 Thu Oct 15 17:59:39 2026     /usr/libexec/mobileactivationd
+42503 69391 Tue Oct 20 18:13:44 2026     /Applications/WeChat.app/Contents/MacOS/WeChatAppEx.app/Contents/Frameworks/WeChatAppEx Framework.framework/Versions/C/Helpers/WeChatAppEx Helper (Renderer).app/Contents/MacOS/WeChatAppEx Helper (Renderer)
+43715 30172 Wed Oct 21 00:23:48 2026     /Applications/Arc.app/Contents/Frameworks/ArcCore.framework/Helpers/Browser Helper (Renderer).app/Contents/MacOS/Browser Helper (Renderer)
+44049     1 Wed Oct 21 08:05:48 2026     /Library/Developer/PrivateFrameworks/CoreSimulator.framework/Versions/A/XPCServices/com.apple.CoreSimulator.CoreSimulatorService.xpc/Contents/MacOS/com.apple.CoreSimulator.CoreSimulatorService
+44055     1 Wed Oct 21 08:05:48 2026     /Library/Developer/PrivateFrameworks/CoreSimulator.framework/Versions/A/XPCServices/SimulatorTrampoline.xpc/Contents/MacOS/SimulatorTrampoline
+44160 69823 Tue Oct 20 20:33:49 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+44161 69823 Tue Oct 20 20:33:49 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+44162 69823 Tue Oct 20 20:33:49 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+44164 44161 Tue Oct 20 20:33:49 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+49689     1 Wed Oct 21 10:04:17 2026     /System/Library/CoreServices/TextInputSwitcher.app/Contents/MacOS/TextInputSwitcher
+49867     1 Wed Oct 21 10:04:56 2026     /System/Library/PrivateFrameworks/AppSSO.framework/Support/AppSSOAgent.app/Contents/MacOS/AppSSOAgent
+49870     1 Wed Oct 21 10:04:56 2026     /System/Library/PrivateFrameworks/AppSSO.framework/Support/AppSSODaemon
+51245 69823 Tue Oct 20 12:40:20 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+51246 69823 Tue Oct 20 12:40:20 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+51247 69823 Tue Oct 20 12:40:20 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+51248 51245 Tue Oct 20 12:40:20 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+51974     1 Wed Oct 21 16:27:36 2026     /System/Library/PrivateFrameworks/CommerceKit.framework/Versions/A/Resources/commerce
+52014     1 Wed Oct 21 10:32:13 2026     /System/Applications/Stocks.app/Contents/PlugIns/StocksWidget.appex/Contents/MacOS/StocksWidget
+52329 69823 Wed Oct 21 14:16:38 2026     /var/folders/lg/msp2zt0x5q14_lxl12ts9lsw0000gn/T/sk-membership-direct-20261021-rdmq_4lb/quota-venv/bin/python
+53941     1 Tue Oct 20 07:31:07 2026     /System/Library/CoreServices/PowerChime.app/Contents/MacOS/PowerChime
+53960 69895 Tue Oct 20 07:31:09 2026     /Users/frankqin/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/CUALockScreenGuardian.app/Contents/MacOS/CUALockScreenGuardian
+54339 71805 Wed Oct 21 00:38:00 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+54340 71805 Wed Oct 21 00:38:00 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+54341 71805 Wed Oct 21 00:38:00 2026     /Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex
+54688     1 Wed Oct 21 00:39:35 2026     /usr/libexec/searchpartyd
+55860     1 Wed Oct 21 00:42:35 2026     /usr/libexec/amfid
+56179     1 Tue Oct 20 10:44:01 2026     /System/Library/PrivateFrameworks/SafariPlatformSupport.framework/Versions/A/XPCServices/com.apple.SafariPlatformSupport.Helper.xpc/Contents/MacOS/com.apple.SafariPlatformSupport.Helper
+56203 69180 Tue Oct 20 10:44:06 2026     /Applications/WeChat.app/Contents/Frameworks/wxocr
+56204 69180 Tue Oct 20 10:44:07 2026     /Applications/WeChat.app/Contents/Frameworks/wxplayer
+56205 69180 Tue Oct 20 10:44:07 2026     /Applications/WeChat.app/Contents/Frameworks/wxutility
+56206 69391 Tue Oct 20 10:44:07 2026     /Applications/WeChat.app/Contents/MacOS/WeChatAppEx.app/Contents/Frameworks/WeChatAppEx Framework.framework/Versions/C/Helpers/WeChatAppEx Helper.app/Contents/MacOS/WeChatAppEx Helper
+56224 69391 Tue Oct 20 10:44:07 2026     /Applications/WeChat.app/Contents/MacOS/WeChatAppEx.app/Contents/Frameworks/WeChatAppEx Framework.framework/Versions/C/Helpers/WeChatAppEx Helper (Renderer).app/Contents/MacOS/WeChatAppEx Helper (Renderer)
+56225 69391 Tue Oct 20 10:44:07 2026     /Applications/WeChat.app/Contents/MacOS/WeChatAppEx.app/Contents/Frameworks/WeChatAppEx Framework.framework/Versions/C/Helpers/WeChatAppEx Helper (Renderer).app/Contents/MacOS/WeChatAppEx Helper (Renderer)
+56229 69391 Tue Oct 20 10:44:09 2026     /Applications/WeChat.app/Contents/MacOS/WeChatAppEx.app/Contents/Frameworks/WeChatAppEx Framework.framework/Versions/C/Helpers/WeChatAppEx Helper (Renderer).app/Contents/MacOS/WeChatAppEx Helper (Renderer)
+56230 69391 Tue Oct 20 10:44:09 2026     /Applications/WeChat.app/Contents/MacOS/WeChatAppEx.app/Contents/Frameworks/WeChatAppEx Framework.framework/Versions/C/Helpers/WeChatAppEx Helper (Renderer).app/Contents/MacOS/WeChatAppEx Helper (Renderer)
+56596     1 Tue Oct 20 18:23:54 2026     /System/Library/Frameworks/AppKit.framework/Versions/C/XPCServices/com.apple.appkit.xpc.openAndSavePanelService.xpc/Contents/MacOS/com.apple.appkit.xpc.openAndSavePanelService
+57003     1 Wed Oct 21 16:31:02 2026     /System/Library/PrivateFrameworks/PhotoAnalysis.framework/Versions/A/Support/photoanalysisd
+57004     1 Wed Oct 21 16:31:02 2026     /System/Library/PrivateFrameworks/MediaAnalysis.framework/Versions/A/mediaanalysisd
+57042     1 Wed Oct 21 16:31:04 2026     /System/Library/PrivateFrameworks/DataAccess.framework/Support/dataaccessd
+57047     1 Wed Oct 21 16:31:04 2026     /usr/libexec/transparencyd
+57053     1 Wed Oct 21 16:31:04 2026     /System/Library/PrivateFrameworks/CalendarDaemon.framework/Support/calaccessd
+57176     1 Wed Oct 21 10:35:17 2026     /Applications/Android Studio.app/Contents/jbr/Contents/Home/bin/java
+57682     1 Sun Oct 18 09:55:39 2026     /usr/libexec/gamepolicyd
+57825     1 Wed Oct 21 16:31:30 2026     /System/Library/PrivateFrameworks/SessionCore.framework/Support/liveactivitiesd
+57849     1 Wed Oct 21 16:31:31 2026     /usr/libexec/pkd
+57850     1 Wed Oct 21 16:31:31 2026     /usr/libexec/biometrickitd
+60367     1 Wed Oct 21 12:33:05 2026     /System/Library/PrivateFrameworks/SoftwareUpdate.framework/Resources/SoftwareUpdateNotificationManager.app/Contents/MacOS/SoftwareUpdateNotificationManager
+60368     1 Wed Oct 21 12:33:05 2026     /System/Library/PrivateFrameworks/UIFoundation.framework/Versions/A/XPCServices/nsattributedstringagent.xpc/Contents/MacOS/nsattributedstringagent
+60491     1 Wed Oct 21 08:26:20 2026     /System/Library/PrivateFrameworks/CloudTelemetry.framework/Versions/A/XPCServices/CloudTelemetryService.xpc/Contents/MacOS/CloudTelemetryService
+61172     1 Wed Oct 21 16:33:53 2026     /usr/libexec/ospredictiond
+61212     1 Wed Oct 21 16:33:55 2026     /System/Library/PrivateFrameworks/HearingCore.framework/heard
+61365     1 Wed Oct 21 16:34:01 2026     /System/Library/PrivateFrameworks/AppleMediaServices.framework/Resources/amsaccountsd
+61390     1 Wed Oct 21 16:34:03 2026     /System/Library/PrivateFrameworks/ScreenTimeCore.framework/Versions/A/ScreenTimeAgent
+61419     1 Wed Oct 21 16:34:03 2026     /System/Library/CoreServices/iconservicesagent
+61421     1 Wed Oct 21 16:34:03 2026     /System/Library/CoreServices/iconservicesd
+62701     1 Wed Oct 21 08:28:38 2026     /System/Library/PrivateFrameworks/AuthKit.framework/Versions/A/Support/akd
+62845     1 Wed Oct 21 16:35:23 2026     /usr/libexec/audioanalyticsd
+63015     1 Wed Oct 21 08:29:24 2026     /System/Library/PrivateFrameworks/AssetCacheServices.framework/Versions/A/XPCServices/AssetCacheLocatorService.xpc/Contents/MacOS/AssetCacheLocatorService
+63348     1 Wed Oct 21 16:36:27 2026     /usr/libexec/networkserviceproxy
+63375     1 Wed Oct 21 16:36:28 2026     /System/Library/CoreServices/osanalyticshelper
+63648     1 Wed Oct 21 16:37:16 2026     /System/Library/Frameworks/ManagedAppDistribution.framework/Support/managedappdistributionagent
+63772     1 Wed Oct 21 10:40:17 2026     /System/Cryptexes/App/usr/libexec/AuthenticationServicesAgent
+64446     1 Wed Oct 21 05:57:26 2026     /usr/libexec/linkd
+64452     1 Wed Oct 21 16:38:12 2026     /System/Library/PrivateFrameworks/GeoServices.framework/Versions/A/XPCServices/com.apple.geod.xpc/Contents/MacOS/com.apple.geod
+64507     1 Wed Oct 21 16:38:17 2026     /System/Library/PrivateFrameworks/iCloudDriveService.framework/XPCServices/ContainerMetadataExtractor.xpc/Contents/MacOS/ContainerMetadataExtractor
+64525     1 Wed Oct 21 16:38:18 2026     /System/Library/PrivateFrameworks/AppPredictionFoundation.framework/Versions/A/XPCServices/AppPredictionIntentsHelperService.xpc/Contents/MacOS/AppPredictionIntentsHelperService
+64557     1 Wed Oct 21 05:57:56 2026     /usr/libexec/sandboxd
+65314 69823 Wed Oct 21 16:39:34 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+65315 69823 Wed Oct 21 16:39:34 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+65316 69823 Wed Oct 21 16:39:34 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+65317 69823 Wed Oct 21 16:39:34 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+65318 69823 Wed Oct 21 16:39:34 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+65366 65318 Wed Oct 21 16:39:34 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+65496     1 Wed Oct 21 16:39:49 2026     /System/Library/Frameworks/ExtensionFoundation.framework/Versions/A/XPCServices/extensionkitservice.xpc/Contents/MacOS/extensionkitservice
+65611 65366 Wed Oct 21 16:40:06 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+65612 65366 Wed Oct 21 16:40:06 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+65614 65366 Wed Oct 21 16:40:06 2026     /Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex
+65769     1 Wed Oct 21 06:00:59 2026     /usr/libexec/coreduetd
+65785     1 Wed Oct 21 06:01:01 2026     /System/Library/PrivateFrameworks/IntelligencePlatformCompute.framework/Versions/A/XPCServices/IntelligencePlatformComputeService.xpc/Contents/MacOS/IntelligencePlatformComputeService
+66221     1 Mon Oct 19 16:18:39 2026     /usr/libexec/nehelper
+66248     1 Wed Oct 21 06:02:04 2026     /System/Library/PrivateFrameworks/VoiceShortcuts.framework/Versions/A/Support/siriactionsd
+66338     1 Wed Oct 21 06:02:32 2026     /System/Library/Frameworks/Security.framework/Versions/A/XPCServices/com.apple.CodeSigningHelper.xpc/Contents/MacOS/com.apple.CodeSigningHelper
+66344     1 Wed Oct 21 06:02:32 2026     /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/HIServices.framework/Versions/A/XPCServices/com.apple.hiservices-xpcservice.xpc/Contents/MacOS/com.apple.hiservices-xpcservice
+66396 69770 Wed Oct 21 16:42:04 2026     /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/Codex (Renderer).app/Contents/MacOS/Codex (Renderer)
+66397 69770 Wed Oct 21 16:42:04 2026     /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/Codex (Renderer).app/Contents/MacOS/Codex (Renderer)
+66423 69770 Wed Oct 21 16:42:09 2026     /Applications/ChatGPT.app/Contents/Resources/native/bare-modifier-monitor
+66424 69770 Wed Oct 21 16:42:09 2026     /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/Codex (Renderer).app/Contents/MacOS/Codex (Renderer)
+66507 69823 Wed Oct 21 16:42:14 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+66508 69823 Wed Oct 21 16:42:14 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+66509 69823 Wed Oct 21 16:42:14 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+66510 69823 Wed Oct 21 16:42:14 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+66511 69823 Wed Oct 21 16:42:14 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+66521 66510 Wed Oct 21 16:42:14 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+66547     1 Mon Oct 19 08:52:54 2026     /System/Library/Frameworks/LocalAuthentication.framework/Support/coreauthd
+66552 69770 Wed Oct 21 16:42:17 2026     /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/Codex (Renderer).app/Contents/MacOS/Codex (Renderer)
+66553 69770 Wed Oct 21 16:42:17 2026     /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/Codex (Renderer).app/Contents/MacOS/Codex (Renderer)
+66563     1 Wed Oct 21 16:42:18 2026     /System/Library/PrivateFrameworks/PackageKit.framework/Resources/system_installd
+66564     1 Wed Oct 21 16:42:18 2026     /usr/libexec/triald
+66573     1 Wed Oct 21 16:42:18 2026     /usr/libexec/AssetCache/AssetCache
+66575     1 Wed Oct 21 16:42:18 2026     /System/Library/CoreServices/TimeMachine/backupd-helper
+66576     1 Wed Oct 21 16:42:18 2026     /System/Library/PrivateFrameworks/PackageKit.framework/Resources/installd
+66666 69770 Wed Oct 21 16:42:28 2026     /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/Codex (Renderer).app/Contents/MacOS/Codex (Renderer)
+66939     1 Wed Oct 21 03:49:34 2026     /System/Library/PrivateFrameworks/CoreADI.framework/adid
+66973 69823 Wed Oct 21 10:42:29 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+66974 69823 Wed Oct 21 10:42:29 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+66975 69823 Wed Oct 21 10:42:29 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+66976 69823 Wed Oct 21 10:42:29 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+66977 69823 Wed Oct 21 10:42:29 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+66980 66977 Wed Oct 21 10:42:29 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+67082     1 Wed Oct 21 08:36:24 2026     /System/Library/PrivateFrameworks/CoreDuetContext.framework/Resources/ContextStoreAgent
+67240     1 Wed Oct 21 16:43:11 2026     /usr/libexec/mlhostd
+67241     1 Wed Oct 21 16:43:11 2026     /System/Library/PrivateFrameworks/GenerativeExperiencesRuntime.framework/Versions/A/generativeexperiencesd
+67564     1 Wed Oct 21 16:43:44 2026     /usr/libexec/searchpartyuseragent
+67572     1 Wed Oct 21 16:43:45 2026     /usr/libexec/storagekitd
+67639     1 Wed Oct 21 16:44:01 2026     /System/Library/PrivateFrameworks/CoreRecents.framework/Versions/A/Support/recentsd
+67697     1 Wed Oct 21 16:44:16 2026     /System/Library/PrivateFrameworks/IMDPersistence.framework/XPCServices/IMDPersistenceAgent.xpc/Contents/MacOS/IMDPersistenceAgent
+68265     1 Tue Oct 20 01:12:03 2026     /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mds
+68270     1 Tue Oct 20 01:12:04 2026     /System/Library/CoreServices/launchservicesd
+68277     1 Tue Oct 20 01:12:04 2026     /System/Library/PrivateFrameworks/MediaRemote.framework/Support/mediaremoted
+68279     1 Tue Oct 20 01:12:04 2026     /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer
+68281     1 Tue Oct 20 01:12:04 2026     /System/Library/PrivateFrameworks/CoreDuetContext.framework/Resources/contextstored
+68293     1 Tue Oct 20 01:12:04 2026     /System/Library/CoreServices/loginwindow.app/Contents/MacOS/loginwindow
+68332     1 Tue Oct 20 01:12:05 2026     /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mds_stores
+68364     1 Tue Oct 20 01:12:15 2026     /System/Library/PrivateFrameworks/AmbientDisplay.framework/Versions/A/XPCServices/com.apple.AmbientDisplayAgent.xpc/Contents/MacOS/com.apple.AmbientDisplayAgent
+68382     1 Wed Oct 21 16:44:48 2026     /usr/libexec/filevaultd
+68418     1 Wed Oct 21 16:44:49 2026     /usr/libexec/smd
+69056     1 Wed Oct 21 16:45:11 2026     /System/Library/CoreServices/IOUIAgent.app/Contents/MacOS/IOUIAgent
+69125     1 Tue Oct 20 04:13:16 2026     /usr/libexec/UserEventAgent
+69128     1 Tue Oct 20 04:13:16 2026     /System/Library/CoreServices/audioaccessoryd
+69130     1 Tue Oct 20 04:13:16 2026     /System/Library/CoreServices/ControlCenter.app/Contents/MacOS/ControlCenter
+69131     1 Tue Oct 20 04:13:16 2026     /usr/libexec/knowledge-agent
+69132     1 Tue Oct 20 04:13:16 2026     /System/Library/CoreServices/CoreServicesUIAgent.app/Contents/MacOS/CoreServicesUIAgent
+69133     1 Tue Oct 20 04:13:16 2026     /usr/sbin/universalaccessd
+69134     1 Tue Oct 20 04:13:16 2026     /usr/libexec/pboard
+69137     1 Tue Oct 20 04:13:16 2026     /System/Library/Frameworks/InputMethodKit.framework/Resources/imklaunchagent
+69138     1 Tue Oct 20 04:13:16 2026     /System/Library/PrivateFrameworks/BiomeStreams.framework/Support/BiomeAgent
+69140     1 Tue Oct 20 04:13:16 2026     /System/Library/PrivateFrameworks/UserNotificationsCore.framework/Support/usernotificationsd
+69141     1 Tue Oct 20 04:13:16 2026     /System/Library/CoreServices/WindowManager.app/Contents/MacOS/WindowManager
+69142     1 Tue Oct 20 04:13:16 2026     /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/corespotlightd
+69147     1 Tue Oct 20 04:13:16 2026     /usr/libexec/nsurlsessiond
+69148     1 Tue Oct 20 04:13:16 2026     /usr/sbin/usernoted
+69152     1 Tue Oct 20 04:13:16 2026     /usr/libexec/rapportd
+69153     1 Tue Oct 20 04:13:16 2026     /System/Library/CoreServices/lockoutagent
+69156     1 Tue Oct 20 04:13:16 2026     /System/Library/CoreServices/CoreLocationAgent.app/Contents/MacOS/CoreLocationAgent
+69157     1 Tue Oct 20 04:13:16 2026     /System/Library/PrivateFrameworks/CoreSuggestions.framework/Versions/A/Support/suggestd
+69158     1 Tue Oct 20 04:13:16 2026     /System/Library/PrivateFrameworks/TCC.framework/Support/tccd
+69164     1 Tue Oct 20 04:13:16 2026     /System/Library/Frameworks/Accounts.framework/Versions/A/Support/accountsd
+69165     1 Tue Oct 20 04:13:16 2026     /System/Library/PrivateFrameworks/TelephonyUtilities.framework/callservicesd
+69167     1 Tue Oct 20 04:13:16 2026     /System/Library/PrivateFrameworks/SyncedDefaults.framework/Support/syncdefaultsd
+69168     1 Tue Oct 20 04:13:16 2026     /System/Library/PrivateFrameworks/IDS.framework/identityservicesd.app/Contents/MacOS/identityservicesd
+69169     1 Tue Oct 20 04:13:16 2026     /usr/libexec/ContinuityCaptureAgent
+69171     1 Tue Oct 20 04:13:16 2026     /System/Library/PrivateFrameworks/FileProvider.framework/Support/fileproviderd
+69180     1 Tue Oct 20 04:13:16 2026     /Applications/WeChat.app/Contents/MacOS/WeChat
+69181     1 Tue Oct 20 04:13:16 2026     /System/Library/PrivateFrameworks/ChronoCore.framework/Support/chronod
+69183     1 Tue Oct 20 04:13:16 2026     /System/Applications/Utilities/Activity Monitor.app/Contents/MacOS/Activity Monitor
+69187     1 Tue Oct 20 04:13:16 2026     /System/Library/PrivateFrameworks/CommunicationsFilter.framework/CMFSyncAgent
+69189     1 Tue Oct 20 04:13:16 2026     /System/Library/CoreServices/AccessibilityUIServer.app/Contents/MacOS/AccessibilityUIServer
+69192     1 Tue Oct 20 04:13:16 2026     /System/Library/PrivateFrameworks/IMCore.framework/imagent.app/Contents/MacOS/imagent
+69204     1 Tue Oct 20 04:13:16 2026     /System/Library/CoreServices/diagnostics_agent
+69205     1 Tue Oct 20 04:13:16 2026     /System/Library/Frameworks/ApplicationServices.framework/Frameworks/ATS.framework/Support/fontd
+69207     1 Tue Oct 20 04:13:16 2026     /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/ATS.framework/Versions/A/Support/fontworker
+69210     1 Tue Oct 20 04:13:16 2026     /usr/libexec/duetexpertd
+69213     1 Tue Oct 20 04:13:17 2026     /System/Library/PrivateFrameworks/ViewBridge.framework/Versions/A/XPCServices/ViewBridgeAuxiliary.xpc/Contents/MacOS/ViewBridgeAuxiliary
+69214     1 Tue Oct 20 04:13:17 2026     /usr/libexec/neagent
+69217     1 Tue Oct 20 04:13:17 2026     /System/Library/CoreServices/sharedfilelistd
+69220     1 Tue Oct 20 04:13:17 2026     /usr/libexec/sharingd
+69221     1 Tue Oct 20 04:13:17 2026     /System/Library/Input Methods/SCIM.app/Contents/PlugIns/SCIM_Extension.appex/Contents/MacOS/SCIM_Extension
+69222     1 Tue Oct 20 04:13:17 2026     /System/Library/Input Methods/PressAndHold.app/Contents/PlugIns/PAH_Extension.appex/Contents/MacOS/PAH_Extension
+69226     1 Tue Oct 20 04:13:17 2026     /Applications/Shadowrocket.app/Contents/MacOS/Shadowrocket
+69227     1 Tue Oct 20 04:13:17 2026     /System/Library/CoreServices/UIKitSystem.app/Contents/MacOS/UIKitSystem
+69228     1 Tue Oct 20 04:13:17 2026     /System/Library/CoreServices/Dock.app/Contents/MacOS/Dock
+69229     1 Tue Oct 20 04:13:17 2026     /System/Library/CoreServices/SystemUIServer.app/Contents/MacOS/SystemUIServer
+69230     1 Tue Oct 20 04:13:17 2026     /System/Library/CoreServices/Finder.app/Contents/MacOS/Finder
+69238     1 Tue Oct 20 04:13:17 2026     /System/Library/CoreServices/WallpaperAgent.app/Contents/MacOS/WallpaperAgent
+69242     1 Tue Oct 20 04:13:17 2026     /System/Library/PrivateFrameworks/AMPDevices.framework/Versions/A/Support/AMPDeviceDiscoveryAgent
+69249     1 Tue Oct 20 04:13:17 2026     /System/Library/ExtensionKit/Extensions/WallpaperAerialsExtension.appex/Contents/MacOS/WallpaperAerialsExtension
+69252     1 Tue Oct 20 04:13:18 2026     /System/Library/CoreServices/NotificationCenter.app/Contents/MacOS/NotificationCenter
+69262     1 Tue Oct 20 04:13:18 2026     /System/Library/CoreServices/Screen Time.app/Contents/PlugIns/ScreenTimeWidgetExtension.appex/Contents/MacOS/ScreenTimeWidgetExtension
+69263     1 Tue Oct 20 04:13:18 2026     /System/Library/CoreServices/WiFiAgent.app/Contents/MacOS/WiFiAgent
+69267     1 Tue Oct 20 04:13:18 2026     /System/Library/PrivateFrameworks/FamilyCircle.framework/Versions/A/Resources/familycircled
+69285     1 Tue Oct 20 04:13:18 2026     /System/Library/PrivateFrameworks/HomeKitDaemon.framework/Support/homed
+69296     1 Tue Oct 20 04:13:19 2026     /System/Library/CoreServices/Spotlight.app/Contents/MacOS/Spotlight
+69302     1 Tue Oct 20 04:13:19 2026     /System/Library/PrivateFrameworks/TextInputUIMacHelper.framework/Versions/A/XPCServices/CursorUIViewService.xpc/Contents/MacOS/CursorUIViewService
+69312     1 Tue Oct 20 04:13:19 2026     /System/Library/PrivateFrameworks/MediaRemote.framework/Support/mediaremoteagent
+69313     1 Tue Oct 20 04:13:19 2026     /usr/libexec/avconferenced
+69319     1 Tue Oct 20 04:13:19 2026     /System/Library/PrivateFrameworks/UserActivity.framework/Agents/useractivityd
+69340     1 Tue Oct 20 04:13:21 2026     /System/Library/CoreServices/Dock.app/Contents/XPCServices/com.apple.dock.extra.xpc/Contents/MacOS/com.apple.dock.extra
+69341     1 Tue Oct 20 04:13:21 2026     /System/Library/CoreServices/Dock.app/Contents/XPCServices/com.apple.dock.external.extra.arm64.xpc/Contents/MacOS/com.apple.dock.external.extra.arm64
+69342     1 Tue Oct 20 04:13:21 2026     /System/Library/CoreServices/Dock.app/Contents/XPCServices/com.apple.dock.external.extra.arm64.xpc/Contents/MacOS/com.apple.dock.external.extra.arm64
+69343     1 Tue Oct 20 04:13:21 2026     /System/Applications/Clock.app/Contents/PlugIns/WorldClockWidget.appex/Contents/MacOS/WorldClockWidget
+69352     1 Tue Oct 20 04:13:21 2026     /System/Library/PrivateFrameworks/CloudDocs.framework/PlugIns/com.apple.CloudDocs.iCloudDriveFileProvider.appex/Contents/MacOS/com.apple.CloudDocs.iCloudDriveFileProvider
+69354     1 Tue Oct 20 04:13:21 2026     /System/Applications/Calendar.app/Contents/PlugIns/CalendarWidgetExtension.appex/Contents/MacOS/CalendarWidgetExtension
+69362     1 Tue Oct 20 04:13:22 2026     /System/Library/PrivateFrameworks/AssistantServices.framework/Versions/A/Support/assistantd
+69381     1 Tue Oct 20 04:13:24 2026     /System/Library/PrivateFrameworks/DeviceCheckInternal.framework/devicecheckd
+69391 69180 Tue Oct 20 04:13:24 2026     /Applications/WeChat.app/Contents/MacOS/WeChatAppEx.app/Contents/MacOS/WeChatAppEx
+69398 69391 Tue Oct 20 04:13:24 2026     /Applications/WeChat.app/Contents/MacOS/WeChatAppEx.app/Contents/Frameworks/WeChatAppEx Framework.framework/Versions/C/Helpers/WeChatAppEx Helper.app/Contents/MacOS/WeChatAppEx Helper
+69399 69391 Tue Oct 20 04:13:24 2026     /Applications/WeChat.app/Contents/MacOS/WeChatAppEx.app/Contents/Frameworks/WeChatAppEx Framework.framework/Versions/C/Helpers/WeChatAppEx Helper (GPU).app/Contents/MacOS/WeChatAppEx Helper (GPU)
+69416     1 Tue Oct 20 04:13:27 2026     /System/Library/PrivateFrameworks/CoreSpeech.framework/corespeechd
+69421     1 Tue Oct 20 04:13:27 2026     /bin/sh
+69422     1 Tue Oct 20 04:13:27 2026     /System/Library/Image Capture/Support/icdd
+69423     1 Tue Oct 20 04:13:27 2026     Contents/Resources/ChatGPTHelper
+69429     1 Tue Oct 20 04:13:27 2026     /System/Library/CoreServices/AirPlayUIAgent.app/Contents/MacOS/AirPlayUIAgent
+69431     1 Tue Oct 20 04:13:27 2026     /System/Library/CoreServices/TextInputMenuAgent.app/Contents/MacOS/TextInputMenuAgent
+69434     1 Tue Oct 20 04:13:27 2026     /System/Library/Frameworks/CryptoTokenKit.framework/ctkahp.bundle/Contents/MacOS/ctkahp
+69438     1 Tue Oct 20 04:13:27 2026     /System/Library/CoreServices/Dock.app/Contents/XPCServices/com.apple.dock.external.extra.arm64.xpc/Contents/MacOS/com.apple.dock.external.extra.arm64
+69454     1 Tue Oct 20 04:13:27 2026     /System/Library/PrivateFrameworks/PassKitCore.framework/passd
+69541 69421 Tue Oct 20 04:13:31 2026     /opt/homebrew/opt/mysql/bin/mysqld
+69743     1 Tue Oct 20 04:13:49 2026     /System/Library/PrivateFrameworks/SafariPlatformSupport.framework/Versions/A/XPCServices/com.apple.SafariPlatformSupport.Helper.xpc/Contents/MacOS/com.apple.SafariPlatformSupport.Helper
+69748     1 Tue Oct 20 04:13:50 2026     /Applications/Shadowrocket.app/Contents/PlugIns/PacketTunnel.appex/Contents/MacOS/PacketTunnel
+69770     1 Tue Oct 20 04:14:03 2026     /Applications/ChatGPT.app/Contents/MacOS/ChatGPT
+69780 69770 Tue Oct 20 04:14:04 2026     /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/Codex (Service).app/Contents/MacOS/Codex (Service)
+69781 69770 Tue Oct 20 04:14:04 2026     /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/Codex (Service).app/Contents/MacOS/Codex (Service)
+69789 69770 Tue Oct 20 04:14:04 2026     /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/Codex (Service).app/Contents/MacOS/Codex (Service)
+69800     1 Tue Oct 20 04:14:05 2026     /System/Library/PrivateFrameworks/SafariSafeBrowsing.framework/com.apple.Safari.SafeBrowsing.Service
+69801 69770 Tue Oct 20 04:14:05 2026     /Applications/ChatGPT.app/Contents/Resources/native/bare-modifier-monitor
+69823 69770 Tue Oct 20 04:14:08 2026     /Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex
+69829 69770 Tue Oct 20 04:14:09 2026     /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/Codex (Service).app/Contents/MacOS/Codex (Service)
+69891 69770 Tue Oct 20 04:14:12 2026     /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/Codex (Renderer).app/Contents/MacOS/Codex (Renderer)
+69892     1 Tue Oct 20 04:14:12 2026     /System/Library/PrivateFrameworks/SafariPlatformSupport.framework/Versions/A/XPCServices/com.apple.SafariPlatformSupport.Helper.xpc/Contents/MacOS/com.apple.SafariPlatformSupport.Helper
+69895 69770 Tue Oct 20 04:14:12 2026     /Users/frankqin/.codex/computer-use/Codex Computer Use.app/Contents/MacOS/SkyComputerUseService
+69958     1 Wed Oct 21 03:54:49 2026     /System/Library/PrivateFrameworks/iCloudDriveCore.framework/Versions/A/Support/bird
+70018 69770 Tue Oct 20 04:14:13 2026     /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/Codex (Renderer).app/Contents/MacOS/Codex (Renderer)
+70057 69770 Tue Oct 20 04:14:15 2026     /Users/frankqin/Library/Application Support/Codex/artifact-sessions/runtime-generations/generation-CdWnC6/runtime/bin/node
+70093 69823 Wed Oct 21 16:45:58 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+70094 69823 Wed Oct 21 16:45:58 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+70095 69823 Wed Oct 21 16:45:58 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+70096 69823 Wed Oct 21 16:45:58 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+70097 69823 Wed Oct 21 16:45:58 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+70098 70094 Wed Oct 21 16:45:58 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+70137     1 Tue Oct 20 04:14:17 2026     /System/Library/Frameworks/CoreSpotlight.framework/spotlightknowledged
+70161 69823 Tue Oct 20 04:14:17 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+70163 69823 Tue Oct 20 04:14:17 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+70164 69823 Tue Oct 20 04:14:17 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+70165 69823 Tue Oct 20 04:14:17 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+70166 69823 Tue Oct 20 04:14:17 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+70185 70163 Tue Oct 20 04:14:18 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+70200 69823 Tue Oct 20 15:09:49 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+70201 69823 Tue Oct 20 15:09:49 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+70247 69770 Tue Oct 20 04:14:18 2026     /Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex
+70410     1 Wed Oct 21 08:42:02 2026     /System/Library/PrivateFrameworks/UsageTracking.framework/Versions/A/UsageTrackingAgent
+70454 69823 Tue Oct 20 04:14:24 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+70455 69823 Tue Oct 20 04:14:24 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+70456 69823 Tue Oct 20 04:14:24 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+70457 69823 Tue Oct 20 04:14:24 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+70458 69823 Tue Oct 20 04:14:24 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+70469 70456 Tue Oct 20 04:14:24 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+70682     1 Wed Oct 21 08:42:54 2026     /usr/libexec/proactived
+70686     1 Wed Oct 21 08:42:54 2026     /System/Library/Frameworks/Contacts.framework/Support/contactsd
+70699 69823 Tue Oct 20 04:14:35 2026     /Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex-code-mode-host
+70768     1 Wed Oct 21 08:43:05 2026     /System/Library/PrivateFrameworks/WorkflowKit.framework/XPCServices/ShortcutsViewService.xpc/Contents/MacOS/ShortcutsViewService
+71152 69823 Tue Oct 20 04:15:10 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+71153 69823 Tue Oct 20 04:15:10 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+71154 69823 Tue Oct 20 04:15:10 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+71155 69823 Tue Oct 20 04:15:10 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+71156 69823 Tue Oct 20 04:15:10 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+71203 71154 Tue Oct 20 04:15:10 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+71779 69823 Tue Oct 20 04:15:34 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+71780 69823 Tue Oct 20 04:15:34 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+71781 69823 Tue Oct 20 04:15:34 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+71782 69823 Tue Oct 20 04:15:34 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+71783 69823 Tue Oct 20 04:15:34 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+71805 71783 Tue Oct 20 04:15:34 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+72136     1 Wed Oct 21 16:48:07 2026     /System/Library/PrivateFrameworks/CoreFollowUp.framework/Versions/A/Support/followupd
+72137     1 Wed Oct 21 16:48:07 2026     /System/Library/PrivateFrameworks/ProtectedCloudStorage.framework/Helpers/ProtectedCloudKeySyncing
+72138     1 Wed Oct 21 16:48:07 2026     /System/Library/PrivateFrameworks/CoreCDP.framework/Versions/A/Resources/cdpd
+72620     1 Wed Oct 21 16:48:51 2026     /System/Library/PrivateFrameworks/KerberosHelper/Helpers/DiskUnmountWatcher
+73000     1 Tue Oct 20 04:16:59 2026     /Users/frankqin/Library/Android/sdk/emulator/qemu/darwin-aarch64/qemu-system-aarch64
+73005     1 Tue Oct 20 04:17:00 2026     /Users/frankqin/Library/Android/sdk/emulator/crashpad_handler
+73027 73000 Tue Oct 20 04:17:02 2026     /Users/frankqin/Library/Android/sdk/emulator/netsimd
+73172     1 Tue Oct 20 04:17:10 2026     /System/Library/PrivateFrameworks/SafariPlatformSupport.framework/Versions/A/XPCServices/com.apple.SafariPlatformSupport.Helper.xpc/Contents/MacOS/com.apple.SafariPlatformSupport.Helper
+73821     1 Wed Oct 21 06:18:17 2026     /System/Library/CoreServices/talagentd
+73899 69823 Tue Oct 20 11:10:09 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+73900 69823 Tue Oct 20 11:10:09 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+73901 69823 Tue Oct 20 11:10:09 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+73902 73901 Tue Oct 20 11:10:09 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+74447     1 Wed Oct 21 08:48:54 2026     /System/Library/PrivateFrameworks/BackgroundTaskManagement.framework/Support/BackgroundTaskManagementAgent.app/Contents/MacOS/BackgroundTaskManagementAgent
+74793     1 Wed Oct 21 14:34:31 2026     /System/Library/ExtensionKit/Extensions/PackageThumbnailExtension.appex/Contents/MacOS/PackageThumbnailExtension
+74936     1 Wed Oct 21 16:49:45 2026     /Library/Developer/PrivateFrameworks/CoreDevice.framework/Versions/A/XPCServices/CoreDeviceService.xpc/Contents/MacOS/CoreDeviceService
+74982     1 Wed Oct 21 08:51:27 2026     /System/Library/PrivateFrameworks/Synapse.framework/Support/contentlinkingd
+75494     1 Thu Oct  8 13:27:45 2026     /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.27/Helpers/browser_crashpad_handler
+75496     1 Thu Oct  8 13:27:45 2026     /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.27/Helpers/browser_crashpad_handler
+75505     1 Wed Oct 21 08:52:58 2026     /usr/libexec/studentd
+75528     1 Thu Oct  8 13:27:46 2026     /Applications/ChatGPT.app/Contents/Resources/native/bare-modifier-monitor
+75572 69823 Wed Oct 21 01:19:00 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+75573 69823 Wed Oct 21 01:19:00 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+75574 69823 Wed Oct 21 01:19:00 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+75575 69823 Wed Oct 21 01:19:00 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+75576 69823 Wed Oct 21 01:19:00 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+75577 75574 Wed Oct 21 01:19:00 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+75625     1 Wed Oct 21 08:53:21 2026     /System/Library/Services/AppleSpell.service/Contents/MacOS/AppleSpell
+76580 57176 Wed Oct 21 14:36:41 2026     /Applications/Android Studio.app/Contents/jbr/Contents/Home/bin/java
+76664     1 Tue Oct 20 04:19:56 2026     /System/Library/PrivateFrameworks/SkyLight.framework//Versions/A/Resources/AquaAppearanceHelper.app/Contents/MacOS/AquaAppearanceHelper
+76981     1 Tue Oct 20 04:20:15 2026     /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+77765     1 Wed Oct 21 16:53:30 2026     /System/Library/PrivateFrameworks/NewDeviceOutreach.framework/ndoagent
+77773     1 Wed Oct 21 16:53:31 2026     /usr/libexec/PowerUIAgent
+77779     1 Wed Oct 21 16:53:32 2026     /System/Library/Frameworks/ClassKit.framework/Versions/A/progressd
+77798     1 Wed Oct 21 16:53:32 2026     /System/Library/PrivateFrameworks/People.framework/peopled
+78546     1 Wed Oct 21 06:23:21 2026     /System/Library/Frameworks/AppKit.framework/Versions/C/XPCServices/ThemeWidgetControlViewService.xpc/Contents/MacOS/ThemeWidgetControlViewService
+80076     1 Wed Oct 21 16:56:18 2026     /usr/libexec/remindd
+81110     1 Sat Oct 17 09:33:54 2026     /opt/homebrew/lib/node_modules/agent-browser/bin/agent-browser-darwin-arm64
+82414     1 Tue Oct 20 13:35:39 2026     /System/Library/PrivateFrameworks/IMDPersistence.framework/IMAutomaticHistoryDeletionAgent.app/Contents/MacOS/IMAutomaticHistoryDeletionAgent
+82543 69391 Wed Oct 21 17:00:20 2026     /Applications/WeChat.app/Contents/MacOS/WeChatAppEx.app/Contents/Frameworks/WeChatAppEx Framework.framework/Versions/C/Helpers/WeChatAppEx Helper (Renderer).app/Contents/MacOS/WeChatAppEx Helper (Renderer)
+82558     1 Wed Oct 21 17:00:23 2026     /System/Library/Frameworks/ExtensionFoundation.framework/Versions/A/XPCServices/extensionkitservice.xpc/Contents/MacOS/extensionkitservice
+82684     1 Tue Oct 20 04:28:51 2026     /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdwrite
+83689     1 Tue Oct 20 04:29:36 2026     /System/Library/CoreServices/UserNotificationCenter.app/Contents/MacOS/UserNotificationCenter
+83728     1 Mon Oct 19 09:23:34 2026     /System/Library/Frameworks/Security.framework/Versions/A/XPCServices/TrustedPeersHelper.xpc/Contents/MacOS/TrustedPeersHelper
+85589 69823 Tue Oct 20 11:25:38 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+85590 69823 Tue Oct 20 11:25:38 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+85753     1 Wed Oct 21 06:32:57 2026     /usr/libexec/GamePolicyAgent
+85791     1 Wed Oct 21 06:33:04 2026     /System/Library/PrivateFrameworks/IntelligenceFlowContextRuntime.framework/Versions/A/intelligencecontextd
+86482     1 Tue Oct 13 16:57:53 2026     /Users/frankqin/dev/TekesMemory/target/release/tekes-memory
+86483     1 Tue Oct 13 16:57:53 2026     /Users/frankqin/dev/TekesMemory/target/release/tekes-memory
+87665 70185 Tue Oct 20 04:40:33 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+87666 70185 Tue Oct 20 04:40:33 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+87667 70185 Tue Oct 20 04:40:33 2026     /Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex
+87720 69823 Tue Oct 20 13:49:12 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+87721 69823 Tue Oct 20 13:49:12 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+88072 30172 Tue Oct 20 23:19:10 2026     /Applications/Arc.app/Contents/Frameworks/ArcCore.framework/Helpers/Browser Helper (Renderer).app/Contents/MacOS/Browser Helper (Renderer)
+88085 69823 Tue Oct 20 13:50:52 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+88086 69823 Tue Oct 20 13:50:52 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+88087 69823 Tue Oct 20 13:50:52 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+88090 88086 Tue Oct 20 13:50:52 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+88119     1 Tue Oct 20 11:28:37 2026     /System/Library/Frameworks/AppKit.framework/Versions/C/XPCServices/ThemeWidgetControlViewService.xpc/Contents/MacOS/ThemeWidgetControlViewService
+88759     1 Sat Oct 17 16:52:41 2026     /usr/libexec/mobileassetd
+89045     1 Sat Oct 17 16:52:55 2026     /System/Library/Frameworks/CryptoTokenKit.framework/ctkd
+92021     1 Thu Oct  8 13:53:12 2026     /System/Library/CoreServices/TimeMachine/backupd
+92198     1 Thu Oct  8 13:53:41 2026     /usr/libexec/sysmond
+92235 69823 Tue Oct 20 15:55:24 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+92236 69823 Tue Oct 20 15:55:24 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+92237 69823 Tue Oct 20 15:55:24 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+92238 69823 Tue Oct 20 15:55:24 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+92239 69823 Tue Oct 20 15:55:24 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+92286 92236 Tue Oct 20 15:55:24 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+92697     1 Thu Oct  8 15:41:08 2026     /usr/libexec/TouchBarServer
+93966 69823 Wed Oct 21 17:10:47 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+93967 69823 Wed Oct 21 17:10:47 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+93968 69823 Wed Oct 21 17:10:47 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+93969 69823 Wed Oct 21 17:10:47 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+93970 69823 Wed Oct 21 17:10:47 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+93972 93970 Wed Oct 21 17:10:47 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+94097 30172 Wed Oct 21 13:10:48 2026     /Applications/Arc.app/Contents/Frameworks/ArcCore.framework/Helpers/Browser Helper (Renderer).app/Contents/MacOS/Browser Helper (Renderer)
+95048 70469 Tue Oct 20 05:03:03 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+95049 70469 Tue Oct 20 05:03:03 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+95050 70469 Tue Oct 20 05:03:03 2026     /Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex
+95992 69823 Wed Oct 21 17:12:21 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+95993 69823 Wed Oct 21 17:12:21 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+95994 69823 Wed Oct 21 17:12:21 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+95995 69823 Wed Oct 21 17:12:21 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+95996 69823 Wed Oct 21 17:12:21 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+96016 95996 Wed Oct 21 17:12:21 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+97065 69823 Wed Oct 21 13:12:53 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+97066 69823 Wed Oct 21 13:12:53 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+97067 69823 Wed Oct 21 13:12:53 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+97068 69823 Wed Oct 21 13:12:53 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+97069 69823 Wed Oct 21 13:12:53 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+97072 97069 Wed Oct 21 13:12:53 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+97374 30172 Wed Oct 21 15:15:29 2026     /Applications/Arc.app/Contents/Frameworks/ArcCore.framework/Helpers/Browser Helper (Renderer).app/Contents/MacOS/Browser Helper (Renderer)
+97754     1 Mon Oct 19 23:14:25 2026     /opt/homebrew/Cellar/node@24/24.19.0/bin/node
+97755 97754 Mon Oct 19 23:14:25 2026     /Users/frankqin/dev/Tekes/.build/kernel-0.9.3-installed/BuiltInKernel/tekes-supervisor
+97759 97754 Mon Oct 19 23:14:26 2026     /Users/frankqin/.agents/client/agent-web/bin/agentkit-9aa5180962cfd77e040218dbb4a3a900e4e81e151bfe653a0f20185eba419846
+97922 97759 Mon Oct 19 23:14:43 2026     pi
+98187     1 Wed Oct 21 13:13:46 2026     /System/Library/Frameworks/QuickLookUI.framework/Versions/A/PlugIns/QLPreviewGenerationExtension.appex/Contents/MacOS/QLPreviewGenerationExtension
+98286     1 Wed Oct 21 17:13:58 2026     /usr/libexec/online-auth-agent
+98387     1 Tue Oct 13 13:20:19 2026     /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+98577     1 Wed Oct 21 17:14:11 2026     /System/Library/Frameworks/CoreTelephony.framework/Support/CommCenter
+98580     1 Wed Oct 21 17:14:12 2026     /usr/libexec/securityd_system
+98719     1 Tue Oct 13 13:20:38 2026     /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+98720     1 Tue Oct 13 13:20:38 2026     /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+98721     1 Tue Oct 13 13:20:38 2026     /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+98723     1 Tue Oct 13 13:20:38 2026     /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+98725     1 Tue Oct 13 13:20:38 2026     /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+98726     1 Tue Oct 13 13:20:38 2026     /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+98779     1 Wed Oct 21 17:14:18 2026     /System/Library/PrivateFrameworks/CoreAnalytics.framework/Support/analyticsagent
+98861     1 Wed Oct 21 17:14:22 2026     /System/Library/PrivateFrameworks/XprotectFramework.framework/Versions/A/XPCServices/XProtectBridgeService.xpc/Contents/MacOS/XProtectBridgeService
+98866     1 Mon Oct 12 15:13:27 2026     /System/Library/Frameworks/CoreMediaIO.framework/Resources/VDC.plugin/Contents/Resources/VDCAssistant
+99348     1 Wed Oct 21 17:14:42 2026     /System/Library/PrivateFrameworks/CoreSymbolication.framework/coresymbolicationd
+99437 69823 Tue Oct 20 11:40:18 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+99438 69823 Tue Oct 20 11:40:18 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+99439 69823 Tue Oct 20 11:40:18 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+99440 99438 Tue Oct 20 11:40:18 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+99584 69823 Wed Oct 21 09:17:25 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+99585 69823 Wed Oct 21 09:17:25 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+99586 69823 Wed Oct 21 09:17:25 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+99587 69823 Wed Oct 21 09:17:25 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+99588 69823 Wed Oct 21 09:17:25 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+99589 99587 Wed Oct 21 09:17:25 2026     /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+99824     1 Wed Oct 21 17:15:00 2026     /usr/libexec/findmybeaconingd
+ 4378 11199 Sun Oct 18 16:32:37 2026     /bin/bash

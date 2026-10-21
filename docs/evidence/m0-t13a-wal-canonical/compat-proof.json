@@ -1,0 +1,50 @@
+{
+  "command": [
+    "rustc",
+    "--edition=2021",
+    "-O",
+    "--forbid",
+    "unsafe_code",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-wal-canonical/compat-restore.rs",
+    "-L",
+    "dependency=/Users/frankqin/dev/MyCity/target/release/deps",
+    "--extern",
+    "mycity_core=/Users/frankqin/dev/MyCity/target/release/deps/libmycity_core-b869799dfe52c64c.rlib",
+    "--extern",
+    "mycity_storage=/Users/frankqin/dev/MyCity/target/release/libmycity_storage.rlib",
+    "-o",
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/wal-canonical/compat-restore"
+  ],
+  "run": [
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/wal-canonical/compat-restore",
+    "/Users/frankqin/dev/MyCity/work/t13a68-legacy-reopen/world",
+    "sim-t13a-full-v2:9deedcb11bce7d2d431d4fd8fabad6342fc17a5772cb3de1b7d60ab345aaab82",
+    "/Users/frankqin/dev/MyCity/work/t13a65-joint-02/model/business/fault-reference/cpu-final-engine.json"
+  ],
+  "exit": 0,
+  "helper_sha256": "b1c95a7a7c17c44748f1aa699bffe5f6212c07b1a0620fd3077dfa1da3b16bc9",
+  "executable_sha256": "9805c22043cc37b97ef264deead04d8c8cfd947f4fa2c713cad4ab94686ae92b",
+  "linked_rlibs": {
+    "mycity_core": {
+      "path": "/Users/frankqin/dev/MyCity/target/release/deps/libmycity_core-b869799dfe52c64c.rlib",
+      "sha256": "1b315c6444205c652e67da1a0951e110f4800ea772037b88a7c24c4f6f652955"
+    },
+    "mycity_storage": {
+      "path": "/Users/frankqin/dev/MyCity/target/release/libmycity_storage.rlib",
+      "sha256": "b0e152cec1391158d498ac78b0c77aaab7642cdb4993a581ada87131e29db8db"
+    }
+  },
+  "original_files_verified_unchanged": 243,
+  "copy_complete_retained_at": "work/t13a68-legacy-reopen/world",
+  "source_original": "work/t13a65-joint-02/model/business/world",
+  "rules_identity_unchanged": "sim-t13a-full-v2:9deedcb11bce7d2d431d4fd8fabad6342fc17a5772cb3de1b7d60ab345aaab82",
+  "result": {
+    "schema": "mycity-legacy-store-byte-compat-v1",
+    "complete_engine_bytes_equal": true,
+    "bytes": 2507418,
+    "sha256": "f4c922bfc7a6a214e73d1c69c26386b3faa2465794dc9f77f99793a554246e02",
+    "sequence": 3013,
+    "runtime_budget_acceptance": false
+  },
+  "scope": "Actual old complete world reopen and canonical full byte comparison; no budget or throughput acceptance"
+}

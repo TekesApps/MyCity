@@ -1,6 +1,6 @@
 # MyCity
 
-仓库发布版本：`v0.5.73`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.74`。已开始Rust模型与headless CLI，当前不做UI。
 
 **软件结构先读[总体架构](docs/SOFTWARE_ARCHITECTURE.md)：当前代码、主体与事件、单writer、多进程目标、数据文件和预算。**
 
@@ -66,3 +66,6 @@ v0.5.67: [Typed full-model capacity plan](docs/evidence/m0-t13a-model-capacity/S
 [v0.5.72历史验证产物回收](docs/evidence/disk-reclamation-2026-10-21-reserves/STATUS.md)：精确退役旧布局预留页，保护完整恢复点与验收证据；不新增模型或性能通过声明。
 
 [v0.5.73 Store流式检查点与回执](docs/evidence/m0-t13a-store-stream/STATUS.md)：完整输入与两遍输出绑定、逐条回执核验、检查点展开保护；旧完整存档与实际新检查点往返通过，整图池及正式性能／8h仍待验收。
+
+- [WAL有界规范编码与真实存档兼容](docs/evidence/m0-t13a-wal-canonical/STATUS.md)：同源回归与实际重开通过，整图池和正式性能仍未签。
+- [历史产物清理及当前保留审计](docs/evidence/disk-reclamation-current-audit/STATUS.md)：逐轮清单、完整恢复输入、分配空间与df分别记账。

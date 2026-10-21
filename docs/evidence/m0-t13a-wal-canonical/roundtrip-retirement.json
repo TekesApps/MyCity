@@ -1,0 +1,22 @@
+{
+  "before": {
+    "unix_ns": 1792576730717013000,
+    "filesystem_available_bytes": 122030350336,
+    "work_du_kib": 18049544,
+    "target_du_kib": 1019624
+  },
+  "after": {
+    "unix_ns": 1792576732590475000,
+    "filesystem_available_bytes": 122047156224,
+    "work_du_kib": 18039576,
+    "target_du_kib": 1019624
+  },
+  "removed_paths": 245,
+  "removed_unique_inodes": 245,
+  "removed_unique_allocated_bytes": 10207232,
+  "filesystem_available_delta_bytes": 16805888,
+  "retained_work_files_checked_unchanged": 85131,
+  "nonselected_inventory_sha256": "aba8ee804d8b3e3d8ca0c7997378b2fcc0037526e0d75b8700f93ffb57dce971",
+  "availability": "Disposable roundtrip fork retired; cannot directly reopen it. Original full world and compatibility copy retained, hashes are not substitutes for them.",
+  "accounting": "Device/inode deduplicated st_blocks; observed filesystem delta is not wholly attributed. No target/cache deletion."
+}

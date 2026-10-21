@@ -1,0 +1,11 @@
+# 接续：v0.5.74 WAL阶段已终态
+
+source63c1642e…167文件，fixedbin460627ca…；全仓30935终态0／595.302秒，379 harness含nested，clippy/fmt/build0；finish90442终态0。旧完整world3013seq／2507418字节相符；临时fork新增一成功一失败，实际两WAL与旧编码逐字节相符，实际重开与重试、两次checkpoint后3015收据一致，原3013指纹不改。advisor无新阻断。无源码新变动不重复本轮全仓验证，也不为每个局部再跑600秒诊断。
+
+下一主线必须继续收敛业务对照和state_hash／WorldView的实际DOM与编码路径：core transaction.rs business_comparison_checkpoint及state_hash，joint_reference::business_digest、Reference目标轨迹、scale_reference尾部、ordinary Compare和sim_host快照调用。使用借用视图（revision归零只用于business，其他字段完整保留）、串行复用的有界codec／canonical表，避免每次创建完整Value或给每个Engine再藏一份4MiB槽；全字节比较不能偷换为仅hash比较。legacy v1检查点仍需兼容流式／有界路径。
+
+然后将Reference／FaultReference／Sim／普通Compare／候选／恢复的全部实际分配接原64MiB授权及归还，查齐真实8MiB共享诊断。Store已有canonical表726016B、双WAL65536B已计；目标base44939296＋Raw暂态1325248＝46264544B只证明算术，runtimeGrantfalse。不要把这张表当实际池，也不能漏state_hash等仍拥有DOM的入口。
+
+整图闭合后按原acceptance统一正式分级、四档、三场景三轮稳态、完整联合及实际28800秒8h。当前仅32GiB主机；16GB not_run，M0 not_accepted，goal active。
+
+磁盘：只复用共享target。临时t13a74-wal-roundtrip已逐文件退役，不可直接重开；原完整business／兼容副本、v70两代完整布局和v50旧格式依赖保留。旧feature库／验收测试程序需逐项确认依赖后再清，不按t13或target文件名前缀批删；保留固定source／Cargo.lock／exe及必要日志收据。下一阶段结束记录回收／保留原因。

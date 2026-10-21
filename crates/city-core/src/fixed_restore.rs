@@ -123,6 +123,10 @@ impl<R: Read> Read for JsonReader<R> {
         }
         for &b in &out[..n] {
             if self.quoted {
+                if b == b'"' && !self.escaped {
+                    self.quoted = false;
+                    continue;
+                }
                 self.string_bytes += 1;
                 if self.string_bytes > self.string_limit {
                     return Err(io::Error::other("fixed_restore_string"));
@@ -131,8 +135,6 @@ impl<R: Read> Read for JsonReader<R> {
                     self.escaped = false;
                 } else if b == b'\\' {
                     self.escaped = true;
-                } else if b == b'"' {
-                    self.quoted = false;
                 }
             } else if b == b'"' {
                 self.quoted = true;

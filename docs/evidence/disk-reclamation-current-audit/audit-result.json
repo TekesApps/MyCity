@@ -1,0 +1,23 @@
+{
+  "before": {
+    "time_ns": 1792577328242502000,
+    "work_du_kib": 18039576,
+    "target_du_kib": 1019624,
+    "filesystem_available_bytes": 121740115968
+  },
+  "after": {
+    "time_ns": 1792577341483985000,
+    "work_du_kib": 18039576,
+    "target_du_kib": 1019624,
+    "filesystem_available_bytes": 121737216000
+  },
+  "work_files_checked_unchanged": 85131,
+  "new_deleted_paths": 0,
+  "new_deleted_allocated_bytes": 0,
+  "observed_filesystem_available_delta": -2899968,
+  "target_shared": true,
+  "build_launched": false,
+  "new_target_created": false,
+  "reason": "Remaining large pressure files are required complete restore inputs; other native/meter components and proof-linked build artifacts not proven redundant. No further deletion authorized by classification.",
+  "accounting": "Read-only audit. Any df/target movement is not attributed to this audit. Prior retirements are reported separately, not counted again."
+}

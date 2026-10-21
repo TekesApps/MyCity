@@ -16,6 +16,7 @@ pub use query::{Page, Query};
 mod checkpoint;
 mod checkpoint_v2;
 mod stream;
+mod wal;
 pub use capacity::{CapacityPolicy, CapacityStatus};
 mod spatial;
 pub use checkpoint::{CheckpointPoint, CheckpointStatus};
@@ -133,14 +134,6 @@ struct Current {
     slot: u8,
     root_sha256: String,
 }
-#[derive(Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-struct WalEntry {
-    sequence: u64,
-    previous: String,
-    envelope: Envelope,
-    record: serde_json::Value,
-}
 
 #[derive(Debug, Serialize)]
 pub struct Outcome {
@@ -158,6 +151,7 @@ struct Persistence {
     poisoned: bool,
     source_reconciled: bool,
     background_live: Vec<[u8; 32]>,
+    canonical: mycity_core::canonical::Workspace,
 }
 impl Drop for Persistence {
     fn drop(&mut self) {
@@ -321,6 +315,7 @@ impl Store {
             (None, None)
         };
         spatial::validate_exchange_binding(&engine, spatial.as_ref())?;
+        let canonical = mycity_core::canonical::Workspace::new().map_err(Error::Model)?;
         observer(CreatePoint::Validated)?;
         fs::create_dir(dir)?;
         let lock = lock(dir)?;
@@ -415,6 +410,7 @@ impl Store {
                 poisoned: false,
                 source_reconciled: !outbox::exists(dir),
                 background_live: Vec::with_capacity(BACKGROUND_LIVE_ASSETS),
+                canonical,
             },
         })
     }
@@ -503,6 +499,8 @@ impl Store {
         if root.wal_end > wal_length {
             return Err(Error::Invalid("committed_wal_truncated"));
         }
+        let mut canonical = mycity_core::canonical::Workspace::new().map_err(Error::Model)?;
+        let mut buffers = wal::Buffers::new();
         let mut pos = 0u64;
         let mut background_live = Vec::with_capacity(BACKGROUND_LIVE_ASSETS);
         while pos < root.wal_end {
@@ -515,32 +513,31 @@ impl Store {
             if length == 0 || length > FRAME_LIMIT || root.wal_end - pos < 4 + length as u64 + 32 {
                 return Err(Error::Invalid("committed_frame_length"));
             }
-            let mut payload = vec![0; length];
-            wal.read_exact(&mut payload)?;
+            let payload = &mut buffers.frame[..length];
+            wal.read_exact(payload)?;
             let mut checksum = [0u8; 32];
             wal.read_exact(&mut checksum)?;
-            let mut checked = Vec::with_capacity(length + 4);
-            checked.extend_from_slice(&len);
-            checked.extend_from_slice(&payload);
-            let actual = digest(&checked);
+            let actual = wal::checksum(&len, payload);
             if actual != checksum {
                 return Err(Error::Invalid("committed_frame_checksum"));
             }
-            let entry: WalEntry = serde_json::from_slice(&payload)?;
+            let entry = wal::decode(payload)?;
             sequence += 1;
             if entry.sequence != sequence || entry.previous != chain {
                 return Err(Error::Invalid("committed_frame_chain"));
             }
-            let actor = entry.record["actor"]
-                .as_u64()
-                .and_then(|n| u32::try_from(n).ok())
-                .ok_or(Error::Invalid("record_actor"))?;
+            let mut normalized = mycity_core::canonical::FixedWriter::new(&mut buffers.record);
+            canonical
+                .write(entry.record.get().as_bytes(), &mut normalized)
+                .map_err(Error::Model)?;
+            // Normalize first: the old Value path used the last duplicate key.
+            let record: JournalRecord = serde_json::from_slice(normalized.as_slice())?;
+            let actor = record.actor;
             let caller = if actor == 0 {
                 Caller::System
             } else {
                 Caller::Account(actor)
             };
-            let record: JournalRecord = serde_json::from_value(entry.record.clone())?;
             let candidate_hash =
                 background::successful_hash(&entry.envelope, record.outcome.is_ok());
             let candidate = candidate_hash
@@ -557,7 +554,12 @@ impl Store {
                 candidate.as_ref(),
                 |_, record| -> Result<(), Error> {
                     called = true;
-                    if serde_json::to_value(record)? != entry.record {
+                    if !wal::matches(
+                        &mut canonical,
+                        record,
+                        &mut buffers.frame,
+                        normalized.as_slice(),
+                    )? {
                         return Err(Error::Invalid("replay_outcome_mismatch"));
                     }
                     Ok(())
@@ -618,6 +620,7 @@ impl Store {
                 poisoned: false,
                 source_reconciled: !outbox::exists(dir),
                 background_live,
+                canonical,
             },
         })
     }
@@ -649,6 +652,8 @@ impl Store {
             + self.engine()?.owned_capacity_bytes()
             + self.io.dir.capacity()
             + self.io.background_live.capacity() * std::mem::size_of::<[u8; 32]>()
+            + self.io.canonical.owned_capacity_bytes()
+            - std::mem::size_of::<mycity_core::canonical::Workspace>()
             + self.io.root.schema.capacity()
             + self.io.root.wal_chain.capacity()
             + self.io.root.genesis_sha256.capacity()
@@ -908,25 +913,22 @@ impl Persistence {
             .sequence
             .checked_add(1)
             .ok_or(Error::Invalid("sequence_overflow"))?;
-        let payload = json(&WalEntry {
+        let mut buffers = wal::Buffers::new();
+        let payload = wal::encode(
+            &mut self.canonical,
+            &mut buffers,
             sequence,
-            previous: self.root.wal_chain.clone(),
-            envelope: envelope.clone(),
-            record: serde_json::to_value(record)?,
-        })?;
-        if payload.len() > FRAME_LIMIT {
-            return Err(Error::Invalid("frame_limit"));
-        }
+            &self.root.wal_chain,
+            envelope,
+            record,
+        )?;
         let length = (payload.len() as u32).to_le_bytes();
-        let mut check = Vec::with_capacity(payload.len() + 4);
-        check.extend_from_slice(&length);
-        check.extend_from_slice(&payload);
-        let checksum = digest(&check);
+        let checksum = wal::checksum(&length, payload);
         observer(WritePoint::WalEncoded)?;
         let wal_end = self
             .root
             .wal_end
-            .checked_add(check.len() as u64 + 32)
+            .checked_add(4 + payload.len() as u64 + 32)
             .ok_or(Error::Invalid("wal_overflow"))?;
         if wal_end > WAL_LIMIT {
             return Err(Error::Invalid("wal_limit"));
@@ -936,7 +938,7 @@ impl Persistence {
         capacity::admit_with_reserve(
             &self.dir,
             self.root.capacity,
-            check.len() as u64 + 32 + 2 * META_LIMIT,
+            4 + payload.len() as u64 + 32 + 2 * META_LIMIT,
             record.emergency_eligible
                 || background_plan.funded && record.outcome.is_ok()
                 || self.root.continuation.is_some()

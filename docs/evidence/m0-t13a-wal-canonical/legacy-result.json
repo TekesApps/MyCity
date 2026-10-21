@@ -1,0 +1,8 @@
+{
+  "command": [
+    "python3",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-wal-canonical/verify_legacy.py"
+  ],
+  "exit": 0,
+  "seconds": 1.4815949999999702
+}

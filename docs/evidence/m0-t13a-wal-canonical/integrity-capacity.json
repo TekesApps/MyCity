@@ -1,0 +1,26 @@
+{
+  "source_and_archive_equal": true,
+  "fixed_binary_matches": true,
+  "old_v70_v71_v73_executables_unchanged": true,
+  "required_base_bytes": 44939296,
+  "extra_raw_air_temporary_bytes": 1325248,
+  "conservative_total_bytes": 46264544,
+  "budget_bytes": 67108864,
+  "margin_bytes": 20844320,
+  "runtime_grant_accepted": false,
+  "new_metadata": [
+    {
+      "name": "canonical_iterative_traversal_backing",
+      "count": 1,
+      "record_bytes": 726016,
+      "bytes": 726016
+    },
+    {
+      "name": "wal_frame_and_record_buffers",
+      "count": 1,
+      "record_bytes": 65536,
+      "bytes": 65536
+    }
+  ],
+  "harness_pass_sum_including_nested": 379
+}

@@ -1,0 +1,50 @@
+{
+  "command": [
+    "rustc",
+    "--edition=2021",
+    "-O",
+    "--forbid",
+    "unsafe_code",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-wal-canonical/roundtrip.rs",
+    "-L",
+    "dependency=/Users/frankqin/dev/MyCity/target/release/deps",
+    "--extern",
+    "sha2=/Users/frankqin/dev/MyCity/target/release/deps/libsha2-2d417722ca1cbec4.rlib",
+    "--extern",
+    "serde_json=/Users/frankqin/dev/MyCity/target/release/deps/libserde_json-739cab3222a3d08f.rlib",
+    "--extern",
+    "serde=/Users/frankqin/dev/MyCity/target/release/deps/libserde-f5b63cb488197598.rlib",
+    "--extern",
+    "mycity_core=/Users/frankqin/dev/MyCity/target/release/deps/libmycity_core-b869799dfe52c64c.rlib",
+    "--extern",
+    "mycity_storage=/Users/frankqin/dev/MyCity/target/release/libmycity_storage.rlib",
+    "-o",
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/wal-canonical/roundtrip"
+  ],
+  "run": [
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/wal-canonical/roundtrip",
+    "/Users/frankqin/dev/MyCity/work/t13a74-wal-roundtrip/world",
+    "sim-t13a-full-v2:9deedcb11bce7d2d431d4fd8fabad6342fc17a5772cb3de1b7d60ab345aaab82",
+    "/Users/frankqin/dev/MyCity/work/t13a65-joint-02/model/business/fault-reference/cpu-final-engine.json"
+  ],
+  "exit": 0,
+  "executable_sha256": "38eef2e3e76e46790c8c5f8f50706b977aa0374c3f4506e83a1839e88e03835e",
+  "world": "work/t13a74-wal-roundtrip/world",
+  "result": {
+    "schema": "mycity-wal-canonical-full-roundtrip-v1",
+    "original_sequence": 3013,
+    "final_sequence": 3015,
+    "original_engine_bytes": 2507418,
+    "original_engine_sha256": "f4c922bfc7a6a214e73d1c69c26386b3faa2465794dc9f77f99793a554246e02",
+    "final_engine_sha256": "41862152b83c650453e32f4d777f38a72bcde1f3b62837c7f86a7a1cc36ab7f2",
+    "new_successes": 1,
+    "new_failures": 1,
+    "actual_wal_frames_old_byte_oracle": 2,
+    "receipt_rows": 3015,
+    "old_receipts_unchanged": true,
+    "new_wal_replayed": true,
+    "saved_and_reopened": true,
+    "performance_accepted": false
+  },
+  "scope": "Correctness diagnostic of full old world and actual new streaming checkpoint; no performance/load gate accepted"
+}

@@ -110,6 +110,16 @@ fn metadata() -> Vec<MetadataPart> {
         ("bounded_metadata_hash_or_schema_strings", 64, 64),
         ("stream_parser_scratch", 1, 64 * 1024),
         (
+            "canonical_iterative_traversal_backing",
+            1,
+            mycity_core::canonical::Workspace::backing_bytes(),
+        ),
+        (
+            "wal_frame_and_record_buffers",
+            1,
+            std::mem::size_of::<super::wal::Buffers>(),
+        ),
+        (
             "verified_input_output_controls_and_buffers",
             1,
             super::stream::capacity_metadata_bytes(),

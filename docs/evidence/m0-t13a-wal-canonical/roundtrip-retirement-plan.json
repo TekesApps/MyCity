@@ -1,0 +1,3187 @@
+[
+  {
+    "path": "work/t13a74-wal-roundtrip/world/CURRENT.json",
+    "identity": [
+      16777231,
+      407925330,
+      123,
+      1792576045340574533,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/LOCK",
+    "identity": [
+      16777231,
+      407924494,
+      0,
+      1792560209484541005,
+      0,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/air-worker-owner.json",
+    "identity": [
+      16777231,
+      407924421,
+      211,
+      1792560543000438807,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/air-worker.lock",
+    "identity": [
+      16777231,
+      407924452,
+      0,
+      1792560212117784949,
+      0,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/air-worker/candidates/23cee06ce3be900eff9fb74331dbd9a11f9e2b1e1033b583e7dc010ec53ecfba.air",
+    "identity": [
+      16777231,
+      407924620,
+      688860,
+      1792560543037385067,
+      692224,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/air-worker/inputs/1d103171fc4ac269f96a40cc21b2bb5ff436f9c0a2374fa04b95cc72dd981905.air",
+    "identity": [
+      16777231,
+      407924622,
+      688860,
+      1792560542953815033,
+      692224,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/genesis.json",
+    "identity": [
+      16777231,
+      407924406,
+      101670,
+      1792560209506875802,
+      102400,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-101.json",
+    "identity": [
+      16777231,
+      407924463,
+      593,
+      1792560212845352223,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-1047.json",
+    "identity": [
+      16777231,
+      407924635,
+      1969,
+      1792560297155913976,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-111.json",
+    "identity": [
+      16777231,
+      407924428,
+      458,
+      1792560213590901686,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-1210.json",
+    "identity": [
+      16777231,
+      407924593,
+      1974,
+      1792560312596227345,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-129.json",
+    "identity": [
+      16777231,
+      407924602,
+      492,
+      1792560214620968178,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-135.json",
+    "identity": [
+      16777231,
+      407924544,
+      413,
+      1792560215089690281,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-1371.json",
+    "identity": [
+      16777231,
+      407924465,
+      1986,
+      1792560326858502029,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-146.json",
+    "identity": [
+      16777231,
+      407924426,
+      463,
+      1792560215944048959,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-1532.json",
+    "identity": [
+      16777231,
+      407924604,
+      2032,
+      1792560340149316561,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-157.json",
+    "identity": [
+      16777231,
+      407924522,
+      463,
+      1792560216816001949,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-164.json",
+    "identity": [
+      16777231,
+      407924592,
+      417,
+      1792560217337407066,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-1693.json",
+    "identity": [
+      16777231,
+      407924550,
+      2032,
+      1792560353802567909,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-174.json",
+    "identity": [
+      16777231,
+      407924539,
+      459,
+      1792560218166385139,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-185.json",
+    "identity": [
+      16777231,
+      407924429,
+      463,
+      1792560218989940055,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-1854.json",
+    "identity": [
+      16777231,
+      407924462,
+      2032,
+      1792560367371642810,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-196.json",
+    "identity": [
+      16777231,
+      407924583,
+      463,
+      1792560219839851416,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-2015.json",
+    "identity": [
+      16777231,
+      407924410,
+      2032,
+      1792560380001929915,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-203.json",
+    "identity": [
+      16777231,
+      407924434,
+      417,
+      1792560220343518388,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-213.json",
+    "identity": [
+      16777231,
+      407924509,
+      459,
+      1792560221177477073,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-2188.json",
+    "identity": [
+      16777231,
+      407924436,
+      2092,
+      1792560393735962317,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-224.json",
+    "identity": [
+      16777231,
+      407924475,
+      463,
+      1792560222026545971,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-2349.json",
+    "identity": [
+      16777231,
+      407924607,
+      2032,
+      1792560407609886324,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-235.json",
+    "identity": [
+      16777231,
+      407924456,
+      463,
+      1792560222850560140,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-242.json",
+    "identity": [
+      16777231,
+      407924439,
+      417,
+      1792560223347793783,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-2510.json",
+    "identity": [
+      16777231,
+      407924477,
+      2032,
+      1792560421114972394,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-252.json",
+    "identity": [
+      16777231,
+      407924505,
+      459,
+      1792560224153012301,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-263.json",
+    "identity": [
+      16777231,
+      407924403,
+      463,
+      1792560224989772752,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-2671.json",
+    "identity": [
+      16777231,
+      407924623,
+      2032,
+      1792560437811857658,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-269.json",
+    "identity": [
+      16777231,
+      407924466,
+      413,
+      1792560225605516209,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-276.json",
+    "identity": [
+      16777231,
+      407924634,
+      417,
+      1792560226354153690,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-281.json",
+    "identity": [
+      16777231,
+      407924444,
+      409,
+      1792560227409525247,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-2832.json",
+    "identity": [
+      16777231,
+      407924432,
+      2032,
+      1792560453361103704,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-287.json",
+    "identity": [
+      16777231,
+      407924517,
+      413,
+      1792560227988372114,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-298.json",
+    "identity": [
+      16777231,
+      407924598,
+      463,
+      1792560228877558079,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-2993.json",
+    "identity": [
+      16777231,
+      407924491,
+      2032,
+      1792560470226247197,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-304.json",
+    "identity": [
+      16777231,
+      407924606,
+      413,
+      1792560229402807343,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-315.json",
+    "identity": [
+      16777231,
+      407924585,
+      463,
+      1792560230335105476,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-3154.json",
+    "identity": [
+      16777231,
+      407924569,
+      2032,
+      1792560484879605822,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-323.json",
+    "identity": [
+      16777231,
+      407924562,
+      455,
+      1792560231018844912,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-3315.json",
+    "identity": [
+      16777231,
+      407924547,
+      2032,
+      1792560498928289930,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-334.json",
+    "identity": [
+      16777231,
+      407924552,
+      463,
+      1792560231880952969,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-340.json",
+    "identity": [
+      16777231,
+      407924506,
+      413,
+      1792560232374063046,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-3476.json",
+    "identity": [
+      16777231,
+      407924538,
+      2032,
+      1792560511998558165,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-351.json",
+    "identity": [
+      16777231,
+      407924430,
+      463,
+      1792560233232886584,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-362.json",
+    "identity": [
+      16777231,
+      407924557,
+      463,
+      1792560234091276912,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-3637.json",
+    "identity": [
+      16777231,
+      407924581,
+      2032,
+      1792560525248330709,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-368.json",
+    "identity": [
+      16777231,
+      407924614,
+      413,
+      1792560234663192280,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-379.json",
+    "identity": [
+      16777231,
+      407924532,
+      463,
+      1792560235547930470,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-3798.json",
+    "identity": [
+      16777231,
+      407924431,
+      2032,
+      1792560538376293661,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-3854.json",
+    "identity": [
+      16777231,
+      407924485,
+      939,
+      1792560543338022545,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-3858.json",
+    "identity": [
+      16777231,
+      407925320,
+      386,
+      1792576044989372841,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-386.json",
+    "identity": [
+      16777231,
+      407924613,
+      417,
+      1792560236088961242,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-396.json",
+    "identity": [
+      16777231,
+      407924531,
+      459,
+      1792560236901814013,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-407.json",
+    "identity": [
+      16777231,
+      407924624,
+      463,
+      1792560237775402553,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-415.json",
+    "identity": [
+      16777231,
+      407924524,
+      421,
+      1792560238343470817,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-424.json",
+    "identity": [
+      16777231,
+      407924415,
+      455,
+      1792560239098319417,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-435.json",
+    "identity": [
+      16777231,
+      407924493,
+      463,
+      1792560239965783671,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-446.json",
+    "identity": [
+      16777231,
+      407924615,
+      463,
+      1792560240794746411,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-454.json",
+    "identity": [
+      16777231,
+      407924520,
+      421,
+      1792560241362611590,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-463.json",
+    "identity": [
+      16777231,
+      407924489,
+      455,
+      1792560242164698506,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-471.json",
+    "identity": [
+      16777231,
+      407924594,
+      421,
+      1792560242851725253,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-480.json",
+    "identity": [
+      16777231,
+      407924471,
+      455,
+      1792560243697022879,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-491.json",
+    "identity": [
+      16777231,
+      407924440,
+      463,
+      1792560244638670232,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-497.json",
+    "identity": [
+      16777231,
+      407924515,
+      413,
+      1792560245184269073,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-499.json",
+    "identity": [
+      16777231,
+      407924567,
+      367,
+      1792560245987394204,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-504.json",
+    "identity": [
+      16777231,
+      407924537,
+      409,
+      1792560246810002448,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-511.json",
+    "identity": [
+      16777231,
+      407924519,
+      417,
+      1792560247362768248,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-521.json",
+    "identity": [
+      16777231,
+      407924450,
+      459,
+      1792560248348288523,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-527.json",
+    "identity": [
+      16777231,
+      407924492,
+      413,
+      1792560249172461068,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-533.json",
+    "identity": [
+      16777231,
+      407924568,
+      413,
+      1792560249679214390,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-540.json",
+    "identity": [
+      16777231,
+      407924443,
+      417,
+      1792560250353788607,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-550.json",
+    "identity": [
+      16777231,
+      407924523,
+      459,
+      1792560251229894912,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-558.json",
+    "identity": [
+      16777231,
+      407924633,
+      421,
+      1792560251855999513,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-567.json",
+    "identity": [
+      16777231,
+      407924486,
+      455,
+      1792560252694870018,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-578.json",
+    "identity": [
+      16777231,
+      407924630,
+      463,
+      1792560253633638855,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-584.json",
+    "identity": [
+      16777231,
+      407924469,
+      413,
+      1792560254216635039,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-595.json",
+    "identity": [
+      16777231,
+      407924435,
+      463,
+      1792560255128084424,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-601.json",
+    "identity": [
+      16777231,
+      407924526,
+      413,
+      1792560255675862319,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-609.json",
+    "identity": [
+      16777231,
+      407924418,
+      421,
+      1792560256381374341,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-618.json",
+    "identity": [
+      16777231,
+      407924499,
+      455,
+      1792560257325305958,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-624.json",
+    "identity": [
+      16777231,
+      407924460,
+      413,
+      1792560257892912468,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-635.json",
+    "identity": [
+      16777231,
+      407924480,
+      463,
+      1792560258815817379,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-641.json",
+    "identity": [
+      16777231,
+      407924580,
+      413,
+      1792560259434763813,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-643.json",
+    "identity": [
+      16777231,
+      407924508,
+      367,
+      1792560260092496806,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-650.json",
+    "identity": [
+      16777231,
+      407924601,
+      417,
+      1792560260854051987,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-659.json",
+    "identity": [
+      16777231,
+      407924495,
+      455,
+      1792560261713748197,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-667.json",
+    "identity": [
+      16777231,
+      407924638,
+      421,
+      1792560262348351889,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-676.json",
+    "identity": [
+      16777231,
+      407924553,
+      455,
+      1792560263662908703,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-688.json",
+    "identity": [
+      16777231,
+      407924639,
+      463,
+      1792560264886354196,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-694.json",
+    "identity": [
+      16777231,
+      407924574,
+      413,
+      1792560265559484695,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-700.json",
+    "identity": [
+      16777231,
+      407924438,
+      413,
+      1792560266169225535,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-703.json",
+    "identity": [
+      16777231,
+      407924605,
+      367,
+      1792560266986048036,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-708.json",
+    "identity": [
+      16777231,
+      407924570,
+      409,
+      1792560267613377686,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-719.json",
+    "identity": [
+      16777231,
+      407924589,
+      463,
+      1792560268615532975,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-725.json",
+    "identity": [
+      16777231,
+      407924548,
+      413,
+      1792560269189066562,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-733.json",
+    "identity": [
+      16777231,
+      407924555,
+      421,
+      1792560269859909214,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-742.json",
+    "identity": [
+      16777231,
+      407924599,
+      455,
+      1792560270755093881,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-748.json",
+    "identity": [
+      16777231,
+      407924542,
+      413,
+      1792560271370328544,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-759.json",
+    "identity": [
+      16777231,
+      407924640,
+      463,
+      1792560272349353990,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-765.json",
+    "identity": [
+      16777231,
+      407924559,
+      413,
+      1792560272923083202,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-773.json",
+    "identity": [
+      16777231,
+      407924563,
+      421,
+      1792560273600656310,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-782.json",
+    "identity": [
+      16777231,
+      407924446,
+      455,
+      1792560274453797900,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-793.json",
+    "identity": [
+      16777231,
+      407924467,
+      463,
+      1792560275404238471,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-799.json",
+    "identity": [
+      16777231,
+      407924404,
+      413,
+      1792560276012216216,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-805.json",
+    "identity": [
+      16777231,
+      407924449,
+      413,
+      1792560276597833039,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-816.json",
+    "identity": [
+      16777231,
+      407924533,
+      463,
+      1792560277608217084,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-822.json",
+    "identity": [
+      16777231,
+      407924488,
+      413,
+      1792560278202188707,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-830.json",
+    "identity": [
+      16777231,
+      407924591,
+      421,
+      1792560278849150512,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-839.json",
+    "identity": [
+      16777231,
+      407924510,
+      455,
+      1792560279801270134,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-845.json",
+    "identity": [
+      16777231,
+      407924425,
+      413,
+      1792560280403994808,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-856.json",
+    "identity": [
+      16777231,
+      407924576,
+      463,
+      1792560281354989591,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-862.json",
+    "identity": [
+      16777231,
+      407924498,
+      413,
+      1792560281955959587,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-870.json",
+    "identity": [
+      16777231,
+      407924646,
+      421,
+      1792560282621269291,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-879.json",
+    "identity": [
+      16777231,
+      407924472,
+      455,
+      1792560283494115119,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipt-index-885.json",
+    "identity": [
+      16777231,
+      407924627,
+      413,
+      1792560284109169364,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-101.json",
+    "identity": [
+      16777231,
+      407924451,
+      100539,
+      1792560212835774293,
+      102400,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-1047.json",
+    "identity": [
+      16777231,
+      407924478,
+      125338,
+      1792560297143609362,
+      126976,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-111.json",
+    "identity": [
+      16777231,
+      407924496,
+      6982,
+      1792560213581501673,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-1210.json",
+    "identity": [
+      16777231,
+      407924497,
+      126001,
+      1792560312586962833,
+      126976,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-129.json",
+    "identity": [
+      16777231,
+      407924556,
+      13700,
+      1792560214611577790,
+      16384,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-135.json",
+    "identity": [
+      16777231,
+      407924625,
+      4123,
+      1792560215079819932,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-1371.json",
+    "identity": [
+      16777231,
+      407924626,
+      124424,
+      1792560326848509887,
+      126976,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-146.json",
+    "identity": [
+      16777231,
+      407924501,
+      8005,
+      1792560215933703649,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-1532.json",
+    "identity": [
+      16777231,
+      407924514,
+      124691,
+      1792560340140599593,
+      126976,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-157.json",
+    "identity": [
+      16777231,
+      407924419,
+      7985,
+      1792560216806678853,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-164.json",
+    "identity": [
+      16777231,
+      407924577,
+      5111,
+      1792560217328437181,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-1693.json",
+    "identity": [
+      16777231,
+      407924461,
+      124760,
+      1792560353792299016,
+      126976,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-174.json",
+    "identity": [
+      16777231,
+      407924617,
+      7017,
+      1792560218158090174,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-185.json",
+    "identity": [
+      16777231,
+      407924503,
+      7978,
+      1792560218980488583,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-1854.json",
+    "identity": [
+      16777231,
+      407924551,
+      124921,
+      1792560367360820622,
+      126976,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-196.json",
+    "identity": [
+      16777231,
+      407924597,
+      7980,
+      1792560219829630065,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-2015.json",
+    "identity": [
+      16777231,
+      407924561,
+      125023,
+      1792560379992079150,
+      126976,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-203.json",
+    "identity": [
+      16777231,
+      407924476,
+      5104,
+      1792560220333265329,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-213.json",
+    "identity": [
+      16777231,
+      407924409,
+      6997,
+      1792560221169050983,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-2188.json",
+    "identity": [
+      16777231,
+      407924525,
+      135027,
+      1792560393726192302,
+      135168,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-224.json",
+    "identity": [
+      16777231,
+      407924437,
+      7999,
+      1792560222018429132,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-2349.json",
+    "identity": [
+      16777231,
+      407924511,
+      124931,
+      1792560407599944558,
+      126976,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-235.json",
+    "identity": [
+      16777231,
+      407924470,
+      7986,
+      1792560222842044674,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-242.json",
+    "identity": [
+      16777231,
+      407924481,
+      5118,
+      1792560223339485193,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-2510.json",
+    "identity": [
+      16777231,
+      407924636,
+      124920,
+      1792560421104930003,
+      126976,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-252.json",
+    "identity": [
+      16777231,
+      407924402,
+      7021,
+      1792560224142684074,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-263.json",
+    "identity": [
+      16777231,
+      407924512,
+      7982,
+      1792560224981212286,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-2671.json",
+    "identity": [
+      16777231,
+      407924468,
+      124931,
+      1792560437792030751,
+      126976,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-269.json",
+    "identity": [
+      16777231,
+      407924453,
+      4113,
+      1792560225596051279,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-276.json",
+    "identity": [
+      16777231,
+      407924527,
+      5104,
+      1792560226343585129,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-281.json",
+    "identity": [
+      16777231,
+      407924483,
+      3139,
+      1792560227398031722,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-2832.json",
+    "identity": [
+      16777231,
+      407924582,
+      124882,
+      1792560453347075748,
+      126976,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-287.json",
+    "identity": [
+      16777231,
+      407924413,
+      4133,
+      1792560227978995310,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-298.json",
+    "identity": [
+      16777231,
+      407924584,
+      7999,
+      1792560228867857731,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-2993.json",
+    "identity": [
+      16777231,
+      407924590,
+      125009,
+      1792560470216429973,
+      126976,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-304.json",
+    "identity": [
+      16777231,
+      407924564,
+      4124,
+      1792560229393735166,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-315.json",
+    "identity": [
+      16777231,
+      407924596,
+      7983,
+      1792560230324865291,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-3154.json",
+    "identity": [
+      16777231,
+      407924414,
+      125021,
+      1792560484866706539,
+      126976,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-323.json",
+    "identity": [
+      16777231,
+      407924608,
+      5931,
+      1792560231008936021,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-3315.json",
+    "identity": [
+      16777231,
+      407924457,
+      124942,
+      1792560498920140257,
+      126976,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-334.json",
+    "identity": [
+      16777231,
+      407924632,
+      8001,
+      1792560231872028167,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-340.json",
+    "identity": [
+      16777231,
+      407924401,
+      4116,
+      1792560232364053322,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-3476.json",
+    "identity": [
+      16777231,
+      407924447,
+      125010,
+      1792560511989264399,
+      126976,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-351.json",
+    "identity": [
+      16777231,
+      407924502,
+      7998,
+      1792560233223338362,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-362.json",
+    "identity": [
+      16777231,
+      407924603,
+      7986,
+      1792560234080940810,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-3637.json",
+    "identity": [
+      16777231,
+      407924433,
+      125020,
+      1792560525239014778,
+      126976,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-368.json",
+    "identity": [
+      16777231,
+      407924543,
+      4132,
+      1792560234653446307,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-379.json",
+    "identity": [
+      16777231,
+      407924644,
+      7993,
+      1792560235539092960,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-3798.json",
+    "identity": [
+      16777231,
+      407924586,
+      124983,
+      1792560538366119184,
+      126976,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-3854.json",
+    "identity": [
+      16777231,
+      407924641,
+      43113,
+      1792560543327865193,
+      45056,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-3858.json",
+    "identity": [
+      16777231,
+      407925319,
+      1741,
+      1792576044979851632,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-386.json",
+    "identity": [
+      16777231,
+      407924571,
+      5112,
+      1792560236079933315,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-396.json",
+    "identity": [
+      16777231,
+      407924643,
+      7020,
+      1792560236890903116,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-407.json",
+    "identity": [
+      16777231,
+      407924545,
+      8002,
+      1792560237765314286,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-415.json",
+    "identity": [
+      16777231,
+      407924417,
+      6087,
+      1792560238333846886,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-424.json",
+    "identity": [
+      16777231,
+      407924516,
+      6045,
+      1792560239088283066,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-435.json",
+    "identity": [
+      16777231,
+      407924422,
+      8023,
+      1792560239956674618,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-446.json",
+    "identity": [
+      16777231,
+      407924541,
+      7992,
+      1792560240785005812,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-454.json",
+    "identity": [
+      16777231,
+      407924412,
+      6096,
+      1792560241352851950,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-463.json",
+    "identity": [
+      16777231,
+      407924445,
+      6035,
+      1792560242154846407,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-471.json",
+    "identity": [
+      16777231,
+      407924578,
+      6098,
+      1792560242841712653,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-480.json",
+    "identity": [
+      16777231,
+      407924458,
+      6032,
+      1792560243686989654,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-491.json",
+    "identity": [
+      16777231,
+      407924479,
+      8019,
+      1792560244626934205,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-497.json",
+    "identity": [
+      16777231,
+      407924405,
+      4130,
+      1792560245170150325,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-499.json",
+    "identity": [
+      16777231,
+      407924611,
+      1240,
+      1792560245955624186,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-504.json",
+    "identity": [
+      16777231,
+      407924645,
+      3146,
+      1792560246799608179,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-511.json",
+    "identity": [
+      16777231,
+      407924411,
+      5107,
+      1792560247353319526,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-521.json",
+    "identity": [
+      16777231,
+      407924464,
+      7013,
+      1792560248337955504,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-527.json",
+    "identity": [
+      16777231,
+      407924423,
+      4146,
+      1792560249161967881,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-533.json",
+    "identity": [
+      16777231,
+      407924612,
+      4127,
+      1792560249668990081,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-540.json",
+    "identity": [
+      16777231,
+      407924484,
+      5116,
+      1792560250344241593,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-550.json",
+    "identity": [
+      16777231,
+      407924416,
+      7012,
+      1792560251221154737,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-558.json",
+    "identity": [
+      16777231,
+      407924528,
+      6107,
+      1792560251846663375,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-567.json",
+    "identity": [
+      16777231,
+      407924442,
+      6036,
+      1792560252685852466,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-578.json",
+    "identity": [
+      16777231,
+      407924554,
+      7998,
+      1792560253624251050,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-584.json",
+    "identity": [
+      16777231,
+      407924455,
+      4139,
+      1792560254208298490,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-595.json",
+    "identity": [
+      16777231,
+      407924474,
+      8013,
+      1792560255117996616,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-601.json",
+    "identity": [
+      16777231,
+      407924637,
+      4135,
+      1792560255665768094,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-609.json",
+    "identity": [
+      16777231,
+      407924521,
+      6114,
+      1792560256371022073,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-618.json",
+    "identity": [
+      16777231,
+      407924424,
+      6048,
+      1792560257314990689,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-624.json",
+    "identity": [
+      16777231,
+      407924473,
+      4130,
+      1792560257882965077,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-635.json",
+    "identity": [
+      16777231,
+      407924441,
+      8008,
+      1792560258806309157,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-641.json",
+    "identity": [
+      16777231,
+      407924595,
+      4135,
+      1792560259424991173,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-643.json",
+    "identity": [
+      16777231,
+      407924408,
+      1241,
+      1792560260082107371,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-650.json",
+    "identity": [
+      16777231,
+      407924558,
+      5114,
+      1792560260844564973,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-659.json",
+    "identity": [
+      16777231,
+      407924420,
+      6021,
+      1792560261704237308,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-667.json",
+    "identity": [
+      16777231,
+      407924529,
+      6101,
+      1792560262338047746,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-676.json",
+    "identity": [
+      16777231,
+      407924629,
+      6044,
+      1792560263652634351,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-688.json",
+    "identity": [
+      16777231,
+      407924530,
+      8005,
+      1792560264876114220,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-694.json",
+    "identity": [
+      16777231,
+      407924588,
+      4144,
+      1792560265549093177,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-700.json",
+    "identity": [
+      16777231,
+      407924482,
+      4128,
+      1792560266159326727,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-703.json",
+    "identity": [
+      16777231,
+      407924565,
+      1239,
+      1792560266976851691,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-708.json",
+    "identity": [
+      16777231,
+      407924610,
+      3150,
+      1792560267601045656,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-719.json",
+    "identity": [
+      16777231,
+      407924573,
+      8013,
+      1792560268605380999,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-725.json",
+    "identity": [
+      16777231,
+      407924628,
+      4135,
+      1792560269179507423,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-733.json",
+    "identity": [
+      16777231,
+      407924631,
+      6115,
+      1792560269850531493,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-742.json",
+    "identity": [
+      16777231,
+      407924560,
+      6038,
+      1792560270744289401,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-748.json",
+    "identity": [
+      16777231,
+      407924616,
+      4134,
+      1792560271360070443,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-759.json",
+    "identity": [
+      16777231,
+      407924534,
+      8012,
+      1792560272339122388,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-765.json",
+    "identity": [
+      16777231,
+      407924600,
+      4139,
+      1792560272913413812,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-773.json",
+    "identity": [
+      16777231,
+      407924609,
+      6101,
+      1792560273591202422,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-782.json",
+    "identity": [
+      16777231,
+      407924490,
+      6053,
+      1792560274443936967,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-793.json",
+    "identity": [
+      16777231,
+      407924454,
+      8026,
+      1792560275395330252,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-799.json",
+    "identity": [
+      16777231,
+      407924513,
+      4124,
+      1792560276001928781,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-805.json",
+    "identity": [
+      16777231,
+      407924487,
+      4134,
+      1792560276588111607,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-816.json",
+    "identity": [
+      16777231,
+      407924642,
+      7994,
+      1792560277597718398,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-822.json",
+    "identity": [
+      16777231,
+      407924448,
+      4126,
+      1792560278192452275,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-830.json",
+    "identity": [
+      16777231,
+      407924579,
+      6096,
+      1792560278839762249,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-839.json",
+    "identity": [
+      16777231,
+      407924407,
+      6046,
+      1792560279791050242,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-845.json",
+    "identity": [
+      16777231,
+      407924500,
+      4146,
+      1792560280394931964,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-856.json",
+    "identity": [
+      16777231,
+      407924587,
+      8022,
+      1792560281346952294,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-862.json",
+    "identity": [
+      16777231,
+      407924427,
+      4133,
+      1792560281946457365,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-870.json",
+    "identity": [
+      16777231,
+      407924535,
+      6084,
+      1792560282611622734,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-879.json",
+    "identity": [
+      16777231,
+      407924459,
+      6035,
+      1792560283484159853,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/receipts-885.json",
+    "identity": [
+      16777231,
+      407924549,
+      4135,
+      1792560284098908596,
+      8192,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/root-0.json",
+    "identity": [
+      16777231,
+      407925323,
+      570,
+      1792576045018448130,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/root-1.json",
+    "identity": [
+      16777231,
+      407925329,
+      570,
+      1792576045330402247,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/spatial-height.png",
+    "identity": [
+      16777231,
+      407924518,
+      207,
+      1792560209496173948,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/spatial-input.json",
+    "identity": [
+      16777231,
+      407924536,
+      3679,
+      1792560209484641505,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/wal-3859.bin",
+    "identity": [
+      16777231,
+      407925328,
+      0,
+      1792576045320370834,
+      0,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/world-3858.json",
+    "identity": [
+      16777231,
+      407925318,
+      2507418,
+      1792576044928594204,
+      2510848,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/world-3859.json",
+    "identity": [
+      16777231,
+      407925326,
+      2507418,
+      1792576045258892911,
+      2510848,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  },
+  {
+    "path": "work/t13a74-wal-roundtrip/world/world-index-3859.json",
+    "identity": [
+      16777231,
+      407925327,
+      655,
+      1792576045311111832,
+      4096,
+      1
+    ],
+    "reason": "Successful disposable old-world to streamed-checkpoint correctness fork; no independent restore dependency; original and compatibility copy retained",
+    "retained_evidence": "docs/evidence/m0-t13a-wal-canonical/roundtrip-proof.json"
+  }
+]

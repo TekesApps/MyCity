@@ -1,0 +1,17 @@
+{
+  "source_archive_current_bytes_match": true,
+  "source_sha256": "63c1642e45fef44374dddeddfa4aeb9f1a734929777267b213ea799e26dcf4ca",
+  "fixed_binary_matches": true,
+  "lock_unchanged": true,
+  "json_python_markdown_checks": true,
+  "markdown_checked": [
+    "docs/evidence/m0-t13a-wal-canonical/failure-notes.md",
+    "docs/evidence/m0-t13a-wal-canonical/NEXT.md",
+    "docs/evidence/m0-t13a-wal-canonical/advisor-review.md",
+    "docs/evidence/m0-t13a-wal-canonical/STATUS.md",
+    "docs/evidence/disk-reclamation-current-audit/advisor-review.md",
+    "docs/evidence/disk-reclamation-current-audit/STATUS.md"
+  ],
+  "capacity_arithmetic_only": true,
+  "game_performance_accepted": false
+}

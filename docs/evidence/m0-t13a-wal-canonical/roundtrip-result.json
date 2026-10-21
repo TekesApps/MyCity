@@ -1,0 +1,8 @@
+{
+  "command": [
+    "python3",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-wal-canonical/verify_roundtrip.py"
+  ],
+  "exit": 0,
+  "seconds": 12.325817707999988
+}

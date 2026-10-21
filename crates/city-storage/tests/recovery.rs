@@ -436,3 +436,95 @@ fn regional_process_exit_never_publishes_half_population_half_clock_or_half_paym
         }
     }
 }
+
+fn rewrite_committed_frame(world: &std::path::Path, payload: &[u8]) -> usize {
+    use sha2::{Digest, Sha256};
+    let length = (payload.len() as u32).to_le_bytes();
+    let mut hash = Sha256::new();
+    hash.update(length);
+    hash.update(payload);
+    let checksum = hash.finalize();
+    let mut wal = length.to_vec();
+    wal.extend_from_slice(payload);
+    wal.extend_from_slice(&checksum);
+    let committed = wal.len();
+    wal.extend_from_slice(b"uncommitted fault evidence");
+    fs::write(world.join("wal.bin"), &wal).unwrap();
+    let mut current: serde_json::Value =
+        serde_json::from_slice(&fs::read(world.join("CURRENT.json")).unwrap()).unwrap();
+    let slot = current["slot"].as_u64().unwrap();
+    let root_path = world.join(format!("root-{slot}.json"));
+    let mut root: serde_json::Value =
+        serde_json::from_slice(&fs::read(&root_path).unwrap()).unwrap();
+    root["wal_end"] = serde_json::json!(committed);
+    root["wal_chain"] = serde_json::json!(format!("{checksum:x}"));
+    let bytes = serde_json::to_vec(&root).unwrap();
+    current["root_sha256"] = serde_json::json!(mycity_core::sha256(&bytes));
+    fs::write(root_path, bytes).unwrap();
+    fs::write(
+        world.join("CURRENT.json"),
+        serde_json::to_vec(&current).unwrap(),
+    )
+    .unwrap();
+    wal.len()
+}
+#[test]
+fn replay_preserves_old_value_last_key_and_rejects_ignored_unknown_fields_before_tail_gc() {
+    for mode in 0..5 {
+        let t = Temp::new();
+        let mut s = Store::create(&t.world(), INPUT, vec![], "rules1").unwrap();
+        let request = command(&s);
+        s.execute(Caller::Account(2), request.clone()).unwrap();
+        let expected = s.engine().unwrap().export_checkpoint().unwrap();
+        drop(s);
+        let wal = fs::read(t.world().join("wal.bin")).unwrap();
+        let n = u32::from_le_bytes(wal[..4].try_into().unwrap()) as usize;
+        let value: serde_json::Value = serde_json::from_slice(&wal[4..4 + n]).unwrap();
+        let original = serde_json::to_string(&value["record"]).unwrap();
+        let raw = match mode {
+            0 => format!("{{{}{}", "\"\\u0061ctor\":999,".repeat(70), &original[1..]),
+            1 => {
+                let mut r = value["record"].clone();
+                r["unknown"] = serde_json::json!(0);
+                serde_json::to_string(&r).unwrap()
+            }
+            2 => {
+                let mut r = value["record"].clone();
+                r["outcome"]["Ok"]["unknown"] = serde_json::json!(0);
+                serde_json::to_string(&r).unwrap()
+            }
+            3 => format!("{{\"actor\":1e400,{}", &original[1..]),
+            _ => format!("{{\"actor\":{{\"nested\":1e400}},{}", &original[1..]),
+        };
+        if mode >= 3 {
+            assert!(serde_json::from_str::<serde_json::Value>(&raw).is_err());
+        }
+        let previous = value["previous"].as_str().unwrap();
+        let escaped = previous
+            .bytes()
+            .map(|b| format!("\\u{b:04x}"))
+            .collect::<Vec<_>>()
+            .join("");
+        let payload = format!(
+            "{{\"record\":{raw},\"envelope\":{},\"previous\":\"{escaped}\",\"sequence\":1}}",
+            value["envelope"]
+        );
+        let untrimmed = rewrite_committed_frame(&t.world(), payload.as_bytes());
+        if mode == 0 {
+            let mut s = Store::open(&t.world(), "rules1").unwrap();
+            assert_eq!(s.engine().unwrap().export_checkpoint().unwrap(), expected);
+            assert_eq!(
+                s.execute(Caller::Account(2), request)
+                    .unwrap()
+                    .committed_sequence,
+                1
+            );
+        } else {
+            assert!(Store::open(&t.world(), "rules1").is_err());
+            assert_eq!(
+                fs::metadata(t.world().join("wal.bin")).unwrap().len() as usize,
+                untrimmed
+            );
+        }
+    }
+}

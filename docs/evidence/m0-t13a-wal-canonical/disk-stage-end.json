@@ -1,0 +1,11 @@
+{
+  "unix_ns": 1792576732590475000,
+  "filesystem_available_bytes": 122047156224,
+  "work_du_kib": 18039576,
+  "target_du_kib": 1019624,
+  "new_independent_target": false,
+  "new_pressure_snapshots": false,
+  "explicit_cache_deleted_bytes": 0,
+  "temporary_roundtrip_allocated_bytes_deleted": 10207232,
+  "reason": "Shared target/current libraries and historical proof-linked feature libraries retained pending exact dependency audit. Successful temporary fork retired by exact file allowlist; all original restore dependencies and fixed evidence preserved. df change not wholly attributable."
+}
