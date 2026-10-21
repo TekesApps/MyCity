@@ -1,13 +1,13 @@
 # MyCity
 
-仓库发布版本：`v0.5.59`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.60`。已开始Rust模型与headless CLI，当前不做UI。
 
 **软件结构先读[总体架构](docs/SOFTWARE_ARCHITECTURE.md)：当前代码、主体与事件、单writer、多进程目标、数据文件和预算。**
 
 **从[完整产品蓝图](docs/PRODUCT_BLUEPRINT.md)开始。** 总体覆盖市长／City Team、市民生活、企业经营和城市运行，实施分版本；原23类首期和90类目录不作为总体完成证明。
 
 - [四视角覆盖与61条需求追踪](docs/product-coverage-and-requirements.md)：全部能力的完成条件／证据／主动边界。
-- [区域属性与概率决策](docs/regional-probabilistic-decisions.md)：区域属性决定自主经营倾向、固定周期抽样及私人医院示例；仅设计，尚未实现／调参／性能验证。
+- [属性驱动的概率机制通则](docs/regional-probabilistic-decisions.md)：跨系统识别统计倾向，组合区域／经济／气候／居民／企业等相关属性，统一概率语义、抽样及恢复契约；仅设计，尚未实现／调参／性能验证。
 - [玩家、空间、建设与治理](docs/product-governance-space-and-player.md)：精确选择、文字／语音、事项、协商补偿、议会司法与财政。
 - [市民、企业与复合空间](docs/product-citizens-enterprises-and-spaces.md)：生活就业、住房共享、公司持股、复合建筑／商租摊位和访客经济。
 - [全模式交通](docs/product-transport-and-logistics.md)：公交停车、电车／地铁／客货铁路、轮渡港口、三档机场与航空公司。
