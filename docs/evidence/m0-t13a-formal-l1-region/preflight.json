@@ -1,0 +1,20 @@
+{
+  "source_sha256": "66e7e2aee0464d302738c4a1d36cfe2b2e7d17de7ac6f8d088330a2d85629138",
+  "source_zip": "docs/evidence/m0-t13a-causal-clock/frozen-source.zip",
+  "fixed_binary": "/Users/frankqin/dev/MyCity/work/candidate-binaries/causal-clock/mycity-headless",
+  "fixed_binary_sha256": "7c44c99b2dcfa4d1f95979e6569b55c4a8a2d3140aeb6ace3054d40ae490b741",
+  "single_snapshot_file_bytes": 3378784402,
+  "three_live_generations_and_log_allowance_bytes": 10539006390,
+  "filesystem_available_bytes": 109407334400,
+  "world_max_bytes": 21474836480,
+  "safety_free_bytes": 2147483648,
+  "support_sha256": {
+    "docs/evidence/m0-t13a-causal-clock/observe.py": "6bc89147a64894599d7eea1f6762fbb01f4119d606842ce475ba2c2f7215c98a",
+    "docs/evidence/m0-t13a-causal-clock/native_metrics.py": "917b184e339649acd7b79797cf77f2b2db4f5128f33fdaf8759c162672fa34ca",
+    "docs/evidence/m0-t13a-causal-clock/clock_exchange.py": "534642a6854928e5253521862b18b33d19ebc0d777f5a0695321adeddea264b5",
+    "docs/evidence/m0-t13a-causal-clock/readiness.py": "88ae51f35cabba9cf5660cf6a6d7a7e29b3268b253b2e80583fa005b69dbee6a",
+    "docs/evidence/m0-t13a-formal-l1-region/run.py": "2758f2ef20437146de9e1c5224ec51f8f05ee907de70499683ebd3cd45fa1aa4"
+  },
+  "no_new_target": true,
+  "original_parameters_unchanged": true
+}

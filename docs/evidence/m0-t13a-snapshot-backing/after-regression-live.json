@@ -1,0 +1,7 @@
+{
+  "pid": 21459,
+  "waited_controller_pid": 19231,
+  "initial_process_identity": "19231 Thu Oct 22 05:11:27 2026     /Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python",
+  "source_sha256": "c0e4ef46b0c3c8c3d2908d8b7d79f4adf3a32967f92fda959e29094f27331bc5",
+  "phase": "waiting for actual regression terminal; no automatic retry"
+}

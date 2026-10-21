@@ -1,0 +1,13 @@
+{
+  "deleted_files": [],
+  "deleted_allocated_bytes": 0,
+  "work_du_kib": 33359988,
+  "target_du_kib": 1400552,
+  "filesystem_available_bytes": 95051304960,
+  "filesystem_delta_attributed_to_cleanup_bytes": 0,
+  "occupancy": [],
+  "new_target": false,
+  "retained": "current first complete + second pending, previous complete baselines and fault originals, real business/WAL/receipts/raw samples, fixed sources/lock/exes",
+  "release_condition": "after concrete report-lifetime cause verification and independent dependency handoff, retire obsolete synthetic files by exact allowlist",
+  "new_cold_outputs": "only small reports; no pressure copy; input originals preserved"
+}

@@ -1,0 +1,14 @@
+{
+  "source_sha256": "66e7e2aee0464d302738c4a1d36cfe2b2e7d17de7ac6f8d088330a2d85629138",
+  "status": "model_failed",
+  "actual_wall_seconds": 308.51998670899997,
+  "model_exit_code": 2,
+  "samples": 1235,
+  "error": "memory allocation of 1048576 bytes failed\n",
+  "formal_measurement_complete": false,
+  "snapshot_1": "complete original preserved",
+  "snapshot_2": "pending; not a valid restore point; native-restore-bound present; index/native-roundtrip absent",
+  "raw_root": "work/causal-clock-formal-l1-01/observed",
+  "allocation_site": "not proven; no per-allocation trace in this source",
+  "next_action": "repair actual COW return and persistent I/O then repeat original formal; do not raise allowance or shrink load"
+}

@@ -1,13 +1,14 @@
 //! Full frozen JPROD storage pressure. Missing business domains remain typed stubs.
 //! This module cannot mutate or install a gameplay World.
 mod bounded_table;
+mod reusable_io;
 use mycity_core::layout_pressure::NativePressure;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use std::{
     fs::{self, File, OpenOptions},
     hint::black_box,
-    io::{BufReader, BufWriter, Read, Write},
+    io::{BufWriter, Read, Write},
     mem::size_of,
     path::{Path, PathBuf},
     sync::{Arc, Mutex},
@@ -261,13 +262,22 @@ fn read_verified<T>(
     entry: &FileEntry,
     decode: impl FnOnce(&mut dyn Read) -> Result<T, String>,
 ) -> Result<T, String> {
+    let mut backing = vec![0u8; MIB];
+    read_verified_buffered(path, entry, &mut backing, decode)
+}
+fn read_verified_buffered<T>(
+    path: &Path,
+    entry: &FileEntry,
+    backing: &mut [u8],
+    decode: impl FnOnce(&mut dyn Read) -> Result<T, String>,
+) -> Result<T, String> {
     use sha2::Digest;
     let hashed = HashReader {
         inner: File::open(path).map_err(err)?,
         digest: sha2::Sha256::new(),
         bytes: 0,
     };
-    let mut reader = BufReader::with_capacity(MIB, hashed);
+    let mut reader = reusable_io::Reader::new(hashed, backing);
     let value = decode(&mut reader)?;
     let mut trailing = [0u8; 1];
     if reader.read(&mut trailing).map_err(err)? != 0 {
@@ -282,12 +292,13 @@ fn read_verified<T>(
 fn write_file(
     dir: &Path,
     name: &str,
-    write: impl FnOnce(&mut HashWriter<BufWriter<File>>) -> Result<(), String>,
+    backing: &mut [u8],
+    write: impl FnOnce(&mut HashWriter<reusable_io::Writer<'_, File>>) -> Result<(), String>,
 ) -> Result<FileEntry, String> {
     use sha2::Digest;
     let file = File::create(dir.join(name)).map_err(err)?;
     let mut writer = HashWriter {
-        inner: BufWriter::with_capacity(MIB, file),
+        inner: reusable_io::Writer::new(file, backing),
         digest: sha2::Sha256::new(),
         bytes: 0,
     };
@@ -308,6 +319,7 @@ fn free_bytes(dir: &Path) -> Result<u64, String> {
 struct Reserve {
     pages: Vec<Vec<u8>>,
     loan_pages: usize,
+    decode_loan_pages: usize,
 }
 impl Reserve {
     /// Transfer an already initialized MiB allocation into a dirty COW page.
@@ -330,16 +342,58 @@ impl Reserve {
             self.pages.pop();
         }
         self.loan_pages += n;
+        self.decode_loan_pages += n;
         Ok(())
     }
-    fn repay(&mut self, n: usize) -> Result<(), String> {
-        if self.loan_pages < n {
-            return Err("layout_cow_loan".into());
+    fn repay(&mut self, n: usize, trace: &mut AllocationTrace) -> Result<(), String> {
+        if self.decode_loan_pages < n || self.loan_pages < n {
+            return Err("layout_decode_loan".into());
         }
-        for _ in 0..n {
-            self.pages.push(vec![0xa5; MIB]);
+        for index in 0..n {
+            trace.mark(8, index as u64, MIB, self)?;
+            let mut page = Vec::new();
+            page.try_reserve_exact(MIB)
+                .map_err(|_| "layout_decode_repay_allocation")?;
+            page.resize(MIB, 0xa5);
+            self.pages.push(page);
+            // A fallible partial repayment has truthful accounting, never a
+            // numerical credit for pages that were not actually restored.
+            self.loan_pages -= 1;
+            self.decode_loan_pages -= 1;
         }
-        self.loan_pages -= n;
+        Ok(())
+    }
+    fn reclaim_cow(&mut self, pages: Vec<PressurePage>, expected: usize) -> Result<(), String> {
+        if self.decode_loan_pages != 0 || self.loan_pages != expected {
+            return Err("layout_cow_outstanding_decode_or_count".into());
+        }
+        let unique = pages
+            .iter()
+            .filter(|p| Arc::strong_count(&p.bytes) == 1)
+            .count();
+        if unique != expected || self.pages.len() + expected != COW_PAGES {
+            return Err("layout_cow_return_count".into());
+        }
+        for page in &pages {
+            if Arc::strong_count(&page.bytes) == 1
+                && (page.bytes.len() != MIB || page.bytes.capacity() != MIB)
+            {
+                return Err("layout_cow_return_shape".into());
+            }
+        }
+        // Only called by the owning main thread AFTER join, with no scan in
+        // flight. Shared pages remain world-owned; unique pages are actual old
+        // backing, not freshly allocated replacement placeholders.
+        for page in pages {
+            if let Ok(mut bytes) = Arc::try_unwrap(page.bytes) {
+                bytes.fill(0xa5);
+                self.pages.push(bytes);
+                self.loan_pages -= 1;
+            }
+        }
+        if self.loan_pages != 0 {
+            return Err("layout_cow_return_incomplete".into());
+        }
         Ok(())
     }
 }
@@ -364,7 +418,8 @@ pub struct Load {
     normal_bytes: usize,
     external_charge: usize,
     metadata_charge: usize,
-    job: Option<JoinHandle<Result<Value, String>>>,
+    job: Option<JoinHandle<SnapshotCompletion>>,
+    snapshot_buffers: Arc<Mutex<SnapshotBuffers>>,
     root: PathBuf,
     generation: u64,
     _root_lock: File,
@@ -401,6 +456,7 @@ impl Load {
         // second System allocation resident. A second Load/other active role
         // is rejected by the allocator; there is no fallback or larger grant.
         activate_layout_region(normal_bytes, external_charge)?;
+        let snapshot_buffers = Arc::new(Mutex::new(SnapshotBuffers::new()));
         let native = Arc::new(NativePressure::jprod()?);
         let tables = Arc::new(tables()?);
         let native_bytes = native.manifest().owned_capacity_bytes;
@@ -443,6 +499,7 @@ impl Load {
         let reserve = Reserve {
             pages: (0..COW_PAGES).map(|_| vec![0xa5; MIB]).collect(),
             loan_pages: 0,
+            decode_loan_pages: 0,
         };
         Ok(Self {
             native,
@@ -454,6 +511,7 @@ impl Load {
             normal_bytes,
             external_charge,
             metadata_charge,
+            snapshot_buffers,
             job: None,
             root: root.into(),
             generation: 0,
@@ -572,6 +630,7 @@ impl Load {
         let native = self.native.clone();
         let tables = self.tables.clone();
         let reserve = self.reserve.clone();
+        let buffers = self.snapshot_buffers.clone();
         let root = self.root.clone();
         let manifest = self.manifest();
         self.job = Some(
@@ -587,6 +646,7 @@ impl Load {
                         native,
                         tables,
                         reserve,
+                        buffers,
                         manifest,
                     }
                     .run()
@@ -597,23 +657,34 @@ impl Load {
             json!({"generation":generation,"available_bytes":free,"required_candidate_upper_bytes":worst_candidate,"minimum_free_bytes":FREE_FLOOR}),
         )
     }
+    fn complete_snapshot(&mut self, completed: SnapshotCompletion) -> Result<Value, String> {
+        let reclaimed = self.cow_pages;
+        let returned = self
+            .reserve
+            .lock()
+            .map_err(err)?
+            .reclaim_cow(completed.pages, reclaimed);
+        if let Err(error) = returned {
+            return Err(format!("{error}:snapshot_outcome={:?}", completed.result));
+        }
+        self.cow_pages = 0;
+        completed.result.map(|mut result| {
+            result["cow_backings_returned_after_join"] = json!(reclaimed);
+            result
+        })
+    }
     pub fn poll_snapshot(&mut self) -> Result<Option<Value>, String> {
         if self.job.as_ref().is_some_and(JoinHandle::is_finished) {
             let job = self.job.take().ok_or("layout_job")?;
             let result = job.join().map_err(|_| "layout_snapshot_panicked")?;
-            // Worker drops old Arc pages before it terminates; recover placeholders.
-            self.reserve.lock().map_err(err)?.repay(self.cow_pages)?;
-            self.cow_pages = 0;
-            return result.map(Some);
+            return self.complete_snapshot(result).map(Some);
         }
         Ok(None)
     }
     pub fn finish_snapshot(&mut self) -> Result<Option<Value>, String> {
         if let Some(job) = self.job.take() {
             let result = job.join().map_err(|_| "layout_snapshot_panicked")?;
-            self.reserve.lock().map_err(err)?.repay(self.cow_pages)?;
-            self.cow_pages = 0;
-            return result.map(Some);
+            return self.complete_snapshot(result).map(Some);
         }
         Ok(None)
     }
@@ -625,6 +696,68 @@ impl Drop for Load {
         }
     }
 }
+struct SnapshotBuffers {
+    io: Vec<u8>,
+    compare: Vec<u8>,
+}
+impl SnapshotBuffers {
+    fn new() -> Self {
+        Self {
+            io: vec![0; MIB],
+            compare: vec![0; MIB],
+        }
+    }
+}
+struct SnapshotCompletion {
+    result: Result<Value, String>,
+    pages: Vec<PressurePage>,
+}
+// Fixed 128-byte little-endian records, written before the operation. Fields:
+// magic/version, sequence, generation, phase, file-or-page-index, request bytes,
+// allocator requested/used/free/failures, reserve available/total loans/decode
+// loans, clock elapsed, reserved. No heap formatting or allocation on this path.
+struct AllocationTrace {
+    file: File,
+    sequence: u64,
+    generation: u64,
+}
+impl AllocationTrace {
+    fn mark(
+        &mut self,
+        phase: u64,
+        index: u64,
+        request: usize,
+        reserve: &Reserve,
+    ) -> Result<(), String> {
+        let a = crate::heap_meter::arena_snapshot();
+        let fields = [
+            0x4d59435452414301,
+            self.sequence,
+            self.generation,
+            phase,
+            index,
+            request as u64,
+            a.current_requested_bytes as u64,
+            a.arena_used_bytes as u64,
+            a.arena_free_bytes as u64,
+            a.allocation_failures,
+            reserve.pages.len() as u64,
+            reserve.loan_pages as u64,
+            reserve.decode_loan_pages as u64,
+            crate::heap_meter::clock_reading().elapsed_ns,
+            0,
+            0,
+        ];
+        let mut bytes = [0u8; 128];
+        for (chunk, value) in bytes.chunks_exact_mut(8).zip(fields) {
+            chunk.copy_from_slice(&value.to_le_bytes());
+        }
+        self.file.write_all(&bytes).map_err(err)?;
+        self.file.sync_data().map_err(err)?;
+        self.sequence += 1;
+        Ok(())
+    }
+}
 struct Snapshot {
     root: PathBuf,
     dir: PathBuf,
@@ -634,9 +767,17 @@ struct Snapshot {
     tables: Arc<Vec<DomainTable>>,
     reserve: Arc<Mutex<Reserve>>,
     manifest: Value,
+    buffers: Arc<Mutex<SnapshotBuffers>>,
 }
 impl Snapshot {
-    fn run(self) -> Result<Value, String> {
+    fn run(self) -> SnapshotCompletion {
+        let result = self.run_inner();
+        SnapshotCompletion {
+            result,
+            pages: self.pages,
+        }
+    }
+    fn run_inner(&self) -> Result<Value, String> {
         let Self {
             root,
             dir,
@@ -646,26 +787,38 @@ impl Snapshot {
             tables,
             reserve,
             manifest,
+            buffers,
         } = self;
+        let mut buffers = buffers.lock().map_err(err)?;
+        let SnapshotBuffers { io, compare } = &mut *buffers;
+        let mut trace = AllocationTrace {
+            file: File::create_new(dir.join("allocation-phases.bin")).map_err(err)?,
+            sequence: 0,
+            generation: *generation,
+        };
         let start = Instant::now();
         let mut entries = Vec::with_capacity(tables.len() + 3);
-        entries.push(write_file(&dir, "native.json", |w| {
+        trace.mark(1, 0, 0, &*reserve.lock().map_err(err)?)?;
+        entries.push(write_file(dir, "native.json", io, |w| {
             native.write_checkpoint(w)
         })?);
-        for table in tables.iter() {
-            entries.push(write_file(&dir, &format!("{}.json", table.name), |w| {
+        for (i, table) in tables.iter().enumerate() {
+            trace.mark(1, i as u64 + 1, 0, &*reserve.lock().map_err(err)?)?;
+            entries.push(write_file(dir, &format!("{}.json", table.name), io, |w| {
                 serde_json::to_writer(w, &table.table).map_err(err)
             })?);
         }
-        entries.push(write_file(&dir, "pressure.bin", |w| {
-            for page in &pages {
+        trace.mark(1, 27, 0, &*reserve.lock().map_err(err)?)?;
+        entries.push(write_file(dir, "pressure.bin", io, |w| {
+            for page in pages {
                 w.write_all(&page.bytes).map_err(err)?;
             }
             Ok(())
         })?);
         // The complete 128MiB reserved work-page image is physically written too.
         // Stream one existing placeholder repeatedly, never allocate another world.
-        entries.push(write_file(&dir, "work-reserve.bin", |w| {
+        trace.mark(1, 28, 0, &*reserve.lock().map_err(err)?)?;
+        entries.push(write_file(dir, "work-reserve.bin", io, |w| {
             let spare = reserve.lock().map_err(err)?;
             let page = spare.pages.first().ok_or("layout_no_spare")?;
             for _ in 0..COW_PAGES {
@@ -676,6 +829,7 @@ impl Snapshot {
         let write_fsync_seconds = start.elapsed().as_secs_f64();
         // Fund the full transient decode from the SAME 128MiB COW reserve. No full
         // padding/world clone is allocated; each domain is restored and released.
+        trace.mark(2, 0, 64 * MIB, &*reserve.lock().map_err(err)?)?;
         reserve.lock().map_err(err)?.loan(64)?;
         let restore = (|| {
             let entry = |name: &str| {
@@ -684,11 +838,15 @@ impl Snapshot {
                     .find(|e| e.name == name)
                     .ok_or_else(|| format!("layout_snapshot_entry:{name}"))
             };
-            let (candidate, native_restore_bound) =
-                read_verified(&dir.join("native.json"), entry("native.json")?, |reader| {
-                    NativePressure::restore_checkpoint_profiled(reader)
-                })?;
-            let original_hash = write_file(&dir, "native-roundtrip.json", |w| {
+            trace.mark(3, 0, 0, &*reserve.lock().map_err(err)?)?;
+            let (candidate, native_restore_bound) = read_verified_buffered(
+                &dir.join("native.json"),
+                entry("native.json")?,
+                io,
+                |reader| NativePressure::restore_checkpoint_profiled(reader),
+            )?;
+            trace.mark(4, 0, 0, &*reserve.lock().map_err(err)?)?;
+            let original_hash = write_file(dir, "native-roundtrip.json", io, |w| {
                 candidate.write_checkpoint(w)
             })?;
             if original_hash.sha256 != entries[0].sha256 || original_hash.bytes != entries[0].bytes
@@ -701,21 +859,25 @@ impl Snapshot {
             bound_file.sync_all().map_err(err)?;
             drop(candidate);
             fs::remove_file(dir.join("native-roundtrip.json")).map_err(err)?;
-            for table in tables.iter() {
+            for (i, table) in tables.iter().enumerate() {
+                trace.mark(5, i as u64 + 1, 0, &*reserve.lock().map_err(err)?)?;
                 let name = format!("{}.json", table.name);
-                let candidate: Table = read_verified(&dir.join(&name), entry(&name)?, |reader| {
-                    bounded_table::decode(reader, &table.table)
-                })?;
+                let candidate: Table =
+                    read_verified_buffered(&dir.join(&name), entry(&name)?, io, |reader| {
+                        bounded_table::decode(reader, &table.table)
+                    })?;
                 if candidate != table.table {
                     return Err("layout_stub_restore_changed".into());
                 }
             }
-            read_verified(
+            trace.mark(6, 27, 0, &*reserve.lock().map_err(err)?)?;
+            read_verified_buffered(
                 &dir.join("pressure.bin"),
                 entry("pressure.bin")?,
+                io,
                 |reader| {
-                    let mut buf = vec![0u8; MIB];
-                    for page in &pages {
+                    let buf = &mut *compare;
+                    for page in pages {
                         reader
                             .read_exact(&mut buf[..page.bytes.len()])
                             .map_err(err)?;
@@ -726,13 +888,15 @@ impl Snapshot {
                     Ok(())
                 },
             )?;
-            read_verified(
+            trace.mark(7, 28, 0, &*reserve.lock().map_err(err)?)?;
+            read_verified_buffered(
                 &dir.join("work-reserve.bin"),
                 entry("work-reserve.bin")?,
+                io,
                 |reader| {
-                    let mut buf = vec![0u8; MIB];
+                    let buf = &mut *compare;
                     for _ in 0..COW_PAGES {
-                        reader.read_exact(&mut buf).map_err(err)?;
+                        reader.read_exact(buf).map_err(err)?;
                         if buf.iter().any(|b| *b != 0xa5) {
                             return Err("layout_work_restore_changed".into());
                         }
@@ -742,24 +906,25 @@ impl Snapshot {
             )?;
             serde_json::to_value(native_restore_bound).map_err(err)
         })();
-        reserve.lock().map_err(err)?.repay(64)?;
+        reserve.lock().map_err(err)?.repay(64, &mut trace)?;
+        trace.mark(9, 0, 0, &*reserve.lock().map_err(err)?)?;
         let native_restore_bound = restore?;
         let index = json!({"schema":"mycity-layout-snapshot-v2","generation":generation,"manifest":manifest,"files":entries});
         let mut f = File::create(dir.join("index.json")).map_err(err)?;
         serde_json::to_writer_pretty(&mut f, &index).map_err(err)?;
         f.sync_all().map_err(err)?;
-        File::open(&dir).map_err(err)?.sync_all().map_err(err)?;
+        File::open(dir).map_err(err)?.sync_all().map_err(err)?;
         let durable = root.join(format!("snapshot-{generation:06}"));
-        fs::rename(&dir, &durable).map_err(err)?;
-        File::open(&root).map_err(err)?.sync_all().map_err(err)?;
+        fs::rename(dir, &durable).map_err(err)?;
+        File::open(root).map_err(err)?.sync_all().map_err(err)?;
         // Only after full new restore validation and directory durability, retain two.
-        if generation > 2 {
+        if *generation > 2 {
             fs::remove_dir_all(root.join(format!("snapshot-{:06}", generation - 2)))
                 .map_err(err)?;
-            File::open(&root).map_err(err)?.sync_all().map_err(err)?;
+            File::open(root).map_err(err)?.sync_all().map_err(err)?;
         }
         Ok(
-            json!({"generation":generation,"write_fsync_seconds":write_fsync_seconds,"durable_complete_seconds":start.elapsed().as_secs_f64(),"files":entries,"native_restore_bound":native_restore_bound,"complete_record_restore":"passed","full_pressure_file_readback":"passed","remaining_free_bytes":free_bytes(&root)?}),
+            json!({"generation":generation,"write_fsync_seconds":write_fsync_seconds,"durable_complete_seconds":start.elapsed().as_secs_f64(),"files":entries,"native_restore_bound":native_restore_bound,"complete_record_restore":"passed","full_pressure_file_readback":"passed","remaining_free_bytes":free_bytes(root)?}),
         )
     }
 }
@@ -1090,6 +1255,9 @@ impl Load {
         // compatibility decoding below deliberately does not activate it.
         // Schema/work-budget rejection precedes this process-lifetime switch.
         activate_layout_region(normal_bytes, external_charge)?;
+        let snapshot_buffers = Arc::new(Mutex::new(SnapshotBuffers::new()));
+        let mut buffers = snapshot_buffers.lock().map_err(err)?;
+        let io = &mut buffers.io;
         let mut tables = tables()?;
         let mut expected = vec![
             "native.json".to_string(),
@@ -1119,9 +1287,10 @@ impl Load {
                 .find(|e| e.name == name)
                 .ok_or_else(|| format!("layout_restore_entry:{name}"))
         };
-        let (native, bound) = read_verified(
+        let (native, bound) = read_verified_buffered(
             &snapshot_dir.join("native.json"),
             entry("native.json")?,
+            io,
             |reader| NativePressure::restore_checkpoint_profiled(reader),
         )?;
         if serde_json::to_value(native.manifest()).map_err(err)? != manifest["native"] {
@@ -1130,7 +1299,7 @@ impl Load {
         for table in &mut tables {
             let name = format!("{}.json", table.name);
             let candidate: Table =
-                read_verified(&snapshot_dir.join(&name), entry(&name)?, |reader| {
+                read_verified_buffered(&snapshot_dir.join(&name), entry(&name)?, io, |reader| {
                     bounded_table::decode(reader, &table.table)
                 })?;
             if candidate != table.table {
@@ -1164,9 +1333,10 @@ impl Load {
         {
             return Err("layout_restore_joint_budget".into());
         }
-        let pages = read_verified(
+        let pages = read_verified_buffered(
             &snapshot_dir.join("pressure.bin"),
             entry("pressure.bin")?,
+            io,
             |reader| {
                 let mut pages = Vec::with_capacity(total_payload.div_ceil(MIB) + 7);
                 for (domain, bytes) in payload.iter().enumerate() {
@@ -1189,9 +1359,10 @@ impl Load {
         if entry("work-reserve.bin")?.bytes != (COW_PAGES * MIB) as u64 {
             return Err("layout_restore_work_size".into());
         }
-        let reserve_pages = read_verified(
+        let reserve_pages = read_verified_buffered(
             &snapshot_dir.join("work-reserve.bin"),
             entry("work-reserve.bin")?,
+            io,
             |reader| {
                 let mut pages = Vec::with_capacity(COW_PAGES);
                 for _ in 0..COW_PAGES {
@@ -1212,6 +1383,7 @@ impl Load {
             return Err("layout_restore_zero_generation".into());
         }
         let report = json!({"cold_restore_seconds":started.elapsed().as_secs_f64(),"native_restore_bound":bound,"producer_source_sha256":manifest["source_sha256"],"reader_source_sha256":env!("MYCITY_SOURCE_SHA256"),"same_source":manifest["source_sha256"]==env!("MYCITY_SOURCE_SHA256"),"codec":"layout-v2; full native shape/capacity and immutable stub equality; explicit mutation counter required; one-pass hash+load","restored_generation":generation,"restored_mutation_iteration":iterations,"all_payload_files_hashed_and_loaded":true,"byte_length":entries.iter().map(|e|e.bytes).sum::<u64>()});
+        drop(buffers);
         Ok((
             Self {
                 native: Arc::new(native),
@@ -1220,12 +1392,14 @@ impl Load {
                 reserve: Arc::new(Mutex::new(Reserve {
                     pages: reserve_pages,
                     loan_pages: 0,
+                    decode_loan_pages: 0,
                 })),
                 iterations,
                 cow_pages: 0,
                 normal_bytes,
                 external_charge,
                 metadata_charge,
+                snapshot_buffers,
                 job: None,
                 root: root.into(),
                 generation,
@@ -1466,6 +1640,7 @@ mod tests {
         let mut reserve = Reserve {
             pages: (0..2).map(|_| vec![0xa5; MIB]).collect(),
             loan_pages: 0,
+            decode_loan_pages: 0,
         };
         assert!(reserve.loan(3).is_err());
         assert_eq!(reserve.pages.len(), 2);
@@ -1481,10 +1656,121 @@ mod tests {
             reserve.pages.len() * MIB + current.len() + original.len(),
             3 * MIB
         );
-        drop(original);
-        reserve.repay(1).unwrap();
-        assert_eq!(reserve.pages.len(), 2);
+        let old_address = original.as_ptr();
+        // This unit uses a two-page reserve; pad to the production count without
+        // changing the COW transfer being tested.
+        reserve
+            .pages
+            .extend((0..COW_PAGES - 2).map(|_| vec![0xa5; MIB]));
+        reserve
+            .reclaim_cow(
+                vec![PressurePage {
+                    domain: 0,
+                    bytes: original,
+                }],
+                1,
+            )
+            .unwrap();
+        assert_eq!(reserve.pages.last().unwrap().as_ptr(), old_address);
+        assert_eq!(reserve.pages.len(), COW_PAGES);
         assert_eq!(reserve.loan_pages, 0);
-        assert!(reserve.repay(1).is_err());
+        assert!(reserve.pages.last().unwrap().iter().all(|b| *b == 0xa5));
+    }
+    #[test]
+    fn snapshot_error_returns_pages_after_join_and_keeps_shared_pages_world_owned() {
+        let original = Arc::new(vec![7; MIB]);
+        let mut current = original.clone();
+        let unchanged = Arc::new(vec![9; MIB]);
+        let mut reserve = Reserve {
+            pages: (0..COW_PAGES).map(|_| vec![0xa5; MIB]).collect(),
+            loan_pages: 0,
+            decode_loan_pages: 0,
+        };
+        let snapshot_pages = vec![
+            PressurePage {
+                domain: 0,
+                bytes: original,
+            },
+            PressurePage {
+                domain: 1,
+                bytes: unchanged.clone(),
+            },
+        ];
+        let old_address = snapshot_pages[0].bytes.as_ptr();
+        // Force the exact previously racy ordering: worker finishes its work
+        // while main has borrowed the new backing but not replaced the old Arc.
+        let copied = reserve.copy_page(&current).unwrap();
+        let worker = thread::spawn(move || SnapshotCompletion {
+            result: Err("injected_readback_failure".into()),
+            pages: snapshot_pages,
+        });
+        let completed = worker.join().unwrap();
+        assert_eq!(Arc::strong_count(&current), 2);
+        current = Arc::new(copied);
+        assert_eq!(current[0], 7);
+        assert!(completed.result.is_err());
+        reserve.reclaim_cow(completed.pages, 1).unwrap();
+        assert_eq!(reserve.pages.last().unwrap().as_ptr(), old_address);
+        assert_eq!(Arc::strong_count(&unchanged), 1);
+        assert_eq!(unchanged[0], 9);
+        assert_eq!(reserve.pages.len(), COW_PAGES);
+        assert_eq!(reserve.loan_pages, 0);
+    }
+    #[test]
+    fn page_return_cannot_cancel_decode_debt_or_fabricate_missing_pages() {
+        let mut reserve = Reserve {
+            pages: (0..COW_PAGES).map(|_| vec![0xa5; MIB]).collect(),
+            loan_pages: 0,
+            decode_loan_pages: 0,
+        };
+        reserve.loan(1).unwrap();
+        let available = reserve.pages.len();
+        assert!(reserve.reclaim_cow(Vec::new(), 1).is_err());
+        assert_eq!(reserve.pages.len(), available);
+        assert_eq!(reserve.decode_loan_pages, 1);
+        // A missing actual COW backing may not be replaced with a fresh Vec.
+        reserve.decode_loan_pages = 0;
+        assert!(reserve.reclaim_cow(Vec::new(), 1).is_err());
+        assert_eq!(reserve.pages.len(), available);
+        assert_eq!(reserve.loan_pages, 1);
+    }
+    #[test]
+    fn borrowed_file_buffers_reset_hashes_verify_eof_and_keep_addresses() {
+        let root = std::env::temp_dir().join(format!("mycity-layout-io-{}", std::process::id()));
+        fs::create_dir(&root).unwrap();
+        let mut buffers = SnapshotBuffers::new();
+        let addresses = (buffers.io.as_ptr(), buffers.compare.as_ptr());
+        for n in [1, MIB + 19, 11] {
+            let bytes = pattern(n, n as u64);
+            let entry = write_file(&root, "payload", &mut buffers.io, |w| {
+                w.write_all(&bytes).map_err(err)
+            })
+            .unwrap();
+            let read =
+                read_verified_buffered(&root.join("payload"), &entry, &mut buffers.io, |r| {
+                    let mut result = Vec::new();
+                    r.read_to_end(&mut result).map_err(err)?;
+                    Ok(result)
+                })
+                .unwrap();
+            assert_eq!(read, bytes);
+            assert_eq!(addresses, (buffers.io.as_ptr(), buffers.compare.as_ptr()));
+            assert!(read_verified_buffered(
+                &root.join("payload"),
+                &entry,
+                &mut buffers.io,
+                |_| Ok(())
+            )
+            .is_err());
+            let mut bad = entry;
+            bad.sha256 = "0".repeat(64);
+            assert!(
+                read_verified_buffered(&root.join("payload"), &bad, &mut buffers.io, |r| {
+                    std::io::copy(r, &mut std::io::sink()).map_err(err)
+                })
+                .is_err()
+            );
+        }
+        fs::remove_dir_all(root).unwrap();
     }
 }

@@ -1,0 +1,14 @@
+{
+  "source_sha256": "c0e4ef46b0c3c8c3d2908d8b7d79f4adf3a32967f92fda959e29094f27331bc5",
+  "harness_summaries": 60,
+  "passed_harness_entries_including_nested": 434,
+  "not_a_unique_test_count": true,
+  "added": [
+    "crates/city-headless/src/layout_load/reusable_io.rs"
+  ],
+  "removed": [],
+  "modified": [
+    "crates/city-headless/src/layout_load.rs"
+  ],
+  "all_fixtures_and_dependency_lock_unchanged": true
+}

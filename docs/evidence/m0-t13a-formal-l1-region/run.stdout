@@ -1,0 +1,87 @@
+{
+  "schema": "mycity-bounded-group-observer-v1",
+  "host": {
+    "hardware_model": "Mac16,1",
+    "cpu": "Apple M4",
+    "logical_cpus": 10,
+    "physical_memory_bytes": 34359738368,
+    "os": "26.6.2",
+    "architecture": "arm64"
+  },
+  "observer_source_sha256": "6bc89147a64894599d7eea1f6762fbb01f4119d606842ce475ba2c2f7215c98a",
+  "observer_source_unchanged": true,
+  "status": "model_failed",
+  "reason": null,
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/causal-clock/mycity-headless",
+    "steady-run",
+    "/Users/frankqin/dev/MyCity/work/causal-clock-formal-l1-01/observed/model",
+    "l1",
+    "formal"
+  ],
+  "artifacts_root": "/Users/frankqin/dev/MyCity/work/causal-clock-formal-l1-01/observed",
+  "model_exit_code": 2,
+  "actual_wall_seconds": 308.51998670899997,
+  "samples": 1235,
+  "sample_log_bytes": 1291094,
+  "maximum_sample_gap_seconds": 0.2714094169999868,
+  "maximum_capture_window_seconds": 0.01921229200002017,
+  "peak_simultaneous_rss_bytes": 3357868032,
+  "peak_simultaneous_footprint_bytes": 3347205912,
+  "missing_footprint_process_samples": 0,
+  "missing_rss_process_samples": 0,
+  "native_metrics": {
+    "method": "public local SDK proc_listpids/proc_pidinfo and host_statistics64",
+    "headers_sha256": {
+      "libproc.h": "246d87709fc6b9157ce5cf3c475656ac48e0e1ae8bbdc46cf45acd34294448cd",
+      "sys/proc_info.h": "e427fa96b348537b21552b9de71e01039410bcad2cedee5584c5e5fddafd70fc",
+      "sys/param.h": "10d7a9553d341c5bc0b473444802920a7ec2e6222281eeaeb61b32dfff29c4b4",
+      "mach/vm_statistics.h": "b2b81f9e7efff57b648b4705a1ad08ffb55b99d0966b02c110f95fa454e175b7",
+      "mach/host_info.h": "4b0d40d08ea62da23ed80a6cce3f0cc45bd595a81b17c86348a289342983e1b0"
+    },
+    "struct_sizes": {
+      "proc_bsdshortinfo": 64,
+      "proc_taskinfo": 96,
+      "vm_statistics64": 416
+    },
+    "pid_capacity": 8192,
+    "fixed_control_charge_bytes": 65536,
+    "no_sampler_child": true,
+    "status": "candidate; requires actual ABI and live capture validation before formal use"
+  },
+  "native_metrics_source_sha256": "917b184e339649acd7b79797cf77f2b2db4f5128f33fdaf8759c162672fa34ca",
+  "native_metrics_source_unchanged": true,
+  "identity_completeness": "per-frame enumerated and captured instances only; birth/relation brackets required, unknowns retained. Does not prove capture of all short-lived processes; model identity roster must also be audited",
+  "peak_world_logical_bytes": 6822748021,
+  "disk_warning_16gib_observed": false,
+  "maximum_live_tracked_identities": 5,
+  "identities_recorded": 5,
+  "identities_retired": 4,
+  "final_live_identity_count": 1,
+  "observer_hot_bound_bytes": 985667,
+  "other_diagnostic_owned_bytes": 3407872,
+  "combined_diagnostic_hot_bound_bytes": 4393539,
+  "swap_initial_bytes": 3350921216,
+  "swap_max_bytes": 3350921216,
+  "maximum_observed_swap_net_growth_bytes": 0,
+  "maximum_sampled_non_normal_pressure_seconds": 0,
+  "pressure_duration_definition": "conservative interval from preceding normal poll through next observed normal poll",
+  "pressure_semantics": "sysctl returns dispatch flags; normal=1, warning=2, critical=4, not internal enum 0..3",
+  "mach_timebase": {
+    "numer": 125,
+    "denom": 3
+  },
+  "sdk_resource_header_sha256": "1067178025c5fd88c9a1b8206a07c2695ef94dd471fe2783f06c512995382961",
+  "sdk_sysctl_header_sha256": "d6d627d3353607f4078079051e09ea0e9a3b32a6771934be1ac5d89fbe93b1c7",
+  "binary_sha256": "7c44c99b2dcfa4d1f95979e6569b55c4a8a2d3140aeb6ace3054d40ae490b741",
+  "binary_unchanged": true,
+  "cpu_children_at_end": {
+    "user_seconds": 22.871958,
+    "system_seconds": 2.8748869999999997
+  },
+  "short_helper_peak_completeness": "no sampler ps/vm_stat child; short model helpers remain subject to actual capture/missing disclosure",
+  "sampler_scope": "native observer + actual model process tree + observed orphans by PID/Mach birth; unavailable RSS/footprint retained as missing, not zero",
+  "memory_16gb_gate": "not_run",
+  "eight_hour_gate": "not_run",
+  "full_M0": "not_accepted"
+}

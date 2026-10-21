@@ -1,0 +1,202 @@
+{
+  "source_sha256": "c0e4ef46b0c3c8c3d2908d8b7d79f4adf3a32967f92fda959e29094f27331bc5",
+  "status": "model_failed",
+  "actual_wall_seconds": 310.292508708,
+  "model_exit_code": 2,
+  "samples": 1242,
+  "peak_simultaneous_rss_bytes": 3358867456,
+  "peak_simultaneous_footprint_bytes": 3348090720,
+  "swap_net_growth": 0,
+  "non_normal_pressure_seconds": 0,
+  "error": "layout_probe_failed:layout_cow_outstanding_decode_or_count:snapshot_outcome=Err(\"layout_decode_repay_allocation\")\n",
+  "first_snapshot_report": {
+    "complete_record_restore": "passed",
+    "cow_backings_returned_after_join": 9,
+    "durable_complete_seconds": 8.15424575,
+    "files": [
+      {
+        "bytes": 65299383,
+        "name": "native.json",
+        "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d"
+      },
+      {
+        "bytes": 2942,
+        "name": "maps.json",
+        "sha256": "ae761e9b61d12349e7981d67af0348b7d695ac0f5afbdbe9c8c3397456b247ae"
+      },
+      {
+        "bytes": 15359282,
+        "name": "households.json",
+        "sha256": "e3fb17426646d2b0d7be91d37ac60007116cbbdb0fb47df9dcb6b19e19866558"
+      },
+      {
+        "bytes": 16677375,
+        "name": "housing.json",
+        "sha256": "945e089c974fae08f7afdb0ce31e329a8a2f56ebedcecf2af2594d0a0d6bfd40"
+      },
+      {
+        "bytes": 690521,
+        "name": "visitors.json",
+        "sha256": "da50ab93414feb3adb8ed61fc7db097685f7d54eaaf61519abc581ea6ca1e6db"
+      },
+      {
+        "bytes": 917651,
+        "name": "operators.json",
+        "sha256": "9a04b08911d53eb76ef4d3e21b7bd90952aca39eb60540199bd37d3b2a761c54"
+      },
+      {
+        "bytes": 1368255,
+        "name": "entities.json",
+        "sha256": "db1dabe1d763fb4efae5e29a004b057f67ac60fd8c49e913e7fc6a68fe902c80"
+      },
+      {
+        "bytes": 2453947,
+        "name": "equity_links.json",
+        "sha256": "fa41a9f768748013714b0e2ccab7b624dc8faf50bda7e8c5f65119155023957b"
+      },
+      {
+        "bytes": 59090761,
+        "name": "meter.json",
+        "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c"
+      },
+      {
+        "bytes": 1101276,
+        "name": "general_contracts.json",
+        "sha256": "9d5a9af34fcf4347739ca021ee9e7fbfb929151741f2574a823f2b245cc66b79"
+      },
+      {
+        "bytes": 5423128,
+        "name": "od.json",
+        "sha256": "9752dcc442e0ac5ce3176c39f682feba7da95b4eb122d2963de544cbab0e1b19"
+      },
+      {
+        "bytes": 4722328,
+        "name": "path_refs.json",
+        "sha256": "22dd70d215552416e832bff45e3d639417269683417ff0a2531b82e75b22ca7f"
+      },
+      {
+        "bytes": 3131844,
+        "name": "cargo_batches.json",
+        "sha256": "ccca291ac558b5724d79aa3da6017fbb0c79a0ffe6e2d514dce8ae7098c2d698"
+      },
+      {
+        "bytes": 14813630,
+        "name": "passenger_batches.json",
+        "sha256": "5395485902b0b50f665f1d972be360f0968ead26f3a5a6cc69ce20866d7b6586"
+      },
+      {
+        "bytes": 736200,
+        "name": "bus_train_vehicles.json",
+        "sha256": "20dce9e9aa5b2804164917308428b0df3a7fbc6c14a59cc7a7e1c07ef3d9ef7b"
+      },
+      {
+        "bytes": 183429,
+        "name": "ship_aircraft_vehicles.json",
+        "sha256": "abaa5b8c26e0b87ae20a9aac79b7b40189b64e84bc919033e4b3a38b48e5cf8a"
+      },
+      {
+        "bytes": 6209212,
+        "name": "car_vehicles.json",
+        "sha256": "6af743614a5111a333b9f327461fc1c2db13441d571f7f7073afc2222c3edb94"
+      },
+      {
+        "bytes": 82934,
+        "name": "matters.json",
+        "sha256": "e9c44415a18648aacb1632f1dff4d23c4d9065a329400d79c53f55f5a097cc0e"
+      },
+      {
+        "bytes": 11688,
+        "name": "team_members.json",
+        "sha256": "dcb1def449b163d6e8d4e844a94cbace4be2e0157b352a95e3e41563bb9f7033"
+      },
+      {
+        "bytes": 22170,
+        "name": "analysis_tasks.json",
+        "sha256": "ecf2eee90e87a656fb49e5a23457146d1eddbafa16311f218ca601b71dfdffbd"
+      },
+      {
+        "bytes": 399,
+        "name": "models.json",
+        "sha256": "464f6b505cf21b6c6ce8fdc4a7b59886f6d709df7d34901102ddcf9763eb20ec"
+      },
+      {
+        "bytes": 399,
+        "name": "preview.json",
+        "sha256": "14befb84351445a252e881f1bbd872c814aa5d8d5482b5f24e8c2f07428ff6e8"
+      },
+      {
+        "bytes": 1419868,
+        "name": "hosts.json",
+        "sha256": "9dd1b2bad52cffc8b9287d68802b58313ba1faa0f431db9c623fdb5dffe16122"
+      },
+      {
+        "bytes": 220123,
+        "name": "teaching_batches.json",
+        "sha256": "c2acc7e0bff85be162f3aa325a16f16117cf058ff07798ff9d2d8d261130661c"
+      },
+      {
+        "bytes": 551619,
+        "name": "current_services.json",
+        "sha256": "ce36e5ee99eb53403c3ab6f1a09e6144819e93d663374aa138bd36e1d6ecab67"
+      },
+      {
+        "bytes": 24909,
+        "name": "cases.json",
+        "sha256": "744bcbbec2787fa1a2c513ba7b530f1366f5ab0cd461347f43e3cec3b8b76b3b"
+      },
+      {
+        "bytes": 11091,
+        "name": "bills.json",
+        "sha256": "ca1116d31f876fdc002ecc09173b768390ac80a0858dd4008a0b7e93a8c75584"
+      },
+      {
+        "bytes": 3044040310,
+        "name": "pressure.bin",
+        "sha256": "b54b320a49eda0e4d1fbb2ba6d8dfb7fdf33d228b6397bace5cf6bf95bf507be"
+      },
+      {
+        "bytes": 134217728,
+        "name": "work-reserve.bin",
+        "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee"
+      }
+    ],
+    "full_pressure_file_readback": "passed",
+    "generation": 1,
+    "native_restore_bound": {
+      "conservative_transient_bound_bytes": 35917424,
+      "decoded_owned_bytes": 29625968,
+      "largest_replacement_bytes": 0,
+      "parser_io_stack_slack_bytes": 6291456
+    },
+    "remaining_free_bytes": 98447978496,
+    "write_fsync_seconds": 4.140149959
+  },
+  "first_snapshot_file_bytes": 3378784402,
+  "second_snapshot_last_pre_operation": {
+    "magic": 5573560043284022017,
+    "sequence": 123,
+    "generation": 2,
+    "phase": 8,
+    "index": 63,
+    "request_bytes": 1048576,
+    "requested": 3259063297,
+    "arena_used": 3258999504,
+    "arena_free": 2424536,
+    "allocation_failures": 0,
+    "reserve_available_pages": 119,
+    "total_loan_pages": 9,
+    "decode_loan_pages": 1,
+    "elapsed_ns": 307942044208,
+    "reserved_0": 0,
+    "reserved_1": 0,
+    "phase_name": "decode_repay_before_page"
+  },
+  "formal_measurement_complete": false,
+  "second_snapshot_restorable": false,
+  "raw_root": "work/snapshot-backing-formal-l1-01/observed",
+  "source_unchanged_during_run": true,
+  "binary_unchanged": true,
+  "new_allocation_failure_localized": "decode repayment index63; exact post-failure heap snapshot not captured",
+  "next_minimal_fix": "return stack-only RestoreBound from decode closure; allocate JSON report only after work-page repayment; error String fragmentation still not solved",
+  "all_200_frozen_source_files_current_bytes_verified_after_terminal": true
+}

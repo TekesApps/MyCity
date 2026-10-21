@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.92`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.93`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.93完成[实际COW页回收与重复快照失败定位](docs/evidence/m0-t13a-snapshot-backing/STATUS.md)：同源全仓通过，原正式L1约310.29秒在第二次快照的第64页解码还款申请失败；保留原负载/现场，下一步优先消除报告跨还款逃逸。正式三轮、8h与真实16GB未完成。
 
 v0.5.92完成[历史产物集中盘点](docs/evidence/disk-reclamation-latest-request/STATUS.md)：work约25.49GiB，共享target约1.34GiB；本轮未确认新的安全退役项，删除0B。当前原L1 formal第二次快照实际分配失败，完整基线与故障原件保留，继续修复后再验收。
 

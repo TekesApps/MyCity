@@ -1,5 +1,7 @@
 # M0-T13-A：模型规模与性能冻结验收
 
+v0.5.93：[实际COW回收与重复快照诊断](evidence/m0-t13a-snapshot-backing/STATUS.md)同源全仓通过；原formal第二次快照仍失败，已定位第64页解码还款申请。未完成1800秒窗，不能以首份完整快照替代；下一步消除具体报告逃逸后重测原负载。原冻结阈值及全部剩余门不变。
+
 v0.5.91：[固定L1区域与真实因果校准](evidence/m0-t13a-causal-clock/STATUS.md)完成同源全仓、原规模L1短测及新旧完整冷恢复；28帧同相位footprint超normal约18.57MiB，维持failed observed。下一步[原正式L1多轮快照](evidence/m0-t13a-causal-clock/NEXT.md)，不改负载／预算；三轮／四速／8h未完成，真实16GB not_run。
 
 v0.5.85：[整角色Rust区域与原full联合短诊断](evidence/m0-t13a-role-arena/STATUS.md)已实测通过：同源全仓、原30日完整字节、64MiB池生命周期及606秒L1＋L2恢复；8角色／725worker归还，压力长度未缩。仅签功能与短诊断，原正式三场景×三轮、四速、十类分位及28,800秒仍待[统一正式测量控制器](evidence/m0-t13a-role-arena/NEXT.md)完成；真实16GB not_run，M0不签。

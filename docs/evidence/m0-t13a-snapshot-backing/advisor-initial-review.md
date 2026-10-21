@@ -1,0 +1,9 @@
+# Advisor独立时序审查
+
+来源：既有boot_advisor只读检查当前layout_load.rs；未执行负载或修改文件。
+
+快照线程不能自行try_unwrap回填：主线程可能已借出新页但尚未替换旧Arc，线程此时会把仍共享的旧页跳过，随后旧Vec被释放。应返回独立完成对象，包含业务Result和原snapshot页集合；错误也返回页。主线程join后、下一次scan/快照之前回收，实际返回数必须等于cow_pages；未改页仍归世界。decode64页借款独立核对，不补新Vec掩盖缺页。
+
+I/O背板按真实重叠关系持久复用；每次换文件前处理flush错误并重置hash/字节计数。不能让内部reader或writer偷偷新申请MiB。实际缓冲从原metadata/reserve收费，不扩大128MiB。错误保留pending与最后阶段，存档发布与工作区归还分别报告。
+
+typed decode暂不扩大重构；以真实重复快照/还款和冷恢复检验修复。

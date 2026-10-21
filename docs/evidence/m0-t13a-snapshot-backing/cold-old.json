@@ -1,0 +1,13 @@
+{
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/snapshot-backing/mycity-headless",
+    "layout-load-only",
+    "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001",
+    "work/snapshot-backing-old-cold-01"
+  ],
+  "exit_code": 0,
+  "seconds": 3.867280708,
+  "source_sha256": "c0e4ef46b0c3c8c3d2908d8b7d79f4adf3a32967f92fda959e29094f27331bc5",
+  "input_full_original_preserved": true,
+  "new_pressure_copy": false
+}
