@@ -1,0 +1,49 @@
+{
+  "core-corrected": {
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "mycity-core",
+      "--lib",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "exit": 0,
+    "seconds": 8.550736792
+  },
+  "storage-slots": {
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "mycity-storage",
+      "--lib",
+      "--test",
+      "background",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "exit": 0,
+    "seconds": 60.923165999999995
+  },
+  "headless-slots": {
+    "command": [
+      "cargo",
+      "test",
+      "-p",
+      "mycity-headless",
+      "--test",
+      "engine_slot",
+      "--test",
+      "scale_reference",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "exit": 101,
+    "seconds": 17.845577708999997
+  }
+}

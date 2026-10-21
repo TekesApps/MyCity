@@ -1,0 +1,12 @@
+
+running 2 tests
+test air::slot::tests::checksum_schema_unknown_duplicate_tail_and_limits_cannot_publish ... ok
+test air::slot::tests::same_slot_partial_complete_bad_good_and_general_profile_boundary ... FAILED
+
+failures:
+
+failures:
+    air::slot::tests::same_slot_partial_complete_bad_good_and_general_profile_boundary
+
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 64 filtered out; finished in 0.05s
+

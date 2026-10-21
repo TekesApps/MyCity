@@ -23,3 +23,5 @@
 [当前集中复查](evidence/disk-reclamation-current-audit/STATUS.md)：work约17.204GiB，三份完整布局及业务兼容输入保留；本阶段临时WAL fork退役9.734MiB，复查无追加删除。旧清理不重复计入，全部已退役副本不可直接恢复。
 
 [v0.5.76终态回收](evidence/m0-t13a-role-slots/retention-result.json)：当前验证进程已退出、work/target无占用，新增删除0B；新完整业务world保留为下一阶段恢复输入，旧完整布局及必要证据不变。运行中的[集中只读核查](evidence/disk-reclamation-live-recheck/STATUS.md)不计历史回收或df增量为本次成果。
+
+[v0.5.77终态回收](evidence/m0-t13a-air-candidate-slots/retention-result.json)：原验证进程已退出、work/target无占用，新增删除0B；保留最新完整业务world用于角色包接入后的恢复／重放验证，无新增L1复制或独立target。仍需完整旧恢复输入，不因缺少可删除项而删除必要证据。

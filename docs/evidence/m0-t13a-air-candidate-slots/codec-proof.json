@@ -1,0 +1,61 @@
+{
+  "command": [
+    "rustc",
+    "--edition=2021",
+    "-O",
+    "--forbid",
+    "unsafe_code",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-air-candidate-slots/codec-proof.rs",
+    "-L",
+    "dependency=/Users/frankqin/dev/MyCity/target/release/deps",
+    "--extern",
+    "serde_json=/Users/frankqin/dev/MyCity/target/release/deps/libserde_json-739cab3222a3d08f.rlib",
+    "--extern",
+    "mycity_core=/Users/frankqin/dev/MyCity/target/release/deps/libmycity_core-b869799dfe52c64c.rlib",
+    "--extern",
+    "mycity_storage=/Users/frankqin/dev/MyCity/target/release/libmycity_storage.rlib",
+    "-o",
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/air-candidate-slots/codec-proof"
+  ],
+  "run": [
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/air-candidate-slots/codec-proof",
+    "/Users/frankqin/dev/MyCity/work/t13a68-legacy-reopen/world",
+    "sim-t13a-full-v2:9deedcb11bce7d2d431d4fd8fabad6342fc17a5772cb3de1b7d60ab345aaab82",
+    "/Users/frankqin/dev/MyCity/work/t13a65-joint-02/model/business/fault-reference/cpu-final-engine.json"
+  ],
+  "exit": 0,
+  "result": {
+    "business_bytes": 1818613,
+    "business_sha256": "17b4cbd4271a18e8bd3ec0ddfe1b1bfe2b33081e3a3f87db79ccd7f87464f432",
+    "codec_owned_capacity_bytes": 4920368,
+    "full_engine_bytes": 2507418,
+    "full_engine_sha256": "f4c922bfc7a6a214e73d1c69c26386b3faa2465794dc9f77f99793a554246e02",
+    "old_business_and_state_entire_bytes_equal": true,
+    "performance_accepted": false,
+    "runtime_pool_accepted": false,
+    "schema": "mycity-model-comparison-byte-oracle-v1",
+    "sequence": 3013,
+    "state_bytes": 2480116,
+    "state_sha256": "2c0464b46d2d83a48976f955a063e12f24ba547860b47f7e49bc45d29b9d48e8",
+    "store_old_outer_hash_equal": true,
+    "store_owned_capacity_bytes": 13651338,
+    "store_sha256": "c88fd24e03c9295505ca9d8e562c816c0c5b45b3957649c970d7c72b8cad1e5b",
+    "ten_reused_hash_checks_seconds_diagnostic_only": 0.326987833
+  },
+  "helper_sha256": "26ee23549f0adec0d9fa6c58208b07acecc0868af3a48c4a1632a2c09bc53b85",
+  "executable_sha256": "006bf76de1b2cfb1b94a35e9e81944de6658e1e4a1bc1b80f17cc704a51330e3",
+  "libraries": {
+    "serde_json": {
+      "path": "/Users/frankqin/dev/MyCity/target/release/deps/libserde_json-739cab3222a3d08f.rlib",
+      "sha256": "2dddbb780db152a49fd25676cdafaa63d8df138016de76f09aaea866fb495079"
+    },
+    "mycity_core": {
+      "path": "/Users/frankqin/dev/MyCity/target/release/deps/libmycity_core-b869799dfe52c64c.rlib",
+      "sha256": "0b1cb460f35a5eda2e9c2e2d152f479cc140a13ca65b9a7c9a036cdc2ae8f94a"
+    },
+    "mycity_storage": {
+      "path": "/Users/frankqin/dev/MyCity/target/release/libmycity_storage.rlib",
+      "sha256": "09e0e8da53fdec18b7404106cce06aacbac1e1b8cbe4ce0f131327fd443e211d"
+    }
+  }
+}

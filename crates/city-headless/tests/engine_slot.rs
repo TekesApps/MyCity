@@ -68,7 +68,7 @@ fn full_reader_restore_copy_null_failure_and_reset_retain_every_backing() {
     }
     for n in [0, 1, 64, bytes.len() / 2, bytes.len() - 1] {
         assert!(slot.restore_into(&bytes[..n]).is_err());
-        assert!(slot.engine_mut().is_err());
+        assert!(slot.engine().is_err());
         assert_eq!(slot.identity().unwrap(), identity);
         slot.restore_into(&bytes).unwrap();
     }

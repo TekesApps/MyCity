@@ -1,0 +1,25 @@
+{
+  "roles": {
+    "scale-model-task": {
+      "records": 3,
+      "max_lifetime_rust_requested_plus_tail_bytes": 16502713
+    },
+    "compute-worker-bounded": {
+      "records": 724,
+      "max_lifetime_rust_requested_plus_tail_bytes": 5980167
+    },
+    "sim-host-scale-full": {
+      "records": 2,
+      "max_lifetime_rust_requested_plus_tail_bytes": 24997873
+    },
+    "scale-sim-probe": {
+      "records": 1,
+      "max_lifetime_rust_requested_plus_tail_bytes": 614484
+    }
+  },
+  "total_records": 730,
+  "normal_pool_authorization_accepted": false,
+  "shared_diagnostics_accepted": false,
+  "physical_or_16gb_accepted": false,
+  "note": "Per-process lifetime Rust requested peak plus reserved tail only; not synchronized group physical memory or grant proof"
+}

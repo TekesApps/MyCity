@@ -1,0 +1,8 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+    Finished `release` profile [optimized] target(s) in 31.25s
+     Running unittests src/lib.rs (target/release/deps/mycity_core-363f7122bd90a840)
+
+thread 'air::slot::tests::same_slot_partial_complete_bad_good_and_general_profile_boundary' panicked at crates/city-core/src/air/slot.rs:169:14:
+called `Result::unwrap()` on an `Err` value: "air_fixed_rows_limit"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: test failed, to rerun pass `-p mycity-core --lib`

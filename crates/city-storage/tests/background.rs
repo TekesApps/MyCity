@@ -829,3 +829,47 @@ fn v2_staged_asset_checkpoint_reopen_accept_and_gc_preserve_original_receipts() 
     assert!(s.execute(Caller::System, cmd).unwrap().model.is_ok());
     assert_eq!(s.committed_sequence(), seq);
 }
+
+#[test]
+fn retained_candidate_slot_spans_bad_import_staged_checkpoint_wal_reopen_and_retry() {
+    let t = Temp::new();
+    let mut s = ready(&t.world(), true, 8192);
+    let id = s.candidate_workspace_identity().unwrap();
+    let result = finish(&s);
+    let bytes = result.checkpoint().unwrap();
+    let before = s.state_hash().unwrap();
+    assert!(s
+        .import_background_candidate(1, 1, &bytes[..bytes.len() - 1])
+        .is_err());
+    assert_eq!(s.state_hash().unwrap(), before);
+    assert_eq!(s.candidate_workspace_identity().unwrap(), id);
+    let hash = s.import_background_candidate(1, 1, &bytes).unwrap();
+    assert_eq!(s.import_background_candidate(1, 1, &bytes).unwrap(), hash);
+    assert_eq!(s.candidate_workspace_identity().unwrap(), id);
+    s.checkpoint().unwrap();
+    assert_eq!(s.candidate_workspace_identity().unwrap(), id);
+    drop(s);
+    let mut s = Store::open(&t.world(), RULES).unwrap();
+    let id = s.candidate_workspace_identity().unwrap();
+    let before = s.state_hash().unwrap();
+    let stale = accept(&s, hash, 2);
+    assert!(s.execute(Caller::System, stale).unwrap().model.is_err());
+    assert_eq!(s.state_hash().unwrap(), before);
+    assert_eq!(s.candidate_workspace_identity().unwrap(), id);
+    let cmd = accept(&s, hash, 1);
+    s.execute(Caller::System, cmd.clone())
+        .unwrap()
+        .model
+        .unwrap();
+    assert_eq!(s.candidate_workspace_identity().unwrap(), id);
+    let saved = s.state_hash().unwrap();
+    let seq = s.committed_sequence();
+    drop(s);
+    let mut s = Store::open(&t.world(), RULES).unwrap(); // WAL candidate streamed into prebuilt slot.
+    assert_eq!(s.state_hash().unwrap(), saved);
+    let id = s.candidate_workspace_identity().unwrap();
+    s.execute(Caller::System, cmd).unwrap().model.unwrap();
+    assert_eq!(s.committed_sequence(), seq);
+    assert_eq!(s.state_hash().unwrap(), saved);
+    assert_eq!(s.candidate_workspace_identity().unwrap(), id);
+}

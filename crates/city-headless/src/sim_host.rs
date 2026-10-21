@@ -137,13 +137,18 @@ impl Profile {
 struct Codec {
     epoch: u64,
     slots: crate::worker_slots::Owner,
+    air_input: mycity_core::air::BackgroundStateSlot,
 }
 impl Codec {
     fn new() -> Result<Self, String> {
         let epoch = crate::normal_pool::broker::codec_epoch_from_env()?.unwrap_or(1);
         let slots = crate::worker_slots::Owner::new(epoch, 1, 1, 1)?;
         crate::normal_pool::broker::acknowledge_codec(&slots)?;
-        Ok(Self { epoch, slots })
+        Ok(Self {
+            epoch,
+            slots,
+            air_input: mycity_core::air::BackgroundStateSlot::new(),
+        })
     }
     fn log(&self, diag: &mut Option<crate::cpu_log::CpuLog>) -> Result<(), String> {
         if let Some(log) = diag.as_mut() {
@@ -172,9 +177,9 @@ fn status(
     let view = e.world().view();
     let air_sha = b
         .and_then(|b| b.field())
-        .map(|f| f.checkpoint().map(|b| sha256(&b)))
+        .map(|f| f.checkpoint_sha256())
         .transpose()?;
-    let runtime = json!({"accounts":view.accounts,"boot":view.boot,"active_city":view.region.as_ref().map(|r|r.active_city),"obligations":view.region.as_ref().map(|r|r.obligations),"payroll":e.timeline().map(|t|t.payroll.iter().take(8).collect::<Vec<_>>()),"claims":e.timeline().map(|t|t.claims.iter().take(8).collect::<Vec<_>>()),"claim_count":e.timeline().map(|t|t.claims.len()),"payroll_count":e.timeline().map(|t|t.payroll.len()),"resources":e.resources(),"store_owned_bytes":store.owned_capacity_bytes().map_err(err)?,"sim_codec":codec.slots.report()?,"diagnostics_owned_bytes":diag.as_ref().map_or(0,crate::cpu_log::CpuLog::owned_bytes)});
+    let runtime = json!({"accounts":view.accounts,"boot":view.boot,"active_city":view.region.as_ref().map(|r|r.active_city),"obligations":view.region.as_ref().map(|r|r.obligations),"payroll":e.timeline().map(|t|t.payroll.iter().take(8).collect::<Vec<_>>()),"claims":e.timeline().map(|t|t.claims.iter().take(8).collect::<Vec<_>>()),"claim_count":e.timeline().map(|t|t.claims.len()),"payroll_count":e.timeline().map(|t|t.payroll.len()),"resources":e.resources(),"store_owned_bytes":store.owned_capacity_bytes().map_err(err)?,"sim_codec":codec.slots.report()?,"sim_air_input_owned_bytes":codec.air_input.owned_bytes(),"diagnostics_owned_bytes":diag.as_ref().map_or(0,crate::cpu_log::CpuLog::owned_bytes)});
 
     Ok(
         json!({"revision":view.revision,"sequence":store.committed_sequence(),"business_sha256":store.business_digest().map_err(err)?,"runtime":runtime,"timeline":e.timeline().map(|t|t.progress),
@@ -259,8 +264,9 @@ fn required(
             .map_err(err)?
             .background()
             .ok_or("sim_no_background")?;
-        let pending = b.pending().cloned().ok_or("sim_no_pending")?;
-        let input = b.frozen_input()?;
+        let pending = b.pending().ok_or("sim_no_pending")?;
+        b.frozen_input_into(&mut codec.air_input)?;
+        let input = codec.air_input.state()?;
         codec
             .slots
             .rebind(codec.epoch, job, pending.generation, pending.attempt)?;
@@ -293,19 +299,21 @@ fn required(
                 checkpoint_sha256: checkpoint,
             },
         };
+        let generation = pending.generation;
+        let attempt_number = pending.attempt;
         if gate(
             ProbePoint::Leased,
             &mut probe,
             reader,
             w,
             id,
-            json!({"job":job,"attempt":pending.attempt}),
+            json!({"job":job,"attempt":attempt_number}),
         )? {
             control(
                 store,
                 B::Fail {
                     job,
-                    generation: pending.generation,
+                    generation,
                     failure: Failure::Cancelled,
                 },
                 diag,
@@ -376,7 +384,7 @@ fn required(
                             Ok(crate::cpu_log::import(
                                 store,
                                 job,
-                                pending.generation,
+                                generation,
                                 bytes.as_slice(),
                                 |point| {
                                     if point == mycity_storage::BackgroundPoint::AssetPublished {
@@ -415,7 +423,7 @@ fn required(
                     store,
                     B::Fail {
                         job,
-                        generation: pending.generation,
+                        generation,
                         failure: if cancelled {
                             Failure::Cancelled
                         } else {
@@ -428,7 +436,7 @@ fn required(
                     w,
                     id,
                     "attempt_failed",
-                    json!({"attempt":pending.attempt,"reason":error}),
+                    json!({"attempt":attempt_number,"reason":error}),
                 )?;
                 if cancelled {
                     return Err("sim_attempt_cancelled".into());
@@ -449,7 +457,7 @@ fn required(
                         store,
                         B::Fail {
                             job,
-                            generation: pending.generation,
+                            generation,
                             failure: Failure::InvalidInput,
                         },
                         diag,
@@ -467,7 +475,7 @@ fn required(
             actions: vec![Action::Background {
                 command: B::Accept {
                     job,
-                    generation: pending.generation,
+                    generation,
                     candidate_sha256: hash,
                 },
             }],

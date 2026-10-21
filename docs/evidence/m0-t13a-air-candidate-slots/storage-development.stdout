@@ -1,0 +1,17 @@
+
+running 12 tests
+test canonical_accept_rejections_do_not_create_wal_or_cold_failed_receipts ... ok
+test retained_candidate_slot_spans_bad_import_staged_checkpoint_wal_reopen_and_retry ... ok
+test staged_asset_survives_midflight_checkpoint_restart_and_generation_rebind ... ok
+test normal_disk_exhaustion_preserves_background_and_timeline_funding ... ok
+test committed_missing_or_corrupt_asset_is_rejected_before_tail_truncation_and_gc ... ok
+test worker_cache_charge_survives_missing_files_and_moves_out_of_task_reserve_once ... ok
+test v2_staged_asset_checkpoint_reopen_accept_and_gc_preserve_original_receipts ... ok
+test wrong_window_finite_forgery_and_old_job_cannot_consume_reservation_or_replace_field ... ok
+test empty_and_real_freight_large_pages_have_funded_barrier_and_restore_exactly_once ... ok
+test result_reference_limit_checkpoints_before_new_obligation_and_keeps_cold_receipts ... ok
+test actual_process_exit_at_every_import_and_accept_boundary_restores_original_result ... ok
+test failed_operation_flood_cannot_consume_dedicated_control_or_receipt_slots ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 37.13s
+

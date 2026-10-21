@@ -238,7 +238,10 @@ pub fn plan(budget: usize) -> Plan {
         + mycity_map::GEOMETRY_BUDGET_BYTES
         - size_of::<mycity_map::scene::Scene>();
     let scenarios = vec![
-        Scenario::new("reference_or_fault_reference", 1, 0, 0, &i, metadata_bytes),
+        Scenario::new("reference_or_fault_reference", 2, 0, 0, &i, metadata_bytes),
+        // Five conservative general Air slots cover simultaneous Store candidate,
+        // Sim frozen input and Reference candidate, plus two spare slots. Per-Engine
+        // Background Work is separately charged above; do not spend these twice.
         // Keep genesis in this conservative topology: no speculative early drop credit.
         Scenario::new(
             "sim_open_genesis_current_and_validation",
@@ -297,6 +300,8 @@ mod tests {
         assert!(plan(p.required_bytes).target_slots_fit);
         assert!(!plan(p.required_bytes - 1).target_slots_fit);
         assert!(!p.runtime_grant_accepted);
+        assert_eq!(p.scenarios[0].engine_slots, 2);
+        assert_eq!(p.scenarios[0].retained_preparation_workspace_slots, 2);
         assert_eq!(p.scenarios[1].engine_slots, 3);
         assert_eq!(p.scenarios[1].retained_preparation_workspace_slots, 3);
         assert!(p.core.retained_preparation_workspace_bytes > 1_000_000);

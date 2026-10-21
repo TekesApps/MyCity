@@ -1,0 +1,43 @@
+   Compiling sha2-asm v0.6.4
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+    Checking sha2 v0.10.9
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+    Checking mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+    Checking mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+error: redundant field names in struct initialization
+   --> crates/city-headless/src/sim_host.rs:316:21
+    |
+316 |                     generation: generation,
+    |                     ^^^^^^^^^^^^^^^^^^^^^^ help: replace it with: `generation`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#redundant_field_names
+    = note: `-D clippy::redundant-field-names` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::redundant_field_names)]`
+
+error: redundant field names in struct initialization
+   --> crates/city-headless/src/sim_host.rs:426:25
+    |
+426 |                         generation: generation,
+    |                         ^^^^^^^^^^^^^^^^^^^^^^ help: replace it with: `generation`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#redundant_field_names
+
+error: redundant field names in struct initialization
+   --> crates/city-headless/src/sim_host.rs:460:29
+    |
+460 | ...                   generation: generation,
+    |                       ^^^^^^^^^^^^^^^^^^^^^^ help: replace it with: `generation`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#redundant_field_names
+
+error: redundant field names in struct initialization
+   --> crates/city-headless/src/sim_host.rs:478:21
+    |
+478 |                     generation: generation,
+    |                     ^^^^^^^^^^^^^^^^^^^^^^ help: replace it with: `generation`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#redundant_field_names
+
+error: could not compile `mycity-headless` (lib) due to 4 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `mycity-headless` (lib test) due to 4 previous errors

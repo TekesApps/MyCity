@@ -168,6 +168,7 @@ impl Drop for Persistence {
 pub struct Store {
     engine: Engine,
     restore_workspace: mycity_core::transaction::EngineSlot,
+    air_candidate: mycity_core::air::BackgroundStateSlot,
     spatial: Option<SpatialAssets>,
     spatial_ref: Option<SpatialReference>,
     io: Persistence,
@@ -310,6 +311,7 @@ impl Store {
             .map_err(|e| Error::Model(format!("{e:?}")))?;
         let restore_workspace =
             mycity_core::transaction::EngineSlot::new().map_err(Error::Model)?;
+        let air_candidate = mycity_core::air::BackgroundStateSlot::new();
         let identity = identity(&engine);
         let (spatial_ref, spatial) = if let Some((input, png)) = bundle {
             let (reference, assets) = SpatialReference::prepare(input, png, &identity)?;
@@ -404,6 +406,7 @@ impl Store {
         Ok(Self {
             engine,
             restore_workspace,
+            air_candidate,
             spatial,
             spatial_ref,
             io: Persistence {
@@ -524,6 +527,7 @@ impl Store {
         let mut buffers = wal::Buffers::new();
         let mut pos = 0u64;
         let mut background_live = Vec::with_capacity(BACKGROUND_LIVE_ASSETS);
+        let mut air_candidate = mycity_core::air::BackgroundStateSlot::new();
         while pos < root.wal_end {
             if root.wal_end - pos < 4 {
                 return Err(Error::Invalid("committed_header_truncated"));
@@ -563,10 +567,12 @@ impl Store {
             };
             let candidate_hash =
                 background::successful_hash(&entry.envelope, record.outcome.is_ok());
-            let candidate = candidate_hash
-                .as_ref()
-                .map(|h| background::load_asset(dir, h))
-                .transpose()?;
+            let candidate = if let Some(hash) = &candidate_hash {
+                background::load_asset_into(dir, hash, &mut air_candidate)?;
+                Some(air_candidate.state().map_err(Error::Model)?)
+            } else {
+                None
+            };
             if let Some(hash) = candidate_hash {
                 background::remember(&mut background_live, hash)?;
             }
@@ -574,7 +580,7 @@ impl Store {
             let _ = engine.execute_recorded_with_background(
                 caller,
                 entry.envelope,
-                candidate.as_ref(),
+                candidate,
                 |_, record| -> Result<(), Error> {
                     called = true;
                     if !wal::matches(
@@ -598,7 +604,7 @@ impl Store {
             return Err(Error::Invalid("committed_boundary_mismatch"));
         }
         Self::validate_continuation(&engine, &root)?;
-        Self::validate_background(&engine, dir, &root)?;
+        Self::validate_background(&engine, dir, &root, &mut air_candidate)?;
         // Only bytes provably beyond CURRENT's validated committed boundary are removable.
         if wal_length > root.wal_end {
             wal.set_len(root.wal_end)?;
@@ -633,6 +639,7 @@ impl Store {
         Ok(Self {
             engine,
             restore_workspace,
+            air_candidate,
             spatial,
             spatial_ref,
             io: Persistence {
@@ -662,6 +669,13 @@ impl Store {
     ) -> Result<mycity_core::transaction::SlotIdentity, Error> {
         self.engine()?;
         self.restore_workspace.identity().map_err(Error::Model)
+    }
+    /// Stable candidate backing only; not a successful candidate or pool grant.
+    pub fn candidate_workspace_identity(
+        &self,
+    ) -> Result<mycity_core::air::StateSlotIdentity, Error> {
+        self.engine()?;
+        Ok(self.air_candidate.identity())
     }
     pub fn spatial(&self) -> Result<Option<&SpatialAssets>, Error> {
         self.engine()?;
@@ -716,6 +730,8 @@ impl Store {
                 .map_err(Error::Model)?
                 .owned_model_bytes
             - std::mem::size_of::<Engine>()
+            + self.air_candidate.owned_bytes()
+            - std::mem::size_of::<mycity_core::air::BackgroundStateSlot>()
             + self.io.dir.capacity()
             + self.io.background_live.capacity() * std::mem::size_of::<[u8; 32]>()
             + self.io.canonical.borrow().backing_capacity_bytes()
@@ -830,15 +846,23 @@ impl Store {
         {
             return Err(Error::SourceSyncRequired);
         }
-        let candidate = match self.background_attachment(caller, &envelope, trace) {
+        let candidate_present = match self.background_attachment(caller, &envelope, trace) {
             Ok(c) => c,
             Err(e) => {
                 self.io.poisoned = true;
                 return Err(e);
             }
         };
-        let background_funded =
-            self.background_funded_quote(caller, &envelope, candidate.as_ref(), trace);
+        let background_funded = self.background_funded_quote(
+            caller,
+            &envelope,
+            if candidate_present {
+                Some(self.air_candidate.state().map_err(Error::Model)?)
+            } else {
+                None
+            },
+            trace,
+        );
         let continuation_plan =
             self.prepare_continuation(caller, &envelope, background_funded, trace)?;
         let background_plan = self.prepare_background(
@@ -883,11 +907,16 @@ impl Store {
                 Err(e) => return Err(e),
             }
         }
+        let candidate = if candidate_present {
+            Some(self.air_candidate.state().map_err(Error::Model)?)
+        } else {
+            None
+        };
         let io = &mut self.io;
         let result = self.engine.execute_recorded_diagnosed(
             caller,
             envelope,
-            candidate.as_ref(),
+            candidate,
             |env, record| {
                 io.append(
                     env,

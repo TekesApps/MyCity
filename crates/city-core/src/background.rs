@@ -290,6 +290,15 @@ impl Background {
             None => State::new(input),
         }
     }
+    /// Same frozen identity, but into caller-owned small-profile backing.
+    pub fn frozen_input_into(
+        &self,
+        slot: &mut crate::air::BackgroundStateSlot,
+    ) -> Result<(), String> {
+        slot.reset_preserving_capacity();
+        let job = self.pending.as_ref().ok_or("background_no_job")?;
+        slot.begin_into(self.field.as_ref(), &job.input, job.checkpoint_sha256)
+    }
     pub fn frozen_input(&self) -> Result<State, String> {
         let job = self.pending.as_ref().ok_or("background_no_job")?;
         let state = self.build_input_state(job.input.clone())?;
@@ -851,6 +860,22 @@ mod tests {
             )
             .unwrap();
             let legacy = b.frozen_input().unwrap();
+            let mut slot = crate::air::BackgroundStateSlot::new();
+            let slot_id = slot.identity();
+            b.frozen_input_into(&mut slot).unwrap();
+            assert_eq!(
+                slot.state().unwrap().checkpoint().unwrap(),
+                legacy.checkpoint().unwrap()
+            );
+            b.pending.as_mut().unwrap().checkpoint_sha256[0] ^= 1;
+            assert!(b.frozen_input_into(&mut slot).is_err());
+            assert!(slot.state().is_err());
+            assert_eq!(slot.identity(), slot_id);
+            b.pending.as_mut().unwrap().checkpoint_sha256[0] ^= 1;
+            b.frozen_input_into(&mut slot).unwrap();
+            assert!(Background::new().frozen_input_into(&mut slot).is_err());
+            assert!(slot.state().is_err());
+            assert_eq!(slot.identity(), slot_id);
             b.frozen_into(&mut work).unwrap();
             assert_eq!(
                 legacy.checkpoint().unwrap(),

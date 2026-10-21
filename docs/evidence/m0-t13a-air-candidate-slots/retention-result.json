@@ -1,0 +1,19 @@
+{
+  "metrics": {
+    "work_du_kib": 18282896,
+    "target_du_kib": 1084960,
+    "filesystem_available_bytes": 116257927168
+  },
+  "deleted_paths": [],
+  "deleted_inode_allocated_bytes": 0,
+  "no_occupied_work_or_target": true,
+  "active_run_terminal_pids": [
+    95625,
+    95660,
+    95758,
+    3802
+  ],
+  "retained_new_world": "work/t13a77-full-business-01/world",
+  "reason": "Keep complete current world for next role-workspace recovery/replay input, original receipt and diagnostic evidence; no additional cache dependency proved removable. Shared target reused; no isolated target or new L1 copies.",
+  "df_gain_attributed": 0
+}

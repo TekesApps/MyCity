@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/air-candidate-slots/mycity-headless",
+    "scale-sim-probe",
+    "/Users/frankqin/dev/MyCity/work/t13a77-full-business-01",
+    "full",
+    "measure"
+  ],
+  "exit": 0,
+  "seconds": 339.32609141700004,
+  "run": "work/t13a77-full-business-01",
+  "source_sha256": "68d0247291c48fc595ccd1604761e32651f4c1dcd00f116c175239a4b81f7a6c",
+  "l1_pressure_included": false,
+  "normal_pool_authorization_accepted": false,
+  "performance_accepted": false,
+  "eight_hours_accepted": false,
+  "memory_16gb_gate": "not_run"
+}

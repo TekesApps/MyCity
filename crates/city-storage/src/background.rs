@@ -1,7 +1,7 @@
 //! Sim-owned immutable air assets and a finite normal-funded background obligation.
 use super::*;
 use mycity_core::{
-    air::State,
+    air::{BackgroundStateSlot, State},
     background::{Command as B, ASSET_LIMIT},
     transaction::Action,
 };
@@ -66,16 +66,30 @@ pub(super) fn successful_hash(envelope: &Envelope, success: bool) -> Option<[u8;
         _ => None,
     }
 }
-pub(super) fn load_asset(dir: &Path, hash: &[u8; 32]) -> Result<State, Error> {
-    let bytes = read_file(&dir.join(asset_name(hash)), ASSET_LIMIT as u64)?;
-    if digest(&bytes) != *hash {
-        return Err(Error::Invalid("background_asset_checksum"));
+pub(super) fn load_asset_into(
+    dir: &Path,
+    hash: &[u8; 32],
+    slot: &mut BackgroundStateSlot,
+) -> Result<(), Error> {
+    slot.reset_preserving_capacity();
+    let result = (|| {
+        let path = dir.join(asset_name(hash));
+        let expected = stream::Identity {
+            bytes: fs::symlink_metadata(&path)?.len(),
+            sha256: hex(hash),
+        };
+        stream::verified(&path, &expected, ASSET_LIMIT as u64, |reader| {
+            slot.restore_reader_into(reader).map_err(Error::Model)
+        })?;
+        if !slot.state().map_err(Error::Model)?.complete() {
+            return Err(Error::Invalid("background_asset_partial"));
+        }
+        Ok(())
+    })();
+    if result.is_err() {
+        slot.reset_preserving_capacity();
     }
-    let state = State::restore(&bytes).map_err(Error::Model)?;
-    if !state.complete() {
-        return Err(Error::Invalid("background_asset_partial"));
-    }
-    Ok(state)
+    result
 }
 pub(super) fn remember(live: &mut Vec<[u8; 32]>, hash: [u8; 32]) -> Result<(), Error> {
     if !live.contains(&hash) {
@@ -137,6 +151,7 @@ impl Store {
         engine: &Engine,
         dir: &Path,
         root: &Root,
+        candidate: &mut BackgroundStateSlot,
     ) -> Result<(), Error> {
         let required = engine.background().is_some()
             && engine.timeline().is_some_and(|t| {
@@ -154,12 +169,13 @@ impl Store {
                     return Err(Error::Invalid("background_reserve_window"));
                 }
                 if let Some(hash) = r.staged_sha256 {
-                    let state = load_asset(dir, &hash)?;
+                    load_asset_into(dir, &hash, candidate)?;
+                    let state = candidate.state().map_err(Error::Model)?;
                     if state.checkpoint_digest().map_err(Error::Model)?.0 as u64 != r.staged_bytes {
                         return Err(Error::Invalid("background_staged_length"));
                     }
                     if !engine
-                        .background_candidate_matches(&state)
+                        .background_candidate_matches(state)
                         .map_err(Error::Model)?
                     {
                         return Err(Error::Invalid("background_staged_input"));
@@ -171,11 +187,11 @@ impl Store {
         }
     }
     pub(super) fn background_attachment(
-        &self,
+        &mut self,
         caller: Caller,
         envelope: &Envelope,
         trace: &mut mycity_core::diagnostics::Trace<'_>,
-    ) -> Result<Option<State>, Error> {
+    ) -> Result<bool, Error> {
         match (
             envelope.actions.as_slice(),
             self.io.root.background_reserve.as_ref(),
@@ -189,21 +205,22 @@ impl Store {
                 }],
                 Some(r),
             ) if r.staged_sha256 == Some(*candidate_sha256) => {
-                let state = load_asset(&self.io.dir, candidate_sha256)?;
+                load_asset_into(&self.io.dir, candidate_sha256, &mut self.air_candidate)?;
+                let state = self.air_candidate.state().map_err(Error::Model)?;
                 // Failure receipts are evaluated without attachments, hence their replay
                 // never depends on a payload that was not admitted into the model.
                 if self.engine.background_control_quote_diagnosed(
                     caller,
                     envelope,
-                    Some(&state),
+                    Some(state),
                     trace,
                 ) {
-                    Ok(Some(state))
+                    Ok(true)
                 } else {
-                    Ok(None)
+                    Ok(false)
                 }
             }
-            _ => Ok(None),
+            _ => Ok(false),
         }
     }
     pub(super) fn background_funded_quote(
@@ -344,7 +361,10 @@ impl Store {
             return Err(Error::Invalid("background_asset_bytes"));
         }
         let hash = digest(bytes);
-        let state = State::restore(bytes).map_err(Error::Model)?;
+        self.air_candidate
+            .restore_into(bytes)
+            .map_err(Error::Model)?;
+        let state = self.air_candidate.state().map_err(Error::Model)?;
         let view = self.engine.world().view();
         let envelope = Envelope {
             world: view.scope.world(),
@@ -364,7 +384,7 @@ impl Store {
         if !self.engine.background_control_quote_diagnosed(
             Caller::System,
             &envelope,
-            Some(&state),
+            Some(state),
             trace,
         ) {
             return Err(Error::Invalid("background_candidate_rejected"));
@@ -380,7 +400,7 @@ impl Store {
                 return Err(Error::Invalid("background_candidate_already_staged"));
             }
             let result = (|| {
-                load_asset(&self.io.dir, &hash)?;
+                load_asset_into(&self.io.dir, &hash, &mut self.air_candidate)?;
                 File::open(self.io.dir.join(asset_name(&hash)))?.sync_all()?;
                 sync_directory(&self.io.dir)?;
                 Ok(hash)
@@ -450,7 +470,7 @@ impl Store {
             match fs::hard_link(self.io.dir.join(&temp), &target) {
                 Ok(()) => (),
                 Err(e) if e.kind() == io::ErrorKind::AlreadyExists => {
-                    load_asset(&self.io.dir, &hash)?;
+                    load_asset_into(&self.io.dir, &hash, &mut self.air_candidate)?;
                     File::open(&target)?.sync_all()?;
                 }
                 Err(e) => return Err(e.into()),
@@ -638,5 +658,49 @@ impl Store {
             self.io.poisoned = true;
         }
         result
+    }
+}
+
+#[cfg(test)]
+mod slot_load_tests {
+    use super::*;
+    #[test]
+    fn outer_hash_failure_invalidates_otherwise_valid_decoded_candidate() {
+        let dir = std::env::temp_dir().join(format!(
+            "mycity-slot-asset-{}-{}",
+            std::process::id(),
+            TEMP_ID.fetch_add(1, Ordering::Relaxed)
+        ));
+        fs::create_dir(&dir).unwrap();
+        struct Cleanup(PathBuf);
+        impl Drop for Cleanup {
+            fn drop(&mut self) {
+                let _ = fs::remove_dir_all(&self.0);
+            }
+        }
+        let _cleanup = Cleanup(dir.clone());
+        let input=mycity_core::air::Input::parse(br#"{"schema":"run36-air-f32-v1","side":128,"target":1,"initial_micro":2000000,"boundary_micro":[2000000,2000000,2000000,2000000],"boundary_until":1,"sources":[]}"#).unwrap();
+        let mut state = State::new(input).unwrap();
+        while !state.complete() {
+            state.page(8192, 1024).unwrap();
+        }
+        let mut bytes = state.checkpoint().unwrap();
+        let hash = digest(&bytes);
+        let file = dir.join(asset_name(&hash));
+        fs::write(&file, &bytes).unwrap();
+        let mut slot = BackgroundStateSlot::new();
+        let id = slot.identity();
+        load_asset_into(&dir, &hash, &mut slot).unwrap();
+        assert!(slot.state().unwrap().complete());
+        bytes.push(b' '); // valid inner payload and EOF, but wrong content address.
+        assert!(State::restore(&bytes).is_ok());
+        fs::write(&file, &bytes).unwrap();
+        assert!(load_asset_into(&dir, &hash, &mut slot).is_err());
+        assert!(slot.state().is_err());
+        assert_eq!(slot.identity(), id);
+        bytes.pop();
+        fs::write(&file, &bytes).unwrap();
+        load_asset_into(&dir, &hash, &mut slot).unwrap();
+        assert_eq!(slot.identity(), id);
     }
 }

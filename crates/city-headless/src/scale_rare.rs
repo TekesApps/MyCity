@@ -36,7 +36,7 @@ fn json_file(path: &Path, v: &Value) -> Result<(), String> {
 fn expected(e: &Engine, target: u64) -> Result<Value, String> {
     let b = e.background().ok_or("rare_background")?;
     Ok(
-        json!({"target":target,"business_sha256":joint_reference::business_digest(e)?,"air_sha256":sha256(&b.field().ok_or("rare_air")?.checkpoint()?),"windows":b.version()}),
+        json!({"target":target,"business_sha256":joint_reference::business_digest(e)?,"air_sha256":b.field().ok_or("rare_air")?.checkpoint_sha256()?,"windows":b.version()}),
     )
 }
 fn checked_dir(dir: &Path) -> Result<std::path::PathBuf, String> {
@@ -119,6 +119,7 @@ fn apply(
 }
 /// Reference only. These executions never contribute actual Sim timing samples.
 fn cpu_drive(e: &mut Engine, target: u64) -> Result<(), String> {
+    let mut candidate = mycity_core::air::BackgroundStateSlot::new();
     for _ in 0..1000 {
         let p = e.timeline().ok_or("rare_timeline")?.progress;
         if p.target.is_none() && p.last_complete == target {
@@ -141,12 +142,12 @@ fn cpu_drive(e: &mut Engine, target: u64) -> Result<(), String> {
             )?;
             let b = e.background().ok_or("rare_background")?;
             let generation = b.pending().ok_or("rare_job")?.generation;
-            let mut state = b.frozen_input()?;
-            while !state.complete() {
-                state.page(8192, 1024)?;
+            b.frozen_input_into(&mut candidate)?;
+            while !candidate.state()?.complete() {
+                candidate.page(8192, 1024)?;
             }
-            use sha2::Digest;
-            let hash: [u8; 32] = sha2::Sha256::digest(state.checkpoint()?).into();
+            let state = candidate.state()?;
+            let hash = state.checkpoint_digest()?.1;
             apply(
                 e,
                 Action::Background {
@@ -156,7 +157,7 @@ fn cpu_drive(e: &mut Engine, target: u64) -> Result<(), String> {
                         candidate_sha256: hash,
                     },
                 },
-                Some(&state),
+                Some(state),
                 Some(background::accept_operation_id(job)?),
             )?;
         } else {

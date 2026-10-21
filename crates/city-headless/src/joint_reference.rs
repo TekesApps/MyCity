@@ -303,6 +303,7 @@ pub struct Reference {
     pub windows: u64,
     retry_job: Option<u64>,
     retried: bool,
+    air_candidate: mycity_core::air::BackgroundStateSlot,
     comparison: std::cell::RefCell<mycity_core::canonical::Codec>,
     restore: std::cell::RefCell<mycity_core::transaction::EngineSlot>,
 }
@@ -314,6 +315,7 @@ impl Reference {
             windows: 0,
             retry_job: None,
             retried: false,
+            air_candidate: mycity_core::air::BackgroundStateSlot::new(),
             comparison: std::cell::RefCell::new(mycity_core::canonical::Codec::new()?),
             restore: std::cell::RefCell::new(mycity_core::transaction::EngineSlot::new()?),
         })
@@ -333,6 +335,7 @@ impl Reference {
             windows: 0,
             retry_job: None,
             retried: false,
+            air_candidate: mycity_core::air::BackgroundStateSlot::new(),
             comparison: std::cell::RefCell::new(mycity_core::canonical::Codec::new()?),
             restore: std::cell::RefCell::new(mycity_core::transaction::EngineSlot::new()?),
         })
@@ -345,7 +348,9 @@ impl Reference {
         self.engine.business_digest_with(&mut codec)
     }
     pub fn comparison_capacity_bytes(&self) -> usize {
-        std::mem::size_of::<Self>() - 2 * std::mem::size_of::<Engine>()
+        std::mem::size_of::<Self>()
+            - 2 * std::mem::size_of::<Engine>()
+            - std::mem::size_of::<mycity_core::air::BackgroundStateSlot>()
             + self.comparison.borrow().backing_capacity_bytes()
     }
     pub fn retained_model_capacity_bytes(&self) -> Result<usize, String> {
@@ -356,6 +361,7 @@ impl Reference {
             .identity()?;
         Ok(self.engine.owned_capacity_bytes()
             + self.comparison_capacity_bytes()
+            + self.air_candidate.owned_bytes()
             + slot.owned_model_bytes
             + 2 * slot.retained_prepare_bytes)
     }
@@ -457,15 +463,12 @@ impl Reference {
         }
         let b = self.engine.background().ok_or("joint_no_background")?;
         let generation = b.pending().ok_or("joint_no_task")?.generation;
-        let mut state = b.frozen_input()?;
-        while !state.complete() {
-            state.page(8192, 1024)?;
+        b.frozen_input_into(&mut self.air_candidate)?;
+        while !self.air_candidate.state()?.complete() {
+            self.air_candidate.page(8192, 1024)?;
         }
-        let text = sha256(&state.checkpoint()?);
-        let mut hash = [0; 32];
-        for (i, byte) in hash.iter_mut().enumerate() {
-            *byte = u8::from_str_radix(&text[2 * i..2 * i + 2], 16).map_err(err)?;
-        }
+        let state = self.air_candidate.state()?;
+        let hash = state.checkpoint_digest()?.1;
         let view = self.engine.world().view();
         let env = Envelope {
             world: view.scope.world(),
@@ -481,7 +484,7 @@ impl Reference {
             }],
         };
         self.engine
-            .execute_recorded_with_background(Caller::System, env, Some(&state), |_, _| {
+            .execute_recorded_with_background(Caller::System, env, Some(state), |_, _| {
                 Ok::<(), String>(())
             })?
             .map_err(err)?;

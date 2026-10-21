@@ -337,7 +337,7 @@ pub fn execute(dir: &Path) -> Result<(), String> {
                                     windows: u64,
                                 }
                                 let row = Target {
-                                    air_sha256: sha256(&air.checkpoint()?),
+                                    air_sha256: air.checkpoint_sha256()?,
                                     business_sha256: state.business_digest()?,
                                     target: *target,
                                     windows: state.windows,

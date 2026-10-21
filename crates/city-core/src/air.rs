@@ -8,6 +8,8 @@ use std::{
     mem::size_of,
 };
 mod resident;
+mod slot;
+pub use slot::{BackgroundStateSlot, StateSlotIdentity};
 mod rows;
 mod wire;
 pub use rows::Rows;
@@ -710,6 +712,15 @@ impl State {
         let mut hash = HashWriter::new();
         let bytes = self.checkpoint_to(&mut hash)?;
         Ok((bytes, hash.finish().into()))
+    }
+    /// Hex digest of the complete checkpoint wire without an encoded body Vec.
+    pub fn checkpoint_sha256(&self) -> Result<String, String> {
+        use std::fmt::Write as _;
+        let mut text = String::with_capacity(64);
+        for byte in self.checkpoint_digest()?.1 {
+            write!(&mut text, "{byte:02x}").expect("String write");
+        }
+        Ok(text)
     }
     pub fn restore(bytes: &[u8]) -> Result<Self, String> {
         if bytes.len() > CHECKPOINT_BYTES {

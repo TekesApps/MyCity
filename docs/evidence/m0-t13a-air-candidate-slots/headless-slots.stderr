@@ -1,0 +1,41 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+error[E0500]: closure requires unique access to `*store` but it is already borrowed
+   --> crates/city-headless/src/sim_host.rs:332:24
+    |
+271 |         let b = store
+    |                 ----- borrow occurs here
+...
+332 |         let attempt = (|| -> Result<_, String> {
+    |                        ^^^^^^^^^^^^^^^^^^^^^^^ closure construction occurs here
+...
+392 |                                 store,
+    |                                 ----- second borrow occurs due to use of `*store` in closure
+393 |                                 job,
+394 |                                 pending.generation,
+    |                                 ------------------ first borrow later captured here by closure
+
+error[E0502]: cannot borrow `*store` as mutable because it is also borrowed as immutable
+   --> crates/city-headless/src/sim_host.rs:429:17
+    |
+271 |           let b = store
+    |                   ----- immutable borrow occurs here
+...
+429 | /                 control(
+430 | |                     store,
+431 | |                     B::Fail {
+432 | |                         job,
+...   |
+440 | |                     diag,
+441 | |                 )?;
+    | |_________________^ mutable borrow occurs here
+...
+446 |                       json!({"attempt":pending.attempt,"reason":error}),
+    |                       ------------------------------------------------- immutable borrow later used here
+
+Some errors have detailed explanations: E0500, E0502.
+For more information about an error, try `rustc --explain E0500`.
+error: could not compile `mycity-headless` (lib) due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...

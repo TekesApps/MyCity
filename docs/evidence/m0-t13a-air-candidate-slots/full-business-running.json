@@ -1,0 +1,13 @@
+{
+  "controller_pid": 95758,
+  "pid": 3802,
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/air-candidate-slots/mycity-headless",
+    "scale-sim-probe",
+    "/Users/frankqin/dev/MyCity/work/t13a77-full-business-01",
+    "full",
+    "measure"
+  ],
+  "source_sha256": "68d0247291c48fc595ccd1604761e32651f4c1dcd00f116c175239a4b81f7a6c",
+  "scope": "Original full real30d business, no L1 or normal pool, functional diagnostic only"
+}

@@ -69,13 +69,6 @@ impl EngineSlot {
             Err("unpublished_engine_slot".into())
         }
     }
-    pub fn engine_mut(&mut self) -> Result<&mut Engine, String> {
-        if self.valid {
-            Ok(&mut self.engine)
-        } else {
-            Err("unpublished_engine_slot".into())
-        }
-    }
     pub fn restore_into(&mut self, bytes: &[u8]) -> Result<(), String> {
         if bytes.len() > ENGINE_BYTE_BUDGET {
             self.reset_preserving_capacity();

@@ -1,0 +1,7 @@
+# 开发期失败记录
+
+首次与第二次定向core slot测试：checksum/schema/tail通过，profile边界测试失败air_fixed_rows_limit。最初误以为Background::SOURCE_LIMIT为16，实际它继承Exchange::MAX_SHIPMENTS=4；创建16源测试fixture时即在第5项失败，尚未进入restore。仅clone通用输入的第一次修正未解决这个错误假设。最终按SOURCE_LIMIT常量构造满级4源与通用5源，通用输入clone为owned Rows后增加第5项；未修改生产上限、冻结负载或一般20k源API。以修后同源验证为准。
+
+开发headless编译曾因移除pending深clone后，借用Job跨过Store可变事务而报E0500/E0502（原stderr保留）。已在构建Ticket后只复制generation/attempt两个标量，结束只读借用；全workspace/all-targets cargo check通过。advisor另发现公开可变根可被整块替换，已移除StateSlot::state_mut和未使用的EngineSlot::engine_mut，改受控page失败失效，最终冻结验证覆盖此修正。
+
+修后clippy发现4处generation: generation冗余字段写法，已改为字段简写；未改变逻辑。原日志保留，最终clippy重新实测。

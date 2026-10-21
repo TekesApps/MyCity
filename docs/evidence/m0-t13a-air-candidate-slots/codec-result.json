@@ -1,0 +1,8 @@
+{
+  "command": [
+    "python3",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-air-candidate-slots/verify_codec.py"
+  ],
+  "exit": 0,
+  "seconds": 2.063102959000048
+}
