@@ -1,0 +1,26 @@
+{
+  "mode": "read_only_no_build_no_delete",
+  "before": {
+    "du_kib": {
+      "work": 25590204,
+      "target": 1401068
+    },
+    "filesystem_available_bytes": 101622120448
+  },
+  "after": {
+    "du_kib": {
+      "work": 25590204,
+      "target": 1401068
+    },
+    "filesystem_available_bytes": 101620314112
+  },
+  "inventory_entries": 125304,
+  "inventory_unchanged": true,
+  "retained_pressure_files": 12,
+  "retained_pressure_allocated_bytes": 19069550592,
+  "deleted": [],
+  "deleted_inode_allocated_bytes": 0,
+  "filesystem_available_delta_bytes": -1806336,
+  "attribution": "df delta is observational only; no bytes credited to this audit",
+  "source_and_wip": "not modified by audit; no cleanup command executed"
+}

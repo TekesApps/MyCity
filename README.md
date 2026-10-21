@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.94`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.95`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.95完成[集中回收后的当前复查](docs/evidence/disk-reclamation-current-recheck/STATUS.md)：work24.40GiB、共享target1.34GiB，本次无新增安全退役项、释放0B；完整恢复及故障原件保留，历史回收不重复计入。模型WIP及性能验收状态不变。
 
 v0.5.94完成[旧故障载荷交接与回收](docs/evidence/disk-reclamation-fault-handoff/STATUS.md)：最新原件实际冷恢复及逐字节等价核验后退役9个旧合成文件，分配空间约13.70GiB，work剩24.42GiB。报告延后实验仍失败；常驻typed解码基础尚为WIP，正式窗口/8h/真实16GB未完成。
 

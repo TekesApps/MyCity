@@ -1,5 +1,7 @@
 # 验证产物回收规则
 
+**当前复查（v0.5.95）**：[集中回收后盘点](evidence/disk-reclamation-current-recheck/STATUS.md)实测work24.40GiB、共享target1.34GiB；无运行/占用，125,304项文件元数据不变。本次新增删除0B，12份pressure/reserve仍为完整恢复及故障依赖，保留原件；v0.5.94历史回收不重复计入。旧退役状态不变，下一阶段继续复用唯一target，先完成依赖交接再退役新旧副本。
+
 **最新可用性（v0.5.94）**：[旧故障依赖交接](evidence/disk-reclamation-fault-handoff/STATUS.md)及[逐文件availability](evidence/disk-reclamation-fault-handoff/availability.json)覆盖旧a702/v91/c0完整载荷保留承诺。最新82实际全冷恢复、输入逐字节等价与独立依赖解除后，精确退役9个旧合成pressure/reserve，分配空间14,710,177,792B，work剩24.42GiB。旧首代不能直接完整恢复，旧pending不再保留完整故障载荷；最新82完整首代/pending、formal7/8、v50及smoke-L2完整原件保留。源码/WIP/raw/typed组件/依赖/exe与共享target均未删。
 
 **v0.5.93阶段留存**：[重复快照实际失败](evidence/m0-t13a-snapshot-backing/STATUS.md)终态后分析，新增删除0B。本轮首代完整快照及第二代pending仍用于报告逃逸修复的下一步诊断；旧恢复输入/故障仍未解除依赖。复用唯一target；先完成下一次具体因果验证和依赖交接，再按精确文件退役，不默认永久保存每轮压力副本。
