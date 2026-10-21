@@ -1,0 +1,38 @@
+[
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001",
+    "index_sha256": "f73ce2febd21a8ee01f9f8b1c341591b9d78fc6135dc6f1fa1613df04ae2aff4",
+    "indexed_files": 29,
+    "all_original_bytes_verified": true
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002",
+    "index_sha256": "8cb5f0ce2fadbeaf47e4a0def1fa59548acc40c61a7ad13aad4820f136a3f446",
+    "indexed_files": 29,
+    "all_original_bytes_verified": true
+  },
+  {
+    "path": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001",
+    "index_sha256": "43f83f0a14e8e1962370a1d6bdf26424671660e3679e48d94b864bd1be47728c",
+    "indexed_files": 29,
+    "all_original_bytes_verified": true
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000007",
+    "index_sha256": "9e826b9af387fe4c219326dc9393e26c091451e024d3358d66b2f758fa7a0893",
+    "indexed_files": 29,
+    "all_original_bytes_verified": true
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000008",
+    "index_sha256": "39c38b2bd9262de5ed6176d4681d47f0a373f073cf7293d4988e9c84c519de74",
+    "indexed_files": 29,
+    "all_original_bytes_verified": true
+  },
+  {
+    "path": "work/steady-controller-smoke-l2-01/observed/model/layout/snapshots/snapshot-000001",
+    "index_sha256": "ec69d72ce2115f0263129cd366bc562065524e413db77761a0828145be3cc39d",
+    "indexed_files": 29,
+    "all_original_bytes_verified": true
+  }
+]

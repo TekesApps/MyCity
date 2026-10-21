@@ -1,0 +1,107 @@
+[
+  {
+    "path": "work/steady-controller-smoke-l2-01/observed/model/business/measurement/cpu-final-engine.json",
+    "before": 3555328,
+    "after": 2510848
+  },
+  {
+    "path": "work/steady-controller-smoke-l2-01/observed/model/business/measurement/cpu-targets.jsonl",
+    "before": 196608,
+    "after": 143360
+  },
+  {
+    "path": "work/steady-controller-smoke-l2-01/observed/model/business/measurement/reference/cpu-final-engine.json",
+    "before": 3555328,
+    "after": 2510848
+  },
+  {
+    "path": "work/steady-controller-smoke-l2-01/observed/model/business/measurement/reference/cpu-targets.jsonl",
+    "before": 196608,
+    "after": 143360
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/host-samples.jsonl",
+    "before": 7344128,
+    "after": 7176192
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/heaps.jsonl",
+    "before": 2101248,
+    "after": 1122304
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/compute-durations.bin",
+    "before": 4259840,
+    "after": 4141056
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/events.jsonl",
+    "before": 2101248,
+    "after": 1175552
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000008/pressure.bin",
+    "before": 3045089280,
+    "after": 3044040704
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000007/pressure.bin",
+    "before": 3048235008,
+    "after": 3044040704
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/normal-pool/events.jsonl",
+    "before": 6295552,
+    "after": 5300224
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/business/measurement/transcript.jsonl",
+    "before": 6295552,
+    "after": 6090752
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/business/measurement/cpu-targets.jsonl",
+    "before": 196608,
+    "after": 143360
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/business/measurement/diagnostics/sim-54209-0/transactions.jsonl",
+    "before": 13635584,
+    "after": 13623296
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/business/measurement/diagnostics/sim-54209-0/quote/compute-durations.bin",
+    "before": 18939904,
+    "after": 18698240
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/business/measurement/diagnostics/sim-54209-0/execution/compute-durations.bin",
+    "before": 6356992,
+    "after": 6250496
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/business/measurement/reference/cpu-targets.jsonl",
+    "before": 196608,
+    "after": 143360
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/business/warmup-0000/transcript.jsonl",
+    "before": 5246976,
+    "after": 5234688
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/business/warmup-0000/diagnostics/sim-46674-0/transactions.jsonl",
+    "before": 13635584,
+    "after": 13410304
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/business/warmup-0000/diagnostics/sim-46674-0/quote/compute-durations.bin",
+    "before": 18939904,
+    "after": 18411520
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/business/warmup-0000/diagnostics/sim-46674-0/execution/compute-durations.bin",
+    "before": 6356992,
+    "after": 6152192
+  }
+]

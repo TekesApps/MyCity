@@ -1,6 +1,8 @@
 # 验证产物回收规则
 
-**当前可用性（v0.5.86）**：[用户指定集中回收](evidence/disk-reclamation-v70-components/STATUS.md)覆盖历史v70组件原路径保留承诺。v70两代的50份重复合成组件已按精确清单退役，完整字节继续保存在既有gzip证据归档；v70此前即缺pressure／reserve，仍不能直接完整恢复。当前完整恢复输入为v85两代及v50旧格式原件，不能以hash或归档替代它们。历史清理脚本的v70 CANON入口不再可原样复跑；当前审计只读其保留index。
+**当前可用性（v0.5.87）**：[集中回收与恢复基线交接](evidence/disk-reclamation-stage-followup/STATUS.md)覆盖旧v85完整保留承诺。新formal第7／8代经实际完整读回、最新冷恢复与独立依赖审查接替恢复基线；旧v85两代及已完成smoke-L1短诊断仅6份pressure／reserve按精确清单退役，均不再可直接完整恢复。新formal两代、v50旧格式和smoke-L2失败原件完整保留；业务／组件／原index／固定源码与exe／原始日志保留。本次删除分配空间9,534,775,296B，work剩17.657GiB；APFS及df变化另列，不重复计算历史清理。
+
+**历史可用性（v0.5.86，v85保留状态已由上文替代）**：[用户指定集中回收](evidence/disk-reclamation-v70-components/STATUS.md)覆盖历史v70组件原路径保留承诺。v70两代的50份重复合成组件已按精确清单退役，完整字节继续保存在既有gzip证据归档；v70此前即缺pressure／reserve，仍不能直接完整恢复。当前完整恢复输入为v85两代及v50旧格式原件，不能以hash或归档替代它们。历史清理脚本的v70 CANON入口不再可原样复跑；当前审计只读其保留index。
 
 [v0.5.85阶段回收及可用性](evidence/m0-t13a-role-arena/retention/result.json)更新完整基线：实际full联合和最新冷恢复通过后，新v85两代接替v70，旧v70两份pressure／reserve共4文件及9份临时合成输入已退役，不能直接完整恢复。v70原index／日志／业务／组件保留，v50完整旧格式和v85两代原件完整保留并全SHA核验。精确删除分配空间6,373,318,656B；保留文件APFS分配块变化另列，不计入回收。此次df前后差值缺可靠留存，保持未报告；唯一target继续复用。
 

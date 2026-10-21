@@ -1,0 +1,10 @@
+{
+  "json_syntax": "passed",
+  "python_syntax": "passed",
+  "document_links": "passed",
+  "deletion_receipts": "6 unique single-link originals absent",
+  "protected_original_index_SHA_before_after": "passed",
+  "source_WIP_before_after": "passed",
+  "model_tests": "not run for cleanup",
+  "new_cleanup_evidence_allocated_bytes_at_validation": 4931584
+}

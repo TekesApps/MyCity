@@ -1,0 +1,59 @@
+{
+  "files": [
+    {
+      "path": "docs/evidence/m0-t13a-steady-controller/frozen-source.zip",
+      "sha256": "0ff39485c6e0dcf89117cae868a7f13e283c537442e0cd5a8b64d782695efc4f",
+      "bytes": 659079
+    },
+    {
+      "path": "docs/evidence/m0-t13a-steady-controller/source.json",
+      "sha256": "6d169ac1ca45e5307930bb1fa73de9aa2300e5b46e92f9d1bd1ba9404a6d3c39",
+      "bytes": 503
+    },
+    {
+      "path": "docs/evidence/m0-t13a-steady-controller/formal-l2-01-observed.json",
+      "sha256": "e0bc1ee2a26db3a4120d0e240da8ef0e2ff8d260117731169bf0eafa0dbfbb56",
+      "bytes": 564
+    },
+    {
+      "path": "docs/evidence/m0-t13a-steady-controller/formal-l2-01-business-audit.json",
+      "sha256": "cf7e1c4fac0ac379b6aab10a5d1ee07fbf2f8c163deee998fb45484e8a80394a",
+      "bytes": 347
+    },
+    {
+      "path": "docs/evidence/m0-t13a-steady-controller/formal-l2-01-business-audit.stdout",
+      "sha256": "64e2fa1e4e4e5748c65fbe2b4bb4d2cb27bb999c1f6b91ae68a6e69a5a38c42c",
+      "bytes": 30178
+    },
+    {
+      "path": "/Users/frankqin/dev/MyCity/work/candidate-binaries/steady-controller/mycity-headless",
+      "sha256": "3ec2d0b2a840bca147654da5f4f43c01dd15f4c89b13c934bf2e12bbb6186774",
+      "bytes": 12985152
+    },
+    {
+      "path": "Cargo.lock",
+      "sha256": "8e10b63f3a4bb19bcbec6229e5d7939d696f3b3b55b076e7e885027ec778d95d",
+      "bytes": 9941
+    }
+  ],
+  "frozen_source_sha256": "e49b29d55ca76a562d1e497701333393746d3f9031651b814c65590fdf5db0b5",
+  "binary_sha256": "3ec2d0b2a840bca147654da5f4f43c01dd15f4c89b13c934bf2e12bbb6186774",
+  "business_scope": "actual original full trajectory and latest published full Engine; no formal speed/steady acceptance",
+  "all_recorded_normal_exits_successful": true,
+  "pool_final": {
+    "capacity_bytes": 67108864,
+    "available_touched_bytes": 67108864,
+    "granted_capacity_bytes": 0,
+    "workspace_capacity_bytes": 0,
+    "workspace_grants": 6,
+    "workspace_returns": 6,
+    "workspace_fills": 6,
+    "grants": 1437,
+    "returns": 1437,
+    "fill_acknowledgements": 1437,
+    "scans": 6473,
+    "rejected_requests": 0,
+    "maximum_prepare_to_fill_or_reap_ns": 335055084
+  },
+  "performance_acceptance": "not established by this retention review"
+}

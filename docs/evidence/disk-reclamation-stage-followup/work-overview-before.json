@@ -1,0 +1,210 @@
+{
+  "largest_round_allocations_not_exclusive_APFS_bytes": [
+    [
+      "steady-controller-formal-l2-01",
+      6981570560
+    ],
+    [
+      "t13a85-joint-01",
+      6872150016
+    ],
+    [
+      "t13a50-joint-01",
+      3665219584
+    ],
+    [
+      "steady-controller-smoke-l2-01",
+      3391676416
+    ],
+    [
+      "steady-controller-smoke-l1-01",
+      3379122176
+    ],
+    [
+      "candidate-binaries",
+      309407744
+    ],
+    [
+      "t13a1b-layout-full-04",
+      200986624
+    ],
+    [
+      "t13a1b-layout-full-01",
+      200781824
+    ],
+    [
+      "t13a1b-layout-negative-fixture",
+      200605696
+    ],
+    [
+      "t13a2-v1-compatibility",
+      125800448
+    ],
+    [
+      "t13a2-store-baseline-01",
+      119877632
+    ],
+    [
+      "t13a2-store-borrowed-v1-02",
+      119877632
+    ],
+    [
+      "t13a63-joint-01",
+      114356224
+    ],
+    [
+      "t13a65-joint-01",
+      114188288
+    ],
+    [
+      "t13a60-joint-01",
+      114171904
+    ],
+    [
+      "t13a62-joint-01",
+      114126848
+    ],
+    [
+      "t13a70-joint-01",
+      114089984
+    ],
+    [
+      "t13a65-joint-02",
+      114089984
+    ],
+    [
+      "t13a64-joint-01",
+      114040832
+    ],
+    [
+      "t13a49-smoke01",
+      108208128
+    ],
+    [
+      "t13a49-smoke02",
+      108150784
+    ],
+    [
+      "t13a58-unpaced-01",
+      98308096
+    ],
+    [
+      "t13a-role-arena-business-01",
+      97554432
+    ],
+    [
+      "t13a51-unpaced-01",
+      95666176
+    ],
+    [
+      "t13a3j-functional-01",
+      95645696
+    ],
+    [
+      "t13a3m-functional-01",
+      95563776
+    ],
+    [
+      "t13a3i-functional-01",
+      95453184
+    ],
+    [
+      "t13a-role-spatial-business-01",
+      94097408
+    ],
+    [
+      "t13a-role-lexical-business-01",
+      94097408
+    ],
+    [
+      "t13a-role-metadata-business-01",
+      94093312
+    ]
+  ],
+  "pressure_and_reserve_originals": [
+    {
+      "path": "work/steady-controller-smoke-l2-01/observed/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+      "allocated_bytes": 134217728,
+      "logical_bytes": 134217728,
+      "links": 1
+    },
+    {
+      "path": "work/steady-controller-smoke-l2-01/observed/model/layout/snapshots/snapshot-000001/pressure.bin",
+      "allocated_bytes": 3044040704,
+      "logical_bytes": 3044040310,
+      "links": 1
+    },
+    {
+      "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000008/work-reserve.bin",
+      "allocated_bytes": 134217728,
+      "logical_bytes": 134217728,
+      "links": 1
+    },
+    {
+      "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000008/pressure.bin",
+      "allocated_bytes": 3045089280,
+      "logical_bytes": 3044040310,
+      "links": 1
+    },
+    {
+      "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000007/work-reserve.bin",
+      "allocated_bytes": 134217728,
+      "logical_bytes": 134217728,
+      "links": 1
+    },
+    {
+      "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000007/pressure.bin",
+      "allocated_bytes": 3048235008,
+      "logical_bytes": 3044040310,
+      "links": 1
+    },
+    {
+      "path": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+      "allocated_bytes": 134217728,
+      "logical_bytes": 134217728,
+      "links": 1
+    },
+    {
+      "path": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+      "allocated_bytes": 3044040704,
+      "logical_bytes": 3044040310,
+      "links": 1
+    },
+    {
+      "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+      "allocated_bytes": 134217728,
+      "logical_bytes": 134217728,
+      "links": 1
+    },
+    {
+      "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+      "allocated_bytes": 3044040704,
+      "logical_bytes": 3044040310,
+      "links": 1
+    },
+    {
+      "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+      "allocated_bytes": 134217728,
+      "logical_bytes": 134217728,
+      "links": 1
+    },
+    {
+      "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/pressure.bin",
+      "allocated_bytes": 3044040704,
+      "logical_bytes": 3044040310,
+      "links": 1
+    },
+    {
+      "path": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+      "allocated_bytes": 134217728,
+      "logical_bytes": 134217728,
+      "links": 1
+    },
+    {
+      "path": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/pressure.bin",
+      "allocated_bytes": 3044040704,
+      "logical_bytes": 3044040310,
+      "links": 1
+    }
+  ]
+}

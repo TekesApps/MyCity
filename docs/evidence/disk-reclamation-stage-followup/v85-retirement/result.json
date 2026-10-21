@@ -1,0 +1,24 @@
+{
+  "before": {
+    "time_ns": 1792608883371706000,
+    "work_du_kib": 24722504,
+    "target_du_kib": 1400484,
+    "filesystem_available_bytes": 106956304384
+  },
+  "after": {
+    "time_ns": 1792608889635390000,
+    "work_du_kib": 18514968,
+    "target_du_kib": 1400484,
+    "filesystem_available_bytes": 113312571392
+  },
+  "deleted_files": 4,
+  "deleted_unique_single_link_inode_allocated_bytes": 6356516864,
+  "target_deleted_bytes": 0,
+  "new_work_archive_bytes": 0,
+  "retained_files_identity_length_mtime_links_unchanged": 118668,
+  "retained_allocation_only_differences": 0,
+  "observed_df_available_delta": 6356267008,
+  "df_delta_attributed_to_cleanup": null,
+  "availability": "v85 generations1/2 now incomplete and cannot directly restore; formal generations7/8, v50 old-format and smoke-L2 fault full originals preserved",
+  "accounting": "st_blocks not exclusive APFS physical bytes; df influenced by snapshots/shared blocks and unrelated tasks; old cleanup not counted"
+}

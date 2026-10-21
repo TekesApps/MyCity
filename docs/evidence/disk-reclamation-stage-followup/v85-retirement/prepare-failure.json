@@ -1,0 +1,6 @@
+{
+  "phase": "pre-delete report validation",
+  "deleted_files": 0,
+  "reason": "Report contains eight historical snapshot summaries; current retained physical generations are7/8. Fixed selection to exact kept generation IDs; original report unchanged.",
+  "original_script": "reclaim-before-summary-check-fix.py"
+}

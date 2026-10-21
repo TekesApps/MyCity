@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.86`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.87`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.87完成[集中回收与恢复基线交接](docs/evidence/disk-reclamation-stage-followup/STATUS.md)：精确删除6份退役合成压力／预留文件，减少8.880GiB文件分配空间；work剩17.657GiB，唯一target继续复用。新formal两代、旧格式兼容原件、故障与业务证据完整保留；模型未提交工作不混入发布。
 
 v0.5.86完成[历史重复组件回收](docs/evidence/disk-reclamation-v70-components/STATUS.md)，保留完整恢复输入、业务与验收证据；共享target继续复用。稳态控制器开发仍在进行，本次不发布未验证代码。
 

@@ -1,0 +1,66 @@
+[
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      408993726,
+      3044040310,
+      1792601387360252721,
+      3044040704,
+      1
+    ],
+    "sha256": "b54b320a49eda0e4d1fbb2ba6d8dfb7fdf33d228b6397bace5cf6bf95bf507be",
+    "reason": "Superseded by actual formal L2 generations7/8 full write/readback/cold restore, complete real30d independent business audit, and advisor dependency release; synthetic original-load pressure/reserve, not business",
+    "evidence": "docs/evidence/disk-reclamation-stage-followup/v85-replacement-review.md; work/t13a85-joint-01/model/layout/snapshots/*/index.json; work/steady-controller-formal-l2-01/observed/model/layout-restored/report.json",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      408993778,
+      134217728,
+      1792601387546776015,
+      134217728,
+      1
+    ],
+    "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee",
+    "reason": "Superseded by actual formal L2 generations7/8 full write/readback/cold restore, complete real30d independent business audit, and advisor dependency release; synthetic original-load pressure/reserve, not business",
+    "evidence": "docs/evidence/disk-reclamation-stage-followup/v85-replacement-review.md; work/t13a85-joint-01/model/layout/snapshots/*/index.json; work/steady-controller-formal-l2-01/observed/model/layout-restored/report.json",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/pressure.bin",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      409015870,
+      3044040310,
+      1792601689674851647,
+      3044040704,
+      1
+    ],
+    "sha256": "295aa5513563576511be04259ebbd9106037e84315e6ca79f99a0765d025c428",
+    "reason": "Superseded by actual formal L2 generations7/8 full write/readback/cold restore, complete real30d independent business audit, and advisor dependency release; synthetic original-load pressure/reserve, not business",
+    "evidence": "docs/evidence/disk-reclamation-stage-followup/v85-replacement-review.md; work/t13a85-joint-01/model/layout/snapshots/*/index.json; work/steady-controller-formal-l2-01/observed/model/layout-restored/report.json",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      409016202,
+      134217728,
+      1792601689868371702,
+      134217728,
+      1
+    ],
+    "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee",
+    "reason": "Superseded by actual formal L2 generations7/8 full write/readback/cold restore, complete real30d independent business audit, and advisor dependency release; synthetic original-load pressure/reserve, not business",
+    "evidence": "docs/evidence/disk-reclamation-stage-followup/v85-replacement-review.md; work/t13a85-joint-01/model/layout/snapshots/*/index.json; work/steady-controller-formal-l2-01/observed/model/layout-restored/report.json",
+    "directly_restorable_after": false
+  }
+]

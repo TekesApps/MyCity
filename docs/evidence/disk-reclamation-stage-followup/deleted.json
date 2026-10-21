@@ -1,0 +1,34 @@
+[
+  {
+    "path": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "round": "steady-controller-smoke-l1-01",
+    "metadata": [
+      16777231,
+      409165601,
+      3044040310,
+      1792606079369688601,
+      3044040704,
+      1
+    ],
+    "sha256": "b54b320a49eda0e4d1fbb2ba6d8dfb7fdf33d228b6397bace5cf6bf95bf507be",
+    "reason": "Completed shortened-wall L1 diagnostic; full readback and cold record restore passed; no subsequent full-snapshot dependency; regenerable original-load synthetic data, not business",
+    "evidence": "docs/evidence/m0-t13a-steady-controller/l1-observed.json; work/steady-controller-smoke-l1-01/observed/model/layout/{events.jsonl,report.json,snapshots/snapshot-000001/index.json}",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "round": "steady-controller-smoke-l1-01",
+    "metadata": [
+      16777231,
+      409165604,
+      134217728,
+      1792606079540527416,
+      134217728,
+      1
+    ],
+    "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee",
+    "reason": "Completed shortened-wall L1 diagnostic; full readback and cold record restore passed; no subsequent full-snapshot dependency; regenerable original-load synthetic data, not business",
+    "evidence": "docs/evidence/m0-t13a-steady-controller/l1-observed.json; work/steady-controller-smoke-l1-01/observed/model/layout/{events.jsonl,report.json,snapshots/snapshot-000001/index.json}",
+    "directly_restorable_after": false
+  }
+]

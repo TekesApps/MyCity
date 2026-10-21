@@ -1,0 +1,17 @@
+ M crates/city-headless/src/boot_probe.rs
+ M crates/city-headless/src/cpu_log.rs
+ M crates/city-headless/src/economy_probe.rs
+ M crates/city-headless/src/exchange_probe.rs
+ M crates/city-headless/src/heap_meter.rs
+ M crates/city-headless/src/layout_load.rs
+ M crates/city-headless/src/lib.rs
+ M crates/city-headless/src/main.rs
+ M crates/city-headless/src/scale_metrics.rs
+ M crates/city-headless/src/scale_model_task.rs
+ M crates/city-headless/src/scale_sim.rs
+ M crates/city-headless/src/scale_speed.rs
+ M crates/city-headless/src/sim_host.rs
+?? crates/city-headless/src/steady/
+?? crates/city-headless/tests/steady.rs
+?? docs/evidence/disk-reclamation-stage-followup/
+?? docs/evidence/m0-t13a-steady-controller/

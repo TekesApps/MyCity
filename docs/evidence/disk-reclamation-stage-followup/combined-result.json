@@ -1,0 +1,35 @@
+{
+  "time_ns": 1792609200911061000,
+  "deleted_files": 6,
+  "deleted_unique_single_link_inode_allocated_bytes": 9534775296,
+  "first_delete_before": {
+    "time_ns": 1792608704086870000,
+    "work_du_kib": 27826272,
+    "target_du_kib": 1400484,
+    "filesystem_available_bytes": 103791575040
+  },
+  "final_delete_after": {
+    "time_ns": 1792608889635390000,
+    "work_du_kib": 18514968,
+    "target_du_kib": 1400484,
+    "filesystem_available_bytes": 113312571392
+  },
+  "observed_df_delta_across_both_delete_intervals": 9534550016,
+  "observed_df_delta_entire_span": 9520996352,
+  "df_delta_attributed_to_cleanup": null,
+  "target_deleted_bytes": 0,
+  "new_work_archive_bytes": 0,
+  "cleanup_evidence_location": "docs/evidence/disk-reclamation-stage-followup",
+  "formal_gate_change": "none; retention replacement only",
+  "protected_full_inputs": [
+    "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000007",
+    "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000008",
+    "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001",
+    "work/steady-controller-smoke-l2-01/observed/model/layout/snapshots/snapshot-000001"
+  ],
+  "retired_direct_recovery": [
+    "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001",
+    "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001",
+    "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002"
+  ]
+}
