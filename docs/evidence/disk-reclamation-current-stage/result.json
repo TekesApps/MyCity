@@ -1,0 +1,24 @@
+{
+  "before": {
+    "time_ns": 1792612768987001000,
+    "work_du_kib": 24008084,
+    "target_du_kib": 1400140,
+    "filesystem_available_bytes": 106247315456
+  },
+  "after": {
+    "time_ns": 1792612773847797000,
+    "work_du_kib": 20112428,
+    "target_du_kib": 1400140,
+    "filesystem_available_bytes": 110236594176
+  },
+  "deleted_files": 102,
+  "deleted_unique_single_link_inode_allocated_bytes": 3989151744,
+  "target_deleted_bytes": 0,
+  "new_work_archive_bytes": 0,
+  "retained_files_identity_length_mtime_links_unchanged": 118748,
+  "retained_allocation_only_differences": 0,
+  "observed_df_available_delta": 3989278720,
+  "df_delta_attributed_to_cleanup": null,
+  "availability": "layout-region-l1-smoke-02 now incomplete, cannot directly restore; v85/steady-smoke-L1 already incomplete, archived components now retired too; formal7/8, v50, smoke-L2 and complete failed pending originals preserved",
+  "accounting": "st_blocks not exclusive APFS physical bytes; df influenced by snapshots/shared blocks and unrelated tasks; old cleanup not counted"
+}

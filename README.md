@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.89`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.90`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.90完成[历史验证产物集中清理](docs/evidence/disk-reclamation-current-stage/STATUS.md)：精确退役102份终态合成载荷与旧重复组件，减少3.715GiB文件分配空间，work剩19.181GiB；完整恢复输入、失败现场及模型未提交工作保留。共享target复用，未新增模型验收结论。
 
 v0.5.89完成[实际边界计数与原生观测](docs/evidence/m0-t13a-native-boundaries/STATUS.md)：冻结全仓回归、原L1短测及冷恢复成立；同相位物理驻留仍高于3.10GiB，下一步固定工作区复用实验。短测27份合成载荷已回收，未签正式稳态／8h或真实16GB。
 

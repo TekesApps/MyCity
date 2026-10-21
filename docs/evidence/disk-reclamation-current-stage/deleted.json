@@ -1,0 +1,1984 @@
+[
+  {
+    "path": "work/layout-region-l1-smoke-02/observed/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "round": "layout-region-l1-smoke-02",
+    "metadata": [
+      16777231,
+      409326209,
+      3044040310,
+      1792612493148606751,
+      3052642304,
+      1
+    ],
+    "sha256": "b54b320a49eda0e4d1fbb2ba6d8dfb7fdf33d228b6397bace5cf6bf95bf507be",
+    "reason": "Completed shortened-wall L1 diagnostic; full readback and cold record restore passed; no subsequent full-snapshot dependency; regenerable original-load synthetic data, not business",
+    "evidence": "docs/evidence/m0-t13a-layout-cow-reuse/layout-region-l1-smoke-02.stdout; work/layout-region-l1-smoke-02/observed/model/layout/{events.jsonl,report.json,snapshots/snapshot-000001/index.json}",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/layout-region-l1-smoke-02/observed/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "round": "layout-region-l1-smoke-02",
+    "metadata": [
+      16777231,
+      409326212,
+      134217728,
+      1792612493337330595,
+      134217728,
+      1
+    ],
+    "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee",
+    "reason": "Completed shortened-wall L1 diagnostic; full readback and cold record restore passed; no subsequent full-snapshot dependency; regenerable original-load synthetic data, not business",
+    "evidence": "docs/evidence/m0-t13a-layout-cow-reuse/layout-region-l1-smoke-02.stdout; work/layout-region-l1-smoke-02/observed/model/layout/{events.jsonl,report.json,snapshots/snapshot-000001/index.json}",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/layout-region-l1-smoke-02/observed/model/layout/snapshots/snapshot-000001/native.json",
+    "round": "layout-region-l1-smoke-02",
+    "metadata": [
+      16777231,
+      409326172,
+      65299383,
+      1792612489414260574,
+      65302528,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+    "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+    "reason": "Completed pure synthetic diagnostic without recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "retained original index, cold restore report, actual model logs and existing full-byte gzip archive",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/layout-region-l1-smoke-02/observed/model/layout/snapshots/snapshot-000001/maps.json",
+    "round": "layout-region-l1-smoke-02",
+    "metadata": [
+      16777231,
+      409326183,
+      2942,
+      1792612489422490630,
+      4096,
+      1
+    ],
+    "sha256": "ae761e9b61d12349e7981d67af0348b7d695ac0f5afbdbe9c8c3397456b247ae",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/maps.json.gz",
+    "archive_sha256": "05880820040b3aae978ea9edbed28747a7c618207c4e60575d233adaab5bf4b1",
+    "reason": "Completed pure synthetic diagnostic without recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "retained original index, cold restore report, actual model logs and existing full-byte gzip archive",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/layout-region-l1-smoke-02/observed/model/layout/snapshots/snapshot-000001/households.json",
+    "round": "layout-region-l1-smoke-02",
+    "metadata": [
+      16777231,
+      409326184,
+      15359282,
+      1792612489449373971,
+      15360000,
+      1
+    ],
+    "sha256": "e3fb17426646d2b0d7be91d37ac60007116cbbdb0fb47df9dcb6b19e19866558",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/households.json.gz",
+    "archive_sha256": "d97e14b29fe883e3334c66c7bcbd09cc710bd735754c32911f91336f623db75c",
+    "reason": "Completed pure synthetic diagnostic without recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "retained original index, cold restore report, actual model logs and existing full-byte gzip archive",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/layout-region-l1-smoke-02/observed/model/layout/snapshots/snapshot-000001/housing.json",
+    "round": "layout-region-l1-smoke-02",
+    "metadata": [
+      16777231,
+      409326185,
+      16677375,
+      1792612489480896445,
+      16678912,
+      1
+    ],
+    "sha256": "945e089c974fae08f7afdb0ce31e329a8a2f56ebedcecf2af2594d0a0d6bfd40",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/housing.json.gz",
+    "archive_sha256": "37b9ad04780f0fd79712269e2f48b4e3e4e6757a071583dc1fd2cbffc35db69b",
+    "reason": "Completed pure synthetic diagnostic without recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "retained original index, cold restore report, actual model logs and existing full-byte gzip archive",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/layout-region-l1-smoke-02/observed/model/layout/snapshots/snapshot-000001/visitors.json",
+    "round": "layout-region-l1-smoke-02",
+    "metadata": [
+      16777231,
+      409326186,
+      690521,
+      1792612489492577300,
+      692224,
+      1
+    ],
+    "sha256": "da50ab93414feb3adb8ed61fc7db097685f7d54eaaf61519abc581ea6ca1e6db",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/visitors.json.gz",
+    "archive_sha256": "3a38cf7178da6144006a466bab78d2842b3fec030449afbbe2b50dbbbeeae8ff",
+    "reason": "Completed pure synthetic diagnostic without recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "retained original index, cold restore report, actual model logs and existing full-byte gzip archive",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/layout-region-l1-smoke-02/observed/model/layout/snapshots/snapshot-000001/operators.json",
+    "round": "layout-region-l1-smoke-02",
+    "metadata": [
+      16777231,
+      409326187,
+      917651,
+      1792612489499907563,
+      921600,
+      1
+    ],
+    "sha256": "9a04b08911d53eb76ef4d3e21b7bd90952aca39eb60540199bd37d3b2a761c54",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/operators.json.gz",
+    "archive_sha256": "f2bc7a1f871546611dc31a308342ebc1661b7a7eb89e849fa53fe615d3aa3068",
+    "reason": "Completed pure synthetic diagnostic without recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "retained original index, cold restore report, actual model logs and existing full-byte gzip archive",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/layout-region-l1-smoke-02/observed/model/layout/snapshots/snapshot-000001/entities.json",
+    "round": "layout-region-l1-smoke-02",
+    "metadata": [
+      16777231,
+      409326188,
+      1368255,
+      1792612489507157910,
+      1372160,
+      1
+    ],
+    "sha256": "db1dabe1d763fb4efae5e29a004b057f67ac60fd8c49e913e7fc6a68fe902c80",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/entities.json.gz",
+    "archive_sha256": "6f6f85f6d29a58cc8fc4e523eeae494cbdede739176804805556aba8802f6be4",
+    "reason": "Completed pure synthetic diagnostic without recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "retained original index, cold restore report, actual model logs and existing full-byte gzip archive",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/layout-region-l1-smoke-02/observed/model/layout/snapshots/snapshot-000001/equity_links.json",
+    "round": "layout-region-l1-smoke-02",
+    "metadata": [
+      16777231,
+      409326189,
+      2453947,
+      1792612489518211805,
+      2457600,
+      1
+    ],
+    "sha256": "fa41a9f768748013714b0e2ccab7b624dc8faf50bda7e8c5f65119155023957b",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/equity_links.json.gz",
+    "archive_sha256": "eafcbfbb83dd2138d5f0c70030fd61214ed3c2e531eba1eb93ec1c6fa5de72ec",
+    "reason": "Completed pure synthetic diagnostic without recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "retained original index, cold restore report, actual model logs and existing full-byte gzip archive",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/layout-region-l1-smoke-02/observed/model/layout/snapshots/snapshot-000001/meter.json",
+    "round": "layout-region-l1-smoke-02",
+    "metadata": [
+      16777231,
+      409326190,
+      59090761,
+      1792612489633263390,
+      59092992,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+    "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+    "reason": "Completed pure synthetic diagnostic without recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "retained original index, cold restore report, actual model logs and existing full-byte gzip archive",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/layout-region-l1-smoke-02/observed/model/layout/snapshots/snapshot-000001/general_contracts.json",
+    "round": "layout-region-l1-smoke-02",
+    "metadata": [
+      16777231,
+      409326191,
+      1101276,
+      1792612489640986945,
+      1101824,
+      1
+    ],
+    "sha256": "9d5a9af34fcf4347739ca021ee9e7fbfb929151741f2574a823f2b245cc66b79",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/general_contracts.json.gz",
+    "archive_sha256": "fb78adb50695ffe9523c7eac984b329a21f6777510d7b1ab72da03db4f08dddc",
+    "reason": "Completed pure synthetic diagnostic without recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "retained original index, cold restore report, actual model logs and existing full-byte gzip archive",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/layout-region-l1-smoke-02/observed/model/layout/snapshots/snapshot-000001/od.json",
+    "round": "layout-region-l1-smoke-02",
+    "metadata": [
+      16777231,
+      409326192,
+      5423128,
+      1792612489654759887,
+      5427200,
+      1
+    ],
+    "sha256": "9752dcc442e0ac5ce3176c39f682feba7da95b4eb122d2963de544cbab0e1b19",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/od.json.gz",
+    "archive_sha256": "6c80f10ef8b13255b171d33950e0362c281b90b7687f1b6653914a18ef088295",
+    "reason": "Completed pure synthetic diagnostic without recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "retained original index, cold restore report, actual model logs and existing full-byte gzip archive",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/layout-region-l1-smoke-02/observed/model/layout/snapshots/snapshot-000001/path_refs.json",
+    "round": "layout-region-l1-smoke-02",
+    "metadata": [
+      16777231,
+      409326193,
+      4722328,
+      1792612489673644088,
+      4722688,
+      1
+    ],
+    "sha256": "22dd70d215552416e832bff45e3d639417269683417ff0a2531b82e75b22ca7f",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/path_refs.json.gz",
+    "archive_sha256": "1012f38473b782884fb397b1179ef56232587cebfb549d56ce38ca6d49331532",
+    "reason": "Completed pure synthetic diagnostic without recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "retained original index, cold restore report, actual model logs and existing full-byte gzip archive",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/layout-region-l1-smoke-02/observed/model/layout/snapshots/snapshot-000001/cargo_batches.json",
+    "round": "layout-region-l1-smoke-02",
+    "metadata": [
+      16777231,
+      409326194,
+      3131844,
+      1792612489685307526,
+      3133440,
+      1
+    ],
+    "sha256": "ccca291ac558b5724d79aa3da6017fbb0c79a0ffe6e2d514dce8ae7098c2d698",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/cargo_batches.json.gz",
+    "archive_sha256": "21feb37ededf60a6361b1be1ed69fb273f710adcf7e8eeb3d3eeaacdb4876492",
+    "reason": "Completed pure synthetic diagnostic without recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "retained original index, cold restore report, actual model logs and existing full-byte gzip archive",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/layout-region-l1-smoke-02/observed/model/layout/snapshots/snapshot-000001/passenger_batches.json",
+    "round": "layout-region-l1-smoke-02",
+    "metadata": [
+      16777231,
+      409326195,
+      14813630,
+      1792612489717320876,
+      14815232,
+      1
+    ],
+    "sha256": "5395485902b0b50f665f1d972be360f0968ead26f3a5a6cc69ce20866d7b6586",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/passenger_batches.json.gz",
+    "archive_sha256": "a78e39f97399649e3ff1f0b1f297a3d44762f26e8f75ccbf0252f24c7fe1b87e",
+    "reason": "Completed pure synthetic diagnostic without recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "retained original index, cold restore report, actual model logs and existing full-byte gzip archive",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/layout-region-l1-smoke-02/observed/model/layout/snapshots/snapshot-000001/bus_train_vehicles.json",
+    "round": "layout-region-l1-smoke-02",
+    "metadata": [
+      16777231,
+      409326196,
+      736200,
+      1792612489728955272,
+      737280,
+      1
+    ],
+    "sha256": "20dce9e9aa5b2804164917308428b0df3a7fbc6c14a59cc7a7e1c07ef3d9ef7b",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/bus_train_vehicles.json.gz",
+    "archive_sha256": "3ad0d3065ec5456425b9ab239832b706fe1687b56e64516f653257b1fb7f8151",
+    "reason": "Completed pure synthetic diagnostic without recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "retained original index, cold restore report, actual model logs and existing full-byte gzip archive",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/layout-region-l1-smoke-02/observed/model/layout/snapshots/snapshot-000001/ship_aircraft_vehicles.json",
+    "round": "layout-region-l1-smoke-02",
+    "metadata": [
+      16777231,
+      409326197,
+      183429,
+      1792612489735923993,
+      184320,
+      1
+    ],
+    "sha256": "abaa5b8c26e0b87ae20a9aac79b7b40189b64e84bc919033e4b3a38b48e5cf8a",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/ship_aircraft_vehicles.json.gz",
+    "archive_sha256": "3a2b41b5ba1a8a7e23abf5b2b2482edaf3a37f8098ec12a0a56cf12093c50b1c",
+    "reason": "Completed pure synthetic diagnostic without recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "retained original index, cold restore report, actual model logs and existing full-byte gzip archive",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/layout-region-l1-smoke-02/observed/model/layout/snapshots/snapshot-000001/car_vehicles.json",
+    "round": "layout-region-l1-smoke-02",
+    "metadata": [
+      16777231,
+      409326198,
+      6209212,
+      1792612489752506607,
+      6209536,
+      1
+    ],
+    "sha256": "6af743614a5111a333b9f327461fc1c2db13441d571f7f7073afc2222c3edb94",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/car_vehicles.json.gz",
+    "archive_sha256": "17156f8359f49aeb06cbe722520518e0811ae6e9666e5621aabbe64d131dbda8",
+    "reason": "Completed pure synthetic diagnostic without recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "retained original index, cold restore report, actual model logs and existing full-byte gzip archive",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/layout-region-l1-smoke-02/observed/model/layout/snapshots/snapshot-000001/matters.json",
+    "round": "layout-region-l1-smoke-02",
+    "metadata": [
+      16777231,
+      409326199,
+      82934,
+      1792612489760093954,
+      86016,
+      1
+    ],
+    "sha256": "e9c44415a18648aacb1632f1dff4d23c4d9065a329400d79c53f55f5a097cc0e",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/matters.json.gz",
+    "archive_sha256": "e277ee89f0f9705a12b457e105c1c32d491d444fbfc156fc11a7fdc4900d4807",
+    "reason": "Completed pure synthetic diagnostic without recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "retained original index, cold restore report, actual model logs and existing full-byte gzip archive",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/layout-region-l1-smoke-02/observed/model/layout/snapshots/snapshot-000001/team_members.json",
+    "round": "layout-region-l1-smoke-02",
+    "metadata": [
+      16777231,
+      409326200,
+      11688,
+      1792612489764948254,
+      12288,
+      1
+    ],
+    "sha256": "dcb1def449b163d6e8d4e844a94cbace4be2e0157b352a95e3e41563bb9f7033",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/team_members.json.gz",
+    "archive_sha256": "91f9bea0382c05b43298a9f4d5ae53123d1d145e66fc9c38b332164665fe631b",
+    "reason": "Completed pure synthetic diagnostic without recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "retained original index, cold restore report, actual model logs and existing full-byte gzip archive",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/layout-region-l1-smoke-02/observed/model/layout/snapshots/snapshot-000001/analysis_tasks.json",
+    "round": "layout-region-l1-smoke-02",
+    "metadata": [
+      16777231,
+      409326201,
+      22170,
+      1792612489769637346,
+      24576,
+      1
+    ],
+    "sha256": "ecf2eee90e87a656fb49e5a23457146d1eddbafa16311f218ca601b71dfdffbd",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/analysis_tasks.json.gz",
+    "archive_sha256": "c66951ae3b529f4f11410398dea3d261436f98150d400c279bd5076a53d303c5",
+    "reason": "Completed pure synthetic diagnostic without recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "retained original index, cold restore report, actual model logs and existing full-byte gzip archive",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/layout-region-l1-smoke-02/observed/model/layout/snapshots/snapshot-000001/hosts.json",
+    "round": "layout-region-l1-smoke-02",
+    "metadata": [
+      16777231,
+      409326204,
+      1419868,
+      1792612489785641542,
+      1421312,
+      1
+    ],
+    "sha256": "9dd1b2bad52cffc8b9287d68802b58313ba1faa0f431db9c623fdb5dffe16122",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/hosts.json.gz",
+    "archive_sha256": "333ccb34a87c1cdc555c7d21cc29cc30aad55a0b28b373345a9986a5fc42e59b",
+    "reason": "Completed pure synthetic diagnostic without recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "retained original index, cold restore report, actual model logs and existing full-byte gzip archive",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/layout-region-l1-smoke-02/observed/model/layout/snapshots/snapshot-000001/teaching_batches.json",
+    "round": "layout-region-l1-smoke-02",
+    "metadata": [
+      16777231,
+      409326205,
+      220123,
+      1792612489791846595,
+      221184,
+      1
+    ],
+    "sha256": "c2acc7e0bff85be162f3aa325a16f16117cf058ff07798ff9d2d8d261130661c",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/teaching_batches.json.gz",
+    "archive_sha256": "92a0a69f2102e839420ecc9126424dfbcb77cf6ddf394becb1b21fbc8e149256",
+    "reason": "Completed pure synthetic diagnostic without recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "retained original index, cold restore report, actual model logs and existing full-byte gzip archive",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/layout-region-l1-smoke-02/observed/model/layout/snapshots/snapshot-000001/current_services.json",
+    "round": "layout-region-l1-smoke-02",
+    "metadata": [
+      16777231,
+      409326206,
+      551619,
+      1792612489797618022,
+      552960,
+      1
+    ],
+    "sha256": "ce36e5ee99eb53403c3ab6f1a09e6144819e93d663374aa138bd36e1d6ecab67",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/current_services.json.gz",
+    "archive_sha256": "bf23a38a6012c7b862400dd12c8198fe1138d9125bc456fb1b72e8f0a4cbdadc",
+    "reason": "Completed pure synthetic diagnostic without recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "retained original index, cold restore report, actual model logs and existing full-byte gzip archive",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/layout-region-l1-smoke-02/observed/model/layout/snapshots/snapshot-000001/cases.json",
+    "round": "layout-region-l1-smoke-02",
+    "metadata": [
+      16777231,
+      409326207,
+      24909,
+      1792612489802325781,
+      28672,
+      1
+    ],
+    "sha256": "744bcbbec2787fa1a2c513ba7b530f1366f5ab0cd461347f43e3cec3b8b76b3b",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/cases.json.gz",
+    "archive_sha256": "3b734cc320f1723484feebae27ed4bb0a33410727d5d04fa1a3015289191afb4",
+    "reason": "Completed pure synthetic diagnostic without recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "retained original index, cold restore report, actual model logs and existing full-byte gzip archive",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/layout-region-l1-smoke-02/observed/model/layout/snapshots/snapshot-000001/bills.json",
+    "round": "layout-region-l1-smoke-02",
+    "metadata": [
+      16777231,
+      409326208,
+      11091,
+      1792612489807472832,
+      12288,
+      1
+    ],
+    "sha256": "ca1116d31f876fdc002ecc09173b768390ac80a0858dd4008a0b7e93a8c75584",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/bills.json.gz",
+    "archive_sha256": "5ff4697e95bea24f92ca0490f885778c23dcd73e127b0d8acf06744b46f9f620",
+    "reason": "Completed pure synthetic diagnostic without recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "retained original index, cold restore report, actual model logs and existing full-byte gzip archive",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/native.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      408993612,
+      65299383,
+      1792601383540490118,
+      65302528,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+    "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "f73ce2febd21a8ee01f9f8b1c341591b9d78fc6135dc6f1fa1613df04ae2aff4",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/maps.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      408993658,
+      2942,
+      1792601383550519236,
+      4096,
+      1
+    ],
+    "sha256": "ae761e9b61d12349e7981d67af0348b7d695ac0f5afbdbe9c8c3397456b247ae",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/maps.json.gz",
+    "archive_sha256": "05880820040b3aae978ea9edbed28747a7c618207c4e60575d233adaab5bf4b1",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "f73ce2febd21a8ee01f9f8b1c341591b9d78fc6135dc6f1fa1613df04ae2aff4",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/households.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      408993659,
+      15359282,
+      1792601383583575612,
+      15360000,
+      1
+    ],
+    "sha256": "e3fb17426646d2b0d7be91d37ac60007116cbbdb0fb47df9dcb6b19e19866558",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/households.json.gz",
+    "archive_sha256": "d97e14b29fe883e3334c66c7bcbd09cc710bd735754c32911f91336f623db75c",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "f73ce2febd21a8ee01f9f8b1c341591b9d78fc6135dc6f1fa1613df04ae2aff4",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/housing.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      408993665,
+      16677375,
+      1792601383635541841,
+      16678912,
+      1
+    ],
+    "sha256": "945e089c974fae08f7afdb0ce31e329a8a2f56ebedcecf2af2594d0a0d6bfd40",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/housing.json.gz",
+    "archive_sha256": "37b9ad04780f0fd79712269e2f48b4e3e4e6757a071583dc1fd2cbffc35db69b",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "f73ce2febd21a8ee01f9f8b1c341591b9d78fc6135dc6f1fa1613df04ae2aff4",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/visitors.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      408993671,
+      690521,
+      1792601383647285597,
+      692224,
+      1
+    ],
+    "sha256": "da50ab93414feb3adb8ed61fc7db097685f7d54eaaf61519abc581ea6ca1e6db",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/visitors.json.gz",
+    "archive_sha256": "3a38cf7178da6144006a466bab78d2842b3fec030449afbbe2b50dbbbeeae8ff",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "f73ce2febd21a8ee01f9f8b1c341591b9d78fc6135dc6f1fa1613df04ae2aff4",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/operators.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      408993673,
+      917651,
+      1792601383656319124,
+      921600,
+      1
+    ],
+    "sha256": "9a04b08911d53eb76ef4d3e21b7bd90952aca39eb60540199bd37d3b2a761c54",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/operators.json.gz",
+    "archive_sha256": "f2bc7a1f871546611dc31a308342ebc1661b7a7eb89e849fa53fe615d3aa3068",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "f73ce2febd21a8ee01f9f8b1c341591b9d78fc6135dc6f1fa1613df04ae2aff4",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/entities.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      408993676,
+      1368255,
+      1792601383665124733,
+      1372160,
+      1
+    ],
+    "sha256": "db1dabe1d763fb4efae5e29a004b057f67ac60fd8c49e913e7fc6a68fe902c80",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/entities.json.gz",
+    "archive_sha256": "6f6f85f6d29a58cc8fc4e523eeae494cbdede739176804805556aba8802f6be4",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "f73ce2febd21a8ee01f9f8b1c341591b9d78fc6135dc6f1fa1613df04ae2aff4",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/equity_links.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      408993681,
+      2453947,
+      1792601383677566286,
+      2457600,
+      1
+    ],
+    "sha256": "fa41a9f768748013714b0e2ccab7b624dc8faf50bda7e8c5f65119155023957b",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/equity_links.json.gz",
+    "archive_sha256": "eafcbfbb83dd2138d5f0c70030fd61214ed3c2e531eba1eb93ec1c6fa5de72ec",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "f73ce2febd21a8ee01f9f8b1c341591b9d78fc6135dc6f1fa1613df04ae2aff4",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/meter.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      408993690,
+      59090761,
+      1792601383809997210,
+      59092992,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+    "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "f73ce2febd21a8ee01f9f8b1c341591b9d78fc6135dc6f1fa1613df04ae2aff4",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/general_contracts.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      408993702,
+      1101276,
+      1792601383826113874,
+      1101824,
+      1
+    ],
+    "sha256": "9d5a9af34fcf4347739ca021ee9e7fbfb929151741f2574a823f2b245cc66b79",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/general_contracts.json.gz",
+    "archive_sha256": "fb78adb50695ffe9523c7eac984b329a21f6777510d7b1ab72da03db4f08dddc",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "f73ce2febd21a8ee01f9f8b1c341591b9d78fc6135dc6f1fa1613df04ae2aff4",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/od.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      408993704,
+      5423128,
+      1792601383844977893,
+      5427200,
+      1
+    ],
+    "sha256": "9752dcc442e0ac5ce3176c39f682feba7da95b4eb122d2963de544cbab0e1b19",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/od.json.gz",
+    "archive_sha256": "6c80f10ef8b13255b171d33950e0362c281b90b7687f1b6653914a18ef088295",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "f73ce2febd21a8ee01f9f8b1c341591b9d78fc6135dc6f1fa1613df04ae2aff4",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/path_refs.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      408993708,
+      4722328,
+      1792601383869365912,
+      4722688,
+      1
+    ],
+    "sha256": "22dd70d215552416e832bff45e3d639417269683417ff0a2531b82e75b22ca7f",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/path_refs.json.gz",
+    "archive_sha256": "1012f38473b782884fb397b1179ef56232587cebfb549d56ce38ca6d49331532",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "f73ce2febd21a8ee01f9f8b1c341591b9d78fc6135dc6f1fa1613df04ae2aff4",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/cargo_batches.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      408993711,
+      3131844,
+      1792601383883561853,
+      3133440,
+      1
+    ],
+    "sha256": "ccca291ac558b5724d79aa3da6017fbb0c79a0ffe6e2d514dce8ae7098c2d698",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/cargo_batches.json.gz",
+    "archive_sha256": "21feb37ededf60a6361b1be1ed69fb273f710adcf7e8eeb3d3eeaacdb4876492",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "f73ce2febd21a8ee01f9f8b1c341591b9d78fc6135dc6f1fa1613df04ae2aff4",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/passenger_batches.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      408993712,
+      14813630,
+      1792601383919506335,
+      14815232,
+      1
+    ],
+    "sha256": "5395485902b0b50f665f1d972be360f0968ead26f3a5a6cc69ce20866d7b6586",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/passenger_batches.json.gz",
+    "archive_sha256": "a78e39f97399649e3ff1f0b1f297a3d44762f26e8f75ccbf0252f24c7fe1b87e",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "f73ce2febd21a8ee01f9f8b1c341591b9d78fc6135dc6f1fa1613df04ae2aff4",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/bus_train_vehicles.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      408993713,
+      736200,
+      1792601383928384736,
+      737280,
+      1
+    ],
+    "sha256": "20dce9e9aa5b2804164917308428b0df3a7fbc6c14a59cc7a7e1c07ef3d9ef7b",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/bus_train_vehicles.json.gz",
+    "archive_sha256": "3ad0d3065ec5456425b9ab239832b706fe1687b56e64516f653257b1fb7f8151",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "f73ce2febd21a8ee01f9f8b1c341591b9d78fc6135dc6f1fa1613df04ae2aff4",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/ship_aircraft_vehicles.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      408993714,
+      183429,
+      1792601383934434365,
+      184320,
+      1
+    ],
+    "sha256": "abaa5b8c26e0b87ae20a9aac79b7b40189b64e84bc919033e4b3a38b48e5cf8a",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/ship_aircraft_vehicles.json.gz",
+    "archive_sha256": "3a2b41b5ba1a8a7e23abf5b2b2482edaf3a37f8098ec12a0a56cf12093c50b1c",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "f73ce2febd21a8ee01f9f8b1c341591b9d78fc6135dc6f1fa1613df04ae2aff4",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/car_vehicles.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      408993715,
+      6209212,
+      1792601383953828263,
+      6209536,
+      1
+    ],
+    "sha256": "6af743614a5111a333b9f327461fc1c2db13441d571f7f7073afc2222c3edb94",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/car_vehicles.json.gz",
+    "archive_sha256": "17156f8359f49aeb06cbe722520518e0811ae6e9666e5621aabbe64d131dbda8",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "f73ce2febd21a8ee01f9f8b1c341591b9d78fc6135dc6f1fa1613df04ae2aff4",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/matters.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      408993716,
+      82934,
+      1792601383960627023,
+      86016,
+      1
+    ],
+    "sha256": "e9c44415a18648aacb1632f1dff4d23c4d9065a329400d79c53f55f5a097cc0e",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/matters.json.gz",
+    "archive_sha256": "e277ee89f0f9705a12b457e105c1c32d491d444fbfc156fc11a7fdc4900d4807",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "f73ce2febd21a8ee01f9f8b1c341591b9d78fc6135dc6f1fa1613df04ae2aff4",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/team_members.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      408993717,
+      11688,
+      1792601383965270225,
+      12288,
+      1
+    ],
+    "sha256": "dcb1def449b163d6e8d4e844a94cbace4be2e0157b352a95e3e41563bb9f7033",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/team_members.json.gz",
+    "archive_sha256": "91f9bea0382c05b43298a9f4d5ae53123d1d145e66fc9c38b332164665fe631b",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "f73ce2febd21a8ee01f9f8b1c341591b9d78fc6135dc6f1fa1613df04ae2aff4",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/analysis_tasks.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      408993718,
+      22170,
+      1792601383970214221,
+      24576,
+      1
+    ],
+    "sha256": "ecf2eee90e87a656fb49e5a23457146d1eddbafa16311f218ca601b71dfdffbd",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/analysis_tasks.json.gz",
+    "archive_sha256": "c66951ae3b529f4f11410398dea3d261436f98150d400c279bd5076a53d303c5",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "f73ce2febd21a8ee01f9f8b1c341591b9d78fc6135dc6f1fa1613df04ae2aff4",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/hosts.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      408993721,
+      1419868,
+      1792601383986349385,
+      1421312,
+      1
+    ],
+    "sha256": "9dd1b2bad52cffc8b9287d68802b58313ba1faa0f431db9c623fdb5dffe16122",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/hosts.json.gz",
+    "archive_sha256": "333ccb34a87c1cdc555c7d21cc29cc30aad55a0b28b373345a9986a5fc42e59b",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "f73ce2febd21a8ee01f9f8b1c341591b9d78fc6135dc6f1fa1613df04ae2aff4",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/teaching_batches.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      408993722,
+      220123,
+      1792601383994120236,
+      221184,
+      1
+    ],
+    "sha256": "c2acc7e0bff85be162f3aa325a16f16117cf058ff07798ff9d2d8d261130661c",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/teaching_batches.json.gz",
+    "archive_sha256": "92a0a69f2102e839420ecc9126424dfbcb77cf6ddf394becb1b21fbc8e149256",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "f73ce2febd21a8ee01f9f8b1c341591b9d78fc6135dc6f1fa1613df04ae2aff4",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/current_services.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      408993723,
+      551619,
+      1792601383999701862,
+      552960,
+      1
+    ],
+    "sha256": "ce36e5ee99eb53403c3ab6f1a09e6144819e93d663374aa138bd36e1d6ecab67",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/current_services.json.gz",
+    "archive_sha256": "bf23a38a6012c7b862400dd12c8198fe1138d9125bc456fb1b72e8f0a4cbdadc",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "f73ce2febd21a8ee01f9f8b1c341591b9d78fc6135dc6f1fa1613df04ae2aff4",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/cases.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      408993724,
+      24909,
+      1792601384004117604,
+      28672,
+      1
+    ],
+    "sha256": "744bcbbec2787fa1a2c513ba7b530f1366f5ab0cd461347f43e3cec3b8b76b3b",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/cases.json.gz",
+    "archive_sha256": "3b734cc320f1723484feebae27ed4bb0a33410727d5d04fa1a3015289191afb4",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "f73ce2febd21a8ee01f9f8b1c341591b9d78fc6135dc6f1fa1613df04ae2aff4",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/bills.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      408993725,
+      11091,
+      1792601384009607645,
+      12288,
+      1
+    ],
+    "sha256": "ca1116d31f876fdc002ecc09173b768390ac80a0858dd4008a0b7e93a8c75584",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/bills.json.gz",
+    "archive_sha256": "5ff4697e95bea24f92ca0490f885778c23dcd73e127b0d8acf06744b46f9f620",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "f73ce2febd21a8ee01f9f8b1c341591b9d78fc6135dc6f1fa1613df04ae2aff4",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/native.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      409015783,
+      65299383,
+      1792601683528330215,
+      65302528,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+    "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "8cb5f0ce2fadbeaf47e4a0def1fa59548acc40c61a7ad13aad4820f136a3f446",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/maps.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      409015810,
+      2942,
+      1792601683536199317,
+      4096,
+      1
+    ],
+    "sha256": "ae761e9b61d12349e7981d67af0348b7d695ac0f5afbdbe9c8c3397456b247ae",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/maps.json.gz",
+    "archive_sha256": "05880820040b3aae978ea9edbed28747a7c618207c4e60575d233adaab5bf4b1",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "8cb5f0ce2fadbeaf47e4a0def1fa59548acc40c61a7ad13aad4820f136a3f446",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/households.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      409015811,
+      15359282,
+      1792601683581339536,
+      15360000,
+      1
+    ],
+    "sha256": "e3fb17426646d2b0d7be91d37ac60007116cbbdb0fb47df9dcb6b19e19866558",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/households.json.gz",
+    "archive_sha256": "d97e14b29fe883e3334c66c7bcbd09cc710bd735754c32911f91336f623db75c",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "8cb5f0ce2fadbeaf47e4a0def1fa59548acc40c61a7ad13aad4820f136a3f446",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/housing.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      409015814,
+      16677375,
+      1792601683631166790,
+      16678912,
+      1
+    ],
+    "sha256": "945e089c974fae08f7afdb0ce31e329a8a2f56ebedcecf2af2594d0a0d6bfd40",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/housing.json.gz",
+    "archive_sha256": "37b9ad04780f0fd79712269e2f48b4e3e4e6757a071583dc1fd2cbffc35db69b",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "8cb5f0ce2fadbeaf47e4a0def1fa59548acc40c61a7ad13aad4820f136a3f446",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/visitors.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      409015817,
+      690521,
+      1792601683642598627,
+      692224,
+      1
+    ],
+    "sha256": "da50ab93414feb3adb8ed61fc7db097685f7d54eaaf61519abc581ea6ca1e6db",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/visitors.json.gz",
+    "archive_sha256": "3a38cf7178da6144006a466bab78d2842b3fec030449afbbe2b50dbbbeeae8ff",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "8cb5f0ce2fadbeaf47e4a0def1fa59548acc40c61a7ad13aad4820f136a3f446",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/operators.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      409015818,
+      917651,
+      1792601683650114475,
+      921600,
+      1
+    ],
+    "sha256": "9a04b08911d53eb76ef4d3e21b7bd90952aca39eb60540199bd37d3b2a761c54",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/operators.json.gz",
+    "archive_sha256": "f2bc7a1f871546611dc31a308342ebc1661b7a7eb89e849fa53fe615d3aa3068",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "8cb5f0ce2fadbeaf47e4a0def1fa59548acc40c61a7ad13aad4820f136a3f446",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/entities.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      409015819,
+      1368255,
+      1792601683658214370,
+      1372160,
+      1
+    ],
+    "sha256": "db1dabe1d763fb4efae5e29a004b057f67ac60fd8c49e913e7fc6a68fe902c80",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/entities.json.gz",
+    "archive_sha256": "6f6f85f6d29a58cc8fc4e523eeae494cbdede739176804805556aba8802f6be4",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "8cb5f0ce2fadbeaf47e4a0def1fa59548acc40c61a7ad13aad4820f136a3f446",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/equity_links.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      409015820,
+      2453947,
+      1792601683669466998,
+      2457600,
+      1
+    ],
+    "sha256": "fa41a9f768748013714b0e2ccab7b624dc8faf50bda7e8c5f65119155023957b",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/equity_links.json.gz",
+    "archive_sha256": "eafcbfbb83dd2138d5f0c70030fd61214ed3c2e531eba1eb93ec1c6fa5de72ec",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "8cb5f0ce2fadbeaf47e4a0def1fa59548acc40c61a7ad13aad4820f136a3f446",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/meter.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      409015821,
+      59090761,
+      1792601683877447955,
+      59092992,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+    "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "8cb5f0ce2fadbeaf47e4a0def1fa59548acc40c61a7ad13aad4820f136a3f446",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/general_contracts.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      409015840,
+      1101276,
+      1792601683890411554,
+      1101824,
+      1
+    ],
+    "sha256": "9d5a9af34fcf4347739ca021ee9e7fbfb929151741f2574a823f2b245cc66b79",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/general_contracts.json.gz",
+    "archive_sha256": "fb78adb50695ffe9523c7eac984b329a21f6777510d7b1ab72da03db4f08dddc",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "8cb5f0ce2fadbeaf47e4a0def1fa59548acc40c61a7ad13aad4820f136a3f446",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/od.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      409015843,
+      5423128,
+      1792601683922753091,
+      5427200,
+      1
+    ],
+    "sha256": "9752dcc442e0ac5ce3176c39f682feba7da95b4eb122d2963de544cbab0e1b19",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/od.json.gz",
+    "archive_sha256": "6c80f10ef8b13255b171d33950e0362c281b90b7687f1b6653914a18ef088295",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "8cb5f0ce2fadbeaf47e4a0def1fa59548acc40c61a7ad13aad4820f136a3f446",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/path_refs.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      409015845,
+      4722328,
+      1792601683944563757,
+      4722688,
+      1
+    ],
+    "sha256": "22dd70d215552416e832bff45e3d639417269683417ff0a2531b82e75b22ca7f",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/path_refs.json.gz",
+    "archive_sha256": "1012f38473b782884fb397b1179ef56232587cebfb549d56ce38ca6d49331532",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "8cb5f0ce2fadbeaf47e4a0def1fa59548acc40c61a7ad13aad4820f136a3f446",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/cargo_batches.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      409015847,
+      3131844,
+      1792601683966538049,
+      3133440,
+      1
+    ],
+    "sha256": "ccca291ac558b5724d79aa3da6017fbb0c79a0ffe6e2d514dce8ae7098c2d698",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/cargo_batches.json.gz",
+    "archive_sha256": "21feb37ededf60a6361b1be1ed69fb273f710adcf7e8eeb3d3eeaacdb4876492",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "8cb5f0ce2fadbeaf47e4a0def1fa59548acc40c61a7ad13aad4820f136a3f446",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/passenger_batches.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      409015852,
+      14813630,
+      1792601684013250405,
+      14815232,
+      1
+    ],
+    "sha256": "5395485902b0b50f665f1d972be360f0968ead26f3a5a6cc69ce20866d7b6586",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/passenger_batches.json.gz",
+    "archive_sha256": "a78e39f97399649e3ff1f0b1f297a3d44762f26e8f75ccbf0252f24c7fe1b87e",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "8cb5f0ce2fadbeaf47e4a0def1fa59548acc40c61a7ad13aad4820f136a3f446",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/bus_train_vehicles.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      409015853,
+      736200,
+      1792601684025196079,
+      737280,
+      1
+    ],
+    "sha256": "20dce9e9aa5b2804164917308428b0df3a7fbc6c14a59cc7a7e1c07ef3d9ef7b",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/bus_train_vehicles.json.gz",
+    "archive_sha256": "3ad0d3065ec5456425b9ab239832b706fe1687b56e64516f653257b1fb7f8151",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "8cb5f0ce2fadbeaf47e4a0def1fa59548acc40c61a7ad13aad4820f136a3f446",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/ship_aircraft_vehicles.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      409015855,
+      183429,
+      1792601684035046404,
+      184320,
+      1
+    ],
+    "sha256": "abaa5b8c26e0b87ae20a9aac79b7b40189b64e84bc919033e4b3a38b48e5cf8a",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/ship_aircraft_vehicles.json.gz",
+    "archive_sha256": "3a2b41b5ba1a8a7e23abf5b2b2482edaf3a37f8098ec12a0a56cf12093c50b1c",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "8cb5f0ce2fadbeaf47e4a0def1fa59548acc40c61a7ad13aad4820f136a3f446",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/car_vehicles.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      409015856,
+      6209212,
+      1792601684064469086,
+      6209536,
+      1
+    ],
+    "sha256": "6af743614a5111a333b9f327461fc1c2db13441d571f7f7073afc2222c3edb94",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/car_vehicles.json.gz",
+    "archive_sha256": "17156f8359f49aeb06cbe722520518e0811ae6e9666e5621aabbe64d131dbda8",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "8cb5f0ce2fadbeaf47e4a0def1fa59548acc40c61a7ad13aad4820f136a3f446",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/matters.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      409015860,
+      82934,
+      1792601684081113755,
+      86016,
+      1
+    ],
+    "sha256": "e9c44415a18648aacb1632f1dff4d23c4d9065a329400d79c53f55f5a097cc0e",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/matters.json.gz",
+    "archive_sha256": "e277ee89f0f9705a12b457e105c1c32d491d444fbfc156fc11a7fdc4900d4807",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "8cb5f0ce2fadbeaf47e4a0def1fa59548acc40c61a7ad13aad4820f136a3f446",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/team_members.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      409015861,
+      11688,
+      1792601684090759911,
+      12288,
+      1
+    ],
+    "sha256": "dcb1def449b163d6e8d4e844a94cbace4be2e0157b352a95e3e41563bb9f7033",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/team_members.json.gz",
+    "archive_sha256": "91f9bea0382c05b43298a9f4d5ae53123d1d145e66fc9c38b332164665fe631b",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "8cb5f0ce2fadbeaf47e4a0def1fa59548acc40c61a7ad13aad4820f136a3f446",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/analysis_tasks.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      409015862,
+      22170,
+      1792601684095256737,
+      24576,
+      1
+    ],
+    "sha256": "ecf2eee90e87a656fb49e5a23457146d1eddbafa16311f218ca601b71dfdffbd",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/analysis_tasks.json.gz",
+    "archive_sha256": "c66951ae3b529f4f11410398dea3d261436f98150d400c279bd5076a53d303c5",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "8cb5f0ce2fadbeaf47e4a0def1fa59548acc40c61a7ad13aad4820f136a3f446",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/hosts.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      409015865,
+      1419868,
+      1792601684111627445,
+      1421312,
+      1
+    ],
+    "sha256": "9dd1b2bad52cffc8b9287d68802b58313ba1faa0f431db9c623fdb5dffe16122",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/hosts.json.gz",
+    "archive_sha256": "333ccb34a87c1cdc555c7d21cc29cc30aad55a0b28b373345a9986a5fc42e59b",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "8cb5f0ce2fadbeaf47e4a0def1fa59548acc40c61a7ad13aad4820f136a3f446",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/teaching_batches.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      409015866,
+      220123,
+      1792601684117120278,
+      221184,
+      1
+    ],
+    "sha256": "c2acc7e0bff85be162f3aa325a16f16117cf058ff07798ff9d2d8d261130661c",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/teaching_batches.json.gz",
+    "archive_sha256": "92a0a69f2102e839420ecc9126424dfbcb77cf6ddf394becb1b21fbc8e149256",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "8cb5f0ce2fadbeaf47e4a0def1fa59548acc40c61a7ad13aad4820f136a3f446",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/current_services.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      409015867,
+      551619,
+      1792601684122398694,
+      552960,
+      1
+    ],
+    "sha256": "ce36e5ee99eb53403c3ab6f1a09e6144819e93d663374aa138bd36e1d6ecab67",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/current_services.json.gz",
+    "archive_sha256": "bf23a38a6012c7b862400dd12c8198fe1138d9125bc456fb1b72e8f0a4cbdadc",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "8cb5f0ce2fadbeaf47e4a0def1fa59548acc40c61a7ad13aad4820f136a3f446",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/cases.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      409015868,
+      24909,
+      1792601684128289905,
+      28672,
+      1
+    ],
+    "sha256": "744bcbbec2787fa1a2c513ba7b530f1366f5ab0cd461347f43e3cec3b8b76b3b",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/cases.json.gz",
+    "archive_sha256": "3b734cc320f1723484feebae27ed4bb0a33410727d5d04fa1a3015289191afb4",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "8cb5f0ce2fadbeaf47e4a0def1fa59548acc40c61a7ad13aad4820f136a3f446",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/bills.json",
+    "round": "t13a85-joint-01",
+    "metadata": [
+      16777231,
+      409015869,
+      11091,
+      1792601684133294318,
+      12288,
+      1
+    ],
+    "sha256": "ca1116d31f876fdc002ecc09173b768390ac80a0858dd4008a0b7e93a8c75584",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/bills.json.gz",
+    "archive_sha256": "5ff4697e95bea24f92ca0490f885778c23dcd73e127b0d8acf06744b46f9f620",
+    "original_index": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+    "original_index_sha256": "8cb5f0ce2fadbeaf47e4a0def1fa59548acc40c61a7ad13aad4820f136a3f446",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/native.json",
+    "round": "steady-controller-smoke-l1-01",
+    "metadata": [
+      16777231,
+      409165562,
+      65299383,
+      1792606075389149135,
+      65302528,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+    "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+    "original_index": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "ec69d72ce2115f0263129cd366bc562065524e413db77761a0828145be3cc39d",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/maps.json",
+    "round": "steady-controller-smoke-l1-01",
+    "metadata": [
+      16777231,
+      409165573,
+      2942,
+      1792606075401008631,
+      4096,
+      1
+    ],
+    "sha256": "ae761e9b61d12349e7981d67af0348b7d695ac0f5afbdbe9c8c3397456b247ae",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/maps.json.gz",
+    "archive_sha256": "05880820040b3aae978ea9edbed28747a7c618207c4e60575d233adaab5bf4b1",
+    "original_index": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "ec69d72ce2115f0263129cd366bc562065524e413db77761a0828145be3cc39d",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/households.json",
+    "round": "steady-controller-smoke-l1-01",
+    "metadata": [
+      16777231,
+      409165574,
+      15359282,
+      1792606075428401566,
+      15360000,
+      1
+    ],
+    "sha256": "e3fb17426646d2b0d7be91d37ac60007116cbbdb0fb47df9dcb6b19e19866558",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/households.json.gz",
+    "archive_sha256": "d97e14b29fe883e3334c66c7bcbd09cc710bd735754c32911f91336f623db75c",
+    "original_index": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "ec69d72ce2115f0263129cd366bc562065524e413db77761a0828145be3cc39d",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/housing.json",
+    "round": "steady-controller-smoke-l1-01",
+    "metadata": [
+      16777231,
+      409165575,
+      16677375,
+      1792606075462673129,
+      16678912,
+      1
+    ],
+    "sha256": "945e089c974fae08f7afdb0ce31e329a8a2f56ebedcecf2af2594d0a0d6bfd40",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/housing.json.gz",
+    "archive_sha256": "37b9ad04780f0fd79712269e2f48b4e3e4e6757a071583dc1fd2cbffc35db69b",
+    "original_index": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "ec69d72ce2115f0263129cd366bc562065524e413db77761a0828145be3cc39d",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/visitors.json",
+    "round": "steady-controller-smoke-l1-01",
+    "metadata": [
+      16777231,
+      409165576,
+      690521,
+      1792606075477166560,
+      692224,
+      1
+    ],
+    "sha256": "da50ab93414feb3adb8ed61fc7db097685f7d54eaaf61519abc581ea6ca1e6db",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/visitors.json.gz",
+    "archive_sha256": "3a38cf7178da6144006a466bab78d2842b3fec030449afbbe2b50dbbbeeae8ff",
+    "original_index": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "ec69d72ce2115f0263129cd366bc562065524e413db77761a0828145be3cc39d",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/operators.json",
+    "round": "steady-controller-smoke-l1-01",
+    "metadata": [
+      16777231,
+      409165577,
+      917651,
+      1792606075486285246,
+      921600,
+      1
+    ],
+    "sha256": "9a04b08911d53eb76ef4d3e21b7bd90952aca39eb60540199bd37d3b2a761c54",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/operators.json.gz",
+    "archive_sha256": "f2bc7a1f871546611dc31a308342ebc1661b7a7eb89e849fa53fe615d3aa3068",
+    "original_index": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "ec69d72ce2115f0263129cd366bc562065524e413db77761a0828145be3cc39d",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/entities.json",
+    "round": "steady-controller-smoke-l1-01",
+    "metadata": [
+      16777231,
+      409165578,
+      1368255,
+      1792606075494430968,
+      1372160,
+      1
+    ],
+    "sha256": "db1dabe1d763fb4efae5e29a004b057f67ac60fd8c49e913e7fc6a68fe902c80",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/entities.json.gz",
+    "archive_sha256": "6f6f85f6d29a58cc8fc4e523eeae494cbdede739176804805556aba8802f6be4",
+    "original_index": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "ec69d72ce2115f0263129cd366bc562065524e413db77761a0828145be3cc39d",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/equity_links.json",
+    "round": "steady-controller-smoke-l1-01",
+    "metadata": [
+      16777231,
+      409165579,
+      2453947,
+      1792606075506620716,
+      2457600,
+      1
+    ],
+    "sha256": "fa41a9f768748013714b0e2ccab7b624dc8faf50bda7e8c5f65119155023957b",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/equity_links.json.gz",
+    "archive_sha256": "eafcbfbb83dd2138d5f0c70030fd61214ed3c2e531eba1eb93ec1c6fa5de72ec",
+    "original_index": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "ec69d72ce2115f0263129cd366bc562065524e413db77761a0828145be3cc39d",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/meter.json",
+    "round": "steady-controller-smoke-l1-01",
+    "metadata": [
+      16777231,
+      409165580,
+      59090761,
+      1792606075615809867,
+      59092992,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+    "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+    "original_index": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "ec69d72ce2115f0263129cd366bc562065524e413db77761a0828145be3cc39d",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/general_contracts.json",
+    "round": "steady-controller-smoke-l1-01",
+    "metadata": [
+      16777231,
+      409165583,
+      1101276,
+      1792606075630025921,
+      1101824,
+      1
+    ],
+    "sha256": "9d5a9af34fcf4347739ca021ee9e7fbfb929151741f2574a823f2b245cc66b79",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/general_contracts.json.gz",
+    "archive_sha256": "fb78adb50695ffe9523c7eac984b329a21f6777510d7b1ab72da03db4f08dddc",
+    "original_index": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "ec69d72ce2115f0263129cd366bc562065524e413db77761a0828145be3cc39d",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/od.json",
+    "round": "steady-controller-smoke-l1-01",
+    "metadata": [
+      16777231,
+      409165584,
+      5423128,
+      1792606075645713985,
+      5427200,
+      1
+    ],
+    "sha256": "9752dcc442e0ac5ce3176c39f682feba7da95b4eb122d2963de544cbab0e1b19",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/od.json.gz",
+    "archive_sha256": "6c80f10ef8b13255b171d33950e0362c281b90b7687f1b6653914a18ef088295",
+    "original_index": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "ec69d72ce2115f0263129cd366bc562065524e413db77761a0828145be3cc39d",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/path_refs.json",
+    "round": "steady-controller-smoke-l1-01",
+    "metadata": [
+      16777231,
+      409165585,
+      4722328,
+      1792606075667963176,
+      4722688,
+      1
+    ],
+    "sha256": "22dd70d215552416e832bff45e3d639417269683417ff0a2531b82e75b22ca7f",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/path_refs.json.gz",
+    "archive_sha256": "1012f38473b782884fb397b1179ef56232587cebfb549d56ce38ca6d49331532",
+    "original_index": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "ec69d72ce2115f0263129cd366bc562065524e413db77761a0828145be3cc39d",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/cargo_batches.json",
+    "round": "steady-controller-smoke-l1-01",
+    "metadata": [
+      16777231,
+      409165586,
+      3131844,
+      1792606075681587559,
+      3133440,
+      1
+    ],
+    "sha256": "ccca291ac558b5724d79aa3da6017fbb0c79a0ffe6e2d514dce8ae7098c2d698",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/cargo_batches.json.gz",
+    "archive_sha256": "21feb37ededf60a6361b1be1ed69fb273f710adcf7e8eeb3d3eeaacdb4876492",
+    "original_index": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "ec69d72ce2115f0263129cd366bc562065524e413db77761a0828145be3cc39d",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/passenger_batches.json",
+    "round": "steady-controller-smoke-l1-01",
+    "metadata": [
+      16777231,
+      409165587,
+      14813630,
+      1792606075714950158,
+      14815232,
+      1
+    ],
+    "sha256": "5395485902b0b50f665f1d972be360f0968ead26f3a5a6cc69ce20866d7b6586",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/passenger_batches.json.gz",
+    "archive_sha256": "a78e39f97399649e3ff1f0b1f297a3d44762f26e8f75ccbf0252f24c7fe1b87e",
+    "original_index": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "ec69d72ce2115f0263129cd366bc562065524e413db77761a0828145be3cc39d",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/bus_train_vehicles.json",
+    "round": "steady-controller-smoke-l1-01",
+    "metadata": [
+      16777231,
+      409165588,
+      736200,
+      1792606075728810502,
+      737280,
+      1
+    ],
+    "sha256": "20dce9e9aa5b2804164917308428b0df3a7fbc6c14a59cc7a7e1c07ef3d9ef7b",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/bus_train_vehicles.json.gz",
+    "archive_sha256": "3ad0d3065ec5456425b9ab239832b706fe1687b56e64516f653257b1fb7f8151",
+    "original_index": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "ec69d72ce2115f0263129cd366bc562065524e413db77761a0828145be3cc39d",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/ship_aircraft_vehicles.json",
+    "round": "steady-controller-smoke-l1-01",
+    "metadata": [
+      16777231,
+      409165589,
+      183429,
+      1792606075736082717,
+      184320,
+      1
+    ],
+    "sha256": "abaa5b8c26e0b87ae20a9aac79b7b40189b64e84bc919033e4b3a38b48e5cf8a",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/ship_aircraft_vehicles.json.gz",
+    "archive_sha256": "3a2b41b5ba1a8a7e23abf5b2b2482edaf3a37f8098ec12a0a56cf12093c50b1c",
+    "original_index": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "ec69d72ce2115f0263129cd366bc562065524e413db77761a0828145be3cc39d",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/car_vehicles.json",
+    "round": "steady-controller-smoke-l1-01",
+    "metadata": [
+      16777231,
+      409165590,
+      6209212,
+      1792606075753673461,
+      6209536,
+      1
+    ],
+    "sha256": "6af743614a5111a333b9f327461fc1c2db13441d571f7f7073afc2222c3edb94",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/car_vehicles.json.gz",
+    "archive_sha256": "17156f8359f49aeb06cbe722520518e0811ae6e9666e5621aabbe64d131dbda8",
+    "original_index": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "ec69d72ce2115f0263129cd366bc562065524e413db77761a0828145be3cc39d",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/matters.json",
+    "round": "steady-controller-smoke-l1-01",
+    "metadata": [
+      16777231,
+      409165591,
+      82934,
+      1792606075764582367,
+      86016,
+      1
+    ],
+    "sha256": "e9c44415a18648aacb1632f1dff4d23c4d9065a329400d79c53f55f5a097cc0e",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/matters.json.gz",
+    "archive_sha256": "e277ee89f0f9705a12b457e105c1c32d491d444fbfc156fc11a7fdc4900d4807",
+    "original_index": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "ec69d72ce2115f0263129cd366bc562065524e413db77761a0828145be3cc39d",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/team_members.json",
+    "round": "steady-controller-smoke-l1-01",
+    "metadata": [
+      16777231,
+      409165592,
+      11688,
+      1792606075768880479,
+      12288,
+      1
+    ],
+    "sha256": "dcb1def449b163d6e8d4e844a94cbace4be2e0157b352a95e3e41563bb9f7033",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/team_members.json.gz",
+    "archive_sha256": "91f9bea0382c05b43298a9f4d5ae53123d1d145e66fc9c38b332164665fe631b",
+    "original_index": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "ec69d72ce2115f0263129cd366bc562065524e413db77761a0828145be3cc39d",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/analysis_tasks.json",
+    "round": "steady-controller-smoke-l1-01",
+    "metadata": [
+      16777231,
+      409165593,
+      22170,
+      1792606075774353099,
+      24576,
+      1
+    ],
+    "sha256": "ecf2eee90e87a656fb49e5a23457146d1eddbafa16311f218ca601b71dfdffbd",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/analysis_tasks.json.gz",
+    "archive_sha256": "c66951ae3b529f4f11410398dea3d261436f98150d400c279bd5076a53d303c5",
+    "original_index": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "ec69d72ce2115f0263129cd366bc562065524e413db77761a0828145be3cc39d",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/hosts.json",
+    "round": "steady-controller-smoke-l1-01",
+    "metadata": [
+      16777231,
+      409165596,
+      1419868,
+      1792606075792723181,
+      1421312,
+      1
+    ],
+    "sha256": "9dd1b2bad52cffc8b9287d68802b58313ba1faa0f431db9c623fdb5dffe16122",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/hosts.json.gz",
+    "archive_sha256": "333ccb34a87c1cdc555c7d21cc29cc30aad55a0b28b373345a9986a5fc42e59b",
+    "original_index": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "ec69d72ce2115f0263129cd366bc562065524e413db77761a0828145be3cc39d",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/teaching_batches.json",
+    "round": "steady-controller-smoke-l1-01",
+    "metadata": [
+      16777231,
+      409165597,
+      220123,
+      1792606075800480525,
+      221184,
+      1
+    ],
+    "sha256": "c2acc7e0bff85be162f3aa325a16f16117cf058ff07798ff9d2d8d261130661c",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/teaching_batches.json.gz",
+    "archive_sha256": "92a0a69f2102e839420ecc9126424dfbcb77cf6ddf394becb1b21fbc8e149256",
+    "original_index": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "ec69d72ce2115f0263129cd366bc562065524e413db77761a0828145be3cc39d",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/current_services.json",
+    "round": "steady-controller-smoke-l1-01",
+    "metadata": [
+      16777231,
+      409165598,
+      551619,
+      1792606075805866645,
+      552960,
+      1
+    ],
+    "sha256": "ce36e5ee99eb53403c3ab6f1a09e6144819e93d663374aa138bd36e1d6ecab67",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/current_services.json.gz",
+    "archive_sha256": "bf23a38a6012c7b862400dd12c8198fe1138d9125bc456fb1b72e8f0a4cbdadc",
+    "original_index": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "ec69d72ce2115f0263129cd366bc562065524e413db77761a0828145be3cc39d",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/cases.json",
+    "round": "steady-controller-smoke-l1-01",
+    "metadata": [
+      16777231,
+      409165599,
+      24909,
+      1792606075811774768,
+      28672,
+      1
+    ],
+    "sha256": "744bcbbec2787fa1a2c513ba7b530f1366f5ab0cd461347f43e3cec3b8b76b3b",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/cases.json.gz",
+    "archive_sha256": "3b734cc320f1723484feebae27ed4bb0a33410727d5d04fa1a3015289191afb4",
+    "original_index": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "ec69d72ce2115f0263129cd366bc562065524e413db77761a0828145be3cc39d",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/bills.json",
+    "round": "steady-controller-smoke-l1-01",
+    "metadata": [
+      16777231,
+      409165600,
+      11091,
+      1792606075817542890,
+      12288,
+      1
+    ],
+    "sha256": "ca1116d31f876fdc002ecc09173b768390ac80a0858dd4008a0b7e93a8c75584",
+    "archive": "work/retained-component-evidence/duplicate-stubs-v1/bills.json.gz",
+    "archive_sha256": "5ff4697e95bea24f92ca0490f885778c23dcd73e127b0d8acf06744b46f9f620",
+    "original_index": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "original_index_sha256": "ec69d72ce2115f0263129cd366bc562065524e413db77761a0828145be3cc39d",
+    "reason": "Already retired synthetic snapshot; no remaining recovery dependency; existing lossless component archive verified byte-for-byte",
+    "evidence": "original index/raw plus docs/evidence/disk-reclamation-stage-followup/STATUS.md and current advisor-review.md",
+    "directly_restorable_after": false
+  }
+]

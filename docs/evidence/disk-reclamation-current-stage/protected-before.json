@@ -1,0 +1,340 @@
+[
+  {
+    "path": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001",
+    "index_sha256": "43f83f0a14e8e1962370a1d6bdf26424671660e3679e48d94b864bd1be47728c",
+    "indexed_files": 29,
+    "all_original_bytes_verified": true
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000007",
+    "index_sha256": "9e826b9af387fe4c219326dc9393e26c091451e024d3358d66b2f758fa7a0893",
+    "indexed_files": 29,
+    "all_original_bytes_verified": true
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000008",
+    "index_sha256": "39c38b2bd9262de5ed6176d4681d47f0a373f073cf7293d4988e9c84c519de74",
+    "indexed_files": 29,
+    "all_original_bytes_verified": true
+  },
+  {
+    "path": "work/steady-controller-smoke-l2-01/observed/model/layout/snapshots/snapshot-000001",
+    "index_sha256": "ec69d72ce2115f0263129cd366bc562065524e413db77761a0828145be3cc39d",
+    "indexed_files": 29,
+    "all_original_bytes_verified": true
+  },
+  {
+    "fault": "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending",
+    "not_a_restore_point": true,
+    "files": {
+      "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/analysis_tasks.json": {
+        "metadata": [
+          16777231,
+          409323254,
+          22170,
+          1792611973279547615,
+          24576,
+          1
+        ],
+        "sha256": "ecf2eee90e87a656fb49e5a23457146d1eddbafa16311f218ca601b71dfdffbd"
+      },
+      "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/bills.json": {
+        "metadata": [
+          16777231,
+          409323261,
+          11091,
+          1792611973320893399,
+          12288,
+          1
+        ],
+        "sha256": "ca1116d31f876fdc002ecc09173b768390ac80a0858dd4008a0b7e93a8c75584"
+      },
+      "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/bus_train_vehicles.json": {
+        "metadata": [
+          16777231,
+          409323249,
+          736200,
+          1792611973240052086,
+          737280,
+          1
+        ],
+        "sha256": "20dce9e9aa5b2804164917308428b0df3a7fbc6c14a59cc7a7e1c07ef3d9ef7b"
+      },
+      "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/car_vehicles.json": {
+        "metadata": [
+          16777231,
+          409323251,
+          6209212,
+          1792611973262965086,
+          6209536,
+          1
+        ],
+        "sha256": "6af743614a5111a333b9f327461fc1c2db13441d571f7f7073afc2222c3edb94"
+      },
+      "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/cargo_batches.json": {
+        "metadata": [
+          16777231,
+          409323247,
+          3131844,
+          1792611973203052102,
+          3133440,
+          1
+        ],
+        "sha256": "ccca291ac558b5724d79aa3da6017fbb0c79a0ffe6e2d514dce8ae7098c2d698"
+      },
+      "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/cases.json": {
+        "metadata": [
+          16777231,
+          409323260,
+          24909,
+          1792611973315507014,
+          28672,
+          1
+        ],
+        "sha256": "744bcbbec2787fa1a2c513ba7b530f1366f5ab0cd461347f43e3cec3b8b76b3b"
+      },
+      "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/current_services.json": {
+        "metadata": [
+          16777231,
+          409323259,
+          551619,
+          1792611973309285711,
+          552960,
+          1
+        ],
+        "sha256": "ce36e5ee99eb53403c3ab6f1a09e6144819e93d663374aa138bd36e1d6ecab67"
+      },
+      "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/entities.json": {
+        "metadata": [
+          16777231,
+          409323241,
+          1368255,
+          1792611973039884846,
+          1372160,
+          1
+        ],
+        "sha256": "db1dabe1d763fb4efae5e29a004b057f67ac60fd8c49e913e7fc6a68fe902c80"
+      },
+      "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/equity_links.json": {
+        "metadata": [
+          16777231,
+          409323242,
+          2453947,
+          1792611973050595490,
+          2457600,
+          1
+        ],
+        "sha256": "fa41a9f768748013714b0e2ccab7b624dc8faf50bda7e8c5f65119155023957b"
+      },
+      "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/general_contracts.json": {
+        "metadata": [
+          16777231,
+          409323244,
+          1101276,
+          1792611973159984231,
+          1101824,
+          1
+        ],
+        "sha256": "9d5a9af34fcf4347739ca021ee9e7fbfb929151741f2574a823f2b245cc66b79"
+      },
+      "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/hosts.json": {
+        "metadata": [
+          16777231,
+          409323257,
+          1419868,
+          1792611973297131731,
+          1421312,
+          1
+        ],
+        "sha256": "9dd1b2bad52cffc8b9287d68802b58313ba1faa0f431db9c623fdb5dffe16122"
+      },
+      "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/households.json": {
+        "metadata": [
+          16777231,
+          409323237,
+          15359282,
+          1792611972983305493,
+          15360000,
+          1
+        ],
+        "sha256": "e3fb17426646d2b0d7be91d37ac60007116cbbdb0fb47df9dcb6b19e19866558"
+      },
+      "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/housing.json": {
+        "metadata": [
+          16777231,
+          409323238,
+          16677375,
+          1792611973012679838,
+          16678912,
+          1
+        ],
+        "sha256": "945e089c974fae08f7afdb0ce31e329a8a2f56ebedcecf2af2594d0a0d6bfd40"
+      },
+      "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/maps.json": {
+        "metadata": [
+          16777231,
+          409323236,
+          2942,
+          1792611972956785569,
+          4096,
+          1
+        ],
+        "sha256": "ae761e9b61d12349e7981d67af0348b7d695ac0f5afbdbe9c8c3397456b247ae"
+      },
+      "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/matters.json": {
+        "metadata": [
+          16777231,
+          409323252,
+          82934,
+          1792611973270792808,
+          86016,
+          1
+        ],
+        "sha256": "e9c44415a18648aacb1632f1dff4d23c4d9065a329400d79c53f55f5a097cc0e"
+      },
+      "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/meter.json": {
+        "metadata": [
+          16777231,
+          409323243,
+          59090761,
+          1792611973150819256,
+          59092992,
+          1
+        ],
+        "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c"
+      },
+      "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/models.json": {
+        "metadata": [
+          16777231,
+          409323255,
+          399,
+          1792611973284348291,
+          4096,
+          1
+        ],
+        "sha256": "464f6b505cf21b6c6ce8fdc4a7b59886f6d709df7d34901102ddcf9763eb20ec"
+      },
+      "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/native.json": {
+        "metadata": [
+          16777231,
+          409323225,
+          65299383,
+          1792611972949621473,
+          65302528,
+          1
+        ],
+        "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d"
+      },
+      "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/od.json": {
+        "metadata": [
+          16777231,
+          409323245,
+          5423128,
+          1792611973174622050,
+          5427200,
+          1
+        ],
+        "sha256": "9752dcc442e0ac5ce3176c39f682feba7da95b4eb122d2963de544cbab0e1b19"
+      },
+      "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/operators.json": {
+        "metadata": [
+          16777231,
+          409323240,
+          917651,
+          1792611973032001081,
+          921600,
+          1
+        ],
+        "sha256": "9a04b08911d53eb76ef4d3e21b7bd90952aca39eb60540199bd37d3b2a761c54"
+      },
+      "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/passenger_batches.json": {
+        "metadata": [
+          16777231,
+          409323248,
+          14813630,
+          1792611973232216655,
+          14815232,
+          1
+        ],
+        "sha256": "5395485902b0b50f665f1d972be360f0968ead26f3a5a6cc69ce20866d7b6586"
+      },
+      "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/path_refs.json": {
+        "metadata": [
+          16777231,
+          409323246,
+          4722328,
+          1792611973192194249,
+          4722688,
+          1
+        ],
+        "sha256": "22dd70d215552416e832bff45e3d639417269683417ff0a2531b82e75b22ca7f"
+      },
+      "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/pressure.bin": {
+        "metadata": [
+          16777231,
+          409323262,
+          1997142031,
+          1792611974737473774,
+          1997144064,
+          1
+        ],
+        "sha256": "c93a5ab5078b5a2652a96e52a66c284b6adb5b918d5586c14eb7a9311f0c9c9b"
+      },
+      "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/preview.json": {
+        "metadata": [
+          16777231,
+          409323256,
+          399,
+          1792611973289641592,
+          4096,
+          1
+        ],
+        "sha256": "14befb84351445a252e881f1bbd872c814aa5d8d5482b5f24e8c2f07428ff6e8"
+      },
+      "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/ship_aircraft_vehicles.json": {
+        "metadata": [
+          16777231,
+          409323250,
+          183429,
+          1792611973246324306,
+          184320,
+          1
+        ],
+        "sha256": "abaa5b8c26e0b87ae20a9aac79b7b40189b64e84bc919033e4b3a38b48e5cf8a"
+      },
+      "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/teaching_batches.json": {
+        "metadata": [
+          16777231,
+          409323258,
+          220123,
+          1792611973303912826,
+          221184,
+          1
+        ],
+        "sha256": "c2acc7e0bff85be162f3aa325a16f16117cf058ff07798ff9d2d8d261130661c"
+      },
+      "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/team_members.json": {
+        "metadata": [
+          16777231,
+          409323253,
+          11688,
+          1792611973275227066,
+          12288,
+          1
+        ],
+        "sha256": "dcb1def449b163d6e8d4e844a94cbace4be2e0157b352a95e3e41563bb9f7033"
+      },
+      "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/visitors.json": {
+        "metadata": [
+          16777231,
+          409323239,
+          690521,
+          1792611973024312276,
+          692224,
+          1
+        ],
+        "sha256": "da50ab93414feb3adb8ed61fc7db097685f7d54eaaf61519abc581ea6ca1e6db"
+      }
+    }
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "parents": [
+    "work/layout-region-l1-smoke-02/observed/model/layout/snapshots/snapshot-000001",
+    "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001",
+    "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001",
+    "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002"
+  ],
+  "all_fsync_completed": true
+}

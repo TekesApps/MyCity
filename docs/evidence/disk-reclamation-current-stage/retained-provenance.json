@@ -1,0 +1,47 @@
+[
+  {
+    "path": "docs/evidence/m0-t13a-layout-region/freeze.json",
+    "bytes": 597,
+    "sha256": "7a6d5bb7ef54411c729f3e4f967315d4283c1272d4d8e681ac5bcd89c9d78dea"
+  },
+  {
+    "path": "docs/evidence/m0-t13a-layout-region/source.json",
+    "bytes": 478,
+    "sha256": "669846a0aac1393e75d449bfff8b4041690ff9a193de8f6347c5930778808eff"
+  },
+  {
+    "path": "docs/evidence/m0-t13a-layout-region/frozen-source.zip",
+    "bytes": 660113,
+    "sha256": "f6e9d1cb8f4a25e5b4df2b103fb4f7df0dd2f4096413f7df254904f8ba66218a"
+  },
+  {
+    "path": "docs/evidence/m0-t13a-layout-cow-reuse/freeze.json",
+    "bytes": 597,
+    "sha256": "8a7a9c2957883be75273df236bc06033f44f6402fe690b9608ef5fb9170cdd0b"
+  },
+  {
+    "path": "docs/evidence/m0-t13a-layout-cow-reuse/source.json",
+    "bytes": 481,
+    "sha256": "b1e02df97168603a53f4c1f8d7b7549b83388b4b3b23bc512cf8357c9857ea08"
+  },
+  {
+    "path": "docs/evidence/m0-t13a-layout-cow-reuse/frozen-source.zip",
+    "bytes": 660357,
+    "sha256": "90ee9cdd3593aae21413503f4b5153177e1b9ed21915469d64dcdd4aaac8cfd6"
+  },
+  {
+    "path": "work/candidate-binaries/layout-region/mycity-headless",
+    "bytes": 12987456,
+    "sha256": "800696502be2a52853fa3972ab962e75791b9fff280ab7109e6ce1622bc63687"
+  },
+  {
+    "path": "work/candidate-binaries/layout-cow-reuse/mycity-headless",
+    "bytes": 12863376,
+    "sha256": "5668b0ced4b7fdef2279b14e9ade136b17a70b1d327af40fab45a4b03e62a40e"
+  },
+  {
+    "path": "Cargo.lock",
+    "bytes": 9941,
+    "sha256": "8e10b63f3a4bb19bcbec6229e5d7939d696f3b3b55b076e7e885027ec778d95d"
+  }
+]

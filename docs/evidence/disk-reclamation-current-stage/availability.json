@@ -1,0 +1,52 @@
+[
+  {
+    "path": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001",
+    "complete_original_retained": true,
+    "eligible_for_direct_restore_validation": true
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000007",
+    "complete_original_retained": true,
+    "eligible_for_direct_restore_validation": true
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000008",
+    "complete_original_retained": true,
+    "eligible_for_direct_restore_validation": true
+  },
+  {
+    "path": "work/steady-controller-smoke-l2-01/observed/model/layout/snapshots/snapshot-000001",
+    "complete_original_retained": true,
+    "eligible_for_direct_restore_validation": true
+  },
+  {
+    "path": "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending",
+    "complete_original_retained": true,
+    "eligible_for_direct_restore_validation": false,
+    "reason": "incomplete failed write; full fault original retained"
+  },
+  {
+    "path": "work/layout-region-l1-smoke-02/observed/model/layout/snapshots/snapshot-000001",
+    "complete_original_retained": false,
+    "eligible_for_direct_restore_validation": false,
+    "reason": "synthetic payload retired; retained index/archive does not replace pressure original"
+  },
+  {
+    "path": "work/steady-controller-smoke-l1-01/observed/model/layout/snapshots/snapshot-000001",
+    "complete_original_retained": false,
+    "eligible_for_direct_restore_validation": false,
+    "reason": "synthetic payload retired; retained index/archive does not replace pressure original"
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000001",
+    "complete_original_retained": false,
+    "eligible_for_direct_restore_validation": false,
+    "reason": "synthetic payload retired; retained index/archive does not replace pressure original"
+  },
+  {
+    "path": "work/t13a85-joint-01/model/layout/snapshots/snapshot-000002",
+    "complete_original_retained": false,
+    "eligible_for_direct_restore_validation": false,
+    "reason": "synthetic payload retired; retained index/archive does not replace pressure original"
+  }
+]

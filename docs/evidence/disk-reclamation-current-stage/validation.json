@@ -1,0 +1,8 @@
+{
+  "checks": "exact deletion arithmetic; source including WIP unchanged; protected originals unchanged; no deleted file present; all new report links resolve; compressed pre-inventory readable; only permitted files absent",
+  "passed": true,
+  "deleted_files": 102,
+  "remaining_work_files": 118748,
+  "model_tests_run": false,
+  "performance_gate_changed": false
+}

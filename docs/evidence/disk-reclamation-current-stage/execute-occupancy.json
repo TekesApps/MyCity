@@ -1,0 +1,26 @@
+[
+  {
+    "pid": "95724",
+    "command": "Python",
+    "fd": "cwd",
+    "path": "/Users/frankqin/dev/MyCity"
+  },
+  {
+    "pid": "95724",
+    "command": "Python",
+    "fd": "1",
+    "path": "/Users/frankqin/dev/MyCity/docs/evidence/disk-reclamation-current-stage/run.stdout"
+  },
+  {
+    "pid": "95724",
+    "command": "Python",
+    "fd": "2",
+    "path": "/Users/frankqin/dev/MyCity/docs/evidence/disk-reclamation-current-stage/run.stderr"
+  },
+  {
+    "pid": "95794",
+    "command": "lsof",
+    "fd": "cwd",
+    "path": "/Users/frankqin/dev/MyCity"
+  }
+]
