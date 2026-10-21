@@ -1,0 +1,22 @@
+
+running 3 tests
+test actual_owner_eof_is_failure_and_cannot_be_safe_prefix_success ... ok
+test actual_short_l0_window_stops_only_at_safe_boundary_and_never_accepts_formal ... ok
+test actual_full_l0_cases_fit_original_region_and_verify_all_existing_assertions ... FAILED
+
+failures:
+
+---- actual_full_l0_cases_fit_original_region_and_verify_all_existing_assertions stdout ----
+
+thread 'actual_full_l0_cases_fit_original_region_and_verify_all_existing_assertions' panicked at crates/city-headless/tests/steady.rs:59:17:
+economy: exit status: 2; Invalid("metadata_allocation")
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+steady_fixture_retained:/var/folders/lg/msp2zt0x5q14_lxl12ts9lsw0000gn/T/mc-steady-6518-1
+
+
+failures:
+    actual_full_l0_cases_fit_original_region_and_verify_all_existing_assertions
+
+test result: FAILED. 2 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 26.10s
+

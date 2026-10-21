@@ -454,6 +454,13 @@ pub fn execute(dir: &Path) -> Result<(), String> {
     })
 }
 /// Check source, request, exact artifact list, sizes and hashes after a successful exit.
+pub(crate) fn validate_reference(dir: &Path, tier: Tier) -> Result<(), String> {
+    let r = validate(dir)?;
+    if r.mode != Mode::Reference || r.tier.as_str() != tier.name() {
+        return Err("steady_reference_kind".into());
+    }
+    Ok(())
+}
 pub fn validate(dir: &Path) -> Result<ResultRecord, String> {
     let (r, digest, tier) = request(dir)?;
     let result: ResultRecord = control_data::parse(&joined(dir, "result.json")?)?;

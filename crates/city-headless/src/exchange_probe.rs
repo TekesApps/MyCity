@@ -90,6 +90,7 @@ impl Case {
         })
     }
     fn execute(&mut self, a: Action) -> Result<Envelope, String> {
+        mycity_headless::steady::case_boundary()?;
         let c = self.envelope(vec![a])?;
         let r = self.store.execute(Caller::System, c.clone()).map_err(err)?;
         r.model.map_err(err)?;
@@ -97,6 +98,7 @@ impl Case {
         Ok(c)
     }
     fn reject(&mut self, a: Action, expected: TxError) -> Result<Envelope, String> {
+        mycity_headless::steady::case_boundary()?;
         let c = self.envelope(vec![a])?;
         let hash = self.store.state_hash().map_err(err)?;
         let r = self.store.execute(Caller::System, c.clone()).map_err(err)?;
@@ -231,6 +233,8 @@ pub fn run(input: &[u8], root: &Path, rules: &str) -> Result<Value, String> {
                 == after.region.map(|r| r.interaction_time),
         "switch_replayed_money_or_goods_or_time",
     )?;
+    let normal_report = normal.report()?;
+    drop(normal);
     let mut population = Case::new(&root.join("population"), &base, rules)?;
     population.execute(Action::RegionMigrate {
         from: 1,
@@ -287,6 +291,8 @@ pub fn run(input: &[u8], root: &Path, rules: &str) -> Result<Value, String> {
     )?;
     population.execute(dispatch(1))?;
     population.advance(120)?;
+    let population_report = population.report()?;
+    drop(population);
     let mut competition = Case::new(&root.join("competition"), &base, rules)?;
     competition.prepare()?;
     competition.execute(start(Facility::Pump))?;
@@ -319,6 +325,8 @@ pub fn run(input: &[u8], root: &Path, rules: &str) -> Result<Value, String> {
             == Status::Delivered,
         "expiry_erased_delivery",
     )?;
+    let competition_report = competition.report()?;
+    drop(competition);
     let mut interruptions = Vec::new();
     for (id, edge, dest, duration) in [(6, 3, 13, 62), (7, 5, 14, 1084)] {
         let mut v = base.clone();
@@ -377,6 +385,8 @@ pub fn run(input: &[u8], root: &Path, rules: &str) -> Result<Value, String> {
         capacity.quantity(7)? == 1000,
         "capacity_failure_debited_source",
     )?;
+    let capacity_report = capacity.report()?;
+    drop(capacity);
     let mut v = base.clone();
     v["region"]["obligations"][0]["amount"] = json!(700000);
     let mut debt = Case::new(&root.join("debt"), &v, rules)?;
@@ -408,6 +418,6 @@ pub fn run(input: &[u8], root: &Path, rules: &str) -> Result<Value, String> {
         "arrears_or_expiry_oracle",
     )?;
     Ok(
-        json!({"schema":"mycity-m0-exchange-evidence-v1","result":"finite_regional_fulfilment_executed_and_verified","normal":normal.report()?,"population":population.report()?,"competition":competition.report()?,"utility_interruptions":interruptions,"capacity":capacity.report()?,"debt":debt.report()?,"exchange_inline_bytes":std::mem::size_of::<mycity_core::exchange::Exchange>(),"boot_inline_bytes":std::mem::size_of::<mycity_core::boot::Boot>(),"spatial_model":"one_verified_flat_template_three_metric_frames_and_typed_terminal_links","P_XMAP":"typed_finite_fulfilment_subset_executed_not_vehicle_or_powerflow_hydraulics","P_CAP":"voluntary_backpressure_and_reserved_existing_liabilities_subset_only","memory_16gb_gate":"not_run","ui":"not_implemented"}),
+        json!({"schema":"mycity-m0-exchange-evidence-v1","result":"finite_regional_fulfilment_executed_and_verified","normal":normal_report,"population":population_report,"competition":competition_report,"utility_interruptions":interruptions,"capacity":capacity_report,"debt":debt.report()?,"exchange_inline_bytes":std::mem::size_of::<mycity_core::exchange::Exchange>(),"boot_inline_bytes":std::mem::size_of::<mycity_core::boot::Boot>(),"spatial_model":"one_verified_flat_template_three_metric_frames_and_typed_terminal_links","P_XMAP":"typed_finite_fulfilment_subset_executed_not_vehicle_or_powerflow_hydraulics","P_CAP":"voluntary_backpressure_and_reserved_existing_liabilities_subset_only","memory_16gb_gate":"not_run","ui":"not_implemented"}),
     )
 }

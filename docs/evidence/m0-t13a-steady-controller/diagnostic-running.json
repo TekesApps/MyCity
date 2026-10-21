@@ -1,0 +1,16 @@
+{
+  "name": "l2-observed",
+  "pid": 43579,
+  "controller_pid": 40502,
+  "command": [
+    "python3",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-steady-controller/observe.py",
+    "/Users/frankqin/dev/MyCity/work/steady-controller-smoke-l2-01/observed",
+    "--",
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/steady-controller/mycity-headless",
+    "steady-run",
+    "/Users/frankqin/dev/MyCity/work/steady-controller-smoke-l2-01/observed/model",
+    "l2",
+    "smoke"
+  ]
+}

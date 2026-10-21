@@ -81,6 +81,7 @@ impl Case {
         })
     }
     fn execute(&mut self, c: Command) -> Result<Envelope, String> {
+        mycity_headless::steady::case_boundary()?;
         let env = self.envelope(c)?;
         let result = mycity_headless::cpu_log::execute(
             &mut self.store,
@@ -234,6 +235,8 @@ pub fn run(input: &[u8], root: &Path, rules: &str) -> Result<Value, String> {
                 .is_some_and(|s| s.quantity.value() == 300000),
         "pe0_physical_and_tax_endpoints",
     )?;
+    let pe0_report = pe0.report()?;
+    drop(pe0);
     let mut low = base.clone();
     low["bootstrap"]["branch"] = json!(2);
     mutate_money(&mut low, 2, 10000)?;
@@ -251,6 +254,8 @@ pub fn run(input: &[u8], root: &Path, rules: &str) -> Result<Value, String> {
     let row3 = low.report()?;
     let last = low.run_to(30 * DAY)?;
     low = recover(low, "day30_with_unsold_batches", last)?;
+    let low_report = low.report()?;
+    drop(low);
     let mut supply = base.clone();
     supply["bootstrap"]["branch"] = json!(3);
     let stock = supply["stocks"]
@@ -281,13 +286,23 @@ pub fn run(input: &[u8], root: &Path, rules: &str) -> Result<Value, String> {
         supply.state()?.produced.value() == 20000,
         "pe1_exhaustion_no_free_production",
     )?;
+    let supply_report = supply.report()?;
+    drop(supply);
     let mut debt = short_case(&base, &root.join("pe1-debt"), rules, "debt")?;
+    let debt_report = debt.report()?;
+    drop(debt);
     let mut prepay = short_case(&base, &root.join("pe1-prepay"), rules, "prepay")?;
+    let prepay_report = prepay.report()?;
+    drop(prepay);
     let mut refund = short_case(&base, &root.join("pe1-refund"), rules, "refund")?;
+    let refund_report = refund.report()?;
+    drop(refund);
     let mut suspend = short_case(&base, &root.join("pe1-suspend"), rules, "suspend")?;
+    let suspend_report = suspend.report()?;
+    drop(suspend);
     Ok(
-        json!({"schema":"mycity-m0-economy-evidence-v1","result":"P-E0_P-E1_executed_and_verified","pe0":pe0.report()?,
-        "pe1":{"low_cash_day3":row3,"low_cash_day30":low.report()?,"supply_day3":day3_supply,"supply_day30":supply.report()?,"debt_exit":debt.report()?,"prepaid_cancel":prepay.report()?,"refund_shortfall":refund.report()?,"suspended_shift":suspend.report()?},
+        json!({"schema":"mycity-m0-economy-evidence-v1","result":"P-E0_P-E1_executed_and_verified","pe0":pe0_report,
+        "pe1":{"low_cash_day3":row3,"low_cash_day30":low_report,"supply_day3":day3_supply,"supply_day30":supply_report,"debt_exit":debt_report,"prepaid_cancel":prepay_report,"refund_shortfall":refund_report,"suspended_shift":suspend_report},
         "days":30,"profile":"pe0-30d-v1","economic_balance":"not_tested_not_sustainable_pe0","P_BOOT":"not_run","memory_16gb_gate":"not_run","ui":"not_implemented","gpu":"not_used"}),
     )
 }

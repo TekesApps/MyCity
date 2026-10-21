@@ -1,0 +1,16 @@
+{
+  "exit_code": 1,
+  "seconds": 43.350769334000006,
+  "command": [
+    "python3",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-steady-controller/observe.py",
+    "/Users/frankqin/dev/MyCity/work/steady-controller-smoke-l2-01/observed",
+    "--",
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/steady-controller/mycity-headless",
+    "steady-run",
+    "/Users/frankqin/dev/MyCity/work/steady-controller-smoke-l2-01/observed/model",
+    "l2",
+    "smoke"
+  ],
+  "source_sha256": "e49b29d55ca76a562d1e497701333393746d3f9031651b814c65590fdf5db0b5"
+}

@@ -301,7 +301,11 @@ impl CpuLog {
         }
         Ok(())
     }
-    fn write(&mut self, value: Value) -> Result<(), String> {
+    fn write(&mut self, mut value: Value) -> Result<(), String> {
+        value.as_object_mut().ok_or("cpu_log_object")?.insert(
+            "process_clock".into(),
+            serde_json::to_value(crate::heap_meter::clock_reading()).map_err(err)?,
+        );
         let b = serde_json::to_vec(&value).map_err(err)?;
         if b.len() > 32768 || self.bytes + b.len() + 1 > 128 * 1024 * 1024 {
             return Err("cpu_transaction_log_cap".into());

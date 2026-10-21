@@ -1,0 +1,23 @@
+{
+  "checked_unix_ns": 1792606599665368000,
+  "tool_session_id": 51121,
+  "active": {
+    "controller_pid": 44975,
+    "pid": 46375,
+    "name": "formal-l2-01-observed",
+    "command": [
+      "python3",
+      "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-steady-controller/observe.py",
+      "/Users/frankqin/dev/MyCity/work/steady-controller-formal-l2-01/observed",
+      "--",
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/steady-controller/mycity-headless",
+      "steady-run",
+      "/Users/frankqin/dev/MyCity/work/steady-controller-formal-l2-01/observed/model",
+      "l2",
+      "formal"
+    ],
+    "source_sha256": "e49b29d55ca76a562d1e497701333393746d3f9031651b814c65590fdf5db0b5"
+  },
+  "actual_ps": "  PID  PPID ELAPSED COMM\n46375 44975   01:18 /Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python\n",
+  "status": "specific original formal round live; no acceptance claim"
+}

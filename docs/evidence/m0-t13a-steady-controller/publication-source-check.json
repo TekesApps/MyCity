@@ -1,0 +1,6 @@
+{
+  "frozen_original_source": "byte-identical",
+  "binary": "byte-identical",
+  "Cargo.lock": "byte-identical",
+  "model_tests": "existing same-frozen-source full regression; not rerun for report publication"
+}

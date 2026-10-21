@@ -1,0 +1,31 @@
+{
+  "schema": "mycity-steady-resource-window-v1",
+  "source_sha256": "e49b29d55ca76a562d1e497701333393746d3f9031651b814c65590fdf5db0b5",
+  "formal": false,
+  "driver_origin_observer_ns": [
+    7492292,
+    722894168
+  ],
+  "mapping_uncertainty_ns": 715401876,
+  "inside_capture_frames": 45,
+  "outside_capture_frames": 206,
+  "crossing_or_uncertain_capture_frames": 6,
+  "inside_sampled_simultaneous_rss_peak_bytes": 92389376,
+  "inside_obtained_simultaneous_footprint_peak_bytes": 77595896,
+  "inside_missing_footprint_process_samples": 45,
+  "inside_maximum_capture_end_gap_ns": 272988375,
+  "whole_observation_status": "passed_measurement_wrapper",
+  "whole_maximum_swap_net_growth_bytes": 0,
+  "whole_maximum_non_normal_pressure_seconds": 0,
+  "whole_peak_world_logical_bytes": 10646527,
+  "whole_observer_hot_bound_bytes": 667070,
+  "whole_combined_reported_diagnostic_hot_bound_bytes": 4074942,
+  "scope": "Whole-group captures only; missing processes/footprint never imputed. Mapping uses all causal uncertainty, no interpolation.",
+  "normal_3_10GiB": "not_accepted; complete ownership/resource closure separately required",
+  "shared_8MiB": "not_accepted; role and runtime peak coupling separately required",
+  "same_boundary_leakage": "not_assessed; day Status marker alone is not a coincident resource sample or explanation of live history",
+  "three_rounds": "not_accepted_by_single_round",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run",
+  "full_M0": "not_accepted"
+}

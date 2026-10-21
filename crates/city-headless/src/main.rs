@@ -26,6 +26,60 @@ fn system(command: &str, args: &[&str]) -> Option<String> {
 
 fn run() -> Result<(), String> {
     let args: Vec<_> = env::args().collect();
+    if args
+        .get(1)
+        .is_some_and(|a| a == "steady-run" || a == "steady-driver")
+    {
+        if args.len() != 5 {
+            return Err("usage: steady-run|steady-driver NEW_DIR l0|l1|l2 formal|smoke".into());
+        }
+        let scenario = mycity_headless::steady::Scenario::parse(&args[3])?;
+        let plan = mycity_headless::steady::Plan::parse(&args[4])?;
+        return if args[1] == "steady-run" {
+            mycity_headless::steady::run(std::path::Path::new(&args[2]), scenario, plan)
+        } else {
+            mycity_headless::steady::driver(std::path::Path::new(&args[2]), scenario, plan)
+        };
+    }
+    if args.get(1).is_some_and(|a| a == "steady-layout-session") {
+        if args.len() != 4 {
+            return Err("usage: steady-layout-session NEW_DIR 15|2100".into());
+        }
+        mycity_headless::layout_load::steady_session(
+            std::path::Path::new(&args[2]),
+            args[3].parse::<u64>().map_err(|e| e.to_string())?,
+        )?;
+        return Ok(());
+    }
+    if args.get(1).is_some_and(|a| a == "steady-l0-case") {
+        if args.len() != 4 {
+            return Err("usage: steady-l0-case economy|boot|exchange NEW_DIR".into());
+        }
+        let root = std::path::Path::new(&args[3]);
+        mycity_headless::steady::watch_case_owner()?;
+        mycity_headless::heap_meter::activate_standalone_prototype()?;
+        mycity_headless::steady::case_ready(root)?;
+        let world = root.join("world");
+        let result = match args[2].as_str() {
+            "economy" => economy_probe::run(
+                include_bytes!("../../../fixtures/m0-economy-opening.json"),
+                &world,
+                env!("MYCITY_SOURCE_SHA256"),
+            ),
+            "boot" => boot_probe::run(
+                include_bytes!("../../../fixtures/m0-boot-opening.json"),
+                &world,
+                env!("MYCITY_SOURCE_SHA256"),
+            ),
+            "exchange" => exchange_probe::run(
+                include_bytes!("../../../fixtures/m0-exchange-opening.json"),
+                &world,
+                env!("MYCITY_SOURCE_SHA256"),
+            ),
+            _ => return Err("steady_case_kind".into()),
+        };
+        return mycity_headless::steady::case_outcome(&root.join("case-result.json"), result);
+    }
     if args.get(1).is_some_and(|a| a == "model-capacity-plan") {
         if args.len() != 2 {
             return Err("usage: mycity-headless model-capacity-plan".into());

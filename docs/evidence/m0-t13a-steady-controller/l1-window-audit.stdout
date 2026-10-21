@@ -1,0 +1,160 @@
+{
+  "schema": "mycity-steady-window-raw-audit-v1",
+  "source_sha256": "e49b29d55ca76a562d1e497701333393746d3f9031651b814c65590fdf5db0b5",
+  "formal": false,
+  "measurement_driver_ns": [
+    3000000000,
+    15000000000
+  ],
+  "clock_mappings": 0,
+  "worker_request_intervals": 0,
+  "raw_files_accounted": 1,
+  "raw_universe_fully_accounted": true,
+  "unbound_raw_files": [],
+  "raw_bytes_accounted": 30960,
+  "batch_intervals": [
+    {
+      "key": [
+        "sealed",
+        "layout",
+        "execution",
+        "before",
+        "scan_complete",
+        "L1/full_jprod1"
+      ],
+      "count": 4
+    },
+    {
+      "key": [
+        "sealed",
+        "layout",
+        "execution",
+        "cross_boundary_or_uncertain",
+        "scan_complete",
+        "L1/full_jprod1"
+      ],
+      "count": 1
+    },
+    {
+      "key": [
+        "sealed",
+        "layout",
+        "execution",
+        "inside",
+        "scan_complete",
+        "L1/full_jprod1"
+      ],
+      "count": 11
+    }
+  ],
+  "strata": [
+    {
+      "record_state": "sealed",
+      "producer": "layout",
+      "role": "execution",
+      "window": "before",
+      "admission": "scan_complete",
+      "case": "L1/full_jprod1",
+      "class": "L1_native_record_index_page",
+      "page_spec": "not_air",
+      "samples": 188,
+      "maximum_ns": 36667,
+      "p95_ns": 21000,
+      "p99_ns": 33375,
+      "minimum_samples_met": false,
+      "thresholds_met": null
+    },
+    {
+      "record_state": "sealed",
+      "producer": "layout",
+      "role": "execution",
+      "window": "before",
+      "admission": "scan_complete",
+      "case": "L1/full_jprod1",
+      "class": "L1_stub_record_index_page",
+      "page_spec": "not_air",
+      "samples": 672,
+      "maximum_ns": 61292,
+      "p95_ns": 27083,
+      "p99_ns": 57083,
+      "minimum_samples_met": true,
+      "thresholds_met": true
+    },
+    {
+      "record_state": "sealed",
+      "producer": "layout",
+      "role": "execution",
+      "window": "cross_boundary_or_uncertain",
+      "admission": "scan_complete",
+      "case": "L1/full_jprod1",
+      "class": "L1_native_record_index_page",
+      "page_spec": "not_air",
+      "samples": 47,
+      "maximum_ns": 46542,
+      "p95_ns": 43333,
+      "p99_ns": 46542,
+      "minimum_samples_met": false,
+      "thresholds_met": null
+    },
+    {
+      "record_state": "sealed",
+      "producer": "layout",
+      "role": "execution",
+      "window": "cross_boundary_or_uncertain",
+      "admission": "scan_complete",
+      "case": "L1/full_jprod1",
+      "class": "L1_stub_record_index_page",
+      "page_spec": "not_air",
+      "samples": 168,
+      "maximum_ns": 230250,
+      "p95_ns": 100750,
+      "p99_ns": 221375,
+      "minimum_samples_met": false,
+      "thresholds_met": null
+    },
+    {
+      "record_state": "sealed",
+      "producer": "layout",
+      "role": "execution",
+      "window": "inside",
+      "admission": "scan_complete",
+      "case": "L1/full_jprod1",
+      "class": "L1_native_record_index_page",
+      "page_spec": "not_air",
+      "samples": 517,
+      "maximum_ns": 57625,
+      "p95_ns": 36750,
+      "p99_ns": 42500,
+      "minimum_samples_met": true,
+      "thresholds_met": true
+    },
+    {
+      "record_state": "sealed",
+      "producer": "layout",
+      "role": "execution",
+      "window": "inside",
+      "admission": "scan_complete",
+      "case": "L1/full_jprod1",
+      "class": "L1_stub_record_index_page",
+      "page_spec": "not_air",
+      "samples": 1848,
+      "maximum_ns": 209959,
+      "p95_ns": 69625,
+      "p99_ns": 124125,
+      "minimum_samples_met": true,
+      "thresholds_met": true
+    }
+  ],
+  "expected_classes": [
+    "L1_native_record_index_page",
+    "L1_stub_record_index_page"
+  ],
+  "eligible_window_class_minimums_met": true,
+  "observed_window_thresholds_met": true,
+  "formal_latency": "not_accepted_smoke",
+  "three_rounds": "not_accepted_by_single_round",
+  "resource_and_queue": "not_assessed_by_raw_selector",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run",
+  "full_M0": "not_accepted"
+}

@@ -792,6 +792,22 @@ fn read_owner_stop(mut reader: impl Read) -> Result<(), String> {
         Err("layout_owner_command".into())
     }
 }
+fn read_owner_commands(mut reader: impl Read, marker: &Path) -> Result<(), String> {
+    loop {
+        let mut byte = [0];
+        reader.read_exact(&mut byte).map_err(err)?;
+        match byte[0] {
+            b'S' => return read_owner_stop(&byte[..]),
+            b'C' => {
+                let clock = crate::heap_meter::clock_reading();
+                let mut file = File::create_new(marker).map_err(err)?;
+                serde_json::to_writer(&mut file, &json!({"clock":clock})).map_err(err)?;
+                file.sync_all().map_err(err)?;
+            }
+            _ => return Err("layout_owner_command".into()),
+        }
+    }
+}
 fn published_before(deadline: u64, end: Option<std::time::Duration>) -> bool {
     end.is_none_or(|end| {
         std::time::Duration::from_secs(deadline) < end.max(std::time::Duration::from_nanos(1))
@@ -804,6 +820,14 @@ pub fn session(dir: &Path, minimum_seconds: u64) -> Result<Value, String> {
         return Err("layout_session_minimum".into());
     }
     probe_schedule(dir, minimum_seconds, 300, Some(64 * 1024 * 1024), true)
+}
+
+/// Same full records and pressure, owner-held through steady measurement drain.
+pub fn steady_session(dir: &Path, seconds: u64) -> Result<Value, String> {
+    if ![15, 2100].contains(&seconds) {
+        return Err("steady_layout_duration".into());
+    }
+    probe_schedule(dir, seconds, 300, Some(64 * 1024 * 1024), true)
 }
 
 fn probe_schedule(
@@ -843,11 +867,12 @@ fn probe_schedule(
     let started = Instant::now();
     let owner = if owner_session {
         let (tx, rx) = std::sync::mpsc::sync_channel(1);
+        let clock_marker = dir.join("clock-sync.json");
         std::thread::Builder::new()
             .name("layout-owner".into())
             .stack_size(64 * 1024)
             .spawn(move || {
-                let result = read_owner_stop(std::io::stdin());
+                let result = read_owner_commands(std::io::stdin(), &clock_marker);
                 let _ = tx.send((Instant::now(), result));
             })
             .map_err(err)?;
@@ -910,12 +935,16 @@ fn probe_schedule(
             if published(next_scan) && elapsed >= next_scan as f64 {
                 let lateness = elapsed - next_scan as f64;
                 maximum_scan_lateness = maximum_scan_lateness.max(lateness);
+                let raw_begin = metrics.written_bytes();
+                let clock_begin = crate::heap_meter::clock_reading();
                 let scan = load.scan(|class, _, ns| metrics.observe(class, ns))?;
+                let clock_end = crate::heap_meter::clock_reading();
+                let raw_end = metrics.written_bytes();
                 metrics.check()?;
                 if metrics.owned_bytes() > charge {
                     return Err("layout_diagnostics_exceeds_charge".into());
                 }
-                serde_json::to_writer(&mut events,&json!({"elapsed_seconds":started.elapsed().as_secs_f64(),"scan_deadline_seconds":next_scan,"scan_ready_age_seconds":lateness,"scan":scan})).map_err(err)?;
+                serde_json::to_writer(&mut events,&json!({"elapsed_seconds":started.elapsed().as_secs_f64(),"scan_deadline_seconds":next_scan,"scan_ready_age_seconds":lateness,"scan":scan,"raw_begin":raw_begin,"raw_end":raw_end,"clock_begin":clock_begin,"clock_end":clock_end})).map_err(err)?;
                 events.write_all(b"\n").map_err(err)?;
                 events.flush().map_err(err)?;
                 scans += 1;

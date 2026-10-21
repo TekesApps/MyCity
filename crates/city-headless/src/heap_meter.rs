@@ -4,13 +4,13 @@
 //! bytes to invent RSS or deduct common diagnostics twice.
 //! No reset is used. Native allocator metadata, stacks and foreign allocations
 //! remain outside this counter and are never reported as measured by it.
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use std::{
     fs::OpenOptions,
     io::Write,
     path::PathBuf,
     sync::OnceLock,
-    time::{SystemTime, UNIX_EPOCH},
+    time::{Instant, SystemTime, UNIX_EPOCH},
 };
 /// Shared by heap records and all diagnostic producers in this process. Directory
 /// uniqueness still comes from create_dir, not clock resolution or PID alone.
@@ -21,6 +21,26 @@ pub fn process_instance() -> u128 {
             .duration_since(UNIX_EPOCH)
             .map_or(0, |d| d.as_nanos())
     })
+}
+/// Process-local monotonic reading. Cross-process epochs are never assumed equal.
+#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
+pub struct ClockReading {
+    pub pid: u32,
+    pub instance_unix_ns: u128,
+    pub elapsed_ns: u64,
+}
+pub fn clock_reading() -> ClockReading {
+    static EPOCH: OnceLock<Instant> = OnceLock::new();
+    ClockReading {
+        pid: std::process::id(),
+        instance_unix_ns: process_instance(),
+        elapsed_ns: EPOCH
+            .get_or_init(Instant::now)
+            .elapsed()
+            .as_nanos()
+            .try_into()
+            .expect("process clock horizon"),
+    }
 }
 static FIXED_HELPER: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
 /// Called before fixed helper workspace creation. No peak reset or subtraction.
@@ -34,6 +54,13 @@ static ALLOCATOR: mycity_role_allocator::Allocator = mycity_role_allocator::Allo
 pub struct Snapshot {
     pub current_requested_bytes: usize,
     pub lifetime_peak_requested_bytes: usize,
+}
+/// Isolated real L0 suite child. No pool is concurrently retained in this scenario.
+pub fn activate_standalone_prototype() -> Result<(), String> {
+    if std::env::var_os("MYCITY_NORMAL_POOL").is_some() {
+        return Err("steady_prototype_unexpected_pool".into());
+    }
+    activate_role(59 * 1024 * 1024).map(|_| ())
 }
 pub(crate) fn activate_role(bytes: usize) -> Result<mycity_role_allocator::Activation, String> {
     ALLOCATOR.activate(bytes).map_err(str::to_owned)
@@ -84,12 +111,11 @@ impl Recorder {
             "scale-model-task" if FIXED_HELPER.load(std::sync::atomic::Ordering::Relaxed) => {
                 Some(crate::worker_slots::OWNER_BYTES + crate::diagnostic_contract::HELPER)
             }
-            "scale-sim-probe" | "scale-endurance" | "speed-driver" => {
+            "scale-sim-probe" | "scale-endurance" | "speed-driver" | "steady-driver" => {
                 Some(crate::diagnostic_contract::DRIVER)
             }
-            "joint-budget-probe" | "joint-endurance" | "speed-run" | "pe0-speed-probe" => {
-                Some(crate::diagnostic_contract::SUPERVISOR)
-            }
+            "joint-budget-probe" | "joint-endurance" | "speed-run" | "pe0-speed-probe"
+            | "steady-run" => Some(crate::diagnostic_contract::SUPERVISOR),
             "normal-pool-host" => {
                 Some(crate::normal_pool::BYTES + crate::normal_pool::DIAGNOSTIC_BYTES)
             }

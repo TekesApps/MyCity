@@ -114,6 +114,9 @@ pub(crate) struct Experiment {
     failed_attempts: u64,
 }
 impl Experiment {
+    pub(crate) fn clock_origin(&self) -> Instant {
+        self.began
+    }
     pub(crate) fn record(&mut self, value: Value) -> Result<(), String> {
         #[derive(Serialize)]
         struct Row<'a> {
@@ -138,15 +141,18 @@ impl Experiment {
     pub(crate) fn call(&mut self, command: Command) -> Result<Value, String> {
         self.id = self.id.checked_add(1).ok_or("scale_sim_id")?;
         self.record(json!({"request":self.id,"command":command}))?;
+        let request_sent_ns = self.began.elapsed().as_nanos();
         self.client.submit(self.id, command)?;
         let started = Instant::now();
         for _ in 0..16384 {
             let mut event = self.client.next(Duration::from_secs(35))?;
+            let response_received_ns = self.began.elapsed().as_nanos();
             if event.kind == "attempt_failed" {
                 self.failed_attempts += 1;
             }
+            let worker_identity = (event.kind == "worker_started").then_some(&event.payload);
             let (payload_sha256, payload_bytes) = payload_digest(&event.payload)?;
-            self.record(json!({"response":self.id,"kind":event.kind,"seconds":started.elapsed().as_secs_f64(),"payload_sha256":payload_sha256,"payload_bytes":payload_bytes}))?;
+            self.record(json!({"response":self.id,"kind":event.kind,"seconds":started.elapsed().as_secs_f64(),"payload_sha256":payload_sha256,"payload_bytes":payload_bytes,"request_sent_ns":request_sent_ns,"response_received_ns":response_received_ns,"sim_clock":event.clock,"worker_identity":worker_identity,"result_ok":if event.kind=="result" {Some(event.payload.get("Ok").is_some())} else {None}}))?;
             if event.kind == "result" {
                 return event
                     .payload

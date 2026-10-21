@@ -1,0 +1,4 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+    Finished `release` profile [optimized] target(s) in 18.29s
+     Running tests/steady.rs (target/release/deps/steady-aba4ae859b2994e1)
+error: test failed, to rerun pass `-p mycity-headless --test steady`

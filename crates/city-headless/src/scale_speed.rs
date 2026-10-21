@@ -70,6 +70,7 @@ impl Rate {
 }
 struct Clock {
     began: Instant,
+    publication_cutoff: Option<Duration>,
     queries: u64,
     saves: u64,
     maximum_query_lateness: Duration,
@@ -88,6 +89,7 @@ impl Clock {
     /// Fixed cutoff per call. Final call freezes publication at the predefined
     /// final-checkpoint boundary; new future requests are never marked completed.
     fn service(&mut self, e: &mut Experiment, cutoff: Duration) -> Result<(), String> {
+        let cutoff = cutoff.min(self.publication_cutoff.unwrap_or(cutoff));
         loop {
             let q = self.next_query();
             let s = self.next_save();
@@ -222,7 +224,27 @@ pub fn run(dir: &Path, rate: Rate) -> Result<(), String> {
     )
 }
 pub fn driver(dir: &Path, rate: Rate) -> Result<(), String> {
-    fs::create_dir(dir).map_err(err)?;
+    driver_inner(dir, rate, None)
+}
+/// Reference is prepared before warmup; no measured city exists before anchor.
+pub(crate) fn steady_driver(dir: &Path, anchor: Instant, span: Duration) -> Result<(), String> {
+    scale_model_task::validate_reference(&dir.join("reference"), Tier::Full)?;
+    driver_inner(
+        dir,
+        Rate::parse(if span == Duration::from_secs(1800) {
+            "60"
+        } else {
+            "unpaced"
+        })?,
+        Some((anchor, span)),
+    )
+}
+fn driver_inner(dir: &Path, rate: Rate, steady: Option<(Instant, Duration)>) -> Result<(), String> {
+    if steady.is_none() {
+        fs::create_dir(dir).map_err(err)?;
+    } else if dir.join("world").exists() {
+        return Err("steady_measured_city_preexists".into());
+    }
     let dir = dir.canonicalize().map_err(err)?;
     save(
         &dir.join("speed-manifest.json"),
@@ -237,17 +259,21 @@ pub fn driver(dir: &Path, rate: Rate) -> Result<(), String> {
         "speed_miss":"continue full trajectory and report miss; no tolerance, shorter sample or dropped fact"}),
     )?;
     let whole = Instant::now();
-    scale_model_task::run(&dir, Tier::Full, Mode::Reference)?;
+    if steady.is_none() {
+        scale_model_task::run(&dir, Tier::Full, Mode::Reference)?;
+    }
     let reference_seconds = whole.elapsed().as_secs_f64();
     // Must precede the actual Store creation request, not just model initialization.
     let mut clock = Clock {
-        began: Instant::now(),
+        began: steady.map_or_else(Instant::now, |(anchor, _)| anchor),
+        publication_cutoff: steady.map(|(_, span)| span),
         queries: 0,
         saves: 0,
         maximum_query_lateness: Duration::ZERO,
         maximum_save_lateness: Duration::ZERO,
     };
     let mut e = scale_sim::independent_experiment(&dir, true, true)?;
+    e.record(json!({"experiment_origin_measurement_ns":e.clock_origin().duration_since(clock.began).as_nanos(),"mapping":"same process Instant offset; origin before actual Sim creation"}))?;
     let sim_ready_seconds = clock.elapsed().as_secs_f64();
     e.record(json!({"speed_operating_started_before_sim_create":true,"sim_ready_seconds":sim_ready_seconds}))?;
     let mut lines = BufReader::new(File::open(dir.join("cpu-targets.jsonl")).map_err(err)?);
@@ -300,6 +326,12 @@ pub fn driver(dir: &Path, rate: Rate) -> Result<(), String> {
                         adjacent_business_completion_seconds: adjacent.as_secs_f64(),
                         budget_met: period.unwrap_or(adjacent) <= budget,
                     });
+                    if steady.is_some() {
+                        let boundary = e.call(Command::Status)?;
+                        e.record(json!({"steady_quiescent_day_boundary":day,"same_phase":"hour complete; no active driver request",
+                            "game_target":day*86400,"status":boundary,"driver_heap":crate::heap_meter::snapshot(),
+                            "observed_seconds":clock.elapsed().as_secs_f64()}))?;
+                    }
                     previous_day = complete;
                 }
             }
@@ -337,7 +369,26 @@ pub fn driver(dir: &Path, rate: Rate) -> Result<(), String> {
     let met = all_days && total_met;
     e.record(json!({"speed_operating_end_seconds":operating_end.as_secs_f64(),"final_checkpoint_completed_seconds":publication_end.as_secs_f64(),
         "publication_end_seconds":publication_end.as_secs_f64(),"all_published_observations_completed":true}))?;
-    // Only non-mutating shutdown and independent cold proof follow this boundary.
+    let measured_business_complete = publication_end;
+    let mut steady_closed = None;
+    let steady_boundary_before_cold = if let Some((_, span)) = steady {
+        while clock.elapsed() < span {
+            clock.service(&mut e, clock.elapsed().min(span))?;
+            std::thread::sleep(
+                span.saturating_sub(clock.elapsed())
+                    .min(Duration::from_millis(20)),
+            );
+        }
+        // Exactly the fixed publication cutoff, even if drain is late.
+        clock.service(&mut e, span)?;
+        let completed = clock.elapsed();
+        let boundary = e.call(Command::Status)?;
+        steady_closed = Some(completed);
+        Some(boundary)
+    } else {
+        None
+    };
+    // Shutdown and cold proof remain observed, outside the fixed measurement window.
     e.call(Command::Stop)?;
     e.client.stop()?;
     scale_model_task::run(&dir, Tier::Full, Mode::BeforeReopen)?;
@@ -374,6 +425,16 @@ pub fn driver(dir: &Path, rate: Rate) -> Result<(), String> {
         "cold_ready_seconds":cold_ready_seconds,"cold_proof_and_shutdown_seconds":post_operating.elapsed().as_secs_f64(),
         "whole_driver_wall_seconds":whole.elapsed().as_secs_f64(),"image_sha256":compared.image_sha256,
         "L1":"absent","common_8MiB":"not_accepted","exact_normal_owned":"not_accepted","eight_hour":"not_run","real_16GB":"not_run","full_M0":"not_accepted"});
+    if let Some((_, span)) = steady {
+        report["steady_window"] = json!({"measurement_seconds":span.as_secs_f64(),
+            "last_business_seconds":business_complete.as_secs_f64(),"last_business_checkpoint_seconds":measured_business_complete.as_secs_f64(),
+            "business_and_checkpoint_within_window":measured_business_complete<=span,
+            "fixed_window_end_seconds":span.as_secs_f64(),"scheduled_observations_drained_seconds":steady_closed.map(|d|d.as_secs_f64()),
+            "quiescent_boundary_before_cold":steady_boundary_before_cold,"cold_proof_drain_end_seconds":clock.elapsed().as_secs_f64(),
+            "periodic_queries_completed":clock.queries,"periodic_saves_completed":clock.saves,
+            "maximum_save_lateness_seconds":clock.maximum_save_lateness.as_secs_f64(),
+            "formal_steady_acceptance":"requires actual whole-window and independent resource/latency audit"});
+    }
     report["profile"] = json!("L2_full_actual");
     report["mandatory_pe0_gate"] = json!("not_evaluated_other_profile");
     report["legacy_session_speed"] = json!("not_retested");

@@ -81,6 +81,8 @@ pub struct Event {
     pub protocol: String,
     pub id: u64,
     pub sim_pid: u32,
+    #[serde(default)]
+    pub clock: Option<crate::heap_meter::ClockReading>,
     pub kind: String,
     pub payload: Value,
 }
@@ -94,6 +96,7 @@ fn event(w: &mut impl Write, id: u64, kind: &str, payload: Value) -> Result<(), 
             protocol: PROTOCOL.into(),
             id,
             sim_pid: std::process::id(),
+            clock: Some(crate::heap_meter::clock_reading()),
             kind: kind.into(),
             payload,
         },

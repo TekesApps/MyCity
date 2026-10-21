@@ -1,0 +1,9 @@
+{
+  "source_sha256": "e49b29d55ca76a562d1e497701333393746d3f9031651b814c65590fdf5db0b5",
+  "actual_round_completed": true,
+  "formal_steady": "requires_axis_audits_and_independent_review",
+  "three_rounds": "not_accepted_by_single_round",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run",
+  "full_M0": "not_accepted"
+}

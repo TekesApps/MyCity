@@ -1,0 +1,20 @@
+{
+  "path": "target/debug",
+  "reason": "Accidental development cargo check cache; all MyCity build/test tasks terminal, no occupancy or future debug dependency; other project cargo cwd inspected and untouched; release/fixed binary/logs/source retained",
+  "deleted_files": 639,
+  "deleted_inode_allocated_bytes": 159301632,
+  "shared_external_inode_allocation_not_claimed_bytes": 0,
+  "before": {
+    "unix_ns": 1792605810131465000,
+    "target_du_kib": 1556052,
+    "filesystem_available_bytes": 117980299264
+  },
+  "after": {
+    "unix_ns": 1792605810363703000,
+    "target_du_kib": 1400484,
+    "filesystem_available_bytes": 118131736576
+  },
+  "observed_df_available_delta": 151437312,
+  "df_delta_attributed": null,
+  "deleted_before_measurement": true
+}

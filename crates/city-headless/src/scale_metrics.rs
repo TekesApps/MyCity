@@ -132,6 +132,9 @@ impl Metrics {
             self.bytes += 9;
         }
     }
+    pub(crate) fn written_bytes(&self) -> u64 {
+        self.bytes
+    }
     pub fn check(&self) -> Result<(), String> {
         self.error.as_ref().map_or(Ok(()), |e| Err(e.clone()))
     }

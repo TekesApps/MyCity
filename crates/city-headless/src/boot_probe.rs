@@ -80,6 +80,7 @@ impl Case {
         })
     }
     fn execute(&mut self, c: Command) -> Result<Envelope, String> {
+        mycity_headless::steady::case_boundary()?;
         let env = self.command(c)?;
         let result = self
             .store
@@ -90,6 +91,7 @@ impl Case {
         Ok(env)
     }
     fn reject(&mut self, c: Command) -> Result<(Envelope, TxError), String> {
+        mycity_headless::steady::case_boundary()?;
         let env = self.command(c)?;
         let hash = self.store.state_hash().map_err(err)?;
         let r = self
@@ -219,6 +221,8 @@ pub fn run(bytes: &[u8], root: &Path, rules: &str) -> Result<Value, String> {
         normal.state()?.fees == Money::new(1000).map_err(err)?,
         "normal_fee_oracle",
     )?;
+    let normal_report = normal.report()?;
+    drop(normal);
     let mut no_seed = base.clone();
     set_stock(&mut no_seed, 2, 0, 0)?;
     let mut no_seed = Case::new(&root.join("no-seed"), &no_seed, rules, 2, false)?;
@@ -232,6 +236,8 @@ pub fn run(bytes: &[u8], root: &Path, rules: &str) -> Result<Value, String> {
             && no_seed.state()?.fees == Money::ZERO,
         "free_circular_start",
     )?;
+    let no_seed_report = no_seed.report()?;
+    drop(no_seed);
     let mut water = base.clone();
     set_stock(&mut water, 2, 0, 0)?;
     set_stock(&mut water, 3, 60000, 60)?;
@@ -241,6 +247,8 @@ pub fn run(bytes: &[u8], root: &Path, rules: &str) -> Result<Value, String> {
     water.execute(start(Facility::Pump))?;
     let last = water.execute(Command::Advance { seconds: 60 })?;
     water = recover(water, "alternative_real_water_tank_seed", last, true)?;
+    let water_report = water.report()?;
+    drop(water);
     let mut competition = base.clone();
     set_stock(&mut competition, 3, 60000, 60)?;
     let mut competition = Case::new(&root.join("competition"), &competition, rules, 1, false)?;
@@ -265,6 +273,8 @@ pub fn run(bytes: &[u8], root: &Path, rules: &str) -> Result<Value, String> {
         true,
     )?;
     competition.execute(Command::Advance { seconds: 60 })?;
+    let competition_report = competition.report()?;
+    drop(competition);
     let mut faults = Vec::new();
     for facility in [Facility::Pump, Facility::Generator] {
         let mut c = Case::new(
@@ -319,6 +329,6 @@ pub fn run(bytes: &[u8], root: &Path, rules: &str) -> Result<Value, String> {
     exhausted = recover(exhausted, "finite_fuel_is_not_recreated", last, false)?;
     require(exhausted.quantity(1)? == 0, "fuel_not_exhausted")?;
     Ok(
-        json!({"schema":"mycity-m0-boot-evidence-v1","result":"P_BOOT_finite_startup_interlock_executed_and_verified","profile":mycity_core::boot::PROFILE,"normal":normal.report()?,"no_seed":no_seed.report()?,"water_seed":water.report()?,"competition":competition.report()?,"faults":faults,"exhausted":exhausted.report()?,"boot_inline_bytes":std::mem::size_of::<Boot>(),"scope":"finite_micro_profile_not_LC38_or_city_utility_network","resource_units":{"electric_slot_envelope_watts":24000,"water_slot_envelope_liters_per_second":10,"duration_seconds":60,"resource_limits":"same_generic_lease_pool_plus_separate_finite_physical_buffers"},"memory_16gb_gate":"not_run","long_run_balance":"not_tested","ui":"not_implemented"}),
+        json!({"schema":"mycity-m0-boot-evidence-v1","result":"P_BOOT_finite_startup_interlock_executed_and_verified","profile":mycity_core::boot::PROFILE,"normal":normal_report,"no_seed":no_seed_report,"water_seed":water_report,"competition":competition_report,"faults":faults,"exhausted":exhausted.report()?,"boot_inline_bytes":std::mem::size_of::<Boot>(),"scope":"finite_micro_profile_not_LC38_or_city_utility_network","resource_units":{"electric_slot_envelope_watts":24000,"water_slot_envelope_liters_per_second":10,"duration_seconds":60,"resource_limits":"same_generic_lease_pool_plus_separate_finite_physical_buffers"},"memory_16gb_gate":"not_run","long_run_balance":"not_tested","ui":"not_implemented"}),
     )
 }

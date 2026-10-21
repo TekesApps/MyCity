@@ -1,0 +1,1187 @@
+{
+  "source_sha256": "e49b29d55ca76a562d1e497701333393746d3f9031651b814c65590fdf5db0b5",
+  "original_hours": 720,
+  "original_targets": 723,
+  "worker_windows": 724,
+  "final_sequence": 3011,
+  "full_engine_bytes": 2507418,
+  "full_engine_sha256": "375065b04ead72b347babf37e1e212455170737057c245d96fe710212f34034c",
+  "original_target_stream_equal_v85": true,
+  "complete_engine_byte_equal_current_independent_cpu": true,
+  "steady_window": {
+    "business_and_checkpoint_within_window": true,
+    "cold_proof_drain_end_seconds": 1800.936028542,
+    "fixed_window_end_seconds": 1800.0,
+    "formal_steady_acceptance": "requires actual whole-window and independent resource/latency audit",
+    "last_business_checkpoint_seconds": 1798.107336125,
+    "last_business_seconds": 1797.968760334,
+    "maximum_save_lateness_seconds": 0.146361625,
+    "measurement_seconds": 1800.0,
+    "periodic_queries_completed": 180,
+    "periodic_saves_completed": 6,
+    "quiescent_boundary_before_cold": {
+      "background": {
+        "field": {
+          "background": 14155775.68359375,
+          "boundary_exchange": 0.0,
+          "complete": true,
+          "decay": 14155778.765221665,
+          "emitted_micro": 960000,
+          "field_sha256": "3c94c781cac867dd4a4238f56e73c68b8890aec8f22816a7bb82b86b69585c65",
+          "input_sha256": "3b3593b6894946f0aed4bdcb1af33be845eb2f2389268826bde0929e9c4d8c5e",
+          "integral_sha256": "8fc2b4c75cc49aa092376f147e9b5b294f9632d18e9825c7ba8c9334c34a237d",
+          "maximum": 2.0000178813934326,
+          "minimum": 2.0,
+          "owned_bytes": 262704,
+          "progress": null,
+          "rounding_residual": 2.1266182662546913,
+          "side": 128,
+          "steps": 43200,
+          "strategy": "run36-air-f32-v1",
+          "sum": 32768.004997968674,
+          "target": 2592000,
+          "time": 2592000
+        },
+        "incarnation": 724,
+        "pending": null,
+        "state_sha256": "23cee06ce3be900eff9fb74331dbd9a11f9e2b1e1033b583e7dc010ec53ecfba",
+        "time": 2592000,
+        "version": 724
+      },
+      "business_sha256": "17b4cbd4271a18e8bd3ec0ddfe1b1bfe2b33081e3a3f87db79ccd7f87464f432",
+      "capacity": {
+        "background_reserved_bytes": 0,
+        "continuation_reserved_bytes": 0,
+        "hard_blocked": false,
+        "normal_blocked": false,
+        "normal_limit": 125829120,
+        "reason": null,
+        "total_bytes": 134217728,
+        "used_bytes": 14395857,
+        "worker_cache_actual_bytes": 1377720,
+        "worker_cache_charged_bytes": 6291456
+      },
+      "memory_16gb_gate": "not_run",
+      "revision": 3011,
+      "runtime": {
+        "accounts": [
+          {
+            "cash": 1048000,
+            "id": 1,
+            "protected": 0,
+            "role": "treasury"
+          },
+          {
+            "cash": 183800,
+            "id": 2,
+            "protected": 0,
+            "role": "company"
+          },
+          {
+            "cash": 412716,
+            "id": 3,
+            "protected": 0,
+            "role": "company"
+          },
+          {
+            "cash": 1216700,
+            "id": 4,
+            "protected": 0,
+            "role": "supplier"
+          },
+          {
+            "cash": 4712,
+            "id": 5,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 5176,
+            "id": 6,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 4248,
+            "id": 7,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 4712,
+            "id": 8,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 3088,
+            "id": 9,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 2624,
+            "id": 10,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 2856,
+            "id": 11,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 3088,
+            "id": 12,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 2624,
+            "id": 13,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 2856,
+            "id": 14,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 3088,
+            "id": 15,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 2624,
+            "id": 16,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 2856,
+            "id": 17,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 3088,
+            "id": 18,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 2624,
+            "id": 19,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 2856,
+            "id": 20,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 3088,
+            "id": 21,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 2624,
+            "id": 22,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 2856,
+            "id": 23,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 3088,
+            "id": 24,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 1624,
+            "id": 25,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 1856,
+            "id": 26,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 2088,
+            "id": 27,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 1624,
+            "id": 28,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 1856,
+            "id": 29,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 2088,
+            "id": 30,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 1624,
+            "id": 31,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 1856,
+            "id": 32,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 2088,
+            "id": 33,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 1624,
+            "id": 34,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 1856,
+            "id": 35,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 2088,
+            "id": 36,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 1624,
+            "id": 37,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 1856,
+            "id": 38,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 2088,
+            "id": 39,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 1624,
+            "id": 40,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 1856,
+            "id": 41,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 2088,
+            "id": 42,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 1624,
+            "id": 43,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 1856,
+            "id": 44,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 2088,
+            "id": 45,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 1624,
+            "id": 46,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 1856,
+            "id": 47,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 2088,
+            "id": 48,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 1624,
+            "id": 49,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 1856,
+            "id": 50,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 2088,
+            "id": 51,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 1624,
+            "id": 52,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 1856,
+            "id": 53,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 2088,
+            "id": 54,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 1624,
+            "id": 55,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 1856,
+            "id": 56,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 2088,
+            "id": 57,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 1624,
+            "id": 58,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 1856,
+            "id": 59,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 2088,
+            "id": 60,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 1624,
+            "id": 61,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 1856,
+            "id": 62,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 2088,
+            "id": 63,
+            "protected": 0,
+            "role": "household"
+          },
+          {
+            "cash": 1624,
+            "id": 64,
+            "protected": 0,
+            "role": "household"
+          }
+        ],
+        "active_city": 1,
+        "boot": {
+          "contractor": 4,
+          "exported_basis": 0,
+          "exports": [
+            0,
+            0
+          ],
+          "failed_expense": 0,
+          "fees": 500,
+          "fuel_used": 1000,
+          "initial": [
+            5000,
+            100000,
+            0,
+            6000000,
+            0,
+            0
+          ],
+          "initial_basis": 2100,
+          "initial_cash": 3000000,
+          "jobs": [
+            {
+              "completed": 1,
+              "cost": 0,
+              "due": 60,
+              "failed": 0,
+              "identity": 1,
+              "inputs": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "phase": "Idle",
+              "started": 0,
+              "tokens": [
+                0,
+                0
+              ]
+            },
+            {
+              "completed": 1,
+              "cost": 0,
+              "due": 120,
+              "failed": 0,
+              "identity": 2,
+              "inputs": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "phase": "Idle",
+              "started": 60,
+              "tokens": [
+                0,
+                0
+              ]
+            }
+          ],
+          "limits": [
+            5000,
+            2000000,
+            6000000,
+            6000000,
+            6000000,
+            10000000
+          ],
+          "next_job": 3,
+          "operator": 3,
+          "profile": "pboot-cold-scale-v1",
+          "resources": [
+            101,
+            102
+          ],
+          "stocks": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6
+          ],
+          "time": 2592000
+        },
+        "claim_count": 20000,
+        "claims": [
+          {
+            "due": 86400,
+            "id": 1,
+            "paid": 1,
+            "payee": 5,
+            "payer": 3,
+            "principal": 1,
+            "processed": true
+          },
+          {
+            "due": 86400,
+            "id": 2,
+            "paid": 1,
+            "payee": 5,
+            "payer": 3,
+            "principal": 1,
+            "processed": true
+          },
+          {
+            "due": 86400,
+            "id": 3,
+            "paid": 1,
+            "payee": 5,
+            "payer": 3,
+            "principal": 1,
+            "processed": true
+          },
+          {
+            "due": 86400,
+            "id": 4,
+            "paid": 1,
+            "payee": 5,
+            "payer": 3,
+            "principal": 1,
+            "processed": true
+          },
+          {
+            "due": 86400,
+            "id": 5,
+            "paid": 1,
+            "payee": 5,
+            "payer": 3,
+            "principal": 1,
+            "processed": true
+          },
+          {
+            "due": 86400,
+            "id": 6,
+            "paid": 1,
+            "payee": 5,
+            "payer": 3,
+            "principal": 1,
+            "processed": true
+          },
+          {
+            "due": 86400,
+            "id": 7,
+            "paid": 1,
+            "payee": 5,
+            "payer": 3,
+            "principal": 1,
+            "processed": true
+          },
+          {
+            "due": 86400,
+            "id": 8,
+            "paid": 1,
+            "payee": 5,
+            "payer": 3,
+            "principal": 1,
+            "processed": true
+          }
+        ],
+        "diagnostics_owned_bytes": 2186592,
+        "obligations": [
+          {
+            "amount": 100,
+            "arrears": 0,
+            "expires_at": 2592000,
+            "id": 1,
+            "next_due": null,
+            "payee": 1,
+            "payer": 3,
+            "period_seconds": 86400
+          },
+          {
+            "amount": 100,
+            "arrears": 0,
+            "expires_at": 2592000,
+            "id": 2,
+            "next_due": null,
+            "payee": 1,
+            "payer": 3,
+            "period_seconds": 86400
+          },
+          {
+            "amount": 100,
+            "arrears": 0,
+            "expires_at": 2592000,
+            "id": 3,
+            "next_due": null,
+            "payee": 1,
+            "payer": 3,
+            "period_seconds": 86400
+          },
+          {
+            "amount": 100,
+            "arrears": 0,
+            "expires_at": 2592000,
+            "id": 4,
+            "next_due": null,
+            "payee": 1,
+            "payer": 3,
+            "period_seconds": 86400
+          },
+          {
+            "amount": 100,
+            "arrears": 0,
+            "expires_at": 2592000,
+            "id": 5,
+            "next_due": null,
+            "payee": 1,
+            "payer": 3,
+            "period_seconds": 86400
+          },
+          {
+            "amount": 100,
+            "arrears": 0,
+            "expires_at": 2592000,
+            "id": 6,
+            "next_due": null,
+            "payee": 1,
+            "payer": 3,
+            "period_seconds": 86400
+          },
+          {
+            "amount": 100,
+            "arrears": 0,
+            "expires_at": 2592000,
+            "id": 7,
+            "next_due": null,
+            "payee": 1,
+            "payer": 3,
+            "period_seconds": 86400
+          },
+          {
+            "amount": 100,
+            "arrears": 0,
+            "expires_at": 2592000,
+            "id": 8,
+            "next_due": null,
+            "payee": 1,
+            "payer": 3,
+            "period_seconds": 86400
+          },
+          {
+            "amount": 100,
+            "arrears": 0,
+            "expires_at": 2592000,
+            "id": 9,
+            "next_due": null,
+            "payee": 1,
+            "payer": 3,
+            "period_seconds": 86400
+          },
+          {
+            "amount": 100,
+            "arrears": 0,
+            "expires_at": 2592000,
+            "id": 10,
+            "next_due": null,
+            "payee": 1,
+            "payer": 3,
+            "period_seconds": 86400
+          },
+          {
+            "amount": 100,
+            "arrears": 0,
+            "expires_at": 2592000,
+            "id": 11,
+            "next_due": null,
+            "payee": 1,
+            "payer": 3,
+            "period_seconds": 86400
+          },
+          {
+            "amount": 100,
+            "arrears": 0,
+            "expires_at": 2592000,
+            "id": 12,
+            "next_due": null,
+            "payee": 1,
+            "payer": 3,
+            "period_seconds": 86400
+          },
+          {
+            "amount": 100,
+            "arrears": 0,
+            "expires_at": 2592000,
+            "id": 13,
+            "next_due": null,
+            "payee": 1,
+            "payer": 3,
+            "period_seconds": 86400
+          },
+          {
+            "amount": 100,
+            "arrears": 0,
+            "expires_at": 2592000,
+            "id": 14,
+            "next_due": null,
+            "payee": 1,
+            "payer": 3,
+            "period_seconds": 86400
+          },
+          {
+            "amount": 100,
+            "arrears": 0,
+            "expires_at": 2592000,
+            "id": 15,
+            "next_due": null,
+            "payee": 1,
+            "payer": 3,
+            "period_seconds": 86400
+          },
+          {
+            "amount": 100,
+            "arrears": 0,
+            "expires_at": 2592000,
+            "id": 16,
+            "next_due": null,
+            "payee": 1,
+            "payer": 3,
+            "period_seconds": 86400
+          }
+        ],
+        "payroll": [
+          {
+            "accrued": 1856,
+            "billed": 1856,
+            "last_accrual": 2592000,
+            "next_due": null,
+            "occurrences": 30,
+            "paid": 1856,
+            "pending_cycle": null,
+            "remainder": 0,
+            "spec": {
+              "cycle": {
+                "kind": "daily"
+              },
+              "ends_at": 2592000,
+              "home_city": 1,
+              "hourly_cents": 8,
+              "id": 1,
+              "payee": 5,
+              "payer": 3
+            },
+            "started": 0,
+            "work_seconds": 835200,
+            "working": false
+          },
+          {
+            "accrued": 2088,
+            "billed": 2088,
+            "last_accrual": 2592000,
+            "next_due": null,
+            "occurrences": 5,
+            "paid": 2088,
+            "pending_cycle": null,
+            "remainder": 0,
+            "spec": {
+              "cycle": {
+                "kind": "weekly"
+              },
+              "ends_at": 2592000,
+              "home_city": 1,
+              "hourly_cents": 9,
+              "id": 2,
+              "payee": 6,
+              "payer": 3
+            },
+            "started": 0,
+            "work_seconds": 835200,
+            "working": false
+          },
+          {
+            "accrued": 1624,
+            "billed": 1624,
+            "last_accrual": 2592000,
+            "next_due": null,
+            "occurrences": 1,
+            "paid": 1624,
+            "pending_cycle": null,
+            "remainder": 0,
+            "spec": {
+              "cycle": {
+                "anchor": 1,
+                "kind": "monthly"
+              },
+              "ends_at": 2592000,
+              "home_city": 1,
+              "hourly_cents": 7,
+              "id": 3,
+              "payee": 7,
+              "payer": 3
+            },
+            "started": 0,
+            "work_seconds": 835200,
+            "working": false
+          },
+          {
+            "accrued": 1856,
+            "billed": 1856,
+            "last_accrual": 2592000,
+            "next_due": null,
+            "occurrences": 30,
+            "paid": 1856,
+            "pending_cycle": null,
+            "remainder": 0,
+            "spec": {
+              "cycle": {
+                "kind": "daily"
+              },
+              "ends_at": 2592000,
+              "home_city": 1,
+              "hourly_cents": 8,
+              "id": 4,
+              "payee": 8,
+              "payer": 3
+            },
+            "started": 0,
+            "work_seconds": 835200,
+            "working": false
+          },
+          {
+            "accrued": 2088,
+            "billed": 2088,
+            "last_accrual": 2592000,
+            "next_due": null,
+            "occurrences": 5,
+            "paid": 2088,
+            "pending_cycle": null,
+            "remainder": 0,
+            "spec": {
+              "cycle": {
+                "kind": "weekly"
+              },
+              "ends_at": 2592000,
+              "home_city": 1,
+              "hourly_cents": 9,
+              "id": 5,
+              "payee": 9,
+              "payer": 3
+            },
+            "started": 0,
+            "work_seconds": 835200,
+            "working": false
+          },
+          {
+            "accrued": 1624,
+            "billed": 1624,
+            "last_accrual": 2592000,
+            "next_due": null,
+            "occurrences": 1,
+            "paid": 1624,
+            "pending_cycle": null,
+            "remainder": 0,
+            "spec": {
+              "cycle": {
+                "anchor": 1,
+                "kind": "monthly"
+              },
+              "ends_at": 2592000,
+              "home_city": 1,
+              "hourly_cents": 7,
+              "id": 6,
+              "payee": 10,
+              "payer": 3
+            },
+            "started": 0,
+            "work_seconds": 835200,
+            "working": false
+          },
+          {
+            "accrued": 1856,
+            "billed": 1856,
+            "last_accrual": 2592000,
+            "next_due": null,
+            "occurrences": 30,
+            "paid": 1856,
+            "pending_cycle": null,
+            "remainder": 0,
+            "spec": {
+              "cycle": {
+                "kind": "daily"
+              },
+              "ends_at": 2592000,
+              "home_city": 1,
+              "hourly_cents": 8,
+              "id": 7,
+              "payee": 11,
+              "payer": 3
+            },
+            "started": 0,
+            "work_seconds": 835200,
+            "working": false
+          },
+          {
+            "accrued": 2088,
+            "billed": 2088,
+            "last_accrual": 2592000,
+            "next_due": null,
+            "occurrences": 5,
+            "paid": 2088,
+            "pending_cycle": null,
+            "remainder": 0,
+            "spec": {
+              "cycle": {
+                "kind": "weekly"
+              },
+              "ends_at": 2592000,
+              "home_city": 1,
+              "hourly_cents": 9,
+              "id": 8,
+              "payee": 12,
+              "payer": 3
+            },
+            "started": 0,
+            "work_seconds": 835200,
+            "working": false
+          }
+        ],
+        "payroll_count": 64,
+        "resources": [
+          {
+            "capacity": 1,
+            "id": 101,
+            "occupied": 0,
+            "reserved": 0
+          },
+          {
+            "capacity": 1,
+            "id": 102,
+            "occupied": 0,
+            "reserved": 0
+          },
+          {
+            "capacity": 1,
+            "id": 103,
+            "occupied": 0,
+            "reserved": 0
+          },
+          {
+            "capacity": 1,
+            "id": 104,
+            "occupied": 0,
+            "reserved": 0
+          },
+          {
+            "capacity": 2000,
+            "id": 201,
+            "occupied": 0,
+            "reserved": 0
+          },
+          {
+            "capacity": 2000,
+            "id": 202,
+            "occupied": 0,
+            "reserved": 0
+          },
+          {
+            "capacity": 1000,
+            "id": 203,
+            "occupied": 0,
+            "reserved": 0
+          },
+          {
+            "capacity": 1000,
+            "id": 204,
+            "occupied": 0,
+            "reserved": 0
+          }
+        ],
+        "sim_air_input_owned_bytes": 262840,
+        "sim_codec": {
+          "available_touched_bytes": 4194304,
+          "controlled_metadata_charge_bytes": 1184,
+          "full_balance_scan_passed": true,
+          "identity": {
+            "attempt": 1,
+            "generation": 1,
+            "job": 724,
+            "owner_instance": 724,
+            "process_instance_unix_ns": 1792606860078892000,
+            "process_pid": 54209,
+            "run_epoch": 3
+          },
+          "lent_capacity_bytes": 0,
+          "owner_capacity_bytes": 4194304,
+          "schema": "mycity-worker-slots-v1",
+          "scope": "local actual worker input/candidate capacity only; not State/serde/IPC/native or global64MiB closure",
+          "slots": [
+            {
+              "available_touched_bytes": 2097152,
+              "capacity_bytes": 2097152,
+              "claims": 1,
+              "maximum_payload_bytes": 688860,
+              "returns": 1,
+              "slot": "input"
+            },
+            {
+              "available_touched_bytes": 2097152,
+              "capacity_bytes": 2097152,
+              "claims": 1,
+              "maximum_payload_bytes": 688860,
+              "returns": 1,
+              "slot": "candidate"
+            }
+          ],
+          "transitions": [
+            {
+              "borrowed": true,
+              "observed_ns": 333,
+              "ticket": {
+                "identity": {
+                  "attempt": 1,
+                  "generation": 1,
+                  "job": 724,
+                  "owner_instance": 724,
+                  "process_instance_unix_ns": 1792606860078892000,
+                  "process_pid": 54209,
+                  "run_epoch": 3
+                },
+                "sequence": 1,
+                "slot": "input"
+              },
+              "work_succeeded": null
+            },
+            {
+              "borrowed": false,
+              "observed_ns": 13164958,
+              "ticket": {
+                "identity": {
+                  "attempt": 1,
+                  "generation": 1,
+                  "job": 724,
+                  "owner_instance": 724,
+                  "process_instance_unix_ns": 1792606860078892000,
+                  "process_pid": 54209,
+                  "run_epoch": 3
+                },
+                "sequence": 1,
+                "slot": "input"
+              },
+              "work_succeeded": true
+            },
+            {
+              "borrowed": true,
+              "observed_ns": 94587167,
+              "ticket": {
+                "identity": {
+                  "attempt": 1,
+                  "generation": 1,
+                  "job": 724,
+                  "owner_instance": 724,
+                  "process_instance_unix_ns": 1792606860078892000,
+                  "process_pid": 54209,
+                  "run_epoch": 3
+                },
+                "sequence": 2,
+                "slot": "candidate"
+              },
+              "work_succeeded": null
+            },
+            {
+              "borrowed": false,
+              "observed_ns": 136948500,
+              "ticket": {
+                "identity": {
+                  "attempt": 1,
+                  "generation": 1,
+                  "job": 724,
+                  "owner_instance": 724,
+                  "process_instance_unix_ns": 1792606860078892000,
+                  "process_pid": 54209,
+                  "run_epoch": 3
+                },
+                "sequence": 2,
+                "slot": "candidate"
+              },
+              "work_succeeded": true
+            }
+          ]
+        },
+        "store_owned_bytes": 50854918
+      },
+      "sequence": 3011,
+      "source_sha256": "e49b29d55ca76a562d1e497701333393746d3f9031651b814c65590fdf5db0b5",
+      "state_sha256": "e252ee7a1698357e69b5da320463ac7b5ee129932b3b3a915c316a0fd3036ebf",
+      "timeline": {
+        "at": 2592000,
+        "cursor": 0,
+        "lane": 0,
+        "last_complete": 2592000,
+        "page_paid": 0,
+        "page_sources": 0,
+        "phase": null,
+        "serial": 1448,
+        "target": null
+      },
+      "worker_pid": 74645
+    },
+    "scheduled_observations_drained_seconds": 1800.120782209
+  },
+  "scope": "actual original full trajectory and latest published full Engine; no formal speed/steady acceptance",
+  "normal_heap_records": 1448,
+  "roles": {
+    "scale-model-task": 3,
+    "compute-worker-bounded": 1437,
+    "sim-host-scale-full": 3,
+    "steady-driver": 1,
+    "steady-layout-session": 1,
+    "layout-load-only": 1,
+    "normal-pool-host": 1,
+    "steady-run": 1
+  },
+  "all_recorded_normal_exits_successful": true,
+  "pool_final": {
+    "capacity_bytes": 67108864,
+    "available_touched_bytes": 67108864,
+    "granted_capacity_bytes": 0,
+    "workspace_capacity_bytes": 0,
+    "workspace_grants": 6,
+    "workspace_returns": 6,
+    "workspace_fills": 6,
+    "grants": 1437,
+    "returns": 1437,
+    "fill_acknowledgements": 1437,
+    "scans": 6473,
+    "rejected_requests": 0,
+    "maximum_prepare_to_fill_or_reap_ns": 335055084
+  }
+}
