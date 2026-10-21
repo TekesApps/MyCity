@@ -1,0 +1,197 @@
+[
+  {
+    "path": "work/steady-controller-smoke-l2-01/observed/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "metadata": [
+      16777231,
+      409166349,
+      134217728,
+      1792606220270417714,
+      134217728,
+      1,
+      33188
+    ],
+    "reason": "Warmup failure comparison; retain until diagnosis dependency explicitly released.",
+    "evidence": "work/steady-controller-smoke-l2-01/observed/model/layout/snapshots/snapshot-000001",
+    "deleted": false
+  },
+  {
+    "path": "work/steady-controller-smoke-l2-01/observed/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "metadata": [
+      16777231,
+      409166346,
+      3044040310,
+      1792606220137169818,
+      3044040704,
+      1,
+      33188
+    ],
+    "reason": "Warmup failure comparison; retain until diagnosis dependency explicitly released.",
+    "evidence": "work/steady-controller-smoke-l2-01/observed/model/layout/snapshots/snapshot-000001",
+    "deleted": false
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000008/work-reserve.bin",
+    "metadata": [
+      16777231,
+      409233255,
+      134217728,
+      1792608627080217997,
+      134217728,
+      1,
+      33188
+    ],
+    "reason": "Latest published full recovery baseline generations 7/8; replacement formal run failed, dependency not released.",
+    "evidence": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000008",
+    "deleted": false
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000008/pressure.bin",
+    "metadata": [
+      16777231,
+      409233196,
+      3044040310,
+      1792608626955882175,
+      3044040704,
+      1,
+      33188
+    ],
+    "reason": "Latest published full recovery baseline generations 7/8; replacement formal run failed, dependency not released.",
+    "evidence": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000008",
+    "deleted": false
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000007/work-reserve.bin",
+    "metadata": [
+      16777231,
+      409227537,
+      134217728,
+      1792608326916459283,
+      134217728,
+      1,
+      33188
+    ],
+    "reason": "Latest published full recovery baseline generations 7/8; replacement formal run failed, dependency not released.",
+    "evidence": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000007",
+    "deleted": false
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000007/pressure.bin",
+    "metadata": [
+      16777231,
+      409227468,
+      3044040310,
+      1792608326784802937,
+      3044040704,
+      1,
+      33188
+    ],
+    "reason": "Latest published full recovery baseline generations 7/8; replacement formal run failed, dependency not released.",
+    "evidence": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000007",
+    "deleted": false
+  },
+  {
+    "path": "work/causal-clock-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "metadata": [
+      16777231,
+      409448549,
+      134217728,
+      1792615434167079795,
+      134217728,
+      1,
+      33188
+    ],
+    "reason": "Current repeated-snapshot allocation failure: keep complete first snapshot and entire second pending for diagnosis/recovery; pending is not a restore point.",
+    "evidence": "work/causal-clock-formal-l1-01/observed/model/layout/snapshots/snapshot-000001",
+    "deleted": false
+  },
+  {
+    "path": "work/causal-clock-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "metadata": [
+      16777231,
+      409448545,
+      3044040310,
+      1792615434002902277,
+      3044040704,
+      1,
+      33188
+    ],
+    "reason": "Current repeated-snapshot allocation failure: keep complete first snapshot and entire second pending for diagnosis/recovery; pending is not a restore point.",
+    "evidence": "work/causal-clock-formal-l1-01/observed/model/layout/snapshots/snapshot-000001",
+    "deleted": false
+  },
+  {
+    "path": "work/causal-clock-formal-l1-01/observed/model/layout/snapshots/snapshot-000002.pending/work-reserve.bin",
+    "metadata": [
+      16777231,
+      409452357,
+      134217728,
+      1792615733155368647,
+      134217728,
+      1,
+      33188
+    ],
+    "reason": "Current repeated-snapshot allocation failure: keep complete first snapshot and entire second pending for diagnosis/recovery; pending is not a restore point.",
+    "evidence": "work/causal-clock-formal-l1-01/observed/model/layout/snapshots/snapshot-000002.pending",
+    "deleted": false
+  },
+  {
+    "path": "work/causal-clock-formal-l1-01/observed/model/layout/snapshots/snapshot-000002.pending/pressure.bin",
+    "metadata": [
+      16777231,
+      409452354,
+      3044040310,
+      1792615733023421054,
+      3044040704,
+      1,
+      33188
+    ],
+    "reason": "Current repeated-snapshot allocation failure: keep complete first snapshot and entire second pending for diagnosis/recovery; pending is not a restore point.",
+    "evidence": "work/causal-clock-formal-l1-01/observed/model/layout/snapshots/snapshot-000002.pending",
+    "deleted": false
+  },
+  {
+    "path": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "metadata": [
+      16777231,
+      405281350,
+      134217728,
+      1792533118677734209,
+      134217728,
+      1,
+      33188
+    ],
+    "reason": "Old-format full cold-restore compatibility input; retain until compatibility dependency explicitly released.",
+    "evidence": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001",
+    "deleted": false
+  },
+  {
+    "path": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "metadata": [
+      16777231,
+      405281271,
+      3044040310,
+      1792533118163479344,
+      3044040704,
+      1,
+      33188
+    ],
+    "reason": "Old-format full cold-restore compatibility input; retain until compatibility dependency explicitly released.",
+    "evidence": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001",
+    "deleted": false
+  },
+  {
+    "path": "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/pressure.bin",
+    "metadata": [
+      16777231,
+      409323262,
+      1997142031,
+      1792611974737473774,
+      1997144064,
+      1,
+      33188
+    ],
+    "reason": "Prior actual allocation failure pending: still required fault comparison, incomplete, not restorable.",
+    "evidence": "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending",
+    "deleted": false
+  }
+]

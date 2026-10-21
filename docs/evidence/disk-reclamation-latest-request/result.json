@@ -1,0 +1,30 @@
+{
+  "before": {
+    "time_ns": 1792616522871066000,
+    "filesystem_available_bytes": 102162034688,
+    "work_du_kib": 26726960,
+    "target_du_kib": 1400172
+  },
+  "after": {
+    "time_ns": 1792616537943261000,
+    "filesystem_available_bytes": 102158667776,
+    "work_du_kib": 26726960,
+    "target_du_kib": 1400172
+  },
+  "deleted_files": 0,
+  "deleted_allocated_bytes": 0,
+  "new_work_archive_bytes": 0,
+  "target_deleted_bytes": 0,
+  "work_files": 118911,
+  "work_unique_inodes": 118791,
+  "work_unique_inode_allocated_bytes": 27368407040,
+  "pressure_files": 7,
+  "reserve_files": 6,
+  "pressure_allocated_bytes": 20261388288,
+  "timing_sample_allocated_bytes": 1563877376,
+  "all_work_target_metadata_unchanged": true,
+  "observed_filesystem_available_delta_bytes": -3366912,
+  "filesystem_delta_attributed_to_cleanup_bytes": 0,
+  "accounting": "No deletion this audit. st_blocks is not exclusive APFS physical space. Historical deletions and concurrent filesystem changes are not credited.",
+  "preserved": "source/WIP, complete recovery inputs, all fault pending/negative fixtures, raw business/WAL/receipts, timing samples, fixed source/dependencies/executables; shared target reused"
+}

@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.91`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.92`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.92完成[历史产物集中盘点](docs/evidence/disk-reclamation-latest-request/STATUS.md)：work约25.49GiB，共享target约1.34GiB；本轮未确认新的安全退役项，删除0B。当前原L1 formal第二次快照实际分配失败，完整基线与故障原件保留，继续修复后再验收。
 
 v0.5.91完成[固定L1区域与真实因果校准](docs/evidence/m0-t13a-causal-clock/STATUS.md)：同源全仓、原L1完整短测与新旧冷恢复通过，取得28帧同相位实测；normal仍超约18.57MiB。短测27合成载荷已退役，下一步原300+1800秒L1，正式三轮／8h／真实16GB仍未完成。
 
