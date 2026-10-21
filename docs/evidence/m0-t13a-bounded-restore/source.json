@@ -1,0 +1,10 @@
+{
+  "source_sha256": "fd551d1f79697d727185f19230d7dc4ebd973a05d0e9a2cec2150553366dce17",
+  "source_files": 148,
+  "source_archive": "bounded-depth/source.zip",
+  "binary_sha256": "ef228c12042b3ec4a1062e57cf4602d7d607451e5da73fec0d016e3ad5c2ee2a",
+  "frozen_acceptance_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+  "observer_sha256": "9fcb2290b7837fff0e73eefae0e761237fa90e9c03f8d53d96b8388647bc5ac1",
+  "profile_freeze_sha256": "d85f8392141722bc10e37380b00af938f97c09a883d8b4690d404e2c08d98550",
+  "rust": "1.85.1"
+}

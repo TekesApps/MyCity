@@ -1,0 +1,50 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 31.33s
+     Running unittests src/lib.rs (target/release/deps/mycity_headless-50f2d753a50ef36d)
+
+running 39 tests
+test control_data::tests::bill_is_exactly_256kib ... ok
+test control_data::boundary_tests::escapes_reject_before_serde_unescape_and_path_hex_preserves_names ... ok
+test control_data::boundary_tests::fourth_artifact_and_fourth_path_cannot_allocate_unbounded_metadata ... ok
+test diagnostic_contract::tests::total_stays_eight_mib ... ok
+test control_data::tests::text_rejects_before_copying_and_round_trips_unicode ... ok
+test layout_load::bounded_table::tests::duplicate_missing_wrong_fields_extra_records_and_tokens_reject ... ok
+test control_data::tests::leases_reject_overlap_and_return_on_unwind ... ok
+test layout_load::tests::eight_hour_snapshot_summaries_do_not_retain_file_trees ... ok
+test layout_load::bounded_table::tests::all_variants_restore_exactly_and_accept_records_before_tag ... ok
+test layout_load::tests::owner_stop_requires_explicit_byte_and_publication_cutoff_is_fixed ... ok
+test layout_load::tests::external_component_reservation_rejects_oversize_before_allocation ... ok
+test cpu_log::tests::instance_creation_does_not_retry_io_errors_or_wrap_counter ... ok
+test layout_load::tests::real_cow_releases_placeholder_before_copy_and_preserves_snapshot ... ok
+test control_data::file_tests::fixed_file_slots_refuse_fourth_and_oversized_inputs_and_return_on_error ... ok
+test layout_load::tests::restore_rejects_component_reservation_before_loading_any_large_file ... ok
+test normal_pool::tests::control_wire_bound_truncation_trailing_and_escape_reject_before_growth ... ok
+test normal_pool::tests::every_control_variant_round_trips_u128_without_a_dynamic_tagged_content_tree ... ok
+test normal_pool::tests::fixed_event_envelope_covers_u128_and_original_eight_hour_diagnostics ... ok
+test layout_load::tests::all_stub_counts_widths_population_and_references_are_real_records ... ok
+test pe0_speed::tests::frozen_targets_preserve_every_day_and_transit_observations ... ok
+test cpu_log::tests::reused_pid_and_partial_initialization_skip_existing_directories_atomically ... ok
+test scale_endurance::tests::formal_deadlines_keep_all_2880_queries_and_96_saves_and_last_hour_at_8h ... ok
+test scale_endurance::tests::late_scheduler_keeps_old_deadlines_and_sim_recovery_flags_without_clock_reset ... ok
+test scale_endurance::tests::smoke_scales_wall_time_only_not_number_of_business_or_periodic_requests ... ok
+test scale_metrics::tests::compact_bucket_refuses_overflow_without_corrupting_quantile_or_count ... ok
+test scale_metrics::tests::inactive_histograms_allocate_no_bins ... ok
+test scale_metrics::tests::quantile_does_not_hide_tail_or_sparse_class ... ok
+test scale_sim::buffer_tests::diagnostic_buffer_refuses_growth_before_limit_and_keeps_previous_bytes ... ok
+test normal_pool::broker::tests::old_generation_capabilities_and_legacy_calls_cannot_touch_new_registration ... ok
+test scale_sim::buffer_tests::golden_line_reader_is_bounded_before_allocation_and_rejects_truncation ... ok
+test scale_speed::tests::final_period_starts_early_but_future_periods_are_not_released_early ... ok
+test scale_sim::buffer_tests::streaming_payload_digest_preserves_exact_old_wire_hash_and_length ... ok
+test worker_slots::tests::duplicate_wrong_slot_old_epoch_and_generation_cannot_refund_a_live_slot ... ok
+test worker_slots::retention_tests::rebind_reuses_the_same_two_allocations_and_rejects_busy_slots ... ok
+test worker_slots::tests::read_failure_encoding_failure_and_unwind_restore_touched_balance ... ok
+test worker_slots::tests::exact_capacity_prefix_and_one_byte_overflow_never_grow_or_publish_tail ... ok
+test cpu_log::tests::failed_transaction_batches_never_fill_success_histogram_and_raw_pages_remain_attempts ... ok
+test cpu_log::tests::same_pid_logs_keep_original_files_and_shared_quota_across_instances ... ok
+test normal_pool::tests::actual_64mib_pages_grant_identity_and_duplicate_receipts_never_double_credit ... ok
+
+test result: ok. 39 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+

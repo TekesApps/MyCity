@@ -1,5 +1,6 @@
 //! Full frozen JPROD storage pressure. Missing business domains remain typed stubs.
 //! This module cannot mutate or install a gameplay World.
+mod bounded_table;
 use mycity_core::layout_pressure::NativePressure;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
@@ -35,7 +36,7 @@ const ACCEPTANCE: &[u8] = include_bytes!("../../../fixtures/m0-t13a-acceptance.j
 fn err(e: impl std::fmt::Debug) -> String {
     format!("{e:?}")
 }
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(
     bound(
         serialize = "[u64; N]: Serialize",
@@ -672,7 +673,7 @@ impl Snapshot {
             for table in tables.iter() {
                 let name = format!("{}.json", table.name);
                 let candidate: Table = read_verified(&dir.join(&name), entry(&name)?, |reader| {
-                    serde_json::from_reader(reader).map_err(err)
+                    bounded_table::decode(reader, &table.table)
                 })?;
                 if candidate != table.table {
                     return Err("layout_stub_restore_changed".into());
@@ -1063,7 +1064,7 @@ impl Load {
             let name = format!("{}.json", table.name);
             let candidate: Table =
                 read_verified(&snapshot_dir.join(&name), entry(&name)?, |reader| {
-                    serde_json::from_reader(reader).map_err(err)
+                    bounded_table::decode(reader, &table.table)
                 })?;
             if candidate != table.table {
                 return Err(format!("layout_restore_stub:{}", table.name));
@@ -1172,6 +1173,95 @@ pub fn reopen(snapshot_dir: &Path, report_dir: &Path) -> Result<Value, String> {
 }
 pub fn load_only(snapshot_dir: &Path, report_dir: &Path) -> Result<Value, String> {
     reopen_inner(snapshot_dir, report_dir, false)
+}
+/// Compatibility test of ALL original typed records, without allocating the
+/// 3.10GiB pressure image. Never signs the full layout or joint-memory gate.
+pub fn restore_records_only(snapshot_dir: &Path, report_dir: &Path) -> Result<Value, String> {
+    use sha2::Digest;
+    fs::create_dir(report_dir).map_err(err)?;
+    let started = Instant::now();
+    let raw = mycity_core::read_bounded(
+        File::open(snapshot_dir.join("index.json")).map_err(err)?,
+        256 * 1024,
+    )
+    .map_err(err)?;
+    let index: Value = serde_json::from_slice(&raw).map_err(err)?;
+    if index["schema"] != "mycity-layout-snapshot-v2"
+        || index["manifest"]["acceptance_sha256"] != mycity_core::sha256(ACCEPTANCE)
+    {
+        return Err("layout_record_compat_schema".into());
+    }
+    let entries: Vec<FileEntry> = serde_json::from_value(index["files"].clone()).map_err(err)?;
+    let mut checked = Vec::new();
+    let entry = |name: &str| -> Result<&FileEntry, String> {
+        let mut found = entries.iter().filter(|e| e.name == name);
+        let entry = found
+            .next()
+            .ok_or_else(|| format!("layout_record_missing:{name}"))?;
+        if found.next().is_some() {
+            return Err("layout_record_duplicate_file".into());
+        }
+        Ok(entry)
+    };
+    let compare = |record: &FileEntry,
+                   writer: HashWriter<std::io::Sink>|
+     -> Result<Value, String> {
+        let digest = format!("{:x}", writer.digest.finalize());
+        if writer.bytes != record.bytes || digest != record.sha256 {
+            return Err(format!("layout_record_roundtrip:{}", record.name));
+        }
+        Ok(
+            json!({"name":record.name,"bytes":record.bytes,"sha256":digest,"canonical_roundtrip_equal":true}),
+        )
+    };
+    let native_entry = entry("native.json")?;
+    let (native, native_bound) =
+        read_verified(&snapshot_dir.join("native.json"), native_entry, |r| {
+            NativePressure::restore_checkpoint_profiled(r)
+        })?;
+    if serde_json::to_value(native.manifest()).map_err(err)? != index["manifest"]["native"] {
+        return Err("layout_record_native_manifest".into());
+    }
+    let mut native_count = 0;
+    let native_scan = native.scan(|n, _| native_count += n)?;
+    let mut writer = HashWriter {
+        inner: std::io::sink(),
+        digest: sha2::Sha256::new(),
+        bytes: 0,
+    };
+    native.write_checkpoint(&mut writer)?;
+    checked.push(compare(native_entry, writer)?);
+    drop(native);
+    let expected = tables()?;
+    let mut table_count = 0;
+    for table in &expected {
+        let name = format!("{}.json", table.name);
+        let record = entry(&name)?;
+        let candidate = read_verified(&snapshot_dir.join(&name), record, |r| {
+            bounded_table::decode(r, &table.table)
+        })?;
+        if candidate != table.table || candidate.owned() != table.table.owned() {
+            return Err(format!("layout_record_changed:{}", table.name));
+        }
+        table_count += candidate.count();
+        let mut writer = HashWriter {
+            inner: std::io::sink(),
+            digest: sha2::Sha256::new(),
+            bytes: 0,
+        };
+        serde_json::to_writer(&mut writer, &candidate).map_err(err)?;
+        checked.push(compare(record, writer)?);
+    }
+    let report = json!({"schema":"mycity-layout-record-compat-v1","source_sha256":env!("MYCITY_SOURCE_SHA256"),
+        "producer_source_sha256":index["manifest"]["source_sha256"],"original_index_sha256":mycity_core::sha256(&raw),
+        "native_records":native_count,"native_scan":native_scan,"stub_records":table_count,
+        "native_restore_bound":native_bound,"all_original_component_files":checked,
+        "actual_seconds":started.elapsed().as_secs_f64(),"scope":"record components only; original constant counts and canonical bytes; pressure/reserve payload NOT loaded",
+        "full_layout":"not_run","joint_normal64":"not_accepted","common8":"not_accepted","steady":"not_run","eight_hour":"not_run","real16gb":"not_run","full_M0":"not_accepted"});
+    let mut f = File::create(report_dir.join("report.json")).map_err(err)?;
+    serde_json::to_writer_pretty(&mut f, &report).map_err(err)?;
+    f.sync_all().map_err(err)?;
+    Ok(report)
 }
 fn reopen_inner(snapshot_dir: &Path, report_dir: &Path, save: bool) -> Result<Value, String> {
     fs::create_dir(report_dir).map_err(err)?;

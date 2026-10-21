@@ -118,6 +118,54 @@ pub struct Arena<D: Domain, T: Copy> {
 }
 
 impl<D: Domain, T: Copy> Arena<D, T> {
+    /// Fixed diagnostic snapshot only: all slots live and free list empty.
+    /// This must never replace the general World/Arena deserializer.
+    pub(crate) fn deserialize_layout<'de, S, const N: usize>(d: S) -> Result<Self, S::Error>
+    where
+        S: serde::Deserializer<'de>,
+        T: Deserialize<'de>,
+    {
+        #[derive(Deserialize)]
+        #[serde(bound(deserialize = "T: Deserialize<'de>"), deny_unknown_fields)]
+        struct Raw<T: Copy, const N: usize> {
+            scope: Scope,
+            #[serde(deserialize_with = "crate::fixed_restore::vector::<_, _, N>")]
+            slots: Vec<Slot<T>>,
+            #[serde(deserialize_with = "crate::fixed_restore::vector::<_, _, 0>")]
+            free: Vec<u32>,
+            max: u32,
+            live: usize,
+        }
+        let raw = Raw::<T, N>::deserialize(d)?;
+        if raw.scope.world() != 0x5441
+            || raw.scope.branch() != 1
+            || raw.max as usize != N
+            || raw.live != N
+            || raw
+                .slots
+                .iter()
+                .any(|s| s.generation == 0 || s.value.is_none())
+        {
+            return Err(serde::de::Error::custom("native_fixed_arena_shape"));
+        }
+        let mut free = raw.free;
+        free.try_reserve_exact(N)
+            .map_err(serde::de::Error::custom)?;
+        if free.capacity() != N {
+            return Err(serde::de::Error::custom("native_fixed_arena_capacity"));
+        }
+        Ok(Self {
+            scope: raw.scope,
+            slots: raw.slots,
+            free,
+            max: raw.max,
+            live: raw.live,
+            marker: PhantomData,
+        })
+    }
+    pub(crate) fn layout_restore_bytes(count: usize) -> Option<usize> {
+        count.checked_mul(size_of::<Slot<T>>() + size_of::<u32>())
+    }
     pub fn new(scope: Scope, max: u32, byte_budget: usize) -> Result<Self, ArenaError> {
         let minimum = (max as usize)
             .checked_mul(size_of::<Slot<T>>() + size_of::<u32>())
@@ -279,6 +327,30 @@ impl<D: Domain, T: Copy> Arena<D, T> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn fixed_diagnostic_arena_rejects_shape_and_preserves_handles() {
+        let raw = r#"{"scope":{"world":21569,"branch":1},"slots":[{"generation":1,"value":7},{"generation":2,"value":8}],"free":[],"max":2,"live":2}"#;
+        let decode = |s: &str| {
+            Arena::<AccountDomain, u64>::deserialize_layout::<_, 2>(
+                &mut serde_json::Deserializer::from_str(s),
+            )
+        };
+        let a = decode(raw).unwrap();
+        assert_eq!(a.slots.capacity(), 2);
+        assert_eq!(a.free.capacity(), 2);
+        assert_eq!(serde_json::to_string(&a).unwrap(), raw);
+        for bad in [
+            raw.replace("21569", "1"),
+            raw.replace("\"branch\":1", "\"branch\":2"),
+            raw.replace("\"generation\":2", "\"generation\":0"),
+            raw.replace("\"value\":8", "\"value\":null"),
+            raw.replace("\"free\":[]", "\"free\":[0]"),
+            raw.replace("\"max\":2", "\"max\":3"),
+            raw.replace("\"live\":2", "\"live\":1"),
+        ] {
+            assert!(decode(&bad).is_err(), "{bad}");
+        }
+    }
     fn table() -> Arena<AccountDomain, u64> {
         Arena::new(Scope::new(1, 1).unwrap(), 2, 4096).unwrap()
     }

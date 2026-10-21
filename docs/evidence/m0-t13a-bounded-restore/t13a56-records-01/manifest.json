@@ -1,0 +1,32 @@
+[
+  {
+    "path": "host-samples.jsonl",
+    "bytes": 10782,
+    "sha256": "0ac4683809318ea20622c30d7544445d0cdd0e4479b9d73352d76148d3eb3499"
+  },
+  {
+    "path": "model/heaps.jsonl",
+    "bytes": 490,
+    "sha256": "ff1540cca761c5e3d79e620385019157de6c2481909cd655885b0b44d41f313a"
+  },
+  {
+    "path": "model/report.json",
+    "bytes": 6221,
+    "sha256": "ac09dbebeec32bf73b436151af19c3e86317d599b801eb005b5ca55b31d597b2"
+  },
+  {
+    "path": "model.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "model.stdout",
+    "bytes": 6222,
+    "sha256": "fc43d3f60a0561dc46a3a25dc50bbbca73145db5d08bfa96e204e0fea6b8c046"
+  },
+  {
+    "path": "observer-report.json",
+    "bytes": 4190,
+    "sha256": "ed7c68e74523052fb8bf427676cfac386c2afecea8849616729a5119631452b1"
+  }
+]

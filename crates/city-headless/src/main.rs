@@ -116,6 +116,23 @@ fn run() -> Result<(), String> {
         );
         return Ok(());
     }
+    if args.get(1).is_some_and(|a| a == "layout-record-restore") {
+        if args.len() != 4 {
+            return Err(
+                "usage: mycity-headless layout-record-restore EXISTING_SNAPSHOT NEW_REPORT_DIR"
+                    .into(),
+            );
+        }
+        let report = mycity_headless::layout_load::restore_records_only(
+            std::path::Path::new(&args[2]),
+            std::path::Path::new(&args[3]),
+        )?;
+        println!(
+            "{}",
+            serde_json::to_string_pretty(&report).map_err(|e| e.to_string())?
+        );
+        return Ok(());
+    }
     if args.get(1).is_some_and(|a| a == "layout-load-only") {
         if args.len() != 4 {
             return Err(

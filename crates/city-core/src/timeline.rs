@@ -12,12 +12,51 @@ pub const PAYROLL_LIMIT: usize = 64;
 pub const PAGE_LIMIT: u16 = 8192;
 pub const HEAP_LIMIT: usize = 2 * 1024 * 1024;
 pub const DAY: u64 = 86400;
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum Cycle {
     Daily,
     Weekly,
     Monthly { anchor: u8 },
+}
+// Direct fixed fields avoid internally-tagged Content buffering in diagnostic
+// payroll restores. Serialization and accepted valid calendar rules stay unchanged.
+impl<'de> Deserialize<'de> for Cycle {
+    fn deserialize<D: serde::Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        #[derive(Deserialize)]
+        #[serde(rename_all = "snake_case")]
+        enum Kind {
+            Daily,
+            Weekly,
+            Monthly,
+        }
+        #[derive(Default)]
+        enum Anchor {
+            #[default]
+            Absent,
+            Value(u8),
+        }
+        impl<'de> Deserialize<'de> for Anchor {
+            fn deserialize<S: serde::Deserializer<'de>>(d: S) -> Result<Self, S::Error> {
+                u8::deserialize(d).map(Self::Value)
+            }
+        }
+        #[derive(Deserialize)]
+        #[serde(deny_unknown_fields)]
+        struct Raw {
+            kind: Kind,
+            #[serde(default)]
+            anchor: Anchor,
+        }
+        let raw = Raw::deserialize(d)?;
+        match (raw.kind, raw.anchor) {
+            (Kind::Daily, Anchor::Absent) => Ok(Self::Daily),
+            (Kind::Weekly, Anchor::Absent) => Ok(Self::Weekly),
+            (Kind::Monthly, Anchor::Value(anchor)) => Ok(Self::Monthly { anchor }),
+            (Kind::Monthly, Anchor::Absent) => Err(serde::de::Error::missing_field("anchor")),
+            _ => Err(serde::de::Error::custom("anchor_only_valid_for_monthly")),
+        }
+    }
 }
 impl Cycle {
     pub fn next(self, at: u64) -> Result<u64, TxError> {
@@ -339,5 +378,39 @@ impl Timeline {
             }
         }
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod fixed_cycle_decode_tests {
+    use super::*;
+    #[test]
+    fn cycle_field_order_and_canonical_bytes_stay_compatible_without_content() {
+        for (text, cycle) in [
+            (r#"{"kind":"daily"}"#, Cycle::Daily),
+            (r#"{"kind":"weekly"}"#, Cycle::Weekly),
+            (
+                r#"{"kind":"monthly","anchor":31}"#,
+                Cycle::Monthly { anchor: 31 },
+            ),
+        ] {
+            assert_eq!(serde_json::from_str::<Cycle>(text).unwrap(), cycle);
+            assert_eq!(serde_json::to_string(&cycle).unwrap(), text);
+        }
+        assert_eq!(
+            serde_json::from_str::<Cycle>(r#"{"anchor":31,"kind":"monthly"}"#).unwrap(),
+            Cycle::Monthly { anchor: 31 }
+        );
+        for bad in [
+            r#"{"kind":"daily","anchor":null}"#,
+            r#"{"kind":"daily","anchor":1}"#,
+            r#"{"kind":"monthly"}"#,
+            r#"{"kind":"monthly","anchor":null}"#,
+            r#"{"kind":"monthly","anchor":1,"anchor":2}"#,
+            r#"{"kind":"daily","kind":"weekly"}"#,
+            r#"{"extra":[[[0]]],"kind":"daily"}"#,
+        ] {
+            assert!(serde_json::from_str::<Cycle>(bad).is_err(), "{bad}");
+        }
     }
 }

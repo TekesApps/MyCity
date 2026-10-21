@@ -1,0 +1,148 @@
+{
+  "baseline_tag": "v0.5.55",
+  "original_run": "t13a50-joint-01",
+  "snapshot": "/Users/frankqin/dev/MyCity/work/t13a50-joint-01/model/layout/snapshots/snapshot-000001",
+  "index_sha256": "43f83f0a14e8e1962370a1d6bdf26424671660e3679e48d94b864bd1be47728c",
+  "producer_source_sha256": "3931598f6b6b6d1b5fe6b297a0e18b53d9732a6eeaffd88b4cb3b144be50cd4a",
+  "original_complete_snapshot_preserved": true,
+  "record_component_files": [
+    {
+      "bytes": 65299383,
+      "name": "native.json",
+      "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d"
+    },
+    {
+      "bytes": 2942,
+      "name": "maps.json",
+      "sha256": "ae761e9b61d12349e7981d67af0348b7d695ac0f5afbdbe9c8c3397456b247ae"
+    },
+    {
+      "bytes": 15359282,
+      "name": "households.json",
+      "sha256": "e3fb17426646d2b0d7be91d37ac60007116cbbdb0fb47df9dcb6b19e19866558"
+    },
+    {
+      "bytes": 16677375,
+      "name": "housing.json",
+      "sha256": "945e089c974fae08f7afdb0ce31e329a8a2f56ebedcecf2af2594d0a0d6bfd40"
+    },
+    {
+      "bytes": 690521,
+      "name": "visitors.json",
+      "sha256": "da50ab93414feb3adb8ed61fc7db097685f7d54eaaf61519abc581ea6ca1e6db"
+    },
+    {
+      "bytes": 917651,
+      "name": "operators.json",
+      "sha256": "9a04b08911d53eb76ef4d3e21b7bd90952aca39eb60540199bd37d3b2a761c54"
+    },
+    {
+      "bytes": 1368255,
+      "name": "entities.json",
+      "sha256": "db1dabe1d763fb4efae5e29a004b057f67ac60fd8c49e913e7fc6a68fe902c80"
+    },
+    {
+      "bytes": 2453947,
+      "name": "equity_links.json",
+      "sha256": "fa41a9f768748013714b0e2ccab7b624dc8faf50bda7e8c5f65119155023957b"
+    },
+    {
+      "bytes": 59090761,
+      "name": "meter.json",
+      "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c"
+    },
+    {
+      "bytes": 1101276,
+      "name": "general_contracts.json",
+      "sha256": "9d5a9af34fcf4347739ca021ee9e7fbfb929151741f2574a823f2b245cc66b79"
+    },
+    {
+      "bytes": 5423128,
+      "name": "od.json",
+      "sha256": "9752dcc442e0ac5ce3176c39f682feba7da95b4eb122d2963de544cbab0e1b19"
+    },
+    {
+      "bytes": 4722328,
+      "name": "path_refs.json",
+      "sha256": "22dd70d215552416e832bff45e3d639417269683417ff0a2531b82e75b22ca7f"
+    },
+    {
+      "bytes": 3131844,
+      "name": "cargo_batches.json",
+      "sha256": "ccca291ac558b5724d79aa3da6017fbb0c79a0ffe6e2d514dce8ae7098c2d698"
+    },
+    {
+      "bytes": 14813630,
+      "name": "passenger_batches.json",
+      "sha256": "5395485902b0b50f665f1d972be360f0968ead26f3a5a6cc69ce20866d7b6586"
+    },
+    {
+      "bytes": 736200,
+      "name": "bus_train_vehicles.json",
+      "sha256": "20dce9e9aa5b2804164917308428b0df3a7fbc6c14a59cc7a7e1c07ef3d9ef7b"
+    },
+    {
+      "bytes": 183429,
+      "name": "ship_aircraft_vehicles.json",
+      "sha256": "abaa5b8c26e0b87ae20a9aac79b7b40189b64e84bc919033e4b3a38b48e5cf8a"
+    },
+    {
+      "bytes": 6209212,
+      "name": "car_vehicles.json",
+      "sha256": "6af743614a5111a333b9f327461fc1c2db13441d571f7f7073afc2222c3edb94"
+    },
+    {
+      "bytes": 82934,
+      "name": "matters.json",
+      "sha256": "e9c44415a18648aacb1632f1dff4d23c4d9065a329400d79c53f55f5a097cc0e"
+    },
+    {
+      "bytes": 11688,
+      "name": "team_members.json",
+      "sha256": "dcb1def449b163d6e8d4e844a94cbace4be2e0157b352a95e3e41563bb9f7033"
+    },
+    {
+      "bytes": 22170,
+      "name": "analysis_tasks.json",
+      "sha256": "ecf2eee90e87a656fb49e5a23457146d1eddbafa16311f218ca601b71dfdffbd"
+    },
+    {
+      "bytes": 399,
+      "name": "models.json",
+      "sha256": "464f6b505cf21b6c6ce8fdc4a7b59886f6d709df7d34901102ddcf9763eb20ec"
+    },
+    {
+      "bytes": 399,
+      "name": "preview.json",
+      "sha256": "14befb84351445a252e881f1bbd872c814aa5d8d5482b5f24e8c2f07428ff6e8"
+    },
+    {
+      "bytes": 1419868,
+      "name": "hosts.json",
+      "sha256": "9dd1b2bad52cffc8b9287d68802b58313ba1faa0f431db9c623fdb5dffe16122"
+    },
+    {
+      "bytes": 220123,
+      "name": "teaching_batches.json",
+      "sha256": "c2acc7e0bff85be162f3aa325a16f16117cf058ff07798ff9d2d8d261130661c"
+    },
+    {
+      "bytes": 551619,
+      "name": "current_services.json",
+      "sha256": "ce36e5ee99eb53403c3ab6f1a09e6144819e93d663374aa138bd36e1d6ecab67"
+    },
+    {
+      "bytes": 24909,
+      "name": "cases.json",
+      "sha256": "744bcbbec2787fa1a2c513ba7b530f1366f5ab0cd461347f43e3cec3b8b76b3b"
+    },
+    {
+      "bytes": 11091,
+      "name": "bills.json",
+      "sha256": "ca1116d31f876fdc002ecc09173b768390ac80a0858dd4008a0b7e93a8c75584"
+    }
+  ],
+  "pressure_and_work_reserve_loaded": false,
+  "frozen_acceptance_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+  "scope": "all record components of original snapshot; not full layout/pressure or joint acceptance"
+}

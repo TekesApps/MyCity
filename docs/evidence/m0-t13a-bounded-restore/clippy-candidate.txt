@@ -1,0 +1,77 @@
+   Compiling version_check v0.9.5
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.27
+    Checking typenum v1.20.1
+   Compiling libc v0.2.191
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+    Checking cfg-if v1.0.5
+   Compiling zmij v1.0.23
+   Compiling serde v1.0.229
+   Compiling serde_json v1.0.149
+    Checking itoa v1.0.18
+    Checking memchr v2.8.3
+   Compiling generic-array v0.14.7
+    Checking simd-adler32 v0.3.10
+    Checking adler2 v2.0.1
+   Compiling crc32fast v1.5.2
+    Checking miniz_oxide v0.9.1
+    Checking miniz_oxide v0.8.9
+    Checking fdeflate v0.3.7
+    Checking bitflags v1.3.2
+    Checking peak_alloc v0.3.0
+   Compiling syn v3.0.9
+   Compiling serde_derive v1.0.229
+    Checking block-buffer v0.10.4
+    Checking crypto-common v0.1.7
+    Checking digest v0.10.7
+    Checking cpufeatures v0.2.17
+    Checking fs2 v0.4.3
+    Checking flate2 v1.1.10
+    Checking sha2 v0.10.9
+    Checking png v0.17.16
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+error: items after a test module
+   --> crates/city-core/src/fixed_restore.rs:23:1
+    |
+23  |   mod tests {
+    |   ^^^^^^^^^
+...
+84  |   impl<T: Copy> Records<T> {
+    |   ^^^^^^^^^^^^^^^^^^^^^^^^
+...
+92  |   impl<'de, T: Copy + Deserialize<'de>> DeserializeSeed<'de> for Records<T> {
+    |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+98  |   struct RejectExtra;
+    |   ^^^^^^^^^^^^^^^^^^
+99  |   impl<'de> DeserializeSeed<'de> for RejectExtra {
+    |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+105 |   impl<'de, T: Copy + Deserialize<'de>> Visitor<'de> for Records<T> {
+    |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+136 | / pub(crate) fn vector<'de, D, T, const N: usize>(d: D) -> Result<Vec<T>, D::Error>
+137 | | where
+138 | |     D: Deserializer<'de>,
+139 | |     T: Copy + Deserialize<'de>,
+    | |_______________________________^
+...
+146 |   pub struct JsonReader<R> {
+    |   ^^^^^^^^^^^^^^^^^^^^^^^^
+...
+154 |   impl<R: Read> JsonReader<R> {
+    |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+166 |   impl<R: Read> Read for JsonReader<R> {
+    |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#items_after_test_module
+    = note: `-D clippy::items-after-test-module` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::items_after_test_module)]`
+    = help: move the items to before the test module was defined
+
+    Checking mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+error: could not compile `mycity-core` (lib test) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

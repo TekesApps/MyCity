@@ -1,0 +1,6 @@
+{
+  "source_sha256": "fd551d1f79697d727185f19230d7dc4ebd973a05d0e9a2cec2150553366dce17",
+  "current_source_binary_and_original_acceptance_match": true,
+  "archives": [],
+  "scope": "static only; not runtime/performance or full joint acceptance"
+}

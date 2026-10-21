@@ -1,0 +1,22 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+    Finished `release` profile [optimized] target(s) in 7.70s
+     Running unittests src/lib.rs (target/release/deps/mycity_core-5ab2917727894e6e)
+
+running 1 test
+test fixed_restore::tests::nested_ignored_field_is_bounded_before_parser_scratch_can_grow ... FAILED
+
+failures:
+
+---- fixed_restore::tests::nested_ignored_field_is_bounded_before_parser_scratch_can_grow stdout ----
+
+thread 'fixed_restore::tests::nested_ignored_field_is_bounded_before_parser_scratch_can_grow' panicked at crates/city-core/src/fixed_restore.rs:214:24:
+called `Result::unwrap_err()` on an `Ok` value: [Fixed { value: 7 }]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    fixed_restore::tests::nested_ignored_field_is_bounded_before_parser_scratch_can_grow
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 45 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p mycity-core --lib`

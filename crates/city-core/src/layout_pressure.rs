@@ -13,14 +13,32 @@ use std::{hint::black_box, mem::size_of};
 #[derive(Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct NativePressure {
+    #[serde(deserialize_with = "decode_accounts")]
     accounts: Arena<AccountDomain, Account>,
+    #[serde(deserialize_with = "decode_inventory")]
     inventory: Arena<InventoryDomain, Stock>,
+    #[serde(deserialize_with = "crate::fixed_restore::vector::<_, _, 40000>")]
     account_index: Vec<Handle<AccountDomain>>,
+    #[serde(deserialize_with = "crate::fixed_restore::vector::<_, _, 110000>")]
     inventory_index: Vec<Handle<InventoryDomain>>,
+    #[serde(deserialize_with = "crate::fixed_restore::vector::<_, _, 180000>")]
     claims: Vec<Claim>,
+    #[serde(deserialize_with = "crate::fixed_restore::vector::<_, _, 31200>")]
     payroll: Vec<Payroll>,
+    #[serde(deserialize_with = "crate::fixed_restore::vector::<_, _, 8>")]
     resources: Vec<Resource>,
+    #[serde(deserialize_with = "crate::fixed_restore::vector::<_, _, 64>")]
     leases: Vec<Lease>,
+}
+fn decode_accounts<'de, D: serde::Deserializer<'de>>(
+    d: D,
+) -> Result<Arena<AccountDomain, Account>, D::Error> {
+    Arena::deserialize_layout::<D, 40000>(d)
+}
+fn decode_inventory<'de, D: serde::Deserializer<'de>>(
+    d: D,
+) -> Result<Arena<InventoryDomain, Stock>, D::Error> {
+    Arena::deserialize_layout::<D, 110000>(d)
 }
 #[derive(Serialize)]
 pub struct Manifest {
@@ -33,7 +51,7 @@ pub struct Manifest {
     pub owned_capacity_bytes: usize,
 }
 /// A conservative capacity proof for this fixed, hash-verified native fixture.
-/// Includes the whole decoded graph, one full buffer replacement, and 6MiB for
+/// Includes the exact decoded graph, no buffer replacement, and 6MiB for
 /// parser/IO/stack slack. This is not an allocator measurement of arbitrary JSON.
 #[derive(Serialize)]
 pub struct RestoreBound {
@@ -280,62 +298,16 @@ impl NativePressure {
     pub fn restore_checkpoint_profiled(
         reader: impl std::io::Read,
     ) -> Result<(Self, RestoreBound), String> {
-        let mut restored: Self =
-            serde_json::from_reader(reader.take(128 * 1024 * 1024)).map_err(fail)?;
-        let decoded = restored.manifest();
-        let largest_replacement_bytes = decoded
-            .vectors
-            .iter()
-            .map(|(_, _, cap, width)| cap * width)
-            .chain([
-                decoded.account_arena.slots_capacity * decoded.account_arena.slot_bytes,
-                decoded.inventory_arena.slots_capacity * decoded.inventory_arena.slot_bytes,
-                // Both destination arena buffers can coexist during repacking.
-                110000 * (decoded.inventory_arena.slot_bytes + 4)
-                    + decoded.inventory_arena.header_bytes,
-            ])
-            .max()
-            .ok_or("native_restore_bound")?;
-        let bound = RestoreBound {
-            decoded_owned_bytes: decoded.owned_capacity_bytes,
-            largest_replacement_bytes,
-            parser_io_stack_slack_bytes: 6 * 1024 * 1024,
-            conservative_transient_bound_bytes: decoded.owned_capacity_bytes
-                + largest_replacement_bytes
-                + 6 * 1024 * 1024,
-        };
-        if bound.conservative_transient_bound_bytes > 64 * 1024 * 1024 {
-            return Err("native_restore_work_bound_exceeded".into());
+        // Compute the whole simultaneous destination graph before reading input.
+        // Every sequence below reserves exactly once, with no buffer replacement.
+        let bound = Self::fixed_restore_bound()?;
+        let mut decoder =
+            serde_json::Deserializer::from_reader(crate::fixed_restore::JsonReader::new(reader));
+        let restored = Self::deserialize(&mut decoder).map_err(fail)?;
+        decoder.end().map_err(fail)?;
+        if restored.manifest().owned_capacity_bytes != bound.decoded_owned_bytes {
+            return Err("native_fixed_restore_capacity_changed".into());
         }
-        let scope = Scope::new(0x5441, 1).map_err(fail)?;
-        restored
-            .accounts
-            .restore_capacity(scope, 40000, 8 * 1024 * 1024)
-            .map_err(fail)?;
-        restored
-            .inventory
-            .restore_capacity(scope, 110000, 32 * 1024 * 1024)
-            .map_err(fail)?;
-        if restored.account_index.len() != 40000
-            || restored.inventory_index.len() != 110000
-            || restored.claims.len() != 180000
-            || restored.payroll.len() != 31200
-            || restored.resources.len() != 8
-            || restored.leases.len() != 64
-        {
-            return Err("native_layout_counts".into());
-        }
-        // JSON's growth strategy is not the frozen storage capacity. Repack only
-        // after checking exact counts; temporary candidates are charged by caller.
-        fn exact<T>(v: Vec<T>) -> Vec<T> {
-            v.into_boxed_slice().into_vec()
-        }
-        restored.account_index = exact(restored.account_index);
-        restored.inventory_index = exact(restored.inventory_index);
-        restored.claims = exact(restored.claims);
-        restored.payroll = exact(restored.payroll);
-        restored.resources = exact(restored.resources);
-        restored.leases = exact(restored.leases);
         for (i, h) in restored.account_index.iter().enumerate() {
             if h.raw().index as usize != i
                 || restored.accounts.get(*h).map_err(fail)?.id as usize != i + 1
@@ -356,6 +328,40 @@ impl NativePressure {
             return Err("native_layout_budget".into());
         }
         Ok((restored, bound))
+    }
+    pub fn fixed_restore_bound() -> Result<RestoreBound, String> {
+        let arrays = [
+            (40000usize, size_of::<Handle<AccountDomain>>()),
+            (110000, size_of::<Handle<InventoryDomain>>()),
+            (180000, size_of::<Claim>()),
+            (31200, size_of::<Payroll>()),
+            (8, size_of::<Resource>()),
+            (64, size_of::<Lease>()),
+        ];
+        let mut bytes = size_of::<Self>();
+        for part in [
+            Arena::<AccountDomain, Account>::layout_restore_bytes(40000),
+            Arena::<InventoryDomain, Stock>::layout_restore_bytes(110000),
+        ] {
+            bytes = bytes
+                .checked_add(part.ok_or("native_restore_overflow")?)
+                .ok_or("native_restore_overflow")?;
+        }
+        for (count, width) in arrays {
+            bytes = bytes
+                .checked_add(count.checked_mul(width).ok_or("native_restore_overflow")?)
+                .ok_or("native_restore_overflow")?;
+        }
+        let bound = RestoreBound {
+            decoded_owned_bytes: bytes,
+            largest_replacement_bytes: 0,
+            parser_io_stack_slack_bytes: 6 * 1024 * 1024,
+            conservative_transient_bound_bytes: bytes + 6 * 1024 * 1024,
+        };
+        if bound.conservative_transient_bound_bytes > crate::fixed_restore::RESTORE_BYTES {
+            return Err("native_restore_work_bound_exceeded".into());
+        }
+        Ok(bound)
     }
     pub fn write_checkpoint(&self, writer: impl std::io::Write) -> Result<(), String> {
         serde_json::to_writer(writer, self).map_err(fail)

@@ -1,0 +1,23 @@
+{
+  "source_sha256": "fd551d1f79697d727185f19230d7dc4ebd973a05d0e9a2cec2150553366dce17",
+  "old_index_bound_to_v50_archive": true,
+  "all27_original_component_files_and_roundtrip_hashes": true,
+  "record_bytes": 200526364,
+  "native_records": 361272,
+  "stub_records": 1232426,
+  "native_bound": {
+    "conservative_transient_bound_bytes": 35917424,
+    "decoded_owned_bytes": 29625968,
+    "largest_replacement_bytes": 0,
+    "parser_io_stack_slack_bytes": 6291456
+  },
+  "actual_component_seconds": 3.069205541,
+  "scope": "all original record components only; no pressure/reserve image; not a full layout/joint-memory or speed acceptance",
+  "full_layout": "not_run",
+  "normal64": "not_accepted",
+  "common8": "not_accepted",
+  "steady": "not_run",
+  "eight_hour": "not_run",
+  "real16gb": "not_run",
+  "full_M0": "not_accepted"
+}

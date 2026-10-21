@@ -1,0 +1,18 @@
+{
+  "attempts": [
+    {
+      "source": "candidate/source.json",
+      "session": 51123,
+      "exit_code": 101,
+      "log": "clippy-candidate.txt",
+      "cause": "items_after_test_module; fixed by moving test module to end"
+    },
+    {
+      "source": "depth-reproducer/source.json",
+      "session": 81837,
+      "exit_code": 101,
+      "log": "depth-reproducer.txt",
+      "cause": "expected regression: 256-level ignored nested field was accepted; lexer depth bound added; same regression must pass final source"
+    }
+  ]
+}

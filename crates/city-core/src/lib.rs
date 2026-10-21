@@ -12,6 +12,7 @@ pub mod calendar;
 pub mod diagnostics;
 pub mod economy;
 pub mod exchange;
+pub mod fixed_restore;
 pub mod inbox;
 pub mod layout_pressure;
 pub mod probes;

@@ -1,0 +1,28 @@
+{
+  "full_staged_check_exit_code": 2,
+  "exact_raw_log_exceptions": [
+    {
+      "path": "core-tests-final.txt",
+      "kind": "new blank line at EOF; original command output preserved"
+    },
+    {
+      "path": "core-tests-initial.txt",
+      "kind": "new blank line at EOF; original command output preserved"
+    },
+    {
+      "path": "headless-tests-candidate.txt",
+      "kind": "new blank line at EOF; original command output preserved"
+    },
+    {
+      "path": "headless-tests-final.txt",
+      "kind": "new blank line at EOF; original command output preserved"
+    },
+    {
+      "path": "workspace-tests.txt",
+      "kind": "new blank line at EOF; original command output preserved"
+    }
+  ],
+  "check_excluding_exact_raw_txt_logs_exit_code": 0,
+  "source_and_authored_docs_whitespace": "passed",
+  "normalization": "raw log bytes were not edited"
+}

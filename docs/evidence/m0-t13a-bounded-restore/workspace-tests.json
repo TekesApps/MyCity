@@ -1,0 +1,12 @@
+{
+  "source_sha256": "15166dd34d79befd08d2bc8824b17a94f318867afefd7e1bf85c47e1a1de8a4c",
+  "command": "cargo test --release --locked --offline --workspace",
+  "actual_session": 93594,
+  "exit_code": 0,
+  "result_summaries": 48,
+  "harness_reported_passed_including_nested_process_harnesses": 330,
+  "failed": 0,
+  "ignored": 0,
+  "unique_test_count": "not inferred from nested process harness output",
+  "scope": "broad candidate before additional diagnostic-reader depth guard"
+}

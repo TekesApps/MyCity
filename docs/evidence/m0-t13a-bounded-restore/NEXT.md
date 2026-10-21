@@ -1,0 +1,13 @@
+# Current stage handoff
+
+Canonical /Users/frankqin/dev/MyCity. Published v0.5.55 main4dc9be216fb60c6952b5f9c008e172e3dbde2eb0, annotated2f48f3af51a4d15751592e4e079589d10d352963. Current v56 WIP ONLY, not committed/tagged.
+
+Final source fd551d1f79697d727185f19230d7dc4ebd973a05d0e9a2cec2150553366dce17 /148files, binary ef228c12042b3ec4a1062e57cf4602d7d607451e5da73fec0d016e3ad5c2ee2a. Tests final87 (46corelib+2nativefile+39headlesslib), clippy85076, fmt and build56735 terminal0. Prior source15166.. full workspace93594 terminal0 with330 harness reported including nested process harnesses, not unique count; workspace-to-final patch only diagnostic reader depth guard/test. Candidate clippy51123 failed101 items_after_test_module, depth reproducer81837 failed101 expected accepted nested ignored field; separate sources/raw logs preserved. No false source merging.
+
+Actual50177 terminal0, no own live benchmark. Admission30103 terminal0 fresh120normal. RUNwork/t13a56-records-01 component3.069205541s/wrapper4.31542525s. verify/collect/static actual0; advisor independently re-ran verify/static0 and approved limitedv56. All27components200526364B/native361272/stub1232426 byte hashes match. Current publication step: links/diffcheck (raw exact logs may retain EOF whitespace), annotatedv0.5.56, explicit atomicpushmain/tag and remote/cleancheck. If already published, inspect actual git/remote instead of repeating. Source frozen fd551/binaryef228 preserved in evidence.
+
+This probes ALL27 original record components200526364B, original v50 archived index bound in freeze.json; NO pressure/reserve load. After terminal run verify.py t13a56-records-01, collect.py same, static_check.py and inspect real report/heap/observer. Advisor boot_advisor has final-source code review active and awaits actual result to conclude one round. Need keep scope component-only, no fullL1/normal64/common8/steady/8h/16GB acceptance. Original native fixed graph29625968+6MiB=35917424 is allocation bound, not physical RSS claim.
+
+Only after actual validation/review update README/STATUS/M0 status, increment annotatedv0.5.56, explicit atomic main/tag push and remote/clean verification. Raw logs keep exact bytes; any diff-check raw EOF whitespace is an evidence exception, never silently normalize.
+
+Next full joint admission must recompute disk: latest free9.4GiB, likely insufficient for original multi-snapshot+2GiB floor. Preserve unique old failed bytes. Native/table preallocation does not solve ordinary Engine/serde/helper EXTRA normal64 ownership; L1 phase attribution and physical balance remain. Steady controller preparation in ignoredwork/steady-controller-next.md still not implemented. Goal active; no UI/GPU/AgentKit; real16GB not_run, fullM0 not_accepted.
