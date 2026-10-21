@@ -1,0 +1,12 @@
+{
+  "runs": [
+    "work/t13a55-step-01/model",
+    "work/t13a55-paced-01/model",
+    "work/t13a53-paced-01/model"
+  ],
+  "engine_sha256": "4333551a7ac773c5c8fa900242c8fce79ed36046e4ff1b6545cc4d2d673fbe95",
+  "reference_engine_bytes_identical": true,
+  "facts_bytes_identical": true,
+  "actual_checkpoint_binding": "each actual run verified separately by verify.py; old v54 verification retained",
+  "scope": "same trajectory; not old half-hour command sequence or fullL2"
+}

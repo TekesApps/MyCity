@@ -1,0 +1,23 @@
+{
+  "source_sha256": "6a3b78e609022f4709ef43d4e113cc9f80a98a9c1e3c01ca85cb049293f959a2",
+  "schema": "queued-pacing-audit-v2",
+  "observed_run_responses": 722,
+  "complete_30day_business_responses": true,
+  "final_report_present": true,
+  "positive_wait_requests_after_first": 721,
+  "late_ready_rebases": 0,
+  "scheduled_phase_shift_ns": 0,
+  "sum_actual_release_lateness_ns": 2443652884,
+  "maximum_actual_release_lateness_ns": 13950625,
+  "last_actual_release_lateness_ns": 5036833,
+  "first_scheduled_in_session_ns": 334458,
+  "last_scheduled_in_session_ns": 1797500334458,
+  "nominal_phase_ns": 1797500000000,
+  "exact_integer_phase_conservation": true,
+  "all_early_ready_releases_preserve_phase": true,
+  "speed_target_met": true,
+  "interpretation": "actual lateness retained; no subtraction from operating wall time; full performance verdict comes from real report/verify",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run",
+  "full_M0": "not_accepted"
+}

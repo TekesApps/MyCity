@@ -83,8 +83,8 @@ impl Pacing {
     fn release(&self, now: Instant) -> Instant {
         self.next_release.map_or(now, |next| next.max(now))
     }
-    fn committed(&mut self, release: Instant, interval: Duration) {
-        self.next_release = Some(release + interval);
+    fn committed(&mut self, scheduled: Instant, interval: Duration) {
+        self.next_release = Some(scheduled + interval);
     }
     fn reset(&mut self) {
         self.next_release = None;
@@ -109,7 +109,7 @@ impl Session {
             "sequence":self.store.committed_sequence(),"revision":view.revision,"world":view.scope.world(),"branch":view.scope.branch(),
             "state_sha256":self.store.state_hash().map_err(storage_error)?,"engine_state_sha256":engine.state_hash(),"source":self.store.source_status().map_err(storage_error)?,
             "provenance":{"source_sha256":env!("MYCITY_SOURCE_SHA256"),"lock_sha256":env!("MYCITY_LOCK_SHA256")},
-            "timeline":engine.timeline().map(|t|t.progress),"continuation":self.store.continuation_status().map_err(storage_error)?,"offline_catchup":false,"wall_pacing":"volatile_release_start_v1","next_release_in_session_ns":self.pacing.next_release.map(|t|t.duration_since(self.wall_origin).as_nanos()),"full_source_scheduler":if engine.timeline().is_some(){"implemented_profiles_only"}else{"not_enabled"},"memory_16gb_gate":"not_run"}),
+            "timeline":engine.timeline().map(|t|t.progress),"continuation":self.store.continuation_status().map_err(storage_error)?,"offline_catchup":false,"wall_pacing":"volatile_ready_scheduled_release_v2","next_release_in_session_ns":self.pacing.next_release.map(|t|t.duration_since(self.wall_origin).as_nanos()),"full_source_scheduler":if engine.timeline().is_some(){"implemented_profiles_only"}else{"not_enabled"},"memory_16gb_gate":"not_run"}),
         )
     }
     fn clock_seconds(&self, envelope: &Envelope) -> Option<u32> {
@@ -251,14 +251,12 @@ impl Session {
                 // Existing IDs go straight to Store's actor/payload validation. Neither
                 // an exact replay nor a conflict gets a new release or advances pacing.
                 let interval = Duration::from_nanos(interval_ns as u64);
-                let wait_ns = if mode == 2 && !retry {
-                    self.pacing
-                        .release(Instant::now())
-                        .saturating_duration_since(Instant::now())
-                        .as_nanos()
-                } else {
-                    0
-                };
+                // Ready requests keep the planned cadence even if waking is late.
+                // A request already late when ready rebases once, without idle credit.
+                let scheduled = (mode == 2 && !retry).then(|| self.pacing.release(Instant::now()));
+                let wait_ns = scheduled.map_or(0, |due| {
+                    due.saturating_duration_since(Instant::now()).as_nanos()
+                });
                 if wait_ns > 0 {
                     std::thread::sleep(Duration::from_nanos(wait_ns as u64));
                 }
@@ -272,12 +270,12 @@ impl Session {
                 };
                 if outcome.model.is_err() {
                     self.paused = true;
-                } else if mode == 2 && !retry {
-                    self.pacing.committed(released, interval);
+                } else if let Some(due) = scheduled {
+                    self.pacing.committed(due, interval);
                 }
                 let elapsed = started.elapsed().as_nanos();
                 Ok(
-                    json!({"outcome":outcome,"already_recorded":retry && outcome.has_persistent_receipt,"requested_game_seconds":seconds,"pacing_wait_ns":wait_ns,"pacing_interval_ns":interval_ns,"pacing_release_elapsed_ns":released.duration_since(started).as_nanos(),
+                    json!({"outcome":outcome,"already_recorded":retry && outcome.has_persistent_receipt,"requested_game_seconds":seconds,"pacing_wait_ns":wait_ns,"pacing_interval_ns":interval_ns,"pacing_release_elapsed_ns":released.duration_since(started).as_nanos(),"pacing_scheduled_elapsed_ns":scheduled.map(|due|due.duration_since(started).as_nanos()),"pacing_release_lateness_ns":scheduled.map(|due|released.saturating_duration_since(due).as_nanos()),
                     "elapsed_ns":elapsed,"completed_game_seconds_delta":before_complete.and_then(|before|self.store.engine().ok()?.timeline()?.progress.last_complete.checked_sub(before)),"actual_game_seconds_per_wall_second":if !timeline_request && mode!=0 && !retry && outcome.model.is_ok(){Some(f64::from(seconds.unwrap())*1e9/elapsed.max(1) as f64)}else{None},
                     "status":self.status()?}),
                 )
@@ -371,6 +369,28 @@ pub fn run(args: &[String]) -> Result<(), String> {
 #[cfg(test)]
 mod pacing_tests {
     use super::*;
+
+    #[test]
+    fn early_ready_late_wake_keeps_phase_but_next_late_ready_rebases() {
+        let start = Instant::now();
+        let interval = Duration::from_secs(10);
+        let mut p = Pacing::default();
+        p.committed(start, interval);
+        let planned = p.release(start + Duration::from_secs(4));
+        assert_eq!(planned, start + interval);
+        // Simulate dispatch three seconds late after an early-ready request.
+        p.committed(planned, interval);
+        assert_eq!(
+            p.release(start + Duration::from_secs(14)),
+            start + Duration::from_secs(20)
+        );
+        // A slow computation / truly late next request has no stored catch-up credit.
+        let ready = start + Duration::from_secs(35);
+        let rebased = p.release(ready);
+        assert_eq!(rebased, ready);
+        p.committed(rebased, interval);
+        assert_eq!(p.release(ready), ready + interval);
+    }
 
     #[test]
     fn computation_consumes_interval_but_idle_time_does_not_create_credit() {

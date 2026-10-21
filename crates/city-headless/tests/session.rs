@@ -494,6 +494,17 @@ fn paced_economy_day_matches_unpaced_committed_business_and_reports_real_wall_ti
     // consumes those periods; do not require an extra sleep after the last job.
     assert!(elapsed >= 57.5);
     assert_eq!(out[1]["result"]["pacing_wait_ns"], 0);
+    for row in &out[1..25] {
+        let r = &row["result"];
+        let scheduled = r["pacing_scheduled_elapsed_ns"].as_u64().unwrap();
+        let actual = r["pacing_release_elapsed_ns"].as_u64().unwrap();
+        assert!(actual >= scheduled);
+        assert_eq!(
+            actual - scheduled,
+            r["pacing_release_lateness_ns"].as_u64().unwrap()
+        );
+    }
+
     assert!(out[1..25]
         .iter()
         .all(|r| r["result"]["pacing_interval_ns"] == 2_500_000_000u64));

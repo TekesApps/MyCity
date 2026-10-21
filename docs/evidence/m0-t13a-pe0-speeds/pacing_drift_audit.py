@@ -8,7 +8,7 @@ with (M/'transcript.jsonl').open() as f:
   try:x=json.loads(line)
   except json.JSONDecodeError:continue
   if x['request']['request']['command']!='run':continue
-  r=x['response']['result'];assert r['outcome']['has_persistent_receipt'] and 'Ok' in r['outcome']['model'] and not r['already_recorded']
+  r=x['response']['result'];assert r['status']['wall_pacing']=='volatile_release_start_v1';assert r['outcome']['has_persistent_receipt'] and 'Ok' in r['outcome']['model'] and not r['already_recorded']
   interval=r['pacing_interval_ns'];deadline=r['status']['next_release_in_session_ns'];released=deadline-interval
   if first_release is None:first_release=released
   else:
