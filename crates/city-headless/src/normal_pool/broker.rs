@@ -40,6 +40,14 @@ pub(super) enum Op {
         gated: bool,
         diagnostics: bool,
     },
+    CodecFilled {
+        generation: u64,
+        key: Text<64>,
+        identity: worker_slots::Identity,
+        capacity: usize,
+        touched: usize,
+        balanced: bool,
+    },
     Stop {
         generation: u64,
         key: Text<64>,
@@ -58,6 +66,7 @@ pub(super) enum Op {
 pub(super) enum Receipt {
     Registered { generation: u64, key: Text<64> },
     Bound { generation: u64 },
+    CodecFilled { generation: u64 },
     Revoked { generation: u64 },
     Started { lease: u64, pid: u32 },
     Stopped { lease: u64, raw_status: i32 },
@@ -180,6 +189,7 @@ impl Pool {
                 }
                 let generation = self.broker.next + 1;
                 let key = secret()?;
+                self.prepare_codec(generation)?;
                 self.broker.session = Some(Session {
                     generation,
                     supervisor,
@@ -200,6 +210,7 @@ impl Pool {
                 if pid <= 1 || s.pid.is_some_and(|p| p != pid) {
                     return Err(ActionError::Rejected("normal_broker_sim_pid"));
                 }
+                self.bind_codec(generation, pid)?;
                 self.broker.session.as_mut().expect("validated").pid = Some(pid);
                 self.event("broker_sim_bound", None)?;
                 Ok(Receipt::Bound { generation })
@@ -216,6 +227,7 @@ impl Pool {
                         key: s.key,
                     },
                 )?;
+                self.retire_codec(generation)?;
                 self.event("broker_unspawned_cancelled", None)?;
                 self.broker.session = None;
                 self.broker.last_closed = Some((generation, key));
@@ -249,11 +261,24 @@ impl Pool {
                         key: s.key,
                     },
                 )?;
+                self.retire_codec(generation)?;
                 self.event("broker_session_revoked_after_sim_wait", None)?;
                 self.broker.awaiting_revoke_ack = true;
                 self.broker.session = None;
                 self.broker.last_closed = Some((generation, key));
                 Ok(Receipt::Revoked { generation })
+            }
+            Op::CodecFilled {
+                generation,
+                key,
+                identity,
+                capacity,
+                touched,
+                balanced,
+            } => {
+                self.broker.session(generation, key, false)?;
+                self.fill_codec(generation, identity, capacity, touched, balanced)?;
+                Ok(Receipt::CodecFilled { generation })
             }
             Op::Start {
                 generation,
@@ -268,6 +293,9 @@ impl Pool {
                 let pid = s
                     .pid
                     .ok_or(ActionError::Rejected("normal_broker_sim_unbound"))?;
+                if !self.codec_ready(generation, pid) {
+                    return Err(ActionError::Rejected("normal_workspace_not_filled"));
+                }
                 if self.broker.owned.is_some() || self.active.is_some() {
                     return Err(ActionError::Rejected("normal_broker_worker_busy"));
                 }
@@ -543,6 +571,64 @@ impl Drop for Supervisor {
     }
 }
 
+/// Trusted Sim startup only. Capacity was released by Register before Child spawn.
+pub(crate) fn codec_epoch_from_env() -> Result<Option<u64>, String> {
+    let Some(raw) = std::env::var_os("MYCITY_BROKER_SESSION") else {
+        return if std::env::var_os("MYCITY_NORMAL_POOL").is_some() {
+            Err("normal_workspace_binding_required".into())
+        } else {
+            Ok(None)
+        };
+    };
+    let binding: Binding = crate::control_data::decode(
+        raw.to_str()
+            .ok_or("normal_workspace_binding_utf8")?
+            .as_bytes(),
+    )?;
+    Ok(Some(binding.generation))
+}
+pub(crate) fn acknowledge_codec(owner: &worker_slots::Owner) -> Result<(), String> {
+    let Some(raw) = std::env::var_os("MYCITY_BROKER_SESSION") else {
+        return Ok(());
+    };
+    let binding: Binding = crate::control_data::decode(
+        raw.to_str()
+            .ok_or("normal_workspace_binding_utf8")?
+            .as_bytes(),
+    )?;
+    let root = std::env::var_os("MYCITY_NORMAL_POOL").ok_or("normal_workspace_pool_absent")?;
+    let root = Path::new(&root);
+    let ready = ready(root)?;
+    let report = owner.report()?;
+    let began = Instant::now();
+    loop {
+        match rpc(
+            root,
+            ready,
+            Op::CodecFilled {
+                generation: binding.generation,
+                key: binding.key,
+                identity: owner.identity(),
+                capacity: report.owner_capacity_bytes,
+                touched: report.available_touched_bytes,
+                balanced: report.full_balance_scan_passed,
+            },
+        ) {
+            Err(e)
+                if e == "normal_workspace_sim_unbound"
+                    && began.elapsed() < Duration::from_secs(5) =>
+            {
+                std::thread::sleep(Duration::from_millis(2));
+            }
+            Ok(Receipt::CodecFilled { generation }) if generation == binding.generation => {
+                return Ok(())
+            }
+            Ok(_) => return Err("normal_workspace_fill_receipt".into()),
+            Err(e) => return Err(e),
+        }
+    }
+}
+
 /// Logical worker lease, never a fabricated Child. Slot returns happen only at broker wait.
 pub struct Lease {
     root: PathBuf,
@@ -735,12 +821,28 @@ mod tests {
             })
             .is_err());
         assert_eq!(pool.summary.grants, 0);
-        assert_eq!(pool.summary.available_touched_bytes, BYTES);
+        // The NEW generation still owns four prepared pages. An old tombstone
+        // cannot return that capacity or make the pool report 64MiB available.
+        assert_eq!(
+            pool.summary.available_touched_bytes,
+            BYTES - super::super::workspace::BYTES
+        );
+        assert_eq!(
+            pool.summary.workspace_capacity_bytes,
+            super::super::workspace::BYTES
+        );
+        assert_eq!(pool.summary.workspace_grants, 2);
+        assert_eq!(pool.summary.workspace_returns, 1);
         pool.broker_action(Op::Cancel {
             generation: new,
             key: supervisor2,
         })
         .unwrap();
+        assert_eq!(pool.summary.available_touched_bytes, BYTES);
+        assert_eq!(
+            pool.summary.workspace_grants,
+            pool.summary.workspace_returns
+        );
         drop(pool);
         fs::remove_dir_all(root).unwrap();
     }

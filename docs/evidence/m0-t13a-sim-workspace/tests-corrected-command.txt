@@ -1,0 +1,47 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+error[E0308]: mismatched types
+   --> crates/city-headless/src/sim_host.rs:368:28
+    |
+317 |           let attempt = (|| -> Result<Vec<u8>, String> {
+    |                                ----------------------- expected `Result<Vec<u8>, std::string::String>` because of return type
+...
+368 |                       return codec
+    |  ____________________________^
+369 | |                         .slots
+370 | |                         .with_slot(crate::worker_slots::Kind::Candidate, |bytes| {
+371 | |                             wire::read_asset_into(
+...   |
+401 | |                             ))
+402 | |                         });
+    | |__________________________^ expected `Result<Vec<u8>, String>`, found `Result<Result<[u8; 32], ...>, ...>`
+    |
+    = note: expected enum `Result<Vec<u8>, _>`
+               found enum `Result<Result<[u8; 32], mycity_storage::Error>, _>`
+
+error[E0308]: mismatched types
+   --> crates/city-headless/src/sim_host.rs:441:13
+    |
+440 |         let hash = match imported {
+    |                          -------- this expression has type `Vec<u8>`
+441 |             Ok(h) => h,
+    |             ^^^^^ expected `Vec<u8>`, found `Result<_, _>`
+    |
+    = note: expected struct `Vec<u8>`
+                 found enum `Result<_, _>`
+
+error[E0308]: mismatched types
+   --> crates/city-headless/src/sim_host.rs:442:13
+    |
+440 |         let hash = match imported {
+    |                          -------- this expression has type `Vec<u8>`
+441 |             Ok(h) => h,
+442 |             Err(error) => {
+    |             ^^^^^^^^^^ expected `Vec<u8>`, found `Result<_, _>`
+    |
+    = note: expected struct `Vec<u8>`
+                 found enum `Result<_, _>`
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `mycity-headless` (lib) due to 3 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `mycity-headless` (lib test) due to 3 previous errors

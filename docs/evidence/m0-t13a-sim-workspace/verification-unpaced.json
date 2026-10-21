@@ -1,0 +1,35 @@
+{
+  "source_sha256": "e6dd2bad02f0816f78ebc5d2d0794baac07e0f9dd8c12bbf16282965cd01acab",
+  "rate": "unpaced",
+  "profile": "L2_full_actual",
+  "mandatory_pe0_gate": "not_evaluated_other_profile",
+  "legacy_session_speed": "not_retested",
+  "experiment_completed": true,
+  "operating_seconds": 343.253854834,
+  "publication_cutoff_seconds": 343.253848417,
+  "queries": 34,
+  "saves": 1,
+  "all_daily_budgets_met": true,
+  "whole_budget_met": true,
+  "speed_target_met": true,
+  "all_723_targets_equal_original_reference": true,
+  "exact_complete_Engine_including_metadata": true,
+  "original_receipts": 3011,
+  "normal_heap_records": {
+    "scale-model-task": 3,
+    "compute-worker-bounded": 724,
+    "sim-host-scale-full": 2,
+    "speed-driver": 1,
+    "normal-pool-host": 1
+  },
+  "missing_required_heap_records": {
+    "speed-run": 1
+  },
+  "full_heap_telemetry_gate": "not_accepted_missing_supervisor_record",
+  "L1": "absent",
+  "common_8MiB": "not_accepted",
+  "normal_3_10GiB": "not_accepted",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run",
+  "full_M0": "not_accepted"
+}

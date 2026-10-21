@@ -369,3 +369,6 @@ v0.5.55：[P-E0计划释放节拍及完整30日重测](evidence/m0-t13a-queued-p
 
 
 v0.5.56：[固定L1诊断恢复与旧组件兼容](evidence/m0-t13a-bounded-restore/STATUS.md)。固定记录先算完整graph/容量、一次预分配及token/嵌套上限，表任意字段顺序无整表Content；Arena引用语义保留，写入codec不变。最终fd551…来源87相关/clippy/fmt/build通过；前一15166…来源全仓Release0单列，原clippy/深度反例失败分源保留。实际读旧v50全部27组件200526364B、native361272/stub1232426并重编码hash一致，native保守界35917424B；未加载压力/reserve，不能签完整L1或常规64MiB/共同8MiB。32GiB采样normal/swap净0但基线已有9147187200B，不能称无swap。full四档/正式稳态/真正8h/真实16GB仍未签，M0 not_accepted。
+
+
+v0.5.59：[Sim具名固定编码／候选owner](evidence/m0-t13a-sim-workspace/STATUS.md)。4MiB实际双槽先释放再Filled、实际Child wait归还、部分补页失败不发信用，原64MiB池及诊断上限未扩大。最终e6dd…来源56定向/clippy/fmt/build0；原full L2实际30日经营343.253854834秒，723目标/3011票/完整Engine及冷恢复核验一致，2代Sim和724worker分别平衡，双owner池56MiB。漏顶层heap env导致缺1份监督者记录，原核验失败保留，完整遥测门不签；quote p95=24.811810ms失败/稀有样本不足，不签正式分位。Engine/serde/helper仍EXTRA，L1/共同预算/四档稳态/真正8h/真实16GB未签，M0 not_accepted。

@@ -152,6 +152,28 @@ pub fn read_asset(dir: &Path, hash: &str) -> Result<Vec<u8>, String> {
     }
     Ok(bytes)
 }
+/// Read directly into the caller's fixed slot; no full temporary Vec.
+pub(crate) fn read_asset_into(
+    dir: &Path,
+    hash: &str,
+    bytes: &mut crate::worker_slots::Bytes,
+) -> Result<(), String> {
+    if !digest(hash) {
+        return Err("worker_asset_digest".into());
+    }
+    let path = dir.join(format!("{hash}.air"));
+    if !fs::symlink_metadata(&path)
+        .map_err(|e| e.to_string())?
+        .is_file()
+    {
+        return Err("worker_nonregular_asset".into());
+    }
+    bytes.read_from(File::open(path).map_err(|e| e.to_string())?)?;
+    if sha256(bytes.as_slice()) != hash {
+        return Err("worker_asset_checksum".into());
+    }
+    Ok(())
+}
 /// Idempotent publication verifies every byte without a second owned checkpoint.
 fn verify_asset_stream(dir: &Path, hash: &str) -> Result<(), String> {
     use sha2::{Digest, Sha256};
@@ -826,4 +848,42 @@ pub fn verify_candidate(request: &Request, base: &State, bytes: &[u8]) -> Result
         return Err("worker_cpu_mismatch".into());
     }
     Ok(candidate)
+}
+
+#[cfg(test)]
+mod fixed_asset_tests {
+    use super::*;
+    #[test]
+    fn candidate_file_reads_directly_into_slot_and_failure_returns_real_capacity() {
+        let root = std::env::temp_dir().join(format!(
+            "sim-codec-{}-{}",
+            std::process::id(),
+            crate::heap_meter::process_instance()
+        ));
+        fs::create_dir(&root).unwrap();
+        let data = b"bounded original payload";
+        let hash = sha256(data);
+        fs::write(root.join(format!("{hash}.air")), data).unwrap();
+        let mut owner = crate::worker_slots::Owner::new(1, 1, 1, 1).unwrap();
+        owner
+            .with_slot(crate::worker_slots::Kind::Candidate, |bytes| {
+                read_asset_into(&root, &hash, bytes)?;
+                assert_eq!(bytes.as_slice(), data);
+                Ok(())
+            })
+            .unwrap();
+        let wrong = "0".repeat(64);
+        fs::write(root.join(format!("{wrong}.air")), data).unwrap();
+        assert!(owner
+            .with_slot(crate::worker_slots::Kind::Candidate, |bytes| {
+                read_asset_into(&root, &wrong, bytes)
+            })
+            .is_err());
+        owner.check_balance().unwrap();
+        assert_eq!(
+            owner.report().unwrap().available_touched_bytes,
+            crate::worker_slots::OWNER_BYTES
+        );
+        fs::remove_dir_all(root).unwrap();
+    }
 }

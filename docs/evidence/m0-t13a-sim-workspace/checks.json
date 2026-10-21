@@ -1,0 +1,26 @@
+{
+  "source_sha256": "e6dd2bad02f0816f78ebc5d2d0794baac07e0f9dd8c12bbf16282965cd01acab",
+  "tests": {
+    "actual_session": 56977,
+    "exit_code": 0,
+    "library": 42,
+    "broker": 8,
+    "sim_host": 6,
+    "log": "tests-filled-barrier.txt"
+  },
+  "clippy": {
+    "actual_session": 7589,
+    "exit_code": 0,
+    "scope": "release workspace all-targets -D warnings",
+    "log": "clippy.txt"
+  },
+  "fmt": {
+    "exit_code": 0,
+    "log": "fmt.txt"
+  },
+  "build": {
+    "exit_code": 0,
+    "log": "build.txt"
+  },
+  "not_a_full_workspace_test": true
+}

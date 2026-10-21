@@ -1,0 +1,34 @@
+{
+  "actual_workspace_epochs": [
+    {
+      "generation": 1,
+      "prepare_to_filled_ns": 21942792,
+      "lifetime_to_return_ns": 343338133458
+    },
+    {
+      "generation": 2,
+      "prepare_to_filled_ns": 22343333,
+      "lifetime_to_return_ns": 253838625
+    }
+  ],
+  "actual_sim_logs": [
+    {
+      "pid": 91160,
+      "instance": 1792544859208065000,
+      "reports": 1,
+      "complete_jobs": 0
+    },
+    {
+      "pid": 82137,
+      "instance": 1792544515780338000,
+      "reports": 1449,
+      "complete_jobs": 724
+    }
+  ],
+  "actual_worker_fills": 724,
+  "actual_complete_sim_jobs": 724,
+  "dual_owner_pool_bytes": 58720256,
+  "final_pool_bytes": 67108864,
+  "Engine_serde_helper": "EXTRA",
+  "normal64_common8_fulljoint_8h_16GB": "not_accepted"
+}

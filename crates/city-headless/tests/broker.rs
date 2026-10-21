@@ -134,6 +134,19 @@ fn broker_wait_and_real_sim_death_revoke_restore_capacity_and_cold_result() {
         let mut c = Client::spawn_in_pool(exe(), &world, true, true, &root).unwrap();
         c.next(Duration::from_secs(10)).unwrap();
         let mut id = 0;
+        let initial = normal_pool::status(&root).unwrap();
+        assert_eq!(initial.workspace_capacity_bytes, 4 * 1024 * 1024);
+        assert_eq!(initial.workspace_fills, 1);
+        assert_eq!(initial.available_touched_bytes, BYTES - 4 * 1024 * 1024);
+        let sim_status = call(&mut c, &mut id, Command::Status);
+        assert_eq!(
+            sim_status["runtime"]["sim_codec"]["owner_capacity_bytes"],
+            4 * 1024 * 1024
+        );
+        assert_eq!(
+            sim_status["runtime"]["sim_codec"]["full_balance_scan_passed"],
+            true
+        );
         prepare(&mut c, &mut id);
         assert!(Supervisor::register(&root).is_err());
         id += 1;
@@ -178,6 +191,8 @@ fn broker_wait_and_real_sim_death_revoke_restore_capacity_and_cold_result() {
         c.wait_for_sim_exit(Duration::from_secs(3)).unwrap();
         let after = normal_pool::status(&root).unwrap();
         assert_eq!(after.available_touched_bytes, BYTES);
+        assert_eq!(after.workspace_grants, after.workspace_returns);
+        assert_eq!(after.workspace_capacity_bytes, 0);
         assert_eq!(after.grants, after.returns);
         let mut recovered = Client::spawn_in_pool(exe(), &world, false, false, &root).unwrap();
         recovered.next(Duration::from_secs(10)).unwrap();
@@ -438,4 +453,37 @@ fn broker_death_is_fail_closed_and_cannot_adopt_old_ready_or_claim_return() {
     assert!(!root.join("report.json").exists());
     let events = fs::read_to_string(root.join("events.jsonl")).unwrap();
     assert!(!events.contains("returned_after_wait_or_abort"));
+}
+
+#[test]
+fn partial_sim_workspace_refill_after_real_child_exit_stops_pool_without_false_credit() {
+    let t = Temp::new();
+    let root = t.0.join("pool");
+    let mut pool = FaultPool::spawn(&root, "workspace-return-page-2");
+    let mut c = Client::spawn_in_pool(exe(), &t.0.join("world"), true, false, &root).unwrap();
+    c.next(Duration::from_secs(10)).unwrap();
+    let mut id = 0;
+    call(&mut c, &mut id, Command::Stop);
+    assert!(c.stop().is_err()); // real Sim is waited, but partial physical return cannot be acknowledged.
+    let status = pool.child.wait().unwrap();
+    assert!(!status.success());
+    let rows: Vec<Value> = fs::read_to_string(root.join("events.jsonl"))
+        .unwrap()
+        .lines()
+        .map(|l| serde_json::from_str(l).unwrap())
+        .collect();
+    let failure = rows
+        .iter()
+        .find(|r| r["kind"] == "injected_partial_workspace_return_failure")
+        .unwrap();
+    assert_eq!(failure["phase"], "retiring");
+    assert_eq!(failure["summary"]["workspace_returns"], 0);
+    assert_eq!(
+        failure["summary"]["workspace_capacity_bytes"],
+        4 * 1024 * 1024
+    );
+    assert!(!rows
+        .iter()
+        .any(|r| r["kind"] == "returned_after_sim_wait_or_cancel"));
+    assert!(!root.join("report.json").exists());
 }

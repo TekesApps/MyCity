@@ -1,0 +1,1 @@
+实际fullL2 62534终态0，源码e6dd…/binary f262…，工件及advisor意见已归档；缺顶层heap env的遥测门未签，不再作为活跃测试。版本v0.5.58被另一文档线程a16eafc合法发布，本阶段v0.5.59。下一依赖：按现有目标处理其余受控分配/原完整联合及正确全进程heap env；正式四档、三轮稳态和真正8h仍未跑，16GB not_run。同时接收区域概率决策文档的代码对齐任务，须独立显式profile和有界持久意图/游标，不改旧冻结profile、不先称已经实现。源码及WIP保留，无活跃本项目benchmark/build。当前target复用，不新建cache；v59有限验收binary另存work/accepted-binaries/v0.5.59。

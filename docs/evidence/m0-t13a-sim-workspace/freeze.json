@@ -1,0 +1,13 @@
+{
+  "baseline_tag": "v0.5.57",
+  "acceptance_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+  "pool_capacity_bytes": 67108864,
+  "sim_codec_capacity_bytes": 4194304,
+  "worker_capacity_bytes": 4194304,
+  "sim_slot_count": 2,
+  "sim_slot_bytes": 2097152,
+  "full_targets": 723,
+  "full_windows": 724,
+  "full_original_receipts": 3011,
+  "scope": "real additional fixed byte owner; original unconverted model work remains EXTRA"
+}

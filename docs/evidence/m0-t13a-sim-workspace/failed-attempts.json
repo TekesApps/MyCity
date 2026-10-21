@@ -1,0 +1,9 @@
+{
+  "retained_failures": [
+    {"source":"initial/source.json","log":"tests-initial.txt","exit":101,"reason":"command named nonexistent integration target sim; no test ran"},
+    {"source":"initial/source.json","log":"tests-corrected-command.txt","exit":101,"reason":"compile: old attempt closure type did not match nested storage import outcome"},
+    {"source":"import-outcome/source.json","log":"tests-import-outcome.txt","exit":101,"reason":"41 library tests passed, one old-generation assertion expected64MiB despite new prepared4MiB owner; integration suites not reached"}
+  ],
+  "intermediate_pass": {"source":"workspace-generation-assertion/source.json","actual_session":79128,"exit":0,"log":"tests-workspace-generation.txt","counts":{"lib":42,"broker":7,"sim_host":6}},
+  "final_checks":"checks.json"
+}

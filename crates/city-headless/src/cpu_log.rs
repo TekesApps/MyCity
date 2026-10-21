@@ -119,6 +119,12 @@ impl CpuLog {
     ) -> Result<(), String> {
         self.write(json!({"phase":"worker_controlled_slots","owner":report}))
     }
+    pub fn sim_controlled_slots(
+        &mut self,
+        report: &crate::worker_slots::Report<'_>,
+    ) -> Result<(), String> {
+        self.write(json!({"phase":"sim_controlled_slots","owner":report}))
+    }
     pub fn set_l0_class(&mut self, class: &'static str) -> Result<(), String> {
         if !matches!(
             class,

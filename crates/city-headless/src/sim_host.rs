@@ -134,6 +134,24 @@ impl Profile {
         format!("{name}:{}", env!("MYCITY_SOURCE_SHA256"))
     }
 }
+struct Codec {
+    epoch: u64,
+    slots: crate::worker_slots::Owner,
+}
+impl Codec {
+    fn new() -> Result<Self, String> {
+        let epoch = crate::normal_pool::broker::codec_epoch_from_env()?.unwrap_or(1);
+        let slots = crate::worker_slots::Owner::new(epoch, 1, 1, 1)?;
+        crate::normal_pool::broker::acknowledge_codec(&slots)?;
+        Ok(Self { epoch, slots })
+    }
+    fn log(&self, diag: &mut Option<crate::cpu_log::CpuLog>) -> Result<(), String> {
+        if let Some(log) = diag.as_mut() {
+            log.sim_controlled_slots(&self.slots.report()?)?;
+        }
+        Ok(())
+    }
+}
 fn progress(store: &Store) -> Result<Value, String> {
     let e = store.engine().map_err(err)?;
     Ok(
@@ -146,6 +164,7 @@ fn progress(store: &Store) -> Result<Value, String> {
 fn status(
     store: &Store,
     worker: &Option<Worker>,
+    codec: &Codec,
     diag: &Option<crate::cpu_log::CpuLog>,
 ) -> Result<Value, String> {
     let e = store.engine().map_err(err)?;
@@ -155,7 +174,7 @@ fn status(
         .and_then(|b| b.field())
         .map(|f| f.checkpoint().map(|b| sha256(&b)))
         .transpose()?;
-    let runtime = json!({"accounts":view.accounts,"boot":view.boot,"active_city":view.region.as_ref().map(|r|r.active_city),"obligations":view.region.as_ref().map(|r|r.obligations),"payroll":e.timeline().map(|t|t.payroll.iter().take(8).collect::<Vec<_>>()),"claims":e.timeline().map(|t|t.claims.iter().take(8).collect::<Vec<_>>()),"claim_count":e.timeline().map(|t|t.claims.len()),"payroll_count":e.timeline().map(|t|t.payroll.len()),"resources":e.resources(),"store_owned_bytes":store.owned_capacity_bytes().map_err(err)?,"diagnostics_owned_bytes":diag.as_ref().map_or(0,crate::cpu_log::CpuLog::owned_bytes)});
+    let runtime = json!({"accounts":view.accounts,"boot":view.boot,"active_city":view.region.as_ref().map(|r|r.active_city),"obligations":view.region.as_ref().map(|r|r.obligations),"payroll":e.timeline().map(|t|t.payroll.iter().take(8).collect::<Vec<_>>()),"claims":e.timeline().map(|t|t.claims.iter().take(8).collect::<Vec<_>>()),"claim_count":e.timeline().map(|t|t.claims.len()),"payroll_count":e.timeline().map(|t|t.payroll.len()),"resources":e.resources(),"store_owned_bytes":store.owned_capacity_bytes().map_err(err)?,"sim_codec":codec.slots.report()?,"diagnostics_owned_bytes":diag.as_ref().map_or(0,crate::cpu_log::CpuLog::owned_bytes)});
 
     Ok(
         json!({"revision":view.revision,"sequence":store.committed_sequence(),"business_sha256":crate::joint_reference::business_digest(e)?,"runtime":runtime,"timeline":e.timeline().map(|t|t.progress),
@@ -196,6 +215,7 @@ struct Required<'a> {
 fn required(
     store: &mut Store,
     worker: &mut Option<Worker>,
+    codec: &mut Codec,
     context: Required<'_>,
     w: &mut impl Write,
     reader: &mut impl BufRead,
@@ -241,7 +261,17 @@ fn required(
             .ok_or("sim_no_background")?;
         let pending = b.pending().cloned().ok_or("sim_no_pending")?;
         let input = b.frozen_input()?;
-        let checkpoint = worker_cache::publish(&cache, "inputs", &input.checkpoint()?)?;
+        codec
+            .slots
+            .rebind(codec.epoch, job, pending.generation, pending.attempt)?;
+        let checkpoint = codec
+            .slots
+            .with_slot(crate::worker_slots::Kind::Input, |bytes| {
+                input.checkpoint_to(bytes)?;
+                worker_cache::publish(&cache, "inputs", bytes.as_slice())
+            });
+        codec.log(diag)?;
+        let checkpoint = checkpoint?;
         let view = store.engine().map_err(err)?.world().view();
         let request = Work {
             protocol: wire::PROTOCOL.into(),
@@ -284,7 +314,7 @@ fn required(
         }
         let gated = probe.is_some();
         let mut cancelled = false;
-        let attempt = (|| -> Result<Vec<u8>, String> {
+        let attempt = (|| -> Result<_, String> {
             let exe = std::env::current_exe().map_err(err)?;
             *worker = Some(if gated {
                 Worker::spawn_bounded_probe(&exe, &cache)?
@@ -331,18 +361,51 @@ fn required(
                     child.acknowledge_probe(&progress)?;
                 }
                 if progress.stage == Stage::Complete {
-                    return wire::read_asset(
-                        &cache.join("candidates"),
-                        progress
-                            .candidate_sha256
-                            .as_deref()
-                            .ok_or("sim_candidate_hash")?,
-                    );
+                    let candidate_hash = progress
+                        .candidate_sha256
+                        .as_deref()
+                        .ok_or("sim_candidate_hash")?;
+                    return codec
+                        .slots
+                        .with_slot(crate::worker_slots::Kind::Candidate, |bytes| {
+                            wire::read_asset_into(
+                                &cache.join("candidates"),
+                                candidate_hash,
+                                bytes,
+                            )?;
+                            Ok(crate::cpu_log::import(
+                                store,
+                                job,
+                                pending.generation,
+                                bytes.as_slice(),
+                                |point| {
+                                    if point == mycity_storage::BackgroundPoint::AssetPublished {
+                                        let cancelled = gate(
+                                            ProbePoint::CandidatePublished,
+                                            &mut probe,
+                                            reader,
+                                            w,
+                                            id,
+                                            json!({"job":job}),
+                                        )
+                                        .map_err(std::io::Error::other)?;
+                                        if cancelled {
+                                            return Err(std::io::Error::other(
+                                                "sim_probe_cancel_at_import_unsupported",
+                                            ));
+                                        }
+                                    }
+                                    Ok(())
+                                },
+                                diag,
+                            ))
+                        });
                 }
             }
             Err("sim_worker_incomplete".into())
         })();
-        let bytes = match attempt {
+        codec.log(diag)?;
+        let imported = match attempt {
             Ok(b) => b,
             Err(error) => {
                 if let Some(mut old) = worker.take() {
@@ -374,32 +437,7 @@ fn required(
             }
         };
         // The pure worker's files are copied/validated into Sim-owned immutable assets.
-        let hash = match crate::cpu_log::import(
-            store,
-            job,
-            pending.generation,
-            &bytes,
-            |point| {
-                if point == mycity_storage::BackgroundPoint::AssetPublished {
-                    let cancelled = gate(
-                        ProbePoint::CandidatePublished,
-                        &mut probe,
-                        reader,
-                        w,
-                        id,
-                        json!({"job":job}),
-                    )
-                    .map_err(std::io::Error::other)?;
-                    if cancelled {
-                        return Err(std::io::Error::other(
-                            "sim_probe_cancel_at_import_unsupported",
-                        ));
-                    }
-                }
-                Ok(())
-            },
-            diag,
-        ) {
+        let hash = match imported {
             Ok(h) => h,
             Err(error) => {
                 // Validation failure remains a required obligation. IO uncertainty must reopen.
@@ -480,6 +518,7 @@ fn run_inner(
     probe_enabled: bool,
     profile: Profile,
 ) -> Result<(), String> {
+    let mut codec = Codec::new()?;
     let rules = profile.rules();
     let mut store = if create {
         let (opening, resources) = match profile {
@@ -521,12 +560,21 @@ fn run_inner(
     } else {
         None
     };
+    if let Some(log) = diag.as_mut() {
+        log.set_external_diagnostics_owned_bytes(std::mem::size_of::<Codec>())?;
+    }
+    codec.log(&mut diag)?;
     let mut worker = None;
     let stdin = std::io::stdin();
     let mut reader = BufReader::with_capacity(8192, stdin.lock());
     let stdout = std::io::stdout();
     let mut writer = stdout.lock();
-    event(&mut writer, 0, "ready", status(&store, &worker, &diag)?)?;
+    event(
+        &mut writer,
+        0,
+        "ready",
+        status(&store, &worker, &codec, &diag)?,
+    )?;
     while let Some(bytes) = wire::frame(&mut reader)? {
         let request: Request = serde_json::from_slice(&bytes).map_err(err)?;
         if request.protocol != PROTOCOL || request.id == 0 {
@@ -534,7 +582,7 @@ fn run_inner(
         }
         let stop = matches!(request.command, Command::Stop);
         let outcome = match request.command {
-            Command::Status => status(&store, &worker, &diag),
+            Command::Status => status(&store, &worker, &codec, &diag),
             Command::Progress => progress(&store),
             Command::ReceiptProof { operation } => store.receipt(operation).map_err(err).and_then(|record| {
                 let bytes = serde_json::to_vec(&record).map_err(err)?;
@@ -557,6 +605,7 @@ fn run_inner(
             Command::RunRequired { job } => required(
                 &mut store,
                 &mut worker,
+                &mut codec,
                 Required {
                     id: request.id,
                     job,
@@ -570,6 +619,7 @@ fn run_inner(
             Command::ProbeRequired { job, point } if probe_enabled => required(
                 &mut store,
                 &mut worker,
+                &mut codec,
                 Required {
                     id: request.id,
                     job,

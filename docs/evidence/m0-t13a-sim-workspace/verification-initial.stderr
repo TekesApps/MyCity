@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-sim-workspace/verify.py", line 87, in <module>
+    roles=collections.Counter(x['role'] for x in heaps);assert roles=={'speed-run':1,'speed-driver':1,'normal-pool-host':1,'scale-model-task':3,'sim-host-scale-full':2,'compute-worker-bounded':724},roles
+AssertionError: Counter({'compute-worker-bounded': 724, 'scale-model-task': 3, 'sim-host-scale-full': 2, 'speed-driver': 1, 'normal-pool-host': 1})

@@ -1,0 +1,16 @@
+{
+  "checked": [
+    "docs/evidence/m0-t13a-sim-workspace/PLAN.md",
+    "docs/evidence/m0-t13a-sim-workspace/source.json",
+    "docs/evidence/m0-t13a-sim-workspace/checks.json",
+    "docs/evidence/m0-t13a-sim-workspace/failed-attempts.json",
+    "docs/evidence/m0-t13a-sim-workspace/verification-unpaced.json",
+    "docs/evidence/m0-t13a-sim-workspace/workspace-unpaced.json",
+    "docs/evidence/m0-t13a-sim-workspace/verification-initial.stderr",
+    "docs/evidence/m0-t13a-sim-workspace/verify-initial.py",
+    "docs/evidence/m0-t13a-sim-workspace/latency-unpaced.json",
+    "docs/evidence/m0-t13a-sim-workspace/t13a58-unpaced-01/manifest.json",
+    "docs/evidence/m0-t13a-sim-workspace/static-verification.json"
+  ],
+  "all_exist": true
+}

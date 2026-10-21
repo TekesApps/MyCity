@@ -1,6 +1,7 @@
 //! Actual external balance. Only worker byte slots are converted into grants.
 //! Ordinary Engine allocations remain EXTRA pressure, never subtracted from this pool.
 pub mod broker;
+mod workspace;
 use crate::{control_data::Text, heap_meter, worker_slots};
 use serde::{Deserialize, Serialize};
 use std::os::unix::net::{UnixListener, UnixStream};
@@ -53,6 +54,10 @@ pub struct Summary {
     pub capacity_bytes: usize,
     pub available_touched_bytes: usize,
     pub granted_capacity_bytes: usize,
+    pub workspace_capacity_bytes: usize,
+    pub workspace_grants: u64,
+    pub workspace_returns: u64,
+    pub workspace_fills: u64,
     pub grants: u64,
     pub returns: u64,
     pub fill_acknowledgements: u64,
@@ -158,6 +163,7 @@ impl From<String> for ActionError {
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum Fault {
     ReturnSecondPage,
+    WorkspaceReturnSecondPage,
     AfterAttachEvent,
     AfterBrokerSpawnPause,
     AfterBrokerBindReply,
@@ -170,6 +176,7 @@ struct Pool {
     ready: Ready,
     fault: Option<Fault>,
     pages: [Option<Vec<u8>>; 64],
+    workspaces: [Option<workspace::Entry>; 4],
     active: Option<Active>,
     last: Option<Returned>,
     summary: Summary,
@@ -192,6 +199,7 @@ impl Pool {
         let fault = match fault_raw.as_deref() {
             None => None,
             Some("return-page-2") => Some(Fault::ReturnSecondPage),
+            Some("workspace-return-page-2") => Some(Fault::WorkspaceReturnSecondPage),
             Some("after-attach-event") => Some(Fault::AfterAttachEvent),
             Some("after-broker-spawn-pause") => Some(Fault::AfterBrokerSpawnPause),
             Some("after-broker-bind-reply") => Some(Fault::AfterBrokerBindReply),
@@ -213,12 +221,17 @@ impl Pool {
                 fault_injection: fault_raw.as_deref().map(Text::new).transpose()?,
             },
             pages: std::array::from_fn(|_| None),
+            workspaces: [None; 4],
             active: None,
             last: None,
             summary: Summary {
                 capacity_bytes: BYTES,
                 available_touched_bytes: 0,
                 granted_capacity_bytes: 0,
+                workspace_capacity_bytes: 0,
+                workspace_grants: 0,
+                workspace_returns: 0,
+                workspace_fills: 0,
                 grants: 0,
                 returns: 0,
                 fill_acknowledgements: 0,
@@ -252,12 +265,14 @@ impl Pool {
             }
             total += p.capacity();
         }
-        let grant = if self.active.is_some() {
-            GRANT_BYTES
-        } else {
-            0
-        };
-        if total != self.summary.available_touched_bytes
+        let grant = self.workspace_bytes()
+            + if self.active.is_some() {
+                GRANT_BYTES
+            } else {
+                0
+            };
+        if self.workspace_bytes() != self.summary.workspace_capacity_bytes
+            || total != self.summary.available_touched_bytes
             || total + grant != BYTES
             || grant != self.summary.granted_capacity_bytes
         {
@@ -279,6 +294,23 @@ impl Pool {
             self.fault = None;
             return Err("normal_pool_injected_event_failure".into());
         }
+        let e = Event {
+            kind,
+            rejection_reason,
+            broker_generation: self.broker.generation(),
+            broker_sim_pid: self.broker.sim_pid(),
+            observed_ns: self.now(),
+            id: a.map(|v| v.id),
+            parent: a.map(|v| v.parent),
+            parent_instance: a.map(|v| v.parent_instance),
+            pid: a.and_then(|v| v.pid),
+            worker_identity: a.and_then(|v| v.filled),
+            summary: self.summary,
+            owner_actual_capacity_bytes: self.pages.iter().flatten().map(Vec::capacity).sum(),
+        };
+        self.write_event(&e)
+    }
+    fn write_event(&mut self, e: &impl Serialize) -> Result<(), String> {
         struct Count<'a> {
             sink: &'a mut BufWriter<File>,
             used: &'a mut usize,
@@ -301,26 +333,12 @@ impl Pool {
                 self.sink.flush()
             }
         }
-        let e = Event {
-            kind,
-            rejection_reason,
-            broker_generation: self.broker.generation(),
-            broker_sim_pid: self.broker.sim_pid(),
-            observed_ns: self.now(),
-            id: a.map(|v| v.id),
-            parent: a.map(|v| v.parent),
-            parent_instance: a.map(|v| v.parent_instance),
-            pid: a.and_then(|v| v.pid),
-            worker_identity: a.and_then(|v| v.filled),
-            summary: self.summary,
-            owner_actual_capacity_bytes: self.pages.iter().flatten().map(Vec::capacity).sum(),
-        };
         let mut sink = Count {
             sink: &mut self.events,
             used: &mut self.event_bytes,
             row_bytes: 0,
         };
-        serde_json::to_writer(&mut sink, &e).map_err(err)?;
+        serde_json::to_writer(&mut sink, e).map_err(err)?;
         sink.write_all(b"\n").map_err(err)?;
         sink.flush().map_err(err)
     }
@@ -362,8 +380,8 @@ impl Pool {
             key: a.key,
             pid: a.pid,
         });
-        self.summary.available_touched_bytes = BYTES;
-        self.summary.granted_capacity_bytes = 0;
+        self.summary.available_touched_bytes += GRANT_BYTES;
+        self.summary.granted_capacity_bytes -= GRANT_BYTES;
         self.summary.returns += 1;
         self.scan()?;
         self.event("returned_after_wait_or_abort", Some(a))
@@ -410,7 +428,7 @@ impl Pool {
                 self.active = Some(a);
                 self.summary.grants += 1;
                 self.summary.available_touched_bytes -= GRANT_BYTES;
-                self.summary.granted_capacity_bytes = GRANT_BYTES;
+                self.summary.granted_capacity_bytes += GRANT_BYTES;
                 self.scan()?;
                 self.event("grant_released_before_spawn", Some(a))?;
                 Ok((Some(a.id), Some(a.worker_key)))
@@ -1201,6 +1219,10 @@ mod tests {
                 capacity_bytes: usize::MAX,
                 available_touched_bytes: usize::MAX,
                 granted_capacity_bytes: usize::MAX,
+                workspace_capacity_bytes: usize::MAX,
+                workspace_grants: u64::MAX,
+                workspace_returns: u64::MAX,
+                workspace_fills: u64::MAX,
                 grants: u64::MAX,
                 returns: u64::MAX,
                 fill_acknowledgements: u64::MAX,
@@ -1213,7 +1235,7 @@ mod tests {
         assert!(serde_json::to_vec(&event).unwrap().len() < EVENT_BYTES);
         // Original724 windows plus retries (up to768),960 periodic checkpoints,
         // sixteen session handoffs and64 exceptional transitions. Diagnostic bound only.
-        let rows = 5 * 768 + 28_800 / PERIODIC_EVENT_SECONDS + 4 * 16 + 64;
+        let rows = 5 * 768 + 28_800 / PERIODIC_EVENT_SECONDS + 8 * 16 + 64;
         assert!(rows as usize * EVENT_BYTES < 8 * MIB);
     }
 }
