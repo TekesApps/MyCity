@@ -1,0 +1,15 @@
+# 同边界资源验收的证据合同
+
+advisor已明确：固定64MiB仅证明backing不增长，不能替代Sim内部used/free/current与增长率。本轮e49缺内部日界点则该门缺测，不能从最终footer／peak或跨冷启动比较反推。
+
+下一来源已有Status入口前后单调clock夹住allocator_snapshot，绑定同一PID／instance、实际target和相位，字段包括current requested、used/free、bootstrap live/quarantined及累计failures。runtime所列Store／codec／air／diag是grant内部归属，不得与59／64MiB重复相加。lifetime peak单列，不能拿两峰相减当当前量。
+
+L1每次实际scan后读取全进程Rust计数（activation=None表示System模式，不能把arena_used=0当成无内存），用clock_end到allocator_after_scan_clock夹住读数，标实际snapshot_inflight。不得在snapshot存活期与无snapshot期混成泄漏结论。新的字段并不改变scan数量、容量或时序。
+
+RSS／footprint：选择已有日界Status回复后至下一实际RPC请求前的空闲gap；完整进程组capture区间传播observer→supervisor→driver全部origin不确定性，必须完全落在gap内。排除所有可能与L1快照在途区间重叠的capture。找不到匹配帧即缺测，不插值；被排除的活动期／峰值仍完整保留。内外部引用PID／实例与采样Mach birth匹配，不能仅按进程名合并。
+
+比较分开报告：同源各轮同游戏target／保存阶段；单轮同释放阶段跨日（不同历史须解释实际新增记录／原票和bytes，不得称同状态）。统计Store内部容量及diag lazy分配来源，分别给current与arena used的变化、bootstrap保留变化；无法解释部分按真实墙钟计算增长率。旧1MiB／16MiB／1MiB每小时不放宽。
+
+本目录是尚未装配的观测候选，不能作为已测结果。原e49正式首轮继续完成并逐轴报告；不改其源码／observer、不重启它。
+
+Advisor对native候选指出的阻断：ALL PID已枚举但SHORT查询失败时不能静默丢PID／祖先。候选现保留PID、errno及确认不存在结果；无法归属的缺口使该帧完整性未知。已知Mach birth遇临时查询失败保持pending，不以裸PID续认旧实例、不把失败当退出；仅明确不存在或取得不同birth后退休。完整门需结合这些字段，不仅看已选成员求和。实际SDK可获得性尚未验证，若永久缺口存在须先修provider，不能把未知帧涂绿。

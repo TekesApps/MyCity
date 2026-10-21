@@ -1,0 +1,60 @@
+{
+  "source_sha256": "0418b0739385eaea81fe3ba299fab06085c754cdeee4630c82b447087a497314",
+  "frames": 83,
+  "complete_frames": 81,
+  "incomplete_frames": [
+    66,
+    80
+  ],
+  "missing_footprint_process_samples": 1,
+  "missing_rss_process_samples": 1,
+  "sampler_helper_members": 0,
+  "normal_exit_heap_roles": [
+    {
+      "pid": 86682,
+      "instance_unix_ns": 1792611044693625000,
+      "role": "steady-driver",
+      "success": true,
+      "observed_mach_births": [
+        24499412385723
+      ]
+    },
+    {
+      "pid": 86678,
+      "instance_unix_ns": 1792611043862549000,
+      "role": "steady-layout-session",
+      "success": true,
+      "observed_mach_births": [
+        24499392446806
+      ]
+    },
+    {
+      "pid": 86853,
+      "instance_unix_ns": 1792611059882608000,
+      "role": "layout-load-only",
+      "success": true,
+      "observed_mach_births": [
+        24499776931877
+      ]
+    },
+    {
+      "pid": 86676,
+      "instance_unix_ns": 1792611043810408000,
+      "role": "normal-pool-host",
+      "success": true,
+      "observed_mach_births": [
+        24499391138016
+      ]
+    },
+    {
+      "pid": 86675,
+      "instance_unix_ns": 1792611043798719000,
+      "role": "steady-run",
+      "success": true,
+      "observed_mach_births": [
+        24499379346166
+      ]
+    }
+  ],
+  "scope": "Actual L1 diagnostic group with per-frame birth/relation binding. Unique-PID observation coverage only; no interpolation or sum of lifetime peaks, not proof of unsampled lifetime maxima."
+}

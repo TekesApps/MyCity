@@ -1,0 +1,9 @@
+{
+  "source": "matches frozen0418",
+  "fixed_binary": "unchanged",
+  "observation_support": "matches actual pre-run hashes",
+  "json_python_links": "passed",
+  "retention_originals_source_WIP": "passed",
+  "new_tests": "12 offline counterexamples passed",
+  "raw_logs": "preserved byte-for-byte; trailing blank lines may trigger whitespace warnings, not edited"
+}

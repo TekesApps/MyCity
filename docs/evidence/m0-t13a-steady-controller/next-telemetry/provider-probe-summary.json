@@ -1,0 +1,12 @@
+{
+  "scope": "Actual native provider plus sleep child; not real model/performance acceptance",
+  "frames": 11,
+  "complete_frames": 10,
+  "incomplete_frames": 1,
+  "enumeration_failure_frames": 0,
+  "missing_footprint": 1,
+  "missing_rss": 1,
+  "sampler_helper_members": 0,
+  "observer_hot_bound_bytes": 898998,
+  "artifacts": "work/native-observer-provider-probe-01"
+}

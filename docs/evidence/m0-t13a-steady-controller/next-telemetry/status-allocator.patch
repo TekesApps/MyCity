@@ -1,0 +1,22 @@
+--- a/crates/city-headless/src/sim_host.rs
++++ b/crates/city-headless/src/sim_host.rs
+@@ -174,6 +174,10 @@
+     codec: &Codec,
+     diag: &Option<crate::cpu_log::CpuLog>,
+ ) -> Result<Value, String> {
++    // Same-phase current occupancy, before allocating the status report.
++    let allocator_clock_begin = crate::heap_meter::clock_reading();
++    let allocator_boundary = crate::heap_meter::arena_snapshot();
++    let allocator_clock_end = crate::heap_meter::clock_reading();
+     let e = store.engine().map_err(err)?;
+     let b = e.background();
+     let view = e.world().view();
+@@ -181,7 +185,7 @@
+         .and_then(|b| b.field())
+         .map(|f| f.checkpoint_sha256())
+         .transpose()?;
+-    let runtime = json!({"accounts":view.accounts,"boot":view.boot,"active_city":view.region.as_ref().map(|r|r.active_city),"obligations":view.region.as_ref().map(|r|r.obligations),"payroll":e.timeline().map(|t|t.payroll.iter().take(8).collect::<Vec<_>>()),"claims":e.timeline().map(|t|t.claims.iter().take(8).collect::<Vec<_>>()),"claim_count":e.timeline().map(|t|t.claims.len()),"payroll_count":e.timeline().map(|t|t.payroll.len()),"resources":e.resources(),"store_owned_bytes":store.owned_capacity_bytes().map_err(err)?,"sim_codec":codec.slots.report()?,"sim_air_input_owned_bytes":codec.air_input.owned_bytes(),"diagnostics_owned_bytes":diag.as_ref().map_or(0,crate::cpu_log::CpuLog::owned_bytes)});
++    let runtime = json!({"allocator_boundary":{"phase":"status_entry_before_report_allocations","clock_begin":allocator_clock_begin,"clock_end":allocator_clock_end,"snapshot":allocator_boundary},"accounts":view.accounts,"boot":view.boot,"active_city":view.region.as_ref().map(|r|r.active_city),"obligations":view.region.as_ref().map(|r|r.obligations),"payroll":e.timeline().map(|t|t.payroll.iter().take(8).collect::<Vec<_>>()),"claims":e.timeline().map(|t|t.claims.iter().take(8).collect::<Vec<_>>()),"claim_count":e.timeline().map(|t|t.claims.len()),"payroll_count":e.timeline().map(|t|t.payroll.len()),"resources":e.resources(),"store_owned_bytes":store.owned_capacity_bytes().map_err(err)?,"sim_codec":codec.slots.report()?,"sim_air_input_owned_bytes":codec.air_input.owned_bytes(),"diagnostics_owned_bytes":diag.as_ref().map_or(0,crate::cpu_log::CpuLog::owned_bytes)});
+ 
+     Ok(
+         json!({"revision":view.revision,"sequence":store.committed_sequence(),"business_sha256":store.business_digest().map_err(err)?,"runtime":runtime,"timeline":e.timeline().map(|t|t.progress),

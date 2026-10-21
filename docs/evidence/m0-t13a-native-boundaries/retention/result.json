@@ -1,0 +1,24 @@
+{
+  "before": {
+    "time_ns": 1792611223816855000,
+    "work_du_kib": 21840228,
+    "target_du_kib": 1400948,
+    "filesystem_available_bytes": 109713756160
+  },
+  "after": {
+    "time_ns": 1792611225898002000,
+    "work_du_kib": 18528092,
+    "target_du_kib": 1400948,
+    "filesystem_available_bytes": 113105416192
+  },
+  "deleted_files": 27,
+  "deleted_unique_single_link_inode_allocated_bytes": 3391627264,
+  "target_deleted_bytes": 0,
+  "new_work_archive_bytes": 0,
+  "retained_files_identity_length_mtime_links_unchanged": 118720,
+  "retained_allocation_only_differences": 0,
+  "observed_df_available_delta": 3391660032,
+  "df_delta_attributed_to_cleanup": null,
+  "availability": "Native diagnostic L1 snapshot now incomplete, cannot directly restore; formal7/8, v50 compatibility and smoke-L2 fault full originals preserved",
+  "accounting": "st_blocks not exclusive APFS physical bytes; df influenced by snapshots/shared blocks and unrelated tasks; old cleanup not counted"
+}

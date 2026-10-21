@@ -1,0 +1,25 @@
+
+running 3 tests
+test construction_oom_cannot_fill_or_refund_before_the_parent_actually_waits ... ok
+test sim_full_arena_fills_after_models_and_unknown_durable_oom_recovers_original_ticket ... ok
+test complete_reference_and_sim_sessions_cannot_overlap_and_twenty_mib_is_returned ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 17.35s
+
+
+running 2 tests
+test frozen_input_walk_preserves_every_hour_special_target_and_startup_count ... ok
+test named_profiles_have_frozen_counts_v2_identity_and_read_only_bounded_progress ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.36s
+
+
+running 3 tests
+test actual_owner_eof_is_failure_and_cannot_be_safe_prefix_success ... ok
+test actual_full_l0_cases_fit_original_region_and_verify_all_existing_assertions has been running for over 60 seconds
+test actual_short_l0_window_stops_only_at_safe_boundary_and_never_accepts_formal has been running for over 60 seconds
+test actual_short_l0_window_stops_only_at_safe_boundary_and_never_accepts_formal ... ok
+test actual_full_l0_cases_fit_original_region_and_verify_all_existing_assertions ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 118.83s
+

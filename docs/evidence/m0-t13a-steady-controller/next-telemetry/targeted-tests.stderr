@@ -1,0 +1,10 @@
+   Compiling sha2-asm v0.6.4
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+   Compiling sha2 v0.10.9
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 26.60s
+     Running tests/role_arena.rs (target/release/deps/role_arena-6f1e31f5cd7e4afa)
+     Running tests/scale_sim.rs (target/release/deps/scale_sim-a957c4b33957190d)
+     Running tests/steady.rs (target/release/deps/steady-aba4ae859b2994e1)

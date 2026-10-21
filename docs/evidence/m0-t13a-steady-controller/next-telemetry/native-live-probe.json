@@ -1,0 +1,133 @@
+{
+  "pid": 78519,
+  "self_row": [
+    69823,
+    null,
+    "2",
+    "Python"
+  ],
+  "self_resident_bytes": 14401536,
+  "child_rows": {
+    "78533": [
+      78519,
+      null,
+      "2",
+      "sleep"
+    ],
+    "78534": [
+      78519,
+      null,
+      "2",
+      "sleep"
+    ],
+    "78535": [
+      78519,
+      null,
+      "2",
+      "sleep"
+    ]
+  },
+  "child_rss": {
+    "78533": 1163264,
+    "78534": 1163264,
+    "78535": 1163264
+  },
+  "enumeration_failures": [],
+  "initial_process_count": 887,
+  "capture_ns": 1553084,
+  "vm": {
+    "method": "host_statistics64 HOST_VM_INFO64",
+    "returned_bytes": 248,
+    "fields": {
+      "free_count": 17960,
+      "active_count": 668634,
+      "inactive_count": 658191,
+      "wire_count": 225108,
+      "zero_fill_count": 20546362403,
+      "reactivations": 1585013738,
+      "pageins": 1298134257,
+      "pageouts": 4750684,
+      "faults": 28878893134,
+      "cow_faults": 1142367841,
+      "lookups": 0,
+      "hits": 0,
+      "purges": 105066663,
+      "purgeable_count": 10113,
+      "speculative_count": 10640,
+      "decompressions": 1331822953,
+      "compressions": 1818667376,
+      "swapins": 4247035,
+      "swapouts": 7246569,
+      "compressor_page_count": 473413,
+      "throttled_count": 0,
+      "external_page_count": 813184,
+      "internal_page_count": 524281,
+      "total_uncompressed_pages_in_compressor": 1419934,
+      "swapped_count": 383921,
+      "total_tag_storage_pages": 0,
+      "nontag_pageable_tag_storage_pages": 0,
+      "nontag_wired_tag_storage_pages": 0,
+      "free_tag_storage_pages": 0,
+      "tag_storing_tag_storage_pages": 0,
+      "total_tagged_pages": 0,
+      "resident_tagged_pages": 0,
+      "compressed_tagged_pages": 0,
+      "tagged_compressions": 0,
+      "tagged_decompressions": 0,
+      "compressed_tag_storage_bytes": 0
+    },
+    "units": "page counts or cumulative events as named in SDK; page size separately recorded"
+  },
+  "abi_c": {
+    "proc_bsdshortinfo": 64,
+    "proc_taskinfo": 96,
+    "vm_statistics64": 416,
+    "short_pid": 0,
+    "short_ppid": 4,
+    "short_comm": 16,
+    "task_resident": 8,
+    "vm_compressor": 128,
+    "vm_compressions": 104,
+    "vm_decompressions": 96,
+    "vm_swapins": 112,
+    "vm_swapouts": 120,
+    "vm_max_mem": 392,
+    "host_vm_count": 104
+  },
+  "abi_ctypes": {
+    "proc_bsdshortinfo": 64,
+    "proc_taskinfo": 96,
+    "vm_statistics64": 416,
+    "short_pid": 0,
+    "short_ppid": 4,
+    "short_comm": 16,
+    "task_resident": 8,
+    "vm_compressor": 128,
+    "vm_compressions": 104,
+    "vm_decompressions": 96,
+    "vm_swapins": 112,
+    "vm_swapouts": 120,
+    "vm_max_mem": 392,
+    "host_vm_count": 104
+  },
+  "provenance": {
+    "method": "public local SDK proc_listpids/proc_pidinfo and host_statistics64",
+    "headers_sha256": {
+      "libproc.h": "246d87709fc6b9157ce5cf3c475656ac48e0e1ae8bbdc46cf45acd34294448cd",
+      "sys/proc_info.h": "e427fa96b348537b21552b9de71e01039410bcad2cedee5584c5e5fddafd70fc",
+      "sys/param.h": "10d7a9553d341c5bc0b473444802920a7ec2e6222281eeaeb61b32dfff29c4b4",
+      "mach/vm_statistics.h": "b2b81f9e7efff57b648b4705a1ad08ffb55b99d0966b02c110f95fa454e175b7",
+      "mach/host_info.h": "4b0d40d08ea62da23ed80a6cce3f0cc45bd595a81b17c86348a289342983e1b0"
+    },
+    "struct_sizes": {
+      "proc_bsdshortinfo": 64,
+      "proc_taskinfo": 96,
+      "vm_statistics64": 416
+    },
+    "pid_capacity": 8192,
+    "fixed_control_charge_bytes": 65536,
+    "no_sampler_child": true,
+    "status": "candidate; requires actual ABI and live capture validation before formal use"
+  },
+  "abi_exe_sha256": "7273bcaeef3be1f905870e8ecf907a6d49352922a95e0ecd68dac4f6a5d3e78d"
+}

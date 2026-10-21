@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.88`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.89`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.89完成[实际边界计数与原生观测](docs/evidence/m0-t13a-native-boundaries/STATUS.md)：冻结全仓回归、原L1短测及冷恢复成立；同相位物理驻留仍高于3.10GiB，下一步固定工作区复用实验。短测27份合成载荷已回收，未签正式稳态／8h或真实16GB。
 
 v0.5.88完成[统一稳态控制器与实际正式L2首轮](docs/evidence/m0-t13a-steady-controller/STATUS.md)：冻结全仓回归和原300＋1800秒完整30日／独立Engine对照成立；稀有样本、完整资源与同边界泄漏未签，三轮／四速／8h及真实16GB尚未完成。
 

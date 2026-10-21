@@ -1,0 +1,6 @@
+ M crates/city-headless/src/layout_load.rs
+ M crates/city-headless/src/scale_speed.rs
+ M crates/city-headless/src/sim_host.rs
+ M crates/city-headless/tests/scale_sim.rs
+?? docs/evidence/m0-t13a-native-boundaries/
+?? docs/evidence/m0-t13a-steady-controller/next-telemetry/

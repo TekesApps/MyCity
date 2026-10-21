@@ -1,5 +1,7 @@
 # M0 Rust模型：当前范围、运行方法与验收状态
 
+v0.5.89：[实际边界计数与native观测](evidence/m0-t13a-native-boundaries/STATUS.md)完成同源全仓及原规模L1短测／完整冷恢复；观察到同相位物理驻留高于3.10GiB，未归因为System缓存。下一步实验L1固定区域复用，原负载／预算不变。正式三轮／四速／8h未完成，16GB为not_run。
+
 v0.5.88：[统一稳态控制器及实际正式L2首轮](evidence/m0-t13a-steady-controller/STATUS.md)完成原300＋1800秒、720小时／723目标／724窗口及完整Engine独立对照，冻结全仓回归通过。稀有类别样本不足、物理／诊断预算与同边界泄漏仍未签；三轮／四速／8h未完成，真实16GB为not_run。下一源补实际allocator与native观测，不跨来源继承首轮。
 
 v0.5.85：[整角色区域及原规模短联合](evidence/m0-t13a-role-arena/STATUS.md)通过冻结全仓、旧完整Store、近16MiB边界、实际池内full30日及606秒L1＋L2故障／保存／冷恢复。仅签该功能／短诊断范围，非正式内存／分位／稳态／四速／8h；真实16GB保持not_run。下一主线是[统一正式测量控制器](evidence/m0-t13a-role-arena/NEXT.md)。旧阶段文字保留历史范围，不覆盖本项更新。

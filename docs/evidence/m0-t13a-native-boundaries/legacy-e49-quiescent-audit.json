@@ -1,0 +1,54 @@
+{
+  "schema": "mycity-quiescent-boundaries-v1",
+  "source_sha256": "e49b29d55ca76a562d1e497701333393746d3f9031651b814c65590fdf5db0b5",
+  "driver_origin_observer_ns": [
+    38420523209,
+    38490974750
+  ],
+  "layout_started_offset_from_heap_clock_ns": [
+    -151792,
+    42
+  ],
+  "snapshot_exclusion_intervals_observer_ns": [
+    [
+      914934458,
+      8434973293
+    ],
+    [
+      300927693833,
+      311117668626
+    ],
+    [
+      600917340249,
+      609498888835
+    ],
+    [
+      900927817666,
+      909397995168
+    ],
+    [
+      1200919350416,
+      1210375758043
+    ],
+    [
+      1500920305791,
+      1509076928210
+    ],
+    [
+      1800918637874,
+      1809569040710
+    ],
+    [
+      2100921329624,
+      2109825571960
+    ]
+  ],
+  "day_status_markers": 30,
+  "release_markers": 0,
+  "boundaries": [],
+  "current_internal_drift": null,
+  "leakage_gate": "not_accepted; actual current counters and complete matching frames are inputs, history/role identity and same-phase growth attribution still require audit; no peak subtraction",
+  "original_tolerances_unchanged": true,
+  "eight_hour": "not_run",
+  "real16GB": "not_run"
+}

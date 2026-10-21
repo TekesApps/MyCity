@@ -1,0 +1,15 @@
+{
+  "controller_pid": 81274,
+  "pid": 86350,
+  "name": "frozen-build",
+  "command": [
+    "cargo",
+    "build",
+    "--release",
+    "--workspace",
+    "--locked",
+    "--offline",
+    "--message-format=json"
+  ],
+  "source_sha256": "0418b0739385eaea81fe3ba299fab06085c754cdeee4630c82b447087a497314"
+}

@@ -1,0 +1,28 @@
+{
+  "successful_harness_summary_records": 60,
+  "nonempty_harness_summary_records": 55,
+  "passed_entries_including_nested_process_harnesses": 427,
+  "failed_entries": 0,
+  "scope": "Not unique-test count; same-frozen-source full regression, not performance acceptance",
+  "command_result": {
+    "command": [
+      "cargo",
+      "test",
+      "--release",
+      "--workspace",
+      "--locked",
+      "--offline"
+    ],
+    "exit_code": 0,
+    "seconds": 718.666574542,
+    "source_sha256": "0418b0739385eaea81fe3ba299fab06085c754cdeee4630c82b447087a497314"
+  },
+  "source": {
+    "source_sha256": "0418b0739385eaea81fe3ba299fab06085c754cdeee4630c82b447087a497314",
+    "source_files": 198,
+    "binary": "/Users/frankqin/dev/MyCity/work/candidate-binaries/steady-native-boundaries/mycity-headless",
+    "binary_sha256": "a89c27880e4d8ab2ecc011f33af4786e5037cd7349bab00ccab5c365bfa636d2",
+    "lock_sha256": "8e10b63f3a4bb19bcbec6229e5d7939d696f3b3b55b076e7e885027ec778d95d",
+    "scope": "frozen source passed full regression; actual controller diagnostic and formal gates separately reported"
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "first_abi_compile": "failed before output: selected Xcode clang/ld cannot parse newer CLT27 SDK arm64e.x1 TAPI. Retried using matching CLT clang and same CLT SDK; ABI then passed. No model source/threshold affected.",
+  "first_targeted_test_command": "package city-headless not found; corrected to actual package mycity-headless; no tests executed by failed command",
+  "artifact_retention": "ABI exe, both probe roots, raw observations, SDK hashes, original diagnostics and source are retained; no new target cache"
+}

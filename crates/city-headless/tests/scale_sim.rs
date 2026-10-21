@@ -97,6 +97,22 @@ fn named_profiles_have_frozen_counts_v2_identity_and_read_only_bounded_progress(
             }
         }
         let s = call(&mut c, &mut id, Command::Status);
+        // The read-only status captures real live occupancy in this Sim instance,
+        // before its report allocations, rather than repeating the fixed grant.
+        let boundary = &s["runtime"]["allocator_boundary"];
+        assert_eq!(boundary["phase"], "status_entry_before_report_allocations");
+        let begin = &boundary["clock_begin"];
+        let end = &boundary["clock_end"];
+        assert_eq!(begin["pid"], end["pid"]);
+        assert_eq!(begin["instance_unix_ns"], end["instance_unix_ns"]);
+        assert!(begin["elapsed_ns"].as_u64().unwrap() <= end["elapsed_ns"].as_u64().unwrap());
+        let heap = &boundary["snapshot"];
+        assert!(heap["current_requested_bytes"].as_u64().unwrap() > 0);
+        assert_eq!(heap["activation"]["grant_bytes"], 59 * 1024 * 1024);
+        assert_eq!(
+            heap["arena_used_bytes"].as_u64().unwrap() + heap["arena_free_bytes"].as_u64().unwrap(),
+            heap["arena_usable_bytes"].as_u64().unwrap()
+        );
         assert_eq!(s["runtime"]["claim_count"], claims);
         assert_eq!(s["runtime"]["payroll_count"], payroll);
         assert_eq!(s["runtime"]["claims"].as_array().unwrap().len(), 8);

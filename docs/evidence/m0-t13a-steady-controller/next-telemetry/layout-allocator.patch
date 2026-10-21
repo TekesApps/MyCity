@@ -1,0 +1,19 @@
+--- a/crates/city-headless/src/layout_load.rs
++++ b/crates/city-headless/src/layout_load.rs
+@@ -939,12 +939,15 @@
+                 let clock_begin = crate::heap_meter::clock_reading();
+                 let scan = load.scan(|class, _, ns| metrics.observe(class, ns))?;
+                 let clock_end = crate::heap_meter::clock_reading();
++                let allocator_after_scan = crate::heap_meter::arena_snapshot();
++                let allocator_after_scan_clock = crate::heap_meter::clock_reading();
++                let snapshot_inflight = load.job.is_some();
+                 let raw_end = metrics.written_bytes();
+                 metrics.check()?;
+                 if metrics.owned_bytes() > charge {
+                     return Err("layout_diagnostics_exceeds_charge".into());
+                 }
+-                serde_json::to_writer(&mut events,&json!({"elapsed_seconds":started.elapsed().as_secs_f64(),"scan_deadline_seconds":next_scan,"scan_ready_age_seconds":lateness,"scan":scan,"raw_begin":raw_begin,"raw_end":raw_end,"clock_begin":clock_begin,"clock_end":clock_end})).map_err(err)?;
++                serde_json::to_writer(&mut events,&json!({"elapsed_seconds":started.elapsed().as_secs_f64(),"scan_deadline_seconds":next_scan,"scan_ready_age_seconds":lateness,"scan":scan,"raw_begin":raw_begin,"raw_end":raw_end,"clock_begin":clock_begin,"clock_end":clock_end,"allocator_after_scan":allocator_after_scan,"allocator_after_scan_clock":allocator_after_scan_clock,"snapshot_inflight":snapshot_inflight})).map_err(err)?;
+                 events.write_all(b"\n").map_err(err)?;
+                 events.flush().map_err(err)?;
+                 scans += 1;

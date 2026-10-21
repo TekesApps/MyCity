@@ -331,6 +331,11 @@ fn driver_inner(dir: &Path, rate: Rate, steady: Option<(Instant, Duration)>) -> 
                         e.record(json!({"steady_quiescent_day_boundary":day,"same_phase":"hour complete; no active driver request",
                             "game_target":day*86400,"status":boundary,"driver_heap":crate::heap_meter::snapshot(),
                             "observed_seconds":clock.elapsed().as_secs_f64()}))?;
+                        // The large status Value has been serialized and dropped.
+                        // This small marker opens a physical idle-sampling gap;
+                        // the next actual RPC request closes it without any wait.
+                        e.record(json!({"steady_quiescent_day_released":day,
+                            "game_target":day*86400,"phase":"status_report_dropped_before_next_request"}))?;
                     }
                     previous_day = complete;
                 }
