@@ -1,0 +1,68 @@
+{
+  "status": "planned_not_deleted",
+  "protected": [
+    "work/t13a65-joint-02",
+    "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001",
+    "work/t13a68-legacy-reopen",
+    "work/accepted-binaries",
+    "work/candidate-binaries"
+  ],
+  "files": [
+    {
+      "path": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "inode": 406712649,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792555295384466374,
+      "run": "t13a64-joint-01",
+      "retained_evidence": "docs/evidence/m0-t13a-hotpath/t13a64-joint-01",
+      "reason": "Superseded by published v0.5.66 full joint-02 recovery baseline; no remaining recovery dependency after source/script/advisor audit. First v65 experiment also lacks root heap footer; keep complete original fault logs and all nonpressure files.",
+      "availability_after": "NOT directly full-restorable: synthetic pressure payload retired; manifests/hashes are historical evidence only",
+      "regeneration": "Archived versioned layout_load generator and original index; regenerate exact pattern/page layout/mutation iteration, then validate entire original index before declaring full restore available"
+    },
+    {
+      "path": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000002/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "inode": 406736242,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792555598492519775,
+      "run": "t13a64-joint-01",
+      "retained_evidence": "docs/evidence/m0-t13a-hotpath/t13a64-joint-01",
+      "reason": "Superseded by published v0.5.66 full joint-02 recovery baseline; no remaining recovery dependency after source/script/advisor audit. First v65 experiment also lacks root heap footer; keep complete original fault logs and all nonpressure files.",
+      "availability_after": "NOT directly full-restorable: synthetic pressure payload retired; manifests/hashes are historical evidence only",
+      "regeneration": "Archived versioned layout_load generator and original index; regenerate exact pattern/page layout/mutation iteration, then validate entire original index before declaring full restore available"
+    },
+    {
+      "path": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "inode": 406942516,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792559202134622333,
+      "run": "t13a65-joint-01",
+      "retained_evidence": "docs/evidence/m0-t13a-helper-compare/t13a65-joint-01",
+      "reason": "Superseded by published v0.5.66 full joint-02 recovery baseline; no remaining recovery dependency after source/script/advisor audit. First v65 experiment also lacks root heap footer; keep complete original fault logs and all nonpressure files.",
+      "availability_after": "NOT directly full-restorable: synthetic pressure payload retired; manifests/hashes are historical evidence only",
+      "regeneration": "Archived versioned layout_load generator and original index; regenerate exact pattern/page layout/mutation iteration, then validate entire original index before declaring full restore available"
+    },
+    {
+      "path": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000002/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "inode": 406980572,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792559503932384355,
+      "run": "t13a65-joint-01",
+      "retained_evidence": "docs/evidence/m0-t13a-helper-compare/t13a65-joint-01",
+      "reason": "Superseded by published v0.5.66 full joint-02 recovery baseline; no remaining recovery dependency after source/script/advisor audit. First v65 experiment also lacks root heap footer; keep complete original fault logs and all nonpressure files.",
+      "availability_after": "NOT directly full-restorable: synthetic pressure payload retired; manifests/hashes are historical evidence only",
+      "regeneration": "Archived versioned layout_load generator and original index; regenerate exact pattern/page layout/mutation iteration, then validate entire original index before declaring full restore available"
+    }
+  ]
+}

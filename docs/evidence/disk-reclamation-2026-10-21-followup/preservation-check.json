@@ -1,0 +1,27 @@
+{
+  "production_sources_fixtures_executables_hash_unchanged": 180,
+  "checks": [
+    {
+      "index": "work/t13a65-joint-02/model/layout/snapshots/snapshot-000001/index.json",
+      "indexed_files": 29,
+      "all_present_original_length": true,
+      "scope": "Existence/length + full pre/post metadata unchanged; not a new full restore or pressure rehash"
+    },
+    {
+      "index": "work/t13a65-joint-02/model/layout/snapshots/snapshot-000002/index.json",
+      "indexed_files": 29,
+      "all_present_original_length": true,
+      "scope": "Existence/length + full pre/post metadata unchanged; not a new full restore or pressure rehash"
+    },
+    {
+      "index": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+      "indexed_files": 29,
+      "all_present_original_length": true,
+      "scope": "Existence/length + full pre/post metadata unchanged; not a new full restore or pressure rehash"
+    },
+    {
+      "legacy_world_files": 243,
+      "original_and_complete_copy_hash_match": true
+    }
+  ]
+}

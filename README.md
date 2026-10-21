@@ -1,6 +1,6 @@
 # MyCity
 
-仓库发布版本：`v0.5.67`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.68`。已开始Rust模型与headless CLI，当前不做UI。
 
 **软件结构先读[总体架构](docs/SOFTWARE_ARCHITECTURE.md)：当前代码、主体与事件、单writer、多进程目标、数据文件和预算。**
 
@@ -54,3 +54,5 @@
 v0.5.66: [Fixed end-of-run helper workspace and original full-load joint diagnostic](docs/evidence/m0-t13a-helper-compare/STATUS.md). Full model ownership, formal performance, 8h and real16GB gates remain open.
 
 v0.5.67: [Typed full-model capacity plan](docs/evidence/m0-t13a-model-capacity/STATUS.md). The proposed backing fits64MiB; current runtime ownership and performance gates remain unaccepted.
+
+[v0.5.68历史验证产物后续回收](docs/evidence/disk-reclamation-2026-10-21-followup/STATUS.md)：释放11.34GiB分配空间，保留完整恢复依赖、真实业务与当前模型WIP；不代表新模型／性能通过。

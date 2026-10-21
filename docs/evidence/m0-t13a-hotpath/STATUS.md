@@ -1,5 +1,7 @@
 # 规范整数编码与ARM SHA运行时分派
 
+> 当前可用性更新（v0.5.68）：v64 joint-01及v65 joint-01的四份压力载荷已退役，对应快照不能直接完整恢复；原始证据保留。v66 joint-02两代及v50旧格式依赖仍完整。详见[后续清理报告](../disk-reclamation-2026-10-21-followup/STATUS.md)。旧文中的完整保留承诺仅代表当时状态。
+
 v0.5.64阶段发布，仍只做Rust模型/CLI。[计划](PLAN.md)保留原冻结负载/SHA、全部数值步、独立CPU参考和20/40ms门；未修改UI/GPU/AgentKit。[advisor方案及代码检查](advisor-plan-and-code.md)未发现编码/错误传播/深校验阻断。[独立最终审查](advisor-final-review.md)实际重跑四项核验，同意有限阶段发布，完整M0验收仍未签。
 
 ## 定位与实现

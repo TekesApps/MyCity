@@ -1,5 +1,7 @@
 # Continuation: v0.5.66 fixed helper stage
 
+> 当前可用性更新（v0.5.68）：v64 joint-01及v65 joint-01的四份压力载荷已退役，对应快照不能直接完整恢复；原始证据保留。v66 joint-02两代及v50旧格式依赖仍完整。详见[后续清理报告](../disk-reclamation-2026-10-21-followup/STATUS.md)。旧文中的完整保留承诺仅代表当时状态。
+
 Active goal, M0 not accepted. Cleanup-only v0.5.65 main 9bdddfa1d5feafd55c3f3b7c8604f195c6e55036 was published first. This model stage is v0.5.66; t13a65-* remain immutable experiment IDs, not release claims.
 
 Frozen source 9deedcb11bce7d2d431d4fd8fabad6342fc17a5772cb3de1b7d60ab345aaab82 /156 files; immutable binary work/candidate-binaries/helper-compare/mycity-headless SHA753704248cb853f874da9ad609de10ac9bacf1173ff8916725ee4019c47dcc05. Final full workspace10241 terminal0 /350 harness records including nested invocations; clippy19040 terminal0, fmt/fullalltargetbuild0. No source edits since tests. Do not repeat without new changes/failure.

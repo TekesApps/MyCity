@@ -1,0 +1,80 @@
+{
+  "before": {
+    "unix_ns": 1792565765760418000,
+    "filesystem_available_bytes": 115571068928,
+    "work_du_kib": 29886348,
+    "target_du_kib": 754196
+  },
+  "after": {
+    "unix_ns": 1792565768528310000,
+    "filesystem_available_bytes": 127747547136,
+    "work_du_kib": 17995564,
+    "target_du_kib": 754196
+  },
+  "removed_paths": 4,
+  "removed_unique_inodes": 4,
+  "removed_unique_allocated_bytes": 12176162816,
+  "removed_unique_logical_bytes": 12176161240,
+  "filesystem_available_delta_bytes": 12176478208,
+  "work_du_delta_bytes": 12176162816,
+  "retained_raw_files_checked_unchanged": 81116,
+  "accounting": "st_blocks deduplicated by device/inode; not exclusive APFS extents. df delta is observed, not attributed entirely to this deletion.",
+  "files": [
+    {
+      "path": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "inode": 406712649,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792555295384466374,
+      "run": "t13a64-joint-01",
+      "retained_evidence": "docs/evidence/m0-t13a-hotpath/t13a64-joint-01",
+      "reason": "Superseded by published v0.5.66 full joint-02 recovery baseline; no remaining recovery dependency after source/script/advisor audit. First v65 experiment also lacks root heap footer; keep complete original fault logs and all nonpressure files.",
+      "availability_after": "NOT directly full-restorable: synthetic pressure payload retired; manifests/hashes are historical evidence only",
+      "regeneration": "Archived versioned layout_load generator and original index; regenerate exact pattern/page layout/mutation iteration, then validate entire original index before declaring full restore available"
+    },
+    {
+      "path": "work/t13a64-joint-01/model/layout/snapshots/snapshot-000002/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "inode": 406736242,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792555598492519775,
+      "run": "t13a64-joint-01",
+      "retained_evidence": "docs/evidence/m0-t13a-hotpath/t13a64-joint-01",
+      "reason": "Superseded by published v0.5.66 full joint-02 recovery baseline; no remaining recovery dependency after source/script/advisor audit. First v65 experiment also lacks root heap footer; keep complete original fault logs and all nonpressure files.",
+      "availability_after": "NOT directly full-restorable: synthetic pressure payload retired; manifests/hashes are historical evidence only",
+      "regeneration": "Archived versioned layout_load generator and original index; regenerate exact pattern/page layout/mutation iteration, then validate entire original index before declaring full restore available"
+    },
+    {
+      "path": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "inode": 406942516,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792559202134622333,
+      "run": "t13a65-joint-01",
+      "retained_evidence": "docs/evidence/m0-t13a-helper-compare/t13a65-joint-01",
+      "reason": "Superseded by published v0.5.66 full joint-02 recovery baseline; no remaining recovery dependency after source/script/advisor audit. First v65 experiment also lacks root heap footer; keep complete original fault logs and all nonpressure files.",
+      "availability_after": "NOT directly full-restorable: synthetic pressure payload retired; manifests/hashes are historical evidence only",
+      "regeneration": "Archived versioned layout_load generator and original index; regenerate exact pattern/page layout/mutation iteration, then validate entire original index before declaring full restore available"
+    },
+    {
+      "path": "work/t13a65-joint-01/model/layout/snapshots/snapshot-000002/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "inode": 406980572,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792559503932384355,
+      "run": "t13a65-joint-01",
+      "retained_evidence": "docs/evidence/m0-t13a-helper-compare/t13a65-joint-01",
+      "reason": "Superseded by published v0.5.66 full joint-02 recovery baseline; no remaining recovery dependency after source/script/advisor audit. First v65 experiment also lacks root heap footer; keep complete original fault logs and all nonpressure files.",
+      "availability_after": "NOT directly full-restorable: synthetic pressure payload retired; manifests/hashes are historical evidence only",
+      "regeneration": "Archived versioned layout_load generator and original index; regenerate exact pattern/page layout/mutation iteration, then validate entire original index before declaring full restore available"
+    }
+  ]
+}
