@@ -1,0 +1,6 @@
+{
+  "source_sha256": "926a61a2df328e5c4767f82de045659fa416f91858e62a6c5292ee24c171939f",
+  "source_files": 161,
+  "fixture_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+  "scope": "Source frozen during full regression session95173; results pending, not a pass claim"
+}

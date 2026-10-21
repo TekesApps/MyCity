@@ -252,14 +252,14 @@ pub struct Engine {
     next_token: u64,
     journal: JournalRows,
     timeline: crate::model_rows::Resident<crate::timeline::Timeline>,
-    background: Option<crate::background::Background>,
+    background: crate::model_rows::Resident<crate::background::Background>,
     #[serde(skip)]
     preparation_workspace: Option<workspace::PreparationWorkspace>,
 }
 
 struct Prepared {
     timeline: workspace::TimelineLease,
-    background: Option<crate::background::Background>,
+    background: workspace::BackgroundLease,
     exchange: Option<crate::exchange::Exchange>,
     boot: Option<crate::boot::Boot>,
     economy: Option<crate::economy::Economy>,
@@ -272,6 +272,9 @@ struct Prepared {
     receipt: Receipt,
 }
 
+pub(crate) fn preparation_workspace_capacity() -> (usize, usize, usize) {
+    workspace::capacity_inventory()
+}
 pub(crate) const fn prepared_header_bytes() -> usize {
     size_of::<Prepared>()
 }
@@ -330,7 +333,7 @@ impl Engine {
             next_token: 1,
             journal,
             timeline: crate::model_rows::Resident::empty(),
-            background: None,
+            background: crate::model_rows::Resident::empty(),
             preparation_workspace: Some(workspace::reserve()?),
         };
         if engine.owned_capacity_bytes() > ENGINE_BYTE_BUDGET {
@@ -355,7 +358,7 @@ impl Engine {
             next_token: u64,
             journal: &'a [JournalRecord],
             timeline: &'a crate::model_rows::Resident<crate::timeline::Timeline>,
-            background: &'a Option<crate::background::Background>,
+            background: &'a crate::model_rows::Resident<crate::background::Background>,
         }
         struct Bounded<W> {
             inner: W,
@@ -428,8 +431,16 @@ impl Engine {
         if let Some(e) = candidate.world.exchange {
             e.validate_world_shape(&candidate.world)?;
         }
-        if let Some(b) = &candidate.background {
-            b.validate()?;
+        if let Some(b) = candidate.background.as_ref() {
+            let mut work = workspace::BackgroundWorkLease::take(
+                &candidate
+                    .preparation_workspace
+                    .as_ref()
+                    .ok_or("missing_workspace")?
+                    .background_work,
+            )
+            .map_err(|e| format!("workspace:{e:?}"))?;
+            b.validate_with(&mut work)?;
             let t = candidate.timeline.as_ref().ok_or("background_timeline")?;
             b.validate_timeline(t, candidate.world.revision)?;
             if candidate.world.exchange.is_none()
@@ -689,6 +700,22 @@ impl Engine {
                 result.is_ok()
             }
     }
+    /// Recovery/staged validation borrows the same separately charged CPU image.
+    pub fn background_candidate_matches(
+        &self,
+        candidate: &crate::air::State,
+    ) -> Result<bool, String> {
+        let storage = self
+            .preparation_workspace
+            .as_ref()
+            .ok_or("missing_workspace")?;
+        let mut work = workspace::BackgroundWorkLease::take(&storage.background_work)
+            .map_err(|e| format!("workspace:{e:?}"))?;
+        self.background
+            .as_ref()
+            .ok_or("background_missing")?
+            .candidate_matches(candidate, &mut work, &mut Trace::disabled())
+    }
     pub fn background(&self) -> Option<&crate::background::Background> {
         self.background.as_ref()
     }
@@ -696,10 +723,8 @@ impl Engine {
         self.timeline.as_ref()
     }
     pub fn owned_capacity_bytes(&self) -> usize {
-        let extra = self.timeline.backing().owned_bytes()
-            + self.background.as_ref().map_or(0, |b| {
-                b.owned_bytes() - size_of::<crate::background::Background>()
-            });
+        let extra = self.timeline.backing().owned_bytes() + self.background.backing().owned_bytes()
+            - size_of::<crate::background::Background>();
         extra
             + size_of::<Self>()
             + self.world.layout()["owned_capacity_bytes"]
@@ -1008,7 +1033,9 @@ impl Engine {
         let mut economy = self.world.economy;
         let mut boot = self.world.boot;
         let mut exchange = self.world.exchange;
-        let mut background = self.background.clone();
+        let mut background =
+            workspace::BackgroundLease::acquire(&storage.background, &self.background)?;
+        let mut background_work = workspace::BackgroundWorkLease::take(&storage.background_work)?;
         for (action_index, action) in env.actions.iter().enumerate() {
             let domain_start = if matches!(
                 action,
@@ -1087,7 +1114,7 @@ impl Engine {
                         {
                             return Err(TxError::InvalidOperation);
                         }
-                        background = Some(crate::background::Background::new());
+                        background.activate();
                     } else {
                         if !matches!(command, crate::background::Command::Restart)
                             && timeline.as_ref().is_none_or(|t| {
@@ -1100,7 +1127,7 @@ impl Engine {
                         let result = background
                             .as_mut()
                             .ok_or(TxError::InvalidOperation)?
-                            .command_diagnosed(command, candidate, trace)
+                            .command_diagnosed(command, candidate, trace, &mut background_work)
                             .map_err(|_| TxError::InvalidOperation);
                         if matches!(command, crate::background::Command::Accept { .. }) {
                             trace.end(Class::Admit, started, 0, u64::from(result.is_ok()), 0);
@@ -1119,6 +1146,7 @@ impl Engine {
                         trace,
                         world: &self.world,
                         background: &mut background,
+                        background_work: &mut background_work,
                         region: &mut region,
                         economy: &mut economy,
                         boot: &mut boot,
@@ -1745,17 +1773,15 @@ impl Engine {
         } else {
             None
         };
-        if let Some(b) = &background {
+        if let Some(b) = background.as_ref() {
             b.validate_timeline(
                 timeline.as_ref().ok_or(TxError::InvalidOperation)?,
                 next_revision,
             )
             .map_err(|_| TxError::InvalidOperation)?;
         }
-        let bg_heap = |b: &Option<crate::background::Background>| {
-            b.as_ref().map_or(0, |v| {
-                v.owned_bytes() - size_of::<crate::background::Background>()
-            })
+        let bg_heap = |b: &crate::model_rows::Resident<crate::background::Background>| {
+            b.backing().owned_bytes() - size_of::<crate::background::Background>()
         };
         let projected = self
             .owned_capacity_bytes()
@@ -1807,7 +1833,7 @@ impl Engine {
         }
         // The old authoritative backing returns through the lease, never deallocated.
         std::mem::swap(&mut self.timeline, &mut *prepared.timeline);
-        self.background = prepared.background;
+        std::mem::swap(&mut self.background, &mut *prepared.background);
         self.world.exchange = prepared.exchange;
         self.world.boot = prepared.boot;
         self.world.economy = prepared.economy;

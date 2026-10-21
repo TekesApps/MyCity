@@ -158,12 +158,10 @@ impl Store {
                     if state.checkpoint_digest().map_err(Error::Model)?.0 as u64 != r.staged_bytes {
                         return Err(Error::Invalid("background_staged_length"));
                     }
-                    let b = engine.background().expect("required background");
-                    let mut reference = b.frozen_input().map_err(Error::Model)?;
-                    while !reference.complete() {
-                        reference.page(8192, 1024).map_err(Error::Model)?;
-                    }
-                    if reference != state {
+                    if !engine
+                        .background_candidate_matches(&state)
+                        .map_err(Error::Model)?
+                    {
                         return Err(Error::Invalid("background_staged_input"));
                     }
                 }

@@ -1,0 +1,41 @@
+{
+  "status": "planned_not_deleted",
+  "protected": [
+    "work/t13a70-joint-01",
+    "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001",
+    "work/t13a65-joint-02/model/business",
+    "work/t13a68-legacy-reopen",
+    "work/accepted-binaries",
+    "work/candidate-binaries"
+  ],
+  "files": [
+    {
+      "path": "work/t13a65-joint-02/model/layout/snapshots/snapshot-000001/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "inode": 407014256,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792560187388196536,
+      "run": "t13a65-joint-02",
+      "retained_evidence": "docs/evidence/m0-t13a-helper-compare/t13a65-joint-02",
+      "reason": "Published v66 synthetic layout pressure superseded by current verified full t13a70-joint-01 two-generation baseline; advisor found no remaining old layout restore dependency. All old business/compatibility worlds and original fault evidence retained.",
+      "availability_after": "Old v66 layout snapshot NOT directly full-restorable; original hash/index is historical identity only",
+      "regeneration": "Archived exact version generator + original pattern/page layout/mutation iteration; validate complete original index after regeneration before claiming restored"
+    },
+    {
+      "path": "work/t13a65-joint-02/model/layout/snapshots/snapshot-000002/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "inode": 407040708,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792560488774186855,
+      "run": "t13a65-joint-02",
+      "retained_evidence": "docs/evidence/m0-t13a-helper-compare/t13a65-joint-02",
+      "reason": "Published v66 synthetic layout pressure superseded by current verified full t13a70-joint-01 two-generation baseline; advisor found no remaining old layout restore dependency. All old business/compatibility worlds and original fault evidence retained.",
+      "availability_after": "Old v66 layout snapshot NOT directly full-restorable; original hash/index is historical identity only",
+      "regeneration": "Archived exact version generator + original pattern/page layout/mutation iteration; validate complete original index after regeneration before claiming restored"
+    }
+  ]
+}

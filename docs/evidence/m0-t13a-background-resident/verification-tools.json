@@ -1,0 +1,14 @@
+{
+  "source": "docs/evidence/m0-t13a-helper-compare",
+  "unchanged_copies_sha256": {
+    "observe.py": "9fcb2290b7837fff0e73eefae0e761237fa90e9c03f8d53d96b8388647bc5ac1",
+    "readiness.py": "88ae51f35cabba9cf5660cf6a6d7a7e29b3268b253b2e80583fa005b69dbee6a",
+    "collect.py": "bea7e242c40d4c813d46e4f76d1a3bfcba5d64bb40b0c017199481a4dcadd124",
+    "verify.py": "f4e639f33be851a5a17962970f9244c5fb78a3ca8e47daf276f533be195af170",
+    "diagnostic_audit.py": "5283853c485bb6bb3c536dddd0602fe8d9d17febdcd64111f24fad097c1230b2",
+    "workspace_audit.py": "0ddf2d8754345805841d135325dfc50d5a48c7aca188ba94bb91e489971541e4",
+    "coverage.py": "0f392641be3e6d1b45d8b9fe99bd4064f606e8633596983393de057e005e2208",
+    "latency_audit.py": "f552cb89e1b4b5b5b7fc838b6e0bd722eca59f60dead694153bb5e952efc95b7"
+  },
+  "scope": "Original workload/controller and independent audits; paths adapt through positional arguments only"
+}

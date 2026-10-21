@@ -1,0 +1,25 @@
+{
+  "checks": [
+    {
+      "index": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+      "indexed_files": 29,
+      "original_files_present_and_length_match": true,
+      "scope": "Existing complete snapshot retained; not a new restore"
+    },
+    {
+      "index": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/index.json",
+      "indexed_files": 29,
+      "original_files_present_and_length_match": true,
+      "scope": "Existing complete snapshot retained; not a new restore"
+    },
+    {
+      "index": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001/index.json",
+      "indexed_files": 29,
+      "original_files_present_and_length_match": true,
+      "scope": "Existing complete snapshot retained; not a new restore"
+    }
+  ],
+  "old_business_original_and_compat_copy_files_each": 243,
+  "old_business_original_and_compat_copy_hash_unchanged": true,
+  "all_nonselected_work_metadata_unchanged": 85129
+}

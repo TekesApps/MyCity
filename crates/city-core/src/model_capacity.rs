@@ -6,8 +6,8 @@ use crate::{
     background::SOURCE_LIMIT,
     timeline::{Claim, Payroll, CLAIM_LIMIT, PAYROLL_LIMIT},
     transaction::{
-        prepared_header_bytes, Engine, JournalRecord, Lease, Resource, MAX_LEASES, MAX_RECEIPTS,
-        MAX_RESOURCES,
+        preparation_workspace_capacity, prepared_header_bytes, Engine, JournalRecord, Lease,
+        Resource, MAX_LEASES, MAX_RECEIPTS, MAX_RESOURCES,
     },
 };
 use serde::Serialize;
@@ -36,6 +36,8 @@ pub struct Inventory {
     pub engine: Vec<Part>,
     pub prepared: Vec<Part>,
     pub extra_air_state: Vec<Part>,
+    pub retained_preparation_workspace: Vec<Part>,
+    pub retained_preparation_workspace_bytes: usize,
     pub engine_bytes: usize,
     pub prepared_bytes: usize,
     pub extra_air_state_bytes: usize,
@@ -144,7 +146,23 @@ pub fn inventory() -> Inventory {
     let mut extra_air_state = vec![Part::new("state_inline_header", 1, size_of::<State>())];
     // Shared maximum supports the full CPU/reference kernel too, not only four shipments.
     extra_air_state.extend(air_payload(20_000));
+    let (tables, work, controls) = preparation_workspace_capacity();
+    let retained_preparation_workspace = vec![
+        Part::new(
+            "per_engine_retained_prepare_tables_and_background",
+            1,
+            tables,
+        ),
+        Part::new("per_engine_background_compute_payload", 1, work),
+        Part::new(
+            "seven_slot_headers_and_conservative_arc_allowance",
+            1,
+            controls,
+        ),
+    ];
     Inventory {
+        retained_preparation_workspace_bytes: sum(&retained_preparation_workspace),
+        retained_preparation_workspace,
         engine_bytes: sum(&engine),
         prepared_bytes: sum(&prepared),
         extra_air_state_bytes: sum(&extra_air_state),

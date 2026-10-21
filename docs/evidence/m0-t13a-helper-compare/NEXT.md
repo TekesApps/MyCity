@@ -1,5 +1,7 @@
 # Continuation: v0.5.66 fixed helper stage
 
+> 当前恢复可用性更新（v0.5.70）：旧v66 joint-02两份layout压力已退役，对应布局快照不能直接完整恢复；business world及完整兼容副本保留。最新完整布局基线已换为t13a70-joint-01两代，v50旧格式依赖仍完整。详见[本阶段报告](../m0-t13a-background-resident/STATUS.md)；下文旧保留承诺仅代表当时状态。
+
 > 当前可用性更新（v0.5.68）：v64 joint-01及v65 joint-01的四份压力载荷已退役，对应快照不能直接完整恢复；原始证据保留。v66 joint-02两代及v50旧格式依赖仍完整。详见[后续清理报告](../disk-reclamation-2026-10-21-followup/STATUS.md)。旧文中的完整保留承诺仅代表当时状态。
 
 Active goal, M0 not accepted. Cleanup-only v0.5.65 main 9bdddfa1d5feafd55c3f3b7c8604f195c6e55036 was published first. This model stage is v0.5.66; t13a65-* remain immutable experiment IDs, not release claims.

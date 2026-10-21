@@ -7,6 +7,7 @@ use std::{
     io::{self, Write},
     mem::size_of,
 };
+mod resident;
 mod rows;
 mod wire;
 pub use rows::Rows;

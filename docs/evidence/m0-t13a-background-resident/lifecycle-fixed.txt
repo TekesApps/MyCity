@@ -1,0 +1,9 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+    Finished `release` profile [optimized] target(s) in 7.11s
+     Running unittests src/lib.rs (target/release/deps/mycity_core-2f19e129d35b0fee)
+
+running 1 test
+test background::tests::fixed_background_lifecycle_keeps_all_backings_and_old_numerical_bytes ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 55 filtered out; finished in 0.03s
+

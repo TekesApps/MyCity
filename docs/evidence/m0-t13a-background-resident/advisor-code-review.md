@@ -1,0 +1,9 @@
+# advisor独立代码审查（只读）
+
+advisor首先建议C：Engine显式持有并借出BackgroundWork；不把RefCell隐藏进权威模型，也不让Clone共享一个难以归属的Arc计算场。生成、摘要校验及独立CPU reference串行复用同一槽。
+
+当前diff审查未发现具体阻断：background_begin保留原continuation条件、累积场／积分／时间和数值核；Accept复制到Prepared既有背板，持久成功后交换，失败及展开归还。Resident按活动状态序列化／比较，旧null及字段顺序保留。新公式按Engine份数计常驻准备工作区与七槽控制预留，额外活动Prepared／五通用Air槽是保守重复预留。
+
+仍有边界：Raw恢复同时持有旧解码对象与新背板；input.identity产生短字符串；公共validate/frozen_input仍会分配。只能称主准备／接纳路径大State背板复用，不能称零分配／全角色固定恢复／normal64闭合。
+
+advisor未构建、运行测试或负载，最终结果仍待全仓终态、真实旧完整world兼容及实际联合运行。

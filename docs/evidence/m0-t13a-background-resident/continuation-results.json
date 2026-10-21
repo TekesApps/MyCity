@@ -1,0 +1,108 @@
+{
+  "regression_wait": {
+    "pid": 92037,
+    "lstart": "Wed Oct 21 15:10:04 2026",
+    "required_keys": [
+      "workspace-release",
+      "clippy-final",
+      "fmt-final",
+      "build-final"
+    ]
+  },
+  "capacity": {
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/background-resident/mycity-headless",
+      "model-capacity-plan"
+    ],
+    "exit": 0,
+    "seconds": 0.5322249580000005
+  },
+  "readiness": {
+    "command": [
+      "python3",
+      "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-background-resident/readiness.py",
+      "/Users/frankqin/dev/MyCity/work/t13a70-preflight"
+    ],
+    "exit": 0,
+    "seconds": 120.28115724999998
+  },
+  "measurement_launch": {
+    "source": "926a61a2df328e5c4767f82de045659fa416f91858e62a6c5292ee24c171939f",
+    "root_heap_log_environment": "/Users/frankqin/dev/MyCity/work/t13a70-joint-01/model/heaps.jsonl",
+    "load": "unchanged full L1+L2 smoke600s; NOT8h",
+    "readiness_exit": 0
+  },
+  "joint": {
+    "command": [
+      "python3",
+      "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-background-resident/observe.py",
+      "/Users/frankqin/dev/MyCity/work/t13a70-joint-01",
+      "--",
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/background-resident/mycity-headless",
+      "joint-endurance",
+      "/Users/frankqin/dev/MyCity/work/t13a70-joint-01/model",
+      "smoke"
+    ],
+    "exit": 0,
+    "seconds": 606.44288325
+  },
+  "collect": {
+    "command": [
+      "python3",
+      "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-background-resident/collect.py",
+      "t13a70-joint-01"
+    ],
+    "exit": 0,
+    "seconds": 4.492316249999931
+  },
+  "verify": {
+    "command": [
+      "python3",
+      "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-background-resident/verify.py",
+      "/Users/frankqin/dev/MyCity/work/t13a70-joint-01",
+      "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-background-resident"
+    ],
+    "exit": 0,
+    "seconds": 0.9560239999999567
+  },
+  "workspace_audit": {
+    "command": [
+      "python3",
+      "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-background-resident/workspace_audit.py",
+      "/Users/frankqin/dev/MyCity/work/t13a70-joint-01",
+      "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-background-resident"
+    ],
+    "exit": 0,
+    "seconds": 0.9149958749999314
+  },
+  "coverage": {
+    "command": [
+      "python3",
+      "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-background-resident/coverage.py",
+      "/Users/frankqin/dev/MyCity/work/t13a70-joint-01",
+      "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-background-resident"
+    ],
+    "exit": 0,
+    "seconds": 0.10375820800004476
+  },
+  "diagnostic_audit": {
+    "command": [
+      "python3",
+      "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-background-resident/diagnostic_audit.py",
+      "/Users/frankqin/dev/MyCity/work/t13a70-joint-01",
+      "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-background-resident"
+    ],
+    "exit": 0,
+    "seconds": 0.14772149999998874
+  },
+  "latency_audit": {
+    "command": [
+      "python3",
+      "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-background-resident/latency_audit.py",
+      "/Users/frankqin/dev/MyCity/work/t13a70-joint-01",
+      "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-background-resident"
+    ],
+    "exit": 0,
+    "seconds": 3.074961958000017
+  }
+}

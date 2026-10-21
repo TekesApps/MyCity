@@ -1,0 +1,24 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+    Finished `release` profile [optimized] target(s) in 7.80s
+     Running unittests src/lib.rs (target/release/deps/mycity_core-2f19e129d35b0fee)
+
+running 1 test
+test background::tests::fixed_background_lifecycle_keeps_all_backings_and_old_numerical_bytes ... FAILED
+
+failures:
+
+---- background::tests::fixed_background_lifecycle_keeps_all_backings_and_old_numerical_bytes stdout ----
+
+thread 'background::tests::fixed_background_lifecycle_keeps_all_backings_and_old_numerical_bytes' panicked at crates/city-core/src/background.rs:844:13:
+assertion `left == right` failed
+  left: [48375955456, 48375889920, 48376020992, 4310434064, 4310410976, 4310434144]
+ right: [48375889920, 48375955456, 48376020992, 4310434064, 4310410976, 4310434144]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    background::tests::fixed_background_lifecycle_keeps_all_backings_and_old_numerical_bytes
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 55 filtered out; finished in 0.02s
+
+error: test failed, to rerun pass `-p mycity-core --lib`

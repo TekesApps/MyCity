@@ -13,3 +13,5 @@
 本次记录见 [2026-10-21 清理报告](evidence/disk-reclamation-2026-10-21/STATUS.md)。后续阶段须在结束检查中明确“已回收”或“保留原因及下一次复查条件”，不得只启动下一轮而累积旧压力数据。
 
 当前回收与恢复可用性以[v0.5.68后续报告](evidence/disk-reclamation-2026-10-21-followup/STATUS.md)为准：退役v64及失败v65第一轮压力，仍保留成功joint-02两代、v50旧格式依赖及当前业务兼容world。后续阶段不得将此精确允许清单泛化为批删权限。
+
+[v0.5.70最新基线及阶段回收](evidence/m0-t13a-background-resident/STATUS.md)覆盖上述当时的保留承诺：新t13a70-joint-01两代及v50旧格式依赖完整；旧v66 layout压力已逐文件退役，其业务world和完整兼容副本保留。历史快照未重建前不可再宣称可直接完整恢复。

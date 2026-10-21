@@ -6,6 +6,9 @@ use std::{
     sync::{Arc, Mutex},
 };
 type Image = Resident<crate::timeline::Timeline>;
+type BackgroundImage = Resident<crate::background::Background>;
+pub(super) type BackgroundLease = Lease<BackgroundImage>;
+pub(super) type BackgroundWorkLease = Lease<crate::background::Work>;
 type Owner<T> = Arc<Mutex<Option<T>>>;
 pub(super) type TimelineWorkspace = Owner<Image>;
 pub(super) type TimelineLease = Lease<Image>;
@@ -15,10 +18,40 @@ pub(super) type ResourceLease = Lease<ResourceRows>;
 pub(super) type CapacityLease = Lease<LeaseRows>;
 pub(super) struct PreparationWorkspace {
     pub timeline: TimelineWorkspace,
+    pub background: Owner<BackgroundImage>,
+    pub background_work: Owner<crate::background::Work>,
     pub accounts: Owner<DirtyAccounts>,
     pub stocks: Owner<DirtyStocks>,
     pub resources: Owner<ResourceRows>,
     pub leases: Owner<LeaseRows>,
+}
+/// Current per-Engine retained preparation storage, not just one active Prepared.
+/// 256B/slot conservatively covers Arc counts/alignment; not allocator/RSS evidence.
+pub(super) fn capacity_inventory() -> (usize, usize, usize) {
+    fn slot<T>() -> usize {
+        size_of::<Mutex<Option<T>>>() + 256
+    }
+    let controls = slot::<Image>()
+        + slot::<BackgroundImage>()
+        + slot::<crate::background::Work>()
+        + slot::<DirtyAccounts>()
+        + slot::<DirtyStocks>()
+        + slot::<ResourceRows>()
+        + slot::<LeaseRows>();
+    let tables = crate::timeline::CLAIM_LIMIT * size_of::<crate::timeline::Claim>()
+        + crate::timeline::PAYROLL_LIMIT * size_of::<crate::timeline::Payroll>()
+        + crate::assembly::MAX_ACCOUNTS * size_of::<(Handle<AccountDomain>, Account)>()
+        + crate::assembly::MAX_STOCKS * size_of::<(Handle<InventoryDomain>, Stock)>()
+        + MAX_RESOURCES * size_of::<Resource>()
+        + MAX_LEASES * size_of::<Option<super::Lease>>();
+    let air_payload = 128 * 128 * 16
+        + crate::background::SOURCE_LIMIT * size_of::<crate::air::Source>()
+        + crate::air::STRATEGY.len()
+        + 64;
+    let background = air_payload
+        + crate::background::SOURCE_LIMIT * size_of::<crate::air::Source>()
+        + crate::air::STRATEGY.len();
+    (tables + background, air_payload, controls)
 }
 pub(super) fn reserve_timeline() -> TimelineWorkspace {
     Arc::new(Mutex::new(Some(Image::empty())))
@@ -31,6 +64,8 @@ pub(super) fn reserve() -> Result<PreparationWorkspace, TxError> {
     }
     Ok(PreparationWorkspace {
         timeline: reserve_timeline(),
+        background: Arc::new(Mutex::new(Some(BackgroundImage::empty()))),
+        background_work: Arc::new(Mutex::new(Some(crate::background::Work::new()))),
         accounts: rows()?,
         stocks: rows()?,
         resources: rows()?,
@@ -39,6 +74,26 @@ pub(super) fn reserve() -> Result<PreparationWorkspace, TxError> {
 }
 pub(super) trait Reset {
     fn reset_storage(&mut self);
+}
+impl Reset for crate::background::Work {
+    fn reset_storage(&mut self) {
+        self.reset();
+    }
+}
+impl Reset for BackgroundImage {
+    fn reset_storage(&mut self) {
+        self.deactivate();
+    }
+}
+impl Lease<BackgroundImage> {
+    pub fn acquire(
+        owner: &Owner<BackgroundImage>,
+        source: &BackgroundImage,
+    ) -> Result<Self, TxError> {
+        let mut lease = Self::take(owner)?;
+        lease.deref_mut().clone_from(source);
+        Ok(lease)
+    }
 }
 impl Reset for Image {
     fn reset_storage(&mut self) {
@@ -204,6 +259,38 @@ mod tests {
     fn failed_or_unwound_hook_preserves_authority_then_commit_swaps_backing() {
         let mut e = engine();
         let before = e.state_hash();
+        let bg_owner = Arc::clone(&e.preparation_workspace.as_ref().unwrap().background);
+        let bg_authority = e.background.backing().allocation_set();
+        let bg_scratch = bg_owner
+            .lock()
+            .unwrap()
+            .as_ref()
+            .unwrap()
+            .backing()
+            .allocation_set();
+        let air_owner = Arc::clone(&e.preparation_workspace.as_ref().unwrap().background_work);
+        {
+            let lease = BackgroundWorkLease::take(&air_owner).unwrap();
+            assert!(matches!(
+                e.prepare_diagnosed(
+                    Caller::System,
+                    &Envelope {
+                        world: 1,
+                        branch: 1,
+                        operation_id: 999,
+                        expected_revision: 0,
+                        actions: vec![Action::Timeline {
+                            command: crate::timeline::Command::Enable
+                        }]
+                    },
+                    None,
+                    &mut Trace::disabled()
+                ),
+                Err(TxError::WorkingLimit)
+            ));
+            drop(lease);
+        }
+        assert_eq!(e.background.backing().allocation_set(), bg_authority);
         let owner = Arc::clone(&e.preparation_workspace.as_ref().unwrap().timeline);
         let authority = e.timeline.backing().claims.allocation();
         let scratch = owner
@@ -251,6 +338,18 @@ mod tests {
         e.execute(Caller::System, env).unwrap();
         assert!(e.timeline.is_some());
         assert_eq!(e.timeline.backing().claims.allocation(), scratch);
+        assert_eq!(e.background.backing().allocation_set(), bg_scratch);
+        assert_eq!(
+            bg_owner
+                .lock()
+                .unwrap()
+                .as_ref()
+                .unwrap()
+                .backing()
+                .allocation_set(),
+            bg_authority
+        );
+        assert!(BackgroundWorkLease::take(&air_owner).is_ok());
         let back = owner.lock().unwrap();
         let returned = back.as_ref().unwrap();
         assert_eq!(returned.backing().claims.allocation(), authority);

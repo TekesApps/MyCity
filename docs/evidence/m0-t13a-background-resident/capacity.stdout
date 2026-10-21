@@ -1,0 +1,483 @@
+{
+  "schema": "mycity-model-workspace-capacity-plan-v1",
+  "pointer_width_bits": 64,
+  "core": {
+    "engine": [
+      {
+        "name": "engine_inline_root_including_timeline_background_headers",
+        "count": 1,
+        "record_bytes": 984,
+        "bytes": 984
+      },
+      {
+        "name": "boxed_world_inline_root_including_fixed_domains",
+        "count": 1,
+        "record_bytes": 22072,
+        "bytes": 22072
+      },
+      {
+        "name": "account_arena_slots_and_free_indices",
+        "count": 1,
+        "record_bytes": 2304,
+        "bytes": 2304
+      },
+      {
+        "name": "stock_arena_slots_and_free_indices",
+        "count": 1,
+        "record_bytes": 12800,
+        "bytes": 12800
+      },
+      {
+        "name": "account_id_index",
+        "count": 64,
+        "record_bytes": 40,
+        "bytes": 2560
+      },
+      {
+        "name": "stock_id_index",
+        "count": 128,
+        "record_bytes": 40,
+        "bytes": 5120
+      },
+      {
+        "name": "opening_sources",
+        "count": 192,
+        "record_bytes": 16,
+        "bytes": 3072
+      },
+      {
+        "name": "resources",
+        "count": 8,
+        "record_bytes": 16,
+        "bytes": 128
+      },
+      {
+        "name": "leases",
+        "count": 64,
+        "record_bytes": 24,
+        "bytes": 1536
+      },
+      {
+        "name": "hot_journal",
+        "count": 1024,
+        "record_bytes": 2584,
+        "bytes": 2646016
+      },
+      {
+        "name": "claims",
+        "count": 20000,
+        "record_bytes": 48,
+        "bytes": 960000
+      },
+      {
+        "name": "payroll",
+        "count": 64,
+        "record_bytes": 120,
+        "bytes": 7680
+      },
+      {
+        "name": "air_sources",
+        "count": 4,
+        "record_bytes": 20,
+        "bytes": 80
+      },
+      {
+        "name": "air_f32_bits_field_and_scratch",
+        "count": 32768,
+        "record_bytes": 4,
+        "bytes": 131072
+      },
+      {
+        "name": "air_f64_bits_integral",
+        "count": 16384,
+        "record_bytes": 8,
+        "bytes": 131072
+      },
+      {
+        "name": "air_strategy_and_input_hash",
+        "count": 1,
+        "record_bytes": 80,
+        "bytes": 80
+      },
+      {
+        "name": "pending_job_input_sources",
+        "count": 4,
+        "record_bytes": 20,
+        "bytes": 80
+      },
+      {
+        "name": "pending_job_input_strategy",
+        "count": 1,
+        "record_bytes": 16,
+        "bytes": 16
+      }
+    ],
+    "prepared": [
+      {
+        "name": "prepared_inline_root_including_fixed_domain_copies",
+        "count": 1,
+        "record_bytes": 24056,
+        "bytes": 24056
+      },
+      {
+        "name": "dirty_accounts",
+        "count": 64,
+        "record_bytes": 56,
+        "bytes": 3584
+      },
+      {
+        "name": "dirty_stocks",
+        "count": 128,
+        "record_bytes": 120,
+        "bytes": 15360
+      },
+      {
+        "name": "resources",
+        "count": 8,
+        "record_bytes": 16,
+        "bytes": 128
+      },
+      {
+        "name": "leases",
+        "count": 64,
+        "record_bytes": 24,
+        "bytes": 1536
+      },
+      {
+        "name": "claims",
+        "count": 20000,
+        "record_bytes": 48,
+        "bytes": 960000
+      },
+      {
+        "name": "payroll",
+        "count": 64,
+        "record_bytes": 120,
+        "bytes": 7680
+      },
+      {
+        "name": "air_sources",
+        "count": 4,
+        "record_bytes": 20,
+        "bytes": 80
+      },
+      {
+        "name": "air_f32_bits_field_and_scratch",
+        "count": 32768,
+        "record_bytes": 4,
+        "bytes": 131072
+      },
+      {
+        "name": "air_f64_bits_integral",
+        "count": 16384,
+        "record_bytes": 8,
+        "bytes": 131072
+      },
+      {
+        "name": "air_strategy_and_input_hash",
+        "count": 1,
+        "record_bytes": 80,
+        "bytes": 80
+      },
+      {
+        "name": "pending_job_input_sources",
+        "count": 4,
+        "record_bytes": 20,
+        "bytes": 80
+      },
+      {
+        "name": "pending_job_input_strategy",
+        "count": 1,
+        "record_bytes": 16,
+        "bytes": 16
+      }
+    ],
+    "extra_air_state": [
+      {
+        "name": "state_inline_header",
+        "count": 1,
+        "record_bytes": 400,
+        "bytes": 400
+      },
+      {
+        "name": "air_sources",
+        "count": 20000,
+        "record_bytes": 20,
+        "bytes": 400000
+      },
+      {
+        "name": "air_f32_bits_field_and_scratch",
+        "count": 32768,
+        "record_bytes": 4,
+        "bytes": 131072
+      },
+      {
+        "name": "air_f64_bits_integral",
+        "count": 16384,
+        "record_bytes": 8,
+        "bytes": 131072
+      },
+      {
+        "name": "air_strategy_and_input_hash",
+        "count": 1,
+        "record_bytes": 80,
+        "bytes": 80
+      }
+    ],
+    "retained_preparation_workspace": [
+      {
+        "name": "per_engine_retained_prepare_tables_and_background",
+        "count": 1,
+        "record_bytes": 1250688,
+        "bytes": 1250688
+      },
+      {
+        "name": "per_engine_background_compute_payload",
+        "count": 1,
+        "record_bytes": 262304,
+        "bytes": 262304
+      },
+      {
+        "name": "seven_slot_headers_and_conservative_arc_allowance",
+        "count": 1,
+        "record_bytes": 3248,
+        "bytes": 3248
+      }
+    ],
+    "retained_preparation_workspace_bytes": 1516240,
+    "engine_bytes": 3926672,
+    "prepared_bytes": 1274744,
+    "extra_air_state_bytes": 662624,
+    "source_limit": 20000,
+    "cell_limit": 16384,
+    "runtime_ownership_proven": false
+  },
+  "metadata": [
+    {
+      "name": "store_root_and_inline_headers_excluding_engine",
+      "count": 1,
+      "record_bytes": 1712,
+      "bytes": 1712
+    },
+    {
+      "name": "candidate_root_and_verification_root",
+      "count": 2,
+      "record_bytes": 328,
+      "bytes": 656
+    },
+    {
+      "name": "v2_snapshot_receipt_index_body_headers",
+      "count": 1,
+      "record_bytes": 496,
+      "bytes": 496
+    },
+    {
+      "name": "source_queue_header",
+      "count": 1,
+      "record_bytes": 96,
+      "bytes": 96
+    },
+    {
+      "name": "source_queue_and_staged_copy",
+      "count": 32,
+      "record_bytes": 40,
+      "bytes": 1280
+    },
+    {
+      "name": "receipt_operations_index",
+      "count": 1024,
+      "record_bytes": 8,
+      "bytes": 8192
+    },
+    {
+      "name": "current_and_replay_journal_records",
+      "count": 2,
+      "record_bytes": 2584,
+      "bytes": 5168
+    },
+    {
+      "name": "current_and_replay_receipts",
+      "count": 2,
+      "record_bytes": 1248,
+      "bytes": 2496
+    },
+    {
+      "name": "current_replay_and_wal_envelope_headers",
+      "count": 3,
+      "record_bytes": 56,
+      "bytes": 168
+    },
+    {
+      "name": "current_replay_and_wal_actions",
+      "count": 48,
+      "record_bytes": 80,
+      "bytes": 3840
+    },
+    {
+      "name": "decoded_opening_inline_headers_including_domain_openings",
+      "count": 1,
+      "record_bytes": 2720,
+      "bytes": 2720
+    },
+    {
+      "name": "opening_account_rows",
+      "count": 64,
+      "record_bytes": 24,
+      "bytes": 1536
+    },
+    {
+      "name": "opening_stock_rows",
+      "count": 128,
+      "record_bytes": 32,
+      "bytes": 4096
+    },
+    {
+      "name": "opening_source_rows",
+      "count": 192,
+      "record_bytes": 16,
+      "bytes": 3072
+    },
+    {
+      "name": "opening_city_rows",
+      "count": 8,
+      "record_bytes": 24,
+      "bytes": 192
+    },
+    {
+      "name": "opening_route_rows",
+      "count": 16,
+      "record_bytes": 24,
+      "bytes": 384
+    },
+    {
+      "name": "opening_obligation_rows",
+      "count": 16,
+      "record_bytes": 56,
+      "bytes": 896
+    },
+    {
+      "name": "opening_schema_profile_and_transport_strings",
+      "count": 11,
+      "record_bytes": 64,
+      "bytes": 704
+    },
+    {
+      "name": "genesis_resources",
+      "count": 8,
+      "record_bytes": 16,
+      "bytes": 128
+    },
+    {
+      "name": "background_live_hashes",
+      "count": 32,
+      "record_bytes": 32,
+      "bytes": 1024
+    },
+    {
+      "name": "bounded_path_slots",
+      "count": 8,
+      "record_bytes": 4096,
+      "bytes": 32768
+    },
+    {
+      "name": "bounded_metadata_hash_or_schema_strings",
+      "count": 64,
+      "record_bytes": 64,
+      "bytes": 4096
+    },
+    {
+      "name": "stream_parser_scratch",
+      "count": 1,
+      "record_bytes": 65536,
+      "bytes": 65536
+    },
+    {
+      "name": "bounded_token_scratch",
+      "count": 1,
+      "record_bytes": 4096,
+      "bytes": 4096
+    }
+  ],
+  "metadata_bytes": 145352,
+  "store_inline_non_engine_bytes": 1712,
+  "persistence_inline_bytes_already_in_store": 392,
+  "scenarios": [
+    {
+      "name": "reference_or_fault_reference",
+      "engine_slots": 1,
+      "prepared_slots": 1,
+      "retained_preparation_workspace_slots": 1,
+      "retained_preparation_workspace_slot_bytes": 1516240,
+      "extra_air_slots": 5,
+      "extra_air_slot_bytes": 1049128,
+      "spatial_resident_bytes": 0,
+      "io_codec_bytes": 4194304,
+      "metadata_target_bytes": 145352,
+      "concurrent_worker_bytes": 0,
+      "total_bytes": 16302952
+    },
+    {
+      "name": "sim_open_genesis_current_and_validation",
+      "engine_slots": 3,
+      "prepared_slots": 1,
+      "retained_preparation_workspace_slots": 3,
+      "retained_preparation_workspace_slot_bytes": 1516240,
+      "extra_air_slots": 5,
+      "extra_air_slot_bytes": 1049128,
+      "spatial_resident_bytes": 11533232,
+      "io_codec_bytes": 4194304,
+      "metadata_target_bytes": 145352,
+      "concurrent_worker_bytes": 5242880,
+      "total_bytes": 43964888
+    },
+    {
+      "name": "sim_prepare_capture_accept_or_checkpoint",
+      "engine_slots": 2,
+      "prepared_slots": 1,
+      "retained_preparation_workspace_slots": 2,
+      "retained_preparation_workspace_slot_bytes": 1516240,
+      "extra_air_slots": 5,
+      "extra_air_slot_bytes": 1049128,
+      "spatial_resident_bytes": 11533232,
+      "io_codec_bytes": 4194304,
+      "metadata_target_bytes": 145352,
+      "concurrent_worker_bytes": 5242880,
+      "total_bytes": 38521976
+    },
+    {
+      "name": "ordinary_compare_two_models",
+      "engine_slots": 2,
+      "prepared_slots": 1,
+      "retained_preparation_workspace_slots": 2,
+      "retained_preparation_workspace_slot_bytes": 1516240,
+      "extra_air_slots": 5,
+      "extra_air_slot_bytes": 1049128,
+      "spatial_resident_bytes": 0,
+      "io_codec_bytes": 4194304,
+      "metadata_target_bytes": 145352,
+      "concurrent_worker_bytes": 0,
+      "total_bytes": 21745864
+    }
+  ],
+  "required_bytes": 43964888,
+  "budget_bytes": 67108864,
+  "target_slots_fit": true,
+  "runtime_grant_accepted": false,
+  "prerequisites": [
+    "Exact fully initialized fixed arrays/strings, active lengths, no hidden growth or deep Clone escape",
+    "Five explicit shared Air scratch slots; all capture/accept/validate/staged-reload entries borrow them",
+    "Charge all per-Engine retained prepare tables/background scratch and controls; extra active Prepared target is conservatively retained; durable-before-publish/full rollback",
+    "Streaming seed restore with token/depth/sequence bounds before materialization; no old/new Vec capacity overlap",
+    "Stream WAL, receipt archive, hashes and canonical borrowed views; no Value or full encoded-body Vec",
+    "One 4MiB codec reused across serial paths, including legacy checkpoint decoding; no live nested codec borrow",
+    "Typed metadata rows must use exact backing; enforce path4096/token4096/schema-or-hash64 limits before allocation",
+    "Actual broker grants before all allocations, touch all backing, real child wait before credit return"
+  ],
+  "exclusions": [
+    "Current legacy dynamic parser/DOM/clone allocations remain unbounded by this target plan",
+    "Terrain import transient up to128MiB is not a resident Store operation and is NOT accepted under this64MiB plan",
+    "L1 layout pressure remains separately charged, not another64MiB model slot",
+    "Stack, allocator metadata and foreign libraries need separate joint physical accounting",
+    "Shared8MiB diagnostics, formal performance, four rates, steady,8h and real16GB remain unaccepted"
+  ]
+}

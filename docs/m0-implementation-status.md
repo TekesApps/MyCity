@@ -390,3 +390,6 @@ v0.5.67：[完整模型工作区容量依据](evidence/m0-t13a-model-capacity/ST
 
 
 v0.5.69：[固定核心表与事务准备租约](evidence/m0-t13a-model-workspace/STATUS.md)。Timeline、资源／租约／journal使用固定有效背板；五类准备lease失败／展开归还，发布交换背板，Store保持poison至apply与Applied结束。cc1ca0…同源全仓Release46538退出0，358 harness记录含nested，clippy/fmt0；独立CLI实际Store::open旧rules完整world副本243文件，3013序列、2,507,418字节与旧fault-reference完全相等，原world未改。advisor独立审查有限发布无阻断。每Engine独立scratch，v67目标公式不可直接作为现有内存证明；Background深clone、一般恢复／WAL／DOM和实际池图仍未闭合。未新增全负载／正式性能／四档／8h，真实16GB not_run，M0 not_accepted。v68独立回收11.34GiB，原测试run id不改写。
+
+
+v0.5.70：[Background常驻背板与显式计算槽](evidence/m0-t13a-background-resident/STATUS.md)。field/pending固定、prepare lease复制活动数据、持久后交换，capture/validate/Accept及Store staged/恢复显式借单Work，保持原数值及规范字节。926a61…同源全仓Release95173终态0／359 harness含nested，clippy/fmt/build0；旧规则world完整重开／3013seq／2,507,418字节相等。原full联合27370实际605.689秒、723目标／3013原票／724旧hash／725借还／600扫描两代及最新完整cold通过，五audit0及advisor独立认可有限发布。每Engine工作区重计后目标43,964,888B仍fit原64MiB，runtimeGrantfalse；普通恢复/拥有式入口及池图未闭合，normal64/common8／正式性能／四档／稳态／8h仍未签，16GB not_run，M0 not_accepted。末尾退役旧v66两压力5.67GiB，新完整基线及业务兼容依赖保留，复用共享target。

@@ -1,6 +1,7 @@
 //! Finite regional air obligation. Sim owns this state; workers only propose a candidate.
+use crate::model_rows::{Resident, ResidentValue};
 use crate::{
-    air::{Input, Source, State, STRATEGY},
+    air::{Input, Source, State},
     exchange::{Exchange, Kind},
     sha256,
 };
@@ -66,14 +67,135 @@ pub struct Job {
     pub running: bool,
     pub failure: Option<Failure>,
 }
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
+#[derive(Debug, PartialEq, Eq, Serialize)]
 pub struct Background {
-    field: Option<State>,
-    pending: Option<Job>,
+    field: Resident<State>,
+    pending: Resident<Job>,
     version: u64,
     next_job: u64,
     incarnation: u64,
+}
+/// One computation image, separately owned by the Engine preparation workspace.
+/// Not part of the authoritative 320KiB Background limit.
+pub(crate) struct Work {
+    state: State,
+}
+impl Work {
+    pub(crate) fn new() -> Self {
+        let work = Self {
+            state: State::background_empty(),
+        };
+        assert!(work.owned_bytes() <= OWNED_LIMIT);
+        work
+    }
+    pub(crate) fn reset(&mut self) {
+        self.state.background_reset();
+    }
+    pub(crate) fn owned_bytes(&self) -> usize {
+        self.state.owned_bytes()
+    }
+}
+impl ResidentValue for Job {
+    fn empty() -> Self {
+        Self {
+            id: 0,
+            base_revision: 0,
+            field_version: 0,
+            start: 0,
+            end: 0,
+            input: Input::background_empty(),
+            checkpoint_sha256: [0; 32],
+            incarnation: 0,
+            generation: 0,
+            attempt: 0,
+            running: false,
+            failure: None,
+        }
+    }
+    fn reset(&mut self) {
+        self.input.background_reset();
+        self.id = 0;
+        self.base_revision = 0;
+        self.field_version = 0;
+        self.start = 0;
+        self.end = 0;
+        self.checkpoint_sha256 = [0; 32];
+        self.incarnation = 0;
+        self.generation = 0;
+        self.attempt = 0;
+        self.running = false;
+        self.failure = None;
+    }
+}
+impl Job {
+    fn copy_from(&mut self, v: &Self) -> Result<(), String> {
+        self.input.background_copy(&v.input)?;
+        self.id = v.id;
+        self.base_revision = v.base_revision;
+        self.field_version = v.field_version;
+        self.start = v.start;
+        self.end = v.end;
+        self.checkpoint_sha256 = v.checkpoint_sha256;
+        self.incarnation = v.incarnation;
+        self.generation = v.generation;
+        self.attempt = v.attempt;
+        self.running = v.running;
+        self.failure = v.failure;
+        Ok(())
+    }
+}
+impl ResidentValue for Background {
+    fn empty() -> Self {
+        Self::new()
+    }
+    fn reset(&mut self) {
+        self.field.deactivate();
+        self.pending.deactivate();
+        self.version = 0;
+        self.next_job = 1;
+        self.incarnation = 0;
+    }
+}
+impl Clone for Background {
+    fn clone(&self) -> Self {
+        let mut v = Self::new();
+        v.clone_from(self);
+        v
+    }
+    fn clone_from(&mut self, v: &Self) {
+        self.copy_from(v).expect("validated bounded background");
+    }
+}
+impl<'de> Deserialize<'de> for Background {
+    fn deserialize<D: serde::Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        #[derive(Deserialize)]
+        #[serde(deny_unknown_fields)]
+        struct Raw {
+            field: Option<State>,
+            pending: Option<Job>,
+            version: u64,
+            next_job: u64,
+            incarnation: u64,
+        }
+        let raw = Raw::deserialize(d)?;
+        let mut v = Self::new();
+        if let Some(s) = raw.field {
+            v.field
+                .activate()
+                .background_copy(&s)
+                .map_err(serde::de::Error::custom)?;
+        }
+        if let Some(j) = raw.pending {
+            v.pending
+                .activate()
+                .copy_from(&j)
+                .map_err(serde::de::Error::custom)?;
+        }
+        v.version = raw.version;
+        v.next_job = raw.next_job;
+        v.incarnation = raw.incarnation;
+        Ok(v)
+    }
 }
 #[cfg(test)]
 fn hash(bytes: &[u8]) -> [u8; 32] {
@@ -83,12 +205,51 @@ fn hash(bytes: &[u8]) -> [u8; 32] {
 impl Background {
     pub fn new() -> Self {
         Self {
-            field: None,
-            pending: None,
+            field: Resident::empty(),
+            pending: Resident::empty(),
             version: 0,
             next_job: 1,
             incarnation: 0,
         }
+    }
+    fn copy_from(&mut self, v: &Self) -> Result<(), String> {
+        match v.field.as_ref() {
+            Some(s) => self.field.activate().background_copy(s)?,
+            None => self.field.deactivate(),
+        }
+        match v.pending.as_ref() {
+            Some(j) => self.pending.activate().copy_from(j)?,
+            None => self.pending.deactivate(),
+        }
+        self.version = v.version;
+        self.next_job = v.next_job;
+        self.incarnation = v.incarnation;
+        Ok(())
+    }
+    pub(crate) fn candidate_matches(
+        &self,
+        candidate: &State,
+        work: &mut Work,
+        trace: &mut crate::diagnostics::Trace<'_>,
+    ) -> Result<bool, String> {
+        self.frozen_into(work)?;
+        while !work.state.complete() {
+            work.state.page_diagnosed(8192, 1024, trace)?;
+        }
+        Ok(&work.state == candidate)
+    }
+    fn frozen_into(&self, work: &mut Work) -> Result<(), String> {
+        let job = self.pending.as_ref().ok_or("background_no_job")?;
+        work.state
+            .background_begin(self.field.as_ref(), &job.input)?;
+        if work.state.checkpoint_digest()?.1 != job.checkpoint_sha256 {
+            return Err("background_input_checksum".into());
+        }
+        Ok(())
+    }
+    #[cfg(test)]
+    pub(crate) fn allocation_set(&self) -> [usize; 6] {
+        self.field.backing().background_allocations()
     }
     pub fn pending(&self) -> Option<&Job> {
         self.pending.as_ref()
@@ -106,7 +267,7 @@ impl Background {
         self.field.as_ref().map_or(0, |s| s.time())
     }
     fn build_input_state(&self, input: Input) -> Result<State, String> {
-        match &self.field {
+        match self.field.as_ref() {
             Some(s) => s.continue_from_boundary(input),
             None => State::new(input),
         }
@@ -126,6 +287,7 @@ impl Background {
         start: u64,
         end: u64,
         revision: u64,
+        work: &mut Work,
     ) -> Result<(), String> {
         if self.next_job > JOB_ID_LIMIT
             || self.pending.is_some()
@@ -135,7 +297,8 @@ impl Background {
         {
             return Err("background_capture_window".into());
         }
-        let mut sources = Vec::new();
+        let job = self.pending.activate();
+        job.input.target = end as u32;
         for ship in exchange.shipments.iter().flatten() {
             let q = exchange
                 .quotes
@@ -167,51 +330,32 @@ impl Background {
             if rate_micro == 0 || rate_micro > 1_000_000 {
                 return Err("background_source_rate".into());
             }
-            sources.push(Source {
+            job.input.background_push(Source {
                 id: q.spec.id,
                 cell: 16 * u32::from(SIDE) + x as u32,
                 start: start as u32,
                 end: until as u32,
                 rate_micro,
-            });
+            })?;
         }
-        sources.sort_by_key(|s| s.id);
-        if sources.len() > SOURCE_LIMIT {
-            return Err("background_source_limit".into());
-        }
-        let input = Input {
-            schema: STRATEGY.into(),
-            side: SIDE,
-            target: end as u32,
-            initial_micro: 2_000_000,
-            boundary_micro: [Some(2_000_000); 4],
-            boundary_until: END_LIMIT,
-            sources: sources.into(),
-        };
-        let state = self.build_input_state(input.clone())?;
-        let (bytes, checkpoint_sha256) = state.checkpoint_digest()?;
+        job.input.sources.sort_by_key(|s| s.id);
+        work.state
+            .background_begin(self.field.as_ref(), &job.input)?;
+        let (bytes, checkpoint_sha256) = work.state.checkpoint_digest()?;
         if bytes > ASSET_LIMIT {
             return Err("background_asset_bytes".into());
         }
-        self.pending = Some(Job {
-            id: self.next_job,
-            base_revision: revision,
-            field_version: self.version,
-            start: start as u32,
-            end: end as u32,
-            input,
-            checkpoint_sha256,
-            incarnation: 0,
-            generation: 0,
-            attempt: 0,
-            running: false,
-            failure: None,
-        });
+        job.id = self.next_job;
+        job.base_revision = revision;
+        job.field_version = self.version;
+        job.start = start as u32;
+        job.end = end as u32;
+        job.checkpoint_sha256 = checkpoint_sha256;
         self.next_job = self
             .next_job
             .checked_add(1)
             .ok_or("background_job_overflow")?;
-        self.validate()
+        self.validate_with(work)
     }
     /// No business transfers occur here. The Engine prepares a clone before calling it.
     #[cfg(test)]
@@ -224,6 +368,7 @@ impl Background {
             command,
             candidate,
             &mut crate::diagnostics::Trace::disabled(),
+            &mut Work::new(),
         )
     }
     pub(crate) fn command_diagnosed(
@@ -231,6 +376,7 @@ impl Background {
         command: Command,
         candidate: Option<&State>,
         trace: &mut crate::diagnostics::Trace<'_>,
+        work: &mut Work,
     ) -> Result<(), String> {
         match command {
             Command::Enable => return Err("background_duplicate".into()),
@@ -321,24 +467,23 @@ impl Background {
                 {
                     return Err("background_candidate_identity".into());
                 }
-                let mut reference = self.frozen_input()?;
-                while !reference.complete() {
-                    reference.page_diagnosed(8192, 1024, trace)?;
-                }
-                if &reference != result {
+                if !self.candidate_matches(result, work, trace)? {
                     return Err("background_cpu_mismatch".into());
                 }
                 self.version = self
                     .version
                     .checked_add(1)
                     .ok_or("background_version_overflow")?;
-                self.field = Some(result.clone());
-                self.pending = None;
+                self.field.activate().background_copy(result)?;
+                self.pending.deactivate();
             }
         }
-        self.validate()
+        self.validate_with(work)
     }
     pub fn validate(&self) -> Result<(), String> {
+        self.validate_with(&mut Work::new())
+    }
+    pub(crate) fn validate_with(&self, work: &mut Work) -> Result<(), String> {
         if self.next_job == 0
             || self.next_job > JOB_ID_LIMIT + 1
             || self.version > u64::from(self.time())
@@ -352,12 +497,12 @@ impl Background {
                     || s.input().boundary_micro != [Some(2_000_000); 4]
                     || s.input().boundary_until != END_LIMIT
             })
-            || (self.version == 0) != self.field.is_none()
+            || (self.version == 0) == self.field.is_some()
             || self.owned_bytes() > OWNED_LIMIT
         {
             return Err("background_state".into());
         }
-        if let Some(job) = &self.pending {
+        if let Some(job) = self.pending.as_ref() {
             if job.id == 0
                 || job.id.checked_add(1) != Some(self.next_job)
                 || job.base_revision == 0
@@ -381,7 +526,7 @@ impl Background {
             {
                 return Err("background_job_state".into());
             }
-            self.frozen_input()?;
+            self.frozen_into(work)?;
         }
         Ok(())
     }
@@ -394,10 +539,10 @@ impl Background {
         let p = timeline.progress;
         let time = u64::from(self.time());
         let valid = if p.at == p.last_complete {
-            self.pending.is_none() && time == p.at
+            !self.pending.is_some() && time == p.at
         } else {
             match p.phase {
-                None | Some(Phase::P0) => self.pending.is_none() && time == p.last_complete,
+                None | Some(Phase::P0) => !self.pending.is_some() && time == p.last_complete,
                 Some(Phase::P1 | Phase::P2 | Phase::P3) => {
                     self.pending.is_some() && time == p.last_complete
                 }
@@ -408,7 +553,7 @@ impl Background {
                         time == p.at
                     }
                 }
-                Some(Phase::P5) => self.pending.is_none() && time == p.at,
+                Some(Phase::P5) => !self.pending.is_some() && time == p.at,
             }
         };
         if !valid
@@ -424,14 +569,9 @@ impl Background {
         Ok(())
     }
     pub fn owned_bytes(&self) -> usize {
-        size_of::<Self>()
-            + self
-                .field
-                .as_ref()
-                .map_or(0, |s| s.owned_bytes() - size_of::<State>())
-            + self.pending.as_ref().map_or(0, |j| {
-                j.input.schema.capacity() + j.input.sources.capacity() * size_of::<Source>()
-            })
+        size_of::<Self>() + self.field.backing().owned_bytes() - size_of::<State>()
+            + self.pending.backing().input.schema.capacity()
+            + self.pending.backing().input.sources.capacity() * size_of::<Source>()
     }
     pub fn state_hash(&self) -> String {
         sha256(&serde_json::to_vec(self).expect("bounded background state"))
@@ -494,12 +634,12 @@ mod tests {
         let mut e = engine();
         let initial = e.world().view().exchange.unwrap();
         let mut empty = Background::new();
-        empty.capture(&initial, 0, 60, 1).unwrap();
+        empty.capture(&initial, 0, 60, 1, &mut Work::new()).unwrap();
         assert!(empty.pending().unwrap().input.sources.is_empty());
         run(&mut e, X::Dispatch { quote: 1 });
         let exchange = e.world().view().exchange.unwrap();
         let mut b = Background::new();
-        b.capture(&exchange, 0, 60, 2).unwrap();
+        b.capture(&exchange, 0, 60, 2, &mut Work::new()).unwrap();
         let source = &b.pending().unwrap().input.sources[0];
         assert_eq!(source.cell, 16 * 128 + 16);
         assert_eq!(
@@ -523,7 +663,13 @@ mod tests {
         );
         let mut paused = Background::new();
         paused
-            .capture(&e.world().view().exchange.unwrap(), 0, 60, 3)
+            .capture(
+                &e.world().view().exchange.unwrap(),
+                0,
+                60,
+                3,
+                &mut Work::new(),
+            )
             .unwrap();
         assert!(paused.pending().unwrap().input.sources.is_empty());
     }
@@ -533,7 +679,7 @@ mod tests {
         run(&mut e, X::Dispatch { quote: 1 });
         let exchange = e.world().view().exchange.unwrap();
         let mut b = Background::new();
-        b.capture(&exchange, 0, 60, 2).unwrap();
+        b.capture(&exchange, 0, 60, 2, &mut Work::new()).unwrap();
         b.command(Command::Restart, None).unwrap();
         b.command(Command::Lease { job: 1 }, None).unwrap();
         let result = finish(&b);
@@ -575,7 +721,9 @@ mod tests {
         let mut restored: Background =
             serde_json::from_slice(&serde_json::to_vec(&b).unwrap()).unwrap();
         restored.validate().unwrap();
-        restored.capture(&exchange, 60, 120, 10).unwrap();
+        restored
+            .capture(&exchange, 60, 120, 10, &mut Work::new())
+            .unwrap();
         assert_eq!(
             restored.frozen_input().unwrap().field_bits(),
             result.field_bits()
@@ -592,7 +740,7 @@ mod tests {
         run(&mut e, X::Dispatch { quote: 1 });
         let exchange = e.world().view().exchange.unwrap();
         let mut b = Background::new();
-        b.capture(&exchange, 0, 60, 2).unwrap();
+        b.capture(&exchange, 0, 60, 2, &mut Work::new()).unwrap();
         b.command(Command::Restart, None).unwrap();
         for generation in 1..=3 {
             b.command(Command::Lease { job: 1 }, None).unwrap();
@@ -614,7 +762,7 @@ mod tests {
         assert!(b.pending().is_some());
         assert_eq!(b.time(), 0);
         let mut b = Background::new();
-        b.capture(&exchange, 0, 60, 2).unwrap();
+        b.capture(&exchange, 0, 60, 2, &mut Work::new()).unwrap();
         b.command(Command::Restart, None).unwrap();
         b.command(Command::Lease { job: 1 }, None).unwrap();
         b.command(
@@ -628,5 +776,86 @@ mod tests {
         .unwrap();
         assert!(b.command(Command::Lease { job: 1 }, None).is_err());
         assert_eq!(b.pending().unwrap().attempt, 1);
+    }
+    #[test]
+    fn fixed_background_lifecycle_keeps_all_backings_and_old_numerical_bytes() {
+        let mut e = engine();
+        run(&mut e, X::Dispatch { quote: 1 });
+        let exchange = e.world().view().exchange.unwrap();
+        let mut b = Background::new();
+        let mut work = Work::new();
+        let field_ids = b.field.backing().background_allocations();
+        let work_ids = work.state.background_allocations();
+        let pending_sources = b.pending.backing().input.sources.as_ptr();
+        let mut mirror = Background::new();
+        let mirror_ids = mirror.field.backing().background_allocations();
+        for (i, (start, end)) in [(0, 60), (60, 120)].into_iter().enumerate() {
+            b.capture(&exchange, start, end, 2 + i as u64, &mut work)
+                .unwrap();
+            b.command_diagnosed(
+                Command::RebindLease { job: 1 + i as u64 },
+                None,
+                &mut crate::diagnostics::Trace::disabled(),
+                &mut work,
+            )
+            .unwrap();
+            let legacy = b.frozen_input().unwrap();
+            b.frozen_into(&mut work).unwrap();
+            assert_eq!(
+                legacy.checkpoint().unwrap(),
+                work.state.checkpoint().unwrap()
+            );
+            let result = finish(&b);
+            let digest = result.checkpoint_digest().unwrap().1;
+            // Wrong hash fails without changing authority; scratch can be reused.
+            let before = b.state_hash();
+            assert!(b
+                .command_diagnosed(
+                    Command::Accept {
+                        job: 1 + i as u64,
+                        generation: 1,
+                        candidate_sha256: [0; 32]
+                    },
+                    Some(&result),
+                    &mut crate::diagnostics::Trace::disabled(),
+                    &mut work
+                )
+                .is_err());
+            assert_eq!(b.state_hash(), before);
+            b.command_diagnosed(
+                Command::Accept {
+                    job: 1 + i as u64,
+                    generation: 1,
+                    candidate_sha256: digest,
+                },
+                Some(&result),
+                &mut crate::diagnostics::Trace::disabled(),
+                &mut work,
+            )
+            .unwrap();
+            assert_eq!(
+                b.field().unwrap().checkpoint().unwrap(),
+                result.checkpoint().unwrap()
+            );
+            mirror.clone_from(&b);
+            assert_eq!(
+                serde_json::to_vec(&mirror).unwrap(),
+                serde_json::to_vec(&b).unwrap()
+            );
+            assert_eq!(mirror.field.backing().background_allocations(), mirror_ids);
+            assert_eq!(b.field.backing().background_allocations(), field_ids);
+            assert_eq!(b.pending.backing().input.sources.as_ptr(), pending_sources);
+            assert_eq!(work.state.background_allocations(), work_ids);
+            assert!(b.owned_bytes() <= OWNED_LIMIT);
+        }
+        b.reset();
+        work.reset();
+        mirror.reset();
+        assert_eq!(b.field.backing().background_allocations(), field_ids);
+        assert_eq!(work.state.background_allocations(), work_ids);
+        assert_eq!(
+            serde_json::to_string(&b).unwrap(),
+            r#"{"field":null,"pending":null,"version":0,"next_job":1,"incarnation":0}"#
+        );
     }
 }

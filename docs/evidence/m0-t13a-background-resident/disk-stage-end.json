@@ -1,0 +1,10 @@
+{
+  "unix_ns": 1792568627904628000,
+  "work_du_kib": 18771744,
+  "target_du_kib": 755872,
+  "filesystem_available_bytes": 124108042240,
+  "new_independent_target": false,
+  "explicit_cache_deleted_bytes": 0,
+  "pressure_retirement": "retirement/deletion-result.json",
+  "accounting": "Final observation separate from exact deletion window. Any later target/df change is not attributed to pressure deletion. Shared target reused; necessary fixed executables/source/dependency snapshots and full recovery worlds retained."
+}

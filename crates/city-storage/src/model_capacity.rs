@@ -122,6 +122,8 @@ pub struct Scenario {
     pub name: &'static str,
     pub engine_slots: usize,
     pub prepared_slots: usize,
+    pub retained_preparation_workspace_slots: usize,
+    pub retained_preparation_workspace_slot_bytes: usize,
     pub extra_air_slots: usize,
     pub extra_air_slot_bytes: usize,
     pub spatial_resident_bytes: usize,
@@ -143,6 +145,8 @@ impl Scenario {
             name,
             engine_slots: engines,
             prepared_slots: 1,
+            retained_preparation_workspace_slots: engines,
+            retained_preparation_workspace_slot_bytes: i.retained_preparation_workspace_bytes,
             extra_air_slots: 5,
             extra_air_slot_bytes: mycity_core::air::WORKSPACE_BYTES
                 + size_of::<mycity_core::air::AirWorkspace>(),
@@ -154,6 +158,7 @@ impl Scenario {
         };
         s.total_bytes = engines * i.engine_bytes
             + i.prepared_bytes
+            + engines * i.retained_preparation_workspace_bytes
             + s.extra_air_slots * s.extra_air_slot_bytes
             + spatial
             + s.io_codec_bytes
@@ -181,7 +186,8 @@ pub struct Plan {
     pub exclusions: [&'static str; 5],
 }
 
-/// Fixed topology candidate. Even a fit is NOT permission to grant these bytes to
+/// Conservatively charge current per-Engine retained preparation workspaces in
+/// addition to the active Prepared target and all five general Air slots. Even a fit is NOT permission to grant these bytes to
 /// the current Vec/DOM implementation. No model, image or source data is allocated.
 pub fn plan(budget: usize) -> Plan {
     let i = mycity_core::model_capacity::inventory();
@@ -223,7 +229,7 @@ pub fn plan(budget: usize) -> Plan {
         prerequisites: [
             "Exact fully initialized fixed arrays/strings, active lengths, no hidden growth or deep Clone escape",
             "Five explicit shared Air scratch slots; all capture/accept/validate/staged-reload entries borrow them",
-            "Fixed Prepared dirty tables; retain durable-before-publish and full rollback",
+            "Charge all per-Engine retained prepare tables/background scratch and controls; extra active Prepared target is conservatively retained; durable-before-publish/full rollback",
             "Streaming seed restore with token/depth/sequence bounds before materialization; no old/new Vec capacity overlap",
             "Stream WAL, receipt archive, hashes and canonical borrowed views; no Value or full encoded-body Vec",
             "One 4MiB codec reused across serial paths, including legacy checkpoint decoding; no live nested codec borrow",
@@ -254,5 +260,7 @@ mod tests {
         assert!(!plan(p.required_bytes - 1).target_slots_fit);
         assert!(!p.runtime_grant_accepted);
         assert_eq!(p.scenarios[1].engine_slots, 3);
+        assert_eq!(p.scenarios[1].retained_preparation_workspace_slots, 3);
+        assert!(p.core.retained_preparation_workspace_bytes > 1_000_000);
     }
 }

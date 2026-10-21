@@ -1,0 +1,168 @@
+{
+  "source_sha256": "926a61a2df328e5c4767f82de045659fa416f91858e62a6c5292ee24c171939f",
+  "scope": "same-source full-controller joint smoke diagnostic audit, full L1 pressure present",
+  "normal_heap_records": 735,
+  "normal_component_evidence": {
+    "sim": {
+      "reports": 3,
+      "maximum_reported_component_charge_bytes": 2448144,
+      "component_cap_bytes": 2621440,
+      "scope": "sealed component capacity evidence; not whole process or missing-process proof"
+    },
+    "worker": {
+      "reports": 724,
+      "maximum_reported_component_charge_bytes": 848088,
+      "component_cap_bytes": 1048576,
+      "scope": "sealed component capacity evidence; not whole process or missing-process proof"
+    },
+    "driver": {
+      "whole_Rust_heap_peak_plus_tail_bytes": 858029,
+      "cap_bytes": 1048576,
+      "native_stack_foreign": "separate"
+    },
+    "helper": [
+      {
+        "mode": "reference",
+        "control_capacity": {
+          "limit_bytes": 262144,
+          "control_slots_bytes": 24576,
+          "parser_error_scratch_bytes": 40960,
+          "paths_and_metadata_bytes": 65536,
+          "golden_or_hash_bytes": 65536,
+          "exit_tail_bytes": 65536,
+          "usage": {
+            "control_peak_owners": 1,
+            "path_peak_owners": 3,
+            "golden_peak_owners": 1,
+            "hash_peak_owners": 1
+          }
+        },
+        "whole_Rust_heap_peak_plus_tail_bytes_including_model_work": 32580928,
+        "scope": "Reference/FaultReference model heap EXTRA; no peak subtraction"
+      },
+      {
+        "mode": "fault-reference",
+        "control_capacity": {
+          "limit_bytes": 262144,
+          "control_slots_bytes": 24576,
+          "parser_error_scratch_bytes": 40960,
+          "paths_and_metadata_bytes": 65536,
+          "golden_or_hash_bytes": 65536,
+          "exit_tail_bytes": 65536,
+          "usage": {
+            "control_peak_owners": 1,
+            "path_peak_owners": 3,
+            "golden_peak_owners": 1,
+            "hash_peak_owners": 1
+          }
+        },
+        "whole_Rust_heap_peak_plus_tail_bytes_including_model_work": 32580940,
+        "scope": "Reference/FaultReference model heap EXTRA; no peak subtraction"
+      },
+      {
+        "mode": "before-reopen",
+        "control_capacity": {
+          "limit_bytes": 262144,
+          "control_slots_bytes": 24576,
+          "parser_error_scratch_bytes": 40960,
+          "paths_and_metadata_bytes": 65536,
+          "golden_or_hash_bytes": 65536,
+          "exit_tail_bytes": 65536,
+          "usage": {
+            "control_peak_owners": 3,
+            "path_peak_owners": 3,
+            "golden_peak_owners": 0,
+            "hash_peak_owners": 1
+          }
+        },
+        "whole_Rust_heap_peak_plus_tail_bytes_including_model_work": 4309982,
+        "scope": "fixed4MiB owner plus256KiB whole-heap cap, independently audited"
+      },
+      {
+        "mode": "compare-endurance",
+        "control_capacity": {
+          "limit_bytes": 262144,
+          "control_slots_bytes": 24576,
+          "parser_error_scratch_bytes": 40960,
+          "paths_and_metadata_bytes": 65536,
+          "golden_or_hash_bytes": 65536,
+          "exit_tail_bytes": 65536,
+          "usage": {
+            "control_peak_owners": 3,
+            "path_peak_owners": 3,
+            "golden_peak_owners": 0,
+            "hash_peak_owners": 1
+          }
+        },
+        "whole_Rust_heap_peak_plus_tail_bytes_including_model_work": 4310068,
+        "scope": "fixed4MiB owner plus256KiB whole-heap cap, independently audited"
+      }
+    ],
+    "pool": {
+      "whole_Rust_heap_peak_plus_tail_bytes": 67191807,
+      "whole_upper_bound_bytes": 67371008,
+      "diagnostic_0_25MiB_separate_proof": "not_closed; no subtraction of lifetime peaks while pages are lent"
+    },
+    "observer": {
+      "observed_hot_trace_bound_bytes": 718752,
+      "cap_bytes": 2097152,
+      "startup_native_foreign": "not_proven_by_hot_tracemalloc"
+    },
+    "Rust_supervisor": {
+      "whole_Rust_heap_peak_plus_tail_bytes": 181010,
+      "cap_bytes": 262144,
+      "native_stack_foreign": "separate"
+    },
+    "layout": {
+      "allocated_owned_bytes": 461888,
+      "cap_bytes": 786432,
+      "charged_bound_bytes": 724032,
+      "full_snapshot_file_details": "events.jsonl and retained snapshot indices",
+      "transient_reservation_bytes": 262144
+    }
+  },
+  "fault_instances_without_normal_heap_footer": [
+    {
+      "producer": "worker-2396-0",
+      "pid": 2396,
+      "process_instance_unix_ns": 1792567343712531000,
+      "sealed_component_report_present": true,
+      "normal_heap_footer": "absent; not zero"
+    },
+    {
+      "producer": "sim-1260-0",
+      "pid": 1260,
+      "process_instance_unix_ns": 1792567304722783000,
+      "sealed_component_report_present": false,
+      "normal_heap_footer": "absent; not zero"
+    },
+    {
+      "producer": "worker-1834-0",
+      "pid": 1834,
+      "process_instance_unix_ns": 1792567325294795000,
+      "sealed_component_report_present": false,
+      "normal_heap_footer": "absent; not zero"
+    }
+  ],
+  "role_whole_Rust_heap_peaks_plus_tail_including_model_work": {
+    "scale-model-task": 32580940,
+    "compute-worker-bounded": 5980263,
+    "sim-host-scale-full-probe": 35264936,
+    "scale-endurance": 858029,
+    "layout-session": 3259128790,
+    "layout-load-only": 3258672688,
+    "normal-pool-host": 67191807,
+    "joint-endurance": 181010
+  },
+  "component_caps_addition_only": {
+    "formal_Rust_joint_nominal_bytes": 8388608,
+    "not_measured_joint_proof": true
+  },
+  "shared_8MiB_joint": "not_accepted",
+  "normal_3_10GiB": "not_accepted; Engine/serde/Reference/FaultReference model allocations remain extra; fixed helper audited separately",
+  "L1_joint": "present; pressure substitute is not product functionality",
+  "formal_latency": "not_accepted; shortened cadence; execution concurrency conditions recorded in STATUS.md",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run",
+  "full_M0": "not_accepted"
+}

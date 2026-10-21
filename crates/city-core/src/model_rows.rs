@@ -204,6 +204,12 @@ impl<T: ResidentValue> Resident<T> {
         self.present = false;
     }
 }
+impl<T: PartialEq + ResidentValue> PartialEq for Resident<T> {
+    fn eq(&self, other: &Self) -> bool {
+        self.as_ref() == other.as_ref()
+    }
+}
+impl<T: Eq + ResidentValue> Eq for Resident<T> {}
 impl<T: Clone> Clone for Resident<T> {
     fn clone(&self) -> Self {
         Self {

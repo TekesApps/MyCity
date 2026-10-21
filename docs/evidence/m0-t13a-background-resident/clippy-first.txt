@@ -1,0 +1,22 @@
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+error[E0107]: missing generics for struct `transaction::workspace::Lease`
+   --> crates/city-core/src/transaction/workspace.rs:46:41
+    |
+46  |         + MAX_LEASES * size_of::<Option<Lease>>();
+    |                                         ^^^^^ expected 1 generic argument
+    |
+note: struct defined here, with 1 generic parameter: `T`
+   --> crates/city-core/src/transaction/workspace.rs:108:19
+    |
+108 | pub(super) struct Lease<T: Reset> {
+    |                   ^^^^^ -
+help: add missing generic argument
+    |
+46  |         + MAX_LEASES * size_of::<Option<Lease<T>>>();
+    |                                              +++
+
+For more information about this error, try `rustc --explain E0107`.
+error: could not compile `mycity-core` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `mycity-core` (lib test) due to 1 previous error

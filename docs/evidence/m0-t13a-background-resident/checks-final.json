@@ -1,0 +1,53 @@
+{
+  "workspace-release": {
+    "command": [
+      "cargo",
+      "test",
+      "--release",
+      "--locked",
+      "--offline",
+      "--workspace"
+    ],
+    "exit": 0,
+    "seconds": 543.610741875
+  },
+  "clippy-final": {
+    "command": [
+      "cargo",
+      "clippy",
+      "--release",
+      "--locked",
+      "--offline",
+      "--workspace",
+      "--all-targets",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit": 0,
+    "seconds": 8.002007207999895
+  },
+  "fmt-final": {
+    "command": [
+      "cargo",
+      "fmt",
+      "--all",
+      "--",
+      "--check"
+    ],
+    "exit": 0,
+    "seconds": 0.3878649170000017
+  },
+  "build-final": {
+    "command": [
+      "cargo",
+      "build",
+      "--release",
+      "--locked",
+      "--offline",
+      "--workspace"
+    ],
+    "exit": 0,
+    "seconds": 0.0874343330000329
+  }
+}

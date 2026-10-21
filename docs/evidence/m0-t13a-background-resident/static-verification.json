@@ -1,0 +1,9 @@
+{
+  "source_sha256": "926a61a2df328e5c4767f82de045659fa416f91858e62a6c5292ee24c171939f",
+  "source_and_binary_match": true,
+  "frozen_fixture_and_observer_unchanged": true,
+  "archived_files_verified": 3948,
+  "large_files_complete_and_prior_terminal_hash_matches_index": 60,
+  "large_hash_scope": "collect.py actually hashed bytes after terminal; here validates preserved files/length and digest against complete snapshot indexes; not a fresh restore",
+  "runtime_budget_accepted": false
+}

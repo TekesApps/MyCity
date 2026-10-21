@@ -32,7 +32,8 @@ fn check_time(at: u64) -> Result<(), TxError> {
 pub(super) struct Frame<'a, 'd> {
     pub trace: &'a mut crate::diagnostics::Trace<'d>,
     pub world: &'a World,
-    pub background: &'a mut Option<crate::background::Background>,
+    pub background: &'a mut crate::model_rows::Resident<crate::background::Background>,
+    pub background_work: &'a mut crate::background::Work,
     pub region: &'a mut Option<crate::region::Region>,
     pub economy: &'a mut Option<crate::economy::Economy>,
     pub boot: &'a mut Option<crate::boot::Boot>,
@@ -503,6 +504,7 @@ impl Frame<'_, '_> {
                                     .revision
                                     .checked_add(1)
                                     .ok_or(TxError::Overflow)?,
+                                self.background_work,
                             )
                             .map_err(|_| TxError::InvalidOperation);
                         self.trace.end(

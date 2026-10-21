@@ -1,0 +1,52 @@
+{
+  "before": {
+    "unix_ns": 1792568445282851000,
+    "filesystem_available_bytes": 118621351936,
+    "work_du_kib": 24717136,
+    "target_du_kib": 755872
+  },
+  "after": {
+    "unix_ns": 1792568447588864000,
+    "filesystem_available_bytes": 124711759872,
+    "work_du_kib": 18771744,
+    "target_du_kib": 755872
+  },
+  "removed_paths": 2,
+  "removed_unique_inodes": 2,
+  "removed_unique_allocated_bytes": 6088081408,
+  "removed_unique_logical_bytes": 6088080620,
+  "filesystem_available_delta_bytes": 6090407936,
+  "work_du_delta_bytes": 6088081408,
+  "retained_raw_files_checked_unchanged": 85129,
+  "accounting": "st_blocks deduplicated by device/inode; not exclusive APFS extents. df delta is observed, not attributed entirely to this deletion.",
+  "files": [
+    {
+      "path": "work/t13a65-joint-02/model/layout/snapshots/snapshot-000001/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "inode": 407014256,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792560187388196536,
+      "run": "t13a65-joint-02",
+      "retained_evidence": "docs/evidence/m0-t13a-helper-compare/t13a65-joint-02",
+      "reason": "Published v66 synthetic layout pressure superseded by current verified full t13a70-joint-01 two-generation baseline; advisor found no remaining old layout restore dependency. All old business/compatibility worlds and original fault evidence retained.",
+      "availability_after": "Old v66 layout snapshot NOT directly full-restorable; original hash/index is historical identity only",
+      "regeneration": "Archived exact version generator + original pattern/page layout/mutation iteration; validate complete original index after regeneration before claiming restored"
+    },
+    {
+      "path": "work/t13a65-joint-02/model/layout/snapshots/snapshot-000002/pressure.bin",
+      "bytes": 3044040310,
+      "allocated_bytes": 3044040704,
+      "inode": 407040708,
+      "device": 16777231,
+      "links": 1,
+      "mtime_ns": 1792560488774186855,
+      "run": "t13a65-joint-02",
+      "retained_evidence": "docs/evidence/m0-t13a-helper-compare/t13a65-joint-02",
+      "reason": "Published v66 synthetic layout pressure superseded by current verified full t13a70-joint-01 two-generation baseline; advisor found no remaining old layout restore dependency. All old business/compatibility worlds and original fault evidence retained.",
+      "availability_after": "Old v66 layout snapshot NOT directly full-restorable; original hash/index is historical identity only",
+      "regeneration": "Archived exact version generator + original pattern/page layout/mutation iteration; validate complete original index after regeneration before claiming restored"
+    }
+  ]
+}

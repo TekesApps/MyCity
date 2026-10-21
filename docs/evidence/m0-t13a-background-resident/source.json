@@ -1,0 +1,11 @@
+{
+  "source_sha256": "926a61a2df328e5c4767f82de045659fa416f91858e62a6c5292ee24c171939f",
+  "source_files": 161,
+  "fixture_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+  "scope": "Same-source full regression/build terminal0; immutable binary for original full joint600s, no performance acceptance implied",
+  "binary_sha256": "4d0188460082ca51e74b73b02f2db3cebbf82310d9f74fa03c6213c49df635af",
+  "binary": "work/candidate-binaries/background-resident/mycity-headless",
+  "benchmark_binary_path": "work/candidate-binaries/background-resident/mycity-headless",
+  "frozen_acceptance_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+  "observer_sha256": "9fcb2290b7837fff0e73eefae0e761237fa90e9c03f8d53d96b8388647bc5ac1"
+}
