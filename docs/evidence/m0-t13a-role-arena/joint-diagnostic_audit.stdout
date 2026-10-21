@@ -1,0 +1,189 @@
+{
+  "actual_layout_and_diagnostic_ledgers": {
+    "layout_external_charge_bytes": 67108864,
+    "layout_metadata_bytes": 4194304,
+    "supervisor_external_diagnostics_bytes": 3407872,
+    "pressure_unchanged_from_v70": true,
+    "actual_full_snapshots": [
+      {
+        "path": "/Users/frankqin/dev/MyCity/work/t13a85-joint-01/model/layout/snapshots/snapshot-000001",
+        "pressure_bytes": 3044040310,
+        "external_charge_bytes": 67108864
+      },
+      {
+        "path": "/Users/frankqin/dev/MyCity/work/t13a85-joint-01/model/layout/snapshots/snapshot-000002",
+        "pressure_bytes": 3044040310,
+        "external_charge_bytes": 67108864
+      }
+    ],
+    "L1_metrics": "independent diagnostics, not charged again to the normal pool"
+  },
+  "source_sha256": "f75a8a2ff202e7cf92f77d6bfd3dfb1f553f00ec607feb52842fa7d6f832850a",
+  "scope": "same-source full-controller joint smoke diagnostic audit, full L1 pressure present",
+  "normal_heap_records": 735,
+  "normal_component_evidence": {
+    "sim": {
+      "reports": 3,
+      "maximum_reported_component_charge_bytes": 2448592,
+      "component_cap_bytes": 2621440,
+      "scope": "sealed component capacity evidence; not whole process or missing-process proof"
+    },
+    "worker": {
+      "reports": 724,
+      "maximum_reported_component_charge_bytes": 848088,
+      "component_cap_bytes": 1048576,
+      "scope": "sealed component capacity evidence; not whole process or missing-process proof"
+    },
+    "driver": {
+      "whole_Rust_heap_peak_plus_tail_bytes": 858111,
+      "cap_bytes": 1048576,
+      "native_stack_foreign": "separate"
+    },
+    "helper": [
+      {
+        "mode": "reference",
+        "control_capacity": {
+          "limit_bytes": 262144,
+          "control_slots_bytes": 24576,
+          "parser_error_scratch_bytes": 40960,
+          "paths_and_metadata_bytes": 65536,
+          "golden_or_hash_bytes": 65536,
+          "exit_tail_bytes": 65536,
+          "usage": {
+            "control_peak_owners": 1,
+            "path_peak_owners": 3,
+            "golden_peak_owners": 1,
+            "hash_peak_owners": 1
+          }
+        },
+        "whole_Rust_heap_peak_plus_tail_bytes_including_model_work": 16502693,
+        "scope": "fixed20MiB whole Rust arena including diagnostic allocations, independently audited"
+      },
+      {
+        "mode": "fault-reference",
+        "control_capacity": {
+          "limit_bytes": 262144,
+          "control_slots_bytes": 24576,
+          "parser_error_scratch_bytes": 40960,
+          "paths_and_metadata_bytes": 65536,
+          "golden_or_hash_bytes": 65536,
+          "exit_tail_bytes": 65536,
+          "usage": {
+            "control_peak_owners": 1,
+            "path_peak_owners": 3,
+            "golden_peak_owners": 1,
+            "hash_peak_owners": 1
+          }
+        },
+        "whole_Rust_heap_peak_plus_tail_bytes_including_model_work": 16502705,
+        "scope": "fixed20MiB whole Rust arena including diagnostic allocations, independently audited"
+      },
+      {
+        "mode": "before-reopen",
+        "control_capacity": {
+          "limit_bytes": 262144,
+          "control_slots_bytes": 24576,
+          "parser_error_scratch_bytes": 40960,
+          "paths_and_metadata_bytes": 65536,
+          "golden_or_hash_bytes": 65536,
+          "exit_tail_bytes": 65536,
+          "usage": {
+            "control_peak_owners": 3,
+            "path_peak_owners": 3,
+            "golden_peak_owners": 0,
+            "hash_peak_owners": 1
+          }
+        },
+        "whole_Rust_heap_peak_plus_tail_bytes_including_model_work": 4309973,
+        "scope": "fixed6MiB whole Rust arena including diagnostic allocations, independently audited"
+      },
+      {
+        "mode": "compare-endurance",
+        "control_capacity": {
+          "limit_bytes": 262144,
+          "control_slots_bytes": 24576,
+          "parser_error_scratch_bytes": 40960,
+          "paths_and_metadata_bytes": 65536,
+          "golden_or_hash_bytes": 65536,
+          "exit_tail_bytes": 65536,
+          "usage": {
+            "control_peak_owners": 3,
+            "path_peak_owners": 3,
+            "golden_peak_owners": 0,
+            "hash_peak_owners": 1
+          }
+        },
+        "whole_Rust_heap_peak_plus_tail_bytes_including_model_work": 4310059,
+        "scope": "fixed6MiB whole Rust arena including diagnostic allocations, independently audited"
+      }
+    ],
+    "pool": {
+      "whole_Rust_heap_peak_plus_tail_bytes": 67191798,
+      "whole_upper_bound_bytes": 67371008,
+      "diagnostic_0_25MiB_separate_proof": "not_closed; no subtraction of lifetime peaks while pages are lent"
+    },
+    "observer": {
+      "observed_hot_trace_bound_bytes": 774394,
+      "cap_bytes": 2097152,
+      "startup_native_foreign": "not_proven_by_hot_tracemalloc"
+    },
+    "Rust_supervisor": {
+      "whole_Rust_heap_peak_plus_tail_bytes": 181001,
+      "cap_bytes": 262144,
+      "native_stack_foreign": "separate"
+    },
+    "layout": {
+      "allocated_owned_bytes": 461888,
+      "cap_bytes": 786432,
+      "charged_bound_bytes": 724032,
+      "full_snapshot_file_details": "events.jsonl and retained snapshot indices",
+      "transient_reservation_bytes": 262144
+    }
+  },
+  "fault_instances_without_normal_heap_footer": [
+    {
+      "producer": "sim-81374-0",
+      "pid": 81374,
+      "process_instance_unix_ns": 1792601423434878000,
+      "sealed_component_report_present": false,
+      "normal_heap_footer": "absent; not zero"
+    },
+    {
+      "producer": "worker-81913-0",
+      "pid": 81913,
+      "process_instance_unix_ns": 1792601444062104000,
+      "sealed_component_report_present": false,
+      "normal_heap_footer": "absent; not zero"
+    },
+    {
+      "producer": "worker-82409-0",
+      "pid": 82409,
+      "process_instance_unix_ns": 1792601462348972000,
+      "sealed_component_report_present": true,
+      "normal_heap_footer": "absent; not zero"
+    }
+  ],
+  "role_whole_Rust_heap_peaks_plus_tail_including_model_work": {
+    "scale-model-task": 16502705,
+    "compute-worker-bounded": 5980258,
+    "sim-host-scale-full-probe": 59168662,
+    "scale-endurance": 858111,
+    "layout-session": 3259128781,
+    "layout-load-only": 3258672679,
+    "normal-pool-host": 67191798,
+    "joint-endurance": 181001
+  },
+  "external_without_observer_bytes": 3407872,
+  "sim_and_helper_diagnostics": "inside_role_arena_not_external_double_subtracted",
+  "component_caps_addition_only": {
+    "formal_Rust_joint_nominal_bytes": 8388608,
+    "not_measured_joint_proof": true
+  },
+  "shared_8MiB_joint": "not_accepted",
+  "normal_3_10GiB": "not_accepted; fixed whole Rust arenas verified separately, native and stack outside arena",
+  "L1_joint": "present; pressure substitute is not product functionality",
+  "formal_latency": "not_accepted; shortened cadence; execution concurrency conditions recorded in STATUS.md",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run",
+  "full_M0": "not_accepted"
+}

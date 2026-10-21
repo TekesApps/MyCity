@@ -1,0 +1,8 @@
+{
+  "source_sha256": "f75a8a2ff202e7cf92f77d6bfd3dfb1f553f00ec607feb52842fa7d6f832850a",
+  "source_files": 194,
+  "binary": "work/candidate-binaries/role-arena/mycity-headless",
+  "binary_sha256": "36be81c952a29f939601b21f7b2d4e4e1afde12d1b82aecb11416d94a025c62a",
+  "lock_sha256": "8e10b63f3a4bb19bcbec6229e5d7939d696f3b3b55b076e7e885027ec778d95d",
+  "scope": "Whole Rust role fixed arena diagnostic; formal joint performance and 8h not accepted"
+}

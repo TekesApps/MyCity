@@ -1,0 +1,50 @@
+{
+  "source_sha256": "f75a8a2ff202e7cf92f77d6bfd3dfb1f553f00ec607feb52842fa7d6f832850a",
+  "whole_business_seconds": 337.220137167,
+  "operating_seconds": 298.426450125,
+  "cold_ready_seconds": 0.18714,
+  "sequence": 3011,
+  "hours": 720,
+  "targets": 723,
+  "workers": 724,
+  "full_canonical_engine_equal_original_v48": true,
+  "all_original_target_bytes_equal": true,
+  "role_arenas": [
+    {
+      "kind": "model",
+      "grant_bytes": 20971520,
+      "initialized_arena_bytes": 20962275,
+      "peak_requested_bytes": 16437175
+    },
+    {
+      "kind": "sim_codec",
+      "grant_bytes": 61865984,
+      "initialized_arena_bytes": 61865449,
+      "peak_requested_bytes": 59103119
+    },
+    {
+      "kind": "helper_compare",
+      "grant_bytes": 6291456,
+      "initialized_arena_bytes": 6282203,
+      "peak_requested_bytes": 4244455
+    },
+    {
+      "kind": "sim_codec",
+      "grant_bytes": 61865984,
+      "initialized_arena_bytes": 61865451,
+      "peak_requested_bytes": 55815764
+    },
+    {
+      "kind": "helper_compare",
+      "grant_bytes": 6291456,
+      "initialized_arena_bytes": 6282203,
+      "peak_requested_bytes": 4244533
+    }
+  ],
+  "normal_heap_records": 731,
+  "normal_pool_returned_bytes": 67108864,
+  "physical_joint_memory": "not_tested",
+  "formal_performance": "not_accepted",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run"
+}

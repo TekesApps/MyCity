@@ -1,0 +1,6 @@
+   Compiling mycity-role-allocator v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-role-allocator)
+    Finished `release` profile [optimized] target(s) in 0.29s
+     Running unittests src/lib.rs (target/release/deps/mycity_role_allocator-d2a176baae1e8884)
+     Running unittests src/bin/role-arena-probe.rs (target/release/deps/role_arena_probe-b7edbfcb8df323fe)
+     Running tests/process.rs (target/release/deps/process-0014cc69312ec576)
+   Doc-tests mycity_role_allocator

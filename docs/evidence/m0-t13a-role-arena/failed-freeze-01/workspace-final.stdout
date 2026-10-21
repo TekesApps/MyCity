@@ -1,0 +1,332 @@
+
+running 66 tests
+test air::wire::tests::short_writes_errors_and_original_byte_bound_are_not_bypassed ... ok
+test arena::checkpoint_tests::last_generation_free_survives_reopen_then_exhausted_slot_stays_retired ... ok
+test arena::checkpoint_tests::checkpoint_preserves_free_stack_generation_and_retired_slots ... ok
+test arena::restore::tests::inplace_sparse_free_stack_and_last_generation_reuse_trusted_backing ... ok
+test arena::checkpoint_tests::general_restore_is_order_independent_bounded_and_never_reallocates_or_expands_max ... ok
+test arena::tests::fixed_diagnostic_arena_rejects_shape_and_preserves_handles ... ok
+test arena::tests::full_tables_preserve_existing_state_and_owned_capacity ... ok
+test arena::tests::generation_exhaustion_retires_slot_instead_of_resurrecting_old_handle ... ok
+test arena::tests::wrong_world_branch_domain_and_generation_are_rejected ... ok
+test air::report_hash_tests::fixed_scratch_report_matches_the_previous_complete_wire_hashes ... ok
+test assembly::tests::input_order_does_not_change_world_identity_or_hash ... ok
+test air::report_hash_tests::fixed_buffer_hash_is_chunk_and_flush_independent ... ok
+test assembly::tests::duplicate_sources_missing_owners_and_cost_mismatches_reject ... ok
+test assembly::tests::oversized_counts_and_unspent_initial_sources_do_not_publish_a_world ... ok
+test assembly::tests::sources_and_independent_initial_worlds_are_exact ... ok
+test bounded_decode::tests::lexical_guards_precede_scratch_and_keep_escaped_known_schema_valid ... ok
+test calendar::tests::dates_round_trip_and_reject_invalid_bounds ... ok
+test calendar::tests::month_anchor_does_not_drift_after_february ... ok
+test calendar::tests::rent_30_days_is_not_calendar_month_or_four_weeks ... ok
+test canonical::tests::fixed_codec_and_writer_failure_never_fall_back_to_allocation ... ok
+test canonical::tests::old_value_is_an_independent_oracle_for_duplicates_escapes_and_numbers ... ok
+test canonical::tests::overwritten_values_still_obey_old_value_validity ... ok
+test fixed_restore::tests::capacity_overflow_and_extra_record_reject_before_record_decode ... ok
+test air::wire::tests::every_decimal_boundary_and_chunk_tail_matches_independent_serde ... ok
+test fixed_restore::tests::fixed_counts_eof_and_token_limits_reject_malformed_streams ... ok
+test fixed_restore::tests::nested_ignored_field_is_bounded_before_parser_scratch_can_grow ... ok
+test fixed_restore::tests::record_budget_is_checked_before_reservation ... ok
+test model_capacity::tests::every_domain_copy_and_full_dirty_stock_table_is_included ... ok
+test model_rows::tests::copy_reset_and_shorter_restore_keep_full_backing_and_wire ... ok
+test model_rows::tests::overflow_rejected_before_decoding_the_extra_value ... ok
+test model_rows::tests::inactive_timeline_retains_capacity_and_enable_does_not_allocate_rows ... ok
+test schedule::tests::large_same_time_source_pages_finish_before_advancing_world ... ok
+test schedule::tests::bookmark_continues_remaining_pages_without_reprocessing_old_sources ... ok
+test schedule::tests::pause_and_old_ack_do_not_change_cursor_or_time ... ok
+test schedule::tests::bookmark_cannot_be_loaded_into_another_world_or_branch ... ok
+test schedule::tests::per_source_randomness_ignores_paging_and_is_domain_separated ... ok
+test background::tests::real_dispatched_freight_produces_bounded_source_but_paused_link_does_not ... ok
+test schedule::tests::phase_order_and_interval_cap_are_independent_of_input_order ... ok
+test tests::digest_has_known_reference_value ... ok
+test tests::stream_bound_does_not_depend_on_file_metadata ... ok
+test timeline::fixed_cycle_decode_tests::cycle_field_order_and_canonical_bytes_stay_compatible_without_content ... ok
+test tests::unsupported_or_ambiguous_bootstrap_is_rejected ... ok
+test schedule::tests::malformed_bookmarks_and_changed_sources_reject ... ok
+test transaction::tests::capacity_lifecycle_releases_once_and_never_reuses_token ... ok
+test transaction::tests::account_cannot_unprotect_or_redirect_reserved_funds ... ok
+test transaction::tests::failed_late_action_leaves_no_partial_cash_or_capacity ... ok
+test transaction::tests::foreign_capacity_reference_cannot_resolve_same_number_in_another_world ... ok
+test transaction::tests::persistence_hook_failure_publishes_neither_model_changes_nor_receipt ... ok
+test transaction::tests::protection_is_not_new_cash_and_payment_converts_once ... ok
+test transaction::tests::lot_cost_is_invariant_under_splitting_and_internal_transfer ... ok
+test transaction::tests::retry_is_exact_and_changed_payload_or_actor_cannot_reuse_receipt ... ok
+test background::tests::three_failed_attempts_or_bad_input_leave_required_job_without_unbounded_retry ... ok
+test transaction::tests::stale_revision_scope_and_foreign_handles_do_not_write ... ok
+test transaction::tests::stock_and_payment_commit_as_one_with_conserved_quantity_and_basis ... ok
+test units::tests::failed_accrual_preserves_carry ... ok
+test transaction::workspace::tests::reentry_is_rejected_and_unwind_returns_same_initialized_rows ... ok
+test units::tests::negative_values_and_overflow_cannot_enter_exact_units ... ok
+test units::tests::splitting_and_restoring_time_does_not_drop_fractional_cost ... ok
+test transaction::tests::two_resource_request_does_not_hold_one_when_second_is_unavailable ... ok
+test transaction::workspace::tests::failed_or_unwound_hook_preserves_authority_then_commit_swaps_backing ... ok
+test background::tests::restart_fences_old_attempt_and_preserves_continuous_committed_field ... ok
+test canonical::tests::large_arrays_and_nested_objects_use_same_fixed_backing_and_errors_do_not_poison_reuse ... ok
+test transaction::tests::full_journal_backpressures_without_erasing_prior_receipts ... ok
+test background::tests::fixed_background_lifecycle_keeps_all_backings_and_old_numerical_bytes ... ok
+test air::slot::tests::checksum_schema_unknown_duplicate_tail_and_limits_cannot_publish ... ok
+test air::slot::tests::same_slot_partial_complete_bad_good_and_general_profile_boundary ... ok
+
+test result: ok. 66 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+
+
+running 13 tests
+test pulse_spreads_from_a_single_cell_on_later_steps ... ok
+test partial_candidate_never_publishes_field_integral_time_or_diagnostics ... ok
+test continuous_windows_preserve_field_integral_and_source_ledger ... ok
+test checksum_stale_identity_invalid_cursor_and_nonfinite_restore_are_rejected ... ok
+test unknown_boundary_bad_sources_and_limits_do_not_silently_substitute_zero ... ok
+test streamed_checkpoint_handles_partial_writers_exact_size_and_interrupted_output ... ok
+test decoder_rejects_excess_rows_before_accepting_source_or_checkpoint_vectors ... ok
+test diagnostics_keep_air_checkpoint_exact_and_exclude_page_sink_from_parent_clock ... ok
+test checkpoint_digest_preserves_complete_and_continued_state_identity ... ok
+test dense_source_pages_and_mid_source_mid_tile_checkpoints_are_bit_exact ... ok
+test constant_background_is_exact_for_all_map_sizes_and_full_day_integral ... ok
+test independent_f64_single_step_day_and_fixed_thirty_day_window ... ok
+test streamed_borrowed_checkpoints_are_byte_identical_to_legacy_owned_format ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.97s
+
+
+running 3 tests
+test parser_limits_invalid_pages_and_output_failure_never_leave_loaded_partial_data ... ok
+test excess_rows_are_rejected_before_decoding_the_extra_value_and_failure_refills ... ok
+test fixed_workspace_preserves_every_source_and_cell_page_and_original_encoding ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.65s
+
+
+running 5 tests
+test checkpoint_cannot_erase_a_pending_obligation_or_detach_its_timeline ... ok
+test atomic_rebind_fences_running_attempt_and_exhaustion_does_not_reset ... ok
+test final_admission_namespace_cannot_be_burned_by_rejection_or_another_action ... ok
+test pending_job_survives_checkpoint_and_stale_attempt_cannot_open_the_observation_barrier ... ok
+test p4_requires_complete_candidate_and_commit_hook_remains_the_only_publication_boundary ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+
+running 13 tests
+test independent_economic_and_regional_clocks_cannot_be_mixed_with_boot ... ok
+test malformed_profiles_sources_units_and_shared_clock_mixes_are_rejected ... ok
+test restarting_cold_cleared_work_keeps_old_loss_and_requires_new_real_inputs ... ok
+test battery_then_actual_water_then_generator_and_parallel_cycles_conserve_inputs_and_fees ... ok
+test no_seed_rejects_both_dependencies_and_time_does_not_create_outputs ... ok
+test authorization_hook_failure_late_batch_error_and_generic_bypasses_cannot_partially_publish ... ok
+test half_steps_match_one_step_and_due_output_is_not_visible_to_earlier_start ... ok
+test reversed_resource_request_has_identical_tokens_and_releasing_then_new_id_retry_succeeds ... ok
+test faults_keep_actual_losses_and_receivers_then_cleanup_releases_only_work_leases ... ok
+test water_tank_is_an_alternative_real_seed_not_a_future_generator_promise ... ok
+test reverse_requests_use_same_pool_and_failed_request_leaves_no_partial_claim_or_cash ... ok
+test fuel_aquifer_battery_cash_and_output_capacity_are_finite ... ok
+test worst_fault_outlet_reservations_reject_new_work_before_any_consumption ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+
+running 13 tests
+test independent_capacity_pool_cannot_be_enabled_beside_private_economic_corridor ... ok
+test external_debt_cannot_reuse_generated_refund_or_tax_source ... ok
+test malformed_profiles_overlapping_batches_and_conflicting_region_clock_are_rejected ... ok
+test pe1_existing_debt_is_part_paid_then_handed_off_without_changing_parties_or_disappearing_on_exit ... ok
+test pe1_prepayment_cancel_keeps_delivered_labor_and_creates_only_one_real_refund ... ok
+test advances_split_at_events_restore_equivalent_business_state_and_never_open_next_day_early ... ok
+test pe1_insolvent_supplier_retains_refund_claim_and_cancellation_does_not_mint_money ... ok
+test suspended_guaranteed_wages_are_expense_and_cumulative_tax_can_fall_without_cash_refund ... ok
+test economic_caller_protection_stock_and_disk_failure_gates_leave_no_partial_commit ... ok
+test pe1_low_household_cash_records_failed_whole_order_retains_costed_old_lots_and_keeps_running ... ok
+test month_end_tax_cash_shortfall_survives_activity_handoff_and_never_mints_payment ... ok
+test pe1_twenty_units_exhaust_without_new_labor_wages_products_or_deleting_existing_tax ... ok
+test pe0_reaches_all_independent_thirty_day_oracles_through_actual_hourly_transactions ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+
+running 12 tests
+test opening_capital_cannot_reuse_generated_purchase_lot_namespace ... ok
+test malformed_geometry_custody_type_and_missing_pool_are_rejected ... ok
+test old_due_at_arrival_cannot_spend_later_delivery_income_or_silently_repay_old_arrears ... ok
+test broken_link_pauses_actual_goods_and_people_without_erasing_reservations_or_fees ... ok
+test resource_type_swaps_cannot_bypass_boot_and_original_lot_intervals_survive_buyer_costs ... ok
+test electric_and_water_link_failure_keeps_buffers_money_and_capacity_then_delivers_after_expiry ... ok
+test accepted_boot_finishes_while_closed_then_real_multihop_goods_and_utilities_settle_once ... ok
+test freight_blocks_otherwise_eligible_population_and_closed_city_fault_preserves_losses ... ok
+test expiry_keeps_old_debt_and_already_accepted_delivery_while_split_steps_keep_business_results ... ok
+test population_freight_boot_and_utility_compete_in_actual_shared_pools ... ok
+test protections_lease_ownership_clock_scope_hook_and_late_error_are_real_gates ... ok
+test full_shipments_expiry_distance_storage_loss_and_insufficient_funds_reject_atomically ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 2 tests
+test native_jprod_storage_counts_real_widths_and_all_scanned_records ... ok
+test native_full_snapshot_roundtrip_and_truncation_use_real_files ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.87s
+
+
+running 5 tests
+test switching_does_not_catch_up_replay_or_replenish_and_sleep_cannot_erase_debt ... ok
+test remote_discovery_and_approximate_migration_preserve_actual_people ... ok
+test persisted_hook_failure_and_late_action_failure_roll_back_the_entire_region ... ok
+test due_order_and_cash_do_not_depend_on_advance_chunk_size ... ok
+test malformed_sources_bounds_and_overflow_never_admit_partial_worlds ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 7 tests
+test scale_receiving_pool_capacity_rejects_before_any_second_shipment_side_effect ... ok
+test scale_air_rejects_a_freight_source_outside_finite_field_but_not_unemitting_frames ... ok
+test legacy_three_city_wire_input_stays_valid_and_does_not_accept_expanded_tables ... ok
+test scale_receiving_cost_pool_keeps_two_purchase_prices_and_rolls_back_failed_commit ... ok
+test full_world_assembles_and_extra_nonzero_stock_is_outside_managed_conservation_domains ... ok
+test scaled_shape_is_bounded_and_invalid_structure_rejects_both_initialization_and_restore ... ok
+test stream_restore_matches_full_image_and_rejects_bad_tail_io_and_limits ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+
+running 1 test
+test sha256_preserves_fixed_vectors_and_incremental_block_boundaries ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 11 tests
+test diagnostics_distinguish_empty_scan_from_zero_cash_debt_processing ... ok
+test joint_boot_transport_periodic_debt_and_population_use_real_dynamic_sources ... ok
+test inactive_city_gets_no_autonomous_work_and_payment_insufficiency_keeps_claim ... ok
+test one_clock_no_new_action_in_frozen_stage_and_target_cannot_change ... ok
+test later_page_can_touch_all_sixty_four_admitted_accounts ... ok
+test daily_weekly_monthly_same_earned_wages_fraction_carry_and_exit_debt ... ok
+test mid_wage_page_is_valid_and_p4_never_changes_money ... ok
+test economic_dynamic_same_time_work_wage_output_and_tax_match_legacy_thirty_days ... ok
+test diagnostics_preserve_complete_state_quotes_retries_and_failed_persistence ... ok
+test real_twenty_thousand_payments_page_and_checkpoint_without_duplicate_cash ... ok
+test monthly_anchor_leap_century_year_end_stop_and_frequency_change_keep_old_due ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.28s
+
+
+running 47 tests
+test control_data::tests::bill_is_exactly_256kib ... ok
+test control_data::boundary_tests::escapes_reject_before_serde_unescape_and_path_hex_preserves_names ... ok
+test control_data::tests::text_rejects_before_copying_and_round_trips_unicode ... ok
+test control_data::boundary_tests::fourth_artifact_and_fourth_path_cannot_allocate_unbounded_metadata ... ok
+test diagnostic_contract::tests::total_stays_eight_mib ... ok
+test layout_load::bounded_table::tests::duplicate_missing_wrong_fields_extra_records_and_tokens_reject ... ok
+test control_data::tests::leases_reject_overlap_and_return_on_unwind ... ok
+test cpu_log::tests::instance_creation_does_not_retry_io_errors_or_wrap_counter ... ok
+test layout_load::bounded_table::tests::all_variants_restore_exactly_and_accept_records_before_tag ... ok
+test layout_load::tests::eight_hour_snapshot_summaries_do_not_retain_file_trees ... ok
+test control_data::file_tests::fixed_file_slots_refuse_fourth_and_oversized_inputs_and_return_on_error ... ok
+test layout_load::tests::external_component_reservation_rejects_oversize_before_allocation ... ok
+test layout_load::tests::owner_stop_requires_explicit_byte_and_publication_cutoff_is_fixed ... ok
+test model_compare::tests::exact_reader_rejects_different_or_short_input_and_checks_tail ... ok
+test layout_load::tests::real_cow_releases_placeholder_before_copy_and_preserves_snapshot ... ok
+test normal_pool::tests::control_wire_bound_truncation_trailing_and_escape_reject_before_growth ... ok
+test layout_load::tests::all_stub_counts_widths_population_and_references_are_real_records ... ok
+test normal_pool::tests::fixed_event_envelope_covers_u128_and_original_eight_hour_diagnostics ... ok
+test compute_worker::fixed_asset_tests::candidate_file_reads_directly_into_slot_and_failure_returns_real_capacity ... ok
+test normal_pool::tests::every_control_variant_round_trips_u128_without_a_dynamic_tagged_content_tree ... ok
+test pe0_speed::tests::frozen_targets_preserve_every_day_and_transit_observations ... ok
+test scale_endurance::tests::formal_deadlines_keep_all_2880_queries_and_96_saves_and_last_hour_at_8h ... ok
+test scale_endurance::tests::late_scheduler_keeps_old_deadlines_and_sim_recovery_flags_without_clock_reset ... ok
+test scale_endurance::tests::smoke_scales_wall_time_only_not_number_of_business_or_periodic_requests ... ok
+test scale_metrics::tests::compact_bucket_refuses_overflow_without_corrupting_quantile_or_count ... ok
+test scale_metrics::tests::inactive_histograms_allocate_no_bins ... ok
+test cpu_log::tests::reused_pid_and_partial_initialization_skip_existing_directories_atomically ... ok
+test scale_metrics::tests::quantile_does_not_hide_tail_or_sparse_class ... ok
+test scale_model_task::stream::tests::report_rejects_long_keys_values_deep_unknown_fields_and_trailing_bytes ... ok
+test scale_sim::buffer_tests::diagnostic_buffer_refuses_growth_before_limit_and_keeps_previous_bytes ... ok
+test layout_load::tests::restore_rejects_component_reservation_before_loading_any_large_file ... ok
+test scale_sim::buffer_tests::golden_line_reader_is_bounded_before_allocation_and_rejects_truncation ... ok
+test scale_speed::tests::final_period_starts_early_but_future_periods_are_not_released_early ... ok
+test scale_sim::buffer_tests::streaming_payload_digest_preserves_exact_old_wire_hash_and_length ... ok
+test worker_slots::retention_tests::rebind_reuses_the_same_two_allocations_and_rejects_busy_slots ... ok
+test worker_slots::tests::duplicate_wrong_slot_old_epoch_and_generation_cannot_refund_a_live_slot ... ok
+test worker_slots::retention_tests::repeated_reads_in_one_loan_preserve_payload_high_water_and_reset_backing ... ok
+test worker_slots::tests::exact_capacity_prefix_and_one_byte_overflow_never_grow_or_publish_tail ... ok
+test worker_slots::tests::read_failure_encoding_failure_and_unwind_restore_touched_balance ... ok
+test cpu_log::tests::failed_transaction_batches_never_fill_success_histogram_and_raw_pages_remain_attempts ... ok
+test normal_pool::broker::tests::helper_capability_cannot_start_worker_or_overlap_a_live_session ... ok
+test cpu_log::tests::same_pid_logs_keep_original_files_and_shared_quota_across_instances ... ok
+test normal_pool::broker::tests::old_generation_capabilities_and_legacy_calls_cannot_touch_new_registration ... ok
+test normal_pool::workspace::tests::sim_and_worker_use_distinct_real_pages_and_do_not_return_each_others_capacity ... ok
+test scale_model_task::stream::tests::exact_fixed_comparison_covers_chunks_lengths_and_io_failure ... ok
+test normal_pool::tests::actual_64mib_pages_grant_identity_and_duplicate_receipts_never_double_credit ... ok
+test normal_pool::workspace::tests::bounded_table_overflow_duplicate_generation_and_partial_refill_fail_closed ... ok
+
+test result: ok. 47 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s
+
+
+running 2 tests
+test session::pacing_tests::computation_consumes_interval_but_idle_time_does_not_create_credit ... ok
+test session::pacing_tests::early_ready_late_wake_keeps_phase_but_next_late_ready_rebases ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 2 tests
+test cpu_suite_reopens_five_file_checkpoints_in_new_processes_and_reports_real_scope ... ok
+test stale_source_input_corruption_and_existing_output_cannot_publish_a_new_candidate ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.73s
+
+
+running 12 tests
+test bad_invocation_and_missing_input_exit_nonzero ... ok
+test opening_cli_assembles_real_bounded_records_without_running_the_economy ... ok
+test clock_probe_pages_twenty_thousand_sources_and_does_not_claim_disk_recovery ... ok
+test offline_runs_retain_provenance_and_do_not_claim_simulation ... ok
+test spatial_cli_imports_actual_png_and_validates_geometry_without_claiming_city_persistence ... ok
+test transaction_probe_exercises_model_without_claiming_durable_success ... ok
+test spatial_store_cli_restores_cpu_assets_and_money_without_claiming_mutable_construction ... ok
+test storage_cli_confirms_persistent_operation_but_not_full_city_recovery ... ok
+test boot_cli_runs_finite_interlocks_and_recovery_without_claiming_city_network_or_16gb ... ok
+test regional_fulfilment_cli_runs_actual_goods_utilities_common_pools_and_closed_map_recovery ... ok
+test continuity_short_run_exercises_model_but_does_not_pass_wall_duration_or_16gb_gate ... ok
+test economy_cli_executes_real_30_day_cash_goods_and_failure_branches has been running for over 60 seconds
+test economy_cli_executes_real_30_day_cash_goods_and_failure_branches ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 63.01s
+
+
+running 8 tests
+test partial_sim_workspace_refill_after_real_child_exit_stops_pool_without_false_credit ... FAILED
+test broker_wait_and_real_sim_death_revoke_restore_capacity_and_cold_result ... FAILED
+test actual_sim_spawn_permission_failure_cancels_unbound_registration ... ok
+test lost_bind_reply_reaps_actual_sim_and_cancels_generation_before_replacement ... ok
+test broker_owned_worker_fault_retries_inside_same_sim_without_double_credit ... ok
+test lost_revoke_request_or_reply_retries_after_real_sim_wait_without_duplicate_credit ... ok
+test broker_death_is_fail_closed_and_cannot_adopt_old_ready_or_claim_return ... ok
+test sim_killed_after_worker_spawn_before_start_reply_recovers_without_knowing_worker_id ... ok
+
+failures:
+
+---- partial_sim_workspace_refill_after_real_child_exit_stops_pool_without_false_credit stdout ----
+
+thread 'partial_sim_workspace_refill_after_real_child_exit_stops_pool_without_false_credit' panicked at crates/city-headless/tests/broker.rs:481:5:
+assertion `left == right` failed
+  left: Number(61865984)
+ right: 4194304
+broker_fixture_retained_after_panic:/var/folders/lg/msp2zt0x5q14_lxl12ts9lsw0000gn/T/mc-broker-64420-4
+
+---- broker_wait_and_real_sim_death_revoke_restore_capacity_and_cold_result stdout ----
+
+thread 'broker_wait_and_real_sim_death_revoke_restore_capacity_and_cold_result' panicked at crates/city-headless/tests/broker.rs:138:9:
+assertion `left == right` failed
+  left: 61865984
+ right: 4194304
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+broker_fixture_retained_after_panic:/var/folders/lg/msp2zt0x5q14_lxl12ts9lsw0000gn/T/mc-broker-64420-7
+
+
+failures:
+    broker_wait_and_real_sim_death_revoke_restore_capacity_and_cold_result
+    partial_sim_workspace_refill_after_real_child_exit_stops_pool_without_false_credit
+
+test result: FAILED. 6 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.02s
+

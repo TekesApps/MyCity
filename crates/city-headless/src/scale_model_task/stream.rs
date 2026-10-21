@@ -169,7 +169,7 @@ pub(super) fn execute(
     heap_meter::fixed_helper();
     let epoch = crate::normal_pool::broker::codec_epoch_from_env()?.unwrap_or(1);
     let mut owner = Owner::new(epoch, 1, 1, 1)?;
-    crate::normal_pool::broker::acknowledge_codec(&owner)?;
+    crate::normal_pool::broker::acknowledge_role(epoch, &owner.report()?)?;
     // Explicit fault-injection gate only; never used by measured controllers.
     if std::env::var_os("MYCITY_HELPER_COMPARE_PROBE").is_some() {
         publish(dir, "filled-probe.json", 65536, |f| {

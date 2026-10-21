@@ -290,6 +290,15 @@ pub fn execute(dir: &Path) -> Result<(), String> {
     if joined(&dir, "result.json")?.exists() {
         return Err("model_task_result_exists".into());
     }
+    let kind = if matches!(
+        r.mode,
+        Mode::Reference | Mode::FaultReference | Mode::Compare
+    ) {
+        crate::normal_pool::workspace::Kind::Model
+    } else {
+        crate::normal_pool::workspace::Kind::HelperCompare
+    };
+    let epoch = crate::normal_pool::broker::activate_role(kind)?;
     let mut result = ResultRecord {
         schema: Text::new("mycity-model-task-result-v2")?,
         source_sha256: Text::new(SOURCE)?,
@@ -314,6 +323,9 @@ pub fn execute(dir: &Path) -> Result<(), String> {
     } else {
         None
     };
+    if let Some(w) = workspace.as_ref() {
+        crate::normal_pool::broker::acknowledge_role(epoch, &w.identity()?)?;
+    }
     match r.mode {
         Mode::Reference | Mode::FaultReference => {
             if (r.mode == Mode::FaultReference) != r.retry_job.is_some() {
@@ -590,18 +602,23 @@ pub(crate) fn run_retry(
         mode,
         Mode::BeforeReopen | Mode::CompareEndurance | Mode::CompareSpeed
     );
-    let mut supervisor = if fixed {
-        std::env::var_os("MYCITY_NORMAL_POOL")
-            .map(|p| crate::normal_pool::broker::Supervisor::register_helper(Path::new(&p)))
-            .transpose()?
-    } else {
-        None
-    };
+    let mut supervisor = std::env::var_os("MYCITY_NORMAL_POOL")
+        .map(|p| {
+            crate::normal_pool::broker::Supervisor::register_kind(
+                Path::new(&p),
+                if fixed {
+                    crate::normal_pool::workspace::Kind::HelperCompare
+                } else {
+                    crate::normal_pool::workspace::Kind::Model
+                },
+            )
+        })
+        .transpose()?;
     let mut command = Command::new(std::env::current_exe().map_err(err)?);
     if let Some(s) = supervisor.as_ref() {
         s.configure(&mut command)?;
     }
-    // Non-fixed reference work remains EXTRA; it must not inherit a Sim lease.
+    // Standalone work has the same fixed role arena but no external pool grant.
     else {
         command.env_remove("MYCITY_BROKER_SESSION");
     }

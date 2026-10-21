@@ -1,7 +1,8 @@
 //! Actual external balance. Worker I/O and typed air backings share a pre-spawn grant.
-//! Ordinary Engine allocations remain EXTRA pressure, never subtracted from this pool.
+//! Sim/model/stream roles own one fixed allocator region, authenticated before
+//! construction; worker backing retains its separate5MiB grant. Native/stack separate.
 pub mod broker;
-mod workspace;
+pub(crate) mod workspace;
 use crate::{control_data::Text, heap_meter, worker_slots};
 use serde::{Deserialize, Serialize};
 use std::os::unix::net::{UnixListener, UnixStream};
@@ -324,14 +325,18 @@ impl Pool {
         self.write_event(&e)
     }
     fn write_event(&mut self, e: &impl Serialize) -> Result<(), String> {
+        self.write_event_bounded(e, EVENT_BYTES)
+    }
+    fn write_event_bounded(&mut self, e: &impl Serialize, row_limit: usize) -> Result<(), String> {
         struct Count<'a> {
             sink: &'a mut BufWriter<File>,
             used: &'a mut usize,
             row_bytes: usize,
+            row_limit: usize,
         }
         impl Write for Count<'_> {
             fn write(&mut self, b: &[u8]) -> std::io::Result<usize> {
-                if self.row_bytes.saturating_add(b.len()) > EVENT_BYTES {
+                if self.row_bytes.saturating_add(b.len()) > self.row_limit {
                     return Err(std::io::Error::other("normal_pool_event_row_bound"));
                 }
                 if self.used.saturating_add(b.len()) > 8 * MIB {
@@ -350,6 +355,7 @@ impl Pool {
             sink: &mut self.events,
             used: &mut self.event_bytes,
             row_bytes: 0,
+            row_limit,
         };
         serde_json::to_writer(&mut sink, e).map_err(err)?;
         sink.write_all(b"\n").map_err(err)?;
@@ -940,7 +946,7 @@ pub fn serve(root: &Path) -> Result<(), String> {
         scope: &'static str,
     }
     let mut f = File::create_new(root.join("report.json")).map_err(err)?;
-    serde_json::to_writer_pretty(&mut f,&Final{source_sha256:SOURCE,ready:pool.ready,summary:pool.summary,balanced_after_owned_wait:balanced,normal_owned_acceptance:"not_accepted_unconverted_Engine_work_is_extra_pressure",scope:"64MiB physical balance plus worker grants; observed transitions are not a proof of continuously full pressure; native/stack separate"}).map_err(err)?;
+    serde_json::to_writer_pretty(&mut f,&Final{source_sha256:SOURCE,ready:pool.ready,summary:pool.summary,balanced_after_owned_wait:balanced,normal_owned_acceptance:"not_accepted_until_complete_joint_physical_validation",scope:"64MiB initialized region/page balance including whole Rust model roles and worker backing; continuously full joint physical pressure, native/stack and diagnostics require observed validation"}).map_err(err)?;
     f.sync_all().map_err(err)?;
     pool.events.flush().map_err(err)?;
     pool.events.get_ref().sync_all().map_err(err)?;

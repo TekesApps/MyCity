@@ -1,5 +1,7 @@
 //! Whole-process requested Rust heap high-water mark, separate from RSS/footprint.
-//! PeakAlloc's alloc+copy realloc path is part of this measured binary's cost.
+//! Alloc+copy realloc overlap is counted. Active roles use a fixed first-fit arena.
+//! Reserved arena/prefix are reported separately; never add them to requested
+//! bytes to invent RSS or deduct common diagnostics twice.
 //! No reset is used. Native allocator metadata, stacks and foreign allocations
 //! remain outside this counter and are never reported as measured by it.
 use serde::Serialize;
@@ -27,11 +29,17 @@ pub(crate) fn fixed_helper() {
 }
 pub const TAIL_RESERVED_BYTES: usize = 64 * 1024;
 #[global_allocator]
-static ALLOCATOR: peak_alloc::PeakAlloc = peak_alloc::PeakAlloc;
+static ALLOCATOR: mycity_role_allocator::Allocator = mycity_role_allocator::Allocator::new();
 #[derive(Serialize)]
 pub struct Snapshot {
     pub current_requested_bytes: usize,
     pub lifetime_peak_requested_bytes: usize,
+}
+pub(crate) fn activate_role(bytes: usize) -> Result<mycity_role_allocator::Activation, String> {
+    ALLOCATOR.activate(bytes).map_err(str::to_owned)
+}
+pub(crate) fn arena_snapshot() -> mycity_role_allocator::Snapshot {
+    ALLOCATOR.snapshot()
 }
 pub fn snapshot() -> Snapshot {
     let current_requested_bytes = ALLOCATOR.current_usage();
@@ -54,6 +62,7 @@ struct Record<'a> {
     source_sha256: &'static str,
     success: bool,
     heap: Snapshot,
+    role_arena: mycity_role_allocator::Snapshot,
     tail_reserved_bytes: usize,
     scope: &'static str,
 }
@@ -112,10 +121,10 @@ impl Recorder {
             .open(path)
             .map_err(|e| e.to_string())?;
         fs2::FileExt::lock_exclusive(&file).map_err(|e| e.to_string())?;
-        if file.metadata().map_err(|e| e.to_string())?.len() + 1024 > 8 * 1024 * 1024 {
+        if file.metadata().map_err(|e| e.to_string())?.len() + 2048 > 8 * 1024 * 1024 {
             return Err("heap_log_capacity".into());
         }
-        let record=Record{schema:"mycity-rust-heap-v1",pid:std::process::id(),instance_unix_ns:self.instance,role:&self.role,source_sha256:env!("MYCITY_SOURCE_SHA256"),success,heap:snapshot(),tail_reserved_bytes:TAIL_RESERVED_BYTES,scope:"Rust heap through final record construction; 64KiB tail reserved, not exact exit peak; realloc copies counted; no reset; native/stack/mapped/foreign excluded"};
+        let record=Record{schema:"mycity-rust-heap-v1",pid:std::process::id(),instance_unix_ns:self.instance,role:&self.role,source_sha256:env!("MYCITY_SOURCE_SHA256"),success,heap:snapshot(),role_arena:arena_snapshot(),tail_reserved_bytes:TAIL_RESERVED_BYTES,scope:"Rust heap through final record construction; 64KiB tail reserved, not exact exit peak; realloc copies counted; no reset; native/stack/mapped/foreign excluded"};
         serde_json::to_writer(&mut file, &record).map_err(|e| e.to_string())?;
         file.write_all(b"\n").map_err(|e| e.to_string())?;
         file.sync_all().map_err(|e| e.to_string())?;

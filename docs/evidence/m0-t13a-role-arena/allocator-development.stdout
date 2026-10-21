@@ -1,0 +1,25 @@
+
+running 4 tests
+test adapter::tests::startup_limit_rejects_before_switch_and_never_hides_previous_peak ... ok
+test adapter::tests::activation_is_once_and_charges_real_prefix_header_and_full_region ... ok
+test adapter::tests::alignments_zeroing_failed_realloc_and_cross_activation_move_keep_bytes ... ok
+test adapter::tests::repeated_fragmentation_coalesces_without_system_fallback ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 1 test
+test real_global_switch_with_live_monitor_realloc_alignment_and_oom_are_finite ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.44s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

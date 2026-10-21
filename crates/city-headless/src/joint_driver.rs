@@ -204,7 +204,7 @@ pub fn run(dir: &Path) -> Result<(), String> {
     fs::create_dir(dir).map_err(err)?;
     let dir = dir.canonicalize().map_err(err)?;
     let mib = 1024 * 1024;
-    save(&dir.join("manifest.json"),&Manifest{external_owned_charge_bytes:6*mib,component_caps_bytes:[crate::diagnostic_contract::SIM,mib,crate::diagnostic_contract::LAYOUT,mib/4,mib,mib/4,crate::diagnostic_contract::POOL],scope:"Sim2.5 + worker1 + L1 diagnostics0.75 + supervisor0.25 + driver1 + helper0.25 + pool0.25 MiB; observer separate2; 64MiB entity pool plus extra unconverted Engine pressure"})?;
+    save(&dir.join("manifest.json"),&Manifest{external_owned_charge_bytes:crate::diagnostic_contract::EXTERNAL_WITHOUT_OBSERVER,component_caps_bytes:[crate::diagnostic_contract::SIM,mib,crate::diagnostic_contract::LAYOUT,mib/4,mib,mib/4,crate::diagnostic_contract::POOL],scope:"external worker1 + L1 diagnostics0.75 + supervisor0.25 + driver1 + pool0.25 MiB; observer separate2; Sim and helper full Rust heaps including diagnostics inside64MiB; no duplicate external credit"})?;
     let mut clock = Clock {
         begin: Instant::now(),
         events: BufWriter::with_capacity(
@@ -384,7 +384,7 @@ pub fn run(dir: &Path) -> Result<(), String> {
     {
         return Err("joint_supervisor_diagnostic_heap_cap".into());
     }
-    save(&dir.join("report.json"),&Report{schema:"mycity-joint-budget-diagnostic-v1",source_sha256:env!("MYCITY_SOURCE_SHA256"),diagnostic_component_caps_bytes:[crate::diagnostic_contract::SIM,mib,crate::diagnostic_contract::LAYOUT,2*mib,mib/4,mib,mib/4,crate::diagnostic_contract::POOL],l1_charged_bound_bytes:l.diagnostics.charged_bound_bytes,supervisor_requested_heap_peak_bytes:supervisor_peak,whole_ns:clock.now(),overlap_witness_in_observed_tree:true,scope:"fixed 600s concurrent diagnostic; raw business unchanged; 64MiB entity balance with real worker grants; unconverted Engine work remains extra pressure; exact total normal owned unproven",joint_owned_budget:"not_accepted",steady_gate:"not_run",eight_hour_gate:"not_run",memory_16gb_gate:"not_run"})?;
+    save(&dir.join("report.json"),&Report{schema:"mycity-joint-budget-diagnostic-v1",source_sha256:env!("MYCITY_SOURCE_SHA256"),diagnostic_component_caps_bytes:[crate::diagnostic_contract::SIM,mib,crate::diagnostic_contract::LAYOUT,2*mib,mib/4,mib,mib/4,crate::diagnostic_contract::POOL],l1_charged_bound_bytes:l.diagnostics.charged_bound_bytes,supervisor_requested_heap_peak_bytes:supervisor_peak,whole_ns:clock.now(),overlap_witness_in_observed_tree:true,scope:"fixed 600s concurrent diagnostic; raw business unchanged; 64MiB fixed whole-role Rust arenas and worker backing; joint physical/native/stack and common diagnostic acceptance unproven",joint_owned_budget:"not_accepted",steady_gate:"not_run",eight_hour_gate:"not_run",memory_16gb_gate:"not_run"})?;
     clock.events.flush().map_err(err)?;
     clock.events.get_ref().sync_all().map_err(err)
 }
@@ -423,11 +423,11 @@ pub fn endurance(dir: &Path, formal: bool) -> Result<(), String> {
         &dir.join("manifest.json"),
         &serde_json::json!({
             "schema":"mycity-joint-endurance-v1", "source_sha256":env!("MYCITY_SOURCE_SHA256"),
-        "external_owned_charge_bytes":6*1024*1024,
+        "external_owned_charge_bytes":crate::diagnostic_contract::EXTERNAL_WITHOUT_OBSERVER,
             "cadence":cadence, "layout_minimum_seconds":if formal {28800} else {600},
             "layout_hard_failure_seconds":35000,"supervisor_hard_failure_seconds":36000,
             "scan_seconds":1,"snapshot_seconds":300,"normal_pool_bytes":crate::normal_pool::BYTES,
-            "scope":"full actual business plus full L1 layout pressure; unconverted Engine remains EXTRA",
+            "scope":"full actual business plus full L1 layout pressure; fixed whole-role Rust arenas inside64MiB, native/stack separate",
             "common_8MiB":"not_accepted", "exact_normal_owned":"not_accepted", "real_16GB":"not_run"
         }),
     )?;

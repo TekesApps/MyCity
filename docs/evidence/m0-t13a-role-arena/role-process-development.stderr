@@ -1,0 +1,3 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+    Finished `release` profile [optimized] target(s) in 15.70s
+     Running tests/role_arena.rs (target/release/deps/role_arena-6f1e31f5cd7e4afa)

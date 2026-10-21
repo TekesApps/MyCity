@@ -1,0 +1,11 @@
+{
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/role-arena/metadata-compat",
+    "/Users/frankqin/dev/MyCity/work/t13a-role-metadata-v1-proof/world",
+    "metadata-compat-proof-v1",
+    "/Users/frankqin/dev/MyCity/work/t13a-role-metadata-v1-proof/expected-engine.json"
+  ],
+  "exit_code": 0,
+  "seconds": 0.02520591699999386,
+  "source_sha256": "f75a8a2ff202e7cf92f77d6bfd3dfb1f553f00ec607feb52842fa7d6f832850a"
+}

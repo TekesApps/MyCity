@@ -1,0 +1,8 @@
+
+running 3 tests
+test construction_oom_cannot_fill_or_refund_before_the_parent_actually_waits ... ok
+test sim_full_arena_fills_after_models_and_unknown_durable_oom_recovers_original_ticket ... ok
+test complete_reference_and_sim_sessions_cannot_overlap_and_twenty_mib_is_returned ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 16.45s
+

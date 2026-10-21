@@ -1,0 +1,9 @@
+{
+  "source_sha256": "f75a8a2ff202e7cf92f77d6bfd3dfb1f553f00ec607feb52842fa7d6f832850a",
+  "functional_original_full_30day_verified": true,
+  "l1_pressure_included": false,
+  "formal_performance_accepted": false,
+  "eight_hour_accepted": false,
+  "memory_16gb_gate": "not_run",
+  "full_m0": "not_accepted"
+}

@@ -1,0 +1,33 @@
+{
+  "before": null,
+  "after": {
+    "time_ns": 1792602224324002000,
+    "work_du_kib": 14798016,
+    "target_du_kib": 1398104,
+    "filesystem_available_bytes": 121125367808
+  },
+  "deleted_files": 13,
+  "deleted_allocated_bytes": 6373318656,
+  "retained_existing_files_identity_length_mtime_links_unchanged": 110949,
+  "retained_allocation_only_differences": 19,
+  "joint_changed_allocation_files_bytes_verified_against_precleanup_archive": [
+    "work/t13a85-joint-01/host-samples.jsonl",
+    "work/t13a85-joint-01/model/heaps.jsonl",
+    "work/t13a85-joint-01/model/layout/compute-durations.bin",
+    "work/t13a85-joint-01/model/business/transcript.jsonl",
+    "work/t13a85-joint-01/model/business/cpu-final-engine.json",
+    "work/t13a85-joint-01/model/business/fault-reference/cpu-targets.jsonl",
+    "work/t13a85-joint-01/model/business/diagnostics/sim-82743-0/quote/compute-durations.bin",
+    "work/t13a85-joint-01/model/business/diagnostics/sim-82743-0/execution/compute-durations.bin",
+    "work/t13a85-joint-01/model/business/diagnostics/sim-81374-0/transactions.jsonl",
+    "work/t13a85-joint-01/model/business/diagnostics/sim-81374-0/quote/compute-durations.bin",
+    "work/t13a85-joint-01/model/business/diagnostics/sim-82411-0/transactions.jsonl",
+    "work/t13a85-joint-01/model/business/reference/cpu-final-engine.json"
+  ],
+  "observed_df_available_delta": null,
+  "target_deleted_bytes": 0,
+  "new_archive_bytes": 0,
+  "measurement_limitation": "Deletion completed and directories synced, then strict st_blocks equality failed: APFS allocation-only reductions on19 retained paths; identity/size/mtime/links unchanged. Reverified joint bytes against precleanup archive and full protected originals. Initial before/after metrics existed only in exited process, not persisted; no reconstructed df delta or du-before claimed.",
+  "retired_availability": "Old v70 two full layouts and synthetic input cannot directly restore. New v85 two generations and old v50 original remain complete; old index/business/log/component files retained.",
+  "accounting": "Only exact single-link deleted inode allocation counted. Retained APFS allocation changes and unknown df movement excluded."
+}

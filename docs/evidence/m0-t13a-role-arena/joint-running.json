@@ -1,0 +1,11 @@
+{
+  "controller_pid": 79800,
+  "pid": 93465,
+  "name": "joint-latency_audit",
+  "command": [
+    "python3",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-role-arena/latency_audit.py",
+    "/Users/frankqin/dev/MyCity/work/t13a85-joint-01",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-role-arena"
+  ]
+}

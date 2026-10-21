@@ -1,0 +1,12 @@
+{
+  "controller_pid": 65361,
+  "pid": 72017,
+  "name": "arena-full-business",
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/role-arena/mycity-headless",
+    "speed-run",
+    "/Users/frankqin/dev/MyCity/work/t13a-role-arena-business-01",
+    "unpaced"
+  ],
+  "source_sha256": "f75a8a2ff202e7cf92f77d6bfd3dfb1f553f00ec607feb52842fa7d6f832850a"
+}

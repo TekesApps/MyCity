@@ -1,0 +1,53 @@
+{
+  "result": {
+    "engine_bytes": 2507418,
+    "full_engine_equal": true,
+    "role_arena": {
+      "activation": {
+        "adapter_header_bytes": 160,
+        "arena_bytes": 61865824,
+        "arena_start": 23018340352,
+        "bootstrap_charged_bytes": 0,
+        "grant_bytes": 61865984,
+        "initialized_bytes": 61865824,
+        "pid": 72010
+      },
+      "allocation_failures": 0,
+      "arena_free_bytes": 4315736,
+      "arena_usable_bytes": 61865824,
+      "arena_used_bytes": 57550088,
+      "bootstrap_live_bytes": 0,
+      "bootstrap_peak_bytes": 0,
+      "bootstrap_quarantined_bytes": 0,
+      "current_requested_bytes": 57550030,
+      "lifetime_peak_requested_bytes": 59647118
+    },
+    "sequence": 3013
+  },
+  "source_sha256": "f75a8a2ff202e7cf92f77d6bfd3dfb1f553f00ec607feb52842fa7d6f832850a",
+  "helper_sha256": "4760d21236adcba791eb4843d3fbda0f3678ea0fc97687bdcc7770b217b43c2d",
+  "helper_source_sha256": "8682bdb28b66f2c23cf5b5a9663f0ff0b9ba7ee65098aefd832047f6f2922491",
+  "original_and_copy_files_verified_unchanged": 243,
+  "linked_libraries": {
+    "serde_json": {
+      "path": "/Users/frankqin/dev/MyCity/target/release/deps/libserde_json-739cab3222a3d08f.rlib",
+      "sha256": "2dddbb780db152a49fd25676cdafaa63d8df138016de76f09aaea866fb495079"
+    },
+    "mycity_core": {
+      "path": "/Users/frankqin/dev/MyCity/target/release/libmycity_core.rlib",
+      "sha256": "86de485b99ace1791e0b6e50d3f527286d5e4be6c27fb524357944be80910ba9"
+    },
+    "mycity_role_allocator": {
+      "path": "/Users/frankqin/dev/MyCity/target/release/libmycity_role_allocator.rlib",
+      "sha256": "94e95304b34271bfd601294e3ef43c53e0d91fa5acb2a3801d493639a0e59875"
+    },
+    "mycity_map": {
+      "path": "/Users/frankqin/dev/MyCity/target/release/libmycity_map.rlib",
+      "sha256": "06ba4c8cd65ecd195f126a416a7a75f0fed0ddb85d35d23c42a2a8815e8a3200"
+    },
+    "mycity_storage": {
+      "path": "/Users/frankqin/dev/MyCity/target/release/libmycity_storage.rlib",
+      "sha256": "2c70f4e802c52d96f952710c20c597cb68ef8f3c59bcde56d8625424169392fd"
+    }
+  }
+}

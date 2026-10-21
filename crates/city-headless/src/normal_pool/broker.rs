@@ -42,6 +42,12 @@ pub(super) enum Op {
         gated: bool,
         diagnostics: bool,
     },
+    Authorize {
+        generation: u64,
+        key: Text<64>,
+        pid: u32,
+        kind: workspace::Kind,
+    },
     CodecFilled {
         generation: u64,
         key: Text<64>,
@@ -49,6 +55,8 @@ pub(super) enum Op {
         capacity: usize,
         touched: usize,
         balanced: bool,
+        arena: mycity_role_allocator::Snapshot,
+        backing_sha256: Text<64>,
     },
     Stop {
         generation: u64,
@@ -68,6 +76,7 @@ pub(super) enum Op {
 pub(super) enum Receipt {
     Registered { generation: u64, key: Text<64> },
     Bound { generation: u64 },
+    Authorized { generation: u64, capacity: usize },
     CodecFilled { generation: u64 },
     Revoked { generation: u64 },
     Started { lease: u64, pid: u32 },
@@ -279,6 +288,24 @@ impl Pool {
                 self.broker.last_closed = Some((generation, key));
                 Ok(Receipt::Revoked { generation })
             }
+            Op::Authorize {
+                generation,
+                key,
+                pid,
+                kind,
+            } => {
+                let session = self.broker.session(generation, key, false)?;
+                if session.pid != Some(pid) {
+                    return Err(ActionError::Rejected("normal_workspace_sim_unbound"));
+                }
+                if session.kind != kind {
+                    return Err(ActionError::Rejected("normal_workspace_role_kind"));
+                }
+                Ok(Receipt::Authorized {
+                    generation,
+                    capacity: kind.bytes(),
+                })
+            }
             Op::CodecFilled {
                 generation,
                 key,
@@ -286,9 +313,21 @@ impl Pool {
                 capacity,
                 touched,
                 balanced,
+                arena,
+                backing_sha256,
             } => {
                 self.broker.session(generation, key, false)?;
-                self.fill_codec(generation, identity, capacity, touched, balanced)?;
+                self.fill_codec(
+                    generation,
+                    identity,
+                    capacity,
+                    touched,
+                    balanced,
+                    workspace::Filled {
+                        arena,
+                        digest: backing_sha256,
+                    },
+                )?;
                 Ok(Receipt::CodecFilled { generation })
             }
             Op::Start {
@@ -479,10 +518,13 @@ impl Supervisor {
     pub fn register(root: &Path) -> Result<Self, String> {
         Self::register_kind(root, workspace::Kind::SimCodec)
     }
+    pub fn register_model(root: &Path) -> Result<Self, String> {
+        Self::register_kind(root, workspace::Kind::Model)
+    }
     pub fn register_helper(root: &Path) -> Result<Self, String> {
         Self::register_kind(root, workspace::Kind::HelperCompare)
     }
-    fn register_kind(root: &Path, kind: workspace::Kind) -> Result<Self, String> {
+    pub(crate) fn register_kind(root: &Path, kind: workspace::Kind) -> Result<Self, String> {
         let ready = ready(root)?;
         let key = secret()?;
         let Receipt::Registered {
@@ -616,45 +658,88 @@ pub(crate) fn codec_epoch_from_env() -> Result<Option<u64>, String> {
     )?;
     Ok(Some(binding.generation))
 }
-pub(crate) fn acknowledge_codec(owner: &worker_slots::Owner) -> Result<(), String> {
+pub(crate) fn activate_role(kind: workspace::Kind) -> Result<u64, String> {
+    let epoch = codec_epoch_from_env()?.unwrap_or(1);
+    if let Some(raw) = std::env::var_os("MYCITY_BROKER_SESSION") {
+        let b: Binding =
+            crate::control_data::decode(raw.to_str().ok_or("normal_binding_utf8")?.as_bytes())?;
+        let root = std::env::var_os("MYCITY_NORMAL_POOL").ok_or("normal_workspace_pool_absent")?;
+        let root = Path::new(&root);
+        let ready = ready(root)?;
+        let began = Instant::now();
+        loop {
+            match rpc(
+                root,
+                ready,
+                Op::Authorize {
+                    generation: b.generation,
+                    key: b.key,
+                    pid: std::process::id(),
+                    kind,
+                },
+            ) {
+                Ok(Receipt::Authorized {
+                    generation,
+                    capacity,
+                }) if generation == epoch && capacity == kind.bytes() => break,
+                Err(e)
+                    if e == "normal_workspace_sim_unbound"
+                        && began.elapsed() < Duration::from_secs(5) =>
+                {
+                    std::thread::sleep(Duration::from_millis(2))
+                }
+                Err(e) => return Err(e),
+                _ => return Err("normal_workspace_authorize_receipt".into()),
+            }
+        }
+    }
+    crate::heap_meter::activate_role(kind.bytes())?;
+    if std::env::var_os("MYCITY_ROLE_CONSTRUCTION_OOM").is_some() {
+        let bytes = vec![0u8; kind.bytes() * 2];
+        std::hint::black_box(bytes);
+        return Err("role_construction_oom_probe_unexpected_success".into());
+    }
+    Ok(epoch)
+}
+pub(crate) fn acknowledge_role(epoch: u64, backing: &impl Serialize) -> Result<(), String> {
+    let arena = crate::heap_meter::arena_snapshot();
+    let a = arena.activation.ok_or("normal_role_not_constructed")?;
+    let backing_sha256 = Text::new(&mycity_core::sha256(
+        &serde_json::to_vec(backing).map_err(err)?,
+    ))?;
     let Some(raw) = std::env::var_os("MYCITY_BROKER_SESSION") else {
         return Ok(());
     };
-    let binding: Binding = crate::control_data::decode(
-        raw.to_str()
-            .ok_or("normal_workspace_binding_utf8")?
-            .as_bytes(),
-    )?;
+    let b: Binding =
+        crate::control_data::decode(raw.to_str().ok_or("normal_binding_utf8")?.as_bytes())?;
     let root = std::env::var_os("MYCITY_NORMAL_POOL").ok_or("normal_workspace_pool_absent")?;
     let root = Path::new(&root);
     let ready = ready(root)?;
-    let report = owner.report()?;
-    let began = Instant::now();
-    loop {
-        match rpc(
-            root,
-            ready,
-            Op::CodecFilled {
-                generation: binding.generation,
-                key: binding.key,
-                identity: owner.identity(),
-                capacity: report.owner_capacity_bytes,
-                touched: report.available_touched_bytes,
-                balanced: report.full_balance_scan_passed,
-            },
-        ) {
-            Err(e)
-                if e == "normal_workspace_sim_unbound"
-                    && began.elapsed() < Duration::from_secs(5) =>
-            {
-                std::thread::sleep(Duration::from_millis(2));
-            }
-            Ok(Receipt::CodecFilled { generation }) if generation == binding.generation => {
-                return Ok(())
-            }
-            Ok(_) => return Err("normal_workspace_fill_receipt".into()),
-            Err(e) => return Err(e),
-        }
+    let identity = worker_slots::Identity {
+        process_pid: std::process::id(),
+        process_instance_unix_ns: heap_meter::process_instance(),
+        run_epoch: epoch,
+        owner_instance: a.arena_start as u64,
+        job: 1,
+        generation: 1,
+        attempt: 1,
+    };
+    match rpc(
+        root,
+        ready,
+        Op::CodecFilled {
+            generation: b.generation,
+            key: b.key,
+            identity,
+            capacity: a.grant_bytes,
+            touched: a.grant_bytes,
+            balanced: true,
+            arena,
+            backing_sha256,
+        },
+    )? {
+        Receipt::CodecFilled { generation } if generation == epoch => Ok(()),
+        _ => Err("normal_workspace_fill_receipt".into()),
     }
 }
 

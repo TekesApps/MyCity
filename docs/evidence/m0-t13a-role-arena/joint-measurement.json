@@ -1,0 +1,14 @@
+{
+  "command": [
+    "python3",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-role-arena/observe.py",
+    "/Users/frankqin/dev/MyCity/work/t13a85-joint-01",
+    "--",
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/role-arena/mycity-headless",
+    "joint-endurance",
+    "/Users/frankqin/dev/MyCity/work/t13a85-joint-01/model",
+    "smoke"
+  ],
+  "exit_code": 0,
+  "seconds": 606.679762292
+}

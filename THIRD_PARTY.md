@@ -18,6 +18,7 @@ Versions below are from the committed Cargo.lock, not a claim of newest releases
 | generic-array | 0.14.7 | MIT | crates.io; checksum in Cargo.lock |
 | itoa | 1.0.18 | MIT OR Apache-2.0 | crates.io; checksum in Cargo.lock |
 | libc | 0.2.191 | MIT OR Apache-2.0 | crates.io; checksum in Cargo.lock |
+| linked_list_allocator | 0.10.6 | Apache-2.0 OR MIT | crates.io; checksum in Cargo.lock; unsafe allocator backend, adapter boundary independently reviewed |
 | memchr | 2.8.3 | Unlicense OR MIT | crates.io; checksum in Cargo.lock |
 | miniz_oxide | 0.8.9 | MIT OR Zlib OR Apache-2.0 | crates.io; checksum in Cargo.lock |
 | miniz_oxide | 0.9.1 | MIT OR Zlib OR Apache-2.0 | crates.io; checksum in Cargo.lock |

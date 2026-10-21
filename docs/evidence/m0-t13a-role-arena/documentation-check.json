@@ -1,0 +1,7 @@
+{
+  "script_syntax": true,
+  "links": true,
+  "frozen_source_bytes_unchanged": true,
+  "fixed_cli_unchanged": true,
+  "scope": "documentation and provenance, not new performance execution"
+}

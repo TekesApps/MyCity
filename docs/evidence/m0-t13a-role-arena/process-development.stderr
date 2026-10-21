@@ -1,0 +1,3 @@
+error: no test target named `sim`
+
+	Did you mean `air`?

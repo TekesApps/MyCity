@@ -9,6 +9,9 @@ pub const OBSERVER: usize = 2 * MIB;
 pub const SUPERVISOR: usize = MIB / 4;
 pub const DRIVER: usize = MIB;
 pub const HELPER: usize = MIB / 4;
+/// Sim and model/stream helper diagnostics now suballocate from their normal
+/// role arena. They cannot also subtract external L1 pressure a second time.
+pub const EXTERNAL_WITHOUT_OBSERVER: usize = WORKER + LAYOUT + SUPERVISOR + DRIVER + POOL;
 #[derive(Serialize)]
 pub struct Caps {
     pub sim: usize,

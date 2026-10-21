@@ -1,0 +1,9 @@
+{
+  "source_sha256": "f75a8a2ff202e7cf92f77d6bfd3dfb1f553f00ec607feb52842fa7d6f832850a",
+  "same_source_full_joint_smoke_completed": true,
+  "formal_steady": "not_run",
+  "four_speeds": "not_run",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run",
+  "full_M0": "not_accepted"
+}

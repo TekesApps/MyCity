@@ -1,5 +1,7 @@
 # M0-T13-A：模型规模与性能冻结验收
 
+v0.5.85：[整角色Rust区域与原full联合短诊断](evidence/m0-t13a-role-arena/STATUS.md)已实测通过：同源全仓、原30日完整字节、64MiB池生命周期及606秒L1＋L2恢复；8角色／725worker归还，压力长度未缩。仅签功能与短诊断，原正式三场景×三轮、四速、十类分位及28,800秒仍待[统一正式测量控制器](evidence/m0-t13a-role-arena/NEXT.md)完成；真实16GB not_run，M0不签。
+
 冻结方案T13A-0，发布v0.5.30。当前只做Rust模型／CLI，不做UI、GPU或AgentKit。用户要求实际完成分级规模、瓶颈修复和8现实小时联合运行；不以计划、替身或小负载代替验收。机器现为M4／32GiB；真实16GB门保持未测，整个M0不签收。
 
 v0.5.81的[Meta／legacy保留工作区](evidence/m0-t13a-metadata-workspace/STATUS.md)已消费实际预建文件、Engine字节及完整收据／控制表；保留原legacy有效大收据并移除Content树。冻结同源全仓54组／410条harness记录、旧完整存档、固定旧reader读取新v1输出及原full30日720小时／724真实worker与完整业务空气对照通过。Meta全部heap纳入保守表后旧拓扑显式不fit64MiB；实际角色账、逃逸scratch、broker/Filled、normal64/common8与正式分级／四档／稳态／8h继续实现，真实16GB保持not_run。下一步见[实际角色分配边界](evidence/m0-t13a-metadata-workspace/ROLE-ALLOCATION-NEXT.md)。

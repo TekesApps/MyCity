@@ -136,6 +136,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "65cd87c9a6d60536580b316ad985726104730a5151c99845f2490428ef91240a"
 
 [[package]]
+name = "linked_list_allocator"
+version = "0.10.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2b23ac50abb8261cb38c6e2a7192d3302e0836dac1628f6a93b82b4fad185897"
+
+[[package]]
 name = "memchr"
 version = "2.8.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -177,6 +183,7 @@ dependencies = [
  "fs2",
  "mycity-core",
  "mycity-map",
+ "mycity-role-allocator",
  "mycity-storage",
  "peak_alloc",
  "serde",
@@ -195,6 +202,14 @@ dependencies = [
  "serde",
  "serde_json",
  "sha2",
+]
+
+[[package]]
+name = "mycity-role-allocator"
+version = "0.1.0"
+dependencies = [
+ "linked_list_allocator",
+ "serde",
 ]
 
 [[package]]

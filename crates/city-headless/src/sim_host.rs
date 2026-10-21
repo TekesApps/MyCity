@@ -35,6 +35,7 @@ pub enum Command {
     ProbeAck { point: ProbePoint, cancel: bool },
     Checkpoint,
     ReceiptProof { operation: u64 },
+    ProbeExhaust { envelope: Envelope },
     Stop,
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -140,10 +141,8 @@ struct Codec {
     air_input: mycity_core::air::BackgroundStateSlot,
 }
 impl Codec {
-    fn new() -> Result<Self, String> {
-        let epoch = crate::normal_pool::broker::codec_epoch_from_env()?.unwrap_or(1);
+    fn new(epoch: u64) -> Result<Self, String> {
         let slots = crate::worker_slots::Owner::new(epoch, 1, 1, 1)?;
-        crate::normal_pool::broker::acknowledge_codec(&slots)?;
         Ok(Self {
             epoch,
             slots,
@@ -526,7 +525,9 @@ fn run_inner(
     probe_enabled: bool,
     profile: Profile,
 ) -> Result<(), String> {
-    let mut codec = Codec::new()?;
+    let epoch =
+        crate::normal_pool::broker::activate_role(crate::normal_pool::workspace::Kind::SimCodec)?;
+    let mut codec = Codec::new(epoch)?;
     let workspace = mycity_storage::StoreWorkspace::new().map_err(err)?;
     let rules = profile.rules();
     let mut store = if create {
@@ -557,6 +558,27 @@ fn run_inner(
     } else {
         Store::open_in_prepared_workspace(world, &rules, workspace).map_err(err)?
     };
+    crate::normal_pool::broker::acknowledge_role(
+        epoch,
+        &(
+            store.model_workspace_identity().map_err(err)?,
+            store.metadata_workspace_identity().map_err(err)?,
+            store
+                .spatial()
+                .map_err(err)?
+                .ok_or("sim_spatial_missing")?
+                .normal_backing_identity()
+                .map_err(err)?,
+            store
+                .spatial()
+                .map_err(err)?
+                .ok_or("sim_spatial_missing")?
+                .terrain()
+                .grid_backing_identity(),
+            codec.slots.report()?,
+            codec.air_input.identity(),
+        ),
+    )?;
     let mut diag = if crate::cpu_log::enabled() {
         Some(crate::cpu_log::CpuLog::create(
             &world
@@ -641,6 +663,16 @@ fn run_inner(
             Command::ProbeRequired { .. } | Command::ProbeAck { .. } => {
                 Err("sim_probe_command_disabled_or_unexpected".into())
             }
+            Command::ProbeExhaust {envelope} if probe_enabled => {
+                let receipt=crate::cpu_log::execute(&mut store,Caller::System,envelope,&mut diag)?;
+                receipt.model.map_err(err)?;
+                // Test-only protocol, exactly after durable commit and before reply.
+                // This real allocation must fail; no fallback or caught fake OOM.
+                let bytes=vec![0u8;2*crate::normal_pool::workspace::Kind::SimCodec.bytes()];
+                std::hint::black_box(bytes);
+                Err("sim_oom_probe_unexpected_success".into())
+            }
+            Command::ProbeExhaust {..} => Err("sim_probe_command_disabled_or_unexpected".into()),
             Command::Checkpoint => store
                 .checkpoint()
                 .map_err(err)

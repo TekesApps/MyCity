@@ -1,0 +1,17 @@
+   Compiling sha2-asm v0.6.4
+    Checking mycity-role-allocator v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-role-allocator)
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+    Checking sha2 v0.10.9
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+    Checking mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+    Checking mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+warning: constant `BYTES` is never used
+ --> crates/city-headless/src/normal_pool/workspace.rs:5:18
+  |
+5 | pub(super) const BYTES: usize = 59 * MIB;
+  |                  ^^^^^
+  |
+  = note: `#[warn(dead_code)]` on by default
+
+warning: `mycity-headless` (lib) generated 1 warning
+    Finished `release` profile [optimized] target(s) in 6.22s

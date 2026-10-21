@@ -1,0 +1,32 @@
+{
+  "result": {
+    "engine_bytes": 1882,
+    "full_engine_equal": true,
+    "role_arena": {
+      "activation": {
+        "adapter_header_bytes": 160,
+        "arena_bytes": 61865824,
+        "arena_start": 19293798400,
+        "bootstrap_charged_bytes": 0,
+        "grant_bytes": 61865984,
+        "initialized_bytes": 61865824,
+        "pid": 79719
+      },
+      "allocation_failures": 0,
+      "arena_free_bytes": 11013600,
+      "arena_usable_bytes": 61865824,
+      "arena_used_bytes": 50852224,
+      "bootstrap_live_bytes": 0,
+      "bootstrap_peak_bytes": 0,
+      "bootstrap_quarantined_bytes": 0,
+      "current_requested_bytes": 50852189,
+      "lifetime_peak_requested_bytes": 50893324
+    },
+    "sequence": 2
+  },
+  "old_reader_sha256": "5e648089c05725134492c78d5566cdcdf8afc4eeaf9b2e1c5261adbecaa8623a",
+  "new_reader_sha256": "4760d21236adcba791eb4843d3fbda0f3678ea0fc97687bdcc7770b217b43c2d",
+  "helper_source_sha256": "8682bdb28b66f2c23cf5b5a9663f0ff0b9ba7ee65098aefd832047f6f2922491",
+  "synthetic_world_and_base_unchanged": true,
+  "scope": "Actual normal-prepared Store old/new legacy open of a near-16MiB synthetic CP; old/new full Engine and sequence equal, no fallback root. New process uses fixed59MiB actual arena covering entire construction/open/compare lifetime, no reset or fallback. Does not grant normal64/common8 or physical memory acceptance."
+}

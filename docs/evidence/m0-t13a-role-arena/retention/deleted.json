@@ -1,0 +1,210 @@
+[
+  {
+    "path": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "round": "t13a70-joint-01",
+    "metadata": [
+      16777231,
+      407400878,
+      3044040310,
+      1792567284934944118,
+      3044040704,
+      1
+    ],
+    "sha256": "b54b320a49eda0e4d1fbb2ba6d8dfb7fdf33d228b6397bace5cf6bf95bf507be",
+    "reason": "Superseded complete recovery baseline: both new v85 generations exist and latest actual cold restore passed; v70 audit depends only on retained index. No remaining old-pressure restore dependency.",
+    "evidence": "docs/evidence/m0-t13a-role-arena/advisor-final-review.md; work/t13a70-joint-01/model/layout/snapshots retained index; full new v85 originals",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "round": "t13a70-joint-01",
+    "metadata": [
+      16777231,
+      407400880,
+      134217728,
+      1792567285042648235,
+      134217728,
+      1
+    ],
+    "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee",
+    "reason": "Superseded complete recovery baseline: both new v85 generations exist and latest actual cold restore passed; v70 audit depends only on retained index. No remaining old-pressure restore dependency.",
+    "evidence": "docs/evidence/m0-t13a-role-arena/advisor-final-review.md; work/t13a70-joint-01/model/layout/snapshots retained index; full new v85 originals",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/pressure.bin",
+    "round": "t13a70-joint-01",
+    "metadata": [
+      16777231,
+      407431142,
+      3044040310,
+      1792567588177209564,
+      3044040704,
+      1
+    ],
+    "sha256": "295aa5513563576511be04259ebbd9106037e84315e6ca79f99a0765d025c428",
+    "reason": "Superseded complete recovery baseline: both new v85 generations exist and latest actual cold restore passed; v70 audit depends only on retained index. No remaining old-pressure restore dependency.",
+    "evidence": "docs/evidence/m0-t13a-role-arena/advisor-final-review.md; work/t13a70-joint-01/model/layout/snapshots retained index; full new v85 originals",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a70-joint-01/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+    "round": "t13a70-joint-01",
+    "metadata": [
+      16777231,
+      407431464,
+      134217728,
+      1792567588450561104,
+      134217728,
+      1
+    ],
+    "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee",
+    "reason": "Superseded complete recovery baseline: both new v85 generations exist and latest actual cold restore passed; v70 audit depends only on retained index. No remaining old-pressure restore dependency.",
+    "evidence": "docs/evidence/m0-t13a-role-arena/advisor-final-review.md; work/t13a70-joint-01/model/layout/snapshots retained index; full new v85 originals",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a-role-arena-inputs/store-escaped-key/genesis.json",
+    "round": "role-arena-store-boundary",
+    "metadata": [
+      16777231,
+      408991331,
+      3434,
+      1792593255640269291,
+      4096,
+      1
+    ],
+    "sha256": "c07054ef262557472c2bc6e83a583849a6171a374d1febfd19c97c1d6dc9d5d6",
+    "reason": "Synthetic near16MiB CP copy after old/new actual probes terminal and independent review; no downstream restore dependency; full v81 base unchanged and retained.",
+    "evidence": "docs/evidence/m0-t13a-role-arena/store-boundary-input.json; store-boundary-proof.json; probe stdout/stderr and generator",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a-role-arena-inputs/store-escaped-key/checkpoint-3.json",
+    "round": "role-arena-store-boundary",
+    "metadata": [
+      16777231,
+      408991332,
+      16777215,
+      1792601246603844811,
+      16777216,
+      1
+    ],
+    "sha256": "2a507df102145d5565d73f2861fd21142b1e68fba0142559735481fff0cf29bf",
+    "reason": "Synthetic near16MiB CP copy after old/new actual probes terminal and independent review; no downstream restore dependency; full v81 base unchanged and retained.",
+    "evidence": "docs/evidence/m0-t13a-role-arena/store-boundary-input.json; store-boundary-proof.json; probe stdout/stderr and generator",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a-role-arena-inputs/store-escaped-key/LOCK",
+    "round": "role-arena-store-boundary",
+    "metadata": [
+      16777231,
+      408991333,
+      0,
+      1792593255628823577,
+      0,
+      1
+    ],
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "reason": "Synthetic near16MiB CP copy after old/new actual probes terminal and independent review; no downstream restore dependency; full v81 base unchanged and retained.",
+    "evidence": "docs/evidence/m0-t13a-role-arena/store-boundary-input.json; store-boundary-proof.json; probe stdout/stderr and generator",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a-role-arena-inputs/store-escaped-key/spatial-height.png",
+    "round": "role-arena-store-boundary",
+    "metadata": [
+      16777231,
+      408991334,
+      207,
+      1792593255635127709,
+      4096,
+      1
+    ],
+    "sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8",
+    "reason": "Synthetic near16MiB CP copy after old/new actual probes terminal and independent review; no downstream restore dependency; full v81 base unchanged and retained.",
+    "evidence": "docs/evidence/m0-t13a-role-arena/store-boundary-input.json; store-boundary-proof.json; probe stdout/stderr and generator",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a-role-arena-inputs/store-escaped-key/spatial-input.json",
+    "round": "role-arena-store-boundary",
+    "metadata": [
+      16777231,
+      408991335,
+      3679,
+      1792593255628964953,
+      4096,
+      1
+    ],
+    "sha256": "d7a3d9ebeeb2c92ac0a6dba3ac0683639c3cc360d7d1cf1c01d249ecb82b8da2",
+    "reason": "Synthetic near16MiB CP copy after old/new actual probes terminal and independent review; no downstream restore dependency; full v81 base unchanged and retained.",
+    "evidence": "docs/evidence/m0-t13a-role-arena/store-boundary-input.json; store-boundary-proof.json; probe stdout/stderr and generator",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a-role-arena-inputs/store-escaped-key/root-1.json",
+    "round": "role-arena-store-boundary",
+    "metadata": [
+      16777231,
+      408991337,
+      509,
+      1792601246615558317,
+      4096,
+      1
+    ],
+    "sha256": "dcaa24195579a4e79bbf2b768dc4ea7d58ad437504bec65a34311954a37559b3",
+    "reason": "Synthetic near16MiB CP copy after old/new actual probes terminal and independent review; no downstream restore dependency; full v81 base unchanged and retained.",
+    "evidence": "docs/evidence/m0-t13a-role-arena/store-boundary-input.json; store-boundary-proof.json; probe stdout/stderr and generator",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a-role-arena-inputs/store-escaped-key/CURRENT.json",
+    "round": "role-arena-store-boundary",
+    "metadata": [
+      16777231,
+      408991338,
+      123,
+      1792601246615636651,
+      4096,
+      1
+    ],
+    "sha256": "d81a7a215a2d959a8bdb0c0eb957527c63f0d474a9e929cd37a71acb813b160f",
+    "reason": "Synthetic near16MiB CP copy after old/new actual probes terminal and independent review; no downstream restore dependency; full v81 base unchanged and retained.",
+    "evidence": "docs/evidence/m0-t13a-role-arena/store-boundary-input.json; store-boundary-proof.json; probe stdout/stderr and generator",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a-role-arena-inputs/store-escaped-key/checkpoint-index-3.json",
+    "round": "role-arena-store-boundary",
+    "metadata": [
+      16777231,
+      408991339,
+      117,
+      1792601246615420274,
+      4096,
+      1
+    ],
+    "sha256": "7709864c1632ffb3f3d5dae0496563116c67fcc95f1b95ec1834540ac458a718",
+    "reason": "Synthetic near16MiB CP copy after old/new actual probes terminal and independent review; no downstream restore dependency; full v81 base unchanged and retained.",
+    "evidence": "docs/evidence/m0-t13a-role-arena/store-boundary-input.json; store-boundary-proof.json; probe stdout/stderr and generator",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/t13a-role-arena-inputs/store-escaped-key/wal-3.bin",
+    "round": "role-arena-store-boundary",
+    "metadata": [
+      16777231,
+      408991340,
+      0,
+      1792593255748156550,
+      0,
+      1
+    ],
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "reason": "Synthetic near16MiB CP copy after old/new actual probes terminal and independent review; no downstream restore dependency; full v81 base unchanged and retained.",
+    "evidence": "docs/evidence/m0-t13a-role-arena/store-boundary-input.json; store-boundary-proof.json; probe stdout/stderr and generator",
+    "directly_restorable_after": false
+  }
+]

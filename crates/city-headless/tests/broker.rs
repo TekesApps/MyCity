@@ -135,9 +135,9 @@ fn broker_wait_and_real_sim_death_revoke_restore_capacity_and_cold_result() {
         c.next(Duration::from_secs(10)).unwrap();
         let mut id = 0;
         let initial = normal_pool::status(&root).unwrap();
-        assert_eq!(initial.workspace_capacity_bytes, 4 * 1024 * 1024);
+        assert_eq!(initial.workspace_capacity_bytes, 59 * 1024 * 1024);
         assert_eq!(initial.workspace_fills, 1);
-        assert_eq!(initial.available_touched_bytes, BYTES - 4 * 1024 * 1024);
+        assert_eq!(initial.available_touched_bytes, BYTES - 59 * 1024 * 1024);
         let sim_status = call(&mut c, &mut id, Command::Status);
         assert_eq!(
             sim_status["runtime"]["sim_codec"]["owner_capacity_bytes"],
@@ -480,7 +480,7 @@ fn partial_sim_workspace_refill_after_real_child_exit_stops_pool_without_false_c
     assert_eq!(failure["summary"]["workspace_returns"], 0);
     assert_eq!(
         failure["summary"]["workspace_capacity_bytes"],
-        4 * 1024 * 1024
+        59 * 1024 * 1024
     );
     assert!(!rows
         .iter()

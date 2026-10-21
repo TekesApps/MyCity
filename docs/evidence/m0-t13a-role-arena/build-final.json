@@ -1,0 +1,14 @@
+{
+  "command": [
+    "cargo",
+    "build",
+    "--workspace",
+    "--release",
+    "--locked",
+    "--offline",
+    "--message-format=json"
+  ],
+  "exit_code": 0,
+  "seconds": 0.09207729199999903,
+  "source_sha256": "f75a8a2ff202e7cf92f77d6bfd3dfb1f553f00ec607feb52842fa7d6f832850a"
+}

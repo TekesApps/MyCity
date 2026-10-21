@@ -1,0 +1,9 @@
+{
+  "command": [
+    "python3",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-role-arena/readiness.py",
+    "/Users/frankqin/dev/MyCity/work/t13a85-preflight"
+  ],
+  "exit_code": 0,
+  "seconds": 120.23106479200001
+}

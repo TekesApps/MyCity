@@ -1,0 +1,26 @@
+   Compiling sha2-asm v0.6.4
+   Compiling mycity-role-allocator v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-role-allocator)
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+   Compiling sha2 v0.10.9
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 57.72s
+     Running unittests src/lib.rs (target/release/deps/mycity_core-7cf04b75eddcf4d5)
+     Running tests/air.rs (target/release/deps/air-e9c1758577d185bf)
+     Running tests/air_workspace.rs (target/release/deps/air_workspace-1205670a6e24fe07)
+     Running tests/background.rs (target/release/deps/background-13180b77b72ac51a)
+     Running tests/boot.rs (target/release/deps/boot-a998cdd1a02794d2)
+     Running tests/economy.rs (target/release/deps/economy-6405ae6fd96a73da)
+     Running tests/exchange.rs (target/release/deps/exchange-25f1319fa4586c48)
+     Running tests/layout_pressure.rs (target/release/deps/layout_pressure-676c1c5d483c4209)
+     Running tests/region.rs (target/release/deps/region-31f7a824ad709362)
+     Running tests/scale_assembly.rs (target/release/deps/scale_assembly-a177c496173f3006)
+     Running tests/sha256_vectors.rs (target/release/deps/sha256_vectors-e560932d85c330e9)
+     Running tests/timeline.rs (target/release/deps/timeline-eb1e476686df0cea)
+     Running unittests src/lib.rs (target/release/deps/mycity_headless-670fdee518c2d092)
+     Running unittests src/main.rs (target/release/deps/mycity_headless-9c2cd72a781369bd)
+     Running tests/air.rs (target/release/deps/air-13241146dcd89625)
+     Running tests/baseline.rs (target/release/deps/baseline-11c6b47649aee6a0)
+     Running tests/broker.rs (target/release/deps/broker-392f803b6780d6f4)
+error: test failed, to rerun pass `-p mycity-headless --test broker`

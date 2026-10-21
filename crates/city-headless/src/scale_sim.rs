@@ -285,9 +285,9 @@ pub fn run_measured(dir: &Path, tier: Tier, measured: bool) -> Result<Value, Str
     if measured {
         write_json(
             &dir.join("manifest.json"),
-            &json!({"external_owned_charge_bytes":crate::diagnostic_contract::SIM+crate::diagnostic_contract::WORKER+crate::diagnostic_contract::DRIVER+crate::diagnostic_contract::HELPER,
+            &json!({"external_owned_charge_bytes":crate::diagnostic_contract::WORKER+crate::diagnostic_contract::DRIVER,
             "component_caps":crate::diagnostic_contract::caps(),
-            "scope":"standalone: Sim2.5 + worker1 + driver1 + helper0.25 MiB; observer separate; model/native/stack separate",
+            "scope":"standalone: external worker1 + driver1 MiB; Sim/helper controls inside fixed full-role Rust arenas; native/stack separate",
             "budget_acceptance":"not_accepted_until_measured_component_contracts"}),
         )?;
     }

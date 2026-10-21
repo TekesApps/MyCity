@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.84`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.85`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.85完成[整角色Rust区域与联合短诊断](docs/evidence/m0-t13a-role-arena/STATUS.md)：原full30日、真实64MiB池授权、完整旧存档／近16MiB边界及606秒L1＋L2联合恢复通过；正式整体内存、分位、稳态、四速和8小时仍未签，真实16GB未测。下一步是[统一正式测量控制器](docs/evidence/m0-t13a-role-arena/NEXT.md)。
 
 v0.5.84完成[历史产物集中回收](docs/evidence/disk-reclamation-2026-10-22/STATUS.md)：退役529份旧重复合成组件，扣除完整无损归档后净减少1.604GiB文件分配空间；完整恢复输入和Rust未提交工作保留，性能验收状态不变。
 

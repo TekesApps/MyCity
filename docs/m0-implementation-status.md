@@ -1,5 +1,7 @@
 # M0 Rust模型：当前范围、运行方法与验收状态
 
+v0.5.85：[整角色区域及原规模短联合](evidence/m0-t13a-role-arena/STATUS.md)通过冻结全仓、旧完整Store、近16MiB边界、实际池内full30日及606秒L1＋L2故障／保存／冷恢复。仅签该功能／短诊断范围，非正式内存／分位／稳态／四速／8h；真实16GB保持not_run。下一主线是[统一正式测量控制器](evidence/m0-t13a-role-arena/NEXT.md)。旧阶段文字保留历史范围，不覆盖本项更新。
+
 记录起于v0.5.4，2026-10-19。用户授权从M0-T01按依赖写Rust，并明确本轮只做模型、不做UI。版本tag是仓库阶段发布，不是游戏0.1已经发布；所有阶段验证后提交、递增附注tag并推送。
 
 v0.5.83的[固定词法解析](evidence/m0-t13a-fixed-lexical/STATUS.md)已接v1／genesis／v2正文，共用1MiB预建且计入owned的bit栈，保留旧有效范围和Ignore／Content差别。冻结源码全仓54组／415条通过记录、原full30日720小时／724worker、旧完整world及近16MiB合成CP实际新旧Store冷开通过；解析压力峰值单列，非业务规模或内存降幅。整Role控制暂态／broker及normal64/common8、原联合负载、分级／四速／稳态／8h仍未通过，真实16GB为not_run。下一步见[整Role准入与联合实测](evidence/m0-t13a-fixed-lexical/NEXT.md)。下列早期阶段段落保留其发布时范围。

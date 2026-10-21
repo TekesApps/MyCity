@@ -1,0 +1,10 @@
+{
+  "command": [
+    "python3",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-role-arena/workspace_audit.py",
+    "/Users/frankqin/dev/MyCity/work/t13a85-joint-01",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-role-arena"
+  ],
+  "exit_code": 0,
+  "seconds": 0.8932916669999713
+}

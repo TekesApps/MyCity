@@ -148,8 +148,8 @@ pub fn run(dir: &Path, rate: Rate) -> Result<(), String> {
         &dir.join("manifest.json"),
         &json!({"schema":"mycity-speed-supervisor-v1",
         "source_sha256":env!("MYCITY_SOURCE_SHA256"),"rate":rate.name(),
-        "external_owned_charge_bytes":6*1024*1024,"normal_pool_bytes":normal_pool::BYTES,
-        "scope":"full actual business, L1 absent; normal Engine allocations remain EXTRA",
+        "external_owned_charge_bytes":crate::diagnostic_contract::EXTERNAL_WITHOUT_OBSERVER,"normal_pool_bytes":normal_pool::BYTES,
+        "scope":"full actual business, L1 absent; full model Rust arenas inside64MiB; native/stack separate",
         "process_exit_zero":"completed experiment, NOT speed acceptance"}),
     )?;
     let mut pool = normal_pool::Process::spawn(

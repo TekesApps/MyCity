@@ -1,0 +1,9 @@
+{
+  "command": [
+    "python3",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-role-arena/collect.py",
+    "t13a85-joint-01"
+  ],
+  "exit_code": 0,
+  "seconds": 4.395029500000078
+}

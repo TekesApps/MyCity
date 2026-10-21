@@ -1,0 +1,7 @@
+{
+  "harnesses": 59,
+  "passed_entries": 423,
+  "failed_entries": 0,
+  "entries_include_nested_process_harnesses": true,
+  "not_performance_acceptance": true
+}
