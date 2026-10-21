@@ -1,0 +1,44 @@
+{
+  "core-tables": {
+    "command": [
+      "cargo",
+      "test",
+      "--release",
+      "--locked",
+      "--offline",
+      "-p",
+      "mycity-core"
+    ],
+    "exit": 0,
+    "seconds": 38.48815894126892
+  },
+  "storage-tables": {
+    "command": [
+      "cargo",
+      "test",
+      "--release",
+      "--locked",
+      "--offline",
+      "-p",
+      "mycity-storage"
+    ],
+    "exit": 0,
+    "seconds": 299.1336143016815
+  },
+  "clippy-tables": {
+    "command": [
+      "cargo",
+      "clippy",
+      "--release",
+      "--locked",
+      "--offline",
+      "--workspace",
+      "--all-targets",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit": 0,
+    "seconds": 11.862173080444336
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "core-lease": {
+    "command": [
+      "cargo",
+      "test",
+      "--release",
+      "--locked",
+      "--offline",
+      "-p",
+      "mycity-core"
+    ],
+    "exit": 0,
+    "seconds": 35.676037073135376
+  },
+  "storage-recovery": {
+    "command": [
+      "cargo",
+      "test",
+      "--release",
+      "--locked",
+      "--offline",
+      "-p",
+      "mycity-storage",
+      "--test",
+      "recovery"
+    ],
+    "exit": 0,
+    "seconds": 18.958040952682495
+  },
+  "clippy": {
+    "command": [
+      "cargo",
+      "clippy",
+      "--release",
+      "--locked",
+      "--offline",
+      "--workspace",
+      "--all-targets",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit": 0,
+    "seconds": 9.35745620727539
+  }
+}

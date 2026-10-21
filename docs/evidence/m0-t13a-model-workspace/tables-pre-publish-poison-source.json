@@ -1,0 +1,4 @@
+{
+  "source_sha256": "b41ee73699c812e463cf63ee052fc68cebb3f92919da1ae6d58940673791f2ba",
+  "scope": "25533 core/storage/all-target clippy passed; before extending poison through core apply"
+}

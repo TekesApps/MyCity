@@ -216,12 +216,72 @@ pub struct Progress {
     pub page_sources: u32,
     pub page_paid: Money,
 }
-#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Timeline {
     pub progress: Progress,
-    pub claims: Vec<Claim>,
-    pub payroll: Vec<Payroll>,
+    pub claims: crate::model_rows::Rows<Claim, CLAIM_LIMIT>,
+    pub payroll: crate::model_rows::Rows<Payroll, PAYROLL_LIMIT>,
+}
+
+impl crate::model_rows::Record for Claim {
+    fn inactive() -> Self {
+        Self {
+            id: 0,
+            payer: 0,
+            payee: 0,
+            due: 0,
+            principal: Money::ZERO,
+            paid: Money::ZERO,
+            processed: false,
+        }
+    }
+}
+impl crate::model_rows::Record for Payroll {
+    fn inactive() -> Self {
+        Self {
+            spec: PayrollSpec {
+                id: 0,
+                payer: 0,
+                payee: 0,
+                home_city: 0,
+                hourly_cents: Money::ZERO,
+                cycle: Cycle::Daily,
+                ends_at: 0,
+            },
+            started: 0,
+            last_accrual: 0,
+            next_due: None,
+            working: false,
+            pending_cycle: None,
+            accrued: Money::ZERO,
+            billed: Money::ZERO,
+            paid: Money::ZERO,
+            remainder: 0,
+            occurrences: 0,
+            work_seconds: 0,
+        }
+    }
+}
+impl Clone for Timeline {
+    fn clone(&self) -> Self {
+        let mut out = Self::new(0);
+        out.clone_from(self);
+        out
+    }
+    fn clone_from(&mut self, other: &Self) {
+        self.progress = other.progress;
+        self.claims.copy_active_from(&other.claims);
+        self.payroll.copy_active_from(&other.payroll);
+    }
+}
+impl crate::model_rows::ResidentValue for Timeline {
+    fn empty() -> Self {
+        Self::new(0)
+    }
+    fn reset(&mut self) {
+        self.reset_at(0);
+    }
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
@@ -282,6 +342,21 @@ pub enum Error {
     CausalOrder,
 }
 impl Timeline {
+    pub(crate) fn reset_at(&mut self, now: u64) {
+        self.claims.clear();
+        self.payroll.clear();
+        self.progress = Progress {
+            target: None,
+            at: now,
+            last_complete: now,
+            phase: None,
+            lane: 0,
+            cursor: 0,
+            serial: 0,
+            page_sources: 0,
+            page_paid: Money::ZERO,
+        };
+    }
     pub(crate) fn new(now: u64) -> Self {
         Self {
             progress: Progress {
@@ -295,8 +370,8 @@ impl Timeline {
                 page_sources: 0,
                 page_paid: Money::ZERO,
             },
-            claims: vec![],
-            payroll: vec![],
+            claims: crate::model_rows::Rows::new().expect("fixed claims backing"),
+            payroll: crate::model_rows::Rows::new().expect("fixed payroll backing"),
         }
     }
     pub fn owned_bytes(&self) -> usize {

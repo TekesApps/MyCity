@@ -1,0 +1,8 @@
+{
+  "source_sha256": "cc1ca0fb3e32ff336b20367fe43870677f32ab8bb3d60b8266a532bceb629893",
+  "source_files": 160,
+  "binary_sha256": "2a830aef888b9c83a362f66502607685b150c56bfa23d9b709a3410644c90907",
+  "binary": "work/candidate-binaries/model-core-tables/mycity-headless",
+  "fixture_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+  "scope": "frozen core-table/lease and Store unwind change; full regression session46538 still running at capture, not a pass receipt"
+}

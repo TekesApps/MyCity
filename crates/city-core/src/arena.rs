@@ -79,6 +79,18 @@ pub struct Handle<D: Domain> {
     marker: PhantomData<D>,
 }
 impl<D: Domain> Handle<D> {
+    pub(crate) fn inactive() -> Self {
+        Self {
+            raw: RawHandle {
+                world: 0,
+                branch: 0,
+                domain: D::ID,
+                index: u32::MAX,
+                generation: 0,
+            },
+            marker: PhantomData,
+        }
+    }
     pub const fn raw(self) -> RawHandle {
         self.raw
     }

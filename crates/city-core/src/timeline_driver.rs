@@ -37,10 +37,10 @@ pub(super) struct Frame<'a, 'd> {
     pub economy: &'a mut Option<crate::economy::Economy>,
     pub boot: &'a mut Option<crate::boot::Boot>,
     pub exchange: &'a mut Option<crate::exchange::Exchange>,
-    pub accounts: &'a mut Vec<(Handle<AccountDomain>, Account)>,
-    pub stocks: &'a mut Vec<(Handle<InventoryDomain>, Stock)>,
-    pub resources: &'a mut Vec<Resource>,
-    pub leases: &'a mut Vec<Option<Lease>>,
+    pub accounts: &'a mut DirtyAccounts,
+    pub stocks: &'a mut DirtyStocks,
+    pub resources: &'a mut ResourceRows,
+    pub leases: &'a mut LeaseRows,
     pub next_token: &'a mut u64,
 }
 impl Frame<'_, '_> {
@@ -76,12 +76,16 @@ impl Frame<'_, '_> {
         }
         Ok(paid)
     }
-    pub fn command(&mut self, slot: &mut Option<Timeline>, command: C) -> Result<(), TxError> {
+    pub fn command(
+        &mut self,
+        slot: &mut crate::model_rows::Resident<Timeline>,
+        command: C,
+    ) -> Result<(), TxError> {
         if matches!(command, C::Enable) {
             if slot.is_some() {
                 return Err(err(E::Duplicate));
             }
-            *slot = Some(Timeline::new(self.now()));
+            slot.activate().reset_at(self.now());
             return Ok(());
         }
         let t = slot.as_mut().ok_or(err(E::Input))?;

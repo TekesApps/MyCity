@@ -1,0 +1,24 @@
+   Compiling sha2 v0.10.9
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 16.12s
+     Running tests/recovery.rs (target/release/deps/recovery-44838a0f7edd49f5)
+
+running 13 tests
+test incompatible_rules_reject_instead_of_recalculating_history ... ok
+test oversized_command_is_rejected_before_serializing_and_never_changes_storage ... ok
+test recovery_reclaims_only_known_unreferenced_atomic_temp_files ... ok
+test acknowledged_success_and_operation_coverage_survive_reopen_without_double_payment ... ok
+test only_tail_outside_the_validated_committed_boundary_is_truncated ... ok
+test regional_clocks_migrants_debt_and_snapshot_watermarks_recover_atomically_once ... ok
+test store_ownership_handoff_reopens_immediately_during_parallel_process_spawn ... ok
+test a_second_process_cannot_open_a_world_while_writer_lock_is_held ... ok
+test publication_callback_unwind_requires_recovery_and_preserves_committed_receipt ... ok
+test injected_io_uncertainty_poisoning_prevents_further_writes_until_recovery ... ok
+test committed_corruption_or_missing_dependency_never_falls_back_to_old_root ... ok
+test regional_process_exit_never_publishes_half_population_half_clock_or_half_payment ... ok
+test abrupt_process_exit_at_each_boundary_retains_exactly_the_published_operation ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.28s
+

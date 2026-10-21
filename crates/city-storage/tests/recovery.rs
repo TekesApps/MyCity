@@ -57,6 +57,38 @@ fn worker(args: &[&str]) -> std::process::Output {
 }
 
 #[test]
+fn publication_callback_unwind_requires_recovery_and_preserves_committed_receipt() {
+    for point in [WritePoint::CurrentSynced, WritePoint::Applied] {
+        let t = Temp::new();
+        let mut s = Store::create(&t.world(), INPUT, vec![], "rules1").unwrap();
+        let cmd = command(&s);
+        let failed = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+            let _ = s.execute_with_observer(Caller::Account(2), cmd.clone(), |at| {
+                if at == point {
+                    panic!("durable callback unwind");
+                }
+                Ok(())
+            });
+        }));
+        assert!(failed.is_err());
+        assert!(matches!(s.engine(), Err(Error::RecoveryRequired)));
+        assert!(matches!(
+            s.execute(Caller::Account(2), cmd.clone()),
+            Err(Error::RecoveryRequired)
+        ));
+        drop(s);
+        let mut reopened = Store::open(&t.world(), "rules1").unwrap();
+        assert_eq!(reopened.committed_sequence(), 1);
+        let before = reopened.engine().unwrap().state_hash();
+        let retry = reopened.execute(Caller::Account(2), cmd).unwrap();
+        assert!(retry.has_persistent_receipt);
+        assert!(retry.model.is_ok());
+        assert_eq!(reopened.engine().unwrap().state_hash(), before);
+        assert_eq!(reopened.committed_sequence(), 1);
+    }
+}
+
+#[test]
 fn acknowledged_success_and_operation_coverage_survive_reopen_without_double_payment() {
     let t = Temp::new();
     let mut s = Store::create(&t.world(), INPUT, vec![], "rules1").unwrap();

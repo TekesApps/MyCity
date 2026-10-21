@@ -10,12 +10,21 @@ use serde::{Deserialize, Serialize};
 use std::mem::size_of;
 #[path = "timeline_driver.rs"]
 mod timeline_driver;
+mod workspace;
 
 pub const MAX_ACTIONS: usize = 16;
 pub const MAX_RECEIPTS: usize = 1024;
 pub const MAX_RESOURCES: usize = 8;
 pub const MAX_LEASES: usize = 64;
 pub const ENGINE_BYTE_BUDGET: usize = 4 * 1024 * 1024;
+
+type DirtyAccounts =
+    crate::model_rows::Rows<(Handle<AccountDomain>, Account), { crate::assembly::MAX_ACCOUNTS }>;
+type DirtyStocks =
+    crate::model_rows::Rows<(Handle<InventoryDomain>, Stock), { crate::assembly::MAX_STOCKS }>;
+type ResourceRows = crate::model_rows::Rows<Resource, MAX_RESOURCES>;
+type LeaseRows = crate::model_rows::Rows<Option<Lease>, MAX_LEASES>;
+type JournalRows = crate::model_rows::Rows<JournalRecord, MAX_RECEIPTS>;
 
 fn valid_background_operation(caller: Caller, env: &Envelope) -> bool {
     if env.operation_id & 0xf000_0000_0000_0000 == 0xd000_0000_0000_0000 {
@@ -238,25 +247,27 @@ pub struct Lease {
 #[serde(deny_unknown_fields)]
 pub struct Engine {
     pub(crate) world: Box<World>,
-    resources: Vec<Resource>,
-    leases: Vec<Option<Lease>>,
+    resources: ResourceRows,
+    leases: LeaseRows,
     next_token: u64,
-    journal: Vec<JournalRecord>,
-    timeline: Option<crate::timeline::Timeline>,
+    journal: JournalRows,
+    timeline: crate::model_rows::Resident<crate::timeline::Timeline>,
     background: Option<crate::background::Background>,
+    #[serde(skip)]
+    preparation_workspace: Option<workspace::PreparationWorkspace>,
 }
 
 struct Prepared {
-    timeline: Option<crate::timeline::Timeline>,
+    timeline: workspace::TimelineLease,
     background: Option<crate::background::Background>,
     exchange: Option<crate::exchange::Exchange>,
     boot: Option<crate::boot::Boot>,
     economy: Option<crate::economy::Economy>,
     region: Option<crate::region::Region>,
-    accounts: Vec<(Handle<AccountDomain>, Account)>,
-    stocks: Vec<(Handle<InventoryDomain>, Stock)>,
-    resources: Vec<Resource>,
-    leases: Vec<Option<Lease>>,
+    accounts: workspace::AccountLease,
+    stocks: workspace::StockLease,
+    resources: workspace::ResourceLease,
+    leases: workspace::CapacityLease,
     next_token: u64,
     receipt: Receipt,
 }
@@ -298,23 +309,29 @@ impl Engine {
         {
             return Err(TxError::Resource);
         }
-        let mut journal = Vec::new();
+        let mut journal = JournalRows::new().map_err(|_| TxError::WorkingLimit)?;
         journal
             .try_reserve_exact(MAX_RECEIPTS)
             .map_err(|_| TxError::WorkingLimit)?;
-        let mut leases = Vec::new();
+        let mut leases = LeaseRows::new().map_err(|_| TxError::WorkingLimit)?;
         leases
             .try_reserve_exact(MAX_LEASES)
             .map_err(|_| TxError::WorkingLimit)?;
         leases.resize(MAX_LEASES, None);
+        let mut resource_rows = ResourceRows::new().map_err(|_| TxError::WorkingLimit)?;
+        for r in &resources {
+            resource_rows.push(*r);
+        }
+        drop(resources);
         let engine = Self {
             world: Box::new(world),
-            resources,
+            resources: resource_rows,
             leases,
             next_token: 1,
             journal,
-            timeline: None,
+            timeline: crate::model_rows::Resident::empty(),
             background: None,
+            preparation_workspace: Some(workspace::reserve()?),
         };
         if engine.owned_capacity_bytes() > ENGINE_BYTE_BUDGET {
             return Err(TxError::WorkingLimit);
@@ -337,7 +354,7 @@ impl Engine {
             leases: &'a [Option<Lease>],
             next_token: u64,
             journal: &'a [JournalRecord],
-            timeline: &'a Option<crate::timeline::Timeline>,
+            timeline: &'a crate::model_rows::Resident<crate::timeline::Timeline>,
             background: &'a Option<crate::background::Background>,
         }
         struct Bounded<W> {
@@ -393,6 +410,10 @@ impl Engine {
             return Err("checkpoint_byte_limit".into());
         }
         let mut candidate: Self = serde_json::from_slice(bytes).map_err(|e| e.to_string())?;
+        // Explicit scratch construction, not a serde default which silently allocates.
+        // Whole-graph seed/authorization is still being migrated in this phase.
+        candidate.preparation_workspace =
+            Some(workspace::reserve().map_err(|e| format!("workspace:{e:?}"))?);
         if !candidate.journal.is_empty()
             || candidate.resources.len() > MAX_RESOURCES
             || candidate.leases.len() != MAX_LEASES
@@ -421,11 +442,7 @@ impl Engine {
                 return Err("background_restore_clock".into());
             }
         }
-        if let Some(t) = candidate.timeline.as_mut() {
-            t.claims.shrink_to_fit();
-            t.payroll.shrink_to_fit();
-        }
-        if let Some(t) = &candidate.timeline {
+        if let Some(t) = candidate.timeline.as_ref() {
             t.validate()
                 .map_err(|e| format!("timeline_restore:{e:?}"))?;
         }
@@ -501,24 +518,30 @@ impl Engine {
         candidate
             .validate_checkpoint_runtime()
             .map_err(|e| format!("checkpoint_invariant:{e:?}"))?;
-        candidate.journal = Vec::with_capacity(MAX_RECEIPTS);
+        candidate.journal.clear();
         if candidate.owned_capacity_bytes() > ENGINE_BYTE_BUDGET {
             return Err("checkpoint_engine_budget".into());
         }
         Ok(candidate)
     }
     fn validate_checkpoint_runtime(&self) -> Result<(), TxError> {
-        if let Some(t) = &self.timeline {
+        if let Some(t) = self.timeline.as_ref() {
             timeline_driver::validate(self, t)?;
         }
         let economy = self.world.economy;
         let boot = self.world.boot;
         let exchange = self.world.exchange;
         let region = self.world.region;
-        let mut accounts = Vec::with_capacity(crate::assembly::MAX_ACCOUNTS);
-        let mut stocks = Vec::with_capacity(MAX_ACTIONS * 2);
-        let mut resources = self.resources.clone();
-        let mut leases = self.leases.clone();
+        let storage = self
+            .preparation_workspace
+            .as_ref()
+            .ok_or(TxError::WorkingLimit)?;
+        let mut accounts = workspace::AccountLease::take(&storage.accounts)?;
+        let mut stocks = workspace::StockLease::take(&storage.stocks)?;
+        let mut resources = workspace::ResourceLease::take(&storage.resources)?;
+        let mut leases = workspace::CapacityLease::take(&storage.leases)?;
+        resources.copy_active_from(&self.resources);
+        leases.copy_active_from(&self.leases);
         let mut next_token = self.next_token;
         if let Some(e) = &economy {
             e.validate(&mut EconomicLedger {
@@ -673,7 +696,7 @@ impl Engine {
         self.timeline.as_ref()
     }
     pub fn owned_capacity_bytes(&self) -> usize {
-        let extra = self.timeline.as_ref().map_or(0, |t| t.owned_bytes())
+        let extra = self.timeline.backing().owned_bytes()
             + self.background.as_ref().map_or(0, |b| {
                 b.owned_bytes() - size_of::<crate::background::Background>()
             });
@@ -965,11 +988,17 @@ impl Engine {
             .revision
             .checked_add(1)
             .ok_or(TxError::Overflow)?;
-        let mut accounts: Vec<(Handle<AccountDomain>, Account)> =
-            Vec::with_capacity(crate::assembly::MAX_ACCOUNTS);
-        let mut stocks: Vec<(Handle<InventoryDomain>, Stock)> = Vec::with_capacity(MAX_ACTIONS * 2);
-        let mut resources = self.resources.clone();
-        let mut leases = self.leases.clone();
+        let storage = self
+            .preparation_workspace
+            .as_ref()
+            .ok_or(TxError::WorkingLimit)?;
+        let mut timeline = workspace::TimelineLease::acquire(&storage.timeline, &self.timeline)?;
+        let mut accounts = workspace::AccountLease::take(&storage.accounts)?;
+        let mut stocks = workspace::StockLease::take(&storage.stocks)?;
+        let mut resources = workspace::ResourceLease::take(&storage.resources)?;
+        let mut leases = workspace::CapacityLease::take(&storage.leases)?;
+        resources.copy_active_from(&self.resources);
+        leases.copy_active_from(&self.leases);
         let mut next_token = self.next_token;
         let mut created_tokens = [None; MAX_ACTIONS];
         let mut migrated = [None; MAX_ACTIONS];
@@ -979,7 +1008,6 @@ impl Engine {
         let mut economy = self.world.economy;
         let mut boot = self.world.boot;
         let mut exchange = self.world.exchange;
-        let mut timeline = self.timeline.clone();
         let mut background = self.background.clone();
         for (action_index, action) in env.actions.iter().enumerate() {
             let domain_start = if matches!(
@@ -1705,7 +1733,7 @@ impl Engine {
                 },
             )?;
         }
-        if let Some(t) = &timeline {
+        if let Some(t) = timeline.as_ref() {
             t.validate()?;
         }
         let timeline_progress = if env
@@ -1732,9 +1760,9 @@ impl Engine {
         let projected = self
             .owned_capacity_bytes()
             .saturating_sub(bg_heap(&self.background))
-            .saturating_sub(self.timeline.as_ref().map_or(0, |t| t.owned_bytes()))
+            .saturating_sub(self.timeline.backing().owned_bytes())
             + bg_heap(&background)
-            + timeline.as_ref().map_or(0, |t| t.owned_bytes());
+            + timeline.backing().owned_bytes();
         if projected > ENGINE_BYTE_BUDGET {
             return Err(TxError::WorkingLimit);
         }
@@ -1763,36 +1791,37 @@ impl Engine {
         })
     }
 
-    fn apply(&mut self, prepared: Prepared) {
+    fn apply(&mut self, mut prepared: Prepared) {
         // No user hook, allocation or business failure after the durable hook succeeds.
-        for (h, a) in prepared.accounts {
+        for &(h, a) in prepared.accounts.iter() {
             self.world
                 .accounts
                 .replace(h, a)
                 .expect("validated commit handle");
         }
-        for (h, s) in prepared.stocks {
+        for &(h, s) in prepared.stocks.iter() {
             self.world
                 .stocks
                 .replace(h, s)
                 .expect("validated commit handle");
         }
-        self.timeline = prepared.timeline;
+        // The old authoritative backing returns through the lease, never deallocated.
+        std::mem::swap(&mut self.timeline, &mut *prepared.timeline);
         self.background = prepared.background;
         self.world.exchange = prepared.exchange;
         self.world.boot = prepared.boot;
         self.world.economy = prepared.economy;
         self.world.region = prepared.region;
         self.world.revision = prepared.receipt.revision;
-        self.resources = prepared.resources;
-        self.leases = prepared.leases;
+        std::mem::swap(&mut self.resources, &mut *prepared.resources);
+        std::mem::swap(&mut self.leases, &mut *prepared.leases);
         self.next_token = prepared.next_token;
     }
 }
 
 fn stage_account(
     world: &World,
-    dirty: &mut Vec<(Handle<AccountDomain>, Account)>,
+    dirty: &mut DirtyAccounts,
     raw: RawHandle,
 ) -> Result<usize, TxError> {
     let h = world
@@ -1811,11 +1840,7 @@ fn stage_account(
     ));
     Ok(dirty.len() - 1)
 }
-fn stage_stock(
-    world: &World,
-    dirty: &mut Vec<(Handle<InventoryDomain>, Stock)>,
-    raw: RawHandle,
-) -> Result<usize, TxError> {
+fn stage_stock(world: &World, dirty: &mut DirtyStocks, raw: RawHandle) -> Result<usize, TxError> {
     let h = world
         .stocks
         .resolve(raw)
@@ -1833,7 +1858,7 @@ fn stage_stock(
 // Only the trusted regional workflow calls this, never a user-provided payer alias.
 fn settle_obligation(
     world: &World,
-    accounts: &mut Vec<(Handle<AccountDomain>, Account)>,
+    accounts: &mut DirtyAccounts,
     o: &mut crate::region::Obligation,
 ) -> Result<(), TxError> {
     if o.arrears == Money::ZERO {
@@ -1875,8 +1900,8 @@ fn settle_obligation(
 
 struct EconomicLedger<'a> {
     world: &'a World,
-    accounts: &'a mut Vec<(Handle<AccountDomain>, Account)>,
-    stocks: &'a mut Vec<(Handle<InventoryDomain>, Stock)>,
+    accounts: &'a mut DirtyAccounts,
+    stocks: &'a mut DirtyStocks,
 }
 impl crate::economy::Ledger for EconomicLedger<'_> {
     fn stock(&mut self, id: u32) -> Result<Stock, TxError> {
@@ -1982,8 +2007,8 @@ impl crate::economy::Ledger for EconomicLedger<'_> {
 
 struct BootLedger<'a> {
     base: EconomicLedger<'a>,
-    resources: &'a mut Vec<Resource>,
-    leases: &'a mut Vec<Option<Lease>>,
+    resources: &'a mut ResourceRows,
+    leases: &'a mut LeaseRows,
     next_token: &'a mut u64,
 }
 impl crate::boot::Ledger for BootLedger<'_> {

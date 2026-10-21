@@ -837,10 +837,12 @@ impl Store {
                 return Err(e);
             }
         };
+        // Keep fail-closed across an observer unwind after durable/model publication.
+        self.io.poisoned = true;
         if let Err(e) = observer(WritePoint::Applied) {
-            self.io.poisoned = true;
             return Err(e.into());
         }
+        self.io.poisoned = false;
         let has_persistent_receipt = self.engine.journal().iter().any(|r| {
             r.operation_id == operation
                 && r.actor == actor
@@ -857,6 +859,30 @@ impl Store {
 
 impl Persistence {
     fn append(
+        &mut self,
+        envelope: &Envelope,
+        record: &JournalRecord,
+        continuation_plan: Option<&Continuation>,
+        background_plan: &background::Plan,
+        observer: &mut impl FnMut(WritePoint) -> io::Result<()>,
+    ) -> Result<(), Error> {
+        // A callback can unwind after CURRENT is durable but before Engine apply.
+        // Arm first; ordinary classified pre-write failures may explicitly disarm.
+        self.poisoned = true;
+        let result = self.append_inner(
+            envelope,
+            record,
+            continuation_plan,
+            background_plan,
+            observer,
+        );
+        // Success stays armed until Engine apply/journal and Applied observer finish.
+        if matches!(&result, Err(Error::Capacity { .. } | Error::FactBlocked(_))) {
+            self.poisoned = false;
+        }
+        result
+    }
+    fn append_inner(
         &mut self,
         envelope: &Envelope,
         record: &JournalRecord,

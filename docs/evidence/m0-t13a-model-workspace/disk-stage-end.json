@@ -1,0 +1,10 @@
+{
+  "unix_ns": 1792565966188995000,
+  "work_du_kib": 17995564,
+  "target_du_kib": 754196,
+  "filesystem_available_bytes": 127606120448,
+  "new_independent_target": false,
+  "cache_deleted_bytes": 0,
+  "reason": "Shared target retained for current/future build; immutable sources, executables, logs, full legacy world copy remain. Superseded old pressure retired separately in v0.5.68, not counted again.",
+  "prior_cleanup": "docs/evidence/disk-reclamation-2026-10-21-followup/STATUS.md"
+}

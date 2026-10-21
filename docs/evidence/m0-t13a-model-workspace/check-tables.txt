@@ -1,0 +1,62 @@
+   Compiling sha2-asm v0.6.4
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+    Checking sha2 v0.10.9
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+error[E0308]: mismatched types
+   --> crates/city-core/src/transaction.rs:521:29
+    |
+521 |         candidate.journal = Vec::with_capacity(MAX_RECEIPTS);
+    |         -----------------   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `Rows<JournalRecord, 1024>`, found `Vec<_>`
+    |         |
+    |         expected due to the type of this binding
+    |
+    = note: expected struct `model_rows::Rows<transaction::JournalRecord, 1024>`
+               found struct `Vec<_>`
+
+error[E0308]: mismatched types
+   --> crates/city-core/src/transaction.rs:543:27
+    |
+543 |                 accounts: &mut accounts,
+    |                           ^^^^^^^^^^^^^ expected `&mut Rows<(Handle<...>, ...), 64>`, found `&mut Vec<_>`
+    |
+    = note: expected mutable reference `&mut model_rows::Rows<(arena::Handle<arena::AccountDomain>, assembly::Account), 64>`
+               found mutable reference `&mut Vec<_>`
+
+error[E0308]: mismatched types
+   --> crates/city-core/src/transaction.rs:544:25
+    |
+544 |                 stocks: &mut stocks,
+    |                         ^^^^^^^^^^^ expected `&mut Rows<(Handle<...>, ...), 128>`, found `&mut Vec<_>`
+    |
+    = note: expected mutable reference `&mut model_rows::Rows<(arena::Handle<arena::InventoryDomain>, assembly::Stock), 128>`
+               found mutable reference `&mut Vec<_>`
+
+error[E0609]: no field `protected` on type `&_`
+   --> crates/city-core/src/transaction.rs:547:22
+    |
+547 |                 if a.protected < e.required_protection(a.id) {
+    |                      ^^^^^^^^^ unknown field
+
+error[E0308]: mismatched types
+   --> crates/city-core/src/transaction.rs:557:29
+    |
+557 |                     stocks: &mut stocks,
+    |                             ^^^^^^^^^^^ expected `&mut Rows<(Handle<...>, ...), 128>`, found `&mut Vec<_>`
+    |
+    = note: expected mutable reference `&mut model_rows::Rows<(arena::Handle<arena::InventoryDomain>, assembly::Stock), 128>`
+               found mutable reference `&mut Vec<_>`
+
+error[E0308]: mismatched types
+   --> crates/city-core/src/transaction.rs:579:33
+    |
+579 |                         stocks: &mut stocks,
+    |                                 ^^^^^^^^^^^ expected `&mut Rows<(Handle<...>, ...), 128>`, found `&mut Vec<_>`
+    |
+    = note: expected mutable reference `&mut model_rows::Rows<(arena::Handle<arena::InventoryDomain>, assembly::Stock), 128>`
+               found mutable reference `&mut Vec<_>`
+
+Some errors have detailed explanations: E0308, E0609.
+For more information about an error, try `rustc --explain E0308`.
+error: could not compile `mycity-core` (lib) due to 6 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `mycity-core` (lib test) due to 6 previous errors
