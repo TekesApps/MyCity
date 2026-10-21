@@ -1,0 +1,12 @@
+{
+  "work_unique_inodes": 99884,
+  "work_allocated_bytes": 16119713792,
+  "new_deleted_files": 0,
+  "new_deleted_allocated_bytes": 0,
+  "independent_target_found": false,
+  "target_tmp_allocated_bytes": 0,
+  "target_incremental_allocated_bytes": 0,
+  "pycache_found_under_work_or_evidence": false,
+  "shared_target_retained": "target",
+  "next_recheck": "After fixed lexical stage reaches terminal state, before any new workload directory is created."
+}

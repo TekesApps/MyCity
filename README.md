@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.81`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.82`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.82记录[历史验证产物集中复查](docs/evidence/disk-reclamation-current-request/STATUS.md)：work约15.013GiB；现存完整恢复输入及证据仍有依赖，本次删除0B。当前未提交Rust实现不随本次文档发布。
 
 v0.5.81完成[Meta／legacy保留工作区接入与兼容回归](docs/evidence/m0-t13a-metadata-workspace/STATUS.md)：原文件／Engine／收据／控制缓存预建并用于实际Store／Sim，修正旧有效大收据读取边界；同源全仓、旧完整world、新旧reader和原full30日真实业务通过。逃逸解析scratch、完整Role授权及normal64/common8、正式性能／8h仍未通过，真实16GB为not_run。
 

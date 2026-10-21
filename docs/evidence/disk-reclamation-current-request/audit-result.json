@@ -1,0 +1,23 @@
+{
+  "before": {
+    "time_ns": 1792595666348727000,
+    "work_du_kib": 15741908,
+    "target_du_kib": 1298668,
+    "filesystem_available_bytes": 113283260416
+  },
+  "after": {
+    "time_ns": 1792595678643429000,
+    "work_du_kib": 15741908,
+    "target_du_kib": 1298668,
+    "filesystem_available_bytes": 113276686336
+  },
+  "work_files_checked_unchanged": 99989,
+  "new_deleted_paths": 0,
+  "new_deleted_allocated_bytes": 0,
+  "observed_filesystem_available_delta": -6574080,
+  "target_shared": true,
+  "build_launched": false,
+  "new_target_created": false,
+  "reason": "Only three pressure files remain, all required complete recovery baselines. Remaining large native/meter belong to protected complete snapshots, fault pending evidence or hardlinked negative fixture. Business archives, evidence logs, frozen executables and shared build dependencies retained; no expendable item confirmed.",
+  "accounting": "Read-only audit. Any df/target movement is not attributed to this audit. Prior retirements are reported separately, not counted again."
+}
