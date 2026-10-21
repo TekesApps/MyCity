@@ -1,0 +1,9 @@
+# Fixed L1 region experiment: original load unchanged
+
+Previous actual source0418 L1 requested3,257,932,107B but same-phase RSS3,323,609,088B/footprint3,322,530,504B. This is unexplained physical residency, not proof of a System cache root cause.
+
+Activate the existing reviewed GlobalAlloc once, after original external/schema/work validation and lock but before native/tables/pressure. Grant is original normal minus existing external charge; metadata4MiB, reserve128MiB, prefix/header/fragmentation all stay within it. Snapshot internal decode loans the same64 pages and returns them inside this one region. No extra System backing, fallback, changed records/padding/widths/scan/dirty/snapshot/restore, new unsafe or dependency. Re-entry or failed construction requires a new process; records-only stays component-only. Cold full restore uses its own child and the same original-grant derivation.
+
+Focused library8 checks passed. Freeze exact source/fixtures/lock, build same shared target, actual original full L1 short run with unchanged native observer, full snapshot/cold restore and same-phase resource matching first. Preserve any real OOM/abort and full fault originals, never expand grant to fit. If focused real capacity works, run full workspace regression and strict checks at identical source before publishing. Short success never signs formal3x3, speed, normal3.10/common8 or8h; real16GB remains not_run.
+
+No build/cleanup during measured observation. Pre-recorded short run has no next full-snapshot dependency once real full cold restore/index check and independent finite review release it. Retire regenerable payloads by precise allowlist, reuse existing full-byte component archive where equal, keep raw logs/index/receipts/source/exes. Protected formal7/8, oldv50 and failedsmoke-L2 originals remain intact. One target/release; no per-run cache.

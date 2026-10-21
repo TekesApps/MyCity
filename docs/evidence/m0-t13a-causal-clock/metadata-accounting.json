@@ -1,0 +1,23 @@
+{
+  "schema": "mycity-existing-metadata-accounting-v1",
+  "source_sha256": "66e7e2aee0464d302738c4a1d36cfe2b2e7d17de7ac6f8d088330a2d85629138",
+  "iteration": 15,
+  "native_owned_capacity_bytes": 29625968,
+  "stub_owned_capacity_bytes": 49412480,
+  "pressure_payload_bytes": 3044040310,
+  "cow_backing_bytes": 134217728,
+  "existing_external64MiB_bytes": 67108864,
+  "existing_metadata_precharge_bytes": 4194304,
+  "manifest_base_bytes": 3257296486,
+  "region_grant_bytes": 3261490790,
+  "actual_current_requested_bytes": 3257932070,
+  "requested_minus_manifest_base_bytes": 635584,
+  "arena_used_bytes": 3257865696,
+  "arena_free_bytes": 3558368,
+  "bootstrap_charged_bytes": 66563,
+  "allocation_failures": 0,
+  "r07_additional_credit_bytes": 0,
+  "interpretation": "The4MiB is a precharge within L1 grant, not another4MiB independent Vec. Domain owned includes headers/capacities; requested is allocator requested, so their residual is not a unique object inventory. Region free is already physically initialized inside this same grant. Neither unused precharge nor footprint-requested authorizes another native/observer deduction.",
+  "next_required": "Exact controlled owner/storage/lifetime, exclusion of existing64MiB/metadata/COW/role diag, and no missing replacement bytes before any versioned R07 substitution",
+  "normal": "failed observed complete same-phase footprint; not relabeled not_run"
+}

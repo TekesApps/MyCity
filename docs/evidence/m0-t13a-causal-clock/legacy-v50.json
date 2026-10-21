@@ -1,0 +1,14 @@
+{
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/causal-clock/mycity-headless",
+    "layout-load-only",
+    "/Users/frankqin/dev/MyCity/work/t13a50-joint-01/model/layout/snapshots/snapshot-000001",
+    "/Users/frankqin/dev/MyCity/work/causal-clock-legacy-v50-01/restored"
+  ],
+  "exit_code": 0,
+  "seconds": 4.070571999999999,
+  "source_sha256": "66e7e2aee0464d302738c4a1d36cfe2b2e7d17de7ac6f8d088330a2d85629138",
+  "source_unchanged": true,
+  "fixed_binary_unchanged": true,
+  "scope": "actual full old-format cold restore, not group memory or throughput acceptance"
+}

@@ -1,0 +1,23 @@
+{
+  "pid": 4881,
+  "phase": "exec observer immediately; no parked parent",
+  "command": [
+    "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-causal-clock/observe.py",
+    "/Users/frankqin/dev/MyCity/work/causal-clock-l1-smoke-01/observed",
+    "--",
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/causal-clock/mycity-headless",
+    "steady-run",
+    "/Users/frankqin/dev/MyCity/work/causal-clock-l1-smoke-01/observed/model",
+    "l1",
+    "smoke"
+  ],
+  "source_sha256": "66e7e2aee0464d302738c4a1d36cfe2b2e7d17de7ac6f8d088330a2d85629138",
+  "support_sha256": {
+    "observe.py": "6bc89147a64894599d7eea1f6762fbb01f4119d606842ce475ba2c2f7215c98a",
+    "native_metrics.py": "917b184e339649acd7b79797cf77f2b2db4f5128f33fdaf8759c162672fa34ca",
+    "launch.py": "8ef9c43c93c32fd9952b4f86a00e426798975fedd53ea5f933cfd131d9985e5d",
+    "readiness.py": "88ae51f35cabba9cf5660cf6a6d7a7e29b3268b253b2e80583fa005b69dbee6a",
+    "clock_exchange.py": "534642a6854928e5253521862b18b33d19ebc0d777f5a0695321adeddea264b5"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "source_sha256": "a70293e83331c4a0e40b287029163c7ca113048d1dfaf20e40bc0c8e58a9eeeb",
+  "source_files": 198,
+  "binary": "/Users/frankqin/dev/MyCity/work/candidate-binaries/layout-region/mycity-headless",
+  "binary_sha256": "800696502be2a52853fa3972ab962e75791b9fff280ab7109e6ce1622bc63687",
+  "lock_sha256": "8e10b63f3a4bb19bcbec6229e5d7939d696f3b3b55b076e7e885027ec778d95d",
+  "scope": "Frozen build for real capacity experiment; full same-source regression not yet run"
+}

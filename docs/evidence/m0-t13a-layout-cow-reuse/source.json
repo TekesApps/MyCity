@@ -1,0 +1,8 @@
+{
+  "source_sha256": "8d66fe24c36c72318b29c5eda6311eba58e8ebf7126a902d387669023ac8b06f",
+  "source_files": 198,
+  "binary": "/Users/frankqin/dev/MyCity/work/candidate-binaries/layout-cow-reuse/mycity-headless",
+  "binary_sha256": "5668b0ced4b7fdef2279b14e9ade136b17a70b1d327af40fab45a4b03e62a40e",
+  "lock_sha256": "8e10b63f3a4bb19bcbec6229e5d7939d696f3b3b55b076e7e885027ec778d95d",
+  "scope": "Frozen build for real capacity experiment; full same-source regression not yet run"
+}

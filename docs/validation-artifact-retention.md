@@ -1,5 +1,7 @@
 # 验证产物回收规则
 
+**最新可用性（v0.5.91）**：[阶段终态回收](evidence/m0-t13a-causal-clock/STATUS.md)及[可用性清单](evidence/m0-t13a-causal-clock/retention/availability.json)覆盖该短测的原路径保留承诺。原全仓终态后，27份成功短测pressure/reserve/重复组件已按精确清单退役，分配空间3,378,831,360B；不可直接完整恢复。formal7/8、v50、smoke-L2及a702失败pending完整保留，其他既有退役状态不变；共享target继续复用。下文旧“最新”仅代表当时状态，以本项为准。
+
 **最新可用性（v0.5.90）**：[本次集中清理](evidence/disk-reclamation-current-stage/STATUS.md)及[逐快照可用性](evidence/disk-reclamation-current-stage/availability.json)为当前权威。新增退役102份终态短测压力／预留及已逐字节归档的旧重复组件，分配空间3,989,151,744B，work剩19.180706GiB。formal7/8、v50和smoke-L2完整原件、整个新失败pending、业务／源码／exe／raw保持；成功新短测不可直接恢复。下文所有旧“当前”保留承诺只代表当时状态，冲突以最新清单为准。
 
 **当前可用性（v0.5.87）**：[集中回收与恢复基线交接](evidence/disk-reclamation-stage-followup/STATUS.md)覆盖旧v85完整保留承诺。新formal第7／8代经实际完整读回、最新冷恢复与独立依赖审查接替恢复基线；旧v85两代及已完成smoke-L1短诊断仅6份pressure／reserve按精确清单退役，均不再可直接完整恢复。新formal两代、v50旧格式和smoke-L2失败原件完整保留；业务／组件／原index／固定源码与exe／原始日志保留。本次删除分配空间9,534,775,296B，work剩17.657GiB；APFS及df变化另列，不重复计算历史清理。

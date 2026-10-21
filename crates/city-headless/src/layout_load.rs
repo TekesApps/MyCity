@@ -310,6 +310,18 @@ struct Reserve {
     loan_pages: usize,
 }
 impl Reserve {
+    /// Transfer an already initialized MiB allocation into a dirty COW page.
+    /// Avoid releasing a usable backing only to request another equal-sized
+    /// allocation; snapshot decoding and repayment remain separately checked.
+    fn copy_page(&mut self, original: &[u8]) -> Result<Vec<u8>, String> {
+        if original.len() != MIB {
+            return Err("layout_cow_page_size".into());
+        }
+        let mut page = self.pages.pop().ok_or("layout_cow_backpressure")?;
+        page.copy_from_slice(original);
+        self.loan_pages += 1;
+        Ok(page)
+    }
     fn loan(&mut self, n: usize) -> Result<(), String> {
         if self.pages.len() < n {
             return Err("layout_cow_backpressure".into());
@@ -357,7 +369,15 @@ pub struct Load {
     generation: u64,
     _root_lock: File,
 }
+fn activate_layout_region(normal_bytes: usize, external_charge: usize) -> Result<(), String> {
+    let grant = normal_bytes
+        .checked_sub(external_charge)
+        .ok_or("layout_allocator_budget")?;
+    crate::heap_meter::activate_role(grant).map(|_| ())
+}
 impl Load {
+    /// Owns one process-lifetime L1 region. A second Load or another active role
+    /// in this process is rejected; callers use a separate CLI process.
     pub fn full(root: &Path, external_owned_charge_bytes: usize) -> Result<Self, String> {
         Self::construct(root, NORMAL_BYTES, external_owned_charge_bytes)
     }
@@ -375,6 +395,12 @@ impl Load {
             .open(root.join("layout.lock"))
             .map_err(err)?;
         fs2::FileExt::try_lock_exclusive(&root_lock).map_err(err)?;
+        // This process owns the entire actual L1 working set. The original
+        // metadata and 128MiB reserve remain inside this SAME fixed region;
+        // temporary decode/dirty pages reuse freed holes instead of leaving a
+        // second System allocation resident. A second Load/other active role
+        // is rejected by the allocator; there is no fallback or larger grant.
+        activate_layout_region(normal_bytes, external_charge)?;
         let native = Arc::new(NativePressure::jprod()?);
         let tables = Arc::new(tables()?);
         let native_bytes = native.manifest().owned_capacity_bytes;
@@ -492,7 +518,12 @@ impl Load {
             index = (index + 1) % self.pages.len();
         }
         if Arc::strong_count(&self.pages[index].bytes) > 1 {
-            self.reserve.lock().map_err(err)?.loan(1)?;
+            let page = self
+                .reserve
+                .lock()
+                .map_err(err)?
+                .copy_page(&self.pages[index].bytes)?;
+            self.pages[index].bytes = Arc::new(page);
             self.cow_pages += 1;
         }
         let dirty = Arc::make_mut(&mut self.pages[index].bytes);
@@ -1055,6 +1086,10 @@ impl Load {
         }
         let entries: Vec<FileEntry> =
             serde_json::from_value(index["files"].clone()).map_err(err)?;
+        // Only the full cold-layout path owns a full region. Records-only
+        // compatibility decoding below deliberately does not activate it.
+        // Schema/work-budget rejection precedes this process-lifetime switch.
+        activate_layout_region(normal_bytes, external_charge)?;
         let mut tables = tables()?;
         let mut expected = vec![
             "native.json".to_string(),
@@ -1425,7 +1460,7 @@ mod tests {
         }
     }
     #[test]
-    fn real_cow_releases_placeholder_before_copy_and_preserves_snapshot() {
+    fn real_cow_transfers_existing_reserve_allocation_and_preserves_snapshot() {
         let original = Arc::new(vec![7u8; MIB]);
         let mut current = original.clone();
         let mut reserve = Reserve {
@@ -1434,7 +1469,11 @@ mod tests {
         };
         assert!(reserve.loan(3).is_err());
         assert_eq!(reserve.pages.len(), 2);
-        reserve.loan(1).unwrap();
+        let existing_allocation = reserve.pages.last().unwrap().as_ptr();
+        assert!(reserve.copy_page(&[0u8; 7]).is_err());
+        assert_eq!(reserve.pages.len(), 2);
+        current = Arc::new(reserve.copy_page(&current).unwrap());
+        assert_eq!(current.as_ptr(), existing_allocation);
         Arc::make_mut(&mut current).fill(8);
         assert!(original.iter().all(|v| *v == 7));
         assert!(current.iter().all(|v| *v == 8));

@@ -1,0 +1,34 @@
+[
+  {
+    "path": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001",
+    "complete_original_retained": true,
+    "restore_input": true
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000007",
+    "complete_original_retained": true,
+    "restore_input": true
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000008",
+    "complete_original_retained": true,
+    "restore_input": true
+  },
+  {
+    "path": "work/steady-controller-smoke-l2-01/observed/model/layout/snapshots/snapshot-000001",
+    "complete_original_retained": true,
+    "restore_input": true
+  },
+  {
+    "path": "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending",
+    "complete_original_retained": true,
+    "restore_input": false,
+    "reason": "incomplete failed write; entire fault original retained"
+  },
+  {
+    "path": "work/causal-clock-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001",
+    "complete_original_retained": false,
+    "restore_input": false,
+    "reason": "completed synthetic diagnostic payload retired after actual complete restore; index/raw/archive not a complete pressure restore input"
+  }
+]

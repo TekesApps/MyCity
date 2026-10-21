@@ -1,0 +1,26 @@
+{
+  "source_sha256": "66e7e2aee0464d302738c4a1d36cfe2b2e7d17de7ac6f8d088330a2d85629138",
+  "rows": [
+    {
+      "kind": "pid",
+      "pid": 4897,
+      "exit_code": 2,
+      "no_clock_reply": true,
+      "no_business_or_pool_spawn": true
+    },
+    {
+      "kind": "source",
+      "pid": 4934,
+      "exit_code": 2,
+      "no_clock_reply": true,
+      "no_business_or_pool_spawn": true
+    },
+    {
+      "kind": "nonce",
+      "pid": 4935,
+      "exit_code": 2,
+      "no_clock_reply": true,
+      "no_business_or_pool_spawn": true
+    }
+  ]
+}

@@ -50,3 +50,5 @@ pub mod pe0_speed;
 mod model_compare;
 
 pub mod steady;
+
+mod observer_clock;

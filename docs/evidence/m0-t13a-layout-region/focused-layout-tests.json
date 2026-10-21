@@ -1,0 +1,16 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "--release",
+    "--locked",
+    "--offline",
+    "-p",
+    "mycity-headless",
+    "--lib",
+    "layout_load"
+  ],
+  "exit_code": 0,
+  "passed": 8,
+  "scope": "Actual library checks before freeze; original schedule, COW and record constraints, not whole layout performance"
+}

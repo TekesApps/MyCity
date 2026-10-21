@@ -213,6 +213,7 @@ pub fn run(dir: &Path) -> Result<(), String> {
         ),
     };
     clock.event("supervisor_started", Some(std::process::id()), None)?;
+    crate::observer_clock::synchronize(&dir, || clock.now())?;
     let mut normal_pool = crate::normal_pool::Process::spawn(
         &std::env::current_exe().map_err(err)?,
         &dir.join("normal-pool"),
@@ -432,6 +433,7 @@ pub fn endurance(dir: &Path, formal: bool) -> Result<(), String> {
         }),
     )?;
     clock.event("supervisor_started", Some(std::process::id()), None)?;
+    crate::observer_clock::synchronize(&dir, || clock.now())?;
     let mut pool = crate::normal_pool::Process::spawn(
         &std::env::current_exe().map_err(err)?,
         &dir.join("normal-pool"),

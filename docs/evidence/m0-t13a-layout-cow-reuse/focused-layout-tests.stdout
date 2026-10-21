@@ -1,0 +1,13 @@
+
+running 8 tests
+test layout_load::tests::owner_stop_requires_explicit_byte_and_publication_cutoff_is_fixed ... ok
+test layout_load::bounded_table::tests::duplicate_missing_wrong_fields_extra_records_and_tokens_reject ... ok
+test layout_load::tests::external_component_reservation_rejects_oversize_before_allocation ... ok
+test layout_load::tests::eight_hour_snapshot_summaries_do_not_retain_file_trees ... ok
+test layout_load::bounded_table::tests::all_variants_restore_exactly_and_accept_records_before_tag ... ok
+test layout_load::tests::real_cow_transfers_existing_reserve_allocation_and_preserves_snapshot ... ok
+test layout_load::tests::restore_rejects_component_reservation_before_loading_any_large_file ... ok
+test layout_load::tests::all_stub_counts_widths_population_and_references_are_real_records ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 40 filtered out; finished in 0.01s
+

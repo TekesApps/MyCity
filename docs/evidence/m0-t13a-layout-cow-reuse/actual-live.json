@@ -1,0 +1,22 @@
+{
+  "pid": 93472,
+  "phase": "exec observer immediately; no parked parent",
+  "command": [
+    "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-layout-cow-reuse/observe.py",
+    "/Users/frankqin/dev/MyCity/work/layout-region-l1-smoke-02/observed",
+    "--",
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/layout-cow-reuse/mycity-headless",
+    "steady-run",
+    "/Users/frankqin/dev/MyCity/work/layout-region-l1-smoke-02/observed/model",
+    "l1",
+    "smoke"
+  ],
+  "source_sha256": "8d66fe24c36c72318b29c5eda6311eba58e8ebf7126a902d387669023ac8b06f",
+  "support_sha256": {
+    "observe.py": "bfdac081b73d84e4a93170923030ceba977a416b98b12b7fd0dccb159e53d7dc",
+    "native_metrics.py": "917b184e339649acd7b79797cf77f2b2db4f5128f33fdaf8759c162672fa34ca",
+    "launch.py": "aff623f3144f731ccbf5da08d4ac56a2ac20199c4580b3dd284ad2ae16319e3b",
+    "readiness.py": "88ae51f35cabba9cf5660cf6a6d7a7e29b3268b253b2e80583fa005b69dbee6a"
+  }
+}

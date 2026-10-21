@@ -1,0 +1,15 @@
+{
+  "observer": {
+    "status": "model_failed",
+    "reason": null,
+    "model_exit_code": 2,
+    "actual_wall_seconds": 4.5351683750000005,
+    "samples": 19
+  },
+  "model_stderr": "joint_child_failed:91984:signal: 6 (SIGABRT)\n",
+  "layout_stderr": "memory allocation of 1048576 bytes failed\n",
+  "snapshot": "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending",
+  "availability": "incomplete failed write; not a restore point; full fault original retained",
+  "source_sha256": "a70293e83331c4a0e40b287029163c7ca113048d1dfaf20e40bc0c8e58a9eeeb",
+  "following_change": "Transfer existing reserve Vec directly into COW, original budget and full IO unchanged"
+}

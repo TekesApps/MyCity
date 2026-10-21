@@ -41,6 +41,9 @@ pub fn run(dir: &Path, scenario: Scenario, plan: Plan) -> Result<(), String> {
   "normal_pool_bytes":if scenario==Scenario::L0 {0}else{normal_pool::BYTES},"scope":"fixed original inputs; smoke has original full records but shortened clock and cannot accept steady","formal_acceptance":"requires independent audit"}),
     )?;
     let mut events = Events::new(&dir.join("common-events.jsonl"))?;
+    crate::observer_clock::synchronize(&dir, || {
+        events.elapsed().as_nanos().min(u128::from(u64::MAX)) as u64
+    })?;
     let mut pool = if scenario == Scenario::L0 {
         None
     } else {

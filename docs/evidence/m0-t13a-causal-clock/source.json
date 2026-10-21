@@ -1,0 +1,8 @@
+{
+  "source_sha256": "66e7e2aee0464d302738c4a1d36cfe2b2e7d17de7ac6f8d088330a2d85629138",
+  "source_files": 199,
+  "binary": "/Users/frankqin/dev/MyCity/work/candidate-binaries/causal-clock/mycity-headless",
+  "binary_sha256": "7c44c99b2dcfa4d1f95979e6569b55c4a8a2d3140aeb6ace3054d40ae490b741",
+  "lock_sha256": "8e10b63f3a4bb19bcbec6229e5d7939d696f3b3b55b076e7e885027ec778d95d",
+  "scope": "Frozen build for real capacity experiment; full same-source regression not yet run"
+}

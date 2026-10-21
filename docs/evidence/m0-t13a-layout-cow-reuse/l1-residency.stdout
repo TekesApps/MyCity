@@ -1,0 +1,290 @@
+{
+  "schema": "mycity-layout-residency-v1",
+  "mapped_pid": 93893,
+  "mapped_instance_unix_ns": 1792612488249836000,
+  "origin_observer_ns": [
+    993267001,
+    1748467459
+  ],
+  "layout_started_offset_from_heap_clock_ns": [
+    -164044,
+    0
+  ],
+  "all_original_scans": 16,
+  "snapshot_exclusion_intervals": [
+    [
+      993152706,
+      9403319252
+    ]
+  ],
+  "same_phase_samples": [
+    {
+      "iteration": 9,
+      "snapshot_inflight": false,
+      "allocator": {
+        "activation": {
+          "adapter_header_bytes": 160,
+          "arena_bytes": 3261424059,
+          "arena_start": 18958254080,
+          "bootstrap_charged_bytes": 66571,
+          "grant_bytes": 3261490790,
+          "initialized_bytes": 3261424059,
+          "pid": 93893
+        },
+        "allocation_failures": 0,
+        "arena_free_bytes": 3558352,
+        "arena_usable_bytes": 3261424056,
+        "arena_used_bytes": 3257865704,
+        "bootstrap_live_bytes": 66413,
+        "bootstrap_peak_bytes": 66838,
+        "bootstrap_quarantined_bytes": 158,
+        "current_requested_bytes": 3257932079,
+        "lifetime_peak_requested_bytes": 3259067205
+      },
+      "gap_layout_heap_ns": [
+        8013717666,
+        9010898375
+      ],
+      "eligible_complete_frames": 0,
+      "incomplete_frames": 0,
+      "snapshot_excluded_frames": 0,
+      "layout_rss_min": null,
+      "layout_rss_max": null,
+      "layout_footprint_min": null,
+      "layout_footprint_max": null,
+      "group_rss_max": null,
+      "group_footprint_max": null,
+      "member_ranges": {}
+    },
+    {
+      "iteration": 10,
+      "snapshot_inflight": false,
+      "allocator": {
+        "activation": {
+          "adapter_header_bytes": 160,
+          "arena_bytes": 3261424059,
+          "arena_start": 18958254080,
+          "bootstrap_charged_bytes": 66571,
+          "grant_bytes": 3261490790,
+          "initialized_bytes": 3261424059,
+          "pid": 93893
+        },
+        "allocation_failures": 0,
+        "arena_free_bytes": 3558352,
+        "arena_usable_bytes": 3261424056,
+        "arena_used_bytes": 3257865704,
+        "bootstrap_live_bytes": 66413,
+        "bootstrap_peak_bytes": 66838,
+        "bootstrap_quarantined_bytes": 158,
+        "current_requested_bytes": 3257932079,
+        "lifetime_peak_requested_bytes": 3259067205
+      },
+      "gap_layout_heap_ns": [
+        9017232583,
+        10006225833
+      ],
+      "eligible_complete_frames": 0,
+      "incomplete_frames": 0,
+      "snapshot_excluded_frames": 0,
+      "layout_rss_min": null,
+      "layout_rss_max": null,
+      "layout_footprint_min": null,
+      "layout_footprint_max": null,
+      "group_rss_max": null,
+      "group_footprint_max": null,
+      "member_ranges": {}
+    },
+    {
+      "iteration": 11,
+      "snapshot_inflight": false,
+      "allocator": {
+        "activation": {
+          "adapter_header_bytes": 160,
+          "arena_bytes": 3261424059,
+          "arena_start": 18958254080,
+          "bootstrap_charged_bytes": 66571,
+          "grant_bytes": 3261490790,
+          "initialized_bytes": 3261424059,
+          "pid": 93893
+        },
+        "allocation_failures": 0,
+        "arena_free_bytes": 3558352,
+        "arena_usable_bytes": 3261424056,
+        "arena_used_bytes": 3257865704,
+        "bootstrap_live_bytes": 66413,
+        "bootstrap_peak_bytes": 66838,
+        "bootstrap_quarantined_bytes": 158,
+        "current_requested_bytes": 3257932079,
+        "lifetime_peak_requested_bytes": 3259067205
+      },
+      "gap_layout_heap_ns": [
+        10012078208,
+        11006840541
+      ],
+      "eligible_complete_frames": 0,
+      "incomplete_frames": 0,
+      "snapshot_excluded_frames": 0,
+      "layout_rss_min": null,
+      "layout_rss_max": null,
+      "layout_footprint_min": null,
+      "layout_footprint_max": null,
+      "group_rss_max": null,
+      "group_footprint_max": null,
+      "member_ranges": {}
+    },
+    {
+      "iteration": 12,
+      "snapshot_inflight": false,
+      "allocator": {
+        "activation": {
+          "adapter_header_bytes": 160,
+          "arena_bytes": 3261424059,
+          "arena_start": 18958254080,
+          "bootstrap_charged_bytes": 66571,
+          "grant_bytes": 3261490790,
+          "initialized_bytes": 3261424059,
+          "pid": 93893
+        },
+        "allocation_failures": 0,
+        "arena_free_bytes": 3558352,
+        "arena_usable_bytes": 3261424056,
+        "arena_used_bytes": 3257865704,
+        "bootstrap_live_bytes": 66413,
+        "bootstrap_peak_bytes": 66838,
+        "bootstrap_quarantined_bytes": 158,
+        "current_requested_bytes": 3257932079,
+        "lifetime_peak_requested_bytes": 3259067205
+      },
+      "gap_layout_heap_ns": [
+        11012745541,
+        12010649833
+      ],
+      "eligible_complete_frames": 0,
+      "incomplete_frames": 0,
+      "snapshot_excluded_frames": 0,
+      "layout_rss_min": null,
+      "layout_rss_max": null,
+      "layout_footprint_min": null,
+      "layout_footprint_max": null,
+      "group_rss_max": null,
+      "group_footprint_max": null,
+      "member_ranges": {}
+    },
+    {
+      "iteration": 13,
+      "snapshot_inflight": false,
+      "allocator": {
+        "activation": {
+          "adapter_header_bytes": 160,
+          "arena_bytes": 3261424059,
+          "arena_start": 18958254080,
+          "bootstrap_charged_bytes": 66571,
+          "grant_bytes": 3261490790,
+          "initialized_bytes": 3261424059,
+          "pid": 93893
+        },
+        "allocation_failures": 0,
+        "arena_free_bytes": 3558352,
+        "arena_usable_bytes": 3261424056,
+        "arena_used_bytes": 3257865704,
+        "bootstrap_live_bytes": 66413,
+        "bootstrap_peak_bytes": 66838,
+        "bootstrap_quarantined_bytes": 158,
+        "current_requested_bytes": 3257932079,
+        "lifetime_peak_requested_bytes": 3259067205
+      },
+      "gap_layout_heap_ns": [
+        12016878000,
+        13012097500
+      ],
+      "eligible_complete_frames": 0,
+      "incomplete_frames": 0,
+      "snapshot_excluded_frames": 0,
+      "layout_rss_min": null,
+      "layout_rss_max": null,
+      "layout_footprint_min": null,
+      "layout_footprint_max": null,
+      "group_rss_max": null,
+      "group_footprint_max": null,
+      "member_ranges": {}
+    },
+    {
+      "iteration": 14,
+      "snapshot_inflight": false,
+      "allocator": {
+        "activation": {
+          "adapter_header_bytes": 160,
+          "arena_bytes": 3261424059,
+          "arena_start": 18958254080,
+          "bootstrap_charged_bytes": 66571,
+          "grant_bytes": 3261490790,
+          "initialized_bytes": 3261424059,
+          "pid": 93893
+        },
+        "allocation_failures": 0,
+        "arena_free_bytes": 3558352,
+        "arena_usable_bytes": 3261424056,
+        "arena_used_bytes": 3257865704,
+        "bootstrap_live_bytes": 66413,
+        "bootstrap_peak_bytes": 66838,
+        "bootstrap_quarantined_bytes": 158,
+        "current_requested_bytes": 3257932079,
+        "lifetime_peak_requested_bytes": 3259067205
+      },
+      "gap_layout_heap_ns": [
+        13018173375,
+        14000401875
+      ],
+      "eligible_complete_frames": 0,
+      "incomplete_frames": 0,
+      "snapshot_excluded_frames": 0,
+      "layout_rss_min": null,
+      "layout_rss_max": null,
+      "layout_footprint_min": null,
+      "layout_footprint_max": null,
+      "group_rss_max": null,
+      "group_footprint_max": null,
+      "member_ranges": {}
+    },
+    {
+      "iteration": 15,
+      "snapshot_inflight": false,
+      "allocator": {
+        "activation": {
+          "adapter_header_bytes": 160,
+          "arena_bytes": 3261424059,
+          "arena_start": 18958254080,
+          "bootstrap_charged_bytes": 66571,
+          "grant_bytes": 3261490790,
+          "initialized_bytes": 3261424059,
+          "pid": 93893
+        },
+        "allocation_failures": 0,
+        "arena_free_bytes": 3558352,
+        "arena_usable_bytes": 3261424056,
+        "arena_used_bytes": 3257865704,
+        "bootstrap_live_bytes": 66413,
+        "bootstrap_peak_bytes": 66838,
+        "bootstrap_quarantined_bytes": 158,
+        "current_requested_bytes": 3257932079,
+        "lifetime_peak_requested_bytes": 3259067205
+      },
+      "gap_layout_heap_ns": [
+        14014274333,
+        15003248333
+      ],
+      "eligible_complete_frames": 0,
+      "incomplete_frames": 0,
+      "snapshot_excluded_frames": 0,
+      "layout_rss_min": null,
+      "layout_rss_max": null,
+      "layout_footprint_min": null,
+      "layout_footprint_max": null,
+      "group_rss_max": null,
+      "group_footprint_max": null,
+      "member_ranges": {}
+    }
+  ],
+  "gate": "not_accepted; actual current allocation and physical capture reported separately; no claim System cache is the cause without ownership evidence",
+  "scope": "No dropped records/pressure/frequency; no interpolated resources or zero imputation"
+}

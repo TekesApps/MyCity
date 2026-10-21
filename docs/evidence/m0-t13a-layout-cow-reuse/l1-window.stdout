@@ -1,0 +1,160 @@
+{
+  "schema": "mycity-steady-window-raw-audit-v1",
+  "source_sha256": "8d66fe24c36c72318b29c5eda6311eba58e8ebf7126a902d387669023ac8b06f",
+  "formal": false,
+  "measurement_driver_ns": [
+    3000000000,
+    15000000000
+  ],
+  "clock_mappings": 0,
+  "worker_request_intervals": 0,
+  "raw_files_accounted": 1,
+  "raw_universe_fully_accounted": true,
+  "unbound_raw_files": [],
+  "raw_bytes_accounted": 30960,
+  "batch_intervals": [
+    {
+      "key": [
+        "sealed",
+        "layout",
+        "execution",
+        "before",
+        "scan_complete",
+        "L1/full_jprod1"
+      ],
+      "count": 3
+    },
+    {
+      "key": [
+        "sealed",
+        "layout",
+        "execution",
+        "cross_boundary_or_uncertain",
+        "scan_complete",
+        "L1/full_jprod1"
+      ],
+      "count": 1
+    },
+    {
+      "key": [
+        "sealed",
+        "layout",
+        "execution",
+        "inside",
+        "scan_complete",
+        "L1/full_jprod1"
+      ],
+      "count": 12
+    }
+  ],
+  "strata": [
+    {
+      "record_state": "sealed",
+      "producer": "layout",
+      "role": "execution",
+      "window": "before",
+      "admission": "scan_complete",
+      "case": "L1/full_jprod1",
+      "class": "L1_native_record_index_page",
+      "page_spec": "not_air",
+      "samples": 141,
+      "maximum_ns": 26791,
+      "p95_ns": 17541,
+      "p99_ns": 25458,
+      "minimum_samples_met": false,
+      "thresholds_met": null
+    },
+    {
+      "record_state": "sealed",
+      "producer": "layout",
+      "role": "execution",
+      "window": "before",
+      "admission": "scan_complete",
+      "case": "L1/full_jprod1",
+      "class": "L1_stub_record_index_page",
+      "page_spec": "not_air",
+      "samples": 504,
+      "maximum_ns": 63917,
+      "p95_ns": 27917,
+      "p99_ns": 55084,
+      "minimum_samples_met": true,
+      "thresholds_met": true
+    },
+    {
+      "record_state": "sealed",
+      "producer": "layout",
+      "role": "execution",
+      "window": "cross_boundary_or_uncertain",
+      "admission": "scan_complete",
+      "case": "L1/full_jprod1",
+      "class": "L1_native_record_index_page",
+      "page_spec": "not_air",
+      "samples": 47,
+      "maximum_ns": 37541,
+      "p95_ns": 24291,
+      "p99_ns": 37541,
+      "minimum_samples_met": false,
+      "thresholds_met": null
+    },
+    {
+      "record_state": "sealed",
+      "producer": "layout",
+      "role": "execution",
+      "window": "cross_boundary_or_uncertain",
+      "admission": "scan_complete",
+      "case": "L1/full_jprod1",
+      "class": "L1_stub_record_index_page",
+      "page_spec": "not_air",
+      "samples": 168,
+      "maximum_ns": 51542,
+      "p95_ns": 26792,
+      "p99_ns": 51042,
+      "minimum_samples_met": false,
+      "thresholds_met": null
+    },
+    {
+      "record_state": "sealed",
+      "producer": "layout",
+      "role": "execution",
+      "window": "inside",
+      "admission": "scan_complete",
+      "case": "L1/full_jprod1",
+      "class": "L1_native_record_index_page",
+      "page_spec": "not_air",
+      "samples": 564,
+      "maximum_ns": 26041,
+      "p95_ns": 16416,
+      "p99_ns": 22542,
+      "minimum_samples_met": true,
+      "thresholds_met": true
+    },
+    {
+      "record_state": "sealed",
+      "producer": "layout",
+      "role": "execution",
+      "window": "inside",
+      "admission": "scan_complete",
+      "case": "L1/full_jprod1",
+      "class": "L1_stub_record_index_page",
+      "page_spec": "not_air",
+      "samples": 2016,
+      "maximum_ns": 73041,
+      "p95_ns": 29250,
+      "p99_ns": 57375,
+      "minimum_samples_met": true,
+      "thresholds_met": true
+    }
+  ],
+  "expected_classes": [
+    "L1_native_record_index_page",
+    "L1_stub_record_index_page"
+  ],
+  "eligible_window_class_minimums_met": true,
+  "observed_window_thresholds_met": true,
+  "formal_latency": "not_accepted_smoke",
+  "three_rounds": "not_accepted_by_single_round",
+  "resource_and_queue": "not_assessed_by_raw_selector",
+  "eight_hour": "not_run",
+  "real_16GB": "not_run",
+  "full_M0": "not_accepted"
+}

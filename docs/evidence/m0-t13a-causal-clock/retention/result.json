@@ -1,0 +1,24 @@
+{
+  "before": {
+    "time_ns": 1792615090582553000,
+    "work_du_kib": 23424972,
+    "target_du_kib": 1400172,
+    "filesystem_available_bytes": 106048524288
+  },
+  "after": {
+    "time_ns": 1792615095566327000,
+    "work_du_kib": 20125332,
+    "target_du_kib": 1400172,
+    "filesystem_available_bytes": 109428109312
+  },
+  "deleted_files": 27,
+  "deleted_unique_single_link_inode_allocated_bytes": 3378831360,
+  "target_deleted_bytes": 0,
+  "new_work_archive_bytes": 0,
+  "retained_files_identity_length_mtime_links_unchanged": 118816,
+  "retained_allocation_only_differences": 0,
+  "observed_df_available_delta": 3379585024,
+  "df_delta_attributed_to_cleanup": null,
+  "availability": "causal-clock L1 short snapshot now incomplete, cannot directly restore; formal7/8, v50, smoke-L2 and a702 failed pending originals preserved",
+  "accounting": "st_blocks not exclusive APFS physical bytes; df influenced by snapshots/shared blocks and unrelated tasks; old cleanup not counted"
+}

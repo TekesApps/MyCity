@@ -1,0 +1,9 @@
+{
+  "manifest_equal_except_disclosed_source": true,
+  "all_29_indexed_files_identical": true,
+  "original_payload_and_pattern_unchanged": true,
+  "reference_index": "docs/evidence/m0-t13a-native-boundaries/retention/retained-snapshot-index.json",
+  "candidate_index": "docs/evidence/disk-reclamation-current-stage/retained-snapshot-index.json",
+  "candidate_direct_restore_available": false,
+  "scope": "indexed bytes checked during actual run and cleanup; pressure now retired, index identity is not a substitute for restore bytes"
+}

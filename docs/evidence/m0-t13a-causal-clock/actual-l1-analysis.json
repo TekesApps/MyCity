@@ -1,0 +1,154 @@
+{
+  "source_sha256": "66e7e2aee0464d302738c4a1d36cfe2b2e7d17de7ac6f8d088330a2d85629138",
+  "actual_wall_seconds": 20.53997975,
+  "frames": 83,
+  "complete_same_phase_frames": 28,
+  "supervisor_clock_uncertainty_ns": 5560709,
+  "layout_combined_origin_uncertainty_ns": 16655084,
+  "same_phase_iterations": [
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "same_phase_current_requested_bytes": 3257932070,
+  "same_phase_activation": {
+    "adapter_header_bytes": 160,
+    "arena_bytes": 3261424067,
+    "arena_start": 48083501056,
+    "bootstrap_charged_bytes": 66563,
+    "grant_bytes": 3261490790,
+    "initialized_bytes": 3261424067,
+    "pid": 5456
+  },
+  "same_phase_arena_free_bytes": 3558368,
+  "same_phase_allocation_failures": 0,
+  "same_phase_group_rss_max": 3358654464,
+  "same_phase_group_footprint_max": 3348074360,
+  "normal_budget_bytes": 3328599654,
+  "footprint_excess_bytes": 19474706,
+  "members": [
+    {
+      "pid_birth": "4881:24572432899779",
+      "heap_role": "observer",
+      "role": "observer",
+      "rss_min": 17465344,
+      "rss_max": 17465344,
+      "footprint_min": 12943696,
+      "footprint_max": 12943696
+    },
+    {
+      "pid_birth": "5454:24575343456677",
+      "heap_role": "steady-run",
+      "role": "mycity-headless",
+      "rss_min": 3211264,
+      "rss_max": 3211264,
+      "footprint_min": 1360184,
+      "footprint_max": 1360184
+    },
+    {
+      "pid_birth": "5455:24575344110741",
+      "heap_role": "normal-pool-host",
+      "role": "mycity-headless",
+      "rss_min": 69976064,
+      "rss_max": 69976064,
+      "footprint_min": 68518248,
+      "footprint_max": 68518248
+    },
+    {
+      "pid_birth": "5456:24575344759802",
+      "heap_role": "steady-layout-session",
+      "role": "mycity-headless",
+      "rss_min": 3265380352,
+      "rss_max": 3265380352,
+      "footprint_min": 3264186960,
+      "footprint_max": 3264186960
+    },
+    {
+      "pid_birth": "5460:24575372252296",
+      "heap_role": "steady-driver",
+      "role": "mycity-headless",
+      "rss_min": 2621440,
+      "rss_max": 2621440,
+      "footprint_min": 1065272,
+      "footprint_max": 1065272
+    }
+  ],
+  "incomplete_frames": [
+    {
+      "frame": 65,
+      "t": 16.262737458,
+      "missing_rss": 1,
+      "missing_footprint": 1,
+      "identity_uncertainties": [
+        {
+          "capture_begin_monotonic_ns": 16295190791,
+          "capture_end_monotonic_ns": 16295342416,
+          "pid": 5460,
+          "reason": "identity_or_relation_unavailable",
+          "expected_start_abstime": 24575372252296,
+          "first_start_abstime": 24575372252296,
+          "last_start_abstime": 24575372252296
+        }
+      ],
+      "pending_identities": [],
+      "enumeration_failures": [],
+      "missing_selected_processes": []
+    },
+    {
+      "frame": 79,
+      "t": 19.763295708,
+      "missing_rss": 1,
+      "missing_footprint": 1,
+      "identity_uncertainties": [
+        {
+          "capture_begin_monotonic_ns": 19795832250,
+          "capture_end_monotonic_ns": 19795927250,
+          "pid": 5485,
+          "reason": "identity_or_relation_unavailable",
+          "expected_start_abstime": 24575736168378,
+          "first_start_abstime": 24575736168378,
+          "last_start_abstime": 24575736168378
+        }
+      ],
+      "pending_identities": [],
+      "enumeration_failures": [
+        {
+          "pid": 5485,
+          "errno": 3,
+          "error": "ESRCH",
+          "confirmed_absent_after_query": false,
+          "ancestry": "unresolved; cannot silently remove from group completeness"
+        }
+      ],
+      "missing_selected_processes": []
+    },
+    {
+      "frame": 80,
+      "t": 20.013883,
+      "missing_rss": 0,
+      "missing_footprint": 0,
+      "identity_uncertainties": [],
+      "pending_identities": [],
+      "enumeration_failures": [
+        {
+          "pid": 5454,
+          "errno": 3,
+          "error": "ESRCH",
+          "confirmed_absent_after_query": false,
+          "ancestry": "unresolved; cannot silently remove from group completeness"
+        }
+      ],
+      "missing_selected_processes": []
+    }
+  ],
+  "layout_payload": "same 29 files as original source0418; full write/readback/cold restore passed",
+  "normal_3_10GiB": "not_accepted; actual complete same-phase total exceeds budget",
+  "unexplained_native_or_stack": "No generic System-cache attribution or pressure deduction",
+  "full_M0": "not_accepted",
+  "real16GB": "not_run",
+  "eight_hour": "not_run"
+}

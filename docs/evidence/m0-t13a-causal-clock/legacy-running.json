@@ -1,0 +1,9 @@
+{
+  "pid": 5841,
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/causal-clock/mycity-headless",
+    "layout-load-only",
+    "/Users/frankqin/dev/MyCity/work/t13a50-joint-01/model/layout/snapshots/snapshot-000001",
+    "/Users/frankqin/dev/MyCity/work/causal-clock-legacy-v50-01/restored"
+  ]
+}

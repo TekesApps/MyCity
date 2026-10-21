@@ -1,0 +1,542 @@
+{
+  "schema": "mycity-layout-residency-v1",
+  "mapped_pid": 5456,
+  "mapped_instance_unix_ns": 1792614208547500000,
+  "origin_observer_ns": [
+    1169479082,
+    1186134166
+  ],
+  "layout_started_offset_from_heap_clock_ns": [
+    -179626,
+    42
+  ],
+  "all_original_scans": 16,
+  "snapshot_exclusion_intervals": [
+    [
+      1169340080,
+      8742436376
+    ]
+  ],
+  "same_phase_samples": [
+    {
+      "iteration": 9,
+      "snapshot_inflight": false,
+      "allocator": {
+        "activation": {
+          "adapter_header_bytes": 160,
+          "arena_bytes": 3261424067,
+          "arena_start": 48083501056,
+          "bootstrap_charged_bytes": 66563,
+          "grant_bytes": 3261490790,
+          "initialized_bytes": 3261424067,
+          "pid": 5456
+        },
+        "allocation_failures": 0,
+        "arena_free_bytes": 3558368,
+        "arena_usable_bytes": 3261424064,
+        "arena_used_bytes": 3257865696,
+        "bootstrap_live_bytes": 66407,
+        "bootstrap_peak_bytes": 66827,
+        "bootstrap_quarantined_bytes": 156,
+        "current_requested_bytes": 3257932070,
+        "lifetime_peak_requested_bytes": 3259067077
+      },
+      "gap_layout_heap_ns": [
+        8021716834,
+        9007316667
+      ],
+      "eligible_complete_frames": 4,
+      "incomplete_frames": 0,
+      "snapshot_excluded_frames": 0,
+      "layout_rss_min": 3265380352,
+      "layout_rss_max": 3265380352,
+      "layout_footprint_min": 3264186960,
+      "layout_footprint_max": 3264186960,
+      "group_rss_max": 3358654464,
+      "group_footprint_max": 3348074360,
+      "member_ranges": {
+        "4881:24572432899779": {
+          "role": "observer",
+          "rss_min": 17399808,
+          "rss_max": 17465344,
+          "footprint_min": 12878160,
+          "footprint_max": 12943696
+        },
+        "5454:24575343456677": {
+          "role": "mycity-headless",
+          "rss_min": 3211264,
+          "rss_max": 3211264,
+          "footprint_min": 1360184,
+          "footprint_max": 1360184
+        },
+        "5455:24575344110741": {
+          "role": "mycity-headless",
+          "rss_min": 69976064,
+          "rss_max": 69976064,
+          "footprint_min": 68518248,
+          "footprint_max": 68518248
+        },
+        "5456:24575344759802": {
+          "role": "mycity-headless",
+          "rss_min": 3265380352,
+          "rss_max": 3265380352,
+          "footprint_min": 3264186960,
+          "footprint_max": 3264186960
+        },
+        "5460:24575372252296": {
+          "role": "mycity-headless",
+          "rss_min": 2621440,
+          "rss_max": 2621440,
+          "footprint_min": 1065272,
+          "footprint_max": 1065272
+        }
+      }
+    },
+    {
+      "iteration": 10,
+      "snapshot_inflight": false,
+      "allocator": {
+        "activation": {
+          "adapter_header_bytes": 160,
+          "arena_bytes": 3261424067,
+          "arena_start": 48083501056,
+          "bootstrap_charged_bytes": 66563,
+          "grant_bytes": 3261490790,
+          "initialized_bytes": 3261424067,
+          "pid": 5456
+        },
+        "allocation_failures": 0,
+        "arena_free_bytes": 3558368,
+        "arena_usable_bytes": 3261424064,
+        "arena_used_bytes": 3257865696,
+        "bootstrap_live_bytes": 66407,
+        "bootstrap_peak_bytes": 66827,
+        "bootstrap_quarantined_bytes": 156,
+        "current_requested_bytes": 3257932070,
+        "lifetime_peak_requested_bytes": 3259067077
+      },
+      "gap_layout_heap_ns": [
+        9022424667,
+        10009625000
+      ],
+      "eligible_complete_frames": 4,
+      "incomplete_frames": 0,
+      "snapshot_excluded_frames": 0,
+      "layout_rss_min": 3265380352,
+      "layout_rss_max": 3265380352,
+      "layout_footprint_min": 3264186960,
+      "layout_footprint_max": 3264186960,
+      "group_rss_max": 3358654464,
+      "group_footprint_max": 3348074360,
+      "member_ranges": {
+        "4881:24572432899779": {
+          "role": "observer",
+          "rss_min": 17465344,
+          "rss_max": 17465344,
+          "footprint_min": 12943696,
+          "footprint_max": 12943696
+        },
+        "5454:24575343456677": {
+          "role": "mycity-headless",
+          "rss_min": 3211264,
+          "rss_max": 3211264,
+          "footprint_min": 1360184,
+          "footprint_max": 1360184
+        },
+        "5455:24575344110741": {
+          "role": "mycity-headless",
+          "rss_min": 69976064,
+          "rss_max": 69976064,
+          "footprint_min": 68518248,
+          "footprint_max": 68518248
+        },
+        "5456:24575344759802": {
+          "role": "mycity-headless",
+          "rss_min": 3265380352,
+          "rss_max": 3265380352,
+          "footprint_min": 3264186960,
+          "footprint_max": 3264186960
+        },
+        "5460:24575372252296": {
+          "role": "mycity-headless",
+          "rss_min": 2621440,
+          "rss_max": 2621440,
+          "footprint_min": 1065272,
+          "footprint_max": 1065272
+        }
+      }
+    },
+    {
+      "iteration": 11,
+      "snapshot_inflight": false,
+      "allocator": {
+        "activation": {
+          "adapter_header_bytes": 160,
+          "arena_bytes": 3261424067,
+          "arena_start": 48083501056,
+          "bootstrap_charged_bytes": 66563,
+          "grant_bytes": 3261490790,
+          "initialized_bytes": 3261424067,
+          "pid": 5456
+        },
+        "allocation_failures": 0,
+        "arena_free_bytes": 3558368,
+        "arena_usable_bytes": 3261424064,
+        "arena_used_bytes": 3257865696,
+        "bootstrap_live_bytes": 66407,
+        "bootstrap_peak_bytes": 66827,
+        "bootstrap_quarantined_bytes": 156,
+        "current_requested_bytes": 3257932070,
+        "lifetime_peak_requested_bytes": 3259067077
+      },
+      "gap_layout_heap_ns": [
+        10028139250,
+        11001349250
+      ],
+      "eligible_complete_frames": 4,
+      "incomplete_frames": 0,
+      "snapshot_excluded_frames": 0,
+      "layout_rss_min": 3265380352,
+      "layout_rss_max": 3265380352,
+      "layout_footprint_min": 3264186960,
+      "layout_footprint_max": 3264186960,
+      "group_rss_max": 3358654464,
+      "group_footprint_max": 3348074360,
+      "member_ranges": {
+        "4881:24572432899779": {
+          "role": "observer",
+          "rss_min": 17465344,
+          "rss_max": 17465344,
+          "footprint_min": 12943696,
+          "footprint_max": 12943696
+        },
+        "5454:24575343456677": {
+          "role": "mycity-headless",
+          "rss_min": 3211264,
+          "rss_max": 3211264,
+          "footprint_min": 1360184,
+          "footprint_max": 1360184
+        },
+        "5455:24575344110741": {
+          "role": "mycity-headless",
+          "rss_min": 69976064,
+          "rss_max": 69976064,
+          "footprint_min": 68518248,
+          "footprint_max": 68518248
+        },
+        "5456:24575344759802": {
+          "role": "mycity-headless",
+          "rss_min": 3265380352,
+          "rss_max": 3265380352,
+          "footprint_min": 3264186960,
+          "footprint_max": 3264186960
+        },
+        "5460:24575372252296": {
+          "role": "mycity-headless",
+          "rss_min": 2621440,
+          "rss_max": 2621440,
+          "footprint_min": 1065272,
+          "footprint_max": 1065272
+        }
+      }
+    },
+    {
+      "iteration": 12,
+      "snapshot_inflight": false,
+      "allocator": {
+        "activation": {
+          "adapter_header_bytes": 160,
+          "arena_bytes": 3261424067,
+          "arena_start": 48083501056,
+          "bootstrap_charged_bytes": 66563,
+          "grant_bytes": 3261490790,
+          "initialized_bytes": 3261424067,
+          "pid": 5456
+        },
+        "allocation_failures": 0,
+        "arena_free_bytes": 3558368,
+        "arena_usable_bytes": 3261424064,
+        "arena_used_bytes": 3257865696,
+        "bootstrap_live_bytes": 66407,
+        "bootstrap_peak_bytes": 66827,
+        "bootstrap_quarantined_bytes": 156,
+        "current_requested_bytes": 3257932070,
+        "lifetime_peak_requested_bytes": 3259067077
+      },
+      "gap_layout_heap_ns": [
+        11017749250,
+        12009996875
+      ],
+      "eligible_complete_frames": 4,
+      "incomplete_frames": 0,
+      "snapshot_excluded_frames": 0,
+      "layout_rss_min": 3265380352,
+      "layout_rss_max": 3265380352,
+      "layout_footprint_min": 3264186960,
+      "layout_footprint_max": 3264186960,
+      "group_rss_max": 3358654464,
+      "group_footprint_max": 3348074360,
+      "member_ranges": {
+        "4881:24572432899779": {
+          "role": "observer",
+          "rss_min": 17465344,
+          "rss_max": 17465344,
+          "footprint_min": 12943696,
+          "footprint_max": 12943696
+        },
+        "5454:24575343456677": {
+          "role": "mycity-headless",
+          "rss_min": 3211264,
+          "rss_max": 3211264,
+          "footprint_min": 1360184,
+          "footprint_max": 1360184
+        },
+        "5455:24575344110741": {
+          "role": "mycity-headless",
+          "rss_min": 69976064,
+          "rss_max": 69976064,
+          "footprint_min": 68518248,
+          "footprint_max": 68518248
+        },
+        "5456:24575344759802": {
+          "role": "mycity-headless",
+          "rss_min": 3265380352,
+          "rss_max": 3265380352,
+          "footprint_min": 3264186960,
+          "footprint_max": 3264186960
+        },
+        "5460:24575372252296": {
+          "role": "mycity-headless",
+          "rss_min": 2621440,
+          "rss_max": 2621440,
+          "footprint_min": 1065272,
+          "footprint_max": 1065272
+        }
+      }
+    },
+    {
+      "iteration": 13,
+      "snapshot_inflight": false,
+      "allocator": {
+        "activation": {
+          "adapter_header_bytes": 160,
+          "arena_bytes": 3261424067,
+          "arena_start": 48083501056,
+          "bootstrap_charged_bytes": 66563,
+          "grant_bytes": 3261490790,
+          "initialized_bytes": 3261424067,
+          "pid": 5456
+        },
+        "allocation_failures": 0,
+        "arena_free_bytes": 3558368,
+        "arena_usable_bytes": 3261424064,
+        "arena_used_bytes": 3257865696,
+        "bootstrap_live_bytes": 66407,
+        "bootstrap_peak_bytes": 66827,
+        "bootstrap_quarantined_bytes": 156,
+        "current_requested_bytes": 3257932070,
+        "lifetime_peak_requested_bytes": 3259067077
+      },
+      "gap_layout_heap_ns": [
+        12028522667,
+        13004296750
+      ],
+      "eligible_complete_frames": 4,
+      "incomplete_frames": 0,
+      "snapshot_excluded_frames": 0,
+      "layout_rss_min": 3265380352,
+      "layout_rss_max": 3265380352,
+      "layout_footprint_min": 3264186960,
+      "layout_footprint_max": 3264186960,
+      "group_rss_max": 3358654464,
+      "group_footprint_max": 3348074360,
+      "member_ranges": {
+        "4881:24572432899779": {
+          "role": "observer",
+          "rss_min": 17465344,
+          "rss_max": 17465344,
+          "footprint_min": 12943696,
+          "footprint_max": 12943696
+        },
+        "5454:24575343456677": {
+          "role": "mycity-headless",
+          "rss_min": 3211264,
+          "rss_max": 3211264,
+          "footprint_min": 1360184,
+          "footprint_max": 1360184
+        },
+        "5455:24575344110741": {
+          "role": "mycity-headless",
+          "rss_min": 69976064,
+          "rss_max": 69976064,
+          "footprint_min": 68518248,
+          "footprint_max": 68518248
+        },
+        "5456:24575344759802": {
+          "role": "mycity-headless",
+          "rss_min": 3265380352,
+          "rss_max": 3265380352,
+          "footprint_min": 3264186960,
+          "footprint_max": 3264186960
+        },
+        "5460:24575372252296": {
+          "role": "mycity-headless",
+          "rss_min": 2621440,
+          "rss_max": 2621440,
+          "footprint_min": 1065272,
+          "footprint_max": 1065272
+        }
+      }
+    },
+    {
+      "iteration": 14,
+      "snapshot_inflight": false,
+      "allocator": {
+        "activation": {
+          "adapter_header_bytes": 160,
+          "arena_bytes": 3261424067,
+          "arena_start": 48083501056,
+          "bootstrap_charged_bytes": 66563,
+          "grant_bytes": 3261490790,
+          "initialized_bytes": 3261424067,
+          "pid": 5456
+        },
+        "allocation_failures": 0,
+        "arena_free_bytes": 3558368,
+        "arena_usable_bytes": 3261424064,
+        "arena_used_bytes": 3257865696,
+        "bootstrap_live_bytes": 66407,
+        "bootstrap_peak_bytes": 66827,
+        "bootstrap_quarantined_bytes": 156,
+        "current_requested_bytes": 3257932070,
+        "lifetime_peak_requested_bytes": 3259067077
+      },
+      "gap_layout_heap_ns": [
+        13021109334,
+        14001437750
+      ],
+      "eligible_complete_frames": 4,
+      "incomplete_frames": 0,
+      "snapshot_excluded_frames": 0,
+      "layout_rss_min": 3265380352,
+      "layout_rss_max": 3265380352,
+      "layout_footprint_min": 3264186960,
+      "layout_footprint_max": 3264186960,
+      "group_rss_max": 3358654464,
+      "group_footprint_max": 3348074360,
+      "member_ranges": {
+        "4881:24572432899779": {
+          "role": "observer",
+          "rss_min": 17465344,
+          "rss_max": 17465344,
+          "footprint_min": 12943696,
+          "footprint_max": 12943696
+        },
+        "5454:24575343456677": {
+          "role": "mycity-headless",
+          "rss_min": 3211264,
+          "rss_max": 3211264,
+          "footprint_min": 1360184,
+          "footprint_max": 1360184
+        },
+        "5455:24575344110741": {
+          "role": "mycity-headless",
+          "rss_min": 69976064,
+          "rss_max": 69976064,
+          "footprint_min": 68518248,
+          "footprint_max": 68518248
+        },
+        "5456:24575344759802": {
+          "role": "mycity-headless",
+          "rss_min": 3265380352,
+          "rss_max": 3265380352,
+          "footprint_min": 3264186960,
+          "footprint_max": 3264186960
+        },
+        "5460:24575372252296": {
+          "role": "mycity-headless",
+          "rss_min": 2621440,
+          "rss_max": 2621440,
+          "footprint_min": 1065272,
+          "footprint_max": 1065272
+        }
+      }
+    },
+    {
+      "iteration": 15,
+      "snapshot_inflight": false,
+      "allocator": {
+        "activation": {
+          "adapter_header_bytes": 160,
+          "arena_bytes": 3261424067,
+          "arena_start": 48083501056,
+          "bootstrap_charged_bytes": 66563,
+          "grant_bytes": 3261490790,
+          "initialized_bytes": 3261424067,
+          "pid": 5456
+        },
+        "allocation_failures": 0,
+        "arena_free_bytes": 3558368,
+        "arena_usable_bytes": 3261424064,
+        "arena_used_bytes": 3257865696,
+        "bootstrap_live_bytes": 66407,
+        "bootstrap_peak_bytes": 66827,
+        "bootstrap_quarantined_bytes": 156,
+        "current_requested_bytes": 3257932070,
+        "lifetime_peak_requested_bytes": 3259067077
+      },
+      "gap_layout_heap_ns": [
+        14018094917,
+        15004261750
+      ],
+      "eligible_complete_frames": 4,
+      "incomplete_frames": 0,
+      "snapshot_excluded_frames": 0,
+      "layout_rss_min": 3265380352,
+      "layout_rss_max": 3265380352,
+      "layout_footprint_min": 3264186960,
+      "layout_footprint_max": 3264186960,
+      "group_rss_max": 3358654464,
+      "group_footprint_max": 3348074360,
+      "member_ranges": {
+        "4881:24572432899779": {
+          "role": "observer",
+          "rss_min": 17465344,
+          "rss_max": 17465344,
+          "footprint_min": 12943696,
+          "footprint_max": 12943696
+        },
+        "5454:24575343456677": {
+          "role": "mycity-headless",
+          "rss_min": 3211264,
+          "rss_max": 3211264,
+          "footprint_min": 1360184,
+          "footprint_max": 1360184
+        },
+        "5455:24575344110741": {
+          "role": "mycity-headless",
+          "rss_min": 69976064,
+          "rss_max": 69976064,
+          "footprint_min": 68518248,
+          "footprint_max": 68518248
+        },
+        "5456:24575344759802": {
+          "role": "mycity-headless",
+          "rss_min": 3265380352,
+          "rss_max": 3265380352,
+          "footprint_min": 3264186960,
+          "footprint_max": 3264186960
+        },
+        "5460:24575372252296": {
+          "role": "mycity-headless",
+          "rss_min": 2621440,
+          "rss_max": 2621440,
+          "footprint_min": 1065272,
+          "footprint_max": 1065272
+        }
+      }
+    }
+  ],
+  "gate": "not_accepted; actual current allocation and physical capture reported separately; no claim System cache is the cause without ownership evidence",
+  "scope": "No dropped records/pressure/frequency; no interpolated resources or zero imputation"
+}

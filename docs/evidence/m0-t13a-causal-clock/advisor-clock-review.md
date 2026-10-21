@@ -1,0 +1,5 @@
+# 独立静态审查
+
+boot_advisor读取Rust和Python实现，未发现当前因果或失败边界阻断。sent在请求写入前，Rust完整读取/验证后取elapsed，received在完整回复读回后，构成所需包围。PID/source/nonce与整数区间交集正确，spawn下界不假定时钟同源。临时文件rename和换行完整回复避免半份JSON；mandatory失败明确失败，无旧映射fallback。调用位于监督时钟创建后/业务spawn前，没有改变业务窗口或模型步骤。
+
+仅一次启动校准，必须继续报告实际不确定区间，成功不保证窄区间或eligible帧。辅助模块和校准开销继续计观察器来源及资源。本审查没有运行测试/构建/负载。

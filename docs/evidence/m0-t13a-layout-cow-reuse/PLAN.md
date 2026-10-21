@@ -1,0 +1,7 @@
+# Direct reuse after actual fixed-arena failure
+
+Original a702 fixed-region experiment failed with a real1MiB allocation abort during its first snapshot. Preserve its full pending fault, raw observer/model logs, source and executable under layout-region. No grant/metadata/reserve/payload growth.
+
+Scan COW now transfers an existing initialized1MiB Vec from the original128MiB reserve, copies the old immutable pressure data into it, then dirties it. It does not drop that allocation and request a new one. Arc metadata is still honestly allocated in the same region. The unit assertion checks the identical buffer pointer and old snapshot bytes; invalid-size/backpressure remains explicit. Bulk snapshot decode still borrows64 pages from the same region; repay remains real. All record counts, field widths, pressure byte amounts/patterns, scan/dirty schedule, file bytes and cold recovery unchanged.
+
+Freeze/build, actual original-size L1 short run and cold load first; preserve any failure rather than expanding. If real capacity passes, full same-source release regression/clippy/fmt/build before publication. Same native observer/selector, existing target. Failed first original is an explicit future debugging dependency, not cleanup cache. Successful short pure synthetic payload only retires after audited cold restore/precise dependency review; formal7/8, v50 and oldsmoke-L2 originals remain protected. Real16GB not_run; no formal3x3/8h claim.

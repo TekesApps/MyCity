@@ -1,0 +1,18 @@
+{
+  "source_sha256": "66e7e2aee0464d302738c4a1d36cfe2b2e7d17de7ac6f8d088330a2d85629138",
+  "source_and_fixed_executable_unchanged": true,
+  "full_same_source_commands_exit_zero": true,
+  "harness_summaries": 60,
+  "passed_entries_including_nested": 429,
+  "python_counterexamples": 15,
+  "actual_cli_identity_rejections": 3,
+  "actual_l1_full_io_and_restore": true,
+  "actual_old_format_full_restore": true,
+  "load_thresholds_unchanged": true,
+  "cleanup_files": 27,
+  "normal_3_10GiB": "failed_observed",
+  "formal_three_rounds": "not_complete",
+  "eight_hour": "not_run",
+  "real16GB": "not_run",
+  "full_M0": "not_accepted"
+}
