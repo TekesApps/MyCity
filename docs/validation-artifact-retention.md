@@ -1,5 +1,7 @@
 # 验证产物回收规则
 
+**当前回收与恢复可用性（v0.5.103）**：[用户指定集中回收](evidence/disk-reclamation-v103/STATUS.md)及[availability](evidence/disk-reclamation-v103/availability.json)覆盖本次相关原路径承诺：7份已无依赖prefix/已归档正常重复组件退役，分配空间617,242,624B；190份完整恢复/故障原件保留，当前R07第一代未冷恢复保留。共享target复用，源码/WIP/业务/raw/固定依赖/exe不变。三份旧正常布局继续不可直接完整恢复；已删prefix也不能直接复用。df变化单列，历史释放不重复计入。本轮不运行模型或构建。
+
 **v0.5.102原生整组观测终态**：[回收与恢复可用性](evidence/m0-t13a-native-observer-errno/STATUS.md)精确退役9份本轮短测/失主合成载荷、3份缺当前errno的旧静态库，分配空间12,756,258,816B；本轮新目录不可直接完整恢复。typed正式7/8、v50及report-lifetime完整故障原件158文件全SHA前后核验，raw/typed组件/partial targets/源锁exe/固定依赖保留，其他128,391元数据不变。df变化单列、不计历史成果，唯一target复用。
 
 **当前权威（v0.5.101）**：[本次用户指定集中回收](evidence/disk-reclamation-v101/STATUS.md)及逐文件清单覆盖旧smoke-L2完整保留和指定10份正常组件原路径保留承诺。smoke-L2暖场超时的pressure/reserve已解除依赖；指定旧正常组件完整字节保存在既有gzip归档，相关快照均不能直接完整恢复。typed正式7/8、v50和report-lifetime首代/pending2完整原件继续保留。仅清理精确核验的旧静态库，当前共享target复用；本次不运行模型或构建。

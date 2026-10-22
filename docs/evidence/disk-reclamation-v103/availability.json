@@ -1,0 +1,12 @@
+{
+  "prefix_original_removed": true,
+  "prefix_probe_scope": "same-process only; no original file for direct reuse",
+  "retired_layouts_not_directly_restorable": [
+    "native-observer-l1-01",
+    "native-observer-l1-02",
+    "steady-controller-smoke-l2-01"
+  ],
+  "current_r07_coupling_full_original_retained": true,
+  "five_old_complete_or_fault_originals_retained": true,
+  "pending_not_valid_restore_point": true
+}

@@ -1,0 +1,8 @@
+{
+  "new_report_links_valid": 5,
+  "removed_files_absent": 7,
+  "source_wip_hashes_valid": 191,
+  "allocation_du_arithmetic": true,
+  "all_four_documents_link_findings": [],
+  "scope": "documentation and disk identity checks only; no build or model performance test"
+}
