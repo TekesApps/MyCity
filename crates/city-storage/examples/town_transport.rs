@@ -130,6 +130,7 @@ struct Road28Totals {
     freight: i128,
     utilities: i128,
     disposal: i128,
+    labor_basis: i128,
     wages_accrued: i128,
     idle_labor: i128,
     days_with_sales: u32,
@@ -145,6 +146,7 @@ impl Road28Totals {
         self.freight += i128::from(summary.freight.value());
         self.utilities += i128::from(summary.utilities.value());
         self.disposal += i128::from(summary.disposal.value());
+        self.labor_basis += i128::from(summary.labor_basis.value());
         self.wages_accrued += i128::from(summary.wages_accrued.value());
         self.idle_labor += i128::from(summary.idle_labor_expense.value());
         if summary.actual_sales > Quantity::ZERO {
@@ -792,6 +794,23 @@ fn run_road_effect(dir: &str, production_and_suspend: bool, road_28: bool) -> Re
             .timeline()
             .ok_or("road-28 payroll missing")?
             .payroll[0];
+        let final_company_cash = final_view
+            .accounts
+            .iter()
+            .find(|account| account.id == 3)
+            .ok_or("factory company account missing at road-28 close")?
+            .cash
+            .value();
+        let opening_stock_basis =
+            i128::from(opening_raw.basis.value()) + i128::from(opening_finished.basis.value());
+        let final_stock_basis =
+            i128::from(final_raw.basis.value()) + i128::from(final_finished.basis.value());
+        let opening_restricted_book_projection =
+            i128::from(opening_company_cash.value()) + opening_stock_basis;
+        let final_wage_outstanding =
+            i128::from(final_payroll.accrued.value()) - i128::from(final_payroll.paid.value());
+        let final_restricted_book_projection =
+            i128::from(final_company_cash) + final_stock_basis - final_wage_outstanding;
         let final_provider_cash = final_view
             .accounts
             .iter()
@@ -809,6 +828,7 @@ fn run_road_effect(dir: &str, production_and_suspend: bool, road_28: bool) -> Re
             || raw_consumed != totals.produced
             || finished_balance != i128::from(final_finished.quantity.value())
             || totals.wages_accrued != i128::from(final_payroll.accrued.value())
+            || totals.labor_basis + totals.idle_labor != totals.wages_accrued
             || final_payroll.spec.ends_at != 28 * DAY
             || final_payroll.working
             || final_payroll.next_due.is_some()
@@ -861,11 +881,17 @@ fn run_road_effect(dir: &str, production_and_suspend: bool, road_28: bool) -> Re
             "fixed_repeat_od_batch_per_day":true,
             "initial_cash_company_3":opening_company_cash.value(),
             "initial_cash_citywide":initial_cash_total,
+            "opening_stock_basis":opening_stock_basis,
+            "opening_restricted_book_projection":opening_restricted_book_projection,
             "initial_raw_quantity":opening_raw.quantity.value(),
             "initial_raw_basis":opening_raw.basis.value(),
             "initial_finished_quantity":opening_finished.quantity.value(),
-            "final_company_cash":final_view.accounts.iter().find(|row| row.id==3).map(|row|row.cash.value()),
+            "final_company_cash":final_company_cash,
             "final_raw_quantity":final_raw.quantity.value(),
+            "final_stock_basis":final_stock_basis,
+            "final_wage_outstanding":final_wage_outstanding,
+            "final_restricted_book_projection":final_restricted_book_projection,
+            "restricted_book_projection_delta":final_restricted_book_projection-opening_restricted_book_projection,
             "final_finished_quantity":final_finished.quantity.value(),
             "cumulative_produced":totals.produced,
             "cumulative_actual_sales":totals.sales,
@@ -876,6 +902,7 @@ fn run_road_effect(dir: &str, production_and_suspend: bool, road_28: bool) -> Re
             "cumulative_freight_cost":totals.freight,
             "cumulative_utility_cost":totals.utilities,
             "cumulative_disposal_cost":totals.disposal,
+            "cumulative_labor_basis":totals.labor_basis,
             "cumulative_wages_accrued":totals.wages_accrued,
             "cumulative_idle_labor_cost":totals.idle_labor,
             "payroll_contract_end_day":final_payroll.spec.ends_at / DAY,
@@ -888,8 +915,11 @@ fn run_road_effect(dir: &str, production_and_suspend: bool, road_28: bool) -> Re
             "output_stock_balance":"passed",
             "midpoint_day_14_cold_reopen":"passed",
             "final_cold_reopen":"passed",
-            "opening_cash_and_inventory_used":opening_company_cash.value() > 0 && raw_consumed > 0,
+            "opening_capital_present":opening_company_cash.value() > 0,
+            "opening_inventory_consumed":raw_consumed > 0,
             "opening_raw_inventory_consumed":raw_consumed,
+            "continuous_self_funding":"not_demonstrated; finite opening raw inventory is consumed",
+            "book_projection_scope":"restricted cash plus inventory basis less unpaid wages; excludes unmodeled liabilities/assets and is not a full balance sheet",
             "continuous_sales_all_28_days":totals.days_with_sales==28,
             "utility_input":"explicit_capacity_and_unit_cost_profile_not_live_grid",
             "traffic_demand":"repeat_fixed_daily_OD_not_endogenous_to_market_shortage",

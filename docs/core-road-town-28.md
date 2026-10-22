@@ -41,12 +41,23 @@ market receipts.
 
 The bounded report aggregates actual sales, production, unmet demand, goods payments,
 freight, utilities, disposal, accrued and paid wages, idle labor, construction spending,
-and remaining stock. It reconciles raw-stock consumption to production, finished inventory
-to production less sales, supplier tariff receipts to freight and configured utility and
-disposal charges, and citywide cash before and after the run. It reports the payroll contract
-end and unpaid balance, daily sales coverage, and whether factory raw stock was consumed.
-Shortages propagate from the opening stock; there are no scheduled free refills or fixed
-sales quantities.
+and remaining stock. The opening/final company cash and inventory basis, unpaid wages, and
+their restricted book projection are reported. This projection is only cash plus inventory
+basis less unpaid wages for this no-financing fixture; it is not a complete company balance
+sheet and excludes unmodeled assets or liabilities. The report separately says opening
+capital was present and opening inventory was consumed; it does not claim that either was
+proven necessary to fund the run. Continuous self-funding is explicitly not demonstrated,
+because the finite opening raw inventory is allowed to run down.
+
+The planner defines `idle_labor_expense = wages_accrued - labor_basis`; the source asserts
+the corresponding reconciliation `labor_basis + idle_labor_expense == wages_accrued` over
+all 28 daily summaries. This prevents adding productive labor basis and idle payroll expense
+on top of the same accrued wages. It reconciles raw-stock consumption to production, finished
+inventory to production less sales, supplier tariff receipts to freight and configured utility
+and disposal charges, and citywide cash before and after the run. It reports the payroll
+contract end and unpaid balance, daily sales coverage, and whether factory raw stock was
+consumed. Shortages propagate from the opening stock; there are no scheduled free refills or
+fixed sales quantities.
 
 This is a finite source-level integration scenario, not an economic calibration or proof
 that the city is self-sustaining. A run with sales for fewer than 28 days must be reported
