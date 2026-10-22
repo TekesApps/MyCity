@@ -24,7 +24,7 @@ struct EquityProjection {
 
 fn equity_projection(store: &Store, account: u32) -> Result<EquityProjection, Box<dyn Error>> {
     let view = store.engine()?.world().view();
-    let timeline = store.engine()?.timeline()?;
+    let timeline = timeline(store)?;
     let cash = i128::from(
         view.accounts
             .iter()
@@ -85,6 +85,13 @@ fn total_cash(store: &Store) -> Result<i128, Box<dyn Error>> {
         .iter()
         .map(|row| i128::from(row.cash.value()))
         .sum())
+}
+
+fn timeline(store: &Store) -> Result<&mycity_core::timeline::Timeline, Box<dyn Error>> {
+    store
+        .engine()?
+        .timeline()
+        .ok_or_else(|| std::io::Error::other("timeline state unavailable").into())
 }
 
 fn opening(loss_mode: bool) -> Result<Vec<u8>, Box<dyn Error>> {
@@ -204,7 +211,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         },
     )?;
     let initial_equity = equity_projection(&store, 3)?;
-    let fixture_claim = store.engine()?.timeline()?.claims[0];
+    let fixture_claim = timeline(&store)?.claims[0];
     if fixture_claim.payer != 3 || fixture_claim.payee != 4 || fixture_claim.paid != Money::ZERO {
         return Err(std::io::Error::other("fixture payable projection is invalid").into());
     }
@@ -218,7 +225,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 },
             },
         )?;
-        if store.engine()?.timeline()?.progress.target.is_none() {
+        if timeline(&store)?.progress.target.is_none() {
             break;
         }
     }
@@ -238,7 +245,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             )
             .into());
         }
-        if store.engine()?.timeline()?.claims[0] != fixture_claim {
+        if timeline(&store)?.claims[0] != fixture_claim {
             return Err(
                 std::io::Error::other("loss fixture claim changed before suspension").into(),
             );
@@ -253,14 +260,12 @@ fn main() -> Result<(), Box<dyn Error>> {
     )?;
     store.checkpoint()?;
     let equity_at_stop = equity_projection(&store, 3)?;
-    let claim_at_stop = store.engine()?.timeline()?.claims[0];
+    let claim_at_stop = timeline(&store)?.claims[0];
     if claim_at_stop != fixture_claim {
         return Err(std::io::Error::other("suspension changed the existing claim").into());
     }
     let day2_cash_before = total_cash(&store)?;
-    let stopped_work_seconds = store
-        .engine()?
-        .timeline()?
+    let stopped_work_seconds = timeline(&store)?
         .payroll
         .iter()
         .find(|row| row.spec.payer == 3)
@@ -306,7 +311,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 },
             },
         )?;
-        if store.engine()?.timeline()?.progress.target.is_none() {
+        if timeline(&store)?.progress.target.is_none() {
             break;
         }
     }
@@ -353,9 +358,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
     let next_day_equity = equity_projection(&store, 3)?;
     let day2_cash_after = total_cash(&store)?;
-    let stopped_work_seconds_after = store
-        .engine()?
-        .timeline()?
+    let stopped_work_seconds_after = timeline(&store)?
         .payroll
         .iter()
         .find(|row| row.spec.payer == 3)
@@ -364,7 +367,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     if next_day_equity.total != equity_at_stop.total
         || stopped_work_seconds_after != stopped_work_seconds
         || day2_cash_after != day2_cash_before
-        || store.engine()?.timeline()?.claims[0] != claim_at_stop
+        || timeline(&store)?.claims[0] != claim_at_stop
     {
         return Err(std::io::Error::other(
             "post-suspension equity, labor, or cash conservation failed",
