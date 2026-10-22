@@ -1,0 +1,34 @@
+{
+  "admission_seconds": 120,
+  "case_label": "combined-control",
+  "controller_deadline_seconds": 120,
+  "external_support": {
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-joint-smoke-control-03/process_activity.py": "1abbc0771180936fa660b34db4f6428f199fd467e0f866548e8a12bdb4c58aa9",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-joint-smoke-control-03/readiness.py": "fa62f21677bab98c558e86fa3a54f42ecfa8b64fd1d7d3449b6401ecff4ef7ae",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-joint-smoke-control-03/support-manifest.json": "aded3e653c0f0da488ffda0a5110441d8dfc1a97987f1d9fdf89642e5adbebe7",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-typed-workspace/native_metrics.py": "917b184e339649acd7b79797cf77f2b2db4f5128f33fdaf8759c162672fa34ca",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-typed-workspace/observe.py": "6bc89147a64894599d7eea1f6762fbb01f4119d606842ce475ba2c2f7215c98a",
+    "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/run_speed.py": "32311cb97680b55f58ae4f74f50ead3ab11106421a4e28d706cc9c927ddfb45d",
+    "/Volumes/HP P900/dev/MyCity/work/timing-full-v128-02/run_profile.py": "596b8777817e806fbc3f824114d7c222725df4037140b0d2f9934ef5cd33683a"
+  },
+  "files": {
+    "README.md": "f7353f81360e847e787443273c354cc6b21c75ce33cf726d490ca61831bcb9f6",
+    "binary-v128.json": "f564922cf94d825522c3ffa64626969924480f84f4658c3d9633c14a99ac22f0",
+    "fault-cases.py": "8185825d74d8e8d4404f03481e30c81a1376552abc89c4cfe11ff1631b4cd23c",
+    "launch_native.py": "609781d1b3bd6a262dd9331ea88044988d038b4736fe89701b9c6623203e4a2c",
+    "support/run_profile.py": "596b8777817e806fbc3f824114d7c222725df4037140b0d2f9934ef5cd33683a",
+    "test_launch_native.py": "121483094c58e5aadfa817fa01a7c639d7cf084bdb9c79509510813f2e7d55fe"
+  },
+  "fixed_identity": {
+    "acceptance_fixture_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+    "binary_sha256": "83b7a28460c8d82ae1b5c5c17ca154359648d6d3937103f973a8fa988fcc373a",
+    "source_sha256": "db4577273a37fdbeeb95c092e20356ba2386bdb0dd311f2b6020de2bb89f0daf",
+    "source_zip_sha256": "ac4fed1cf8d4f915f7d69b2947e4795310f56e8aba2775a4eb386b01536cfdea"
+  },
+  "mode": "combined-control",
+  "prepared_utc": "2026-10-22T22:52:28.695968+00:00",
+  "retention": "no cleanup or retry; preserve natural two snapshot generations and all failure artifacts",
+  "schema": "mycity-v128-native-prepared-manifest-v1",
+  "scope": "short combined-pool native peak diagnostic only; not full shared 8MiB acceptance, L1, clean performance, or M0",
+  "state": "prepared_not_run"
+}

@@ -1,0 +1,37 @@
+[
+  {
+    "controller_monotonic_ns": 2401459791,
+    "observer_t": 2.093415875,
+    "r07_epoch": 1,
+    "source_sha256": "db4577273a37fdbeeb95c092e20356ba2386bdb0dd311f2b6020de2bb89f0daf",
+    "step": "vm-start-first"
+  },
+  {
+    "controller_monotonic_ns": 13060481833,
+    "observer_t": 12.843037875,
+    "r07_epoch": 1,
+    "source_sha256": "db4577273a37fdbeeb95c092e20356ba2386bdb0dd311f2b6020de2bb89f0daf",
+    "step": "vm-start-second"
+  },
+  {
+    "controller_monotonic_ns": 14073379000,
+    "observer_t": 13.840290958,
+    "r07_epoch": 1,
+    "source_sha256": "db4577273a37fdbeeb95c092e20356ba2386bdb0dd311f2b6020de2bb89f0daf",
+    "step": "r07-provider-pause"
+  },
+  {
+    "consecutive_frames": 3,
+    "controller_monotonic_ns": 16121754083,
+    "full_restored_window_sha256": "b1d92766a0a7141dbfe16952caf698e5710cdb75e671fc7f5b1c759a6b8decd3",
+    "observer_t": 15.840976416,
+    "source_sha256": "db4577273a37fdbeeb95c092e20356ba2386bdb0dd311f2b6020de2bb89f0daf",
+    "step": "pause-observed"
+  },
+  {
+    "controller_monotonic_ns": 16121876333,
+    "observer_t": 15.840976416,
+    "source_sha256": "db4577273a37fdbeeb95c092e20356ba2386bdb0dd311f2b6020de2bb89f0daf",
+    "step": "pause-released"
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "source_sha256": "db4577273a37fdbeeb95c092e20356ba2386bdb0dd311f2b6020de2bb89f0daf",
+  "source_files": 262,
+  "binary": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/executables/83b7a28460c8d82ae1b5c5c17ca154359648d6d3937103f973a8fa988fcc373a/mycity-headless",
+  "binary_sha256": "83b7a28460c8d82ae1b5c5c17ca154359648d6d3937103f973a8fa988fcc373a",
+  "source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/41-timing-witness-bin/source.zip",
+  "source_zip_sha256": "ac4fed1cf8d4f915f7d69b2947e4795310f56e8aba2775a4eb386b01536cfdea",
+  "source_embedded_checked": true,
+  "storage": "external_USB_APFS_HP_P900_SSD",
+  "scope": "fixed timing witness candidate; all successful Status summaries persisted; runtime not yet tested",
+  "git_base": "v0.5.127 with 4 source files changed"
+}

@@ -1,0 +1,54 @@
+{
+  "acceptance_fixture_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+  "binary_sha256": "83b7a28460c8d82ae1b5c5c17ca154359648d6d3937103f973a8fa988fcc373a",
+  "checks": {
+    "AST": "passed",
+    "actual_socket_path": "passed",
+    "conservative_socket_path": "passed",
+    "exact_fixed_descriptor_and_source_archive": "passed",
+    "manifest_and_launch_snapshot": "passed",
+    "pinned_helper_hashes": "passed",
+    "preparation_time_activity": "clear",
+    "pure_unittest": "passed",
+    "storage_and_volume": "passed"
+  },
+  "controller_sha256": "8185825d74d8e8d4404f03481e30c81a1376552abc89c4cfe11ff1631b4cd23c",
+  "descriptor_file_sha256": "f564922cf94d825522c3ffa64626969924480f84f4658c3d9633c14a99ac22f0",
+  "launch_freeze_sha256": "92e208775c4ea6d934dddc6fd74fe9ecbb803a32388db73e8a1d4cbfac7d00fd",
+  "manifest_sha256": "bbd58f7c03ab79b6fbe5ad58f0292325427f9b4054dcf80d1e9424f95555e77e",
+  "process_activity_at_check": {
+    "compilers": [],
+    "heavy_mycity": []
+  },
+  "readiness_or_model_started": false,
+  "runner_sha256": "609781d1b3bd6a262dd9331ea88044988d038b4736fe89701b9c6623203e4a2c",
+  "schema": "mycity-v128-native-preparation-validation-v1",
+  "socket": {
+    "actual_path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/normal-pool/pool.sock",
+    "actual_utf8_bytes_plus_nul": 93,
+    "conservative_path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/observed/model/normal-pool/pool.sock",
+    "conservative_utf8_bytes_plus_nul": 102,
+    "limit_exclusive": 104
+  },
+  "source_sha256": "db4577273a37fdbeeb95c092e20356ba2386bdb0dd311f2b6020de2bb89f0daf",
+  "source_zip_sha256": "ac4fed1cf8d4f915f7d69b2947e4795310f56e8aba2775a4eb386b01536cfdea",
+  "state": "prepared_and_frozen_not_run",
+  "storage": {
+    "available_bytes": 1917033451520,
+    "estimated_snapshot_bytes_each": 3378784402,
+    "free_floor_bytes": 2147483648,
+    "required_free_bytes": 12552272310,
+    "resolved_work": "/Volumes/HP P900/dev/MyCity/work/v128-native-01",
+    "retention": "keep both full run roots and source/executable until explicit evidence review; never clean automatically",
+    "three_generations_plus_log_cap_bytes": 10404788662,
+    "volume": {
+      "bus_protocol": "USB",
+      "external_device": true,
+      "filesystem": "apfs",
+      "internal": false,
+      "mount_point": "/Volumes/HP P900",
+      "volume_uuid": "4289CF6D-F09D-4831-8558-4AB223E4EE04"
+    }
+  },
+  "test_output": "test_actual_socket_path_is_short_enough (test_launch_native.LaunchNativePureTests) ... ok\ntest_boundary_counts_utf8_and_nul (test_launch_native.LaunchNativePureTests) ... ok\ntest_deadline_is_original_controller_deadline (test_launch_native.LaunchNativePureTests) ... ok\ntest_import_does_not_launch_child_or_create_attempt (test_launch_native.LaunchNativePureTests) ... ok\ntest_success_requires_fixed_identity_and_diagnostic_only_receipt (test_launch_native.LaunchNativePureTests) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.002s\n\nOK\n"
+}

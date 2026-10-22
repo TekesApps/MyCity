@@ -1,0 +1,55 @@
+{
+  "utc": "2026-10-22T22:49:40.426306+00:00",
+  "scope": "unmerged real typed Engine diagnosis, not workload or performance acceptance",
+  "base": "v0.5.128; production core same as v0.5.129",
+  "typed_probe_exit": {
+    "exit_code": 0,
+    "wall_seconds": 1.7309894160000001,
+    "source_unchanged": true
+  },
+  "core_lib": {
+    "exit_code": 0,
+    "wall_seconds": 31.207618,
+    "source_unchanged": true
+  },
+  "core_lib_tests_passed": 135,
+  "shape_probe_exit": {
+    "exit_code": 0,
+    "wall_seconds": 1.305181917,
+    "source_unchanged": true
+  },
+  "strict": {
+    "exit_code": 0,
+    "wall_seconds": 6.626265667,
+    "source_unchanged": true
+  },
+  "input_sha256": "375065b04ead72b347babf37e1e212455170737057c245d96fe710212f34034c",
+  "canonical_sha256": "1aa28d75ff43997b9405c022df72ec1094f25cdcc2b60ec72e7350d0e0fb6449",
+  "round_ms": [
+    {
+      "canonical_output_with_sha_ns": 25.276167,
+      "finalization_ns": 0.000833,
+      "json_validation_ns": 7.6715,
+      "typed_serialize_ns": 5.736125
+    },
+    {
+      "canonical_output_with_sha_ns": 25.916084,
+      "finalization_ns": 0.00125,
+      "json_validation_ns": 7.826,
+      "typed_serialize_ns": 5.743375
+    },
+    {
+      "canonical_output_with_sha_ns": 25.965958,
+      "finalization_ns": 0.001333,
+      "json_validation_ns": 7.8335,
+      "typed_serialize_ns": 5.97
+    }
+  ],
+  "exact_write_calls": 1020125,
+  "array_primitive_separator_call_upper_bound": 49413,
+  "array_separator_fraction_upper_bound": 0.04843818159539272,
+  "decision": "do not implement separator merging without stronger benefit; no revision cache adopted because Status projections differ and normal windows change revision",
+  "memory": "diagnostic DOM unmetered, not role allowance; no new persistent Codec fields",
+  "storage": "HP P900 external USB APFS SSD; 32GiB Mac; real16GB not_run",
+  "released": false
+}

@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/81-canonical-shape-probe-bin/executables/84bac03a9c67671dc9bd9c62328dd7083a20dc1dbea83356147465e4423485cb/canonical_shape_probe",
+    "/Volumes/HP P900/dev/MyCity/work/timing-full-v128-02/observed/model/business/reference/cpu-final-engine.json"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/canonical-typed-profile-current",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-22T22:46:26.044482+00:00",
+  "source_manifest_sha256": "dc9ec21e8a0518ec608199a1e89155d84e486c362d0b2ade9a32ddbc4e28f3f6"
+}

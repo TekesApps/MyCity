@@ -1,0 +1,206 @@
+{
+  "admission": {
+    "activity_in_final_120_seconds": [],
+    "activity_observed": [
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 8208,
+            "ppid": 8193,
+            "start_identity": "Fri Oct 23 06:53:16 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 8210,
+            "ppid": 8208,
+            "start_identity": "Fri Oct 23 06:53:16 2026"
+          }
+        ],
+        "elapsed_seconds": 15.135434083,
+        "heavy_mycity": []
+      }
+    ],
+    "exit_code": 0,
+    "final_120_seconds_start": 26.276004916999995,
+    "normal_pressure_gate": {
+      "samples": [
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 20.249346375000002,
+          "pressure": 1,
+          "unix_ns": 1792709602190283000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 25.290698042000002,
+          "pressure": 1,
+          "unix_ns": 1792709607231688000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 30.331909084000003,
+          "pressure": 1,
+          "unix_ns": 1792709612272953000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 35.372192250000005,
+          "pressure": 1,
+          "unix_ns": 1792709617313290000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 40.413365792,
+          "pressure": 1,
+          "unix_ns": 1792709622354517000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 45.45451025,
+          "pressure": 1,
+          "unix_ns": 1792709627395715000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 50.494459167,
+          "pressure": 1,
+          "unix_ns": 1792709632435718000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 55.533704667,
+          "pressure": 1,
+          "unix_ns": 1792709637475017000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 60.579314125,
+          "pressure": 1,
+          "unix_ns": 1792709642520679000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 65.624418542,
+          "pressure": 1,
+          "unix_ns": 1792709647565838000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 70.6807545,
+          "pressure": 1,
+          "unix_ns": 1792709652622227000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 75.735921625,
+          "pressure": 1,
+          "unix_ns": 1792709657677448000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 80.786623042,
+          "pressure": 1,
+          "unix_ns": 1792709662728203000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 85.842032,
+          "pressure": 1,
+          "unix_ns": 1792709667783666000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 90.892924917,
+          "pressure": 1,
+          "unix_ns": 1792709672834612000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 95.941085459,
+          "pressure": 1,
+          "unix_ns": 1792709677882826000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 100.994967375,
+          "pressure": 1,
+          "unix_ns": 1792709682936762000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 106.040901917,
+          "pressure": 1,
+          "unix_ns": 1792709687982750000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 111.082978292,
+          "pressure": 1,
+          "unix_ns": 1792709693024885000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 116.13382666700001,
+          "pressure": 1,
+          "unix_ns": 1792709698075782000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 121.187279084,
+          "pressure": 1,
+          "unix_ns": 1792709703129288000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 126.228070625,
+          "pressure": 1,
+          "unix_ns": 1792709708170133000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 131.279367334,
+          "pressure": 1,
+          "unix_ns": 1792709713221484000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 136.333511625,
+          "pressure": 1,
+          "unix_ns": 1792709718275682000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 141.375326167,
+          "pressure": 1,
+          "unix_ns": 1792709723317549000
+        }
+      ]
+    },
+    "status": "passed"
+  },
+  "binary_sha256": "83b7a28460c8d82ae1b5c5c17ca154359648d6d3937103f973a8fa988fcc373a",
+  "command": [
+    "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+    "/Volumes/HP P900/dev/MyCity/work/v128-native-01/fault-cases.py",
+    "combined-control",
+    "--binary-record",
+    "binary-v128.json",
+    "--case-label",
+    "combined-control"
+  ],
+  "controller_child_pid": 10172,
+  "controller_deadline_seconds": 120,
+  "controller_only_peak": {
+    "accounting": "controller-only; observer and its descendants are raw observer group, never added here",
+    "macos_ru_maxrss_bytes": 42172416,
+    "pid": 7920,
+    "ru_maxrss_platform_units": 42172416
+  },
+  "controller_pid": 7920,
+  "scope": "short combined-pool native peak diagnostic only; not full shared 8MiB acceptance, L1, performance, or M0",
+  "source_sha256": "db4577273a37fdbeeb95c092e20356ba2386bdb0dd311f2b6020de2bb89f0daf",
+  "source_zip_sha256": "ac4fed1cf8d4f915f7d69b2947e4795310f56e8aba2775a4eb386b01536cfdea",
+  "started_utc": "2026-10-22T22:55:28.324395+00:00",
+  "state": "running"
+}

@@ -1,0 +1,72 @@
+{
+  "admission_seconds": 120,
+  "case_root": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control",
+  "controller_deadline_seconds": 120,
+  "controller_sha256": "8185825d74d8e8d4404f03481e30c81a1376552abc89c4cfe11ff1631b4cd23c",
+  "descriptor_sha256": "f564922cf94d825522c3ffa64626969924480f84f4658c3d9633c14a99ac22f0",
+  "frozen_manifest_sha256": "bbd58f7c03ab79b6fbe5ad58f0292325427f9b4054dcf80d1e9424f95555e77e",
+  "identity": {
+    "acceptance_fixture_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+    "archive_entries": 267,
+    "binary": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/executables/83b7a28460c8d82ae1b5c5c17ca154359648d6d3937103f973a8fa988fcc373a/mycity-headless",
+    "binary_embeds_source_fingerprint": true,
+    "binary_sha256": "83b7a28460c8d82ae1b5c5c17ca154359648d6d3937103f973a8fa988fcc373a",
+    "build_source_entries": 262,
+    "full_unpaced_workload_checks": {
+      "30 days": true,
+      "720 hours": true,
+      "723 targets": true,
+      "724 windows": true,
+      "speed-run entrypoint": true,
+      "unpaced mode": true
+    },
+    "source_sha256": "db4577273a37fdbeeb95c092e20356ba2386bdb0dd311f2b6020de2bb89f0daf",
+    "source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/41-timing-witness-bin/source.zip",
+    "source_zip_sha256": "ac4fed1cf8d4f915f7d69b2947e4795310f56e8aba2775a4eb386b01536cfdea"
+  },
+  "local_controller_sha256": "609781d1b3bd6a262dd9331ea88044988d038b4736fe89701b9c6623203e4a2c",
+  "mode": "combined-control",
+  "model_started": false,
+  "pre_readiness_processes": {
+    "compilers": [],
+    "heavy_mycity": []
+  },
+  "schema": "mycity-v128-native-diagnostic-intent-v1",
+  "scope": "short combined-pool native peak diagnostic only; not full shared 8MiB acceptance, L1, performance, or M0",
+  "socket_paths": {
+    "actual_controller_socket": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/normal-pool/pool.sock",
+    "actual_utf8_bytes_plus_nul": 93,
+    "conservative_profile_check": {
+      "max_formatted_broker_socket": {
+        "limit_exclusive": 104,
+        "path": "/tmp/mc-w-ffffffffffffffff-18446744073709551615-ffffffffffffffff.sock",
+        "utf8_bytes_plus_nul": 70
+      },
+      "normal_pool_socket": {
+        "limit_exclusive": 104,
+        "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/observed/model/normal-pool/pool.sock",
+        "utf8_bytes_plus_nul": 102
+      },
+      "source_inventory": "verified from exact source archive; both normal-pool and broker bind/connect families retained"
+    }
+  },
+  "started_utc": "2026-10-22T22:53:01.731184+00:00",
+  "state": "static_preflight_passed",
+  "storage": {
+    "available_bytes": 1917033422848,
+    "estimated_snapshot_bytes_each": 3378784402,
+    "free_floor_bytes": 2147483648,
+    "required_free_bytes": 12552272310,
+    "resolved_work": "/Volumes/HP P900/dev/MyCity/work/v128-native-01",
+    "retention": "keep both full run roots and source/executable until explicit evidence review; never clean automatically",
+    "three_generations_plus_log_cap_bytes": 10404788662,
+    "volume": {
+      "bus_protocol": "USB",
+      "external_device": true,
+      "filesystem": "apfs",
+      "internal": false,
+      "mount_point": "/Volumes/HP P900",
+      "volume_uuid": "4289CF6D-F09D-4831-8558-4AB223E4EE04"
+    }
+  }
+}

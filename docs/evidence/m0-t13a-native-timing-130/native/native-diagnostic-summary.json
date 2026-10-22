@@ -1,0 +1,311 @@
+{
+  "claims": {
+    "L1_acceptance": false,
+    "M0_acceptance": false,
+    "diagnostic_control_passed": true,
+    "formal_8h_or_16gb_gate": false,
+    "full_shared_8mib_acceptance": false,
+    "performance_acceptance": false
+  },
+  "created_utc": "2026-10-22T22:58:11.583159+00:00",
+  "evidence_sources": [
+    "/Volumes/HP P900/dev/MyCity/work/v128-native-01/launch.json",
+    "/Volumes/HP P900/dev/MyCity/work/v128-native-01/terminal.json",
+    "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/receipt.json",
+    "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/observer-report.json",
+    "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/full-restored-window.json",
+    "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/marker-protocol.json",
+    "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/registrations.jsonl",
+    "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/r07-excluded-root.json",
+    "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/r07-runtime.json",
+    "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/normal-pool/report.json",
+    "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/report.json",
+    "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/manifest.json",
+    "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/cold-with-provider/report.json",
+    "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/21-independent-verifier/stdout.log"
+  ],
+  "fixed_identity": {
+    "acceptance_fixture_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+    "binary_sha256": "83b7a28460c8d82ae1b5c5c17ca154359648d6d3937103f973a8fa988fcc373a",
+    "source_sha256": "db4577273a37fdbeeb95c092e20356ba2386bdb0dd311f2b6020de2bb89f0daf",
+    "source_zip_sha256": "ac4fed1cf8d4f915f7d69b2947e4795310f56e8aba2775a4eb386b01536cfdea"
+  },
+  "full_restored_window": {
+    "all_three_exact_phase_frames_valid": true,
+    "comparison_rule": "maximum phys_footprint_bytes among the exact three complete full-restored paused frames; member sum equals group; global peak excluded",
+    "consecutive_within_1s": true,
+    "frames": [
+      {
+        "all_checks_pass": true,
+        "checks": {
+          "all_member_footprints_present": true,
+          "exact_root_layout_owner_pid_birth": true,
+          "group_capture_complete": true,
+          "mapped_full": true,
+          "member_footprint_sum_equals_group": true,
+          "permitted_zero": true,
+          "provider_paused": true,
+          "r07_coverage_complete": true,
+          "replaced_zero": true,
+          "source_matches_fixed_binary": true
+        },
+        "layout_pid_birth": [
+          10176,
+          26781932388759
+        ],
+        "mapped_bytes": 277610496,
+        "member_footprint_sum_bytes": 3336228080,
+        "observer_t_seconds": 15.336720541,
+        "permitted_bytes": 0,
+        "phys_footprint_bytes": 3336228080,
+        "pressure_dispatch_flag": 1,
+        "r07_reading": null,
+        "replaced_bytes": 0,
+        "root_pid_birth": [
+          10175,
+          26781929305357
+        ],
+        "swap_used_bytes": 1981808640
+      },
+      {
+        "all_checks_pass": true,
+        "checks": {
+          "all_member_footprints_present": true,
+          "exact_root_layout_owner_pid_birth": true,
+          "group_capture_complete": true,
+          "mapped_full": true,
+          "member_footprint_sum_equals_group": true,
+          "permitted_zero": true,
+          "provider_paused": true,
+          "r07_coverage_complete": true,
+          "replaced_zero": true,
+          "source_matches_fixed_binary": true
+        },
+        "layout_pid_birth": [
+          10176,
+          26781932388759
+        ],
+        "mapped_bytes": 277610496,
+        "member_footprint_sum_bytes": 3336228080,
+        "observer_t_seconds": 15.59113625,
+        "permitted_bytes": 0,
+        "phys_footprint_bytes": 3336228080,
+        "pressure_dispatch_flag": 1,
+        "r07_reading": null,
+        "replaced_bytes": 0,
+        "root_pid_birth": [
+          10175,
+          26781929305357
+        ],
+        "swap_used_bytes": 1981808640
+      },
+      {
+        "all_checks_pass": true,
+        "checks": {
+          "all_member_footprints_present": true,
+          "exact_root_layout_owner_pid_birth": true,
+          "group_capture_complete": true,
+          "mapped_full": true,
+          "member_footprint_sum_equals_group": true,
+          "permitted_zero": true,
+          "provider_paused": true,
+          "r07_coverage_complete": true,
+          "replaced_zero": true,
+          "source_matches_fixed_binary": true
+        },
+        "layout_pid_birth": [
+          10176,
+          26781932388759
+        ],
+        "mapped_bytes": 277610496,
+        "member_footprint_sum_bytes": 3336228080,
+        "observer_t_seconds": 15.840976416,
+        "permitted_bytes": 0,
+        "phys_footprint_bytes": 3336228080,
+        "pressure_dispatch_flag": 1,
+        "r07_reading": null,
+        "replaced_bytes": 0,
+        "root_pid_birth": [
+          10175,
+          26781929305357
+        ],
+        "swap_used_bytes": 1981808640
+      }
+    ],
+    "marker_sha256": "b1d92766a0a7141dbfe16952caf698e5710cdb75e671fc7f5b1c759a6b8decd3",
+    "normal_joint_threshold_bytes": 3328599654,
+    "normal_threshold_source": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/manifest.json",
+    "over_threshold_bytes": 7628426,
+    "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/full-restored-window.json",
+    "predicate": "group+coverage complete; provider paused; mapped=277610496; replaced=0; permitted=0; exact registered root/layout PID+birth and owner; member footprint sum equals group footprint",
+    "same_window_minus_global_observer_peak_bytes": 65536,
+    "sha256": "b1d92766a0a7141dbfe16952caf698e5710cdb75e671fc7f5b1c759a6b8decd3",
+    "source_sha256": "db4577273a37fdbeeb95c092e20356ba2386bdb0dd311f2b6020de2bb89f0daf",
+    "window_peak_phys_footprint_bytes": 3336228080
+  },
+  "normal_pool": {
+    "available_touched_bytes": 67108864,
+    "balanced_after_owned_wait": true,
+    "capacity_bytes": 67108864,
+    "granted_capacity_bytes": 0,
+    "grants": 0,
+    "report_path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/normal-pool/report.json",
+    "source_sha256": "db4577273a37fdbeeb95c092e20356ba2386bdb0dd311f2b6020de2bb89f0daf",
+    "workspace_grants": 0
+  },
+  "observer_global_measurement_not_used_for_same_phase_threshold": {
+    "global_peak_frame_index": 110,
+    "missing_footprint_process_samples": 2,
+    "missing_rss_process_samples": 2,
+    "peak_simultaneous_footprint_bytes": 3336293616,
+    "peak_simultaneous_rss_bytes": 3342581760,
+    "why_not_used": "global peak includes 2 missing process footprint/RSS observations; use complete paused phase frames instead"
+  },
+  "r07_accounting": {
+    "credit_applied_to_raw_group": false,
+    "estimated_footprint_deduction_bytes": 0,
+    "excluded_root_identity": {
+      "parent_pid": 10174,
+      "pid": 10175,
+      "start_abstime": 26781929305357
+    },
+    "interpretation": "same-use mixed root is absent from R07 component attribution, but the physical raw observer group remains unchanged; no same-purpose padding is subtracted",
+    "mapped_bytes_per_frame": 277610496,
+    "mixed_root_exclusion_path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/r07-excluded-root.json",
+    "permitted_bytes_per_frame": 0,
+    "raw_group_unchanged": true,
+    "replaced_bytes_per_frame": 0,
+    "runtime_components": [
+      {
+        "footprint_bytes": 3424544,
+        "identity": {
+          "parent_pid": 10172,
+          "pid": 10174,
+          "start_abstime": 26781928858967
+        },
+        "role": "observer"
+      },
+      null,
+      null
+    ]
+  },
+  "read_only_summary": true,
+  "retained_generations": {
+    "all_payload_files_hashed_and_loaded": true,
+    "allocated_measurement": "sum of st_blocks*512 for each regular file under each generation; directory metadata excluded; APFS clone/shared extents are not deduplicated",
+    "cold_reopen_and_scan": "passed",
+    "cold_restore_report_path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/cold-with-provider/report.json",
+    "generation_count": 2,
+    "generations": [
+      {
+        "apparent_bytes": 3375402588,
+        "file_count": 32,
+        "generation_directory": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001",
+        "pressure_file": {
+          "apparent_bytes": 3040632438,
+          "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/pressure.bin",
+          "st_blocks_allocated_bytes": 3050332160
+        },
+        "st_blocks_allocated_bytes": 3385163776
+      },
+      {
+        "apparent_bytes": 3375402590,
+        "file_count": 32,
+        "generation_directory": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002",
+        "pressure_file": {
+          "apparent_bytes": 3040632438,
+          "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/pressure.bin",
+          "st_blocks_allocated_bytes": 3050332160
+        },
+        "st_blocks_allocated_bytes": 3385163776
+      }
+    ],
+    "layout_report_path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/report.json",
+    "restored_generation": 2,
+    "retention": "both snapshot generations and all run inputs/artifacts remain in place; no cleanup or full-file rehash in this summary",
+    "same_source": true,
+    "total_apparent_bytes": 6750805178,
+    "total_st_blocks_allocated_bytes": 6770327552
+  },
+  "run": {
+    "all_four_registered_identities_absent": true,
+    "case_root": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control",
+    "controller_exit_code": 0,
+    "controller_mode": "combined-control",
+    "controller_pid": 10172,
+    "controller_receipt_passed_controlled_exercise": true,
+    "controller_receipt_path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/receipt.json",
+    "elapsed_time_note": "Model elapsed is 28.768227125 s from exercise_report; observer wall is 29.35862575 s. Wrapper total wall duration was not persisted in the terminal, so it is not inferred.",
+    "external_activity_sampling_errors": [],
+    "external_compile_or_heavy_activity_samples": [],
+    "fault_controller_pid": 10172,
+    "model_exercise_seconds": 28.768227125,
+    "observer_pid": 10174,
+    "observer_wall_seconds": 29.35862575,
+    "prepared_root": "/Volumes/HP P900/dev/MyCity/work/v128-native-01",
+    "process_identities": {
+      "complete": true,
+      "identities": [
+        {
+          "birth": 26781928858967,
+          "confirmed_absent": true,
+          "first_seen_frame_t": 29.095014791,
+          "parent_pid": 10172,
+          "pid": 10174,
+          "role": "observer",
+          "status": "confirmed_absent",
+          "terminal_usage": null
+        },
+        {
+          "birth": 26781929305357,
+          "confirmed_absent": true,
+          "parent_pid": 10174,
+          "pid": 10175,
+          "role": "r07-layout-driver",
+          "status": "confirmed_absent",
+          "terminal_usage": null
+        },
+        {
+          "birth": 26781932388759,
+          "confirmed_absent": true,
+          "parent_pid": 10175,
+          "pid": 10176,
+          "role": "layout-r07-session",
+          "status": "confirmed_absent",
+          "terminal_usage": null
+        },
+        {
+          "birth": 26782533640623,
+          "confirmed_absent": true,
+          "parent_pid": 10175,
+          "pid": 10495,
+          "role": "layout-load-only",
+          "status": "confirmed_absent",
+          "terminal_usage": null
+        }
+      ],
+      "identity_count": 4
+    },
+    "session_exit_code_reported_by_root": 0,
+    "supervisor_session_id_from_root_report": 80587,
+    "terminal_path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/terminal.json",
+    "terminal_state": "diagnostic_control_passed_not_acceptance",
+    "wrapper_pid": 7920
+  },
+  "schema": "mycity-v128-native-diagnostic-summary-v1",
+  "v125_same_phase_diagnostic_comparison": {
+    "current_minus_v125_window_bytes": 0,
+    "current_v128_over_threshold_bytes": 7628426,
+    "current_v128_source_sha256": "db4577273a37fdbeeb95c092e20356ba2386bdb0dd311f2b6020de2bb89f0daf",
+    "current_v128_window_peak_bytes": 3336228080,
+    "interpretation": "same-phase and same configured capacity diagnostic only; source/build identities differ, so it is not a same-source controlled comparison or an acceptance claim",
+    "reference_binary_sha256": "557b2e4d0bc89f429a07a270c9f388b508d595c8b4a1f233b795becdf75797e7",
+    "reference_combined_full_restored_window_peak_bytes": 3336228080,
+    "reference_over_threshold_bytes": 7628426,
+    "reference_source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+    "reference_threshold_bytes": 3328599654,
+    "reference_verifier_stdout": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/21-independent-verifier/stdout.log",
+    "same_source": false,
+    "values_match": true
+  }
+}
