@@ -1,0 +1,27 @@
+{
+  "before": {
+    "du_kib": {
+      "work": 26220136,
+      "target": 1833984
+    },
+    "available_bytes": 98642284544,
+    "time_ns": 1792628938902497000
+  },
+  "after": {
+    "du_kib": {
+      "work": 22508968,
+      "target": 1810936
+    },
+    "available_bytes": 102466465792,
+    "time_ns": 1792628944608558000
+  },
+  "files_deleted": 15,
+  "allocated_bytes_removed": 3823837184,
+  "filesystem_available_delta_bytes": 3824181248,
+  "other_work_target_files_unchanged": 126876,
+  "protected_files_sha_verified": 158,
+  "source_wip_unchanged": true,
+  "archive_added_bytes": 0,
+  "attribution": "st_blocks allocation is not APFS exclusive physical reclaim; df delta observational only, no attribution to deletion or other tasks",
+  "scope": "no build, no recovery run, no UI/GPU/AgentKit, no performance acceptance"
+}

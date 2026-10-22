@@ -1,0 +1,315 @@
+[
+  {
+    "path": "work/steady-controller-smoke-l2-01/observed/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "metadata": [
+      16777231,
+      409166346,
+      33188,
+      3044040310,
+      1792606220137169818,
+      5945392,
+      1
+    ],
+    "sha256": "b54b320a49eda0e4d1fbb2ba6d8dfb7fdf33d228b6397bace5cf6bf95bf507be",
+    "allocated_bytes": 3044040704,
+    "round": "steady-controller-smoke-l2-01",
+    "reason": "synthetic load; warm-up deadline failure before measurement, no payload fault; later formal run supersedes this diagnostic, advisor released original recovery dependency",
+    "retained_evidence": "docs/evidence/m0-t13a-steady-controller; original work/steady-controller-smoke-l2-01 logs, business, pool, index and components",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-smoke-l2-01/observed/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "metadata": [
+      16777231,
+      409166349,
+      33188,
+      134217728,
+      1792606220270417714,
+      262144,
+      1
+    ],
+    "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee",
+    "allocated_bytes": 134217728,
+    "round": "steady-controller-smoke-l2-01",
+    "reason": "synthetic load; warm-up deadline failure before measurement, no payload fault; later formal run supersedes this diagnostic, advisor released original recovery dependency",
+    "retained_evidence": "docs/evidence/m0-t13a-steady-controller; original work/steady-controller-smoke-l2-01 logs, business, pool, index and components",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000007/native.json",
+    "metadata": [
+      16777231,
+      409227411,
+      33188,
+      65299383,
+      1792608322817300744,
+      127544,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "allocated_bytes": 65302528,
+    "round": "steady-controller-formal-l2-01",
+    "reason": "normal retired layout; full bytes exactly equal to preexisting lossless archive; not a pending or negative fixture",
+    "retained_evidence": "docs/evidence/disk-reclamation-duplicate-components; original run/index/logs remain",
+    "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+    "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+    "index": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000007/index.json",
+    "index_sha256": "9e826b9af387fe4c219326dc9393e26c091451e024d3358d66b2f758fa7a0893",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000007/meter.json",
+    "metadata": [
+      16777231,
+      409227449,
+      33188,
+      59090761,
+      1792608323058241965,
+      115416,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "allocated_bytes": 59092992,
+    "round": "steady-controller-formal-l2-01",
+    "reason": "normal retired layout; full bytes exactly equal to preexisting lossless archive; not a pending or negative fixture",
+    "retained_evidence": "docs/evidence/disk-reclamation-duplicate-components; original run/index/logs remain",
+    "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+    "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+    "index": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000007/index.json",
+    "index_sha256": "9e826b9af387fe4c219326dc9393e26c091451e024d3358d66b2f758fa7a0893",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000008/native.json",
+    "metadata": [
+      16777231,
+      409233113,
+      33188,
+      65299383,
+      1792608622743804327,
+      127544,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "allocated_bytes": 65302528,
+    "round": "steady-controller-formal-l2-01",
+    "reason": "normal retired layout; full bytes exactly equal to preexisting lossless archive; not a pending or negative fixture",
+    "retained_evidence": "docs/evidence/disk-reclamation-duplicate-components; original run/index/logs remain",
+    "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+    "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+    "index": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000008/index.json",
+    "index_sha256": "39c38b2bd9262de5ed6176d4681d47f0a373f073cf7293d4988e9c84c519de74",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000008/meter.json",
+    "metadata": [
+      16777231,
+      409233151,
+      33188,
+      59090761,
+      1792608622989806067,
+      115416,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "allocated_bytes": 59092992,
+    "round": "steady-controller-formal-l2-01",
+    "reason": "normal retired layout; full bytes exactly equal to preexisting lossless archive; not a pending or negative fixture",
+    "retained_evidence": "docs/evidence/disk-reclamation-duplicate-components; original run/index/logs remain",
+    "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+    "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+    "index": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000008/index.json",
+    "index_sha256": "39c38b2bd9262de5ed6176d4681d47f0a373f073cf7293d4988e9c84c519de74",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/runtime-vm-l1-01/observed/model/layout/snapshots/snapshot-000001/native.json",
+    "metadata": [
+      16777231,
+      409666021,
+      33188,
+      65299383,
+      1792625568547294462,
+      127544,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "allocated_bytes": 65302528,
+    "round": "runtime-vm-l1-01",
+    "reason": "normal retired layout; full bytes exactly equal to preexisting lossless archive; not a pending or negative fixture",
+    "retained_evidence": "docs/evidence/disk-reclamation-duplicate-components; original run/index/logs remain",
+    "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+    "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+    "index": "work/runtime-vm-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "index_sha256": "011b9b9ab63c9956be24a4a138822f5615f5936eef7fb0c9010e22b7280ba019",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/runtime-vm-l1-01/observed/model/layout/snapshots/snapshot-000001/meter.json",
+    "metadata": [
+      16777231,
+      409666054,
+      33188,
+      59090761,
+      1792625570063830216,
+      115416,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "allocated_bytes": 59092992,
+    "round": "runtime-vm-l1-01",
+    "reason": "normal retired layout; full bytes exactly equal to preexisting lossless archive; not a pending or negative fixture",
+    "retained_evidence": "docs/evidence/disk-reclamation-duplicate-components; original run/index/logs remain",
+    "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+    "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+    "index": "work/runtime-vm-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "index_sha256": "011b9b9ab63c9956be24a4a138822f5615f5936eef7fb0c9010e22b7280ba019",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/causal-clock-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/native.json",
+    "metadata": [
+      16777231,
+      409448509,
+      33188,
+      65299383,
+      1792615430249663900,
+      127544,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "allocated_bytes": 65302528,
+    "round": "causal-clock-formal-l1-01",
+    "reason": "normal retired layout; full bytes exactly equal to preexisting lossless archive; not a pending or negative fixture",
+    "retained_evidence": "docs/evidence/disk-reclamation-duplicate-components; original run/index/logs remain",
+    "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+    "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+    "index": "work/causal-clock-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "index_sha256": "307a8ae40be702ca620598e2b458894c8ccac6071a68facb561b76e0463d7037",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/causal-clock-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/meter.json",
+    "metadata": [
+      16777231,
+      409448526,
+      33188,
+      59090761,
+      1792615430470119035,
+      115416,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "allocated_bytes": 59092992,
+    "round": "causal-clock-formal-l1-01",
+    "reason": "normal retired layout; full bytes exactly equal to preexisting lossless archive; not a pending or negative fixture",
+    "retained_evidence": "docs/evidence/disk-reclamation-duplicate-components; original run/index/logs remain",
+    "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+    "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+    "index": "work/causal-clock-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "index_sha256": "307a8ae40be702ca620598e2b458894c8ccac6071a68facb561b76e0463d7037",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/snapshot-backing-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/native.json",
+    "metadata": [
+      16777231,
+      409522812,
+      33188,
+      65299383,
+      1792617916441192758,
+      127544,
+      1
+    ],
+    "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d",
+    "allocated_bytes": 65302528,
+    "round": "snapshot-backing-formal-l1-01",
+    "reason": "normal retired layout; full bytes exactly equal to preexisting lossless archive; not a pending or negative fixture",
+    "retained_evidence": "docs/evidence/disk-reclamation-duplicate-components; original run/index/logs remain",
+    "archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+    "archive_sha256": "e287507f66bb968e09440cb1b718adaf6f39789969c1708e441fabeaac069d74",
+    "index": "work/snapshot-backing-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "index_sha256": "08bdfc67817924516a42d6561cd6f1b93387143405bb4591f51021df64a55104",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/snapshot-backing-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/meter.json",
+    "metadata": [
+      16777231,
+      409522829,
+      33188,
+      59090761,
+      1792617916690108644,
+      115416,
+      1
+    ],
+    "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c",
+    "allocated_bytes": 59092992,
+    "round": "snapshot-backing-formal-l1-01",
+    "reason": "normal retired layout; full bytes exactly equal to preexisting lossless archive; not a pending or negative fixture",
+    "retained_evidence": "docs/evidence/disk-reclamation-duplicate-components; original run/index/logs remain",
+    "archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+    "archive_sha256": "ee9e1866f36307fab91b3a025eda2a9d48b1bb7818fa197b648f8424adb26b83",
+    "index": "work/snapshot-backing-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "index_sha256": "08bdfc67817924516a42d6561cd6f1b93387143405bb4591f51021df64a55104",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-d181d8f584a40a9a.rlib",
+    "metadata": [
+      16777231,
+      409685479,
+      33188,
+      15408960,
+      1792626404445849656,
+      30096,
+      1
+    ],
+    "sha256": "e3fecaf62b80b43d452ce0dda6dd3ebd8a7ffda6201353c74bbb7477e94c4f09",
+    "allocated_bytes": 15409152,
+    "round": "obsolete-v100-build-graph",
+    "reason": "old headless static cache lacks now mandatory sysctl/rustix dependencies; current wrapper graph and all executables retained",
+    "retained_evidence": "docs/evidence/m0-t13a-native-reader; work/candidate-binaries; source/lock/exe and raw unchanged",
+    "graph": "target/release/.fingerprint/mycity-headless-d181d8f584a40a9a/lib-mycity_headless.json",
+    "graph_sha256": "8a7b31b9e01581cb092e33c6d9ff6d28d077d55fcba4549bae470cc86d0a8274"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-d181d8f584a40a9a.rmeta",
+    "metadata": [
+      16777231,
+      409684701,
+      33188,
+      5810840,
+      1792626386083934062,
+      11352,
+      1
+    ],
+    "sha256": "4c25df6ce98b954b426dffb6f81d59b459a9b55b7dbe9a36201ece8718ebf761",
+    "allocated_bytes": 5812224,
+    "round": "obsolete-v100-build-graph",
+    "reason": "old headless static cache lacks now mandatory sysctl/rustix dependencies; current wrapper graph and all executables retained",
+    "retained_evidence": "docs/evidence/m0-t13a-native-reader; work/candidate-binaries; source/lock/exe and raw unchanged",
+    "graph": "target/release/.fingerprint/mycity-headless-d181d8f584a40a9a/lib-mycity_headless.json",
+    "graph_sha256": "8a7b31b9e01581cb092e33c6d9ff6d28d077d55fcba4549bae470cc86d0a8274"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-3340064100ed6322.rmeta",
+    "metadata": [
+      16777231,
+      409745800,
+      33188,
+      2377985,
+      1792627136207850031,
+      4648,
+      1
+    ],
+    "sha256": "40bb73e5b6cb4ce985e8db289a0729008d82df017e5d12e1ac05c8a2368015bf",
+    "allocated_bytes": 2379776,
+    "round": "obsolete-v100-build-graph",
+    "reason": "old headless static cache lacks now mandatory sysctl/rustix dependencies; current wrapper graph and all executables retained",
+    "retained_evidence": "docs/evidence/m0-t13a-native-reader; work/candidate-binaries; source/lock/exe and raw unchanged",
+    "graph": "target/release/.fingerprint/mycity-headless-3340064100ed6322/lib-mycity_headless.json",
+    "graph_sha256": "2b8667540bedece334c8eba51875dd30e84956025db515abd903593b0cab61e1"
+  }
+]

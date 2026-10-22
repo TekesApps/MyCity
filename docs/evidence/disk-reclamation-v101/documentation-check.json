@@ -1,0 +1,7 @@
+{
+  "arithmetic": "passed",
+  "script_ast": "passed",
+  "local_links": "passed",
+  "model_tests": "not_run",
+  "build": "not_run"
+}

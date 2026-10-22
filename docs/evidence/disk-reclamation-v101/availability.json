@@ -1,0 +1,110 @@
+[
+  {
+    "path": "work/steady-controller-smoke-l2-01/observed/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "round": "steady-controller-smoke-l2-01",
+    "original_path_exists": false,
+    "snapshot_directly_restorable": false,
+    "full_component_archive": null,
+    "retained_evidence": "docs/evidence/m0-t13a-steady-controller; original work/steady-controller-smoke-l2-01 logs, business, pool, index and components",
+    "reason": "synthetic load; warm-up deadline failure before measurement, no payload fault; later formal run supersedes this diagnostic, advisor released original recovery dependency"
+  },
+  {
+    "path": "work/steady-controller-smoke-l2-01/observed/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "round": "steady-controller-smoke-l2-01",
+    "original_path_exists": false,
+    "snapshot_directly_restorable": false,
+    "full_component_archive": null,
+    "retained_evidence": "docs/evidence/m0-t13a-steady-controller; original work/steady-controller-smoke-l2-01 logs, business, pool, index and components",
+    "reason": "synthetic load; warm-up deadline failure before measurement, no payload fault; later formal run supersedes this diagnostic, advisor released original recovery dependency"
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000007/native.json",
+    "round": "steady-controller-formal-l2-01",
+    "original_path_exists": false,
+    "snapshot_directly_restorable": false,
+    "full_component_archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+    "retained_evidence": "docs/evidence/disk-reclamation-duplicate-components; original run/index/logs remain",
+    "reason": "normal retired layout; full bytes exactly equal to preexisting lossless archive; not a pending or negative fixture"
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000007/meter.json",
+    "round": "steady-controller-formal-l2-01",
+    "original_path_exists": false,
+    "snapshot_directly_restorable": false,
+    "full_component_archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+    "retained_evidence": "docs/evidence/disk-reclamation-duplicate-components; original run/index/logs remain",
+    "reason": "normal retired layout; full bytes exactly equal to preexisting lossless archive; not a pending or negative fixture"
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000008/native.json",
+    "round": "steady-controller-formal-l2-01",
+    "original_path_exists": false,
+    "snapshot_directly_restorable": false,
+    "full_component_archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+    "retained_evidence": "docs/evidence/disk-reclamation-duplicate-components; original run/index/logs remain",
+    "reason": "normal retired layout; full bytes exactly equal to preexisting lossless archive; not a pending or negative fixture"
+  },
+  {
+    "path": "work/steady-controller-formal-l2-01/observed/model/layout/snapshots/snapshot-000008/meter.json",
+    "round": "steady-controller-formal-l2-01",
+    "original_path_exists": false,
+    "snapshot_directly_restorable": false,
+    "full_component_archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+    "retained_evidence": "docs/evidence/disk-reclamation-duplicate-components; original run/index/logs remain",
+    "reason": "normal retired layout; full bytes exactly equal to preexisting lossless archive; not a pending or negative fixture"
+  },
+  {
+    "path": "work/runtime-vm-l1-01/observed/model/layout/snapshots/snapshot-000001/native.json",
+    "round": "runtime-vm-l1-01",
+    "original_path_exists": false,
+    "snapshot_directly_restorable": false,
+    "full_component_archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+    "retained_evidence": "docs/evidence/disk-reclamation-duplicate-components; original run/index/logs remain",
+    "reason": "normal retired layout; full bytes exactly equal to preexisting lossless archive; not a pending or negative fixture"
+  },
+  {
+    "path": "work/runtime-vm-l1-01/observed/model/layout/snapshots/snapshot-000001/meter.json",
+    "round": "runtime-vm-l1-01",
+    "original_path_exists": false,
+    "snapshot_directly_restorable": false,
+    "full_component_archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+    "retained_evidence": "docs/evidence/disk-reclamation-duplicate-components; original run/index/logs remain",
+    "reason": "normal retired layout; full bytes exactly equal to preexisting lossless archive; not a pending or negative fixture"
+  },
+  {
+    "path": "work/causal-clock-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/native.json",
+    "round": "causal-clock-formal-l1-01",
+    "original_path_exists": false,
+    "snapshot_directly_restorable": false,
+    "full_component_archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+    "retained_evidence": "docs/evidence/disk-reclamation-duplicate-components; original run/index/logs remain",
+    "reason": "normal retired layout; full bytes exactly equal to preexisting lossless archive; not a pending or negative fixture"
+  },
+  {
+    "path": "work/causal-clock-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/meter.json",
+    "round": "causal-clock-formal-l1-01",
+    "original_path_exists": false,
+    "snapshot_directly_restorable": false,
+    "full_component_archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+    "retained_evidence": "docs/evidence/disk-reclamation-duplicate-components; original run/index/logs remain",
+    "reason": "normal retired layout; full bytes exactly equal to preexisting lossless archive; not a pending or negative fixture"
+  },
+  {
+    "path": "work/snapshot-backing-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/native.json",
+    "round": "snapshot-backing-formal-l1-01",
+    "original_path_exists": false,
+    "snapshot_directly_restorable": false,
+    "full_component_archive": "work/retained-component-evidence/duplicate-components-v1/native.json.gz",
+    "retained_evidence": "docs/evidence/disk-reclamation-duplicate-components; original run/index/logs remain",
+    "reason": "normal retired layout; full bytes exactly equal to preexisting lossless archive; not a pending or negative fixture"
+  },
+  {
+    "path": "work/snapshot-backing-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/meter.json",
+    "round": "snapshot-backing-formal-l1-01",
+    "original_path_exists": false,
+    "snapshot_directly_restorable": false,
+    "full_component_archive": "work/retained-component-evidence/duplicate-components-v1/meter.json.gz",
+    "retained_evidence": "docs/evidence/disk-reclamation-duplicate-components; original run/index/logs remain",
+    "reason": "normal retired layout; full bytes exactly equal to preexisting lossless archive; not a pending or negative fixture"
+  }
+]
