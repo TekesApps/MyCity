@@ -117,6 +117,16 @@ fn open(capacity: u32, is_open: bool) -> Opening {
     }
 }
 
+fn open_cross_boundary() -> Opening {
+    let mut opening = open(5, true);
+    opening.nodes[1].city_id = 2;
+    opening.edges[0].city_to = 2;
+    opening.edges[0].boundary_source = Some(9_101);
+    opening.edges[1].city_from = 2;
+    opening.edges[1].boundary_source = Some(9_102);
+    opening
+}
+
 #[derive(Serialize)]
 struct Allocation<'a> {
     schema: u16,
@@ -1308,6 +1318,359 @@ fn run_road_effect(
     Ok(())
 }
 
+fn inspect_cross_boundary_proof(
+    dir: &Path,
+    proof_hash: [u8; 32],
+    service_day: u64,
+    opening: &Opening,
+    expected_assignment: &mycity_core::transport::Assignment,
+) -> Result<(), String> {
+    let path = dir.join(format!("town-proof-{}.json", hex(&proof_hash)));
+    let bytes = fs::read(path).map_err(err)?;
+    if hash(&bytes) != proof_hash {
+        return Err(format!("day-{service_day} boundary proof hash mismatch"));
+    }
+    let proof: mycity_core::market_access::TransportProofAsset =
+        serde_json::from_slice(&bytes).map_err(err)?;
+    if proof.service_day != service_day
+        || proof.generation != service_day
+        || proof.profile_id != 1
+        || proof.opening != *opening
+        || proof.assignment != *expected_assignment
+        || proof.assignment.boundary_flows
+            != vec![
+                mycity_core::transport::BoundaryFlow {
+                    source_id: 9_101,
+                    people: 5,
+                },
+                mycity_core::transport::BoundaryFlow {
+                    source_id: 9_102,
+                    people: 5,
+                },
+            ]
+    {
+        return Err(format!(
+            "day-{service_day} proof lost OD boundary provenance"
+        ));
+    }
+    for (source_id, edge_id) in [(101, 10), (102, 11)] {
+        let paths: Vec<_> = proof
+            .assignment
+            .path_receipts
+            .iter()
+            .filter(|path| path.source_id == source_id)
+            .collect();
+        if paths.len() != 1 || paths[0].people != 5 || paths[0].edge_ids != [edge_id] {
+            return Err(format!(
+                "day-{service_day} OD source {source_id} boundary path mismatch"
+            ));
+        }
+        let outcome = proof
+            .assignment
+            .demand_outcomes
+            .iter()
+            .find(|outcome| outcome.source_id == source_id)
+            .ok_or_else(|| format!("day-{service_day} OD source {source_id} missing"))?;
+        if outcome.requested_people != 10
+            || outcome.served_people != 5
+            || outcome.unserved_people != 5
+        {
+            return Err(format!(
+                "day-{service_day} OD source {source_id} flow mismatch"
+            ));
+        }
+    }
+    Ok(())
+}
+
+/// Two actual Store market days whose fixed OD routes cross a city boundary in each direction.
+fn run_cross_boundary(dir: &str) -> Result<(), String> {
+    if Path::new(dir).exists() {
+        return Err("store directory already exists".into());
+    }
+    let opening = open_cross_boundary();
+    let mut missing_boundary_source = opening.clone();
+    missing_boundary_source.edges[0].boundary_source = None;
+    let mut duplicate_boundary_source = opening.clone();
+    duplicate_boundary_source.edges[1].boundary_source = Some(9_101);
+    if missing_boundary_source.validate().is_ok() || duplicate_boundary_source.validate().is_ok() {
+        return Err("missing or duplicate boundary source was accepted".into());
+    }
+    let assignment = opening.assign().map_err(err)?;
+    if !opening.entrances.iter().all(|entrance| entrance.authorized)
+        || opening.entrances[0].owner != 2
+        || opening.entrances[0].node != 1
+        || opening.entrances[1].owner != 3
+        || opening.entrances[1].node != 2
+        || assignment.boundary_flows
+            != vec![
+                mycity_core::transport::BoundaryFlow {
+                    source_id: 9_101,
+                    people: 5,
+                },
+                mycity_core::transport::BoundaryFlow {
+                    source_id: 9_102,
+                    people: 5,
+                },
+            ]
+    {
+        return Err("cross-boundary graph or authorized entrances did not validate".into());
+    }
+    for (source_id, edge_id) in [(101, 10), (102, 11)] {
+        let paths: Vec<_> = assignment
+            .path_receipts
+            .iter()
+            .filter(|path| path.source_id == source_id)
+            .collect();
+        if paths.len() != 1 || paths[0].people != 5 || paths[0].edge_ids != [edge_id] {
+            return Err(format!(
+                "fixed OD source {source_id} did not use its city boundary"
+            ));
+        }
+    }
+    let partitions = [TripPartition {
+        quote_id: 1,
+        outbound_source: 101,
+        return_source: 102,
+        trip_count: 10,
+        goods_per_trip: Quantity::new(20).map_err(err)?,
+    }];
+    let allocation = Allocation {
+        schema: 1,
+        world_id: 1,
+        branch_id: 1,
+        market_profile_id: 1,
+        period_seconds: DAY as u32,
+        allocation_scope: AllocationScope::SingleTownExclusive,
+        demand_repeat_policy: DemandRepeatPolicy::RepeatFixedDailyDemand,
+        road_capacity_effect: None,
+        opening: &opening,
+        assignment: &assignment,
+        partitions: &partitions,
+        fee_policy: FeePolicyInput {
+            provider_account: 1,
+            cents_per_travel_second: 1,
+        },
+    };
+    let allocation_bytes = serde_json::to_vec(&allocation).map_err(err)?;
+    let opening_bytes = opening_with_market(hash(&allocation_bytes));
+    let mut store = Store::create_with_transport_allocation_profile(
+        Path::new(dir),
+        &opening_bytes,
+        vec![],
+        RULES,
+        &allocation_bytes,
+    )
+    .map_err(err)?;
+    let cash_total = |accounts: &[mycity_core::assembly::AccountView]| -> i128 {
+        accounts
+            .iter()
+            .map(|account| i128::from(account.cash.value()))
+            .sum()
+    };
+    let before = store.engine().map_err(err)?.world().view();
+    let opening_cash = cash_total(&before.accounts);
+    let opening_provider_cash = before
+        .accounts
+        .iter()
+        .find(|account| account.id == 1)
+        .ok_or("boundary tariff provider missing")?
+        .cash
+        .value();
+    let opening_inventory = before
+        .stocks
+        .iter()
+        .find(|stock| stock.id == 3)
+        .ok_or("boundary market stock missing")?
+        .quantity
+        .value();
+    execute_action(
+        &mut store,
+        Caller::System,
+        Action::Timeline {
+            command: TimelineCommand::Enable,
+        },
+    )?;
+    advance_to(&mut store, DAY)?;
+    store
+        .settle_town_market(31_001)
+        .map_err(err)?
+        .model
+        .map_err(err)?;
+    let first = store.engine().map_err(err)?.world().view();
+    let first_market = first.town.ok_or("town missing after boundary day one")?;
+    let first_summary = first_market.state.last_summary;
+    let first_transport = first_market
+        .state
+        .last_transport
+        .ok_or("day-one boundary proof receipt missing")?;
+    if first_summary.actual_sales.value() != 100
+        || first_transport.issued_day != 1
+        || first_transport.consumed_generation != 1
+        || first_transport.issued_proof_sha256 == [0; 32]
+    {
+        return Err(
+            "day-one boundary transport did not settle exactly one round-trip batch".into(),
+        );
+    }
+    if transport_proof_from_receipt(
+        &store
+            .receipt(31_001)
+            .map_err(err)?
+            .ok_or("day-one boundary settlement receipt missing")?,
+    ) != Some(first_transport.issued_proof_sha256)
+    {
+        return Err("day-one journal receipt did not reference its boundary proof".into());
+    }
+    inspect_cross_boundary_proof(
+        Path::new(dir),
+        first_transport.issued_proof_sha256,
+        1,
+        &opening,
+        &assignment,
+    )?;
+    let after_first = store.engine().map_err(err)?.world().view();
+    let first_provider_cash = after_first
+        .accounts
+        .iter()
+        .find(|account| account.id == 1)
+        .ok_or("boundary tariff provider missing after day one")?
+        .cash
+        .value();
+    let first_inventory = after_first
+        .stocks
+        .iter()
+        .find(|stock| stock.id == 3)
+        .ok_or("boundary stock missing after day one")?
+        .quantity
+        .value();
+    if first_provider_cash - opening_provider_cash != first_summary.freight.value()
+        || opening_cash != cash_total(&after_first.accounts)
+        || opening_inventory - first_inventory != first_summary.actual_sales.value()
+    {
+        return Err("day-one boundary freight, cash, or actual stock did not reconcile".into());
+    }
+    advance_to(&mut store, 2 * DAY)?;
+    store
+        .settle_town_market(31_002)
+        .map_err(err)?
+        .model
+        .map_err(err)?;
+    let second = store.engine().map_err(err)?.world().view();
+    let second_market = second.town.ok_or("town missing after boundary day two")?;
+    let second_summary = second_market.state.last_summary;
+    let second_transport = second_market
+        .state
+        .last_transport
+        .ok_or("day-two boundary proof receipt missing")?;
+    if second_summary.actual_sales.value() != 100
+        || second_transport.issued_day != 2
+        || second_transport.consumed_generation != 2
+        || second_transport.issued_proof_sha256 == first_transport.issued_proof_sha256
+    {
+        return Err("day-two boundary transport did not issue a fresh round-trip proof".into());
+    }
+    if transport_proof_from_receipt(
+        &store
+            .receipt(31_002)
+            .map_err(err)?
+            .ok_or("day-two boundary settlement receipt missing")?,
+    ) != Some(second_transport.issued_proof_sha256)
+    {
+        return Err("day-two journal receipt did not reference its boundary proof".into());
+    }
+    inspect_cross_boundary_proof(
+        Path::new(dir),
+        second_transport.issued_proof_sha256,
+        2,
+        &opening,
+        &assignment,
+    )?;
+    let final_view = store.engine().map_err(err)?.world().view();
+    let final_inventory = final_view
+        .stocks
+        .iter()
+        .find(|stock| stock.id == 3)
+        .ok_or("boundary stock missing after day two")?
+        .quantity
+        .value();
+    let final_provider_cash = final_view
+        .accounts
+        .iter()
+        .find(|account| account.id == 1)
+        .ok_or("boundary tariff provider missing after day two")?
+        .cash
+        .value();
+    if final_provider_cash - first_provider_cash != second_summary.freight.value()
+        || opening_cash != cash_total(&final_view.accounts)
+        || first_inventory - final_inventory != second_summary.actual_sales.value()
+        || final_inventory != 0
+    {
+        return Err("day-two boundary freight, cash, or stock depletion did not reconcile".into());
+    }
+    let expected_hash = store.state_hash().map_err(err)?;
+    store.checkpoint().map_err(err)?;
+    drop(store);
+    let recovered = Store::open(Path::new(dir), RULES).map_err(err)?;
+    let recovered_market = recovered
+        .engine()
+        .map_err(err)?
+        .world()
+        .view()
+        .town
+        .ok_or("town missing after boundary cold reopen")?;
+    if recovered.state_hash().map_err(err)? != expected_hash
+        || recovered.receipt(31_001).map_err(err)?.is_none()
+        || recovered.receipt(31_002).map_err(err)?.is_none()
+        || recovered_market
+            .state
+            .last_transport
+            .ok_or("latest boundary proof missing after cold reopen")?
+            .issued_proof_sha256
+            != second_transport.issued_proof_sha256
+    {
+        return Err("boundary cold reopen lost state, receipts, or latest proof".into());
+    }
+    for (day, proof_hash) in [
+        (1, first_transport.issued_proof_sha256),
+        (2, second_transport.issued_proof_sha256),
+    ] {
+        inspect_cross_boundary_proof(Path::new(dir), proof_hash, day, &opening, &assignment)?;
+    }
+    println!(
+        "{}",
+        serde_json::to_string_pretty(&serde_json::json!({
+            "scenario":"cross-boundary",
+            "allocation_scope":"single_town_exclusive_market",
+            "graph_cities":[1,2],
+            "entrances":[{"owner":2,"node":1,"authorized":true},{"owner":3,"node":2,"authorized":true}],
+            "fixed_od_sources":{"outbound":101,"return":102},
+            "boundary_sources":{"outbound":9101,"return":9102},
+            "boundary_edges":{"9101":"edge-10:city-1-to-city-2","9102":"edge-11:city-2-to-city-1"},
+            "each_od_requested_people":10,
+            "each_od_served_people":5,
+            "round_trip_trips_allocated":5,
+            "single_quote_accessible_goods":100,
+            "day_one_actual_sales":first_summary.actual_sales.value(),
+            "day_two_actual_sales":second_summary.actual_sales.value(),
+            "opening_inventory":opening_inventory,
+            "ending_inventory":final_inventory,
+            "day_one_boundary_proof":"fresh_and_verified",
+            "day_two_boundary_proof":"fresh_and_verified",
+            "missing_or_duplicate_boundary_sources":"rejected",
+            "cash_conservation":"passed",
+            "provider_freight_receipts_match":"passed",
+            "no_inventory_refill":true,
+            "cold_reopen_historical_proofs":"passed",
+            "od_and_boundary_sources":"immutable_fixed_fixture",
+            "region_snapshot_or_migration":"not_implemented_or_tested",
+            "cross_city_contract_fulfillment":"not_implemented_or_tested"
+        }))
+        .map_err(err)?
+    );
+    Ok(())
+}
+
 fn assert_untrusted_action_rejected(
     store: &mut Store,
     operation_id: u64,
@@ -1491,7 +1854,7 @@ fn main() {
 fn run() -> Result<(), String> {
     let mut args = env::args().skip(1);
     let scenario = args.next().ok_or(
-        "usage: town_transport <normal|closed|bottleneck|expanded|road-effect|road-suspend|road-28|road-withdraw> <new-store-dir> | reopen-check <existing-copied-world-dir> <expected-rules-identity> <expected-state-sha256>",
+        "usage: town_transport <normal|closed|bottleneck|expanded|cross-boundary|road-effect|road-suspend|road-28|road-withdraw> <new-store-dir> | reopen-check <existing-copied-world-dir> <expected-rules-identity> <expected-state-sha256>",
     )?;
     let dir = args.next().ok_or("missing_store_dir")?;
     if scenario == "reopen-check" {
@@ -1504,6 +1867,9 @@ fn run() -> Result<(), String> {
     }
     if args.next().is_some() {
         return Err("unexpected_scenario_argument".into());
+    }
+    if scenario == "cross-boundary" {
+        return run_cross_boundary(&dir);
     }
     if matches!(
         scenario.as_str(),
