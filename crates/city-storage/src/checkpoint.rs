@@ -24,6 +24,7 @@ pub(super) fn verify_transport_proofs(
     reference: &Reference,
     profile: Option<&mycity_core::market_access::TransportAllocationProfile>,
     allocation_hash: Option<[u8; 32]>,
+    engine: &mycity_core::transaction::Engine,
     meta: &mut MetadataWorkspace,
 ) -> Result<(), Error> {
     let mut refs = town_transport::ArchivedProofRefs::new()?;
@@ -34,7 +35,7 @@ pub(super) fn verify_transport_proofs(
         for record in &meta.receipts {
             refs.push_record(record)?;
         }
-        refs.verify(dir, meta, profile, allocation_hash)?;
+        refs.verify(dir, meta, engine, profile, allocation_hash)?;
         cursor = checkpoint.previous;
     }
     Ok(())

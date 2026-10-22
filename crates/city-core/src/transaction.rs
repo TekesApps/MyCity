@@ -389,6 +389,13 @@ impl Engine {
             background: crate::model_rows::Resident::empty(),
             preparation_workspace: Some(workspace::reserve()?),
         };
+        validate_construction_binding(
+            engine.world.construction,
+            &engine.resources,
+            &engine.leases,
+            engine.world.boot.as_ref(),
+            engine.world.exchange.as_ref(),
+        )?;
         if engine.owned_capacity_bytes() > ENGINE_BYTE_BUDGET {
             return Err(TxError::WorkingLimit);
         }
@@ -629,8 +636,14 @@ impl Engine {
             }) {
                 return Err("checkpoint_construction_site_resource".into());
             }
-            if validate_construction_binding(Some(project), &candidate.resources, &candidate.leases)
-                .is_err()
+            if validate_construction_binding(
+                Some(project),
+                &candidate.resources,
+                &candidate.leases,
+                candidate.world.boot.as_ref(),
+                candidate.world.exchange.as_ref(),
+            )
+            .is_err()
             {
                 return Err("checkpoint_construction_site_lease".into());
             }
@@ -1474,6 +1487,7 @@ impl Engine {
                         &mut next_token,
                         &mut created_tokens[action_index],
                         timeline.as_ref(),
+                        town.as_ref(),
                     )?;
                 }
                 Action::TownSettle { profile_id } => {
@@ -1923,6 +1937,11 @@ impl Engine {
                     if units == 0 {
                         return Err(TxError::Capacity);
                     }
+                    if construction.is_some_and(|project| {
+                        project.operating_edge_id != 0 && project.operating_resource == resource
+                    }) {
+                        return Err(TxError::InvalidOperation);
+                    }
                     let r = resources
                         .iter_mut()
                         .find(|r| r.id == resource)
@@ -2071,7 +2090,13 @@ impl Engine {
         if projected > ENGINE_BYTE_BUDGET {
             return Err(TxError::WorkingLimit);
         }
-        validate_construction_binding(construction, &resources, &leases)?;
+        validate_construction_binding(
+            construction,
+            &resources,
+            &leases,
+            boot.as_ref(),
+            exchange.as_ref(),
+        )?;
         Ok(Prepared {
             timeline,
             background,
@@ -2138,6 +2163,8 @@ fn validate_construction_binding(
     project: Option<crate::construction::Project>,
     resources: &[Resource],
     leases: &[Option<Lease>],
+    boot: Option<&crate::boot::Boot>,
+    exchange: Option<&crate::exchange::Exchange>,
 ) -> Result<(), TxError> {
     let Some(project) = project else {
         return Ok(());
@@ -2173,6 +2200,25 @@ fn validate_construction_binding(
         };
         if project.operating_published && !phase_keeps_operating_contribution {
             return Err(TxError::InvalidOperation);
+        }
+        if project.operating_edge_id != 0 {
+            if project.kind != crate::construction::Kind::Build
+                || project.site_resource == project.operating_resource
+                || (project.waste_units != 0
+                    && project.waste_receiver_resource == project.operating_resource)
+                || resource.reserved != 0
+                || resource.occupied != 0
+                || boot.is_some_and(|boot| boot.resources.contains(&project.operating_resource))
+                || exchange.is_some_and(|exchange| {
+                    exchange
+                        .edges
+                        .iter()
+                        .any(|edge| edge.resource == project.operating_resource)
+                })
+                || (project.operating_published && project.operating_published_at.is_none())
+            {
+                return Err(TxError::InvalidOperation);
+            }
         }
     }
     if project.waste_units != 0
@@ -2840,6 +2886,7 @@ fn prepare_construction(
     next_token: &mut u64,
     created_token: &mut Option<CapacityToken>,
     timeline: Option<&crate::timeline::Timeline>,
+    town: Option<&crate::town_runtime::MarketState>,
 ) -> Result<(), TxError> {
     use crate::construction::{EffectKind, EngineCommand, GateDecision, Receipt as CReceipt};
     let mut candidate = *project;
@@ -2896,6 +2943,9 @@ fn prepare_construction(
             }
         }
         EngineCommand::BeginDemolition { .. } => {
+            if candidate.operating_edge_id != 0 {
+                return Err(TxError::InvalidOperation);
+            }
             if actor != candidate.owner && !matches!(caller, Caller::System) {
                 return Err(TxError::Unauthorized);
             }
@@ -2904,11 +2954,17 @@ fn prepare_construction(
             }
         }
         EngineCommand::AcceptWaste => {
+            if candidate.operating_edge_id != 0 {
+                return Err(TxError::InvalidOperation);
+            }
             if actor != candidate.waste_receiver_account && !matches!(caller, Caller::System) {
                 return Err(TxError::Unauthorized);
             }
         }
         EngineCommand::Close => {
+            if candidate.operating_edge_id != 0 {
+                return Err(TxError::InvalidOperation);
+            }
             if actor != candidate.owner && !matches!(caller, Caller::System) {
                 return Err(TxError::Unauthorized);
             }
@@ -2917,6 +2973,27 @@ fn prepare_construction(
             return Err(TxError::Unauthorized);
         }
         _ => {}
+    }
+
+    if candidate.operating_edge_id != 0 {
+        match command {
+            EngineCommand::Cancel => return Err(TxError::InvalidOperation),
+            EngineCommand::AcceptInspection { accepted: true, .. } => {
+                let timeline = timeline.ok_or(TxError::InvalidOperation)?;
+                let at = timeline.progress.last_complete;
+                if timeline.progress.phase.is_some()
+                    || timeline.progress.target.is_some()
+                    || at % crate::timeline::DAY != 0
+                    || town.map(|market| market.settled_day) != Some(at / crate::timeline::DAY)
+                {
+                    return Err(TxError::InvalidOperation);
+                }
+            }
+            EngineCommand::BeginDemolition { .. }
+            | EngineCommand::AcceptWaste
+            | EngineCommand::Close => return Err(TxError::InvalidOperation),
+            _ => {}
+        }
     }
 
     let effect = match command {
@@ -3130,6 +3207,9 @@ fn prepare_construction(
                     .ok_or(TxError::Overflow)?;
             }
             EffectKind::WithdrawOperatingCapacity => {
+                if candidate.operating_edge_id != 0 {
+                    return Err(TxError::InvalidOperation);
+                }
                 if !candidate.operating_published || candidate.operating_resource == 0 {
                     return Err(TxError::InvalidOperation);
                 }

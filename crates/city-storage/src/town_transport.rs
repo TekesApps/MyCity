@@ -66,6 +66,7 @@ impl ArchivedProofRefs {
         &self,
         dir: &Path,
         metadata: &mut MetadataWorkspace,
+        engine: &Engine,
         profile: Option<&TransportAllocationProfile>,
         allocation_hash: Option<[u8; 32]>,
     ) -> Result<(), Error> {
@@ -78,6 +79,7 @@ impl ArchivedProofRefs {
                 return Err(Error::Invalid("town_transport_archive_profile"));
             }
             verify_proof_matches_allocation(
+                engine,
                 &proof,
                 profile,
                 allocation_hash,
@@ -135,6 +137,7 @@ pub(super) fn verify_latest_market_cursor(
     }
     let proof = read_proof(dir, metadata, receipt.issued_proof_sha256)?;
     verify_proof_matches_allocation(
+        engine,
         &proof,
         profile,
         allocation_hash,
@@ -164,6 +167,91 @@ pub(super) fn validate_allocation(
         .validate()
         .map_err(|_| Error::Invalid("town_transport_allocation_invalid"))?;
     validate_allocation_scope(profile, world_id, branch_id, profile_id)
+}
+
+/// The immutable profile and fixed Project must agree at genesis/open. The road resource is
+/// exclusive to this project and cannot also serve water, power, waste, or generic leases.
+pub(super) fn validate_allocation_project(
+    engine: &Engine,
+    profile: &TransportAllocationProfile,
+) -> Result<(), Error> {
+    let view = engine.world().view();
+    let Some(binding) = profile.road_capacity_effect else {
+        if view
+            .construction
+            .is_some_and(|project| project.operating_edge_id != 0)
+        {
+            return Err(Error::Invalid("town_transport_road_binding_missing"));
+        }
+        return Ok(());
+    };
+    let project = view
+        .construction
+        .ok_or(Error::Invalid("town_transport_road_project_missing"))?;
+    let resource = engine
+        .resources()
+        .iter()
+        .find(|resource| resource.id == binding.resource_id)
+        .ok_or(Error::Invalid("town_transport_road_resource_missing"))?;
+    let expected_capacity = project
+        .operating_base_capacity
+        .checked_add(if project.operating_published {
+            project.operating_units
+        } else {
+            0
+        })
+        .ok_or(Error::Invalid("town_transport_road_capacity_overflow"))?;
+    if project.id != binding.project_id
+        || project.kind != mycity_core::construction::Kind::Build
+        || project.operating_edge_id != binding.edge_id
+        || project.operating_resource != binding.resource_id
+        || project.operating_base_capacity != binding.base_capacity_people
+        || project.operating_units != binding.added_capacity_people
+        || resource.capacity != expected_capacity
+        || resource.reserved != 0
+        || resource.occupied != 0
+        || project.site_resource == binding.resource_id
+        || (project.waste_units != 0 && project.waste_receiver_resource == binding.resource_id)
+        || view
+            .boot
+            .is_some_and(|boot| boot.resources.contains(&binding.resource_id))
+        || view.exchange.is_some_and(|exchange| {
+            exchange
+                .edges
+                .iter()
+                .any(|edge| edge.resource == binding.resource_id)
+        })
+        || (project.operating_published && project.operating_published_at.is_none())
+    {
+        return Err(Error::Invalid("town_transport_road_project_mismatch"));
+    }
+    Ok(())
+}
+
+pub(super) fn validate_no_orphan_road_project(engine: &Engine) -> Result<(), Error> {
+    if engine
+        .world()
+        .view()
+        .construction
+        .is_some_and(|project| project.operating_edge_id != 0)
+    {
+        return Err(Error::Invalid("town_transport_road_binding_missing"));
+    }
+    Ok(())
+}
+
+fn road_effect_publication_time(
+    engine: &Engine,
+    profile: &TransportAllocationProfile,
+) -> Result<Option<mycity_core::units::GameTime>, Error> {
+    validate_allocation_project(engine, profile)?;
+    Ok(profile.road_capacity_effect.and_then(|_| {
+        engine
+            .world()
+            .view()
+            .construction
+            .and_then(|project| project.operating_published_at)
+    }))
 }
 
 fn decode_allocation(bytes: &[u8]) -> Result<TransportAllocationProfile, Error> {
@@ -322,6 +410,7 @@ pub(super) fn read_proof(
 }
 
 pub(super) fn verify_proof_matches_allocation<'a>(
+    engine: &Engine,
     proof: &'a TransportProofAsset,
     profile: &TransportAllocationProfile,
     allocation_hash: [u8; 32],
@@ -329,6 +418,10 @@ pub(super) fn verify_proof_matches_allocation<'a>(
     service_day: u64,
     generation: u64,
 ) -> Result<SettlementDeliveryInput<'a>, Error> {
+    let published_at = road_effect_publication_time(engine, profile)?;
+    let (opening, assignment) = profile
+        .derive_for_day(service_day, published_at)
+        .map_err(|_| Error::Invalid("town_transport_road_epoch"))?;
     if proof.schema != 1
         || proof.world_id != profile.world_id
         || proof.branch_id != profile.branch_id
@@ -337,8 +430,8 @@ pub(super) fn verify_proof_matches_allocation<'a>(
         || proof.service_day != service_day
         || proof.period_seconds != profile.period_seconds
         || proof.generation != generation
-        || proof.opening != profile.opening
-        || proof.assignment != profile.assignment
+        || proof.opening != opening
+        || proof.assignment != assignment
         || proof.partitions != profile.partitions
         || proof.fee_policy != profile.fee_policy
     {
@@ -427,6 +520,10 @@ impl Store {
             branch_id,
             profile_id,
         )?;
+        let published_at = road_effect_publication_time(&self.engine, &profile)?;
+        let (opening, assignment) = profile
+            .derive_for_day(service_day, published_at)
+            .map_err(|_| Error::Invalid("town_transport_road_epoch"))?;
         let proof_view = mycity_core::market_access::TransportProofView {
             schema: 1,
             world_id,
@@ -436,8 +533,8 @@ impl Store {
             service_day,
             period_seconds: mycity_core::timeline::DAY as u32,
             generation,
-            opening: &profile.opening,
-            assignment: &profile.assignment,
+            opening: &opening,
+            assignment: &assignment,
             partitions: &profile.partitions,
             fee_policy: profile.fee_policy,
         };

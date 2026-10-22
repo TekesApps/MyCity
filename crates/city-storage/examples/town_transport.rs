@@ -1,10 +1,17 @@
 //! Run one real Store-backed transport-limited market day.
 use mycity_core::{
-    market_access::{AllocationScope, DemandRepeatPolicy, FeePolicyInput, TripPartition},
+    construction::{
+        EngineCommand as ConstructionCommand, Gate, GateCategory, GateDecision, Kind, Material,
+        Project, OPERATION_PREFIX,
+    },
+    market_access::{
+        AllocationScope, DemandRepeatPolicy, FeePolicyInput, RoadCapacityEffectBinding,
+        TripPartition,
+    },
     timeline::{Command as TimelineCommand, DAY},
-    transaction::{Action, Caller, Envelope},
+    transaction::{Action, Caller, Envelope, Resource},
     transport::{Entrance, Node, OdDemand, Opening, RoadEdge},
-    units::Quantity,
+    units::{GameTime, Money, Quantity},
 };
 use mycity_storage::{CapacityPolicy, Error as StorageError, Store};
 use serde::Serialize;
@@ -14,6 +21,7 @@ use std::{env, fs, path::Path};
 
 const RULES: &str = "m0-town-transport-fixed-profile-v1";
 const OPENING: &[u8] = include_bytes!("../../../fixtures/m0-e0-opening.json");
+const SHIFT_END: u64 = 17 * 3_600;
 
 fn hash(bytes: &[u8]) -> [u8; 32] {
     Sha256::digest(bytes).into()
@@ -105,6 +113,8 @@ struct Allocation<'a> {
     period_seconds: u32,
     allocation_scope: AllocationScope,
     demand_repeat_policy: DemandRepeatPolicy,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    road_capacity_effect: Option<RoadCapacityEffectBinding>,
     opening: &'a Opening,
     assignment: &'a mycity_core::transport::Assignment,
     partitions: &'a [TripPartition],
@@ -146,6 +156,461 @@ fn opening_with_market(allocation_hash: [u8; 32]) -> Vec<u8> {
         "delivery":[{"quote_id":1,"shop":1,"household_group":1,"good":1,"reachable":true,"route_source":77,"freight_account":1,"utility_account":1,"available_capacity":200,"freight_per_q":1,"utility_surcharge_per_q":0}]
     });
     serde_json::to_vec(&value).unwrap()
+}
+
+fn opening_with_road_project(allocation_hash: [u8; 32], project: &Project) -> Vec<u8> {
+    let mut value: Value = serde_json::from_slice(&opening_with_market(allocation_hash)).unwrap();
+    value["construction"] = serde_json::to_value(project).unwrap();
+    serde_json::to_vec(&value).unwrap()
+}
+
+fn execute_action(store: &mut Store, caller: Caller, action: Action) -> Result<(), String> {
+    let view = store.engine().map_err(err)?.world().view();
+    let outcome = store
+        .execute(
+            caller,
+            Envelope {
+                world: view.scope.world(),
+                branch: view.scope.branch(),
+                operation_id: store.committed_sequence() + 1,
+                expected_revision: view.revision,
+                actions: vec![action],
+            },
+        )
+        .map_err(err)?;
+    outcome.model.map_err(err)
+}
+
+fn advance_to(store: &mut Store, target: u64) -> Result<(), String> {
+    for _ in 0..128 {
+        execute_action(
+            store,
+            Caller::System,
+            Action::Timeline {
+                command: TimelineCommand::Advance {
+                    target,
+                    limit: 8192,
+                },
+            },
+        )?;
+        if store
+            .engine()
+            .map_err(err)?
+            .timeline()
+            .ok_or("timeline missing")?
+            .progress
+            .target
+            .is_none()
+        {
+            return Ok(());
+        }
+    }
+    Err("timeline did not reach requested boundary".into())
+}
+
+fn project_effect_id(store: &Store) -> Result<u64, String> {
+    let project = store
+        .engine()
+        .map_err(err)?
+        .world()
+        .view()
+        .construction
+        .ok_or("road project missing")?;
+    Ok(OPERATION_PREFIX | (project.id << 32) | u64::from(project.next_effect))
+}
+
+fn construction_action(
+    store: &mut Store,
+    caller: Caller,
+    command: ConstructionCommand,
+) -> Result<(), String> {
+    let view = store.engine().map_err(err)?.world().view();
+    let operation_id = if matches!(
+        command,
+        ConstructionCommand::Start
+            | ConstructionCommand::Work { .. }
+            | ConstructionCommand::SubmitInspection
+            | ConstructionCommand::AcceptInspection { accepted: true, .. }
+    ) {
+        project_effect_id(store)?
+    } else {
+        store.committed_sequence() + 1
+    };
+    let outcome = store
+        .execute(
+            caller,
+            Envelope {
+                world: view.scope.world(),
+                branch: view.scope.branch(),
+                operation_id,
+                expected_revision: view.revision,
+                actions: vec![Action::Construction { command }],
+            },
+        )
+        .map_err(err)?;
+    outcome.model.map_err(err)
+}
+
+/// Store-backed causal scenario: the project pays for a real road-capacity resource, but
+/// traffic remains at the base epoch until inspection is accepted at the settled day boundary.
+fn run_road_effect(dir: &str) -> Result<(), String> {
+    if Path::new(dir).exists() {
+        return Err("store directory already exists".into());
+    }
+    let mut opening = open(2, true);
+    // The project improves the bottleneck direction; the return leg has spare capacity already.
+    opening.edges[1].capacity_people = 10;
+    let assignment = opening.assign().map_err(err)?;
+    let partitions = [TripPartition {
+        quote_id: 1,
+        outbound_source: 101,
+        return_source: 102,
+        trip_count: 10,
+        goods_per_trip: Quantity::new(20).map_err(err)?,
+    }];
+    let allocation = Allocation {
+        schema: 1,
+        world_id: 1,
+        branch_id: 1,
+        market_profile_id: 1,
+        period_seconds: DAY as u32,
+        allocation_scope: AllocationScope::SingleTownExclusive,
+        demand_repeat_policy: DemandRepeatPolicy::RepeatFixedDailyDemand,
+        road_capacity_effect: Some(RoadCapacityEffectBinding {
+            project_id: 7,
+            resource_id: 81,
+            edge_id: 10,
+            base_capacity_people: 2,
+            added_capacity_people: 8,
+        }),
+        opening: &opening,
+        assignment: &assignment,
+        partitions: &partitions,
+        fee_policy: FeePolicyInput {
+            provider_account: 1,
+            cents_per_travel_second: 1,
+        },
+    };
+    let allocation_bytes = serde_json::to_vec(&allocation).map_err(err)?;
+    let mut project = Project::new(
+        7,
+        Kind::Build,
+        4,
+        3,
+        1,
+        80,
+        1,
+        1,
+        Money::new(1_000_000).map_err(err)?,
+        Money::new(3_600).map_err(err)?,
+        28_800,
+        &[
+            Gate {
+                id: 1,
+                category: GateCategory::OwnerConsent,
+                evidence_id: 0,
+                party: 2,
+                decided: GateDecision::Pending,
+            },
+            Gate {
+                id: 2,
+                category: GateCategory::Permit,
+                evidence_id: 0,
+                party: 1,
+                decided: GateDecision::Pending,
+            },
+        ],
+        &[Material {
+            stock_id: 1,
+            required: Quantity::new(1_000).map_err(err)?,
+            consumed: Quantity::ZERO,
+            basis_per_unit: Money::new(400).map_err(err)?,
+            basis_remainder: 0,
+        }],
+        GameTime::ZERO,
+    )
+    .map_err(err)?;
+    project.operating_resource = 81;
+    project.operating_base_capacity = 2;
+    project.operating_units = 8;
+    project.operating_edge_id = 10;
+    let opening_bytes = opening_with_road_project(hash(&allocation_bytes), &project);
+    let mut store = Store::create_with_transport_allocation_profile(
+        Path::new(dir),
+        &opening_bytes,
+        vec![
+            Resource::new(80, 1).map_err(err)?,
+            Resource::new(81, 2).map_err(err)?,
+        ],
+        RULES,
+        &allocation_bytes,
+    )
+    .map_err(err)?;
+    let initial_cash_total: i128 = store
+        .engine()
+        .map_err(err)?
+        .world()
+        .view()
+        .accounts
+        .iter()
+        .map(|account| i128::from(account.cash.value()))
+        .sum();
+
+    for (caller, command) in [
+        (Caller::Account(4), ConstructionCommand::File),
+        (
+            Caller::Account(2),
+            ConstructionCommand::DecideGate {
+                gate_id: 1,
+                decision: GateDecision::Accepted,
+                evidence_id: 701,
+            },
+        ),
+        (
+            Caller::Account(1),
+            ConstructionCommand::DecideGate {
+                gate_id: 2,
+                decision: GateDecision::Accepted,
+                evidence_id: 702,
+            },
+        ),
+        (Caller::Account(4), ConstructionCommand::Prepare),
+        (Caller::Account(4), ConstructionCommand::Start),
+    ] {
+        construction_action(&mut store, caller, command)?;
+    }
+    execute_action(
+        &mut store,
+        Caller::System,
+        Action::Timeline {
+            command: TimelineCommand::Enable,
+        },
+    )?;
+    advance_to(&mut store, SHIFT_END)?;
+    construction_action(
+        &mut store,
+        Caller::Account(3),
+        ConstructionCommand::Work {
+            at: GameTime::new(SHIFT_END as i64).map_err(err)?,
+            elapsed_seconds: SHIFT_END as u32,
+            worker_seconds: 28_800,
+        },
+    )?;
+    construction_action(
+        &mut store,
+        Caller::Account(3),
+        ConstructionCommand::SubmitInspection,
+    )?;
+
+    let midday_state = store.state_hash().map_err(err)?;
+    let midday_view = store.engine().map_err(err)?.world().view();
+    let midday = store.execute(
+        Caller::Account(1),
+        Envelope {
+            world: midday_view.scope.world(),
+            branch: midday_view.scope.branch(),
+            operation_id: store.committed_sequence() + 1,
+            expected_revision: midday_view.revision,
+            actions: vec![Action::Construction {
+                command: ConstructionCommand::AcceptInspection {
+                    inspector: 1,
+                    accepted: true,
+                },
+            }],
+        },
+    );
+    let midday_rejected = match midday {
+        Ok(outcome) => outcome.model.is_err(),
+        Err(_) => true,
+    };
+    if !midday_rejected || store.state_hash().map_err(err)? != midday_state {
+        return Err("midday inspection acceptance changed the world".into());
+    }
+    advance_to(&mut store, DAY)?;
+    let unsettled_state = store.state_hash().map_err(err)?;
+    let unsettled_view = store.engine().map_err(err)?.world().view();
+    let unsettled = store.execute(
+        Caller::Account(1),
+        Envelope {
+            world: unsettled_view.scope.world(),
+            branch: unsettled_view.scope.branch(),
+            operation_id: store.committed_sequence() + 1,
+            expected_revision: unsettled_view.revision,
+            actions: vec![Action::Construction {
+                command: ConstructionCommand::AcceptInspection {
+                    inspector: 1,
+                    accepted: true,
+                },
+            }],
+        },
+    );
+    let unsettled_rejected = match unsettled {
+        Ok(outcome) => outcome.model.is_err(),
+        Err(_) => true,
+    };
+    if !unsettled_rejected || store.state_hash().map_err(err)? != unsettled_state {
+        return Err("inspection before day-one market settlement changed the world".into());
+    }
+    let before_first_day = store.engine().map_err(err)?.world().view();
+    let first_provider_cash = before_first_day
+        .accounts
+        .iter()
+        .find(|account| account.id == 1)
+        .ok_or("tariff provider account missing")?
+        .cash
+        .value();
+    store
+        .settle_town_market(80_001)
+        .map_err(err)?
+        .model
+        .map_err(err)?;
+    let day_one = store.engine().map_err(err)?.world().view();
+    let day_one_market = day_one.town.ok_or("town missing")?;
+    if day_one_market.state.last_summary.actual_sales.value() != 40
+        || day_one.construction.unwrap().operating_published
+        || store
+            .engine()
+            .map_err(err)?
+            .resources()
+            .iter()
+            .find(|resource| resource.id == 81)
+            .ok_or("road resource missing")?
+            .capacity
+            != 2
+    {
+        return Err("road capacity became effective before inspection acceptance".into());
+    }
+    let first_proof = day_one_market
+        .state
+        .last_transport
+        .unwrap()
+        .issued_proof_sha256;
+    construction_action(
+        &mut store,
+        Caller::Account(1),
+        ConstructionCommand::AcceptInspection {
+            inspector: 1,
+            accepted: true,
+        },
+    )?;
+    let published = store.engine().map_err(err)?.world().view();
+    if published.construction.unwrap().operating_published_at
+        != Some(GameTime::new(DAY as i64).map_err(err)?)
+        || store
+            .engine()
+            .map_err(err)?
+            .resources()
+            .iter()
+            .find(|resource| resource.id == 81)
+            .ok_or("road resource missing after publication")?
+            .capacity
+            != 10
+    {
+        return Err("accepted road project did not publish atomically".into());
+    }
+    if store.settle_town_market(80_002).is_ok() {
+        return Err("second settlement for the same completed day was accepted".into());
+    }
+    let demolition = construction_action(
+        &mut store,
+        Caller::Account(4),
+        ConstructionCommand::BeginDemolition { waste_receiver: 3 },
+    );
+    if demolition.is_ok() {
+        return Err("irreversible road effect allowed demolition".into());
+    }
+    advance_to(&mut store, 2 * DAY)?;
+    store
+        .settle_town_market(80_003)
+        .map_err(err)?
+        .model
+        .map_err(err)?;
+    let day_two = store.engine().map_err(err)?.world().view();
+    let day_two_market = day_two.town.ok_or("town missing after day two")?;
+    if day_two_market.state.last_summary.actual_sales.value() != 200
+        || day_two_market.state.last_transport.unwrap().issued_day != 2
+        || day_two_market
+            .state
+            .last_transport
+            .unwrap()
+            .consumed_generation
+            != 2
+    {
+        return Err("next-day road epoch did not unlock the expected 200 sales".into());
+    }
+    let second_proof = day_two_market
+        .state
+        .last_transport
+        .unwrap()
+        .issued_proof_sha256;
+    let day_two_provider_cash = day_two
+        .accounts
+        .iter()
+        .find(|account| account.id == 1)
+        .ok_or("tariff provider account missing after day two")?
+        .cash
+        .value();
+    if day_two_provider_cash - first_provider_cash
+        != day_one_market.state.last_summary.freight.value()
+            + day_two_market.state.last_summary.freight.value()
+        || first_proof == second_proof
+    {
+        return Err("road service freight or daily proof generation did not reconcile".into());
+    }
+    let construction = day_two.construction.unwrap();
+    if construction.materials[0].consumed != Quantity::new(1_000).map_err(err)?
+        || day_two
+            .stocks
+            .iter()
+            .find(|stock| stock.id == 1)
+            .unwrap()
+            .quantity
+            .value()
+            != 599_000
+    {
+        return Err("construction material did not debit the real inventory".into());
+    }
+    let cash_total = |accounts: &[mycity_core::assembly::AccountView]| -> i128 {
+        accounts
+            .iter()
+            .map(|account| i128::from(account.cash.value()))
+            .sum()
+    };
+    if initial_cash_total != cash_total(&day_two.accounts) {
+        return Err("construction and market transactions did not conserve city cash".into());
+    }
+    store.checkpoint().map_err(err)?;
+    let committed = store.state_hash().map_err(err)?;
+    drop(store);
+    let recovered = Store::open(Path::new(dir), RULES).map_err(err)?;
+    if recovered.state_hash().map_err(err)? != committed
+        || recovered.receipt(80_001).map_err(err)?.is_none()
+        || recovered.receipt(80_003).map_err(err)?.is_none()
+    {
+        return Err("cold recovery did not preserve road publication and historical proofs".into());
+    }
+    println!(
+        "{}",
+        serde_json::to_string_pretty(&serde_json::json!({
+            "scenario":"road-effect",
+            "day_one_sales_before_acceptance":day_one_market.state.last_summary.actual_sales.value(),
+            "day_two_sales_after_acceptance":day_two_market.state.last_summary.actual_sales.value(),
+            "capacity_base":2,
+            "capacity_after_accepted_inspection":10,
+            "published_at":DAY,
+            "old_day_proof_hash":first_proof,
+            "new_day_proof_hash":second_proof,
+            "same_day_duplicate":"rejected",
+            "midday_inspection":"rejected_without_state_change",
+            "unsettled_boundary_inspection":"rejected_without_state_change",
+            "demolition":"rejected",
+            "real_material_debit":construction.materials[0].consumed.value(),
+            "cash_conservation":"passed",
+            "cold_recovery":"passed"
+        }))
+        .map_err(err)?
+    );
+    Ok(())
 }
 
 fn assert_untrusted_action_rejected(
@@ -274,10 +739,13 @@ fn main() {
 
 fn run() -> Result<(), String> {
     let mut args = env::args().skip(1);
-    let scenario = args
-        .next()
-        .ok_or("usage: town_transport <normal|closed|bottleneck|expanded> <new-store-dir>")?;
+    let scenario = args.next().ok_or(
+        "usage: town_transport <normal|closed|bottleneck|expanded|road-effect> <new-store-dir>",
+    )?;
     let dir = args.next().ok_or("missing_store_dir")?;
+    if scenario == "road-effect" {
+        return run_road_effect(&dir);
+    }
     let (capacity, is_open, expected) = match scenario.as_str() {
         "normal" => (5, true, 100),
         "closed" => (10, false, 0),
@@ -305,6 +773,7 @@ fn run() -> Result<(), String> {
         period_seconds: DAY as u32,
         allocation_scope: AllocationScope::SingleTownExclusive,
         demand_repeat_policy: DemandRepeatPolicy::RepeatFixedDailyDemand,
+        road_capacity_effect: None,
         opening: &opening,
         assignment: &assignment,
         partitions: &partitions,

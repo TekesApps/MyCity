@@ -492,15 +492,20 @@ impl Store {
                     .view()
                     .town
                     .ok_or(Error::Invalid("town_missing"))?;
-                Some(town_transport::validate_allocation(
+                let profile = town_transport::validate_allocation(
                     bytes,
                     engine.world().view().scope.world(),
                     engine.world().view().scope.branch(),
                     town.profile.id,
                     hash,
-                )?)
+                )?;
+                town_transport::validate_allocation_project(&engine, &profile)?;
+                Some(profile)
             }
-            (None, None) => None,
+            (None, None) => {
+                town_transport::validate_no_orphan_road_project(&engine)?;
+                None
+            }
             _ => return Err(Error::Invalid("town_transport_profile_reference")),
         };
         drop(allocation_profile);
@@ -744,15 +749,18 @@ impl Store {
                 .view()
                 .town
                 .ok_or(Error::Invalid("town_transport_market_missing"))?;
-            Some(town_transport::read_allocation(
+            let profile = town_transport::read_allocation(
                 dir,
                 &mut metadata,
                 &hash,
                 genesis_engine.world().view().scope.world(),
                 genesis_engine.world().view().scope.branch(),
                 town.profile.id,
-            )?)
+            )?;
+            town_transport::validate_allocation_project(&genesis_engine, &profile)?;
+            Some(profile)
         } else {
+            town_transport::validate_no_orphan_road_project(&genesis_engine)?;
             None
         };
         if root.checkpoint_layout != genesis.checkpoint_layout
@@ -806,6 +814,7 @@ impl Store {
                 reference,
                 transport_profile.as_ref(),
                 transport_profile_hash,
+                &genesis_engine,
                 &mut metadata,
             )?;
         }
@@ -907,6 +916,7 @@ impl Store {
                     .as_ref()
                     .ok_or(Error::Invalid("town_transport_profile_missing"))?;
                 let input = town_transport::verify_proof_matches_allocation(
+                    &engine,
                     proof,
                     profile,
                     transport_profile_hash

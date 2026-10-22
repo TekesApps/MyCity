@@ -126,6 +126,19 @@ pub enum DemandRepeatPolicy {
     RepeatFixedDailyDemand,
 }
 
+/// A one-time, project-funded increase to one already-open road edge. The immutable profile
+/// is genesis-bound; runtime capacity is derived only from the Engine project's inspection
+/// publication timestamp.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct RoadCapacityEffectBinding {
+    pub project_id: u64,
+    pub resource_id: u32,
+    pub edge_id: u32,
+    pub base_capacity_people: u32,
+    pub added_capacity_people: u32,
+}
+
 /// Immutable world-owned allocation assumptions. The World stores only this asset's SHA-256;
 /// exact records remain in Store's bounded external file.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -138,6 +151,9 @@ pub struct TransportAllocationProfile {
     pub period_seconds: u32,
     pub allocation_scope: AllocationScope,
     pub demand_repeat_policy: DemandRepeatPolicy,
+    /// Optional single irreversible road project. Missing means the legacy fixed profile.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub road_capacity_effect: Option<RoadCapacityEffectBinding>,
     pub opening: Opening,
     pub assignment: Assignment,
     #[serde(deserialize_with = "partitions")]
@@ -162,6 +178,33 @@ impl TransportAllocationProfile {
         self.opening
             .validate()
             .map_err(|_| Error::InvalidTransport)?;
+        if let Some(effect) = self.road_capacity_effect {
+            if effect.project_id == 0
+                || effect.resource_id == 0
+                || effect.edge_id == 0
+                || effect.base_capacity_people == 0
+                || effect.added_capacity_people == 0
+            {
+                return Err(Error::InvalidTransport);
+            }
+            let edge = self
+                .opening
+                .edges
+                .iter()
+                .find(|edge| edge.id == effect.edge_id)
+                .ok_or(Error::InvalidTransport)?;
+            if !edge.open
+                || edge.capacity_people != effect.base_capacity_people
+                || edge.city_from != edge.city_to
+                || edge.boundary_source.is_some()
+            {
+                return Err(Error::InvalidTransport);
+            }
+            effect
+                .base_capacity_people
+                .checked_add(effect.added_capacity_people)
+                .ok_or(Error::Overflow)?;
+        }
         self.assignment
             .verify(&self.opening)
             .map_err(|_| Error::InvalidAssignment)?;
@@ -174,6 +217,49 @@ impl TransportAllocationProfile {
             return Err(Error::InvalidPartition);
         }
         Ok(())
+    }
+
+    /// Derive the exact immutable input epoch for one service day. Acceptance at a fully
+    /// settled midnight d first affects service day d+1. Project state is Engine-owned.
+    pub fn derive_for_day(
+        &self,
+        service_day: u64,
+        published_at: Option<crate::units::GameTime>,
+    ) -> Result<(Opening, Assignment), Error> {
+        if self.period_seconds == 0 {
+            return Err(Error::InvalidTransport);
+        }
+        let Some(effect) = self.road_capacity_effect else {
+            return Ok((self.opening.clone(), self.assignment.clone()));
+        };
+        let mut opening = self.opening.clone();
+        let active = if let Some(at) = published_at {
+            let seconds = u64::try_from(at.value()).map_err(|_| Error::InvalidTransport)?;
+            if seconds % u64::from(self.period_seconds) != 0 {
+                return Err(Error::InvalidTransport);
+            }
+            let first_active_day = seconds
+                .checked_div(u64::from(self.period_seconds))
+                .and_then(|day| day.checked_add(1))
+                .ok_or(Error::Overflow)?;
+            service_day >= first_active_day
+        } else {
+            false
+        };
+        if active {
+            let edge = opening
+                .edges
+                .iter_mut()
+                .find(|edge| edge.id == effect.edge_id)
+                .ok_or(Error::InvalidTransport)?;
+            edge.capacity_people = edge
+                .capacity_people
+                .checked_add(effect.added_capacity_people)
+                .ok_or(Error::Overflow)?;
+            opening.revision = opening.revision.checked_add(1).ok_or(Error::Overflow)?;
+        }
+        let assignment = opening.assign().map_err(|_| Error::InvalidAssignment)?;
+        Ok((opening, assignment))
     }
 }
 
@@ -626,6 +712,94 @@ mod proof_schema_tests {
         BoundaryFlow, DemandOutcome, EdgeFlow, Entrance, Node, OdDemand, PathReceipt, RoadEdge,
         Unserved,
     };
+
+    #[test]
+    fn legacy_transport_profile_omits_absent_road_effect() {
+        let opening = Opening {
+            revision: 1,
+            nodes: vec![Node { id: 1, city_id: 1 }],
+            edges: Vec::new(),
+            entrances: Vec::new(),
+            demands: Vec::new(),
+        };
+        let profile = TransportAllocationProfile {
+            schema: 1,
+            world_id: 1,
+            branch_id: 1,
+            market_profile_id: 1,
+            period_seconds: crate::timeline::DAY as u32,
+            allocation_scope: AllocationScope::SingleTownExclusive,
+            demand_repeat_policy: DemandRepeatPolicy::RepeatFixedDailyDemand,
+            road_capacity_effect: None,
+            assignment: opening.assign().unwrap(),
+            opening,
+            partitions: Vec::new(),
+            fee_policy: FeePolicyInput {
+                provider_account: 1,
+                cents_per_travel_second: 0,
+            },
+        };
+        let json = serde_json::to_value(&profile).unwrap();
+        assert!(json.get("road_capacity_effect").is_none());
+        let restored: TransportAllocationProfile = serde_json::from_value(json.clone()).unwrap();
+        assert_eq!(restored.road_capacity_effect, None);
+        assert_eq!(serde_json::to_value(restored).unwrap(), json);
+    }
+
+    #[test]
+    fn road_project_changes_capacity_only_after_the_published_day() {
+        let opening = Opening {
+            revision: 7,
+            nodes: vec![Node { id: 1, city_id: 1 }, Node { id: 2, city_id: 1 }],
+            edges: vec![RoadEdge {
+                id: 9,
+                from: 1,
+                to: 2,
+                city_from: 1,
+                city_to: 1,
+                free_flow_seconds: 20,
+                capacity_people: 40,
+                mode_mask: 1,
+                open: true,
+                boundary_source: None,
+            }],
+            entrances: Vec::new(),
+            demands: Vec::new(),
+        };
+        let profile = TransportAllocationProfile {
+            schema: 1,
+            world_id: 1,
+            branch_id: 1,
+            market_profile_id: 1,
+            period_seconds: crate::timeline::DAY as u32,
+            allocation_scope: AllocationScope::SingleTownExclusive,
+            demand_repeat_policy: DemandRepeatPolicy::RepeatFixedDailyDemand,
+            road_capacity_effect: Some(RoadCapacityEffectBinding {
+                project_id: 2,
+                resource_id: 3,
+                edge_id: 9,
+                base_capacity_people: 40,
+                added_capacity_people: 160,
+            }),
+            assignment: opening.assign().unwrap(),
+            opening,
+            partitions: Vec::new(),
+            fee_policy: FeePolicyInput {
+                provider_account: 1,
+                cents_per_travel_second: 0,
+            },
+        };
+        let accepted_at = crate::units::GameTime::new(2 * crate::timeline::DAY).unwrap();
+        let (same_day, _) = profile.derive_for_day(2, Some(accepted_at)).unwrap();
+        let (next_day, assignment) = profile.derive_for_day(3, Some(accepted_at)).unwrap();
+        assert_eq!(same_day.edges[0].capacity_people, 40);
+        assert_eq!(same_day.revision, 7);
+        assert_eq!(next_day.edges[0].capacity_people, 200);
+        assert_eq!(next_day.revision, 8);
+        assert!(next_day.edges[0].open);
+        assert_eq!(next_day.edges[0].mode_mask, 1);
+        assignment.verify(&next_day).unwrap();
+    }
 
     #[test]
     fn maximal_bounded_transport_json_fits_the_frozen_schema_limit() {

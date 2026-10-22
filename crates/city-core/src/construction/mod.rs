@@ -11,6 +11,10 @@ pub const STATE_BUDGET_BYTES: usize = 2048;
 /// C namespace avoids the existing D-prefixed system/background operation IDs.
 pub const OPERATION_PREFIX: u64 = 0xc000_0000_0000_0000;
 
+fn is_zero_u32(value: &u32) -> bool {
+    *value == 0
+}
+
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Gate {
@@ -283,6 +287,12 @@ pub struct Project {
     /// Exact contribution currently included in Resource.capacity.
     #[serde(default)]
     pub operating_published: bool,
+    /// Non-zero only for a genesis-bound, one-way road capacity effect project.
+    #[serde(default, skip_serializing_if = "is_zero_u32")]
+    pub operating_edge_id: u32,
+    /// Authoritative time at which inspection published the contribution.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub operating_published_at: Option<GameTime>,
     pub crew: u16,
     pub budget: Money,
     pub spent: Money,
@@ -317,6 +327,52 @@ pub struct Project {
     pub inspected: bool,
     pub waste_accepted: bool,
     pub failure_count: u32,
+}
+
+#[cfg(test)]
+mod road_effect_legacy_serde_tests {
+    use super::*;
+
+    #[test]
+    fn legacy_project_defaults_new_road_fields_without_changing_json() {
+        let project = Project::new(
+            7,
+            Kind::Build,
+            4,
+            3,
+            1,
+            80,
+            1,
+            1,
+            Money::new(1_000_000).unwrap(),
+            Money::new(3_600).unwrap(),
+            28_800,
+            &[Gate {
+                id: 1,
+                category: GateCategory::Permit,
+                evidence_id: 0,
+                party: 1,
+                decided: GateDecision::Pending,
+            }],
+            &[Material {
+                stock_id: 1,
+                required: Quantity::new(1_000).unwrap(),
+                consumed: Quantity::ZERO,
+                basis_per_unit: Money::new(400).unwrap(),
+                basis_remainder: 0,
+            }],
+            GameTime::new(0).unwrap(),
+        )
+        .unwrap();
+        let legacy = serde_json::to_value(project).unwrap();
+        let object = legacy.as_object().unwrap();
+        assert!(!object.contains_key("operating_edge_id"));
+        assert!(!object.contains_key("operating_published_at"));
+        let restored: Project = serde_json::from_value(legacy.clone()).unwrap();
+        assert_eq!(restored.operating_edge_id, 0);
+        assert_eq!(restored.operating_published_at, None);
+        assert_eq!(serde_json::to_value(restored).unwrap(), legacy);
+    }
 }
 fn work_window_capacity(from: GameTime, to: GameTime, crew: u16) -> Result<u64, Error> {
     let mut t = from.value();
@@ -357,9 +413,22 @@ impl Project {
             || (self.operating_resource == 0
                 && (self.operating_base_capacity != 0
                     || self.operating_units != 0
-                    || self.operating_published))
+                    || self.operating_published
+                    || self.operating_edge_id != 0
+                    || self.operating_published_at.is_some()))
             || (self.operating_resource != 0 && self.operating_units == 0)
             || (self.operating_published && self.operating_resource == 0)
+            || (self.operating_edge_id != 0
+                && (self.operating_resource == 0
+                    || self.operating_base_capacity == 0
+                    || self.kind != Kind::Build))
+            || (self.operating_published_at.is_some() && !self.operating_published)
+            || (self.operating_published_at.is_some() && self.operating_edge_id == 0)
+            || (self.operating_edge_id != 0
+                && self.operating_published != self.operating_published_at.is_some())
+            || self
+                .operating_published_at
+                .is_some_and(|at| at.value() < 0 || at.value() % crate::timeline::DAY != 0)
             || self.crew == 0
             || self.budget == Money::ZERO
             || self.labor_cents_per_hour == Money::ZERO
@@ -528,6 +597,8 @@ impl Project {
             operating_base_capacity: 0,
             operating_units: 0,
             operating_published: false,
+            operating_edge_id: 0,
+            operating_published_at: None,
             crew,
             budget,
             spent: Money::ZERO,
@@ -988,6 +1059,9 @@ impl Project {
             EffectKind::Inspect => self.phase = Phase::Inspection,
             EffectKind::PublishOperatingCapacity => {
                 self.operating_published = true;
+                if self.operating_edge_id != 0 {
+                    self.operating_published_at = self.pending_at;
+                }
                 self.phase = Phase::Operational;
             }
             EffectKind::WithdrawOperatingCapacity => {

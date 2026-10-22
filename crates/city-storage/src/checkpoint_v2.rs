@@ -162,6 +162,14 @@ pub(super) fn open_into(
     }
     let mut cursor = s.receipts.clone();
     let mut next = s.current.sequence;
+    // Restore the authoritative current Engine before archive verification. A road-effect
+    // proof's historical epoch is derived from its service day and this persisted publication
+    // timestamp, never from a caller-provided capacity or the current edge alone.
+    restore_world_into(
+        &dir.join(world_name(s.current.generation)),
+        &world_identity(&s.current),
+        slot,
+    )?;
     let mut transport_refs = town_transport::ArchivedProofRefs::new()?;
     while let Some(r) = cursor {
         let i = index(dir, &r)?;
@@ -178,7 +186,13 @@ pub(super) fn open_into(
         if let Some(error) = capture_error {
             return Err(error);
         }
-        transport_refs.verify(dir, meta, transport_profile, transport_allocation_hash)?;
+        transport_refs.verify(
+            dir,
+            meta,
+            slot.engine().map_err(Error::Model)?,
+            transport_profile,
+            transport_allocation_hash,
+        )?;
         next = i.first - 1;
         cursor = i.previous;
     }
@@ -193,11 +207,6 @@ pub(super) fn open_into(
             4 * 1024 * 1024,
         )?;
     }
-    restore_world_into(
-        &dir.join(world_name(s.current.generation)),
-        &world_identity(&s.current),
-        slot,
-    )?;
     Ok((s.current.sequence, s.current.chain))
 }
 pub(super) fn lookup(
