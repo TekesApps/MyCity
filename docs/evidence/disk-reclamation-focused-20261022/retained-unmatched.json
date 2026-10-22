@@ -1,0 +1,18 @@
+[
+  {
+    "path": "work/m0-t13a-extents-joint-l1-01/observed/model/layout/snapshots/snapshot-000001/models.json",
+    "reason": "no existing lossless archive; retain original"
+  },
+  {
+    "path": "work/m0-t13a-extents-joint-l1-01/observed/model/layout/snapshots/snapshot-000001/preview.json",
+    "reason": "no existing lossless archive; retain original"
+  },
+  {
+    "path": "work/m0-t13a-extents-joint-l1-01/observed/model/layout/snapshots/snapshot-000002/models.json",
+    "reason": "no existing lossless archive; retain original"
+  },
+  {
+    "path": "work/m0-t13a-extents-joint-l1-01/observed/model/layout/snapshots/snapshot-000002/preview.json",
+    "reason": "no existing lossless archive; retain original"
+  }
+]

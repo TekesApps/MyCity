@@ -1,4 +1,6 @@
-# R07 extent full-L1 joint diagnostic preparation
+# R07 extent full-L1 joint diagnostic preparation (historical)
+
+**Current result:** See [STATUS.md](STATUS.md). The actual controller failed on a transient missing ack; both generated snapshots passed independent cold restore afterwards. The exact four pressure/reserve files have now retired, so neither original snapshot is directly restorable. Source/executable/raw/index/restore reports remain. The preparation notes below describe the pre-run state, not current availability.
 
 This directory contains a prepared, **not run** external diagnostic for the
 original M0-T13-A full L1 workload. It does not relax workload, coverage,

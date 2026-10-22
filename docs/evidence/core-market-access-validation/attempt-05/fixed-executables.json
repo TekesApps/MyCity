@@ -1,0 +1,31 @@
+{
+  "source_archive_sha256": "142b1961a1c3c16a676d31c6a315ed21ec01665b7f09f8a960ecfb21f79e6f9e",
+  "source_fingerprint_kind": "tar archive SHA, not Rust stream fingerprint",
+  "files": [
+    {
+      "name": "market_access",
+      "original": "/Users/frankqin/dev/MyCity-core-work/market-access/docs/evidence/core-market-access-validation/attempt-05/fixed-binaries/market_access",
+      "fixed": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-market-access/142b1961a1c3c16a676d31c6a315ed21ec01665b7f09f8a960ecfb21f79e6f9e/market_access",
+      "sha256": "95bf529c721b749a5fd83439278fa8c5a12d4cb822e4903272439c9faaa881ac",
+      "bytes": 741872,
+      "same_inode_device": true
+    },
+    {
+      "name": "transport-tests",
+      "original": "/Users/frankqin/dev/MyCity-core-work/market-access/docs/evidence/core-market-access-validation/attempt-05/fixed-binaries/transport-tests",
+      "fixed": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-market-access/142b1961a1c3c16a676d31c6a315ed21ec01665b7f09f8a960ecfb21f79e6f9e/transport-tests",
+      "sha256": "28e0c185e4b3354daffc23a7d2a523fc78386cdca5df01113595446b767feac4",
+      "bytes": 3190608,
+      "same_inode_device": true
+    },
+    {
+      "name": "market-access-tests",
+      "original": "/Users/frankqin/dev/MyCity-core-work/market-access/docs/evidence/core-market-access-validation/attempt-05/fixed-binaries/market-access-tests",
+      "fixed": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-market-access/142b1961a1c3c16a676d31c6a315ed21ec01665b7f09f8a960ecfb21f79e6f9e/market-access-tests",
+      "sha256": "0edfe581de313702839320cef692a8571318f7c558555b1d3343f6cb2608e346",
+      "bytes": 1286160,
+      "same_inode_device": true
+    }
+  ],
+  "scope": "independent branch source, not the current combined source"
+}

@@ -1,0 +1,4 @@
+{
+  "reason": "rsync truncates subsecond mtimes; byte copy passed but strict nanosecond check stopped before switch",
+  "remedy": "restored exact source mtime_ns and reverified every byte, mode and internal hardlink group before switching"
+}

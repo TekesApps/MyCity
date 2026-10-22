@@ -1,0 +1,18 @@
+[
+  {
+    "execution_path": "source-manifest.json",
+    "retained_lossless_archive": "source-manifest.json.gz",
+    "original_sha256": "962c51a90e54097183b3941fea006bf3819afe112acbc76e3e89f076286e3d77",
+    "gzip_sha256": "177a44bd505910679a70873ff63bf5171706862d229724238e47d31b0aad74eb",
+    "original_bytes": 3186612,
+    "gzip_bytes": 530810
+  },
+  {
+    "execution_path": "destination-manifest.json",
+    "retained_lossless_archive": "destination-manifest.json.gz",
+    "original_sha256": "db3306c11a67bb1bf0e56d2788e2073441c21ba89181e73fbafea15b80112b10",
+    "gzip_sha256": "2c101f688bcac30d1300ea5f9e8fe782b9b9d28400f9aa2bdda171734408fdb2",
+    "original_bytes": 3154293,
+    "gzip_bytes": 519665
+  }
+]

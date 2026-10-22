@@ -1,0 +1,3 @@
+# Narrow release decision
+
+provider_advisor46 independently checked this failed diagnostic and both fresh-process cold restore reports on 2026-10-22. Only the four pressure.bin/work-reserve.bin paths in this run's snapshot-000001 and snapshot-000002 may retire. The external controller failed on a missing ack, not a pressure payload corruption; both complete payloads loaded and scanned successfully afterwards. All original processes exited and no handles remained at review. This is not joint or formal acceptance. Keep raw, index, source, executable and cold reports. Existing protected190 original files remain immutable. Other component files are not authorized by this release and are retained pending exact archive comparison after the retry.

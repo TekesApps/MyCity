@@ -1,0 +1,30 @@
+       Fresh version_check v0.9.5
+       Fresh find-msvc-tools v0.1.15
+       Fresh typenum v1.20.1
+       Fresh unicode-ident v1.0.27
+       Fresh shlex v2.0.1
+       Fresh cc v1.9.0
+       Fresh itoa v1.0.18
+       Fresh generic-array v0.14.7
+       Fresh proc-macro2 v1.0.107
+       Fresh libc v0.2.191
+       Fresh serde_core v1.0.229
+       Fresh zmij v1.0.23
+       Fresh cfg-if v1.0.5
+       Fresh memchr v2.8.3
+       Fresh quote v1.0.47
+       Fresh crypto-common v0.1.7
+       Fresh block-buffer v0.10.4
+       Fresh cpufeatures v0.2.17
+       Fresh serde_json v1.0.149
+       Fresh syn v3.0.9
+       Fresh sha2-asm v0.6.4
+       Fresh digest v0.10.7
+       Fresh serde_derive v1.0.229
+       Fresh sha2 v0.10.9
+       Fresh serde v1.0.229
+       Dirty mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core): dependency info changed
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+     Running `/Users/frankqin/.rustup/toolchains/1.85.1-aarch64-apple-darwin/bin/rustc --crate-name mycity_core --edition=2021 crates/city-core/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --emit=dep-info,link -C opt-level=3 -C embed-bitcode=no --forbid=unsafe_code -C overflow-checks=on --test --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values())' -C metadata=3276454c700567af -C extra-filename=-363f7122bd90a840 --out-dir /Users/frankqin/dev/MyCity/target/release/deps -C strip=debuginfo -L dependency=/Users/frankqin/dev/MyCity/target/release/deps --extern serde=/Users/frankqin/dev/MyCity/target/release/deps/libserde-f5b63cb488197598.rlib --extern serde_json=/Users/frankqin/dev/MyCity/target/release/deps/libserde_json-739cab3222a3d08f.rlib --extern sha2=/Users/frankqin/dev/MyCity/target/release/deps/libsha2-cb89313e42c56623.rlib -L native=/Users/frankqin/dev/MyCity/target/release/build/sha2-asm-7bc95b9d923bba18/out`
+    Finished `release` profile [optimized] target(s) in 19.47s
+     Running `/Users/frankqin/dev/MyCity/target/release/deps/mycity_core-363f7122bd90a840`

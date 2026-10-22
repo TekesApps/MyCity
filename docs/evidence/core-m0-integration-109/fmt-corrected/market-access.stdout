@@ -1,0 +1,17 @@
+
+running 12 tests
+test duplicate_quote_partition_is_rejected ... ok
+test explicit_entrance_owner_binding_rejects_wrong_account ... ok
+test no_return_service_means_no_accessible_sales_or_fake_completion ... ok
+test capacity_shortfall_yields_only_served_roundtrips_and_unmet_market_demand ... ok
+test expanded_capacity_allows_more_sales_from_same_od_demand ... ok
+test missing_or_forged_path_receipt_cannot_supply_access_capacity ... ok
+test same_revision_graph_edit_invalidates_assignment ... ok
+test unauthorized_entrance_is_rejected_even_when_geometrically_at_the_road_node ... ok
+test cross_city_market_roundtrip_reports_only_its_actual_boundary_sources ... ok
+test round_trip_access_caps_goods_and_uses_external_tariff_for_pure_plan ... ok
+test same_od_is_shared_across_goods_without_reissuing_served_trips ... ok
+test unrelated_cross_city_od_does_not_block_local_market_access ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.108`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.109`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.109完成[有限核心集成验证](docs/evidence/core-m0-integration-109/STATUS.md)：221项测试、严格检查和7项CLI通过，交通市场提案与实际28日Engine结算分开报告，家庭仍依靠初始现金，未宣称长期经济平衡或完整联合。完成[历史重复组件回收](docs/evidence/disk-reclamation-focused-20261022/STATUS.md)约382.6MiB及[共享target外置迁移](docs/evidence/target-migration-20261022/STATUS.md)，原路径链接保留、106项迁移回归两次通过，第二次无编译。M0诊断控制器失败及物理超额原文保留；8h/真实16GB仍未测。
 
 v0.5.108完成[有限核心模型合并功能验证](docs/evidence/core-m0-integration-108/STATUS.md)：199项测试、严格Clippy、工程与六个经济CLI通过；合入实际施工/恢复兼容、未落账动态经济planner及价格修复、R07 extent和八小时角色接线。生产28日、拆除废物、真实交通联调及M0正式性能仍待完成，真实16GB/8h未测。新R07候选exe和源码已固定，原负载阈值与失败证据保留；本次未启动压力。
 

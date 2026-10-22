@@ -1,0 +1,19 @@
+{
+  "session_id": 83036,
+  "controller_exit": 1,
+  "error": "TypeError: 'NoneType' object is not subscriptable",
+  "site": "run.py::capture inflight layout: ca['topology']['r07_extents']",
+  "reason": "ack intentionally absent during refresh; external controller did not wait for a valid context",
+  "run_restart": false,
+  "actual_pids_observed_terminal": [
+    72302,
+    72307,
+    72308,
+    72309
+  ],
+  "model_stderr": "work/m0-t13a-extents-joint-l1-01/observed/model.stderr",
+  "observer_report_present": false,
+  "external_concurrent_workload_observed": "Cargo1.95 PID71925 and HP P900 TekesCADPlugin phase1_run PID72025 appeared after preflight; this was never a formal performance run",
+  "performance_acceptance": false,
+  "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2"
+}

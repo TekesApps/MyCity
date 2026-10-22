@@ -1,0 +1,30 @@
+[
+  {
+    "generation": 1,
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/r07-extents/32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2/mycity-headless",
+      "layout-load-only",
+      "/Users/frankqin/dev/MyCity/work/m0-t13a-extents-joint-l1-01/observed/model/layout/snapshots/snapshot-000001",
+      "/Users/frankqin/dev/MyCity/work/m0-t13a-extents-joint-l1-01/independent-cold-after-controller-failure-gen1"
+    ],
+    "exit": 0,
+    "seconds": 4.66072575,
+    "cold_reopen_and_scan": "passed",
+    "report": "/Users/frankqin/dev/MyCity/work/m0-t13a-extents-joint-l1-01/independent-cold-after-controller-failure-gen1/report.json",
+    "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2"
+  },
+  {
+    "generation": 2,
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/r07-extents/32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2/mycity-headless",
+      "layout-load-only",
+      "/Users/frankqin/dev/MyCity/work/m0-t13a-extents-joint-l1-01/observed/model/layout/snapshots/snapshot-000002",
+      "/Users/frankqin/dev/MyCity/work/m0-t13a-extents-joint-l1-01/independent-cold-after-controller-failure-gen2"
+    ],
+    "exit": 0,
+    "seconds": 4.366414125,
+    "cold_reopen_and_scan": "passed",
+    "report": "/Users/frankqin/dev/MyCity/work/m0-t13a-extents-joint-l1-01/independent-cold-after-controller-failure-gen2/report.json",
+    "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2"
+  }
+]

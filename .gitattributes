@@ -27,3 +27,12 @@ docs/evidence/core-economy-validation/**/source.patch whitespace=-blank-at-eof,-
 docs/evidence/core-economy-validation/**/*.raw whitespace=-blank-at-eof,-blank-at-eol
 docs/evidence/core-m0-integration-108/*.stdout whitespace=-blank-at-eof,-blank-at-eol
 docs/evidence/core-economy-main-check/*.stdout whitespace=-blank-at-eof,-blank-at-eol
+
+# Immutable raw receipts for the integrated stage and disk migration.
+docs/evidence/core-m0-integration-109/**/*.stdout whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/target-migration-20261022/*.stdout whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/core-production-validation/**/source.diff whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/core-production-validation/**/*.log whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/core-market-access-validation/**/source/tracked-wip.patch whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/core-market-access-validation/**/*.txt whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/m0-t13a-extents-joint/*.stdout whitespace=-blank-at-eof,-blank-at-eol

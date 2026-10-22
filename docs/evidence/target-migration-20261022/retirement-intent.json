@@ -1,0 +1,12 @@
+{
+  "exact_root": "/Users/frankqin/dev/MyCity/target-migration-original-20261022",
+  "manifest": "source-manifest.json",
+  "file_count": 9167,
+  "unique_allocated_bytes": 2326003712,
+  "allocated_bytes_with_no_external_links": 2326003712,
+  "external_links_retained": [],
+  "free_before": {
+    "/Users/frankqin/dev/MyCity": 88127545344,
+    "/Volumes/HP P900/dev/MyCity": 2018757603328
+  }
+}

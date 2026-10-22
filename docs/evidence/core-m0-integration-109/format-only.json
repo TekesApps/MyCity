@@ -1,0 +1,8 @@
+{
+  "changed": [
+    "crates/city-core/src/lib.rs",
+    "crates/city-core/src/town_economy.rs"
+  ],
+  "rustfmt_1_85_1_old_source_stdout_equals_current_bytes": true,
+  "changed_scope": "only formatting in cfg(test) assertions"
+}

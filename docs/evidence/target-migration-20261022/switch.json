@@ -1,0 +1,13 @@
+{
+  "verified": true,
+  "files": 9167,
+  "source": "/Users/frankqin/dev/MyCity/target",
+  "destination": "/Volumes/HP P900/dev/MyCity/target",
+  "rollback_original": "/Users/frankqin/dev/MyCity/target-migration-original-20261022",
+  "all_file_bytes_modes_mtimes_verified": true,
+  "internal_hardlinks_preserved": true,
+  "free_after_copy": {
+    "/Users/frankqin/dev/MyCity": 88132345856,
+    "/Volumes/HP P900/dev/MyCity": 2018771779584
+  }
+}

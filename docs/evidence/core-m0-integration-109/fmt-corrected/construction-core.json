@@ -1,0 +1,18 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "--release",
+    "--locked",
+    "--offline",
+    "-p",
+    "mycity-core",
+    "--test",
+    "construction",
+    "--test",
+    "construction_engine"
+  ],
+  "exit": 0,
+  "seconds": 2.1430938329999947,
+  "source_sha256": "5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5"
+}

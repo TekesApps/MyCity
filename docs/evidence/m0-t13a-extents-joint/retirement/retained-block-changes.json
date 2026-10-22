@@ -1,0 +1,15 @@
+{
+  "before": [
+    {
+      "path": "work/m0-t13a-extents-joint-l1-01/observed/host-samples.jsonl",
+      "allocated_delta_bytes": -20480
+    }
+  ],
+  "after": [
+    {
+      "path": "work/m0-t13a-extents-joint-l1-01/observed/host-samples.jsonl",
+      "allocated_delta_bytes": -20480
+    }
+  ],
+  "excluded_from_deleted_total": true
+}

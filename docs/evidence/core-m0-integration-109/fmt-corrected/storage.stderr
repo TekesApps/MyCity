@@ -1,0 +1,6 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 35.23s
+     Running tests/construction.rs (target/release/deps/construction-b68fb118295d0565)
+     Running tests/town_market.rs (target/release/deps/town_market-fc275aa083e796f1)

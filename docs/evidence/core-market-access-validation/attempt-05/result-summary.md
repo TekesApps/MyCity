@@ -28,3 +28,5 @@ All CLI records report `pureplan_not_settled` and `engine_commit_required`. Thes
 ## Fixed binaries
 
 `fixed-binaries/` contains hardlinks to the tested release CLI, transport unit-test executable, and adapter-test executable. Their hashes are in `fixed-binaries/SHA256SUMS`; `link-check.txt` records shared inode metadata.
+
+Root integration retained these exact executables as same-inode links under canonical `work/candidate-binaries/core-market-access/<source archive SHA>/`. See `fixed-executables.json` and original fixed-binary checksum/link receipts here. These are the independent branch binaries, not a claim that current combined sources were compiled.

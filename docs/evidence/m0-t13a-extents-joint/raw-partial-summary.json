@@ -1,0 +1,14 @@
+{
+  "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+  "raw_frames": 137,
+  "group_complete_frames": 122,
+  "complete_frame_peak_footprint_bytes": 3332492864,
+  "original_normal_bytes": 3328599654,
+  "excess_bytes": 3893210,
+  "observer_report_missing": true,
+  "controller_failed": true,
+  "four_vm_brackets_passed": false,
+  "formal_performance": "not_accepted",
+  "normal_pass": false,
+  "scope": "Partial diagnostic only. Complete individual frames do not establish successful run or formal window; external workload appeared during this diagnostic. No inferred footprint credits."
+}

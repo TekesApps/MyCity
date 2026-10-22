@@ -1,0 +1,140 @@
+{
+  "commands": [
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--release",
+        "--locked",
+        "--offline",
+        "-p",
+        "mycity-core",
+        "-p",
+        "mycity-headless",
+        "--lib"
+      ],
+      "exit": 0,
+      "seconds": 55.390096875000005,
+      "source_sha256": "5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5"
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--release",
+        "--locked",
+        "--offline",
+        "-p",
+        "mycity-core",
+        "--test",
+        "market_access"
+      ],
+      "exit": 0,
+      "seconds": 24.818239917000007,
+      "source_sha256": "5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5"
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--release",
+        "--locked",
+        "--offline",
+        "-p",
+        "mycity-core",
+        "--test",
+        "construction",
+        "--test",
+        "construction_engine"
+      ],
+      "exit": 0,
+      "seconds": 2.1430938329999947,
+      "source_sha256": "5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5"
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--release",
+        "--locked",
+        "--offline",
+        "-p",
+        "mycity-storage",
+        "--test",
+        "construction",
+        "--test",
+        "town_market"
+      ],
+      "exit": 0,
+      "seconds": 38.040209958000005,
+      "source_sha256": "5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5"
+    },
+    {
+      "command": [
+        "cargo",
+        "clippy",
+        "--release",
+        "--locked",
+        "--offline",
+        "-p",
+        "mycity-core",
+        "-p",
+        "mycity-storage",
+        "-p",
+        "mycity-headless",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit": 0,
+      "seconds": 11.057533833999983,
+      "source_sha256": "5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5"
+    },
+    {
+      "command": [
+        "cargo",
+        "build",
+        "--release",
+        "--locked",
+        "--offline",
+        "-p",
+        "mycity-headless"
+      ],
+      "exit": 0,
+      "seconds": 20.837002374999997,
+      "source_sha256": "5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5"
+    },
+    {
+      "command": [
+        "cargo",
+        "build",
+        "--release",
+        "--locked",
+        "--offline",
+        "-p",
+        "mycity-core",
+        "--examples"
+      ],
+      "exit": 0,
+      "seconds": 1.030043374999991,
+      "source_sha256": "5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5"
+    },
+    {
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit": 0,
+      "seconds": 0.4972222080000108,
+      "source_sha256": "5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5"
+    }
+  ],
+  "source_sha256": "5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5",
+  "functional_checks_passed": true,
+  "formal_performance": "not_run",
+  "full_M0": "not_accepted"
+}

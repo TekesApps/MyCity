@@ -1,0 +1,37 @@
+[
+  {
+    "path": "/Users/frankqin/dev/MyCity",
+    "status": " M crates/city-core/src/lib.rs\n M crates/city-core/src/town_economy.rs\n M docs/evidence/core-market-access-validation/attempt-05/result-summary.md\n M docs/evidence/m0-t13a-extents-joint/README.md\n?? docs/evidence/core-m0-integration-109/\n?? docs/evidence/core-market-access-validation/attempt-05/fixed-executables.json\n?? docs/evidence/core-market-access-validation/attempt-05/original-fixed-SHA256SUMS.txt\n?? docs/evidence/core-market-access-validation/attempt-05/original-fixed-link-check.txt\n?? docs/evidence/disk-reclamation-focused-20261022/\n?? docs/evidence/m0-t13a-extents-joint-retry-01/\n?? docs/evidence/m0-t13a-extents-joint/STATUS.md\n?? docs/evidence/m0-t13a-extents-joint/controller-failure.json\n?? docs/evidence/m0-t13a-extents-joint/idle-layout-72309.json\n?? docs/evidence/m0-t13a-extents-joint/idle-layout-72309.stderr\n?? docs/evidence/m0-t13a-extents-joint/idle-layout-72309.stdout\n?? docs/evidence/m0-t13a-extents-joint/idle-pool-72308.json\n?? docs/evidence/m0-t13a-extents-joint/idle-pool-72308.stderr\n?? docs/evidence/m0-t13a-extents-joint/idle-pool-72308.stdout\n?? docs/evidence/m0-t13a-extents-joint/inflight-layout-72309.stderr\n?? docs/evidence/m0-t13a-extents-joint/inflight-layout-72309.stdout\n?? docs/evidence/m0-t13a-extents-joint/inflight-pool-72308.json\n?? docs/evidence/m0-t13a-extents-joint/inflight-pool-72308.stderr\n?? docs/evidence/m0-t13a-extents-joint/inflight-pool-72308.stdout\n?? docs/evidence/m0-t13a-extents-joint/observer.stderr\n?? docs/evidence/m0-t13a-extents-joint/observer.stdout\n?? docs/evidence/m0-t13a-extents-joint/postfailure-cold-gen1.stderr\n?? docs/evidence/m0-t13a-extents-joint/postfailure-cold-gen1.stdout\n?? docs/evidence/m0-t13a-extents-joint/postfailure-cold-gen2.stderr\n?? docs/evidence/m0-t13a-extents-joint/postfailure-cold-gen2.stdout\n?? docs/evidence/m0-t13a-extents-joint/postfailure-cold.json\n?? docs/evidence/m0-t13a-extents-joint/raw-partial-summary.json\n?? docs/evidence/m0-t13a-extents-joint/retirement/\n?? docs/evidence/m0-t13a-extents-joint/running-experiment.json\n",
+    "tracked_diff_sha256": "f5b7b28c4bdca0ca5268a926d494fb1534da3740643c023719bde7f93165e65a"
+  },
+  {
+    "path": "/Users/frankqin/dev/MyCity-core-work/construction",
+    "status": "",
+    "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "/Users/frankqin/dev/MyCity-core-work/economy",
+    "status": "",
+    "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "/Users/frankqin/dev/MyCity-core-work/market-access",
+    "status": "",
+    "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "/Users/frankqin/dev/MyCity-core-work/production",
+    "status": " M crates/city-core/src/transaction.rs\n M crates/city-storage/tests/town_market.rs\n",
+    "tracked_diff_sha256": "effa7706b064f420b2742706242409ebc7520d908ea47562bbca0d00f94e3b23"
+  },
+  {
+    "path": "/Users/frankqin/dev/MyCity-core-work/r07-extents",
+    "status": " M crates/city-headless/src/layout_load/r07.rs\n M docs/r07-extent-experiment.md\n",
+    "tracked_diff_sha256": "f6d7c69e7ebaee6fb47813e3f75abcba57148cc058b1d4ecaf245ee7c4a24549"
+  },
+  {
+    "path": "/Users/frankqin/dev/MyCity-core-work/transport",
+    "status": "",
+    "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

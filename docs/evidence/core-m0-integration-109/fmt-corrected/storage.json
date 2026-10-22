@@ -1,0 +1,18 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "--release",
+    "--locked",
+    "--offline",
+    "-p",
+    "mycity-storage",
+    "--test",
+    "construction",
+    "--test",
+    "town_market"
+  ],
+  "exit": 0,
+  "seconds": 38.040209958000005,
+  "source_sha256": "5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5"
+}

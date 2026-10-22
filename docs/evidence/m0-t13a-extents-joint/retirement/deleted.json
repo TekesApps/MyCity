@@ -1,0 +1,118 @@
+[
+  {
+    "path": "work/m0-t13a-extents-joint-l1-01/observed/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "round": "m0-t13a-extents-joint-l1-01",
+    "metadata": [
+      16777231,
+      410307704,
+      33188,
+      3039452790,
+      1792646088654389534,
+      5936432,
+      1
+    ],
+    "sha256": "c4eee36b556370ab2407cff0862073de5e1d17c6725a0cdca65c38c63c5e992d",
+    "allocated_bytes": 3039453184,
+    "reason": "terminal rebuildable synthetic load; actual independent cold validation; no next-stage original-path dependency",
+    "retained_evidence": "work/m0-t13a-extents-joint-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json; original raw/reports; docs/evidence/m0-t13a-extents-joint; postfailure-cold reports; fixed source/lock/exe",
+    "index": "work/m0-t13a-extents-joint-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "index_sha256": "6a05c534829b05c977f4081488a560ec1faeef903a3106631036d9172d3a9128",
+    "directly_restorable_after": false,
+    "metadata_at_unlink": [
+      16777231,
+      410307704,
+      33188,
+      3039452790,
+      1792646088654389534,
+      5936432,
+      1
+    ]
+  },
+  {
+    "path": "work/m0-t13a-extents-joint-l1-01/observed/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "round": "m0-t13a-extents-joint-l1-01",
+    "metadata": [
+      16777231,
+      410308038,
+      33188,
+      134217728,
+      1792646088824978154,
+      262144,
+      1
+    ],
+    "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee",
+    "allocated_bytes": 134217728,
+    "reason": "terminal rebuildable synthetic load; actual independent cold validation; no next-stage original-path dependency",
+    "retained_evidence": "work/m0-t13a-extents-joint-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json; original raw/reports; docs/evidence/m0-t13a-extents-joint; postfailure-cold reports; fixed source/lock/exe",
+    "index": "work/m0-t13a-extents-joint-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "index_sha256": "6a05c534829b05c977f4081488a560ec1faeef903a3106631036d9172d3a9128",
+    "directly_restorable_after": false,
+    "metadata_at_unlink": [
+      16777231,
+      410308038,
+      33188,
+      134217728,
+      1792646088824978154,
+      262144,
+      1
+    ]
+  },
+  {
+    "path": "work/m0-t13a-extents-joint-l1-01/observed/model/layout/snapshots/snapshot-000002/pressure.bin",
+    "round": "m0-t13a-extents-joint-l1-01",
+    "metadata": [
+      16777231,
+      410308384,
+      33188,
+      3039387254,
+      1792646103787079593,
+      5936304,
+      1
+    ],
+    "sha256": "70cff99351e9ee47d45498d6b620aa85e9147337d4bdb9fefaefa894350e2602",
+    "allocated_bytes": 3039387648,
+    "reason": "terminal rebuildable synthetic load; actual independent cold validation; no next-stage original-path dependency",
+    "retained_evidence": "work/m0-t13a-extents-joint-l1-01/observed/model/layout/snapshots/snapshot-000002/index.json; original raw/reports; docs/evidence/m0-t13a-extents-joint; postfailure-cold reports; fixed source/lock/exe",
+    "index": "work/m0-t13a-extents-joint-l1-01/observed/model/layout/snapshots/snapshot-000002/index.json",
+    "index_sha256": "e85f2c7faffd6552ae52f714c9a228851ba9bda911970723bba1dc009b9c7ecc",
+    "directly_restorable_after": false,
+    "metadata_at_unlink": [
+      16777231,
+      410308384,
+      33188,
+      3039387254,
+      1792646103787079593,
+      5936304,
+      1
+    ]
+  },
+  {
+    "path": "work/m0-t13a-extents-joint-l1-01/observed/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+    "round": "m0-t13a-extents-joint-l1-01",
+    "metadata": [
+      16777231,
+      410308490,
+      33188,
+      134217728,
+      1792646103936939868,
+      262144,
+      1
+    ],
+    "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee",
+    "allocated_bytes": 134217728,
+    "reason": "terminal rebuildable synthetic load; actual independent cold validation; no next-stage original-path dependency",
+    "retained_evidence": "work/m0-t13a-extents-joint-l1-01/observed/model/layout/snapshots/snapshot-000002/index.json; original raw/reports; docs/evidence/m0-t13a-extents-joint; postfailure-cold reports; fixed source/lock/exe",
+    "index": "work/m0-t13a-extents-joint-l1-01/observed/model/layout/snapshots/snapshot-000002/index.json",
+    "index_sha256": "e85f2c7faffd6552ae52f714c9a228851ba9bda911970723bba1dc009b9c7ecc",
+    "directly_restorable_after": false,
+    "metadata_at_unlink": [
+      16777231,
+      410308490,
+      33188,
+      134217728,
+      1792646103936939868,
+      262144,
+      1
+    ]
+  }
+]

@@ -1,0 +1,28 @@
+       Fresh version_check v0.9.5
+       Fresh shlex v2.0.1
+       Fresh typenum v1.20.1
+       Fresh find-msvc-tools v0.1.15
+       Fresh unicode-ident v1.0.27
+       Fresh cc v1.9.0
+       Fresh memchr v2.8.3
+       Fresh proc-macro2 v1.0.107
+       Fresh generic-array v0.14.7
+       Fresh serde_core v1.0.229
+       Fresh libc v0.2.191
+       Fresh zmij v1.0.23
+       Fresh itoa v1.0.18
+       Fresh cfg-if v1.0.5
+       Fresh quote v1.0.47
+       Fresh block-buffer v0.10.4
+       Fresh crypto-common v0.1.7
+       Fresh cpufeatures v0.2.17
+       Fresh serde_json v1.0.149
+       Fresh syn v3.0.9
+       Fresh digest v0.10.7
+       Fresh sha2-asm v0.6.4
+       Fresh serde_derive v1.0.229
+       Fresh sha2 v0.10.9
+       Fresh serde v1.0.229
+       Fresh mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+    Finished `release` profile [optimized] target(s) in 0.03s
+     Running `/Users/frankqin/dev/MyCity/target/release/deps/mycity_core-363f7122bd90a840`

@@ -1,0 +1,64 @@
+[
+  {
+    "scenario": "town-market",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5/town_market"
+    ],
+    "exit": 0,
+    "source_sha256": "5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5"
+  },
+  {
+    "scenario": "normal",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5/market_access",
+      "normal"
+    ],
+    "exit": 0,
+    "source_sha256": "5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5"
+  },
+  {
+    "scenario": "road_closed",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5/market_access",
+      "road_closed"
+    ],
+    "exit": 0,
+    "source_sha256": "5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5"
+  },
+  {
+    "scenario": "bottleneck",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5/market_access",
+      "bottleneck"
+    ],
+    "exit": 0,
+    "source_sha256": "5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5"
+  },
+  {
+    "scenario": "capacity_expanded",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5/market_access",
+      "capacity_expanded"
+    ],
+    "exit": 0,
+    "source_sha256": "5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5"
+  },
+  {
+    "scenario": "cross_city",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5/market_access",
+      "cross_city"
+    ],
+    "exit": 0,
+    "source_sha256": "5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5"
+  },
+  {
+    "scenario": "unrelated_cross_city",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5/market_access",
+      "unrelated_cross_city"
+    ],
+    "exit": 0,
+    "source_sha256": "5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5"
+  }
+]

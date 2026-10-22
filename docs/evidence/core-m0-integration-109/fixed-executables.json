@@ -1,0 +1,56 @@
+{
+  "source_sha256": "f64b9f43309eeb201ad6c1347ba9cf4ecde8fb2e42ba86a5d5ea9f5563e8f70f",
+  "files": [
+    {
+      "fixed": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/f64b9f43309eeb201ad6c1347ba9cf4ecde8fb2e42ba86a5d5ea9f5563e8f70f/construction-a6842a0669a1dd86",
+      "bytes": 1205184,
+      "sha256": "409fb6eb32c850dda79c1ee51c37e7e0aef59efd6ca9b31829da0a80ea006352"
+    },
+    {
+      "fixed": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/f64b9f43309eeb201ad6c1347ba9cf4ecde8fb2e42ba86a5d5ea9f5563e8f70f/construction-b68fb118295d0565",
+      "bytes": 6951120,
+      "sha256": "5964bc05d63c3af245405379a7551395dbc10104f9c79e6e219fbe8f74d01652"
+    },
+    {
+      "fixed": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/f64b9f43309eeb201ad6c1347ba9cf4ecde8fb2e42ba86a5d5ea9f5563e8f70f/construction_engine-bbae94b7cf7feb30",
+      "bytes": 3706704,
+      "sha256": "188c8746949e9ecd5072aa87cd3890042dccc70135e8b16d3e349d5a628b66aa"
+    },
+    {
+      "fixed": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/f64b9f43309eeb201ad6c1347ba9cf4ecde8fb2e42ba86a5d5ea9f5563e8f70f/market_access-4b9260b305aa4a20",
+      "bytes": 1291936,
+      "sha256": "61bc1b5bde015870dd759cc2ea4a802617907c97aeb0ec010f4fcb6abc188a7e"
+    },
+    {
+      "fixed": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/f64b9f43309eeb201ad6c1347ba9cf4ecde8fb2e42ba86a5d5ea9f5563e8f70f/mycity_core-3e1c4965578400af",
+      "bytes": 4031376,
+      "sha256": "47d80bfaefc8177545f7c65c347e6c8dd825932f7d4c5e27b6896164c1c95b58"
+    },
+    {
+      "fixed": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/f64b9f43309eeb201ad6c1347ba9cf4ecde8fb2e42ba86a5d5ea9f5563e8f70f/mycity_headless-bd191120ee0d5aca",
+      "bytes": 2599424,
+      "sha256": "ce0951fd5e84c521b090875513dd8a04b900d9ec0de709099cb3bd61e71823d1"
+    },
+    {
+      "fixed": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/f64b9f43309eeb201ad6c1347ba9cf4ecde8fb2e42ba86a5d5ea9f5563e8f70f/town_market-fc275aa083e796f1",
+      "bytes": 6478992,
+      "sha256": "5e3c65d9cc0291f888d2c4e11fac3887cc34f7043d87e2009629bcedb471292b"
+    },
+    {
+      "fixed": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/f64b9f43309eeb201ad6c1347ba9cf4ecde8fb2e42ba86a5d5ea9f5563e8f70f/market_access",
+      "bytes": 764288,
+      "sha256": "db534a3642c81fafdb10c17695e5503f979ab9905268cb190073b1adcc191789"
+    },
+    {
+      "fixed": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/f64b9f43309eeb201ad6c1347ba9cf4ecde8fb2e42ba86a5d5ea9f5563e8f70f/town_market",
+      "bytes": 1619536,
+      "sha256": "3d2ca87aa4113eeec5357f5d0258dbb9730d113a1d6a1d2bea9be66bed3b34f4"
+    },
+    {
+      "fixed": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/f64b9f43309eeb201ad6c1347ba9cf4ecde8fb2e42ba86a5d5ea9f5563e8f70f/mycity-headless",
+      "bytes": 14833392,
+      "sha256": "90254658f36b034031b475cfc79dfdd5391e3c3780c636edc897086e4fa86fa2"
+    }
+  ],
+  "scope": "functional tests passed; fmt failed; immutable pre-format source"
+}

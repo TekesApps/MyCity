@@ -1540,11 +1540,10 @@ mod tests {
         x.accounts[1].cash = Money::new(12_000).unwrap();
         x.accounts[1].protected = Money::new(12_000).unwrap();
         let a = plan_day(&x).unwrap();
-        assert!(
-            a.lines
-                .iter()
-                .all(|l| !matches!(l, PlanLine::Produce { .. }))
-        );
+        assert!(a
+            .lines
+            .iter()
+            .all(|l| !matches!(l, PlanLine::Produce { .. })));
         x.accounts[1].cash = Money::new(100_000).unwrap();
         x.inventories[0].quantity = Quantity::new(2).unwrap();
         let a = plan_day(&x).unwrap();
@@ -1706,18 +1705,14 @@ mod tests {
         let baseline = plan_day(&x).unwrap();
         x.recipes[0].utility_cost_per_output_q = Money::new(2).unwrap();
         let energy_shock = plan_day(&x).unwrap();
-        assert!(
-            baseline
-                .lines
-                .iter()
-                .any(|l| matches!(l, PlanLine::Produce { .. }))
-        );
-        assert!(
-            !energy_shock
-                .lines
-                .iter()
-                .any(|l| matches!(l, PlanLine::Produce { .. }))
-        );
+        assert!(baseline
+            .lines
+            .iter()
+            .any(|l| matches!(l, PlanLine::Produce { .. })));
+        assert!(!energy_shock
+            .lines
+            .iter()
+            .any(|l| matches!(l, PlanLine::Produce { .. })));
 
         x.recipes.clear();
         x.accounts[1].cash = Money::new(100_000).unwrap();
@@ -1730,12 +1725,10 @@ mod tests {
             normal_demand.planned_goods_payments.value()
                 > lower_demand.planned_goods_payments.value()
         );
-        assert!(
-            normal_demand
-                .lines
-                .iter()
-                .any(|l| matches!(l, PlanLine::Sale { .. }))
-        );
+        assert!(normal_demand
+            .lines
+            .iter()
+            .any(|l| matches!(l, PlanLine::Sale { .. })));
     }
 
     fn add_expensive_offer(input: &mut MarketInput, inventory_quantity: i64) {

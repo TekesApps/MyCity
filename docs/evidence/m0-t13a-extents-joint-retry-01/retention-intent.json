@@ -1,0 +1,19 @@
+{
+  "scope": "Same original full M0-T13-A L1 workload, opening and thresholds. Exact source is frozen at execution. Canonical integration may also contain traffic/economy/construction and endurance-role fixes; report all source differences and raw whole-group cost, never claim a one-variable comparison or subtract their inferred overhead.",
+  "new_work": [
+    "docs/evidence/m0-t13a-extents-joint-retry-01",
+    "work/m0-t13a-extents-joint-l1-retry-01"
+  ],
+  "reused_immutable_inputs": [
+    "docs/evidence/m0-t13a-extents-joint/frozen-source.zip",
+    "work/candidate-binaries/r07-extents/32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2/mycity-headless"
+  ],
+  "estimated_max_new_pressure_and_snapshot_bytes": 8589934592,
+  "planned_stage_peak_bytes": 8589934592,
+  "no_new_target": true,
+  "protected": "The canonical set of 190 original recovery/fault files, prior v104 complete v3 generation 2, source/dependency locks, fixed executables, raw VM/address/process identity evidence and all pre-existing work are immutable inputs and must retain exact bytes.",
+  "retirement_gate": "Do not retire either new pressure generation until both generations have passed independent fresh-process cold restore and scan, restore evidence is durable, all run/observer/native-watch processes have exited, and open-file checks show no dependent handles. Then retire only exact run-owned synthetic pressure/reserve/snapshots after path-specific inventory and advisor review; preserve source, executable, Cargo.lock, logs, receipts, raw VM captures, topology lists, identities, restore reports and failure evidence.",
+  "retirement_scope": "This retry's exact work/m0-t13a-extents-joint-l1-retry-01 pressure and reserve files only. Never substitute hashes for snapshots still required by restore validation. Never include the protected 190 originals, the original joint run directory, or previous evidence roots.",
+  "physical_scope": "Address topology is diagnostic only. No VM address, resident-page estimate, page-table estimate or virtual range creates physical-memory credit. Preserve original normal and physical thresholds.",
+  "formal_acceptance": "not granted by preparation, unit validators, diagnostics, or cold restore alone; execute the frozen original full run and compare actual whole-group measurements before any normal gate claim"
+}

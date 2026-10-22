@@ -1,0 +1,23 @@
+{
+  "original_removed": true,
+  "shared_target": "/Volumes/HP P900/dev/MyCity/target",
+  "link": "/Users/frankqin/dev/MyCity/target",
+  "all_copy_bytes_preverified": true,
+  "fixed_executables_unchanged": 0,
+  "unique_source_allocation_bytes": 2326003712,
+  "allocation_bytes_no_external_links": 2326003712,
+  "retained_external_link_allocation_bytes": 0,
+  "free_before": {
+    "/Users/frankqin/dev/MyCity": 88127545344,
+    "/Volumes/HP P900/dev/MyCity": 2018757603328
+  },
+  "free_after": {
+    "/Users/frankqin/dev/MyCity": 90300264448,
+    "/Volumes/HP P900/dev/MyCity": 2018757603328
+  },
+  "free_delta_observational": {
+    "/Users/frankqin/dev/MyCity": 2172719104,
+    "/Volumes/HP P900/dev/MyCity": 0
+  },
+  "physical_APFS_exclusive_reclaim": "not_claimed"
+}

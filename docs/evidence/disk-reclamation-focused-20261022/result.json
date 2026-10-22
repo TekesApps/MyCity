@@ -1,0 +1,28 @@
+{
+  "files_deleted": 50,
+  "allocated_bytes_removed": 401145856,
+  "before": {
+    "time_ns": 1792648979447481000,
+    "available_bytes": 87840972800,
+    "du_kib": {
+      "work": 27053632,
+      "target": 2271488
+    }
+  },
+  "after": {
+    "time_ns": 1792648985204358000,
+    "available_bytes": 88238694400,
+    "du_kib": {
+      "work": 26661888,
+      "target": 2271488
+    }
+  },
+  "filesystem_available_delta_bytes": 397721600,
+  "protected_files_sha_verified": 190,
+  "source_wip_unchanged": true,
+  "other_files_identity_metadata_unchanged": 129444,
+  "new_archive_bytes": 0,
+  "new_target": false,
+  "build_or_model_run": false,
+  "attribution": "inode-deduplicated st_blocks; not APFS exclusive physical bytes. df observational only; retained block changes excluded."
+}

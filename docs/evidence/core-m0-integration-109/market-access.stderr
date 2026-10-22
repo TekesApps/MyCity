@@ -1,0 +1,4 @@
+   Compiling sha2 v0.10.9
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+    Finished `release` profile [optimized] target(s) in 18.56s
+     Running tests/market_access.rs (target/release/deps/market_access-4b9260b305aa4a20)
