@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.99`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.100`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.100完成[原生单PID采样后端](docs/evidence/m0-t13a-native-reader/STATUS.md)：独立SDK布局/240活体夹取及4项身份/退出请求、五类实际协议拒绝通过，同源全workspace/严格检查通过。候选进程footprint约3.10MB，不代表完整observer；正式观测器尚未接入，置换额度0，原normal失败/三轮/四速/8h/真实16GB仍未通过。清理28份旧库缓存约104.69MiB，复用共享target。
 
 v0.5.99完成[独立运行时VM地址诊断](docs/evidence/m0-t13a-runtime-vm/STATUS.md)：原满级L1单次smoke、10份vmmap与实际完整冷恢复通过；arena地址全部落实际MALLOC_LARGE。诊断工具有扰动，组件可置换额度仍为0，不改变上轮normal失败。原3+12秒smoke不是600秒；未取得末尾快照组，三轮/四速/8h/真实16GB仍未通过。本轮两份无后续恢复依赖合成载荷按精确清单退役。
 

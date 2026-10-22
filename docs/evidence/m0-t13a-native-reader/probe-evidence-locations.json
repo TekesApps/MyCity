@@ -1,0 +1,50 @@
+[
+  {
+    "path": "work/native-reader-probe-01/live-heap.jsonl",
+    "bytes": 944,
+    "sha256": "154b966badf827f0c434d7250ecfbaff5df5ed6541e7f8db703295995e1eebaf",
+    "retained": true
+  },
+  {
+    "path": "work/native-reader-probe-01/partial/samples.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "retained": true
+  },
+  {
+    "path": "work/native-reader-probe-01/limit/samples.jsonl",
+    "bytes": 457645,
+    "sha256": "66b6492606f8e18174a40e456bee5b54a7bf5f40c5801caeced53a9468027738",
+    "retained": true
+  },
+  {
+    "path": "work/native-reader-probe-01/long/samples.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "retained": true
+  },
+  {
+    "path": "work/native-reader-probe-01/live/report.json",
+    "bytes": 886,
+    "sha256": "2c148a01d2d2a530c676e685664751bfde9ca8d96bb902303bb8a8f09eb429be",
+    "retained": true
+  },
+  {
+    "path": "work/native-reader-probe-01/live/samples.jsonl",
+    "bytes": 86661,
+    "sha256": "7c9af46ab183a2df72d223f7df81d0b701036ced178b7c51d00dae3904864c92",
+    "retained": true
+  },
+  {
+    "path": "work/native-reader-probe-01/unknown-field/samples.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "retained": true
+  },
+  {
+    "path": "work/native-reader-probe-01/sequence/samples.jsonl",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "retained": true
+  }
+]

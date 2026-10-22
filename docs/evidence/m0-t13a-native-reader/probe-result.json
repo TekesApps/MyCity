@@ -1,0 +1,90 @@
+{
+  "schema": "mycity-native-reader-independent-probe-v1",
+  "source_sha256": "8b2c259441f654d92ce43b7feb1430e025c8f45c5441ae6682f152f5097a7c91",
+  "binary_sha256": "8283bfe47abe9ce576ad0ec10c3ab424877f3b95eb0b5cfa687b2edd62ab68b0",
+  "live_samples": 240,
+  "total_requests": 244,
+  "abi_matches_local_sdk": true,
+  "mach_birth_parent_and_cpu_brackets_passed": true,
+  "volatile_footprint_compared_as_raw_not_forced_equal": true,
+  "sample_duration_ns": {
+    "minimum": 1250,
+    "maximum": 23458
+  },
+  "same_process_footprint_before_range_bytes": [
+    3096864,
+    3096864
+  ],
+  "actual_protocol_failure_cases": [
+    {
+      "name": "long",
+      "exit_code": 2,
+      "stdout_bytes": 1173,
+      "stderr": "native_observer_request_capacity\n"
+    },
+    {
+      "name": "partial",
+      "exit_code": 2,
+      "stdout_bytes": 1173,
+      "stderr": "native_observer_partial_request\n"
+    },
+    {
+      "name": "sequence",
+      "exit_code": 2,
+      "stdout_bytes": 1173,
+      "stderr": "native_observer_request_sequence\n"
+    },
+    {
+      "name": "unknown-field",
+      "exit_code": 2,
+      "stdout_bytes": 1173,
+      "stderr": "unknown field `extra`, expected one of `sequence`, `pid`, `expected` at line 1 column 45\n"
+    },
+    {
+      "name": "limit",
+      "exit_code": 2,
+      "stdout_bytes": 458818,
+      "stderr": "native_observer_sample_capacity\n"
+    }
+  ],
+  "probe_report": {
+    "arena": {
+      "activation": {
+        "adapter_header_bytes": 160,
+        "arena_bytes": 2096635,
+        "arena_start": 50071601152,
+        "bootstrap_charged_bytes": 357,
+        "grant_bytes": 2097152,
+        "initialized_bytes": 2096635,
+        "pid": 78093
+      },
+      "allocation_failures": 0,
+      "arena_free_bytes": 2020944,
+      "arena_usable_bytes": 2096632,
+      "arena_used_bytes": 75688,
+      "bootstrap_live_bytes": 357,
+      "bootstrap_peak_bytes": 429,
+      "bootstrap_quarantined_bytes": 0,
+      "current_requested_bytes": 76003,
+      "lifetime_peak_requested_bytes": 76003
+    },
+    "formal_acceptance": "not_accepted",
+    "memory_credit_bytes": 0,
+    "rust_heap": {
+      "current_requested_bytes": 77570,
+      "lifetime_peak_requested_bytes": 77570
+    },
+    "samples": 244,
+    "schema": "mycity-native-observer-probe-v1",
+    "scope": "single PID capture backend; no enumeration/system pressure/swap/disk guard/clock mapping/retirement, not the formal observer",
+    "source_sha256": "8b2c259441f654d92ce43b7feb1430e025c8f45c5441ae6682f152f5097a7c91",
+    "unknowns": 3
+  },
+  "cpu_unit_interpretation": "raw_counters_are_mach_ticks_on_this_host",
+  "pressure_copy_bytes": 0,
+  "replacement_credit_bytes": 0,
+  "formal_observer": "not_integrated",
+  "formal_acceptance": "not_accepted",
+  "real_16gb": "not_run",
+  "eight_hour": "not_run"
+}

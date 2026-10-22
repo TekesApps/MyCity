@@ -1,0 +1,478 @@
+[
+  {
+    "path": "target/release/deps/libmycity_headless-4c77855ba80b6cd2.rmeta",
+    "metadata": [
+      16777231,
+      400179121,
+      33188,
+      1342428,
+      1792485909409651407,
+      1
+    ],
+    "allocated_bytes": 1343488,
+    "sha256": "a186988efbf3241f87817877b4e95fe58c0e6d1a7505567c5884d955a2a02b99",
+    "graph": "target/release/.fingerprint/mycity-headless-4c77855ba80b6cd2/lib-mycity_headless.json",
+    "graph_sha256": "87fdca6225797f84f9c6974cd3cea8c6ce8cbcdd103e120d08271fd5cb19e2f6",
+    "reason": "obsolete macOS headless library graph lacks now mandatory libproc; pure regenerable rlib/rmeta cache, not an acceptance executable",
+    "retained": "fixed old and new source/lock/exe + full test and actual measurement evidence remain"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-920cece5e2778c71.rmeta",
+    "metadata": [
+      16777231,
+      408326088,
+      33188,
+      2048887,
+      1792585541389354857,
+      1
+    ],
+    "allocated_bytes": 2052096,
+    "sha256": "240fa2cd1afb9957946ac8ba2d53655b2a447b596e440311314634c91a8dfc8f",
+    "graph": "target/release/.fingerprint/mycity-headless-920cece5e2778c71/lib-mycity_headless.json",
+    "graph_sha256": "dbd56abf213ec6ff2f627b306c0994f255a1cbfaf9e3dbc0560cfbd62abe9f41",
+    "reason": "obsolete macOS headless library graph lacks now mandatory libproc; pure regenerable rlib/rmeta cache, not an acceptance executable",
+    "retained": "fixed old and new source/lock/exe + full test and actual measurement evidence remain"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-e58a6062d940cd6f.rmeta",
+    "metadata": [
+      16777231,
+      406449444,
+      33188,
+      1982137,
+      1792553841347900456,
+      1
+    ],
+    "allocated_bytes": 1982464,
+    "sha256": "b9b7452ed4e941566335c56d64a6f66baffd854a97ea1a769bd9bbdc125cf89f",
+    "graph": "target/release/.fingerprint/mycity-headless-e58a6062d940cd6f/lib-mycity_headless.json",
+    "graph_sha256": "b7fc525aa51784b5faee49b755cd0f623432c7f4213e345bf9dc37a6f012da0e",
+    "reason": "obsolete macOS headless library graph lacks now mandatory libproc; pure regenerable rlib/rmeta cache, not an acceptance executable",
+    "retained": "fixed old and new source/lock/exe + full test and actual measurement evidence remain"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-952135d39d2e64ba.rmeta",
+    "metadata": [
+      16777231,
+      402732414,
+      33188,
+      950457,
+      1792508594617806466,
+      1
+    ],
+    "allocated_bytes": 954368,
+    "sha256": "971a2c20f094ffa81b83e3acb5511626c130af8478d8d962aa433ec0b0fd8e92",
+    "graph": "target/release/.fingerprint/mycity-headless-952135d39d2e64ba/lib-mycity_headless.json",
+    "graph_sha256": "400bd11d52c7ff6e885d5cb85e01e0c49b28587d5d725bdbac7922e3a11606a2",
+    "reason": "obsolete macOS headless library graph lacks now mandatory libproc; pure regenerable rlib/rmeta cache, not an acceptance executable",
+    "retained": "fixed old and new source/lock/exe + full test and actual measurement evidence remain"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-7f6e785ee4620caf.rmeta",
+    "metadata": [
+      16777231,
+      407789805,
+      33188,
+      2035096,
+      1792572722247759062,
+      1
+    ],
+    "allocated_bytes": 2035712,
+    "sha256": "a08b2fa951ff087fe755168f6f61f3e7eb8d006779ae77cec245e403ae60e02b",
+    "graph": "target/release/.fingerprint/mycity-headless-7f6e785ee4620caf/lib-mycity_headless.json",
+    "graph_sha256": "6a1ec58ac7df395d245944dc666250cf7fdb74d9aae237274157594398b2c9f0",
+    "reason": "obsolete macOS headless library graph lacks now mandatory libproc; pure regenerable rlib/rmeta cache, not an acceptance executable",
+    "retained": "fixed old and new source/lock/exe + full test and actual measurement evidence remain"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-35abca32ccd4950a.rlib",
+    "metadata": [
+      16777231,
+      407681919,
+      33188,
+      12739768,
+      1792572157813810744,
+      1
+    ],
+    "allocated_bytes": 12742656,
+    "sha256": "b70294a66d57d59feae76bd2ec01af0e29d465f943b232f9683bfe0a6f892567",
+    "graph": "target/release/.fingerprint/mycity-headless-35abca32ccd4950a/lib-mycity_headless.json",
+    "graph_sha256": "90343e77df96c852bb0844680787d000e6f2aca95a7cfa3d147a9d715e5f59e5",
+    "reason": "obsolete macOS headless library graph lacks now mandatory libproc; pure regenerable rlib/rmeta cache, not an acceptance executable",
+    "retained": "fixed old and new source/lock/exe + full test and actual measurement evidence remain"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-35abca32ccd4950a.rmeta",
+    "metadata": [
+      16777231,
+      407681246,
+      33188,
+      4993527,
+      1792572137323852857,
+      1
+    ],
+    "allocated_bytes": 4997120,
+    "sha256": "c8751eb590bda3c36f0f54272367d11fb21daf99861be252187e593562478aa8",
+    "graph": "target/release/.fingerprint/mycity-headless-35abca32ccd4950a/lib-mycity_headless.json",
+    "graph_sha256": "90343e77df96c852bb0844680787d000e6f2aca95a7cfa3d147a9d715e5f59e5",
+    "reason": "obsolete macOS headless library graph lacks now mandatory libproc; pure regenerable rlib/rmeta cache, not an acceptance executable",
+    "retained": "fixed old and new source/lock/exe + full test and actual measurement evidence remain"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-6aa28552d5f211c9.rmeta",
+    "metadata": [
+      16777231,
+      408318173,
+      33188,
+      5007318,
+      1792584994293868658,
+      1
+    ],
+    "allocated_bytes": 5009408,
+    "sha256": "10f7915bab26afc1f6ec2a2f82b8776edefe7dc82ee75b142ef9e6df86f87b62",
+    "graph": "target/release/.fingerprint/mycity-headless-6aa28552d5f211c9/lib-mycity_headless.json",
+    "graph_sha256": "b0054547ad47819595b39d962ae3ff5995320614185eb91dca9959c02e9fa7dd",
+    "reason": "obsolete macOS headless library graph lacks now mandatory libproc; pure regenerable rlib/rmeta cache, not an acceptance executable",
+    "retained": "fixed old and new source/lock/exe + full test and actual measurement evidence remain"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-6aa28552d5f211c9.rlib",
+    "metadata": [
+      16777231,
+      408318237,
+      33188,
+      13916360,
+      1792585004087803108,
+      1
+    ],
+    "allocated_bytes": 13918208,
+    "sha256": "13123d10c31142fa76e49f81ad5ffa37fce423f9313872f2a1f36e69b46c7c5a",
+    "graph": "target/release/.fingerprint/mycity-headless-6aa28552d5f211c9/lib-mycity_headless.json",
+    "graph_sha256": "b0054547ad47819595b39d962ae3ff5995320614185eb91dca9959c02e9fa7dd",
+    "reason": "obsolete macOS headless library graph lacks now mandatory libproc; pure regenerable rlib/rmeta cache, not an acceptance executable",
+    "retained": "fixed old and new source/lock/exe + full test and actual measurement evidence remain"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-f1431bffc7dd9ace.rmeta",
+    "metadata": [
+      16777231,
+      408808413,
+      33188,
+      2048946,
+      1792596586242790086,
+      1
+    ],
+    "allocated_bytes": 2052096,
+    "sha256": "79317fdff38b116d02714e0b1be58ab5685a19a4a0ec635a8547f8274c7fed5e",
+    "graph": "target/release/.fingerprint/mycity-headless-f1431bffc7dd9ace/lib-mycity_headless.json",
+    "graph_sha256": "57f585a13fffce669e42217d0761e04561ee3848834ae7633f30df788a6abdf1",
+    "reason": "obsolete macOS headless library graph lacks now mandatory libproc; pure regenerable rlib/rmeta cache, not an acceptance executable",
+    "retained": "fixed old and new source/lock/exe + full test and actual measurement evidence remain"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-ebdd7994e5f78bbd.rmeta",
+    "metadata": [
+      16777231,
+      399613922,
+      33188,
+      224209,
+      1792475327302174428,
+      1
+    ],
+    "allocated_bytes": 225280,
+    "sha256": "84cd7d123859468b1fc2ab8eaa013d3e8c645ae9a615ab0bc75ad58e8f9b801e",
+    "graph": "target/release/.fingerprint/mycity-headless-ebdd7994e5f78bbd/lib-mycity_headless.json",
+    "graph_sha256": "5e1a1a8e034322c8c33eee7e0961206305bd9ffeea9eafe6752c8fa50c43e527",
+    "reason": "obsolete macOS headless library graph lacks now mandatory libproc; pure regenerable rlib/rmeta cache, not an acceptance executable",
+    "retained": "fixed old and new source/lock/exe + full test and actual measurement evidence remain"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-8e5c0daf4164954a.rmeta",
+    "metadata": [
+      16777231,
+      402732480,
+      33188,
+      2400718,
+      1792508596611240253,
+      1
+    ],
+    "allocated_bytes": 2404352,
+    "sha256": "0df8e4ed42c0f13be4506cf8d286b1f54a51f48abd394e78640daf4ca0576dae",
+    "graph": "target/release/.fingerprint/mycity-headless-8e5c0daf4164954a/lib-mycity_headless.json",
+    "graph_sha256": "dd134db38f94b0a605e1f3e6f1ec1a00d923c3ed38dc825d5f1e81e4e5010ff6",
+    "reason": "obsolete macOS headless library graph lacks now mandatory libproc; pure regenerable rlib/rmeta cache, not an acceptance executable",
+    "retained": "fixed old and new source/lock/exe + full test and actual measurement evidence remain"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-886ed5ad7b9045b0.rmeta",
+    "metadata": [
+      16777231,
+      399613504,
+      33188,
+      595413,
+      1792475305582761808,
+      1
+    ],
+    "allocated_bytes": 598016,
+    "sha256": "a4c37ce3f390696228e83b7a6733ecff5e87519545a9fa5bb9f37b386b3b3a55",
+    "graph": "target/release/.fingerprint/mycity-headless-886ed5ad7b9045b0/lib-mycity_headless.json",
+    "graph_sha256": "c31197dd81790ae7f6a9717bbbed2e5ea3521bed9dbd1b6802dcf95a22435061",
+    "reason": "obsolete macOS headless library graph lacks now mandatory libproc; pure regenerable rlib/rmeta cache, not an acceptance executable",
+    "retained": "fixed old and new source/lock/exe + full test and actual measurement evidence remain"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-3a507194f33d4fdc.rmeta",
+    "metadata": [
+      16777231,
+      400222876,
+      33188,
+      568452,
+      1792486275611424567,
+      1
+    ],
+    "allocated_bytes": 569344,
+    "sha256": "85b2a580b1059c3648d40fbc91f75e193729e90ac44f71dfd2883ca977cba399",
+    "graph": "target/release/.fingerprint/mycity-headless-3a507194f33d4fdc/lib-mycity_headless.json",
+    "graph_sha256": "96967f9f657460e263f7b3460aacfa48c5f188e2fba51bce3475c3e4f138a1f6",
+    "reason": "obsolete macOS headless library graph lacks now mandatory libproc; pure regenerable rlib/rmeta cache, not an acceptance executable",
+    "retained": "fixed old and new source/lock/exe + full test and actual measurement evidence remain"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-2729f82fad261bfd.rlib",
+    "metadata": [
+      16777231,
+      408766263,
+      33188,
+      13921944,
+      1792596041258082043,
+      1
+    ],
+    "allocated_bytes": 13922304,
+    "sha256": "cd1ba0f5aa829394cc26dc6733379e903f4fef81b1775d9f728a86f03769f95e",
+    "graph": "target/release/.fingerprint/mycity-headless-2729f82fad261bfd/lib-mycity_headless.json",
+    "graph_sha256": "1c493762032593b0f9ed45d9bcb2af4d1ffd07982f1759b67e7fc609bd66f71e",
+    "reason": "obsolete macOS headless library graph lacks now mandatory libproc; pure regenerable rlib/rmeta cache, not an acceptance executable",
+    "retained": "fixed old and new source/lock/exe + full test and actual measurement evidence remain"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-2729f82fad261bfd.rmeta",
+    "metadata": [
+      16777231,
+      408765315,
+      33188,
+      5007634,
+      1792596014487627900,
+      1
+    ],
+    "allocated_bytes": 5009408,
+    "sha256": "899d0797f9364b381380cede0335e79d982a40cd812a24a54059f37783d6b296",
+    "graph": "target/release/.fingerprint/mycity-headless-2729f82fad261bfd/lib-mycity_headless.json",
+    "graph_sha256": "1c493762032593b0f9ed45d9bcb2af4d1ffd07982f1759b67e7fc609bd66f71e",
+    "reason": "obsolete macOS headless library graph lacks now mandatory libproc; pure regenerable rlib/rmeta cache, not an acceptance executable",
+    "retained": "fixed old and new source/lock/exe + full test and actual measurement evidence remain"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-b20b642f73245900.rmeta",
+    "metadata": [
+      16777231,
+      400160563,
+      33188,
+      566428,
+      1792485458519042670,
+      1
+    ],
+    "allocated_bytes": 569344,
+    "sha256": "7ce3a90f183eed918568292283dfea54751926e500b9630ece2642251dafcd47",
+    "graph": "target/release/.fingerprint/mycity-headless-b20b642f73245900/lib-mycity_headless.json",
+    "graph_sha256": "fc418f3ed5335f74e352f66b23f91e9cf67559e8a476c06ed70bf39e03461ca8",
+    "reason": "obsolete macOS headless library graph lacks now mandatory libproc; pure regenerable rlib/rmeta cache, not an acceptance executable",
+    "retained": "fixed old and new source/lock/exe + full test and actual measurement evidence remain"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-e049643dbb4ef3e7.rmeta",
+    "metadata": [
+      16777231,
+      401034628,
+      33188,
+      712983,
+      1792496077761304643,
+      1
+    ],
+    "allocated_bytes": 716800,
+    "sha256": "e5c0696cf6334924b2bbbaa4a3f6aeec9ad6098087b5c39497bdd204161124ea",
+    "graph": "target/release/.fingerprint/mycity-headless-e049643dbb4ef3e7/lib-mycity_headless.json",
+    "graph_sha256": "57e2f6bb61be6432217f0009b94370d567b365e6fed4ab0deb11007a0e69bac4",
+    "reason": "obsolete macOS headless library graph lacks now mandatory libproc; pure regenerable rlib/rmeta cache, not an acceptance executable",
+    "retained": "fixed old and new source/lock/exe + full test and actual measurement evidence remain"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-4ec896eb0b059596.rmeta",
+    "metadata": [
+      16777231,
+      408317950,
+      33188,
+      2049211,
+      1792584891761097087,
+      1
+    ],
+    "allocated_bytes": 2052096,
+    "sha256": "1716efb6d473dd7f9fc73fc94bc64e272603a5836464cf7213f379dcdbe02e89",
+    "graph": "target/release/.fingerprint/mycity-headless-4ec896eb0b059596/lib-mycity_headless.json",
+    "graph_sha256": "996337b0cc8d73c9d651273c1d9b6064b95574a001e56e22726ec1648f54b7f3",
+    "reason": "obsolete macOS headless library graph lacks now mandatory libproc; pure regenerable rlib/rmeta cache, not an acceptance executable",
+    "retained": "fixed old and new source/lock/exe + full test and actual measurement evidence remain"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-b45f8933881a4d0a.rmeta",
+    "metadata": [
+      16777231,
+      408723143,
+      33188,
+      2048948,
+      1792594622607239836,
+      1
+    ],
+    "allocated_bytes": 2052096,
+    "sha256": "029900582e39dd519c4f98b0308b6985776b2122638a7e5df450169ad6a23817",
+    "graph": "target/release/.fingerprint/mycity-headless-b45f8933881a4d0a/lib-mycity_headless.json",
+    "graph_sha256": "0c309262dd7768ff24f24db57ef4f11ae9705d6ab53d473a26295b90eef93b67",
+    "reason": "obsolete macOS headless library graph lacks now mandatory libproc; pure regenerable rlib/rmeta cache, not an acceptance executable",
+    "retained": "fixed old and new source/lock/exe + full test and actual measurement evidence remain"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-7c96f86244da62e6.rmeta",
+    "metadata": [
+      16777231,
+      409608344,
+      33188,
+      5705812,
+      1792621995351920432,
+      1
+    ],
+    "allocated_bytes": 5709824,
+    "sha256": "b629a7c2d5f068390a75f1654d10d86151a8cf9c4db3566315d745448f9bec1c",
+    "graph": "target/release/.fingerprint/mycity-headless-7c96f86244da62e6/lib-mycity_headless.json",
+    "graph_sha256": "af1092e6cd90b6714c47d0c572fc02f89dfb20431fdd839e23fd2c19758b8af1",
+    "reason": "obsolete macOS headless library graph lacks now mandatory libproc; pure regenerable rlib/rmeta cache, not an acceptance executable",
+    "retained": "fixed old and new source/lock/exe + full test and actual measurement evidence remain"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-7c96f86244da62e6.rlib",
+    "metadata": [
+      16777231,
+      409608498,
+      33188,
+      15242024,
+      1792622007379231557,
+      1
+    ],
+    "allocated_bytes": 15245312,
+    "sha256": "fa2b27ff1646c548de7c9996be953000147ad81815547dcf244c6a85601ddb25",
+    "graph": "target/release/.fingerprint/mycity-headless-7c96f86244da62e6/lib-mycity_headless.json",
+    "graph_sha256": "af1092e6cd90b6714c47d0c572fc02f89dfb20431fdd839e23fd2c19758b8af1",
+    "reason": "obsolete macOS headless library graph lacks now mandatory libproc; pure regenerable rlib/rmeta cache, not an acceptance executable",
+    "retained": "fixed old and new source/lock/exe + full test and actual measurement evidence remain"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-6571fa2e3be8cab5.rmeta",
+    "metadata": [
+      16777231,
+      406253847,
+      33188,
+      1982080,
+      1792551173711179728,
+      1
+    ],
+    "allocated_bytes": 1982464,
+    "sha256": "38c2b263fa987e72f3f22902e8ea30f766f691a83268558d58f2b859d78f78a8",
+    "graph": "target/release/.fingerprint/mycity-headless-6571fa2e3be8cab5/lib-mycity_headless.json",
+    "graph_sha256": "3e437c9388bba8faef1968f84c3dcadffac61a0d5e6c8c73f7b514bb15e172fa",
+    "reason": "obsolete macOS headless library graph lacks now mandatory libproc; pure regenerable rlib/rmeta cache, not an acceptance executable",
+    "retained": "fixed old and new source/lock/exe + full test and actual measurement evidence remain"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-366df529457fe063.rmeta",
+    "metadata": [
+      16777231,
+      407676573,
+      33188,
+      2035170,
+      1792571661734918610,
+      1
+    ],
+    "allocated_bytes": 2035712,
+    "sha256": "b4a95fc24bd9d8a96c16eff8edf578abef2bdfdb0dc2e159490ab1b6a64e257c",
+    "graph": "target/release/.fingerprint/mycity-headless-366df529457fe063/lib-mycity_headless.json",
+    "graph_sha256": "5ad95221429da50eecd4d859f53b9a02d50e1269d82f437ec99c5872c52c5c42",
+    "reason": "obsolete macOS headless library graph lacks now mandatory libproc; pure regenerable rlib/rmeta cache, not an acceptance executable",
+    "retained": "fixed old and new source/lock/exe + full test and actual measurement evidence remain"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-5a0475842df95fe4.rmeta",
+    "metadata": [
+      16777231,
+      409605607,
+      33188,
+      2324683,
+      1792621868450296190,
+      1
+    ],
+    "allocated_bytes": 2326528,
+    "sha256": "e89e836eb151834be14aa884979c043c407ef941ee0bcdfea1294bac13c349bd",
+    "graph": "target/release/.fingerprint/mycity-headless-5a0475842df95fe4/lib-mycity_headless.json",
+    "graph_sha256": "b12f8e6db0c46e184f0268ea8436db2cf350521b1e411a7e012d8e8a662cebc7",
+    "reason": "obsolete macOS headless library graph lacks now mandatory libproc; pure regenerable rlib/rmeta cache, not an acceptance executable",
+    "retained": "fixed old and new source/lock/exe + full test and actual measurement evidence remain"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-96728d0bab43c414.rmeta",
+    "metadata": [
+      16777231,
+      406495752,
+      33188,
+      4844700,
+      1792554060124852666,
+      1
+    ],
+    "allocated_bytes": 4845568,
+    "sha256": "781899df86fe6e1a8fd703be20158f50ea9f4e8ac593c5e25ec9fec396dc3570",
+    "graph": "target/release/.fingerprint/mycity-headless-96728d0bab43c414/lib-mycity_headless.json",
+    "graph_sha256": "c2e90302fa852f5440c9f7d6494472c4e75721d83cbddc8d72e4acc6b7513f45",
+    "reason": "obsolete macOS headless library graph lacks now mandatory libproc; pure regenerable rlib/rmeta cache, not an acceptance executable",
+    "retained": "fixed old and new source/lock/exe + full test and actual measurement evidence remain"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-568bdeb4e56922aa.rmeta",
+    "metadata": [
+      16777231,
+      409538083,
+      33188,
+      2201081,
+      1792620023477986498,
+      1
+    ],
+    "allocated_bytes": 2203648,
+    "sha256": "e5e4095be0b5a262bf1517506dfb6c9145ed8013678c9a097fe59c59ca3a9f88",
+    "graph": "target/release/.fingerprint/mycity-headless-568bdeb4e56922aa/lib-mycity_headless.json",
+    "graph_sha256": "88f61ffd72355eff5b0cb84e28553ecbe9df2e8e8fe33ea316a67a066a59a00a",
+    "reason": "obsolete macOS headless library graph lacks now mandatory libproc; pure regenerable rlib/rmeta cache, not an acceptance executable",
+    "retained": "fixed old and new source/lock/exe + full test and actual measurement evidence remain"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-8e8e579071754430.rmeta",
+    "metadata": [
+      16777231,
+      399612586,
+      33188,
+      219976,
+      1792475219153534054,
+      1
+    ],
+    "allocated_bytes": 221184,
+    "sha256": "82ac354064c595ab9fb219e203dc0207997d12767768bc070d345535148d0faf",
+    "graph": "target/release/.fingerprint/mycity-headless-8e8e579071754430/lib-mycity_headless.json",
+    "graph_sha256": "12e6c31cb7b8fa12aef3ff1f51e6652618c0a07d3cd77bf732db6a73f1d54242",
+    "reason": "obsolete macOS headless library graph lacks now mandatory libproc; pure regenerable rlib/rmeta cache, not an acceptance executable",
+    "retained": "fixed old and new source/lock/exe + full test and actual measurement evidence remain"
+  }
+]

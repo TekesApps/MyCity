@@ -1,0 +1,8 @@
+{
+  "source_sha256": "8b2c259441f654d92ce43b7feb1430e025c8f45c5441ae6682f152f5097a7c91",
+  "source_files": 206,
+  "binary": "/Users/frankqin/dev/MyCity/work/candidate-binaries/native-reader/mycity-headless",
+  "binary_sha256": "8283bfe47abe9ce576ad0ec10c3ab424877f3b95eb0b5cfa687b2edd62ab68b0",
+  "lock_sha256": "398b5322d7cb06cf28135bdfd3d0651b061b61051e44a68a1fc452c3abec98c6",
+  "scope": "Frozen native-reader backend probe; formal observer integration and full same-source regression incomplete"
+}

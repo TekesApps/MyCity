@@ -1,0 +1,14 @@
+{
+  "command": [
+    "cargo",
+    "build",
+    "--release",
+    "--workspace",
+    "--locked",
+    "--offline"
+  ],
+  "exit_code": 0,
+  "seconds": 0.26560225,
+  "retired_old_library_files_regenerated": 0,
+  "fixed_binary_unchanged": true
+}

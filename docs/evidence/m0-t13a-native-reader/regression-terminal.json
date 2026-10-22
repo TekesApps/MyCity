@@ -1,0 +1,7 @@
+{
+  "source_sha256": "8b2c259441f654d92ce43b7feb1430e025c8f45c5441ae6682f152f5097a7c91",
+  "all_commands_exit_zero": true,
+  "fixed_binary_unchanged": true,
+  "source_zip_unchanged": true,
+  "elapsed_is_regression_not_performance": true
+}

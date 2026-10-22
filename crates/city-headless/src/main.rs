@@ -26,6 +26,12 @@ fn system(command: &str, args: &[&str]) -> Option<String> {
 
 fn run() -> Result<(), String> {
     let args: Vec<_> = env::args().collect();
+    if args.get(1).is_some_and(|a| a == "native-metrics-probe") {
+        if args.len() != 3 {
+            return Err("usage: native-metrics-probe NEW_DIR; JSON requests on stdin".into());
+        }
+        return mycity_headless::native_observer::probe(std::path::Path::new(&args[2]));
+    }
     if args
         .get(1)
         .is_some_and(|a| a == "steady-run" || a == "steady-driver")

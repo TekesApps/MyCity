@@ -1,0 +1,281 @@
+{
+  "expected": {
+    "rusage_size": 296,
+    "rusage_offsets": {
+      "ri_diskio_bytesread": 144,
+      "ri_diskio_byteswritten": 152,
+      "ri_phys_footprint": 72,
+      "ri_proc_exit_abstime": 88,
+      "ri_proc_start_abstime": 80,
+      "ri_resident_size": 64,
+      "ri_system_time": 24,
+      "ri_user_time": 16
+    },
+    "bsd_size": 136,
+    "bsd_offsets": {
+      "pbi_pid": 12,
+      "pbi_ppid": 16
+    }
+  },
+  "actual": {
+    "bsd_offsets": {
+      "pbi_pid": 12,
+      "pbi_ppid": 16
+    },
+    "bsd_size": 136,
+    "cpu_unit": "raw proc_pid_rusage counters; no conversion or cross-platform unit claim",
+    "dependency": "libproc 0.14.11 fixed safe API types; verify against local public SDK independently",
+    "rusage_offsets": {
+      "ri_diskio_bytesread": 144,
+      "ri_diskio_byteswritten": 152,
+      "ri_phys_footprint": 72,
+      "ri_proc_exit_abstime": 88,
+      "ri_proc_start_abstime": 80,
+      "ri_resident_size": 64,
+      "ri_system_time": 24,
+      "ri_user_time": 16
+    },
+    "rusage_size": 296
+  },
+  "sdk_sha256": {
+    "sys/proc_info.h": "e427fa96b348537b21552b9de71e01039410bcad2cedee5584c5e5fddafd70fc",
+    "sys/resource.h": "1067178025c5fd88c9a1b8206a07c2695ef94dd471fe2783f06c512995382961",
+    "sys/param.h": "10d7a9553d341c5bc0b473444802920a7ec2e6222281eeaeb61b32dfff29c4b4"
+  },
+  "usage_fields": [
+    [
+      "ri_uuid",
+      "<class 'old_observer.c_ubyte_Array_16'>"
+    ],
+    [
+      "ri_user_time",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_system_time",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_pkg_idle_wkups",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_interrupt_wkups",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_pageins",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_wired_size",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_resident_size",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_phys_footprint",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_proc_start_abstime",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_proc_exit_abstime",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_child_user_time",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_child_system_time",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_child_pkg_idle_wkups",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_child_interrupt_wkups",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_child_pageins",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_child_elapsed_abstime",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_diskio_bytesread",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_diskio_byteswritten",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_cpu_time_qos_default",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_cpu_time_qos_maintenance",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_cpu_time_qos_background",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_cpu_time_qos_utility",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_cpu_time_qos_legacy",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_cpu_time_qos_user_initiated",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_cpu_time_qos_user_interactive",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_billed_system_time",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_serviced_system_time",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_logical_writes",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_lifetime_max_phys_footprint",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_instructions",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_cycles",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_billed_energy",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_serviced_energy",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_interval_max_phys_footprint",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "ri_runnable_time",
+      "<class 'ctypes.c_ulong'>"
+    ]
+  ],
+  "bsd_fields": [
+    [
+      "pbi_flags",
+      "<class 'ctypes.c_uint'>"
+    ],
+    [
+      "pbi_status",
+      "<class 'ctypes.c_uint'>"
+    ],
+    [
+      "pbi_xstatus",
+      "<class 'ctypes.c_uint'>"
+    ],
+    [
+      "pbi_pid",
+      "<class 'ctypes.c_uint'>"
+    ],
+    [
+      "pbi_ppid",
+      "<class 'ctypes.c_uint'>"
+    ],
+    [
+      "pbi_uid",
+      "<class 'ctypes.c_uint'>"
+    ],
+    [
+      "pbi_gid",
+      "<class 'ctypes.c_uint'>"
+    ],
+    [
+      "pbi_ruid",
+      "<class 'ctypes.c_uint'>"
+    ],
+    [
+      "pbi_rgid",
+      "<class 'ctypes.c_uint'>"
+    ],
+    [
+      "pbi_svuid",
+      "<class 'ctypes.c_uint'>"
+    ],
+    [
+      "pbi_svgid",
+      "<class 'ctypes.c_uint'>"
+    ],
+    [
+      "rfu_1",
+      "<class 'ctypes.c_uint'>"
+    ],
+    [
+      "pbi_comm",
+      "<class 'native_metrics.c_char_Array_16'>"
+    ],
+    [
+      "pbi_name",
+      "<class '__main__.c_char_Array_32'>"
+    ],
+    [
+      "pbi_nfiles",
+      "<class 'ctypes.c_uint'>"
+    ],
+    [
+      "pbi_pgid",
+      "<class 'ctypes.c_uint'>"
+    ],
+    [
+      "pbi_pjobc",
+      "<class 'ctypes.c_uint'>"
+    ],
+    [
+      "e_tdev",
+      "<class 'ctypes.c_uint'>"
+    ],
+    [
+      "e_tpgid",
+      "<class 'ctypes.c_uint'>"
+    ],
+    [
+      "pbi_nice",
+      "<class 'ctypes.c_int'>"
+    ],
+    [
+      "pbi_start_tvsec",
+      "<class 'ctypes.c_ulong'>"
+    ],
+    [
+      "pbi_start_tvusec",
+      "<class 'ctypes.c_ulong'>"
+    ]
+  ]
+}

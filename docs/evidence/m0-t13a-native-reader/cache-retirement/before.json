@@ -1,0 +1,19 @@
+{
+  "disk": {
+    "du_kib": {
+      "work": 26220136,
+      "target": 1772732
+    },
+    "available_bytes": 99328368640
+  },
+  "occupancy": {
+    "lsof_returncode": 1,
+    "processes": []
+  },
+  "protected_fixed_files": 54,
+  "current_libraries": [
+    "target/release/deps/libmycity_headless-d181d8f584a40a9a.rlib",
+    "target/release/deps/libmycity_headless-d181d8f584a40a9a.rmeta",
+    "target/release/deps/libmycity_headless-3340064100ed6322.rmeta"
+  ]
+}

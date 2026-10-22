@@ -1,0 +1,29 @@
+{
+  "deleted_files": 28,
+  "allocated_bytes_removed": 109776896,
+  "before": {
+    "du_kib": {
+      "work": 26220136,
+      "target": 1772732
+    },
+    "available_bytes": 99328368640
+  },
+  "after": {
+    "du_kib": {
+      "work": 26220136,
+      "target": 1665528
+    },
+    "available_bytes": 99435847680
+  },
+  "filesystem_available_delta_bytes": 107479040,
+  "attribution": "inode allocation not exclusive APFS physical space; filesystem delta independently observed, not fully credited",
+  "other_target_metadata_unchanged": true,
+  "fixed_exe_and_snapshots_checked": 54,
+  "current_libraries_checked": 3,
+  "work_payload_deleted_bytes": 0,
+  "post_occupancy": {
+    "lsof_returncode": 1,
+    "processes": []
+  },
+  "fixed_checked_scope": "54 files under work/candidate-binaries; not complete pressure snapshots"
+}

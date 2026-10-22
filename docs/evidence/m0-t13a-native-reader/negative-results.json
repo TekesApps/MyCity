@@ -1,0 +1,70 @@
+{
+  "wrong_birth": {
+    "sequence": 241,
+    "sample": null,
+    "unknown": "expected_identity_mismatch"
+  },
+  "invalid_pid": {
+    "sequence": 242,
+    "sample": null,
+    "unknown": "invalid_pid"
+  },
+  "live_child": {
+    "sequence": 243,
+    "sample": {
+      "identity": {
+        "pid": 78094,
+        "start_abstime": 24869414228856,
+        "parent_pid": 78081
+      },
+      "begin_ns": 77815209,
+      "end_ns": 77825375,
+      "usage": {
+        "start_abstime": 24869414228856,
+        "exit_abstime": 0,
+        "resident_bytes": 229376,
+        "footprint_bytes": 245904,
+        "user_time_raw": 10729,
+        "system_time_raw": 23340,
+        "disk_read_bytes": 12288,
+        "disk_written_bytes": 0
+      }
+    },
+    "unknown": null
+  },
+  "child_before": {
+    "begin": 701640375,
+    "end": 702259250,
+    "rc": 0,
+    "errno": 0,
+    "bsd_returned_bytes": 136,
+    "bsd_errno": 0,
+    "birth": 24869414228856,
+    "resident_bytes": 524288,
+    "footprint_bytes": 180296,
+    "user_time_raw": 1608,
+    "system_time_raw": 17889,
+    "parent_pid": 78081,
+    "pid": 78094
+  },
+  "dead_child": {
+    "sequence": 244,
+    "sample": null,
+    "unknown": "resource_unavailable"
+  },
+  "dead_oracle": {
+    "begin": 702512708,
+    "end": 702729666,
+    "rc": -1,
+    "errno": 3,
+    "bsd_returned_bytes": 0,
+    "bsd_errno": 3,
+    "birth": 0,
+    "resident_bytes": 0,
+    "footprint_bytes": 0,
+    "user_time_raw": 0,
+    "system_time_raw": 0,
+    "parent_pid": 0,
+    "pid": 0
+  }
+}

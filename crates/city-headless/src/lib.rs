@@ -52,3 +52,5 @@ mod model_compare;
 pub mod steady;
 
 mod observer_clock;
+
+pub mod native_observer;

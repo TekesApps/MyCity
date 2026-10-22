@@ -1,0 +1,138 @@
+{
+  "libproc_version": "0.14.11",
+  "safe_entry_points": [
+    "pidrusage::<RUsageInfoV4>",
+    "pidinfo::<BSDInfo>"
+  ],
+  "local_project_new_unsafe": false,
+  "dependency_contains_ffi_unsafe": true,
+  "original_lock_packages_preserved": true,
+  "added_packages": [
+    {
+      "name": "aho-corasick",
+      "version": "1.1.5",
+      "checksum": "c982642fa9e8606056828ee9a8505737230110bb1099153c79efe865c59d12ba"
+    },
+    {
+      "name": "bindgen",
+      "version": "0.72.1",
+      "checksum": "993776b509cfb49c750f11b8f07a46fa23e0a1386ffc01fb1e7d343efc387895"
+    },
+    {
+      "name": "bitflags",
+      "version": "2.13.2",
+      "checksum": "3ded4057c258ba199e2d26386d3af3780957ecaee6c4ef4041c6b4b8b97c0b06"
+    },
+    {
+      "name": "cexpr",
+      "version": "0.6.0",
+      "checksum": "6fac387a98bb7c37292057cffc56d62ecb629900026402633ae9160df93a8766"
+    },
+    {
+      "name": "clang-sys",
+      "version": "1.9.1",
+      "checksum": "157a8ba7b480713b56f4c09fd13fc3e0a22a5dfab8097ba61cbc5feef950788a"
+    },
+    {
+      "name": "either",
+      "version": "1.19.0",
+      "checksum": "0e9c71c2167ca323c882b99918929403426e2373ea17242ff5653e0d5e1058be"
+    },
+    {
+      "name": "errno",
+      "version": "0.3.14",
+      "checksum": "39cab71617ae0d63f51a36d69f866391735b51691dbda63cf6f96d042b63efeb"
+    },
+    {
+      "name": "glob",
+      "version": "0.3.4",
+      "checksum": "e4eba85ea1d0a966a983acd07deee566e67395d2d96b6fb39e62b5a833f1eb0b"
+    },
+    {
+      "name": "itertools",
+      "version": "0.13.0",
+      "checksum": "413ee7dfc52ee1a4949ceeb7dbc8a33f2d6c088194d9f922fb8318faf1f01186"
+    },
+    {
+      "name": "libloading",
+      "version": "0.8.9",
+      "checksum": "d7c4b02199fee7c5d21a5ae7d8cfa79a6ef5bb2fc834d6e9058e89c825efdc55"
+    },
+    {
+      "name": "libproc",
+      "version": "0.14.11",
+      "checksum": "a54ad7278b8bc5301d5ffd2a94251c004feb971feba96c971ea4063645990757"
+    },
+    {
+      "name": "minimal-lexical",
+      "version": "0.2.1",
+      "checksum": "68354c5c6bd36d73ff3feceb05efa59b6acb7626617f4962be322a825e61f79a"
+    },
+    {
+      "name": "nom",
+      "version": "7.1.3",
+      "checksum": "d273983c5a657a70a3e8f2a01329822f3b8c8172b73826411a55751e404a0a4a"
+    },
+    {
+      "name": "regex",
+      "version": "1.13.1",
+      "checksum": "f020237b6c8eed93db2e2cb53c00c60a8e1bc73da7d073199a1180401450218d"
+    },
+    {
+      "name": "regex-automata",
+      "version": "0.4.18",
+      "checksum": "ad8553b9b26413251cbf30e620595c7a41b3887f03da04579c0e6b0d6a06b4b2"
+    },
+    {
+      "name": "regex-syntax",
+      "version": "0.8.11",
+      "checksum": "d6f6ff9a378485b298a5286656da665ba74413d36db0979633275d2e708145d4"
+    },
+    {
+      "name": "rustc-hash",
+      "version": "2.1.3",
+      "checksum": "6b1e7f9a428571be2dc5bc0505c13fb6bf936822b894ec87abf8a08a4e51742d"
+    },
+    {
+      "name": "shlex",
+      "version": "1.3.0",
+      "checksum": "0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64"
+    },
+    {
+      "name": "syn",
+      "version": "2.0.119",
+      "checksum": "872831b642d1a07999a962a351ed35b955ea2cfc8f3862091e2a240a84f17297"
+    },
+    {
+      "name": "windows-link",
+      "version": "0.2.1",
+      "checksum": "f0805222e57f7521d6a62e36fa9163bc891acd422f971defe97d64e70d0a4fe5"
+    },
+    {
+      "name": "windows-sys",
+      "version": "0.61.2",
+      "checksum": "ae137229bcbd6cdf0f7b80a31df61766145077ddf49416a728b02cb3921ff3fc"
+    }
+  ],
+  "libproc_source_sha256": {
+    "Cargo.toml": "7ff7688557b994022c4819809c4ed2526bc09d48074b328b25445bd0e283efae",
+    "build.rs": "4588201d84f707ea117e31e19e89559f0eba8ef4d6a16456d671bec7f248ff26",
+    "src/libproc/pid_rusage.rs": "20849a18eed744429e00fd116aa7a899bd98b6a78d548e32ae36641027b0d55f",
+    "src/libproc/proc_pid.rs": "04542eb38f1a07d8145a755004a6084ad27711769109f7703fbceb3580210205",
+    "src/libproc/bsd_info.rs": "aed74224bcd00340807a38f8766ecc5b1dc7f1098fc126f9d05c44dce2a49b72",
+    "src/libproc/sys/macos.rs": "035dc35e6d988cd9e36000ac7aff6e0f763e7b86278aae1c9e38fefabfcc1be4",
+    "src/libproc/helpers.rs": "02ae584c74988324c6315375d179207fc064d594dc2d509fb4a0ffce64bf7cc3"
+  },
+  "generated_bindings_sha256": "e118543dc81dac2e7c4c5db3ddd8c13cec595b393dd796337a522d8bfbedaf8c",
+  "sdk_headers_sha256": {
+    "libproc.h": "246d87709fc6b9157ce5cf3c475656ac48e0e1ae8bbdc46cf45acd34294448cd",
+    "sys/proc_info.h": "e427fa96b348537b21552b9de71e01039410bcad2cedee5584c5e5fddafd70fc",
+    "sys/resource.h": "1067178025c5fd88c9a1b8206a07c2695ef94dd471fe2783f06c512995382961"
+  },
+  "primary_sources": [
+    "https://docs.rs/libproc/0.14.11/libproc/pid_rusage/fn.pidrusage.html",
+    "https://docs.rs/libproc/0.14.11/libproc/pid_rusage/struct.RUsageInfoV4.html",
+    "https://github.com/apple-oss-distributions/xnu/blob/main/osfmk/kern/bsd_kern.c"
+  ],
+  "limits": "ABI verification and CPU-unit calibration apply to this local SDK/host; external dependency unsafe is not proof of general FFI safety"
+}

@@ -1,0 +1,70 @@
+{
+  "full_same_source_commands": {
+    "frozen-workspace": {
+      "command": [
+        "cargo",
+        "test",
+        "--release",
+        "--workspace",
+        "--locked",
+        "--offline"
+      ],
+      "exit_code": 0,
+      "seconds": 717.246626333,
+      "source_sha256": "8b2c259441f654d92ce43b7feb1430e025c8f45c5441ae6682f152f5097a7c91"
+    },
+    "frozen-clippy": {
+      "command": [
+        "cargo",
+        "clippy",
+        "--release",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--offline",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "seconds": 8.944522000000006,
+      "source_sha256": "8b2c259441f654d92ce43b7feb1430e025c8f45c5441ae6682f152f5097a7c91"
+    },
+    "frozen-fmt": {
+      "command": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit_code": 0,
+      "seconds": 0.43677979200003847,
+      "source_sha256": "8b2c259441f654d92ce43b7feb1430e025c8f45c5441ae6682f152f5097a7c91"
+    },
+    "frozen-build": {
+      "command": [
+        "cargo",
+        "build",
+        "--release",
+        "--workspace",
+        "--locked",
+        "--offline",
+        "--message-format=json"
+      ],
+      "exit_code": 0,
+      "seconds": 0.13867758399999275,
+      "source_sha256": "8b2c259441f654d92ce43b7feb1430e025c8f45c5441ae6682f152f5097a7c91"
+    }
+  },
+  "harness_summaries": 60,
+  "passed_harness_entries_including_nested": 445,
+  "not_unique_tests": true,
+  "probe": "independent SDK and actual protocol cases passed",
+  "formal_observer": "not_integrated",
+  "memory_credit_bytes": 0,
+  "normal_physical_gate": "previous_failed_observed_retained",
+  "eight_hour": "not_run",
+  "real_16gb": "not_run",
+  "full_M0": "not_accepted"
+}

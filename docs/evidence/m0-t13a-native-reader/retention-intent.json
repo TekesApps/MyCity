@@ -1,0 +1,10 @@
+{
+  "purpose": "safe native resource backend candidate, no pressure copies, no new target, no formal acceptance",
+  "new_paths": [
+    "work/candidate-binaries/native-reader/mycity-headless",
+    "work/native-reader-probe-01"
+  ],
+  "estimated_new_work_bytes": 33554432,
+  "retained": "fixed source/lock/executable, SDK crosscheck raw and malformed request evidence; no full business or pressure snapshots",
+  "retirement": "probe logs retained as acceptance evidence; no synthetic pressure data introduced; stage ends with shared-target dependency audit"
+}

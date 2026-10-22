@@ -1,0 +1,44 @@
+{
+  "raw_before": {
+    "begin": 776901333,
+    "end": 777121500,
+    "rc": 0,
+    "errno": 0,
+    "bsd_returned_bytes": 136,
+    "bsd_errno": 0,
+    "birth": 24869396055202,
+    "resident_bytes": 17154048,
+    "footprint_bytes": 12665168,
+    "user_time_raw": 2167395,
+    "system_time_raw": 845478,
+    "parent_pid": 69823,
+    "pid": 78081
+  },
+  "raw_after": {
+    "begin": 1029453458,
+    "end": 1029813875,
+    "rc": 0,
+    "errno": 0,
+    "bsd_returned_bytes": 136,
+    "bsd_errno": 0,
+    "birth": 24869396055202,
+    "resident_bytes": 17154048,
+    "footprint_bytes": 12665168,
+    "user_time_raw": 5529215,
+    "system_time_raw": 3489463,
+    "parent_pid": 69823,
+    "pid": 78081
+  },
+  "raw_delta": 6005805,
+  "getrusage_seconds": 0.25000399999999995,
+  "raw_as_nanoseconds_seconds": 0.006005805,
+  "mach_scaled_seconds": 0.250241875,
+  "mach_timebase": {
+    "numer": 125,
+    "denom": 3
+  },
+  "raw_ratio": 0.02402283563462985,
+  "mach_ratio": 1.0009514847762437,
+  "interpretation": "raw_counters_are_mach_ticks_on_this_host",
+  "scope": "local empirical calibration; no arbitrary host unit claim; adapter retains raw counters"
+}

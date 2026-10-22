@@ -108,6 +108,7 @@ impl Recorder {
     }
     pub fn finish(&self, success: bool) -> Result<(), String> {
         let cap = match self.role.as_str() {
+            "native-metrics-probe" => Some(crate::diagnostic_contract::OBSERVER),
             "scale-model-task" if FIXED_HELPER.load(std::sync::atomic::Ordering::Relaxed) => {
                 Some(crate::worker_slots::OWNER_BYTES + crate::diagnostic_contract::HELPER)
             }
