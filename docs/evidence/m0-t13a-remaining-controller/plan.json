@@ -1,0 +1,20 @@
+{
+  "schema": "mycity-m0-t13a-remaining-controller-plan-v1",
+  "formal_schedule": [
+    {"scenario": "l0", "phase": "formal", "run_id": "formal01", "work_path": "work/st-l0-f01", "state": "planned_not_run"},
+    {"scenario": "l0", "phase": "formal", "run_id": "formal02", "work_path": "work/st-l0-f02", "state": "planned_not_run"},
+    {"scenario": "l0", "phase": "formal", "run_id": "formal03", "work_path": "work/st-l0-f03", "state": "planned_not_run"},
+    {"scenario": "l1", "phase": "formal", "run_id": "formal01", "work_path": "work/st-l1-f01", "state": "planned_not_run"},
+    {"scenario": "l1", "phase": "formal", "run_id": "formal02", "work_path": "work/st-l1-f02", "state": "planned_not_run"},
+    {"scenario": "l1", "phase": "formal", "run_id": "formal03", "work_path": "work/st-l1-f03", "state": "planned_not_run"},
+    {"scenario": "l2", "phase": "formal", "run_id": "formal01", "work_path": "work/st-l2-f01", "state": "planned_not_run"},
+    {"scenario": "l2", "phase": "formal", "run_id": "formal02", "work_path": "work/st-l2-f02", "state": "planned_not_run"},
+    {"scenario": "l2", "phase": "formal", "run_id": "formal03", "work_path": "work/st-l2-f03", "state": "planned_not_run"}
+  ],
+  "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+  "binary_sha256": "59aa365ed46b5d373218fcbcf1d34f930d674d15607ed510190361891439b4e0",
+  "formal_duration_seconds": {"warmup": 300, "measured": 1800, "quiesce": 10},
+  "limits": {"sampling_hz": 4, "world_bytes": 21474836480, "combined_log_bytes": 268435456, "free_floor_bytes": 2147483648, "max_non_normal_pressure_seconds": 60, "max_swap_growth_bytes": 268435456},
+  "smoke_validation_policy": "3 smoke warmups + 12 measured seconds + 1 quiesce second; never formal evidence",
+  "status": "planned_not_run"
+}

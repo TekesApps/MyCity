@@ -1,0 +1,12 @@
+{
+  "deleted_files": 4,
+  "deleted_file_allocated_bytes": 6356516864,
+  "free_bytes_before_unlink": 1971111591936,
+  "free_bytes_after_unlink": 1977468076032,
+  "observed_available_space_delta_bytes": 6356484096,
+  "available_delta_is_not_exclusive_reclamation_credit": true,
+  "old_snapshots": "not_directly_fully_restorable",
+  "current_j3s_snapshots": "complete_originals_retained_and_fully_hashed",
+  "protected_190_originals": "full_SHA_and_identities_unchanged",
+  "target": "not_modified"
+}

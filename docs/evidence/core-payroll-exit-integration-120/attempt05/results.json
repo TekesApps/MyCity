@@ -1,0 +1,69 @@
+[
+  {
+    "name": "core-timeline",
+    "command": [
+      "cargo",
+      "+1.85.1",
+      "test",
+      "--locked",
+      "--offline",
+      "--release",
+      "-p",
+      "mycity-core",
+      "--test",
+      "timeline"
+    ],
+    "exit": 0,
+    "seconds": 0.519485625
+  },
+  {
+    "name": "store-payroll-exit",
+    "command": [
+      "cargo",
+      "+1.85.1",
+      "test",
+      "--locked",
+      "--offline",
+      "--release",
+      "-p",
+      "mycity-storage",
+      "--test",
+      "payroll_exit"
+    ],
+    "exit": 0,
+    "seconds": 4.087971916000001
+  },
+  {
+    "name": "storage-lib",
+    "command": [
+      "cargo",
+      "+1.85.1",
+      "test",
+      "--locked",
+      "--offline",
+      "--release",
+      "-p",
+      "mycity-storage",
+      "--lib"
+    ],
+    "exit": 0,
+    "seconds": 5.451626084
+  },
+  {
+    "name": "build-cli",
+    "command": [
+      "cargo",
+      "+1.85.1",
+      "build",
+      "--locked",
+      "--offline",
+      "--release",
+      "-p",
+      "mycity-storage",
+      "--example",
+      "payroll_exit"
+    ],
+    "exit": 101,
+    "seconds": 0.10231891599999976
+  }
+]

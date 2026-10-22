@@ -1,0 +1,28 @@
+
+running 3 tests
+test payroll_exit_rejects_incomplete_advance_and_non_system_caller ... FAILED
+test payroll_exit_checkpoint_reopen_replay_and_explicit_settlement_conserve_cash ... FAILED
+test payroll_exit_write_uncertainty_reopens_and_replays_exactly_once_before_settlement ... ok
+
+failures:
+
+---- payroll_exit_rejects_incomplete_advance_and_non_system_caller stdout ----
+
+thread 'payroll_exit_rejects_incomplete_advance_and_non_system_caller' panicked at crates/city-storage/tests/payroll_exit.rs:270:5:
+assertion `left == right` failed
+  left: Err(Timeline(Busy))
+ right: Err(Unauthorized)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- payroll_exit_checkpoint_reopen_replay_and_explicit_settlement_conserve_cash stdout ----
+
+thread 'payroll_exit_checkpoint_reopen_replay_and_explicit_settlement_conserve_cash' panicked at crates/city-storage/tests/payroll_exit.rs:148:43:
+called `Result::unwrap()` on an `Err` value: Invalid("invalid_json")
+
+
+failures:
+    payroll_exit_checkpoint_reopen_replay_and_explicit_settlement_conserve_cash
+    payroll_exit_rejects_incomplete_advance_and_non_system_caller
+
+test result: FAILED. 1 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 13.28s
+

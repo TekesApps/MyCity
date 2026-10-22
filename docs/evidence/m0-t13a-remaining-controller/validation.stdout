@@ -1,0 +1,6 @@
+AST: 4 Python files passed
+JSON: 4 evidence/plan files passed
+Speed profiles: 5 planned_not_run
+Support hashes: all 16 files match
+Clock guard: blocked_prelaunch_not_run
+Whitespace: all new files passed

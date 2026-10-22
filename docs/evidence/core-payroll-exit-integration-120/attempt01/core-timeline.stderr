@@ -1,0 +1,4 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+    Finished `release` profile [optimized] target(s) in 22.29s
+     Running tests/timeline.rs (target/release/deps/timeline-426d5a778cf9a1a0)
+error: test failed, to rerun pass `-p mycity-core --test timeline`

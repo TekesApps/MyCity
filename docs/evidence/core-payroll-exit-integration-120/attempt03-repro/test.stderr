@@ -1,0 +1,10 @@
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 16.91s
+     Running tests/payroll_exit.rs (target/release/deps/payroll_exit-f90fbeceff047160)
+PAYROLL_EXIT_ARTIFACT_CREATED=/Volumes/HP P900/dev/MyCity/work/payroll-exit-main-120-repro03/mycity-payroll-exit-75998-0
+
+thread 'payroll_exit_checkpoint_reopen_replay_and_explicit_settlement_conserve_cash' panicked at crates/city-storage/tests/payroll_exit.rs:158:43:
+called `Result::unwrap()` on an `Err` value: Invalid("invalid_json")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+PAYROLL_EXIT_ARTIFACT_PRESERVED=/Volumes/HP P900/dev/MyCity/work/payroll-exit-main-120-repro03/mycity-payroll-exit-75998-0
+error: test failed, to rerun pass `-p mycity-storage --test payroll_exit`

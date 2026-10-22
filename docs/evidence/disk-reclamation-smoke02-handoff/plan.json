@@ -1,0 +1,81 @@
+{
+  "files": [
+    {
+      "path": "/Users/frankqin/dev/MyCity/work/j2s-01/observed/model/layout/snapshots/snapshot-000001/pressure.bin",
+      "identity": [
+        16777248,
+        1091574,
+        33188,
+        3044040310,
+        1792659490993353575,
+        5945392,
+        1
+      ],
+      "sha256": "a65732a932b3e81c9e43e6255f62ee6513e07b22117c5290c0aa7843fcf7ce4b",
+      "allocated_bytes": 3044040704,
+      "replacement": "/Users/frankqin/dev/MyCity/work/j3s-01/observed/model/layout/snapshots/snapshot-000001/pressure.bin",
+      "generation": 1,
+      "reason": "older successful same-source synthetic payload is byte-identical to a complete retained replacement; latest replacement cold-reopened successfully",
+      "retained_evidence": "raw/index/log/latency/business remain under work/j2s-01; replacement originals under work/j3s-01; execution summaries in docs/evidence/m0-t13a-joint-smoke-control-02 and -03"
+    },
+    {
+      "path": "/Users/frankqin/dev/MyCity/work/j2s-01/observed/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+      "identity": [
+        16777248,
+        1091578,
+        33188,
+        134217728,
+        1792659491137823630,
+        262144,
+        1
+      ],
+      "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee",
+      "allocated_bytes": 134217728,
+      "replacement": "/Users/frankqin/dev/MyCity/work/j3s-01/observed/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+      "generation": 1,
+      "reason": "older successful same-source synthetic payload is byte-identical to a complete retained replacement; latest replacement cold-reopened successfully",
+      "retained_evidence": "raw/index/log/latency/business remain under work/j2s-01; replacement originals under work/j3s-01; execution summaries in docs/evidence/m0-t13a-joint-smoke-control-02 and -03"
+    },
+    {
+      "path": "/Users/frankqin/dev/MyCity/work/j2s-01/observed/model/layout/snapshots/snapshot-000002/pressure.bin",
+      "identity": [
+        16777248,
+        1116105,
+        33188,
+        3044040310,
+        1792659791026788079,
+        5945392,
+        1
+      ],
+      "sha256": "5208556364f0d7b7ef8eea63565135eb34700e04542e4dc55e7be274d40799ac",
+      "allocated_bytes": 3044040704,
+      "replacement": "/Users/frankqin/dev/MyCity/work/j3s-01/observed/model/layout/snapshots/snapshot-000002/pressure.bin",
+      "generation": 2,
+      "reason": "older successful same-source synthetic payload is byte-identical to a complete retained replacement; latest replacement cold-reopened successfully",
+      "retained_evidence": "raw/index/log/latency/business remain under work/j2s-01; replacement originals under work/j3s-01; execution summaries in docs/evidence/m0-t13a-joint-smoke-control-02 and -03"
+    },
+    {
+      "path": "/Users/frankqin/dev/MyCity/work/j2s-01/observed/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+      "identity": [
+        16777248,
+        1116253,
+        33188,
+        134217728,
+        1792659791173918619,
+        262144,
+        1
+      ],
+      "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee",
+      "allocated_bytes": 134217728,
+      "replacement": "/Users/frankqin/dev/MyCity/work/j3s-01/observed/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+      "generation": 2,
+      "reason": "older successful same-source synthetic payload is byte-identical to a complete retained replacement; latest replacement cold-reopened successfully",
+      "retained_evidence": "raw/index/log/latency/business remain under work/j2s-01; replacement originals under work/j3s-01; execution summaries in docs/evidence/m0-t13a-joint-smoke-control-02 and -03"
+    }
+  ],
+  "allocated_bytes_to_retire": 6356516864,
+  "protected_originals": 190,
+  "retains_current_complete_recovery_originals": true,
+  "old_snapshots_after_retirement": "not_directly_fully_restorable",
+  "free_bytes_before_unlink": 1971111591936
+}

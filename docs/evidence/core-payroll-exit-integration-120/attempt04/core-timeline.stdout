@@ -1,0 +1,21 @@
+
+running 16 tests
+test diagnostics_distinguish_empty_scan_from_zero_cash_debt_processing ... ok
+test end_for_exit_rejects_incomplete_time_and_non_system_caller ... ok
+test end_for_exit_before_first_work_and_after_natural_end_are_safe ... ok
+test inactive_city_gets_no_autonomous_work_and_payment_insufficiency_keeps_claim ... ok
+test joint_boot_transport_periodic_debt_and_population_use_real_dynamic_sources ... ok
+test later_page_can_touch_all_sixty_four_admitted_accounts ... ok
+test end_for_exit_bills_earned_wages_without_payment_and_survives_checkpoint_retry ... ok
+test end_for_exit_preserves_prior_payments_and_only_bills_new_arrears ... ok
+test one_clock_no_new_action_in_frozen_stage_and_target_cannot_change ... ok
+test daily_weekly_monthly_same_earned_wages_fraction_carry_and_exit_debt ... ok
+test mid_wage_page_is_valid_and_p4_never_changes_money ... ok
+test economic_dynamic_same_time_work_wage_output_and_tax_match_legacy_thirty_days ... ok
+test diagnostics_preserve_complete_state_quotes_retries_and_failed_persistence ... ok
+test real_twenty_thousand_payments_page_and_checkpoint_without_duplicate_cash ... ok
+test end_for_exit_preserves_pending_cycle_and_fraction_through_engine_checkpoint_restore ... ok
+test monthly_anchor_leap_century_year_end_stop_and_frequency_change_keep_old_due ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.40s
+

@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.119`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.120`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.120完成[工资退出原语与Store恢复实测](docs/evidence/core-payroll-exit-integration-120/STATUS.md)：16项Timeline、3项Store退出、18项storage lib、110项core lib及实际CLI/严格检查通过；保留故障复现，尚非企业清算。另归档[原负载607.95秒联合短测](docs/evidence/m0-t13a-joint-smoke-control-03/STATUS.md)及[旧压力载荷精确回收](docs/evidence/disk-reclamation-smoke02-handoff/STATUS.md)；未将短测、外部编译污染或脚本纯测试称为性能通过。原8h正式运行、速度/分级门及真实16GB仍未通过。
 
 v0.5.119完成[交通实际履约与有限营业额税主线集成](docs/evidence/core-transport-tax-integration-119/STATUS.md)：主线110项core lib、4项建设恢复、四交通CLI、11经营配置及strict/fmt通过；候选349项独立记录。日历绑定proof实际影响销量与运费，税费复用Timeline并保留欠额，首轮压力fixture错误保留。工程动态扩容、真实企业退出、增量heap/16GB及M0仍未完成。
 

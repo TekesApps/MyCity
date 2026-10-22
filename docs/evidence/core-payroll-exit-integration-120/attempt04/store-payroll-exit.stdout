@@ -1,0 +1,22 @@
+
+running 3 tests
+test payroll_exit_rejects_incomplete_advance_then_non_system_caller_at_complete_time ... FAILED
+test payroll_exit_checkpoint_reopen_replay_and_explicit_settlement_conserve_cash ... ok
+test payroll_exit_write_uncertainty_reopens_and_replays_exactly_once_before_settlement ... ok
+
+failures:
+
+---- payroll_exit_rejects_incomplete_advance_then_non_system_caller_at_complete_time stdout ----
+PAYROLL_EXIT_ARTIFACT_CREATED=/Volumes/HP P900/dev/MyCity/work/payroll-exit-main-120-tests04/mycity-payroll-exit-76209-1
+
+thread 'payroll_exit_rejects_incomplete_advance_then_non_system_caller_at_complete_time' panicked at crates/city-storage/tests/payroll_exit.rs:67:54:
+called `Result::unwrap()` on an `Err` value: Invalid("timeline_reserved_page_limit")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+PAYROLL_EXIT_ARTIFACT_PRESERVED=/Volumes/HP P900/dev/MyCity/work/payroll-exit-main-120-tests04/mycity-payroll-exit-76209-1
+
+
+failures:
+    payroll_exit_rejects_incomplete_advance_then_non_system_caller_at_complete_time
+
+test result: FAILED. 2 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.31s
+

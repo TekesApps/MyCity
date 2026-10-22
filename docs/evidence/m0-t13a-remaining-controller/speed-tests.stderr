@@ -1,0 +1,11 @@
+test_all_five_speed_paths_fit_published_unix_socket_limit (docs.evidence.m0-t13a-remaining-controller.test_speed_run.SpeedControllerTests) ... ok
+test_blocked_wrapper_keeps_existing_integrity_gates (docs.evidence.m0-t13a-remaining-controller.test_speed_run.SpeedControllerTests) ... ok
+test_five_profiles_have_unique_planned_directories (docs.evidence.m0-t13a-remaining-controller.test_speed_run.SpeedControllerTests) ... ok
+test_fixed_source_identity_rejects_mismatch (docs.evidence.m0-t13a-remaining-controller.test_speed_run.SpeedControllerTests) ... ok
+test_fixed_speed_contract_and_clock_gap_are_explicit (docs.evidence.m0-t13a-remaining-controller.test_speed_run.SpeedControllerTests) ... ok
+test_rejects_bad_rates_run_ids_and_long_or_path_inputs (docs.evidence.m0-t13a-remaining-controller.test_speed_run.SpeedControllerTests) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.032s
+
+OK

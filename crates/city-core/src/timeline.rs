@@ -317,6 +317,11 @@ pub enum Command {
     Terminate {
         id: u32,
     },
+    /// Stop future payroll accrual without settling cash or rewriting the contract end.
+    /// This is a system-only Timeline primitive, not legal approval or company closure.
+    EndForExit {
+        id: u32,
+    },
     SettleClaim {
         id: u64,
     },

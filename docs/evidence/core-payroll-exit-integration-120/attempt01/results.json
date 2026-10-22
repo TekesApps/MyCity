@@ -1,0 +1,19 @@
+[
+  {
+    "name": "core-timeline",
+    "command": [
+      "cargo",
+      "+1.85.1",
+      "test",
+      "--locked",
+      "--offline",
+      "--release",
+      "-p",
+      "mycity-core",
+      "--test",
+      "timeline"
+    ],
+    "exit": 101,
+    "seconds": 23.39451675
+  }
+]

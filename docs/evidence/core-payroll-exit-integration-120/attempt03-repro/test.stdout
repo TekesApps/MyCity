@@ -1,0 +1,11 @@
+
+running 1 test
+test payroll_exit_checkpoint_reopen_replay_and_explicit_settlement_conserve_cash ... FAILED
+
+failures:
+
+failures:
+    payroll_exit_checkpoint_reopen_replay_and_explicit_settlement_conserve_cash
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 2 filtered out; finished in 1.07s
+

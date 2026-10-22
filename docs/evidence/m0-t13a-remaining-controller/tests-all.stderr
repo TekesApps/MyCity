@@ -1,0 +1,21 @@
+test_environment_cleaning_is_scoped_to_mycity_names (docs.evidence.m0-t13a-remaining-controller.test_run.RemainingControllerTests) ... ok
+test_formal_arguments_and_paths (docs.evidence.m0-t13a-remaining-controller.test_run.RemainingControllerTests) ... ok
+test_formal_plan_is_complete_and_not_claimed_as_run (docs.evidence.m0-t13a-remaining-controller.test_run.RemainingControllerTests) ... ok
+test_frozen_source_and_all_formal_socket_paths (docs.evidence.m0-t13a-remaining-controller.test_run.RemainingControllerTests) ... ok
+test_frozen_steady_command_and_durations (docs.evidence.m0-t13a-remaining-controller.test_run.RemainingControllerTests) ... ok
+test_readiness_uses_only_final_clean_window (docs.evidence.m0-t13a-remaining-controller.test_run.RemainingControllerTests) ... ok
+test_rejects_argument_counterexamples (docs.evidence.m0-t13a-remaining-controller.test_run.RemainingControllerTests) ... ok
+test_socket_path_limit_includes_nul (docs.evidence.m0-t13a-remaining-controller.test_run.RemainingControllerTests) ... ok
+test_source_and_support_identity_are_fixed (docs.evidence.m0-t13a-remaining-controller.test_run.RemainingControllerTests) ... ok
+test_wrapper_execs_once_without_restart_or_pass_claim (docs.evidence.m0-t13a-remaining-controller.test_run.RemainingControllerTests) ... ok
+test_all_five_speed_paths_fit_published_unix_socket_limit (docs.evidence.m0-t13a-remaining-controller.test_speed_run.SpeedControllerTests) ... ok
+test_blocked_wrapper_keeps_existing_integrity_gates (docs.evidence.m0-t13a-remaining-controller.test_speed_run.SpeedControllerTests) ... ok
+test_five_profiles_have_unique_planned_directories (docs.evidence.m0-t13a-remaining-controller.test_speed_run.SpeedControllerTests) ... ok
+test_fixed_source_identity_rejects_mismatch (docs.evidence.m0-t13a-remaining-controller.test_speed_run.SpeedControllerTests) ... ok
+test_fixed_speed_contract_and_clock_gap_are_explicit (docs.evidence.m0-t13a-remaining-controller.test_speed_run.SpeedControllerTests) ... ok
+test_rejects_bad_rates_run_ids_and_long_or_path_inputs (docs.evidence.m0-t13a-remaining-controller.test_speed_run.SpeedControllerTests) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.112s
+
+OK
