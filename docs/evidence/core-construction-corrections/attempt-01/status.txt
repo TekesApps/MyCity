@@ -1,0 +1,5 @@
+ M crates/city-core/src/construction/mod.rs
+ M crates/city-core/src/transaction.rs
+ M crates/city-core/tests/construction_engine.rs
+ M crates/city-storage/tests/construction.rs
+?? docs/evidence/core-construction-corrections/

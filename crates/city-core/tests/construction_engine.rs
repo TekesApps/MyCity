@@ -17,6 +17,14 @@ const END_OF_SHIFT: u64 = 17 * 3_600;
 static NEXT_OPERATION_ID: AtomicU64 = AtomicU64::new(1_000_000);
 
 fn opening(required: i64, budget: i64) -> Vec<u8> {
+    opening_with_basis(required, budget, 400, None)
+}
+fn opening_with_basis(
+    required: i64,
+    budget: i64,
+    estimated_basis_per_unit: i64,
+    actual_stock_basis: Option<i64>,
+) -> Vec<u8> {
     let mut value: Value = serde_json::from_slice(INPUT).unwrap();
     let profile = Project::new(
         7,
@@ -50,18 +58,41 @@ fn opening(required: i64, budget: i64) -> Vec<u8> {
             stock_id: 1,
             required: Quantity::new(required).unwrap(),
             consumed: Quantity::ZERO,
-            basis_per_unit: Money::new(400).unwrap(),
+            basis_per_unit: Money::new(estimated_basis_per_unit).unwrap(),
             basis_remainder: 0,
         }],
         GameTime::ZERO,
     )
     .unwrap();
     value["construction"] = serde_json::to_value(profile).unwrap();
+    if let Some(actual_basis) = actual_stock_basis {
+        value["stocks"][0]["basis"] = json!(actual_basis);
+        value["sources"][4]["amount"] = json!(actual_basis);
+    }
     serde_json::to_vec(&value).unwrap()
 }
 fn engine(required: i64, budget: i64, site_capacity: u32) -> Engine {
     Engine::new(
         assemble(&opening(required, budget)).unwrap(),
+        vec![Resource::new(80, site_capacity).unwrap()],
+    )
+    .unwrap()
+}
+fn priced_engine(
+    required: i64,
+    budget: i64,
+    site_capacity: u32,
+    estimated_basis_per_unit: i64,
+    actual_stock_basis: Option<i64>,
+) -> Engine {
+    Engine::new(
+        assemble(&opening_with_basis(
+            required,
+            budget,
+            estimated_basis_per_unit,
+            actual_stock_basis,
+        ))
+        .unwrap(),
         vec![Resource::new(80, site_capacity).unwrap()],
     )
     .unwrap()
@@ -376,6 +407,89 @@ fn non_draft_checkpoint_restores_exact_site_lease_and_continues_to_operational_w
         e.resources().iter().find(|r| r.id == 80).unwrap().occupied,
         1
     );
+}
+
+#[test]
+fn generic_release_cannot_break_project_site_binding_and_cold_restore_can_continue_work() {
+    let mut e = engine(1_000, 1_000_000, 1);
+    file_and_approve(&mut e);
+    start(&mut e).unwrap();
+    let before_view = e.world().view();
+    let before_cash = cash(&e, 4);
+    let before_stocks = stock(&e, 1);
+    let before_resources = resource_state(&e);
+    let before_leases = lease_state(&e);
+    let token = before_view
+        .construction
+        .unwrap()
+        .site_token
+        .expect("started project reserves its site");
+    let request = envelope(
+        &e,
+        ordinary_id(&e),
+        Action::ReleaseCapacity {
+            token: mycity_core::transaction::CapacityToken {
+                world: before_view.scope.world(),
+                branch: before_view.scope.branch(),
+                number: token,
+            },
+        },
+    );
+    assert_eq!(e.execute(Caller::Account(4), request), Err(TxError::Lease));
+    assert_eq!(e.world().view(), before_view);
+    assert_eq!(cash(&e, 4), before_cash);
+    assert_eq!(stock(&e, 1), before_stocks);
+    assert_eq!(resource_state(&e), before_resources);
+    assert_eq!(lease_state(&e), before_leases);
+
+    let checkpoint = e.export_checkpoint().unwrap();
+    let mut reopened = Engine::restore_checkpoint(&checkpoint).unwrap();
+    enable_timeline(&mut reopened);
+    advance(&mut reopened, END_OF_SHIFT);
+    work(&mut reopened).unwrap();
+    let project = reopened.world().view().construction.unwrap();
+    assert_eq!(project.completed_worker_seconds, BUILD_SECONDS);
+    assert_eq!(project.phase, Phase::Building);
+    assert_eq!(stock(&reopened, 1), (599_000, 239_600));
+}
+
+#[test]
+fn engine_uses_actual_source_lot_basis_for_budget_and_rejects_actual_overrun_atomically() {
+    let mut lower_actual = priced_engine(1_000, 30_000, 1, 100_000, None);
+    file_and_approve(&mut lower_actual);
+    start(&mut lower_actual).unwrap();
+    enable_timeline(&mut lower_actual);
+    advance(&mut lower_actual, END_OF_SHIFT);
+    work(&mut lower_actual).unwrap();
+    let project = lower_actual.world().view().construction.unwrap();
+    assert_eq!(project.spent, Money::new(29_200).unwrap());
+    assert_eq!(stock(&lower_actual, 1), (599_000, 239_600));
+
+    let mut higher_actual = priced_engine(1_000, 30_000, 1, 1, Some(18_000_000));
+    file_and_approve(&mut higher_actual);
+    start(&mut higher_actual).unwrap();
+    enable_timeline(&mut higher_actual);
+    advance(&mut higher_actual, END_OF_SHIFT);
+    let before_view = higher_actual.world().view();
+    let before_hash = higher_actual.state_hash();
+    let before_cash = cash(&higher_actual, 4);
+    let before_payee_cash = cash(&higher_actual, 3);
+    let before_stock = stock(&higher_actual, 1);
+    let before_resources = resource_state(&higher_actual);
+    let before_leases = lease_state(&higher_actual);
+    assert_eq!(
+        work(&mut higher_actual),
+        Err(TxError::Construction(
+            mycity_core::construction::Error::Funds
+        ))
+    );
+    assert_eq!(higher_actual.state_hash(), before_hash);
+    assert_eq!(higher_actual.world().view(), before_view);
+    assert_eq!(cash(&higher_actual, 4), before_cash);
+    assert_eq!(cash(&higher_actual, 3), before_payee_cash);
+    assert_eq!(stock(&higher_actual, 1), before_stock);
+    assert_eq!(resource_state(&higher_actual), before_resources);
+    assert_eq!(lease_state(&higher_actual), before_leases);
 }
 
 #[test]

@@ -3,6 +3,7 @@ use mycity_core::{
         EngineCommand as C, Gate, GateCategory, GateDecision, Kind, Material, Project,
         OPERATION_PREFIX,
     },
+    timeline::Command as T,
     transaction::{Action, Caller, Envelope, Resource},
     units::{GameTime, Money, Quantity},
 };
@@ -82,6 +83,9 @@ fn create(path: &Path) -> Store {
     Store::create(path, &opening(), vec![Resource::new(80, 1).unwrap()], RULES).unwrap()
 }
 fn env(s: &Store, operation_id: u64, command: C) -> Envelope {
+    env_action(s, operation_id, Action::Construction { command })
+}
+fn env_action(s: &Store, operation_id: u64, action: Action) -> Envelope {
     let e = s.engine().unwrap();
     let view = e.world().view();
     Envelope {
@@ -89,8 +93,38 @@ fn env(s: &Store, operation_id: u64, command: C) -> Envelope {
         branch: view.scope.branch(),
         operation_id,
         expected_revision: view.revision,
-        actions: vec![Action::Construction { command }],
+        actions: vec![action],
     }
+}
+fn ordinary_action(s: &mut Store, caller: Caller, action: Action) {
+    let id = ordinary(s);
+    let request = env_action(s, id, action);
+    assert!(s.execute(caller, request).unwrap().model.is_ok());
+}
+fn advance(s: &mut Store, target: u64) {
+    for _ in 0..100 {
+        ordinary_action(
+            s,
+            Caller::System,
+            Action::Timeline {
+                command: T::Advance {
+                    target,
+                    limit: 8192,
+                },
+            },
+        );
+        if s.engine()
+            .unwrap()
+            .timeline()
+            .unwrap()
+            .progress
+            .target
+            .is_none()
+        {
+            return;
+        }
+    }
+    panic!("timeline failed to reach work end");
 }
 fn ordinary(s: &Store) -> u64 {
     s.engine().unwrap().world().view().revision + 100
@@ -223,4 +257,123 @@ fn construction_wal_cold_reopen_retry_and_checkpointed_receipt_archive_decode() 
             .occupied,
         1
     );
+}
+
+#[test]
+fn construction_work_money_and_materials_commit_once_across_wal_lost_response_and_cold_retry() {
+    const END_OF_SHIFT: u64 = 17 * 3_600;
+    let t = Temp::new();
+    let path = t.world();
+    let mut s = create(&path);
+    approvals(&mut s);
+    let start = start_id(&s);
+    call(&mut s, Caller::Account(4), C::Start, start);
+    ordinary_action(
+        &mut s,
+        Caller::System,
+        Action::Timeline { command: T::Enable },
+    );
+    advance(&mut s, END_OF_SHIFT);
+
+    let work_id = start_id(&s);
+    let sequence_before_work = s.committed_sequence();
+    let request = env(
+        &s,
+        work_id,
+        C::Work {
+            at: GameTime::new(END_OF_SHIFT as i64).unwrap(),
+            elapsed_seconds: END_OF_SHIFT as u32,
+            worker_seconds: 28_800,
+        },
+    );
+    let owner_cash_before = cash(&s, 4);
+    let contractor_cash_before = cash(&s, 3);
+    let stock_before = s
+        .engine()
+        .unwrap()
+        .world()
+        .view()
+        .stocks
+        .into_iter()
+        .find(|stock| stock.id == 1)
+        .unwrap();
+    let lost_response = s.execute_with_observer(Caller::Account(3), request.clone(), |point| {
+        if point == WritePoint::Applied {
+            return Err(io::Error::other("simulated lost work response"));
+        }
+        Ok(())
+    });
+    assert!(lost_response.is_err());
+    drop(s);
+
+    let mut s = Store::open(&path, RULES).unwrap();
+    assert_eq!(cash(&s, 4), owner_cash_before - 28_800);
+    assert_eq!(cash(&s, 3), contractor_cash_before + 28_800);
+    let project = s.engine().unwrap().world().view().construction.unwrap();
+    assert_eq!(project.completed_worker_seconds, 28_800);
+    assert_eq!(project.spent, Money::new(29_200).unwrap());
+    assert_eq!(project.phase, mycity_core::construction::Phase::Building);
+    let stock_after = s
+        .engine()
+        .unwrap()
+        .world()
+        .view()
+        .stocks
+        .into_iter()
+        .find(|stock| stock.id == 1)
+        .unwrap();
+    assert_eq!(
+        stock_after.quantity.value(),
+        stock_before.quantity.value() - 1_000
+    );
+    assert_eq!(stock_after.basis.value(), stock_before.basis.value() - 400);
+
+    let retry = s.execute(Caller::Account(3), request.clone()).unwrap();
+    assert!(retry.has_persistent_receipt);
+    assert_eq!(cash(&s, 4), owner_cash_before - 28_800);
+    assert_eq!(cash(&s, 3), contractor_cash_before + 28_800);
+    assert_eq!(
+        s.engine()
+            .unwrap()
+            .world()
+            .view()
+            .construction
+            .unwrap()
+            .completed_worker_seconds,
+        28_800
+    );
+    assert_eq!(s.committed_sequence(), sequence_before_work + 1);
+    drop(s);
+
+    let mut s = Store::open(&path, RULES).unwrap();
+    assert!(matches!(
+        s.receipt(work_id).unwrap().unwrap().actions[0],
+        Some(Action::Construction {
+            command: C::Work { .. }
+        })
+    ));
+    assert_eq!(cash(&s, 4), owner_cash_before - 28_800);
+    assert_eq!(cash(&s, 3), contractor_cash_before + 28_800);
+    assert_eq!(
+        s.engine()
+            .unwrap()
+            .world()
+            .view()
+            .construction
+            .unwrap()
+            .completed_worker_seconds,
+        28_800
+    );
+    let stock = s
+        .engine()
+        .unwrap()
+        .world()
+        .view()
+        .stocks
+        .into_iter()
+        .find(|stock| stock.id == 1)
+        .unwrap();
+    assert_eq!(stock.quantity.value(), 599_000);
+    assert_eq!(stock.basis.value(), 239_600);
+    assert_eq!(s.committed_sequence(), sequence_before_work + 1);
 }

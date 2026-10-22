@@ -595,16 +595,10 @@ impl Engine {
             }) {
                 return Err("checkpoint_construction_site_resource".into());
             }
-            if let Some(token) = project.site_token {
-                if !candidate.leases.iter().flatten().any(|lease| {
-                    lease.token == token
-                        && lease.actor == project.owner
-                        && lease.resource == project.site_resource
-                        && lease.units == project.site_units
-                        && lease.occupied
-                }) {
-                    return Err("checkpoint_construction_site_lease".into());
-                }
+            if validate_construction_binding(Some(project), &candidate.resources, &candidate.leases)
+                .is_err()
+            {
+                return Err("checkpoint_construction_site_lease".into());
             }
         }
         if let Some(r) = candidate.world.region {
@@ -1942,6 +1936,7 @@ impl Engine {
         if projected > ENGINE_BYTE_BUDGET {
             return Err(TxError::WorkingLimit);
         }
+        validate_construction_binding(construction, &resources, &leases)?;
         Ok(Prepared {
             timeline,
             background,
@@ -1995,6 +1990,46 @@ impl Engine {
         std::mem::swap(&mut self.leases, &mut *prepared.leases);
         self.next_token = prepared.next_token;
     }
+}
+
+/// Every transaction path that mutates generic capacity rows must preserve the exact
+/// occupied site lease that anchors an active construction project.
+fn validate_construction_binding(
+    project: Option<crate::construction::Project>,
+    resources: &[Resource],
+    leases: &[Option<Lease>],
+) -> Result<(), TxError> {
+    let Some(project) = project else {
+        return Ok(());
+    };
+    project
+        .validate_persisted()
+        .map_err(TxError::Construction)?;
+    if !project.site_reserved {
+        if project.site_token.is_some() {
+            return Err(TxError::Lease);
+        }
+        return Ok(());
+    }
+    let token = project.site_token.ok_or(TxError::Lease)?;
+    let resource = resources
+        .iter()
+        .find(|resource| resource.id == project.site_resource)
+        .ok_or(TxError::Resource)?;
+    if project.site_units > resource.capacity {
+        return Err(TxError::Capacity);
+    }
+    let mut matching = leases.iter().flatten().filter(|lease| {
+        lease.token == token
+            && lease.actor == project.owner
+            && lease.resource == project.site_resource
+            && lease.units == project.site_units
+            && lease.occupied
+    });
+    if matching.next().is_none() || matching.next().is_some() {
+        return Err(TxError::Lease);
+    }
+    Ok(())
 }
 
 fn stage_account(
@@ -2149,7 +2184,7 @@ fn prepare_construction(
                 .checked_sub(accounts[owner_idx].1.protected)
                 .map_err(|_| TxError::Protection)?;
             candidate
-                .propose_work(
+                .propose_work_authoritative(
                     requested,
                     elapsed_seconds,
                     spendable,

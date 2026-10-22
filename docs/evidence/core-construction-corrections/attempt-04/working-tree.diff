@@ -1,0 +1,515 @@
+diff --git a/crates/city-core/src/construction/mod.rs b/crates/city-core/src/construction/mod.rs
+index 9560eb6..edb77a3 100644
+--- a/crates/city-core/src/construction/mod.rs
++++ b/crates/city-core/src/construction/mod.rs
+@@ -736,6 +736,32 @@ impl Project {
+         funds: Money,
+         available: [Quantity; MAX_MATERIALS],
+         worker_seconds: u32,
++    ) -> Result<Option<Effect>, Error> {
++        self.propose_work_inner(at, elapsed, funds, available, worker_seconds, true)
++    }
++
++    /// Engine entry point: profile basis is only a planning estimate. The authoritative
++    /// adapter reprices the pending effect from immutable inventory-lot offsets and checks
++    /// the actual total against the project budget before publication.
++    pub(crate) fn propose_work_authoritative(
++        &mut self,
++        at: GameTime,
++        elapsed: u32,
++        funds: Money,
++        available: [Quantity; MAX_MATERIALS],
++        worker_seconds: u32,
++    ) -> Result<Option<Effect>, Error> {
++        self.propose_work_inner(at, elapsed, funds, available, worker_seconds, false)
++    }
++
++    fn propose_work_inner(
++        &mut self,
++        at: GameTime,
++        elapsed: u32,
++        funds: Money,
++        available: [Quantity; MAX_MATERIALS],
++        worker_seconds: u32,
++        check_estimated_material_basis: bool,
+     ) -> Result<Option<Effect>, Error> {
+         if !matches!(self.phase, Phase::Building | Phase::Demolition) {
+             return Err(Error::WrongPhase);
+@@ -796,11 +822,12 @@ impl Project {
+         e.material_basis = material_basis;
+         e.basis_remainders = remainders;
+         e.total_basis = total_basis;
+-        if self
+-            .spent
+-            .checked_add(total_basis)
+-            .map_err(|_| Error::Overflow)?
+-            > self.budget
++        if check_estimated_material_basis
++            && self
++                .spent
++                .checked_add(total_basis)
++                .map_err(|_| Error::Overflow)?
++                > self.budget
+         {
+             return Err(Error::Funds);
+         }
+diff --git a/crates/city-core/src/transaction.rs b/crates/city-core/src/transaction.rs
+index 628ed43..52a0f96 100644
+--- a/crates/city-core/src/transaction.rs
++++ b/crates/city-core/src/transaction.rs
+@@ -595,16 +595,10 @@ impl Engine {
+             }) {
+                 return Err("checkpoint_construction_site_resource".into());
+             }
+-            if let Some(token) = project.site_token {
+-                if !candidate.leases.iter().flatten().any(|lease| {
+-                    lease.token == token
+-                        && lease.actor == project.owner
+-                        && lease.resource == project.site_resource
+-                        && lease.units == project.site_units
+-                        && lease.occupied
+-                }) {
+-                    return Err("checkpoint_construction_site_lease".into());
+-                }
++            if validate_construction_binding(Some(project), &candidate.resources, &candidate.leases)
++                .is_err()
++            {
++                return Err("checkpoint_construction_site_lease".into());
+             }
+         }
+         if let Some(r) = candidate.world.region {
+@@ -1942,6 +1936,7 @@ impl Engine {
+         if projected > ENGINE_BYTE_BUDGET {
+             return Err(TxError::WorkingLimit);
+         }
++        validate_construction_binding(construction, &resources, &leases)?;
+         Ok(Prepared {
+             timeline,
+             background,
+@@ -1997,6 +1992,46 @@ impl Engine {
+     }
+ }
+ 
++/// Every transaction path that mutates generic capacity rows must preserve the exact
++/// occupied site lease that anchors an active construction project.
++fn validate_construction_binding(
++    project: Option<crate::construction::Project>,
++    resources: &[Resource],
++    leases: &[Option<Lease>],
++) -> Result<(), TxError> {
++    let Some(project) = project else {
++        return Ok(());
++    };
++    project
++        .validate_persisted()
++        .map_err(TxError::Construction)?;
++    if !project.site_reserved {
++        if project.site_token.is_some() {
++            return Err(TxError::Lease);
++        }
++        return Ok(());
++    }
++    let token = project.site_token.ok_or(TxError::Lease)?;
++    let resource = resources
++        .iter()
++        .find(|resource| resource.id == project.site_resource)
++        .ok_or(TxError::Resource)?;
++    if project.site_units > resource.capacity {
++        return Err(TxError::Capacity);
++    }
++    let mut matching = leases.iter().flatten().filter(|lease| {
++        lease.token == token
++            && lease.actor == project.owner
++            && lease.resource == project.site_resource
++            && lease.units == project.site_units
++            && lease.occupied
++    });
++    if matching.next().is_none() || matching.next().is_some() {
++        return Err(TxError::Lease);
++    }
++    Ok(())
++}
++
+ fn stage_account(
+     world: &World,
+     dirty: &mut DirtyAccounts,
+@@ -2149,7 +2184,7 @@ fn prepare_construction(
+                 .checked_sub(accounts[owner_idx].1.protected)
+                 .map_err(|_| TxError::Protection)?;
+             candidate
+-                .propose_work(
++                .propose_work_authoritative(
+                     requested,
+                     elapsed_seconds,
+                     spendable,
+diff --git a/crates/city-core/tests/construction_engine.rs b/crates/city-core/tests/construction_engine.rs
+index 7158bb8..1469cf9 100644
+--- a/crates/city-core/tests/construction_engine.rs
++++ b/crates/city-core/tests/construction_engine.rs
+@@ -17,6 +17,14 @@ const END_OF_SHIFT: u64 = 17 * 3_600;
+ static NEXT_OPERATION_ID: AtomicU64 = AtomicU64::new(1_000_000);
+ 
+ fn opening(required: i64, budget: i64) -> Vec<u8> {
++    opening_with_basis(required, budget, 400, None)
++}
++fn opening_with_basis(
++    required: i64,
++    budget: i64,
++    estimated_basis_per_unit: i64,
++    actual_stock_basis: Option<i64>,
++) -> Vec<u8> {
+     let mut value: Value = serde_json::from_slice(INPUT).unwrap();
+     let profile = Project::new(
+         7,
+@@ -50,13 +58,17 @@ fn opening(required: i64, budget: i64) -> Vec<u8> {
+             stock_id: 1,
+             required: Quantity::new(required).unwrap(),
+             consumed: Quantity::ZERO,
+-            basis_per_unit: Money::new(400).unwrap(),
++            basis_per_unit: Money::new(estimated_basis_per_unit).unwrap(),
+             basis_remainder: 0,
+         }],
+         GameTime::ZERO,
+     )
+     .unwrap();
+     value["construction"] = serde_json::to_value(profile).unwrap();
++    if let Some(actual_basis) = actual_stock_basis {
++        value["stocks"][0]["basis"] = json!(actual_basis);
++        value["sources"][4]["amount"] = json!(actual_basis);
++    }
+     serde_json::to_vec(&value).unwrap()
+ }
+ fn engine(required: i64, budget: i64, site_capacity: u32) -> Engine {
+@@ -66,6 +78,25 @@ fn engine(required: i64, budget: i64, site_capacity: u32) -> Engine {
+     )
+     .unwrap()
+ }
++fn priced_engine(
++    required: i64,
++    budget: i64,
++    site_capacity: u32,
++    estimated_basis_per_unit: i64,
++    actual_stock_basis: Option<i64>,
++) -> Engine {
++    Engine::new(
++        assemble(&opening_with_basis(
++            required,
++            budget,
++            estimated_basis_per_unit,
++            actual_stock_basis,
++        ))
++        .unwrap(),
++        vec![Resource::new(80, site_capacity).unwrap()],
++    )
++    .unwrap()
++}
+ fn envelope(e: &Engine, operation_id: u64, action: Action) -> Envelope {
+     let view = e.world().view();
+     Envelope {
+@@ -378,6 +409,89 @@ fn non_draft_checkpoint_restores_exact_site_lease_and_continues_to_operational_w
+     );
+ }
+ 
++#[test]
++fn generic_release_cannot_break_project_site_binding_and_cold_restore_can_continue_work() {
++    let mut e = engine(1_000, 1_000_000, 1);
++    file_and_approve(&mut e);
++    start(&mut e).unwrap();
++    let before_view = e.world().view();
++    let before_cash = cash(&e, 4);
++    let before_stocks = stock(&e, 1);
++    let before_resources = resource_state(&e);
++    let before_leases = lease_state(&e);
++    let token = before_view
++        .construction
++        .unwrap()
++        .site_token
++        .expect("started project reserves its site");
++    let request = envelope(
++        &e,
++        ordinary_id(&e),
++        Action::ReleaseCapacity {
++            token: mycity_core::transaction::CapacityToken {
++                world: before_view.scope.world(),
++                branch: before_view.scope.branch(),
++                number: token,
++            },
++        },
++    );
++    assert_eq!(e.execute(Caller::Account(4), request), Err(TxError::Lease));
++    assert_eq!(e.world().view(), before_view);
++    assert_eq!(cash(&e, 4), before_cash);
++    assert_eq!(stock(&e, 1), before_stocks);
++    assert_eq!(resource_state(&e), before_resources);
++    assert_eq!(lease_state(&e), before_leases);
++
++    let checkpoint = e.export_checkpoint().unwrap();
++    let mut reopened = Engine::restore_checkpoint(&checkpoint).unwrap();
++    enable_timeline(&mut reopened);
++    advance(&mut reopened, END_OF_SHIFT);
++    work(&mut reopened).unwrap();
++    let project = reopened.world().view().construction.unwrap();
++    assert_eq!(project.completed_worker_seconds, BUILD_SECONDS);
++    assert_eq!(project.phase, Phase::Building);
++    assert_eq!(stock(&reopened, 1), (599_000, 239_600));
++}
++
++#[test]
++fn engine_uses_actual_source_lot_basis_for_budget_and_rejects_actual_overrun_atomically() {
++    let mut lower_actual = priced_engine(1_000, 30_000, 1, 100_000, None);
++    file_and_approve(&mut lower_actual);
++    start(&mut lower_actual).unwrap();
++    enable_timeline(&mut lower_actual);
++    advance(&mut lower_actual, END_OF_SHIFT);
++    work(&mut lower_actual).unwrap();
++    let project = lower_actual.world().view().construction.unwrap();
++    assert_eq!(project.spent, Money::new(29_200).unwrap());
++    assert_eq!(stock(&lower_actual, 1), (599_000, 239_600));
++
++    let mut higher_actual = priced_engine(1_000, 30_000, 1, 1, Some(18_000_000));
++    file_and_approve(&mut higher_actual);
++    start(&mut higher_actual).unwrap();
++    enable_timeline(&mut higher_actual);
++    advance(&mut higher_actual, END_OF_SHIFT);
++    let before_view = higher_actual.world().view();
++    let before_hash = higher_actual.state_hash();
++    let before_cash = cash(&higher_actual, 4);
++    let before_payee_cash = cash(&higher_actual, 3);
++    let before_stock = stock(&higher_actual, 1);
++    let before_resources = resource_state(&higher_actual);
++    let before_leases = lease_state(&higher_actual);
++    assert_eq!(
++        work(&mut higher_actual),
++        Err(TxError::Construction(
++            mycity_core::construction::Error::Funds
++        ))
++    );
++    assert_eq!(higher_actual.state_hash(), before_hash);
++    assert_eq!(higher_actual.world().view(), before_view);
++    assert_eq!(cash(&higher_actual, 4), before_cash);
++    assert_eq!(cash(&higher_actual, 3), before_payee_cash);
++    assert_eq!(stock(&higher_actual, 1), before_stock);
++    assert_eq!(resource_state(&higher_actual), before_resources);
++    assert_eq!(lease_state(&higher_actual), before_leases);
++}
++
+ #[test]
+ fn forged_gate_or_inspector_identity_is_rejected_before_domain_mutation() {
+     let mut e = engine(1_000, 1_000_000, 1);
+diff --git a/crates/city-storage/tests/construction.rs b/crates/city-storage/tests/construction.rs
+index b03dfe7..4bded1a 100644
+--- a/crates/city-storage/tests/construction.rs
++++ b/crates/city-storage/tests/construction.rs
+@@ -3,6 +3,7 @@ use mycity_core::{
+         EngineCommand as C, Gate, GateCategory, GateDecision, Kind, Material, Project,
+         OPERATION_PREFIX,
+     },
++    timeline::Command as T,
+     transaction::{Action, Caller, Envelope, Resource},
+     units::{GameTime, Money, Quantity},
+ };
+@@ -82,6 +83,9 @@ fn create(path: &Path) -> Store {
+     Store::create(path, &opening(), vec![Resource::new(80, 1).unwrap()], RULES).unwrap()
+ }
+ fn env(s: &Store, operation_id: u64, command: C) -> Envelope {
++    env_action(s, operation_id, Action::Construction { command })
++}
++fn env_action(s: &Store, operation_id: u64, action: Action) -> Envelope {
+     let e = s.engine().unwrap();
+     let view = e.world().view();
+     Envelope {
+@@ -89,8 +93,38 @@ fn env(s: &Store, operation_id: u64, command: C) -> Envelope {
+         branch: view.scope.branch(),
+         operation_id,
+         expected_revision: view.revision,
+-        actions: vec![Action::Construction { command }],
++        actions: vec![action],
++    }
++}
++fn ordinary_action(s: &mut Store, caller: Caller, action: Action) {
++    let id = ordinary(s);
++    let request = env_action(s, id, action);
++    assert!(s.execute(caller, request).unwrap().model.is_ok());
++}
++fn advance(s: &mut Store, target: u64) {
++    for _ in 0..100 {
++        ordinary_action(
++            s,
++            Caller::System,
++            Action::Timeline {
++                command: T::Advance {
++                    target,
++                    limit: 8192,
++                },
++            },
++        );
++        if s.engine()
++            .unwrap()
++            .timeline()
++            .unwrap()
++            .progress
++            .target
++            .is_none()
++        {
++            return;
++        }
+     }
++    panic!("timeline failed to reach work end");
+ }
+ fn ordinary(s: &Store) -> u64 {
+     s.engine().unwrap().world().view().revision + 100
+@@ -224,3 +258,122 @@ fn construction_wal_cold_reopen_retry_and_checkpointed_receipt_archive_decode()
+         1
+     );
+ }
++
++#[test]
++fn construction_work_money_and_materials_commit_once_across_wal_lost_response_and_cold_retry() {
++    const END_OF_SHIFT: u64 = 17 * 3_600;
++    let t = Temp::new();
++    let path = t.world();
++    let mut s = create(&path);
++    approvals(&mut s);
++    let start = start_id(&s);
++    call(&mut s, Caller::Account(4), C::Start, start);
++    ordinary_action(
++        &mut s,
++        Caller::System,
++        Action::Timeline { command: T::Enable },
++    );
++    advance(&mut s, END_OF_SHIFT);
++
++    let work_id = start_id(&s);
++    let sequence_before_work = s.committed_sequence();
++    let request = env(
++        &s,
++        work_id,
++        C::Work {
++            at: GameTime::new(END_OF_SHIFT as i64).unwrap(),
++            elapsed_seconds: END_OF_SHIFT as u32,
++            worker_seconds: 28_800,
++        },
++    );
++    let owner_cash_before = cash(&s, 4);
++    let contractor_cash_before = cash(&s, 3);
++    let stock_before = s
++        .engine()
++        .unwrap()
++        .world()
++        .view()
++        .stocks
++        .into_iter()
++        .find(|stock| stock.id == 1)
++        .unwrap();
++    let lost_response = s.execute_with_observer(Caller::Account(3), request.clone(), |point| {
++        if point == WritePoint::Applied {
++            return Err(io::Error::other("simulated lost work response"));
++        }
++        Ok(())
++    });
++    assert!(lost_response.is_err());
++    drop(s);
++
++    let mut s = Store::open(&path, RULES).unwrap();
++    assert_eq!(cash(&s, 4), owner_cash_before - 28_800);
++    assert_eq!(cash(&s, 3), contractor_cash_before + 28_800);
++    let project = s.engine().unwrap().world().view().construction.unwrap();
++    assert_eq!(project.completed_worker_seconds, 28_800);
++    assert_eq!(project.spent, Money::new(29_200).unwrap());
++    assert_eq!(project.phase, mycity_core::construction::Phase::Building);
++    let stock_after = s
++        .engine()
++        .unwrap()
++        .world()
++        .view()
++        .stocks
++        .into_iter()
++        .find(|stock| stock.id == 1)
++        .unwrap();
++    assert_eq!(
++        stock_after.quantity.value(),
++        stock_before.quantity.value() - 1_000
++    );
++    assert_eq!(stock_after.basis.value(), stock_before.basis.value() - 400);
++
++    let retry = s.execute(Caller::Account(3), request.clone()).unwrap();
++    assert!(retry.has_persistent_receipt);
++    assert_eq!(cash(&s, 4), owner_cash_before - 28_800);
++    assert_eq!(cash(&s, 3), contractor_cash_before + 28_800);
++    assert_eq!(
++        s.engine()
++            .unwrap()
++            .world()
++            .view()
++            .construction
++            .unwrap()
++            .completed_worker_seconds,
++        28_800
++    );
++    assert_eq!(s.committed_sequence(), sequence_before_work + 1);
++    drop(s);
++
++    let mut s = Store::open(&path, RULES).unwrap();
++    assert!(matches!(
++        s.receipt(work_id).unwrap().unwrap().actions[0],
++        Some(Action::Construction {
++            command: C::Work { .. }
++        })
++    ));
++    assert_eq!(cash(&s, 4), owner_cash_before - 28_800);
++    assert_eq!(cash(&s, 3), contractor_cash_before + 28_800);
++    assert_eq!(
++        s.engine()
++            .unwrap()
++            .world()
++            .view()
++            .construction
++            .unwrap()
++            .completed_worker_seconds,
++        28_800
++    );
++    let stock = s
++        .engine()
++        .unwrap()
++        .world()
++        .view()
++        .stocks
++        .into_iter()
++        .find(|stock| stock.id == 1)
++        .unwrap();
++    assert_eq!(stock.quantity.value(), 599_000);
++    assert_eq!(stock.basis.value(), 239_600);
++    assert_eq!(s.committed_sequence(), sequence_before_work + 1);
++}
+diff --git a/docs/core-construction.md b/docs/core-construction.md
+index 04a183f..976dd8c 100644
+--- a/docs/core-construction.md
++++ b/docs/core-construction.md
+@@ -8,22 +8,24 @@ The shared boundary is now `Action::Construction { command: EngineCommand }` wit
+ 
+ ## This branch's files and deliverables
+ 
+-This integration branch modifies the construction model plus the shared Engine, World assembly/checkpoint view, and Store typed receipt decoder. Delivered code includes one bounded project slot, compact scalar actions, stable effect IDs, game-calendar progress, lot-basis-derived COGS, project-site capacity occupation, and explicit authorization checks. No Cargo build or tests have been run for this integrated change yet; the coordinated root build is the acceptance gate.
++This integration branch modifies the construction model plus the shared Engine, World assembly/checkpoint view, and Store typed receipt decoder. Delivered code includes one bounded project slot, compact scalar actions, stable effect IDs, game-calendar progress, lot-basis-derived COGS, project-site capacity occupation, and explicit authorization checks. Integrated release validation is recorded in `docs/evidence/core-construction-validation/attempt-08/`; follow-up binding and actual-basis corrections are recorded in `docs/evidence/core-construction-corrections/`.
+ 
+ ## State and rules
+ 
+ A supported build/retrofit progresses through application, explicit party/authority gates, capacity reservation, work, pause/resume, inspection, and operation. Gate decisions are explicit attributed results. Pending effects are immutable and replay with the same operation ID; conflicting payloads fail. The candidate project, account balances, consumed inventory lots, and occupied site lease are published together only after the existing durable hook succeeds. An unknown outcome can be retried with the identical operation ID and compact action. Material COGS is computed from source lot offsets at commit time; the profile's per-unit basis is only an estimate. Capacity lease occupancy represents the completed physical site and remains held after inspection. Cancel is only available before mobilization.
+ 
++Every Engine commit validates the Project-to-site-token/resource binding after all actions, so generic `ReleaseCapacity` cannot free an active project's site. Checkpoint restore applies the same binding check. Engine work reprices material from the authoritative source lot before project-budget acceptance; the pure model API retains estimated-basis checking for standalone planning. Tests cover a deliberately high estimate with sufficient actual budget and a source-lot basis that exceeds the budget.
++
+ Demolition/retirement is intentionally not exposed through the Engine adapter yet: this profile does not contain a measured waste quantity or validated disposal receipt, so demolition, waste acceptance, and site release fail closed. Pure-model demolition transitions remain in the module, but are not an Engine feature. This keeps an unsafe close action from releasing a live site without waste accounting.
+ 
+ Game time determines duration. Wall-clock speed only changes how quickly `GameTime` advances in the host. Progress is capped by elapsed game time, crew size, Monday-to-Friday 09:00-17:00 shifts; work input, material usage, and wages are derived from the project schedule/rates. Capacity is reserved before mobilization and held through inspection/operation; release is an explicit effect. Inspection is a gate before operational capacity. Demolition requires a waste receiver and releases capacity only after safe-exit acceptance. Cancellation records actual consumed resources and does not refund or restore them automatically.
+ 
+ ## Limits and acceptance
+ 
+-One project, eight gates, eight material lines, 64-bit checked integer quantities, one pending external effect and a 2 KiB `size_of::<Project>()` in-memory target (not yet measured). Serialized JSON includes transport/Store framing and is measured separately, not covered by that target. The Engine slot adds `Option<Project>` to `World`; its bytes are included in `World`'s fixed header budget and must still pass the existing 128 KiB World / 4 MiB Engine bounds. The stable-ID namespace is C-prefixed, disjoint from background D and accepted operation F namespaces. Integrated negative and crash-recovery tests are still required for insufficient cash/material/site capacity, pre-durable failure, lost response, retry, cold checkpoint/WAL restore, and no duplicate charges or work.
++One project, eight gates, eight material lines, 64-bit checked integer quantities, one pending external effect and a 2 KiB `size_of::<Project>()` slot. Serialized JSON includes transport/Store framing and is measured separately, not covered by that target. The Engine slot adds `Option<Project>` to `World`; its bytes are included in `World`'s fixed header budget and pass the existing 128 KiB World / 4 MiB Engine bounds in current Engine tests. The stable-ID namespace is C-prefixed, disjoint from background D and accepted operation F namespaces. Integration tests cover insufficient cash/material/site capacity, pre-durable failure, lost response, retry, cold checkpoint/WAL restore, no duplicate charges/work, generic site release rejection and actual lot-basis budget behavior.
+ 
+ The profile's worst-case state is bounded by the fixed gate/material arrays and one receipt; no per-resident/per-worker objects are stored. Current code has no shared-game memory profile allocated to this module. The target 2 KiB is a design bound to verify with `size_of::<Project>()` during coordinated testing; serialized size is a separate measurement. CPU per command is O(8 gates + 8 materials), independent of city population.
+ 
+ ## Required shared integration contract
+ 
+-The integration requires an opening construction profile whose owner, contractor, inspector, gate parties, stocks and site resource resolve against existing Engine rows; site units must fit the configured resource capacity. No profile field in a player action can replace those authorities. The command is scalar and does not carry arbitrary JSON, a Project, or gate/material arrays. Inspector and consent/compensation party authorization are checked against the trusted caller. This narrow integration does not claim demolition/retirement support, and no integration tests are considered passed until they are run against the shared Engine and Store.
++The integration requires an opening construction profile whose owner, contractor, inspector, gate parties, stocks and site resource resolve against existing Engine rows; site units must fit the configured resource capacity. No profile field in a player action can replace those authorities. The command is scalar and does not carry arbitrary JSON, a Project, or gate/material arrays. Inspector and consent/compensation party authorization are checked against the trusted caller. This narrow integration does not claim demolition/retirement support.

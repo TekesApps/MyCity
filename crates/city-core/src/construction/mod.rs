@@ -737,6 +737,32 @@ impl Project {
         available: [Quantity; MAX_MATERIALS],
         worker_seconds: u32,
     ) -> Result<Option<Effect>, Error> {
+        self.propose_work_inner(at, elapsed, funds, available, worker_seconds, true)
+    }
+
+    /// Engine entry point: profile basis is only a planning estimate. The authoritative
+    /// adapter reprices the pending effect from immutable inventory-lot offsets and checks
+    /// the actual total against the project budget before publication.
+    pub(crate) fn propose_work_authoritative(
+        &mut self,
+        at: GameTime,
+        elapsed: u32,
+        funds: Money,
+        available: [Quantity; MAX_MATERIALS],
+        worker_seconds: u32,
+    ) -> Result<Option<Effect>, Error> {
+        self.propose_work_inner(at, elapsed, funds, available, worker_seconds, false)
+    }
+
+    fn propose_work_inner(
+        &mut self,
+        at: GameTime,
+        elapsed: u32,
+        funds: Money,
+        available: [Quantity; MAX_MATERIALS],
+        worker_seconds: u32,
+        check_estimated_material_basis: bool,
+    ) -> Result<Option<Effect>, Error> {
         if !matches!(self.phase, Phase::Building | Phase::Demolition) {
             return Err(Error::WrongPhase);
         }
@@ -796,11 +822,12 @@ impl Project {
         e.material_basis = material_basis;
         e.basis_remainders = remainders;
         e.total_basis = total_basis;
-        if self
-            .spent
-            .checked_add(total_basis)
-            .map_err(|_| Error::Overflow)?
-            > self.budget
+        if check_estimated_material_basis
+            && self
+                .spent
+                .checked_add(total_basis)
+                .map_err(|_| Error::Overflow)?
+                > self.budget
         {
             return Err(Error::Funds);
         }

@@ -1,0 +1,14 @@
+    Finished `release` profile [optimized] target(s) in 0.02s
+     Running tests/construction_engine.rs (/Users/frankqin/dev/MyCity/target/release/deps/construction_engine-bbae94b7cf7feb30)
+
+running 7 tests
+test construction_action_and_journal_records_stay_inside_frozen_engine_budget ... ok
+test forged_gate_or_inspector_identity_is_rejected_before_domain_mutation ... ok
+test generic_release_cannot_break_project_site_binding_and_cold_restore_can_continue_work ... ok
+test non_draft_checkpoint_restores_exact_site_lease_and_continues_to_operational_without_double_charge ... ok
+test engine_uses_actual_source_lot_basis_for_budget_and_rejects_actual_overrun_atomically ... ok
+test durable_hook_failure_does_not_publish_and_retry_after_commit_returns_original_receipt ... ok
+test insufficient_site_capacity_funds_and_materials_leave_candidate_domains_unchanged ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+

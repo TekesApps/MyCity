@@ -1,0 +1,5 @@
+pure construction: 7 passed / 0 failed
+Engine integration: 7 passed / 0 failed
+Store WAL integration: 2 passed / 0 failed
+Engine example: exit 0, Operational
+strict Clippy all targets (core+storage, -D warnings): exit 0
