@@ -1,0 +1,10 @@
+Toolchain: rustc 1.85.1 (4eb161250 2025-03-15); cargo 1.85.1 (d73d2caf9 2024-12-31)
+Shared target: CARGO_TARGET_DIR=/Users/frankqin/dev/MyCity/target -> /Volumes/HP P900/dev/MyCity/target
+Dependency mode: --locked --offline
+
+PASS: CARGO_TARGET_DIR=/Users/frankqin/dev/MyCity/target cargo test -p mycity-core --test town_business_exit --locked --offline
+PASS: CARGO_TARGET_DIR=/Users/frankqin/dev/MyCity/target cargo clippy -p mycity-core --all-targets --locked --offline -- -D warnings
+PASS: rustfmt --edition 2021 --check crates/city-core/src/town_economy.rs crates/city-core/src/town_economy/exit.rs crates/city-core/tests/town_business_exit.rs
+PASS: git diff --check
+
+No full workspace suite, release build, Engine settlement integration, serialized-entry peak-memory measurement, performance/load test, or legal-policy calibration was run.

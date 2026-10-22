@@ -1,0 +1,19 @@
+{
+  "scope": "2MiB candidate from exact v108; only R07 extent ceiling runtime change, parameterized tests. Same original full L1 payload and thresholds; internal copy/transition work can differ, no savings assumed.",
+  "new_work": [
+    "docs/evidence/m0-t13a-extents-2m-joint-02",
+    "work/m0-t13a-extents-2m-joint-l1-02"
+  ],
+  "reused_immutable_inputs": [
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-extents-2m-joint-02/frozen-source.zip",
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/r07-extents-2m/ade347ccd333e9f4cdbda7f08066f720bbd7649a6d58762987445750a0db4e05/mycity-headless"
+  ],
+  "estimated_max_new_pressure_and_snapshot_bytes": 8589934592,
+  "planned_stage_peak_bytes": 8589934592,
+  "no_new_target": true,
+  "protected": "The canonical set of 190 original recovery/fault files, prior v104 complete v3 generation 2, source/dependency locks, fixed executables, raw VM/address/process identity evidence and all pre-existing work are immutable inputs and must retain exact bytes.",
+  "retirement_gate": "Do not retire either new pressure generation until both generations have passed independent fresh-process cold restore and scan, restore evidence is durable, all run/observer/native-watch processes have exited, and open-file checks show no dependent handles. Then retire only exact run-owned synthetic pressure/reserve/snapshots after path-specific inventory and advisor review; preserve source, executable, Cargo.lock, logs, receipts, raw VM captures, topology lists, identities, restore reports and failure evidence.",
+  "retirement_scope": "Only new work/m0-t13a-extents-2m-joint-l1-02 exact run-owned synthetic files after both actual cold restores and independent release; never protected190.",
+  "physical_scope": "Address topology is diagnostic only. No VM address, resident-page estimate, page-table estimate or virtual range creates physical-memory credit. Preserve original normal and physical thresholds.",
+  "formal_acceptance": "not granted by preparation, unit validators, diagnostics, or cold restore alone; execute the frozen original full run and compare actual whole-group measurements before any normal gate claim"
+}

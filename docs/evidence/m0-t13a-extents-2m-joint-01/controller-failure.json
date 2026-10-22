@@ -1,0 +1,10 @@
+{
+  "stage": "initial-layout-observation",
+  "type": "AssertionError",
+  "error": "",
+  "traceback": "Traceback (most recent call last):\n  File \"/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-extents-2m-joint-01/run.py\", line 303, in <module>\n    waitfor(\n  File \"/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-extents-2m-joint-01/run.py\", line 164, in waitfor\n    value = predicate()\n  File \"/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-extents-2m-joint-01/run.py\", line 307, in <lambda>\n    if (item := context()) else None,\n  File \"/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-extents-2m-joint-01/run.py\", line 141, in context\n    listing = topology_for_ack(ack, list_path, topology_header, topology)\n  File \"/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-extents-2m-joint-01/controller.py\", line 51, in topology_for_ack\n    return load_topology(path, state[\"mapped_bytes\"])\n  File \"/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-extents-2m-joint-01/run.py\", line 112, in topology\n    extents = r07_extents({\"ranges\": body}, expected_mapped) if r07 else []\n  File \"/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-extents-2m-joint-01/topology.py\", line 27, in r07_extents\n    assert logical_len <= MAX_EXTENT_BYTES\nAssertionError\n",
+  "source_sha256": "ade347ccd333e9f4cdbda7f08066f720bbd7649a6d58762987445750a0db4e05",
+  "child_pid": 55808,
+  "captures_saved": 0,
+  "run_restart": false
+}

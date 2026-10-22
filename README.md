@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.112`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.113`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.113集成[有限企业退出计划器与M0预算归因](docs/evidence/core-business-exit-integration-113/STATUS.md)：13项实际测试、strict Clippy通过；尚未执行Engine退出结算。保留2MiB控制器失败、两代冷恢复和54文件精确回收；原normal满额及native超额已从raw重算，候选第二轮仅准备完成。交通与建设继续独立推进，真实16GB/8h未测。
 
 v0.5.112完成[原负载控制器重试](docs/evidence/m0-t13a-extents-joint-retry-02/STATUS.md)：20项辅助测试、4次实际捕获与两代完整冷恢复通过，但90完整帧peak3,337,031,256B仍超原normal8,431,602B，非normal压力/外部Cargo下不签性能。保留retry01实际启动失败；本轮54份已无依赖载荷/归档重复组件终态回收约6.285GiB，190原件保留，work约25.44GiB。2MiB候选与建设拆除/经营退出继续推进，16GB/8h未测。
 

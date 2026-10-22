@@ -1,0 +1,10 @@
+Command: CARGO_TARGET_DIR=/Users/frankqin/dev/MyCity/target cargo test -p city-core --test town_business_exit --locked --offline
+Result: exit 101
+Cargo output:
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+error: package ID specification `city-core` did not match any packages
+
+Did you mean `mycity-core`?
+
+Corrected package name to mycity-core; successful output is in cargo-test.log.

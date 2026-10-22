@@ -1,0 +1,11 @@
+diff --git a/crates/city-core/src/town_economy.rs b/crates/city-core/src/town_economy.rs
+index cef6c25..5886e03 100644
+--- a/crates/city-core/src/town_economy.rs
++++ b/crates/city-core/src/town_economy.rs
+@@ -1,4 +1,6 @@
+ //! Deterministic bounded market planning. The Engine remains authoritative for all settlement.
++pub mod exit;
++
+ use crate::units::{Money, Quantity};
+ use serde::{Deserialize, Serialize};
+ 

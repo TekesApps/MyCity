@@ -1,0 +1,10 @@
+{
+  "source_sha256": "ade347ccd333e9f4cdbda7f08066f720bbd7649a6d58762987445750a0db4e05",
+  "source_files": 231,
+  "binary": "/Users/frankqin/dev/MyCity/work/candidate-binaries/r07-extents-2m/ade347ccd333e9f4cdbda7f08066f720bbd7649a6d58762987445750a0db4e05/mycity-headless",
+  "binary_sha256": "93623d74dc58e13a7c98f516a49512795fe40c99d21104d0d8363dd9546856ea",
+  "lock_sha256": "7da5c54a8499a07cbc71dcecce0c0095d4af3b8b6e5052783f20d188037b6dd6",
+  "acceptance_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+  "opening_sha256": "04c113c62b0b682f94f9abfbde7618b87bd972f3931504366be9e07c130b4726",
+  "scope": "2MiB candidate from exact v108; only R07 extent ceiling runtime change, parameterized tests. Same original full L1 payload and thresholds; internal copy/transition work can differ, no savings assumed."
+}

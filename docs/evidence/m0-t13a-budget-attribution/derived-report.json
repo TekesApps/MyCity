@@ -1,0 +1,94 @@
+{
+  "first_complete_frame_over_normal": {
+    "allocator_grant_minus_arena_bytes": 66829,
+    "complete": true,
+    "excess_identity_bytes": 3860442,
+    "frame_index_zero_based": 5,
+    "group_footprint_bytes": 3332460096,
+    "jsonl_line_one_based": 6,
+    "layout_footprint_outside_arena_and_r07_bytes": 2730231,
+    "normal_excess_bytes": 3860442,
+    "observer_plus_driver_footprint_bytes": 4571760,
+    "pool_footprint_outside_mapping_bytes": 1147264,
+    "process_footprints_bytes": {
+      "layout-r07-session": 3259632208,
+      "normal-pool-host": 68256128,
+      "observer": 3277112,
+      "r07-layout-driver": 1294648
+    },
+    "r07_helper_permitted_bytes_not_subtracted": 4571760,
+    "r07_mapped_bytes": 273088512,
+    "r07_replaced_bytes": 4521984,
+    "sum_observed_overhead_bytes": 8449255
+  },
+  "fixed_named_grants": {
+    "allocator_bootstrap_plus_header_bytes": 66829,
+    "layout_allocator_grant_bytes": 2983880294,
+    "layout_role_arena_address_bytes": 2983813465,
+    "normal_pool_mapped_bytes": 67108864,
+    "r07_full_mapped_bytes": 277610496,
+    "reconstructed_normal_bytes": 3328599654
+  },
+  "full_vs_reduced_r07_peak": {
+    "difference_bytes": 16408,
+    "layout_process_footprint_increase_bytes": 4538392,
+    "r07_mapping_restored_bytes": 4521984
+  },
+  "inputs": {
+    "address_audit": "docs/evidence/m0-t13a-extents-joint-retry-02/address-audit.json",
+    "measurement_summary": "docs/evidence/m0-t13a-extents-joint-retry-02/measurement-summary.json",
+    "raw_frames": "work/m0-t13a-extents-joint-l1-retry-02/observed/host-samples.jsonl"
+  },
+  "interpretation": {
+    "helper_permitted_bytes_are_subtracted": false,
+    "payload_or_normal_threshold_changed": false,
+    "safe_reduction_claimed": false,
+    "vm_address_coverage_is_physical_credit": false
+  },
+  "maximum_complete_frame": {
+    "allocator_grant_minus_arena_bytes": 66829,
+    "complete": true,
+    "excess_identity_bytes": 8431602,
+    "frame_index_zero_based": 104,
+    "group_footprint_bytes": 3337031256,
+    "jsonl_line_one_based": 105,
+    "layout_footprint_outside_arena_and_r07_bytes": 2763023,
+    "normal_excess_bytes": 8431602,
+    "observer_plus_driver_footprint_bytes": 4588144,
+    "pool_footprint_outside_mapping_bytes": 1147264,
+    "process_footprints_bytes": {
+      "layout-r07-session": 3264186984,
+      "normal-pool-host": 68256128,
+      "observer": 3293496,
+      "r07-layout-driver": 1294648
+    },
+    "r07_helper_permitted_bytes_not_subtracted": 0,
+    "r07_mapped_bytes": 277610496,
+    "r07_replaced_bytes": 0,
+    "sum_observed_overhead_bytes": 8498431
+  },
+  "maximum_complete_frame_with_r07_replaced_bytes": {
+    "allocator_grant_minus_arena_bytes": 66829,
+    "complete": true,
+    "excess_identity_bytes": 3893210,
+    "frame_index_zero_based": 55,
+    "group_footprint_bytes": 3332492864,
+    "jsonl_line_one_based": 56,
+    "layout_footprint_outside_arena_and_r07_bytes": 2746615,
+    "normal_excess_bytes": 3893210,
+    "observer_plus_driver_footprint_bytes": 4588144,
+    "pool_footprint_outside_mapping_bytes": 1147264,
+    "process_footprints_bytes": {
+      "layout-r07-session": 3259648592,
+      "normal-pool-host": 68256128,
+      "observer": 3293496,
+      "r07-layout-driver": 1294648
+    },
+    "r07_helper_permitted_bytes_not_subtracted": 4588144,
+    "r07_mapped_bytes": 273088512,
+    "r07_replaced_bytes": 4521984,
+    "sum_observed_overhead_bytes": 8482023
+  },
+  "schema": "mycity-t13a-normal-budget-attribution-v1",
+  "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2"
+}

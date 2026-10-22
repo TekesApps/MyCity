@@ -1,0 +1,65 @@
+{
+  "source_sha256": "ade347ccd333e9f4cdbda7f08066f720bbd7649a6d58762987445750a0db4e05",
+  "focused_tests": "9 passed, 0 failed",
+  "strict_clippy": "must be recorded successful in supplied log",
+  "cli_build": "must be recorded successful in supplied log",
+  "binaries": [
+    {
+      "role": "cli",
+      "path": "/Users/frankqin/dev/MyCity/work/candidate-binaries/r07-extents-2m/ade347ccd333e9f4cdbda7f08066f720bbd7649a6d58762987445750a0db4e05/mycity-headless",
+      "sha256": "93623d74dc58e13a7c98f516a49512795fe40c99d21104d0d8363dd9546856ea",
+      "size_bytes": 14191216,
+      "hardlink_verified": true,
+      "embedded_source_sha256": "ade347ccd333e9f4cdbda7f08066f720bbd7649a6d58762987445750a0db4e05"
+    },
+    {
+      "role": "focused_test_executable",
+      "path": "/Users/frankqin/dev/MyCity/work/candidate-binaries/r07-extents-2m/ade347ccd333e9f4cdbda7f08066f720bbd7649a6d58762987445750a0db4e05/focused-test-executable",
+      "sha256": "15865b715f3b75c8e2325c0fbf8c31bb2cc1e8a8dded7e2aba011247db8befcd",
+      "size_bytes": 2596416,
+      "hardlink_verified": true,
+      "embedded_source_sha256": "ade347ccd333e9f4cdbda7f08066f720bbd7649a6d58762987445750a0db4e05"
+    }
+  ],
+  "frozen_inputs": [
+    {
+      "path": "/Users/frankqin/dev/MyCity/work/candidate-binaries/r07-extents-2m/ade347ccd333e9f4cdbda7f08066f720bbd7649a6d58762987445750a0db4e05/frozen-source.zip",
+      "sha256": "4eb9302f08659bef7cb4faa7fdca09e208fb4756fc451d90761ac25eb62fe3df",
+      "size_bytes": 769138,
+      "same_device_as_fixed_binaries": true
+    },
+    {
+      "path": "/Users/frankqin/dev/MyCity/work/candidate-binaries/r07-extents-2m/ade347ccd333e9f4cdbda7f08066f720bbd7649a6d58762987445750a0db4e05/Cargo.lock.frozen",
+      "sha256": "7da5c54a8499a07cbc71dcecce0c0095d4af3b8b6e5052783f20d188037b6dd6",
+      "size_bytes": 17634,
+      "same_device_as_fixed_binaries": true
+    }
+  ],
+  "logs": {
+    "focused_tests": {
+      "path": "verification/r07-extent-2m/attempt-01/focused-tests.stdout",
+      "sha256": "a904b965544e483d013f7f582b41a10a25cf4a9559e933dee6ed897820e4df85"
+    },
+    "focused_tests_stderr": {
+      "path": "verification/r07-extent-2m/attempt-01/focused-tests.stderr",
+      "sha256": "6446e08d2cd718a4d9c91252b98e8fed1e740fd7f245398284b32fe89d08735d"
+    },
+    "strict_clippy": {
+      "path": "verification/r07-extent-2m/attempt-01/strict-clippy.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "strict_clippy_stderr": {
+      "path": "verification/r07-extent-2m/attempt-01/strict-clippy.stderr",
+      "sha256": "304a25a90b597c59558a9f5eca0cbbe178af574cc3d2f8fef3a4b497dfad5ef4"
+    },
+    "cli_build": {
+      "path": "verification/r07-extent-2m/attempt-01/cli-build.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "cli_build_stderr": {
+      "path": "verification/r07-extent-2m/attempt-01/cli-build.stderr",
+      "sha256": "1ed2195bc051dc5e1f5fa529819656247b5c02d29f0fd19eadfdaf69ab4972f9"
+    }
+  },
+  "role_scope": "focused-test executable is not the CLI binary"
+}

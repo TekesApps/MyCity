@@ -1,0 +1,22 @@
+{
+  "status": "passed targeted functionality and strict crate all-target clippy; not Engine-integrated",
+  "base_commit": "44e2bf3c421145b8bf3e3eaeaa239b406123b142",
+  "branch": "codex/core-business-exit",
+  "base_tag": "v0.5.111",
+  "toolchain": "rustc 1.85.1; cargo 1.85.1",
+  "dependency_mode": "locked offline",
+  "target_dir": "/Users/frankqin/dev/MyCity/target (shared symlink to external HP P900)",
+  "source_zip": "source.zip",
+  "source_zip_sha256": "159ffbe80cb5e2b21145224ee8e4e2163fe14c05f1d39e3dc1b9c0767c55944a",
+  "tests": {"passed": 13, "failed": 0, "ignored": 0, "filtered": 0},
+  "strict_clippy": "cargo clippy -p mycity-core --all-targets --locked --offline -- -D warnings: passed",
+  "static_checks": ["rustfmt --edition 2021 --check relevant Rust files: passed", "git diff --check: passed"],
+  "test_binary": {
+    "path": "town_business_exit-test-binary",
+    "sha256": "f4f64ebdb84227bfbddb68043e7e7722bf2ad7b9916e5dcbc47871efaa3f8484",
+    "size_bytes": 2076920
+  },
+  "memory_scope": "64 KiB estimates planner-owned working/output bytes only; not JSON decode or full adapter peak. Schema String currently allocates before length validation; public entry must cap raw bytes before Serde.",
+  "not_measured_or_implemented": ["Engine settlement integration", "28-day economic closure", "serialized-entry peak memory", "performance/load", "legal-policy calibration", "full workspace test suite", "release build"],
+  "failure_evidence": "initial-package-name-failure.log records corrected command typo"
+}

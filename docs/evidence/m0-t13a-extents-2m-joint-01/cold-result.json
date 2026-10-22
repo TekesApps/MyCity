@@ -1,0 +1,21 @@
+{
+  "all_generations_cold_restored": true,
+  "generations": [
+    {
+      "generation": 1,
+      "exit": 0,
+      "source": "/Users/frankqin/dev/MyCity/work/m0-t13a-extents-2m-joint-l1-01/observed/model/layout/snapshots/snapshot-000001",
+      "target": "/Users/frankqin/dev/MyCity/work/m0-t13a-extents-2m-joint-l1-01/independent-cold-after-failure-gen1",
+      "source_sha256": "ade347ccd333e9f4cdbda7f08066f720bbd7649a6d58762987445750a0db4e05",
+      "elapsed_seconds": 6.303936333
+    },
+    {
+      "generation": 2,
+      "exit": 0,
+      "source": "/Users/frankqin/dev/MyCity/work/m0-t13a-extents-2m-joint-l1-01/observed/model/layout/snapshots/snapshot-000002",
+      "target": "/Users/frankqin/dev/MyCity/work/m0-t13a-extents-2m-joint-l1-01/independent-cold-after-failure-gen2",
+      "source_sha256": "ade347ccd333e9f4cdbda7f08066f720bbd7649a6d58762987445750a0db4e05",
+      "elapsed_seconds": 6.130953041
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "control_source": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+  "candidate_source": "ade347ccd333e9f4cdbda7f08066f720bbd7649a6d58762987445750a0db4e05",
+  "candidate_commit": "c5db749ae8d5887fc3f12b72d6a4470b0d4ebb5d",
+  "control": "docs/evidence/m0-t13a-extents-joint-retry-02/measurement-summary.json",
+  "same_payload_fixtures": true,
+  "normal_bytes": 3328599654,
+  "new_pressure_ceiling_bytes": 8589934592,
+  "formal_performance": false,
+  "storage": "external HP P900 USB/APFS SSD",
+  "limits": "sequential diagnostics under ambient OS load; no formal A/B causality claim or assumed savings"
+}

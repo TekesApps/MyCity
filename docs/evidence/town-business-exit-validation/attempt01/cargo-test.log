@@ -1,0 +1,46 @@
+   Compiling version_check v0.9.5
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.27
+   Compiling find-msvc-tools v0.1.15
+   Compiling shlex v2.0.1
+   Compiling typenum v1.20.1
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.229
+   Compiling libc v0.2.191
+   Compiling zmij v1.0.23
+   Compiling cc v1.9.0
+   Compiling serde_json v1.0.149
+   Compiling serde v1.0.229
+   Compiling generic-array v0.14.7
+   Compiling itoa v1.0.18
+   Compiling memchr v2.8.3
+   Compiling cfg-if v1.0.5
+   Compiling sha2-asm v0.6.4
+   Compiling syn v3.0.9
+   Compiling serde_derive v1.0.229
+   Compiling cpufeatures v0.2.17
+   Compiling block-buffer v0.10.4
+   Compiling crypto-common v0.1.7
+   Compiling digest v0.10.7
+   Compiling sha2 v0.10.9
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/economy/crates/city-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 12.28s
+     Running tests/town_business_exit.rs (/Users/frankqin/dev/MyCity/target/debug/deps/town_business_exit-95d61dfce6c5cf14)
+
+running 13 tests
+test maximum_bounded_snapshot_and_plan_heap_estimate_fit_the_budget ... ok
+test personal_inventory_cannot_be_counted_as_company_asset ... ok
+test future_claims_block_distribution_even_when_no_due_claims_remain ... ok
+test missing_share_register_does_not_block_due_creditor_payment_but_blocks_residual ... ok
+test missing_tax_or_legal_completeness_blocks_claims_and_distribution ... ok
+test same_tier_partial_payment_uses_pro_rata_integer_cents_and_stable_remainder ... ok
+test duplicate_liability_identity_and_invalid_lot_basis_are_rejected ... ok
+test inventory_offer_is_not_cash_and_requires_a_fresh_snapshot_to_distribute ... ok
+test due_wages_and_debts_follow_explicit_priority_without_owner_distribution ... ok
+test incomplete_employment_terms_do_not_cancel_payroll ... ok
+test fully_cleared_company_pays_claims_before_pro_rata_residual ... ok
+test solvent_fixture_keeps_protected_cash_and_distributes_only_company_residual ... ok
+test unreviewed_priority_and_oversized_snapshots_fail_closed ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

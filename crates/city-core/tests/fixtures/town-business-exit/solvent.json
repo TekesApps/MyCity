@@ -1,0 +1,28 @@
+{
+  "schema": "mycity-business-exit-v0.1",
+  "world": 1,
+  "branch": 1,
+  "revision": 12,
+  "day": 10,
+  "operation_id": 9001,
+  "company": 50,
+  "company_account": { "account": 500, "cash": 10000, "protected": 1000 },
+  "trigger": "voluntary",
+  "priority_policy": {
+    "order": ["tax", "wage", "secured_debt", "unsecured_debt", "other"],
+    "within_tier": "pro_rata_by_outstanding_stable_id"
+  },
+  "legal_clearance": "cleared",
+  "claims_complete": true,
+  "tax_assessment_complete": true,
+  "asset_register_complete": true,
+  "employment_exit_terms_complete": true,
+  "liabilities": [],
+  "payroll": [],
+  "inventory": [],
+  "shareholders_complete": true,
+  "shareholders": [
+    { "account": 1001, "shares": 2 },
+    { "account": 1002, "shares": 1 }
+  ]
+}

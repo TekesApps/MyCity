@@ -1,0 +1,3 @@
+# Independent release
+
+provider_advisor46 confirmed old01 fails the legacy16Q extent assertion (not the model); captures0, observer/model exit0, both independent cold payload hash/load+scan pass and no inherited credit. No02 dependency on old snapshot paths found. Release only new01 two pressure/reserve pairs; components only after index length/SHA and exact existing gzip byte comparison. Index, source, fixed CLI, raw failure/cold reports/gzip and migrated190 originals remain. Root must still recheck terminal processes, handles, complete SHA and protected originals. Old01 is not four-capture/performance/16GB/8h evidence. Advisor read only.

@@ -1,0 +1,10 @@
+{
+  "status": "draft source frozen for future validation; not tested",
+  "base_commit": "44e2bf3c421145b8bf3e3eaeaa239b406123b142",
+  "branch": "codex/core-business-exit",
+  "base_tag": "v0.5.111",
+  "included": ["Cargo.toml", "Cargo.lock", "crates/city-core/src/town_economy.rs", "crates/city-core/src/town_economy/exit.rs", "crates/city-core/tests/town_business_exit.rs", "crates/city-core/tests/fixtures/town-business-exit/solvent.json", "docs/town-business-exit.md", "source.patch"],
+  "static_checks": ["rustfmt --edition 2021 --check relevant Rust files", "git diff --check"],
+  "cargo_or_tests_run": false,
+  "engine_settlement": "not implemented in this branch"
+}
