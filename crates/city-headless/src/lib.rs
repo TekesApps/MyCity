@@ -61,3 +61,5 @@ pub mod native_watch;
 pub mod r07_runtime;
 
 pub mod r07_exercise;
+
+pub(crate) mod vm_trace;

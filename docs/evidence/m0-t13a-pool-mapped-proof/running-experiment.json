@@ -1,0 +1,14 @@
+{
+  "pid": 97390,
+  "controller_pid": 97377,
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/pool-mapped-proof/mycity-headless",
+    "native-observe",
+    "/Users/frankqin/dev/MyCity/work/pool-mapped-proof-l1-01/observed",
+    "--",
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/pool-mapped-proof/mycity-headless",
+    "r07-layout-driver",
+    "/Users/frankqin/dev/MyCity/work/pool-mapped-proof-l1-01/observed/model",
+    "--vm-trace"
+  ]
+}

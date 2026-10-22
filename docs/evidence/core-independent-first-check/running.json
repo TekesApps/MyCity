@@ -1,0 +1,1 @@
+{"line": "economy", "pid": 96376, "command": ["cargo", "test", "--release", "--locked", "--offline", "-p", "mycity-core", "--lib", "town_economy::", "--", "--nocapture"]}

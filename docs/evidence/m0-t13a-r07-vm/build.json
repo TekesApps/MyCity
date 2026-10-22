@@ -1,0 +1,14 @@
+{
+  "command": [
+    "cargo",
+    "build",
+    "--release",
+    "--locked",
+    "--offline",
+    "-p",
+    "mycity-headless"
+  ],
+  "exit_code": 0,
+  "seconds": 48.853687167,
+  "source_sha256": "df5fba4ceca432a0027ac59d51f37f1083be698df90756c51a5ead75e8fff417"
+}

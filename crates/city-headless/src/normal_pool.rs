@@ -2,8 +2,10 @@
 //! Sim/model/stream roles own one fixed allocator region, authenticated before
 //! construction; worker backing retains its separate5MiB grant. Native/stack separate.
 pub mod broker;
+mod mapped_pages;
 pub(crate) mod workspace;
 use crate::{control_data::Text, heap_meter, worker_slots};
+use mapped_pages::{Budget as MappedBudget, Page};
 use serde::{Deserialize, Serialize};
 use std::os::unix::net::{UnixListener, UnixStream};
 use std::{
@@ -183,7 +185,12 @@ struct Pool {
     broker: broker::State,
     ready: Ready,
     fault: Option<Fault>,
-    pages: [Option<Vec<u8>>; 64],
+    pages: [Option<Page>; 64],
+    backing: Arc<MappedBudget>,
+    vm_trace_enabled: bool,
+    vm_trace_epoch: Option<u64>,
+    vm_trace_lists: u64,
+    vm_trace_bytes: usize,
     workspaces: [Option<workspace::Entry>; 4],
     active: Option<Active>,
     last: Option<Returned>,
@@ -191,15 +198,6 @@ struct Pool {
     began: Instant,
     events: BufWriter<File>,
     event_bytes: usize,
-}
-fn page() -> Result<Vec<u8>, String> {
-    let mut p = Vec::new();
-    p.try_reserve_exact(MIB).map_err(err)?;
-    if p.capacity() != MIB {
-        return Err("normal_pool_page_capacity".into());
-    }
-    p.resize(MIB, FILL);
-    Ok(p)
 }
 impl Pool {
     fn new(root: &Path) -> Result<Self, String> {
@@ -229,6 +227,11 @@ impl Pool {
                 fault_injection: fault_raw.as_deref().map(Text::new).transpose()?,
             },
             pages: std::array::from_fn(|_| None),
+            backing: MappedBudget::new(BYTES),
+            vm_trace_enabled: false,
+            vm_trace_epoch: None,
+            vm_trace_lists: 0,
+            vm_trace_bytes: 0,
             workspaces: [None; 4],
             active: None,
             last: None,
@@ -254,19 +257,80 @@ impl Pool {
             ),
             event_bytes: 0,
         };
-        for p in &mut pool.pages {
-            *p = Some(page()?);
+        for i in 0..64 {
+            pool.pages[i] = Some(pool.make_page()?);
         }
         pool.summary.available_touched_bytes = BYTES;
         pool.scan()?;
         pool.event("created", None)?;
         Ok(pool)
     }
+    fn make_page(&mut self) -> Result<Page, String> {
+        match Page::new(&self.backing) {
+            Ok(page) => Ok(page),
+            Err(e) => {
+                self.event("mapped_page_allocation_failed", self.active)?;
+                Err(e)
+            }
+        }
+    }
+    fn write_vm_trace(&mut self, root: &Path) -> Result<(), String> {
+        let report = self.backing.report();
+        if self.vm_trace_bytes + crate::vm_trace::MAX_BYTES > 16 * MIB {
+            return Err("normal_pool_vm_trace_total_cap".into());
+        }
+        let arena = heap_meter::arena_snapshot().activation;
+        let mut writer = crate::vm_trace::Writer::new(
+            &root.join(format!("vm-regions-{:06}.jsonl", self.vm_trace_lists)),
+            self.vm_trace_lists,
+            report.epoch,
+            self.pages.iter().flatten().count() + usize::from(arena.is_some()),
+        )?;
+        if let Some(a) = arena {
+            writer.arena(a)?;
+        }
+        for (i, p) in self.pages.iter().enumerate() {
+            if let Some(p) = p {
+                let start = p.as_ptr() as usize;
+                let nested = arena.is_some_and(|a| {
+                    start >= a.arena_start && start + p.capacity() <= a.arena_start + a.arena_bytes
+                });
+                writer.range(crate::vm_trace::Range {
+                    kind: "normal_pool_mapped_page",
+                    ordinal: i,
+                    allocation_generation: p.generation,
+                    start,
+                    len: p.len(),
+                    capacity: p.capacity(),
+                    nested_in_arena: nested,
+                    grant_bytes: None,
+                })?;
+            }
+        }
+        let list = writer.finish()?;
+        self.vm_trace_bytes += list.bytes;
+        self.vm_trace_lists += 1;
+        self.vm_trace_epoch = Some(report.epoch);
+        Ok(())
+    }
     fn now(&self) -> u64 {
         self.began.elapsed().as_nanos().min(u128::from(u64::MAX)) as u64
     }
     fn scan(&mut self) -> Result<(), String> {
         let mut total = 0;
+        let backing = self.backing.report();
+        let owned = self
+            .pages
+            .iter()
+            .flatten()
+            .map(Page::capacity)
+            .sum::<usize>();
+        if backing.reserved_bytes != owned
+            || backing.initialized_mapped_bytes != owned
+            || backing.peak_initialized_mapped_bytes > BYTES
+        {
+            return Err("normal_pool_mapped_balance".into());
+        }
         for p in self.pages.iter().flatten() {
             if p.len() != MIB || p.capacity() != MIB || !p.iter().all(|b| *b == FILL) {
                 return Err("normal_pool_balance_corrupt".into());
@@ -320,7 +384,7 @@ impl Pool {
                 0
             },
             summary: self.summary,
-            owner_actual_capacity_bytes: self.pages.iter().flatten().map(Vec::capacity).sum(),
+            owner_actual_capacity_bytes: self.pages.iter().flatten().map(Page::capacity).sum(),
         };
         self.write_event(&e)
     }
@@ -359,7 +423,12 @@ impl Pool {
         };
         serde_json::to_writer(&mut sink, e).map_err(err)?;
         sink.write_all(b"\n").map_err(err)?;
-        sink.flush().map_err(err)
+        sink.flush().map_err(err)?;
+        if self.vm_trace_enabled && self.vm_trace_epoch != Some(self.backing.report().epoch) {
+            let root = self.broker_root.clone();
+            self.write_vm_trace(&root)?;
+        }
+        Ok(())
     }
     fn active(&self, id: u64, key: Text<64>, worker: bool) -> Result<Active, ActionError> {
         self.active
@@ -385,7 +454,7 @@ impl Pool {
                 self.event("injected_partial_return_failure", Some(a))?;
                 return Err("normal_pool_injected_return_page_failure".into());
             }
-            self.pages[i] = Some(page()?);
+            self.pages[i] = Some(self.make_page()?);
         }
         if a.filled.is_none() {
             self.summary.maximum_prepare_to_fill_or_reap_ns = self
@@ -834,6 +903,14 @@ pub fn serve(root: &Path) -> Result<(), String> {
         })
         .map_err(err)?;
     let mut pool = Pool::new(root)?;
+    match std::env::var("MYCITY_POOL_VM_TRACE").ok().as_deref() {
+        None => (),
+        Some("1") => {
+            pool.vm_trace_enabled = true;
+            pool.write_vm_trace(root)?;
+        }
+        Some(_) => return Err("normal_pool_vm_trace_mode".into()),
+    }
     let mut f = File::create_new(root.join("ready.json")).map_err(err)?;
     serde_json::to_writer(&mut f, &pool.ready).map_err(err)?;
     f.sync_all().map_err(err)?;
@@ -942,11 +1019,13 @@ pub fn serve(root: &Path) -> Result<(), String> {
         ready: Ready,
         summary: Summary,
         balanced_after_owned_wait: bool,
+        mapped_backing: mapped_pages::Report,
+        rust_metadata_cap_bytes: usize,
         normal_owned_acceptance: &'static str,
         scope: &'static str,
     }
     let mut f = File::create_new(root.join("report.json")).map_err(err)?;
-    serde_json::to_writer_pretty(&mut f,&Final{source_sha256:SOURCE,ready:pool.ready,summary:pool.summary,balanced_after_owned_wait:balanced,normal_owned_acceptance:"not_accepted_until_complete_joint_physical_validation",scope:"64MiB initialized region/page balance including whole Rust model roles and worker backing; continuously full joint physical pressure, native/stack and diagnostics require observed validation"}).map_err(err)?;
+    serde_json::to_writer_pretty(&mut f,&Final{source_sha256:SOURCE,ready:pool.ready,summary:pool.summary,balanced_after_owned_wait:balanced,mapped_backing:pool.backing.report(),rust_metadata_cap_bytes:DIAGNOSTIC_BYTES,normal_owned_acceptance:"not_accepted_until_complete_joint_physical_validation",scope:"64MiB initialized region/page balance including whole Rust model roles and worker backing; continuously full joint physical pressure, native/stack and diagnostics require observed validation"}).map_err(err)?;
     f.sync_all().map_err(err)?;
     pool.events.flush().map_err(err)?;
     pool.events.get_ref().sync_all().map_err(err)?;
@@ -962,12 +1041,32 @@ pub struct Process {
 }
 impl Process {
     pub fn spawn(exe: &Path, root: &Path, heap_log: Option<&Path>) -> Result<Self, String> {
+        Self::spawn_with_vm_trace(exe, root, heap_log, false)
+    }
+    /// Explicit address-trace constructor for isolated CLI diagnostics only.
+    pub fn spawn_vm_diagnostic(
+        exe: &Path,
+        root: &Path,
+        heap_log: Option<&Path>,
+    ) -> Result<Self, String> {
+        Self::spawn_with_vm_trace(exe, root, heap_log, true)
+    }
+    pub(crate) fn spawn_with_vm_trace(
+        exe: &Path,
+        root: &Path,
+        heap_log: Option<&Path>,
+        vm_trace: bool,
+    ) -> Result<Self, String> {
         match fs::symlink_metadata(root) {
             Ok(_) => return Err("normal_pool_run_directory_exists".into()),
             Err(e) if e.kind() == std::io::ErrorKind::NotFound => (),
             Err(e) => return Err(err(e)),
         }
         let mut cmd = Command::new(exe);
+        cmd.env_remove("MYCITY_POOL_VM_TRACE");
+        if vm_trace {
+            cmd.env("MYCITY_POOL_VM_TRACE", "1");
+        }
         cmd.env_remove("MYCITY_NORMAL_POOL_FAULT")
             .arg("normal-pool-host")
             .arg(root)
@@ -1071,7 +1170,7 @@ mod tests {
         let (id, w) = (id.unwrap(), w.unwrap());
         assert_eq!(p.summary.available_touched_bytes, BYTES - GRANT_BYTES);
         assert_eq!(
-            p.pages.iter().flatten().map(Vec::capacity).sum::<usize>(),
+            p.pages.iter().flatten().map(Page::capacity).sum::<usize>(),
             BYTES - GRANT_BYTES
         );
         assert_eq!(p.action(op).unwrap().0, Some(id));

@@ -1751,7 +1751,7 @@ fn reopen_inner(snapshot_dir: &Path, report_dir: &Path, save: bool) -> Result<Va
 /// Diagnostic TWO-generation protocol exercise. There is deliberately no fixed
 /// save deadline here: formal/steady schedules above remain entirely unchanged.
 /// Every admitted scan still uses the original full records and1MiB dirty work.
-pub fn r07_session(dir: &Path, report_fault: bool) -> Result<Value, String> {
+pub fn r07_session(dir: &Path, report_fault: bool, vm_trace: bool) -> Result<Value, String> {
     use std::time::Duration;
     fs::create_dir(dir).map_err(err)?;
     let mut metrics = crate::scale_metrics::Metrics::create(&dir.join("compute-durations.bin"))?;
@@ -1762,6 +1762,16 @@ pub fn r07_session(dir: &Path, report_fault: bool) -> Result<Value, String> {
         return publish_r07_report(dir, &mut metrics, json!({"diagnostic_report_fault":true}));
     }
     let mut load = Load::full(&dir.join("snapshots"), 64 * MIB)?;
+    if vm_trace {
+        load.r07
+            .as_mut()
+            .ok_or("r07_trace_backing")?
+            .enable_vm_trace()?;
+    }
+    let mut traced_epoch = None;
+    let mut trace_lists = 0u64;
+    let mut trace_bytes = 0usize;
+
     fs::write(
         dir.join("manifest.json"),
         serde_json::to_vec_pretty(&load.manifest()).map_err(err)?,
@@ -1798,6 +1808,38 @@ pub fn r07_session(dir: &Path, report_fault: bool) -> Result<Value, String> {
             serde_json::to_writer(&mut events,&json!({"elapsed_seconds":began.elapsed().as_secs_f64(),"scan":scan,"r07":load.r07.as_ref().map(r07::Backing::state),"arena":crate::heap_meter::arena_snapshot()})).map_err(err)?;
             events.write_all(b"\n").map_err(err)?;
             events.flush().map_err(err)?;
+            if vm_trace {
+                let backing = load.r07.as_ref().ok_or("r07_trace_backing")?;
+                let state = backing.state();
+                if traced_epoch != Some(state.epoch) {
+                    if trace_bytes + crate::vm_trace::MAX_BYTES > 16 * MIB {
+                        return Err("r07_vm_trace_total_cap".into());
+                    }
+                    let arena = crate::heap_meter::arena_snapshot().activation;
+                    let path = dir.join(format!("vm-regions-{trace_lists:06}.jsonl"));
+                    let mut writer = crate::vm_trace::Writer::new(
+                        &path,
+                        trace_lists,
+                        state.epoch,
+                        backing.vm_range_count() + usize::from(arena.is_some()),
+                    )?;
+                    if let Some(arena) = arena {
+                        writer.arena(arena)?;
+                    }
+                    backing.vm_ranges(&mut writer)?;
+                    let list = writer.finish()?;
+                    trace_bytes += list.bytes;
+                    serde_json::to_writer(
+                        &mut events,
+                        &json!({"elapsed_seconds":began.elapsed().as_secs_f64(),"vm_regions":list}),
+                    )
+                    .map_err(err)?;
+                    events.write_all(b"\n").map_err(err)?;
+                    events.flush().map_err(err)?;
+                    traced_epoch = Some(state.epoch);
+                    trace_lists += 1;
+                }
+            }
             next_scan += 1;
             scans += 1;
         }
@@ -1808,7 +1850,9 @@ pub fn r07_session(dir: &Path, report_fault: bool) -> Result<Value, String> {
         let ready_second = admitted == 1
             && completed == 1
             && first_credit_at.is_some_and(|at| began.elapsed() >= at + Duration::from_secs(1));
-        if admitted == 0 || ready_second {
+        let permit_first = !vm_trace || dir.join("vm-start-first").exists();
+        let permit_second = !vm_trace || dir.join("vm-start-second").exists();
+        if (admitted == 0 && permit_first) || (ready_second && permit_second) {
             let admission = load.start_snapshot()?;
             admitted += 1;
             if admitted == 2 {
@@ -1825,7 +1869,7 @@ pub fn r07_session(dir: &Path, report_fault: bool) -> Result<Value, String> {
         }
         std::thread::sleep(Duration::from_millis(5));
     }
-    let result = json!({"schema":"mycity-r07-full-session-exercise-v1","source_sha256":env!("MYCITY_SOURCE_SHA256"),"elapsed_seconds":began.elapsed().as_secs_f64(),"scans":scans,"snapshots":snapshots,"manifest":load.manifest(),"all_admitted_dirty_bytes_exactly_one_mib":true,"snapshot_scheduling":"diagnostic event-driven, exactly two actual generations; no formal deadline claim","formal_steady":"not_accepted","eight_hour":"not_run","memory_16gb_gate":"not_run"});
+    let result = json!({"schema":"mycity-r07-full-session-exercise-v1","source_sha256":env!("MYCITY_SOURCE_SHA256"),"elapsed_seconds":began.elapsed().as_secs_f64(),"scans":scans,"snapshots":snapshots,"manifest":load.manifest(),"all_admitted_dirty_bytes_exactly_one_mib":true,"vm_trace":{"enabled":vm_trace,"lists":trace_lists,"bytes":trace_bytes,"buffer_bytes":if vm_trace {crate::vm_trace::BUFFER_BYTES}else{0},"transient_bound_bytes":if vm_trace {crate::vm_trace::TRANSIENT_BOUND_BYTES}else{0},"byte_cap":16*MIB},"snapshot_scheduling":"diagnostic event-driven, exactly two actual generations; optional VM markers control admission only, no formal deadline claim","formal_steady":"not_accepted","eight_hour":"not_run","memory_16gb_gate":"not_run"});
     publish_r07_report(dir, &mut metrics, result)
 }
 fn publish_r07_report(

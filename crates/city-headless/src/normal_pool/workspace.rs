@@ -83,7 +83,7 @@ impl Pool {
                 capacity_bytes: e.kind.bytes(),
                 transition_ns: self.now() - e.released_ns,
                 summary: self.summary,
-                pool_touched_bytes: self.pages.iter().flatten().map(Vec::capacity).sum(),
+                pool_touched_bytes: self.pages.iter().flatten().map(Page::capacity).sum(),
                 arena: e.arena,
                 backing_sha256: e.backing_sha256,
             },
@@ -292,7 +292,7 @@ impl Pool {
                 self.workspace_event("injected_partial_workspace_return_failure", e)?;
                 return Err("normal_workspace_injected_return_failure".into());
             }
-            self.pages[i] = Some(page()?);
+            self.pages[i] = Some(self.make_page()?);
         }
         self.workspaces[slot] = None;
         self.summary.workspace_capacity_bytes -= e.kind.bytes();

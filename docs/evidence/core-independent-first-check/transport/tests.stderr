@@ -1,0 +1,14 @@
+   Compiling sha2 v0.10.9
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/transport/crates/city-core)
+error[E0428]: the name `transport` is defined multiple times
+  --> crates/city-core/src/lib.rs:27:1
+   |
+26 | pub mod transport;
+   | ------------------ previous definition of the module `transport` here
+27 | pub mod transport;
+   | ^^^^^^^^^^^^^^^^^^ `transport` redefined here
+   |
+   = note: `transport` must be defined only once in the type namespace of this module
+
+For more information about this error, try `rustc --explain E0428`.
+error: could not compile `mycity-core` (lib test) due to 1 previous error

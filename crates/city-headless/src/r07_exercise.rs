@@ -9,7 +9,7 @@ use std::{
 fn err(e: impl std::fmt::Display) -> String {
     e.to_string()
 }
-pub fn run(root: &Path) -> Result<(), String> {
+pub fn run(root: &Path, vm_trace: bool) -> Result<(), String> {
     fs::create_dir(root).map_err(err)?;
     let start = Instant::now();
     let exe = std::env::current_exe().map_err(err)?;
@@ -17,14 +17,16 @@ pub fn run(root: &Path) -> Result<(), String> {
     crate::observer_clock::synchronize(root, || {
         start.elapsed().as_nanos().min(u128::from(u64::MAX)) as u64
     })?;
-    let mut pool = crate::normal_pool::Process::spawn(
+    let mut pool = crate::normal_pool::Process::spawn_with_vm_trace(
         &exe,
         &root.join("normal-pool"),
         Some(&root.join("heaps.jsonl")),
+        vm_trace,
     )?;
     let mut layout = Command::new(&exe)
         .arg("layout-r07-session")
         .arg(root.join("layout"))
+        .args(vm_trace.then_some("--vm-trace"))
         .env("MYCITY_NORMAL_POOL", root.join("normal-pool"))
         .stdin(Stdio::null())
         .stdout(File::create_new(root.join("layout.stdout")).map_err(err)?)

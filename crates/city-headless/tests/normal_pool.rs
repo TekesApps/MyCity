@@ -455,3 +455,169 @@ fn fragmented_control_waits_for_suffix_but_timeout_eof_and_identity_remain_disti
     );
     assert!(!events.contains(&fake_key));
 }
+
+#[cfg(target_os = "macos")]
+#[test]
+fn mapped_pool_unmaps_before_grant_and_rebuilds_only_after_owned_wait() {
+    use mycity_headless::native_observer::{capture, Identity};
+    fn top(root: &Path) -> Vec<serde_json::Value> {
+        let mut paths: Vec<_> = fs::read_dir(root)
+            .unwrap()
+            .map(|p| p.unwrap().path())
+            .filter(|p| {
+                p.file_name()
+                    .unwrap()
+                    .to_string_lossy()
+                    .starts_with("vm-regions-")
+                    && p.extension().is_some_and(|s| s == "jsonl")
+            })
+            .collect();
+        paths.sort();
+        fs::read_to_string(paths.last().unwrap())
+            .unwrap()
+            .lines()
+            .map(|s| serde_json::from_str(s).unwrap())
+            .collect()
+    }
+    fn vm(pid: u32) -> Vec<u8> {
+        let out = Command::new("/usr/bin/vmmap")
+            .args(["-wide", "-pages", "-interleaved", &pid.to_string()])
+            .output()
+            .unwrap();
+        assert!(out.status.success());
+        assert!(out.stdout.len() < 4 * 1024 * 1024);
+        out.stdout
+    }
+    fn intervals(raw: &[u8]) -> Vec<(usize, usize)> {
+        String::from_utf8_lossy(raw)
+            .lines()
+            .filter_map(|l| {
+                l.split_whitespace().find_map(|w| {
+                    let (a, b) = w.split_once('-')?;
+                    if a.len() < 5 || b.len() < 5 {
+                        return None;
+                    }
+                    Some((
+                        usize::from_str_radix(a, 16).ok()?,
+                        usize::from_str_radix(b, 16).ok()?,
+                    ))
+                })
+            })
+            .collect()
+    }
+    let t = Temp::new();
+    let proof = std::env::var_os("MYCITY_POOL_PROOF_DIR").map(PathBuf::from);
+    if let Some(path) = &proof {
+        fs::create_dir(path).unwrap();
+    }
+    let base = proof
+        .as_ref()
+        .map_or_else(|| t.0.clone(), |p| p.join("runtime"));
+    if proof.is_some() {
+        fs::create_dir(&base).unwrap();
+    }
+    let root = base.join("mapped-pool");
+    let mut pool =
+        Process::spawn_vm_diagnostic(exe(), &root, Some(&t.0.join("heaps.jsonl"))).unwrap();
+    let before_list = top(&root);
+    let identity: Identity = serde_json::from_value(before_list[0]["owner"].clone()).unwrap();
+    let before = capture(identity.pid, Some(identity), Instant::now()).unwrap();
+    let before_vm = vm(identity.pid);
+    let before_pages: Vec<_> = before_list
+        .iter()
+        .filter(|v| v["kind"] == "normal_pool_mapped_page")
+        .collect();
+    assert_eq!(before_pages.len(), 64);
+    if let Some(p) = &proof {
+        fs::write(p.join("before.vmmap"), &before_vm).unwrap();
+        fs::write(
+            p.join("before-addresses.json"),
+            serde_json::to_vec_pretty(&before_list).unwrap(),
+        )
+        .unwrap();
+    }
+    let tasks = base.join("tasks-99");
+    fs::create_dir(&tasks).unwrap();
+    fs::create_dir(tasks.join("inputs")).unwrap();
+    fs::create_dir(tasks.join("candidates")).unwrap();
+    let mut worker = Worker::spawn_bounded_in_pool(exe(), &tasks, &root, false).unwrap();
+    let during = capture(identity.pid, Some(identity), Instant::now()).unwrap();
+    let during_vm = vm(identity.pid);
+    let during_list = top(&root);
+    if let Some(p) = &proof {
+        fs::write(p.join("loan.vmmap"), &during_vm).unwrap();
+        fs::write(
+            p.join("loan-addresses.json"),
+            serde_json::to_vec_pretty(&during_list).unwrap(),
+        )
+        .unwrap();
+    }
+    assert_eq!(during_list.len() - 2, 64 - GRANT_BYTES / (1024 * 1024));
+    let released: Vec<_> = before_pages
+        .iter()
+        .filter(|v| v["ordinal"].as_u64().unwrap() as usize >= 64 - GRANT_BYTES / (1024 * 1024))
+        .collect();
+    let spans = intervals(&during_vm);
+    for r in &released {
+        let start = r["start"].as_u64().unwrap() as usize;
+        let end = start + r["capacity"].as_u64().unwrap() as usize;
+        assert!(
+            !spans.iter().any(|(a, b)| *a < end && *b > start),
+            "released donor mapping still present"
+        );
+    }
+    assert!(
+        before.usage.footprint_bytes
+            >= during.usage.footprint_bytes + (GRANT_BYTES - 1024 * 1024) as u64
+    );
+    assert!(worker
+        .stop_when_idle(Duration::from_secs(2))
+        .unwrap()
+        .success());
+    let after = capture(identity.pid, Some(identity), Instant::now()).unwrap();
+    let after_vm = vm(identity.pid);
+    let after_list = top(&root);
+    if let Some(p) = &proof {
+        fs::write(p.join("returned.vmmap"), &after_vm).unwrap();
+        fs::write(
+            p.join("returned-addresses.json"),
+            serde_json::to_vec_pretty(&after_list).unwrap(),
+        )
+        .unwrap();
+    }
+    let after_pages: Vec<_> = after_list
+        .iter()
+        .filter(|v| v["kind"] == "normal_pool_mapped_page")
+        .collect();
+    assert_eq!(after_pages.len(), 64);
+    let spans = intervals(&after_vm);
+    for r in &after_pages {
+        let start = r["start"].as_u64().unwrap() as usize;
+        let end = start + r["capacity"].as_u64().unwrap() as usize;
+        assert!(spans.iter().any(|(a, b)| *a <= start && *b >= end));
+        if r["ordinal"].as_u64().unwrap() as usize >= 64 - GRANT_BYTES / (1024 * 1024) {
+            assert!(r["allocation_generation"].as_u64().unwrap() > 64);
+        }
+    }
+    assert!(
+        after.usage.footprint_bytes
+            >= during.usage.footprint_bytes + (GRANT_BYTES - 1024 * 1024) as u64
+    );
+    assert_eq!(
+        normal_pool::status(&root).unwrap().available_touched_bytes,
+        BYTES
+    );
+    pool.finish().unwrap();
+    let report: serde_json::Value =
+        serde_json::from_slice(&fs::read(root.join("report.json")).unwrap()).unwrap();
+    assert_eq!(report["mapped_backing"]["initialized_mapped_bytes"], BYTES);
+    assert_eq!(
+        report["mapped_backing"]["peak_initialized_mapped_bytes"],
+        BYTES
+    );
+    assert_eq!(report["rust_metadata_cap_bytes"], 256 * 1024);
+    eprintln!(
+        "{}",
+        serde_json::json!({"source_sha256":env!("MYCITY_SOURCE_SHA256"),"pool_identity":identity,"before":before,"during":during,"after":after,"released_original_ranges":released,"all_released_addresses_unmapped":true,"returned_map_generations_new":true,"vm_raw_sha256":[sha256(&before_vm),sha256(&during_vm),sha256(&after_vm)],"mapped_backing":report["mapped_backing"],"scope":"actual donor mapping/footprint/owned-wait mechanism only; not joint normal or real16GB acceptance"})
+    );
+}

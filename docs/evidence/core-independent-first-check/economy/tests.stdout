@@ -1,0 +1,10 @@
+
+running 5 tests
+test town_economy::tests::route_capacity_is_consumed_once_per_route_and_good ... ok
+test town_economy::tests::unreachable_route_and_empty_stock_never_create_sales ... ok
+test town_economy::tests::producer_cash_and_recipe_input_limit_output ... ok
+test town_economy::tests::plan_is_deterministic_bounded_and_does_not_mutate_authoritative_input ... ok
+test town_economy::tests::sales_are_limited_by_actual_stock_and_cash ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 68 filtered out; finished in 0.00s
+

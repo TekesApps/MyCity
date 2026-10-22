@@ -1,0 +1,26 @@
+[
+  {
+    "name": "v104-v3",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/pool-mapped-proof/mycity-headless",
+      "layout-load-only",
+      "/Users/frankqin/dev/MyCity/work/r07-report-error-l1-01/observed/model/layout/snapshots/snapshot-000002",
+      "/Users/frankqin/dev/MyCity/work/pm-compat-01/v104-v3"
+    ],
+    "exit": 0,
+    "seconds": 5.264644833,
+    "source_sha256": "6b70d8bc08d00625b369ae92d58ae5ce9dceff9d31a733fe17732de3dd38c87d"
+  },
+  {
+    "name": "v50-legacy",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/pool-mapped-proof/mycity-headless",
+      "layout-load-only",
+      "/Users/frankqin/dev/MyCity/work/t13a50-joint-01/model/layout/snapshots/snapshot-000001",
+      "/Users/frankqin/dev/MyCity/work/pm-compat-01/v50-legacy"
+    ],
+    "exit": 0,
+    "seconds": 5.3046907910000005,
+    "source_sha256": "6b70d8bc08d00625b369ae92d58ae5ce9dceff9d31a733fe17732de3dd38c87d"
+  }
+]

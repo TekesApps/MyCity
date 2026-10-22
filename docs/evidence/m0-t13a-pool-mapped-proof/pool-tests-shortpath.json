@@ -1,0 +1,23 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "--release",
+    "--locked",
+    "--offline",
+    "-p",
+    "mycity-headless",
+    "--test",
+    "normal_pool",
+    "--",
+    "--nocapture",
+    "--test-threads=1"
+  ],
+  "code": 0,
+  "seconds": 6.302413083,
+  "source": "6b70d8bc08d00625b369ae92d58ae5ce9dceff9d31a733fe17732de3dd38c87d",
+  "proof_dir": "/Users/frankqin/dev/MyCity/work/pm-proof-01",
+  "previous_failure": "evidence path exceeded macOS UNIX socket SUN_LEN; preserved original failure unchanged",
+  "load_or_criterion_changed": false,
+  "scope": "functional regression only; no formal normal or real16GB acceptance"
+}

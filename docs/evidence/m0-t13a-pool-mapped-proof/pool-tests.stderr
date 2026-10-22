@@ -1,0 +1,8 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+    Finished `release` profile [optimized] target(s) in 1.59s
+     Running tests/normal_pool.rs (target/release/deps/normal_pool-c99a807c5a2c0514)
+
+thread 'mapped_pool_unmaps_before_grant_and_rebuilds_only_after_owned_wait' panicked at crates/city-headless/tests/normal_pool.rs:521:84:
+called `Result::unwrap()` on an `Err` value: "normal_pool_start_exit:exit status: 2"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: test failed, to rerun pass `-p mycity-headless --test normal_pool`

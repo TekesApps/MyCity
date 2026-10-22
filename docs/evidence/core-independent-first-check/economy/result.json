@@ -1,0 +1,22 @@
+{
+  "source_sha256": "86dc6e83c60d533c3bf85af8602b8647cde52128b207fc2df05bb84686db6fe8",
+  "command": [
+    "cargo",
+    "test",
+    "--release",
+    "--locked",
+    "--offline",
+    "-p",
+    "mycity-core",
+    "--lib",
+    "town_economy::",
+    "--",
+    "--nocapture"
+  ],
+  "code": 0,
+  "seconds": 8.385780500000001,
+  "worktree": "/Users/frankqin/dev/MyCity-core-work/economy",
+  "base_commit": "1f12916fe53512f6df74d6d1f12b01384f4d34ad",
+  "shared_target": "/Users/frankqin/dev/MyCity/target",
+  "scope": "independent module tests only; not Engine integration, 28day settlement, performance or complete line acceptance"
+}

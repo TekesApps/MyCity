@@ -1,0 +1,11 @@
+{
+  "source_sha256": "df5fba4ceca432a0027ac59d51f37f1083be698df90756c51a5ead75e8fff417",
+  "source_files": 220,
+  "lock_sha256": "7da5c54a8499a07cbc71dcecce0c0095d4af3b8b6e5052783f20d188037b6dd6",
+  "acceptance_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+  "full_opening_sha256": "04c113c62b0b682f94f9abfbde7618b87bd972f3931504366be9e07c130b4726",
+  "source_zip_sha256": "002740bfcd309c3eb54c22aa48d36fe47cefe4d97c1e903efcb345796876c8e2",
+  "started_unix_ns": 1792638458636350000,
+  "shared_target": "target/release",
+  "original_load_thresholds_changed": false
+}

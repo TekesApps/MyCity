@@ -1,5 +1,7 @@
 # 验证产物回收规则
 
+**当前阶段回收（v0.5.106）**：[映射pool功能终态](evidence/m0-t13a-pool-mapped-proof/STATUS.md)及[当前可用性](evidence/m0-t13a-pool-mapped-proof/retirement/availability.json)：54份本阶段诊断pressure/reserve/重复合成组件精确退役6,748,618,752B；属于新增数据终态回收，不计入v105历史清理成果。190恢复/故障原件逐SHA保留，work剩25.337GiB，target2.080GiB复用。两代诊断不可直接恢复，raw/index/source/exe/故障保留；df另列，正常组件gzip不等于完整快照。
+
 **当前集中清理（v0.5.105）**：[报告](evidence/disk-reclamation-v105/STATUS.md)及[逐快照可用性](evidence/disk-reclamation-v105/availability.json)覆盖本次六个旧正常快照的原路径承诺：154文件精确退役，分配空间7,550,910,464B；work降至25.322GiB，target2.080GiB复用。190完整恢复/故障原件逐SHA保留，业务/WIP/raw/固定源依赖/exe不变。已删快照不可直接完整恢复；gzip组件不是完整快照。df变化单列，不全算成果。阶段结束先回收或登记依赖再开启新大负载，正式测量不与清理或构建并发。
 
 **当前回收与恢复可用性（v0.5.104）**：[R07功能终态](evidence/m0-t13a-r07-report-error/STATUS.md)及[availability](evidence/m0-t13a-r07-report-error/retirement/availability.json)覆盖本阶段旧原路径保留承诺。实际新PID冷开与继任后仅退役8份旧合成pressure/reserve，分配空间12,699,467,776B；新最终v3第二代及原五份完整/故障基线190文件全SHA保留，退役目录不能直接恢复。初次预检st_blocks变化在删除前止步，5,619,712B保留块减少单列排除；df另报，不归入本次成果。源码/WIP/raw/组件/index/固定源依赖/exe不变，共享target保留复用，其他项目Cargo未干预。

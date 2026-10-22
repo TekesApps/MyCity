@@ -1,0 +1,965 @@
+{
+  "label": "idle",
+  "role": "pool",
+  "pid": 97401,
+  "identity_before": {
+    "first": {
+      "pid": 97401,
+      "start_abstime": 25177562853498,
+      "rss_bytes": 70123520,
+      "phys_footprint_bytes": 68239720,
+      "user_time_ns": 71702583,
+      "system_time_ns": 16220958,
+      "disk_bytes_read": 0,
+      "disk_bytes_written": 20480
+    },
+    "last": {
+      "pid": 97401,
+      "start_abstime": 25177562853498,
+      "rss_bytes": 70123520,
+      "phys_footprint_bytes": 68239720,
+      "user_time_ns": 71702583,
+      "system_time_ns": 16220958,
+      "disk_bytes_read": 0,
+      "disk_bytes_written": 20480
+    },
+    "relation": [
+      97400,
+      null,
+      "2",
+      "mycity-headless"
+    ],
+    "valid": true
+  },
+  "identity_after": {
+    "first": {
+      "pid": 97401,
+      "start_abstime": 25177562853498,
+      "rss_bytes": 70123520,
+      "phys_footprint_bytes": 68239720,
+      "user_time_ns": 71881708,
+      "system_time_ns": 16717791,
+      "disk_bytes_read": 0,
+      "disk_bytes_written": 20480
+    },
+    "last": {
+      "pid": 97401,
+      "start_abstime": 25177562853498,
+      "rss_bytes": 70123520,
+      "phys_footprint_bytes": 68239720,
+      "user_time_ns": 71881708,
+      "system_time_ns": 16717791,
+      "disk_bytes_read": 0,
+      "disk_bytes_written": 20480
+    },
+    "relation": [
+      97400,
+      null,
+      "2",
+      "mycity-headless"
+    ],
+    "valid": true
+  },
+  "identity_unchanged": true,
+  "context_before": {
+    "scan": {
+      "arena": {
+        "activation": {
+          "adapter_header_bytes": 160,
+          "arena_bytes": 2983813565,
+          "arena_start": 29494345728,
+          "bootstrap_charged_bytes": 66569,
+          "grant_bytes": 2983880294,
+          "initialized_bytes": 2983813565,
+          "pid": 97402
+        },
+        "allocation_failures": 0,
+        "arena_free_bytes": 1285256,
+        "arena_usable_bytes": 2983813560,
+        "arena_used_bytes": 2982528304,
+        "bootstrap_live_bytes": 66415,
+        "bootstrap_peak_bytes": 66830,
+        "bootstrap_quarantined_bytes": 154,
+        "current_requested_bytes": 2982594580,
+        "lifetime_peak_requested_bytes": 2982603863
+      },
+      "elapsed_seconds": 1.021982458,
+      "r07": {
+        "arena_tail_bytes": 52432,
+        "epoch": 1,
+        "logical_bytes": 277662928,
+        "mapped_bytes": 273088512,
+        "quantum_bytes": 65536,
+        "reading_sequence": 9,
+        "replaced_bytes": 4521984,
+        "schema": 1
+      },
+      "scan": {
+        "checksum": 10412027265725912966,
+        "cow_pages": 0,
+        "decode_workspace_borrowed_bytes": 0,
+        "decode_workspace_scanned_bytes": 67108864,
+        "dirty_bytes": 1048576,
+        "iteration": 2,
+        "native_records": 361272,
+        "stub_records": 1232426,
+        "touched_pressure_bytes": 3173736054,
+        "wall_seconds": 0.021251375
+      }
+    },
+    "topology": {
+      "path": "/Users/frankqin/dev/MyCity/work/pool-mapped-proof-l1-01/observed/model/layout/vm-regions-000000.jsonl",
+      "sha256": "659e748b5e5f8b3a99285814b42c7ddbac95ab2b8f1bbc91a556248a8f4e31ac",
+      "header": {
+        "address_coverage_is_not_physical_credit": true,
+        "begin_ns": 1213492226484000,
+        "buffer_capacity_bytes": 8192,
+        "epoch": 1,
+        "expected_ranges": 4168,
+        "list_byte_cap": 2097152,
+        "list_id": 0,
+        "owner": {
+          "parent_pid": 97400,
+          "pid": 97402,
+          "start_abstime": 25177564215412
+        },
+        "record": "begin",
+        "schema": "mycity-vm-address-list-v1",
+        "source_sha256": "6b70d8bc08d00625b369ae92d58ae5ce9dceff9d31a733fe17732de3dd38c87d",
+        "transient_bound_bytes": 65536
+      },
+      "footer": {
+        "actual_ranges": 4168,
+        "begin_ns": 1213492226484000,
+        "complete": true,
+        "end_ns": 1213492228848000,
+        "epoch": 1,
+        "expected_ranges": 4168,
+        "list_id": 0,
+        "owner": {
+          "parent_pid": 97400,
+          "pid": 97402,
+          "start_abstime": 25177564215412
+        },
+        "record": "end"
+      }
+    },
+    "ack": {
+      "source": "6b70d8bc08d00625b369ae92d58ae5ce9dceff9d31a733fe17732de3dd38c87d",
+      "owner": {
+        "pid": 97402,
+        "start_abstime": 25177564215412,
+        "parent_pid": 97400
+      },
+      "state": {
+        "schema": 1,
+        "logical_bytes": 277662928,
+        "arena_tail_bytes": 52432,
+        "quantum_bytes": 65536,
+        "mapped_bytes": 273088512,
+        "replaced_bytes": 4521984,
+        "epoch": 1,
+        "reading_sequence": 9
+      },
+      "permitted_bytes": 4538992,
+      "reason": "fresh_unique_live_same_use_components"
+    },
+    "admitted": 0,
+    "durable": 0,
+    "phase": "idle"
+  },
+  "context_after": {
+    "scan": {
+      "arena": {
+        "activation": {
+          "adapter_header_bytes": 160,
+          "arena_bytes": 2983813565,
+          "arena_start": 29494345728,
+          "bootstrap_charged_bytes": 66569,
+          "grant_bytes": 2983880294,
+          "initialized_bytes": 2983813565,
+          "pid": 97402
+        },
+        "allocation_failures": 0,
+        "arena_free_bytes": 1285256,
+        "arena_usable_bytes": 2983813560,
+        "arena_used_bytes": 2982528304,
+        "bootstrap_live_bytes": 66415,
+        "bootstrap_peak_bytes": 66830,
+        "bootstrap_quarantined_bytes": 154,
+        "current_requested_bytes": 2982594580,
+        "lifetime_peak_requested_bytes": 2982603863
+      },
+      "elapsed_seconds": 1.021982458,
+      "r07": {
+        "arena_tail_bytes": 52432,
+        "epoch": 1,
+        "logical_bytes": 277662928,
+        "mapped_bytes": 273088512,
+        "quantum_bytes": 65536,
+        "reading_sequence": 9,
+        "replaced_bytes": 4521984,
+        "schema": 1
+      },
+      "scan": {
+        "checksum": 10412027265725912966,
+        "cow_pages": 0,
+        "decode_workspace_borrowed_bytes": 0,
+        "decode_workspace_scanned_bytes": 67108864,
+        "dirty_bytes": 1048576,
+        "iteration": 2,
+        "native_records": 361272,
+        "stub_records": 1232426,
+        "touched_pressure_bytes": 3173736054,
+        "wall_seconds": 0.021251375
+      }
+    },
+    "topology": {
+      "path": "/Users/frankqin/dev/MyCity/work/pool-mapped-proof-l1-01/observed/model/layout/vm-regions-000000.jsonl",
+      "sha256": "659e748b5e5f8b3a99285814b42c7ddbac95ab2b8f1bbc91a556248a8f4e31ac",
+      "header": {
+        "address_coverage_is_not_physical_credit": true,
+        "begin_ns": 1213492226484000,
+        "buffer_capacity_bytes": 8192,
+        "epoch": 1,
+        "expected_ranges": 4168,
+        "list_byte_cap": 2097152,
+        "list_id": 0,
+        "owner": {
+          "parent_pid": 97400,
+          "pid": 97402,
+          "start_abstime": 25177564215412
+        },
+        "record": "begin",
+        "schema": "mycity-vm-address-list-v1",
+        "source_sha256": "6b70d8bc08d00625b369ae92d58ae5ce9dceff9d31a733fe17732de3dd38c87d",
+        "transient_bound_bytes": 65536
+      },
+      "footer": {
+        "actual_ranges": 4168,
+        "begin_ns": 1213492226484000,
+        "complete": true,
+        "end_ns": 1213492228848000,
+        "epoch": 1,
+        "expected_ranges": 4168,
+        "list_id": 0,
+        "owner": {
+          "parent_pid": 97400,
+          "pid": 97402,
+          "start_abstime": 25177564215412
+        },
+        "record": "end"
+      }
+    },
+    "ack": {
+      "source": "6b70d8bc08d00625b369ae92d58ae5ce9dceff9d31a733fe17732de3dd38c87d",
+      "owner": {
+        "pid": 97402,
+        "start_abstime": 25177564215412,
+        "parent_pid": 97400
+      },
+      "state": {
+        "schema": 1,
+        "logical_bytes": 277662928,
+        "arena_tail_bytes": 52432,
+        "quantum_bytes": 65536,
+        "mapped_bytes": 273088512,
+        "replaced_bytes": 4521984,
+        "epoch": 1,
+        "reading_sequence": 9
+      },
+      "permitted_bytes": 4538992,
+      "reason": "fresh_unique_live_same_use_components"
+    },
+    "admitted": 0,
+    "durable": 0,
+    "phase": "idle"
+  },
+  "topology": {
+    "path": "/Users/frankqin/dev/MyCity/work/pool-mapped-proof-l1-01/observed/model/normal-pool/vm-regions-000000.jsonl",
+    "sha256": "e964951e6db4070608b7f44356409f4d989a632296c66d74876360b94e618834",
+    "header": {
+      "address_coverage_is_not_physical_credit": true,
+      "begin_ns": 1213491120574000,
+      "buffer_capacity_bytes": 8192,
+      "epoch": 64,
+      "expected_ranges": 64,
+      "list_byte_cap": 2097152,
+      "list_id": 0,
+      "owner": {
+        "parent_pid": 97400,
+        "pid": 97401,
+        "start_abstime": 25177562853498
+      },
+      "record": "begin",
+      "schema": "mycity-vm-address-list-v1",
+      "source_sha256": "6b70d8bc08d00625b369ae92d58ae5ce9dceff9d31a733fe17732de3dd38c87d",
+      "transient_bound_bytes": 65536
+    },
+    "footer": {
+      "actual_ranges": 64,
+      "begin_ns": 1213491120574000,
+      "complete": true,
+      "end_ns": 1213491120764000,
+      "epoch": 64,
+      "expected_ranges": 64,
+      "list_id": 0,
+      "owner": {
+        "parent_pid": 97400,
+        "pid": 97401,
+        "start_abstime": 25177562853498
+      },
+      "record": "end"
+    },
+    "ranges": [
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 0,
+        "allocation_generation": 1,
+        "start": 4390486016,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 1,
+        "allocation_generation": 2,
+        "start": 4391534592,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 2,
+        "allocation_generation": 3,
+        "start": 4392583168,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 3,
+        "allocation_generation": 4,
+        "start": 4393631744,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 4,
+        "allocation_generation": 5,
+        "start": 4394680320,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 5,
+        "allocation_generation": 6,
+        "start": 4395728896,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 6,
+        "allocation_generation": 7,
+        "start": 4396777472,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 7,
+        "allocation_generation": 8,
+        "start": 4397826048,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 8,
+        "allocation_generation": 9,
+        "start": 4398874624,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 9,
+        "allocation_generation": 10,
+        "start": 4399923200,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 10,
+        "allocation_generation": 11,
+        "start": 4400971776,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 11,
+        "allocation_generation": 12,
+        "start": 4402020352,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 12,
+        "allocation_generation": 13,
+        "start": 4403068928,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 13,
+        "allocation_generation": 14,
+        "start": 4404117504,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 14,
+        "allocation_generation": 15,
+        "start": 4405166080,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 15,
+        "allocation_generation": 16,
+        "start": 4406214656,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 16,
+        "allocation_generation": 17,
+        "start": 4407263232,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 17,
+        "allocation_generation": 18,
+        "start": 4408311808,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 18,
+        "allocation_generation": 19,
+        "start": 4409360384,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 19,
+        "allocation_generation": 20,
+        "start": 4410408960,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 20,
+        "allocation_generation": 21,
+        "start": 4411457536,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 21,
+        "allocation_generation": 22,
+        "start": 4412506112,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 22,
+        "allocation_generation": 23,
+        "start": 4413554688,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 23,
+        "allocation_generation": 24,
+        "start": 4414603264,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 24,
+        "allocation_generation": 25,
+        "start": 4415651840,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 25,
+        "allocation_generation": 26,
+        "start": 4416700416,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 26,
+        "allocation_generation": 27,
+        "start": 4417748992,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 27,
+        "allocation_generation": 28,
+        "start": 4418797568,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 28,
+        "allocation_generation": 29,
+        "start": 4419846144,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 29,
+        "allocation_generation": 30,
+        "start": 4420894720,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 30,
+        "allocation_generation": 31,
+        "start": 4421943296,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 31,
+        "allocation_generation": 32,
+        "start": 4422991872,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 32,
+        "allocation_generation": 33,
+        "start": 4424040448,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 33,
+        "allocation_generation": 34,
+        "start": 4425089024,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 34,
+        "allocation_generation": 35,
+        "start": 4426137600,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 35,
+        "allocation_generation": 36,
+        "start": 4427186176,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 36,
+        "allocation_generation": 37,
+        "start": 4428234752,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 37,
+        "allocation_generation": 38,
+        "start": 4429283328,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 38,
+        "allocation_generation": 39,
+        "start": 4430331904,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 39,
+        "allocation_generation": 40,
+        "start": 4431380480,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 40,
+        "allocation_generation": 41,
+        "start": 4432429056,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 41,
+        "allocation_generation": 42,
+        "start": 4433477632,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 42,
+        "allocation_generation": 43,
+        "start": 4434526208,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 43,
+        "allocation_generation": 44,
+        "start": 4435574784,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 44,
+        "allocation_generation": 45,
+        "start": 4436623360,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 45,
+        "allocation_generation": 46,
+        "start": 4437671936,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 46,
+        "allocation_generation": 47,
+        "start": 4438720512,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 47,
+        "allocation_generation": 48,
+        "start": 4439769088,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 48,
+        "allocation_generation": 49,
+        "start": 4440817664,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 49,
+        "allocation_generation": 50,
+        "start": 4441866240,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 50,
+        "allocation_generation": 51,
+        "start": 4442914816,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 51,
+        "allocation_generation": 52,
+        "start": 4443963392,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 52,
+        "allocation_generation": 53,
+        "start": 4445011968,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 53,
+        "allocation_generation": 54,
+        "start": 4446060544,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 54,
+        "allocation_generation": 55,
+        "start": 4447109120,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 55,
+        "allocation_generation": 56,
+        "start": 4448157696,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 56,
+        "allocation_generation": 57,
+        "start": 4449206272,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 57,
+        "allocation_generation": 58,
+        "start": 4450254848,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 58,
+        "allocation_generation": 59,
+        "start": 4451303424,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 59,
+        "allocation_generation": 60,
+        "start": 4452352000,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 60,
+        "allocation_generation": 61,
+        "start": 4453400576,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 61,
+        "allocation_generation": 62,
+        "start": 4454449152,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 62,
+        "allocation_generation": 63,
+        "start": 4455497728,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      },
+      {
+        "kind": "normal_pool_mapped_page",
+        "ordinal": 63,
+        "allocation_generation": 64,
+        "start": 4456546304,
+        "len": 1048576,
+        "capacity": 1048576,
+        "nested_in_arena": false,
+        "grant_bytes": null
+      }
+    ]
+  },
+  "tool_begin_monotonic_ns": 2893984708,
+  "tool_end_monotonic_ns": 3562460541,
+  "exit_code": 0,
+  "error": null,
+  "stable_phase_epoch_list_endpoints": true,
+  "stdout": "docs/evidence/m0-t13a-pool-mapped-proof/idle-pool-97401.stdout",
+  "stderr": "docs/evidence/m0-t13a-pool-mapped-proof/idle-pool-97401.stderr",
+  "scope": "asynchronous perturbed address attribution only, no physical credit"
+}

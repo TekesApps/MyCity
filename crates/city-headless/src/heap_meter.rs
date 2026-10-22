@@ -121,9 +121,7 @@ impl Recorder {
             }
             "joint-budget-probe" | "joint-endurance" | "speed-run" | "pe0-speed-probe"
             | "steady-run" | "r07-layout-driver" => Some(crate::diagnostic_contract::SUPERVISOR),
-            "normal-pool-host" => {
-                Some(crate::normal_pool::BYTES + crate::normal_pool::DIAGNOSTIC_BYTES)
-            }
+            "normal-pool-host" => Some(crate::normal_pool::DIAGNOSTIC_BYTES),
             _ => None,
         };
         let within = cap.is_none_or(|cap| {

@@ -1,0 +1,14 @@
+{
+  "pid": 71281,
+  "controller_pid": 71264,
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/r07-vm/mycity-headless",
+    "native-observe",
+    "/Users/frankqin/dev/MyCity/work/r07-vm-l1-01/observed",
+    "--",
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/r07-vm/mycity-headless",
+    "r07-layout-driver",
+    "/Users/frankqin/dev/MyCity/work/r07-vm-l1-01/observed/model",
+    "--vm-trace"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "--release",
+    "--locked",
+    "--offline",
+    "-p",
+    "mycity-headless",
+    "--test",
+    "normal_pool",
+    "--",
+    "--nocapture",
+    "--test-threads=1"
+  ],
+  "code": 101,
+  "seconds": 6.224502917,
+  "source": "6b70d8bc08d00625b369ae92d58ae5ce9dceff9d31a733fe17732de3dd38c87d",
+  "proof_dir": "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-pool-mapped-proof/loan-proof",
+  "scope": "functional regression only; no formal normal or real16GB acceptance"
+}

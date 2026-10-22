@@ -1,0 +1,22 @@
+{
+  "source_sha256": "520ccb14e82966935bfa52979eb893c17d0d97840975b8cd30489b7e35f76dfc",
+  "command": [
+    "cargo",
+    "test",
+    "--release",
+    "--locked",
+    "--offline",
+    "-p",
+    "mycity-core",
+    "--lib",
+    "construction::",
+    "--",
+    "--nocapture"
+  ],
+  "code": 0,
+  "seconds": 8.198732125,
+  "worktree": "/Users/frankqin/dev/MyCity-core-work/construction",
+  "base_commit": "1f12916fe53512f6df74d6d1f12b01384f4d34ad",
+  "shared_target": "/Users/frankqin/dev/MyCity/target",
+  "scope": "independent module tests only; not Engine integration, 28day settlement, performance or complete line acceptance"
+}

@@ -1,0 +1,10 @@
+{
+ "purpose":"full original L1 VM attribution, actual address lists and idle/inflight identity+epoch brackets; no physical credit or formal performance claim",
+ "new_work":["work/r07-vm-l1-01","work/candidate-binaries/r07-vm"],
+ "estimated_max_new_bytes":8589934592,
+ "no_new_target":true,
+ "trace_caps":{"per_list_bytes":2097152,"layout_total_bytes":16777216,"pool_lists":1,"serializer_buffer_bytes":8192,"transient_bound_bytes":65536},
+ "protected":"old five full/fault originals and v104 complete partial-v3 generation2 remain; source/exe/lock/deps/logs preserved",
+ "retirement":"this diagnostic adds no required recovery baseline; after actual cold validation and independent release, retire both new pure synthetic pressure/reserve; keep address lists,rawVM,indices,components,raw measurement,source and executable",
+ "scope":"per-second original full scans and1MiB dirty; markers gate snapshot admission only,120s maximum; VM tools perturb run and are external to measured group"
+}

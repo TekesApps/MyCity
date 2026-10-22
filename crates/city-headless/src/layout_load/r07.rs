@@ -62,11 +62,16 @@ pub struct Applied {
     pub permitted_bytes: usize,
     pub reason: crate::control_data::Text<64>,
 }
+struct Generations {
+    ids: Vec<u64>,
+    next: u64,
+}
 pub struct Backing {
     logical: usize,
     pages: Vec<Arc<MmapMut>>,
     epoch: u64,
     sequence: u64,
+    generations: Option<Generations>,
 }
 impl Backing {
     pub fn full(logical: usize) -> Result<Self, String> {
@@ -83,15 +88,51 @@ impl Backing {
             pages,
             epoch: 0,
             sequence: 0,
+            generations: None,
         })
+    }
+    pub fn enable_vm_trace(&mut self) -> Result<(), String> {
+        if self.generations.is_some() {
+            return Err("r07_trace_already_enabled".into());
+        }
+        let mut ids = Vec::with_capacity(self.logical / QUANTUM);
+        ids.extend(1..=self.pages.len() as u64);
+        self.generations = Some(Generations {
+            ids,
+            next: self.pages.len() as u64 + 1,
+        });
+        Ok(())
+    }
+    pub fn vm_ranges(&self, out: &mut crate::vm_trace::Writer) -> Result<(), String> {
+        let trace = self.generations.as_ref().ok_or("r07_trace_not_enabled")?;
+        for (i, (page, generation)) in self.pages.iter().zip(&trace.ids).enumerate() {
+            out.range(crate::vm_trace::Range {
+                kind: "r07_immutable_map",
+                ordinal: i,
+                allocation_generation: *generation,
+                start: page.as_ptr() as usize,
+                len: page.len(),
+                capacity: page.len(),
+                nested_in_arena: false,
+                grant_bytes: None,
+            })?;
+        }
+        Ok(())
+    }
+    pub fn vm_range_count(&self) -> usize {
+        self.pages.len()
     }
     pub fn control_bytes(&self) -> usize {
         // Vec backing, Arc header+MmapMut per segment, and a maximum snapshot
         // reference table. Not OS VM metadata: whole-group physical samples cover that.
-        self.pages.capacity()
-            * (2 * std::mem::size_of::<Arc<MmapMut>>()
-                + 2 * std::mem::size_of::<usize>()
-                + std::mem::size_of::<MmapMut>())
+        self.generations
+            .as_ref()
+            .map_or(0, |g| g.ids.capacity() * std::mem::size_of::<u64>())
+            + std::mem::size_of::<Option<Generations>>()
+            + self.pages.capacity()
+                * (2 * std::mem::size_of::<Arc<MmapMut>>()
+                    + 2 * std::mem::size_of::<usize>()
+                    + std::mem::size_of::<MmapMut>())
     }
     pub fn state(&self) -> State {
         let mapped = self.pages.len() * QUANTUM;
@@ -121,9 +162,21 @@ impl Backing {
                 break;
             }
             self.pages.pop(); // Last Arc drops the anonymous map: actual munmap.
+            if let Some(g) = &mut self.generations {
+                g.ids.pop();
+            }
         }
         while self.pages.len() < desired {
-            self.pages.push(map(self.pages.len())?);
+            let mapped = map(self.pages.len())?;
+            if let Some(g) = &mut self.generations {
+                let next = g
+                    .next
+                    .checked_add(1)
+                    .ok_or("r07_allocation_generation_overflow")?;
+                g.ids.push(g.next);
+                g.next = next;
+            }
+            self.pages.push(mapped);
         }
         if before != self.pages.len() {
             self.epoch = self.epoch.checked_add(1).ok_or("r07_epoch_overflow")?;
@@ -222,6 +275,21 @@ mod tests {
         assert!(cold
             .read_snapshot_prefix(&mut &bytes[..], old.state, &mut vec![0; QUANTUM])
             .is_err());
+    }
+    #[test]
+    fn trace_generation_changes_on_remap_without_entering_snapshot_state() {
+        let mut b = Backing::full(4 * QUANTUM).unwrap();
+        b.enable_vm_trace().unwrap();
+        let ids = b.generations.as_ref().unwrap().ids.clone();
+        b.apply(2 * QUANTUM, 1).unwrap();
+        b.apply(0, 2).unwrap();
+        let current = &b.generations.as_ref().unwrap().ids;
+        assert_eq!(&current[..2], &ids[..2]);
+        assert!(current[2] > ids[3] && current[3] > current[2]);
+        assert!(!serde_json::to_string(&b.state())
+            .unwrap()
+            .contains("generation"));
+        assert_eq!(b.state().mapped_bytes, 4 * QUANTUM);
     }
     #[test]
     fn forged_lengths_and_overflow_budget_reject() {

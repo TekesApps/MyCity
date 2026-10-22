@@ -48,17 +48,23 @@ fn run() -> Result<(), String> {
     }
     if args.get(1).is_some_and(|a| a == "layout-r07-session") {
         let report_fault = args.len() == 4 && args[3] == "--report-fault";
-        if args.len() != 3 && !report_fault {
-            return Err("usage: layout-r07-session NEW_DIR [--report-fault]".into());
+        let vm_trace = args.len() == 4 && args[3] == "--vm-trace";
+        if args.len() != 3 && !report_fault && !vm_trace {
+            return Err("usage: layout-r07-session NEW_DIR [--report-fault|--vm-trace]".into());
         }
-        mycity_headless::layout_load::r07_session(std::path::Path::new(&args[2]), report_fault)?;
+        mycity_headless::layout_load::r07_session(
+            std::path::Path::new(&args[2]),
+            report_fault,
+            vm_trace,
+        )?;
         return Ok(());
     }
     if args.get(1).is_some_and(|a| a == "r07-layout-driver") {
-        if args.len() != 3 {
-            return Err("usage: r07-layout-driver NEW_DIR".into());
+        let vm_trace = args.len() == 4 && args[3] == "--vm-trace";
+        if args.len() != 3 && !vm_trace {
+            return Err("usage: r07-layout-driver NEW_DIR [--vm-trace]".into());
         }
-        return mycity_headless::r07_exercise::run(std::path::Path::new(&args[2]));
+        return mycity_headless::r07_exercise::run(std::path::Path::new(&args[2]), vm_trace);
     }
     if args.get(1).is_some_and(|a| a == "r07-backing-probe") {
         if args.len() != 3 {

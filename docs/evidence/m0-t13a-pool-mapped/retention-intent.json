@@ -1,0 +1,10 @@
+{
+ "scope":"actual independent mapped pool pages, original64MiB, same grants/wait/refill/fault semantics, pureRust metadata256KiB cap; no new physical credit",
+ "new_work":["work/pool-mapped-l1-01","work/candidate-binaries/pool-mapped"],
+ "estimated_max_new_bytes":8589934592,
+ "stage_combined_peak_including_preoptimization_vm_bytes":17179869184,
+ "no_new_target":true,
+ "protected":"v104 complete v3 gen2 and old five full/fault originals190files remain unchanged; source/dependencies/exe/raw/receipts kept",
+ "retirement":"both before/after VM experiments are diagnostics not new recovery baselines; after actual cold validation+advisor release retire their pure synthetic pressure/reserve, preserve rawVM/address lists/indices/components/logs/fixedexes. Any exact duplicate component release requires existing gzip full-byte match and separate path-specific allowance.",
+ "physical_scope":"donor unmapped address disappearance/refill and same-size full joint diagnostic to compare actual cost; allocator fragmentation numbers not advance savings; normal still unaccepted until original full gates measured"
+}

@@ -1,0 +1,1 @@
+{"pid": 94133, "command": ["cargo", "test", "--release", "--locked", "--offline", "-p", "mycity-headless", "--test", "normal_pool", "--", "--nocapture", "--test-threads=1"]}
