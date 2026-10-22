@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.126`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.127`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.127完成[满级30日两档实际速度观察](docs/evidence/m0-t13a-full-speed-127/STATUS.md)：两档完整业务、状态对照与冷恢复通过；1秒/日188.76秒未达30秒预算，10秒/日299.95秒观测满足300秒及逐日预算。两档都有外部编译采样，另有进程内存缺测，clean验收不接受。准入控制器失败保留并修复，原normal、三轮四速、8h与真实16GB门不变。
 
 v0.5.126新增真实施工Boot电/水履约与累计材料去向：按累计有效worker工时差计量，实际库存、费用、施工进度同一事务提交；材料sink使用真实库存lot basis，不再重复支付现金，清场和拆除不会重置累计sink。容量资源上限调整到16以覆盖实际9资源生命周期（原8不够），既有4MiB Engine／64MiB role界限不变。Run19的11个Store联调测试通过，覆盖施工、Town及跨城Exchange依次争用同一Boot电力库存，以及WAL/checkpoint/重试；路由source77仍是测试替身，不是真实路网联调。详见[施工Boot供给与材料核算](docs/construction-boot-material-accounting.md)。
 

@@ -1,0 +1,19 @@
+{
+  "attempt_root": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-01",
+  "binary_sha256": "557b2e4d0bc89f429a07a270c9f388b508d595c8b4a1f233b795becdf75797e7",
+  "model_started": false,
+  "rate_seconds_per_game_day": 10,
+  "run_id": "speed01",
+  "runner_sha256": "cea36abf1931b567916ce40a43ffa1c96233edcd288154e2a9bcc3fb9dd73bbc",
+  "schema": "mycity-standalone-full-speed-receipt-v1",
+  "scope": "standalone L2 full speed only; L1/joint/four-rate M0/formal resource acceptance not claimed",
+  "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+  "started_utc": "2026-10-22T20:57:33.178085+00:00",
+  "state": "blocked_prelaunch",
+  "timeout": {
+    "child_wait_seconds": 3000,
+    "controller_deadline_seconds": 3200,
+    "restart": "never",
+    "signal_policy": "SIGTERM only exact still-live own observer PID/start/command identity; no escalation"
+  }
+}

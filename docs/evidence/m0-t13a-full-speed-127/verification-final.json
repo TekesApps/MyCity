@@ -1,0 +1,343 @@
+{
+  "16GB": "not_run",
+  "L1": "absent",
+  "clean_speed_acceptance": "not_accepted",
+  "clean_speed_acceptance_reason": [
+    "external_activity_or_missing_samples",
+    "one_or_more_standalone_rate_targets_missed"
+  ],
+  "eight_hour": "not_run",
+  "errors": [],
+  "execution_wrapper": "passed_both_rates",
+  "fixed_inputs": {
+    "acceptance_fixture_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+    "binary": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/executables/557b2e4d0bc89f429a07a270c9f388b508d595c8b4a1f233b795becdf75797e7/mycity-headless",
+    "binary_sha256": "557b2e4d0bc89f429a07a270c9f388b508d595c8b4a1f233b795becdf75797e7",
+    "build_source_entries": 259,
+    "cargo_lock_sha256": "7da5c54a8499a07cbc71dcecce0c0095d4af3b8b6e5052783f20d188037b6dd6",
+    "current_checkout_is_provenance_only": true,
+    "fixtures": {
+      "opening_sha256": "04c113c62b0b682f94f9abfbde7618b87bd972f3931504366be9e07c130b4726",
+      "oracle_sha256": "00fa0827d11023bab75571c83d586d9436e4f72c93300be20c5fd9ab4cd1ed8f",
+      "policy_sha256": "614ac01e912bf932fad4f5bb33f8254b03f1ac3cba71c93106d2739655dfd4b0"
+    },
+    "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+    "source_zip": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/09-fixed-cli-build/source.zip",
+    "source_zip_sha256": "8e85f7adc3dd0d0811ec8ee6fa89720512f8ba6f587b1b10de6146cfc3d81561"
+  },
+  "functional": "passed_both_rates",
+  "original_joint_M0": "not_accepted",
+  "performance_acceptance": "observed rate-target results are reported separately; clean speed acceptance requires both runs to meet their rate targets with zero external heavy-work observations and zero missing activity samples; no hardware/resource gate claimed",
+  "retained_excluded_attempts": [
+    {
+      "attempt": "rate10-01",
+      "classification": "controller_failure_before_model_start",
+      "evidence": "controller-terminal.json",
+      "included_in_functional_or_speed_results": false,
+      "rate_seconds_per_game_day": 10,
+      "run_id": "speed01"
+    }
+  ],
+  "runs": [
+    {
+      "16GB": "not_run",
+      "L1": "absent",
+      "business_sha256": "01e6d8fe5dfff9cbdc4e7a2e916fdeb62312fbd57eaa046c999d659fb68aa4af",
+      "cash_total_cents": 3000000,
+      "claims_paid_cents": 20000,
+      "clean_measurement_environment": false,
+      "delivery_contracts": 8,
+      "eight_hour": "not_run",
+      "execution_wrapper": {
+        "clock_handshake": {
+          "nonce": "e95a42fc6ccd31409b4cb75fadf70347",
+          "origin_max_ns": 14370499,
+          "origin_min_ns": 10193124,
+          "pid": 2225,
+          "reply_received_observer_ns": 20723041,
+          "request_sent_observer_ns": 16545666,
+          "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+          "spawn_before_observer_ns": 7195708,
+          "uncertainty_ns": 4177375
+        },
+        "controller_process_exit_not_used_as_proof": true,
+        "environment_integrity": {
+          "clean_measurement_environment": false,
+          "external_activity_elapsed_seconds": [
+            181.199432041,
+            186.383438708,
+            191.55353125000002,
+            196.7926115,
+            201.929211041
+          ],
+          "external_activity_sample_missing": [
+            {
+              "elapsed_seconds": 176.090548333,
+              "error": "ps snapshots remained inconsistent after 3 attempts: ps PID/start identities changed between comm and args snapshots"
+            }
+          ],
+          "external_activity_sample_missing_count": 1,
+          "external_compile_or_heavy_mycity_observations": [
+            {
+              "compilers": [
+                {
+                  "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+                  "pid": 8510,
+                  "ppid": 8244,
+                  "start_identity": "Fri Oct 23 04:55:32 2026"
+                }
+              ],
+              "elapsed_seconds": 181.199432041,
+              "heavy_mycity": []
+            },
+            {
+              "compilers": [
+                {
+                  "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+                  "pid": 8715,
+                  "ppid": 8244,
+                  "start_identity": "Fri Oct 23 04:55:37 2026"
+                },
+                {
+                  "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+                  "pid": 8807,
+                  "ppid": 8715,
+                  "start_identity": "Fri Oct 23 04:55:39 2026"
+                },
+                {
+                  "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+                  "pid": 8851,
+                  "ppid": 8715,
+                  "start_identity": "Fri Oct 23 04:55:40 2026"
+                },
+                {
+                  "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+                  "pid": 8852,
+                  "ppid": 8715,
+                  "start_identity": "Fri Oct 23 04:55:40 2026"
+                }
+              ],
+              "elapsed_seconds": 186.383438708,
+              "heavy_mycity": []
+            },
+            {
+              "compilers": [
+                {
+                  "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+                  "pid": 8715,
+                  "ppid": 8244,
+                  "start_identity": "Fri Oct 23 04:55:37 2026"
+                }
+              ],
+              "elapsed_seconds": 191.55353125000002,
+              "heavy_mycity": []
+            },
+            {
+              "compilers": [
+                {
+                  "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+                  "pid": 9114,
+                  "ppid": 8244,
+                  "start_identity": "Fri Oct 23 04:55:47 2026"
+                },
+                {
+                  "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+                  "pid": 9206,
+                  "ppid": 9114,
+                  "start_identity": "Fri Oct 23 04:55:50 2026"
+                }
+              ],
+              "elapsed_seconds": 196.7926115,
+              "heavy_mycity": []
+            },
+            {
+              "compilers": [
+                {
+                  "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+                  "pid": 9288,
+                  "ppid": 9287,
+                  "start_identity": "Fri Oct 23 04:55:53 2026"
+                },
+                {
+                  "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/clippy-driver",
+                  "pid": 9395,
+                  "ppid": 9288,
+                  "start_identity": "Fri Oct 23 04:55:55 2026"
+                }
+              ],
+              "elapsed_seconds": 201.929211041,
+              "heavy_mycity": []
+            }
+          ],
+          "external_compile_or_heavy_mycity_observations_count": 5
+        },
+        "observer_exit_code": 0,
+        "observer_report_status": "passed_measurement_wrapper",
+        "receipt_state": "observer_exited",
+        "status": "passed"
+      },
+      "full_image_sha256": "375065b04ead72b347babf37e1e212455170737057c245d96fe710212f34034c",
+      "functional_model": "passed",
+      "model_counts": {
+        "accounts": 64,
+        "cities": 8,
+        "claims": 20000,
+        "inflight_peak": 4,
+        "payroll": 64,
+        "quotes": 8,
+        "stocks": 128
+      },
+      "rate_seconds_per_game_day": 1,
+      "speed": {
+        "all_30_daily_periods_met": false,
+        "measured_operating_wall_seconds": 188.759230042,
+        "nominal_30_day_budget_seconds": 30,
+        "rate_seconds_per_game_day": 1,
+        "standalone_speed_target": "missed",
+        "whole_30day_budget_met": false
+      },
+      "wages_paid_cents": 118784
+    },
+    {
+      "16GB": "not_run",
+      "L1": "absent",
+      "business_sha256": "01e6d8fe5dfff9cbdc4e7a2e916fdeb62312fbd57eaa046c999d659fb68aa4af",
+      "cash_total_cents": 3000000,
+      "claims_paid_cents": 20000,
+      "clean_measurement_environment": false,
+      "delivery_contracts": 8,
+      "eight_hour": "not_run",
+      "execution_wrapper": {
+        "clock_handshake": {
+          "nonce": "a9e738f4c109c832b88f7eabd926f9f4",
+          "origin_max_ns": 12564667,
+          "origin_min_ns": 6879250,
+          "pid": 13860,
+          "reply_received_observer_ns": 20081792,
+          "request_sent_observer_ns": 14396375,
+          "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+          "spawn_before_observer_ns": 6776834,
+          "uncertainty_ns": 5685417
+        },
+        "controller_process_exit_not_used_as_proof": true,
+        "environment_integrity": {
+          "clean_measurement_environment": false,
+          "external_activity_elapsed_seconds": [
+            244.84506279199996,
+            250.01345475,
+            296.40749462499997
+          ],
+          "external_activity_sample_missing": [],
+          "external_activity_sample_missing_count": 0,
+          "external_compile_or_heavy_mycity_observations": [
+            {
+              "compilers": [
+                {
+                  "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+                  "pid": 18267,
+                  "ppid": 80467,
+                  "start_identity": "Fri Oct 23 05:09:32 2026"
+                },
+                {
+                  "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+                  "pid": 18311,
+                  "ppid": 18267,
+                  "start_identity": "Fri Oct 23 05:09:34 2026"
+                }
+              ],
+              "elapsed_seconds": 244.84506279199996,
+              "heavy_mycity": []
+            },
+            {
+              "compilers": [
+                {
+                  "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+                  "pid": 18267,
+                  "ppid": 80467,
+                  "start_identity": "Fri Oct 23 05:09:32 2026"
+                },
+                {
+                  "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+                  "pid": 18409,
+                  "ppid": 18267,
+                  "start_identity": "Fri Oct 23 05:09:38 2026"
+                }
+              ],
+              "elapsed_seconds": 250.01345475,
+              "heavy_mycity": []
+            },
+            {
+              "compilers": [
+                {
+                  "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+                  "pid": 19245,
+                  "ppid": 80467,
+                  "start_identity": "Fri Oct 23 05:10:23 2026"
+                },
+                {
+                  "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+                  "pid": 19289,
+                  "ppid": 19245,
+                  "start_identity": "Fri Oct 23 05:10:24 2026"
+                },
+                {
+                  "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+                  "pid": 19350,
+                  "ppid": 19245,
+                  "start_identity": "Fri Oct 23 05:10:25 2026"
+                },
+                {
+                  "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+                  "pid": 19357,
+                  "ppid": 19245,
+                  "start_identity": "Fri Oct 23 05:10:25 2026"
+                },
+                {
+                  "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+                  "pid": 19368,
+                  "ppid": 19245,
+                  "start_identity": "Fri Oct 23 05:10:26 2026"
+                }
+              ],
+              "elapsed_seconds": 296.40749462499997,
+              "heavy_mycity": []
+            }
+          ],
+          "external_compile_or_heavy_mycity_observations_count": 3
+        },
+        "observer_exit_code": 0,
+        "observer_report_status": "passed_measurement_wrapper",
+        "receipt_state": "observer_exited",
+        "status": "passed"
+      },
+      "full_image_sha256": "375065b04ead72b347babf37e1e212455170737057c245d96fe710212f34034c",
+      "functional_model": "passed",
+      "model_counts": {
+        "accounts": 64,
+        "cities": 8,
+        "claims": 20000,
+        "inflight_peak": 4,
+        "payroll": 64,
+        "quotes": 8,
+        "stocks": 128
+      },
+      "rate_seconds_per_game_day": 10,
+      "speed": {
+        "all_30_daily_periods_met": true,
+        "measured_operating_wall_seconds": 299.950156541,
+        "nominal_30_day_budget_seconds": 300,
+        "rate_seconds_per_game_day": 10,
+        "standalone_speed_target": "met",
+        "whole_30day_budget_met": true
+      },
+      "wages_paid_cents": 118784
+    }
+  ],
+  "schema": "mycity-standalone-full-speed-verification-v1",
+  "scope": "two_fixed_rate_full_30day_runs",
+  "standalone_speed_targets": {
+    "1": "missed",
+    "10": "met"
+  },
+  "status": "evidence_complete"
+}

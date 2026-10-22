@@ -1,0 +1,443 @@
+{
+  "active_processes_before_readiness": {
+    "compilers": [],
+    "heavy_mycity": []
+  },
+  "admission": {
+    "activity_in_final_120_seconds": [],
+    "activity_observed": [],
+    "exit_code": 0,
+    "final_120_seconds_start": 6.306591458,
+    "normal_pressure_gate": {
+      "samples": [
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 0.045022833000000005,
+          "pressure": 1,
+          "unix_ns": 1792703003261979000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 5.093419375000001,
+          "pressure": 1,
+          "unix_ns": 1792703008310426000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 10.192905083000001,
+          "pressure": 1,
+          "unix_ns": 1792703013409962000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 15.241661125,
+          "pressure": 1,
+          "unix_ns": 1792703018458769000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 20.329887208,
+          "pressure": 1,
+          "unix_ns": 1792703023547046000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 25.370751375,
+          "pressure": 1,
+          "unix_ns": 1792703028587960000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 30.452268083,
+          "pressure": 1,
+          "unix_ns": 1792703033669528000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 35.500834125,
+          "pressure": 1,
+          "unix_ns": 1792703038718149000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 40.566104875,
+          "pressure": 1,
+          "unix_ns": 1792703043783478000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 45.662803458,
+          "pressure": 1,
+          "unix_ns": 1792703048880231000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 50.749885625,
+          "pressure": 1,
+          "unix_ns": 1792703053967368000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 55.797065792,
+          "pressure": 1,
+          "unix_ns": 1792703059014602000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 60.89464075,
+          "pressure": 1,
+          "unix_ns": 1792703064112229000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 65.96581125,
+          "pressure": 1,
+          "unix_ns": 1792703069183451000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 71.022616208,
+          "pressure": 1,
+          "unix_ns": 1792703074240308000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 76.126855625,
+          "pressure": 1,
+          "unix_ns": 1792703079344599000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 81.166904667,
+          "pressure": 1,
+          "unix_ns": 1792703084384699000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 86.238015167,
+          "pressure": 1,
+          "unix_ns": 1792703089455861000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 91.34939975,
+          "pressure": 1,
+          "unix_ns": 1792703094567296000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 96.411008792,
+          "pressure": 1,
+          "unix_ns": 1792703099628956000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 101.482823917,
+          "pressure": 1,
+          "unix_ns": 1792703104700822000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 106.594685417,
+          "pressure": 1,
+          "unix_ns": 1792703109812735000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 111.640548583,
+          "pressure": 1,
+          "unix_ns": 1792703114858649000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 116.695505667,
+          "pressure": 1,
+          "unix_ns": 1792703119913657000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 121.764849917,
+          "pressure": 1,
+          "unix_ns": 1792703124983052000
+        }
+      ]
+    },
+    "status": "passed"
+  },
+  "admission_support_files_sha256": {
+    "process_activity.py": "1abbc0771180936fa660b34db4f6428f199fd467e0f866548e8a12bdb4c58aa9",
+    "readiness.py": "fa62f21677bab98c558e86fa3a54f42ecfa8b64fd1d7d3449b6401ecff4ef7ae",
+    "support-manifest.json": "aded3e653c0f0da488ffda0a5110441d8dfc1a97987f1d9fdf89642e5adbebe7",
+    "usage": "readiness.py and process_activity.py only; fixed ac02 native-observe handles measurement and clock handshake"
+  },
+  "attempt_root": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-02",
+  "binary_sha256": "557b2e4d0bc89f429a07a270c9f388b508d595c8b4a1f233b795becdf75797e7",
+  "clock_handshake": {
+    "clock_map_pid": 13860,
+    "nonce": "a9e738f4c109c832b88f7eabd926f9f4",
+    "observer_child_pid": 13860,
+    "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+    "status": "passed",
+    "uncertainty_ns": 5685417
+  },
+  "command": [
+    "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/executables/557b2e4d0bc89f429a07a270c9f388b508d595c8b4a1f233b795becdf75797e7/mycity-headless",
+    "native-observe",
+    "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-02/observed",
+    "--",
+    "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/executables/557b2e4d0bc89f429a07a270c9f388b508d595c8b4a1f233b795becdf75797e7/mycity-headless",
+    "speed-run",
+    "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-02/observed/model",
+    "full",
+    "10"
+  ],
+  "controller_auxiliary_accounting": "controller-only; observer raw-group RSS/footprint not added twice",
+  "controller_peak_resource": {
+    "accounting": "controller-only; not added to raw observer group",
+    "macos_ru_maxrss_bytes": 46465024,
+    "pid": 13125,
+    "ru_maxrss_platform_units": 46465024
+  },
+  "controller_pid": 13125,
+  "elapsed_seconds": 337.391924084,
+  "ended_utc": "2026-10-22T21:11:07.178627+00:00",
+  "external_activity_accounting": "controller observations outside this observer PID tree; raw observer group remains unchanged",
+  "external_activity_sample_missing": [],
+  "external_compile_or_heavy_mycity_observations": [
+    {
+      "compilers": [
+        {
+          "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+          "pid": 18267,
+          "ppid": 80467,
+          "start_identity": "Fri Oct 23 05:09:32 2026"
+        },
+        {
+          "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+          "pid": 18311,
+          "ppid": 18267,
+          "start_identity": "Fri Oct 23 05:09:34 2026"
+        }
+      ],
+      "elapsed_seconds": 244.84506279199996,
+      "heavy_mycity": []
+    },
+    {
+      "compilers": [
+        {
+          "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+          "pid": 18267,
+          "ppid": 80467,
+          "start_identity": "Fri Oct 23 05:09:32 2026"
+        },
+        {
+          "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+          "pid": 18409,
+          "ppid": 18267,
+          "start_identity": "Fri Oct 23 05:09:38 2026"
+        }
+      ],
+      "elapsed_seconds": 250.01345475,
+      "heavy_mycity": []
+    },
+    {
+      "compilers": [
+        {
+          "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+          "pid": 19245,
+          "ppid": 80467,
+          "start_identity": "Fri Oct 23 05:10:23 2026"
+        },
+        {
+          "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+          "pid": 19289,
+          "ppid": 19245,
+          "start_identity": "Fri Oct 23 05:10:24 2026"
+        },
+        {
+          "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+          "pid": 19350,
+          "ppid": 19245,
+          "start_identity": "Fri Oct 23 05:10:25 2026"
+        },
+        {
+          "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+          "pid": 19357,
+          "ppid": 19245,
+          "start_identity": "Fri Oct 23 05:10:25 2026"
+        },
+        {
+          "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+          "pid": 19368,
+          "ppid": 19245,
+          "start_identity": "Fri Oct 23 05:10:26 2026"
+        }
+      ],
+      "elapsed_seconds": 296.40749462499997,
+      "heavy_mycity": []
+    }
+  ],
+  "frozen_inputs": {
+    "acceptance_fixture_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+    "archive_entries": 264,
+    "binary_embeds_source_fingerprint": true,
+    "binary_path": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/executables/557b2e4d0bc89f429a07a270c9f388b508d595c8b4a1f233b795becdf75797e7/mycity-headless",
+    "binary_sha256": "557b2e4d0bc89f429a07a270c9f388b508d595c8b4a1f233b795becdf75797e7",
+    "build_source_entries": 259,
+    "legacy_binary_excluded": {
+      "binary_sha256": "6279b76ab63cad479b022664c90d68c2a53e373143c4dc72ac7549848e5515ea",
+      "historical_source_prefix": "4a818",
+      "path": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/binary.json",
+      "reason": "binary.json's pinned 6279/6f76 legacy identity is excluded; only binary-final ac02/557b is eligible",
+      "source_sha256_field": null,
+      "source_zip_sha256": "6f76c28a75a57653020b4f4b3e99ea431d7e70a50f3bf98d1244ce288c528805"
+    },
+    "lock_sha256": "7da5c54a8499a07cbc71dcecce0c0095d4af3b8b6e5052783f20d188037b6dd6",
+    "prepared_checkout_provenance_only": {
+      "commit": "1fc3c59890992558b8e1c9143df0f2ff002e991d",
+      "matches_fixed_source_hash": false,
+      "path": "/Users/frankqin/dev/MyCity",
+      "source_comparison": "current checkout hash is recorded separately; Rust source intentionally not compared byte-for-byte",
+      "source_entries": 262,
+      "source_sha256": "4d44b663c997d2cc6c8136bc9ecd17c3bcc009023cc3de15a9df9830060c9a09",
+      "version": "v0.5.126"
+    },
+    "source_archive_sha256": "8e85f7adc3dd0d0811ec8ee6fa89720512f8ba6f587b1b10de6146cfc3d81561",
+    "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+    "speed_contract": {
+      "checks": {
+        "724_worker_windows": true,
+        "broker_temp_socket_template": true,
+        "full_30_days_720_hours_723_targets": true,
+        "native_observer_keeps_original_guards": true,
+        "native_observer_nonce_clock_peer": true,
+        "normal_pool_path_derivation": true,
+        "public_run_selects_full_tier": true,
+        "rate_timeout_is_3000_seconds_for_1_and_10": true,
+        "requested_rate_values": true,
+        "speed_entrypoint": true,
+        "speed_uses_clock_exchange": true
+      },
+      "clock_exchange": "nonce-bound startup from native observer; any missing/invalid ready/request/reply is fatal",
+      "pathname_binds": [
+        {
+          "line": 773,
+          "source": "crates/city-headless/src/normal_pool/broker.rs",
+          "text": "let listener = UnixListener::bind(&endpoint).map_err(err)?;"
+        },
+        {
+          "line": 908,
+          "source": "crates/city-headless/src/normal_pool.rs",
+          "text": "let listener = UnixListener::bind(root.join(\"pool.sock\")).map_err(err)?;"
+        }
+      ],
+      "pathname_connects": [
+        {
+          "line": 375,
+          "source": "crates/city-headless/src/normal_pool/broker.rs",
+          "text": "let stream = UnixStream::connect(endpoint).map_err(err)?;"
+        },
+        {
+          "line": 684,
+          "source": "crates/city-headless/src/normal_pool.rs",
+          "text": "let mut socket = UnixStream::connect(root.join(\"pool.sock\")).map_err(err)?;"
+        },
+        {
+          "line": 227,
+          "source": "crates/city-headless/tests/normal_pool.rs",
+          "text": "let mut socket = UnixStream::connect(root.join(\"pool.sock\")).unwrap();"
+        },
+        {
+          "line": 234,
+          "source": "crates/city-headless/tests/normal_pool.rs",
+          "text": "let mut socket = UnixStream::connect(root.join(\"pool.sock\")).unwrap();"
+        },
+        {
+          "line": 374,
+          "source": "crates/city-headless/tests/normal_pool.rs",
+          "text": "let s = UnixStream::connect(root.join(\"pool.sock\")).unwrap();"
+        }
+      ],
+      "workload": {
+        "days": 30,
+        "formal_m0": false,
+        "hours": 720,
+        "l1": "absent",
+        "rate_semantics": "1|10 wall seconds per game day; fixed source's timeout resolves to 3000s for both",
+        "targets": 723,
+        "tier": "full",
+        "worker_windows": 724
+      }
+    },
+    "status": "passed_static_fixed_inputs"
+  },
+  "launch_utc": "2026-10-22T21:05:29.782809+00:00",
+  "model_started": true,
+  "native_observer_owns_descendant_liveness_guard": true,
+  "observer_exit_code": 0,
+  "observer_pid": 13858,
+  "observer_pid_role": "direct native-observe child",
+  "observer_pid_start_identity": {
+    "comm": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/executables/557b2e4d0bc89f429a07a270c9f388b508d595c8b4a1f233b795becdf75797e7/mycity-headless",
+    "pid": 13858,
+    "ppid": 13125,
+    "projection": "single_ps_full_executable_not_argv",
+    "start_identity": "Fri Oct 23 05:05:29 2026"
+  },
+  "observer_report_path": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-02/observed/observer-report.json",
+  "observer_report_present": true,
+  "observer_result_validation": {
+    "binary_sha256": "557b2e4d0bc89f429a07a270c9f388b508d595c8b4a1f233b795becdf75797e7",
+    "binary_unchanged": true,
+    "model_exit_code": 0,
+    "observer_status": "passed_measurement_wrapper",
+    "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+    "status": "passed"
+  },
+  "performance_acceptance": "not_claimed; standalone L2 speed evidence only",
+  "rate_seconds_per_game_day": 10,
+  "run_id": "speed02",
+  "runner_sha256": "32311cb97680b55f58ae4f74f50ead3ab11106421a4e28d706cc9c927ddfb45d",
+  "schema": "mycity-standalone-full-speed-receipt-v1",
+  "scope": "standalone L2 full speed only; L1/joint/four-rate M0/formal resource acceptance not claimed",
+  "socket_paths": {
+    "max_formatted_broker_socket": {
+      "limit_exclusive": 104,
+      "path": "/tmp/mc-w-ffffffffffffffff-18446744073709551615-ffffffffffffffff.sock",
+      "utf8_bytes_plus_nul": 70
+    },
+    "normal_pool_socket": {
+      "limit_exclusive": 104,
+      "path": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-02/observed/model/normal-pool/pool.sock",
+      "utf8_bytes_plus_nul": 99
+    },
+    "source_inventory": "verified from exact source archive; both normal-pool and broker bind/connect families retained"
+  },
+  "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+  "started_utc": "2026-10-22T21:03:22.915513+00:00",
+  "state": "observer_exited",
+  "storage": {
+    "available_bytes": 1917763624960,
+    "estimated_snapshot_bytes_each": 3378784402,
+    "free_floor_bytes": 2147483648,
+    "required_free_bytes": 12552272310,
+    "resolved_work": "/Volumes/HP P900/dev/MyCity/work",
+    "retention": "keep both full run roots and source/executable until explicit evidence review; never clean automatically",
+    "three_generations_plus_log_cap_bytes": 10404788662,
+    "volume": {
+      "bus_protocol": "USB",
+      "external_device": true,
+      "filesystem": "apfs",
+      "internal": false,
+      "mount_point": "/Volumes/HP P900",
+      "volume_uuid": "4289CF6D-F09D-4831-8558-4AB223E4EE04"
+    }
+  },
+  "timed_out": false,
+  "timeout": {
+    "child_wait_seconds": 3000,
+    "controller_deadline_seconds": 3200,
+    "restart": "never",
+    "signal_policy": "SIGTERM only exact still-live own observer PID/start/command identity; no escalation"
+  }
+}

@@ -1,0 +1,482 @@
+{
+  "created_utc": "2026-10-22T21:17:42.510380+00:00",
+  "raw_root": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01",
+  "policy": "Full raw logs, executable, source ZIP, business Store/WAL/checkpoints retained on SSD. Published process argument fields are removed only from PID/comm dictionaries. No original replaced by hash. Gzip files contain complete raw bytes.",
+  "files": [
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/controller-revisions/02ceff931153232d981ed4494fa1f7c6270f5ab472c975a33e83ec44465ab8ca-test_run_speed.py",
+      "published": "docs/evidence/m0-t13a-full-speed-127/controller-revisions/02ceff931153232d981ed4494fa1f7c6270f5ab472c975a33e83ec44465ab8ca-test_run_speed.py",
+      "original_bytes": 7301,
+      "original_sha256": "02ceff931153232d981ed4494fa1f7c6270f5ab472c975a33e83ec44465ab8ca",
+      "published_sha256": "02ceff931153232d981ed4494fa1f7c6270f5ab472c975a33e83ec44465ab8ca",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/controller-revisions/32311cb97680b55f58ae4f74f50ead3ab11106421a4e28d706cc9c927ddfb45d-run_speed.py",
+      "published": "docs/evidence/m0-t13a-full-speed-127/controller-revisions/32311cb97680b55f58ae4f74f50ead3ab11106421a4e28d706cc9c927ddfb45d-run_speed.py",
+      "original_bytes": 35766,
+      "original_sha256": "32311cb97680b55f58ae4f74f50ead3ab11106421a4e28d706cc9c927ddfb45d",
+      "published_sha256": "32311cb97680b55f58ae4f74f50ead3ab11106421a4e28d706cc9c927ddfb45d",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/controller-revisions/6b6a9ee87f10d4af94e6a130313902984fab0eb0e35effc7341ac820a5708757-verify_speeds.py",
+      "published": "docs/evidence/m0-t13a-full-speed-127/controller-revisions/6b6a9ee87f10d4af94e6a130313902984fab0eb0e35effc7341ac820a5708757-verify_speeds.py",
+      "original_bytes": 29539,
+      "original_sha256": "6b6a9ee87f10d4af94e6a130313902984fab0eb0e35effc7341ac820a5708757",
+      "published_sha256": "6b6a9ee87f10d4af94e6a130313902984fab0eb0e35effc7341ac820a5708757",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/controller-revisions/b49187bd40139733d677cec6151f9a70aae5864fb9a68f1d51928c81b0dc87c9-test_run_speed.py",
+      "published": "docs/evidence/m0-t13a-full-speed-127/controller-revisions/b49187bd40139733d677cec6151f9a70aae5864fb9a68f1d51928c81b0dc87c9-test_run_speed.py",
+      "original_bytes": 7404,
+      "original_sha256": "b49187bd40139733d677cec6151f9a70aae5864fb9a68f1d51928c81b0dc87c9",
+      "published_sha256": "b49187bd40139733d677cec6151f9a70aae5864fb9a68f1d51928c81b0dc87c9",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/controller-revisions/cea36abf1931b567916ce40a43ffa1c96233edcd288154e2a9bcc3fb9dd73bbc-run_speed.py",
+      "published": "docs/evidence/m0-t13a-full-speed-127/controller-revisions/cea36abf1931b567916ce40a43ffa1c96233edcd288154e2a9bcc3fb9dd73bbc-run_speed.py",
+      "original_bytes": 36861,
+      "original_sha256": "cea36abf1931b567916ce40a43ffa1c96233edcd288154e2a9bcc3fb9dd73bbc",
+      "published_sha256": "cea36abf1931b567916ce40a43ffa1c96233edcd288154e2a9bcc3fb9dd73bbc",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/run_speed.py",
+      "published": "docs/evidence/m0-t13a-full-speed-127/run_speed.py",
+      "original_bytes": 35766,
+      "original_sha256": "32311cb97680b55f58ae4f74f50ead3ab11106421a4e28d706cc9c927ddfb45d",
+      "published_sha256": "32311cb97680b55f58ae4f74f50ead3ab11106421a4e28d706cc9c927ddfb45d",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/test_run_speed.py",
+      "published": "docs/evidence/m0-t13a-full-speed-127/test_run_speed.py",
+      "original_bytes": 7404,
+      "original_sha256": "b49187bd40139733d677cec6151f9a70aae5864fb9a68f1d51928c81b0dc87c9",
+      "published_sha256": "b49187bd40139733d677cec6151f9a70aae5864fb9a68f1d51928c81b0dc87c9",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/verify_speeds.py",
+      "published": "docs/evidence/m0-t13a-full-speed-127/verify_speeds.py",
+      "original_bytes": 29539,
+      "original_sha256": "6b6a9ee87f10d4af94e6a130313902984fab0eb0e35effc7341ac820a5708757",
+      "published_sha256": "6b6a9ee87f10d4af94e6a130313902984fab0eb0e35effc7341ac820a5708757",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/prepared-manifest.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/prepared-manifest.json",
+      "original_bytes": 13346,
+      "original_sha256": "371a98c4b1e9f34045aed11a27df0b36fb7ca12e78a0bf0049d6680cc26af004",
+      "published_sha256": "1379e128e2096b2d848bd3d8af000b590683264c92ff22b0b43b844cf91b76ba",
+      "transformation": "process_argv_removed_raw_retained_on_SSD"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/verification-final.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/verification-final.json",
+      "original_bytes": 23421,
+      "original_sha256": "858e6afe4d87de29ac006849a340d0e06e3b6ccf2a90a10ab7e02f023c92c68d",
+      "published_sha256": "a5b6e294d9e3523f4b7bbdd1c00d15489f248708191f842b12bd5eff356dba86",
+      "transformation": "process_argv_removed_raw_retained_on_SSD"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/pure-tests-final.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/pure-tests-final.json",
+      "original_bytes": 426,
+      "original_sha256": "df2dca333a1e1d2a50a8a78c3b2446a83b28acff3f5a092d55005e968d41b691",
+      "published_sha256": "df2dca333a1e1d2a50a8a78c3b2446a83b28acff3f5a092d55005e968d41b691",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/pure-tests-final.stdout",
+      "published": "docs/evidence/m0-t13a-full-speed-127/pure-tests-final.stdout",
+      "original_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/pure-tests-final.stderr",
+      "published": "docs/evidence/m0-t13a-full-speed-127/pure-tests-final.stderr",
+      "original_bytes": 1438,
+      "original_sha256": "4612b49f65cd5d6a1f18170775483aaee54097f5ba4c6a4d00e57184eabe1206",
+      "published_sha256": "4612b49f65cd5d6a1f18170775483aaee54097f5ba4c6a4d00e57184eabe1206",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate1-functional-verification.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate1-functional-verification.json",
+      "original_bytes": 331,
+      "original_sha256": "45aa8eed8bae36fd554da145b93a75158e6ce7ffebc9660b923b958f4e45be11",
+      "published_sha256": "45aa8eed8bae36fd554da145b93a75158e6ce7ffebc9660b923b958f4e45be11",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate1-functional-verification-02.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate1-functional-verification-02.json",
+      "original_bytes": 15757,
+      "original_sha256": "7b1ee16e8f49b83ca11622dfeeb1618a3659aa76804eb4a665dd5d2d2d357694",
+      "published_sha256": "16d793fbe27c8c6a1fa6b825a9d65f8bd79d2f2e296cd53f32ba208c82cd7839",
+      "transformation": "process_argv_removed_raw_retained_on_SSD"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate1-01/intent.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate1-01/intent.json",
+      "original_bytes": 900,
+      "original_sha256": "45666d32d3734c816079495cd938d23831dbeba9a293331582ee84616eb25390",
+      "published_sha256": "45666d32d3734c816079495cd938d23831dbeba9a293331582ee84616eb25390",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate1-01/preflight.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate1-01/preflight.json",
+      "original_bytes": 6912,
+      "original_sha256": "b4ec670e5e4da263a48ff526f5d3651e591d2910f489ef31babcbf03ccb1bc12",
+      "published_sha256": "b4ec670e5e4da263a48ff526f5d3651e591d2910f489ef31babcbf03ccb1bc12",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate1-01/admission.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate1-01/admission.json",
+      "original_bytes": 9190,
+      "original_sha256": "525ba55fceb74e0f576c2ca918467de606b86f836416bfcb6b1f29326704786d",
+      "published_sha256": "899500c49c48f12551fc8931b5b8e84f9dba76c634351fc85b2e2b982844e7b8",
+      "transformation": "process_argv_removed_raw_retained_on_SSD"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate1-01/live.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate1-01/live.json",
+      "original_bytes": 15622,
+      "original_sha256": "c9b0fee3315f6972b22e7684fb776cbbe61d10f582f10c6a0d090bf6d6d6683d",
+      "published_sha256": "5abfd42a8f78633ba45c941998aec4f9f6cad3e7b414f3ce3f114deb55434af3",
+      "transformation": "process_argv_removed_raw_retained_on_SSD"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate1-01/receipt.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate1-01/receipt.json",
+      "original_bytes": 29638,
+      "original_sha256": "130929c39b0ef5940d2119aaa7a92c58798abc4fb1f738b2d5deb324e855688e",
+      "published_sha256": "2004885f80eab2edb772324960c58cadd25daa302bb57afd4bfcb1ecfca35227",
+      "transformation": "process_argv_removed_raw_retained_on_SSD"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate1-01/readiness.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate1-01/readiness.json",
+      "original_bytes": 3787,
+      "original_sha256": "a195ba3550907d01cd4b865daf67beb36dacd84085c0e5e17f4d78f3eaa015b2",
+      "published_sha256": "a195ba3550907d01cd4b865daf67beb36dacd84085c0e5e17f4d78f3eaa015b2",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate1-01/observer.stdout",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate1-01/observer.stdout",
+      "original_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate1-01/observer.stderr",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate1-01/observer.stderr",
+      "original_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate1-01/observed/observer-report.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate1-01/observed/observer-report.json",
+      "original_bytes": 3290,
+      "original_sha256": "2e630205b871d399b705ad098b030a085ab96d70b0d6f1a0ffee8417fec74605",
+      "published_sha256": "2e630205b871d399b705ad098b030a085ab96d70b0d6f1a0ffee8417fec74605",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate1-01/observed/observer-clock-map.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate1-01/observed/observer-clock-map.json",
+      "original_bytes": 495,
+      "original_sha256": "75af39de3ea8560e17414cba4d5713993b9149dbaf6358875932b355d3f836f8",
+      "published_sha256": "75af39de3ea8560e17414cba4d5713993b9149dbaf6358875932b355d3f836f8",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate1-01/observed/observer-child.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate1-01/observed/observer-child.json",
+      "original_bytes": 388,
+      "original_sha256": "13ece855351e292e69ff38ab0b60487f381a63f8dac008eedb2cc6b3c6a9c2d9",
+      "published_sha256": "13ece855351e292e69ff38ab0b60487f381a63f8dac008eedb2cc6b3c6a9c2d9",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate1-01/observed/model/manifest.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate1-01/observed/model/manifest.json",
+      "original_bytes": 447,
+      "original_sha256": "41e85ae89c4cd035ed3c773e9c37f28330ed163548131a6f95783524c3c484ed",
+      "published_sha256": "41e85ae89c4cd035ed3c773e9c37f28330ed163548131a6f95783524c3c484ed",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate1-01/observed/model/report.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate1-01/observed/model/report.json",
+      "original_bytes": 539,
+      "original_sha256": "8616f3de8d97da6fc39df654a48e102f8219114e6d3e81da5ee2719af7d0f1c2",
+      "published_sha256": "8616f3de8d97da6fc39df654a48e102f8219114e6d3e81da5ee2719af7d0f1c2",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate1-01/observed/model/business/report.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate1-01/observed/model/business/report.json",
+      "original_bytes": 9699,
+      "original_sha256": "e9ef3f0fadc82d8132f9eb4ff71d0894d7a67054960fff7326cb1766057db08e",
+      "published_sha256": "e9ef3f0fadc82d8132f9eb4ff71d0894d7a67054960fff7326cb1766057db08e",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate1-01/observed/model/business/cpu-report.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate1-01/observed/model/business/cpu-report.json",
+      "original_bytes": 9527,
+      "original_sha256": "feeaf44a3578f59c13776b78196ef2017eb8a44291e603f6820953ce4bcaf62c",
+      "published_sha256": "feeaf44a3578f59c13776b78196ef2017eb8a44291e603f6820953ce4bcaf62c",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate1-01/observed/model/business/speed-manifest.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate1-01/observed/model/business/speed-manifest.json",
+      "original_bytes": 999,
+      "original_sha256": "10bb088c22fffe3dc6db1b11c8933bcf334d8dec258982dbf9de7a15d54bb530",
+      "published_sha256": "10bb088c22fffe3dc6db1b11c8933bcf334d8dec258982dbf9de7a15d54bb530",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate1-01/observed/model/business/transcript.jsonl",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate1-01/observed/model/business/transcript.jsonl.gz",
+      "original_bytes": 5512286,
+      "original_sha256": "4982cfcda5670d1265d6bea9d98ff1181e27a56b294a3f593e68620701466c21",
+      "published_sha256": "fd75f144a37fbaa6c5474d0e41ff256b41f44b7ebe41530fca0076527f3448bc",
+      "transformation": "raw_bytes;gzip_full_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate1-01/observed/model/business/cpu-targets.jsonl",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate1-01/observed/model/business/cpu-targets.jsonl.gz",
+      "original_bytes": 142733,
+      "original_sha256": "54511c3ebed63d98a440512f3c912db8bf2844029ef1a999b023ede8c905b832",
+      "published_sha256": "f6ca99f67a450bcd2294265ff3f7f61bf00eaadd2d3f4a4005dd510c980e681b",
+      "transformation": "raw_bytes;gzip_full_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate1-01/observed/model/business/cpu-final-engine.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate1-01/observed/model/business/cpu-final-engine.json.gz",
+      "original_bytes": 2507418,
+      "original_sha256": "375065b04ead72b347babf37e1e212455170737057c245d96fe710212f34034c",
+      "published_sha256": "49ab0a1c72659ac80464e0d96ce2eba9e58ae2bec42661ba441a8bbf3cdcec65",
+      "transformation": "raw_bytes;gzip_full_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-02/intent.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate10-02/intent.json",
+      "original_bytes": 902,
+      "original_sha256": "195b7dd9b6285219a3d380437e9561e1330389b2504d56c64a93a891fda5a7ff",
+      "published_sha256": "195b7dd9b6285219a3d380437e9561e1330389b2504d56c64a93a891fda5a7ff",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-02/preflight.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate10-02/preflight.json",
+      "original_bytes": 6915,
+      "original_sha256": "47cac2fd182f2ececc7beafecbebf59f759aa9c8abf666e48f3819c2fb4eef8d",
+      "published_sha256": "47cac2fd182f2ececc7beafecbebf59f759aa9c8abf666e48f3819c2fb4eef8d",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-02/admission.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate10-02/admission.json",
+      "original_bytes": 4717,
+      "original_sha256": "7268f78fde80073e6a64d3548277ab647dc8ce0c74d7aedd394eb8c6f0f2e6d8",
+      "published_sha256": "7268f78fde80073e6a64d3548277ab647dc8ce0c74d7aedd394eb8c6f0f2e6d8",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-02/live.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate10-02/live.json",
+      "original_bytes": 12946,
+      "original_sha256": "e243428e65b568e577ac00da8af1ad79f72475096db7e911053321a289f3a431",
+      "published_sha256": "e243428e65b568e577ac00da8af1ad79f72475096db7e911053321a289f3a431",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-02/receipt.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate10-02/receipt.json",
+      "original_bytes": 16446,
+      "original_sha256": "9aa16016613013da1c08047d025ce0dd65847b884c07e3a58db4f650d88f6497",
+      "published_sha256": "9aa16016613013da1c08047d025ce0dd65847b884c07e3a58db4f650d88f6497",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-02/readiness.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate10-02/readiness.json",
+      "original_bytes": 3768,
+      "original_sha256": "4483f62dda8c1edef993e4759d5728d8a78ef18a278a7225614071b166c8067d",
+      "published_sha256": "4483f62dda8c1edef993e4759d5728d8a78ef18a278a7225614071b166c8067d",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-02/observer.stdout",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate10-02/observer.stdout",
+      "original_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-02/observer.stderr",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate10-02/observer.stderr",
+      "original_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-02/observed/observer-report.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate10-02/observed/observer-report.json",
+      "original_bytes": 3295,
+      "original_sha256": "2e7e2b7c2a2604c5150a35cf0cf49ed3a81874d0b7b8335248169fc38380f803",
+      "published_sha256": "2e7e2b7c2a2604c5150a35cf0cf49ed3a81874d0b7b8335248169fc38380f803",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-02/observed/observer-clock-map.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate10-02/observed/observer-clock-map.json",
+      "original_bytes": 495,
+      "original_sha256": "e5fadadfb19ccc16b03ce8b42d13d83af0b0ddf96616e5bca092a32369ddde91",
+      "published_sha256": "e5fadadfb19ccc16b03ce8b42d13d83af0b0ddf96616e5bca092a32369ddde91",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-02/observed/observer-child.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate10-02/observed/observer-child.json",
+      "original_bytes": 390,
+      "original_sha256": "f084b39e81a69c2aea4c76f5383198b3ea66c58b4b2810807db8f6b6eeb03c25",
+      "published_sha256": "f084b39e81a69c2aea4c76f5383198b3ea66c58b4b2810807db8f6b6eeb03c25",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-02/observed/model/manifest.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate10-02/observed/model/manifest.json",
+      "original_bytes": 448,
+      "original_sha256": "64e501a883e7d87e8624f1205f00e25ef434a10f10953736a0418479240ba906",
+      "published_sha256": "64e501a883e7d87e8624f1205f00e25ef434a10f10953736a0418479240ba906",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-02/observed/model/report.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate10-02/observed/model/report.json",
+      "original_bytes": 542,
+      "original_sha256": "0bcd1d089d84aaf1308f3dc1fb86fefcfe802d759b3070fd26600ffeb02e7d58",
+      "published_sha256": "0bcd1d089d84aaf1308f3dc1fb86fefcfe802d759b3070fd26600ffeb02e7d58",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-02/observed/model/business/report.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate10-02/observed/model/business/report.json",
+      "original_bytes": 9656,
+      "original_sha256": "1ea43994d8e2bbe843af90517837c76a7f2906f0dbafe2cd1a7c2803dc7c824b",
+      "published_sha256": "1ea43994d8e2bbe843af90517837c76a7f2906f0dbafe2cd1a7c2803dc7c824b",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-02/observed/model/business/cpu-report.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate10-02/observed/model/business/cpu-report.json",
+      "original_bytes": 9527,
+      "original_sha256": "0974a4e7cf833aea90e7c95676efadeb080d25742c79b2f909e0895b86771e45",
+      "published_sha256": "0974a4e7cf833aea90e7c95676efadeb080d25742c79b2f909e0895b86771e45",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-02/observed/model/business/speed-manifest.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate10-02/observed/model/business/speed-manifest.json",
+      "original_bytes": 1000,
+      "original_sha256": "2f809d212cc8e84c65a00ac81289316604f638205beda8182c333a888aaec367",
+      "published_sha256": "2f809d212cc8e84c65a00ac81289316604f638205beda8182c333a888aaec367",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-02/observed/model/business/transcript.jsonl",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate10-02/observed/model/business/transcript.jsonl.gz",
+      "original_bytes": 5538572,
+      "original_sha256": "7edb3bbbd5ac8777875f98d9cf4e0f7310eaec322a474bcffad94c1182529fb0",
+      "published_sha256": "48c7c99ddfcf1c85b9c24ab1a99fcb87de5bf80b3781fd03c67c949fd63cc337",
+      "transformation": "raw_bytes;gzip_full_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-02/observed/model/business/cpu-targets.jsonl",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate10-02/observed/model/business/cpu-targets.jsonl.gz",
+      "original_bytes": 142733,
+      "original_sha256": "54511c3ebed63d98a440512f3c912db8bf2844029ef1a999b023ede8c905b832",
+      "published_sha256": "f6ca99f67a450bcd2294265ff3f7f61bf00eaadd2d3f4a4005dd510c980e681b",
+      "transformation": "raw_bytes;gzip_full_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-02/observed/model/business/cpu-final-engine.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate10-02/observed/model/business/cpu-final-engine.json.gz",
+      "original_bytes": 2507418,
+      "original_sha256": "375065b04ead72b347babf37e1e212455170737057c245d96fe710212f34034c",
+      "published_sha256": "49ab0a1c72659ac80464e0d96ce2eba9e58ae2bec42661ba441a8bbf3cdcec65",
+      "transformation": "raw_bytes;gzip_full_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-01/intent.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate10-01/intent.json",
+      "original_bytes": 902,
+      "original_sha256": "412aaa76fcb8f988ab209aae7ae6aa07e786b4b837289af6c1c792c790a99210",
+      "published_sha256": "412aaa76fcb8f988ab209aae7ae6aa07e786b4b837289af6c1c792c790a99210",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-01/preflight.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate10-01/preflight.json",
+      "original_bytes": 6915,
+      "original_sha256": "c6059bf1614e2c41aaa76a003746fc603dc6c9648054a7534bef22be5cb733ac",
+      "published_sha256": "c6059bf1614e2c41aaa76a003746fc603dc6c9648054a7534bef22be5cb733ac",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-01/controller-terminal.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate10-01/controller-terminal.json",
+      "original_bytes": 549,
+      "original_sha256": "5795cc8fcae0a8576b1c71e3becd8f9833f30a76aad683d627ed9217df48f018",
+      "published_sha256": "5795cc8fcae0a8576b1c71e3becd8f9833f30a76aad683d627ed9217df48f018",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-01/pressure-latest.json",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate10-01/pressure-latest.json",
+      "original_bytes": 114,
+      "original_sha256": "6fdb52e79ac7a69b01b8861f875f373d3f87db67a9b5680f9338bab214f125d7",
+      "published_sha256": "6fdb52e79ac7a69b01b8861f875f373d3f87db67a9b5680f9338bab214f125d7",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-01/readiness.stdout",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate10-01/readiness.stdout",
+      "original_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "transformation": "raw_bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-01/readiness.stderr",
+      "published": "docs/evidence/m0-t13a-full-speed-127/rate10-01/readiness.stderr",
+      "original_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "transformation": "raw_bytes"
+    }
+  ],
+  "recovery_inputs_deleted": [],
+  "build_cache_deleted": [],
+  "reclaim_reason": "Current two rates and failed controller/recovery evidence remain in use; shared target reused and required by queued tests."
+}

@@ -1,0 +1,12 @@
+{
+  "binary": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/executables/557b2e4d0bc89f429a07a270c9f388b508d595c8b4a1f233b795becdf75797e7/mycity-headless",
+  "binary_sha256": "557b2e4d0bc89f429a07a270c9f388b508d595c8b4a1f233b795becdf75797e7",
+  "source_zip_sha256": "8e85f7adc3dd0d0811ec8ee6fa89720512f8ba6f587b1b10de6146cfc3d81561",
+  "storage": "HP P900 external USB/APFS SSD",
+  "scope": "combined root fully excluded from R07 credit; raw full process remains accounted, fixed original load/caps",
+  "original_normal_threshold_bytes": 3328599654,
+  "normal_pool_bytes": 67108864,
+  "full_r07_mapped_bytes": 277610496,
+  "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+  "source_zip": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/09-fixed-cli-build/source.zip"
+}

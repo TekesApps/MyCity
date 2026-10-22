@@ -1,0 +1,12 @@
+{
+  "schema": "controller-prelaunch-failure-v1",
+  "state": "controller_error_before_model",
+  "controller_exit_code": 1,
+  "error": "ps snapshots remained inconsistent after 3 attempts: ps PID/start identities changed between comm and args snapshots",
+  "model_started": false,
+  "observed_directory_exists": false,
+  "readiness_helper_found_in_followup_ps": false,
+  "old_attempt_retained": true,
+  "replacement_attempt": "rate10-02 with explicit speed02 identity; not restart of live model",
+  "recorded_utc": "2026-10-22T21:00:48.187426+00:00"
+}

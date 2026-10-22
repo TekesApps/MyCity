@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "python3",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01",
+    "-p",
+    "test_*.py",
+    "-v"
+  ],
+  "exit_code": 0,
+  "runner_sha256": "32311cb97680b55f58ae4f74f50ead3ab11106421a4e28d706cc9c927ddfb45d",
+  "tests_sha256": "b49187bd40139733d677cec6151f9a70aae5864fb9a68f1d51928c81b0dc87c9",
+  "scope": "pure controller checks; no model launch"
+}

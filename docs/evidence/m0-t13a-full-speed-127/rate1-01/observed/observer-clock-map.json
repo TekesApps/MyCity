@@ -1,0 +1,12 @@
+{
+  "method": "nonce-bound real request/reply; intersect original spawn lower bound",
+  "nonce": "e95a42fc6ccd31409b4cb75fadf70347",
+  "reply_received_observer_ns": 20723041,
+  "request_sent_observer_ns": 16545666,
+  "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+  "spawn_before_observer_ns": 7195708,
+  "supervisor_origin_observer_ns_max": 14370499,
+  "supervisor_origin_observer_ns_min": 10193124,
+  "supervisor_pid": 2225,
+  "uncertainty_ns": 4177375
+}

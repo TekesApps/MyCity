@@ -1,0 +1,207 @@
+{
+  "admission": {
+    "activity_in_final_120_seconds": [],
+    "activity_observed": [
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 1946,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 04:50:24 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 1994,
+            "ppid": 1946,
+            "start_identity": "Fri Oct 23 04:50:26 2026"
+          }
+        ],
+        "elapsed_seconds": 66.074770792,
+        "heavy_mycity": []
+      }
+    ],
+    "exit_code": 0,
+    "final_120_seconds_start": 73.05772354200002,
+    "normal_pressure_gate": {
+      "samples": [
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 70.962105459,
+          "pressure": 1,
+          "unix_ns": 1792702231741113000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 76.033130417,
+          "pressure": 1,
+          "unix_ns": 1792702236812189000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 81.108987125,
+          "pressure": 1,
+          "unix_ns": 1792702241888096000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 86.185536667,
+          "pressure": 1,
+          "unix_ns": 1792702246964696000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 91.259223,
+          "pressure": 1,
+          "unix_ns": 1792702252038434000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 96.325851792,
+          "pressure": 1,
+          "unix_ns": 1792702257105114000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 101.396958209,
+          "pressure": 1,
+          "unix_ns": 1792702262176271000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 106.451330542,
+          "pressure": 1,
+          "unix_ns": 1792702267230693000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 111.496046584,
+          "pressure": 1,
+          "unix_ns": 1792702272275460000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 116.541249542,
+          "pressure": 1,
+          "unix_ns": 1792702277320713000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 121.586376167,
+          "pressure": 1,
+          "unix_ns": 1792702282365891000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 126.644499084,
+          "pressure": 1,
+          "unix_ns": 1792702287424064000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 131.69025524999998,
+          "pressure": 1,
+          "unix_ns": 1792702292469871000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 136.76606991699998,
+          "pressure": 1,
+          "unix_ns": 1792702297545736000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 141.809062542,
+          "pressure": 1,
+          "unix_ns": 1792702302588779000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 146.881482625,
+          "pressure": 1,
+          "unix_ns": 1792702307661250000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 151.996446459,
+          "pressure": 1,
+          "unix_ns": 1792702312776265000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 157.06642620899999,
+          "pressure": 1,
+          "unix_ns": 1792702317846296000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 162.131774584,
+          "pressure": 1,
+          "unix_ns": 1792702322911695000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 167.194195792,
+          "pressure": 1,
+          "unix_ns": 1792702327974167000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 172.257557209,
+          "pressure": 1,
+          "unix_ns": 1792702333037579000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 177.32675187499999,
+          "pressure": 1,
+          "unix_ns": 1792702338106824000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 182.401643334,
+          "pressure": 1,
+          "unix_ns": 1792702343181766000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 187.47533504199998,
+          "pressure": 1,
+          "unix_ns": 1792702348255509000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 192.53325775,
+          "pressure": 1,
+          "unix_ns": 1792702353313482000
+        }
+      ]
+    },
+    "status": "passed"
+  },
+  "readiness": {
+    "activity_observed": [
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 1946,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 04:50:24 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 1994,
+            "ppid": 1946,
+            "start_identity": "Fri Oct 23 04:50:26 2026"
+          }
+        ],
+        "elapsed_seconds": 66.074770792,
+        "heavy_mycity": []
+      }
+    ],
+    "elapsed_seconds": 193.05772354200002,
+    "exit_code": 0,
+    "pid": 1769
+  }
+}

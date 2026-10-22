@@ -1,0 +1,5 @@
+{
+  "status": "verifier_error",
+  "error": "TypeError(\"verify_run() missing 2 required positional arguments: 'attempt_name' and 'fixed'\")",
+  "traceback": "Traceback (most recent call last):\n  File \"<stdin>\", line 5, in <module>\nTypeError: verify_run() missing 2 required positional arguments: 'attempt_name' and 'fixed'\n"
+}

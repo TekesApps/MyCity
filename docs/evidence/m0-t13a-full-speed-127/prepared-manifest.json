@@ -1,0 +1,285 @@
+{
+  "admission_support": {
+    "process_activity.py": "1abbc0771180936fa660b34db4f6428f199fd467e0f866548e8a12bdb4c58aa9",
+    "readiness.py": "fa62f21677bab98c558e86fa3a54f42ecfa8b64fd1d7d3449b6401ecff4ef7ae",
+    "support-manifest.json": "aded3e653c0f0da488ffda0a5110441d8dfc1a97987f1d9fdf89642e5adbebe7",
+    "usage": "readiness.py and process_activity.py only; fixed ac02 native-observe handles measurement and clock handshake"
+  },
+  "clock_and_source_fail_closed": {
+    "any_fixed_identity_mismatch_blocks_before_readiness": true,
+    "current_checkout_mismatch_does_not_substitute_or_reject_fixed_binary": true,
+    "fixed_binary_embeds_fixed_source": true,
+    "native_observer_requires_nonce_bound_ready_request_reply": true,
+    "observer_report_source_binary_unchanged_and_zero_model_exit_required": true,
+    "postrun_same_source_child_pid_nonce_clock_map_required_for_wrapper_success": true,
+    "speed_calls_observer_clock_synchronize": true
+  },
+  "commands": [
+    "cd /Users/frankqin/dev/MyCity && python3 \"/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/run_speed.py\" 1 speed01",
+    "cd /Users/frankqin/dev/MyCity && python3 \"/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/run_speed.py\" 10 speed01"
+  ],
+  "controller_bugfix": {
+    "change": "comm and args are captured by separate ps projections, parsed with split(None, 7), and joined on PID plus lstart; only the transient /bin/ps samplers are excluded. A changing PID/start or PPID is retried up to three paired snapshots then fails closed.",
+    "current_runner_sha256": "cea36abf1931b567916ce40a43ffa1c96233edcd288154e2a9bcc3fb9dd73bbc",
+    "kind": "ps process snapshot path-with-spaces parsing",
+    "previous_runner_sha256": "87d3b4b9b05143dbeae2812bc0e958db4fc592c214e49d5a16d5dec6fae66f27",
+    "rate_attempts_started": false,
+    "reason": "The former combined projection split on whitespace and truncated executable paths containing spaces, which could miss compiler or heavy MyCity processes.",
+    "tests": [
+      "path with spaces preserved in comm",
+      "arguments with spaces preserved in args",
+      "PID change rejected",
+      "start identity change rejected",
+      "PPID change rejected",
+      "transient sampler processes excluded by exact comm/args fields"
+    ]
+  },
+  "controller_resources": {
+    "controller_auxiliary_not_added_to_observer_raw_group": true,
+    "controller_peak_rss_recorded_separately": true,
+    "observer_descendants_counted_only_by_native_observer": true
+  },
+  "controller_revision": {
+    "failed_attempt_preserved": "rate10-01/controller-terminal.json; no observed/model root",
+    "model_or_cargo_started_by_this_task": false,
+    "parser": "one pid/ppid/lstart/comm projection; trailing executable field parsed intact; no cross-snapshot PID join",
+    "reason": "10-01 admission ended at 76s because the old controller joined two ps projections that observed different transient PID sets; the original attempt root and controller-terminal.json are retained.",
+    "reviewed_attempt_identity": {
+      "existing_attempt_root": "rejected without overwrite",
+      "rate10-speed02": "rate10-02",
+      "speed02_other_rates": "rejected"
+    },
+    "runner_file_sha256": "32311cb97680b55f58ae4f74f50ead3ab11106421a4e28d706cc9c927ddfb45d",
+    "tests": "13 pure tests passed; includes one-call mocked ps projection, spaced executable path classification, independent snapshots with unrelated PID changes, malformed/duplicate identity rejection, speed02 uniqueness and existing-root rejection"
+  },
+  "fixed_inputs": {
+    "acceptance_fixture_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+    "archive_entries": 264,
+    "binary_embeds_source_fingerprint": true,
+    "binary_path": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/executables/557b2e4d0bc89f429a07a270c9f388b508d595c8b4a1f233b795becdf75797e7/mycity-headless",
+    "binary_sha256": "557b2e4d0bc89f429a07a270c9f388b508d595c8b4a1f233b795becdf75797e7",
+    "build_source_entries": 259,
+    "legacy_binary_excluded": {
+      "binary_sha256": "6279b76ab63cad479b022664c90d68c2a53e373143c4dc72ac7549848e5515ea",
+      "historical_source_prefix": "4a818",
+      "path": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/binary.json",
+      "reason": "binary.json's pinned 6279/6f76 legacy identity is excluded; only binary-final ac02/557b is eligible",
+      "source_sha256_field": null,
+      "source_zip_sha256": "6f76c28a75a57653020b4f4b3e99ea431d7e70a50f3bf98d1244ce288c528805"
+    },
+    "lock_sha256": "7da5c54a8499a07cbc71dcecce0c0095d4af3b8b6e5052783f20d188037b6dd6",
+    "prepared_checkout_provenance_only": {
+      "commit": "3a188ad796698a332dfb6e453eb3c7fddb4362cc",
+      "matches_fixed_source_hash": true,
+      "path": "/Users/frankqin/dev/MyCity",
+      "source_comparison": "current checkout hash is recorded separately; Rust source intentionally not compared byte-for-byte",
+      "source_entries": 259,
+      "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+      "version": "v0.5.125"
+    },
+    "source_archive_sha256": "8e85f7adc3dd0d0811ec8ee6fa89720512f8ba6f587b1b10de6146cfc3d81561",
+    "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+    "speed_contract": {
+      "checks": {
+        "724_worker_windows": true,
+        "broker_temp_socket_template": true,
+        "full_30_days_720_hours_723_targets": true,
+        "native_observer_keeps_original_guards": true,
+        "native_observer_nonce_clock_peer": true,
+        "normal_pool_path_derivation": true,
+        "public_run_selects_full_tier": true,
+        "rate_timeout_is_3000_seconds_for_1_and_10": true,
+        "requested_rate_values": true,
+        "speed_entrypoint": true,
+        "speed_uses_clock_exchange": true
+      },
+      "clock_exchange": "nonce-bound startup from native observer; any missing/invalid ready/request/reply is fatal",
+      "pathname_binds": [
+        {
+          "line": 773,
+          "source": "crates/city-headless/src/normal_pool/broker.rs",
+          "text": "let listener = UnixListener::bind(&endpoint).map_err(err)?;"
+        },
+        {
+          "line": 908,
+          "source": "crates/city-headless/src/normal_pool.rs",
+          "text": "let listener = UnixListener::bind(root.join(\"pool.sock\")).map_err(err)?;"
+        }
+      ],
+      "pathname_connects": [
+        {
+          "line": 375,
+          "source": "crates/city-headless/src/normal_pool/broker.rs",
+          "text": "let stream = UnixStream::connect(endpoint).map_err(err)?;"
+        },
+        {
+          "line": 684,
+          "source": "crates/city-headless/src/normal_pool.rs",
+          "text": "let mut socket = UnixStream::connect(root.join(\"pool.sock\")).map_err(err)?;"
+        },
+        {
+          "line": 227,
+          "source": "crates/city-headless/tests/normal_pool.rs",
+          "text": "let mut socket = UnixStream::connect(root.join(\"pool.sock\")).unwrap();"
+        },
+        {
+          "line": 234,
+          "source": "crates/city-headless/tests/normal_pool.rs",
+          "text": "let mut socket = UnixStream::connect(root.join(\"pool.sock\")).unwrap();"
+        },
+        {
+          "line": 374,
+          "source": "crates/city-headless/tests/normal_pool.rs",
+          "text": "let s = UnixStream::connect(root.join(\"pool.sock\")).unwrap();"
+        }
+      ],
+      "workload": {
+        "days": 30,
+        "formal_m0": false,
+        "hours": 720,
+        "l1": "absent",
+        "rate_semantics": "1|10 wall seconds per game day; fixed source's timeout resolves to 3000s for both",
+        "targets": 723,
+        "tier": "full",
+        "worker_windows": 724
+      }
+    },
+    "status": "passed_static_fixed_inputs"
+  },
+  "prepared_files_sha256": {
+    "README.md": "27cab213c549f5ec3f3029fbec615d249e160ef9f7c4e9c59ac45d94825491a7",
+    "run_speed.py": "32311cb97680b55f58ae4f74f50ead3ab11106421a4e28d706cc9c927ddfb45d",
+    "test_run_speed.py": "b49187bd40139733d677cec6151f9a70aae5864fb9a68f1d51928c81b0dc87c9"
+  },
+  "prepared_utc": "2026-10-22T20:09:59.209671+00:00",
+  "process_activity_snapshot": {
+    "compilers": [
+      {
+        "comm": "/Users/frankqin/",
+        "pid": 83990,
+        "ppid": 83967,
+        "start_identity": "Fri Oct 23 04:09:42 2026"
+      },
+      {
+        "comm": "/Users/frankqin/",
+        "pid": 83993,
+        "ppid": 83990,
+        "start_identity": "Fri Oct 23 04:09:42 2026"
+      },
+      {
+        "comm": "/Users/frankqin/",
+        "pid": 83998,
+        "ppid": 83990,
+        "start_identity": "Fri Oct 23 04:09:43 2026"
+      }
+    ],
+    "heavy_mycity": []
+  },
+  "process_snapshot_policy": "read-only; any active Cargo/rustc/heavy MyCity blocks before readiness and again before model launch; external tasks are never terminated",
+  "repo_context": {
+    "canonical_repo": "/Users/frankqin/dev/MyCity",
+    "current_Rust_tree_compared_byte_for_byte_to_fixed_archive": false,
+    "current_checkout_build_source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+    "current_checkout_commit": "3a188ad796698a332dfb6e453eb3c7fddb4362cc",
+    "current_checkout_version": "v0.5.125",
+    "current_hash_matches_fixed": true,
+    "fixed_source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+    "source_domains_recorded_separately": true
+  },
+  "retention": {
+    "attempt_roots": [
+      "rate1-01",
+      "rate10-01"
+    ],
+    "automatic_cleanup": false,
+    "available_bytes": 1918156750848,
+    "budget_generations": 3,
+    "combined_log_cap_bytes": 268435456,
+    "controller_does_not_create_observed_or_model": true,
+    "estimated_snapshot_bytes_each": 3378784402,
+    "observer_creates_observed_root": true,
+    "required_bytes": 12552272310,
+    "unique_new_attempt_only": true
+  },
+  "run_roots_created": [],
+  "schema": "mycity-standalone-full-speed-prepared-v1",
+  "socket_paths": [
+    {
+      "max_formatted_broker_socket": {
+        "limit_exclusive": 104,
+        "path": "/tmp/mc-w-ffffffffffffffff-18446744073709551615-ffffffffffffffff.sock",
+        "utf8_bytes_plus_nul": 70
+      },
+      "normal_pool_socket": {
+        "limit_exclusive": 104,
+        "path": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate1-01/observed/model/normal-pool/pool.sock",
+        "utf8_bytes_plus_nul": 98
+      },
+      "source_inventory": "verified from exact source archive; both normal-pool and broker bind/connect families retained"
+    },
+    {
+      "max_formatted_broker_socket": {
+        "limit_exclusive": 104,
+        "path": "/tmp/mc-w-ffffffffffffffff-18446744073709551615-ffffffffffffffff.sock",
+        "utf8_bytes_plus_nul": 70
+      },
+      "normal_pool_socket": {
+        "limit_exclusive": 104,
+        "path": "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/rate10-01/observed/model/normal-pool/pool.sock",
+        "utf8_bytes_plus_nul": 99
+      },
+      "source_inventory": "verified from exact source archive; both normal-pool and broker bind/connect families retained"
+    }
+  ],
+  "state": "controller-revised; measurement not launched by this preparation task",
+  "storage": {
+    "available_bytes": 1918156750848,
+    "estimated_snapshot_bytes_each": 3378784402,
+    "free_floor_bytes": 2147483648,
+    "required_free_bytes": 12552272310,
+    "resolved_work": "/Volumes/HP P900/dev/MyCity/work",
+    "retention": "keep both full run roots and source/executable until explicit evidence review; never clean automatically",
+    "three_generations_plus_log_cap_bytes": 10404788662,
+    "volume": {
+      "bus_protocol": "USB",
+      "external_device": true,
+      "filesystem": "apfs",
+      "internal": false,
+      "mount_point": "/Volumes/HP P900",
+      "volume_uuid": "4289CF6D-F09D-4831-8558-4AB223E4EE04"
+    }
+  },
+  "timeout": {
+    "controller_deadline_seconds": 3200,
+    "escalation": "none",
+    "fixed_model_timeout_seconds": 3000,
+    "restart": "never",
+    "timeout_signal": "SIGTERM only direct observer process with matching live PID/start identity/command"
+  },
+  "validation": {
+    "AST": "runner and tests parse successfully after controller revision",
+    "cargo_invoked": false,
+    "live_ps_parser": "read-only 738-row snapshot parsed; compiler PID 11158 (cargo test --manifest-path ui/Cargo.toml --locked --offline --workspace) observed; no heavy MyCity process",
+    "measurement_gate": "controller admission remains responsible for waiting for sustained compiler-free window",
+    "measurement_launch_by_this_task": false,
+    "measurements_run": false,
+    "model_started": false,
+    "unittest": "13 tests passed; static/no-launch"
+  },
+  "workload": {
+    "business_hours": 720,
+    "game_days": 30,
+    "l1": "absent",
+    "l1_joint_four_rate_m0_formal_performance": "not_claimed",
+    "nominal_pace_is_not_a_wall_runtime_estimate": true,
+    "rate_unit": "wall_seconds_per_game_day",
+    "rates": [
+      "1",
+      "10"
+    ],
+    "targets": 723,
+    "tier": "full",
+    "v124_full_unpaced_wall_seconds": 254.6,
+    "windows": 724
+  }
+}

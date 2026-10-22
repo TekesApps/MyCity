@@ -1,0 +1,163 @@
+{
+  "run": {
+    "16GB": "not_run",
+    "L1": "absent",
+    "business_sha256": "01e6d8fe5dfff9cbdc4e7a2e916fdeb62312fbd57eaa046c999d659fb68aa4af",
+    "cash_total_cents": 3000000,
+    "claims_paid_cents": 20000,
+    "clean_measurement_environment": false,
+    "delivery_contracts": 8,
+    "eight_hour": "not_run",
+    "execution_wrapper": {
+      "clock_handshake": {
+        "nonce": "e95a42fc6ccd31409b4cb75fadf70347",
+        "origin_max_ns": 14370499,
+        "origin_min_ns": 10193124,
+        "pid": 2225,
+        "reply_received_observer_ns": 20723041,
+        "request_sent_observer_ns": 16545666,
+        "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+        "spawn_before_observer_ns": 7195708,
+        "uncertainty_ns": 4177375
+      },
+      "controller_process_exit_not_used_as_proof": true,
+      "environment_integrity": {
+        "clean_measurement_environment": false,
+        "external_activity_elapsed_seconds": [
+          181.199432041,
+          186.383438708,
+          191.55353125000002,
+          196.7926115,
+          201.929211041
+        ],
+        "external_activity_sample_missing": [
+          {
+            "elapsed_seconds": 176.090548333,
+            "error": "ps snapshots remained inconsistent after 3 attempts: ps PID/start identities changed between comm and args snapshots"
+          }
+        ],
+        "external_activity_sample_missing_count": 1,
+        "external_compile_or_heavy_mycity_observations": [
+          {
+            "compilers": [
+              {
+                "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+                "pid": 8510,
+                "ppid": 8244,
+                "start_identity": "Fri Oct 23 04:55:32 2026"
+              }
+            ],
+            "elapsed_seconds": 181.199432041,
+            "heavy_mycity": []
+          },
+          {
+            "compilers": [
+              {
+                "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+                "pid": 8715,
+                "ppid": 8244,
+                "start_identity": "Fri Oct 23 04:55:37 2026"
+              },
+              {
+                "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+                "pid": 8807,
+                "ppid": 8715,
+                "start_identity": "Fri Oct 23 04:55:39 2026"
+              },
+              {
+                "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+                "pid": 8851,
+                "ppid": 8715,
+                "start_identity": "Fri Oct 23 04:55:40 2026"
+              },
+              {
+                "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+                "pid": 8852,
+                "ppid": 8715,
+                "start_identity": "Fri Oct 23 04:55:40 2026"
+              }
+            ],
+            "elapsed_seconds": 186.383438708,
+            "heavy_mycity": []
+          },
+          {
+            "compilers": [
+              {
+                "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+                "pid": 8715,
+                "ppid": 8244,
+                "start_identity": "Fri Oct 23 04:55:37 2026"
+              }
+            ],
+            "elapsed_seconds": 191.55353125000002,
+            "heavy_mycity": []
+          },
+          {
+            "compilers": [
+              {
+                "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+                "pid": 9114,
+                "ppid": 8244,
+                "start_identity": "Fri Oct 23 04:55:47 2026"
+              },
+              {
+                "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+                "pid": 9206,
+                "ppid": 9114,
+                "start_identity": "Fri Oct 23 04:55:50 2026"
+              }
+            ],
+            "elapsed_seconds": 196.7926115,
+            "heavy_mycity": []
+          },
+          {
+            "compilers": [
+              {
+                "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+                "pid": 9288,
+                "ppid": 9287,
+                "start_identity": "Fri Oct 23 04:55:53 2026"
+              },
+              {
+                "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/clippy-driver",
+                "pid": 9395,
+                "ppid": 9288,
+                "start_identity": "Fri Oct 23 04:55:55 2026"
+              }
+            ],
+            "elapsed_seconds": 201.929211041,
+            "heavy_mycity": []
+          }
+        ],
+        "external_compile_or_heavy_mycity_observations_count": 5
+      },
+      "observer_exit_code": 0,
+      "observer_report_status": "passed_measurement_wrapper",
+      "receipt_state": "observer_exited",
+      "status": "passed"
+    },
+    "full_image_sha256": "375065b04ead72b347babf37e1e212455170737057c245d96fe710212f34034c",
+    "functional_model": "passed",
+    "model_counts": {
+      "accounts": 64,
+      "cities": 8,
+      "claims": 20000,
+      "inflight_peak": 4,
+      "payroll": 64,
+      "quotes": 8,
+      "stocks": 128
+    },
+    "rate_seconds_per_game_day": 1,
+    "speed": {
+      "all_30_daily_periods_met": false,
+      "measured_operating_wall_seconds": 188.759230042,
+      "nominal_30_day_budget_seconds": 30,
+      "rate_seconds_per_game_day": 1,
+      "standalone_speed_target": "missed",
+      "whole_30day_budget_met": false
+    },
+    "wages_paid_cents": 118784
+  },
+  "scope": "only terminal rate1-01; rate10 pending; no clean performance pass",
+  "status": "single_rate_evidence_checked"
+}

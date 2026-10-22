@@ -1,0 +1,18 @@
+test_clock_map_source_pid_nonce_and_bounds_are_fail_closed (test_run_speed.SpeedRunnerPureTests) ... ok
+test_controller_declares_deadline_greater_than_rust_child_wait (test_run_speed.SpeedRunnerPureTests) ... ok
+test_existing_attempt_root_cannot_be_reused (test_run_speed.SpeedRunnerPureTests) ... ok
+test_fixed_full_source_contract_and_actual_external_socket_paths (test_run_speed.SpeedRunnerPureTests) ... ok
+test_fixed_source_or_binary_mismatch_fails_closed (test_run_speed.SpeedRunnerPureTests) ... ok
+test_process_activity_identifies_only_compilers_and_mycity_heavy_names (test_run_speed.SpeedRunnerPureTests) ... ok
+test_process_birth_or_exit_between_calls_does_not_join_stale_snapshots (test_run_speed.SpeedRunnerPureTests) ... ok
+test_ps_listing_rejects_malformed_and_duplicate_pid_start_rows (test_run_speed.SpeedRunnerPureTests) ... ok
+test_ps_rows_uses_one_projection_and_preserves_spaced_comm (test_run_speed.SpeedRunnerPureTests) ... ok
+test_reviewed_rate_run_ids_map_to_unique_attempts (test_run_speed.SpeedRunnerPureTests) ... ok
+test_run_path_does_not_precreate_observed_or_model (test_run_speed.SpeedRunnerPureTests) ... ok
+test_runtime_process_exclusion_is_limited_to_own_observer_tree (test_run_speed.SpeedRunnerPureTests) ... ok
+test_socket_length_counts_utf8_bytes_and_nul (test_run_speed.SpeedRunnerPureTests) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.018s
+
+OK
