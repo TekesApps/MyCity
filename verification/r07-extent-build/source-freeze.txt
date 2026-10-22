@@ -1,0 +1,16 @@
+branch=codex/m0-r07-extents
+head=5661d55f3be171aeff7fdafdbe24a64897eb0ff8
+working_diff_sha256=f0fb34326b01e425163ec91f5aa5130424cb0260803d2486896554be45f562cc
+mycity_source_sha256=ba405f99cf7638d9ecefc15a6a6203f125756f7dfdddc624cf91f62fd1863f68
+cargo_lock_sha256=7da5c54a8499a07cbc71dcecce0c0095d4af3b8b6e5052783f20d188037b6dd6
+source_files_hashed=221
+rustc=1.85.1 (4eb161250 2025-03-15)
+cargo=1.85.1 (d73d2caf9 2025-03-31)
+target=/Users/frankqin/dev/MyCity/target
+target_baseline_kib=2209460
+working_tree_status:
+ M crates/city-headless/src/layout_load.rs
+ M crates/city-headless/src/layout_load/r07.rs
+ M crates/city-headless/src/normal_pool.rs
+ M crates/city-headless/src/vm_trace.rs
+?? docs/r07-extent-experiment.md

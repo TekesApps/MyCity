@@ -302,6 +302,8 @@ impl Pool {
                     start,
                     len: p.len(),
                     capacity: p.capacity(),
+                    logical_start: None,
+                    logical_len: None,
                     nested_in_arena: nested,
                     grant_bytes: None,
                 })?;

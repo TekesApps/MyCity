@@ -569,6 +569,7 @@ impl Load {
             "padding_payload_bytes":by_domain,"padding_payload_total_bytes":by_domain.iter().sum::<usize>(),"pressure_page_bytes":MIB,"mutation_iteration":self.iterations,"pressure_pattern":if self.r07.is_some(){"splitmix64-init-v1; affine-u64-nonr07-dirty-v1"}else{"splitmix64-init-v1; affine-u64-dirty-v1"},
             "r07":self.r07.as_ref().map(r07::Backing::state),"r07_generator":self.r07.as_ref().map(|_|r07::Backing::pattern()),
             "r07_mapping_control_bytes":self.r07.as_ref().map_or(0,r07::Backing::control_bytes),
+            "r07_transition_peak_bytes":self.r07.as_ref().map_or(0,r07::Backing::transition_peak_bytes),
             "cow_reserve_bytes":WORK_PAGES*MIB,"cow_concurrent_pages":COW_PAGES,"decode_workspace":work,"metadata_and_io_charge_bytes":self.metadata_charge,"external_owned_charge_bytes":self.external_charge,"normal_joint_budget_bytes":self.normal_bytes,
             "solver_preview":"192MiB preview and 32MiB compute are pressure pages within solver share; no algorithms/GPU/UI",
             "layout_not_business":true,"full_M0":"not_accepted","memory_16gb_gate":"not_run"})
@@ -668,6 +669,16 @@ impl Load {
         let Some(backing) = &mut self.r07 else {
             return Ok(());
         };
+        let parent = self.root.parent().ok_or("r07_state_parent")?;
+        let ack_path = parent.join("r07-state.json");
+        // Revoke the previous owner's acknowledgement before any mapping change.
+        // If allocation fails partway through apply, native_watch cannot keep
+        // treating an older replacement amount as current credit.
+        match fs::remove_file(&ack_path) {
+            Ok(()) => {}
+            Err(error) if error.kind() == std::io::ErrorKind::NotFound => {}
+            Err(error) => return Err(err(error)),
+        }
         let decision = crate::r07_runtime::current(backing.state().reading_sequence)?;
         let state = backing.apply(decision.permitted_bytes, decision.sequence)?;
         let owner = crate::native_observer::capture(std::process::id(), None, Instant::now())
@@ -680,7 +691,6 @@ impl Load {
             permitted_bytes: decision.permitted_bytes,
             reason: crate::control_data::Text::new(decision.reason)?,
         };
-        let parent = self.root.parent().ok_or("r07_state_parent")?;
         let tmp = parent.join("r07-state.tmp");
         let mut file = File::create(&tmp).map_err(err)?;
         serde_json::to_writer(&mut file, &applied).map_err(err)?;

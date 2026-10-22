@@ -1,0 +1,20 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/r07-extents/crates/city-core)
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity-core-work/r07-extents/crates/city-headless)
+   Compiling mycity-role-allocator v0.1.0 (/Users/frankqin/dev/MyCity-core-work/r07-extents/crates/city-role-allocator)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity-core-work/r07-extents/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/r07-extents/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 30.64s
+     Running unittests src/lib.rs (/Users/frankqin/dev/MyCity/target/release/deps/mycity_headless-bd191120ee0d5aca)
+
+running 9 tests
+test layout_load::r07::tests::forged_lengths_and_overflow_budget_reject ... ok
+test layout_load::r07::tests::allocation_failure_after_shrink_drop_keeps_actual_state_and_propagates_error ... ok
+test layout_load::r07::tests::trace_generation_and_payload_counts_are_physical_extents_and_logical_bytes ... ok
+test layout_load::r07::tests::pins_defer_release_without_duplicate_prefix_or_false_credit ... ok
+test layout_load::r07::tests::allocation_failure_during_multiextent_refill_counts_every_committed_extent ... ok
+test layout_load::r07::tests::snapshot_v3_stream_and_cold_prefix_restore_keep_schema_one_accounting ... ok
+test layout_load::r07::tests::split_and_partial_refill_keep_stream_bytes_and_bound_transition_peak ... ok
+test layout_load::r07::tests::shrinking_inside_a_larger_final_extent_copies_only_the_retained_prefix ... ok
+test layout_load::r07::tests::generator_matches_legacy_bytes_at_each_logical_quantum ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 73 filtered out; finished in 0.02s

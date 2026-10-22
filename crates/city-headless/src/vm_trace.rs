@@ -49,6 +49,11 @@ pub(crate) struct Range {
     pub start: usize,
     pub len: usize,
     pub capacity: usize,
+    /// Logical byte interval represented by this physical mapping, when applicable.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub logical_start: Option<usize>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub logical_len: Option<usize>,
     pub nested_in_arena: bool,
     pub grant_bytes: Option<usize>,
 }
@@ -127,6 +132,8 @@ impl Writer {
             start: a.arena_start,
             len: a.arena_bytes,
             capacity: a.arena_bytes,
+            logical_start: None,
+            logical_len: None,
             nested_in_arena: false,
             grant_bytes: Some(a.grant_bytes),
         })
@@ -178,6 +185,8 @@ mod tests {
                 start: usize::MAX,
                 len: 2,
                 capacity: 2,
+                logical_start: None,
+                logical_len: None,
                 nested_in_arena: false,
                 grant_bytes: None
             })

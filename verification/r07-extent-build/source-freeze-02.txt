@@ -1,0 +1,10 @@
+branch=codex/m0-r07-extents
+head=5661d55f3be171aeff7fdafdbe24a64897eb0ff8
+working_diff_sha256=3576c4975d8222e6996e7c1f6932500236e3819470c8e44c4e8026c34051b74b
+mycity_source_sha256=9d8e5f2d8d04ff05ff68454a52e47df0b247edb2cac5beabe10ad3f283c7f7e1
+cargo_lock_sha256=7da5c54a8499a07cbc71dcecce0c0095d4af3b8b6e5052783f20d188037b6dd6
+source_files_hashed=221
+rustc=1.85.1
+cargo=1.85.1
+target=/Users/frankqin/dev/MyCity/target
+target_before_retry_kib=2209524
