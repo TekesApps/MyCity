@@ -449,3 +449,5 @@ v0.5.115：[主线有限集成及2MiB诊断](evidence/core-runtime-integration-1
 
 
 v0.5.116：[28日经营场景主线集成](evidence/core-market-scenarios-integration-116/STATUS.md)在2c18来源七场景+参数覆盖及example strict/fmt通过；当前Engine4100728B仅拥有容量，非M0物理证据。替身/无税/基础家庭现金耗损/退出未落账保留，M0原标准、normal失败及16GB/8h not_run不变。
+
+v0.5.117：[原负载完整联合smoke](evidence/m0-t13a-joint-smoke-control-02/STATUS.md)固定32c/59aa来源实测611.85秒，720h业务/723目标/2880查询/96保存、725池借还及最新布局第2代冷恢复完成。44帧不完整及115帧外部编译保留，日志筛查拒绝formal准入；normal/common仍not_accepted，四速/正式稳态/8h/16GB未通过。新增两代完整恢复输入与raw仍有依赖，本轮删除0B。
