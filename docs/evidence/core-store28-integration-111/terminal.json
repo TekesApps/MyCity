@@ -1,0 +1,75 @@
+{
+  "source_sha256": "2eb155719ad33e152a2354e43b01cb63bf4a99eb2286db1ba1e4d92ef7cfca9f",
+  "checks": [
+    {
+      "command": [
+        "cargo",
+        "+1.85.1",
+        "test",
+        "--release",
+        "--locked",
+        "--offline",
+        "-p",
+        "mycity-core",
+        "--lib"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 32.919053125,
+      "source_sha256": "2eb155719ad33e152a2354e43b01cb63bf4a99eb2286db1ba1e4d92ef7cfca9f"
+    },
+    {
+      "command": [
+        "cargo",
+        "+1.85.1",
+        "test",
+        "--release",
+        "--locked",
+        "--offline",
+        "-p",
+        "mycity-storage",
+        "--test",
+        "town_market"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 42.487261000000004,
+      "source_sha256": "2eb155719ad33e152a2354e43b01cb63bf4a99eb2286db1ba1e4d92ef7cfca9f"
+    },
+    {
+      "command": [
+        "cargo",
+        "+1.85.1",
+        "clippy",
+        "--release",
+        "--locked",
+        "--offline",
+        "-p",
+        "mycity-core",
+        "-p",
+        "mycity-storage",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 6.7845998330000015,
+      "source_sha256": "2eb155719ad33e152a2354e43b01cb63bf4a99eb2286db1ba1e4d92ef7cfca9f"
+    },
+    {
+      "command": [
+        "cargo",
+        "+1.85.1",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "exit": 0,
+      "elapsed_seconds": 0.4963076669999964,
+      "source_sha256": "2eb155719ad33e152a2354e43b01cb63bf4a99eb2286db1ba1e4d92ef7cfca9f"
+    }
+  ],
+  "functional_passed": true,
+  "formal_performance": "not_run",
+  "full_M0": "not_accepted"
+}

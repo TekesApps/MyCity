@@ -1,0 +1,14 @@
+[
+  {
+    "fixed": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-store28/2eb155719ad33e152a2354e43b01cb63bf4a99eb2286db1ba1e4d92ef7cfca9f/mycity_core-363f7122bd90a840",
+    "physical": "/Volumes/HP P900/dev/MyCity/acceptance-binaries/2eb155719ad33e152a2354e43b01cb63bf4a99eb2286db1ba1e4d92ef7cfca9f/mycity_core-363f7122bd90a840",
+    "sha256": "41b92fdb85979ce3a27956f4831a348d343289c79cb81f64bc8ee1f583e627ef",
+    "same_inode_with_target": true
+  },
+  {
+    "fixed": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-store28/2eb155719ad33e152a2354e43b01cb63bf4a99eb2286db1ba1e4d92ef7cfca9f/town_market-fc275aa083e796f1",
+    "physical": "/Volumes/HP P900/dev/MyCity/acceptance-binaries/2eb155719ad33e152a2354e43b01cb63bf4a99eb2286db1ba1e4d92ef7cfca9f/town_market-fc275aa083e796f1",
+    "sha256": "e0277e065c99a09e40114ba3dfb416781bacd85d8bdc6b1052825a394f2cdaed",
+    "same_inode_with_target": true
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "source_sha256": "2eb155719ad33e152a2354e43b01cb63bf4a99eb2286db1ba1e4d92ef7cfca9f",
+  "source_files": 237,
+  "source_zip_sha256": "0e60a40e9199cbc9d23807951c91b28aa3efb00ab34495a804f410f2c476ca44",
+  "work_real": "/Volumes/HP P900/dev/MyCity/work",
+  "target_real": "/Volumes/HP P900/dev/MyCity/target",
+  "temp_real": "/Volumes/HP P900/dev/MyCity/work/core-store28-integration-111/tmp",
+  "storage": "external HP P900 USB/APFS SSD",
+  "formal_performance": false,
+  "real16GB": "not_run",
+  "eight_hour": "not_run"
+}

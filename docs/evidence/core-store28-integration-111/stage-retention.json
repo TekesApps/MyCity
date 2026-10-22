@@ -1,0 +1,10 @@
+{
+  "removed_empty_test_staging": "/Users/frankqin/dev/MyCity/work/core-store28-integration-111/tmp",
+  "removed_pressure_bytes": 0,
+  "new_target": false,
+  "shared_target": "/Volumes/HP P900/dev/MyCity/target",
+  "work": "/Volumes/HP P900/dev/MyCity/work",
+  "fixed_exes": "external same-volume hardlinks; no payload duplication",
+  "restore_originals_deleted": 0,
+  "existing_compile_graphs": "reuse; no proven obsolete graphs removed"
+}

@@ -39,3 +39,10 @@ docs/evidence/m0-t13a-extents-joint/*.stdout whitespace=-blank-at-eof,-blank-at-
 
 # Preserve migration validation stdout verbatim.
 docs/evidence/work-migration-20261022/*.stdout whitespace=-blank-at-eof,-blank-at-eol
+
+# Keep failed and passing production-test receipts byte-identical.
+docs/evidence/core-production-validation/attempt-2[0-6]/*.stdout whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/core-production-validation/attempt-2[0-6]/*.stderr whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/core-production-validation/attempt-2[0-6]/source.patch whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/core-production-validation/wip-store28-pre-ssd-20261022/source/wip.patch whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/core-store28-integration-111/*.stdout whitespace=-blank-at-eof,-blank-at-eol

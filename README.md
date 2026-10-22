@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.110`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.111`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.111在外置work/target上完成[28日持久化与经济反例集成验证](docs/evidence/core-store28-integration-111/STATUS.md)：主分支core107项、Store3项、严格检查与fmt通过；每7日冷开、收据连续及工资/产出余数对齐。高购买力恢复fixture与原经济基准分开，真实交通/公用联调及长期平衡未证明；失败来源保留。迁移完成不代表M0规模性能通过。
 
 v0.5.110完成[work完整外置迁移](docs/evidence/work-migration-20261022/STATUS.md)：全部普通文件逐SHA校验，190恢复/故障原件保留，三组真实新进程冷恢复通过后才删除内置盘副本；原路径符号链接保持，验收exe及旧新inode衔接另核验。后续性能明确使用外置HP P900 USB/APFS SSD，预检按work所在卷检查空间；迁移不等于M0性能通过。
 

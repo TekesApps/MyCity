@@ -1,0 +1,16 @@
+{
+  "command": [
+    "cargo",
+    "+1.85.1",
+    "test",
+    "--release",
+    "--locked",
+    "--offline",
+    "-p",
+    "mycity-core",
+    "--lib"
+  ],
+  "exit": 0,
+  "elapsed_seconds": 32.919053125,
+  "source_sha256": "2eb155719ad33e152a2354e43b01cb63bf4a99eb2286db1ba1e4d92ef7cfca9f"
+}
