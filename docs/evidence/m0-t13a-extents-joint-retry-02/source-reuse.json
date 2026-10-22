@@ -1,0 +1,18 @@
+{
+  "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+  "source_archive_path": "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-extents-joint/frozen-source.zip",
+  "retry_archive_path": "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-extents-joint-retry-02/frozen-source.zip",
+  "source_archive_sha256": "84c450c2c866578b02205030c7587df1dbb719660422fe64865ae62fe2ce908d",
+  "source_archive_hardlink_same_device_inode": true,
+  "binary_path": "/Users/frankqin/dev/MyCity/work/candidate-binaries/r07-extents/32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2/mycity-headless",
+  "binary_sha256": "59aa365ed46b5d373218fcbcf1d34f930d674d15607ed510190361891439b4e0",
+  "binary_embeds_source_fingerprint": true,
+  "reuse_original_binary_without_rebuild": true,
+  "original_attempt_dir": "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-extents-joint",
+  "original_failure_record": "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-extents-joint/controller-failure.json",
+  "retry_workspace": "work/m0-t13a-extents-joint-l1-retry-02",
+  "cargo_or_pressure_started_during_retry_preparation": false,
+  "original_pressure_reserve_status": "retired by primary owner after advisor review and two historical cold restores",
+  "original_generations_status": "historical cold-restore receipts exist; do not claim the retired original run remains a complete directly recoverable snapshot set",
+  "retry_did_not_modify_original_remaining_components": true
+}

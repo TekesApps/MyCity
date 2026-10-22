@@ -1,0 +1,28 @@
+{
+  "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+  "binary_sha256": "59aa365ed46b5d373218fcbcf1d34f930d674d15607ed510190361891439b4e0",
+  "observer_exit": 2,
+  "actual_seconds": 0.03471837499999997,
+  "captures": [],
+  "facts": [],
+  "report": null,
+  "controller_error": {
+    "stage": "initial-layout-observation",
+    "type": "RuntimeError",
+    "error": "existing wrapper exited; inspect partial evidence, never restart",
+    "traceback": "Traceback (most recent call last):\n  File \"/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-extents-joint-retry-01/run.py\", line 303, in <module>\n    waitfor(\n  File \"/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-extents-joint-retry-01/run.py\", line 168, in waitfor\n    raise RuntimeError(\"existing wrapper exited; inspect partial evidence, never restart\")\nRuntimeError: existing wrapper exited; inspect partial evidence, never restart\n"
+  },
+  "terminal_stage": "initial-layout-observation",
+  "snapshot1_admission_event": null,
+  "snapshot1_first_valid_inflight_context": null,
+  "snapshot1_pin_identity_claim": {
+    "claim": "not_made",
+    "reason": "snapshot 1 admission not observed yet"
+  },
+  "formal_performance": "not_accepted",
+  "physical_credit_from_VM": 0,
+  "real16gb": "not_run",
+  "eight_hour": "not_run",
+  "child_was_restarted": false,
+  "child_terminal_wait_completed": true
+}

@@ -1,5 +1,7 @@
 # 验证产物回收规则
 
+**v0.5.112诊断终态回收**：[本轮结果](evidence/m0-t13a-extents-joint-retry-02/STATUS.md)精确退役54份新诊断pressure/reserve及逐字节既有gzip匹配组件6,748,553,216B，190迁移后原件前后全SHA保留。两代已不可直接完整恢复；成功冷开属于退役前实测。真实执行统计按resolved外置work/target与work卷，旧prepare对symlink的0读数已另纠正，不能用于回收成果。
+
 **work现行位置与保护身份**：[完整迁移记录](evidence/work-migration-20261022/STATUS.md)。work原路径链接外置HP P900 SSD，原件均在，190份新卷保护身份见该记录；历史same-inode收据不等于当前身份。后续记录实际存储路径/卷/空间，新IO基线注明外置USB/APFS SSD；源码卷df不能代替work所在卷空间。
 
 **共享target现行位置**：原路径`/Users/frankqin/dev/MyCity/target`符号链接至`/Volumes/HP P900/dev/MyCity/target`；[迁移核验与退役记录](evidence/target-migration-20261022/STATUS.md)。继续复用原路径；外置卷离线先恢复挂载，不自动创建替代target。

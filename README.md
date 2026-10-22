@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.111`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.112`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.112完成[原负载控制器重试](docs/evidence/m0-t13a-extents-joint-retry-02/STATUS.md)：20项辅助测试、4次实际捕获与两代完整冷恢复通过，但90完整帧peak3,337,031,256B仍超原normal8,431,602B，非normal压力/外部Cargo下不签性能。保留retry01实际启动失败；本轮54份已无依赖载荷/归档重复组件终态回收约6.285GiB，190原件保留，work约25.44GiB。2MiB候选与建设拆除/经营退出继续推进，16GB/8h未测。
 
 v0.5.111在外置work/target上完成[28日持久化与经济反例集成验证](docs/evidence/core-store28-integration-111/STATUS.md)：主分支core107项、Store3项、严格检查与fmt通过；每7日冷开、收据连续及工资/产出余数对齐。高购买力恢复fixture与原经济基准分开，真实交通/公用联调及长期平衡未证明；失败来源保留。迁移完成不代表M0规模性能通过。
 

@@ -1,0 +1,10 @@
+{
+  "process_48002_terminal": true,
+  "actual_pressure_files": 0,
+  "actual_snapshots": 0,
+  "deleted_files": [],
+  "allocated_bytes_reclaimed": 0,
+  "kept": "intent, empty output dir, source and actual failure receipts",
+  "no_new_target": true,
+  "protected_originals_untouched": true
+}

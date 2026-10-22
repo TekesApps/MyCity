@@ -1,0 +1,24 @@
+{
+  "status": "passed_static_frozen_input_preflight",
+  "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+  "source_entries": 231,
+  "source_zip_sha256": "84c450c2c866578b02205030c7587df1dbb719660422fe64865ae62fe2ce908d",
+  "lock_sha256": "7da5c54a8499a07cbc71dcecce0c0095d4af3b8b6e5052783f20d188037b6dd6",
+  "fixture_sha256": {
+    "fixtures/m0-t13a-acceptance.json": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+    "fixtures/m0-t13a-full-opening-candidate.json": "04c113c62b0b682f94f9abfbde7618b87bd972f3931504366be9e07c130b4726"
+  },
+  "binary_path": "/Users/frankqin/dev/MyCity/work/candidate-binaries/r07-extents/32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2/mycity-headless",
+  "binary_sha256": "59aa365ed46b5d373218fcbcf1d34f930d674d15607ed510190361891439b4e0",
+  "binary_embeds_source_fingerprint": true,
+  "current_checkout_comparison": "fixtures_only; current non-fixture Rust source intentionally not compared to retired frozen source",
+  "cargo_invoked": false,
+  "pressure_started": false,
+  "harness_sha256": {
+    "run.py": "7ab0196168438e9409f6d7537e892c59f452c6888f18e1e493b776e01f0033b1",
+    "controller.py": "6cd466807d049abaed04b722cd2477f658dc6b42ca4a36da07d2bcecb519896c",
+    "topology.py": "c3292452457849fda95b2174825b7c05d522b4a0177d2622efe6b85796fe48a0",
+    "preflight.py": "dae14d2e7f88a81f548bf04b6c01f6289412b8a0f1c892549abc75b5815113bc",
+    "analyze.py": "1bb85447ebc8c3bffede83ad07e9a59fd25377dae2813faa994202293ca5730e"
+  }
+}

@@ -22,6 +22,7 @@ os.chdir(R)
 sys.path.insert(0, str(D))
 from controller import (
     assert_stable_context,
+    initialize_workspace,
     bind_pinned_baseline,
     topology_for_ack,
     wait_for_context,
@@ -42,8 +43,6 @@ assert info["source_sha256"] == "32c6e61b9565545177c330f34455611b329fbe1cb38591e
 assert not W.exists(), f"retry workspace already exists: {W}"
 stat = os.statvfs(W.parent)
 assert stat.f_bavail * stat.f_frsize > 10 * 1024**3
-W.mkdir()
-(W / "intent.json").write_text((D / "retention-intent.json").read_text())
 
 
 def save(name, value):
@@ -290,13 +289,10 @@ def capture(label, role, top, child):
 
 try:
     stage = "workspace-init"
-    assert os.statvfs(R).f_bavail * os.statvfs(R).f_frsize > 10 * 1024**3
-    W.mkdir()
-    root.mkdir()
+    root = initialize_workspace(W, (D / "retention-intent.json").read_bytes())
     layout = root / "model/layout"
     ackpath = layout / "r07-state.json"
     pause = root / "r07-provider-pause"
-    (W / "intent.json").write_text((D / "retention-intent.json").read_text())
     cmd = [exe, "native-observe", str(root), "--", exe, "r07-layout-driver", str(root / "model"), "--vm-trace"]
     stage = "launch-existing-wrapper"
     with (D / "observer.stdout").open("x") as stdout, (D / "observer.stderr").open("x") as stderr:
@@ -340,10 +336,10 @@ try:
     stage = "snapshot-2-admission"
     (layout / "vm-start-second").touch(exist_ok=False)
     waitfor(lambda: any(item.get("snapshot_admitted", {}).get("generation") == 2 for item in events()), p)
-    bound = read(ackpath)
-    assert bound and bound["state"]["replaced_bytes"] > 0
     bound_context = wait_for_context(context, "inflight", p)
-    bound_topology = topology(Path(bound_context["topology"]["path"]), bound["state"]["mapped_bytes"])
+    bound = bound_context["ack"]
+    assert bound["state"]["replaced_bytes"] > 0
+    bound_topology = bound_context["topology"]
     pause.touch(exist_ok=False)
 
     stage = "repayment"

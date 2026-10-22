@@ -94,3 +94,17 @@ def wait_for_existing_child(child, on_wait, interval=30.0):
                 # A receipt-write problem must not abandon the already-running
                 # child after the controller has launched it.
                 continue
+
+
+def initialize_workspace(work, intent, minimum_free_bytes=10 * 1024**3):
+    """Create once; reject old state and check the actual work volume."""
+    import os
+    volume = os.statvfs(work.parent)
+    available = volume.f_bavail * volume.f_frsize
+    if available <= minimum_free_bytes:
+        raise RuntimeError("insufficient work-volume space")
+    work.mkdir()
+    root = work / "observed"
+    root.mkdir()
+    (work / "intent.json").write_bytes(intent)
+    return root

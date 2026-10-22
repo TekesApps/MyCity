@@ -1,0 +1,24 @@
+{
+  "generations": [
+    {
+      "generation": 1,
+      "exit": 0,
+      "seconds": 6.496563958000003,
+      "snapshot": "/Users/frankqin/dev/MyCity/work/m0-t13a-extents-joint-l1-retry-02/observed/model/layout/snapshots/snapshot-000001",
+      "report": "/Users/frankqin/dev/MyCity/work/m0-t13a-extents-joint-l1-retry-02/independent-cold-gen1/report.json",
+      "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+      "whole_historical_credit_restored": false
+    },
+    {
+      "generation": 2,
+      "exit": 0,
+      "seconds": 6.596552250000002,
+      "snapshot": "/Users/frankqin/dev/MyCity/work/m0-t13a-extents-joint-l1-retry-02/observed/model/layout/snapshots/snapshot-000002",
+      "report": "/Users/frankqin/dev/MyCity/work/m0-t13a-extents-joint-l1-retry-02/independent-cold-gen2/report.json",
+      "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+      "whole_historical_credit_restored": false
+    }
+  ],
+  "all_generations_cold_restored": true,
+  "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2"
+}

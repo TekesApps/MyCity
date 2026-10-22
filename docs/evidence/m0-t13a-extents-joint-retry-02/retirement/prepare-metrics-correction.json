@@ -1,0 +1,10 @@
+{
+  "reason": "legacy prepare used du on symlink and free space on source repository volume; these were not actual work metrics, no deletion has occurred",
+  "plan_file_allocation_bytes": 6748553216,
+  "work_actual": "/Volumes/HP P900/dev/MyCity/work",
+  "target_actual": "/Volumes/HP P900/dev/MyCity/target",
+  "actual_work_du_kib": 33270408,
+  "external_volume_available_bytes": 1984111321088,
+  "repository_volume_available_bytes": 104467357696,
+  "execute_metrics": "resolved work/target and work volume; old raw prepare receipt preserved"
+}
