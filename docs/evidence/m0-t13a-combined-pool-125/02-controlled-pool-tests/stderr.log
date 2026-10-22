@@ -1,0 +1,13 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity-core-work/pool-control-current/crates/city-headless)
+    Finished `release` profile [optimized] target(s) in 10.48s
+     Running unittests src/lib.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_headless-bd191120ee0d5aca)
+
+thread 'normal_pool::tests::controlled_owner_keeps_original_backing_and_requires_balanced_shutdown' panicked at crates/city-headless/src/normal_pool.rs:1216:10:
+called `Result::unwrap()` on an `Err` value: "path must be shorter than SUN_LEN"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'normal_pool::tests::controlled_owner_failure_cannot_publish_a_successful_pool_report' panicked at crates/city-headless/src/normal_pool.rs:1235:9:
+assertion `left == right` failed
+  left: Err("path must be shorter than SUN_LEN")
+ right: Err("controlled_test_failure")
+error: test failed, to rerun pass `-p mycity-headless --lib`

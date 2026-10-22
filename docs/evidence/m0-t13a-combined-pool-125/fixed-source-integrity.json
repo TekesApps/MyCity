@@ -1,0 +1,9 @@
+{
+  "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+  "source_file_count": 259,
+  "build_rs_length_prefixed_source_hash_matches": true,
+  "source_zip_sha256": "8e85f7adc3dd0d0811ec8ee6fa89720512f8ba6f587b1b10de6146cfc3d81561",
+  "source_zip_hash_matches": true,
+  "binary_sha256": "557b2e4d0bc89f429a07a270c9f388b508d595c8b4a1f233b795becdf75797e7",
+  "binary_hash_matches": true
+}

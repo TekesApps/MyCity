@@ -1,0 +1,307 @@
+{
+  "binary_sha256": "557b2e4d0bc89f429a07a270c9f388b508d595c8b4a1f233b795becdf75797e7",
+  "case_root_created_after_observer_failure": false,
+  "controller_auxiliary": {
+    "controller_only_peak_phys_footprint_bytes": 16941368,
+    "missing_identity_samples": 0,
+    "sample_count": 109,
+    "sample_log": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/half-wire02/controller-resource-samples.jsonl",
+    "unavailable_controller_samples_not_zero": true
+  },
+  "controller_birth": 26456163059049,
+  "controller_pid": 57755,
+  "exercise_report": {
+    "actual_seconds": 26.841328834,
+    "combined_pool_process": true,
+    "eight_hour": "not_run",
+    "formal_acceptance": false,
+    "latest_snapshot": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/half-wire02/model/layout/snapshots/snapshot-000002",
+    "layout_and_live_provider_cold_exit_zero": true,
+    "memory_credit_bytes": 0,
+    "real_16gb": "not_run",
+    "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c"
+  },
+  "fault_injected": true,
+  "fault_target_proof_present": false,
+  "half_wire": {
+    "bytes_sent_hex": "7b22736f75726365223a22706f6f6c2d636f6e74726f6c2d68616c662d7769726522",
+    "close_after_seconds": 2.25,
+    "closed_monotonic_ns": 15792911333,
+    "connected_monotonic_ns": 13506922166,
+    "ready": {
+      "boot": 1792696154798126000,
+      "capacity_bytes": 67108864,
+      "diagnostic_reserved_bytes": 262144,
+      "fault_injection": null,
+      "pid": 57758,
+      "schema": "mycity-normal-pool-v1",
+      "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c"
+    },
+    "root_identity_check": {
+      "expected_birth": 26456165588406,
+      "expected_parent": 57756,
+      "issue": null,
+      "ok": true,
+      "parent_ok": true,
+      "pid": 57758,
+      "proof": {
+        "capture_begin_monotonic_ns": 13506843000,
+        "capture_end_monotonic_ns": 13506853416
+      },
+      "relation": [
+        57756,
+        null,
+        "2",
+        "mycity-headless"
+      ],
+      "usage": {
+        "disk_bytes_read": 49152,
+        "disk_bytes_written": 32768,
+        "phys_footprint_bytes": 68501888,
+        "pid": 57758,
+        "rss_bytes": 69959680,
+        "start_abstime": 26456165588406,
+        "system_time_ns": 14942958,
+        "user_time_ns": 217866583
+      }
+    },
+    "socket": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/half-wire02/model/normal-pool/pool.sock"
+  },
+  "identity_audit": {
+    "complete": true,
+    "identities": [
+      {
+        "birth": 26456165349737,
+        "confirmed_absent": true,
+        "first_seen_frame_t": 27.281097083,
+        "parent_pid": 57755,
+        "pid": 57756,
+        "role": "observer",
+        "status": "confirmed_absent",
+        "terminal_usage": null
+      },
+      {
+        "birth": 26456165588406,
+        "confirmed_absent": true,
+        "parent_pid": 57756,
+        "pid": 57758,
+        "role": "r07-layout-driver",
+        "status": "confirmed_absent",
+        "terminal_usage": null
+      },
+      {
+        "birth": 26456166586504,
+        "confirmed_absent": true,
+        "parent_pid": 57758,
+        "pid": 57761,
+        "role": "layout-r07-session",
+        "status": "confirmed_absent",
+        "terminal_usage": null
+      },
+      {
+        "birth": 26456715995405,
+        "confirmed_absent": true,
+        "parent_pid": 57758,
+        "pid": 57882,
+        "role": "layout-load-only",
+        "status": "confirmed_absent",
+        "terminal_usage": null
+      }
+    ],
+    "identity_count": 4
+  },
+  "marker_protocol": [
+    {
+      "controller_monotonic_ns": 2365889750,
+      "observer_t": 2.033284708,
+      "r07_epoch": 1,
+      "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+      "step": "vm-start-first"
+    },
+    {
+      "controller_monotonic_ns": 12491724458,
+      "observer_t": 12.279049375,
+      "r07_epoch": 1,
+      "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+      "step": "vm-start-second"
+    },
+    {
+      "controller_monotonic_ns": 13505049125,
+      "observer_t": 13.283503041,
+      "r07_epoch": 1,
+      "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+      "step": "r07-provider-pause"
+    },
+    {
+      "consecutive_frames": 3,
+      "controller_monotonic_ns": 16052579541,
+      "full_restored_window_sha256": "f33b18fd40c8c061d035974b812f6b9e8a90244019d2311929539f0b6efdd5e0",
+      "observer_t": 15.77921025,
+      "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+      "step": "pause-observed"
+    },
+    {
+      "controller_monotonic_ns": 16052747458,
+      "observer_t": 15.77921025,
+      "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+      "step": "pause-released"
+    }
+  ],
+  "mode": "half-wire",
+  "observer_birth": 26456165349737,
+  "observer_exit_code": 0,
+  "observer_measurement": {
+    "already_in_raw_group": true,
+    "missing_identity_samples": 0,
+    "must_not_be_added_to_raw_group_again": true,
+    "peak_phys_footprint_bytes": 3457336,
+    "sample_count": 109
+  },
+  "observer_pid": 57756,
+  "observer_report": {
+    "actual_wall_seconds": 27.537352416,
+    "arena": {
+      "activation": {
+        "adapter_header_bytes": 160,
+        "arena_bytes": 2096026,
+        "arena_start": 41527803904,
+        "bootstrap_charged_bytes": 966,
+        "grant_bytes": 2097152,
+        "initialized_bytes": 2096026,
+        "pid": 57756
+      },
+      "allocation_failures": 0,
+      "arena_free_bytes": 1561592,
+      "arena_usable_bytes": 2096024,
+      "arena_used_bytes": 534432,
+      "bootstrap_live_bytes": 966,
+      "bootstrap_peak_bytes": 1346,
+      "bootstrap_quarantined_bytes": 0,
+      "current_requested_bytes": 535289,
+      "lifetime_peak_requested_bytes": 551657
+    },
+    "binary_sha256": "557b2e4d0bc89f429a07a270c9f388b508d595c8b4a1f233b795becdf75797e7",
+    "binary_unchanged": true,
+    "cleanup_error": null,
+    "combined_diagnostic_hot_bound_bytes": 5505024,
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/executables/557b2e4d0bc89f429a07a270c9f388b508d595c8b4a1f233b795becdf75797e7/mycity-headless",
+      "r07-layout-driver",
+      "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/half-wire02/model",
+      "--combined-pool",
+      "--vm-trace"
+    ],
+    "cpu_units": "raw proc_pid_rusage counters; no unverified ns conversion",
+    "discovery_pid_capacity": "8192 post-return admission only, not a preallocation bound; fixed 2MiB arena OOM fails observation",
+    "eight_hour_gate": "not_run",
+    "final_live_identity_count": 1,
+    "full_M0": "not_accepted",
+    "host": {
+      "architecture": "aarch64",
+      "cpu": "Apple M4",
+      "hardware_model": "Mac16,1",
+      "logical_cpus": 10,
+      "os": "25G83",
+      "page_size_bytes": 16384,
+      "physical_memory_bytes": 34359738368
+    },
+    "identities_recorded": 4,
+    "identities_retired": 3,
+    "identity_completeness": "enumerated descendants plus authenticated headless lifecycle journal and seen orphans; unpolled registrations flagged; unregistered external short helpers not proven",
+    "maximum_capture_window_seconds": 0.037375875,
+    "maximum_live_tracked_identities": 4,
+    "maximum_observed_r07_replaced_bytes": 3407872,
+    "maximum_observed_swap_net_growth_bytes": 0,
+    "maximum_sample_gap_seconds": 0.268698084,
+    "maximum_sampled_non_normal_pressure_seconds": 0.0,
+    "memory_16gb_gate": "not_run",
+    "memory_credit_bytes": 0,
+    "missing_footprint_process_samples": 2,
+    "missing_rss_process_samples": 2,
+    "model_exit_code": 0,
+    "observer_hot_bound_bytes": 2097152,
+    "other_diagnostic_owned_bytes": 3407872,
+    "peak_footprint_raw_frame_index": 101,
+    "peak_rss_raw_frame_index": 30,
+    "peak_simultaneous_footprint_bytes": 3336326432,
+    "peak_simultaneous_rss_bytes": 3338813440,
+    "peak_world_logical_bytes": 6761689216,
+    "pressure_semantics": "dispatch flags 1 normal/2 warning/4 critical; pressure/swap each frame; periodic named VM counters every60s",
+    "r07_credit_semantics": "unique independently mapped same-use padding actually dropped; cold opens rebuild padding; not owned capacity and never subtract from old raw peaks",
+    "reason": null,
+    "registration_records": 6,
+    "sample_log_bytes": 165055,
+    "samples": 111,
+    "schema": "mycity-bounded-native-group-observer-v1",
+    "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+    "status": "passed_measurement_wrapper",
+    "swap_initial_bytes": 1998585856,
+    "unpolled_registered_processes": 0
+  },
+  "outcome_checks": {
+    "checks": {
+      "all_payload_files_hashed_and_loaded": true,
+      "cold_passed": true,
+      "cold_report_schema": true,
+      "exercise_success_and_source": true,
+      "layout_report_schema": true,
+      "model_exit_zero": true,
+      "observer_passed_wrapper": true,
+      "pool_timeout_rejected": true,
+      "restored_generation_two": true,
+      "two_generations": true
+    },
+    "layout_generations": [
+      1,
+      2
+    ],
+    "observer_exit": 0,
+    "observer_status": "passed_measurement_wrapper",
+    "passed": true,
+    "rejection_evidence": [
+      {
+        "broker_generation": null,
+        "broker_sim_pid": null,
+        "id": null,
+        "kind": "rejected",
+        "observed_ns": 15400304875,
+        "owner_actual_capacity_bytes": 67108864,
+        "parent": null,
+        "parent_instance": null,
+        "pid": null,
+        "rejection_reason": "normal_pool_control_timeout",
+        "summary": {
+          "available_touched_bytes": 67108864,
+          "capacity_bytes": 67108864,
+          "fill_acknowledgements": 0,
+          "granted_capacity_bytes": 0,
+          "grants": 0,
+          "maximum_prepare_to_fill_or_reap_ns": 0,
+          "rejected_requests": 48,
+          "returns": 0,
+          "scans": 11,
+          "workspace_capacity_bytes": 0,
+          "workspace_fills": 0,
+          "workspace_grants": 0,
+          "workspace_returns": 0
+        },
+        "typed_capacity": 0,
+        "typed_instance": null,
+        "worker_identity": null
+      }
+    ]
+  },
+  "passed_fault_exercise": true,
+  "performance_acceptance": "not_claimed",
+  "protocol_complete": true,
+  "reason": null,
+  "registration_nonce": "065f79f95a3ef6942aa5d50ccc1bb437",
+  "registration_record_count": 6,
+  "retention": "all files retained; no snapshot cleanup or restart",
+  "schema": "mycity-controlled-fault-case-receipt-v1",
+  "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+  "source_sha256_matches_fixed_binary": true,
+  "target_signal": null,
+  "terminal_monotonic_ns": 27697832083,
+  "timed_out": false
+}

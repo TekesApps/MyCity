@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+  "nonce": "674ab863487bfeebbd79fb4529b70a11",
+  "sequence": 109,
+  "monotonic_begin_ns": 1269933375784000,
+  "monotonic_end_ns": 1269933377006000,
+  "components": [
+    {
+      "role": "observer",
+      "identity": {
+        "pid": 67865,
+        "start_abstime": 26488664115621,
+        "parent_pid": 67864
+      },
+      "footprint_bytes": 3424568
+    },
+    null,
+    null
+  ]
+}

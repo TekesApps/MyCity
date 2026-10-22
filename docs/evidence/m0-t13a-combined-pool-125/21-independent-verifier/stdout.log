@@ -1,0 +1,1522 @@
+{
+  "blockers": [],
+  "checks": [
+    {
+      "blocking": true,
+      "detail": {
+        "binary_sha256": "557b2e4d0bc89f429a07a270c9f388b508d595c8b4a1f233b795becdf75797e7",
+        "full_r07_mapped_bytes": 277610496,
+        "normal_pool_bytes": 67108864,
+        "original_normal_threshold_bytes": 3328599654,
+        "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+        "source_zip_sha256": "8e85f7adc3dd0d0811ec8ee6fa89720512f8ba6f587b1b10de6146cfc3d81561"
+      },
+      "name": "binary-final-fixed-identity",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": {
+        "context_source_prefix": "4a818 (legacy R07-attribution runs excluded)",
+        "legacy_binary_sha256": "6279b76ab63cad479b022664c90d68c2a53e373143c4dc72ac7549848e5515ea",
+        "legacy_source_sha256_in_record": null
+      },
+      "name": "legacy-binary-json-excluded-from-comparison",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": {
+        "binary": "557b2e4d0bc89f429a07a270c9f388b508d595c8b4a1f233b795becdf75797e7",
+        "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c"
+      },
+      "name": "separate-control:fixed-source-and-binary",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": {
+        "all_restored_predicates": true,
+        "condition_vectors": [
+          {
+            "group_capture_complete": true,
+            "logical_bytes": 277662928,
+            "mapped_bytes": 277610496,
+            "permitted_bytes": 0,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_bytes": 0,
+            "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+            "state_schema": 1
+          },
+          {
+            "group_capture_complete": true,
+            "logical_bytes": 277662928,
+            "mapped_bytes": 277610496,
+            "permitted_bytes": 0,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_bytes": 0,
+            "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+            "state_schema": 1
+          },
+          {
+            "group_capture_complete": true,
+            "logical_bytes": 277662928,
+            "mapped_bytes": 277610496,
+            "permitted_bytes": 0,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_bytes": 0,
+            "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+            "state_schema": 1
+          }
+        ],
+        "consecutive_within_1s": true,
+        "frame_checks": [
+          {
+            "exact_root_layout_owner_pid_birth": true,
+            "group_capture_complete": true,
+            "mapped_full": true,
+            "member_footprints_complete": true,
+            "member_sum_equals_group": true,
+            "permitted_zero": true,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_zero": true,
+            "source_matches": true
+          },
+          {
+            "exact_root_layout_owner_pid_birth": true,
+            "group_capture_complete": true,
+            "mapped_full": true,
+            "member_footprints_complete": true,
+            "member_sum_equals_group": true,
+            "permitted_zero": true,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_zero": true,
+            "source_matches": true
+          },
+          {
+            "exact_root_layout_owner_pid_birth": true,
+            "group_capture_complete": true,
+            "mapped_full": true,
+            "member_footprints_complete": true,
+            "member_sum_equals_group": true,
+            "permitted_zero": true,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_zero": true,
+            "source_matches": true
+          }
+        ],
+        "frame_count": 3,
+        "frame_group_bytes": [
+          3337555520,
+          3337555520,
+          3337555520
+        ],
+        "member_sum_bytes": [
+          3337555520,
+          3337555520,
+          3337555520
+        ],
+        "roles": {
+          "layout-load-only": {
+            "birth": 26489207947101,
+            "parent_pid": 67866,
+            "pid": 68024
+          },
+          "layout-r07-session": {
+            "birth": 26488665691903,
+            "parent_pid": 67866,
+            "pid": 67872
+          },
+          "normal-pool-host": {
+            "birth": 26488664806085,
+            "parent_pid": 67866,
+            "pid": 67869
+          },
+          "r07-layout-driver": {
+            "birth": 26488664340445,
+            "parent_pid": 67865,
+            "pid": 67866
+          }
+        },
+        "schema": "mycity-r07-full-restored-window-v1",
+        "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+        "times": [
+          14.285327166,
+          14.533497791,
+          14.784381416
+        ],
+        "window_peak_bytes": 3337555520
+      },
+      "name": "separate-control:full-restored-three-frame-window",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": {
+        "cold_report": {
+          "all_payload_files_hashed_and_loaded": true,
+          "byte_length": 3373934738,
+          "cold_reopen_and_scan": "passed",
+          "payload_hashes_independently_rechecked": false,
+          "producer_source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+          "reader_source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+          "restored_generation": 2,
+          "same_source": true,
+          "schema": "mycity-layout-cold-reopen-v2"
+        },
+        "generations": [
+          1,
+          2
+        ]
+      },
+      "name": "separate-control:two-snapshots-and-cold-report",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": {
+        "available_touched_bytes": 67108864,
+        "balanced_after_owned_wait": true,
+        "capacity_bytes": 67108864,
+        "granted_capacity_bytes": 0,
+        "grants": 0,
+        "workspace_grants": 0
+      },
+      "name": "separate-control:normal-pool-64MiB-zero-grants",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": {
+        "all_terminal_by_receipt": true,
+        "complete": true,
+        "identity_count": 5,
+        "states": {
+          "confirmed_absent": 5
+        }
+      },
+      "name": "separate-control:all-registered-identities-terminal",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": {
+        "independent_normal_pool_host_registered": true,
+        "mixed_root_exclusion_receipt_absent": true,
+        "passes": true,
+        "root_in_complete_physical_frames": true
+      },
+      "name": "separate-control:separate_pool_not_excluded",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": {
+        "binary": "557b2e4d0bc89f429a07a270c9f388b508d595c8b4a1f233b795becdf75797e7",
+        "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c"
+      },
+      "name": "combined-control:fixed-source-and-binary",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": {
+        "all_restored_predicates": true,
+        "condition_vectors": [
+          {
+            "group_capture_complete": true,
+            "logical_bytes": 277662928,
+            "mapped_bytes": 277610496,
+            "permitted_bytes": 0,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_bytes": 0,
+            "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+            "state_schema": 1
+          },
+          {
+            "group_capture_complete": true,
+            "logical_bytes": 277662928,
+            "mapped_bytes": 277610496,
+            "permitted_bytes": 0,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_bytes": 0,
+            "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+            "state_schema": 1
+          },
+          {
+            "group_capture_complete": true,
+            "logical_bytes": 277662928,
+            "mapped_bytes": 277610496,
+            "permitted_bytes": 0,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_bytes": 0,
+            "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+            "state_schema": 1
+          }
+        ],
+        "consecutive_within_1s": true,
+        "frame_checks": [
+          {
+            "exact_root_layout_owner_pid_birth": true,
+            "group_capture_complete": true,
+            "mapped_full": true,
+            "member_footprints_complete": true,
+            "member_sum_equals_group": true,
+            "permitted_zero": true,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_zero": true,
+            "source_matches": true
+          },
+          {
+            "exact_root_layout_owner_pid_birth": true,
+            "group_capture_complete": true,
+            "mapped_full": true,
+            "member_footprints_complete": true,
+            "member_sum_equals_group": true,
+            "permitted_zero": true,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_zero": true,
+            "source_matches": true
+          },
+          {
+            "exact_root_layout_owner_pid_birth": true,
+            "group_capture_complete": true,
+            "mapped_full": true,
+            "member_footprints_complete": true,
+            "member_sum_equals_group": true,
+            "permitted_zero": true,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_zero": true,
+            "source_matches": true
+          }
+        ],
+        "frame_count": 3,
+        "frame_group_bytes": [
+          3336228080,
+          3336228080,
+          3336228080
+        ],
+        "member_sum_bytes": [
+          3336228080,
+          3336228080,
+          3336228080
+        ],
+        "roles": {
+          "layout-load-only": {
+            "birth": 26490341045032,
+            "parent_pid": 68282,
+            "pid": 68351
+          },
+          "layout-r07-session": {
+            "birth": 26489802698788,
+            "parent_pid": 68282,
+            "pid": 68283
+          },
+          "r07-layout-driver": {
+            "birth": 26489801662390,
+            "parent_pid": 68280,
+            "pid": 68282
+          }
+        },
+        "schema": "mycity-r07-full-restored-window-v1",
+        "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+        "times": [
+          14.026180625,
+          14.278871458,
+          14.535377375
+        ],
+        "window_peak_bytes": 3336228080
+      },
+      "name": "combined-control:full-restored-three-frame-window",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": {
+        "cold_report": {
+          "all_payload_files_hashed_and_loaded": true,
+          "byte_length": 3375376530,
+          "cold_reopen_and_scan": "passed",
+          "payload_hashes_independently_rechecked": false,
+          "producer_source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+          "reader_source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+          "restored_generation": 2,
+          "same_source": true,
+          "schema": "mycity-layout-cold-reopen-v2"
+        },
+        "generations": [
+          1,
+          2
+        ]
+      },
+      "name": "combined-control:two-snapshots-and-cold-report",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": {
+        "available_touched_bytes": 67108864,
+        "balanced_after_owned_wait": true,
+        "capacity_bytes": 67108864,
+        "granted_capacity_bytes": 0,
+        "grants": 0,
+        "workspace_grants": 0
+      },
+      "name": "combined-control:normal-pool-64MiB-zero-grants",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": {
+        "all_terminal_by_receipt": true,
+        "complete": true,
+        "identity_count": 4,
+        "states": {
+          "confirmed_absent": 4
+        }
+      },
+      "name": "combined-control:all-registered-identities-terminal",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": {
+        "estimated_footprint_deduction_bytes": 0,
+        "exclusion": "entire_actual_child_pid_for_lifetime",
+        "passes": true,
+        "raw_group_unchanged": true,
+        "root_identity": {
+          "parent_pid": 68280,
+          "pid": 68282,
+          "start_abstime": 26489801662390
+        },
+        "runtime_does_not_list_root_pid": true,
+        "schema": "mycity-r07-excluded-mixed-root-v1"
+      },
+      "name": "combined-control:combined_root_exclusion",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": {
+        "binary": "557b2e4d0bc89f429a07a270c9f388b508d595c8b4a1f233b795becdf75797e7",
+        "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c"
+      },
+      "name": "half-wire03:fixed-source-and-binary",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": {
+        "all_restored_predicates": true,
+        "condition_vectors": [
+          {
+            "group_capture_complete": true,
+            "logical_bytes": 277662928,
+            "mapped_bytes": 277610496,
+            "permitted_bytes": 0,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_bytes": 0,
+            "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+            "state_schema": 1
+          },
+          {
+            "group_capture_complete": true,
+            "logical_bytes": 277662928,
+            "mapped_bytes": 277610496,
+            "permitted_bytes": 0,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_bytes": 0,
+            "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+            "state_schema": 1
+          },
+          {
+            "group_capture_complete": true,
+            "logical_bytes": 277662928,
+            "mapped_bytes": 277610496,
+            "permitted_bytes": 0,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_bytes": 0,
+            "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+            "state_schema": 1
+          }
+        ],
+        "consecutive_within_1s": true,
+        "frame_checks": [
+          {
+            "exact_root_layout_owner_pid_birth": true,
+            "group_capture_complete": true,
+            "mapped_full": true,
+            "member_footprints_complete": true,
+            "member_sum_equals_group": true,
+            "permitted_zero": true,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_zero": true,
+            "source_matches": true
+          },
+          {
+            "exact_root_layout_owner_pid_birth": true,
+            "group_capture_complete": true,
+            "mapped_full": true,
+            "member_footprints_complete": true,
+            "member_sum_equals_group": true,
+            "permitted_zero": true,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_zero": true,
+            "source_matches": true
+          },
+          {
+            "exact_root_layout_owner_pid_birth": true,
+            "group_capture_complete": true,
+            "mapped_full": true,
+            "member_footprints_complete": true,
+            "member_sum_equals_group": true,
+            "permitted_zero": true,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_zero": true,
+            "source_matches": true
+          }
+        ],
+        "frame_count": 3,
+        "frame_group_bytes": [
+          3336228128,
+          3336228128,
+          3336228128
+        ],
+        "member_sum_bytes": [
+          3336228128,
+          3336228128,
+          3336228128
+        ],
+        "roles": {
+          "layout-load-only": {
+            "birth": 26460169612576,
+            "parent_pid": 58562,
+            "pid": 58641
+          },
+          "layout-r07-session": {
+            "birth": 26459638701012,
+            "parent_pid": 58562,
+            "pid": 58567
+          },
+          "r07-layout-driver": {
+            "birth": 26459637858186,
+            "parent_pid": 58561,
+            "pid": 58562
+          }
+        },
+        "schema": "mycity-r07-full-restored-window-v1",
+        "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+        "times": [
+          14.274297625,
+          14.557566792,
+          14.772221042
+        ],
+        "window_peak_bytes": 3336228128
+      },
+      "name": "half-wire03:full-restored-three-frame-window",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": {
+        "cold_report": {
+          "all_payload_files_hashed_and_loaded": true,
+          "byte_length": 3375376530,
+          "cold_reopen_and_scan": "passed",
+          "payload_hashes_independently_rechecked": false,
+          "producer_source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+          "reader_source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+          "restored_generation": 2,
+          "same_source": true,
+          "schema": "mycity-layout-cold-reopen-v2"
+        },
+        "generations": [
+          1,
+          2
+        ]
+      },
+      "name": "half-wire03:two-snapshots-and-cold-report",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": {
+        "available_touched_bytes": 67108864,
+        "balanced_after_owned_wait": true,
+        "capacity_bytes": 67108864,
+        "granted_capacity_bytes": 0,
+        "grants": 0,
+        "workspace_grants": 0
+      },
+      "name": "half-wire03:normal-pool-64MiB-zero-grants",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": {
+        "all_terminal_by_receipt": true,
+        "complete": true,
+        "identity_count": 4,
+        "states": {
+          "confirmed_absent": 4
+        }
+      },
+      "name": "half-wire03:all-registered-identities-terminal",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": {
+        "estimated_footprint_deduction_bytes": 0,
+        "exclusion": "entire_actual_child_pid_for_lifetime",
+        "passes": true,
+        "raw_group_unchanged": true,
+        "root_identity": {
+          "parent_pid": 58561,
+          "pid": 58562,
+          "start_abstime": 26459637858186
+        },
+        "runtime_does_not_list_root_pid": true,
+        "schema": "mycity-r07-excluded-mixed-root-v1"
+      },
+      "name": "half-wire03:combined_root_exclusion",
+      "passed": true
+    },
+    {
+      "blocking": false,
+      "detail": {
+        "all_nested_checks_true": true,
+        "known_reason": "retained helper reused half-wire outcome rule; do not rewrite historical receipt",
+        "nested_outcome_passed": false,
+        "passed_controlled_exercise": true
+      },
+      "name": "separate-control-receipt-discrepancy-recorded",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": {
+        "model_exit_code": 2,
+        "observer_status": "failed",
+        "signal": "SIGTERM",
+        "target_birth": 26463691535388,
+        "target_identity_check_ok": true,
+        "target_pid": 59201,
+        "terminal_audit": {
+          "all_terminal_by_receipt": true,
+          "complete": true,
+          "identity_count": 3,
+          "states": {
+            "confirmed_absent": 3
+          }
+        }
+      },
+      "name": "kill-layout:identity-bound-negative-fault",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": {
+        "model_exit_code": null,
+        "observer_status": "failed",
+        "signal": "SIGKILL",
+        "target_birth": 26466431512581,
+        "target_identity_check_ok": true,
+        "target_pid": 60888,
+        "terminal_audit": {
+          "all_terminal_by_receipt": true,
+          "complete": true,
+          "identity_count": 3,
+          "states": {
+            "confirmed_absent": 3
+          }
+        }
+      },
+      "name": "kill-root:identity-bound-negative-fault",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": {
+        "fault_exercise_passed": true,
+        "outcome_passed": true,
+        "rejections": {
+          "normal_pool_control_timeout": 1
+        }
+      },
+      "name": "half-wire03:one-timeout-rejection-and-successful-cold-path",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": {
+        "interpretation": "47 EOF rejections from repeated/closed requests and one explicit incomplete-frame timeout; distinct outcomes",
+        "rejections": {
+          "normal_pool_control_eof": 47,
+          "normal_pool_control_timeout": 1
+        }
+      },
+      "name": "half-wire02-legacy-rejection-distinction",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": {
+        "exit_code": 1,
+        "source_unchanged": true,
+        "wall_seconds": 1.94385125
+      },
+      "name": "10-half-wire:failure-artifact-retained",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": {
+        "exit_code": 1,
+        "source_unchanged": true,
+        "wall_seconds": 0.10921395799999999
+      },
+      "name": "15-separate-control:failure-artifact-retained",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": {
+        "all_registered_identities_terminal": {
+          "all_terminal_by_receipt": true,
+          "complete": true,
+          "identity_count": 4,
+          "states": {
+            "confirmed_absent": 4
+          }
+        },
+        "already_exists_error": true,
+        "cold_child_registered": true,
+        "full_M0": "not_accepted",
+        "model_exit_code": 2,
+        "observer_status": "failed",
+        "successful_exercise": false,
+        "unpolled_registered_processes": 1
+      },
+      "name": "cold-error-retained-as-nonperformance-terminal-failure",
+      "passed": true
+    },
+    {
+      "blocking": true,
+      "detail": {
+        "binary_sha256": "557b2e4d0bc89f429a07a270c9f388b508d595c8b4a1f233b795becdf75797e7",
+        "both_same_source_and_predicates": true,
+        "combined_over_threshold_bytes": 7628426,
+        "combined_window_peak_bytes": 3336228080,
+        "comparison_basis": "maximum phys_footprint_bytes among each run exact full-restored three-frame window; not observer global peak",
+        "observer_global_peaks_with_missing_samples_not_used": {
+          "combined": 3336260848,
+          "combined_missing_samples": 2,
+          "separate": 3337588288,
+          "separate_missing_samples": 2
+        },
+        "original_normal_threshold_bytes": 3328599654,
+        "separate_minus_combined_bytes": 1327440,
+        "separate_over_threshold_bytes": 8955866,
+        "separate_window_peak_bytes": 3337555520,
+        "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c"
+      },
+      "name": "same-source-full-restored-window-peak-comparison",
+      "passed": true
+    }
+  ],
+  "fixed_identity": {
+    "binary_sha256": "557b2e4d0bc89f429a07a270c9f388b508d595c8b4a1f233b795becdf75797e7",
+    "full_r07_mapped_bytes": 277610496,
+    "normal_pool_bytes": 67108864,
+    "original_normal_threshold_bytes": 3328599654,
+    "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+    "source_zip_sha256": "8e85f7adc3dd0d0811ec8ee6fa89720512f8ba6f587b1b10de6146cfc3d81561"
+  },
+  "interpretation": {
+    "cold_error": "terminal AlreadyExists failure; not performance acceptance",
+    "combined_control": "controlled exercise and helper checks pass; excluded mixed-root deduction is zero and raw group remains intact",
+    "formal": "not run/not accepted",
+    "half_wire03": "single timeout rejection and full snapshot/cold report checks pass",
+    "kill_cases": "intended identity-bound negative cases pass; not functional/performance acceptance",
+    "separate_control": "controlled exercise true; retained nested verdict inconsistency is explicitly reported"
+  },
+  "performance_or_formal_acceptance_claimed": false,
+  "read_only": true,
+  "results": {
+    "cold_error": {
+      "all_registered_identities_terminal": {
+        "all_terminal_by_receipt": true,
+        "complete": true,
+        "identity_count": 4,
+        "states": {
+          "confirmed_absent": 4
+        }
+      },
+      "already_exists_error": true,
+      "cold_child_registered": true,
+      "full_M0": "not_accepted",
+      "model_exit_code": 2,
+      "observer_status": "failed",
+      "successful_exercise": false,
+      "unpolled_registered_processes": 1
+    },
+    "combined-control": {
+      "checks_pass": true,
+      "cold_report": {
+        "all_payload_files_hashed_and_loaded": true,
+        "byte_length": 3375376530,
+        "cold_reopen_and_scan": "passed",
+        "payload_hashes_independently_rechecked": false,
+        "producer_source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+        "reader_source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+        "restored_generation": 2,
+        "same_source": true,
+        "schema": "mycity-layout-cold-reopen-v2"
+      },
+      "controlled_receipt": {
+        "nested_checks": {
+          "all_payload_files_hashed_and_loaded": true,
+          "cold_passed": true,
+          "cold_report_schema": true,
+          "exercise_success_and_source": true,
+          "layout_report_schema": true,
+          "model_exit_zero": true,
+          "observer_passed_wrapper": true,
+          "original_pool_balanced": true,
+          "restored_generation_two": true,
+          "two_generations": true
+        },
+        "nested_outcome_passed": true,
+        "passed_controlled_exercise": true,
+        "passed_fault_exercise": false
+      },
+      "normal_pool": {
+        "available_touched_bytes": 67108864,
+        "balanced_after_owned_wait": true,
+        "capacity_bytes": 67108864,
+        "granted_capacity_bytes": 0,
+        "grants": 0,
+        "workspace_grants": 0
+      },
+      "observer": {
+        "eight_hour_gate": "not_run",
+        "full_M0": "not_accepted",
+        "maximum_observed_r07_replaced_bytes": 3407872,
+        "maximum_sample_gap_seconds": 0.278007708,
+        "missing_footprint_process_samples": 2,
+        "model_exit_code": 0,
+        "peak_simultaneous_footprint_bytes": 3336260848,
+        "sample_log_bytes": 162921,
+        "samples": 108,
+        "status": "passed_measurement_wrapper",
+        "unpolled_registered_processes": 0
+      },
+      "r07_exclusion": {
+        "combined_root_exclusion": {
+          "estimated_footprint_deduction_bytes": 0,
+          "exclusion": "entire_actual_child_pid_for_lifetime",
+          "passes": true,
+          "raw_group_unchanged": true,
+          "root_identity": {
+            "parent_pid": 68280,
+            "pid": 68282,
+            "start_abstime": 26489801662390
+          },
+          "runtime_does_not_list_root_pid": true,
+          "schema": "mycity-r07-excluded-mixed-root-v1"
+        }
+      },
+      "registration_roles": {
+        "layout-load-only": {
+          "birth": 26490341045032,
+          "parent_pid": 68282,
+          "pid": 68351
+        },
+        "layout-r07-session": {
+          "birth": 26489802698788,
+          "parent_pid": 68282,
+          "pid": 68283
+        },
+        "r07-layout-driver": {
+          "birth": 26489801662390,
+          "parent_pid": 68280,
+          "pid": 68282
+        }
+      },
+      "snapshots": {
+        "complete_record_restore": [
+          "passed",
+          "passed"
+        ],
+        "eight_hour": "not_run",
+        "formal_steady": "not_accepted",
+        "generations": [
+          1,
+          2
+        ],
+        "schema": "mycity-r07-full-session-exercise-v1"
+      },
+      "source_and_binary_match_fixed": true,
+      "terminal_identity_audit": {
+        "all_terminal_by_receipt": true,
+        "complete": true,
+        "identity_count": 4,
+        "states": {
+          "confirmed_absent": 4
+        }
+      },
+      "window": {
+        "all_restored_predicates": true,
+        "condition_vectors": [
+          {
+            "group_capture_complete": true,
+            "logical_bytes": 277662928,
+            "mapped_bytes": 277610496,
+            "permitted_bytes": 0,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_bytes": 0,
+            "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+            "state_schema": 1
+          },
+          {
+            "group_capture_complete": true,
+            "logical_bytes": 277662928,
+            "mapped_bytes": 277610496,
+            "permitted_bytes": 0,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_bytes": 0,
+            "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+            "state_schema": 1
+          },
+          {
+            "group_capture_complete": true,
+            "logical_bytes": 277662928,
+            "mapped_bytes": 277610496,
+            "permitted_bytes": 0,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_bytes": 0,
+            "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+            "state_schema": 1
+          }
+        ],
+        "consecutive_within_1s": true,
+        "frame_checks": [
+          {
+            "exact_root_layout_owner_pid_birth": true,
+            "group_capture_complete": true,
+            "mapped_full": true,
+            "member_footprints_complete": true,
+            "member_sum_equals_group": true,
+            "permitted_zero": true,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_zero": true,
+            "source_matches": true
+          },
+          {
+            "exact_root_layout_owner_pid_birth": true,
+            "group_capture_complete": true,
+            "mapped_full": true,
+            "member_footprints_complete": true,
+            "member_sum_equals_group": true,
+            "permitted_zero": true,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_zero": true,
+            "source_matches": true
+          },
+          {
+            "exact_root_layout_owner_pid_birth": true,
+            "group_capture_complete": true,
+            "mapped_full": true,
+            "member_footprints_complete": true,
+            "member_sum_equals_group": true,
+            "permitted_zero": true,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_zero": true,
+            "source_matches": true
+          }
+        ],
+        "frame_count": 3,
+        "frame_group_bytes": [
+          3336228080,
+          3336228080,
+          3336228080
+        ],
+        "member_sum_bytes": [
+          3336228080,
+          3336228080,
+          3336228080
+        ],
+        "roles": {
+          "layout-load-only": {
+            "birth": 26490341045032,
+            "parent_pid": 68282,
+            "pid": 68351
+          },
+          "layout-r07-session": {
+            "birth": 26489802698788,
+            "parent_pid": 68282,
+            "pid": 68283
+          },
+          "r07-layout-driver": {
+            "birth": 26489801662390,
+            "parent_pid": 68280,
+            "pid": 68282
+          }
+        },
+        "schema": "mycity-r07-full-restored-window-v1",
+        "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+        "times": [
+          14.026180625,
+          14.278871458,
+          14.535377375
+        ],
+        "window_peak_bytes": 3336228080
+      }
+    },
+    "half-wire02_rejections": {
+      "normal_pool_control_eof": 47,
+      "normal_pool_control_timeout": 1
+    },
+    "half-wire03": {
+      "checks_pass": true,
+      "cold_report": {
+        "all_payload_files_hashed_and_loaded": true,
+        "byte_length": 3375376530,
+        "cold_reopen_and_scan": "passed",
+        "payload_hashes_independently_rechecked": false,
+        "producer_source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+        "reader_source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+        "restored_generation": 2,
+        "same_source": true,
+        "schema": "mycity-layout-cold-reopen-v2"
+      },
+      "controlled_receipt": {
+        "nested_checks": {
+          "all_payload_files_hashed_and_loaded": true,
+          "cold_passed": true,
+          "cold_report_schema": true,
+          "exercise_success_and_source": true,
+          "layout_report_schema": true,
+          "model_exit_zero": true,
+          "observer_passed_wrapper": true,
+          "pool_timeout_rejected": true,
+          "restored_generation_two": true,
+          "two_generations": true
+        },
+        "nested_outcome_passed": true,
+        "passed_controlled_exercise": null,
+        "passed_fault_exercise": true
+      },
+      "normal_pool": {
+        "available_touched_bytes": 67108864,
+        "balanced_after_owned_wait": true,
+        "capacity_bytes": 67108864,
+        "granted_capacity_bytes": 0,
+        "grants": 0,
+        "workspace_grants": 0
+      },
+      "observer": {
+        "eight_hour_gate": "not_run",
+        "full_M0": "not_accepted",
+        "maximum_observed_r07_replaced_bytes": 3407872,
+        "maximum_sample_gap_seconds": 0.288135708,
+        "missing_footprint_process_samples": 2,
+        "model_exit_code": 0,
+        "peak_simultaneous_footprint_bytes": 3336277280,
+        "sample_log_bytes": 160162,
+        "samples": 107,
+        "status": "passed_measurement_wrapper",
+        "unpolled_registered_processes": 0
+      },
+      "r07_exclusion": {
+        "combined_root_exclusion": {
+          "estimated_footprint_deduction_bytes": 0,
+          "exclusion": "entire_actual_child_pid_for_lifetime",
+          "passes": true,
+          "raw_group_unchanged": true,
+          "root_identity": {
+            "parent_pid": 58561,
+            "pid": 58562,
+            "start_abstime": 26459637858186
+          },
+          "runtime_does_not_list_root_pid": true,
+          "schema": "mycity-r07-excluded-mixed-root-v1"
+        }
+      },
+      "registration_roles": {
+        "layout-load-only": {
+          "birth": 26460169612576,
+          "parent_pid": 58562,
+          "pid": 58641
+        },
+        "layout-r07-session": {
+          "birth": 26459638701012,
+          "parent_pid": 58562,
+          "pid": 58567
+        },
+        "r07-layout-driver": {
+          "birth": 26459637858186,
+          "parent_pid": 58561,
+          "pid": 58562
+        }
+      },
+      "snapshots": {
+        "complete_record_restore": [
+          "passed",
+          "passed"
+        ],
+        "eight_hour": "not_run",
+        "formal_steady": "not_accepted",
+        "generations": [
+          1,
+          2
+        ],
+        "schema": "mycity-r07-full-session-exercise-v1"
+      },
+      "source_and_binary_match_fixed": true,
+      "terminal_identity_audit": {
+        "all_terminal_by_receipt": true,
+        "complete": true,
+        "identity_count": 4,
+        "states": {
+          "confirmed_absent": 4
+        }
+      },
+      "window": {
+        "all_restored_predicates": true,
+        "condition_vectors": [
+          {
+            "group_capture_complete": true,
+            "logical_bytes": 277662928,
+            "mapped_bytes": 277610496,
+            "permitted_bytes": 0,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_bytes": 0,
+            "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+            "state_schema": 1
+          },
+          {
+            "group_capture_complete": true,
+            "logical_bytes": 277662928,
+            "mapped_bytes": 277610496,
+            "permitted_bytes": 0,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_bytes": 0,
+            "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+            "state_schema": 1
+          },
+          {
+            "group_capture_complete": true,
+            "logical_bytes": 277662928,
+            "mapped_bytes": 277610496,
+            "permitted_bytes": 0,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_bytes": 0,
+            "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+            "state_schema": 1
+          }
+        ],
+        "consecutive_within_1s": true,
+        "frame_checks": [
+          {
+            "exact_root_layout_owner_pid_birth": true,
+            "group_capture_complete": true,
+            "mapped_full": true,
+            "member_footprints_complete": true,
+            "member_sum_equals_group": true,
+            "permitted_zero": true,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_zero": true,
+            "source_matches": true
+          },
+          {
+            "exact_root_layout_owner_pid_birth": true,
+            "group_capture_complete": true,
+            "mapped_full": true,
+            "member_footprints_complete": true,
+            "member_sum_equals_group": true,
+            "permitted_zero": true,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_zero": true,
+            "source_matches": true
+          },
+          {
+            "exact_root_layout_owner_pid_birth": true,
+            "group_capture_complete": true,
+            "mapped_full": true,
+            "member_footprints_complete": true,
+            "member_sum_equals_group": true,
+            "permitted_zero": true,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_zero": true,
+            "source_matches": true
+          }
+        ],
+        "frame_count": 3,
+        "frame_group_bytes": [
+          3336228128,
+          3336228128,
+          3336228128
+        ],
+        "member_sum_bytes": [
+          3336228128,
+          3336228128,
+          3336228128
+        ],
+        "roles": {
+          "layout-load-only": {
+            "birth": 26460169612576,
+            "parent_pid": 58562,
+            "pid": 58641
+          },
+          "layout-r07-session": {
+            "birth": 26459638701012,
+            "parent_pid": 58562,
+            "pid": 58567
+          },
+          "r07-layout-driver": {
+            "birth": 26459637858186,
+            "parent_pid": 58561,
+            "pid": 58562
+          }
+        },
+        "schema": "mycity-r07-full-restored-window-v1",
+        "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+        "times": [
+          14.274297625,
+          14.557566792,
+          14.772221042
+        ],
+        "window_peak_bytes": 3336228128
+      }
+    },
+    "half-wire03_rejections": {
+      "normal_pool_control_timeout": 1
+    },
+    "kill-layout": {
+      "model_exit_code": 2,
+      "observer_status": "failed",
+      "signal": "SIGTERM",
+      "target_birth": 26463691535388,
+      "target_identity_check_ok": true,
+      "target_pid": 59201,
+      "terminal_audit": {
+        "all_terminal_by_receipt": true,
+        "complete": true,
+        "identity_count": 3,
+        "states": {
+          "confirmed_absent": 3
+        }
+      }
+    },
+    "kill-root": {
+      "model_exit_code": null,
+      "observer_status": "failed",
+      "signal": "SIGKILL",
+      "target_birth": 26466431512581,
+      "target_identity_check_ok": true,
+      "target_pid": 60888,
+      "terminal_audit": {
+        "all_terminal_by_receipt": true,
+        "complete": true,
+        "identity_count": 3,
+        "states": {
+          "confirmed_absent": 3
+        }
+      }
+    },
+    "peak_comparison": {
+      "binary_sha256": "557b2e4d0bc89f429a07a270c9f388b508d595c8b4a1f233b795becdf75797e7",
+      "both_same_source_and_predicates": true,
+      "combined_over_threshold_bytes": 7628426,
+      "combined_window_peak_bytes": 3336228080,
+      "comparison_basis": "maximum phys_footprint_bytes among each run exact full-restored three-frame window; not observer global peak",
+      "observer_global_peaks_with_missing_samples_not_used": {
+        "combined": 3336260848,
+        "combined_missing_samples": 2,
+        "separate": 3337588288,
+        "separate_missing_samples": 2
+      },
+      "original_normal_threshold_bytes": 3328599654,
+      "separate_minus_combined_bytes": 1327440,
+      "separate_over_threshold_bytes": 8955866,
+      "separate_window_peak_bytes": 3337555520,
+      "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c"
+    },
+    "retained_failure_stages": {
+      "10-half-wire": {
+        "exit_code": 1,
+        "source_unchanged": true,
+        "wall_seconds": 1.94385125
+      },
+      "15-separate-control": {
+        "exit_code": 1,
+        "source_unchanged": true,
+        "wall_seconds": 0.10921395799999999
+      }
+    },
+    "separate-control": {
+      "checks_pass": true,
+      "cold_report": {
+        "all_payload_files_hashed_and_loaded": true,
+        "byte_length": 3373934738,
+        "cold_reopen_and_scan": "passed",
+        "payload_hashes_independently_rechecked": false,
+        "producer_source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+        "reader_source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+        "restored_generation": 2,
+        "same_source": true,
+        "schema": "mycity-layout-cold-reopen-v2"
+      },
+      "controlled_receipt": {
+        "nested_checks": {
+          "all_payload_files_hashed_and_loaded": true,
+          "cold_passed": true,
+          "cold_report_schema": true,
+          "exercise_success_and_source": true,
+          "layout_report_schema": true,
+          "model_exit_zero": true,
+          "observer_passed_wrapper": true,
+          "original_pool_balanced": true,
+          "restored_generation_two": true,
+          "two_generations": true
+        },
+        "nested_outcome_passed": false,
+        "passed_controlled_exercise": true,
+        "passed_fault_exercise": false
+      },
+      "normal_pool": {
+        "available_touched_bytes": 67108864,
+        "balanced_after_owned_wait": true,
+        "capacity_bytes": 67108864,
+        "granted_capacity_bytes": 0,
+        "grants": 0,
+        "workspace_grants": 0
+      },
+      "observer": {
+        "eight_hour_gate": "not_run",
+        "full_M0": "not_accepted",
+        "maximum_observed_r07_replaced_bytes": 4849664,
+        "maximum_sample_gap_seconds": 0.283142834,
+        "missing_footprint_process_samples": 2,
+        "model_exit_code": 0,
+        "peak_simultaneous_footprint_bytes": 3337588288,
+        "sample_log_bytes": 184144,
+        "samples": 109,
+        "status": "passed_measurement_wrapper",
+        "unpolled_registered_processes": 0
+      },
+      "r07_exclusion": {
+        "separate_pool_not_excluded": {
+          "independent_normal_pool_host_registered": true,
+          "mixed_root_exclusion_receipt_absent": true,
+          "passes": true,
+          "root_in_complete_physical_frames": true
+        }
+      },
+      "registration_roles": {
+        "layout-load-only": {
+          "birth": 26489207947101,
+          "parent_pid": 67866,
+          "pid": 68024
+        },
+        "layout-r07-session": {
+          "birth": 26488665691903,
+          "parent_pid": 67866,
+          "pid": 67872
+        },
+        "normal-pool-host": {
+          "birth": 26488664806085,
+          "parent_pid": 67866,
+          "pid": 67869
+        },
+        "r07-layout-driver": {
+          "birth": 26488664340445,
+          "parent_pid": 67865,
+          "pid": 67866
+        }
+      },
+      "snapshots": {
+        "complete_record_restore": [
+          "passed",
+          "passed"
+        ],
+        "eight_hour": "not_run",
+        "formal_steady": "not_accepted",
+        "generations": [
+          1,
+          2
+        ],
+        "schema": "mycity-r07-full-session-exercise-v1"
+      },
+      "source_and_binary_match_fixed": true,
+      "terminal_identity_audit": {
+        "all_terminal_by_receipt": true,
+        "complete": true,
+        "identity_count": 5,
+        "states": {
+          "confirmed_absent": 5
+        }
+      },
+      "window": {
+        "all_restored_predicates": true,
+        "condition_vectors": [
+          {
+            "group_capture_complete": true,
+            "logical_bytes": 277662928,
+            "mapped_bytes": 277610496,
+            "permitted_bytes": 0,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_bytes": 0,
+            "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+            "state_schema": 1
+          },
+          {
+            "group_capture_complete": true,
+            "logical_bytes": 277662928,
+            "mapped_bytes": 277610496,
+            "permitted_bytes": 0,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_bytes": 0,
+            "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+            "state_schema": 1
+          },
+          {
+            "group_capture_complete": true,
+            "logical_bytes": 277662928,
+            "mapped_bytes": 277610496,
+            "permitted_bytes": 0,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_bytes": 0,
+            "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+            "state_schema": 1
+          }
+        ],
+        "consecutive_within_1s": true,
+        "frame_checks": [
+          {
+            "exact_root_layout_owner_pid_birth": true,
+            "group_capture_complete": true,
+            "mapped_full": true,
+            "member_footprints_complete": true,
+            "member_sum_equals_group": true,
+            "permitted_zero": true,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_zero": true,
+            "source_matches": true
+          },
+          {
+            "exact_root_layout_owner_pid_birth": true,
+            "group_capture_complete": true,
+            "mapped_full": true,
+            "member_footprints_complete": true,
+            "member_sum_equals_group": true,
+            "permitted_zero": true,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_zero": true,
+            "source_matches": true
+          },
+          {
+            "exact_root_layout_owner_pid_birth": true,
+            "group_capture_complete": true,
+            "mapped_full": true,
+            "member_footprints_complete": true,
+            "member_sum_equals_group": true,
+            "permitted_zero": true,
+            "provider_paused": true,
+            "r07_coverage_complete": true,
+            "replaced_zero": true,
+            "source_matches": true
+          }
+        ],
+        "frame_count": 3,
+        "frame_group_bytes": [
+          3337555520,
+          3337555520,
+          3337555520
+        ],
+        "member_sum_bytes": [
+          3337555520,
+          3337555520,
+          3337555520
+        ],
+        "roles": {
+          "layout-load-only": {
+            "birth": 26489207947101,
+            "parent_pid": 67866,
+            "pid": 68024
+          },
+          "layout-r07-session": {
+            "birth": 26488665691903,
+            "parent_pid": 67866,
+            "pid": 67872
+          },
+          "normal-pool-host": {
+            "birth": 26488664806085,
+            "parent_pid": 67866,
+            "pid": 67869
+          },
+          "r07-layout-driver": {
+            "birth": 26488664340445,
+            "parent_pid": 67865,
+            "pid": 67866
+          }
+        },
+        "schema": "mycity-r07-full-restored-window-v1",
+        "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+        "times": [
+          14.285327166,
+          14.533497791,
+          14.784381416
+        ],
+        "window_peak_bytes": 3337555520
+      }
+    },
+    "separate_control_receipt_discrepancy": {
+      "all_nested_checks_true": true,
+      "known_reason": "retained helper reused half-wire outcome rule; do not rewrite historical receipt",
+      "nested_outcome_passed": false,
+      "passed_controlled_exercise": true
+    }
+  },
+  "schema": "mycity-pool-control-final-report-check-v1",
+  "snapshot_payload_files_opened_or_rehashed": false,
+  "verification_passed": true
+}

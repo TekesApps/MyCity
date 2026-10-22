@@ -168,6 +168,27 @@ fn r07_component_slot(role: &str, is_observer: bool) -> Option<usize> {
         None
     }
 }
+fn r07_combined_pool_root(command: &[String]) -> bool {
+    command.get(1).is_some_and(|s| s == "r07-layout-driver")
+        && command
+            .get(3..)
+            .is_some_and(|flags| flags.iter().any(|s| s == "--combined-pool"))
+}
+fn r07_eligible_component_slot(
+    role: &str,
+    is_observer: bool,
+    pid: u32,
+    excluded_root_pid: Option<u32>,
+) -> Option<usize> {
+    // A mixed pool/orchestration process cannot exchange its normal backing for
+    // diagnostic padding. Reject by actual child PID even before role registration
+    // and on any later identity anomaly; raw group accounting is unchanged.
+    if excluded_root_pid == Some(pid) {
+        None
+    } else {
+        r07_component_slot(role, is_observer)
+    }
+}
 fn r07_layout_role(role: &str) -> bool {
     [
         "steady-layout-session",
@@ -185,11 +206,17 @@ fn publish_r07(
     nonce: &str,
     sequence: u64,
     begin: u64,
+    excluded_root_pid: Option<u32>,
 ) -> Result<crate::r07_runtime::Reading, String> {
     use crate::r07_runtime::{Component, Reading, Role};
     let mut components = [None; 3];
     for m in &tracker.members {
-        let slot = r07_component_slot(m.role.as_str(), m.sample.identity.pid == std::process::id());
+        let slot = r07_eligible_component_slot(
+            m.role.as_str(),
+            m.sample.identity.pid == std::process::id(),
+            m.sample.identity.pid,
+            excluded_root_pid,
+        );
         if let Some(i) = slot {
             if components[i].is_some() {
                 return Err("r07_ambiguous_role".into());
@@ -248,6 +275,7 @@ struct Capture<'a> {
     host: &'a system::Host,
     r07_enabled: bool,
     r07_pause_allowed: bool,
+    r07_excluded_root_pid: Option<u32>,
 }
 fn tick(context: Capture<'_>) -> Result<(), String> {
     let Capture {
@@ -263,6 +291,7 @@ fn tick(context: Capture<'_>) -> Result<(), String> {
         host,
         r07_enabled,
         r07_pause_allowed,
+        r07_excluded_root_pid,
     } = context;
     let begin = now(origin);
     let monotonic_begin = crate::r07_runtime::monotonic_ns()?;
@@ -322,6 +351,7 @@ fn tick(context: Capture<'_>) -> Result<(), String> {
             nonce,
             stats.samples + 1,
             monotonic_begin,
+            r07_excluded_root_pid,
         )?)
     } else {
         None
@@ -520,6 +550,7 @@ pub fn run(root: &Path, command: &[String]) -> Result<(), String> {
         .stderr(File::create_new(root.join("model.stderr")).map_err(err)?);
     let spawn = now(origin);
     let mut child = process.spawn().map_err(err)?;
+    let excluded_root_pid = r07_combined_pool_root(command).then_some(child.id());
     let mut exit: Option<ExitStatus> = None;
     let result = (|| {
         if let Ok(sample) = capture(child.id(), None, origin) {
@@ -532,6 +563,18 @@ pub fn run(root: &Path, command: &[String]) -> Result<(), String> {
                 false,
             )?;
             save(&root.join("observer-child.json"), &sample)?;
+            if excluded_root_pid.is_some() {
+                save(
+                    &root.join("r07-excluded-root.json"),
+                    &serde_json::json!({
+                        "schema":"mycity-r07-excluded-mixed-root-v1",
+                        "source_sha256":env!("MYCITY_SOURCE_SHA256"),
+                        "identity":sample.identity,"exclusion":"entire_actual_child_pid_for_lifetime",
+                        "reason":"combined root owns the normal64MiB pool; not diagnostic-only",
+                        "raw_group_unchanged":true,"estimated_footprint_deduction_bytes":0
+                    }),
+                )?;
+            }
         } else {
             return Err("native_spawn_identity_unconfirmed".into());
         }
@@ -558,6 +601,7 @@ pub fn run(root: &Path, command: &[String]) -> Result<(), String> {
                 host: &host,
                 r07_enabled,
                 r07_pause_allowed: command.get(1).is_some_and(|s| s == "r07-layout-driver"),
+                r07_excluded_root_pid: excluded_root_pid,
             })?;
             if exit.is_none() {
                 exit = child.try_wait().map_err(err)?;
@@ -624,6 +668,44 @@ pub fn run(root: &Path, command: &[String]) -> Result<(), String> {
 mod r07_role_tests {
     use super::*;
 
+    #[test]
+    fn mixed_pool_root_is_excluded_before_and_after_role_registration() {
+        for role in ["direct-root", "r07-layout-driver", "unknown"] {
+            assert_eq!(r07_eligible_component_slot(role, false, 17, Some(17)), None);
+        }
+        assert_eq!(
+            r07_eligible_component_slot("r07-layout-driver", false, 17, None),
+            Some(1)
+        );
+        assert_eq!(
+            r07_eligible_component_slot("native-observer", true, 16, Some(17)),
+            Some(0)
+        );
+        let args = |values: &[&str]| values.iter().map(|s| (*s).to_owned()).collect::<Vec<_>>();
+        assert!(r07_combined_pool_root(&args(&[
+            "exe",
+            "r07-layout-driver",
+            "dir",
+            "--combined-pool"
+        ])));
+        assert!(!r07_combined_pool_root(&args(&[
+            "exe",
+            "r07-layout-driver",
+            "--combined-pool"
+        ])));
+        assert!(!r07_combined_pool_root(&args(&[
+            "exe",
+            "r07-layout-driver",
+            "dir",
+            "--vm-trace"
+        ])));
+        assert!(!r07_combined_pool_root(&args(&[
+            "exe",
+            "steady-run",
+            "dir",
+            "--combined-pool"
+        ])));
+    }
     #[test]
     fn joint_endurance_uses_only_same_use_orchestrators() {
         assert!(r07_root_enabled("joint-endurance"));

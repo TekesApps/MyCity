@@ -1,0 +1,17 @@
+
+running 6 tests
+test normal_pool::tests::control_wire_bound_truncation_trailing_and_escape_reject_before_growth ... ok
+test normal_pool::tests::fixed_event_envelope_covers_u128_and_original_eight_hour_diagnostics ... ok
+test normal_pool::tests::every_control_variant_round_trips_u128_without_a_dynamic_tagged_content_tree ... ok
+test normal_pool::tests::controlled_owner_failure_cannot_publish_a_successful_pool_report ... FAILED
+test normal_pool::tests::controlled_owner_keeps_original_backing_and_requires_balanced_shutdown ... FAILED
+test normal_pool::tests::actual_64mib_pages_grant_identity_and_duplicate_receipts_never_double_credit ... ok
+
+failures:
+
+failures:
+    normal_pool::tests::controlled_owner_failure_cannot_publish_a_successful_pool_report
+    normal_pool::tests::controlled_owner_keeps_original_backing_and_requires_balanced_shutdown
+
+test result: FAILED. 4 passed; 2 failed; 0 ignored; 0 measured; 82 filtered out; finished in 0.17s
+

@@ -60,11 +60,24 @@ fn run() -> Result<(), String> {
         return Ok(());
     }
     if args.get(1).is_some_and(|a| a == "r07-layout-driver") {
-        let vm_trace = args.len() == 4 && args[3] == "--vm-trace";
-        if args.len() != 3 && !vm_trace {
-            return Err("usage: r07-layout-driver NEW_DIR [--vm-trace]".into());
-        }
-        return mycity_headless::r07_exercise::run(std::path::Path::new(&args[2]), vm_trace);
+        let flags = args.get(3..).ok_or("r07_exercise_missing_directory")?;
+        let (combined, vm_trace) = match flags {
+            [] => (false, false),
+            [flag] if flag == "--vm-trace" => (false, true),
+            [flag] if flag == "--combined-pool" => (true, false),
+            [first, second] if first == "--combined-pool" && second == "--vm-trace" => (true, true),
+            _ => {
+                return Err(
+                    "usage: r07-layout-driver NEW_DIR [--combined-pool] [--vm-trace]".into(),
+                )
+            }
+        };
+        let root = std::path::Path::new(&args[2]);
+        return if combined {
+            mycity_headless::r07_exercise::run_combined(root, vm_trace)
+        } else {
+            mycity_headless::r07_exercise::run(root, vm_trace)
+        };
     }
     if args.get(1).is_some_and(|a| a == "r07-backing-probe") {
         if args.len() != 3 {

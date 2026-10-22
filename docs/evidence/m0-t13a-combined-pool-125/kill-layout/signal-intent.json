@@ -1,0 +1,35 @@
+{
+  "birth": 26463691535388,
+  "controller_monotonic_ns": 1372472750,
+  "pid": 59201,
+  "pre_signal_identity_check": {
+    "expected_birth": 26463691535388,
+    "expected_parent": 59196,
+    "issue": null,
+    "ok": true,
+    "parent_ok": true,
+    "pid": 59201,
+    "proof": {
+      "capture_begin_monotonic_ns": 1372398958,
+      "capture_end_monotonic_ns": 1372424041
+    },
+    "relation": [
+      59196,
+      null,
+      "2",
+      "mycity-headless"
+    ],
+    "usage": {
+      "disk_bytes_read": 0,
+      "disk_bytes_written": 81920,
+      "phys_footprint_bytes": 3260959336,
+      "pid": 59201,
+      "rss_bytes": 3261841408,
+      "start_abstime": 26463691535388,
+      "system_time_ns": 199547750,
+      "user_time_ns": 752396916
+    }
+  },
+  "signal": "SIGTERM",
+  "target_role": "layout-r07-session"
+}

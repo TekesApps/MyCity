@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/fault-cases.py", line 874, in <module>
+    raise SystemExit(main())
+  File "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/fault-cases.py", line 460, in main
+    'fault': {'kill-layout': 'SIGTERM exact registered layout-r07-session PID/birth only after valid active owner frame',
+KeyError: 'separate-control'

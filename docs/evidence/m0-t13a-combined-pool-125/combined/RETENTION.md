@@ -1,0 +1,1 @@
+初始combined功能恢复当时通过，但R07归因错误不支持物理比较。其两代pressure.bin/work-reserve.bin已精确退役，当前不再可直接完整恢复。所有日志、协议、语义组件及固定源码/exe保留；最终ac02 combined-control两代完整恢复基线逐文件SHA验证后保留。退役收据：/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/retirement-initial-combined/receipt.json

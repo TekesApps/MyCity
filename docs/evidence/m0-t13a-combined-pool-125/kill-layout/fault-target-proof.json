@@ -1,0 +1,207 @@
+{
+  "frame": {
+    "clock_begin_ns": 1024774500,
+    "clock_end_ns": 1028662292,
+    "cpu_io_footprint": null,
+    "group_capture_complete": true,
+    "identity_uncertainties": [],
+    "member_footprints_pid_birth_bytes": [
+      [
+        59195,
+        26463690354751,
+        3391776
+      ],
+      [
+        59196,
+        26463690590925,
+        68501888
+      ],
+      [
+        59201,
+        26463691535388,
+        3260959336
+      ]
+    ],
+    "members": [
+      [
+        59195,
+        59192,
+        26463690354751,
+        5586944,
+        "observer"
+      ],
+      [
+        59196,
+        59195,
+        26463690590925,
+        70582272,
+        "r07-layout-driver"
+      ],
+      [
+        59201,
+        59196,
+        26463691535388,
+        3261841408,
+        "layout-r07-session"
+      ]
+    ],
+    "missing_footprint": 0,
+    "missing_rss": 0,
+    "observer_hot_bound_bytes": 2097152,
+    "pending_registration_bytes": 0,
+    "phys_footprint_bytes": 3332853000,
+    "pressure_dispatch_flag": 1,
+    "r07_applied": {
+      "owner": {
+        "parent_pid": 59196,
+        "pid": 59201,
+        "start_abstime": 26463691535388
+      },
+      "permitted_bytes": 3391776,
+      "reason": "fresh_unique_live_same_use_components",
+      "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+      "state": {
+        "arena_tail_bytes": 52432,
+        "epoch": 1,
+        "logical_bytes": 277662928,
+        "mapped_bytes": 274268160,
+        "quantum_bytes": 65536,
+        "reading_sequence": 4,
+        "replaced_bytes": 3342336,
+        "schema": 1
+      }
+    },
+    "r07_coverage_complete": true,
+    "r07_provider_paused": false,
+    "r07_reading": {
+      "components": [
+        {
+          "footprint_bytes": 3391776,
+          "identity": {
+            "parent_pid": 59192,
+            "pid": 59195,
+            "start_abstime": 26463690354751
+          },
+          "role": "observer"
+        },
+        null,
+        null
+      ],
+      "monotonic_begin_ns": 1268866792804000,
+      "monotonic_end_ns": 1268866793108000,
+      "nonce": "81f247b5ea99f0e2743fef72a3725866",
+      "schema": 1,
+      "sequence": 5,
+      "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c"
+    },
+    "registration_lock_busy": false,
+    "rss_bytes": 3338010624,
+    "swap_used_bytes": 1998585856,
+    "system": null,
+    "t": 1.028662292,
+    "window_s": 0.003887792
+  },
+  "frame_reason": "active_registered_layout_owner",
+  "observer_child": {
+    "begin_ns": 6775333,
+    "end_ns": 6777917,
+    "identity": {
+      "parent_pid": 59195,
+      "pid": 59196,
+      "start_abstime": 26463690590925
+    },
+    "usage": {
+      "disk_read_bytes": 0,
+      "disk_written_bytes": 0,
+      "exit_abstime": 0,
+      "footprint_bytes": 81992,
+      "resident_bytes": 32768,
+      "start_abstime": 26463690590925,
+      "system_time_raw": 41,
+      "user_time_raw": 0
+    }
+  },
+  "protocol": [],
+  "registrations": {
+    "layout-r07-session": {
+      "kind": "started",
+      "nonce": "81f247b5ea99f0e2743fef72a3725866",
+      "role": "layout-r07-session",
+      "sample": {
+        "begin_ns": 42,
+        "end_ns": 2792,
+        "identity": {
+          "parent_pid": 59196,
+          "pid": 59201,
+          "start_abstime": 26463691535388
+        },
+        "usage": {
+          "disk_read_bytes": 0,
+          "disk_written_bytes": 0,
+          "exit_abstime": 0,
+          "footprint_bytes": 950560,
+          "resident_bytes": 1867776,
+          "start_abstime": 26463691535388,
+          "system_time_raw": 12842,
+          "user_time_raw": 20315
+        }
+      },
+      "schema": "mycity-observed-process-v1",
+      "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c"
+    },
+    "r07-layout-driver": {
+      "kind": "started",
+      "nonce": "81f247b5ea99f0e2743fef72a3725866",
+      "role": "r07-layout-driver",
+      "sample": {
+        "begin_ns": 41,
+        "end_ns": 2625,
+        "identity": {
+          "parent_pid": 59195,
+          "pid": 59196,
+          "start_abstime": 26463690590925
+        },
+        "usage": {
+          "disk_read_bytes": 0,
+          "disk_written_bytes": 0,
+          "exit_abstime": 0,
+          "footprint_bytes": 999736,
+          "resident_bytes": 2015232,
+          "start_abstime": 26463690590925,
+          "system_time_raw": 15396,
+          "user_time_raw": 22654
+        }
+      },
+      "schema": "mycity-observed-process-v1",
+      "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c"
+    }
+  },
+  "target_identity_check": {
+    "expected_birth": 26463691535388,
+    "expected_parent": 59196,
+    "issue": null,
+    "ok": true,
+    "parent_ok": true,
+    "pid": 59201,
+    "proof": {
+      "capture_begin_monotonic_ns": 1368160458,
+      "capture_end_monotonic_ns": 1368185916
+    },
+    "relation": [
+      59196,
+      null,
+      "2",
+      "mycity-headless"
+    ],
+    "usage": {
+      "disk_bytes_read": 0,
+      "disk_bytes_written": 81920,
+      "phys_footprint_bytes": 3260959336,
+      "pid": 59201,
+      "rss_bytes": 3261841408,
+      "start_abstime": 26463691535388,
+      "system_time_ns": 199536166,
+      "user_time_ns": 752393500
+    }
+  }
+}

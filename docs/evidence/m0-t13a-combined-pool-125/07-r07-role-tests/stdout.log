@@ -1,0 +1,8 @@
+
+running 3 tests
+test native_watch::r07_role_tests::joint_endurance_uses_only_same_use_orchestrators ... ok
+test native_watch::r07_role_tests::steady_and_diagnostic_roles_keep_existing_slots ... ok
+test native_watch::r07_role_tests::mixed_pool_root_is_excluded_before_and_after_role_registration ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 86 filtered out; finished in 0.00s
+

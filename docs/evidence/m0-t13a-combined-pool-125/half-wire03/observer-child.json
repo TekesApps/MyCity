@@ -1,0 +1,19 @@
+{
+  "identity": {
+    "pid": 58562,
+    "start_abstime": 26459637858186,
+    "parent_pid": 58561
+  },
+  "begin_ns": 7280917,
+  "end_ns": 7284125,
+  "usage": {
+    "start_abstime": 26459637858186,
+    "exit_abstime": 0,
+    "resident_bytes": 32768,
+    "footprint_bytes": 81992,
+    "user_time_raw": 0,
+    "system_time_raw": 41,
+    "disk_read_bytes": 0,
+    "disk_written_bytes": 0
+  }
+}

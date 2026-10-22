@@ -1,0 +1,10 @@
+{
+  "binary": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/executables/6279b76ab63cad479b022664c90d68c2a53e373143c4dc72ac7549848e5515ea/mycity-headless",
+  "binary_sha256": "6279b76ab63cad479b022664c90d68c2a53e373143c4dc72ac7549848e5515ea",
+  "source_zip_sha256": "6f76c28a75a57653020b4f4b3e99ea431d7e70a50f3bf98d1244ce288c528805",
+  "storage": "HP P900 external USB/APFS SSD",
+  "scope": "original full-L1 diagnostic, two snapshots and cold load; no formal acceptance, unchanged caps and pressure",
+  "original_normal_threshold_bytes": 3328599654,
+  "normal_pool_bytes": 67108864,
+  "full_r07_mapped_bytes": 277610496
+}

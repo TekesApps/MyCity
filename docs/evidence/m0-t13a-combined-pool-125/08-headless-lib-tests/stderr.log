@@ -1,0 +1,13 @@
+    Finished `release` profile [optimized] target(s) in 0.08s
+     Running unittests src/lib.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_headless-bd191120ee0d5aca)
+
+thread 'control_data::tests::leases_reject_overlap_and_return_on_unwind' panicked at crates/city-headless/src/control_data.rs:273:13:
+release
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+workspace_manifest:{"disk_work_image":"128MiB canonical 0xa5, not a serialization of decoder heap","initialized_tail_bytes":5338736,"inline_header_bytes":464,"native_inline_header_bytes":304,"native_owned_bytes":29625968,"owned_bytes":67108864,"parser_and_report":"original 4MiB metadata; 2MiB IO already charged there","table_backings":[{"count":30000,"owned_bytes":1920000},{"count":160000,"owned_bytes":20480000},{"count":24000,"owned_bytes":6144000},{"count":900000,"owned_bytes":3600000}],"thread_stack":"original 2MiB native stack, included in physical process measurements"}
+
+thread 'worker_slots::tests::read_failure_encoding_failure_and_unwind_restore_touched_balance' panicked at crates/city-headless/src/worker_slots.rs:445:60:
+fault
+
+thread 'scale_model_task::stream::tests::exact_fixed_comparison_covers_chunks_lengths_and_io_failure' panicked at crates/city-headless/src/scale_model_task/stream.rs:375:42:
+unwind_fault

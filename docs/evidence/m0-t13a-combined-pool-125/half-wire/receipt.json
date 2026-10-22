@@ -1,0 +1,114 @@
+{
+  "binary_sha256": "557b2e4d0bc89f429a07a270c9f388b508d595c8b4a1f233b795becdf75797e7",
+  "case_root_created_after_observer_failure": false,
+  "controller_auxiliary": {
+    "controller_only_peak_phys_footprint_bytes": 16089400,
+    "missing_identity_samples": 0,
+    "sample_count": 2,
+    "sample_log": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/half-wire/controller-resource-samples.jsonl",
+    "unavailable_controller_samples_not_zero": true
+  },
+  "controller_birth": 26451022072908,
+  "controller_pid": 54689,
+  "exercise_report": null,
+  "fault_injected": false,
+  "fault_target_proof_present": false,
+  "half_wire": null,
+  "identity_audit": {
+    "complete": false,
+    "identities": [
+      {
+        "birth": 26451024989776,
+        "confirmed_absent": null,
+        "first_seen_frame_t": 0.025361583,
+        "parent_pid": 54689,
+        "pid": 54690,
+        "role": "observer",
+        "status": "same_birth_still_alive",
+        "terminal_usage": {
+          "disk_bytes_read": 0,
+          "disk_bytes_written": 36864,
+          "phys_footprint_bytes": 3424568,
+          "pid": 54690,
+          "rss_bytes": 5603328,
+          "start_abstime": 26451024989776,
+          "system_time_ns": 10705541,
+          "user_time_ns": 7661208
+        }
+      },
+      {
+        "birth": 26451038286112,
+        "confirmed_absent": null,
+        "parent_pid": 54690,
+        "pid": 54701,
+        "role": "r07-layout-driver",
+        "status": "same_birth_still_alive",
+        "terminal_usage": {
+          "disk_bytes_read": 0,
+          "disk_bytes_written": 32768,
+          "phys_footprint_bytes": 68469096,
+          "pid": 54701,
+          "rss_bytes": 70565888,
+          "start_abstime": 26451038286112,
+          "system_time_ns": 13599708,
+          "user_time_ns": 39552958
+        }
+      },
+      {
+        "birth": 26451039537455,
+        "confirmed_absent": null,
+        "parent_pid": 54701,
+        "pid": 54702,
+        "role": "layout-r07-session",
+        "status": "same_birth_still_alive",
+        "terminal_usage": {
+          "disk_bytes_read": 0,
+          "disk_bytes_written": 81920,
+          "phys_footprint_bytes": 3260893800,
+          "pid": 54702,
+          "rss_bytes": 3261775872,
+          "start_abstime": 26451039537455,
+          "system_time_ns": 303056083,
+          "user_time_ns": 797323416
+        }
+      }
+    ],
+    "identity_count": 3
+  },
+  "marker_protocol": [],
+  "mode": "half-wire",
+  "observer_birth": 26451024989776,
+  "observer_exit_code": null,
+  "observer_measurement": {
+    "already_in_raw_group": true,
+    "missing_identity_samples": 0,
+    "must_not_be_added_to_raw_group_again": true,
+    "peak_phys_footprint_bytes": 3359032,
+    "sample_count": 2
+  },
+  "observer_pid": 54690,
+  "observer_report": null,
+  "outcome_checks": {
+    "checks": {},
+    "missing_evidence": [
+      "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/half-wire/observer-report.json",
+      "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/half-wire/model/layout/report.json",
+      "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/half-wire/model/cold-with-provider/report.json",
+      "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/half-wire/model/exercise-report.json"
+    ],
+    "passed": false
+  },
+  "passed_fault_exercise": false,
+  "performance_acceptance": "not_claimed",
+  "protocol_complete": false,
+  "reason": "RuntimeError: nonce-bound observer clock map source/PID mismatch",
+  "registration_nonce": "67c2835afb5866acdd3443fd334cb95f",
+  "registration_record_count": 2,
+  "retention": "all files retained; no snapshot cleanup or restart",
+  "schema": "mycity-controlled-fault-case-receipt-v1",
+  "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+  "source_sha256_matches_fixed_binary": true,
+  "target_signal": null,
+  "terminal_monotonic_ns": 1911954375,
+  "timed_out": false
+}

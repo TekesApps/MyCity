@@ -1,0 +1,39 @@
+{
+  "authoritative_later_audit": {
+    "complete": true,
+    "identity_count": 3,
+    "identities": [
+      {
+        "birth": 26451024989776,
+        "confirmed_absent": true,
+        "first_seen_frame_t": 0.025361583,
+        "parent_pid": 54689,
+        "pid": 54690,
+        "role": "observer",
+        "status": "confirmed_absent",
+        "terminal_usage": null
+      },
+      {
+        "birth": 26451038286112,
+        "confirmed_absent": true,
+        "parent_pid": 54690,
+        "pid": 54701,
+        "role": "r07-layout-driver",
+        "status": "confirmed_absent",
+        "terminal_usage": null
+      },
+      {
+        "birth": 26451039537455,
+        "confirmed_absent": true,
+        "parent_pid": 54701,
+        "pid": 54702,
+        "role": "layout-r07-session",
+        "status": "confirmed_absent",
+        "terminal_usage": null
+      }
+    ]
+  },
+  "monotonic_ns": 80070791,
+  "original_failed_receipt_unchanged": true,
+  "note": "controller bookkeeping failed before fault; this later terminal audit is not a passed fault case"
+}

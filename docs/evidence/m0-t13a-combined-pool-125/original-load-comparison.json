@@ -1,0 +1,42 @@
+[
+  {
+    "case": "separate-control",
+    "all_fields_equal_except_source_sha256": true,
+    "baseline_source": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+    "candidate_source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+    "baseline_manifest": "/Volumes/HP P900/dev/MyCity/work/full-r07-vm-diagnostic-03/observed/model/layout/manifest.json",
+    "candidate_manifest": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/separate-control/model/layout/manifest.json",
+    "original_normal_joint_budget_bytes": 3328599654,
+    "original_acceptance_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508"
+  },
+  {
+    "case": "combined-control",
+    "all_fields_equal_except_source_sha256": true,
+    "baseline_source": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+    "candidate_source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+    "baseline_manifest": "/Volumes/HP P900/dev/MyCity/work/full-r07-vm-diagnostic-03/observed/model/layout/manifest.json",
+    "candidate_manifest": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/combined-control/model/layout/manifest.json",
+    "original_normal_joint_budget_bytes": 3328599654,
+    "original_acceptance_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508"
+  },
+  {
+    "case": "half-wire03",
+    "all_fields_equal_except_source_sha256": true,
+    "baseline_source": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+    "candidate_source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+    "baseline_manifest": "/Volumes/HP P900/dev/MyCity/work/full-r07-vm-diagnostic-03/observed/model/layout/manifest.json",
+    "candidate_manifest": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/half-wire03/model/layout/manifest.json",
+    "original_normal_joint_budget_bytes": 3328599654,
+    "original_acceptance_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508"
+  },
+  {
+    "case": "cold-error",
+    "all_fields_equal_except_source_sha256": true,
+    "baseline_source": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+    "candidate_source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+    "baseline_manifest": "/Volumes/HP P900/dev/MyCity/work/full-r07-vm-diagnostic-03/observed/model/layout/manifest.json",
+    "candidate_manifest": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/cold-error/model/layout/manifest.json",
+    "original_normal_joint_budget_bytes": 3328599654,
+    "original_acceptance_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508"
+  }
+]

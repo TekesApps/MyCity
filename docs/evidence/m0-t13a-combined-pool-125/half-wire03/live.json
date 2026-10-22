@@ -1,0 +1,14 @@
+{
+  "controller_birth": 26459634855701,
+  "controller_pid": 58558,
+  "launch_monotonic_ns": 100522833,
+  "mode": "half-wire",
+  "observer_birth": 26459637590964,
+  "observer_parent_relation": [
+    58558,
+    null,
+    "2",
+    "mycity-headless"
+  ],
+  "observer_pid": 58561
+}

@@ -1,0 +1,44 @@
+{
+  "bytes_sent_hex": "7b22736f75726365223a22706f6f6c2d636f6e74726f6c2d68616c662d7769726522",
+  "close_after_seconds": 2.25,
+  "closed_monotonic_ns": 15792911333,
+  "connected_monotonic_ns": 13506922166,
+  "ready": {
+    "boot": 1792696154798126000,
+    "capacity_bytes": 67108864,
+    "diagnostic_reserved_bytes": 262144,
+    "fault_injection": null,
+    "pid": 57758,
+    "schema": "mycity-normal-pool-v1",
+    "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c"
+  },
+  "root_identity_check": {
+    "expected_birth": 26456165588406,
+    "expected_parent": 57756,
+    "issue": null,
+    "ok": true,
+    "parent_ok": true,
+    "pid": 57758,
+    "proof": {
+      "capture_begin_monotonic_ns": 13506843000,
+      "capture_end_monotonic_ns": 13506853416
+    },
+    "relation": [
+      57756,
+      null,
+      "2",
+      "mycity-headless"
+    ],
+    "usage": {
+      "disk_bytes_read": 49152,
+      "disk_bytes_written": 32768,
+      "phys_footprint_bytes": 68501888,
+      "pid": 57758,
+      "rss_bytes": 69959680,
+      "start_abstime": 26456165588406,
+      "system_time_ns": 14942958,
+      "user_time_ns": 217866583
+    }
+  },
+  "socket": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/half-wire02/model/normal-pool/pool.sock"
+}

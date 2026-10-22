@@ -886,32 +886,56 @@ impl WorkerGrant {
 }
 /// One bounded owner server; private control connection commands are short-lived.
 pub fn serve(root: &Path) -> Result<(), String> {
+    serve_inner(root, true, None, |_| Ok(false))
+}
+/// The same pool service/backing with a bounded nonblocking owner state machine.
+/// The caller must actually wait every owned child before requesting shutdown.
+/// This is a diagnostic candidate, not additional model or native memory credit.
+pub(crate) fn serve_controlled(
+    root: &Path,
+    vm_trace: bool,
+    control: impl FnMut(&Summary) -> Result<bool, String>,
+) -> Result<(), String> {
+    serve_inner(root, false, Some(vm_trace), control)
+}
+fn serve_inner(
+    root: &Path,
+    watch_parent: bool,
+    explicit_vm_trace: Option<bool>,
+    mut control: impl FnMut(&Summary) -> Result<bool, String>,
+) -> Result<(), String> {
     fs::create_dir(root).map_err(err)?;
     let listener = UnixListener::bind(root.join("pool.sock")).map_err(err)?;
     listener.set_nonblocking(true).map_err(err)?;
     let stopped = Arc::new(AtomicBool::new(false));
-    let stop = Arc::clone(&stopped);
-    std::thread::Builder::new()
-        .name("normal-pool-parent".into())
-        .stack_size(128 * 1024)
-        .spawn(move || {
-            let mut data = [0; 32];
-            while let Ok(n) = std::io::stdin().read(&mut data) {
-                if n == 0 {
-                    break;
+    if watch_parent {
+        let stop = Arc::clone(&stopped);
+        std::thread::Builder::new()
+            .name("normal-pool-parent".into())
+            .stack_size(128 * 1024)
+            .spawn(move || {
+                let mut data = [0; 32];
+                while let Ok(n) = std::io::stdin().read(&mut data) {
+                    if n == 0 {
+                        break;
+                    }
                 }
-            }
-            stop.store(true, Ordering::Release);
-        })
-        .map_err(err)?;
+                stop.store(true, Ordering::Release);
+            })
+            .map_err(err)?;
+    }
     let mut pool = Pool::new(root)?;
-    match std::env::var("MYCITY_POOL_VM_TRACE").ok().as_deref() {
-        None => (),
-        Some("1") => {
-            pool.vm_trace_enabled = true;
-            pool.write_vm_trace(root)?;
-        }
-        Some(_) => return Err("normal_pool_vm_trace_mode".into()),
+    let vm_trace = match explicit_vm_trace {
+        Some(value) => value,
+        None => match std::env::var("MYCITY_POOL_VM_TRACE").ok().as_deref() {
+            None => false,
+            Some("1") => true,
+            Some(_) => return Err("normal_pool_vm_trace_mode".into()),
+        },
+    };
+    if vm_trace {
+        pool.vm_trace_enabled = true;
+        pool.write_vm_trace(root)?;
     }
     let mut f = File::create_new(root.join("ready.json")).map_err(err)?;
     serde_json::to_writer(&mut f, &pool.ready).map_err(err)?;
@@ -919,6 +943,9 @@ pub fn serve(root: &Path) -> Result<(), String> {
     let mut next_scan = Instant::now() + Duration::from_secs(1);
     let mut next_periodic_event = Instant::now() + Duration::from_secs(PERIODIC_EVENT_SECONDS);
     while !stopped.load(Ordering::Acquire) {
+        if control(&pool.summary)? {
+            break;
+        }
         match listener.accept() {
             Ok((mut socket, _)) => {
                 // BSD/macOS accept can inherit O_NONBLOCK from the listener.
@@ -1013,7 +1040,14 @@ pub fn serve(root: &Path) -> Result<(), String> {
         }
     }
     pool.scan()?;
-    pool.event("parent_pipe_closed", pool.active)?;
+    pool.event(
+        if watch_parent {
+            "parent_pipe_closed"
+        } else {
+            "controlled_children_waited"
+        },
+        pool.active,
+    )?;
     let balanced = pool.active.is_none() && !pool.broker.registered();
     #[derive(Serialize)]
     struct Final {
@@ -1156,6 +1190,50 @@ mod tests {
         fn drop(&mut self) {
             let _ = fs::remove_dir_all(&self.0);
         }
+    }
+    fn controlled_test_root(name: &str) -> (Temp, PathBuf) {
+        // Unix sockets admit at most SUN_LEN bytes. Unit-only metadata uses the
+        // existing scoped temp fixture; full CLI restore artifacts stay on SSD.
+        let temp = Temp::new();
+        let root = temp.0.join(name);
+        (temp, root)
+    }
+    #[test]
+    fn controlled_owner_keeps_original_backing_and_requires_balanced_shutdown() {
+        let (_temp, root) = controlled_test_root("balanced");
+        let mut calls = 0;
+        serve_controlled(&root, false, |summary| {
+            assert_eq!(summary.capacity_bytes, BYTES);
+            assert_eq!(summary.available_touched_bytes, BYTES);
+            assert_eq!(summary.granted_capacity_bytes, 0);
+            calls += 1;
+            Ok(calls == 2)
+        })
+        .unwrap();
+        let ready: serde_json::Value =
+            serde_json::from_slice(&fs::read(root.join("ready.json")).unwrap()).unwrap();
+        let report: serde_json::Value =
+            serde_json::from_slice(&fs::read(root.join("report.json")).unwrap()).unwrap();
+        assert_eq!(calls, 2);
+        assert_eq!(ready["pid"], std::process::id());
+        assert_eq!(report["balanced_after_owned_wait"], true);
+        assert_eq!(report["summary"]["capacity_bytes"], BYTES);
+        assert_eq!(report["summary"]["available_touched_bytes"], BYTES);
+        assert_eq!(report["summary"]["granted_capacity_bytes"], 0);
+        assert_eq!(report["rust_metadata_cap_bytes"], DIAGNOSTIC_BYTES);
+        assert!(fs::read_to_string(root.join("events.jsonl"))
+            .unwrap()
+            .contains("controlled_children_waited"));
+    }
+    #[test]
+    fn controlled_owner_failure_cannot_publish_a_successful_pool_report() {
+        let (_temp, root) = controlled_test_root("failure");
+        assert_eq!(
+            serve_controlled(&root, false, |_| Err("controlled_test_failure".into())),
+            Err("controlled_test_failure".into())
+        );
+        assert!(root.join("ready.json").exists());
+        assert!(!root.join("report.json").exists());
     }
     #[test]
     fn actual_64mib_pages_grant_identity_and_duplicate_receipts_never_double_credit() {

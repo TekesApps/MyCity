@@ -1,0 +1,13 @@
+{
+  "estimated_footprint_deduction_bytes": 0,
+  "exclusion": "entire_actual_child_pid_for_lifetime",
+  "identity": {
+    "parent_pid": 59195,
+    "pid": 59196,
+    "start_abstime": 26463690590925
+  },
+  "raw_group_unchanged": true,
+  "reason": "combined root owns the normal64MiB pool; not diagnostic-only",
+  "schema": "mycity-r07-excluded-mixed-root-v1",
+  "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c"
+}

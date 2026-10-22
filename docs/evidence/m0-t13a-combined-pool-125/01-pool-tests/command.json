@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "cargo",
+    "test",
+    "--release",
+    "-p",
+    "mycity-headless",
+    "--lib",
+    "normal_pool::tests",
+    "--",
+    "--nocapture"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/pool-control-current",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-22T18:48:11.960232+00:00",
+  "source_manifest_sha256": "98de28faa84077e4c4225515f3ac482f5be3d34d72bb4714e0a0a75d245a69ef"
+}

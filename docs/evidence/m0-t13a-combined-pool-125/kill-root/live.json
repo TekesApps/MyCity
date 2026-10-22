@@ -1,0 +1,14 @@
+{
+  "controller_birth": 26466429155012,
+  "controller_pid": 60884,
+  "launch_monotonic_ns": 75839333,
+  "mode": "kill-root",
+  "observer_birth": 26466431279583,
+  "observer_parent_relation": [
+    60884,
+    null,
+    "2",
+    "mycity-headless"
+  ],
+  "observer_pid": 60887
+}

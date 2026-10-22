@@ -1,0 +1,4 @@
+{
+  "error": "RuntimeError: nonce-bound observer clock map source/PID mismatch",
+  "traceback": "Traceback (most recent call last):\n  File \"/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/fault-cases.py\", line 605, in main\n    raise RuntimeError('nonce-bound observer clock map source/PID mismatch')\nRuntimeError: nonce-bound observer clock map source/PID mismatch\n"
+}

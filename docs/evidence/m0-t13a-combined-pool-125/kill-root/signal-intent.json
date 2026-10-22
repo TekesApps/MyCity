@@ -1,0 +1,35 @@
+{
+  "birth": 26466431512581,
+  "controller_monotonic_ns": 1363439916,
+  "pid": 60888,
+  "pre_signal_identity_check": {
+    "expected_birth": 26466431512581,
+    "expected_parent": 60887,
+    "issue": null,
+    "ok": true,
+    "parent_ok": true,
+    "pid": 60888,
+    "proof": {
+      "capture_begin_monotonic_ns": 1363371666,
+      "capture_end_monotonic_ns": 1363380875
+    },
+    "relation": [
+      60887,
+      null,
+      "2",
+      "mycity-headless"
+    ],
+    "usage": {
+      "disk_bytes_read": 0,
+      "disk_bytes_written": 32768,
+      "phys_footprint_bytes": 68469120,
+      "pid": 60888,
+      "rss_bytes": 70549504,
+      "start_abstime": 26466431512581,
+      "system_time_ns": 8186875,
+      "user_time_ns": 35601500
+    }
+  },
+  "signal": "SIGKILL",
+  "target_role": "r07-layout-driver"
+}

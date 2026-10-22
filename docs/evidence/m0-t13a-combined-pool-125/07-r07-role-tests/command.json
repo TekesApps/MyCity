@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "cargo",
+    "test",
+    "--release",
+    "-p",
+    "mycity-headless",
+    "--lib",
+    "native_watch::r07_role_tests",
+    "--",
+    "--nocapture"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/pool-control-current",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-22T18:58:58.749923+00:00",
+  "source_manifest_sha256": "730561f026149d53ca021157da6fe4ff6440bdcbe6d05a5f373d7239affb40f8"
+}

@@ -1,0 +1,254 @@
+{
+  "frames": [
+    {
+      "clock_begin_ns": 14034778625,
+      "clock_end_ns": 14035427208,
+      "cpu_io_footprint": null,
+      "group_capture_complete": true,
+      "identity_uncertainties": [],
+      "member_footprints_pid_birth_bytes": [
+        [
+          68411,
+          26490626787105,
+          3440928
+        ],
+        [
+          68412,
+          26490627019309,
+          68485480
+        ],
+        [
+          68413,
+          26490628023379,
+          3264318056
+        ]
+      ],
+      "members": [
+        [
+          68411,
+          68408,
+          26490626787105,
+          5718016,
+          "observer"
+        ],
+        [
+          68412,
+          68411,
+          26490627019309,
+          70582272,
+          "r07-layout-driver"
+        ],
+        [
+          68413,
+          68412,
+          26490628023379,
+          3265937408,
+          "layout-r07-session"
+        ]
+      ],
+      "missing_footprint": 0,
+      "missing_rss": 0,
+      "observer_hot_bound_bytes": 2097152,
+      "pending_registration_bytes": 0,
+      "phys_footprint_bytes": 3336244464,
+      "pressure_dispatch_flag": 1,
+      "r07_applied": {
+        "owner": {
+          "parent_pid": 68412,
+          "pid": 68413,
+          "start_abstime": 26490628023379
+        },
+        "permitted_bytes": 0,
+        "reason": "reading_identity_sequence_or_ttl",
+        "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+        "state": {
+          "arena_tail_bytes": 52432,
+          "epoch": 2,
+          "logical_bytes": 277662928,
+          "mapped_bytes": 277610496,
+          "quantum_bytes": 65536,
+          "reading_sequence": 52,
+          "replaced_bytes": 0,
+          "schema": 1
+        }
+      },
+      "r07_coverage_complete": true,
+      "r07_provider_paused": true,
+      "r07_reading": null,
+      "registration_lock_busy": false,
+      "rss_bytes": 3342237696,
+      "swap_used_bytes": 1998585856,
+      "system": null,
+      "t": 14.035427208,
+      "window_s": 0.000648583
+    },
+    {
+      "clock_begin_ns": 14284898167,
+      "clock_end_ns": 14285737750,
+      "cpu_io_footprint": null,
+      "group_capture_complete": true,
+      "identity_uncertainties": [],
+      "member_footprints_pid_birth_bytes": [
+        [
+          68411,
+          26490626787105,
+          3440928
+        ],
+        [
+          68412,
+          26490627019309,
+          68485480
+        ],
+        [
+          68413,
+          26490628023379,
+          3264318056
+        ]
+      ],
+      "members": [
+        [
+          68411,
+          68408,
+          26490626787105,
+          5718016,
+          "observer"
+        ],
+        [
+          68412,
+          68411,
+          26490627019309,
+          70582272,
+          "r07-layout-driver"
+        ],
+        [
+          68413,
+          68412,
+          26490628023379,
+          3265937408,
+          "layout-r07-session"
+        ]
+      ],
+      "missing_footprint": 0,
+      "missing_rss": 0,
+      "observer_hot_bound_bytes": 2097152,
+      "pending_registration_bytes": 0,
+      "phys_footprint_bytes": 3336244464,
+      "pressure_dispatch_flag": 1,
+      "r07_applied": {
+        "owner": {
+          "parent_pid": 68412,
+          "pid": 68413,
+          "start_abstime": 26490628023379
+        },
+        "permitted_bytes": 0,
+        "reason": "reading_identity_sequence_or_ttl",
+        "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+        "state": {
+          "arena_tail_bytes": 52432,
+          "epoch": 2,
+          "logical_bytes": 277662928,
+          "mapped_bytes": 277610496,
+          "quantum_bytes": 65536,
+          "reading_sequence": 52,
+          "replaced_bytes": 0,
+          "schema": 1
+        }
+      },
+      "r07_coverage_complete": true,
+      "r07_provider_paused": true,
+      "r07_reading": null,
+      "registration_lock_busy": false,
+      "rss_bytes": 3342237696,
+      "swap_used_bytes": 1998585856,
+      "system": null,
+      "t": 14.28573775,
+      "window_s": 0.000839583
+    },
+    {
+      "clock_begin_ns": 14534787333,
+      "clock_end_ns": 14535494750,
+      "cpu_io_footprint": null,
+      "group_capture_complete": true,
+      "identity_uncertainties": [],
+      "member_footprints_pid_birth_bytes": [
+        [
+          68411,
+          26490626787105,
+          3440928
+        ],
+        [
+          68412,
+          26490627019309,
+          68485480
+        ],
+        [
+          68413,
+          26490628023379,
+          3264318056
+        ]
+      ],
+      "members": [
+        [
+          68411,
+          68408,
+          26490626787105,
+          5718016,
+          "observer"
+        ],
+        [
+          68412,
+          68411,
+          26490627019309,
+          70582272,
+          "r07-layout-driver"
+        ],
+        [
+          68413,
+          68412,
+          26490628023379,
+          3265937408,
+          "layout-r07-session"
+        ]
+      ],
+      "missing_footprint": 0,
+      "missing_rss": 0,
+      "observer_hot_bound_bytes": 2097152,
+      "pending_registration_bytes": 0,
+      "phys_footprint_bytes": 3336244464,
+      "pressure_dispatch_flag": 1,
+      "r07_applied": {
+        "owner": {
+          "parent_pid": 68412,
+          "pid": 68413,
+          "start_abstime": 26490628023379
+        },
+        "permitted_bytes": 0,
+        "reason": "reading_identity_sequence_or_ttl",
+        "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+        "state": {
+          "arena_tail_bytes": 52432,
+          "epoch": 2,
+          "logical_bytes": 277662928,
+          "mapped_bytes": 277610496,
+          "quantum_bytes": 65536,
+          "reading_sequence": 52,
+          "replaced_bytes": 0,
+          "schema": 1
+        }
+      },
+      "r07_coverage_complete": true,
+      "r07_provider_paused": true,
+      "r07_reading": null,
+      "registration_lock_busy": false,
+      "rss_bytes": 3342237696,
+      "swap_used_bytes": 1998585856,
+      "system": null,
+      "t": 14.53549475,
+      "window_s": 0.000707417
+    }
+  ],
+  "predicate": "group+coverage complete; provider paused; mapped=277610496; replaced=0; permitted=0; exact registered root/layout PID+birth and owner; member footprint sum equals group footprint",
+  "required_consecutive_frames": 3,
+  "schema": "mycity-r07-full-restored-window-v1",
+  "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c"
+}

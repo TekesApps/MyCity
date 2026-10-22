@@ -1,0 +1,108 @@
+{
+  "controller_monotonic_ns": 1390503625,
+  "fault": "preexisting empty output directory makes actual cold child fail",
+  "path": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/cold-error/model/cold-with-provider",
+  "source_sha256": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+  "validated_live_owner_frame": {
+    "clock_begin_ns": 1027650500,
+    "clock_end_ns": 1032515583,
+    "cpu_io_footprint": null,
+    "group_capture_complete": true,
+    "identity_uncertainties": [],
+    "member_footprints_pid_birth_bytes": [
+      [
+        68411,
+        26490626787105,
+        3424544
+      ],
+      [
+        68412,
+        26490627019309,
+        68485480
+      ],
+      [
+        68413,
+        26490628023379,
+        3260893800
+      ]
+    ],
+    "members": [
+      [
+        68411,
+        68408,
+        26490626787105,
+        5619712,
+        "observer"
+      ],
+      [
+        68412,
+        68411,
+        26490627019309,
+        70582272,
+        "r07-layout-driver"
+      ],
+      [
+        68413,
+        68412,
+        26490628023379,
+        3261775872,
+        "layout-r07-session"
+      ]
+    ],
+    "missing_footprint": 0,
+    "missing_rss": 0,
+    "observer_hot_bound_bytes": 2097152,
+    "pending_registration_bytes": 0,
+    "phys_footprint_bytes": 3332803824,
+    "pressure_dispatch_flag": 1,
+    "r07_applied": {
+      "owner": {
+        "parent_pid": 68412,
+        "pid": 68413,
+        "start_abstime": 26490628023379
+      },
+      "permitted_bytes": 3424544,
+      "reason": "fresh_unique_live_same_use_components",
+      "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c",
+      "state": {
+        "arena_tail_bytes": 52432,
+        "epoch": 1,
+        "logical_bytes": 277662928,
+        "mapped_bytes": 274202624,
+        "quantum_bytes": 65536,
+        "reading_sequence": 4,
+        "replaced_bytes": 3407872,
+        "schema": 1
+      }
+    },
+    "r07_coverage_complete": true,
+    "r07_provider_paused": false,
+    "r07_reading": {
+      "components": [
+        {
+          "footprint_bytes": 3424544,
+          "identity": {
+            "parent_pid": 68408,
+            "pid": 68411,
+            "start_abstime": 26490626787105
+          },
+          "role": "observer"
+        },
+        null,
+        null
+      ],
+      "monotonic_begin_ns": 1269989145814000,
+      "monotonic_end_ns": 1269989146308000,
+      "nonce": "23f0650f80edd658ac6906bb68b8eb08",
+      "schema": 1,
+      "sequence": 5,
+      "source": "ac02e7ccb7e2b9e842e5f8dd15903b14f7fff9b9426909449b36b33bbd08db6c"
+    },
+    "registration_lock_busy": false,
+    "rss_bytes": 3337977856,
+    "swap_used_bytes": 1998585856,
+    "system": null,
+    "t": 1.032515583,
+    "window_s": 0.004865083
+  }
+}

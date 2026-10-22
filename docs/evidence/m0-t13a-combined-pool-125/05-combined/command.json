@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/executables/6279b76ab63cad479b022664c90d68c2a53e373143c4dc72ac7549848e5515ea/mycity-headless",
+    "native-observe",
+    "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/combined",
+    "--",
+    "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/executables/6279b76ab63cad479b022664c90d68c2a53e373143c4dc72ac7549848e5515ea/mycity-headless",
+    "r07-layout-driver",
+    "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/combined/model",
+    "--combined-pool"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/pool-control-current",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-22T18:53:54.338465+00:00",
+  "source_manifest_sha256": "5e8b1c8366c7d75412adf038954ca9a0411d4479845201ad795022c7efdd8ee5"
+}

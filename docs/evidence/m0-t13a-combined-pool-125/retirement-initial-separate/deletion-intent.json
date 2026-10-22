@@ -1,0 +1,51 @@
+{
+  "files": [
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/separate/model/layout/snapshots/snapshot-000001/pressure.bin",
+      "bytes": 3039190646,
+      "allocated_bytes": 3039191040,
+      "device": 16777248,
+      "inode": 1664492,
+      "mtime_ns": 1792695320965930209,
+      "sha256": "70dd23ecd767c7b4aab5d6174841ab22c6c465f9975aa4698973c547c9505cee",
+      "reason": "obsolete synthetic pressure/reserve after actual two-generation and cold-read validation;final-source separate-control retains a fully verified two-generation recovery baseline; initial separate raw evidence and semantic payload retained",
+      "retained_evidence": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/separate/observer-report.json"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/separate/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "device": 16777248,
+      "inode": 1664511,
+      "mtime_ns": 1792695321116752740,
+      "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee",
+      "reason": "obsolete synthetic pressure/reserve after actual two-generation and cold-read validation;final-source separate-control retains a fully verified two-generation recovery baseline; initial separate raw evidence and semantic payload retained",
+      "retained_evidence": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/separate/observer-report.json"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/separate/model/layout/snapshots/snapshot-000002/pressure.bin",
+      "bytes": 3039190646,
+      "allocated_bytes": 3039191040,
+      "device": 16777248,
+      "inode": 1664590,
+      "mtime_ns": 1792695331559706287,
+      "sha256": "4500fe80d3ff204ebfb663697d1687bdaeff373b3ff9e6ad5cd866ad9ce5869a",
+      "reason": "obsolete synthetic pressure/reserve after actual two-generation and cold-read validation;final-source separate-control retains a fully verified two-generation recovery baseline; initial separate raw evidence and semantic payload retained",
+      "retained_evidence": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/separate/observer-report.json"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/separate/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "device": 16777248,
+      "inode": 1664706,
+      "mtime_ns": 1792695331703829074,
+      "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee",
+      "reason": "obsolete synthetic pressure/reserve after actual two-generation and cold-read validation;final-source separate-control retains a fully verified two-generation recovery baseline; initial separate raw evidence and semantic payload retained",
+      "retained_evidence": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/separate/observer-report.json"
+    }
+  ],
+  "not_directly_restorable_after_retirement": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/separate",
+  "new_complete_baseline": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/separate-control",
+  "dependency_review": "initial separate source4a818 is superseded by the same-source ac02 separate/combined control pair; only its raw diagnostic logs remain referenced; no future restore uses this initial source; final sourceac02 separate-control two complete generations cold-read and every file SHA verified; frozen source/exe/190 prior originals preserved"
+}

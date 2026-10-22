@@ -1,0 +1,9 @@
+
+running 4 tests
+test normal_pool::tests::control_wire_bound_truncation_trailing_and_escape_reject_before_growth ... ok
+test normal_pool::tests::fixed_event_envelope_covers_u128_and_original_eight_hour_diagnostics ... ok
+test normal_pool::tests::every_control_variant_round_trips_u128_without_a_dynamic_tagged_content_tree ... ok
+test normal_pool::tests::actual_64mib_pages_grant_identity_and_duplicate_receipts_never_double_credit ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 82 filtered out; finished in 0.17s
+

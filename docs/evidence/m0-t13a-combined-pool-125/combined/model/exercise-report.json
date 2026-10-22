@@ -1,0 +1,11 @@
+{
+  "actual_seconds": 24.912050875,
+  "combined_pool_process": true,
+  "eight_hour": "not_run",
+  "formal_acceptance": false,
+  "latest_snapshot": "/Volumes/HP P900/dev/MyCity/work/pool-control-current-01/combined/model/layout/snapshots/snapshot-000002",
+  "layout_and_live_provider_cold_exit_zero": true,
+  "memory_credit_bytes": 0,
+  "real_16gb": "not_run",
+  "source_sha256": "4a818a79a8d8bd0d4d64deb0035788dd2d4c5a28fb2efcadac1abfbc7b30d340"
+}
