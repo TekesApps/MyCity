@@ -17,7 +17,7 @@ use mycity_storage::{CapacityPolicy, Error as StorageError, Store};
 use serde::Serialize;
 use serde_json::Value;
 use sha2::{Digest, Sha256};
-use std::{env, fs, path::Path};
+use std::{collections::BTreeSet, env, fs, path::Path};
 
 const RULES: &str = "m0-town-transport-fixed-profile-v1";
 const OPENING: &[u8] = include_bytes!("../../../fixtures/m0-e0-opening.json");
@@ -119,6 +119,41 @@ struct Allocation<'a> {
     assignment: &'a mycity_core::transport::Assignment,
     partitions: &'a [TripPartition],
     fee_policy: FeePolicyInput,
+}
+
+#[derive(Default)]
+struct Road28Totals {
+    sales: i128,
+    produced: i128,
+    unmet: i128,
+    goods_payments: i128,
+    freight: i128,
+    utilities: i128,
+    disposal: i128,
+    labor_basis: i128,
+    wages_accrued: i128,
+    idle_labor: i128,
+    days_with_sales: u32,
+    last_sales_day: u32,
+}
+
+impl Road28Totals {
+    fn add(&mut self, day: u32, summary: mycity_core::town_runtime::MarketSummary) {
+        self.sales += i128::from(summary.actual_sales.value());
+        self.produced += i128::from(summary.produced.value());
+        self.unmet += i128::from(summary.unmet_market_demand.value());
+        self.goods_payments += i128::from(summary.goods_payments.value());
+        self.freight += i128::from(summary.freight.value());
+        self.utilities += i128::from(summary.utilities.value());
+        self.disposal += i128::from(summary.disposal.value());
+        self.labor_basis += i128::from(summary.labor_basis.value());
+        self.wages_accrued += i128::from(summary.wages_accrued.value());
+        self.idle_labor += i128::from(summary.idle_labor_expense.value());
+        if summary.actual_sales > Quantity::ZERO {
+            self.days_with_sales += 1;
+            self.last_sales_day = day;
+        }
+    }
 }
 
 fn opening_with_market(allocation_hash: [u8; 32]) -> Vec<u8> {
@@ -291,7 +326,7 @@ fn construction_action(
 
 /// Store-backed causal scenario: the project pays for a real road-capacity resource, but
 /// traffic remains at the base epoch until inspection is accepted at the settled day boundary.
-fn run_road_effect(dir: &str, production_and_suspend: bool) -> Result<(), String> {
+fn run_road_effect(dir: &str, production_and_suspend: bool, road_28: bool) -> Result<(), String> {
     if Path::new(dir).exists() {
         return Err("store directory already exists".into());
     }
@@ -395,6 +430,23 @@ fn run_road_effect(dir: &str, production_and_suspend: bool) -> Result<(), String
         .iter()
         .map(|account| i128::from(account.cash.value()))
         .sum();
+    let opening_view = store.engine().map_err(err)?.world().view();
+    let opening_company_cash = opening_view
+        .accounts
+        .iter()
+        .find(|row| row.id == 3)
+        .ok_or("factory company account missing at opening")?
+        .cash;
+    let opening_raw = opening_view
+        .stocks
+        .iter()
+        .find(|row| row.id == 2)
+        .ok_or("factory raw stock missing at opening")?;
+    let opening_finished = opening_view
+        .stocks
+        .iter()
+        .find(|row| row.id == 3)
+        .ok_or("factory finished stock missing at opening")?;
 
     for (caller, command) in [
         (Caller::Account(4), ConstructionCommand::File),
@@ -439,7 +491,7 @@ fn run_road_effect(dir: &str, production_and_suspend: bool) -> Result<(), String
                         home_city: 0,
                         hourly_cents: Money::new(100).map_err(err)?,
                         cycle: mycity_core::timeline::Cycle::Daily,
-                        ends_at: 7 * DAY,
+                        ends_at: if road_28 { 28 * DAY } else { 7 * DAY },
                     },
                 },
             },
@@ -611,7 +663,11 @@ fn run_road_effect(dir: &str, production_and_suspend: bool) -> Result<(), String
         .value();
     if day_two_provider_cash - first_provider_cash
         != day_one_market.state.last_summary.freight.value()
+            + day_one_market.state.last_summary.utilities.value()
+            + day_one_market.state.last_summary.disposal.value()
             + day_two_market.state.last_summary.freight.value()
+            + day_two_market.state.last_summary.utilities.value()
+            + day_two_market.state.last_summary.disposal.value()
         || first_proof == second_proof
     {
         return Err("road service freight or daily proof generation did not reconcile".into());
@@ -649,7 +705,228 @@ fn run_road_effect(dir: &str, production_and_suspend: bool) -> Result<(), String
         return Err("cold recovery did not preserve road publication and historical proofs".into());
     }
     let mut suspension_report = Value::Null;
-    if production_and_suspend {
+    let mut road_28_report = Value::Null;
+    if road_28 {
+        if day_one_market.state.last_summary.produced.value() != 400 {
+            return Err(
+                "road-28 did not produce goods from actual payroll and opening raw stock".into(),
+            );
+        }
+        let mut totals = Road28Totals::default();
+        totals.add(1, day_one_market.state.last_summary);
+        totals.add(2, day_two_market.state.last_summary);
+        let mut proof_hashes = BTreeSet::new();
+        proof_hashes.insert(first_proof);
+        proof_hashes.insert(second_proof);
+        if proof_hashes.len() != 2 {
+            return Err("day-one and day-two transport proofs are not unique".into());
+        }
+        let mut midpoint_hash = String::new();
+        let mut midpoint_sequence = 0;
+        let mut midpoint_op = 0;
+        for day in 3..=28_u32 {
+            advance_to(&mut recovered, u64::from(day) * DAY)?;
+            let settlement_op = 80_100 + u64::from(day);
+            recovered
+                .settle_town_market(settlement_op)
+                .map_err(err)?
+                .model
+                .map_err(err)?;
+            if recovered.receipt(settlement_op).map_err(err)?.is_none() {
+                return Err(format!("day-{day} transport settlement receipt missing"));
+            }
+            let daily = recovered.engine().map_err(err)?.world().view();
+            let market = daily.town.ok_or("town missing during road-28")?;
+            let transport = market
+                .state
+                .last_transport
+                .ok_or("daily road-28 transport proof missing")?;
+            if transport.issued_day != u64::from(day) || transport.consumed_generation != 2 {
+                return Err(format!("day-{day} used a stale traffic proof"));
+            }
+            if !proof_hashes.insert(transport.issued_proof_sha256) {
+                return Err(format!("day-{day} reused a prior transport proof"));
+            }
+            totals.add(day, market.state.last_summary);
+            if day == 14 {
+                midpoint_op = settlement_op;
+                recovered.checkpoint().map_err(err)?;
+                midpoint_hash = recovered.state_hash().map_err(err)?;
+                midpoint_sequence = recovered.committed_sequence();
+                drop(recovered);
+                recovered = Store::open(Path::new(dir), RULES).map_err(err)?;
+                let reopened = recovered.engine().map_err(err)?.world().view();
+                let reopened_market = reopened
+                    .town
+                    .ok_or("town missing after day-14 cold reopen")?;
+                if recovered.state_hash().map_err(err)? != midpoint_hash
+                    || recovered.committed_sequence() != midpoint_sequence
+                    || recovered.receipt(midpoint_op).map_err(err)?.is_none()
+                    || reopened_market
+                        .state
+                        .last_transport
+                        .ok_or("day-14 proof missing after reopen")?
+                        .issued_day
+                        != 14
+                {
+                    return Err("midpoint cold reopen lost road-28 state or proof".into());
+                }
+            }
+        }
+        let final_view = recovered.engine().map_err(err)?.world().view();
+        let final_market = final_view
+            .town
+            .as_ref()
+            .ok_or("town missing at road-28 close")?;
+        let final_raw = final_view
+            .stocks
+            .iter()
+            .find(|stock| stock.id == 2)
+            .ok_or("factory raw stock missing at road-28 close")?;
+        let final_finished = final_view
+            .stocks
+            .iter()
+            .find(|stock| stock.id == 3)
+            .ok_or("factory finished stock missing at road-28 close")?;
+        let final_payroll = recovered
+            .engine()
+            .map_err(err)?
+            .timeline()
+            .ok_or("road-28 payroll missing")?
+            .payroll[0];
+        let final_company_cash = final_view
+            .accounts
+            .iter()
+            .find(|account| account.id == 3)
+            .ok_or("factory company account missing at road-28 close")?
+            .cash
+            .value();
+        let opening_stock_basis =
+            i128::from(opening_raw.basis.value()) + i128::from(opening_finished.basis.value());
+        let final_stock_basis =
+            i128::from(final_raw.basis.value()) + i128::from(final_finished.basis.value());
+        let opening_restricted_book_projection =
+            i128::from(opening_company_cash.value()) + opening_stock_basis;
+        let final_wage_outstanding =
+            i128::from(final_payroll.accrued.value()) - i128::from(final_payroll.paid.value());
+        let final_restricted_book_projection =
+            i128::from(final_company_cash) + final_stock_basis - final_wage_outstanding;
+        let final_provider_cash = final_view
+            .accounts
+            .iter()
+            .find(|account| account.id == 1)
+            .ok_or("tariff provider account missing at road-28 close")?
+            .cash
+            .value();
+        let raw_consumed = i128::from(opening_raw.quantity.value() - final_raw.quantity.value());
+        let finished_balance =
+            i128::from(opening_finished.quantity.value()) + totals.produced - totals.sales;
+        if totals.days_with_sales == 0
+            || totals.sales < 0
+            || totals.produced < 0
+            || totals.unmet < 0
+            || raw_consumed != totals.produced
+            || finished_balance != i128::from(final_finished.quantity.value())
+            || totals.wages_accrued != i128::from(final_payroll.accrued.value())
+            || totals.labor_basis + totals.idle_labor != totals.wages_accrued
+            || final_payroll.spec.ends_at != 28 * DAY
+            || final_payroll.working
+            || final_payroll.next_due.is_some()
+            || final_payroll.paid > final_payroll.accrued
+            || final_provider_cash - first_provider_cash
+                != i64::try_from(totals.freight + totals.utilities + totals.disposal)
+                    .map_err(err)?
+            || initial_cash_total
+                != final_view
+                    .accounts
+                    .iter()
+                    .map(|account| i128::from(account.cash.value()))
+                    .sum::<i128>()
+        {
+            return Err(
+                "road-28 cumulative money, goods, wages, or proof reconciliation failed".into(),
+            );
+        }
+        let expected_receipts = std::iter::once(80_001_u64)
+            .chain(std::iter::once(80_003_u64))
+            .chain((3..=28_u64).map(|day| 80_100 + day));
+        for operation_id in expected_receipts {
+            if recovered.receipt(operation_id).map_err(err)?.is_none() {
+                return Err(format!("historical market receipt {operation_id} missing"));
+            }
+        }
+        recovered.checkpoint().map_err(err)?;
+        let final_hash = recovered.state_hash().map_err(err)?;
+        let final_sequence = recovered.committed_sequence();
+        drop(recovered);
+        recovered = Store::open(Path::new(dir), RULES).map_err(err)?;
+        if recovered.state_hash().map_err(err)? != final_hash
+            || recovered.committed_sequence() != final_sequence
+        {
+            return Err("final road-28 cold reopen changed state or sequence".into());
+        }
+        for operation_id in std::iter::once(80_001_u64)
+            .chain(std::iter::once(80_003_u64))
+            .chain((3..=28_u64).map(|day| 80_100 + day))
+        {
+            if recovered.receipt(operation_id).map_err(err)?.is_none() {
+                return Err(format!(
+                    "final cold reopen lost market receipt {operation_id}"
+                ));
+            }
+        }
+        road_28_report = serde_json::json!({
+            "daily_settlements":28,
+            "transport_proofs_unique_and_consumed":proof_hashes.len(),
+            "fixed_repeat_od_batch_per_day":true,
+            "initial_cash_company_3":opening_company_cash.value(),
+            "initial_cash_citywide":initial_cash_total,
+            "opening_stock_basis":opening_stock_basis,
+            "opening_restricted_book_projection":opening_restricted_book_projection,
+            "initial_raw_quantity":opening_raw.quantity.value(),
+            "initial_raw_basis":opening_raw.basis.value(),
+            "initial_finished_quantity":opening_finished.quantity.value(),
+            "final_company_cash":final_company_cash,
+            "final_raw_quantity":final_raw.quantity.value(),
+            "final_stock_basis":final_stock_basis,
+            "final_wage_outstanding":final_wage_outstanding,
+            "final_restricted_book_projection":final_restricted_book_projection,
+            "restricted_book_projection_delta":final_restricted_book_projection-opening_restricted_book_projection,
+            "final_finished_quantity":final_finished.quantity.value(),
+            "cumulative_produced":totals.produced,
+            "cumulative_actual_sales":totals.sales,
+            "cumulative_unmet_demand":totals.unmet,
+            "days_with_sales":totals.days_with_sales,
+            "last_day_with_sales":totals.last_sales_day,
+            "cumulative_goods_payments":totals.goods_payments,
+            "cumulative_freight_cost":totals.freight,
+            "cumulative_utility_cost":totals.utilities,
+            "cumulative_disposal_cost":totals.disposal,
+            "cumulative_labor_basis":totals.labor_basis,
+            "cumulative_wages_accrued":totals.wages_accrued,
+            "cumulative_idle_labor_cost":totals.idle_labor,
+            "payroll_contract_end_day":final_payroll.spec.ends_at / DAY,
+            "payroll_accrued":final_payroll.accrued.value(),
+            "payroll_paid":final_payroll.paid.value(),
+            "payroll_outstanding":final_payroll.accrued.value()-final_payroll.paid.value(),
+            "construction_spent":construction.spent.value(),
+            "cash_conservation":"passed",
+            "raw_to_output_balance":"passed",
+            "output_stock_balance":"passed",
+            "midpoint_day_14_cold_reopen":"passed",
+            "final_cold_reopen":"passed",
+            "opening_capital_present":opening_company_cash.value() > 0,
+            "opening_inventory_consumed":raw_consumed > 0,
+            "opening_raw_inventory_consumed":raw_consumed,
+            "continuous_self_funding":"not_demonstrated; finite opening raw inventory is consumed",
+            "book_projection_scope":"restricted cash plus inventory basis less unpaid wages; excludes unmodeled liabilities/assets and is not a full balance sheet",
+            "continuous_sales_all_28_days":totals.days_with_sales==28,
+            "utility_input":"explicit_capacity_and_unit_cost_profile_not_live_grid",
+            "traffic_demand":"repeat_fixed_daily_OD_not_endogenous_to_market_shortage",
+            "legal_company_close":false
+        });
+    }
+    if production_and_suspend && !road_28 {
         if day_one_market.state.last_summary.produced.value() != 400 {
             return Err(
                 "joint case did not produce the goods from actual payroll and raw stock".into(),
@@ -782,8 +1059,9 @@ fn run_road_effect(dir: &str, production_and_suspend: bool) -> Result<(), String
     println!(
         "{}",
         serde_json::to_string_pretty(&serde_json::json!({
-            "scenario":if production_and_suspend {"road-suspend"} else {"road-effect"},
+            "scenario":if road_28 {"road-28"} else if production_and_suspend {"road-suspend"} else {"road-effect"},
             "production_and_suspension":suspension_report,
+            "road_28":road_28_report,
             "day_one_sales_before_acceptance":day_one_market.state.last_summary.actual_sales.value(),
             "day_two_sales_after_acceptance":day_two_market.state.last_summary.actual_sales.value(),
             "capacity_base":2,
@@ -987,7 +1265,7 @@ fn main() {
 fn run() -> Result<(), String> {
     let mut args = env::args().skip(1);
     let scenario = args.next().ok_or(
-        "usage: town_transport <normal|closed|bottleneck|expanded|road-effect|road-suspend> <new-store-dir> | reopen-check <existing-copied-world-dir> <expected-rules-identity> <expected-state-sha256>",
+        "usage: town_transport <normal|closed|bottleneck|expanded|road-effect|road-suspend|road-28> <new-store-dir> | reopen-check <existing-copied-world-dir> <expected-rules-identity> <expected-state-sha256>",
     )?;
     let dir = args.next().ok_or("missing_store_dir")?;
     if scenario == "reopen-check" {
@@ -1001,8 +1279,12 @@ fn run() -> Result<(), String> {
     if args.next().is_some() {
         return Err("unexpected_scenario_argument".into());
     }
-    if matches!(scenario.as_str(), "road-effect" | "road-suspend") {
-        return run_road_effect(&dir, scenario == "road-suspend");
+    if matches!(
+        scenario.as_str(),
+        "road-effect" | "road-suspend" | "road-28"
+    ) {
+        let production = scenario != "road-effect";
+        return run_road_effect(&dir, production, scenario == "road-28");
     }
     let (capacity, is_open, expected) = match scenario.as_str() {
         "normal" => (5, true, 100),
