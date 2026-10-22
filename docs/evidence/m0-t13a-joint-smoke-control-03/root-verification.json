@@ -1,0 +1,11 @@
+{
+  "support_files_verified": 16,
+  "historical_log_roundtrip": "byte_for_byte_equal",
+  "raw_sha256": "a44bb6c214757442efa1d9bff017053b4eeee7f55fe56ab6b111d68000f28c18",
+  "raw_bytes": 2684183,
+  "new_smoke_started": false,
+  "new_formal_started": false,
+  "rust_model_changed": false,
+  "performance_acceptance": "not_accepted",
+  "external_ssd": "/Volumes/HP P900/dev/MyCity/work"
+}

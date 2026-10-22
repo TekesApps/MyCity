@@ -1,0 +1,26 @@
+{
+  "schema": "m0-t13a-joint-control-support-manifest-v1",
+  "attempt": "03",
+  "fixed_source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+  "fixed_binary_sha256": "59aa365ed46b5d373218fcbcf1d34f930d674d15607ed510190361891439b4e0",
+  "files": {
+    "observe.py": "0d7ddad946762bb3a9b683caa71dcf99cda6de08ff14c45c6877757e0d468d5d",
+    "native_metrics.py": "4a672f7c711f30250ec493f63dad6ba95895e97ec5d10edcc99d034eb989051e",
+    "clock_exchange.py": "534642a6854928e5253521862b18b33d19ebc0d777f5a0695321adeddea264b5",
+    "readiness.py": "fa62f21677bab98c558e86fa3a54f42ecfa8b64fd1d7d3449b6401ecff4ef7ae",
+    "process_activity.py": "1abbc0771180936fa660b34db4f6428f199fd467e0f866548e8a12bdb4c58aa9",
+    "preflight.py": "66c8cb2a5667346f764bd548becf5b85e8cd0397d7b2e53079e43c87ff6e30c4",
+    "frame_codec.py": "005be0c42f1703e0aae4d6e7597d83e65654ffb805f22456873ae042e4a9b97f",
+    "log_budget.py": "611263b7ea782d18d38c18c8078ba8813a5b7472f88796a90ca2bf0974ed8f60",
+    "run.py": "bdf64efc8fe91019244e41943ae4e245f705ca40d61231258501fd46cec5c99d",
+    "test_harness.py": "6f3e3585adb46777314bc90cd19dc3512d14e4c9427f8c4fae8b42b38ec999d9",
+    "analyze_attempt02.py": "0122b2f12abc95d1e67370c59de7a28b31abcb4e267cc626b04753af7bccb5fe",
+    "README.md": "8810be45b29bf71ae22a8e17852b63c0aff06164af05f4e8002dfa460afe725d",
+    "acceptance-review.md": "722a911d1e80c61a4e12a8dab8009561871ac434d488b507396dc61c466cfde8",
+    "source.json": "086ddcb1738e5219b2ed919a23ae8d9667785fa29369313a47bd9c1a8b143eef",
+    "freeze.json": "0ce94a66e0cca41bc8c22c65db14aa2249686d179d06ac4ab306e20899645fca",
+    "unix-socket-paths.json": "371d02ae68bd29fa34a9e3c5708d1238f02b152efc2988484c922d14b5e1caa0"
+  },
+  "canonical_map_sha256": "90d9aa231d387ae4cb7f631c1e81d527ea0ec25074eee8509a4a1910765845c3",
+  "manifest_self_hash": "excluded by design; runtime compares the explicit files map and records it in live.json"
+}

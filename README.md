@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.117`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.118`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.118完成[联合耐久观测器离线修复](docs/evidence/m0-t13a-joint-smoke-control-03/STATUS.md)：16项纯测试、16支持文件身份和完整2441帧无损往返通过，修正固定业务日志外推及写盘前容量守卫。原256MiB/4Hz和安全阈值不变；新smoke/formal尚未启动，物理性能/16GB/M0仍未通过。核心交通—经济集成继续独立验证。
 
 v0.5.117记录[原负载完整联合smoke](docs/evidence/m0-t13a-joint-smoke-control-02/STATUS.md)：外置SSD上611.85秒、完整720h业务与最新布局冷恢复完成；44帧采集不完整及115帧外部编译保留，日志准入拒绝，正式8h未启动。修复首轮socket路径启动错误，不修改冻结Rust、负载或预算；交通—经济Store真实集成仍在隔离分支验证，16GB/M0不宣称完成。
 
