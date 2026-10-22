@@ -730,6 +730,62 @@ fn verify_capacity_rejection(dir: &str, opening: &[u8], allocation: &[u8]) -> Re
     Ok(())
 }
 
+/// Read an existing copied Store using the current reader and compare its canonical state
+/// identity with a hash recorded by the frozen writer. This path intentionally performs no
+/// checkpoint, transaction, or proof regeneration.
+fn run_reopen_check(dir: &str, expected_rules: &str, expected_hash: &str) -> Result<(), String> {
+    if !Path::new(dir).is_dir() {
+        return Err("existing_store_dir_required".into());
+    }
+    if expected_rules.is_empty() || expected_rules.len() > 128 {
+        return Err("expected_rules_identity_required".into());
+    }
+    if expected_hash.len() != 64
+        || !expected_hash
+            .bytes()
+            .all(|byte| byte.is_ascii_hexdigit() && !byte.is_ascii_uppercase())
+    {
+        return Err("expected_state_sha256_must_be_64_lowercase_hex_chars".into());
+    }
+    let store = Store::open(Path::new(dir), expected_rules).map_err(err)?;
+    let observed_hash = store.state_hash().map_err(err)?;
+    if observed_hash != expected_hash {
+        return Err(format!(
+            "state_hash_mismatch expected={expected_hash} observed={observed_hash}"
+        ));
+    }
+    let engine = store.engine().map_err(err)?;
+    let view = engine.world().view();
+    let project = view.construction;
+    let accepted_project_count = u8::from(project.is_some_and(|project| {
+        project.inspected && project.phase == mycity_core::construction::Phase::Operational
+    }));
+    let transport = view.town.and_then(|town| town.state.last_transport);
+    println!(
+        "{}",
+        serde_json::to_string_pretty(&serde_json::json!({
+            "scenario": "reopen-check",
+            "rules_identity": expected_rules,
+            "expected_state_sha256": expected_hash,
+            "observed_state_sha256": observed_hash,
+            "state_hash_match": true,
+            "committed_sequence": store.committed_sequence(),
+            "construction_project_count": u8::from(project.is_some()),
+            "accepted_operating_project_count": accepted_project_count,
+            "construction_project_phase": project.map(|value| format!("{:?}", value.phase)),
+            "construction_inspected": project.map(|value| value.inspected),
+            "construction_operating_published": project.map(|value| value.operating_published),
+            "construction_published_at": project.map(|value| value.operating_published_at.map(|at| at.value())),
+            "transport_settlement_present": transport.is_some(),
+            "transport_service_day": transport.map(|receipt| receipt.issued_day),
+            "transport_generation": transport.map(|receipt| receipt.issued_generation),
+            "transport_proof_sha256": transport.map(|receipt| hex(&receipt.issued_proof_sha256))
+        }))
+        .map_err(err)?
+    );
+    Ok(())
+}
+
 fn main() {
     if let Err(error) = run() {
         eprintln!("town_transport: {error}");
@@ -740,9 +796,20 @@ fn main() {
 fn run() -> Result<(), String> {
     let mut args = env::args().skip(1);
     let scenario = args.next().ok_or(
-        "usage: town_transport <normal|closed|bottleneck|expanded|road-effect> <new-store-dir>",
+        "usage: town_transport <normal|closed|bottleneck|expanded|road-effect> <new-store-dir> | reopen-check <existing-copied-world-dir> <expected-rules-identity> <expected-state-sha256>",
     )?;
     let dir = args.next().ok_or("missing_store_dir")?;
+    if scenario == "reopen-check" {
+        let expected_rules = args.next().ok_or("missing_expected_rules_identity")?;
+        let expected_hash = args.next().ok_or("missing_expected_state_sha256")?;
+        if args.next().is_some() {
+            return Err("unexpected_reopen_check_argument".into());
+        }
+        return run_reopen_check(&dir, &expected_rules, &expected_hash);
+    }
+    if args.next().is_some() {
+        return Err("unexpected_scenario_argument".into());
+    }
     if scenario == "road-effect" {
         return run_road_effect(&dir);
     }
