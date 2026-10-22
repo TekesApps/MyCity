@@ -1,0 +1,10 @@
+{
+  "local_links": "passed",
+  "json_files_parsed": 43,
+  "scripts_ast": "passed",
+  "arithmetic": "passed",
+  "all_retired_paths_absent": true,
+  "final_rust_source_unchanged": true,
+  "fixed_executable_unchanged": true,
+  "performance_accepted": false
+}

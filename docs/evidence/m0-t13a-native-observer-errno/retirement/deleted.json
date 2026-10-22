@@ -1,0 +1,239 @@
+[
+  {
+    "path": "work/native-observer-l1-01/observed/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "metadata": [
+      16777231,
+      409805803,
+      33188,
+      3044040310,
+      1792629433350960675,
+      5945392,
+      1
+    ],
+    "sha256": "b54b320a49eda0e4d1fbb2ba6d8dfb7fdf33d228b6397bace5cf6bf95bf507be",
+    "allocated_bytes": 3044040704,
+    "round": "work/native-observer-l1-01/observed/model/layout/snapshots",
+    "snapshot": "work/native-observer-l1-01/observed/model/layout/snapshots/snapshot-000001",
+    "reason": "terminal synthetic diagnostic payload; smoke actually cold-restored, owner-loss payload only proves termination and is not a future crash-recovery input; advisor dependency release",
+    "retained_evidence": "original typed components/index, all raw/source/lock/exe and owner-fault-results/partial CPU targets retained",
+    "directly_restorable_after": false,
+    "index_sha256": "f4284aefa47167307f81c849cd77ac82ec77831344cc479640eb7347f07ee163"
+  },
+  {
+    "path": "work/native-observer-l1-01/observed/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "metadata": [
+      16777231,
+      409805883,
+      33188,
+      134217728,
+      1792629433475132305,
+      262144,
+      1
+    ],
+    "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee",
+    "allocated_bytes": 134217728,
+    "round": "work/native-observer-l1-01/observed/model/layout/snapshots",
+    "snapshot": "work/native-observer-l1-01/observed/model/layout/snapshots/snapshot-000001",
+    "reason": "terminal synthetic diagnostic payload; smoke actually cold-restored, owner-loss payload only proves termination and is not a future crash-recovery input; advisor dependency release",
+    "retained_evidence": "original typed components/index, all raw/source/lock/exe and owner-fault-results/partial CPU targets retained",
+    "directly_restorable_after": false,
+    "index_sha256": "f4284aefa47167307f81c849cd77ac82ec77831344cc479640eb7347f07ee163"
+  },
+  {
+    "path": "work/native-observer-l1-02/observed/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "metadata": [
+      16777231,
+      409813016,
+      33188,
+      3044040310,
+      1792629759137808995,
+      5945392,
+      1
+    ],
+    "sha256": "b54b320a49eda0e4d1fbb2ba6d8dfb7fdf33d228b6397bace5cf6bf95bf507be",
+    "allocated_bytes": 3044040704,
+    "round": "work/native-observer-l1-02/observed/model/layout/snapshots",
+    "snapshot": "work/native-observer-l1-02/observed/model/layout/snapshots/snapshot-000001",
+    "reason": "terminal synthetic diagnostic payload; smoke actually cold-restored, owner-loss payload only proves termination and is not a future crash-recovery input; advisor dependency release",
+    "retained_evidence": "original typed components/index, all raw/source/lock/exe and owner-fault-results/partial CPU targets retained",
+    "directly_restorable_after": false,
+    "index_sha256": "e2871d1ddf2b7325ca6ec35d37654f5d74c3903a2f017089ceabe5ab0cb6b364"
+  },
+  {
+    "path": "work/native-observer-l1-02/observed/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "metadata": [
+      16777231,
+      409813035,
+      33188,
+      134217728,
+      1792629759281548474,
+      262144,
+      1
+    ],
+    "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee",
+    "allocated_bytes": 134217728,
+    "round": "work/native-observer-l1-02/observed/model/layout/snapshots",
+    "snapshot": "work/native-observer-l1-02/observed/model/layout/snapshots/snapshot-000001",
+    "reason": "terminal synthetic diagnostic payload; smoke actually cold-restored, owner-loss payload only proves termination and is not a future crash-recovery input; advisor dependency release",
+    "retained_evidence": "original typed components/index, all raw/source/lock/exe and owner-fault-results/partial CPU targets retained",
+    "directly_restorable_after": false,
+    "index_sha256": "e2871d1ddf2b7325ca6ec35d37654f5d74c3903a2f017089ceabe5ab0cb6b364"
+  },
+  {
+    "path": "work/native-observer-faults-01/worker-compute/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "metadata": [
+      16777231,
+      409813482,
+      33188,
+      3044040310,
+      1792629795971836328,
+      5945392,
+      1
+    ],
+    "sha256": "b54b320a49eda0e4d1fbb2ba6d8dfb7fdf33d228b6397bace5cf6bf95bf507be",
+    "allocated_bytes": 3044040704,
+    "round": "work/native-observer-faults-01/worker-compute/model/layout/snapshots",
+    "snapshot": "work/native-observer-faults-01/worker-compute/model/layout/snapshots/snapshot-000001",
+    "reason": "terminal synthetic diagnostic payload; smoke actually cold-restored, owner-loss payload only proves termination and is not a future crash-recovery input; advisor dependency release",
+    "retained_evidence": "original typed components/index, all raw/source/lock/exe and owner-fault-results/partial CPU targets retained",
+    "directly_restorable_after": false,
+    "index_sha256": "e2871d1ddf2b7325ca6ec35d37654f5d74c3903a2f017089ceabe5ab0cb6b364"
+  },
+  {
+    "path": "work/native-observer-faults-01/worker-compute/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "metadata": [
+      16777231,
+      409813528,
+      33188,
+      134217728,
+      1792629796176736884,
+      262144,
+      1
+    ],
+    "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee",
+    "allocated_bytes": 134217728,
+    "round": "work/native-observer-faults-01/worker-compute/model/layout/snapshots",
+    "snapshot": "work/native-observer-faults-01/worker-compute/model/layout/snapshots/snapshot-000001",
+    "reason": "terminal synthetic diagnostic payload; smoke actually cold-restored, owner-loss payload only proves termination and is not a future crash-recovery input; advisor dependency release",
+    "retained_evidence": "original typed components/index, all raw/source/lock/exe and owner-fault-results/partial CPU targets retained",
+    "directly_restorable_after": false,
+    "index_sha256": "e2871d1ddf2b7325ca6ec35d37654f5d74c3903a2f017089ceabe5ab0cb6b364"
+  },
+  {
+    "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/pressure.bin",
+    "metadata": [
+      16777231,
+      409814698,
+      33188,
+      17825792,
+      1792629881630195857,
+      34816,
+      1
+    ],
+    "sha256": "4e4f8e0391e4126cd22ea626b65dd38ca4c2df48c83b493161c39a52b9ec173f",
+    "allocated_bytes": 17825792,
+    "round": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots",
+    "snapshot": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending",
+    "reason": "terminal synthetic diagnostic payload; smoke actually cold-restored, owner-loss payload only proves termination and is not a future crash-recovery input; advisor dependency release",
+    "retained_evidence": "original typed components/index, all raw/source/lock/exe and owner-fault-results/partial CPU targets retained",
+    "directly_restorable_after": false,
+    "index_sha256": null
+  },
+  {
+    "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "metadata": [
+      16777231,
+      409817013,
+      33188,
+      3044040310,
+      1792630001528811662,
+      5945392,
+      1
+    ],
+    "sha256": "b54b320a49eda0e4d1fbb2ba6d8dfb7fdf33d228b6397bace5cf6bf95bf507be",
+    "allocated_bytes": 3044040704,
+    "round": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots",
+    "snapshot": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001",
+    "reason": "terminal synthetic diagnostic payload; smoke actually cold-restored, owner-loss payload only proves termination and is not a future crash-recovery input; advisor dependency release",
+    "retained_evidence": "original typed components/index, all raw/source/lock/exe and owner-fault-results/partial CPU targets retained",
+    "directly_restorable_after": false,
+    "index_sha256": "e2871d1ddf2b7325ca6ec35d37654f5d74c3903a2f017089ceabe5ab0cb6b364"
+  },
+  {
+    "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "metadata": [
+      16777231,
+      409817175,
+      33188,
+      134217728,
+      1792630001669653767,
+      262144,
+      1
+    ],
+    "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee",
+    "allocated_bytes": 134217728,
+    "round": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots",
+    "snapshot": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001",
+    "reason": "terminal synthetic diagnostic payload; smoke actually cold-restored, owner-loss payload only proves termination and is not a future crash-recovery input; advisor dependency release",
+    "retained_evidence": "original typed components/index, all raw/source/lock/exe and owner-fault-results/partial CPU targets retained",
+    "directly_restorable_after": false,
+    "index_sha256": "e2871d1ddf2b7325ca6ec35d37654f5d74c3903a2f017089ceabe5ab0cb6b364"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-47d1ef032e1c49ed.rmeta",
+    "metadata": [
+      16777231,
+      409803930,
+      33188,
+      6305476,
+      1792629353700684808,
+      12320,
+      1
+    ],
+    "sha256": "19f4190b063af307367dea9f1ccac64a1e413d51f952853acb795b7246624703",
+    "allocated_bytes": 6307840,
+    "round": "superseded native observer before direct errno dependency",
+    "reason": "pure regenerable static cache graph lacks now mandatory direct errno dependency; not used by any current feature/profile graph",
+    "retained_evidence": "all fixed old/final source/lock/exe, original failures and raw preserved",
+    "graph": "target/release/.fingerprint/mycity-headless-47d1ef032e1c49ed/lib-mycity_headless.json",
+    "graph_sha256": "e9920db808f1f63bec1fb2660670dcd8538d4485f49555be41be1fb6c6b3c7cb"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-47d1ef032e1c49ed.rlib",
+    "metadata": [
+      16777231,
+      409804688,
+      33188,
+      16446200,
+      1792629372569715860,
+      32128,
+      1
+    ],
+    "sha256": "9b577db6c2d1154d9896f33eba2040ca0f1e27e43370f9618ed8c4d7a273c420",
+    "allocated_bytes": 16449536,
+    "round": "superseded native observer before direct errno dependency",
+    "reason": "pure regenerable static cache graph lacks now mandatory direct errno dependency; not used by any current feature/profile graph",
+    "retained_evidence": "all fixed old/final source/lock/exe, original failures and raw preserved",
+    "graph": "target/release/.fingerprint/mycity-headless-47d1ef032e1c49ed/lib-mycity_headless.json",
+    "graph_sha256": "e9920db808f1f63bec1fb2660670dcd8538d4485f49555be41be1fb6c6b3c7cb"
+  },
+  {
+    "path": "target/release/deps/libmycity_headless-afc124851d615ee2.rmeta",
+    "metadata": [
+      16777231,
+      409802859,
+      33188,
+      2638592,
+      1792629315443368357,
+      5160,
+      1
+    ],
+    "sha256": "e07b7dbfc7d0df76e8666cd746143d5aaae54aff1f30d79235d62cb0596b952c",
+    "allocated_bytes": 2641920,
+    "round": "superseded native observer before direct errno dependency",
+    "reason": "pure regenerable static cache graph lacks now mandatory direct errno dependency; not used by any current feature/profile graph",
+    "retained_evidence": "all fixed old/final source/lock/exe, original failures and raw preserved",
+    "graph": "target/release/.fingerprint/mycity-headless-afc124851d615ee2/lib-mycity_headless.json",
+    "graph_sha256": "150819ecd6e2aa170db8ce9e7dbfc1ad6491c19d75df30780e5470f60ec22e66"
+  }
+]

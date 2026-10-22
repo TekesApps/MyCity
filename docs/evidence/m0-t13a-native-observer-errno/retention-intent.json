@@ -1,0 +1,14 @@
+{
+  "scope": "errno fix, full original L1 diagnostic and explicit owner-loss faults; no formal acceptance or credit",
+  "new_work": [
+    "work/native-watch-preflight-02",
+    "work/native-observer-l1-02",
+    "work/native-observer-faults-01",
+    "work/native-observer-periodic-01",
+    "work/candidate-binaries/native-observer-errno"
+  ],
+  "estimated_max_new_bytes": 17179869184,
+  "no_new_target": true,
+  "protected": "typed formal7/8,v50,report-lifetime1/pending2,all existing retained source/exe and raw",
+  "retirement": "terminal original/full pressure/reserve after actual coldload+dependency release; intentional owner-loss partial pressure not crash-recovery fixture, retire only after independent release and precise metadata; keep all nonpayload fault/log files. No new full recovery baseline."
+}

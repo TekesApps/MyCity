@@ -186,3 +186,7 @@ v0.5.63阶段证据见[工作区范围](evidence/m0-t13a-air-workspace/DESIGN.md
 启动前池实际释放5MiB（IO4＋typed1），两者创建扫描并绑定实际child后Filled；进程仍在时不归还，实际wait后补足5页才发布信用，初始化/部分补页失败保持关闭。首个Sim编码槽4MiB在worker页以下，正常双owner池余额55MiB；原64MiB总池没有扩大。
 
 这不是通用进程全堆arena，也不证明全部模型/控制解析/原生栈、helper或共同8MiB已闭合；无unsafe透明allocator。报告/故障/预算及验收限制以本阶段原始证据为准，渲染/UI/AgentKit和真实16GB设备仍未验。
+
+## T13-A原生测量与失主收尾
+
+[原生CLI观测器](m0-native-observer.md)补充固定exe、root专属进程组、出生身份采样、非阻塞生命周期日志和失主整组终止的有限实现。它是验收工具，不代替City的事件调度或持久writer；强杀与正常归还、完整恢复分别报告。当前物理normal门仍失败，不把功能实验与分配账升级为全产品或性能验收。

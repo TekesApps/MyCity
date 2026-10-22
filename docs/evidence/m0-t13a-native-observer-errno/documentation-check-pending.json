@@ -1,0 +1,16 @@
+{
+  "script_ast": [
+    "docs/evidence/m0-t13a-native-observer-errno/regression.py",
+    "docs/evidence/m0-t13a-native-observer-errno/periodic.py",
+    "docs/evidence/m0-t13a-native-observer-errno/worker-active-fault.py",
+    "docs/evidence/m0-t13a-native-observer-errno/owner-faults.py",
+    "docs/evidence/m0-t13a-native-observer-errno/run-smoke.py",
+    "docs/evidence/m0-t13a-native-observer-errno/owner-faults-initial.py",
+    "docs/evidence/m0-t13a-native-observer-errno/publisher-deadline.py",
+    "docs/evidence/m0-t13a-native-observer-errno/prepare.py",
+    "docs/evidence/m0-t13a-native-observer-errno/preflight.py"
+  ],
+  "local_links": "passed",
+  "full_regression": "running_not_passed",
+  "rust_source_unchanged_after_freeze": true
+}

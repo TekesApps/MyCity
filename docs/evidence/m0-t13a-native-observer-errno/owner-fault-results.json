@@ -1,0 +1,1161 @@
+[
+  {
+    "mode": "initializing",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/native-observer-errno/mycity-headless",
+      "native-observe",
+      "/Users/frankqin/dev/MyCity/work/native-observer-faults-01/initializing",
+      "--",
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/native-observer-errno/mycity-headless",
+      "steady-run",
+      "/Users/frankqin/dev/MyCity/work/native-observer-faults-01/initializing/model",
+      "l1",
+      "formal"
+    ],
+    "trigger": {
+      "kind": "registered layout before its full ready manifest",
+      "registration": {
+        "schema": "mycity-observed-process-v1",
+        "nonce": "236c5fdd753efe1d1e24c76addea3112",
+        "source": "8f0c90ba81d0fe56ce8eadc25f18caacae127ce596a86eab790ee0ce4860f64f",
+        "kind": "started",
+        "role": "steady-layout-session",
+        "sample": {
+          "identity": {
+            "pid": 10329,
+            "start_abstime": 24949294176398,
+            "parent_pid": 10327
+          },
+          "begin_ns": 1083,
+          "end_ns": 6208,
+          "usage": {
+            "start_abstime": 24949294176398,
+            "exit_abstime": 0,
+            "resident_bytes": 1835008,
+            "footprint_bytes": 950560,
+            "user_time_raw": 23685,
+            "system_time_raw": 16446,
+            "disk_read_bytes": 0,
+            "disk_written_bytes": 0
+          }
+        }
+      }
+    },
+    "trigger_monotonic_ns": 141715750,
+    "observer_exit": -9,
+    "group": 10327,
+    "members_before": [
+      {
+        "pid": 10329,
+        "birth": 24949294176398,
+        "footprint_bytes": 950560,
+        "exit_abstime": 0
+      },
+      {
+        "pid": 10328,
+        "birth": 24949293014668,
+        "footprint_bytes": 68485456,
+        "exit_abstime": 0
+      },
+      {
+        "pid": 10327,
+        "birth": 24949292209767,
+        "footprint_bytes": 1294624,
+        "exit_abstime": 0
+      }
+    ],
+    "all_group_members_absent": true,
+    "outsider_alive": true,
+    "elapsed_seconds": 0.113420375,
+    "observer_final_report_exists": false,
+    "files_after": [
+      {
+        "path": "work/native-observer-faults-01/initializing/observer-clock-map.json",
+        "bytes": 497,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/initializing/host-samples.jsonl",
+        "bytes": 2262,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/initializing/observer-child.json",
+        "bytes": 389,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/initializing/model.stderr",
+        "bytes": 27,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/initializing/registrations.jsonl",
+        "bytes": 1543,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/initializing/model.stdout",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/initializing/model/normal-pool.stderr",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/initializing/model/observer-clock-request.json",
+        "bytes": 184,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/initializing/model/observer-clock-reply.json",
+        "bytes": 204,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/initializing/model/common-events.jsonl",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/initializing/model/layout.stdout",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/initializing/model/manifest.json",
+        "bytes": 469,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/initializing/model/observer-clock-ready.json",
+        "bytes": 139,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/initializing/model/layout.stderr",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/initializing/model/normal-pool/events.jsonl",
+        "bytes": 586,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/initializing/model/normal-pool/ready.json",
+        "bytes": 233,
+        "allocated_bytes": 4096
+      }
+    ],
+    "scope": "intentional abort; missing footer is failure, not normal return; persistence/crash recovery not validated"
+  },
+  {
+    "mode": "worker-compute-l2",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/native-observer-errno/mycity-headless",
+      "native-observe",
+      "/Users/frankqin/dev/MyCity/work/native-observer-faults-01/worker-compute-l2",
+      "--",
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/native-observer-errno/mycity-headless",
+      "steady-run",
+      "/Users/frankqin/dev/MyCity/work/native-observer-faults-01/worker-compute-l2/model",
+      "l2",
+      "formal"
+    ],
+    "trigger": {
+      "kind": "actual model task registered and alive",
+      "registration": {
+        "schema": "mycity-observed-process-v1",
+        "nonce": "75508b5661cb01a42704fe3dc40e76fe",
+        "source": "8f0c90ba81d0fe56ce8eadc25f18caacae127ce596a86eab790ee0ce4860f64f",
+        "kind": "started",
+        "role": "scale-model-task",
+        "sample": {
+          "identity": {
+            "pid": 11227,
+            "start_abstime": 24951437670537,
+            "parent_pid": 11225
+          },
+          "begin_ns": 1333,
+          "end_ns": 94083,
+          "usage": {
+            "start_abstime": 24951437670537,
+            "exit_abstime": 0,
+            "resident_bytes": 1835008,
+            "footprint_bytes": 966968,
+            "user_time_raw": 25949,
+            "system_time_raw": 21895,
+            "disk_read_bytes": 0,
+            "disk_written_bytes": 0
+          }
+        }
+      },
+      "actual_usage": {
+        "pid": 11227,
+        "birth": 24951437670537,
+        "footprint_bytes": 966968,
+        "exit_abstime": 0
+      }
+    },
+    "trigger_monotonic_ns": 1249494583,
+    "observer_exit": -9,
+    "group": 11194,
+    "members_before": [
+      {
+        "pid": 11227,
+        "birth": 24951437670537,
+        "footprint_bytes": 966968,
+        "exit_abstime": 0
+      },
+      {
+        "pid": 11225,
+        "birth": 24951436410141,
+        "footprint_bytes": 1147192,
+        "exit_abstime": 0
+      },
+      {
+        "pid": 11206,
+        "birth": 24951410620243,
+        "footprint_bytes": 3264186960,
+        "exit_abstime": 0
+      },
+      {
+        "pid": 11195,
+        "birth": 24951409737910,
+        "footprint_bytes": 68534632,
+        "exit_abstime": 0
+      },
+      {
+        "pid": 11194,
+        "birth": 24951408868750,
+        "footprint_bytes": 1343800,
+        "exit_abstime": 0
+      }
+    ],
+    "all_group_members_absent": true,
+    "outsider_alive": true,
+    "elapsed_seconds": 1.2729697500000001,
+    "observer_final_report_exists": false,
+    "files_after": [
+      {
+        "path": "work/native-observer-faults-01/worker-compute-l2/observer-clock-map.json",
+        "bytes": 497,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-compute-l2/host-samples.jsonl",
+        "bytes": 5597,
+        "allocated_bytes": 8192
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-compute-l2/observer-child.json",
+        "bytes": 389,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-compute-l2/model.stderr",
+        "bytes": 27,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-compute-l2/registrations.jsonl",
+        "bytes": 2570,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-compute-l2/model.stdout",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-compute-l2/model/normal-pool.stderr",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-compute-l2/model/layout-clock-map.json",
+        "bytes": 295,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-compute-l2/model/observer-clock-request.json",
+        "bytes": 184,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-compute-l2/model/observer-clock-reply.json",
+        "bytes": 204,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-compute-l2/model/common-events.jsonl",
+        "bytes": 83,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-compute-l2/model/layout.stdout",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-compute-l2/model/business.stdout",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-compute-l2/model/manifest.json",
+        "bytes": 469,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-compute-l2/model/observer-clock-ready.json",
+        "bytes": 139,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-compute-l2/model/business.stderr",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-compute-l2/model/layout.stderr",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-compute-l2/model/layout/compute-durations.bin",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-compute-l2/model/layout/clock-sync.json",
+        "bytes": 83,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-compute-l2/model/layout/events.jsonl",
+        "bytes": 1446,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-compute-l2/model/layout/manifest.json",
+        "bytes": 12259,
+        "allocated_bytes": 12288
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-compute-l2/model/layout/snapshots/layout.lock",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-compute-l2/model/layout/snapshots/snapshot-000001.pending/native.json",
+        "bytes": 17809408,
+        "allocated_bytes": 17809408
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-compute-l2/model/layout/snapshots/snapshot-000001.pending/allocation-phases.bin",
+        "bytes": 128,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-compute-l2/model/normal-pool/events.jsonl",
+        "bytes": 2443,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-compute-l2/model/normal-pool/ready.json",
+        "bytes": 233,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-compute-l2/model/business/measurement/reference/request.json",
+        "bytes": 638,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-compute-l2/model/business/measurement/reference/stdout",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-compute-l2/model/business/measurement/reference/stderr",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-compute-l2/model/business/measurement/reference/child.json",
+        "bytes": 32,
+        "allocated_bytes": 4096
+      }
+    ],
+    "scope": "intentional abort; missing footer is failure, not normal return; persistence/crash recovery not validated"
+  },
+  {
+    "mode": "snapshot-write",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/native-observer-errno/mycity-headless",
+      "native-observe",
+      "/Users/frankqin/dev/MyCity/work/native-observer-faults-01/snapshot-write",
+      "--",
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/native-observer-errno/mycity-headless",
+      "steady-run",
+      "/Users/frankqin/dev/MyCity/work/native-observer-faults-01/snapshot-write/model",
+      "l1",
+      "formal"
+    ],
+    "trigger": {
+      "kind": "actual original snapshot pressure file partially written",
+      "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/pressure.bin",
+      "bytes": 1048576,
+      "expected_full_bytes": 3044040310
+    },
+    "trigger_monotonic_ns": 3800678166,
+    "observer_exit": -9,
+    "group": 11229,
+    "members_before": [
+      {
+        "pid": 11267,
+        "birth": 24951474827680,
+        "footprint_bytes": 999712,
+        "exit_abstime": 0
+      },
+      {
+        "pid": 11231,
+        "birth": 24951441150792,
+        "footprint_bytes": 3264203368,
+        "exit_abstime": 0
+      },
+      {
+        "pid": 11230,
+        "birth": 24951440260251,
+        "footprint_bytes": 68485480,
+        "exit_abstime": 0
+      },
+      {
+        "pid": 11229,
+        "birth": 24951439437186,
+        "footprint_bytes": 1360160,
+        "exit_abstime": 0
+      }
+    ],
+    "all_group_members_absent": true,
+    "outsider_alive": true,
+    "elapsed_seconds": 2.5714745,
+    "observer_final_report_exists": false,
+    "files_after": [
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/observer-clock-map.json",
+        "bytes": 497,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/host-samples.jsonl",
+        "bytes": 10109,
+        "allocated_bytes": 12288
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/observer-child.json",
+        "bytes": 389,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model.stderr",
+        "bytes": 27,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/registrations.jsonl",
+        "bytes": 2055,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model.stdout",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/normal-pool.stderr",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout-clock-map.json",
+        "bytes": 295,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/observer-clock-request.json",
+        "bytes": 184,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/observer-clock-reply.json",
+        "bytes": 204,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/common-events.jsonl",
+        "bytes": 252,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout.stdout",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/business.stdout",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/clock-map.json",
+        "bytes": 214,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/manifest.json",
+        "bytes": 469,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/observer-clock-ready.json",
+        "bytes": 139,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/business.stderr",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout.stderr",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/compute-durations.bin",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/clock-sync.json",
+        "bytes": 84,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/events.jsonl",
+        "bytes": 1447,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/manifest.json",
+        "bytes": 12259,
+        "allocated_bytes": 12288
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/layout.lock",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/passenger_batches.json",
+        "bytes": 14813630,
+        "allocated_bytes": 14815232
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/teaching_batches.json",
+        "bytes": 220123,
+        "allocated_bytes": 221184
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/visitors.json",
+        "bytes": 690521,
+        "allocated_bytes": 692224
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/current_services.json",
+        "bytes": 551619,
+        "allocated_bytes": 552960
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/car_vehicles.json",
+        "bytes": 6209212,
+        "allocated_bytes": 6209536
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/models.json",
+        "bytes": 399,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/analysis_tasks.json",
+        "bytes": 22170,
+        "allocated_bytes": 24576
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/operators.json",
+        "bytes": 917651,
+        "allocated_bytes": 921600
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/path_refs.json",
+        "bytes": 4722328,
+        "allocated_bytes": 4722688
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/pressure.bin",
+        "bytes": 17825792,
+        "allocated_bytes": 17825792
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/meter.json",
+        "bytes": 59090761,
+        "allocated_bytes": 59092992
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/bus_train_vehicles.json",
+        "bytes": 736200,
+        "allocated_bytes": 737280
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/equity_links.json",
+        "bytes": 2453947,
+        "allocated_bytes": 2457600
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/native.json",
+        "bytes": 65299383,
+        "allocated_bytes": 65302528
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/entities.json",
+        "bytes": 1368255,
+        "allocated_bytes": 1372160
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/cargo_batches.json",
+        "bytes": 3131844,
+        "allocated_bytes": 3133440
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/ship_aircraft_vehicles.json",
+        "bytes": 183429,
+        "allocated_bytes": 184320
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/cases.json",
+        "bytes": 24909,
+        "allocated_bytes": 28672
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/general_contracts.json",
+        "bytes": 1101276,
+        "allocated_bytes": 1101824
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/maps.json",
+        "bytes": 2942,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/bills.json",
+        "bytes": 11091,
+        "allocated_bytes": 12288
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/team_members.json",
+        "bytes": 11688,
+        "allocated_bytes": 12288
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/matters.json",
+        "bytes": 82934,
+        "allocated_bytes": 86016
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/households.json",
+        "bytes": 15359282,
+        "allocated_bytes": 15360000
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/allocation-phases.bin",
+        "bytes": 3584,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/housing.json",
+        "bytes": 16677375,
+        "allocated_bytes": 16678912
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/preview.json",
+        "bytes": 399,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/hosts.json",
+        "bytes": 1419868,
+        "allocated_bytes": 1421312
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/od.json",
+        "bytes": 5423128,
+        "allocated_bytes": 5427200
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/normal-pool/events.jsonl",
+        "bytes": 586,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/normal-pool/ready.json",
+        "bytes": 233,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/business/window-events.jsonl",
+        "bytes": 85,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/business/clock-sync-ready.json",
+        "bytes": 20,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/snapshot-write/model/business/clock-started.json",
+        "bytes": 299,
+        "allocated_bytes": 4096
+      }
+    ],
+    "scope": "intentional abort; missing footer is failure, not normal return; persistence/crash recovery not validated"
+  },
+  {
+    "mode": "worker-active-l2",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/native-observer-errno/mycity-headless",
+      "native-observe",
+      "/Users/frankqin/dev/MyCity/work/native-observer-faults-01/worker-active-l2",
+      "--",
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/native-observer-errno/mycity-headless",
+      "steady-run",
+      "/Users/frankqin/dev/MyCity/work/native-observer-faults-01/worker-active-l2/model",
+      "l2",
+      "formal"
+    ],
+    "trigger": {
+      "kind": "actual CPU reference helper has emitted target records and its CPU counter advances while alive",
+      "registration": {
+        "schema": "mycity-observed-process-v1",
+        "nonce": "4f4394fd99e77b0b991f93c41d568058",
+        "source": "8f0c90ba81d0fe56ce8eadc25f18caacae127ce596a86eab790ee0ce4860f64f",
+        "kind": "started",
+        "role": "scale-model-task",
+        "sample": {
+          "identity": {
+            "pid": 13096,
+            "start_abstime": 24954279603605,
+            "parent_pid": 13095
+          },
+          "begin_ns": 1166,
+          "end_ns": 6125,
+          "usage": {
+            "start_abstime": 24954279603605,
+            "exit_abstime": 0,
+            "resident_bytes": 1835008,
+            "footprint_bytes": 950560,
+            "user_time_raw": 23662,
+            "system_time_raw": 16910,
+            "disk_read_bytes": 0,
+            "disk_written_bytes": 0
+          }
+        }
+      },
+      "usage_before": {
+        "pid": 13096,
+        "birth": 24954279603605,
+        "footprint_bytes": 22380856,
+        "exit_abstime": 0,
+        "user_time_raw": 430858710,
+        "system_time_raw": 5925416
+      },
+      "usage_after": {
+        "pid": 13096,
+        "birth": 24954279603605,
+        "footprint_bytes": 22380856,
+        "exit_abstime": 0,
+        "user_time_raw": 431375336,
+        "system_time_raw": 5926487
+      },
+      "target_partial_path": "work/native-observer-faults-01/worker-active-l2/model/business/measurement/reference/cpu-targets.jsonl.tmp",
+      "target_partial_bytes_before": 65528,
+      "target_partial_bytes_after": 65528
+    },
+    "trigger_monotonic_ns": 20826140708,
+    "observer_exit": -9,
+    "group": 13092,
+    "members_before": [
+      {
+        "pid": 13096,
+        "birth": 24954279603605,
+        "footprint_bytes": 22380856,
+        "exit_abstime": 0,
+        "user_time_raw": 431375336,
+        "system_time_raw": 5926487
+      },
+      {
+        "pid": 13095,
+        "birth": 24954278406668,
+        "footprint_bytes": 1163576,
+        "exit_abstime": 0,
+        "user_time_raw": 160875,
+        "system_time_raw": 336674
+      },
+      {
+        "pid": 13094,
+        "birth": 24954252380034,
+        "footprint_bytes": 3264186984,
+        "exit_abstime": 0,
+        "user_time_raw": 154662204,
+        "system_time_raw": 38191764
+      },
+      {
+        "pid": 13093,
+        "birth": 24954251475449,
+        "footprint_bytes": 68518248,
+        "exit_abstime": 0,
+        "user_time_raw": 7987721,
+        "system_time_raw": 1420620
+      },
+      {
+        "pid": 13092,
+        "birth": 24954249871059,
+        "footprint_bytes": 1425696,
+        "exit_abstime": 0,
+        "user_time_raw": 200499,
+        "system_time_raw": 606337
+      }
+    ],
+    "all_group_members_absent": true,
+    "outsider_alive": true,
+    "elapsed_seconds": 20.844761167,
+    "observer_final_report_exists": false,
+    "files_after": [
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/observer-clock-map.json",
+        "bytes": 497,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/host-samples.jsonl",
+        "bytes": 84381,
+        "allocated_bytes": 135168
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/observer-child.json",
+        "bytes": 389,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model.stderr",
+        "bytes": 27,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/registrations.jsonl",
+        "bytes": 2575,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model.stdout",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/normal-pool.stderr",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout-clock-map.json",
+        "bytes": 295,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/observer-clock-request.json",
+        "bytes": 184,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/observer-clock-reply.json",
+        "bytes": 204,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/common-events.jsonl",
+        "bytes": 83,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout.stdout",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/business.stdout",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/manifest.json",
+        "bytes": 469,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/observer-clock-ready.json",
+        "bytes": 139,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/business.stderr",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout.stderr",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/compute-durations.bin",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/clock-sync.json",
+        "bytes": 83,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/events.jsonl",
+        "bytes": 28780,
+        "allocated_bytes": 32768
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/manifest.json",
+        "bytes": 12259,
+        "allocated_bytes": 12288
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/layout.lock",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/passenger_batches.json",
+        "bytes": 14813630,
+        "allocated_bytes": 14815232
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+        "bytes": 134217728,
+        "allocated_bytes": 134217728
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/native-restore-bound.json",
+        "bytes": 163,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/teaching_batches.json",
+        "bytes": 220123,
+        "allocated_bytes": 221184
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/visitors.json",
+        "bytes": 690521,
+        "allocated_bytes": 692224
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/current_services.json",
+        "bytes": 551619,
+        "allocated_bytes": 552960
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/car_vehicles.json",
+        "bytes": 6209212,
+        "allocated_bytes": 6209536
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/models.json",
+        "bytes": 399,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/analysis_tasks.json",
+        "bytes": 22170,
+        "allocated_bytes": 24576
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/operators.json",
+        "bytes": 917651,
+        "allocated_bytes": 921600
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/path_refs.json",
+        "bytes": 4722328,
+        "allocated_bytes": 4722688
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/pressure.bin",
+        "bytes": 3044040310,
+        "allocated_bytes": 3053690880
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/meter.json",
+        "bytes": 59090761,
+        "allocated_bytes": 59092992
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/bus_train_vehicles.json",
+        "bytes": 736200,
+        "allocated_bytes": 737280
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/equity_links.json",
+        "bytes": 2453947,
+        "allocated_bytes": 2457600
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/native.json",
+        "bytes": 65299383,
+        "allocated_bytes": 65302528
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/entities.json",
+        "bytes": 1368255,
+        "allocated_bytes": 1372160
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/cargo_batches.json",
+        "bytes": 3131844,
+        "allocated_bytes": 3133440
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/ship_aircraft_vehicles.json",
+        "bytes": 183429,
+        "allocated_bytes": 184320
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/cases.json",
+        "bytes": 24909,
+        "allocated_bytes": 28672
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/general_contracts.json",
+        "bytes": 1101276,
+        "allocated_bytes": 1101824
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/maps.json",
+        "bytes": 2942,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/bills.json",
+        "bytes": 11091,
+        "allocated_bytes": 12288
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/team_members.json",
+        "bytes": 11688,
+        "allocated_bytes": 12288
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/matters.json",
+        "bytes": 82934,
+        "allocated_bytes": 86016
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/households.json",
+        "bytes": 15359282,
+        "allocated_bytes": 15360000
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/index.json",
+        "bytes": 17698,
+        "allocated_bytes": 20480
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/allocation-phases.bin",
+        "bytes": 7808,
+        "allocated_bytes": 8192
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/housing.json",
+        "bytes": 16677375,
+        "allocated_bytes": 16678912
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/preview.json",
+        "bytes": 399,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/hosts.json",
+        "bytes": 1419868,
+        "allocated_bytes": 1421312
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/od.json",
+        "bytes": 5423128,
+        "allocated_bytes": 5427200
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/normal-pool/events.jsonl",
+        "bytes": 3744,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/normal-pool/ready.json",
+        "bytes": 233,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/business/measurement/reference/request.json",
+        "bytes": 636,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/business/measurement/reference/stdout",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/business/measurement/reference/cpu-targets.jsonl.tmp",
+        "bytes": 65528,
+        "allocated_bytes": 65536
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/business/measurement/reference/stderr",
+        "bytes": 0,
+        "allocated_bytes": 0
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/business/measurement/reference/child.json",
+        "bytes": 32,
+        "allocated_bytes": 4096
+      },
+      {
+        "path": "work/native-observer-faults-01/worker-active-l2/model/business/measurement/reference/cpu-report.json.tmp",
+        "bytes": 1,
+        "allocated_bytes": 4096
+      }
+    ],
+    "scope": "intentional abort; missing footer is failure, not normal return; persistence/crash recovery not validated"
+  }
+]

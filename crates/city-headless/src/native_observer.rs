@@ -15,7 +15,7 @@ pub struct Identity {
     pub start_abstime: u64,
     pub parent_pid: u32,
 }
-#[derive(Clone, Copy, Debug, Serialize)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 pub struct Usage {
     pub start_abstime: u64,
     pub exit_abstime: u64,
@@ -26,7 +26,7 @@ pub struct Usage {
     pub disk_read_bytes: u64,
     pub disk_written_bytes: u64,
 }
-#[derive(Clone, Copy, Debug, Serialize)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 pub struct Sample {
     pub identity: Identity,
     pub begin_ns: u64,

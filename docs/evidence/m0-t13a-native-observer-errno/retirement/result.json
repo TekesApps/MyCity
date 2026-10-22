@@ -1,0 +1,27 @@
+{
+  "before": {
+    "du_kib": {
+      "work": 35970712,
+      "target": 2094100
+    },
+    "available_bytes": 87927296000,
+    "time_ns": 1792630918830655000
+  },
+  "after": {
+    "du_kib": {
+      "work": 23538232,
+      "target": 2069296
+    },
+    "available_bytes": 100685635584,
+    "time_ns": 1792630929558164000
+  },
+  "files_deleted": 12,
+  "allocated_bytes_removed": 12756258816,
+  "filesystem_available_delta_bytes": 12758339584,
+  "other_work_target_files_unchanged": 128391,
+  "protected_files_sha_verified": 158,
+  "source_wip_unchanged": true,
+  "archive_added_bytes": 0,
+  "attribution": "inode allocation is not APFS exclusive physical reclaim; df observed separately; no other task attribution",
+  "scope": "terminal native observer diagnostics only; no new recovery baseline or pressure copy; target reused"
+}

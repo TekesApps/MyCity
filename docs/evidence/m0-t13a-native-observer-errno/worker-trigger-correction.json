@@ -1,0 +1,8 @@
+{
+  "reason": "L1 is frozen layout-only; no real business compute exists in its driver. The functional harness asked for an impossible trigger, so this owned intentional fault was stopped. Continue original L2 combined scenario in a separately named fault test; do not call L1 a successful compute test.",
+  "observer_pid": 10330,
+  "birth": 24949294708165,
+  "action": "SIGKILL verified current observer; private root group receives owner EOF",
+  "time_ns": 1792629859313985000,
+  "performance_acceptance": false
+}

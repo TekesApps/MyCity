@@ -1,5 +1,7 @@
 # 验证产物回收规则
 
+**v0.5.102原生整组观测终态**：[回收与恢复可用性](evidence/m0-t13a-native-observer-errno/STATUS.md)精确退役9份本轮短测/失主合成载荷、3份缺当前errno的旧静态库，分配空间12,756,258,816B；本轮新目录不可直接完整恢复。typed正式7/8、v50及report-lifetime完整故障原件158文件全SHA前后核验，raw/typed组件/partial targets/源锁exe/固定依赖保留，其他128,391元数据不变。df变化单列、不计历史成果，唯一target复用。
+
 **当前权威（v0.5.101）**：[本次用户指定集中回收](evidence/disk-reclamation-v101/STATUS.md)及逐文件清单覆盖旧smoke-L2完整保留和指定10份正常组件原路径保留承诺。smoke-L2暖场超时的pressure/reserve已解除依赖；指定旧正常组件完整字节保存在既有gzip归档，相关快照均不能直接完整恢复。typed正式7/8、v50和report-lifetime首代/pending2完整原件继续保留。仅清理精确核验的旧静态库，当前共享target复用；本次不运行模型或构建。
 
 **v0.5.100原生读取后端终态**：[缓存清单与结果](evidence/m0-t13a-native-reader/STATUS.md)退役28份缺少当前强制libproc依赖的旧rlib/rmeta，分配空间104.691MiB；固定源/lock/exe、SDK对照和故障raw保留。无压力副本或独立target；实际后续build未重新生成已删库，当前3库及54固定候选文件复核。原完整压力恢复基线不动，df变化独立报告。

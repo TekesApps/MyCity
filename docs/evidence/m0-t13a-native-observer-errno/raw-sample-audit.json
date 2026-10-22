@@ -1,0 +1,17 @@
+{
+  "samples": 88,
+  "complete": 85,
+  "incomplete": 3,
+  "busy": 2,
+  "pending": 2,
+  "issues": {
+    "known_identity_unconfirmed": 1,
+    "enumerated_child_unreadable": 1
+  },
+  "peak_footprint": 3338358552,
+  "normal_limit_bytes": 3328599654,
+  "original_normal_gate": "failed_diagnostic_not_formal",
+  "coverage": "L1 is layout-only; no business throughput claimed",
+  "full_actual_business": "not_tested_in_this_smoke",
+  "over_normal_bytes": 9758898
+}

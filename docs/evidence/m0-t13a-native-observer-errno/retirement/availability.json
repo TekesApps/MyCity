@@ -1,0 +1,65 @@
+[
+  {
+    "path": "work/native-observer-l1-01/observed/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "snapshot": "work/native-observer-l1-01/observed/model/layout/snapshots/snapshot-000001",
+    "directly_restorable": false,
+    "reason": "terminal synthetic diagnostic payload; smoke actually cold-restored, owner-loss payload only proves termination and is not a future crash-recovery input; advisor dependency release",
+    "retained_evidence": "original typed components/index, all raw/source/lock/exe and owner-fault-results/partial CPU targets retained"
+  },
+  {
+    "path": "work/native-observer-l1-01/observed/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "snapshot": "work/native-observer-l1-01/observed/model/layout/snapshots/snapshot-000001",
+    "directly_restorable": false,
+    "reason": "terminal synthetic diagnostic payload; smoke actually cold-restored, owner-loss payload only proves termination and is not a future crash-recovery input; advisor dependency release",
+    "retained_evidence": "original typed components/index, all raw/source/lock/exe and owner-fault-results/partial CPU targets retained"
+  },
+  {
+    "path": "work/native-observer-l1-02/observed/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "snapshot": "work/native-observer-l1-02/observed/model/layout/snapshots/snapshot-000001",
+    "directly_restorable": false,
+    "reason": "terminal synthetic diagnostic payload; smoke actually cold-restored, owner-loss payload only proves termination and is not a future crash-recovery input; advisor dependency release",
+    "retained_evidence": "original typed components/index, all raw/source/lock/exe and owner-fault-results/partial CPU targets retained"
+  },
+  {
+    "path": "work/native-observer-l1-02/observed/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "snapshot": "work/native-observer-l1-02/observed/model/layout/snapshots/snapshot-000001",
+    "directly_restorable": false,
+    "reason": "terminal synthetic diagnostic payload; smoke actually cold-restored, owner-loss payload only proves termination and is not a future crash-recovery input; advisor dependency release",
+    "retained_evidence": "original typed components/index, all raw/source/lock/exe and owner-fault-results/partial CPU targets retained"
+  },
+  {
+    "path": "work/native-observer-faults-01/worker-compute/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "snapshot": "work/native-observer-faults-01/worker-compute/model/layout/snapshots/snapshot-000001",
+    "directly_restorable": false,
+    "reason": "terminal synthetic diagnostic payload; smoke actually cold-restored, owner-loss payload only proves termination and is not a future crash-recovery input; advisor dependency release",
+    "retained_evidence": "original typed components/index, all raw/source/lock/exe and owner-fault-results/partial CPU targets retained"
+  },
+  {
+    "path": "work/native-observer-faults-01/worker-compute/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "snapshot": "work/native-observer-faults-01/worker-compute/model/layout/snapshots/snapshot-000001",
+    "directly_restorable": false,
+    "reason": "terminal synthetic diagnostic payload; smoke actually cold-restored, owner-loss payload only proves termination and is not a future crash-recovery input; advisor dependency release",
+    "retained_evidence": "original typed components/index, all raw/source/lock/exe and owner-fault-results/partial CPU targets retained"
+  },
+  {
+    "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/pressure.bin",
+    "snapshot": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending",
+    "directly_restorable": false,
+    "reason": "terminal synthetic diagnostic payload; smoke actually cold-restored, owner-loss payload only proves termination and is not a future crash-recovery input; advisor dependency release",
+    "retained_evidence": "original typed components/index, all raw/source/lock/exe and owner-fault-results/partial CPU targets retained"
+  },
+  {
+    "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "snapshot": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001",
+    "directly_restorable": false,
+    "reason": "terminal synthetic diagnostic payload; smoke actually cold-restored, owner-loss payload only proves termination and is not a future crash-recovery input; advisor dependency release",
+    "retained_evidence": "original typed components/index, all raw/source/lock/exe and owner-fault-results/partial CPU targets retained"
+  },
+  {
+    "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "snapshot": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001",
+    "directly_restorable": false,
+    "reason": "terminal synthetic diagnostic payload; smoke actually cold-restored, owner-loss payload only proves termination and is not a future crash-recovery input; advisor dependency release",
+    "retained_evidence": "original typed components/index, all raw/source/lock/exe and owner-fault-results/partial CPU targets retained"
+  }
+]

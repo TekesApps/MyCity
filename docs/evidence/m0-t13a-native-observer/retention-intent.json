@@ -1,0 +1,12 @@
+{
+  "scope": "full native observation wrapper candidate; function diagnostics first, original full L1 smoke later; no formal performance acceptance or replacement credit",
+  "new_work": [
+    "work/native-watch-preflight-01",
+    "work/native-observer-l1-01",
+    "work/candidate-binaries/native-observer"
+  ],
+  "estimated_max_new_bytes": 10270570934,
+  "no_new_target": true,
+  "protected": "old typed formal current7/8, v50 and existing fault originals not copied or modified",
+  "retirement": "terminal synthetic pressure/reserve without downstream recovery dependency retired only by exact list after actual recovery and advisor release; keep raw samples, journal, manifests, SDK probes, source/lock/exe and faults; reuse target"
+}

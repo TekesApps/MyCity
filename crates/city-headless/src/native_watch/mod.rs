@@ -1,0 +1,464 @@
+//! Native bounded process-group observer. It never grants pressure replacement credit.
+mod clock;
+mod disk;
+pub mod fixture;
+pub mod owner;
+pub mod registration;
+mod summary;
+mod system;
+mod tracker;
+use crate::{heap_meter, native_observer::capture};
+use serde::{ser::SerializeSeq, Serialize};
+use std::{
+    fs::{self, File},
+    io::{BufWriter, Write},
+    os::unix::process::CommandExt,
+    path::Path,
+    process::{Child, Command, ExitStatus, Stdio},
+    time::{Duration, Instant},
+};
+fn err(e: impl std::fmt::Display) -> String {
+    e.to_string()
+}
+fn now(origin: Instant) -> u64 {
+    origin.elapsed().as_nanos().min(u128::from(u64::MAX)) as u64
+}
+fn save(path: &Path, value: &impl Serialize) -> Result<(), String> {
+    let mut file = File::create_new(path).map_err(err)?;
+    serde_json::to_writer_pretty(&mut file, value).map_err(err)?;
+    file.write_all(b"\n").map_err(err)?;
+    file.sync_all().map_err(err)
+}
+struct Members<'a>(&'a [tracker::Member]);
+impl Serialize for Members<'_> {
+    fn serialize<S: serde::Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
+        let mut seq = s.serialize_seq(Some(self.0.len()))?;
+        for x in self.0 {
+            let id = x.sample.identity;
+            seq.serialize_element(&(
+                id.pid,
+                id.parent_pid,
+                id.start_abstime,
+                x.sample.usage.resident_bytes,
+                x.role,
+            ))?;
+        }
+        seq.end()
+    }
+}
+struct Footprints<'a>(&'a [tracker::Member]);
+impl Serialize for Footprints<'_> {
+    fn serialize<S: serde::Serializer>(&self, s: S) -> Result<S::Ok, S::Error> {
+        let mut seq = s.serialize_seq(Some(self.0.len()))?;
+        for x in self.0 {
+            seq.serialize_element(&(
+                x.sample.identity.pid,
+                x.sample.identity.start_abstime,
+                x.sample.usage.footprint_bytes,
+            ))?;
+        }
+        seq.end()
+    }
+}
+#[derive(Serialize)]
+struct SystemFrame {
+    vm_sysctl: system::Vm,
+    vm_page_size_bytes: u64,
+    physical_memory_bytes: u64,
+    disk_bytes: u64,
+    available_disk_bytes: u64,
+    swap_total_bytes: u64,
+}
+#[derive(Serialize)]
+struct Frame<'a> {
+    clock_begin_ns: u64,
+    clock_end_ns: u64,
+    t: f64,
+    window_s: f64,
+    rss_bytes: u64,
+    phys_footprint_bytes: u64,
+    missing_footprint: usize,
+    missing_rss: usize,
+    group_capture_complete: bool,
+    members: Members<'a>,
+    member_footprints_pid_birth_bytes: Footprints<'a>,
+    identity_uncertainties: &'a [tracker::Issue],
+    pending_registration_bytes: u64,
+    registration_lock_busy: bool,
+    pressure_dispatch_flag: u64,
+    swap_used_bytes: u64,
+    observer_hot_bound_bytes: usize,
+    cpu_io_footprint: Option<&'a [tracker::Member]>,
+    system: Option<SystemFrame>,
+}
+struct Stats {
+    samples: u64,
+    log_bytes: u64,
+    max_gap: u64,
+    max_capture: u64,
+    last_end: Option<u64>,
+    rss: u64,
+    foot: u64,
+    rss_frame: u64,
+    foot_frame: u64,
+    disk: u64,
+    missing: u64,
+}
+impl Stats {
+    fn new() -> Self {
+        Self {
+            samples: 0,
+            log_bytes: 0,
+            max_gap: 0,
+            max_capture: 0,
+            last_end: None,
+            rss: 0,
+            foot: 0,
+            rss_frame: 0,
+            foot_frame: 0,
+            disk: 0,
+            missing: 0,
+        }
+    }
+}
+fn diagnostic_charge(root: &Path) -> Result<u64, String> {
+    let path = root.join("model/manifest.json");
+    let file = match File::open(path) {
+        Ok(f) => f,
+        Err(e) if e.kind() == std::io::ErrorKind::NotFound => return Ok(0),
+        Err(e) => return Err(err(e)),
+    };
+    #[derive(serde::Deserialize)]
+    struct Projection {
+        #[serde(default)]
+        external_owned_charge_bytes: u64,
+    }
+    let raw = mycity_core::read_bounded(file, 65536).map_err(err)?;
+    let value: Projection = serde_json::from_slice(&raw).map_err(err)?;
+    Ok(value.external_owned_charge_bytes)
+}
+struct Capture<'a> {
+    root: &'a Path,
+    origin: Instant,
+    tracker: &'a mut tracker::Tracker,
+    journal: &'a mut registration::Journal,
+    nonce: &'a str,
+    guard: &'a mut system::Guard,
+    stats: &'a mut Stats,
+    writer: &'a mut BufWriter<File>,
+    buffer: &'a mut disk::Line,
+    host: &'a system::Host,
+}
+fn tick(context: Capture<'_>) -> Result<(), String> {
+    let Capture {
+        root,
+        origin,
+        tracker,
+        journal,
+        nonce,
+        guard,
+        stats,
+        writer,
+        buffer,
+        host,
+    } = context;
+    let begin = now(origin);
+    journal.read(nonce, |r| tracker.register(r))?;
+    tracker.poll(origin)?;
+    let critical = system::critical()?;
+    guard.observe(now(origin), critical)?;
+    let usage = disk::scan(root)?;
+    let free = fs2::available_space(root).map_err(err)?;
+    if usage.total > 20 * 1024 * 1024 * 1024 {
+        return Err("native_world_disk_limit".into());
+    }
+    if free < 2 * 1024 * 1024 * 1024 {
+        return Err("native_free_disk_floor".into());
+    }
+    let other = diagnostic_charge(root)?;
+    let own = heap_meter::arena_snapshot();
+    let charged = own
+        .activation
+        .ok_or("native_observer_arena_missing")?
+        .grant_bytes;
+    if own.allocation_failures != 0
+        || own.lifetime_peak_requested_bytes + heap_meter::TAIL_RESERVED_BYTES
+            > crate::diagnostic_contract::OBSERVER
+        || charged as u64 + other > 8 * 1024 * 1024
+    {
+        return Err("native_observer_diagnostic_budget".into());
+    }
+    let rss = tracker
+        .members
+        .iter()
+        .map(|m| m.sample.usage.resident_bytes)
+        .sum();
+    let foot = tracker
+        .members
+        .iter()
+        .map(|m| m.sample.usage.footprint_bytes)
+        .sum();
+    let missing = tracker.issues.len();
+    let periodic =
+        stats.samples == 0 || begin / 60_000_000_000 > stats.last_end.unwrap_or(0) / 60_000_000_000;
+    let sys = periodic.then(|| SystemFrame {
+        vm_sysctl: system::vm(),
+        vm_page_size_bytes: host.page_size_bytes,
+        physical_memory_bytes: host.physical_memory_bytes,
+        disk_bytes: usage.total,
+        available_disk_bytes: free,
+        swap_total_bytes: critical.total,
+    });
+    let pending = journal.pending()?;
+    let end = now(origin);
+    let frame = Frame {
+        clock_begin_ns: begin,
+        clock_end_ns: end,
+        t: end as f64 / 1e9,
+        window_s: (end - begin) as f64 / 1e9,
+        rss_bytes: rss,
+        phys_footprint_bytes: foot,
+        missing_footprint: missing,
+        missing_rss: missing,
+        group_capture_complete: missing == 0 && pending == 0 && !journal.busy,
+        members: Members(&tracker.members),
+        member_footprints_pid_birth_bytes: Footprints(&tracker.members),
+        identity_uncertainties: &tracker.issues,
+        pending_registration_bytes: pending,
+        registration_lock_busy: journal.busy,
+        pressure_dispatch_flag: critical.pressure,
+        swap_used_bytes: critical.used,
+        observer_hot_bound_bytes: charged,
+        cpu_io_footprint: periodic.then_some(&tracker.members),
+        system: sys,
+    };
+    let bytes = buffer.encode(&frame)?;
+    if stats.log_bytes + bytes.len() as u64 + usage.latency > 256 * 1024 * 1024 {
+        return Err("native_measurement_log_limit".into());
+    }
+    writer.write_all(bytes).map_err(err)?;
+    writer.flush().map_err(err)?;
+    stats.log_bytes += bytes.len() as u64;
+    stats.max_capture = stats.max_capture.max(end - begin);
+    if let Some(last) = stats.last_end {
+        stats.max_gap = stats.max_gap.max(end - last);
+    }
+    stats.last_end = Some(end);
+    if rss > stats.rss {
+        stats.rss = rss;
+        stats.rss_frame = stats.samples;
+    }
+    if foot > stats.foot {
+        stats.foot = foot;
+        stats.foot_frame = stats.samples;
+    }
+    stats.disk = stats.disk.max(usage.total);
+    stats.missing += missing as u64;
+    stats.samples += 1;
+    Ok(())
+}
+fn cleanup(
+    child: &mut Child,
+    origin: Instant,
+    tracker: &mut tracker::Tracker,
+    journal: &mut registration::Journal,
+    nonce: &str,
+) -> Result<(), String> {
+    let _ = journal.read(nonce, |r| tracker.register(r));
+    let _ = tracker.poll(origin);
+    // The direct Child has not been reaped if try_wait returns None; its PID
+    // cannot be recycled. This also covers failure before the first birth read.
+    if child.try_wait().map_err(err)?.is_none() {
+        child.kill().map_err(err)?;
+    }
+    // Only proven descendants whose current birth still matches. There is no
+    // permission to signal an arbitrary PID from a previous observer frame.
+    for signal in [rustix::process::Signal::TERM, rustix::process::Signal::KILL] {
+        for identity in tracker.owned_identities() {
+            if identity.pid == std::process::id() {
+                continue;
+            }
+            if let Ok(sample) = capture(identity.pid, None, origin) {
+                if sample.identity.start_abstime == identity.start_abstime {
+                    if let Some(pid) = i32::try_from(identity.pid)
+                        .ok()
+                        .and_then(rustix::process::Pid::from_raw)
+                    {
+                        let _ = rustix::process::kill_process(pid, signal);
+                    }
+                }
+            }
+        }
+        let deadline = Instant::now() + Duration::from_secs(5);
+        loop {
+            let done = child.try_wait().map_err(err)?.is_some();
+            journal.read(nonce, |r| tracker.register(r))?;
+            tracker.poll(origin)?;
+            if done && tracker.live_other_than(std::process::id()) == 0 {
+                return Ok(());
+            }
+            if Instant::now() >= deadline {
+                break;
+            }
+            std::thread::sleep(Duration::from_millis(50));
+        }
+    }
+    Err("native_cleanup_live_or_unknown_descendants".into())
+}
+/// CLI wrapper; target must be the same fixed executable, never a foreign command.
+pub fn run(root: &Path, command: &[String]) -> Result<(), String> {
+    if command.is_empty() || command.len() > 32 || command.iter().any(|s| s.len() > 4096) {
+        return Err("native_observer_command_capacity".into());
+    }
+    if Path::new(&command[0]).canonicalize().map_err(err)?
+        != std::env::current_exe()
+            .map_err(err)?
+            .canonicalize()
+            .map_err(err)?
+    {
+        return Err("native_observer_same_binary_required".into());
+    }
+    if !command.get(1).is_some_and(|s| {
+        [
+            "steady-run",
+            "joint-endurance",
+            "speed-run",
+            "pe0-speed-probe",
+            "native-watch-fixture",
+        ]
+        .contains(&s.as_str())
+    }) {
+        return Err("native_observer_unsupported_root_command".into());
+    }
+    fs::create_dir(root).map_err(err)?;
+    let root = root.canonicalize().map_err(err)?;
+    heap_meter::activate_role(crate::diagnostic_contract::OBSERVER)?;
+    let origin = Instant::now();
+    let host = system::host()?;
+    let initial = system::critical()?;
+    let mut guard = system::Guard::new(initial.used);
+    let own = capture(std::process::id(), None, origin)
+        .map_err(|e| format!("native_observer_self:{e:?}"))?;
+    let mut tracker = tracker::Tracker::new(own)?;
+    let nonce = clock::nonce()?;
+    File::create_new(root.join("registrations.jsonl")).map_err(err)?;
+    let mut journal = registration::Journal::new(&root.join("registrations.jsonl"))?;
+    let mut samples = BufWriter::with_capacity(
+        65536,
+        File::create_new(root.join("host-samples.jsonl")).map_err(err)?,
+    );
+    let mut buffer = disk::Line::new();
+    let mut stats = Stats::new();
+    let binary_before = disk::hash(Path::new(&command[0]))?;
+    let mut process = Command::new(&command[0]);
+    process
+        .arg("native-observed-root")
+        .args(&command[1..])
+        .process_group(0)
+        .env("MYCITY_HEAP_LOG", root.join("model/heaps.jsonl"))
+        .env("MYCITY_PROCESS_LOG", root.join("registrations.jsonl"))
+        .env("MYCITY_PROCESS_NONCE", &nonce)
+        .env("MYCITY_OBSERVER_CLOCK", "1")
+        .env("MYCITY_OBSERVER_OWNER_PID", std::process::id().to_string())
+        .stdin(Stdio::piped())
+        .stdout(File::create_new(root.join("model.stdout")).map_err(err)?)
+        .stderr(File::create_new(root.join("model.stderr")).map_err(err)?);
+    let spawn = now(origin);
+    let mut child = process.spawn().map_err(err)?;
+    let mut exit: Option<ExitStatus> = None;
+    let result = (|| {
+        if let Ok(sample) = capture(child.id(), None, origin) {
+            if sample.identity.parent_pid != std::process::id() {
+                return Err("native_spawn_parent_mismatch".into());
+            }
+            tracker.add(
+                sample.identity,
+                crate::control_data::Text::new("direct-root")?,
+                false,
+            )?;
+            save(&root.join("observer-child.json"), &sample)?;
+        } else {
+            return Err("native_spawn_identity_unconfirmed".into());
+        }
+        child
+            .stdin
+            .as_mut()
+            .ok_or("native_observer_owner_pipe")?
+            .write_all(b"O")
+            .map_err(err)?;
+        clock::exchange(&mut child, &root, origin, spawn)?;
+        let mut post = 0;
+        let mut next = now(origin);
+        loop {
+            tick(Capture {
+                root: &root,
+                origin,
+                tracker: &mut tracker,
+                journal: &mut journal,
+                nonce: &nonce,
+                guard: &mut guard,
+                stats: &mut stats,
+                writer: &mut samples,
+                buffer: &mut buffer,
+                host: &host,
+            })?;
+            if exit.is_none() {
+                exit = child.try_wait().map_err(err)?;
+            }
+            if exit.is_some() {
+                post += 1;
+                if post >= 3 {
+                    if tracker.live_other_than(std::process::id()) != 0 {
+                        return Err("native_model_exited_with_live_or_unknown_descendants".into());
+                    }
+                    break;
+                }
+            }
+            if origin.elapsed() > Duration::from_secs(36000) {
+                return Err("native_observer_wall_limit".into());
+            }
+            next = next
+                .checked_add(250_000_000)
+                .ok_or("native_observer_clock_overflow")?;
+            std::thread::sleep(Duration::from_nanos(next.saturating_sub(now(origin))));
+        }
+        Ok::<(), String>(())
+    })();
+    let cleanup_error = if result.is_err() {
+        cleanup(&mut child, origin, &mut tracker, &mut journal, &nonce).err()
+    } else {
+        None
+    };
+    if exit.is_none() {
+        exit = child.try_wait().map_err(err)?;
+    }
+    samples.flush().map_err(err)?;
+    samples.get_ref().sync_all().map_err(err)?;
+    let unchanged = binary_before == disk::hash(Path::new(&command[0]))?;
+    let success =
+        result.is_ok() && cleanup_error.is_none() && exit.is_some_and(|s| s.success()) && unchanged;
+    let other = diagnostic_charge(&root).ok();
+    let report = summary::Report {
+        host: &host,
+        success,
+        reason: result.as_ref().err().map(String::as_str),
+        cleanup: cleanup_error.as_deref(),
+        command,
+        binary_hash: &binary_before,
+        unchanged,
+        exit: exit.and_then(|s| s.code()),
+        duration: origin.elapsed().as_secs_f64(),
+        stats: &stats,
+        tracker: &tracker,
+        registrations: journal.records,
+        other,
+        initial_swap: initial.used,
+        guard: &guard,
+    };
+    save(&root.join("observer-report.json"), &report)?;
+    if success {
+        Ok(())
+    } else {
+        Err("native_observer_failed; see observer-report.json".into())
+    }
+}

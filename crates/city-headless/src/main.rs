@@ -25,7 +25,27 @@ fn system(command: &str, args: &[&str]) -> Option<String> {
 }
 
 fn run() -> Result<(), String> {
-    let args: Vec<_> = env::args().collect();
+    let args: Vec<_> = env::args()
+        .enumerate()
+        .filter_map(|(i, a)| (!(i == 1 && a == "native-observed-root")).then_some(a))
+        .collect();
+    #[cfg(target_os = "macos")]
+    if args.get(1).is_some_and(|a| a == "native-observe") {
+        if args.len() < 6 || args[3] != "--" {
+            return Err("usage: native-observe NEW_DIR -- SAME_EXE COMMAND ARGS".into());
+        }
+        return mycity_headless::native_watch::run(std::path::Path::new(&args[2]), &args[4..]);
+    }
+    #[cfg(target_os = "macos")]
+    if args.get(1).is_some_and(|a| a == "native-watch-fixture") {
+        if args.len() != 4 {
+            return Err("usage: native-watch-fixture ROOT MODE".into());
+        }
+        return mycity_headless::native_watch::fixture::run(
+            std::path::Path::new(&args[2]),
+            &args[3],
+        );
+    }
     if args.get(1).is_some_and(|a| a == "native-metrics-probe") {
         if args.len() != 3 {
             return Err("usage: native-metrics-probe NEW_DIR; JSON requests on stdin".into());
@@ -1087,6 +1107,19 @@ fn regional_probe(input: &[u8], dir: &std::path::Path) -> Result<serde_json::Val
 
 fn main() {
     let heap = mycity_headless::heap_meter::Recorder::from_env();
+    #[cfg(target_os = "macos")]
+    let result = {
+        let admission = mycity_headless::native_watch::owner::watch()
+            .and_then(|_| mycity_headless::native_watch::registration::publish(false));
+        let started = admission.is_ok();
+        let result = admission.and_then(|_| run());
+        if started {
+            result.and(mycity_headless::native_watch::registration::publish(true))
+        } else {
+            result
+        }
+    };
+    #[cfg(not(target_os = "macos"))]
     let result = run();
     let measurement = heap.finish(result.is_ok());
     if let Err(error) = result.and(measurement) {

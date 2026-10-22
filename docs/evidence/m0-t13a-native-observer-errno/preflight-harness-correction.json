@@ -1,0 +1,1 @@
+{"first_attempt":"stopped after short-child terminal report, all processes exited","harness_error":"incorrectly required fast child to be missed; scheduler sampled it successfully","correction":"require independently identified child either present in actual frame or explicitly marked unpolled; resume existing terminal reports, do not rerun","rust_source_changed":false}

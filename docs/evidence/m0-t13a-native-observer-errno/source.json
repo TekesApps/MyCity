@@ -1,0 +1,8 @@
+{
+  "source_sha256": "8f0c90ba81d0fe56ce8eadc25f18caacae127ce596a86eab790ee0ce4860f64f",
+  "source_files": 215,
+  "binary": "/Users/frankqin/dev/MyCity/work/candidate-binaries/native-observer-errno/mycity-headless",
+  "binary_sha256": "b9b327e8a50ea7c55ece1479d6ca6039d882c369da42516a2178adccab30c203",
+  "lock_sha256": "4e3d331ef312824514e5ab5b6a2e30aaef786011291ba2a11f9d7671d17a5003",
+  "scope": "Frozen native group observer; functional and full same-source regression pending, no performance acceptance or memory credit"
+}

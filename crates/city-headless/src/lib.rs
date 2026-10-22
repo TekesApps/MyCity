@@ -54,3 +54,6 @@ pub mod steady;
 mod observer_clock;
 
 pub mod native_observer;
+
+#[cfg(target_os = "macos")]
+pub mod native_watch;

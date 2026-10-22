@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.101`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.102`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.102完成[原生整组观测器接入](docs/evidence/m0-t13a-native-observer-errno/STATUS.md)：同源全仓/严格检查、实际失主/锁竞争及60秒周期验证完成；原规模L1短测85/88帧完整，物理仍超限约9.31MiB，置换0，不算性能通过。终态回收约11.88GiB，本轮退役快照不可直接恢复；正式三轮/四速/8h/真实16GB仍未通过。
 
 v0.5.101完成[历史验证产物集中回收](docs/evidence/disk-reclamation-v101/STATUS.md)：精确退役已无依赖的旧暖场压力、已归档重复组件和旧静态库缓存；恢复原件及模型WIP保留。仅磁盘治理，不改变性能验收状态。
 

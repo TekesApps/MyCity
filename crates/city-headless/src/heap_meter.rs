@@ -97,18 +97,22 @@ impl Recorder {
     pub fn from_env() -> Self {
         Self {
             path: std::env::var_os("MYCITY_HEAP_LOG").map(PathBuf::from),
-            role: std::env::args()
-                .nth(1)
-                .unwrap_or_default()
-                .chars()
-                .take(48)
-                .collect(),
+            role: {
+                let mut args = std::env::args().skip(1);
+                let first = args.next().unwrap_or_default();
+                let role = if first == "native-observed-root" {
+                    args.next().unwrap_or_default()
+                } else {
+                    first
+                };
+                role.chars().take(48).collect()
+            },
             instance: process_instance(),
         }
     }
     pub fn finish(&self, success: bool) -> Result<(), String> {
         let cap = match self.role.as_str() {
-            "native-metrics-probe" => Some(crate::diagnostic_contract::OBSERVER),
+            "native-metrics-probe" | "native-observe" => Some(crate::diagnostic_contract::OBSERVER),
             "scale-model-task" if FIXED_HELPER.load(std::sync::atomic::Ordering::Relaxed) => {
                 Some(crate::worker_slots::OWNER_BYTES + crate::diagnostic_contract::HELPER)
             }
