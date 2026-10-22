@@ -1,0 +1,1 @@
+CARGO_TARGET_DIR=/Users/frankqin/dev/MyCity/target cargo +1.85.1 clippy --release --locked --offline -p mycity-core -p mycity-storage --all-targets -- -D warnings

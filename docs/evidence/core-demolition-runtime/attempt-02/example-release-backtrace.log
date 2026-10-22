@@ -1,0 +1,12 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-core)
+    Finished `release` profile [optimized] target(s) in 0.33s
+     Running `/Users/frankqin/dev/MyCity/target/release/examples/construction`
+
+thread 'main' panicked at crates/city-core/examples/construction.rs:47:33:
+construction AcceptInspection { inspector: 1, accepted: true } operation 1000022 failed: InvalidOperation
+stack backtrace:
+   0: _rust_begin_unwind
+   1: core::panicking::panic_fmt
+   2: construction::construction
+   3: construction::main
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.

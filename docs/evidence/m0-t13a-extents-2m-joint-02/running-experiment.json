@@ -1,0 +1,14 @@
+{
+  "pid": 88474,
+  "controller_pid": 88460,
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/r07-extents-2m/ade347ccd333e9f4cdbda7f08066f720bbd7649a6d58762987445750a0db4e05/mycity-headless",
+    "native-observe",
+    "/Users/frankqin/dev/MyCity/work/m0-t13a-extents-2m-joint-l1-02/observed",
+    "--",
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/r07-extents-2m/ade347ccd333e9f4cdbda7f08066f720bbd7649a6d58762987445750a0db4e05/mycity-headless",
+    "r07-layout-driver",
+    "/Users/frankqin/dev/MyCity/work/m0-t13a-extents-2m-joint-l1-02/observed/model",
+    "--vm-trace"
+  ]
+}

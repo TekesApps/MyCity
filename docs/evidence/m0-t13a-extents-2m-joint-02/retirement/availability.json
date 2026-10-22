@@ -1,0 +1,10 @@
+{
+  "not_directly_restorable": [
+    "work/m0-t13a-extents-2m-joint-l1-02/observed/model/layout/snapshots/snapshot-000001",
+    "work/m0-t13a-extents-2m-joint-l1-02/observed/model/layout/snapshots/snapshot-000002"
+  ],
+  "complete_original_files_retained": 190,
+  "pending_is_not_valid_restore_point": true,
+  "original_pressure_not_archived": true,
+  "component_gzip_is_not_complete_snapshot": true
+}

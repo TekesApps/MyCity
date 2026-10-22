@@ -1,0 +1,23 @@
+{
+  "source_sha256": "ade347ccd333e9f4cdbda7f08066f720bbd7649a6d58762987445750a0db4e05",
+  "raw_frames": 113,
+  "complete_frames": 81,
+  "all_sample_peak_footprint_bytes": 3337014824,
+  "complete_frame_peak_index": 61,
+  "complete_frame_peak_footprint_bytes": 3337014824,
+  "complete_frame_excess_bytes": 8415170,
+  "normal_bytes": 3328599654,
+  "normal_pass": false,
+  "pressure_non_normal_seconds": 0.0,
+  "maximum_swap_growth_bytes": 0,
+  "storage": "external HP P900 USB/APFS SSD",
+  "physical_credit_from_VM": 0,
+  "cross_admission_pin_claim": "not_made",
+  "formal_performance": "not_accepted",
+  "real16GB": "not_run",
+  "eight_hour": "not_run",
+  "full_M0": "not_accepted",
+  "candidate_not_main_default": true,
+  "comparison_1m_complete_peak_delta_bytes": -16432,
+  "comparison_scope": "independent short diagnostics; not controlled repeated performance significance or peak identity equivalence"
+}

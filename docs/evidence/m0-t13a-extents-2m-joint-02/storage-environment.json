@@ -1,0 +1,10 @@
+{
+  "work_alias": "/Users/frankqin/dev/MyCity/work",
+  "work_actual": "/Volumes/HP P900/dev/MyCity/work",
+  "target_actual": "/Volumes/HP P900/dev/MyCity/target",
+  "storage": "external HP P900 USB/APFS SSD",
+  "available_bytes_before": 1988811649024,
+  "source_volume_not_used_for_work_capacity": true,
+  "historical_internal_disk_io_comparison": "not_equivalent",
+  "formal_performance": false
+}

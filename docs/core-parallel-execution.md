@@ -46,3 +46,13 @@ root持有同机重任务调度权。各agent先编码，不自行构建；只�
 只读追踪确认正式steady已从native observer继承R07 provider；但`joint-endurance`原来虽被允许观察，却未启用provider，也未识别其`scale-endurance`驱动及`layout-session`等待ack。root已补最小角色映射草稿，advisor完成一次窄审，尚待Cargo与实际生命周期验证。没有将layout、pool、模型worker纳入额度。验收须覆盖驱动退出后额度重新计算、旧layout退出、冷恢复新owner接管；缺有效ack的样本不能当覆盖完整。provider reading有source/nonce/birth/TTL约束，ack本身仅核source/State/活owner，不能混称两者认证。该接线修复不是8小时实测通过。
 
 本轮合并功能终态见[v108实测](evidence/core-m0-integration-108/STATUS.md)：199项及严格检查通过；交通adapter持下一功能窗口，production实际核算继续编码。上文阶段顺序是实际执行记录，未完成门保持未完成。
+
+
+## v0.5.114之后的执行窗口
+
+交通resolver已在v0.5.114独立16项测试/六个pureplan CLI通过，企业退出planner在v0.5.113独立13项通过；二者尚非真实Engine联合。建设原分支保留WIP，由construction_finish单一writer接续实测完整投运/拆除/废物/关闭及恢复；默认2MiB测试栈失败与16MiB条件通过必须分开报告。root随后集成并使用当前主线验证，不混用冻结M0来源。
+
+- construction_finish：独占共享接口与Cargo功能窗口，先完成建设阶段；之后才接[真实交通经营契约](core-town-transport-integration.md)。
+- economy_scenarios：只改真实28日example/scenario测试/fixtures，在隔离economy分支编码，等待构建窗口；不可修改Engine/Store等共享writer文件。
+- root：建设窗口结束后运行既有2MiB02诊断，保持原负载/阈值；性能运行期间其它线只编码/只读。外置work/target与190保护原件规则不变，诊断、恢复和正式性能分别报告。
+- advisor：已完成真实接入的具体可信输入/跨天配额审查；没有新证据不再做同专题整体复核。最终M0验收审查仍保留。

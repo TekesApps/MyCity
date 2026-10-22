@@ -314,6 +314,25 @@ impl Engine {
             if project.site_units > site.capacity {
                 return Err(TxError::Capacity);
             }
+            if project.waste_units != 0 {
+                let receiver = resources
+                    .iter()
+                    .find(|r| r.id == project.waste_receiver_resource)
+                    .ok_or(TxError::Resource)?;
+                if project.waste_units > receiver.capacity {
+                    return Err(TxError::Capacity);
+                }
+            }
+            if project.operating_resource != 0 {
+                let operating = resources
+                    .iter()
+                    .find(|r| r.id == project.operating_resource)
+                    .ok_or(TxError::Resource)?;
+                let expected = project.operating_base_capacity;
+                if operating.capacity != expected {
+                    return Err(TxError::Capacity);
+                }
+            }
         }
         if let Some(e) = world.exchange {
             if e.edges.iter().any(|e| {
@@ -2042,6 +2061,44 @@ fn validate_construction_binding(
     project
         .validate_persisted()
         .map_err(TxError::Construction)?;
+    if project.operating_resource != 0 {
+        let resource = resources
+            .iter()
+            .find(|resource| resource.id == project.operating_resource)
+            .ok_or(TxError::Resource)?;
+        let expected = project
+            .operating_base_capacity
+            .checked_add(if project.operating_published {
+                project.operating_units
+            } else {
+                0
+            })
+            .ok_or(TxError::Overflow)?;
+        if resource.capacity != expected {
+            return Err(TxError::Capacity);
+        }
+        let phase_keeps_operating_contribution = match project.phase {
+            crate::construction::Phase::Operational => {
+                project.kind == crate::construction::Kind::Build
+            }
+            crate::construction::Phase::Review => {
+                project.kind == crate::construction::Kind::Build && project.waste_receiver.is_some()
+            }
+            crate::construction::Phase::Ready => project.waste_receiver.is_some(),
+            _ => false,
+        };
+        if project.operating_published && !phase_keeps_operating_contribution {
+            return Err(TxError::InvalidOperation);
+        }
+    }
+    if project.waste_units != 0
+        && !resources.iter().any(|resource| {
+            resource.id == project.waste_receiver_resource
+                && project.waste_units <= resource.capacity
+        })
+    {
+        return Err(TxError::Resource);
+    }
     if !project.site_reserved {
         if project.site_token.is_some() {
             return Err(TxError::Lease);
@@ -2719,12 +2776,23 @@ fn prepare_construction(
                 return Err(TxError::Unauthorized);
             }
         }
-        EngineCommand::AcceptWaste
-        | EngineCommand::Close
-        | EngineCommand::BeginDemolition { .. } => {
-            // Waste quantities and disposal acceptance are not yet represented in the fixed
-            // profile, so fail closed instead of manufacturing a demolition receipt.
-            return Err(TxError::InvalidOperation);
+        EngineCommand::BeginDemolition { .. } => {
+            if actor != candidate.owner && !matches!(caller, Caller::System) {
+                return Err(TxError::Unauthorized);
+            }
+            if !candidate.operating_published || candidate.operating_resource == 0 {
+                return Err(TxError::InvalidOperation);
+            }
+        }
+        EngineCommand::AcceptWaste => {
+            if actor != candidate.waste_receiver_account && !matches!(caller, Caller::System) {
+                return Err(TxError::Unauthorized);
+            }
+        }
+        EngineCommand::Close => {
+            if actor != candidate.owner && !matches!(caller, Caller::System) {
+                return Err(TxError::Unauthorized);
+            }
         }
         _ if actor != candidate.owner && !matches!(caller, Caller::System) => {
             return Err(TxError::Unauthorized);
@@ -2779,7 +2847,16 @@ fn prepare_construction(
 
     if let Some(mut effect) = effect {
         if effect.operation_id != operation_id {
-            return Err(TxError::InvalidOperation);
+            // These demolition effects can be blocked by live consumer capacity or
+            // owner funds and retried after those inputs change. Keep their internal
+            // project sequence separate from the caller's transaction id so a fresh
+            // operation id can safely retry without mutating the failed candidate.
+            if !matches!(
+                effect.kind,
+                EffectKind::WithdrawOperatingCapacity | EffectKind::ReceiveWaste
+            ) {
+                return Err(TxError::InvalidOperation);
+            }
         }
         match effect.kind {
             EffectKind::ReserveSite => {
@@ -2914,8 +2991,147 @@ fn prepare_construction(
                 }
             }
             EffectKind::Inspect => {}
-            EffectKind::ReleaseSite | EffectKind::ReceiveWaste => {
-                return Err(TxError::InvalidOperation);
+            EffectKind::PublishOperatingCapacity => {
+                if candidate.operating_resource == 0
+                    || candidate.operating_units == 0
+                    || candidate.operating_published
+                {
+                    return Err(TxError::InvalidOperation);
+                }
+                let resource = resources
+                    .iter_mut()
+                    .find(|resource| resource.id == candidate.operating_resource)
+                    .ok_or(TxError::Resource)?;
+                if resource.capacity != candidate.operating_base_capacity {
+                    return Err(TxError::Capacity);
+                }
+                resource.capacity = resource
+                    .capacity
+                    .checked_add(candidate.operating_units)
+                    .ok_or(TxError::Overflow)?;
+            }
+            EffectKind::WithdrawOperatingCapacity => {
+                if !candidate.operating_published || candidate.operating_resource == 0 {
+                    return Err(TxError::InvalidOperation);
+                }
+                let resource = resources
+                    .iter_mut()
+                    .find(|resource| resource.id == candidate.operating_resource)
+                    .ok_or(TxError::Resource)?;
+                let restored = resource
+                    .capacity
+                    .checked_sub(candidate.operating_units)
+                    .ok_or(TxError::Capacity)?;
+                if resource
+                    .reserved
+                    .checked_add(resource.occupied)
+                    .ok_or(TxError::Overflow)?
+                    > restored
+                {
+                    return Err(TxError::Capacity);
+                }
+                resource.capacity = restored;
+            }
+            EffectKind::ReceiveWaste => {
+                if effect.waste_units == 0
+                    || effect.waste_resource == 0
+                    || effect.waste_receiver != Some(candidate.waste_receiver_account)
+                    || effect.payee != candidate.waste_receiver_account
+                {
+                    return Err(TxError::InvalidOperation);
+                }
+                let payer = stage_account(
+                    world,
+                    accounts,
+                    world
+                        .account_ref(effect.payer)
+                        .map_err(|_| TxError::InvalidHandle)?,
+                )?;
+                let payee = stage_account(
+                    world,
+                    accounts,
+                    world
+                        .account_ref(effect.payee)
+                        .map_err(|_| TxError::InvalidHandle)?,
+                )?;
+                let spendable = accounts[payer]
+                    .1
+                    .cash
+                    .checked_sub(accounts[payer].1.protected)
+                    .map_err(|_| TxError::Protection)?;
+                if spendable < effect.cash {
+                    return Err(TxError::Construction(crate::construction::Error::Funds));
+                }
+                let r = resources
+                    .iter_mut()
+                    .find(|r| r.id == effect.waste_resource)
+                    .ok_or(TxError::Resource)?;
+                let occupied = r
+                    .occupied
+                    .checked_add(effect.waste_units)
+                    .ok_or(TxError::Overflow)?;
+                if occupied.checked_add(r.reserved).ok_or(TxError::Overflow)? > r.capacity {
+                    return Err(TxError::Capacity);
+                }
+                let slot = leases
+                    .iter_mut()
+                    .find(|lease| lease.is_none())
+                    .ok_or(TxError::Lease)?;
+                let token = *next_token;
+                *next_token = next_token.checked_add(1).ok_or(TxError::Overflow)?;
+                *slot = Some(Lease {
+                    token,
+                    actor: effect.payee,
+                    resource: effect.waste_resource,
+                    units: effect.waste_units,
+                    occupied: true,
+                });
+                accounts[payer].1.cash = accounts[payer]
+                    .1
+                    .cash
+                    .checked_sub(effect.cash)
+                    .map_err(|_| TxError::Overflow)?;
+                accounts[payee].1.cash = accounts[payee]
+                    .1
+                    .cash
+                    .checked_add(effect.cash)
+                    .map_err(|_| TxError::Overflow)?;
+                r.occupied = occupied;
+            }
+            EffectKind::ReleaseSite => {
+                if effect.site_resource != candidate.site_resource
+                    || effect.site_units != candidate.site_units
+                {
+                    return Err(TxError::Lease);
+                }
+                let token = candidate.site_token.ok_or(TxError::Lease)?;
+                let mut found = None;
+                for (index, lease) in leases.iter().enumerate() {
+                    if lease.is_some_and(|lease| lease.token == token) {
+                        if found.is_some() {
+                            return Err(TxError::Lease);
+                        }
+                        found = Some(index);
+                    }
+                }
+                let index = found.ok_or(TxError::Lease)?;
+                let lease = leases[index].ok_or(TxError::Lease)?;
+                if lease.actor != candidate.owner
+                    || lease.resource != candidate.site_resource
+                    || lease.units != candidate.site_units
+                    || !lease.occupied
+                {
+                    return Err(TxError::Lease);
+                }
+                let r = resources
+                    .iter_mut()
+                    .find(|r| r.id == candidate.site_resource)
+                    .ok_or(TxError::Resource)?;
+                r.occupied = r
+                    .occupied
+                    .checked_sub(candidate.site_units)
+                    .ok_or(TxError::Lease)?;
+                leases[index] = None;
             }
         }
         candidate
@@ -2926,7 +3142,7 @@ fn prepare_construction(
                 materials: effect.materials,
                 total_basis: effect.total_basis,
                 site_units: effect.site_units,
-                waste_accepted: false,
+                waste_accepted: effect.kind == EffectKind::ReceiveWaste,
             })
             .map_err(TxError::Construction)?;
     }

@@ -1,0 +1,304 @@
+diff --git a/crates/city-core/examples/construction.rs b/crates/city-core/examples/construction.rs
+index fbfccf8..a000ef4 100644
+--- a/crates/city-core/examples/construction.rs
++++ b/crates/city-core/examples/construction.rs
+@@ -1,4 +1,4 @@
+-//! Run a complete, bounded build through the authoritative Engine transaction path.
++//! Run a complete build, demolition, and waste settlement through the authoritative Engine path.
+ use mycity_core::{
+     assembly::assemble,
+     construction::{
+@@ -6,15 +6,18 @@ use mycity_core::{
+         OPERATION_PREFIX,
+     },
+     timeline::Command as T,
+-    transaction::{Action, Caller, Engine, Envelope, Resource},
++    transaction::{Action, Caller, Engine, Envelope, Resource, TxError},
+     units::{GameTime, Money, Quantity},
+ };
+ use serde_json::Value;
++use std::sync::atomic::{AtomicU64, Ordering};
+ 
+ const OPENING: &[u8] = include_bytes!("../../../fixtures/m0-e0-opening.json");
+ const SITE: u32 = 80;
+ const PROJECT_ID: u64 = 7;
+ const SHIFT_END: u64 = 17 * 3_600;
++const NEXT_SHIFT_END: u64 = SHIFT_END + 86_400;
++static NEXT_OPERATION_ID: AtomicU64 = AtomicU64::new(1_000_000);
+ 
+ fn envelope(engine: &Engine, operation_id: u64, action: Action) -> Envelope {
+     let world = engine.world().view();
+@@ -27,16 +30,21 @@ fn envelope(engine: &Engine, operation_id: u64, action: Action) -> Envelope {
+     }
+ }
+ fn ordinary(engine: &Engine) -> u64 {
+-    engine.world().view().revision + 100
++    let _ = engine;
++    NEXT_OPERATION_ID.fetch_add(1, Ordering::Relaxed)
+ }
+ fn run(engine: &mut Engine, caller: Caller, action: Action) {
+     let id = ordinary(engine);
+     let request = envelope(engine, id, action);
+-    engine.execute(caller, request).unwrap();
++    engine
++        .execute(caller, request)
++        .unwrap_or_else(|error| panic!("action {id} failed: {error:?}"));
+ }
+ fn construction(engine: &mut Engine, caller: Caller, command: C, op: u64) {
+     let request = envelope(engine, op, Action::Construction { command });
+-    engine.execute(caller, request).unwrap();
++    engine
++        .execute(caller, request)
++        .unwrap_or_else(|error| panic!("construction {command:?} operation {op} failed: {error:?}"));
+ }
+ fn effect_id(engine: &Engine) -> u64 {
+     let project = engine.world().view().construction.unwrap();
+@@ -63,7 +71,7 @@ fn advance(engine: &mut Engine, target: u64) {
+ 
+ fn main() {
+     // Owner 4 owns raw stock 1; contractor 3 receives wages; inspector 1 is an existing account.
+-    let project = Project::new(
++    let mut project = Project::new(
+         PROJECT_ID,
+         Kind::Build,
+         4,
+@@ -101,10 +109,25 @@ fn main() {
+         GameTime::ZERO,
+     )
+     .unwrap();
++    project.operating_resource = 81;
++    project.operating_base_capacity = 2;
++    project.operating_units = 2;
++    project.waste_receiver_account = 3;
++    project.waste_receiver_resource = 82;
++    project.waste_units = 2;
++    project.waste_fee = Money::new(250).unwrap();
+     let mut opening: Value = serde_json::from_slice(OPENING).unwrap();
+     opening["construction"] = serde_json::to_value(project).unwrap();
+     let world = assemble(&serde_json::to_vec(&opening).unwrap()).unwrap();
+-    let mut engine = Engine::new(world, vec![Resource::new(SITE, 1).unwrap()]).unwrap();
++    let mut engine = Engine::new(
++        world,
++        vec![
++            Resource::new(SITE, 1).unwrap(),
++            Resource::new(81, 2).unwrap(),
++            Resource::new(82, 10).unwrap(),
++        ],
++    )
++    .unwrap();
+ 
+     let id = ordinary(&engine);
+     construction(&mut engine, Caller::Account(4), C::File, id);
+@@ -154,7 +177,7 @@ fn main() {
+     );
+     let id = effect_id(&engine);
+     construction(&mut engine, Caller::Account(3), C::SubmitInspection, id);
+-    let id = ordinary(&engine);
++    let id = effect_id(&engine);
+     construction(
+         &mut engine,
+         Caller::Account(1),
+@@ -167,6 +190,147 @@ fn main() {
+ 
+     let result = engine.world().view();
+     assert_eq!(result.construction.unwrap().phase, Phase::Operational);
++    assert!(result.construction.unwrap().operating_published);
++    assert_eq!(
++        engine.resources().iter().find(|r| r.id == 81).unwrap().capacity,
++        4
++    );
++
++    let id = ordinary(&engine);
++    construction(
++        &mut engine,
++        Caller::Account(4),
++        C::BeginDemolition { waste_receiver: 3 },
++        id,
++    );
++    let consumer = engine
++        .execute(
++            Caller::Account(2),
++            envelope(
++                &engine,
++                ordinary(&engine),
++                Action::ReserveCapacity {
++                    resource: 81,
++                    units: 3,
++                },
++            ),
++        )
++        .unwrap()
++        .created_tokens[0]
++        .unwrap();
++    run(
++        &mut engine,
++        Caller::Account(2),
++        Action::OccupyCapacity { token: consumer },
++    );
++    let id = ordinary(&engine);
++    construction(
++        &mut engine,
++        Caller::Account(2),
++        C::DecideGate {
++            gate_id: 1,
++            decision: GateDecision::Accepted,
++            evidence_id: 201,
++        },
++        id,
++    );
++    let id = ordinary(&engine);
++    construction(
++        &mut engine,
++        Caller::Account(1),
++        C::DecideGate {
++            gate_id: 2,
++            decision: GateDecision::Accepted,
++            evidence_id: 202,
++        },
++        id,
++    );
++    let id = ordinary(&engine);
++    construction(&mut engine, Caller::Account(4), C::Prepare, id);
++    assert_eq!(
++        engine.execute(
++            Caller::Account(4),
++            envelope(
++                &engine,
++                ordinary(&engine),
++                Action::Construction { command: C::Start },
++            ),
++        ),
++        Err(TxError::Capacity)
++    );
++    run(
++        &mut engine,
++        Caller::Account(2),
++        Action::ReleaseCapacity { token: consumer },
++    );
++    let id = effect_id(&engine);
++    construction(
++        &mut engine,
++        Caller::Account(4),
++        C::Start,
++        id,
++    );
++    assert!(!engine.world().view().construction.unwrap().operating_published);
++    assert_eq!(
++        engine.resources().iter().find(|r| r.id == 81).unwrap().capacity,
++        2
++    );
++    advance(&mut engine, NEXT_SHIFT_END);
++    let id = effect_id(&engine);
++    construction(
++        &mut engine,
++        Caller::Account(3),
++        C::Work {
++            at: GameTime::new(NEXT_SHIFT_END as i64).unwrap(),
++            elapsed_seconds: 86_400,
++            worker_seconds: 28_800,
++        },
++        id,
++    );
++    let owner_cash_before = engine
++        .world()
++        .view()
++        .accounts
++        .iter()
++        .find(|a| a.id == 4)
++        .unwrap()
++        .cash
++        .value();
++    let id = ordinary(&engine);
++    construction(
++        &mut engine,
++        Caller::Account(3),
++        C::AcceptWaste,
++        id,
++    );
++    assert_eq!(
++        engine
++            .world()
++            .view()
++            .accounts
++            .iter()
++            .find(|a| a.id == 4)
++            .unwrap()
++            .cash
++            .value(),
++        owner_cash_before - 250
++    );
++    assert_eq!(
++        engine.resources().iter().find(|r| r.id == 82).unwrap().occupied,
++        2
++    );
++    let id = effect_id(&engine);
++    construction(
++        &mut engine,
++        Caller::Account(4),
++        C::Close,
++        id,
++    );
++    assert!(!engine.world().view().construction.unwrap().site_reserved);
++    assert_eq!(
++        engine.resources().iter().find(|r| r.id == SITE).unwrap().occupied,
++        0
++    );
+     let owner_cash = result
+         .accounts
+         .iter()
+@@ -176,7 +340,7 @@ fn main() {
+         .value();
+     let owner_stock = result.stocks.iter().find(|s| s.id == 1).unwrap();
+     println!(
+-        "Engine construction operational: project={} owner_cash={} stock_qty={} occupied_site={}",
++        "Engine construction closed: project={} owner_cash={} stock_qty={} site_occupied={} waste_occupied={}",
+         PROJECT_ID,
+         owner_cash,
+         owner_stock.quantity.value(),
+@@ -185,6 +349,12 @@ fn main() {
+             .iter()
+             .find(|r| r.id == SITE)
+             .unwrap()
+-            .occupied
++            .occupied,
++        engine
++            .resources()
++            .iter()
++            .find(|r| r.id == 82)
++            .unwrap()
++            .occupied,
+     );
+ }
+diff --git a/crates/city-storage/tests/construction.rs b/crates/city-storage/tests/construction.rs
+index 64c9c54..98b8d7b 100644
+--- a/crates/city-storage/tests/construction.rs
++++ b/crates/city-storage/tests/construction.rs
+@@ -37,6 +37,7 @@ const V106_PROBE: &[u8] = include_bytes!(
+     "../../../docs/evidence/core-construction-compat/attempt-01/old-v106-storage-probe.json"
+ );
+ static NEXT: AtomicU64 = AtomicU64::new(0);
++static NEXT_OPERATION_ID: AtomicU64 = AtomicU64::new(1_000_000);
+ struct Temp(PathBuf);
+ impl Temp {
+     fn new() -> Self {
+@@ -135,7 +136,8 @@ fn env_action(s: &Store, operation_id: u64, action: Action) -> Envelope {
+ fn ordinary_action(s: &mut Store, caller: Caller, action: Action) {
+     let id = ordinary(s);
+     let request = env_action(s, id, action);
+-    assert!(s.execute(caller, request).unwrap().model.is_ok());
++    let response = s.execute(caller, request).unwrap();
++    assert!(response.model.is_ok(), "action failed: {:?}", response.model);
+ }
+ fn advance(s: &mut Store, target: u64) {
+     for _ in 0..100 {
+@@ -162,8 +164,8 @@ fn advance(s: &mut Store, target: u64) {
+     }
+     panic!("timeline failed to reach work end");
+ }
+-fn ordinary(s: &Store) -> u64 {
+-    s.engine().unwrap().world().view().revision + 100
++fn ordinary(_s: &Store) -> u64 {
++    NEXT_OPERATION_ID.fetch_add(1, Ordering::Relaxed)
+ }
+ fn call(s: &mut Store, caller: Caller, command: C, op: u64) {
+     let request = env(s, op, command);

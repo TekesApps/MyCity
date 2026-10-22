@@ -1,7 +1,7 @@
 use mycity_core::{
     market_access::{
-        AccessStatus, Error, FeePolicyInput, TransportSnapshotRef, TripPartition,
         plan_accessible_day, resolve_delivery_quotes, resolve_delivery_quotes_from_snapshot,
+        AccessStatus, Error, FeePolicyInput, TransportSnapshotRef, TripPartition,
     },
     town_economy::{
         AccountSnapshot, DeliveryQuote, HouseholdGroup, InventorySnapshot, MarketInput,

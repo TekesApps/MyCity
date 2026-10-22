@@ -1,0 +1,4 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+    Finished `release` profile [optimized] target(s) in 0.39s
+     Running `target/release/examples/construction`
+Engine construction closed: project=7 owner_cash=1142150 stock_qty=599000 site_occupied=0 waste_occupied=2

@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-extents-2m-joint-02/retirement/reclaim.py", line 91, in <module>
+    before=occupancy('prepare'); inv=inventory(); pr=protected(); plan=[]; unmatched=[]
+  File "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-extents-2m-joint-02/retirement/reclaim.py", line 54, in occupancy
+    assert not subprocess.check_output(['ps','-p',fields[0],'-o','pid='],text=True).strip()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 424, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['ps', '-p', '90327', '-o', 'pid=']' returned non-zero exit status 1.

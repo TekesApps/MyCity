@@ -49,3 +49,9 @@ docs/evidence/core-store28-integration-111/*.stdout whitespace=-blank-at-eof,-bl
 
 # Preserve actual controller and VM observations from retry phases.
 docs/evidence/m0-t13a-extents-joint-retry-0[12]/*.stdout whitespace=-blank-at-eof,-blank-at-eol
+
+# Keep stage115 captured logs, source patches and VM output byte-identical.
+docs/evidence/core-demolition-runtime/attempt-*/*.log whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/core-demolition-runtime/attempt-*/*.diff whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/core-runtime-integration-115/*.log whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/m0-t13a-extents-2m-joint-02/*.stdout whitespace=-blank-at-eof,-blank-at-eol

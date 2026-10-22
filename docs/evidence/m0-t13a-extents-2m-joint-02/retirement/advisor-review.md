@@ -1,0 +1,5 @@
+# Independent release: joint_contract
+
+Read-only review confirmed observer0/controller-errorNone/four stable captures and two actual full cold restores; original run PIDs terminal. No downstream dependency on new02 snapshot originals found. Permit only new02 pressure/reserve after index/SHA and duplicate components after existing gzip exact decompressed bytes. Keep full migrated190 originals, all raw/source/lock/exe/index/cold/failure evidence and unmatched components. Root still performs all-current process/actual-resolved-directory lsof, full protected hashes and metadata checks before/after. Snapshot originals will no longer be directly restorable after retirement; normal remains failed and16GB/8h not_run.
+
+The initial prepare stopped before creating a deletion plan: a process exited between ps/lsof and check_output(ps), whose legitimate exit1 raised an exception. Failure stderr retained. Guard now requires explicit missing-process return1 with empty stdout; live process with unavailable cwd still fails. lsof now enumerates resolved external work/target paths as advisor requested. No data was deleted by the failed prepare.

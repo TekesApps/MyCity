@@ -26,7 +26,7 @@ fn opening_with_basis(
     actual_stock_basis: Option<i64>,
 ) -> Vec<u8> {
     let mut value: Value = serde_json::from_slice(INPUT).unwrap();
-    let profile = Project::new(
+    let mut profile = Project::new(
         7,
         Kind::Build,
         4,
@@ -64,6 +64,13 @@ fn opening_with_basis(
         GameTime::ZERO,
     )
     .unwrap();
+    profile.operating_resource = 81;
+    profile.operating_base_capacity = 2;
+    profile.operating_units = 2;
+    profile.waste_receiver_account = 3;
+    profile.waste_receiver_resource = 82;
+    profile.waste_units = 2;
+    profile.waste_fee = Money::new(250).unwrap();
     value["construction"] = serde_json::to_value(profile).unwrap();
     if let Some(actual_basis) = actual_stock_basis {
         value["stocks"][0]["basis"] = json!(actual_basis);
@@ -74,7 +81,11 @@ fn opening_with_basis(
 fn engine(required: i64, budget: i64, site_capacity: u32) -> Engine {
     Engine::new(
         assemble(&opening(required, budget)).unwrap(),
-        vec![Resource::new(80, site_capacity).unwrap()],
+        vec![
+            Resource::new(80, site_capacity).unwrap(),
+            Resource::new(81, 2).unwrap(),
+            Resource::new(82, 10).unwrap(),
+        ],
     )
     .unwrap()
 }
@@ -93,7 +104,11 @@ fn priced_engine(
             actual_stock_basis,
         ))
         .unwrap(),
-        vec![Resource::new(80, site_capacity).unwrap()],
+        vec![
+            Resource::new(80, site_capacity).unwrap(),
+            Resource::new(81, 2).unwrap(),
+            Resource::new(82, 10).unwrap(),
+        ],
     )
     .unwrap()
 }
@@ -390,22 +405,329 @@ fn non_draft_checkpoint_restores_exact_site_lease_and_continues_to_operational_w
     assert!(after_work_stock.0 < after_start_stock.0);
     let inspect_id = effect_id(&e);
     construction(&mut e, Caller::Account(3), C::SubmitInspection, inspect_id).unwrap();
-    construction_auto(
+    let accept_id = effect_id(&e);
+    construction(
         &mut e,
         Caller::Account(1),
         C::AcceptInspection {
             inspector: 1,
             accepted: true,
         },
+        accept_id,
     )
     .unwrap();
     let view = e.world().view();
-    assert_eq!(view.construction.unwrap().phase, Phase::Operational);
+    let operating = view.construction.unwrap();
+    assert_eq!(operating.phase, Phase::Operational);
+    assert!(operating.operating_published);
+    assert_eq!(operating.operating_base_capacity, 2);
+    assert_eq!(
+        e.resources().iter().find(|r| r.id == 81).unwrap().capacity,
+        4
+    );
+    let checkpoint = e.export_checkpoint().unwrap();
+    let mut forged: Value = serde_json::from_slice(&checkpoint).unwrap();
+    forged["world"]["construction"]["operating_base_capacity"] = json!(3);
+    assert!(Engine::restore_checkpoint(&serde_json::to_vec(&forged).unwrap()).is_err());
+    let mut legacy: Value = serde_json::from_slice(&checkpoint).unwrap();
+    legacy["world"]["construction"]["operating_resource"] = json!(0);
+    legacy["world"]["construction"]["operating_base_capacity"] = json!(0);
+    legacy["world"]["construction"]["operating_units"] = json!(0);
+    legacy["world"]["construction"]["operating_published"] = json!(false);
+    let mut legacy = Engine::restore_checkpoint(&serde_json::to_vec(&legacy).unwrap()).unwrap();
+    let begin = envelope(
+        &legacy,
+        ordinary_id(&legacy),
+        Action::Construction {
+            command: C::BeginDemolition { waste_receiver: 3 },
+        },
+    );
+    assert_eq!(
+        legacy.execute(Caller::Account(4), begin),
+        Err(TxError::InvalidOperation)
+    );
+    assert_eq!(
+        legacy
+            .resources()
+            .iter()
+            .find(|r| r.id == 81)
+            .unwrap()
+            .capacity,
+        4
+    );
     assert_eq!(cash(&e, 4), after_work_cash);
     assert_eq!(stock(&e, 1), after_work_stock);
     assert_eq!(
         e.resources().iter().find(|r| r.id == 80).unwrap().occupied,
         1
+    );
+}
+
+#[test]
+fn operating_capacity_is_published_and_withdrawn_only_when_consumers_allow_it() {
+    const NEXT_SHIFT: u64 = 86_400 + END_OF_SHIFT;
+    let mut e = engine(1_000, 1_000_000, 1);
+    file_and_approve(&mut e);
+    start(&mut e).unwrap();
+    enable_timeline(&mut e);
+    advance(&mut e, END_OF_SHIFT);
+    work(&mut e).unwrap();
+    let inspect = effect_id(&e);
+    construction(&mut e, Caller::Account(3), C::SubmitInspection, inspect).unwrap();
+    let accept = effect_id(&e);
+    construction(
+        &mut e,
+        Caller::Account(1),
+        C::AcceptInspection {
+            inspector: 1,
+            accepted: true,
+        },
+        accept,
+    )
+    .unwrap();
+    let project = e.world().view().construction.unwrap();
+    assert!(project.operating_published);
+    assert_eq!(
+        e.resources().iter().find(|r| r.id == 81).unwrap().capacity,
+        4
+    );
+
+    construction_auto(
+        &mut e,
+        Caller::Account(4),
+        C::BeginDemolition { waste_receiver: 3 },
+    )
+    .unwrap();
+    construction_auto(
+        &mut e,
+        Caller::Account(2),
+        C::DecideGate {
+            gate_id: 1,
+            decision: GateDecision::Rejected,
+            evidence_id: 0,
+        },
+    )
+    .unwrap();
+    let project = e.world().view().construction.unwrap();
+    assert_eq!(project.phase, Phase::Operational);
+    assert!(project.operating_published);
+    assert_eq!(
+        e.resources().iter().find(|r| r.id == 81).unwrap().capacity,
+        4
+    );
+
+    construction_auto(
+        &mut e,
+        Caller::Account(4),
+        C::BeginDemolition { waste_receiver: 3 },
+    )
+    .unwrap();
+    let reserve_id = ordinary_id(&e);
+    let reserve = envelope(
+        &e,
+        reserve_id,
+        Action::ReserveCapacity {
+            resource: 81,
+            units: 2,
+        },
+    );
+    let token = e
+        .execute(Caller::Account(2), reserve)
+        .unwrap()
+        .created_tokens[0]
+        .unwrap();
+    run(&mut e, Caller::Account(2), Action::OccupyCapacity { token });
+    let pending_consumer = envelope(
+        &e,
+        ordinary_id(&e),
+        Action::ReserveCapacity {
+            resource: 81,
+            units: 1,
+        },
+    );
+    let pending_token = e
+        .execute(Caller::Account(2), pending_consumer)
+        .unwrap()
+        .created_tokens[0]
+        .unwrap();
+    construction_auto(
+        &mut e,
+        Caller::Account(2),
+        C::DecideGate {
+            gate_id: 1,
+            decision: GateDecision::Accepted,
+            evidence_id: 21,
+        },
+    )
+    .unwrap();
+    construction_auto(
+        &mut e,
+        Caller::Account(1),
+        C::DecideGate {
+            gate_id: 2,
+            decision: GateDecision::Accepted,
+            evidence_id: 22,
+        },
+    )
+    .unwrap();
+    construction_auto(&mut e, Caller::Account(4), C::Prepare).unwrap();
+    assert_eq!(e.world().view().construction.unwrap().phase, Phase::Ready);
+    assert!(e.world().view().construction.unwrap().operating_published);
+    assert_eq!(
+        construction_auto(&mut e, Caller::Account(4), C::Start),
+        Err(TxError::Capacity)
+    );
+    assert_eq!(
+        e.resources().iter().find(|r| r.id == 81).unwrap().capacity,
+        4
+    );
+    assert!(e.world().view().construction.unwrap().operating_published);
+
+    run(
+        &mut e,
+        Caller::Account(2),
+        Action::ReleaseCapacity { token },
+    );
+    run(
+        &mut e,
+        Caller::Account(2),
+        Action::ReleaseCapacity {
+            token: pending_token,
+        },
+    );
+    let retry_id = ordinary_id(&e);
+    construction(&mut e, Caller::Account(4), C::Start, retry_id).unwrap();
+    assert_eq!(
+        e.resources().iter().find(|r| r.id == 81).unwrap().capacity,
+        2
+    );
+    assert!(!e.world().view().construction.unwrap().operating_published);
+    assert_eq!(
+        e.world().view().construction.unwrap().phase,
+        Phase::Demolition
+    );
+    construction_auto(&mut e, Caller::Account(3), C::Pause).unwrap();
+    assert_eq!(e.world().view().construction.unwrap().phase, Phase::Paused);
+    let paused_checkpoint = e.export_checkpoint().unwrap();
+    let mut e = Engine::restore_checkpoint(&paused_checkpoint).unwrap();
+    assert_eq!(e.world().view().construction.unwrap().phase, Phase::Paused);
+    construction_auto(&mut e, Caller::Account(3), C::Resume).unwrap();
+    assert_eq!(
+        e.world().view().construction.unwrap().phase,
+        Phase::Demolition
+    );
+    advance(&mut e, NEXT_SHIFT);
+    let demolish_work = effect_id(&e);
+    construction(
+        &mut e,
+        Caller::Account(3),
+        C::Work {
+            at: GameTime::new(NEXT_SHIFT as i64).unwrap(),
+            elapsed_seconds: 86_400,
+            worker_seconds: BUILD_SECONDS as u32,
+        },
+        demolish_work,
+    )
+    .unwrap();
+    let owner = e.world().account_ref(4).unwrap();
+    let protected = Money::new(cash(&e, 4) - 200).unwrap();
+    run(
+        &mut e,
+        Caller::Account(4),
+        Action::Protect {
+            account: owner,
+            amount: protected,
+        },
+    );
+    let next_effect = e.world().view().construction.unwrap().next_effect;
+    let owner_cash = cash(&e, 4);
+    let receiver_cash = cash(&e, 3);
+    let waste_occupied = e.resources().iter().find(|r| r.id == 82).unwrap().occupied;
+    assert_eq!(
+        construction_auto(&mut e, Caller::Account(3), C::AcceptWaste),
+        Err(TxError::Construction(
+            mycity_core::construction::Error::Funds
+        ))
+    );
+    assert_eq!(cash(&e, 4), owner_cash);
+    assert_eq!(cash(&e, 3), receiver_cash);
+    assert_eq!(
+        e.world().view().construction.unwrap().next_effect,
+        next_effect
+    );
+    assert_eq!(
+        e.resources().iter().find(|r| r.id == 82).unwrap().occupied,
+        waste_occupied
+    );
+    run(
+        &mut e,
+        Caller::System,
+        Action::ReleaseProtection {
+            account: owner,
+            amount: protected,
+        },
+    );
+
+    let reserve = envelope(
+        &e,
+        ordinary_id(&e),
+        Action::ReserveCapacity {
+            resource: 82,
+            units: 9,
+        },
+    );
+    let receiver_lease = e
+        .execute(Caller::Account(2), reserve)
+        .unwrap()
+        .created_tokens[0]
+        .unwrap();
+    run(
+        &mut e,
+        Caller::Account(2),
+        Action::OccupyCapacity {
+            token: receiver_lease,
+        },
+    );
+    let next_effect = e.world().view().construction.unwrap().next_effect;
+    let owner_cash = cash(&e, 4);
+    let receiver_cash = cash(&e, 3);
+    assert_eq!(
+        construction_auto(&mut e, Caller::Account(3), C::AcceptWaste),
+        Err(TxError::Capacity)
+    );
+    assert_eq!(cash(&e, 4), owner_cash);
+    assert_eq!(cash(&e, 3), receiver_cash);
+    assert_eq!(
+        e.world().view().construction.unwrap().next_effect,
+        next_effect
+    );
+    assert_eq!(
+        e.resources().iter().find(|r| r.id == 82).unwrap().occupied,
+        9
+    );
+    run(
+        &mut e,
+        Caller::Account(2),
+        Action::ReleaseCapacity {
+            token: receiver_lease,
+        },
+    );
+    construction_auto(&mut e, Caller::Account(3), C::AcceptWaste).unwrap();
+    assert_eq!(
+        e.resources().iter().find(|r| r.id == 82).unwrap().occupied,
+        2
+    );
+    assert_eq!(cash(&e, 4), 1_200_000 - 28_800 - 28_800 - 250);
+    let close = effect_id(&e);
+    construction(&mut e, Caller::Account(4), C::Close, close).unwrap();
+    assert_eq!(e.world().view().construction.unwrap().phase, Phase::Closed);
+    assert_eq!(
+        e.resources().iter().find(|r| r.id == 80).unwrap().occupied,
+        0
+    );
+    assert_eq!(
+        e.resources().iter().find(|r| r.id == 82).unwrap().occupied,
+        2
     );
 }
 

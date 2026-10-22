@@ -443,3 +443,6 @@ v0.5.113：[企业退出计划器及原预算归因](evidence/core-business-exit
 
 
 v0.5.114：[交通市场resolver](evidence/core-market-access-integration-114/STATUS.md)最终源码16项release测试及strict通过，六CLI仅pureplan，尚未Engine/Store联合落账。原allocation trace复算未发现可安全回收容量，2MiB02未运行。建设默认测试栈失败待处理，真实16GB/8h not_run，M0不通过。
+
+
+v0.5.115：[主线有限集成及2MiB诊断](evidence/core-runtime-integration-115/STATUS.md)。d19来源49 release测试、strict/fmt、真实建设关闭CLI通过；默认debug栈失败与release通过分开。ade固定候选原负载4捕获/2冷恢复通过，但normal超8,415,170B；该轮快照54文件精确退役，保留190恢复/故障原件。2MiB未替换main默认。真实交通经营联合未完成，16GB/8h not_run，M0 not_accepted。

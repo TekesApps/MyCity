@@ -1,0 +1,1 @@
+CARGO_TARGET_DIR=/Users/frankqin/dev/MyCity/target cargo +1.85.1 test --locked --offline -p mycity-core --test construction_engine -- --nocapture

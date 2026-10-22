@@ -80,6 +80,8 @@ pub enum EffectKind {
     ReserveSite,
     Work,
     Inspect,
+    PublishOperatingCapacity,
+    WithdrawOperatingCapacity,
     ReleaseSite,
     ReceiveWaste,
 }
@@ -100,6 +102,11 @@ pub struct Effect {
     pub payee: u32,
     pub stock_ids: [u32; MAX_MATERIALS],
     pub waste_receiver: Option<u32>,
+    /// Waste quantity accepted by the configured receiver, in receiver capacity units.
+    #[serde(default)]
+    pub waste_units: u32,
+    #[serde(default)]
+    pub waste_resource: u32,
     pub worker_seconds: u64,
     pub game_time: GameTime,
 }
@@ -266,6 +273,16 @@ pub struct Project {
     pub inspector: u32,
     pub site_resource: u32,
     pub site_units: u32,
+    /// Immutable source-bound operating-capacity contribution.
+    #[serde(default)]
+    pub operating_resource: u32,
+    #[serde(default)]
+    pub operating_base_capacity: u32,
+    #[serde(default)]
+    pub operating_units: u32,
+    /// Exact contribution currently included in Resource.capacity.
+    #[serde(default)]
+    pub operating_published: bool,
     pub crew: u16,
     pub budget: Money,
     pub spent: Money,
@@ -283,6 +300,16 @@ pub struct Project {
     pub pending_at: Option<GameTime>,
     pub next_effect: u32,
     pub waste_receiver: Option<u32>,
+    /// Immutable disposal contract copied from the opening project profile. Zero values
+    /// identify legacy profiles that cannot safely accept waste.
+    #[serde(default)]
+    pub waste_receiver_account: u32,
+    #[serde(default)]
+    pub waste_receiver_resource: u32,
+    #[serde(default)]
+    pub waste_units: u32,
+    #[serde(default)]
+    pub waste_fee: Money,
     pub site_reserved: bool,
     /// Exact Engine lease token anchoring the occupied project site.
     #[serde(default)]
@@ -327,6 +354,12 @@ impl Project {
             || self.inspector == 0
             || self.site_resource == 0
             || self.site_units == 0
+            || (self.operating_resource == 0
+                && (self.operating_base_capacity != 0
+                    || self.operating_units != 0
+                    || self.operating_published))
+            || (self.operating_resource != 0 && self.operating_units == 0)
+            || (self.operating_published && self.operating_resource == 0)
             || self.crew == 0
             || self.budget == Money::ZERO
             || self.labor_cents_per_hour == Money::ZERO
@@ -334,13 +367,23 @@ impl Project {
             || self.next_effect == 0
             || gc == 0
             || gc > MAX_GATES
-            || mc == 0
+            || (mc == 0 && self.kind != Kind::Demolish)
             || mc > MAX_MATERIALS
-            || self.kind == Kind::Demolish
+            || (self.kind == Kind::Demolish
+                && !matches!(self.phase, Phase::Demolition | Phase::Closed)
+                && !(self.phase == Phase::Paused
+                    && self.waste_receiver.is_some()
+                    && self.site_reserved
+                    && !self.operating_published
+                    && self.pending.is_none()))
             || self.spent > self.budget
             || self.completed_worker_seconds > self.planned_worker_seconds
             || self.pending.is_some() != self.pending_at.is_some()
             || self.site_reserved != self.site_token.is_some()
+            || (self.waste_receiver_resource == 0) != (self.waste_units == 0)
+            || (self.waste_units != 0 && self.waste_receiver_account == 0)
+            || (self.waste_units == 0 && self.waste_fee != Money::ZERO)
+            || self.waste_fee.value() < 0
             || self.gates[gc..].iter().any(|g| *g != Gate::default())
             || self.materials[mc..]
                 .iter()
@@ -391,6 +434,7 @@ impl Project {
             || self.completed_worker_seconds != 0
             || self.phase != Phase::Draft
             || self.site_reserved
+            || self.operating_published
             || self.inspected
             || self.waste_receiver.is_some()
             || self.waste_accepted
@@ -480,6 +524,10 @@ impl Project {
             inspector,
             site_resource,
             site_units,
+            operating_resource: 0,
+            operating_base_capacity: 0,
+            operating_units: 0,
+            operating_published: false,
             crew,
             budget,
             spent: Money::ZERO,
@@ -497,6 +545,10 @@ impl Project {
             pending_at: None,
             next_effect: 1,
             waste_receiver: None,
+            waste_receiver_account: 0,
+            waste_receiver_resource: 0,
+            waste_units: 0,
+            waste_fee: Money::ZERO,
             site_reserved: false,
             site_token: None,
             inspected: false,
@@ -545,14 +597,28 @@ impl Project {
                 self.phase = Phase::Ready;
                 Ok(None)
             }
-            Command::Start if self.phase == Phase::Ready && self.waste_receiver.is_some() => {
+            Command::Start
+                if self.phase == Phase::Ready
+                    && self.waste_receiver.is_some()
+                    && self.operating_published =>
+            {
                 self.gates_clear()?;
                 self.kind = Kind::Demolish;
                 self.completed_worker_seconds = 0;
                 self.material_count = 0;
+                self.materials = [Material::default(); MAX_MATERIALS];
                 self.last_work_at = Some(at);
-                self.phase = Phase::Demolition;
-                Ok(None)
+                let e = self.effect(
+                    EffectKind::WithdrawOperatingCapacity,
+                    Money::ZERO,
+                    [Quantity::ZERO; MAX_MATERIALS],
+                    0,
+                    at,
+                    0,
+                )?;
+                self.pending = Some(e);
+                self.pending_at = Some(at);
+                Ok(Some(e))
             }
             Command::Start if self.phase == Phase::Ready && self.kind != Kind::Demolish => {
                 let e = self.effect(
@@ -605,8 +671,17 @@ impl Project {
             } if self.phase == Phase::Inspection && inspector == self.inspector => {
                 if accepted {
                     self.inspected = true;
-                    self.phase = Phase::Operational;
-                    Ok(None)
+                    let e = self.effect(
+                        EffectKind::PublishOperatingCapacity,
+                        Money::ZERO,
+                        [Quantity::ZERO; MAX_MATERIALS],
+                        0,
+                        at,
+                        0,
+                    )?;
+                    self.pending = Some(e);
+                    self.pending_at = Some(at);
+                    Ok(Some(e))
                 } else {
                     self.phase = Phase::Building;
                     Ok(None)
@@ -625,6 +700,10 @@ impl Project {
                 gate_count,
             } if matches!(self.phase, Phase::Operational | Phase::Paused)
                 && waste_receiver != 0
+                && waste_receiver == self.waste_receiver_account
+                && self.waste_units != 0
+                && self.waste_receiver_resource != 0
+                && self.operating_published
                 && gate_count > 0
                 && gate_count as usize <= MAX_GATES =>
             {
@@ -658,12 +737,24 @@ impl Project {
             {
                 let e = self.effect(
                     EffectKind::ReceiveWaste,
-                    Money::ZERO,
+                    self.waste_fee,
                     [Quantity::ZERO; MAX_MATERIALS],
                     0,
                     at,
                     0,
                 )?;
+                let mut e = e;
+                e.waste_units = self.waste_units;
+                e.waste_resource = self.waste_receiver_resource;
+                e.payee = self.waste_receiver_account;
+                if self
+                    .spent
+                    .checked_add(e.cash)
+                    .map_err(|_| Error::Overflow)?
+                    > self.budget
+                {
+                    return Err(Error::Funds);
+                }
                 self.pending = Some(e);
                 self.pending_at = Some(at);
                 Ok(Some(e))
@@ -723,6 +814,8 @@ impl Project {
             payee: self.contractor,
             stock_ids: self.materials.map(|m| m.stock_id),
             waste_receiver: self.waste_receiver,
+            waste_units: 0,
+            waste_resource: 0,
             worker_seconds,
             game_time,
         })
@@ -893,12 +986,24 @@ impl Project {
                 }
             }
             EffectKind::Inspect => self.phase = Phase::Inspection,
+            EffectKind::PublishOperatingCapacity => {
+                self.operating_published = true;
+                self.phase = Phase::Operational;
+            }
+            EffectKind::WithdrawOperatingCapacity => {
+                self.operating_published = false;
+                self.phase = Phase::Demolition;
+            }
             EffectKind::ReleaseSite => {
                 self.site_reserved = false;
                 self.site_token = None;
                 self.phase = Phase::Closed
             }
             EffectKind::ReceiveWaste => {
+                self.spent = self
+                    .spent
+                    .checked_add(e.cash)
+                    .map_err(|_| Error::Overflow)?;
                 self.waste_accepted = receipt.waste_accepted;
                 if !self.waste_accepted {
                     return Err(Error::Waste);

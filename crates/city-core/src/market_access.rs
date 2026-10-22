@@ -4,7 +4,7 @@
 //! unused road capacity as new market capacity and never settles cash or inventory.
 
 use crate::{
-    town_economy::{DeliveryQuote, MarketInput, SettlementBatch, plan_day},
+    town_economy::{plan_day, DeliveryQuote, MarketInput, SettlementBatch},
     transport::{Assignment, OdDemand, Opening, UnservedReason},
     units::{Money, Quantity},
 };

@@ -14,7 +14,7 @@ fn g(id: u32, party: u32) -> Gate {
     }
 }
 fn project() -> Project {
-    Project::new(
+    let mut project = Project::new(
         7,
         Kind::Build,
         1,
@@ -36,7 +36,15 @@ fn project() -> Project {
         }],
         GameTime::new(9 * 3_600).unwrap(),
     )
-    .unwrap()
+    .unwrap();
+    project.operating_resource = 81;
+    project.operating_base_capacity = 2;
+    project.operating_units = 2;
+    project.waste_receiver_account = 12;
+    project.waste_receiver_resource = 82;
+    project.waste_units = 3;
+    project.waste_fee = Money::new(100).unwrap();
+    project
 }
 fn receipt(e: Effect, waste: bool) -> Receipt {
     Receipt {
@@ -147,15 +155,23 @@ fn consent_materials_wages_and_inspection_gate_occupancy() {
         ),
         Err(Error::WrongPhase)
     );
-    p.apply(
-        at,
-        Command::AcceptInspection {
-            inspector: 3,
-            accepted: true,
-        },
-    )
-    .unwrap();
+    let publish = p
+        .apply(
+            at,
+            Command::AcceptInspection {
+                inspector: 3,
+                accepted: true,
+            },
+        )
+        .unwrap()
+        .unwrap();
+    assert_eq!(
+        publish.kind,
+        mycity_core::construction::EffectKind::PublishOperatingCapacity
+    );
+    p.confirm(receipt(publish, false)).unwrap();
     assert_eq!(p.phase, Phase::Operational);
+    assert!(p.operating_published);
 }
 
 #[test]

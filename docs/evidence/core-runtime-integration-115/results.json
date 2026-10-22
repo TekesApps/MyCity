@@ -1,0 +1,97 @@
+[
+  {
+    "name": "core-tests",
+    "command": [
+      "cargo",
+      "+1.85.1",
+      "test",
+      "-p",
+      "mycity-core",
+      "--release",
+      "--locked",
+      "--offline",
+      "--test",
+      "construction",
+      "--test",
+      "construction_engine",
+      "--test",
+      "market_access",
+      "--test",
+      "town_business_exit"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 27.671871833,
+    "RUST_MIN_STACK": "unset"
+  },
+  {
+    "name": "store-tests",
+    "command": [
+      "cargo",
+      "+1.85.1",
+      "test",
+      "-p",
+      "mycity-storage",
+      "--release",
+      "--locked",
+      "--offline",
+      "--test",
+      "construction"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 30.28688025,
+    "RUST_MIN_STACK": "unset"
+  },
+  {
+    "name": "construction-cli",
+    "command": [
+      "cargo",
+      "+1.85.1",
+      "run",
+      "-p",
+      "mycity-core",
+      "--release",
+      "--locked",
+      "--offline",
+      "--example",
+      "construction"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.9268676669999962,
+    "RUST_MIN_STACK": "unset"
+  },
+  {
+    "name": "strict",
+    "command": [
+      "cargo",
+      "+1.85.1",
+      "clippy",
+      "-p",
+      "mycity-core",
+      "-p",
+      "mycity-storage",
+      "--all-targets",
+      "--release",
+      "--locked",
+      "--offline",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 6.1197233749999995,
+    "RUST_MIN_STACK": "unset"
+  },
+  {
+    "name": "fmt",
+    "command": [
+      "cargo",
+      "+1.85.1",
+      "fmt",
+      "--all",
+      "--check"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 0.4756952500000011,
+    "RUST_MIN_STACK": "unset"
+  }
+]

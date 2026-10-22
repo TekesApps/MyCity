@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.114`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.115`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.115完成[主线有限运行时集成](docs/evidence/core-runtime-integration-115/STATUS.md)：49项release测试、strict/fmt及完整建设/拆除/废物/关闭CLI实测通过，修正最终现金展示。固定2MiB诊断4捕获/2冷恢复通过但normal仍超8,415,170B，未设main默认；精确回收本轮54文件约6.285GiB，190原件保留。真实交通经营联调、16GB/8h仍未完成。
 
 v0.5.114集成[已验证交通市场resolver](docs/evidence/core-market-access-integration-114/STATUS.md)：最终源码16项测试、strict Clippy及6个pureplan CLI实测通过；保留首轮授权分类失败。动态报价复用真实OD分配，尚未接Engine落账，不签三线联合；M0原容量归因进一步核实，未找到可安全删减的backing。
 

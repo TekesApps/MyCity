@@ -1,0 +1,203 @@
+Diff in /Users/frankqin/dev/MyCity/crates/city-core/examples/construction.rs:42:
+ }
+ fn construction(engine: &mut Engine, caller: Caller, command: C, op: u64) {
+     let request = envelope(engine, op, Action::Construction { command });
+-    engine
+-        .execute(caller, request)
+-        .unwrap_or_else(|error| panic!("construction {command:?} operation {op} failed: {error:?}"));
++    engine.execute(caller, request).unwrap_or_else(|error| {
++        panic!("construction {command:?} operation {op} failed: {error:?}")
++    });
+ }
+ fn effect_id(engine: &Engine) -> u64 {
+     let project = engine.world().view().construction.unwrap();
+Diff in /Users/frankqin/dev/MyCity/crates/city-core/examples/construction.rs:192:
+     assert_eq!(result.construction.unwrap().phase, Phase::Operational);
+     assert!(result.construction.unwrap().operating_published);
+     assert_eq!(
+-        engine.resources().iter().find(|r| r.id == 81).unwrap().capacity,
++        engine
++            .resources()
++            .iter()
++            .find(|r| r.id == 81)
++            .unwrap()
++            .capacity,
+         4
+     );
+ 
+Diff in /Users/frankqin/dev/MyCity/crates/city-core/examples/construction.rs:264:
+         Action::ReleaseCapacity { token: consumer },
+     );
+     let id = effect_id(&engine);
+-    construction(
+-        &mut engine,
+-        Caller::Account(4),
+-        C::Start,
+-        id,
++    construction(&mut engine, Caller::Account(4), C::Start, id);
++    assert!(
++        !engine
++            .world()
++            .view()
++            .construction
++            .unwrap()
++            .operating_published
+     );
+-    assert!(!engine.world().view().construction.unwrap().operating_published);
+     assert_eq!(
+-        engine.resources().iter().find(|r| r.id == 81).unwrap().capacity,
++        engine
++            .resources()
++            .iter()
++            .find(|r| r.id == 81)
++            .unwrap()
++            .capacity,
+         2
+     );
+     advance(&mut engine, NEXT_SHIFT_END);
+Diff in /Users/frankqin/dev/MyCity/crates/city-core/examples/construction.rs:297:
+         .cash
+         .value();
+     let id = ordinary(&engine);
+-    construction(
+-        &mut engine,
+-        Caller::Account(3),
+-        C::AcceptWaste,
+-        id,
+-    );
++    construction(&mut engine, Caller::Account(3), C::AcceptWaste, id);
+     assert_eq!(
+         engine
+             .world()
+Diff in /Users/frankqin/dev/MyCity/crates/city-core/examples/construction.rs:316:
+         owner_cash_before - 250
+     );
+     assert_eq!(
+-        engine.resources().iter().find(|r| r.id == 82).unwrap().occupied,
++        engine
++            .resources()
++            .iter()
++            .find(|r| r.id == 82)
++            .unwrap()
++            .occupied,
+         2
+     );
+     let id = effect_id(&engine);
+Diff in /Users/frankqin/dev/MyCity/crates/city-core/examples/construction.rs:323:
+-    construction(
+-        &mut engine,
+-        Caller::Account(4),
+-        C::Close,
+-        id,
+-    );
++    construction(&mut engine, Caller::Account(4), C::Close, id);
+     assert!(!engine.world().view().construction.unwrap().site_reserved);
+     assert_eq!(
+-        engine.resources().iter().find(|r| r.id == SITE).unwrap().occupied,
++        engine
++            .resources()
++            .iter()
++            .find(|r| r.id == SITE)
++            .unwrap()
++            .occupied,
+         0
+     );
+     // Read the final committed state after waste fees and Close, not the earlier
+Diff in /Users/frankqin/dev/MyCity/crates/city-core/src/market_access.rs:4:
+ //! unused road capacity as new market capacity and never settles cash or inventory.
+ 
+ use crate::{
+-    town_economy::{DeliveryQuote, MarketInput, SettlementBatch, plan_day},
++    town_economy::{plan_day, DeliveryQuote, MarketInput, SettlementBatch},
+     transport::{Assignment, OdDemand, Opening, UnservedReason},
+     units::{Money, Quantity},
+ };
+Diff in /Users/frankqin/dev/MyCity/crates/city-core/tests/construction.rs:1:
+ use mycity_core::construction::{
+-    Command, Effect, Error, Gate, GateCategory, GateDecision, Kind, MAX_MATERIALS, Material, Phase,
+-    Project, Receipt,
++    Command, Effect, Error, Gate, GateCategory, GateDecision, Kind, Material, Phase, Project,
++    Receipt, MAX_MATERIALS,
+ };
+ use mycity_core::units::{GameTime, Money, Quantity};
+ 
+Diff in /Users/frankqin/dev/MyCity/crates/city-core/tests/construction_engine.rs:1:
+ use mycity_core::{
+     assembly::assemble,
+     construction::{
+-        EngineCommand as C, Gate, GateCategory, GateDecision, Kind, Material, OPERATION_PREFIX,
+-        Phase, Project, STATE_BUDGET_BYTES,
++        EngineCommand as C, Gate, GateCategory, GateDecision, Kind, Material, Phase, Project,
++        OPERATION_PREFIX, STATE_BUDGET_BYTES,
+     },
+     timeline::Command as T,
+     transaction::{Action, Caller, Engine, Envelope, Resource, TxError},
+Diff in /Users/frankqin/dev/MyCity/crates/city-core/tests/construction_engine.rs:9:
+     units::{GameTime, Money, Quantity},
+ };
+-use serde_json::{Value, json};
++use serde_json::{json, Value};
+ use std::sync::atomic::{AtomicU64, Ordering};
+ 
+ const INPUT: &[u8] = include_bytes!("../../../fixtures/m0-e0-opening.json");
+Diff in /Users/frankqin/dev/MyCity/crates/city-core/tests/construction_engine.rs:371:
+ }
+ 
+ #[test]
+-fn non_draft_checkpoint_restores_exact_site_lease_and_continues_to_operational_without_double_charge()
+- {
++fn non_draft_checkpoint_restores_exact_site_lease_and_continues_to_operational_without_double_charge(
++) {
+     let mut e = engine(1_000, 1_000_000, 1);
+     file_and_approve(&mut e);
+     start(&mut e).unwrap();
+Diff in /Users/frankqin/dev/MyCity/crates/city-core/tests/construction_engine.rs:890:
+ 
+ #[test]
+ fn construction_action_and_journal_records_stay_inside_frozen_engine_budget() {
+-    use mycity_core::transaction::{Action, ENGINE_BYTE_BUDGET, JournalRecord};
++    use mycity_core::transaction::{Action, JournalRecord, ENGINE_BYTE_BUDGET};
+     use std::mem::size_of;
+     let e = engine(1_000, 1_000_000, 1);
+     assert!(
+Diff in /Users/frankqin/dev/MyCity/crates/city-core/tests/market_access.rs:1:
+ use mycity_core::{
+     market_access::{
+-        AccessStatus, Error, FeePolicyInput, TransportSnapshotRef, TripPartition,
+         plan_accessible_day, resolve_delivery_quotes, resolve_delivery_quotes_from_snapshot,
++        AccessStatus, Error, FeePolicyInput, TransportSnapshotRef, TripPartition,
+     },
+     town_economy::{
+         AccountSnapshot, DeliveryQuote, HouseholdGroup, InventorySnapshot, MarketInput,
+Diff in /Users/frankqin/dev/MyCity/crates/city-storage/tests/construction.rs:1:
+ use mycity_core::{
+     construction::{
+-        EngineCommand as C, Gate, GateCategory, GateDecision, Kind, Material, OPERATION_PREFIX,
+-        Project,
++        EngineCommand as C, Gate, GateCategory, GateDecision, Kind, Material, Project,
++        OPERATION_PREFIX,
+     },
+     timeline::Command as T,
+     transaction::{Action, Caller, Envelope, Resource},
+Diff in /Users/frankqin/dev/MyCity/crates/city-storage/tests/construction.rs:8:
+     units::{GameTime, Money, Quantity},
+ };
+ use mycity_storage::{Store, WritePoint};
+-use serde_json::{Value, json};
++use serde_json::{json, Value};
+ use std::{
+     fs, io,
+     path::{Path, PathBuf},
+Diff in /Users/frankqin/dev/MyCity/crates/city-storage/tests/construction.rs:137:
+     let id = ordinary(s);
+     let request = env_action(s, id, action);
+     let response = s.execute(caller, request).unwrap();
+-    assert!(response.model.is_ok(), "action failed: {:?}", response.model);
++    assert!(
++        response.model.is_ok(),
++        "action failed: {:?}",
++        response.model
++    );
+ }
+ fn advance(s: &mut Store, target: u64) {
+     for _ in 0..100 {

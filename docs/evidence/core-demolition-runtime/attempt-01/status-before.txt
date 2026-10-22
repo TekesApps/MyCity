@@ -1,0 +1,3 @@
+ M crates/city-core/examples/construction.rs
+ M crates/city-storage/tests/construction.rs
+?? docs/evidence/core-demolition-runtime/

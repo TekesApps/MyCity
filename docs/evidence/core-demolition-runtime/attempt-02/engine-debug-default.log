@@ -1,0 +1,17 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-core)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.75s
+     Running tests/construction_engine.rs (/Users/frankqin/dev/MyCity/target/debug/deps/construction_engine-b7e0af8a5d6501ff)
+
+running 9 tests
+
+thread '
+thread 'non_draft_checkpoint_restores_exact_site_lease_and_continues_to_operational_without_double_charge' has overflowed its stack
+fatal runtime error: stack overflow
+
+thread 'insufficient_site_capacity_funds_and_materials_leave_candidate_domains_unchanged' has overflowed its stack
+fatal runtime error: stack overflow
+
+thread 'operating_capacity_is_published_and_withdrawn_only_when_consumers_allow_iterror: test failed, to rerun pass `-p mycity-core --test construction_engine`
+
+Caused by:
+  process didn't exit successfully: `/Users/frankqin/dev/MyCity/target/debug/deps/construction_engine-b7e0af8a5d6501ff --nocapture` (signal: 6, SIGABRT: process abort signal)

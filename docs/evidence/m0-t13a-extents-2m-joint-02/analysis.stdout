@@ -1,0 +1,1656 @@
+[
+  {
+    "label": "idle",
+    "role": "layout",
+    "ranges": 132,
+    "range_totals": {
+      "role_arena": 2983813474,
+      "r07_immutable_map": 273088512
+    },
+    "logical_r07_extents": [
+      {
+        "logical_start": 0,
+        "logical_len": 2097152,
+        "start": 4428382208,
+        "allocation_generation": 1
+      },
+      {
+        "logical_start": 2097152,
+        "logical_len": 2097152,
+        "start": 4430479360,
+        "allocation_generation": 2
+      },
+      {
+        "logical_start": 4194304,
+        "logical_len": 2097152,
+        "start": 4432576512,
+        "allocation_generation": 3
+      },
+      {
+        "logical_start": 6291456,
+        "logical_len": 2097152,
+        "start": 4434673664,
+        "allocation_generation": 4
+      },
+      {
+        "logical_start": 8388608,
+        "logical_len": 2097152,
+        "start": 4436770816,
+        "allocation_generation": 5
+      },
+      {
+        "logical_start": 10485760,
+        "logical_len": 2097152,
+        "start": 4438867968,
+        "allocation_generation": 6
+      },
+      {
+        "logical_start": 12582912,
+        "logical_len": 2097152,
+        "start": 4440965120,
+        "allocation_generation": 7
+      },
+      {
+        "logical_start": 14680064,
+        "logical_len": 2097152,
+        "start": 4443062272,
+        "allocation_generation": 8
+      },
+      {
+        "logical_start": 16777216,
+        "logical_len": 2097152,
+        "start": 4445159424,
+        "allocation_generation": 9
+      },
+      {
+        "logical_start": 18874368,
+        "logical_len": 2097152,
+        "start": 4447256576,
+        "allocation_generation": 10
+      },
+      {
+        "logical_start": 20971520,
+        "logical_len": 2097152,
+        "start": 4449353728,
+        "allocation_generation": 11
+      },
+      {
+        "logical_start": 23068672,
+        "logical_len": 2097152,
+        "start": 4451450880,
+        "allocation_generation": 12
+      },
+      {
+        "logical_start": 25165824,
+        "logical_len": 2097152,
+        "start": 4453548032,
+        "allocation_generation": 13
+      },
+      {
+        "logical_start": 27262976,
+        "logical_len": 2097152,
+        "start": 4455645184,
+        "allocation_generation": 14
+      },
+      {
+        "logical_start": 29360128,
+        "logical_len": 2097152,
+        "start": 4457742336,
+        "allocation_generation": 15
+      },
+      {
+        "logical_start": 31457280,
+        "logical_len": 2097152,
+        "start": 4459839488,
+        "allocation_generation": 16
+      },
+      {
+        "logical_start": 33554432,
+        "logical_len": 2097152,
+        "start": 4461936640,
+        "allocation_generation": 17
+      },
+      {
+        "logical_start": 35651584,
+        "logical_len": 2097152,
+        "start": 4464033792,
+        "allocation_generation": 18
+      },
+      {
+        "logical_start": 37748736,
+        "logical_len": 2097152,
+        "start": 4466130944,
+        "allocation_generation": 19
+      },
+      {
+        "logical_start": 39845888,
+        "logical_len": 2097152,
+        "start": 4468228096,
+        "allocation_generation": 20
+      },
+      {
+        "logical_start": 41943040,
+        "logical_len": 2097152,
+        "start": 4470325248,
+        "allocation_generation": 21
+      },
+      {
+        "logical_start": 44040192,
+        "logical_len": 2097152,
+        "start": 4472422400,
+        "allocation_generation": 22
+      },
+      {
+        "logical_start": 46137344,
+        "logical_len": 2097152,
+        "start": 4474519552,
+        "allocation_generation": 23
+      },
+      {
+        "logical_start": 48234496,
+        "logical_len": 2097152,
+        "start": 4476616704,
+        "allocation_generation": 24
+      },
+      {
+        "logical_start": 50331648,
+        "logical_len": 2097152,
+        "start": 4478713856,
+        "allocation_generation": 25
+      },
+      {
+        "logical_start": 52428800,
+        "logical_len": 2097152,
+        "start": 4480811008,
+        "allocation_generation": 26
+      },
+      {
+        "logical_start": 54525952,
+        "logical_len": 2097152,
+        "start": 4482908160,
+        "allocation_generation": 27
+      },
+      {
+        "logical_start": 56623104,
+        "logical_len": 2097152,
+        "start": 4485005312,
+        "allocation_generation": 28
+      },
+      {
+        "logical_start": 58720256,
+        "logical_len": 2097152,
+        "start": 4487102464,
+        "allocation_generation": 29
+      },
+      {
+        "logical_start": 60817408,
+        "logical_len": 2097152,
+        "start": 4489199616,
+        "allocation_generation": 30
+      },
+      {
+        "logical_start": 62914560,
+        "logical_len": 2097152,
+        "start": 4491296768,
+        "allocation_generation": 31
+      },
+      {
+        "logical_start": 65011712,
+        "logical_len": 2097152,
+        "start": 4493393920,
+        "allocation_generation": 32
+      },
+      {
+        "logical_start": 67108864,
+        "logical_len": 2097152,
+        "start": 4495491072,
+        "allocation_generation": 33
+      },
+      {
+        "logical_start": 69206016,
+        "logical_len": 2097152,
+        "start": 4497588224,
+        "allocation_generation": 34
+      },
+      {
+        "logical_start": 71303168,
+        "logical_len": 2097152,
+        "start": 4499685376,
+        "allocation_generation": 35
+      },
+      {
+        "logical_start": 73400320,
+        "logical_len": 2097152,
+        "start": 4501782528,
+        "allocation_generation": 36
+      },
+      {
+        "logical_start": 75497472,
+        "logical_len": 2097152,
+        "start": 4503879680,
+        "allocation_generation": 37
+      },
+      {
+        "logical_start": 77594624,
+        "logical_len": 2097152,
+        "start": 4505976832,
+        "allocation_generation": 38
+      },
+      {
+        "logical_start": 79691776,
+        "logical_len": 2097152,
+        "start": 4508073984,
+        "allocation_generation": 39
+      },
+      {
+        "logical_start": 81788928,
+        "logical_len": 2097152,
+        "start": 4510171136,
+        "allocation_generation": 40
+      },
+      {
+        "logical_start": 83886080,
+        "logical_len": 2097152,
+        "start": 4512268288,
+        "allocation_generation": 41
+      },
+      {
+        "logical_start": 85983232,
+        "logical_len": 2097152,
+        "start": 4514365440,
+        "allocation_generation": 42
+      },
+      {
+        "logical_start": 88080384,
+        "logical_len": 2097152,
+        "start": 4516462592,
+        "allocation_generation": 43
+      },
+      {
+        "logical_start": 90177536,
+        "logical_len": 2097152,
+        "start": 4518559744,
+        "allocation_generation": 44
+      },
+      {
+        "logical_start": 92274688,
+        "logical_len": 2097152,
+        "start": 4520656896,
+        "allocation_generation": 45
+      },
+      {
+        "logical_start": 94371840,
+        "logical_len": 2097152,
+        "start": 4522754048,
+        "allocation_generation": 46
+      },
+      {
+        "logical_start": 96468992,
+        "logical_len": 2097152,
+        "start": 4524851200,
+        "allocation_generation": 47
+      },
+      {
+        "logical_start": 98566144,
+        "logical_len": 2097152,
+        "start": 4526948352,
+        "allocation_generation": 48
+      },
+      {
+        "logical_start": 100663296,
+        "logical_len": 2097152,
+        "start": 4529045504,
+        "allocation_generation": 49
+      },
+      {
+        "logical_start": 102760448,
+        "logical_len": 2097152,
+        "start": 4531142656,
+        "allocation_generation": 50
+      },
+      {
+        "logical_start": 104857600,
+        "logical_len": 2097152,
+        "start": 4533239808,
+        "allocation_generation": 51
+      },
+      {
+        "logical_start": 106954752,
+        "logical_len": 2097152,
+        "start": 4535336960,
+        "allocation_generation": 52
+      },
+      {
+        "logical_start": 109051904,
+        "logical_len": 2097152,
+        "start": 4537434112,
+        "allocation_generation": 53
+      },
+      {
+        "logical_start": 111149056,
+        "logical_len": 2097152,
+        "start": 4539531264,
+        "allocation_generation": 54
+      },
+      {
+        "logical_start": 113246208,
+        "logical_len": 2097152,
+        "start": 4541628416,
+        "allocation_generation": 55
+      },
+      {
+        "logical_start": 115343360,
+        "logical_len": 2097152,
+        "start": 4543725568,
+        "allocation_generation": 56
+      },
+      {
+        "logical_start": 117440512,
+        "logical_len": 2097152,
+        "start": 4545822720,
+        "allocation_generation": 57
+      },
+      {
+        "logical_start": 119537664,
+        "logical_len": 2097152,
+        "start": 4547919872,
+        "allocation_generation": 58
+      },
+      {
+        "logical_start": 121634816,
+        "logical_len": 2097152,
+        "start": 4550017024,
+        "allocation_generation": 59
+      },
+      {
+        "logical_start": 123731968,
+        "logical_len": 2097152,
+        "start": 4552114176,
+        "allocation_generation": 60
+      },
+      {
+        "logical_start": 125829120,
+        "logical_len": 2097152,
+        "start": 4554211328,
+        "allocation_generation": 61
+      },
+      {
+        "logical_start": 127926272,
+        "logical_len": 2097152,
+        "start": 4556308480,
+        "allocation_generation": 62
+      },
+      {
+        "logical_start": 130023424,
+        "logical_len": 2097152,
+        "start": 4558405632,
+        "allocation_generation": 63
+      },
+      {
+        "logical_start": 132120576,
+        "logical_len": 2097152,
+        "start": 4560502784,
+        "allocation_generation": 64
+      },
+      {
+        "logical_start": 134217728,
+        "logical_len": 2097152,
+        "start": 4562599936,
+        "allocation_generation": 65
+      },
+      {
+        "logical_start": 136314880,
+        "logical_len": 2097152,
+        "start": 4564697088,
+        "allocation_generation": 66
+      },
+      {
+        "logical_start": 138412032,
+        "logical_len": 2097152,
+        "start": 4566794240,
+        "allocation_generation": 67
+      },
+      {
+        "logical_start": 140509184,
+        "logical_len": 2097152,
+        "start": 4568891392,
+        "allocation_generation": 68
+      },
+      {
+        "logical_start": 142606336,
+        "logical_len": 2097152,
+        "start": 4570988544,
+        "allocation_generation": 69
+      },
+      {
+        "logical_start": 144703488,
+        "logical_len": 2097152,
+        "start": 4573085696,
+        "allocation_generation": 70
+      },
+      {
+        "logical_start": 146800640,
+        "logical_len": 2097152,
+        "start": 4575182848,
+        "allocation_generation": 71
+      },
+      {
+        "logical_start": 148897792,
+        "logical_len": 2097152,
+        "start": 4577280000,
+        "allocation_generation": 72
+      },
+      {
+        "logical_start": 150994944,
+        "logical_len": 2097152,
+        "start": 4579377152,
+        "allocation_generation": 73
+      },
+      {
+        "logical_start": 153092096,
+        "logical_len": 2097152,
+        "start": 4581474304,
+        "allocation_generation": 74
+      },
+      {
+        "logical_start": 155189248,
+        "logical_len": 2097152,
+        "start": 4583571456,
+        "allocation_generation": 75
+      },
+      {
+        "logical_start": 157286400,
+        "logical_len": 2097152,
+        "start": 4585668608,
+        "allocation_generation": 76
+      },
+      {
+        "logical_start": 159383552,
+        "logical_len": 2097152,
+        "start": 4587765760,
+        "allocation_generation": 77
+      },
+      {
+        "logical_start": 161480704,
+        "logical_len": 2097152,
+        "start": 4589862912,
+        "allocation_generation": 78
+      },
+      {
+        "logical_start": 163577856,
+        "logical_len": 2097152,
+        "start": 4591960064,
+        "allocation_generation": 79
+      },
+      {
+        "logical_start": 165675008,
+        "logical_len": 2097152,
+        "start": 4594057216,
+        "allocation_generation": 80
+      },
+      {
+        "logical_start": 167772160,
+        "logical_len": 2097152,
+        "start": 4596154368,
+        "allocation_generation": 81
+      },
+      {
+        "logical_start": 169869312,
+        "logical_len": 2097152,
+        "start": 4598251520,
+        "allocation_generation": 82
+      },
+      {
+        "logical_start": 171966464,
+        "logical_len": 2097152,
+        "start": 4600348672,
+        "allocation_generation": 83
+      },
+      {
+        "logical_start": 174063616,
+        "logical_len": 2097152,
+        "start": 4602445824,
+        "allocation_generation": 84
+      },
+      {
+        "logical_start": 176160768,
+        "logical_len": 2097152,
+        "start": 4604542976,
+        "allocation_generation": 85
+      },
+      {
+        "logical_start": 178257920,
+        "logical_len": 2097152,
+        "start": 4606640128,
+        "allocation_generation": 86
+      },
+      {
+        "logical_start": 180355072,
+        "logical_len": 2097152,
+        "start": 4608737280,
+        "allocation_generation": 87
+      },
+      {
+        "logical_start": 182452224,
+        "logical_len": 2097152,
+        "start": 4610834432,
+        "allocation_generation": 88
+      },
+      {
+        "logical_start": 184549376,
+        "logical_len": 2097152,
+        "start": 4612931584,
+        "allocation_generation": 89
+      },
+      {
+        "logical_start": 186646528,
+        "logical_len": 2097152,
+        "start": 4615028736,
+        "allocation_generation": 90
+      },
+      {
+        "logical_start": 188743680,
+        "logical_len": 2097152,
+        "start": 4617125888,
+        "allocation_generation": 91
+      },
+      {
+        "logical_start": 190840832,
+        "logical_len": 2097152,
+        "start": 4619223040,
+        "allocation_generation": 92
+      },
+      {
+        "logical_start": 192937984,
+        "logical_len": 2097152,
+        "start": 4621320192,
+        "allocation_generation": 93
+      },
+      {
+        "logical_start": 195035136,
+        "logical_len": 2097152,
+        "start": 4623417344,
+        "allocation_generation": 94
+      },
+      {
+        "logical_start": 197132288,
+        "logical_len": 2097152,
+        "start": 4625514496,
+        "allocation_generation": 95
+      },
+      {
+        "logical_start": 199229440,
+        "logical_len": 2097152,
+        "start": 4627611648,
+        "allocation_generation": 96
+      },
+      {
+        "logical_start": 201326592,
+        "logical_len": 2097152,
+        "start": 4629708800,
+        "allocation_generation": 97
+      },
+      {
+        "logical_start": 203423744,
+        "logical_len": 2097152,
+        "start": 4631805952,
+        "allocation_generation": 98
+      },
+      {
+        "logical_start": 205520896,
+        "logical_len": 2097152,
+        "start": 4633903104,
+        "allocation_generation": 99
+      },
+      {
+        "logical_start": 207618048,
+        "logical_len": 2097152,
+        "start": 4636000256,
+        "allocation_generation": 100
+      },
+      {
+        "logical_start": 209715200,
+        "logical_len": 2097152,
+        "start": 4638097408,
+        "allocation_generation": 101
+      },
+      {
+        "logical_start": 211812352,
+        "logical_len": 2097152,
+        "start": 4640194560,
+        "allocation_generation": 102
+      },
+      {
+        "logical_start": 213909504,
+        "logical_len": 2097152,
+        "start": 4642291712,
+        "allocation_generation": 103
+      },
+      {
+        "logical_start": 216006656,
+        "logical_len": 2097152,
+        "start": 4644388864,
+        "allocation_generation": 104
+      },
+      {
+        "logical_start": 218103808,
+        "logical_len": 2097152,
+        "start": 4646486016,
+        "allocation_generation": 105
+      },
+      {
+        "logical_start": 220200960,
+        "logical_len": 2097152,
+        "start": 4648583168,
+        "allocation_generation": 106
+      },
+      {
+        "logical_start": 222298112,
+        "logical_len": 2097152,
+        "start": 4650680320,
+        "allocation_generation": 107
+      },
+      {
+        "logical_start": 224395264,
+        "logical_len": 2097152,
+        "start": 4652777472,
+        "allocation_generation": 108
+      },
+      {
+        "logical_start": 226492416,
+        "logical_len": 2097152,
+        "start": 4654874624,
+        "allocation_generation": 109
+      },
+      {
+        "logical_start": 228589568,
+        "logical_len": 2097152,
+        "start": 4656971776,
+        "allocation_generation": 110
+      },
+      {
+        "logical_start": 230686720,
+        "logical_len": 2097152,
+        "start": 4659068928,
+        "allocation_generation": 111
+      },
+      {
+        "logical_start": 232783872,
+        "logical_len": 2097152,
+        "start": 4661166080,
+        "allocation_generation": 112
+      },
+      {
+        "logical_start": 234881024,
+        "logical_len": 2097152,
+        "start": 4663263232,
+        "allocation_generation": 113
+      },
+      {
+        "logical_start": 236978176,
+        "logical_len": 2097152,
+        "start": 4665360384,
+        "allocation_generation": 114
+      },
+      {
+        "logical_start": 239075328,
+        "logical_len": 2097152,
+        "start": 4667457536,
+        "allocation_generation": 115
+      },
+      {
+        "logical_start": 241172480,
+        "logical_len": 2097152,
+        "start": 4669554688,
+        "allocation_generation": 116
+      },
+      {
+        "logical_start": 243269632,
+        "logical_len": 2097152,
+        "start": 4671651840,
+        "allocation_generation": 117
+      },
+      {
+        "logical_start": 245366784,
+        "logical_len": 2097152,
+        "start": 4673748992,
+        "allocation_generation": 118
+      },
+      {
+        "logical_start": 247463936,
+        "logical_len": 2097152,
+        "start": 4675846144,
+        "allocation_generation": 119
+      },
+      {
+        "logical_start": 249561088,
+        "logical_len": 2097152,
+        "start": 4677943296,
+        "allocation_generation": 120
+      },
+      {
+        "logical_start": 251658240,
+        "logical_len": 2097152,
+        "start": 4680040448,
+        "allocation_generation": 121
+      },
+      {
+        "logical_start": 253755392,
+        "logical_len": 2097152,
+        "start": 4682137600,
+        "allocation_generation": 122
+      },
+      {
+        "logical_start": 255852544,
+        "logical_len": 2097152,
+        "start": 4684234752,
+        "allocation_generation": 123
+      },
+      {
+        "logical_start": 257949696,
+        "logical_len": 2097152,
+        "start": 4686331904,
+        "allocation_generation": 124
+      },
+      {
+        "logical_start": 260046848,
+        "logical_len": 2097152,
+        "start": 4688429056,
+        "allocation_generation": 125
+      },
+      {
+        "logical_start": 262144000,
+        "logical_len": 2097152,
+        "start": 4690526208,
+        "allocation_generation": 126
+      },
+      {
+        "logical_start": 264241152,
+        "logical_len": 2097152,
+        "start": 4692623360,
+        "allocation_generation": 127
+      },
+      {
+        "logical_start": 266338304,
+        "logical_len": 2097152,
+        "start": 4694720512,
+        "allocation_generation": 128
+      },
+      {
+        "logical_start": 268435456,
+        "logical_len": 2097152,
+        "start": 4696817664,
+        "allocation_generation": 129
+      },
+      {
+        "logical_start": 270532608,
+        "logical_len": 2097152,
+        "start": 4698914816,
+        "allocation_generation": 130
+      },
+      {
+        "logical_start": 272629760,
+        "logical_len": 458752,
+        "start": 4703109120,
+        "allocation_generation": 134
+      }
+    ],
+    "r07_mapped_bytes": 273088512,
+    "types": {
+      "MALLOC_LARGE": 23,
+      "VM_ALLOCATE": 131
+    },
+    "before": 3259648616,
+    "after": 3259648616,
+    "page_table_lines": [
+      "page table in kernel           kernel-kernel       [  112.16   112.16   112.16     0   ] rw-/rw- SM=PRV          charged to process physical footprint",
+      "page table in kernel               112.16     112.16     112.16       0          0          0          0           1 "
+    ]
+  },
+  {
+    "label": "idle",
+    "role": "pool",
+    "ranges": 64,
+    "range_totals": {
+      "normal_pool_mapped_page": 67108864
+    },
+    "logical_r07_extents": [],
+    "r07_mapped_bytes": 0,
+    "types": {
+      "VM_ALLOCATE": 64
+    },
+    "before": 68239720,
+    "after": 68239720,
+    "page_table_lines": [
+      "page table in kernel           kernel-kernel       [   16.02    16.02    16.02     0   ] rw-/rw- SM=PRV          charged to process physical footprint",
+      "page table in kernel                16.02      16.02      16.02       0          0          0          0           1 "
+    ]
+  },
+  {
+    "label": "inflight",
+    "role": "layout",
+    "ranges": 132,
+    "range_totals": {
+      "role_arena": 2983813474,
+      "r07_immutable_map": 273088512
+    },
+    "logical_r07_extents": [
+      {
+        "logical_start": 0,
+        "logical_len": 2097152,
+        "start": 4428382208,
+        "allocation_generation": 1
+      },
+      {
+        "logical_start": 2097152,
+        "logical_len": 2097152,
+        "start": 4430479360,
+        "allocation_generation": 2
+      },
+      {
+        "logical_start": 4194304,
+        "logical_len": 2097152,
+        "start": 4432576512,
+        "allocation_generation": 3
+      },
+      {
+        "logical_start": 6291456,
+        "logical_len": 2097152,
+        "start": 4434673664,
+        "allocation_generation": 4
+      },
+      {
+        "logical_start": 8388608,
+        "logical_len": 2097152,
+        "start": 4436770816,
+        "allocation_generation": 5
+      },
+      {
+        "logical_start": 10485760,
+        "logical_len": 2097152,
+        "start": 4438867968,
+        "allocation_generation": 6
+      },
+      {
+        "logical_start": 12582912,
+        "logical_len": 2097152,
+        "start": 4440965120,
+        "allocation_generation": 7
+      },
+      {
+        "logical_start": 14680064,
+        "logical_len": 2097152,
+        "start": 4443062272,
+        "allocation_generation": 8
+      },
+      {
+        "logical_start": 16777216,
+        "logical_len": 2097152,
+        "start": 4445159424,
+        "allocation_generation": 9
+      },
+      {
+        "logical_start": 18874368,
+        "logical_len": 2097152,
+        "start": 4447256576,
+        "allocation_generation": 10
+      },
+      {
+        "logical_start": 20971520,
+        "logical_len": 2097152,
+        "start": 4449353728,
+        "allocation_generation": 11
+      },
+      {
+        "logical_start": 23068672,
+        "logical_len": 2097152,
+        "start": 4451450880,
+        "allocation_generation": 12
+      },
+      {
+        "logical_start": 25165824,
+        "logical_len": 2097152,
+        "start": 4453548032,
+        "allocation_generation": 13
+      },
+      {
+        "logical_start": 27262976,
+        "logical_len": 2097152,
+        "start": 4455645184,
+        "allocation_generation": 14
+      },
+      {
+        "logical_start": 29360128,
+        "logical_len": 2097152,
+        "start": 4457742336,
+        "allocation_generation": 15
+      },
+      {
+        "logical_start": 31457280,
+        "logical_len": 2097152,
+        "start": 4459839488,
+        "allocation_generation": 16
+      },
+      {
+        "logical_start": 33554432,
+        "logical_len": 2097152,
+        "start": 4461936640,
+        "allocation_generation": 17
+      },
+      {
+        "logical_start": 35651584,
+        "logical_len": 2097152,
+        "start": 4464033792,
+        "allocation_generation": 18
+      },
+      {
+        "logical_start": 37748736,
+        "logical_len": 2097152,
+        "start": 4466130944,
+        "allocation_generation": 19
+      },
+      {
+        "logical_start": 39845888,
+        "logical_len": 2097152,
+        "start": 4468228096,
+        "allocation_generation": 20
+      },
+      {
+        "logical_start": 41943040,
+        "logical_len": 2097152,
+        "start": 4470325248,
+        "allocation_generation": 21
+      },
+      {
+        "logical_start": 44040192,
+        "logical_len": 2097152,
+        "start": 4472422400,
+        "allocation_generation": 22
+      },
+      {
+        "logical_start": 46137344,
+        "logical_len": 2097152,
+        "start": 4474519552,
+        "allocation_generation": 23
+      },
+      {
+        "logical_start": 48234496,
+        "logical_len": 2097152,
+        "start": 4476616704,
+        "allocation_generation": 24
+      },
+      {
+        "logical_start": 50331648,
+        "logical_len": 2097152,
+        "start": 4478713856,
+        "allocation_generation": 25
+      },
+      {
+        "logical_start": 52428800,
+        "logical_len": 2097152,
+        "start": 4480811008,
+        "allocation_generation": 26
+      },
+      {
+        "logical_start": 54525952,
+        "logical_len": 2097152,
+        "start": 4482908160,
+        "allocation_generation": 27
+      },
+      {
+        "logical_start": 56623104,
+        "logical_len": 2097152,
+        "start": 4485005312,
+        "allocation_generation": 28
+      },
+      {
+        "logical_start": 58720256,
+        "logical_len": 2097152,
+        "start": 4487102464,
+        "allocation_generation": 29
+      },
+      {
+        "logical_start": 60817408,
+        "logical_len": 2097152,
+        "start": 4489199616,
+        "allocation_generation": 30
+      },
+      {
+        "logical_start": 62914560,
+        "logical_len": 2097152,
+        "start": 4491296768,
+        "allocation_generation": 31
+      },
+      {
+        "logical_start": 65011712,
+        "logical_len": 2097152,
+        "start": 4493393920,
+        "allocation_generation": 32
+      },
+      {
+        "logical_start": 67108864,
+        "logical_len": 2097152,
+        "start": 4495491072,
+        "allocation_generation": 33
+      },
+      {
+        "logical_start": 69206016,
+        "logical_len": 2097152,
+        "start": 4497588224,
+        "allocation_generation": 34
+      },
+      {
+        "logical_start": 71303168,
+        "logical_len": 2097152,
+        "start": 4499685376,
+        "allocation_generation": 35
+      },
+      {
+        "logical_start": 73400320,
+        "logical_len": 2097152,
+        "start": 4501782528,
+        "allocation_generation": 36
+      },
+      {
+        "logical_start": 75497472,
+        "logical_len": 2097152,
+        "start": 4503879680,
+        "allocation_generation": 37
+      },
+      {
+        "logical_start": 77594624,
+        "logical_len": 2097152,
+        "start": 4505976832,
+        "allocation_generation": 38
+      },
+      {
+        "logical_start": 79691776,
+        "logical_len": 2097152,
+        "start": 4508073984,
+        "allocation_generation": 39
+      },
+      {
+        "logical_start": 81788928,
+        "logical_len": 2097152,
+        "start": 4510171136,
+        "allocation_generation": 40
+      },
+      {
+        "logical_start": 83886080,
+        "logical_len": 2097152,
+        "start": 4512268288,
+        "allocation_generation": 41
+      },
+      {
+        "logical_start": 85983232,
+        "logical_len": 2097152,
+        "start": 4514365440,
+        "allocation_generation": 42
+      },
+      {
+        "logical_start": 88080384,
+        "logical_len": 2097152,
+        "start": 4516462592,
+        "allocation_generation": 43
+      },
+      {
+        "logical_start": 90177536,
+        "logical_len": 2097152,
+        "start": 4518559744,
+        "allocation_generation": 44
+      },
+      {
+        "logical_start": 92274688,
+        "logical_len": 2097152,
+        "start": 4520656896,
+        "allocation_generation": 45
+      },
+      {
+        "logical_start": 94371840,
+        "logical_len": 2097152,
+        "start": 4522754048,
+        "allocation_generation": 46
+      },
+      {
+        "logical_start": 96468992,
+        "logical_len": 2097152,
+        "start": 4524851200,
+        "allocation_generation": 47
+      },
+      {
+        "logical_start": 98566144,
+        "logical_len": 2097152,
+        "start": 4526948352,
+        "allocation_generation": 48
+      },
+      {
+        "logical_start": 100663296,
+        "logical_len": 2097152,
+        "start": 4529045504,
+        "allocation_generation": 49
+      },
+      {
+        "logical_start": 102760448,
+        "logical_len": 2097152,
+        "start": 4531142656,
+        "allocation_generation": 50
+      },
+      {
+        "logical_start": 104857600,
+        "logical_len": 2097152,
+        "start": 4533239808,
+        "allocation_generation": 51
+      },
+      {
+        "logical_start": 106954752,
+        "logical_len": 2097152,
+        "start": 4535336960,
+        "allocation_generation": 52
+      },
+      {
+        "logical_start": 109051904,
+        "logical_len": 2097152,
+        "start": 4537434112,
+        "allocation_generation": 53
+      },
+      {
+        "logical_start": 111149056,
+        "logical_len": 2097152,
+        "start": 4539531264,
+        "allocation_generation": 54
+      },
+      {
+        "logical_start": 113246208,
+        "logical_len": 2097152,
+        "start": 4541628416,
+        "allocation_generation": 55
+      },
+      {
+        "logical_start": 115343360,
+        "logical_len": 2097152,
+        "start": 4543725568,
+        "allocation_generation": 56
+      },
+      {
+        "logical_start": 117440512,
+        "logical_len": 2097152,
+        "start": 4545822720,
+        "allocation_generation": 57
+      },
+      {
+        "logical_start": 119537664,
+        "logical_len": 2097152,
+        "start": 4547919872,
+        "allocation_generation": 58
+      },
+      {
+        "logical_start": 121634816,
+        "logical_len": 2097152,
+        "start": 4550017024,
+        "allocation_generation": 59
+      },
+      {
+        "logical_start": 123731968,
+        "logical_len": 2097152,
+        "start": 4552114176,
+        "allocation_generation": 60
+      },
+      {
+        "logical_start": 125829120,
+        "logical_len": 2097152,
+        "start": 4554211328,
+        "allocation_generation": 61
+      },
+      {
+        "logical_start": 127926272,
+        "logical_len": 2097152,
+        "start": 4556308480,
+        "allocation_generation": 62
+      },
+      {
+        "logical_start": 130023424,
+        "logical_len": 2097152,
+        "start": 4558405632,
+        "allocation_generation": 63
+      },
+      {
+        "logical_start": 132120576,
+        "logical_len": 2097152,
+        "start": 4560502784,
+        "allocation_generation": 64
+      },
+      {
+        "logical_start": 134217728,
+        "logical_len": 2097152,
+        "start": 4562599936,
+        "allocation_generation": 65
+      },
+      {
+        "logical_start": 136314880,
+        "logical_len": 2097152,
+        "start": 4564697088,
+        "allocation_generation": 66
+      },
+      {
+        "logical_start": 138412032,
+        "logical_len": 2097152,
+        "start": 4566794240,
+        "allocation_generation": 67
+      },
+      {
+        "logical_start": 140509184,
+        "logical_len": 2097152,
+        "start": 4568891392,
+        "allocation_generation": 68
+      },
+      {
+        "logical_start": 142606336,
+        "logical_len": 2097152,
+        "start": 4570988544,
+        "allocation_generation": 69
+      },
+      {
+        "logical_start": 144703488,
+        "logical_len": 2097152,
+        "start": 4573085696,
+        "allocation_generation": 70
+      },
+      {
+        "logical_start": 146800640,
+        "logical_len": 2097152,
+        "start": 4575182848,
+        "allocation_generation": 71
+      },
+      {
+        "logical_start": 148897792,
+        "logical_len": 2097152,
+        "start": 4577280000,
+        "allocation_generation": 72
+      },
+      {
+        "logical_start": 150994944,
+        "logical_len": 2097152,
+        "start": 4579377152,
+        "allocation_generation": 73
+      },
+      {
+        "logical_start": 153092096,
+        "logical_len": 2097152,
+        "start": 4581474304,
+        "allocation_generation": 74
+      },
+      {
+        "logical_start": 155189248,
+        "logical_len": 2097152,
+        "start": 4583571456,
+        "allocation_generation": 75
+      },
+      {
+        "logical_start": 157286400,
+        "logical_len": 2097152,
+        "start": 4585668608,
+        "allocation_generation": 76
+      },
+      {
+        "logical_start": 159383552,
+        "logical_len": 2097152,
+        "start": 4587765760,
+        "allocation_generation": 77
+      },
+      {
+        "logical_start": 161480704,
+        "logical_len": 2097152,
+        "start": 4589862912,
+        "allocation_generation": 78
+      },
+      {
+        "logical_start": 163577856,
+        "logical_len": 2097152,
+        "start": 4591960064,
+        "allocation_generation": 79
+      },
+      {
+        "logical_start": 165675008,
+        "logical_len": 2097152,
+        "start": 4594057216,
+        "allocation_generation": 80
+      },
+      {
+        "logical_start": 167772160,
+        "logical_len": 2097152,
+        "start": 4596154368,
+        "allocation_generation": 81
+      },
+      {
+        "logical_start": 169869312,
+        "logical_len": 2097152,
+        "start": 4598251520,
+        "allocation_generation": 82
+      },
+      {
+        "logical_start": 171966464,
+        "logical_len": 2097152,
+        "start": 4600348672,
+        "allocation_generation": 83
+      },
+      {
+        "logical_start": 174063616,
+        "logical_len": 2097152,
+        "start": 4602445824,
+        "allocation_generation": 84
+      },
+      {
+        "logical_start": 176160768,
+        "logical_len": 2097152,
+        "start": 4604542976,
+        "allocation_generation": 85
+      },
+      {
+        "logical_start": 178257920,
+        "logical_len": 2097152,
+        "start": 4606640128,
+        "allocation_generation": 86
+      },
+      {
+        "logical_start": 180355072,
+        "logical_len": 2097152,
+        "start": 4608737280,
+        "allocation_generation": 87
+      },
+      {
+        "logical_start": 182452224,
+        "logical_len": 2097152,
+        "start": 4610834432,
+        "allocation_generation": 88
+      },
+      {
+        "logical_start": 184549376,
+        "logical_len": 2097152,
+        "start": 4612931584,
+        "allocation_generation": 89
+      },
+      {
+        "logical_start": 186646528,
+        "logical_len": 2097152,
+        "start": 4615028736,
+        "allocation_generation": 90
+      },
+      {
+        "logical_start": 188743680,
+        "logical_len": 2097152,
+        "start": 4617125888,
+        "allocation_generation": 91
+      },
+      {
+        "logical_start": 190840832,
+        "logical_len": 2097152,
+        "start": 4619223040,
+        "allocation_generation": 92
+      },
+      {
+        "logical_start": 192937984,
+        "logical_len": 2097152,
+        "start": 4621320192,
+        "allocation_generation": 93
+      },
+      {
+        "logical_start": 195035136,
+        "logical_len": 2097152,
+        "start": 4623417344,
+        "allocation_generation": 94
+      },
+      {
+        "logical_start": 197132288,
+        "logical_len": 2097152,
+        "start": 4625514496,
+        "allocation_generation": 95
+      },
+      {
+        "logical_start": 199229440,
+        "logical_len": 2097152,
+        "start": 4627611648,
+        "allocation_generation": 96
+      },
+      {
+        "logical_start": 201326592,
+        "logical_len": 2097152,
+        "start": 4629708800,
+        "allocation_generation": 97
+      },
+      {
+        "logical_start": 203423744,
+        "logical_len": 2097152,
+        "start": 4631805952,
+        "allocation_generation": 98
+      },
+      {
+        "logical_start": 205520896,
+        "logical_len": 2097152,
+        "start": 4633903104,
+        "allocation_generation": 99
+      },
+      {
+        "logical_start": 207618048,
+        "logical_len": 2097152,
+        "start": 4636000256,
+        "allocation_generation": 100
+      },
+      {
+        "logical_start": 209715200,
+        "logical_len": 2097152,
+        "start": 4638097408,
+        "allocation_generation": 101
+      },
+      {
+        "logical_start": 211812352,
+        "logical_len": 2097152,
+        "start": 4640194560,
+        "allocation_generation": 102
+      },
+      {
+        "logical_start": 213909504,
+        "logical_len": 2097152,
+        "start": 4642291712,
+        "allocation_generation": 103
+      },
+      {
+        "logical_start": 216006656,
+        "logical_len": 2097152,
+        "start": 4644388864,
+        "allocation_generation": 104
+      },
+      {
+        "logical_start": 218103808,
+        "logical_len": 2097152,
+        "start": 4646486016,
+        "allocation_generation": 105
+      },
+      {
+        "logical_start": 220200960,
+        "logical_len": 2097152,
+        "start": 4648583168,
+        "allocation_generation": 106
+      },
+      {
+        "logical_start": 222298112,
+        "logical_len": 2097152,
+        "start": 4650680320,
+        "allocation_generation": 107
+      },
+      {
+        "logical_start": 224395264,
+        "logical_len": 2097152,
+        "start": 4652777472,
+        "allocation_generation": 108
+      },
+      {
+        "logical_start": 226492416,
+        "logical_len": 2097152,
+        "start": 4654874624,
+        "allocation_generation": 109
+      },
+      {
+        "logical_start": 228589568,
+        "logical_len": 2097152,
+        "start": 4656971776,
+        "allocation_generation": 110
+      },
+      {
+        "logical_start": 230686720,
+        "logical_len": 2097152,
+        "start": 4659068928,
+        "allocation_generation": 111
+      },
+      {
+        "logical_start": 232783872,
+        "logical_len": 2097152,
+        "start": 4661166080,
+        "allocation_generation": 112
+      },
+      {
+        "logical_start": 234881024,
+        "logical_len": 2097152,
+        "start": 4663263232,
+        "allocation_generation": 113
+      },
+      {
+        "logical_start": 236978176,
+        "logical_len": 2097152,
+        "start": 4665360384,
+        "allocation_generation": 114
+      },
+      {
+        "logical_start": 239075328,
+        "logical_len": 2097152,
+        "start": 4667457536,
+        "allocation_generation": 115
+      },
+      {
+        "logical_start": 241172480,
+        "logical_len": 2097152,
+        "start": 4669554688,
+        "allocation_generation": 116
+      },
+      {
+        "logical_start": 243269632,
+        "logical_len": 2097152,
+        "start": 4671651840,
+        "allocation_generation": 117
+      },
+      {
+        "logical_start": 245366784,
+        "logical_len": 2097152,
+        "start": 4673748992,
+        "allocation_generation": 118
+      },
+      {
+        "logical_start": 247463936,
+        "logical_len": 2097152,
+        "start": 4675846144,
+        "allocation_generation": 119
+      },
+      {
+        "logical_start": 249561088,
+        "logical_len": 2097152,
+        "start": 4677943296,
+        "allocation_generation": 120
+      },
+      {
+        "logical_start": 251658240,
+        "logical_len": 2097152,
+        "start": 4680040448,
+        "allocation_generation": 121
+      },
+      {
+        "logical_start": 253755392,
+        "logical_len": 2097152,
+        "start": 4682137600,
+        "allocation_generation": 122
+      },
+      {
+        "logical_start": 255852544,
+        "logical_len": 2097152,
+        "start": 4684234752,
+        "allocation_generation": 123
+      },
+      {
+        "logical_start": 257949696,
+        "logical_len": 2097152,
+        "start": 4686331904,
+        "allocation_generation": 124
+      },
+      {
+        "logical_start": 260046848,
+        "logical_len": 2097152,
+        "start": 4688429056,
+        "allocation_generation": 125
+      },
+      {
+        "logical_start": 262144000,
+        "logical_len": 2097152,
+        "start": 4690526208,
+        "allocation_generation": 126
+      },
+      {
+        "logical_start": 264241152,
+        "logical_len": 2097152,
+        "start": 4692623360,
+        "allocation_generation": 127
+      },
+      {
+        "logical_start": 266338304,
+        "logical_len": 2097152,
+        "start": 4694720512,
+        "allocation_generation": 128
+      },
+      {
+        "logical_start": 268435456,
+        "logical_len": 2097152,
+        "start": 4696817664,
+        "allocation_generation": 129
+      },
+      {
+        "logical_start": 270532608,
+        "logical_len": 2097152,
+        "start": 4698914816,
+        "allocation_generation": 130
+      },
+      {
+        "logical_start": 272629760,
+        "logical_len": 458752,
+        "start": 4703109120,
+        "allocation_generation": 134
+      }
+    ],
+    "r07_mapped_bytes": 273088512,
+    "types": {
+      "MALLOC_LARGE": 23,
+      "VM_ALLOCATE": 131
+    },
+    "before": 3259665000,
+    "after": 3259665000,
+    "page_table_lines": [
+      "page table in kernel           kernel-kernel       [  112.16   112.16   112.16     0   ] rw-/rw- SM=PRV          charged to process physical footprint",
+      "page table in kernel               112.16     112.16     112.16       0          0          0          0           1 "
+    ]
+  },
+  {
+    "label": "inflight",
+    "role": "pool",
+    "ranges": 64,
+    "range_totals": {
+      "normal_pool_mapped_page": 67108864
+    },
+    "logical_r07_extents": [],
+    "r07_mapped_bytes": 0,
+    "types": {
+      "VM_ALLOCATE": 64
+    },
+    "before": 68239720,
+    "after": 68239720,
+    "page_table_lines": [
+      "page table in kernel           kernel-kernel       [   16.02    16.02    16.02     0   ] rw-/rw- SM=PRV          charged to process physical footprint",
+      "page table in kernel                16.02      16.02      16.02       0          0          0          0           1 "
+    ]
+  }
+]

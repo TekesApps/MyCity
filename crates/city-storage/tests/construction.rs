@@ -37,6 +37,7 @@ const V106_PROBE: &[u8] = include_bytes!(
     "../../../docs/evidence/core-construction-compat/attempt-01/old-v106-storage-probe.json"
 );
 static NEXT: AtomicU64 = AtomicU64::new(0);
+static NEXT_OPERATION_ID: AtomicU64 = AtomicU64::new(1_000_000);
 struct Temp(PathBuf);
 impl Temp {
     fn new() -> Self {
@@ -56,7 +57,7 @@ impl Drop for Temp {
     }
 }
 fn opening() -> Vec<u8> {
-    let project = Project::new(
+    let mut project = Project::new(
         7,
         Kind::Build,
         4,
@@ -94,12 +95,29 @@ fn opening() -> Vec<u8> {
         GameTime::ZERO,
     )
     .unwrap();
+    project.operating_resource = 81;
+    project.operating_base_capacity = 2;
+    project.operating_units = 2;
+    project.waste_receiver_account = 3;
+    project.waste_receiver_resource = 82;
+    project.waste_units = 2;
+    project.waste_fee = Money::new(250).unwrap();
     let mut v: Value = serde_json::from_slice(OPENING).unwrap();
     v["construction"] = serde_json::to_value(project).unwrap();
     serde_json::to_vec(&v).unwrap()
 }
 fn create(path: &Path) -> Store {
-    Store::create(path, &opening(), vec![Resource::new(80, 1).unwrap()], RULES).unwrap()
+    Store::create(
+        path,
+        &opening(),
+        vec![
+            Resource::new(80, 1).unwrap(),
+            Resource::new(81, 2).unwrap(),
+            Resource::new(82, 10).unwrap(),
+        ],
+        RULES,
+    )
+    .unwrap()
 }
 fn env(s: &Store, operation_id: u64, command: C) -> Envelope {
     env_action(s, operation_id, Action::Construction { command })
@@ -118,7 +136,12 @@ fn env_action(s: &Store, operation_id: u64, action: Action) -> Envelope {
 fn ordinary_action(s: &mut Store, caller: Caller, action: Action) {
     let id = ordinary(s);
     let request = env_action(s, id, action);
-    assert!(s.execute(caller, request).unwrap().model.is_ok());
+    let response = s.execute(caller, request).unwrap();
+    assert!(
+        response.model.is_ok(),
+        "action failed: {:?}",
+        response.model
+    );
 }
 fn advance(s: &mut Store, target: u64) {
     for _ in 0..100 {
@@ -145,8 +168,8 @@ fn advance(s: &mut Store, target: u64) {
     }
     panic!("timeline failed to reach work end");
 }
-fn ordinary(s: &Store) -> u64 {
-    s.engine().unwrap().world().view().revision + 100
+fn ordinary(_s: &Store) -> u64 {
+    NEXT_OPERATION_ID.fetch_add(1, Ordering::Relaxed)
 }
 fn call(s: &mut Store, caller: Caller, command: C, op: u64) {
     let request = env(s, op, command);
@@ -395,6 +418,271 @@ fn construction_work_money_and_materials_commit_once_across_wal_lost_response_an
     assert_eq!(stock.quantity.value(), 599_000);
     assert_eq!(stock.basis.value(), 239_600);
     assert_eq!(s.committed_sequence(), sequence_before_work + 1);
+}
+
+#[test]
+fn operational_capacity_demolition_waste_and_close_replay_through_store() {
+    const SHIFT: u64 = 17 * 3_600;
+    const DAY: u64 = 86_400;
+    let t = Temp::new();
+    let path = t.world();
+    let mut s = create(&path);
+    approvals(&mut s);
+    let op = start_id(&s);
+    call(&mut s, Caller::Account(4), C::Start, op);
+    ordinary_action(
+        &mut s,
+        Caller::System,
+        Action::Timeline { command: T::Enable },
+    );
+    advance(&mut s, SHIFT);
+    let op = start_id(&s);
+    call(
+        &mut s,
+        Caller::Account(3),
+        C::Work {
+            at: GameTime::new(SHIFT as i64).unwrap(),
+            elapsed_seconds: SHIFT as u32,
+            worker_seconds: 28_800,
+        },
+        op,
+    );
+    let op = start_id(&s);
+    call(&mut s, Caller::Account(3), C::SubmitInspection, op);
+    let op = start_id(&s);
+    call(
+        &mut s,
+        Caller::Account(1),
+        C::AcceptInspection {
+            inspector: 1,
+            accepted: true,
+        },
+        op,
+    );
+    let project = s.engine().unwrap().world().view().construction.unwrap();
+    assert!(project.operating_published);
+    assert_eq!(
+        s.engine()
+            .unwrap()
+            .resources()
+            .iter()
+            .find(|r| r.id == 81)
+            .unwrap()
+            .capacity,
+        4
+    );
+
+    let op = ordinary(&s);
+    call(
+        &mut s,
+        Caller::Account(4),
+        C::BeginDemolition { waste_receiver: 3 },
+        op,
+    );
+    let op = ordinary(&s);
+    call(
+        &mut s,
+        Caller::Account(2),
+        C::DecideGate {
+            gate_id: 1,
+            decision: GateDecision::Rejected,
+            evidence_id: 0,
+        },
+        op,
+    );
+    assert_eq!(
+        s.engine()
+            .unwrap()
+            .resources()
+            .iter()
+            .find(|r| r.id == 81)
+            .unwrap()
+            .capacity,
+        4,
+        "rejected approval leaves the operating contribution in place"
+    );
+
+    let op = ordinary(&s);
+    call(
+        &mut s,
+        Caller::Account(4),
+        C::BeginDemolition { waste_receiver: 3 },
+        op,
+    );
+    let reserve_request = env_action(
+        &s,
+        ordinary(&s),
+        Action::ReserveCapacity {
+            resource: 81,
+            units: 3,
+        },
+    );
+    let consumer = s
+        .execute(Caller::Account(2), reserve_request)
+        .unwrap()
+        .model
+        .unwrap()
+        .created_tokens[0]
+        .unwrap();
+    ordinary_action(
+        &mut s,
+        Caller::Account(2),
+        Action::OccupyCapacity { token: consumer },
+    );
+    s.checkpoint().unwrap();
+    drop(s);
+    let mut s = Store::open(&path, RULES).unwrap();
+    assert_eq!(
+        s.engine()
+            .unwrap()
+            .resources()
+            .iter()
+            .find(|r| r.id == 81)
+            .unwrap()
+            .occupied,
+        3
+    );
+    let op = ordinary(&s);
+    call(
+        &mut s,
+        Caller::Account(2),
+        C::DecideGate {
+            gate_id: 1,
+            decision: GateDecision::Accepted,
+            evidence_id: 21,
+        },
+        op,
+    );
+    let op = ordinary(&s);
+    call(
+        &mut s,
+        Caller::Account(1),
+        C::DecideGate {
+            gate_id: 2,
+            decision: GateDecision::Accepted,
+            evidence_id: 22,
+        },
+        op,
+    );
+    let op = ordinary(&s);
+    call(&mut s, Caller::Account(4), C::Prepare, op);
+    let blocked_start = env(&s, ordinary(&s), C::Start);
+    assert_eq!(
+        s.execute(Caller::Account(4), blocked_start).unwrap().model,
+        Err(mycity_core::transaction::TxError::Capacity)
+    );
+    assert!(
+        s.engine()
+            .unwrap()
+            .world()
+            .view()
+            .construction
+            .unwrap()
+            .operating_published
+    );
+    ordinary_action(
+        &mut s,
+        Caller::Account(2),
+        Action::ReleaseCapacity { token: consumer },
+    );
+    s.checkpoint().unwrap();
+    drop(s);
+    let mut s = Store::open(&path, RULES).unwrap();
+    assert!(
+        s.engine()
+            .unwrap()
+            .world()
+            .view()
+            .construction
+            .unwrap()
+            .operating_published
+    );
+    let op = ordinary(&s);
+    call(&mut s, Caller::Account(4), C::Start, op);
+    let project = s.engine().unwrap().world().view().construction.unwrap();
+    assert_eq!(project.phase, mycity_core::construction::Phase::Demolition);
+    assert!(!project.operating_published);
+    assert_eq!(
+        s.engine()
+            .unwrap()
+            .resources()
+            .iter()
+            .find(|r| r.id == 81)
+            .unwrap()
+            .capacity,
+        2
+    );
+    advance(&mut s, DAY + SHIFT);
+    let op = start_id(&s);
+    call(
+        &mut s,
+        Caller::Account(3),
+        C::Work {
+            at: GameTime::new((DAY + SHIFT) as i64).unwrap(),
+            elapsed_seconds: DAY as u32,
+            worker_seconds: 28_800,
+        },
+        op,
+    );
+
+    let waste_id = ordinary(&s);
+    let waste_request = env(&s, waste_id, C::AcceptWaste);
+    let owner_before = cash(&s, 4);
+    let receiver_before = cash(&s, 3);
+    let lost_response =
+        s.execute_with_observer(Caller::Account(3), waste_request.clone(), |point| {
+            if point == WritePoint::Applied {
+                return Err(io::Error::other("simulated lost waste response"));
+            }
+            Ok(())
+        });
+    assert!(lost_response.is_err());
+    drop(s);
+
+    let mut s = Store::open(&path, RULES).unwrap();
+    assert_eq!(cash(&s, 4), owner_before - 250);
+    assert_eq!(cash(&s, 3), receiver_before + 250);
+    assert_eq!(
+        s.engine()
+            .unwrap()
+            .resources()
+            .iter()
+            .find(|r| r.id == 82)
+            .unwrap()
+            .occupied,
+        2
+    );
+    let replay = s.execute(Caller::Account(3), waste_request).unwrap();
+    assert!(replay.has_persistent_receipt);
+    replay.model.unwrap();
+    assert_eq!(cash(&s, 4), owner_before - 250);
+    assert_eq!(cash(&s, 3), receiver_before + 250);
+
+    let op = start_id(&s);
+    call(&mut s, Caller::Account(4), C::Close, op);
+    let project = s.engine().unwrap().world().view().construction.unwrap();
+    assert_eq!(project.phase, mycity_core::construction::Phase::Closed);
+    assert!(!project.site_reserved);
+    assert_eq!(
+        s.engine()
+            .unwrap()
+            .resources()
+            .iter()
+            .find(|r| r.id == 80)
+            .unwrap()
+            .occupied,
+        0
+    );
+    assert_eq!(
+        s.engine()
+            .unwrap()
+            .resources()
+            .iter()
+            .find(|r| r.id == 82)
+            .unwrap()
+            .occupied,
+        2
+    );
 }
 
 #[test]

@@ -1,0 +1,73 @@
+   Compiling sha2-asm v0.6.4
+   Compiling sha2 v0.10.9
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+    Finished `release` profile [optimized] target(s) in 24.32s
+     Running tests/construction.rs (target/release/deps/construction-a6842a0669a1dd86)
+
+running 7 tests
+test cancellation_never_releases_started_capacity_or_refunds_spend ... ok
+test consent_materials_wages_and_inspection_gate_occupancy ... ok
+test cannot_activate_uninspected_or_demolish_without_parties_and_waste_receiver ... ok
+test identical_effect_replay_is_stable_and_definitive_failure_does_not_charge_twice ... ok
+test wall_speed_does_not_change_game_calendar_work_and_weekend_is_not_workday ... ok
+test work_is_rejected_when_cash_or_total_project_budget_is_insufficient ... ok
+test pending_effect_survives_serialization_and_cannot_be_acked_twice ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/construction_engine.rs (target/release/deps/construction_engine-bbae94b7cf7feb30)
+
+running 9 tests
+test construction_action_and_journal_records_stay_inside_frozen_engine_budget ... ok
+test forged_gate_or_inspector_identity_is_rejected_before_domain_mutation ... ok
+test authoritative_work_skips_untrusted_estimate_even_when_its_sum_overflows ... ok
+test generic_release_cannot_break_project_site_binding_and_cold_restore_can_continue_work ... ok
+test durable_hook_failure_does_not_publish_and_retry_after_commit_returns_original_receipt ... ok
+test engine_uses_actual_source_lot_basis_for_budget_and_rejects_actual_overrun_atomically ... ok
+test non_draft_checkpoint_restores_exact_site_lease_and_continues_to_operational_without_double_charge ... ok
+test operating_capacity_is_published_and_withdrawn_only_when_consumers_allow_it ... ok
+test insufficient_site_capacity_funds_and_materials_leave_candidate_domains_unchanged ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/market_access.rs (target/release/deps/market_access-4b9260b305aa4a20)
+
+running 16 tests
+test resolver_returns_dynamic_quotes_and_audit_without_mutating_input_or_planning ... ok
+test expanded_capacity_allows_more_sales_from_same_od_demand ... ok
+test capacity_shortfall_yields_only_served_roundtrips_and_unmet_market_demand ... ok
+test missing_or_forged_path_receipt_cannot_supply_access_capacity ... ok
+test cross_city_market_roundtrip_reports_only_its_actual_boundary_sources ... ok
+test resolver_rejects_stale_and_forged_assignments_and_wrong_entrance_owner ... ok
+test explicit_entrance_owner_binding_rejects_wrong_account ... ok
+test duplicate_quote_partition_is_rejected ... ok
+test no_return_service_means_no_accessible_sales_or_fake_completion ... ok
+test resolver_partitions_shared_od_service_once_across_multiple_goods ... ok
+test round_trip_access_caps_goods_and_uses_external_tariff_for_pure_plan ... ok
+test same_od_is_shared_across_goods_without_reissuing_served_trips ... ok
+test same_revision_graph_edit_invalidates_assignment ... ok
+test unauthorized_entrance_is_rejected_even_when_geometrically_at_the_road_node ... ok
+test snapshot_resolver_binds_compact_generation_ref_and_profile_without_expanding_command_data ... ok
+test unrelated_cross_city_od_does_not_block_local_market_access ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/town_business_exit.rs (target/release/deps/town_business_exit-93c4ca030f4dfddc)
+
+running 13 tests
+test duplicate_liability_identity_and_invalid_lot_basis_are_rejected ... ok
+test due_wages_and_debts_follow_explicit_priority_without_owner_distribution ... ok
+test future_claims_block_distribution_even_when_no_due_claims_remain ... ok
+test incomplete_employment_terms_do_not_cancel_payroll ... ok
+test inventory_offer_is_not_cash_and_requires_a_fresh_snapshot_to_distribute ... ok
+test fully_cleared_company_pays_claims_before_pro_rata_residual ... ok
+test maximum_bounded_snapshot_and_plan_heap_estimate_fit_the_budget ... ok
+test missing_share_register_does_not_block_due_creditor_payment_but_blocks_residual ... ok
+test personal_inventory_cannot_be_counted_as_company_asset ... ok
+test missing_tax_or_legal_completeness_blocks_claims_and_distribution ... ok
+test same_tier_partial_payment_uses_pro_rata_integer_cents_and_stable_remainder ... ok
+test solvent_fixture_keeps_protected_cash_and_distributes_only_company_residual ... ok
+test unreviewed_priority_and_oversized_snapshots_fail_closed ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

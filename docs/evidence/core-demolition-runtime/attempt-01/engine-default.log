@@ -1,0 +1,118 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-core)
+error[E0609]: no field `operating_resource` on type `Project`
+  --> crates/city-core/tests/construction_engine.rs:67:13
+   |
+67 |     profile.operating_resource = 81;
+   |             ^^^^^^^^^^^^^^^^^^ unknown field
+   |
+   = note: available fields are: `id`, `kind`, `phase`, `previous_phase`, `owner` ... and 26 others
+
+error[E0609]: no field `operating_base_capacity` on type `Project`
+  --> crates/city-core/tests/construction_engine.rs:68:13
+   |
+68 |     profile.operating_base_capacity = 2;
+   |             ^^^^^^^^^^^^^^^^^^^^^^^ unknown field
+   |
+   = note: available fields are: `id`, `kind`, `phase`, `previous_phase`, `owner` ... and 26 others
+
+error[E0609]: no field `operating_units` on type `Project`
+  --> crates/city-core/tests/construction_engine.rs:69:13
+   |
+69 |     profile.operating_units = 2;
+   |             ^^^^^^^^^^^^^^^ unknown field
+   |
+   = note: available fields are: `id`, `kind`, `phase`, `previous_phase`, `owner` ... and 26 others
+
+error[E0609]: no field `waste_receiver_account` on type `Project`
+  --> crates/city-core/tests/construction_engine.rs:70:13
+   |
+70 |     profile.waste_receiver_account = 3;
+   |             ^^^^^^^^^^^^^^^^^^^^^^ unknown field
+   |
+   = note: available fields are: `id`, `kind`, `phase`, `previous_phase`, `owner` ... and 26 others
+
+error[E0609]: no field `waste_receiver_resource` on type `Project`
+  --> crates/city-core/tests/construction_engine.rs:71:13
+   |
+71 |     profile.waste_receiver_resource = 82;
+   |             ^^^^^^^^^^^^^^^^^^^^^^^ unknown field
+   |
+   = note: available fields are: `id`, `kind`, `phase`, `previous_phase`, `owner` ... and 26 others
+
+error[E0609]: no field `waste_units` on type `Project`
+  --> crates/city-core/tests/construction_engine.rs:72:13
+   |
+72 |     profile.waste_units = 2;
+   |             ^^^^^^^^^^^ unknown field
+   |
+help: a field with a similar name exists
+   |
+72 |     profile.site_units = 2;
+   |             ~~~~~~~~~~
+
+error[E0609]: no field `waste_fee` on type `Project`
+  --> crates/city-core/tests/construction_engine.rs:73:13
+   |
+73 |     profile.waste_fee = Money::new(250).unwrap();
+   |             ^^^^^^^^^ unknown field
+   |
+   = note: available fields are: `id`, `kind`, `phase`, `previous_phase`, `owner` ... and 26 others
+
+error[E0609]: no field `operating_published` on type `Project`
+   --> crates/city-core/tests/construction_engine.rs:422:23
+    |
+422 |     assert!(operating.operating_published);
+    |                       ^^^^^^^^^^^^^^^^^^^ unknown field
+    |
+    = note: available fields are: `id`, `kind`, `phase`, `previous_phase`, `owner` ... and 26 others
+
+error[E0609]: no field `operating_base_capacity` on type `Project`
+   --> crates/city-core/tests/construction_engine.rs:423:26
+    |
+423 |     assert_eq!(operating.operating_base_capacity, 2);
+    |                          ^^^^^^^^^^^^^^^^^^^^^^^ unknown field
+    |
+    = note: available fields are: `id`, `kind`, `phase`, `previous_phase`, `owner` ... and 26 others
+
+error[E0609]: no field `operating_published` on type `Project`
+   --> crates/city-core/tests/construction_engine.rs:489:21
+    |
+489 |     assert!(project.operating_published);
+    |                     ^^^^^^^^^^^^^^^^^^^ unknown field
+    |
+    = note: available fields are: `id`, `kind`, `phase`, `previous_phase`, `owner` ... and 26 others
+
+error[E0609]: no field `operating_published` on type `Project`
+   --> crates/city-core/tests/construction_engine.rs:513:21
+    |
+513 |     assert!(project.operating_published);
+    |                     ^^^^^^^^^^^^^^^^^^^ unknown field
+    |
+    = note: available fields are: `id`, `kind`, `phase`, `previous_phase`, `owner` ... and 26 others
+
+error[E0609]: no field `operating_published` on type `Project`
+   --> crates/city-core/tests/construction_engine.rs:575:52
+    |
+575 |     assert!(e.world().view().construction.unwrap().operating_published);
+    |                                                    ^^^^^^^^^^^^^^^^^^^ unknown field
+    |
+    = note: available fields are: `id`, `kind`, `phase`, `previous_phase`, `owner` ... and 26 others
+
+error[E0609]: no field `operating_published` on type `Project`
+   --> crates/city-core/tests/construction_engine.rs:584:52
+    |
+584 |     assert!(e.world().view().construction.unwrap().operating_published);
+    |                                                    ^^^^^^^^^^^^^^^^^^^ unknown field
+    |
+    = note: available fields are: `id`, `kind`, `phase`, `previous_phase`, `owner` ... and 26 others
+
+error[E0609]: no field `operating_published` on type `Project`
+   --> crates/city-core/tests/construction_engine.rs:604:53
+    |
+604 |     assert!(!e.world().view().construction.unwrap().operating_published);
+    |                                                     ^^^^^^^^^^^^^^^^^^^ unknown field
+    |
+    = note: available fields are: `id`, `kind`, `phase`, `previous_phase`, `owner` ... and 26 others
+
+For more information about this error, try `rustc --explain E0609`.
+error: could not compile `mycity-core` (test "construction_engine") due to 14 previous errors
