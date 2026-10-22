@@ -24,6 +24,7 @@ mod stream;
 mod wal;
 pub use capacity::{CapacityPolicy, CapacityStatus};
 mod spatial;
+mod town_transport;
 pub use checkpoint::{CheckpointPoint, CheckpointStatus};
 use fs2::FileExt;
 use mycity_core::{
@@ -78,6 +79,8 @@ impl From<serde_json::Error> for Error {
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum WritePoint {
+    TransportProofEncoded,
+    TransportProofPublished,
     Prepared,
     WalEncoded,
     WalAdmitted,
@@ -414,6 +417,59 @@ impl Store {
             Option<mycity_map::assets::SpatialWorkspace>,
             MetadataWorkspace,
         ),
+        observer: impl FnMut(CreatePoint) -> io::Result<()>,
+    ) -> Result<Self, Error> {
+        Self::create_in_workspace_with_transport(
+            dir,
+            opening,
+            resources,
+            rules_identity,
+            bundle,
+            None,
+            setup,
+            observer,
+        )
+    }
+    /// Create a market world with its immutable Store-owned daily transport allocation.
+    pub fn create_with_transport_allocation_profile(
+        dir: &Path,
+        opening: &[u8],
+        resources: Vec<Resource>,
+        rules_identity: &str,
+        allocation_profile: &[u8],
+    ) -> Result<Self, Error> {
+        Self::create_in_workspace_with_transport(
+            dir,
+            opening,
+            resources,
+            rules_identity,
+            None,
+            Some(allocation_profile),
+            (
+                0,
+                mycity_core::transaction::EngineWorkspace::new().map_err(Error::Model)?,
+                None,
+                MetadataWorkspace::new()?,
+            ),
+            |_| Ok(()),
+        )
+    }
+    // Preserve the existing workspace setup tuple and observer API while adding an optional
+    // immutable transport allocation at genesis.
+    #[allow(clippy::too_many_arguments)]
+    fn create_in_workspace_with_transport(
+        dir: &Path,
+        opening: &[u8],
+        resources: Vec<Resource>,
+        rules_identity: &str,
+        bundle: Option<(&[u8], &[u8])>,
+        allocation_bytes: Option<&[u8]>,
+        setup: (
+            u8,
+            mycity_core::transaction::EngineWorkspace,
+            Option<mycity_map::assets::SpatialWorkspace>,
+            MetadataWorkspace,
+        ),
         mut observer: impl FnMut(CreatePoint) -> io::Result<()>,
     ) -> Result<Self, Error> {
         if opening.len() as u64 > INPUT_LIMIT
@@ -428,6 +484,26 @@ impl Store {
             .initialize_into(opening, &resources)
             .map_err(Error::Model)?;
         let engine = initial.into_engine().map_err(Error::Model)?;
+        let allocation_hash = town_transport::allocation_ref(&engine);
+        let allocation_profile = match (allocation_bytes, allocation_hash) {
+            (Some(bytes), Some(hash)) => {
+                let town = engine
+                    .world()
+                    .view()
+                    .town
+                    .ok_or(Error::Invalid("town_missing"))?;
+                Some(town_transport::validate_allocation(
+                    bytes,
+                    engine.world().view().scope.world(),
+                    engine.world().view().scope.branch(),
+                    town.profile.id,
+                    hash,
+                )?)
+            }
+            (None, None) => None,
+            _ => return Err(Error::Invalid("town_transport_profile_reference")),
+        };
+        drop(allocation_profile);
         let identity = identity(&engine);
         let (spatial_ref, spatial) = if let Some((input, png)) = bundle {
             let (reference, assets) =
@@ -441,6 +517,17 @@ impl Store {
         observer(CreatePoint::Validated)?;
         fs::create_dir(dir)?;
         let lock = lock(dir)?;
+        if let (Some(bytes), Some(hash)) = (allocation_bytes, allocation_hash) {
+            town_transport::admit_immutable_write(
+                dir,
+                CapacityPolicy::default(),
+                town_transport::ALLOCATION_PREFIX,
+                bytes,
+                &hash,
+                false,
+            )?;
+            town_transport::write_immutable(dir, town_transport::ALLOCATION_PREFIX, bytes, &hash)?;
+        }
         if let Some((input, png)) = bundle {
             spatial::write_dependency(
                 dir,
@@ -650,6 +737,24 @@ impl Store {
             .initialize_into(metadata.opening.as_slice(), &metadata.resources)
             .map_err(Error::Model)?;
         let mut genesis_engine = initial.into_engine().map_err(Error::Model)?;
+        let transport_profile_hash = town_transport::allocation_ref(&genesis_engine);
+        let transport_profile = if let Some(hash) = transport_profile_hash {
+            let town = genesis_engine
+                .world()
+                .view()
+                .town
+                .ok_or(Error::Invalid("town_transport_market_missing"))?;
+            Some(town_transport::read_allocation(
+                dir,
+                &mut metadata,
+                &hash,
+                genesis_engine.world().view().scope.world(),
+                genesis_engine.world().view().scope.branch(),
+                town.profile.id,
+            )?)
+        } else {
+            None
+        };
         if root.checkpoint_layout != genesis.checkpoint_layout
             || !matches!(root.checkpoint_layout, 0 | 2)
             || root.checkpoint_layout == 0 && root.checkpoint_v2.is_some()
@@ -663,6 +768,8 @@ impl Store {
                 reference,
                 &root.genesis_sha256,
                 root.sequence,
+                transport_profile.as_ref(),
+                transport_profile_hash,
                 &mut restore_workspace,
                 &mut metadata,
             )?;
@@ -686,6 +793,22 @@ impl Store {
         } else {
             (0, root.genesis_sha256.clone())
         };
+        town_transport::verify_latest_market_cursor(
+            &genesis_engine,
+            dir,
+            &mut metadata,
+            transport_profile.as_ref(),
+            transport_profile_hash,
+        )?;
+        if let Some(reference) = root.checkpoint.as_ref() {
+            checkpoint::verify_transport_proofs(
+                dir,
+                reference,
+                transport_profile.as_ref(),
+                transport_profile_hash,
+                &mut metadata,
+            )?;
+        }
         let mut engine = genesis_engine;
         outbox::verify(dir, engine.world().view().scope)?;
         let spatial_ref = genesis.spatial;
@@ -762,11 +885,49 @@ impl Store {
             if let Some(hash) = candidate_hash {
                 background::remember(&mut background_live, hash)?;
             }
+            let transport_proof = match entry.envelope.actions.as_slice() {
+                [mycity_core::transaction::Action::TownTransportSettle {
+                    profile_id,
+                    service_day,
+                    generation,
+                    proof_sha256,
+                }] => {
+                    transport_profile
+                        .as_ref()
+                        .ok_or(Error::Invalid("town_transport_profile_missing"))?;
+                    let proof = town_transport::read_proof(dir, &mut metadata, *proof_sha256)?;
+                    Some((proof, *profile_id, *service_day, *generation, *proof_sha256))
+                }
+                _ => None,
+            };
+            let transport_input = if let Some((proof, profile_id, service_day, generation, hash)) =
+                transport_proof.as_ref()
+            {
+                let profile = transport_profile
+                    .as_ref()
+                    .ok_or(Error::Invalid("town_transport_profile_missing"))?;
+                let input = town_transport::verify_proof_matches_allocation(
+                    proof,
+                    profile,
+                    transport_profile_hash
+                        .ok_or(Error::Invalid("town_transport_profile_missing"))?,
+                    *hash,
+                    *service_day,
+                    *generation,
+                )?;
+                if *profile_id != profile.market_profile_id {
+                    return Err(Error::Invalid("town_transport_profile_mismatch"));
+                }
+                Some(input)
+            } else {
+                None
+            };
             let mut called = false;
-            let _ = engine.execute_recorded_with_background(
+            let _ = engine.execute_recorded_transport_diagnosed(
                 caller,
                 entry.envelope,
                 candidate,
+                transport_input.as_ref(),
                 |_, record| -> Result<(), Error> {
                     called = true;
                     if !wal::matches(
@@ -779,6 +940,7 @@ impl Store {
                     }
                     Ok(())
                 },
+                &mut mycity_core::diagnostics::Trace::disabled(),
             )?;
             if !called {
                 return Err(Error::Invalid("record_not_admitted_or_duplicate"));
@@ -1003,6 +1165,16 @@ impl Store {
         mut observer: impl FnMut(WritePoint) -> io::Result<()>,
         trace: &mut mycity_core::diagnostics::Trace<'_>,
     ) -> Result<Outcome, Error> {
+        self.execute_observed_transport_diagnosed(caller, envelope, None, &mut observer, trace)
+    }
+    pub(crate) fn execute_observed_transport_diagnosed(
+        &mut self,
+        caller: Caller,
+        envelope: Envelope,
+        transport: Option<&mycity_core::market_access::SettlementDeliveryInput<'_>>,
+        mut observer: impl FnMut(WritePoint) -> io::Result<()>,
+        trace: &mut mycity_core::diagnostics::Trace<'_>,
+    ) -> Result<Outcome, Error> {
         if self.io.poisoned || self.io.owner_pid != std::process::id() {
             return Err(Error::RecoveryRequired);
         }
@@ -1048,6 +1220,15 @@ impl Store {
                 model,
                 committed_sequence: self.io.root.sequence,
             });
+        }
+        let transport_action = envelope.actions.iter().any(|action| {
+            matches!(
+                action,
+                mycity_core::transaction::Action::TownTransportSettle { .. }
+            )
+        });
+        if transport_action != transport.is_some() {
+            return Err(Error::Invalid("town_transport_requires_verified_proof"));
         }
         outbox::validate_attempt(
             &self.io.dir,
@@ -1137,10 +1318,11 @@ impl Store {
             None
         };
         let io = &mut self.io;
-        let result = self.engine.execute_recorded_diagnosed(
+        let result = self.engine.execute_recorded_transport_diagnosed(
             caller,
             envelope,
             candidate,
+            transport,
             |env, record| {
                 io.append(
                     env,

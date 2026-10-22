@@ -337,6 +337,7 @@ mod tests {
                         }]
                     },
                     None,
+                    None,
                     &mut Trace::disabled()
                 ),
                 Err(TxError::WorkingLimit)
