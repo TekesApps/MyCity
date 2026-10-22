@@ -1,0 +1,3 @@
+{"scan": {"iteration": 2}}
+{"snapshot_durable": {"generation": 1}}
+{"snapshot_admitted": {"generation": 2}}

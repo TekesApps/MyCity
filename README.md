@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.122`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.123`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.123完成[原满级R07的四角色native归因诊断](docs/evidence/m0-t13a-full-r07-native-attribution/STATUS.md)：03同源满映射窗口获得4份VMmap及两代/冷恢复；01/02控制脚本错误和原日志保留。辅助进程另计，VM分类不抵预算；02四份过时合成文件精确回收约5.922GiB，03完整原件保留。物理超额、速度、8h和真实16GB仍未通过，下一步只验证减少真实重复进程开销的候选。
 
 v0.5.122完成[工程、交通、经营与有限Boot供电的阶段整合](docs/evidence/core-road-town-integration-122/STATUS.md)：真实CLI、28日经济压力矩阵、旧writer兼容、core/storage完整回归及全workspace严格检查通过；新增源码、失败历史和外置SSD环境逐项留证。M0停机后业务与57/58代布局快照恢复通过，但原formal01仍失败，正常物理预算、分级速度、8小时及真实16GB门仍未通过；不宣称完整M0或完整0.1完成。
 

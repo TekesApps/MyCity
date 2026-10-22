@@ -1,0 +1,20 @@
+[
+  {
+    "name": "first",
+    "monotonic_ns": 84302625,
+    "host_t": 2,
+    "r07_epoch": 1
+  },
+  {
+    "name": "second",
+    "monotonic_ns": 84630875,
+    "host_t": 2,
+    "r07_epoch": 1
+  },
+  {
+    "name": "pause",
+    "monotonic_ns": 84959000,
+    "host_t": 2,
+    "r07_epoch": 1
+  }
+]

@@ -1,0 +1,236 @@
+{
+  "role": "normal-pool-host",
+  "target_pid": 93558,
+  "expected_birth": 26351242218279,
+  "before": {
+    "pid": 93558,
+    "start_abstime": 26351242218279,
+    "rss_bytes": 70139904,
+    "phys_footprint_bytes": 68256128,
+    "user_time_ns": 267381833,
+    "system_time_ns": 36229416,
+    "disk_bytes_read": 0,
+    "disk_bytes_written": 20480
+  },
+  "host_frame_before": {
+    "clock_begin_ns": 14275217917,
+    "clock_end_ns": 14275826792,
+    "t": 14.275826792,
+    "window_s": 0.000608875,
+    "rss_bytes": 3269296128,
+    "phys_footprint_bytes": 3337047616,
+    "missing_footprint": 0,
+    "missing_rss": 0,
+    "group_capture_complete": true,
+    "members": [
+      [
+        93556,
+        93542,
+        26351241647606,
+        5619712,
+        "observer"
+      ],
+      [
+        93557,
+        93556,
+        26351241889821,
+        3342336,
+        "r07-layout-driver"
+      ],
+      [
+        93558,
+        93557,
+        26351242218279,
+        70139904,
+        "normal-pool-host"
+      ],
+      [
+        93559,
+        93557,
+        26351243304380,
+        3190194176,
+        "layout-r07-session"
+      ]
+    ],
+    "member_footprints_pid_birth_bytes": [
+      [
+        93556,
+        26351241647606,
+        3293496
+      ],
+      [
+        93557,
+        26351241889821,
+        1311008
+      ],
+      [
+        93558,
+        26351242218279,
+        68256128
+      ],
+      [
+        93559,
+        26351243304380,
+        3264186984
+      ]
+    ],
+    "identity_uncertainties": [],
+    "pending_registration_bytes": 0,
+    "registration_lock_busy": false,
+    "r07_applied": {
+      "source": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+      "owner": {
+        "pid": 93559,
+        "start_abstime": 26351243304380,
+        "parent_pid": 93557
+      },
+      "state": {
+        "schema": 1,
+        "logical_bytes": 277662928,
+        "arena_tail_bytes": 52432,
+        "quantum_bytes": 65536,
+        "mapped_bytes": 277610496,
+        "replaced_bytes": 0,
+        "epoch": 2,
+        "reading_sequence": 53
+      },
+      "permitted_bytes": 0,
+      "reason": "reading_identity_sequence_or_ttl"
+    },
+    "r07_reading": null,
+    "r07_coverage_complete": true,
+    "r07_provider_paused": true,
+    "pressure_dispatch_flag": 1,
+    "swap_used_bytes": 2023751680,
+    "observer_hot_bound_bytes": 2097152,
+    "cpu_io_footprint": null,
+    "system": null
+  },
+  "argv": [
+    "/usr/bin/vmmap",
+    "-wide",
+    "-pages",
+    "-interleaved",
+    "93558"
+  ],
+  "begin_ns": 14572780791,
+  "helper_first": {
+    "pid": 93637,
+    "start_abstime": 26351588615380,
+    "rss_bytes": 458752,
+    "phys_footprint_bytes": 180296,
+    "user_time_ns": 90750,
+    "system_time_ns": 894625,
+    "disk_bytes_read": 0,
+    "disk_bytes_written": 0
+  },
+  "exit_code": 0,
+  "end_ns": 15848466875,
+  "after": {
+    "pid": 93558,
+    "start_abstime": 26351242218279,
+    "rss_bytes": 70139904,
+    "phys_footprint_bytes": 68256128,
+    "user_time_ns": 269834916,
+    "system_time_ns": 36525500,
+    "disk_bytes_read": 0,
+    "disk_bytes_written": 20480
+  },
+  "host_frame_after": {
+    "clock_begin_ns": 15708306875,
+    "clock_end_ns": 15708559667,
+    "t": 15.708559667,
+    "window_s": 0.000252792,
+    "rss_bytes": 1935261696,
+    "phys_footprint_bytes": 3337047616,
+    "missing_footprint": 0,
+    "missing_rss": 0,
+    "group_capture_complete": true,
+    "members": [
+      [
+        93556,
+        93542,
+        26351241647606,
+        5619712,
+        "observer"
+      ],
+      [
+        93557,
+        93556,
+        26351241889821,
+        3342336,
+        "r07-layout-driver"
+      ],
+      [
+        93558,
+        93557,
+        26351242218279,
+        70139904,
+        "normal-pool-host"
+      ],
+      [
+        93559,
+        93557,
+        26351243304380,
+        1856159744,
+        "layout-r07-session"
+      ]
+    ],
+    "member_footprints_pid_birth_bytes": [
+      [
+        93556,
+        26351241647606,
+        3293496
+      ],
+      [
+        93557,
+        26351241889821,
+        1311008
+      ],
+      [
+        93558,
+        26351242218279,
+        68256128
+      ],
+      [
+        93559,
+        26351243304380,
+        3264186984
+      ]
+    ],
+    "identity_uncertainties": [],
+    "pending_registration_bytes": 0,
+    "registration_lock_busy": false,
+    "r07_applied": {
+      "source": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+      "owner": {
+        "pid": 93559,
+        "start_abstime": 26351243304380,
+        "parent_pid": 93557
+      },
+      "state": {
+        "schema": 1,
+        "logical_bytes": 277662928,
+        "arena_tail_bytes": 52432,
+        "quantum_bytes": 65536,
+        "mapped_bytes": 277610496,
+        "replaced_bytes": 0,
+        "epoch": 2,
+        "reading_sequence": 53
+      },
+      "permitted_bytes": 0,
+      "reason": "reading_identity_sequence_or_ttl"
+    },
+    "r07_reading": null,
+    "r07_coverage_complete": true,
+    "r07_provider_paused": true,
+    "pressure_dispatch_flag": 1,
+    "swap_used_bytes": 2023751680,
+    "observer_hot_bound_bytes": 2097152,
+    "cpu_io_footprint": null,
+    "system": null
+  },
+  "helper_pid": 93637,
+  "target_identity_unchanged": true,
+  "helper_missing_after_exit": "not sampled as zero"
+}

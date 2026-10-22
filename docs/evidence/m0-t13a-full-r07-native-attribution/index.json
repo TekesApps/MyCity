@@ -1,0 +1,516 @@
+{
+  "schema": "mycity-full-r07-native-attribution-v1",
+  "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+  "binary_sha256": "59aa365ed46b5d373218fcbcf1d34f930d674d15607ed510190361891439b4e0",
+  "source_archive": "../m0-t13a-extents-joint-retry-02/frozen-source.zip",
+  "scope": "intrusive native attribution; no performance acceptance or physical credit",
+  "storage": "HP P900 external USB/APFS SSD; Apple M4 32GiB",
+  "attempts": [
+    {
+      "attempt": "01",
+      "external_run": "/Volumes/HP P900/dev/MyCity/work/full-r07-vm-diagnostic-01",
+      "controller_sha256": "ff5e24fb7bb0d2d3854e8f99724bcf9962f15cedba99eac654a7824bc70a4c4e",
+      "files": [
+        {
+          "path": "auxiliary-samples.jsonl",
+          "sha256": "5bd5a4ec67d2c7b7433c91912853916b75f049bd70223b46b91359884b1507ea",
+          "bytes": 1783710
+        },
+        {
+          "path": "intent.json",
+          "sha256": "4502b7833e770270de6f763b380ac767cb0e53bbcefa75f1b66bcac4c4243a77",
+          "bytes": 61921
+        },
+        {
+          "path": "live.json",
+          "sha256": "465f458d10c6bbf8b5df7836e79db5be5476a2e32b6d631a912ea596ba305b32",
+          "bytes": 89
+        },
+        {
+          "path": "observed/host-samples.jsonl",
+          "sha256": "befad8a205d13f548817a9a63893778e52377d48e01bdd3ba644a5fdf34226d7",
+          "bytes": 886577
+        },
+        {
+          "path": "observed/model/layout.stderr",
+          "sha256": "ed5d4000edc76869d41fdd2614c3fc57b433318de2192bc185544810589467be",
+          "bytes": 22
+        },
+        {
+          "path": "observed/model/layout.stdout",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "observed/model/layout/events.jsonl",
+          "sha256": "c6745d571ee845f6894bbed23dd57c2edd99d6ea3612d1655622d48cc173e604",
+          "bytes": 117257
+        },
+        {
+          "path": "observed/model/layout/manifest.json",
+          "sha256": "5869c00f17cac9c2cbf3c2ef1fc147a98925e9379243798d5adebf589c22e249",
+          "bytes": 12611
+        },
+        {
+          "path": "observed/model/layout/r07-state.json",
+          "sha256": "451529b29b70b92f5c8471b2c72a560362298122b3018e1ec43ce58b59352520",
+          "bytes": 402
+        },
+        {
+          "path": "observed/model/layout/vm-regions-000000.jsonl",
+          "sha256": "e91693d3a649cf38b7dd520b85ec7647ce6f5fd64fda689b156b86da6e7f049a",
+          "bytes": 56325
+        },
+        {
+          "path": "observed/model/manifest.json",
+          "sha256": "5750eab22415a8c05c7e2a75d23053e5229b5c04681fce6c6f92e7f2e237e294",
+          "bytes": 359
+        },
+        {
+          "path": "observed/model/normal-pool/events.jsonl",
+          "sha256": "625533a9af51cab7094d2d35b68f570a866df55f37232de6c26f33c29d4bc534",
+          "bytes": 2398
+        },
+        {
+          "path": "observed/model/normal-pool/vm-regions-000000.jsonl",
+          "sha256": "726b73d069c10ec35ac57b027d49b1db7a121b2ffd781734e77e6b1b0f0aa538",
+          "bytes": 11496
+        },
+        {
+          "path": "observed/observer-report.json",
+          "sha256": "c175a86df66618e68c03560dd747cc085a3b35fba79b08fa11cb1abcede21922",
+          "bytes": 3264
+        },
+        {
+          "path": "observer.stderr",
+          "sha256": "b3c6c2dfcab3f615d2a1082fa253d3ebc0dd10fe0497919159a19cf9b9cfc4cd",
+          "bytes": 49
+        },
+        {
+          "path": "observer.stdout",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "terminal.json",
+          "sha256": "6da08c7422294dcec12a8c38cfae3ed97d9d537282374612fe1566879d25ada7",
+          "bytes": 482
+        }
+      ],
+      "terminal": {
+        "observer_exit": 2,
+        "elapsed_observation_seconds": 121.81356125,
+        "capture_triggered": false,
+        "capture_count": 0,
+        "all_capture_receipts_saved": true,
+        "peak_observed_auxiliary_footprint_bytes": 12632376,
+        "auxiliary_missing": "per-sample explicit; exited helpers not zero-cost proof",
+        "binary_still_same": true,
+        "memory_16gb_gate": "not_run",
+        "full_M0": "not_accepted",
+        "scope": "intrusive physical attribution only; not normal, speed or endurance acceptance"
+      },
+      "current_restore_status": "no snapshot admitted; no recovery baseline"
+    },
+    {
+      "attempt": "02",
+      "external_run": "/Volumes/HP P900/dev/MyCity/work/full-r07-vm-diagnostic-02",
+      "controller_sha256": "e326da6e9dbfd61f3b4cf383d83d6bc829efa0c9475de714e5ae2d38301ef586",
+      "files": [
+        {
+          "path": "RETENTION.md",
+          "sha256": "e2817204a2a0bba6faf5ee9af0e7459e2dd2f78321594d7587081cd497f36a93",
+          "bytes": 361
+        },
+        {
+          "path": "auxiliary-samples.jsonl",
+          "sha256": "03672d5f5b3bcf0ace7a359c504d58e9c29c2c78935da4a18da7dae03290243a",
+          "bytes": 396034
+        },
+        {
+          "path": "intent.json",
+          "sha256": "c8b9168dc54a596a3e2f9ad9b376499ec5543347d6380d9006dded37de875134",
+          "bytes": 63272
+        },
+        {
+          "path": "live.json",
+          "sha256": "fb1fb62acf450b51f95f46cf1ec409e19c494e60373a3b633daf61d31326c967",
+          "bytes": 89
+        },
+        {
+          "path": "observed/host-samples.jsonl",
+          "sha256": "65929d57a689c677a4f180ca83e04831b2a9a769f6f9552933c5c1b994f94a1a",
+          "bytes": 163436
+        },
+        {
+          "path": "observed/model/cold-with-provider/report.json",
+          "sha256": "a7f1728273cee95f97261b5503eec5a8df9543ff861b31c1c1347d3dc8ee270d",
+          "bytes": 15104
+        },
+        {
+          "path": "observed/model/cold.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "observed/model/cold.stdout",
+          "sha256": "00e108859777ca10b25e88418dcb5b1d81eac3512d368fd6780c7f1b816b9708",
+          "bytes": 15105
+        },
+        {
+          "path": "observed/model/exercise-report.json",
+          "sha256": "a58fb398da929ce1604958afe17adcc068c8e7212ed4b672a50d7d83f8e5303c",
+          "bytes": 388
+        },
+        {
+          "path": "observed/model/layout.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "observed/model/layout.stdout",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "observed/model/layout/events.jsonl",
+          "sha256": "0396442074a870673f33c01f196f6028a96dd7aaf82237b10e64d8e4fe95d7ce",
+          "bytes": 29936
+        },
+        {
+          "path": "observed/model/layout/manifest.json",
+          "sha256": "5869c00f17cac9c2cbf3c2ef1fc147a98925e9379243798d5adebf589c22e249",
+          "bytes": 12611
+        },
+        {
+          "path": "observed/model/layout/r07-state.json",
+          "sha256": "cc315a989b9c40a270f10d01477f2f18388e65debc7e06d81123e8fa46eab6a2",
+          "bytes": 383
+        },
+        {
+          "path": "observed/model/layout/report.json",
+          "sha256": "c2af75a7af1bbe89c3af7bac376bc144f5ec7c230644d87f3f3613e176708cbe",
+          "bytes": 28341
+        },
+        {
+          "path": "observed/model/layout/vm-regions-000000.jsonl",
+          "sha256": "36f044a58a1b2151483b9322460fa6fc3cae4dd3d11462bd684ef75751deb96f",
+          "bytes": 56325
+        },
+        {
+          "path": "observed/model/layout/vm-regions-000001.jsonl",
+          "sha256": "185add49c8a71a98d75929201a238717c241af2a0d4acca87949a53988860393",
+          "bytes": 57392
+        },
+        {
+          "path": "observed/model/manifest.json",
+          "sha256": "5750eab22415a8c05c7e2a75d23053e5229b5c04681fce6c6f92e7f2e237e294",
+          "bytes": 359
+        },
+        {
+          "path": "observed/model/normal-pool/events.jsonl",
+          "sha256": "abc233aacae9a1e7e90fb5efde3ae05064deefdac8acbc9caaf1e9daa1843087",
+          "bytes": 1187
+        },
+        {
+          "path": "observed/model/normal-pool/vm-regions-000000.jsonl",
+          "sha256": "e33ef8ddab4b09aa180ebac779841b65a9ec441354b3a57d67a7eaf5974cb50e",
+          "bytes": 11496
+        },
+        {
+          "path": "observed/observer-report.json",
+          "sha256": "9b9f913bea558381aa5f0020078f2dddf2c01e2d0540774a047a4e4de32ace53",
+          "bytes": 3290
+        },
+        {
+          "path": "observer.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "observer.stdout",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "protocol.json",
+          "sha256": "04878ffa424d8997060084aaecf8b95ce8c37def7f98390b9dbf82578da1b566",
+          "bytes": 328
+        },
+        {
+          "path": "terminal.json",
+          "sha256": "a7e07de87b3172bf6b948215ba0d6b13f44511214d822e1eb273778577c7b364",
+          "bytes": 985
+        }
+      ],
+      "terminal": {
+        "observer_exit": 0,
+        "protocol": [
+          {
+            "name": "first",
+            "monotonic_ns": 2399470833,
+            "host_t": 2.28292725,
+            "r07_epoch": 1
+          },
+          {
+            "name": "second",
+            "monotonic_ns": 12403595958,
+            "host_t": 12.280803584,
+            "r07_epoch": 1
+          },
+          {
+            "name": "pause",
+            "monotonic_ns": 13393712166,
+            "host_t": 13.2825115,
+            "r07_epoch": 1
+          }
+        ],
+        "prior_attempt": "01 retained; missing VM admission markers caused original120s deadline; fixed external protocol only",
+        "elapsed_observation_seconds": 27.3215595,
+        "capture_triggered": false,
+        "capture_count": 0,
+        "all_capture_receipts_saved": true,
+        "peak_observed_auxiliary_footprint_bytes": 13091128,
+        "auxiliary_missing": "per-sample explicit; exited helpers not zero-cost proof",
+        "binary_still_same": true,
+        "memory_16gb_gate": "not_run",
+        "full_M0": "not_accepted",
+        "scope": "intrusive physical attribution only; not normal, speed or endurance acceptance"
+      },
+      "current_restore_status": "retired synthetic pressure/reserve; no longer directly restorable"
+    },
+    {
+      "attempt": "03",
+      "external_run": "/Volumes/HP P900/dev/MyCity/work/full-r07-vm-diagnostic-03",
+      "controller_sha256": "d61bc3befbcf983672b2d5e1bc43031eec236b6a503c60e239cf01d74a4ef3cf",
+      "files": [
+        {
+          "path": "auxiliary-samples.jsonl",
+          "sha256": "7c03d6762a013d8148dc10118628e793e3a372b38d6d02c29cebf0d49fc51b1c",
+          "bytes": 433111
+        },
+        {
+          "path": "captures/layout-r07-session.json",
+          "sha256": "d2f9f1f182b2a8236ddf8957222d5a186d39e3a95874b95c0f1b7caa8232fcc1",
+          "bytes": 5308
+        },
+        {
+          "path": "captures/layout-r07-session.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "captures/layout-r07-session.stdout",
+          "sha256": "8e95b29521b813e37d209565b6b6eecb2adfa7924b5658b2d142f43a881ffad4",
+          "bytes": 78249
+        },
+        {
+          "path": "captures/normal-pool-host.json",
+          "sha256": "f7ba7efb68699a9048cd53fd0df244854706398a224ab3ff078c427cc7dd0f53",
+          "bytes": 5263
+        },
+        {
+          "path": "captures/normal-pool-host.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "captures/normal-pool-host.stdout",
+          "sha256": "4e511775bf2ea061b90894af6e4bcdca392cc5752e2d8f19c50c5aea8a52ced2",
+          "bytes": 53400
+        },
+        {
+          "path": "captures/observer.json",
+          "sha256": "a7a80bd6c92e99b99061d3406465285eabd57ee36a2590d0843fadf1aa20e93f",
+          "bytes": 5257
+        },
+        {
+          "path": "captures/observer.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "captures/observer.stdout",
+          "sha256": "053791e7b8abeb371e5517920ac63034cbd085648268f6efe244e5c3a9ffe6b8",
+          "bytes": 46262
+        },
+        {
+          "path": "captures/r07-layout-driver.json",
+          "sha256": "83796449b07d2f379a35ae0c97e7a3c5f7bcdca5d744b5593c856ae30d0d0580",
+          "bytes": 5256
+        },
+        {
+          "path": "captures/r07-layout-driver.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "captures/r07-layout-driver.stdout",
+          "sha256": "043b28682399101793b21d0660d6f31c4faaab97676ce46c3743f84bf6c65330",
+          "bytes": 46764
+        },
+        {
+          "path": "intent.json",
+          "sha256": "34b9f9a7c076fc0c225b6632cc97deec320fcf13191cd7f6940c69bf6ae14212",
+          "bytes": 63070
+        },
+        {
+          "path": "live.json",
+          "sha256": "9e2d0c603a2b724ab3fcd5dd53dcb3df8264afa8e12526cf83c8d7b5ae19c1af",
+          "bytes": 89
+        },
+        {
+          "path": "observed/host-samples.jsonl",
+          "sha256": "ca9e3d3c418aff24c2a453343f86f92b92ef90e957afa07c39f46a1797f406cb",
+          "bytes": 192559
+        },
+        {
+          "path": "observed/model/cold-with-provider/report.json",
+          "sha256": "338a14cc8c91bd94415c10bf9d10ce9a36addedec08538ba155631990614f789",
+          "bytes": 15094
+        },
+        {
+          "path": "observed/model/cold.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "observed/model/cold.stdout",
+          "sha256": "ce312b514a9d99fe2d9bd34007139ba2b97b5b13b0919bd8721e063a6db3b066",
+          "bytes": 15095
+        },
+        {
+          "path": "observed/model/exercise-report.json",
+          "sha256": "0d350c14dac04c65cdf249319c952282f03a4e0b34c271b52e1422e8b89970fb",
+          "bytes": 388
+        },
+        {
+          "path": "observed/model/layout.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "observed/model/layout.stdout",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "observed/model/layout/events.jsonl",
+          "sha256": "95d2140ef833d28f425e9a7cfa59291b4826ae30ec90a9751673407ef81ccd59",
+          "bytes": 31174
+        },
+        {
+          "path": "observed/model/layout/manifest.json",
+          "sha256": "5869c00f17cac9c2cbf3c2ef1fc147a98925e9379243798d5adebf589c22e249",
+          "bytes": 12611
+        },
+        {
+          "path": "observed/model/layout/r07-state.json",
+          "sha256": "adde1f5e43a78531797e07b8a61a76a544f2b422096bf619cfe43b2d22f8c53a",
+          "bytes": 402
+        },
+        {
+          "path": "observed/model/layout/report.json",
+          "sha256": "12264e29473c50eeda5034b592fd5b9d6770f4f8dbdea9d3f76b3dfbbb5c94c6",
+          "bytes": 28348
+        },
+        {
+          "path": "observed/model/layout/vm-regions-000000.jsonl",
+          "sha256": "f2395cf975dc76cc3d7120226d229094e94155b967fb97da1291584c6dfbdd51",
+          "bytes": 56325
+        },
+        {
+          "path": "observed/model/layout/vm-regions-000001.jsonl",
+          "sha256": "22fca5b95c79d6c8ebeb6f29c33561b4c8dfcbf135d342f0936d43efac86fc18",
+          "bytes": 57392
+        },
+        {
+          "path": "observed/model/layout/vm-regions-000002.jsonl",
+          "sha256": "b4122d60299f535ecec233276b1e327b64dec0c03e54dad3a381d48312fd0421",
+          "bytes": 56325
+        },
+        {
+          "path": "observed/model/manifest.json",
+          "sha256": "5750eab22415a8c05c7e2a75d23053e5229b5c04681fce6c6f92e7f2e237e294",
+          "bytes": 359
+        },
+        {
+          "path": "observed/model/normal-pool/events.jsonl",
+          "sha256": "37728571778e088593ba3f71bc49bf7eb1f5297ede873ea4b840e77b3325839f",
+          "bytes": 1187
+        },
+        {
+          "path": "observed/model/normal-pool/vm-regions-000000.jsonl",
+          "sha256": "59186f9f98cc7524d629cc797847d241192fb5c92c5065b93f42311bf9fe8226",
+          "bytes": 11496
+        },
+        {
+          "path": "observed/observer-report.json",
+          "sha256": "e2c003111247211326154026aa6c8766fa4a1378106287f4f58e8cf30ba0cc62",
+          "bytes": 3290
+        },
+        {
+          "path": "observer.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "observer.stdout",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "protocol.json",
+          "sha256": "65439ad402d51748fd269ee92afe8e508d41b171636eb1f8db7e34e6b1498111",
+          "bytes": 416
+        },
+        {
+          "path": "terminal.json",
+          "sha256": "de5279c41a1db2b8968f8c3f1a0d9d85be820a343e7184a244e0bb9cf8b50c0e",
+          "bytes": 1181
+        }
+      ],
+      "terminal": {
+        "observer_exit": 0,
+        "protocol": [
+          {
+            "name": "first",
+            "monotonic_ns": 2420753500,
+            "host_t": 2.287032667,
+            "r07_epoch": 1
+          },
+          {
+            "name": "second",
+            "monotonic_ns": 12162105875,
+            "host_t": 12.03029225,
+            "r07_epoch": 1
+          },
+          {
+            "name": "pause",
+            "monotonic_ns": 13160193125,
+            "host_t": 13.027707417,
+            "r07_epoch": 1
+          },
+          {
+            "name": "pause_released_after_captures",
+            "monotonic_ns": 15944693916
+          }
+        ],
+        "prior_attempt": "01 retained missing-marker failure; 02 two-generation/cold completed but fixed epoch predicate missed full repaid epoch2; 03 uses actual physical/state/identity contract, no load or threshold change",
+        "elapsed_observation_seconds": 28.319927083,
+        "capture_triggered": true,
+        "capture_count": 4,
+        "all_capture_receipts_saved": true,
+        "peak_observed_auxiliary_footprint_bytes": 142608760,
+        "auxiliary_missing": "per-sample explicit; exited helpers not zero-cost proof",
+        "binary_still_same": true,
+        "memory_16gb_gate": "not_run",
+        "full_M0": "not_accepted",
+        "scope": "intrusive physical attribution only; not normal, speed or endurance acceptance"
+      },
+      "current_restore_status": "complete two-generation originals retained"
+    }
+  ],
+  "native_reader_script": "../m0-t13a-typed-workspace/observe.py",
+  "retention": "03 complete, 02 four synthetic files explicitly retired; prior190 restore inputs remain full files"
+}

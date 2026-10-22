@@ -1,0 +1,346 @@
+Process:         mycity-headless [93556]
+Path:            /Volumes/VOLUME/*/mycity-headless
+Load Address:    0x1047f4000
+Identifier:      mycity-headless
+Version:         0
+Code Type:       ARM64
+Platform:        macOS
+Parent Process:  Python [93542]
+Target Type:     live task
+
+Date/Time:       2026-10-23 01:56:37.492 +0800
+Launch Time:     2026-10-23 01:56:23.020 +0800
+OS Version:      macOS 26.6.2 (25G83)
+Report Version:  7
+Analysis Tool:   /usr/bin/vmmap
+
+Physical footprint:         3216K
+Physical footprint (peak):  3216K
+Idle exit:                  untracked
+----
+
+Virtual Memory Map of process 93556 (mycity-headless)
+Output report format:  2.4  -- 64-bit process
+VM page size:  16384 bytes
+Collected with PhysFootprint mode enabled
+
+==== regions for process 93556  (non-writable and writable regions are interleaved)
+REGION TYPE                    START - END         [   VSIZE    RSDNT    DIRTY     SWAP] PRT/MAX SHRMOD PURGE    REGION DETAIL
+__TEXT                      1047f4000-1052a0000    [  683      113        0        0   ] r-x/r-x SM=COW          /Volumes/HP P900/dev/MyCity/work/candidate-binaries/r07-extents/32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2/mycity-headless
+__DATA_CONST                1052a0000-1052d8000    [   14        5        0        0   ] r--/rw- SM=COW          /Volumes/HP P900/dev/MyCity/work/candidate-binaries/r07-extents/32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2/mycity-headless
+__DATA                      1052d8000-1052dc000    [    1        1        1        0   ] rw-/rw- SM=COW          /Volumes/HP P900/dev/MyCity/work/candidate-binaries/r07-extents/32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2/mycity-headless
+__LINKEDIT                  1052dc000-105580000    [  169        1        0        0   ] r--/r-- SM=COW          /Volumes/HP P900/dev/MyCity/work/candidate-binaries/r07-extents/32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2/mycity-headless
+Kernel Alloc Once           105580000-105588000    [    2        1        1        0   ] rw-/rwx SM=PRV  
+shared memory               105588000-105590000    [    2        2        2        0   ] r--/r-- SM=SHM  
+VM_ALLOCATE                 105590000-105594000    [    1        0        0        0   ] ---/rwx SM=NUL  
+VM_ALLOCATE (reserved)      105594000-1055b4000    [    8        0        0        0   ] rw-/rwx SM=NUL          reserved VM address space (unallocated)
+MALLOC guard page           105a00000-105d14000    [  197        0        0        0   ] ---/--- SM=SHM  
+MALLOC metadata             105d14000-105d50000    [   15       12       12        0   ] rw-/rwx SM=PRV          DefaultMallocZone_0x105d14000
+MALLOC metadata             105d50000-105d54000    [    1        1        1        0   ] r--/rwx SM=PRV  
+MALLOC metadata             105d54000-105dd4000    [   32        3        3        0   ] rw-/rwx SM=PRV          DefaultMallocZone_0x105d14000
+MALLOC guard page           105e14000-105e28000    [    5        0        0        0   ] ---/--- SM=SHM  
+MALLOC guard page           105e28000-105e2c000    [    1        0        0        0   ] ---/rwx SM=SHM  
+MALLOC_TINY                 105e2c000-10622c000    [  256        3        3        0   ] rw-/rwx SM=PRV          DefaultMallocZone_0x105d14000
+MALLOC guard page           10622c000-106230000    [    1        0        0        0   ] ---/rwx SM=SHM  
+Memory Tag 22               106230000-10a234000    [ 4097        1        1        0   ] rw-/rw- SM=PRV  
+MALLOC metadata             11f600000-11f604000    [    1        0        0        0   ] rw-/rwx SM=PRV  
+Stack Guard                 16760c000-16ae10000    [ 3585        0        0        0   ] ---/rwx SM=NUL  
+VM_ALLOCATE                 16ae10000-16ae14000    [    1        0        0        0   ] ---/rwx SM=NUL  
+Stack                       16ae14000-16b60c000    [  510        9        9        0   ] rw-/rwx SM=PRV          thread 0
+__TEXT                      18e0e0000-18e133000    [   20.75    20.75     0        0   ] r-x/r-x SM=COW          /usr/lib/libobjc.A.dylib
+__TEXT                      18e133000-18e168000    [   13.25     9.25     0        0   ] r-x/r-x SM=COW          /usr/lib/system/libdyld.dylib
+__TEXT                      18e168000-18e21c000    [   45       45        0        0   ] r-x/r-x SM=COW          /usr/lib/dyld
+__TEXT                      18e21c000-18e220000    [    1        1        0        0   ] r-x/r-x SM=COW          /usr/lib/system/libsystem_blocks.dylib
+__TEXT                      18e220000-18e275000    [   21.25    21.25     0        0   ] r-x/r-x SM=COW          /usr/lib/system/libxpc.dylib
+__TEXT                      18e275000-18e296000    [    8.25     8.25     0        0   ] r-x/r-x SM=COW          /usr/lib/system/libsystem_trace.dylib
+__TEXT                      18e296000-18e345000    [   43.75    43.75     0        0   ] r-x/r-x SM=COW          /usr/lib/system/libcorecrypto.dylib
+__TEXT                      18e345000-18e396000    [   20.25    20.25     0        0   ] r-x/r-x SM=COW          /usr/lib/system/libsystem_malloc.dylib
+__TEXT                      18e396000-18e3de000    [   18       18        0        0   ] r-x/r-x SM=COW          /usr/lib/system/libdispatch.dylib
+__TEXT                      18e3de000-18e3e1000    [    0.75     0.75     0        0   ] r-x/r-x SM=COW          /usr/lib/system/libsystem_featureflags.dylib
+__TEXT                      18e3e1000-18e463000    [   32.50    30.50     0        0   ] r-x/r-x SM=COW          /usr/lib/system/libsystem_c.dylib
+__TEXT                      18e463000-18e4f4000    [   36.25    30.25     0        0   ] r-x/r-x SM=COW          /usr/lib/libc++.1.dylib
+__TEXT                      18e4f4000-18e50f000    [    6.75     6.75     0        0   ] r-x/r-x SM=COW          /usr/lib/libc++abi.dylib
+__TEXT                      18e50f000-18e54d000    [   15.50    15.50     0        0   ] r-x/r-x SM=COW          /usr/lib/system/libsystem_kernel.dylib
+__TEXT                      18e54d000-18e55a000    [    3.25     3.25     0        0   ] r-x/r-x SM=COW          /usr/lib/system/libsystem_pthread.dylib
+__TEXT                      18e55a000-18e563000    [    2.25     2.25     0        0   ] r-x/r-x SM=COW          /usr/lib/system/libsystem_platform.dylib
+__TEXT                      18e563000-18e593000    [   12       12        0        0   ] r-x/r-x SM=COW          /usr/lib/system/libsystem_info.dylib
+__TEXT                      192530000-19253a000    [    2.50     2.50     0        0   ] r-x/r-x SM=COW          /usr/lib/system/libsystem_darwin.dylib
+__TEXT                      19299b000-1929ae000    [    4.75     4.75     0        0   ] r-x/r-x SM=COW          /usr/lib/system/libsystem_notify.dylib
+__TEXT                      194c6c000-194c87000    [    6.75     6.75     0        0   ] r-x/r-x SM=COW          /usr/lib/system/libsystem_networkextension.dylib
+__TEXT                      194d09000-194d21000    [    6        6        0        0   ] r-x/r-x SM=COW          /usr/lib/system/libsystem_asl.dylib
+__TEXT                      1968c2000-1968cb000    [    2.25     2.25     0        0   ] r-x/r-x SM=COW          /usr/lib/system/libsystem_symptoms.dylib
+__TEXT                      19ab67000-19aba0000    [   14.25    12.25     0        0   ] r-x/r-x SM=COW          /usr/lib/system/libsystem_containermanager.dylib
+__TEXT                      19bf79000-19bf7e000    [    1.25     1.25     0        0   ] r-x/r-x SM=COW          /usr/lib/system/libsystem_configuration.dylib
+__TEXT                      19bf7e000-19bf85000    [    1.75     1.75     0        0   ] r-x/r-x SM=COW          /usr/lib/system/libsystem_sandbox.dylib
+__TEXT                      19d5d9000-19d5dd000    [    1        1        0        0   ] r-x/r-x SM=COW          /usr/lib/system/libquarantine.dylib
+__TEXT                      19dd78000-19dd7f000    [    1.75     1.75     0        0   ] r-x/r-x SM=COW          /usr/lib/system/libsystem_coreservices.dylib
+__TEXT                      19e307000-19e345000    [   15.50    12.50     0        0   ] r-x/r-x SM=COW          /usr/lib/system/libsystem_m.dylib
+__TEXT                      19e345000-19e346000    [    0.25     0.25     0        0   ] r-x/r-x SM=COW          /usr/lib/libcharset.1.dylib
+__TEXT                      19e346000-19e34a000    [    1        1        0        0   ] r-x/r-x SM=COW          /usr/lib/system/libmacho.dylib
+__TEXT                      19e363000-19e371000    [    3.50     3.50     0        0   ] r-x/r-x SM=COW          /usr/lib/system/libcommonCrypto.dylib
+__TEXT                      19e371000-19e37b000    [    2.50     2.50     0        0   ] r-x/r-x SM=COW          /usr/lib/system/libunwind.dylib
+__TEXT                      19e383000-19e38e000    [    2.75     2.75     0        0   ] r-x/r-x SM=COW          /usr/lib/system/libcopyfile.dylib
+__TEXT                      19e38e000-19e392000    [    1        1        0        0   ] r-x/r-x SM=COW          /usr/lib/system/libcompiler_rt.dylib
+__TEXT                      19e392000-19e397000    [    1.25     1.25     0        0   ] r-x/r-x SM=COW          /usr/lib/system/libsystem_collections.dylib
+__TEXT                      19e397000-19e39b000    [    1        1        0        0   ] r-x/r-x SM=COW          /usr/lib/system/libsystem_secinit.dylib
+__TEXT                      19e39b000-19e39e000    [    0.75     0.75     0        0   ] r-x/r-x SM=COW          /usr/lib/system/libremovefile.dylib
+__TEXT                      19e39e000-19e39f000    [    0.25     0.25     0        0   ] r-x/r-x SM=COW          /usr/lib/system/libkeymgr.dylib
+__TEXT                      19e39f000-19e3a8000    [    2.25     2.25     0        0   ] r-x/r-x SM=COW          /usr/lib/system/libsystem_dnssd.dylib
+__TEXT                      19e3a8000-19e3ae000    [    1.50     1.50     0        0   ] r-x/r-x SM=COW          /usr/lib/system/libcache.dylib
+__TEXT                      19e3ae000-19e3b0000    [    0.50     0.50     0        0   ] r-x/r-x SM=COW          /usr/lib/libSystem.B.dylib
+__TEXT                      19e3e8000-19e3f0000    [    2        2        0        0   ] r-x/r-x SM=COW          /usr/lib/libiconv.2.dylib
+__DATA_CONST                1f4217a00-1f4218580    [    0.18     0.18     0        0   ] r--/rw- SM=COW          /usr/lib/libobjc.A.dylib
+__DATA_CONST                1f4218580-1f421ab48    [    0.59     0.59     0        0   ] r--/rw- SM=COW          /usr/lib/dyld
+__DATA_CONST                1f421ab48-1f421ac00    [    0.01     0.01     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_blocks.dylib
+__DATA_CONST                1f421ac00-1f421c4b0    [    0.39     0.39     0        0   ] r--/rw- SM=COW          /usr/lib/system/libxpc.dylib
+__DATA_CONST                1f421c4b0-1f421cb68    [    0.10     0.10     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_trace.dylib
+__DATA_CONST                1f421cb68-1f421ed20    [    0.53     0.53     0        0   ] r--/rw- SM=COW          /usr/lib/system/libcorecrypto.dylib
+__DATA_CONST                1f421ed20-1f421f7f8    [    0.17     0.17     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_malloc.dylib
+__DATA_CONST                1f421f800-1f4220550    [    0.21     0.21     0        0   ] r--/rw- SM=COW          /usr/lib/system/libdispatch.dylib
+__DATA_CONST                1f4220550-1f4220590    [    0.00     0.00     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_featureflags.dylib
+__DATA_CONST                1f4220590-1f4221e00    [    0.38     0.38     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_c.dylib
+__DATA_CONST                1f4221e00-1f4222b60    [    0.21     0.21     0        0   ] r--/rw- SM=COW          /usr/lib/libc++.1.dylib
+__DATA_CONST                1f4222b60-1f4222fe0    [    0.07     0.07     0        0   ] r--/rw- SM=COW          /usr/lib/libc++abi.dylib
+__DATA_CONST                1f4222fe0-1f4225b68    [    0.68     0.68     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_kernel.dylib
+__DATA_CONST                1f4225b68-1f4225ba0    [    0.00     0.00     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_pthread.dylib
+__DATA_CONST                1f4225ba0-1f4225bc0    [    0.00     0.00     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_platform.dylib
+__DATA_CONST                1f4225bc0-1f4226148    [    0.09     0.09     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_info.dylib
+__DATA_CONST                1f4699af0-1f469c498    [    0.65     0.65     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_darwin.dylib
+__DATA_CONST                1f46b5f78-1f46b6160    [    0.03     0.03     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_notify.dylib
+__DATA_CONST                1f476cec8-1f476d5e0    [    0.11     0.11     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_networkextension.dylib
+__DATA_CONST                1f476e9b0-1f476efd0    [    0.10     0.10     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_asl.dylib
+__DATA_CONST                1f47e0540-1f47e06e0    [    0.03     0.03     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_symptoms.dylib
+__DATA_CONST                1f4a7ad20-1f4a7ba40    [    0.21     0.21     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_containermanager.dylib
+__DATA_CONST                1f4b27028-1f4b27200    [    0.03     0.03     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_configuration.dylib
+__DATA_CONST                1f4b27200-1f4b272c0    [    0.01     0.01     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_sandbox.dylib
+__DATA_CONST                1f4b3f8f0-1f4b3f940    [    0.00     0.00     0        0   ] r--/rw- SM=COW          /usr/lib/system/libquarantine.dylib
+__DATA_CONST                1f4c93168-1f4c93a70    [    0.14     0.14     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_coreservices.dylib
+__DATA_CONST                1f4cb6fa0-1f4cb6fb0    [    0.00     0.00     0        0   ] r--/rw- SM=COW          /usr/lib/libcharset.1.dylib
+__DATA_CONST                1f4cb6fb0-1f4cb7758    [    0.12     0.12     0        0   ] r--/rw- SM=COW          /usr/lib/system/libmacho.dylib
+__DATA_CONST                1f4cb7790-1f4cb7f30    [    0.12     0.12     0        0   ] r--/rw- SM=COW          /usr/lib/system/libcommonCrypto.dylib
+__DATA_CONST                1f4cb7f30-1f4cb8250    [    0.05     0.05     0        0   ] r--/rw- SM=COW          /usr/lib/system/libunwind.dylib
+__DATA_CONST                1f4cb8288-1f4cb8668    [    0.06     0.06     0        0   ] r--/rw- SM=COW          /usr/lib/system/libcopyfile.dylib
+__DATA_CONST                1f4cb8668-1f4cb8670    [    0.00     0.00     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_collections.dylib
+__DATA_CONST                1f4cb8670-1f4cb8700    [    0.01     0.01     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_secinit.dylib
+__DATA_CONST                1f4cb8700-1f4cb8710    [    0.00     0.00     0        0   ] r--/rw- SM=COW          /usr/lib/system/libremovefile.dylib
+__DATA_CONST                1f4cb8710-1f4cb8720    [    0.00     0.00     0        0   ] r--/rw- SM=COW          /usr/lib/system/libkeymgr.dylib
+__DATA_CONST                1f4cb8720-1f4cb8798    [    0.01     0.01     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_dnssd.dylib
+__DATA_CONST                1f4cb8798-1f4cb8840    [    0.01     0.01     0        0   ] r--/rw- SM=COW          /usr/lib/system/libcache.dylib
+__DATA_CONST                1f4cb8840-1f4cb8850    [    0.00     0.00     0        0   ] r--/rw- SM=COW          /usr/lib/libSystem.B.dylib
+__DATA_CONST                1f4cb9d68-1f4cb9d70    [    0.00     0.00     0        0   ] r--/rw- SM=COW          /usr/lib/libiconv.2.dylib
+__DATA                      1f84b8000-1f84b86f8    [    0.11     0.11     0.11     0   ] rw-/rw- SM=COW          /usr/lib/libobjc.A.dylib
+__DATA                      1f84b86f8-1f84b9899    [    0.28     0.28     0.28     0   ] rw-/rw- SM=COW          /usr/lib/system/libdyld.dylib
+unused __DATA               1f84b9899-1f84b98c0    [    0.00     0.00     0.00     0   ] rw-/rw- SM=COW          on dirty page  unused system shared lib __DATA
+__DATA                      1f84b98c0-1f84baa10    [    0.27     0.27     0.27     0   ] rw-/rw- SM=COW          /usr/lib/dyld
+__DATA                      1f84baa10-1f84baa28    [    0.00     0.00     0.00     0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_blocks.dylib
+__DATA                      1f84baa28-1f84bb910    [    0.23     0.23     0.23     0   ] rw-/rw- SM=COW          /usr/lib/system/libxpc.dylib
+__DATA                      1f84bb910-1f84bbd60    [    0.07     0.07     0.07     0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_trace.dylib
+__DATA                      1f84bbd60-1f84c3498    [    1.86     0.86     0.86     0   ] rw-/rw- SM=COW          /usr/lib/system/libcorecrypto.dylib
+__DATA                      1f84c3498-1f84c587c    [    0.56     0.56     0.56     0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_malloc.dylib
+unused __DATA               1f84c587c-1f84c5880    [    0.00     0.00     0.00     0   ] rw-/rw- SM=COW          on dirty page  unused system shared lib __DATA
+__DATA                      1f84c5880-1f84c6c08    [    0.31     0.31     0.31     0   ] rw-/rw- SM=COW          /usr/lib/system/libdispatch.dylib
+__DATA                      1f84c6c08-1f84c6c40    [    0.00     0.00     0.00     0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_featureflags.dylib
+__DATA                      1f84c6c40-1f84c8d40    [    0.52     0.52     0.31     0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_c.dylib
+__DATA                      1f84c8d40-1f84ce2e0    [    1.34     1.34     0.54     0   ] rw-/rw- SM=COW          /usr/lib/libc++.1.dylib
+__DATA                      1f84ce2e0-1f84ce6a0    [    0.06     0.06     0.06     0   ] rw-/rw- SM=COW          /usr/lib/libc++abi.dylib
+__DATA                      1f84ce6a0-1f84cea28    [    0.06     0.06     0.06     0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_kernel.dylib
+unused __DATA               1f84cea28-1f84d0000    [    0.34     0.34     0.34     0   ] rw-/rw- SM=COW          on dirty page  unused system shared lib __DATA
+__DATA                      1f84d0000-1f84dd000    [    3.25     3.25     1        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_pthread.dylib
+__DATA                      1f84e0000-1f84e8148    [    2.02     1.02     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_platform.dylib
+__DATA                      1f84e8148-1f84e8c99    [    0.18     0.18     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_info.dylib
+__DATA                      1f85c72d8-1f85c72e8    [    0.00     0.00     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_darwin.dylib
+__DATA                      1f85cf800-1f85cf970    [    0.02     0.02     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_notify.dylib
+__DATA                      1f863ad18-1f863b350    [    0.10     0.10     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_networkextension.dylib
+__DATA                      1f863b650-1f863b860    [    0.03     0.03     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_asl.dylib
+__DATA                      1f866b710-1f866b740    [    0.00     0.00     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_symptoms.dylib
+__DATA                      1f8756630-1f8756b30    [    0.08     0.08     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_containermanager.dylib
+__DATA                      1f8787fe4-1f8787fe5    [    0.00     0.00     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_configuration.dylib
+__DATA                      1f8787fe8-1f8788008    [    0.00     0.00     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_sandbox.dylib
+__DATA                      1f87a31e8-1f87a3208    [    0.00     0.00     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_coreservices.dylib
+__DATA                      1f87abbf0-1f87abbf4    [    0.00     0        0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_m.dylib
+__DATA                      1f87abbf8-1f87abc90    [    0.01     0        0        0   ] rw-/rw- SM=COW          /usr/lib/libcharset.1.dylib
+__DATA                      1f87abd18-1f87ac719    [    0.16     0.11     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libunwind.dylib
+__DATA                      1f87ad888-1f87ad9d0    [    0.02     0.02     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_secinit.dylib
+__DATA                      1f87ad9d0-1f87ad9f8    [    0.00     0.00     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_dnssd.dylib
+__DATA                      1f87ad9f8-1f87ada00    [    0.00     0.00     0        0   ] rw-/rw- SM=COW          /usr/lib/libSystem.B.dylib
+__DATA                      1f87adff0-1f87ae02c    [    0.00     0.00     0        0   ] rw-/rw- SM=COW          /usr/lib/libiconv.2.dylib
+unused __TEXT               1facdc000-1facdc030    [    0.00     0.00     0.00     0   ] r--/rw- SM=COW          on dirty page  unused system shared lib __DATA
+__TPRO_CONST                1facdc030-1facdc048    [    0.00     0.00     0.00     0   ] r--/rw- SM=COW          /usr/lib/system/libdyld.dylib
+unused __TEXT               1facdc048-1facdc050    [    0.00     0.00     0.00     0   ] r--/rw- SM=COW          on dirty page  unused system shared lib __DATA
+__TPRO_CONST                1facdc050-1facfc140    [    8.01     3.00     2.00     0   ] r--/rw- SM=COW          /usr/lib/dyld
+__OBJC_RW                   1fad00000-1faf89dc0    [  162.46    24.46     1.46     0   ] rw-/rw- SM=COW          /usr/lib/libobjc.A.dylib
+__DATA_DIRTY                1faf89dc0-1faf902d0    [    1.58     1.58     1.58     0   ] rw-/rw- SM=COW          /usr/lib/libobjc.A.dylib
+__DATA_DIRTY                1faf902d0-1faf90358    [    0.01     0.01     0.01     0   ] rw-/rw- SM=COW          /usr/lib/system/libdyld.dylib
+unused __DATA               1faf90358-1faf90380    [    0.00     0.00     0.00     0   ] rw-/rw- SM=COW          on dirty page  unused system shared lib __DATA
+__DATA_DIRTY                1faf90380-1faf93a74    [    0.86     0.86     0.86     0   ] rw-/rw- SM=COW          /usr/lib/dyld
+unused __DATA               1faf93a74-1faf93a78    [    0.00     0.00     0.00     0   ] rw-/rw- SM=COW          on dirty page  unused system shared lib __DATA
+__DATA_DIRTY                1faf93a78-1faf93c70    [    0.03     0.03     0.03     0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_blocks.dylib
+__DATA_DIRTY                1faf93c70-1faf94848    [    0.19     0.19     0.19     0   ] rw-/rw- SM=COW          /usr/lib/system/libxpc.dylib
+__DATA_DIRTY                1faf94848-1faf94f70    [    0.11     0.11     0.11     0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_trace.dylib
+__DATA_DIRTY                1faf94f70-1faf959b0    [    0.16     0.16     0.16     0   ] rw-/rw- SM=COW          /usr/lib/system/libcorecrypto.dylib
+__DATA_DIRTY                1faf959b0-1faf95c8c    [    0.04     0.04     0.04     0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_malloc.dylib
+unused __DATA               1faf95c8c-1faf95cc0    [    0.00     0.00     0.00     0   ] rw-/rw- SM=COW          on dirty page  unused system shared lib __DATA
+__DATA_DIRTY                1faf95cc0-1faf99768    [    0.92     0.92     0.92     0   ] rw-/rw- SM=COW          /usr/lib/system/libdispatch.dylib
+__DATA_DIRTY                1faf99768-1faf99788    [    0.00     0.00     0.00     0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_featureflags.dylib
+__DATA_DIRTY                1faf99788-1faf9c524    [    0.71     0.71     0.71     0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_c.dylib
+unused __DATA               1faf9c524-1faf9c528    [    0.00     0.00     0.00     0   ] rw-/rw- SM=COW          on dirty page  unused system shared lib __DATA
+__DATA_DIRTY                1faf9c528-1faf9e078    [    0.43     0.43     0.43     0   ] rw-/rw- SM=COW          /usr/lib/libc++.1.dylib
+__DATA_DIRTY                1faf9e078-1faf9e150    [    0.01     0.01     0.01     0   ] rw-/rw- SM=COW          /usr/lib/libc++abi.dylib
+__DATA_DIRTY                1faf9e150-1faf9e828    [    0.11     0.11     0.11     0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_kernel.dylib
+unused __DATA               1faf9e828-1fafa0000    [    0.37     0.37     0.37     0   ] rw-/rw- SM=COW          on dirty page  unused system shared lib __DATA
+__DATA_DIRTY                1fafa0000-1fafb0018    [    4.00     4.00     3.00     0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_pthread.dylib
+__DATA_DIRTY                1fafb0018-1fafb0068    [    0.00     0.00     0.00     0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_platform.dylib
+__DATA_DIRTY                1fafb0068-1fafb0510    [    0.07     0.07     0.07     0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_info.dylib
+unused __DATA_DIRTY         1fafb0510-1fafb3d10    [    0.88     0.88     0.88     0   ] rw-/rw- SM=COW          on dirty page  unused /System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation
+unused __DATA_DIRTY         1fafb3d10-1fafb4000    [    0.05     0.05     0.05     0   ] rw-/rw- SM=COW          on dirty page  unused /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/LaunchServices
+unused __DATA_DIRTY         1fafd4000-1fafd4be0    [    0.19     0.19     0.19     0   ] rw-/rw- SM=COW          on dirty page  unused /System/Library/Frameworks/CoreAudio.framework/Versions/A/CoreAudio
+unused __DATA_DIRTY         1fafd4be0-1fafd5450    [    0.13     0.13     0.13     0   ] rw-/rw- SM=COW          on dirty page  unused /System/Library/Frameworks/Security.framework/Versions/A/Security
+unused __DATA_DIRTY         1fafd5450-1fafd6d40    [    0.39     0.39     0.39     0   ] rw-/rw- SM=COW          on dirty page  unused /usr/lib/libicucore.A.dylib
+__DATA_DIRTY                1fafd6d40-1fafd6d80    [    0.00     0.00     0.00     0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_darwin.dylib
+unused __DATA_DIRTY         1fafd6d80-1fafd766c    [    0.14     0.14     0.14     0   ] rw-/rw- SM=COW          on dirty page  unused /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/CarbonCore.framework/Versions/A/CarbonCore
+unused __DATA               1fafd766c-1fafd7670    [    0.00     0.00     0.00     0   ] rw-/rw- SM=COW          on dirty page  unused system shared lib __DATA
+unused __DATA_DIRTY         1fafd7670-1fafd8000    [    0.15     0.15     0.15     0   ] rw-/rw- SM=COW          on dirty page  unused /System/Library/PrivateFrameworks/CoreServicesInternal.framework/Versions/A/CoreServicesInternal
+__DATA_DIRTY                1fafd9ee0-1fafd9f10    [    0.00     0.00     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_notify.dylib
+__DATA_DIRTY                1fb003488-1fb00358a    [    0.02     0.02     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_networkextension.dylib
+__DATA_DIRTY                1fb005400-1fb005568    [    0.02     0.02     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_asl.dylib
+__DATA_DIRTY                1fb01a248-1fb01a268    [    0.00     0.00     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_symptoms.dylib
+__DATA_DIRTY                1fb04d2e0-1fb04d488    [    0.03     0.03     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_containermanager.dylib
+__DATA_DIRTY                1fb066438-1fb0664f8    [    0.01     0        0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_configuration.dylib
+__DATA_DIRTY                1fb0664f8-1fb066520    [    0.00     0        0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_sandbox.dylib
+__DATA_DIRTY                1fb06edb8-1fb06edc8    [    0.00     0        0        0   ] rw-/rw- SM=COW          /usr/lib/system/libquarantine.dylib
+__DATA_DIRTY                1fb080bd0-1fb080c78    [    0.01     0.01     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_coreservices.dylib
+__DATA_DIRTY                1fb08e938-1fb08e958    [    0.00     0.00     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libcommonCrypto.dylib
+__DATA_DIRTY                1fb08e968-1fb08e978    [    0.00     0.00     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libcopyfile.dylib
+__DATA_DIRTY                1fb08e978-1fb08f978    [    0.25     0.25     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libcompiler_rt.dylib
+__DATA_DIRTY                1fb08f978-1fb08f980    [    0.00     0.00     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_dnssd.dylib
+__DATA_DIRTY                1fb08f980-1fb08f988    [    0.00     0.00     0        0   ] rw-/rw- SM=COW          /usr/lib/libSystem.B.dylib
+__DATA_DIRTY                1fb08fed0-1fb0908e8    [    0.16     0.16     0        0   ] rw-/rw- SM=COW          /usr/lib/libiconv.2.dylib
+__AUTH                      1fbc4e4e0-1fbc4e578    [    0.01     0.01     0        0   ] rw-/rw- SM=COW          /usr/lib/libobjc.A.dylib
+__AUTH                      1fbc4e578-1fbc4e5c8    [    0.00     0.00     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libxpc.dylib
+__AUTH                      1fbc4e5c8-1fbc4e870    [    0.04     0.04     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_trace.dylib
+__AUTH                      1fbc4e870-1fbc4e988    [    0.02     0.02     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libcorecrypto.dylib
+__AUTH                      1fbc50000-1fbc58000    [    2        2        0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_malloc.dylib
+__AUTH                      1fbc58000-1fbc58070    [    0.01     0.01     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libdispatch.dylib
+__AUTH                      1fbc58070-1fbc58120    [    0.01     0.01     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_c.dylib
+__AUTH                      1fbc58120-1fbc58150    [    0.00     0.00     0        0   ] rw-/rw- SM=COW          /usr/lib/libc++.1.dylib
+__AUTH                      1fbc58150-1fbc58180    [    0.00     0.00     0        0   ] rw-/rw- SM=COW          /usr/lib/libc++abi.dylib
+__AUTH                      1fbc58180-1fbc58350    [    0.03     0.03     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_info.dylib
+__AUTH                      1fbd028d0-1fbd02d08    [    0.07     0        0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_containermanager.dylib
+__AUTH_CONST                1fc5f1ac0-1fc5f2948    [    0.23     0.23     0        0   ] r--/rw- SM=COW          /usr/lib/libobjc.A.dylib
+__DATA_CONST                1fc5f2948-1fc5f3300    [    0.15     0.15     0        0   ] r--/rw- SM=COW          /usr/lib/system/libdyld.dylib
+__AUTH_CONST                1fc5f3300-1fc5f5df0    [    0.67     0.67     0        0   ] r--/rw- SM=COW          /usr/lib/system/libdyld.dylib
+__AUTH_CONST                1fc5f5df0-1fc5fba68    [    1.44     1.44     0        0   ] r--/rw- SM=COW          /usr/lib/dyld
+__AUTH_CONST                1fc5fba68-1fc5fbef8    [    0.07     0.07     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_blocks.dylib
+__AUTH_CONST                1fc5fbf00-1fc601230    [    1.30     1.30     0        0   ] r--/rw- SM=COW          /usr/lib/system/libxpc.dylib
+__AUTH_CONST                1fc601230-1fc602618    [    0.31     0.31     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_trace.dylib
+__AUTH_CONST                1fc602618-1fc6047c8    [    0.53     0.53     0        0   ] r--/rw- SM=COW          /usr/lib/system/libcorecrypto.dylib
+__AUTH_CONST                1fc6047c8-1fc6052a8    [    0.17     0.17     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_malloc.dylib
+__AUTH_CONST                1fc6052c0-1fc618b48    [    4.88     1.88     0        0   ] r--/rw- SM=COW          /usr/lib/system/libdispatch.dylib
+__AUTH_CONST                1fc618b48-1fc618cc8    [    0.02     0.02     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_featureflags.dylib
+__AUTH_CONST                1fc618cc8-1fc619658    [    0.15     0.15     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_c.dylib
+__AUTH_CONST                1fc619658-1fc61df10    [    1.14     1.14     0        0   ] r--/rw- SM=COW          /usr/lib/libc++.1.dylib
+__AUTH_CONST                1fc61df10-1fc6219f8    [    0.92     0.92     0        0   ] r--/rw- SM=COW          /usr/lib/libc++abi.dylib
+__AUTH_CONST                1fc6219f8-1fc621b48    [    0.02     0.02     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_kernel.dylib
+__AUTH_CONST                1fc621b48-1fc621d78    [    0.03     0.03     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_pthread.dylib
+__AUTH_CONST                1fc621d78-1fc621fa0    [    0.03     0.03     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_platform.dylib
+__AUTH_CONST                1fc621fa0-1fc6236c0    [    0.36     0.36     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_info.dylib
+__AUTH_CONST                1fc9b4cb0-1fc9b50f8    [    0.07     0.07     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_darwin.dylib
+__AUTH_CONST                1fc9d2670-1fc9d2b38    [    0.07     0.07     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_notify.dylib
+__AUTH_CONST                1fcc97ac8-1fcc98740    [    0.19     0.08     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_networkextension.dylib
+__AUTH_CONST                1fcd08658-1fcd090a8    [    0.16     0.16     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_asl.dylib
+__AUTH_CONST                1fce57850-1fce57b18    [    0.04     0.04     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_symptoms.dylib
+__AUTH_CONST                1fd1051a0-1fd106c68    [    0.42     0.42     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_containermanager.dylib
+__AUTH_CONST                1fd2e1c58-1fd2e1f80    [    0.05     0.05     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_configuration.dylib
+__AUTH_CONST                1fd2e1f80-1fd2e2218    [    0.04     0.04     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_sandbox.dylib
+__AUTH_CONST                1fd366428-1fd366580    [    0.02     0.02     0        0   ] r--/rw- SM=COW          /usr/lib/system/libquarantine.dylib
+__AUTH_CONST                1fd4830e8-1fd483408    [    0.05     0.05     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_coreservices.dylib
+__AUTH_CONST                1fd50b138-1fd50b160    [    0.00     0.00     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_m.dylib
+__AUTH_CONST                1fd50b160-1fd50b210    [    0.01     0.01     0        0   ] r--/rw- SM=COW          /usr/lib/libcharset.1.dylib
+__AUTH_CONST                1fd50b210-1fd50b280    [    0.01     0.01     0        0   ] r--/rw- SM=COW          /usr/lib/system/libmacho.dylib
+__AUTH_CONST                1fd50b398-1fd50c220    [    0.23     0.23     0        0   ] r--/rw- SM=COW          /usr/lib/system/libcommonCrypto.dylib
+__AUTH_CONST                1fd50c220-1fd50c338    [    0.02     0.02     0        0   ] r--/rw- SM=COW          /usr/lib/system/libunwind.dylib
+__AUTH_CONST                1fd50c6a8-1fd50caf8    [    0.07     0.07     0        0   ] r--/rw- SM=COW          /usr/lib/system/libcopyfile.dylib
+__AUTH_CONST                1fd50caf8-1fd50cb60    [    0.01     0.01     0        0   ] r--/rw- SM=COW          /usr/lib/system/libcompiler_rt.dylib
+__AUTH_CONST                1fd50cb60-1fd50ccb0    [    0.02     0.02     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_collections.dylib
+__AUTH_CONST                1fd50ccb0-1fd50cff0    [    0.05     0.05     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_secinit.dylib
+__AUTH_CONST                1fd50cff0-1fd50d180    [    0.02     0.02     0        0   ] r--/rw- SM=COW          /usr/lib/system/libremovefile.dylib
+__AUTH_CONST                1fd50d180-1fd50d200    [    0.01     0.01     0        0   ] r--/rw- SM=COW          /usr/lib/system/libkeymgr.dylib
+__AUTH_CONST                1fd50d200-1fd50d3f8    [    0.03     0.03     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_dnssd.dylib
+__AUTH_CONST                1fd50d3f8-1fd50d4d0    [    0.01     0.01     0        0   ] r--/rw- SM=COW          /usr/lib/system/libcache.dylib
+__AUTH_CONST                1fd50d4d0-1fd50d7b0    [    0.04     0.04     0        0   ] r--/rw- SM=COW          /usr/lib/libSystem.B.dylib
+__AUTH_CONST                1fd50db88-1fd50dd38    [    0.03     0.03     0        0   ] r--/rw- SM=COW          /usr/lib/libiconv.2.dylib
+__OBJC_RO                   208a891b8-20d9b9a68    [ 5068.14  1350.72     0        0   ] r--/r-- SM=COW          /usr/lib/libobjc.A.dylib
+__LINKEDIT                  20d9c0000-231618000    [36630      407        0        0   ] r--/r-- SM=COW          dyld shared cache combined __LINKEDIT
+__TEXT                      292371000-292379000    [    2        2        0        0   ] r-x/r-x SM=COW          /usr/lib/libRosetta.dylib
+__TEXT                      293f84000-293f88000    [    1        1        0        0   ] r-x/r-x SM=COW          /usr/lib/system/libsystem_darwindirectory.dylib
+__TEXT                      293f88000-293f93000    [    2.75     2.75     0        0   ] r-x/r-x SM=COW          /usr/lib/system/libsystem_eligibility.dylib
+__TEXT                      293f93000-293f9b000    [    2        2        0        0   ] r-x/r-x SM=COW          /usr/lib/system/libsystem_sanitizers.dylib
+__TEXT                      293f9b000-293f9c000    [    0.25     0.25     0        0   ] r-x/r-x SM=COW          /usr/lib/system/libsystem_trial.dylib
+__DATA_CONST                2a00bceb0-2a00bcee8    [    0.00     0.00     0        0   ] r--/rw- SM=COW          /usr/lib/libRosetta.dylib
+__DATA_CONST                2a047e168-2a047e2f8    [    0.02     0.02     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_darwindirectory.dylib
+__DATA_CONST                2a047e2f8-2a047eb20    [    0.13     0.13     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_eligibility.dylib
+__DATA_CONST                2a047eb20-2a047ec00    [    0.01     0.01     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_sanitizers.dylib
+__DATA                      2a6486620-2a6487788    [    0.27     0.27     0        0   ] rw-/rw- SM=COW          /usr/lib/libRosetta.dylib
+__DATA                      2a6635f90-2a66364f8    [    0.08     0        0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_sanitizers.dylib
+__DATA_DIRTY                2a78d9d58-2a78d9d68    [    0.00     0.00     0        0   ] rw-/rw- SM=COW          /usr/lib/libRosetta.dylib
+__DATA_DIRTY                2a78e6d20-2a78e6d60    [    0.00     0.00     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_darwindirectory.dylib
+__DATA_DIRTY                2a78e6d60-2a78e6d70    [    0.00     0.00     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_eligibility.dylib
+__AUTH                      2a83fa458-2a83fa488    [    0.00     0.00     0        0   ] rw-/rw- SM=COW          /usr/lib/system/libsystem_sanitizers.dylib
+__AUTH_CONST                2ad1c0ec0-2ad1c1230    [    0.05     0.05     0        0   ] r--/rw- SM=COW          /usr/lib/libRosetta.dylib
+__AUTH_CONST                2ad2b3bb8-2ad2b3f00    [    0.05     0        0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_darwindirectory.dylib
+__AUTH_CONST                2ad2b3f00-2ad2b40b8    [    0.03     0.01     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_eligibility.dylib
+__AUTH_CONST                2ad2b40b8-2ad2b4268    [    0.03     0.03     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_sanitizers.dylib
+__AUTH_CONST                2ad2b4268-2ad2b42a0    [    0.00     0.00     0        0   ] r--/rw- SM=COW          /usr/lib/system/libsystem_trial.dylib
+unused __TEXT               2f44b4000-2f44b8000    [    1        1        1        0   ] r--/r-- SM=COW          on dirty page  unused system shared lib __DATA
+MALLOC_SMALL (empty)        af2c00000-af3000000    [  256        4        4        0   ] rw-/rwx SM=PRV          DefaultMallocZone_0x105d14000
+MALLOC_SMALL                af3000000-af3400000    [  256        3        3        0   ] rw-/rwx SM=PRV          DefaultMallocZone_0x105d14000
+MALLOC_SMALL                af3400000-af3800000    [  256      128      128        0   ] rw-/rwx SM=PRV          DefaultMallocZone_0x105d14000
+page table in kernel           kernel-kernel       [   14.02    14.02    14.02     0   ] rw-/rw- SM=PRV          charged to process physical footprint
+
+==== Legend
+SM=sharing mode:  
+	COW=copy_on_write PRV=private NUL=empty ALI=aliased 
+	SHM=shared ZER=zero_filled S/A=shared_alias
+PURGE=purgeable mode:  
+	V=volatile N=nonvolatile E=empty   otherwise is unpurgeable
+
+==== Summary for process 93556
+ReadOnly portion of Libraries: Total=591.7M resident=13.9M(2%) swapped_out_or_unallocated=577.8M(98%)
+Writable regions: Total=89.1M written=2848K(3%) resident=2848K(3%) swapped_out=0K(0%) unallocated=86.3M(97%)
+
+                                  VIRTUAL   RESIDENT      DIRTY    SWAPPED   VOLATILE     NONVOL      EMPTY   REGION 
+REGION TYPE                         PAGES      PAGES      PAGES      PAGES      PAGES      PAGES      PAGES    COUNT (non-coalesced) 
+===========                       =======   ========      =====    =======   ========     ======      =====  ======= 
+Kernel Alloc Once                    2          1          1          0          0          0          0           1 
+MALLOC guard page                  204          0          0          0          0          0          0           4 
+MALLOC metadata                     49         16         16          0          0          0          0           4 
+MALLOC_SMALL                       512        131        131          0          0          0          0           2         see MALLOC ZONE table below
+MALLOC_SMALL (empty)               256          4          4          0          0          0          0           1         see MALLOC ZONE table below
+MALLOC_TINY                        256          3          3          0          0          0          0           1         see MALLOC ZONE table below
+Memory Tag 22                     4097          1          1          0          0          0          0           1 
+Stack                              510          9          9          0          0          0          0           1 
+Stack Guard                       3585          0          0          0          0          0          0           1 
+VM_ALLOCATE                          2          0          0          0          0          0          0           2 
+VM_ALLOCATE (reserved)               8          0          0          0          0          0          0           1         reserved VM address space (unallocated)
+__AUTH                               2.19       2.13       0          0          0          0          0          12 
+__AUTH_CONST                        14.12      10.94       0          0          0          0          0          47 
+__DATA                              12.89      10.75       5.66       0          0          0          0          36 
+__DATA_CONST                        19.62      10.62       0          0          0          0          0          45 
+__DATA_DIRTY                         9.75       9.74       8.24       0          0          0          0          36 
+__LINKEDIT                       36799        408          0          0          0          0          0           2 
+__OBJC_RO                         5068.14    1350.72       0          0          0          0          0           1 
+__OBJC_RW                          162.46      24.46       1.46       0          0          0          0           1 
+__TEXT                            1070        483          0          0          0          0          0          48 
+__TPRO_CONST                         8.02       3.00       2.00       0          0          0          0           2 
+page table in kernel                14.02      14.02      14.02       0          0          0          0           1 
+shared memory                        2          2          2          0          0          0          0           1 
+unused but dirty shlib __DATA        3.64       3.64       3.64       0          0          0          0          19 
+===========                       =======   ========      =====    =======   ========     ======      =====  ======= 
+TOTAL                            52666.85    2498.02     202.02       0          0          0          0         270 
+TOTAL, minus reserved VM space   52658.85    2498.02     202.02       0          0          0          0         270 
+
+                                 VIRTUAL   RESIDENT      DIRTY    SWAPPED ALLOCATION      BYTES DIRTY+SWAP          REGION
+MALLOC ZONE                        PAGES      PAGES      PAGES      PAGES      COUNT  ALLOCATED  FRAG SIZE  % FRAG   COUNT
+===========                      =======  =========  =========  =========  =========  =========  =========  ======  ======
+DefaultMallocZone_0x105d14000    1071        153        153          0           198      2060K       388K     16%       6
+

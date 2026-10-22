@@ -1,0 +1,10 @@
+{
+  "work_allocated_stat_kib": 58339472,
+  "target_allocated_stat_kib": 3636452,
+  "work_allocated_stat_gib": 55.63685607910156,
+  "target_allocated_stat_gib": 3.4679908752441406,
+  "volume_available_bytes": 1955377868800,
+  "allocation_semantics": "du/stat allocation accounting, may count shared APFS CoW blocks more than once; not exclusive physical ownership",
+  "retained_large_inputs": "original190/full formal failure/typed baselines plus full03 two-generation recovery baseline; poststop57/58 CoW inputs retained; no unknown dependency retired",
+  "removed_scope": "only02 four synthetic components; receipt records allocation and available-space deltas separately"
+}

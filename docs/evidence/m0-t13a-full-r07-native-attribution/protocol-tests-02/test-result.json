@@ -1,0 +1,11 @@
+{
+  "scope": "pure external marker protocol only; no model or performance gate",
+  "checks": [
+    "no early first",
+    "initial scan releases first",
+    "durable first releases second",
+    "second admission pauses provider",
+    "idempotent existing markers"
+  ],
+  "result": "passed"
+}

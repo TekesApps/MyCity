@@ -1,0 +1,38 @@
+{
+  "observer_exit": 0,
+  "protocol": [
+    {
+      "name": "first",
+      "monotonic_ns": 2420753500,
+      "host_t": 2.287032667,
+      "r07_epoch": 1
+    },
+    {
+      "name": "second",
+      "monotonic_ns": 12162105875,
+      "host_t": 12.03029225,
+      "r07_epoch": 1
+    },
+    {
+      "name": "pause",
+      "monotonic_ns": 13160193125,
+      "host_t": 13.027707417,
+      "r07_epoch": 1
+    },
+    {
+      "name": "pause_released_after_captures",
+      "monotonic_ns": 15944693916
+    }
+  ],
+  "prior_attempt": "01 retained missing-marker failure; 02 two-generation/cold completed but fixed epoch predicate missed full repaid epoch2; 03 uses actual physical/state/identity contract, no load or threshold change",
+  "elapsed_observation_seconds": 28.319927083,
+  "capture_triggered": true,
+  "capture_count": 4,
+  "all_capture_receipts_saved": true,
+  "peak_observed_auxiliary_footprint_bytes": 142608760,
+  "auxiliary_missing": "per-sample explicit; exited helpers not zero-cost proof",
+  "binary_still_same": true,
+  "memory_16gb_gate": "not_run",
+  "full_M0": "not_accepted",
+  "scope": "intrusive physical attribution only; not normal, speed or endurance acceptance"
+}

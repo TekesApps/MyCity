@@ -1,0 +1,4 @@
+{
+  "predicate_tests": "passed",
+  "scope": "pure controller guard against real epoch2/3 states and missing/identity/partial/credit/source counterexamples; not model/performance acceptance"
+}

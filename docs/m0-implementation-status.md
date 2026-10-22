@@ -1,5 +1,7 @@
 # M0 Rust模型：当前范围、运行方法与验收状态
 
+v0.5.123：[full-R07 native归因](evidence/m0-t13a-full-r07-native-attribution/STATUS.md)已真实获得4角色VMmap、身份和完整映射时间窗；两代/冷开完成，辅助工具约136MiB另计，本轮不签性能。原完整帧超8431602B与8h/16GB未过结论不变。02已退役四份合成载荷，现不可直接恢复；03两代完整原件逐文件验证后保留。下一候选减少重复driver进程开销，尚未实现，不以页表/文件cache给免费额度。
+
 v0.5.122：[0.1限定模型阶段验证](evidence/core-road-town-integration-122/STATUS.md)已完成真实CLI、28日经营压力矩阵、旧writer兼容和core/storage回归；headless诊断消费者的5项测试与全workspace构建/strict/fmt通过。formal01停机后业务WAL/检查点及布局57/58完整副本冷恢复通过，原件保留；此功能恢复不抵6h/8h。原32c完整帧normal物理超额8,431,602B仍未消除，分级速度和8h尚缺、实际16GB为not_run，full_M0=not_accepted。
 
 v0.5.104：[R07独立背板/TTL/冷恢复](evidence/m0-t13a-r07-report-error/STATUS.md)最终1faa同源全workspace720.238秒及严格检查完成，原满级两代、实际补回、独立新PID零信用与旧格式冷开通过；修复metrics错误误报，实际CLI exit2无成功报告。完整帧物理仍超8,677,290B，不签normal/正式性能。精确8份旧payload退役11.827GiB、190原件全SHA保持；下一依赖实际VM归因，三轮/四速/稀有层/8h/真实16GB未完成。

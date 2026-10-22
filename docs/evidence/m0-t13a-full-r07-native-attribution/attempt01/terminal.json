@@ -1,0 +1,13 @@
+{
+  "observer_exit": 2,
+  "elapsed_observation_seconds": 121.81356125,
+  "capture_triggered": false,
+  "capture_count": 0,
+  "all_capture_receipts_saved": true,
+  "peak_observed_auxiliary_footprint_bytes": 12632376,
+  "auxiliary_missing": "per-sample explicit; exited helpers not zero-cost proof",
+  "binary_still_same": true,
+  "memory_16gb_gate": "not_run",
+  "full_M0": "not_accepted",
+  "scope": "intrusive physical attribution only; not normal, speed or endurance acceptance"
+}

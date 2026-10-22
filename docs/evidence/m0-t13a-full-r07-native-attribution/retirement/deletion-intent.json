@@ -1,0 +1,51 @@
+{
+  "files": [
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/full-r07-vm-diagnostic-02/observed/model/layout/snapshots/snapshot-000001/pressure.bin",
+      "bytes": 3039452790,
+      "allocated_bytes": 3040059392,
+      "device": 16777248,
+      "inode": 1582546,
+      "mtime_ns": 1792691606985586022,
+      "sha256": "ba503a8ab5169692666b7d640ef9a56921080ac764ca1e7ee047580ce6b13fe3",
+      "reason": "obsolete synthetic pressure/reserve after actual two-generation and cold-read validation;03 retains a fully verified two-generation recovery baseline;02 raw host/protocol/VM evidence and semantic payload retained",
+      "retained_evidence": "/Volumes/HP P900/dev/MyCity/work/full-r07-vm-diagnostic-02/terminal.json"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/full-r07-vm-diagnostic-02/observed/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "device": 16777248,
+      "inode": 1582565,
+      "mtime_ns": 1792691607135266966,
+      "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee",
+      "reason": "obsolete synthetic pressure/reserve after actual two-generation and cold-read validation;03 retains a fully verified two-generation recovery baseline;02 raw host/protocol/VM evidence and semantic payload retained",
+      "retained_evidence": "/Volumes/HP P900/dev/MyCity/work/full-r07-vm-diagnostic-02/terminal.json"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/full-r07-vm-diagnostic-02/observed/model/layout/snapshots/snapshot-000002/pressure.bin",
+      "bytes": 3039452790,
+      "allocated_bytes": 3050545152,
+      "device": 16777248,
+      "inode": 1582641,
+      "mtime_ns": 1792691617840219752,
+      "sha256": "d8508527599782689636f8a3300b24411f351ff2ef6b15fb89251f04c23f7423",
+      "reason": "obsolete synthetic pressure/reserve after actual two-generation and cold-read validation;03 retains a fully verified two-generation recovery baseline;02 raw host/protocol/VM evidence and semantic payload retained",
+      "retained_evidence": "/Volumes/HP P900/dev/MyCity/work/full-r07-vm-diagnostic-02/terminal.json"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/full-r07-vm-diagnostic-02/observed/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+      "bytes": 134217728,
+      "allocated_bytes": 134217728,
+      "device": 16777248,
+      "inode": 1582648,
+      "mtime_ns": 1792691617988366514,
+      "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee",
+      "reason": "obsolete synthetic pressure/reserve after actual two-generation and cold-read validation;03 retains a fully verified two-generation recovery baseline;02 raw host/protocol/VM evidence and semantic payload retained",
+      "retained_evidence": "/Volumes/HP P900/dev/MyCity/work/full-r07-vm-diagnostic-02/terminal.json"
+    }
+  ],
+  "not_directly_restorable_after_retirement": "/Volumes/HP P900/dev/MyCity/work/full-r07-vm-diagnostic-02",
+  "new_complete_baseline": "/Volumes/HP P900/dev/MyCity/work/full-r07-vm-diagnostic-03",
+  "dependency_review": "02 is referenced only for guard-test raw host rows; no later recovery requires02 payload;03 verified all component SHA; frozen source/exe/190 prior originals preserved"
+}

@@ -1,0 +1,9 @@
+{
+  "actual_seconds": 27.722093875,
+  "eight_hour": "not_run",
+  "formal_acceptance": false,
+  "latest_snapshot": "/Volumes/HP P900/dev/MyCity/work/full-r07-vm-diagnostic-03/observed/model/layout/snapshots/snapshot-000002",
+  "layout_and_live_provider_cold_exit_zero": true,
+  "real_16gb": "not_run",
+  "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2"
+}

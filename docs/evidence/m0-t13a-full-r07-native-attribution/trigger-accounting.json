@@ -1,0 +1,54 @@
+{
+  "host_t": 14.275826792,
+  "group_footprint_bytes": 3337047616,
+  "members_pid_birth_footprint_bytes": [
+    [
+      93556,
+      26351241647606,
+      3293496
+    ],
+    [
+      93557,
+      26351241889821,
+      1311008
+    ],
+    [
+      93558,
+      26351242218279,
+      68256128
+    ],
+    [
+      93559,
+      26351243304380,
+      3264186984
+    ]
+  ],
+  "same_frame_sum_bytes": 3337047616,
+  "normal_threshold_bytes": 3328599654,
+  "trigger_excess_bytes": 8447962,
+  "not_claimed_as_unperturbed_peak": true,
+  "auxiliary_peak_bytes": 142608760,
+  "auxiliary_deducted_bytes": 0,
+  "physical_credit_bytes": 0,
+  "r07": {
+    "source": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+    "owner": {
+      "pid": 93559,
+      "start_abstime": 26351243304380,
+      "parent_pid": 93557
+    },
+    "state": {
+      "schema": 1,
+      "logical_bytes": 277662928,
+      "arena_tail_bytes": 52432,
+      "quantum_bytes": 65536,
+      "mapped_bytes": 277610496,
+      "replaced_bytes": 0,
+      "epoch": 2,
+      "reading_sequence": 53
+    },
+    "permitted_bytes": 0,
+    "reason": "reading_identity_sequence_or_ttl"
+  },
+  "is_original_104_frame": false
+}

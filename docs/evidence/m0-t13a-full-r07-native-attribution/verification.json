@@ -1,0 +1,8 @@
+{
+  "archived_bytes_match_original_per_file_manifest": true,
+  "links_valid": true,
+  "rust_fixtures_and_dependency_pins_unchanged_from_v122": true,
+  "pure_controller_unittests_exit_code": 0,
+  "pure_controller_test_count": 2,
+  "model_or_performance_acceptance": false
+}

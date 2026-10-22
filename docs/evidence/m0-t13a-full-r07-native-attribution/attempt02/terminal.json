@@ -1,0 +1,34 @@
+{
+  "observer_exit": 0,
+  "protocol": [
+    {
+      "name": "first",
+      "monotonic_ns": 2399470833,
+      "host_t": 2.28292725,
+      "r07_epoch": 1
+    },
+    {
+      "name": "second",
+      "monotonic_ns": 12403595958,
+      "host_t": 12.280803584,
+      "r07_epoch": 1
+    },
+    {
+      "name": "pause",
+      "monotonic_ns": 13393712166,
+      "host_t": 13.2825115,
+      "r07_epoch": 1
+    }
+  ],
+  "prior_attempt": "01 retained; missing VM admission markers caused original120s deadline; fixed external protocol only",
+  "elapsed_observation_seconds": 27.3215595,
+  "capture_triggered": false,
+  "capture_count": 0,
+  "all_capture_receipts_saved": true,
+  "peak_observed_auxiliary_footprint_bytes": 13091128,
+  "auxiliary_missing": "per-sample explicit; exited helpers not zero-cost proof",
+  "binary_still_same": true,
+  "memory_16gb_gate": "not_run",
+  "full_M0": "not_accepted",
+  "scope": "intrusive physical attribution only; not normal, speed or endurance acceptance"
+}
