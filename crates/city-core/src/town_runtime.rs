@@ -16,6 +16,8 @@ use std::{fmt, mem::size_of};
 
 pub const MAX_MARKET_LANES: usize = 512;
 pub const MAX_PAYROLL_CURSORS: usize = crate::timeline::PAYROLL_LIMIT;
+pub const MAX_SUSPENDED_OPERATORS: usize =
+    crate::town_economy::MAX_EMPLOYERS + crate::town_economy::MAX_SHOP_STOCK_LOTS;
 
 /// A fixed-capacity table that serializes only active values. Its complete backing is
 /// inline in World and therefore charged by `size_of::<World>()`.
@@ -376,6 +378,26 @@ pub struct MarketState {
     pub payroll: FixedRows<PayrollCursor, MAX_PAYROLL_CURSORS>,
     pub recipe_output_remainders:
         FixedRows<RecipeOutputRemainder, { crate::town_economy::MAX_RECIPES }>,
+    /// Durable stop-operation markers. Empty rows are omitted to preserve the legacy JSON
+    /// representation and canonical hash for worlds that have never suspended a business.
+    #[serde(default, skip_serializing_if = "FixedRows::is_empty")]
+    pub suspended_operators: FixedRows<SuspendedOperator, MAX_SUSPENDED_OPERATORS>,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct SuspendedOperator {
+    pub account: u32,
+    pub suspended_at: u64,
+}
+
+impl Record for SuspendedOperator {
+    fn inactive() -> Self {
+        Self {
+            account: 0,
+            suspended_at: 0,
+        }
+    }
 }
 
 /// Small receipt for the exact transport proof consumed by the last market settlement.
@@ -415,6 +437,7 @@ impl MarketState {
             last_transport: None,
             payroll: FixedRows::new(),
             recipe_output_remainders: FixedRows::new(),
+            suspended_operators: FixedRows::new(),
         }
     }
 }
@@ -445,6 +468,7 @@ impl TownMarket {
         self.profile.owned_bytes()
             + self.state.payroll.capacity_bytes()
             + self.state.recipe_output_remainders.capacity_bytes()
+            + self.state.suspended_operators.capacity_bytes()
     }
 
     pub fn validate_persisted(&self) -> Result<(), &'static str> {
@@ -470,6 +494,22 @@ impl TownMarket {
             _ => false,
         };
         if self.state.payroll.len() > MAX_PAYROLL_CURSORS
+            || self.state.suspended_operators.len() > MAX_SUSPENDED_OPERATORS
+            || self
+                .state
+                .suspended_operators
+                .as_slice()
+                .iter()
+                .enumerate()
+                .any(|(i, row)| {
+                    row.account == 0
+                        || row.suspended_at == 0
+                        || row.suspended_at % crate::timeline::DAY != 0
+                        || row.suspended_at / crate::timeline::DAY > self.state.settled_day
+                        || self.state.suspended_operators.as_slice()[..i]
+                            .iter()
+                            .any(|prior| prior.account == row.account)
+                })
             || self.state.payroll.as_slice().iter().any(|x| x.id == 0)
             || self
                 .state
@@ -515,6 +555,21 @@ impl TownMarket {
                 .as_slice()
                 .iter()
                 .any(|x| !has_account(x.account))
+            || self.state.suspended_operators.as_slice().iter().any(|row| {
+                !has_account(row.account)
+                    || !(self
+                        .profile
+                        .employers
+                        .as_slice()
+                        .iter()
+                        .any(|employer| employer.account == row.account)
+                        || self
+                            .profile
+                            .shops
+                            .as_slice()
+                            .iter()
+                            .any(|shop| shop.account == row.account))
+            })
             || self.profile.shops.as_slice().iter().any(|x| {
                 !has_account(x.account)
                     || world
@@ -706,5 +761,19 @@ mod transport_cursor_tests {
 
         town.state.last_transport.as_mut().unwrap().issued_day = 0;
         assert!(town.validate_persisted().is_err());
+    }
+
+    #[test]
+    fn empty_suspension_state_keeps_legacy_json_shape_and_defaults_on_restore() {
+        let state = MarketState::new();
+        let mut encoded = serde_json::to_value(state).unwrap();
+        assert!(encoded.get("suspended_operators").is_none());
+        encoded
+            .as_object_mut()
+            .unwrap()
+            .remove("suspended_operators");
+        let restored: MarketState = serde_json::from_value(encoded).unwrap();
+        assert_eq!(restored, state);
+        assert!(restored.suspended_operators.is_empty());
     }
 }

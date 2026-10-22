@@ -158,9 +158,47 @@ fn opening_with_market(allocation_hash: [u8; 32]) -> Vec<u8> {
     serde_json::to_vec(&value).unwrap()
 }
 
-fn opening_with_road_project(allocation_hash: [u8; 32], project: &Project) -> Vec<u8> {
+fn opening_with_road_project(
+    allocation_hash: [u8; 32],
+    project: &Project,
+    production_and_suspend: bool,
+) -> Vec<u8> {
     let mut value: Value = serde_json::from_slice(&opening_with_market(allocation_hash)).unwrap();
     value["construction"] = serde_json::to_value(project).unwrap();
+    // The two-day road-only case needs at least 240 real goods, not a second free refill.
+    // The joint case instead starts with no finished goods and actually produces them.
+    let finished = if production_and_suspend { 0 } else { 400 };
+    for source in value["sources"].as_array_mut().unwrap() {
+        if source["id"] == 7 {
+            source["amount"] = finished.into();
+        }
+    }
+    for stock in value["stocks"].as_array_mut().unwrap() {
+        if stock["id"] == 3 {
+            stock["quantity"] = finished.into();
+            stock["basis"] = finished.into();
+        }
+    }
+    if production_and_suspend {
+        // A separate contractor avoids counting the factory payroll as road-crew labor.
+        value["sources"]
+            .as_array_mut()
+            .unwrap()
+            .push(serde_json::json!({"id":8,"kind":"cash_capital","amount":0}));
+        value["accounts"]
+            .as_array_mut()
+            .unwrap()
+            .push(serde_json::json!({"id":5,"role":"company","cash":0,"source":8}));
+        value["town"]["recipes"] = serde_json::json!([{
+            "recipe_id":1,"employer":3,"assigned_workers":1,
+            "input_stock_id":2,"input_per_output":1,"output_good":1,"output_stock_id":3,
+            "output_per_worker_day":400,"waste_per_output_q":0,
+            "available_utility_per_day":1000,"utility_per_output_q":1,
+            "utility_cost_per_output_q":1,"freight_cost_per_input_q":0,
+            "disposal_cost_per_input_q":0,"utility_account":1,
+            "freight_account":1,"disposal_account":1
+        }]);
+    }
     serde_json::to_vec(&value).unwrap()
 }
 
@@ -253,7 +291,7 @@ fn construction_action(
 
 /// Store-backed causal scenario: the project pays for a real road-capacity resource, but
 /// traffic remains at the base epoch until inspection is accepted at the settled day boundary.
-fn run_road_effect(dir: &str) -> Result<(), String> {
+fn run_road_effect(dir: &str, production_and_suspend: bool) -> Result<(), String> {
     if Path::new(dir).exists() {
         return Err("store directory already exists".into());
     }
@@ -292,11 +330,12 @@ fn run_road_effect(dir: &str) -> Result<(), String> {
         },
     };
     let allocation_bytes = serde_json::to_vec(&allocation).map_err(err)?;
+    let contractor = if production_and_suspend { 5 } else { 3 };
     let mut project = Project::new(
         7,
         Kind::Build,
         4,
-        3,
+        contractor,
         1,
         80,
         1,
@@ -334,7 +373,8 @@ fn run_road_effect(dir: &str) -> Result<(), String> {
     project.operating_base_capacity = 2;
     project.operating_units = 8;
     project.operating_edge_id = 10;
-    let opening_bytes = opening_with_road_project(hash(&allocation_bytes), &project);
+    let opening_bytes =
+        opening_with_road_project(hash(&allocation_bytes), &project, production_and_suspend);
     let mut store = Store::create_with_transport_allocation_profile(
         Path::new(dir),
         &opening_bytes,
@@ -386,10 +426,29 @@ fn run_road_effect(dir: &str) -> Result<(), String> {
             command: TimelineCommand::Enable,
         },
     )?;
+    if production_and_suspend {
+        execute_action(
+            &mut store,
+            Caller::System,
+            Action::Timeline {
+                command: TimelineCommand::AddPayroll {
+                    spec: mycity_core::timeline::PayrollSpec {
+                        id: 1,
+                        payer: 3,
+                        payee: 2,
+                        home_city: 0,
+                        hourly_cents: Money::new(100).map_err(err)?,
+                        cycle: mycity_core::timeline::Cycle::Daily,
+                        ends_at: 7 * DAY,
+                    },
+                },
+            },
+        )?;
+    }
     advance_to(&mut store, SHIFT_END)?;
     construction_action(
         &mut store,
-        Caller::Account(3),
+        Caller::Account(contractor),
         ConstructionCommand::Work {
             at: GameTime::new(SHIFT_END as i64).map_err(err)?,
             elapsed_seconds: SHIFT_END as u32,
@@ -398,7 +457,7 @@ fn run_road_effect(dir: &str) -> Result<(), String> {
     )?;
     construction_action(
         &mut store,
-        Caller::Account(3),
+        Caller::Account(contractor),
         ConstructionCommand::SubmitInspection,
     )?;
 
@@ -582,17 +641,149 @@ fn run_road_effect(dir: &str) -> Result<(), String> {
     store.checkpoint().map_err(err)?;
     let committed = store.state_hash().map_err(err)?;
     drop(store);
-    let recovered = Store::open(Path::new(dir), RULES).map_err(err)?;
+    let mut recovered = Store::open(Path::new(dir), RULES).map_err(err)?;
     if recovered.state_hash().map_err(err)? != committed
         || recovered.receipt(80_001).map_err(err)?.is_none()
         || recovered.receipt(80_003).map_err(err)?.is_none()
     {
         return Err("cold recovery did not preserve road publication and historical proofs".into());
     }
+    let mut suspension_report = Value::Null;
+    if production_and_suspend {
+        if day_one_market.state.last_summary.produced.value() != 400 {
+            return Err(
+                "joint case did not produce the goods from actual payroll and raw stock".into(),
+            );
+        }
+        let before_suspend = recovered.engine().map_err(err)?.world().view();
+        let inventory_before: Vec<_> = before_suspend
+            .stocks
+            .iter()
+            .filter(|stock| stock.owner == 3)
+            .map(|stock| (stock.id, stock.quantity, stock.basis))
+            .collect();
+        let company_cash = before_suspend
+            .accounts
+            .iter()
+            .find(|row| row.id == 3)
+            .ok_or("joint company account missing")?
+            .cash;
+        let accrued = recovered
+            .engine()
+            .map_err(err)?
+            .timeline()
+            .ok_or("joint timeline missing")?
+            .payroll[0]
+            .accrued;
+        let suspend = Envelope {
+            world: before_suspend.scope.world(),
+            branch: before_suspend.scope.branch(),
+            operation_id: recovered.committed_sequence() + 1,
+            expected_revision: before_suspend.revision,
+            actions: vec![Action::TownSuspendOperations {
+                profile_id: 1,
+                company_account: 3,
+            }],
+        };
+        let outcome = recovered
+            .execute(Caller::System, suspend.clone())
+            .map_err(err)?;
+        outcome.model.map_err(err)?;
+        if !outcome.has_persistent_receipt {
+            return Err("joint suspension missing durable receipt".into());
+        }
+        let stopped_hash = recovered.state_hash().map_err(err)?;
+        recovered.checkpoint().map_err(err)?;
+        drop(recovered);
+        recovered = Store::open(Path::new(dir), RULES).map_err(err)?;
+        if recovered.state_hash().map_err(err)? != stopped_hash {
+            return Err("joint suspension cold recovery changed state".into());
+        }
+        let retry = recovered.execute(Caller::System, suspend).map_err(err)?;
+        retry.model.map_err(err)?;
+        if !retry.has_persistent_receipt || recovered.state_hash().map_err(err)? != stopped_hash {
+            return Err("joint suspension replay changed state".into());
+        }
+        advance_to(&mut recovered, 3 * DAY)?;
+        recovered
+            .settle_town_market(80_004)
+            .map_err(err)?
+            .model
+            .map_err(err)?;
+        let after = recovered.engine().map_err(err)?.world().view();
+        let state = after
+            .town
+            .ok_or("joint town missing after suspension")?
+            .state;
+        let inventory_after: Vec<_> = after
+            .stocks
+            .iter()
+            .filter(|stock| stock.owner == 3)
+            .map(|stock| (stock.id, stock.quantity, stock.basis))
+            .collect();
+        let payroll = recovered
+            .engine()
+            .map_err(err)?
+            .timeline()
+            .ok_or("joint payroll missing after suspension")?
+            .payroll[0];
+        if state.last_summary.actual_sales != Quantity::ZERO
+            || state.last_summary.produced != Quantity::ZERO
+            || state.last_summary.wages_accrued != Money::ZERO
+            || state.last_summary.freight != Money::ZERO
+            || state
+                .last_transport
+                .ok_or("joint day-three proof missing")?
+                .issued_day
+                != 3
+            || inventory_after != inventory_before
+            || after
+                .accounts
+                .iter()
+                .find(|row| row.id == 3)
+                .ok_or("joint company account lost")?
+                .cash
+                != company_cash
+            || payroll.working
+            || payroll.next_due.is_some()
+            || payroll.accrued != accrued
+            || cash_total(&after.accounts) != initial_cash_total
+        {
+            return Err(
+                "joint suspended company continued operations or changed money/materials".into(),
+            );
+        }
+        recovered.checkpoint().map_err(err)?;
+        let final_hash = recovered.state_hash().map_err(err)?;
+        drop(recovered);
+        recovered = Store::open(Path::new(dir), RULES).map_err(err)?;
+        if recovered.state_hash().map_err(err)? != final_hash
+            || [80_001, 80_003, 80_004]
+                .iter()
+                .any(|id| recovered.receipt(*id).ok().flatten().is_none())
+        {
+            return Err("joint final recovery lost a historical transport settlement".into());
+        }
+        suspension_report = serde_json::json!({
+            "day_one_real_production":day_one_market.state.last_summary.produced.value(),
+            "day_three_actual_sales":state.last_summary.actual_sales.value(),
+            "day_three_produced":state.last_summary.produced.value(),
+            "day_three_new_wages":state.last_summary.wages_accrued.value(),
+            "inventory_and_company_cash_after_stop":"unchanged",
+            "suspension_checkpoint_and_same_op_retry":"passed",
+            "historical_day_one_two_three_proofs":"cold_restored",
+            "construction_contractor_account":contractor,
+            "factory_and_payroll_payer":3,
+            "utility_supply":"explicit_capacity_and_cost_profile_not_live_grid",
+            "traffic_demand":"repeat_fixed_daily_OD_not_endogenous_to_shop_closure",
+            "legal_company_close":false
+        });
+    }
     println!(
         "{}",
         serde_json::to_string_pretty(&serde_json::json!({
-            "scenario":"road-effect",
+            "scenario":if production_and_suspend {"road-suspend"} else {"road-effect"},
+            "production_and_suspension":suspension_report,
             "day_one_sales_before_acceptance":day_one_market.state.last_summary.actual_sales.value(),
             "day_two_sales_after_acceptance":day_two_market.state.last_summary.actual_sales.value(),
             "capacity_base":2,
@@ -796,7 +987,7 @@ fn main() {
 fn run() -> Result<(), String> {
     let mut args = env::args().skip(1);
     let scenario = args.next().ok_or(
-        "usage: town_transport <normal|closed|bottleneck|expanded|road-effect> <new-store-dir> | reopen-check <existing-copied-world-dir> <expected-rules-identity> <expected-state-sha256>",
+        "usage: town_transport <normal|closed|bottleneck|expanded|road-effect|road-suspend> <new-store-dir> | reopen-check <existing-copied-world-dir> <expected-rules-identity> <expected-state-sha256>",
     )?;
     let dir = args.next().ok_or("missing_store_dir")?;
     if scenario == "reopen-check" {
@@ -810,8 +1001,8 @@ fn run() -> Result<(), String> {
     if args.next().is_some() {
         return Err("unexpected_scenario_argument".into());
     }
-    if scenario == "road-effect" {
-        return run_road_effect(&dir);
+    if matches!(scenario.as_str(), "road-effect" | "road-suspend") {
+        return run_road_effect(&dir, scenario == "road-suspend");
     }
     let (capacity, is_open, expected) = match scenario.as_str() {
         "normal" => (5, true, 100),

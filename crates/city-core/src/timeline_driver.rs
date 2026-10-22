@@ -32,6 +32,7 @@ fn check_time(at: u64) -> Result<(), TxError> {
 pub(super) struct Frame<'a, 'd> {
     pub trace: &'a mut crate::diagnostics::Trace<'d>,
     pub world: &'a World,
+    pub town: &'a mut Option<crate::town_runtime::MarketState>,
     pub background: &'a mut crate::model_rows::Resident<crate::background::Background>,
     pub background_work: &'a mut crate::background::Work,
     pub region: &'a mut Option<crate::region::Region>,
@@ -181,6 +182,11 @@ impl Frame<'_, '_> {
                 }
             }
             C::AddPayroll { spec } => {
+                if self.town.as_ref().is_some_and(|state| {
+                    crate::transaction::market_is_suspended(Some(state), spec.payer)
+                }) {
+                    return Err(err(E::Input));
+                }
                 self.parties(spec.payer, spec.payee)?;
                 check_time(spec.ends_at)?;
                 if self
