@@ -1,0 +1,18 @@
+
+running 1 test
+test transaction::tests::engine_market_scenarios_propagate_cash_material_route_price_and_need_changes ... FAILED
+
+failures:
+
+---- transaction::tests::engine_market_scenarios_propagate_cash_material_route_price_and_need_changes stdout ----
+
+thread 'transaction::tests::engine_market_scenarios_propagate_cash_material_route_price_and_need_changes' panicked at crates/city-core/src/transaction.rs:3567:33:
+action Timeline { command: AddPayroll { spec: PayrollSpec { id: 1, payer: 3, payee: 4, home_city: 0, hourly_cents: Money(100), cycle: Daily, ends_at: 604800 } } } failed: Timeline(Input)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    transaction::tests::engine_market_scenarios_propagate_cash_material_route_price_and_need_changes
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 92 filtered out; finished in 0.00s
+

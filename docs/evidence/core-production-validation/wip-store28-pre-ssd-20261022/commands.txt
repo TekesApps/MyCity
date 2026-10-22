@@ -1,0 +1,6 @@
+# Run only after root grants the Cargo window and sets MYCITY_TARGET_DIR to the migrated shared target.
+# All commands use the same moved/reused target and the branch source must first be aligned with the exact v0.5.109 base.
+CARGO_TARGET_DIR="${MYCITY_TARGET_DIR:?set migrated shared target}" cargo +1.85.1 test -p mycity-core --lib transaction::tests::engine_market_scenarios_propagate_cash_material_route_price_and_need_changes --release --locked --offline
+CARGO_TARGET_DIR="${MYCITY_TARGET_DIR:?set migrated shared target}" cargo +1.85.1 test -p mycity-storage --test town_market twenty_eight_day_store_checkpoints_reopen_with_contiguous_receipts_and_work_remainders --release --locked --offline
+CARGO_TARGET_DIR="${MYCITY_TARGET_DIR:?set migrated shared target}" cargo +1.85.1 test -p mycity-storage --test town_market --release --locked --offline
+CARGO_TARGET_DIR="${MYCITY_TARGET_DIR:?set migrated shared target}" cargo +1.85.1 clippy --workspace --all-targets --release --locked --offline -- -D warnings

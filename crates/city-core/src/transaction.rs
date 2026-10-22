@@ -3451,24 +3451,81 @@ mod tests {
     }
 
     fn productive_market_engine() -> Engine {
+        productive_market_engine_with(ProductiveMarketConfig::default())
+    }
+
+    #[derive(Clone, Copy)]
+    struct ProductiveMarketConfig {
+        raw_quantity: i64,
+        household_need: i64,
+        household_cash: i64,
+        company_cash: i64,
+        route_reachable: bool,
+        route_capacity: i64,
+        delivery_utility_surcharge: i64,
+        production_utility_cost: i64,
+    }
+
+    impl Default for ProductiveMarketConfig {
+        fn default() -> Self {
+            Self {
+                raw_quantity: 100_000,
+                household_need: 10,
+                household_cash: 200_000,
+                company_cash: 600_000,
+                route_reachable: true,
+                route_capacity: 100,
+                delivery_utility_surcharge: 1,
+                production_utility_cost: 1,
+            }
+        }
+    }
+
+    // These variants deliberately alter fixed genesis inputs, then execute the same
+    // authoritative Engine/Timeline settlement path used by the baseline fixture.
+    fn productive_market_engine_with(config: ProductiveMarketConfig) -> Engine {
+        let ProductiveMarketConfig {
+            raw_quantity,
+            household_need,
+            household_cash,
+            company_cash,
+            route_reachable,
+            route_capacity,
+            delivery_utility_surcharge,
+            production_utility_cost,
+        } = config;
         let mut opening: serde_json::Value =
             serde_json::from_slice(include_bytes!("../../../fixtures/m0-e0-opening.json")).unwrap();
+        for source in opening["sources"].as_array_mut().unwrap() {
+            match source["id"].as_u64() {
+                Some(2) => source["amount"] = household_cash.into(),
+                Some(3) => source["amount"] = company_cash.into(),
+                _ => {}
+            }
+        }
+        for account in opening["accounts"].as_array_mut().unwrap() {
+            match account["id"].as_u64() {
+                Some(2) => account["cash"] = household_cash.into(),
+                Some(3) => account["cash"] = company_cash.into(),
+                _ => {}
+            }
+        }
         opening["sources"].as_array_mut().unwrap().extend([
-            serde_json::json!({"id":6,"kind":"inventory_capital","amount":100000}),
+            serde_json::json!({"id":6,"kind":"inventory_capital","amount":raw_quantity}),
             serde_json::json!({"id":7,"kind":"inventory_capital","amount":0}),
         ]);
         opening["stocks"].as_array_mut().unwrap().extend([
-            serde_json::json!({"id":2,"owner":3,"commodity":"raw","quantity":100000,"basis":100000,"source":6}),
+            serde_json::json!({"id":2,"owner":3,"commodity":"raw","quantity":raw_quantity,"basis":raw_quantity,"source":6}),
             serde_json::json!({"id":3,"owner":3,"commodity":"product","quantity":0,"basis":0,"source":7}),
         ]);
         opening["town"] = serde_json::json!({
             "schema_version":1,
             "id":1,
-            "households":[{"id":1,"account":2,"households":1,"need_good":1,"need_per_household":10,"reference_price_per_q":1000}],
+            "households":[{"id":1,"account":2,"households":1,"need_good":1,"need_per_household":household_need,"reference_price_per_q":1000}],
             "employers":[{"account":3,"worker_limit":1}],
             "shops":[{"shop_id":1,"account":3,"stock_id":3,"good":1,"shelf_price_per_q":100}],
-            "recipes":[{"recipe_id":1,"employer":3,"assigned_workers":1,"input_stock_id":2,"input_per_output":1,"output_good":1,"output_stock_id":3,"output_per_worker_day":100,"waste_per_output_q":0,"available_utility_per_day":1000,"utility_per_output_q":1,"utility_cost_per_output_q":1,"freight_cost_per_input_q":0,"disposal_cost_per_input_q":0,"utility_account":1,"freight_account":1,"disposal_account":1}],
-            "delivery":[{"quote_id":1,"shop":1,"household_group":1,"good":1,"reachable":true,"route_source":77,"freight_account":1,"utility_account":1,"available_capacity":100,"freight_per_q":1,"utility_surcharge_per_q":1}]
+            "recipes":[{"recipe_id":1,"employer":3,"assigned_workers":1,"input_stock_id":2,"input_per_output":1,"output_good":1,"output_stock_id":3,"output_per_worker_day":100,"waste_per_output_q":0,"available_utility_per_day":1000,"utility_per_output_q":1,"utility_cost_per_output_q":production_utility_cost,"freight_cost_per_input_q":0,"disposal_cost_per_input_q":0,"utility_account":1,"freight_account":1,"disposal_account":1}],
+            "delivery":[{"quote_id":1,"shop":1,"household_group":1,"good":1,"reachable":route_reachable,"route_source":77,"freight_account":1,"utility_account":1,"available_capacity":route_capacity,"freight_per_q":1,"utility_surcharge_per_q":delivery_utility_surcharge}]
         });
         let mut e = Engine::new(
             assemble(&serde_json::to_vec(&opening).unwrap()).unwrap(),
@@ -3477,6 +3534,46 @@ mod tests {
         .unwrap();
         e.timeline.activate();
         e
+    }
+
+    fn settle_productive_day(e: &mut Engine) -> crate::town_runtime::MarketSummary {
+        advance_productive_day(e);
+        issue(e, Action::TownSettle { profile_id: 1 })
+            .town
+            .expect("town settlement receipt")
+    }
+
+    fn advance_productive_day(e: &mut Engine) {
+        issue(
+            e,
+            Action::Timeline {
+                command: crate::timeline::Command::AddPayroll {
+                    spec: crate::timeline::PayrollSpec {
+                        id: 1,
+                        payer: 3,
+                        payee: 2,
+                        home_city: 0,
+                        hourly_cents: cash(100),
+                        cycle: crate::timeline::Cycle::Daily,
+                        ends_at: 7 * crate::timeline::DAY,
+                    },
+                },
+            },
+        );
+        for _ in 0..100 {
+            issue(
+                e,
+                Action::Timeline {
+                    command: crate::timeline::Command::Advance {
+                        target: crate::timeline::DAY,
+                        limit: 8192,
+                    },
+                },
+            );
+            if e.timeline().unwrap().progress.target.is_none() {
+                break;
+            }
+        }
     }
 
     fn issue(e: &mut Engine, action: Action) -> Receipt {
@@ -3598,6 +3695,153 @@ mod tests {
         assert_eq!(
             view.town.unwrap().state.payroll.as_slice()[0].paid,
             cash(800)
+        );
+    }
+
+    #[test]
+    fn engine_market_scenarios_propagate_cash_material_route_price_and_need_changes() {
+        // Low household cash: route and production exist, but the household cannot buy.
+        // Payroll first reaches the household normally; a recorded transfer then models its
+        // remaining cash being spent before the market-clearing action.
+        let mut low_cash = productive_market_engine_with(ProductiveMarketConfig {
+            household_cash: 0,
+            ..ProductiveMarketConfig::default()
+        });
+        advance_productive_day(&mut low_cash);
+        let household = account(&low_cash, 2);
+        let supplier = account(&low_cash, 4);
+        issue(
+            &mut low_cash,
+            Action::Transfer {
+                from: household,
+                to: supplier,
+                amount: cash(800),
+            },
+        );
+        assert_eq!(
+            low_cash
+                .world
+                .view()
+                .accounts
+                .iter()
+                .find(|row| row.id == 2)
+                .unwrap()
+                .cash,
+            Money::ZERO
+        );
+        let low_cash_summary = issue(&mut low_cash, Action::TownSettle { profile_id: 1 })
+            .town
+            .expect("low-cash settlement receipt");
+        assert_eq!(low_cash_summary.produced, Quantity::new(100).unwrap());
+        assert_eq!(low_cash_summary.actual_sales, Quantity::ZERO);
+        assert_eq!(low_cash_summary.reference_need, Quantity::new(10).unwrap());
+        assert_eq!(
+            low_cash
+                .world
+                .view()
+                .stocks
+                .iter()
+                .find(|s| s.id == 3)
+                .unwrap()
+                .quantity,
+            Quantity::new(100).unwrap()
+        );
+
+        // Missing raw material blocks production, which leaves no product to sell.
+        let mut no_material = productive_market_engine_with(ProductiveMarketConfig {
+            raw_quantity: 0,
+            ..ProductiveMarketConfig::default()
+        });
+        let no_material_summary = settle_productive_day(&mut no_material);
+        assert_eq!(no_material_summary.produced, Quantity::ZERO);
+        assert_eq!(no_material_summary.actual_sales, Quantity::ZERO);
+        assert_eq!(
+            no_material_summary.reference_need,
+            Quantity::new(10).unwrap()
+        );
+        assert_eq!(
+            no_material
+                .world
+                .view()
+                .stocks
+                .iter()
+                .find(|s| s.id == 2)
+                .unwrap()
+                .quantity,
+            Quantity::ZERO
+        );
+
+        // Route closure is represented by a fixed test quote (until the real transport
+        // adapter is joined); production occurs, but delivery and sale are blocked.
+        let mut closed_route = productive_market_engine_with(ProductiveMarketConfig {
+            route_reachable: false,
+            route_capacity: 0,
+            ..ProductiveMarketConfig::default()
+        });
+        let closed_route_summary = settle_productive_day(&mut closed_route);
+        assert_eq!(closed_route_summary.produced, Quantity::new(100).unwrap());
+        assert_eq!(closed_route_summary.actual_sales, Quantity::ZERO);
+        assert_eq!(
+            closed_route_summary.reference_need,
+            Quantity::new(10).unwrap()
+        );
+
+        // A higher delivery utility surcharge reduces the endogenous price ceiling.
+        // The quote is a test substitute, not yet the live utility/transport assignment.
+        let mut expensive_delivery = productive_market_engine_with(ProductiveMarketConfig {
+            delivery_utility_surcharge: 1_998,
+            ..ProductiveMarketConfig::default()
+        });
+        let expensive_summary = settle_productive_day(&mut expensive_delivery);
+        assert_eq!(expensive_summary.reference_need, Quantity::new(10).unwrap());
+        assert_eq!(expensive_summary.market_demand, Quantity::new(4).unwrap());
+        assert_eq!(expensive_summary.actual_sales, Quantity::new(4).unwrap());
+
+        // A lower underlying need passes through the same Engine path and lowers sales.
+        let mut lower_need = productive_market_engine_with(ProductiveMarketConfig {
+            household_need: 4,
+            ..ProductiveMarketConfig::default()
+        });
+        let lower_need_summary = settle_productive_day(&mut lower_need);
+        assert_eq!(lower_need_summary.reference_need, Quantity::new(4).unwrap());
+        assert_eq!(lower_need_summary.actual_sales, Quantity::new(4).unwrap());
+
+        // Higher production utility price is paid by the producer in the same atomic
+        // Engine receipt and reduces its cash result; this is a fixed test cost, not a
+        // live utility-network assignment.
+        let mut ordinary_energy = productive_market_engine_with(ProductiveMarketConfig::default());
+        let ordinary_summary = settle_productive_day(&mut ordinary_energy);
+        let ordinary_company_cash = ordinary_energy
+            .world
+            .view()
+            .accounts
+            .iter()
+            .find(|row| row.id == 3)
+            .unwrap()
+            .cash;
+        let mut expensive_energy = productive_market_engine_with(ProductiveMarketConfig {
+            production_utility_cost: 1_000,
+            ..ProductiveMarketConfig::default()
+        });
+        let expensive_summary = settle_productive_day(&mut expensive_energy);
+        let expensive_company_cash = expensive_energy
+            .world
+            .view()
+            .accounts
+            .iter()
+            .find(|row| row.id == 3)
+            .unwrap()
+            .cash;
+        assert_eq!(expensive_summary.produced, ordinary_summary.produced);
+        assert_eq!(
+            expensive_summary.actual_sales,
+            ordinary_summary.actual_sales
+        );
+        assert_eq!(
+            ordinary_company_cash
+                .checked_sub(expensive_company_cash)
+                .unwrap(),
+            cash(99_900)
         );
     }
 

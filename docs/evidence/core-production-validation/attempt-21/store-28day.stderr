@@ -1,0 +1,33 @@
+   Compiling sha2 v0.10.9
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-core)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-storage)
+error[E0277]: a value of type `Vec<(u32, i64, i64, u64)>` cannot be built from an iterator over elements of type `(u32, i64, i64, u32)`
+    --> crates/city-storage/tests/town_market.rs:130:14
+     |
+130  |             .collect(),
+     |              ^^^^^^^ value of type `Vec<(u32, i64, i64, u64)>` cannot be built from `std::iter::Iterator<Item=(u32, i64, i64, u32)>`
+     |
+     = help: the trait `FromIterator<(_, _, _, u32)>` is not implemented for `Vec<(u32, i64, i64, u64)>`
+             but trait `FromIterator<(_, _, _, u64)>` is implemented for it
+     = help: for that trait implementation, expected `u64`, found `u32`
+note: the method call chain might not have had the expected associated types
+    --> crates/city-storage/tests/town_market.rs:129:14
+     |
+126  |           stocks: view
+     |  _________________-
+127  | |             .stocks
+     | |___________________- this expression has type `Vec<StockView>`
+128  |               .iter()
+     |                ------ `Iterator::Item` is `&StockView` here
+129  |               .map(|row| (row.id, row.quantity.value(), row.basis.value(), row.lot_id))
+     |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Iterator::Item` changed to `(u32, i64, i64, u32)` here
+note: required by a bound in `collect`
+    --> /Users/frankqin/.rustup/toolchains/1.85.1-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/iter/traits/iterator.rs:1967:19
+     |
+1967 |     fn collect<B: FromIterator<Self::Item>>(self) -> B
+     |                   ^^^^^^^^^^^^^^^^^^^^^^^^ required by this bound in `Iterator::collect`
+
+For more information about this error, try `rustc --explain E0277`.
+error: could not compile `mycity-storage` (test "town_market") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

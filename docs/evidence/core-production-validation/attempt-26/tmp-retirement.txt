@@ -1,0 +1,4 @@
+Temporary staging path: /Volumes/HP P900/dev/MyCity/work/.tmp/core-production-store28-20261022
+Registered budget: 256 MiB; observed contents after tests: INTENT.md only, 4.0 KiB allocated.
+Before removal: MyCity cargo/test processes had exited; `lsof +D` returned no open handles. An unrelated TekesUI Cargo process was observed but had no handle to this directory and was not touched.
+Action: removed the directory after validation. Shared external target retained.

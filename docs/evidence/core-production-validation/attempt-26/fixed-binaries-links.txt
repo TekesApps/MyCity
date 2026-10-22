@@ -1,0 +1,4 @@
+1065106 3910016 /Users/frankqin/dev/MyCity/target/release/deps/mycity_core-363f7122bd90a840
+1065106 3910016 /Volumes/HP P900/dev/MyCity/work/acceptance-binaries/core-production/attempt-26/engine-market-test
+1068634 6717200 /Users/frankqin/dev/MyCity/target/release/deps/town_market-fc275aa083e796f1
+1068634 6717200 /Volumes/HP P900/dev/MyCity/work/acceptance-binaries/core-production/attempt-26/town-market-store-test

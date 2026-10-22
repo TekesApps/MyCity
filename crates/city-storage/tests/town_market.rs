@@ -3,7 +3,7 @@ use mycity_core::{
     transaction::{Action, Caller, Envelope},
     units::{Money, Quantity},
 };
-use mycity_storage::{Store, WritePoint};
+use mycity_storage::{Query, Store, WritePoint};
 use serde_json::Value;
 use std::{
     fs,
@@ -59,6 +59,22 @@ fn opening() -> Vec<u8> {
     serde_json::to_vec(&value).unwrap()
 }
 
+fn opening_with_daily_sellout() -> Vec<u8> {
+    let mut value: Value = serde_json::from_slice(&opening()).unwrap();
+    for source in value["sources"].as_array_mut().unwrap() {
+        if source["id"] == 2 {
+            source["amount"] = 1_000_000.into();
+        }
+    }
+    for account in value["accounts"].as_array_mut().unwrap() {
+        if account["id"] == 2 {
+            account["cash"] = 1_000_000.into();
+        }
+    }
+    value["town"]["households"][0]["need_per_household"] = 100.into();
+    serde_json::to_vec(&value).unwrap()
+}
+
 fn envelope(store: &Store, action: Action) -> Envelope {
     let engine = store.engine().unwrap();
     let view = engine.world().view();
@@ -89,6 +105,91 @@ fn cash(store: &Store, id: u32) -> Money {
         .find(|a| a.id == id)
         .unwrap()
         .cash
+}
+
+#[derive(Debug, PartialEq, Eq)]
+struct Snapshot {
+    sequence: u64,
+    hash: String,
+    cash: Vec<(u32, i64)>,
+    stocks: Vec<(u32, i64, i64, u32)>,
+    payroll: mycity_core::timeline::Payroll,
+    settled_day: u64,
+    summary: mycity_core::town_runtime::MarketSummary,
+    payroll_cursor: mycity_core::town_runtime::PayrollCursor,
+    output_remainder: mycity_core::town_runtime::RecipeOutputRemainder,
+}
+
+fn snapshot(store: &mut Store) -> Snapshot {
+    let engine = store.engine().unwrap();
+    let view = engine.world().view();
+    let timeline = engine.timeline().unwrap();
+    let payroll = timeline
+        .payroll
+        .iter()
+        .find(|row| row.spec.id == 1)
+        .copied()
+        .unwrap();
+    let town = view.town.as_ref().unwrap();
+    Snapshot {
+        sequence: store.committed_sequence(),
+        hash: store.state_hash().unwrap(),
+        cash: view
+            .accounts
+            .iter()
+            .map(|row| (row.id, row.cash.value()))
+            .collect(),
+        stocks: view
+            .stocks
+            .iter()
+            .map(|row| (row.id, row.quantity.value(), row.basis.value(), row.lot_id))
+            .collect(),
+        payroll,
+        settled_day: town.state.settled_day,
+        summary: town.state.last_summary,
+        payroll_cursor: town
+            .state
+            .payroll
+            .as_slice()
+            .iter()
+            .find(|row| row.id == 1)
+            .copied()
+            .unwrap(),
+        output_remainder: town
+            .state
+            .recipe_output_remainders
+            .as_slice()
+            .iter()
+            .find(|row| row.recipe_id == 1)
+            .copied()
+            .unwrap(),
+    }
+}
+
+fn advance_to_day(store: &mut Store, target: u64) {
+    for _ in 0..128 {
+        execute(
+            store,
+            Action::Timeline {
+                command: TimelineCommand::Advance {
+                    target,
+                    limit: 8192,
+                },
+            },
+        );
+        if store
+            .engine()
+            .unwrap()
+            .timeline()
+            .unwrap()
+            .progress
+            .target
+            .is_none()
+        {
+            return;
+        }
+    }
+    panic!("timeline failed to reach target {target}");
 }
 
 #[test]
@@ -216,4 +317,167 @@ fn town_work_and_market_day_recover_once_after_applied_reply_loss() {
     );
     assert_eq!(store.committed_sequence(), operation_id);
     assert_eq!(store.state_hash().unwrap(), state_hash);
+}
+
+#[test]
+fn twenty_eight_day_store_checkpoints_reopen_with_contiguous_receipts_and_work_remainders() {
+    const DAYS: u64 = 28;
+    const FINAL_SHIFT_SECONDS: u64 = 60;
+    let temp = Temp::new();
+    let path = temp.0.join("world");
+    let mut store = Store::create(&path, &opening_with_daily_sellout(), vec![], RULES).unwrap();
+    execute(
+        &mut store,
+        Action::Timeline {
+            command: TimelineCommand::Enable,
+        },
+    );
+    execute(
+        &mut store,
+        Action::Timeline {
+            command: TimelineCommand::AddPayroll {
+                spec: PayrollSpec {
+                    id: 1,
+                    payer: 3,
+                    payee: 2,
+                    home_city: 0,
+                    hourly_cents: Money::new(100).unwrap(),
+                    cycle: Cycle::Daily,
+                    ends_at: (DAYS - 1) * DAY + 9 * 3600 + FINAL_SHIFT_SECONDS,
+                },
+            },
+        },
+    );
+
+    let mut town_receipts = Vec::with_capacity(DAYS as usize);
+    for day in 1..=DAYS {
+        advance_to_day(&mut store, day * DAY);
+        execute(&mut store, Action::TownSettle { profile_id: 1 });
+        let operation_id = store.committed_sequence();
+        town_receipts.push((day, operation_id));
+        let current = store.engine().unwrap().world().view();
+        assert_eq!(current.town.as_ref().unwrap().state.settled_day, day);
+        drop(current);
+
+        if day % 7 == 0 {
+            let before = snapshot(&mut store);
+            store.checkpoint().unwrap();
+            drop(store);
+            store = Store::open(&path, RULES).unwrap();
+            assert_eq!(snapshot(&mut store), before, "cold reopen after day {day}");
+            for &(receipt_day, receipt_id) in &town_receipts {
+                let record = store.receipt(receipt_id).unwrap().unwrap();
+                assert_eq!(record.operation_id, receipt_id);
+                assert!(matches!(
+                    record.actions[0],
+                    Some(Action::TownSettle { profile_id: 1 })
+                ));
+                assert_eq!(record.outcome.unwrap().town.unwrap().day, receipt_day);
+            }
+        }
+    }
+
+    let final_state = snapshot(&mut store);
+    let expected_work_seconds = 27 * 8 * 3600 + FINAL_SHIFT_SECONDS;
+    assert_eq!(final_state.payroll.work_seconds, expected_work_seconds);
+    assert_eq!(final_state.payroll.accrued, Money::new(21_601).unwrap());
+    assert_eq!(final_state.payroll.paid, Money::new(21_601).unwrap());
+    assert_eq!(final_state.payroll.remainder, 2_400);
+    assert_eq!(
+        final_state.payroll_cursor.work_seconds,
+        expected_work_seconds
+    );
+    assert_eq!(
+        final_state.payroll_cursor.accrued,
+        Money::new(21_601).unwrap()
+    );
+    assert_eq!(final_state.payroll_cursor.paid, Money::new(21_601).unwrap());
+    assert_eq!(final_state.output_remainder.numerator, 6_000);
+    assert_eq!(final_state.settled_day, DAYS);
+
+    let mut cursor: Option<String> = None;
+    let mut rows = Vec::new();
+    loop {
+        let page = store.query(Query::Receipts, cursor.as_deref(), 64).unwrap();
+        rows.extend(page.rows);
+        cursor = page.next_cursor;
+        if cursor.is_none() {
+            break;
+        }
+    }
+    rows.sort_by_key(|row| row["committed_sequence"].as_u64().unwrap());
+    assert_eq!(rows.len() as u64, store.committed_sequence());
+    for (index, row) in rows.iter().enumerate() {
+        let sequence = index as u64 + 1;
+        assert_eq!(row["committed_sequence"].as_u64(), Some(sequence));
+        assert_eq!(row["record"]["operation_id"].as_u64(), Some(sequence));
+    }
+    for &(day, receipt_id) in &town_receipts {
+        let record = store.receipt(receipt_id).unwrap().unwrap();
+        assert_eq!(record.outcome.unwrap().town.unwrap().day, day);
+    }
+    eprintln!(
+        "28_day_store_fixture=daily_sellout_need100 receipt_count={} town_receipts={town_receipts:?} final_snapshot={final_state:?}",
+        rows.len()
+    );
+}
+
+#[test]
+fn partial_paid_shift_with_unsold_inventory_is_idle_not_recipe_remainder() {
+    let temp = Temp::new();
+    let path = temp.0.join("world");
+    let mut store = Store::create(&path, &opening(), vec![], RULES).unwrap();
+    execute(
+        &mut store,
+        Action::Timeline {
+            command: TimelineCommand::Enable,
+        },
+    );
+    execute(
+        &mut store,
+        Action::Timeline {
+            command: TimelineCommand::AddPayroll {
+                spec: PayrollSpec {
+                    id: 1,
+                    payer: 3,
+                    payee: 2,
+                    home_city: 0,
+                    hourly_cents: Money::new(100).unwrap(),
+                    cycle: Cycle::Daily,
+                    ends_at: DAY + 9 * 3600 + 60,
+                },
+            },
+        },
+    );
+
+    advance_to_day(&mut store, DAY);
+    execute(&mut store, Action::TownSettle { profile_id: 1 });
+    assert_eq!(
+        store
+            .engine()
+            .unwrap()
+            .world()
+            .view()
+            .stocks
+            .iter()
+            .find(|row| row.id == 3)
+            .unwrap()
+            .quantity,
+        Quantity::new(90).unwrap()
+    );
+
+    advance_to_day(&mut store, 2 * DAY);
+    let request = envelope(&store, Action::TownSettle { profile_id: 1 });
+    let response = store.execute(Caller::System, request).unwrap();
+    let summary = response.model.unwrap().town.unwrap();
+    assert_eq!(summary.day, 2);
+    assert_eq!(summary.produced, Quantity::ZERO);
+    assert_eq!(summary.labor_basis, Money::ZERO);
+    assert_eq!(summary.wages_accrued, Money::new(1).unwrap());
+    assert_eq!(summary.idle_labor_expense, Money::new(1).unwrap());
+    let town = store.engine().unwrap().world().view().town.unwrap();
+    assert_eq!(
+        town.state.recipe_output_remainders.as_slice()[0].numerator,
+        0
+    );
 }

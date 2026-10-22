@@ -1,0 +1,4 @@
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 0.70s
+     Running tests/town_market.rs (/Users/frankqin/dev/MyCity/target/release/deps/town_market-fc275aa083e796f1)
+error: test failed, to rerun pass `-p mycity-storage --test town_market`

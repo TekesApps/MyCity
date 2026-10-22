@@ -1,0 +1,22 @@
+    Checking sha2-asm v0.6.4
+    Checking sha2 v0.10.9
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-core)
+error: this function has too many arguments (8/7)
+    --> crates/city-core/src/transaction.rs:3459:5
+     |
+3459 | /     fn productive_market_engine_with(
+3460 | |         raw_quantity: i64,
+3461 | |         household_need: i64,
+3462 | |         household_cash: i64,
+...    |
+3467 | |         production_utility_cost: i64,
+3468 | |     ) -> Engine {
+     | |_______________^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#too_many_arguments
+     = note: `-D clippy::too-many-arguments` implied by `-D warnings`
+     = help: to override `-D warnings` add `#[allow(clippy::too_many_arguments)]`
+
+    Checking mycity-map v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-map)
+error: could not compile `mycity-core` (lib test) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

@@ -1,0 +1,11 @@
+Runtime environment:
+  CARGO_TARGET_DIR=/Users/frankqin/dev/MyCity/target (symlink to external SSD shared target)
+  TMPDIR=/Volumes/HP P900/dev/MyCity/work/.tmp/core-production-store28-20261022 (256 MiB, temporary validation files only)
+  Rust toolchain: 1.85.1; locked, offline, release
+
+Commands (execute serially; capture stdout and stderr separately):
+1. cargo +1.85.1 test -p mycity-core --lib transaction::tests::engine_market_scenarios_propagate_cash_material_route_price_and_need_changes --release --locked --offline
+2. cargo +1.85.1 test -p mycity-storage --test town_market twenty_eight_day_store_checkpoints_reopen_with_contiguous_receipts_and_work_remainders --release --locked --offline
+3. cargo +1.85.1 test -p mycity-storage --test town_market --release --locked --offline
+4. cargo +1.85.1 clippy -p mycity-core -p mycity-storage --all-targets --release --locked --offline -- -D warnings
+No performance/scale claim is attached to these functional tests.
