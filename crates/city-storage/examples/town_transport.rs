@@ -2,7 +2,7 @@
 use mycity_core::{
     construction::{
         EngineCommand as ConstructionCommand, Gate, GateCategory, GateDecision, Kind, Material,
-        Project, OPERATION_PREFIX,
+        OPERATION_PREFIX, Project,
     },
     market_access::{
         AllocationScope, DemandRepeatPolicy, FeePolicyInput, RoadCapacityEffectBinding,
@@ -37,6 +37,17 @@ fn hex(digest: &[u8; 32]) -> String {
 }
 fn err(value: impl std::fmt::Debug) -> String {
     format!("{value:?}")
+}
+
+fn transport_proof_from_receipt(receipt: &mycity_core::transaction::Receipt) -> Option<[u8; 32]> {
+    receipt
+        .actions
+        .iter()
+        .flatten()
+        .find_map(|action| match action {
+            Action::TownTransportSettle { proof_sha256, .. } => Some(*proof_sha256),
+            _ => None,
+        })
 }
 
 fn open(capacity: u32, is_open: bool) -> Opening {
@@ -326,7 +337,12 @@ fn construction_action(
 
 /// Store-backed causal scenario: the project pays for a real road-capacity resource, but
 /// traffic remains at the base epoch until inspection is accepted at the settled day boundary.
-fn run_road_effect(dir: &str, production_and_suspend: bool, road_28: bool) -> Result<(), String> {
+fn run_road_effect(
+    dir: &str,
+    production_and_suspend: bool,
+    road_28: bool,
+    road_withdraw: bool,
+) -> Result<(), String> {
     if Path::new(dir).exists() {
         return Err("store directory already exists".into());
     }
@@ -408,15 +424,27 @@ fn run_road_effect(dir: &str, production_and_suspend: bool, road_28: bool) -> Re
     project.operating_base_capacity = 2;
     project.operating_units = 8;
     project.operating_edge_id = 10;
+    if road_withdraw {
+        project.waste_receiver_account = 3;
+        project.waste_receiver_resource = 82;
+        project.waste_units = 2;
+        project.waste_fee = Money::new(250).map_err(err)?;
+    }
     let opening_bytes =
         opening_with_road_project(hash(&allocation_bytes), &project, production_and_suspend);
     let mut store = Store::create_with_transport_allocation_profile(
         Path::new(dir),
         &opening_bytes,
-        vec![
-            Resource::new(80, 1).map_err(err)?,
-            Resource::new(81, 2).map_err(err)?,
-        ],
+        {
+            let mut resources = vec![
+                Resource::new(80, 1).map_err(err)?,
+                Resource::new(81, 2).map_err(err)?,
+            ];
+            if road_withdraw {
+                resources.push(Resource::new(82, 10).map_err(err)?);
+            }
+            resources
+        },
         RULES,
         &allocation_bytes,
     )
@@ -622,13 +650,15 @@ fn run_road_effect(dir: &str, production_and_suspend: bool, road_28: bool) -> Re
     if store.settle_town_market(80_002).is_ok() {
         return Err("second settlement for the same completed day was accepted".into());
     }
-    let demolition = construction_action(
-        &mut store,
-        Caller::Account(4),
-        ConstructionCommand::BeginDemolition { waste_receiver: 3 },
-    );
-    if demolition.is_ok() {
-        return Err("irreversible road effect allowed demolition".into());
+    if !road_withdraw {
+        let demolition = construction_action(
+            &mut store,
+            Caller::Account(4),
+            ConstructionCommand::BeginDemolition { waste_receiver: 3 },
+        );
+        if demolition.is_ok() {
+            return Err("irreversible road effect allowed demolition".into());
+        }
     }
     advance_to(&mut store, 2 * DAY)?;
     store
@@ -694,6 +724,156 @@ fn run_road_effect(dir: &str, production_and_suspend: bool, road_28: bool) -> Re
     if initial_cash_total != cash_total(&day_two.accounts) {
         return Err("construction and market transactions did not conserve city cash".into());
     }
+    let mut withdrawal_report = Value::Null;
+    let mut third_proof = None;
+    if road_withdraw {
+        construction_action(
+            &mut store,
+            Caller::Account(4),
+            ConstructionCommand::BeginDemolition { waste_receiver: 3 },
+        )?;
+        construction_action(
+            &mut store,
+            Caller::Account(2),
+            ConstructionCommand::DecideGate {
+                gate_id: 1,
+                decision: GateDecision::Accepted,
+                evidence_id: 703,
+            },
+        )?;
+        construction_action(
+            &mut store,
+            Caller::Account(1),
+            ConstructionCommand::DecideGate {
+                gate_id: 2,
+                decision: GateDecision::Accepted,
+                evidence_id: 704,
+            },
+        )?;
+        construction_action(&mut store, Caller::Account(4), ConstructionCommand::Prepare)?;
+        construction_action(&mut store, Caller::Account(4), ConstructionCommand::Start)?;
+        let withdrawn = store.engine().map_err(err)?.world().view();
+        let project = withdrawn
+            .construction
+            .ok_or("road project missing after withdrawal")?;
+        let road_capacity = store
+            .engine()
+            .map_err(err)?
+            .resources()
+            .iter()
+            .find(|resource| resource.id == 81)
+            .ok_or("road resource missing after withdrawal")?
+            .capacity;
+        if project.kind != Kind::Demolish
+            || project.operating_published
+            || project.operating_published_at != Some(GameTime::new(DAY as i64).map_err(err)?)
+            || project.operating_withdrawn_at != Some(GameTime::new((2 * DAY) as i64).map_err(err)?)
+            || road_capacity != 2
+        {
+            return Err("approved demolition did not withdraw only the added road capacity".into());
+        }
+
+        advance_to(&mut store, 3 * DAY)?;
+        store
+            .settle_town_market(80_004)
+            .map_err(err)?
+            .model
+            .map_err(err)?;
+        let day_three = store.engine().map_err(err)?.world().view();
+        let day_three_market = day_three.town.ok_or("town missing after withdrawal")?;
+        let day_three_proof = day_three_market
+            .state
+            .last_transport
+            .ok_or("day-three transport proof missing")?;
+        if day_three_proof.issued_day != 3
+            || day_three_proof.consumed_generation != 3
+            || day_three_proof.issued_proof_sha256 == second_proof
+            || day_three_market.state.last_summary.actual_sales.value() != 40
+            || store
+                .engine()
+                .map_err(err)?
+                .resources()
+                .iter()
+                .find(|resource| resource.id == 81)
+                .ok_or("road resource missing on day three")?
+                .capacity
+                != 2
+        {
+            return Err(
+                "withdrawn road capacity or day-three historical proof is incorrect".into(),
+            );
+        }
+        third_proof = Some(day_three_proof.issued_proof_sha256);
+
+        let work_end = 3 * DAY + SHIFT_END;
+        advance_to(&mut store, work_end)?;
+        construction_action(
+            &mut store,
+            Caller::Account(contractor),
+            ConstructionCommand::Work {
+                at: GameTime::new(work_end as i64).map_err(err)?,
+                elapsed_seconds: u32::try_from(work_end - 2 * DAY).map_err(err)?,
+                worker_seconds: 28_800,
+            },
+        )?;
+        construction_action(
+            &mut store,
+            Caller::Account(4),
+            ConstructionCommand::AcceptWaste,
+        )?;
+        construction_action(&mut store, Caller::Account(4), ConstructionCommand::Close)?;
+        let closed = store.engine().map_err(err)?.world().view();
+        if closed
+            .construction
+            .ok_or("road project missing after close")?
+            .phase
+            != mycity_core::construction::Phase::Closed
+            || store
+                .engine()
+                .map_err(err)?
+                .resources()
+                .iter()
+                .find(|resource| resource.id == 81)
+                .ok_or("road resource missing after close")?
+                .capacity
+                != 2
+            || store
+                .engine()
+                .map_err(err)?
+                .resources()
+                .iter()
+                .find(|resource| resource.id == 80)
+                .ok_or("site resource missing after close")?
+                .occupied
+                != 0
+            || store
+                .engine()
+                .map_err(err)?
+                .resources()
+                .iter()
+                .find(|resource| resource.id == 82)
+                .ok_or("waste resource missing after close")?
+                .occupied
+                != 2
+            || initial_cash_total != cash_total(&closed.accounts)
+        {
+            return Err(
+                "completed road demolition did not preserve the base capacity and release site"
+                    .into(),
+            );
+        }
+        withdrawal_report = serde_json::json!({
+            "demolition_gates_and_start":"accepted_at_settled_day_2_boundary",
+            "capacity_after_start":road_capacity,
+            "withdrawal_timestamp":2 * DAY,
+            "day_two_expanded_sales":day_two_market.state.last_summary.actual_sales.value(),
+            "day_three_base_sales":day_three_market.state.last_summary.actual_sales.value(),
+            "day_two_and_day_three_proofs_distinct":true,
+            "demolition_work_and_waste":"completed_and_accepted",
+            "site":"released",
+            "project":"closed"
+        });
+    }
     store.checkpoint().map_err(err)?;
     let committed = store.state_hash().map_err(err)?;
     drop(store);
@@ -703,6 +883,34 @@ fn run_road_effect(dir: &str, production_and_suspend: bool, road_28: bool) -> Re
         || recovered.receipt(80_003).map_err(err)?.is_none()
     {
         return Err("cold recovery did not preserve road publication and historical proofs".into());
+    }
+    if road_withdraw {
+        let day_two_receipt = recovered
+            .receipt(80_003)
+            .map_err(err)?
+            .ok_or("day-two settlement receipt missing after withdrawal cold open")?;
+        let day_three_receipt = recovered
+            .receipt(80_004)
+            .map_err(err)?
+            .ok_or("day-three settlement receipt missing after withdrawal cold open")?;
+        let third_proof = third_proof.ok_or("day-three road proof was not captured")?;
+        if transport_proof_from_receipt(&day_two_receipt) != Some(second_proof)
+            || transport_proof_from_receipt(&day_three_receipt) != Some(third_proof)
+            || recovered
+                .engine()
+                .map_err(err)?
+                .world()
+                .view()
+                .town
+                .and_then(|town| town.state.last_transport)
+                .is_none_or(|proof| {
+                    proof.issued_proof_sha256 != third_proof || proof.issued_day != 3
+                })
+        {
+            return Err(
+                "cold reopen did not preserve both historical road-capacity epoch proofs".into(),
+            );
+        }
     }
     let mut suspension_report = Value::Null;
     let mut road_28_report = Value::Null;
@@ -1059,9 +1267,10 @@ fn run_road_effect(dir: &str, production_and_suspend: bool, road_28: bool) -> Re
     println!(
         "{}",
         serde_json::to_string_pretty(&serde_json::json!({
-            "scenario":if road_28 {"road-28"} else if production_and_suspend {"road-suspend"} else {"road-effect"},
+            "scenario":if road_withdraw {"road-withdraw"} else if road_28 {"road-28"} else if production_and_suspend {"road-suspend"} else {"road-effect"},
             "production_and_suspension":suspension_report,
             "road_28":road_28_report,
+            "road_withdrawal":withdrawal_report,
             "day_one_sales_before_acceptance":day_one_market.state.last_summary.actual_sales.value(),
             "day_two_sales_after_acceptance":day_two_market.state.last_summary.actual_sales.value(),
             "capacity_base":2,
@@ -1072,7 +1281,7 @@ fn run_road_effect(dir: &str, production_and_suspend: bool, road_28: bool) -> Re
             "same_day_duplicate":"rejected",
             "midday_inspection":"rejected_without_state_change",
             "unsettled_boundary_inspection":"rejected_without_state_change",
-            "demolition":"rejected",
+            "demolition":if road_withdraw {"approved_then_completed"} else {"rejected"},
             "real_material_debit":construction.materials[0].consumed.value(),
             "cash_conservation":"passed",
             "cold_recovery":"passed"
@@ -1265,7 +1474,7 @@ fn main() {
 fn run() -> Result<(), String> {
     let mut args = env::args().skip(1);
     let scenario = args.next().ok_or(
-        "usage: town_transport <normal|closed|bottleneck|expanded|road-effect|road-suspend|road-28> <new-store-dir> | reopen-check <existing-copied-world-dir> <expected-rules-identity> <expected-state-sha256>",
+        "usage: town_transport <normal|closed|bottleneck|expanded|road-effect|road-suspend|road-28|road-withdraw> <new-store-dir> | reopen-check <existing-copied-world-dir> <expected-rules-identity> <expected-state-sha256>",
     )?;
     let dir = args.next().ok_or("missing_store_dir")?;
     if scenario == "reopen-check" {
@@ -1281,10 +1490,15 @@ fn run() -> Result<(), String> {
     }
     if matches!(
         scenario.as_str(),
-        "road-effect" | "road-suspend" | "road-28"
+        "road-effect" | "road-suspend" | "road-28" | "road-withdraw"
     ) {
-        let production = scenario != "road-effect";
-        return run_road_effect(&dir, production, scenario == "road-28");
+        let production = matches!(scenario.as_str(), "road-suspend" | "road-28");
+        return run_road_effect(
+            &dir,
+            production,
+            scenario == "road-28",
+            scenario == "road-withdraw",
+        );
     }
     let (capacity, is_open, expected) = match scenario.as_str() {
         "normal" => (5, true, 100),

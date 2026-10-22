@@ -12,4 +12,4 @@ Withdrawal is one-time and irreversible. A withdrawn project remains a demolitio
 
 Legacy projects omit `operating_withdrawn_at`; serde defaults it to `None` and omits `None` on serialization to preserve old canonical state hashes. The current candidate supports a single bound road effect. Reversible capacity schedules and multiple simultaneous road projects remain out of scope.
 
-This document and its source tests are a design/implementation candidate only. No Cargo build, test, Store CLI, cold-open recovery, performance, or memory measurement has been run for this candidate.
+The `town_transport road-withdraw` Store scenario exercises the lifecycle from a real day-one settlement and publication through day-two expansion, approved withdrawal, day-three base service, demolition work, waste acceptance, site release, checkpoint, and cold reopen. It checks both historical settlement receipt hashes after reopen. This candidate has only received source formatting and diff checks; no Cargo build, CLI execution, cold-open recovery, performance, or memory measurement has been run.
