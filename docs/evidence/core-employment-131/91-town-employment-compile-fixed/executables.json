@@ -1,0 +1,7 @@
+{
+  "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/91-town-employment-compile-fixed/executables/ade3e903d518ce351981c913eff3330627dc01919173bf9790715226ec1c8148/town_employment",
+  "sha256": "ade3e903d518ce351981c913eff3330627dc01919173bf9790715226ec1c8148",
+  "source_archive": "source.zip",
+  "runtime_exit": 1,
+  "failure": "terminated_payroll_arrears_changed_after_switch"
+}

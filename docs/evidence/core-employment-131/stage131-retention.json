@@ -1,0 +1,49 @@
+{
+  "utc": "2026-10-22T23:28:54.286894+00:00",
+  "scope": "only terminal identical source archives; no snapshots, logs, executables, dependencies or target removed",
+  "files_deduplicated": 6,
+  "allocated_before": 28643328,
+  "allocated_after": 4091904,
+  "allocation_reduction": 24551424,
+  "observed_available_delta": 24506368,
+  "APFS_exclusive_reclaim": "not_claimed",
+  "shared_target": "reused, retained; no independent target",
+  "records": [
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/96-town-employment-final-default/source.zip",
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/95-town-employment-strict/source.zip",
+      "sha256": "f046072553dd6f69cbd5fdfc2e4906215aae38ed0b81a944271210c29a03fbd0",
+      "reason": "terminal immutable identical full source ZIP; all complete bytes and original paths retained"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/97-town-employment-day01/source.zip",
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/95-town-employment-strict/source.zip",
+      "sha256": "f046072553dd6f69cbd5fdfc2e4906215aae38ed0b81a944271210c29a03fbd0",
+      "reason": "terminal immutable identical full source ZIP; all complete bytes and original paths retained"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/98-town-employment-day27/source.zip",
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/95-town-employment-strict/source.zip",
+      "sha256": "f046072553dd6f69cbd5fdfc2e4906215aae38ed0b81a944271210c29a03fbd0",
+      "reason": "terminal immutable identical full source ZIP; all complete bytes and original paths retained"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/99-town-employment-invalid00/source.zip",
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/95-town-employment-strict/source.zip",
+      "sha256": "f046072553dd6f69cbd5fdfc2e4906215aae38ed0b81a944271210c29a03fbd0",
+      "reason": "terminal immutable identical full source ZIP; all complete bytes and original paths retained"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/100-town-employment-invalid28/source.zip",
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/95-town-employment-strict/source.zip",
+      "sha256": "f046072553dd6f69cbd5fdfc2e4906215aae38ed0b81a944271210c29a03fbd0",
+      "reason": "terminal immutable identical full source ZIP; all complete bytes and original paths retained"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/101-town-employment-native-time/source.zip",
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/95-town-employment-strict/source.zip",
+      "sha256": "f046072553dd6f69cbd5fdfc2e4906215aae38ed0b81a944271210c29a03fbd0",
+      "reason": "terminal immutable identical full source ZIP; all complete bytes and original paths retained"
+    }
+  ]
+}

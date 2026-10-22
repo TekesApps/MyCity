@@ -1,0 +1,341 @@
+{
+  "files": [
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/90-town-employment-initial/command.json",
+      "published": "90-town-employment-initial/command.json",
+      "bytes": 497,
+      "sha256": "c08c77dca7138754c15866b92ff8c345740281e589b5de041a4c6d45029743d4"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/90-town-employment-initial/exit.json",
+      "published": "90-town-employment-initial/exit.json",
+      "bytes": 89,
+      "sha256": "756cf32a7eb87213235356f365b5fe39cfbbbd579fd911102b09384d9b091a1e"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/90-town-employment-initial/source-manifest.json",
+      "published": "90-town-employment-initial/source-manifest.json",
+      "bytes": 42896,
+      "sha256": "7a833adc5ba912596676cea8f7488c06e4de4fdbe0b7d6a1fa85812ff9962100"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/90-town-employment-initial/stdout.log",
+      "published": "90-town-employment-initial/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/90-town-employment-initial/stderr.log",
+      "published": "90-town-employment-initial/stderr.log",
+      "bytes": 5679,
+      "sha256": "0fad72efb52f72b7532c6cb068cee7882fd542c0e3fc61e423879ebb2ab4e04b"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/91-town-employment-compile-fixed/command.json",
+      "published": "91-town-employment-compile-fixed/command.json",
+      "bytes": 497,
+      "sha256": "8d1592378e6e4d64ab6be977419b858fb1ec182daa3e2707671cb9c42ab766ab"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/91-town-employment-compile-fixed/exit.json",
+      "published": "91-town-employment-compile-fixed/exit.json",
+      "bytes": 79,
+      "sha256": "ec7ef643e7a93eff99e9044cc56d22f4a510b46414ec64bf3a75d8f10470e8ba"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/91-town-employment-compile-fixed/source-manifest.json",
+      "published": "91-town-employment-compile-fixed/source-manifest.json",
+      "bytes": 42896,
+      "sha256": "dc4cd7eb53d7cf54e60ad995fece6f00671b0ffaf250870743c11a18d0eb221d"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/91-town-employment-compile-fixed/stdout.log",
+      "published": "91-town-employment-compile-fixed/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/91-town-employment-compile-fixed/stderr.log",
+      "published": "91-town-employment-compile-fixed/stderr.log",
+      "bytes": 332,
+      "sha256": "9b7b42d4e374bf4430e8ab0ed72e9c304277063c80defcb6202f281d2fd1d24e"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/91-town-employment-compile-fixed/executables.json",
+      "published": "91-town-employment-compile-fixed/executables.json",
+      "bytes": 407,
+      "sha256": "361605e1a79c73b4e5b589022849f885cbf75f6fbdb8d119f81bbe554ba7b703"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/94-town-employment-six-case/command.json",
+      "published": "94-town-employment-six-case/command.json",
+      "bytes": 497,
+      "sha256": "b2303257dcf97887d0ff5ffae92205913fe15095fc6a279d28ecdbc0aa381a49"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/94-town-employment-six-case/exit.json",
+      "published": "94-town-employment-six-case/exit.json",
+      "bytes": 86,
+      "sha256": "ee443f682c66b61f1e9f3aa4772574327beaebf9a8ecfe89d593b788db4646a2"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/94-town-employment-six-case/source-manifest.json",
+      "published": "94-town-employment-six-case/source-manifest.json",
+      "bytes": 42896,
+      "sha256": "fbd36a6645afa96b3106e19a5fa43be6ae8e07a3c8613226016fac79bbbb6b68"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/94-town-employment-six-case/stdout.log",
+      "published": "94-town-employment-six-case/stdout.log",
+      "bytes": 6601,
+      "sha256": "b2c537ab112c219171bc0625537c53cc815657e8348bc7ac1d637daef31658c5"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/94-town-employment-six-case/stderr.log",
+      "published": "94-town-employment-six-case/stderr.log",
+      "bytes": 598,
+      "sha256": "7bf72a50a8557b185219131e59783d20d78f447cb1ba48c40ef506500727f216"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/95-town-employment-strict/command.json",
+      "published": "95-town-employment-strict/command.json",
+      "bytes": 503,
+      "sha256": "2c297c4aa1995924e49a2c39821cce0d5ac55b6f8dfe4dd84c00dd8e58680933"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/95-town-employment-strict/exit.json",
+      "published": "95-town-employment-strict/exit.json",
+      "bytes": 87,
+      "sha256": "05ad62bb4b4491883cd89f6a0e12535b9bb72ea73508131d712ee9cf5fecb06b"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/95-town-employment-strict/source-manifest.json",
+      "published": "95-town-employment-strict/source-manifest.json",
+      "bytes": 42896,
+      "sha256": "a2b8ab5872dbed6d5d2b798b4ef90a12e0a8933815d30ca37ccc8cda496cdd51"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/95-town-employment-strict/stdout.log",
+      "published": "95-town-employment-strict/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/95-town-employment-strict/stderr.log",
+      "published": "95-town-employment-strict/stderr.log",
+      "bytes": 176,
+      "sha256": "9f5a0ba9e7ba2a4d815c21464fa2c0ee225f0265367b7f3a2bc4da35e4791215"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/96-town-employment-final-default/command.json",
+      "published": "96-town-employment-final-default/command.json",
+      "bytes": 497,
+      "sha256": "cab82b0b88e4d64a1590a5dfab3726f630a979ba91a90419082485007e2bbadd"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/96-town-employment-final-default/exit.json",
+      "published": "96-town-employment-final-default/exit.json",
+      "bytes": 79,
+      "sha256": "fd3978f4998a68ab03d753675fede9978e6ad529cb62cfabbf8f88b204f1b1ec"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/96-town-employment-final-default/source-manifest.json",
+      "published": "96-town-employment-final-default/source-manifest.json",
+      "bytes": 42896,
+      "sha256": "a2b8ab5872dbed6d5d2b798b4ef90a12e0a8933815d30ca37ccc8cda496cdd51"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/96-town-employment-final-default/stdout.log",
+      "published": "96-town-employment-final-default/stdout.log",
+      "bytes": 6979,
+      "sha256": "1bc472825bed6866dc5ebb0c01efb58a895d2bc121149aded5266fb897525781"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/96-town-employment-final-default/stderr.log",
+      "published": "96-town-employment-final-default/stderr.log",
+      "bytes": 275,
+      "sha256": "b5b46a43f31435b9a2a1a3af48fd9a1368d971819c742078d56ec51768cbf172"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/97-town-employment-day01/command.json",
+      "published": "97-town-employment-day01/command.json",
+      "bytes": 543,
+      "sha256": "c94c3d333ae968388a9c3817dcab26478bfb4ad5750a7668ba310c6ff4395d0d"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/97-town-employment-day01/exit.json",
+      "published": "97-town-employment-day01/exit.json",
+      "bytes": 79,
+      "sha256": "bd2f5dd67c89931aca848c904c50bf60bd36addab571c5ee7ef9e9f0e5ad347b"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/97-town-employment-day01/source-manifest.json",
+      "published": "97-town-employment-day01/source-manifest.json",
+      "bytes": 42896,
+      "sha256": "a2b8ab5872dbed6d5d2b798b4ef90a12e0a8933815d30ca37ccc8cda496cdd51"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/97-town-employment-day01/stdout.log",
+      "published": "97-town-employment-day01/stdout.log",
+      "bytes": 6965,
+      "sha256": "5e5ef8fbec485e631f8d14b88046aeb26133435778ad54e199008febe960b9a9"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/97-town-employment-day01/stderr.log",
+      "published": "97-town-employment-day01/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/98-town-employment-day27/command.json",
+      "published": "98-town-employment-day27/command.json",
+      "bytes": 544,
+      "sha256": "20f6bcd5a06a7b1f9bc28c453c9128644f35d82d909cb8d9a8eb2d8b4e345ecf"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/98-town-employment-day27/exit.json",
+      "published": "98-town-employment-day27/exit.json",
+      "bytes": 88,
+      "sha256": "3758b62d093651c8fd688d40a27248b1f134472f1538e8461f22599690f234bb"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/98-town-employment-day27/source-manifest.json",
+      "published": "98-town-employment-day27/source-manifest.json",
+      "bytes": 42896,
+      "sha256": "a2b8ab5872dbed6d5d2b798b4ef90a12e0a8933815d30ca37ccc8cda496cdd51"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/98-town-employment-day27/stdout.log",
+      "published": "98-town-employment-day27/stdout.log",
+      "bytes": 6970,
+      "sha256": "9a321a5a2385b28b22ae1be8a1488aa201d683d61923053061f6e321ac60522d"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/98-town-employment-day27/stderr.log",
+      "published": "98-town-employment-day27/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/99-town-employment-invalid00/command.json",
+      "published": "99-town-employment-invalid00/command.json",
+      "bytes": 543,
+      "sha256": "e0d3f6d91a03a094a1e9348529c81ea46360060c768d9f2534ff89b5379014ce"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/99-town-employment-invalid00/exit.json",
+      "published": "99-town-employment-invalid00/exit.json",
+      "bytes": 88,
+      "sha256": "85fda01732e5beebdaf7251f3e5f319a46b3bd0e1c6a8bd0cb54ac751aa6defe"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/99-town-employment-invalid00/source-manifest.json",
+      "published": "99-town-employment-invalid00/source-manifest.json",
+      "bytes": 42896,
+      "sha256": "a2b8ab5872dbed6d5d2b798b4ef90a12e0a8933815d30ca37ccc8cda496cdd51"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/99-town-employment-invalid00/stdout.log",
+      "published": "99-town-employment-invalid00/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/99-town-employment-invalid00/stderr.log",
+      "published": "99-town-employment-invalid00/stderr.log",
+      "bytes": 45,
+      "sha256": "48ecffb869352449d3530f23a1e11ed715c77556a171006e88ebdbda39628baa"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/100-town-employment-invalid28/command.json",
+      "published": "100-town-employment-invalid28/command.json",
+      "bytes": 544,
+      "sha256": "368dce1943c60a93dc6357909b83b5818e9edb04439f38cc396067eef5194db0"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/100-town-employment-invalid28/exit.json",
+      "published": "100-town-employment-invalid28/exit.json",
+      "bytes": 88,
+      "sha256": "247a169c4ac3bf3c5319a6a46573d42bb5bec2e27d2aab2c7a7fe8330e65f385"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/100-town-employment-invalid28/source-manifest.json",
+      "published": "100-town-employment-invalid28/source-manifest.json",
+      "bytes": 42896,
+      "sha256": "a2b8ab5872dbed6d5d2b798b4ef90a12e0a8933815d30ca37ccc8cda496cdd51"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/100-town-employment-invalid28/stdout.log",
+      "published": "100-town-employment-invalid28/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/100-town-employment-invalid28/stderr.log",
+      "published": "100-town-employment-invalid28/stderr.log",
+      "bytes": 45,
+      "sha256": "48ecffb869352449d3530f23a1e11ed715c77556a171006e88ebdbda39628baa"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/101-town-employment-native-time/command.json",
+      "published": "101-town-employment-native-time/command.json",
+      "bytes": 575,
+      "sha256": "d7951b6133773816ae56cbdb1d526244105eedc6b3dafe84310475ae74f2266c"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/101-town-employment-native-time/exit.json",
+      "published": "101-town-employment-native-time/exit.json",
+      "bytes": 87,
+      "sha256": "62574c092fdf606c43c879e8efd4dc304f5d997a0b763a6c9602f2c6ed8ab1b3"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/101-town-employment-native-time/source-manifest.json",
+      "published": "101-town-employment-native-time/source-manifest.json",
+      "bytes": 42896,
+      "sha256": "a2b8ab5872dbed6d5d2b798b4ef90a12e0a8933815d30ca37ccc8cda496cdd51"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/101-town-employment-native-time/stdout.log",
+      "published": "101-town-employment-native-time/stdout.log",
+      "bytes": 6979,
+      "sha256": "1bc472825bed6866dc5ebb0c01efb58a895d2bc121149aded5266fb897525781"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/101-town-employment-native-time/stderr.log",
+      "published": "101-town-employment-native-time/stderr.log",
+      "bytes": 777,
+      "sha256": "374764e7039323f0247aafa4a5ad86009c173ebd41a4d28597c9bb70d1a83dfe"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/employment-final-binary.json",
+      "published": "employment-final-binary.json",
+      "bytes": 722,
+      "sha256": "ab4cc677d91f97b1ce8c190fc3f1936eaccd8a44a73bb2a3d6f3772776462769"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/employment-independent-validation.json",
+      "published": "employment-independent-validation.json",
+      "bytes": 6176,
+      "sha256": "29c1476f894516b8a17b14f2681c0ff58f45d98544dc73f594208a8e49a32aac"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/validate-employment.py",
+      "published": "validate-employment.py",
+      "bytes": 3411,
+      "sha256": "e449bc8a531eabcfe3f0f8d61eabbf8a8e42f3e3eefd1348f0216519ac49a136"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/stage131-retention.json",
+      "published": "stage131-retention.json",
+      "bytes": 3173,
+      "sha256": "b494bb84d4b274e4aa69a37e9aecbd5361844ef56a3f80144f0994d0703f79df"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/96-town-employment-final-default/source-manifest.json",
+      "published": "final-source-manifest.json",
+      "bytes": 42896,
+      "sha256": "a2b8ab5872dbed6d5d2b798b4ef90a12e0a8933815d30ca37ccc8cda496cdd51"
+    }
+  ],
+  "scope": "exact evidence; complete source/dependencies/executable retained on SSD; CLI uses Engine in memory, not persistent world snapshots"
+}

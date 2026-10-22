@@ -1,0 +1,110 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/employment-change-current/crates/city-core)
+error: 29 positional arguments in format string, but there are 28 arguments
+   --> crates/city-core/examples/town_employment.rs:462:19
+    |
+462 | ...   "case={} days={DAYS} money_unit=cents switch_day={} switch_assignment=explicit_company_account_5 endogenous_job_search=false skill_matching=false destination_recipe=not_modeled initial_source_funded_cash_total={} final_cash_total={} initial_cash_by_account=(household:{},producer:{},destination_employer:{}) final_cash_by_account=(household:{},producer:{},destination_employer:{}) raw_initial={} raw_remaining={} production={} sales={} market_unmet={} waste={} goods_payments={} old_wage_accrued={} old_wage_paid={} old_job_work_seconds_at_switch={} old_job_work_seconds_close={} old_wage_arrears_at_switch={} old_wage_arrears_close={} new_wage_accrued={} new_wage_paid={} new_job_work_seconds={} new_wage_arrears={} purchasing_power_observation=(household_cash_close:{},actual_units_purchased:{}) t...
+    |             ^^                                         ^^                                                                                                                                                               ^^                  ^^                                    ^^          ^^                      ^^                                   ^^          ^^                      ^^              ^^               ^^            ^^       ^^              ^^       ^^                ^^                  ^^               ^^                                ^^                            ^^                            ^^                        ^^                  ^^               ^^                      ^^                  ^^                                                    ^^                        ^^
+463 | ...   if row.changed { "employment_change" } else { "stay_control" },
+    |       --------------------------------------------------------------
+464 | ...   if row.changed { switch_day } else { 0 },
+    |       ----------------------------------------
+465 | ...   row.initial_cash,
+    |       ----------------
+466 | ...   row.household_open,
+    |       ------------------
+467 | ...   row.producer_open,
+    |       -----------------
+468 | ...   row.destination_employer_open,
+    |       -----------------------------
+469 | ...   row.household_close,
+    |       -------------------
+470 | ...   row.producer_close,
+    |       ------------------
+471 | ...   row.destination_employer_close,
+    |       ------------------------------
+472 | ...   row.initial_raw,
+    |       ---------------
+473 | ...   row.raw_close,
+    |       -------------
+474 | ...   row.totals.produced,
+    |       -------------------
+475 | ...   row.totals.sold,
+    |       ---------------
+476 | ...   row.totals.unmet,
+    |       ----------------
+477 | ...   row.totals.waste,
+    |       ----------------
+478 | ...   row.totals.goods_payments,
+    |       -------------------------
+479 | ...   row.old_accrued,
+    |       ---------------
+480 | ...   row.old_paid,
+    |       ------------
+481 | ...   row.old_work_seconds_at_switch,
+    |       ------------------------------
+482 | ...   row.old_work_seconds_close,
+    |       --------------------------
+483 | ...   row.old_arrears_at_switch,
+    |       -------------------------
+484 | ...   row.old_arrears_close,
+    |       ---------------------
+485 | ...   row.new_accrued,
+    |       ---------------
+486 | ...   row.new_paid,
+    |       ------------
+487 | ...   row.new_work_seconds,
+    |       --------------------
+488 | ...   row.new_arrears,
+    |       ---------------
+489 | ...   row.household_close,
+    |       -------------------
+490 | ...   row.totals.sold,
+    |       ---------------
+
+error[E0308]: mismatched types
+  --> crates/city-core/examples/town_employment.rs:88:32
+   |
+88 |             source["amount"] = 5_000;
+   |             ----------------   ^^^^^ expected `Value`, found integer
+   |             |
+   |             expected due to the type of this binding
+
+error[E0308]: mismatched types
+  --> crates/city-core/examples/town_employment.rs:91:32
+   |
+91 |             source["amount"] = 1_000;
+   |             ----------------   ^^^^^ expected `Value`, found integer
+   |             |
+   |             expected due to the type of this binding
+
+error[E0308]: mismatched types
+  --> crates/city-core/examples/town_employment.rs:99:31
+   |
+99 |             account["cash"] = 5_000;
+   |             ---------------   ^^^^^ expected `Value`, found integer
+   |             |
+   |             expected due to the type of this binding
+
+error[E0308]: mismatched types
+   --> crates/city-core/examples/town_employment.rs:102:31
+    |
+102 |             account["cash"] = 1_000;
+    |             ---------------   ^^^^^ expected `Value`, found integer
+    |             |
+    |             expected due to the type of this binding
+
+error[E0502]: cannot borrow `engine` as mutable because it is also borrowed as immutable
+   --> crates/city-core/examples/town_employment.rs:338:17
+    |
+323 |             let old = engine
+    |                       ------ immutable borrow occurs here
+...
+338 |                 &mut engine,
+    |                 ^^^^^^^^^^^ mutable borrow occurs here
+...
+364 |                 || old.spec.ends_at != new.started
+    |                    ---------------- immutable borrow later used here
+
+Some errors have detailed explanations: E0308, E0502.
+For more information about an error, try `rustc --explain E0308`.
+error: could not compile `mycity-core` (example "town_employment") due to 6 previous errors

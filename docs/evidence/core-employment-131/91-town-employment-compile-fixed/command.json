@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "cargo",
+    "run",
+    "--release",
+    "--locked",
+    "--offline",
+    "-p",
+    "mycity-core",
+    "--example",
+    "town_employment",
+    "--",
+    "--switch-day=10"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/employment-change-current",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-22T23:05:19.030444+00:00",
+  "source_manifest_sha256": "dc4cd7eb53d7cf54e60ad995fece6f00671b0ffaf250870743c11a18d0eb221d"
+}

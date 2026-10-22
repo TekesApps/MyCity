@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/96-town-employment-final-default/executables/a77943e4672db3016af8d5d3cbb1f3c7713956e3a352917553adc4ba8c23645e/town_employment",
+    "--switch-day=27"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/employment-change-current",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-22T23:23:01.085901+00:00",
+  "source_manifest_sha256": "a2b8ab5872dbed6d5d2b798b4ef90a12e0a8933815d30ca37ccc8cda496cdd51"
+}

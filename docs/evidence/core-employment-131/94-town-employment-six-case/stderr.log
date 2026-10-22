@@ -1,0 +1,12 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/employment-change-current/crates/city-core)
+warning: constant `PAID_WORKDAY_SECONDS` is never used
+  --> crates/city-core/examples/town_employment.rs:20:7
+   |
+20 | const PAID_WORKDAY_SECONDS: u64 = 8 * 60 * 60;
+   |       ^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: `mycity-core` (example "town_employment") generated 1 warning
+    Finished `release` profile [optimized] target(s) in 0.84s
+     Running `/Volumes/HP P900/dev/MyCity/target/release/examples/town_employment --switch-day=10`

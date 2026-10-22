@@ -1,0 +1,3 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/employment-change-current/crates/city-core)
+    Finished `release` profile [optimized] target(s) in 0.68s
+     Running `/Volumes/HP P900/dev/MyCity/target/release/examples/town_employment --switch-day=10`

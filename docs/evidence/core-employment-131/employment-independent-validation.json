@@ -1,0 +1,191 @@
+{
+  "status": "passed",
+  "scope": "18 result rows from three fixed-executable runs; independent cash, wage, inventory equations and default affordability oracle",
+  "rows": [
+    {
+      "label": "96-town-employment-final-default",
+      "scenario": "arrears_stress",
+      "changed": false,
+      "reference_need_28_days": 112,
+      "unfilled_reference_need": 12,
+      "reported_unmet_market_demand": 0,
+      "retail_units_sold": 0,
+      "money_stock_work_checks": "passed"
+    },
+    {
+      "label": "96-town-employment-final-default",
+      "scenario": "arrears_stress",
+      "changed": true,
+      "reference_need_28_days": 112,
+      "unfilled_reference_need": 12,
+      "reported_unmet_market_demand": 0,
+      "retail_units_sold": 0,
+      "money_stock_work_checks": "passed"
+    },
+    {
+      "label": "96-town-employment-final-default",
+      "scenario": "solvent_production_pair",
+      "changed": false,
+      "reference_need_28_days": 112,
+      "unfilled_reference_need": 0,
+      "reported_unmet_market_demand": 0,
+      "retail_units_sold": 0,
+      "money_stock_work_checks": "passed"
+    },
+    {
+      "label": "96-town-employment-final-default",
+      "scenario": "solvent_production_pair",
+      "changed": true,
+      "reference_need_28_days": 112,
+      "unfilled_reference_need": 12,
+      "reported_unmet_market_demand": 0,
+      "retail_units_sold": 0,
+      "money_stock_work_checks": "passed"
+    },
+    {
+      "label": "96-town-employment-final-default",
+      "scenario": "purchasing_power_high_wage",
+      "changed": true,
+      "reference_need_28_days": 112,
+      "unfilled_reference_need": 25,
+      "reported_unmet_market_demand": 25,
+      "retail_units_sold": 0,
+      "money_stock_work_checks": "passed"
+    },
+    {
+      "label": "96-town-employment-final-default",
+      "scenario": "purchasing_power_low_wage",
+      "changed": true,
+      "reference_need_28_days": 112,
+      "unfilled_reference_need": 69,
+      "reported_unmet_market_demand": 69,
+      "retail_units_sold": 0,
+      "money_stock_work_checks": "passed"
+    },
+    {
+      "label": "97-town-employment-day01",
+      "scenario": "arrears_stress",
+      "changed": false,
+      "reference_need_28_days": 112,
+      "unfilled_reference_need": 12,
+      "reported_unmet_market_demand": 0,
+      "retail_units_sold": 0,
+      "money_stock_work_checks": "passed"
+    },
+    {
+      "label": "97-town-employment-day01",
+      "scenario": "arrears_stress",
+      "changed": true,
+      "reference_need_28_days": 112,
+      "unfilled_reference_need": 12,
+      "reported_unmet_market_demand": 0,
+      "retail_units_sold": 0,
+      "money_stock_work_checks": "passed"
+    },
+    {
+      "label": "97-town-employment-day01",
+      "scenario": "solvent_production_pair",
+      "changed": false,
+      "reference_need_28_days": 112,
+      "unfilled_reference_need": 0,
+      "reported_unmet_market_demand": 0,
+      "retail_units_sold": 0,
+      "money_stock_work_checks": "passed"
+    },
+    {
+      "label": "97-town-employment-day01",
+      "scenario": "solvent_production_pair",
+      "changed": true,
+      "reference_need_28_days": 112,
+      "unfilled_reference_need": 12,
+      "reported_unmet_market_demand": 0,
+      "retail_units_sold": 0,
+      "money_stock_work_checks": "passed"
+    },
+    {
+      "label": "97-town-employment-day01",
+      "scenario": "purchasing_power_high_wage",
+      "changed": true,
+      "reference_need_28_days": 112,
+      "unfilled_reference_need": 3,
+      "reported_unmet_market_demand": 3,
+      "retail_units_sold": 9,
+      "money_stock_work_checks": "passed"
+    },
+    {
+      "label": "97-town-employment-day01",
+      "scenario": "purchasing_power_low_wage",
+      "changed": true,
+      "reference_need_28_days": 112,
+      "unfilled_reference_need": 69,
+      "reported_unmet_market_demand": 69,
+      "retail_units_sold": 0,
+      "money_stock_work_checks": "passed"
+    },
+    {
+      "label": "98-town-employment-day27",
+      "scenario": "arrears_stress",
+      "changed": false,
+      "reference_need_28_days": 112,
+      "unfilled_reference_need": 12,
+      "reported_unmet_market_demand": 0,
+      "retail_units_sold": 0,
+      "money_stock_work_checks": "passed"
+    },
+    {
+      "label": "98-town-employment-day27",
+      "scenario": "arrears_stress",
+      "changed": true,
+      "reference_need_28_days": 112,
+      "unfilled_reference_need": 12,
+      "reported_unmet_market_demand": 0,
+      "retail_units_sold": 0,
+      "money_stock_work_checks": "passed"
+    },
+    {
+      "label": "98-town-employment-day27",
+      "scenario": "solvent_production_pair",
+      "changed": false,
+      "reference_need_28_days": 112,
+      "unfilled_reference_need": 0,
+      "reported_unmet_market_demand": 0,
+      "retail_units_sold": 0,
+      "money_stock_work_checks": "passed"
+    },
+    {
+      "label": "98-town-employment-day27",
+      "scenario": "solvent_production_pair",
+      "changed": true,
+      "reference_need_28_days": 112,
+      "unfilled_reference_need": 0,
+      "reported_unmet_market_demand": 0,
+      "retail_units_sold": 0,
+      "money_stock_work_checks": "passed"
+    },
+    {
+      "label": "98-town-employment-day27",
+      "scenario": "purchasing_power_high_wage",
+      "changed": true,
+      "reference_need_28_days": 112,
+      "unfilled_reference_need": 66,
+      "reported_unmet_market_demand": 66,
+      "retail_units_sold": 0,
+      "money_stock_work_checks": "passed"
+    },
+    {
+      "label": "98-town-employment-day27",
+      "scenario": "purchasing_power_low_wage",
+      "changed": true,
+      "reference_need_28_days": 112,
+      "unfilled_reference_need": 69,
+      "reported_unmet_market_demand": 69,
+      "retail_units_sold": 0,
+      "money_stock_work_checks": "passed"
+    }
+  ],
+  "limits": [
+    "reference need gap derived for this fixed household need=4/day, not equivalent to reported unmet_market_demand",
+    "same complete opening depends also on shared builder and Scenario inheritance; aggregate assertion alone is not a byte identity proof",
+    "not endogenous job search, legal labor permissions, sustained financing, or persistence acceptance"
+  ]
+}

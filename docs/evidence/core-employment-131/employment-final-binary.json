@@ -1,0 +1,9 @@
+{
+  "binary": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/96-town-employment-final-default/executables/a77943e4672db3016af8d5d3cbb1f3c7713956e3a352917553adc4ba8c23645e/town_employment",
+  "binary_sha256": "a77943e4672db3016af8d5d3cbb1f3c7713956e3a352917553adc4ba8c23645e",
+  "source_sha256": "08017af283f14f5ba4b5474887dc9d0b0b3355949b07fb274a925d259a559f42",
+  "source_files": 263,
+  "source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/96-town-employment-final-default/source.zip",
+  "source_zip_sha256": "f046072553dd6f69cbd5fdfc2e4906215aae38ed0b81a944271210c29a03fbd0",
+  "scope": "example-only, no shared core changes; not integrated with new integer candidate"
+}
