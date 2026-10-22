@@ -19,14 +19,18 @@ the existing settlement paths. No arrears receive priority and no assets are fro
 Each later town settlement first validates the original configured shops, quotes,
 recipes, and any immutable transport proof. It then excludes suspended operators' shops,
 recipes, and quotes from the economic planner. Other employers and shops continue to
-settle. `AddPayroll` and identifiable new commitments involving a suspended account are
+settle; the Store fixture uses a second independent shop and household, and checks that
+the suspended shop's stock does not move while the other shop sells after the stop.
+`AddPayroll` and identifiable new commitments involving a suspended account are
 rejected: new Lend/Claims involving either party, Exchange Dispatch involving seller,
 buyer, or carrier, Boot Start, Construction Start/Work, and account-authored capacity
 reservations. Existing obligations remain payable. Capacity leases created by an unscoped
 System action retain their existing municipal/citywide meaning; because the action carries
 no beneficiary, suspension neither freezes them nor treats them as authority to restart the
-suspended business. There is not yet a universal beneficiary-linked reservation or asset
-freeze model.
+suspended business. New construction entry including `BeginDemolition` is rejected for a
+suspended owner/contractor so it cannot create work that is then blocked from advancing;
+cleanup commands remain available. There is not yet a universal beneficiary-linked
+reservation or asset-freeze model.
 
 This is not a legal insolvency decision, bankruptcy process, liquidation, or `CompanyClose`.
 There is no resume operation, asset transfer freeze, shareholder distribution, or final
@@ -41,8 +45,10 @@ follow-up integration limits, not guarantees of a complete business exit.
 
 The added core tests cover real Timeline payroll and TownSettle behavior, preserving cash,
 stock, and paid wages at suspension, rejection of new payroll, continuation of an unrelated
-employer, and persistence-hook failure atomicity. MarketState empty serialization and
-manual receipt decoding have source tests. All are **not run** in this candidate because
+employer, cross-system rejection of future suspension markers and active/unbilled payroll,
+and the construction-entry guard. The Store fixture now includes two independent shops and
+checks day-2 sales from the continuing shop alongside unchanged suspended-shop inventory.
+MarketState empty serialization and manual receipt decoding have source tests. All are **not run** in this candidate because
 the parent task owns the only Cargo/CLI validation window. Store checkpoint/reopen, WAL
 replay, response-loss, and end-to-end CLI execution are also **not run** and remain required
 before integration.

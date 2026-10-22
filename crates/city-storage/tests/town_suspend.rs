@@ -51,18 +51,23 @@ fn opening() -> Vec<u8> {
     value["sources"].as_array_mut().unwrap().extend([
         serde_json::json!({"id":6,"kind":"inventory_capital","amount":100000}),
         serde_json::json!({"id":7,"kind":"inventory_capital","amount":0}),
+        serde_json::json!({"id":8,"kind":"cash_capital","amount":200000}),
     ]);
+    value["accounts"]
+        .as_array_mut()
+        .unwrap()
+        .push(serde_json::json!({"id":5,"role":"household","cash":200000,"source":8}));
     value["stocks"].as_array_mut().unwrap().extend([
         serde_json::json!({"id":2,"owner":3,"commodity":"raw","quantity":100000,"basis":100000,"source":6}),
         serde_json::json!({"id":3,"owner":3,"commodity":"product","quantity":0,"basis":0,"source":7}),
     ]);
     value["town"] = serde_json::json!({
         "schema_version":1,"id":1,
-        "households":[{"id":1,"account":2,"households":1,"need_good":1,"need_per_household":10,"reference_price_per_q":1000}],
+        "households":[{"id":1,"account":2,"households":1,"need_good":1,"need_per_household":10,"reference_price_per_q":1000},{"id":2,"account":5,"households":1,"need_good":0,"need_per_household":10,"reference_price_per_q":1000}],
         "employers":[{"account":3,"worker_limit":1},{"account":4,"worker_limit":1}],
-        "shops":[{"shop_id":1,"account":3,"stock_id":3,"good":1,"shelf_price_per_q":100}],
+        "shops":[{"shop_id":1,"account":3,"stock_id":3,"good":1,"shelf_price_per_q":100},{"shop_id":2,"account":4,"stock_id":1,"good":0,"shelf_price_per_q":100}],
         "recipes":[{"recipe_id":1,"employer":3,"assigned_workers":1,"input_stock_id":2,"input_per_output":1,"output_good":1,"output_stock_id":3,"output_per_worker_day":100,"waste_per_output_q":0,"available_utility_per_day":1000,"utility_per_output_q":1,"utility_cost_per_output_q":1,"freight_cost_per_input_q":0,"disposal_cost_per_input_q":0,"utility_account":1,"freight_account":1,"disposal_account":1}],
-        "delivery":[{"quote_id":1,"shop":1,"household_group":1,"good":1,"reachable":true,"route_source":77,"freight_account":1,"utility_account":1,"available_capacity":100,"freight_per_q":1,"utility_surcharge_per_q":1}]
+        "delivery":[{"quote_id":1,"shop":1,"household_group":1,"good":1,"reachable":true,"route_source":77,"freight_account":1,"utility_account":1,"available_capacity":100,"freight_per_q":1,"utility_surcharge_per_q":1},{"quote_id":2,"shop":2,"household_group":2,"good":0,"reachable":true,"route_source":78,"freight_account":1,"utility_account":1,"available_capacity":100,"freight_per_q":1,"utility_surcharge_per_q":1}]
     });
     serde_json::to_vec(&value).unwrap()
 }
@@ -146,6 +151,8 @@ fn stop_operations_is_atomic_durable_and_does_not_stop_unrelated_business() {
     let paid_before = store.engine().unwrap().timeline().unwrap().payroll[0].paid;
     let cash_before = day1.accounts.iter().find(|row| row.id == 3).unwrap().cash;
     let stock_before = day1.stocks.iter().find(|row| row.id == 2).unwrap().quantity;
+    let stopped_shop_stock_before = day1.stocks.iter().find(|row| row.id == 3).unwrap().quantity;
+    let continuing_shop_stock_before = day1.stocks.iter().find(|row| row.id == 1).unwrap().quantity;
 
     let request = envelope(
         &store,
@@ -197,6 +204,16 @@ fn stop_operations_is_atomic_durable_and_does_not_stop_unrelated_business() {
             .is_ok()
     );
     assert_eq!(store.state_hash().unwrap(), hash_after_suspend);
+    let cash_at_suspend = store
+        .engine()
+        .unwrap()
+        .world()
+        .view()
+        .accounts
+        .iter()
+        .find(|row| row.id == 3)
+        .unwrap()
+        .cash;
     store.checkpoint().unwrap();
     drop(store);
 
@@ -224,13 +241,18 @@ fn stop_operations_is_atomic_durable_and_does_not_stop_unrelated_business() {
     drive(&mut store, 2 * DAY);
     execute(&mut store, Action::TownSettle { profile_id: 1 });
     let view = store.engine().unwrap().world().view();
+    assert!(view.town.unwrap().state.last_summary.actual_sales > Quantity::ZERO);
     assert_eq!(
-        view.town.unwrap().state.last_summary.actual_sales,
-        Quantity::ZERO
+        view.stocks.iter().find(|row| row.id == 3).unwrap().quantity,
+        stopped_shop_stock_before
     );
+    assert!(
+        view.stocks.iter().find(|row| row.id == 1).unwrap().quantity < continuing_shop_stock_before
+    );
+    assert!(view.accounts.iter().find(|row| row.id == 3).unwrap().cash <= cash_at_suspend);
     assert_eq!(
-        view.town.unwrap().state.last_summary.produced,
-        Quantity::ZERO
+        view.stocks.iter().find(|row| row.id == 2).unwrap().quantity,
+        stock_before
     );
     assert!(view.town.unwrap().state.last_summary.wages_accrued > Money::ZERO);
 }

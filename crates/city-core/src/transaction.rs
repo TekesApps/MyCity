@@ -579,6 +579,11 @@ impl Engine {
             t.validate()
                 .map_err(|e| format!("timeline_restore:{e:?}"))?;
         }
+        validate_town_suspension_consistency(
+            candidate.world.town.as_ref().map(|market| &market.state),
+            candidate.timeline.as_ref(),
+        )
+        .map_err(|_| "checkpoint_town_suspension")?;
 
         for (i, r) in candidate.resources.iter().enumerate() {
             if r.id == 0 || candidate.resources[..i].iter().any(|p| p.id == r.id) {
@@ -1508,13 +1513,10 @@ impl Engine {
                         return Err(TxError::InvalidOperation);
                     }
                     let p = construction.as_mut().ok_or(TxError::InvalidOperation)?;
-                    if matches!(
-                        command,
-                        crate::construction::EngineCommand::Start
-                            | crate::construction::EngineCommand::Work { .. }
-                    ) && [p.owner, p.contractor]
-                        .iter()
-                        .any(|id| market_is_suspended(town.as_ref(), *id))
+                    if construction_operation_requires_active_business(command)
+                        && [p.owner, p.contractor]
+                            .iter()
+                            .any(|id| market_is_suspended(town.as_ref(), *id))
                     {
                         return Err(TxError::InvalidOperation);
                     }
@@ -2188,6 +2190,8 @@ impl Engine {
         if let Some(t) = timeline.as_ref() {
             t.validate()?;
         }
+        validate_town_suspension_consistency(town.as_ref(), timeline.as_ref())
+            .map_err(|_| TxError::InvalidOperation)?;
         let timeline_progress = if env
             .actions
             .iter()
@@ -2685,6 +2689,12 @@ fn prepare_town_settlement(
         input
             .recipes
             .retain(|recipe| !suspended.contains(&recipe.employer));
+        let active_recipe_ids: Vec<u32> = input
+            .recipes
+            .iter()
+            .map(|recipe| recipe.recipe_id)
+            .collect();
+        executions.retain(|execution| active_recipe_ids.contains(&execution.recipe_id));
         let active_shop_ids: Vec<u32> = input.shops.iter().map(|shop| shop.shop_id).collect();
         input
             .delivery
@@ -3849,6 +3859,33 @@ pub(super) fn market_is_suspended(
         })
 }
 
+fn validate_town_suspension_consistency(
+    state: Option<&crate::town_runtime::MarketState>,
+    timeline: Option<&crate::timeline::Timeline>,
+) -> Result<(), &'static str> {
+    let Some(state) = state else {
+        return Ok(());
+    };
+    if state.suspended_operators.is_empty() {
+        return Ok(());
+    }
+    let timeline = timeline.ok_or("town_suspension_without_timeline")?;
+    for suspension in state.suspended_operators.as_slice() {
+        if suspension.suspended_at > timeline.progress.last_complete {
+            return Err("town_suspension_from_future");
+        }
+        if timeline.payroll.iter().any(|payroll| {
+            payroll.spec.payer == suspension.account
+                && (payroll.working
+                    || payroll.next_due.is_some()
+                    || payroll.billed != payroll.accrued)
+        }) {
+            return Err("town_suspended_payroll_active");
+        }
+    }
+    Ok(())
+}
+
 fn active_company_dependency(
     account: u32,
     exchange: Option<&crate::exchange::Exchange>,
@@ -3885,6 +3922,23 @@ fn active_company_dependency(
             )
     });
     reserved_capacity || exchange_pending || boot_active || construction_active
+}
+
+fn construction_operation_requires_active_business(
+    command: crate::construction::EngineCommand,
+) -> bool {
+    matches!(
+        command,
+        crate::construction::EngineCommand::File
+            | crate::construction::EngineCommand::DecideGate { .. }
+            | crate::construction::EngineCommand::Prepare
+            | crate::construction::EngineCommand::Start
+            | crate::construction::EngineCommand::Work { .. }
+            | crate::construction::EngineCommand::Resume
+            | crate::construction::EngineCommand::SubmitInspection
+            | crate::construction::EngineCommand::AcceptInspection { .. }
+            | crate::construction::EngineCommand::BeginDemolition { .. }
+    )
 }
 
 fn safe_inbox_release(action: &Action, exchange: Option<&crate::exchange::Exchange>) -> bool {
@@ -5225,5 +5279,85 @@ mod tests {
             Err("simulated write failure")
         );
         assert_eq!(e.state_hash(), before);
+    }
+
+    #[test]
+    fn checkpoint_rejects_future_suspension_and_resumed_or_unbilled_payroll() {
+        let mut e = productive_market_engine();
+        add_daily_payroll(&mut e, 1, 3);
+        advance_timeline_to(&mut e, crate::timeline::DAY);
+        issue(&mut e, Action::TownSettle { profile_id: 1 });
+        issue(
+            &mut e,
+            Action::TownSuspendOperations {
+                profile_id: 1,
+                company_account: 3,
+            },
+        );
+        let checkpoint = e.export_checkpoint().unwrap();
+        let baseline: serde_json::Value = serde_json::from_slice(&checkpoint).unwrap();
+
+        let mut future_marker = baseline.clone();
+        future_marker["world"]["town"]["state"]["settled_day"] =
+            serde_json::json!(2 * crate::timeline::DAY);
+        future_marker["world"]["town"]["state"]["last_summary"]["day"] =
+            serde_json::json!(2 * crate::timeline::DAY);
+        future_marker["world"]["town"]["state"]["suspended_operators"][0]["suspended_at"] =
+            serde_json::json!(2 * crate::timeline::DAY);
+        assert!(
+            Engine::restore_checkpoint(&serde_json::to_vec(&future_marker).unwrap()).is_err(),
+            "a suspension cannot be later than Timeline.last_complete"
+        );
+
+        let mut resumed_payroll = baseline.clone();
+        resumed_payroll["timeline"]["payroll"][0]["working"] = serde_json::json!(true);
+        assert!(
+            Engine::restore_checkpoint(&serde_json::to_vec(&resumed_payroll).unwrap()).is_err()
+        );
+
+        let mut pending_payroll = baseline.clone();
+        pending_payroll["timeline"]["payroll"][0]["next_due"] =
+            serde_json::json!(2 * crate::timeline::DAY);
+        assert!(
+            Engine::restore_checkpoint(&serde_json::to_vec(&pending_payroll).unwrap()).is_err()
+        );
+
+        let mut unbilled_payroll = baseline;
+        unbilled_payroll["timeline"]["payroll"][0]["billed"] = serde_json::json!(0);
+        assert!(
+            Engine::restore_checkpoint(&serde_json::to_vec(&unbilled_payroll).unwrap()).is_err()
+        );
+    }
+
+    #[test]
+    fn suspended_construction_guard_blocks_new_build_and_demolition_entry_only() {
+        use crate::construction::EngineCommand as C;
+        for command in [
+            C::File,
+            C::DecideGate {
+                gate_id: 1,
+                decision: crate::construction::GateDecision::Accepted,
+                evidence_id: 1,
+            },
+            C::Prepare,
+            C::Start,
+            C::Work {
+                at: crate::units::GameTime::ZERO,
+                elapsed_seconds: 1,
+                worker_seconds: 1,
+            },
+            C::Resume,
+            C::SubmitInspection,
+            C::AcceptInspection {
+                inspector: 1,
+                accepted: true,
+            },
+            C::BeginDemolition { waste_receiver: 1 },
+        ] {
+            assert!(construction_operation_requires_active_business(command));
+        }
+        for cleanup in [C::Pause, C::Cancel, C::AcceptWaste, C::Close] {
+            assert!(!construction_operation_requires_active_business(cleanup));
+        }
     }
 }
