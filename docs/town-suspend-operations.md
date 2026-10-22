@@ -43,12 +43,27 @@ follow-up integration limits, not guarantees of a complete business exit.
 
 ## Source verification status
 
+The example keeps ordinary mode as the default and adds optional `--loss`, which changes
+only the recipe's existing `utility_cost_per_output_q` from 1 to 10,000. It measures the
+business projection from account cash, owned stock basis, unpaid Timeline payroll, and
+unpaid Timeline claims before day one, after the completed first-day settlement, and after
+the next day. The loss mode must observe a negative pre-suspension change before issuing
+`TownSuspendOperations`; the high utility cost must suppress production while producing
+positive accrued and idle-labor expense. It also checks no new labor or stock movement for
+the suspended company, continuing sales at the second shop, an unchanged existing due-later
+Timeline payable, and unchanged citywide cash. The fixture has no `Lend` or cash borrowing,
+dividends, or asset transfers; it carries one fixed Timeline payable with no cash advance.
+The projection is intentionally limited to those account and Timeline values, not a full
+enterprise income statement. Reported amounts are cents. Stopping remains ordinary
+operational suspension, not a legal closure.
+
 The added core tests cover real Timeline payroll and TownSettle behavior, preserving cash,
 stock, and paid wages at suspension, rejection of new payroll, continuation of an unrelated
 employer, cross-system rejection of future suspension markers and active/unbilled payroll,
 and the construction-entry guard. The Store fixture now includes two independent shops and
 checks day-2 sales from the continuing shop alongside unchanged suspended-shop inventory.
-MarketState empty serialization and manual receipt decoding have source tests. All are **not run** in this candidate because
+MarketState empty serialization and manual receipt decoding have source tests. Ordinary and
+loss-mode Store checks and both CLI modes are **not run** in this candidate because
 the parent task owns the only Cargo/CLI validation window. Store checkpoint/reopen, WAL
 replay, response-loss, and end-to-end CLI execution are also **not run** and remain required
 before integration.
