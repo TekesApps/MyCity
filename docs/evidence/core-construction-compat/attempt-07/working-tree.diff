@@ -1,0 +1,266 @@
+diff --git a/crates/city-core/src/assembly.rs b/crates/city-core/src/assembly.rs
+index a131cc0..fbb3b5d 100644
+--- a/crates/city-core/src/assembly.rs
++++ b/crates/city-core/src/assembly.rs
+@@ -121,6 +121,7 @@ pub struct World {
+     pub(crate) economy: Option<crate::economy::Economy>,
+     pub(crate) boot: Option<crate::boot::Boot>,
+     pub(crate) exchange: Option<crate::exchange::Exchange>,
++    #[serde(skip_serializing_if = "Option::is_none")]
+     pub(crate) construction: Option<crate::construction::Project>,
+ }
+ 
+@@ -156,6 +157,7 @@ pub struct WorldView {
+     pub economy: Option<crate::economy::Economy>,
+     pub boot: Option<crate::boot::Boot>,
+     pub exchange: Option<crate::exchange::Exchange>,
++    #[serde(skip_serializing_if = "Option::is_none")]
+     pub construction: Option<crate::construction::Project>,
+ }
+ 
+@@ -211,6 +213,7 @@ pub(crate) struct BusinessWorld<'a> {
+     economy: &'a Option<crate::economy::Economy>,
+     boot: &'a Option<crate::boot::Boot>,
+     exchange: &'a Option<crate::exchange::Exchange>,
++    #[serde(skip_serializing_if = "Option::is_none")]
+     construction: &'a Option<crate::construction::Project>,
+ }
+ #[derive(Serialize)]
+@@ -226,6 +229,7 @@ pub(crate) struct BorrowedWorldView<'a> {
+     economy: &'a Option<crate::economy::Economy>,
+     boot: &'a Option<crate::boot::Boot>,
+     exchange: &'a Option<crate::exchange::Exchange>,
++    #[serde(skip_serializing_if = "Option::is_none")]
+     construction: &'a Option<crate::construction::Project>,
+ }
+ struct AccountViews<'a>(&'a World);
+@@ -351,7 +355,11 @@ impl World {
+     }
+     pub(crate) fn borrowed_view(&self) -> BorrowedWorldView<'_> {
+         BorrowedWorldView {
+-            schema: "mycity-m0-state-v7",
++            schema: if self.construction.is_some() {
++                "mycity-m0-state-v7"
++            } else {
++                "mycity-m0-state-v6"
++            },
+             scope: self.scope,
+             seed: self.seed,
+             revision: self.revision,
+@@ -472,7 +480,11 @@ impl World {
+     }
+     pub fn view(&self) -> WorldView {
+         WorldView {
+-            schema: "mycity-m0-state-v7",
++            schema: if self.construction.is_some() {
++                "mycity-m0-state-v7"
++            } else {
++                "mycity-m0-state-v6"
++            },
+             scope: self.scope,
+             seed: self.seed,
+             revision: self.revision,
+@@ -732,6 +744,9 @@ pub(crate) fn assemble_into(bytes: &[u8], world: &mut World) -> Result<(), Strin
+ 
+ impl crate::restore_into::Restore for World {
+     fn restore<'de, D: serde::Deserializer<'de>>(&mut self, d: D) -> Result<(), D::Error> {
++        // Pre-construction checkpoints have no field 12. Clear the reused slot first so
++        // restoring such a checkpoint over a world with a project cannot retain stale state.
++        self.construction = None;
+         crate::restore_into::object!(d,self,World,255u64,{
+         scope,0=>Copy,
+         seed,1=>Copy,
+@@ -755,6 +770,79 @@ impl crate::restore_into::Restore for World {
+ mod tests {
+     use super::*;
+     const INPUT: &[u8] = include_bytes!("../../../fixtures/m0-e0-opening.json");
++
++    fn project() -> crate::construction::Project {
++        use crate::{
++            construction::{Gate, GateCategory, GateDecision, Kind, Material},
++            units::GameTime,
++        };
++        crate::construction::Project::new(
++            7,
++            Kind::Build,
++            4,
++            3,
++            1,
++            80,
++            1,
++            1,
++            Money::new(1_000_000).unwrap(),
++            Money::new(3_600).unwrap(),
++            28_800,
++            &[Gate {
++                id: 1,
++                category: GateCategory::Permit,
++                evidence_id: 0,
++                party: 1,
++                decided: GateDecision::Pending,
++            }],
++            &[Material {
++                stock_id: 1,
++                required: Quantity::new(1_000).unwrap(),
++                consumed: Quantity::ZERO,
++                basis_per_unit: Money::new(400).unwrap(),
++                basis_remainder: 0,
++            }],
++            GameTime::ZERO,
++        )
++        .unwrap()
++    }
++
++    #[test]
++    fn restore_of_preconstruction_object_clears_reused_optional_slot() {
++        let mut reused = assemble(INPUT).unwrap();
++        reused.construction = Some(project());
++
++        // This synthetic object tests only the reused-slot defaulting invariant. The
++        // authentic v106 Store/WAL compatibility test uses its unmodified archived bytes.
++        let fresh = assemble(INPUT).unwrap();
++        assert_eq!(fresh.view().schema, "mycity-m0-state-v6");
++        assert!(!serde_json::to_value(fresh.view())
++            .unwrap()
++            .as_object()
++            .unwrap()
++            .contains_key("construction"));
++        assert!(!serde_json::to_value(fresh.business_world())
++            .unwrap()
++            .as_object()
++            .unwrap()
++            .contains_key("construction"));
++        assert!(!serde_json::to_value(fresh.borrowed_view())
++            .unwrap()
++            .as_object()
++            .unwrap()
++            .contains_key("construction"));
++        let mut legacy = serde_json::to_value(fresh).unwrap();
++        assert!(legacy
++            .as_object_mut()
++            .unwrap()
++            .remove("construction")
++            .is_none());
++        let bytes = serde_json::to_vec(&legacy).unwrap();
++        let mut deserializer = serde_json::Deserializer::from_slice(&bytes);
++        crate::restore_into::Restore::restore(&mut reused, &mut deserializer).unwrap();
++        assert!(reused.construction.is_none());
++    }
++
+     #[test]
+     fn sources_and_independent_initial_worlds_are_exact() {
+         let w = assemble(INPUT).unwrap();
+diff --git a/crates/city-storage/tests/construction.rs b/crates/city-storage/tests/construction.rs
+index 4bded1a..b5ef26b 100644
+--- a/crates/city-storage/tests/construction.rs
++++ b/crates/city-storage/tests/construction.rs
+@@ -17,6 +17,22 @@ use std::{
+ 
+ const OPENING: &[u8] = include_bytes!("../../../fixtures/m0-e0-opening.json");
+ const RULES: &str = "construction-engine-v1";
++const V106_RULES: &str = "6b70d8bc08d00625b369ae92d58ae5ce9dceff9d31a733fe17732de3dd38c87d";
++const V106_GENESIS: &[u8] = include_bytes!(
++    "../../../docs/evidence/core-construction-compat/attempt-01/old-v106-world/genesis.json"
++);
++const V106_CURRENT: &[u8] = include_bytes!(
++    "../../../docs/evidence/core-construction-compat/attempt-01/old-v106-world/CURRENT.json"
++);
++const V106_ROOT_0: &[u8] = include_bytes!(
++    "../../../docs/evidence/core-construction-compat/attempt-01/old-v106-world/root-0.json"
++);
++const V106_ROOT_1: &[u8] = include_bytes!(
++    "../../../docs/evidence/core-construction-compat/attempt-01/old-v106-world/root-1.json"
++);
++const V106_WAL: &[u8] = include_bytes!(
++    "../../../docs/evidence/core-construction-compat/attempt-01/old-v106-world/wal.bin"
++);
+ static NEXT: AtomicU64 = AtomicU64::new(0);
+ struct Temp(PathBuf);
+ impl Temp {
+@@ -377,3 +393,86 @@ fn construction_work_money_and_materials_commit_once_across_wal_lost_response_an
+     assert_eq!(stock.basis.value(), 239_600);
+     assert_eq!(s.committed_sequence(), sequence_before_work + 1);
+ }
++
++#[test]
++fn v106_store_wal_checkpoint_and_receipt_reopen_with_identical_identity() {
++    const LEGACY_ENGINE_STATE: &str =
++        "2188baf12c0adf263c33bb3cf233e8005d73394aedb7a12bfb23bc4542cda0e6";
++    const LEGACY_WORLD_STATE: &str =
++        "332a903ab02ed53459491d87f855b3b57fe1fa0259bd039e07a23746f25b71d1";
++    const LEGACY_JOURNAL: &str = "cb1a68bcda51ec4b1bb2932380d5e2b4ad07f02c91fb5b823c2ee8d516ee1b90";
++    let temp = Temp::new();
++    let path = temp.world();
++    fs::create_dir(&path).unwrap();
++    for (name, bytes) in [
++        ("genesis.json", V106_GENESIS),
++        ("CURRENT.json", V106_CURRENT),
++        ("root-0.json", V106_ROOT_0),
++        ("root-1.json", V106_ROOT_1),
++        ("wal.bin", V106_WAL),
++    ] {
++        fs::write(path.join(name), bytes).unwrap();
++    }
++    let mut store = Store::open(&path, V106_RULES).unwrap();
++    let (view, journal_hash, engine_hash, world_hash) = {
++        let engine = store.engine().unwrap();
++        let view = engine.world().view();
++        let journal_hash = mycity_core::sha256(&serde_json::to_vec(engine.journal()).unwrap());
++        (
++            view,
++            journal_hash,
++            engine.state_hash(),
++            engine.world().state_hash(),
++        )
++    };
++    assert_eq!(engine_hash, LEGACY_ENGINE_STATE);
++    assert_eq!(world_hash, LEGACY_WORLD_STATE);
++    let store_hash_before_replay = store.state_hash().unwrap();
++    assert_eq!(store.committed_sequence(), 2);
++    assert_eq!(journal_hash, LEGACY_JOURNAL);
++    assert_eq!(
++        view.accounts
++            .iter()
++            .map(|a| a.cash.value())
++            .collect::<Vec<_>>(),
++        [1_000_000, 190_000, 600_000, 1_210_000]
++    );
++    assert_eq!(view.stocks[0].quantity.value(), 600_000);
++    assert_eq!(view.stocks[0].basis.value(), 240_000);
++    assert_eq!(store.engine().unwrap().resources()[0].occupied, 8);
++
++    let (family, company, supplier) = {
++        let engine = store.engine().unwrap();
++        (
++            engine.world().account_ref(2).unwrap(),
++            engine.world().account_ref(3).unwrap(),
++            engine.world().account_ref(4).unwrap(),
++        )
++    };
++    let retry = Envelope {
++        world: view.scope.world(),
++        branch: view.scope.branch(),
++        operation_id: 1,
++        expected_revision: 0,
++        actions: vec![
++            Action::Protect {
++                account: family,
++                amount: Money::new(10_000).unwrap(),
++            },
++            Action::Transfer {
++                from: company,
++                to: supplier,
++                amount: Money::new(10_000).unwrap(),
++            },
++            Action::ReserveCapacity {
++                resource: 1,
++                units: 8,
++            },
++        ],
++    };
++    let replay = store.execute(Caller::System, retry).unwrap();
++    assert!(replay.has_persistent_receipt);
++    assert!(replay.model.is_ok());
++    assert_eq!(store.engine().unwrap().state_hash(), LEGACY_ENGINE_STATE);
++    assert_eq!(store.state_hash().unwrap(), store_hash_before_replay);
++}

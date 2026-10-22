@@ -1,0 +1,3 @@
+CARGO_TARGET_DIR=/Users/frankqin/dev/MyCity/target cargo +1.85.1 test --release --locked --offline -p mycity-storage --test construction v106_store_wal_checkpoint_and_receipt_reopen_with_identical_identity -- --nocapture
+CARGO_TARGET_DIR=/Users/frankqin/dev/MyCity/target cargo +1.85.1 test --release --locked --offline -p mycity-core assembly::tests::restore_of_preconstruction_object_clears_reused_optional_slot --lib -- --nocapture
+CARGO_TARGET_DIR=/Users/frankqin/dev/MyCity/target cargo +1.85.1 clippy --release --locked --offline -p mycity-core -p mycity-storage --all-targets -- -D warnings

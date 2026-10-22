@@ -1,0 +1,256 @@
+{
+  "build": {
+    "profile": "release",
+    "rustc": "rustc 1.85.1 (4eb161250 2025-03-15)",
+    "target": "aarch64-apple-darwin"
+  },
+  "economic_prototypes": "not_run",
+  "gpu": "not_implemented",
+  "host": {
+    "arch": "aarch64",
+    "chip": "Apple M4",
+    "memory_bytes": "34359738368",
+    "os": "macos",
+    "os_version": "26.6.2"
+  },
+  "input": {
+    "branch": 1,
+    "laboratory_only": true,
+    "schema": "mycity-m0-bootstrap-v1",
+    "seed": 7,
+    "world": 1
+  },
+  "input_sha256": "6756555697457b3de5307086610a108c88d15650c6e668da0cdf990ca52b874c",
+  "layout": {
+    "accounts": {
+      "free_index_capacity": 64,
+      "header_bytes": 80,
+      "live_records": 4,
+      "owned_capacity_bytes": 2384,
+      "record_bytes": 24,
+      "slot_bytes": 32,
+      "slots_capacity": 64
+    },
+    "allocator_metadata_included": false,
+    "index_capacity_bytes": 7680,
+    "opening_sources_capacity_bytes": 3072,
+    "owned_capacity_bytes": 47952,
+    "stocks": {
+      "free_index_capacity": 128,
+      "header_bytes": 80,
+      "live_records": 1,
+      "owned_capacity_bytes": 12880,
+      "record_bytes": 88,
+      "slot_bytes": 96,
+      "slots_capacity": 128
+    },
+    "temporary_parse_and_view_pages_included": false,
+    "world_remaining_header_bytes": 21936
+  },
+  "lock_sha256": "7da5c54a8499a07cbc71dcecce0c0095d4af3b8b6e5052783f20d188037b6dd6",
+  "memory_16gb_gate": "not_run",
+  "report_schema": "mycity-m0-evidence-v1",
+  "result": "transaction_storage_roundtrip_passed",
+  "rules": {
+    "input_limit_bytes": 65536,
+    "max_accounts": 64,
+    "max_sources": 192,
+    "max_stocks": 128,
+    "mode": "headless_laboratory",
+    "numeric_strategy": "checked-integer-v1",
+    "opening_schema": "mycity-m0-opening-v1",
+    "schema": "mycity-m0-bootstrap-v1",
+    "storage": {
+      "committed_boundary": "CURRENT_root_hash_sequence_and_wal_end",
+      "frame_limit": 32768,
+      "rules_identity": "6b70d8bc08d00625b369ae92d58ae5ce9dceff9d31a733fe17732de3dd38c87d",
+      "schema": "mycity-m0-genesis-v1",
+      "wal_limit": 67108864
+    },
+    "world_byte_budget": 131072
+  },
+  "rules_sha256": "a5720a6b5c65fd1bce37f8173a657e106e04c8a5b82f25f522c21e27b0754a58",
+  "run_id": "35360-1792644283135077000",
+  "source_sha256": "6b70d8bc08d00625b369ae92d58ae5ce9dceff9d31a733fe17732de3dd38c87d",
+  "state_sha256": "332a903ab02ed53459491d87f855b3b57fe1fa0259bd039e07a23746f25b71d1",
+  "storage_probe": {
+    "committed_sequence": 2,
+    "engine_owned_capacity_bytes": 3926696,
+    "journal_sha256": "cb1a68bcda51ec4b1bb2932380d5e2b4ad07f02c91fb5b823c2ee8d516ee1b90",
+    "memory_16gb_gate": "not_run",
+    "model_receipt_durability": "volatile_only_inside_core; storage_wrapper_confirms_persistent_coverage",
+    "power_loss": "not_tested",
+    "replay_has_persistent_receipt": true,
+    "resources": [
+      {
+        "capacity": 10,
+        "id": 1,
+        "occupied": 8,
+        "reserved": 0
+      }
+    ],
+    "result": "committed_transactions_recovered_once",
+    "scope": "transaction_recovery_only_not_scheduler_checkpoint",
+    "state_sha256": "2188baf12c0adf263c33bb3cf233e8005d73394aedb7a12bfb23bc4542cda0e6",
+    "world": {
+      "accounts": [
+        {
+          "cash": 1000000,
+          "id": 1,
+          "protected": 0,
+          "role": "treasury"
+        },
+        {
+          "cash": 190000,
+          "id": 2,
+          "protected": 0,
+          "role": "household"
+        },
+        {
+          "cash": 600000,
+          "id": 3,
+          "protected": 0,
+          "role": "company"
+        },
+        {
+          "cash": 1210000,
+          "id": 4,
+          "protected": 0,
+          "role": "supplier"
+        }
+      ],
+      "boot": null,
+      "economy": null,
+      "exchange": null,
+      "opening_sources": [
+        {
+          "amount": 1000000,
+          "id": 1,
+          "kind": "cash_capital"
+        },
+        {
+          "amount": 200000,
+          "id": 2,
+          "kind": "cash_capital"
+        },
+        {
+          "amount": 600000,
+          "id": 3,
+          "kind": "cash_capital"
+        },
+        {
+          "amount": 1200000,
+          "id": 4,
+          "kind": "cash_capital"
+        },
+        {
+          "amount": 240000,
+          "id": 5,
+          "kind": "inventory_capital"
+        }
+      ],
+      "region": null,
+      "revision": 2,
+      "schema": "mycity-m0-state-v6",
+      "scope": {
+        "branch": 1,
+        "world": 1
+      },
+      "seed": 7,
+      "stocks": [
+        {
+          "basis": 240000,
+          "commodity": "raw",
+          "id": 1,
+          "lot_id": 5,
+          "offset": 0,
+          "origin_basis": 240000,
+          "origin_quantity": 600000,
+          "owner": 4,
+          "quantity": 600000
+        }
+      ]
+    }
+  },
+  "task": "M0-T06",
+  "ui": "not_implemented_by_scope",
+  "world": {
+    "accounts": [
+      {
+        "cash": 1000000,
+        "id": 1,
+        "protected": 0,
+        "role": "treasury"
+      },
+      {
+        "cash": 200000,
+        "id": 2,
+        "protected": 0,
+        "role": "household"
+      },
+      {
+        "cash": 600000,
+        "id": 3,
+        "protected": 0,
+        "role": "company"
+      },
+      {
+        "cash": 1200000,
+        "id": 4,
+        "protected": 0,
+        "role": "supplier"
+      }
+    ],
+    "boot": null,
+    "economy": null,
+    "exchange": null,
+    "opening_sources": [
+      {
+        "amount": 1000000,
+        "id": 1,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 200000,
+        "id": 2,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 600000,
+        "id": 3,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 1200000,
+        "id": 4,
+        "kind": "cash_capital"
+      },
+      {
+        "amount": 240000,
+        "id": 5,
+        "kind": "inventory_capital"
+      }
+    ],
+    "region": null,
+    "revision": 0,
+    "schema": "mycity-m0-state-v6",
+    "scope": {
+      "branch": 1,
+      "world": 1
+    },
+    "seed": 7,
+    "stocks": [
+      {
+        "basis": 240000,
+        "commodity": "raw",
+        "id": 1,
+        "lot_id": 5,
+        "offset": 0,
+        "origin_basis": 240000,
+        "origin_quantity": 600000,
+        "owner": 4,
+        "quantity": 600000
+      }
+    ]
+  }
+}

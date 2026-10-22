@@ -121,6 +121,7 @@ pub struct World {
     pub(crate) economy: Option<crate::economy::Economy>,
     pub(crate) boot: Option<crate::boot::Boot>,
     pub(crate) exchange: Option<crate::exchange::Exchange>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) construction: Option<crate::construction::Project>,
 }
 
@@ -156,6 +157,7 @@ pub struct WorldView {
     pub economy: Option<crate::economy::Economy>,
     pub boot: Option<crate::boot::Boot>,
     pub exchange: Option<crate::exchange::Exchange>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub construction: Option<crate::construction::Project>,
 }
 
@@ -211,6 +213,7 @@ pub(crate) struct BusinessWorld<'a> {
     economy: &'a Option<crate::economy::Economy>,
     boot: &'a Option<crate::boot::Boot>,
     exchange: &'a Option<crate::exchange::Exchange>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     construction: &'a Option<crate::construction::Project>,
 }
 #[derive(Serialize)]
@@ -226,6 +229,7 @@ pub(crate) struct BorrowedWorldView<'a> {
     economy: &'a Option<crate::economy::Economy>,
     boot: &'a Option<crate::boot::Boot>,
     exchange: &'a Option<crate::exchange::Exchange>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     construction: &'a Option<crate::construction::Project>,
 }
 struct AccountViews<'a>(&'a World);
@@ -351,7 +355,11 @@ impl World {
     }
     pub(crate) fn borrowed_view(&self) -> BorrowedWorldView<'_> {
         BorrowedWorldView {
-            schema: "mycity-m0-state-v7",
+            schema: if self.construction.is_some() {
+                "mycity-m0-state-v7"
+            } else {
+                "mycity-m0-state-v6"
+            },
             scope: self.scope,
             seed: self.seed,
             revision: self.revision,
@@ -472,7 +480,11 @@ impl World {
     }
     pub fn view(&self) -> WorldView {
         WorldView {
-            schema: "mycity-m0-state-v7",
+            schema: if self.construction.is_some() {
+                "mycity-m0-state-v7"
+            } else {
+                "mycity-m0-state-v6"
+            },
             scope: self.scope,
             seed: self.seed,
             revision: self.revision,
@@ -732,6 +744,9 @@ pub(crate) fn assemble_into(bytes: &[u8], world: &mut World) -> Result<(), Strin
 
 impl crate::restore_into::Restore for World {
     fn restore<'de, D: serde::Deserializer<'de>>(&mut self, d: D) -> Result<(), D::Error> {
+        // Pre-construction checkpoints have no field 12. Clear the reused slot first so
+        // restoring such a checkpoint over a world with a project cannot retain stale state.
+        self.construction = None;
         crate::restore_into::object!(d,self,World,255u64,{
         scope,0=>Copy,
         seed,1=>Copy,
@@ -755,6 +770,79 @@ impl crate::restore_into::Restore for World {
 mod tests {
     use super::*;
     const INPUT: &[u8] = include_bytes!("../../../fixtures/m0-e0-opening.json");
+
+    fn project() -> crate::construction::Project {
+        use crate::{
+            construction::{Gate, GateCategory, GateDecision, Kind, Material},
+            units::GameTime,
+        };
+        crate::construction::Project::new(
+            7,
+            Kind::Build,
+            4,
+            3,
+            1,
+            80,
+            1,
+            1,
+            Money::new(1_000_000).unwrap(),
+            Money::new(3_600).unwrap(),
+            28_800,
+            &[Gate {
+                id: 1,
+                category: GateCategory::Permit,
+                evidence_id: 0,
+                party: 1,
+                decided: GateDecision::Pending,
+            }],
+            &[Material {
+                stock_id: 1,
+                required: Quantity::new(1_000).unwrap(),
+                consumed: Quantity::ZERO,
+                basis_per_unit: Money::new(400).unwrap(),
+                basis_remainder: 0,
+            }],
+            GameTime::ZERO,
+        )
+        .unwrap()
+    }
+
+    #[test]
+    fn restore_of_preconstruction_object_clears_reused_optional_slot() {
+        let mut reused = assemble(INPUT).unwrap();
+        reused.construction = Some(project());
+
+        // This synthetic object tests only the reused-slot defaulting invariant. The
+        // authentic v106 Store/WAL compatibility test uses its unmodified archived bytes.
+        let fresh = assemble(INPUT).unwrap();
+        assert_eq!(fresh.view().schema, "mycity-m0-state-v6");
+        assert!(!serde_json::to_value(fresh.view())
+            .unwrap()
+            .as_object()
+            .unwrap()
+            .contains_key("construction"));
+        assert!(!serde_json::to_value(fresh.business_world())
+            .unwrap()
+            .as_object()
+            .unwrap()
+            .contains_key("construction"));
+        assert!(!serde_json::to_value(fresh.borrowed_view())
+            .unwrap()
+            .as_object()
+            .unwrap()
+            .contains_key("construction"));
+        let mut legacy = serde_json::to_value(fresh).unwrap();
+        assert!(legacy
+            .as_object_mut()
+            .unwrap()
+            .remove("construction")
+            .is_none());
+        let bytes = serde_json::to_vec(&legacy).unwrap();
+        let mut deserializer = serde_json::Deserializer::from_slice(&bytes);
+        crate::restore_into::Restore::restore(&mut reused, &mut deserializer).unwrap();
+        assert!(reused.construction.is_none());
+    }
+
     #[test]
     fn sources_and_independent_initial_worlds_are_exact() {
         let w = assemble(INPUT).unwrap();

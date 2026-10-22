@@ -1,0 +1,4 @@
+storage-v106: 0
+reused-slot: 0
+clippy: 0
+core-storage-all-targets: 0

@@ -1,0 +1,22 @@
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 2.43s
+     Running tests/construction.rs (/Users/frankqin/dev/MyCity/target/release/deps/construction-b68fb118295d0565)
+
+running 1 test
+v106-compat-current-world={"schema":"mycity-m0-state-v6","scope":{"world":1,"branch":1},"seed":7,"revision":2,"accounts":[{"id":1,"role":"treasury","cash":1000000,"protected":0},{"id":2,"role":"household","cash":190000,"protected":0},{"id":3,"role":"company","cash":600000,"protected":0},{"id":4,"role":"supplier","cash":1210000,"protected":0}],"stocks":[{"id":1,"owner":4,"commodity":"raw","quantity":600000,"basis":240000,"lot_id":5,"origin_quantity":600000,"origin_basis":240000,"offset":0}],"opening_sources":[{"id":1,"kind":"cash_capital","amount":1000000},{"id":2,"kind":"cash_capital","amount":200000},{"id":3,"kind":"cash_capital","amount":600000},{"id":4,"kind":"cash_capital","amount":1200000},{"id":5,"kind":"inventory_capital","amount":240000}],"region":null,"economy":null,"boot":null,"exchange":null}
+
+thread 'v106_store_wal_checkpoint_and_receipt_reopen_with_identical_identity' panicked at crates/city-storage/tests/construction.rs:427:5:
+assertion `left == right` failed
+  left: "4521c3c7d2834a7563c095ffda92391c519de438e13cf4a2bfd405e3cb756776"
+ right: "2188baf12c0adf263c33bb3cf233e8005d73394aedb7a12bfb23bc4542cda0e6"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test v106_store_wal_checkpoint_and_receipt_reopen_with_identical_identity ... FAILED
+
+failures:
+
+failures:
+    v106_store_wal_checkpoint_and_receipt_reopen_with_identical_identity
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.02s
+
+error: test failed, to rerun pass `-p mycity-storage --test construction`

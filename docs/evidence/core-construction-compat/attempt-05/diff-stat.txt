@@ -1,0 +1,3 @@
+ crates/city-core/src/assembly.rs          | 72 +++++++++++++++++++++++-
+ crates/city-storage/tests/construction.rs | 93 +++++++++++++++++++++++++++++++
+ 2 files changed, 163 insertions(+), 2 deletions(-)

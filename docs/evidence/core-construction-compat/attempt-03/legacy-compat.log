@@ -1,0 +1,23 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction/crates/city-core)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 28.77s
+     Running tests/construction.rs (/Users/frankqin/dev/MyCity/target/release/deps/construction-b68fb118295d0565)
+
+running 1 test
+
+thread 'v106_store_wal_checkpoint_and_receipt_reopen_with_identical_identity' panicked at crates/city-storage/tests/construction.rs:423:5:
+assertion `left == right` failed
+  left: "4521c3c7d2834a7563c095ffda92391c519de438e13cf4a2bfd405e3cb756776"
+ right: "2188baf12c0adf263c33bb3cf233e8005d73394aedb7a12bfb23bc4542cda0e6"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test v106_store_wal_checkpoint_and_receipt_reopen_with_identical_identity ... FAILED
+
+failures:
+
+failures:
+    v106_store_wal_checkpoint_and_receipt_reopen_with_identical_identity
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `-p mycity-storage --test construction`

@@ -1,0 +1,1 @@
+1180b7f3ff5f0225d9fce68480ae87a69c64e77af2d95a8206b3610c6c5a5b13  docs/evidence/core-construction-compat/attempt-03/source.zip

@@ -1,0 +1,111 @@
+diff --git a/crates/city-storage/tests/construction.rs b/crates/city-storage/tests/construction.rs
+index 4bded1a..f99949a 100644
+--- a/crates/city-storage/tests/construction.rs
++++ b/crates/city-storage/tests/construction.rs
+@@ -17,6 +17,22 @@ use std::{
+ 
+ const OPENING: &[u8] = include_bytes!("../../../fixtures/m0-e0-opening.json");
+ const RULES: &str = "construction-engine-v1";
++const V106_RULES: &str = "6b70d8bc08d00625b369ae92d58ae5ce9dceff9d31a733fe17732de3dd38c87d";
++const V106_GENESIS: &[u8] = include_bytes!(
++    "../../../docs/evidence/core-construction-compat/attempt-01/old-v106-world/genesis.json"
++);
++const V106_CURRENT: &[u8] = include_bytes!(
++    "../../../docs/evidence/core-construction-compat/attempt-01/old-v106-world/CURRENT.json"
++);
++const V106_ROOT_0: &[u8] = include_bytes!(
++    "../../../docs/evidence/core-construction-compat/attempt-01/old-v106-world/root-0.json"
++);
++const V106_ROOT_1: &[u8] = include_bytes!(
++    "../../../docs/evidence/core-construction-compat/attempt-01/old-v106-world/root-1.json"
++);
++const V106_WAL: &[u8] = include_bytes!(
++    "../../../docs/evidence/core-construction-compat/attempt-01/old-v106-world/wal.bin"
++);
+ static NEXT: AtomicU64 = AtomicU64::new(0);
+ struct Temp(PathBuf);
+ impl Temp {
+@@ -377,3 +393,83 @@ fn construction_work_money_and_materials_commit_once_across_wal_lost_response_an
+     assert_eq!(stock.basis.value(), 239_600);
+     assert_eq!(s.committed_sequence(), sequence_before_work + 1);
+ }
++
++#[test]
++fn v106_store_wal_checkpoint_and_receipt_reopen_with_identical_identity() {
++    const LEGACY_ENGINE_STATE: &str =
++        "2188baf12c0adf263c33bb3cf233e8005d73394aedb7a12bfb23bc4542cda0e6";
++    const LEGACY_STORE_STATE: &str =
++        "332a903ab02ed53459491d87f855b3b57fe1fa0259bd039e07a23746f25b71d1";
++    const LEGACY_JOURNAL: &str = "cb1a68bcda51ec4b1bb2932380d5e2b4ad07f02c91fb5b823c2ee8d516ee1b90";
++    let temp = Temp::new();
++    let path = temp.world();
++    fs::create_dir(&path).unwrap();
++    for (name, bytes) in [
++        ("genesis.json", V106_GENESIS),
++        ("CURRENT.json", V106_CURRENT),
++        ("root-0.json", V106_ROOT_0),
++        ("root-1.json", V106_ROOT_1),
++        ("wal.bin", V106_WAL),
++    ] {
++        fs::write(path.join(name), bytes).unwrap();
++    }
++    let mut store = Store::open(&path, V106_RULES).unwrap();
++    let (view, journal_hash, engine_hash) = {
++        let engine = store.engine().unwrap();
++        let view = engine.world().view();
++        let journal_hash = mycity_core::sha256(&serde_json::to_vec(engine.journal()).unwrap());
++        (view, journal_hash, engine.world().state_hash())
++    };
++    assert_eq!(engine_hash, LEGACY_ENGINE_STATE);
++    assert_eq!(store.state_hash().unwrap(), LEGACY_STORE_STATE);
++    assert_eq!(store.committed_sequence(), 2);
++    assert_eq!(journal_hash, LEGACY_JOURNAL);
++    assert_eq!(
++        view.accounts
++            .iter()
++            .map(|a| a.cash.value())
++            .collect::<Vec<_>>(),
++        [1_000_000, 190_000, 600_000, 1_210_000]
++    );
++    assert_eq!(view.stocks[0].quantity.value(), 600_000);
++    assert_eq!(view.stocks[0].basis.value(), 240_000);
++    assert_eq!(store.engine().unwrap().resources()[0].occupied, 8);
++
++    let (family, company, supplier) = {
++        let engine = store.engine().unwrap();
++        (
++            engine.world().account_ref(2).unwrap(),
++            engine.world().account_ref(3).unwrap(),
++            engine.world().account_ref(4).unwrap(),
++        )
++    };
++    let retry = Envelope {
++        world: view.scope.world(),
++        branch: view.scope.branch(),
++        operation_id: 1,
++        expected_revision: 0,
++        actions: vec![
++            Action::Protect {
++                account: family,
++                amount: Money::new(10_000).unwrap(),
++            },
++            Action::Transfer {
++                from: company,
++                to: supplier,
++                amount: Money::new(10_000).unwrap(),
++            },
++            Action::ReserveCapacity {
++                resource: 1,
++                units: 8,
++            },
++        ],
++    };
++    let replay = store.execute(Caller::System, retry).unwrap();
++    assert!(replay.has_persistent_receipt);
++    assert!(replay.model.is_ok());
++    assert_eq!(
++        store.engine().unwrap().world().state_hash(),
++        LEGACY_ENGINE_STATE
++    );
++    assert_eq!(store.state_hash().unwrap(), LEGACY_STORE_STATE);
++}
