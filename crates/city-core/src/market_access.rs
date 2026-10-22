@@ -4,7 +4,7 @@
 //! unused road capacity as new market capacity and never settles cash or inventory.
 
 use crate::{
-    town_economy::{plan_day, MarketInput, SettlementBatch},
+    town_economy::{DeliveryQuote, MarketInput, SettlementBatch, plan_day},
     transport::{Assignment, OdDemand, Opening, UnservedReason},
     units::{Money, Quantity},
 };
@@ -83,6 +83,35 @@ pub struct AccessPlan {
     pub batch: SettlementBatch,
 }
 
+/// Verified transport-derived delivery inputs and a compact per-quote audit receipt.
+///
+/// The caller supplies `Opening` and `Assignment` by reference. A writer should resolve those
+/// references from its immutable, hash-verified transport snapshot; do not put either full
+/// object in a small `TownSettle` command. `source_digest` binds the exact market input,
+/// assignment, quote partitions, and fee policy used here.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ResolvedDeliveryQuotes {
+    /// Present when this was resolved from a hash-verified immutable input snapshot.
+    pub source_snapshot: Option<TransportSnapshotRef>,
+    pub profile_id: Option<u32>,
+    pub source_digest: [u8; 32],
+    pub transport_revision: u64,
+    pub transport_fingerprint: [u8; 32],
+    pub fee_policy_input: FeePolicyInput,
+    pub delivery_quotes: Vec<DeliveryQuote>,
+    pub delivery_access: Vec<DeliveryAccess>,
+}
+
+/// Compact immutable-snapshot locator suitable for a bounded settlement command. Storage
+/// resolves the generation to the repository's hash-bearing immutable reference and verifies
+/// its bytes before handing borrowed source records to this module.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct TransportSnapshotRef {
+    pub generation: u64,
+}
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Error {
     InvalidTransport,
@@ -93,6 +122,7 @@ pub enum Error {
     DuplicatePartition,
     MissingQuote,
     DuplicateSourceBinding,
+    InvalidSnapshotRef,
     MissingOutcome,
     Overflow,
     Planning,
@@ -206,19 +236,24 @@ fn source_digest(
     Ok(Sha256::digest(bytes).into())
 }
 
-/// Allocate served group trips to delivery quotes, then make a pure town-economy proposal.
-/// Each quote receives only its explicit round-trip trip partition times goods-per-trip.
-pub fn plan_accessible_day(
+/// Resolve verified transport assignments into current-day market delivery quotes without
+/// invoking the market planner. `opening` and `assignment` should be borrowed from the same
+/// immutable, hash-verified transport snapshot identified by the caller's snapshot reference.
+/// This is the integration boundary for a writer that must continue with its own production
+/// executions and call `plan_day_with_execution` exactly once.
+pub fn resolve_delivery_quotes(
     input: &MarketInput,
     opening: &Opening,
     assignment: &Assignment,
     partitions: &[TripPartition],
     fee: FeePolicyInput,
-) -> Result<AccessPlan, Error> {
-    opening.validate().map_err(|_| Error::InvalidTransport)?;
+) -> Result<ResolvedDeliveryQuotes, Error> {
+    // A permission or topology edit after assignment makes the receipt stale, even if the
+    // edited opening is no longer independently valid (for example, an entrance was revoked).
     if !assignment.matches(opening) {
         return Err(Error::StaleAssignment);
     }
+    opening.validate().map_err(|_| Error::InvalidTransport)?;
     assignment
         .verify(opening)
         .map_err(|_| Error::InvalidAssignment)?;
@@ -310,9 +345,9 @@ pub fn plan_accessible_day(
         actual_by_quote.insert(p.quote_id, allocated);
     }
 
-    let mut market = input.clone();
+    let mut delivery_quotes = input.delivery.clone();
     let mut access = Vec::with_capacity(partitions.len());
-    for q in &mut market.delivery {
+    for q in &mut delivery_quotes {
         let p = *by_quote.get(&q.quote_id).ok_or(Error::MissingQuote)?;
         let allocated_trips = *actual_by_quote
             .get(&q.quote_id)
@@ -379,14 +414,63 @@ pub fn plan_accessible_day(
         });
     }
     access.sort_by_key(|x| x.quote_id);
-    let batch = plan_day(&market).map_err(|_| Error::Planning)?;
-    Ok(AccessPlan {
+    Ok(ResolvedDeliveryQuotes {
+        source_snapshot: None,
+        profile_id: None,
         source_digest: source_digest(opening, assignment, input, partitions, fee)?,
         transport_revision: assignment.network_revision,
         transport_fingerprint: assignment.input_fingerprint,
         fee_policy_input: fee,
-        fee_policy_integration: FeePolicyIntegration::ExternalInputUnintegrated,
+        delivery_quotes,
         delivery_access: access,
+    })
+}
+
+/// Resolve quotes using source records loaded from a hash-verified immutable snapshot. The
+/// command carries only `profile_id` and this compact reference; it never embeds the bounded
+/// `Opening` or `Assignment`. `input` carries the authoritative world/branch/revision/day and
+/// operation scope already present in the enclosing Engine transaction.
+pub fn resolve_delivery_quotes_from_snapshot(
+    profile_id: u32,
+    source_snapshot: TransportSnapshotRef,
+    input: &MarketInput,
+    opening: &Opening,
+    assignment: &Assignment,
+    partitions: &[TripPartition],
+    fee: FeePolicyInput,
+) -> Result<ResolvedDeliveryQuotes, Error> {
+    if profile_id == 0 || source_snapshot.generation == 0 {
+        return Err(Error::InvalidSnapshotRef);
+    }
+    let mut resolved = resolve_delivery_quotes(input, opening, assignment, partitions, fee)?;
+    let bytes = serde_json::to_vec(&(profile_id, &source_snapshot, resolved.source_digest))
+        .map_err(|_| Error::InvalidSnapshotRef)?;
+    resolved.source_digest = Sha256::digest(bytes).into();
+    resolved.profile_id = Some(profile_id);
+    resolved.source_snapshot = Some(source_snapshot);
+    Ok(resolved)
+}
+
+/// Resolve transport access then make the existing pure town-economy plan. This convenience
+/// entry point is not an Engine settlement and has no recipe-execution input.
+pub fn plan_accessible_day(
+    input: &MarketInput,
+    opening: &Opening,
+    assignment: &Assignment,
+    partitions: &[TripPartition],
+    fee: FeePolicyInput,
+) -> Result<AccessPlan, Error> {
+    let resolved = resolve_delivery_quotes(input, opening, assignment, partitions, fee)?;
+    let mut market = input.clone();
+    market.delivery = resolved.delivery_quotes;
+    let batch = plan_day(&market).map_err(|_| Error::Planning)?;
+    Ok(AccessPlan {
+        source_digest: resolved.source_digest,
+        transport_revision: resolved.transport_revision,
+        transport_fingerprint: resolved.transport_fingerprint,
+        fee_policy_input: resolved.fee_policy_input,
+        fee_policy_integration: FeePolicyIntegration::ExternalInputUnintegrated,
+        delivery_access: resolved.delivery_access,
         batch,
     })
 }

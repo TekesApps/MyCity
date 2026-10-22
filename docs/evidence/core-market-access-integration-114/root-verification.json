@@ -1,0 +1,7 @@
+{
+  "capacity_script_exit": 0,
+  "saved_report_byte_identical": true,
+  "links": "passed",
+  "initial_root_wrapper_error": "Attempted JSON parse of script stdout although script writes report and prints a path. Script itself exited zero. Corrected wrapper compares saved bytes before/after. No model/build/load repeated.",
+  "scope": "source identity, arithmetic and documents only; no new runtime test or performance claim"
+}

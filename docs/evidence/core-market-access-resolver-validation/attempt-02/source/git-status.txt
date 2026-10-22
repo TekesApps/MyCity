@@ -1,0 +1,4 @@
+## codex/market-access-resolver
+ M crates/city-core/src/market_access.rs
+ M crates/city-core/tests/market_access.rs
+?? docs/evidence/core-market-access-resolver-validation/

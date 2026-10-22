@@ -440,3 +440,6 @@ v0.5.77：[固定空气候选槽](evidence/m0-t13a-air-candidate-slots/STATUS.md
 
 
 v0.5.113：[企业退出计划器及原预算归因](evidence/core-business-exit-integration-113/STATUS.md)。13项退出测试及core strict通过；有限只读planner已集成，不等于Engine实际清算。2MiB01控制器格式上限失败、2代完整冷恢复及精确54文件回收留证，2MiB02辅助22项通过但尚未运行。32c原normal满额、full complete peak超8,431,602B已按raw重算，native成本不能靠地址映射抵扣；原负载阈值不变。16GB/8h not_run，M0 not_accepted。
+
+
+v0.5.114：[交通市场resolver](evidence/core-market-access-integration-114/STATUS.md)最终源码16项release测试及strict通过，六CLI仅pureplan，尚未Engine/Store联合落账。原allocation trace复算未发现可安全回收容量，2MiB02未运行。建设默认测试栈失败待处理，真实16GB/8h not_run，M0不通过。

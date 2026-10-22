@@ -1,5 +1,8 @@
 use mycity_core::{
-    market_access::{plan_accessible_day, AccessStatus, Error, FeePolicyInput, TripPartition},
+    market_access::{
+        AccessStatus, Error, FeePolicyInput, TransportSnapshotRef, TripPartition,
+        plan_accessible_day, resolve_delivery_quotes, resolve_delivery_quotes_from_snapshot,
+    },
     town_economy::{
         AccountSnapshot, DeliveryQuote, HouseholdGroup, InventorySnapshot, MarketInput,
         ShopSnapshot,
@@ -184,6 +187,145 @@ fn round_trip_access_caps_goods_and_uses_external_tariff_for_pure_plan() {
         100
     );
     assert_eq!(plan.transport_fingerprint, assignment.input_fingerprint);
+}
+
+#[test]
+fn resolver_returns_dynamic_quotes_and_audit_without_mutating_input_or_planning() {
+    let input = market();
+    let network = opening();
+    let assignment = network.assign().unwrap();
+    let resolved =
+        resolve_delivery_quotes(&input, &network, &assignment, &[partition(5)], tariff()).unwrap();
+
+    assert_eq!(input.delivery[0].route_source, 88);
+    assert_eq!(
+        input.delivery[0].available_capacity,
+        Quantity::new(1000).unwrap()
+    );
+    assert!(resolved.delivery_quotes[0].reachable);
+    assert_eq!(resolved.delivery_quotes[0].route_source, 7001);
+    assert_eq!(
+        resolved.delivery_quotes[0].available_capacity,
+        Quantity::new(100).unwrap()
+    );
+    assert_eq!(resolved.delivery_quotes[0].freight_account, 303);
+    assert_eq!(
+        resolved.delivery_quotes[0].freight_per_q,
+        Money::new(1).unwrap()
+    );
+    assert_eq!(
+        resolved.delivery_quotes[0].utility_account,
+        input.delivery[0].utility_account
+    );
+    assert_eq!(
+        resolved.delivery_quotes[0].utility_surcharge_per_q,
+        input.delivery[0].utility_surcharge_per_q
+    );
+    assert_eq!(resolved.delivery_access[0].outbound_source, 5001);
+    assert_eq!(resolved.delivery_access[0].return_source, 5002);
+    assert_eq!(resolved.delivery_access[0].allocated_trips, 5);
+    assert_eq!(resolved.transport_revision, network.revision);
+    assert_eq!(resolved.transport_fingerprint, assignment.input_fingerprint);
+    assert_ne!(resolved.source_digest, [0; 32]);
+}
+
+#[test]
+fn snapshot_resolver_binds_compact_generation_ref_and_profile_without_expanding_command_data() {
+    let input = market();
+    let network = opening();
+    let assignment = network.assign().unwrap();
+    let source_ref = TransportSnapshotRef { generation: 12 };
+    assert!(serde_json::to_vec(&(7_u32, &source_ref)).unwrap().len() < 128);
+    let resolved = resolve_delivery_quotes_from_snapshot(
+        7,
+        source_ref.clone(),
+        &input,
+        &network,
+        &assignment,
+        &[partition(5)],
+        tariff(),
+    )
+    .unwrap();
+    assert_eq!(resolved.profile_id, Some(7));
+    assert_eq!(resolved.source_snapshot, Some(source_ref));
+
+    let another_generation = resolve_delivery_quotes_from_snapshot(
+        7,
+        TransportSnapshotRef { generation: 13 },
+        &input,
+        &network,
+        &assignment,
+        &[partition(5)],
+        tariff(),
+    )
+    .unwrap();
+    assert_ne!(resolved.source_digest, another_generation.source_digest);
+
+    assert_eq!(
+        resolve_delivery_quotes_from_snapshot(
+            0,
+            TransportSnapshotRef { generation: 12 },
+            &input,
+            &network,
+            &assignment,
+            &[partition(5)],
+            tariff()
+        ),
+        Err(Error::InvalidSnapshotRef)
+    );
+    assert_eq!(
+        resolve_delivery_quotes_from_snapshot(
+            7,
+            TransportSnapshotRef { generation: 0 },
+            &input,
+            &network,
+            &assignment,
+            &[partition(5)],
+            tariff()
+        ),
+        Err(Error::InvalidSnapshotRef)
+    );
+}
+
+#[test]
+fn resolver_rejects_stale_and_forged_assignments_and_wrong_entrance_owner() {
+    let input = market();
+    let mut network = opening();
+    let assignment = network.assign().unwrap();
+    network.edges[0].capacity_people += 1;
+    assert_eq!(
+        resolve_delivery_quotes(&input, &network, &assignment, &[partition(5)], tariff()),
+        Err(Error::StaleAssignment)
+    );
+
+    network = opening();
+    let mut forged = network.assign().unwrap();
+    forged.path_receipts[0].people += 1;
+    assert_eq!(
+        resolve_delivery_quotes(&input, &network, &forged, &[partition(5)], tariff()),
+        Err(Error::InvalidAssignment)
+    );
+
+    network.entrances[0].owner = 999;
+    let owner_mismatch = network.assign().unwrap();
+    assert_eq!(
+        resolve_delivery_quotes(&input, &network, &owner_mismatch, &[partition(5)], tariff()),
+        Err(Error::InvalidPartition)
+    );
+
+    network = opening();
+    let authorized_assignment = network.assign().unwrap();
+    network.entrances[0].authorized = false;
+    assert_eq!(
+        resolve_delivery_quotes(
+            &input,
+            &network,
+            &authorized_assignment,
+            &[partition(5)],
+            tariff()
+        ),
+        Err(Error::StaleAssignment)
+    );
 }
 
 #[test]
@@ -455,6 +597,74 @@ fn same_od_is_shared_across_goods_without_reissuing_served_trips() {
             .unwrap()
             .allocated_trips,
         2
+    );
+}
+
+#[test]
+fn resolver_partitions_shared_od_service_once_across_multiple_goods() {
+    let mut input = market();
+    input.inventories.push(InventorySnapshot {
+        stock_id: 901,
+        owner: 202,
+        good: 1,
+        quantity: Quantity::new(100).unwrap(),
+        spendable_basis: Money::ZERO,
+        origin_quantity: Quantity::new(100).unwrap(),
+        origin_basis: Money::ZERO,
+        offset: Quantity::ZERO,
+    });
+    input.shops.push(ShopSnapshot {
+        shop_id: 2,
+        account: 202,
+        stock_id: 901,
+        good: 1,
+        shelf_price_per_q: Money::new(1).unwrap(),
+    });
+    input.delivery.push(DeliveryQuote {
+        quote_id: 7002,
+        shop: 2,
+        household_group: 1,
+        good: 1,
+        reachable: false,
+        route_source: 89,
+        freight_account: 303,
+        utility_account: 303,
+        available_capacity: Quantity::ZERO,
+        freight_per_q: Money::ZERO,
+        utility_surcharge_per_q: Money::ZERO,
+    });
+    let network = opening();
+    let assignment = network.assign().unwrap();
+    let second = TripPartition {
+        quote_id: 7002,
+        outbound_source: 5001,
+        return_source: 5002,
+        trip_count: 3,
+        goods_per_trip: Quantity::new(1).unwrap(),
+    };
+    let resolved = resolve_delivery_quotes(
+        &input,
+        &network,
+        &assignment,
+        &[partition(3), second],
+        tariff(),
+    )
+    .unwrap();
+    assert_eq!(
+        resolved
+            .delivery_access
+            .iter()
+            .map(|row| row.allocated_trips)
+            .sum::<u32>(),
+        5
+    );
+    assert_eq!(
+        resolved
+            .delivery_quotes
+            .iter()
+            .map(|quote| quote.available_capacity.value())
+            .sum::<i64>(),
+        62
     );
 }
 

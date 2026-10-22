@@ -1,0 +1,6 @@
+7da5c54a8499a07cbc71dcecce0c0095d4af3b8b6e5052783f20d188037b6dd6  Cargo.lock
+b323b19900e4b811af0a8facce5ec11249ed135ae5a46ff5c0be90067521e11f  rust-toolchain.toml
+f84fdd9bac23eb2d6a6a83a9982dd058dea28257123dd484879931ec32ac852a  crates/city-core/src/market_access.rs
+ee59d64c64d2a70d0ff2ef9094f15d4f436956e618edd484884223900da411a7  crates/city-core/tests/market_access.rs
+07422fdf6c94ad8c011eb51686fba6678bb2aa858317a5d8afdc5d63c050e1d4  crates/city-core/examples/market_access.rs
+cdb204df75a77a162b8793a8c3d17a3363ca80d661cc85cf2bf76db464e06ccb  docs/evidence/core-market-access-resolver-validation/attempt-01/source/frozen-source.tar.gz
