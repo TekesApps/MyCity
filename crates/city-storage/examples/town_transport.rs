@@ -894,18 +894,33 @@ fn run_road_effect(
             .map_err(err)?
             .ok_or("day-three settlement receipt missing after withdrawal cold open")?;
         let third_proof = third_proof.ok_or("day-three road proof was not captured")?;
+        let reopened = recovered.engine().map_err(err)?.world().view();
+        let reopened_project = reopened
+            .construction
+            .ok_or("closed road project missing after withdrawal cold open")?;
+        let reopened_capacity = recovered
+            .engine()
+            .map_err(err)?
+            .resources()
+            .iter()
+            .find(|resource| resource.id == 81)
+            .ok_or("base road resource missing after withdrawal cold open")?
+            .capacity;
         if transport_proof_from_receipt(&day_two_receipt) != Some(second_proof)
             || transport_proof_from_receipt(&day_three_receipt) != Some(third_proof)
-            || recovered
-                .engine()
-                .map_err(err)?
-                .world()
-                .view()
+            || reopened
                 .town
                 .and_then(|town| town.state.last_transport)
                 .is_none_or(|proof| {
                     proof.issued_proof_sha256 != third_proof || proof.issued_day != 3
                 })
+            || reopened_project.kind != Kind::Demolish
+            || reopened_project.phase != mycity_core::construction::Phase::Closed
+            || reopened_project.operating_published_at
+                != Some(GameTime::new(DAY as i64).map_err(err)?)
+            || reopened_project.operating_withdrawn_at
+                != Some(GameTime::new((2 * DAY) as i64).map_err(err)?)
+            || reopened_capacity != 2
         {
             return Err(
                 "cold reopen did not preserve both historical road-capacity epoch proofs".into(),
