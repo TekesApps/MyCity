@@ -1,0 +1,11 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-core)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 23.40s
+     Running tests/town_market.rs (/Users/frankqin/dev/MyCity/target/release/deps/town_market-fc275aa083e796f1)
+
+running 1 test
+test town_work_and_market_day_recover_once_after_applied_reply_loss ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.90s
+

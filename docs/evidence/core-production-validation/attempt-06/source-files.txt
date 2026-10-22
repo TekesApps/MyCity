@@ -1,0 +1,7 @@
+crates/city-core/src/assembly.rs
+crates/city-core/src/lib.rs
+crates/city-core/src/town_economy.rs
+crates/city-core/src/town_runtime.rs
+crates/city-core/src/transaction.rs
+crates/city-core/examples/town_market.rs
+crates/city-storage/tests/town_market.rs

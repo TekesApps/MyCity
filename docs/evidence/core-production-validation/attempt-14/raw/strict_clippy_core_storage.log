@@ -1,0 +1,31 @@
+    Checking sha2 v0.10.9
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-core)
+error: this expression creates a reference which is immediately dereferenced by the compiler
+   --> crates/city-core/src/assembly.rs:765:37
+    |
+765 |         town.validate_initial_world(&world).map_err(str::to_owned)?;
+    |                                     ^^^^^^ help: change this to: `world`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_borrow
+    = note: `-D clippy::needless-borrow` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::needless_borrow)]`
+
+error: this function has too many arguments (10/7)
+    --> crates/city-core/src/transaction.rs:2108:1
+     |
+2108 | / fn prepare_town_settlement(
+2109 | |     operation_id: u64,
+2110 | |     world_id: u64,
+2111 | |     branch_id: u64,
+...    |
+2118 | |     stocks: &mut DirtyStocks,
+2119 | | ) -> Result<crate::town_runtime::MarketSummary, TxError> {
+     | |________________________________________________________^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#too_many_arguments
+     = note: `-D clippy::too-many-arguments` implied by `-D warnings`
+     = help: to override `-D warnings` add `#[allow(clippy::too_many_arguments)]`
+
+error: could not compile `mycity-core` (lib) due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `mycity-core` (lib test) due to 2 previous errors

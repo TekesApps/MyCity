@@ -25,6 +25,7 @@ pub mod probes;
 pub mod region;
 pub mod schedule;
 pub mod town_economy;
+pub mod town_runtime;
 pub mod transaction;
 pub mod transport;
 pub mod units;
@@ -116,16 +117,20 @@ mod tests {
         assert!(parse_bootstrap(s.replace("bootstrap-v1", "bootstrap-v2").as_bytes()).is_err());
         assert!(parse_bootstrap(s.replace("\"world\": 1", "\"world\": 0").as_bytes()).is_err());
         assert!(parse_bootstrap(s.replace("true", "false").as_bytes()).is_err());
-        assert!(parse_bootstrap(
-            s.replace("\"world\": 1", "\"world\": 1, \"world\": 2")
-                .as_bytes()
-        )
-        .is_err());
-        assert!(parse_bootstrap(
-            s.replace("\"seed\": 7", "\"seed\": 7, \"balance\": 999")
-                .as_bytes()
-        )
-        .is_err());
+        assert!(
+            parse_bootstrap(
+                s.replace("\"world\": 1", "\"world\": 1, \"world\": 2")
+                    .as_bytes()
+            )
+            .is_err()
+        );
+        assert!(
+            parse_bootstrap(
+                s.replace("\"seed\": 7", "\"seed\": 7, \"balance\": 999")
+                    .as_bytes()
+            )
+            .is_err()
+        );
     }
 }
 

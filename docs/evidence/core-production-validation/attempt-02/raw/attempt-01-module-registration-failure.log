@@ -1,0 +1,121 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-core)
+error[E0432]: unresolved import `crate::town_economy`
+   --> crates/city-core/src/assembly.rs:845:20
+    |
+845 |         use crate::town_economy::{DeliveryQuote, HouseholdGroup, ShopSnapshot};
+    |                    ^^^^^^^^^^^^ could not find `town_economy` in the crate root
+
+error[E0432]: unresolved import `crate::town_economy`
+ --> crates/city-core/src/town_runtime.rs:8:5
+  |
+8 |     town_economy::{DeliveryQuote, HouseholdGroup, Recipe, ShopSnapshot},
+  |     ^^^^^^^^^^^^ could not find `town_economy` in the crate root
+
+error[E0432]: unresolved imports `crate::town_economy`, `crate::town_economy`
+    --> crates/city-core/src/transaction.rs:2121:9
+     |
+2121 |         town_economy::{
+     |         ^^^^^^^^^^^^ could not find `town_economy` in the crate root
+2122 |             self, AccountSnapshot, EmployerSnapshot, InventorySnapshot, MarketInput, PlanLine,
+     |             ^^^^ no `town_economy` in the root
+
+error[E0432]: unresolved import `crate::town_economy`
+    --> crates/city-core/src/transaction.rs:3368:13
+     |
+3368 |             town_economy::{DeliveryQuote, HouseholdGroup, ShopSnapshot},
+     |             ^^^^^^^^^^^^ could not find `town_economy` in the crate root
+
+error[E0433]: failed to resolve: could not find `town_economy` in the crate root
+   --> crates/city-core/src/town_runtime.rs:127:56
+    |
+127 |     pub households: FixedRows<HouseholdGroup, { crate::town_economy::MAX_HOUSEHOLD_GROUPS }>,
+    |                                                        ^^^^^^^^^^^^ could not find `town_economy` in the crate root
+
+error[E0433]: failed to resolve: could not find `town_economy` in the crate root
+   --> crates/city-core/src/town_runtime.rs:128:53
+    |
+128 |     pub employers: FixedRows<EmployerSpec, { crate::town_economy::MAX_EMPLOYERS }>,
+    |                                                     ^^^^^^^^^^^^ could not find `town_economy` in the crate root
+
+error[E0433]: failed to resolve: could not find `town_economy` in the crate root
+   --> crates/city-core/src/town_runtime.rs:129:49
+    |
+129 |     pub shops: FixedRows<ShopSnapshot, { crate::town_economy::MAX_SHOP_STOCK_LOTS }>,
+    |                                                 ^^^^^^^^^^^^ could not find `town_economy` in the crate root
+
+error[E0433]: failed to resolve: could not find `town_economy` in the crate root
+   --> crates/city-core/src/town_runtime.rs:130:45
+    |
+130 |     pub recipes: FixedRows<Recipe, { crate::town_economy::MAX_RECIPES }>,
+    |                                             ^^^^^^^^^^^^ could not find `town_economy` in the crate root
+
+error[E0433]: failed to resolve: could not find `town_economy` in the crate root
+   --> crates/city-core/src/town_runtime.rs:372:51
+    |
+372 |         FixedRows<RecipeOutputRemainder, { crate::town_economy::MAX_RECIPES }>,
+    |                                                   ^^^^^^^^^^^^ could not find `town_economy` in the crate root
+
+error[E0599]: no method named `map_err` found for unit type `()` in the current scope
+   --> crates/city-core/src/assembly.rs:479:18
+    |
+478 | /             town.validate_world(self)?
+479 | |                 .map_err(|_| "checkpoint_town_binding")?;
+    | |                 -^^^^^^^ method not found in `()`
+    | |_________________|
+    |
+
+error[E0609]: no field `id` on type `&_`
+   --> crates/city-core/src/town_runtime.rs:145:59
+    |
+145 |         if duplicate_by(self.households.as_slice(), |x| x.id)
+    |                                                           ^^ unknown field
+
+error[E0609]: no field `account` on type `&_`
+   --> crates/city-core/src/town_runtime.rs:146:63
+    |
+146 |             || duplicate_by(self.households.as_slice(), |x| x.account)
+    |                                                               ^^^^^^^ unknown field
+
+error[E0609]: no field `account` on type `&_`
+   --> crates/city-core/src/town_runtime.rs:147:62
+    |
+147 |             || duplicate_by(self.employers.as_slice(), |x| x.account)
+    |                                                              ^^^^^^^ unknown field
+
+error[E0609]: no field `shop_id` on type `&_`
+   --> crates/city-core/src/town_runtime.rs:148:58
+    |
+148 |             || duplicate_by(self.shops.as_slice(), |x| x.shop_id)
+    |                                                          ^^^^^^^ unknown field
+
+error[E0609]: no field `stock_id` on type `&_`
+   --> crates/city-core/src/town_runtime.rs:149:58
+    |
+149 |             || duplicate_by(self.shops.as_slice(), |x| x.stock_id)
+    |                                                          ^^^^^^^^ unknown field
+
+error[E0609]: no field `recipe_id` on type `&_`
+   --> crates/city-core/src/town_runtime.rs:150:60
+    |
+150 |             || duplicate_by(self.recipes.as_slice(), |x| x.recipe_id)
+    |                                                            ^^^^^^^^^ unknown field
+
+error[E0716]: temporary value dropped while borrowed
+    --> crates/city-core/src/transaction.rs:3726:24
+     |
+3726 |         let payroll = &e.world.view().town.unwrap().state.payroll.as_slice()[0];
+     |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^                            - temporary value is freed at the end of this statement
+     |                        |
+     |                        creates a temporary value which is freed while still in use
+3727 |         assert_eq!(payroll.accrued, cash(5_600));
+     |         ---------------------------------------- borrow later used here
+     |
+help: consider using a `let` binding to create a longer lived value
+     |
+3726 ~         let binding = e.world.view().town.unwrap();
+3727 ~         let payroll = &binding.state.payroll.as_slice()[0];
+     |
+
+Some errors have detailed explanations: E0432, E0433, E0599, E0609, E0716.
+For more information about an error, try `rustc --explain E0432`.
+error: could not compile `mycity-core` (lib test) due to 17 previous errors

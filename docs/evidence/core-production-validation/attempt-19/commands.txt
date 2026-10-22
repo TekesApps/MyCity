@@ -1,0 +1,11 @@
+All commands used the shared `CARGO_TARGET_DIR=/Users/frankqin/dev/MyCity/target`, Rust 1.85.1, `--release --locked --offline`.
+
+- `cargo +1.85.1 run -p mycity-core --example town_market --release --locked --offline`
+- `cargo +1.85.1 clippy -p mycity-core -p mycity-storage --all-targets --release --locked --offline -- -D warnings`
+- `cargo +1.85.1 test -p mycity-storage --test town_market --release --locked --offline`
+- `cargo +1.85.1 test -p mycity-storage --test construction --release --locked --offline`
+- `cargo +1.85.1 test -p mycity-core --lib transaction::tests::town --release --locked --offline`
+- `cargo +1.85.1 test -p mycity-core --lib town_economy::tests --release --locked --offline`
+- `cargo +1.85.1 test -p mycity-core --lib weekly_timeline_payroll_catchup_does_not_block_daily_town_settlement --release --locked --offline`
+- `cargo +1.85.1 test -p mycity-core --lib restore_of_preconstruction_object_clears_reused_optional_slot --release --locked --offline`
+- `cargo +1.85.1 test -p mycity-core --lib town_configuration_is_omitted_when_absent_and_legacy_restore_clears_reused_slot --release --locked --offline`

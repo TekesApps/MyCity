@@ -1,0 +1,9 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-core)
+    Finished `release` profile [optimized] target(s) in 41.00s
+     Running unittests src/lib.rs (/Users/frankqin/dev/MyCity/target/release/deps/mycity_core-363f7122bd90a840)
+
+running 1 test
+test town_economy::tests::execution_day_uses_actual_seconds_and_exact_labor_cost ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 91 filtered out; finished in 0.00s
+

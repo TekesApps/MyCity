@@ -1,0 +1,24 @@
+    Finished `release` profile [optimized] target(s) in 0.06s
+     Running unittests src/lib.rs (/Users/frankqin/dev/MyCity/target/release/deps/mycity_core-363f7122bd90a840)
+
+running 1 test
+
+thread 'transaction::tests::town_production_uses_real_timeline_wages_and_preserves_lot_basis' panicked at crates/city-core/src/transaction.rs:3476:10:
+called `Result::unwrap()` on an `Err` value: Timeline(Busy)
+stack backtrace:
+   0: _rust_begin_unwind
+   1: core::panicking::panic_fmt
+   2: core::result::unwrap_failed
+   3: mycity_core::transaction::tests::issue
+   4: core::ops::function::FnOnce::call_once
+note: Some details are omitted, run with `RUST_BACKTRACE=full` for a verbose backtrace.
+test transaction::tests::town_production_uses_real_timeline_wages_and_preserves_lot_basis ... FAILED
+
+failures:
+
+failures:
+    transaction::tests::town_production_uses_real_timeline_wages_and_preserves_lot_basis
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 91 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `-p mycity-core --lib`

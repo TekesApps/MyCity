@@ -1,0 +1,103 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-core)
+    Finished `release` profile [optimized] target(s) in 41.42s
+     Running unittests src/lib.rs (/Users/frankqin/dev/MyCity/target/release/deps/mycity_core-363f7122bd90a840)
+
+running 17 tests
+test town_economy::tests::duplicate_recipe_or_quote_identity_is_rejected ... ok
+test town_economy::tests::elapsed_work_scales_output_and_carries_only_fractional_numerator ... ok
+test town_economy::tests::price_increase_keeps_reference_need_visible_as_unmet ... ok
+test town_economy::tests::offer_iteration_order_does_not_change_the_plan ... ok
+test town_economy::tests::exhausted_cheap_route_then_expensive_route_reprices_remaining_demand ... ok
+test town_economy::tests::empty_cheap_offer_does_not_set_demand_price_for_expensive_stock ... ok
+test town_economy::tests::plan_is_deterministic_bounded_and_does_not_mutate_authoritative_input ... ok
+test town_economy::tests::execution_day_uses_actual_seconds_and_exact_labor_cost ... ok
+test town_economy::tests::producer_cash_and_recipe_input_limit_output ... ok
+test town_economy::tests::energy_price_and_falling_demand_reduce_production_and_sales ... ok
+test town_economy::tests::recipes_compete_for_one_shared_utility_pool ... ok
+test town_economy::tests::reconciliation_balances_counterparties_and_rejects_stale_or_tampered_batch ... ok
+test town_economy::tests::remaining_cheap_inventory_then_expensive_offer_reprices_only_marginal_units ... ok
+test town_economy::tests::route_capacity_is_consumed_once_per_route_and_good ... ok
+test town_economy::tests::sales_are_limited_by_actual_stock_and_cash ... ok
+test town_economy::tests::stockout_no_cash_and_closed_road_propagate_as_unmet_demand ... ok
+test town_economy::tests::unreachable_route_and_empty_stock_never_create_sales ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 75 filtered out; finished in 0.00s
+
+     Running tests/air.rs (/Users/frankqin/dev/MyCity/target/release/deps/air-16db1d20a949c146)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 0.00s
+
+     Running tests/air_workspace.rs (/Users/frankqin/dev/MyCity/target/release/deps/air_workspace-506322bba5df5019)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.00s
+
+     Running tests/background.rs (/Users/frankqin/dev/MyCity/target/release/deps/background-2221ad473ca40497)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.00s
+
+     Running tests/boot.rs (/Users/frankqin/dev/MyCity/target/release/deps/boot-1649d9581b730884)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 0.00s
+
+     Running tests/construction.rs (/Users/frankqin/dev/MyCity/target/release/deps/construction-a6842a0669a1dd86)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 7 filtered out; finished in 0.00s
+
+     Running tests/construction_engine.rs (/Users/frankqin/dev/MyCity/target/release/deps/construction_engine-bbae94b7cf7feb30)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.00s
+
+     Running tests/economy.rs (/Users/frankqin/dev/MyCity/target/release/deps/economy-8615b58a989251e6)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 13 filtered out; finished in 0.00s
+
+     Running tests/exchange.rs (/Users/frankqin/dev/MyCity/target/release/deps/exchange-afbd26273b492f7d)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 12 filtered out; finished in 0.00s
+
+     Running tests/layout_pressure.rs (/Users/frankqin/dev/MyCity/target/release/deps/layout_pressure-6412a02233a3ea4f)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+
+     Running tests/region.rs (/Users/frankqin/dev/MyCity/target/release/deps/region-05b36a81f5fa8afe)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 5 filtered out; finished in 0.00s
+
+     Running tests/scale_assembly.rs (/Users/frankqin/dev/MyCity/target/release/deps/scale_assembly-f4958ec66e2eaf5d)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 7 filtered out; finished in 0.00s
+
+     Running tests/sha256_vectors.rs (/Users/frankqin/dev/MyCity/target/release/deps/sha256_vectors-759a40338f98bdf1)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+     Running tests/timeline.rs (/Users/frankqin/dev/MyCity/target/release/deps/timeline-426d5a778cf9a1a0)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 11 filtered out; finished in 0.00s
+

@@ -108,6 +108,11 @@ pub enum Action {
     Construction {
         command: crate::construction::EngineCommand,
     },
+    /// Recompute and atomically settle one complete game-day market from authoritative
+    /// Engine accounts, stock lots, Timeline payroll and the genesis-bound profile.
+    TownSettle {
+        profile_id: u32,
+    },
     RegionSettleDebt {
         obligation: u32,
     },
@@ -209,6 +214,8 @@ pub struct Receipt {
     pub settled: [Option<Money>; MAX_ACTIONS],
     pub created_tokens: [Option<CapacityToken>; MAX_ACTIONS],
     pub timeline: Option<crate::timeline::Progress>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub town: Option<crate::town_runtime::MarketSummary>,
 }
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
@@ -274,6 +281,7 @@ struct Prepared {
     economy: Option<crate::economy::Economy>,
     region: Option<crate::region::Region>,
     construction: Option<crate::construction::Project>,
+    town: Option<crate::town_runtime::MarketState>,
     accounts: workspace::AccountLease,
     stocks: workspace::StockLease,
     resources: workspace::ResourceLease,
@@ -1157,6 +1165,8 @@ impl Engine {
         let mut boot = self.world.boot;
         let mut exchange = self.world.exchange;
         let mut construction = self.world.construction;
+        let mut town = self.world.town.map(|m| m.state);
+        let mut town_summary = None;
         let mut background =
             workspace::BackgroundLease::acquire(&storage.background, &self.background)?;
         let mut background_work = workspace::BackgroundWorkLease::take(&storage.background_work)?;
@@ -1425,6 +1435,28 @@ impl Engine {
                         &mut created_tokens[action_index],
                         timeline.as_ref(),
                     )?;
+                }
+                Action::TownSettle { profile_id } => {
+                    if !matches!(caller, Caller::System) || env.actions.len() != 1 {
+                        return Err(TxError::Unauthorized);
+                    }
+                    let market = self.world.town.ok_or(TxError::InvalidOperation)?;
+                    if market.profile.id != profile_id || town.is_none() {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    let t = timeline.as_ref().ok_or(TxError::InvalidOperation)?;
+                    town_summary = Some(prepare_town_settlement(TownSettlementContext {
+                        operation_id: env.operation_id,
+                        world_id: self.world.scope.world(),
+                        branch_id: self.world.scope.branch(),
+                        revision: self.world.revision,
+                        world: &self.world,
+                        profile: &market.profile,
+                        state: &mut town,
+                        timeline: t,
+                        accounts: &mut accounts,
+                        stocks: &mut stocks,
+                    })?);
                 }
                 Action::RegionSettleDebt { obligation } => {
                     if !matches!(caller, Caller::System) {
@@ -1945,6 +1977,7 @@ impl Engine {
             economy,
             region,
             construction,
+            town,
             accounts,
             stocks,
             resources,
@@ -1959,6 +1992,7 @@ impl Engine {
                 settled,
                 created_tokens,
                 timeline: timeline_progress,
+                town: town_summary,
             },
         })
     }
@@ -1985,6 +2019,9 @@ impl Engine {
         self.world.economy = prepared.economy;
         self.world.region = prepared.region;
         self.world.construction = prepared.construction;
+        if let (Some(world_town), Some(state)) = (&mut self.world.town, prepared.town) {
+            world_town.state = state;
+        }
         self.world.revision = prepared.receipt.revision;
         std::mem::swap(&mut self.resources, &mut *prepared.resources);
         std::mem::swap(&mut self.leases, &mut *prepared.leases);
@@ -2061,11 +2098,553 @@ fn stage_stock(world: &World, dirty: &mut DirtyStocks, raw: RawHandle) -> Result
     if let Some(i) = dirty.iter().position(|(old, _)| *old == h) {
         return Ok(i);
     }
-    if dirty.len() == MAX_ACTIONS * 2 {
+    if dirty.len() == crate::assembly::MAX_STOCKS {
         return Err(TxError::WorkingLimit);
     }
     dirty.push((h, *world.stocks.get(h).map_err(|_| TxError::InvalidHandle)?));
     Ok(dirty.len() - 1)
+}
+
+struct TownSettlementContext<'a> {
+    operation_id: u64,
+    world_id: u64,
+    branch_id: u64,
+    revision: u64,
+    world: &'a World,
+    profile: &'a crate::town_runtime::MarketProfile,
+    state: &'a mut Option<crate::town_runtime::MarketState>,
+    timeline: &'a crate::timeline::Timeline,
+    accounts: &'a mut DirtyAccounts,
+    stocks: &'a mut DirtyStocks,
+}
+
+fn prepare_town_settlement(
+    context: TownSettlementContext<'_>,
+) -> Result<crate::town_runtime::MarketSummary, TxError> {
+    let TownSettlementContext {
+        operation_id,
+        world_id,
+        branch_id,
+        revision,
+        world,
+        profile,
+        state,
+        timeline,
+        accounts,
+        stocks,
+    } = context;
+    use crate::{
+        town_economy::{
+            self, AccountSnapshot, EmployerSnapshot, InventorySnapshot, MarketInput, PlanLine,
+            Recipe, RecipeExecution,
+        },
+        town_runtime::PayrollCursor,
+    };
+
+    profile.validate().map_err(|_| TxError::InvalidOperation)?;
+    let market_state = state.as_mut().ok_or(TxError::InvalidOperation)?;
+    let at = timeline.progress.last_complete;
+    if timeline.progress.phase.is_some()
+        || timeline.progress.target.is_some()
+        || at == 0
+        || at % crate::timeline::DAY != 0
+    {
+        return Err(TxError::InvalidOperation);
+    }
+    let day = at / crate::timeline::DAY;
+    if market_state.settled_day.checked_add(1) != Some(day) {
+        return Err(TxError::InvalidOperation);
+    }
+
+    let mut employer_counts = Vec::<(u32, u32, i64)>::with_capacity(profile.employers.len());
+    for employer in profile.employers.as_slice() {
+        employer_counts.push((employer.account, 0, 0));
+    }
+    let mut worker_deltas = Vec::<(u32, u32, u64, i64, i64)>::new();
+    let mut wages_accrued_total = 0i64;
+    let prior_at = at - crate::timeline::DAY;
+    let cursors = market_state.payroll.as_slice();
+    for payroll in timeline.payroll.iter() {
+        let Some(row) = employer_counts
+            .iter_mut()
+            .find(|row| row.0 == payroll.spec.payer)
+        else {
+            continue;
+        };
+        let previous = cursors.iter().find(|cursor| cursor.id == payroll.spec.id);
+        if previous.is_none() && payroll.started < prior_at {
+            return Err(TxError::InvalidOperation);
+        }
+        let old_work = previous.map_or(0, |cursor| cursor.work_seconds);
+        let old_accrued = previous.map_or(Money::ZERO, |cursor| cursor.accrued);
+        let old_paid = previous.map_or(Money::ZERO, |cursor| cursor.paid);
+        let worked = payroll
+            .work_seconds
+            .checked_sub(old_work)
+            .ok_or(TxError::InvalidOperation)?;
+        let accrued = payroll
+            .accrued
+            .checked_sub(old_accrued)
+            .map_err(|_| TxError::InvalidOperation)?;
+        let paid = payroll
+            .paid
+            .checked_sub(old_paid)
+            .map_err(|_| TxError::InvalidOperation)?;
+        if payroll.paid > payroll.accrued {
+            return Err(TxError::InvalidOperation);
+        }
+        if worked > 0 {
+            row.1 = row.1.checked_add(1).ok_or(TxError::Overflow)?;
+        }
+        row.2 = row.2.checked_add(paid.value()).ok_or(TxError::Overflow)?;
+        wages_accrued_total = wages_accrued_total
+            .checked_add(accrued.value())
+            .ok_or(TxError::Overflow)?;
+        worker_deltas.push((
+            payroll.spec.id,
+            payroll.spec.payer,
+            worked,
+            accrued.value(),
+            paid.value(),
+        ));
+    }
+    worker_deltas.sort_by_key(|row| row.0);
+
+    let mut employers = Vec::with_capacity(profile.employers.len());
+    for spec in profile.employers.as_slice() {
+        let (_, workers, paid) = *employer_counts
+            .iter()
+            .find(|row| row.0 == spec.account)
+            .ok_or(TxError::InvalidOperation)?;
+        if workers > spec.worker_limit {
+            return Err(TxError::InvalidOperation);
+        }
+        employers.push(EmployerSnapshot {
+            account: spec.account,
+            available_workers: workers,
+            wage_cost_per_worker_day: Money::ZERO,
+            payroll_paid_today: Money::new(paid).map_err(|_| TxError::Overflow)?,
+        });
+    }
+
+    let mut account_views = Vec::with_capacity(world.account_ids.len());
+    for (id, handle) in world.account_ids.iter() {
+        let account = world
+            .accounts
+            .get(*handle)
+            .map_err(|_| TxError::InvalidHandle)?;
+        account_views.push(AccountSnapshot {
+            account: *id,
+            cash: account.cash,
+            protected: account.protected,
+        });
+    }
+    let mut inventories = Vec::with_capacity(world.stock_ids.len());
+    for (id, handle) in world.stock_ids.iter() {
+        let stock = world
+            .stocks
+            .get(*handle)
+            .map_err(|_| TxError::InvalidHandle)?;
+        let owner = world
+            .accounts
+            .get(stock.owner)
+            .map_err(|_| TxError::InvalidHandle)?;
+        inventories.push(InventorySnapshot {
+            stock_id: *id,
+            owner: owner.id,
+            good: crate::town_runtime::commodity_good(stock.commodity),
+            quantity: stock.quantity,
+            spendable_basis: stock.basis,
+            origin_quantity: stock.origin_quantity,
+            origin_basis: stock.origin_basis,
+            offset: stock.offset,
+        });
+    }
+
+    let mut recipes = Vec::<Recipe>::with_capacity(profile.recipes.len());
+    let mut executions = Vec::<RecipeExecution>::with_capacity(profile.recipes.len());
+    let mut used_workers = Vec::<(u32, u32)>::with_capacity(profile.employers.len());
+    for employer in employers.iter() {
+        used_workers.push((employer.account, 0));
+    }
+    let mut configured_recipes: Vec<_> = profile.recipes.as_slice().iter().collect();
+    configured_recipes.sort_by_key(|recipe| recipe.recipe_id);
+    let mut assigned_payroll_ids = Vec::<u32>::new();
+    for configured in configured_recipes {
+        let output_handle = world
+            .stock_handle(configured.output_stock_id)
+            .map_err(|_| TxError::InvalidHandle)?;
+        let output = world
+            .stocks
+            .get(output_handle)
+            .map_err(|_| TxError::InvalidHandle)?;
+        // A single physical output slot represents one unmerged lot. Existing goods remain
+        // sellable; production resumes after the slot is fully consumed and cleared.
+        if output.quantity != Quantity::ZERO {
+            continue;
+        }
+        let assigned = used_workers
+            .iter_mut()
+            .find(|row| row.0 == configured.employer)
+            .ok_or(TxError::InvalidOperation)?;
+        let workers = worker_deltas
+            .iter()
+            .filter(|row| {
+                row.1 == configured.employer && row.2 > 0 && !assigned_payroll_ids.contains(&row.0)
+            })
+            .take(configured.assigned_workers as usize)
+            .count() as u32;
+        if workers == 0 {
+            continue;
+        }
+        let selected: Vec<_> = worker_deltas
+            .iter()
+            .filter(|row| {
+                row.1 == configured.employer && row.2 > 0 && !assigned_payroll_ids.contains(&row.0)
+            })
+            .take(workers as usize)
+            .copied()
+            .collect();
+        assigned_payroll_ids.extend(selected.iter().map(|row| row.0));
+        assigned.1 = assigned.1.checked_add(workers).ok_or(TxError::Overflow)?;
+        let mut recipe = *configured;
+        recipe.assigned_workers = workers;
+        let worked_seconds = selected.iter().try_fold(0u64, |total, row| {
+            total.checked_add(row.2).ok_or(TxError::Overflow)
+        })?;
+        let labor_cost = selected.iter().try_fold(0i64, |total, row| {
+            total.checked_add(row.3).ok_or(TxError::Overflow)
+        })?;
+        if worked_seconds == 0 {
+            continue;
+        }
+        let output_remainder = market_state
+            .recipe_output_remainders
+            .as_slice()
+            .iter()
+            .find(|row| row.recipe_id == configured.recipe_id)
+            .map_or(0, |row| row.numerator);
+        executions.push(RecipeExecution {
+            recipe_id: configured.recipe_id,
+            workers,
+            worked_seconds,
+            output_remainder,
+            labor_cost: Money::new(labor_cost).map_err(|_| TxError::Overflow)?,
+        });
+        recipes.push(recipe);
+    }
+
+    let input = MarketInput {
+        schema: "mycity-town-market-v0.1".to_owned(),
+        world: world_id,
+        branch: branch_id,
+        revision,
+        day,
+        operation_id,
+        households: profile.households.as_slice().to_vec(),
+        employers,
+        accounts: account_views,
+        inventories,
+        shops: profile.shops.as_slice().to_vec(),
+        recipes,
+        delivery: profile.delivery.as_slice().to_vec(),
+    };
+    let batch = town_economy::plan_day_with_execution(&input, &executions)
+        .map_err(|_| TxError::InvalidOperation)?;
+    let reconciled = town_economy::reconcile_with_execution(&input, &executions, &batch)
+        .map_err(|_| TxError::InvalidOperation)?;
+
+    for execution in &executions {
+        let recipe = profile
+            .recipes
+            .as_slice()
+            .iter()
+            .find(|recipe| recipe.recipe_id == execution.recipe_id)
+            .ok_or(TxError::InvalidOperation)?;
+        let (_, remainder) = town_economy::worker_output(
+            recipe.output_per_worker_day,
+            execution.worked_seconds,
+            execution.output_remainder,
+        )
+        .map_err(|_| TxError::InvalidOperation)?;
+        if let Some(row) = market_state
+            .recipe_output_remainders
+            .as_mut_slice()
+            .iter_mut()
+            .find(|row| row.recipe_id == execution.recipe_id)
+        {
+            row.numerator = remainder;
+        } else {
+            market_state
+                .recipe_output_remainders
+                .push(crate::town_runtime::RecipeOutputRemainder {
+                    recipe_id: execution.recipe_id,
+                    numerator: remainder,
+                })
+                .map_err(|_| TxError::WorkingLimit)?;
+        }
+    }
+    market_state
+        .recipe_output_remainders
+        .as_mut_slice()
+        .sort_by_key(|row| row.recipe_id);
+
+    let mut produced = Quantity::ZERO;
+    let mut waste = Quantity::ZERO;
+    for line in &batch.lines {
+        match *line {
+            PlanLine::Produce {
+                employer,
+                input_stock_id,
+                input_quantity,
+                output_stock_id,
+                output_good,
+                output_quantity,
+                waste_quantity,
+                input_basis,
+                output_basis,
+                utility_cost,
+                freight_cost,
+                disposal_cost,
+                utility_account,
+                freight_account,
+                disposal_account,
+                ..
+            } => {
+                let input_raw = world
+                    .stock_ref(input_stock_id)
+                    .map_err(|_| TxError::InvalidHandle)?;
+                let input_index = stage_stock(world, stocks, input_raw)?;
+                let input_stock = &mut stocks[input_index].1;
+                let measured_basis = stock_slice_basis(input_stock, input_quantity)?;
+                if measured_basis != input_basis
+                    || input_stock.owner
+                        != world
+                            .account_handle(employer)
+                            .map_err(|_| TxError::InvalidHandle)?
+                {
+                    return Err(TxError::Stock);
+                }
+                consume_stock(input_stock, input_quantity, input_basis)?;
+
+                let output_raw = world
+                    .stock_ref(output_stock_id)
+                    .map_err(|_| TxError::InvalidHandle)?;
+                let output_index = stage_stock(world, stocks, output_raw)?;
+                let output_stock = &mut stocks[output_index].1;
+                if output_stock.quantity != Quantity::ZERO
+                    || crate::town_runtime::commodity_good(output_stock.commodity) != output_good
+                    || output_stock.owner
+                        != world
+                            .account_handle(employer)
+                            .map_err(|_| TxError::InvalidHandle)?
+                {
+                    return Err(TxError::Stock);
+                }
+                output_stock.quantity = output_quantity;
+                output_stock.basis = output_basis;
+                output_stock.origin_quantity = output_quantity;
+                output_stock.origin_basis = output_basis;
+                output_stock.offset = Quantity::ZERO;
+                output_stock.lot_id = output_stock
+                    .lot_id
+                    .checked_add(1)
+                    .ok_or(TxError::Overflow)?
+                    .max(1);
+
+                market_transfer(world, accounts, employer, utility_account, utility_cost)?;
+                market_transfer(world, accounts, employer, freight_account, freight_cost)?;
+                market_transfer(world, accounts, employer, disposal_account, disposal_cost)?;
+                produced = produced
+                    .checked_add(output_quantity)
+                    .map_err(|_| TxError::Overflow)?;
+                waste = waste
+                    .checked_add(waste_quantity)
+                    .map_err(|_| TxError::Overflow)?;
+            }
+            PlanLine::Sale {
+                buyer_account,
+                shop_account,
+                stock_id,
+                quantity,
+                goods_basis,
+                goods_payment,
+                freight_payment,
+                utility_payment,
+                freight_account,
+                utility_account,
+                ..
+            } => {
+                let raw = world
+                    .stock_ref(stock_id)
+                    .map_err(|_| TxError::InvalidHandle)?;
+                let index = stage_stock(world, stocks, raw)?;
+                let stock = &mut stocks[index].1;
+                if world
+                    .accounts
+                    .get(stock.owner)
+                    .map_err(|_| TxError::InvalidHandle)?
+                    .id
+                    != shop_account
+                    || stock_slice_basis(stock, quantity)? != goods_basis
+                {
+                    return Err(TxError::Stock);
+                }
+                consume_stock(stock, quantity, goods_basis)?;
+                market_transfer(world, accounts, buyer_account, shop_account, goods_payment)?;
+                market_transfer(
+                    world,
+                    accounts,
+                    buyer_account,
+                    freight_account,
+                    freight_payment,
+                )?;
+                market_transfer(
+                    world,
+                    accounts,
+                    buyer_account,
+                    utility_account,
+                    utility_payment,
+                )?;
+            }
+            PlanLine::Unmet { .. } => {}
+        }
+    }
+
+    for payroll in timeline.payroll.iter() {
+        let cursor = PayrollCursor {
+            id: payroll.spec.id,
+            work_seconds: payroll.work_seconds,
+            accrued: payroll.accrued,
+            paid: payroll.paid,
+        };
+        if let Some(existing) = market_state
+            .payroll
+            .as_mut_slice()
+            .iter_mut()
+            .find(|x| x.id == cursor.id)
+        {
+            *existing = cursor;
+        } else {
+            market_state
+                .payroll
+                .push(cursor)
+                .map_err(|_| TxError::WorkingLimit)?;
+        }
+    }
+    if market_state
+        .payroll
+        .as_slice()
+        .windows(2)
+        .any(|w| w[0].id >= w[1].id)
+    {
+        return Err(TxError::InvalidOperation);
+    }
+    let wages_accrued = Money::new(wages_accrued_total).map_err(|_| TxError::Overflow)?;
+    let idle_labor_expense = wages_accrued
+        .checked_sub(reconciled.labor_basis)
+        .map_err(|_| TxError::InvalidOperation)?;
+    let summary = crate::town_runtime::MarketSummary {
+        day,
+        operation_id,
+        reference_need: batch.reference_need,
+        market_demand: batch.market_demand,
+        actual_sales: batch.actual_sales,
+        unmet_market_demand: batch.unmet_market_demand,
+        produced,
+        waste,
+        goods_payments: batch.planned_goods_payments,
+        freight: batch.planned_freight,
+        utilities: batch.planned_utilities,
+        disposal: batch.planned_disposal,
+        labor_basis: reconciled.labor_basis,
+        wages_accrued,
+        idle_labor_expense,
+    };
+    // Record both actual application and the authoritative planner reconciliation in one
+    // persisted cursor. Timeline has already paid any due wages; no second wage transfer occurs.
+    let _labor_paid_by_timeline = reconciled.worker_days;
+    market_state.settled_day = day;
+    market_state.last_summary = summary;
+    Ok(summary)
+}
+
+fn stock_slice_basis(stock: &Stock, quantity: Quantity) -> Result<Money, TxError> {
+    let end = stock
+        .offset
+        .checked_add(quantity)
+        .map_err(|_| TxError::Overflow)?;
+    let denominator = stock.origin_quantity.value();
+    if denominator <= 0 || end > stock.origin_quantity || quantity <= Quantity::ZERO {
+        return Err(TxError::Stock);
+    }
+    let origin = i128::from(stock.origin_basis.value());
+    let left = origin * i128::from(stock.offset.value()) / i128::from(denominator);
+    let right = origin * i128::from(end.value()) / i128::from(denominator);
+    Money::new(i64::try_from(right - left).map_err(|_| TxError::Overflow)?)
+        .map_err(|_| TxError::Overflow)
+}
+
+fn consume_stock(stock: &mut Stock, quantity: Quantity, basis: Money) -> Result<(), TxError> {
+    stock.quantity = stock
+        .quantity
+        .checked_sub(quantity)
+        .map_err(|_| TxError::Stock)?;
+    stock.basis = stock.basis.checked_sub(basis).map_err(|_| TxError::Stock)?;
+    stock.offset = stock
+        .offset
+        .checked_add(quantity)
+        .map_err(|_| TxError::Overflow)?;
+    if stock.quantity == Quantity::ZERO {
+        if stock.basis != Money::ZERO {
+            return Err(TxError::Stock);
+        }
+        stock.origin_quantity = Quantity::ZERO;
+        stock.origin_basis = Money::ZERO;
+        stock.offset = Quantity::ZERO;
+        stock.lot_id = 0;
+    }
+    Ok(())
+}
+
+fn market_transfer(
+    world: &World,
+    accounts: &mut DirtyAccounts,
+    from: u32,
+    to: u32,
+    amount: Money,
+) -> Result<(), TxError> {
+    if amount == Money::ZERO || from == to {
+        return Ok(());
+    }
+    if amount < Money::ZERO {
+        return Err(TxError::InvalidOperation);
+    }
+    let from_raw = world
+        .account_ref(from)
+        .map_err(|_| TxError::InvalidHandle)?;
+    let from_index = stage_account(world, accounts, from_raw)?;
+    let spendable = accounts[from_index]
+        .1
+        .cash
+        .checked_sub(accounts[from_index].1.protected)
+        .map_err(|_| TxError::Protection)?;
+    if spendable < amount {
+        return Err(TxError::InsufficientFunds);
+    }
+    accounts[from_index].1.cash = accounts[from_index]
+        .1
+        .cash
+        .checked_sub(amount)
+        .map_err(|_| TxError::InsufficientFunds)?;
+    let to_raw = world.account_ref(to).map_err(|_| TxError::InvalidHandle)?;
+    let to_index = stage_account(world, accounts, to_raw)?;
+    accounts[to_index].1.cash = accounts[to_index]
+        .1
+        .cash
+        .checked_add(amount)
+        .map_err(|_| TxError::Overflow)?;
+    Ok(())
 }
 
 /// Applies the bounded construction projection and its external effects to the same
@@ -2336,7 +2915,7 @@ fn prepare_construction(
             }
             EffectKind::Inspect => {}
             EffectKind::ReleaseSite | EffectKind::ReceiveWaste => {
-                return Err(TxError::InvalidOperation)
+                return Err(TxError::InvalidOperation);
             }
         }
         candidate
@@ -2799,6 +3378,359 @@ mod tests {
             expected_revision: e.world.revision,
             actions,
         }
+    }
+    fn market_engine() -> Engine {
+        use crate::{
+            town_economy::{DeliveryQuote, HouseholdGroup, ShopSnapshot},
+            town_runtime::{EmployerSpec, FixedRows, MarketProfile, TownMarket},
+        };
+        let mut e = engine();
+        let mut households = FixedRows::<HouseholdGroup, 64>::new();
+        households
+            .push(HouseholdGroup {
+                id: 1,
+                account: 2,
+                households: 1,
+                need_good: 0,
+                need_per_household: Quantity::new(100).unwrap(),
+                reference_price_per_q: cash(10),
+            })
+            .unwrap();
+        let mut employers = FixedRows::<EmployerSpec, 16>::new();
+        employers
+            .push(EmployerSpec {
+                account: 3,
+                worker_limit: 1,
+            })
+            .unwrap();
+        let mut shops = FixedRows::<ShopSnapshot, 128>::new();
+        shops
+            .push(ShopSnapshot {
+                shop_id: 1,
+                account: 4,
+                stock_id: 1,
+                good: 0,
+                shelf_price_per_q: cash(10),
+            })
+            .unwrap();
+        let recipes = FixedRows::new();
+        let mut delivery = FixedRows::<DeliveryQuote, 512>::new();
+        delivery
+            .push(DeliveryQuote {
+                quote_id: 1,
+                shop: 1,
+                household_group: 1,
+                good: 0,
+                reachable: true,
+                route_source: 1,
+                freight_account: 1,
+                utility_account: 1,
+                available_capacity: Quantity::new(100).unwrap(),
+                freight_per_q: Money::ZERO,
+                utility_surcharge_per_q: Money::ZERO,
+            })
+            .unwrap();
+        e.world.town = Some(
+            TownMarket::new(MarketProfile {
+                schema_version: 1,
+                id: 1,
+                households,
+                employers,
+                shops,
+                recipes,
+                delivery,
+            })
+            .unwrap(),
+        );
+        e.world.town.unwrap().validate_world(&e.world).unwrap();
+        e.timeline.activate();
+        e.timeline.as_mut().unwrap().progress.last_complete = crate::timeline::DAY;
+        e.timeline.as_mut().unwrap().progress.at = crate::timeline::DAY;
+        assert!(e.owned_capacity_bytes() <= ENGINE_BYTE_BUDGET);
+        e
+    }
+
+    fn productive_market_engine() -> Engine {
+        let mut opening: serde_json::Value =
+            serde_json::from_slice(include_bytes!("../../../fixtures/m0-e0-opening.json")).unwrap();
+        opening["sources"].as_array_mut().unwrap().extend([
+            serde_json::json!({"id":6,"kind":"inventory_capital","amount":100000}),
+            serde_json::json!({"id":7,"kind":"inventory_capital","amount":0}),
+        ]);
+        opening["stocks"].as_array_mut().unwrap().extend([
+            serde_json::json!({"id":2,"owner":3,"commodity":"raw","quantity":100000,"basis":100000,"source":6}),
+            serde_json::json!({"id":3,"owner":3,"commodity":"product","quantity":0,"basis":0,"source":7}),
+        ]);
+        opening["town"] = serde_json::json!({
+            "schema_version":1,
+            "id":1,
+            "households":[{"id":1,"account":2,"households":1,"need_good":1,"need_per_household":10,"reference_price_per_q":1000}],
+            "employers":[{"account":3,"worker_limit":1}],
+            "shops":[{"shop_id":1,"account":3,"stock_id":3,"good":1,"shelf_price_per_q":100}],
+            "recipes":[{"recipe_id":1,"employer":3,"assigned_workers":1,"input_stock_id":2,"input_per_output":1,"output_good":1,"output_stock_id":3,"output_per_worker_day":100,"waste_per_output_q":0,"available_utility_per_day":1000,"utility_per_output_q":1,"utility_cost_per_output_q":1,"freight_cost_per_input_q":0,"disposal_cost_per_input_q":0,"utility_account":1,"freight_account":1,"disposal_account":1}],
+            "delivery":[{"quote_id":1,"shop":1,"household_group":1,"good":1,"reachable":true,"route_source":77,"freight_account":1,"utility_account":1,"available_capacity":100,"freight_per_q":1,"utility_surcharge_per_q":1}]
+        });
+        let mut e = Engine::new(
+            assemble(&serde_json::to_vec(&opening).unwrap()).unwrap(),
+            Vec::new(),
+        )
+        .unwrap();
+        e.timeline.activate();
+        e
+    }
+
+    fn issue(e: &mut Engine, action: Action) -> Receipt {
+        let view = e.world.view();
+        let action_description = format!("{action:?}");
+        e.execute(
+            Caller::System,
+            Envelope {
+                world: view.scope.world(),
+                branch: view.scope.branch(),
+                operation_id: view.revision + 100,
+                expected_revision: view.revision,
+                actions: vec![action],
+            },
+        )
+        .unwrap_or_else(|error| panic!("action {action_description} failed: {error:?}"))
+    }
+
+    #[test]
+    fn town_day_is_one_atomic_engine_receipt_and_retry_does_not_repeat_sale() {
+        let mut e = market_engine();
+        let cmd = env(&e, 500, vec![Action::TownSettle { profile_id: 1 }]);
+        let receipt = e.execute(Caller::System, cmd.clone()).unwrap();
+        assert_eq!(
+            receipt.town.unwrap().actual_sales,
+            Quantity::new(100).unwrap()
+        );
+        let after = e.state_hash();
+        let view = e.world.view();
+        assert_eq!(view.stocks[0].quantity, Quantity::new(599_900).unwrap());
+        assert_eq!(
+            view.accounts.iter().find(|a| a.id == 2).unwrap().cash,
+            cash(199_000)
+        );
+        assert_eq!(
+            view.accounts.iter().find(|a| a.id == 4).unwrap().cash,
+            cash(1_201_000)
+        );
+        assert_eq!(view.town.unwrap().state.settled_day, 1);
+        assert_eq!(e.execute(Caller::System, cmd).unwrap(), receipt);
+        assert_eq!(e.state_hash(), after);
+        eprintln!("action_size_bytes={}", std::mem::size_of::<Action>());
+        assert!(std::mem::size_of::<Action>() <= 128);
+    }
+
+    #[test]
+    fn town_durable_hook_failure_does_not_publish_cash_stock_or_day() {
+        let mut e = market_engine();
+        let cmd = env(&e, 501, vec![Action::TownSettle { profile_id: 1 }]);
+        let before = e.state_hash();
+        let failed = e.execute_recorded(Caller::System, cmd, |_, _| Err("disk"));
+        assert_eq!(failed, Err("disk"));
+        assert_eq!(e.state_hash(), before);
+        let view = e.world.view();
+        assert_eq!(view.stocks[0].quantity, Quantity::new(600_000).unwrap());
+        assert_eq!(view.town.unwrap().state.settled_day, 0);
+    }
+
+    #[test]
+    fn town_production_uses_real_timeline_wages_and_preserves_lot_basis() {
+        let mut e = productive_market_engine();
+        issue(
+            &mut e,
+            Action::Timeline {
+                command: crate::timeline::Command::AddPayroll {
+                    spec: crate::timeline::PayrollSpec {
+                        id: 1,
+                        payer: 3,
+                        payee: 2,
+                        home_city: 0,
+                        hourly_cents: cash(100),
+                        cycle: crate::timeline::Cycle::Daily,
+                        ends_at: 7 * crate::timeline::DAY,
+                    },
+                },
+            },
+        );
+        for _ in 0..100 {
+            issue(
+                &mut e,
+                Action::Timeline {
+                    command: crate::timeline::Command::Advance {
+                        target: crate::timeline::DAY,
+                        limit: 8192,
+                    },
+                },
+            );
+            if e.timeline().unwrap().progress.target.is_none() {
+                break;
+            }
+        }
+        let before_company = e
+            .world
+            .view()
+            .accounts
+            .iter()
+            .find(|a| a.id == 3)
+            .unwrap()
+            .cash;
+        let receipt = issue(&mut e, Action::TownSettle { profile_id: 1 });
+        let summary = receipt.town.unwrap();
+        assert_eq!(summary.day, 1);
+        assert_eq!(summary.produced, Quantity::new(100).unwrap());
+        assert_eq!(summary.actual_sales, Quantity::new(10).unwrap());
+        assert_eq!(summary.labor_basis, cash(800));
+        let view = e.world.view();
+        let raw = view.stocks.iter().find(|s| s.id == 2).unwrap();
+        let product = view.stocks.iter().find(|s| s.id == 3).unwrap();
+        assert_eq!(raw.quantity, Quantity::new(99_900).unwrap());
+        assert_eq!(raw.basis, cash(99_900));
+        assert_eq!(product.quantity, Quantity::new(90).unwrap());
+        assert_eq!(product.basis, cash(900));
+        assert_eq!(product.origin_quantity, Quantity::new(100).unwrap());
+        assert_eq!(product.offset, Quantity::new(10).unwrap());
+        assert_eq!(
+            view.accounts.iter().find(|a| a.id == 3).unwrap().cash,
+            before_company.checked_add(cash(900)).unwrap()
+        );
+        assert_eq!(
+            view.town.unwrap().state.payroll.as_slice()[0].paid,
+            cash(800)
+        );
+    }
+
+    #[test]
+    fn town_assigns_exact_partial_worker_seconds_and_reconciles_100_101_wages() {
+        let mut opening: serde_json::Value =
+            serde_json::from_slice(include_bytes!("../../../fixtures/m0-e0-opening.json")).unwrap();
+        opening["sources"].as_array_mut().unwrap().extend([
+            serde_json::json!({"id":6,"kind":"inventory_capital","amount":100000}),
+            serde_json::json!({"id":7,"kind":"inventory_capital","amount":0}),
+        ]);
+        opening["stocks"].as_array_mut().unwrap().extend([
+            serde_json::json!({"id":2,"owner":3,"commodity":"raw","quantity":100000,"basis":100000,"source":6}),
+            serde_json::json!({"id":3,"owner":3,"commodity":"product","quantity":0,"basis":0,"source":7}),
+        ]);
+        opening["town"] = serde_json::json!({
+            "schema_version":1,
+            "id":1,
+            "households":[{"id":1,"account":2,"households":1,"need_good":1,"need_per_household":10,"reference_price_per_q":1000}],
+            "employers":[{"account":3,"worker_limit":2}],
+            "shops":[{"shop_id":1,"account":3,"stock_id":3,"good":1,"shelf_price_per_q":100}],
+            "recipes":[{"recipe_id":1,"employer":3,"assigned_workers":2,"input_stock_id":2,"input_per_output":1,"output_good":1,"output_stock_id":3,"output_per_worker_day":480,"waste_per_output_q":0,"available_utility_per_day":1,"utility_per_output_q":1,"utility_cost_per_output_q":1,"freight_cost_per_input_q":0,"disposal_cost_per_input_q":0,"utility_account":1,"freight_account":1,"disposal_account":1}],
+            "delivery":[{"quote_id":1,"shop":1,"household_group":1,"good":1,"reachable":true,"route_source":77,"freight_account":1,"utility_account":1,"available_capacity":100,"freight_per_q":1,"utility_surcharge_per_q":1}]
+        });
+        let mut e = Engine::new(
+            assemble(&serde_json::to_vec(&opening).unwrap()).unwrap(),
+            Vec::new(),
+        )
+        .unwrap();
+        e.timeline.activate();
+        for (id, hourly_cents) in [(1, 6_000), (2, 6_060)] {
+            issue(
+                &mut e,
+                Action::Timeline {
+                    command: crate::timeline::Command::AddPayroll {
+                        spec: crate::timeline::PayrollSpec {
+                            id,
+                            payer: 3,
+                            payee: 2,
+                            home_city: 0,
+                            hourly_cents: cash(hourly_cents),
+                            cycle: crate::timeline::Cycle::Daily,
+                            ends_at: 9 * 3_600 + 60,
+                        },
+                    },
+                },
+            );
+        }
+        for _ in 0..100 {
+            issue(
+                &mut e,
+                Action::Timeline {
+                    command: crate::timeline::Command::Advance {
+                        target: crate::timeline::DAY,
+                        limit: 8192,
+                    },
+                },
+            );
+            if e.timeline().unwrap().progress.target.is_none() {
+                break;
+            }
+        }
+        let summary = issue(&mut e, Action::TownSettle { profile_id: 1 })
+            .town
+            .unwrap();
+        assert_eq!(summary.wages_accrued, cash(201));
+        assert_eq!(summary.produced, Quantity::new(1).unwrap());
+        assert_eq!(summary.labor_basis, cash(100));
+        assert_eq!(summary.idle_labor_expense, cash(101));
+        assert_eq!(
+            summary
+                .labor_basis
+                .checked_add(summary.idle_labor_expense)
+                .unwrap(),
+            summary.wages_accrued
+        );
+        assert_eq!(
+            e.world
+                .view()
+                .town
+                .unwrap()
+                .state
+                .recipe_output_remainders
+                .as_slice()[0]
+                .numerator,
+            0
+        );
+    }
+
+    #[test]
+    fn weekly_timeline_payroll_catchup_does_not_block_daily_town_settlement() {
+        let mut e = productive_market_engine();
+        issue(
+            &mut e,
+            Action::Timeline {
+                command: crate::timeline::Command::AddPayroll {
+                    spec: crate::timeline::PayrollSpec {
+                        id: 1,
+                        payer: 3,
+                        payee: 2,
+                        home_city: 0,
+                        hourly_cents: cash(100),
+                        cycle: crate::timeline::Cycle::Weekly,
+                        ends_at: 8 * crate::timeline::DAY,
+                    },
+                },
+            },
+        );
+        for day in 1..=7 {
+            for _ in 0..100 {
+                issue(
+                    &mut e,
+                    Action::Timeline {
+                        command: crate::timeline::Command::Advance {
+                            target: day * crate::timeline::DAY,
+                            limit: 8192,
+                        },
+                    },
+                );
+                if e.timeline().unwrap().progress.target.is_none() {
+                    break;
+                }
+            }
+            let summary = issue(&mut e, Action::TownSettle { profile_id: 1 })
+                .town
+                .unwrap();
+            assert_eq!(summary.day, day);
+            assert_eq!(summary.wages_accrued, cash(800));
+        }
+        let town = e.world.view().town.unwrap();
+        let payroll = &town.state.payroll.as_slice()[0];
+        assert_eq!(payroll.accrued, cash(5_600));
+        assert_eq!(payroll.paid, cash(5_600));
     }
     #[test]
     fn failed_late_action_leaves_no_partial_cash_or_capacity() {

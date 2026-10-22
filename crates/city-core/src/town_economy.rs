@@ -9,6 +9,7 @@ pub const MAX_SHOP_STOCK_LOTS: usize = 128;
 pub const MAX_RECIPES: usize = 16;
 pub const MAX_GOODS: usize = 8;
 pub const MAX_LINES: usize = 1024;
+pub const WORKER_DAY_SECONDS: u64 = 28_800;
 /// Additional bounded planning heap target; must be measured after Engine integration.
 pub const PLANNER_HEAP_BUDGET_TARGET: usize = 512 * 1024;
 
@@ -98,6 +99,67 @@ pub struct Recipe {
     pub utility_account: u32,
     pub freight_account: u32,
     pub disposal_account: u32,
+}
+
+/// Day-specific labor facts built by the Engine from Timeline payroll cursors. The old
+/// planner API omits these rows and gets the equivalent full-worker-day defaults.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct RecipeExecution {
+    pub recipe_id: u32,
+    pub workers: u32,
+    pub worked_seconds: u64,
+    pub output_remainder: u32,
+    pub labor_cost: Money,
+}
+
+/// Convert elapsed labor into output while carrying only the fractional output numerator.
+/// Both the legacy integer-worker planner and the Engine execution path use this rule.
+pub fn worker_output(
+    output_per_worker_day: Quantity,
+    worked_seconds: u64,
+    remainder: u32,
+) -> Result<(Quantity, u32), PlanError> {
+    if remainder as u64 >= WORKER_DAY_SECONDS {
+        return Err(PlanError::InvalidInput);
+    }
+    let numerator = i128::from(output_per_worker_day.value())
+        .checked_mul(i128::from(worked_seconds))
+        .and_then(|value| value.checked_add(i128::from(remainder)))
+        .ok_or(PlanError::Overflow)?;
+    let quantity = i64::try_from(numerator / i128::from(WORKER_DAY_SECONDS))
+        .map_err(|_| PlanError::Overflow)?;
+    let carry = u32::try_from(numerator % i128::from(WORKER_DAY_SECONDS))
+        .map_err(|_| PlanError::Overflow)?;
+    Ok((
+        Quantity::new(quantity).map_err(|_| PlanError::Overflow)?,
+        carry,
+    ))
+}
+
+/// Allocate exact integer-cents labor deterministically between produced inventory and
+/// current-period expense. Any fractional cents stay in the expense side.
+pub fn split_labor_cost(
+    total: Money,
+    produced: Quantity,
+    potential: Quantity,
+) -> Result<(Money, Money), PlanError> {
+    if produced > potential {
+        return Err(PlanError::InvalidInput);
+    }
+    let capitalized = if potential == Quantity::ZERO {
+        Money::ZERO
+    } else {
+        let cents = i128::from(total.value())
+            .checked_mul(i128::from(produced.value()))
+            .ok_or(PlanError::Overflow)?
+            / i128::from(potential.value());
+        Money::new(i64::try_from(cents).map_err(|_| PlanError::Overflow)?)
+            .map_err(|_| PlanError::Overflow)?
+    };
+    let expense = total
+        .checked_sub(capitalized)
+        .map_err(|_| PlanError::Overflow)?;
+    Ok((capitalized, expense))
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -549,7 +611,45 @@ fn push_line(lines: &mut Vec<PlanLine>, line: PlanLine) -> Result<(), PlanError>
 /// Build one pure plan from a single authoritative revision. It neither changes balances nor
 /// inventory; a caller must atomically commit every non-Unmet line through the Engine.
 pub fn plan_day(input: &MarketInput) -> Result<SettlementBatch, PlanError> {
+    let executions = legacy_recipe_executions(input)?;
+    plan_day_with_execution(input, &executions)
+}
+
+/// Build a plan using authoritative elapsed work and accrued labor costs supplied by the
+/// Engine. Resource, cost, stock and market constraints remain the same as the legacy planner.
+pub fn plan_day_with_execution(
+    input: &MarketInput,
+    executions: &[RecipeExecution],
+) -> Result<SettlementBatch, PlanError> {
     if !input_valid(input) {
+        return Err(PlanError::InvalidInput);
+    }
+    if executions.len() != input.recipes.len()
+        || executions.iter().any(|execution| {
+            let Some(recipe) = input
+                .recipes
+                .iter()
+                .find(|recipe| recipe.recipe_id == execution.recipe_id)
+            else {
+                return true;
+            };
+            execution.workers != recipe.assigned_workers
+                || execution.worked_seconds
+                    > u64::from(execution.workers).saturating_mul(WORKER_DAY_SECONDS)
+                || execution.output_remainder as u64 >= WORKER_DAY_SECONDS
+                || execution.labor_cost.value() < 0
+        })
+        || {
+            let mut ids: Vec<_> = executions.iter().map(|row| row.recipe_id).collect();
+            ids.sort_unstable();
+            ids.windows(2).any(|pair| pair[0] == pair[1])
+                || input.recipes.iter().any(|recipe| {
+                    !executions
+                        .iter()
+                        .any(|row| row.recipe_id == recipe.recipe_id)
+                })
+        }
+    {
         return Err(PlanError::InvalidInput);
     }
     let mut lines = Vec::with_capacity(
@@ -611,11 +711,6 @@ pub fn plan_day(input: &MarketInput) -> Result<SettlementBatch, PlanError> {
     let mut recipes: Vec<&Recipe> = input.recipes.iter().collect();
     recipes.sort_by_key(|r| (r.employer, r.output_stock_id));
     for recipe in recipes {
-        let employer = input
-            .employers
-            .iter()
-            .find(|e| e.account == recipe.employer)
-            .ok_or(PlanError::MissingReference)?;
         let _producer = account(input, recipe.employer).ok_or(PlanError::MissingReference)?;
         let inv = stock(input, recipe.input_stock_id).ok_or(PlanError::MissingReference)?;
         if inv.owner != recipe.employer {
@@ -625,11 +720,20 @@ pub fn plan_day(input: &MarketInput) -> Result<SettlementBatch, PlanError> {
             .iter_mut()
             .find(|x| x.stock_id == recipe.input_stock_id)
             .ok_or(PlanError::MissingReference)?;
-        let workers = recipe.assigned_workers;
+        let execution = executions
+            .iter()
+            .find(|execution| execution.recipe_id == recipe.recipe_id)
+            .ok_or(PlanError::MissingReference)?;
+        let workers = execution.workers;
         if workers == 0 {
             continue;
         }
-        let mut output = checked_mul_qty(recipe.output_per_worker_day, workers)?;
+        let (potential_output, _next_output_remainder) = worker_output(
+            recipe.output_per_worker_day,
+            execution.worked_seconds,
+            execution.output_remainder,
+        )?;
+        let mut output = potential_output;
         let unit_in = recipe.input_per_output.value();
         let utility_per_output = recipe.utility_per_output_q.value();
         if unit_in <= 0 || utility_per_output <= 0 {
@@ -676,10 +780,9 @@ pub fn plan_day(input: &MarketInput) -> Result<SettlementBatch, PlanError> {
             u32::try_from(output.value()).map_err(|_| PlanError::Overflow)?,
         )?;
         // This is accrued labor cost from Timeline, not a second cash payment.
-        let labor_cost = checked_mul_money(
-            employer.wage_cost_per_worker_day,
-            Quantity::new(i64::from(workers)).map_err(|_| PlanError::Overflow)?,
-        )?;
+        let labor_cost = execution.labor_cost;
+        let (capitalized_labor, _current_labor_expense) =
+            split_labor_cost(labor_cost, output, potential_output)?;
         let freight = checked_mul_money(recipe.freight_cost_per_input_q, qty)?;
         let disposal = checked_mul_money(recipe.disposal_cost_per_input_q, qty)?;
         let waste_quantity = checked_mul_qty(
@@ -716,7 +819,7 @@ pub fn plan_day(input: &MarketInput) -> Result<SettlementBatch, PlanError> {
             .find(|x| x.stock_id == recipe.output_stock_id)
             .ok_or(PlanError::MissingReference)?;
         let output_basis = add_money(
-            add_money(add_money(input_basis, utility)?, labor_cost)?,
+            add_money(add_money(input_basis, utility)?, capitalized_labor)?,
             add_money(freight, disposal)?,
         )?;
         out.quantity = add_qty(out.quantity, output)?;
@@ -725,7 +828,7 @@ pub fn plan_day(input: &MarketInput) -> Result<SettlementBatch, PlanError> {
         out.origin_basis = output_basis;
         out.offset = Quantity::ZERO;
         disposal_total = add_money(disposal_total, disposal)?;
-        labor_total = add_money(labor_total, labor_cost)?;
+        labor_total = add_money(labor_total, capitalized_labor)?;
         utility_total = add_money(utility_total, utility)?;
         freight_total = add_money(freight_total, freight)?;
         push_line(
@@ -743,7 +846,7 @@ pub fn plan_day(input: &MarketInput) -> Result<SettlementBatch, PlanError> {
                 utility_quantity,
                 input_basis,
                 output_basis,
-                labor_cost,
+                labor_cost: capitalized_labor,
                 utility_cost: utility,
                 freight_cost: freight,
                 disposal_cost: disposal,
@@ -994,6 +1097,35 @@ pub fn plan_day(input: &MarketInput) -> Result<SettlementBatch, PlanError> {
     })
 }
 
+fn legacy_recipe_executions(input: &MarketInput) -> Result<Vec<RecipeExecution>, PlanError> {
+    input
+        .recipes
+        .iter()
+        .map(|recipe| {
+            let employer = input
+                .employers
+                .iter()
+                .find(|employer| employer.account == recipe.employer)
+                .ok_or(PlanError::MissingReference)?;
+            let worked_seconds = u64::from(recipe.assigned_workers)
+                .checked_mul(WORKER_DAY_SECONDS)
+                .ok_or(PlanError::Overflow)?;
+            let labor_cost = checked_mul_money(
+                employer.wage_cost_per_worker_day,
+                Quantity::new(i64::from(recipe.assigned_workers))
+                    .map_err(|_| PlanError::Overflow)?,
+            )?;
+            Ok(RecipeExecution {
+                recipe_id: recipe.recipe_id,
+                workers: recipe.assigned_workers,
+                worked_seconds,
+                output_remainder: 0,
+                labor_cost,
+            })
+        })
+        .collect()
+}
+
 fn candidates_empty_for(input: &MarketInput, group: u32, good: u8) -> bool {
     !input.shops.iter().filter(|s| s.good == good).any(|s| {
         input.delivery.iter().any(|q| {
@@ -1009,6 +1141,15 @@ pub fn reconcile(
     input: &MarketInput,
     batch: &SettlementBatch,
 ) -> Result<Reconciliation, PlanError> {
+    let executions = legacy_recipe_executions(input)?;
+    reconcile_with_execution(input, &executions, batch)
+}
+
+pub fn reconcile_with_execution(
+    input: &MarketInput,
+    executions: &[RecipeExecution],
+    batch: &SettlementBatch,
+) -> Result<Reconciliation, PlanError> {
     if !input_valid(input) {
         return Err(PlanError::InvalidInput);
     }
@@ -1020,7 +1161,7 @@ pub fn reconcile(
     {
         return Err(PlanError::SnapshotMismatch);
     }
-    let expected = plan_day(input)?;
+    let expected = plan_day_with_execution(input, executions)?;
     if expected != *batch {
         return Err(PlanError::SnapshotMismatch);
     }
@@ -1303,6 +1444,73 @@ mod tests {
         assert_eq!(a.day, 1);
     }
     #[test]
+    fn elapsed_work_scales_output_and_carries_only_fractional_numerator() {
+        assert_eq!(
+            worker_output(Quantity::new(28_800).unwrap(), 60, 0).unwrap(),
+            (Quantity::new(60).unwrap(), 0)
+        );
+        let mut remainder = 0;
+        let mut total = 0;
+        for _ in 0..3 {
+            let (output, next) =
+                worker_output(Quantity::new(1).unwrap(), 9_600, remainder).unwrap();
+            total += output.value();
+            remainder = next;
+        }
+        assert_eq!(total, 1);
+        assert_eq!(remainder, 0);
+        assert_eq!(
+            split_labor_cost(
+                Money::new(201).unwrap(),
+                Quantity::new(1).unwrap(),
+                Quantity::new(2).unwrap()
+            )
+            .unwrap(),
+            (Money::new(100).unwrap(), Money::new(101).unwrap())
+        );
+    }
+
+    #[test]
+    fn execution_day_uses_actual_seconds_and_exact_labor_cost() {
+        let mut x = input();
+        x.recipes[0].output_per_worker_day = Quantity::new(480).unwrap();
+        x.recipes[0].available_utility_per_day = Quantity::new(1).unwrap();
+        x.recipes[0].utility_per_output_q = Quantity::new(1).unwrap();
+        x.employers[0].available_workers = 2;
+        x.recipes[0].assigned_workers = 2;
+        let executions = [RecipeExecution {
+            recipe_id: 1,
+            workers: 2,
+            worked_seconds: 120,
+            output_remainder: 0,
+            labor_cost: Money::new(201).unwrap(),
+        }];
+        let batch = plan_day_with_execution(&x, &executions).unwrap();
+        let audit = reconcile_with_execution(&x, &executions, &batch).unwrap();
+        let produced = batch.lines.iter().find_map(|line| match line {
+            PlanLine::Produce {
+                output_quantity,
+                labor_cost,
+                ..
+            } => Some((*output_quantity, *labor_cost)),
+            _ => None,
+        });
+        assert_eq!(
+            produced,
+            Some((Quantity::new(1).unwrap(), Money::new(100).unwrap()))
+        );
+        assert_eq!(audit.labor_basis, Money::new(100).unwrap());
+        assert_eq!(
+            split_labor_cost(
+                Money::new(201).unwrap(),
+                Quantity::new(1).unwrap(),
+                Quantity::new(2).unwrap()
+            )
+            .unwrap(),
+            (Money::new(100).unwrap(), Money::new(101).unwrap())
+        );
+    }
+    #[test]
     fn unreachable_route_and_empty_stock_never_create_sales() {
         let mut x = input();
         x.delivery[0].reachable = false;
@@ -1332,10 +1540,11 @@ mod tests {
         x.accounts[1].cash = Money::new(12_000).unwrap();
         x.accounts[1].protected = Money::new(12_000).unwrap();
         let a = plan_day(&x).unwrap();
-        assert!(a
-            .lines
-            .iter()
-            .all(|l| !matches!(l, PlanLine::Produce { .. })));
+        assert!(
+            a.lines
+                .iter()
+                .all(|l| !matches!(l, PlanLine::Produce { .. }))
+        );
         x.accounts[1].cash = Money::new(100_000).unwrap();
         x.inventories[0].quantity = Quantity::new(2).unwrap();
         let a = plan_day(&x).unwrap();
@@ -1497,14 +1706,18 @@ mod tests {
         let baseline = plan_day(&x).unwrap();
         x.recipes[0].utility_cost_per_output_q = Money::new(2).unwrap();
         let energy_shock = plan_day(&x).unwrap();
-        assert!(baseline
-            .lines
-            .iter()
-            .any(|l| matches!(l, PlanLine::Produce { .. })));
-        assert!(!energy_shock
-            .lines
-            .iter()
-            .any(|l| matches!(l, PlanLine::Produce { .. })));
+        assert!(
+            baseline
+                .lines
+                .iter()
+                .any(|l| matches!(l, PlanLine::Produce { .. }))
+        );
+        assert!(
+            !energy_shock
+                .lines
+                .iter()
+                .any(|l| matches!(l, PlanLine::Produce { .. }))
+        );
 
         x.recipes.clear();
         x.accounts[1].cash = Money::new(100_000).unwrap();
@@ -1517,10 +1730,12 @@ mod tests {
             normal_demand.planned_goods_payments.value()
                 > lower_demand.planned_goods_payments.value()
         );
-        assert!(normal_demand
-            .lines
-            .iter()
-            .any(|l| matches!(l, PlanLine::Sale { .. })));
+        assert!(
+            normal_demand
+                .lines
+                .iter()
+                .any(|l| matches!(l, PlanLine::Sale { .. }))
+        );
     }
 
     fn add_expensive_offer(input: &mut MarketInput, inventory_quantity: i64) {

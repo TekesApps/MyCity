@@ -1,0 +1,7 @@
+a45a01c4f47e5d6a036d2f8ce21aa0540f27ab0e17dbd48d8e9868d1926a6380  crates/city-core/src/assembly.rs
+f43fd4b6b84b7455090eff5b868824ce71c70eccbfa3604d1e2c36e61900bbb7  crates/city-core/src/lib.rs
+963e351d025c4cc362aae48af8363aeadad8456b1245ddf685ef2f17ebc6bab1  crates/city-core/src/town_economy.rs
+2efad2b65cb2ec8270bf95babf68f51b05e1baf2de7861040c2dc92d240c94f6  crates/city-core/src/town_runtime.rs
+9a03ad4e5cab3f7f46e186fbb2c203aba1675dd8faa3a3ab3f8295c84693ff9f  crates/city-core/src/transaction.rs
+8e2f4f46101f5a1d4bf83576f9aca4156f11e122f94805e9d002637b801713d0  crates/city-core/examples/town_market.rs
+2a5e0caf12fd9a56ec17ffb9ee4a83c10dffe2947ae19d7a0f69ee1ab768bf59  crates/city-storage/tests/town_market.rs

@@ -1,0 +1,24 @@
+    Finished `release` profile [optimized] target(s) in 0.11s
+     Running unittests src/lib.rs (/Users/frankqin/dev/MyCity/target/release/deps/mycity_core-363f7122bd90a840)
+
+running 17 tests
+test town_economy::tests::elapsed_work_scales_output_and_carries_only_fractional_numerator ... ok
+test town_economy::tests::duplicate_recipe_or_quote_identity_is_rejected ... ok
+test town_economy::tests::empty_cheap_offer_does_not_set_demand_price_for_expensive_stock ... ok
+test town_economy::tests::energy_price_and_falling_demand_reduce_production_and_sales ... ok
+test town_economy::tests::execution_day_uses_actual_seconds_and_exact_labor_cost ... ok
+test town_economy::tests::exhausted_cheap_route_then_expensive_route_reprices_remaining_demand ... ok
+test town_economy::tests::offer_iteration_order_does_not_change_the_plan ... ok
+test town_economy::tests::plan_is_deterministic_bounded_and_does_not_mutate_authoritative_input ... ok
+test town_economy::tests::price_increase_keeps_reference_need_visible_as_unmet ... ok
+test town_economy::tests::producer_cash_and_recipe_input_limit_output ... ok
+test town_economy::tests::recipes_compete_for_one_shared_utility_pool ... ok
+test town_economy::tests::reconciliation_balances_counterparties_and_rejects_stale_or_tampered_batch ... ok
+test town_economy::tests::route_capacity_is_consumed_once_per_route_and_good ... ok
+test town_economy::tests::remaining_cheap_inventory_then_expensive_offer_reprices_only_marginal_units ... ok
+test town_economy::tests::sales_are_limited_by_actual_stock_and_cash ... ok
+test town_economy::tests::stockout_no_cash_and_closed_road_propagate_as_unmet_demand ... ok
+test town_economy::tests::unreachable_route_and_empty_stock_never_create_sales ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 75 filtered out; finished in 0.00s
+

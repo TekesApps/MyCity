@@ -1,0 +1,71 @@
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-core)
+    Checking mycity-map v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-map)
+    Checking mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-storage)
+error: couldn't read `crates/city-storage/tests/../../../docs/evidence/core-construction-compat/attempt-01/old-v106-world/genesis.json`: No such file or directory (os error 2)
+  --> crates/city-storage/tests/construction.rs:21:29
+   |
+21 |   const V106_GENESIS: &[u8] = include_bytes!(
+   |  _____________________________^
+22 | |     "../../../docs/evidence/core-construction-compat/attempt-01/old-v106-world/genesis.json"
+23 | | );
+   | |_^
+   |
+   = note: this error originates in the macro `include_bytes` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: couldn't read `crates/city-storage/tests/../../../docs/evidence/core-construction-compat/attempt-01/old-v106-world/CURRENT.json`: No such file or directory (os error 2)
+  --> crates/city-storage/tests/construction.rs:24:29
+   |
+24 |   const V106_CURRENT: &[u8] = include_bytes!(
+   |  _____________________________^
+25 | |     "../../../docs/evidence/core-construction-compat/attempt-01/old-v106-world/CURRENT.json"
+26 | | );
+   | |_^
+   |
+   = note: this error originates in the macro `include_bytes` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: couldn't read `crates/city-storage/tests/../../../docs/evidence/core-construction-compat/attempt-01/old-v106-world/root-0.json`: No such file or directory (os error 2)
+  --> crates/city-storage/tests/construction.rs:27:28
+   |
+27 |   const V106_ROOT_0: &[u8] = include_bytes!(
+   |  ____________________________^
+28 | |     "../../../docs/evidence/core-construction-compat/attempt-01/old-v106-world/root-0.json"
+29 | | );
+   | |_^
+   |
+   = note: this error originates in the macro `include_bytes` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: couldn't read `crates/city-storage/tests/../../../docs/evidence/core-construction-compat/attempt-01/old-v106-world/root-1.json`: No such file or directory (os error 2)
+  --> crates/city-storage/tests/construction.rs:30:28
+   |
+30 |   const V106_ROOT_1: &[u8] = include_bytes!(
+   |  ____________________________^
+31 | |     "../../../docs/evidence/core-construction-compat/attempt-01/old-v106-world/root-1.json"
+32 | | );
+   | |_^
+   |
+   = note: this error originates in the macro `include_bytes` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: couldn't read `crates/city-storage/tests/../../../docs/evidence/core-construction-compat/attempt-01/old-v106-world/wal.bin`: No such file or directory (os error 2)
+  --> crates/city-storage/tests/construction.rs:33:25
+   |
+33 |   const V106_WAL: &[u8] = include_bytes!(
+   |  _________________________^
+34 | |     "../../../docs/evidence/core-construction-compat/attempt-01/old-v106-world/wal.bin"
+35 | | );
+   | |_^
+   |
+   = note: this error originates in the macro `include_bytes` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: couldn't read `crates/city-storage/tests/../../../docs/evidence/core-construction-compat/attempt-01/old-v106-storage-probe.json`: No such file or directory (os error 2)
+  --> crates/city-storage/tests/construction.rs:36:27
+   |
+36 |   const V106_PROBE: &[u8] = include_bytes!(
+   |  ___________________________^
+37 | |     "../../../docs/evidence/core-construction-compat/attempt-01/old-v106-storage-probe.json"
+38 | | );
+   | |_^
+   |
+   = note: this error originates in the macro `include_bytes` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: could not compile `mycity-storage` (test "construction") due to 6 previous errors
+warning: build failed, waiting for other jobs to finish...

@@ -84,6 +84,10 @@ pub struct Opening {
     /// Optional fixed one-project prototype profile. Runtime changes only through Engine actions.
     #[serde(default)]
     pub construction: Option<crate::construction::Project>,
+    /// Optional fixed market profile. It is genesis configuration; runtime changes use
+    /// compact Engine actions and persist in the same World/checkpoint.
+    #[serde(default)]
+    pub town: Option<crate::town_runtime::MarketProfile>,
 }
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
@@ -123,6 +127,8 @@ pub struct World {
     pub(crate) exchange: Option<crate::exchange::Exchange>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) construction: Option<crate::construction::Project>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) town: Option<crate::town_runtime::TownMarket>,
 }
 
 #[derive(Debug, PartialEq, Eq, Serialize)]
@@ -159,6 +165,8 @@ pub struct WorldView {
     pub exchange: Option<crate::exchange::Exchange>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub construction: Option<crate::construction::Project>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub town: Option<crate::town_runtime::TownMarket>,
 }
 
 impl Record for OpeningSource {
@@ -215,6 +223,8 @@ pub(crate) struct BusinessWorld<'a> {
     exchange: &'a Option<crate::exchange::Exchange>,
     #[serde(skip_serializing_if = "Option::is_none")]
     construction: &'a Option<crate::construction::Project>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    town: &'a Option<crate::town_runtime::TownMarket>,
 }
 #[derive(Serialize)]
 pub(crate) struct BorrowedWorldView<'a> {
@@ -231,6 +241,8 @@ pub(crate) struct BorrowedWorldView<'a> {
     exchange: &'a Option<crate::exchange::Exchange>,
     #[serde(skip_serializing_if = "Option::is_none")]
     construction: &'a Option<crate::construction::Project>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    town: &'a Option<crate::town_runtime::TownMarket>,
 }
 struct AccountViews<'a>(&'a World);
 impl Serialize for AccountViews<'_> {
@@ -290,6 +302,7 @@ impl World {
             boot: None,
             exchange: None,
             construction: None,
+            town: None,
         })
     }
     pub(crate) fn reset_backing(&mut self) {
@@ -306,6 +319,7 @@ impl World {
         self.boot = None;
         self.exchange = None;
         self.construction = None;
+        self.town = None;
     }
     pub(crate) fn copy_into(&self, target: &mut Self) -> Result<(), String> {
         self.accounts.copy_into(&mut target.accounts)?;
@@ -321,6 +335,7 @@ impl World {
         target.boot = self.boot;
         target.exchange = self.exchange;
         target.construction = self.construction;
+        target.town = self.town;
         Ok(())
     }
     pub(crate) fn backing_ids(&self) -> [usize; 7] {
@@ -351,11 +366,12 @@ impl World {
             boot: &self.boot,
             exchange: &self.exchange,
             construction: &self.construction,
+            town: &self.town,
         }
     }
     pub(crate) fn borrowed_view(&self) -> BorrowedWorldView<'_> {
         BorrowedWorldView {
-            schema: if self.construction.is_some() {
+            schema: if self.construction.is_some() || self.town.is_some() {
                 "mycity-m0-state-v7"
             } else {
                 "mycity-m0-state-v6"
@@ -371,6 +387,7 @@ impl World {
             boot: &self.boot,
             exchange: &self.exchange,
             construction: &self.construction,
+            town: &self.town,
         }
     }
     pub(crate) fn restore_capacity(&mut self) -> Result<(), String> {
@@ -455,6 +472,12 @@ impl World {
                 }
             }
         }
+        if let Some(town) = self.town {
+            town.validate_persisted()
+                .map_err(|_| "checkpoint_town_profile")?;
+            town.validate_world(self)
+                .map_err(|_| "checkpoint_town_binding")?;
+        }
         if self.owned_capacity_bytes() > WORLD_BYTE_BUDGET {
             return Err("checkpoint_world_budget".into());
         }
@@ -480,7 +503,7 @@ impl World {
     }
     pub fn view(&self) -> WorldView {
         WorldView {
-            schema: if self.construction.is_some() {
+            schema: if self.construction.is_some() || self.town.is_some() {
                 "mycity-m0-state-v7"
             } else {
                 "mycity-m0-state-v6"
@@ -525,6 +548,7 @@ impl World {
             boot: self.boot,
             exchange: self.exchange,
             construction: self.construction,
+            town: self.town,
         }
     }
     pub fn state_hash(&self) -> String {
@@ -547,7 +571,7 @@ impl World {
         let headers = size_of::<Self>()
             - size_of::<Arena<AccountDomain, Account>>()
             - size_of::<Arena<InventoryDomain, Stock>>();
-        serde_json::json!({"accounts":self.accounts.layout(),"stocks":self.stocks.layout(),"index_capacity_bytes":index_bytes,"construction_slot_bytes":size_of::<Option<crate::construction::Project>>(),"construction_slot_included_in_world_remaining_header_bytes":true,"opening_sources_capacity_bytes":source_bytes,"world_remaining_header_bytes":headers,"owned_capacity_bytes":self.accounts.owned_bytes()+self.stocks.owned_bytes()+index_bytes+source_bytes+headers,"allocator_metadata_included":false,"temporary_parse_and_view_pages_included":false})
+        serde_json::json!({"accounts":self.accounts.layout(),"stocks":self.stocks.layout(),"index_capacity_bytes":index_bytes,"construction_slot_bytes":size_of::<Option<crate::construction::Project>>(),"town_market_slot_bytes":size_of::<Option<crate::town_runtime::TownMarket>>(),"town_market_slot_included_in_world_remaining_header_bytes":true,"town_profile_owned_bytes":self.town.map_or(0,|town|town.owned_bytes()),"construction_slot_included_in_world_remaining_header_bytes":true,"opening_sources_capacity_bytes":source_bytes,"world_remaining_header_bytes":headers,"owned_capacity_bytes":self.accounts.owned_bytes()+self.stocks.owned_bytes()+index_bytes+source_bytes+headers,"allocator_metadata_included":false,"temporary_parse_and_view_pages_included":false})
     }
 }
 
@@ -732,6 +756,14 @@ pub(crate) fn assemble_into(bytes: &[u8], world: &mut World) -> Result<(), Strin
             }
         }
     }
+    world.town = input
+        .town
+        .map(crate::town_runtime::TownMarket::new)
+        .transpose()
+        .map_err(str::to_owned)?;
+    if let Some(town) = world.town {
+        town.validate_initial_world(world).map_err(str::to_owned)?;
+    }
     if world.owned_capacity_bytes() > WORLD_BYTE_BUDGET {
         return Err("world_byte_limit".into());
     }
@@ -747,6 +779,7 @@ impl crate::restore_into::Restore for World {
         // Pre-construction checkpoints have no field 12. Clear the reused slot first so
         // restoring such a checkpoint over a world with a project cannot retain stale state.
         self.construction = None;
+        self.town = None;
         crate::restore_into::object!(d,self,World,255u64,{
         scope,0=>Copy,
         seed,1=>Copy,
@@ -761,6 +794,7 @@ impl crate::restore_into::Restore for World {
         boot,10=>Copy,
         exchange,11=>Copy,
         construction,12=>Copy,
+        town,13=>Copy,
         })?;
         Ok(())
     }
@@ -807,6 +841,64 @@ mod tests {
         .unwrap()
     }
 
+    fn town_profile() -> crate::town_runtime::MarketProfile {
+        use crate::town_economy::{DeliveryQuote, HouseholdGroup, ShopSnapshot};
+        use crate::town_runtime::{EmployerSpec, FixedRows};
+        let mut households = FixedRows::new();
+        households
+            .push(HouseholdGroup {
+                id: 1,
+                account: 2,
+                households: 1,
+                need_good: 0,
+                need_per_household: Quantity::new(1).unwrap(),
+                reference_price_per_q: Money::new(1).unwrap(),
+            })
+            .unwrap();
+        let mut employers = FixedRows::new();
+        employers
+            .push(EmployerSpec {
+                account: 3,
+                worker_limit: 1,
+            })
+            .unwrap();
+        let mut shops = FixedRows::new();
+        shops
+            .push(ShopSnapshot {
+                shop_id: 1,
+                account: 3,
+                stock_id: 1,
+                good: 0,
+                shelf_price_per_q: Money::new(1).unwrap(),
+            })
+            .unwrap();
+        let mut delivery = FixedRows::new();
+        delivery
+            .push(DeliveryQuote {
+                quote_id: 1,
+                shop: 1,
+                household_group: 1,
+                good: 0,
+                reachable: true,
+                route_source: 1,
+                freight_account: 3,
+                utility_account: 3,
+                available_capacity: Quantity::new(1).unwrap(),
+                freight_per_q: Money::ZERO,
+                utility_surcharge_per_q: Money::ZERO,
+            })
+            .unwrap();
+        crate::town_runtime::MarketProfile {
+            schema_version: 1,
+            id: 1,
+            households,
+            employers,
+            shops,
+            recipes: FixedRows::new(),
+            delivery,
+        }
+    }
+
     #[test]
     fn restore_of_preconstruction_object_clears_reused_optional_slot() {
         let mut reused = assemble(INPUT).unwrap();
@@ -841,6 +933,30 @@ mod tests {
         let mut deserializer = serde_json::Deserializer::from_slice(&bytes);
         crate::restore_into::Restore::restore(&mut reused, &mut deserializer).unwrap();
         assert!(reused.construction.is_none());
+    }
+
+    #[test]
+    fn town_configuration_is_omitted_when_absent_and_legacy_restore_clears_reused_slot() {
+        let mut world = assemble(INPUT).unwrap();
+        assert_eq!(world.view().schema, "mycity-m0-state-v6");
+        assert!(!serde_json::to_value(world.view())
+            .unwrap()
+            .as_object()
+            .unwrap()
+            .contains_key("town"));
+        assert!(!serde_json::to_value(world.business_world())
+            .unwrap()
+            .as_object()
+            .unwrap()
+            .contains_key("town"));
+
+        world.town = Some(crate::town_runtime::TownMarket::new(town_profile()).unwrap());
+        let mut legacy = serde_json::to_value(assemble(INPUT).unwrap()).unwrap();
+        assert!(legacy.as_object_mut().unwrap().remove("town").is_none());
+        let bytes = serde_json::to_vec(&legacy).unwrap();
+        let mut deserializer = serde_json::Deserializer::from_slice(&bytes);
+        crate::restore_into::Restore::restore(&mut world, &mut deserializer).unwrap();
+        assert!(world.town.is_none());
     }
 
     #[test]

@@ -95,6 +95,7 @@ fn action_raw(
         Boot,
         Economy,
         Construction,
+        TownSettle,
         RegionSettleDebt,
         RegionActivate,
         RegionAdvance,
@@ -151,6 +152,12 @@ fn action_raw(
             let fields = Fields::parse(raw, &["kind", "command"], false, scratch)?;
             Ok(Output::Construction {
                 command: reader::decode(fields.raw(1)?, scratch)?,
+            })
+        }
+        Kind::TownSettle => {
+            let fields = Fields::parse(raw, &["kind", "profile_id"], false, scratch)?;
+            Ok(Output::TownSettle {
+                profile_id: fields.get(1, scratch)?,
             })
         }
         Kind::RegionSettleDebt => {

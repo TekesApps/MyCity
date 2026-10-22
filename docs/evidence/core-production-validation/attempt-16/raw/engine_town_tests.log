@@ -1,0 +1,12 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-core)
+    Finished `release` profile [optimized] target(s) in 12.53s
+     Running unittests src/lib.rs (/Users/frankqin/dev/MyCity/target/release/deps/mycity_core-363f7122bd90a840)
+
+running 4 tests
+test transaction::tests::town_production_uses_real_timeline_wages_and_preserves_lot_basis ... ok
+test transaction::tests::town_durable_hook_failure_does_not_publish_cash_stock_or_day ... ok
+test transaction::tests::town_day_is_one_atomic_engine_receipt_and_retry_does_not_repeat_sale ... ok
+test transaction::tests::town_assigns_exact_partial_worker_seconds_and_reconciles_100_101_wages ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 88 filtered out; finished in 0.00s
+

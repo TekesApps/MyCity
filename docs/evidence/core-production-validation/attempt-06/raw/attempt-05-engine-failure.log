@@ -1,0 +1,37 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-core)
+    Finished `release` profile [optimized] target(s) in 13.07s
+     Running unittests src/lib.rs (/Users/frankqin/dev/MyCity/target/release/deps/mycity_core-363f7122bd90a840)
+
+running 4 tests
+test transaction::tests::town_day_is_one_atomic_engine_receipt_and_retry_does_not_repeat_sale ... FAILED
+test transaction::tests::town_production_uses_real_timeline_wages_and_preserves_lot_basis ... FAILED
+test transaction::tests::town_assigns_exact_partial_worker_seconds_and_reconciles_100_101_wages ... FAILED
+test transaction::tests::town_durable_hook_failure_does_not_publish_cash_stock_or_day ... ok
+
+failures:
+
+---- transaction::tests::town_day_is_one_atomic_engine_receipt_and_retry_does_not_repeat_sale stdout ----
+
+thread 'transaction::tests::town_day_is_one_atomic_engine_receipt_and_retry_does_not_repeat_sale' panicked at crates/city-core/src/transaction.rs:3483:62:
+called `Result::unwrap()` on an `Err` value: InvalidOperation
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- transaction::tests::town_production_uses_real_timeline_wages_and_preserves_lot_basis stdout ----
+
+thread 'transaction::tests::town_production_uses_real_timeline_wages_and_preserves_lot_basis' panicked at crates/city-core/src/transaction.rs:3476:10:
+called `Result::unwrap()` on an `Err` value: Timeline(Busy)
+
+---- transaction::tests::town_assigns_exact_partial_worker_seconds_and_reconciles_100_101_wages stdout ----
+
+thread 'transaction::tests::town_assigns_exact_partial_worker_seconds_and_reconciles_100_101_wages' panicked at crates/city-core/src/transaction.rs:3476:10:
+called `Result::unwrap()` on an `Err` value: Timeline(Busy)
+
+
+failures:
+    transaction::tests::town_assigns_exact_partial_worker_seconds_and_reconciles_100_101_wages
+    transaction::tests::town_day_is_one_atomic_engine_receipt_and_retry_does_not_repeat_sale
+    transaction::tests::town_production_uses_real_timeline_wages_and_preserves_lot_basis
+
+test result: FAILED. 1 passed; 3 failed; 0 ignored; 0 measured; 88 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p mycity-core --lib`

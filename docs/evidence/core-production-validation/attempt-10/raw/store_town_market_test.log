@@ -1,0 +1,19 @@
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 0.80s
+     Running tests/town_market.rs (/Users/frankqin/dev/MyCity/target/release/deps/town_market-fc275aa083e796f1)
+
+running 1 test
+
+thread 'town_work_and_market_day_recover_once_after_applied_reply_loss' panicked at crates/city-storage/tests/town_market.rs:205:13:
+checkpoint cold-open failed: Invalid("invalid_json")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test town_work_and_market_day_recover_once_after_applied_reply_loss ... FAILED
+
+failures:
+
+failures:
+    town_work_and_market_day_recover_once_after_applied_reply_loss
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.85s
+
+error: test failed, to rerun pass `-p mycity-storage --test town_market`

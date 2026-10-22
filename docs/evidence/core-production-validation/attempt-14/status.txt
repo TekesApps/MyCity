@@ -1,0 +1,9 @@
+ M crates/city-core/src/assembly.rs
+ M crates/city-core/src/lib.rs
+ M crates/city-core/src/town_economy.rs
+ M crates/city-core/src/transaction.rs
+ M crates/city-storage/src/checkpoint/receipt_decode.rs
+?? crates/city-core/examples/town_market.rs
+?? crates/city-core/src/town_runtime.rs
+?? crates/city-storage/tests/town_market.rs
+?? docs/evidence/core-production-validation/
