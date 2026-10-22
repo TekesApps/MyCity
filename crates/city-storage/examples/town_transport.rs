@@ -1611,7 +1611,7 @@ fn run_cross_boundary(dir: &str) -> Result<(), String> {
     let expected_hash = store.state_hash().map_err(err)?;
     store.checkpoint().map_err(err)?;
     drop(store);
-    let recovered = Store::open(Path::new(dir), RULES).map_err(err)?;
+    let mut recovered = Store::open(Path::new(dir), RULES).map_err(err)?;
     let recovered_market = recovered
         .engine()
         .map_err(err)?
