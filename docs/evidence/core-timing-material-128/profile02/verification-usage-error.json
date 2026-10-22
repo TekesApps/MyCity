@@ -1,0 +1,16 @@
+{
+  "attempt": 1,
+  "command": [
+    "python3",
+    "verify_profile.py",
+    "--repo",
+    "/Users/frankqin/dev/MyCity",
+    "--evidence-root",
+    "/Volumes/HP P900/dev/MyCity/work/timing-full-v128-02",
+    "--output",
+    "verification-final.json"
+  ],
+  "error": "argparse expected positional repo evidence_root; model not rerun",
+  "evidence_provenance": "recorded from tool output",
+  "exit_code": 2
+}

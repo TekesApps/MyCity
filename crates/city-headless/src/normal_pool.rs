@@ -628,8 +628,13 @@ impl Pool {
         }
     }
 }
-fn read_wire<T: serde::de::DeserializeOwned>(r: &mut impl Read) -> Result<T, &'static str> {
-    let mut data = [0; CONTROL];
+fn read_wire_into<T: serde::de::DeserializeOwned>(
+    r: &mut impl Read,
+    data: &mut [u8],
+) -> Result<T, &'static str> {
+    if data.len() != CONTROL {
+        return Err("normal_pool_control_buffer_size");
+    }
     let mut used = 0;
     loop {
         if used == CONTROL {
@@ -658,6 +663,10 @@ fn read_wire<T: serde::de::DeserializeOwned>(r: &mut impl Read) -> Result<T, &'s
                 .map_err(|_| "normal_pool_control_decode");
         }
     }
+}
+fn read_wire<T: serde::de::DeserializeOwned>(r: &mut impl Read) -> Result<T, &'static str> {
+    let mut data = [0; CONTROL];
+    read_wire_into(r, &mut data)
 }
 fn write_wire(w: &mut impl Write, value: &impl Serialize) -> Result<(), String> {
     serde_json::to_writer(&mut *w, value).map_err(err)?;
@@ -925,6 +934,24 @@ fn serve_inner(
             .map_err(err)?;
     }
     let mut pool = Pool::new(root)?;
+    // In the combined root this allocation uses the already active 256 KiB
+    // diagnostic arena. Keep one fixed frame buffer for the entire service loop.
+    let mut control_buffer = Vec::new();
+    control_buffer.try_reserve_exact(CONTROL).map_err(err)?;
+    control_buffer.resize(CONTROL, 0);
+    if let Some(arena) = heap_meter::arena_snapshot().activation {
+        let start = control_buffer.as_ptr() as usize;
+        let end = start
+            .checked_add(control_buffer.capacity())
+            .ok_or("normal_pool_control_buffer_address")?;
+        let arena_end = arena
+            .arena_start
+            .checked_add(arena.arena_bytes)
+            .ok_or("normal_pool_control_arena_address")?;
+        if start < arena.arena_start || end > arena_end {
+            return Err("normal_pool_control_buffer_outside_role_arena".into());
+        }
+    }
     let vm_trace = match explicit_vm_trace {
         Some(value) => value,
         None => match std::env::var("MYCITY_POOL_VM_TRACE").ok().as_deref() {
@@ -957,7 +984,7 @@ fn serve_inner(
                 socket
                     .set_write_timeout(Some(Duration::from_secs(2)))
                     .map_err(err)?;
-                let request: Result<Request, _> = read_wire(&mut socket);
+                let request: Result<Request, _> = read_wire_into(&mut socket, &mut control_buffer);
                 if pool.fault == Some(Fault::BeforeBrokerRevoke)
                     && matches!(
                         &request,
@@ -1448,9 +1475,75 @@ mod tests {
         assert!(read_wire::<Request>(&mut &b"{}\n{}\n"[..]).is_err());
         assert!(read_wire::<Request>(&mut &b"{\"source\":\"\\u0061\"}\n"[..]).is_err());
         assert!(
-            std::mem::size_of::<Pool>() + 2 * CONTROL + 40 * 1024 + 8192 + 64 * 1024
+            std::mem::size_of::<Pool>() + 2 * CONTROL + 40 * 1024 + 8192 + 64 * 1024 + CONTROL
                 < DIAGNOSTIC_BYTES
         );
+    }
+    fn request_frame(boot: u128) -> Vec<u8> {
+        serde_json::to_vec(&Request {
+            source: Text::new(SOURCE).unwrap(),
+            boot,
+            action: Op::Status,
+        })
+        .unwrap()
+    }
+    #[test]
+    fn control_wire_into_accepts_maximum_legal_frame_and_rejects_overflow_and_trailing_bytes() {
+        let mut maximum = request_frame(11);
+        maximum.resize(CONTROL - 1, b' ');
+        maximum.push(b'\n');
+        assert_eq!(maximum.len(), CONTROL);
+        let mut buffer = vec![0; CONTROL];
+        let parsed: Request = read_wire_into(&mut &maximum[..], &mut buffer).unwrap();
+        assert_eq!(parsed.boot, 11);
+
+        let overlong = vec![b' '; CONTROL + 1];
+        assert!(matches!(
+            read_wire_into::<Request>(&mut &overlong[..], &mut buffer),
+            Err("normal_pool_control_bound")
+        ));
+
+        let mut trailing = request_frame(12);
+        trailing.extend_from_slice(b"\n{}\n");
+        assert!(matches!(
+            read_wire_into::<Request>(&mut &trailing[..], &mut buffer),
+            Err("normal_pool_control_trailing")
+        ));
+    }
+    #[test]
+    fn control_wire_into_reuses_buffer_without_leaking_previous_frame_bytes() {
+        let mut long = request_frame(21);
+        long.resize(2048, b' ');
+        long.push(b'\n');
+        let short = [request_frame(22), b"\n".to_vec()].concat();
+        let mut buffer = vec![0xa5; CONTROL];
+
+        let first: Request = read_wire_into(&mut &long[..], &mut buffer).unwrap();
+        let second: Request = read_wire_into(&mut &short[..], &mut buffer).unwrap();
+        assert_eq!(first.boot, 21);
+        assert_eq!(second.boot, 22);
+    }
+    #[test]
+    fn control_wire_into_reports_truncation_and_io_failure() {
+        struct FailingReader;
+        impl Read for FailingReader {
+            fn read(&mut self, _: &mut [u8]) -> std::io::Result<usize> {
+                Err(std::io::Error::new(
+                    std::io::ErrorKind::InvalidData,
+                    "synthetic read failure",
+                ))
+            }
+        }
+
+        let mut buffer = vec![0; CONTROL];
+        assert!(matches!(
+            read_wire_into::<Request>(&mut &b"{}"[..], &mut buffer),
+            Err("normal_pool_control_eof")
+        ));
+        assert!(matches!(
+            read_wire_into::<Request>(&mut FailingReader, &mut buffer),
+            Err("normal_pool_control_io")
+        ));
     }
     #[test]
     fn fixed_event_envelope_covers_u128_and_original_eight_hour_diagnostics() {

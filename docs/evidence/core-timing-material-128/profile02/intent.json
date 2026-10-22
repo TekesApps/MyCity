@@ -1,0 +1,7 @@
+{
+  "model_started": false,
+  "schema": "mycity-unpaced-full-timing-v128-v1",
+  "scope": "full-tier unpaced segment timing diagnostic; no performance/M0/L1/8h/16GB acceptance",
+  "started_utc": "2026-10-22T21:53:40.412221+00:00",
+  "state": "preflight"
+}

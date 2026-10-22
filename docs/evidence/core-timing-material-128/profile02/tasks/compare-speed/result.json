@@ -1,0 +1,58 @@
+{
+  "artifacts": [
+    {
+      "bytes": 570,
+      "name": "root.json",
+      "sha256": "3e0e06bfe47f10917b0845f2418cb25c33f44ed0e74d3a0b0af7e55f916851dd"
+    },
+    {
+      "bytes": 1755,
+      "name": "workspace.json",
+      "sha256": "0e6a960f657a3a3057fd2b659529980d4291775c82941b4dcdd86faa852e624b"
+    },
+    null
+  ],
+  "business_sha256": "01e6d8fe5dfff9cbdc4e7a2e916fdeb62312fbd57eaa046c999d659fb68aa4af",
+  "comparison_proof": {
+    "engine": {
+      "bytes": 2507418,
+      "name": "cpu-final-engine.json",
+      "sha256": "375065b04ead72b347babf37e1e212455170737057c245d96fe710212f34034c"
+    },
+    "method": "full-bytes-equal-reference-business-digest",
+    "reference_mode": "reference",
+    "report": {
+      "bytes": 9527,
+      "name": "cpu-report.json",
+      "sha256": "639e911eb0fd22b30ee87330c951d9bef6634a48da8620a86d773d9ee133fd95"
+    }
+  },
+  "diagnostic_budget_acceptance": "fixed-control-v2-not-global-acceptance",
+  "diagnostic_capacity": {
+    "control_slots_bytes": 24576,
+    "exit_tail_bytes": 65536,
+    "golden_or_hash_bytes": 65536,
+    "limit_bytes": 262144,
+    "parser_error_scratch_bytes": 40960,
+    "paths_and_metadata_bytes": 65536,
+    "usage": {
+      "control_peak_owners": 3,
+      "golden_peak_owners": 0,
+      "hash_peak_owners": 1,
+      "path_peak_owners": 3
+    }
+  },
+  "image_sha256": "375065b04ead72b347babf37e1e212455170737057c245d96fe710212f34034c",
+  "instance_unix_ns": 1792706375687777000,
+  "mode": "compare_speed",
+  "pid": 51764,
+  "request_sha256": "63931a17d14f4072ce51e9268336ee2fdb26adb1c73ebbc63fbca9b1df3addba",
+  "root": {
+    "bytes": 570,
+    "sequence": 3011,
+    "sha256": "3e0e06bfe47f10917b0845f2418cb25c33f44ed0e74d3a0b0af7e55f916851dd"
+  },
+  "schema": "mycity-model-task-result-v2",
+  "source_sha256": "db4577273a37fdbeeb95c092e20356ba2386bdb0dd311f2b6020de2bb89f0daf",
+  "tier": "full"
+}

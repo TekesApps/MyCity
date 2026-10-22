@@ -139,6 +139,7 @@ impl Experiment {
         Ok(())
     }
     pub(crate) fn call(&mut self, command: Command) -> Result<Value, String> {
+        let status_requested = matches!(&command, Command::Status);
         self.id = self.id.checked_add(1).ok_or("scale_sim_id")?;
         self.record(json!({"request":self.id,"command":command}))?;
         let request_sent_ns = self.began.elapsed().as_nanos();
@@ -152,7 +153,13 @@ impl Experiment {
             }
             let worker_identity = (event.kind == "worker_started").then_some(&event.payload);
             let (payload_sha256, payload_bytes) = payload_digest(&event.payload)?;
-            self.record(json!({"response":self.id,"kind":event.kind,"seconds":started.elapsed().as_secs_f64(),"payload_sha256":payload_sha256,"payload_bytes":payload_bytes,"request_sent_ns":request_sent_ns,"response_received_ns":response_received_ns,"sim_clock":event.clock,"worker_identity":worker_identity,"result_ok":if event.kind=="result" {Some(event.payload.get("Ok").is_some())} else {None}}))?;
+            // Preserve only the fixed-size timing summary for successful Status
+            // results. The full payload still has its original hash/byte witness;
+            // the existing 128 KiB row and 128 MiB transcript bounds also apply.
+            let sim_host_timing = (status_requested && event.kind == "result")
+                .then(|| event.payload.pointer("/Ok/runtime/sim_host_timing"))
+                .flatten();
+            self.record(json!({"response":self.id,"kind":event.kind,"seconds":started.elapsed().as_secs_f64(),"payload_sha256":payload_sha256,"payload_bytes":payload_bytes,"request_sent_ns":request_sent_ns,"response_received_ns":response_received_ns,"sim_clock":event.clock,"worker_identity":worker_identity,"sim_host_timing":sim_host_timing,"result_ok":if event.kind=="result" {Some(event.payload.get("Ok").is_some())} else {None}}))?;
             if event.kind == "result" {
                 return event
                     .payload

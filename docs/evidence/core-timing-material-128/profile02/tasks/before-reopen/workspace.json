@@ -1,0 +1,110 @@
+{
+  "available_touched_bytes": 4194304,
+  "controlled_metadata_charge_bytes": 1184,
+  "full_balance_scan_passed": true,
+  "identity": {
+    "attempt": 1,
+    "generation": 1,
+    "job": 1,
+    "owner_instance": 0,
+    "process_instance_unix_ns": 1792706375253204000,
+    "process_pid": 51743,
+    "run_epoch": 3
+  },
+  "lent_capacity_bytes": 0,
+  "owner_capacity_bytes": 4194304,
+  "schema": "mycity-worker-slots-v1",
+  "scope": "local actual worker input/candidate capacity only; not State/serde/IPC/native or global64MiB closure",
+  "slots": [
+    {
+      "available_touched_bytes": 2097152,
+      "capacity_bytes": 2097152,
+      "claims": 1,
+      "maximum_payload_bytes": 2097152,
+      "returns": 1,
+      "slot": "input"
+    },
+    {
+      "available_touched_bytes": 2097152,
+      "capacity_bytes": 2097152,
+      "claims": 1,
+      "maximum_payload_bytes": 0,
+      "returns": 1,
+      "slot": "candidate"
+    }
+  ],
+  "transitions": [
+    {
+      "borrowed": true,
+      "observed_ns": 3177833,
+      "ticket": {
+        "identity": {
+          "attempt": 1,
+          "generation": 1,
+          "job": 1,
+          "owner_instance": 0,
+          "process_instance_unix_ns": 1792706375253204000,
+          "process_pid": 51743,
+          "run_epoch": 3
+        },
+        "sequence": 1,
+        "slot": "input"
+      },
+      "work_succeeded": null
+    },
+    {
+      "borrowed": true,
+      "observed_ns": 3177875,
+      "ticket": {
+        "identity": {
+          "attempt": 1,
+          "generation": 1,
+          "job": 1,
+          "owner_instance": 0,
+          "process_instance_unix_ns": 1792706375253204000,
+          "process_pid": 51743,
+          "run_epoch": 3
+        },
+        "sequence": 2,
+        "slot": "candidate"
+      },
+      "work_succeeded": null
+    },
+    {
+      "borrowed": false,
+      "observed_ns": 7802250,
+      "ticket": {
+        "identity": {
+          "attempt": 1,
+          "generation": 1,
+          "job": 1,
+          "owner_instance": 0,
+          "process_instance_unix_ns": 1792706375253204000,
+          "process_pid": 51743,
+          "run_epoch": 3
+        },
+        "sequence": 1,
+        "slot": "input"
+      },
+      "work_succeeded": true
+    },
+    {
+      "borrowed": false,
+      "observed_ns": 7802417,
+      "ticket": {
+        "identity": {
+          "attempt": 1,
+          "generation": 1,
+          "job": 1,
+          "owner_instance": 0,
+          "process_instance_unix_ns": 1792706375253204000,
+          "process_pid": 51743,
+          "run_epoch": 3
+        },
+        "sequence": 2,
+        "slot": "candidate"
+      },
+      "work_succeeded": true
+    }
+  ]
+}

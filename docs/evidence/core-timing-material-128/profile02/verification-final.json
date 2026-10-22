@@ -1,0 +1,590 @@
+{
+  "L1": "absent",
+  "business": {
+    "L1": "absent",
+    "cash_total_cents": 3000000,
+    "claims_paid_cents": 20000,
+    "cold_image_unchanged": true,
+    "delivery_contracts": 8,
+    "eight_hour": "not_run",
+    "full_M0": "not_accepted",
+    "full_business_sha256": "01e6d8fe5dfff9cbdc4e7a2e916fdeb62312fbd57eaa046c999d659fb68aa4af",
+    "full_engine_image_sha256": "375065b04ead72b347babf37e1e212455170737057c245d96fe710212f34034c",
+    "full_tier_counts": {
+      "accounts": 64,
+      "cities": 8,
+      "claims": 20000,
+      "inflight_peak": 4,
+      "payroll": 64,
+      "quotes": 8,
+      "stocks": 128
+    },
+    "functional_model": "passed",
+    "hours": 720,
+    "performance_acceptance": "not_claimed",
+    "periodic_obligations": 16,
+    "real_16GB": "not_run",
+    "timing_transcript_audit": {
+      "aggregation_rule": "group consecutive Status calls by (sim_clock.pid, sim_clock.instance_unix_ns); retain cumulative first/last counters and compute deltas only inside a process segment; never sum snapshots or cross process restarts",
+      "process_instance_segments": [
+        {
+          "cumulative_phase_summary": {
+            "cache_recover_rebind_reset": {
+              "between_first_and_last_status_delta": {
+                "count": 723,
+                "max_ns_is_not_additive": 175209209,
+                "total_ns": 12286116934
+              },
+              "first_status_cumulative": {
+                "count": 1,
+                "max_ns": 15054875,
+                "total_ns": 15054875
+              },
+              "last_status_cumulative": {
+                "count": 724,
+                "max_ns": 175209209,
+                "total_ns": 12301171809
+              }
+            },
+            "candidate_read_and_import": {
+              "between_first_and_last_status_delta": {
+                "count": 723,
+                "max_ns_is_not_additive": 136965042,
+                "total_ns": 20100719353
+              },
+              "first_status_cumulative": {
+                "count": 1,
+                "max_ns": 20709709,
+                "total_ns": 20709709
+              },
+              "last_status_cumulative": {
+                "count": 724,
+                "max_ns": 136965042,
+                "total_ns": 20121429062
+              }
+            },
+            "input_encode_publish": {
+              "between_first_and_last_status_delta": {
+                "count": 723,
+                "max_ns_is_not_additive": 33898041,
+                "total_ns": 7219538954
+              },
+              "first_status_cumulative": {
+                "count": 1,
+                "max_ns": 9820291,
+                "total_ns": 9820291
+              },
+              "last_status_cumulative": {
+                "count": 724,
+                "max_ns": 33898041,
+                "total_ns": 7229359245
+              }
+            },
+            "persistent_accept_execute": {
+              "between_first_and_last_status_delta": {
+                "count": 723,
+                "max_ns_is_not_additive": 719555833,
+                "total_ns": 28997337033
+              },
+              "first_status_cumulative": {
+                "count": 1,
+                "max_ns": 21758667,
+                "total_ns": 21758667
+              },
+              "last_status_cumulative": {
+                "count": 724,
+                "max_ns": 719555833,
+                "total_ns": 29019095700
+              }
+            },
+            "run_required": {
+              "between_first_and_last_status_delta": {
+                "count": 723,
+                "max_ns_is_not_additive": 1215279791,
+                "total_ns": 111739127815
+              },
+              "first_status_cumulative": {
+                "count": 1,
+                "max_ns": 110635375,
+                "total_ns": 110635375
+              },
+              "last_status_cumulative": {
+                "count": 724,
+                "max_ns": 1215279791,
+                "total_ns": 111849763190
+              }
+            },
+            "status_air_checkpoint_digest": {
+              "between_first_and_last_status_delta": {
+                "count": 722,
+                "max_ns_is_not_additive": 3696791,
+                "total_ns": 798676370
+              },
+              "first_status_cumulative": {
+                "count": 2,
+                "max_ns": 1128500,
+                "total_ns": 1128500
+              },
+              "last_status_cumulative": {
+                "count": 724,
+                "max_ns": 3696791,
+                "total_ns": 799804870
+              }
+            },
+            "status_business_digest": {
+              "between_first_and_last_status_delta": {
+                "count": 722,
+                "max_ns_is_not_additive": 87054750,
+                "total_ns": 23507979452
+              },
+              "first_status_cumulative": {
+                "count": 2,
+                "max_ns": 33938042,
+                "total_ns": 35336209
+              },
+              "last_status_cumulative": {
+                "count": 724,
+                "max_ns": 87054750,
+                "total_ns": 23543315661
+              }
+            },
+            "status_state_digest": {
+              "between_first_and_last_status_delta": {
+                "count": 722,
+                "max_ns_is_not_additive": 65265792,
+                "total_ns": 26778414041
+              },
+              "first_status_cumulative": {
+                "count": 2,
+                "max_ns": 36625125,
+                "total_ns": 37440166
+              },
+              "last_status_cumulative": {
+                "count": 724,
+                "max_ns": 65265792,
+                "total_ns": 26815854207
+              }
+            },
+            "worker_progress_wait_after_first_response": {
+              "between_first_and_last_status_delta": {
+                "count": 1446,
+                "max_ns_is_not_additive": 186677834,
+                "total_ns": 17862777091
+              },
+              "first_status_cumulative": {
+                "count": 2,
+                "max_ns": 12827459,
+                "total_ns": 22207126
+              },
+              "last_status_cumulative": {
+                "count": 1448,
+                "max_ns": 186677834,
+                "total_ns": 17884984217
+              }
+            },
+            "worker_spawn_register_submit_to_first_validated_response": {
+              "between_first_and_last_status_delta": {
+                "count": 723,
+                "max_ns_is_not_additive": 116504000,
+                "total_ns": 14826501252
+              },
+              "first_status_cumulative": {
+                "count": 1,
+                "max_ns": 19926500,
+                "total_ns": 19926500
+              },
+              "last_status_cumulative": {
+                "count": 724,
+                "max_ns": 116504000,
+                "total_ns": 14846427752
+              }
+            }
+          },
+          "first_host_elapsed_ns": 1060638208,
+          "first_request_id": 184,
+          "last_host_elapsed_ns": 188274517708,
+          "last_request_id": 6038,
+          "process_identity": [
+            44907,
+            1792706186702729000
+          ],
+          "scope_notes": {
+            "cache_recover_rebind_reset": "includes cache preparation, exclusive recovery, RebindLease transaction and reset; excludes prior worker reap",
+            "candidate_read_and_import": "candidate asset read/validation and import transaction path",
+            "input_encode_publish": "frozen input conversion through checkpoint publication and request construction",
+            "persistent_accept_execute": "Accept execute through model outcome validation and durable receipt check",
+            "run_required": "one required command from entry through result construction; excludes writing the outer IPC result frame",
+            "status_digests": "separate Air checkpoint, business and full-state digest calls",
+            "worker_progress_wait_after_first_response": "later next() waits plus event identity/shape validation; combines worker execution, scheduling and IPC wait",
+            "worker_spawn_register_submit_to_first_validated_response": "includes spawn, registration, request submission and worker work/wait until first validated progress; not pure spawn time"
+          },
+          "segment": 1,
+          "status_count": 723
+        }
+      ],
+      "scope_notes_by_process_segment": {
+        "1": {
+          "cache_recover_rebind_reset": "includes cache preparation, exclusive recovery, RebindLease transaction and reset; excludes prior worker reap",
+          "candidate_read_and_import": "candidate asset read/validation and import transaction path",
+          "input_encode_publish": "frozen input conversion through checkpoint publication and request construction",
+          "persistent_accept_execute": "Accept execute through model outcome validation and durable receipt check",
+          "run_required": "one required command from entry through result construction; excludes writing the outer IPC result frame",
+          "status_digests": "separate Air checkpoint, business and full-state digest calls",
+          "worker_progress_wait_after_first_response": "later next() waits plus event identity/shape validation; combines worker execution, scheduling and IPC wait",
+          "worker_spawn_register_submit_to_first_validated_response": "includes spawn, registration, request submission and worker work/wait until first validated progress; not pure spawn time"
+        }
+      },
+      "segment_boundary_interpretation": "process instance changes delimit a new SimHost timing counter lifetime; the transcript carries no city-id label, so segment ordinals are reported without inventing a city identity",
+      "sim_host_timing_missing_status_count": 0,
+      "sim_host_timing_reports_recovered": 723,
+      "sim_host_timing_status": "verified",
+      "sim_host_timing_unavailable_reasons": [],
+      "state_bytes": {
+        "additional_budget_charge_bytes": 0,
+        "fixed_sim_timings_bytes": 240,
+        "included_in_timing_summary": false,
+        "source": "fixed-size SimTimings definition and existing source/unit contract"
+      },
+      "status_request_count": 723,
+      "status_responses_verified": 723,
+      "transcript_rows": 17172,
+      "transcript_sha256": "37061d808f25c63f01a7aba6c84e6871dce4c57b800923983fdd3f5771a7d18e"
+    },
+    "unpaced_is_not_1s_or_10s_acceptance": true,
+    "unpaced_report_speed_target": true,
+    "verified_targets": 723,
+    "wages_paid_cents": 118784,
+    "worker_windows": 724
+  },
+  "eight_hour": "not_run",
+  "errors": [],
+  "external_activity_status": "polluted_or_sampling_incomplete",
+  "fixed_inputs": {
+    "acceptance_fixture_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+    "archive_entries": 267,
+    "binary": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/executables/83b7a28460c8d82ae1b5c5c17ca154359648d6d3937103f973a8fa988fcc373a/mycity-headless",
+    "binary_sha256": "83b7a28460c8d82ae1b5c5c17ca154359648d6d3937103f973a8fa988fcc373a",
+    "build_source_entries": 262,
+    "current_checkout_source_comparison": "not_used_for_binary_identity",
+    "declared_run_root": "/Volumes/HP P900/dev/MyCity/work/timing-full-v128-02",
+    "fixtures": {
+      "opening_sha256": "04c113c62b0b682f94f9abfbde7618b87bd972f3931504366be9e07c130b4726",
+      "oracle_sha256": "00fa0827d11023bab75571c83d586d9436e4f72c93300be20c5fd9ab4cd1ed8f",
+      "policy_sha256": "614ac01e912bf932fad4f5bb33f8254b03f1ac3cba71c93106d2739655dfd4b0"
+    },
+    "runner_sha256": "596b8777817e806fbc3f824114d7c222725df4037140b0d2f9934ef5cd33683a",
+    "source_sha256": "db4577273a37fdbeeb95c092e20356ba2386bdb0dd311f2b6020de2bb89f0daf",
+    "source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/41-timing-witness-bin/source.zip",
+    "source_zip_sha256": "ac4fed1cf8d4f915f7d69b2947e4795310f56e8aba2775a4eb386b01536cfdea"
+  },
+  "full_M0": "not_accepted",
+  "functional": "passed",
+  "performance_acceptance": "not_claimed",
+  "real_16GB": "not_run",
+  "retained_excluded_attempt": {
+    "classification": "root-abort-prelaunch",
+    "included_in_functional_or_timing_results": false,
+    "model_started": false,
+    "root": "/Volumes/HP P900/dev/MyCity/work/timing-full-v128-01"
+  },
+  "schema": "mycity-full-unpaced-profile-verification-v1",
+  "scope": "full-tier unpaced functional and source-segment diagnostic only",
+  "status": "evidence_complete",
+  "timing_profile": "verified",
+  "wrapper": {
+    "clean_measurement_environment": false,
+    "clock": {
+      "nonce": "8ccf6df6cd4bb0e17bee30b28336b39e",
+      "origin_bounds_ns": [
+        16041209,
+        20432334
+      ],
+      "pid": 44577,
+      "reply_received_observer_ns": 27312625,
+      "request_sent_observer_ns": 22921500,
+      "source_sha256": "db4577273a37fdbeeb95c092e20356ba2386bdb0dd311f2b6020de2bb89f0daf",
+      "spawn_before_observer_ns": 12005959,
+      "status": "passed",
+      "uncertainty_ns": 4391125
+    },
+    "external_activity": [
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 44663,
+            "ppid": 44650,
+            "start_identity": "Fri Oct 23 05:56:06 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 44667,
+            "ppid": 44663,
+            "start_identity": "Fri Oct 23 05:56:07 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 44669,
+            "ppid": 44663,
+            "start_identity": "Fri Oct 23 05:56:07 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 44670,
+            "ppid": 44663,
+            "start_identity": "Fri Oct 23 05:56:07 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 44672,
+            "ppid": 44663,
+            "start_identity": "Fri Oct 23 05:56:07 2026"
+          }
+        ],
+        "elapsed_seconds": 20.43050820900001,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 44663,
+            "ppid": 44650,
+            "start_identity": "Fri Oct 23 05:56:06 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 44716,
+            "ppid": 44663,
+            "start_identity": "Fri Oct 23 05:56:11 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 44717,
+            "ppid": 44663,
+            "start_identity": "Fri Oct 23 05:56:12 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 44718,
+            "ppid": 44663,
+            "start_identity": "Fri Oct 23 05:56:12 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 44719,
+            "ppid": 44663,
+            "start_identity": "Fri Oct 23 05:56:12 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 44720,
+            "ppid": 44663,
+            "start_identity": "Fri Oct 23 05:56:12 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 44721,
+            "ppid": 44663,
+            "start_identity": "Fri Oct 23 05:56:12 2026"
+          }
+        ],
+        "elapsed_seconds": 25.536905875000002,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 44757,
+            "ppid": 44650,
+            "start_identity": "Fri Oct 23 05:56:15 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 44762,
+            "ppid": 44757,
+            "start_identity": "Fri Oct 23 05:56:15 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 44778,
+            "ppid": 44757,
+            "start_identity": "Fri Oct 23 05:56:17 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 44780,
+            "ppid": 44757,
+            "start_identity": "Fri Oct 23 05:56:17 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 44782,
+            "ppid": 44757,
+            "start_identity": "Fri Oct 23 05:56:17 2026"
+          }
+        ],
+        "elapsed_seconds": 30.66165562500001,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 44867,
+            "ppid": 44650,
+            "start_identity": "Fri Oct 23 05:56:22 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 44873,
+            "ppid": 44867,
+            "start_identity": "Fri Oct 23 05:56:22 2026"
+          }
+        ],
+        "elapsed_seconds": 35.80029099999999,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 44867,
+            "ppid": 44650,
+            "start_identity": "Fri Oct 23 05:56:22 2026"
+          }
+        ],
+        "elapsed_seconds": 40.89357816699999,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 44867,
+            "ppid": 44650,
+            "start_identity": "Fri Oct 23 05:56:22 2026"
+          }
+        ],
+        "elapsed_seconds": 45.998757874999995,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 45273,
+            "ppid": 44650,
+            "start_identity": "Fri Oct 23 05:56:37 2026"
+          }
+        ],
+        "elapsed_seconds": 51.08722424999999,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 45273,
+            "ppid": 44650,
+            "start_identity": "Fri Oct 23 05:56:37 2026"
+          }
+        ],
+        "elapsed_seconds": 56.185458917000005,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 45634,
+            "ppid": 44650,
+            "start_identity": "Fri Oct 23 05:56:47 2026"
+          }
+        ],
+        "elapsed_seconds": 61.29076541699999,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 45894,
+            "ppid": 45892,
+            "start_identity": "Fri Oct 23 05:56:53 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/clippy-driver",
+            "pid": 45898,
+            "ppid": 45894,
+            "start_identity": "Fri Oct 23 05:56:53 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/clippy-driver",
+            "pid": 45899,
+            "ppid": 45894,
+            "start_identity": "Fri Oct 23 05:56:53 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/clippy-driver",
+            "pid": 45900,
+            "ppid": 45894,
+            "start_identity": "Fri Oct 23 05:56:53 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/clippy-driver",
+            "pid": 45901,
+            "ppid": 45894,
+            "start_identity": "Fri Oct 23 05:56:53 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/clippy-driver",
+            "pid": 45902,
+            "ppid": 45894,
+            "start_identity": "Fri Oct 23 05:56:53 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/clippy-driver",
+            "pid": 45903,
+            "ppid": 45894,
+            "start_identity": "Fri Oct 23 05:56:53 2026"
+          }
+        ],
+        "elapsed_seconds": 66.394182417,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 45894,
+            "ppid": 45892,
+            "start_identity": "Fri Oct 23 05:56:53 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/clippy-driver",
+            "pid": 46069,
+            "ppid": 45894,
+            "start_identity": "Fri Oct 23 05:56:58 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/clippy-driver",
+            "pid": 46070,
+            "ppid": 45894,
+            "start_identity": "Fri Oct 23 05:56:58 2026"
+          }
+        ],
+        "elapsed_seconds": 71.502434292,
+        "heavy_mycity": []
+      }
+    ],
+    "external_activity_count": 11,
+    "external_sampling_error_count": 0,
+    "external_sampling_errors": [],
+    "functional_wrapper": "passed",
+    "observer_exit_code": 0,
+    "performance_acceptance": "not_claimed",
+    "timeout": false
+  }
+}

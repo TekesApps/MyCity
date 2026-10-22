@@ -1,0 +1,170 @@
+{
+  "admission": {
+    "activity_in_final_120_seconds": [],
+    "activity_observed": [],
+    "exit_code": 0,
+    "final_120_seconds_start": 6.240656625,
+    "normal_pressure_gate": {
+      "samples": [
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 0.045827583000000005,
+          "pressure": 1,
+          "unix_ns": 1792706020659567000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 5.086233665999999,
+          "pressure": 1,
+          "unix_ns": 1792706025700023000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 10.125795958000001,
+          "pressure": 1,
+          "unix_ns": 1792706030739636000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 15.173720833,
+          "pressure": 1,
+          "unix_ns": 1792706035787612000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 20.218881790999998,
+          "pressure": 1,
+          "unix_ns": 1792706040832823000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 25.299969082999997,
+          "pressure": 1,
+          "unix_ns": 1792706045913961000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 30.343582791,
+          "pressure": 1,
+          "unix_ns": 1792706050957625000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 35.389990625,
+          "pressure": 1,
+          "unix_ns": 1792706056004085000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 40.494833458,
+          "pressure": 1,
+          "unix_ns": 1792706061108978000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 45.589149708,
+          "pressure": 1,
+          "unix_ns": 1792706066203353000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 50.650403666,
+          "pressure": 1,
+          "unix_ns": 1792706071264650000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 55.708122375,
+          "pressure": 1,
+          "unix_ns": 1792706076322419000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 60.766726541000004,
+          "pressure": 1,
+          "unix_ns": 1792706081381074000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 65.86137162499999,
+          "pressure": 1,
+          "unix_ns": 1792706086475770000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 70.91667224999999,
+          "pressure": 1,
+          "unix_ns": 1792706091531121000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 75.984885708,
+          "pressure": 1,
+          "unix_ns": 1792706096599385000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 81.05065095799999,
+          "pressure": 1,
+          "unix_ns": 1792706101665201000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 86.121403291,
+          "pressure": 1,
+          "unix_ns": 1792706106736004000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 91.1899725,
+          "pressure": 1,
+          "unix_ns": 1792706111804624000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 96.237731,
+          "pressure": 1,
+          "unix_ns": 1792706116852433000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 101.287106666,
+          "pressure": 1,
+          "unix_ns": 1792706121901860000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 106.345035916,
+          "pressure": 1,
+          "unix_ns": 1792706126959840000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 111.405754125,
+          "pressure": 1,
+          "unix_ns": 1792706132020608000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 116.48997962499999,
+          "pressure": 1,
+          "unix_ns": 1792706137104884000
+        },
+        {
+          "active_external_compilers": [],
+          "elapsed_seconds": 121.536585625,
+          "pressure": 1,
+          "unix_ns": 1792706142151541000
+        }
+      ]
+    },
+    "status": "passed"
+  },
+  "readiness": {
+    "activity_observed": [],
+    "elapsed_seconds": 126.240656625,
+    "exit_code": 0,
+    "owned_popen_cleanup": [],
+    "pid": 43507
+  }
+}

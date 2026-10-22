@@ -52,11 +52,21 @@ impl Temp {
     fn world(&self, name: &str) -> PathBuf {
         self.0.join(name)
     }
+
+    fn retain_recovery_inputs(&self) {
+        if std::env::var_os("MYCITY_TEST_ARTIFACT_ROOT").is_some() {
+            fs::write(
+                self.0.join("KEEP-RESTORE-INPUTS"),
+                b"Retain this case's complete Store, WAL and checkpoint as recovery evidence.\n",
+            )
+            .unwrap();
+        }
+    }
 }
 
 impl Drop for Temp {
     fn drop(&mut self) {
-        if std::thread::panicking() {
+        if std::thread::panicking() || self.0.join("KEEP-RESTORE-INPUTS").exists() {
             eprintln!("CONSTRUCTION_UTILITIES_PRESERVED={}", self.0.display());
         } else {
             let _ = fs::remove_dir_all(&self.0);
@@ -1804,4 +1814,609 @@ fn shared_boot_electricity_cross_city_dispatch_then_work_and_town_share_source_s
     assert!(replay.has_persistent_receipt);
     assert!(replay.model.is_ok(), "{replay:?}");
     assert_eq!(shared_supply_snapshot(&store), checkpointed);
+}
+
+fn shared_raw_fixture_totals() -> (i128, i128) {
+    let value: Value = serde_json::from_slice(OPENING).unwrap();
+    value["stocks"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter(|stock| {
+            let id = stock["id"].as_u64().unwrap();
+            (7..=12).contains(&id)
+        })
+        .fold((0_i128, 0_i128), |(quantity, basis), stock| {
+            (
+                quantity + i128::from(stock["quantity"].as_i64().unwrap()),
+                basis + i128::from(stock["basis"].as_i64().unwrap()),
+            )
+        })
+}
+
+fn fixture_raw7_basis_for(consumed: i64) -> Money {
+    let value: Value = serde_json::from_slice(OPENING).unwrap();
+    let lot = value["stocks"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|stock| stock["id"] == json!(7))
+        .unwrap();
+    let quantity = i128::from(lot["quantity"].as_i64().unwrap());
+    let basis = i128::from(lot["basis"].as_i64().unwrap());
+    let numerator = basis * i128::from(consumed);
+    assert_eq!(
+        numerator % quantity,
+        0,
+        "fixture lot basis must divide exactly"
+    );
+    Money::new(i64::try_from(numerator / quantity).unwrap()).unwrap()
+}
+
+/// Independently re-sums raw stocks, in-flight raw Exchange fragments, and
+/// Project's permanent material sink against the immutable fixture lot. Store
+/// validation also enforces this invariant at every commit and restore.
+fn assert_exchange_raw_conservation(store: &Store) {
+    let initial = shared_raw_fixture_totals();
+    let engine = store.engine().unwrap();
+    let view = engine.world().view();
+    let exchange = view.exchange.unwrap();
+    assert_eq!(i128::from(exchange.initial_raw.value()), initial.0);
+
+    let mut quantity = 0_i128;
+    let mut basis = 0_i128;
+    for stock in view
+        .stocks
+        .iter()
+        .filter(|stock| (7..=12).contains(&stock.id))
+    {
+        quantity += i128::from(stock.quantity.value());
+        basis += i128::from(stock.basis.value());
+    }
+    for shipment in exchange.shipments.iter().flatten() {
+        let quote = exchange.quotes[shipment.quote_index];
+        if quote.spec.kind == mycity_core::exchange::Kind::Freight
+            && (7..=12).contains(&quote.spec.source)
+        {
+            quantity += i128::from(shipment.fragment.quantity.value());
+            basis += i128::from(shipment.fragment.basis.value());
+        }
+    }
+    if let Some(accounting) = view
+        .construction
+        .and_then(|project| project.material_accounting)
+    {
+        for row in accounting
+            .rows
+            .iter()
+            .take(usize::from(accounting.row_count))
+        {
+            if (7..=12).contains(&row.stock_id) {
+                quantity += i128::from(row.consumed.value());
+                basis += i128::from(row.basis.value());
+            }
+        }
+    }
+    assert_eq!(quantity, initial.0, "Exchange raw quantity conservation");
+    assert_eq!(basis, initial.1, "Exchange raw basis conservation");
+}
+
+fn shared_raw_lifecycle_opening() -> Vec<u8> {
+    let mut value: Value = serde_json::from_slice(&opening(100_000, 100_000)).unwrap();
+    let mut project: Project = serde_json::from_value(value["construction"].clone()).unwrap();
+    let source_lot = value["stocks"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|stock| stock["id"] == json!(7))
+        .unwrap();
+    let raw_quantity = source_lot["quantity"].as_i64().unwrap();
+    let raw_basis = source_lot["basis"].as_i64().unwrap();
+    let required = project.materials[0].required.value();
+    let material_basis = i128::from(raw_basis) * i128::from(required) / i128::from(raw_quantity);
+    assert_eq!(
+        i128::from(raw_basis) * i128::from(required) % i128::from(raw_quantity),
+        0,
+        "fixture raw lot must produce an exact Project material estimate"
+    );
+
+    project.owner = 4;
+    project.contractor = 2;
+    project.gates[0].party = 4;
+    project.planned_worker_seconds = 28_800;
+    project.materials[0].stock_id = 7;
+    project.materials[0].basis_per_unit =
+        Money::new(i64::try_from(material_basis).unwrap()).unwrap();
+    project.material_accounting = None;
+    project.enable_material_accounting().unwrap();
+    project.operating_resource = 81;
+    project.operating_base_capacity = 2;
+    project.operating_units = 2;
+    project.waste_receiver_account = OPERATOR;
+    project.waste_receiver_resource = 82;
+    project.waste_units = 2;
+    project.waste_fee = Money::new(250).unwrap();
+    project.abort_clearance_spec = Some(AbortClearanceSpec {
+        base_worker_seconds: 3_600,
+        material_rules: [
+            AbortClearanceMaterialRule {
+                stock_id: 7,
+                quantity_per_waste_capacity_unit: 500,
+                worker_seconds_per_thousand_quantity: 3_600,
+            },
+            AbortClearanceMaterialRule::default(),
+            AbortClearanceMaterialRule::default(),
+            AbortClearanceMaterialRule::default(),
+            AbortClearanceMaterialRule::default(),
+            AbortClearanceMaterialRule::default(),
+            AbortClearanceMaterialRule::default(),
+            AbortClearanceMaterialRule::default(),
+        ],
+    });
+    project.validate_profile().unwrap();
+    value["construction"] = serde_json::to_value(project).unwrap();
+    serde_json::to_vec(&value).unwrap()
+}
+
+fn create_shared_raw_lifecycle(path: &Path) -> Store {
+    Store::create_spatial(
+        path,
+        &shared_raw_lifecycle_opening(),
+        lifecycle_resources(),
+        RULES,
+        include_bytes!("../../../fixtures/m0-exchange-spatial.json"),
+        include_bytes!("../../../fixtures/terrain/m0-flat16.png"),
+    )
+    .unwrap()
+}
+
+fn setup_shared_raw_project(store: &mut Store) {
+    execute(
+        store,
+        Caller::System,
+        Action::Timeline { command: T::Enable },
+    );
+    advance_to(store, 9 * 3_600);
+    construction(store, Caller::Account(4), C::File);
+    construction(
+        store,
+        Caller::Account(4),
+        C::DecideGate {
+            gate_id: 1,
+            decision: GateDecision::Accepted,
+            evidence_id: 7201,
+        },
+    );
+    construction(
+        store,
+        Caller::Account(1),
+        C::DecideGate {
+            gate_id: 2,
+            decision: GateDecision::Accepted,
+            evidence_id: 7202,
+        },
+    );
+    construction(store, Caller::Account(4), C::Prepare);
+    construction(store, Caller::Account(4), C::Start);
+    assert_exchange_raw_conservation(store);
+}
+
+fn approve_shared_raw_demolition(store: &mut Store) {
+    construction(
+        store,
+        Caller::Account(4),
+        C::BeginDemolition {
+            waste_receiver: OPERATOR,
+        },
+    );
+    construction(
+        store,
+        Caller::Account(4),
+        C::DecideGate {
+            gate_id: 1,
+            decision: GateDecision::Accepted,
+            evidence_id: 7301,
+        },
+    );
+    construction(
+        store,
+        Caller::Account(1),
+        C::DecideGate {
+            gate_id: 2,
+            decision: GateDecision::Accepted,
+            evidence_id: 7302,
+        },
+    );
+    construction(store, Caller::Account(4), C::Prepare);
+    construction(store, Caller::Account(4), C::Start);
+    assert_exchange_raw_conservation(store);
+}
+
+#[test]
+fn exchange_raw7_half_build_clearance_and_close_preserve_raw_sink_through_recovery() {
+    let temp = Temp::new();
+    temp.retain_recovery_inputs();
+    let path = temp.world("exchange-raw7-half-clearance");
+    let mut store = create_shared_raw_lifecycle(&path);
+    setup_shared_raw_project(&mut store);
+    assert_eq!(shared_raw_fixture_totals(), (5_000, 2_000));
+
+    // The fixture's actual stock-7 lot is 5,000 quantity / 2,000 basis.
+    // At 28,800 planned worker-seconds each 3,600-second Work consumes 125
+    // quantity and the actual lot offset contributes 50 basis.
+    for completed_shift in 1..=4_u64 {
+        let at = (9 + completed_shift) * 3_600;
+        advance_to(&mut store, at);
+        let request = work_request(&store, next_operation(), at, 3_600);
+        let result = store.execute(Caller::Account(2), request.clone()).unwrap();
+        assert!(result.model.is_ok(), "{result:?}");
+        let worked = snapshot(&store);
+        let consumed = i64::try_from(completed_shift * 125).unwrap();
+        let consumed_basis = fixture_raw7_basis_for(consumed);
+        let row = worked.project.material_accounting.unwrap().rows[0];
+        assert_eq!(row.stock_id, 7);
+        assert_eq!(row.consumed, Quantity::new(consumed).unwrap());
+        assert_eq!(row.basis, consumed_basis);
+        let raw = worked.stocks.iter().find(|stock| stock.0 == 7).unwrap();
+        assert_eq!(raw.1, 5_000 - consumed);
+        assert_eq!(raw.2, 2_000 - consumed_basis.value());
+        assert_exchange_raw_conservation(&store);
+
+        drop(store);
+        store = Store::open(&path, RULES).unwrap();
+        assert_eq!(snapshot(&store), worked);
+        let replay = store.execute(Caller::Account(2), request).unwrap();
+        assert!(replay.has_persistent_receipt);
+        assert!(replay.model.is_ok(), "{replay:?}");
+        assert_eq!(snapshot(&store), worked);
+        assert_exchange_raw_conservation(&store);
+    }
+
+    let half_built = snapshot(&store);
+    assert_eq!(half_built.project.completed_worker_seconds, 14_400);
+    assert_eq!(
+        half_built.project.material_accounting.unwrap().rows[0].consumed,
+        Quantity::new(500).unwrap()
+    );
+    assert_eq!(
+        half_built.project.material_accounting.unwrap().rows[0].basis,
+        fixture_raw7_basis_for(500)
+    );
+    approve_shared_raw_demolition(&mut store);
+    let clearing = snapshot(&store);
+    assert_eq!(clearing.project.kind, Kind::Demolish);
+    assert!(!clearing.project.operating_published);
+    assert_eq!(clearing.project.operating_withdrawn_at, None);
+    assert_eq!(clearing.project.abort_clearance.unwrap().waste_units, 1);
+    assert_exchange_raw_conservation(&store);
+
+    const CLEARANCE_WORKER_SECONDS: u32 = 5_400;
+    const CLEARANCE_AT: u64 = 20 * 3_600;
+    advance_to(&mut store, CLEARANCE_AT);
+    let clearance = work_request_with_seconds(
+        &store,
+        next_operation(),
+        CLEARANCE_AT,
+        7 * 3_600,
+        CLEARANCE_WORKER_SECONDS,
+    );
+    let lost_reply = store.execute_with_observer(Caller::Account(2), clearance.clone(), |point| {
+        if point == WritePoint::Applied {
+            Err(io::Error::other(
+                "raw7 clearance committed before lost reply",
+            ))
+        } else {
+            Ok(())
+        }
+    });
+    assert!(lost_reply.is_err());
+    drop(store);
+    let mut store = Store::open(&path, RULES).unwrap();
+    let cleared = snapshot(&store);
+    assert_eq!(cleared.project.completed_worker_seconds, 5_400);
+    assert_eq!(cleared.project.utility_worker_seconds, 19_800);
+    assert_eq!(
+        cleared.project.material_accounting.unwrap().rows[0].consumed,
+        Quantity::new(500).unwrap()
+    );
+    assert_eq!(
+        cleared.project.material_accounting.unwrap().rows[0].basis,
+        fixture_raw7_basis_for(500)
+    );
+    assert_exchange_raw_conservation(&store);
+    let replay = store.execute(Caller::Account(2), clearance).unwrap();
+    assert!(replay.has_persistent_receipt);
+    assert!(replay.model.is_ok(), "{replay:?}");
+    assert_eq!(snapshot(&store), cleared);
+    assert_exchange_raw_conservation(&store);
+    store.checkpoint().unwrap();
+    let checkpointed = snapshot(&store);
+    drop(store);
+    let mut store = Store::open(&path, RULES).unwrap();
+    assert_eq!(snapshot(&store), checkpointed);
+    assert_exchange_raw_conservation(&store);
+
+    let waste = envelope(
+        &store,
+        next_operation(),
+        Action::Construction {
+            command: C::AcceptWaste,
+        },
+    );
+    let waste_lost_reply =
+        store.execute_with_observer(Caller::Account(OPERATOR), waste.clone(), |point| {
+            if point == WritePoint::Applied {
+                Err(io::Error::other("raw7 waste committed before lost reply"))
+            } else {
+                Ok(())
+            }
+        });
+    assert!(waste_lost_reply.is_err());
+    drop(store);
+    let mut store = Store::open(&path, RULES).unwrap();
+    let after_waste = snapshot(&store);
+    assert_eq!(after_waste.project.abort_clearance.unwrap().waste_units, 1);
+    assert_exchange_raw_conservation(&store);
+    let replay = store.execute(Caller::Account(OPERATOR), waste).unwrap();
+    assert!(replay.has_persistent_receipt);
+    assert!(replay.model.is_ok(), "{replay:?}");
+    assert_eq!(snapshot(&store), after_waste);
+    assert_exchange_raw_conservation(&store);
+
+    construction(&mut store, Caller::Account(4), C::Close);
+    let closed = snapshot(&store);
+    assert_eq!(
+        closed.project.phase,
+        mycity_core::construction::Phase::Closed
+    );
+    assert_eq!(
+        closed.project.material_accounting.unwrap().rows[0].consumed,
+        Quantity::new(500).unwrap()
+    );
+    assert_eq!(
+        closed.project.material_accounting.unwrap().rows[0].basis,
+        fixture_raw7_basis_for(500)
+    );
+    assert_exchange_raw_conservation(&store);
+    store.checkpoint().unwrap();
+    drop(store);
+    let reopened = Store::open(&path, RULES).unwrap();
+    assert_eq!(snapshot(&reopened), closed);
+    assert_exchange_raw_conservation(&reopened);
+}
+
+#[test]
+fn exchange_raw7_complete_build_and_operational_demolition_preserve_sink_through_recovery() {
+    let temp = Temp::new();
+    temp.retain_recovery_inputs();
+    let path = temp.world("exchange-raw7-operational-demolition");
+    let mut store = create_shared_raw_lifecycle(&path);
+    setup_shared_raw_project(&mut store);
+    assert_eq!(shared_raw_fixture_totals(), (5_000, 2_000));
+
+    for completed_shift in 1..=8_u64 {
+        let at = (9 + completed_shift) * 3_600;
+        advance_to(&mut store, at);
+        let request = work_request(&store, next_operation(), at, 3_600);
+        let result = store.execute(Caller::Account(2), request.clone()).unwrap();
+        assert!(result.model.is_ok(), "{result:?}");
+        let worked = snapshot(&store);
+        let consumed = i64::try_from(completed_shift * 125).unwrap();
+        let basis = fixture_raw7_basis_for(consumed);
+        let row = worked.project.material_accounting.unwrap().rows[0];
+        assert_eq!(
+            (row.stock_id, row.consumed, row.basis),
+            (7, Quantity::new(consumed).unwrap(), basis)
+        );
+        let raw = worked.stocks.iter().find(|stock| stock.0 == 7).unwrap();
+        assert_eq!((raw.1, raw.2), (5_000 - consumed, 2_000 - basis.value()));
+        assert_exchange_raw_conservation(&store);
+
+        if completed_shift == 8 {
+            store.checkpoint().unwrap();
+            let checkpointed = snapshot(&store);
+            drop(store);
+            store = Store::open(&path, RULES).unwrap();
+            assert_eq!(snapshot(&store), checkpointed);
+            assert_exchange_raw_conservation(&store);
+        }
+        let replay = store.execute(Caller::Account(2), request).unwrap();
+        assert!(replay.has_persistent_receipt);
+        assert!(replay.model.is_ok(), "{replay:?}");
+        assert_eq!(snapshot(&store), worked);
+        assert_exchange_raw_conservation(&store);
+    }
+
+    let built = snapshot(&store);
+    assert_eq!(built.project.completed_worker_seconds, 28_800);
+    assert_eq!(
+        built.project.material_accounting.unwrap().rows[0].consumed,
+        Quantity::new(1_000).unwrap()
+    );
+    assert_eq!(
+        built.project.material_accounting.unwrap().rows[0].basis,
+        fixture_raw7_basis_for(1_000)
+    );
+    assert_eq!(
+        store
+            .engine()
+            .unwrap()
+            .resources()
+            .iter()
+            .find(|resource| resource.id == 81)
+            .unwrap()
+            .capacity,
+        2
+    );
+    construction(&mut store, Caller::Account(2), C::SubmitInspection);
+    construction(
+        &mut store,
+        Caller::Account(1),
+        C::AcceptInspection {
+            inspector: 1,
+            accepted: true,
+        },
+    );
+    let operational = snapshot(&store);
+    assert!(operational.project.operating_published);
+    assert_exchange_raw_conservation(&store);
+    assert_eq!(
+        store
+            .engine()
+            .unwrap()
+            .resources()
+            .iter()
+            .find(|resource| resource.id == 81)
+            .unwrap()
+            .capacity,
+        4
+    );
+
+    approve_shared_raw_demolition(&mut store);
+    let demolition = snapshot(&store);
+    assert!(!demolition.project.operating_published);
+    // Only road-edge contributions carry the road withdrawal clock.
+    // This fixture withdraws resource 81; verify its real capacity below.
+    assert_eq!(demolition.project.operating_edge_id, 0);
+    assert!(demolition.project.operating_withdrawn_at.is_none());
+    assert_eq!(demolition.project.material_count, 0);
+    assert_eq!(
+        demolition.project.material_accounting.unwrap().rows[0].consumed,
+        Quantity::new(1_000).unwrap()
+    );
+    assert_eq!(
+        demolition.project.material_accounting.unwrap().rows[0].basis,
+        fixture_raw7_basis_for(1_000)
+    );
+    assert_exchange_raw_conservation(&store);
+    assert_eq!(
+        store
+            .engine()
+            .unwrap()
+            .resources()
+            .iter()
+            .find(|resource| resource.id == 81)
+            .unwrap()
+            .capacity,
+        2
+    );
+
+    // Build ends at 17:00. The same crew cannot work outside the actual
+    // 09:00-17:00 calendar window, and refusal must not consume anything.
+    advance_to(&mut store, 18 * 3_600);
+    let before_night = snapshot(&store);
+    let night = work_request(&store, next_operation(), 18 * 3_600, 3_600);
+    let refused = store.execute(Caller::Account(2), night.clone()).unwrap();
+    assert!(matches!(
+        refused.model,
+        Err(mycity_core::transaction::TxError::Construction(
+            mycity_core::construction::Error::WorkLimit
+        ))
+    ));
+    assert!(refused.has_persistent_receipt);
+    let after_night = snapshot(&store);
+    work_state_unchanged(&before_night, &after_night);
+    let replay = store.execute(Caller::Account(2), night).unwrap();
+    assert!(replay.model.is_err());
+    assert_eq!(snapshot(&store), after_night);
+    assert_exchange_raw_conservation(&store);
+
+    for demolition_shift in 1..=8_u64 {
+        let at = 86_400 + (9 + demolition_shift) * 3_600;
+        let last = snapshot(&store).project.last_work_at.unwrap().value();
+        let elapsed = u32::try_from(i64::try_from(at).unwrap() - last).unwrap();
+        advance_to(&mut store, at);
+        let request = work_request(&store, next_operation(), at, elapsed);
+        let result = store.execute(Caller::Account(2), request.clone()).unwrap();
+        assert!(result.model.is_ok(), "{result:?}");
+        let worked = snapshot(&store);
+        assert_eq!(worked.project.material_count, 0);
+        assert_eq!(
+            worked.project.material_accounting.unwrap().rows[0].consumed,
+            Quantity::new(1_000).unwrap()
+        );
+        assert_eq!(
+            worked.project.material_accounting.unwrap().rows[0].basis,
+            fixture_raw7_basis_for(1_000)
+        );
+        assert_eq!(
+            worked.project.utility_worker_seconds,
+            28_800 + demolition_shift * 3_600
+        );
+        assert_exchange_raw_conservation(&store);
+
+        if demolition_shift == 8 {
+            store.checkpoint().unwrap();
+            let checkpointed = snapshot(&store);
+            drop(store);
+            store = Store::open(&path, RULES).unwrap();
+            assert_eq!(snapshot(&store), checkpointed);
+            assert_exchange_raw_conservation(&store);
+        }
+        let replay = store.execute(Caller::Account(2), request).unwrap();
+        assert!(replay.has_persistent_receipt);
+        assert!(replay.model.is_ok(), "{replay:?}");
+        assert_eq!(snapshot(&store), worked);
+        assert_exchange_raw_conservation(&store);
+    }
+
+    let demolished = snapshot(&store);
+    assert_eq!(demolished.project.utility_worker_seconds, 57_600);
+    assert_eq!(
+        demolished.project.utility_consumed,
+        [Quantity::new(16_000).unwrap(); 2]
+    );
+    assert_eq!(
+        demolished.project.material_accounting.unwrap().rows[0].consumed,
+        Quantity::new(1_000).unwrap()
+    );
+    assert_exchange_raw_conservation(&store);
+    let waste = envelope(
+        &store,
+        next_operation(),
+        Action::Construction {
+            command: C::AcceptWaste,
+        },
+    );
+    let lost_reply =
+        store.execute_with_observer(Caller::Account(OPERATOR), waste.clone(), |point| {
+            if point == WritePoint::Applied {
+                Err(io::Error::other(
+                    "raw7 demolition waste committed before lost reply",
+                ))
+            } else {
+                Ok(())
+            }
+        });
+    assert!(lost_reply.is_err());
+    drop(store);
+    let mut store = Store::open(&path, RULES).unwrap();
+    let after_waste = snapshot(&store);
+    assert_exchange_raw_conservation(&store);
+    let replay = store.execute(Caller::Account(OPERATOR), waste).unwrap();
+    assert!(replay.has_persistent_receipt);
+    assert!(replay.model.is_ok(), "{replay:?}");
+    assert_eq!(snapshot(&store), after_waste);
+    assert_exchange_raw_conservation(&store);
+
+    construction(&mut store, Caller::Account(4), C::Close);
+    let closed = snapshot(&store);
+    assert_eq!(
+        closed.project.phase,
+        mycity_core::construction::Phase::Closed
+    );
+    assert_eq!(
+        closed.project.material_accounting.unwrap().rows[0].consumed,
+        Quantity::new(1_000).unwrap()
+    );
+    assert_eq!(
+        closed.project.material_accounting.unwrap().rows[0].basis,
+        fixture_raw7_basis_for(1_000)
+    );
+    assert_exchange_raw_conservation(&store);
+    store.checkpoint().unwrap();
+    drop(store);
+    let reopened = Store::open(&path, RULES).unwrap();
+    assert_eq!(snapshot(&reopened), closed);
+    assert_exchange_raw_conservation(&reopened);
 }

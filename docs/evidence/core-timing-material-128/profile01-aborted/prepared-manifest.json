@@ -1,0 +1,86 @@
+{
+  "created_preparation_root": true,
+  "fixed_diagnostic_record": {
+    "acceptance_fixture_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+    "archive_entries": 267,
+    "binary_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/executables/b8cf01ebf6a3f369137ad18968527cea257721583f1b6c25c34c5c78a6430119/mycity-headless",
+    "binary_sha256": "b8cf01ebf6a3f369137ad18968527cea257721583f1b6c25c34c5c78a6430119",
+    "comparison_to_old_ac02_source": "none; current diagnostic source is separate 2b7c\u2026",
+    "embedded_source_fingerprint": "verified by current static test",
+    "full_unpaced_workload": {
+      "checks_passed": true,
+      "days": 30,
+      "hours": 720,
+      "targets": 723,
+      "windows": 724
+    },
+    "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/diagnostic-final-binary.json",
+    "record_replaced_from_history": true,
+    "record_sha256": "277a8f6cac586f6fc8e72c910860f9ae1ec5273281be81c01d52f7ce47b7cfee",
+    "source_entries": 262,
+    "source_sha256": "2b7c7255abcbaaf4b71062e052e55cd43668e9afbbca995f372274c080a68cd2",
+    "source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/38-retention-bin/source.zip",
+    "source_zip_sha256": "07edd83e17f5265df8ee74f7f6c5f80e33137fbcd29c43dc73e10535f51cf990"
+  },
+  "imported_helper_sha256": {
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-joint-smoke-control-03/process_activity.py": "1abbc0771180936fa660b34db4f6428f199fd467e0f866548e8a12bdb4c58aa9",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-joint-smoke-control-03/readiness.py": "fa62f21677bab98c558e86fa3a54f42ecfa8b64fd1d7d3449b6401ecff4ef7ae",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-joint-smoke-control-03/support-manifest.json": "aded3e653c0f0da488ffda0a5110441d8dfc1a97987f1d9fdf89642e5adbebe7",
+    "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/run_speed.py": "32311cb97680b55f58ae4f74f50ead3ab11106421a4e28d706cc9c927ddfb45d"
+  },
+  "model_created": false,
+  "observed_created": false,
+  "prepared_files_sha256": {
+    "README.md": "8f51856d33dfbec614924d732a1af3ab0e32a5facc772e65e370c0a51571c630",
+    "run_profile.py": "74c1dc31a1934dc5776bfc500a649ff0639901686241c38ddb9c0504f1f298f8",
+    "test_profile.py": "e208ceb4933a060160e5cc4854bc51c045cc194f7f32d79b1d595566f699a94c"
+  },
+  "receipts_created": [],
+  "run_command": "cd \"/Volumes/HP P900/dev/MyCity/work/timing-full-v128-01\" && PYTHONDONTWRITEBYTECODE=1 python3 run_profile.py",
+  "run_root": "/Volumes/HP P900/dev/MyCity/work/timing-full-v128-01",
+  "runtime_policy": {
+    "controller_deadline_seconds": 3200,
+    "external_activity_sampling_seconds": 5,
+    "observer_child_timeout_seconds": 3000,
+    "observer_owns_observed_and_model_directories": true,
+    "readiness_helper_cleanup": "finally block terminates and waits only tracked Popen children",
+    "readiness_max_wait_seconds": 930,
+    "readiness_seconds": 120,
+    "restart": "never",
+    "timeout_signal": "SIGTERM only after Popen-child plus PID,PPID,start identity and full executable match; then wait; no escalation"
+  },
+  "schema": "mycity-full-unpaced-timing-prepared-v128-v1",
+  "scope": "segment timing and functional diagnosis only; no clean performance/M0/L1/8h/16GB acceptance",
+  "socket_preflight": {
+    "limit_exclusive": 104,
+    "max_broker_utf8_bytes_plus_nul": 70,
+    "normal_pool_path": "/Volumes/HP P900/dev/MyCity/work/timing-full-v128-01/observed/model/normal-pool/pool.sock",
+    "normal_pool_utf8_bytes_plus_nul": 90
+  },
+  "state": "static-preflight-passed-waiting-for-root-release",
+  "storage": {
+    "available_bytes_at_static_check": 1917557669888,
+    "bus_protocol": "USB",
+    "external_device": true,
+    "filesystem": "apfs",
+    "resolved_work": "/Volumes/HP P900/dev/MyCity/work/timing-full-v128-01",
+    "volume_uuid": "4289CF6D-F09D-4831-8558-4AB223E4EE04"
+  },
+  "validation": {
+    "AST": "run_profile.py and test_profile.py parsed",
+    "cargo_or_model_started_by_this_task": false,
+    "empty_identity": "observer-child PID fields tolerate missing/null identity; timeout signaling requires nonempty verified identity",
+    "external_process_observed": {
+      "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+      "pid": 33225,
+      "ppid": 80467,
+      "start_identity": "Fri Oct 23 05:31:44 2026"
+    },
+    "heavy_mycity_observed": [],
+    "identity_sampling_exception": "unknown identity retained; controller refuses to signal without verified PID/PPID/start/executable",
+    "real_readonly_ps_rows": 696,
+    "static_identity": "current descriptor hashes, archive-derived source stream, embedded fingerprint, acceptance fixture and full workload checks passed",
+    "unittest": "9 passed; static/no-launch"
+  },
+  "workload_command": "<exe> native-observe <root>/observed -- <same-exe> speed-run <root>/observed/model full unpaced"
+}

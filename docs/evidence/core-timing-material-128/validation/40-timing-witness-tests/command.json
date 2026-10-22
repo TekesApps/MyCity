@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "cargo",
+    "test",
+    "--locked",
+    "--offline",
+    "--release",
+    "-p",
+    "mycity-headless",
+    "--lib"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/construction-utilities-current",
+  "rust_min_stack": "unset",
+  "source_manifest_sha256": "ecbc0347807fdf8e501185fedc524941da9df2f757e81e28116614357315157f",
+  "started_utc": "2026-10-22T21:47:35.102623+00:00",
+  "target": "/Volumes/HP P900/dev/MyCity/target"
+}

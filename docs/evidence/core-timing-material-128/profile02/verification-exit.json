@@ -1,0 +1,12 @@
+{
+  "command": [
+    "python3",
+    "verify_profile.py",
+    "/Users/frankqin/dev/MyCity",
+    "/Volumes/HP P900/dev/MyCity/work/timing-full-v128-02",
+    "--output",
+    "/Volumes/HP P900/dev/MyCity/work/timing-full-v128-02/verification-final.json"
+  ],
+  "exit_code": 0,
+  "wall_seconds": 0.1861725
+}

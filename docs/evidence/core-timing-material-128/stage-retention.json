@@ -1,0 +1,62 @@
+{
+  "created_utc": "2026-10-22T22:03:11.791999+00:00",
+  "operation": "identical terminal source ZIP hardlink deduplication",
+  "files_deduplicated": 8,
+  "unique_file_allocation_before": 52768768,
+  "unique_file_allocation_after": 20295680,
+  "unique_file_allocation_reduction": 32473088,
+  "observed_volume_available_delta": 32452608,
+  "APFS_exclusive_reclaim": "not_claimed",
+  "restore_inputs_and_executables": "all retained; no model snapshots retired",
+  "shared_target": "reused unchanged",
+  "records": [
+    {
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/28-headless-diagnostics/source.zip",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/29-diagnostics-clippy/source.zip",
+      "sha256": "45b1d5d87527811106dee79a2ed410767d7139e08cd352b6dccf024e64c9e1e7",
+      "reason": "terminal identical immutable source ZIP; full historical path and bytes retained; no restore snapshot retired"
+    },
+    {
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/33-final-diagnostics-clippy/source.zip",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/34-final-diagnostics-bin/source.zip",
+      "sha256": "207b707802e312d1f435d276c55c8d778c72fed628dfc5e219f99f5eb272b920",
+      "reason": "terminal identical immutable source ZIP; full historical path and bytes retained; no restore snapshot retired"
+    },
+    {
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/33-final-diagnostics-clippy/source.zip",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/35-final-headless-tests/source.zip",
+      "sha256": "207b707802e312d1f435d276c55c8d778c72fed628dfc5e219f99f5eb272b920",
+      "reason": "terminal identical immutable source ZIP; full historical path and bytes retained; no restore snapshot retired"
+    },
+    {
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/39-timing-witness-clippy/source.zip",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/40-timing-witness-tests/source.zip",
+      "sha256": "ac4fed1cf8d4f915f7d69b2947e4795310f56e8aba2775a4eb386b01536cfdea",
+      "reason": "terminal identical immutable source ZIP; full historical path and bytes retained; no restore snapshot retired"
+    },
+    {
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/39-timing-witness-clippy/source.zip",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/41-timing-witness-bin/source.zip",
+      "sha256": "ac4fed1cf8d4f915f7d69b2947e4795310f56e8aba2775a4eb386b01536cfdea",
+      "reason": "terminal identical immutable source ZIP; full historical path and bytes retained; no restore snapshot retired"
+    },
+    {
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/36-retained-raw7/source.zip",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/37-retention-clippy/source.zip",
+      "sha256": "07edd83e17f5265df8ee74f7f6c5f80e33137fbcd29c43dc73e10535f51cf990",
+      "reason": "terminal identical immutable source ZIP; full historical path and bytes retained; no restore snapshot retired"
+    },
+    {
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/36-retained-raw7/source.zip",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/38-retention-bin/source.zip",
+      "sha256": "07edd83e17f5265df8ee74f7f6c5f80e33137fbcd29c43dc73e10535f51cf990",
+      "reason": "terminal identical immutable source ZIP; full historical path and bytes retained; no restore snapshot retired"
+    },
+    {
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/30-diagnostics-clippy/source.zip",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/31-diagnostics-bin/source.zip",
+      "sha256": "1211b0a0086b338417d21a1c1cb76bde99da36a18a8fe42bcd2e86abb3772b68",
+      "reason": "terminal identical immutable source ZIP; full historical path and bytes retained; no restore snapshot retired"
+    }
+  ]
+}

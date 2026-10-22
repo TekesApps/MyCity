@@ -1,0 +1,16 @@
+{
+  "game_days": 30,
+  "hour_deadline": "h*day_wall/24; no extra wait at final end",
+  "hour_release": "(ceil(target/3600)-1)*day_wall/24; actions after hour h wait for boundary h",
+  "hours": 720,
+  "observations": "query every10s/save every300s from operating t0; publication stops at final business checkpoint completion; later deadlines cancelled/unpublished",
+  "operating_end": "after final business checkpoint and draining observations published at or before that checkpoint completion",
+  "operating_start": "immediately before actual Sim create/open, after independent CPU reference",
+  "proof_work": "reference and cold restoration/comparison independently reported; never deducted from observed resources",
+  "rate": "unpaced",
+  "schema": "mycity-speed-plan-v1",
+  "source_sha256": "db4577273a37fdbeeb95c092e20356ba2386bdb0dd311f2b6020de2bb89f0daf",
+  "speed_miss": "continue full trajectory and report miss; no tolerance, shorter sample or dropped fact",
+  "targets": 723,
+  "tier": "full"
+}

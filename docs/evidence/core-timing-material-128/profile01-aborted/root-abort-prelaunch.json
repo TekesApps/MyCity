@@ -1,0 +1,13 @@
+{
+  "created_utc": "2026-10-22T21:46:25.119807+00:00",
+  "helper_identity": {
+    "birth": "Fri Oct 23 05:42:43 2026",
+    "comm": "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python",
+    "pid": 36187,
+    "ppid": 36173
+  },
+  "model_started": false,
+  "no_load_or_standard_changed": true,
+  "reason": "fixed source computes segment timers but discards actual Status payload; profiling evidence unavailable; abort own readiness before any model launch",
+  "signal": "SIGTERM own readiness helper only"
+}

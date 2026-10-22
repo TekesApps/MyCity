@@ -1,0 +1,23 @@
+{
+  "background_reserve": null,
+  "capacity": {
+    "emergency_bytes": 8388608,
+    "total_bytes": 134217728
+  },
+  "checkpoint": null,
+  "checkpoint_layout": 2,
+  "checkpoint_v2": {
+    "generation": 3759,
+    "sha256": "62483f2d3e6b5852814b808e0f379a8446f3bc135b5b2c134f09d970633221a6"
+  },
+  "continuation": null,
+  "generation": 3759,
+  "genesis_sha256": "d70cca98d6ab9f64ac8b7096ee269e0bf8f1626c03013519201dc401e9545e06",
+  "schema": "mycity-m0-root-v1",
+  "segment": 3759,
+  "sequence": 3011,
+  "source_registered": false,
+  "wal_chain": "f3f089654b2f4254b6a8a73741794ce8e4042ee0b4552d3f7579d3a5a66d6843",
+  "wal_end": 0,
+  "worker_cache_bytes": 6291456
+}

@@ -1,0 +1,12 @@
+{
+  "change": "safe null observer-child identity access only, loaded Python process is unchanged",
+  "copy_provenance": "reconstructed after launch by exact inverse patch; matches agent recorded prelaunch SHA; not contemporaneously captured copy",
+  "created_utc": "2026-10-22T21:44:32.761871+00:00",
+  "current_disk_script_executed": false,
+  "current_disk_script_sha256": "74c1dc31a1934dc5776bfc500a649ff0639901686241c38ddb9c0504f1f298f8",
+  "executed_script_copy": "/Volumes/HP P900/dev/MyCity/work/timing-full-v128-01-launch-snapshot/run_profile.py",
+  "executed_script_sha256": "53d3b7f8ecd5522ddc274d58cb682ab17059b813c5e4c814326f1b4cc149c377",
+  "executing_controller_pid": "see live session68491 and intent",
+  "handling": "preserve both versions and diff; do not restart live measurement",
+  "manifest": "prepared-manifest refers to postlaunch version; not evidence of actual executing controller bytes"
+}

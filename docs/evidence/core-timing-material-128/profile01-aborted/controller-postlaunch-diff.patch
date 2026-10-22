@@ -1,0 +1,22 @@
+--- executed-reconstructed
++++ postlaunch-edited
+@@ -144,6 +144,10 @@
+         return None, str(exc)
+ 
+ 
++def observer_child_pid(observer_child):
++    return ((observer_child or {}).get("identity") or {}).get("pid")
++
++
+ def guarded_readiness_gate(speed, attempt, readiness, preflight):
+     """Reuse the pinned gate and always terminate/wait its exact Popen children on exceptions."""
+     helpers = []
+@@ -358,7 +362,7 @@
+                     "observer_report_present": report_path.is_file(), "observer_report_status": report_status,
+                     "clock_status": clock_status,
+                     "clock_supervisor_pid": clock.get("supervisor_pid"),
+-                    "observer_child_pid": observer_child.get("identity", {}).get("pid"),
++                    "observer_child_pid": observer_child_pid(observer_child),
+                     "source_binary_identity_unchanged": final_identity == identity,
+                     "postrun_identity_error": final_identity_error,
+                     "scope_statement": "unpaced full functional/segment timing diagnostic only; not clean performance, M0, L1, 8h, or 16GB acceptance",

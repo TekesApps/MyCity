@@ -1,0 +1,101 @@
+{
+  "controller_revisions": {
+    "launch_snapshot_path": "controller-revisions/launch",
+    "launch_snapshot_status": "frozen: exact active runner/test/manifest copied to controller-revisions/launch; do not modify active files or snapshot",
+    "seed_files_sha256": {
+      "README.md": "8f51856d33dfbec614924d732a1af3ab0e32a5facc772e65e370c0a51571c630",
+      "prepared-manifest.json": "3a2ad38748298e56acb1368d881ae9660b80d08d4067a61bf572d8f25c824046",
+      "run_profile.py": "74c1dc31a1934dc5776bfc500a649ff0639901686241c38ddb9c0504f1f298f8",
+      "test_profile.py": "e208ceb4933a060160e5cc4854bc51c045cc194f7f32d79b1d595566f699a94c"
+    },
+    "seed_path": "controller-revisions/seed-v128-01-final"
+  },
+  "created_preparation_root": true,
+  "fixed_diagnostic_record": {
+    "acceptance_fixture_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+    "binary_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/executables/83b7a28460c8d82ae1b5c5c17ca154359648d6d3937103f973a8fa988fcc373a/mycity-headless",
+    "binary_sha256": "83b7a28460c8d82ae1b5c5c17ca154359648d6d3937103f973a8fa988fcc373a",
+    "expected_full_unpaced_workload": {
+      "days": 30,
+      "hours": 720,
+      "targets": 723,
+      "windows": 724
+    },
+    "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/diagnostic-final-binary.json",
+    "record_sha256": "f564922cf94d825522c3ffa64626969924480f84f4658c3d9633c14a99ac22f0",
+    "source_files": 262,
+    "source_sha256": "db4577273a37fdbeeb95c092e20356ba2386bdb0dd311f2b6020de2bb89f0daf",
+    "source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/41-timing-witness-bin/source.zip",
+    "source_zip_sha256": "ac4fed1cf8d4f915f7d69b2947e4795310f56e8aba2775a4eb386b01536cfdea",
+    "status": "post-retention descriptor statically verified for v128-02; no runtime measurement yet",
+    "validation": "recompute sorted length-prefixed build-input digest from archive, verify executable embeds source SHA, pinned acceptance fixture, and full workload declarations; do not compare current checkout source"
+  },
+  "imported_helper_sha256": {
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-joint-smoke-control-03/process_activity.py": "1abbc0771180936fa660b34db4f6428f199fd467e0f866548e8a12bdb4c58aa9",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-joint-smoke-control-03/readiness.py": "fa62f21677bab98c558e86fa3a54f42ecfa8b64fd1d7d3449b6401ecff4ef7ae",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-joint-smoke-control-03/support-manifest.json": "aded3e653c0f0da488ffda0a5110441d8dfc1a97987f1d9fdf89642e5adbebe7",
+    "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/run_speed.py": "32311cb97680b55f58ae4f74f50ead3ab11106421a4e28d706cc9c927ddfb45d"
+  },
+  "model_created": false,
+  "observed_created": false,
+  "prepared_files_sha256": {
+    "README.md": "335c612a3ce6a32e320fb25f73368eae30fd4b7d4409cc7410f20fe5dc812611",
+    "run_profile.py": "596b8777817e806fbc3f824114d7c222725df4037140b0d2f9934ef5cd33683a",
+    "test_profile.py": "1499558b4f0de986bf72d191a42a1109a7fb1404d8affe2098a03d67b13f2f4e"
+  },
+  "prior_attempt": {
+    "classification": "root-abort-prelaunch",
+    "model_started": false,
+    "root": "/Volumes/HP P900/dev/MyCity/work/timing-full-v128-01",
+    "root_abort_receipt": "/Volumes/HP P900/dev/MyCity/work/timing-full-v128-01/root-abort-prelaunch.json",
+    "terminal_preserved": true
+  },
+  "receipts_created": [],
+  "run_command": "cd \"/Volumes/HP P900/dev/MyCity/work/timing-full-v128-02\" && PYTHONDONTWRITEBYTECODE=1 python3 run_profile.py",
+  "run_root": "/Volumes/HP P900/dev/MyCity/work/timing-full-v128-02",
+  "runtime_policy": {
+    "controller_deadline_seconds": 3200,
+    "external_activity_sampling_seconds": 5,
+    "observer_child_timeout_seconds": 3000,
+    "observer_owns_observed_and_model_directories": true,
+    "readiness_helper_cleanup": "finally block terminates and waits only tracked Popen children",
+    "readiness_max_wait_seconds": 930,
+    "readiness_seconds": 120,
+    "restart": "never",
+    "timeout_signal": "SIGTERM only after Popen-child plus PID,PPID,start identity and full executable match; then wait; no escalation"
+  },
+  "schema": "mycity-full-unpaced-timing-prepared-v128-02-v1",
+  "scope": "segment timing and functional diagnosis only; no clean performance/M0/L1/8h/16GB acceptance",
+  "socket_preflight": {
+    "limit_exclusive": 104,
+    "normal_pool_path": "observed/model/normal-pool/pool.sock",
+    "observed_bytes_plus_nul": 90,
+    "runtime_path": "/Volumes/HP P900/dev/MyCity/work/timing-full-v128-02/observed/model/normal-pool/pool.sock",
+    "runtime_recheck_required": true
+  },
+  "state": "ready_static_verified_launch_frozen",
+  "storage": {
+    "available_bytes_at_static_check": 1917486637056,
+    "bus_protocol": "USB",
+    "estimated_snapshot_bytes_each": 3378784402,
+    "external_device": true,
+    "filesystem": "apfs",
+    "recheck_before_run": true,
+    "required_free_bytes_including_floor": 12552272310,
+    "resolved_work": "/Volumes/HP P900/dev/MyCity/work/timing-full-v128-02",
+    "three_generations_plus_log_cap_bytes": 10404788662,
+    "volume_uuid": "4289CF6D-F09D-4831-8558-4AB223E4EE04"
+  },
+  "validation": {
+    "AST": "run_profile.py and test_profile.py parsed successfully after final descriptor binding",
+    "cargo_started_by_this_task": false,
+    "independent_verifier_fixed_inputs": "verify_profile.verify_fixed_inputs passed for bound source, exe, ZIP, acceptance fixture, and current opening/policy/oracle fixture bytes",
+    "launch_snapshot": "final active runner/test/manifest exact copies stored under controller-revisions/launch",
+    "model_or_readiness_started_by_this_task": false,
+    "new_descriptor_static_identity": "verified: source db4577273a37fdbeeb95c092e20356ba2386bdb0dd311f2b6020de2bb89f0daf; binary 83b7a28460c8d82ae1b5c5c17ca154359648d6d3937103f973a8fa988fcc373a; source ZIP ac4fed1cf8d4f915f7d69b2947e4795310f56e8aba2775a4eb386b01536cfdea; record f564922cf94d825522c3ffa64626969924480f84f4658c3d9633c14a99ac22f0",
+    "prepared_file_hashes": "README, runner, and tests SHA-256 computed from final prelaunch bytes",
+    "run_root_safety": "one-shot markers absent; observed/model absent",
+    "unit_tests": "10 passed against final post-retention descriptor; AST checks passed"
+  },
+  "workload_command": "<exe> native-observe <root>/observed -- <same-exe> speed-run <root>/observed/model full unpaced"
+}

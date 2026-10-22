@@ -1,0 +1,45 @@
+{
+  "artifacts": [
+    {
+      "bytes": 570,
+      "name": "root.json",
+      "sha256": "082c45df3d1cbd2cb38607a1dc6bf7b881d614bd4de87f7cac8636ab83713624"
+    },
+    {
+      "bytes": 1747,
+      "name": "workspace.json",
+      "sha256": "1f496461de4abb4309bb3c24e80f723c458a09c6d3aa64e63b1a9e76c71cc869"
+    },
+    null
+  ],
+  "business_sha256": null,
+  "comparison_proof": null,
+  "diagnostic_budget_acceptance": "fixed-control-v2-not-global-acceptance",
+  "diagnostic_capacity": {
+    "control_slots_bytes": 24576,
+    "exit_tail_bytes": 65536,
+    "golden_or_hash_bytes": 65536,
+    "limit_bytes": 262144,
+    "parser_error_scratch_bytes": 40960,
+    "paths_and_metadata_bytes": 65536,
+    "usage": {
+      "control_peak_owners": 3,
+      "golden_peak_owners": 0,
+      "hash_peak_owners": 1,
+      "path_peak_owners": 3
+    }
+  },
+  "image_sha256": "375065b04ead72b347babf37e1e212455170737057c245d96fe710212f34034c",
+  "instance_unix_ns": 1792706375253204000,
+  "mode": "before_reopen",
+  "pid": 51743,
+  "request_sha256": "c9f97dead7d24871331893129d060c4b782442a5d8a8e5966c1ee3488dc9a8c3",
+  "root": {
+    "bytes": 570,
+    "sequence": 3011,
+    "sha256": "082c45df3d1cbd2cb38607a1dc6bf7b881d614bd4de87f7cac8636ab83713624"
+  },
+  "schema": "mycity-model-task-result-v2",
+  "source_sha256": "db4577273a37fdbeeb95c092e20356ba2386bdb0dd311f2b6020de2bb89f0daf",
+  "tier": "full"
+}

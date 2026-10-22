@@ -1,0 +1,22 @@
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction-utilities-current/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 3.38s
+     Running tests/construction_utilities.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/construction_utilities-688ad21356dacdfa)
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/25-raw7-lifecycle/test-artifacts/mycity-construction-utilities-22352-0
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/25-raw7-lifecycle/test-artifacts/mycity-construction-utilities-22352-1
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/25-raw7-lifecycle/test-artifacts/mycity-construction-utilities-22352-2
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/25-raw7-lifecycle/test-artifacts/mycity-construction-utilities-22352-3
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/25-raw7-lifecycle/test-artifacts/mycity-construction-utilities-22352-4
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/25-raw7-lifecycle/test-artifacts/mycity-construction-utilities-22352-5
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/25-raw7-lifecycle/test-artifacts/mycity-construction-utilities-22352-6
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/25-raw7-lifecycle/test-artifacts/mycity-construction-utilities-22352-7
+
+thread 'exchange_raw7_complete_build_and_operational_demolition_preserve_sink_through_recovery' panicked at crates/city-storage/tests/construction_utilities.rs:2266:5:
+assertion failed: demolition.project.operating_withdrawn_at.is_some()
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+CONSTRUCTION_UTILITIES_PRESERVED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/25-raw7-lifecycle/test-artifacts/mycity-construction-utilities-22352-6
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/25-raw7-lifecycle/test-artifacts/mycity-construction-utilities-22352-8
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/25-raw7-lifecycle/test-artifacts/mycity-construction-utilities-22352-9
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/25-raw7-lifecycle/test-artifacts/mycity-construction-utilities-22352-10
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/25-raw7-lifecycle/test-artifacts/mycity-construction-utilities-22352-11
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/25-raw7-lifecycle/test-artifacts/mycity-construction-utilities-22352-12
+error: test failed, to rerun pass `-p mycity-storage --test construction_utilities`

@@ -1,0 +1,16 @@
+{
+  "L1": "absent",
+  "eight_hour": "not_run",
+  "experiment_completed": true,
+  "full_M0": "not_accepted",
+  "normal_3_10GiB": "not_accepted",
+  "rate": "unpaced",
+  "real_16GB": "not_run",
+  "schema": "mycity-speed-supervisor-v1",
+  "shared_8MiB": "not_accepted",
+  "source_sha256": "db4577273a37fdbeeb95c092e20356ba2386bdb0dd311f2b6020de2bb89f0daf",
+  "speed_acceptance": "see business/report.json; completion is not target acceptance",
+  "supervisor_heap_peak_requested_bytes": 33979,
+  "tier": "full",
+  "whole_wall_seconds": 228.284245583
+}

@@ -12,11 +12,99 @@ use mycity_storage::Store;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use std::{
+    cell::Cell,
     io::{BufRead, BufReader, Write},
     path::Path,
-    time::Duration,
+    time::{Duration, Instant},
 };
 const PROTOCOL: &str = "mycity-sim-v1";
+
+// Fixed-size counters make timing visible without adding a per-request log.
+// `Cell` lets scoped timers update the report across early returns and retries.
+const TIMING_PHASES: usize = 10;
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize)]
+struct TimingSample {
+    count: u64,
+    total_ns: u64,
+    max_ns: u64,
+}
+struct SimTimings {
+    samples: [Cell<TimingSample>; TIMING_PHASES],
+}
+#[derive(Clone, Copy)]
+#[repr(usize)]
+enum TimingPhase {
+    RunRequired = 0,
+    CacheRecoverRebindReset = 1,
+    InputEncodePublish = 2,
+    WorkerSpawnRegisterToFirstResponse = 3,
+    WorkerProgressWaitAfterFirst = 4,
+    CandidateReadAndImport = 5,
+    PersistentAccept = 6,
+    StatusAirDigest = 7,
+    StatusBusinessDigest = 8,
+    StatusStateDigest = 9,
+}
+impl SimTimings {
+    fn new() -> Self {
+        Self {
+            samples: std::array::from_fn(|_| Cell::new(TimingSample::default())),
+        }
+    }
+    fn timer(&self, phase: TimingPhase) -> TimingGuard<'_> {
+        TimingGuard {
+            owner: self,
+            phase,
+            started: Instant::now(),
+        }
+    }
+    fn record(&self, phase: TimingPhase, elapsed: Duration) {
+        let index = phase as usize;
+        let ns = elapsed.as_nanos().min(u128::from(u64::MAX)) as u64;
+        let mut sample = self.samples[index].get();
+        sample.count = sample.count.saturating_add(1);
+        sample.total_ns = sample.total_ns.saturating_add(ns);
+        sample.max_ns = sample.max_ns.max(ns);
+        self.samples[index].set(sample);
+    }
+    fn report(&self) -> Value {
+        let sample = |phase: TimingPhase| self.samples[phase as usize].get();
+        json!({
+            "schema":"mycity-sim-timing-v1",
+            "clock":"elapsed Instant nanoseconds; includes scheduling and synchronous filesystem work",
+            "scope_notes":{
+                "run_required":"one required command from entry through result construction; excludes writing the outer IPC result frame",
+                "cache_recover_rebind_reset":"includes cache preparation, exclusive recovery, RebindLease transaction and reset; excludes prior worker reap",
+                "input_encode_publish":"frozen input conversion through checkpoint publication and request construction",
+                "worker_spawn_register_submit_to_first_validated_response":"includes spawn, registration, request submission and worker work/wait until first validated progress; not pure spawn time",
+                "worker_progress_wait_after_first_response":"later next() waits plus event identity/shape validation; combines worker execution, scheduling and IPC wait",
+                "candidate_read_and_import":"candidate asset read/validation and import transaction path",
+                "persistent_accept_execute":"Accept execute through model outcome validation and durable receipt check",
+                "status_digests":"separate Air checkpoint, business and full-state digest calls"
+            },
+            "run_required":sample(TimingPhase::RunRequired),
+            "cache_recover_rebind_reset":sample(TimingPhase::CacheRecoverRebindReset),
+            "input_encode_publish":sample(TimingPhase::InputEncodePublish),
+            "worker_spawn_register_submit_to_first_validated_response":sample(TimingPhase::WorkerSpawnRegisterToFirstResponse),
+            "worker_progress_wait_after_first_response":sample(TimingPhase::WorkerProgressWaitAfterFirst),
+            "candidate_read_and_import":sample(TimingPhase::CandidateReadAndImport),
+            "persistent_accept_execute":sample(TimingPhase::PersistentAccept),
+            "status_air_checkpoint_digest":sample(TimingPhase::StatusAirDigest),
+            "status_business_digest":sample(TimingPhase::StatusBusinessDigest),
+            "status_state_digest":sample(TimingPhase::StatusStateDigest)
+        })
+    }
+}
+struct TimingGuard<'a> {
+    owner: &'a SimTimings,
+    phase: TimingPhase,
+    started: Instant,
+}
+impl Drop for TimingGuard<'_> {
+    fn drop(&mut self) {
+        self.owner.record(self.phase, self.started.elapsed());
+    }
+}
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Request {
@@ -173,6 +261,7 @@ fn status(
     worker: &Option<Worker>,
     codec: &Codec,
     diag: &Option<crate::cpu_log::CpuLog>,
+    timings: &SimTimings,
 ) -> Result<Value, String> {
     // Same-phase current occupancy, before allocating the status report.
     let allocator_clock_begin = crate::heap_meter::clock_reading();
@@ -181,16 +270,28 @@ fn status(
     let e = store.engine().map_err(err)?;
     let b = e.background();
     let view = e.world().view();
-    let air_sha = b
-        .and_then(|b| b.field())
-        .map(|f| f.checkpoint_sha256())
-        .transpose()?;
-    let runtime = json!({"allocator_boundary":{"phase":"status_entry_before_report_allocations","clock_begin":allocator_clock_begin,"clock_end":allocator_clock_end,"snapshot":allocator_boundary},"accounts":view.accounts,"boot":view.boot,"active_city":view.region.as_ref().map(|r|r.active_city),"obligations":view.region.as_ref().map(|r|r.obligations),"payroll":e.timeline().map(|t|t.payroll.iter().take(8).collect::<Vec<_>>()),"claims":e.timeline().map(|t|t.claims.iter().take(8).collect::<Vec<_>>()),"claim_count":e.timeline().map(|t|t.claims.len()),"payroll_count":e.timeline().map(|t|t.payroll.len()),"resources":e.resources(),"store_owned_bytes":store.owned_capacity_bytes().map_err(err)?,"sim_codec":codec.slots.report()?,"sim_air_input_owned_bytes":codec.air_input.owned_bytes(),"diagnostics_owned_bytes":diag.as_ref().map_or(0,crate::cpu_log::CpuLog::owned_bytes)});
+    let air_sha = {
+        let _timer = timings.timer(TimingPhase::StatusAirDigest);
+        b.and_then(|b| b.field())
+            .map(|f| f.checkpoint_sha256())
+            .transpose()?
+    };
+    let runtime = json!({"allocator_boundary":{"phase":"status_entry_before_report_allocations","clock_begin":allocator_clock_begin,"clock_end":allocator_clock_end,"snapshot":allocator_boundary},"accounts":view.accounts,"boot":view.boot,"active_city":view.region.as_ref().map(|r|r.active_city),"obligations":view.region.as_ref().map(|r|r.obligations),"payroll":e.timeline().map(|t|t.payroll.iter().take(8).collect::<Vec<_>>()),"claims":e.timeline().map(|t|t.claims.iter().take(8).collect::<Vec<_>>()),"claim_count":e.timeline().map(|t|t.claims.len()),"payroll_count":e.timeline().map(|t|t.payroll.len()),"resources":e.resources(),"store_owned_bytes":store.owned_capacity_bytes().map_err(err)?,"sim_codec":codec.slots.report()?,"sim_air_input_owned_bytes":codec.air_input.owned_bytes(),"sim_timing_state_bytes":std::mem::size_of::<SimTimings>(),"diagnostics_owned_bytes":diag.as_ref().map_or(0,crate::cpu_log::CpuLog::owned_bytes)});
 
+    let business_sha = {
+        let _timer = timings.timer(TimingPhase::StatusBusinessDigest);
+        store.business_digest().map_err(err)?
+    };
+    let state_sha = {
+        let _timer = timings.timer(TimingPhase::StatusStateDigest);
+        store.state_hash().map_err(err)?
+    };
+    let mut runtime = runtime;
+    runtime["sim_host_timing"] = timings.report();
     Ok(
-        json!({"revision":view.revision,"sequence":store.committed_sequence(),"business_sha256":store.business_digest().map_err(err)?,"runtime":runtime,"timeline":e.timeline().map(|t|t.progress),
+        json!({"revision":view.revision,"sequence":store.committed_sequence(),"business_sha256":business_sha,"runtime":runtime,"timeline":e.timeline().map(|t|t.progress),
  "background":b.map(|b|json!({"version":b.version(),"time":b.time(),"incarnation":b.incarnation(),"pending":b.pending().map(|j|json!({"id":j.id,"generation":j.generation,"attempt":j.attempt,"running":j.running,"failure":j.failure,"start":j.start,"end":j.end})),"field":b.field().map(|f|f.report()),"state_sha256":air_sha})),
- "state_sha256":store.state_hash().map_err(err)?,"capacity":store.capacity_status().map_err(err)?,"worker_pid":worker.as_ref().map(|w|w.pid()),"source_sha256":env!("MYCITY_SOURCE_SHA256"),"memory_16gb_gate":"not_run"}),
+ "state_sha256":state_sha,"capacity":store.capacity_status().map_err(err)?,"worker_pid":worker.as_ref().map(|w|w.pid()),"source_sha256":env!("MYCITY_SOURCE_SHA256"),"memory_16gb_gate":"not_run"}),
     )
 }
 fn control(
@@ -222,6 +323,7 @@ struct Required<'a> {
     job: u64,
     rules: &'a str,
     diag: &'a mut Option<crate::cpu_log::CpuLog>,
+    timings: &'a SimTimings,
 }
 fn required(
     store: &mut Store,
@@ -237,7 +339,9 @@ fn required(
         job,
         rules,
         diag,
+        timings,
     } = context;
+    let _request_timer = timings.timer(TimingPhase::RunRequired);
     let operation = background::accept_operation_id(job)?;
     // Return the ORIGINAL persisted record; never rebuild an Envelope after lost ACK.
     if let Some(record) = store.receipt(operation).map_err(err)? {
@@ -260,11 +364,17 @@ fn required(
         if let Some(mut old) = worker.take() {
             old.stop_when_idle(Duration::from_secs(1))?;
         }
-        let cache = store.prepare_worker_cache().map_err(err)?;
-        let exe = std::env::current_exe().map_err(err)?;
-        let cache_fence = worker_cache::recover_exclusive(&cache, &exe)?;
-        control(store, B::RebindLease { job }, diag)?;
-        worker_cache::reset_after_worker_stopped(&cache)?;
+        let (cache, cache_fence) = {
+            let _timer = timings.timer(TimingPhase::CacheRecoverRebindReset);
+            let cache = store.prepare_worker_cache().map_err(err)?;
+            let exe = std::env::current_exe().map_err(err)?;
+            let cache_fence = worker_cache::recover_exclusive(&cache, &exe)?;
+            control(store, B::RebindLease { job }, diag)?;
+            worker_cache::reset_after_worker_stopped(&cache)?;
+            // Keep the exclusive fence alive through input publication and spawn.
+            (cache, cache_fence)
+        };
+        let _input_timer = timings.timer(TimingPhase::InputEncodePublish);
         let b = store
             .engine()
             .map_err(err)?
@@ -307,6 +417,7 @@ fn required(
         };
         let generation = pending.generation;
         let attempt_number = pending.attempt;
+        drop(_input_timer);
         if gate(
             ProbePoint::Leased,
             &mut probe,
@@ -330,6 +441,8 @@ fn required(
         let mut cancelled = false;
         let attempt = (|| -> Result<_, String> {
             let exe = std::env::current_exe().map_err(err)?;
+            let mut first_response_timer =
+                Some(timings.timer(TimingPhase::WorkerSpawnRegisterToFirstResponse));
             *worker = Some(if gated {
                 Worker::spawn_bounded_probe(&exe, &cache)?
             } else {
@@ -345,8 +458,12 @@ fn required(
                 json!({"worker_pid":child.pid(),"broker_lease":child.broker_lease(),"ticket":request.ticket}),
             )?;
             child.submit(&request)?;
-            for _ in 0..4 {
+            for index in 0..4 {
+                let wait_timer =
+                    (index != 0).then(|| timings.timer(TimingPhase::WorkerProgressWaitAfterFirst));
                 let progress = child.next(Duration::from_secs(30))?;
+                drop(wait_timer);
+                drop(first_response_timer.take());
                 event(
                     w,
                     id,
@@ -379,6 +496,7 @@ fn required(
                         .candidate_sha256
                         .as_deref()
                         .ok_or("sim_candidate_hash")?;
+                    let _result_timer = timings.timer(TimingPhase::CandidateReadAndImport);
                     return codec
                         .slots
                         .with_slot(crate::worker_slots::Kind::Candidate, |bytes| {
@@ -486,10 +604,13 @@ fn required(
                 },
             }],
         };
-        let outcome = crate::cpu_log::execute(store, Caller::System, envelope, diag)?;
-        outcome.model.map_err(err)?;
-        if !outcome.has_persistent_receipt {
-            return Err("sim_admission_not_durable".into());
+        {
+            let _timer = timings.timer(TimingPhase::PersistentAccept);
+            let outcome = crate::cpu_log::execute(store, Caller::System, envelope, diag)?;
+            outcome.model.map_err(err)?;
+            if !outcome.has_persistent_receipt {
+                return Err("sim_admission_not_durable".into());
+            }
         }
         if gate(
             ProbePoint::Committed,
@@ -526,6 +647,7 @@ pub fn run_scale(
 ) -> Result<(), String> {
     run_inner(world, create, probe, Profile::Scale(tier))
 }
+
 fn run_inner(
     world: &Path,
     create: bool,
@@ -535,6 +657,7 @@ fn run_inner(
     let epoch =
         crate::normal_pool::broker::activate_role(crate::normal_pool::workspace::Kind::SimCodec)?;
     let mut codec = Codec::new(epoch)?;
+    let timings = SimTimings::new();
     let workspace = mycity_storage::StoreWorkspace::new().map_err(err)?;
     let rules = profile.rules();
     let mut store = if create {
@@ -598,7 +721,10 @@ fn run_inner(
         None
     };
     if let Some(log) = diag.as_mut() {
-        log.set_external_diagnostics_owned_bytes(std::mem::size_of::<Codec>())?;
+        let owned_bytes = std::mem::size_of::<Codec>()
+            .checked_add(std::mem::size_of::<SimTimings>())
+            .ok_or("sim_diagnostics_bytes")?;
+        log.set_external_diagnostics_owned_bytes(owned_bytes)?;
     }
     codec.log(&mut diag)?;
     let mut worker = None;
@@ -610,7 +736,7 @@ fn run_inner(
         &mut writer,
         0,
         "ready",
-        status(&store, &worker, &codec, &diag)?,
+        status(&store, &worker, &codec, &diag, &timings)?,
     )?;
     while let Some(bytes) = wire::frame(&mut reader)? {
         let request: Request = serde_json::from_slice(&bytes).map_err(err)?;
@@ -619,7 +745,7 @@ fn run_inner(
         }
         let stop = matches!(request.command, Command::Stop);
         let outcome = match request.command {
-            Command::Status => status(&store, &worker, &codec, &diag),
+            Command::Status => status(&store, &worker, &codec, &diag, &timings),
             Command::Progress => progress(&store),
             Command::ReceiptProof { operation } => store.receipt(operation).map_err(err).and_then(|record| {
                 let bytes = serde_json::to_vec(&record).map_err(err)?;
@@ -648,6 +774,7 @@ fn run_inner(
                     job,
                     rules: &rules,
                     diag:&mut diag,
+                    timings:&timings,
                 },
                 &mut writer,
                 &mut reader,
@@ -662,6 +789,7 @@ fn run_inner(
                     job,
                     rules: &rules,
                     diag:&mut diag,
+                    timings:&timings,
                 },
                 &mut writer,
                 &mut reader,
@@ -703,4 +831,25 @@ fn run_inner(
         log.finish()?;
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod timing_tests {
+    use super::{SimTimings, TimingPhase};
+    use std::time::Duration;
+
+    #[test]
+    fn timing_summary_is_fixed_and_accumulates_count_total_and_max() {
+        let timings = SimTimings::new();
+        timings.record(TimingPhase::RunRequired, Duration::from_nanos(7));
+        timings.record(TimingPhase::RunRequired, Duration::from_nanos(11));
+
+        let report = timings.report();
+        assert_eq!(report["schema"], "mycity-sim-timing-v1");
+        assert_eq!(report["run_required"]["count"], 2);
+        assert_eq!(report["run_required"]["total_ns"], 18);
+        assert_eq!(report["run_required"]["max_ns"], 11);
+        assert_eq!(report["status_state_digest"]["count"], 0);
+        assert_eq!(report.as_object().unwrap().len(), 13);
+    }
 }

@@ -1,0 +1,158 @@
+{
+  "allocated_file_bytes": 651264,
+  "cases": [
+    {
+      "files": [
+        {
+          "bytes": 76,
+          "path": "KEEP-RESTORE-INPUTS",
+          "sha256": "3cae0726f9d0881cd44183703c09969bde9b0a30c5106ced0f9118c7543528b0"
+        },
+        {
+          "bytes": 123,
+          "path": "exchange-raw7-operational-demolition/CURRENT.json",
+          "sha256": "8296f5f79c8240ee3843c7622c8afa8e8f2cb7ea0c2fca630dc3e87cdbc4dd0f"
+        },
+        {
+          "bytes": 0,
+          "path": "exchange-raw7-operational-demolition/LOCK",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "bytes": 105235,
+          "path": "exchange-raw7-operational-demolition/checkpoint-35.json",
+          "sha256": "dff050eebc1aa1154fb47e3ca9448624d16dbdcedd085360604630cf4747c6f9"
+        },
+        {
+          "bytes": 110704,
+          "path": "exchange-raw7-operational-demolition/checkpoint-76.json",
+          "sha256": "50d9958b4b8f1765c4a78a07ee0a9c30df8f03f226723864a669cd4da8b96c26"
+        },
+        {
+          "bytes": 74886,
+          "path": "exchange-raw7-operational-demolition/checkpoint-79.json",
+          "sha256": "8e561affa9b79e5a631b3e0ae69462ba77f58f451d29c8f44ed9b222f08778d1"
+        },
+        {
+          "bytes": 419,
+          "path": "exchange-raw7-operational-demolition/checkpoint-index-35.json",
+          "sha256": "a8819ef2d1b55334f8c54168eead7723d86d03d16b89c446dc8ae71be0a4bdbd"
+        },
+        {
+          "bytes": 562,
+          "path": "exchange-raw7-operational-demolition/checkpoint-index-76.json",
+          "sha256": "5fa056e95b556623f630276bf08009baafc27f592b377f05ef62bdcc413611a0"
+        },
+        {
+          "bytes": 220,
+          "path": "exchange-raw7-operational-demolition/checkpoint-index-79.json",
+          "sha256": "8419a7f2e6d44979bd3bdef37b93b68a2be98b6b7d2ca5564fb107084a19e0f3"
+        },
+        {
+          "bytes": 43185,
+          "path": "exchange-raw7-operational-demolition/genesis.json",
+          "sha256": "409027f81696d14c753db459eb6923f80688fd6fa03bdcf107a1bf4893a76db8"
+        },
+        {
+          "bytes": 516,
+          "path": "exchange-raw7-operational-demolition/root-0.json",
+          "sha256": "70503c83b7430a89b261d304eacee84781766b15c9fab7e3d43c2e27c72892da"
+        },
+        {
+          "bytes": 513,
+          "path": "exchange-raw7-operational-demolition/root-1.json",
+          "sha256": "2ce0e8b2556da42ba962bbcf9abccf725067707911893bac99002c8f52b4de70"
+        },
+        {
+          "bytes": 207,
+          "path": "exchange-raw7-operational-demolition/spatial-height.png",
+          "sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8"
+        },
+        {
+          "bytes": 3679,
+          "path": "exchange-raw7-operational-demolition/spatial-input.json",
+          "sha256": "1891b68e1190fac29e3dc83a1d5d96ba3fa972cc7594fb8106ccbe179cdd29d6"
+        },
+        {
+          "bytes": 0,
+          "path": "exchange-raw7-operational-demolition/wal-79.bin",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "reason": "successful shared raw7 complete lifecycle; full Store/WAL/checkpoint retained for recovery, not just hashes",
+      "root": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/36-retained-raw7/test-artifacts/mycity-construction-utilities-33523-6"
+    },
+    {
+      "files": [
+        {
+          "bytes": 76,
+          "path": "KEEP-RESTORE-INPUTS",
+          "sha256": "3cae0726f9d0881cd44183703c09969bde9b0a30c5106ced0f9118c7543528b0"
+        },
+        {
+          "bytes": 123,
+          "path": "exchange-raw7-half-clearance/CURRENT.json",
+          "sha256": "7f399683eaf3aa8cf8feccefbdc1bc5b87af9277d0af80fee0f0c0e453f55d02"
+        },
+        {
+          "bytes": 0,
+          "path": "exchange-raw7-half-clearance/LOCK",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "bytes": 110968,
+          "path": "exchange-raw7-half-clearance/checkpoint-40.json",
+          "sha256": "05868557ae3e91c9221a3ae2b7a38809de70a6b61d414921c7b150cbb0ef861d"
+        },
+        {
+          "bytes": 75897,
+          "path": "exchange-raw7-half-clearance/checkpoint-43.json",
+          "sha256": "dfebb7168a0295d3d17b4f65044681cd1eecc4535799ec0eb8de85ea99397975"
+        },
+        {
+          "bytes": 464,
+          "path": "exchange-raw7-half-clearance/checkpoint-index-40.json",
+          "sha256": "152c7ac4d5bbd38c158ea70d6d8fe703c1730d87d90920cc23ad17764a0b35ac"
+        },
+        {
+          "bytes": 220,
+          "path": "exchange-raw7-half-clearance/checkpoint-index-43.json",
+          "sha256": "42864802a8401f182cfe5b542b4e8182b5a20dc7f423935b0230efba628f34a2"
+        },
+        {
+          "bytes": 43185,
+          "path": "exchange-raw7-half-clearance/genesis.json",
+          "sha256": "409027f81696d14c753db459eb6923f80688fd6fa03bdcf107a1bf4893a76db8"
+        },
+        {
+          "bytes": 516,
+          "path": "exchange-raw7-half-clearance/root-0.json",
+          "sha256": "e74909ff3143f92adf9ff60e96518e148bb00e1cbba63c4d448079f39383270b"
+        },
+        {
+          "bytes": 513,
+          "path": "exchange-raw7-half-clearance/root-1.json",
+          "sha256": "0ee27220c77324ee4b8f196b26469cf314e178b5f45f25e2bf18206c4472e3e0"
+        },
+        {
+          "bytes": 207,
+          "path": "exchange-raw7-half-clearance/spatial-height.png",
+          "sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8"
+        },
+        {
+          "bytes": 3679,
+          "path": "exchange-raw7-half-clearance/spatial-input.json",
+          "sha256": "1891b68e1190fac29e3dc83a1d5d96ba3fa972cc7594fb8106ccbe179cdd29d6"
+        },
+        {
+          "bytes": 0,
+          "path": "exchange-raw7-half-clearance/wal-43.bin",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "reason": "successful shared raw7 complete lifecycle; full Store/WAL/checkpoint retained for recovery, not just hashes",
+      "root": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/36-retained-raw7/test-artifacts/mycity-construction-utilities-33523-7"
+    }
+  ],
+  "protected_until": "later explicit phase retirement after dependency/occupancy checks"
+}
