@@ -1,0 +1,12 @@
+{
+  "source_sha256": "c0b38ec624f6d4ab90460fd1551b8519250c6d3ad498a26b323127fd5cff9889",
+  "base_commit": "d6564ae8513080f34da14600c7c07fca3073bdca",
+  "test": {"passed": 15, "failed": 0, "ignored": 0, "filtered": 68},
+  "example_release_build": "passed",
+  "strict_all_targets_clippy": "passed",
+  "fixed_binary_scenarios": ["baseline", "missing_cash", "stockout", "closed_road", "energy_price_shock", "demand_drop"],
+  "scenario_supply": "fixture substitute; not Engine-integrated",
+  "planner_status": "pureplan_not_settled",
+  "engine_settlement": "not validated",
+  "settled_28_day_loop": "not validated"
+}

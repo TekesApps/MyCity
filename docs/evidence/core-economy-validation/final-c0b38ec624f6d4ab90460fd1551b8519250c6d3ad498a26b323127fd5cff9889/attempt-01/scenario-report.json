@@ -1,0 +1,9 @@
+{
+  "baseline": {"reference_need": 2800, "market_demand": 2000, "actual_sales": 2000, "unmet_need": 800, "status": "pureplan_not_settled"},
+  "missing_cash": {"reference_need": 2800, "market_demand": 2000, "actual_sales": 0, "unmet_need": 2800, "reason": "no_cash"},
+  "stockout": {"reference_need": 2800, "market_demand": 0, "actual_sales": 0, "unmet_need": 2800, "reason": "no_stock"},
+  "closed_road": {"reference_need": 2800, "market_demand": 0, "actual_sales": 0, "unmet_need": 2800, "reason": "missing_route"},
+  "energy_price_shock": {"reference_need": 2800, "market_demand": 0, "actual_sales": 0, "unmet_need": 2800, "note": "fixture lacks feasible production after utility price shock"},
+  "demand_drop": {"reference_need": 200, "market_demand": 100, "actual_sales": 100, "unmet_need": 100},
+  "note": "scenario outputs are read-only planner proposals based on test fixture inputs, not authoritative committed transactions"
+}

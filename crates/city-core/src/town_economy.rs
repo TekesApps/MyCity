@@ -185,7 +185,12 @@ pub enum PlanLine {
     Unmet {
         household_group: u32,
         good: u8,
+        /// Unserved natural/reference need; price does not erase this quantity.
         quantity: Quantity,
+        /// Elasticity-adjusted quantity at the cheapest currently executable offer.
+        market_demand: Quantity,
+        /// Market demand less actual group purchases.
+        unmet_market_demand: Quantity,
         reason: RejectReason,
     },
 }
@@ -204,6 +209,15 @@ pub struct SettlementBatch {
     pub planned_utilities: Money,
     pub planned_disposal: Money,
     pub planned_labor_cost: Money,
+    /// Baseline need before price response.
+    pub reference_need: Quantity,
+    /// Price-adjusted demand at the cheapest offer with stock and route capacity at clearing start.
+    pub market_demand: Quantity,
+    /// Sum of quantities actually sold.
+    pub actual_sales: Quantity,
+    /// Price-adjusted market demand not purchased due to price, cash, stock or route constraints.
+    pub unmet_market_demand: Quantity,
+    /// Reference need less actual sales; a high price never marks natural need satisfied.
     pub unmet_need: Quantity,
     pub reason: Option<RejectReason>,
 }
@@ -218,6 +232,9 @@ pub struct Reconciliation {
     pub input_quantity: Quantity,
     pub output_quantity: Quantity,
     pub sold_quantity: Quantity,
+    pub reference_need: Quantity,
+    pub market_demand: Quantity,
+    pub unmet_market_demand: Quantity,
     pub waste_quantity: Quantity,
     pub consumed_basis: Money,
     pub output_basis: Money,
@@ -251,6 +268,24 @@ fn checked_mul_qty(quantity: Quantity, n: u32) -> Result<Quantity, PlanError> {
     quantity
         .checked_mul(u64::from(n))
         .map_err(|_| PlanError::Overflow)
+}
+
+fn demand_at_price(
+    need: Quantity,
+    reference_price: Money,
+    delivered_price: i64,
+) -> Result<Quantity, PlanError> {
+    if delivered_price <= 0 || reference_price.value() <= 0 {
+        return Err(PlanError::InvalidInput);
+    }
+    let demand = need
+        .value()
+        .checked_mul(reference_price.value())
+        .ok_or(PlanError::Overflow)?
+        .checked_div(delivered_price)
+        .ok_or(PlanError::Overflow)?
+        .min(need.value());
+    Quantity::new(demand).map_err(|_| PlanError::Overflow)
 }
 
 fn add_money(a: Money, b: Money) -> Result<Money, PlanError> {
@@ -727,8 +762,13 @@ pub fn plan_day(input: &MarketInput) -> Result<SettlementBatch, PlanError> {
         .collect();
     let mut household_needs: Vec<&HouseholdGroup> = input.households.iter().collect();
     household_needs.sort_by_key(|h| h.id);
+    let mut reference_need_total = Quantity::ZERO;
+    let mut market_demand_total = Quantity::ZERO;
+    let mut actual_sales_total = Quantity::ZERO;
+    let mut unmet_market_demand_total = Quantity::ZERO;
     for household in household_needs {
         let need = checked_mul_qty(household.need_per_household, household.households)?;
+        reference_need_total = add_qty(reference_need_total, need)?;
         if need.value() == 0 {
             continue;
         }
@@ -755,41 +795,35 @@ pub fn plan_day(input: &MarketInput) -> Result<SettlementBatch, PlanError> {
             }
         }
         candidates.sort_by_key(|(s, _, p)| (*p, s.account, s.stock_id));
-        let reference = household.reference_price_per_q.value();
-        if reference <= 0 {
-            return Err(PlanError::InvalidInput);
-        }
-        let desired = if candidates.is_empty() {
-            need.value()
-        } else {
-            let effective = candidates.first().map_or(0, |x| x.2);
-            need.value()
-                .checked_mul(reference)
-                .ok_or(PlanError::Overflow)?
-                .checked_div(effective)
-                .ok_or(PlanError::Overflow)?
-                .min(need.value())
+        let executable_price = candidates
+            .iter()
+            .filter(|(shop, quote, _)| {
+                projected_stocks
+                    .iter()
+                    .find(|lot| lot.stock_id == shop.stock_id)
+                    .is_some_and(|lot| lot.quantity.value() > 0)
+                    && route_capacity
+                        .iter()
+                        .find(|pool| pool.0 == quote.route_source && pool.1 == shop.good)
+                        .is_some_and(|pool| pool.2.value() > 0)
+            })
+            .map(|(_, _, price)| *price)
+            .min();
+        let market_demand = match executable_price {
+            Some(price) => demand_at_price(need, household.reference_price_per_q, price)?,
+            None => Quantity::ZERO,
         };
-        let mut remaining = Quantity::new(desired).map_err(|_| PlanError::Overflow)?;
+        market_demand_total = add_qty(market_demand_total, market_demand)?;
+        let mut group_sales = Quantity::ZERO;
         let mut unmet_reason = if candidates.is_empty() {
             RejectReason::MissingRoute
         } else {
             RejectReason::NoStock
         };
-        let mut affordable_any = false;
         let mut route_blocked = false;
+        let mut cash_blocked = false;
+        let mut price_blocked = false;
         for (shop, quote, effective_price) in candidates {
-            if remaining.value() == 0 {
-                break;
-            }
-            let cash = group_cash
-                .iter_mut()
-                .find(|x| x.0 == household.account)
-                .ok_or(PlanError::MissingReference)?;
-            if cash.1 <= 0 {
-                unmet_reason = RejectReason::NoCash;
-                break;
-            }
             let inv = projected_stocks
                 .iter_mut()
                 .find(|x| x.stock_id == shop.stock_id)
@@ -797,36 +831,53 @@ pub fn plan_day(input: &MarketInput) -> Result<SettlementBatch, PlanError> {
             if inv.quantity.value() == 0 {
                 continue;
             }
-            let can_afford = cash
-                .1
-                .checked_div(effective_price)
-                .ok_or(PlanError::Overflow)?;
-            if can_afford > 0 {
-                affordable_any = true;
-            }
             let route = route_capacity
                 .iter_mut()
                 .find(|x| x.0 == quote.route_source && x.1 == shop.good)
                 .ok_or(PlanError::MissingReference)?;
-            let qty = remaining
+            if route.2.value() == 0 {
+                route_blocked = true;
+                unmet_reason = RejectReason::RouteCapacity;
+                continue;
+            }
+
+            // Demand is a price curve, not a one-time cap at the cheapest listed quote.
+            // Each executable marginal offer tightens the cumulative purchase ceiling.
+            let price_ceiling =
+                demand_at_price(need, household.reference_price_per_q, effective_price)?;
+            if group_sales.value() >= price_ceiling.value() {
+                price_blocked = true;
+                unmet_reason = RejectReason::NoDemand;
+                break;
+            }
+            let cash = group_cash
+                .iter_mut()
+                .find(|x| x.0 == household.account)
+                .ok_or(PlanError::MissingReference)?;
+            if cash.1 <= 0 {
+                cash_blocked = true;
+                unmet_reason = RejectReason::NoCash;
+                break;
+            }
+            let can_afford = cash
+                .1
+                .checked_div(effective_price)
+                .ok_or(PlanError::Overflow)?;
+            if can_afford == 0 {
+                cash_blocked = true;
+                unmet_reason = RejectReason::NoCash;
+                break;
+            }
+            let allowed_at_price = price_ceiling
                 .value()
+                .checked_sub(group_sales.value())
+                .ok_or(PlanError::Overflow)?;
+            let qty = allowed_at_price
                 .min(inv.quantity.value())
                 .min(can_afford)
                 .min(route.2.value());
             if qty <= 0 {
-                if route.2 == Quantity::ZERO {
-                    route_blocked = true;
-                }
-                unmet_reason = if affordable_any {
-                    if route.2 == Quantity::ZERO {
-                        RejectReason::RouteCapacity
-                    } else {
-                        RejectReason::NoStock
-                    }
-                } else {
-                    RejectReason::NoCash
-                };
-                continue;
+                return Err(PlanError::Unbalanced);
             }
             let quantity = Quantity::new(qty).map_err(|_| PlanError::Overflow)?;
             let goods = checked_mul_money(shop.shelf_price_per_q, quantity)?;
@@ -855,9 +906,11 @@ pub fn plan_day(input: &MarketInput) -> Result<SettlementBatch, PlanError> {
                 .2
                 .checked_sub(quantity)
                 .map_err(|_| PlanError::Overflow)?;
-            remaining = remaining
-                .checked_sub(quantity)
-                .map_err(|_| PlanError::Overflow)?;
+            group_sales = add_qty(group_sales, quantity)?;
+            if group_sales.value() >= price_ceiling.value() && group_sales.value() < need.value() {
+                price_blocked = true;
+                unmet_reason = RejectReason::NoDemand;
+            }
             goods_total = add_money(goods_total, goods)?;
             freight_total = add_money(freight_total, freight)?;
             utility_total = add_money(utility_total, utility)?;
@@ -880,20 +933,39 @@ pub fn plan_day(input: &MarketInput) -> Result<SettlementBatch, PlanError> {
                 },
             )?;
         }
-        if remaining.value() > 0 {
-            unmet_total = add_qty(unmet_total, remaining)?;
+        actual_sales_total = add_qty(actual_sales_total, group_sales)?;
+        let reference_unmet = need
+            .checked_sub(group_sales)
+            .map_err(|_| PlanError::Overflow)?;
+        let market_unmet = market_demand
+            .checked_sub(group_sales.min(market_demand))
+            .map_err(|_| PlanError::Overflow)?;
+        unmet_market_demand_total = add_qty(unmet_market_demand_total, market_unmet)?;
+        if reference_unmet.value() > 0 {
+            unmet_total = add_qty(unmet_total, reference_unmet)?;
             push_line(
                 &mut lines,
                 PlanLine::Unmet {
                     household_group: household.id,
                     good: household.need_good,
-                    quantity: remaining,
-                    reason: if route_blocked {
+                    quantity: reference_unmet,
+                    market_demand,
+                    unmet_market_demand: market_unmet,
+                    reason: if cash_blocked {
+                        RejectReason::NoCash
+                    } else if price_blocked {
+                        RejectReason::NoDemand
+                    } else if route_blocked {
                         RejectReason::RouteCapacity
-                    } else if remaining == need
+                    } else if group_sales == Quantity::ZERO
                         && candidates_empty_for(input, household.id, household.need_good)
                     {
                         RejectReason::MissingRoute
+                    } else if market_demand.value() > 0
+                        && market_demand.value() < need.value()
+                        && group_sales >= market_demand
+                    {
+                        RejectReason::NoDemand
                     } else {
                         unmet_reason
                     },
@@ -913,6 +985,10 @@ pub fn plan_day(input: &MarketInput) -> Result<SettlementBatch, PlanError> {
         planned_utilities: utility_total,
         planned_disposal: disposal_total,
         planned_labor_cost: labor_total,
+        reference_need: reference_need_total,
+        market_demand: market_demand_total,
+        actual_sales: actual_sales_total,
+        unmet_market_demand: unmet_market_demand_total,
         unmet_need: unmet_total,
         reason: None,
     })
@@ -1081,17 +1157,34 @@ pub fn reconcile(
                 freight = add_money(freight, freight_payment)?;
                 utility = add_money(utility, utility_payment)?;
             }
-            PlanLine::Unmet { quantity, .. } => {
+            PlanLine::Unmet {
+                quantity,
+                unmet_market_demand,
+                ..
+            } => {
                 audit.unmet_quantity = add_qty(audit.unmet_quantity, quantity)?;
+                audit.unmet_market_demand =
+                    add_qty(audit.unmet_market_demand, unmet_market_demand)?;
             }
         }
     }
+    for household in &input.households {
+        audit.reference_need = add_qty(
+            audit.reference_need,
+            checked_mul_qty(household.need_per_household, household.households)?,
+        )?;
+    }
+    audit.market_demand = batch.market_demand;
     if audit.cash_debits != audit.cash_credits
         || goods != batch.planned_goods_payments
         || freight != batch.planned_freight
         || utility != batch.planned_utilities
         || disposal != batch.planned_disposal
         || audit.labor_basis != batch.planned_labor_cost
+        || audit.reference_need != batch.reference_need
+        || audit.sold_quantity != batch.actual_sales
+        || audit.market_demand != batch.market_demand
+        || audit.unmet_market_demand != batch.unmet_market_demand
         || audit.unmet_quantity != batch.unmet_need
     {
         return Err(PlanError::Unbalanced);
@@ -1428,5 +1521,139 @@ mod tests {
             .lines
             .iter()
             .any(|l| matches!(l, PlanLine::Sale { .. })));
+    }
+
+    fn add_expensive_offer(input: &mut MarketInput, inventory_quantity: i64) {
+        input.inventories.push(InventorySnapshot {
+            stock_id: 32,
+            owner: 20,
+            good: 0,
+            quantity: Quantity::new(inventory_quantity).unwrap(),
+            spendable_basis: Money::ZERO,
+            origin_quantity: Quantity::new(inventory_quantity).unwrap(),
+            origin_basis: Money::ZERO,
+            offset: Quantity::ZERO,
+        });
+        input.shops.push(ShopSnapshot {
+            shop_id: 2,
+            account: 20,
+            stock_id: 32,
+            good: 0,
+            shelf_price_per_q: Money::new(100).unwrap(),
+        });
+        input.delivery.push(DeliveryQuote {
+            quote_id: 7002,
+            shop: 2,
+            household_group: 1,
+            good: 0,
+            reachable: true,
+            route_source: 8,
+            freight_account: 20,
+            utility_account: 20,
+            available_capacity: Quantity::new(100).unwrap(),
+            freight_per_q: Money::ZERO,
+            utility_surcharge_per_q: Money::ZERO,
+        });
+    }
+
+    fn sales_for_group(batch: &SettlementBatch, buyer: u32) -> i64 {
+        batch
+            .lines
+            .iter()
+            .map(|line| match line {
+                PlanLine::Sale {
+                    buyer_account,
+                    quantity,
+                    ..
+                } if *buyer_account == buyer => quantity.value(),
+                _ => 0,
+            })
+            .sum()
+    }
+
+    #[test]
+    fn empty_cheap_offer_does_not_set_demand_price_for_expensive_stock() {
+        let mut x = input();
+        x.recipes.clear();
+        x.households[0].households = 1;
+        x.households[0].reference_price_per_q = Money::new(10).unwrap();
+        x.shops[0].shelf_price_per_q = Money::new(10).unwrap();
+        add_expensive_offer(&mut x, 100);
+
+        let batch = plan_day(&x).unwrap();
+        assert_eq!(sales_for_group(&batch, 10), 10);
+        assert_eq!(batch.market_demand.value(), 10);
+        assert_eq!(batch.actual_sales.value(), 10);
+        assert_eq!(batch.unmet_need.value(), 90);
+    }
+
+    #[test]
+    fn remaining_cheap_inventory_then_expensive_offer_reprices_only_marginal_units() {
+        let mut x = input();
+        x.recipes.clear();
+        x.households[0].households = 1;
+        x.households[0].reference_price_per_q = Money::new(10).unwrap();
+        x.shops[0].shelf_price_per_q = Money::new(10).unwrap();
+        x.inventories[1].quantity = Quantity::new(5).unwrap();
+        x.inventories[1].origin_quantity = Quantity::new(5).unwrap();
+        add_expensive_offer(&mut x, 100);
+
+        let batch = plan_day(&x).unwrap();
+        assert_eq!(sales_for_group(&batch, 10), 10);
+        assert_eq!(batch.market_demand.value(), 100);
+        assert_eq!(batch.unmet_market_demand.value(), 90);
+    }
+
+    #[test]
+    fn exhausted_cheap_route_then_expensive_route_reprices_remaining_demand() {
+        let mut x = input();
+        x.recipes.clear();
+        x.households[0].households = 1;
+        x.households[0].reference_price_per_q = Money::new(10).unwrap();
+        x.shops[0].shelf_price_per_q = Money::new(10).unwrap();
+        x.inventories[1].quantity = Quantity::new(100).unwrap();
+        x.inventories[1].origin_quantity = Quantity::new(100).unwrap();
+        x.delivery[0].available_capacity = Quantity::new(5).unwrap();
+        add_expensive_offer(&mut x, 100);
+
+        let batch = plan_day(&x).unwrap();
+        assert_eq!(sales_for_group(&batch, 10), 10);
+        assert_eq!(batch.market_demand.value(), 100);
+        assert_eq!(batch.unmet_market_demand.value(), 90);
+    }
+
+    #[test]
+    fn price_increase_keeps_reference_need_visible_as_unmet() {
+        let mut x = input();
+        x.recipes.clear();
+        x.households[0].households = 1;
+        x.households[0].reference_price_per_q = Money::new(10).unwrap();
+        x.inventories[1].quantity = Quantity::new(100).unwrap();
+        x.inventories[1].origin_quantity = Quantity::new(100).unwrap();
+        x.shops[0].shelf_price_per_q = Money::new(10).unwrap();
+        x.delivery[0].utility_surcharge_per_q = Money::new(90).unwrap();
+
+        let batch = plan_day(&x).unwrap();
+        assert_eq!(sales_for_group(&batch, 10), 10);
+        assert_eq!(batch.market_demand.value(), 10);
+        assert_eq!(batch.unmet_need.value(), 90);
+    }
+
+    #[test]
+    fn offer_iteration_order_does_not_change_the_plan() {
+        let mut x = input();
+        x.recipes.clear();
+        x.households[0].households = 1;
+        x.households[0].reference_price_per_q = Money::new(10).unwrap();
+        x.shops[0].shelf_price_per_q = Money::new(10).unwrap();
+        x.inventories[1].quantity = Quantity::new(5).unwrap();
+        x.inventories[1].origin_quantity = Quantity::new(5).unwrap();
+        add_expensive_offer(&mut x, 100);
+        let expected = plan_day(&x).unwrap();
+
+        x.shops.reverse();
+        x.delivery.reverse();
+        x.inventories.reverse();
+        assert_eq!(plan_day(&x).unwrap(), expected);
     }
 }

@@ -1,0 +1,136 @@
+{
+  "world": 1,
+  "branch": 1,
+  "revision": 28,
+  "day": 28,
+  "operation_id": 28001,
+  "households": [
+    {
+      "id": 1,
+      "account": 101,
+      "households": 1,
+      "need_good": 0,
+      "need_per_household": 100,
+      "reference_price_per_q": 120
+    },
+    {
+      "id": 2,
+      "account": 102,
+      "households": 1,
+      "need_good": 0,
+      "need_per_household": 100,
+      "reference_price_per_q": 100
+    }
+  ],
+  "employers": [
+    {
+      "account": 201,
+      "available_workers": 12,
+      "wage_cost_per_worker_day": 800,
+      "payroll_paid_today": 9600
+    }
+  ],
+  "accounts": [
+    {
+      "account": 101,
+      "cash": 250000,
+      "protected": 0
+    },
+    {
+      "account": 102,
+      "cash": 18000,
+      "protected": 0
+    },
+    {
+      "account": 201,
+      "cash": 300000,
+      "protected": 12000
+    },
+    {
+      "account": 301,
+      "cash": 20000,
+      "protected": 0
+    }
+  ],
+  "inventories": [
+    {
+      "stock_id": 401,
+      "owner": 201,
+      "good": 1,
+      "quantity": 50000,
+      "spendable_basis": 100000,
+      "origin_quantity": 50000,
+      "origin_basis": 100000,
+      "offset": 0
+    },
+    {
+      "stock_id": 402,
+      "owner": 201,
+      "good": 0,
+      "quantity": 0,
+      "spendable_basis": 0,
+      "origin_quantity": 0,
+      "origin_basis": 0,
+      "offset": 0
+    }
+  ],
+  "shops": [
+    {
+      "shop_id": 1,
+      "account": 201,
+      "stock_id": 402,
+      "good": 0,
+      "shelf_price_per_q": 100
+    }
+  ],
+  "recipes": [
+    {
+      "recipe_id": 1,
+      "employer": 201,
+      "input_stock_id": 401,
+      "input_per_output": 2,
+      "output_good": 0,
+      "output_stock_id": 402,
+      "output_per_worker_day": 500,
+      "waste_per_output_q": 1,
+      "available_utility_per_day": 10000,
+      "utility_per_output_q": 1,
+      "utility_cost_per_output_q": 1,
+      "freight_cost_per_input_q": 1,
+      "disposal_cost_per_input_q": 1,
+      "utility_account": 301,
+      "freight_account": 301,
+      "disposal_account": 301,
+      "assigned_workers": 12
+    }
+  ],
+  "delivery": [
+    {
+      "quote_id": 9001,
+      "shop": 1,
+      "household_group": 1,
+      "reachable": true,
+      "route_source": 9001,
+      "freight_account": 301,
+      "utility_account": 301,
+      "freight_per_q": 1,
+      "utility_surcharge_per_q": 1,
+      "good": 0,
+      "available_capacity": 10000
+    },
+    {
+      "quote_id": 9002,
+      "shop": 1,
+      "household_group": 2,
+      "reachable": false,
+      "route_source": 9001,
+      "freight_account": 301,
+      "utility_account": 301,
+      "freight_per_q": 1,
+      "utility_surcharge_per_q": 1,
+      "good": 0,
+      "available_capacity": 10000
+    }
+  ],
+  "schema": "mycity-town-market-v0.1"
+}

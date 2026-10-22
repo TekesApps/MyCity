@@ -1,0 +1,5 @@
+export CARGO_TARGET_DIR=/Users/frankqin/dev/MyCity/target
+cargo +1.85.1 test --manifest-path /Users/frankqin/dev/MyCity-core-work/economy/Cargo.toml -p mycity-core --lib --release --locked --offline town_economy::tests::
+cargo +1.85.1 build --manifest-path /Users/frankqin/dev/MyCity-core-work/economy/Cargo.toml -p mycity-core --example town_economy --release --locked --offline
+cargo +1.85.1 clippy --manifest-path /Users/frankqin/dev/MyCity-core-work/economy/Cargo.toml -p mycity-core --all-targets --release --locked --offline -- -D warnings
+six fixed binary scenario invocations: baseline, missing_cash, stockout, closed_road, energy_price_shock, demand_drop

@@ -1,0 +1,9 @@
+{
+  "base_commit": "d6564ae8513080f34da14600c7c07fca3073bdca",
+  "branch": "codex/core-economy",
+  "status": "frozen before validation; price-fix changes uncommitted",
+  "included": ["Cargo.toml", "Cargo.lock", "crates/city-core/src/lib.rs", "crates/city-core/src/town_economy.rs", "crates/city-core/examples/town_economy.rs", "docs/core-economy.md", "scenarios/*.json", "source.patch"],
+  "toolchain": "rustc 1.85.1 / cargo 1.85.1",
+  "target_dir": "/Users/frankqin/dev/MyCity/target",
+  "external_inputs": "six fixture scenario JSON files copied from previously accepted source 0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3"
+}

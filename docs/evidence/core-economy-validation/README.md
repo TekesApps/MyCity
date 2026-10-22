@@ -1,7 +1,9 @@
 # Core economy validation evidence
 
-`final-0f2b1b.../attempt-01` is the accepted frozen source, release build, 10-test run, strict all-target Clippy, and six fixed-binary fixture pureplan runs. `source.zip` SHA-256 is `0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3`. The original fixed binary remains at `work/candidate-binaries/core-economy/<source>/town_economy`; its hash and hardlink identity are recorded in the evidence.
+`final-0f2b1b.../attempt-01` records the initial accepted planner source, 10 tests, release example, strict all-target Clippy and six fixture pureplan scenarios.
 
-`failed-b9d9.../attempt-01` preserves the invalid-scope invocation that ascended from the evidence directory and tested the canonical checkout (0 matched tests). `attempt-02` ran the economy worktree, passed 10 tests and built the example, but strict Clippy found two diagnostics; both failures are retained as evidence. A new source freeze fixed the diagnostics and passed all gates.
+`final-c0b38e.../attempt-01` validates the dynamic price ceiling fix: 15 tests, release example, strict all-target Clippy, and six fixed-binary fixture scenarios. Frozen source zip SHA-256 is `c0b38ec624f6d4ab90460fd1551b8519250c6d3ad498a26b323127fd5cff9889`. The fixed binary is a hardlink in `work/candidate-binaries/core-economy/<source>/town_economy`; its file hash is recorded with inode/size evidence.
 
-All fixture runs are pure plans with test-supply inputs. Production/consumption atomic Engine settlement and shared transport supply integration remain unimplemented; this evidence does not establish a settled 28-day economy.
+`failed-6f7a.../attempt-01` preserves the first run of the price fix. It exposed a stockout reason regression (`NoDemand` instead of `NoStock`); the fix was applied, frozen again, and the complete validation rerun. Earlier invalid-scope and strict-Clippy failure attempts remain preserved under their original ids.
+
+All CLI scenarios say `pureplan_not_settled` and use fixture supply. Engine atomic production/consumption settlement, live shared transport supply, a settled 28-day operation, and market calibration are not validated by these results.
