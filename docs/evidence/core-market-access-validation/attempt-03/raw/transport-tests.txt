@@ -1,0 +1,3 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/market-access/crates/city-core)
+
+Attempt interrupted before tests started: cargo compiled unrelated integration target scale_assembly due omitted --lib. Re-running the intended transport unit tests with --lib only.

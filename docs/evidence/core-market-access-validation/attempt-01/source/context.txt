@@ -1,0 +1,3 @@
+branch=codex/core-market-access
+head=14ba795d67ef6574e77a60a71314171fc1ec0cae
+toolchain=rustc 1.85.1 (4eb161250 2025-03-15)

@@ -1,0 +1,6 @@
+410329009 -rwxr-xr-x@ 2 frankqin  staff  1286160 Oct 22 13:23 /Users/frankqin/dev/MyCity/target/release/deps/market_access-4b9260b305aa4a20
+410302831 -rwxr-xr-x@ 2 frankqin  staff  3190608 Oct 22 13:12 /Users/frankqin/dev/MyCity/target/release/deps/mycity_core-363f7122bd90a840
+410330358 -rwxr-xr-x@ 2 frankqin  staff   741872 Oct 22 13:24 /Users/frankqin/dev/MyCity/target/release/examples/market_access
+410329009 -rwxr-xr-x@ 2 frankqin  staff  1286160 Oct 22 13:23 docs/evidence/core-market-access-validation/attempt-05/fixed-binaries/market-access-tests
+410330358 -rwxr-xr-x@ 2 frankqin  staff   741872 Oct 22 13:24 docs/evidence/core-market-access-validation/attempt-05/fixed-binaries/market_access
+410302831 -rwxr-xr-x@ 2 frankqin  staff  3190608 Oct 22 13:12 docs/evidence/core-market-access-validation/attempt-05/fixed-binaries/transport-tests

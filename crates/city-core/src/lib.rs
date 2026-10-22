@@ -18,6 +18,7 @@ pub mod exchange;
 pub mod fixed_restore;
 pub mod inbox;
 pub mod layout_pressure;
+pub mod market_access;
 pub mod model_capacity;
 pub mod model_rows;
 pub mod probes;

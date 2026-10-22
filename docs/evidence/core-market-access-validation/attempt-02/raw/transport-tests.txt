@@ -1,0 +1,75 @@
+   Compiling sha2-asm v0.6.4
+   Compiling sha2 v0.10.9
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/market-access/crates/city-core)
+warning: unused import: `DeliveryQuote`
+ --> crates/city-core/src/market_access.rs:7:30
+  |
+7 |     town_economy::{plan_day, DeliveryQuote, MarketInput, SettlementBatch},
+  |                              ^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+error[E0308]: arguments to this function are incorrect
+   --> crates/city-core/src/market_access.rs:384:24
+    |
+384 |         source_digest: source_digest(input, opening, assignment, partitions, fee)?,
+    |                        ^^^^^^^^^^^^^ -----  -------  ---------- expected `&MarketInput`, found `&Assignment`
+    |                                      |      |
+    |                                      |      expected `&Assignment`, found `&transport::Opening`
+    |                                      expected `&transport::Opening`, found `&MarketInput`
+    |
+note: function defined here
+   --> crates/city-core/src/market_access.rs:192:4
+    |
+192 | fn source_digest(
+    |    ^^^^^^^^^^^^^
+193 |     opening: &Opening,
+    |     -----------------
+194 |     assignment: &Assignment,
+    |     -----------------------
+195 |     input: &MarketInput,
+    |     -------------------
+196 |     partitions: &[TripPartition],
+    |     ----------------------------
+197 |     fee: FeePolicyInput,
+    |     -------------------
+help: reorder these arguments
+    |
+384 |         source_digest: source_digest(opening, assignment, input, partitions, fee)?,
+    |                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+error[E0308]: arguments to this function are incorrect
+   --> crates/city-core/src/market_access.rs:384:24
+    |
+384 |         source_digest: source_digest(input, opening, assignment, partitions, fee)?,
+    |                        ^^^^^^^^^^^^^ -----  -------  ---------- expected `&town_economy::MarketInput`, found `&Assignment`
+    |                                      |      |
+    |                                      |      expected `&Assignment`, found `&transport::Opening`
+    |                                      expected `&transport::Opening`, found `&town_economy::MarketInput`
+    |
+note: function defined here
+   --> crates/city-core/src/market_access.rs:192:4
+    |
+192 | fn source_digest(
+    |    ^^^^^^^^^^^^^
+193 |     opening: &Opening,
+    |     -----------------
+194 |     assignment: &Assignment,
+    |     -----------------------
+195 |     input: &MarketInput,
+    |     -------------------
+196 |     partitions: &[TripPartition],
+    |     ----------------------------
+197 |     fee: FeePolicyInput,
+    |     -------------------
+help: reorder these arguments
+    |
+384 |         source_digest: source_digest(opening, assignment, input, partitions, fee)?,
+    |                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For more information about this error, try `rustc --explain E0308`.
+warning: `mycity-core` (lib) generated 1 warning
+error: could not compile `mycity-core` (lib) due to 1 previous error; 1 warning emitted
+warning: build failed, waiting for other jobs to finish...
+warning: `mycity-core` (lib test) generated 1 warning (1 duplicate)
+error: could not compile `mycity-core` (lib test) due to 1 previous error; 1 warning emitted

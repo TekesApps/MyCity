@@ -1,0 +1,6 @@
+2e09b7b7d22b9e4e42a2ba532ba799e893590900d57b1f25c1243a25e99638a8  docs/evidence/core-market-access-validation/attempt-02/source/mycity-market-access-source.tar.gz
+7da5c54a8499a07cbc71dcecce0c0095d4af3b8b6e5052783f20d188037b6dd6  Cargo.lock
+f56490a6e2baa71ea788a9729e8f243598273abff986d4a9b45fba0e9bd9a3f4  crates/city-core/src/transport.rs
+c8596724be45fa66c953631812b4089907e2087dc714ddc7449b254f4511d474  crates/city-core/src/market_access.rs
+d2309f320d29a1688662dfa9656e5e2bedf91356208106204115b025e8b21fbc  crates/city-core/tests/market_access.rs
+880ce2b7ee6f021aed7d666ecdfd15b83aa1cc7f7a48dd651cc4445e7a012399  crates/city-core/examples/market_access.rs

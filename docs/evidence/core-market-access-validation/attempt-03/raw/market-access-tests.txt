@@ -1,0 +1,37 @@
+    Finished `release` profile [optimized] target(s) in 0.02s
+     Running tests/market_access.rs (/Users/frankqin/dev/MyCity/target/release/deps/market_access-4b9260b305aa4a20)
+
+running 12 tests
+
+thread 'duplicate_quote_partition_is_rejected' panicked at crates/city-core/tests/market_access.rs:467:5:
+assertion `left == right` failed
+  left: Err(DuplicatePartition)
+ right: Err(DuplicateSourceBinding)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'no_return_service_means_no_accessible_sales_or_fake_completion' panicked at crates/city-core/tests/market_access.rs:204:5:
+assertion `left == right` failed
+  left: Quantity(0)
+ right: Quantity(100)
+test explicit_entrance_owner_binding_rejects_wrong_account ... ok
+test expanded_capacity_allows_more_sales_from_same_od_demand ... ok
+test cross_city_market_roundtrip_reports_only_its_actual_boundary_sources ... ok
+test missing_or_forged_path_receipt_cannot_supply_access_capacity ... ok
+test no_return_service_means_no_accessible_sales_or_fake_completion ... FAILED
+test duplicate_quote_partition_is_rejected ... FAILED
+test round_trip_access_caps_goods_and_uses_external_tariff_for_pure_plan ... ok
+test same_revision_graph_edit_invalidates_assignment ... ok
+test capacity_shortfall_yields_only_served_roundtrips_and_unmet_market_demand ... ok
+test same_od_is_shared_across_goods_without_reissuing_served_trips ... ok
+test unauthorized_entrance_is_rejected_even_when_geometrically_at_the_road_node ... ok
+test unrelated_cross_city_od_does_not_block_local_market_access ... ok
+
+failures:
+
+failures:
+    duplicate_quote_partition_is_rejected
+    no_return_service_means_no_accessible_sales_or_fake_completion
+
+test result: FAILED. 10 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p mycity-core --test market_access`

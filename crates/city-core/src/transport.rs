@@ -9,6 +9,8 @@ pub const MAX_EDGES: usize = 512;
 pub const MAX_ENTRANCES: usize = 128;
 pub const MAX_DEMANDS: usize = 512;
 pub const MAX_ASSIGNMENT_STEPS: usize = 512;
+pub const MAX_PATH_RECEIPTS: usize = MAX_ASSIGNMENT_STEPS;
+pub const MAX_PATH_EDGES: usize = MAX_NODES - 1;
 const COST_SCALE: u64 = 10_000;
 const BPR_ALPHA: u128 = 1_500; // 0.15 * COST_SCALE
 const BPR_SCALE: u128 = 10_000;
@@ -112,6 +114,14 @@ pub struct DemandOutcome {
     /// Integer mean path cost for served people; `None` means nobody could travel.
     pub mean_travel_seconds: Option<u64>,
 }
+/// One bounded aggregate path slice for an OD demand source. This is group flow, never
+/// an individual vehicle/person record. `edge_ids` are stable opening identifiers.
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+pub struct PathReceipt {
+    pub source_id: u64,
+    pub people: u32,
+    pub edge_ids: Vec<u32>,
+}
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub struct Assignment {
     pub network_revision: u64,
@@ -121,6 +131,8 @@ pub struct Assignment {
     pub unserved: Vec<Unserved>,
     pub boundary_flows: Vec<BoundaryFlow>,
     pub demand_outcomes: Vec<DemandOutcome>,
+    /// At most `MAX_PATH_RECEIPTS`; each simple path has at most `MAX_PATH_EDGES`.
+    pub path_receipts: Vec<PathReceipt>,
     pub requested_people: u64,
     pub served_people: u64,
     pub unserved_people: u64,
@@ -133,13 +145,18 @@ impl Assignment {
         self.network_revision == opening.revision
             && opening.input_fingerprint().ok() == Some(self.input_fingerprint)
     }
-}
 
-#[derive(Debug)]
-struct PathAllocation {
-    outcome_index: usize,
-    people: u32,
-    edge_indices: Vec<u16>,
+    /// Verify the complete deterministic result once against its opening. A matching input
+    /// fingerprint alone does not attest to output fields or path receipts.
+    pub fn verify(&self, opening: &Opening) -> Result<(), Error> {
+        if !self.matches(opening) {
+            return Err(Error::Fingerprint);
+        }
+        if opening.assign()?.ne(self) {
+            return Err(Error::Fingerprint);
+        }
+        Ok(())
+    }
 }
 
 impl Opening {
@@ -260,7 +277,7 @@ impl Opening {
         let mut requested = 0u64;
         let mut unserved = Vec::new();
         let mut demand_outcomes = Vec::with_capacity(demands.len());
-        let mut allocations = Vec::with_capacity(MAX_ASSIGNMENT_STEPS);
+        let mut path_receipts = Vec::with_capacity(MAX_PATH_RECEIPTS);
         let mut steps = 0u16;
         for d in demands {
             requested = requested
@@ -275,17 +292,16 @@ impl Opening {
             let (origin, destination) = (entrances[from].node, entrances[to].node);
             let mut remaining = u64::from(d.people);
             let mut demand_served = 0u64;
-            let outcome_index = demand_outcomes.len();
             let mut unserved_reason = None;
             if origin == destination {
                 if usize::from(steps) < MAX_ASSIGNMENT_STEPS {
                     demand_served = remaining;
                     remaining = 0;
                     served = served.checked_add(demand_served).ok_or(Error::Overflow)?;
-                    allocations.push(PathAllocation {
-                        outcome_index,
+                    path_receipts.push(PathReceipt {
+                        source_id: d.source_id,
                         people: d.people,
-                        edge_indices: Vec::new(),
+                        edge_ids: Vec::new(),
                     });
                     steps = steps.checked_add(1).ok_or(Error::Overflow)?;
                 } else {
@@ -314,17 +330,17 @@ impl Opening {
                     break;
                 }
                 let amount = remaining.min(room);
-                let edge_indices = path
-                    .iter()
-                    .map(|i| u16::try_from(*i).map_err(|_| Error::Limit))
-                    .collect::<Result<Vec<_>, _>>()?;
+                if path.len() > MAX_PATH_EDGES || path_receipts.len() >= MAX_PATH_RECEIPTS {
+                    return Err(Error::Limit);
+                }
+                let edge_ids = path.iter().map(|i| edges[*i].id).collect();
                 for i in path {
                     flow[i] = flow[i].checked_add(amount).ok_or(Error::Overflow)?;
                 }
-                allocations.push(PathAllocation {
-                    outcome_index,
+                path_receipts.push(PathReceipt {
+                    source_id: d.source_id,
                     people: u32::try_from(amount).map_err(|_| Error::Overflow)?,
-                    edge_indices,
+                    edge_ids,
                 });
                 remaining -= amount;
                 demand_served = demand_served.checked_add(amount).ok_or(Error::Overflow)?;
@@ -362,24 +378,35 @@ impl Opening {
             });
         }
         let mut weighted_seconds = vec![0u128; demand_outcomes.len()];
-        for allocation in &allocations {
-            let path_cost = allocation
-                .edge_indices
-                .iter()
-                .try_fold(0u64, |sum, index| {
-                    let edge = edges.get(usize::from(*index)).ok_or(Error::InvalidEdge)?;
-                    sum.checked_add(congested_cost(
-                        edge.free_flow_seconds,
-                        edge.capacity_people,
-                        flow[usize::from(*index)],
-                    )?)
-                    .ok_or(Error::Overflow)
-                })?;
-            let weighted = u128::from(allocation.people)
+        let outcome_indices: BTreeMap<_, _> = demand_outcomes
+            .iter()
+            .enumerate()
+            .map(|(index, outcome)| (outcome.source_id, index))
+            .collect();
+        for receipt in &path_receipts {
+            if receipt.edge_ids.len() > MAX_PATH_EDGES {
+                return Err(Error::Limit);
+            }
+            let path_cost = receipt.edge_ids.iter().try_fold(0u64, |sum, edge_id| {
+                let index = edges
+                    .binary_search_by_key(edge_id, |edge| edge.id)
+                    .map_err(|_| Error::InvalidEdge)?;
+                let edge = &edges[index];
+                sum.checked_add(congested_cost(
+                    edge.free_flow_seconds,
+                    edge.capacity_people,
+                    flow[index],
+                )?)
+                .ok_or(Error::Overflow)
+            })?;
+            let weighted = u128::from(receipt.people)
                 .checked_mul(u128::from(path_cost))
                 .ok_or(Error::Overflow)?;
+            let outcome_index = *outcome_indices
+                .get(&receipt.source_id)
+                .ok_or(Error::InvalidDemand)?;
             let total = weighted_seconds
-                .get_mut(allocation.outcome_index)
+                .get_mut(outcome_index)
                 .ok_or(Error::InvalidDemand)?;
             *total = total.checked_add(weighted).ok_or(Error::Overflow)?;
         }
@@ -413,6 +440,7 @@ impl Opening {
             unserved,
             boundary_flows,
             demand_outcomes,
+            path_receipts,
             requested_people: requested,
             served_people: served,
             unserved_people,
@@ -756,6 +784,9 @@ mod tests {
         assert_eq!(result.unserved_people, 0);
         assert_eq!(result.demand_outcomes[0].mean_travel_seconds, Some(0));
         assert!(result.edge_flows.iter().all(|e| e.people == 0));
+        assert_eq!(result.path_receipts.len(), 1);
+        assert!(result.path_receipts[0].edge_ids.is_empty());
+        assert_eq!(result.path_receipts[0].people, 9);
     }
     #[test]
     fn edge_city_labels_must_match_the_cities_of_both_nodes() {
@@ -820,5 +851,59 @@ mod tests {
     fn identical_input_produces_identical_aggregates() {
         let x = base(20, 18);
         assert_eq!(x.assign().unwrap(), x.assign().unwrap());
+    }
+
+    #[test]
+    fn path_receipts_are_stable_edge_ids_and_verify_all_output_fields() {
+        let x = base(20, 8);
+        let result = x.assign().unwrap();
+        assert!(result.verify(&x).is_ok());
+        for outcome in &result.demand_outcomes {
+            let receipt_total: u64 = result
+                .path_receipts
+                .iter()
+                .filter(|path| path.source_id == outcome.source_id)
+                .map(|path| u64::from(path.people))
+                .sum();
+            assert_eq!(receipt_total, u64::from(outcome.served_people));
+        }
+        for edge_flow in &result.edge_flows {
+            let receipt_total: u64 = result
+                .path_receipts
+                .iter()
+                .filter(|path| path.edge_ids.contains(&edge_flow.edge_id))
+                .map(|path| u64::from(path.people))
+                .sum();
+            assert_eq!(receipt_total, edge_flow.people);
+        }
+        for boundary in &result.boundary_flows {
+            let receipt_total: u64 = result
+                .path_receipts
+                .iter()
+                .filter(|path| {
+                    path.edge_ids.iter().any(|edge_id| {
+                        x.edges.iter().any(|edge| {
+                            edge.id == *edge_id && edge.boundary_source == Some(boundary.source_id)
+                        })
+                    })
+                })
+                .map(|path| u64::from(path.people))
+                .sum();
+            assert_eq!(receipt_total, boundary.people);
+        }
+        let mut reordered = x.clone();
+        reordered.edges.reverse();
+        assert_eq!(
+            result.path_receipts,
+            reordered.assign().unwrap().path_receipts
+        );
+
+        let mut missing_path = result.clone();
+        missing_path.path_receipts.clear();
+        assert_eq!(missing_path.verify(&x), Err(Error::Fingerprint));
+
+        let mut forged_flow = result;
+        forged_flow.edge_flows[0].people += 1;
+        assert_eq!(forged_flow.verify(&x), Err(Error::Fingerprint));
     }
 }

@@ -1,0 +1,36 @@
+## codex/core-market-access
+ M crates/city-core/src/lib.rs
+ M crates/city-core/src/transport.rs
+?? crates/city-core/examples/market_access.rs
+?? crates/city-core/src/market_access.rs
+?? crates/city-core/tests/market_access.rs
+?? docs/core-market-access.md
+?? docs/evidence/core-market-access-validation/attempt-01/source/context.txt
+?? docs/evidence/core-market-access-validation/attempt-01/source/mycity-market-access-source.tar.gz
+?? docs/evidence/core-market-access-validation/attempt-01/source/sha256.txt
+?? docs/evidence/core-market-access-validation/attempt-01/source/tracked-wip.patch
+?? docs/evidence/core-market-access-validation/attempt-01/source/worktree-status.txt
+?? docs/evidence/core-market-access-validation/attempt-02/raw/transport-tests.txt
+?? docs/evidence/core-market-access-validation/attempt-02/source/context.txt
+?? docs/evidence/core-market-access-validation/attempt-02/source/mycity-market-access-source.tar.gz
+?? docs/evidence/core-market-access-validation/attempt-02/source/sha256.txt
+?? docs/evidence/core-market-access-validation/attempt-02/source/tracked-wip.patch
+?? docs/evidence/core-market-access-validation/attempt-02/source/worktree-status.txt
+?? docs/evidence/core-market-access-validation/attempt-03/raw/market-access-tests.txt
+?? docs/evidence/core-market-access-validation/attempt-03/raw/transport-tests.txt
+?? docs/evidence/core-market-access-validation/attempt-03/raw/transport-unit-tests.txt
+?? docs/evidence/core-market-access-validation/attempt-03/source/context.txt
+?? docs/evidence/core-market-access-validation/attempt-03/source/mycity-market-access-source.tar.gz
+?? docs/evidence/core-market-access-validation/attempt-03/source/sha256.txt
+?? docs/evidence/core-market-access-validation/attempt-03/source/tracked-wip.patch
+?? docs/evidence/core-market-access-validation/attempt-03/source/worktree-status.txt
+?? docs/evidence/core-market-access-validation/attempt-04/raw/clippy.txt
+?? docs/evidence/core-market-access-validation/attempt-04/raw/market-access-tests.txt
+?? docs/evidence/core-market-access-validation/attempt-04/raw/transport-tests.txt
+?? docs/evidence/core-market-access-validation/attempt-04/source/context.txt
+?? docs/evidence/core-market-access-validation/attempt-04/source/mycity-market-access-source.tar.gz
+?? docs/evidence/core-market-access-validation/attempt-04/source/sha256.txt
+?? docs/evidence/core-market-access-validation/attempt-04/source/tracked-wip.patch
+?? docs/evidence/core-market-access-validation/attempt-04/source/worktree-status.txt
+?? docs/evidence/core-market-access-validation/attempt-05/source/mycity-market-access-source.tar.gz
+?? docs/evidence/core-market-access-validation/attempt-05/source/worktree-status.txt
