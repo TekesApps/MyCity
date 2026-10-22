@@ -97,6 +97,7 @@ fn action_raw(
         Construction,
         TownSettle,
         TownTransportSettle,
+        TownSuspendOperations,
         RegionSettleDebt,
         RegionActivate,
         RegionAdvance,
@@ -179,6 +180,18 @@ fn action_raw(
                 service_day: fields.get(2, scratch)?,
                 generation: fields.get(3, scratch)?,
                 proof_sha256: fields.get(4, scratch)?,
+            })
+        }
+        Kind::TownSuspendOperations => {
+            let fields = Fields::parse(
+                raw,
+                &["kind", "profile_id", "company_account"],
+                false,
+                scratch,
+            )?;
+            Ok(Output::TownSuspendOperations {
+                profile_id: fields.get(1, scratch)?,
+                company_account: fields.get(2, scratch)?,
             })
         }
         Kind::RegionSettleDebt => {
@@ -726,6 +739,7 @@ mod tests {
             r#"{"kind":"timeline","command":{"kind":"settle_payroll","id":1}}"#,
             r#"{"kind":"timeline","command":{"kind":"advance","target":1,"limit":1}}"#,
             r#"{"kind":"town_transport_settle","profile_id":1,"service_day":1,"generation":1,"proof_sha256":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}"#,
+            r#"{"kind":"town_suspend_operations","profile_id":1,"company_account":3}"#,
             r#"{"kind":"inbox","command":{"kind":"enable"}}"#,
             r#"{"kind":"inbox","command":{"kind":"external","fact":{"source":1,"event":1,"debtor":1,"creditor":2,"amount":1,"due":1,"reason":"emergency_repair"}}}"#,
             r#"{"kind":"inbox","command":{"kind":"receive","quote":1}}"#,

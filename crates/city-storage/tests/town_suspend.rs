@@ -1,0 +1,236 @@
+use mycity_core::{
+    timeline::{Command as T, Cycle, DAY, PayrollSpec},
+    transaction::{Action, Caller, Envelope},
+    units::{Money, Quantity},
+};
+use mycity_storage::{Store, WritePoint};
+use serde_json::Value;
+use std::{
+    fs,
+    path::{Path, PathBuf},
+    sync::atomic::{AtomicU64, Ordering},
+};
+
+const RULES: &str = "town-suspend-operations-source-fixture-v1";
+static ID: AtomicU64 = AtomicU64::new(0);
+
+struct Temp(PathBuf);
+impl Temp {
+    fn new() -> Self {
+        let root = std::env::var_os("MYCITY_TEST_ARTIFACT_ROOT")
+            .map(PathBuf::from)
+            .unwrap_or_else(std::env::temp_dir);
+        fs::create_dir_all(&root).unwrap();
+        let path = root.join(format!(
+            "mycity-town-suspend-{}-{}",
+            std::process::id(),
+            ID.fetch_add(1, Ordering::Relaxed)
+        ));
+        fs::create_dir(&path).unwrap();
+        let path = fs::canonicalize(path).unwrap();
+        eprintln!("TOWN_SUSPEND_ARTIFACT_CREATED={}", path.display());
+        Self(path)
+    }
+    fn world(&self) -> PathBuf {
+        self.0.join("world")
+    }
+}
+impl Drop for Temp {
+    fn drop(&mut self) {
+        if std::thread::panicking() {
+            eprintln!("TOWN_SUSPEND_ARTIFACT_PRESERVED={}", self.0.display());
+            return;
+        }
+        let _ = fs::remove_dir_all(&self.0);
+    }
+}
+
+fn opening() -> Vec<u8> {
+    let mut value: Value =
+        serde_json::from_slice(include_bytes!("../../../fixtures/m0-e0-opening.json")).unwrap();
+    value["sources"].as_array_mut().unwrap().extend([
+        serde_json::json!({"id":6,"kind":"inventory_capital","amount":100000}),
+        serde_json::json!({"id":7,"kind":"inventory_capital","amount":0}),
+    ]);
+    value["stocks"].as_array_mut().unwrap().extend([
+        serde_json::json!({"id":2,"owner":3,"commodity":"raw","quantity":100000,"basis":100000,"source":6}),
+        serde_json::json!({"id":3,"owner":3,"commodity":"product","quantity":0,"basis":0,"source":7}),
+    ]);
+    value["town"] = serde_json::json!({
+        "schema_version":1,"id":1,
+        "households":[{"id":1,"account":2,"households":1,"need_good":1,"need_per_household":10,"reference_price_per_q":1000}],
+        "employers":[{"account":3,"worker_limit":1},{"account":4,"worker_limit":1}],
+        "shops":[{"shop_id":1,"account":3,"stock_id":3,"good":1,"shelf_price_per_q":100}],
+        "recipes":[{"recipe_id":1,"employer":3,"assigned_workers":1,"input_stock_id":2,"input_per_output":1,"output_good":1,"output_stock_id":3,"output_per_worker_day":100,"waste_per_output_q":0,"available_utility_per_day":1000,"utility_per_output_q":1,"utility_cost_per_output_q":1,"freight_cost_per_input_q":0,"disposal_cost_per_input_q":0,"utility_account":1,"freight_account":1,"disposal_account":1}],
+        "delivery":[{"quote_id":1,"shop":1,"household_group":1,"good":1,"reachable":true,"route_source":77,"freight_account":1,"utility_account":1,"available_capacity":100,"freight_per_q":1,"utility_surcharge_per_q":1}]
+    });
+    serde_json::to_vec(&value).unwrap()
+}
+
+fn create(path: &Path) -> Store {
+    Store::create(path, &opening(), vec![], RULES).unwrap()
+}
+fn envelope(store: &Store, action: Action) -> Envelope {
+    let engine = store.engine().unwrap();
+    Envelope {
+        world: 1,
+        branch: 1,
+        operation_id: store.committed_sequence() + 1,
+        expected_revision: engine.world().view().revision,
+        actions: vec![action],
+    }
+}
+fn execute(store: &mut Store, action: Action) {
+    let request = envelope(store, action);
+    let outcome = store.execute(Caller::System, request).unwrap();
+    assert!(outcome.model.is_ok(), "{outcome:?}");
+    assert!(outcome.has_persistent_receipt);
+}
+fn add_payroll(store: &mut Store, id: u32, payer: u32) {
+    execute(
+        store,
+        Action::Timeline {
+            command: T::AddPayroll {
+                spec: PayrollSpec {
+                    id,
+                    payer,
+                    payee: 2,
+                    home_city: 0,
+                    hourly_cents: Money::new(100).unwrap(),
+                    cycle: Cycle::Daily,
+                    ends_at: 7 * DAY,
+                },
+            },
+        },
+    );
+}
+fn drive(store: &mut Store, target: u64) {
+    for _ in 0..100 {
+        execute(
+            store,
+            Action::Timeline {
+                command: T::Advance {
+                    target,
+                    limit: 8192,
+                },
+            },
+        );
+        if store
+            .engine()
+            .unwrap()
+            .timeline()
+            .unwrap()
+            .progress
+            .target
+            .is_none()
+        {
+            return;
+        }
+    }
+    panic!("Timeline did not complete {target}");
+}
+
+#[test]
+fn stop_operations_is_atomic_durable_and_does_not_stop_unrelated_business() {
+    let temp = Temp::new();
+    let path = temp.world();
+    let mut store = create(&path);
+    execute(&mut store, Action::Timeline { command: T::Enable });
+    add_payroll(&mut store, 1, 3);
+    add_payroll(&mut store, 2, 4);
+    drive(&mut store, DAY);
+    execute(&mut store, Action::TownSettle { profile_id: 1 });
+    let day1 = store.engine().unwrap().world().view();
+    assert!(day1.town.unwrap().state.last_summary.actual_sales > Quantity::ZERO);
+    assert!(day1.town.unwrap().state.last_summary.produced > Quantity::ZERO);
+    let paid_before = store.engine().unwrap().timeline().unwrap().payroll[0].paid;
+    let cash_before = day1.accounts.iter().find(|row| row.id == 3).unwrap().cash;
+    let stock_before = day1.stocks.iter().find(|row| row.id == 2).unwrap().quantity;
+
+    let request = envelope(
+        &store,
+        Action::TownSuspendOperations {
+            profile_id: 1,
+            company_account: 3,
+        },
+    );
+    let lost_reply = store.execute_with_observer(Caller::System, request.clone(), |point| {
+        if point == WritePoint::Applied {
+            Err(std::io::Error::other("simulate lost suspension reply"))
+        } else {
+            Ok(())
+        }
+    });
+    assert!(lost_reply.is_err());
+    drop(store);
+
+    let mut store = Store::open(&path, RULES).unwrap();
+    let after = store.engine().unwrap().world().view();
+    assert_eq!(
+        after.town.unwrap().state.suspended_operators.as_slice()[0].account,
+        3
+    );
+    assert!(!store.engine().unwrap().timeline().unwrap().payroll[0].working);
+    assert_eq!(
+        store.engine().unwrap().timeline().unwrap().payroll[0].paid,
+        paid_before
+    );
+    assert_eq!(
+        after.accounts.iter().find(|row| row.id == 3).unwrap().cash,
+        cash_before
+    );
+    assert_eq!(
+        after
+            .stocks
+            .iter()
+            .find(|row| row.id == 2)
+            .unwrap()
+            .quantity,
+        stock_before
+    );
+    let hash_after_suspend = store.state_hash().unwrap();
+    assert!(
+        store
+            .execute(Caller::System, request.clone())
+            .unwrap()
+            .model
+            .is_ok()
+    );
+    assert_eq!(store.state_hash().unwrap(), hash_after_suspend);
+    store.checkpoint().unwrap();
+    drop(store);
+
+    let mut store = Store::open(&path, RULES).unwrap();
+    let rejected = store.execute(
+        Caller::System,
+        envelope(
+            &store,
+            Action::Timeline {
+                command: T::AddPayroll {
+                    spec: PayrollSpec {
+                        id: 3,
+                        payer: 3,
+                        payee: 2,
+                        home_city: 0,
+                        hourly_cents: Money::new(100).unwrap(),
+                        cycle: Cycle::Daily,
+                        ends_at: 7 * DAY,
+                    },
+                },
+            },
+        ),
+    );
+    assert!(rejected.unwrap().model.is_err());
+    drive(&mut store, 2 * DAY);
+    execute(&mut store, Action::TownSettle { profile_id: 1 });
+    let view = store.engine().unwrap().world().view();
+    assert_eq!(
+        view.town.unwrap().state.last_summary.actual_sales,
+        Quantity::ZERO
+    );
+    assert_eq!(
+        view.town.unwrap().state.last_summary.produced,
+        Quantity::ZERO
+    );
+    assert!(view.town.unwrap().state.last_summary.wages_accrued > Money::ZERO);
+}

@@ -120,6 +120,12 @@ pub enum Action {
         generation: u64,
         proof_sha256: [u8; 32],
     },
+    /// Permanently stop new operations for one configured town-market business. This is
+    /// an operational control only; it does not approve insolvency, liquidation or closure.
+    TownSuspendOperations {
+        profile_id: u32,
+        company_account: u32,
+    },
     RegionSettleDebt {
         obligation: u32,
     },
@@ -1316,9 +1322,26 @@ impl Engine {
                     if env.actions.len() != 1 {
                         return Err(TxError::Timeline(crate::timeline::Error::Input));
                     }
+                    if let crate::timeline::Command::Lend {
+                        lender, borrower, ..
+                    }
+                    | crate::timeline::Command::Claims {
+                        payer: lender,
+                        payee: borrower,
+                        ..
+                    } = command
+                    {
+                        if [lender, borrower]
+                            .iter()
+                            .any(|id| market_is_suspended(town.as_ref(), *id))
+                        {
+                            return Err(TxError::InvalidOperation);
+                        }
+                    }
                     timeline_driver::Frame {
                         trace,
                         world: &self.world,
+                        town: &mut town,
                         background: &mut background,
                         background_work: &mut background_work,
                         region: &mut region,
@@ -1381,6 +1404,21 @@ impl Engine {
                     if !matches!(caller, Caller::System) {
                         return Err(TxError::Unauthorized);
                     }
+                    if let crate::exchange::Command::Dispatch { quote } = command {
+                        let e = exchange.as_ref().ok_or(TxError::InvalidOperation)?;
+                        let spec = e
+                            .quotes
+                            .iter()
+                            .find(|row| row.spec.id == quote)
+                            .ok_or(TxError::InvalidOperation)?
+                            .spec;
+                        if [spec.seller, spec.buyer, spec.carrier]
+                            .iter()
+                            .any(|id| market_is_suspended(town.as_ref(), *id))
+                        {
+                            return Err(TxError::InvalidOperation);
+                        }
+                    }
                     let previous = exchange
                         .as_ref()
                         .ok_or(TxError::InvalidOperation)?
@@ -1417,6 +1455,15 @@ impl Engine {
                 Action::Boot { command } => {
                     if !matches!(caller, Caller::System) {
                         return Err(TxError::Unauthorized);
+                    }
+                    if matches!(command, crate::boot::Command::Start { .. }) {
+                        let b = boot.as_ref().ok_or(TxError::InvalidOperation)?;
+                        if [b.operator, b.contractor]
+                            .iter()
+                            .any(|id| market_is_suspended(town.as_ref(), *id))
+                        {
+                            return Err(TxError::InvalidOperation);
+                        }
                     }
                     if let Some(e) = exchange {
                         let r = region.as_ref().ok_or(TxError::InvalidOperation)?;
@@ -1461,6 +1508,16 @@ impl Engine {
                         return Err(TxError::InvalidOperation);
                     }
                     let p = construction.as_mut().ok_or(TxError::InvalidOperation)?;
+                    if matches!(
+                        command,
+                        crate::construction::EngineCommand::Start
+                            | crate::construction::EngineCommand::Work { .. }
+                    ) && [p.owner, p.contractor]
+                        .iter()
+                        .any(|id| market_is_suspended(town.as_ref(), *id))
+                    {
+                        return Err(TxError::InvalidOperation);
+                    }
                     prepare_construction(
                         caller,
                         command,
@@ -1560,6 +1617,89 @@ impl Engine {
                         stocks: &mut stocks,
                         transport: Some(proof),
                     })?);
+                }
+                Action::TownSuspendOperations {
+                    profile_id,
+                    company_account,
+                } => {
+                    if !matches!(caller, Caller::System) || env.actions.len() != 1 {
+                        return Err(TxError::Unauthorized);
+                    }
+                    let market = self.world.town.ok_or(TxError::InvalidOperation)?;
+                    let profile = &market.profile;
+                    let current_timeline = timeline.as_ref().ok_or(TxError::InvalidOperation)?;
+                    let state = town.as_ref().ok_or(TxError::InvalidOperation)?;
+                    let at = current_timeline.progress.last_complete;
+                    if profile.id != profile_id
+                        || company_account == 0
+                        || !(profile
+                            .employers
+                            .as_slice()
+                            .iter()
+                            .any(|row| row.account == company_account)
+                            || profile
+                                .shops
+                                .as_slice()
+                                .iter()
+                                .any(|row| row.account == company_account))
+                        || current_timeline.progress.phase.is_some()
+                        || current_timeline.progress.target.is_some()
+                        || at == 0
+                        || at % crate::timeline::DAY != 0
+                        || state.settled_day != at / crate::timeline::DAY
+                    {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    let already_suspended = state
+                        .suspended_operators
+                        .as_slice()
+                        .iter()
+                        .any(|row| row.account == company_account);
+                    if !already_suspended {
+                        if active_company_dependency(
+                            company_account,
+                            exchange.as_ref(),
+                            boot.as_ref(),
+                            construction.as_ref(),
+                            &leases,
+                        ) {
+                            return Err(TxError::InvalidOperation);
+                        }
+                        let payroll_ids: Vec<u32> = current_timeline
+                            .payroll
+                            .iter()
+                            .filter(|row| row.spec.payer == company_account)
+                            .map(|row| row.spec.id)
+                            .collect();
+                        for id in payroll_ids {
+                            timeline_driver::Frame {
+                                trace,
+                                world: &self.world,
+                                town: &mut town,
+                                background: &mut background,
+                                background_work: &mut background_work,
+                                region: &mut region,
+                                economy: &mut economy,
+                                boot: &mut boot,
+                                exchange: &mut exchange,
+                                accounts: &mut accounts,
+                                stocks: &mut stocks,
+                                resources: &mut resources,
+                                leases: &mut leases,
+                                next_token: &mut next_token,
+                            }
+                            .command(&mut timeline, crate::timeline::Command::EndForExit { id })?;
+                        }
+                        let state = town.as_mut().ok_or(TxError::InvalidOperation)?;
+                        let row = crate::town_runtime::SuspendedOperator {
+                            account: company_account,
+                            suspended_at: at,
+                        };
+                        state
+                            .suspended_operators
+                            .push(row)
+                            .map_err(|_| TxError::InvalidOperation)?;
+                    }
                 }
                 Action::RegionSettleDebt { obligation } => {
                     if !matches!(caller, Caller::System) {
@@ -1920,6 +2060,11 @@ impl Engine {
                         .map_err(|_| TxError::Overflow)?;
                 }
                 Action::ReserveCapacity { resource, units } => {
+                    if let Caller::Account(account) = caller {
+                        if market_is_suspended(town.as_ref(), account) {
+                            return Err(TxError::InvalidOperation);
+                        }
+                    }
                     if units == 0 {
                         return Err(TxError::Capacity);
                     }
@@ -2524,6 +2669,27 @@ fn prepare_town_settlement(
         (None, None) => None,
         _ => return Err(TxError::InvalidOperation),
     };
+    // Resolve and verify transport using the unchanged genesis-bound opening first. Only
+    // then remove suspended operators from the economic planner input, so a suspension
+    // cannot bypass the proof checks or invalidate the declaration being consumed.
+    let suspended: Vec<u32> = market_state
+        .suspended_operators
+        .as_slice()
+        .iter()
+        .map(|row| row.account)
+        .collect();
+    if !suspended.is_empty() {
+        input
+            .shops
+            .retain(|shop| !suspended.contains(&shop.account));
+        input
+            .recipes
+            .retain(|recipe| !suspended.contains(&recipe.employer));
+        let active_shop_ids: Vec<u32> = input.shops.iter().map(|shop| shop.shop_id).collect();
+        input
+            .delivery
+            .retain(|quote| active_shop_ids.contains(&quote.shop));
+    }
     let batch = town_economy::plan_day_with_execution(&input, &executions)
         .map_err(|_| TxError::InvalidOperation)?;
     let reconciled = town_economy::reconcile_with_execution(&input, &executions, &batch)
@@ -3667,6 +3833,58 @@ impl Action {
                 }
         )
     }
+}
+
+pub(super) fn market_is_suspended(
+    state: Option<&crate::town_runtime::MarketState>,
+    account: u32,
+) -> bool {
+    account != 0
+        && state.is_some_and(|state| {
+            state
+                .suspended_operators
+                .as_slice()
+                .iter()
+                .any(|row| row.account == account)
+        })
+}
+
+fn active_company_dependency(
+    account: u32,
+    exchange: Option<&crate::exchange::Exchange>,
+    boot: Option<&crate::boot::Boot>,
+    construction: Option<&crate::construction::Project>,
+    leases: &LeaseRows,
+) -> bool {
+    let reserved_capacity = leases.iter().flatten().any(|lease| lease.actor == account);
+    let exchange_pending = exchange.is_some_and(|exchange| {
+        exchange.quotes.iter().any(|quote| {
+            matches!(
+                quote.status,
+                crate::exchange::Status::Pending | crate::exchange::Status::Transit
+            ) && [quote.spec.seller, quote.spec.buyer, quote.spec.carrier].contains(&account)
+        })
+    });
+    let boot_active = boot.is_some_and(|boot| {
+        [boot.operator, boot.contractor].contains(&account)
+            && boot.jobs.iter().any(|job| {
+                matches!(
+                    job.phase,
+                    crate::boot::Phase::Running | crate::boot::Phase::Failed
+                )
+            })
+    });
+    let construction_active = construction.is_some_and(|project| {
+        [project.owner, project.contractor].contains(&account)
+            && !matches!(
+                project.phase,
+                crate::construction::Phase::Operational
+                    | crate::construction::Phase::Closed
+                    | crate::construction::Phase::Rejected
+                    | crate::construction::Phase::Cancelled
+            )
+    });
+    reserved_capacity || exchange_pending || boot_active || construction_active
 }
 
 fn safe_inbox_release(action: &Action, exchange: Option<&crate::exchange::Exchange>) -> bool {
@@ -4813,5 +5031,199 @@ mod tests {
         }
         assert_eq!(relayed.world.view().stocks[1].basis.value(), 1);
         assert_eq!(relayed.world.view().stocks[0].basis.value(), 1);
+    }
+
+    fn advance_timeline_to(e: &mut Engine, target: u64) {
+        for _ in 0..100 {
+            issue(
+                e,
+                Action::Timeline {
+                    command: crate::timeline::Command::Advance {
+                        target,
+                        limit: 8192,
+                    },
+                },
+            );
+            if e.timeline().unwrap().progress.target.is_none() {
+                break;
+            }
+        }
+        assert_eq!(e.timeline().unwrap().progress.last_complete, target);
+    }
+
+    fn add_daily_payroll(e: &mut Engine, id: u32, payer: u32) {
+        issue(
+            e,
+            Action::Timeline {
+                command: crate::timeline::Command::AddPayroll {
+                    spec: crate::timeline::PayrollSpec {
+                        id,
+                        payer,
+                        payee: 2,
+                        home_city: 0,
+                        hourly_cents: cash(100),
+                        cycle: crate::timeline::Cycle::Daily,
+                        ends_at: 7 * crate::timeline::DAY,
+                    },
+                },
+            },
+        );
+    }
+
+    #[test]
+    fn town_suspend_stops_payroll_and_market_operations_but_preserves_liabilities() {
+        let mut e = productive_market_engine();
+        e.world
+            .town
+            .as_mut()
+            .unwrap()
+            .profile
+            .employers
+            .push(crate::town_runtime::EmployerSpec {
+                account: 4,
+                worker_limit: 1,
+            })
+            .unwrap();
+        add_daily_payroll(&mut e, 1, 3);
+        add_daily_payroll(&mut e, 2, 4);
+        advance_timeline_to(&mut e, crate::timeline::DAY);
+        let before_unsettled_stop = e.state_hash();
+        let rejected_stop = e.execute(
+            Caller::System,
+            env(
+                &e,
+                e.world.revision + 450,
+                vec![Action::TownSuspendOperations {
+                    profile_id: 1,
+                    company_account: 3,
+                }],
+            ),
+        );
+        assert_eq!(rejected_stop, Err(TxError::InvalidOperation));
+        assert_eq!(e.state_hash(), before_unsettled_stop);
+        let day1 = issue(&mut e, Action::TownSettle { profile_id: 1 })
+            .town
+            .unwrap();
+        assert!(day1.actual_sales.value() > 0);
+        assert!(day1.produced.value() > 0);
+
+        let before_suspend = e.world.view();
+        let business_cash = before_suspend
+            .accounts
+            .iter()
+            .find(|row| row.id == 3)
+            .unwrap()
+            .cash;
+        let inventory = before_suspend
+            .stocks
+            .iter()
+            .find(|row| row.id == 2)
+            .unwrap()
+            .quantity;
+        let paid = e.timeline().unwrap().payroll[0].paid;
+        issue(
+            &mut e,
+            Action::TownSuspendOperations {
+                profile_id: 1,
+                company_account: 3,
+            },
+        );
+        let suspended = e.world.view();
+        assert_eq!(
+            suspended
+                .accounts
+                .iter()
+                .find(|row| row.id == 3)
+                .unwrap()
+                .cash,
+            business_cash
+        );
+        assert_eq!(
+            suspended
+                .stocks
+                .iter()
+                .find(|row| row.id == 2)
+                .unwrap()
+                .quantity,
+            inventory
+        );
+        assert_eq!(e.timeline().unwrap().payroll[0].paid, paid);
+        assert!(!e.timeline().unwrap().payroll[0].working);
+        assert_eq!(
+            suspended.town.unwrap().state.suspended_operators.as_slice()[0].account,
+            3
+        );
+
+        let unchanged = e.state_hash();
+        let rejected = e.execute(
+            Caller::System,
+            env(
+                &e,
+                e.world.revision + 500,
+                vec![Action::Timeline {
+                    command: crate::timeline::Command::AddPayroll {
+                        spec: crate::timeline::PayrollSpec {
+                            id: 3,
+                            payer: 3,
+                            payee: 2,
+                            home_city: 0,
+                            hourly_cents: cash(100),
+                            cycle: crate::timeline::Cycle::Daily,
+                            ends_at: 7 * crate::timeline::DAY,
+                        },
+                    },
+                }],
+            ),
+        );
+        assert!(matches!(
+            rejected,
+            Err(TxError::Timeline(crate::timeline::Error::Input))
+        ));
+        assert_eq!(e.state_hash(), unchanged);
+
+        advance_timeline_to(&mut e, 2 * crate::timeline::DAY);
+        let day2 = issue(&mut e, Action::TownSettle { profile_id: 1 })
+            .town
+            .unwrap();
+        assert_eq!(day2.actual_sales, Quantity::ZERO);
+        assert_eq!(day2.produced, Quantity::ZERO);
+        assert!(
+            day2.wages_accrued.value() > 0,
+            "unrelated employer payroll continues"
+        );
+        assert_eq!(
+            e.world
+                .view()
+                .accounts
+                .iter()
+                .find(|row| row.id == 3)
+                .unwrap()
+                .cash,
+            business_cash
+        );
+    }
+
+    #[test]
+    fn town_suspend_persistence_hook_failure_leaves_all_state_unchanged() {
+        let mut e = productive_market_engine();
+        add_daily_payroll(&mut e, 1, 3);
+        advance_timeline_to(&mut e, crate::timeline::DAY);
+        issue(&mut e, Action::TownSettle { profile_id: 1 });
+        let before = e.state_hash();
+        let command = env(
+            &e,
+            e.world.revision + 900,
+            vec![Action::TownSuspendOperations {
+                profile_id: 1,
+                company_account: 3,
+            }],
+        );
+        assert_eq!(
+            e.execute_recorded(Caller::System, command, |_, _| Err(
+                "simulated write failure"
+            )),
+            Err("simulated write failure")
+        );
+        assert_eq!(e.state_hash(), before);
     }
 }
