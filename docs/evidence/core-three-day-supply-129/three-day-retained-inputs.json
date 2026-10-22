@@ -1,0 +1,411 @@
+{
+  "cases": [
+    {
+      "root": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/71-final-three-day-normal/store",
+      "purpose": "complete final CLI Store retained for recovery; do not substitute hashes",
+      "files": [
+        {
+          "path": "CURRENT.json",
+          "bytes": 123,
+          "sha256": "357ceb09d7e20e0a54675e957325ad9cea40c5939dbb5129a6c7b2befccc1b67"
+        },
+        {
+          "path": "LOCK",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "checkpoint-103.json",
+          "bytes": 137614,
+          "sha256": "73d1ce7ba1c96df7a00aafec951836b68986300155c1bae456bc21137d5b26ee"
+        },
+        {
+          "path": "checkpoint-32.json",
+          "bytes": 99301,
+          "sha256": "db18776b7e3d8946d41170a49f3c528388a6a3543a058edc3b6e7d2cb3eb59f9"
+        },
+        {
+          "path": "checkpoint-36.json",
+          "bytes": 73243,
+          "sha256": "da81720457d040d5e1d947ffcd077d365df8e34ec1a3acb7133bd05c7edf2cfd"
+        },
+        {
+          "path": "checkpoint-index-103.json",
+          "bytes": 466,
+          "sha256": "a8ee3f1be4538e0a18af53e54b0ef8c19da8815579c4775a8126fc5db3b97332"
+        },
+        {
+          "path": "checkpoint-index-32.json",
+          "bytes": 219,
+          "sha256": "3989038d9d559cbc103e26259adf5cdeb2d0eb6cfa21cb2c3b76895348647b23"
+        },
+        {
+          "path": "checkpoint-index-36.json",
+          "bytes": 211,
+          "sha256": "27823f79dcffd3a49f8cf7d5461f8395addc86d4cae686fd69cb4411d3dd8b8f"
+        },
+        {
+          "path": "genesis.json",
+          "bytes": 40636,
+          "sha256": "05a6145df69735177090ad71ba07c30629901b5d60f3a2649faea829b3923ec9"
+        },
+        {
+          "path": "root-0.json",
+          "bytes": 519,
+          "sha256": "8b49de0fe0d79f4287f9856c2af13974ae336134e5cd8cb9c546e8c53d01276d"
+        },
+        {
+          "path": "root-1.json",
+          "bytes": 517,
+          "sha256": "514698a478a7325b08c2fbd854fe4917446743e7d9f6f55e158b75c14dc005ff"
+        },
+        {
+          "path": "spatial-height.png",
+          "bytes": 207,
+          "sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8"
+        },
+        {
+          "path": "spatial-input.json",
+          "bytes": 3679,
+          "sha256": "1891b68e1190fac29e3dc83a1d5d96ba3fa972cc7594fb8106ccbe179cdd29d6"
+        },
+        {
+          "path": "town-allocation-ab6eef4f234d08ae9db14e6ed684fb51193223c0e776af607a065e0541411f04.json",
+          "bytes": 1982,
+          "sha256": "ab6eef4f234d08ae9db14e6ed684fb51193223c0e776af607a065e0541411f04"
+        },
+        {
+          "path": "town-proof-1260dd859e24e42372b4c20bbc14abde3c01ae8bfec7dc3179e2a19c4a087b75.json",
+          "bytes": 1928,
+          "sha256": "1260dd859e24e42372b4c20bbc14abde3c01ae8bfec7dc3179e2a19c4a087b75"
+        },
+        {
+          "path": "town-proof-bf9104769aaa9645c0a16872045a93af207419de942ced2089ad0d532ece271d.json",
+          "bytes": 1928,
+          "sha256": "bf9104769aaa9645c0a16872045a93af207419de942ced2089ad0d532ece271d"
+        },
+        {
+          "path": "town-proof-ffec94c29ca0ae5e8b87fb7ad38167008b1877087941bd1b8b832c44d368408c.json",
+          "bytes": 1874,
+          "sha256": "ffec94c29ca0ae5e8b87fb7ad38167008b1877087941bd1b8b832c44d368408c"
+        },
+        {
+          "path": "wal-103.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    {
+      "root": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/72-final-three-day-held/store",
+      "purpose": "complete final CLI Store retained for recovery; do not substitute hashes",
+      "files": [
+        {
+          "path": "CURRENT.json",
+          "bytes": 123,
+          "sha256": "76d63ff2ee5e08518910bc05a72c3e091bb3e931f37dc2e5f16c2e979b9e91a9"
+        },
+        {
+          "path": "LOCK",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "checkpoint-102.json",
+          "bytes": 136642,
+          "sha256": "2dbd245224ffc4f676b0f38d74a4165e10aa30e798fdd6c80c883a9a443db6ad"
+        },
+        {
+          "path": "checkpoint-32.json",
+          "bytes": 99301,
+          "sha256": "db18776b7e3d8946d41170a49f3c528388a6a3543a058edc3b6e7d2cb3eb59f9"
+        },
+        {
+          "path": "checkpoint-36.json",
+          "bytes": 73243,
+          "sha256": "da81720457d040d5e1d947ffcd077d365df8e34ec1a3acb7133bd05c7edf2cfd"
+        },
+        {
+          "path": "checkpoint-index-102.json",
+          "bytes": 445,
+          "sha256": "0dced1503fc866d0000a59f9057ab77e8dfb5e67849e48f163bf8b6885ef68a4"
+        },
+        {
+          "path": "checkpoint-index-32.json",
+          "bytes": 219,
+          "sha256": "3989038d9d559cbc103e26259adf5cdeb2d0eb6cfa21cb2c3b76895348647b23"
+        },
+        {
+          "path": "checkpoint-index-36.json",
+          "bytes": 211,
+          "sha256": "27823f79dcffd3a49f8cf7d5461f8395addc86d4cae686fd69cb4411d3dd8b8f"
+        },
+        {
+          "path": "genesis.json",
+          "bytes": 40636,
+          "sha256": "05a6145df69735177090ad71ba07c30629901b5d60f3a2649faea829b3923ec9"
+        },
+        {
+          "path": "root-0.json",
+          "bytes": 516,
+          "sha256": "874c5302a690f04fb2d538350951d772c88d91a70fde881cc6634dc7e896fe8e"
+        },
+        {
+          "path": "root-1.json",
+          "bytes": 518,
+          "sha256": "e278c531207e1f67ae3a26277947905d27d4a9ee16c9ccee92b2983f7cdeeb8e"
+        },
+        {
+          "path": "spatial-height.png",
+          "bytes": 207,
+          "sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8"
+        },
+        {
+          "path": "spatial-input.json",
+          "bytes": 3679,
+          "sha256": "1891b68e1190fac29e3dc83a1d5d96ba3fa972cc7594fb8106ccbe179cdd29d6"
+        },
+        {
+          "path": "town-allocation-ab6eef4f234d08ae9db14e6ed684fb51193223c0e776af607a065e0541411f04.json",
+          "bytes": 1982,
+          "sha256": "ab6eef4f234d08ae9db14e6ed684fb51193223c0e776af607a065e0541411f04"
+        },
+        {
+          "path": "town-proof-0ed1b33281d82173bc827e3767131981fe713de1bdf7be8b224ec879585714a6.json",
+          "bytes": 1928,
+          "sha256": "0ed1b33281d82173bc827e3767131981fe713de1bdf7be8b224ec879585714a6"
+        },
+        {
+          "path": "town-proof-1260dd859e24e42372b4c20bbc14abde3c01ae8bfec7dc3179e2a19c4a087b75.json",
+          "bytes": 1928,
+          "sha256": "1260dd859e24e42372b4c20bbc14abde3c01ae8bfec7dc3179e2a19c4a087b75"
+        },
+        {
+          "path": "town-proof-bf9104769aaa9645c0a16872045a93af207419de942ced2089ad0d532ece271d.json",
+          "bytes": 1928,
+          "sha256": "bf9104769aaa9645c0a16872045a93af207419de942ced2089ad0d532ece271d"
+        },
+        {
+          "path": "wal-102.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    {
+      "root": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/73-final-three-day-default/store",
+      "purpose": "complete final CLI Store retained for recovery; do not substitute hashes",
+      "files": [
+        {
+          "path": "CURRENT.json",
+          "bytes": 123,
+          "sha256": "cc83510397e1c81468011cde2452a8e13322a299bf12e0127668d448141acca3"
+        },
+        {
+          "path": "LOCK",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "checkpoint-68.json",
+          "bytes": 134778,
+          "sha256": "386b8cf59579e2ab79d8f3d87771a53f5dcc94fc0e72ce9fbbd90e26f6149d8f"
+        },
+        {
+          "path": "checkpoint-index-68.json",
+          "bytes": 384,
+          "sha256": "8f2e5548582a283773e5dc2aba7db2a739b771870122af30fc1d9072cf418dec"
+        },
+        {
+          "path": "genesis.json",
+          "bytes": 38050,
+          "sha256": "7c4f4db0435bbca7a467eb5be38e9497141cf67f55b5e7926a1e565a7ccd9cef"
+        },
+        {
+          "path": "root-0.json",
+          "bytes": 513,
+          "sha256": "dba6380a6e2eafcf0c4fb52f7fe3374c1be51d379819cfdc94104278a5162f9e"
+        },
+        {
+          "path": "root-1.json",
+          "bytes": 427,
+          "sha256": "0a2d326658c81413fb111bee843dc81005b845661a8b25ebc6733ee9dee9d573"
+        },
+        {
+          "path": "spatial-height.png",
+          "bytes": 207,
+          "sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8"
+        },
+        {
+          "path": "spatial-input.json",
+          "bytes": 3679,
+          "sha256": "1891b68e1190fac29e3dc83a1d5d96ba3fa972cc7594fb8106ccbe179cdd29d6"
+        },
+        {
+          "path": "town-allocation-ab6eef4f234d08ae9db14e6ed684fb51193223c0e776af607a065e0541411f04.json",
+          "bytes": 1982,
+          "sha256": "ab6eef4f234d08ae9db14e6ed684fb51193223c0e776af607a065e0541411f04"
+        },
+        {
+          "path": "town-proof-37d3ee62d451c3a86469a52d624786a62b1e8d3864591ea0d5b6bf05bed84b96.json",
+          "bytes": 1874,
+          "sha256": "37d3ee62d451c3a86469a52d624786a62b1e8d3864591ea0d5b6bf05bed84b96"
+        },
+        {
+          "path": "town-proof-bf9104769aaa9645c0a16872045a93af207419de942ced2089ad0d532ece271d.json",
+          "bytes": 1928,
+          "sha256": "bf9104769aaa9645c0a16872045a93af207419de942ced2089ad0d532ece271d"
+        },
+        {
+          "path": "wal-68.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    {
+      "root": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/74-final-three-day-generator-fault/store",
+      "purpose": "complete final CLI Store retained for recovery; do not substitute hashes",
+      "files": [
+        {
+          "path": "CURRENT.json",
+          "bytes": 123,
+          "sha256": "8ccb9d9bd4fa720a79e55c3d91c6dc3a09e35a08fa4b429f9910381d70b497d2"
+        },
+        {
+          "path": "LOCK",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "checkpoint-69.json",
+          "bytes": 135712,
+          "sha256": "7f05e8639c44b54efd35e1c7aa0064bc27368632c3d5aa6ca5e47dfaaf711ee3"
+        },
+        {
+          "path": "checkpoint-index-69.json",
+          "bytes": 387,
+          "sha256": "45c6d9ce784b682819c5642cfb00a240faf8c0621bdc9d553e7dbc2a5582b81d"
+        },
+        {
+          "path": "genesis.json",
+          "bytes": 38050,
+          "sha256": "7c4f4db0435bbca7a467eb5be38e9497141cf67f55b5e7926a1e565a7ccd9cef"
+        },
+        {
+          "path": "root-0.json",
+          "bytes": 427,
+          "sha256": "4a7bcd0c907cc544a2f54fc619e6ef069cdf4c7e454af6827754293b8d81c988"
+        },
+        {
+          "path": "root-1.json",
+          "bytes": 513,
+          "sha256": "ce77e6199a93a95b24d60ca09c5ee41a5cc795547e45a4b7d194777fb9c584f8"
+        },
+        {
+          "path": "spatial-height.png",
+          "bytes": 207,
+          "sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8"
+        },
+        {
+          "path": "spatial-input.json",
+          "bytes": 3679,
+          "sha256": "1891b68e1190fac29e3dc83a1d5d96ba3fa972cc7594fb8106ccbe179cdd29d6"
+        },
+        {
+          "path": "town-allocation-ab6eef4f234d08ae9db14e6ed684fb51193223c0e776af607a065e0541411f04.json",
+          "bytes": 1982,
+          "sha256": "ab6eef4f234d08ae9db14e6ed684fb51193223c0e776af607a065e0541411f04"
+        },
+        {
+          "path": "town-proof-37d3ee62d451c3a86469a52d624786a62b1e8d3864591ea0d5b6bf05bed84b96.json",
+          "bytes": 1874,
+          "sha256": "37d3ee62d451c3a86469a52d624786a62b1e8d3864591ea0d5b6bf05bed84b96"
+        },
+        {
+          "path": "town-proof-bf9104769aaa9645c0a16872045a93af207419de942ced2089ad0d532ece271d.json",
+          "bytes": 1928,
+          "sha256": "bf9104769aaa9645c0a16872045a93af207419de942ced2089ad0d532ece271d"
+        },
+        {
+          "path": "wal-69.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    {
+      "root": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/75-final-three-day-held-baseline/store",
+      "purpose": "complete final CLI Store retained for recovery; do not substitute hashes",
+      "files": [
+        {
+          "path": "CURRENT.json",
+          "bytes": 123,
+          "sha256": "3f02f2f18bb2106843ec40ab5cb66279191678a4ee13fb181881ad05e4600ba5"
+        },
+        {
+          "path": "LOCK",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "checkpoint-67.json",
+          "bytes": 133781,
+          "sha256": "c9e5cc1733bdb28cc423cf6ec74d73d47131c4e1d20d80e714a19fd86d9ed493"
+        },
+        {
+          "path": "checkpoint-index-67.json",
+          "bytes": 363,
+          "sha256": "fcdb4821088445e492c2592720e0917d7b3796c2eefbee14ef4b3eedffb621a9"
+        },
+        {
+          "path": "genesis.json",
+          "bytes": 38050,
+          "sha256": "7c4f4db0435bbca7a467eb5be38e9497141cf67f55b5e7926a1e565a7ccd9cef"
+        },
+        {
+          "path": "root-0.json",
+          "bytes": 427,
+          "sha256": "2b5163776326616486bcede9491799d427711987bd7ac655f944683005269369"
+        },
+        {
+          "path": "root-1.json",
+          "bytes": 513,
+          "sha256": "6699c2fdcf1d6941fc2d661c08a12a7d7aea29978d759aa378787d6d35f788af"
+        },
+        {
+          "path": "spatial-height.png",
+          "bytes": 207,
+          "sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8"
+        },
+        {
+          "path": "spatial-input.json",
+          "bytes": 3679,
+          "sha256": "1891b68e1190fac29e3dc83a1d5d96ba3fa972cc7594fb8106ccbe179cdd29d6"
+        },
+        {
+          "path": "town-allocation-ab6eef4f234d08ae9db14e6ed684fb51193223c0e776af607a065e0541411f04.json",
+          "bytes": 1982,
+          "sha256": "ab6eef4f234d08ae9db14e6ed684fb51193223c0e776af607a065e0541411f04"
+        },
+        {
+          "path": "town-proof-1260dd859e24e42372b4c20bbc14abde3c01ae8bfec7dc3179e2a19c4a087b75.json",
+          "bytes": 1928,
+          "sha256": "1260dd859e24e42372b4c20bbc14abde3c01ae8bfec7dc3179e2a19c4a087b75"
+        },
+        {
+          "path": "town-proof-bf9104769aaa9645c0a16872045a93af207419de942ced2089ad0d532ece271d.json",
+          "bytes": 1928,
+          "sha256": "bf9104769aaa9645c0a16872045a93af207419de942ced2089ad0d532ece271d"
+        },
+        {
+          "path": "wal-67.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    }
+  ],
+  "retirement": "retain until later explicit dependency/occupancy checked retirement",
+  "note": "current complete final Stores are directly recoverable; prior intermediate checkpoints are evidence, not a promise that each historical root can still be directly opened"
+}

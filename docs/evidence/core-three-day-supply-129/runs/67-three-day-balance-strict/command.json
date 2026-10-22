@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "cargo",
+    "clippy",
+    "--locked",
+    "--offline",
+    "--workspace",
+    "--all-targets",
+    "--",
+    "-D",
+    "warnings"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/joint-supply-current",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-22T22:20:26.122935+00:00",
+  "source_manifest_sha256": "316a77efa89dc82582ee33aefbfd036d4df12bd62a799e895cdba6ad8a0f8c35"
+}

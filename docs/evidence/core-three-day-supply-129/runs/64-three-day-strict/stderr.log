@@ -1,0 +1,22 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity-core-work/joint-supply-current/crates/city-headless)
+    Checking mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/joint-supply-current/crates/city-storage)
+error: literal with an empty format string
+    --> crates/city-storage/examples/town_lifelines.rs:1444:9
+     |
+1444 |         "not_applicable",
+     |         ^^^^^^^^^^^^^^^^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#print_literal
+     = note: `-D clippy::print-literal` implied by `-D warnings`
+     = help: to override `-D warnings` add `#[allow(clippy::print_literal)]`
+help: try
+     |
+1434 ~         "mode={} fixture=core-town-utility-opening-v1 fixed_od_sources=101,102 outbound_edge=10 return_edge=11 trip_limit=10 goods_per_trip=10 construction_work_elapsed_seconds={} construction_work_worker_seconds={} day1_electricity_stock_at_settlement={} day1_produced={} day1_sales={} day1_proof_sha256={} day1_outbound_capacity=2 inspection_held={} construction_utilities={} construction_utility_failure_retry=not_applicable construction_failure_retry_exact_replay={} construction_electricity_used={} construction_water_used={} construction_electricity_charged={} construction_water_charged={} generator_starts_before_day1_settlement={} construction_generator_batch_before_day1={} construction_material_initial={} construction_material_consumed={} raw_initial={} raw_after_day2={} factory_raw_used={} day2_generator_electricity={} day2_produced={} day2_sales={} day2_proof_sha256={} road_capacity_after_inspection={} road_published_at={:?} boot_electricity_export_total={} boot_electricity_export_local={} boot_electricity_export_cross_city={} boot_electricity_basis_total={} boot_local_electricity_basis={} operator_utility_payment={} construction_owner_cash_final={} household_cash_final={} cash_initial_total={} cash_final_total={} cash_conserved={} cold_open_state_hash_equal={} cold_open_day2_proof_equal={} historical_market_retries_exact=true state_hash={}",
+1435 |         if options.construction_utilities { "construction-utilities" } else if options.generator_failure { "generator-failure" } else if options.hold_road_inspection { "hold-road-inspection" } else { "normal" },
+ ...
+1442 |         options.hold_road_inspection,
+1443 ~         options.construction_utilities,
+     |
+
+error: could not compile `mycity-storage` (example "town_lifelines") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

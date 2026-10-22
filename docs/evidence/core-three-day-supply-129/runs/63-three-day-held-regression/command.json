@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/executables/9d41bf6469d7b9628dfe5cd17e2e68bc6e434612f3ee16fdfb7b91393f77755d/town_lifelines",
+    "--store-dir",
+    "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/63-three-day-held-regression/store",
+    "--hold-road-inspection"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/joint-supply-current",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-22T22:16:46.105920+00:00",
+  "source_manifest_sha256": "4804e718659d1b4a570b66b03fcb48afc824d7cfa709d3c840300c4e67230e0f"
+}

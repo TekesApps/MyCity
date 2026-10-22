@@ -1,0 +1,1013 @@
+{
+  "files": [
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/57-joint-three-day-bin/command.json",
+      "published": "runs/57-joint-three-day-bin/command.json",
+      "bytes": 463,
+      "sha256": "069205b23f7ab71bc314a293c38fdca5b0c48aaf9fb1a1ca79b5947e34629bbd",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/57-joint-three-day-bin/exit.json",
+      "published": "runs/57-joint-three-day-bin/exit.json",
+      "bytes": 81,
+      "sha256": "9e467a8b59b73c33b87fdb0a2ce8ed56022260c0d9a204ad6c8c9d0f3c0da746",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/57-joint-three-day-bin/stdout.log",
+      "published": "runs/57-joint-three-day-bin/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/57-joint-three-day-bin/stderr.log",
+      "published": "runs/57-joint-three-day-bin/stderr.log",
+      "bytes": 679,
+      "sha256": "f0ec3be54e34af037a9f03c440c368252b0db73a5e02b26728eaaec83e8e5f78",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/58-joint-three-day-bin/command.json",
+      "published": "runs/58-joint-three-day-bin/command.json",
+      "bytes": 463,
+      "sha256": "c2cd8a8f50de87d740d3bd8f20466b26b9942b73cab84cbac5a8b057b787f053",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/58-joint-three-day-bin/exit.json",
+      "published": "runs/58-joint-three-day-bin/exit.json",
+      "bytes": 79,
+      "sha256": "3739cca04c174bf4e318362fc8826897e9c9dcd516c4e3170f3cb1195a72057d",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/58-joint-three-day-bin/stdout.log",
+      "published": "runs/58-joint-three-day-bin/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/58-joint-three-day-bin/stderr.log",
+      "published": "runs/58-joint-three-day-bin/stderr.log",
+      "bytes": 177,
+      "sha256": "8253ccb97585b9b63b04b84e1179b9dc5a45145ea26a799d7d4e4971e0649d70",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/59-joint-three-day-normal/command.json",
+      "published": "runs/59-joint-three-day-normal/command.json",
+      "bytes": 639,
+      "sha256": "78195dd3d3eed139edb71c59e3538e3ee800d496e131bd2be832975bb36afac5",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/59-joint-three-day-normal/exit.json",
+      "published": "runs/59-joint-three-day-normal/exit.json",
+      "bytes": 86,
+      "sha256": "067ae03bc04dc6394c9420e3546f792be448730e440df1720ac0df98f8b67d15",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/59-joint-three-day-normal/stdout.log",
+      "published": "runs/59-joint-three-day-normal/stdout.log",
+      "bytes": 1487,
+      "sha256": "cdac881b74619ef8e724ce1e23acd0e5c97458f40de54b731068e9b9aa5dc8f6",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/59-joint-three-day-normal/stderr.log",
+      "published": "runs/59-joint-three-day-normal/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/60-joint-three-day-held/command.json",
+      "published": "runs/60-joint-three-day-held/command.json",
+      "bytes": 667,
+      "sha256": "2b54f8546bb12abde3ded28397b84b6f6047518691b741d0b58d47c77dc5e198",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/60-joint-three-day-held/exit.json",
+      "published": "runs/60-joint-three-day-held/exit.json",
+      "bytes": 86,
+      "sha256": "6873d25be334852f1873f67ca599affdb8158b60c2c4a61af31a250f7914ef5e",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/60-joint-three-day-held/stdout.log",
+      "published": "runs/60-joint-three-day-held/stdout.log",
+      "bytes": 1490,
+      "sha256": "84183dee8e0e275a0ae7c02513c45eee25fa29448de16d4c78ca285fd6d2c66a",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/60-joint-three-day-held/stderr.log",
+      "published": "runs/60-joint-three-day-held/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/61-three-day-default-regression/command.json",
+      "published": "runs/61-three-day-default-regression/command.json",
+      "bytes": 613,
+      "sha256": "d0f6a7ef9ba6ba71242f9ad2e92d5f31e40fdad0d1f6859f08019dea53104573",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/61-three-day-default-regression/exit.json",
+      "published": "runs/61-three-day-default-regression/exit.json",
+      "bytes": 79,
+      "sha256": "bca462c0d7f548e82ad0f3754459851d839b1bf10a0be86552d4c2553dd31bc5",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/61-three-day-default-regression/stdout.log",
+      "published": "runs/61-three-day-default-regression/stdout.log",
+      "bytes": 1824,
+      "sha256": "8705b87b8e4cf04b34b03e3d1e1e6658b09eddb6b51e486fac562ea85fbaf21a",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/61-three-day-default-regression/stderr.log",
+      "published": "runs/61-three-day-default-regression/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/62-three-day-generator-fault/command.json",
+      "published": "runs/62-three-day-generator-fault/command.json",
+      "bytes": 637,
+      "sha256": "0926d20f2eea703835ee31f6a72975010156b125681d7f019db47d5e00513fa1",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/62-three-day-generator-fault/exit.json",
+      "published": "runs/62-three-day-generator-fault/exit.json",
+      "bytes": 87,
+      "sha256": "b74fe33aafb2ecb5bcfe315d0e73db4b21e34fe568b9ab66879cae88dcbbcb20",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/62-three-day-generator-fault/stdout.log",
+      "published": "runs/62-three-day-generator-fault/stdout.log",
+      "bytes": 1809,
+      "sha256": "1f97839f250d4b3b782520aea98c411257e13ea81d5148c7edf208503394dff7",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/62-three-day-generator-fault/stderr.log",
+      "published": "runs/62-three-day-generator-fault/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/63-three-day-held-regression/command.json",
+      "published": "runs/63-three-day-held-regression/command.json",
+      "bytes": 640,
+      "sha256": "fbc6e8da340b6967c387282cb4138fc3f731ac8eabcc4bc794c97c58f9ec9730",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/63-three-day-held-regression/exit.json",
+      "published": "runs/63-three-day-held-regression/exit.json",
+      "bytes": 79,
+      "sha256": "cae924031c7952f15f82c158a629c0e6134782e90df915f9f762ffeb28e1eda4",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/63-three-day-held-regression/stdout.log",
+      "published": "runs/63-three-day-held-regression/stdout.log",
+      "bytes": 1829,
+      "sha256": "4eb332984b2104bd9561df523911cb74100728b5d4d168654a99ad6e87f32500",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/63-three-day-held-regression/stderr.log",
+      "published": "runs/63-three-day-held-regression/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/64-three-day-strict/command.json",
+      "published": "runs/64-three-day-strict/command.json",
+      "bytes": 452,
+      "sha256": "06b4ef9b37785e50180b2203993d3da9361c492189152ef06e18de7457b13c25",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/64-three-day-strict/exit.json",
+      "published": "runs/64-three-day-strict/exit.json",
+      "bytes": 80,
+      "sha256": "e8d90c497c7c2eca98d29482d3007f6d007429814515f9c6159a87489a6c7c90",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/64-three-day-strict/stdout.log",
+      "published": "runs/64-three-day-strict/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/64-three-day-strict/stderr.log",
+      "published": "runs/64-three-day-strict/stderr.log",
+      "bytes": 2542,
+      "sha256": "44f3ff864ab5704a18fdafc57fea6e23efd1aec6ddfe5eee55eec46eaa022387",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/65-three-day-final-strict/command.json",
+      "published": "runs/65-three-day-final-strict/command.json",
+      "bytes": 452,
+      "sha256": "125c6326042accd6126d4792a43ed8be1b8f90a96c4fb426f831620174da57be",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/65-three-day-final-strict/exit.json",
+      "published": "runs/65-three-day-final-strict/exit.json",
+      "bytes": 86,
+      "sha256": "ae622553c679e7122ab871ef9c1db415ea1db91efda624affacda3097424441d",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/65-three-day-final-strict/stdout.log",
+      "published": "runs/65-three-day-final-strict/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/65-three-day-final-strict/stderr.log",
+      "published": "runs/65-three-day-final-strict/stderr.log",
+      "bytes": 304,
+      "sha256": "fbea63afef8629850b0693cb877af9e0c858d56599390c1eb64d1eae2b10968f",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/66-three-day-final-bin/command.json",
+      "published": "runs/66-three-day-final-bin/command.json",
+      "bytes": 463,
+      "sha256": "206fd0231d461ac8406856bbc327c1a902c4449f06f1c6b93e079c9dadce7867",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/66-three-day-final-bin/exit.json",
+      "published": "runs/66-three-day-final-bin/exit.json",
+      "bytes": 78,
+      "sha256": "7be8bec56334c8121fe1e555a2e95def406cb2ff76b09ac12ebcd0d0622d1bea",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/66-three-day-final-bin/stdout.log",
+      "published": "runs/66-three-day-final-bin/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/66-three-day-final-bin/stderr.log",
+      "published": "runs/66-three-day-final-bin/stderr.log",
+      "bytes": 177,
+      "sha256": "19102905fcdb4d0bdbb48e9a37944bbdcea33b95d1e7139d283fe4e2a968667c",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/67-three-day-balance-strict/command.json",
+      "published": "runs/67-three-day-balance-strict/command.json",
+      "bytes": 452,
+      "sha256": "d4c42fc244e474cb8c4992fb7e74321e769f2c845c83e1a17f917e419d04f72e",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/67-three-day-balance-strict/exit.json",
+      "published": "runs/67-three-day-balance-strict/exit.json",
+      "bytes": 77,
+      "sha256": "2a53a518c6f44586afb56102a4634740796eff0a768dc574cda6a829d2469c14",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/67-three-day-balance-strict/stdout.log",
+      "published": "runs/67-three-day-balance-strict/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/67-three-day-balance-strict/stderr.log",
+      "published": "runs/67-three-day-balance-strict/stderr.log",
+      "bytes": 2025,
+      "sha256": "78d501af491a4859a97fb5b0b8d283b1059394a52dc3b14feb2f929658a19c34",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/68-three-day-balance-bin/command.json",
+      "published": "runs/68-three-day-balance-bin/command.json",
+      "bytes": 463,
+      "sha256": "232f5cf766bf1e968a4cd98dcefee60783cc8e259ad59f3ddfe052a2032a6567",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/68-three-day-balance-bin/exit.json",
+      "published": "runs/68-three-day-balance-bin/exit.json",
+      "bytes": 89,
+      "sha256": "ebf0c8f508afba969e9d11e6765f3e7bc7fc9a271b5f169eb021936d5fe879e5",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/68-three-day-balance-bin/stdout.log",
+      "published": "runs/68-three-day-balance-bin/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/68-three-day-balance-bin/stderr.log",
+      "published": "runs/68-three-day-balance-bin/stderr.log",
+      "bytes": 1789,
+      "sha256": "ce95c6e4f6730cb01dbcced4ea151e17fd2e91ef3b07d558265a3fb738cf08fe",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/69-three-day-full-balance-strict/command.json",
+      "published": "runs/69-three-day-full-balance-strict/command.json",
+      "bytes": 452,
+      "sha256": "790a4f9d5997d5c6af3154e13414156547e7a588cfea95cbf352f52fba35b581",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/69-three-day-full-balance-strict/exit.json",
+      "published": "runs/69-three-day-full-balance-strict/exit.json",
+      "bytes": 86,
+      "sha256": "3b1b0df9a16800d79747659c4cb9897e2b5244f35c395142942dbf01963e32de",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/69-three-day-full-balance-strict/stdout.log",
+      "published": "runs/69-three-day-full-balance-strict/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/69-three-day-full-balance-strict/stderr.log",
+      "published": "runs/69-three-day-full-balance-strict/stderr.log",
+      "bytes": 304,
+      "sha256": "3eebe8ebd0d3dc4bd219b8c5eb7499223cd8ed5a2415d289ac5cc4bde8a718b1",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/70-three-day-full-balance-bin/command.json",
+      "published": "runs/70-three-day-full-balance-bin/command.json",
+      "bytes": 463,
+      "sha256": "5500e81d97acc5536de83f8ab64dde3489e27fdb93ac4e9211407ecd37ca6d57",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/70-three-day-full-balance-bin/exit.json",
+      "published": "runs/70-three-day-full-balance-bin/exit.json",
+      "bytes": 79,
+      "sha256": "80640f2845fcd533b6f4b8d534151b3481e2b7a1e72c11372318c4edb13c9b22",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/70-three-day-full-balance-bin/stdout.log",
+      "published": "runs/70-three-day-full-balance-bin/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/70-three-day-full-balance-bin/stderr.log",
+      "published": "runs/70-three-day-full-balance-bin/stderr.log",
+      "bytes": 177,
+      "sha256": "44fb5d552fc72455b1c8607b2779706e81cf1dbd87c730e3a45b12a7d0d7f784",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/71-final-three-day-normal/command.json",
+      "published": "runs/71-final-three-day-normal/command.json",
+      "bytes": 670,
+      "sha256": "a389f0c0300a00df3e1368dc8ecfcfd2eb83b5f4532097c684285e86f2b22549",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/71-final-three-day-normal/exit.json",
+      "published": "runs/71-final-three-day-normal/exit.json",
+      "bytes": 79,
+      "sha256": "4ecd98ae03ec7ec8cad95f59a22771553466b78c2f954fb1d9fe65742f6bf9c1",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/71-final-three-day-normal/stdout.log",
+      "published": "runs/71-final-three-day-normal/stdout.log",
+      "bytes": 1487,
+      "sha256": "cdac881b74619ef8e724ce1e23acd0e5c97458f40de54b731068e9b9aa5dc8f6",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/71-final-three-day-normal/stderr.log",
+      "published": "runs/71-final-three-day-normal/stderr.log",
+      "bytes": 777,
+      "sha256": "5559b2c7c8e9a4ee647422dc5079abfa417a5af197289ada52fc995ec9d03338",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/72-final-three-day-held/command.json",
+      "published": "runs/72-final-three-day-held/command.json",
+      "bytes": 667,
+      "sha256": "db97c44f822c92ebb59ef9211de897270b78aca49984be1d11cd12c51b568eb6",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/72-final-three-day-held/exit.json",
+      "published": "runs/72-final-three-day-held/exit.json",
+      "bytes": 86,
+      "sha256": "a239bee6f6235b9f794c04481c891948e6ff30160d5e08b740949cfeb687c06e",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/72-final-three-day-held/stdout.log",
+      "published": "runs/72-final-three-day-held/stdout.log",
+      "bytes": 1490,
+      "sha256": "84183dee8e0e275a0ae7c02513c45eee25fa29448de16d4c78ca285fd6d2c66a",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/72-final-three-day-held/stderr.log",
+      "published": "runs/72-final-three-day-held/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/73-final-three-day-default/command.json",
+      "published": "runs/73-final-three-day-default/command.json",
+      "bytes": 608,
+      "sha256": "d1578316c39f7dbd0f4c01971bf9f2005292da47edf5dd74a7386876ae80bf81",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/73-final-three-day-default/exit.json",
+      "published": "runs/73-final-three-day-default/exit.json",
+      "bytes": 79,
+      "sha256": "a53f249d650afee431044350cdc22ec6f2402432cf127788b0cf16323dab718d",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/73-final-three-day-default/stdout.log",
+      "published": "runs/73-final-three-day-default/stdout.log",
+      "bytes": 1824,
+      "sha256": "8705b87b8e4cf04b34b03e3d1e1e6658b09eddb6b51e486fac562ea85fbaf21a",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/73-final-three-day-default/stderr.log",
+      "published": "runs/73-final-three-day-default/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/74-final-three-day-generator-fault/command.json",
+      "published": "runs/74-final-three-day-generator-fault/command.json",
+      "bytes": 643,
+      "sha256": "1309422d41b1011ef89039a2f9be6473eeebf42df5d82801c67e1297a1abd060",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/74-final-three-day-generator-fault/exit.json",
+      "published": "runs/74-final-three-day-generator-fault/exit.json",
+      "bytes": 87,
+      "sha256": "5e7d817872140babe25470896f45afac89399187179ce3aa9b0dd5336200b858",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/74-final-three-day-generator-fault/stdout.log",
+      "published": "runs/74-final-three-day-generator-fault/stdout.log",
+      "bytes": 1809,
+      "sha256": "1f97839f250d4b3b782520aea98c411257e13ea81d5148c7edf208503394dff7",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/74-final-three-day-generator-fault/stderr.log",
+      "published": "runs/74-final-three-day-generator-fault/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/75-final-three-day-held-baseline/command.json",
+      "published": "runs/75-final-three-day-held-baseline/command.json",
+      "bytes": 644,
+      "sha256": "54c998be224f555a9d3c3715626f5e2bb570ee35efd235ddec9921ce641d82db",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/75-final-three-day-held-baseline/exit.json",
+      "published": "runs/75-final-three-day-held-baseline/exit.json",
+      "bytes": 87,
+      "sha256": "203b3795ad7ee4cb2770508d2214ce2114f3c6fdcec6a615154ba5aa62287227",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/75-final-three-day-held-baseline/stdout.log",
+      "published": "runs/75-final-three-day-held-baseline/stdout.log",
+      "bytes": 1829,
+      "sha256": "4eb332984b2104bd9561df523911cb74100728b5d4d168654a99ad6e87f32500",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/75-final-three-day-held-baseline/stderr.log",
+      "published": "runs/75-final-three-day-held-baseline/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/joint-three-day-final-binary.json",
+      "published": "joint-three-day-final-binary.json",
+      "bytes": 863,
+      "sha256": "05466e91ba76ab856f311b5ec148be46e975cfd7292296471e3542973c9be88d",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/three-day-final-cases.json",
+      "published": "three-day-final-cases.json",
+      "bytes": 1851,
+      "sha256": "f2d83fa3488c237bd075ef8000f9ddd4625270c93a2b8ee48fbf95c804f50a1d",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/three-day-independent-comparison.json",
+      "published": "three-day-independent-comparison.json",
+      "bytes": 12136,
+      "sha256": "c648c40ece02ebc70e6cfa6c62b9470f7d931149a9a833e81dd79c30e32b3933",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/three-day-retained-inputs.json",
+      "published": "three-day-retained-inputs.json",
+      "bytes": 15369,
+      "sha256": "9f771de7ede922678d76f267285f5d3a8d2c9f5f71710f2380dae02fcdd781f1",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/stage129-retention.json",
+      "published": "stage129-retention.json",
+      "bytes": 10774,
+      "sha256": "e1adb7e162697ba3ec4852f81908f5a58be62ce8a1cc259e39acc9f52cfb0545",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/70-three-day-full-balance-bin/source-manifest.json",
+      "published": "final-source-manifest.json",
+      "bytes": 43492,
+      "sha256": "7af25b914b8ae805e98ccd6949fdc429eee97e064c52e6d66ed34bde1b638b96",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/71-final-three-day-normal/store/CURRENT.json",
+      "published": "stores/71-final-three-day-normal/CURRENT.json",
+      "bytes": 123,
+      "sha256": "357ceb09d7e20e0a54675e957325ad9cea40c5939dbb5129a6c7b2befccc1b67",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/71-final-three-day-normal/store/LOCK",
+      "published": "stores/71-final-three-day-normal/LOCK",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/71-final-three-day-normal/store/checkpoint-103.json",
+      "published": "stores/71-final-three-day-normal/checkpoint-103.json",
+      "bytes": 137614,
+      "sha256": "73d1ce7ba1c96df7a00aafec951836b68986300155c1bae456bc21137d5b26ee",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/71-final-three-day-normal/store/checkpoint-32.json",
+      "published": "stores/71-final-three-day-normal/checkpoint-32.json",
+      "bytes": 99301,
+      "sha256": "db18776b7e3d8946d41170a49f3c528388a6a3543a058edc3b6e7d2cb3eb59f9",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/71-final-three-day-normal/store/checkpoint-36.json",
+      "published": "stores/71-final-three-day-normal/checkpoint-36.json",
+      "bytes": 73243,
+      "sha256": "da81720457d040d5e1d947ffcd077d365df8e34ec1a3acb7133bd05c7edf2cfd",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/71-final-three-day-normal/store/checkpoint-index-103.json",
+      "published": "stores/71-final-three-day-normal/checkpoint-index-103.json",
+      "bytes": 466,
+      "sha256": "a8ee3f1be4538e0a18af53e54b0ef8c19da8815579c4775a8126fc5db3b97332",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/71-final-three-day-normal/store/checkpoint-index-32.json",
+      "published": "stores/71-final-three-day-normal/checkpoint-index-32.json",
+      "bytes": 219,
+      "sha256": "3989038d9d559cbc103e26259adf5cdeb2d0eb6cfa21cb2c3b76895348647b23",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/71-final-three-day-normal/store/checkpoint-index-36.json",
+      "published": "stores/71-final-three-day-normal/checkpoint-index-36.json",
+      "bytes": 211,
+      "sha256": "27823f79dcffd3a49f8cf7d5461f8395addc86d4cae686fd69cb4411d3dd8b8f",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/71-final-three-day-normal/store/genesis.json",
+      "published": "stores/71-final-three-day-normal/genesis.json",
+      "bytes": 40636,
+      "sha256": "05a6145df69735177090ad71ba07c30629901b5d60f3a2649faea829b3923ec9",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/71-final-three-day-normal/store/root-0.json",
+      "published": "stores/71-final-three-day-normal/root-0.json",
+      "bytes": 519,
+      "sha256": "8b49de0fe0d79f4287f9856c2af13974ae336134e5cd8cb9c546e8c53d01276d",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/71-final-three-day-normal/store/root-1.json",
+      "published": "stores/71-final-three-day-normal/root-1.json",
+      "bytes": 517,
+      "sha256": "514698a478a7325b08c2fbd854fe4917446743e7d9f6f55e158b75c14dc005ff",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/71-final-three-day-normal/store/spatial-height.png",
+      "published": "stores/71-final-three-day-normal/spatial-height.png",
+      "bytes": 207,
+      "sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/71-final-three-day-normal/store/spatial-input.json",
+      "published": "stores/71-final-three-day-normal/spatial-input.json",
+      "bytes": 3679,
+      "sha256": "1891b68e1190fac29e3dc83a1d5d96ba3fa972cc7594fb8106ccbe179cdd29d6",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/71-final-three-day-normal/store/town-allocation-ab6eef4f234d08ae9db14e6ed684fb51193223c0e776af607a065e0541411f04.json",
+      "published": "stores/71-final-three-day-normal/town-allocation-ab6eef4f234d08ae9db14e6ed684fb51193223c0e776af607a065e0541411f04.json",
+      "bytes": 1982,
+      "sha256": "ab6eef4f234d08ae9db14e6ed684fb51193223c0e776af607a065e0541411f04",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/71-final-three-day-normal/store/town-proof-1260dd859e24e42372b4c20bbc14abde3c01ae8bfec7dc3179e2a19c4a087b75.json",
+      "published": "stores/71-final-three-day-normal/town-proof-1260dd859e24e42372b4c20bbc14abde3c01ae8bfec7dc3179e2a19c4a087b75.json",
+      "bytes": 1928,
+      "sha256": "1260dd859e24e42372b4c20bbc14abde3c01ae8bfec7dc3179e2a19c4a087b75",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/71-final-three-day-normal/store/town-proof-bf9104769aaa9645c0a16872045a93af207419de942ced2089ad0d532ece271d.json",
+      "published": "stores/71-final-three-day-normal/town-proof-bf9104769aaa9645c0a16872045a93af207419de942ced2089ad0d532ece271d.json",
+      "bytes": 1928,
+      "sha256": "bf9104769aaa9645c0a16872045a93af207419de942ced2089ad0d532ece271d",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/71-final-three-day-normal/store/town-proof-ffec94c29ca0ae5e8b87fb7ad38167008b1877087941bd1b8b832c44d368408c.json",
+      "published": "stores/71-final-three-day-normal/town-proof-ffec94c29ca0ae5e8b87fb7ad38167008b1877087941bd1b8b832c44d368408c.json",
+      "bytes": 1874,
+      "sha256": "ffec94c29ca0ae5e8b87fb7ad38167008b1877087941bd1b8b832c44d368408c",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/71-final-three-day-normal/store/wal-103.bin",
+      "published": "stores/71-final-three-day-normal/wal-103.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/72-final-three-day-held/store/CURRENT.json",
+      "published": "stores/72-final-three-day-held/CURRENT.json",
+      "bytes": 123,
+      "sha256": "76d63ff2ee5e08518910bc05a72c3e091bb3e931f37dc2e5f16c2e979b9e91a9",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/72-final-three-day-held/store/LOCK",
+      "published": "stores/72-final-three-day-held/LOCK",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/72-final-three-day-held/store/checkpoint-102.json",
+      "published": "stores/72-final-three-day-held/checkpoint-102.json",
+      "bytes": 136642,
+      "sha256": "2dbd245224ffc4f676b0f38d74a4165e10aa30e798fdd6c80c883a9a443db6ad",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/72-final-three-day-held/store/checkpoint-32.json",
+      "published": "stores/72-final-three-day-held/checkpoint-32.json",
+      "bytes": 99301,
+      "sha256": "db18776b7e3d8946d41170a49f3c528388a6a3543a058edc3b6e7d2cb3eb59f9",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/72-final-three-day-held/store/checkpoint-36.json",
+      "published": "stores/72-final-three-day-held/checkpoint-36.json",
+      "bytes": 73243,
+      "sha256": "da81720457d040d5e1d947ffcd077d365df8e34ec1a3acb7133bd05c7edf2cfd",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/72-final-three-day-held/store/checkpoint-index-102.json",
+      "published": "stores/72-final-three-day-held/checkpoint-index-102.json",
+      "bytes": 445,
+      "sha256": "0dced1503fc866d0000a59f9057ab77e8dfb5e67849e48f163bf8b6885ef68a4",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/72-final-three-day-held/store/checkpoint-index-32.json",
+      "published": "stores/72-final-three-day-held/checkpoint-index-32.json",
+      "bytes": 219,
+      "sha256": "3989038d9d559cbc103e26259adf5cdeb2d0eb6cfa21cb2c3b76895348647b23",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/72-final-three-day-held/store/checkpoint-index-36.json",
+      "published": "stores/72-final-three-day-held/checkpoint-index-36.json",
+      "bytes": 211,
+      "sha256": "27823f79dcffd3a49f8cf7d5461f8395addc86d4cae686fd69cb4411d3dd8b8f",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/72-final-three-day-held/store/genesis.json",
+      "published": "stores/72-final-three-day-held/genesis.json",
+      "bytes": 40636,
+      "sha256": "05a6145df69735177090ad71ba07c30629901b5d60f3a2649faea829b3923ec9",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/72-final-three-day-held/store/root-0.json",
+      "published": "stores/72-final-three-day-held/root-0.json",
+      "bytes": 516,
+      "sha256": "874c5302a690f04fb2d538350951d772c88d91a70fde881cc6634dc7e896fe8e",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/72-final-three-day-held/store/root-1.json",
+      "published": "stores/72-final-three-day-held/root-1.json",
+      "bytes": 518,
+      "sha256": "e278c531207e1f67ae3a26277947905d27d4a9ee16c9ccee92b2983f7cdeeb8e",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/72-final-three-day-held/store/spatial-height.png",
+      "published": "stores/72-final-three-day-held/spatial-height.png",
+      "bytes": 207,
+      "sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/72-final-three-day-held/store/spatial-input.json",
+      "published": "stores/72-final-three-day-held/spatial-input.json",
+      "bytes": 3679,
+      "sha256": "1891b68e1190fac29e3dc83a1d5d96ba3fa972cc7594fb8106ccbe179cdd29d6",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/72-final-three-day-held/store/town-allocation-ab6eef4f234d08ae9db14e6ed684fb51193223c0e776af607a065e0541411f04.json",
+      "published": "stores/72-final-three-day-held/town-allocation-ab6eef4f234d08ae9db14e6ed684fb51193223c0e776af607a065e0541411f04.json",
+      "bytes": 1982,
+      "sha256": "ab6eef4f234d08ae9db14e6ed684fb51193223c0e776af607a065e0541411f04",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/72-final-three-day-held/store/town-proof-0ed1b33281d82173bc827e3767131981fe713de1bdf7be8b224ec879585714a6.json",
+      "published": "stores/72-final-three-day-held/town-proof-0ed1b33281d82173bc827e3767131981fe713de1bdf7be8b224ec879585714a6.json",
+      "bytes": 1928,
+      "sha256": "0ed1b33281d82173bc827e3767131981fe713de1bdf7be8b224ec879585714a6",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/72-final-three-day-held/store/town-proof-1260dd859e24e42372b4c20bbc14abde3c01ae8bfec7dc3179e2a19c4a087b75.json",
+      "published": "stores/72-final-three-day-held/town-proof-1260dd859e24e42372b4c20bbc14abde3c01ae8bfec7dc3179e2a19c4a087b75.json",
+      "bytes": 1928,
+      "sha256": "1260dd859e24e42372b4c20bbc14abde3c01ae8bfec7dc3179e2a19c4a087b75",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/72-final-three-day-held/store/town-proof-bf9104769aaa9645c0a16872045a93af207419de942ced2089ad0d532ece271d.json",
+      "published": "stores/72-final-three-day-held/town-proof-bf9104769aaa9645c0a16872045a93af207419de942ced2089ad0d532ece271d.json",
+      "bytes": 1928,
+      "sha256": "bf9104769aaa9645c0a16872045a93af207419de942ced2089ad0d532ece271d",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/72-final-three-day-held/store/wal-102.bin",
+      "published": "stores/72-final-three-day-held/wal-102.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/54-canonical-hash-tests/command.json",
+      "published": "withheld-hash-experiment/54-canonical-hash-tests/command.json",
+      "bytes": 506,
+      "sha256": "6d5b6330ce7030b6368a95ee77ccf279b93046bd7899b2425a615cbd658d8cf9",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/54-canonical-hash-tests/exit.json",
+      "published": "withheld-hash-experiment/54-canonical-hash-tests/exit.json",
+      "bytes": 87,
+      "sha256": "97b9ca17654ddfb06906269000424f70ea084ddb1e11219ed33945455ae90106",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/54-canonical-hash-tests/stdout.log",
+      "published": "withheld-hash-experiment/54-canonical-hash-tests/stdout.log",
+      "bytes": 928,
+      "sha256": "9e30dd44bc67698382156067a119001dd1fafc0db9e864518b9f7850480f3e3c",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/54-canonical-hash-tests/stderr.log",
+      "published": "withheld-hash-experiment/54-canonical-hash-tests/stderr.log",
+      "bytes": 665,
+      "sha256": "76b0369704b113e673e355ec9d86c80b52371baa42f8c0108234aed54a510139",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/54-canonical-hash-tests/executables.json",
+      "published": "withheld-hash-experiment/54-canonical-hash-tests/executables.json",
+      "bytes": 383,
+      "sha256": "135c96f8f688be37a6071126a7cb6b2f80cf68c933f2a701772fe37356391112",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/55-canonical-bounded-tests/command.json",
+      "published": "withheld-hash-experiment/55-canonical-bounded-tests/command.json",
+      "bytes": 506,
+      "sha256": "0ce7fa88de99ae7d3621f958dd6f260889aaaaee2640c294cfeaf9bd4f9651fc",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/55-canonical-bounded-tests/exit.json",
+      "published": "withheld-hash-experiment/55-canonical-bounded-tests/exit.json",
+      "bytes": 80,
+      "sha256": "e511eab6f5ec7bf764024b096620042f944601da59c348542888d04ed95ad6ef",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/55-canonical-bounded-tests/stdout.log",
+      "published": "withheld-hash-experiment/55-canonical-bounded-tests/stdout.log",
+      "bytes": 2833,
+      "sha256": "153dd368f763b25a99134fbe37b461290cd9e878d38974dcaaccda86949342a2",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/55-canonical-bounded-tests/stderr.log",
+      "published": "withheld-hash-experiment/55-canonical-bounded-tests/stderr.log",
+      "bytes": 2372,
+      "sha256": "0f70119743a5feda11a338b26bde00aa9579bffac54e8b0c1bda0bcd787ca429",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/55-canonical-bounded-tests/executables.json",
+      "published": "withheld-hash-experiment/55-canonical-bounded-tests/executables.json",
+      "bytes": 7285,
+      "sha256": "db61b274ba3c7f599fe0096059e011327a52ee5fef093d91824cbc22f2398d37",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/56-canonical-core-regression/command.json",
+      "published": "withheld-hash-experiment/56-canonical-core-regression/command.json",
+      "bytes": 476,
+      "sha256": "8051ebea0c33b28b8a62a1a81580b7831979ffc2a87d2ade9eaf4197c2b9011f",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/56-canonical-core-regression/exit.json",
+      "published": "withheld-hash-experiment/56-canonical-core-regression/exit.json",
+      "bytes": 79,
+      "sha256": "043a038c21dd34c209b0f03fadc916d65174bbdb3b3dc5d82ec260920912ca78",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/56-canonical-core-regression/stdout.log",
+      "published": "withheld-hash-experiment/56-canonical-core-regression/stdout.log",
+      "bytes": 13284,
+      "sha256": "63f09c8318b7c304a27381ab698bbb69e6d09f464c612a34cd9e423876a2ba52",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/56-canonical-core-regression/stderr.log",
+      "published": "withheld-hash-experiment/56-canonical-core-regression/stderr.log",
+      "bytes": 175,
+      "sha256": "12057cdbdc9fd0d78ed289b827a4594cca2cf9835297c4711c461d26e4e82f7b",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/76-canonical-probe-bin/command.json",
+      "published": "withheld-hash-experiment/76-canonical-probe-bin/command.json",
+      "bytes": 475,
+      "sha256": "f1f3b89dc9d2f8dc7a65419570188773839f2e2c7f298bf7c03b648fcb4972d8",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/76-canonical-probe-bin/exit.json",
+      "published": "withheld-hash-experiment/76-canonical-probe-bin/exit.json",
+      "bytes": 79,
+      "sha256": "ec9dcca143cd4c4f9dcd58752b1476f28d7eed24cb143b293046b9062c61db89",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/76-canonical-probe-bin/stdout.log",
+      "published": "withheld-hash-experiment/76-canonical-probe-bin/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/76-canonical-probe-bin/stderr.log",
+      "published": "withheld-hash-experiment/76-canonical-probe-bin/stderr.log",
+      "bytes": 180,
+      "sha256": "824fc8095a2660859b5f62e9fd5236d8123066f5ab4112e0296663e816d9d0c5",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/76-canonical-probe-bin/executables.json",
+      "published": "withheld-hash-experiment/76-canonical-probe-bin/executables.json",
+      "bytes": 263,
+      "sha256": "729a93a6b0a54ed35bd6639e980b751e4a2f3a5eb6fa6cfb3b44106f18a229cd",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/77-canonical-engine-probe/command.json",
+      "published": "withheld-hash-experiment/77-canonical-engine-probe/command.json",
+      "bytes": 613,
+      "sha256": "a7a4ef47c215b19f1201b38cbfb2f9debf5bc4c9939a11fc9e4b3d303d5683f8",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/77-canonical-engine-probe/exit.json",
+      "published": "withheld-hash-experiment/77-canonical-engine-probe/exit.json",
+      "bytes": 79,
+      "sha256": "8fea842d637fed064a5c6391db7062cd786a0e89ab079c2ffbf44798ce779ead",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/77-canonical-engine-probe/stdout.log",
+      "published": "withheld-hash-experiment/77-canonical-engine-probe/stdout.log",
+      "bytes": 2100,
+      "sha256": "10a934ee844027d3d574c175a9dbe5631bdd3a410aeee147cb60653eba3bae44",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/77-canonical-engine-probe/stderr.log",
+      "published": "withheld-hash-experiment/77-canonical-engine-probe/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Volumes/HP P900/dev/MyCity/work/canonical-hash-buffer-full-01/CANDIDATE-STATUS.json",
+      "published": "withheld-hash-experiment/CANDIDATE-STATUS.json",
+      "bytes": 709,
+      "sha256": "4b1089c0b7087fc464655542c03c5920dd3a3d15cb21a0170a67f179418a74a2",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Users/frankqin/dev/MyCity-core-work/canonical-hash-buffer-current/crates/city-core/src/canonical.rs",
+      "published": "withheld-hash-experiment/source/canonical.rs",
+      "bytes": 24435,
+      "sha256": "2e475b8fecd3081a54a50260b9c9bc246b011ab4cfcd693131c2c4c9de6ab5b9",
+      "representation": "exact original bytes"
+    },
+    {
+      "original": "/Users/frankqin/dev/MyCity-core-work/canonical-hash-buffer-current/crates/city-core/examples/canonical_hash_probe.rs",
+      "published": "withheld-hash-experiment/source/canonical_hash_probe.rs",
+      "bytes": 8145,
+      "sha256": "256a59607759c14cacf0397e0e49f36bc577cf47b162bfcee4d585ab1d719571",
+      "representation": "exact original bytes"
+    }
+  ],
+  "note": "complete final normal and held Stores published byte-for-byte; remaining final Stores and all old/failure inputs, fixed exes and full source ZIPs retained on SSD; experimental hash code is not merged release source"
+}

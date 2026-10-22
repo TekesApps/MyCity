@@ -1,0 +1,146 @@
+{
+  "created_utc": "2026-10-22T22:33:42.115506+00:00",
+  "operation": "source ZIP hardlink deduplication only",
+  "files_deduplicated": 22,
+  "unique_allocated_bytes_before": 117821440,
+  "unique_allocated_bytes_after": 28426240,
+  "unique_file_allocation_reduction": 89395200,
+  "observed_available_space_change": 89182208,
+  "APFS_exclusive_reclaim": "not_claimed",
+  "shared_target": "retained for active upcoming validation; reused, no independent target",
+  "business_restore_inputs_fault_evidence_and_executables": "all preserved; no snapshots retired",
+  "records": [
+    {
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/45-joint-exports-bin/source.zip",
+      "deduplicated_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/46-joint-utilities-normal/source.zip",
+      "sha256": "7e2c70a5c1dd70a10c8f100a4fe9d60fa72edcd84dec5329565575acca01e40c",
+      "reason": "identical terminal immutable full source ZIP; all original paths and complete bytes retained"
+    },
+    {
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/45-joint-exports-bin/source.zip",
+      "deduplicated_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/47-joint-utilities-held/source.zip",
+      "sha256": "7e2c70a5c1dd70a10c8f100a4fe9d60fa72edcd84dec5329565575acca01e40c",
+      "reason": "identical terminal immutable full source ZIP; all original paths and complete bytes retained"
+    },
+    {
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/45-joint-exports-bin/source.zip",
+      "deduplicated_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/48-joint-baseline/source.zip",
+      "sha256": "7e2c70a5c1dd70a10c8f100a4fe9d60fa72edcd84dec5329565575acca01e40c",
+      "reason": "identical terminal immutable full source ZIP; all original paths and complete bytes retained"
+    },
+    {
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/45-joint-exports-bin/source.zip",
+      "deduplicated_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/49-joint-generator-fault/source.zip",
+      "sha256": "7e2c70a5c1dd70a10c8f100a4fe9d60fa72edcd84dec5329565575acca01e40c",
+      "reason": "identical terminal immutable full source ZIP; all original paths and complete bytes retained"
+    },
+    {
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/45-joint-exports-bin/source.zip",
+      "deduplicated_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/50-joint-held-baseline/source.zip",
+      "sha256": "7e2c70a5c1dd70a10c8f100a4fe9d60fa72edcd84dec5329565575acca01e40c",
+      "reason": "identical terminal immutable full source ZIP; all original paths and complete bytes retained"
+    },
+    {
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/45-joint-exports-bin/source.zip",
+      "deduplicated_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/51-joint-utilities-clippy/source.zip",
+      "sha256": "7e2c70a5c1dd70a10c8f100a4fe9d60fa72edcd84dec5329565575acca01e40c",
+      "reason": "identical terminal immutable full source ZIP; all original paths and complete bytes retained"
+    },
+    {
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/52-joint-complete-input-clippy/source.zip",
+      "deduplicated_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/53-joint-input-complete-clippy/source.zip",
+      "sha256": "2f0ad21f3a969fa2350498286e697bb826548eaaa5f601cc1db1b8a19e01d24c",
+      "reason": "identical terminal immutable full source ZIP; all original paths and complete bytes retained"
+    },
+    {
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/58-joint-three-day-bin/source.zip",
+      "deduplicated_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/59-joint-three-day-normal/source.zip",
+      "sha256": "8d6eb2538e3c486fd38db24665bc5fe228899d9981fae8e867a2aa31c586604f",
+      "reason": "identical terminal immutable full source ZIP; all original paths and complete bytes retained"
+    },
+    {
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/58-joint-three-day-bin/source.zip",
+      "deduplicated_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/60-joint-three-day-held/source.zip",
+      "sha256": "8d6eb2538e3c486fd38db24665bc5fe228899d9981fae8e867a2aa31c586604f",
+      "reason": "identical terminal immutable full source ZIP; all original paths and complete bytes retained"
+    },
+    {
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/58-joint-three-day-bin/source.zip",
+      "deduplicated_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/61-three-day-default-regression/source.zip",
+      "sha256": "8d6eb2538e3c486fd38db24665bc5fe228899d9981fae8e867a2aa31c586604f",
+      "reason": "identical terminal immutable full source ZIP; all original paths and complete bytes retained"
+    },
+    {
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/58-joint-three-day-bin/source.zip",
+      "deduplicated_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/62-three-day-generator-fault/source.zip",
+      "sha256": "8d6eb2538e3c486fd38db24665bc5fe228899d9981fae8e867a2aa31c586604f",
+      "reason": "identical terminal immutable full source ZIP; all original paths and complete bytes retained"
+    },
+    {
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/58-joint-three-day-bin/source.zip",
+      "deduplicated_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/63-three-day-held-regression/source.zip",
+      "sha256": "8d6eb2538e3c486fd38db24665bc5fe228899d9981fae8e867a2aa31c586604f",
+      "reason": "identical terminal immutable full source ZIP; all original paths and complete bytes retained"
+    },
+    {
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/58-joint-three-day-bin/source.zip",
+      "deduplicated_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/64-three-day-strict/source.zip",
+      "sha256": "8d6eb2538e3c486fd38db24665bc5fe228899d9981fae8e867a2aa31c586604f",
+      "reason": "identical terminal immutable full source ZIP; all original paths and complete bytes retained"
+    },
+    {
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/67-three-day-balance-strict/source.zip",
+      "deduplicated_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/68-three-day-balance-bin/source.zip",
+      "sha256": "72238fb55c4bae2a46f0cc6c61098e415455d488b2e469abd64bf0b52db6847e",
+      "reason": "identical terminal immutable full source ZIP; all original paths and complete bytes retained"
+    },
+    {
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/43-joint-utilities-bin/source.zip",
+      "deduplicated_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/44-joint-utilities-normal/source.zip",
+      "sha256": "09c4dad8411c8a521484d93f873651101c7084a3cf76ec7ffd989054a04064f2",
+      "reason": "identical terminal immutable full source ZIP; all original paths and complete bytes retained"
+    },
+    {
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/69-three-day-full-balance-strict/source.zip",
+      "deduplicated_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/70-three-day-full-balance-bin/source.zip",
+      "sha256": "cedc6e95a43adeeee4f36010d93f443d6206c94f655250964aab6a748a0e0455",
+      "reason": "identical terminal immutable full source ZIP; all original paths and complete bytes retained"
+    },
+    {
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/69-three-day-full-balance-strict/source.zip",
+      "deduplicated_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/71-final-three-day-normal/source.zip",
+      "sha256": "cedc6e95a43adeeee4f36010d93f443d6206c94f655250964aab6a748a0e0455",
+      "reason": "identical terminal immutable full source ZIP; all original paths and complete bytes retained"
+    },
+    {
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/69-three-day-full-balance-strict/source.zip",
+      "deduplicated_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/72-final-three-day-held/source.zip",
+      "sha256": "cedc6e95a43adeeee4f36010d93f443d6206c94f655250964aab6a748a0e0455",
+      "reason": "identical terminal immutable full source ZIP; all original paths and complete bytes retained"
+    },
+    {
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/69-three-day-full-balance-strict/source.zip",
+      "deduplicated_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/73-final-three-day-default/source.zip",
+      "sha256": "cedc6e95a43adeeee4f36010d93f443d6206c94f655250964aab6a748a0e0455",
+      "reason": "identical terminal immutable full source ZIP; all original paths and complete bytes retained"
+    },
+    {
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/69-three-day-full-balance-strict/source.zip",
+      "deduplicated_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/74-final-three-day-generator-fault/source.zip",
+      "sha256": "cedc6e95a43adeeee4f36010d93f443d6206c94f655250964aab6a748a0e0455",
+      "reason": "identical terminal immutable full source ZIP; all original paths and complete bytes retained"
+    },
+    {
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/69-three-day-full-balance-strict/source.zip",
+      "deduplicated_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/75-final-three-day-held-baseline/source.zip",
+      "sha256": "cedc6e95a43adeeee4f36010d93f443d6206c94f655250964aab6a748a0e0455",
+      "reason": "identical terminal immutable full source ZIP; all original paths and complete bytes retained"
+    },
+    {
+      "kept": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/65-three-day-final-strict/source.zip",
+      "deduplicated_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/66-three-day-final-bin/source.zip",
+      "sha256": "e7ac922b2daec5a4b0551a2c11cc22ab5d9c9e41e27c7ca63895850eab945719",
+      "reason": "identical terminal immutable full source ZIP; all original paths and complete bytes retained"
+    }
+  ]
+}

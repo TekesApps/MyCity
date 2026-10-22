@@ -1,0 +1,8 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/canonical-hash-buffer-current/crates/city-core)
+    Finished `release` profile [optimized] target(s) in 1m 26s
+     Running unittests src/lib.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_core-363f7122bd90a840)
+
+thread 'canonical::tests::buffered_hash_matches_independent_canonical_bytes_for_empty_boundary_and_large_values' panicked at crates/city-core/src/canonical.rs:646:43:
+called `Result::unwrap()` on an `Err` value: "fixed_restore_string"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: test failed, to rerun pass `-p mycity-core --lib`

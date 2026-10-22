@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "cargo",
+    "build",
+    "--release",
+    "--locked",
+    "--offline",
+    "-p",
+    "mycity-storage",
+    "--example",
+    "town_lifelines"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/joint-supply-current",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-22T22:13:54.464834+00:00",
+  "source_manifest_sha256": "3daf880ad9c0e09c102c5ee261ea5b65155338a6695d2a467e68a9d02572dd67"
+}

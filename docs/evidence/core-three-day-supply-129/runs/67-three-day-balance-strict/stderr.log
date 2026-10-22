@@ -1,0 +1,33 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity-core-work/joint-supply-current/crates/city-headless)
+    Checking mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/joint-supply-current/crates/city-storage)
+error[E0369]: binary operation `!=` cannot be applied to type `&[mycity_core::transaction::Resource]`
+   --> crates/city-storage/examples/town_lifelines.rs:559:53
+    |
+559 |         || store.engine().map_err(err)?.resources() != resources_before_failure
+    |            ---------------------------------------- ^^ ------------------------ std::vec::Vec<mycity_core::transaction::Resource>
+    |            |
+    |            &[mycity_core::transaction::Resource]
+    |
+note: the foreign item type `mycity_core::transaction::Resource` doesn't implement `std::cmp::PartialEq`
+   --> /Users/frankqin/dev/MyCity-core-work/joint-supply-current/crates/city-core/src/transaction.rs:249:1
+    |
+249 | pub struct Resource {
+    | ^^^^^^^^^^^^^^^^^^^ not implement `std::cmp::PartialEq`
+
+error[E0369]: binary operation `!=` cannot be applied to type `&[mycity_core::transaction::Resource]`
+   --> crates/city-storage/examples/town_lifelines.rs:690:53
+    |
+690 |         || store.engine().map_err(err)?.resources() != resources_before_limited_retry
+    |            ---------------------------------------- ^^ ------------------------------ std::vec::Vec<mycity_core::transaction::Resource>
+    |            |
+    |            &[mycity_core::transaction::Resource]
+    |
+note: the foreign item type `mycity_core::transaction::Resource` doesn't implement `std::cmp::PartialEq`
+   --> /Users/frankqin/dev/MyCity-core-work/joint-supply-current/crates/city-core/src/transaction.rs:249:1
+    |
+249 | pub struct Resource {
+    | ^^^^^^^^^^^^^^^^^^^ not implement `std::cmp::PartialEq`
+
+For more information about this error, try `rustc --explain E0369`.
+error: could not compile `mycity-storage` (example "town_lifelines") due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...

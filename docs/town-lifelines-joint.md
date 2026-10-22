@@ -12,8 +12,23 @@
 | `--hold-road-inspection` | 2 | 100 | 20 | 400 |
 | `--generator-failure` | 10 | 0 | 0 | 500 |
 
-46号normal、47号held、48号generator-failure的stdout分别记录以上销量及容量、原料；48号机组失败后第二日无电量、产量或销量。三例都核对两日历史proof、冷开状态、重放与现金守恒。固定OD来源为101/102，出向/返向边为10/11；施工有效工时输入为61,200秒，worker工时为28,800秒。电力来自Boot有限库存缓冲。输出明确标注`self_funding=not_demonstrated`、`balance=not_calibrated`。
+46号normal、47号held、48号generator-failure的stdout分别记录以上销量及容量、原料；48号机组失败后第二日无电量、产量或销量。三例都核对两日历史proof、冷开状态、重放与现金守恒。固定OD来源为101/102，出向/返向边为10/11；日历elapsed输入为61,200秒，worker有效工时为28,800秒。电力来自Boot有限库存缓冲。输出明确标注`self_funding=not_demonstrated`、`balance=not_calibrated`。
 
 道路只在已结算日界由检查方明确验收后发布增量，下一服务日才生效。每轮读取实际运输proof并核对OD未服务量、边流、基础容量／扩容及服务日，校验两日历史收据的proof绑定；不是用输出中写死的销量代替真实市场结果。电力按实际生产耗量扣同一Boot库存，供应商收到固定电价，而供应原始basis独立保留，二者不要求相等。全城现金、工程和工厂共用原料、电力出口及成本需一致；checkpoint再冷开后状态与历史proof须保持；还必须分别重试第一日及第二日的原结算请求，返回各自原summary，持久提交序号和全状态hash均不得变化。第一日重试不能套用第二日的扩容及已完成发电状态，也不能重复收款、扣电或扣库存。
 
 42号早期attempt以`town_transport_road_project_mismatch`退出1，失败stdout/stderr及exit记录保留；后续46–48对修复后的相应三种模式通过。72号最终core/storage all-target release测试exit 0；69旧共享缓存误复用失败、70定向清理、71 epoch测试3/3的历史顺序保留。范围仍有限：固定群体OD和承包商有效工时是明确接口输入，不是内生通勤或逐人模拟；只接有限电力缓冲，不是实时电网／水网。两日联合因果链不证明28日持续经营、经济平衡、64MiB或16GB性能。28日结果另见[道路清场与28日运输记录](core-road-clearance.md)，M0状态和范围索引见[集成验证状态页](evidence/core-road-town-integration-122/STATUS.md)。
+
+## 三日建设公用、道路验收与市场联调（71–72）
+
+外置盘 `work/construction-utilities-current-01/71-final-three-day-normal/` 与 `72-final-three-day-held/` 是 `town_lifelines --construction-utilities` 及其 `--hold-road-inspection` 对照的实际 Store 终态。两例均由真实 CLI 运行并以 exit 0 结束。本文件前节的旧目录46–48与当前construction-utilities目录73–75的两日案例保留为独立证据，不与这组三日结果合并计算。
+
+流程从机组启动前的供电不足开始：建设被显式暂停并检查点冷开，机组启动供电后由承包商显式恢复。恢复后在同一时刻用 `elapsed_seconds=0` 重试施工，实际返回 `Construction(WorkLimit)`，项目、现金、库存和供电资源均不变；这证明恢复后的零elapsed不会获准立即施工，并不表示系统能自动停工或自动恢复。第一日、第二日道路容量都保持2。市场日结和有限电力/水力结算继续使用真实 Store、Engine、Timeline 与 Boot 状态。
+
+| 三日场景 | D1/D2/D3道路容量 | 产量 D1/D2/D3 | 销量 D1/D2/D3 | 验收结果 |
+|---|---|---|---|---|
+| 正常验收 | 2 / 2 / 10 | 100 / 0 / 0 | 20 / 20 / 60 | D2由检查方验收，扩容在D3生效 |
+| 保持待验收 | 2 / 2 / 2 | 100 / 0 / 0 | 20 / 20 / 20 | 未验收，扩容不发布 |
+
+两种模式都受单一未结清产出 lot 限制：D1生产100件后，D2/D3不能继续生产，尽管D1销量仅20件、仍有80件库存。共用原料的期初basis为1000；工程消耗500（剩余basis 500），工厂另耗100，期末原料数量为400。建设累计 `spent=41,300`，由材料basis 500、承包商工时成本28,800、电力费8,000和水费4,000构成。三日工资、日结现金、供电消耗及道路 proof 均按各自实际终态核验；两例输出确认现金守恒、暂停/恢复持久化、最终冷开一致和三个市场操作重放不改变状态。
+
+此结果只说明显式暂停/恢复、有限供电、施工验收时点、道路容量与三日市场结算可以按该固定fixture联动。它不证明自动停工、供电连续性、持续盈利、经济平衡或性能验收；固定OD和建设工时仍是外部输入。

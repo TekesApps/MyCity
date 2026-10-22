@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "cargo",
+    "test",
+    "--locked",
+    "--offline",
+    "--release",
+    "-p",
+    "mycity-core",
+    "canonical::tests",
+    "--",
+    "--nocapture",
+    "--test-threads=1"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/canonical-hash-buffer-current",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-22T22:10:07.180333+00:00",
+  "source_manifest_sha256": "f019d7f1bd2ce8c66bcc1c83431bd9a80f647561805f26ac760218921355c7ce"
+}

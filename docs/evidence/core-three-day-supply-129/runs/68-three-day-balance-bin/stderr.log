@@ -1,0 +1,31 @@
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/joint-supply-current/crates/city-storage)
+error[E0369]: binary operation `!=` cannot be applied to type `&[mycity_core::transaction::Resource]`
+   --> crates/city-storage/examples/town_lifelines.rs:559:53
+    |
+559 |         || store.engine().map_err(err)?.resources() != resources_before_failure
+    |            ---------------------------------------- ^^ ------------------------ Vec<mycity_core::transaction::Resource>
+    |            |
+    |            &[mycity_core::transaction::Resource]
+    |
+note: the foreign item type `mycity_core::transaction::Resource` doesn't implement `PartialEq`
+   --> /Users/frankqin/dev/MyCity-core-work/joint-supply-current/crates/city-core/src/transaction.rs:249:1
+    |
+249 | pub struct Resource {
+    | ^^^^^^^^^^^^^^^^^^^ not implement `PartialEq`
+
+error[E0369]: binary operation `!=` cannot be applied to type `&[mycity_core::transaction::Resource]`
+   --> crates/city-storage/examples/town_lifelines.rs:690:53
+    |
+690 |         || store.engine().map_err(err)?.resources() != resources_before_limited_retry
+    |            ---------------------------------------- ^^ ------------------------------ Vec<mycity_core::transaction::Resource>
+    |            |
+    |            &[mycity_core::transaction::Resource]
+    |
+note: the foreign item type `mycity_core::transaction::Resource` doesn't implement `PartialEq`
+   --> /Users/frankqin/dev/MyCity-core-work/joint-supply-current/crates/city-core/src/transaction.rs:249:1
+    |
+249 | pub struct Resource {
+    | ^^^^^^^^^^^^^^^^^^^ not implement `PartialEq`
+
+For more information about this error, try `rustc --explain E0369`.
+error: could not compile `mycity-storage` (example "town_lifelines") due to 2 previous errors

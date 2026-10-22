@@ -1,0 +1,10 @@
+{
+  "recorded_utc": "2026-10-22T22:29:16.945524+00:00",
+  "status": "withheld_no_stable_performance_benefit",
+  "model_run": "not_run",
+  "reason": "three parsed Value probe rounds preserve identical hashes but two warmed buffered rounds slower; not proof about typed Engine, not enough positive evidence to adopt buffer",
+  "evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/77-canonical-engine-probe",
+  "advisor_recommendation": "keep isolated experiment; diagnose typed Engine encode/validate/canonical emit/SHA boundaries first; avoid per-write clocks",
+  "prepared_controller": "preserved pending, no descriptor or launch receipt generated",
+  "core_change_merged": false
+}
