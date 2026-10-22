@@ -1,0 +1,18 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/transport/crates/city-core)
+    Finished `release` profile [optimized] target(s) in 44.76s
+     Running unittests src/lib.rs (/Users/frankqin/dev/MyCity/target/release/deps/mycity_core-363f7122bd90a840)
+
+thread 'transport::tests::boundary_transit_is_counted_once_under_its_source_key' panicked at crates/city-core/src/transport.rs:718:33:
+called `Result::unwrap()` on an `Err` value: InvalidEdge
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'transport::tests::duplicate_demand_and_boundary_sources_are_rejected' panicked at crates/city-core/src/transport.rs:711:9:
+assertion `left == right` failed
+  left: Err(InvalidEdge)
+ right: Err(DuplicateBoundarySource)
+
+thread 'transport::tests::final_route_cost_matches_final_edge_cost_after_loading' panicked at crates/city-core/src/transport.rs:738:9:
+assertion `left == right` failed
+  left: 15000000000000010
+ right: 11
+error: test failed, to rerun pass `-p mycity-core --lib`

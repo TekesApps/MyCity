@@ -1,0 +1,24 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "--release",
+    "--locked",
+    "--offline",
+    "-p",
+    "mycity-core",
+    "transport::",
+    "--",
+    "--nocapture"
+  ],
+  "exit_code": 101,
+  "seconds": 42.389233958,
+  "source_sha256": "ca558ab53a364fc64e2e07f2cb787d6458914c5b8254583590a6b5c4376aee58",
+  "source_after_sha256": "ca558ab53a364fc64e2e07f2cb787d6458914c5b8254583590a6b5c4376aee58",
+  "source_unchanged": true,
+  "test_lines": [
+    "running 13 tests",
+    "test result: FAILED. 12 passed; 1 failed; 0 ignored; 0 measured; 68 filtered out; finished in 0.00s"
+  ],
+  "tests_run_reported": 13
+}

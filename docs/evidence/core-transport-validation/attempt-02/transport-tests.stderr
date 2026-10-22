@@ -1,0 +1,8 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/transport/crates/city-core)
+    Finished `release` profile [optimized] target(s) in 41.73s
+     Running unittests src/lib.rs (/Users/frankqin/dev/MyCity/target/release/deps/mycity_core-363f7122bd90a840)
+
+thread 'transport::tests::boundary_transit_is_counted_once_under_its_source_key' panicked at crates/city-core/src/transport.rs:722:33:
+called `Result::unwrap()` on an `Err` value: InvalidEdge
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: test failed, to rerun pass `-p mycity-core --lib`

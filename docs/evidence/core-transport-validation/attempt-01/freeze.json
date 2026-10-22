@@ -1,0 +1,28 @@
+{
+  "head": "1f12916fe53512f6df74d6d1f12b01384f4d34ad",
+  "source_sha256": "f4bd805eda969a13c1446208b93e0f90d96ecc9f2566124fd66c5e639d65d56b",
+  "source_files": 222,
+  "lock_sha256": "7da5c54a8499a07cbc71dcecce0c0095d4af3b8b6e5052783f20d188037b6dd6",
+  "git_diff_sha256": "8c2d96b4a859debb8f8ccd4521780595d6d2b01e7858121491dc6e6ae2eb9d10",
+  "git_untracked": [
+    "crates/city-core/examples/transport.rs",
+    "crates/city-core/src/transport.rs",
+    "docs/core-transport.md",
+    "docs/evidence/core-transport-validation/attempt-01/frozen-source.zip",
+    "docs/evidence/core-transport-validation/attempt-01/git-diff.patch",
+    "docs/evidence/core-transport-validation/attempt-01/git-status.txt"
+  ],
+  "git_status": [
+    " M crates/city-core/src/lib.rs",
+    "?? crates/city-core/examples/transport.rs",
+    "?? crates/city-core/src/transport.rs",
+    "?? docs/core-transport.md",
+    "?? docs/evidence/core-transport-validation/attempt-01/frozen-source.zip",
+    "?? docs/evidence/core-transport-validation/attempt-01/git-diff.patch"
+  ],
+  "rustc": "rustc 1.85.1",
+  "cargo": "cargo 1.85.1",
+  "target_dir": "/Users/frankqin/dev/MyCity/target",
+  "frozen_at_unix_ns": 1792642293871063000,
+  "scope": "city-core transport only; non-performance mechanism verification"
+}

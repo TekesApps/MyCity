@@ -1,0 +1,22 @@
+ M crates/city-core/src/lib.rs
+?? crates/city-core/examples/transport.rs
+?? crates/city-core/src/transport.rs
+?? docs/core-transport.md
+?? docs/evidence/core-transport-validation/attempt-01/freeze.json
+?? docs/evidence/core-transport-validation/attempt-01/frozen-source.zip
+?? docs/evidence/core-transport-validation/attempt-01/git-diff.patch
+?? docs/evidence/core-transport-validation/attempt-01/git-status.txt
+?? docs/evidence/core-transport-validation/attempt-01/git-untracked.txt
+?? docs/evidence/core-transport-validation/attempt-01/transport-tests.json
+?? docs/evidence/core-transport-validation/attempt-01/transport-tests.stderr
+?? docs/evidence/core-transport-validation/attempt-01/transport-tests.stdout
+?? docs/evidence/core-transport-validation/attempt-02/freeze.json
+?? docs/evidence/core-transport-validation/attempt-02/frozen-source.zip
+?? docs/evidence/core-transport-validation/attempt-02/git-diff.patch
+?? docs/evidence/core-transport-validation/attempt-02/git-status.txt
+?? docs/evidence/core-transport-validation/attempt-02/git-untracked.txt
+?? docs/evidence/core-transport-validation/attempt-02/transport-tests.json
+?? docs/evidence/core-transport-validation/attempt-02/transport-tests.stderr
+?? docs/evidence/core-transport-validation/attempt-02/transport-tests.stdout
+?? docs/evidence/core-transport-validation/attempt-03/frozen-source.zip
+?? docs/evidence/core-transport-validation/attempt-03/git-diff.patch

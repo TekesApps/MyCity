@@ -1,0 +1,161 @@
+{
+  "binary": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-transport/637594a393ee32ab211b9bec701f7b587e9b19d135f00617d689d8b862410e49/transport",
+  "binary_sha256": "52dc970850f7c2732d24b6a13f9c6b6bccf640b67bfc87e379ea507893472dec",
+  "scenarios": [
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-transport/637594a393ee32ab211b9bec701f7b587e9b19d135f00617d689d8b862410e49/transport",
+        "normal"
+      ],
+      "exit_code": 0,
+      "binary_sha256": "52dc970850f7c2732d24b6a13f9c6b6bccf640b67bfc87e379ea507893472dec",
+      "scenario": "normal",
+      "requested_people": 8,
+      "served_people": 8,
+      "unserved_people": 0,
+      "unserved": [],
+      "edge_flows": [
+        {
+          "edge_id": 1,
+          "people": 8,
+          "capacity_people": 20,
+          "cost_seconds": 60
+        },
+        {
+          "edge_id": 2,
+          "people": 0,
+          "capacity_people": 20,
+          "cost_seconds": 90
+        },
+        {
+          "edge_id": 3,
+          "people": 0,
+          "capacity_people": 20,
+          "cost_seconds": 90
+        }
+      ],
+      "demand_outcomes": [
+        {
+          "source_id": 100,
+          "requested_people": 8,
+          "served_people": 8,
+          "unserved_people": 0,
+          "mean_travel_seconds": 60
+        }
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-transport/637594a393ee32ab211b9bec701f7b587e9b19d135f00617d689d8b862410e49/transport",
+        "closed"
+      ],
+      "exit_code": 0,
+      "binary_sha256": "52dc970850f7c2732d24b6a13f9c6b6bccf640b67bfc87e379ea507893472dec",
+      "scenario": "closed",
+      "requested_people": 25,
+      "served_people": 20,
+      "unserved_people": 5,
+      "unserved": [
+        {
+          "source_id": 100,
+          "people": 5,
+          "reason": "CapacityExhausted"
+        }
+      ],
+      "edge_flows": [
+        {
+          "edge_id": 2,
+          "people": 20,
+          "capacity_people": 20,
+          "cost_seconds": 103
+        },
+        {
+          "edge_id": 3,
+          "people": 20,
+          "capacity_people": 20,
+          "cost_seconds": 103
+        }
+      ],
+      "demand_outcomes": [
+        {
+          "source_id": 100,
+          "requested_people": 25,
+          "served_people": 20,
+          "unserved_people": 5,
+          "mean_travel_seconds": 206
+        }
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-transport/637594a393ee32ab211b9bec701f7b587e9b19d135f00617d689d8b862410e49/transport",
+        "congested"
+      ],
+      "exit_code": 0,
+      "binary_sha256": "52dc970850f7c2732d24b6a13f9c6b6bccf640b67bfc87e379ea507893472dec",
+      "scenario": "congested",
+      "requested_people": 20,
+      "served_people": 20,
+      "unserved_people": 0,
+      "unserved": [],
+      "edge_flows": [
+        {
+          "edge_id": 1,
+          "people": 20,
+          "capacity_people": 20,
+          "cost_seconds": 69
+        },
+        {
+          "edge_id": 2,
+          "people": 0,
+          "capacity_people": 20,
+          "cost_seconds": 90
+        },
+        {
+          "edge_id": 3,
+          "people": 0,
+          "capacity_people": 20,
+          "cost_seconds": 90
+        }
+      ],
+      "demand_outcomes": [
+        {
+          "source_id": 100,
+          "requested_people": 20,
+          "served_people": 20,
+          "unserved_people": 0,
+          "mean_travel_seconds": 69
+        }
+      ]
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-transport/637594a393ee32ab211b9bec701f7b587e9b19d135f00617d689d8b862410e49/transport",
+        "unreachable"
+      ],
+      "exit_code": 0,
+      "binary_sha256": "52dc970850f7c2732d24b6a13f9c6b6bccf640b67bfc87e379ea507893472dec",
+      "scenario": "unreachable",
+      "requested_people": 5,
+      "served_people": 0,
+      "unserved_people": 5,
+      "unserved": [
+        {
+          "source_id": 100,
+          "people": 5,
+          "reason": "NoOpenRoute"
+        }
+      ],
+      "edge_flows": [],
+      "demand_outcomes": [
+        {
+          "source_id": 100,
+          "requested_people": 5,
+          "served_people": 0,
+          "unserved_people": 5,
+          "mean_travel_seconds": null
+        }
+      ]
+    }
+  ]
+}

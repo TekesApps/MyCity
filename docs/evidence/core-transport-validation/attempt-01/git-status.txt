@@ -1,0 +1,6 @@
+ M crates/city-core/src/lib.rs
+?? crates/city-core/examples/transport.rs
+?? crates/city-core/src/transport.rs
+?? docs/core-transport.md
+?? docs/evidence/core-transport-validation/attempt-01/frozen-source.zip
+?? docs/evidence/core-transport-validation/attempt-01/git-diff.patch

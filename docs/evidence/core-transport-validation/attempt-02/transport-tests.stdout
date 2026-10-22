@@ -1,0 +1,23 @@
+
+running 13 tests
+test transport::tests::duplicate_demand_and_boundary_sources_are_rejected ... ok
+test transport::tests::edge_city_labels_must_match_the_cities_of_both_nodes ... ok
+test transport::tests::entrance_must_allow_the_demand_mode ... ok
+test transport::tests::final_route_cost_matches_final_edge_cost_after_loading ... ok
+test transport::tests::closed_directed_road_changes_reachable_assignment ... ok
+test transport::tests::identical_input_produces_identical_aggregates ... ok
+test transport::tests::input_fingerprint_detects_same_revision_changes_and_ignores_record_order ... ok
+test transport::tests::nearby_geometry_without_granted_entrance_does_not_create_access ... ok
+test transport::tests::no_path_is_reported_as_unserved ... ok
+test transport::tests::capacity_limits_served_people_and_expansion_changes_cost ... ok
+test transport::tests::same_node_entrances_are_zero_cost_reachable ... ok
+test transport::tests::boundary_transit_is_counted_once_under_its_source_key ... FAILED
+test transport::tests::assignment_reports_capacity_closed_route_and_budget_failures_separately ... ok
+
+failures:
+
+failures:
+    transport::tests::boundary_transit_is_counted_once_under_its_source_key
+
+test result: FAILED. 12 passed; 1 failed; 0 ignored; 0 measured; 68 filtered out; finished in 0.00s
+

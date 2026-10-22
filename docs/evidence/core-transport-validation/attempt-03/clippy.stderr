@@ -1,0 +1,13 @@
+    Checking sha2 v0.10.9
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/transport/crates/city-core)
+error: called `is_none()` after searching an `Iterator` with `find`
+   --> crates/city-core/src/transport.rs:657:17
+    |
+657 |         assert!(a.edge_flows.iter().find(|e| e.edge_id == 10).is_none());
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: consider using: `!a.edge_flows.iter().any(|e| e.edge_id == 10)`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#search_is_some
+    = note: `-D clippy::search-is-some` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::search_is_some)]`
+
+error: could not compile `mycity-core` (lib test) due to 1 previous error

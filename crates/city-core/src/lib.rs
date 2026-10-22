@@ -23,6 +23,7 @@ pub mod probes;
 pub mod region;
 pub mod schedule;
 pub mod transaction;
+pub mod transport;
 pub mod units;
 
 pub const SCHEMA: &str = "mycity-m0-bootstrap-v1";
