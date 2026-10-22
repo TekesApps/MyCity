@@ -395,6 +395,8 @@ impl Engine {
             &engine.leases,
             engine.world.boot.as_ref(),
             engine.world.exchange.as_ref(),
+            None,
+            engine.world.town.map(|town| town.state.settled_day),
         )?;
         if engine.owned_capacity_bytes() > ENGINE_BYTE_BUDGET {
             return Err(TxError::WorkingLimit);
@@ -642,6 +644,8 @@ impl Engine {
                 &candidate.leases,
                 candidate.world.boot.as_ref(),
                 candidate.world.exchange.as_ref(),
+                candidate.timeline.as_ref(),
+                candidate.world.town.map(|town| town.state.settled_day),
             )
             .is_err()
             {
@@ -2096,6 +2100,8 @@ impl Engine {
             &leases,
             boot.as_ref(),
             exchange.as_ref(),
+            timeline.as_ref(),
+            town.as_ref().map(|market| market.settled_day),
         )?;
         Ok(Prepared {
             timeline,
@@ -2165,6 +2171,8 @@ fn validate_construction_binding(
     leases: &[Option<Lease>],
     boot: Option<&crate::boot::Boot>,
     exchange: Option<&crate::exchange::Exchange>,
+    timeline: Option<&crate::timeline::Timeline>,
+    settled_day: Option<u64>,
 ) -> Result<(), TxError> {
     let Some(project) = project else {
         return Ok(());
@@ -2219,6 +2227,16 @@ fn validate_construction_binding(
             {
                 return Err(TxError::InvalidOperation);
             }
+            if project.operating_published {
+                let published_at = project
+                    .operating_published_at
+                    .ok_or(TxError::InvalidOperation)?;
+                validate_road_effect_publication_clock(
+                    published_at,
+                    timeline.map(|value| value.progress.last_complete),
+                    settled_day,
+                )?;
+            }
         }
     }
     if project.waste_units != 0
@@ -2252,6 +2270,23 @@ fn validate_construction_binding(
     });
     if matching.next().is_none() || matching.next().is_some() {
         return Err(TxError::Lease);
+    }
+    Ok(())
+}
+
+fn validate_road_effect_publication_clock(
+    published_at: crate::units::GameTime,
+    last_complete: Option<u64>,
+    settled_day: Option<u64>,
+) -> Result<(), TxError> {
+    let published_seconds =
+        u64::try_from(published_at.value()).map_err(|_| TxError::InvalidOperation)?;
+    let day = u64::try_from(crate::timeline::DAY).map_err(|_| TxError::InvalidOperation)?;
+    if published_seconds % day != 0
+        || last_complete.is_none_or(|complete| published_seconds > complete)
+        || settled_day.is_none_or(|settled| published_seconds / day > settled)
+    {
+        return Err(TxError::InvalidOperation);
     }
     Ok(())
 }
@@ -3772,6 +3807,30 @@ fn safe_inbox_release(action: &Action, exchange: Option<&crate::exchange::Exchan
 mod tests {
     use super::*;
     use crate::assembly::assemble;
+
+    #[test]
+    fn road_effect_restore_rejects_future_or_unsettled_publication() {
+        let published_at = crate::units::GameTime::new(2 * crate::timeline::DAY).unwrap();
+        assert!(validate_road_effect_publication_clock(
+            published_at,
+            Some(crate::timeline::DAY as u64),
+            Some(1),
+        )
+        .is_err());
+        assert!(validate_road_effect_publication_clock(
+            published_at,
+            Some(2 * crate::timeline::DAY as u64),
+            Some(1),
+        )
+        .is_err());
+        assert!(validate_road_effect_publication_clock(
+            published_at,
+            Some(2 * crate::timeline::DAY as u64),
+            Some(2),
+        )
+        .is_ok());
+    }
+
     fn engine() -> Engine {
         Engine::new(
             assemble(include_bytes!("../../../fixtures/m0-e0-opening.json")).unwrap(),

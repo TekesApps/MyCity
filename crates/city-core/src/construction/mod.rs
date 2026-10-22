@@ -373,6 +373,49 @@ mod road_effect_legacy_serde_tests {
         assert_eq!(restored.operating_published_at, None);
         assert_eq!(serde_json::to_value(restored).unwrap(), legacy);
     }
+
+    #[test]
+    fn road_publication_cannot_precede_final_construction_work() {
+        let mut project = Project::new(
+            7,
+            Kind::Build,
+            4,
+            3,
+            1,
+            80,
+            1,
+            1,
+            Money::new(1_000_000).unwrap(),
+            Money::new(3_600).unwrap(),
+            28_800,
+            &[Gate {
+                id: 1,
+                category: GateCategory::Permit,
+                evidence_id: 0,
+                party: 1,
+                decided: GateDecision::Pending,
+            }],
+            &[Material {
+                stock_id: 1,
+                required: Quantity::new(1_000).unwrap(),
+                consumed: Quantity::ZERO,
+                basis_per_unit: Money::new(400).unwrap(),
+                basis_remainder: 0,
+            }],
+            GameTime::new(0).unwrap(),
+        )
+        .unwrap();
+        project.operating_resource = 2;
+        project.operating_base_capacity = 40;
+        project.operating_units = 160;
+        project.operating_published = true;
+        project.operating_edge_id = 9;
+        project.operating_published_at = Some(GameTime::new(0).unwrap());
+        project.last_work_at = Some(GameTime::new(DAY).unwrap());
+        project.phase = Phase::Operational;
+
+        assert!(project.validate_persisted().is_err());
+    }
 }
 fn work_window_capacity(from: GameTime, to: GameTime, crew: u16) -> Result<u64, Error> {
     let mut t = from.value();
@@ -426,9 +469,13 @@ impl Project {
             || (self.operating_published_at.is_some() && self.operating_edge_id == 0)
             || (self.operating_edge_id != 0
                 && self.operating_published != self.operating_published_at.is_some())
-            || self
-                .operating_published_at
-                .is_some_and(|at| at.value() < 0 || at.value() % crate::timeline::DAY != 0)
+            || self.operating_published_at.is_some_and(|at| {
+                at.value() < 0
+                    || at.value() % DAY != 0
+                    || self
+                        .last_work_at
+                        .is_none_or(|work_at| at.value() < work_at.value())
+            })
             || self.crew == 0
             || self.budget == Money::ZERO
             || self.labor_cents_per_hour == Money::ZERO
