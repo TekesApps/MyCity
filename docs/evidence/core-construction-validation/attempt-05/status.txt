@@ -1,0 +1,11 @@
+ M crates/city-core/src/assembly.rs
+ M crates/city-core/src/lib.rs
+ M crates/city-core/src/transaction.rs
+ M crates/city-storage/src/checkpoint/receipt_decode.rs
+?? crates/city-core/examples/
+?? crates/city-core/src/construction/
+?? crates/city-core/tests/construction.rs
+?? crates/city-core/tests/construction_engine.rs
+?? crates/city-storage/tests/construction.rs
+?? docs/core-construction.md
+?? docs/evidence/core-construction-validation/

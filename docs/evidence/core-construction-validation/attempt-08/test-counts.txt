@@ -1,0 +1,5 @@
+construction pure module: 7 passed / 0 failed
+construction Engine integration: 5 passed / 0 failed
+construction Store WAL integration: 1 passed / 0 failed
+example: exit 0; Operational
+strict Clippy (all targets, core+storage, -D warnings): exit 0

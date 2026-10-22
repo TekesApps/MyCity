@@ -1,0 +1,75 @@
+   Compiling sha2-asm v0.6.4
+   Compiling sha2 v0.10.9
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction/crates/city-core)
+error: expected one of `,` or `>`, found `(`
+   --> crates/city-core/src/assembly.rs:538:199
+    |
+538 | ...bytes":size_of::<Option<crate::construction::Project>()>,"construction_slot_included_in_world_remaining_header_bytes":true,"opening_so...
+    |                                                         ^ expected one of `,` or `>`
+    |
+help: expressions must be enclosed in braces to be used as const generic arguments
+    |
+538 |         serde_json::json!({"accounts":self.accounts.layout(),"stocks":self.stocks.layout(),"index_capacity_bytes":index_bytes,"construction_slot_bytes":size_of::<{ Option<crate::construction::Project>() }>,"construction_slot_included_in_world_remaining_header_bytes":true,"opening_sources_capacity_bytes":source_bytes,"world_remaining_header_bytes":headers,"owned_capacity_bytes":self.accounts.owned_bytes()+self.stocks.owned_bytes()+index_bytes+source_bytes+headers,"allocator_metadata_included":false,"temporary_parse_and_view_pages_included":false})
+    |                                                                                                                                                                   +                                        +
+
+error[E0747]: constant provided when a type was expected
+   --> crates/city-core/src/assembly.rs:538:163
+    |
+538 | ...index_bytes,"construction_slot_bytes":size_of::<Option<crate::construction::Project>()>,"construction_slot_included_in_world_remaining...
+    |                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0277]: the trait bound `fn() -> usize {std::mem::size_of::<_>}: serde::Serialize` is not satisfied
+   --> crates/city-core/src/assembly.rs:538:9
+    |
+538 | ...   serde_json::json!({"accounts":self.accounts.layout(),"stocks":self.stocks.layout(),"index_capacity_bytes":index_bytes,"construction_slot_bytes":size_of::<Option<crate::construction::Project>()>,"construction_slot_included_in_world_remaining_header_bytes":true,"opening_sources_capacity_bytes":source_bytes,"world_remaining_header_bytes":headers,"owned_capacity_bytes":self.accounts.owned_bytes()+self.stocks.owned_bytes()+index_bytes+source_bytes+headers,"allocator_metadata_included":false,"temporary_parse_and_view_pages_included":false})
+    |       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |       |
+    |       the trait `_::_serde::Serialize` is not implemented for fn item `fn() -> usize {std::mem::size_of::<_>}`
+    |       required by a bound introduced by this call
+    |
+    = note: for local types consider adding `#[derive(serde::Serialize)]` to your `fn() -> usize {std::mem::size_of::<_>}` type
+    = note: for types from other crates check whether the crate offers a `serde` feature flag
+    = help: the following other types implement trait `_::_serde::Serialize`:
+              &'a T
+              &'a mut T
+              ()
+              (T,)
+              (T0, T1)
+              (T0, T1, T2)
+              (T0, T1, T2, T3)
+              (T0, T1, T2, T3, T4)
+            and 264 others
+    = note: required for `&fn() -> usize {std::mem::size_of::<_>}` to implement `_::_serde::Serialize`
+note: required by a bound in `to_value`
+   --> /Users/frankqin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_json-1.0.149/src/value/mod.rs:997:8
+    |
+995 | pub fn to_value<T>(value: T) -> Result<Value, Error>
+    |        -------- required by a bound in this function
+996 | where
+997 |     T: Serialize,
+    |        ^^^^^^^^^ required by this bound in `to_value`
+    = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `serde_json::json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0308]: mismatched types
+    --> crates/city-core/src/transaction.rs:1425:25
+     |
+1420 |                     prepare_construction(
+     |                     -------------------- arguments to this function are incorrect
+...
+1425 |                         p,
+     |                         ^ expected `&mut Option<Project>`, found `&mut Project`
+     |
+     = note: expected mutable reference `&mut std::option::Option<Project>`
+                found mutable reference `&mut Project`
+note: function defined here
+    --> crates/city-core/src/transaction.rs:2040:4
+     |
+2040 | fn prepare_construction(
+     |    ^^^^^^^^^^^^^^^^^^^^
+...
+2045 |     project: &mut Option<crate::construction::Project>,
+     |     --------------------------------------------------
+
+Some errors have detailed explanations: E0277, E0308, E0747.
+For more information about an error, try `rustc --explain E0277`.
+error: could not compile `mycity-core` (lib) due to 4 previous errors

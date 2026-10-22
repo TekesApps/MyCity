@@ -11,6 +11,7 @@ pub mod boot;
 mod bounded_decode;
 pub mod calendar;
 pub mod canonical;
+pub mod construction;
 pub mod diagnostics;
 pub mod economy;
 pub mod exchange;

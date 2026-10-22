@@ -103,6 +103,11 @@ pub enum Action {
     Economy {
         command: crate::economy::Command,
     },
+    /// One active construction projection with scalar retry commands. Project configuration
+    /// is fixed in genesis and lives in World, not in every journal action.
+    Construction {
+        command: crate::construction::EngineCommand,
+    },
     RegionSettleDebt {
         obligation: u32,
     },
@@ -190,6 +195,7 @@ pub enum TxError {
     Boot(crate::boot::Error),
     Exchange(crate::exchange::Error),
     Timeline(crate::timeline::Error),
+    Construction(crate::construction::Error),
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -267,6 +273,7 @@ struct Prepared {
     boot: Option<crate::boot::Boot>,
     economy: Option<crate::economy::Economy>,
     region: Option<crate::region::Region>,
+    construction: Option<crate::construction::Project>,
     accounts: workspace::AccountLease,
     stocks: workspace::StockLease,
     resources: workspace::ResourceLease,
@@ -291,6 +298,15 @@ impl Engine {
             return Err(TxError::Resource);
         }
         resources.sort_by_key(|r| r.id);
+        if let Some(project) = world.construction {
+            let site = resources
+                .iter()
+                .find(|r| r.id == project.site_resource)
+                .ok_or(TxError::Resource)?;
+            if project.site_units > site.capacity {
+                return Err(TxError::Capacity);
+            }
+        }
         if let Some(e) = world.exchange {
             if e.edges.iter().any(|e| {
                 !resources
@@ -409,7 +425,7 @@ impl Engine {
             timeline: &'a crate::model_rows::Resident<crate::timeline::Timeline>,
         }
         View {
-            schema: "mycity-business-comparison-v1",
+            schema: "mycity-business-comparison-v2",
             world: self.world.business_world(),
             resources: &self.resources,
             leases: &self.leases,
@@ -571,6 +587,24 @@ impl Engine {
                     .any(|old| old.token == l.token)
             {
                 return Err("checkpoint_lease_identity".into());
+            }
+        }
+        if let Some(project) = candidate.world.construction {
+            if !candidate.resources.iter().any(|resource| {
+                resource.id == project.site_resource && project.site_units <= resource.capacity
+            }) {
+                return Err("checkpoint_construction_site_resource".into());
+            }
+            if let Some(token) = project.site_token {
+                if !candidate.leases.iter().flatten().any(|lease| {
+                    lease.token == token
+                        && lease.actor == project.owner
+                        && lease.resource == project.site_resource
+                        && lease.units == project.site_units
+                        && lease.occupied
+                }) {
+                    return Err("checkpoint_construction_site_lease".into());
+                }
             }
         }
         if let Some(r) = candidate.world.region {
@@ -1128,6 +1162,7 @@ impl Engine {
         let mut economy = self.world.economy;
         let mut boot = self.world.boot;
         let mut exchange = self.world.exchange;
+        let mut construction = self.world.construction;
         let mut background =
             workspace::BackgroundLease::acquire(&storage.background, &self.background)?;
         let mut background_work = workspace::BackgroundWorkLease::take(&storage.background_work)?;
@@ -1375,6 +1410,26 @@ impl Engine {
                             accounts: &mut accounts,
                             stocks: &mut stocks,
                         },
+                    )?;
+                }
+                Action::Construction { command } => {
+                    if env.actions.len() != 1 {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    let p = construction.as_mut().ok_or(TxError::InvalidOperation)?;
+                    prepare_construction(
+                        caller,
+                        command,
+                        env.operation_id,
+                        &self.world,
+                        p,
+                        &mut accounts,
+                        &mut stocks,
+                        &mut resources,
+                        &mut leases,
+                        &mut next_token,
+                        &mut created_tokens[action_index],
+                        timeline.as_ref(),
                     )?;
                 }
                 Action::RegionSettleDebt { obligation } => {
@@ -1894,6 +1949,7 @@ impl Engine {
             boot,
             economy,
             region,
+            construction,
             accounts,
             stocks,
             resources,
@@ -1933,6 +1989,7 @@ impl Engine {
         self.world.boot = prepared.boot;
         self.world.economy = prepared.economy;
         self.world.region = prepared.region;
+        self.world.construction = prepared.construction;
         self.world.revision = prepared.receipt.revision;
         std::mem::swap(&mut self.resources, &mut *prepared.resources);
         std::mem::swap(&mut self.leases, &mut *prepared.leases);
@@ -1974,6 +2031,293 @@ fn stage_stock(world: &World, dirty: &mut DirtyStocks, raw: RawHandle) -> Result
     }
     dirty.push((h, *world.stocks.get(h).map_err(|_| TxError::InvalidHandle)?));
     Ok(dirty.len() - 1)
+}
+
+/// Applies the bounded construction projection and its external effects to the same
+/// candidate Engine state. The caller publishes this candidate only after the Store's
+/// durable hook succeeds.
+#[allow(clippy::too_many_arguments)]
+fn prepare_construction(
+    caller: Caller,
+    command: crate::construction::EngineCommand,
+    operation_id: u64,
+    world: &World,
+    project: &mut crate::construction::Project,
+    accounts: &mut DirtyAccounts,
+    stocks: &mut DirtyStocks,
+    resources: &mut ResourceRows,
+    leases: &mut LeaseRows,
+    next_token: &mut u64,
+    created_token: &mut Option<CapacityToken>,
+    timeline: Option<&crate::timeline::Timeline>,
+) -> Result<(), TxError> {
+    use crate::construction::{EffectKind, EngineCommand, GateDecision, Receipt as CReceipt};
+    let mut candidate = *project;
+    let at = if let Some(timeline) = timeline {
+        crate::units::GameTime::new(
+            i64::try_from(timeline.progress.last_complete).map_err(|_| TxError::Overflow)?,
+        )
+        .map_err(|_| TxError::InvalidOperation)?
+    } else {
+        candidate
+            .last_work_at
+            .unwrap_or(crate::units::GameTime::ZERO)
+    };
+    let actor = match caller {
+        Caller::System => 0,
+        Caller::Account(id) => id,
+    };
+    match command {
+        EngineCommand::DecideGate {
+            gate_id, decision, ..
+        } => {
+            let gate = candidate.gates[..candidate.gate_count as usize]
+                .iter()
+                .find(|gate| gate.id == gate_id)
+                .ok_or(TxError::Unauthorized)?;
+            if actor != gate.party && !matches!(caller, Caller::System) {
+                return Err(TxError::Unauthorized);
+            }
+            if decision == GateDecision::Accepted && matches!(caller, Caller::System) {
+                // The system may administer permits, while consent remains party-owned.
+                if matches!(
+                    gate.category,
+                    crate::construction::GateCategory::OwnerConsent
+                        | crate::construction::GateCategory::OccupantConsent
+                        | crate::construction::GateCategory::Compensation
+                ) {
+                    return Err(TxError::Unauthorized);
+                }
+            }
+        }
+        EngineCommand::AcceptInspection { inspector, .. } => {
+            if inspector != candidate.inspector
+                || (actor != inspector && !matches!(caller, Caller::System))
+            {
+                return Err(TxError::Unauthorized);
+            }
+        }
+        EngineCommand::Work { .. }
+        | EngineCommand::Pause
+        | EngineCommand::Resume
+        | EngineCommand::SubmitInspection => {
+            if actor != candidate.contractor && !matches!(caller, Caller::System) {
+                return Err(TxError::Unauthorized);
+            }
+        }
+        EngineCommand::AcceptWaste
+        | EngineCommand::Close
+        | EngineCommand::BeginDemolition { .. } => {
+            // Waste quantities and disposal acceptance are not yet represented in the fixed
+            // profile, so fail closed instead of manufacturing a demolition receipt.
+            return Err(TxError::InvalidOperation);
+        }
+        _ if actor != candidate.owner && !matches!(caller, Caller::System) => {
+            return Err(TxError::Unauthorized);
+        }
+        _ => {}
+    }
+
+    let effect = match command {
+        EngineCommand::Work {
+            at: requested,
+            elapsed_seconds,
+            worker_seconds,
+        } => {
+            if requested != at {
+                return Err(TxError::Construction(crate::construction::Error::Time));
+            }
+            let mut available = [crate::units::Quantity::ZERO; crate::construction::MAX_MATERIALS];
+            for (i, slot) in available
+                .iter_mut()
+                .enumerate()
+                .take(candidate.material_count as usize)
+            {
+                let h = world
+                    .stock_ref(candidate.materials[i].stock_id)
+                    .map_err(|_| TxError::InvalidHandle)?;
+                let index = stage_stock(world, stocks, h)?;
+                *slot = stocks[index].1.quantity;
+            }
+            let owner_raw = world
+                .account_ref(candidate.owner)
+                .map_err(|_| TxError::InvalidHandle)?;
+            let owner_idx = stage_account(world, accounts, owner_raw)?;
+            let spendable = accounts[owner_idx]
+                .1
+                .cash
+                .checked_sub(accounts[owner_idx].1.protected)
+                .map_err(|_| TxError::Protection)?;
+            candidate
+                .propose_work(
+                    requested,
+                    elapsed_seconds,
+                    spendable,
+                    available,
+                    worker_seconds,
+                )
+                .map_err(TxError::Construction)?
+        }
+        _ => candidate
+            .apply(at, command.into_command(&candidate))
+            .map_err(TxError::Construction)?,
+    };
+
+    if let Some(mut effect) = effect {
+        if effect.operation_id != operation_id {
+            return Err(TxError::InvalidOperation);
+        }
+        match effect.kind {
+            EffectKind::ReserveSite => {
+                let r = resources
+                    .iter_mut()
+                    .find(|r| r.id == effect.site_resource)
+                    .ok_or(TxError::Resource)?;
+                let occupied = r
+                    .occupied
+                    .checked_add(effect.site_units)
+                    .ok_or(TxError::Overflow)?;
+                if occupied.checked_add(r.reserved).ok_or(TxError::Overflow)? > r.capacity {
+                    return Err(TxError::Capacity);
+                }
+                let slot = leases
+                    .iter_mut()
+                    .find(|lease| lease.is_none())
+                    .ok_or(TxError::Lease)?;
+                let token = *next_token;
+                *next_token = next_token.checked_add(1).ok_or(TxError::Overflow)?;
+                *slot = Some(Lease {
+                    token,
+                    actor: candidate.owner,
+                    resource: effect.site_resource,
+                    units: effect.site_units,
+                    occupied: true,
+                });
+                r.occupied = occupied;
+                candidate.site_token = Some(token);
+                *created_token = Some(CapacityToken {
+                    world: world.scope.world(),
+                    branch: world.scope.branch(),
+                    number: token,
+                });
+            }
+            EffectKind::Work => {
+                // Charge the contractor from the owner's account in the same candidate.
+                let payer = stage_account(
+                    world,
+                    accounts,
+                    world
+                        .account_ref(effect.payer)
+                        .map_err(|_| TxError::InvalidHandle)?,
+                )?;
+                let payee = stage_account(
+                    world,
+                    accounts,
+                    world
+                        .account_ref(effect.payee)
+                        .map_err(|_| TxError::InvalidHandle)?,
+                )?;
+                let spendable = accounts[payer]
+                    .1
+                    .cash
+                    .checked_sub(accounts[payer].1.protected)
+                    .map_err(|_| TxError::Protection)?;
+                if spendable < effect.cash {
+                    return Err(TxError::Construction(crate::construction::Error::Funds));
+                }
+                accounts[payer].1.cash = accounts[payer]
+                    .1
+                    .cash
+                    .checked_sub(effect.cash)
+                    .map_err(|_| TxError::Overflow)?;
+                accounts[payee].1.cash = accounts[payee]
+                    .1
+                    .cash
+                    .checked_add(effect.cash)
+                    .map_err(|_| TxError::Overflow)?;
+                let mut total_basis = effect.cash;
+                for i in 0..candidate.material_count as usize {
+                    let raw = world
+                        .stock_ref(effect.stock_ids[i])
+                        .map_err(|_| TxError::InvalidHandle)?;
+                    let index = stage_stock(world, stocks, raw)?;
+                    let old = stocks[index].1;
+                    if world
+                        .accounts
+                        .get(old.owner)
+                        .map_err(|_| TxError::InvalidHandle)?
+                        .id
+                        != candidate.owner
+                    {
+                        return Err(TxError::Unauthorized);
+                    }
+                    let end = old
+                        .offset
+                        .checked_add(effect.materials[i])
+                        .map_err(|_| TxError::Overflow)?;
+                    if end > old.origin_quantity {
+                        return Err(TxError::Construction(crate::construction::Error::Materials));
+                    }
+                    let basis_at = |offset: i64| -> Result<i64, TxError> {
+                        i64::try_from(
+                            i128::from(old.origin_basis.value()) * i128::from(offset)
+                                / i128::from(old.origin_quantity.value()),
+                        )
+                        .map_err(|_| TxError::Overflow)
+                    };
+                    let consumed_basis = crate::units::Money::new(
+                        basis_at(end.value())? - basis_at(old.offset.value())?,
+                    )
+                    .map_err(|_| TxError::Overflow)?;
+                    stocks[index].1.quantity =
+                        old.quantity.checked_sub(effect.materials[i]).map_err(|_| {
+                            TxError::Construction(crate::construction::Error::Materials)
+                        })?;
+                    stocks[index].1.offset = end;
+                    stocks[index].1.basis = old
+                        .basis
+                        .checked_sub(consumed_basis)
+                        .map_err(|_| TxError::Stock)?;
+                    effect.material_basis[i] = consumed_basis;
+                    total_basis = total_basis
+                        .checked_add(consumed_basis)
+                        .map_err(|_| TxError::Overflow)?;
+                }
+                effect.total_basis = total_basis;
+                let p = candidate
+                    .pending
+                    .as_mut()
+                    .ok_or(TxError::InvalidOperation)?;
+                p.material_basis = effect.material_basis;
+                p.total_basis = total_basis;
+                if candidate
+                    .spent
+                    .checked_add(total_basis)
+                    .map_err(|_| TxError::Overflow)?
+                    > candidate.budget
+                {
+                    return Err(TxError::Construction(crate::construction::Error::Funds));
+                }
+            }
+            EffectKind::Inspect => {}
+            EffectKind::ReleaseSite | EffectKind::ReceiveWaste => {
+                return Err(TxError::InvalidOperation)
+            }
+        }
+        candidate
+            .confirm(CReceipt {
+                operation_id: effect.operation_id,
+                success: true,
+                cash: effect.cash,
+                materials: effect.materials,
+                total_basis: effect.total_basis,
+                site_units: effect.site_units,
+                waste_accepted: false,
+            })
+            .map_err(TxError::Construction)?;
+    }
+    *project = candidate;
+    Ok(())
 }
 
 // Only the trusted regional workflow calls this, never a user-provided payer alias.
@@ -2338,6 +2682,9 @@ impl Action {
                 command: crate::exchange::Command::Dispatch { .. }
             } | Self::Boot {
                 command: crate::boot::Command::Start { .. }
+            } | Self::Construction {
+                command: crate::construction::EngineCommand::Start
+                    | crate::construction::EngineCommand::Work { .. }
             } | Self::RegionMigrate { .. }
                 | Self::ReserveCapacity { .. }
         )

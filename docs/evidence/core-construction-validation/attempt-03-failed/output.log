@@ -1,0 +1,27 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction/crates/city-core)
+    Finished `release` profile [optimized] target(s) in 0.91s
+     Running tests/construction_engine.rs (/Users/frankqin/dev/MyCity/target/release/deps/construction_engine-bbae94b7cf7feb30)
+
+running 5 tests
+test construction_action_and_journal_records_stay_inside_frozen_engine_budget ... ok
+
+thread 'forged_gate_or_inspector_identity_is_rejected_before_domain_mutation' panicked at crates/city-core/tests/construction_engine.rs:404:6:
+called `Result::unwrap()` on an `Err` value: Unauthorized
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test forged_gate_or_inspector_identity_is_rejected_before_domain_mutation ... FAILED
+
+thread 'non_draft_checkpoint_restores_exact_site_lease_and_continues_to_operational_without_double_charge' panicked at crates/city-core/tests/construction_engine.rs:357:72:
+called `Result::unwrap()` on an `Err` value: InvalidOperation
+test non_draft_checkpoint_restores_exact_site_lease_and_continues_to_operational_without_double_charge ... FAILED
+test durable_hook_failure_does_not_publish_and_retry_after_commit_returns_original_receipt ... ok
+test insufficient_site_capacity_funds_and_materials_leave_candidate_domains_unchanged ... ok
+
+failures:
+
+failures:
+    forged_gate_or_inspector_identity_is_rejected_before_domain_mutation
+    non_draft_checkpoint_restores_exact_site_lease_and_continues_to_operational_without_double_charge
+
+test result: FAILED. 3 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `-p mycity-core --test construction_engine`

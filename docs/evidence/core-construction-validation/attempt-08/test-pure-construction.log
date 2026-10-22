@@ -1,0 +1,15 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction/crates/city-core)
+    Finished `release` profile [optimized] target(s) in 20.58s
+     Running tests/construction.rs (/Users/frankqin/dev/MyCity/target/release/deps/construction-a6842a0669a1dd86)
+
+running 7 tests
+test cancellation_never_releases_started_capacity_or_refunds_spend ... ok
+test cannot_activate_uninspected_or_demolish_without_parties_and_waste_receiver ... ok
+test consent_materials_wages_and_inspection_gate_occupancy ... ok
+test identical_effect_replay_is_stable_and_definitive_failure_does_not_charge_twice ... ok
+test pending_effect_survives_serialization_and_cannot_be_acked_twice ... ok
+test wall_speed_does_not_change_game_calendar_work_and_weekend_is_not_workday ... ok
+test work_is_rejected_when_cash_or_total_project_budget_is_insufficient ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

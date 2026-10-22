@@ -1,0 +1,2 @@
+size=1385696 bytes inode=410210670 links=2 path=/Users/frankqin/dev/MyCity/target/release/examples/construction
+size=1385696 bytes inode=410210670 links=2 path=/Users/frankqin/dev/MyCity/work/candidate-binaries/core-construction/865bcbf282606e1a22a123855e76d2fb35ebddd2d255f8b8c6d2462d3490c211/construction

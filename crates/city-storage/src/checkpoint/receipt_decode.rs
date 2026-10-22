@@ -94,6 +94,7 @@ fn action_raw(
         Exchange,
         Boot,
         Economy,
+        Construction,
         RegionSettleDebt,
         RegionActivate,
         RegionAdvance,
@@ -144,6 +145,12 @@ fn action_raw(
             let fields = Fields::parse(raw, &["kind", "command"], false, scratch)?;
             Ok(Output::Economy {
                 command: economy(fields.raw(1)?, scratch)?,
+            })
+        }
+        Kind::Construction => {
+            let fields = Fields::parse(raw, &["kind", "command"], false, scratch)?;
+            Ok(Output::Construction {
+                command: reader::decode(fields.raw(1)?, scratch)?,
             })
         }
         Kind::RegionSettleDebt => {

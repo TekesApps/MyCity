@@ -1,0 +1,14 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction/crates/city-core)
+error: couldn't read `crates/city-core/examples/../fixtures/m0-e0-opening.json`: No such file or directory (os error 2)
+  --> crates/city-core/examples/construction.rs:14:24
+   |
+14 | const OPENING: &[u8] = include_bytes!("../fixtures/m0-e0-opening.json");
+   |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: this error originates in the macro `include_bytes` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: there is a file with the same name in a different directory
+   |
+14 | const OPENING: &[u8] = include_bytes!("../../../fixtures/m0-e0-opening.json");
+   |                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+error: could not compile `mycity-core` (example "construction") due to 1 previous error

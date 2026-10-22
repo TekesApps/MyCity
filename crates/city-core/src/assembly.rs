@@ -81,6 +81,9 @@ pub struct Opening {
     pub economy: Option<crate::economy::Opening>,
     pub boot: Option<crate::boot::Opening>,
     pub exchange: Option<crate::exchange::Opening>,
+    /// Optional fixed one-project prototype profile. Runtime changes only through Engine actions.
+    #[serde(default)]
+    pub construction: Option<crate::construction::Project>,
 }
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
@@ -118,6 +121,7 @@ pub struct World {
     pub(crate) economy: Option<crate::economy::Economy>,
     pub(crate) boot: Option<crate::boot::Boot>,
     pub(crate) exchange: Option<crate::exchange::Exchange>,
+    pub(crate) construction: Option<crate::construction::Project>,
 }
 
 #[derive(Debug, PartialEq, Eq, Serialize)]
@@ -152,6 +156,7 @@ pub struct WorldView {
     pub economy: Option<crate::economy::Economy>,
     pub boot: Option<crate::boot::Boot>,
     pub exchange: Option<crate::exchange::Exchange>,
+    pub construction: Option<crate::construction::Project>,
 }
 
 impl Record for OpeningSource {
@@ -206,6 +211,7 @@ pub(crate) struct BusinessWorld<'a> {
     economy: &'a Option<crate::economy::Economy>,
     boot: &'a Option<crate::boot::Boot>,
     exchange: &'a Option<crate::exchange::Exchange>,
+    construction: &'a Option<crate::construction::Project>,
 }
 #[derive(Serialize)]
 pub(crate) struct BorrowedWorldView<'a> {
@@ -220,6 +226,7 @@ pub(crate) struct BorrowedWorldView<'a> {
     economy: &'a Option<crate::economy::Economy>,
     boot: &'a Option<crate::boot::Boot>,
     exchange: &'a Option<crate::exchange::Exchange>,
+    construction: &'a Option<crate::construction::Project>,
 }
 struct AccountViews<'a>(&'a World);
 impl Serialize for AccountViews<'_> {
@@ -278,6 +285,7 @@ impl World {
             economy: None,
             boot: None,
             exchange: None,
+            construction: None,
         })
     }
     pub(crate) fn reset_backing(&mut self) {
@@ -293,6 +301,7 @@ impl World {
         self.economy = None;
         self.boot = None;
         self.exchange = None;
+        self.construction = None;
     }
     pub(crate) fn copy_into(&self, target: &mut Self) -> Result<(), String> {
         self.accounts.copy_into(&mut target.accounts)?;
@@ -307,6 +316,7 @@ impl World {
         target.economy = self.economy;
         target.boot = self.boot;
         target.exchange = self.exchange;
+        target.construction = self.construction;
         Ok(())
     }
     pub(crate) fn backing_ids(&self) -> [usize; 7] {
@@ -336,11 +346,12 @@ impl World {
             economy: &self.economy,
             boot: &self.boot,
             exchange: &self.exchange,
+            construction: &self.construction,
         }
     }
     pub(crate) fn borrowed_view(&self) -> BorrowedWorldView<'_> {
         BorrowedWorldView {
-            schema: "mycity-m0-state-v6",
+            schema: "mycity-m0-state-v7",
             scope: self.scope,
             seed: self.seed,
             revision: self.revision,
@@ -351,6 +362,7 @@ impl World {
             economy: &self.economy,
             boot: &self.boot,
             exchange: &self.exchange,
+            construction: &self.construction,
         }
     }
     pub(crate) fn restore_capacity(&mut self) -> Result<(), String> {
@@ -398,6 +410,43 @@ impl World {
         {
             return Err("checkpoint_runtime_combination".into());
         }
+        if let Some(project) = self.construction {
+            project
+                .validate_persisted()
+                .map_err(|_| "checkpoint_construction_profile")?;
+            self.account_handle(project.owner)
+                .map_err(|_| "checkpoint_construction_owner")?;
+            self.account_handle(project.contractor)
+                .map_err(|_| "checkpoint_construction_contractor")?;
+            self.account_handle(project.inspector)
+                .map_err(|_| "checkpoint_construction_inspector")?;
+            for gate in project.gates.iter().take(project.gate_count as usize) {
+                self.account_handle(gate.party)
+                    .map_err(|_| "checkpoint_construction_gate_party")?;
+            }
+            for material in project
+                .materials
+                .iter()
+                .take(project.material_count as usize)
+            {
+                let stock_handle = self
+                    .stock_handle(material.stock_id)
+                    .map_err(|_| "checkpoint_construction_stock")?;
+                let stock = self
+                    .stocks
+                    .get(stock_handle)
+                    .map_err(|_| "checkpoint_construction_stock")?;
+                if self
+                    .accounts
+                    .get(stock.owner)
+                    .map_err(|_| "checkpoint_construction_stock_owner")?
+                    .id
+                    != project.owner
+                {
+                    return Err("checkpoint_construction_stock_owner".into());
+                }
+            }
+        }
         if self.owned_capacity_bytes() > WORLD_BYTE_BUDGET {
             return Err("checkpoint_world_budget".into());
         }
@@ -423,7 +472,7 @@ impl World {
     }
     pub fn view(&self) -> WorldView {
         WorldView {
-            schema: "mycity-m0-state-v6",
+            schema: "mycity-m0-state-v7",
             scope: self.scope,
             seed: self.seed,
             revision: self.revision,
@@ -463,6 +512,7 @@ impl World {
             economy: self.economy,
             boot: self.boot,
             exchange: self.exchange,
+            construction: self.construction,
         }
     }
     pub fn state_hash(&self) -> String {
@@ -485,7 +535,7 @@ impl World {
         let headers = size_of::<Self>()
             - size_of::<Arena<AccountDomain, Account>>()
             - size_of::<Arena<InventoryDomain, Stock>>();
-        serde_json::json!({"accounts":self.accounts.layout(),"stocks":self.stocks.layout(),"index_capacity_bytes":index_bytes,"opening_sources_capacity_bytes":source_bytes,"world_remaining_header_bytes":headers,"owned_capacity_bytes":self.accounts.owned_bytes()+self.stocks.owned_bytes()+index_bytes+source_bytes+headers,"allocator_metadata_included":false,"temporary_parse_and_view_pages_included":false})
+        serde_json::json!({"accounts":self.accounts.layout(),"stocks":self.stocks.layout(),"index_capacity_bytes":index_bytes,"construction_slot_bytes":size_of::<Option<crate::construction::Project>>(),"construction_slot_included_in_world_remaining_header_bytes":true,"opening_sources_capacity_bytes":source_bytes,"world_remaining_header_bytes":headers,"owned_capacity_bytes":self.accounts.owned_bytes()+self.stocks.owned_bytes()+index_bytes+source_bytes+headers,"allocator_metadata_included":false,"temporary_parse_and_view_pages_included":false})
     }
 }
 
@@ -636,6 +686,40 @@ pub(crate) fn assemble_into(bytes: &[u8], world: &mut World) -> Result<(), Strin
     if let Some(exchange) = input.exchange {
         world.exchange = Some(crate::exchange::Exchange::new(exchange, world)?);
     }
+    world.construction = input.construction;
+    if let Some(project) = world.construction {
+        project
+            .validate_profile()
+            .map_err(|_| "construction_profile")?;
+        world.account_handle(project.owner)?;
+        world.account_handle(project.contractor)?;
+        world.account_handle(project.inspector)?;
+        for gate in project.gates.iter().take(project.gate_count as usize) {
+            world.account_handle(gate.party)?;
+        }
+        for material in project
+            .materials
+            .iter()
+            .take(project.material_count as usize)
+        {
+            let stock = world.stock_handle(material.stock_id)?;
+            let stock = world.stocks.get(stock).map_err(|_| "construction_stock")?;
+            if world
+                .accounts
+                .get(stock.owner)
+                .map_err(|_| "construction_stock_owner")?
+                .id
+                != project.owner
+            {
+                return Err("construction_stock_owner".into());
+            }
+            // The genesis rate is only a planning estimate. Runtime COGS is derived from
+            // the immutable source-lot offsets by the Engine adapter.
+            if stock.origin_quantity.value() == 0 || material.basis_per_unit.value() == 0 {
+                return Err("construction_material_basis".into());
+            }
+        }
+    }
     if world.owned_capacity_bytes() > WORLD_BYTE_BUDGET {
         return Err("world_byte_limit".into());
     }
@@ -661,6 +745,7 @@ impl crate::restore_into::Restore for World {
         economy,9=>Copy,
         boot,10=>Copy,
         exchange,11=>Copy,
+        construction,12=>Copy,
         })?;
         Ok(())
     }

@@ -1,0 +1,29 @@
+# Construction, retrofit and demolition core (0.1)
+
+## Dependency and ownership
+
+The existing shared clock is `calendar::Date` / `units::GameTime`; commands are driven by game time and never by wall-clock speed. Financial, material and capacity facts belong to `transaction::Engine` (`Action::Transfer`, `MoveStock`, `ReserveCapacity`, `OccupyCapacity`, `ReleaseCapacity`) and its checkpoint/store path. The construction module owns a bounded project workflow projection only. It does not maintain an independent balance, stock ledger, clock, or save system.
+
+The shared boundary is now `Action::Construction { command: EngineCommand }` with one optional, genesis-bound project slot in `World`. The compact scalar command is journaled; the fixed project arrays are not copied into every receipt. The Engine builds the candidate project, cash/stock changes, and capacity lease together, then relies on the existing Store durable hook before publishing any of them. Construction effects must use the project's stable operation ID (`OPERATION_PREFIX | project_id << 32 | next_effect`) as the envelope operation ID. Existing account cash protection, inventory lot offsets, capacity rows, timeline cursor, checkpoint, and receipt journal remain authoritative.
+
+## This branch's files and deliverables
+
+This integration branch modifies the construction model plus the shared Engine, World assembly/checkpoint view, and Store typed receipt decoder. Delivered code includes one bounded project slot, compact scalar actions, stable effect IDs, game-calendar progress, lot-basis-derived COGS, project-site capacity occupation, and explicit authorization checks. No Cargo build or tests have been run for this integrated change yet; the coordinated root build is the acceptance gate.
+
+## State and rules
+
+A supported build/retrofit progresses through application, explicit party/authority gates, capacity reservation, work, pause/resume, inspection, and operation. Gate decisions are explicit attributed results. Pending effects are immutable and replay with the same operation ID; conflicting payloads fail. The candidate project, account balances, consumed inventory lots, and occupied site lease are published together only after the existing durable hook succeeds. An unknown outcome can be retried with the identical operation ID and compact action. Material COGS is computed from source lot offsets at commit time; the profile's per-unit basis is only an estimate. Capacity lease occupancy represents the completed physical site and remains held after inspection. Cancel is only available before mobilization.
+
+Demolition/retirement is intentionally not exposed through the Engine adapter yet: this profile does not contain a measured waste quantity or validated disposal receipt, so demolition, waste acceptance, and site release fail closed. Pure-model demolition transitions remain in the module, but are not an Engine feature. This keeps an unsafe close action from releasing a live site without waste accounting.
+
+Game time determines duration. Wall-clock speed only changes how quickly `GameTime` advances in the host. Progress is capped by elapsed game time, crew size, Monday-to-Friday 09:00-17:00 shifts; work input, material usage, and wages are derived from the project schedule/rates. Capacity is reserved before mobilization and held through inspection/operation; release is an explicit effect. Inspection is a gate before operational capacity. Demolition requires a waste receiver and releases capacity only after safe-exit acceptance. Cancellation records actual consumed resources and does not refund or restore them automatically.
+
+## Limits and acceptance
+
+One project, eight gates, eight material lines, 64-bit checked integer quantities, one pending external effect and a 2 KiB `size_of::<Project>()` in-memory target (not yet measured). Serialized JSON includes transport/Store framing and is measured separately, not covered by that target. The Engine slot adds `Option<Project>` to `World`; its bytes are included in `World`'s fixed header budget and must still pass the existing 128 KiB World / 4 MiB Engine bounds. The stable-ID namespace is C-prefixed, disjoint from background D and accepted operation F namespaces. Integrated negative and crash-recovery tests are still required for insufficient cash/material/site capacity, pre-durable failure, lost response, retry, cold checkpoint/WAL restore, and no duplicate charges or work.
+
+The profile's worst-case state is bounded by the fixed gate/material arrays and one receipt; no per-resident/per-worker objects are stored. Current code has no shared-game memory profile allocated to this module. The target 2 KiB is a design bound to verify with `size_of::<Project>()` during coordinated testing; serialized size is a separate measurement. CPU per command is O(8 gates + 8 materials), independent of city population.
+
+## Required shared integration contract
+
+The integration requires an opening construction profile whose owner, contractor, inspector, gate parties, stocks and site resource resolve against existing Engine rows; site units must fit the configured resource capacity. No profile field in a player action can replace those authorities. The command is scalar and does not carry arbitrary JSON, a Project, or gate/material arrays. Inspector and consent/compensation party authorization are checked against the trusted caller. This narrow integration does not claim demolition/retirement support, and no integration tests are considered passed until they are run against the shared Engine and Store.
