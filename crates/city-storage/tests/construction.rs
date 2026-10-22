@@ -42,10 +42,13 @@ struct Temp(PathBuf);
 impl Temp {
     fn new() -> Self {
         let n = NEXT.fetch_add(1, Ordering::Relaxed);
-        let p =
-            std::env::temp_dir().join(format!("mycity-construction-{}-{n}", std::process::id()));
+        let root = std::env::var_os("MYCITY_TEST_ARTIFACT_ROOT")
+            .map(PathBuf::from)
+            .unwrap_or_else(std::env::temp_dir);
+        fs::create_dir_all(&root).unwrap();
+        let p = root.join(format!("mycity-construction-{}-{n}", std::process::id()));
         fs::create_dir(&p).unwrap();
-        Self(p)
+        Self(fs::canonicalize(&p).unwrap())
     }
     fn world(&self) -> PathBuf {
         self.0.join("world")
@@ -53,7 +56,14 @@ impl Temp {
 }
 impl Drop for Temp {
     fn drop(&mut self) {
-        let _ = fs::remove_dir_all(&self.0);
+        if std::thread::panicking() {
+            eprintln!(
+                "mycity construction test artifacts retained at {}",
+                self.0.display()
+            );
+        } else {
+            let _ = fs::remove_dir_all(&self.0);
+        }
     }
 }
 fn opening() -> Vec<u8> {
