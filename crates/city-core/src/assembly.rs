@@ -483,6 +483,59 @@ impl World {
                     return Err("checkpoint_construction_stock_owner".into());
                 }
             }
+            if let Some(accounting) = project.material_accounting {
+                for row in accounting
+                    .rows
+                    .iter()
+                    .take(usize::from(accounting.row_count))
+                {
+                    let stock = self
+                        .stocks
+                        .get(
+                            self.stock_handle(row.stock_id)
+                                .map_err(|_| "checkpoint_construction_material_accounting_stock")?,
+                        )
+                        .map_err(|_| "checkpoint_construction_material_accounting_stock")?;
+                    if self
+                        .accounts
+                        .get(stock.owner)
+                        .map_err(|_| "checkpoint_construction_material_accounting_owner")?
+                        .id
+                        != project.owner
+                    {
+                        return Err("checkpoint_construction_material_accounting_owner".into());
+                    }
+                    if self
+                        .boot
+                        .as_ref()
+                        .is_some_and(|boot| boot.governs(row.stock_id))
+                        || (self.exchange.is_some()
+                            && (1..=14).contains(&row.stock_id)
+                            && !(7..=12).contains(&row.stock_id))
+                    {
+                        return Err(
+                            "checkpoint_construction_material_accounting_governed_stock".into()
+                        );
+                    }
+                }
+            }
+            if project.utility_contract.is_some() {
+                let boot = self
+                    .boot
+                    .as_ref()
+                    .ok_or("checkpoint_construction_utility_boot_missing")?;
+                boot.validate_construction_contract(project)
+                    .map_err(|_| "checkpoint_construction_utility_boot_binding")?;
+                for supply in project
+                    .utility_contract
+                    .into_iter()
+                    .flat_map(|contract| [contract.electricity, contract.water])
+                    .flatten()
+                {
+                    self.account_handle(supply.operator)
+                        .map_err(|_| "checkpoint_construction_utility_operator")?;
+                }
+            }
         }
         if let Some(town) = self.town {
             town.validate_persisted()
@@ -776,6 +829,21 @@ pub(crate) fn assemble_into(bytes: &[u8], world: &mut World) -> Result<(), Strin
             // the immutable source-lot offsets by the Engine adapter.
             if stock.origin_quantity.value() == 0 || material.basis_per_unit.value() == 0 {
                 return Err("construction_material_basis".into());
+            }
+        }
+        if project.utility_contract.is_some() {
+            let boot = world
+                .boot
+                .as_ref()
+                .ok_or("construction_utility_boot_missing")?;
+            boot.validate_construction_contract(project)?;
+            for supply in project
+                .utility_contract
+                .into_iter()
+                .flat_map(|contract| [contract.electricity, contract.water])
+                .flatten()
+            {
+                world.account_handle(supply.operator)?;
             }
         }
     }

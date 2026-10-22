@@ -17,7 +17,9 @@ pub use slots::{EngineSlot, SlotIdentity};
 
 pub const MAX_ACTIONS: usize = 16;
 pub const MAX_RECEIPTS: usize = 1024;
-pub const MAX_RESOURCES: usize = 8;
+// The integrated city needs independent site, operating, disposal and utility
+// resources. This is a bounded schema capacity, not a larger byte-budget grant.
+pub const MAX_RESOURCES: usize = 16;
 pub const MAX_LEASES: usize = 64;
 pub const ENGINE_BYTE_BUDGET: usize = 4 * 1024 * 1024;
 
@@ -745,6 +747,7 @@ impl Engine {
             e.validate(
                 region.as_ref().ok_or(TxError::InvalidOperation)?,
                 boot.as_ref().ok_or(TxError::InvalidOperation)?,
+                self.world.construction.as_ref(),
                 &mut BootLedger {
                     base: EconomicLedger {
                         world: &self.world,
@@ -1542,6 +1545,7 @@ impl Engine {
                         command,
                         env.operation_id,
                         &self.world,
+                        &mut boot,
                         p,
                         &mut accounts,
                         &mut stocks,
@@ -2206,6 +2210,7 @@ impl Engine {
             e.validate(
                 region.as_ref().ok_or(TxError::InvalidOperation)?,
                 boot.as_ref().ok_or(TxError::InvalidOperation)?,
+                construction.as_ref(),
                 &mut BootLedger {
                     base: EconomicLedger {
                         world: &self.world,
@@ -2337,6 +2342,11 @@ fn validate_construction_binding(
     project
         .validate_persisted()
         .map_err(TxError::Construction)?;
+    if project.utility_contract.is_some() {
+        boot.ok_or(TxError::InvalidOperation)?
+            .validate_construction_contract(project)
+            .map_err(|_| TxError::InvalidOperation)?;
+    }
     // A clearance start is a committed calendar fact, not a future work reservation.
     // Check both timestamps against the restored authoritative clock as well as
     // the relative ordering checked by Project::validate_persisted.
@@ -3229,6 +3239,7 @@ fn prepare_construction(
     command: crate::construction::EngineCommand,
     operation_id: u64,
     world: &World,
+    boot: &mut Option<crate::boot::Boot>,
     project: &mut crate::construction::Project,
     accounts: &mut DirtyAccounts,
     stocks: &mut DirtyStocks,
@@ -3367,6 +3378,17 @@ fn prepare_construction(
             if requested != at {
                 return Err(TxError::Construction(crate::construction::Error::Time));
             }
+            if candidate.utility_contract.is_some() {
+                let timeline =
+                    timeline.ok_or(TxError::Construction(crate::construction::Error::Time))?;
+                let boot_clock = boot.as_ref().ok_or(TxError::InvalidOperation)?.time;
+                if timeline.progress.phase.is_some()
+                    || timeline.progress.target.is_some()
+                    || boot_clock != timeline.progress.last_complete
+                {
+                    return Err(TxError::Construction(crate::construction::Error::Time));
+                }
+            }
             let mut available = [crate::units::Quantity::ZERO; crate::construction::MAX_MATERIALS];
             for (i, slot) in available
                 .iter_mut()
@@ -3450,6 +3472,82 @@ fn prepare_construction(
                 });
             }
             EffectKind::Work => {
+                if candidate.utility_contract.is_some() {
+                    let contract = candidate
+                        .utility_contract
+                        .ok_or(TxError::InvalidOperation)?;
+                    let utility_boot = boot.as_mut().ok_or(TxError::InvalidOperation)?;
+                    utility_boot
+                        .validate_construction_contract(candidate)
+                        .map_err(|_| TxError::InvalidOperation)?;
+                    for (index, supply) in [contract.electricity, contract.water]
+                        .into_iter()
+                        .enumerate()
+                    {
+                        let quantity = effect.utility_quantities[index];
+                        let fee = effect.utility_fees[index];
+                        if quantity == crate::units::Quantity::ZERO {
+                            if fee != crate::units::Money::ZERO {
+                                return Err(TxError::InvalidOperation);
+                            }
+                            continue;
+                        }
+                        let supply = supply.ok_or(TxError::InvalidOperation)?;
+                        {
+                            let mut ledger = BootLedger {
+                                base: EconomicLedger {
+                                    world,
+                                    accounts,
+                                    stocks,
+                                },
+                                resources,
+                                leases,
+                                next_token,
+                            };
+                            utility_boot.export_local_construction_utility(
+                                index,
+                                quantity,
+                                &mut ledger,
+                            )?;
+                        }
+                        if fee != crate::units::Money::ZERO {
+                            let payer = stage_account(
+                                world,
+                                accounts,
+                                world
+                                    .account_ref(effect.payer)
+                                    .map_err(|_| TxError::InvalidHandle)?,
+                            )?;
+                            let payee = stage_account(
+                                world,
+                                accounts,
+                                world
+                                    .account_ref(supply.operator)
+                                    .map_err(|_| TxError::InvalidHandle)?,
+                            )?;
+                            let spendable = accounts[payer]
+                                .1
+                                .cash
+                                .checked_sub(accounts[payer].1.protected)
+                                .map_err(|_| TxError::Protection)?;
+                            if spendable < fee {
+                                return Err(TxError::Construction(
+                                    crate::construction::Error::Funds,
+                                ));
+                            }
+                            accounts[payer].1.cash = accounts[payer]
+                                .1
+                                .cash
+                                .checked_sub(fee)
+                                .map_err(|_| TxError::Overflow)?;
+                            accounts[payee].1.cash = accounts[payee]
+                                .1
+                                .cash
+                                .checked_add(fee)
+                                .map_err(|_| TxError::Overflow)?;
+                        }
+                    }
+                }
                 // Charge the contractor from the owner's account in the same candidate.
                 let payer = stage_account(
                     world,
@@ -3484,6 +3582,11 @@ fn prepare_construction(
                     .checked_add(effect.cash)
                     .map_err(|_| TxError::Overflow)?;
                 let mut total_basis = effect.cash;
+                for utility_fee in effect.utility_fees {
+                    total_basis = total_basis
+                        .checked_add(utility_fee)
+                        .map_err(|_| TxError::Overflow)?;
+                }
                 for i in 0..candidate.active_material_count() {
                     // Governed electricity/water/fuel must use their owning system's
                     // consumption accounting, never the ordinary material COGS path.
@@ -3493,6 +3596,13 @@ fn prepare_construction(
                             .boot
                             .as_ref()
                             .is_some_and(|boot| boot.governs(effect.stock_ids[i]))
+                    {
+                        return Err(TxError::Unauthorized);
+                    }
+                    if candidate.material_accounting.is_some()
+                        && world.exchange.is_some()
+                        && (1..=14).contains(&effect.stock_ids[i])
+                        && !(7..=12).contains(&effect.stock_ids[i])
                     {
                         return Err(TxError::Unauthorized);
                     }
@@ -3714,6 +3824,8 @@ fn prepare_construction(
                 success: true,
                 cash: effect.cash,
                 materials: effect.materials,
+                utility_quantities: effect.utility_quantities,
+                utility_fees: effect.utility_fees,
                 total_basis: effect.total_basis,
                 site_units: effect.site_units,
                 waste_accepted: effect.kind == EffectKind::ReceiveWaste,
@@ -4293,6 +4405,425 @@ mod tests {
             vec![Resource::new(1, 10).unwrap(), Resource::new(2, 10).unwrap()],
         )
         .unwrap()
+    }
+
+    fn construction_utility_engine(electricity_quantity: i64, water_quantity: i64) -> Engine {
+        construction_utility_engine_with_contractor(electricity_quantity, water_quantity, 2)
+    }
+
+    fn construction_utility_engine_with_contractor(
+        electricity_quantity: i64,
+        water_quantity: i64,
+        contractor: u32,
+    ) -> Engine {
+        construction_utility_engine_with_accounting(
+            electricity_quantity,
+            water_quantity,
+            contractor,
+            true,
+        )
+    }
+
+    fn construction_utility_engine_with_accounting(
+        electricity_quantity: i64,
+        water_quantity: i64,
+        contractor: u32,
+        material_accounting: bool,
+    ) -> Engine {
+        use crate::construction::{
+            ConstructionUtilityContract, ConstructionUtilitySupply, EngineCommand as C, Gate,
+            GateCategory, GateDecision, Kind, Material, Project,
+        };
+        use crate::units::GameTime;
+        let mut opening: serde_json::Value = serde_json::from_slice(include_bytes!(
+            "../../../fixtures/m0-background-joint-opening.json"
+        ))
+        .unwrap();
+        let electricity_source = opening["sources"]
+            .as_array_mut()
+            .unwrap()
+            .iter_mut()
+            .find(|row| row["id"] == 6)
+            .unwrap();
+        electricity_source["amount"] =
+            serde_json::json!(if electricity_quantity == 0 { 0 } else { 100 });
+        let electricity = opening["stocks"]
+            .as_array_mut()
+            .unwrap()
+            .iter_mut()
+            .find(|row| row["id"] == 2)
+            .unwrap();
+        electricity["quantity"] = serde_json::json!(electricity_quantity);
+        electricity["basis"] = serde_json::json!(if electricity_quantity == 0 { 0 } else { 100 });
+        let source = opening["sources"]
+            .as_array_mut()
+            .unwrap()
+            .iter_mut()
+            .find(|row| row["id"] == 7)
+            .unwrap();
+        source["amount"] = serde_json::json!(if water_quantity == 0 { 0 } else { 100 });
+        let water = opening["stocks"]
+            .as_array_mut()
+            .unwrap()
+            .iter_mut()
+            .find(|row| row["id"] == 3)
+            .unwrap();
+        water["quantity"] = serde_json::json!(water_quantity);
+        water["basis"] = serde_json::json!(if water_quantity == 0 { 0 } else { 100 });
+
+        let start = GameTime::new(9 * 3_600).unwrap();
+        let mut project = Project::new(
+            7,
+            Kind::Build,
+            4,
+            contractor,
+            1,
+            80,
+            1,
+            1,
+            Money::new(100_000).unwrap(),
+            Money::new(3_600).unwrap(),
+            28_800,
+            &[
+                Gate {
+                    id: 1,
+                    category: GateCategory::OwnerConsent,
+                    evidence_id: 0,
+                    party: 4,
+                    decided: GateDecision::Pending,
+                },
+                Gate {
+                    id: 2,
+                    category: GateCategory::Permit,
+                    evidence_id: 0,
+                    party: 1,
+                    decided: GateDecision::Pending,
+                },
+            ],
+            &[Material {
+                stock_id: 7,
+                required: Quantity::new(1_000).unwrap(),
+                consumed: Quantity::ZERO,
+                basis_per_unit: Money::new(400).unwrap(),
+                basis_remainder: 0,
+            }],
+            start,
+        )
+        .unwrap();
+        project.utility_contract = Some(ConstructionUtilityContract {
+            electricity: Some(ConstructionUtilitySupply {
+                operator: 3,
+                stock_id: 2,
+                rate_per_3600_worker_seconds: Quantity::new(1_000).unwrap(),
+                tariff_per_quantity_unit: Money::new(20).unwrap(),
+                quantity_unit: Quantity::new(1_000).unwrap(),
+            }),
+            water: Some(ConstructionUtilitySupply {
+                operator: 3,
+                stock_id: 3,
+                rate_per_3600_worker_seconds: Quantity::new(1_000).unwrap(),
+                tariff_per_quantity_unit: Money::new(10).unwrap(),
+                quantity_unit: Quantity::new(1_000).unwrap(),
+            }),
+        });
+        if material_accounting {
+            project.enable_material_accounting().unwrap();
+        }
+        opening["construction"] = serde_json::to_value(project).unwrap();
+        let mut engine = Engine::new(
+            assemble(&serde_json::to_vec(&opening).unwrap()).unwrap(),
+            vec![
+                Resource::new(80, 4).unwrap(),
+                Resource::new(101, 1).unwrap(),
+                Resource::new(102, 1).unwrap(),
+                Resource::new(103, 1).unwrap(),
+                Resource::new(104, 1).unwrap(),
+                Resource::new(201, 2_000).unwrap(),
+                Resource::new(202, 2_000).unwrap(),
+            ],
+        )
+        .unwrap();
+        engine.timeline.activate();
+        advance_timeline_to(&mut engine, 9 * 3_600);
+        for (actor, command, id) in [
+            (4, C::File, 9_000_001),
+            (
+                4,
+                C::DecideGate {
+                    gate_id: 1,
+                    decision: GateDecision::Accepted,
+                    evidence_id: 1,
+                },
+                9_000_002,
+            ),
+            (
+                1,
+                C::DecideGate {
+                    gate_id: 2,
+                    decision: GateDecision::Accepted,
+                    evidence_id: 2,
+                },
+                9_000_003,
+            ),
+            (4, C::Prepare, 9_000_004),
+            (4, C::Start, 9_000_005),
+        ] {
+            engine
+                .execute(
+                    Caller::Account(actor),
+                    env(&engine, id, vec![Action::Construction { command }]),
+                )
+                .unwrap();
+        }
+        advance_timeline_to(&mut engine, 10 * 3_600);
+        engine
+    }
+
+    fn construction_utility_empty_engine() -> Engine {
+        let mut opening: serde_json::Value = serde_json::from_slice(include_bytes!(
+            "../../../fixtures/m0-background-joint-opening.json"
+        ))
+        .unwrap();
+        opening.as_object_mut().unwrap().remove("construction");
+        Engine::new(
+            assemble(&serde_json::to_vec(&opening).unwrap()).unwrap(),
+            vec![
+                Resource::new(80, 4).unwrap(),
+                Resource::new(101, 1).unwrap(),
+                Resource::new(102, 1).unwrap(),
+                Resource::new(103, 1).unwrap(),
+                Resource::new(104, 1).unwrap(),
+                Resource::new(201, 2_000).unwrap(),
+                Resource::new(202, 2_000).unwrap(),
+            ],
+        )
+        .unwrap()
+    }
+
+    fn construction_utility_work(e: &Engine, operation_id: u64) -> Envelope {
+        Envelope {
+            world: e.world.scope.world(),
+            branch: e.world.scope.branch(),
+            operation_id,
+            expected_revision: e.world.revision,
+            actions: vec![Action::Construction {
+                command: crate::construction::EngineCommand::Work {
+                    at: crate::units::GameTime::new(10 * 3_600).unwrap(),
+                    elapsed_seconds: 3_600,
+                    worker_seconds: 3_600,
+                },
+            }],
+        }
+    }
+
+    #[test]
+    fn construction_work_exports_and_pays_both_utilities_once_with_the_shared_boot_pool() {
+        let mut engine = construction_utility_engine(100_000, 100_000);
+        let request = construction_utility_work(&engine, 9_000_006);
+        engine.execute(Caller::Account(2), request.clone()).unwrap();
+        let after = engine.world.view();
+        let project = after.construction.unwrap();
+        assert_eq!(project.utility_worker_seconds, 3_600);
+        assert_eq!(project.utility_consumed, [Quantity::new(1_000).unwrap(); 2]);
+        assert_eq!(
+            project.utility_charged,
+            [Money::new(20).unwrap(), Money::new(10).unwrap()]
+        );
+        assert_eq!(project.spent, Money::new(3_680).unwrap());
+        let material_accounting = project.material_accounting.unwrap();
+        assert_eq!(material_accounting.row_count, 1);
+        assert_eq!(material_accounting.rows[0].stock_id, 7);
+        assert_eq!(
+            material_accounting.rows[0].consumed,
+            Quantity::new(125).unwrap()
+        );
+        assert_eq!(material_accounting.rows[0].basis, Money::new(50).unwrap());
+        let boot = after.boot.unwrap();
+        assert_eq!(boot.exports, [Quantity::new(1_000).unwrap(); 2]);
+        assert_eq!(
+            boot.local_construction_exported,
+            [Quantity::new(1_000).unwrap(); 2]
+        );
+        assert_eq!(boot.local_construction_basis, [Money::new(1).unwrap(); 2]);
+        assert_eq!(
+            after.accounts.iter().find(|a| a.id == 3).unwrap().cash,
+            Money::new(600_030).unwrap()
+        );
+        let cash_after = after
+            .accounts
+            .iter()
+            .map(|a| (a.id, a.cash))
+            .collect::<Vec<_>>();
+        let stocks_after = serde_json::to_vec(&after.stocks).unwrap();
+        engine.execute(Caller::Account(2), request).unwrap();
+        let replayed = engine.world.view();
+        assert_eq!(
+            replayed
+                .accounts
+                .iter()
+                .map(|a| (a.id, a.cash))
+                .collect::<Vec<_>>(),
+            cash_after
+        );
+        assert_eq!(serde_json::to_vec(&replayed.stocks).unwrap(), stocks_after);
+        assert_eq!(replayed.construction.unwrap().utility_worker_seconds, 3_600);
+    }
+
+    #[test]
+    fn construction_legacy_unaccounted_exchange_material_sink_remains_rejected() {
+        let mut engine = construction_utility_engine_with_accounting(100_000, 100_000, 2, false);
+        let before = engine.export_checkpoint().unwrap();
+        let request = construction_utility_work(&engine, 9_200_001);
+        let first = engine.execute(Caller::Account(2), request.clone());
+        assert_eq!(
+            first,
+            Err(TxError::Exchange(crate::exchange::Error::Invariant))
+        );
+        assert_eq!(engine.execute(Caller::Account(2), request), first);
+        let old = Engine::restore_checkpoint(&before).unwrap();
+        let after = engine.world.view();
+        let prior = old.world.view();
+        assert_eq!(after.accounts, prior.accounts);
+        assert_eq!(after.stocks, prior.stocks);
+        assert_eq!(after.boot, prior.boot);
+        assert_eq!(after.construction, prior.construction);
+    }
+
+    #[test]
+    fn construction_utility_shortage_and_protected_combined_cost_leave_no_partial_export() {
+        let mut no_water = construction_utility_engine(100_000, 0);
+        let before = no_water.world.view();
+        assert!(no_water
+            .execute(
+                Caller::Account(2),
+                construction_utility_work(&no_water, 9_100_001),
+            )
+            .is_err());
+        let after = no_water.world.view();
+        assert_eq!(after.stocks, before.stocks);
+        assert_eq!(after.accounts, before.accounts);
+        assert_eq!(after.boot, before.boot);
+        assert_eq!(after.construction, before.construction);
+
+        let mut no_electricity = construction_utility_engine(0, 100_000);
+        let before = no_electricity.world.view();
+        assert!(no_electricity
+            .execute(
+                Caller::Account(2),
+                construction_utility_work(&no_electricity, 9_100_003),
+            )
+            .is_err());
+        let after = no_electricity.world.view();
+        assert_eq!(after.stocks, before.stocks);
+        assert_eq!(after.accounts, before.accounts);
+        assert_eq!(after.boot, before.boot);
+        assert_eq!(after.construction, before.construction);
+
+        let mut protected = construction_utility_engine(100_000, 100_000);
+        let owner = protected.world.account_handle(4).unwrap();
+        let owner_cash = protected.world.accounts.get(owner).unwrap().cash;
+        let spendable = Money::new(3_629).unwrap(); // utilities 30 + labour 3600 is 3630.
+        let mut owner_row = *protected.world.accounts.get(owner).unwrap();
+        owner_row.protected = owner_cash.checked_sub(spendable).unwrap();
+        protected.world.accounts.replace(owner, owner_row).unwrap();
+        let before = protected.world.view();
+        assert!(protected
+            .execute(
+                Caller::Account(2),
+                construction_utility_work(&protected, 9_100_002),
+            )
+            .is_err());
+        let after = protected.world.view();
+        assert_eq!(after.stocks, before.stocks);
+        assert_eq!(after.accounts, before.accounts);
+        assert_eq!(after.boot, before.boot);
+        assert_eq!(after.construction, before.construction);
+    }
+
+    #[test]
+    fn construction_utility_supplier_can_also_be_contractor_and_receives_combined_payments() {
+        let mut engine = construction_utility_engine_with_contractor(100_000, 100_000, 3);
+        let owner_before = engine
+            .world
+            .view()
+            .accounts
+            .iter()
+            .find(|row| row.id == 4)
+            .unwrap()
+            .cash;
+        let supplier_before = engine
+            .world
+            .view()
+            .accounts
+            .iter()
+            .find(|row| row.id == 3)
+            .unwrap()
+            .cash;
+
+        engine
+            .execute(
+                Caller::Account(3),
+                construction_utility_work(&engine, 9_000_106),
+            )
+            .unwrap();
+
+        let after = engine.world.view();
+        let owner_after = after.accounts.iter().find(|row| row.id == 4).unwrap().cash;
+        let supplier_after = after.accounts.iter().find(|row| row.id == 3).unwrap().cash;
+        assert_eq!(
+            owner_before.checked_sub(owner_after).unwrap(),
+            Money::new(3_630).unwrap()
+        );
+        assert_eq!(
+            supplier_after.checked_sub(supplier_before).unwrap(),
+            Money::new(3_630).unwrap()
+        );
+        assert_eq!(
+            after.construction.unwrap().spent,
+            Money::new(3_680).unwrap()
+        );
+        assert_eq!(
+            after.boot.unwrap().local_construction_exported,
+            [Quantity::new(1_000).unwrap(); 2]
+        );
+    }
+
+    #[test]
+    fn construction_boot_checkpoint_rejects_export_mismatch_and_basis_without_quantity() {
+        let empty = construction_utility_empty_engine();
+        let empty_checkpoint = empty.export_checkpoint().unwrap();
+        let mut export_without_project: serde_json::Value =
+            serde_json::from_slice(&empty_checkpoint).unwrap();
+        export_without_project["world"]["boot"]["local_construction_exported"] =
+            serde_json::json!([1, 0]);
+        assert!(
+            Engine::restore_checkpoint(&serde_json::to_vec(&export_without_project).unwrap())
+                .is_err()
+        );
+
+        let untouched = construction_utility_engine(100_000, 100_000);
+        let untouched_checkpoint = untouched.export_checkpoint().unwrap();
+        let mut basis_without_quantity: serde_json::Value =
+            serde_json::from_slice(&untouched_checkpoint).unwrap();
+        basis_without_quantity["world"]["boot"]["local_construction_basis"] =
+            serde_json::json!([1, 0]);
+        assert!(
+            Engine::restore_checkpoint(&serde_json::to_vec(&basis_without_quantity).unwrap())
+                .is_err()
+        );
+
+        let mut engine = construction_utility_engine(100_000, 100_000);
+        let request = construction_utility_work(&engine, 9_000_107);
+        engine.execute(Caller::Account(2), request).unwrap();
+        let checkpoint = engine.export_checkpoint().unwrap();
+        let baseline: serde_json::Value = serde_json::from_slice(&checkpoint).unwrap();
+
+        let mut mismatched_export = baseline.clone();
+        mismatched_export["world"]["boot"]["local_construction_exported"][0] =
+            serde_json::json!(999);
+        assert!(
+            Engine::restore_checkpoint(&serde_json::to_vec(&mismatched_export).unwrap()).is_err()
+        );
     }
     fn cash(v: i64) -> Money {
         Money::new(v).unwrap()

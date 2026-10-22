@@ -1,0 +1,23 @@
+{
+  "source_sha256": "4d44b663c997d2cc6c8136bc9ecd17c3bcc009023cc3de15a9df9830060c9a09",
+  "source_file_count": 262,
+  "source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/20-final-bins/source.zip",
+  "source_zip_sha256": "bb82fe33dedeb058555867bd2bdfa44298c49b8f6a08872a00808310442575d8",
+  "binaries": [
+    {
+      "name": "mycity-headless",
+      "binary": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/executables/c235709a1f7f01fe370b59f93ec353e110a1157ea7e1ab0d90c13891f50b6a1b/mycity-headless",
+      "sha256": "c235709a1f7f01fe370b59f93ec353e110a1157ea7e1ab0d90c13891f50b6a1b",
+      "source_sha256": "4d44b663c997d2cc6c8136bc9ecd17c3bcc009023cc3de15a9df9830060c9a09",
+      "source_embedded_bytes_checked": true
+    },
+    {
+      "name": "construction_utilities",
+      "binary": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/executables/2dea5b60c7e46c27618d44d8d791f7c21e65073e300af12f2f25a60a1afde8f5/construction_utilities",
+      "sha256": "2dea5b60c7e46c27618d44d8d791f7c21e65073e300af12f2f25a60a1afde8f5",
+      "source_sha256": "4d44b663c997d2cc6c8136bc9ecd17c3bcc009023cc3de15a9df9830060c9a09"
+    }
+  ],
+  "storage_profile": "external_USB_APFS_HP_P900_SSD",
+  "scope": "final candidate build with actual CLI and capacity receipts; finite model integration only"
+}

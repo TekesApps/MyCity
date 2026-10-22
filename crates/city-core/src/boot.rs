@@ -14,6 +14,12 @@ fn zero_quantity(value: &Quantity) -> bool {
 fn zero_money(value: &Money) -> bool {
     *value == Money::ZERO
 }
+fn zero_quantities2(value: &[Quantity; 2]) -> bool {
+    value.iter().all(|quantity| *quantity == Quantity::ZERO)
+}
+fn zero_money2(value: &[Money; 2]) -> bool {
+    value.iter().all(|money| *money == Money::ZERO)
+}
 #[derive(Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Opening {
@@ -125,6 +131,11 @@ pub struct Boot {
     pub local_electricity_exported: Quantity,
     #[serde(default, skip_serializing_if = "zero_money")]
     pub local_electricity_basis: Money,
+    /// Construction consumption is separate from Town local use and Exchange delivery.
+    #[serde(default, skip_serializing_if = "zero_quantities2")]
+    pub local_construction_exported: [Quantity; 2],
+    #[serde(default, skip_serializing_if = "zero_money2")]
+    pub local_construction_basis: [Money; 2],
 }
 fn q(v: i64) -> Quantity {
     Quantity::new(v).expect("profile quantity")
@@ -241,6 +252,8 @@ impl Boot {
             exported_basis: Money::ZERO,
             local_electricity_exported: Quantity::ZERO,
             local_electricity_basis: Money::ZERO,
+            local_construction_exported: [Quantity::ZERO; 2],
+            local_construction_basis: [Money::ZERO; 2],
         })
     }
     pub(crate) fn export(
@@ -272,7 +285,47 @@ impl Boot {
         self.local_electricity_basis = add(self.local_electricity_basis, basis)?;
         Ok(basis)
     }
+    pub(crate) fn export_local_construction_utility(
+        &mut self,
+        index: usize,
+        quantity: Quantity,
+        ledger: &mut impl Ledger,
+    ) -> Result<Money, TxError> {
+        if index > 1 {
+            return Err(error(Error::Input));
+        }
+        let basis = self.export(index, quantity, ledger)?;
+        self.local_construction_exported[index] =
+            plus(self.local_construction_exported[index], quantity)?;
+        self.local_construction_basis[index] = add(self.local_construction_basis[index], basis)?;
+        Ok(basis)
+    }
+    pub(crate) fn validate_construction_contract(
+        &self,
+        project: crate::construction::Project,
+    ) -> Result<(), String> {
+        if let Some(contract) = project.utility_contract {
+            for (index, supply) in [contract.electricity, contract.water]
+                .into_iter()
+                .enumerate()
+            {
+                if let Some(supply) = supply {
+                    let stock_index = if index == 0 { 1 } else { 2 };
+                    if supply.operator != self.operator
+                        || supply.stock_id != self.stocks[stock_index]
+                        || supply.operator == project.owner
+                    {
+                        return Err("construction_utility_boot_binding".into());
+                    }
+                }
+            }
+        }
+        Ok(())
+    }
     pub(crate) fn validate_world_shape(&self, w: &World, joint: bool) -> Result<(), String> {
+        if let Some(project) = w.construction {
+            self.validate_construction_contract(project)?;
+        }
         if (self.local_electricity_exported != Quantity::ZERO
             || self.local_electricity_basis != Money::ZERO)
             && !w.town.as_ref().is_some_and(|town| {
@@ -283,6 +336,38 @@ impl Boot {
             })
         {
             return Err("boot_unbound_local_electricity".into());
+        }
+        let project_contract = w.construction.and_then(|project| project.utility_contract);
+        for index in 0..2 {
+            let expected_export = w
+                .construction
+                .map_or(Quantity::ZERO, |project| project.utility_consumed[index]);
+            if self.local_construction_exported[index] != expected_export {
+                return Err("boot_construction_export_mismatch".into());
+            }
+            if self.local_construction_exported[index] == Quantity::ZERO
+                && self.local_construction_basis[index] != Money::ZERO
+            {
+                return Err("boot_construction_basis_without_export".into());
+            }
+            if self.local_construction_exported[index] != Quantity::ZERO
+                || self.local_construction_basis[index] != Money::ZERO
+            {
+                let bound = project_contract.is_some_and(|contract| {
+                    let supply = if index == 0 {
+                        contract.electricity
+                    } else {
+                        contract.water
+                    };
+                    supply.is_some_and(|supply| {
+                        supply.operator == self.operator
+                            && supply.stock_id == self.stocks[if index == 0 { 1 } else { 2 }]
+                    })
+                });
+                if !bound {
+                    return Err("boot_unbound_local_construction_utility".into());
+                }
+            }
         }
         let scaled = self.profile.as_str() == SCALE_PROFILE;
         if ![PROFILE, SCALE_PROFILE].contains(&self.profile.as_str())
@@ -520,10 +605,24 @@ impl Boot {
         Ok(())
     }
     pub(crate) fn validate(&self, l: &mut impl Ledger, world_cash: Money) -> Result<(), TxError> {
-        if self.local_electricity_exported > self.exports[0]
-            || self.local_electricity_basis > self.exported_basis
+        let local_construction_electricity = self.local_construction_exported[0];
+        let local_construction_water = self.local_construction_exported[1];
+        let local_construction_basis = add(
+            self.local_construction_basis[0],
+            self.local_construction_basis[1],
+        )?;
+        let local_electricity_total = plus(
+            self.local_electricity_exported,
+            local_construction_electricity,
+        )?;
+        let all_local_basis = add(self.local_electricity_basis, local_construction_basis)?;
+        if local_electricity_total > self.exports[0]
+            || local_construction_water > self.exports[1]
+            || all_local_basis > self.exported_basis
             || (self.local_electricity_exported == Quantity::ZERO
                 && self.local_electricity_basis != Money::ZERO)
+            || (zero_quantities2(&self.local_construction_exported)
+                && !zero_money2(&self.local_construction_basis))
         {
             return Err(error(Error::Invariant));
         }

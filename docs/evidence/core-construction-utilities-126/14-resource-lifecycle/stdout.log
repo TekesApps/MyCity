@@ -1,0 +1,20 @@
+
+running 2 tests
+test sixteen_resources_roundtrip_and_seventeenth_or_duplicate_cannot_enter_model ... ok
+test actual_workspace_and_resource_capacity_are_reported_inside_existing_budgets ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 8 tests
+test construction_shared_exchange_raw_sink_is_durable_without_duplicate_material_payment ... ok
+test construction_utilities_store_work_replays_coldopens_and_pause_does_not_reset_meter ... ok
+test construction_utility_store_applied_lost_reply_reopens_and_replays_once ... ok
+test construction_utility_store_prepared_failure_is_unchanged_and_retryable ... ok
+test construction_utility_store_protection_covers_combined_utilities_and_labor ... ok
+test construction_utility_store_shortage_keeps_old_failure_and_new_id_works_after_boot_refill ... ok
+test partial_build_clearance_keeps_material_sink_and_continues_utility_meter_through_cold_replay ... ok
+test published_build_demolition_preserves_full_material_sink_and_cumulative_utility_usage ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.04s
+

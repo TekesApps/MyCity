@@ -1,0 +1,440 @@
+{
+  "created_utc": "2026-10-22T20:42:52.154195+00:00",
+  "scope": "Rust model and CLI finite construction Boot/material integration; not M0 or 16GB acceptance",
+  "source_sha256": "4d44b663c997d2cc6c8136bc9ecd17c3bcc009023cc3de15a9df9830060c9a09",
+  "commands": [
+    {
+      "label": "14-resource-lifecycle",
+      "files": [
+        {
+          "name": "command.json",
+          "bytes": 598,
+          "sha256": "8751abaacc37c678217ae6d418db6422ffa5b44ef49952a74b0c78b59e82bb8d"
+        },
+        {
+          "name": "exit.json",
+          "bytes": 85,
+          "sha256": "6a80561644fd19aa1eede02f1d4034b4e63b9e65aeb668976ed178b1e6d0741c"
+        },
+        {
+          "name": "stdout.log",
+          "bytes": 1147,
+          "sha256": "e3022de0acfad0f60d65fb287a960129e6dd145fe3506d4d856b73721412879f"
+        },
+        {
+          "name": "stderr.log",
+          "bytes": 3989,
+          "sha256": "fdd3a53583b5ff9129c572db7c375a52697c5afdd99738c66cb61a000a8f952c"
+        },
+        {
+          "name": "executables.json",
+          "bytes": 798,
+          "sha256": "77827eae2ba912c6cdeb2c18bc41e0491f3ff7cb410d00b0f83c1721094fb87d"
+        }
+      ],
+      "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/14-resource-lifecycle/source-manifest.json",
+      "full_source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/14-resource-lifecycle/source.zip",
+      "source_zip_sha256": "1598fc8b230940e8b98c63d2e172da17c2112853353197b793cb95c8cda46d96"
+    },
+    {
+      "label": "15-workspace-final",
+      "files": [
+        {
+          "name": "command.json",
+          "bytes": 516,
+          "sha256": "1b32adb9d48e279f675ba2aa5cb34942c38d84f3dc6c2fe51be2fee3a7436a9a"
+        },
+        {
+          "name": "exit.json",
+          "bytes": 83,
+          "sha256": "3a8281d34ab3643741d3e0e7deb1f545b160b3362da1164ac83aea6f5f4ffb68"
+        },
+        {
+          "name": "stdout.log",
+          "bytes": 86006,
+          "sha256": "13595d1d0b5255cb3af82c768727fc83815532d20822acd144c8e3da377f192a"
+        },
+        {
+          "name": "stderr.log",
+          "bytes": 23501,
+          "sha256": "867e67a0fefa02f1567f95059971343c22f4a6fbb3356cbda1b9cbdc3ef124f2"
+        },
+        {
+          "name": "executables.json",
+          "bytes": 33064,
+          "sha256": "055b78c86ab35115ea554cc87b78afef5b0ffe8034f5474bf6b3521d063fa34a"
+        }
+      ],
+      "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/15-workspace-final/source-manifest.json",
+      "full_source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/15-workspace-final/source.zip",
+      "source_zip_sha256": "1598fc8b230940e8b98c63d2e172da17c2112853353197b793cb95c8cda46d96"
+    },
+    {
+      "label": "16-metadata-policy",
+      "files": [
+        {
+          "name": "command.json",
+          "bytes": 499,
+          "sha256": "ce6112648d59d9456e9b72645d2b22daf49fc5dd04e852d334009952d62b0027"
+        },
+        {
+          "name": "exit.json",
+          "bytes": 86,
+          "sha256": "0a8116efcb9c53414c70e4bafe809ec5f0f01a6d1f71a7db088287c42582743c"
+        },
+        {
+          "name": "stdout.log",
+          "bytes": 2300,
+          "sha256": "fa00d4ee9a720270192eb15270cdb6a760630cb33d3406c8c7dddd470b1fe054"
+        },
+        {
+          "name": "stderr.log",
+          "bytes": 304,
+          "sha256": "acdd229a9f02423b71b977d0da0efd89532631a8554d1470411c752e3dbc3b61"
+        },
+        {
+          "name": "executables.json",
+          "bytes": 389,
+          "sha256": "15d0bbf82f9c127ab1d657ec166cdb35ecbf4a2edbcd0eb64f78427f0bbb8778"
+        }
+      ],
+      "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/16-metadata-policy/source-manifest.json",
+      "full_source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/16-metadata-policy/source.zip",
+      "source_zip_sha256": "be29a5623ffe52bc7f0b8a663086966e7422afae8e15650875237645801c8fef"
+    },
+    {
+      "label": "17-clippy",
+      "files": [
+        {
+          "name": "command.json",
+          "bytes": 462,
+          "sha256": "f94d05f462b2f32c0fb12d67e9e09fede70058434d8a8e5f6e441f8c7eefccdd"
+        },
+        {
+          "name": "exit.json",
+          "bytes": 80,
+          "sha256": "0311089725013cbe0a5e7a4ce105b03c9ea06ad9f9b3255028d72537dbc2a650"
+        },
+        {
+          "name": "stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "bytes": 700,
+          "sha256": "0ad2e2dc2b7437d9f27b915a552366c9f96de61ec08b0f79ff79768e0f407246"
+        }
+      ],
+      "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/17-clippy/source-manifest.json",
+      "full_source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/17-clippy/source.zip",
+      "source_zip_sha256": "be29a5623ffe52bc7f0b8a663086966e7422afae8e15650875237645801c8fef"
+    },
+    {
+      "label": "18-shared-supply",
+      "files": [
+        {
+          "name": "command.json",
+          "bytes": 530,
+          "sha256": "a90d29facec46ef6af2e35bbd5409743b807961f0e717fee930a9eed80bbb1a0"
+        },
+        {
+          "name": "exit.json",
+          "bytes": 82,
+          "sha256": "c29014e82cf67f98ae899065c20f4d7ab1145dcbc9d3aa9e419042c28352eb26"
+        },
+        {
+          "name": "stdout.log",
+          "bytes": 1435,
+          "sha256": "5764ea6d2fd91e2e596d6856ae44e71b6cd007ad4e8859eca899d23768534493"
+        },
+        {
+          "name": "stderr.log",
+          "bytes": 3577,
+          "sha256": "7773ca93b0396c6b593e88631b3d0c8dfd2561149d90a24cf1870fdae1752f24"
+        },
+        {
+          "name": "executables.json",
+          "bytes": 405,
+          "sha256": "8cd102da9a3b0617151f31c9348313baf89007c3bdd4a4ff4a71078bb457baa8"
+        }
+      ],
+      "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/18-shared-supply/source-manifest.json",
+      "full_source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/18-shared-supply/source.zip",
+      "source_zip_sha256": "0fb995e4e82a13b3937dbe4da6e20b44eeeedbefaf22aea0b45baadb7353f509"
+    },
+    {
+      "label": "19-shared-supply-clock",
+      "files": [
+        {
+          "name": "command.json",
+          "bytes": 530,
+          "sha256": "2fa4a8935362817a0e7956a38454487496db4bfd7043d572838545181a3cc63b"
+        },
+        {
+          "name": "exit.json",
+          "bytes": 79,
+          "sha256": "1f978df0cf790f033f83eafc4d585154d6acfa0218cf727e78b3d18608462da4"
+        },
+        {
+          "name": "stdout.log",
+          "bytes": 1141,
+          "sha256": "c2ccb296bfd72435d2fef429d4c09bab151ad7375387cbe0b9203858986811b3"
+        },
+        {
+          "name": "stderr.log",
+          "bytes": 2248,
+          "sha256": "e65f70349857547ad8e146e7b7b53ba8a27e2c8bd4c526d3cf539f274ad4ec97"
+        },
+        {
+          "name": "executables.json",
+          "bytes": 405,
+          "sha256": "090b5f9938579f249af5337c7f9659259f63bff8bf9122a3c7c4918e12fd991a"
+        }
+      ],
+      "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/19-shared-supply-clock/source-manifest.json",
+      "full_source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/19-shared-supply-clock/source.zip",
+      "source_zip_sha256": "bb82fe33dedeb058555867bd2bdfa44298c49b8f6a08872a00808310442575d8"
+    },
+    {
+      "label": "20-final-bins",
+      "files": [
+        {
+          "name": "command.json",
+          "bytes": 546,
+          "sha256": "8802377b6e60e548ba46dad6f1da3e0622e14f0a5fc6d53d214f949d5755addd"
+        },
+        {
+          "name": "exit.json",
+          "bytes": 86,
+          "sha256": "90208e72f4b99fd06610299ce1f235d1bbd2ec4dd9c9ab982383b9e5e405d040"
+        },
+        {
+          "name": "stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "bytes": 315,
+          "sha256": "56eaca4c4db606d3dc05eb96203845a6cc07a60132d85140a29804ce8ff419de"
+        }
+      ],
+      "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/20-final-bins/source-manifest.json",
+      "full_source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/20-final-bins/source.zip",
+      "source_zip_sha256": "bb82fe33dedeb058555867bd2bdfa44298c49b8f6a08872a00808310442575d8"
+    },
+    {
+      "label": "21-final-clippy",
+      "files": [
+        {
+          "name": "command.json",
+          "bytes": 462,
+          "sha256": "98fb4669dbc03c450e4125224fd76c3dcdf712148fc125ce465f1e18af0993db"
+        },
+        {
+          "name": "exit.json",
+          "bytes": 79,
+          "sha256": "1bcfc5d7c3ec16d3e5525973bb01b7f58073745ec2a96c33d1cbc02874a9ae50"
+        },
+        {
+          "name": "stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "bytes": 324,
+          "sha256": "b05ab02b840945b422161ce7560c5ab41fa00d4247a0805c35a2fa75396ad11b"
+        }
+      ],
+      "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/21-final-clippy/source-manifest.json",
+      "full_source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/21-final-clippy/source.zip",
+      "source_zip_sha256": "bb82fe33dedeb058555867bd2bdfa44298c49b8f6a08872a00808310442575d8"
+    },
+    {
+      "label": "22-final-cli",
+      "files": [
+        {
+          "name": "command.json",
+          "bytes": 621,
+          "sha256": "38f262ad1d790f95b3e03de08a51e6b446760accca711df550a9685e76fc88a3"
+        },
+        {
+          "name": "exit.json",
+          "bytes": 77,
+          "sha256": "290f2ae08fd9899cbd66cf94431ea468dad19a20c7aef3de334b372ff18eac51"
+        },
+        {
+          "name": "stdout.log",
+          "bytes": 1071,
+          "sha256": "513a3ed181e2e55b16b031ed041ce38759570d1f75fa93b2d442865cbd8d2a7b"
+        },
+        {
+          "name": "stderr.log",
+          "bytes": 777,
+          "sha256": "38e80ba47cc05c9124124eadfea9588d57c70b36d9710794c3f63a14116a446b"
+        }
+      ],
+      "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/22-final-cli/source-manifest.json",
+      "full_source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/22-final-cli/source.zip",
+      "source_zip_sha256": "bb82fe33dedeb058555867bd2bdfa44298c49b8f6a08872a00808310442575d8"
+    },
+    {
+      "label": "23-final-capacity",
+      "files": [
+        {
+          "name": "command.json",
+          "bytes": 609,
+          "sha256": "fcfa03aa83ad6dddc393e5b87b814e9b4ee2542d4f4e1ae4f83592512751f506"
+        },
+        {
+          "name": "exit.json",
+          "bytes": 79,
+          "sha256": "0a77aaa4ba6471d984399445ea08b6f8afb5db0f339d3757b7c573e63cf0a761"
+        },
+        {
+          "name": "stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "bytes": 43,
+          "sha256": "ef25ed798e8b943bb5f65695feebad3bf7025b1cc802ec8a18797a021bfbf808"
+        }
+      ],
+      "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/23-final-capacity/source-manifest.json",
+      "full_source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/23-final-capacity/source.zip",
+      "source_zip_sha256": "bb82fe33dedeb058555867bd2bdfa44298c49b8f6a08872a00808310442575d8"
+    },
+    {
+      "label": "24-final-capacity",
+      "files": [
+        {
+          "name": "command.json",
+          "bytes": 520,
+          "sha256": "47864f4d96e5f01eed70a722becb1759a5d98afbd2243b892dc66202c4def0a8"
+        },
+        {
+          "name": "exit.json",
+          "bytes": 88,
+          "sha256": "a48640129c719b70d9e0bd4fd5fb62dcde3eba458b5b25c059c72ebfec133b32"
+        },
+        {
+          "name": "stdout.log",
+          "bytes": 13740,
+          "sha256": "48669e7df6a8f062cc727dbdd6798c33778afc561393a4022bab2dc5b42fa44e"
+        },
+        {
+          "name": "stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/24-final-capacity/source-manifest.json",
+      "full_source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/24-final-capacity/source.zip",
+      "source_zip_sha256": "bb82fe33dedeb058555867bd2bdfa44298c49b8f6a08872a00808310442575d8"
+    }
+  ],
+  "actual_cli": {
+    "boot_exports": [
+      1000,
+      1000
+    ],
+    "cold_open_state_hash_equal": true,
+    "construction_local_exports": [
+      1000,
+      1000
+    ],
+    "local_boot_supply": true,
+    "material_accounting": {
+      "row_count": 1,
+      "rows": [
+        {
+          "basis": 1000,
+          "consumed": 1000,
+          "required": 1000,
+          "stock_id": 15
+        },
+        {
+          "basis": 0,
+          "consumed": 0,
+          "required": 0,
+          "stock_id": 0
+        },
+        {
+          "basis": 0,
+          "consumed": 0,
+          "required": 0,
+          "stock_id": 0
+        },
+        {
+          "basis": 0,
+          "consumed": 0,
+          "required": 0,
+          "stock_id": 0
+        },
+        {
+          "basis": 0,
+          "consumed": 0,
+          "required": 0,
+          "stock_id": 0
+        },
+        {
+          "basis": 0,
+          "consumed": 0,
+          "required": 0,
+          "stock_id": 0
+        },
+        {
+          "basis": 0,
+          "consumed": 0,
+          "required": 0,
+          "stock_id": 0
+        },
+        {
+          "basis": 0,
+          "consumed": 0,
+          "required": 0,
+          "stock_id": 0
+        }
+      ]
+    },
+    "project_inline_bytes": 1616,
+    "project_spent_cents": 4630,
+    "scenario": "normal",
+    "schema": "mycity-construction-utilities-cli-v1",
+    "scope": "store_construction_boot_utilities",
+    "service_day": 0,
+    "state_hash": "c11d36f3288181b2d42ac967572e5ec4eb64feae8f47a7e7890c5044128a9975",
+    "store": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/final-cli-world",
+    "town_cross_city_competition": "not_tested",
+    "utility_fees": [
+      20,
+      10
+    ],
+    "utility_quantities": [
+      1000,
+      1000
+    ],
+    "worker_seconds": 3600
+  },
+  "capacity_totals": {
+    "required_bytes": 79704104,
+    "budget_bytes": 67108864,
+    "target_slots_fit": false,
+    "runtime_grant_accepted": false
+  },
+  "host": "Apple M4 32GiB",
+  "storage": "HP P900 external USB/APFS SSD; work and target symlinks retained",
+  "cli_environment": "unrelated TekesAgentKit Cargo active; time/RSS observational only, not uncontaminated performance",
+  "independent_final_review": "advisor read-only final audit: no explicit code blocker; shared raw7 sink and private15 lifecycle separately verified; not shared7 full lifecycle",
+  "m0_unchanged": {
+    "original_normal": "failed",
+    "real_8h": "failed_incomplete",
+    "real_16gb": "not_run"
+  },
+  "full_recovery_inputs_preserved": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01",
+  "source_archives_are_full_files_not_hash_substitutes": true
+}

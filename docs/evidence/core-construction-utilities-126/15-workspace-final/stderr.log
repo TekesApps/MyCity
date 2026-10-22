@@ -1,0 +1,172 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction-utilities-current/crates/city-core)
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction-utilities-current/crates/city-headless)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction-utilities-current/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction-utilities-current/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 3m 16s
+     Running unittests src/lib.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_core-3e1c4965578400af)
+construction_project_size_bytes=1616
+action_size_bytes=80
+
+thread 'transaction::workspace::tests::failed_or_unwound_hook_preserves_authority_then_commit_swaps_backing' panicked at crates/city-core/src/transaction/workspace.rs:375:17:
+persist unwind
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'transaction::workspace::tests::reentry_is_rejected_and_unwind_returns_same_initialized_rows' panicked at crates/city-core/src/transaction/workspace.rs:303:13:
+prepare callback unwind
+     Running tests/air.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/air-d2d8597feaf19bd6)
+     Running tests/air_workspace.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/air_workspace-b2957bbeee27d1b2)
+     Running tests/background.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/background-0ccc80c9798f59d3)
+     Running tests/boot.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/boot-90af499b47d2fcfb)
+     Running tests/construction.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/construction-34b00367e41fbcdd)
+     Running tests/construction_engine.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/construction_engine-532c1052f9a506fc)
+     Running tests/economy.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/economy-6a92b3d4ea1a301f)
+     Running tests/exchange.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/exchange-7a145dd794e07315)
+     Running tests/layout_pressure.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/layout_pressure-be3cff6afebe9d81)
+     Running tests/market_access.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/market_access-a11542cec6f04c92)
+     Running tests/region.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/region-584c53a6fc7e214a)
+     Running tests/resource_capacity.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/resource_capacity-51c2171c75c6b5f9)
+RESOURCE_CAPACITY {"engine_byte_budget":4194304,"engine_owned_bytes":4104080,"max_resources":16,"per_backing_delta_from_original_eight":128,"per_resource_backing_bytes":256,"resource_record_bytes":16,"scope":"actual allocated capacity inventory, not native footprint or allocator peak","workspace":{"candidate":{"backing":[4317558288,46687568032,46691221504,46709260288,46709325824,46709391360,4317556688,4317558224],"owned_bytes":262840},"codec":{"backing_bytes":4920320,"byte_backing":29280436224,"traversal_backing":46709784576},"initial":{"background_tables":[4317504544,4317549616,4317549696,46701854720,46701920256,46701985792,4317549760,4317504560],"engine_tables":[46691155968,46687407104,29267853312],"owned_model_bytes":4104080,"preparation_backing":[46702116864,46687174656,4317550032,4317550048,4317550128,46703165440,46703230976,46703296512,4317550208,4317550192,4317551056,4317551072,4317551152,46703427584,46703493120,46703575040,46691015680,46687305728,46691156480,46687410176,4317549856,4317550304,4317551232,4317551680,4317551744,4317551808,4317551872],"retained_prepare_bytes":1516368,"timeline_tables":[46700888064,46687166464],"world":46700806144,"world_tables":[4317543984,4317546032,46686855168,4317546288,46686964224,46686983168,46687112192]},"owned_bytes":16424120,"restore":{"background_tables":[4317552688,4317552704,4317552784,46706950144,46707015680,46707081216,4317553216,4317553200],"engine_tables":[46691156992,46687411712,29276241920],"owned_model_bytes":4104080,"preparation_backing":[46707769344,46687207424,4317555472,4317555488,4317555568,46708736000,46708801536,46708867072,46687567872,4317555632,4317556416,4317556432,46687567952,46708998144,46709063680,46709129216,46691237888,46687338496,46691157760,46687414784,4317555296,4317555664,4317557792,4317556512,4317556576,4317556640,46687551504],"retained_prepare_bytes":1516368,"timeline_tables":[46705016832,46687191040],"world":46704934912,"world_tables":[46691172352,46691156736,46686879744,4317551920,46686969344,46686993408,46687118336]}}}
+     Running tests/scale_assembly.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/scale_assembly-8619ca52988948f2)
+     Running tests/sha256_vectors.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/sha256_vectors-506395e4c7608a29)
+     Running tests/timeline.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/timeline-e4d7100ebf384fee)
+     Running tests/town_business_exit.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/town_business_exit-9df8908c6cf17e9f)
+     Running tests/town_utility_binding.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/town_utility_binding-a21c167c14814d21)
+     Running tests/town_utility_engine.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/town_utility_engine-01e247b31296f57a)
+     Running unittests examples/construction.rs (/Volumes/HP P900/dev/MyCity/target/release/examples/construction-0a87f77d22ec0fa8)
+     Running unittests examples/market_access.rs (/Volumes/HP P900/dev/MyCity/target/release/examples/market_access-b8d68c3e6a3a699c)
+     Running unittests examples/town_economy.rs (/Volumes/HP P900/dev/MyCity/target/release/examples/town_economy-b268ca5bc8228583)
+     Running unittests examples/town_market.rs (/Volumes/HP P900/dev/MyCity/target/release/examples/town_market-b54ffa0b21447fa1)
+     Running unittests examples/town_utility.rs (/Volumes/HP P900/dev/MyCity/target/release/examples/town_utility-ae9785a3912c3c31)
+     Running unittests examples/transport.rs (/Volumes/HP P900/dev/MyCity/target/release/examples/transport-ce012948d2142d26)
+     Running unittests examples/unfinished_clearance.rs (/Volumes/HP P900/dev/MyCity/target/release/examples/unfinished_clearance-231f58e598acbf50)
+     Running unittests src/lib.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_headless-bd191120ee0d5aca)
+
+thread 'control_data::tests::leases_reject_overlap_and_return_on_unwind' panicked at crates/city-headless/src/control_data.rs:273:13:
+release
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+workspace_manifest:{"disk_work_image":"128MiB canonical 0xa5, not a serialization of decoder heap","initialized_tail_bytes":5338736,"inline_header_bytes":464,"native_inline_header_bytes":304,"native_owned_bytes":29625968,"owned_bytes":67108864,"parser_and_report":"original 4MiB metadata; 2MiB IO already charged there","table_backings":[{"count":30000,"owned_bytes":1920000},{"count":160000,"owned_bytes":20480000},{"count":24000,"owned_bytes":6144000},{"count":900000,"owned_bytes":3600000}],"thread_stack":"original 2MiB native stack, included in physical process measurements"}
+
+thread 'worker_slots::tests::read_failure_encoding_failure_and_unwind_restore_touched_balance' panicked at crates/city-headless/src/worker_slots.rs:445:60:
+fault
+
+thread 'scale_model_task::stream::tests::exact_fixed_comparison_covers_chunks_lengths_and_io_failure' panicked at crates/city-headless/src/scale_model_task/stream.rs:375:42:
+unwind_fault
+     Running unittests src/main.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_headless-40059f1389a2c47a)
+     Running tests/air.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/air-53458bf7b5328563)
+     Running tests/baseline.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/baseline-f86c5f2438bb5ca1)
+     Running tests/broker.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/broker-2307c7666bbdf017)
+     Running tests/comparison_codec.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/comparison_codec-03ca7b825284ef75)
+     Running tests/compute_worker.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/compute_worker-226524a4dc99bf4c)
+     Running tests/economy_short.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/economy_short-40c3c5299d41c507)
+     Running tests/engine_slot.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/engine_slot-af68a8eee1f8dd70)
+     Running tests/group_sampler.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/group_sampler-e74d6dc52de879ab)
+     Running tests/heap_meter.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/heap_meter-e5fb30cf48240fbf)
+     Running tests/joint_reference.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/joint_reference-70476c37eb20aacf)
+     Running tests/joint_sim.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/joint_sim-e84883a711ed0ecb)
+     Running tests/normal_pool.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/normal_pool-c99a807c5a2c0514)
+{"after":{"begin_ns":42,"end_ns":5042,"identity":{"parent_pid":87338,"pid":87362,"start_abstime":26552143930260},"usage":{"disk_read_bytes":0,"disk_written_bytes":40960,"exit_abstime":0,"footprint_bytes":68436352,"resident_bytes":70500352,"start_abstime":26552143930260,"system_time_raw":198032,"user_time_raw":2136776}},"all_released_addresses_unmapped":true,"before":{"begin_ns":41,"end_ns":4125,"identity":{"parent_pid":87338,"pid":87362,"start_abstime":26552143930260},"usage":{"disk_read_bytes":0,"disk_written_bytes":16384,"exit_abstime":0,"footprint_bytes":68403584,"resident_bytes":70156288,"start_abstime":26552143930260,"system_time_raw":149242,"user_time_raw":508457}},"during":{"begin_ns":84,"end_ns":5167,"identity":{"parent_pid":87338,"pid":87362,"start_abstime":26552143930260},"usage":{"disk_read_bytes":0,"disk_written_bytes":28672,"exit_abstime":0,"footprint_bytes":63160680,"resident_bytes":65241088,"start_abstime":26552143930260,"system_time_raw":178059,"user_time_raw":1703752}},"mapped_backing":{"epoch":74,"initialized_mapped_bytes":67108864,"limit_bytes":67108864,"peak_initialized_mapped_bytes":67108864,"reserved_bytes":67108864},"pool_identity":{"parent_pid":87338,"pid":87362,"start_abstime":26552143930260},"released_original_ranges":[{"allocation_generation":60,"capacity":1048576,"grant_bytes":null,"kind":"normal_pool_mapped_page","len":1048576,"nested_in_arena":false,"ordinal":59,"start":4495327232},{"allocation_generation":61,"capacity":1048576,"grant_bytes":null,"kind":"normal_pool_mapped_page","len":1048576,"nested_in_arena":false,"ordinal":60,"start":4496375808},{"allocation_generation":62,"capacity":1048576,"grant_bytes":null,"kind":"normal_pool_mapped_page","len":1048576,"nested_in_arena":false,"ordinal":61,"start":4497424384},{"allocation_generation":63,"capacity":1048576,"grant_bytes":null,"kind":"normal_pool_mapped_page","len":1048576,"nested_in_arena":false,"ordinal":62,"start":4498472960},{"allocation_generation":64,"capacity":1048576,"grant_bytes":null,"kind":"normal_pool_mapped_page","len":1048576,"nested_in_arena":false,"ordinal":63,"start":4499521536}],"returned_map_generations_new":true,"scope":"actual donor mapping/footprint/owned-wait mechanism only; not joint normal or real16GB acceptance","source_sha256":"08026de28f4032465878b72b2468097757ed1f6bf698e57cc895fa4fb0ea56d1","vm_raw_sha256":["8b5d59c2681daf345dd91d07b7a61286c77e7eb23f031008f4c15cb962089cb7","8f1d6a4fb64c6d36b7da206188dc0c1b3cb20b8c832ad66722129f0f494860b7","6345618a3e1ea5bb415d95726c042cdf6649a171d8752e19b5ac2e2fa2cf4a82"]}
+     Running tests/r07_report.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/r07_report-0cb4f2fdb9b9a763)
+     Running tests/role_arena.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/role_arena-888dcb5f7e99dec9)
+     Running tests/scale_model_task.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/scale_model_task-80e9f3684cacdd1c)
+     Running tests/scale_rare.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/scale_rare-769d3ae15b0537c4)
+     Running tests/scale_reference.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/scale_reference-20b54bce4eccd751)
+     Running tests/scale_sim.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/scale_sim-93f642586f238a07)
+     Running tests/session.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/session-fff1f9ad0567ca92)
+     Running tests/sim_host.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/sim_host-3f4c1e2bcb4b895e)
+     Running tests/stack_restore.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/stack_restore-fc14f24bf14fb11c)
+     Running tests/steady.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/steady-f1250dc526b169c3)
+     Running unittests examples/air_hotpath.rs (/Volumes/HP P900/dev/MyCity/target/release/examples/air_hotpath-36ce6e154f920773)
+     Running unittests src/lib.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_map-b5428b7e586d44ae)
+     Running tests/spatial.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/spatial-cc579d2dda17a41b)
+     Running tests/workspace.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/workspace-73238fad52725d6b)
+     Running unittests src/lib.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_role_allocator-34ec8db35114f432)
+     Running unittests src/bin/role-arena-probe.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/role_arena_probe-ecf2f1f7c953737b)
+     Running tests/process.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/process-7fb69586a142b95c)
+     Running unittests src/lib.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_storage-f5979fb2759bf06a)
+
+thread 'metadata::tests::metadata_counts_full_receipts_and_all_retained_file_slots' panicked at crates/city-storage/src/metadata.rs:328:9:
+assertion `left == right` failed
+  left: 256
+ right: 128
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: test failed, to rerun pass `-p mycity-storage --lib`
+     Running unittests src/bin/construction_utilities.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/construction_utilities-0061e00a35f19cbf)
+     Running unittests src/bin/mycity-storage-worker.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_storage_worker-29f9dbb864290385)
+     Running tests/background.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/background-5597e70456a5eb5e)
+     Running tests/boot.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/boot-b9bfae7f2394a8ab)
+     Running tests/checkpoint.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/checkpoint-55ce4598a9109136)
+
+thread 'checkpoint_unwind_requires_reopen_even_after_current_or_retirement' panicked at crates/city-storage/tests/checkpoint.rs:202:21:
+checkpoint unwind SnapshotSynced
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'checkpoint_unwind_requires_reopen_even_after_current_or_retirement' panicked at crates/city-storage/tests/checkpoint.rs:202:21:
+checkpoint unwind CurrentSynced
+
+thread 'checkpoint_unwind_requires_reopen_even_after_current_or_retirement' panicked at crates/city-storage/tests/checkpoint.rs:202:21:
+checkpoint unwind Retired
+     Running tests/checkpoint_v2.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/checkpoint_v2-cf351322fc5396cb)
+
+thread 'streamed_checkpoint_unwind_never_leaves_a_usable_stale_store' panicked at crates/city-storage/tests/checkpoint_v2.rs:309:21:
+checkpoint unwind WorldSynced
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'streamed_checkpoint_unwind_never_leaves_a_usable_stale_store' panicked at crates/city-storage/tests/checkpoint_v2.rs:309:21:
+checkpoint unwind ReceiptsSynced
+
+thread 'streamed_checkpoint_unwind_never_leaves_a_usable_stale_store' panicked at crates/city-storage/tests/checkpoint_v2.rs:309:21:
+checkpoint unwind RootPublished
+
+thread 'streamed_checkpoint_unwind_never_leaves_a_usable_stale_store' panicked at crates/city-storage/tests/checkpoint_v2.rs:309:21:
+checkpoint unwind CurrentSynced
+
+thread 'streamed_checkpoint_unwind_never_leaves_a_usable_stale_store' panicked at crates/city-storage/tests/checkpoint_v2.rs:309:21:
+checkpoint unwind Retired
+     Running tests/construction.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/construction-e4c17ad293de060d)
+     Running tests/construction_boot_stock_isolation.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/construction_boot_stock_isolation-851bcaece68f7062)
+     Running tests/construction_material_retry.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/construction_material_retry-d738168d4f05292f)
+     Running tests/construction_retry_policy.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/construction_retry_policy-b46910436c2b39c1)
+     Running tests/construction_utilities.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/construction_utilities-bca98307e001e806)
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/15-workspace-final/test-artifacts/mycity-construction-utilities-89630-1
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/15-workspace-final/test-artifacts/mycity-construction-utilities-89630-0
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/15-workspace-final/test-artifacts/mycity-construction-utilities-89630-2
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/15-workspace-final/test-artifacts/mycity-construction-utilities-89630-3
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/15-workspace-final/test-artifacts/mycity-construction-utilities-89630-4
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/15-workspace-final/test-artifacts/mycity-construction-utilities-89630-5
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/15-workspace-final/test-artifacts/mycity-construction-utilities-89630-6
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/15-workspace-final/test-artifacts/mycity-construction-utilities-89630-7
+     Running tests/economy.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/economy-2352041b986b2c77)
+     Running tests/exchange.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/exchange-c60b4e01ea269467)
+     Running tests/inbox.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/inbox-d94986586616c7c6)
+     Running tests/metadata.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/metadata-fe58154edeffcb1f)
+     Running tests/payroll_exit.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/payroll_exit-d019774ca6d2daca)
+PAYROLL_EXIT_ARTIFACT_CREATED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/15-workspace-final/test-artifacts/mycity-payroll-exit-90237-0
+PAYROLL_EXIT_ARTIFACT_CREATED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/15-workspace-final/test-artifacts/mycity-payroll-exit-90237-1
+PAYROLL_EXIT_ARTIFACT_CREATED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/15-workspace-final/test-artifacts/mycity-payroll-exit-90237-2
+PAYROLL_EXIT_ARTIFACT_CREATED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/15-workspace-final/test-artifacts/mycity-payroll-exit-90237-3
+     Running tests/recovery.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/recovery-78943e948ee803df)
+
+thread 'publication_callback_unwind_requires_recovery_and_preserves_committed_receipt' panicked at crates/city-storage/tests/recovery.rs:68:21:
+durable callback unwind
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'publication_callback_unwind_requires_recovery_and_preserves_committed_receipt' panicked at crates/city-storage/tests/recovery.rs:68:21:
+durable callback unwind
+     Running tests/scale_assembly.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/scale_assembly-78fcc067c126d129)
+     Running tests/spatial.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/spatial-ac5051eb8dfcddb5)
+     Running tests/timeline.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/timeline-838ecdba713e0c5c)
+     Running tests/town_market.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/town_market-fd9a2eda03ab76db)
+28_day_store_fixture=daily_sellout_need100 receipt_count=703 town_receipts=[(1, 27), (2, 52), (3, 77), (4, 102), (5, 127), (6, 152), (7, 177), (8, 202), (9, 227), (10, 252), (11, 277), (12, 302), (13, 327), (14, 352), (15, 377), (16, 402), (17, 427), (18, 452), (19, 477), (20, 502), (21, 527), (22, 552), (23, 577), (24, 602), (25, 627), (26, 652), (27, 677), (28, 703)] final_snapshot=Snapshot { sequence: 703, hash: "54da4b070a6c7523793b3afaeca47bc11855c7e0e62147e46137747f74a02630", cash: [(1, 1008100), (2, 746201), (3, 845699), (4, 1200000)], stocks: [(1, 600000, 240000, 5), (2, 97300, 97300, 6), (3, 0, 0, 0)], payroll: Payroll { spec: PayrollSpec { id: 1, payer: 3, payee: 2, home_city: 0, hourly_cents: Money(100), cycle: Daily, ends_at: 2365260 }, started: 0, last_accrual: 2419200, next_due: None, working: false, pending_cycle: None, accrued: Money(21601), billed: Money(21601), paid: Money(21601), remainder: 2400, occurrences: 28, work_seconds: 777660 }, settled_day: 28, summary: MarketSummary { day: 28, operation_id: 703, reference_need: Quantity(100), market_demand: Quantity(0), actual_sales: Quantity(0), unmet_market_demand: Quantity(0), produced: Quantity(0), waste: Quantity(0), goods_payments: Money(0), freight: Money(0), utilities: Money(0), disposal: Money(0), labor_basis: Money(0), wages_accrued: Money(1), idle_labor_expense: Money(1) }, payroll_cursor: PayrollCursor { id: 1, work_seconds: 777660, accrued: Money(21601), paid: Money(21601) }, output_remainder: RecipeOutputRemainder { recipe_id: 1, numerator: 6000 } }
+     Running tests/town_suspend.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/town_suspend-bf0b4b98c0c64589)
+TOWN_SUSPEND_ARTIFACT_CREATED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/15-workspace-final/test-artifacts/mycity-town-suspend-90828-1
+TOWN_SUSPEND_ARTIFACT_CREATED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/15-workspace-final/test-artifacts/mycity-town-suspend-90828-0
+     Running tests/town_utility_recovery.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/town_utility_recovery-b3d4b9463d60aeb7)
+TOWN_UTILITY_ARTIFACT_CREATED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/15-workspace-final/test-artifacts/mycity-town-utility-recovery-90832-1
+TOWN_UTILITY_ARTIFACT_CREATED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/15-workspace-final/test-artifacts/mycity-town-utility-recovery-90832-0
+     Running tests/unfinished_clearance.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/unfinished_clearance-3e77b9f34ae2703a)
+     Running unittests examples/payroll_exit.rs (/Volumes/HP P900/dev/MyCity/target/release/examples/payroll_exit-f81dfe0fdc024c0e)
+     Running unittests examples/town_lifelines.rs (/Volumes/HP P900/dev/MyCity/target/release/examples/town_lifelines-5a318d12c87a6670)
+     Running unittests examples/town_suspend.rs (/Volumes/HP P900/dev/MyCity/target/release/examples/town_suspend-b468b570f3faa64d)
+     Running unittests examples/town_transport.rs (/Volumes/HP P900/dev/MyCity/target/release/examples/town_transport-fae69eb75d8b93c1)
+error: 1 target failed:
+    `-p mycity-storage --lib`

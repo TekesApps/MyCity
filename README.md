@@ -1,8 +1,12 @@
 # MyCity
 
-仓库发布版本：`v0.5.125`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.126`。已开始Rust模型与headless CLI，当前不做UI。
 
-v0.5.125完成[合并pool进程的原满级诊断](docs/evidence/m0-t13a-combined-pool-125/STATUS.md)：同源正常对照、两代/冷恢复、单次半帧和三类进程/恢复失败实测完成，修复混合root错误R07归因。完整恢复窗口少1,327,440B但仍超原normal 7,628,426B，不签物理门、8h或16GB。旧两组8个纯合成载荷精确退役，最新完整恢复输入保留；建设真实材料/水电联调继续，不因本阶段通过而签联合模型。
+v0.5.126新增真实施工Boot电/水履约与累计材料去向：按累计有效worker工时差计量，实际库存、费用、施工进度同一事务提交；材料sink使用真实库存lot basis，不再重复支付现金，清场和拆除不会重置累计sink。容量资源上限调整到16以覆盖实际9资源生命周期（原8不够），既有4MiB Engine／64MiB role界限不变。Run19的11个Store联调测试通过，覆盖施工、Town及跨城Exchange依次争用同一Boot电力库存，以及WAL/checkpoint/重试；路由source77仍是测试替身，不是真实路网联调。详见[施工Boot供给与材料核算](docs/construction-boot-material-accounting.md)。
+
+验证边界：run15全workspace/all-target命令历时946.53秒后exit 101，唯一失败是storage metadata仍按旧资源数8断言；run16修正后storage library 21/21通过，run21在新增测试后严格Clippy通过，最终CLI与冷恢复通过。这不是整个workspace命令exit 0。M0既有物理/8小时失败维持，实际16GB未运行；旧来源性能不转移给本候选，64MiB整体角色准入也未因此通过。详见[本阶段原始收据与边界](docs/evidence/core-construction-utilities-126/STATUS.md)。
+
+v0.5.125完成[合并pool进程的原满级诊断](docs/evidence/m0-t13a-combined-pool-125/STATUS.md)：同源正常对照、两代/冷恢复、单次半帧和三类进程/恢复失败实测完成，修复混合root错误R07归因。完整恢复窗口少1,327,440B但仍超原normal 7,628,426B，不签物理门、8h或16GB。旧两组8个纯合成载荷精确退役，最新完整恢复输入保留；该v125阶段记录当时建设材料/水电联调仍在继续，当前候选结果另列于上方，不因功能通过而签联合性能。
 
 v0.5.124完成[分级速度入口与观察器时钟握手修复](docs/evidence/m0-t13a-tier-speed-124/STATUS.md)：三档各完整30日实际业务、冷恢复和独立全状态比较通过，03原时钟超时失败保留。尚非三轮/四速矩阵或联合性能通过，采样缺测及L1缺席明确记录；原normal、8h与真实16GB门不变。建设真实水电和减少重复进程开销的候选继续隔离实施，尚未实测。
 

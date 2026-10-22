@@ -1097,6 +1097,7 @@ impl Exchange {
         &self,
         r: &Region,
         b: &Boot,
+        construction: Option<&crate::construction::Project>,
         l: &mut impl Ledger,
     ) -> Result<(), TxError> {
         self.inbox.validate()?;
@@ -1107,7 +1108,10 @@ impl Exchange {
         // Retain its exact supplier basis; it is not a cross-city sale/COGS row.
         let mut basis = add(
             add(b.failed_expense, self.loss_expense)?,
-            b.local_electricity_basis,
+            add(
+                b.local_electricity_basis,
+                add(b.local_construction_basis[0], b.local_construction_basis[1])?,
+            )?,
         )?;
         let mut raw = Quantity::ZERO;
         for s in self.stocks {
@@ -1118,6 +1122,21 @@ impl Exchange {
             basis = add(basis, stock.basis)?;
             if (7..=12).contains(&s.stock) {
                 raw = qa(raw, stock.quantity)?;
+            }
+        }
+        // Opt-in Project accounting is the single durable authority for materials
+        // already taken out of this raw-stock graph. It survives clearance and
+        // demolition; labor and utility tariffs are not material inventory basis.
+        if let Some(accounting) = construction.and_then(|p| p.material_accounting) {
+            for row in accounting
+                .rows
+                .iter()
+                .take(usize::from(accounting.row_count))
+            {
+                if (7..=12).contains(&row.stock_id) {
+                    raw = qa(raw, row.consumed)?;
+                    basis = add(basis, row.basis)?;
+                }
             }
         }
         for j in b.jobs {
@@ -1139,7 +1158,9 @@ impl Exchange {
         }
         e = qa(e, l.stock(13)?.quantity)?;
         e = qa(e, b.local_electricity_exported)?;
+        e = qa(e, b.local_construction_exported[0])?;
         water = qa(water, l.stock(14)?.quantity)?;
+        water = qa(water, b.local_construction_exported[1])?;
         if e != b.exports[0]
             || water != b.exports[1]
             || raw != self.initial_raw

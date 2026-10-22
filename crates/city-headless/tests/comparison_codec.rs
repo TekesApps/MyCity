@@ -10,11 +10,12 @@ use mycity_headless::{
 use serde_json::{json, Value};
 use std::io::{self, Write};
 fn oracle(e: &Engine) -> (Vec<u8>, Vec<u8>) {
-    // Independent old Value implementation from v74, not the borrowed adapters.
+    // Independent old Value algorithm from v74, not the borrowed adapters.
+    // The published construction integration versions the comparison envelope v2.
     let v: Value = serde_json::from_slice(&e.export_checkpoint().unwrap()).unwrap();
     let mut world = v["world"].clone();
     world["revision"] = json!(0);
-    let business=serde_json::to_vec(&json!({"schema":"mycity-business-comparison-v1","world":world,
+    let business=serde_json::to_vec(&json!({"schema":"mycity-business-comparison-v2","world":world,
         "resources":v["resources"],"leases":v["leases"],"next_token":v["next_token"],"timeline":v["timeline"]})).unwrap();
     let state=serde_json::to_vec(&json!({"world":e.world().view(),
         "resources":v["resources"],"leases":v["leases"],"next_token":v["next_token"],"timeline":v["timeline"],"background":v["background"]})).unwrap();

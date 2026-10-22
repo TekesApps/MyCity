@@ -1,0 +1,21 @@
+{
+  "failure": "15-workspace-final metadata::tests::metadata_counts_full_receipts_and_all_retained_file_slots",
+  "observed_bytes": 256,
+  "stale_oracle_bytes": 128,
+  "resource_record_bytes": 16,
+  "new_declared_resource_capacity": 16,
+  "old_declared_resource_capacity": 8,
+  "production_metadata_capacity_uses_MAX_RESOURCES": true,
+  "change": "test expected capacity only; production byte bounds unchanged",
+  "patch": "metadata-capacity-policy.patch",
+  "status": "applied_after15_terminal",
+  "affected_verification": {
+    "label": "16-metadata-policy",
+    "exit": {
+      "exit_code": 0,
+      "wall_seconds": 12.410170416000001,
+      "source_unchanged": true
+    },
+    "tests_passed": 21
+  }
+}

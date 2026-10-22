@@ -1,0 +1,14 @@
+[
+  {
+    "actual_bytes": 13824,
+    "oracle_bytes": 13824,
+    "only_semantic_difference": "schema v2 versus v1",
+    "source_of_v2": "published f07a4e850851c843905818b51ca44461bfeb6523"
+  },
+  {
+    "actual_bytes": 66192,
+    "oracle_bytes": 66192,
+    "only_semantic_difference": "schema v2 versus v1",
+    "source_of_v2": "published f07a4e850851c843905818b51ca44461bfeb6523"
+  }
+]

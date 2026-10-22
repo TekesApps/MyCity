@@ -1,0 +1,56 @@
+{
+  "created_utc": "2026-10-22T20:43:57.262147+00:00",
+  "operation": "identical source ZIP hardlink deduplication; no snapshot removed",
+  "full_paths_retained": 15,
+  "files_deduplicated": 7,
+  "unique_file_allocation_before": 60190720,
+  "unique_file_allocation_after": 32047104,
+  "unique_file_allocation_delta": 28143616,
+  "volume_available_observed_delta": 28049408,
+  "APFS_exclusive_physical_reclaim": "not_claimed",
+  "records": [
+    {
+      "retained_full_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/14-resource-lifecycle/source.zip",
+      "deduplicated_full_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/15-workspace-final/source.zip",
+      "reason": "identical full source archive, all commands terminal, no open handles; per-round paths remain complete readable files",
+      "sha256": "1598fc8b230940e8b98c63d2e172da17c2112853353197b793cb95c8cda46d96"
+    },
+    {
+      "retained_full_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/16-metadata-policy/source.zip",
+      "deduplicated_full_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/17-clippy/source.zip",
+      "reason": "identical full source archive, all commands terminal, no open handles; per-round paths remain complete readable files",
+      "sha256": "be29a5623ffe52bc7f0b8a663086966e7422afae8e15650875237645801c8fef"
+    },
+    {
+      "retained_full_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/19-shared-supply-clock/source.zip",
+      "deduplicated_full_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/20-final-bins/source.zip",
+      "reason": "identical full source archive, all commands terminal, no open handles; per-round paths remain complete readable files",
+      "sha256": "bb82fe33dedeb058555867bd2bdfa44298c49b8f6a08872a00808310442575d8"
+    },
+    {
+      "retained_full_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/19-shared-supply-clock/source.zip",
+      "deduplicated_full_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/21-final-clippy/source.zip",
+      "reason": "identical full source archive, all commands terminal, no open handles; per-round paths remain complete readable files",
+      "sha256": "bb82fe33dedeb058555867bd2bdfa44298c49b8f6a08872a00808310442575d8"
+    },
+    {
+      "retained_full_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/19-shared-supply-clock/source.zip",
+      "deduplicated_full_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/22-final-cli/source.zip",
+      "reason": "identical full source archive, all commands terminal, no open handles; per-round paths remain complete readable files",
+      "sha256": "bb82fe33dedeb058555867bd2bdfa44298c49b8f6a08872a00808310442575d8"
+    },
+    {
+      "retained_full_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/19-shared-supply-clock/source.zip",
+      "deduplicated_full_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/23-final-capacity/source.zip",
+      "reason": "identical full source archive, all commands terminal, no open handles; per-round paths remain complete readable files",
+      "sha256": "bb82fe33dedeb058555867bd2bdfa44298c49b8f6a08872a00808310442575d8"
+    },
+    {
+      "retained_full_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/19-shared-supply-clock/source.zip",
+      "deduplicated_full_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/24-final-capacity/source.zip",
+      "reason": "identical full source archive, all commands terminal, no open handles; per-round paths remain complete readable files",
+      "sha256": "bb82fe33dedeb058555867bd2bdfa44298c49b8f6a08872a00808310442575d8"
+    }
+  ],
+  "open_handles_check_exit": 1
+}

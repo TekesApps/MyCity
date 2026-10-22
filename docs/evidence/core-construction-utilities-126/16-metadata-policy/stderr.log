@@ -1,0 +1,3 @@
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction-utilities-current/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 11.55s
+     Running unittests src/lib.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_storage-46fdf6e079eacbdd)

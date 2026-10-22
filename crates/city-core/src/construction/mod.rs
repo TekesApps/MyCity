@@ -11,6 +11,31 @@ pub const STATE_BUDGET_BYTES: usize = 2048;
 /// C namespace avoids the existing D-prefixed system/background operation IDs.
 pub const OPERATION_PREFIX: u64 = 0xc000_0000_0000_0000;
 
+const CONSTRUCTION_UTILITY_COUNT: usize = 2; // electricity, water
+
+fn zero_u64(value: &u64) -> bool {
+    *value == 0
+}
+fn zero_quantities2(value: &[Quantity; CONSTRUCTION_UTILITY_COUNT]) -> bool {
+    value.iter().all(|quantity| *quantity == Quantity::ZERO)
+}
+fn zero_money2(value: &[Money; CONSTRUCTION_UTILITY_COUNT]) -> bool {
+    value.iter().all(|money| *money == Money::ZERO)
+}
+fn no_material_accounting(value: &Option<ConstructionMaterialAccounting>) -> bool {
+    value.is_none()
+}
+fn ceil_nonnegative(numerator: i128, denominator: i128) -> Result<i64, Error> {
+    if numerator < 0 || denominator <= 0 {
+        return Err(Error::InvalidInput);
+    }
+    let quotient = numerator
+        .checked_add(denominator - 1)
+        .ok_or(Error::Overflow)?
+        / denominator;
+    i64::try_from(quotient).map_err(|_| Error::Overflow)
+}
+
 fn is_zero_u32(value: &u32) -> bool {
     *value == 0
 }
@@ -56,6 +81,24 @@ pub struct Material {
     pub basis_remainder: u16,
 }
 
+/// Cumulative real material settlement, frozen to the opening stock limits.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ConstructionMaterialRow {
+    pub stock_id: u32,
+    pub required: Quantity,
+    pub consumed: Quantity,
+    pub basis: Money,
+}
+
+/// Optional bounded material accounting retained after project materials leave the site.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ConstructionMaterialAccounting {
+    pub row_count: u8,
+    pub rows: [ConstructionMaterialRow; MAX_MATERIALS],
+}
+
 /// Opening-bound disposal-work rule for one construction material stock.
 /// Quantities use the existing milli-unit representation.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
@@ -87,6 +130,27 @@ pub struct AbortClearanceHistory {
     pub started_at: Option<GameTime>,
     pub required_worker_seconds: u64,
     pub waste_units: u32,
+}
+
+/// One immutable Boot-backed utility purchase line. Rates are milli-native units per
+/// 3600 construction worker-seconds; tariff is cents per `quantity_unit` milli-units.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ConstructionUtilitySupply {
+    pub operator: u32,
+    pub stock_id: u32,
+    pub rate_per_3600_worker_seconds: Quantity,
+    pub tariff_per_quantity_unit: Money,
+    pub quantity_unit: Quantity,
+}
+
+/// Optional fixed electricity/water supply contract attached at genesis. The two slots
+/// have stable identities: 0 electricity, 1 water. Every Work phase uses the same rates.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ConstructionUtilityContract {
+    pub electricity: Option<ConstructionUtilitySupply>,
+    pub water: Option<ConstructionUtilitySupply>,
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
@@ -130,6 +194,10 @@ pub struct Effect {
     pub project_id: u64,
     pub cash: Money,
     pub materials: [Quantity; MAX_MATERIALS],
+    #[serde(default, skip_serializing_if = "zero_quantities2")]
+    pub utility_quantities: [Quantity; CONSTRUCTION_UTILITY_COUNT],
+    #[serde(default, skip_serializing_if = "zero_money2")]
+    pub utility_fees: [Money; CONSTRUCTION_UTILITY_COUNT],
     pub material_basis: [Money; MAX_MATERIALS],
     pub basis_remainders: [u16; MAX_MATERIALS],
     pub total_basis: Money,
@@ -154,6 +222,10 @@ pub struct Receipt {
     pub success: bool,
     pub cash: Money,
     pub materials: [Quantity; MAX_MATERIALS],
+    #[serde(default, skip_serializing_if = "zero_quantities2")]
+    pub utility_quantities: [Quantity; CONSTRUCTION_UTILITY_COUNT],
+    #[serde(default, skip_serializing_if = "zero_money2")]
+    pub utility_fees: [Money; CONSTRUCTION_UTILITY_COUNT],
     pub total_basis: Money,
     pub site_units: u32,
     pub waste_accepted: bool,
@@ -357,12 +429,25 @@ pub struct Project {
     pub gates: [Gate; MAX_GATES],
     pub material_count: u8,
     pub materials: [Material; MAX_MATERIALS],
+    /// Optional genesis-enabled stock usage history; omitted for legacy semantics.
+    #[serde(default, skip_serializing_if = "no_material_accounting")]
+    pub material_accounting: Option<ConstructionMaterialAccounting>,
     /// Fixed, opening-bound work rules for clearing a never-commissioned project.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub abort_clearance_spec: Option<AbortClearanceSpec>,
     /// Immutable record created when approved clearance work starts.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub abort_clearance: Option<AbortClearanceHistory>,
+    /// Optional immutable Boot supply contract. Missing preserves pre-integration projects.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub utility_contract: Option<ConstructionUtilityContract>,
+    /// Cumulative cursor intentionally survives pause, clearance, and demolition phases.
+    #[serde(default, skip_serializing_if = "zero_u64")]
+    pub utility_worker_seconds: u64,
+    #[serde(default, skip_serializing_if = "zero_quantities2")]
+    pub utility_consumed: [Quantity; CONSTRUCTION_UTILITY_COUNT],
+    #[serde(default, skip_serializing_if = "zero_money2")]
+    pub utility_charged: [Money; CONSTRUCTION_UTILITY_COUNT],
     pub pending: Option<Effect>,
     pub pending_at: Option<GameTime>,
     pub next_effect: u32,
@@ -500,6 +585,33 @@ impl Project {
         self.execution_policy == ExecutionPolicy::RecoverableV2
     }
 
+    /// Enable immutable opening-time material usage accounting for this pristine project.
+    pub fn enable_material_accounting(&mut self) -> Result<(), Error> {
+        if self.material_accounting.is_some() || self.kind == Kind::Demolish {
+            return Err(Error::InvalidInput);
+        }
+        self.validate_profile()?;
+        let count = usize::from(self.material_count);
+        if count == 0 || count > MAX_MATERIALS {
+            return Err(Error::InvalidInput);
+        }
+        let mut accounting = ConstructionMaterialAccounting {
+            row_count: self.material_count,
+            ..ConstructionMaterialAccounting::default()
+        };
+        for i in 0..count {
+            let material = self.materials[i];
+            accounting.rows[i] = ConstructionMaterialRow {
+                stock_id: material.stock_id,
+                required: material.required,
+                consumed: Quantity::ZERO,
+                basis: Money::ZERO,
+            };
+        }
+        self.material_accounting = Some(accounting);
+        self.validate_profile()
+    }
+
     /// Whether this occupied, never-published project can enter the clearance review path.
     pub fn can_request_uncommissioned_clearance(&self) -> bool {
         self.recoverable_commands()
@@ -551,6 +663,196 @@ impl Project {
 
     pub fn is_uncommissioned_clearance(&self) -> bool {
         self.abort_clearance.is_some()
+    }
+
+    fn utility_contract_valid(&self, contract: ConstructionUtilityContract) -> bool {
+        let supplies = [contract.electricity, contract.water];
+        if supplies.iter().all(Option::is_none) {
+            return false;
+        }
+        supplies.into_iter().flatten().all(|supply| {
+            supply.operator != 0
+                && supply.operator != self.owner
+                && supply.stock_id != 0
+                && supply.rate_per_3600_worker_seconds != Quantity::ZERO
+                && supply.tariff_per_quantity_unit != Money::ZERO
+                && supply.quantity_unit != Quantity::ZERO
+        })
+    }
+
+    fn validate_material_accounting(&self) -> Result<(), Error> {
+        let Some(accounting) = self.material_accounting else {
+            return Ok(());
+        };
+        let count = usize::from(accounting.row_count);
+        let material_count = usize::from(self.material_count);
+        if count == 0
+            || count > MAX_MATERIALS
+            || accounting.rows[count..]
+                .iter()
+                .any(|row| *row != ConstructionMaterialRow::default())
+        {
+            return Err(Error::InvalidInput);
+        }
+        let mut total_basis = Money::ZERO;
+        for (i, row) in accounting.rows[..count].iter().enumerate() {
+            if row.stock_id == 0
+                || row.required.value() <= 0
+                || row.consumed.value() < 0
+                || row.consumed > row.required
+                || row.basis.value() < 0
+                || (row.consumed == Quantity::ZERO && row.basis != Money::ZERO)
+                || accounting.rows[..i]
+                    .iter()
+                    .any(|previous| previous.stock_id == row.stock_id)
+            {
+                return Err(Error::InvalidInput);
+            }
+            total_basis = total_basis
+                .checked_add(row.basis)
+                .map_err(|_| Error::Overflow)?;
+        }
+        if total_basis > self.spent {
+            return Err(Error::InvalidInput);
+        }
+
+        if let Some(history) = self.abort_clearance {
+            if count != material_count {
+                return Err(Error::InvalidInput);
+            }
+            for i in 0..count {
+                let row = accounting.rows[i];
+                let material = self.materials[i];
+                if row.stock_id != material.stock_id
+                    || row.required != material.required
+                    || row.consumed != history.original_consumed[i]
+                    || row.consumed != material.consumed
+                {
+                    return Err(Error::InvalidInput);
+                }
+            }
+        } else if self.kind == Kind::Demolish && material_count == 0 {
+            if accounting.rows[..count]
+                .iter()
+                .any(|row| row.consumed != row.required)
+            {
+                return Err(Error::InvalidInput);
+            }
+        } else {
+            if count != material_count {
+                return Err(Error::InvalidInput);
+            }
+            for i in 0..count {
+                let row = accounting.rows[i];
+                let material = self.materials[i];
+                if row.stock_id != material.stock_id
+                    || row.required != material.required
+                    || row.consumed != material.consumed
+                {
+                    return Err(Error::InvalidInput);
+                }
+            }
+        }
+        Ok(())
+    }
+
+    fn utility_totals(
+        &self,
+        worker_seconds: u64,
+    ) -> Result<
+        (
+            [Quantity; CONSTRUCTION_UTILITY_COUNT],
+            [Money; CONSTRUCTION_UTILITY_COUNT],
+        ),
+        Error,
+    > {
+        let mut quantities = [Quantity::ZERO; CONSTRUCTION_UTILITY_COUNT];
+        let mut fees = [Money::ZERO; CONSTRUCTION_UTILITY_COUNT];
+        let Some(contract) = self.utility_contract else {
+            return Ok((quantities, fees));
+        };
+        for (index, supply) in [contract.electricity, contract.water]
+            .into_iter()
+            .enumerate()
+        {
+            let Some(supply) = supply else { continue };
+            let quantity_numerator = i128::from(supply.rate_per_3600_worker_seconds.value())
+                .checked_mul(i128::from(worker_seconds))
+                .ok_or(Error::Overflow)?;
+            let quantity_value = ceil_nonnegative(quantity_numerator, 3600)?;
+            let quantity = Quantity::new(quantity_value).map_err(|_| Error::Overflow)?;
+            let fee_numerator = i128::from(supply.tariff_per_quantity_unit.value())
+                .checked_mul(i128::from(quantity.value()))
+                .ok_or(Error::Overflow)?;
+            let fee_value =
+                ceil_nonnegative(fee_numerator, i128::from(supply.quantity_unit.value()))?;
+            quantities[index] = quantity;
+            fees[index] = Money::new(fee_value).map_err(|_| Error::Overflow)?;
+        }
+        Ok((quantities, fees))
+    }
+
+    fn utility_delta(
+        &self,
+        worker_seconds: u64,
+    ) -> Result<
+        (
+            [Quantity; CONSTRUCTION_UTILITY_COUNT],
+            [Money; CONSTRUCTION_UTILITY_COUNT],
+        ),
+        Error,
+    > {
+        let next_seconds = self
+            .utility_worker_seconds
+            .checked_add(worker_seconds)
+            .ok_or(Error::Overflow)?;
+        let (next_quantity, next_fees) = self.utility_totals(next_seconds)?;
+        let mut quantity_delta = [Quantity::ZERO; CONSTRUCTION_UTILITY_COUNT];
+        let mut fee_delta = [Money::ZERO; CONSTRUCTION_UTILITY_COUNT];
+        for i in 0..CONSTRUCTION_UTILITY_COUNT {
+            quantity_delta[i] = next_quantity[i]
+                .checked_sub(self.utility_consumed[i])
+                .map_err(|_| Error::InvalidInput)?;
+            fee_delta[i] = next_fees[i]
+                .checked_sub(self.utility_charged[i])
+                .map_err(|_| Error::InvalidInput)?;
+        }
+        Ok((quantity_delta, fee_delta))
+    }
+
+    fn validate_utility_state(&self) -> Result<(), Error> {
+        match self.utility_contract {
+            None => {
+                if self.utility_worker_seconds != 0
+                    || !zero_quantities2(&self.utility_consumed)
+                    || !zero_money2(&self.utility_charged)
+                {
+                    return Err(Error::InvalidInput);
+                }
+            }
+            Some(contract) => {
+                if !self.utility_contract_valid(contract) {
+                    return Err(Error::InvalidInput);
+                }
+                let (quantities, fees) = self.utility_totals(self.utility_worker_seconds)?;
+                if quantities != self.utility_consumed || fees != self.utility_charged {
+                    return Err(Error::InvalidInput);
+                }
+            }
+        }
+        if let Some(effect) = self.pending {
+            if effect.kind == EffectKind::Work {
+                let (quantities, fees) = self.utility_delta(effect.worker_seconds)?;
+                if quantities != effect.utility_quantities || fees != effect.utility_fees {
+                    return Err(Error::InvalidInput);
+                }
+            } else if !zero_quantities2(&effect.utility_quantities)
+                || !zero_money2(&effect.utility_fees)
+            {
+                return Err(Error::InvalidInput);
+            }
+        }
+        Ok(())
     }
 
     /// Validate static configuration and runtime invariants for checkpoints.
@@ -666,6 +968,7 @@ impl Project {
                 return Err(Error::InvalidInput);
             }
         }
+        self.validate_material_accounting()?;
         if let Some(history) = self.abort_clearance {
             if !self.recoverable_commands() {
                 return Err(Error::InvalidInput);
@@ -772,6 +1075,7 @@ impl Project {
                 return Err(Error::InvalidInput);
             }
         }
+        self.validate_utility_state()?;
         Ok(())
     }
     /// Validate a pristine opening-bound project profile before it becomes authoritative.
@@ -792,6 +1096,11 @@ impl Project {
             || self.materials[..self.material_count as usize]
                 .iter()
                 .any(|m| m.consumed != Quantity::ZERO || m.basis_remainder != 0)
+            || self.material_accounting.is_some_and(|accounting| {
+                accounting.rows[..usize::from(accounting.row_count)]
+                    .iter()
+                    .any(|row| row.consumed != Quantity::ZERO || row.basis != Money::ZERO)
+            })
             || self.gates[..self.gate_count as usize]
                 .iter()
                 .any(|g| g.decided != GateDecision::Pending)
@@ -895,8 +1204,13 @@ impl Project {
             gates: gs,
             material_count: materials.len() as u8,
             materials: ms,
+            material_accounting: None,
             abort_clearance_spec: None,
             abort_clearance: None,
+            utility_contract: None,
+            utility_worker_seconds: 0,
+            utility_consumed: [Quantity::ZERO; CONSTRUCTION_UTILITY_COUNT],
+            utility_charged: [Money::ZERO; CONSTRUCTION_UTILITY_COUNT],
             pending: None,
             pending_at: None,
             next_effect: 1,
@@ -1223,6 +1537,8 @@ impl Project {
             project_id: self.id,
             cash,
             materials,
+            utility_quantities: [Quantity::ZERO; CONSTRUCTION_UTILITY_COUNT],
+            utility_fees: [Money::ZERO; CONSTRUCTION_UTILITY_COUNT],
             material_basis: [Money::ZERO; MAX_MATERIALS],
             basis_remainders: self.materials.map(|m| m.basis_remainder),
             total_basis: cash,
@@ -1332,8 +1648,16 @@ impl Project {
             }
         }
         let mut e = self.effect(EffectKind::Work, cost, qty, ws, at, 0)?;
+        let (utility_quantities, utility_fees) = self.utility_delta(ws)?;
+        e.utility_quantities = utility_quantities;
+        e.utility_fees = utility_fees;
         e.material_basis = material_basis;
         e.basis_remainders = remainders;
+        for utility_fee in utility_fees {
+            total_basis = total_basis
+                .checked_add(utility_fee)
+                .map_err(|_| Error::Overflow)?;
+        }
         e.total_basis = total_basis;
         if check_estimated_material_basis
             && self
@@ -1353,11 +1677,71 @@ impl Project {
         if receipt.operation_id != e.operation_id
             || receipt.cash != e.cash
             || receipt.materials != e.materials
+            || receipt.utility_quantities != e.utility_quantities
+            || receipt.utility_fees != e.utility_fees
             || receipt.total_basis != e.total_basis
             || receipt.site_units != e.site_units
             || (e.kind == EffectKind::ReceiveWaste && receipt.success && !receipt.waste_accepted)
         {
             return Err(Error::ReceiptMismatch);
+        }
+        let mut material_accounting = self.material_accounting;
+        if receipt.success && e.kind == EffectKind::Work {
+            if let Some(accounting) = material_accounting.as_mut() {
+                let row_count = usize::from(accounting.row_count);
+                if row_count == 0 || row_count > MAX_MATERIALS {
+                    return Err(Error::ReceiptMismatch);
+                }
+                let mut total_basis = Money::ZERO;
+                for row in &accounting.rows[..row_count] {
+                    total_basis = total_basis
+                        .checked_add(row.basis)
+                        .map_err(|_| Error::Overflow)?;
+                }
+                for i in 0..MAX_MATERIALS {
+                    let quantity = e.materials[i];
+                    let basis = e.material_basis[i];
+                    if quantity.value() < 0 || basis.value() < 0 {
+                        return Err(Error::ReceiptMismatch);
+                    }
+                    let stock_id = e.stock_ids[i];
+                    if stock_id == 0 {
+                        if quantity != Quantity::ZERO || basis != Money::ZERO {
+                            return Err(Error::ReceiptMismatch);
+                        }
+                        continue;
+                    }
+                    let row = accounting.rows[..row_count]
+                        .iter_mut()
+                        .find(|row| row.stock_id == stock_id)
+                        .ok_or(Error::ReceiptMismatch)?;
+                    if quantity == Quantity::ZERO {
+                        if basis != Money::ZERO {
+                            return Err(Error::ReceiptMismatch);
+                        }
+                        continue;
+                    }
+                    row.consumed = row
+                        .consumed
+                        .checked_add(quantity)
+                        .map_err(|_| Error::Overflow)?;
+                    if row.consumed > row.required {
+                        return Err(Error::ReceiptMismatch);
+                    }
+                    row.basis = row.basis.checked_add(basis).map_err(|_| Error::Overflow)?;
+                    total_basis = total_basis
+                        .checked_add(basis)
+                        .map_err(|_| Error::Overflow)?;
+                }
+                if total_basis
+                    > self
+                        .spent
+                        .checked_add(e.total_basis)
+                        .map_err(|_| Error::Overflow)?
+                {
+                    return Err(Error::ReceiptMismatch);
+                }
+            }
         }
         if !receipt.success {
             self.failure_count = self.failure_count.checked_add(1).ok_or(Error::Overflow)?;
@@ -1385,6 +1769,20 @@ impl Project {
                     .completed_worker_seconds
                     .checked_add(e.worker_seconds)
                     .ok_or(Error::Overflow)?;
+                if self.utility_contract.is_some() {
+                    self.utility_worker_seconds = self
+                        .utility_worker_seconds
+                        .checked_add(e.worker_seconds)
+                        .ok_or(Error::Overflow)?;
+                    for i in 0..CONSTRUCTION_UTILITY_COUNT {
+                        self.utility_consumed[i] = self.utility_consumed[i]
+                            .checked_add(e.utility_quantities[i])
+                            .map_err(|_| Error::Overflow)?;
+                        self.utility_charged[i] = self.utility_charged[i]
+                            .checked_add(e.utility_fees[i])
+                            .map_err(|_| Error::Overflow)?;
+                    }
+                }
                 self.labor_remainder = ((i128::from(self.labor_cents_per_hour.value())
                     * i128::from(e.worker_seconds)
                     + i128::from(self.labor_remainder))
@@ -1396,6 +1794,7 @@ impl Project {
                         .map_err(|_| Error::Overflow)?;
                     self.materials[i].basis_remainder = e.basis_remainders[i];
                 }
+                self.material_accounting = material_accounting;
                 self.last_work_at = self.pending_at;
                 self.phase = if self.kind == Kind::Demolish {
                     Phase::Demolition
@@ -1484,6 +1883,10 @@ mod road_effect_legacy_serde_tests {
         assert!(!object.contains_key("operating_withdrawn_at"));
         assert!(!object.contains_key("abort_clearance_spec"));
         assert!(!object.contains_key("abort_clearance"));
+        assert!(!object.contains_key("utility_contract"));
+        assert!(!object.contains_key("utility_worker_seconds"));
+        assert!(!object.contains_key("utility_consumed"));
+        assert!(!object.contains_key("utility_charged"));
         let restored: Project = serde_json::from_value(legacy.clone()).unwrap();
         assert_eq!(restored.execution_policy, ExecutionPolicy::LegacyV1);
         assert_eq!(restored.operating_edge_id, 0);
@@ -1491,6 +1894,8 @@ mod road_effect_legacy_serde_tests {
         assert_eq!(restored.operating_withdrawn_at, None);
         assert_eq!(restored.abort_clearance_spec, None);
         assert_eq!(restored.abort_clearance, None);
+        assert_eq!(restored.utility_contract, None);
+        assert_eq!(restored.utility_worker_seconds, 0);
         assert_eq!(serde_json::to_value(restored).unwrap(), legacy);
     }
 
@@ -1594,6 +1999,8 @@ mod road_effect_legacy_serde_tests {
                 success: true,
                 cash: effect.cash,
                 materials: effect.materials,
+                utility_quantities: effect.utility_quantities,
+                utility_fees: effect.utility_fees,
                 total_basis: effect.total_basis,
                 site_units: effect.site_units,
                 waste_accepted: false,
@@ -1673,5 +2080,347 @@ mod road_effect_legacy_serde_tests {
             ],
         };
         assert!(!clearance_spec_valid(&project, spec));
+    }
+}
+
+#[cfg(test)]
+mod construction_utility_rounding_tests {
+    use super::*;
+
+    fn contracted_project() -> Project {
+        let mut project = Project::new(
+            7,
+            Kind::Build,
+            4,
+            3,
+            1,
+            80,
+            1,
+            1,
+            Money::new(1_000_000).unwrap(),
+            Money::new(3_600).unwrap(),
+            28_800,
+            &[Gate {
+                id: 1,
+                category: GateCategory::Permit,
+                evidence_id: 0,
+                party: 1,
+                decided: GateDecision::Pending,
+            }],
+            &[Material {
+                stock_id: 1,
+                required: Quantity::new(1_000).unwrap(),
+                consumed: Quantity::ZERO,
+                basis_per_unit: Money::new(400).unwrap(),
+                basis_remainder: 0,
+            }],
+            GameTime::ZERO,
+        )
+        .unwrap();
+        project.utility_contract = Some(ConstructionUtilityContract {
+            electricity: Some(ConstructionUtilitySupply {
+                operator: 5,
+                stock_id: 2,
+                rate_per_3600_worker_seconds: Quantity::new(1_000).unwrap(),
+                tariff_per_quantity_unit: Money::new(23).unwrap(),
+                quantity_unit: Quantity::new(1_000).unwrap(),
+            }),
+            water: Some(ConstructionUtilitySupply {
+                operator: 5,
+                stock_id: 3,
+                rate_per_3600_worker_seconds: Quantity::new(500).unwrap(),
+                tariff_per_quantity_unit: Money::new(11).unwrap(),
+                quantity_unit: Quantity::new(1_000).unwrap(),
+            }),
+        });
+        project
+    }
+
+    #[test]
+    fn cumulative_ceil_charges_are_partition_invariant_and_tiny_work_is_not_free() {
+        let whole = contracted_project();
+        let expected = whole.utility_delta(3_600).unwrap();
+        assert_eq!(
+            expected.0,
+            [Quantity::new(1_000).unwrap(), Quantity::new(500).unwrap()]
+        );
+        assert_eq!(
+            expected.1,
+            [Money::new(23).unwrap(), Money::new(6).unwrap()]
+        );
+
+        let mut split = contracted_project();
+        let first = split.utility_delta(1_800).unwrap();
+        assert_eq!(first.1, [Money::new(12).unwrap(), Money::new(3).unwrap()]);
+        split.utility_worker_seconds = 1_800;
+        split.utility_consumed = first.0;
+        split.utility_charged = first.1;
+        // The construction phase may change, but the utility cursor is independent of
+        // completed_worker_seconds and keeps applying the same fixed rates.
+        split.kind = Kind::Demolish;
+        split.phase = Phase::Demolition;
+        split.completed_worker_seconds = 0;
+        let second = split.utility_delta(1_800).unwrap();
+        assert_eq!(first.0[0].checked_add(second.0[0]).unwrap(), expected.0[0]);
+        assert_eq!(first.0[1].checked_add(second.0[1]).unwrap(), expected.0[1]);
+        assert_eq!(first.1[0].checked_add(second.1[0]).unwrap(), expected.1[0]);
+        assert_eq!(first.1[1].checked_add(second.1[1]).unwrap(), expected.1[1]);
+
+        let tiny = contracted_project().utility_delta(1).unwrap();
+        assert!(tiny.0.iter().all(|quantity| *quantity > Quantity::ZERO));
+        assert!(tiny.1.iter().all(|fee| *fee > Money::ZERO));
+    }
+
+    #[test]
+    fn utility_contract_rejects_self_supply_and_invalid_rounding_denominators() {
+        let mut project = contracted_project();
+        assert!(project.validate_persisted().is_ok());
+        let mut contract = project.utility_contract.unwrap();
+        contract.electricity.as_mut().unwrap().operator = project.owner;
+        project.utility_contract = Some(contract);
+        assert!(project.validate_persisted().is_err());
+
+        let mut project = contracted_project();
+        let mut contract = project.utility_contract.unwrap();
+        contract.water.as_mut().unwrap().quantity_unit = Quantity::ZERO;
+        project.utility_contract = Some(contract);
+        assert!(project.validate_persisted().is_err());
+    }
+}
+
+#[cfg(test)]
+mod material_accounting_tests {
+    use super::*;
+
+    fn pending_receipt(effect: Effect, success: bool) -> Receipt {
+        Receipt {
+            operation_id: effect.operation_id,
+            success,
+            cash: effect.cash,
+            materials: effect.materials,
+            utility_quantities: effect.utility_quantities,
+            utility_fees: effect.utility_fees,
+            total_basis: effect.total_basis,
+            site_units: effect.site_units,
+            waste_accepted: false,
+        }
+    }
+
+    fn accounted_draft() -> Project {
+        let at = GameTime::new(9 * 3_600).unwrap();
+        let mut project = Project::new(
+            17,
+            Kind::Build,
+            4,
+            3,
+            1,
+            80,
+            1,
+            1,
+            Money::new(1_000_000).unwrap(),
+            Money::new(3_600).unwrap(),
+            3_600,
+            &[Gate {
+                id: 1,
+                category: GateCategory::Permit,
+                evidence_id: 0,
+                party: 1,
+                decided: GateDecision::Pending,
+            }],
+            &[Material {
+                stock_id: 7,
+                required: Quantity::new(1_000).unwrap(),
+                consumed: Quantity::ZERO,
+                basis_per_unit: Money::new(400).unwrap(),
+                basis_remainder: 0,
+            }],
+            at,
+        )
+        .unwrap();
+        project.enable_material_accounting().unwrap();
+        project
+    }
+
+    fn accounted_project() -> Project {
+        let at = GameTime::new(9 * 3_600).unwrap();
+        let mut project = accounted_draft();
+        project.apply(at, Command::File).unwrap();
+        project
+            .apply(
+                at,
+                Command::DecideGate {
+                    gate_id: 1,
+                    decision: GateDecision::Accepted,
+                    evidence_id: 1,
+                },
+            )
+            .unwrap();
+        project.apply(at, Command::Prepare).unwrap();
+        let reserve = project.apply(at, Command::Start).unwrap().unwrap();
+        project.confirm(pending_receipt(reserve, true)).unwrap();
+        // The Engine publishes the generated resource lease with the receipt.
+        project.site_token = Some(1);
+        project
+    }
+
+    fn complete_material_work(project: &mut Project) {
+        project
+            .propose_work(
+                GameTime::new(10 * 3_600).unwrap(),
+                3_600,
+                Money::new(1_000_000).unwrap(),
+                [Quantity::new(1_000).unwrap(); MAX_MATERIALS],
+                3_600,
+            )
+            .unwrap()
+            .unwrap();
+        // The Engine adapter replaces this profile estimate with the source lot's actual basis.
+        let pending = project.pending.as_mut().unwrap();
+        pending.material_basis[0] = Money::new(275).unwrap();
+        pending.total_basis = Money::new(3_875).unwrap();
+        let effect = project.pending.unwrap();
+        project.confirm(pending_receipt(effect, true)).unwrap();
+    }
+
+    #[test]
+    fn opening_material_accounting_records_success_and_ignores_failed_receipts() {
+        eprintln!(
+            "construction_project_size_bytes={}",
+            std::mem::size_of::<Project>()
+        );
+        let mut project = accounted_project();
+        let accounting = project.material_accounting.unwrap();
+        assert_eq!(accounting.row_count, 1);
+        assert_eq!(accounting.rows[0].stock_id, 7);
+        assert_eq!(accounting.rows[0].required, Quantity::new(1_000).unwrap());
+        assert_eq!(accounting.rows[0].consumed, Quantity::ZERO);
+        assert_eq!(accounting.rows[0].basis, Money::ZERO);
+
+        let failed_work = project
+            .propose_work(
+                GameTime::new(10 * 3_600).unwrap(),
+                3_600,
+                Money::new(1_000_000).unwrap(),
+                [Quantity::new(1_000).unwrap(); MAX_MATERIALS],
+                3_600,
+            )
+            .unwrap()
+            .unwrap();
+        assert_eq!(
+            project.confirm(pending_receipt(failed_work, false)),
+            Err(Error::FailedEffect)
+        );
+        let accounting_after_failure = project.material_accounting.unwrap();
+        assert_eq!(accounting_after_failure.rows[0].consumed, Quantity::ZERO);
+        assert_eq!(accounting_after_failure.rows[0].basis, Money::ZERO);
+
+        // Retry with the next effect and observe actual confirmed material basis.
+        complete_material_work(&mut project);
+        let accounting = project.material_accounting.unwrap();
+        assert_eq!(accounting.rows[0].consumed, Quantity::new(1_000).unwrap());
+        assert_eq!(accounting.rows[0].basis, Money::new(275).unwrap());
+        project.validate_persisted().unwrap();
+    }
+
+    #[test]
+    fn optional_material_accounting_is_omitted_for_legacy_and_enablement_is_one_time() {
+        let mut legacy = accounted_project();
+        legacy.material_accounting = None;
+        let value = serde_json::to_value(legacy).unwrap();
+        assert!(!value
+            .as_object()
+            .unwrap()
+            .contains_key("material_accounting"));
+        let restored: Project = serde_json::from_value(value.clone()).unwrap();
+        assert_eq!(restored.material_accounting, None);
+        assert_eq!(serde_json::to_value(restored).unwrap(), value);
+
+        let mut project = accounted_project();
+        assert_eq!(
+            project.enable_material_accounting(),
+            Err(Error::InvalidInput)
+        );
+        assert_eq!(project.material_accounting.unwrap().row_count, 1);
+    }
+
+    #[test]
+    fn material_accounting_survives_cancellation_and_normal_demolition_sink() {
+        let mut cancelled = accounted_draft();
+        cancelled
+            .apply(GameTime::new(9 * 3_600).unwrap(), Command::Cancel)
+            .unwrap();
+        assert_eq!(cancelled.material_accounting.unwrap().row_count, 1);
+
+        let mut demolished = accounted_project();
+        complete_material_work(&mut demolished);
+        demolished.kind = Kind::Demolish;
+        demolished.phase = Phase::Demolition;
+        demolished.material_count = 0;
+        demolished.materials = [Material::default(); MAX_MATERIALS];
+        assert_eq!(
+            demolished.material_accounting.unwrap().rows[0].consumed,
+            Quantity::new(1_000).unwrap()
+        );
+        demolished.validate_persisted().unwrap();
+    }
+
+    #[test]
+    fn material_accounting_rejects_orphaned_and_unbacked_rows() {
+        let mut project = accounted_project();
+        let accounting = project.material_accounting.as_mut().unwrap();
+        accounting.rows[0].required = Quantity::new(2_000).unwrap();
+        assert_eq!(project.validate_persisted(), Err(Error::InvalidInput));
+
+        let mut project = accounted_project();
+        let accounting = project.material_accounting.as_mut().unwrap();
+        accounting.rows[0].basis = Money::new(1).unwrap();
+        assert_eq!(project.validate_persisted(), Err(Error::InvalidInput));
+    }
+
+    #[test]
+    fn material_accounting_rejects_unknown_effect_stock_and_basis_without_quantity() {
+        let mut unknown_stock = accounted_project();
+        unknown_stock
+            .propose_work(
+                GameTime::new(10 * 3_600).unwrap(),
+                3_600,
+                Money::new(1_000_000).unwrap(),
+                [Quantity::new(1_000).unwrap(); MAX_MATERIALS],
+                3_600,
+            )
+            .unwrap();
+        unknown_stock.pending.as_mut().unwrap().stock_ids[0] = 99;
+        let effect = unknown_stock.pending.unwrap();
+        assert_eq!(
+            unknown_stock.confirm(pending_receipt(effect, true)),
+            Err(Error::ReceiptMismatch)
+        );
+        assert_eq!(
+            unknown_stock.material_accounting.unwrap().rows[0].consumed,
+            Quantity::ZERO
+        );
+
+        let mut basis_without_quantity = accounted_project();
+        basis_without_quantity
+            .propose_work(
+                GameTime::new(10 * 3_600).unwrap(),
+                3_600,
+                Money::new(1_000_000).unwrap(),
+                [Quantity::new(1_000).unwrap(); MAX_MATERIALS],
+                3_600,
+            )
+            .unwrap();
+        let pending = basis_without_quantity.pending.as_mut().unwrap();
+        pending.materials[0] = Quantity::ZERO;
+        pending.material_basis[0] = Money::new(1).unwrap();
+        let effect = basis_without_quantity.pending.unwrap();
+        assert_eq!(
+            basis_without_quantity.confirm(pending_receipt(effect, true)),
+            Err(Error::ReceiptMismatch)
+        );
+        assert_eq!(
+            basis_without_quantity.material_accounting.unwrap().rows[0].basis,
+            Money::ZERO
+        );
     }
 }

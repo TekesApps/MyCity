@@ -1,0 +1,23 @@
+
+running 11 tests
+test construction_shared_exchange_raw_sink_is_durable_without_duplicate_material_payment ... ok
+test construction_utilities_store_work_replays_coldopens_and_pause_does_not_reset_meter ... ok
+test construction_utility_store_applied_lost_reply_reopens_and_replays_once ... ok
+test construction_utility_store_prepared_failure_is_unchanged_and_retryable ... ok
+test construction_utility_store_protection_covers_combined_utilities_and_labor ... ok
+test construction_utility_store_shortage_keeps_old_failure_and_new_id_works_after_boot_refill ... ok
+test partial_build_clearance_keeps_material_sink_and_continues_utility_meter_through_cold_replay ... ok
+test published_build_demolition_preserves_full_material_sink_and_cumulative_utility_usage ... ok
+test shared_boot_electricity_construction_work_before_town_market_uses_one_inventory_pool ... FAILED
+test shared_boot_electricity_cross_city_dispatch_then_work_and_town_share_source_stock ... FAILED
+test shared_boot_electricity_town_market_before_construction_leaves_no_work_supply ... FAILED
+
+failures:
+
+failures:
+    shared_boot_electricity_construction_work_before_town_market_uses_one_inventory_pool
+    shared_boot_electricity_cross_city_dispatch_then_work_and_town_share_source_stock
+    shared_boot_electricity_town_market_before_construction_leaves_no_work_supply
+
+test result: FAILED. 8 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.17s
+

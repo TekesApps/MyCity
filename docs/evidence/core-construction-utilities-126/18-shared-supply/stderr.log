@@ -1,0 +1,28 @@
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction-utilities-current/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 22.76s
+     Running tests/construction_utilities.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/construction_utilities-688ad21356dacdfa)
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/18-shared-supply/test-artifacts/mycity-construction-utilities-95637-0
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/18-shared-supply/test-artifacts/mycity-construction-utilities-95637-1
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/18-shared-supply/test-artifacts/mycity-construction-utilities-95637-2
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/18-shared-supply/test-artifacts/mycity-construction-utilities-95637-3
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/18-shared-supply/test-artifacts/mycity-construction-utilities-95637-4
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/18-shared-supply/test-artifacts/mycity-construction-utilities-95637-5
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/18-shared-supply/test-artifacts/mycity-construction-utilities-95637-6
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/18-shared-supply/test-artifacts/mycity-construction-utilities-95637-7
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/18-shared-supply/test-artifacts/mycity-construction-utilities-95637-8
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/18-shared-supply/test-artifacts/mycity-construction-utilities-95637-9
+
+thread 'shared_boot_electricity_construction_work_before_town_market_uses_one_inventory_pool' panicked at crates/city-storage/tests/construction_utilities.rs:252:5:
+Outcome { model: Err(Timeline(Input)), has_persistent_receipt: true, committed_sequence: 19 }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+CONSTRUCTION_UTILITIES_PRESERVED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/18-shared-supply/test-artifacts/mycity-construction-utilities-95637-8
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/18-shared-supply/test-artifacts/mycity-construction-utilities-95637-10
+
+thread 'shared_boot_electricity_cross_city_dispatch_then_work_and_town_share_source_stock' panicked at crates/city-storage/tests/construction_utilities.rs:400:51:
+called `Option::unwrap()` on a `None` value
+CONSTRUCTION_UTILITIES_PRESERVED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/18-shared-supply/test-artifacts/mycity-construction-utilities-95637-9
+
+thread 'shared_boot_electricity_town_market_before_construction_leaves_no_work_supply' panicked at crates/city-storage/tests/construction_utilities.rs:252:5:
+Outcome { model: Err(Timeline(Input)), has_persistent_receipt: true, committed_sequence: 19 }
+CONSTRUCTION_UTILITIES_PRESERVED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/18-shared-supply/test-artifacts/mycity-construction-utilities-95637-10
+error: test failed, to rerun pass `-p mycity-storage --test construction_utilities`

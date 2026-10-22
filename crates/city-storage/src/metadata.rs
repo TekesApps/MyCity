@@ -325,7 +325,7 @@ mod tests {
             id.receipt_capacity_bytes,
             MAX_RECEIPTS * size_of::<JournalRecord>()
         );
-        assert_eq!(id.resource_capacity_bytes, 8 * size_of::<Resource>());
+        assert_eq!(id.resource_capacity_bytes, 16 * size_of::<Resource>());
         assert_eq!(
             id.owned_bytes,
             size_of::<MetadataWorkspace>()

@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/executables/c235709a1f7f01fe370b59f93ec353e110a1157ea7e1ab0d90c13891f50b6a1b/mycity-headless",
+    "model-capacity-plan"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/construction-utilities-current",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-22T20:41:42.481535+00:00",
+  "source_manifest_sha256": "836de1a6f041721ae67141ee8a5240d9c5ed9b2bd391aaee42439d5e061bd175"
+}

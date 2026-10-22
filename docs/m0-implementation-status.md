@@ -1,6 +1,16 @@
 # M0 Rust模型：当前范围、运行方法与验收状态
 
-v0.5.125：[合并pool进程有限诊断](evidence/m0-t13a-combined-pool-125/STATUS.md)同最终exe的正常对照/两代完整快照/cold、单次half-wire和kill-layout/kill-root/cold-error实测完成，89项headless及严格检查通过。混合root不获诊断替换信用、raw照计；同完整三帧窗口减少1,327,440B但原normal仍超7,628,426B。正式joint-driver尚未接入该opt-in，原8h失败、三轮四速和真实16GB门不改变。初始错误归因及helper失败保留；旧8份纯合成文件已精确退役，最新完整恢复原件保留。建设候选最新126/129测试通过，材料sink仍缺，未签建设水电联调。
+## v0.5.126：施工公用资源与永久材料核算
+
+当前工作区以已发布v0.5.125为base，新增真实Boot电/水施工履约及永久材料核算；详细机制与证据见[施工Boot供给与材料核算](construction-boot-material-accounting.md)。公用资源按累计有效worker工时需求差计量；真实库存消耗、费用和施工进度原子提交。材料永久sink累计实际库存lot basis，不重复支付现金；清场和拆除不会重置已消耗/计费累计量。固定资源目录界限为16（实际生命周期需要9个不同资源，原8个不足），既有4MiB Engine及64MiB role预算标准不变。
+
+Run19的11项construction utilities Store测试全部通过，验证WAL/checkpoint/原票重试及三类真实共享Boot电力顺序：施工→Town后库存为99,000、Town产销99；Town先耗尽100,000后施工失败且状态不变；跨城Exchange先出40,000、施工再耗1,000、Town最后消耗59,000电、产销59单位。施工、Town、Exchange共用同一实际库存，没有复制补发。Town路由source77仍是测试替身，不构成真实道路网络联调。相关定向CLI及容量结果不表示完整0.1或性能验收。
+
+验证历史保持分层：run15的全workspace/all-target命令运行946.53秒后exit 101，唯一报告失败为storage metadata仍按旧值8断言；run16改为16后storage library 21/21通过。run21在新增测试后严格Clippy通过，最终CLI/checkpoint/cold通过，详见[本阶段收据](evidence/core-construction-utilities-126/STATUS.md)。不能称run15整套workspace通过，run16也不是重跑整个workspace。本来源不继承旧源码性能结果；M0既有物理/8小时失败维持，实际16GB未运行，64MiB role整体准入及完整M0仍未通过。
+
+## v0.5.125历史阶段
+
+v0.5.125：[合并pool进程有限诊断](evidence/m0-t13a-combined-pool-125/STATUS.md)同最终exe的正常对照/两代完整快照/cold、单次half-wire和kill-layout/kill-root/cold-error实测完成，89项headless及严格检查通过。混合root不获诊断替换信用、raw照计；同完整三帧窗口减少1,327,440B但原normal仍超7,628,426B。正式joint-driver尚未接入该opt-in，原8h失败、三轮四速和真实16GB门不改变。初始错误归因及helper失败保留；旧8份纯合成文件已精确退役，最新完整恢复原件保留。此处是v125的历史状态，不代表当前候选材料sink仍缺或已经通过建设性能验收。
 
 v0.5.124：[三档速度入口及观察器握手](evidence/m0-t13a-tier-speed-124/STATUS.md)完成各720小时/723目标/724窗口与全Engine参照、冷恢复一致，03超时失败留证。仅本来源unpaced功能验证；缺测265/153/99过程采样和L1缺席不签物理/正式速度门，三轮四速、原normal超限、8h失败及真实16GB not_run均不被覆盖。建设公用供给与合并进程的源码候选尚未实测。
 
