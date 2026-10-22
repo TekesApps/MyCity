@@ -395,16 +395,14 @@ fn run() -> Result<(), String> {
         .get(1)
         .is_some_and(|a| matches!(a.as_str(), "speed-run" | "speed-driver"))
     {
-        if args.len() != 4 {
-            return Err(
-                "usage: mycity-headless speed-run|speed-driver NEW_DIR unpaced|600|60|10|1".into(),
-            );
+        if !matches!(args.len(), 4 | 5) {
+            return Err("usage: mycity-headless speed-run|speed-driver NEW_DIR [small|medium|full] unpaced|600|60|10|1".into());
         }
-        let rate = mycity_headless::scale_speed::Rate::parse(&args[3])?;
+        let (tier, rate) = mycity_headless::scale_speed::parse_cli_selection(&args[3..])?;
         if args[1] == "speed-run" {
-            mycity_headless::scale_speed::run(std::path::Path::new(&args[2]), rate)?;
+            mycity_headless::scale_speed::run_tier(std::path::Path::new(&args[2]), tier, rate)?;
         } else {
-            mycity_headless::scale_speed::driver(std::path::Path::new(&args[2]), rate)?;
+            mycity_headless::scale_speed::driver_tier(std::path::Path::new(&args[2]), tier, rate)?;
         }
         return Ok(());
     }

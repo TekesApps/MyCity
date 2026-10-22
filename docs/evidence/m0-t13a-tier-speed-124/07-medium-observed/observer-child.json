@@ -1,0 +1,19 @@
+{
+  "identity": {
+    "pid": 26213,
+    "start_abstime": 26401576426421,
+    "parent_pid": 26212
+  },
+  "begin_ns": 7121916,
+  "end_ns": 7126083,
+  "usage": {
+    "start_abstime": 26401576426421,
+    "exit_abstime": 0,
+    "resident_bytes": 32768,
+    "footprint_bytes": 81992,
+    "user_time_raw": 0,
+    "system_time_raw": 52,
+    "disk_read_bytes": 0,
+    "disk_written_bytes": 0
+  }
+}

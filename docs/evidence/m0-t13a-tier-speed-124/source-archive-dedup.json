@@ -1,0 +1,79 @@
+{
+  "files": [
+    {
+      "path": "01-speed-tests/source.zip",
+      "kept_full_archive": "02-cli-build/source.zip",
+      "sha256": "d902c49494eaa51649580d926beddedf0efc75e658aef6a6a6dbb5fa051b2637",
+      "old_file_allocation_bytes": 3883008,
+      "reason": "byte-identical source archive hardlinked to retained complete source; original path remains fully readable"
+    },
+    {
+      "path": "03-small-functional/source.zip",
+      "kept_full_archive": "02-cli-build/source.zip",
+      "sha256": "d902c49494eaa51649580d926beddedf0efc75e658aef6a6a6dbb5fa051b2637",
+      "old_file_allocation_bytes": 3883008,
+      "reason": "byte-identical source archive hardlinked to retained complete source; original path remains fully readable"
+    },
+    {
+      "path": "04-clock-fix-tests/source.zip",
+      "kept_full_archive": "05-cli-clock-build/source.zip",
+      "sha256": "04c9787d954f5a3e9351a2400c0a5422924bfa36d8ecd2f8478e163c02c2098b",
+      "old_file_allocation_bytes": 3883008,
+      "reason": "byte-identical source archive hardlinked to retained complete source; original path remains fully readable"
+    },
+    {
+      "path": "06-small-functional/source.zip",
+      "kept_full_archive": "05-cli-clock-build/source.zip",
+      "sha256": "04c9787d954f5a3e9351a2400c0a5422924bfa36d8ecd2f8478e163c02c2098b",
+      "old_file_allocation_bytes": 3883008,
+      "reason": "byte-identical source archive hardlinked to retained complete source; original path remains fully readable"
+    },
+    {
+      "path": "07-medium-functional/source.zip",
+      "kept_full_archive": "05-cli-clock-build/source.zip",
+      "sha256": "04c9787d954f5a3e9351a2400c0a5422924bfa36d8ecd2f8478e163c02c2098b",
+      "old_file_allocation_bytes": 3883008,
+      "reason": "byte-identical source archive hardlinked to retained complete source; original path remains fully readable"
+    },
+    {
+      "path": "08-full-functional/source.zip",
+      "kept_full_archive": "05-cli-clock-build/source.zip",
+      "sha256": "04c9787d954f5a3e9351a2400c0a5422924bfa36d8ecd2f8478e163c02c2098b",
+      "old_file_allocation_bytes": 3883008,
+      "reason": "byte-identical source archive hardlinked to retained complete source; original path remains fully readable"
+    },
+    {
+      "path": "09-strict/source.zip",
+      "kept_full_archive": "05-cli-clock-build/source.zip",
+      "sha256": "04c9787d954f5a3e9351a2400c0a5422924bfa36d8ecd2f8478e163c02c2098b",
+      "old_file_allocation_bytes": 3883008,
+      "reason": "byte-identical source archive hardlinked to retained complete source; original path remains fully readable"
+    },
+    {
+      "path": "10-strict-fixed-inputs/source.zip",
+      "kept_full_archive": "05-cli-clock-build/source.zip",
+      "sha256": "04c9787d954f5a3e9351a2400c0a5422924bfa36d8ecd2f8478e163c02c2098b",
+      "old_file_allocation_bytes": 3883008,
+      "reason": "byte-identical source archive hardlinked to retained complete source; original path remains fully readable"
+    },
+    {
+      "path": "11-format/source.zip",
+      "kept_full_archive": "05-cli-clock-build/source.zip",
+      "sha256": "04c9787d954f5a3e9351a2400c0a5422924bfa36d8ecd2f8478e163c02c2098b",
+      "old_file_allocation_bytes": 3883008,
+      "reason": "byte-identical source archive hardlinked to retained complete source; original path remains fully readable"
+    }
+  ],
+  "all_original_paths_readable_full": true,
+  "restore_world_files_deleted": false,
+  "allocated_estimate_before_bytes": 385503232,
+  "allocated_estimate_after_bytes": 350556160,
+  "allocated_estimate_reduction_bytes": 34947072,
+  "summed_removed_file_allocation_bytes": 34947072,
+  "available_disk_before_bytes": 1953460383744,
+  "available_disk_after_bytes": 1953495203840,
+  "observed_available_delta_bytes": 34820096,
+  "exclusive_physical_reclaim_claim": false,
+  "scope": "exact nine byte-identical source ZIP copies only, full pre/post sources retained and all paths hardlinked; no world/snapshot/log/executable/cache removal",
+  "lsof_empty_before": true
+}

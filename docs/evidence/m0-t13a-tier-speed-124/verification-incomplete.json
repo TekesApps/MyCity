@@ -1,0 +1,15 @@
+{
+  "16GB": "not_run",
+  "L1": "absent",
+  "binary": "/Volumes/HP P900/dev/MyCity/work/tier-speed-current-01/executables/97eb89880426633c4fed290471b96553424da77621ce629f9cd24896ce965248/mycity-headless",
+  "binary_sha256": "97eb89880426633c4fed290471b96553424da77621ce629f9cd24896ce965248",
+  "eight_hour": "not_run",
+  "errors": [
+    "03_small_failure_binary_mismatch"
+  ],
+  "performance_acceptance": "not_evaluated",
+  "schema": "mycity-tier-functional-verification-v1",
+  "scope": "functional-only",
+  "status": "failed",
+  "tiers": []
+}

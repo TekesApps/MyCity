@@ -1,0 +1,10 @@
+{
+  "external_owned_charge_bytes": 3407872,
+  "normal_pool_bytes": 67108864,
+  "process_exit_zero": "completed experiment, NOT speed acceptance",
+  "rate": "unpaced",
+  "schema": "mycity-speed-supervisor-v1",
+  "scope": "actual business at the named scale tier; L1 absent; Rust arenas remain inside the existing model cap; native/stack separate",
+  "source_sha256": "7009046693a9b8baa22a029e5224b0464a55ad8dc5eac0dbca7afc3b9b494c62",
+  "tier": "small"
+}

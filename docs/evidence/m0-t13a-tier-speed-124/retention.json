@@ -1,0 +1,20 @@
+{
+  "root": "/Volumes/HP P900/dev/MyCity/work/tier-speed-current-01",
+  "storage": "HP P900 external USB/APFS SSD",
+  "shared_target": "/Volumes/HP P900/dev/MyCity/target",
+  "new_target_created": false,
+  "deleted_files": [],
+  "deleted_allocated_bytes": 0,
+  "allocated_file_estimate_bytes": 350556160,
+  "allocation_note": "du allocated-file estimate; APFS clone/shared extents are not exclusive physical usage",
+  "free_space_change_claimed": false,
+  "process_snapshot": "/Volumes/HP P900/dev/MyCity/work/tier-speed-current-01/phase-end-processes.txt",
+  "lsof_return_code": 1,
+  "open_file_output_bytes": 0,
+  "retention_reason": "three new full business/reference/cold-restore inputs and exact old/new executable/source/dependency evidence are still needed for following source-version checks; no temporary pressure dataset was created",
+  "no_model_process_live": true,
+  "source_archive_dedup_receipt": "source-archive-dedup.json",
+  "source_archive_duplicate_inodes_replaced": 9,
+  "dedup_file_allocation_reduction_bytes": 34947072,
+  "available_disk_observed_delta_bytes": 34820096
+}

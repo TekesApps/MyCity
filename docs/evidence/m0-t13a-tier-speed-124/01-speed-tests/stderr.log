@@ -1,0 +1,9 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/tier-current/crates/city-core)
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity-core-work/tier-current/crates/city-headless)
+   Compiling mycity-role-allocator v0.1.0 (/Users/frankqin/dev/MyCity-core-work/tier-current/crates/city-role-allocator)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity-core-work/tier-current/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/tier-current/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 1m 32s
+     Running unittests src/lib.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_headless-bd191120ee0d5aca)

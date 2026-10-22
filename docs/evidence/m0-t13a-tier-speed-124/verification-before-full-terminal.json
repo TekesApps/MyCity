@@ -1,0 +1,105 @@
+{
+  "16GB": "not_run",
+  "L1": "absent",
+  "binary": "/Volumes/HP P900/dev/MyCity/work/tier-speed-current-01/executables/97eb89880426633c4fed290471b96553424da77621ce629f9cd24896ce965248/mycity-headless",
+  "binary_sha256": "97eb89880426633c4fed290471b96553424da77621ce629f9cd24896ce965248",
+  "eight_hour": "not_run",
+  "errors": [
+    "missing_file:/Volumes/HP P900/dev/MyCity/work/tier-speed-current-01/08-full-observed/observer-report.json"
+  ],
+  "excluded_failed_attempt": {
+    "binary_sha256": "3616d6c67670c1e0413c1b1884a6da13a5349d96348adbf2332507882e767006",
+    "counted_as_success": false,
+    "path": "/Volumes/HP P900/dev/MyCity/work/tier-speed-current-01/03-small-observed/observer-report.json",
+    "reason": "native_clock_timeout",
+    "status": "failed"
+  },
+  "performance_acceptance": "not_evaluated",
+  "schema": "mycity-tier-functional-verification-v1",
+  "scope": "functional-only",
+  "status": "failed",
+  "tiers": [
+    {
+      "business_sha256": "d9b373086e5328aee1813d7535fe38634e4aba1bfe7100980d2af99a3292324b",
+      "cash_total_cents": 3000000,
+      "claims_total_cents": 2000,
+      "completed_hours": 720,
+      "counts": {
+        "accounts": 16,
+        "cities": 8,
+        "claims": 2000,
+        "inflight_peak": 4,
+        "payroll": 8,
+        "quotes": 8,
+        "stocks": 32
+      },
+      "image_sha256": "c2c98455f85452497f630ec2b223f59522ea1fe9afaa4483bf1ebff50f63f434",
+      "observer_clock": {
+        "nonce": "5ce50e9d1c5b2628c0211a8e517f396a",
+        "origin_max_ns": 43110459,
+        "origin_min_ns": 29373167,
+        "pid": 19806,
+        "reply_received_observer_ns": 61277209,
+        "request_sent_observer_ns": 47539917,
+        "source_sha256": "7009046693a9b8baa22a029e5224b0464a55ad8dc5eac0dbca7afc3b9b494c62",
+        "spawn_before_observer_ns": 27508417,
+        "uncertainty_ns": 13737292
+      },
+      "payroll_cycle_counts": {
+        "daily": 3,
+        "monthly": 2,
+        "weekly": 3
+      },
+      "performance_acceptance": "not_evaluated",
+      "sources": 48,
+      "speed_target_met_recorded_only": true,
+      "status": "functional_pass",
+      "tier": "small",
+      "unique_payees": 8,
+      "verified_targets": 723,
+      "wages_total_cents": 15080,
+      "worker_windows": 724
+    },
+    {
+      "business_sha256": "b411165caf29168d3f45ef82fe96f4a86fd5afec40ef08bb9def183c088e0eed",
+      "cash_total_cents": 3000000,
+      "claims_total_cents": 10000,
+      "completed_hours": 720,
+      "counts": {
+        "accounts": 32,
+        "cities": 8,
+        "claims": 10000,
+        "inflight_peak": 4,
+        "payroll": 32,
+        "quotes": 8,
+        "stocks": 64
+      },
+      "image_sha256": "138ec3b8174bee708b738e44ac9d28c2afd684f74363ddf241cfc6c4efeeb123",
+      "observer_clock": {
+        "nonce": "8bb49f5abee5ae18f995d250075d0b3d",
+        "origin_max_ns": 13788250,
+        "origin_min_ns": 7699250,
+        "pid": 26213,
+        "reply_received_observer_ns": 21718500,
+        "request_sent_observer_ns": 15629500,
+        "source_sha256": "7009046693a9b8baa22a029e5224b0464a55ad8dc5eac0dbca7afc3b9b494c62",
+        "spawn_before_observer_ns": 6904916,
+        "uncertainty_ns": 6089000
+      },
+      "payroll_cycle_counts": {
+        "daily": 11,
+        "monthly": 10,
+        "weekly": 11
+      },
+      "performance_acceptance": "not_evaluated",
+      "sources": 96,
+      "speed_target_met_recorded_only": true,
+      "status": "functional_pass",
+      "tier": "medium",
+      "unique_payees": 28,
+      "verified_targets": 723,
+      "wages_total_cents": 59624,
+      "worker_windows": 724
+    }
+  ]
+}

@@ -459,11 +459,21 @@ pub(crate) fn independent_experiment_options(
     measured: bool,
     probe: bool,
 ) -> Result<Experiment, String> {
+    independent_experiment_for_tier(dir, create, measured, probe, Tier::Full)
+}
+/// Same real experiment setup, using the explicitly selected scale profile.
+pub(crate) fn independent_experiment_for_tier(
+    dir: &Path,
+    create: bool,
+    measured: bool,
+    probe: bool,
+    tier: Tier,
+) -> Result<Experiment, String> {
     let exe = std::env::current_exe().map_err(err)?;
     let mut client = if measured {
-        Client::spawn_scale_measured(&exe, &dir.join("world"), create, probe, Tier::Full)?
+        Client::spawn_scale_measured(&exe, &dir.join("world"), create, probe, tier)?
     } else {
-        Client::spawn_scale(&exe, &dir.join("world"), create, probe, Tier::Full)?
+        Client::spawn_scale(&exe, &dir.join("world"), create, probe, tier)?
     };
     if client.next(Duration::from_secs(35))?.kind != "ready" {
         return Err("rare_not_ready".into());

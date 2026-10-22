@@ -1,0 +1,11 @@
+{
+  "binary": "/Volumes/HP P900/dev/MyCity/work/tier-speed-current-01/executables/3616d6c67670c1e0413c1b1884a6da13a5349d96348adbf2332507882e767006/mycity-headless",
+  "binary_sha256": "3616d6c67670c1e0413c1b1884a6da13a5349d96348adbf2332507882e767006",
+  "source_zip_sha256": "d902c49494eaa51649580d926beddedf0efc75e658aef6a6a6dbb5fa051b2637",
+  "source_manifest_sha256": "09e71c0e9126e62e84d2495e9c7bffe3e024c5c46a2a9340139f059e1bd522e2",
+  "storage": "HP P900 external USB/APFS SSD",
+  "scope": "three-tier full 30-day functional and cold-restore verification; timings not formal performance acceptance; L1 absent",
+  "normal_pool_bytes": 67108864,
+  "retention": "complete world/reference/cold proof and executable/source kept",
+  "host_physical_bytes": 34359738368
+}

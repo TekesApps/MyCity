@@ -1,0 +1,7 @@
+
+running 2 tests
+test scale_speed::tests::final_period_starts_early_but_future_periods_are_not_released_early ... ok
+test scale_speed::tests::speed_cli_keeps_legacy_full_and_requires_one_valid_explicit_tier ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 84 filtered out; finished in 0.00s
+

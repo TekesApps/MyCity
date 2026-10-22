@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "/Volumes/HP P900/dev/MyCity/work/tier-speed-current-01/executables/3616d6c67670c1e0413c1b1884a6da13a5349d96348adbf2332507882e767006/mycity-headless",
+    "native-observe",
+    "/Volumes/HP P900/dev/MyCity/work/tier-speed-current-01/03-small-observed",
+    "--",
+    "/Volumes/HP P900/dev/MyCity/work/tier-speed-current-01/executables/3616d6c67670c1e0413c1b1884a6da13a5349d96348adbf2332507882e767006/mycity-headless",
+    "speed-run",
+    "/Volumes/HP P900/dev/MyCity/work/tier-speed-current-01/03-small-observed/model",
+    "small",
+    "unpaced"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/tier-current",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-22T18:26:32.977672+00:00",
+  "source_manifest_sha256": "09e71c0e9126e62e84d2495e9c7bffe3e024c5c46a2a9340139f059e1bd522e2"
+}

@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "cargo",
+    "build",
+    "--release",
+    "-p",
+    "mycity-headless",
+    "--bin",
+    "mycity-headless"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/tier-current",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-22T18:25:07.287635+00:00",
+  "source_manifest_sha256": "09e71c0e9126e62e84d2495e9c7bffe3e024c5c46a2a9340139f059e1bd522e2"
+}

@@ -1,0 +1,8 @@
+{
+  "method": "independent reproduction of build.rs length-prefixed sorted path/content SHA256 from full frozen source archive",
+  "source_zip_sha256": "04c9787d954f5a3e9351a2400c0a5422924bfa36d8ecd2f8478e163c02c2098b",
+  "source_sha256": "7009046693a9b8baa22a029e5224b0464a55ad8dc5eac0dbca7afc3b9b494c62",
+  "build_source_files": 259,
+  "small_observer_source_matches": true,
+  "source_archive_retained": "/Volumes/HP P900/dev/MyCity/work/tier-speed-current-01/05-cli-clock-build/source.zip"
+}

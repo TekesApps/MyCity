@@ -1,4 +1,4 @@
-//! Original full trajectory at fixed wall-clock releases. No reduced days/load.
+//! Named frozen scale trajectory at fixed wall-clock releases. No reduced days/load.
 //! A completed experiment may MISS its speed target; completion is not acceptance.
 use crate::{
     joint_driver, normal_pool,
@@ -29,6 +29,15 @@ fn save(path: &Path, value: &impl Serialize) -> Result<(), String> {
 #[derive(Clone, Copy)]
 pub struct Rate {
     day: Option<u32>,
+}
+/// Parse arguments after NEW_DIR. One value is the legacy rate-only form and
+/// defaults to Full; two values select an explicit tier and rate.
+pub fn parse_cli_selection(args: &[String]) -> Result<(Tier, Rate), String> {
+    match args {
+        [rate] => Ok((Tier::Full, Rate::parse(rate)?)),
+        [tier, rate] => Ok((Tier::parse(tier)?, Rate::parse(rate)?)),
+        _ => Err("speed_arguments".into()),
+    }
 }
 impl Rate {
     pub fn parse(s: &str) -> Result<Self, String> {
@@ -143,17 +152,26 @@ struct Day {
 /// Supervisor owns the real normal pool and actual driver Child. No Python
 /// functional launcher. Run under the unchanged external system observer.
 pub fn run(dir: &Path, rate: Rate) -> Result<(), String> {
+    run_tier(dir, Tier::Full, rate)
+}
+pub fn run_tier(dir: &Path, tier: Tier, rate: Rate) -> Result<(), String> {
     fs::create_dir(dir).map_err(err)?;
     let dir = dir.canonicalize().map_err(err)?;
     let whole = Instant::now();
     save(
         &dir.join("manifest.json"),
         &json!({"schema":"mycity-speed-supervisor-v1",
-        "source_sha256":env!("MYCITY_SOURCE_SHA256"),"rate":rate.name(),
+        "source_sha256":env!("MYCITY_SOURCE_SHA256"),"tier":tier.name(),"rate":rate.name(),
         "external_owned_charge_bytes":crate::diagnostic_contract::EXTERNAL_WITHOUT_OBSERVER,"normal_pool_bytes":normal_pool::BYTES,
-        "scope":"full actual business, L1 absent; full model Rust arenas inside64MiB; native/stack separate",
+        "scope":"actual business at the named scale tier; L1 absent; Rust arenas remain inside the existing model cap; native/stack separate",
         "process_exit_zero":"completed experiment, NOT speed acceptance"}),
     )?;
+    // The observer requires a nonce-bound causal clock exchange before starting
+    // sampling. Without it speed-run can execute business while observation
+    // times out; standalone invocations remain unchanged when the env is absent.
+    crate::observer_clock::synchronize(&dir, || {
+        whole.elapsed().as_nanos().min(u128::from(u64::MAX)) as u64
+    })?;
     let mut pool = normal_pool::Process::spawn(
         &std::env::current_exe().map_err(err)?,
         &dir.join("normal-pool"),
@@ -166,6 +184,7 @@ pub fn run(dir: &Path, rate: Rate) -> Result<(), String> {
         &[
             "speed-driver".as_ref(),
             business.as_os_str(),
+            tier.name().as_ref(),
             rate.name().as_ref(),
         ],
     )?;
@@ -178,6 +197,8 @@ pub fn run(dir: &Path, rate: Rate) -> Result<(), String> {
     #[derive(Deserialize)]
     struct Completed {
         source_sha256: String,
+        tier: String,
+        rate: String,
         completed_hours: u64,
         verified_targets: u64,
         worker_windows: u64,
@@ -192,6 +213,8 @@ pub fn run(dir: &Path, rate: Rate) -> Result<(), String> {
     )
     .map_err(err)?;
     if b.source_sha256 != env!("MYCITY_SOURCE_SHA256")
+        || b.tier != tier.name()
+        || b.rate != rate.name()
         || b.completed_hours != 720
         || b.verified_targets != 723
         || b.worker_windows != 724
@@ -216,7 +239,7 @@ pub fn run(dir: &Path, rate: Rate) -> Result<(), String> {
     save(
         &dir.join("report.json"),
         &json!({"schema":"mycity-speed-supervisor-v1",
-        "source_sha256":env!("MYCITY_SOURCE_SHA256"),"rate":rate.name(),"experiment_completed":true,
+        "source_sha256":env!("MYCITY_SOURCE_SHA256"),"tier":tier.name(),"rate":rate.name(),"experiment_completed":true,
         "whole_wall_seconds":whole.elapsed().as_secs_f64(),"supervisor_heap_peak_requested_bytes":peak,
         "speed_acceptance":"see business/report.json; completion is not target acceptance",
         "shared_8MiB":"not_accepted","normal_3_10GiB":"not_accepted","L1":"absent",
@@ -224,13 +247,17 @@ pub fn run(dir: &Path, rate: Rate) -> Result<(), String> {
     )
 }
 pub fn driver(dir: &Path, rate: Rate) -> Result<(), String> {
-    driver_inner(dir, rate, None)
+    driver_tier(dir, Tier::Full, rate)
+}
+pub fn driver_tier(dir: &Path, tier: Tier, rate: Rate) -> Result<(), String> {
+    driver_inner(dir, tier, rate, None)
 }
 /// Reference is prepared before warmup; no measured city exists before anchor.
 pub(crate) fn steady_driver(dir: &Path, anchor: Instant, span: Duration) -> Result<(), String> {
     scale_model_task::validate_reference(&dir.join("reference"), Tier::Full)?;
     driver_inner(
         dir,
+        Tier::Full,
         Rate::parse(if span == Duration::from_secs(1800) {
             "60"
         } else {
@@ -239,7 +266,12 @@ pub(crate) fn steady_driver(dir: &Path, anchor: Instant, span: Duration) -> Resu
         Some((anchor, span)),
     )
 }
-fn driver_inner(dir: &Path, rate: Rate, steady: Option<(Instant, Duration)>) -> Result<(), String> {
+fn driver_inner(
+    dir: &Path,
+    tier: Tier,
+    rate: Rate,
+    steady: Option<(Instant, Duration)>,
+) -> Result<(), String> {
     if steady.is_none() {
         fs::create_dir(dir).map_err(err)?;
     } else if dir.join("world").exists() {
@@ -249,7 +281,7 @@ fn driver_inner(dir: &Path, rate: Rate, steady: Option<(Instant, Duration)>) -> 
     save(
         &dir.join("speed-manifest.json"),
         &json!({"schema":"mycity-speed-plan-v1",
-        "source_sha256":env!("MYCITY_SOURCE_SHA256"),"rate":rate.name(),"game_days":30,"hours":720,"targets":723,
+        "source_sha256":env!("MYCITY_SOURCE_SHA256"),"tier":tier.name(),"rate":rate.name(),"game_days":30,"hours":720,"targets":723,
         "hour_release":"(ceil(target/3600)-1)*day_wall/24; actions after hour h wait for boundary h",
         "hour_deadline":"h*day_wall/24; no extra wait at final end",
         "operating_start":"immediately before actual Sim create/open, after independent CPU reference",
@@ -260,7 +292,7 @@ fn driver_inner(dir: &Path, rate: Rate, steady: Option<(Instant, Duration)>) -> 
     )?;
     let whole = Instant::now();
     if steady.is_none() {
-        scale_model_task::run(&dir, Tier::Full, Mode::Reference)?;
+        scale_model_task::run(&dir, tier, Mode::Reference)?;
     }
     let reference_seconds = whole.elapsed().as_secs_f64();
     // Must precede the actual Store creation request, not just model initialization.
@@ -272,7 +304,7 @@ fn driver_inner(dir: &Path, rate: Rate, steady: Option<(Instant, Duration)>) -> 
         maximum_query_lateness: Duration::ZERO,
         maximum_save_lateness: Duration::ZERO,
     };
-    let mut e = scale_sim::independent_experiment(&dir, true, true)?;
+    let mut e = scale_sim::independent_experiment_for_tier(&dir, true, true, false, tier)?;
     e.record(json!({"experiment_origin_measurement_ns":e.clock_origin().duration_since(clock.began).as_nanos(),"mapping":"same process Instant offset; origin before actual Sim creation"}))?;
     let sim_ready_seconds = clock.elapsed().as_secs_f64();
     e.record(json!({"speed_operating_started_before_sim_create":true,"sim_ready_seconds":sim_ready_seconds}))?;
@@ -282,7 +314,7 @@ fn driver_inner(dir: &Path, rate: Rate, steady: Option<(Instant, Duration)>) -> 
     let mut days = Vec::with_capacity(30);
     let mut previous_day = Duration::ZERO;
     let mut last_day_start = Duration::ZERO;
-    scale_reference::walk_tier(Tier::Full, |step| {
+    scale_reference::walk_tier(tier, |step| {
         if clock.elapsed() > rate.timeout() {
             return Err("speed_operating_deadline".into());
         }
@@ -396,14 +428,14 @@ fn driver_inner(dir: &Path, rate: Rate, steady: Option<(Instant, Duration)>) -> 
     // Shutdown and cold proof remain observed, outside the fixed measurement window.
     e.call(Command::Stop)?;
     e.client.stop()?;
-    scale_model_task::run(&dir, Tier::Full, Mode::BeforeReopen)?;
+    scale_model_task::run(&dir, tier, Mode::BeforeReopen)?;
     let cold = Instant::now();
     e.client = Client::spawn_scale_measured(
         &std::env::current_exe().map_err(err)?,
         &dir.join("world"),
         false,
         false,
-        Tier::Full,
+        tier,
     )?;
     if e.client.next(Duration::from_secs(35))?.kind != "ready" {
         return Err("speed_cold_ready".into());
@@ -412,8 +444,8 @@ fn driver_inner(dir: &Path, rate: Rate, steady: Option<(Instant, Duration)>) -> 
     e.call(Command::Checkpoint)?;
     e.call(Command::Stop)?;
     e.client.stop()?;
-    let compared = scale_model_task::run(&dir, Tier::Full, Mode::CompareSpeed)?;
-    let mut report = json!({"schema":"mycity-speed-driver-v1","source_sha256":env!("MYCITY_SOURCE_SHA256"),"rate":rate.name(),
+    let compared = scale_model_task::run(&dir, tier, Mode::CompareSpeed)?;
+    let mut report = json!({"schema":"mycity-speed-driver-v1","source_sha256":env!("MYCITY_SOURCE_SHA256"),"tier":tier.name(),"rate":rate.name(),
         "completed_hours":hours,"verified_targets":targets,"worker_windows":windows,
         "entire_engine_including_metadata":"equal_independent_normal_reference",
         "reference_wall_seconds":reference_seconds,"sim_ready_seconds":sim_ready_seconds,"operating_wall_seconds":operating_end.as_secs_f64(),
@@ -425,8 +457,8 @@ fn driver_inner(dir: &Path, rate: Rate, steady: Option<(Instant, Duration)>) -> 
         "days":days,"final_day_with_checkpoint_seconds":final_day_with_checkpoint.as_secs_f64(),
         "target_day_wall_seconds":rate.day,"evaluation_day_budget_seconds":budget.as_secs_f64(),"all_daily_budgets_met":all_days,
         "whole_30day_budget_met":total_met,"speed_target_met":met,
-        "full_profile_60_actual_operating_target":if rate.day==Some(60) {if met {"passed_this_run"}else{"failed_this_run"}}else{"not_evaluated_this_rate"},
-        "full_profile_unpaced_target":if rate.day.is_none() {if met {"passed_this_run"}else{"failed_this_run"}}else{"not_evaluated_this_rate"},
+        "full_profile_60_actual_operating_target":if tier==Tier::Full && rate.day==Some(60) {if met {"passed_this_run"}else{"failed_this_run"}}else{"not_evaluated_other_tier_or_rate"},
+        "full_profile_unpaced_target":if tier==Tier::Full && rate.day.is_none() {if met {"passed_this_run"}else{"failed_this_run"}}else{"not_evaluated_other_tier_or_rate"},
         "cold_ready_seconds":cold_ready_seconds,"cold_proof_and_shutdown_seconds":post_operating.elapsed().as_secs_f64(),
         "whole_driver_wall_seconds":whole.elapsed().as_secs_f64(),"image_sha256":compared.image_sha256,
         "L1":"absent","common_8MiB":"not_accepted","exact_normal_owned":"not_accepted","eight_hour":"not_run","real_16GB":"not_run","full_M0":"not_accepted"});
@@ -440,7 +472,7 @@ fn driver_inner(dir: &Path, rate: Rate, steady: Option<(Instant, Duration)>) -> 
             "maximum_save_lateness_seconds":clock.maximum_save_lateness.as_secs_f64(),
             "formal_steady_acceptance":"requires actual whole-window and independent resource/latency audit"});
     }
-    report["profile"] = json!("L2_full_actual");
+    report["profile"] = json!(format!("L2_{}_actual", tier.name()));
     report["mandatory_pe0_gate"] = json!("not_evaluated_other_profile");
     report["legacy_session_speed"] = json!("not_retested");
     save(&dir.join("report.json"), &report)
@@ -448,6 +480,31 @@ fn driver_inner(dir: &Path, rate: Rate, steady: Option<(Instant, Duration)>) -> 
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn speed_cli_keeps_legacy_full_and_requires_one_valid_explicit_tier() {
+        let old = vec!["60".to_owned()];
+        let (tier, rate) = parse_cli_selection(&old).unwrap();
+        assert_eq!(tier, Tier::Full);
+        assert_eq!(rate.name(), "60");
+
+        for name in ["small", "medium", "full"] {
+            let args = vec![name.to_owned(), "unpaced".to_owned()];
+            let (tier, rate) = parse_cli_selection(&args).unwrap();
+            assert_eq!(tier.name(), name);
+            assert_eq!(rate.name(), "unpaced");
+        }
+
+        for args in [
+            vec!["unknown".to_owned(), "60".to_owned()],
+            vec!["small".to_owned()],
+            vec!["small".to_owned(), "medium".to_owned()],
+            vec!["small".to_owned(), "60".to_owned(), "1".to_owned()],
+            Vec::new(),
+        ] {
+            assert!(parse_cli_selection(&args).is_err());
+        }
+    }
+
     #[test]
     fn final_period_starts_early_but_future_periods_are_not_released_early() {
         for name in ["600", "60", "10", "1"] {

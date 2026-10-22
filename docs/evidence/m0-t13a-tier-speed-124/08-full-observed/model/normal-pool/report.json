@@ -1,0 +1,38 @@
+{
+  "source_sha256": "7009046693a9b8baa22a029e5224b0464a55ad8dc5eac0dbca7afc3b9b494c62",
+  "ready": {
+    "schema": "mycity-normal-pool-v1",
+    "source": "7009046693a9b8baa22a029e5224b0464a55ad8dc5eac0dbca7afc3b9b494c62",
+    "boot": 1792694090519494000,
+    "pid": 35896,
+    "capacity_bytes": 67108864,
+    "diagnostic_reserved_bytes": 262144,
+    "fault_injection": null
+  },
+  "summary": {
+    "capacity_bytes": 67108864,
+    "available_touched_bytes": 67108864,
+    "granted_capacity_bytes": 0,
+    "workspace_capacity_bytes": 0,
+    "workspace_grants": 5,
+    "workspace_returns": 5,
+    "workspace_fills": 5,
+    "grants": 724,
+    "returns": 724,
+    "fill_acknowledgements": 724,
+    "scans": 2442,
+    "rejected_requests": 0,
+    "maximum_prepare_to_fill_or_reap_ns": 181786542
+  },
+  "balanced_after_owned_wait": true,
+  "mapped_backing": {
+    "limit_bytes": 67108864,
+    "reserved_bytes": 67108864,
+    "initialized_mapped_bytes": 67108864,
+    "peak_initialized_mapped_bytes": 67108864,
+    "epoch": 7604
+  },
+  "rust_metadata_cap_bytes": 262144,
+  "normal_owned_acceptance": "not_accepted_until_complete_joint_physical_validation",
+  "scope": "64MiB initialized region/page balance including whole Rust model roles and worker backing; continuously full joint physical pressure, native/stack and diagnostics require observed validation"
+}

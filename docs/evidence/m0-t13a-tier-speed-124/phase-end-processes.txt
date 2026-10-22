@@ -1,0 +1,712 @@
+    1     0 /sbin/launchd
+  327     1 /usr/libexec/logd
+  329     1 /usr/libexec/UserEventAgent
+  331     1 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+  335     1 /usr/sbin/systemstats
+  339     1 /usr/libexec/configd
+  341     1 /System/Library/CoreServices/powerd.bundle/powerd
+  342     1 /usr/libexec/IOMFB_bics_daemon
+  346     1 /usr/libexec/remoted
+  350     1 /System/Library/PrivateFrameworks/CoreSpeech.framework/corespeechd_system
+  352     1 /usr/libexec/watchdogd
+  358     1 /usr/libexec/kernelmanagerd
+  359     1 /usr/libexec/diskarbitrationd
+  363     1 /usr/sbin/syslogd
+  365     1 /usr/libexec/thermalmonitord
+  367     1 /usr/libexec/xprotectd
+  368     1 /usr/libexec/opendirectoryd
+  369     1 /System/Library/PrivateFrameworks/ApplePushService.framework/apsd
+  371     1 /usr/libexec/timed
+  372     1 /System/Library/PrivateFrameworks/MobileDevice.framework/Versions/A/Resources/usbmuxd
+  373     1 /usr/sbin/securityd
+  375     1 /usr/libexec/locationd
+  376     1 /usr/libexec/nesessionmanager
+  378     1 autofsd
+  379     1 /usr/libexec/dasd
+  380     1 /usr/libexec/corerepaird
+  382     1 /usr/sbin/distnoted
+  386     1 /System/Library/CoreServices/logind
+  387     1 /System/Library/PrivateFrameworks/GenerationalStorage.framework/Versions/A/Support/revisiond
+  388     1 /usr/sbin/KernelEventAgent
+  393     1 /usr/sbin/notifyd
+  395     1 /usr/libexec/corebrightnessd
+  396     1 /usr/libexec/AirPlayXPCHelper
+  397     1 /System/Library/Frameworks/CoreMediaIO.framework/Versions/A/Resources/com.apple.cmio.registerassistantservice
+  401     1 /System/Library/PrivateFrameworks/TCC.framework/Support/tccd
+  402     1 /usr/sbin/cfprefsd
+  407     1 /System/Library/CoreServices/coreservicesd
+  408     1 /usr/libexec/runningboardd
+  411     1 /usr/sbin/coreaudiod
+  412     1 /System/Library/PrivateFrameworks/CoreAnalytics.framework/Support/analyticsd
+  413     1 /usr/libexec/lsd
+  419     1 /usr/libexec/apfsd
+  420     1 /usr/libexec/nsurlsessiond
+  424     1 /usr/libexec/eligibilityd
+  437     1 /usr/sbin/distnoted
+  438     1 /usr/sbin/distnoted
+  439     1 /System/Library/Frameworks/Security.framework/Versions/A/XPCServices/authd.xpc/Contents/MacOS/authd
+  441     1 /usr/sbin/distnoted
+  493     1 /usr/sbin/mDNSResponder
+  495     1 /usr/libexec/syspolicyd
+  500     1 Core Audio Driver (ParrotAudioPlugin.driver)
+  502     1 /usr/libexec/audiomxd
+  503     1 /usr/sbin/WirelessRadioManagerd
+  509     1 /usr/libexec/audioclocksyncd
+  511     1 /usr/sbin/mDNSResponderHelper
+  514     1 /usr/libexec/ApplicationFirewall/socketfilterfw
+  515     1 /usr/sbin/distnoted
+  528     1 /usr/libexec/modelmanagerd
+  529     1 /usr/libexec/com.apple.cmio.videodriverkithostextension.systemextension/Contents/MacOS/com.apple.cmio.videodriverkithostextension
+  530     1 /usr/sbin/distnoted
+  532     1 /usr/libexec/cameracaptured
+  533     1 /System/Library/Frameworks/CoreMediaIO.framework/Versions/A/Resources/UVCAssistant.systemextension/Contents/MacOS/UVCAssistant
+  540     1 /System/Library/CoreServices/appleeventsd
+  554     1 /System/Library/DriverExtensions/com.apple.DriverKit-AppleBCMWLAN.dext/com.apple.DriverKit-AppleBCMWLAN
+  555     1 /System/Library/DriverExtensions/com.apple.DriverKit-IOUserDockChannelSerial.dext/com.apple.DriverKit-IOUserDockChannelSerial
+  556     1 /usr/sbin/distnoted
+  560     1 /System/Library/DriverExtensions/com.apple.AppleUserHIDDrivers.dext/com.apple.AppleUserHIDDrivers
+  570     1 /usr/sbin/distnoted
+  584     1 /usr/sbin/distnoted
+  591     1 /System/Library/Frameworks/LocalAuthentication.framework/Support/coreauthd
+  593     1 /usr/sbin/distnoted
+  594     1 /usr/sbin/distnoted
+  596     1 /usr/libexec/secd
+  597     1 /usr/sbin/cfprefsd
+  614     1 /usr/libexec/lsd
+  627     1 /usr/sbin/distnoted
+  655     1 /System/Library/Frameworks/CryptoTokenKit.framework/ctkd
+  666     1 /usr/sbin/filecoordinationd
+  670     1 automountd
+  701     1 /usr/libexec/rosetta/oahd
+  810     1 /System/Library/CoreServices/SubmitDiagInfo
+  829     1 /usr/sbin/distnoted
+  869     1 /System/Library/Frameworks/CryptoTokenKit.framework/ctkahp.bundle/Contents/MacOS/ctkahp
+  889     1 /usr/sbin/distnoted
+  893     1 /usr/sbin/distnoted
+  906     1 /System/Library/PrivateFrameworks/CoreFP.framework/Versions/A/fairplayd
+  911 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+  912 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+  913   911 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+  932     1 /usr/sbin/distnoted
+  933     1 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdbulkimport
+ 1263     1 /System/Library/PrivateFrameworks/BiomeStreams.framework/Support/biomed
+ 1301   335 /usr/sbin/systemstats
+ 1315     1 /System/Library/CoreServices/CrashReporterSupportHelper
+ 1345     1 /usr/sbin/distnoted
+ 1404     1 /usr/sbin/distnoted
+ 1439     1 /System/Library/PrivateFrameworks/AppleCredentialManager.framework/AppleCredentialManagerDaemon
+ 2962     1 /Library/Developer/PrivateFrameworks/CoreSimulator.framework/Resources/bin/simdiskimaged
+ 2992     1 /Library/Developer/PrivateFrameworks/CoreSimulator.framework/Versions/A/XPCServices/SimLaunchHost.arm64.xpc/Contents/MacOS/SimLaunchHost.arm64
+ 3027     1 /usr/libexec/diskimagesiod
+ 3264     1 /usr/libexec/diskimagesiod
+ 3279     1 /usr/libexec/PerfPowerServices
+ 3654     1 /usr/libexec/wifivelocityd
+ 3665 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+ 3668 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+ 3669 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+ 3670 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+ 3730  3668 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+ 3818     1 /usr/libexec/corercd
+ 3893     1 /System/Library/PrivateFrameworks/RemoteManagement.framework/remotemanagementd
+ 3894     1 /System/Library/PrivateFrameworks/RemoteManagement.framework/RemoteManagementAgent
+ 3895     1 /System/Library/PrivateFrameworks/SafariFoundation.framework/Versions/A/XPCServices/SafariConfigurationSubscriber.xpc/Contents/MacOS/SafariConfigurationSubscriber
+ 3896     1 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/SecuritySubscriber.xpc/Contents/MacOS/SecuritySubscriber
+ 3897     1 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/InteractiveLegacyProfilesSubscriber.xpc/Contents/MacOS/InteractiveLegacyProfilesSubscriber
+ 3898     1 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/SecuritySubscriber.xpc/Contents/MacOS/SecuritySubscriber
+ 3899     1 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/ScreenSharingSubscriber.xpc/Contents/MacOS/ScreenSharingSubscriber
+ 3901     1 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/InteractiveLegacyProfilesSubscriber.xpc/Contents/MacOS/InteractiveLegacyProfilesSubscriber
+ 3906     1 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/ScreenSharingSubscriber.xpc/Contents/MacOS/ScreenSharingSubscriber
+ 3927     1 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/LegacyProfilesSubscriber.xpc/Contents/MacOS/LegacyProfilesSubscriber
+ 3928     1 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/LegacyProfilesSubscriber.xpc/Contents/MacOS/LegacyProfilesSubscriber
+ 3929     1 /usr/libexec/smd
+ 3932     1 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/PasscodeSettingsSubscriber.xpc/Contents/MacOS/PasscodeSettingsSubscriber
+ 3933     1 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/PasscodeSettingsSubscriber.xpc/Contents/MacOS/PasscodeSettingsSubscriber
+ 3934     1 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/DiskManagementSubscriber.xpc/Contents/MacOS/DiskManagementSubscriber
+ 3935     1 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/AccountSubscriber.xpc/Contents/MacOS/AccountSubscriber
+ 3936     1 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/ManagedPreferencesSubscriber.xpc/Contents/MacOS/ManagedPreferencesSubscriber
+ 3938     1 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/ManagedAppsSubscriber.xpc/Contents/MacOS/ManagedAppsSubscriber
+ 3939     1 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/SoftwareUpdateSubscriber.xpc/Contents/MacOS/SoftwareUpdateSubscriber
+ 3942     1 /System/Library/Frameworks/ManagedAppDistribution.framework/Support/managedappdistributionagent
+ 3943     1 /System/Library/CoreServices/Software Update.app/Contents/Resources/softwareupdated
+ 3952     1 /System/Library/PrivateFrameworks/InstallCoordination.framework/Support/installcoordinationd
+ 3953     1 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/MigrationSubscriber.xpc/Contents/MacOS/MigrationSubscriber
+ 3954     1 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/ManagementTestSubscriber.xpc/Contents/MacOS/ManagementTestSubscriber
+ 3955     1 /System/Library/PrivateFrameworks/MobileAssetDaemon.framework/Versions/A/XPCServices/com.apple.MobileAsset.DownloadService.Builtin.xpc/Contents/MacOS/com.apple.MobileAsset.DownloadService.Builtin
+ 3956     1 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/ASConfigurationSubscriber.xpc/Contents/MacOS/ASConfigurationSubscriber
+ 3957     1 /System/Library/PrivateFrameworks/SystemMigration.framework/Resources/systemmigrationd
+ 3958     1 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/ManagedSettingsSubscriber.xpc/Contents/MacOS/ManagedSettingsSubscriber
+ 3959     1 /System/Library/CoreServices/iconservicesagent
+ 3960     1 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/ManagedAppsSubscriber.xpc/Contents/MacOS/ManagedAppsSubscriber
+ 3965     1 /System/Library/Frameworks/ManagedAppDistribution.framework/Support/managedappdistributiond
+ 3966     1 /usr/libexec/containermanagerd_system
+ 3968     1 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/ManagementTestSubscriber.xpc/Contents/MacOS/ManagementTestSubscriber
+ 3969     1 /System/Library/PrivateFrameworks/RemoteManagement.framework/XPCServices/ManagedConfigurationFilesSubscriber.xpc/Contents/MacOS/ManagedConfigurationFilesSubscriber
+ 3971     1 /System/Library/PrivateFrameworks/MobileSoftwareUpdate.framework/Versions/A/XPCServices/com.apple.MobileSoftwareUpdate.CleanupPreparePathService.xpc/Contents/MacOS/com.apple.MobileSoftwareUpdate.CleanupPreparePathService
+ 4016     1 /System/Library/Frameworks/Security.framework/Versions/A/XPCServices/XPCTimeStampingService.xpc/Contents/MacOS/XPCTimeStampingService
+ 4053     1 /System/Library/Frameworks/AudioToolbox.framework/AudioComponentRegistrar
+ 4067     1 /usr/libexec/feedbackd
+ 4076     1 /usr/libexec/assessmentagent
+ 4105     1 /System/Library/PrivateFrameworks/CoreAnalytics.framework/Support/analyticsagent
+ 4111     1 /System/Library/Frameworks/CoreTelephony.framework/Support/CommCenter
+ 4116     1 /System/Library/PrivateFrameworks/CommerceKit.framework/Versions/A/Resources/commerce
+ 4127     1 /usr/libexec/nfcd
+ 4128     1 /System/Library/PrivateFrameworks/NearFieldPrivateServices.framework/Versions/A/XPCServices/NFStorageServer.xpc/Contents/MacOS/NFStorageServer
+ 4133     1 /usr/libexec/online-auth-agent
+ 4224     1 /usr/libexec/seputil
+ 4293     1 /usr/bin/ssh-agent
+ 4807 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+ 4808 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+ 4810 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+ 6236     1 /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/browser_crashpad_handler
+ 6238     1 /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/browser_crashpad_handler
+ 6265     1 /Applications/ChatGPT.app/Contents/Resources/native/bare-modifier-monitor
+ 7265     1 /System/Library/Frameworks/AppKit.framework/Versions/C/XPCServices/ThemeWidgetControlViewService.xpc/Contents/MacOS/ThemeWidgetControlViewService
+ 7815     1 /usr/libexec/ioupsd
+ 7884     1 /usr/libexec/airportd
+ 7891     1 /usr/libexec/nearbyd
+ 7894     1 /usr/libexec/wifip2pd
+ 7899     1 /usr/sbin/bluetoothd
+ 7923     1 /System/Library/CoreServices/Software Update.app/Contents/Resources/suhelperd
+ 7940     1 /System/Library/DriverExtensions/IOUserBluetoothSerialDriver.dext/IOUserBluetoothSerialDriver
+ 9464     1 /System/Library/Frameworks/LocalAuthentication.framework/Support/coreautha.bundle/Contents/MacOS/coreautha
+ 9799 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+ 9800 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+ 9801 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+ 9802 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+ 9803 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+ 9850  9799 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+10177 30172 /Applications/Arc.app/Contents/Frameworks/ArcCore.framework/Helpers/Browser Helper (Renderer).app/Contents/MacOS/Browser Helper (Renderer)
+10623 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+10624 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+10625 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+10626 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+10645 10626 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+11133     1 /usr/libexec/taskgated
+11154     1 /Users/frankqin/Library/Application Support/Tekes/BuiltIn/mcp/memory-12b9919ab11a13dc4446f2e5e23cdc9d6760b8555343d14d513754ebe2326335/tekes-memory
+11199     1 /Users/frankqin/Library/Application Support/Tekes/BuiltIn/dsh-0.2.0-rc.2-node-24.20.0-pnpm-11.7.0/node/bin/node
+11222 97653 /Applications/wechatwebdevtools.app/Contents/Frameworks/wechatwebdevtools Helper (Renderer).app/Contents/MacOS/wechatwebdevtools Helper (Renderer)
+11527     1 /Applications/ChatGPT.app/Contents/Resources/native/bare-modifier-monitor
+11706     1 /System/Library/Frameworks/ExtensionFoundation.framework/Versions/A/XPCServices/extensionkitservice.xpc/Contents/MacOS/extensionkitservice
+11707     1 /Applications/ChatGPT.app/Contents/Resources/native/bare-modifier-monitor
+11859  9850 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+11860  9850 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+11861  9850 /Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex
+12452 69391 /Applications/WeChat.app/Contents/MacOS/WeChatAppEx.app/Contents/Frameworks/WeChatAppEx Framework.framework/Versions/C/Helpers/WeChatAppEx Helper (Renderer).app/Contents/MacOS/WeChatAppEx Helper (Renderer)
+12485 69391 /Applications/WeChat.app/Contents/MacOS/WeChatAppEx.app/Contents/Frameworks/WeChatAppEx Framework.framework/Versions/C/Helpers/WeChatAppEx Helper (Plugin).app/Contents/MacOS/WeChatAppEx Helper (Plugin)
+12567 30172 /Applications/Arc.app/Contents/Frameworks/ArcCore.framework/Helpers/Browser Helper.app/Contents/MacOS/Browser Helper
+12568 30172 /Applications/Arc.app/Contents/Frameworks/ArcCore.framework/Helpers/Browser Helper.app/Contents/MacOS/Browser Helper
+13250     1 /System/Library/CoreServices/ControlCenter.app/Contents/PlugIns/DisplayControls.appex/Contents/MacOS/DisplayControls
+13314     1 /System/Library/PrivateFrameworks/XprotectFramework.framework/Versions/A/XPCServices/XprotectService.xpc/Contents/MacOS/XprotectService
+13747 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+13748 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+13749 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+13750 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+13752 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+13813 13752 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+14042     1 /usr/sbin/distnoted
+14198     1 /System/Library/Input Methods/JapaneseIM-RomajiTyping.app/Contents/PlugIns/JapaneseIM-RomajiTyping.appex/Contents/MacOS/JapaneseIM-RomajiTyping
+15258     1 /var/folders/lg/msp2zt0x5q14_lxl12ts9lsw0000gn/T/sk-membership-direct-20261021-rdmq_4lb/quota-venv/bin/python
+15259     1 /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+16734     1 /System/Applications/Mail.app/Contents/PlugIns/com.apple.mail.SpotlightIndexExtension.appex/Contents/MacOS/com.apple.mail.SpotlightIndexExtension
+17473     1 /System/Library/PrivateFrameworks/MediaAnalysis.framework/Versions/A/mediaanalysisd
+17479     1 /System/Library/CoreServices/ScopedBookmarkAgent
+17531     1 /usr/libexec/keybagd
+17678     1 /System/Library/PrivateFrameworks/CloudTelemetry.framework/Versions/A/XPCServices/CloudTelemetryService.xpc/Contents/MacOS/CloudTelemetryService
+17760     1 /System/Library/PrivateFrameworks/IMDPersistence.framework/XPCServices/IMDPersistenceAgent.xpc/Contents/MacOS/IMDPersistenceAgent
+18196     1 /usr/libexec/dmd
+18230     1 /usr/libexec/PowerUIAgent
+18350     1 /System/Library/PrivateFrameworks/AppStoreDaemon.framework/Support/appstoreagent
+19111 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+19112 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+19113 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+19114 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+19115 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+19117 19114 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+19542     1 /System/Library/PrivateFrameworks/TextToSpeechVoiceBankingSupport.framework/Support/voicebankingd
+19633     1 /usr/libexec/mmaintenanced
+19634     1 /System/Library/PrivateFrameworks/HomeKitEvents.framework/Support/homeeventsd
+19635     1 /usr/libexec/swtransparencyd
+19636     1 /usr/libexec/spotlightknowledged.updater
+19760     1 /System/Library/PrivateFrameworks/PrivateCloudCompute.framework/privatecloudcomputed.app/Contents/MacOS/privatecloudcomputed
+19761     1 /usr/libexec/transparencyd
+19762     1 /System/Library/PrivateFrameworks/CoreFollowUp.framework/Versions/A/Support/followupd
+19765     1 /System/Library/PrivateFrameworks/ProtectedCloudStorage.framework/Helpers/ProtectedCloudKeySyncing
+19903     1 /System/Library/PrivateFrameworks/MapsSync.framework/mapssyncd
+19904     1 /System/Library/PrivateFrameworks/GenerativeExperiencesRuntime.framework/Versions/A/generativeexperiencesd
+19905     1 /System/Library/PrivateFrameworks/AppleIntelligenceReportingProcessing.framework/Versions/A/XPCServices/AppleIntelligenceReportingProcessingService.xpc/Contents/MacOS/AppleIntelligenceReportingProcessingService
+19936     1 /System/Library/PrivateFrameworks/ModelCatalogRuntime.framework/Versions/A/ModelCatalogAgent
+21626 19117 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+21627 19117 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+21628 19117 /Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex
+21819     1 /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+21820     1 /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+21821     1 /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+21822     1 /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+21823     1 /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+22573     1 /System/Library/PrivateFrameworks/UniversalAccess.framework/Versions/A/Resources/universalAccessAuthWarn.app/Contents/MacOS/universalAccessAuthWarn
+24145 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+24146 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+24147 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+24148 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+24196 24147 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+24343     1 /System/Library/PrivateFrameworks/StatusKit.framework/StatusKitAgent
+24503     1 /System/Library/PrivateFrameworks/SystemStatusServer.framework/Support/systemstatusd
+26030     1 /usr/libexec/rtcreportingd
+26147     1 /usr/libexec/triald_system
+26358     1 /System/Library/PrivateFrameworks/AssistantServices.framework/Versions/A/Support/assistantd
+26383     1 /System/Library/Frameworks/LocalAuthentication.framework/Support/coreauthd
+26594 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+26595 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+26596 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+26597 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+26598 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+26617 26597 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+26619     1 adb
+26861     1 /System/Library/Frameworks/QuickLookUI.framework/Versions/A/PlugIns/QLPreviewGenerationExtension.appex/Contents/MacOS/QLPreviewGenerationExtension
+26979 97759 pi
+27055     1 /System/Library/CoreServices/TextInputSwitcher.app/Contents/MacOS/TextInputSwitcher
+27077     1 /System/Library/PrivateFrameworks/JetCore.framework/Support/jetpackassetd
+27106     1 /System/Library/PrivateFrameworks/AppSSO.framework/Support/AppSSOAgent.app/Contents/MacOS/AppSSOAgent
+27133     1 /System/Applications/Weather.app/Contents/PlugIns/WeatherWidget.appex/Contents/MacOS/WeatherWidget
+27134     1 /System/Applications/Stocks.app/Contents/PlugIns/StocksWidget.appex/Contents/MacOS/StocksWidget
+27141     1 /usr/sbin/BTLEServerAgent
+27417     1 /System/Library/Frameworks/OpenGL.framework/Versions/A/Libraries/CVMServer
+27633     1 /System/Library/CoreServices/Siri.app/Contents/MacOS/Siri
+27777     1 /System/Library/PrivateFrameworks/CoreSuggestions.framework/Versions/A/Support/suggestd
+27782     1 /System/Library/PrivateFrameworks/SyncedDefaults.framework/Support/syncdefaultsd
+27882     1 /System/Library/CoreServices/CoreLocationAgent.app/Contents/MacOS/CoreLocationAgent
+27915     1 /System/Library/CoreServices/CoreServicesUIAgent.app/Contents/MacOS/CoreServicesUIAgent
+28033     1 /System/Library/CoreServices/talagentd
+28046     1 /System/Library/PrivateFrameworks/BackgroundTaskManagement.framework/Support/BackgroundTaskManagementAgent.app/Contents/MacOS/BackgroundTaskManagementAgent
+28093     1 /usr/libexec/routined
+28100     1 /System/Library/CoreServices/Siri.app/Contents/XPCServices/SiriNCService.xpc/Contents/MacOS/SiriNCService
+28247     1 /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.40/Helpers/browser_crashpad_handler
+28249     1 /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.40/Helpers/browser_crashpad_handler
+29243     1 /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/browser_crashpad_handler
+29248     1 /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/browser_crashpad_handler
+29447     1 /usr/sbin/distnoted
+29550     1 /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/browser_crashpad_handler
+29552     1 /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/browser_crashpad_handler
+30172     1 /Applications/Arc.app/Contents/MacOS/Arc
+30176 30172 /Applications/Arc.app/Contents/Frameworks/ArcCore.framework/Helpers/Browser Helper.app/Contents/MacOS/Browser Helper
+30177 30172 /Applications/Arc.app/Contents/Frameworks/ArcCore.framework/Helpers/Browser Helper.app/Contents/MacOS/Browser Helper
+30178 30172 /Applications/Arc.app/Contents/Frameworks/ArcCore.framework/Helpers/Browser Helper.app/Contents/MacOS/Browser Helper
+30183     1 /System/Library/PrivateFrameworks/SafariPlatformSupport.framework/Versions/A/XPCServices/com.apple.SafariPlatformSupport.Helper.xpc/Contents/MacOS/com.apple.SafariPlatformSupport.Helper
+30575     1 /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.40/Helpers/browser_crashpad_handler
+30577     1 /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.40/Helpers/browser_crashpad_handler
+31070 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+31071 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+31072 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+31073 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+31074 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+31107 31074 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+31251     1 /System/Library/ExtensionKit/Extensions/AudiovisualThumbnailExtension.appex/Contents/MacOS/AudiovisualThumbnailExtension
+31817     1 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/managedcorespotlightd
+33040 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+33041 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+33042 33040 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+33106     1 /Applications/Android Studio.app/Contents/jbr/Contents/Home/bin/java
+33898 69391 /Applications/WeChat.app/Contents/MacOS/WeChatAppEx.app/Contents/Frameworks/WeChatAppEx Framework.framework/Versions/C/Helpers/WeChatAppEx Helper (Renderer).app/Contents/MacOS/WeChatAppEx Helper (Renderer)
+34058     1 /System/Library/CoreServices/Setup Assistant.app/Contents/Resources/mbuseragent
+34481     1 /opt/homebrew/lib/node_modules/agent-browser/bin/agent-browser-darwin-arm64
+35171     1 /Users/frankqin/.codex/worktrees/gallery-design-baseline/TekesUI/design/reviews/nested-reading-selection-20261023/retained/TekesUI Reading Selection Final.app/Contents/MacOS/reading-selection-final
+35200     1 /System/Library/Frameworks/Metal.framework/Versions/A/XPCServices/MTLCompilerService.xpc/Contents/MacOS/MTLCompilerService
+35212     1 /System/Library/Frameworks/Metal.framework/Versions/A/XPCServices/MTLCompilerService.xpc/Contents/MacOS/MTLCompilerService
+35213     1 /System/Library/PrivateFrameworks/SafariPlatformSupport.framework/Versions/A/XPCServices/com.apple.SafariPlatformSupport.Helper.xpc/Contents/MacOS/com.apple.SafariPlatformSupport.Helper
+35616 80971 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+35617 80971 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+35618 80971 /Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex
+35960     1 /System/Library/Frameworks/AppKit.framework/Versions/C/XPCServices/ThemeWidgetControlViewService.xpc/Contents/MacOS/ThemeWidgetControlViewService
+38228 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+38229 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+38243 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+38244 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+38245 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+38246 38245 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+38631     1 /System/Library/PrivateFrameworks/MobileSoftwareUpdate.framework/Support/softwareupdated
+38763     1 /usr/libexec/assetsubscriptiond
+40152     1 /Library/Apple/System/Library/PrivateFrameworks/RemotePairing.framework/Versions/A/XPCServices/remotepairingd.xpc/Contents/MacOS/remotepairingd
+40216     1 /System/Library/PrivateFrameworks/HomeKitDaemon.framework/Support/homed
+40260     1 /System/Library/PrivateFrameworks/AppleMediaServicesUI.framework/amsengagementd
+40261     1 /usr/libexec/remindd
+40262     1 /System/Library/PrivateFrameworks/MobileTimer.framework/Executables/mobiletimerd
+40275     1 /usr/libexec/findmylocateagent
+41092     1 /usr/libexec/containermanagerd
+41412     1 /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/HIServices.framework/Versions/A/XPCServices/com.apple.hiservices-xpcservice.xpc/Contents/MacOS/com.apple.hiservices-xpcservice
+41751     1 /usr/sbin/cfprefsd
+42178     1 /usr/libexec/mobileactivationd
+42503 69391 /Applications/WeChat.app/Contents/MacOS/WeChatAppEx.app/Contents/Frameworks/WeChatAppEx Framework.framework/Versions/C/Helpers/WeChatAppEx Helper (Renderer).app/Contents/MacOS/WeChatAppEx Helper (Renderer)
+43715 30172 /Applications/Arc.app/Contents/Frameworks/ArcCore.framework/Helpers/Browser Helper (Renderer).app/Contents/MacOS/Browser Helper (Renderer)
+43898     1 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+44196     1 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+44462     1 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdworker_shared
+44467 80467 /bin/zsh
+44479 44467 /Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python
+44480 80467 /bin/zsh
+44481 44480 (zsh)
+44482 44481 (security)
+44483 44479 ps
+44514     1 /usr/sbin/cfprefsd
+44515     1 /usr/sbin/cfprefsd
+44517     1 /usr/sbin/cfprefsd
+44519     1 /usr/sbin/cfprefsd
+44522     1 /usr/sbin/cfprefsd
+44524     1 /usr/sbin/cfprefsd
+44535     1 /usr/sbin/cfprefsd
+44536     1 /usr/sbin/cfprefsd
+44537     1 /usr/sbin/cfprefsd
+44538     1 /usr/sbin/cfprefsd
+44539     1 /usr/sbin/cfprefsd
+44545     1 /usr/libexec/aneuserd
+46364 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+46365 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+46366 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+46367 46366 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+48937 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+48938 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+48939 48938 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+49063     1 /System/Library/PrivateFrameworks/CloudKitDaemon.framework/Support/cloudd
+49064     1 /System/Library/PrivateFrameworks/CloudTelemetry.framework/Versions/A/XPCServices/CloudTelemetryService.xpc/Contents/MacOS/CloudTelemetryService
+49347     1 /usr/libexec/knowledge-agent
+49837     1 /System/Library/PrivateFrameworks/GeoServices.framework/Versions/A/XPCServices/com.apple.geod.xpc/Contents/MacOS/com.apple.geod
+50156 30172 /Applications/Arc.app/Contents/Frameworks/ArcCore.framework/Helpers/Browser Helper (Renderer).app/Contents/MacOS/Browser Helper (Renderer)
+50157 30172 /Applications/Arc.app/Contents/Frameworks/ArcCore.framework/Helpers/Browser Helper (Renderer).app/Contents/MacOS/Browser Helper (Renderer)
+51132     1 /System/Library/PrivateFrameworks/TelephonyUtilities.framework/callservicesd
+52136 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+52137 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+52138 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+52139 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+52140 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+52185 52137 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+53941     1 /System/Library/CoreServices/PowerChime.app/Contents/MacOS/PowerChime
+54068     1 /Applications/Android Studio.app/Contents/jbr/Contents/Home/bin/java
+54502     1 /System/Library/PrivateFrameworks/WorkflowKit.framework/XPCServices/ShortcutsViewService.xpc/Contents/MacOS/ShortcutsViewService
+54688     1 /usr/libexec/searchpartyd
+55515     1 /System/Library/PrivateFrameworks/SoftwareUpdate.framework/Resources/SoftwareUpdateNotificationManager.app/Contents/MacOS/SoftwareUpdateNotificationManager
+55620     1 /usr/libexec/trustd
+55621     1 /usr/libexec/trustd
+56082     1 /System/Library/PrivateFrameworks/UIFoundation.framework/Versions/A/XPCServices/nsattributedstringagent.xpc/Contents/MacOS/nsattributedstringagent
+56179     1 /System/Library/PrivateFrameworks/SafariPlatformSupport.framework/Versions/A/XPCServices/com.apple.SafariPlatformSupport.Helper.xpc/Contents/MacOS/com.apple.SafariPlatformSupport.Helper
+56203 69180 /Applications/WeChat.app/Contents/Frameworks/wxocr
+56204 69180 /Applications/WeChat.app/Contents/Frameworks/wxplayer
+56205 69180 /Applications/WeChat.app/Contents/Frameworks/wxutility
+56206 69391 /Applications/WeChat.app/Contents/MacOS/WeChatAppEx.app/Contents/Frameworks/WeChatAppEx Framework.framework/Versions/C/Helpers/WeChatAppEx Helper.app/Contents/MacOS/WeChatAppEx Helper
+56224 69391 /Applications/WeChat.app/Contents/MacOS/WeChatAppEx.app/Contents/Frameworks/WeChatAppEx Framework.framework/Versions/C/Helpers/WeChatAppEx Helper (Renderer).app/Contents/MacOS/WeChatAppEx Helper (Renderer)
+56225 69391 /Applications/WeChat.app/Contents/MacOS/WeChatAppEx.app/Contents/Frameworks/WeChatAppEx Framework.framework/Versions/C/Helpers/WeChatAppEx Helper (Renderer).app/Contents/MacOS/WeChatAppEx Helper (Renderer)
+56230 69391 /Applications/WeChat.app/Contents/MacOS/WeChatAppEx.app/Contents/Frameworks/WeChatAppEx Framework.framework/Versions/C/Helpers/WeChatAppEx Helper (Renderer).app/Contents/MacOS/WeChatAppEx Helper (Renderer)
+56411     1 /usr/libexec/usermanagerd
+56596     1 /System/Library/Frameworks/AppKit.framework/Versions/C/XPCServices/com.apple.appkit.xpc.openAndSavePanelService.xpc/Contents/MacOS/com.apple.appkit.xpc.openAndSavePanelService
+57682     1 /usr/libexec/gamepolicyd
+57904     1 /usr/libexec/GamePolicyAgent
+59141     1 /System/Library/Frameworks/Contacts.framework/Support/contactsd
+65914     1 /usr/libexec/duetexpertd
+65986     1 /usr/libexec/studentd
+66195 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+66196 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+66197 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+66198 66197 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+66221     1 /usr/libexec/nehelper
+66387     1 /usr/sbin/netbiosd
+66398     1 /System/Library/Frameworks/AppKit.framework/Versions/C/XPCServices/ThemeWidgetControlViewService.xpc/Contents/MacOS/ThemeWidgetControlViewService
+66462     1 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mds_stores
+66902     1 /usr/libexec/trustd
+67572     1 /usr/libexec/storagekitd
+68265     1 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mds
+68270     1 /System/Library/CoreServices/launchservicesd
+68277     1 /System/Library/PrivateFrameworks/MediaRemote.framework/Support/mediaremoted
+68279     1 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer
+68281     1 /System/Library/PrivateFrameworks/CoreDuetContext.framework/Resources/contextstored
+68293     1 /System/Library/CoreServices/loginwindow.app/Contents/MacOS/loginwindow
+68332     1 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mds_stores
+68364     1 /System/Library/PrivateFrameworks/AmbientDisplay.framework/Versions/A/XPCServices/com.apple.AmbientDisplayAgent.xpc/Contents/MacOS/com.apple.AmbientDisplayAgent
+69125     1 /usr/libexec/UserEventAgent
+69128     1 /System/Library/CoreServices/audioaccessoryd
+69130     1 /System/Library/CoreServices/ControlCenter.app/Contents/MacOS/ControlCenter
+69133     1 /usr/sbin/universalaccessd
+69134     1 /usr/libexec/pboard
+69137     1 /System/Library/Frameworks/InputMethodKit.framework/Resources/imklaunchagent
+69138     1 /System/Library/PrivateFrameworks/BiomeStreams.framework/Support/BiomeAgent
+69140     1 /System/Library/PrivateFrameworks/UserNotificationsCore.framework/Support/usernotificationsd
+69141     1 /System/Library/CoreServices/WindowManager.app/Contents/MacOS/WindowManager
+69142     1 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/corespotlightd
+69147     1 /usr/libexec/nsurlsessiond
+69148     1 /usr/sbin/usernoted
+69152     1 /usr/libexec/rapportd
+69153     1 /System/Library/CoreServices/lockoutagent
+69158     1 /System/Library/PrivateFrameworks/TCC.framework/Support/tccd
+69164     1 /System/Library/Frameworks/Accounts.framework/Versions/A/Support/accountsd
+69168     1 /System/Library/PrivateFrameworks/IDS.framework/identityservicesd.app/Contents/MacOS/identityservicesd
+69169     1 /usr/libexec/ContinuityCaptureAgent
+69171     1 /System/Library/PrivateFrameworks/FileProvider.framework/Support/fileproviderd
+69180     1 /Applications/WeChat.app/Contents/MacOS/WeChat
+69181     1 /System/Library/PrivateFrameworks/ChronoCore.framework/Support/chronod
+69183     1 /System/Applications/Utilities/Activity Monitor.app/Contents/MacOS/Activity Monitor
+69187     1 /System/Library/PrivateFrameworks/CommunicationsFilter.framework/CMFSyncAgent
+69189     1 /System/Library/CoreServices/AccessibilityUIServer.app/Contents/MacOS/AccessibilityUIServer
+69192     1 /System/Library/PrivateFrameworks/IMCore.framework/imagent.app/Contents/MacOS/imagent
+69204     1 /System/Library/CoreServices/diagnostics_agent
+69205     1 /System/Library/Frameworks/ApplicationServices.framework/Frameworks/ATS.framework/Support/fontd
+69207     1 /System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/ATS.framework/Versions/A/Support/fontworker
+69213     1 /System/Library/PrivateFrameworks/ViewBridge.framework/Versions/A/XPCServices/ViewBridgeAuxiliary.xpc/Contents/MacOS/ViewBridgeAuxiliary
+69214     1 /usr/libexec/neagent
+69217     1 /System/Library/CoreServices/sharedfilelistd
+69220     1 /usr/libexec/sharingd
+69221     1 /System/Library/Input Methods/SCIM.app/Contents/PlugIns/SCIM_Extension.appex/Contents/MacOS/SCIM_Extension
+69222     1 /System/Library/Input Methods/PressAndHold.app/Contents/PlugIns/PAH_Extension.appex/Contents/MacOS/PAH_Extension
+69226     1 /Applications/Shadowrocket.app/Contents/MacOS/Shadowrocket
+69227     1 /System/Library/CoreServices/UIKitSystem.app/Contents/MacOS/UIKitSystem
+69228     1 /System/Library/CoreServices/Dock.app/Contents/MacOS/Dock
+69229     1 /System/Library/CoreServices/SystemUIServer.app/Contents/MacOS/SystemUIServer
+69230     1 /System/Library/CoreServices/Finder.app/Contents/MacOS/Finder
+69238     1 /System/Library/CoreServices/WallpaperAgent.app/Contents/MacOS/WallpaperAgent
+69242     1 /System/Library/PrivateFrameworks/AMPDevices.framework/Versions/A/Support/AMPDeviceDiscoveryAgent
+69249     1 /System/Library/ExtensionKit/Extensions/WallpaperAerialsExtension.appex/Contents/MacOS/WallpaperAerialsExtension
+69252     1 /System/Library/CoreServices/NotificationCenter.app/Contents/MacOS/NotificationCenter
+69262     1 /System/Library/CoreServices/Screen Time.app/Contents/PlugIns/ScreenTimeWidgetExtension.appex/Contents/MacOS/ScreenTimeWidgetExtension
+69263     1 /System/Library/CoreServices/WiFiAgent.app/Contents/MacOS/WiFiAgent
+69267     1 /System/Library/PrivateFrameworks/FamilyCircle.framework/Versions/A/Resources/familycircled
+69296     1 /System/Library/CoreServices/Spotlight.app/Contents/MacOS/Spotlight
+69302     1 /System/Library/PrivateFrameworks/TextInputUIMacHelper.framework/Versions/A/XPCServices/CursorUIViewService.xpc/Contents/MacOS/CursorUIViewService
+69312     1 /System/Library/PrivateFrameworks/MediaRemote.framework/Support/mediaremoteagent
+69313     1 /usr/libexec/avconferenced
+69319     1 /System/Library/PrivateFrameworks/UserActivity.framework/Agents/useractivityd
+69340     1 /System/Library/CoreServices/Dock.app/Contents/XPCServices/com.apple.dock.extra.xpc/Contents/MacOS/com.apple.dock.extra
+69341     1 /System/Library/CoreServices/Dock.app/Contents/XPCServices/com.apple.dock.external.extra.arm64.xpc/Contents/MacOS/com.apple.dock.external.extra.arm64
+69342     1 /System/Library/CoreServices/Dock.app/Contents/XPCServices/com.apple.dock.external.extra.arm64.xpc/Contents/MacOS/com.apple.dock.external.extra.arm64
+69343     1 /System/Applications/Clock.app/Contents/PlugIns/WorldClockWidget.appex/Contents/MacOS/WorldClockWidget
+69352     1 /System/Library/PrivateFrameworks/CloudDocs.framework/PlugIns/com.apple.CloudDocs.iCloudDriveFileProvider.appex/Contents/MacOS/com.apple.CloudDocs.iCloudDriveFileProvider
+69354     1 /System/Applications/Calendar.app/Contents/PlugIns/CalendarWidgetExtension.appex/Contents/MacOS/CalendarWidgetExtension
+69381     1 /System/Library/PrivateFrameworks/DeviceCheckInternal.framework/devicecheckd
+69391 69180 /Applications/WeChat.app/Contents/MacOS/WeChatAppEx.app/Contents/MacOS/WeChatAppEx
+69398 69391 /Applications/WeChat.app/Contents/MacOS/WeChatAppEx.app/Contents/Frameworks/WeChatAppEx Framework.framework/Versions/C/Helpers/WeChatAppEx Helper.app/Contents/MacOS/WeChatAppEx Helper
+69399 69391 /Applications/WeChat.app/Contents/MacOS/WeChatAppEx.app/Contents/Frameworks/WeChatAppEx Framework.framework/Versions/C/Helpers/WeChatAppEx Helper (GPU).app/Contents/MacOS/WeChatAppEx Helper (GPU)
+69416     1 /System/Library/PrivateFrameworks/CoreSpeech.framework/corespeechd
+69421     1 /bin/sh
+69422     1 /System/Library/Image Capture/Support/icdd
+69423     1 Contents/Resources/ChatGPTHelper
+69429     1 /System/Library/CoreServices/AirPlayUIAgent.app/Contents/MacOS/AirPlayUIAgent
+69431     1 /System/Library/CoreServices/TextInputMenuAgent.app/Contents/MacOS/TextInputMenuAgent
+69434     1 /System/Library/Frameworks/CryptoTokenKit.framework/ctkahp.bundle/Contents/MacOS/ctkahp
+69438     1 /System/Library/CoreServices/Dock.app/Contents/XPCServices/com.apple.dock.external.extra.arm64.xpc/Contents/MacOS/com.apple.dock.external.extra.arm64
+69454     1 /System/Library/PrivateFrameworks/PassKitCore.framework/passd
+69541 69421 /opt/homebrew/opt/mysql/bin/mysqld
+69743     1 /System/Library/PrivateFrameworks/SafariPlatformSupport.framework/Versions/A/XPCServices/com.apple.SafariPlatformSupport.Helper.xpc/Contents/MacOS/com.apple.SafariPlatformSupport.Helper
+69748     1 /Applications/Shadowrocket.app/Contents/PlugIns/PacketTunnel.appex/Contents/MacOS/PacketTunnel
+69800     1 /System/Library/PrivateFrameworks/SafariSafeBrowsing.framework/com.apple.Safari.SafeBrowsing.Service
+70137     1 /System/Library/Frameworks/CoreSpotlight.framework/spotlightknowledged
+71731 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+71732 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+71733 71732 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+72489 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+72490 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+72491 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+72492 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+72493 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+72494 72489 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+72620     1 /System/Library/PrivateFrameworks/KerberosHelper/Helpers/DiskUnmountWatcher
+73000     1 /Users/frankqin/Library/Android/sdk/emulator/qemu/darwin-aarch64/qemu-system-aarch64
+73005     1 /Users/frankqin/Library/Android/sdk/emulator/crashpad_handler
+73027 73000 /Users/frankqin/Library/Android/sdk/emulator/netsimd
+73172     1 /System/Library/PrivateFrameworks/SafariPlatformSupport.framework/Versions/A/XPCServices/com.apple.SafariPlatformSupport.Helper.xpc/Contents/MacOS/com.apple.SafariPlatformSupport.Helper
+74840     1 /usr/libexec/SidecarRelay
+75494     1 /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.27/Helpers/browser_crashpad_handler
+75496     1 /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.27/Helpers/browser_crashpad_handler
+75528     1 /Applications/ChatGPT.app/Contents/Resources/native/bare-modifier-monitor
+76664     1 /System/Library/PrivateFrameworks/SkyLight.framework//Versions/A/Resources/AquaAppearanceHelper.app/Contents/MacOS/AquaAppearanceHelper
+76893     1 /System/Library/PrivateFrameworks/DoNotDisturbServer.framework/Support/donotdisturbd
+76910     1 /usr/libexec/searchpartyuseragent
+76912     1 /System/Library/PrivateFrameworks/AuthKit.framework/Versions/A/Support/akd
+76914     1 /usr/libexec/secinitd
+76916     1 /usr/libexec/findmybeaconingd
+76917     1 /System/Library/PrivateFrameworks/CoreADI.framework/adid
+76918     1 /System/Library/Frameworks/ManagedSettings.framework/Versions/A/ManagedSettingsAgent
+76920     1 /usr/libexec/securityd_system
+76935     1 /usr/libexec/biometrickitd
+76981     1 /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+77151     1 /usr/libexec/logd_helper
+77248     1 /System/Library/PrivateFrameworks/PhotoLibraryServices.framework/Versions/A/Support/photolibraryd
+77249     1 /System/Library/CoreServices/TimeMachine/backupd-helper
+77252     1 /usr/libexec/linkd
+77254     1 /usr/libexec/sandboxd
+77256     1 /System/Library/PrivateFrameworks/AssetCacheServices.framework/Versions/A/XPCServices/AssetCacheLocatorService.xpc/Contents/MacOS/AssetCacheLocatorService
+77257     1 /System/Library/PrivateFrameworks/GeoServices.framework/Versions/A/XPCServices/com.apple.geod.xpc/Contents/MacOS/com.apple.geod
+77374     1 /usr/libexec/ospredictiond
+77382     1 /System/Library/PrivateFrameworks/CoreDuetContext.framework/Resources/ContextStoreAgent
+77386     1 /System/Library/PrivateFrameworks/ScreenTimeCore.framework/Versions/A/ScreenTimeAgent
+77387     1 /System/Library/PrivateFrameworks/HearingCore.framework/heard
+77416     1 /System/Library/CoreServices/UniversalControl.app/Contents/MacOS/UniversalControl
+77417     1 /System/Library/Frameworks/Security.framework/Versions/A/XPCServices/com.apple.CodeSigningHelper.xpc/Contents/MacOS/com.apple.CodeSigningHelper
+77432     1 /usr/libexec/replayd
+77446     1 /usr/libexec/aned
+77794     1 /usr/libexec/pkd
+78342     1 /usr/libexec/proactived
+78343     1 /System/Library/PrivateFrameworks/IntelligencePlatformCompute.framework/Versions/A/XPCServices/IntelligencePlatformComputeService.xpc/Contents/MacOS/IntelligencePlatformComputeService
+78344     1 /System/Library/PrivateFrameworks/CalendarDaemon.framework/Support/calaccessd
+78422     1 /usr/libexec/coreduetd
+78423     1 /System/Library/PrivateFrameworks/AppPredictionFoundation.framework/Versions/A/XPCServices/AppPredictionIntentsHelperService.xpc/Contents/MacOS/AppPredictionIntentsHelperService
+78425     1 /System/Library/PrivateFrameworks/iCloudDriveCore.framework/Versions/A/Support/bird
+78426     1 /System/Library/PrivateFrameworks/iCloudDriveService.framework/XPCServices/ContainerMetadataExtractor.xpc/Contents/MacOS/ContainerMetadataExtractor
+78427     1 /System/Library/PrivateFrameworks/VoiceShortcuts.framework/Versions/A/Support/siriactionsd
+78428     1 /System/Library/PrivateFrameworks/SessionCore.framework/Support/liveactivitiesd
+78445     1 /System/Library/PrivateFrameworks/AXAssetLoader.framework/Support/axassetsd
+78789     1 /System/Library/PrivateFrameworks/CoreSymbolication.framework/coresymbolicationd
+78836     1 /System/Library/PrivateFrameworks/UsageTracking.framework/Versions/A/UsageTrackingAgent
+78844     1 /System/Library/PrivateFrameworks/Categories.framework/Versions/A/XPCServices/CategoriesService.xpc/Contents/MacOS/CategoriesService
+78890     1 /System/Library/PrivateFrameworks/ContextKit.framework/Versions/A/XPCServices/ContextService.xpc/Contents/MacOS/ContextService
+78907     1 /System/Library/PrivateFrameworks/FileProviderDaemon.framework/XPCServices/FPCKService.xpc/Contents/MacOS/FPCKService
+80246     1 /System/Library/PrivateFrameworks/CacheDelete.framework/deleted
+80247     1 /System/Library/PrivateFrameworks/CacheDelete.framework/deleted_helper
+80248     1 /usr/libexec/AssetCache/AssetCache
+80249     1 /System/Library/PrivateFrameworks/PackageKit.framework/Resources/installd
+80250     1 /usr/libexec/triald
+80251     1 /System/Library/PrivateFrameworks/GeoServices.framework/geodMachServiceBridge
+80252     1 /System/Library/PrivateFrameworks/PackageKit.framework/Resources/system_installd
+80253     1 /System/Library/PrivateFrameworks/CloudKitDaemon.framework/Support/cloudd
+80254     1 /System/Library/Frameworks/QuickLookThumbnailing.framework/Support/com.apple.quicklook.ThumbnailsAgent
+80257     1 /System/Library/CoreServices/osanalyticshelper
+80288     1 /System/Library/CoreServices/iconservicesagent
+80289     1 /System/Library/CoreServices/iconservicesd
+80363     1 /System/Library/Services/AppleSpell.service/Contents/MacOS/AppleSpell
+80390     1 /usr/libexec/networkserviceproxy
+80391     1 /usr/libexec/swcd
+80392     1 /System/Library/Frameworks/MediaExtension.framework/Versions/A/Helpers/MENotificationAgent
+80393     1 /usr/libexec/siriknowledged
+80394     1 /Applications/ChatGPT.app/Contents/MacOS/ChatGPT
+80395     1 /usr/libexec/amfid
+80397     1 /System/Library/PrivateFrameworks/BackgroundTaskManagement.framework/Resources/backgroundtaskmanagementd
+80407     1 /System/Library/PrivateFrameworks/XprotectFramework.framework/Versions/A/XPCServices/XProtectBridgeService.xpc/Contents/MacOS/XProtectBridgeService
+80408     1 /System/Library/PrivateFrameworks/CascadeSets.framework/Versions/A/XPCServices/SetStoreUpdateService.xpc/Contents/MacOS/SetStoreUpdateService
+80410     1 /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/browser_crashpad_handler
+80412     1 /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/browser_crashpad_handler
+80423 80394 /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/Codex (Service).app/Contents/MacOS/Codex (Service)
+80426 80394 /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/Codex (Service).app/Contents/MacOS/Codex (Service)
+80431 80394 /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/Codex (Service).app/Contents/MacOS/Codex (Service)
+80438     1 /System/Library/PrivateFrameworks/CoreEmbeddedSpeechRecognition.framework/Versions/A/XPCServices/com.apple.siri.embeddedspeech.xpc/Contents/MacOS/com.apple.siri.embeddedspeech
+80442     1 /usr/libexec/audioanalyticsd
+80447 80394 /Applications/ChatGPT.app/Contents/Resources/native/bare-modifier-monitor
+80450     1 /System/Library/ExtensionKit/Extensions/ImageThumbnailExtension.appex/Contents/MacOS/ImageThumbnailExtension
+80463 80394 /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/Codex (Renderer).app/Contents/MacOS/Codex (Renderer)
+80464 80394 /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/Codex (Renderer).app/Contents/MacOS/Codex (Renderer)
+80465     1 /System/Library/CoreServices/pbs
+80466 80394 /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/Codex (Service).app/Contents/MacOS/Codex (Service)
+80467 80394 /Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex
+80526 80394 /Applications/ChatGPT.app/Contents/Resources/native/bare-modifier-monitor
+80527 80394 /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/Codex (Renderer).app/Contents/MacOS/Codex (Renderer)
+80528 80394 /Users/frankqin/.codex/computer-use/Codex Computer Use.app/Contents/MacOS/SkyComputerUseService
+80632 80394 /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/Codex (Renderer).app/Contents/MacOS/Codex (Renderer)
+80646     1 /System/Library/PrivateFrameworks/SafariPlatformSupport.framework/Versions/A/XPCServices/com.apple.SafariPlatformSupport.Helper.xpc/Contents/MacOS/com.apple.SafariPlatformSupport.Helper
+80647     1 /System/Library/PrivateFrameworks/EmailDaemon.framework/Versions/A/maild
+80649 80394 /Users/frankqin/Library/Application Support/Codex/artifact-sessions/runtime-generations/generation-ivsb9S/runtime/bin/node
+80669 80394 /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/Codex (Renderer).app/Contents/MacOS/Codex (Renderer)
+80673 80394 /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/Codex (Renderer).app/Contents/MacOS/Codex (Renderer)
+80709 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+80710 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+80711 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+80712 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+80750 80710 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+80763 80394 /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/Codex (Renderer).app/Contents/MacOS/Codex (Renderer)
+80764 80394 /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/Codex (Renderer).app/Contents/MacOS/Codex (Renderer)
+80853 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+80854 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+80855 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+80856 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+80860 80855 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+80883 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+80884 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+80885 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+80886 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+80887 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+80903 80884 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+80952 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+80953 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+80954 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+80955 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+80956 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+80971 80952 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+81084 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+81085 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+81086 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+81087 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+81088 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+81110     1 /opt/homebrew/lib/node_modules/agent-browser/bin/agent-browser-darwin-arm64
+81127 81085 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+81183 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+81184 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+81185 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+81186 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+81187 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+81219 81186 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+81288 80394 /Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex
+81586 80394 /Applications/ChatGPT.app/Contents/Frameworks/Codex Framework.framework/Versions/155.0.8059.80/Helpers/Codex (Renderer).app/Contents/MacOS/Codex (Renderer)
+81596 80467 /Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex-code-mode-host
+82195 69391 /Applications/WeChat.app/Contents/MacOS/WeChatAppEx.app/Contents/Frameworks/WeChatAppEx Framework.framework/Versions/C/Helpers/WeApp.app/Contents/MacOS/WeApp
+82414     1 /System/Library/PrivateFrameworks/IMDPersistence.framework/IMAutomaticHistoryDeletionAgent.app/Contents/MacOS/IMAutomaticHistoryDeletionAgent
+82585     1 /System/Library/Frameworks/ExtensionFoundation.framework/Versions/A/XPCServices/extensionkitservice.xpc/Contents/MacOS/extensionkitservice
+82684     1 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/Metadata.framework/Versions/A/Support/mdwrite
+83689     1 /System/Library/CoreServices/UserNotificationCenter.app/Contents/MacOS/UserNotificationCenter
+83728     1 /System/Library/Frameworks/Security.framework/Versions/A/XPCServices/TrustedPeersHelper.xpc/Contents/MacOS/TrustedPeersHelper
+84093     1 /System/Library/PrivateFrameworks/AppleMediaServices.framework/Resources/amsaccountsd
+84487     1 /System/Library/PrivateFrameworks/IntelligenceFlowContextRuntime.framework/Versions/A/intelligencecontextd
+84588 81127 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+84589 81127 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+84590 81127 /Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex
+84623     1 /usr/libexec/tipsd
+85351     1 /usr/libexec/mlhostd
+85797 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+85798 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+85799 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+85800 85799 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+86482     1 /Users/frankqin/dev/TekesMemory/target/release/tekes-memory
+86483     1 /Users/frankqin/dev/TekesMemory/target/release/tekes-memory
+87559     1 /System/Library/CoreServices/ReportCrash
+87560     1 /System/Library/CoreServices/ReportSystemMemory
+87721 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+87722 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+87724 87721 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+87799     1 /System/Library/PrivateFrameworks/SiriAnalytics.framework/Versions/A/XPCServices/SAExtensionOrchestrator.xpc/Contents/MacOS/SAExtensionOrchestrator
+87800     1 /System/Library/Frameworks/ExtensionFoundation.framework/Versions/A/XPCServices/extensionkitservice.xpc/Contents/MacOS/extensionkitservice
+87801     1 /System/Library/ExtensionKit/Extensions/IFTranscriptSELFIngestor.appex/Contents/MacOS/IFTranscriptSELFIngestor
+87802     1 /System/Library/ExtensionKit/Extensions/BiomeSELFIngestor.appex/Contents/MacOS/BiomeSELFIngestor
+87803     1 /System/Library/ExtensionKit/Extensions/IFTelemetrySELFIngestor.appex/Contents/MacOS/IFTelemetrySELFIngestor
+87804     1 /System/Library/ExtensionKit/Extensions/GMSSELFIngestor.appex/Contents/MacOS/GMSSELFIngestor
+88072 30172 /Applications/Arc.app/Contents/Frameworks/ArcCore.framework/Helpers/Browser Helper (Renderer).app/Contents/MacOS/Browser Helper (Renderer)
+88759     1 /usr/libexec/mobileassetd
+89045     1 /System/Library/Frameworks/CryptoTokenKit.framework/ctkd
+89724     1 /System/Library/Frameworks/AppKit.framework/Versions/C/XPCServices/ThemeWidgetControlViewService.xpc/Contents/MacOS/ThemeWidgetControlViewService
+89908     1 /System/Cryptexes/App/usr/libexec/AuthenticationServicesAgent
+92021     1 /System/Library/CoreServices/TimeMachine/backupd
+92198     1 /usr/libexec/sysmond
+92697     1 /usr/libexec/TouchBarServer
+93423 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+93424 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+93425 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+93427 93425 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+94346     1 /System/Applications/Utilities/System Information.app/Contents/MacOS/System Information
+97653     1 /Applications/wechatwebdevtools.app/Contents/MacOS/Electron
+97670 97653 /Applications/wechatwebdevtools.app/Contents/Frameworks/wechatwebdevtools Helper (GPU).app/Contents/MacOS/wechatwebdevtools Helper (GPU)
+97672 97653 /Applications/wechatwebdevtools.app/Contents/Frameworks/wechatwebdevtools Helper.app/Contents/MacOS/wechatwebdevtools Helper
+97677     1 /Applications/wechatwebdevtools.app/Contents/Frameworks/Electron Framework.framework/Helpers/chrome_crashpad_handler
+97682 97653 /Applications/wechatwebdevtools.app/Contents/Frameworks/wechatwebdevtools Helper (Renderer).app/Contents/MacOS/wechatwebdevtools Helper (Renderer)
+97683 97653 /Applications/wechatwebdevtools.app/Contents/Frameworks/wechatwebdevtools Helper.app/Contents/MacOS/wechatwebdevtools Helper
+97691 97653 /Applications/wechatwebdevtools.app/Contents/Frameworks/wechatwebdevtools Helper (Renderer).app/Contents/MacOS/wechatwebdevtools Helper (Renderer)
+97695 97653 /Applications/wechatwebdevtools.app/Contents/Frameworks/wechatwebdevtools Helper (Renderer).app/Contents/MacOS/wechatwebdevtools Helper (Renderer)
+97696 97653 /Applications/wechatwebdevtools.app/Contents/Frameworks/wechatwebdevtools Helper (Renderer).app/Contents/MacOS/wechatwebdevtools Helper (Renderer)
+97697     1 /System/Library/PrivateFrameworks/SafariPlatformSupport.framework/Versions/A/XPCServices/com.apple.SafariPlatformSupport.Helper.xpc/Contents/MacOS/com.apple.SafariPlatformSupport.Helper
+97754     1 /opt/homebrew/Cellar/node@24/24.19.0/bin/node
+97755 97754 /Users/frankqin/dev/Tekes/.build/kernel-0.9.3-installed/BuiltInKernel/tekes-supervisor
+97759 97754 /Users/frankqin/.agents/client/agent-web/bin/agentkit-9aa5180962cfd77e040218dbb4a3a900e4e81e151bfe653a0f20185eba419846
+97922 97759 pi
+98187     1 /System/Library/Frameworks/QuickLookUI.framework/Versions/A/PlugIns/QLPreviewGenerationExtension.appex/Contents/MacOS/QLPreviewGenerationExtension
+98387     1 /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+98719     1 /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+98720     1 /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+98721     1 /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+98723     1 /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+98725     1 /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+98726     1 /opt/homebrew/Cellar/python@3.13/3.13.1/Frameworks/Python.framework/Versions/3.13/Resources/Python.app/Contents/MacOS/Python
+98866     1 /System/Library/Frameworks/CoreMediaIO.framework/Resources/VDC.plugin/Contents/Resources/VDCAssistant
+99643 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node
+99644 80467 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+99647 99643 /Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node_repl
+99685     1 /usr/libexec/MTLAssetUpgraderD
+ 4378 11199 /bin/bash

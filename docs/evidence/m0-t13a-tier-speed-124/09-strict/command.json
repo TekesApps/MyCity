@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "cargo",
+    "clippy",
+    "--release",
+    "--workspace",
+    "--all-targets",
+    "--",
+    "-D",
+    "warnings"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/tier-current",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-22T18:39:15.050432+00:00",
+  "source_manifest_sha256": "e5400906ecaaf23bbb1067dad3f7ca4e58761b6d4e31b62203dd558bb02ef54c"
+}
