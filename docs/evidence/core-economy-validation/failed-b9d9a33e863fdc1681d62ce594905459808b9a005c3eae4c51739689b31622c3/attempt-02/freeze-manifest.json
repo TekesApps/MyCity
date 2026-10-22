@@ -1,0 +1,31 @@
+{
+  "source_id": "b9d9a33e863fdc1681d62ce594905459808b9a005c3eae4c51739689b31622c3",
+  "source_zip_sha256": "b9d9a33e863fdc1681d62ce594905459808b9a005c3eae4c51739689b31622c3",
+  "git_head": "1f12916fe53512f6df74d6d1f12b01384f4d34ad",
+  "git_status": [
+    " M crates/city-core/src/lib.rs",
+    "?? crates/city-core/examples/town_economy.rs",
+    "?? crates/city-core/fixtures/town-economy-day.json",
+    "?? crates/city-core/src/town_economy.rs",
+    "?? docs/core-economy.md"
+  ],
+  "frozen_files": [
+    "Cargo.toml",
+    "Cargo.lock",
+    "crates/city-core/Cargo.toml",
+    "crates/city-core/src/lib.rs",
+    "crates/city-core/src/units.rs",
+    "crates/city-core/src/town_economy.rs",
+    "crates/city-core/examples/town_economy.rs",
+    "crates/city-core/fixtures/town-economy-day.json",
+    "docs/core-economy.md",
+    "source.patch"
+  ],
+  "rustc": "rustc 1.85.1 (4eb161250 2025-03-15)",
+  "cargo": "cargo 1.85.1 (d73d2caf9 2024-12-31)",
+  "target_dir": "/Users/frankqin/dev/MyCity/target",
+  "deps_mode": "locked-offline",
+  "status": "frozen-before-build-explicit-manifest",
+  "attempt": 2,
+  "note": "Attempt 01 command ran from evidence folder and ascended into canonical checkout; retained as invalid-scope raw evidence. Attempt 02 pins economy worktree manifest path."
+}

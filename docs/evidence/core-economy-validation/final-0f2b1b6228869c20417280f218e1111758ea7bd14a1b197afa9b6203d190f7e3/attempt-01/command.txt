@@ -1,0 +1,14 @@
+# Frozen source id: 0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3
+export CARGO_TARGET_DIR=/Users/frankqin/dev/MyCity/target
+cargo +1.85.1 test --manifest-path /Users/frankqin/dev/MyCity-core-work/economy/Cargo.toml -p mycity-core --lib --release --locked --offline town_economy::tests::
+cargo +1.85.1 build --manifest-path /Users/frankqin/dev/MyCity-core-work/economy/Cargo.toml -p mycity-core --example town_economy --release --locked --offline
+cargo +1.85.1 clippy --manifest-path /Users/frankqin/dev/MyCity-core-work/economy/Cargo.toml -p mycity-core --all-targets --release --locked --offline -- -D warnings
+
+# Fixed release binary scenario runs; all inputs are fixture-derived test substitutes.
+BIN=/Users/frankqin/dev/MyCity/work/candidate-binaries/core-economy/0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3/town_economy
+"$BIN" scenarios/baseline.json
+"$BIN" scenarios/missing_cash.json
+"$BIN" scenarios/stockout.json
+"$BIN" scenarios/closed_road.json
+"$BIN" scenarios/energy_price_shock.json
+"$BIN" scenarios/demand_drop.json

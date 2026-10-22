@@ -1,0 +1,31 @@
+    Checking sha2 v0.10.9
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/economy/crates/city-core)
+error: the following explicit lifetimes could be elided: 'a
+   --> crates/city-core/src/town_economy.rs:295:12
+    |
+295 | fn account<'a>(input: &'a MarketInput, id: u32) -> Option<&'a AccountSnapshot> {
+    |            ^^          ^^                                  ^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_lifetimes
+    = note: `-D clippy::needless-lifetimes` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::needless_lifetimes)]`
+help: elide the lifetimes
+    |
+295 - fn account<'a>(input: &'a MarketInput, id: u32) -> Option<&'a AccountSnapshot> {
+295 + fn account(input: &MarketInput, id: u32) -> Option<&AccountSnapshot> {
+    |
+
+error: useless conversion to the same type: `i64`
+   --> crates/city-core/src/town_economy.rs:773:43
+    |
+773 |         let mut remaining = Quantity::new(i64::try_from(desired).map_err(|_| PlanError::Overflow)?)
+    |                                           ^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: consider removing `i64::try_from()`
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#useless_conversion
+    = note: `-D clippy::useless-conversion` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::useless_conversion)]`
+
+error: could not compile `mycity-core` (lib) due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `mycity-core` (lib test) due to 2 previous errors

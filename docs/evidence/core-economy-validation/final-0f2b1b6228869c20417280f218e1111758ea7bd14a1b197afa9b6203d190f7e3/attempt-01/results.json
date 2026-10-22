@@ -1,0 +1,18 @@
+{
+  "source_sha256": "0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3",
+  "toolchain": "rustc 1.85.1, cargo 1.85.1",
+  "target_dir": "/Users/frankqin/dev/MyCity/target",
+  "dependency_mode": "--locked --offline",
+  "tests": {
+    "command": "cargo +1.85.1 test --manifest-path /Users/frankqin/dev/MyCity-core-work/economy/Cargo.toml -p mycity-core --lib --release --locked --offline town_economy::tests::",
+    "passed": 10,
+    "failed": 0,
+    "filtered_other_tests": 68
+  },
+  "example_release_build": "passed",
+  "all_targets_strict_clippy": "passed (-D warnings)",
+  "fixed_binary_scenarios": 6,
+  "scenario_assertions": "passed",
+  "engine_settlement": "not implemented; no 28-day settled-loop claim",
+  "cargo_window": "released"
+}

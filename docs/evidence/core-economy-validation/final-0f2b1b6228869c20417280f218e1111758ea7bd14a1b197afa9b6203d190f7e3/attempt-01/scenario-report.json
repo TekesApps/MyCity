@@ -1,0 +1,90 @@
+{
+  "source_sha256": "0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3",
+  "binary_sha256": "e074de5ec75335035c319995fafaa1dd5435eb0c5e2916a1b7dff0400277d7af",
+  "scenarios": [
+    {
+      "scenario": "baseline",
+      "status": "pureplan_not_settled",
+      "input_provenance": "fixture_supply_not_integrated",
+      "sales_quantity": 2000,
+      "produced_quantity": 6000,
+      "unmet_quantity": 800,
+      "unmet_reasons": [
+        "missing_route"
+      ],
+      "input_sha256": "1856329e54234f79b2bad009aa257b14d07293ab120663042f602dc3cf06adbe",
+      "output_sha256": "05ae56eefa6f7bf70834d0f7b78bb93d72765f4338cfb16ab8944acf0aecd2f5"
+    },
+    {
+      "scenario": "missing_cash",
+      "status": "pureplan_not_settled",
+      "input_provenance": "fixture_supply_not_integrated",
+      "sales_quantity": 0,
+      "produced_quantity": 6000,
+      "unmet_quantity": 2800,
+      "unmet_reasons": [
+        "no_cash",
+        "missing_route"
+      ],
+      "input_sha256": "b37b8a907c74c091d92fab81f341fa584a8b9d4b54e58bd617b59f498bb571e2",
+      "output_sha256": "7e7d7ef58de0b1fa1f2fe17242b85aada5021c3e3fe85ff15e28b41e28d5486e"
+    },
+    {
+      "scenario": "stockout",
+      "status": "pureplan_not_settled",
+      "input_provenance": "fixture_supply_not_integrated",
+      "sales_quantity": 0,
+      "produced_quantity": 0,
+      "unmet_quantity": 2800,
+      "unmet_reasons": [
+        "no_stock",
+        "missing_route"
+      ],
+      "input_sha256": "ffa363624f5e549e7a389f17595db144786b89e21241db1c4b18f979c2ef481c",
+      "output_sha256": "3727ecffafaec412d57b631f2c120399a93ca6ea063268802f435bda2e6360b1"
+    },
+    {
+      "scenario": "closed_road",
+      "status": "pureplan_not_settled",
+      "input_provenance": "fixture_supply_not_integrated",
+      "sales_quantity": 0,
+      "produced_quantity": 6000,
+      "unmet_quantity": 2800,
+      "unmet_reasons": [
+        "missing_route",
+        "missing_route"
+      ],
+      "input_sha256": "965272ef529e616c0b49bf34836c98f1722716296f74fefbe9fd18fa8a0c91ba",
+      "output_sha256": "781c75a4650afa4bf3284e06ace0b3d6e6071173c7ef2c401fbd3e15944442d3"
+    },
+    {
+      "scenario": "energy_price_shock",
+      "status": "pureplan_not_settled",
+      "input_provenance": "fixture_supply_not_integrated",
+      "sales_quantity": 0,
+      "produced_quantity": 0,
+      "unmet_quantity": 2800,
+      "unmet_reasons": [
+        "no_stock",
+        "missing_route"
+      ],
+      "input_sha256": "e484292ed317102498a11e74c646cdc18728109f5979a1f4b2e6af1b85c4b687",
+      "output_sha256": "3727ecffafaec412d57b631f2c120399a93ca6ea063268802f435bda2e6360b1"
+    },
+    {
+      "scenario": "demand_drop",
+      "status": "pureplan_not_settled",
+      "input_provenance": "fixture_supply_not_integrated",
+      "sales_quantity": 100,
+      "produced_quantity": 6000,
+      "unmet_quantity": 100,
+      "unmet_reasons": [
+        "missing_route"
+      ],
+      "input_sha256": "6df3cb906a62dd87bb6abbd3bc93a20bf3f63c0f77abbae2d30c35c672e3b8cc",
+      "output_sha256": "651a0d3767f44af85de88c4d04a0704c01ea2ed20ec3a3a4ae884d097f782ef1"
+    }
+  ],
+  "assertions": "passed",
+  "evidence_boundary": "fixture-only pureplan; Engine production/consumption settlement not integrated"
+}

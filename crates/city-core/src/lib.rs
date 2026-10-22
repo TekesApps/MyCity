@@ -22,6 +22,7 @@ pub mod model_rows;
 pub mod probes;
 pub mod region;
 pub mod schedule;
+pub mod town_economy;
 pub mod transaction;
 pub mod transport;
 pub mod units;
