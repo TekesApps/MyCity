@@ -4,8 +4,8 @@
 //! unused road capacity as new market capacity and never settles cash or inventory.
 
 use crate::{
-    town_economy::{plan_day, DeliveryQuote, MarketInput, SettlementBatch},
-    transport::{bounded_vec, Assignment, OdDemand, Opening, UnservedReason},
+    town_economy::{DeliveryQuote, MarketInput, SettlementBatch, plan_day},
+    transport::{Assignment, OdDemand, Opening, UnservedReason, bounded_vec},
     units::{Money, Quantity},
 };
 use serde::{Deserialize, Deserializer, Serialize};
@@ -225,6 +225,7 @@ impl TransportAllocationProfile {
         &self,
         service_day: u64,
         published_at: Option<crate::units::GameTime>,
+        withdrawn_at: Option<crate::units::GameTime>,
     ) -> Result<(Opening, Assignment), Error> {
         if self.period_seconds == 0 {
             return Err(Error::InvalidTransport);
@@ -233,18 +234,34 @@ impl TransportAllocationProfile {
             return Ok((self.opening.clone(), self.assignment.clone()));
         };
         let mut opening = self.opening.clone();
-        let active = if let Some(at) = published_at {
+        let day_after = |at: crate::units::GameTime| -> Result<u64, Error> {
             let seconds = u64::try_from(at.value()).map_err(|_| Error::InvalidTransport)?;
             if seconds % u64::from(self.period_seconds) != 0 {
                 return Err(Error::InvalidTransport);
             }
-            let first_active_day = seconds
+            seconds
                 .checked_div(u64::from(self.period_seconds))
                 .and_then(|day| day.checked_add(1))
-                .ok_or(Error::Overflow)?;
-            service_day >= first_active_day
+                .ok_or(Error::Overflow)
+        };
+        let first_active_day = published_at.map(day_after).transpose()?;
+        let first_base_day = withdrawn_at.map(day_after).transpose()?;
+        if first_base_day.is_some()
+            && (first_active_day.is_none()
+                || withdrawn_at
+                    .zip(published_at)
+                    .is_some_and(|(withdrawn, published)| withdrawn.value() < published.value()))
+        {
+            return Err(Error::InvalidTransport);
+        }
+        let active = first_active_day.is_some_and(|first| service_day >= first)
+            && first_base_day.is_none_or(|first| service_day < first);
+        let epoch = if first_base_day.is_some_and(|first| service_day >= first) {
+            2
+        } else if active {
+            1
         } else {
-            false
+            0
         };
         if active {
             let edge = opening
@@ -256,8 +273,8 @@ impl TransportAllocationProfile {
                 .capacity_people
                 .checked_add(effect.added_capacity_people)
                 .ok_or(Error::Overflow)?;
-            opening.revision = opening.revision.checked_add(1).ok_or(Error::Overflow)?;
         }
+        opening.revision = opening.revision.checked_add(epoch).ok_or(Error::Overflow)?;
         let assignment = opening.assign().map_err(|_| Error::InvalidAssignment)?;
         Ok((opening, assignment))
     }
@@ -790,15 +807,35 @@ mod proof_schema_tests {
             },
         };
         let accepted_at = crate::units::GameTime::new(2 * crate::timeline::DAY).unwrap();
-        let (same_day, _) = profile.derive_for_day(2, Some(accepted_at)).unwrap();
-        let (next_day, assignment) = profile.derive_for_day(3, Some(accepted_at)).unwrap();
+        let withdrawn_at = crate::units::GameTime::new(4 * crate::timeline::DAY).unwrap();
+        let (same_day, _) = profile.derive_for_day(2, Some(accepted_at), None).unwrap();
+        let (next_day, assignment) = profile.derive_for_day(3, Some(accepted_at), None).unwrap();
+        let (last_added_day, _) = profile
+            .derive_for_day(4, Some(accepted_at), Some(withdrawn_at))
+            .unwrap();
+        let (first_base_day, _) = profile
+            .derive_for_day(5, Some(accepted_at), Some(withdrawn_at))
+            .unwrap();
         assert_eq!(same_day.edges[0].capacity_people, 40);
         assert_eq!(same_day.revision, 7);
         assert_eq!(next_day.edges[0].capacity_people, 200);
         assert_eq!(next_day.revision, 8);
+        assert_eq!(last_added_day.edges[0].capacity_people, 200);
+        assert_eq!(last_added_day.revision, 8);
+        assert_eq!(first_base_day.edges[0].capacity_people, 40);
+        assert_eq!(first_base_day.revision, 9);
         assert!(next_day.edges[0].open);
         assert_eq!(next_day.edges[0].mode_mask, 1);
         assignment.verify(&next_day).unwrap();
+        assert!(
+            profile
+                .derive_for_day(
+                    5,
+                    Some(accepted_at),
+                    Some(crate::units::GameTime::new(crate::timeline::DAY).unwrap())
+                )
+                .is_err()
+        );
     }
 
     #[test]

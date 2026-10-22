@@ -293,6 +293,10 @@ pub struct Project {
     /// Authoritative time at which inspection published the contribution.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub operating_published_at: Option<GameTime>,
+    /// Permanent end-of-day withdrawal boundary. The publication timestamp remains so
+    /// historical transport proofs can derive the correct capacity epoch.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub operating_withdrawn_at: Option<GameTime>,
     pub crew: u16,
     pub budget: Money,
     pub spent: Money,
@@ -368,9 +372,11 @@ mod road_effect_legacy_serde_tests {
         let object = legacy.as_object().unwrap();
         assert!(!object.contains_key("operating_edge_id"));
         assert!(!object.contains_key("operating_published_at"));
+        assert!(!object.contains_key("operating_withdrawn_at"));
         let restored: Project = serde_json::from_value(legacy.clone()).unwrap();
         assert_eq!(restored.operating_edge_id, 0);
         assert_eq!(restored.operating_published_at, None);
+        assert_eq!(restored.operating_withdrawn_at, None);
         assert_eq!(serde_json::to_value(restored).unwrap(), legacy);
     }
 
@@ -416,6 +422,85 @@ mod road_effect_legacy_serde_tests {
 
         assert!(project.validate_persisted().is_err());
     }
+
+    #[test]
+    fn approved_road_demolition_records_one_permanent_withdrawal_boundary() {
+        let mut project = Project::new(
+            7,
+            Kind::Build,
+            4,
+            3,
+            1,
+            80,
+            1,
+            1,
+            Money::new(1_000_000).unwrap(),
+            Money::new(3_600).unwrap(),
+            28_800,
+            &[Gate {
+                id: 1,
+                category: GateCategory::Permit,
+                evidence_id: 1,
+                party: 1,
+                decided: GateDecision::Accepted,
+            }],
+            &[Material {
+                stock_id: 1,
+                required: Quantity::new(1_000).unwrap(),
+                consumed: Quantity::ZERO,
+                basis_per_unit: Money::new(400).unwrap(),
+                basis_remainder: 0,
+            }],
+            GameTime::new(0).unwrap(),
+        )
+        .unwrap();
+        project.operating_resource = 2;
+        project.operating_base_capacity = 40;
+        project.operating_units = 160;
+        project.operating_edge_id = 9;
+        project.operating_published = true;
+        project.operating_published_at = Some(GameTime::new(DAY).unwrap());
+        project.phase = Phase::Ready;
+        project.waste_receiver = Some(3);
+        project.waste_receiver_account = 3;
+        project.waste_receiver_resource = 4;
+        project.waste_units = 2;
+        project.waste_fee = Money::new(250).unwrap();
+
+        let at = GameTime::new(3 * DAY).unwrap();
+        let effect = project.apply(at, Command::Start).unwrap().unwrap();
+        assert_eq!(effect.kind, EffectKind::WithdrawOperatingCapacity);
+        assert_eq!(project.operating_published, true);
+        assert_eq!(project.operating_withdrawn_at, None);
+        project
+            .confirm(Receipt {
+                operation_id: effect.operation_id,
+                success: true,
+                cash: effect.cash,
+                materials: effect.materials,
+                total_basis: effect.total_basis,
+                site_units: effect.site_units,
+                waste_accepted: false,
+            })
+            .unwrap();
+        assert_eq!(project.kind, Kind::Demolish);
+        assert_eq!(project.phase, Phase::Demolition);
+        assert_eq!(project.operating_published, false);
+        assert_eq!(
+            project.operating_published_at,
+            Some(GameTime::new(DAY).unwrap())
+        );
+        assert_eq!(project.operating_withdrawn_at, Some(at));
+        project.validate_persisted().unwrap();
+
+        let mut premature = project;
+        premature.operating_withdrawn_at = Some(GameTime::new(0).unwrap());
+        assert!(premature.validate_persisted().is_err());
+
+        let mut withdrawal_before_work = project;
+        withdrawal_before_work.last_work_at = Some(GameTime::new(2 * DAY).unwrap());
+        assert!(withdrawal_before_work.validate_persisted().is_err());
+    }
 }
 fn work_window_capacity(from: GameTime, to: GameTime, crew: u16) -> Result<u64, Error> {
     let mut t = from.value();
@@ -458,23 +543,43 @@ impl Project {
                     || self.operating_units != 0
                     || self.operating_published
                     || self.operating_edge_id != 0
-                    || self.operating_published_at.is_some()))
+                    || self.operating_published_at.is_some()
+                    || self.operating_withdrawn_at.is_some()))
             || (self.operating_resource != 0 && self.operating_units == 0)
             || (self.operating_published && self.operating_resource == 0)
             || (self.operating_edge_id != 0
                 && (self.operating_resource == 0
                     || self.operating_base_capacity == 0
-                    || self.kind != Kind::Build))
-            || (self.operating_published_at.is_some() && !self.operating_published)
+                    || (self.kind == Kind::Build && self.operating_withdrawn_at.is_some())
+                    || (self.kind == Kind::Demolish && self.operating_withdrawn_at.is_none())))
+            || (self.operating_published_at.is_some()
+                && !self.operating_published
+                && self.operating_withdrawn_at.is_none())
             || (self.operating_published_at.is_some() && self.operating_edge_id == 0)
+            || (self.operating_withdrawn_at.is_some()
+                && (self.operating_edge_id == 0
+                    || self.operating_published
+                    || self.operating_published_at.is_none()))
             || (self.operating_edge_id != 0
-                && self.operating_published != self.operating_published_at.is_some())
+                && self.operating_published
+                    != (self.operating_published_at.is_some()
+                        && self.operating_withdrawn_at.is_none()))
             || self.operating_published_at.is_some_and(|at| {
                 at.value() < 0
                     || at.value() % DAY != 0
+                    || self.last_work_at.is_none_or(|work_at| {
+                        self.kind == Kind::Build && at.value() < work_at.value()
+                    })
+            })
+            || self.operating_withdrawn_at.is_some_and(|at| {
+                at.value() < 0
+                    || at.value() % DAY != 0
+                    || self
+                        .operating_published_at
+                        .is_none_or(|published| at.value() < published.value())
                     || self
                         .last_work_at
-                        .is_none_or(|work_at| at.value() < work_at.value())
+                        .is_none_or(|work_at| work_at.value() < at.value())
             })
             || self.crew == 0
             || self.budget == Money::ZERO
@@ -646,6 +751,7 @@ impl Project {
             operating_published: false,
             operating_edge_id: 0,
             operating_published_at: None,
+            operating_withdrawn_at: None,
             crew,
             budget,
             spent: Money::ZERO,
@@ -718,7 +824,8 @@ impl Project {
             Command::Start
                 if self.phase == Phase::Ready
                     && self.waste_receiver.is_some()
-                    && self.operating_published =>
+                    && self.operating_published
+                    && self.operating_withdrawn_at.is_none() =>
             {
                 self.gates_clear()?;
                 self.kind = Kind::Demolish;
@@ -1113,6 +1220,9 @@ impl Project {
             }
             EffectKind::WithdrawOperatingCapacity => {
                 self.operating_published = false;
+                if self.operating_edge_id != 0 {
+                    self.operating_withdrawn_at = self.pending_at;
+                }
                 self.phase = Phase::Demolition;
             }
             EffectKind::ReleaseSite => {
