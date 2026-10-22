@@ -1,0 +1,14 @@
+{
+  "not_directly_restorable": [
+    "work/r07-coupling-l1-01/observed/model/layout/snapshots/snapshot-000001",
+    "work/r07-event-driven-l1-01/observed/model/layout/snapshots/snapshot-000001",
+    "work/r07-event-driven-l1-01/observed/model/layout/snapshots/snapshot-000002",
+    "work/r07-report-error-l1-01/observed/model/layout/snapshots/snapshot-000001",
+    "work/r07-vm-l1-01/observed/model/layout/snapshots/snapshot-000001",
+    "work/r07-vm-l1-01/observed/model/layout/snapshots/snapshot-000002"
+  ],
+  "complete_original_files_retained": 190,
+  "pending_is_not_valid_restore_point": true,
+  "original_pressure_not_archived": true,
+  "component_gzip_is_not_complete_snapshot": true
+}

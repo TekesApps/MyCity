@@ -1,0 +1,362 @@
+[
+  {
+    "path": "work/report-lifetime-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "size": 3044040310,
+    "allocated": 3044040704,
+    "links": 1
+  },
+  {
+    "path": "work/report-lifetime-formal-l1-01/observed/model/layout/snapshots/snapshot-000002.pending/pressure.bin",
+    "size": 3044040310,
+    "allocated": 3044040704,
+    "links": 1
+  },
+  {
+    "path": "work/typed-workspace-formal-l1-01/observed/model/layout/snapshots/snapshot-000008/pressure.bin",
+    "size": 3044040310,
+    "allocated": 3044040704,
+    "links": 1
+  },
+  {
+    "path": "work/typed-workspace-formal-l1-01/observed/model/layout/snapshots/snapshot-000007/pressure.bin",
+    "size": 3044040310,
+    "allocated": 3044040704,
+    "links": 1
+  },
+  {
+    "path": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "size": 3044040310,
+    "allocated": 3044040704,
+    "links": 1
+  },
+  {
+    "path": "work/r07-vm-l1-01/observed/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "size": 3039518326,
+    "allocated": 3039518720,
+    "links": 1
+  },
+  {
+    "path": "work/r07-vm-l1-01/observed/model/layout/snapshots/snapshot-000002/pressure.bin",
+    "size": 3039518326,
+    "allocated": 3039518720,
+    "links": 1
+  },
+  {
+    "path": "work/r07-report-error-l1-01/observed/model/layout/snapshots/snapshot-000002/pressure.bin",
+    "size": 3039518326,
+    "allocated": 3039518720,
+    "links": 1
+  },
+  {
+    "path": "work/report-lifetime-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "size": 134217728,
+    "allocated": 134217728,
+    "links": 1
+  },
+  {
+    "path": "work/report-lifetime-formal-l1-01/observed/model/layout/snapshots/snapshot-000002.pending/work-reserve.bin",
+    "size": 134217728,
+    "allocated": 134217728,
+    "links": 1
+  },
+  {
+    "path": "work/r07-vm-l1-01/observed/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "size": 134217728,
+    "allocated": 134217728,
+    "links": 1
+  },
+  {
+    "path": "work/r07-vm-l1-01/observed/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+    "size": 134217728,
+    "allocated": 134217728,
+    "links": 1
+  },
+  {
+    "path": "work/typed-workspace-formal-l1-01/observed/model/layout/snapshots/snapshot-000008/work-reserve.bin",
+    "size": 134217728,
+    "allocated": 134217728,
+    "links": 1
+  },
+  {
+    "path": "work/typed-workspace-formal-l1-01/observed/model/layout/snapshots/snapshot-000007/work-reserve.bin",
+    "size": 134217728,
+    "allocated": 134217728,
+    "links": 1
+  },
+  {
+    "path": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "size": 134217728,
+    "allocated": 134217728,
+    "links": 1
+  },
+  {
+    "path": "work/r07-report-error-l1-01/observed/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+    "size": 134217728,
+    "allocated": 134217728,
+    "links": 1
+  },
+  {
+    "path": "work/report-lifetime-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/native.json",
+    "size": 65299383,
+    "allocated": 65302528,
+    "links": 1
+  },
+  {
+    "path": "work/report-lifetime-formal-l1-01/observed/model/layout/snapshots/snapshot-000002.pending/native.json",
+    "size": 65299383,
+    "allocated": 65302528,
+    "links": 1
+  },
+  {
+    "path": "work/t13a1b-layout-full-01/model/snapshots/snapshot-000002/native.json",
+    "size": 65299383,
+    "allocated": 65302528,
+    "links": 2
+  },
+  {
+    "path": "work/r07-vm-l1-01/observed/model/layout/snapshots/snapshot-000001/native.json",
+    "size": 65299383,
+    "allocated": 65302528,
+    "links": 1
+  },
+  {
+    "path": "work/r07-vm-l1-01/observed/model/layout/snapshots/snapshot-000002/native.json",
+    "size": 65299383,
+    "allocated": 65302528,
+    "links": 1
+  },
+  {
+    "path": "work/r07-event-driven-l1-01/observed/model/layout/snapshots/snapshot-000001/native.json",
+    "size": 65299383,
+    "allocated": 65302528,
+    "links": 1
+  },
+  {
+    "path": "work/r07-event-driven-l1-01/observed/model/layout/snapshots/snapshot-000002/native.json",
+    "size": 65299383,
+    "allocated": 65302528,
+    "links": 1
+  },
+  {
+    "path": "work/causal-clock-formal-l1-01/observed/model/layout/snapshots/snapshot-000002.pending/native.json",
+    "size": 65299383,
+    "allocated": 65302528,
+    "links": 1
+  },
+  {
+    "path": "work/typed-workspace-formal-l1-01/observed/model/layout/snapshots/snapshot-000008/native.json",
+    "size": 65299383,
+    "allocated": 65302528,
+    "links": 1
+  },
+  {
+    "path": "work/typed-workspace-formal-l1-01/observed/model/layout/snapshots/snapshot-000007/native.json",
+    "size": 65299383,
+    "allocated": 65302528,
+    "links": 1
+  },
+  {
+    "path": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001/native.json",
+    "size": 65299383,
+    "allocated": 65302528,
+    "links": 1
+  },
+  {
+    "path": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000002.pending/native.json",
+    "size": 65299383,
+    "allocated": 65302528,
+    "links": 1
+  },
+  {
+    "path": "work/r07-report-error-l1-01/observed/model/layout/snapshots/snapshot-000001/native.json",
+    "size": 65299383,
+    "allocated": 65302528,
+    "links": 1
+  },
+  {
+    "path": "work/r07-report-error-l1-01/observed/model/layout/snapshots/snapshot-000002/native.json",
+    "size": 65299383,
+    "allocated": 65302528,
+    "links": 1
+  },
+  {
+    "path": "work/r07-coupling-l1-01/observed/model/layout/snapshots/snapshot-000001/native.json",
+    "size": 65299383,
+    "allocated": 65302528,
+    "links": 1
+  },
+  {
+    "path": "work/native-observer-faults-01/worker-compute/model/layout/snapshots/snapshot-000001/native.json",
+    "size": 65299383,
+    "allocated": 65302528,
+    "links": 1
+  },
+  {
+    "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/native.json",
+    "size": 65299383,
+    "allocated": 65302528,
+    "links": 1
+  },
+  {
+    "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/native.json",
+    "size": 65299383,
+    "allocated": 65302528,
+    "links": 1
+  },
+  {
+    "path": "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/native.json",
+    "size": 65299383,
+    "allocated": 65302528,
+    "links": 1
+  },
+  {
+    "path": "work/t13a1b-layout-full-04/model/snapshots/snapshot-000003.pending/native.json",
+    "size": 65299383,
+    "allocated": 65302528,
+    "links": 1
+  },
+  {
+    "path": "work/t13a1b-layout-negative-fixture/snapshot/native.json",
+    "size": 65299383,
+    "allocated": 65302528,
+    "links": 2
+  },
+  {
+    "path": "work/snapshot-backing-formal-l1-01/observed/model/layout/snapshots/snapshot-000002.pending/native.json",
+    "size": 65299383,
+    "allocated": 65302528,
+    "links": 1
+  },
+  {
+    "path": "work/report-lifetime-formal-l1-01/observed/model/layout/snapshots/snapshot-000001/meter.json",
+    "size": 59090761,
+    "allocated": 59092992,
+    "links": 1
+  },
+  {
+    "path": "work/report-lifetime-formal-l1-01/observed/model/layout/snapshots/snapshot-000002.pending/meter.json",
+    "size": 59090761,
+    "allocated": 59092992,
+    "links": 1
+  },
+  {
+    "path": "work/t13a1b-layout-full-01/model/snapshots/snapshot-000002/meter.json",
+    "size": 59090761,
+    "allocated": 59092992,
+    "links": 2
+  },
+  {
+    "path": "work/r07-vm-l1-01/observed/model/layout/snapshots/snapshot-000001/meter.json",
+    "size": 59090761,
+    "allocated": 59092992,
+    "links": 1
+  },
+  {
+    "path": "work/r07-vm-l1-01/observed/model/layout/snapshots/snapshot-000002/meter.json",
+    "size": 59090761,
+    "allocated": 59092992,
+    "links": 1
+  },
+  {
+    "path": "work/r07-event-driven-l1-01/observed/model/layout/snapshots/snapshot-000001/meter.json",
+    "size": 59090761,
+    "allocated": 59092992,
+    "links": 1
+  },
+  {
+    "path": "work/r07-event-driven-l1-01/observed/model/layout/snapshots/snapshot-000002/meter.json",
+    "size": 59090761,
+    "allocated": 59092992,
+    "links": 1
+  },
+  {
+    "path": "work/causal-clock-formal-l1-01/observed/model/layout/snapshots/snapshot-000002.pending/meter.json",
+    "size": 59090761,
+    "allocated": 59092992,
+    "links": 1
+  },
+  {
+    "path": "work/typed-workspace-formal-l1-01/observed/model/layout/snapshots/snapshot-000008/meter.json",
+    "size": 59090761,
+    "allocated": 59092992,
+    "links": 1
+  },
+  {
+    "path": "work/typed-workspace-formal-l1-01/observed/model/layout/snapshots/snapshot-000007/meter.json",
+    "size": 59090761,
+    "allocated": 59092992,
+    "links": 1
+  },
+  {
+    "path": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001/meter.json",
+    "size": 59090761,
+    "allocated": 59092992,
+    "links": 1
+  },
+  {
+    "path": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000002.pending/meter.json",
+    "size": 59090761,
+    "allocated": 59092992,
+    "links": 1
+  },
+  {
+    "path": "work/r07-report-error-l1-01/observed/model/layout/snapshots/snapshot-000001/meter.json",
+    "size": 59090761,
+    "allocated": 59092992,
+    "links": 1
+  },
+  {
+    "path": "work/r07-report-error-l1-01/observed/model/layout/snapshots/snapshot-000002/meter.json",
+    "size": 59090761,
+    "allocated": 59092992,
+    "links": 1
+  },
+  {
+    "path": "work/r07-coupling-l1-01/observed/model/layout/snapshots/snapshot-000001/meter.json",
+    "size": 59090761,
+    "allocated": 59092992,
+    "links": 1
+  },
+  {
+    "path": "work/native-observer-faults-01/worker-compute/model/layout/snapshots/snapshot-000001/meter.json",
+    "size": 59090761,
+    "allocated": 59092992,
+    "links": 1
+  },
+  {
+    "path": "work/native-observer-faults-01/snapshot-write/model/layout/snapshots/snapshot-000001.pending/meter.json",
+    "size": 59090761,
+    "allocated": 59092992,
+    "links": 1
+  },
+  {
+    "path": "work/native-observer-faults-01/worker-active-l2/model/layout/snapshots/snapshot-000001/meter.json",
+    "size": 59090761,
+    "allocated": 59092992,
+    "links": 1
+  },
+  {
+    "path": "work/layout-region-l1-smoke-01/observed/model/layout/snapshots/snapshot-000001.pending/meter.json",
+    "size": 59090761,
+    "allocated": 59092992,
+    "links": 1
+  },
+  {
+    "path": "work/t13a1b-layout-full-04/model/snapshots/snapshot-000003.pending/meter.json",
+    "size": 59090761,
+    "allocated": 59092992,
+    "links": 1
+  },
+  {
+    "path": "work/t13a1b-layout-negative-fixture/snapshot/meter.json",
+    "size": 59090761,
+    "allocated": 59092992,
+    "links": 2
+  },
+  {
+    "path": "work/snapshot-backing-formal-l1-01/observed/model/layout/snapshots/snapshot-000002.pending/meter.json",
+    "size": 59090761,
+    "allocated": 59092992,
+    "links": 1
+  }
+]

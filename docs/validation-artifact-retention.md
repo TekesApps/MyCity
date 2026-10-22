@@ -1,5 +1,7 @@
 # 验证产物回收规则
 
+**当前集中清理（v0.5.105）**：[报告](evidence/disk-reclamation-v105/STATUS.md)及[逐快照可用性](evidence/disk-reclamation-v105/availability.json)覆盖本次六个旧正常快照的原路径承诺：154文件精确退役，分配空间7,550,910,464B；work降至25.322GiB，target2.080GiB复用。190完整恢复/故障原件逐SHA保留，业务/WIP/raw/固定源依赖/exe不变。已删快照不可直接完整恢复；gzip组件不是完整快照。df变化单列，不全算成果。阶段结束先回收或登记依赖再开启新大负载，正式测量不与清理或构建并发。
+
 **当前回收与恢复可用性（v0.5.104）**：[R07功能终态](evidence/m0-t13a-r07-report-error/STATUS.md)及[availability](evidence/m0-t13a-r07-report-error/retirement/availability.json)覆盖本阶段旧原路径保留承诺。实际新PID冷开与继任后仅退役8份旧合成pressure/reserve，分配空间12,699,467,776B；新最终v3第二代及原五份完整/故障基线190文件全SHA保留，退役目录不能直接恢复。初次预检st_blocks变化在删除前止步，5,619,712B保留块减少单列排除；df另报，不归入本次成果。源码/WIP/raw/组件/index/固定源依赖/exe不变，共享target保留复用，其他项目Cargo未干预。
 
 **当前回收与恢复可用性（v0.5.103）**：[用户指定集中回收](evidence/disk-reclamation-v103/STATUS.md)及[availability](evidence/disk-reclamation-v103/availability.json)覆盖本次相关原路径承诺：7份已无依赖prefix/已归档正常重复组件退役，分配空间617,242,624B；190份完整恢复/故障原件保留，当前R07第一代未冷恢复保留。共享target复用，源码/WIP/业务/raw/固定依赖/exe不变。三份旧正常布局继续不可直接完整恢复；已删prefix也不能直接复用。df变化单列，历史释放不重复计入。本轮不运行模型或构建。
