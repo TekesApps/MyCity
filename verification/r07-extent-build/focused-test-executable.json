@@ -1,0 +1,15 @@
+{
+  "scope": "focused_test_executable_only",
+  "source_sha256": "9d8e5f2d8d04ff05ff68454a52e47df0b247edb2cac5beabe10ad3f283c7f7e1",
+  "binary_sha256": "21325dd90f3414bfe456a9b9b441e9f08430482fcdf11db54a759da2b804e24f",
+  "binary_bytes": 2593840,
+  "original_path": "/Users/frankqin/dev/MyCity/target/release/deps/mycity_headless-bd191120ee0d5aca",
+  "fixed_path": "/Users/frankqin/dev/MyCity/work/candidate-binaries/r07-extents/9d8e5f2d8d04ff05ff68454a52e47df0b247edb2cac5beabe10ad3f283c7f7e1/focused-test-executable",
+  "hardlink_same_device_inode": true,
+  "device": 16777231,
+  "inode": 410252222,
+  "embedded_source_fingerprint_verified": true,
+  "cli_executable": false,
+  "m0_t13a_pressure_or_performance_executable": false,
+  "recorded_unix_ns": 1792645332252782000
+}
