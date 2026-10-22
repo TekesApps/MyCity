@@ -1,0 +1,349 @@
+{
+  "exit": 0,
+  "actual_seconds": 25.504294,
+  "facts": [
+    {
+      "kind": "first_actual_replacement",
+      "ack": {
+        "source": "7fd9e8d83c6d9ac447d124e1d1683900deb2d145ab503afd36a9e9310dbae590",
+        "owner": {
+          "pid": 43106,
+          "start_abstime": 25039092194664,
+          "parent_pid": 43104
+        },
+        "state": {
+          "schema": 1,
+          "logical_bytes": 277662928,
+          "arena_tail_bytes": 52432,
+          "quantum_bytes": 65536,
+          "mapped_bytes": 273088512,
+          "replaced_bytes": 4521984,
+          "epoch": 1,
+          "reading_sequence": 5
+        },
+        "permitted_bytes": 4555376,
+        "reason": "fresh_unique_live_same_use_components"
+      },
+      "time_monotonic_ns": 1835775875
+    },
+    {
+      "kind": "provider_publication_paused_during_second_snapshot",
+      "ack": {
+        "source": "7fd9e8d83c6d9ac447d124e1d1683900deb2d145ab503afd36a9e9310dbae590",
+        "owner": {
+          "pid": 43106,
+          "start_abstime": 25039092194664,
+          "parent_pid": 43104
+        },
+        "state": {
+          "schema": 1,
+          "logical_bytes": 277662928,
+          "arena_tail_bytes": 52432,
+          "quantum_bytes": 65536,
+          "mapped_bytes": 273088512,
+          "replaced_bytes": 4521984,
+          "epoch": 1,
+          "reading_sequence": 41
+        },
+        "permitted_bytes": 4571760,
+        "reason": "fresh_unique_live_same_use_components"
+      },
+      "pending_exists": true,
+      "time_monotonic_ns": 11594537166
+    },
+    {
+      "kind": "expired_reading_repaid_and_initialized",
+      "ack": {
+        "source": "7fd9e8d83c6d9ac447d124e1d1683900deb2d145ab503afd36a9e9310dbae590",
+        "owner": {
+          "pid": 43106,
+          "start_abstime": 25039092194664,
+          "parent_pid": 43104
+        },
+        "state": {
+          "schema": 1,
+          "logical_bytes": 277662928,
+          "arena_tail_bytes": 52432,
+          "quantum_bytes": 65536,
+          "mapped_bytes": 277610496,
+          "replaced_bytes": 0,
+          "epoch": 2,
+          "reading_sequence": 44
+        },
+        "permitted_bytes": 0,
+        "reason": "reading_identity_sequence_or_ttl"
+      },
+      "time_monotonic_ns": 12843334291
+    },
+    {
+      "kind": "sampler_continued_during_provider_pause",
+      "frames": 8,
+      "first": {
+        "clock_begin_ns": 11045404541,
+        "clock_end_ns": 11046080750,
+        "t": 11.04608075,
+        "window_s": 0.000676209,
+        "rss_bytes": 3333406720,
+        "phys_footprint_bytes": 3332722192,
+        "missing_footprint": 0,
+        "missing_rss": 0,
+        "group_capture_complete": false,
+        "members": [
+          [
+            43103,
+            43091,
+            25039074788550,
+            3014656,
+            "observer"
+          ],
+          [
+            43104,
+            43103,
+            25039090333072,
+            2408448,
+            "r07-layout-driver"
+          ],
+          [
+            43105,
+            43104,
+            25039091049359,
+            69206016,
+            "normal-pool-host"
+          ],
+          [
+            43106,
+            43104,
+            25039092194664,
+            3258777600,
+            "layout-r07-session"
+          ]
+        ],
+        "member_footprints_pid_birth_bytes": [
+          [
+            43103,
+            25039074788550,
+            3293496
+          ],
+          [
+            43104,
+            25039090333072,
+            1278264
+          ],
+          [
+            43105,
+            25039091049359,
+            68485456
+          ],
+          [
+            43106,
+            25039092194664,
+            3259664976
+          ]
+        ],
+        "identity_uncertainties": [],
+        "pending_registration_bytes": 0,
+        "registration_lock_busy": false,
+        "r07_applied": {
+          "source": "7fd9e8d83c6d9ac447d124e1d1683900deb2d145ab503afd36a9e9310dbae590",
+          "owner": {
+            "pid": 43106,
+            "start_abstime": 25039092194664,
+            "parent_pid": 43104
+          },
+          "state": {
+            "schema": 1,
+            "logical_bytes": 277662928,
+            "arena_tail_bytes": 52432,
+            "quantum_bytes": 65536,
+            "mapped_bytes": 273088512,
+            "replaced_bytes": 4521984,
+            "epoch": 1,
+            "reading_sequence": 41
+          },
+          "permitted_bytes": 4571760,
+          "reason": "fresh_unique_live_same_use_components"
+        },
+        "r07_reading": null,
+        "r07_coverage_complete": false,
+        "r07_provider_paused": true,
+        "pressure_dispatch_flag": 1,
+        "swap_used_bytes": 3149594624,
+        "observer_hot_bound_bytes": 2097152,
+        "cpu_io_footprint": null,
+        "system": null
+      },
+      "last": {
+        "clock_begin_ns": 12792792375,
+        "clock_end_ns": 12793856500,
+        "t": 12.7938565,
+        "window_s": 0.001064125,
+        "rss_bytes": 3337928704,
+        "phys_footprint_bytes": 3337260584,
+        "missing_footprint": 0,
+        "missing_rss": 0,
+        "group_capture_complete": true,
+        "members": [
+          [
+            43103,
+            43091,
+            25039074788550,
+            3014656,
+            "observer"
+          ],
+          [
+            43104,
+            43103,
+            25039090333072,
+            2408448,
+            "r07-layout-driver"
+          ],
+          [
+            43105,
+            43104,
+            25039091049359,
+            69206016,
+            "normal-pool-host"
+          ],
+          [
+            43106,
+            43104,
+            25039092194664,
+            3263299584,
+            "layout-r07-session"
+          ]
+        ],
+        "member_footprints_pid_birth_bytes": [
+          [
+            43103,
+            25039074788550,
+            3293496
+          ],
+          [
+            43104,
+            25039090333072,
+            1278264
+          ],
+          [
+            43105,
+            25039091049359,
+            68485456
+          ],
+          [
+            43106,
+            25039092194664,
+            3264203368
+          ]
+        ],
+        "identity_uncertainties": [],
+        "pending_registration_bytes": 0,
+        "registration_lock_busy": false,
+        "r07_applied": {
+          "source": "7fd9e8d83c6d9ac447d124e1d1683900deb2d145ab503afd36a9e9310dbae590",
+          "owner": {
+            "pid": 43106,
+            "start_abstime": 25039092194664,
+            "parent_pid": 43104
+          },
+          "state": {
+            "schema": 1,
+            "logical_bytes": 277662928,
+            "arena_tail_bytes": 52432,
+            "quantum_bytes": 65536,
+            "mapped_bytes": 277610496,
+            "replaced_bytes": 0,
+            "epoch": 2,
+            "reading_sequence": 44
+          },
+          "permitted_bytes": 0,
+          "reason": "reading_identity_sequence_or_ttl"
+        },
+        "r07_reading": null,
+        "r07_coverage_complete": true,
+        "r07_provider_paused": true,
+        "pressure_dispatch_flag": 1,
+        "swap_used_bytes": 3149594624,
+        "observer_hot_bound_bytes": 2097152,
+        "cpu_io_footprint": null,
+        "system": null
+      }
+    }
+  ],
+  "observer_report": {
+    "schema": "mycity-bounded-native-group-observer-v1",
+    "source_sha256": "7fd9e8d83c6d9ac447d124e1d1683900deb2d145ab503afd36a9e9310dbae590",
+    "host": {
+      "hardware_model": "Mac16,1",
+      "cpu": "Apple M4",
+      "logical_cpus": 10,
+      "physical_memory_bytes": 34359738368,
+      "os": "25G83",
+      "architecture": "aarch64",
+      "page_size_bytes": 16384
+    },
+    "status": "passed_measurement_wrapper",
+    "reason": null,
+    "cleanup_error": null,
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/r07-event-driven/mycity-headless",
+      "r07-layout-driver",
+      "/Users/frankqin/dev/MyCity/work/r07-event-driven-l1-01/observed/model"
+    ],
+    "binary_sha256": "1737194e07106b7fc93736ec3a4a34ef28cb2a469648f9973da3ff2b5e895218",
+    "binary_unchanged": true,
+    "model_exit_code": 0,
+    "actual_wall_seconds": 24.81616725,
+    "samples": 100,
+    "sample_log_bytes": 168067,
+    "maximum_sample_gap_seconds": 0.270009125,
+    "maximum_capture_window_seconds": 0.025482459,
+    "peak_simultaneous_rss_bytes": 3340468224,
+    "peak_simultaneous_footprint_bytes": 3337293352,
+    "peak_rss_raw_frame_index": 95,
+    "peak_footprint_raw_frame_index": 90,
+    "missing_footprint_process_samples": 2,
+    "missing_rss_process_samples": 2,
+    "peak_world_logical_bytes": 6764436179,
+    "identities_recorded": 5,
+    "identities_retired": 4,
+    "maximum_live_tracked_identities": 5,
+    "unpolled_registered_processes": 0,
+    "registration_records": 8,
+    "final_live_identity_count": 1,
+    "identity_completeness": "enumerated descendants plus authenticated headless lifecycle journal and seen orphans; unpolled registrations flagged; unregistered external short helpers not proven",
+    "discovery_pid_capacity": "8192 post-return admission only, not a preallocation bound; fixed 2MiB arena OOM fails observation",
+    "observer_hot_bound_bytes": 2097152,
+    "other_diagnostic_owned_bytes": 3407872,
+    "combined_diagnostic_hot_bound_bytes": 5505024,
+    "arena": {
+      "activation": {
+        "pid": 43103,
+        "grant_bytes": 2097152,
+        "arena_start": 51514441728,
+        "arena_bytes": 2096390,
+        "bootstrap_charged_bytes": 602,
+        "adapter_header_bytes": 160,
+        "initialized_bytes": 2096390
+      },
+      "current_requested_bytes": 534672,
+      "lifetime_peak_requested_bytes": 550579,
+      "bootstrap_live_bytes": 602,
+      "bootstrap_peak_bytes": 803,
+      "arena_used_bytes": 534184,
+      "arena_usable_bytes": 2096384,
+      "bootstrap_quarantined_bytes": 0,
+      "arena_free_bytes": 1562200,
+      "allocation_failures": 0
+    },
+    "swap_initial_bytes": 3149594624,
+    "maximum_observed_swap_net_growth_bytes": 0,
+    "maximum_sampled_non_normal_pressure_seconds": 0.0,
+    "pressure_semantics": "dispatch flags 1 normal/2 warning/4 critical; pressure/swap each frame; periodic named VM counters every60s",
+    "cpu_units": "raw proc_pid_rusage counters; no unverified ns conversion",
+    "memory_credit_bytes": 0,
+    "maximum_observed_r07_replaced_bytes": 4521984,
+    "r07_credit_semantics": "unique independently mapped same-use padding actually dropped; cold opens rebuild padding; not owned capacity and never subtract from old raw peaks",
+    "memory_16gb_gate": "not_run",
+    "eight_hour_gate": "not_run",
+    "full_M0": "not_accepted"
+  }
+}

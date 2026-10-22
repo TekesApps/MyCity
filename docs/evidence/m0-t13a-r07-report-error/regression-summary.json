@@ -1,0 +1,8 @@
+{
+  "source_sha256": "1faaf8d56d924e699bb72f0e897d4e3894faca02c45609871471cbbaf47b6793",
+  "successful_harness_summaries": 61,
+  "passed_entries_including_nested": 455,
+  "failed_entries": 0,
+  "scope": "counts include nested test runs, not unique-test count",
+  "explicit_error_cli_test": true
+}

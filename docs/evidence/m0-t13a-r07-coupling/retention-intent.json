@@ -1,0 +1,12 @@
+{
+  "scope": "original full L1/actual64MiB pool, denser8s diagnostic snapshots16s only for pin/TTL/partial-v3 cold-open; NOT formal steady, no shrinking record counts",
+  "new_work": [
+    "work/r07-coupling-l1-01",
+    "work/candidate-binaries/r07-coupling"
+  ],
+  "estimated_max_new_bytes": 11811160064,
+  "source_predecessor": "m0-t13a-r07-mapping frozen5c22 and actual32MiB backing release retained",
+  "no_new_target": true,
+  "protected": "all old five complete/fault layouts158files remain unchanged; fixed deps/source/exe/raw preserved",
+  "retirement": "new synthetic pressure/reserve and standalone prefix eligible only after actual cold restore and independent release; retain raw lifecycle/TTL/epoch/index/components and failure evidence"
+}

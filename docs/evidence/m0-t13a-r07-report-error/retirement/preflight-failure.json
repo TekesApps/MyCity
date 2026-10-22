@@ -1,0 +1,27 @@
+{
+  "deleted_files": 0,
+  "reason": "st_blocks changed only; all identities and protected content SHA reverified",
+  "changes": [
+    {
+      "path": "work/r07-event-driven-l1-01/observed/host-samples.jsonl",
+      "before_blocks": 392,
+      "after_blocks": 336,
+      "allocated_delta_bytes": -28672,
+      "attribution": "retained allocation metadata fluctuation, excluded from deleted-file total"
+    },
+    {
+      "path": "work/r07-report-error-l1-01/observed/host-samples.jsonl",
+      "before_blocks": 392,
+      "after_blocks": 352,
+      "allocated_delta_bytes": -20480,
+      "attribution": "retained allocation metadata fluctuation, excluded from deleted-file total"
+    },
+    {
+      "path": "work/r07-report-error-l1-01/observed/model/layout/snapshots/snapshot-000002/pressure.bin",
+      "before_blocks": 5947440,
+      "after_blocks": 5936560,
+      "allocated_delta_bytes": -5570560,
+      "attribution": "retained allocation metadata fluctuation, excluded from deleted-file total"
+    }
+  ]
+}

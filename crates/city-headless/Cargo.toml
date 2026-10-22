@@ -7,6 +7,7 @@ license.workspace = true
 build = "build.rs"
 
 [dependencies]
+memmap2 = "=0.9.9"
 mycity-role-allocator = { path = "../city-role-allocator" }
 mycity-core = { path = "../city-core" }
 mycity-map = { path = "../city-map" }
@@ -26,5 +27,5 @@ workspace = true
 [target.'cfg(target_os = "macos")'.dependencies]
 libproc = "=0.14.11"
 sysctl = "=0.6.0"
-rustix = { version = "=1.1.5", features = ["process"] }
+rustix = { version = "=1.1.5", features = ["process", "time"] }
 errno = "=0.3.14"

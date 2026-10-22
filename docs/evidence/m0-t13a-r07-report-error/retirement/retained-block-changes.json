@@ -1,0 +1,5 @@
+{
+  "before_delete": [],
+  "after_delete": [],
+  "excluded_from_reclamation": true
+}

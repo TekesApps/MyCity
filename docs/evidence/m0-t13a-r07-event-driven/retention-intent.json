@@ -1,0 +1,9 @@
+{
+  "scope": "original full L1 functional protocol, per-second full scans and exact 1MiB dirty, two diagnostic event-driven generations,120s session deadline; formal300s unchanged",
+  "new_work": ["work/r07-event-driven-l1-01", "work/candidate-binaries/r07-event-driven"],
+  "estimated_max_new_bytes": 11811160064,
+  "no_new_target": true,
+  "protected": "all existing originals190files and failed r07-coupling first snapshot retained; source/lock/exe/deps/raw/WIP retained",
+  "retirement": "new pure synthetic pressure/reserve eligible only after actual full cold restore and advisor release; keep raw/index/components/logs, never claim deleted files directly restorable",
+  "safety": "pause provider publication ONLY via explicit diagnostic marker; observer sampling,pressure,swap and owner safety remain live"
+}

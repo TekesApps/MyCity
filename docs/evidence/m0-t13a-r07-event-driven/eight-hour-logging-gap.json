@@ -1,0 +1,14 @@
+{
+  "observed_host_bytes": 168067,
+  "observed_host_frames": 100,
+  "host_average_bytes_per_frame": 1680.67,
+  "raw_compute_bytes": 36765,
+  "raw_compute_record_bytes": 9,
+  "raw_compute_records": 4085,
+  "scans": 19,
+  "compute_bytes_per_scan": 1935.0,
+  "projection_host_bytes_8h_at_same_frame_size": 193613184.0,
+  "projection_L1_compute_bytes_8h": 55728000.0,
+  "combined_cap_bytes": 268435456,
+  "scope": "illustrative projection from functional raw; full L2 all components and 8h not measured; no cap relaxation or pass"
+}

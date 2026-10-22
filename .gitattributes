@@ -4,3 +4,5 @@ docs/evidence/m0-t13a-metadata-workspace/*.stdout whitespace=-blank-at-eof
 docs/evidence/m0-t13a-fixed-lexical/*.stdout whitespace=-blank-at-eof
 docs/evidence/m0-t13a-native-observer/*.stdout whitespace=-blank-at-eof
 docs/evidence/m0-t13a-native-observer-errno/*.stdout whitespace=-blank-at-eof
+docs/evidence/m0-t13a-r07-event-driven/*.stdout whitespace=-blank-at-eof
+docs/evidence/m0-t13a-r07-report-error/*.stdout whitespace=-blank-at-eof

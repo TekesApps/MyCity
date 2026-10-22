@@ -1,0 +1,106 @@
+{
+  "source_sha256": "7fd9e8d83c6d9ac447d124e1d1683900deb2d145ab503afd36a9e9310dbae590",
+  "frames": 100,
+  "complete_frames": 74,
+  "explicit_incomplete_frames": 26,
+  "paused_provider_frames": 8,
+  "sampling_and_safety_never_stopped": true,
+  "actual_replacement_ack_frames": 72,
+  "reading_correlation_unknown": [],
+  "transitions": [
+    {
+      "frame": 5,
+      "relative_seconds": 1.302571625,
+      "owner": {
+        "pid": 43106,
+        "start_abstime": 25039092194664,
+        "parent_pid": 43104
+      },
+      "state": {
+        "schema": 1,
+        "logical_bytes": 277662928,
+        "arena_tail_bytes": 52432,
+        "quantum_bytes": 65536,
+        "mapped_bytes": 273088512,
+        "replaced_bytes": 4521984,
+        "epoch": 1,
+        "reading_sequence": 5
+      },
+      "reason": "fresh_unique_live_same_use_components",
+      "coverage": true
+    },
+    {
+      "frame": 49,
+      "relative_seconds": 12.29376575,
+      "owner": {
+        "pid": 43106,
+        "start_abstime": 25039092194664,
+        "parent_pid": 43104
+      },
+      "state": {
+        "schema": 1,
+        "logical_bytes": 277662928,
+        "arena_tail_bytes": 52432,
+        "quantum_bytes": 65536,
+        "mapped_bytes": 277610496,
+        "replaced_bytes": 0,
+        "epoch": 2,
+        "reading_sequence": 44
+      },
+      "reason": "reading_identity_sequence_or_ttl",
+      "coverage": true
+    },
+    {
+      "frame": 53,
+      "relative_seconds": 13.306651708,
+      "owner": {
+        "pid": 43106,
+        "start_abstime": 25039092194664,
+        "parent_pid": 43104
+      },
+      "state": {
+        "schema": 1,
+        "logical_bytes": 277662928,
+        "arena_tail_bytes": 52432,
+        "quantum_bytes": 65536,
+        "mapped_bytes": 273088512,
+        "replaced_bytes": 4521984,
+        "epoch": 3,
+        "reading_sequence": 53
+      },
+      "reason": "fresh_unique_live_same_use_components",
+      "coverage": true
+    }
+  ],
+  "correlation_semantics": "published sequence/owner/epoch correlated to surrounding raw frames; no simultaneous atomic-ack claim; transition intervals remain explicit",
+  "scans": 19,
+  "original_native_records_each": 361272,
+  "original_stub_records_each": 1232426,
+  "dirty_bytes_each": 1048576,
+  "actual_snapshot_generations": 2,
+  "metadata": {
+    "original_budget_bytes": 4194304,
+    "mapping_control_capacity_bytes": 203328,
+    "actual_role_grant_bytes": 2983880294,
+    "full_mapping_bytes": 277610496,
+    "external_owned_bytes": 67108864,
+    "fixed_payload_capacity_inside_arena_bytes": 2979685990,
+    "maximum_requested_residual_within_metadata_bytes": 3033260,
+    "maximum_used_arena_residual_within_metadata_bytes": 2953890,
+    "minimum_observed_arena_free_bytes": 1173696,
+    "no_allocation_failures": true,
+    "scope": "exact original payload-capacity equation plus actual in-arena charged observations; not kernel/native/stack proof"
+  },
+  "normal": {
+    "budget_bytes": 3328599654,
+    "all_raw_peak_frame": 90,
+    "all_raw_peak_footprint_bytes": 3337293352,
+    "complete_peak_frame": 49,
+    "complete_peak_footprint_bytes": 3337260584,
+    "complete_peak_over_normal_bytes": 8660930,
+    "accepted": false,
+    "reason": "functional protocol experiment includes deliberate provider withdrawal and cold pipeline; no formal performance claim; original whole physical peak remains above normal"
+  },
+  "eight_hour": "not_run",
+  "real16gb": "not_run"
+}

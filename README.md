@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.103`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.104`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.104完成[R07独立背板与恢复功能](docs/evidence/m0-t13a-r07-report-error/STATUS.md)：同源全仓/严格检查、两代真实快照、TTL实际补回、新PID与旧格式冷恢复、错误CLI拒绝通过；原数量和预算不变，整组物理仍超限，不签性能。终态8份旧合成载荷退役11.827GiB，190份恢复/故障原件保留；正式三轮/四速/8h/真实16GB仍未完成。
 
 v0.5.103完成[历史验证产物集中回收](docs/evidence/disk-reclamation-v103/STATUS.md)：精确退役7份已无依赖的合成prefix/已归档重复组件，减少588.648MiB分配空间；work剩25.272GiB，190份完整恢复/故障原件及模型WIP不变。共享target保留复用，不改变性能验收状态。
 

@@ -1,0 +1,33 @@
+{
+  "source_sha256": "7fd9e8d83c6d9ac447d124e1d1683900deb2d145ab503afd36a9e9310dbae590",
+  "binary_sha256": "1737194e07106b7fc93736ec3a4a34ef28cb2a469648f9973da3ff2b5e895218",
+  "runs": [
+    {
+      "name": "v50",
+      "source": "work/t13a50-joint-01/model/layout/snapshots/snapshot-000001",
+      "index_sha256": "43f83f0a14e8e1962370a1d6bdf26424671660e3679e48d94b864bd1be47728c",
+      "pid": 44138,
+      "exit": 0,
+      "seconds": 7.119505583,
+      "report_path": "/Users/frankqin/dev/MyCity/work/r07-compat-cold-01/v50/report.json"
+    },
+    {
+      "name": "typed-v98",
+      "source": "work/typed-workspace-formal-l1-01/observed/model/layout/snapshots/snapshot-000008",
+      "index_sha256": "6952f795035a41ae0bf2b9ecedb50590fac2d3d4c1a58ef43c3eb0603a6f351c",
+      "pid": 44186,
+      "exit": 0,
+      "seconds": 4.983644625,
+      "report_path": "/Users/frankqin/dev/MyCity/work/r07-compat-cold-01/typed-v98/report.json"
+    },
+    {
+      "name": "v3-predecessor",
+      "source": "work/r07-coupling-l1-01/observed/model/layout/snapshots/snapshot-000001",
+      "index_sha256": "6c90f4d5879076647faebaeabc4bdcb5899782dc82d846718021a113cbcd8063",
+      "pid": 44207,
+      "exit": 0,
+      "seconds": 5.221321208000001,
+      "report_path": "/Users/frankqin/dev/MyCity/work/r07-compat-cold-01/v3-predecessor/report.json"
+    }
+  ]
+}

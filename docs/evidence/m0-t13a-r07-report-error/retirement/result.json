@@ -1,0 +1,28 @@
+{
+  "before": {
+    "time_ns": 1792635578451496000,
+    "du_kib": {
+      "work": 39708468,
+      "target": 2180708
+    },
+    "available_bytes": 81893683200
+  },
+  "after": {
+    "time_ns": 1792635588306660000,
+    "du_kib": {
+      "work": 27306644,
+      "target": 2180708
+    },
+    "available_bytes": 94593994752
+  },
+  "files_deleted": 8,
+  "allocated_bytes_removed": 12699467776,
+  "filesystem_available_delta_bytes": 12700311552,
+  "other_work_target_files_identity_metadata_unchanged": 129019,
+  "retained_block_metadata_changes_excluded": true,
+  "protected_files_sha_verified": 190,
+  "source_and_wip_unchanged": true,
+  "new_archive_bytes": 0,
+  "build_or_model_run": false,
+  "attribution": "unique inode st_blocks, not APFS exclusive physical claim; filesystem delta observational only"
+}

@@ -1,0 +1,16 @@
+{
+  "source_sha256": "1faaf8d56d924e699bb72f0e897d4e3894faca02c45609871471cbbaf47b6793",
+  "binary_sha256": "4857353b64e99a614f05de695d0b6a25e37f5b672b35cfb130c10d4e3fd30c46",
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/candidate-binaries/r07-report-error/mycity-headless",
+    "layout-r07-session",
+    "/Users/frankqin/dev/MyCity/work/r07-report-error-probe-01",
+    "--report-fault"
+  ],
+  "exit": 2,
+  "seconds": 0.66980225,
+  "report_exists": false,
+  "full_layout_allocated": false,
+  "error": "metrics_unknown_class",
+  "formal_acceptance": false
+}

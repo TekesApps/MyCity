@@ -120,7 +120,7 @@ impl Recorder {
                 Some(crate::diagnostic_contract::DRIVER)
             }
             "joint-budget-probe" | "joint-endurance" | "speed-run" | "pe0-speed-probe"
-            | "steady-run" => Some(crate::diagnostic_contract::SUPERVISOR),
+            | "steady-run" | "r07-layout-driver" => Some(crate::diagnostic_contract::SUPERVISOR),
             "normal-pool-host" => {
                 Some(crate::normal_pool::BYTES + crate::normal_pool::DIAGNOSTIC_BYTES)
             }

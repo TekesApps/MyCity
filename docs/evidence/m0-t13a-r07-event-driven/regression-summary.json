@@ -1,0 +1,6 @@
+{
+  "successful_harness_summaries": 60,
+  "passed_entries_including_nested": 454,
+  "failed_entries": 0,
+  "scope": "old7fd source; before report-error fix, not final source regression"
+}

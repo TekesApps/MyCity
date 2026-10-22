@@ -1,0 +1,8 @@
+{
+  "source_sha256": "1faaf8d56d924e699bb72f0e897d4e3894faca02c45609871471cbbaf47b6793",
+  "source_files": 219,
+  "binary": "/Users/frankqin/dev/MyCity/work/candidate-binaries/r07-report-error/mycity-headless",
+  "binary_sha256": "4857353b64e99a614f05de695d0b6a25e37f5b672b35cfb130c10d4e3fd30c46",
+  "lock_sha256": "7da5c54a8499a07cbc71dcecce0c0095d4af3b8b6e5052783f20d188037b6dd6",
+  "scope": "Frozen R07 independently mapped padding/coupling candidate; real reads, recovery and regression pending, no performance acceptance"
+}

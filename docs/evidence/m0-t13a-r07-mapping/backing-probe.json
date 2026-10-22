@@ -1,0 +1,8 @@
+{
+  "exit_code": 0,
+  "seconds": 1.017363459,
+  "source_sha256": "5c22cb78aebec73b64bab3ad7b88cbd85b53b20b6443fcc92d470d4b45adc821",
+  "binary_sha256": "4660ac8b3477d40a53bc99828cb1337b51e4d72ae3d6b2e88e225a2f010afca8",
+  "report_path": "/Users/frankqin/dev/MyCity/work/r07-backing-preflight-01/report.json",
+  "scope": "full R07 size mechanism exercise; artificial requests, not actual runtime credit or full L1 acceptance"
+}

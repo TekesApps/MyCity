@@ -1,0 +1,19 @@
+{
+  "previous_packages_checksums_unchanged": 78,
+  "added_registry_packages": [
+    {
+      "name": "memmap2",
+      "version": "0.9.9",
+      "checksum": "744133e4a0e0a658e1374cf3bf8e415c4052a15a111acd372764c55b4177d490",
+      "pristine_archive": "work/fixed-dependencies/r07-event-driven/memmap2-0.9.9.crate",
+      "bytes": 34576
+    }
+  ],
+  "local_unsafe_added": false,
+  "api": "safe memmap2::MmapMut::map_anon; private anonymous mapping; final Arc drop invokes library unmap",
+  "platforms": "actual macOS only; no Windows/Metal/GPU claim",
+  "source_sha256": "1faaf8d56d924e699bb72f0e897d4e3894faca02c45609871471cbbaf47b6793",
+  "lock_sha256": "7da5c54a8499a07cbc71dcecce0c0095d4af3b8b6e5052783f20d188037b6dd6",
+  "original_dependency_audit": "docs/evidence/m0-t13a-r07-event-driven/dependency-audit.json",
+  "no_duplicate_fixed_archive": true
+}

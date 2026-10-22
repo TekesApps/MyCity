@@ -1,0 +1,514 @@
+{
+  "cold_reopen_and_scan": "passed",
+  "eight_hour_gate": "not_run",
+  "full_M0": "not_accepted",
+  "manifest": {
+    "acceptance_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+    "cow_concurrent_pages": 64,
+    "cow_reserve_bytes": 134217728,
+    "decode_workspace": {
+      "disk_work_image": "128MiB canonical 0xa5, not a serialization of decoder heap",
+      "initialized_tail_bytes": 5338736,
+      "inline_header_bytes": 464,
+      "native_inline_header_bytes": 304,
+      "native_owned_bytes": 29625968,
+      "owned_bytes": 67108864,
+      "parser_and_report": "original 4MiB metadata; 2MiB IO already charged there",
+      "table_backings": [
+        {
+          "count": 30000,
+          "owned_bytes": 1920000
+        },
+        {
+          "count": 160000,
+          "owned_bytes": 20480000
+        },
+        {
+          "count": 24000,
+          "owned_bytes": 6144000
+        },
+        {
+          "count": 900000,
+          "owned_bytes": 3600000
+        }
+      ],
+      "thread_stack": "original 2MiB native stack, included in physical process measurements"
+    },
+    "external_owned_charge_bytes": 67108864,
+    "full_M0": "not_accepted",
+    "layout_not_business": true,
+    "memory_16gb_gate": "not_run",
+    "metadata_and_io_charge_bytes": 4194304,
+    "mutation_iteration": 12,
+    "native": {
+      "account_arena": {
+        "free_index_capacity": 40000,
+        "header_bytes": 80,
+        "live_records": 40000,
+        "owned_capacity_bytes": 1440080,
+        "record_bytes": 24,
+        "slot_bytes": 32,
+        "slots_capacity": 40000
+      },
+      "fields": [
+        [
+          "Account.id",
+          16
+        ],
+        [
+          "Account.role",
+          20
+        ],
+        [
+          "Account.cash",
+          0
+        ],
+        [
+          "Account.protected",
+          8
+        ],
+        [
+          "Stock.id",
+          72
+        ],
+        [
+          "Stock.owner",
+          0
+        ],
+        [
+          "Stock.commodity",
+          80
+        ],
+        [
+          "Stock.quantity",
+          32
+        ],
+        [
+          "Stock.basis",
+          40
+        ],
+        [
+          "Stock.lot_id",
+          76
+        ],
+        [
+          "Stock.origin_quantity",
+          48
+        ],
+        [
+          "Stock.origin_basis",
+          56
+        ],
+        [
+          "Stock.offset",
+          64
+        ]
+      ],
+      "inventory_arena": {
+        "free_index_capacity": 110000,
+        "header_bytes": 80,
+        "live_records": 110000,
+        "owned_capacity_bytes": 11000080,
+        "record_bytes": 88,
+        "slot_bytes": 96,
+        "slots_capacity": 110000
+      },
+      "owned_capacity_bytes": 29625968,
+      "schema": "mycity-native-layout-v1",
+      "scope": "actual_types_synthetic_records_not_business_simulation",
+      "vectors": [
+        [
+          "account_index",
+          40000,
+          40000,
+          32
+        ],
+        [
+          "inventory_index",
+          110000,
+          110000,
+          32
+        ],
+        [
+          "claims",
+          180000,
+          180000,
+          48
+        ],
+        [
+          "payroll",
+          31200,
+          31200,
+          120
+        ],
+        [
+          "resources",
+          8,
+          8,
+          16
+        ],
+        [
+          "leases",
+          64,
+          64,
+          24
+        ]
+      ]
+    },
+    "normal_joint_budget_bytes": 3328599654,
+    "padding_payload_bytes": [
+      565206646,
+      322122547,
+      912680550,
+      268435455,
+      429496729,
+      268435455,
+      277662928
+    ],
+    "padding_payload_total_bytes": 3044040310,
+    "population": {
+      "actors": 0,
+      "representation": "22800 household stub members; 11400*3 + 11400*2",
+      "total": 57000
+    },
+    "pressure_page_bytes": 1048576,
+    "pressure_pattern": "splitmix64-init-v1; affine-u64-nonr07-dirty-v1",
+    "r07": {
+      "arena_tail_bytes": 52432,
+      "epoch": 0,
+      "logical_bytes": 277662928,
+      "mapped_bytes": 277610496,
+      "quantum_bytes": 65536,
+      "reading_sequence": 0,
+      "replaced_bytes": 0,
+      "schema": 1
+    },
+    "r07_generator": "r07-immutable-splitmix64-v1",
+    "r07_mapping_control_bytes": 203328,
+    "schema": "mycity-l1-layout-v2",
+    "solver_preview": "192MiB preview and 32MiB compute are pressure pages within solver share; no algorithms/GPU/UI",
+    "source_sha256": "1faaf8d56d924e699bb72f0e897d4e3894faca02c45609871471cbbaf47b6793",
+    "stubs": [
+      {
+        "count": 8,
+        "domain": "maps",
+        "index": "record_id_1_based_contiguous; path_refs_zero_based_OD_index",
+        "owned_capacity_bytes": 1024,
+        "owner_bound": 8,
+        "record_bytes": 128,
+        "schema_version": 1,
+        "source": "layout_stub_not_functional",
+        "source_kind": 1
+      },
+      {
+        "count": 22800,
+        "domain": "households",
+        "index": "record_id_1_based_contiguous; path_refs_zero_based_OD_index",
+        "owned_capacity_bytes": 5836800,
+        "owner_bound": 8,
+        "record_bytes": 256,
+        "schema_version": 1,
+        "source": "layout_stub_not_functional",
+        "source_kind": 2
+      },
+      {
+        "count": 24000,
+        "domain": "housing",
+        "index": "record_id_1_based_contiguous; path_refs_zero_based_OD_index",
+        "owned_capacity_bytes": 6144000,
+        "owner_bound": 7000,
+        "record_bytes": 256,
+        "schema_version": 1,
+        "source": "layout_stub_not_functional",
+        "source_kind": 3
+      },
+      {
+        "count": 1000,
+        "domain": "visitors",
+        "index": "record_id_1_based_contiguous; path_refs_zero_based_OD_index",
+        "owned_capacity_bytes": 256000,
+        "owner_bound": 8,
+        "record_bytes": 256,
+        "schema_version": 1,
+        "source": "layout_stub_not_functional",
+        "source_kind": 4
+      },
+      {
+        "count": 2500,
+        "domain": "operators",
+        "index": "record_id_1_based_contiguous; path_refs_zero_based_OD_index",
+        "owned_capacity_bytes": 320000,
+        "owner_bound": 1980,
+        "record_bytes": 128,
+        "schema_version": 1,
+        "source": "layout_stub_not_functional",
+        "source_kind": 5
+      },
+      {
+        "count": 1980,
+        "domain": "entities",
+        "index": "record_id_1_based_contiguous; path_refs_zero_based_OD_index",
+        "owned_capacity_bytes": 506880,
+        "owner_bound": 8,
+        "record_bytes": 256,
+        "schema_version": 1,
+        "source": "layout_stub_not_functional",
+        "source_kind": 6
+      },
+      {
+        "count": 12000,
+        "domain": "equity_links",
+        "index": "record_id_1_based_contiguous; path_refs_zero_based_OD_index",
+        "owned_capacity_bytes": 768000,
+        "owner_bound": 1980,
+        "record_bytes": 64,
+        "schema_version": 1,
+        "source": "layout_stub_not_functional",
+        "source_kind": 7
+      },
+      {
+        "count": 160000,
+        "domain": "meter",
+        "index": "record_id_1_based_contiguous; path_refs_zero_based_OD_index",
+        "owned_capacity_bytes": 20480000,
+        "owner_bound": 7000,
+        "record_bytes": 128,
+        "schema_version": 1,
+        "source": "layout_stub_not_functional",
+        "source_kind": 8
+      },
+      {
+        "count": 3000,
+        "domain": "general_contracts",
+        "index": "record_id_1_based_contiguous; path_refs_zero_based_OD_index",
+        "owned_capacity_bytes": 384000,
+        "owner_bound": 1980,
+        "record_bytes": 128,
+        "schema_version": 1,
+        "source": "layout_stub_not_functional",
+        "source_kind": 9
+      },
+      {
+        "count": 14800,
+        "domain": "od",
+        "index": "record_id_1_based_contiguous; path_refs_zero_based_OD_index",
+        "owned_capacity_bytes": 1894400,
+        "owner_bound": 8,
+        "record_bytes": 128,
+        "schema_version": 1,
+        "source": "layout_stub_not_functional",
+        "source_kind": 10
+      },
+      {
+        "count": 900000,
+        "domain": "path_refs",
+        "index": "record_id_1_based_contiguous; path_refs_zero_based_OD_index",
+        "owned_capacity_bytes": 3600000,
+        "owner_bound": 14800,
+        "record_bytes": 4,
+        "schema_version": 1,
+        "source": "layout_stub_not_functional",
+        "source_kind": 11
+      },
+      {
+        "count": 8500,
+        "domain": "cargo_batches",
+        "index": "record_id_1_based_contiguous; path_refs_zero_based_OD_index",
+        "owned_capacity_bytes": 1088000,
+        "owner_bound": 1980,
+        "record_bytes": 128,
+        "schema_version": 1,
+        "source": "layout_stub_not_functional",
+        "source_kind": 12
+      },
+      {
+        "count": 40000,
+        "domain": "passenger_batches",
+        "index": "record_id_1_based_contiguous; path_refs_zero_based_OD_index",
+        "owned_capacity_bytes": 5120000,
+        "owner_bound": 22800,
+        "record_bytes": 128,
+        "schema_version": 1,
+        "source": "layout_stub_not_functional",
+        "source_kind": 13
+      },
+      {
+        "count": 2000,
+        "domain": "bus_train_vehicles",
+        "index": "record_id_1_based_contiguous; path_refs_zero_based_OD_index",
+        "owned_capacity_bytes": 256000,
+        "owner_bound": 2500,
+        "record_bytes": 128,
+        "schema_version": 1,
+        "source": "layout_stub_not_functional",
+        "source_kind": 14
+      },
+      {
+        "count": 500,
+        "domain": "ship_aircraft_vehicles",
+        "index": "record_id_1_based_contiguous; path_refs_zero_based_OD_index",
+        "owned_capacity_bytes": 64000,
+        "owner_bound": 2500,
+        "record_bytes": 128,
+        "schema_version": 1,
+        "source": "layout_stub_not_functional",
+        "source_kind": 15
+      },
+      {
+        "count": 30000,
+        "domain": "car_vehicles",
+        "index": "record_id_1_based_contiguous; path_refs_zero_based_OD_index",
+        "owned_capacity_bytes": 1920000,
+        "owner_bound": 22800,
+        "record_bytes": 64,
+        "schema_version": 1,
+        "source": "layout_stub_not_functional",
+        "source_kind": 16
+      },
+      {
+        "count": 120,
+        "domain": "matters",
+        "index": "record_id_1_based_contiguous; path_refs_zero_based_OD_index",
+        "owned_capacity_bytes": 30720,
+        "owner_bound": 8,
+        "record_bytes": 256,
+        "schema_version": 1,
+        "source": "layout_stub_not_functional",
+        "source_kind": 17
+      },
+      {
+        "count": 32,
+        "domain": "team_members",
+        "index": "record_id_1_based_contiguous; path_refs_zero_based_OD_index",
+        "owned_capacity_bytes": 4096,
+        "owner_bound": 8,
+        "record_bytes": 128,
+        "schema_version": 1,
+        "source": "layout_stub_not_functional",
+        "source_kind": 18
+      },
+      {
+        "count": 32,
+        "domain": "analysis_tasks",
+        "index": "record_id_1_based_contiguous; path_refs_zero_based_OD_index",
+        "owned_capacity_bytes": 8192,
+        "owner_bound": 32,
+        "record_bytes": 256,
+        "schema_version": 1,
+        "source": "layout_stub_not_functional",
+        "source_kind": 19
+      },
+      {
+        "count": 1,
+        "domain": "models",
+        "index": "record_id_1_based_contiguous; path_refs_zero_based_OD_index",
+        "owned_capacity_bytes": 128,
+        "owner_bound": 1,
+        "record_bytes": 128,
+        "schema_version": 1,
+        "source": "layout_stub_not_functional",
+        "source_kind": 20
+      },
+      {
+        "count": 1,
+        "domain": "preview",
+        "index": "record_id_1_based_contiguous; path_refs_zero_based_OD_index",
+        "owned_capacity_bytes": 128,
+        "owner_bound": 1,
+        "record_bytes": 128,
+        "schema_version": 1,
+        "source": "layout_stub_not_functional",
+        "source_kind": 21
+      },
+      {
+        "count": 7000,
+        "domain": "hosts",
+        "index": "record_id_1_based_contiguous; path_refs_zero_based_OD_index",
+        "owned_capacity_bytes": 448000,
+        "owner_bound": 8,
+        "record_bytes": 64,
+        "schema_version": 1,
+        "source": "layout_stub_not_functional",
+        "source_kind": 22
+      },
+      {
+        "count": 600,
+        "domain": "teaching_batches",
+        "index": "record_id_1_based_contiguous; path_refs_zero_based_OD_index",
+        "owned_capacity_bytes": 76800,
+        "owner_bound": 7000,
+        "record_bytes": 128,
+        "schema_version": 1,
+        "source": "layout_stub_not_functional",
+        "source_kind": 23
+      },
+      {
+        "count": 1500,
+        "domain": "current_services",
+        "index": "record_id_1_based_contiguous; path_refs_zero_based_OD_index",
+        "owned_capacity_bytes": 192000,
+        "owner_bound": 7000,
+        "record_bytes": 128,
+        "schema_version": 1,
+        "source": "layout_stub_not_functional",
+        "source_kind": 24
+      },
+      {
+        "count": 36,
+        "domain": "cases",
+        "index": "record_id_1_based_contiguous; path_refs_zero_based_OD_index",
+        "owned_capacity_bytes": 9216,
+        "owner_bound": 8,
+        "record_bytes": 256,
+        "schema_version": 1,
+        "source": "layout_stub_not_functional",
+        "source_kind": 25
+      },
+      {
+        "count": 16,
+        "domain": "bills",
+        "index": "record_id_1_based_contiguous; path_refs_zero_based_OD_index",
+        "owned_capacity_bytes": 4096,
+        "owner_bound": 8,
+        "record_bytes": 256,
+        "schema_version": 1,
+        "source": "layout_stub_not_functional",
+        "source_kind": 26
+      }
+    ]
+  },
+  "memory_16gb_gate": "not_run",
+  "next_generation": null,
+  "next_generation_requested": false,
+  "restore": {
+    "all_payload_files_hashed_and_loaded": true,
+    "byte_length": 3374262418,
+    "codec": "canonical layout-v1/v2/v3 generator profile; v3 R07 reconstructed full, old runtime credit not inherited; bounded typed index; full native shape/capacity and immutable stub equality; explicit mutation counter required; one-pass hash+load",
+    "cold_restore_seconds": 3.887217083,
+    "native_restore_bound": {
+      "conservative_transient_bound_bytes": 35917424,
+      "decoded_owned_bytes": 29625968,
+      "largest_replacement_bytes": 0,
+      "parser_io_stack_slack_bytes": 6291456
+    },
+    "producer_source_sha256": "1faaf8d56d924e699bb72f0e897d4e3894faca02c45609871471cbbaf47b6793",
+    "reader_source_sha256": "1faaf8d56d924e699bb72f0e897d4e3894faca02c45609871471cbbaf47b6793",
+    "restored_generation": 2,
+    "restored_mutation_iteration": 12,
+    "same_source": true
+  },
+  "resumed_scan": {
+    "checksum": 10412027265265402229,
+    "cow_pages": 0,
+    "decode_workspace_borrowed_bytes": 0,
+    "decode_workspace_scanned_bytes": 67108864,
+    "dirty_bytes": 1048576,
+    "iteration": 13,
+    "native_records": 361272,
+    "stub_records": 1232426,
+    "touched_pressure_bytes": 3178258038,
+    "wall_seconds": 0.020311
+  },
+  "schema": "mycity-layout-cold-reopen-v2",
+  "steady_gate": "not_run"
+}

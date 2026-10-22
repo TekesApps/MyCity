@@ -85,6 +85,10 @@ struct Frame<'a> {
     identity_uncertainties: &'a [tracker::Issue],
     pending_registration_bytes: u64,
     registration_lock_busy: bool,
+    r07_applied: Option<crate::layout_load::r07::Applied>,
+    r07_reading: Option<crate::r07_runtime::Reading>,
+    r07_coverage_complete: bool,
+    r07_provider_paused: bool,
     pressure_dispatch_flag: u64,
     swap_used_bytes: u64,
     observer_hot_bound_bytes: usize,
@@ -103,6 +107,8 @@ struct Stats {
     foot_frame: u64,
     disk: u64,
     missing: u64,
+    r07_last: Option<crate::layout_load::r07::Applied>,
+    r07_max: usize,
 }
 impl Stats {
     fn new() -> Self {
@@ -118,6 +124,8 @@ impl Stats {
             foot_frame: 0,
             disk: 0,
             missing: 0,
+            r07_last: None,
+            r07_max: 0,
         }
     }
 }
@@ -137,6 +145,70 @@ fn diagnostic_charge(root: &Path) -> Result<u64, String> {
     let value: Projection = serde_json::from_slice(&raw).map_err(err)?;
     Ok(value.external_owned_charge_bytes)
 }
+fn publish_r07(
+    root: &Path,
+    tracker: &tracker::Tracker,
+    nonce: &str,
+    sequence: u64,
+    begin: u64,
+) -> Result<crate::r07_runtime::Reading, String> {
+    use crate::r07_runtime::{Component, Reading, Role};
+    let mut components = [None; 3];
+    for m in &tracker.members {
+        let slot = if m.sample.identity.pid == std::process::id() {
+            Some(0)
+        } else if ["steady-run", "direct-root", "r07-layout-driver"].contains(&m.role.as_str()) {
+            Some(1)
+        } else if m.role.as_str() == "steady-driver" {
+            Some(2)
+        } else {
+            None
+        };
+        if let Some(i) = slot {
+            if components[i].is_some() {
+                return Err("r07_ambiguous_role".into());
+            }
+            components[i] = Some(Component {
+                role: [Role::Observer, Role::Supervisor, Role::Driver][i],
+                identity: m.sample.identity,
+                footprint_bytes: m.sample.usage.footprint_bytes,
+            });
+        }
+    }
+    let reading = Reading {
+        schema: 1,
+        source: crate::control_data::Text::new(env!("MYCITY_SOURCE_SHA256"))?,
+        nonce: crate::control_data::Text::new(nonce)?,
+        sequence,
+        monotonic_begin_ns: begin,
+        monotonic_end_ns: crate::r07_runtime::monotonic_ns()?,
+        components,
+    };
+    let tmp = root.join("r07-runtime.tmp");
+    save(&tmp, &reading)?;
+    fs::rename(tmp, root.join("r07-runtime.json")).map_err(err)?;
+    Ok(reading)
+}
+fn read_r07(
+    root: &Path,
+    tracker: &tracker::Tracker,
+) -> Result<Option<crate::layout_load::r07::Applied>, String> {
+    let file = match File::open(root.join("model/layout/r07-state.json")) {
+        Ok(f) => f,
+        Err(e) if e.kind() == std::io::ErrorKind::NotFound => return Ok(None),
+        Err(e) => return Err(err(e)),
+    };
+    let raw = mycity_core::read_bounded(file, 4096).map_err(err)?;
+    let ack: crate::layout_load::r07::Applied = serde_json::from_slice(&raw).map_err(err)?;
+    if ack.source.as_str() != env!("MYCITY_SOURCE_SHA256") {
+        return Err("r07_ack_source".into());
+    }
+    ack.state.validate(ack.state.logical_bytes)?;
+    Ok(ack
+        .owner
+        .filter(|id| tracker.members.iter().any(|m| m.sample.identity == *id))
+        .map(|_| ack))
+}
 struct Capture<'a> {
     root: &'a Path,
     origin: Instant,
@@ -148,6 +220,8 @@ struct Capture<'a> {
     writer: &'a mut BufWriter<File>,
     buffer: &'a mut disk::Line,
     host: &'a system::Host,
+    r07_enabled: bool,
+    r07_pause_allowed: bool,
 }
 fn tick(context: Capture<'_>) -> Result<(), String> {
     let Capture {
@@ -161,8 +235,11 @@ fn tick(context: Capture<'_>) -> Result<(), String> {
         writer,
         buffer,
         host,
+        r07_enabled,
+        r07_pause_allowed,
     } = context;
     let begin = now(origin);
+    let monotonic_begin = crate::r07_runtime::monotonic_ns()?;
     journal.read(nonce, |r| tracker.register(r))?;
     tracker.poll(origin)?;
     let critical = system::critical()?;
@@ -209,6 +286,50 @@ fn tick(context: Capture<'_>) -> Result<(), String> {
         available_disk_bytes: free,
         swap_total_bytes: critical.total,
     });
+    // Fault control exists only for the explicit diagnostic root. Sampling,
+    // pressure/swap guards and owner protection continue throughout the pause.
+    let r07_provider_paused = r07_pause_allowed && root.join("r07-provider-pause").exists();
+    let r07_reading = if r07_enabled && !r07_provider_paused {
+        Some(publish_r07(
+            root,
+            tracker,
+            nonce,
+            stats.samples + 1,
+            monotonic_begin,
+        )?)
+    } else {
+        None
+    };
+    let r07_applied = read_r07(root, tracker)?;
+    let expected_r07 = r07_enabled
+        && tracker.members.iter().any(|m| {
+            [
+                "steady-layout-session",
+                "layout-load-only",
+                "layout-charged-probe",
+                "layout-r07-session",
+            ]
+            .contains(&m.role.as_str())
+        });
+    let coverage_bytes = r07_reading.map_or(0, |r| {
+        r.components
+            .iter()
+            .flatten()
+            .map(|c| c.footprint_bytes)
+            .sum::<u64>()
+    });
+    let r07_coverage_complete = match r07_applied {
+        Some(ack) => {
+            (ack.state.replaced_bytes as u64)
+                <= coverage_bytes / crate::layout_load::r07::QUANTUM as u64
+                    * crate::layout_load::r07::QUANTUM as u64
+        }
+        None => !expected_r07,
+    };
+    stats.r07_last = r07_applied;
+    if let Some(ack) = r07_applied {
+        stats.r07_max = stats.r07_max.max(ack.state.replaced_bytes);
+    }
     let pending = journal.pending()?;
     let end = now(origin);
     let frame = Frame {
@@ -220,12 +341,19 @@ fn tick(context: Capture<'_>) -> Result<(), String> {
         phys_footprint_bytes: foot,
         missing_footprint: missing,
         missing_rss: missing,
-        group_capture_complete: missing == 0 && pending == 0 && !journal.busy,
+        group_capture_complete: missing == 0
+            && pending == 0
+            && !journal.busy
+            && r07_coverage_complete,
         members: Members(&tracker.members),
         member_footprints_pid_birth_bytes: Footprints(&tracker.members),
         identity_uncertainties: &tracker.issues,
         pending_registration_bytes: pending,
         registration_lock_busy: journal.busy,
+        r07_applied,
+        r07_reading,
+        r07_coverage_complete,
+        r07_provider_paused,
         pressure_dispatch_flag: critical.pressure,
         swap_used_bytes: critical.used,
         observer_hot_bound_bytes: charged,
@@ -321,6 +449,7 @@ pub fn run(root: &Path, command: &[String]) -> Result<(), String> {
     if !command.get(1).is_some_and(|s| {
         [
             "steady-run",
+            "r07-layout-driver",
             "joint-endurance",
             "speed-run",
             "pe0-speed-probe",
@@ -351,6 +480,13 @@ pub fn run(root: &Path, command: &[String]) -> Result<(), String> {
     let mut stats = Stats::new();
     let binary_before = disk::hash(Path::new(&command[0]))?;
     let mut process = Command::new(&command[0]);
+    let r07_enabled = command
+        .get(1)
+        .is_some_and(|s| ["steady-run", "r07-layout-driver"].contains(&s.as_str()));
+    process.env_remove("MYCITY_R07_RUNTIME");
+    if r07_enabled {
+        process.env("MYCITY_R07_RUNTIME", root.join("r07-runtime.json"));
+    }
     process
         .arg("native-observed-root")
         .args(&command[1..])
@@ -401,6 +537,8 @@ pub fn run(root: &Path, command: &[String]) -> Result<(), String> {
                 writer: &mut samples,
                 buffer: &mut buffer,
                 host: &host,
+                r07_enabled,
+                r07_pause_allowed: command.get(1).is_some_and(|s| s == "r07-layout-driver"),
             })?;
             if exit.is_none() {
                 exit = child.try_wait().map_err(err)?;

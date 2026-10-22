@@ -47,3 +47,6 @@ owner管道EOF触发root专属组SIGKILL，包含root自身；不等待已被杀
 已测/未测以证据入口为准：L1短测没有真实业务吞吐；活跃Reference helper故障不等于空气worker计算故障。正式L0/L1/L2三轮、四速度、稀有层样本、实际8h和真实16GB分别验收，不能互相代替。当前M4 32GiB不证明16GB设备通过。
 
 阶段终态后执行[产物回收规则](validation-artifact-retention.md)，保留固定源/依赖/exe、raw、收据及仍需恢复/诊断的完整原件；无依赖的本轮合成压力按精确清单退役，更新不可直接恢复声明。复用唯一target，不在正式测量期间构建或清理。
+
+
+R07独立可回收背板与同用途运行时置换见[实现契约](m0-r07-runtime-replacement.md)。回执与raw按owner/sequence/epoch关联，不是原子同时帧；物理峰保持直接整组实测，layout/pool残差未取得置换授权。

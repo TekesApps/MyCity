@@ -1,0 +1,13 @@
+{
+  "command": [
+    "cargo",
+    "test",
+    "--release",
+    "--workspace",
+    "--locked",
+    "--offline"
+  ],
+  "exit_code": 0,
+  "seconds": 720.2379106249999,
+  "source_sha256": "1faaf8d56d924e699bb72f0e897d4e3894faca02c45609871471cbbaf47b6793"
+}

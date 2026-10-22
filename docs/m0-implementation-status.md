@@ -1,5 +1,7 @@
 # M0 Rust模型：当前范围、运行方法与验收状态
 
+v0.5.104：[R07独立背板/TTL/冷恢复](evidence/m0-t13a-r07-report-error/STATUS.md)最终1faa同源全workspace720.238秒及严格检查完成，原满级两代、实际补回、独立新PID零信用与旧格式冷开通过；修复metrics错误误报，实际CLI exit2无成功报告。完整帧物理仍超8,677,290B，不签normal/正式性能。精确8份旧payload退役11.827GiB、190原件全SHA保持；下一依赖实际VM归因，三轮/四速/稀有层/8h/真实16GB未完成。
+
 v0.5.103：[集中回收](evidence/disk-reclamation-v103/STATUS.md)退役7份无依赖合成/重复文件，分配空间617,242,624B；190份恢复/故障原件全SHA不变，R07第一代未冷恢复继续完整保留，Rust WIP不动。仅磁盘治理，不签新模型/性能门。
 
 v0.5.102：[原生整组观测与失主收尾](evidence/m0-t13a-native-observer-errno/STATUS.md)同冻结8f0c90ba来源全workspace/严格检查通过，实际errno、锁、owner及60s周期验证完成；原规模L1短测88帧85完整，原物理normal仍超9,758,898B，置换0，不签性能门。阶段精确回收约11.88GiB，旧完整原件保留；下一依赖为R07独立可回收背板。正式三轮/四速/8h/真实16GB未完成，完整M0未验。

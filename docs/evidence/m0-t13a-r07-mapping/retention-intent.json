@@ -1,0 +1,13 @@
+{
+  "scope": "R07 independently mapped backing and original full-L1 live runtime replacement; no guarantee of normal pass",
+  "new_work": [
+    "work/r07-backing-preflight-01",
+    "work/r07-mapping-l1-01",
+    "work/candidate-binaries/r07-mapping"
+  ],
+  "estimated_max_new_bytes": 11811160064,
+  "no_new_target": true,
+  "retention": "Keep source/lock/exe, physical evidence, runtime identity/reading/ack/raw and native/stub/index/CPU business. Retire standalone prefix and full synthetic pressure/reserve only after actual readback/cold restore and explicit dependency review. Old five protected layouts remain untouched.",
+  "original_record_counts_and_domain_budgets_unchanged": true,
+  "new_schema": "v3 R07 immutable pattern, nonR07 deterministic1MiB dirty; no cross-schema pressure hash equality claim"
+}

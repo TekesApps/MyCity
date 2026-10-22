@@ -1,0 +1,170 @@
+[
+  {
+    "path": "work/r07-coupling-l1-01/observed/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "metadata": [
+      16777231,
+      409918632,
+      33188,
+      3044040310,
+      1792632706586034950,
+      5945392,
+      1
+    ],
+    "sha256": "a65732a932b3e81c9e43e6255f62ee6513e07b22117c5290c0aa7843fcf7ce4b",
+    "allocated_bytes": 3044040704,
+    "round": "r07-coupling-l1-01",
+    "generation": 1,
+    "reason": "terminal synthetic payload; actual full readback/cold validation and latest full v3 generation2 successor released dependency; snapshot_busy was diagnostic scheduling, not payload fault",
+    "retained_evidence": "original index/components/raw/report/source/exe; docs/evidence/m0-t13a-r07-report-error; original coupling snapshot_busy evidence retained",
+    "index": "work/r07-coupling-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "index_sha256": "6c90f4d5879076647faebaeabc4bdcb5899782dc82d846718021a113cbcd8063",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/r07-coupling-l1-01/observed/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "metadata": [
+      16777231,
+      409918670,
+      33188,
+      134217728,
+      1792632706746141138,
+      262144,
+      1
+    ],
+    "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee",
+    "allocated_bytes": 134217728,
+    "round": "r07-coupling-l1-01",
+    "generation": 1,
+    "reason": "terminal synthetic payload; actual full readback/cold validation and latest full v3 generation2 successor released dependency; snapshot_busy was diagnostic scheduling, not payload fault",
+    "retained_evidence": "original index/components/raw/report/source/exe; docs/evidence/m0-t13a-r07-report-error; original coupling snapshot_busy evidence retained",
+    "index": "work/r07-coupling-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "index_sha256": "6c90f4d5879076647faebaeabc4bdcb5899782dc82d846718021a113cbcd8063",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/r07-event-driven-l1-01/observed/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "metadata": [
+      16777231,
+      409928817,
+      33188,
+      3039518326,
+      1792633536283628518,
+      5936560,
+      1
+    ],
+    "sha256": "0976361f46fa9165bfeae4025b3a4538a6f7f3ac2a3942087816e1202e35b10c",
+    "allocated_bytes": 3039518720,
+    "round": "r07-event-driven-l1-01",
+    "generation": 1,
+    "reason": "terminal synthetic payload; actual full readback/cold validation and latest full v3 generation2 successor released dependency; snapshot_busy was diagnostic scheduling, not payload fault",
+    "retained_evidence": "original index/components/raw/report/source/exe; docs/evidence/m0-t13a-r07-report-error; original coupling snapshot_busy evidence retained",
+    "index": "work/r07-event-driven-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "index_sha256": "6b3f2fa5fbed33b9a8293d1347e0d7a2243aa741084a9db97409b8404110cf00",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/r07-event-driven-l1-01/observed/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "metadata": [
+      16777231,
+      409928848,
+      33188,
+      134217728,
+      1792633536427466794,
+      262144,
+      1
+    ],
+    "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee",
+    "allocated_bytes": 134217728,
+    "round": "r07-event-driven-l1-01",
+    "generation": 1,
+    "reason": "terminal synthetic payload; actual full readback/cold validation and latest full v3 generation2 successor released dependency; snapshot_busy was diagnostic scheduling, not payload fault",
+    "retained_evidence": "original index/components/raw/report/source/exe; docs/evidence/m0-t13a-r07-report-error; original coupling snapshot_busy evidence retained",
+    "index": "work/r07-event-driven-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "index_sha256": "6b3f2fa5fbed33b9a8293d1347e0d7a2243aa741084a9db97409b8404110cf00",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/r07-event-driven-l1-01/observed/model/layout/snapshots/snapshot-000002/pressure.bin",
+    "metadata": [
+      16777231,
+      409928931,
+      33188,
+      3039518326,
+      1792633546859703007,
+      5936560,
+      1
+    ],
+    "sha256": "768518045a4168e5e9ca0133cc8c71bbfdfc69684776150c7746a21a947333bc",
+    "allocated_bytes": 3039518720,
+    "round": "r07-event-driven-l1-01",
+    "generation": 2,
+    "reason": "terminal synthetic payload; actual full readback/cold validation and latest full v3 generation2 successor released dependency; snapshot_busy was diagnostic scheduling, not payload fault",
+    "retained_evidence": "original index/components/raw/report/source/exe; docs/evidence/m0-t13a-r07-report-error; original coupling snapshot_busy evidence retained",
+    "index": "work/r07-event-driven-l1-01/observed/model/layout/snapshots/snapshot-000002/index.json",
+    "index_sha256": "d056ecab8177b06f181307ea1d63aa2731170650c78415e7a447d1b2a116e79f",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/r07-event-driven-l1-01/observed/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+    "metadata": [
+      16777231,
+      409928992,
+      33188,
+      134217728,
+      1792633547027688079,
+      262144,
+      1
+    ],
+    "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee",
+    "allocated_bytes": 134217728,
+    "round": "r07-event-driven-l1-01",
+    "generation": 2,
+    "reason": "terminal synthetic payload; actual full readback/cold validation and latest full v3 generation2 successor released dependency; snapshot_busy was diagnostic scheduling, not payload fault",
+    "retained_evidence": "original index/components/raw/report/source/exe; docs/evidence/m0-t13a-r07-report-error; original coupling snapshot_busy evidence retained",
+    "index": "work/r07-event-driven-l1-01/observed/model/layout/snapshots/snapshot-000002/index.json",
+    "index_sha256": "d056ecab8177b06f181307ea1d63aa2731170650c78415e7a447d1b2a116e79f",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/r07-report-error-l1-01/observed/model/layout/snapshots/snapshot-000001/pressure.bin",
+    "metadata": [
+      16777231,
+      409991725,
+      33188,
+      3039518326,
+      1792634442829795406,
+      5936560,
+      1
+    ],
+    "sha256": "0976361f46fa9165bfeae4025b3a4538a6f7f3ac2a3942087816e1202e35b10c",
+    "allocated_bytes": 3039518720,
+    "round": "r07-report-error-l1-01",
+    "generation": 1,
+    "reason": "terminal synthetic payload; actual full readback/cold validation and latest full v3 generation2 successor released dependency; snapshot_busy was diagnostic scheduling, not payload fault",
+    "retained_evidence": "original index/components/raw/report/source/exe; docs/evidence/m0-t13a-r07-report-error; original coupling snapshot_busy evidence retained",
+    "index": "work/r07-report-error-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "index_sha256": "e8bca5c97507865e83b3b9d823f29a01c4b5edfecd88db850111c1ac65b7d2b7",
+    "directly_restorable_after": false
+  },
+  {
+    "path": "work/r07-report-error-l1-01/observed/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+    "metadata": [
+      16777231,
+      409991805,
+      33188,
+      134217728,
+      1792634443036038269,
+      262144,
+      1
+    ],
+    "sha256": "38d867268fdec7c4b1e3cffddbc6254444b15fe2e47bb7e4d878030ac7c7e6ee",
+    "allocated_bytes": 134217728,
+    "round": "r07-report-error-l1-01",
+    "generation": 1,
+    "reason": "terminal synthetic payload; actual full readback/cold validation and latest full v3 generation2 successor released dependency; snapshot_busy was diagnostic scheduling, not payload fault",
+    "retained_evidence": "original index/components/raw/report/source/exe; docs/evidence/m0-t13a-r07-report-error; original coupling snapshot_busy evidence retained",
+    "index": "work/r07-report-error-l1-01/observed/model/layout/snapshots/snapshot-000001/index.json",
+    "index_sha256": "e8bca5c97507865e83b3b9d823f29a01c4b5edfecd88db850111c1ac65b7d2b7",
+    "directly_restorable_after": false
+  }
+]

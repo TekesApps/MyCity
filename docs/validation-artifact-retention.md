@@ -1,5 +1,7 @@
 # 验证产物回收规则
 
+**当前回收与恢复可用性（v0.5.104）**：[R07功能终态](evidence/m0-t13a-r07-report-error/STATUS.md)及[availability](evidence/m0-t13a-r07-report-error/retirement/availability.json)覆盖本阶段旧原路径保留承诺。实际新PID冷开与继任后仅退役8份旧合成pressure/reserve，分配空间12,699,467,776B；新最终v3第二代及原五份完整/故障基线190文件全SHA保留，退役目录不能直接恢复。初次预检st_blocks变化在删除前止步，5,619,712B保留块减少单列排除；df另报，不归入本次成果。源码/WIP/raw/组件/index/固定源依赖/exe不变，共享target保留复用，其他项目Cargo未干预。
+
 **当前回收与恢复可用性（v0.5.103）**：[用户指定集中回收](evidence/disk-reclamation-v103/STATUS.md)及[availability](evidence/disk-reclamation-v103/availability.json)覆盖本次相关原路径承诺：7份已无依赖prefix/已归档正常重复组件退役，分配空间617,242,624B；190份完整恢复/故障原件保留，当前R07第一代未冷恢复保留。共享target复用，源码/WIP/业务/raw/固定依赖/exe不变。三份旧正常布局继续不可直接完整恢复；已删prefix也不能直接复用。df变化单列，历史释放不重复计入。本轮不运行模型或构建。
 
 **v0.5.102原生整组观测终态**：[回收与恢复可用性](evidence/m0-t13a-native-observer-errno/STATUS.md)精确退役9份本轮短测/失主合成载荷、3份缺当前errno的旧静态库，分配空间12,756,258,816B；本轮新目录不可直接完整恢复。typed正式7/8、v50及report-lifetime完整故障原件158文件全SHA前后核验，raw/typed组件/partial targets/源锁exe/固定依赖保留，其他128,391元数据不变。df变化单列、不计历史成果，唯一target复用。

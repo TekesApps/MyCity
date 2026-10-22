@@ -2,6 +2,7 @@
 //! This module cannot mutate or install a gameplay World.
 mod bounded_table;
 mod decode_workspace;
+pub(crate) mod r07;
 use decode_workspace::{DecodeWorkspace, DECODE_BYTES};
 mod restore_index;
 mod reusable_io;
@@ -408,6 +409,7 @@ pub struct Load {
     native: Arc<NativePressure>,
     tables: Arc<Vec<DomainTable>>,
     pages: Vec<PressurePage>,
+    r07: Option<r07::Backing>,
     reserve: Arc<Mutex<Reserve>>,
     iterations: u64,
     cow_pages: usize,
@@ -421,9 +423,28 @@ pub struct Load {
     generation: u64,
     _root_lock: File,
 }
-fn activate_layout_region(normal_bytes: usize, external_charge: usize) -> Result<(), String> {
+fn r07_logical(normal: usize, external: usize, metadata: usize) -> Result<usize, String> {
+    let assigned = [60usize, 30, 85, 25, 40, 25]
+        .into_iter()
+        .try_fold(0usize, |sum, pct| {
+            sum.checked_add(normal.checked_mul(pct).ok_or("r07_budget_overflow")? / 310)
+                .ok_or("r07_budget_overflow")
+        })?;
+    normal
+        .checked_sub(assigned)
+        .and_then(|n| n.checked_sub(WORK_PAGES * MIB))
+        .and_then(|n| n.checked_sub(metadata))
+        .and_then(|n| n.checked_sub(external))
+        .ok_or_else(|| "r07_budget_underflow".into())
+}
+fn activate_layout_region(
+    normal_bytes: usize,
+    external_charge: usize,
+    independent: usize,
+) -> Result<(), String> {
     let grant = normal_bytes
         .checked_sub(external_charge)
+        .and_then(|n| n.checked_sub(independent))
         .ok_or("layout_allocator_budget")?;
     crate::heap_meter::activate_role(grant).map(|_| ())
 }
@@ -452,7 +473,12 @@ impl Load {
         // temporary decode/dirty pages reuse freed holes instead of leaving a
         // second System allocation resident. A second Load/other active role
         // is rejected by the allocator; there is no fallback or larger grant.
-        activate_layout_region(normal_bytes, external_charge)?;
+        let independent_logical = r07_logical(normal_bytes, external_charge, 4 * MIB)?;
+        activate_layout_region(
+            normal_bytes,
+            external_charge,
+            r07::mapped_capacity(independent_logical),
+        )?;
         let snapshot_buffers = Arc::new(Mutex::new(SnapshotBuffers::new()));
         let native = Arc::new(NativePressure::jprod()?);
         let tables = Arc::new(tables()?);
@@ -485,6 +511,12 @@ impl Load {
                 0
             };
             let mut remaining = quota.checked_sub(charge).ok_or("layout_domain_budget")?;
+            if domain == 6 {
+                if remaining != independent_logical {
+                    return Err("r07_domain_budget".into());
+                }
+                remaining %= r07::QUANTUM;
+            }
             while remaining > 0 {
                 let n = remaining.min(MIB);
                 pages.push(PressurePage {
@@ -503,6 +535,7 @@ impl Load {
             native,
             tables,
             pages,
+            r07: Some(r07::Backing::full(independent_logical)?),
             reserve: Arc::new(Mutex::new(reserve)),
             iterations: 0,
             cow_pages: 0,
@@ -528,15 +561,21 @@ impl Load {
         for p in &self.pages {
             by_domain[p.domain as usize] += p.bytes.capacity();
         }
-        json!({"schema":"mycity-l1-layout-v1","source_sha256":env!("MYCITY_SOURCE_SHA256"),"acceptance_sha256":mycity_core::sha256(ACCEPTANCE),"native":self.native.manifest(),"stubs":domains,
+        if let Some(r07) = &self.r07 {
+            by_domain[6] = r07.state().logical_bytes;
+        }
+        json!({"schema":if self.r07.is_some(){"mycity-l1-layout-v2"}else{"mycity-l1-layout-v1"},"source_sha256":env!("MYCITY_SOURCE_SHA256"),"acceptance_sha256":mycity_core::sha256(ACCEPTANCE),"native":self.native.manifest(),"stubs":domains,
             "population":{"total":57000,"representation":"22800 household stub members; 11400*3 + 11400*2","actors":0},
-            "padding_payload_bytes":by_domain,"padding_payload_total_bytes":self.pages.iter().map(|p|p.bytes.capacity()).sum::<usize>(),"pressure_page_bytes":MIB,"mutation_iteration":self.iterations,"pressure_pattern":"splitmix64-init-v1; affine-u64-dirty-v1",
+            "padding_payload_bytes":by_domain,"padding_payload_total_bytes":by_domain.iter().sum::<usize>(),"pressure_page_bytes":MIB,"mutation_iteration":self.iterations,"pressure_pattern":if self.r07.is_some(){"splitmix64-init-v1; affine-u64-nonr07-dirty-v1"}else{"splitmix64-init-v1; affine-u64-dirty-v1"},
+            "r07":self.r07.as_ref().map(r07::Backing::state),"r07_generator":self.r07.as_ref().map(|_|r07::Backing::pattern()),
+            "r07_mapping_control_bytes":self.r07.as_ref().map_or(0,r07::Backing::control_bytes),
             "cow_reserve_bytes":WORK_PAGES*MIB,"cow_concurrent_pages":COW_PAGES,"decode_workspace":work,"metadata_and_io_charge_bytes":self.metadata_charge,"external_owned_charge_bytes":self.external_charge,"normal_joint_budget_bytes":self.normal_bytes,
             "solver_preview":"192MiB preview and 32MiB compute are pressure pages within solver share; no algorithms/GPU/UI",
             "layout_not_business":true,"full_M0":"not_accepted","memory_16gb_gate":"not_run"})
     }
     pub fn scan(&mut self, mut page: impl FnMut(&'static str, usize, u64)) -> Result<Scan, String> {
         let started = Instant::now();
+        self.refresh_r07()?;
         let mut native_records = 0;
         let mut last = Instant::now();
         let mut checksum = self.native.scan(|n, _| {
@@ -564,6 +603,11 @@ impl Load {
                 checksum = checksum.wrapping_add(u64::from(black_box(chunk[0])));
             }
             touched += p.bytes.len();
+        }
+        if let Some(r07) = &self.r07 {
+            let (bytes, value) = r07.touch();
+            touched += bytes;
+            checksum = checksum.wrapping_add(value);
         }
         {
             let reserve = self.reserve.lock().map_err(err)?;
@@ -620,6 +664,30 @@ impl Load {
             cow_pages: self.cow_pages,
         })
     }
+    fn refresh_r07(&mut self) -> Result<(), String> {
+        let Some(backing) = &mut self.r07 else {
+            return Ok(());
+        };
+        let decision = crate::r07_runtime::current(backing.state().reading_sequence)?;
+        let state = backing.apply(decision.permitted_bytes, decision.sequence)?;
+        let owner = crate::native_observer::capture(std::process::id(), None, Instant::now())
+            .ok()
+            .map(|s| s.identity);
+        let applied = r07::Applied {
+            source: crate::control_data::Text::new(env!("MYCITY_SOURCE_SHA256"))?,
+            owner,
+            state,
+            permitted_bytes: decision.permitted_bytes,
+            reason: crate::control_data::Text::new(decision.reason)?,
+        };
+        let parent = self.root.parent().ok_or("r07_state_parent")?;
+        let tmp = parent.join("r07-state.tmp");
+        let mut file = File::create(&tmp).map_err(err)?;
+        serde_json::to_writer(&mut file, &applied).map_err(err)?;
+        file.write_all(b"\n").map_err(err)?;
+        file.sync_all().map_err(err)?;
+        fs::rename(tmp, parent.join("r07-state.json")).map_err(err)
+    }
     pub fn start_snapshot(&mut self) -> Result<Value, String> {
         if self.job.is_some() {
             return Err("layout_snapshot_busy".into());
@@ -648,6 +716,7 @@ impl Load {
         let buffers = self.snapshot_buffers.clone();
         let decode_workspace = self.decode_workspace.clone();
         let root = self.root.clone();
+        let r07 = self.r07.as_ref().map(r07::Backing::snapshot);
         let manifest = self.manifest();
         self.job = Some(
             thread::Builder::new()
@@ -659,6 +728,7 @@ impl Load {
                         dir,
                         generation,
                         pages,
+                        r07,
                         native,
                         tables,
                         reserve,
@@ -780,6 +850,7 @@ struct Snapshot {
     dir: PathBuf,
     generation: u64,
     pages: Vec<PressurePage>,
+    r07: Option<r07::Snapshot>,
     native: Arc<NativePressure>,
     tables: Arc<Vec<DomainTable>>,
     reserve: Arc<Mutex<Reserve>>,
@@ -808,6 +879,7 @@ impl Snapshot {
             dir,
             generation,
             pages,
+            r07,
             native,
             tables,
             reserve,
@@ -815,6 +887,13 @@ impl Snapshot {
             buffers,
             decode_workspace,
         } = self;
+        if let Some(r07) = r07 {
+            if manifest["r07"] != serde_json::to_value(r07.state).map_err(err)?
+                || manifest["r07_generator"] != r07::Backing::pattern()
+            {
+                return Err("r07_snapshot_generation_mismatch".into());
+            }
+        }
         let mut buffers = buffers.lock().map_err(err)?;
         let SnapshotBuffers { io, compare } = &mut *buffers;
         let mut trace = AllocationTrace {
@@ -838,6 +917,9 @@ impl Snapshot {
         entries.push(write_file(dir, "pressure.bin", io, |w| {
             for page in pages {
                 w.write_all(&page.bytes).map_err(err)?;
+            }
+            if let Some(r07) = r07 {
+                r07.write(w)?;
             }
             Ok(())
         })?);
@@ -908,6 +990,9 @@ impl Snapshot {
                             return Err("layout_page_restore_changed".into());
                         }
                     }
+                    if let Some(r07) = r07 {
+                        r07.verify(reader, buf)?;
+                    }
                     Ok(())
                 },
             )?;
@@ -939,7 +1024,11 @@ impl Snapshot {
         // Serialize borrowed metadata rather than cloning the complete manifest
         // and all entries into a second Value tree during publication.
         let index = SnapshotIndex {
-            schema: "mycity-layout-snapshot-v2",
+            schema: if r07.is_some() {
+                "mycity-layout-snapshot-v3"
+            } else {
+                "mycity-layout-snapshot-v2"
+            },
             generation: *generation,
             manifest,
             files: &entries,
@@ -1238,10 +1327,17 @@ impl Load {
             restore_index::read_raw(File::open(snapshot_dir.join("index.json")).map_err(err)?)?;
         let index = restore_index::decode(&raw)?;
         let manifest = &index.manifest;
-        if !["mycity-layout-snapshot-v1", "mycity-layout-snapshot-v2"]
-            .iter()
-            .any(|version| index.schema == *version)
-            || manifest.schema != "mycity-l1-layout-v1"
+        let v3 = index.schema == "mycity-layout-snapshot-v3";
+        if (v3
+            && (manifest.schema != "mycity-l1-layout-v2"
+                || manifest.r07.is_none()
+                || manifest.r07_generator.as_deref() != Some(r07::Backing::pattern())))
+            || (!v3
+                && (!["mycity-layout-snapshot-v1", "mycity-layout-snapshot-v2"]
+                    .contains(&index.schema.as_str())
+                    || manifest.schema != "mycity-l1-layout-v1"
+                    || manifest.r07.is_some()
+                    || manifest.r07_generator.is_some()))
             || manifest.acceptance_sha256 != mycity_core::sha256(ACCEPTANCE)
         {
             return Err("layout_restore_schema".into());
@@ -1268,7 +1364,19 @@ impl Load {
         // Only the full cold-layout path owns a full region. Records-only
         // compatibility decoding below deliberately does not activate it.
         // Schema/work-budget rejection precedes this process-lifetime switch.
-        activate_layout_region(normal_bytes, external_charge)?;
+        let independent_logical = if v3 {
+            r07_logical(normal_bytes, external_charge, metadata_charge)?
+        } else {
+            0
+        };
+        if let Some(state) = manifest.r07 {
+            state.validate(independent_logical)?;
+        }
+        activate_layout_region(
+            normal_bytes,
+            external_charge,
+            r07::mapped_capacity(independent_logical),
+        )?;
         let snapshot_buffers = Arc::new(Mutex::new(SnapshotBuffers::new()));
         let mut buffers = snapshot_buffers.lock().map_err(err)?;
         let SnapshotBuffers { io, compare } = &mut *buffers;
@@ -1346,6 +1454,19 @@ impl Load {
         if Some(total_payload) != normal_bytes.checked_sub(fixed_bytes) {
             return Err("layout_restore_joint_budget".into());
         }
+        let r07 = if v3 {
+            Some(r07::Backing::full(independent_logical)?)
+        } else {
+            None
+        };
+        let historic_replaced = manifest.r07.map_or(0, |s| s.replaced_bytes);
+        if entry("pressure.bin")?.bytes
+            != total_payload
+                .checked_sub(historic_replaced)
+                .ok_or("r07_snapshot_length")? as u64
+        {
+            return Err("r07_snapshot_length".into());
+        }
         let pages = read_verified_buffered(
             &snapshot_dir.join("pressure.bin"),
             entry("pressure.bin")?,
@@ -1353,7 +1474,11 @@ impl Load {
             |reader| {
                 let mut pages = Vec::with_capacity(total_payload.div_ceil(MIB) + 7);
                 for (domain, bytes) in payload.iter().enumerate() {
-                    let mut remaining = *bytes;
+                    let mut remaining = if v3 && domain == 6 {
+                        *bytes % r07::QUANTUM
+                    } else {
+                        *bytes
+                    };
                     while remaining > 0 {
                         let n = remaining.min(MIB);
                         let mut data = vec![0u8; n];
@@ -1364,6 +1489,9 @@ impl Load {
                         });
                         remaining -= n;
                     }
+                }
+                if let (Some(r07), Some(old)) = (&r07, manifest.r07) {
+                    r07.read_snapshot_prefix(reader, old, compare)?;
                 }
                 Ok(pages)
             },
@@ -1400,13 +1528,14 @@ impl Load {
         if generation == 0 {
             return Err("layout_restore_zero_generation".into());
         }
-        let report = json!({"cold_restore_seconds":started.elapsed().as_secs_f64(),"native_restore_bound":bound,"producer_source_sha256":manifest.source_sha256,"reader_source_sha256":env!("MYCITY_SOURCE_SHA256"),"same_source":manifest.source_sha256.as_deref()==Some(env!("MYCITY_SOURCE_SHA256")),"codec":"canonical layout-v1/v2 generator profile; bounded typed index; full native shape/capacity and immutable stub equality; explicit mutation counter required; one-pass hash+load","restored_generation":generation,"restored_mutation_iteration":iterations,"all_payload_files_hashed_and_loaded":true,"byte_length":entries.iter().map(|e|e.bytes).sum::<u64>()});
+        let report = json!({"cold_restore_seconds":started.elapsed().as_secs_f64(),"native_restore_bound":bound,"producer_source_sha256":manifest.source_sha256,"reader_source_sha256":env!("MYCITY_SOURCE_SHA256"),"same_source":manifest.source_sha256.as_deref()==Some(env!("MYCITY_SOURCE_SHA256")),"codec":"canonical layout-v1/v2/v3 generator profile; v3 R07 reconstructed full, old runtime credit not inherited; bounded typed index; full native shape/capacity and immutable stub equality; explicit mutation counter required; one-pass hash+load","restored_generation":generation,"restored_mutation_iteration":iterations,"all_payload_files_hashed_and_loaded":true,"byte_length":entries.iter().map(|e|e.bytes).sum::<u64>()});
         drop(buffers);
         Ok((
             Self {
                 native: Arc::new(native),
                 tables: Arc::new(tables),
                 pages,
+                r07,
                 reserve: Arc::new(Mutex::new(Reserve {
                     pages: reserve_pages,
                     loan_pages: 0,
@@ -1428,6 +1557,79 @@ impl Load {
         ))
     }
 }
+/// Standalone physical backing exerciser; synthetic requests are NOT runtime
+/// credit and this does not instantiate or accept a full L1 city workload.
+pub fn r07_backing_probe(dir: &Path) -> Result<Value, String> {
+    fs::create_dir(dir).map_err(err)?;
+    crate::heap_meter::activate_role(4 * MIB)?;
+    let logical = r07_logical(NORMAL_BYTES, 64 * MIB, 4 * MIB)?;
+    let mut stages = Vec::with_capacity(8);
+    let sample = |label: &str, state: r07::State| -> Result<Value, String> {
+        let resource = crate::native_observer::capture(std::process::id(), None, Instant::now())
+            .map_err(err)?;
+        Ok(
+            json!({"label":label,"state":state,"resource":resource,"arena":crate::heap_meter::arena_snapshot()}),
+        )
+    };
+    let mut b = r07::Backing::full(logical)?;
+    let full = sample("full", b.state())?;
+    stages.push(full.clone());
+    let pin = b.snapshot();
+    let pinned = b.apply(32 * MIB, 1)?;
+    if pinned.replaced_bytes != 0 {
+        return Err("r07_probe_pinned_release".into());
+    }
+    stages.push(sample("pinned_request_deferred", pinned)?);
+    drop(pin);
+    let released = b.apply(32 * MIB + r07::QUANTUM - 1, 2)?;
+    if released.replaced_bytes != 32 * MIB {
+        return Err("r07_probe_release_rounding".into());
+    }
+    let after = sample("unique_drop", released)?;
+    let before_foot = full["resource"]["usage"]["footprint_bytes"]
+        .as_u64()
+        .ok_or("r07_probe_footprint")?;
+    let after_foot = after["resource"]["usage"]["footprint_bytes"]
+        .as_u64()
+        .ok_or("r07_probe_footprint")?;
+    if before_foot.saturating_sub(after_foot) < 24 * MIB as u64 {
+        return Err("r07_probe_physical_release_not_observed".into());
+    }
+    stages.push(after);
+    let prefix = b.snapshot();
+    let old = prefix.state;
+    let mut io = vec![0; MIB];
+    let mut compare = vec![0; MIB];
+    let file = write_file(dir, "r07-prefix.bin", &mut io, |w| prefix.write(w))?;
+    if file.bytes != old.mapped_bytes as u64 {
+        return Err("r07_probe_prefix_length".into());
+    }
+    let repaid = b.apply(0, 3)?;
+    if repaid.replaced_bytes != 0 {
+        return Err("r07_probe_repayment".into());
+    }
+    read_verified_buffered(&dir.join("r07-prefix.bin"), &file, &mut io, |reader| {
+        prefix.verify(reader, &mut compare)
+    })?;
+    stages.push(sample("repaid_with_old_prefix_pinned", repaid)?);
+    drop(prefix);
+    drop(b);
+    let reconstructed = r07::Backing::full(logical)?;
+    read_verified_buffered(&dir.join("r07-prefix.bin"), &file, &mut io, |reader| {
+        reconstructed.read_snapshot_prefix(reader, old, &mut compare)
+    })?;
+    stages.push(sample(
+        "full_reconstructed_without_historical_credit",
+        reconstructed.state(),
+    )?);
+    let report = json!({"schema":"mycity-r07-backing-probe-v1","source_sha256":env!("MYCITY_SOURCE_SHA256"),"logical_r07_bytes":logical,"generator":r07::Backing::pattern(),"mapping_control_bytes_bound":reconstructed.control_bytes(),"stages":stages,"prefix_file":file,"physical_drop_bytes":before_foot-after_foot,"same_process_reconstruction_only":true,"request_is_artificial_mechanism_test_not_runtime_credit":true,"full_L1_native_stubs_not_instantiated":true,"normal_gate":"not_tested","eight_hour_gate":"not_run","memory_16gb_gate":"not_run","full_M0":"not_accepted"});
+    fs::write(
+        dir.join("report.json"),
+        serde_json::to_vec_pretty(&report).map_err(err)?,
+    )
+    .map_err(err)?;
+    Ok(report)
+}
 pub fn reopen(snapshot_dir: &Path, report_dir: &Path) -> Result<Value, String> {
     reopen_inner(snapshot_dir, report_dir, true)
 }
@@ -1446,7 +1648,9 @@ pub fn restore_records_only(snapshot_dir: &Path, report_dir: &Path) -> Result<Va
     )
     .map_err(err)?;
     let index: Value = serde_json::from_slice(&raw).map_err(err)?;
-    if index["schema"] != "mycity-layout-snapshot-v2"
+    if !["mycity-layout-snapshot-v2", "mycity-layout-snapshot-v3"]
+        .iter()
+        .any(|schema| index["schema"] == *schema)
         || index["manifest"]["acceptance_sha256"] != mycity_core::sha256(ACCEPTANCE)
     {
         return Err("layout_record_compat_schema".into());
@@ -1542,6 +1746,102 @@ fn reopen_inner(snapshot_dir: &Path, report_dir: &Path, save: bool) -> Result<Va
     )
     .map_err(err)?;
     Ok(report)
+}
+
+/// Diagnostic TWO-generation protocol exercise. There is deliberately no fixed
+/// save deadline here: formal/steady schedules above remain entirely unchanged.
+/// Every admitted scan still uses the original full records and1MiB dirty work.
+pub fn r07_session(dir: &Path, report_fault: bool) -> Result<Value, String> {
+    use std::time::Duration;
+    fs::create_dir(dir).map_err(err)?;
+    let mut metrics = crate::scale_metrics::Metrics::create(&dir.join("compute-durations.bin"))?;
+    // Explicit diagnostic-only fault, before allocating the full layout. Both
+    // branches use the same report publisher; no error-shaped success JSON.
+    if report_fault {
+        metrics.observe("r07_deliberately_unknown_report_class", 0);
+        return publish_r07_report(dir, &mut metrics, json!({"diagnostic_report_fault":true}));
+    }
+    let mut load = Load::full(&dir.join("snapshots"), 64 * MIB)?;
+    fs::write(
+        dir.join("manifest.json"),
+        serde_json::to_vec_pretty(&load.manifest()).map_err(err)?,
+    )
+    .map_err(err)?;
+    let mut events = BufWriter::with_capacity(
+        65536,
+        File::create_new(dir.join("events.jsonl")).map_err(err)?,
+    );
+    let began = Instant::now();
+    let mut next_scan = 0u64;
+    let mut admitted = 0u64;
+    let mut completed = 0u64;
+    let mut first_credit_at = None;
+    let mut second_started = None;
+    let mut snapshots = Vec::with_capacity(2);
+    let mut scans = 0u64;
+    loop {
+        if began.elapsed() > Duration::from_secs(120) {
+            return Err("r07_exercise_deadline".into());
+        }
+        if let Some(result) = load.poll_snapshot()? {
+            completed += 1;
+            serde_json::to_writer(&mut events,&json!({"elapsed_seconds":began.elapsed().as_secs_f64(),"snapshot_durable":&result})).map_err(err)?;
+            events.write_all(b"\n").map_err(err)?;
+            events.flush().map_err(err)?;
+            snapshots.push(result);
+        }
+        if began.elapsed().as_secs() >= next_scan {
+            let scan = load.scan(|class, _, ns| metrics.observe(class, ns))?;
+            if scan.dirty_bytes != MIB {
+                return Err("r07_exercise_dirty_contract".into());
+            }
+            serde_json::to_writer(&mut events,&json!({"elapsed_seconds":began.elapsed().as_secs_f64(),"scan":scan,"r07":load.r07.as_ref().map(r07::Backing::state),"arena":crate::heap_meter::arena_snapshot()})).map_err(err)?;
+            events.write_all(b"\n").map_err(err)?;
+            events.flush().map_err(err)?;
+            next_scan += 1;
+            scans += 1;
+        }
+        let replaced = load.r07.as_ref().map_or(0, |b| b.state().replaced_bytes);
+        if completed == 1 && replaced > 0 && first_credit_at.is_none() {
+            first_credit_at = Some(began.elapsed());
+        }
+        let ready_second = admitted == 1
+            && completed == 1
+            && first_credit_at.is_some_and(|at| began.elapsed() >= at + Duration::from_secs(1));
+        if admitted == 0 || ready_second {
+            let admission = load.start_snapshot()?;
+            admitted += 1;
+            if admitted == 2 {
+                second_started = Some(began.elapsed());
+            }
+            serde_json::to_writer(&mut events,&json!({"elapsed_seconds":began.elapsed().as_secs_f64(),"snapshot_admitted":admission})).map_err(err)?;
+            events.write_all(b"\n").map_err(err)?;
+            events.flush().map_err(err)?;
+        }
+        if completed == 2
+            && second_started.is_some_and(|at| began.elapsed() >= at + Duration::from_secs(4))
+        {
+            break;
+        }
+        std::thread::sleep(Duration::from_millis(5));
+    }
+    let result = json!({"schema":"mycity-r07-full-session-exercise-v1","source_sha256":env!("MYCITY_SOURCE_SHA256"),"elapsed_seconds":began.elapsed().as_secs_f64(),"scans":scans,"snapshots":snapshots,"manifest":load.manifest(),"all_admitted_dirty_bytes_exactly_one_mib":true,"snapshot_scheduling":"diagnostic event-driven, exactly two actual generations; no formal deadline claim","formal_steady":"not_accepted","eight_hour":"not_run","memory_16gb_gate":"not_run"});
+    publish_r07_report(dir, &mut metrics, result)
+}
+fn publish_r07_report(
+    dir: &Path,
+    metrics: &mut crate::scale_metrics::Metrics,
+    mut result: Value,
+) -> Result<Value, String> {
+    // Complete/check raw diagnostics before creating a successful report. A
+    // failed report must propagate through the CLI and leave no success file.
+    result["compute"] = metrics.report()?;
+    fs::write(
+        dir.join("report.json"),
+        serde_json::to_vec_pretty(&result).map_err(err)?,
+    )
+    .map_err(err)?;
+    Ok(result)
 }
 
 #[cfg(test)]

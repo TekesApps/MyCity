@@ -1,0 +1,23 @@
+{
+  "retired_snapshots_not_directly_restorable": [
+    {
+      "round": "r07-coupling-l1-01",
+      "generation": 1
+    },
+    {
+      "round": "r07-event-driven-l1-01",
+      "generation": 1
+    },
+    {
+      "round": "r07-event-driven-l1-01",
+      "generation": 2
+    },
+    {
+      "round": "r07-report-error-l1-01",
+      "generation": 1
+    }
+  ],
+  "complete_v3_successor": "work/r07-report-error-l1-01/observed/model/layout/snapshots/snapshot-000002",
+  "five_old_complete_or_fault_originals_retained": true,
+  "pending_not_valid_restore_point": true
+}

@@ -75,6 +75,10 @@ pub(super) struct Manifest {
     pub padding_payload_bytes: Option<[usize; 7]>,
     #[serde(default)]
     pub native: Option<NativeManifest>,
+    #[serde(default)]
+    pub r07: Option<super::r07::State>,
+    #[serde(default, deserialize_with = "optional_text")]
+    pub r07_generator: Option<String>,
 }
 #[derive(Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]

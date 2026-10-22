@@ -93,7 +93,12 @@ impl Serialize for Report<'_> {
             "cpu_units",
             "raw proc_pid_rusage counters; no unverified ns conversion"
         );
-        field!("memory_credit_bytes", 0);
+        field!(
+            "memory_credit_bytes",
+            self.stats.r07_last.map_or(0, |a| a.state.replaced_bytes)
+        );
+        field!("maximum_observed_r07_replaced_bytes", self.stats.r07_max);
+        field!("r07_credit_semantics","unique independently mapped same-use padding actually dropped; cold opens rebuild padding; not owned capacity and never subtract from old raw peaks");
         field!("memory_16gb_gate", "not_run");
         field!("eight_hour_gate", "not_run");
         field!("full_M0", "not_accepted");

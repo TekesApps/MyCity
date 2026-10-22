@@ -1,0 +1,9 @@
+{
+ "scope":"report error propagation fix; original fullL1 two-generation functional rerun, no formal performance acceptance",
+ "new_work":["work/r07-report-error-l1-01","work/r07-report-error-compat-01","work/candidate-binaries/r07-report-error"],
+ "estimated_max_new_bytes":11811160064,
+ "no_new_target":true,
+ "downstream":"keep latest complete partial-v3 generation2 for real next VM/recovery input; old five v1/v2 baselines and faults unchanged",
+ "retirement":"after final same-source functional/cold and regression terminal, advisor conditionally released old couplinggen1,7fdgen1+gen2 and newgen1 synthetic pressure/reserve ONLY; keep all index/raw/components/source/lock/exe/deps/fault evidence; no cleanup while measurement/build active",
+ "new_error_probe":"metrics unknown class, no full model allocation, nonzero exit and no successful report required"
+}
