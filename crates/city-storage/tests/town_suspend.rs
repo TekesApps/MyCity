@@ -487,4 +487,46 @@ fn loss_fixture_measures_operating_loss_then_suspends_only_that_business() {
         claim_at_stop
     );
     assert_eq!(equity_projection(&store, 3), equity_at_stop);
+
+    store.checkpoint().unwrap();
+    let expected_hash = store.state_hash().unwrap();
+    let expected_sequence = store.committed_sequence();
+    let expected_equity = equity_projection(&store, 3);
+    let expected_claim = store.engine().unwrap().timeline().unwrap().claims[0];
+    let expected_payroll = *store
+        .engine()
+        .unwrap()
+        .timeline()
+        .unwrap()
+        .payroll
+        .iter()
+        .find(|row| row.spec.payer == 3)
+        .unwrap();
+    drop(store);
+
+    let store = Store::open(&path, RULES).unwrap();
+    assert_eq!(store.state_hash().unwrap(), expected_hash);
+    assert_eq!(store.committed_sequence(), expected_sequence);
+    assert_eq!(equity_projection(&store, 3), expected_equity);
+    assert_eq!(
+        store.engine().unwrap().timeline().unwrap().claims[0],
+        expected_claim
+    );
+    let reopened_timeline = store.engine().unwrap().timeline().unwrap();
+    let reopened_payroll = *reopened_timeline
+        .payroll
+        .iter()
+        .find(|row| row.spec.payer == 3)
+        .unwrap();
+    assert_eq!(reopened_payroll, expected_payroll);
+    let reopened_world = store.engine().unwrap().world().view();
+    assert!(reopened_world
+        .town
+        .as_ref()
+        .unwrap()
+        .state
+        .suspended_operators
+        .as_slice()
+        .iter()
+        .any(|row| row.account == 3));
 }

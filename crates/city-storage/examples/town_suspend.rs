@@ -374,6 +374,44 @@ fn main() -> Result<(), Box<dyn Error>> {
         )
         .into());
     }
+    store.checkpoint()?;
+    let cold_expected_hash = store.state_hash()?;
+    let cold_expected_sequence = store.committed_sequence();
+    let cold_expected_equity = next_day_equity.total;
+    let cold_expected_claim = timeline(&store)?.claims[0];
+    let cold_expected_payroll = *timeline(&store)?
+        .payroll
+        .iter()
+        .find(|row| row.spec.payer == 3)
+        .ok_or_else(|| std::io::Error::other("suspended payroll"))?;
+    let suspended_at = state.suspended_operators.as_slice()[0].suspended_at;
+    drop(store);
+
+    let store = Store::open(&path, RULES)?;
+    let cold_reopened_view = store.engine()?.world().view();
+    let cold_reopened_town = cold_reopened_view
+        .town
+        .as_ref()
+        .ok_or_else(|| std::io::Error::other("town state after cold reopen"))?;
+    let cold_reopened_payroll = *timeline(&store)?
+        .payroll
+        .iter()
+        .find(|row| row.spec.payer == 3)
+        .ok_or_else(|| std::io::Error::other("suspended payroll after cold reopen"))?;
+    if store.state_hash()? != cold_expected_hash
+        || store.committed_sequence() != cold_expected_sequence
+        || equity_projection(&store, 3)?.total != cold_expected_equity
+        || timeline(&store)?.claims[0] != cold_expected_claim
+        || cold_reopened_payroll != cold_expected_payroll
+        || !cold_reopened_town
+            .state
+            .suspended_operators
+            .as_slice()
+            .iter()
+            .any(|row| row.account == 3)
+    {
+        return Err(std::io::Error::other("cold reopen evidence mismatch").into());
+    }
     if loss_mode
         && (before_stop_summary.produced != mycity_core::units::Quantity::ZERO
             || before_stop_summary.wages_accrued == Money::ZERO
@@ -406,14 +444,14 @@ fn main() -> Result<(), Box<dyn Error>> {
         before_stop_summary.utilities,
         before_stop_summary.wages_accrued,
         before_stop_summary.idle_labor_expense,
-        state.suspended_operators.as_slice()[0].suspended_at,
+        suspended_at,
         settled.state.settled_day,
         settled.state.last_summary.actual_sales,
     );
     println!(
-        "world={} persistent_sequence={}",
-        path.to_string_lossy(),
-        store.committed_sequence()
+        "cold_reopen_verified=true cold_state_hash={} cold_persistent_sequence={}",
+        cold_expected_hash, cold_expected_sequence,
     );
+    println!("world={}", path.to_string_lossy(),);
     Ok(())
 }
