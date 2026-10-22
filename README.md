@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.120`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.121`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.121归档[formal01提前终止证据](docs/evidence/m0-t13a-joint-smoke-control-03/formal01-terminal/README.md)：正式8小时尝试因原60秒系统压力守卫失败，未完成8小时；保留外部编译污染、缺测、完整恢复输入及原负载。2h／4h恢复已执行，6h／8h及真实16GB未通过，完整M0仍不接受。0.1候选代码仍在独立分支验证，未随本次证据发布。
 
 v0.5.120完成[工资退出原语与Store恢复实测](docs/evidence/core-payroll-exit-integration-120/STATUS.md)：16项Timeline、3项Store退出、18项storage lib、110项core lib及实际CLI/严格检查通过；保留故障复现，尚非企业清算。另归档[原负载607.95秒联合短测](docs/evidence/m0-t13a-joint-smoke-control-03/STATUS.md)及[旧压力载荷精确回收](docs/evidence/disk-reclamation-smoke02-handoff/STATUS.md)；未将短测、外部编译污染或脚本纯测试称为性能通过。原8h正式运行、速度/分级门及真实16GB仍未通过。
 

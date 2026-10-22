@@ -1,0 +1,177 @@
+{
+  "status": "passed_static_frozen_input_preflight",
+  "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+  "source_entries": 231,
+  "source_zip_sha256": "84c450c2c866578b02205030c7587df1dbb719660422fe64865ae62fe2ce908d",
+  "lock_sha256": "7da5c54a8499a07cbc71dcecce0c0095d4af3b8b6e5052783f20d188037b6dd6",
+  "fixture_sha256": {
+    "fixtures/m0-t13a-acceptance.json": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+    "fixtures/m0-t13a-full-opening-candidate.json": "04c113c62b0b682f94f9abfbde7618b87bd972f3931504366be9e07c130b4726"
+  },
+  "binary_path": "/Users/frankqin/dev/MyCity/work/candidate-binaries/r07-extents/32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2/mycity-headless",
+  "binary_sha256": "59aa365ed46b5d373218fcbcf1d34f930d674d15607ed510190361891439b4e0",
+  "binary_embeds_source_fingerprint": true,
+  "joint_endurance_contract": {
+    "entrypoint": true,
+    "full_business_hours": true,
+    "full_drive_targets": true,
+    "full_query_count": true,
+    "full_save_count": true,
+    "pool_725_grants_returns_acks": true,
+    "smoke_600_and_formal_28800_layout": true,
+    "formal_clock_28800_smoke_clock_72": true,
+    "full_layout_publications_and_restore": true
+  },
+  "current_checkout_comparison": "fixtures_only; current Rust source intentionally not compared byte-for-byte with fixed archive",
+  "cargo_invoked": false,
+  "pressure_started": false,
+  "storage": {
+    "resolved_work_root": "/Volumes/HP P900/dev/MyCity/work",
+    "storage_profile": "external HP P900 USB/APFS SSD; resolved work path and volume UUID verified",
+    "volume": {
+      "mount_point": "/Volumes/HP P900",
+      "volume_uuid": "4289CF6D-F09D-4831-8558-4AB223E4EE04",
+      "filesystem": "apfs",
+      "protocol": null
+    },
+    "available_bytes": 1977467195392,
+    "estimated_snapshot_bytes_each": 3378784402,
+    "estimated_three_generations_plus_logs_bytes": 10404788662,
+    "combined_log_cap_bytes": 268435456,
+    "world_cap_bytes": 21474836480,
+    "required_free_floor_bytes": 2147483648,
+    "capacity_gate": "passed_estimate_only; live observer enforces actual 20GiB world and 256MiB combined-log caps"
+  },
+  "socket_paths": {
+    "status": "passed_frozen_pathname_uds_inventory",
+    "path_basis_includes_resolved_external_work": "/Volumes/HP P900/dev/MyCity/work",
+    "sun_path_limit_bytes": 104,
+    "rule": "UTF-8 pathname byte count plus terminating NUL must be strictly less than 104",
+    "pathname_bind_sites": [
+      {
+        "source": "crates/city-headless/src/normal_pool.rs",
+        "line": 890,
+        "text": "let listener = UnixListener::bind(root.join(\"pool.sock\")).map_err(err)?;"
+      },
+      {
+        "source": "crates/city-headless/src/normal_pool/broker.rs",
+        "line": 773,
+        "text": "let listener = UnixListener::bind(&endpoint).map_err(err)?;"
+      }
+    ],
+    "pathname_connect_sites": [
+      {
+        "source": "crates/city-headless/src/normal_pool.rs",
+        "line": 684,
+        "text": "let mut socket = UnixStream::connect(root.join(\"pool.sock\")).map_err(err)?;"
+      },
+      {
+        "source": "crates/city-headless/src/normal_pool/broker.rs",
+        "line": 375,
+        "text": "let stream = UnixStream::connect(endpoint).map_err(err)?;"
+      },
+      {
+        "source": "crates/city-headless/tests/normal_pool.rs",
+        "line": 227,
+        "text": "let mut socket = UnixStream::connect(root.join(\"pool.sock\")).unwrap();"
+      },
+      {
+        "source": "crates/city-headless/tests/normal_pool.rs",
+        "line": 234,
+        "text": "let mut socket = UnixStream::connect(root.join(\"pool.sock\")).unwrap();"
+      },
+      {
+        "source": "crates/city-headless/tests/normal_pool.rs",
+        "line": 374,
+        "text": "let s = UnixStream::connect(root.join(\"pool.sock\")).unwrap();"
+      }
+    ],
+    "socketpair_transport": "compute-worker uses inherited anonymous UnixStream descriptors; no filesystem pathname",
+    "normal_pool_path_derivation": "joint_driver dir.join(normal-pool) -> normal_pool root.join(pool.sock); shared by business/layout workers",
+    "run_paths": [
+      {
+        "run_name": "j3s-01",
+        "path_basis": "invocation_symlink_path",
+        "model_root": "/Users/frankqin/dev/MyCity/work/j3s-01/observed/model",
+        "normal_pool_socket": {
+          "path": "/Users/frankqin/dev/MyCity/work/j3s-01/observed/model/normal-pool/pool.sock",
+          "utf8_bytes_plus_nul": 76,
+          "sun_path_bytes": 104,
+          "valid": true
+        }
+      },
+      {
+        "run_name": "j3s-01",
+        "path_basis": "resolved_external_path",
+        "model_root": "/Volumes/HP P900/dev/MyCity/work/j3s-01/observed/model",
+        "normal_pool_socket": {
+          "path": "/Volumes/HP P900/dev/MyCity/work/j3s-01/observed/model/normal-pool/pool.sock",
+          "utf8_bytes_plus_nul": 77,
+          "sun_path_bytes": 104,
+          "valid": true
+        }
+      },
+      {
+        "run_name": "j3f-01",
+        "path_basis": "invocation_symlink_path",
+        "model_root": "/Users/frankqin/dev/MyCity/work/j3f-01/observed/model",
+        "normal_pool_socket": {
+          "path": "/Users/frankqin/dev/MyCity/work/j3f-01/observed/model/normal-pool/pool.sock",
+          "utf8_bytes_plus_nul": 76,
+          "sun_path_bytes": 104,
+          "valid": true
+        }
+      },
+      {
+        "run_name": "j3f-01",
+        "path_basis": "resolved_external_path",
+        "model_root": "/Volumes/HP P900/dev/MyCity/work/j3f-01/observed/model",
+        "normal_pool_socket": {
+          "path": "/Volumes/HP P900/dev/MyCity/work/j3f-01/observed/model/normal-pool/pool.sock",
+          "utf8_bytes_plus_nul": 77,
+          "sun_path_bytes": 104,
+          "valid": true
+        }
+      }
+    ],
+    "max_formatted_broker_socket": {
+      "path": "/tmp/mc-w-ffffffffffffffff-18446744073709551615-ffffffffffffffff.sock",
+      "utf8_bytes_plus_nul": 70,
+      "sun_path_bytes": 104,
+      "valid": true
+    },
+    "all_bind_and_connect_paths_fit": true
+  },
+  "phase": "formal",
+  "prior_smoke": {
+    "path": "/Users/frankqin/dev/MyCity/work/j3s-01",
+    "observer_status": "passed_measurement_wrapper",
+    "model_report": "/Users/frankqin/dev/MyCity/work/j3s-01/observed/model/report.json",
+    "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+    "binary_sha256": "59aa365ed46b5d373218fcbcf1d34f930d674d15607ed510190361891439b4e0",
+    "support_files_sha256": {
+      "observe.py": "0d7ddad946762bb3a9b683caa71dcf99cda6de08ff14c45c6877757e0d468d5d",
+      "native_metrics.py": "4a672f7c711f30250ec493f63dad6ba95895e97ec5d10edcc99d034eb989051e",
+      "clock_exchange.py": "534642a6854928e5253521862b18b33d19ebc0d777f5a0695321adeddea264b5",
+      "readiness.py": "fa62f21677bab98c558e86fa3a54f42ecfa8b64fd1d7d3449b6401ecff4ef7ae",
+      "process_activity.py": "1abbc0771180936fa660b34db4f6428f199fd467e0f866548e8a12bdb4c58aa9",
+      "preflight.py": "66c8cb2a5667346f764bd548becf5b85e8cd0397d7b2e53079e43c87ff6e30c4",
+      "frame_codec.py": "005be0c42f1703e0aae4d6e7597d83e65654ffb805f22456873ae042e4a9b97f",
+      "log_budget.py": "611263b7ea782d18d38c18c8078ba8813a5b7472f88796a90ca2bf0974ed8f60",
+      "run.py": "bdf64efc8fe91019244e41943ae4e245f705ca40d61231258501fd46cec5c99d",
+      "test_harness.py": "6f3e3585adb46777314bc90cd19dc3512d14e4c9427f8c4fae8b42b38ec999d9",
+      "analyze_attempt02.py": "0122b2f12abc95d1e67370c59de7a28b31abcb4e267cc626b04753af7bccb5fe",
+      "README.md": "8810be45b29bf71ae22a8e17852b63c0aff06164af05f4e8002dfa460afe725d",
+      "acceptance-review.md": "722a911d1e80c61a4e12a8dab8009561871ac434d488b507396dc61c466cfde8",
+      "source.json": "086ddcb1738e5219b2ed919a23ae8d9667785fa29369313a47bd9c1a8b143eef",
+      "freeze.json": "0ce94a66e0cca41bc8c22c65db14aa2249686d179d06ac4ab306e20899645fca",
+      "unix-socket-paths.json": "371d02ae68bd29fa34a9e3c5708d1238f02b152efc2988484c922d14b5e1caa0"
+    },
+    "log_budget_receipt": "/Users/frankqin/dev/MyCity/work/j3s-01/log-budget.json",
+    "log_budget_upper_estimate_bytes": 160639919,
+    "log_budget_cap_estimate": "conservative_projection_under_hard_cap"
+  },
+  "preparation_repo_commit": "834d4a9c745d4b8e0cb952f66131528c93a039db",
+  "current_repo_head": "edf28812553a72e778bf9f3ce78136f7278e9e86",
+  "external_compilers_at_static_preflight": []
+}

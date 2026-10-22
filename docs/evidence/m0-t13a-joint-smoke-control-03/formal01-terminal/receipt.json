@@ -1,0 +1,63 @@
+{
+  "schema": "mycity-formal01-terminal-v1",
+  "status": "guard_failed_before_8h",
+  "raw_artifact_root": "/Volumes/HP P900/dev/MyCity/work/j3f-01/observed",
+  "storage": "external HP P900 USB/APFS SSD",
+  "observer_report_sha256": "a789605359ea27fca83eaea03e59843e57b430f737cbe344672699cbb553ab00",
+  "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+  "binary_sha256": "59aa365ed46b5d373218fcbcf1d34f930d674d15607ed510190361891439b4e0",
+  "whole_mcf_audit": "not_run",
+  "post_stop_cold_recovery": "not_run",
+  "six_hour_fault": "not_reached",
+  "eight_hour_gate": "not_run_incomplete_attempt",
+  "actual_16gb_device": "not_run",
+  "full_M0": "not_accepted",
+  "snapshots_full_originals_retained": [
+    "model/layout/snapshots/snapshot-000057",
+    "model/layout/snapshots/snapshot-000058"
+  ],
+  "incomplete_pending_snapshot": "model/layout/snapshots/snapshot-000059.pending",
+  "do_not_describe_pending_as_complete_restore": true,
+  "faults": [
+    {
+      "line": 6651,
+      "record": {
+        "elapsed_seconds": 7200.650184667,
+        "data": {
+          "at_seconds": 7200.174893958,
+          "endurance_fault": "worker_cells",
+          "job": 183
+        }
+      }
+    },
+    {
+      "line": 12873,
+      "record": {
+        "elapsed_seconds": 14401.307850167,
+        "data": {
+          "at_seconds": 14400.28650425,
+          "endurance_fault": "sim_committed_reply",
+          "job": 363,
+          "operation": 16140901064495858027,
+          "original_proof": {
+            "bytes": 1032,
+            "operation": 16140901064495858027,
+            "present": true,
+            "sha256": "6e0d28bfea2e72bbe301f0bbe34506603d9d330a296f97d366928b682da03ac6"
+          },
+          "recovered_seconds": 14400.836214583,
+          "recovery_seconds": 0.701989583
+        }
+      }
+    }
+  ],
+  "last_business_verification": {
+    "line": 15494,
+    "elapsed_seconds": 17361.370258083,
+    "target": 1562400,
+    "expected_windows": 438,
+    "business_sha_matches": true
+  },
+  "completed_periodic_queries": 1736,
+  "completed_periodic_saves": 57
+}
