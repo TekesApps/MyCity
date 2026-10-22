@@ -1,0 +1,24 @@
+{
+  "files_deleted": 0,
+  "allocated_bytes_removed": 0,
+  "protected_originals_sha_verified": 190,
+  "work_target_files_identity_verified": 129233,
+  "before": {
+    "time_ns": 1792644658809530000,
+    "du_kib": {
+      "work": 26574220,
+      "target": 2209460
+    },
+    "available_bytes": 91088998400
+  },
+  "after": {
+    "time_ns": 1792644684751637000,
+    "du_kib": {
+      "work": 26574220,
+      "target": 2209460
+    },
+    "available_bytes": 91071471616
+  },
+  "filesystem_available_delta_bytes": -17526784,
+  "attribution": "No deletion. df delta is unrelated observation, not reclaimed bytes. Prior v105/v106 removals are not counted again."
+}

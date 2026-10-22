@@ -1,0 +1,25 @@
+
+running 7 tests
+test cancellation_never_releases_started_capacity_or_refunds_spend ... ok
+test cannot_activate_uninspected_or_demolish_without_parties_and_waste_receiver ... ok
+test consent_materials_wages_and_inspection_gate_occupancy ... ok
+test identical_effect_replay_is_stable_and_definitive_failure_does_not_charge_twice ... ok
+test wall_speed_does_not_change_game_calendar_work_and_weekend_is_not_workday ... ok
+test work_is_rejected_when_cash_or_total_project_budget_is_insufficient ... ok
+test pending_effect_survives_serialization_and_cannot_be_acked_twice ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 8 tests
+test forged_gate_or_inspector_identity_is_rejected_before_domain_mutation ... ok
+test construction_action_and_journal_records_stay_inside_frozen_engine_budget ... ok
+test authoritative_work_skips_untrusted_estimate_even_when_its_sum_overflows ... ok
+test engine_uses_actual_source_lot_basis_for_budget_and_rejects_actual_overrun_atomically ... ok
+test non_draft_checkpoint_restores_exact_site_lease_and_continues_to_operational_without_double_charge ... ok
+test durable_hook_failure_does_not_publish_and_retry_after_commit_returns_original_receipt ... ok
+test generic_release_cannot_break_project_site_binding_and_cold_restore_can_continue_work ... ok
+test insufficient_site_capacity_funds_and_materials_leave_candidate_domains_unchanged ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+

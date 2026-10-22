@@ -1,0 +1,110 @@
+{
+  "commands": [
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--release",
+        "--locked",
+        "--offline",
+        "-p",
+        "mycity-core",
+        "-p",
+        "mycity-headless",
+        "--lib"
+      ],
+      "exit": 0,
+      "seconds": 60.0940065,
+      "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2"
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--release",
+        "--locked",
+        "--offline",
+        "-p",
+        "mycity-core",
+        "--test",
+        "construction",
+        "--test",
+        "construction_engine"
+      ],
+      "exit": 0,
+      "seconds": 19.788482709000007,
+      "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2"
+    },
+    {
+      "command": [
+        "cargo",
+        "test",
+        "--release",
+        "--locked",
+        "--offline",
+        "-p",
+        "mycity-storage",
+        "--test",
+        "construction"
+      ],
+      "exit": 0,
+      "seconds": 41.96389275,
+      "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2"
+    },
+    {
+      "command": [
+        "cargo",
+        "clippy",
+        "--release",
+        "--locked",
+        "--offline",
+        "-p",
+        "mycity-core",
+        "-p",
+        "mycity-storage",
+        "-p",
+        "mycity-headless",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit": 0,
+      "seconds": 11.21170820799999,
+      "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2"
+    },
+    {
+      "command": [
+        "cargo",
+        "build",
+        "--release",
+        "--locked",
+        "--offline",
+        "-p",
+        "mycity-headless"
+      ],
+      "exit": 0,
+      "seconds": 21.187601459000007,
+      "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2"
+    },
+    {
+      "command": [
+        "cargo",
+        "build",
+        "--release",
+        "--locked",
+        "--offline",
+        "-p",
+        "mycity-core",
+        "--examples"
+      ],
+      "exit": 0,
+      "seconds": 1.169137207999995,
+      "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2"
+    }
+  ],
+  "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+  "functional_checks_passed": true,
+  "formal_performance": "not_run",
+  "full_M0": "not_accepted"
+}

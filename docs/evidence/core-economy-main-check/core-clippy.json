@@ -1,0 +1,18 @@
+{
+  "command": [
+    "cargo",
+    "clippy",
+    "--release",
+    "--locked",
+    "--offline",
+    "-p",
+    "mycity-core",
+    "--all-targets",
+    "--",
+    "-D",
+    "warnings"
+  ],
+  "exit": 0,
+  "seconds": 4.640011042000001,
+  "source": "16ea6512a89ce29605e1ee36544bc97f5848ee0a8a490246f4fb6cbdcadcabb0"
+}

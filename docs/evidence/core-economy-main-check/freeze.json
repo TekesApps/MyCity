@@ -1,0 +1,6 @@
+{
+  "source_stream_sha256": "16ea6512a89ce29605e1ee36544bc97f5848ee0a8a490246f4fb6cbdcadcabb0",
+  "archive_sha256": "3cf4f199f052246176ad410676589490659f9c473779482f8fe1c47e75f25bb2",
+  "files": 226,
+  "note": "integrated A+C source; different from C branch archive hash; no new M0 performance claim"
+}

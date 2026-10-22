@@ -1,0 +1,55 @@
+{
+  "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+  "files": [
+    {
+      "original": "/Users/frankqin/dev/MyCity/target/release/deps/construction-a6842a0669a1dd86",
+      "fixed": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2/construction-a6842a0669a1dd86",
+      "bytes": 1204192,
+      "sha256": "f4b22c590db4b9ceecb0247cf7e77d1fce9f5fe250392615d4545763e37d3393",
+      "same_inode_device": true
+    },
+    {
+      "original": "/Users/frankqin/dev/MyCity/target/release/deps/construction-b68fb118295d0565",
+      "fixed": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2/construction-b68fb118295d0565",
+      "bytes": 6513168,
+      "sha256": "3a461067cc766473195b0e0f248c326e286fd4b5f5015fa14e4f02db24e4987e",
+      "same_inode_device": true
+    },
+    {
+      "original": "/Users/frankqin/dev/MyCity/target/release/deps/construction_engine-bbae94b7cf7feb30",
+      "fixed": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2/construction_engine-bbae94b7cf7feb30",
+      "bytes": 3452752,
+      "sha256": "efea84d187086fe4ddef18ada1422fb5e74f1d7033514b94afb00a6c6c0fca81",
+      "same_inode_device": true
+    },
+    {
+      "original": "/Users/frankqin/dev/MyCity/target/release/deps/mycity_core-3e1c4965578400af",
+      "fixed": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2/mycity_core-3e1c4965578400af",
+      "bytes": 3754192,
+      "sha256": "c3cd3b79879abae1113aa055465a278f51e54b05e05bac3f06fcbc4f6e4d4b9f",
+      "same_inode_device": true
+    },
+    {
+      "original": "/Users/frankqin/dev/MyCity/target/release/deps/mycity_headless-bd191120ee0d5aca",
+      "fixed": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2/mycity_headless-bd191120ee0d5aca",
+      "bytes": 2596432,
+      "sha256": "ef4331a7bbd815f99af1c412cb0c7e11acabe3bcec831167e099445b8bcb5270",
+      "same_inode_device": true
+    },
+    {
+      "original": "/Users/frankqin/dev/MyCity/target/release/examples/construction",
+      "fixed": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2/construction",
+      "bytes": 1386656,
+      "sha256": "b19b54ded3efe4a7903be3aa7ee52656c7830443d948950c63083a9e3043afe7",
+      "same_inode_device": true
+    },
+    {
+      "original": "/Users/frankqin/dev/MyCity/target/release/examples/town_economy",
+      "fixed": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2/town_economy",
+      "bytes": 731552,
+      "sha256": "3208d23334b56bfeea817f5e16f800a450c68baa15b9d0950e726a9f811ac49c",
+      "same_inode_device": true
+    }
+  ],
+  "scope": "functional test harnesses and core examples; no formal performance acceptance"
+}

@@ -145,6 +145,40 @@ fn diagnostic_charge(root: &Path) -> Result<u64, String> {
     let value: Projection = serde_json::from_slice(&raw).map_err(err)?;
     Ok(value.external_owned_charge_bytes)
 }
+// Only orchestration processes already included in the joint observer are
+// eligible. Layout/pool/model workers must never become residual credits.
+fn r07_root_enabled(command: &str) -> bool {
+    ["steady-run", "r07-layout-driver", "joint-endurance"].contains(&command)
+}
+fn r07_component_slot(role: &str, is_observer: bool) -> Option<usize> {
+    if is_observer {
+        Some(0)
+    } else if [
+        "steady-run",
+        "direct-root",
+        "r07-layout-driver",
+        "joint-endurance",
+    ]
+    .contains(&role)
+    {
+        Some(1)
+    } else if ["steady-driver", "scale-endurance"].contains(&role) {
+        Some(2)
+    } else {
+        None
+    }
+}
+fn r07_layout_role(role: &str) -> bool {
+    [
+        "steady-layout-session",
+        "layout-session",
+        "layout-load-only",
+        "layout-charged-probe",
+        "layout-r07-session",
+    ]
+    .contains(&role)
+}
+
 fn publish_r07(
     root: &Path,
     tracker: &tracker::Tracker,
@@ -155,15 +189,7 @@ fn publish_r07(
     use crate::r07_runtime::{Component, Reading, Role};
     let mut components = [None; 3];
     for m in &tracker.members {
-        let slot = if m.sample.identity.pid == std::process::id() {
-            Some(0)
-        } else if ["steady-run", "direct-root", "r07-layout-driver"].contains(&m.role.as_str()) {
-            Some(1)
-        } else if m.role.as_str() == "steady-driver" {
-            Some(2)
-        } else {
-            None
-        };
+        let slot = r07_component_slot(m.role.as_str(), m.sample.identity.pid == std::process::id());
         if let Some(i) = slot {
             if components[i].is_some() {
                 return Err("r07_ambiguous_role".into());
@@ -302,15 +328,10 @@ fn tick(context: Capture<'_>) -> Result<(), String> {
     };
     let r07_applied = read_r07(root, tracker)?;
     let expected_r07 = r07_enabled
-        && tracker.members.iter().any(|m| {
-            [
-                "steady-layout-session",
-                "layout-load-only",
-                "layout-charged-probe",
-                "layout-r07-session",
-            ]
-            .contains(&m.role.as_str())
-        });
+        && tracker
+            .members
+            .iter()
+            .any(|m| r07_layout_role(m.role.as_str()));
     let coverage_bytes = r07_reading.map_or(0, |r| {
         r.components
             .iter()
@@ -480,9 +501,7 @@ pub fn run(root: &Path, command: &[String]) -> Result<(), String> {
     let mut stats = Stats::new();
     let binary_before = disk::hash(Path::new(&command[0]))?;
     let mut process = Command::new(&command[0]);
-    let r07_enabled = command
-        .get(1)
-        .is_some_and(|s| ["steady-run", "r07-layout-driver"].contains(&s.as_str()));
+    let r07_enabled = command.get(1).is_some_and(|s| r07_root_enabled(s));
     process.env_remove("MYCITY_R07_RUNTIME");
     if r07_enabled {
         process.env("MYCITY_R07_RUNTIME", root.join("r07-runtime.json"));
@@ -598,5 +617,42 @@ pub fn run(root: &Path, command: &[String]) -> Result<(), String> {
         Ok(())
     } else {
         Err("native_observer_failed; see observer-report.json".into())
+    }
+}
+
+#[cfg(test)]
+mod r07_role_tests {
+    use super::*;
+
+    #[test]
+    fn joint_endurance_uses_only_same_use_orchestrators() {
+        assert!(r07_root_enabled("joint-endurance"));
+        assert_eq!(r07_component_slot("joint-endurance", false), Some(1));
+        assert_eq!(r07_component_slot("scale-endurance", false), Some(2));
+        assert!(r07_layout_role("layout-session"));
+        assert_eq!(r07_component_slot("native-observer", true), Some(0));
+        for role in [
+            "layout-session",
+            "normal-pool",
+            "sim-host",
+            "model-worker",
+            "unknown",
+        ] {
+            assert_eq!(r07_component_slot(role, false), None);
+            assert!(!r07_root_enabled(role));
+        }
+    }
+
+    #[test]
+    fn steady_and_diagnostic_roles_keep_existing_slots() {
+        for role in ["steady-run", "direct-root", "r07-layout-driver"] {
+            assert_eq!(r07_component_slot(role, false), Some(1));
+        }
+        assert_eq!(r07_component_slot("steady-driver", false), Some(2));
+        assert!(r07_root_enabled("steady-run"));
+        assert!(r07_root_enabled("r07-layout-driver"));
+        assert!(!r07_root_enabled("speed-run"));
+        assert!(!r07_root_enabled("scale-endurance"));
+        assert!(r07_layout_role("steady-layout-session"));
     }
 }

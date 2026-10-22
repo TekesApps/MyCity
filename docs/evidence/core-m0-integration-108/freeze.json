@@ -1,0 +1,10 @@
+{
+  "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+  "source_files": 231,
+  "source_zip_sha256": "84c450c2c866578b02205030c7587df1dbb719660422fe64865ae62fe2ce908d",
+  "shared_target": "/Users/frankqin/dev/MyCity/target",
+  "formal_performance": false,
+  "full_M0": "not_accepted",
+  "real16GB": "not_run",
+  "eight_hour": "not_run"
+}

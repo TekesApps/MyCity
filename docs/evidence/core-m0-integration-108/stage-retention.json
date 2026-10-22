@@ -1,0 +1,13 @@
+{
+  "new_large_pressure": false,
+  "new_target": false,
+  "work_target_du_kib": {
+    "work": 26610520,
+    "target": 2242452
+  },
+  "files_deleted": 0,
+  "allocated_bytes_removed": 0,
+  "retained": "source freezes, raw failures/results, seven exact functional binaries and integrated headless binary hardlinked; all protected190 originals unchanged by this stage",
+  "cache": "shared current core/storage/headless/test/clippy/example graphs reused and still needed; no confirmed obsolete cache removed",
+  "next_release_event": "after next validation, reassess exact newly-created synthetic payload only; current fixed source/exe/results remain acceptance evidence"
+}

@@ -1,0 +1,12 @@
+{
+  "work": {
+    "exit": 1,
+    "stdout": "COMMAND   PID     USER   FD   TYPE DEVICE   SIZE/OFF      NODE NAME\nPython  38097 frankqin    3r   REG   1,15 3044040310 409532998 /Users/frankqin/dev/MyCity/work/report-lifetime-formal-l1-01/observed/model/layout/snapshots/snapshot-000002.pending/pressure.bin\n",
+    "stderr": ""
+  },
+  "target": {
+    "exit": 1,
+    "stdout": "",
+    "stderr": ""
+  }
+}

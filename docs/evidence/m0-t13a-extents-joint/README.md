@@ -47,3 +47,5 @@ Root-owned native-watch/provider wiring is intentionally not copied here; it
 has not yet been tested as part of the frozen joint source. No Cargo build,
 L1 pressure run, or formal performance measurement was started in preparing
 this harness.
+
+The isolated extent source and a later canonical integrated source are different candidates. Freeze the actual executable and report every included change. The canonical run includes independently integrated core models and endurance-role wiring; unchanged workload is not proof of a single-variable source experiment. Raw group measurements include all their costs, with no inferred subtraction.

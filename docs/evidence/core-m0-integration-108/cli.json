@@ -1,0 +1,40 @@
+{
+  "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+  "runs": [
+    {
+      "name": "construction",
+      "exit": 0
+    },
+    {
+      "name": "baseline",
+      "exit": 0,
+      "status": "pureplan_not_settled"
+    },
+    {
+      "name": "closed_road",
+      "exit": 0,
+      "status": "pureplan_not_settled"
+    },
+    {
+      "name": "demand_drop",
+      "exit": 0,
+      "status": "pureplan_not_settled"
+    },
+    {
+      "name": "energy_price_shock",
+      "exit": 0,
+      "status": "pureplan_not_settled"
+    },
+    {
+      "name": "missing_cash",
+      "exit": 0,
+      "status": "pureplan_not_settled"
+    },
+    {
+      "name": "stockout",
+      "exit": 0,
+      "status": "pureplan_not_settled"
+    }
+  ],
+  "economic_settlement": "not_run"
+}

@@ -100,7 +100,7 @@ def main():
                 "lock_sha256": freeze["lock_sha256"],
                 "acceptance_sha256": freeze["acceptance_sha256"],
                 "opening_sha256": freeze["full_opening_sha256"],
-                "scope": "same frozen M0-T13-A full L1 load; R07 extent topology only; no changed pressure or performance acceptance",
+                "scope": "same original M0-T13-A full L1 inputs and thresholds; exact integrated source includes core model and role-wiring changes; all raw costs included; no performance acceptance",
             },
             indent=2,
         )

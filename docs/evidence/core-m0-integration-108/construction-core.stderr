@@ -1,0 +1,5 @@
+   Compiling sha2 v0.10.9
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+    Finished `release` profile [optimized] target(s) in 18.86s
+     Running tests/construction.rs (target/release/deps/construction-a6842a0669a1dd86)
+     Running tests/construction_engine.rs (target/release/deps/construction_engine-bbae94b7cf7feb30)

@@ -12,3 +12,18 @@ docs/evidence/m0-t13a-r07-vm/*.stdout whitespace=-blank-at-eof,-blank-at-eol
 docs/evidence/m0-t13a-pool-mapped-proof/*.stdout whitespace=-blank-at-eof,-blank-at-eol
 docs/evidence/core-independent-first-check/*/*.stdout whitespace=-blank-at-eof,-blank-at-eol
 docs/evidence/core-transport-validation/**/*.stdout whitespace=-blank-at-eof,-blank-at-eol
+
+# Captured validation logs and source patches remain byte-for-byte evidence.
+docs/evidence/core-construction-validation/**/working-tree.diff whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/core-construction-validation/**/*.log whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/core-construction-validation/**/*.stdout whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/core-construction-corrections/**/working-tree.diff whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/core-construction-corrections/**/*.log whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/core-construction-corrections/**/*.stdout whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/core-construction-compat/**/working-tree.diff whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/core-construction-compat/**/*.log whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/core-construction-compat/**/*.stdout whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/core-economy-validation/**/source.patch whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/core-economy-validation/**/*.raw whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/core-m0-integration-108/*.stdout whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/core-economy-main-check/*.stdout whitespace=-blank-at-eof,-blank-at-eol

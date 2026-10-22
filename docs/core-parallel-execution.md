@@ -4,7 +4,7 @@
 
 ## 当前代码依据和责任划分
 
-M0主目录 `/Users/frankqin/dev/MyCity` 保留当前未提交的映射pool/地址诊断改动，旧冻结来源、标准、失败证据不变。最新发布模型v104，最新诊断代码尚未发布，不混用二者性能结果。原L0/L1/L2分级、四速、恢复故障及真实8小时仍按原标准逐项实测；32GiB机器不能代替真实16GB门，后者not_run。没有新证据不重复整体审查，advisor负责具体不确定事项及最终独立验收。
+M0主目录 `/Users/frankqin/dev/MyCity` 的映射pool/地址诊断已在v0.5.106发布，实际完整回归与短联合诊断见[证据](evidence/m0-t13a-pool-mapped-proof/STATUS.md)。该次原normal仍超限，不能报告性能通过。最新发布v0.5.107另含独立交通模型；未发布经济planner及隔离分支不能沿用M0的旧来源性能结果。旧冻结来源、标准和失败证据不变。原L0/L1/L2分级、四速、恢复故障及真实8小时仍按原标准逐项实测；32GiB机器不能代替真实16GB门，后者not_run。没有新证据不重复整体审查，advisor负责具体不确定事项及最终独立验收。
 
 只读代码调查确认可复用：`city-core::transaction::Engine`单写事务/幂等journal/checkpoint、`assembly::World`账户/库存、`units::GameTime`及`calendar::Date`、`timeline::Timeline`工资/税债日程、容量Resource/Lease，以及`city-storage::Store` WAL。它们有固定上限和实验域约束；PE0固定四角色/固定日销量不能被当作动态市场，Region/Exchange有限跨城路线也不是道路交通图。
 
@@ -14,7 +14,7 @@ M0主目录 `/Users/frankqin/dev/MyCity` 保留当前未提交的映射pool/地�
 | B工程 | `codex/core-construction`，同父目录construction | core construction模块、example、测试、该线文档 | 现有时间、事务、容量和账户库存；外部许可/参与方未办理必须等待 | 工料钱工时约束、停工取消改拆废物去向、验收前无运营能力；中断重试恢复不重复扣款/施工/退款；完整小场景和预算 |
 | C经济 | `codex/core-economy`，同父目录economy | core town_economy模块、example、测试、该线文档 | 只读现有World/工资到账；交通/供给DTO先显式替身，提交回现有Engine | 动态需求价格购买力库存约束、28日和压力传播、钱物核对、亏损退出；期初资金依赖及未平衡参数如实报告 |
 
-三线agent已实际派工。独立分支基于v104，优先实现无共享修改的部分，不以派工或未运行的测试宣称通过。各分支允许自己的lib注册，但最终由root统一合并。共享transaction/Store/账务/持久化及主CLI由root协调单一负责人，禁止各线各造一份。隔离目录稀疏检出源代码/fixtures/.cargo，避免复制历史证据；旧设计从主目录只读。
+三线agent已实际派工，原独立分支从v104起步，后续各来源按实际freeze与提交记录；交通已有限集成，其余仍分批验证，不以派工或未运行的测试宣称通过。各分支允许自己的lib注册，但最终由root统一合并。共享transaction/Store/账务/持久化及主CLI由root协调单一负责人，禁止各线各造一份。隔离目录稀疏检出源代码/fixtures/.cargo，避免复制历史证据；旧设计从主目录只读。
 
 ## 已确认的真实依赖，不作为完成项掩盖
 
@@ -29,3 +29,20 @@ root持有同机重任务调度权。各agent先编码，不自行构建；只�
 阶段通过后才提交、唯一递增annotated tag、推送及验证远端；未通过保留反例和限制。各线交付实际Rust、可执行场景/测试、验证记录、预算。工程与经济共享接口集成单独验收，不修改冻结负载以求通过。
 
 每阶段先记录新增大目录/预计峰值/下游原路径依赖和解除条件，终态先留证和回收决策再开下一轮。共享target不复制，不删除马上要重建的缓存；固定源/依赖/exe、业务/WAL、必要完整恢复和故障原件保留。无法确认用途者保留并记录解除事件。文件分配空间与df可用变化分别报告。
+
+## 当前集成次序与验证门（2026-10-22更新）
+
+- A原有向图/OD模型在v107已独立实测；新增逐OD路径回执及市场接入adapter尚未Cargo验证。adapter必须消费真实往返路容与授权入口，不因不相关跨城流量阻断本地消费，不把测试运费/公用输入说成真实联调。
+- B有限建造接入已在隔离树运行实际工料钱和Store重放；拆除/废物的Engine接入仍缺，纯状态机实现不等于完成。旧版None序列化身份与复用恢复槽位另设兼容门；真实旧producer冷开与合成槽位测试分别报告，不外推未覆盖的旧非空checkpoint。
+- C已集成的planner尚无28日实际账本执行，已发现空低价报价导致超额需求的反例，修复在隔离树待测。验证该修复后才发布该阶段；生产owner直接复用稳定DTO及现有Engine/Timeline/Store接入真实消耗、成本和产出，不引入第二账本。
+- M0下一候选仅调整R07物理extent，仍按64KiB逻辑量与既有生成规则；定向功能/错误状态先测，之后原负载联合测量决定收益。过渡新增映射上界不能当OS footprint上界；新增manifest诊断字段不能声称完整旧manifest字节不变。
+
+当前唯一重任务窗口按root授权流转：R07功能测试 → B兼容反例/严格检查 → C价格修复 → A真实接入adapter；正式M0窗口单独排定，期间不并发这些验证。共享Engine/World/Store只由core_engine_integration修改，production与construction隔离，兼容修复先独立终态，才开展下一共享变动。没有等待设备就暂停全部开发。
+
+[最新集中复查](evidence/disk-reclamation-live-20261022/STATUS.md)新增删除0B；190份完整恢复/故障原件重读SHA匹配，唯一target继续复用。旧清理不重复计入；新增大负载仍须预登记峰值和精确退役条件。
+
+### 本轮新增的八小时接线阻断
+
+只读追踪确认正式steady已从native observer继承R07 provider；但`joint-endurance`原来虽被允许观察，却未启用provider，也未识别其`scale-endurance`驱动及`layout-session`等待ack。root已补最小角色映射草稿，advisor完成一次窄审，尚待Cargo与实际生命周期验证。没有将layout、pool、模型worker纳入额度。验收须覆盖驱动退出后额度重新计算、旧layout退出、冷恢复新owner接管；缺有效ack的样本不能当覆盖完整。provider reading有source/nonce/birth/TTL约束，ack本身仅核source/State/活owner，不能混称两者认证。该接线修复不是8小时实测通过。
+
+本轮合并功能终态见[v108实测](evidence/core-m0-integration-108/STATUS.md)：199项及严格检查通过；交通adapter持下一功能窗口，production实际核算继续编码。上文阶段顺序是实际执行记录，未完成门保持未完成。

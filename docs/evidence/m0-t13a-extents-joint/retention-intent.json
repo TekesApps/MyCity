@@ -1,5 +1,5 @@
 {
-  "scope": "same original full M0-T13-A L1 workload, frozen opening, runtime providers, limits and physical/normal criteria; only R07 physical extent layout changes",
+  "scope": "Same original full M0-T13-A L1 workload, opening and thresholds. Exact source is frozen at execution. Canonical integration may also contain traffic/economy/construction and endurance-role fixes; report all source differences and raw whole-group cost, never claim a one-variable comparison or subtract their inferred overhead.",
   "new_work": [
     "docs/evidence/m0-t13a-extents-joint",
     "work/m0-t13a-extents-joint-l1-01",
