@@ -1,0 +1,50 @@
+[
+  {
+    "work_relative": "observed/observer-report.json",
+    "bytes": 8981,
+    "sha256": "5941465820f6a2bed37b7c4c43bf421e96a677a9ff4fa1e17e67d6bad8c527d7",
+    "evidence_relative": "results/observed/observer-report.json"
+  },
+  {
+    "work_relative": "observed/model/report.json",
+    "bytes": 626,
+    "sha256": "9c373784169159a5ac62de635b9a778d8f3f709dbc6bc298bef48cf2efc3d6f8",
+    "evidence_relative": "results/observed/model/report.json"
+  },
+  {
+    "work_relative": "observed/model/layout/report.json",
+    "bytes": 18181,
+    "sha256": "b7dc0a938d5a2f42b4df2f33e1ddd278f5b68ae37a6598d312638c0b4899490e",
+    "evidence_relative": "results/observed/model/layout/report.json"
+  },
+  {
+    "work_relative": "observed/model/normal-pool/report.json",
+    "bytes": 1354,
+    "sha256": "a090ae766325191ac7dd1f1df42f5f3ff1a925bf3c4a5f71c59903d93a0c1828",
+    "evidence_relative": "results/observed/model/normal-pool/report.json"
+  },
+  {
+    "work_relative": "observed/model/business/report.json",
+    "bytes": 959,
+    "sha256": "af48dbd814e6a103ab8d7dec5172eaf695ad3a09494b18ce0103af793e0df665",
+    "evidence_relative": "results/observed/model/business/report.json"
+  },
+  {
+    "work_relative": "observed/model/business/cpu-report.json",
+    "bytes": 9527,
+    "sha256": "594c2533ad3870067cfa54e46af082d79c3d18a1f92fff2b92cf048da0a58e43",
+    "evidence_relative": "results/observed/model/business/cpu-report.json"
+  },
+  {
+    "work_relative": "observed/model/layout-restored/report.json",
+    "bytes": 15104,
+    "sha256": "dee5cb16b175c9ecb7dd10f44f068e9db449cd2b82402888ab72f9bcb5b2b7a8",
+    "evidence_relative": "results/observed/model/layout-restored/report.json"
+  },
+  {
+    "work_relative": "log-budget-diagnostic.json",
+    "bytes": 1331,
+    "sha256": "b0ca2c740673924462ec8d20ce51aa0b43debc1b7e7c77f806f535bc71ce2576",
+    "evidence_relative": "results/log-budget-diagnostic.json"
+  }
+]

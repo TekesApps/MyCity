@@ -1,0 +1,9 @@
+
+running 4 tests
+test v106_store_wal_checkpoint_and_receipt_reopen_with_identical_identity ... ok
+test construction_wal_cold_reopen_retry_and_checkpointed_receipt_archive_decode ... ok
+test construction_work_money_and_materials_commit_once_across_wal_lost_response_and_cold_retry ... ok
+test operational_capacity_demolition_waste_and_close_replay_through_store ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.56s
+

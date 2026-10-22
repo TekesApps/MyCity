@@ -1,0 +1,60 @@
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+error[E0599]: no method named `map_err` found for enum `Option` in the current scope
+    --> crates/city-storage/examples/payroll_exit.rs:43:14
+     |
+39   |           if store
+     |  ____________-
+40   | |             .engine()
+41   | |             .map_err(|e| format!("store engine: {e:?}"))?
+42   | |             .timeline()
+43   | |             .map_err(|e| format!("timeline unavailable: {e:?}"))?
+     | |_____________-^^^^^^^
+     |
+help: there is a method `map_or` with a similar name, but with different arguments
+    --> /Users/frankqin/.rustup/toolchains/1.85.1-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/option.rs:1173:5
+     |
+1173 | /     pub fn map_or<U, F>(self, default: U, f: F) -> U
+1174 | |     where
+1175 | |         F: FnOnce(T) -> U,
+     | |__________________________^
+
+error[E0599]: no method named `map_err` found for enum `Option` in the current scope
+    --> crates/city-storage/examples/payroll_exit.rs:118:10
+     |
+114  |       let before = store
+     |  __________________-
+115  | |         .engine()
+116  | |         .map_err(|e| format!("store engine: {e:?}"))?
+117  | |         .timeline()
+118  | |         .map_err(|e| format!("timeline unavailable: {e:?}"))?
+     | |_________-^^^^^^^
+     |
+help: there is a method `map_or` with a similar name, but with different arguments
+    --> /Users/frankqin/.rustup/toolchains/1.85.1-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/option.rs:1173:5
+     |
+1173 | /     pub fn map_or<U, F>(self, default: U, f: F) -> U
+1174 | |     where
+1175 | |         F: FnOnce(T) -> U,
+     | |__________________________^
+
+error[E0599]: no method named `map_err` found for enum `Option` in the current scope
+    --> crates/city-storage/examples/payroll_exit.rs:174:10
+     |
+170  |       let settled = store
+     |  ___________________-
+171  | |         .engine()
+172  | |         .map_err(|e| format!("store engine: {e:?}"))?
+173  | |         .timeline()
+174  | |         .map_err(|e| format!("timeline unavailable: {e:?}"))?
+     | |_________-^^^^^^^
+     |
+help: there is a method `map_or` with a similar name, but with different arguments
+    --> /Users/frankqin/.rustup/toolchains/1.85.1-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/option.rs:1173:5
+     |
+1173 | /     pub fn map_or<U, F>(self, default: U, f: F) -> U
+1174 | |     where
+1175 | |         F: FnOnce(T) -> U,
+     | |__________________________^
+
+For more information about this error, try `rustc --explain E0599`.
+error: could not compile `mycity-storage` (example "payroll_exit") due to 3 previous errors

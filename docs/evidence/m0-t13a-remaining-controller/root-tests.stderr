@@ -1,0 +1,15 @@
+test_environment_cleaning_is_scoped_to_mycity_names (test_run.RemainingControllerTests) ... ok
+test_formal_arguments_and_paths (test_run.RemainingControllerTests) ... ok
+test_formal_plan_is_complete_and_not_claimed_as_run (test_run.RemainingControllerTests) ... ok
+test_frozen_source_and_all_formal_socket_paths (test_run.RemainingControllerTests) ... ok
+test_frozen_steady_command_and_durations (test_run.RemainingControllerTests) ... ok
+test_readiness_uses_only_final_clean_window (test_run.RemainingControllerTests) ... ok
+test_rejects_argument_counterexamples (test_run.RemainingControllerTests) ... ok
+test_socket_path_limit_includes_nul (test_run.RemainingControllerTests) ... ok
+test_source_and_support_identity_are_fixed (test_run.RemainingControllerTests) ... ok
+test_wrapper_execs_once_without_restart_or_pass_claim (test_run.RemainingControllerTests) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.103s
+
+OK

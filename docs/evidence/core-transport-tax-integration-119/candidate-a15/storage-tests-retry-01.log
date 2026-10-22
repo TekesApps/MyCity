@@ -1,0 +1,42 @@
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-storage)
+warning: unused import: `TransportAllocationProfile`
+ --> crates/city-storage/examples/town_transport.rs:4:62
+  |
+4 |         AllocationScope, DemandRepeatPolicy, FeePolicyInput, TransportAllocationProfile,
+  |                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+error[E0436]: functional record update syntax requires a struct
+   --> crates/city-storage/examples/town_transport.rs:438:15
+    |
+438 |             ..untrusted_action
+    |               ^^^^^^^^^^^^^^^^
+
+error[E0425]: cannot find function `hex` in this scope
+   --> crates/city-storage/examples/town_transport.rs:638:73
+    |
+638 |     let proof_path = Path::new(&dir).join(format!("town-proof-{}.json", hex(&second_proof_hash)));
+    |                                                                         ^^^ not found in this scope
+
+error[E0425]: cannot find function `hex` in this scope
+   --> crates/city-storage/examples/town_transport.rs:649:60
+    |
+649 |         Path::new(&dir).join(format!("town-proof-{}.json", hex(&first_proof_hash)));
+    |                                                            ^^^ not found in this scope
+
+warning: variable does not need to be mutable
+   --> crates/city-storage/examples/town_transport.rs:183:9
+    |
+183 |     let mut operate = |store: &mut Store, action| -> Result<(), String> {
+    |         ----^^^^^^^
+    |         |
+    |         help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` on by default
+
+Some errors have detailed explanations: E0425, E0436.
+For more information about an error, try `rustc --explain E0425`.
+warning: `mycity-storage` (example "town_transport") generated 2 warnings
+error: could not compile `mycity-storage` (example "town_transport") due to 3 previous errors; 2 warnings emitted
+warning: build failed, waiting for other jobs to finish...

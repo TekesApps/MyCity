@@ -1,0 +1,71 @@
+{
+  "harness_schema": "mycity-m0-t13a-joint-smoke-control-v1",
+  "prepared_from_repo": "/Users/frankqin/dev/MyCity",
+  "prepared_repo_branch": "main",
+  "prepared_repo_version": "v0.5.117",
+  "prepared_repo_commit": "834d4a9c745d4b8e0cb952f66131528c93a039db",
+  "prepared_repo_dirty": true,
+  "prepared_worktree_note": "prepared on published main v0.5.117; only this independent evidence directory is untracked; current Rust source is not compared byte-for-byte with the fixed archive",
+  "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+  "fixed_source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+  "fixed_source_files": 231,
+  "fixed_source_archive": "../m0-t13a-extents-joint-retry-02/frozen-source.zip",
+  "fixed_source_archive_sha256": "84c450c2c866578b02205030c7587df1dbb719660422fe64865ae62fe2ce908d",
+  "fixed_binary": "/Users/frankqin/dev/MyCity/work/candidate-binaries/r07-extents/32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2/mycity-headless",
+  "fixed_binary_sha256": "59aa365ed46b5d373218fcbcf1d34f930d674d15607ed510190361891439b4e0",
+  "fixed_lock_sha256": "7da5c54a8499a07cbc71dcecce0c0095d4af3b8b6e5052783f20d188037b6dd6",
+  "acceptance_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+  "full_opening_sha256": "04c113c62b0b682f94f9abfbde7618b87bd972f3931504366be9e07c130b4726",
+  "current_checkout_relation": "separate provenance only; current Rust source is intentionally not compared byte-for-byte with fixed archive",
+  "observer_origin": "docs/evidence/m0-t13a-typed-workspace; independent copy rebound to fixed_source_sha256; new frame codec retains exact 4Hz JSONL bytes in independent lossless blocks",
+  "observer_requirements": {
+    "sampling_hz": 4,
+    "normal_pressure_admission_seconds": 120,
+    "maximum_non_normal_pressure_seconds": 60,
+    "maximum_swap_growth_bytes": 268435456,
+    "minimum_free_bytes": 2147483648,
+    "maximum_world_bytes": 21474836480,
+    "combined_log_cap_bytes": 268435456
+  },
+  "workload": {
+    "entrypoint": "joint-endurance NEW_DIR smoke|formal",
+    "smoke_layout_minimum_seconds": 600,
+    "formal_layout_minimum_seconds": 28800,
+    "game_hours": 720,
+    "drive_targets": 723,
+    "queries": 2880,
+    "saves": 96,
+    "normal_pool_grants_returns_fill_acknowledgements": 725,
+    "l1_l2": "same fixed binary joint controller; full business plus full layout; smoke still executes 600 seconds of layout observation"
+  },
+  "retention": {
+    "protected_original_inventory": "docs/evidence/work-migration-20261022/attempt03/protected-after.json",
+    "retain_new_two_complete_snapshots_until_actual_cold_restore_and_dependency_release": true,
+    "expected_generations_in_budget": 3
+  },
+  "run_prefixes": {
+    "smoke": "j3s",
+    "formal": "j3f",
+    "run_id": "01",
+    "work_paths": [
+      "j3s-01",
+      "j3f-01"
+    ]
+  },
+  "unix_socket_path_proof": "unix-socket-paths.json; static inventory from the fixed 32c ZIP with external resolved work path and UTF-8 byte plus NUL check",
+  "compilation_policy": "no Cargo invocation; record other Cargo/rustc processes before and during actual execution; do not claim a quiet window without evidence",
+  "capacity_policy": "all frames, including incomplete identity frames and frames with compiler interference, are retained and included in capacity projection; functional endurance eligibility is separate from physical identity/performance acceptance",
+  "log_encoding": {
+    "file": "host-samples.mcf",
+    "codec": "independent raw-DEFLATE blocks of up to four original JSONL frames, CRC32 and raw length checked",
+    "sample_hz": 4,
+    "information_loss": false,
+    "live_combined_cap_bytes": 268435456,
+    "block_bounds": {
+      "max_frame_raw_bytes": 8388608,
+      "max_block_raw_bytes": 33554432,
+      "max_packed_block_bytes": 33564736
+    },
+    "live_cap_admission": "before writing each encoded block, exact committed host bytes + encoded candidate bytes including header/expansion + latest scanned compute-duration bytes <= unchanged 268435456; final tail revalidated after fresh latency scan; reject means observer failure"
+  }
+}

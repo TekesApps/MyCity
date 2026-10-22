@@ -1,0 +1,23 @@
+{
+  "command": [
+    "cargo",
+    "+1.85.1",
+    "test",
+    "--locked",
+    "--offline",
+    "--release",
+    "-p",
+    "mycity-storage",
+    "--test",
+    "payroll_exit",
+    "payroll_exit_checkpoint_reopen_replay_and_explicit_settlement_conserve_cash",
+    "--",
+    "--exact",
+    "--nocapture"
+  ],
+  "exit": 101,
+  "seconds": 18.591981667,
+  "artifacts": "/Volumes/HP P900/dev/MyCity/work/payroll-exit-main-120-repro03",
+  "binary_sha256": "fd99dcea00ac5d1287637bb4818543503dd3af5a62bb6d392bbb6b5985549036",
+  "original_attempt02_fixture": "not retained by old unconditional test Drop; this is a new faithful reproduction"
+}

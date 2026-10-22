@@ -1,0 +1,210 @@
+   Compiling sha2 v0.10.9
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-core)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-storage)
+error[E0433]: failed to resolve: there are too many leading `super` keywords
+    --> crates/city-storage/src/lib.rs:1166:9
+     |
+1166 |     pub(super) fn execute_observed_transport_diagnosed(
+     |         ^^^^^ there are too many leading `super` keywords
+
+error[E0106]: missing lifetime specifier
+   --> crates/city-storage/src/town_transport.rs:330:37
+    |
+324 |     proof: &TransportProofAsset,
+    |            --------------------
+325 |     profile: &TransportAllocationProfile,
+    |              ---------------------------
+...
+330 | ) -> Result<SettlementDeliveryInput<'_>, Error> {
+    |                                     ^^ expected named lifetime parameter
+    |
+    = help: this function's return type contains a borrowed value, but the signature does not say whether it is borrowed from `proof` or `profile`
+help: consider introducing a named lifetime parameter
+    |
+323 ~ pub(super) fn verify_proof_matches_allocation<'a>(
+324 ~     proof: &'a TransportProofAsset,
+325 ~     profile: &'a TransportAllocationProfile,
+326 |     allocation_hash: [u8; 32],
+...
+329 |     generation: u64,
+330 ~ ) -> Result<SettlementDeliveryInput<'a>, Error> {
+    |
+
+error[E0425]: cannot find value `include_settlement_frame` in this scope
+   --> crates/city-storage/src/town_transport.rs:287:31
+    |
+287 |     let settlement_frame = if include_settlement_frame {
+    |                               ^^^^^^^^^^^^^^^^^^^^^^^^ not found in this scope
+
+error[E0061]: this function takes 5 arguments but 6 arguments were supplied
+   --> crates/city-storage/src/town_transport.rs:450:9
+    |
+450 |         admit_immutable_write(
+    |         ^^^^^^^^^^^^^^^^^^^^^
+...
+456 |             true,
+    |             ---- unexpected argument #6 of type `bool`
+    |
+note: function defined here
+   --> crates/city-storage/src/town_transport.rs:262:15
+    |
+262 | pub(super) fn admit_immutable_write(
+    |               ^^^^^^^^^^^^^^^^^^^^^
+263 |     dir: &Path,
+    |     ----------
+264 |     policy: CapacityPolicy,
+    |     ----------------------
+265 |     prefix: &str,
+    |     ------------
+266 |     bytes: &[u8],
+    |     ------------
+267 |     hash: &[u8; 32],
+    |     ---------------
+help: remove the extra argument
+    |
+455 -             &proof_sha256,
+456 -             true,
+455 +             &proof_sha256,
+    |
+
+error[E0061]: this function takes 5 arguments but 4 arguments were supplied
+   --> crates/city-storage/src/town_transport.rs:458:9
+    |
+458 |         write_immutable(&self.io.dir, PROOF_PREFIX, proof_bytes, &proof_sha256)?;
+    |         ^^^^^^^^^^^^^^^-------------------------------------------------------- argument #5 of type `bool` is missing
+    |
+note: function defined here
+   --> crates/city-storage/src/town_transport.rs:237:15
+    |
+237 | pub(super) fn write_immutable(
+    |               ^^^^^^^^^^^^^^^
+238 |     dir: &Path,
+    |     ----------
+239 |     prefix: &str,
+    |     ------------
+240 |     bytes: &[u8],
+    |     ------------
+241 |     hash: &[u8; 32],
+    |     ---------------
+242 |     include_settlement_frame: bool,
+    |     ------------------------------
+help: provide the argument
+    |
+458 |         write_immutable(&self.io.dir, PROOF_PREFIX, proof_bytes, &proof_sha256, /* bool */)?;
+    |                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+error[E0061]: this function takes 5 arguments but 6 arguments were supplied
+   --> crates/city-storage/src/lib.rs:518:13
+    |
+518 |             town_transport::admit_immutable_write(
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+524 |                 false,
+    |                 ----- unexpected argument #6 of type `bool`
+    |
+note: function defined here
+   --> crates/city-storage/src/town_transport.rs:262:15
+    |
+262 | pub(super) fn admit_immutable_write(
+    |               ^^^^^^^^^^^^^^^^^^^^^
+263 |     dir: &Path,
+    |     ----------
+264 |     policy: CapacityPolicy,
+    |     ----------------------
+265 |     prefix: &str,
+    |     ------------
+266 |     bytes: &[u8],
+    |     ------------
+267 |     hash: &[u8; 32],
+    |     ---------------
+help: remove the extra argument
+    |
+523 -                 &hash,
+524 -                 false,
+523 +                 &hash,
+    |
+
+error[E0061]: this function takes 5 arguments but 4 arguments were supplied
+   --> crates/city-storage/src/lib.rs:526:13
+    |
+526 |             town_transport::write_immutable(dir, town_transport::ALLOCATION_PREFIX, bytes, &hash)?;
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^------------------------------------------------------ argument #5 of type `bool` is missing
+    |
+note: function defined here
+   --> crates/city-storage/src/town_transport.rs:237:15
+    |
+237 | pub(super) fn write_immutable(
+    |               ^^^^^^^^^^^^^^^
+238 |     dir: &Path,
+    |     ----------
+239 |     prefix: &str,
+    |     ------------
+240 |     bytes: &[u8],
+    |     ------------
+241 |     hash: &[u8; 32],
+    |     ---------------
+242 |     include_settlement_frame: bool,
+    |     ------------------------------
+help: provide the argument
+    |
+526 |             town_transport::write_immutable(dir, town_transport::ALLOCATION_PREFIX, bytes, &hash, /* bool */)?;
+    |                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+error[E0061]: this method takes 6 arguments but 5 arguments were supplied
+   --> crates/city-storage/src/lib.rs:923:28
+    |
+923 |               let _ = engine.execute_recorded_transport_diagnosed(
+    |  ____________________________^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^-
+924 | |                 caller,
+925 | |                 entry.envelope,
+926 | |                 candidate,
+...   |
+939 | |                 },
+940 | |             )?;
+    | |_____________- argument #6 of type `&mut Trace<'_>` is missing
+    |
+note: method defined here
+   --> /Users/frankqin/dev/MyCity-core-work/production/crates/city-core/src/transaction.rs:935:12
+    |
+935 |     pub fn execute_recorded_transport_diagnosed<E>(
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+help: provide the argument
+    |
+923 ~             let _ = engine.execute_recorded_transport_diagnosed(caller, entry.envelope, candidate, transport_input.as_ref(), |_, record| -> Result<(), Error> {
+924 +                     called = true;
+925 +                     if !wal::matches(
+926 +                         &mut canonical.get_mut().workspace,
+927 +                         record,
+928 +                         &mut buffers.frame,
+929 +                         normalized.as_slice(),
+930 +                     )? {
+931 +                         return Err(Error::Invalid("replay_outcome_mismatch"));
+932 +                     }
+933 +                     Ok(())
+934 ~                 }, /* &mut Trace<'_> */)?;
+    |
+
+warning: unused variable: `include_settlement_frame`
+   --> crates/city-storage/src/town_transport.rs:242:5
+    |
+242 |     include_settlement_frame: bool,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_include_settlement_frame`
+    |
+    = note: `#[warn(unused_variables)]` on by default
+
+warning: variable does not need to be mutable
+   --> crates/city-storage/src/lib.rs:420:9
+    |
+420 |         mut observer: impl FnMut(CreatePoint) -> io::Result<()>,
+    |         ----^^^^^^^^
+    |         |
+    |         help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` on by default
+
+Some errors have detailed explanations: E0061, E0106, E0425, E0433.
+For more information about an error, try `rustc --explain E0061`.
+warning: `mycity-storage` (lib) generated 2 warnings
+error: could not compile `mycity-storage` (lib) due to 8 previous errors; 2 warnings emitted
+warning: build failed, waiting for other jobs to finish...

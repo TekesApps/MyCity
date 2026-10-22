@@ -1,0 +1,152 @@
+[
+  {
+    "name": "build-market",
+    "command": [
+      "cargo",
+      "+1.85.1",
+      "build",
+      "--locked",
+      "--offline",
+      "--release",
+      "-p",
+      "mycity-core",
+      "--example",
+      "town_market"
+    ],
+    "exit": 0,
+    "seconds": 1.590282542
+  },
+  {
+    "name": "build-transport",
+    "command": [
+      "cargo",
+      "+1.85.1",
+      "build",
+      "--locked",
+      "--offline",
+      "--release",
+      "-p",
+      "mycity-storage",
+      "--example",
+      "town_transport"
+    ],
+    "exit": 0,
+    "seconds": 0.06284637500000012
+  },
+  {
+    "name": "market-scenarios",
+    "command": [
+      "python3",
+      "/Users/frankqin/dev/MyCity/crates/city-core/tests/town_market_scenarios.py",
+      "/Users/frankqin/dev/MyCity/target/release/examples/town_market"
+    ],
+    "exit": 0,
+    "seconds": 0.9127587500000003
+  },
+  {
+    "name": "core-lib",
+    "command": [
+      "cargo",
+      "+1.85.1",
+      "test",
+      "--locked",
+      "--offline",
+      "--release",
+      "-p",
+      "mycity-core",
+      "--lib"
+    ],
+    "exit": 0,
+    "seconds": 21.08181525
+  },
+  {
+    "name": "construction-recovery",
+    "command": [
+      "cargo",
+      "+1.85.1",
+      "test",
+      "--locked",
+      "--offline",
+      "--release",
+      "-p",
+      "mycity-storage",
+      "--test",
+      "construction"
+    ],
+    "exit": 0,
+    "seconds": 8.913677207999996
+  },
+  {
+    "name": "transport-normal",
+    "command": [
+      "/Users/frankqin/dev/MyCity/target/release/examples/town_transport",
+      "normal",
+      "/Users/frankqin/dev/MyCity/work/core-transport-tax-main-119-attempt02/normal"
+    ],
+    "exit": 0,
+    "seconds": 1.4722282910000004
+  },
+  {
+    "name": "transport-closed",
+    "command": [
+      "/Users/frankqin/dev/MyCity/target/release/examples/town_transport",
+      "closed",
+      "/Users/frankqin/dev/MyCity/work/core-transport-tax-main-119-attempt02/closed"
+    ],
+    "exit": 0,
+    "seconds": 0.5426278329999974
+  },
+  {
+    "name": "transport-bottleneck",
+    "command": [
+      "/Users/frankqin/dev/MyCity/target/release/examples/town_transport",
+      "bottleneck",
+      "/Users/frankqin/dev/MyCity/work/core-transport-tax-main-119-attempt02/bottleneck"
+    ],
+    "exit": 0,
+    "seconds": 0.5410200000000032
+  },
+  {
+    "name": "transport-expanded",
+    "command": [
+      "/Users/frankqin/dev/MyCity/target/release/examples/town_transport",
+      "expanded",
+      "/Users/frankqin/dev/MyCity/work/core-transport-tax-main-119-attempt02/expanded"
+    ],
+    "exit": 0,
+    "seconds": 0.5270034170000031
+  },
+  {
+    "name": "strict",
+    "command": [
+      "cargo",
+      "+1.85.1",
+      "clippy",
+      "--locked",
+      "--offline",
+      "--release",
+      "-p",
+      "mycity-core",
+      "-p",
+      "mycity-storage",
+      "--all-targets",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit": 0,
+    "seconds": 8.184475833999997
+  },
+  {
+    "name": "fmt",
+    "command": [
+      "cargo",
+      "+1.85.1",
+      "fmt",
+      "--all",
+      "--check"
+    ],
+    "exit": 0,
+    "seconds": 0.6206940000000003
+  }
+]

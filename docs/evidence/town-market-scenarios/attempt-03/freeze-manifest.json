@@ -1,0 +1,61 @@
+{
+  "source_id": "6c9ada27e16aab015ed039be369d55eb6d7ef2b9237d28c58af6b50532553036",
+  "source_zip_sha256": "6c9ada27e16aab015ed039be369d55eb6d7ef2b9237d28c58af6b50532553036",
+  "git_head": "6eb888d0e66cfc2862709c06cc0b309aea270bb8",
+  "git_branch": "codex/core-economy-scenarios",
+  "git_status": [
+    " M crates/city-core/examples/town_market.rs",
+    "?? crates/city-core/tests/town_market_scenarios.py",
+    "?? docs/evidence/town-market-scenarios/",
+    "?? docs/town-business-exit-adapter.md",
+    "?? docs/town-market-scenarios.md"
+  ],
+  "frozen_files": [
+    ".cargo/config.toml",
+    "Cargo.toml",
+    "Cargo.lock",
+    "rust-toolchain.toml",
+    "crates/city-core/Cargo.toml",
+    "crates/city-core/examples/town_market.rs",
+    "crates/city-core/tests/town_market_scenarios.py",
+    "fixtures/m0-e0-opening.json",
+    "docs/town-market-scenarios.md",
+    "docs/evidence/town-market-scenarios/attempt-03/source.patch"
+  ],
+  "file_sha256": {
+    ".cargo/config.toml": "22291f9a08bff4503ee169cd55ed0cfb79bb7106b46a81f8068ad2fc56c8cf1b",
+    "Cargo.toml": "5143563f797f253bd6f824c132cacc6c31d3745544f27c5a5145b321dfe76ef5",
+    "Cargo.lock": "7da5c54a8499a07cbc71dcecce0c0095d4af3b8b6e5052783f20d188037b6dd6",
+    "rust-toolchain.toml": "b323b19900e4b811af0a8facce5ec11249ed135ae5a46ff5c0be90067521e11f",
+    "crates/city-core/Cargo.toml": "d774e781cbdd6c1dddbecbb1b5bb5a2ab9a2f26a4fe372d36682b35524f00f6a",
+    "crates/city-core/examples/town_market.rs": "0d6628828d2f32c6e485f7062127ca1b63c31eac16843c38e8cac2ea42193e4d",
+    "crates/city-core/tests/town_market_scenarios.py": "c36ce72be9f89e05ee506319961703a42ea4b3d1800ed66c95c46d1f56aac73f",
+    "fixtures/m0-e0-opening.json": "6756555697457b3de5307086610a108c88d15650c6e668da0cdf990ca52b874c",
+    "docs/town-market-scenarios.md": "70ec9905fa9cf3f0b801d990d44b15395660daad1faa17cfceb25ebf0433ad6e",
+    "docs/evidence/town-market-scenarios/attempt-03/source.patch": "50369ad3e6dd1ca471ad385d2cd55124b28f513fac7acbdacccc83a9964e7aad"
+  },
+  "rustc": "rustc 1.85.1 (4eb161250 2025-03-15)",
+  "cargo": "cargo 1.85.1 (d73d2caf9 2024-12-31)",
+  "target_dir": "/Users/frankqin/dev/MyCity/target -> /Volumes/HP P900/dev/MyCity/target",
+  "dependency_mode": "--locked --offline",
+  "status": "validated",
+  "prior_attempts": [
+    "attempt-01: scenario regression detected automatic due-claim payment was omitted from CLI debt-paid total",
+    "attempt-02: debt reporting corrected; regression showed a closed route has reference need but zero executable market demand"
+  ],
+  "binary_path": "/Volumes/HP P900/dev/MyCity/work/candidate-binaries/town-market/6c9ada27e16aab015ed039be369d55eb6d7ef2b9237d28c58af6b50532553036/town_market",
+  "binary_sha256": "fb141f0c370ddd1dd0637e974b3cdfa4e7c286c8556ca9b8e7bc287e6d72313d",
+  "binary_bytes": 1639360,
+  "build_command": "cargo +1.85.1 build -p mycity-core --example town_market --release --locked --offline",
+  "build_exit_code": 0,
+  "scenario_test_command": "python3 crates/city-core/tests/town_market_scenarios.py '/Volumes/HP P900/dev/MyCity/work/candidate-binaries/town-market/6c9ada27e16aab015ed039be369d55eb6d7ef2b9237d28c58af6b50532553036/town_market'",
+  "scenario_test_exit_code": 0,
+  "scenarios_passed": 7,
+  "parameter_overrides_passed": 1,
+  "complete_process_memory_measured": false,
+  "tax_policy_configured": false,
+  "live_transport_integrated": false,
+  "live_utility_integrated": false,
+  "clippy_command": "cargo +1.85.1 clippy -p mycity-core --example town_market --release --locked --offline -- -D warnings",
+  "clippy_exit_code": 0
+}

@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/frankqin/dev/MyCity/crates/city-core/tests/town_market_scenarios.py", line 150, in <module>
+    raise SystemExit(main())
+  File "/Users/frankqin/dev/MyCity/crates/city-core/tests/town_market_scenarios.py", line 136, in main
+    assert number(low_cash_tax, "tax_future_due") == 0
+AssertionError

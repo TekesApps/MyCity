@@ -224,6 +224,7 @@ impl Frame<'_, '_> {
             C::StopWork { id }
             | C::ChangeCycle { id, .. }
             | C::Terminate { id }
+            | C::EndForExit { id }
             | C::SettlePayroll { id } => {
                 let c = t
                     .payroll
@@ -244,6 +245,34 @@ impl Frame<'_, '_> {
                         c.spec.ends_at = t.progress.last_complete;
                         c.next_due = None;
                         c.billed = c.accrued;
+                    }
+                    C::EndForExit { .. } => {
+                        let at = t.progress.last_complete;
+                        if t.progress.phase.is_some() || t.progress.target.is_some() {
+                            return Err(err(E::Busy));
+                        }
+                        if c.last_accrual != at {
+                            return Err(err(E::Cursor));
+                        }
+                        // A completed, previously stopped payroll is a stable no-op. This
+                        // also makes retries after checkpoint recovery safe.
+                        if !c.working && c.next_due.is_none() {
+                            if c.billed != c.accrued {
+                                return Err(err(E::Input));
+                            }
+                        } else {
+                            // Do not terminate or rewrite the contractual end date here. That
+                            // remains an unresolved obligation for the exit/legal workflow.
+                            if c.next_due.is_none()
+                                || c.next_due.is_some_and(|due| due <= at)
+                                || c.spec.ends_at <= at
+                            {
+                                return Err(err(E::Input));
+                            }
+                            c.working = false;
+                            c.next_due = None;
+                            c.billed = c.accrued;
+                        }
                     }
                     _ => {}
                 }

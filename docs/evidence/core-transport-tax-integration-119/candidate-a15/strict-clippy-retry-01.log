@@ -1,0 +1,36 @@
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-core)
+    Checking mycity-map v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-map)
+    Checking mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-storage)
+error: this function has too many arguments (8/7)
+   --> crates/city-storage/src/checkpoint_v2.rs:147:1
+    |
+147 | / pub(super) fn open_into(
+148 | |     dir: &Path,
+149 | |     r: &Reference,
+150 | |     genesis: &str,
+...   |
+155 | |     meta: &mut MetadataWorkspace,
+156 | | ) -> Result<(u64, String), Error> {
+    | |_________________________________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#too_many_arguments
+    = note: `-D clippy::too-many-arguments` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::too_many_arguments)]`
+
+error: this function has too many arguments (8/7)
+   --> crates/city-storage/src/lib.rs:457:5
+    |
+457 | /     fn create_in_workspace_with_transport(
+458 | |         dir: &Path,
+459 | |         opening: &[u8],
+460 | |         resources: Vec<Resource>,
+...   |
+470 | |         mut observer: impl FnMut(CreatePoint) -> io::Result<()>,
+471 | |     ) -> Result<Self, Error> {
+    | |____________________________^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#too_many_arguments
+
+error: could not compile `mycity-storage` (lib) due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `mycity-storage` (lib test) due to 2 previous errors

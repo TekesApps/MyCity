@@ -1,0 +1,127 @@
+[
+  {
+    "name": "core-timeline",
+    "command": [
+      "cargo",
+      "+1.85.1",
+      "test",
+      "--locked",
+      "--offline",
+      "--release",
+      "-p",
+      "mycity-core",
+      "--test",
+      "timeline"
+    ],
+    "exit": 0,
+    "seconds": 0.618273583
+  },
+  {
+    "name": "store-payroll-exit",
+    "command": [
+      "cargo",
+      "+1.85.1",
+      "test",
+      "--locked",
+      "--offline",
+      "--release",
+      "-p",
+      "mycity-storage",
+      "--test",
+      "payroll_exit"
+    ],
+    "exit": 0,
+    "seconds": 2.329088
+  },
+  {
+    "name": "storage-lib",
+    "command": [
+      "cargo",
+      "+1.85.1",
+      "test",
+      "--locked",
+      "--offline",
+      "--release",
+      "-p",
+      "mycity-storage",
+      "--lib"
+    ],
+    "exit": 0,
+    "seconds": 0.2626709169999999
+  },
+  {
+    "name": "build-cli",
+    "command": [
+      "cargo",
+      "+1.85.1",
+      "build",
+      "--locked",
+      "--offline",
+      "--release",
+      "-p",
+      "mycity-storage",
+      "--example",
+      "payroll_exit"
+    ],
+    "exit": 0,
+    "seconds": 0.8886236250000001
+  },
+  {
+    "name": "cli",
+    "command": [
+      "/Users/frankqin/dev/MyCity/target/release/examples/payroll_exit",
+      "/Users/frankqin/dev/MyCity/work/payroll-exit-main-120-attempt06"
+    ],
+    "exit": 0,
+    "seconds": 1.5761893330000003
+  },
+  {
+    "name": "core-lib",
+    "command": [
+      "cargo",
+      "+1.85.1",
+      "test",
+      "--locked",
+      "--offline",
+      "--release",
+      "-p",
+      "mycity-core",
+      "--lib"
+    ],
+    "exit": 0,
+    "seconds": 18.771745084000003
+  },
+  {
+    "name": "strict",
+    "command": [
+      "cargo",
+      "+1.85.1",
+      "clippy",
+      "--locked",
+      "--offline",
+      "--release",
+      "-p",
+      "mycity-core",
+      "-p",
+      "mycity-storage",
+      "--all-targets",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit": 0,
+    "seconds": 6.862203000000001
+  },
+  {
+    "name": "fmt",
+    "command": [
+      "cargo",
+      "+1.85.1",
+      "fmt",
+      "--all",
+      "--check"
+    ],
+    "exit": 0,
+    "seconds": 0.5351895409999976
+  }
+]

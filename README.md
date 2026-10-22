@@ -1,6 +1,16 @@
 # MyCity
 
-仓库发布版本：`v0.5.115`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.120`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.120完成[工资退出原语与Store恢复实测](docs/evidence/core-payroll-exit-integration-120/STATUS.md)：16项Timeline、3项Store退出、18项storage lib、110项core lib及实际CLI/严格检查通过；保留故障复现，尚非企业清算。另归档[原负载607.95秒联合短测](docs/evidence/m0-t13a-joint-smoke-control-03/STATUS.md)及[旧压力载荷精确回收](docs/evidence/disk-reclamation-smoke02-handoff/STATUS.md)；未将短测、外部编译污染或脚本纯测试称为性能通过。原8h正式运行、速度/分级门及真实16GB仍未通过。
+
+v0.5.119完成[交通实际履约与有限营业额税主线集成](docs/evidence/core-transport-tax-integration-119/STATUS.md)：主线110项core lib、4项建设恢复、四交通CLI、11经营配置及strict/fmt通过；候选349项独立记录。日历绑定proof实际影响销量与运费，税费复用Timeline并保留欠额，首轮压力fixture错误保留。工程动态扩容、真实企业退出、增量heap/16GB及M0仍未完成。
+
+v0.5.118完成[联合耐久观测器离线修复](docs/evidence/m0-t13a-joint-smoke-control-03/STATUS.md)：16项纯测试、16支持文件身份和完整2441帧无损往返通过，修正固定业务日志外推及写盘前容量守卫。原256MiB/4Hz和安全阈值不变；新smoke/formal尚未启动，物理性能/16GB/M0仍未通过。核心交通—经济集成继续独立验证。
+
+v0.5.117记录[原负载完整联合smoke](docs/evidence/m0-t13a-joint-smoke-control-02/STATUS.md)：外置SSD上611.85秒、完整720h业务与最新布局冷恢复完成；44帧采集不完整及115帧外部编译保留，日志准入拒绝，正式8h未启动。修复首轮socket路径启动错误，不修改冻结Rust、负载或预算；交通—经济Store真实集成仍在隔离分支验证，16GB/M0不宣称完成。
+
+v0.5.116完成[真实28日经营场景主线集成](docs/evidence/core-market-scenarios-integration-116/STATUS.md)：七场景+参数覆盖、release构建/strict/fmt实测通过，工资/贷款/库存basis/现金可对账。家庭基础现金仍减少6160分，交通/公用替身、未建模税及真实退出不冒称完成；M0转完整联合smoke准备，16GB/8h未测。
 
 v0.5.115完成[主线有限运行时集成](docs/evidence/core-runtime-integration-115/STATUS.md)：49项release测试、strict/fmt及完整建设/拆除/废物/关闭CLI实测通过，修正最终现金展示。固定2MiB诊断4捕获/2冷恢复通过但normal仍超8,415,170B，未设main默认；精确回收本轮54文件约6.285GiB，190原件保留。真实交通经营联调、16GB/8h仍未完成。
 

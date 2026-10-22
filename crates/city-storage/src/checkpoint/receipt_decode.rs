@@ -356,6 +356,7 @@ fn timeline(
         StopWork,
         ChangeCycle,
         Terminate,
+        EndForExit,
         SettleClaim,
         SettlePayroll,
         Advance,
@@ -426,6 +427,12 @@ fn timeline(
         Kind::Terminate => {
             let fields = Fields::parse(raw, &["kind", "id"], false, scratch)?;
             Ok(Output::Terminate {
+                id: fields.get(1, scratch)?,
+            })
+        }
+        Kind::EndForExit => {
+            let fields = Fields::parse(raw, &["kind", "id"], false, scratch)?;
+            Ok(Output::EndForExit {
                 id: fields.get(1, scratch)?,
             })
         }
@@ -714,6 +721,7 @@ mod tests {
             r#"{"kind":"timeline","command":{"kind":"stop_work","id":1}}"#,
             r#"{"kind":"timeline","command":{"kind":"change_cycle","id":1,"cycle":{"kind":"daily"}}}"#,
             r#"{"kind":"timeline","command":{"kind":"terminate","id":1}}"#,
+            r#"{"kind":"timeline","command":{"kind":"end_for_exit","id":1}}"#,
             r#"{"kind":"timeline","command":{"kind":"settle_claim","id":1}}"#,
             r#"{"kind":"timeline","command":{"kind":"settle_payroll","id":1}}"#,
             r#"{"kind":"timeline","command":{"kind":"advance","target":1,"limit":1}}"#,

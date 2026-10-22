@@ -1,0 +1,6 @@
+    Finished `release` profile [optimized] target(s) in 0.02s
+     Running `/Users/frankqin/dev/MyCity/target/release/examples/town_transport closed /Users/frankqin/dev/MyCity/work/transport-settlement-attempt-01/closed`
+
+thread 'main' panicked at crates/city-storage/examples/town_transport.rs:315:33:
+index out of bounds: the len is 0 but the index is 0
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace

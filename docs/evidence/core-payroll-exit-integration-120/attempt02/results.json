@@ -1,0 +1,36 @@
+[
+  {
+    "name": "core-timeline",
+    "command": [
+      "cargo",
+      "+1.85.1",
+      "test",
+      "--locked",
+      "--offline",
+      "--release",
+      "-p",
+      "mycity-core",
+      "--test",
+      "timeline"
+    ],
+    "exit": 0,
+    "seconds": 2.047285375
+  },
+  {
+    "name": "store-payroll-exit",
+    "command": [
+      "cargo",
+      "+1.85.1",
+      "test",
+      "--locked",
+      "--offline",
+      "--release",
+      "-p",
+      "mycity-storage",
+      "--test",
+      "payroll_exit"
+    ],
+    "exit": 101,
+    "seconds": 41.887997667
+  }
+]

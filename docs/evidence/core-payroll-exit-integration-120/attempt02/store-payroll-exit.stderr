@@ -1,0 +1,17 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+warning: variable does not need to be mutable
+   --> crates/city-storage/tests/payroll_exit.rs:121:9
+    |
+121 |     let mut s = Store::open(path, RULES).unwrap();
+    |         ----^
+    |         |
+    |         help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` on by default
+
+warning: `mycity-storage` (test "payroll_exit") generated 1 warning (run `cargo fix --test "payroll_exit"` to apply 1 suggestion)
+    Finished `release` profile [optimized] target(s) in 28.07s
+     Running tests/payroll_exit.rs (target/release/deps/payroll_exit-f90fbeceff047160)
+error: test failed, to rerun pass `-p mycity-storage --test payroll_exit`

@@ -1,0 +1,61 @@
+[
+  {
+    "name": "build",
+    "command": [
+      "cargo",
+      "+1.85.1",
+      "build",
+      "-p",
+      "mycity-core",
+      "--example",
+      "town_market",
+      "--release",
+      "--locked",
+      "--offline"
+    ],
+    "exit": 0,
+    "seconds": 25.930813083999997
+  },
+  {
+    "name": "scenarios",
+    "command": [
+      "python3",
+      "/Users/frankqin/dev/MyCity/crates/city-core/tests/town_market_scenarios.py",
+      "/Users/frankqin/dev/MyCity/target/release/examples/town_market"
+    ],
+    "exit": 0,
+    "seconds": 0.6930942089999981
+  },
+  {
+    "name": "strict",
+    "command": [
+      "cargo",
+      "+1.85.1",
+      "clippy",
+      "-p",
+      "mycity-core",
+      "--example",
+      "town_market",
+      "--release",
+      "--locked",
+      "--offline",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit": 0,
+    "seconds": 5.140772833
+  },
+  {
+    "name": "fmt",
+    "command": [
+      "cargo",
+      "+1.85.1",
+      "fmt",
+      "--all",
+      "--check"
+    ],
+    "exit": 0,
+    "seconds": 0.5700613330000017
+  }
+]

@@ -446,3 +446,12 @@ v0.5.114：[交通市场resolver](evidence/core-market-access-integration-114/ST
 
 
 v0.5.115：[主线有限集成及2MiB诊断](evidence/core-runtime-integration-115/STATUS.md)。d19来源49 release测试、strict/fmt、真实建设关闭CLI通过；默认debug栈失败与release通过分开。ade固定候选原负载4捕获/2冷恢复通过，但normal超8,415,170B；该轮快照54文件精确退役，保留190恢复/故障原件。2MiB未替换main默认。真实交通经营联合未完成，16GB/8h not_run，M0 not_accepted。
+
+
+v0.5.116：[28日经营场景主线集成](evidence/core-market-scenarios-integration-116/STATUS.md)在2c18来源七场景+参数覆盖及example strict/fmt通过；当前Engine4100728B仅拥有容量，非M0物理证据。替身/无税/基础家庭现金耗损/退出未落账保留，M0原标准、normal失败及16GB/8h not_run不变。
+
+v0.5.117：[原负载完整联合smoke](evidence/m0-t13a-joint-smoke-control-02/STATUS.md)固定32c/59aa来源实测611.85秒，720h业务/723目标/2880查询/96保存、725池借还及最新布局第2代冷恢复完成。44帧不完整及115帧外部编译保留，日志筛查拒绝formal准入；normal/common仍not_accepted，四速/正式稳态/8h/16GB未通过。新增两代完整恢复输入与raw仍有依赖，本轮删除0B。
+
+v0.5.118：[03观测器离线修复](evidence/m0-t13a-joint-smoke-control-03/STATUS.md)在保留缺测和原标准下拆分功能启动资格与物理验收；16纯测试及2441原始帧无损往返通过，按固定业务／布局扫描分开预测日志161392895B，写盘前复核原256MiB上限。新smoke/formal未运行，不替代normal/common失败或剩余原规模门；16GB/8h not_run，M0不通过。本轮删除0B。
+
+v0.5.119：[交通履约／营业额税主线集成](evidence/core-transport-tax-integration-119/STATUS.md)717148来源主线110 core lib+4建设恢复测试、4真实交通CLI、11经济配置与strict/fmt通过；候选349完整core/storage测试另列，93源码／Rust测试文件相等已核对。proof跨日／恢复／容量反例真实完成，成本压力欠税工资债务均保留，首轮fixture失败保留。新增运行heap未测，动态工程道路效果与真实退出仍在隔离线；M0原32c冻结来源/负载/标准不变，8h/16GB not_run，不签完整M0。本轮删除0B。

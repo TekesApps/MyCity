@@ -1,0 +1,43 @@
+{
+  "source_id": "24c571bc90683f28ccfa17b0d6ef13b3a1f07502698fade7db4a3a19205d35e3",
+  "source_zip_sha256": "24c571bc90683f28ccfa17b0d6ef13b3a1f07502698fade7db4a3a19205d35e3",
+  "git_head": "6eb888d0e66cfc2862709c06cc0b309aea270bb8",
+  "git_branch": "codex/core-economy-scenarios",
+  "git_status": [
+    " M crates/city-core/examples/town_market.rs",
+    "?? crates/city-core/tests/town_market_scenarios.py",
+    "?? docs/evidence/town-market-scenarios/",
+    "?? docs/town-business-exit-adapter.md",
+    "?? docs/town-market-scenarios.md"
+  ],
+  "frozen_files": [
+    ".cargo/config.toml",
+    "Cargo.toml",
+    "Cargo.lock",
+    "rust-toolchain.toml",
+    "crates/city-core/Cargo.toml",
+    "crates/city-core/examples/town_market.rs",
+    "crates/city-core/tests/town_market_scenarios.py",
+    "fixtures/m0-e0-opening.json",
+    "docs/town-market-scenarios.md",
+    "docs/evidence/town-market-scenarios/attempt-02/source.patch"
+  ],
+  "file_sha256": {
+    ".cargo/config.toml": "22291f9a08bff4503ee169cd55ed0cfb79bb7106b46a81f8068ad2fc56c8cf1b",
+    "Cargo.toml": "5143563f797f253bd6f824c132cacc6c31d3745544f27c5a5145b321dfe76ef5",
+    "Cargo.lock": "7da5c54a8499a07cbc71dcecce0c0095d4af3b8b6e5052783f20d188037b6dd6",
+    "rust-toolchain.toml": "b323b19900e4b811af0a8facce5ec11249ed135ae5a46ff5c0be90067521e11f",
+    "crates/city-core/Cargo.toml": "d774e781cbdd6c1dddbecbb1b5bb5a2ab9a2f26a4fe372d36682b35524f00f6a",
+    "crates/city-core/examples/town_market.rs": "0d6628828d2f32c6e485f7062127ca1b63c31eac16843c38e8cac2ea42193e4d",
+    "crates/city-core/tests/town_market_scenarios.py": "4e29abed954ded6a452668af64b4ca367da8f65bd2243cae6bd517a192defe55",
+    "fixtures/m0-e0-opening.json": "6756555697457b3de5307086610a108c88d15650c6e668da0cdf990ca52b874c",
+    "docs/town-market-scenarios.md": "70ec9905fa9cf3f0b801d990d44b15395660daad1faa17cfceb25ebf0433ad6e",
+    "docs/evidence/town-market-scenarios/attempt-02/source.patch": "50369ad3e6dd1ca471ad385d2cd55124b28f513fac7acbdacccc83a9964e7aad"
+  },
+  "rustc": "rustc 1.85.1 (4eb161250 2025-03-15)",
+  "cargo": "cargo 1.85.1 (d73d2caf9 2024-12-31)",
+  "target_dir": "/Users/frankqin/dev/MyCity/target -> /Volumes/HP P900/dev/MyCity/target",
+  "dependency_mode": "--locked --offline",
+  "status": "frozen-before-build",
+  "prior_attempt": "attempt-01: build passed; scenario regression failed because automatic claim payment was not included in the CLI debt-paid aggregate"
+}

@@ -1,0 +1,37 @@
+{
+  "schema": "mycity-m0-t13a-speed-run-plan-v1",
+  "runs": [
+    {
+      "rate": "600",
+      "run_id": "speed01",
+      "work_path": "work/sp-600-01",
+      "state": "planned_not_run"
+    },
+    {
+      "rate": "60",
+      "run_id": "speed01",
+      "work_path": "work/sp-60-01",
+      "state": "planned_not_run"
+    },
+    {
+      "rate": "10",
+      "run_id": "speed01",
+      "work_path": "work/sp-10-01",
+      "state": "planned_not_run"
+    },
+    {
+      "rate": "1",
+      "run_id": "speed01",
+      "work_path": "work/sp-1-01",
+      "state": "planned_not_run"
+    },
+    {
+      "rate": "unpaced",
+      "run_id": "speed01",
+      "work_path": "work/sp-u-01",
+      "state": "planned_not_run"
+    }
+  ],
+  "rate_semantics": "600|60|10|1 are wall seconds per game day; unpaced releases each boundary immediately",
+  "status": "planned_not_run"
+}

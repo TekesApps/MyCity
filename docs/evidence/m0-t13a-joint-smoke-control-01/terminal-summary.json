@@ -1,0 +1,18 @@
+{
+  "attempt": "control01-smoke01",
+  "work_path": "/Volumes/HP P900/dev/MyCity/work/m0-t13a-joint-smoke-control-01-smoke-600-01",
+  "observer_pid": 10790,
+  "model_pid": 12558,
+  "observer_status": "model_failed",
+  "model_exit_code": 2,
+  "actual_wall_seconds": 0.798790042,
+  "samples": 4,
+  "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+  "failure": "normal-pool pathname exceeds macOS SUN_LEN",
+  "stderr_path": "work/m0-t13a-joint-smoke-control-01-smoke-600-01/observed/model/normal-pool.stderr",
+  "smoke600": "not_completed",
+  "eight_hour": "not_run",
+  "real16GB": "not_run",
+  "restarted": false,
+  "retention": "No pressure or full layout snapshot was generated before pool startup failed. Keep entire small failure directory, original frozen executable/source, process/clock/pressure records. No deletion performed."
+}

@@ -1,0 +1,3 @@
+    Finished `release` profile [optimized] target(s) in 0.06s
+     Running `/Users/frankqin/dev/MyCity/target/release/examples/town_transport normal /Users/frankqin/dev/MyCity/work/transport-settlement-attempt-01/normal`
+town_transport: Invalid("town_transport_requires_verified_proof")

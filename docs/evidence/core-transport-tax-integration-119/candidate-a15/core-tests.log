@@ -1,0 +1,44 @@
+   Compiling sha2-asm v0.6.4
+   Compiling sha2 v0.10.9
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-core)
+error[E0061]: this method takes 5 arguments but 4 arguments were supplied
+    --> crates/city-core/src/transaction/workspace.rs:328:19
+     |
+328  |                 e.prepare_diagnosed(
+     |                   ^^^^^^^^^^^^^^^^^
+...
+340  |                     &mut Trace::disabled()
+     |                     ---------------------- argument #4 of type `std::option::Option<&SettlementDeliveryInput<'_>>` is missing
+     |
+note: method defined here
+    --> crates/city-core/src/transaction.rs:1174:8
+     |
+1174 |     fn prepare_diagnosed(
+     |        ^^^^^^^^^^^^^^^^^
+1175 |         &self,
+1176 |         caller: Caller,
+     |         --------------
+1177 |         env: &Envelope,
+     |         --------------
+1178 |         candidate: Option<&crate::air::State>,
+     |         -------------------------------------
+1179 |         transport: Option<&crate::market_access::SettlementDeliveryInput<'_>>,
+     |         ---------------------------------------------------------------------
+1180 |         trace: &mut Trace<'_>,
+     |         ---------------------
+help: provide the argument
+     |
+328  ~                 e.prepare_diagnosed(Caller::System, &Envelope {
+329  +                         world: 1,
+330  +                         branch: 1,
+331  +                         operation_id: 999,
+332  +                         expected_revision: 0,
+333  +                         actions: vec![Action::Timeline {
+334  +                             command: crate::timeline::Command::Enable
+335  +                         }]
+336  ~                     }, None, /* std::option::Option<&SettlementDeliveryInput<'_>> */, &mut Trace::disabled()),
+     |
+
+For more information about this error, try `rustc --explain E0061`.
+error: could not compile `mycity-core` (lib test) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

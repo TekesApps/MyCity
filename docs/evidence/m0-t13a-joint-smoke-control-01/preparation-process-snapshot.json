@@ -1,0 +1,36 @@
+{
+  "captured_utc": "2026-10-22T08:39:27.182531+00:00",
+  "active_external_compilers": [
+    {
+      "pid": 7227,
+      "ppid": 7215,
+      "comm": "/Users/frankqin/",
+      "args": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo check --manifest-path examples/panel-module-demo/Cargo.toml --all-targets"
+    },
+    {
+      "pid": 7242,
+      "ppid": 7227,
+      "comm": "/Users/frankqin/",
+      "args": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc --crate-name objc2_foundation --edition=2021 /Users/frankqin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-foundation-0.3.2/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit=dep-info,metadata -C embed-bitcode=no --warn=clippy::cargo --deny=unsafe_op_in_unsafe_fn --warn=unreachable_pub --allow=clippy::redundant_feature_names --warn=clippy::ptr_as_ptr --deny=non_"
+    },
+    {
+      "pid": 7269,
+      "ppid": 7227,
+      "comm": "/Users/frankqin/",
+      "args": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc --crate-name naga --edition=2021 /Users/frankqin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/naga-30.0.1/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit=dep-info,metadata -C embed-bitcode=no --warn=clippy::std_instead_of_core --warn=clippy::std_instead_of_alloc --warn=missing_debug_implementations --warn=clippy::alloc_instead_of_core --cfg feature=\"default\" --cfg"
+    },
+    {
+      "pid": 7271,
+      "ppid": 7227,
+      "comm": "/Users/frankqin/",
+      "args": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc --crate-name wgpu_types --edition=2021 /Users/frankqin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wgpu-types-30.0.1/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit=dep-info,metadata -C embed-bitcode=no --warn=unexpected_cfgs --warn=clippy::std_instead_of_core --warn=clippy::std_instead_of_alloc --warn=missing_debug_implementations --warn=clippy::alloc_instead_of"
+    },
+    {
+      "pid": 7281,
+      "ppid": 7227,
+      "comm": "/Users/frankqin/",
+      "args": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc --crate-name tekes_ui_controls --edition=2024 /Users/frankqin/.cargo/git/checkouts/tekesui-d66ba5efbf6c8866/50ec49f/crates/tekes-ui-controls/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit=dep-info,metadata -C embed-bitcode=no --warn=rust_2018_idioms --warn=clippy::all --warn=unsafe_op_in_unsafe_fn --warn=missing_debug_implementations --cfg feature=\"default\" --check-cfg c"
+    }
+  ],
+  "scope": "single process-table snapshot only; intermittent activity is possible and this is not a claim of a compiler-free measurement window"
+}

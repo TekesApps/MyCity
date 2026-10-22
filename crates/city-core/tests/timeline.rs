@@ -207,6 +207,193 @@ fn daily_weekly_monthly_same_earned_wages_fraction_carry_and_exit_debt() {
     }
     assert!(results.windows(2).all(|p| p[0] == p[1]));
 }
+
+#[test]
+fn end_for_exit_bills_earned_wages_without_payment_and_survives_checkpoint_retry() {
+    let mut e = engine();
+    run(&mut e, T::Enable);
+    run(
+        &mut e,
+        T::AddPayroll {
+            spec: spec(1, Cycle::Weekly, 40 * 86400),
+        },
+    );
+    advance(&mut e, 3 * 86400 + 9 * 3600 + 1, 256);
+    run(&mut e, T::StopWork { id: 1 });
+    let before_cash = cash(&e, 3);
+    let before = e.timeline().unwrap().payroll[0];
+    assert_eq!(before.accrued, money(168));
+    assert_eq!(before.billed, Money::ZERO);
+    assert_eq!(before.paid, Money::ZERO);
+
+    run(&mut e, T::EndForExit { id: 1 });
+    let ended = e.timeline().unwrap().payroll[0];
+    assert!(!ended.working);
+    assert_eq!(ended.next_due, None);
+    assert_eq!(ended.spec.ends_at, 40 * 86400);
+    assert_eq!(ended.accrued, before.accrued);
+    assert_eq!(ended.billed, before.accrued);
+    assert_eq!(ended.paid, before.paid);
+    assert_eq!(cash(&e, 3), before_cash);
+
+    advance(&mut e, 4 * 86400, 256);
+    assert_eq!(e.timeline().unwrap().payroll[0].accrued, before.accrued);
+    let restored = Engine::restore_checkpoint(&e.export_checkpoint().unwrap()).unwrap();
+    e = restored;
+    let before_retry = e.timeline().unwrap().payroll[0];
+    let cash_before_retry = cash(&e, 3);
+    run(&mut e, T::EndForExit { id: 1 });
+    let after_retry = e.timeline().unwrap().payroll[0];
+    assert_eq!(after_retry, before_retry);
+    assert_eq!(cash(&e, 3), cash_before_retry);
+}
+
+#[test]
+fn end_for_exit_before_first_work_and_after_natural_end_are_safe() {
+    let mut e = engine();
+    run(&mut e, T::Enable);
+    run(
+        &mut e,
+        T::AddPayroll {
+            spec: spec(1, Cycle::Daily, 86400),
+        },
+    );
+    let cash_before = cash(&e, 3);
+    run(&mut e, T::EndForExit { id: 1 });
+    let never_worked = e.timeline().unwrap().payroll[0];
+    assert!(!never_worked.working);
+    assert_eq!(never_worked.next_due, None);
+    assert_eq!(never_worked.spec.ends_at, 86400);
+    assert_eq!(never_worked.accrued, Money::ZERO);
+    assert_eq!(never_worked.billed, Money::ZERO);
+    assert_eq!(never_worked.paid, Money::ZERO);
+    assert_eq!(cash(&e, 3), cash_before);
+
+    let mut naturally_ended = engine();
+    run(&mut naturally_ended, T::Enable);
+    run(
+        &mut naturally_ended,
+        T::AddPayroll {
+            spec: spec(1, Cycle::Daily, 86400),
+        },
+    );
+    advance(&mut naturally_ended, 86400, 256);
+    let before_retry = naturally_ended.timeline().unwrap().payroll[0];
+    let cash_before_retry = cash(&naturally_ended, 3);
+    run(&mut naturally_ended, T::EndForExit { id: 1 });
+    assert_eq!(naturally_ended.timeline().unwrap().payroll[0], before_retry);
+    assert_eq!(cash(&naturally_ended, 3), cash_before_retry);
+}
+
+#[test]
+fn end_for_exit_preserves_prior_payments_and_only_bills_new_arrears() {
+    let mut e = engine();
+    run(&mut e, T::Enable);
+    run(
+        &mut e,
+        T::AddPayroll {
+            spec: spec(1, Cycle::Weekly, 40 * 86400),
+        },
+    );
+    advance(&mut e, 7 * 86400, 256);
+    let first_cycle = e.timeline().unwrap().payroll[0];
+    assert_eq!(first_cycle.accrued, money(392));
+    assert_eq!(first_cycle.billed, money(392));
+    assert_eq!(first_cycle.paid, money(392));
+
+    advance(&mut e, 7 * 86400 + 10 * 3600, 256);
+    let before_exit = e.timeline().unwrap().payroll[0];
+    assert_eq!(before_exit.accrued, money(399));
+    assert_eq!(before_exit.billed, money(392));
+    assert_eq!(before_exit.paid, money(392));
+    let payer_cash = cash(&e, 3);
+    let payee_cash = cash(&e, 2);
+
+    run(&mut e, T::EndForExit { id: 1 });
+    let ended = e.timeline().unwrap().payroll[0];
+    assert_eq!(ended.accrued, money(399));
+    assert_eq!(ended.billed, money(399));
+    assert_eq!(ended.paid, money(392));
+    assert_eq!(ended.billed.checked_sub(ended.paid).unwrap(), money(7));
+    assert_eq!(cash(&e, 3), payer_cash);
+    assert_eq!(cash(&e, 2), payee_cash);
+}
+
+#[test]
+fn end_for_exit_preserves_pending_cycle_and_fraction_through_engine_checkpoint_restore() {
+    let mut e = engine();
+    run(&mut e, T::Enable);
+    advance(&mut e, date(2004, 1, 31), 256);
+    let contract_end = date(2004, 5, 1);
+    run(
+        &mut e,
+        T::AddPayroll {
+            spec: spec(1, Cycle::Weekly, contract_end),
+        },
+    );
+    let pending = Cycle::Monthly { anchor: 31 };
+    run(
+        &mut e,
+        T::ChangeCycle {
+            id: 1,
+            cycle: pending,
+        },
+    );
+    advance(&mut e, date(2004, 2, 3) + 9 * 3600 + 1, 256);
+    let before = e.timeline().unwrap().payroll[0];
+    assert_eq!(before.pending_cycle, Some(pending));
+    assert_eq!(before.accrued, money(168));
+    assert_eq!(before.remainder, 7);
+
+    run(&mut e, T::EndForExit { id: 1 });
+    let ended = e.timeline().unwrap().payroll[0];
+    assert_eq!(ended.spec.ends_at, contract_end);
+    assert_eq!(ended.pending_cycle, Some(pending));
+    assert_eq!(ended.remainder, before.remainder);
+    assert_eq!(ended.accrued, before.accrued);
+    assert_eq!(ended.billed, before.accrued);
+    assert_eq!(ended.paid, before.paid);
+
+    let checkpoint = e.export_checkpoint().unwrap();
+    e = Engine::restore_checkpoint(&checkpoint).unwrap();
+    assert_eq!(e.timeline().unwrap().payroll[0], ended);
+    run(&mut e, T::EndForExit { id: 1 });
+    assert_eq!(e.timeline().unwrap().payroll[0], ended);
+}
+
+#[test]
+fn end_for_exit_rejects_incomplete_time_and_non_system_caller() {
+    let mut e = engine();
+    run(&mut e, T::Enable);
+    run(
+        &mut e,
+        T::AddPayroll {
+            spec: spec(1, Cycle::Daily, 40 * 86400),
+        },
+    );
+    run(
+        &mut e,
+        T::Advance {
+            target: 3600,
+            limit: 1,
+        },
+    );
+    assert!(e.timeline().unwrap().progress.target.is_some());
+    let before = e.export_checkpoint().unwrap();
+    let mut command = env(&e, action(T::EndForExit { id: 1 }));
+    assert_eq!(
+        e.execute(Caller::System, command.clone()),
+        Err(TxError::Timeline(mycity_core::timeline::Error::Busy))
+    );
+    assert_eq!(e.export_checkpoint().unwrap(), before);
+
+    command = env(&e, action(T::EndForExit { id: 1 }));
+    assert_eq!(
+        e.execute(Caller::Account(2), command),
+        Err(TxError::Unauthorized)
+    );
+    assert_eq!(e.export_checkpoint().unwrap(), before);
+}
 #[test]
 fn monthly_anchor_leap_century_year_end_stop_and_frequency_change_keep_old_due() {
     for (y, m, d, next, after) in [

@@ -1,0 +1,4 @@
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 14.60s
+     Running tests/payroll_exit.rs (target/release/deps/payroll_exit-f90fbeceff047160)
+error: test failed, to rerun pass `-p mycity-storage --test payroll_exit`

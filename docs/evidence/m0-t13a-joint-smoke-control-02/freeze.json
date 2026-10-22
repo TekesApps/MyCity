@@ -1,0 +1,13 @@
+{
+  "schema": "mycity-fixed-joint-control-freeze-v1",
+  "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+  "source_files": 231,
+  "lock_sha256": "7da5c54a8499a07cbc71dcecce0c0095d4af3b8b6e5052783f20d188037b6dd6",
+  "acceptance_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+  "full_opening_sha256": "04c113c62b0b682f94f9abfbde7618b87bd972f3931504366be9e07c130b4726",
+  "source_zip_sha256": "84c450c2c866578b02205030c7587df1dbb719660422fe64865ae62fe2ce908d",
+  "binary_sha256": "59aa365ed46b5d373218fcbcf1d34f930d674d15607ed510190361891439b4e0",
+  "inherited_control": "docs/evidence/m0-t13a-extents-joint-retry-02/freeze.json",
+  "cargo_invoked": false,
+  "pressure_started": false
+}
