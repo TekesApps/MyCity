@@ -1,0 +1,58 @@
+diff --git a/crates/city-core/src/construction/mod.rs b/crates/city-core/src/construction/mod.rs
+index edb77a3..fff693a 100644
+--- a/crates/city-core/src/construction/mod.rs
++++ b/crates/city-core/src/construction/mod.rs
+@@ -807,16 +807,18 @@ impl Project {
+         let mut material_basis = [Money::ZERO; MAX_MATERIALS];
+         let mut remainders = self.materials.map(|m| m.basis_remainder);
+         let mut total_basis = cost;
+-        for i in 0..self.material_count as usize {
+-            let numerator = i128::from(qty[i].value())
+-                * i128::from(self.materials[i].basis_per_unit.value())
+-                + i128::from(remainders[i]);
+-            let cents = i64::try_from(numerator / 1000).map_err(|_| Error::Overflow)?;
+-            material_basis[i] = Money::new(cents).map_err(|_| Error::Overflow)?;
+-            remainders[i] = (numerator % 1000) as u16;
+-            total_basis = total_basis
+-                .checked_add(material_basis[i])
+-                .map_err(|_| Error::Overflow)?;
++        if check_estimated_material_basis {
++            for i in 0..self.material_count as usize {
++                let numerator = i128::from(qty[i].value())
++                    * i128::from(self.materials[i].basis_per_unit.value())
++                    + i128::from(remainders[i]);
++                let cents = i64::try_from(numerator / 1000).map_err(|_| Error::Overflow)?;
++                material_basis[i] = Money::new(cents).map_err(|_| Error::Overflow)?;
++                remainders[i] = (numerator % 1000) as u16;
++                total_basis = total_basis
++                    .checked_add(material_basis[i])
++                    .map_err(|_| Error::Overflow)?;
++            }
+         }
+         let mut e = self.effect(EffectKind::Work, cost, qty, ws, at, 0)?;
+         e.material_basis = material_basis;
+diff --git a/crates/city-core/tests/construction_engine.rs b/crates/city-core/tests/construction_engine.rs
+index 1469cf9..9a5c073 100644
+--- a/crates/city-core/tests/construction_engine.rs
++++ b/crates/city-core/tests/construction_engine.rs
+@@ -492,6 +492,20 @@ fn engine_uses_actual_source_lot_basis_for_budget_and_rejects_actual_overrun_ato
+     assert_eq!(lease_state(&higher_actual), before_leases);
+ }
+ 
++#[test]
++fn authoritative_work_skips_untrusted_estimate_even_when_its_sum_overflows() {
++    let mut e = priced_engine(1_000, 30_000, 1, i64::MAX, None);
++    file_and_approve(&mut e);
++    start(&mut e).unwrap();
++    enable_timeline(&mut e);
++    advance(&mut e, END_OF_SHIFT);
++
++    work(&mut e).unwrap();
++    let project = e.world().view().construction.unwrap();
++    assert_eq!(project.spent, Money::new(29_200).unwrap());
++    assert_eq!(stock(&e, 1), (599_000, 239_600));
++}
++
+ #[test]
+ fn forged_gate_or_inspector_identity_is_rejected_before_domain_mutation() {
+     let mut e = engine(1_000, 1_000_000, 1);

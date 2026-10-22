@@ -807,16 +807,18 @@ impl Project {
         let mut material_basis = [Money::ZERO; MAX_MATERIALS];
         let mut remainders = self.materials.map(|m| m.basis_remainder);
         let mut total_basis = cost;
-        for i in 0..self.material_count as usize {
-            let numerator = i128::from(qty[i].value())
-                * i128::from(self.materials[i].basis_per_unit.value())
-                + i128::from(remainders[i]);
-            let cents = i64::try_from(numerator / 1000).map_err(|_| Error::Overflow)?;
-            material_basis[i] = Money::new(cents).map_err(|_| Error::Overflow)?;
-            remainders[i] = (numerator % 1000) as u16;
-            total_basis = total_basis
-                .checked_add(material_basis[i])
-                .map_err(|_| Error::Overflow)?;
+        if check_estimated_material_basis {
+            for i in 0..self.material_count as usize {
+                let numerator = i128::from(qty[i].value())
+                    * i128::from(self.materials[i].basis_per_unit.value())
+                    + i128::from(remainders[i]);
+                let cents = i64::try_from(numerator / 1000).map_err(|_| Error::Overflow)?;
+                material_basis[i] = Money::new(cents).map_err(|_| Error::Overflow)?;
+                remainders[i] = (numerator % 1000) as u16;
+                total_basis = total_basis
+                    .checked_add(material_basis[i])
+                    .map_err(|_| Error::Overflow)?;
+            }
         }
         let mut e = self.effect(EffectKind::Work, cost, qty, ws, at, 0)?;
         e.material_basis = material_basis;

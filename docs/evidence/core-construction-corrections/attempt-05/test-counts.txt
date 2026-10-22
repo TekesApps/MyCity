@@ -1,0 +1,5 @@
+construction pure: 7 passed, 0 failed
+construction Engine: 8 passed, 0 failed
+construction Store: 2 passed, 0 failed
+example: exit 0, Operational
+strict Clippy: exit 0, core+storage all targets, -D warnings

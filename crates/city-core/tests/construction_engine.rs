@@ -493,6 +493,20 @@ fn engine_uses_actual_source_lot_basis_for_budget_and_rejects_actual_overrun_ato
 }
 
 #[test]
+fn authoritative_work_skips_untrusted_estimate_even_when_its_sum_overflows() {
+    let mut e = priced_engine(1_000, 30_000, 1, i64::MAX, None);
+    file_and_approve(&mut e);
+    start(&mut e).unwrap();
+    enable_timeline(&mut e);
+    advance(&mut e, END_OF_SHIFT);
+
+    work(&mut e).unwrap();
+    let project = e.world().view().construction.unwrap();
+    assert_eq!(project.spent, Money::new(29_200).unwrap());
+    assert_eq!(stock(&e, 1), (599_000, 239_600));
+}
+
+#[test]
 fn forged_gate_or_inspector_identity_is_rejected_before_domain_mutation() {
     let mut e = engine(1_000, 1_000_000, 1);
     construction_auto(&mut e, Caller::Account(4), C::File).unwrap();

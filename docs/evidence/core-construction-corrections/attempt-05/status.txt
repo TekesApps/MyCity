@@ -1,0 +1,4 @@
+base commit: 91670b9a65596323ebe4018bb2dc907cf2de88c1
+source SHA-256: 1382d0de97d66cc04aa6723551dd9401478bbddf1333bdef367eb25d2383a001
+source zip re-extracted and compared byte-for-byte with the modified Rust source and Engine test before executing validation commands
+all required validation commands exited 0; tests executed > 0
