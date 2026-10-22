@@ -1,0 +1,13 @@
+{
+  "root_mode": 16877,
+  "uid": 501,
+  "gid": 20,
+  "xattrs": {
+    "com.apple.provenance": "5dc6806daca8b1b6a69d12254ce419845bb49a278ef28ea2b4a9898b1964ad42"
+  },
+  "source_flags": 0,
+  "root_mtime_ns": 1792646075129229143,
+  "all_entry_flags_checked": 209147,
+  "flag_corrections": [],
+  "acl_scope": "rsync extended-attributes mode and access smoke tests; no claim of independent all-entry ACL equality"
+}

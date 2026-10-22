@@ -40,7 +40,7 @@ info = json.loads((D / "source.json").read_text())
 exe = info["binary"]
 assert info["source_sha256"] == "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2"
 assert not W.exists(), f"retry workspace already exists: {W}"
-stat = os.statvfs(R)
+stat = os.statvfs(W.parent)
 assert stat.f_bavail * stat.f_frsize > 10 * 1024**3
 W.mkdir()
 (W / "intent.json").write_text((D / "retention-intent.json").read_text())
@@ -52,6 +52,17 @@ def save(name, value):
     tmp.write_text(json.dumps(value, indent=2) + "\n")
     tmp.replace(path)
 
+
+save("storage-environment.json", {
+    "work_alias": str(R / "work"),
+    "work_actual": str((R / "work").resolve(strict=True)),
+    "target_actual": str((R / "target").resolve(strict=True)),
+    "storage": "external HP P900 USB/APFS SSD",
+    "available_bytes_before": stat.f_bavail * stat.f_frsize,
+    "source_volume_not_used_for_work_capacity": True,
+    "historical_internal_disk_io_comparison": "not_equivalent",
+    "formal_performance": False,
+})
 
 frozen_preflight = verify_retry_directory(D, R)
 save("retry-preflight.json", {

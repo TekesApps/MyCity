@@ -1,0 +1,1 @@
+{"source":"6b70d8bc08d00625b369ae92d58ae5ce9dceff9d31a733fe17732de3dd38c87d","owner":{"pid":8352,"start_abstime":25200012767038,"parent_pid":8340},"state":{"schema":1,"logical_bytes":277662928,"arena_tail_bytes":52432,"quantum_bytes":65536,"mapped_bytes":277610496,"replaced_bytes":0,"epoch":0,"reading_sequence":0},"permitted_bytes":0,"reason":"no_provider"}

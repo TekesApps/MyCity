@@ -15,7 +15,7 @@
   "cargo_invoked": false,
   "pressure_started": false,
   "harness_sha256": {
-    "run.py": "892634fcf742e0ffaab9a67fd5d23a4e405221809f8218cc4470d7cddf3deb5b",
+    "run.py": "247185cc25facb7a0d7792c1d5f06fcbb46c24f9f9fa4cd40c7bd774ba39b907",
     "controller.py": "ef07e0d7b776d93aad819d460e16f9f82b3644b8ec2284070c3610800060b9e4",
     "topology.py": "c3292452457849fda95b2174825b7c05d522b4a0177d2622efe6b85796fe48a0",
     "preflight.py": "dae14d2e7f88a81f548bf04b6c01f6289412b8a0f1c892549abc75b5815113bc",

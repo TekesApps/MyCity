@@ -36,3 +36,6 @@ docs/evidence/core-production-validation/**/*.log whitespace=-blank-at-eof,-blan
 docs/evidence/core-market-access-validation/**/source/tracked-wip.patch whitespace=-blank-at-eof,-blank-at-eol
 docs/evidence/core-market-access-validation/**/*.txt whitespace=-blank-at-eof,-blank-at-eol
 docs/evidence/m0-t13a-extents-joint/*.stdout whitespace=-blank-at-eof,-blank-at-eol
+
+# Preserve migration validation stdout verbatim.
+docs/evidence/work-migration-20261022/*.stdout whitespace=-blank-at-eof,-blank-at-eol

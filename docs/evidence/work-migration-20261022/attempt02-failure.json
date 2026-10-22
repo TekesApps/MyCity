@@ -1,0 +1,7 @@
+{
+  "status": "stopped_before_copy",
+  "reason": "111 historical inactive Unix sockets require separate preservation from regular files",
+  "source_untouched": true,
+  "destination_not_created": true,
+  "fix": "precise inode-type socket inventory; recreate unowned zero-byte IPC nodes and verify their metadata"
+}

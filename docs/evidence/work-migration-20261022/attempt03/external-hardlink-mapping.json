@@ -1,0 +1,522 @@
+[
+  {
+    "paths": [
+      "evidence/core-economy/0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3/attempt-01/baseline.raw"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410215411,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672573,
+    "sha256": "05ae56eefa6f7bf70834d0f7b78bb93d72765f4338cfb16ab8944acf0aecd2f5",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3/attempt-01/binary.sha256"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410215409,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672574,
+    "sha256": "3b4ea0eb2a8a62068bb3fdea7d3211ce6b54983dad740513676610674161567e",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3/attempt-01/cargo-build-example.raw"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410213394,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672575,
+    "sha256": "d73e5e1533eeb36828d59abe2ab9ecb6329b809e8cd02dd49520e1a0dc137579",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3/attempt-01/cargo-clippy.raw"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410213657,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672576,
+    "sha256": "4fd6d9fecb2cdcb80727d5be338fbc6fb7800ceab8bee557c314d99d31b1c400",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3/attempt-01/cargo-test.raw"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410213346,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672580,
+    "sha256": "7c985155e197835fe8db4f37f577ad28a451237c9025aec71eac2f275a663dc6",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3/attempt-01/closed_road.raw"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410215414,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672581,
+    "sha256": "781c75a4650afa4bf3284e06ace0b3d6e6071173c7ef2c401fbd3e15944442d3",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3/attempt-01/command.txt"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410213337,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672582,
+    "sha256": "8f9780972e3f5c8fce160177ffc8f54a702d3c7bb41180ca4061afd284215a2e",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3/attempt-01/demand_drop.raw"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410215416,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672583,
+    "sha256": "651a0d3767f44af85de88c4d04a0704c01ea2ed20ec3a3a4ae884d097f782ef1",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3/attempt-01/energy_price_shock.raw"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410215415,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672584,
+    "sha256": "3727ecffafaec412d57b631f2c120399a93ca6ea063268802f435bda2e6360b1",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3/attempt-01/freeze-manifest.json"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410213331,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672585,
+    "sha256": "e4bf52704461e1cc75afdb7895fad5111ef34fd553ecc322e4d8aa0bdeee93b0",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3/attempt-01/missing_cash.raw"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410215412,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672586,
+    "sha256": "7e7d7ef58de0b1fa1f2fe17242b85aada5021c3e3fe85ff15e28b41e28d5486e",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3/attempt-01/results.json"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410216884,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672590,
+    "sha256": "8786951c30318ad7becfbc7b4b0ca3386fa9506ce1a7a78a0daea9345d35ff42",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3/attempt-01/run-tests.sh"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410213339,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672591,
+    "sha256": "95508769bce66647faaacc5589aa0f8794b706da6b530c233ec4925617544da1",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3/attempt-01/scenario-report.json"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410215417,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672592,
+    "sha256": "8362d5f70681f154764b10ebbf4e12f50601b2737bc7be70223970169af3fb59",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3/attempt-01/source.patch"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410213328,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672593,
+    "sha256": "2663b421afc0bd016f6b1c3bc5d6c9184cb9701ccacc7d624eb0dbd45bcebb23",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3/attempt-01/source.zip"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410213329,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672594,
+    "sha256": "0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3/attempt-01/stockout.raw"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410215413,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672595,
+    "sha256": "3727ecffafaec412d57b631f2c120399a93ca6ea063268802f435bda2e6360b1",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3/attempt-01/validation-summary.md"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410217732,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672596,
+    "sha256": "0433d51f9fbaeb4acf8b6a6a2da78dec0919599e61d3f0106ca992a39f14c192",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3/attempt-01/scenarios/baseline.json"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410215399,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672604,
+    "sha256": "1856329e54234f79b2bad009aa257b14d07293ab120663042f602dc3cf06adbe",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3/attempt-01/scenarios/closed_road.json"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410215402,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672605,
+    "sha256": "965272ef529e616c0b49bf34836c98f1722716296f74fefbe9fd18fa8a0c91ba",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3/attempt-01/scenarios/demand_drop.json"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410215404,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672606,
+    "sha256": "6df3cb906a62dd87bb6abbd3bc93a20bf3f63c0f77abbae2d30c35c672e3b8cc",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3/attempt-01/scenarios/energy_price_shock.json"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410215403,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672610,
+    "sha256": "e484292ed317102498a11e74c646cdc18728109f5979a1f4b2e6af1b85c4b687",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3/attempt-01/scenarios/missing_cash.json"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410215400,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672611,
+    "sha256": "b37b8a907c74c091d92fab81f341fa584a8b9d4b54e58bd617b59f498bb571e2",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/0f2b1b6228869c20417280f218e1111758ea7bd14a1b197afa9b6203d190f7e3/attempt-01/scenarios/stockout.json"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410215401,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672615,
+    "sha256": "ffa363624f5e549e7a389f17595db144786b89e21241db1c4b18f979c2ef481c",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/b9d9a33e863fdc1681d62ce594905459808b9a005c3eae4c51739689b31622c3/attempt-02/cargo-build-example.raw"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410212980,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672634,
+    "sha256": "7658244da09056f8c7e0a975d749aa9428434beb71f152fb6364c7bc18854ae4",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/b9d9a33e863fdc1681d62ce594905459808b9a005c3eae4c51739689b31622c3/attempt-02/cargo-clippy.raw"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410213096,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672635,
+    "sha256": "36dbbff03266edfb738ab36dca3d779ef4c0af113444e2f3c6d7e8305ba7cb22",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/b9d9a33e863fdc1681d62ce594905459808b9a005c3eae4c51739689b31622c3/attempt-02/cargo-test.raw"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410212966,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672636,
+    "sha256": "d8f7ba01bc7dc794b9446e42077509f3f4f5f042288828bcdb64073e5ebc0197",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/b9d9a33e863fdc1681d62ce594905459808b9a005c3eae4c51739689b31622c3/attempt-02/command.txt"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410212963,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672640,
+    "sha256": "620764f4aa63beec849c2161f1178f9e4c79e96a50be0b3f10658038fbb62702",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/b9d9a33e863fdc1681d62ce594905459808b9a005c3eae4c51739689b31622c3/attempt-02/freeze-manifest.json"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410212962,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672644,
+    "sha256": "3ed525564b1e14a1b6f9d87d7a4c9c4a04eff326bbb0ee527421126e7c75d656",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/b9d9a33e863fdc1681d62ce594905459808b9a005c3eae4c51739689b31622c3/attempt-02/run-tests.sh"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410212964,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672651,
+    "sha256": "a35f563d0352bb0ae2593f9ec06cbe5af01f39035465fa19fbf724c25ebb1077",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/b9d9a33e863fdc1681d62ce594905459808b9a005c3eae4c51739689b31622c3/attempt-02/source.zip"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410212961,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672652,
+    "sha256": "b9d9a33e863fdc1681d62ce594905459808b9a005c3eae4c51739689b31622c3",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/b9d9a33e863fdc1681d62ce594905459808b9a005c3eae4c51739689b31622c3/attempt-01/cargo-test.raw"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410212505,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672621,
+    "sha256": "ef91e75a2662ebec0e882d7e4d9dfe226f20aae306d8a25e13410c4259e7b359",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/b9d9a33e863fdc1681d62ce594905459808b9a005c3eae4c51739689b31622c3/attempt-01/command.txt"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410212477,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672622,
+    "sha256": "e0a8d5063efff33af30d299072e8570afaa074d9da4d0f23e8bdcd2f36ef9425",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/b9d9a33e863fdc1681d62ce594905459808b9a005c3eae4c51739689b31622c3/attempt-01/freeze-manifest.json"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410212389,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672623,
+    "sha256": "2d560621a5b2536f9f5ca6166305e02fd13a16381d4925aeec772e6c76cef8fb",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/b9d9a33e863fdc1681d62ce594905459808b9a005c3eae4c51739689b31622c3/attempt-01/run-tests.sh"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410212479,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672624,
+    "sha256": "f2003bb920ba2a76220e0c01505656111e551677a05a25de1a61535ab5e6e012",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/b9d9a33e863fdc1681d62ce594905459808b9a005c3eae4c51739689b31622c3/attempt-01/source.patch"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410212386,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672625,
+    "sha256": "2663b421afc0bd016f6b1c3bc5d6c9184cb9701ccacc7d624eb0dbd45bcebb23",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "evidence/core-economy/b9d9a33e863fdc1681d62ce594905459808b9a005c3eae4c51739689b31622c3/attempt-01/source.zip"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410212387,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 672626,
+    "sha256": "b9d9a33e863fdc1681d62ce594905459808b9a005c3eae4c51739689b31622c3",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "candidate-binaries/core-market-access/142b1961a1c3c16a676d31c6a315ed21ec01665b7f09f8a960ecfb21f79e6f9e/market-access-tests"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410329009,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 643682,
+    "sha256": "0edfe581de313702839320cef692a8571318f7c558555b1d3343f6cb2608e346",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "candidate-binaries/core-market-access/142b1961a1c3c16a676d31c6a315ed21ec01665b7f09f8a960ecfb21f79e6f9e/market_access"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410330358,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 643707,
+    "sha256": "95bf529c721b749a5fd83439278fa8c5a12d4cb822e4903272439c9faaa881ac",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  },
+  {
+    "paths": [
+      "candidate-binaries/core-market-access/142b1961a1c3c16a676d31c6a315ed21ec01665b7f09f8a960ecfb21f79e6f9e/transport-tests"
+    ],
+    "old_dev": 16777231,
+    "old_inode": 410302831,
+    "old_nlink": 2,
+    "links_outside_work": 1,
+    "new_dev": 16777248,
+    "new_inode": 643747,
+    "sha256": "28e0c185e4b3354daffc23a7d2a523fc78386cdca5df01113595446b767feac4",
+    "old_same_inode_receipts": "historical only; external original hardlinks remain untouched"
+  }
+]

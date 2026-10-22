@@ -1,0 +1,13 @@
+{
+  "exact_root": "/Users/frankqin/dev/MyCity/work-migration-original-20261022",
+  "exact_original_manifest": "source-manifest.json.gz",
+  "unique_regular_file_allocation_bytes": 27301773312,
+  "allocation_bytes_no_external_links": 27296321536,
+  "source_and_destination_fully_reverified": true,
+  "recovery_passed": 3,
+  "protected_originals_preserved": 190,
+  "free_before": {
+    "/Users/frankqin/dev/MyCity": 86433755136,
+    "/Volumes/HP P900/dev/MyCity": 1990677422080
+  }
+}

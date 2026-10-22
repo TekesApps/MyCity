@@ -1,0 +1,23 @@
+[
+  {
+    "execution_path": "attempt02/processes-before.txt",
+    "retained_original": "work/migration-recovery-20261022/process-evidence/attempt02-processes-before.txt",
+    "original_sha256": "31636c3d331db9fce6df6f17a1e68e4e9f1f8d1a0755bf094ebedabf8a93fd23",
+    "public_derived": "attempt02/processes-before.sanitized.txt",
+    "reason": "public repository: retain complete raw arguments locally, publish only process identity and executable"
+  },
+  {
+    "execution_path": "attempt03/processes-before.txt",
+    "retained_original": "work/migration-recovery-20261022/process-evidence/attempt03-processes-before.txt",
+    "original_sha256": "d67c9cd90bb67ecbcada2310518991bff12dd3d87ef9ca2dd9bac91a14e73136",
+    "public_derived": "attempt03/processes-before.sanitized.txt",
+    "reason": "public repository: retain complete raw arguments locally, publish only process identity and executable"
+  },
+  {
+    "execution_path": "processes-before.txt",
+    "retained_original": "work/migration-recovery-20261022/process-evidence/processes-before.txt",
+    "original_sha256": "252435c088f991c24279cba9d6f69d83a6c3c1db1670400864dafd803fbae866",
+    "public_derived": "processes-before.sanitized.txt",
+    "reason": "public repository: retain complete raw arguments locally, publish only process identity and executable"
+  }
+]

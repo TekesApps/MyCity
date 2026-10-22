@@ -1,0 +1,8 @@
+{
+  "path": "r07-report-error-l1-01/observed/model/layout/r07-state.json",
+  "historical_sha256": "0e3bce313657aa1b1b1ba7f5d1e48a68d84bf4925057b842ceea52c79afc7d76",
+  "recovery_sha256": "7132693ad0859db3b022f1bb0e0ff17a7029026f44dd6469737e548d2748438e",
+  "reason": "fixed source32c load_only refreshes runtime r07-state in input layout parent; no snapshot file changed; preserve both and restore historical control file before final full equality check",
+  "historical_evidence": "/Users/frankqin/dev/MyCity/docs/evidence/work-migration-20261022/historical-r07-state-before.json",
+  "new_recovery_evidence": "/Users/frankqin/dev/MyCity/docs/evidence/work-migration-20261022/recovery-r07-state-after.json"
+}

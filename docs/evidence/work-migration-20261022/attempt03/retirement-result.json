@@ -1,0 +1,23 @@
+{
+  "original_removed": true,
+  "source_alias": "/Users/frankqin/dev/MyCity/work",
+  "destination": "/Volumes/HP P900/dev/MyCity/work",
+  "unique_regular_file_allocation_bytes": 27301773312,
+  "allocation_bytes_no_external_links": 27296321536,
+  "allocation_with_external_links_retained": 5451776,
+  "free_before": {
+    "/Users/frankqin/dev/MyCity": 86433755136,
+    "/Volumes/HP P900/dev/MyCity": 1990677422080
+  },
+  "free_after": {
+    "/Users/frankqin/dev/MyCity": 113793527808,
+    "/Volumes/HP P900/dev/MyCity": 1990677450752
+  },
+  "observational_available_delta": {
+    "/Users/frankqin/dev/MyCity": 27359772672,
+    "/Volumes/HP P900/dev/MyCity": 28672
+  },
+  "physical_exclusive_APFS_reclaim": "not_claimed",
+  "protected_originals_sha_rechecked_after": 190,
+  "restorable_originals": "preserved in full on external SSD; historical already-retired snapshots remain not directly restorable"
+}

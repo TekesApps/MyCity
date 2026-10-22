@@ -1,0 +1,7 @@
+{
+  "path": "t13a1b-layout-full-04/model/snapshots/.DS_Store",
+  "exception": "macOS adds com.apple.provenance on destination Finder metadata file; source xattrs must all remain byte-identical, only this one extra OS provenance attribute allowed",
+  "file_bytes": "must match full SHA",
+  "original_unchanged": true,
+  "scope": "one precise non-game Finder metadata file; no exemption for recovery/acceptance data"
+}

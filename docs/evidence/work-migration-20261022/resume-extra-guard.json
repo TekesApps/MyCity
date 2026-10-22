@@ -1,0 +1,6 @@
+{
+  "status": "stopped_before_extra_deletion",
+  "reason": "rsync generated AppleDouble sidecars can themselves have multiple hardlinks",
+  "source_untouched": true,
+  "extra_deletion_rule": "precise new destination path absent from full source inventory; regular AppleDouble sidecar only; unlink directory entry, never outside links"
+}

@@ -1,0 +1,17 @@
+{
+  "DeviceIdentifier": "disk7s1",
+  "VolumeName": "HP P900",
+  "MountPoint": "/Volumes/HP P900",
+  "FilesystemName": "APFS",
+  "FilesystemType": "apfs",
+  "BusProtocol": "USB",
+  "Internal": false,
+  "TotalSize": 2048198492160,
+  "VolumeUUID": "4289CF6D-F09D-4831-8558-4AB223E4EE04",
+  "storage_class": "external SSD",
+  "declared_by_user": true,
+  "work_original": "/Users/frankqin/dev/MyCity/work",
+  "work_physical": "/Volumes/HP P900/dev/MyCity/work",
+  "target_physical": "/Volumes/HP P900/dev/MyCity/target",
+  "comparison_rule": "new IO/duration baselines must identify external SSD; historical internal-disk measurements stay historical; migration and recovery are not performance acceptance"
+}

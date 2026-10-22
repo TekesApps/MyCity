@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.109`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.110`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.110完成[work完整外置迁移](docs/evidence/work-migration-20261022/STATUS.md)：全部普通文件逐SHA校验，190恢复/故障原件保留，三组真实新进程冷恢复通过后才删除内置盘副本；原路径符号链接保持，验收exe及旧新inode衔接另核验。后续性能明确使用外置HP P900 USB/APFS SSD，预检按work所在卷检查空间；迁移不等于M0性能通过。
 
 v0.5.109完成[有限核心集成验证](docs/evidence/core-m0-integration-109/STATUS.md)：221项测试、严格检查和7项CLI通过，交通市场提案与实际28日Engine结算分开报告，家庭仍依靠初始现金，未宣称长期经济平衡或完整联合。完成[历史重复组件回收](docs/evidence/disk-reclamation-focused-20261022/STATUS.md)约382.6MiB及[共享target外置迁移](docs/evidence/target-migration-20261022/STATUS.md)，原路径链接保留、106项迁移回归两次通过，第二次无编译。M0诊断控制器失败及物理超额原文保留；8h/真实16GB仍未测。
 

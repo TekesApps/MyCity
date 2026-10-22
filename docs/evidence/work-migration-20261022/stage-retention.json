@@ -1,0 +1,10 @@
+{
+  "deleted_helper_cache": [],
+  "allocated_bytes_removed": 0,
+  "pressure_data_generated": false,
+  "new_target": false,
+  "source_work_alias": "/Volumes/HP P900/dev/MyCity/work",
+  "target_alias": "/Volumes/HP P900/dev/MyCity/target",
+  "migration_evidence_retained": true,
+  "recovery_outputs_max_budget_bytes": 1048576
+}

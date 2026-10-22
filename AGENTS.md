@@ -39,6 +39,8 @@
 
 ## 构建产物与磁盘占用
 
+- work原路径`/Users/frankqin/dev/MyCity/work`链接到`/Volumes/HP P900/dev/MyCity/work`。恢复原件/验收证据已完整迁移；现行190原件身份清单为`docs/evidence/work-migration-20261022/attempt03/protected-after.json`，历史dev/inode不能直接当新卷断言。所有新性能记录注明外置HP P900 USB/APFS SSD、work/target实际路径及可用空间；检查work所在卷的容量，不用源码所在卷代替；不能复用旧内置盘IO结论。外置卷未挂载时停止依赖该卷的验证，不自动新建本地work。
+
 - 共享target的原路径`/Users/frankqin/dev/MyCity/target`链接到`/Volumes/HP P900/dev/MyCity/target`（2026-10-22已迁移并实测）。继续使用原共享路径，外置卷未挂载时先恢复挂载，不自动另建本地target；仍不清理其他项目缓存。
 
 - 优先复用本项目现有target；不为每次验证另建独立target或编译缓存。确需隔离时先明确原因、验证依赖与清理时机。

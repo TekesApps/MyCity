@@ -1,0 +1,62 @@
+[
+  {
+    "path": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5/construction-a6842a0669a1dd86",
+    "resolved": "/Volumes/HP P900/dev/MyCity/acceptance-binaries/5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5/construction-a6842a0669a1dd86",
+    "sha256": "409fb6eb32c850dda79c1ee51c37e7e0aef59efd6ca9b31829da0a80ea006352",
+    "executable": true
+  },
+  {
+    "path": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5/construction-b68fb118295d0565",
+    "resolved": "/Volumes/HP P900/dev/MyCity/acceptance-binaries/5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5/construction-b68fb118295d0565",
+    "sha256": "5964bc05d63c3af245405379a7551395dbc10104f9c79e6e219fbe8f74d01652",
+    "executable": true
+  },
+  {
+    "path": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5/construction_engine-bbae94b7cf7feb30",
+    "resolved": "/Volumes/HP P900/dev/MyCity/acceptance-binaries/5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5/construction_engine-bbae94b7cf7feb30",
+    "sha256": "188c8746949e9ecd5072aa87cd3890042dccc70135e8b16d3e349d5a628b66aa",
+    "executable": true
+  },
+  {
+    "path": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5/market_access-4b9260b305aa4a20",
+    "resolved": "/Volumes/HP P900/dev/MyCity/acceptance-binaries/5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5/market_access-4b9260b305aa4a20",
+    "sha256": "61bc1b5bde015870dd759cc2ea4a802617907c97aeb0ec010f4fcb6abc188a7e",
+    "executable": true
+  },
+  {
+    "path": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5/mycity_core-3e1c4965578400af",
+    "resolved": "/Volumes/HP P900/dev/MyCity/acceptance-binaries/5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5/mycity_core-3e1c4965578400af",
+    "sha256": "b5e640a57bae32efa2cf36a21345064a2377fabf56cdd942f9a01c5f325a19bf",
+    "executable": true
+  },
+  {
+    "path": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5/mycity_headless-bd191120ee0d5aca",
+    "resolved": "/Volumes/HP P900/dev/MyCity/acceptance-binaries/5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5/mycity_headless-bd191120ee0d5aca",
+    "sha256": "1364c4676725ac1dbb16cf5853d081e8a3f19588481ce8bfe01c20ef09730d1e",
+    "executable": true
+  },
+  {
+    "path": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5/town_market-fc275aa083e796f1",
+    "resolved": "/Volumes/HP P900/dev/MyCity/acceptance-binaries/5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5/town_market-fc275aa083e796f1",
+    "sha256": "5e3c65d9cc0291f888d2c4e11fac3887cc34f7043d87e2009629bcedb471292b",
+    "executable": true
+  },
+  {
+    "path": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5/market_access",
+    "resolved": "/Volumes/HP P900/dev/MyCity/acceptance-binaries/5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5/market_access",
+    "sha256": "db534a3642c81fafdb10c17695e5503f979ab9905268cb190073b1adcc191789",
+    "executable": true
+  },
+  {
+    "path": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5/town_market",
+    "resolved": "/Volumes/HP P900/dev/MyCity/acceptance-binaries/5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5/town_market",
+    "sha256": "3d2ca87aa4113eeec5357f5d0258dbb9730d113a1d6a1d2bea9be66bed3b34f4",
+    "executable": true
+  },
+  {
+    "path": "/Users/frankqin/dev/MyCity/work/candidate-binaries/core-m0-integration/5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5/mycity-headless",
+    "resolved": "/Volumes/HP P900/dev/MyCity/acceptance-binaries/5ac7c8eb74893b17864411e8018b7a0cb60767150223a0523688aac00c83cfc5/mycity-headless",
+    "sha256": "5abaae20cf267c6b4f7c9b8007457c290ceba57bcecbb7c0206218b900539de4",
+    "executable": true
+  }
+]

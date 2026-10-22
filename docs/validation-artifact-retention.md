@@ -1,5 +1,7 @@
 # 验证产物回收规则
 
+**work现行位置与保护身份**：[完整迁移记录](evidence/work-migration-20261022/STATUS.md)。work原路径链接外置HP P900 SSD，原件均在，190份新卷保护身份见该记录；历史same-inode收据不等于当前身份。后续记录实际存储路径/卷/空间，新IO基线注明外置USB/APFS SSD；源码卷df不能代替work所在卷空间。
+
 **共享target现行位置**：原路径`/Users/frankqin/dev/MyCity/target`符号链接至`/Volumes/HP P900/dev/MyCity/target`；[迁移核验与退役记录](evidence/target-migration-20261022/STATUS.md)。继续复用原路径；外置卷离线先恢复挂载，不自动创建替代target。
 
 **2026-10-22集中回收补充**：[本次清单与报告](evidence/disk-reclamation-focused-20261022/STATUS.md)精确删除joint已退役两代的50份逐字节匹配既有gzip的正常组件，401,145,856B；190完整原件保留，work25.427GiB。此前74GB及历史成果不计入本次。两代仍不可直接完整恢复，未匹配组件和故障证据保留。

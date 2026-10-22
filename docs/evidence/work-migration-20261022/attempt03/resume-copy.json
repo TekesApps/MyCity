@@ -1,0 +1,6 @@
+{
+  "code": 0,
+  "stdout": "",
+  "stderr": "",
+  "reason": "rsync --extended-attributes returned23 on synthetic AppleDouble entries; resume regular data without that flag, preserve and verify xattrs explicitly"
+}

@@ -1,7 +1,10 @@
 .DS_Store
 /target
-/work/
+/work
 /outputs/
 .env
 .env.*
 !.env.example
+
+# Rebuildable validation helper bytecode.
+__pycache__/

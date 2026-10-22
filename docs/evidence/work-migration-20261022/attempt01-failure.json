@@ -1,0 +1,7 @@
+{
+  "status": "stopped_before_copy",
+  "reason": "Xcode Python3.9 lacks os.listxattr",
+  "source_untouched": true,
+  "destination_not_created": true,
+  "fix": "Darwin xattr API reader plus rsync extended attributes"
+}

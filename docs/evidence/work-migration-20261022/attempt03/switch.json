@@ -1,0 +1,18 @@
+{
+  "files": 120166,
+  "entries": 209147,
+  "source": "/Users/frankqin/dev/MyCity/work",
+  "destination": "/Volumes/HP P900/dev/MyCity/work",
+  "rollback_original": "/Users/frankqin/dev/MyCity/work-migration-original-20261022",
+  "protected_files_full_bytes_verified": 190,
+  "all_file_bytes_verified": true,
+  "internal_hardlink_groups_verified": true,
+  "symlinks_xattrs_modes_owners_mtimes_verified": true,
+  "original_retained_pending_recovery": true,
+  "performance_storage": "external_SSD_HP_P900",
+  "free_after_copy": {
+    "/Users/frankqin/dev/MyCity": 86494203904,
+    "/Volumes/HP P900/dev/MyCity": 1990700011520
+  },
+  "copy_implementation": "resume-copy.py; original failed copy receipt retained"
+}

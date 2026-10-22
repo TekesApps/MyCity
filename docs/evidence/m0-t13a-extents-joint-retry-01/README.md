@@ -57,3 +57,5 @@ normal or performance acceptance. All cold restore and retirement decisions
 remain under the primary owner. Retain any retry snapshot while a restore still
 depends on its bytes; the old run's cold restores are historical evidence and
 do not imply its retired pressure/reserve set remains directly recoverable.
+
+After work migration, the next live retry checks free space on the resolved work volume, records storage-environment.json with actual work/target paths, and labels HP P900 external USB/APFS SSD IO. Old internal-disk timings are not the current IO baseline. This storage recording change alone does not execute or pass the retry.

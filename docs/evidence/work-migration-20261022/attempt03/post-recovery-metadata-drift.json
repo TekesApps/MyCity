@@ -1,0 +1,38 @@
+[
+  {
+    "path": "r07-report-error-l1-01/observed/model/layout",
+    "was": [
+      16877,
+      501,
+      20,
+      256,
+      1792642034260167503
+    ],
+    "now": [
+      16877,
+      501,
+      20,
+      256,
+      1792651082387088887
+    ],
+    "directory": true
+  },
+  {
+    "path": "r07-report-error-l1-01/observed/model/layout/r07-state.json",
+    "was": [
+      33188,
+      501,
+      20,
+      360,
+      1792642034251677320
+    ],
+    "now": [
+      33188,
+      501,
+      20,
+      362,
+      1792651082382691193
+    ],
+    "directory": false
+  }
+]

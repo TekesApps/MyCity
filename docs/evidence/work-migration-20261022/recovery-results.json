@@ -1,0 +1,53 @@
+[
+  {
+    "case": "typed8",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/r07-extents/32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2/mycity-headless",
+      "layout-load-only",
+      "/Users/frankqin/dev/MyCity/work/typed-workspace-formal-l1-01/observed/model/layout/snapshots/snapshot-000008",
+      "/Users/frankqin/dev/MyCity/work/migration-recovery-20261022/typed8"
+    ],
+    "exit": 0,
+    "elapsed_observation_seconds": 10.325708042,
+    "input": "/Users/frankqin/dev/MyCity/work/typed-workspace-formal-l1-01/observed/model/layout/snapshots/snapshot-000008",
+    "report": "/Users/frankqin/dev/MyCity/work/migration-recovery-20261022/typed8/report.json",
+    "binary_sha256": "59aa365ed46b5d373218fcbcf1d34f930d674d15607ed510190361891439b4e0",
+    "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+    "storage_profile": "external_USB_APFS_HP_P900_SSD",
+    "is_performance_acceptance": false
+  },
+  {
+    "case": "legacy-v50",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/r07-extents/32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2/mycity-headless",
+      "layout-load-only",
+      "/Users/frankqin/dev/MyCity/work/t13a50-joint-01/model/layout/snapshots/snapshot-000001",
+      "/Users/frankqin/dev/MyCity/work/migration-recovery-20261022/legacy-v50"
+    ],
+    "exit": 0,
+    "elapsed_observation_seconds": 7.690290125000001,
+    "input": "/Users/frankqin/dev/MyCity/work/t13a50-joint-01/model/layout/snapshots/snapshot-000001",
+    "report": "/Users/frankqin/dev/MyCity/work/migration-recovery-20261022/legacy-v50/report.json",
+    "binary_sha256": "59aa365ed46b5d373218fcbcf1d34f930d674d15607ed510190361891439b4e0",
+    "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+    "storage_profile": "external_USB_APFS_HP_P900_SSD",
+    "is_performance_acceptance": false
+  },
+  {
+    "case": "v3",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/candidate-binaries/r07-extents/32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2/mycity-headless",
+      "layout-load-only",
+      "/Users/frankqin/dev/MyCity/work/r07-report-error-l1-01/observed/model/layout/snapshots/snapshot-000002",
+      "/Users/frankqin/dev/MyCity/work/migration-recovery-20261022/v3"
+    ],
+    "exit": 0,
+    "elapsed_observation_seconds": 8.211811166,
+    "input": "/Users/frankqin/dev/MyCity/work/r07-report-error-l1-01/observed/model/layout/snapshots/snapshot-000002",
+    "report": "/Users/frankqin/dev/MyCity/work/migration-recovery-20261022/v3/report.json",
+    "binary_sha256": "59aa365ed46b5d373218fcbcf1d34f930d674d15607ed510190361891439b4e0",
+    "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+    "storage_profile": "external_USB_APFS_HP_P900_SSD",
+    "is_performance_acceptance": false
+  }
+]
