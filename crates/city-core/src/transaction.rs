@@ -113,6 +113,13 @@ pub enum Action {
     TownSettle {
         profile_id: u32,
     },
+    /// Resolve one immutable, Store-verified transport proof for this market-day settlement.
+    TownTransportSettle {
+        profile_id: u32,
+        service_day: u64,
+        generation: u64,
+        proof_sha256: [u8; 32],
+    },
     RegionSettleDebt {
         obligation: u32,
     },
@@ -768,7 +775,7 @@ impl Engine {
         let old = trace.role;
         trace.role = Role::Quote;
         let started = trace.start();
-        let prepared = self.prepare_diagnosed(caller, env, None, trace);
+        let prepared = self.prepare_diagnosed(caller, env, None, None, trace);
         trace.end(Class::Prepare, started, 0, u64::from(prepared.is_ok()), 0);
         trace.role = old;
         let prepared = prepared.ok()?;
@@ -815,7 +822,7 @@ impl Engine {
                 let old = trace.role;
                 trace.role = Role::Quote;
                 let started = trace.start();
-                let result = self.prepare_diagnosed(caller, env, candidate, trace);
+                let result = self.prepare_diagnosed(caller, env, candidate, None, trace);
                 trace.end(Class::Prepare, started, 0, u64::from(result.is_ok()), 0);
                 trace.role = old;
                 result.is_ok()
@@ -921,6 +928,19 @@ impl Engine {
         persist: impl FnOnce(&Envelope, &JournalRecord) -> Result<(), E>,
         trace: &mut Trace<'_>,
     ) -> Result<Result<Receipt, TxError>, E> {
+        self.execute_recorded_transport_diagnosed(caller, env, candidate, None, persist, trace)
+    }
+    /// Storage supplies quotes resolved from an immutable proof whose digest is also present in
+    /// the action. The transaction still performs exactly one planner and reconciliation pass.
+    pub fn execute_recorded_transport_diagnosed<E>(
+        &mut self,
+        caller: Caller,
+        env: Envelope,
+        candidate: Option<&crate::air::State>,
+        transport: Option<&crate::market_access::SettlementDeliveryInput<'_>>,
+        persist: impl FnOnce(&Envelope, &JournalRecord) -> Result<(), E>,
+        trace: &mut Trace<'_>,
+    ) -> Result<Result<Receipt, TxError>, E> {
         if env.world != self.world.scope.world() || env.branch != self.world.scope.branch() {
             return Ok(Err(TxError::WrongScope));
         }
@@ -982,7 +1002,7 @@ impl Engine {
         } else if env.expected_revision != self.world.revision {
             Err(TxError::StaleRevision)
         } else {
-            self.prepare_diagnosed(caller, &env, candidate, trace)
+            self.prepare_diagnosed(caller, &env, candidate, transport, trace)
         };
         trace.end(
             Class::Prepare,
@@ -1044,7 +1064,7 @@ impl Engine {
         let old = trace.role;
         trace.role = Role::Quote;
         let started = trace.start();
-        let prepared = self.prepare_diagnosed(caller, env, None, trace);
+        let prepared = self.prepare_diagnosed(caller, env, None, None, trace);
         trace.end(Class::Prepare, started, 0, u64::from(prepared.is_ok()), 0);
         trace.role = old;
         prepared
@@ -1156,6 +1176,7 @@ impl Engine {
         caller: Caller,
         env: &Envelope,
         candidate: Option<&crate::air::State>,
+        transport: Option<&crate::market_access::SettlementDeliveryInput<'_>>,
         trace: &mut Trace<'_>,
     ) -> Result<Prepared, TxError> {
         let next_revision = self
@@ -1460,7 +1481,14 @@ impl Engine {
                         return Err(TxError::Unauthorized);
                     }
                     let market = self.world.town.ok_or(TxError::InvalidOperation)?;
-                    if market.profile.id != profile_id || town.is_none() {
+                    if market.profile.id != profile_id
+                        || market
+                            .profile
+                            .transport_allocation_sha256
+                            .iter()
+                            .any(|byte| *byte != 0)
+                        || town.is_none()
+                    {
                         return Err(TxError::InvalidOperation);
                     }
                     let t = timeline.as_ref().ok_or(TxError::InvalidOperation)?;
@@ -1475,6 +1503,62 @@ impl Engine {
                         timeline: t,
                         accounts: &mut accounts,
                         stocks: &mut stocks,
+                        transport: None,
+                    })?);
+                }
+                Action::TownTransportSettle {
+                    profile_id,
+                    service_day,
+                    generation,
+                    proof_sha256,
+                } => {
+                    if !matches!(caller, Caller::System) || env.actions.len() != 1 {
+                        return Err(TxError::Unauthorized);
+                    }
+                    let market = self.world.town.ok_or(TxError::InvalidOperation)?;
+                    let proof = transport.ok_or(TxError::InvalidOperation)?;
+                    if market.profile.id != profile_id
+                        || market
+                            .profile
+                            .transport_allocation_sha256
+                            .iter()
+                            .all(|byte| *byte == 0)
+                        || town.is_none()
+                        || proof.proof_sha256 != proof_sha256
+                        || proof.proof.schema != 1
+                        || proof.proof.profile_id != profile_id
+                        || proof.proof.allocation_profile_sha256
+                            != market.profile.transport_allocation_sha256
+                        || proof.proof.generation != generation
+                        || proof.proof.period_seconds != crate::timeline::DAY as u32
+                        || proof.proof.world_id != self.world.scope.world()
+                        || proof.proof.branch_id != self.world.scope.branch()
+                        || proof.proof.service_day != service_day
+                    {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    let t = timeline.as_ref().ok_or(TxError::InvalidOperation)?;
+                    let expected_generation = town
+                        .as_ref()
+                        .and_then(|state| state.last_transport)
+                        .map_or(0, |receipt| receipt.consumed_generation)
+                        .checked_add(1)
+                        .ok_or(TxError::Overflow)?;
+                    if generation != expected_generation {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    town_summary = Some(prepare_town_settlement(TownSettlementContext {
+                        operation_id: env.operation_id,
+                        world_id: self.world.scope.world(),
+                        branch_id: self.world.scope.branch(),
+                        revision: self.world.revision,
+                        world: &self.world,
+                        profile: &market.profile,
+                        state: &mut town,
+                        timeline: t,
+                        accounts: &mut accounts,
+                        stocks: &mut stocks,
+                        transport: Some(proof),
                     })?);
                 }
                 Action::RegionSettleDebt { obligation } => {
@@ -2173,6 +2257,7 @@ struct TownSettlementContext<'a> {
     timeline: &'a crate::timeline::Timeline,
     accounts: &'a mut DirtyAccounts,
     stocks: &'a mut DirtyStocks,
+    transport: Option<&'a crate::market_access::SettlementDeliveryInput<'a>>,
 }
 
 fn prepare_town_settlement(
@@ -2189,6 +2274,7 @@ fn prepare_town_settlement(
         timeline,
         accounts,
         stocks,
+        transport,
     } = context;
     use crate::{
         town_economy::{
@@ -2210,6 +2296,9 @@ fn prepare_town_settlement(
     }
     let day = at / crate::timeline::DAY;
     if market_state.settled_day.checked_add(1) != Some(day) {
+        return Err(TxError::InvalidOperation);
+    }
+    if transport.is_some_and(|proof| proof.proof.service_day != day) {
         return Err(TxError::InvalidOperation);
     }
 
@@ -2391,7 +2480,7 @@ fn prepare_town_settlement(
         recipes.push(recipe);
     }
 
-    let input = MarketInput {
+    let mut input = MarketInput {
         schema: "mycity-town-market-v0.1".to_owned(),
         world: world_id,
         branch: branch_id,
@@ -2405,6 +2494,35 @@ fn prepare_town_settlement(
         shops: profile.shops.as_slice().to_vec(),
         recipes,
         delivery: profile.delivery.as_slice().to_vec(),
+    };
+    let resolved_digest = if let Some(proof) = transport {
+        let resolved = crate::market_access::resolve_delivery_quotes_from_snapshot(
+            profile.id,
+            crate::market_access::TransportSnapshotRef {
+                generation: proof.proof.generation,
+            },
+            &input,
+            proof.proof.opening,
+            proof.proof.assignment,
+            proof.proof.partitions,
+            proof.proof.fee_policy,
+        )
+        .map_err(|_| TxError::InvalidOperation)?;
+        input.delivery = resolved.delivery_quotes;
+        Some(resolved.source_digest)
+    } else {
+        None
+    };
+    let transport_receipt = match (transport, resolved_digest) {
+        (Some(proof), Some(resolved_sha256)) => Some(crate::town_runtime::MarketTransportReceipt {
+            issued_day: day,
+            issued_generation: proof.proof.generation,
+            issued_proof_sha256: proof.proof_sha256,
+            consumed_generation: proof.proof.generation,
+            resolved_sha256,
+        }),
+        (None, None) => None,
+        _ => return Err(TxError::InvalidOperation),
     };
     let batch = town_economy::plan_day_with_execution(&input, &executions)
         .map_err(|_| TxError::InvalidOperation)?;
@@ -2622,6 +2740,7 @@ fn prepare_town_settlement(
     // persisted cursor. Timeline has already paid any due wages; no second wage transfer occurs.
     let _labor_paid_by_timeline = reconciled.worker_days;
     market_state.settled_day = day;
+    market_state.last_transport = transport_receipt;
     market_state.last_summary = summary;
     Ok(summary)
 }
@@ -3650,6 +3769,7 @@ mod tests {
             TownMarket::new(MarketProfile {
                 schema_version: 1,
                 id: 1,
+                transport_allocation_sha256: [0; 32],
                 households,
                 employers,
                 shops,

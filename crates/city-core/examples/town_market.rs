@@ -2,8 +2,9 @@
 //!
 //! Route reachability/capacity and utility availability/cost are explicit profile inputs,
 //! not live transport or utility-network assignments. Timeline remains authoritative for
-//! wages and the optional loan claim; TownSettle remains authoritative for market cash and
-//! stock changes. Run without arguments to retain the original base profile.
+//! wages, the optional loan, and optional turnover-tax fixture claims; TownSettle remains
+//! authoritative for market cash and stock changes. Run without arguments to retain the
+//! original base profile.
 use mycity_core::{
     assembly::assemble,
     timeline::{Command as TimelineCommand, Cycle, PayrollSpec, DAY},
@@ -16,6 +17,10 @@ use std::env;
 const OPENING: &[u8] = include_bytes!("../../../fixtures/m0-e0-opening.json");
 const DAYS: u64 = 28;
 const DEBT_ID: u64 = 1;
+const TURNOVER_TAX_CLAIM_ID_BASE: u64 = 10_000;
+const TURNOVER_TAX_AUTHORITY: u32 = 1;
+const TURNOVER_TAX_PAYER: u32 = 3;
+const TURNOVER_TAX_BPS_DENOMINATOR: i128 = 10_000;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum Scenario {
@@ -67,6 +72,7 @@ struct Inputs {
     production_utility_cost_per_q: i64,
     debt_principal: i64,
     debt_due_day: u64,
+    turnover_tax_bps: u32,
 }
 
 impl Inputs {
@@ -82,6 +88,7 @@ impl Inputs {
             production_utility_cost_per_q: 1,
             debt_principal: 100_000,
             debt_due_day: 14,
+            turnover_tax_bps: 0,
         };
         match scenario {
             Scenario::Base => {}
@@ -121,6 +128,11 @@ impl Inputs {
                     .parse()
                     .map_err(|_| format!("invalid_{key}:{value}"))?
             }
+            "turnover-tax-bps" => {
+                self.turnover_tax_bps = value
+                    .parse()
+                    .map_err(|_| format!("invalid_{key}:{value}"))?
+            }
             _ => return Err(format!("unknown_option:{key}")),
         }
         Ok(())
@@ -136,8 +148,9 @@ impl Inputs {
             || self.debt_principal < 0
             || self.debt_due_day == 0
             || self.debt_due_day > DAYS
+            || self.turnover_tax_bps > 10_000
         {
-            return Err("invalid_scenario_values".into());
+            return Err("invalid_scenario_values_or_turnover_tax_bps_over_10000".into());
         }
         Ok(())
     }
@@ -153,7 +166,7 @@ fn parse_args() -> Result<Inputs, String> {
     let mut overrides = Vec::new();
     while let Some(arg) = args.next() {
         if arg == "--help" || arg == "-h" {
-            return Err("usage: town_market [--scenario base|cash-shortage|raw-shortage|no-route|capacity-cut|energy-price-rise|demand-drop] [--household-cash N] [--company-cash N] [--raw-quantity N] [--daily-need N] [--route-reachable true|false] [--route-capacity N] [--production-utility-cost N] [--debt-principal N] [--debt-due-day 1..28]".into());
+            return Err("usage: town_market [--scenario base|cash-shortage|raw-shortage|no-route|capacity-cut|energy-price-rise|demand-drop] [--household-cash N] [--company-cash N] [--raw-quantity N] [--daily-need N] [--route-reachable true|false] [--route-capacity N] [--production-utility-cost N] [--debt-principal N] [--debt-due-day 1..28] [--turnover-tax-bps 0..10000]".into());
         }
         let (key, value) = arg
             .strip_prefix("--")
@@ -273,6 +286,11 @@ fn main() -> Result<(), String> {
         .iter()
         .map(|account| (account.id, account.cash.value()))
         .collect();
+    let initial_treasury_cash = initial_cash_by_account
+        .iter()
+        .find(|(account, _)| *account == TURNOVER_TAX_AUTHORITY)
+        .map(|(_, cash)| *cash)
+        .ok_or("missing_initial_treasury")?;
     let initial_raw = initial
         .stocks
         .iter()
@@ -302,6 +320,8 @@ fn main() -> Result<(), String> {
     let mut wages_accrued = 0i128;
     let mut labor_basis = 0i128;
     let mut idle_labor_expense = 0i128;
+    let mut turnover_tax_basis = 0i128;
+    let mut turnover_tax_rounding_remainder = 0i128;
 
     command(
         &mut engine,
@@ -405,6 +425,41 @@ fn main() -> Result<(), String> {
         market_demand += i128::from(summary.market_demand.value());
         unmet_market_demand += i128::from(summary.unmet_market_demand.value());
         goods_payments += i128::from(summary.goods_payments.value());
+        turnover_tax_basis = turnover_tax_basis
+            .checked_add(i128::from(summary.goods_payments.value()))
+            .ok_or("turnover_tax_basis_overflow")?;
+        if inputs.turnover_tax_bps > 0 {
+            let numerator = i128::from(summary.goods_payments.value())
+                .checked_mul(i128::from(inputs.turnover_tax_bps))
+                .and_then(|amount| amount.checked_add(turnover_tax_rounding_remainder))
+                .ok_or("turnover_tax_calculation_overflow")?;
+            let assessed_cents = numerator / TURNOVER_TAX_BPS_DENOMINATOR;
+            turnover_tax_rounding_remainder = numerator % TURNOVER_TAX_BPS_DENOMINATOR;
+            if assessed_cents > 0 {
+                let amount = i64::try_from(assessed_cents)
+                    .map_err(|_| "turnover_tax_amount_out_of_range")?;
+                let id = TURNOVER_TAX_CLAIM_ID_BASE
+                    .checked_add(day)
+                    .ok_or("turnover_tax_claim_id_overflow")?;
+                let due = day
+                    .checked_add(1)
+                    .and_then(|next_day| next_day.checked_mul(DAY))
+                    .ok_or("turnover_tax_due_overflow")?;
+                command(
+                    &mut engine,
+                    Action::Timeline {
+                        command: TimelineCommand::Claims {
+                            first_id: id,
+                            count: 1,
+                            payer: TURNOVER_TAX_PAYER,
+                            payee: TURNOVER_TAX_AUTHORITY,
+                            amount: money(amount)?,
+                            due,
+                        },
+                    },
+                )?;
+            }
+        }
         freight += i128::from(summary.freight.value());
         utilities += i128::from(summary.utilities.value());
         disposal += i128::from(summary.disposal.value());
@@ -480,6 +535,40 @@ fn main() -> Result<(), String> {
             )
         })
         .unwrap_or((0, 0));
+    let timeline = engine.timeline().ok_or("missing_timeline")?;
+    let current_time = timeline.progress.last_complete;
+    let tax_claims: Vec<_> = timeline
+        .claims
+        .iter()
+        .filter(|claim| {
+            (TURNOVER_TAX_CLAIM_ID_BASE + 1..=TURNOVER_TAX_CLAIM_ID_BASE + DAYS).contains(&claim.id)
+        })
+        .collect();
+    let tax_assessed: i128 = tax_claims
+        .iter()
+        .map(|claim| i128::from(claim.principal.value()))
+        .sum();
+    let tax_paid: i128 = tax_claims
+        .iter()
+        .map(|claim| i128::from(claim.paid.value()))
+        .sum();
+    let tax_outstanding: i128 = tax_claims
+        .iter()
+        .map(|claim| i128::from(claim.principal.value() - claim.paid.value()))
+        .sum();
+    let tax_future_due_claims: Vec<_> = tax_claims
+        .iter()
+        .filter(|claim| claim.due > current_time && claim.principal != claim.paid)
+        .collect();
+    let tax_future_due: i128 = tax_future_due_claims
+        .iter()
+        .map(|claim| i128::from(claim.principal.value() - claim.paid.value()))
+        .sum();
+    let tax_next_due_day = tax_future_due_claims
+        .iter()
+        .map(|claim| claim.due.div_ceil(DAY))
+        .min()
+        .unwrap_or(0);
     let wage_paid = engine
         .timeline()
         .and_then(|timeline| timeline.payroll.iter().find(|payroll| payroll.spec.id == 1))
@@ -497,14 +586,24 @@ fn main() -> Result<(), String> {
         || i128::from(wage_paid + wage_arrears) > wages_accrued
         || debt_outstanding < 0
         || i128::from(loan_principal_paid) > i128::from(inputs.debt_principal)
+        || tax_assessed != tax_paid + tax_outstanding
+        || tax_future_due > tax_outstanding
+        || tax_claims
+            .iter()
+            .any(|claim| claim.payer != TURNOVER_TAX_PAYER || claim.payee != TURNOVER_TAX_AUTHORITY)
+        || (inputs.turnover_tax_bps == 0 && !tax_claims.is_empty())
     {
-        return Err("28_day_conservation_failed".into());
+        return Err("28_day_or_turnover_tax_conservation_failed".into());
     }
     let engine_owned_capacity_bytes = engine.owned_capacity_bytes();
     let world_layout = engine.world().layout();
     println!(
-        "scenario={} days={DAYS} engine_owned_capacity_bytes={engine_owned_capacity_bytes} engine_cap_bytes={ENGINE_BYTE_BUDGET} world_layout={world_layout} profile_substitutes=transport_route_and_capacity,utility_availability_and_cost live_transport=false live_utility=false tax_policy=not_configured initial_cash_total={initial_cash} final_cash_total={final_cash} cash_initial_by_account={initial_cash_by_account:?} cash_final_by_account={final_cash_by_account:?} cash_delta_by_account={cash_deltas_by_account:?} household_cash_final={} producer_cash_final={} treasury_cash_final={} raw_initial={} raw_consumed={raw_consumed} raw_remaining={raw_remaining} raw_basis_initial={initial_raw_basis} raw_basis_final={raw_basis_remaining} product_produced={produced} waste={waste} product_sold={sales} product_remaining={product_remaining} product_basis_initial={initial_product_basis} product_basis_final={product_basis_remaining} sold_basis_by_conservation={sold_basis_by_conservation} reference_need={reference_need} market_demand={market_demand} unmet_market_demand={unmet_market_demand} goods_payments={goods_payments} freight={freight} utilities={utilities} disposal={disposal} wages_accrued={wages_accrued} wages_paid={wage_paid} wages_arrears={wage_arrears} capitalized_labor_basis={labor_basis} idle_labor_expense={idle_labor_expense} debt_principal={} debt_due_day={} debt_paid={} debt_outstanding={debt_outstanding} configured_route_reachable={} configured_route_capacity={} configured_production_utility_cost_per_q={} configured_daily_need={} starting_household_cash={} starting_company_cash={}",
-        inputs.scenario.name(), household.cash.value(), producer.cash.value(), treasury.cash.value(), initial_raw_quantity,
+        "scenario={} days={DAYS} engine_owned_capacity_bytes={engine_owned_capacity_bytes} engine_cap_bytes={ENGINE_BYTE_BUDGET} world_layout={world_layout} profile_substitutes=transport_route_and_capacity,utility_availability_and_cost live_transport=false live_utility=false tax_policy=not_configured turnover_tax_fixture={} turnover_tax_bps={} tax_payer_account_id={} tax_authority_account_id={} tax_basis_goods_payments={turnover_tax_basis} tax_assessed={tax_assessed} tax_paid={tax_paid} tax_outstanding={tax_outstanding} tax_future_due={tax_future_due} tax_future_due_claims={} tax_next_due_day={} tax_rounding_remainder_bps={turnover_tax_rounding_remainder} initial_cash_total={initial_cash} final_cash_total={final_cash} cash_initial_by_account={initial_cash_by_account:?} cash_final_by_account={final_cash_by_account:?} cash_delta_by_account={cash_deltas_by_account:?} treasury_cash_initial={initial_treasury_cash} household_cash_final={} producer_cash_final={} treasury_cash_final={} raw_initial={} raw_consumed={raw_consumed} raw_remaining={raw_remaining} raw_basis_initial={initial_raw_basis} raw_basis_final={raw_basis_remaining} product_produced={produced} waste={waste} product_sold={sales} product_remaining={product_remaining} product_basis_initial={initial_product_basis} product_basis_final={product_basis_remaining} sold_basis_by_conservation={sold_basis_by_conservation} reference_need={reference_need} market_demand={market_demand} unmet_market_demand={unmet_market_demand} goods_payments={goods_payments} freight={freight} utilities={utilities} disposal={disposal} wages_accrued={wages_accrued} wages_paid={wage_paid} wages_arrears={wage_arrears} capitalized_labor_basis={labor_basis} idle_labor_expense={idle_labor_expense} debt_principal={} debt_due_day={} debt_paid={} debt_outstanding={debt_outstanding} configured_route_reachable={} configured_route_capacity={} configured_production_utility_cost_per_q={} configured_daily_need={} starting_household_cash={} starting_company_cash={}",
+        inputs.scenario.name(),
+        if inputs.turnover_tax_bps > 0 { "fixture_turnover" } else { "none" },
+        inputs.turnover_tax_bps, TURNOVER_TAX_PAYER, TURNOVER_TAX_AUTHORITY,
+        tax_future_due_claims.len(), tax_next_due_day,
+        household.cash.value(), producer.cash.value(), treasury.cash.value(), initial_raw_quantity,
         inputs.debt_principal, inputs.debt_due_day, loan_principal_paid, inputs.route_reachable, inputs.route_capacity,
         inputs.production_utility_cost_per_q, inputs.daily_need, inputs.household_cash, inputs.company_cash,
     );

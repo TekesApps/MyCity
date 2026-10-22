@@ -898,6 +898,7 @@ mod tests {
         crate::town_runtime::MarketProfile {
             schema_version: 1,
             id: 1,
+            transport_allocation_sha256: [0; 32],
             households,
             employers,
             shops,

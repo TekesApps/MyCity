@@ -1,8 +1,14 @@
 //! Bounded deterministic group traffic assignment on an explicitly authorized directed graph.
 //! This module is pure CPU calculation; callers persist inputs/results through the shared host.
-use serde::{Deserialize, Serialize};
+use serde::{
+    de::{self, SeqAccess, Visitor},
+    Deserialize, Deserializer, Serialize,
+};
 use sha2::{Digest, Sha256};
-use std::collections::{BTreeMap, BTreeSet};
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    fmt,
+};
 
 pub const MAX_NODES: usize = 128;
 pub const MAX_EDGES: usize = 512;
@@ -16,7 +22,74 @@ const BPR_ALPHA: u128 = 1_500; // 0.15 * COST_SCALE
 const BPR_SCALE: u128 = 10_000;
 const BPR_POWER_DENOMINATOR: u128 = 10_000_000_000_000_000; // SCALE^4
 
+pub(crate) fn bounded_vec<'de, D, T, const N: usize>(deserializer: D) -> Result<Vec<T>, D::Error>
+where
+    D: Deserializer<'de>,
+    T: Deserialize<'de>,
+{
+    struct Bounded<T, const N: usize>(std::marker::PhantomData<T>);
+    impl<'de, T: Deserialize<'de>, const N: usize> Visitor<'de> for Bounded<T, N> {
+        type Value = Vec<T>;
+        fn expecting(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+            write!(f, "at most {N} bounded transport rows")
+        }
+        fn visit_seq<A: SeqAccess<'de>>(self, mut seq: A) -> Result<Vec<T>, A::Error> {
+            let mut rows = Vec::new();
+            rows.try_reserve_exact(N)
+                .map_err(|_| de::Error::custom("transport_allocation"))?;
+            for _ in 0..N {
+                match seq.next_element()? {
+                    Some(value) => rows.push(value),
+                    None => return Ok(rows),
+                }
+            }
+            struct RejectExtra;
+            impl<'de> serde::de::DeserializeSeed<'de> for RejectExtra {
+                type Value = ();
+                fn deserialize<D2: Deserializer<'de>>(self, _: D2) -> Result<(), D2::Error> {
+                    Err(de::Error::custom("transport_rows_over_limit"))
+                }
+            }
+            seq.next_element_seed(RejectExtra)?;
+            Ok(rows)
+        }
+    }
+    deserializer.deserialize_seq(Bounded::<T, N>(std::marker::PhantomData))
+}
+
+fn nodes<'de, D: Deserializer<'de>>(d: D) -> Result<Vec<Node>, D::Error> {
+    bounded_vec::<D, Node, MAX_NODES>(d)
+}
+fn edges<'de, D: Deserializer<'de>>(d: D) -> Result<Vec<RoadEdge>, D::Error> {
+    bounded_vec::<D, RoadEdge, MAX_EDGES>(d)
+}
+fn entrances<'de, D: Deserializer<'de>>(d: D) -> Result<Vec<Entrance>, D::Error> {
+    bounded_vec::<D, Entrance, MAX_ENTRANCES>(d)
+}
+fn demands<'de, D: Deserializer<'de>>(d: D) -> Result<Vec<OdDemand>, D::Error> {
+    bounded_vec::<D, OdDemand, MAX_DEMANDS>(d)
+}
+fn edge_flows<'de, D: Deserializer<'de>>(d: D) -> Result<Vec<EdgeFlow>, D::Error> {
+    bounded_vec::<D, EdgeFlow, MAX_EDGES>(d)
+}
+fn unserved<'de, D: Deserializer<'de>>(d: D) -> Result<Vec<Unserved>, D::Error> {
+    bounded_vec::<D, Unserved, MAX_DEMANDS>(d)
+}
+fn boundary_flows<'de, D: Deserializer<'de>>(d: D) -> Result<Vec<BoundaryFlow>, D::Error> {
+    bounded_vec::<D, BoundaryFlow, MAX_EDGES>(d)
+}
+fn demand_outcomes<'de, D: Deserializer<'de>>(d: D) -> Result<Vec<DemandOutcome>, D::Error> {
+    bounded_vec::<D, DemandOutcome, MAX_DEMANDS>(d)
+}
+fn path_receipts<'de, D: Deserializer<'de>>(d: D) -> Result<Vec<PathReceipt>, D::Error> {
+    bounded_vec::<D, PathReceipt, MAX_PATH_RECEIPTS>(d)
+}
+fn path_edges<'de, D: Deserializer<'de>>(d: D) -> Result<Vec<u32>, D::Error> {
+    bounded_vec::<D, u32, MAX_PATH_EDGES>(d)
+}
+
 #[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
 pub struct Node {
     pub id: u32,
     pub city_id: u32,
@@ -24,6 +97,7 @@ pub struct Node {
 
 /// `city_from != city_to` marks a city boundary. `boundary_source` must be unique.
 #[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
 pub struct RoadEdge {
     pub id: u32,
     pub from: u32,
@@ -39,6 +113,7 @@ pub struct RoadEdge {
 
 /// Entry is a granted topological connection, never inferred from geometric proximity.
 #[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
 pub struct Entrance {
     pub id: u32,
     pub owner: u32,
@@ -49,6 +124,7 @@ pub struct Entrance {
 
 /// One aggregate OD cohort in a single assignment period.
 #[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
 pub struct OdDemand {
     pub source_id: u64,
     pub origin_entrance: u32,
@@ -58,15 +134,21 @@ pub struct OdDemand {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
 pub struct Opening {
     pub revision: u64,
+    #[serde(deserialize_with = "nodes")]
     pub nodes: Vec<Node>,
+    #[serde(deserialize_with = "edges")]
     pub edges: Vec<RoadEdge>,
+    #[serde(deserialize_with = "entrances")]
     pub entrances: Vec<Entrance>,
+    #[serde(deserialize_with = "demands")]
     pub demands: Vec<OdDemand>,
 }
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
 pub enum Error {
     Limit,
     DuplicateId,
@@ -82,6 +164,7 @@ pub enum Error {
 }
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
 pub struct EdgeFlow {
     pub edge_id: u32,
     pub people: u64,
@@ -89,23 +172,27 @@ pub struct EdgeFlow {
     pub cost_seconds: u64,
 }
 #[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
 pub struct Unserved {
     pub source_id: u64,
     pub people: u32,
     pub reason: UnservedReason,
 }
 #[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
 pub enum UnservedReason {
     NoOpenRoute,
     CapacityExhausted,
     AssignmentBudgetExhausted,
 }
 #[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
 pub struct BoundaryFlow {
     pub source_id: u64,
     pub people: u64,
 }
 #[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
 pub struct DemandOutcome {
     pub source_id: u64,
     pub requested_people: u32,
@@ -117,21 +204,29 @@ pub struct DemandOutcome {
 /// One bounded aggregate path slice for an OD demand source. This is group flow, never
 /// an individual vehicle/person record. `edge_ids` are stable opening identifiers.
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
 pub struct PathReceipt {
     pub source_id: u64,
     pub people: u32,
+    #[serde(deserialize_with = "path_edges")]
     pub edge_ids: Vec<u32>,
 }
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
 pub struct Assignment {
     pub network_revision: u64,
     /// SHA-256 of canonicalized topology, permissions, capacities, demands, and revision.
     pub input_fingerprint: [u8; 32],
+    #[serde(deserialize_with = "edge_flows")]
     pub edge_flows: Vec<EdgeFlow>,
+    #[serde(deserialize_with = "unserved")]
     pub unserved: Vec<Unserved>,
+    #[serde(deserialize_with = "boundary_flows")]
     pub boundary_flows: Vec<BoundaryFlow>,
+    #[serde(deserialize_with = "demand_outcomes")]
     pub demand_outcomes: Vec<DemandOutcome>,
     /// At most `MAX_PATH_RECEIPTS`; each simple path has at most `MAX_PATH_EDGES`.
+    #[serde(deserialize_with = "path_receipts")]
     pub path_receipts: Vec<PathReceipt>,
     pub requested_people: u64,
     pub served_people: u64,
@@ -593,6 +688,7 @@ fn has_open_route(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use serde_json::Value;
     fn base(capacity: u32, people: u32) -> Opening {
         Opening {
             revision: 1,
@@ -905,5 +1001,32 @@ mod tests {
         let mut forged_flow = result;
         forged_flow.edge_flows[0].people += 1;
         assert_eq!(forged_flow.verify(&x), Err(Error::Fingerprint));
+    }
+
+    #[test]
+    fn proof_vectors_reject_excess_rows_before_growing_past_trusted_limits() {
+        let mut opening = serde_json::to_value(base(20, 5)).unwrap();
+        let nodes = opening["nodes"].as_array_mut().unwrap();
+        while nodes.len() <= MAX_NODES {
+            nodes.push(serde_json::json!({"id":99,"city_id":1}));
+        }
+        assert!(serde_json::from_value::<Opening>(opening).is_err());
+
+        let mut opening = serde_json::to_value(base(20, 5)).unwrap();
+        opening["nodes"][0]["unrecognized"] = serde_json::json!(1);
+        assert!(serde_json::from_value::<Opening>(opening).is_err());
+
+        let assignment = base(20, 5).assign().unwrap();
+        let mut assignment: Value = serde_json::to_value(assignment).unwrap();
+        assignment["path_receipts"][0]["edge_ids"] = Value::Array(
+            (0..=MAX_PATH_EDGES)
+                .map(|_| serde_json::json!(10))
+                .collect(),
+        );
+        assert!(serde_json::from_value::<Assignment>(assignment).is_err());
+
+        let mut assignment: Value = serde_json::to_value(base(20, 5).assign().unwrap()).unwrap();
+        assignment["demand_outcomes"][0]["unrecognized"] = serde_json::json!(1);
+        assert!(serde_json::from_value::<Assignment>(assignment).is_err());
     }
 }

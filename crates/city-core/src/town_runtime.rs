@@ -124,6 +124,10 @@ impl Record for EmployerSpec {
 pub struct MarketProfile {
     pub schema_version: u16,
     pub id: u32,
+    /// SHA-256 of the immutable Store-owned daily transport allocation profile; all zeroes
+    /// means the legacy profile delivery quotes remain the active substitute.
+    #[serde(default)]
+    pub transport_allocation_sha256: [u8; 32],
     pub households: FixedRows<HouseholdGroup, { crate::town_economy::MAX_HOUSEHOLD_GROUPS }>,
     pub employers: FixedRows<EmployerSpec, { crate::town_economy::MAX_EMPLOYERS }>,
     pub shops: FixedRows<ShopSnapshot, { crate::town_economy::MAX_SHOP_STOCK_LOTS }>,
@@ -367,9 +371,23 @@ impl Record for MarketSummary {
 pub struct MarketState {
     pub settled_day: u64,
     pub last_summary: MarketSummary,
+    #[serde(default)]
+    pub last_transport: Option<MarketTransportReceipt>,
     pub payroll: FixedRows<PayrollCursor, MAX_PAYROLL_CURSORS>,
     pub recipe_output_remainders:
         FixedRows<RecipeOutputRemainder, { crate::town_economy::MAX_RECIPES }>,
+}
+
+/// Small receipt for the exact transport proof consumed by the last market settlement.
+/// Full immutable source records stay in Store-owned proof assets, never in Copy World.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct MarketTransportReceipt {
+    pub issued_day: u64,
+    pub issued_generation: u64,
+    pub issued_proof_sha256: [u8; 32],
+    pub consumed_generation: u64,
+    pub resolved_sha256: [u8; 32],
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -394,6 +412,7 @@ impl MarketState {
         Self {
             settled_day: 0,
             last_summary: MarketSummary::inactive(),
+            last_transport: None,
             payroll: FixedRows::new(),
             recipe_output_remainders: FixedRows::new(),
         }
@@ -430,6 +449,26 @@ impl TownMarket {
 
     pub fn validate_persisted(&self) -> Result<(), &'static str> {
         self.profile.validate()?;
+        let transport_bound = self
+            .profile
+            .transport_allocation_sha256
+            .iter()
+            .any(|byte| *byte != 0);
+        let transport_cursor_valid = match (
+            transport_bound,
+            self.state.settled_day,
+            self.state.last_transport,
+        ) {
+            (false, _, None) | (true, 0, None) => true,
+            (true, day, Some(receipt)) if day > 0 => {
+                receipt.issued_day == day
+                    && receipt.issued_generation == day
+                    && receipt.consumed_generation == day
+                    && receipt.issued_proof_sha256.iter().any(|byte| *byte != 0)
+                    && receipt.resolved_sha256.iter().any(|byte| *byte != 0)
+            }
+            _ => false,
+        };
         if self.state.payroll.len() > MAX_PAYROLL_CURSORS
             || self.state.payroll.as_slice().iter().any(|x| x.id == 0)
             || self
@@ -453,6 +492,7 @@ impl TownMarket {
             || self.state.last_summary.day > self.state.settled_day
             || (self.state.settled_day == 0 && self.state.last_summary.day != 0)
             || (self.state.settled_day > 0 && self.state.last_summary.day != self.state.settled_day)
+            || !transport_cursor_valid
         {
             return Err("town_market_state");
         }
@@ -571,4 +611,100 @@ fn duplicate_by<T>(rows: &[T], key: impl Fn(&T) -> u32) -> bool {
     rows.iter()
         .enumerate()
         .any(|(i, row)| rows[..i].iter().any(|prior| key(prior) == key(row)))
+}
+
+#[cfg(test)]
+mod transport_cursor_tests {
+    use super::*;
+
+    fn profile() -> MarketProfile {
+        use crate::town_economy::{DeliveryQuote, HouseholdGroup, ShopSnapshot};
+        let mut households = FixedRows::new();
+        households
+            .push(HouseholdGroup {
+                id: 1,
+                account: 2,
+                households: 1,
+                need_good: 0,
+                need_per_household: Quantity::new(1).unwrap(),
+                reference_price_per_q: Money::new(1).unwrap(),
+            })
+            .unwrap();
+        let mut employers = FixedRows::new();
+        employers
+            .push(EmployerSpec {
+                account: 3,
+                worker_limit: 1,
+            })
+            .unwrap();
+        let mut shops = FixedRows::new();
+        shops
+            .push(ShopSnapshot {
+                shop_id: 1,
+                account: 3,
+                stock_id: 1,
+                good: 0,
+                shelf_price_per_q: Money::new(1).unwrap(),
+            })
+            .unwrap();
+        let mut delivery = FixedRows::new();
+        delivery
+            .push(DeliveryQuote {
+                quote_id: 1,
+                shop: 1,
+                household_group: 1,
+                good: 0,
+                reachable: true,
+                route_source: 1,
+                freight_account: 3,
+                utility_account: 3,
+                available_capacity: Quantity::new(1).unwrap(),
+                freight_per_q: Money::ZERO,
+                utility_surcharge_per_q: Money::ZERO,
+            })
+            .unwrap();
+        MarketProfile {
+            schema_version: 1,
+            id: 1,
+            transport_allocation_sha256: [0; 32],
+            households,
+            employers,
+            shops,
+            recipes: FixedRows::new(),
+            delivery,
+        }
+    }
+
+    #[test]
+    fn persisted_transport_cursor_must_match_bound_profile_and_settled_day() {
+        let mut town = TownMarket::new(profile()).unwrap();
+        assert!(town.validate_persisted().is_ok());
+
+        town.state.last_transport = Some(MarketTransportReceipt {
+            issued_day: 0,
+            issued_generation: 0,
+            issued_proof_sha256: [1; 32],
+            consumed_generation: 0,
+            resolved_sha256: [2; 32],
+        });
+        assert!(town.validate_persisted().is_err());
+
+        town.state.last_transport = None;
+        town.profile.transport_allocation_sha256 = [7; 32];
+        assert!(town.validate_persisted().is_ok());
+        town.state.settled_day = 1;
+        town.state.last_summary.day = 1;
+        assert!(town.validate_persisted().is_err());
+        town.state.last_transport = Some(MarketTransportReceipt {
+            issued_day: 1,
+            issued_generation: 1,
+            issued_proof_sha256: [3; 32],
+            consumed_generation: 1,
+            resolved_sha256: [4; 32],
+        });
+        assert!(town.validate_persisted().is_ok());
+
+        town.state.last_transport.as_mut().unwrap().issued_day = 0;
+        assert!(town.validate_persisted().is_err());
+    }
 }

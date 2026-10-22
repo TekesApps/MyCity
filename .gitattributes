@@ -61,3 +61,9 @@ docs/evidence/town-market-scenarios/attempt-*/*.stdout whitespace=-blank-at-eof,
 docs/evidence/town-market-scenarios/attempt-*/*.stderr whitespace=-blank-at-eof,-blank-at-eol
 docs/evidence/town-market-scenarios/attempt-*/source.patch whitespace=-blank-at-eof,-blank-at-eol
 docs/evidence/core-market-scenarios-integration-116/*.log whitespace=-blank-at-eof,-blank-at-eol
+
+# Keep the published, hash-bound observer source and integrated raw receipts unchanged.
+docs/evidence/m0-t13a-joint-smoke-control-03/frame_codec.py whitespace=-blank-at-eof
+docs/evidence/core-transport-tax-integration-119/**/*.stdout whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/core-transport-tax-integration-119/**/*.stderr whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/core-transport-tax-integration-119/**/*.log whitespace=-blank-at-eof,-blank-at-eol

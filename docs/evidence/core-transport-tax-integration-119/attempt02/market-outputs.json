@@ -1,0 +1,114 @@
+{
+  "base": {
+    "args": [
+      "--scenario",
+      "base"
+    ],
+    "exit": 0,
+    "stdout_sha256": "74dffc1bd71e826710fa7352050603cf33aa9d664d823d9010016bdc58079ed7"
+  },
+  "cash-shortage": {
+    "args": [
+      "--scenario",
+      "cash-shortage"
+    ],
+    "exit": 0,
+    "stdout_sha256": "86f3d6c544e2f401745ca5801c4a81286c9bef312c70b5827f3d72de367083d0"
+  },
+  "raw-shortage": {
+    "args": [
+      "--scenario",
+      "raw-shortage"
+    ],
+    "exit": 0,
+    "stdout_sha256": "469c55875bc64188416c9ab25edac182b4f39f17e145bfa244e14ac217a6213d"
+  },
+  "no-route": {
+    "args": [
+      "--scenario",
+      "no-route"
+    ],
+    "exit": 0,
+    "stdout_sha256": "c93e749c1752d46fa05350b7a2fa888ffd14b4df630557ad81f99aa9c4301377"
+  },
+  "capacity-cut": {
+    "args": [
+      "--scenario",
+      "capacity-cut"
+    ],
+    "exit": 0,
+    "stdout_sha256": "4bba97738d3f56d08469f3ca48a479f1b1d3b2094917797bb969dc91002e9f77"
+  },
+  "energy-price-rise": {
+    "args": [
+      "--scenario",
+      "energy-price-rise"
+    ],
+    "exit": 0,
+    "stdout_sha256": "5fb87e97ca419e9a0396fe14efa2276057aed10e8c4480a14a6589b3c84d9301"
+  },
+  "demand-drop": {
+    "args": [
+      "--scenario",
+      "demand-drop"
+    ],
+    "exit": 0,
+    "stdout_sha256": "a728e283d65ef2e012932308b966de8365b8a1862bb8ad3867f8c50c21a46afe"
+  },
+  "parameterized": {
+    "args": [
+      "--scenario",
+      "base",
+      "--route-capacity",
+      "2",
+      "--daily-need",
+      "5"
+    ],
+    "exit": 0,
+    "stdout_sha256": "f256e5545acc4253210f8eac66fceaf419754dd8514f50658549afe420569b98"
+  },
+  "base-tax": {
+    "args": [
+      "--scenario",
+      "base",
+      "--turnover-tax-bps",
+      "500"
+    ],
+    "exit": 0,
+    "stdout_sha256": "fc490bc10662a2ddb2f3752bf64b02e11ed35f8f32a4fe47afdc6fc52e36f27e"
+  },
+  "low-cost-control": {
+    "args": [
+      "--scenario",
+      "base",
+      "--company-cash",
+      "0",
+      "--debt-principal",
+      "1000000",
+      "--debt-due-day",
+      "2",
+      "--production-utility-cost",
+      "50"
+    ],
+    "exit": 0,
+    "stdout_sha256": "326e350c0ed4ab4f6cfbb1f99c17b0d80816b5621ee0b1c050212d4882cb21bd"
+  },
+  "low-cost-tax": {
+    "args": [
+      "--scenario",
+      "base",
+      "--company-cash",
+      "0",
+      "--debt-principal",
+      "1000000",
+      "--debt-due-day",
+      "2",
+      "--production-utility-cost",
+      "50",
+      "--turnover-tax-bps",
+      "500"
+    ],
+    "exit": 0,
+    "stdout_sha256": "2ab713a6e0d9b1862fb7f51c73b24fa0c7392a2957837c8b57d89924a4996ebf"
+  }
+}

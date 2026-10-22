@@ -1,0 +1,23 @@
+    Checking sha2-asm v0.6.4
+    Checking sha2 v0.10.9
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-core)
+error: items after a test module
+   --> crates/city-core/src/town_runtime.rs:598:1
+    |
+598 | mod transport_cursor_tests {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+693 | pub(crate) fn commodity_good(commodity: crate::assembly::Commodity) -> u8 {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+706 | fn duplicate_by<T>(rows: &[T], key: impl Fn(&T) -> u32) -> bool {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#items_after_test_module
+    = note: `-D clippy::items-after-test-module` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::items_after_test_module)]`
+    = help: move the items to before the test module was defined
+
+    Checking mycity-map v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-map)
+error: could not compile `mycity-core` (lib test) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

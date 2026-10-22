@@ -143,11 +143,16 @@ fn index(dir: &Path, r: &Reference) -> Result<ReceiptIndex, Error> {
     }
     Ok(i)
 }
+
+// Kept as the existing restore boundary; the two transport inputs are optional trust bindings.
+#[allow(clippy::too_many_arguments)]
 pub(super) fn open_into(
     dir: &Path,
     r: &Reference,
     genesis: &str,
     ceiling: u64,
+    transport_profile: Option<&mycity_core::market_access::TransportAllocationProfile>,
+    transport_allocation_hash: Option<[u8; 32]>,
     slot: &mut mycity_core::transaction::EngineSlot,
     meta: &mut MetadataWorkspace,
 ) -> Result<(u64, String), Error> {
@@ -157,12 +162,23 @@ pub(super) fn open_into(
     }
     let mut cursor = s.receipts.clone();
     let mut next = s.current.sequence;
+    let mut transport_refs = town_transport::ArchivedProofRefs::new()?;
     while let Some(r) = cursor {
         let i = index(dir, &r)?;
         if i.genesis_sha256 != genesis || i.last != next {
             return Err(Error::Invalid("v2_receipt_sequence_chain"));
         }
-        receipts::scan(dir, &r, &i, meta, |_, _| {})?;
+        transport_refs.clear();
+        let mut capture_error = None;
+        receipts::scan(dir, &r, &i, meta, |_, record| {
+            if capture_error.is_none() {
+                capture_error = transport_refs.push_record(&record).err();
+            }
+        })?;
+        if let Some(error) = capture_error {
+            return Err(error);
+        }
+        transport_refs.verify(dir, meta, transport_profile, transport_allocation_hash)?;
         next = i.first - 1;
         cursor = i.previous;
     }

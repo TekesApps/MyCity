@@ -18,6 +18,28 @@ pub(super) mod receipt_decode;
 mod retained;
 use retained::load_index;
 pub(super) use retained::{load, verify_archive};
+
+pub(super) fn verify_transport_proofs(
+    dir: &Path,
+    reference: &Reference,
+    profile: Option<&mycity_core::market_access::TransportAllocationProfile>,
+    allocation_hash: Option<[u8; 32]>,
+    meta: &mut MetadataWorkspace,
+) -> Result<(), Error> {
+    let mut refs = town_transport::ArchivedProofRefs::new()?;
+    let mut cursor = Some(reference.clone());
+    while let Some(reference) = cursor {
+        let checkpoint = load(dir, &reference, meta)?;
+        refs.clear();
+        for record in &meta.receipts {
+            refs.push_record(record)?;
+        }
+        refs.verify(dir, meta, profile, allocation_hash)?;
+        cursor = checkpoint.previous;
+    }
+    Ok(())
+}
+
 fn index_name(generation: u64) -> String {
     format!("checkpoint-index-{generation}.json")
 }

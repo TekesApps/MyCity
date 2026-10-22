@@ -1,0 +1,114 @@
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 0.98s
+     Running unittests src/lib.rs (/Users/frankqin/dev/MyCity/target/release/deps/mycity_storage-46fdf6e079eacbdd)
+
+running 18 tests
+test checkpoint_v2::receipts::tests::index_overflow_is_rejected_before_extra_record_materializes ... ok
+test metadata::lexical::tests::ignore_and_content_keep_distinct_old_scalar_grammars ... ok
+test checkpoint::receipt_decode::context_tests::original_checkpoint_depth_context_and_ignored_depth_are_preserved ... ok
+test metadata::tests::strict_bytes_reject_before_extra_decode_and_writer_failure_preserves_backing ... ok
+test model_capacity::tests::feasibility_boundary_never_authorizes_current_runtime ... ok
+test checkpoint::receipt_decode::tests::large_whitespace_ignored_fields_and_tag_last_keep_legacy_semantics ... ok
+test stream::tests::complete_stream_hash_length_and_unconsumed_tail_are_required ... ok
+test metadata::tests::metadata_counts_full_receipts_and_all_retained_file_slots ... ok
+test wal::tests::every_produced_sample_matches_old_frame_bytes_and_split_checksum ... ok
+test wal::tests::persisted_envelope_overflow_rejects_before_extra_action_decode ... ok
+test checkpoint_v2::receipts::tests::borrowed_receipt_wire_matches_owned_legacy_and_arbitrary_field_order ... ok
+test stream::tests::second_pass_or_validation_failure_cannot_publish_and_tmp_is_reclaimed ... ok
+test background::slot_load_tests::outer_hash_failure_invalidates_otherwise_valid_decoded_candidate ... ok
+test metadata::lexical::tests::long_escaped_keys_do_not_alias_known_identifiers_or_skip_late_errors ... ok
+test checkpoint_v2::receipts::tests::authenticated_but_malformed_body_tail_metadata_and_count_cannot_pass ... ok
+test metadata::lexical::tests::full_16mib_ignored_nesting_fits_one_initialized_bit_stack_and_overflow_recovers ... ok
+test metadata::lexical::tests::finite_known_values_reject_long_wrong_types_without_old_string_fallback ... ok
+test checkpoint::receipt_decode::tests::all_variants_match_original_typed_reader_for_map_sequence_and_bad_fields ... ok
+
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.19s
+
+     Running unittests src/bin/mycity-storage-worker.rs (/Users/frankqin/dev/MyCity/target/release/deps/mycity_storage_worker-cfad69f3667db819)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/background.rs (/Users/frankqin/dev/MyCity/target/release/deps/background-7fab7fb05f6bc756)
+
+running 12 tests
+test normal_disk_exhaustion_preserves_background_and_timeline_funding ... FAILED
+test canonical_accept_rejections_do_not_create_wal_or_cold_failed_receipts ... FAILED
+test retained_candidate_slot_spans_bad_import_staged_checkpoint_wal_reopen_and_retry ... FAILED
+test staged_asset_survives_midflight_checkpoint_restart_and_generation_rebind ... FAILED
+test v2_staged_asset_checkpoint_reopen_accept_and_gc_preserve_original_receipts ... FAILED
+test actual_process_exit_at_every_import_and_accept_boundary_restores_original_result ... FAILED
+test worker_cache_charge_survives_missing_files_and_moves_out_of_task_reserve_once ... FAILED
+test empty_and_real_freight_large_pages_have_funded_barrier_and_restore_exactly_once ... FAILED
+test committed_missing_or_corrupt_asset_is_rejected_before_tail_truncation_and_gc ... ok
+test wrong_window_finite_forgery_and_old_job_cannot_consume_reservation_or_replace_field ... ok
+test result_reference_limit_checkpoints_before_new_obligation_and_keeps_cold_receipts ... FAILED
+test failed_operation_flood_cannot_consume_dedicated_control_or_receipt_slots ... ok
+
+failures:
+
+---- normal_disk_exhaustion_preserves_background_and_timeline_funding stdout ----
+
+thread 'normal_disk_exhaustion_preserves_background_and_timeline_funding' panicked at crates/city-storage/tests/background.rs:298:48:
+called `Result::unwrap()` on an `Err` value: Invalid("town_transport_market_missing")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- canonical_accept_rejections_do_not_create_wal_or_cold_failed_receipts stdout ----
+
+thread 'canonical_accept_rejections_do_not_create_wal_or_cold_failed_receipts' panicked at crates/city-storage/tests/background.rs:776:44:
+called `Result::unwrap()` on an `Err` value: Invalid("town_transport_market_missing")
+
+---- retained_candidate_slot_spans_bad_import_staged_checkpoint_wal_reopen_and_retry stdout ----
+
+thread 'retained_candidate_slot_spans_bad_import_staged_checkpoint_wal_reopen_and_retry' panicked at crates/city-storage/tests/background.rs:852:48:
+called `Result::unwrap()` on an `Err` value: Invalid("town_transport_market_missing")
+
+---- staged_asset_survives_midflight_checkpoint_restart_and_generation_rebind stdout ----
+
+thread 'staged_asset_survives_midflight_checkpoint_restart_and_generation_rebind' panicked at crates/city-storage/tests/background.rs:232:48:
+called `Result::unwrap()` on an `Err` value: Invalid("town_transport_market_missing")
+
+---- v2_staged_asset_checkpoint_reopen_accept_and_gc_preserve_original_receipts stdout ----
+
+thread 'v2_staged_asset_checkpoint_reopen_accept_and_gc_preserve_original_receipts' panicked at crates/city-storage/tests/background.rs:800:48:
+called `Result::unwrap()` on an `Err` value: Invalid("town_transport_market_missing")
+
+---- actual_process_exit_at_every_import_and_accept_boundary_restores_original_result stdout ----
+
+thread 'actual_process_exit_at_every_import_and_accept_boundary_restores_original_result' panicked at crates/city-storage/tests/background.rs:498:9:
+assertion `left == right` failed: Validated Invalid("town_transport_market_missing")
+
+  left: Some(2)
+ right: Some(97)
+
+---- worker_cache_charge_survives_missing_files_and_moves_out_of_task_reserve_once stdout ----
+
+thread 'worker_cache_charge_survives_missing_files_and_moves_out_of_task_reserve_once' panicked at crates/city-storage/tests/background.rs:732:44:
+called `Result::unwrap()` on an `Err` value: Invalid("town_transport_market_missing")
+
+---- empty_and_real_freight_large_pages_have_funded_barrier_and_restore_exactly_once stdout ----
+
+thread 'empty_and_real_freight_large_pages_have_funded_barrier_and_restore_exactly_once' panicked at crates/city-storage/tests/background.rs:200:56:
+called `Result::unwrap()` on an `Err` value: Invalid("town_transport_market_missing")
+
+---- result_reference_limit_checkpoints_before_new_obligation_and_keeps_cold_receipts stdout ----
+
+thread 'result_reference_limit_checkpoints_before_new_obligation_and_keeps_cold_receipts' panicked at crates/city-storage/tests/background.rs:685:44:
+called `Result::unwrap()` on an `Err` value: Invalid("town_transport_market_missing")
+
+
+failures:
+    actual_process_exit_at_every_import_and_accept_boundary_restores_original_result
+    canonical_accept_rejections_do_not_create_wal_or_cold_failed_receipts
+    empty_and_real_freight_large_pages_have_funded_barrier_and_restore_exactly_once
+    normal_disk_exhaustion_preserves_background_and_timeline_funding
+    result_reference_limit_checkpoints_before_new_obligation_and_keeps_cold_receipts
+    retained_candidate_slot_spans_bad_import_staged_checkpoint_wal_reopen_and_retry
+    staged_asset_survives_midflight_checkpoint_restart_and_generation_rebind
+    v2_staged_asset_checkpoint_reopen_accept_and_gc_preserve_original_receipts
+    worker_cache_charge_survives_missing_files_and_moves_out_of_task_reserve_once
+
+test result: FAILED. 3 passed; 9 failed; 0 ignored; 0 measured; 0 filtered out; finished in 29.55s
+
+error: test failed, to rerun pass `-p mycity-storage --test background`

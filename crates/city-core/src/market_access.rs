@@ -5,14 +5,18 @@
 
 use crate::{
     town_economy::{plan_day, DeliveryQuote, MarketInput, SettlementBatch},
-    transport::{Assignment, OdDemand, Opening, UnservedReason},
+    transport::{bounded_vec, Assignment, OdDemand, Opening, UnservedReason},
     units::{Money, Quantity},
 };
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize};
 use sha2::{Digest, Sha256};
 use std::collections::{BTreeMap, BTreeSet};
 
 pub const MAX_TRIP_PARTITIONS: usize = 256;
+/// Conservative strict-JSON maximum derived from the current Opening, Assignment, partition,
+/// and envelope field limits. Keep below the independent 2 MiB Store asset read cap.
+pub const TRANSPORT_PROOF_SCHEMA_MAX_BYTES: usize = 1_571_328;
+pub const TRANSPORT_PROOF_READ_LIMIT: usize = 2 * 1024 * 1024;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -101,6 +105,137 @@ pub struct ResolvedDeliveryQuotes {
     pub fee_policy_input: FeePolicyInput,
     pub delivery_quotes: Vec<DeliveryQuote>,
     pub delivery_access: Vec<DeliveryAccess>,
+}
+
+/// Store-verified, immutable transport source for one complete market settlement. Store
+/// verifies `proof_sha256` against the exact bounded file bytes and the genesis-bound fixed
+/// allocation profile; the Engine resolves it after constructing the authoritative MarketInput.
+fn partitions<'de, D: Deserializer<'de>>(d: D) -> Result<Vec<TripPartition>, D::Error> {
+    bounded_vec::<D, TripPartition, MAX_TRIP_PARTITIONS>(d)
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum AllocationScope {
+    SingleTownExclusive,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum DemandRepeatPolicy {
+    RepeatFixedDailyDemand,
+}
+
+/// Immutable world-owned allocation assumptions. The World stores only this asset's SHA-256;
+/// exact records remain in Store's bounded external file.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct TransportAllocationProfile {
+    pub schema: u16,
+    pub world_id: u64,
+    pub branch_id: u64,
+    pub market_profile_id: u32,
+    pub period_seconds: u32,
+    pub allocation_scope: AllocationScope,
+    pub demand_repeat_policy: DemandRepeatPolicy,
+    pub opening: Opening,
+    pub assignment: Assignment,
+    #[serde(deserialize_with = "partitions")]
+    pub partitions: Vec<TripPartition>,
+    pub fee_policy: FeePolicyInput,
+}
+
+impl TransportAllocationProfile {
+    pub fn validate(&self) -> Result<(), Error> {
+        if self.schema != 1
+            || self.world_id == 0
+            || self.branch_id == 0
+            || self.market_profile_id == 0
+            || self.period_seconds != crate::timeline::DAY as u32
+            || self.allocation_scope != AllocationScope::SingleTownExclusive
+            || self.demand_repeat_policy != DemandRepeatPolicy::RepeatFixedDailyDemand
+            || self.partitions.is_empty()
+            || self.partitions.len() > MAX_TRIP_PARTITIONS
+        {
+            return Err(Error::InvalidSnapshotRef);
+        }
+        self.opening
+            .validate()
+            .map_err(|_| Error::InvalidTransport)?;
+        self.assignment
+            .verify(&self.opening)
+            .map_err(|_| Error::InvalidAssignment)?;
+        let mut ids = BTreeSet::new();
+        if self
+            .partitions
+            .iter()
+            .any(|partition| partition.quote_id == 0 || !ids.insert(partition.quote_id))
+        {
+            return Err(Error::InvalidPartition);
+        }
+        Ok(())
+    }
+}
+
+/// Exact immutable daily proof referenced by one settlement journal action.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct TransportProofAsset {
+    pub schema: u16,
+    pub world_id: u64,
+    pub branch_id: u64,
+    pub profile_id: u32,
+    pub allocation_profile_sha256: [u8; 32],
+    pub service_day: u64,
+    pub period_seconds: u32,
+    pub generation: u64,
+    pub opening: Opening,
+    pub assignment: Assignment,
+    #[serde(deserialize_with = "partitions")]
+    pub partitions: Vec<TripPartition>,
+    pub fee_policy: FeePolicyInput,
+}
+
+#[derive(Clone, Copy, Serialize)]
+pub struct TransportProofView<'a> {
+    pub schema: u16,
+    pub world_id: u64,
+    pub branch_id: u64,
+    pub profile_id: u32,
+    pub allocation_profile_sha256: [u8; 32],
+    pub service_day: u64,
+    pub period_seconds: u32,
+    pub generation: u64,
+    pub opening: &'a Opening,
+    pub assignment: &'a Assignment,
+    pub partitions: &'a [TripPartition],
+    pub fee_policy: FeePolicyInput,
+}
+
+impl TransportProofAsset {
+    pub fn view(&self) -> TransportProofView<'_> {
+        TransportProofView {
+            schema: self.schema,
+            world_id: self.world_id,
+            branch_id: self.branch_id,
+            profile_id: self.profile_id,
+            allocation_profile_sha256: self.allocation_profile_sha256,
+            service_day: self.service_day,
+            period_seconds: self.period_seconds,
+            generation: self.generation,
+            opening: &self.opening,
+            assignment: &self.assignment,
+            partitions: &self.partitions,
+            fee_policy: self.fee_policy,
+        }
+    }
+}
+
+/// Borrowed daily proof source supplied by Store after checking the fixed allocation profile.
+#[derive(Clone, Copy)]
+pub struct SettlementDeliveryInput<'a> {
+    pub proof_sha256: [u8; 32],
+    pub proof: TransportProofView<'a>,
 }
 
 /// Compact immutable-snapshot locator suitable for a bounded settlement command. Storage
@@ -238,7 +373,7 @@ fn source_digest(
 
 /// Resolve verified transport assignments into current-day market delivery quotes without
 /// invoking the market planner. `opening` and `assignment` should be borrowed from the same
-/// immutable, hash-verified transport snapshot identified by the caller's snapshot reference.
+/// immutable, Store-verified allocation proof for this service day.
 /// This is the integration boundary for a writer that must continue with its own production
 /// executions and call `plan_day_with_execution` exactly once.
 pub fn resolve_delivery_quotes(
@@ -426,10 +561,9 @@ pub fn resolve_delivery_quotes(
     })
 }
 
-/// Resolve quotes using source records loaded from a hash-verified immutable snapshot. The
-/// command carries only `profile_id` and this compact reference; it never embeds the bounded
-/// `Opening` or `Assignment`. `input` carries the authoritative world/branch/revision/day and
-/// operation scope already present in the enclosing Engine transaction.
+/// Resolve quotes using source records loaded from a hash-verified immutable allocation proof.
+/// The compact `TransportSnapshotRef` is a generation selector for existing API compatibility;
+/// Store binds the underlying proof hash and day in the settlement action.
 pub fn resolve_delivery_quotes_from_snapshot(
     profile_id: u32,
     source_snapshot: TransportSnapshotRef,
@@ -483,4 +617,142 @@ pub fn source_failure(assignment: &Assignment, source: u64) -> Option<UnservedRe
         .iter()
         .find(|x| x.source_id == source)
         .map(|x| x.reason)
+}
+
+#[cfg(test)]
+mod proof_schema_tests {
+    use super::*;
+    use crate::transport::{
+        BoundaryFlow, DemandOutcome, EdgeFlow, Entrance, Node, OdDemand, PathReceipt, RoadEdge,
+        Unserved,
+    };
+
+    #[test]
+    fn maximal_bounded_transport_json_fits_the_frozen_schema_limit() {
+        let max32 = u32::MAX;
+        let opening = Opening {
+            revision: u64::MAX,
+            nodes: vec![
+                Node {
+                    id: max32,
+                    city_id: max32,
+                };
+                crate::transport::MAX_NODES
+            ],
+            edges: vec![
+                RoadEdge {
+                    id: max32,
+                    from: max32,
+                    to: max32,
+                    city_from: max32,
+                    city_to: max32,
+                    free_flow_seconds: max32,
+                    capacity_people: max32,
+                    mode_mask: u8::MAX,
+                    open: true,
+                    boundary_source: Some(u64::MAX),
+                };
+                crate::transport::MAX_EDGES
+            ],
+            entrances: vec![
+                Entrance {
+                    id: max32,
+                    owner: max32,
+                    node: max32,
+                    mode_mask: u8::MAX,
+                    authorized: true,
+                };
+                crate::transport::MAX_ENTRANCES
+            ],
+            demands: vec![
+                OdDemand {
+                    source_id: u64::MAX,
+                    origin_entrance: max32,
+                    destination_entrance: max32,
+                    mode: u8::MAX,
+                    people: max32,
+                };
+                crate::transport::MAX_DEMANDS
+            ],
+        };
+        let assignment = Assignment {
+            network_revision: u64::MAX,
+            input_fingerprint: [u8::MAX; 32],
+            edge_flows: vec![
+                EdgeFlow {
+                    edge_id: max32,
+                    people: u64::MAX,
+                    capacity_people: max32,
+                    cost_seconds: u64::MAX,
+                };
+                crate::transport::MAX_EDGES
+            ],
+            unserved: vec![
+                Unserved {
+                    source_id: u64::MAX,
+                    people: max32,
+                    reason: UnservedReason::AssignmentBudgetExhausted,
+                };
+                crate::transport::MAX_DEMANDS
+            ],
+            boundary_flows: vec![
+                BoundaryFlow {
+                    source_id: u64::MAX,
+                    people: u64::MAX,
+                };
+                crate::transport::MAX_EDGES
+            ],
+            demand_outcomes: vec![
+                DemandOutcome {
+                    source_id: u64::MAX,
+                    requested_people: max32,
+                    served_people: max32,
+                    unserved_people: max32,
+                    mean_travel_seconds: Some(u64::MAX),
+                };
+                crate::transport::MAX_DEMANDS
+            ],
+            path_receipts: vec![
+                PathReceipt {
+                    source_id: u64::MAX,
+                    people: max32,
+                    edge_ids: vec![max32; crate::transport::MAX_PATH_EDGES],
+                };
+                crate::transport::MAX_PATH_RECEIPTS
+            ],
+            requested_people: u64::MAX,
+            served_people: u64::MAX,
+            unserved_people: u64::MAX,
+            routing_steps: u16::MAX,
+        };
+        let partitions = vec![
+            TripPartition {
+                quote_id: u64::MAX,
+                outbound_source: u64::MAX,
+                return_source: u64::MAX,
+                trip_count: max32,
+                goods_per_trip: Quantity::new(i64::MAX).unwrap(),
+            };
+            MAX_TRIP_PARTITIONS
+        ];
+        let proof = TransportProofView {
+            schema: u16::MAX,
+            world_id: u64::MAX,
+            branch_id: u64::MAX,
+            profile_id: max32,
+            allocation_profile_sha256: [u8::MAX; 32],
+            service_day: u64::MAX,
+            period_seconds: max32,
+            generation: u64::MAX,
+            opening: &opening,
+            assignment: &assignment,
+            partitions: &partitions,
+            fee_policy: FeePolicyInput {
+                provider_account: max32,
+                cents_per_travel_second: max32,
+            },
+        };
+        let encoded = serde_json::to_vec(&proof).unwrap();
+        assert!(encoded.len() <= TRANSPORT_PROOF_SCHEMA_MAX_BYTES);
+    }
 }
