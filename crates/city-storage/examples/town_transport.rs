@@ -2,7 +2,7 @@
 use mycity_core::{
     construction::{
         EngineCommand as ConstructionCommand, Gate, GateCategory, GateDecision, Kind, Material,
-        OPERATION_PREFIX, Project,
+        Project, OPERATION_PREFIX,
     },
     market_access::{
         AllocationScope, DemandRepeatPolicy, FeePolicyInput, RoadCapacityEffectBinding,
@@ -39,7 +39,9 @@ fn err(value: impl std::fmt::Debug) -> String {
     format!("{value:?}")
 }
 
-fn transport_proof_from_receipt(receipt: &mycity_core::transaction::Receipt) -> Option<[u8; 32]> {
+fn transport_proof_from_receipt(
+    receipt: &mycity_core::transaction::JournalRecord,
+) -> Option<[u8; 32]> {
     receipt
         .actions
         .iter()
