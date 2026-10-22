@@ -1,0 +1,19 @@
+Error: "invalid_scenario_values_or_turnover_tax_bps_over_10000"
+        0.00 real         0.00 user         0.00 sys
+             1769472  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+                 276  page reclaims
+                   2  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+                   0  voluntary context switches
+                   7  involuntary context switches
+            14965214  instructions retired
+             6385070  cycles elapsed
+             1065248  peak memory footprint

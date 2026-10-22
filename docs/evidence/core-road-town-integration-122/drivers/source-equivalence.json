@@ -1,0 +1,26 @@
+{
+  "49_cli_core_storage_runtime_equal_final_except_added_private_test_module": true,
+  "31-cli-build": {
+    "changed_files_from_built_source": [
+      "crates/city-headless/src/cpu_log.rs",
+      "crates/city-storage/src/town_transport.rs"
+    ],
+    "actual_source_archive_sha256": "e7d913079224a3f8623daebfa2e2b6dd402715decd332ea6e0b5b4c20d83b610"
+  },
+  "45-lifelines-genesis-fix-build": {
+    "changed_files_from_built_source": [
+      "crates/city-headless/src/cpu_log.rs",
+      "crates/city-storage/src/town_transport.rs"
+    ],
+    "actual_source_archive_sha256": "f74b90952125ad79ea00b45d9bd21dbe4edf375fa30ca1d77ad9f06fc0f57907"
+  },
+  "49-cli-rebuild": {
+    "changed_files_from_built_source": [
+      "crates/city-headless/src/cpu_log.rs",
+      "crates/city-storage/src/town_transport.rs"
+    ],
+    "actual_source_archive_sha256": "f74b90952125ad79ea00b45d9bd21dbe4edf375fa30ca1d77ad9f06fc0f57907"
+  },
+  "31_economy_core_code_fixtures_and_manifest_dependencies_equal_final": true,
+  "headless_cpu_log_change_scope": "separate consumer diagnostics fix; not a dependency of the recorded core/storage examples; targeted five tests and workspace checks passed"
+}

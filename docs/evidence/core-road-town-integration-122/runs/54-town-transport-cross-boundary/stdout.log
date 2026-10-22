@@ -1,0 +1,50 @@
+{
+  "allocation_scope": "single_town_exclusive_market",
+  "boundary_edges": {
+    "9101": "edge-10:city-1-to-city-2",
+    "9102": "edge-11:city-2-to-city-1"
+  },
+  "boundary_sources": {
+    "outbound": 9101,
+    "return": 9102
+  },
+  "cash_conservation": "passed",
+  "cold_reopen_historical_proofs": "passed",
+  "cross_city_contract_fulfillment": "not_implemented_or_tested",
+  "day_one_actual_sales": 100,
+  "day_one_boundary_proof": "fresh_and_verified",
+  "day_two_actual_sales": 100,
+  "day_two_boundary_proof": "fresh_and_verified",
+  "each_od_requested_people": 10,
+  "each_od_served_people": 5,
+  "ending_inventory": 0,
+  "entrances": [
+    {
+      "authorized": true,
+      "node": 1,
+      "owner": 2
+    },
+    {
+      "authorized": true,
+      "node": 2,
+      "owner": 3
+    }
+  ],
+  "fixed_od_sources": {
+    "outbound": 101,
+    "return": 102
+  },
+  "graph_cities": [
+    1,
+    2
+  ],
+  "missing_or_duplicate_boundary_sources": "rejected",
+  "no_inventory_refill": true,
+  "od_and_boundary_sources": "immutable_fixed_fixture",
+  "opening_inventory": 200,
+  "provider_freight_receipts_match": "passed",
+  "region_snapshot_or_migration": "not_implemented_or_tested",
+  "round_trip_trips_allocated": 5,
+  "scenario": "cross-boundary",
+  "single_quote_accessible_goods": 100
+}

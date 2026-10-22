@@ -1,0 +1,5 @@
+   Compiling mycity-core v0.1.0 (/Volumes/HP P900/dev/MyCity/work/legacy-accepted-project-119-src/crates/city-core)
+   Compiling mycity-map v0.1.0 (/Volumes/HP P900/dev/MyCity/work/legacy-accepted-project-119-src/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Volumes/HP P900/dev/MyCity/work/legacy-accepted-project-119-src/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 49.00s
+  Executable tests/legacy_accepted_fixture.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/legacy_accepted_fixture-a689f7cb0272bc59)

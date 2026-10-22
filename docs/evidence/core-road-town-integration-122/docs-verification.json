@@ -1,0 +1,7 @@
+{
+  "link_targets_checked": 291,
+  "sparse_omitted_targets_verified_in_git_index": 197,
+  "missing_targets": [],
+  "initial_filesystem_only_checker": "refused sparse-omitted tracked files; checker now verifies index presence without materializing historical evidence",
+  "source_zip_current_file_hashes_equal": true
+}

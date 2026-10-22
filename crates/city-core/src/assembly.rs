@@ -458,6 +458,14 @@ impl World {
                 .iter()
                 .take(project.material_count as usize)
             {
+                if project.recoverable_commands()
+                    && self
+                        .boot
+                        .as_ref()
+                        .is_some_and(|boot| boot.governs(material.stock_id))
+                {
+                    return Err("checkpoint_construction_governed_stock".into());
+                }
                 let stock_handle = self
                     .stock_handle(material.stock_id)
                     .map_err(|_| "checkpoint_construction_stock")?;
@@ -745,6 +753,14 @@ pub(crate) fn assemble_into(bytes: &[u8], world: &mut World) -> Result<(), Strin
             .iter()
             .take(project.material_count as usize)
         {
+            if project.recoverable_commands()
+                && world
+                    .boot
+                    .as_ref()
+                    .is_some_and(|boot| boot.governs(material.stock_id))
+            {
+                return Err("construction_governed_stock".into());
+            }
             let stock = world.stock_handle(material.stock_id)?;
             let stock = world.stocks.get(stock).map_err(|_| "construction_stock")?;
             if world
@@ -899,6 +915,7 @@ mod tests {
             schema_version: 1,
             id: 1,
             transport_allocation_sha256: [0; 32],
+            utility_supply: None,
             households,
             employers,
             shops,

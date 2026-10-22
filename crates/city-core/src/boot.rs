@@ -8,6 +8,12 @@ use serde::{Deserialize, Serialize};
 pub const PROFILE: &str = "pboot-cold-micro-v1";
 pub const SCALE_PROFILE: &str = "pboot-cold-scale-v1";
 pub const SECONDS: u64 = 60;
+fn zero_quantity(value: &Quantity) -> bool {
+    *value == Quantity::ZERO
+}
+fn zero_money(value: &Money) -> bool {
+    *value == Money::ZERO
+}
 #[derive(Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Opening {
@@ -114,6 +120,11 @@ pub struct Boot {
     pub fuel_used: Quantity,
     pub exports: [Quantity; 2],
     pub exported_basis: Money,
+    /// Subset of total exports consumed locally by the bound Town, not Exchange.
+    #[serde(default, skip_serializing_if = "zero_quantity")]
+    pub local_electricity_exported: Quantity,
+    #[serde(default, skip_serializing_if = "zero_money")]
+    pub local_electricity_basis: Money,
 }
 fn q(v: i64) -> Quantity {
     Quantity::new(v).expect("profile quantity")
@@ -228,6 +239,8 @@ impl Boot {
             fuel_used: Quantity::ZERO,
             exports: [Quantity::ZERO; 2],
             exported_basis: Money::ZERO,
+            local_electricity_exported: Quantity::ZERO,
+            local_electricity_basis: Money::ZERO,
         })
     }
     pub(crate) fn export(
@@ -249,7 +262,28 @@ impl Boot {
         self.exported_basis = add(self.exported_basis, cost)?;
         Ok(cost)
     }
+    pub(crate) fn export_local_electricity(
+        &mut self,
+        quantity: Quantity,
+        ledger: &mut impl Ledger,
+    ) -> Result<Money, TxError> {
+        let basis = self.export(0, quantity, ledger)?;
+        self.local_electricity_exported = plus(self.local_electricity_exported, quantity)?;
+        self.local_electricity_basis = add(self.local_electricity_basis, basis)?;
+        Ok(basis)
+    }
     pub(crate) fn validate_world_shape(&self, w: &World, joint: bool) -> Result<(), String> {
+        if (self.local_electricity_exported != Quantity::ZERO
+            || self.local_electricity_basis != Money::ZERO)
+            && !w.town.as_ref().is_some_and(|town| {
+                town.profile.utility_supply.is_some_and(|binding| {
+                    binding.boot_operator == self.operator
+                        && binding.boot_stock_id == self.stocks[1]
+                })
+            })
+        {
+            return Err("boot_unbound_local_electricity".into());
+        }
         let scaled = self.profile.as_str() == SCALE_PROFILE;
         if ![PROFILE, SCALE_PROFILE].contains(&self.profile.as_str())
             || w.economy.is_some()
@@ -486,6 +520,13 @@ impl Boot {
         Ok(())
     }
     pub(crate) fn validate(&self, l: &mut impl Ledger, world_cash: Money) -> Result<(), TxError> {
+        if self.local_electricity_exported > self.exports[0]
+            || self.local_electricity_basis > self.exported_basis
+            || (self.local_electricity_exported == Quantity::ZERO
+                && self.local_electricity_basis != Money::ZERO)
+        {
+            return Err(error(Error::Invariant));
+        }
         if world_cash != self.initial_cash {
             return Err(error(Error::Invariant));
         }

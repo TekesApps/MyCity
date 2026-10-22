@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "/usr/bin/time",
+    "-l",
+    "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/3330e412cf39a198cedf926c4120c7374452027231ecf6c4aa61d4e41826c1ee/town_utility",
+    "--generator-failure"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/production",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-22T17:09:51.088731+00:00",
+  "source_manifest_sha256": "16d292c64c0cc339fb3c9092fa9d5b21db0e0b8ce718d02552988b0caedd31e0"
+}

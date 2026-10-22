@@ -1,0 +1,7 @@
+{
+  "work_physical": "/Volumes/HP P900/dev/MyCity/work",
+  "target_physical": "/Volumes/HP P900/dev/MyCity/target",
+  "storage": "external HP P900 USB/APFS SSD",
+  "scope": "functional CLI scenarios; not full-map performance or real-16GB acceptance",
+  "unrelated_compiler_observed": true
+}

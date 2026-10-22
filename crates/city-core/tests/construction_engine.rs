@@ -1,8 +1,8 @@
 use mycity_core::{
     assembly::assemble,
     construction::{
-        EngineCommand as C, Gate, GateCategory, GateDecision, Kind, Material, Phase, Project,
-        OPERATION_PREFIX, STATE_BUDGET_BYTES,
+        AbortClearanceMaterialRule, AbortClearanceSpec, EngineCommand as C, Gate, GateCategory,
+        GateDecision, Kind, Material, Phase, Project, OPERATION_PREFIX, STATE_BUDGET_BYTES,
     },
     timeline::Command as T,
     transaction::{Action, Caller, Engine, Envelope, Resource, TxError},
@@ -320,6 +320,164 @@ fn insufficient_site_capacity_funds_and_materials_leave_candidate_domains_unchan
 }
 
 #[test]
+fn modern_unstarted_road_can_cancel_while_legacy_rejection_is_preserved() {
+    for legacy in [false, true] {
+        let mut value: Value = serde_json::from_slice(&opening(1_000, 1_000_000)).unwrap();
+        value["construction"]["operating_edge_id"] = json!(10);
+        if legacy {
+            value["construction"]
+                .as_object_mut()
+                .unwrap()
+                .remove("execution_policy");
+        }
+        let mut e = Engine::new(
+            assemble(&serde_json::to_vec(&value).unwrap()).unwrap(),
+            vec![
+                Resource::new(80, 1).unwrap(),
+                Resource::new(81, 2).unwrap(),
+                Resource::new(82, 10).unwrap(),
+            ],
+        )
+        .unwrap();
+        let before_hash = e.state_hash();
+        let before_cash = cash(&e, 4);
+        let before_stock = stock(&e, 1);
+        let outcome = construction_auto(&mut e, Caller::Account(4), C::Cancel);
+        if legacy {
+            assert_eq!(outcome, Err(TxError::InvalidOperation));
+            assert_eq!(e.state_hash(), before_hash);
+        } else {
+            outcome.unwrap();
+            assert_eq!(
+                e.world().view().construction.unwrap().phase,
+                Phase::Cancelled
+            );
+        }
+        assert_eq!(cash(&e, 4), before_cash);
+        assert_eq!(stock(&e, 1), before_stock);
+        assert!(e.leases().iter().all(Option::is_none));
+        assert_eq!(
+            e.resources().iter().find(|r| r.id == 81).unwrap().capacity,
+            2
+        );
+        assert_eq!(
+            Engine::restore_checkpoint(&e.export_checkpoint().unwrap())
+                .unwrap()
+                .state_hash(),
+            e.state_hash()
+        );
+    }
+}
+
+#[test]
+fn clearance_metadata_start_is_atomic_and_rejects_a_future_restored_clock() {
+    let mut value: Value = serde_json::from_slice(&opening(1_000, 1_000_000)).unwrap();
+    let mut project: Project = serde_json::from_value(value["construction"].clone()).unwrap();
+    let mut spec = AbortClearanceSpec {
+        base_worker_seconds: 600,
+        ..Default::default()
+    };
+    spec.material_rules[0] = AbortClearanceMaterialRule {
+        stock_id: 1,
+        quantity_per_waste_capacity_unit: 500,
+        worker_seconds_per_thousand_quantity: 3_600,
+    };
+    project.abort_clearance_spec = Some(spec);
+    value["construction"] = serde_json::to_value(project).unwrap();
+    let mut e = Engine::new(
+        assemble(&serde_json::to_vec(&value).unwrap()).unwrap(),
+        vec![
+            Resource::new(80, 1).unwrap(),
+            Resource::new(81, 2).unwrap(),
+            Resource::new(82, 10).unwrap(),
+        ],
+    )
+    .unwrap();
+    file_and_approve(&mut e);
+    start(&mut e).unwrap();
+    enable_timeline(&mut e);
+    advance(&mut e, END_OF_SHIFT);
+    let id = effect_id(&e);
+    construction(
+        &mut e,
+        Caller::Account(3),
+        C::Work {
+            at: GameTime::new(END_OF_SHIFT as i64).unwrap(),
+            elapsed_seconds: END_OF_SHIFT as u32,
+            worker_seconds: (BUILD_SECONDS / 2) as u32,
+        },
+        id,
+    )
+    .unwrap();
+    construction_auto(&mut e, Caller::Account(3), C::Pause).unwrap();
+    construction_auto(
+        &mut e,
+        Caller::Account(4),
+        C::BeginDemolition { waste_receiver: 3 },
+    )
+    .unwrap();
+    for (party, gate) in [(2, 1), (1, 2)] {
+        construction_auto(
+            &mut e,
+            Caller::Account(party),
+            C::DecideGate {
+                gate_id: gate,
+                decision: GateDecision::Accepted,
+                evidence_id: 200 + u64::from(gate),
+            },
+        )
+        .unwrap();
+    }
+    construction_auto(&mut e, Caller::Account(4), C::Prepare).unwrap();
+    let before = e.export_checkpoint().unwrap();
+    let before_hash = e.state_hash();
+    let env = envelope(
+        &e,
+        ordinary_id(&e),
+        Action::Construction { command: C::Start },
+    );
+    assert_eq!(
+        e.execute_recorded(Caller::Account(4), env.clone(), |_, _| Err::<(), _>("disk")),
+        Err("disk")
+    );
+    assert_eq!(e.export_checkpoint().unwrap(), before);
+    assert_eq!(e.state_hash(), before_hash);
+
+    let original_token = e.world().view().construction.unwrap().site_token;
+    let before_cash = cash(&e, 4);
+    let before_stock = stock(&e, 1);
+    let receipt = e.execute(Caller::Account(4), env.clone()).unwrap();
+    let after = e.export_checkpoint().unwrap();
+    assert_eq!(e.execute(Caller::Account(4), env).unwrap(), receipt);
+    let reopened = Engine::restore_checkpoint(&after).unwrap();
+    // Engine checkpoints omit the hot retry journal. Durable lost-response
+    // retries belong to Store's immutable receipt archive tests, not this API.
+    assert_eq!(reopened.state_hash(), e.state_hash());
+    assert_eq!(reopened.export_checkpoint().unwrap(), after);
+    let clearing = reopened.world().view().construction.unwrap();
+    assert_eq!(clearing.phase, Phase::Demolition);
+    assert_eq!(clearing.site_token, original_token);
+    assert_eq!(
+        clearing
+            .abort_clearance
+            .unwrap()
+            .original_completed_worker_seconds,
+        BUILD_SECONDS / 2
+    );
+    assert_eq!(clearing.planned_worker_seconds, 2_400);
+    assert!(!clearing.operating_published);
+    assert_eq!(cash(&reopened, 4), before_cash);
+    assert_eq!(stock(&reopened, 1), before_stock);
+
+    // Keep Project's internal timestamp ordering valid while moving the whole
+    // clearance into the future. The Engine's restored calendar must reject it.
+    let mut forged: Value = serde_json::from_slice(&after).unwrap();
+    forged["world"]["construction"]["started_at"] = json!(END_OF_SHIFT + 1);
+    forged["world"]["construction"]["last_work_at"] = json!(END_OF_SHIFT + 1);
+    assert!(Engine::restore_checkpoint(&serde_json::to_vec(&forged).unwrap()).is_err());
+}
+
+#[test]
 fn durable_hook_failure_does_not_publish_and_retry_after_commit_returns_original_receipt() {
     let mut e = engine(1_000, 1_000_000, 1);
     file_and_approve(&mut e);
@@ -461,6 +619,71 @@ fn non_draft_checkpoint_restores_exact_site_lease_and_continues_to_operational_w
         e.resources().iter().find(|r| r.id == 80).unwrap().occupied,
         1
     );
+}
+
+#[test]
+fn retrofit_publication_and_rejected_demolition_keep_the_operating_capacity() {
+    let mut value: Value = serde_json::from_slice(&opening(1_000, 1_000_000)).unwrap();
+    value["construction"]["kind"] = serde_json::to_value(Kind::Retrofit).unwrap();
+    let mut e = Engine::new(
+        assemble(&serde_json::to_vec(&value).unwrap()).unwrap(),
+        vec![
+            Resource::new(80, 1).unwrap(),
+            Resource::new(81, 2).unwrap(),
+            Resource::new(82, 10).unwrap(),
+        ],
+    )
+    .unwrap();
+    file_and_approve(&mut e);
+    start(&mut e).unwrap();
+    enable_timeline(&mut e);
+    advance(&mut e, END_OF_SHIFT);
+    work(&mut e).unwrap();
+    let inspect = effect_id(&e);
+    construction(&mut e, Caller::Account(3), C::SubmitInspection, inspect).unwrap();
+    let accept = effect_id(&e);
+    construction(
+        &mut e,
+        Caller::Account(1),
+        C::AcceptInspection {
+            inspector: 1,
+            accepted: true,
+        },
+        accept,
+    )
+    .unwrap();
+    let before = e.world().view().construction.unwrap();
+    assert_eq!(before.kind, Kind::Retrofit);
+    assert_eq!(before.phase, Phase::Operational);
+    assert!(before.operating_published);
+    let owner_cash = cash(&e, 4);
+    construction_auto(
+        &mut e,
+        Caller::Account(4),
+        C::BeginDemolition { waste_receiver: 3 },
+    )
+    .unwrap();
+    assert_eq!(e.world().view().construction.unwrap().phase, Phase::Review);
+    construction_auto(
+        &mut e,
+        Caller::Account(2),
+        C::DecideGate {
+            gate_id: 1,
+            decision: GateDecision::Rejected,
+            evidence_id: 0,
+        },
+    )
+    .unwrap();
+    let retained = e.world().view().construction.unwrap();
+    assert_eq!(retained.phase, Phase::Operational);
+    assert!(retained.operating_published);
+    assert_eq!(retained.site_token, before.site_token);
+    assert_eq!(cash(&e, 4), owner_cash);
+    assert_eq!(
+        e.resources().iter().find(|r| r.id == 81).unwrap().capacity,
+        4
+    );
+    assert!(Engine::restore_checkpoint(&e.export_checkpoint().unwrap()).is_ok());
 }
 
 #[test]

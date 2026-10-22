@@ -1,0 +1,10 @@
+
+running 5 tests
+test cpu_log::tests::failed_transaction_batches_never_fill_success_histogram_and_raw_pages_remain_attempts ... ok
+test cpu_log::tests::instance_creation_does_not_retry_io_errors_or_wrap_counter ... ok
+test cpu_log::tests::reused_pid_and_partial_initialization_skip_existing_directories_atomically ... ok
+test cpu_log::tests::same_pid_logs_keep_original_files_and_shared_quota_across_instances ... ok
+test cpu_log::tests::transport_proof_boundaries_do_not_shift_or_overwrite_legacy_slots ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 80 filtered out; finished in 0.16s
+

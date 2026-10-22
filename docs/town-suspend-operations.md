@@ -57,18 +57,22 @@ The projection is intentionally limited to those account and Timeline values, no
 enterprise income statement. Reported amounts are cents. Stopping remains ordinary
 operational suspension, not a legal closure.
 
-Both CLI modes and the loss Store test checkpoint after the two-day run, close the Store,
-and reopen it with the same rules. They compare the full persisted state hash and sequence
-plus the business-equity projection, stopped payroll cursor, suspension marker, and existing
-Timeline claim. This is source coverage only; cold reopen remains not run.
+Run60 ordinary and run61 `--loss` CLI both exited 0. Each checkpointed after the two-day run,
+closed the Store, and reopened with the same rules; stdout reports `cold_reopen_verified=true`
+and a persisted state hash/sequence. Ordinary mode recorded no equity change after stopping;
+loss mode recorded the intended equity decline before stopping. In both, the suspended shop's
+stock stayed unchanged, the other shop sold 10 units on day two, city cash was conserved, and
+`legal_company_close=false`.
 
 The added core tests cover real Timeline payroll and TownSettle behavior, preserving cash,
 stock, and paid wages at suspension, rejection of new payroll, continuation of an unrelated
 employer, cross-system rejection of future suspension markers and active/unbilled payroll,
 and the construction-entry guard. The Store fixture now includes two independent shops and
 checks day-2 sales from the continuing shop alongside unchanged suspended-shop inventory.
-MarketState empty serialization and manual receipt decoding have source tests. Ordinary and
-loss-mode Store checks, cold reopen, and both CLI modes are **not run** in this candidate because
-the parent task owns the only Cargo/CLI validation window. Store checkpoint/reopen, WAL
-replay, response-loss, and end-to-end CLI execution are also **not run** and remain required
-before integration.
+The Store loss/ordinary tests appeared in run23 and were included again in run72's final
+core/storage all-target release test, which exited 0 with source unchanged. These are bounded
+fixture checks; they do not imply legal closure, universal beneficiary-linked asset freezes,
+or full financial liquidation. Run69's stale shared-cache compile failure, run70's targeted
+mycity-core cache cleanup, and run71's epoch 3/3 result remain in the evidence history; run72
+is the final all-target regression. Formal01 ended early under the pressure guard; 64MiB,
+full M0 and actual 16GB device acceptance remain unverified.

@@ -1,0 +1,18 @@
+{
+  "accepted_operating_project_count": 0,
+  "committed_sequence": 52,
+  "construction_inspected": null,
+  "construction_operating_published": null,
+  "construction_project_count": 0,
+  "construction_project_phase": null,
+  "construction_published_at": null,
+  "expected_state_sha256": "34ddfd1f296cbc9bfea99e1e52b58dde423678698594d6da95dc408c8023d11e",
+  "observed_state_sha256": "34ddfd1f296cbc9bfea99e1e52b58dde423678698594d6da95dc408c8023d11e",
+  "rules_identity": "m0-town-transport-fixed-profile-v1",
+  "scenario": "reopen-check",
+  "state_hash_match": true,
+  "transport_generation": 2,
+  "transport_proof_sha256": "8e3ce9f32c1245cf9627a47fe7f0dc4b39a06b1471d4e603c3ebdeb567f4515d",
+  "transport_service_day": 2,
+  "transport_settlement_present": true
+}

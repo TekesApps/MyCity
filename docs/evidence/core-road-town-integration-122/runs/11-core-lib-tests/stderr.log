@@ -1,0 +1,4 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-core)
+    Finished `release` profile [optimized] target(s) in 23.24s
+     Running unittests src/lib.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_core-363f7122bd90a840)
+error: test failed, to rerun pass `-p mycity-core --lib`

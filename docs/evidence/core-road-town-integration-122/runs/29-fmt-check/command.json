@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "cargo",
+    "+1.85.1",
+    "fmt",
+    "--all",
+    "--",
+    "--check"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/production",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-22T16:56:23.494985+00:00",
+  "source_manifest_sha256": "a8ce426361777fc73f29a50e9d9e871007ac2a2fec456f2bd0f4ce1e765fc6a1"
+}

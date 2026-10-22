@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "/usr/bin/time",
+    "-l",
+    "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/a7eb28c4bd235a11f72156ab944745c8c358e344afcccb1a95a39e5b23e9c0f0/town_lifelines",
+    "--store-dir",
+    "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/48-lifelines-generator-failure/world",
+    "--generator-failure"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/production",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-22T17:07:48.108631+00:00",
+  "source_manifest_sha256": "16d292c64c0cc339fb3c9092fa9d5b21db0e0b8ce718d02552988b0caedd31e0"
+}

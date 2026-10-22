@@ -1,0 +1,28 @@
+
+running 9 tests
+test accepted_cross_city_quote_uses_shared_pool_before_local_market_and_survives_checkpoint ... ok
+test actual_town_day_exports_only_consumed_electricity_and_does_not_refill_next_day ... FAILED
+test insufficient_company_cash_skips_production_without_blocking_settlement ... ok
+test invalid_boot_binding_and_stale_legacy_power_controls_are_rejected ... ok
+test legacy_profile_without_boot_binding_remains_compatible ... ok
+test metadata_precommit_failure_and_checkpoint_retry_export_exactly_once ... ok
+test only_completed_generator_output_can_supply_the_next_market_day ... ok
+test opening_utility_stock_is_the_existing_electricity_commodity_and_boot_owner ... ok
+test two_recipes_share_one_boot_stock_pool_and_cannot_over_export ... ok
+
+failures:
+
+---- actual_town_day_exports_only_consumed_electricity_and_does_not_refill_next_day stdout ----
+
+thread 'actual_town_day_exports_only_consumed_electricity_and_does_not_refill_next_day' panicked at crates/city-core/tests/town_utility_engine.rs:290:5:
+assertion `left == right` failed
+  left: 400100
+ right: 600100
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    actual_town_day_exports_only_consumed_electricity_and_does_not_refill_next_day
+
+test result: FAILED. 8 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+

@@ -1,0 +1,66 @@
+{
+  "status": "prepared_not_run",
+  "old_commit": "b4d6889e8424a829cba135fe293267c60cb94fcd",
+  "source_archive_sha256": "75d641c5696873580e8ef2a92606d49d9e6fa6dfe4489b7439c9886e5cda7bbe",
+  "source_manifest_sha256": "3eaac12110dca5e07bd008fe31406eff03771b554faf040ef2cdb90b97c2c0f6",
+  "business_source_sha256": "717148eab1b00e5fc183ee240240fa9150cc839f9a94aa96aaa8bb8a22f67f82",
+  "business_file_count": 243,
+  "output": "/Volumes/HP P900/dev/MyCity/work/legacy-accepted-project-119-src",
+  "fixed_doc_dependencies": [
+    {
+      "path": "docs/evidence/core-construction-compat/attempt-01/old-v106-world/genesis.json",
+      "sha256": "87b17b184f16627fb234aba8b7340e4ef54a128b6ef4ea00443dfecd27754ab7"
+    },
+    {
+      "path": "docs/evidence/core-construction-compat/attempt-01/old-v106-world/CURRENT.json",
+      "sha256": "f265741c699e41904f4a84c8d397f7551308a40abb1917a570970d3bc4e333c2"
+    },
+    {
+      "path": "docs/evidence/core-construction-compat/attempt-01/old-v106-world/root-0.json",
+      "sha256": "00427022aa21283b481973736dedb397a3287ad9e337e5ae10ad2b3da4ff6e67"
+    },
+    {
+      "path": "docs/evidence/core-construction-compat/attempt-01/old-v106-world/root-1.json",
+      "sha256": "75b6ada09a2f7d0da21908579eec99f225b8d85923c60205d8c0263418fa8bdb"
+    },
+    {
+      "path": "docs/evidence/core-construction-compat/attempt-01/old-v106-world/wal.bin",
+      "sha256": "523e8e29571cf1e26b461addb1d2b17d1c8a7795c7a051ac0629a7113e7e42bd"
+    },
+    {
+      "path": "docs/evidence/core-construction-compat/attempt-01/old-v106-storage-probe.json",
+      "sha256": "fcb20e48fea71ef472726bc04b8552d685cab71a0a5c4eb79b511084a9b7b7e3"
+    }
+  ],
+  "only_added_harness": "crates/city-storage/tests/legacy_accepted_fixture.rs",
+  "harness_sha256": "807322f6e98c623406bd2b0733c76988e8a4ef20c24f5482d310d9a909dfef9b",
+  "target_created": false,
+  "cargo_executed": false,
+  "fixtures_generated": false,
+  "future_build_command": [
+    "cargo",
+    "+1.85.1",
+    "test",
+    "--locked",
+    "--offline",
+    "--release",
+    "-p",
+    "mycity-storage",
+    "--test",
+    "legacy_accepted_fixture",
+    "--no-run"
+  ],
+  "future_writer_command": [
+    "/Users/frankqin/dev/MyCity/docs/evidence/core-road-legacy-fixture-preparation/attempt01/writer-test-executable",
+    "export_v119_accepted_project_wal_and_checkpoint",
+    "--exact",
+    "--nocapture"
+  ],
+  "future_execution_order": "build only, preserve exact executable and harness, execute preserved binary once, retain actual receipt/logs, seal outputs",
+  "future_environment": {
+    "CARGO_TARGET_DIR": "/Users/frankqin/dev/MyCity/target",
+    "MYCITY_LEGACY_PROJECT_OUT": "/Volumes/HP P900/dev/MyCity/work/legacy-accepted-project-119-run01"
+  },
+  "storage": "external HP P900 USB/APFS SSD",
+  "never_run_during_formal_measurement": true
+}

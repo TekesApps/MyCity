@@ -31,5 +31,13 @@ or cross-city contracts, and it does not expand the meaning or authority of
 
 ## Verification status
 
-The implementation is **not run** in this candidate. Only Rust 1.85.1 formatting and static
-diff checks are permitted for this task; Cargo, CLI, and model execution remain pending.
+Run54 executed `town_transport cross-boundary` against a fresh Store and exited 0. It recorded
+day-one and day-two actual sales of 100 each, five people served per direction over the fixed
+OD pair, immutable boundary sources 9101/9102 on edges 10/11, matching provider freight receipts,
+cash conservation, cold reopen and historical proof verification. Missing or duplicate boundary
+sources were rejected. This validates the fixed fixture only; it does not model neighboring-city
+snapshots, migration, regional synchronization, or cross-city contracts. Run72's final core/storage
+all-target release test exited 0 with source unchanged. That result does not establish the 64MiB
+process budget, full M0, or actual 16GB device acceptance; formal01 ended early under the pressure
+guard. Evidence is retained in
+`/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/54-town-transport-cross-boundary/`.

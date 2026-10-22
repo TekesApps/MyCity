@@ -1,0 +1,297 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-core)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-storage)
+warning: constant `DAY` is never used
+  --> crates/city-storage/tests/unfinished_clearance.rs:23:7
+   |
+23 | const DAY: u64 = 86_400;
+   |       ^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+error[E0277]: the trait bound `mycity_storage::Error: std::error::Error` is not satisfied
+  --> crates/city-storage/examples/town_suspend.rs:26:30
+   |
+26 |     let view = store.engine()?.world().view();
+   |                              ^ the trait `std::error::Error` is not implemented for `mycity_storage::Error`
+   |
+   = help: the trait `FromResidual<Result<Infallible, E>>` is implemented for `Result<T, F>`
+   = note: required for `Box<dyn std::error::Error>` to implement `From<mycity_storage::Error>`
+   = note: required for `Result<EquityProjection, Box<dyn std::error::Error>>` to implement `FromResidual<Result<Infallible, mycity_storage::Error>>`
+
+error[E0277]: the trait bound `mycity_storage::Error: std::error::Error` is not satisfied
+  --> crates/city-storage/examples/town_suspend.rs:81:18
+   |
+81 |         .engine()?
+   |                  ^ the trait `std::error::Error` is not implemented for `mycity_storage::Error`
+   |
+   = help: the trait `FromResidual<Result<Infallible, E>>` is implemented for `Result<T, F>`
+   = note: required for `Box<dyn std::error::Error>` to implement `From<mycity_storage::Error>`
+   = note: required for `Result<i128, Box<dyn std::error::Error>>` to implement `FromResidual<Result<Infallible, mycity_storage::Error>>`
+
+error[E0277]: the trait bound `mycity_storage::Error: std::error::Error` is not satisfied
+  --> crates/city-storage/examples/town_suspend.rs:92:18
+   |
+92 |         .engine()?
+   |                  ^ the trait `std::error::Error` is not implemented for `mycity_storage::Error`
+   |
+   = help: the trait `FromResidual<Result<Infallible, E>>` is implemented for `Result<T, F>`
+   = note: required for `Box<dyn std::error::Error>` to implement `From<mycity_storage::Error>`
+   = note: required for `Result<&mycity_core::timeline::Timeline, Box<dyn std::error::Error>>` to implement `FromResidual<Result<Infallible, mycity_storage::Error>>`
+
+error[E0277]: the trait bound `mycity_storage::Error: std::error::Error` is not satisfied
+   --> crates/city-storage/examples/town_suspend.rs:137:34
+    |
+137 |         let view = store.engine()?.world().view();
+    |                                  ^ the trait `std::error::Error` is not implemented for `mycity_storage::Error`
+    |
+    = help: the trait `FromResidual<Result<Infallible, E>>` is implemented for `Result<T, F>`
+    = note: required for `Box<dyn std::error::Error>` to implement `From<mycity_storage::Error>`
+    = note: required for `Result<(), Box<dyn std::error::Error>>` to implement `FromResidual<Result<Infallible, mycity_storage::Error>>`
+
+error[E0277]: the trait bound `mycity_storage::Error: std::error::Error` is not satisfied
+   --> crates/city-storage/examples/town_suspend.rs:146:57
+    |
+146 |     let outcome = store.execute(Caller::System, request)?;
+    |                                                         ^ the trait `std::error::Error` is not implemented for `mycity_storage::Error`
+    |
+    = help: the trait `FromResidual<Result<Infallible, E>>` is implemented for `Result<T, F>`
+    = note: required for `Box<dyn std::error::Error>` to implement `From<mycity_storage::Error>`
+    = note: required for `Result<(), Box<dyn std::error::Error>>` to implement `FromResidual<Result<Infallible, mycity_storage::Error>>`
+
+error[E0308]: mismatched types
+   --> crates/city-storage/examples/town_suspend.rs:180:35
+    |
+180 |     let mut store = Store::create(&path, &opening(loss_mode)?, vec![], RULES)?;
+    |                     ------------- ^^^^^ expected `&Path`, found `&OsString`
+    |                     |
+    |                     arguments to this function are incorrect
+    |
+    = note: expected reference `&std::path::Path`
+               found reference `&OsString`
+note: associated function defined here
+   --> /Users/frankqin/dev/MyCity-core-work/production/crates/city-storage/src/lib.rs:243:12
+    |
+243 |     pub fn create(
+    |            ^^^^^^
+
+error[E0277]: the trait bound `mycity_storage::Error: std::error::Error` is not satisfied
+   --> crates/city-storage/examples/town_suspend.rs:180:78
+    |
+180 |     let mut store = Store::create(&path, &opening(loss_mode)?, vec![], RULES)?;
+    |                                                                              ^ the trait `std::error::Error` is not implemented for `mycity_storage::Error`
+    |
+    = help: the trait `FromResidual<Result<Infallible, E>>` is implemented for `Result<T, F>`
+    = note: required for `Box<dyn std::error::Error>` to implement `From<mycity_storage::Error>`
+    = note: required for `Result<(), Box<dyn std::error::Error>>` to implement `FromResidual<Result<Infallible, mycity_storage::Error>>`
+
+error[E0277]: the trait bound `ArithmeticError: std::error::Error` is not satisfied
+   --> crates/city-storage/examples/town_suspend.rs:192:54
+    |
+192 |                         hourly_cents: Money::new(100)?,
+    |                                                      ^ the trait `std::error::Error` is not implemented for `ArithmeticError`
+    |
+    = help: the trait `FromResidual<Result<Infallible, E>>` is implemented for `Result<T, F>`
+    = note: required for `Box<dyn std::error::Error>` to implement `From<ArithmeticError>`
+    = note: required for `Result<(), Box<dyn std::error::Error>>` to implement `FromResidual<Result<Infallible, ArithmeticError>>`
+
+error[E0277]: the trait bound `ArithmeticError: std::error::Error` is not satisfied
+   --> crates/city-storage/examples/town_suspend.rs:208:42
+    |
+208 |                 amount: Money::new(1_000)?,
+    |                                          ^ the trait `std::error::Error` is not implemented for `ArithmeticError`
+    |
+    = help: the trait `FromResidual<Result<Infallible, E>>` is implemented for `Result<T, F>`
+    = note: required for `Box<dyn std::error::Error>` to implement `From<ArithmeticError>`
+    = note: required for `Result<(), Box<dyn std::error::Error>>` to implement `FromResidual<Result<Infallible, ArithmeticError>>`
+
+error[E0277]: the trait bound `mycity_storage::Error: std::error::Error` is not satisfied
+   --> crates/city-storage/examples/town_suspend.rs:234:43
+    |
+234 |     let before_stop_world = store.engine()?.world().view();
+    |                                           ^ the trait `std::error::Error` is not implemented for `mycity_storage::Error`
+    |
+    = help: the trait `FromResidual<Result<Infallible, E>>` is implemented for `Result<T, F>`
+    = note: required for `Box<dyn std::error::Error>` to implement `From<mycity_storage::Error>`
+    = note: required for `Result<(), Box<dyn std::error::Error>>` to implement `FromResidual<Result<Infallible, mycity_storage::Error>>`
+
+error[E0277]: the trait bound `mycity_storage::Error: std::error::Error` is not satisfied
+   --> crates/city-storage/examples/town_suspend.rs:261:23
+    |
+261 |     store.checkpoint()?;
+    |                       ^ the trait `std::error::Error` is not implemented for `mycity_storage::Error`
+    |
+    = help: the trait `FromResidual<Result<Infallible, E>>` is implemented for `Result<T, F>`
+    = note: required for `Box<dyn std::error::Error>` to implement `From<mycity_storage::Error>`
+    = note: required for `Result<(), Box<dyn std::error::Error>>` to implement `FromResidual<Result<Infallible, mycity_storage::Error>>`
+
+error[E0277]: the trait bound `mycity_storage::Error: std::error::Error` is not satisfied
+   --> crates/city-storage/examples/town_suspend.rs:274:30
+    |
+274 |     let day1 = store.engine()?.world().view();
+    |                              ^ the trait `std::error::Error` is not implemented for `mycity_storage::Error`
+    |
+    = help: the trait `FromResidual<Result<Infallible, E>>` is implemented for `Result<T, F>`
+    = note: required for `Box<dyn std::error::Error>` to implement `From<mycity_storage::Error>`
+    = note: required for `Result<(), Box<dyn std::error::Error>>` to implement `FromResidual<Result<Infallible, mycity_storage::Error>>`
+
+error[E0277]: the trait bound `mycity_storage::Error: std::error::Error` is not satisfied
+   --> crates/city-storage/examples/town_suspend.rs:319:30
+    |
+319 |     let view = store.engine()?.world().view();
+    |                              ^ the trait `std::error::Error` is not implemented for `mycity_storage::Error`
+    |
+    = help: the trait `FromResidual<Result<Infallible, E>>` is implemented for `Result<T, F>`
+    = note: required for `Box<dyn std::error::Error>` to implement `From<mycity_storage::Error>`
+    = note: required for `Result<(), Box<dyn std::error::Error>>` to implement `FromResidual<Result<Infallible, mycity_storage::Error>>`
+
+error[E0277]: the trait bound `mycity_storage::Error: std::error::Error` is not satisfied
+   --> crates/city-storage/examples/town_suspend.rs:377:23
+    |
+377 |     store.checkpoint()?;
+    |                       ^ the trait `std::error::Error` is not implemented for `mycity_storage::Error`
+    |
+    = help: the trait `FromResidual<Result<Infallible, E>>` is implemented for `Result<T, F>`
+    = note: required for `Box<dyn std::error::Error>` to implement `From<mycity_storage::Error>`
+    = note: required for `Result<(), Box<dyn std::error::Error>>` to implement `FromResidual<Result<Infallible, mycity_storage::Error>>`
+
+error[E0277]: the trait bound `mycity_storage::Error: std::error::Error` is not satisfied
+   --> crates/city-storage/examples/town_suspend.rs:378:48
+    |
+378 |     let cold_expected_hash = store.state_hash()?;
+    |                                                ^ the trait `std::error::Error` is not implemented for `mycity_storage::Error`
+    |
+    = help: the trait `FromResidual<Result<Infallible, E>>` is implemented for `Result<T, F>`
+    = note: required for `Box<dyn std::error::Error>` to implement `From<mycity_storage::Error>`
+    = note: required for `Result<(), Box<dyn std::error::Error>>` to implement `FromResidual<Result<Infallible, mycity_storage::Error>>`
+
+error[E0308]: mismatched types
+   --> crates/city-storage/examples/town_suspend.rs:390:29
+    |
+390 |     let store = Store::open(&path, RULES)?;
+    |                 ----------- ^^^^^ expected `&Path`, found `&OsString`
+    |                 |
+    |                 arguments to this function are incorrect
+    |
+    = note: expected reference `&std::path::Path`
+               found reference `&OsString`
+note: associated function defined here
+   --> /Users/frankqin/dev/MyCity-core-work/production/crates/city-storage/src/lib.rs:635:12
+    |
+635 |     pub fn open(dir: &Path, rules_identity: &str) -> Result<Self, Error> {
+    |            ^^^^
+
+error[E0277]: the trait bound `mycity_storage::Error: std::error::Error` is not satisfied
+   --> crates/city-storage/examples/town_suspend.rs:390:42
+    |
+390 |     let store = Store::open(&path, RULES)?;
+    |                                          ^ the trait `std::error::Error` is not implemented for `mycity_storage::Error`
+    |
+    = help: the trait `FromResidual<Result<Infallible, E>>` is implemented for `Result<T, F>`
+    = note: required for `Box<dyn std::error::Error>` to implement `From<mycity_storage::Error>`
+    = note: required for `Result<(), Box<dyn std::error::Error>>` to implement `FromResidual<Result<Infallible, mycity_storage::Error>>`
+
+error[E0277]: the trait bound `mycity_storage::Error: std::error::Error` is not satisfied
+   --> crates/city-storage/examples/town_suspend.rs:391:44
+    |
+391 |     let cold_reopened_view = store.engine()?.world().view();
+    |                                            ^ the trait `std::error::Error` is not implemented for `mycity_storage::Error`
+    |
+    = help: the trait `FromResidual<Result<Infallible, E>>` is implemented for `Result<T, F>`
+    = note: required for `Box<dyn std::error::Error>` to implement `From<mycity_storage::Error>`
+    = note: required for `Result<(), Box<dyn std::error::Error>>` to implement `FromResidual<Result<Infallible, mycity_storage::Error>>`
+
+error[E0277]: the trait bound `mycity_storage::Error: std::error::Error` is not satisfied
+   --> crates/city-storage/examples/town_suspend.rs:401:26
+    |
+401 |     if store.state_hash()? != cold_expected_hash
+    |                          ^ the trait `std::error::Error` is not implemented for `mycity_storage::Error`
+    |
+    = help: the trait `FromResidual<Result<Infallible, E>>` is implemented for `Result<T, F>`
+    = note: required for `Box<dyn std::error::Error>` to implement `From<mycity_storage::Error>`
+    = note: required for `Result<(), Box<dyn std::error::Error>>` to implement `FromResidual<Result<Infallible, mycity_storage::Error>>`
+
+error[E0277]: `Money` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_suspend.rs:440:9
+    |
+440 |         claim_at_stop.principal,
+    |         ^^^^^^^^^^^^^^^^^^^^^^^ `Money` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `Money`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+    = note: this error originates in the macro `$crate::format_args_nl` which comes from the expansion of the macro `println` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: `Money` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_suspend.rs:441:9
+    |
+441 |         claim_at_stop.paid,
+    |         ^^^^^^^^^^^^^^^^^^ `Money` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `Money`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+    = note: this error originates in the macro `$crate::format_args_nl` which comes from the expansion of the macro `println` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: `Quantity` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_suspend.rs:442:9
+    |
+442 |         before_stop_summary.produced,
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Quantity` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `Quantity`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+    = note: this error originates in the macro `$crate::format_args_nl` which comes from the expansion of the macro `println` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: `Quantity` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_suspend.rs:443:9
+    |
+443 |         before_stop_summary.actual_sales,
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Quantity` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `Quantity`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+    = note: this error originates in the macro `$crate::format_args_nl` which comes from the expansion of the macro `println` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: `Money` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_suspend.rs:444:9
+    |
+444 |         before_stop_summary.utilities,
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Money` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `Money`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+    = note: this error originates in the macro `$crate::format_args_nl` which comes from the expansion of the macro `println` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: `Money` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_suspend.rs:445:9
+    |
+445 |         before_stop_summary.wages_accrued,
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Money` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `Money`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+    = note: this error originates in the macro `$crate::format_args_nl` which comes from the expansion of the macro `println` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: `Money` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_suspend.rs:446:9
+    |
+446 |         before_stop_summary.idle_labor_expense,
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Money` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `Money`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+    = note: this error originates in the macro `$crate::format_args_nl` which comes from the expansion of the macro `println` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: `Quantity` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_suspend.rs:449:9
+    |
+449 |         settled.state.last_summary.actual_sales,
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `Quantity` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `Quantity`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+    = note: this error originates in the macro `$crate::format_args_nl` which comes from the expansion of the macro `println` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+Some errors have detailed explanations: E0277, E0308.
+For more information about an error, try `rustc --explain E0277`.
+error: could not compile `mycity-storage` (example "town_suspend" test) due to 27 previous errors
+warning: build failed, waiting for other jobs to finish...
+warning: `mycity-storage` (test "unfinished_clearance") generated 1 warning

@@ -1,0 +1,10 @@
+
+running 5 tests
+test full_receiver_capacity_preserves_half_built_site_without_fee_or_clearance ... ok
+test insufficient_cash_preserves_site_and_has_no_disposal_fee ... ok
+test no_waste_still_requires_base_clearance_labor_and_does_not_charge_or_fake_receipt_units ... ok
+test precommit_clearance_waste_failure_cold_recovers_unmodified_then_charges_once_on_retry ... ok
+test unfinished_project_clearance_start_waste_and_close_recover_without_duplicate_effects ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.90s
+

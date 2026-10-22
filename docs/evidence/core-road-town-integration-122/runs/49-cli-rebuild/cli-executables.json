@@ -1,0 +1,30 @@
+{
+  "town_transport": {
+    "sha256": "96a1390c6ef655cf4e50f329f36206fe540ab8b0c3dbf462b6fef3dd78844584",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/96a1390c6ef655cf4e50f329f36206fe540ab8b0c3dbf462b6fef3dd78844584/town_transport"
+  },
+  "town_suspend": {
+    "sha256": "7386ddce17f7478b1252bd1498d6a98543f2f9613e7ef4edd5c6aa4644ca98cd",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/7386ddce17f7478b1252bd1498d6a98543f2f9613e7ef4edd5c6aa4644ca98cd/town_suspend"
+  },
+  "payroll_exit": {
+    "sha256": "1bcc7c4a631438fbad455108694b5ce732a133b4028cea5ddc4642e17f8328dc",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/1bcc7c4a631438fbad455108694b5ce732a133b4028cea5ddc4642e17f8328dc/payroll_exit"
+  },
+  "construction": {
+    "sha256": "6ce82df670998e907d68c19a25dad365e17f3ddac3d343f1c1883ee1f4729dad",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/6ce82df670998e907d68c19a25dad365e17f3ddac3d343f1c1883ee1f4729dad/construction"
+  },
+  "unfinished_clearance": {
+    "sha256": "34d997c94d682522995ba5fb2c8911aea4ab66d2d4266e789f6483f9c8f5f812",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/34d997c94d682522995ba5fb2c8911aea4ab66d2d4266e789f6483f9c8f5f812/unfinished_clearance"
+  },
+  "town_utility": {
+    "sha256": "3330e412cf39a198cedf926c4120c7374452027231ecf6c4aa61d4e41826c1ee",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/3330e412cf39a198cedf926c4120c7374452027231ecf6c4aa61d4e41826c1ee/town_utility"
+  },
+  "town_market": {
+    "sha256": "e97c19648f3346f13b572758da30c9a07e5d75685a0233bbf457bd0913825b88",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/e97c19648f3346f13b572758da30c9a07e5d75685a0233bbf457bd0913825b88/town_market"
+  }
+}

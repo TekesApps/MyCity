@@ -1,0 +1,57 @@
+[
+  {
+    "path": "CURRENT.json",
+    "size": 123,
+    "sha256": "cb0676ac9d59f277f8c5f7289730f4c0e3ea09b717424a59fc4875cf25d16226"
+  },
+  {
+    "path": "LOCK",
+    "size": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "checkpoint-53.json",
+    "size": 65235,
+    "sha256": "59a8cfaf749cd2cf58ed27ba8f38bf5325734986b3d44abfadc59e8aeaf38792"
+  },
+  {
+    "path": "checkpoint-index-53.json",
+    "size": 268,
+    "sha256": "5f6298550f9e599d3075d63f949e10369128f4e1215ba6964d5ed159f72e208b"
+  },
+  {
+    "path": "genesis.json",
+    "size": 5704,
+    "sha256": "1eb3956f4f3078ccdce48f2e24b6dc8b8dfbf10c6f47d134a4901b5a316989ef"
+  },
+  {
+    "path": "root-0.json",
+    "size": 427,
+    "sha256": "a26412eef272fa65340a30a27adce9f5f5dd03bdb7aadb95299bbdee176f9a3b"
+  },
+  {
+    "path": "root-1.json",
+    "size": 513,
+    "sha256": "983ecd7843afb4f23a3ff98e389174ffc5f8aa5764925b756595c60684c41ff5"
+  },
+  {
+    "path": "town-allocation-4db3bc47c1cfbe6d6fa397e3d685886c93effcf363b3ef33ee3f65fc9efd151f.json",
+    "size": 1922,
+    "sha256": "4db3bc47c1cfbe6d6fa397e3d685886c93effcf363b3ef33ee3f65fc9efd151f"
+  },
+  {
+    "path": "town-proof-8e3ce9f32c1245cf9627a47fe7f0dc4b39a06b1471d4e603c3ebdeb567f4515d.json",
+    "size": 2003,
+    "sha256": "8e3ce9f32c1245cf9627a47fe7f0dc4b39a06b1471d4e603c3ebdeb567f4515d"
+  },
+  {
+    "path": "town-proof-cb8d1272f32535c86103f244f36533fff05da184f1835a7afb29f380ac94f017.json",
+    "size": 2003,
+    "sha256": "cb8d1272f32535c86103f244f36533fff05da184f1835a7afb29f380ac94f017"
+  },
+  {
+    "path": "wal-53.bin",
+    "size": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

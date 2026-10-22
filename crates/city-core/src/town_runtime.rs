@@ -130,6 +130,9 @@ pub struct MarketProfile {
     /// means the legacy profile delivery quotes remain the active substitute.
     #[serde(default)]
     pub transport_allocation_sha256: [u8; 32],
+    /// Optional genesis-bound physical electricity supply; absent preserves legacy bytes.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub utility_supply: Option<crate::town_utility::BootSupplyBinding>,
     pub households: FixedRows<HouseholdGroup, { crate::town_economy::MAX_HOUSEHOLD_GROUPS }>,
     pub employers: FixedRows<EmployerSpec, { crate::town_economy::MAX_EMPLOYERS }>,
     pub shops: FixedRows<ShopSnapshot, { crate::town_economy::MAX_SHOP_STOCK_LOTS }>,
@@ -139,6 +142,25 @@ pub struct MarketProfile {
 
 impl MarketProfile {
     pub fn validate(&self) -> Result<(), &'static str> {
+        if self.utility_supply.is_some_and(|binding| {
+            binding.validate().is_err()
+                || self.recipes.as_slice().iter().any(|recipe| {
+                    recipe.utility_account != binding.boot_operator
+                        || recipe.employer == binding.boot_operator
+                        || recipe.available_utility_per_day != Quantity::ZERO
+                        || recipe.utility_cost_per_output_q != Money::ZERO
+                        || binding
+                            .cost_per_output(recipe.utility_per_output_q)
+                            .is_err()
+                })
+                || self
+                    .delivery
+                    .as_slice()
+                    .iter()
+                    .any(|quote| quote.utility_surcharge_per_q != Money::ZERO)
+        }) {
+            return Err("town_utility_profile");
+        }
         if self.schema_version != 1
             || self.id == 0
             || self.households.is_empty()
@@ -541,6 +563,29 @@ impl TownMarket {
 
     pub fn validate_world(&self, world: &crate::assembly::World) -> Result<(), &'static str> {
         self.profile.validate()?;
+        if let Some(binding) = self.profile.utility_supply {
+            let boot = world.boot.as_ref().ok_or("town_utility_boot")?;
+            let stock = world
+                .stocks
+                .get(
+                    world
+                        .stock_handle(binding.boot_stock_id)
+                        .map_err(|_| "town_utility_stock")?,
+                )
+                .map_err(|_| "town_utility_stock")?;
+            if boot.operator != binding.boot_operator
+                || boot.stocks[1] != binding.boot_stock_id
+                || stock.commodity != crate::assembly::Commodity::Electricity
+                || world
+                    .accounts
+                    .get(stock.owner)
+                    .map_err(|_| "town_utility_owner")?
+                    .id
+                    != binding.boot_operator
+            {
+                return Err("town_utility_binding");
+            }
+        }
         let has_account = |id| world.account_handle(id).is_ok();
         let has_stock = |id| world.stock_handle(id).is_ok();
         if self
@@ -722,6 +767,7 @@ mod transport_cursor_tests {
             schema_version: 1,
             id: 1,
             transport_allocation_sha256: [0; 32],
+            utility_supply: None,
             households,
             employers,
             shops,

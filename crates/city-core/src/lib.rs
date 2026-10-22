@@ -26,6 +26,7 @@ pub mod region;
 pub mod schedule;
 pub mod town_economy;
 pub mod town_runtime;
+pub mod town_utility;
 pub mod transaction;
 pub mod transport;
 pub mod units;

@@ -1,0 +1,11 @@
+{
+  "created_utc": "2026-10-22T16:15:36.418552+00:00",
+  "repo": "/Users/frankqin/dev/MyCity-core-work/production",
+  "storage": "external HP P900 USB/APFS SSD",
+  "work": "/Volumes/HP P900/dev/MyCity/work",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "source_manifest_sha256": "37e752cf8e4322a6c5c42140147a02f3786eaa7b669a3e4e8f769626302b9649",
+  "source_zip_sha256": "95a306a559f6b61213ae9f68a1a9cac1a2323cd4bc6364f24603f16a17bdedf4",
+  "default_rust_test_thread_stack": true,
+  "formal01": "terminal failed: system non-normal pressure exceeded 60 seconds; artifacts retained"
+}

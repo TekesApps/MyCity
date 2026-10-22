@@ -6,7 +6,10 @@ use mycity_core::{
 };
 use mycity_storage::Store;
 use serde_json::Value;
-use std::{env, error::Error, fs, path::Path};
+use std::{
+    env, fs,
+    path::{Path, PathBuf},
+};
 
 const RULES: &str = "town-suspend-operations-source-fixture-v1";
 const LOSS_UTILITY_COST_PER_OUTPUT_Q: i64 = 10_000;
@@ -22,14 +25,18 @@ struct EquityProjection {
     claims_payable: i128,
 }
 
-fn equity_projection(store: &Store, account: u32) -> Result<EquityProjection, Box<dyn Error>> {
-    let view = store.engine()?.world().view();
+fn err(value: impl std::fmt::Debug) -> String {
+    format!("{value:?}")
+}
+
+fn equity_projection(store: &Store, account: u32) -> Result<EquityProjection, String> {
+    let view = store.engine().map_err(err)?.world().view();
     let timeline = timeline(store)?;
     let cash = i128::from(
         view.accounts
             .iter()
             .find(|row| row.id == account)
-            .ok_or_else(|| std::io::Error::other("company account"))?
+            .ok_or("company account")?
             .cash
             .value(),
     );
@@ -76,9 +83,10 @@ fn equity_projection(store: &Store, account: u32) -> Result<EquityProjection, Bo
     })
 }
 
-fn total_cash(store: &Store) -> Result<i128, Box<dyn Error>> {
+fn total_cash(store: &Store) -> Result<i128, String> {
     Ok(store
-        .engine()?
+        .engine()
+        .map_err(err)?
         .world()
         .view()
         .accounts
@@ -87,31 +95,30 @@ fn total_cash(store: &Store) -> Result<i128, Box<dyn Error>> {
         .sum())
 }
 
-fn timeline(store: &Store) -> Result<&mycity_core::timeline::Timeline, Box<dyn Error>> {
+fn timeline(store: &Store) -> Result<&mycity_core::timeline::Timeline, String> {
     store
-        .engine()?
+        .engine()
+        .map_err(err)?
         .timeline()
-        .ok_or_else(|| std::io::Error::other("timeline state unavailable").into())
+        .ok_or_else(|| "timeline state unavailable".to_owned())
 }
 
-fn opening(loss_mode: bool) -> Result<Vec<u8>, Box<dyn Error>> {
+fn opening(loss_mode: bool) -> Result<Vec<u8>, String> {
     let mut value: Value =
-        serde_json::from_slice(include_bytes!("../../../fixtures/m0-e0-opening.json"))?;
-    value["sources"]
-        .as_array_mut()
-        .ok_or_else(|| std::io::Error::other("sources"))?
-        .extend([
-            serde_json::json!({"id":6,"kind":"inventory_capital","amount":100000}),
-            serde_json::json!({"id":7,"kind":"inventory_capital","amount":0}),
-            serde_json::json!({"id":8,"kind":"cash_capital","amount":200000}),
-        ]);
+        serde_json::from_slice(include_bytes!("../../../fixtures/m0-e0-opening.json"))
+            .map_err(err)?;
+    value["sources"].as_array_mut().ok_or("sources")?.extend([
+        serde_json::json!({"id":6,"kind":"inventory_capital","amount":100000}),
+        serde_json::json!({"id":7,"kind":"inventory_capital","amount":0}),
+        serde_json::json!({"id":8,"kind":"cash_capital","amount":200000}),
+    ]);
     value["accounts"]
         .as_array_mut()
-        .ok_or_else(|| std::io::Error::other("accounts"))?
+        .ok_or("accounts")?
         .push(serde_json::json!({"id":5,"role":"household","cash":200000,"source":8}));
     value["stocks"]
         .as_array_mut()
-        .ok_or_else(|| std::io::Error::other("stocks"))?
+        .ok_or("stocks")?
         .extend([
             serde_json::json!({"id":2,"owner":3,"commodity":"raw","quantity":100000,"basis":100000,"source":6}),
             serde_json::json!({"id":3,"owner":3,"commodity":"product","quantity":0,"basis":0,"source":7}),
@@ -129,12 +136,12 @@ fn opening(loss_mode: bool) -> Result<Vec<u8>, Box<dyn Error>> {
     } else {
         1
     });
-    Ok(serde_json::to_vec(&value)?)
+    serde_json::to_vec(&value).map_err(err)
 }
 
-fn execute(store: &mut Store, action: Action) -> Result<(), Box<dyn Error>> {
+fn execute(store: &mut Store, action: Action) -> Result<(), String> {
     let request = {
-        let view = store.engine()?.world().view();
+        let view = store.engine().map_err(err)?.world().view();
         Envelope {
             world: view.scope.world(),
             branch: view.scope.branch(),
@@ -143,41 +150,38 @@ fn execute(store: &mut Store, action: Action) -> Result<(), Box<dyn Error>> {
             actions: vec![action],
         }
     };
-    let outcome = store.execute(Caller::System, request)?;
-    if let Err(error) = outcome.model {
-        return Err(format!("model action failed: {error:?}").into());
-    }
-    Ok(())
+    let outcome = store.execute(Caller::System, request).map_err(err)?;
+    outcome
+        .model
+        .map(|_| ())
+        .map_err(|error| format!("model action failed: {error:?}"))
 }
 
-fn main() -> Result<(), Box<dyn Error>> {
+fn main() -> Result<(), String> {
     let mut args = env::args_os().skip(1);
-    let path = args.next().ok_or_else(|| {
-        std::io::Error::other(
-            "usage: cargo run -p mycity-storage --example town_suspend -- <new-world-dir> [--loss]",
-        )
-    })?;
+    let path = PathBuf::from(args.next().ok_or_else(|| {
+        "usage: cargo run -p mycity-storage --example town_suspend -- <new-world-dir> [--loss]"
+            .to_owned()
+    })?);
     let mode = args.next();
     let loss_mode = match mode.as_deref() {
         None => false,
         Some(value) if value == "--loss" => true,
-        Some(_) => return Err(std::io::Error::other("only optional mode is --loss").into()),
+        Some(_) => return Err("only optional mode is --loss".into()),
     };
     if args.next().is_some() {
-        return Err(std::io::Error::other("too many arguments").into());
+        return Err("too many arguments".into());
     }
     if Path::new(&path).exists() {
-        return Err(std::io::Error::other(
-            "target path already exists; choose a new world directory",
-        )
-        .into());
+        return Err("target path already exists; choose a new world directory".into());
     }
     fs::create_dir_all(
         Path::new(&path)
             .parent()
-            .ok_or_else(|| std::io::Error::other("world path parent"))?,
-    )?;
-    let mut store = Store::create(&path, &opening(loss_mode)?, vec![], RULES)?;
+            .ok_or_else(|| "world path parent".to_owned())?,
+    )
+    .map_err(err)?;
+    let mut store = Store::create(&path, &opening(loss_mode)?, vec![], RULES).map_err(err)?;
     execute(&mut store, Action::Timeline { command: T::Enable })?;
     for (id, payer) in [(1, 3), (2, 4)] {
         execute(
@@ -189,7 +193,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                         payer,
                         payee: 2,
                         home_city: 0,
-                        hourly_cents: Money::new(100)?,
+                        hourly_cents: Money::new(100).map_err(err)?,
                         cycle: Cycle::Daily,
                         ends_at: 7 * DAY,
                     },
@@ -205,7 +209,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 count: 1,
                 payer: 3,
                 payee: 4,
-                amount: Money::new(1_000)?,
+                amount: Money::new(1_000).map_err(err)?,
                 due: 3 * DAY,
             },
         },
@@ -213,7 +217,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let initial_equity = equity_projection(&store, 3)?;
     let fixture_claim = timeline(&store)?.claims[0];
     if fixture_claim.payer != 3 || fixture_claim.payee != 4 || fixture_claim.paid != Money::ZERO {
-        return Err(std::io::Error::other("fixture payable projection is invalid").into());
+        return Err("fixture payable projection is invalid".into());
     }
     for _ in 0..100 {
         execute(
@@ -231,24 +235,19 @@ fn main() -> Result<(), Box<dyn Error>> {
     }
     execute(&mut store, Action::TownSettle { profile_id: 1 })?;
     let before_stop_equity = equity_projection(&store, 3)?;
-    let before_stop_world = store.engine()?.world().view();
+    let before_stop_world = store.engine().map_err(err)?.world().view();
     let before_stop_summary = before_stop_world
         .town
         .as_ref()
-        .ok_or_else(|| std::io::Error::other("town state"))?
+        .ok_or("town state")?
         .state
         .last_summary;
     if loss_mode {
         if before_stop_equity.total >= initial_equity.total {
-            return Err(std::io::Error::other(
-                "loss fixture did not produce a measured equity loss",
-            )
-            .into());
+            return Err("loss fixture did not produce a measured equity loss".into());
         }
         if timeline(&store)?.claims[0] != fixture_claim {
-            return Err(
-                std::io::Error::other("loss fixture claim changed before suspension").into(),
-            );
+            return Err("loss fixture claim changed before suspension".into());
         }
     }
     execute(
@@ -258,48 +257,44 @@ fn main() -> Result<(), Box<dyn Error>> {
             company_account: 3,
         },
     )?;
-    store.checkpoint()?;
+    store.checkpoint().map_err(err)?;
     let equity_at_stop = equity_projection(&store, 3)?;
     let claim_at_stop = timeline(&store)?.claims[0];
     if claim_at_stop != fixture_claim {
-        return Err(std::io::Error::other("suspension changed the existing claim").into());
+        return Err("suspension changed the existing claim".into());
     }
     let day2_cash_before = total_cash(&store)?;
     let stopped_work_seconds = timeline(&store)?
         .payroll
         .iter()
         .find(|row| row.spec.payer == 3)
-        .ok_or_else(|| std::io::Error::other("suspended payroll"))?
+        .ok_or("suspended payroll")?
         .work_seconds;
-    let day1 = store.engine()?.world().view();
-    let state = day1
-        .town
-        .as_ref()
-        .ok_or_else(|| std::io::Error::other("town state"))?
-        .state;
+    let day1 = store.engine().map_err(err)?.world().view();
+    let state = day1.town.as_ref().ok_or("town state")?.state;
     let suspended_stock = day1
         .stocks
         .iter()
         .find(|row| row.id == 3)
-        .ok_or_else(|| std::io::Error::other("suspended shop stock"))?
+        .ok_or("suspended shop stock")?
         .quantity;
     let suspended_raw_stock = day1
         .stocks
         .iter()
         .find(|row| row.id == 2)
-        .ok_or_else(|| std::io::Error::other("suspended raw stock"))?
+        .ok_or("suspended raw stock")?
         .quantity;
     let other_shop_stock = day1
         .stocks
         .iter()
         .find(|row| row.id == 1)
-        .ok_or_else(|| std::io::Error::other("other shop stock"))?
+        .ok_or("other shop stock")?
         .quantity;
     let suspended_cash = day1
         .accounts
         .iter()
         .find(|row| row.id == 3)
-        .ok_or_else(|| std::io::Error::other("suspended company account"))?
+        .ok_or("suspended company account")?
         .cash;
     for _ in 0..100 {
         execute(
@@ -316,34 +311,31 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
     }
     execute(&mut store, Action::TownSettle { profile_id: 1 })?;
-    let view = store.engine()?.world().view();
-    let settled = view
-        .town
-        .as_ref()
-        .ok_or_else(|| std::io::Error::other("town state"))?;
+    let view = store.engine().map_err(err)?.world().view();
+    let settled = view.town.as_ref().ok_or("town state")?;
     let suspended_stock_after = view
         .stocks
         .iter()
         .find(|row| row.id == 3)
-        .ok_or_else(|| std::io::Error::other("suspended shop stock"))?
+        .ok_or("suspended shop stock")?
         .quantity;
     let other_shop_stock_after = view
         .stocks
         .iter()
         .find(|row| row.id == 1)
-        .ok_or_else(|| std::io::Error::other("other shop stock"))?
+        .ok_or("other shop stock")?
         .quantity;
     let suspended_cash_after = view
         .accounts
         .iter()
         .find(|row| row.id == 3)
-        .ok_or_else(|| std::io::Error::other("suspended company account"))?
+        .ok_or("suspended company account")?
         .cash;
     let suspended_raw_stock_after = view
         .stocks
         .iter()
         .find(|row| row.id == 2)
-        .ok_or_else(|| std::io::Error::other("suspended raw stock"))?
+        .ok_or("suspended raw stock")?
         .quantity;
     if settled.state.last_summary.actual_sales == mycity_core::units::Quantity::ZERO
         || settled.state.last_summary.produced != mycity_core::units::Quantity::ZERO
@@ -352,9 +344,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         || other_shop_stock_after >= other_shop_stock
         || suspended_cash_after != suspended_cash
     {
-        return Err(
-            std::io::Error::other("day-2 suspension/continuing-shop evidence failed").into(),
-        );
+        return Err("day-2 suspension/continuing-shop evidence failed".into());
     }
     let next_day_equity = equity_projection(&store, 3)?;
     let day2_cash_after = total_cash(&store)?;
@@ -362,20 +352,17 @@ fn main() -> Result<(), Box<dyn Error>> {
         .payroll
         .iter()
         .find(|row| row.spec.payer == 3)
-        .ok_or_else(|| std::io::Error::other("suspended payroll"))?
+        .ok_or("suspended payroll")?
         .work_seconds;
     if next_day_equity.total != equity_at_stop.total
         || stopped_work_seconds_after != stopped_work_seconds
         || day2_cash_after != day2_cash_before
         || timeline(&store)?.claims[0] != claim_at_stop
     {
-        return Err(std::io::Error::other(
-            "post-suspension equity, labor, or cash conservation failed",
-        )
-        .into());
+        return Err("post-suspension equity, labor, or cash conservation failed".into());
     }
-    store.checkpoint()?;
-    let cold_expected_hash = store.state_hash()?;
+    store.checkpoint().map_err(err)?;
+    let cold_expected_hash = store.state_hash().map_err(err)?;
     let cold_expected_sequence = store.committed_sequence();
     let cold_expected_equity = next_day_equity.total;
     let cold_expected_claim = timeline(&store)?.claims[0];
@@ -383,22 +370,22 @@ fn main() -> Result<(), Box<dyn Error>> {
         .payroll
         .iter()
         .find(|row| row.spec.payer == 3)
-        .ok_or_else(|| std::io::Error::other("suspended payroll"))?;
+        .ok_or("suspended payroll")?;
     let suspended_at = state.suspended_operators.as_slice()[0].suspended_at;
     drop(store);
 
-    let store = Store::open(&path, RULES)?;
-    let cold_reopened_view = store.engine()?.world().view();
+    let store = Store::open(&path, RULES).map_err(err)?;
+    let cold_reopened_view = store.engine().map_err(err)?.world().view();
     let cold_reopened_town = cold_reopened_view
         .town
         .as_ref()
-        .ok_or_else(|| std::io::Error::other("town state after cold reopen"))?;
+        .ok_or("town state after cold reopen")?;
     let cold_reopened_payroll = *timeline(&store)?
         .payroll
         .iter()
         .find(|row| row.spec.payer == 3)
-        .ok_or_else(|| std::io::Error::other("suspended payroll after cold reopen"))?;
-    if store.state_hash()? != cold_expected_hash
+        .ok_or("suspended payroll after cold reopen")?;
+    if store.state_hash().map_err(err)? != cold_expected_hash
         || store.committed_sequence() != cold_expected_sequence
         || equity_projection(&store, 3)?.total != cold_expected_equity
         || timeline(&store)?.claims[0] != cold_expected_claim
@@ -410,7 +397,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             .iter()
             .any(|row| row.account == 3)
     {
-        return Err(std::io::Error::other("cold reopen evidence mismatch").into());
+        return Err("cold reopen evidence mismatch".into());
     }
     if loss_mode
         && (before_stop_summary.produced != mycity_core::units::Quantity::ZERO
@@ -418,7 +405,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             || before_stop_summary.idle_labor_expense == Money::ZERO
             || suspended_stock != mycity_core::units::Quantity::ZERO)
     {
-        return Err(std::io::Error::other("loss mode did not suppress production").into());
+        return Err("loss mode did not suppress production".into());
     }
     println!(
         "mode={} utility_cost_per_output_q={} equity_initial={} equity_before_stop={} equity_delta_before_stop={} equity_next_day={} equity_next_day_delta={} cash_before_stop={} inventory_basis_before_stop={} payroll_receivable_before_stop={} payroll_payable_before_stop={} claims_receivable_before_stop={} claims_payable_before_stop={} existing_claim_payer={} existing_claim_payee={} existing_claim_principal={} existing_claim_paid={} day1_produced={} day1_sales={} day1_utilities={} day1_wages_accrued={} day1_idle_labor_expense={} stopped_account=3 suspended_at={} settled_day={} suspended_shop_stock_unchanged=true suspended_account_cash_no_gain=true other_shop_stock_decreased=true other_shop_actual_sales={} city_cash_conserved=true legal_company_close=false",
@@ -437,16 +424,16 @@ fn main() -> Result<(), Box<dyn Error>> {
         before_stop_equity.claims_payable,
         claim_at_stop.payer,
         claim_at_stop.payee,
-        claim_at_stop.principal,
-        claim_at_stop.paid,
-        before_stop_summary.produced,
-        before_stop_summary.actual_sales,
-        before_stop_summary.utilities,
-        before_stop_summary.wages_accrued,
-        before_stop_summary.idle_labor_expense,
+        claim_at_stop.principal.value(),
+        claim_at_stop.paid.value(),
+        before_stop_summary.produced.value(),
+        before_stop_summary.actual_sales.value(),
+        before_stop_summary.utilities.value(),
+        before_stop_summary.wages_accrued.value(),
+        before_stop_summary.idle_labor_expense.value(),
         suspended_at,
         settled.state.settled_day,
-        settled.state.last_summary.actual_sales,
+        settled.state.last_summary.actual_sales.value(),
     );
     println!(
         "cold_reopen_verified=true cold_state_hash={} cold_persistent_sequence={}",

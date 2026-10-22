@@ -1,0 +1,71 @@
+
+running 10 tests
+test cancellation_never_releases_started_capacity_or_refunds_spend ... ok
+test cannot_activate_uninspected_or_demolish_without_parties_and_waste_receiver ... ok
+test clearance_requires_a_valid_opening_spec_and_state_remains_within_budget ... ok
+test consent_materials_wages_and_inspection_gate_occupancy ... ok
+test identical_effect_replay_is_stable_and_definitive_failure_does_not_charge_twice ... ok
+test pending_effect_survives_serialization_and_cannot_be_acked_twice ... ok
+test unfinished_clearance_freezes_real_spend_and_consumption_then_releases_site_once ... ok
+test wall_speed_does_not_change_game_calendar_work_and_weekend_is_not_workday ... ok
+test work_is_rejected_when_cash_or_total_project_budget_is_insufficient ... ok
+test zero_consumption_clearance_uses_base_work_without_fabricating_waste_or_fee ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 12 tests
+test authoritative_work_skips_untrusted_estimate_even_when_its_sum_overflows ... ok
+test clearance_metadata_start_is_atomic_and_rejects_a_future_restored_clock ... ok
+test construction_action_and_journal_records_stay_inside_frozen_engine_budget ... ok
+test durable_hook_failure_does_not_publish_and_retry_after_commit_returns_original_receipt ... ok
+test engine_uses_actual_source_lot_basis_for_budget_and_rejects_actual_overrun_atomically ... ok
+test forged_gate_or_inspector_identity_is_rejected_before_domain_mutation ... ok
+test generic_release_cannot_break_project_site_binding_and_cold_restore_can_continue_work ... ok
+test insufficient_site_capacity_funds_and_materials_leave_candidate_domains_unchanged ... ok
+test modern_unstarted_road_can_cancel_while_legacy_rejection_is_preserved ... ok
+test non_draft_checkpoint_restores_exact_site_lease_and_continues_to_operational_without_double_charge ... ok
+test operating_capacity_is_published_and_withdrawn_only_when_consumers_allow_it ... ok
+test retrofit_publication_and_rejected_demolition_keep_the_operating_capacity ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+
+running 6 tests
+test binding_converts_with_floor_and_exact_integer_cost ... ok
+test conversion_and_cost_overflow_are_rejected ... ok
+test optional_supply_binding_stays_within_the_documented_fixed_slot ... ok
+test serde_rejects_unknown_fields_and_preserves_binding ... ok
+test zero_identity_conversion_and_tariff_are_invalid ... ok
+test zero_stock_and_zero_output_cost_remain_zero ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 9 tests
+test accepted_cross_city_quote_uses_shared_pool_before_local_market_and_survives_checkpoint ... ok
+test actual_town_day_exports_only_consumed_electricity_and_does_not_refill_next_day ... FAILED
+test insufficient_company_cash_skips_production_without_blocking_settlement ... ok
+test invalid_boot_binding_and_stale_legacy_power_controls_are_rejected ... ok
+test legacy_profile_without_boot_binding_remains_compatible ... ok
+test metadata_precommit_failure_and_checkpoint_retry_export_exactly_once ... ok
+test only_completed_generator_output_can_supply_the_next_market_day ... ok
+test opening_utility_stock_is_the_existing_electricity_commodity_and_boot_owner ... ok
+test two_recipes_share_one_boot_stock_pool_and_cannot_over_export ... ok
+
+failures:
+
+---- actual_town_day_exports_only_consumed_electricity_and_does_not_refill_next_day stdout ----
+
+thread 'actual_town_day_exports_only_consumed_electricity_and_does_not_refill_next_day' panicked at crates/city-core/tests/town_utility_engine.rs:283:5:
+assertion `left == right` failed
+  left: 99920
+ right: 99760
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    actual_town_day_exports_only_consumed_electricity_and_does_not_refill_next_day
+
+test result: FAILED. 8 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+

@@ -1,8 +1,10 @@
+#![recursion_limit = "256"]
+
 //! Run one real Store-backed transport-limited market day.
 use mycity_core::{
     construction::{
-        EngineCommand as ConstructionCommand, Gate, GateCategory, GateDecision, Kind, Material,
-        Project, OPERATION_PREFIX,
+        AbortClearanceMaterialRule, AbortClearanceSpec, EngineCommand as ConstructionCommand, Gate,
+        GateCategory, GateDecision, Kind, Material, Project, MAX_MATERIALS, OPERATION_PREFIX,
     },
     market_access::{
         AllocationScope, DemandRepeatPolicy, FeePolicyInput, RoadCapacityEffectBinding,
@@ -274,7 +276,7 @@ fn execute_action(store: &mut Store, caller: Caller, action: Action) -> Result<(
             },
         )
         .map_err(err)?;
-    outcome.model.map_err(err)
+    outcome.model.map(|_| ()).map_err(err)
 }
 
 fn advance_to(store: &mut Store, target: u64) -> Result<(), String> {
@@ -321,13 +323,21 @@ fn construction_action(
     command: ConstructionCommand,
 ) -> Result<(), String> {
     let view = store.engine().map_err(err)?.world().view();
-    let operation_id = if matches!(
-        command,
-        ConstructionCommand::Start
-            | ConstructionCommand::Work { .. }
-            | ConstructionCommand::SubmitInspection
-            | ConstructionCommand::AcceptInspection { accepted: true, .. }
-    ) {
+    let metadata_clearance_start = command == ConstructionCommand::Start
+        && view.construction.is_some_and(|project| {
+            project.waste_receiver.is_some()
+                && !project.operating_published
+                && project.abort_clearance.is_none()
+        });
+    let operation_id = if !metadata_clearance_start
+        && matches!(
+            command,
+            ConstructionCommand::Start
+                | ConstructionCommand::Work { .. }
+                | ConstructionCommand::SubmitInspection
+                | ConstructionCommand::AcceptInspection { accepted: true, .. }
+                | ConstructionCommand::Close
+        ) {
         project_effect_id(store)?
     } else {
         store.committed_sequence() + 1
@@ -344,7 +354,573 @@ fn construction_action(
             },
         )
         .map_err(err)?;
-    outcome.model.map_err(err)
+    outcome.model.map(|_| ()).map_err(err)
+}
+
+/// Store-backed never-published road clearance. This keeps the road profile bound to its
+/// original capacity while a real half-built project is cleared and closed.
+fn run_road_clearance(dir: &str) -> Result<(), String> {
+    if Path::new(dir).exists() {
+        return Err("store directory already exists".into());
+    }
+    let mut opening = open(2, true);
+    opening.edges[1].capacity_people = 10;
+    let assignment = opening.assign().map_err(err)?;
+    let partitions = [TripPartition {
+        quote_id: 1,
+        outbound_source: 101,
+        return_source: 102,
+        trip_count: 10,
+        goods_per_trip: Quantity::new(20).map_err(err)?,
+    }];
+    let allocation = Allocation {
+        schema: 1,
+        world_id: 1,
+        branch_id: 1,
+        market_profile_id: 1,
+        period_seconds: DAY as u32,
+        allocation_scope: AllocationScope::SingleTownExclusive,
+        demand_repeat_policy: DemandRepeatPolicy::RepeatFixedDailyDemand,
+        road_capacity_effect: Some(RoadCapacityEffectBinding {
+            project_id: 7,
+            resource_id: 81,
+            edge_id: 10,
+            base_capacity_people: 2,
+            added_capacity_people: 8,
+        }),
+        opening: &opening,
+        assignment: &assignment,
+        partitions: &partitions,
+        fee_policy: FeePolicyInput {
+            provider_account: 1,
+            cents_per_travel_second: 1,
+        },
+    };
+    let allocation_bytes = serde_json::to_vec(&allocation).map_err(err)?;
+    let mut project = Project::new(
+        7,
+        Kind::Build,
+        4,
+        3,
+        1,
+        80,
+        1,
+        1,
+        Money::new(1_000_000).map_err(err)?,
+        Money::new(3_600).map_err(err)?,
+        28_800,
+        &[
+            Gate {
+                id: 1,
+                category: GateCategory::OwnerConsent,
+                evidence_id: 0,
+                party: 2,
+                decided: GateDecision::Pending,
+            },
+            Gate {
+                id: 2,
+                category: GateCategory::Permit,
+                evidence_id: 0,
+                party: 1,
+                decided: GateDecision::Pending,
+            },
+        ],
+        &[Material {
+            stock_id: 1,
+            required: Quantity::new(1_000).map_err(err)?,
+            consumed: Quantity::ZERO,
+            basis_per_unit: Money::new(400).map_err(err)?,
+            basis_remainder: 0,
+        }],
+        GameTime::ZERO,
+    )
+    .map_err(err)?;
+    project.operating_resource = 81;
+    project.operating_base_capacity = 2;
+    project.operating_units = 8;
+    project.operating_edge_id = 10;
+    project.waste_receiver_account = 3;
+    project.waste_receiver_resource = 82;
+    project.waste_units = 2;
+    project.waste_fee = Money::new(250).map_err(err)?;
+    let mut material_rules = [AbortClearanceMaterialRule::default(); MAX_MATERIALS];
+    material_rules[0] = AbortClearanceMaterialRule {
+        stock_id: 1,
+        quantity_per_waste_capacity_unit: 500,
+        worker_seconds_per_thousand_quantity: 3_600,
+    };
+    project.abort_clearance_spec = Some(AbortClearanceSpec {
+        base_worker_seconds: 600,
+        material_rules,
+    });
+    let opening_bytes = opening_with_road_project(hash(&allocation_bytes), &project, false);
+    let mut store = Store::create_with_transport_allocation_profile(
+        Path::new(dir),
+        &opening_bytes,
+        vec![
+            Resource::new(80, 1).map_err(err)?,
+            Resource::new(81, 2).map_err(err)?,
+            Resource::new(82, 10).map_err(err)?,
+        ],
+        RULES,
+        &allocation_bytes,
+    )
+    .map_err(err)?;
+    let cash_total = |accounts: &[mycity_core::assembly::AccountView]| -> i128 {
+        accounts
+            .iter()
+            .map(|account| i128::from(account.cash.value()))
+            .sum()
+    };
+    let initial = store.engine().map_err(err)?.world().view();
+    let initial_cash = cash_total(&initial.accounts);
+    let initial_finished = initial
+        .stocks
+        .iter()
+        .find(|stock| stock.id == 3)
+        .ok_or("finished goods stock missing")?
+        .quantity
+        .value();
+    let initial_raw = initial
+        .stocks
+        .iter()
+        .find(|stock| stock.id == 1)
+        .ok_or("construction material stock missing")?
+        .quantity
+        .value();
+    for (caller, command) in [
+        (Caller::Account(4), ConstructionCommand::File),
+        (
+            Caller::Account(2),
+            ConstructionCommand::DecideGate {
+                gate_id: 1,
+                decision: GateDecision::Accepted,
+                evidence_id: 701,
+            },
+        ),
+        (
+            Caller::Account(1),
+            ConstructionCommand::DecideGate {
+                gate_id: 2,
+                decision: GateDecision::Accepted,
+                evidence_id: 702,
+            },
+        ),
+        (Caller::Account(4), ConstructionCommand::Prepare),
+        (Caller::Account(4), ConstructionCommand::Start),
+    ] {
+        construction_action(&mut store, caller, command)?;
+    }
+    execute_action(
+        &mut store,
+        Caller::System,
+        Action::Timeline {
+            command: TimelineCommand::Enable,
+        },
+    )?;
+    let original_site_token = store
+        .engine()
+        .map_err(err)?
+        .world()
+        .view()
+        .construction
+        .ok_or("project missing after mobilization")?
+        .site_token
+        .ok_or("site token missing after mobilization")?;
+    advance_to(&mut store, SHIFT_END)?;
+    let before_build_work = store.engine().map_err(err)?.world().view();
+    let owner_before_build_work = before_build_work
+        .accounts
+        .iter()
+        .find(|account| account.id == 4)
+        .ok_or("owner missing before build work")?
+        .cash
+        .value();
+    let contractor_before_build_work = before_build_work
+        .accounts
+        .iter()
+        .find(|account| account.id == 3)
+        .ok_or("contractor missing before build work")?
+        .cash
+        .value();
+    construction_action(
+        &mut store,
+        Caller::Account(3),
+        ConstructionCommand::Work {
+            at: GameTime::new(SHIFT_END as i64).map_err(err)?,
+            elapsed_seconds: SHIFT_END as u32,
+            worker_seconds: 14_400,
+        },
+    )?;
+    let after_build_work = store.engine().map_err(err)?.world().view();
+    if owner_before_build_work
+        - after_build_work
+            .accounts
+            .iter()
+            .find(|account| account.id == 4)
+            .ok_or("owner missing after build work")?
+            .cash
+            .value()
+        != 14_400
+        || after_build_work
+            .accounts
+            .iter()
+            .find(|account| account.id == 3)
+            .ok_or("contractor missing after build work")?
+            .cash
+            .value()
+            - contractor_before_build_work
+            != 14_400
+    {
+        return Err("half-build work did not transfer its real labor payment".into());
+    }
+    construction_action(&mut store, Caller::Account(3), ConstructionCommand::Pause)?;
+    advance_to(&mut store, DAY)?;
+
+    store
+        .settle_town_market(80_001)
+        .map_err(err)?
+        .model
+        .map_err(err)?;
+    let before_clearance = store.engine().map_err(err)?.world().view();
+    let first_market = before_clearance.town.ok_or("town missing after day one")?;
+    let first_proof = first_market
+        .state
+        .last_transport
+        .ok_or("day-one proof missing")?;
+    if first_market.state.last_summary.actual_sales.value() != 40
+        || before_clearance.construction.is_none_or(|p| {
+            p.phase != mycity_core::construction::Phase::Paused
+                || p.operating_published
+                || p.operating_published_at.is_some()
+                || p.operating_withdrawn_at.is_some()
+                || p.materials[0].consumed != Quantity::new(500).unwrap()
+        })
+        || store
+            .engine()
+            .map_err(err)?
+            .resources()
+            .iter()
+            .find(|resource| resource.id == 81)
+            .ok_or("road resource missing")?
+            .capacity
+            != 2
+    {
+        return Err("half-built unpublished project changed base road service".into());
+    }
+    let day_one_receipt = store
+        .receipt(80_001)
+        .map_err(err)?
+        .ok_or("day-one settlement receipt missing")?;
+    if transport_proof_from_receipt(&day_one_receipt) != Some(first_proof.issued_proof_sha256) {
+        return Err("day-one receipt does not retain its transport proof".into());
+    }
+
+    construction_action(
+        &mut store,
+        Caller::Account(4),
+        ConstructionCommand::BeginDemolition { waste_receiver: 3 },
+    )?;
+    for (caller, gate_id, evidence_id) in
+        [(Caller::Account(2), 1, 703), (Caller::Account(1), 2, 704)]
+    {
+        construction_action(
+            &mut store,
+            caller,
+            ConstructionCommand::DecideGate {
+                gate_id,
+                decision: GateDecision::Accepted,
+                evidence_id,
+            },
+        )?;
+    }
+    construction_action(&mut store, Caller::Account(4), ConstructionCommand::Prepare)?;
+    construction_action(&mut store, Caller::Account(4), ConstructionCommand::Start)?;
+    let clearance_start = store.engine().map_err(err)?.world().view();
+    let clearance_project = clearance_start
+        .construction
+        .ok_or("project missing at clearance start")?;
+    let site_occupied = store
+        .engine()
+        .map_err(err)?
+        .resources()
+        .iter()
+        .find(|resource| resource.id == 80)
+        .ok_or("site resource missing")?
+        .occupied;
+    if clearance_project.kind != Kind::Demolish
+        || clearance_project.abort_clearance.is_none_or(|history| {
+            history.required_worker_seconds != 2_400 || history.waste_units != 1
+        })
+        || clearance_project.operating_published
+        || clearance_project.operating_published_at.is_some()
+        || clearance_project.operating_withdrawn_at.is_some()
+        || clearance_project.materials[0].consumed != Quantity::new(500).map_err(err)?
+        || clearance_project.site_token != Some(original_site_token)
+        || site_occupied != 1
+        || store
+            .engine()
+            .map_err(err)?
+            .resources()
+            .iter()
+            .find(|resource| resource.id == 81)
+            .ok_or("road resource missing")?
+            .capacity
+            != 2
+    {
+        return Err(
+            "clearance start published capacity, lost material history, or released the site"
+                .into(),
+        );
+    }
+    let clearance_work_at = DAY + 9 * 3_600 + 2_400;
+    advance_to(&mut store, clearance_work_at)?;
+    let before_clearance_work = store.engine().map_err(err)?.world().view();
+    let owner_before_clearance_work = before_clearance_work
+        .accounts
+        .iter()
+        .find(|account| account.id == 4)
+        .ok_or("owner missing before clearance work")?
+        .cash
+        .value();
+    let contractor_before_clearance_work = before_clearance_work
+        .accounts
+        .iter()
+        .find(|account| account.id == 3)
+        .ok_or("contractor missing before clearance work")?
+        .cash
+        .value();
+    construction_action(
+        &mut store,
+        Caller::Account(3),
+        ConstructionCommand::Work {
+            at: GameTime::new(clearance_work_at as i64).map_err(err)?,
+            elapsed_seconds: (clearance_work_at - DAY) as u32,
+            worker_seconds: 2_400,
+        },
+    )?;
+    let before_waste = store.engine().map_err(err)?.world().view();
+    if owner_before_clearance_work
+        - before_waste
+            .accounts
+            .iter()
+            .find(|account| account.id == 4)
+            .ok_or("owner missing after clearance work")?
+            .cash
+            .value()
+        != 2_400
+        || before_waste
+            .accounts
+            .iter()
+            .find(|account| account.id == 3)
+            .ok_or("contractor missing after clearance work")?
+            .cash
+            .value()
+            - contractor_before_clearance_work
+            != 2_400
+    {
+        return Err("clearance work did not transfer its real labor payment".into());
+    }
+    let owner_before_waste = before_waste
+        .accounts
+        .iter()
+        .find(|account| account.id == 4)
+        .ok_or("owner missing before waste acceptance")?
+        .cash
+        .value();
+    let receiver_before_waste = before_waste
+        .accounts
+        .iter()
+        .find(|account| account.id == 3)
+        .ok_or("receiver missing before waste acceptance")?
+        .cash
+        .value();
+    construction_action(
+        &mut store,
+        Caller::Account(3),
+        ConstructionCommand::AcceptWaste,
+    )?;
+    let after_waste = store.engine().map_err(err)?.world().view();
+    let owner_after_waste = after_waste
+        .accounts
+        .iter()
+        .find(|account| account.id == 4)
+        .ok_or("owner missing after waste acceptance")?
+        .cash
+        .value();
+    let receiver_after_waste = after_waste
+        .accounts
+        .iter()
+        .find(|account| account.id == 3)
+        .ok_or("receiver missing after waste acceptance")?
+        .cash
+        .value();
+    if owner_before_waste - owner_after_waste != 250
+        || receiver_after_waste - receiver_before_waste != 250
+        || after_waste
+            .construction
+            .is_none_or(|p| !p.waste_accepted || p.effective_waste_units() != 1)
+        || cash_total(&after_waste.accounts) != initial_cash
+    {
+        return Err("clearance waste fee or city cash conservation did not reconcile".into());
+    }
+    construction_action(&mut store, Caller::Account(4), ConstructionCommand::Close)?;
+    let closed = store.engine().map_err(err)?.world().view();
+    if closed.construction.is_none_or(|p| {
+        p.phase != mycity_core::construction::Phase::Closed
+            || p.site_token.is_some()
+            || p.operating_published
+            || p.operating_published_at.is_some()
+            || p.operating_withdrawn_at.is_some()
+            || p.materials[0].consumed != Quantity::new(500).unwrap()
+    }) || store
+        .engine()
+        .map_err(err)?
+        .resources()
+        .iter()
+        .find(|resource| resource.id == 81)
+        .ok_or("road resource missing after close")?
+        .capacity
+        != 2
+        || store
+            .engine()
+            .map_err(err)?
+            .resources()
+            .iter()
+            .find(|resource| resource.id == 80)
+            .ok_or("site resource missing after close")?
+            .occupied
+            != 0
+        || store
+            .engine()
+            .map_err(err)?
+            .resources()
+            .iter()
+            .find(|resource| resource.id == 82)
+            .ok_or("waste resource missing after close")?
+            .occupied
+            != 1
+    {
+        return Err(
+            "closed clearance did not preserve the road base and release only its site".into(),
+        );
+    }
+    advance_to(&mut store, 2 * DAY)?;
+    store
+        .settle_town_market(80_002)
+        .map_err(err)?
+        .model
+        .map_err(err)?;
+    let day_two = store.engine().map_err(err)?.world().view();
+    let day_two_market = day_two.town.ok_or("town missing after day two")?;
+    let second_proof = day_two_market
+        .state
+        .last_transport
+        .ok_or("day-two proof missing")?;
+    if day_two_market.state.last_summary.actual_sales.value() != 40
+        || day_two_market
+            .state
+            .last_transport
+            .is_none_or(|proof| proof.issued_day != 2)
+        || day_two.construction.is_none_or(|p| {
+            p.phase != mycity_core::construction::Phase::Closed
+                || p.operating_published_at.is_some()
+                || p.operating_withdrawn_at.is_some()
+        })
+        || store
+            .engine()
+            .map_err(err)?
+            .resources()
+            .iter()
+            .find(|resource| resource.id == 81)
+            .ok_or("road resource missing on day two")?
+            .capacity
+            != 2
+        || cash_total(&day_two.accounts) != initial_cash
+        || first_proof.issued_proof_sha256 == second_proof.issued_proof_sha256
+    {
+        return Err(
+            "closed project did not retain base traffic, cash, and a distinct day-two proof".into(),
+        );
+    }
+    let final_goods = day_two
+        .stocks
+        .iter()
+        .find(|stock| stock.id == 3)
+        .ok_or("finished goods missing after day two")?
+        .quantity
+        .value();
+    let final_raw = day_two
+        .stocks
+        .iter()
+        .find(|stock| stock.id == 1)
+        .ok_or("construction material missing after day two")?
+        .quantity
+        .value();
+    if final_goods != initial_finished - 80 || final_raw != initial_raw - 500 {
+        return Err("market sales did not debit exactly the served goods".into());
+    }
+    store.checkpoint().map_err(err)?;
+    let committed = store.state_hash().map_err(err)?;
+    drop(store);
+    let mut recovered = Store::open(Path::new(dir), RULES).map_err(err)?;
+    if recovered.state_hash().map_err(err)? != committed
+        || recovered.receipt(80_001).map_err(err)?.is_none()
+        || recovered.receipt(80_002).map_err(err)?.is_none()
+        || transport_proof_from_receipt(&recovered.receipt(80_001).map_err(err)?.unwrap())
+            != Some(first_proof.issued_proof_sha256)
+        || transport_proof_from_receipt(&recovered.receipt(80_002).map_err(err)?.unwrap())
+            != Some(second_proof.issued_proof_sha256)
+        || recovered
+            .engine()
+            .map_err(err)?
+            .world()
+            .view()
+            .construction
+            .is_none_or(|p| {
+                p.phase != mycity_core::construction::Phase::Closed
+                    || p.operating_published_at.is_some()
+                    || p.operating_withdrawn_at.is_some()
+                    || p.materials[0].consumed != Quantity::new(500).unwrap()
+            })
+        || recovered
+            .engine()
+            .map_err(err)?
+            .resources()
+            .iter()
+            .find(|resource| resource.id == 81)
+            .ok_or("road resource missing after recovery")?
+            .capacity
+            != 2
+    {
+        return Err("cold reopen lost closed clearance state or historical traffic proofs".into());
+    }
+    println!(
+        "{}",
+        serde_json::to_string_pretty(&serde_json::json!({
+            "scenario":"road-clearance",
+            "half_build_worker_seconds":14_400,
+            "retained_material_consumed":500,
+            "clearance_worker_seconds":2_400,
+            "received_waste_capacity_units":1,
+            "flat_waste_fee_cents":250,
+            "capacity_base_before_and_after_close":2,
+            "operating_published_at":null,
+            "operating_withdrawn_at":null,
+            "day_one_and_day_two_sales":[40,40],
+            "day_one_proof_sha256":hex(&first_proof.issued_proof_sha256),
+            "day_two_proof_sha256":hex(&second_proof.issued_proof_sha256),
+            "finished_goods_open":initial_finished,
+            "finished_goods_after_two_days":final_goods,
+            "construction_material_open":initial_raw,
+            "construction_material_after_clearance":final_raw,
+            "cash_conservation":"passed",
+            "site":"released_once",
+            "closed_project_and_historical_proofs":"cold_recovered"
+        }))
+        .map_err(err)?
+    );
+    Ok(())
 }
 
 /// Store-backed causal scenario: the project pays for a real road-capacity resource, but
@@ -830,7 +1406,7 @@ fn run_road_effect(
         )?;
         construction_action(
             &mut store,
-            Caller::Account(4),
+            Caller::Account(3),
             ConstructionCommand::AcceptWaste,
         )?;
         construction_action(&mut store, Caller::Account(4), ConstructionCommand::Close)?;
@@ -956,9 +1532,6 @@ fn run_road_effect(
         if proof_hashes.len() != 2 {
             return Err("day-one and day-two transport proofs are not unique".into());
         }
-        let mut midpoint_hash = String::new();
-        let mut midpoint_sequence = 0;
-        let mut midpoint_op = 0;
         for day in 3..=28_u32 {
             advance_to(&mut recovered, u64::from(day) * DAY)?;
             let settlement_op = 80_100 + u64::from(day);
@@ -976,7 +1549,10 @@ fn run_road_effect(
                 .state
                 .last_transport
                 .ok_or("daily road-28 transport proof missing")?;
-            if transport.issued_day != u64::from(day) || transport.consumed_generation != 2 {
+            if transport.issued_day != u64::from(day)
+                || transport.issued_generation != u64::from(day)
+                || transport.consumed_generation != u64::from(day)
+            {
                 return Err(format!("day-{day} used a stale traffic proof"));
             }
             if !proof_hashes.insert(transport.issued_proof_sha256) {
@@ -984,10 +1560,10 @@ fn run_road_effect(
             }
             totals.add(day, market.state.last_summary);
             if day == 14 {
-                midpoint_op = settlement_op;
+                let midpoint_op = settlement_op;
                 recovered.checkpoint().map_err(err)?;
-                midpoint_hash = recovered.state_hash().map_err(err)?;
-                midpoint_sequence = recovered.committed_sequence();
+                let midpoint_hash = recovered.state_hash().map_err(err)?;
+                let midpoint_sequence = recovered.committed_sequence();
                 drop(recovered);
                 recovered = Store::open(Path::new(dir), RULES).map_err(err)?;
                 let reopened = recovered.engine().map_err(err)?.world().view();
@@ -1013,6 +1589,9 @@ fn run_road_effect(
             .town
             .as_ref()
             .ok_or("town missing at road-28 close")?;
+        if final_market.state.settled_day != 28 {
+            return Err("road-28 final market cursor is not day 28".into());
+        }
         let final_raw = final_view
             .stocks
             .iter()
@@ -1854,7 +2433,7 @@ fn main() {
 fn run() -> Result<(), String> {
     let mut args = env::args().skip(1);
     let scenario = args.next().ok_or(
-        "usage: town_transport <normal|closed|bottleneck|expanded|cross-boundary|road-effect|road-suspend|road-28|road-withdraw> <new-store-dir> | reopen-check <existing-copied-world-dir> <expected-rules-identity> <expected-state-sha256>",
+        "usage: town_transport <normal|closed|bottleneck|expanded|cross-boundary|road-effect|road-suspend|road-28|road-withdraw|road-clearance> <new-store-dir> | reopen-check <existing-copied-world-dir> <expected-rules-identity> <expected-state-sha256>",
     )?;
     let dir = args.next().ok_or("missing_store_dir")?;
     if scenario == "reopen-check" {
@@ -1870,6 +2449,9 @@ fn run() -> Result<(), String> {
     }
     if scenario == "cross-boundary" {
         return run_cross_boundary(&dir);
+    }
+    if scenario == "road-clearance" {
+        return run_road_clearance(&dir);
     }
     if matches!(
         scenario.as_str(),

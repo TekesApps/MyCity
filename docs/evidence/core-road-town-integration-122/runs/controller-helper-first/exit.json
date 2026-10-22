@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "python3",
+    "-m",
+    "unittest",
+    "-v",
+    "test_controller.py"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/production/docs/evidence/core-road-town-validation-controller",
+  "started_utc": "2026-10-22T17:12:30.808116+00:00",
+  "exit_code": 1,
+  "wall_seconds": 0.077809125
+}

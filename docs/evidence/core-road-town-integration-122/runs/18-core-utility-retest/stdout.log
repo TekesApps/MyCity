@@ -1,0 +1,14 @@
+
+running 9 tests
+test accepted_cross_city_quote_uses_shared_pool_before_local_market_and_survives_checkpoint ... ok
+test actual_town_day_exports_only_consumed_electricity_and_does_not_refill_next_day ... ok
+test insufficient_company_cash_skips_production_without_blocking_settlement ... ok
+test invalid_boot_binding_and_stale_legacy_power_controls_are_rejected ... ok
+test legacy_profile_without_boot_binding_remains_compatible ... ok
+test metadata_precommit_failure_and_checkpoint_retry_export_exactly_once ... ok
+test only_completed_generator_output_can_supply_the_next_market_day ... ok
+test opening_utility_stock_is_the_existing_electricity_commodity_and_boot_owner ... ok
+test two_recipes_share_one_boot_stock_pool_and_cannot_over_export ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+

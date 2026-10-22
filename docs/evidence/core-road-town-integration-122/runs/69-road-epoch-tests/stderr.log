@@ -1,0 +1,224 @@
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-storage)
+error[E0432]: unresolved import `mycity_core::market_access::RoadCapacityEffectBinding`
+   --> crates/city-storage/src/town_transport.rs:638:66
+    |
+638 |             AllocationScope, DemandRepeatPolicy, FeePolicyInput, RoadCapacityEffectBinding,
+    |                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^ no `RoadCapacityEffectBinding` in `market_access`
+
+error[E0599]: no variant named `TownSuspendOperations` found for enum `mycity_core::transaction::Action`
+   --> crates/city-storage/src/checkpoint/receipt_decode.rs:192:24
+    |
+192 |             Ok(Output::TownSuspendOperations {
+    |                        ^^^^^^^^^^^^^^^^^^^^^ variant not found in `mycity_core::transaction::Action`
+
+warning: this function depends on never type fallback being `()`
+   --> crates/city-storage/src/checkpoint/receipt_decode.rs:83:1
+    |
+83  | / fn action_raw(
+84  | |     raw: Raw<'_>,
+85  | |     scratch: &mut Scratch,
+86  | | ) -> Result<mycity_core::transaction::Action, serde_json::Error> {
+    | |________________________________________________________________^
+    |
+    = warning: this was previously accepted by the compiler but is being phased out; it will become a hard error in Rust 2024 and in a future release in all editions!
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/never-type-fallback.html>
+    = help: specify the types explicitly
+note: in edition 2024, the requirement `!: _::_serde::Deserialize<'_>` will fail
+   --> crates/city-storage/src/checkpoint/receipt_decode.rs:193:36
+    |
+193 |                 profile_id: fields.get(1, scratch)?,
+    |                                    ^^^
+    = note: `#[warn(dependency_on_unit_never_type_fallback)]` on by default
+help: use `()` annotations to avoid fallback changes
+    |
+193 ~                 profile_id: fields.get::<()>(1, scratch)?,
+194 ~                 company_account: fields.get::<()>(2, scratch)?,
+    |
+
+error[E0599]: no variant named `EndForExit` found for enum `mycity_core::timeline::Command`
+   --> crates/city-storage/src/checkpoint/receipt_decode.rs:448:24
+    |
+448 |             Ok(Output::EndForExit {
+    |                        ^^^^^^^^^^ variant not found in `mycity_core::timeline::Command`
+
+warning: this function depends on never type fallback being `()`
+   --> crates/city-storage/src/checkpoint/receipt_decode.rs:356:1
+    |
+356 | / fn timeline(
+357 | |     raw: Raw<'_>,
+358 | |     scratch: &mut Scratch,
+359 | | ) -> Result<mycity_core::timeline::Command, serde_json::Error> {
+    | |______________________________________________________________^
+    |
+    = warning: this was previously accepted by the compiler but is being phased out; it will become a hard error in Rust 2024 and in a future release in all editions!
+    = note: for more information, see <https://doc.rust-lang.org/nightly/edition-guide/rust-2024/never-type-fallback.html>
+    = help: specify the types explicitly
+note: in edition 2024, the requirement `!: _::_serde::Deserialize<'_>` will fail
+   --> crates/city-storage/src/checkpoint/receipt_decode.rs:449:28
+    |
+449 |                 id: fields.get(1, scratch)?,
+    |                            ^^^
+help: use `()` annotations to avoid fallback changes
+    |
+449 |                 id: fields.get::<()>(1, scratch)?,
+    |                               ++++++
+
+error[E0609]: no field `road_capacity_effect` on type `&TransportAllocationProfile`
+   --> crates/city-storage/src/town_transport.rs:179:33
+    |
+179 |     let Some(binding) = profile.road_capacity_effect else {
+    |                                 ^^^^^^^^^^^^^^^^^^^^ unknown field
+    |
+    = note: available fields are: `schema`, `world_id`, `branch_id`, `market_profile_id`, `period_seconds` ... and 6 others
+
+error[E0609]: no field `operating_edge_id` on type `Project`
+   --> crates/city-storage/src/town_transport.rs:182:44
+    |
+182 |             .is_some_and(|project| project.operating_edge_id != 0)
+    |                                            ^^^^^^^^^^^^^^^^^ unknown field
+    |
+    = note: available fields are: `id`, `kind`, `phase`, `previous_phase`, `owner` ... and 34 others
+
+error[E0609]: no field `operating_withdrawn_at` on type `Project`
+   --> crates/city-storage/src/town_transport.rs:199:55
+    |
+199 |             if project.operating_published && project.operating_withdrawn_at.is_none() {
+    |                                                       ^^^^^^^^^^^^^^^^^^^^^^ unknown field
+    |
+    = note: available fields are: `id`, `kind`, `phase`, `previous_phase`, `owner` ... and 34 others
+
+error[E0609]: no field `operating_withdrawn_at` on type `Project`
+   --> crates/city-storage/src/town_transport.rs:208:27
+    |
+208 |             != if project.operating_withdrawn_at.is_some() || project.is_uncommissioned_clearance()
+    |                           ^^^^^^^^^^^^^^^^^^^^^^ unknown field
+    |
+    = note: available fields are: `id`, `kind`, `phase`, `previous_phase`, `owner` ... and 34 others
+
+error[E0599]: no method named `is_uncommissioned_clearance` found for struct `Project` in the current scope
+   --> crates/city-storage/src/town_transport.rs:208:71
+    |
+208 |             != if project.operating_withdrawn_at.is_some() || project.is_uncommissioned_clearance()
+    |                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^ method not found in `Project`
+
+error[E0609]: no field `operating_edge_id` on type `Project`
+   --> crates/city-storage/src/town_transport.rs:214:20
+    |
+214 |         || project.operating_edge_id != binding.edge_id
+    |                    ^^^^^^^^^^^^^^^^^ unknown field
+    |
+    = note: available fields are: `id`, `kind`, `phase`, `previous_phase`, `owner` ... and 34 others
+
+error[E0609]: no field `operating_published_at` on type `Project`
+   --> crates/city-storage/src/town_transport.rs:237:16
+    |
+237 |     if project.operating_published_at.is_none() && project.operating_withdrawn_at.is_none() {
+    |                ^^^^^^^^^^^^^^^^^^^^^^ unknown field
+    |
+help: a field with a similar name exists
+    |
+237 |     if project.operating_published.is_none() && project.operating_withdrawn_at.is_none() {
+    |                ~~~~~~~~~~~~~~~~~~~
+
+error[E0609]: no field `operating_withdrawn_at` on type `Project`
+   --> crates/city-storage/src/town_transport.rs:237:60
+    |
+237 |     if project.operating_published_at.is_none() && project.operating_withdrawn_at.is_none() {
+    |                                                            ^^^^^^^^^^^^^^^^^^^^^^ unknown field
+    |
+    = note: available fields are: `id`, `kind`, `phase`, `previous_phase`, `owner` ... and 34 others
+
+error[E0609]: no field `operating_published_at` on type `Project`
+   --> crates/city-storage/src/town_transport.rs:251:17
+    |
+251 |         project.operating_published_at,
+    |                 ^^^^^^^^^^^^^^^^^^^^^^ unknown field
+    |
+help: a field with a similar name exists
+    |
+251 |         project.operating_published,
+    |                 ~~~~~~~~~~~~~~~~~~~
+
+error[E0609]: no field `operating_withdrawn_at` on type `Project`
+   --> crates/city-storage/src/town_transport.rs:252:17
+    |
+252 |         project.operating_withdrawn_at,
+    |                 ^^^^^^^^^^^^^^^^^^^^^^ unknown field
+    |
+    = note: available fields are: `id`, `kind`, `phase`, `previous_phase`, `owner` ... and 34 others
+
+error[E0609]: no field `operating_edge_id` on type `Project`
+   --> crates/city-storage/src/town_transport.rs:272:40
+    |
+272 |         .is_some_and(|project| project.operating_edge_id != 0)
+    |                                        ^^^^^^^^^^^^^^^^^ unknown field
+    |
+    = note: available fields are: `id`, `kind`, `phase`, `previous_phase`, `owner` ... and 34 others
+
+error[E0609]: no field `road_capacity_effect` on type `&TransportAllocationProfile`
+   --> crates/city-storage/src/town_transport.rs:290:16
+    |
+290 |     Ok(profile.road_capacity_effect.map_or((None, None), |_| {
+    |                ^^^^^^^^^^^^^^^^^^^^ unknown field
+    |
+    = note: available fields are: `schema`, `world_id`, `branch_id`, `market_profile_id`, `period_seconds` ... and 6 others
+
+error[E0609]: no field `operating_published_at` on type `Project`
+   --> crates/city-storage/src/town_transport.rs:297:29
+    |
+297 |                     project.operating_published_at,
+    |                             ^^^^^^^^^^^^^^^^^^^^^^ unknown field
+    |
+help: a field with a similar name exists
+    |
+297 |                     project.operating_published,
+    |                             ~~~~~~~~~~~~~~~~~~~
+
+error[E0609]: no field `operating_withdrawn_at` on type `Project`
+   --> crates/city-storage/src/town_transport.rs:298:29
+    |
+298 |                     project.operating_withdrawn_at,
+    |                             ^^^^^^^^^^^^^^^^^^^^^^ unknown field
+    |
+    = note: available fields are: `id`, `kind`, `phase`, `previous_phase`, `owner` ... and 34 others
+
+error[E0599]: no method named `derive_for_day` found for reference `&TransportAllocationProfile` in the current scope
+   --> crates/city-storage/src/town_transport.rs:470:10
+    |
+469 |       let (opening, assignment) = profile
+    |  _________________________________-
+470 | |         .derive_for_day(service_day, published_at, withdrawn_at)
+    | |         -^^^^^^^^^^^^^^ method not found in `&TransportAllocationProfile`
+    | |_________|
+    |
+
+error[E0599]: no method named `derive_for_day` found for struct `TransportAllocationProfile` in the current scope
+   --> crates/city-storage/src/town_transport.rs:572:14
+    |
+571 |           let (opening, assignment) = profile
+    |  _____________________________________-
+572 | |             .derive_for_day(service_day, published_at, withdrawn_at)
+    | |             -^^^^^^^^^^^^^^ method not found in `TransportAllocationProfile`
+    | |_____________|
+    |
+
+error[E0609]: no field `operating_edge_id` on type `Project`
+   --> crates/city-storage/src/town_transport.rs:708:17
+    |
+708 |         project.operating_edge_id = 10;
+    |                 ^^^^^^^^^^^^^^^^^ unknown field
+    |
+    = note: available fields are: `id`, `kind`, `phase`, `previous_phase`, `owner` ... and 34 others
+
+error[E0560]: struct `TransportAllocationProfile` has no field named `road_capacity_effect`
+   --> crates/city-storage/src/town_transport.rs:787:13
+    |
+787 |             road_capacity_effect: Some(RoadCapacityEffectBinding {
+    |             ^^^^^^^^^^^^^^^^^^^^ `TransportAllocationProfile` does not have this field
+    |
+    = note: all struct fields are already assigned
+
+Some errors have detailed explanations: E0432, E0560, E0599, E0609.
+For more information about an error, try `rustc --explain E0432`.
+warning: `mycity-storage` (lib test) generated 2 warnings
+error: could not compile `mycity-storage` (lib test) due to 21 previous errors; 2 warnings emitted

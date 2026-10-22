@@ -1,0 +1,46 @@
+{
+  "files": [
+    {
+      "path": "CURRENT.json",
+      "sha256": "6dfee8460b9423e0e19e986e4f1603d0ca32d1de7dc92009e201a52884e304ef",
+      "size": 123
+    },
+    {
+      "path": "LOCK",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "checkpoint-27.json",
+      "sha256": "e3c3cf33e2c731d82506396d8cef3df81af27f99219cd0cd20122d2fac47d6d7",
+      "size": 40071
+    },
+    {
+      "path": "checkpoint-index-27.json",
+      "sha256": "47c30e67bd48d251e559c383be0e7d346d3a0bbe7045a491c0d24e442de018a9",
+      "size": 373
+    },
+    {
+      "path": "genesis.json",
+      "sha256": "f5f6f2d72a9e5d82aa4260100fae1707df6a65ecd99e30b1d4449edd4ffb6b3f",
+      "size": 9797
+    },
+    {
+      "path": "root-0.json",
+      "sha256": "49ff44ab81150df230c5cd26a396e7b1750d49d392f204028ba6cd16330a9af2",
+      "size": 427
+    },
+    {
+      "path": "root-1.json",
+      "sha256": "654265937d197f32abaf6e7d285efeb1517582939ae28bef910c07e05fe84910",
+      "size": 513
+    },
+    {
+      "path": "wal-27.bin",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    }
+  ],
+  "fixture_kind": "accepted-checkpoint",
+  "world_path": "/Volumes/HP P900/dev/MyCity/work/legacy-accepted-project-119-run01/accepted-checkpoint"
+}

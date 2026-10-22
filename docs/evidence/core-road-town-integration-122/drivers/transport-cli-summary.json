@@ -1,0 +1,47 @@
+{
+  "cases": {
+    "37-transport-normal": {
+      "mode": "normal",
+      "requested": 8,
+      "served": 8,
+      "unserved": 0,
+      "mean_seconds": 60,
+      "max_rss_bytes": 1654784
+    },
+    "38-transport-closed": {
+      "mode": "closed",
+      "requested": 25,
+      "served": 20,
+      "unserved": 5,
+      "mean_seconds": 206,
+      "max_rss_bytes": 1654784
+    },
+    "39-transport-congested": {
+      "mode": "congested",
+      "requested": 20,
+      "served": 20,
+      "unserved": 0,
+      "mean_seconds": 69,
+      "max_rss_bytes": 1654784
+    },
+    "40-transport-unreachable": {
+      "mode": "unreachable",
+      "requested": 5,
+      "served": 0,
+      "unserved": 5,
+      "mean_seconds": null,
+      "max_rss_bytes": 1654784
+    },
+    "41-transport-normal-repeat": {
+      "mode": "normal",
+      "requested": 8,
+      "served": 8,
+      "unserved": 0,
+      "mean_seconds": 60,
+      "max_rss_bytes": 1654784
+    }
+  },
+  "repeat_stdout_identical": true,
+  "validator_sha256": "43c355cc74dcff5e5b0312a97363313f3f2c2a1c6db57f678560da167a0bff7a",
+  "scope": "actual bounded CLI scenarios; not full-map performance or 16GB acceptance"
+}

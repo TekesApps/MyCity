@@ -454,6 +454,32 @@ impl Store {
             |_| Ok(()),
         )
     }
+    /// Bind both the physical cross-city network and daily Town transport at genesis.
+    /// All assets go through the same existing immutable admission and validation path.
+    pub fn create_spatial_with_transport_allocation_profile(
+        dir: &Path,
+        opening: &[u8],
+        resources: Vec<Resource>,
+        rules_identity: &str,
+        bundle: (&[u8], &[u8]),
+        allocation_profile: &[u8],
+    ) -> Result<Self, Error> {
+        Self::create_in_workspace_with_transport(
+            dir,
+            opening,
+            resources,
+            rules_identity,
+            Some(bundle),
+            Some(allocation_profile),
+            (
+                0,
+                mycity_core::transaction::EngineWorkspace::new().map_err(Error::Model)?,
+                None,
+                MetadataWorkspace::new()?,
+            ),
+            |_| Ok(()),
+        )
+    }
     // Preserve the existing workspace setup tuple and observer API while adding an optional
     // immutable transport allocation at genesis.
     #[allow(clippy::too_many_arguments)]

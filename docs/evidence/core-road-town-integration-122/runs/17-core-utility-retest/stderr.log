@@ -1,0 +1,25 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-core)
+error[E0609]: no field `next_due` on type `Option<Obligation>`
+   --> crates/city-core/tests/town_utility_engine.rs:265:27
+    |
+265 |     assert_eq!(obligation.next_due, Some(2 * DAY));
+    |                           ^^^^^^^^ unknown field
+    |
+help: one of the expressions' fields has a field of the same name
+    |
+265 |     assert_eq!(obligation.unwrap().next_due, Some(2 * DAY));
+    |                           +++++++++
+
+error[E0609]: no field `arrears` on type `Option<Obligation>`
+   --> crates/city-core/tests/town_utility_engine.rs:266:27
+    |
+266 |     assert_eq!(obligation.arrears, Money::ZERO);
+    |                           ^^^^^^^ unknown field
+    |
+help: one of the expressions' fields has a field of the same name
+    |
+266 |     assert_eq!(obligation.unwrap().arrears, Money::ZERO);
+    |                           +++++++++
+
+For more information about this error, try `rustc --explain E0609`.
+error: could not compile `mycity-core` (test "town_utility_engine") due to 2 previous errors

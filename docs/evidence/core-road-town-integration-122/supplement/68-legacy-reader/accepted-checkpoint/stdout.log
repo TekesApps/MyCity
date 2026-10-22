@@ -1,0 +1,18 @@
+{
+  "accepted_operating_project_count": 1,
+  "committed_sequence": 26,
+  "construction_inspected": true,
+  "construction_operating_published": true,
+  "construction_project_count": 1,
+  "construction_project_phase": "Operational",
+  "construction_published_at": null,
+  "expected_state_sha256": "a4d0d95d95f10a16af11dd05ef963439bedb3de7337e1e6d4593004bcd327c8f",
+  "observed_state_sha256": "a4d0d95d95f10a16af11dd05ef963439bedb3de7337e1e6d4593004bcd327c8f",
+  "rules_identity": "construction-engine-v1",
+  "scenario": "reopen-check",
+  "state_hash_match": true,
+  "transport_generation": null,
+  "transport_proof_sha256": null,
+  "transport_service_day": null,
+  "transport_settlement_present": false
+}

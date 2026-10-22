@@ -1,0 +1,24 @@
+{
+  "case": "accepted-wal",
+  "argv": [
+    "/usr/bin/time",
+    "-l",
+    "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/96a1390c6ef655cf4e50f329f36206fe540ab8b0c3dbf462b6fef3dd78844584/town_transport",
+    "reopen-check",
+    "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/68-legacy-reader/accepted-wal/world",
+    "construction-engine-v1",
+    "a4d0d95d95f10a16af11dd05ef963439bedb3de7337e1e6d4593004bcd327c8f"
+  ],
+  "exit_code": 0,
+  "wall_seconds": 0.023233749999999997,
+  "source_original_unchanged": true,
+  "copy_before_equal": true,
+  "expected_state_sha256": "a4d0d95d95f10a16af11dd05ef963439bedb3de7337e1e6d4593004bcd327c8f",
+  "executable": {
+    "sha256": "96a1390c6ef655cf4e50f329f36206fe540ab8b0c3dbf462b6fef3dd78844584",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/96a1390c6ef655cf4e50f329f36206fe540ab8b0c3dbf462b6fef3dd78844584/town_transport"
+  },
+  "build_source_manifest_sha256": "16d292c64c0cc339fb3c9092fa9d5b21db0e0b8ce718d02552988b0caedd31e0",
+  "storage": "HP P900 external USB/APFS SSD",
+  "scope": "functional compatibility cold read on full copies only; not M0 performance"
+}

@@ -66,5 +66,13 @@ not bankruptcy, insolvency, or a successful company exit.
 
 ## Verification status
 
-The scenario and its checks are **not run** in this candidate. Only Rust 1.85.1 formatting
-and static diff checks have been performed; Cargo, CLI, and model execution remain pending.
+Run57 executed this 28-day Store-backed road/town scenario with exit 0. It recorded 28 daily
+settlements and 28 unique consumed transport proofs; cash conservation, raw-to-output balance,
+midpoint day-14 reopen, final cold reopen, and payroll reconciliation passed. Actual sales
+occurred on six days only, with the last sales on day 6; all opening raw stock (1,000 units) was
+consumed, so the run does not demonstrate continuous sales, self-funding, or profitability.
+Opening capital was present and the utility supply is an explicit capacity/cost profile, not a
+live grid. Run72's final core/storage all-target release test exited 0 with source unchanged;
+this does not establish the full-scale physical/model-pool gates, full M0, or the 16GB device gate. Formal01
+ended early under the pressure guard. Evidence remains under
+`/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/57-town-transport-road-28/`.

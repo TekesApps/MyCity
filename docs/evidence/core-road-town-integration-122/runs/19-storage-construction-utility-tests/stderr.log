@@ -1,0 +1,6 @@
+    Finished `release` profile [optimized] target(s) in 0.03s
+     Running tests/construction.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/construction-b68fb118295d0565)
+     Running tests/construction_boot_stock_isolation.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/construction_boot_stock_isolation-dd453c47681c6dc8)
+     Running tests/construction_material_retry.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/construction_material_retry-b17765eed5678673)
+     Running tests/construction_retry_policy.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/construction_retry_policy-17b076e6f50d0c83)
+error: test failed, to rerun pass `-p mycity-storage --test construction_retry_policy`

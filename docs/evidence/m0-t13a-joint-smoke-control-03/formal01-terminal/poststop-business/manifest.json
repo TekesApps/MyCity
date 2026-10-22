@@ -1,0 +1,73 @@
+{
+  "schema": "mycity-poststop-business-recovery-evidence-v1",
+  "full_recovery_copy": "/Volumes/HP P900/dev/MyCity/work/formal01-poststop-business-01/world",
+  "originals_not_modified": true,
+  "files": [
+    {
+      "path": "receipt.json",
+      "bytes": 1373,
+      "sha256": "770f171be15f10002fc3efdc595eeab2127f37a89dfcc59736c8406f17c1423f"
+    },
+    {
+      "path": "driver.py",
+      "bytes": 4766,
+      "sha256": "fc0013504249d72f4d0cebd3202508aff1e871b6a644d51a4e7c055ab5f24cb0"
+    },
+    {
+      "path": "original-manifest.json",
+      "bytes": 20090,
+      "sha256": "5176ab2c489ccb4e84947d228b0b3f2b56735ff2672fb7a25b32c82a3d61633e"
+    },
+    {
+      "path": "expected-state.json",
+      "bytes": 24751,
+      "sha256": "f133f50a68c6feb7c74c7a73db4e08c804cc085d3e9e25d644a401d711f05596"
+    },
+    {
+      "path": "expected-receipt.json",
+      "bytes": 155,
+      "sha256": "3a70e71eb7c1ad1bfb1a0be97f23bed74245abfe074f616ee647b59408c5c7d1"
+    },
+    {
+      "path": "wal-cold/status.json",
+      "bytes": 22727,
+      "sha256": "ff39c794a8fca7df864d806da2de78c055c70571bc53d73f654aa41190c8ee3f"
+    },
+    {
+      "path": "wal-cold/receipt-proof.json",
+      "bytes": 155,
+      "sha256": "3a70e71eb7c1ad1bfb1a0be97f23bed74245abfe074f616ee647b59408c5c7d1"
+    },
+    {
+      "path": "wal-cold/protocol.jsonl",
+      "bytes": 44373,
+      "sha256": "ae412084aa39468c2bf7b369d5c0c076800aacebd2e315fc9e0a0782f675fd9d"
+    },
+    {
+      "path": "wal-cold/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "checkpoint-cold/status.json",
+      "bytes": 22727,
+      "sha256": "9e4f26ffceeb7c577ffd14817f8380e7b17f99fabb1dbe4c3fb51e4929bf8449"
+    },
+    {
+      "path": "checkpoint-cold/receipt-proof.json",
+      "bytes": 155,
+      "sha256": "3a70e71eb7c1ad1bfb1a0be97f23bed74245abfe074f616ee647b59408c5c7d1"
+    },
+    {
+      "path": "checkpoint-cold/protocol.jsonl",
+      "bytes": 29594,
+      "sha256": "b70fec559518e54d59ab0acc7daf52f143c56529fd7b1cdcb990608c4df3a0dd"
+    },
+    {
+      "path": "checkpoint-cold/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "scope": "actual standalone cold recovery only; no 6h/8h/shared-pool/16GB pass"
+}

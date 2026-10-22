@@ -1,0 +1,26 @@
+{
+  "schema": "m0-t13a-poststop-layout-preflight-v1",
+  "observed_at_local": "2026-10-23 before 01:09 CST",
+  "formal_model_process_match": false,
+  "related_open_file_match": false,
+  "method": "ps filtered to MyCity formal attempt; lsof filtered to j3f-01 and its layout snapshot paths; no unrelated command arguments retained",
+  "target_absent_before_creation": true,
+  "storage": {
+    "volume": "HP P900",
+    "device": "/dev/disk7s1",
+    "mount": "/Volumes/HP P900",
+    "filesystem": "APFS",
+    "role": "external USB/APFS SSD",
+    "available_at_preflight": "approximately 1.8 TiB"
+  },
+  "original_snapshot_roots": [
+    "/Volumes/HP P900/dev/MyCity/work/j3f-01/observed/model/layout/snapshots/snapshot-000057",
+    "/Volumes/HP P900/dev/MyCity/work/j3f-01/observed/model/layout/snapshots/snapshot-000058"
+  ],
+  "snapshot_index_mtime_local": {
+    "snapshot-000057": "2026-10-23 00:03:54 CST",
+    "snapshot-000058": "2026-10-23 00:08:54 CST"
+  },
+  "snapshot-000059.pending": "excluded; incomplete; not read or copied",
+  "copy_mode": "cp -cRp; APFS clonefile copy with metadata preservation; copies placed in work/formal01-poststop-layout-01/inputs"
+}

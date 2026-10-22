@@ -1,0 +1,24 @@
+{
+  "capacity_base_before_and_after_close": 2,
+  "cash_conservation": "passed",
+  "clearance_worker_seconds": 2400,
+  "closed_project_and_historical_proofs": "cold_recovered",
+  "construction_material_after_clearance": 599500,
+  "construction_material_open": 600000,
+  "day_one_and_day_two_sales": [
+    40,
+    40
+  ],
+  "day_one_proof_sha256": "92125478e465ff7d9712be0af8838dd8e26f267e54fc27436d60351392ce29b0",
+  "day_two_proof_sha256": "0c99ad0b5810e9d1984d8b4f77b15673d75444e63e43b484b873f55dacdd2ca4",
+  "finished_goods_after_two_days": 320,
+  "finished_goods_open": 400,
+  "flat_waste_fee_cents": 250,
+  "half_build_worker_seconds": 14400,
+  "operating_published_at": null,
+  "operating_withdrawn_at": null,
+  "received_waste_capacity_units": 1,
+  "retained_material_consumed": 500,
+  "scenario": "road-clearance",
+  "site": "released_once"
+}

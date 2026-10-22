@@ -1,0 +1,43 @@
+{
+  "results": [
+    {
+      "attempt": 1,
+      "status_matches_last_committed_verification": {
+        "sequence": true,
+        "business_sha256": true,
+        "background": true,
+        "timeline": true,
+        "state_sha256": true
+      },
+      "known_receipt_equal": true,
+      "scope": "standalone cold restore; not shared-pool or 6h/8h performance acceptance",
+      "checkpoint_preserves_state": {
+        "sequence": true,
+        "business_sha256": true,
+        "background": true,
+        "timeline": true,
+        "state_sha256": true
+      },
+      "exit_code": 0
+    },
+    {
+      "attempt": 2,
+      "status_matches_last_committed_verification": {
+        "sequence": true,
+        "business_sha256": true,
+        "background": true,
+        "timeline": true,
+        "state_sha256": true
+      },
+      "known_receipt_equal": true,
+      "scope": "standalone cold restore; not shared-pool or 6h/8h performance acceptance",
+      "exit_code": 0
+    }
+  ],
+  "original_full_files_unchanged": true,
+  "source_original": "/Volumes/HP P900/dev/MyCity/work/j3f-01/observed/model/business/world",
+  "full_copy": "/Volumes/HP P900/dev/MyCity/work/formal01-poststop-business-01/world",
+  "memory_16gb_gate": "not_run",
+  "eight_hour_gate": "not_run_incomplete_attempt",
+  "driver_sha256": "fc0013504249d72f4d0cebd3202508aff1e871b6a644d51a4e7c055ab5f24cb0"
+}

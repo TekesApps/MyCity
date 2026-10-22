@@ -1,0 +1,4 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-core)
+    Finished `release` profile [optimized] target(s) in 1.51s
+     Running tests/town_utility_engine.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/town_utility_engine-386d1268914a8982)
+error: test failed, to rerun pass `-p mycity-core --test town_utility_engine`

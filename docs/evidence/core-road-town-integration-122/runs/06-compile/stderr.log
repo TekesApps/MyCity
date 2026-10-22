@@ -1,0 +1,20 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-core)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-storage)
+error: recursion limit reached while expanding `$crate::json_internal!`
+    --> crates/city-storage/examples/town_transport.rs:1687:26
+     |
+1687 |           road_28_report = serde_json::json!({
+     |  __________________________^
+1688 | |             "daily_settlements":28,
+1689 | |             "transport_proofs_unique_and_consumed":proof_hashes.len(),
+1690 | |             "fixed_repeat_od_batch_per_day":true,
+...    |
+1735 | |             "legal_company_close":false
+1736 | |         });
+     | |__________^
+     |
+     = help: consider increasing the recursion limit by adding a `#![recursion_limit = "256"]` attribute to your crate (`town_transport`)
+     = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `serde_json::json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: could not compile `mycity-storage` (example "town_transport" test) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

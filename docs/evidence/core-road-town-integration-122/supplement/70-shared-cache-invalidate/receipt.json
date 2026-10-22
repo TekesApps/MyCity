@@ -1,0 +1,26 @@
+{
+  "argv": [
+    "cargo",
+    "+1.85.1",
+    "clean",
+    "--release",
+    "-p",
+    "mycity-core"
+  ],
+  "exit_code": 0,
+  "wall_seconds": 0.5049108339999999,
+  "before": {
+    "allocated_bytes_du": 3986407424,
+    "volume_available_bytes": 1962745757696
+  },
+  "after": {
+    "allocated_bytes_du": 3211988992,
+    "volume_available_bytes": 1963388928000
+  },
+  "allocated_bytes_delta": 774418432,
+  "observed_volume_available_delta": 643170304,
+  "exclusive_apfs_reclaim": "not_claimed",
+  "scope": "rebuildable mycity-core release package artifacts only; no source/work evidence/originals removed",
+  "reason": "invalidate stale v119 shared-target core dependency before new-source validation",
+  "preserved_executables": "verified SHA of manifests for12/14/23/31/45/49 before cleanup; oldwriter preserved in canonical attempt01"
+}

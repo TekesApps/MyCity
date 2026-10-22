@@ -1,0 +1,22 @@
+[
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/construction-b68fb118295d0565",
+    "sha256": "28db49abb09a6684be4945ac5eb886645025aee5b876ef7fa41a714a52a4ae3d",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/28db49abb09a6684be4945ac5eb886645025aee5b876ef7fa41a714a52a4ae3d/construction-b68fb118295d0565"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/construction_boot_stock_isolation-dd453c47681c6dc8",
+    "sha256": "0139bc5cd5de7fd0c157a9377c969c967ac07b4b307130b74e2105200f548188",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/0139bc5cd5de7fd0c157a9377c969c967ac07b4b307130b74e2105200f548188/construction_boot_stock_isolation-dd453c47681c6dc8"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/construction_material_retry-b17765eed5678673",
+    "sha256": "1c64c01883283f117b8c2ac2bd41d8e72e5593b3984d947763eee046a22e7205",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/1c64c01883283f117b8c2ac2bd41d8e72e5593b3984d947763eee046a22e7205/construction_material_retry-b17765eed5678673"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/construction_retry_policy-17b076e6f50d0c83",
+    "sha256": "6f12177c561b0e97198390b5cf474a8d2152b60d2a7341b3d5e72b7b2d33c56c",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/6f12177c561b0e97198390b5cf474a8d2152b60d2a7341b3d5e72b7b2d33c56c/construction_retry_policy-17b076e6f50d0c83"
+  }
+]

@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "/usr/bin/time",
+    "-l",
+    "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/18eca54f55044c0d56a42fc3b4db893ef04dce731580f6f62e3ca48668b37b18/town_lifelines",
+    "--store-dir",
+    "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/42-lifelines-normal/world"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/production",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-22T17:02:38.994067+00:00",
+  "source_manifest_sha256": "88bf93b82eafde60f5fcefee8cb39dc88ce16e23ddb24d7a492e516e95a6546e"
+}

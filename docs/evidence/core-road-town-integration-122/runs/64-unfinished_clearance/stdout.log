@@ -1,0 +1,2 @@
+unfinished clearance closed: project=7 built_work=14400/28800 clearance_work=2400 waste_units=1 disposal_fee=250 original_stock_after_build=599500 site_occupied=0 operating_capacity=2 published=false
+summary={"base_operating_capacity":2,"construction_material_consumed_twice":false,"construction_material_refunded":false,"model_only_not_full_legal_process":true,"operating_capacity_published":false,"original_site_token_retained_until_close":true,"project":7,"result":"closed"}

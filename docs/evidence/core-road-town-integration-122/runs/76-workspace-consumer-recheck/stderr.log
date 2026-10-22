@@ -1,0 +1,16 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-headless)
+    Checking mycity-role-allocator v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-role-allocator)
+    Checking mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-storage)
+error: couldn't read `crates/city-headless/tests/../../../docs/evidence/m0-t13a-pe1-short/reference-worlds.json`: No such file or directory (os error 2)
+  --> crates/city-headless/tests/economy_short.rs:18:49
+   |
+18 |       let reference: Value = serde_json::from_str(include_str!(
+   |  _________________________________________________^
+19 | |         "../../../docs/evidence/m0-t13a-pe1-short/reference-worlds.json"
+20 | |     ))
+   | |_____^
+   |
+   = note: this error originates in the macro `include_str` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: could not compile `mycity-headless` (test "economy_short") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

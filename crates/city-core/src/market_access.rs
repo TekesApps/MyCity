@@ -4,8 +4,8 @@
 //! unused road capacity as new market capacity and never settles cash or inventory.
 
 use crate::{
-    town_economy::{DeliveryQuote, MarketInput, SettlementBatch, plan_day},
-    transport::{Assignment, OdDemand, Opening, UnservedReason, bounded_vec},
+    town_economy::{plan_day, DeliveryQuote, MarketInput, SettlementBatch},
+    transport::{bounded_vec, Assignment, OdDemand, Opening, UnservedReason},
     units::{Money, Quantity},
 };
 use serde::{Deserialize, Deserializer, Serialize};
@@ -806,8 +806,10 @@ mod proof_schema_tests {
                 cents_per_travel_second: 0,
             },
         };
-        let accepted_at = crate::units::GameTime::new(2 * crate::timeline::DAY).unwrap();
-        let withdrawn_at = crate::units::GameTime::new(4 * crate::timeline::DAY).unwrap();
+        let accepted_at =
+            crate::units::GameTime::new(i64::try_from(2 * crate::timeline::DAY).unwrap()).unwrap();
+        let withdrawn_at =
+            crate::units::GameTime::new(i64::try_from(4 * crate::timeline::DAY).unwrap()).unwrap();
         let (same_day, _) = profile.derive_for_day(2, Some(accepted_at), None).unwrap();
         let (next_day, assignment) = profile.derive_for_day(3, Some(accepted_at), None).unwrap();
         let (last_added_day, _) = profile
@@ -827,15 +829,11 @@ mod proof_schema_tests {
         assert!(next_day.edges[0].open);
         assert_eq!(next_day.edges[0].mode_mask, 1);
         assignment.verify(&next_day).unwrap();
-        assert!(
-            profile
-                .derive_for_day(
-                    5,
-                    Some(accepted_at),
-                    Some(crate::units::GameTime::new(crate::timeline::DAY).unwrap())
-                )
-                .is_err()
-        );
+        let early_withdrawal =
+            crate::units::GameTime::new(i64::try_from(crate::timeline::DAY).unwrap()).unwrap();
+        assert!(profile
+            .derive_for_day(5, Some(accepted_at), Some(early_withdrawal))
+            .is_err());
     }
 
     #[test]

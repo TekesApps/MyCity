@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "cargo",
+    "+1.85.1",
+    "test",
+    "--locked",
+    "--offline",
+    "--release",
+    "-p",
+    "mycity-storage",
+    "--test",
+    "legacy_accepted_fixture",
+    "--no-run"
+  ],
+  "cwd": "/Volumes/HP P900/dev/MyCity/work/legacy-accepted-project-119-src",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-22T17:10:11.448288+00:00",
+  "source_manifest_sha256": "765de4d5ee1f11a127cf5edf269fd43c213d9bb18c16ed2395205a53af979a56"
+}

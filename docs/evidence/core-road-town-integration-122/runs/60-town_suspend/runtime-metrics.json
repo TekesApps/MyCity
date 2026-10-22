@@ -1,0 +1,9 @@
+{
+  "max_rss_bytes": 48087040,
+  "storage": "HP P900 external USB/APFS SSD",
+  "scope": "bounded functional CLI; not full-map or 16GB acceptance",
+  "executable": {
+    "sha256": "7386ddce17f7478b1252bd1498d6a98543f2f9613e7ef4edd5c6aa4644ca98cd",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/7386ddce17f7478b1252bd1498d6a98543f2f9613e7ef4edd5c6aa4644ca98cd/town_suspend"
+  }
+}

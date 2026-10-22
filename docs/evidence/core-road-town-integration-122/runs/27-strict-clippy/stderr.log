@@ -1,0 +1,40 @@
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-core)
+    Checking mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-storage)
+error: unneeded late initialization
+   --> crates/city-core/tests/construction.rs:406:5
+    |
+406 |     let original_spent;
+    |     ^^^^^^^^^^^^^^^^^^^ created here
+...
+420 |     original_spent = p.spent;
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^ initialised here
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_late_init
+    = note: `-D clippy::needless-late-init` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::needless_late_init)]`
+help: move the declaration `original_spent` here
+    |
+406 ~     
+407 |     let work_at = GameTime::new(17 * 3_600).unwrap();
+...
+419 |     assert_eq!(p.materials[0].consumed, Quantity::new(500).unwrap());
+420 ~     let original_spent = p.spent;
+    |
+
+error: used `assert_eq!` with a literal bool
+   --> crates/city-core/tests/construction.rs:529:5
+    |
+529 |     assert_eq!(p.site_reserved, false);
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#bool_assert_comparison
+    = note: `-D clippy::bool-assert-comparison` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::bool_assert_comparison)]`
+help: replace it with `assert!(..)`
+    |
+529 -     assert_eq!(p.site_reserved, false);
+529 +     assert!(!p.site_reserved);
+    |
+
+error: could not compile `mycity-core` (test "construction") due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...

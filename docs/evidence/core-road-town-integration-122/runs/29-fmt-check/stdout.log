@@ -1,0 +1,11 @@
+Diff in /Users/frankqin/dev/MyCity-core-work/production/crates/city-core/src/market_access.rs:4:
+ //! unused road capacity as new market capacity and never settles cash or inventory.
+ 
+ use crate::{
+-    town_economy::{DeliveryQuote, MarketInput, SettlementBatch, plan_day},
+-    transport::{Assignment, OdDemand, Opening, UnservedReason, bounded_vec},
++    town_economy::{plan_day, DeliveryQuote, MarketInput, SettlementBatch},
++    transport::{bounded_vec, Assignment, OdDemand, Opening, UnservedReason},
+     units::{Money, Quantity},
+ };
+ use serde::{Deserialize, Deserializer, Serialize};

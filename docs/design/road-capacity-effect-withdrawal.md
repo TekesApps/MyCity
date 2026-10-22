@@ -12,4 +12,13 @@ Withdrawal is one-time and irreversible. A withdrawn project remains a demolitio
 
 Legacy projects omit `operating_withdrawn_at`; serde defaults it to `None` and omits `None` on serialization to preserve old canonical state hashes. The current candidate supports a single bound road effect. Reversible capacity schedules and multiple simultaneous road projects remain out of scope.
 
-The `town_transport road-withdraw` Store scenario exercises the lifecycle from a real day-one settlement and publication through day-two expansion, approved withdrawal, day-three base service, demolition work, waste acceptance, site release, checkpoint, and cold reopen. It checks both historical settlement receipt hashes after reopen. This candidate has only received source formatting and diff checks; no Cargo build, CLI execution, cold-open recovery, performance, or memory measurement has been run.
+Run58 executed the `town_transport road-withdraw` Store scenario and exited 0. The lifecycle
+covered day-one settlement/publication, day-two expanded service and approved withdrawal at the
+settled day-two boundary (timestamp 172800), day-three base-capacity service, demolition work,
+waste acceptance, site release, checkpoint and cold reopen. Day-two sales were 200, day-three
+base sales were 40, capacity returned to 2, and the historical proof hashes remained distinct
+and valid after reopen. This is the fixed scenario's functional result, not arbitrary road editing
+or every failure/retry path. Run72's final core/storage all-target release test exited 0 with
+source unchanged. The 64MiB full-scale process budget and actual 16GB device gate remain
+unverified; formal01 ended early under the pressure guard. Evidence is retained in
+`/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/58-town-transport-road-withdraw/`.

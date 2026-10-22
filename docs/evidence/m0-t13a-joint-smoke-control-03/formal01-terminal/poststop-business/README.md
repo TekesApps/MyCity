@@ -1,0 +1,7 @@
+# formal01 停机后业务存档恢复补测
+
+使用原冻结32c来源和59aa可执行文件，仅在完整业务world副本执行既有`sim-host-scale-full-probe open WORLD`协议；未新造模型入口、未重编或恢复原件。原world的所有普通文件前后全字节SHA相同，完整副本仍保留在manifest指定的外置work位置，不能用本目录的hash清单替代恢复原件。
+
+实际先WAL冷开，再checkpoint并正常Stop，然后再次从checkpoint冷开；两次进程均退出0。sequence、business_sha256、background、timeline、state_sha256五项与原transcript最后已验证状态逐项相同；选定的4h已提交operation回执present/bytes/SHA也相同。协议请求和完整回复、stderr、驱动和摘要保留于本目录。
+
+清除MYCITY_*环境后使用standalone角色路径，未接共享normal pool。因此这不是共享池内存或性能验收；没有枚举证明全部历史回执；没有补足6h／8h运行时长或真实16GB门。本轮压力失败和原始报告不改写，layout快照本补测也未验证。

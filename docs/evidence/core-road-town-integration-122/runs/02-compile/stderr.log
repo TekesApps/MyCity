@@ -1,0 +1,17 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-core)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-storage)
+error[E0609]: no field `settled_day` on type `TownMarket`
+   --> crates/city-storage/src/town_transport.rs:243:26
+    |
+243 |         .map(|town| town.settled_day)
+    |                          ^^^^^^^^^^^ unknown field
+    |
+help: one of the expressions' fields has a field of the same name
+    |
+243 |         .map(|town| town.state.settled_day)
+    |                          ++++++
+
+For more information about this error, try `rustc --explain E0609`.
+error: could not compile `mycity-storage` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

@@ -1,0 +1,37 @@
+
+running 3 tests
+test legacy_missing_policy_preserves_failed_start_receipt_after_canonical_retry_and_reopen ... ok
+test recoverable_start_capacity_failure_can_retry_with_new_envelope_after_release ... ok
+test recoverable_work_funds_failure_can_retry_after_protection_is_released ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.34s
+
+
+running 2 tests
+test town_utility_applied_lost_reply_and_same_day_retry_are_exactly_once ... FAILED
+test town_utility_prepared_failure_and_same_day_retry_are_exactly_once ... FAILED
+
+failures:
+
+---- town_utility_applied_lost_reply_and_same_day_retry_are_exactly_once stdout ----
+TOWN_UTILITY_ARTIFACT_CREATED=/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/20-storage-retry-clearance-utility-tests/test-artifacts/mycity-town-utility-recovery-45677-0
+
+thread 'town_utility_applied_lost_reply_and_same_day_retry_are_exactly_once' panicked at crates/city-storage/tests/town_utility_recovery.rs:218:70:
+called `Result::unwrap()` on an `Err` value: Invalid("exchange_spatial_bundle_required")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+TOWN_UTILITY_ARTIFACT_PRESERVED=/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/20-storage-retry-clearance-utility-tests/test-artifacts/mycity-town-utility-recovery-45677-0
+
+---- town_utility_prepared_failure_and_same_day_retry_are_exactly_once stdout ----
+TOWN_UTILITY_ARTIFACT_CREATED=/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/20-storage-retry-clearance-utility-tests/test-artifacts/mycity-town-utility-recovery-45677-1
+
+thread 'town_utility_prepared_failure_and_same_day_retry_are_exactly_once' panicked at crates/city-storage/tests/town_utility_recovery.rs:218:70:
+called `Result::unwrap()` on an `Err` value: Invalid("exchange_spatial_bundle_required")
+TOWN_UTILITY_ARTIFACT_PRESERVED=/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/20-storage-retry-clearance-utility-tests/test-artifacts/mycity-town-utility-recovery-45677-1
+
+
+failures:
+    town_utility_applied_lost_reply_and_same_day_retry_are_exactly_once
+    town_utility_prepared_failure_and_same_day_retry_are_exactly_once
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+

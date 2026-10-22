@@ -1,0 +1,57 @@
+{
+  "schema": "m0-t13a-poststop-layout-execution-v1",
+  "started_at_local": "2026-10-23 01:10 CST",
+  "finished_at_local": "2026-10-23 01:10:53 CST",
+  "executable": "/Users/frankqin/dev/MyCity/work/candidate-binaries/r07-extents/32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2/mycity-headless",
+  "executable_sha256": "59aa365ed46b5d373218fcbcf1d34f930d674d15607ed510190361891439b4e0",
+  "source_sha256": "32c6e61b9565545177c330f34455611b329fbe1cb38591ec5f6e7879731c4da2",
+  "cli": "layout-load-only EXISTING_SNAPSHOT NEW_REPORT_DIR",
+  "runs": [
+    {
+      "snapshot": "snapshot-000057",
+      "exit_code": 0,
+      "stderr_bytes": 0,
+      "report": "reports/057/report.json",
+      "cold_reopen_and_scan": "passed",
+      "same_source": true,
+      "restored_generation": 57,
+      "restored_mutation_iteration": 16800,
+      "payload_bytes": 3378784402,
+      "all_payload_files_hashed_and_loaded": true,
+      "next_generation_requested": false,
+      "cold_restore_seconds": 5.805139
+    },
+    {
+      "snapshot": "snapshot-000058",
+      "exit_code": 0,
+      "stderr_bytes": 0,
+      "report": "reports/058/report.json",
+      "cold_reopen_and_scan": "passed",
+      "same_source": true,
+      "restored_generation": 58,
+      "restored_mutation_iteration": 17100,
+      "payload_bytes": 3378784402,
+      "all_payload_files_hashed_and_loaded": true,
+      "next_generation_requested": false,
+      "cold_restore_seconds": 5.849192167
+    }
+  ],
+  "sha256_inventory": {
+    "files_per_manifest": 64,
+    "original_before_equals_clone_before": true,
+    "original_before_equals_original_after": true,
+    "manifests": [
+      "logs/original-before.sha256",
+      "logs/copy-before.sha256",
+      "logs/original-after.sha256"
+    ]
+  },
+  "acceptance_scope": {
+    "steady_gate": "not_run",
+    "eight_hour_gate": "not_run",
+    "memory_16gb_gate": "not_run",
+    "full_M0": "not_accepted",
+    "note": "functional cold restore only; does not substitute for missed 6h/8h/16GB acceptance"
+  },
+  "artifact_root": "/Volumes/HP P900/dev/MyCity/work/formal01-poststop-layout-01"
+}

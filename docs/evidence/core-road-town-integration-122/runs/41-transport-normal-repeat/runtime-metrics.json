@@ -1,0 +1,9 @@
+{
+  "format": "macos_time_l",
+  "units": "bytes",
+  "max_rss_bytes": 1654784,
+  "max_rss_line": "1654784 maximum resident set size",
+  "peak_footprint_bytes": 999712,
+  "peak_footprint_line": "999712 peak memory footprint",
+  "status": "captured"
+}

@@ -1,0 +1,262 @@
+[
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_core-7cf04b75eddcf4d5",
+    "sha256": "3bb5aca5976791ab0a44a5bbd6a6e136e2a974a2b1a048f1cbb6868d8fa65498",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/3bb5aca5976791ab0a44a5bbd6a6e136e2a974a2b1a048f1cbb6868d8fa65498/mycity_core-7cf04b75eddcf4d5"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/air-e9c1758577d185bf",
+    "sha256": "70a5718b15d1ede1426e0e3082ca9e317ebcbc20bf3faf10812bd3261b0e93ae",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/70a5718b15d1ede1426e0e3082ca9e317ebcbc20bf3faf10812bd3261b0e93ae/air-e9c1758577d185bf"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/air_workspace-1205670a6e24fe07",
+    "sha256": "32404c983d39f36f0dcce960c3a7c29f467822e4a0b7e870f1d22d9024e1e884",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/32404c983d39f36f0dcce960c3a7c29f467822e4a0b7e870f1d22d9024e1e884/air_workspace-1205670a6e24fe07"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/background-13180b77b72ac51a",
+    "sha256": "cdc74411627468239618da3d84f91324dd2f91e90dcf03de3e09ad3d0a5e8405",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/cdc74411627468239618da3d84f91324dd2f91e90dcf03de3e09ad3d0a5e8405/background-13180b77b72ac51a"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/boot-a998cdd1a02794d2",
+    "sha256": "8afaec9dbf37a66b8622444b4184785b97e03f19ef9f59f4af2558eb0ae175b1",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/8afaec9dbf37a66b8622444b4184785b97e03f19ef9f59f4af2558eb0ae175b1/boot-a998cdd1a02794d2"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/construction-6b067e433e9ed972",
+    "sha256": "de89c3ac1490af303460448976fdefefa7799abecc8cec4055c96cc948131a2e",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/de89c3ac1490af303460448976fdefefa7799abecc8cec4055c96cc948131a2e/construction-6b067e433e9ed972"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/construction_engine-aba7807d3972f8af",
+    "sha256": "f170a375df6dbfa2e66f7e7165b39ac730a6deef8370a717479eb88e9ab957c3",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/f170a375df6dbfa2e66f7e7165b39ac730a6deef8370a717479eb88e9ab957c3/construction_engine-aba7807d3972f8af"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/economy-6405ae6fd96a73da",
+    "sha256": "3046a1e3308cb6f09c2774690c4829292f6b084d40b85a0941381f59dfec0b16",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/3046a1e3308cb6f09c2774690c4829292f6b084d40b85a0941381f59dfec0b16/economy-6405ae6fd96a73da"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/exchange-25f1319fa4586c48",
+    "sha256": "af43d51a9c4e50f5f0ed015c7034539c6b9438ad6536410b654e8671d67d9cb5",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/af43d51a9c4e50f5f0ed015c7034539c6b9438ad6536410b654e8671d67d9cb5/exchange-25f1319fa4586c48"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/layout_pressure-676c1c5d483c4209",
+    "sha256": "4f805e830ae02de3552c24703c54bde5feb3fe4afa431cb3e798021dc9f562d0",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/4f805e830ae02de3552c24703c54bde5feb3fe4afa431cb3e798021dc9f562d0/layout_pressure-676c1c5d483c4209"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/market_access-8079d631da38981a",
+    "sha256": "0f109fedfe87d6dc0dcddd310b4e7d02221161895bda9f80c47475a5eba74a2c",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/0f109fedfe87d6dc0dcddd310b4e7d02221161895bda9f80c47475a5eba74a2c/market_access-8079d631da38981a"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/region-31f7a824ad709362",
+    "sha256": "15d5d27e50f2d17daa22de3316433c639773e991d7d225637a1adb35e9e38683",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/15d5d27e50f2d17daa22de3316433c639773e991d7d225637a1adb35e9e38683/region-31f7a824ad709362"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/scale_assembly-a177c496173f3006",
+    "sha256": "8de6c6fc79814d2f641d11d064fbaaf7889636d241e4d59f2054fb0cbd497b05",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/8de6c6fc79814d2f641d11d064fbaaf7889636d241e4d59f2054fb0cbd497b05/scale_assembly-a177c496173f3006"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/sha256_vectors-e560932d85c330e9",
+    "sha256": "2fc05287d95c4d43ffda5334f0b3ef54babf7e9eabf1c53515eee5bfd6a9c0b1",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/2fc05287d95c4d43ffda5334f0b3ef54babf7e9eabf1c53515eee5bfd6a9c0b1/sha256_vectors-e560932d85c330e9"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/timeline-eb1e476686df0cea",
+    "sha256": "39bb09f2d25ababe906034bc9450b22d9d2926016cf57cdb699bff64467e5f78",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/39bb09f2d25ababe906034bc9450b22d9d2926016cf57cdb699bff64467e5f78/timeline-eb1e476686df0cea"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/town_business_exit-793357524d7b2dda",
+    "sha256": "56d56d761b260e43bfcc7acff2b66dda92ff8566a67e566e175a5037b92f6f15",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/56d56d761b260e43bfcc7acff2b66dda92ff8566a67e566e175a5037b92f6f15/town_business_exit-793357524d7b2dda"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/town_utility_binding-f54249571f09e5d6",
+    "sha256": "6cb700563907ef24e384ad9ee44c2d95d6769f2db23162b0c288a6da4e0ff6ef",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/6cb700563907ef24e384ad9ee44c2d95d6769f2db23162b0c288a6da4e0ff6ef/town_utility_binding-f54249571f09e5d6"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/town_utility_engine-00c0742f3648fa87",
+    "sha256": "a207e2211350c51fa2337c0ec6b583f2f4ac5a0e3b4b32cf808b043919458946",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/a207e2211350c51fa2337c0ec6b583f2f4ac5a0e3b4b32cf808b043919458946/town_utility_engine-00c0742f3648fa87"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/examples/construction-03842f662ed7751a",
+    "sha256": "e6be023af2774aa060accd309c92889fea42b4a8d6089e80dde852795a332636",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/e6be023af2774aa060accd309c92889fea42b4a8d6089e80dde852795a332636/construction-03842f662ed7751a"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/examples/market_access-055e23d058b2af2e",
+    "sha256": "23b3420dc51fa6e5ba910c52aa3740b651b6f8162e1a64f2d04fb4a400c020a5",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/23b3420dc51fa6e5ba910c52aa3740b651b6f8162e1a64f2d04fb4a400c020a5/market_access-055e23d058b2af2e"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/examples/town_economy-eb1f40e33984a5f1",
+    "sha256": "fb42ee9c84a1305bf9938e0c3e9fd2961d78c72c3893a7d85d8e6985c741569d",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/fb42ee9c84a1305bf9938e0c3e9fd2961d78c72c3893a7d85d8e6985c741569d/town_economy-eb1f40e33984a5f1"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/examples/town_market-b54257ece0768b62",
+    "sha256": "8306dd5c308247348231b08c348c5a27ad7e52a9a4a1dd1e8462ed168802b608",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/8306dd5c308247348231b08c348c5a27ad7e52a9a4a1dd1e8462ed168802b608/town_market-b54257ece0768b62"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/examples/town_utility-189406e3da46c1bd",
+    "sha256": "89b4e21cf16ba2068e8317891260073f2b1490a432547b7faee1d4f376856bbf",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/89b4e21cf16ba2068e8317891260073f2b1490a432547b7faee1d4f376856bbf/town_utility-189406e3da46c1bd"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/examples/transport-2179850104616871",
+    "sha256": "43b55c7a447854749b5c9187bb15dc7cdf4a4b70706d60283886984fc03acc54",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/43b55c7a447854749b5c9187bb15dc7cdf4a4b70706d60283886984fc03acc54/transport-2179850104616871"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/examples/unfinished_clearance-0d106d913962ff74",
+    "sha256": "cf65b48a865d2026fc966f6fd7b4a0fdbe7412af8c00614d7de5818510d6fc8c",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/cf65b48a865d2026fc966f6fd7b4a0fdbe7412af8c00614d7de5818510d6fc8c/unfinished_clearance-0d106d913962ff74"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_storage-46fdf6e079eacbdd",
+    "sha256": "6064f7b8414fadee173fae6285ef641cf5bb19855a09b5cb28d69907d909d5e3",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/6064f7b8414fadee173fae6285ef641cf5bb19855a09b5cb28d69907d909d5e3/mycity_storage-46fdf6e079eacbdd"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_storage_worker-cfad69f3667db819",
+    "sha256": "69afa2813b038dde6da8230bfbd694731c1dde1690319103777648df057e9579",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/69afa2813b038dde6da8230bfbd694731c1dde1690319103777648df057e9579/mycity_storage_worker-cfad69f3667db819"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/background-7fab7fb05f6bc756",
+    "sha256": "7c4f3a63fd7dec5b23b33f09b34153c2805bd030201822587f497f4f57aa885a",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/7c4f3a63fd7dec5b23b33f09b34153c2805bd030201822587f497f4f57aa885a/background-7fab7fb05f6bc756"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/boot-dfcdbbc1355e9727",
+    "sha256": "161d63ec8fbc706c4be0c79d042cbca6405500f15fdcc41db2073bb9a9a69cc1",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/161d63ec8fbc706c4be0c79d042cbca6405500f15fdcc41db2073bb9a9a69cc1/boot-dfcdbbc1355e9727"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/checkpoint-6c4c2cffa1ce5771",
+    "sha256": "4176ccd96fca830c49668e32b693d7f79624c4fd47b5f3cae073d18c51f10b19",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/4176ccd96fca830c49668e32b693d7f79624c4fd47b5f3cae073d18c51f10b19/checkpoint-6c4c2cffa1ce5771"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/checkpoint_v2-9570c7948cfaef70",
+    "sha256": "4eecdfa68afb5102bc18f010d4849fd8bf5fff42e44539c577e6e8f540f25e16",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/4eecdfa68afb5102bc18f010d4849fd8bf5fff42e44539c577e6e8f540f25e16/checkpoint_v2-9570c7948cfaef70"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/construction-b68fb118295d0565",
+    "sha256": "744216b83ec5b3da281bdcb5bc17db832f2cb443872a84d84b36734411ea96d7",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/744216b83ec5b3da281bdcb5bc17db832f2cb443872a84d84b36734411ea96d7/construction-b68fb118295d0565"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/construction_boot_stock_isolation-dd453c47681c6dc8",
+    "sha256": "2ac6d4691c08d664a4a425859c34b1fc15a07108288b047224de83a42c965e2f",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/2ac6d4691c08d664a4a425859c34b1fc15a07108288b047224de83a42c965e2f/construction_boot_stock_isolation-dd453c47681c6dc8"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/construction_material_retry-b17765eed5678673",
+    "sha256": "e1e46577cd5bd7fe3026192eb4ac0cdcb9a1a6e8be6a19f3f713d1ca368e49d0",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/e1e46577cd5bd7fe3026192eb4ac0cdcb9a1a6e8be6a19f3f713d1ca368e49d0/construction_material_retry-b17765eed5678673"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/construction_retry_policy-17b076e6f50d0c83",
+    "sha256": "fce9cf3ce314209d3803cdcbd61e03e8baa2528435611c5bbf3d0126d232c28e",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/fce9cf3ce314209d3803cdcbd61e03e8baa2528435611c5bbf3d0126d232c28e/construction_retry_policy-17b076e6f50d0c83"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/economy-86c4ee4c7507a0e1",
+    "sha256": "5d46a98b95a4070274fe2990b0a6f7de10ecf928e61b09a8faa6652fa55fd79c",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/5d46a98b95a4070274fe2990b0a6f7de10ecf928e61b09a8faa6652fa55fd79c/economy-86c4ee4c7507a0e1"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/exchange-fbb45fd4d8d99fe1",
+    "sha256": "fcabcb7fe6bef0d93f4a385f3eda4ce9016b67271f2efaf0e310136e04288306",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/fcabcb7fe6bef0d93f4a385f3eda4ce9016b67271f2efaf0e310136e04288306/exchange-fbb45fd4d8d99fe1"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/inbox-a2ca854c6344a006",
+    "sha256": "c746968756cb139cf4574ccfce15d3766358a718df495aaddbcaed292f5ab363",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/c746968756cb139cf4574ccfce15d3766358a718df495aaddbcaed292f5ab363/inbox-a2ca854c6344a006"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/metadata-a99b019c647e8c6d",
+    "sha256": "29faaae82c28d89a2dc10ff6a88ab788e01a51624633a1b2dc882fd03b90e726",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/29faaae82c28d89a2dc10ff6a88ab788e01a51624633a1b2dc882fd03b90e726/metadata-a99b019c647e8c6d"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/payroll_exit-f90fbeceff047160",
+    "sha256": "8a59ff681c7dfa0559371647c6eda7738483699ca02bf0ee1da831136e11aa48",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/8a59ff681c7dfa0559371647c6eda7738483699ca02bf0ee1da831136e11aa48/payroll_exit-f90fbeceff047160"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/recovery-0043ba2393ad768b",
+    "sha256": "953f2e3aeec8f1e60f07bf429454f9f7bdba163d57534e0119238bf53fd73730",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/953f2e3aeec8f1e60f07bf429454f9f7bdba163d57534e0119238bf53fd73730/recovery-0043ba2393ad768b"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/scale_assembly-92842b2e4764e180",
+    "sha256": "a7405816b35c195496748a84a895860ad50294fb4c3f50bdc1897d12e06a14bf",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/a7405816b35c195496748a84a895860ad50294fb4c3f50bdc1897d12e06a14bf/scale_assembly-92842b2e4764e180"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/spatial-4d85089d963c6ad0",
+    "sha256": "103ac905b6aa16bbf6a6e9711f743dcee60a744f2a92db4cbc4928a301a8295a",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/103ac905b6aa16bbf6a6e9711f743dcee60a744f2a92db4cbc4928a301a8295a/spatial-4d85089d963c6ad0"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/timeline-7fb80c2eea807435",
+    "sha256": "27a64770568b9a1f46732013aa9a123f77bb229cdd58319309588e8f12f80c2e",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/27a64770568b9a1f46732013aa9a123f77bb229cdd58319309588e8f12f80c2e/timeline-7fb80c2eea807435"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/town_market-fc275aa083e796f1",
+    "sha256": "23f788025faf298661b94750ee37ae816272241b78b63bc4fc11cb84a1eb5fc4",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/23f788025faf298661b94750ee37ae816272241b78b63bc4fc11cb84a1eb5fc4/town_market-fc275aa083e796f1"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/town_suspend-6f5020b3fb1ad08e",
+    "sha256": "d79cb80c12378fed9249880a714f6f455a5734881b8f8378b740dad35f202d22",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/d79cb80c12378fed9249880a714f6f455a5734881b8f8378b740dad35f202d22/town_suspend-6f5020b3fb1ad08e"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/town_utility_recovery-daf10af7754da488",
+    "sha256": "907d69a615e653c77e58d0966369514d2b5d11ab03039dedc23db1c687eae88b",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/907d69a615e653c77e58d0966369514d2b5d11ab03039dedc23db1c687eae88b/town_utility_recovery-daf10af7754da488"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/unfinished_clearance-aaaf7547bcaff298",
+    "sha256": "baed81ece1d7dc6396fcf9e4fa5f4083decbc9982ca94a5ffab78c86d758077d",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/baed81ece1d7dc6396fcf9e4fa5f4083decbc9982ca94a5ffab78c86d758077d/unfinished_clearance-aaaf7547bcaff298"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/examples/payroll_exit-f6967b7d6353dc01",
+    "sha256": "1b3673c8666fb4b87e7446525cbffdea927292b4cb3e14582a2357835e2d016a",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/1b3673c8666fb4b87e7446525cbffdea927292b4cb3e14582a2357835e2d016a/payroll_exit-f6967b7d6353dc01"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/examples/town_lifelines-c918e8b579293a8f",
+    "sha256": "2d089b7b25dc78327522b37367bcc2627b12c3d6f758228fe3457b3e02a20134",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/2d089b7b25dc78327522b37367bcc2627b12c3d6f758228fe3457b3e02a20134/town_lifelines-c918e8b579293a8f"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/examples/town_suspend-cf03a1251406163c",
+    "sha256": "bceff9e5d5ff140d3a6d114489c73b8252262f09ba145e7940304191ce819141",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/bceff9e5d5ff140d3a6d114489c73b8252262f09ba145e7940304191ce819141/town_suspend-cf03a1251406163c"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/examples/town_transport-6e5c1a2565c05114",
+    "sha256": "2abdf3fecaa7f8e5916efd485ab6c2609aaba65713cc95d1866867a9771c2fe8",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/2abdf3fecaa7f8e5916efd485ab6c2609aaba65713cc95d1866867a9771c2fe8/town_transport-6e5c1a2565c05114"
+  }
+]

@@ -1,0 +1,81 @@
+{
+  "network_revision": 3,
+  "input_fingerprint": [
+    107,
+    44,
+    89,
+    129,
+    174,
+    35,
+    83,
+    131,
+    102,
+    3,
+    132,
+    46,
+    127,
+    32,
+    219,
+    16,
+    153,
+    112,
+    230,
+    254,
+    127,
+    245,
+    23,
+    232,
+    117,
+    157,
+    146,
+    134,
+    219,
+    232,
+    64,
+    250
+  ],
+  "edge_flows": [
+    {
+      "edge_id": 1,
+      "people": 20,
+      "capacity_people": 20,
+      "cost_seconds": 69
+    },
+    {
+      "edge_id": 2,
+      "people": 0,
+      "capacity_people": 20,
+      "cost_seconds": 90
+    },
+    {
+      "edge_id": 3,
+      "people": 0,
+      "capacity_people": 20,
+      "cost_seconds": 90
+    }
+  ],
+  "unserved": [],
+  "boundary_flows": [],
+  "demand_outcomes": [
+    {
+      "source_id": 100,
+      "requested_people": 20,
+      "served_people": 20,
+      "unserved_people": 0,
+      "mean_travel_seconds": 69
+    }
+  ],
+  "path_receipts": [
+    {
+      "source_id": 100,
+      "people": 20,
+      "edge_ids": [
+        1
+      ]
+    }
+  ],
+  "requested_people": 20,
+  "served_people": 20,
+  "unserved_people": 0,
+  "routing_steps": 1
+}

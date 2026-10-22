@@ -1,0 +1,63 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-core)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-storage)
+error[E0308]: mismatched types
+   --> crates/city-storage/examples/town_transport.rs:279:5
+    |
+265 | fn execute_action(store: &mut Store, caller: Caller, action: Action) -> Result<(), String> {
+    |                                                                         ------------------ expected `Result<(), std::string::String>` because of return type
+...
+279 |     outcome.model.map_err(err)
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `Result<(), String>`, found `Result<Receipt, String>`
+    |
+    = note: expected enum `Result<(), _>`
+               found enum `Result<mycity_core::transaction::Receipt, _>`
+
+error[E0308]: mismatched types
+   --> crates/city-storage/examples/town_transport.rs:357:5
+    |
+324 | ) -> Result<(), String> {
+    |      ------------------ expected `Result<(), std::string::String>` because of return type
+...
+357 |     outcome.model.map_err(err)
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `Result<(), String>`, found `Result<Receipt, String>`
+    |
+    = note: expected enum `Result<(), _>`
+               found enum `Result<mycity_core::transaction::Receipt, _>`
+
+warning: value assigned to `midpoint_hash` is never read
+    --> crates/city-storage/examples/town_transport.rs:1535:17
+     |
+1535 |         let mut midpoint_hash = String::new();
+     |                 ^^^^^^^^^^^^^
+     |
+     = help: maybe it is overwritten before being read?
+     = note: `#[warn(unused_assignments)]` on by default
+
+warning: value assigned to `midpoint_sequence` is never read
+    --> crates/city-storage/examples/town_transport.rs:1536:17
+     |
+1536 |         let mut midpoint_sequence = 0;
+     |                 ^^^^^^^^^^^^^^^^^
+     |
+     = help: maybe it is overwritten before being read?
+
+warning: value assigned to `midpoint_op` is never read
+    --> crates/city-storage/examples/town_transport.rs:1537:17
+     |
+1537 |         let mut midpoint_op = 0;
+     |                 ^^^^^^^^^^^
+     |
+     = help: maybe it is overwritten before being read?
+
+warning: unused variable: `final_market`
+    --> crates/city-storage/examples/town_transport.rs:1588:13
+     |
+1588 |         let final_market = final_view
+     |             ^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_final_market`
+     |
+     = note: `#[warn(unused_variables)]` on by default
+
+For more information about this error, try `rustc --explain E0308`.
+warning: `mycity-storage` (example "town_transport" test) generated 4 warnings
+error: could not compile `mycity-storage` (example "town_transport" test) due to 2 previous errors; 4 warnings emitted
+warning: build failed, waiting for other jobs to finish...

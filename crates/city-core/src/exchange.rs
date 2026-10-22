@@ -1103,7 +1103,12 @@ impl Exchange {
         if b.time != r.interaction_time {
             return Err(error(Error::Clock));
         }
-        let mut basis = add(b.failed_expense, self.loss_expense)?;
+        // Local Town consumption exits this fixed Exchange stock graph too.
+        // Retain its exact supplier basis; it is not a cross-city sale/COGS row.
+        let mut basis = add(
+            add(b.failed_expense, self.loss_expense)?,
+            b.local_electricity_basis,
+        )?;
         let mut raw = Quantity::ZERO;
         for s in self.stocks {
             let stock = l.stock(s.stock)?;
@@ -1133,6 +1138,7 @@ impl Exchange {
             }
         }
         e = qa(e, l.stock(13)?.quantity)?;
+        e = qa(e, b.local_electricity_exported)?;
         water = qa(water, l.stock(14)?.quantity)?;
         if e != b.exports[0]
             || water != b.exports[1]

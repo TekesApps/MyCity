@@ -1,0 +1,6 @@
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-core)
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-headless)
+    Checking mycity-role-allocator v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-role-allocator)
+    Checking mycity-map v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-map)
+    Checking mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 13.69s

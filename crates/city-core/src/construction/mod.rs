@@ -55,6 +55,39 @@ pub struct Material {
     pub basis_per_unit: Money,
     pub basis_remainder: u16,
 }
+
+/// Opening-bound disposal-work rule for one construction material stock.
+/// Quantities use the existing milli-unit representation.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct AbortClearanceMaterialRule {
+    pub stock_id: u32,
+    pub quantity_per_waste_capacity_unit: u32,
+    pub worker_seconds_per_thousand_quantity: u32,
+}
+
+/// Fixed, genesis-bound work factors for clearing an uncommissioned project.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct AbortClearanceSpec {
+    pub base_worker_seconds: u64,
+    pub material_rules: [AbortClearanceMaterialRule; MAX_MATERIALS],
+}
+
+/// Immutable record of the construction state replaced by clearance work.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct AbortClearanceHistory {
+    pub original_kind: Kind,
+    pub original_planned_worker_seconds: u64,
+    pub original_completed_worker_seconds: u64,
+    pub original_spent: Money,
+    pub original_consumed: [Quantity; MAX_MATERIALS],
+    pub original_basis_remainders: [u16; MAX_MATERIALS],
+    pub started_at: Option<GameTime>,
+    pub required_worker_seconds: u64,
+    pub waste_units: u32,
+}
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum Kind {
@@ -265,10 +298,24 @@ impl EngineCommand {
         }
     }
 }
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum ExecutionPolicy {
+    #[default]
+    LegacyV1,
+    RecoverableV2,
+}
+fn legacy_execution(value: &ExecutionPolicy) -> bool {
+    *value == ExecutionPolicy::LegacyV1
+}
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Project {
     pub id: u64,
+    /// Genesis-bound execution semantics. Missing preserves historical WAL outcomes.
+    #[serde(default, skip_serializing_if = "legacy_execution")]
+    pub execution_policy: ExecutionPolicy,
     pub kind: Kind,
     pub phase: Phase,
     pub previous_phase: Phase,
@@ -310,6 +357,12 @@ pub struct Project {
     pub gates: [Gate; MAX_GATES],
     pub material_count: u8,
     pub materials: [Material; MAX_MATERIALS],
+    /// Fixed, opening-bound work rules for clearing a never-commissioned project.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub abort_clearance_spec: Option<AbortClearanceSpec>,
+    /// Immutable record created when approved clearance work starts.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub abort_clearance: Option<AbortClearanceHistory>,
     pub pending: Option<Effect>,
     pub pending_at: Option<GameTime>,
     pub next_effect: u32,
@@ -333,175 +386,6 @@ pub struct Project {
     pub failure_count: u32,
 }
 
-#[cfg(test)]
-mod road_effect_legacy_serde_tests {
-    use super::*;
-
-    #[test]
-    fn legacy_project_defaults_new_road_fields_without_changing_json() {
-        let project = Project::new(
-            7,
-            Kind::Build,
-            4,
-            3,
-            1,
-            80,
-            1,
-            1,
-            Money::new(1_000_000).unwrap(),
-            Money::new(3_600).unwrap(),
-            28_800,
-            &[Gate {
-                id: 1,
-                category: GateCategory::Permit,
-                evidence_id: 0,
-                party: 1,
-                decided: GateDecision::Pending,
-            }],
-            &[Material {
-                stock_id: 1,
-                required: Quantity::new(1_000).unwrap(),
-                consumed: Quantity::ZERO,
-                basis_per_unit: Money::new(400).unwrap(),
-                basis_remainder: 0,
-            }],
-            GameTime::new(0).unwrap(),
-        )
-        .unwrap();
-        let legacy = serde_json::to_value(project).unwrap();
-        let object = legacy.as_object().unwrap();
-        assert!(!object.contains_key("operating_edge_id"));
-        assert!(!object.contains_key("operating_published_at"));
-        assert!(!object.contains_key("operating_withdrawn_at"));
-        let restored: Project = serde_json::from_value(legacy.clone()).unwrap();
-        assert_eq!(restored.operating_edge_id, 0);
-        assert_eq!(restored.operating_published_at, None);
-        assert_eq!(restored.operating_withdrawn_at, None);
-        assert_eq!(serde_json::to_value(restored).unwrap(), legacy);
-    }
-
-    #[test]
-    fn road_publication_cannot_precede_final_construction_work() {
-        let mut project = Project::new(
-            7,
-            Kind::Build,
-            4,
-            3,
-            1,
-            80,
-            1,
-            1,
-            Money::new(1_000_000).unwrap(),
-            Money::new(3_600).unwrap(),
-            28_800,
-            &[Gate {
-                id: 1,
-                category: GateCategory::Permit,
-                evidence_id: 0,
-                party: 1,
-                decided: GateDecision::Pending,
-            }],
-            &[Material {
-                stock_id: 1,
-                required: Quantity::new(1_000).unwrap(),
-                consumed: Quantity::ZERO,
-                basis_per_unit: Money::new(400).unwrap(),
-                basis_remainder: 0,
-            }],
-            GameTime::new(0).unwrap(),
-        )
-        .unwrap();
-        project.operating_resource = 2;
-        project.operating_base_capacity = 40;
-        project.operating_units = 160;
-        project.operating_published = true;
-        project.operating_edge_id = 9;
-        project.operating_published_at = Some(GameTime::new(0).unwrap());
-        project.last_work_at = Some(GameTime::new(DAY).unwrap());
-        project.phase = Phase::Operational;
-
-        assert!(project.validate_persisted().is_err());
-    }
-
-    #[test]
-    fn approved_road_demolition_records_one_permanent_withdrawal_boundary() {
-        let mut project = Project::new(
-            7,
-            Kind::Build,
-            4,
-            3,
-            1,
-            80,
-            1,
-            1,
-            Money::new(1_000_000).unwrap(),
-            Money::new(3_600).unwrap(),
-            28_800,
-            &[Gate {
-                id: 1,
-                category: GateCategory::Permit,
-                evidence_id: 1,
-                party: 1,
-                decided: GateDecision::Accepted,
-            }],
-            &[Material {
-                stock_id: 1,
-                required: Quantity::new(1_000).unwrap(),
-                consumed: Quantity::ZERO,
-                basis_per_unit: Money::new(400).unwrap(),
-                basis_remainder: 0,
-            }],
-            GameTime::new(0).unwrap(),
-        )
-        .unwrap();
-        project.operating_resource = 2;
-        project.operating_base_capacity = 40;
-        project.operating_units = 160;
-        project.operating_edge_id = 9;
-        project.operating_published = true;
-        project.operating_published_at = Some(GameTime::new(DAY).unwrap());
-        project.phase = Phase::Ready;
-        project.waste_receiver = Some(3);
-        project.waste_receiver_account = 3;
-        project.waste_receiver_resource = 4;
-        project.waste_units = 2;
-        project.waste_fee = Money::new(250).unwrap();
-
-        let at = GameTime::new(3 * DAY).unwrap();
-        let effect = project.apply(at, Command::Start).unwrap().unwrap();
-        assert_eq!(effect.kind, EffectKind::WithdrawOperatingCapacity);
-        assert_eq!(project.operating_published, true);
-        assert_eq!(project.operating_withdrawn_at, None);
-        project
-            .confirm(Receipt {
-                operation_id: effect.operation_id,
-                success: true,
-                cash: effect.cash,
-                materials: effect.materials,
-                total_basis: effect.total_basis,
-                site_units: effect.site_units,
-                waste_accepted: false,
-            })
-            .unwrap();
-        assert_eq!(project.kind, Kind::Demolish);
-        assert_eq!(project.phase, Phase::Demolition);
-        assert_eq!(project.operating_published, false);
-        assert_eq!(
-            project.operating_published_at,
-            Some(GameTime::new(DAY).unwrap())
-        );
-        assert_eq!(project.operating_withdrawn_at, Some(at));
-        project.validate_persisted().unwrap();
-
-        let mut premature = project;
-        premature.operating_withdrawn_at = Some(GameTime::new(0).unwrap());
-        assert!(premature.validate_persisted().is_err());
-
-        let mut withdrawal_before_work = project;
-        withdrawal_before_work.last_work_at = Some(GameTime::new(2 * DAY).unwrap());
-        assert!(withdrawal_before_work.validate_persisted().is_err());
-    }
-}
 fn work_window_capacity(from: GameTime, to: GameTime, crew: u16) -> Result<u64, Error> {
     let mut t = from.value();
     let end = to.value();
@@ -525,7 +409,150 @@ fn work_window_capacity(from: GameTime, to: GameTime, crew: u16) -> Result<u64, 
     )
     .map_err(|_| Error::Overflow)
 }
+
+fn clearance_spec_valid(project: &Project, spec: AbortClearanceSpec) -> bool {
+    if spec.base_worker_seconds == 0 {
+        return false;
+    }
+    let count = usize::from(project.material_count);
+    if count == 0 || count > MAX_MATERIALS {
+        return false;
+    }
+    let mut full_capacity = 0u128;
+    for i in 0..count {
+        let material = project.materials[i];
+        let rule = spec.material_rules[i];
+        if rule.stock_id != material.stock_id
+            || rule.quantity_per_waste_capacity_unit == 0
+            || rule.worker_seconds_per_thousand_quantity == 0
+            || material.required.value() <= 0
+        {
+            return false;
+        }
+        let quantity = material.required.value() as u128;
+        let denominator = u128::from(rule.quantity_per_waste_capacity_unit);
+        let Some(units) = quantity
+            .checked_add(denominator - 1)
+            .map(|n| n / denominator)
+        else {
+            return false;
+        };
+        let Some(total) = full_capacity.checked_add(units) else {
+            return false;
+        };
+        full_capacity = total;
+    }
+    spec.material_rules[count..]
+        .iter()
+        .all(|rule| *rule == AbortClearanceMaterialRule::default())
+        && full_capacity <= u128::from(project.waste_units)
+        && {
+            let mut full_materials = project.materials;
+            for material in &mut full_materials[..count] {
+                material.consumed = material.required;
+            }
+            clearance_totals(full_materials, count, spec).is_ok()
+        }
+}
+
+fn clearance_totals(
+    materials: [Material; MAX_MATERIALS],
+    count: usize,
+    spec: AbortClearanceSpec,
+) -> Result<(u64, u32), Error> {
+    if count == 0 || count > MAX_MATERIALS {
+        return Err(Error::InvalidInput);
+    }
+    let mut worker_seconds = u128::from(spec.base_worker_seconds);
+    let mut waste_units = 0u128;
+    for (material, rule) in materials[..count].iter().zip(&spec.material_rules[..count]) {
+        if material.stock_id == 0
+            || material.required.value() <= 0
+            || material.consumed.value() < 0
+            || material.consumed > material.required
+            || rule.stock_id != material.stock_id
+            || rule.quantity_per_waste_capacity_unit == 0
+            || rule.worker_seconds_per_thousand_quantity == 0
+        {
+            return Err(Error::InvalidInput);
+        }
+        let quantity = u128::try_from(material.consumed.value()).map_err(|_| Error::Overflow)?;
+        let worker_numerator = quantity
+            .checked_mul(u128::from(rule.worker_seconds_per_thousand_quantity))
+            .ok_or(Error::Overflow)?;
+        let worker = worker_numerator.checked_add(999).ok_or(Error::Overflow)? / 1000;
+        worker_seconds = worker_seconds.checked_add(worker).ok_or(Error::Overflow)?;
+        let capacity_unit = u128::from(rule.quantity_per_waste_capacity_unit);
+        let units = quantity
+            .checked_add(capacity_unit - 1)
+            .ok_or(Error::Overflow)?
+            / capacity_unit;
+        waste_units = waste_units.checked_add(units).ok_or(Error::Overflow)?;
+    }
+    Ok((
+        u64::try_from(worker_seconds).map_err(|_| Error::Overflow)?,
+        u32::try_from(waste_units).map_err(|_| Error::Overflow)?,
+    ))
+}
+
 impl Project {
+    pub fn recoverable_commands(&self) -> bool {
+        self.execution_policy == ExecutionPolicy::RecoverableV2
+    }
+
+    /// Whether this occupied, never-published project can enter the clearance review path.
+    pub fn can_request_uncommissioned_clearance(&self) -> bool {
+        self.recoverable_commands()
+            && self.kind != Kind::Demolish
+            && matches!(
+                self.phase,
+                Phase::Building | Phase::Paused | Phase::Inspection
+            )
+            && self.site_reserved
+            && self.site_token.is_some()
+            && self.started_at.is_some()
+            && self.last_work_at.is_some()
+            && self.pending.is_none()
+            && self.pending_at.is_none()
+            && self.abort_clearance.is_none()
+            && self.waste_receiver.is_none()
+            && !self.waste_accepted
+            && !self.operating_published
+            && self.operating_published_at.is_none()
+            && self.operating_withdrawn_at.is_none()
+            && self
+                .abort_clearance_spec
+                .is_some_and(|spec| clearance_spec_valid(self, spec))
+    }
+
+    /// Number of material slots that can still be charged by a proposed work effect.
+    pub fn active_material_count(&self) -> usize {
+        if self.kind == Kind::Demolish {
+            0
+        } else {
+            usize::from(self.material_count)
+        }
+    }
+
+    /// Waste amount fixed when clearance started, or the ordinary demolition contract amount.
+    pub fn effective_waste_units(&self) -> u32 {
+        self.abort_clearance
+            .map_or(self.waste_units, |history| history.waste_units)
+    }
+
+    /// Disposal is a flat service charge: positive waste pays the full contract fee.
+    pub fn effective_waste_fee(&self) -> Money {
+        if self.abort_clearance.is_some() && self.effective_waste_units() == 0 {
+            Money::ZERO
+        } else {
+            self.waste_fee
+        }
+    }
+
+    pub fn is_uncommissioned_clearance(&self) -> bool {
+        self.abort_clearance.is_some()
+    }
+
     /// Validate static configuration and runtime invariants for checkpoints.
     pub fn validate_persisted(&self) -> Result<(), Error> {
         let gc = usize::from(self.gate_count);
@@ -551,7 +578,9 @@ impl Project {
                 && (self.operating_resource == 0
                     || self.operating_base_capacity == 0
                     || (self.kind == Kind::Build && self.operating_withdrawn_at.is_some())
-                    || (self.kind == Kind::Demolish && self.operating_withdrawn_at.is_none())))
+                    || (self.kind == Kind::Demolish
+                        && self.operating_withdrawn_at.is_none()
+                        && self.abort_clearance.is_none())))
             || (self.operating_published_at.is_some()
                 && !self.operating_published
                 && self.operating_withdrawn_at.is_none())
@@ -609,6 +638,9 @@ impl Project {
             || self.materials[mc..]
                 .iter()
                 .any(|m| *m != Material::default())
+            || self.abort_clearance_spec.is_some_and(|spec| {
+                self.kind != Kind::Demolish && !clearance_spec_valid(self, spec)
+            })
         {
             return Err(Error::InvalidInput);
         }
@@ -625,13 +657,109 @@ impl Project {
         }
         for (i, m) in self.materials[..mc].iter().enumerate() {
             if m.stock_id == 0
-                || m.required == Quantity::ZERO
+                || m.required.value() <= 0
                 || m.consumed > m.required
+                || m.consumed.value() < 0
                 || m.basis_per_unit == Money::ZERO
                 || self.materials[..i].iter().any(|x| x.stock_id == m.stock_id)
             {
                 return Err(Error::InvalidInput);
             }
+        }
+        if let Some(history) = self.abort_clearance {
+            if !self.recoverable_commands() {
+                return Err(Error::InvalidInput);
+            }
+            let spec = self.abort_clearance_spec.ok_or(Error::InvalidInput)?;
+            if !clearance_spec_valid(self, spec) {
+                return Err(Error::InvalidInput);
+            }
+            let (required, waste_units) = clearance_totals(
+                history.original_consumed.iter().enumerate().fold(
+                    [Material::default(); MAX_MATERIALS],
+                    |mut saved, (i, q)| {
+                        if i < mc {
+                            saved[i] = self.materials[i];
+                            saved[i].consumed = *q;
+                            saved[i].basis_remainder = history.original_basis_remainders[i];
+                        }
+                        saved
+                    },
+                ),
+                mc,
+                spec,
+            )?;
+            if self.kind != Kind::Demolish
+                || !matches!(
+                    self.phase,
+                    Phase::Demolition | Phase::Paused | Phase::Closed
+                )
+                || history.original_kind == Kind::Demolish
+                || self.operating_published
+                || self.operating_published_at.is_some()
+                || self.operating_withdrawn_at.is_some()
+                || !self.site_reserved && self.phase != Phase::Closed
+                || !self.site_reserved && !self.waste_accepted
+                || self.material_count as usize != mc
+                || history.original_planned_worker_seconds == 0
+                || history.original_completed_worker_seconds
+                    > history.original_planned_worker_seconds
+                || history.started_at.is_none()
+                || history
+                    .started_at
+                    .is_some_and(|started| started.value() < 0)
+                || history.started_at.is_none_or(|started| {
+                    self.started_at
+                        .is_none_or(|now| now.value() < started.value())
+                })
+                || self.started_at.is_none_or(|started| {
+                    self.last_work_at
+                        .is_none_or(|last| started.value() > last.value())
+                })
+                || history.required_worker_seconds != required
+                || self.planned_worker_seconds != required
+                || self.completed_worker_seconds > required
+                || history.waste_units != waste_units
+                || waste_units > self.waste_units
+                || history.original_spent < Money::ZERO
+                || history.original_spent > self.spent
+                || history.original_consumed[mc..]
+                    .iter()
+                    .any(|q| *q != Quantity::ZERO)
+                || history.original_basis_remainders[mc..]
+                    .iter()
+                    .any(|r| *r != 0)
+                || self.materials[..mc]
+                    .iter()
+                    .zip(history.original_consumed)
+                    .any(|(m, consumed)| m.consumed != consumed)
+                || self.materials[..mc]
+                    .iter()
+                    .zip(history.original_basis_remainders)
+                    .any(|(m, remainder)| m.basis_remainder != remainder)
+                || (self.phase == Phase::Closed && (self.site_reserved || !self.waste_accepted))
+                || (self.operating_edge_id != 0 && self.operating_withdrawn_at.is_some())
+            {
+                return Err(Error::InvalidInput);
+            }
+            for i in 0..mc {
+                let original_completed = i128::from(history.original_completed_worker_seconds);
+                let original_planned = i128::from(history.original_planned_worker_seconds);
+                let expected_consumed = i128::from(self.materials[i].required.value())
+                    .checked_mul(original_completed)
+                    .ok_or(Error::Overflow)?
+                    / original_planned;
+                if i128::from(history.original_consumed[i].value()) != expected_consumed
+                    || history.original_basis_remainders[i] >= 1000
+                {
+                    return Err(Error::InvalidInput);
+                }
+            }
+        } else if self.kind == Kind::Demolish
+            && self.operating_edge_id != 0
+            && self.operating_withdrawn_at.is_none()
+        {
+            return Err(Error::InvalidInput);
         }
         if let Some(effect) = self.pending {
             if effect.project_id != self.id
@@ -651,6 +779,7 @@ impl Project {
         self.validate_persisted()?;
         if self.pending.is_some()
             || self.pending_at.is_some()
+            || self.abort_clearance.is_some()
             || self.spent != Money::ZERO
             || self.completed_worker_seconds != 0
             || self.phase != Phase::Draft
@@ -737,6 +866,7 @@ impl Project {
         ms[..materials.len()].copy_from_slice(materials);
         Ok(Self {
             id,
+            execution_policy: ExecutionPolicy::RecoverableV2,
             kind,
             phase: Phase::Draft,
             previous_phase: Phase::Draft,
@@ -765,6 +895,8 @@ impl Project {
             gates: gs,
             material_count: materials.len() as u8,
             materials: ms,
+            abort_clearance_spec: None,
+            abort_clearance: None,
             pending: None,
             pending_at: None,
             next_effect: 1,
@@ -819,6 +951,50 @@ impl Project {
             Command::Prepare if self.phase == Phase::Review => {
                 self.gates_clear()?;
                 self.phase = Phase::Ready;
+                Ok(None)
+            }
+            Command::Start
+                if self.phase == Phase::Ready
+                    && self.waste_receiver.is_some()
+                    && !self.operating_published
+                    && self.operating_published_at.is_none()
+                    && self.operating_withdrawn_at.is_none()
+                    && self.abort_clearance.is_none()
+                    && self.site_reserved
+                    && self.site_token.is_some()
+                    && at.value() >= 0
+                    && self
+                        .last_work_at
+                        .is_some_and(|last| at.value() >= last.value())
+                    && self
+                        .abort_clearance_spec
+                        .is_some_and(|spec| clearance_spec_valid(self, spec)) =>
+            {
+                self.gates_clear()?;
+                let spec = self.abort_clearance_spec.ok_or(Error::InvalidInput)?;
+                let (required_worker_seconds, waste_units) =
+                    clearance_totals(self.materials, usize::from(self.material_count), spec)?;
+                let history = AbortClearanceHistory {
+                    original_kind: self.kind,
+                    original_planned_worker_seconds: self.planned_worker_seconds,
+                    original_completed_worker_seconds: self.completed_worker_seconds,
+                    original_spent: self.spent,
+                    original_consumed: self.materials.map(|material| material.consumed),
+                    original_basis_remainders: self
+                        .materials
+                        .map(|material| material.basis_remainder),
+                    started_at: self.started_at,
+                    required_worker_seconds,
+                    waste_units,
+                };
+                self.abort_clearance = Some(history);
+                self.kind = Kind::Demolish;
+                self.planned_worker_seconds = required_worker_seconds;
+                self.completed_worker_seconds = 0;
+                self.started_at = Some(at);
+                self.last_work_at = Some(at);
+                self.phase = Phase::Demolition;
+                // No capacity or site effect is due: the existing occupied site stays leased.
                 Ok(None)
             }
             Command::Start
@@ -923,15 +1099,24 @@ impl Project {
                 waste_receiver,
                 gates,
                 gate_count,
-            } if matches!(self.phase, Phase::Operational | Phase::Paused)
-                && waste_receiver != 0
+            } if matches!(
+                self.phase,
+                Phase::Operational | Phase::Building | Phase::Paused | Phase::Inspection
+            ) && waste_receiver != 0
                 && waste_receiver == self.waste_receiver_account
                 && self.waste_units != 0
                 && self.waste_receiver_resource != 0
-                && self.operating_published
                 && gate_count > 0
                 && gate_count as usize <= MAX_GATES =>
             {
+                let operating_demolition = self.phase == Phase::Operational
+                    && self.operating_published
+                    && self.operating_withdrawn_at.is_none()
+                    && self.abort_clearance.is_none();
+                let clearance = self.can_request_uncommissioned_clearance();
+                if !operating_demolition && !clearance {
+                    return Err(Error::InvalidInput);
+                }
                 if gates[..gate_count as usize].iter().any(|g| {
                     g.id == 0
                         || g.party == 0
@@ -958,18 +1143,26 @@ impl Project {
             Command::AcceptWaste
                 if self.phase == Phase::Demolition
                     && self.waste_receiver.is_some()
+                    && (!self.waste_accepted || !self.recoverable_commands())
                     && self.completed_worker_seconds == self.planned_worker_seconds =>
             {
+                let waste_units = self.effective_waste_units();
+                if waste_units == 0 {
+                    // The receiver explicitly signs off the completed no-material clearance;
+                    // do not invent waste, capacity use, or a fee effect.
+                    self.waste_accepted = true;
+                    return Ok(None);
+                }
                 let e = self.effect(
                     EffectKind::ReceiveWaste,
-                    self.waste_fee,
+                    self.effective_waste_fee(),
                     [Quantity::ZERO; MAX_MATERIALS],
                     0,
                     at,
                     0,
                 )?;
                 let mut e = e;
-                e.waste_units = self.waste_units;
+                e.waste_units = waste_units;
                 e.waste_resource = self.waste_receiver_resource;
                 e.payee = self.waste_receiver_account;
                 if self
@@ -1106,7 +1299,7 @@ impl Project {
             return Err(Error::Funds);
         }
         let mut qty = [Quantity::ZERO; MAX_MATERIALS];
-        for i in 0..self.material_count as usize {
+        for i in 0..self.active_material_count() {
             let m = self.materials[i];
             let target = i128::from(m.required.value())
                 * i128::from(self.completed_worker_seconds + ws)
@@ -1126,7 +1319,7 @@ impl Project {
         let mut remainders = self.materials.map(|m| m.basis_remainder);
         let mut total_basis = cost;
         if check_estimated_material_basis {
-            for i in 0..self.material_count as usize {
+            for i in 0..self.active_material_count() {
                 let numerator = i128::from(qty[i].value())
                     * i128::from(self.materials[i].basis_per_unit.value())
                     + i128::from(remainders[i]);
@@ -1196,7 +1389,7 @@ impl Project {
                     * i128::from(e.worker_seconds)
                     + i128::from(self.labor_remainder))
                     % 3600) as u16;
-                for i in 0..self.material_count as usize {
+                for i in 0..self.active_material_count() {
                     self.materials[i].consumed = self.materials[i]
                         .consumed
                         .checked_add(e.materials[i])
@@ -1244,5 +1437,241 @@ impl Project {
         self.pending = None;
         self.pending_at = None;
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod road_effect_legacy_serde_tests {
+    use super::*;
+
+    #[test]
+    fn legacy_project_defaults_new_road_fields_without_changing_json() {
+        let project = Project::new(
+            7,
+            Kind::Build,
+            4,
+            3,
+            1,
+            80,
+            1,
+            1,
+            Money::new(1_000_000).unwrap(),
+            Money::new(3_600).unwrap(),
+            28_800,
+            &[Gate {
+                id: 1,
+                category: GateCategory::Permit,
+                evidence_id: 0,
+                party: 1,
+                decided: GateDecision::Pending,
+            }],
+            &[Material {
+                stock_id: 1,
+                required: Quantity::new(1_000).unwrap(),
+                consumed: Quantity::ZERO,
+                basis_per_unit: Money::new(400).unwrap(),
+                basis_remainder: 0,
+            }],
+            GameTime::new(0).unwrap(),
+        )
+        .unwrap();
+        assert_eq!(project.execution_policy, ExecutionPolicy::RecoverableV2);
+        let mut legacy = serde_json::to_value(project).unwrap();
+        legacy.as_object_mut().unwrap().remove("execution_policy");
+        let object = legacy.as_object().unwrap();
+        assert!(!object.contains_key("operating_edge_id"));
+        assert!(!object.contains_key("operating_published_at"));
+        assert!(!object.contains_key("operating_withdrawn_at"));
+        assert!(!object.contains_key("abort_clearance_spec"));
+        assert!(!object.contains_key("abort_clearance"));
+        let restored: Project = serde_json::from_value(legacy.clone()).unwrap();
+        assert_eq!(restored.execution_policy, ExecutionPolicy::LegacyV1);
+        assert_eq!(restored.operating_edge_id, 0);
+        assert_eq!(restored.operating_published_at, None);
+        assert_eq!(restored.operating_withdrawn_at, None);
+        assert_eq!(restored.abort_clearance_spec, None);
+        assert_eq!(restored.abort_clearance, None);
+        assert_eq!(serde_json::to_value(restored).unwrap(), legacy);
+    }
+
+    #[test]
+    fn road_publication_cannot_precede_final_construction_work() {
+        let mut project = Project::new(
+            7,
+            Kind::Build,
+            4,
+            3,
+            1,
+            80,
+            1,
+            1,
+            Money::new(1_000_000).unwrap(),
+            Money::new(3_600).unwrap(),
+            28_800,
+            &[Gate {
+                id: 1,
+                category: GateCategory::Permit,
+                evidence_id: 0,
+                party: 1,
+                decided: GateDecision::Pending,
+            }],
+            &[Material {
+                stock_id: 1,
+                required: Quantity::new(1_000).unwrap(),
+                consumed: Quantity::ZERO,
+                basis_per_unit: Money::new(400).unwrap(),
+                basis_remainder: 0,
+            }],
+            GameTime::new(0).unwrap(),
+        )
+        .unwrap();
+        project.operating_resource = 2;
+        project.operating_base_capacity = 40;
+        project.operating_units = 160;
+        project.operating_published = true;
+        project.operating_edge_id = 9;
+        project.operating_published_at = Some(GameTime::new(0).unwrap());
+        project.last_work_at = Some(GameTime::new(DAY).unwrap());
+        project.phase = Phase::Operational;
+
+        assert!(project.validate_persisted().is_err());
+    }
+
+    #[test]
+    fn approved_road_demolition_records_one_permanent_withdrawal_boundary() {
+        let mut project = Project::new(
+            7,
+            Kind::Build,
+            4,
+            3,
+            1,
+            80,
+            1,
+            1,
+            Money::new(1_000_000).unwrap(),
+            Money::new(3_600).unwrap(),
+            28_800,
+            &[Gate {
+                id: 1,
+                category: GateCategory::Permit,
+                evidence_id: 0,
+                party: 1,
+                decided: GateDecision::Pending,
+            }],
+            &[Material {
+                stock_id: 1,
+                required: Quantity::new(1_000).unwrap(),
+                consumed: Quantity::ZERO,
+                basis_per_unit: Money::new(400).unwrap(),
+                basis_remainder: 0,
+            }],
+            GameTime::new(0).unwrap(),
+        )
+        .unwrap();
+        project.operating_resource = 2;
+        project.operating_base_capacity = 40;
+        project.operating_units = 160;
+        project.operating_edge_id = 9;
+        project.operating_published = true;
+        project.operating_published_at = Some(GameTime::new(DAY).unwrap());
+        project.gates[0].decided = GateDecision::Accepted;
+        project.gates[0].evidence_id = 1;
+        project.phase = Phase::Ready;
+        project.waste_receiver = Some(3);
+        project.waste_receiver_account = 3;
+        project.waste_receiver_resource = 4;
+        project.waste_units = 2;
+        project.waste_fee = Money::new(250).unwrap();
+
+        let at = GameTime::new(3 * DAY).unwrap();
+        let effect = project.apply(at, Command::Start).unwrap().unwrap();
+        assert_eq!(effect.kind, EffectKind::WithdrawOperatingCapacity);
+        assert!(project.operating_published);
+        assert_eq!(project.operating_withdrawn_at, None);
+        project
+            .confirm(Receipt {
+                operation_id: effect.operation_id,
+                success: true,
+                cash: effect.cash,
+                materials: effect.materials,
+                total_basis: effect.total_basis,
+                site_units: effect.site_units,
+                waste_accepted: false,
+            })
+            .unwrap();
+        assert_eq!(project.kind, Kind::Demolish);
+        assert_eq!(project.phase, Phase::Demolition);
+        assert!(!project.operating_published);
+        assert_eq!(
+            project.operating_published_at,
+            Some(GameTime::new(DAY).unwrap())
+        );
+        assert_eq!(project.operating_withdrawn_at, Some(at));
+        assert_eq!(project.abort_clearance, None);
+        project.validate_persisted().unwrap();
+
+        let mut premature = project;
+        premature.operating_withdrawn_at = Some(GameTime::new(0).unwrap());
+        assert!(premature.validate_persisted().is_err());
+
+        let mut withdrawal_before_work = project;
+        withdrawal_before_work.last_work_at = Some(GameTime::new(2 * DAY).unwrap());
+        assert!(withdrawal_before_work.validate_persisted().is_err());
+
+        let mut missing_withdrawal = project;
+        missing_withdrawal.operating_withdrawn_at = None;
+        assert!(missing_withdrawal.validate_persisted().is_err());
+    }
+
+    #[test]
+    fn clearance_profile_rejects_unrepresentable_full_material_work() {
+        let mut project = Project::new(
+            7,
+            Kind::Build,
+            4,
+            3,
+            1,
+            80,
+            1,
+            1,
+            Money::new(1_000_000).unwrap(),
+            Money::new(3_600).unwrap(),
+            28_800,
+            &[Gate {
+                id: 1,
+                category: GateCategory::Permit,
+                evidence_id: 0,
+                party: 1,
+                decided: GateDecision::Pending,
+            }],
+            &[Material {
+                stock_id: 1,
+                required: Quantity::new(1_000).unwrap(),
+                consumed: Quantity::ZERO,
+                basis_per_unit: Money::new(400).unwrap(),
+                basis_remainder: 0,
+            }],
+            GameTime::new(0).unwrap(),
+        )
+        .unwrap();
+        project.waste_units = 1;
+        let spec = AbortClearanceSpec {
+            base_worker_seconds: u64::MAX,
+            material_rules: [
+                AbortClearanceMaterialRule {
+                    stock_id: 1,
+                    quantity_per_waste_capacity_unit: 2_000,
+                    worker_seconds_per_thousand_quantity: 1,
+                },
+                AbortClearanceMaterialRule::default(),
+                AbortClearanceMaterialRule::default(),
+                AbortClearanceMaterialRule::default(),
+                AbortClearanceMaterialRule::default(),
+                AbortClearanceMaterialRule::default(),
+                AbortClearanceMaterialRule::default(),
+                AbortClearanceMaterialRule::default(),
+            ],
+        };
+        assert!(!clearance_spec_valid(&project, spec));
     }
 }

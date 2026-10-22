@@ -1,0 +1,14 @@
+test_missing_zero_or_ambiguous_native_memory_never_looks_like_a_capture (test_controller.ControllerHelpersTest) ... ok
+test_native_macos_value_precedes_label_and_is_in_bytes (test_controller.ControllerHelpersTest) ... ok
+test_plan_builds_core_release_examples_separately (test_controller.ControllerHelpersTest) ... ok
+test_process_gate_blocks_builders_and_m0_measurements (test_controller.ControllerHelpersTest) ... ok
+test_sha256_requires_lowercase_full_length_hex (test_controller.ControllerHelpersTest) ... ok
+test_town_market_output_parser_keeps_substitute_and_capital_caveats (test_controller.ControllerHelpersTest) ... ok
+test_town_market_plan_covers_seven_profiles_and_two_tax_cases_without_world_dirs (test_controller.ControllerHelpersTest) ... ok
+test_world_manifest_and_copy_preserve_all_file_hashes (test_controller.ControllerHelpersTest) ... ok
+test_world_manifest_rejects_symlinks (test_controller.ControllerHelpersTest) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.006s
+
+OK

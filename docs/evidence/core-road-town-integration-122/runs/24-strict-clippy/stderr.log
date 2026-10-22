@@ -1,0 +1,112 @@
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-core)
+error: items after a test module
+   --> crates/city-core/src/construction/mod.rs:390:1
+    |
+390 |   mod road_effect_legacy_serde_tests {
+    |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+624 |   fn work_window_capacity(from: GameTime, to: GameTime, crew: u16) -> Result<u64, Error> {
+    |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+648 |   fn clearance_spec_valid(project: &Project, spec: AbortClearanceSpec) -> bool {
+    |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+693 | / fn clearance_totals(
+694 | |     materials: [Material; MAX_MATERIALS],
+695 | |     count: usize,
+696 | |     spec: AbortClearanceSpec,
+697 | | ) -> Result<(u64, u32), Error> {
+    | |______________________________^
+...
+733 |   impl Project {
+    |   ^^^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#items_after_test_module
+    = note: `-D clippy::items-after-test-module` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::items_after_test_module)]`
+
+error: used `assert_eq!` with a literal bool
+   --> crates/city-core/src/construction/mod.rs:535:9
+    |
+535 |         assert_eq!(project.operating_published, true);
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#bool_assert_comparison
+    = note: `-D clippy::bool-assert-comparison` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::bool_assert_comparison)]`
+help: replace it with `assert!(..)`
+    |
+535 -         assert_eq!(project.operating_published, true);
+535 +         assert!(project.operating_published);
+    |
+
+error: used `assert_eq!` with a literal bool
+   --> crates/city-core/src/construction/mod.rs:550:9
+    |
+550 |         assert_eq!(project.operating_published, false);
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#bool_assert_comparison
+help: replace it with `assert!(..)`
+    |
+550 -         assert_eq!(project.operating_published, false);
+550 +         assert!(!project.operating_published);
+    |
+
+error: useless conversion to the same type: `u64`
+    --> crates/city-core/src/transaction.rs:2469:15
+     |
+2469 |     let day = u64::try_from(crate::timeline::DAY).map_err(|_| TxError::InvalidOperation)?;
+     |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = help: consider removing `u64::try_from()`
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#useless_conversion
+     = note: `-D clippy::useless-conversion` implied by `-D warnings`
+     = help: to override `-D warnings` add `#[allow(clippy::useless_conversion)]`
+
+error: useless conversion to the same type: `u64`
+    --> crates/city-core/src/transaction.rs:2485:15
+     |
+2485 |     let day = u64::try_from(crate::timeline::DAY).map_err(|_| TxError::InvalidOperation)?;
+     |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = help: consider removing `u64::try_from()`
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#useless_conversion
+
+error: casting to the same type is unnecessary (`u64` -> `u64`)
+    --> crates/city-core/src/transaction.rs:4249:19
+     |
+4249 |         let day = crate::timeline::DAY as u64;
+     |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: try: `crate::timeline::DAY`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#unnecessary_cast
+     = note: `-D clippy::unnecessary-cast` implied by `-D warnings`
+     = help: to override `-D warnings` add `#[allow(clippy::unnecessary_cast)]`
+
+error: casting to the same type is unnecessary (`u64` -> `u64`)
+    --> crates/city-core/src/transaction.rs:4272:18
+     |
+4272 |             Some(crate::timeline::DAY as u64),
+     |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: try: `crate::timeline::DAY`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#unnecessary_cast
+
+error: casting to the same type is unnecessary (`u64` -> `u64`)
+    --> crates/city-core/src/transaction.rs:4278:22
+     |
+4278 |             Some(2 * crate::timeline::DAY as u64),
+     |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: try: `crate::timeline::DAY`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#unnecessary_cast
+
+error: casting to the same type is unnecessary (`u64` -> `u64`)
+    --> crates/city-core/src/transaction.rs:4284:22
+     |
+4284 |             Some(2 * crate::timeline::DAY as u64),
+     |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: try: `crate::timeline::DAY`
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#unnecessary_cast
+
+error: could not compile `mycity-core` (lib) due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `mycity-core` (lib test) due to 9 previous errors

@@ -1,0 +1,45 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-core)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-storage)
+error[E0283]: type annotations needed
+   --> crates/city-core/examples/unfinished_clearance.rs:233:28
+    |
+233 |         BUILD_WORK_SECONDS.into()
+    |                            ^^^^
+    |
+    = note: multiple `impl`s satisfying `_: From<u32>` found in the following crates: `core`, `serde_json`:
+            - impl From<u32> for AtomicU32;
+            - impl From<u32> for Ipv4Addr;
+            - impl From<u32> for Value;
+            - impl From<u32> for f64;
+            - impl From<u32> for i128;
+            - impl From<u32> for i64;
+            - impl From<u32> for serde_json::Number;
+            - impl From<u32> for u128;
+            - impl From<u32> for u64;
+    = note: required for `u32` to implement `Into<_>`
+help: try using a fully qualified path to specify the expected types
+    |
+233 |         <u32 as Into<T>>::into(BUILD_WORK_SECONDS)
+    |         +++++++++++++++++++++++                  ~
+
+error[E0283]: type annotations needed
+   --> crates/city-core/examples/unfinished_clearance.rs:233:28
+    |
+231 | /     assert_eq!(
+232 | |         partially_built.completed_worker_seconds,
+233 | |         BUILD_WORK_SECONDS.into()
+    | |                            ^^^^
+234 | |     );
+    | |_____- type must be known at this point
+    |
+    = note: multiple `impl`s satisfying `u64: PartialEq<_>` found in the following crates: `core`, `serde_json`:
+            - impl PartialEq for u64;
+            - impl PartialEq<Value> for u64;
+help: try using a fully qualified path to specify the expected types
+    |
+233 |         <u32 as Into<T>>::into(BUILD_WORK_SECONDS)
+    |         +++++++++++++++++++++++                  ~
+
+For more information about this error, try `rustc --explain E0283`.
+error: could not compile `mycity-core` (example "unfinished_clearance" test) due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...

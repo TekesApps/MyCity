@@ -1,6 +1,6 @@
 use mycity_core::construction::{
-    Command, Effect, Error, Gate, GateCategory, GateDecision, Kind, Material, Phase, Project,
-    Receipt, MAX_MATERIALS,
+    AbortClearanceMaterialRule, AbortClearanceSpec, Command, Effect, Error, Gate, GateCategory,
+    GateDecision, Kind, Material, Phase, Project, Receipt, MAX_MATERIALS,
 };
 use mycity_core::units::{GameTime, Money, Quantity};
 
@@ -326,4 +326,305 @@ fn cancellation_never_releases_started_capacity_or_refunds_spend() {
     );
     assert!(p.site_reserved);
     assert_eq!(p.spent, Money::ZERO);
+}
+
+fn clearance_project() -> Project {
+    let mut p = project();
+    p.abort_clearance_spec = Some(AbortClearanceSpec {
+        base_worker_seconds: 3_600,
+        material_rules: [
+            AbortClearanceMaterialRule {
+                stock_id: 9,
+                quantity_per_waste_capacity_unit: 2_000,
+                worker_seconds_per_thousand_quantity: 600,
+            },
+            AbortClearanceMaterialRule::default(),
+            AbortClearanceMaterialRule::default(),
+            AbortClearanceMaterialRule::default(),
+            AbortClearanceMaterialRule::default(),
+            AbortClearanceMaterialRule::default(),
+            AbortClearanceMaterialRule::default(),
+            AbortClearanceMaterialRule::default(),
+        ],
+    });
+    p
+}
+
+fn begin_clearance_review(p: &mut Project, at: GameTime) {
+    p.apply(
+        at,
+        Command::BeginDemolition {
+            waste_receiver: 12,
+            gates: [
+                g(3, 10),
+                g(4, 11),
+                Gate::default(),
+                Gate::default(),
+                Gate::default(),
+                Gate::default(),
+                Gate::default(),
+                Gate::default(),
+            ],
+            gate_count: 2,
+        },
+    )
+    .unwrap();
+}
+
+fn prepare_current_gates(p: &mut Project, at: GameTime) {
+    for i in 0..usize::from(p.gate_count) {
+        let gate_id = p.gates[i].id;
+        p.apply(
+            at,
+            Command::DecideGate {
+                gate_id,
+                decision: GateDecision::Accepted,
+                evidence_id: u64::from(gate_id),
+            },
+        )
+        .unwrap();
+    }
+    p.apply(at, Command::Prepare).unwrap();
+}
+
+fn reserve_clearance_site(p: &mut Project) {
+    approve(p);
+    let at = GameTime::new(9 * 3_600).unwrap();
+    let reserve = p
+        .apply(at, Command::Start)
+        .unwrap()
+        .expect("construction reserves its site");
+    p.confirm(receipt(reserve, false)).unwrap();
+    // In Engine this token is issued atomically with ReserveSite.
+    p.site_token = Some(77);
+}
+
+#[test]
+fn unfinished_clearance_freezes_real_spend_and_consumption_then_releases_site_once() {
+    let mut p = clearance_project();
+    reserve_clearance_site(&mut p);
+    let work_at = GameTime::new(17 * 3_600).unwrap();
+    let work = p
+        .propose_work(
+            work_at,
+            28_800,
+            Money::new(100_000).unwrap(),
+            [Quantity::new(1_000).unwrap(); MAX_MATERIALS],
+            14_400,
+        )
+        .unwrap()
+        .unwrap();
+    p.confirm(receipt(work, false)).unwrap();
+    assert_eq!(p.materials[0].consumed, Quantity::new(500).unwrap());
+    let original_spent = p.spent;
+    p.apply(work_at, Command::Pause).unwrap();
+
+    begin_clearance_review(&mut p, work_at);
+    assert!(!p.can_request_uncommissioned_clearance());
+    assert_eq!(p.apply(work_at, Command::Prepare), Err(Error::GatePending));
+    p.apply(
+        work_at,
+        Command::DecideGate {
+            gate_id: 3,
+            decision: GateDecision::Rejected,
+            evidence_id: 0,
+        },
+    )
+    .unwrap();
+    assert_eq!(p.phase, Phase::Paused);
+    assert_eq!(p.waste_receiver, None);
+    assert_eq!(p.site_token, Some(77));
+
+    begin_clearance_review(&mut p, work_at);
+    prepare_current_gates(&mut p, work_at);
+    let original_materials = p.materials;
+    assert_eq!(p.apply(work_at, Command::Start), Ok(None));
+    assert!(p.is_uncommissioned_clearance());
+    assert_eq!(p.kind, Kind::Demolish);
+    assert_eq!(p.phase, Phase::Demolition);
+    assert_eq!(p.site_token, Some(77));
+    assert!(p.site_reserved);
+    assert_eq!(p.material_count, 1);
+    assert_eq!(p.materials, original_materials);
+    assert_eq!(p.active_material_count(), 0);
+    assert_eq!(p.planned_worker_seconds, 3_900);
+    assert_eq!(p.effective_waste_units(), 1);
+    assert_eq!(p.effective_waste_fee(), Money::new(100).unwrap());
+    assert_eq!(p.validate_persisted(), Ok(()));
+
+    let partial_at = GameTime::new(86_400 + 10 * 3_600).unwrap();
+    let partial_elapsed = (partial_at.value() - work_at.value()) as u32;
+    let partial = p
+        .propose_work(
+            partial_at,
+            partial_elapsed,
+            Money::new(100_000).unwrap(),
+            [Quantity::ZERO; MAX_MATERIALS],
+            1_900,
+        )
+        .unwrap()
+        .unwrap();
+    p.confirm(receipt(partial, false)).unwrap();
+    assert_eq!(p.completed_worker_seconds, 1_900);
+
+    let finish_at = GameTime::new(86_400 + 13 * 3_600).unwrap();
+    let elapsed = (finish_at.value() - partial_at.value()) as u32;
+    let clearance_work = p
+        .propose_work(
+            finish_at,
+            elapsed,
+            Money::new(100_000).unwrap(),
+            [Quantity::ZERO; MAX_MATERIALS],
+            2_000,
+        )
+        .unwrap()
+        .unwrap();
+    assert_eq!(clearance_work.materials, [Quantity::ZERO; MAX_MATERIALS]);
+    let failed = Receipt {
+        operation_id: clearance_work.operation_id,
+        success: false,
+        cash: clearance_work.cash,
+        materials: clearance_work.materials,
+        total_basis: clearance_work.total_basis,
+        site_units: clearance_work.site_units,
+        waste_accepted: false,
+    };
+    assert_eq!(p.confirm(failed), Err(Error::FailedEffect));
+    assert_eq!(p.completed_worker_seconds, 1_900);
+    let partial_spent = p.spent;
+    assert!(partial_spent > original_spent);
+    assert_eq!(p.materials, original_materials);
+    let retry = p
+        .propose_work(
+            finish_at,
+            elapsed,
+            Money::new(100_000).unwrap(),
+            [Quantity::ZERO; MAX_MATERIALS],
+            2_000,
+        )
+        .unwrap()
+        .unwrap();
+    p.confirm(receipt(retry, false)).unwrap();
+    assert_eq!(p.materials, original_materials);
+    assert!(p.spent > partial_spent);
+    assert_eq!(p.validate_persisted(), Ok(()));
+
+    let disposal = p.apply(finish_at, Command::AcceptWaste).unwrap().unwrap();
+    assert_eq!(disposal.cash, Money::new(100).unwrap());
+    assert_eq!(disposal.waste_units, 1);
+    p.confirm(receipt(disposal, true)).unwrap();
+    let spent_after_receipt = p.spent;
+    assert_eq!(
+        p.apply(finish_at, Command::AcceptWaste),
+        Err(Error::WrongPhase)
+    );
+    assert_eq!(p.spent, spent_after_receipt);
+    assert_eq!(p.pending, None);
+    let release = p.apply(finish_at, Command::Close).unwrap().unwrap();
+    assert_eq!(release.site_units, 1);
+    p.confirm(receipt(release, false)).unwrap();
+    assert_eq!(p.phase, Phase::Closed);
+    assert_eq!(p.site_token, None);
+    assert!(!p.site_reserved);
+    assert_eq!(p.validate_persisted(), Ok(()));
+}
+
+#[test]
+fn zero_consumption_clearance_uses_base_work_without_fabricating_waste_or_fee() {
+    let mut p = clearance_project();
+    reserve_clearance_site(&mut p);
+    let at = GameTime::new(9 * 3_600).unwrap();
+    begin_clearance_review(&mut p, at);
+    prepare_current_gates(&mut p, at);
+    assert_eq!(p.apply(at, Command::Start), Ok(None));
+    assert_eq!(p.planned_worker_seconds, 3_600);
+    assert_eq!(p.effective_waste_units(), 0);
+    assert_eq!(p.effective_waste_fee(), Money::ZERO);
+    let finish = GameTime::new(17 * 3_600).unwrap();
+    let e = p
+        .propose_work(
+            finish,
+            28_800,
+            Money::new(100_000).unwrap(),
+            [Quantity::ZERO; MAX_MATERIALS],
+            3_600,
+        )
+        .unwrap()
+        .unwrap();
+    assert_eq!(e.materials, [Quantity::ZERO; MAX_MATERIALS]);
+    p.confirm(receipt(e, false)).unwrap();
+    assert_eq!(p.apply(finish, Command::AcceptWaste), Ok(None));
+    assert!(p.waste_accepted);
+    assert_eq!(
+        p.apply(finish, Command::AcceptWaste),
+        Err(Error::WrongPhase)
+    );
+    assert_eq!(p.pending, None);
+    assert_eq!(p.spent, Money::new(3_600).unwrap());
+    let release = p.apply(finish, Command::Close).unwrap().unwrap();
+    assert_eq!(release.site_units, 1);
+    p.confirm(receipt(release, false)).unwrap();
+    assert_eq!(p.site_token, None);
+    assert_eq!(p.validate_persisted(), Ok(()));
+}
+
+#[test]
+fn clearance_requires_a_valid_opening_spec_and_state_remains_within_budget() {
+    let at = GameTime::new(9 * 3_600).unwrap();
+    for spec in [
+        None,
+        Some(AbortClearanceSpec {
+            base_worker_seconds: 3_600,
+            material_rules: [AbortClearanceMaterialRule::default(); MAX_MATERIALS],
+        }),
+        Some(AbortClearanceSpec {
+            base_worker_seconds: 0,
+            material_rules: [
+                AbortClearanceMaterialRule {
+                    stock_id: 9,
+                    quantity_per_waste_capacity_unit: 2_000,
+                    worker_seconds_per_thousand_quantity: 600,
+                },
+                AbortClearanceMaterialRule::default(),
+                AbortClearanceMaterialRule::default(),
+                AbortClearanceMaterialRule::default(),
+                AbortClearanceMaterialRule::default(),
+                AbortClearanceMaterialRule::default(),
+                AbortClearanceMaterialRule::default(),
+                AbortClearanceMaterialRule::default(),
+            ],
+        }),
+    ] {
+        let mut p = project();
+        p.abort_clearance_spec = spec;
+        reserve_clearance_site(&mut p);
+        assert!(!p.can_request_uncommissioned_clearance());
+        assert_eq!(
+            p.apply(
+                at,
+                Command::BeginDemolition {
+                    waste_receiver: 12,
+                    gates: [
+                        g(3, 10),
+                        g(4, 11),
+                        Gate::default(),
+                        Gate::default(),
+                        Gate::default(),
+                        Gate::default(),
+                        Gate::default(),
+                        Gate::default()
+                    ],
+                    gate_count: 2,
+                }
+            ),
+            Err(Error::InvalidInput)
+        );
+        assert_eq!(p.phase, Phase::Building);
+        assert_eq!(p.site_token, Some(77));
+        assert_eq!(p.pending, None);
+    }
+    assert!(
+        std::mem::size_of::<Project>() <= mycity_core::construction::STATE_BUDGET_BYTES,
+        "clearance metadata exceeds the fixed project state budget"
+    );
 }

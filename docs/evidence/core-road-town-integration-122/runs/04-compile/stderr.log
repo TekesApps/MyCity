@@ -1,0 +1,29 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-core)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/production/crates/city-storage)
+error[E0308]: mismatched types
+   --> crates/city-storage/examples/town_lifelines.rs:251:5
+    |
+237 | fn execute_action(store: &mut Store, caller: Caller, action: Action) -> Result<(), String> {
+    |                                                                         ------------------ expected `Result<(), std::string::String>` because of return type
+...
+251 |     outcome.model.map_err(err)
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `Result<(), String>`, found `Result<Receipt, String>`
+    |
+    = note: expected enum `Result<(), _>`
+               found enum `Result<mycity_core::transaction::Receipt, _>`
+
+error[E0308]: mismatched types
+   --> crates/city-storage/examples/town_lifelines.rs:294:5
+    |
+269 | ) -> Result<(), String> {
+    |      ------------------ expected `Result<(), std::string::String>` because of return type
+...
+294 |     outcome.model.map_err(err)
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected `Result<(), String>`, found `Result<Receipt, String>`
+    |
+    = note: expected enum `Result<(), _>`
+               found enum `Result<mycity_core::transaction::Receipt, _>`
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `mycity-storage` (example "town_lifelines" test) due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...

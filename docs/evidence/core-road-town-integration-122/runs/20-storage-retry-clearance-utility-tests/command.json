@@ -1,0 +1,25 @@
+{
+  "argv": [
+    "cargo",
+    "+1.85.1",
+    "test",
+    "--locked",
+    "--offline",
+    "--release",
+    "-p",
+    "mycity-storage",
+    "--test",
+    "construction_retry_policy",
+    "--test",
+    "unfinished_clearance",
+    "--test",
+    "town_utility_recovery",
+    "--",
+    "--test-threads=1"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/production",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-22T16:42:10.473057+00:00",
+  "source_manifest_sha256": "350c79057b4ec6e96ecf2226a419c26d8ee0906ad30f1995eb47145f225cf7b2"
+}

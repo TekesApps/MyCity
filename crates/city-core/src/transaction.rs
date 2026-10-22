@@ -1580,6 +1580,10 @@ impl Engine {
                         timeline: t,
                         accounts: &mut accounts,
                         stocks: &mut stocks,
+                        boot: &mut boot,
+                        resources: &mut resources,
+                        leases: &mut leases,
+                        next_token: &mut next_token,
                         transport: None,
                     })?);
                 }
@@ -1635,6 +1639,10 @@ impl Engine {
                         timeline: t,
                         accounts: &mut accounts,
                         stocks: &mut stocks,
+                        boot: &mut boot,
+                        resources: &mut resources,
+                        leases: &mut leases,
+                        next_token: &mut next_token,
                         transport: Some(proof),
                     })?);
                 }
@@ -2329,6 +2337,19 @@ fn validate_construction_binding(
     project
         .validate_persisted()
         .map_err(TxError::Construction)?;
+    // A clearance start is a committed calendar fact, not a future work reservation.
+    // Check both timestamps against the restored authoritative clock as well as
+    // the relative ordering checked by Project::validate_persisted.
+    if project.is_uncommissioned_clearance()
+        && timeline.is_some_and(|clock| {
+            [project.started_at, project.last_work_at]
+                .into_iter()
+                .flatten()
+                .any(|at| at.value() < 0 || at.value() as u64 > clock.progress.last_complete)
+        })
+    {
+        return Err(TxError::InvalidOperation);
+    }
     if project.operating_resource != 0 {
         let resource = resources
             .iter()
@@ -2348,9 +2369,14 @@ fn validate_construction_binding(
         let phase_keeps_operating_contribution = match project.phase {
             crate::construction::Phase::Operational => {
                 project.kind == crate::construction::Kind::Build
+                    || (project.recoverable_commands()
+                        && project.kind == crate::construction::Kind::Retrofit)
             }
             crate::construction::Phase::Review => {
-                project.kind == crate::construction::Kind::Build && project.waste_receiver.is_some()
+                (project.kind == crate::construction::Kind::Build
+                    || (project.recoverable_commands()
+                        && project.kind == crate::construction::Kind::Retrofit))
+                    && project.waste_receiver.is_some()
             }
             crate::construction::Phase::Ready => project.waste_receiver.is_some(),
             _ => false,
@@ -2360,7 +2386,9 @@ fn validate_construction_binding(
         }
         if project.operating_edge_id != 0 {
             if project.kind
-                != if project.operating_withdrawn_at.is_some() {
+                != if project.operating_withdrawn_at.is_some()
+                    || project.is_uncommissioned_clearance()
+                {
                     crate::construction::Kind::Demolish
                 } else {
                     crate::construction::Kind::Build
@@ -2438,7 +2466,7 @@ fn validate_road_effect_publication_clock(
 ) -> Result<(), TxError> {
     let published_seconds =
         u64::try_from(published_at.value()).map_err(|_| TxError::InvalidOperation)?;
-    let day = u64::try_from(crate::timeline::DAY).map_err(|_| TxError::InvalidOperation)?;
+    let day = crate::timeline::DAY;
     if published_seconds % day != 0
         || last_complete.is_none_or(|complete| published_seconds > complete)
         || settled_day.is_none_or(|settled| published_seconds / day > settled)
@@ -2454,7 +2482,7 @@ fn validate_road_effect_withdrawal_boundary(
 ) -> Result<(), TxError> {
     let timeline = timeline.ok_or(TxError::InvalidOperation)?;
     let progress = timeline.progress;
-    let day = u64::try_from(crate::timeline::DAY).map_err(|_| TxError::InvalidOperation)?;
+    let day = crate::timeline::DAY;
     if progress.phase.is_some()
         || progress.target.is_some()
         || progress.at != progress.last_complete
@@ -2513,6 +2541,10 @@ struct TownSettlementContext<'a> {
     timeline: &'a crate::timeline::Timeline,
     accounts: &'a mut DirtyAccounts,
     stocks: &'a mut DirtyStocks,
+    boot: &'a mut Option<crate::boot::Boot>,
+    resources: &'a mut ResourceRows,
+    leases: &'a mut LeaseRows,
+    next_token: &'a mut u64,
     transport: Option<&'a crate::market_access::SettlementDeliveryInput<'a>>,
 }
 
@@ -2530,6 +2562,10 @@ fn prepare_town_settlement(
         timeline,
         accounts,
         stocks,
+        boot,
+        resources,
+        leases,
+        next_token,
         transport,
     } = context;
     use crate::{
@@ -2557,6 +2593,44 @@ fn prepare_town_settlement(
     if transport.is_some_and(|proof| proof.proof.service_day != day) {
         return Err(TxError::InvalidOperation);
     }
+
+    // A bound market consumes only completed physical electricity, never the
+    // generator's job/lease capacity. All recipes see one shared operator pool.
+    let utility_available = if let Some(binding) = profile.utility_supply {
+        let supplier = boot.as_ref().ok_or(TxError::InvalidOperation)?;
+        if supplier.time != at
+            || supplier.operator != binding.boot_operator
+            || supplier.stocks[1] != binding.boot_stock_id
+        {
+            return Err(TxError::InvalidOperation);
+        }
+        let handle = world
+            .stock_handle(binding.boot_stock_id)
+            .map_err(|_| TxError::InvalidHandle)?;
+        let stock = stocks
+            .iter()
+            .find(|(old, _)| *old == handle)
+            .map(|(_, stock)| *stock)
+            .or_else(|| world.stocks.get(handle).ok().copied())
+            .ok_or(TxError::InvalidHandle)?;
+        if stock.commodity != crate::assembly::Commodity::Electricity
+            || world
+                .accounts
+                .get(stock.owner)
+                .map_err(|_| TxError::InvalidHandle)?
+                .id
+                != binding.boot_operator
+        {
+            return Err(TxError::InvalidOperation);
+        }
+        Some(
+            binding
+                .available_units(stock.quantity)
+                .map_err(|_| TxError::Overflow)?,
+        )
+    } else {
+        None
+    };
 
     let mut employer_counts = Vec::<(u32, u32, i64)>::with_capacity(profile.employers.len());
     for employer in profile.employers.as_slice() {
@@ -2711,6 +2785,13 @@ fn prepare_town_settlement(
         assigned.1 = assigned.1.checked_add(workers).ok_or(TxError::Overflow)?;
         let mut recipe = *configured;
         recipe.assigned_workers = workers;
+        if let Some(binding) = profile.utility_supply {
+            recipe.available_utility_per_day =
+                utility_available.ok_or(TxError::InvalidOperation)?;
+            recipe.utility_cost_per_output_q = binding
+                .cost_per_output(recipe.utility_per_output_q)
+                .map_err(|_| TxError::Overflow)?;
+        }
         let worked_seconds = selected.iter().try_fold(0u64, |total, row| {
             total.checked_add(row.2).ok_or(TxError::Overflow)
         })?;
@@ -2859,6 +2940,7 @@ fn prepare_town_settlement(
                 output_good,
                 output_quantity,
                 waste_quantity,
+                utility_quantity,
                 input_basis,
                 output_basis,
                 utility_cost,
@@ -2910,6 +2992,38 @@ fn prepare_town_settlement(
                     .ok_or(TxError::Overflow)?
                     .max(1);
 
+                if let Some(binding) = profile.utility_supply {
+                    if utility_account != binding.boot_operator
+                        || binding
+                            .cost_per_output(utility_quantity)
+                            .map_err(|_| TxError::Overflow)?
+                            != utility_cost
+                    {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    let quantity = binding
+                        .stock_quantity(utility_quantity)
+                        .map_err(|_| TxError::Overflow)?;
+                    if quantity != Quantity::ZERO {
+                        // Reuse Boot's export accounting, including exported_basis. Payment
+                        // below is the sale revenue, not a second generator operation fee.
+                        boot.as_mut()
+                            .ok_or(TxError::InvalidOperation)?
+                            .export_local_electricity(
+                                quantity,
+                                &mut BootLedger {
+                                    base: EconomicLedger {
+                                        world,
+                                        accounts,
+                                        stocks,
+                                    },
+                                    resources,
+                                    leases,
+                                    next_token,
+                                },
+                            )?;
+                    }
+                }
                 market_transfer(world, accounts, employer, utility_account, utility_cost)?;
                 market_transfer(world, accounts, employer, freight_account, freight_cost)?;
                 market_transfer(world, accounts, employer, disposal_account, disposal_cost)?;
@@ -3141,9 +3255,22 @@ fn prepare_construction(
         Caller::System => 0,
         Caller::Account(id) => id,
     };
+    if !candidate.recoverable_commands()
+        && candidate.operating_edge_id != 0
+        && matches!(
+            command,
+            EngineCommand::BeginDemolition { .. }
+                | EngineCommand::AcceptWaste
+                | EngineCommand::Close
+        )
+    {
+        // Preserve exact historical negative WAL outcomes for pre-policy projects.
+        return Err(TxError::InvalidOperation);
+    }
     if command == EngineCommand::Start
         && candidate.operating_edge_id != 0
         && candidate.waste_receiver.is_some()
+        && candidate.operating_published
     {
         validate_road_effect_withdrawal_boundary(timeline, town.map(|state| state.settled_day))?;
     }
@@ -3186,28 +3313,21 @@ fn prepare_construction(
             }
         }
         EngineCommand::BeginDemolition { .. } => {
-            if candidate.operating_edge_id != 0 {
-                return Err(TxError::InvalidOperation);
-            }
             if actor != candidate.owner && !matches!(caller, Caller::System) {
                 return Err(TxError::Unauthorized);
             }
-            if !candidate.operating_published || candidate.operating_resource == 0 {
+            if !candidate.can_request_uncommissioned_clearance()
+                && (!candidate.operating_published || candidate.operating_resource == 0)
+            {
                 return Err(TxError::InvalidOperation);
             }
         }
         EngineCommand::AcceptWaste => {
-            if candidate.operating_edge_id != 0 {
-                return Err(TxError::InvalidOperation);
-            }
             if actor != candidate.waste_receiver_account && !matches!(caller, Caller::System) {
                 return Err(TxError::Unauthorized);
             }
         }
         EngineCommand::Close => {
-            if candidate.operating_edge_id != 0 {
-                return Err(TxError::InvalidOperation);
-            }
             if actor != candidate.owner && !matches!(caller, Caller::System) {
                 return Err(TxError::Unauthorized);
             }
@@ -3220,7 +3340,9 @@ fn prepare_construction(
 
     if candidate.operating_edge_id != 0 {
         match command {
-            EngineCommand::Cancel => return Err(TxError::InvalidOperation),
+            EngineCommand::Cancel if !candidate.recoverable_commands() => {
+                return Err(TxError::InvalidOperation)
+            }
             EngineCommand::AcceptInspection { accepted: true, .. } => {
                 let timeline = timeline.ok_or(TxError::InvalidOperation)?;
                 let at = timeline.progress.last_complete;
@@ -3232,9 +3354,6 @@ fn prepare_construction(
                     return Err(TxError::InvalidOperation);
                 }
             }
-            EngineCommand::BeginDemolition { .. }
-            | EngineCommand::AcceptWaste
-            | EngineCommand::Close => return Err(TxError::InvalidOperation),
             _ => {}
         }
     }
@@ -3252,7 +3371,7 @@ fn prepare_construction(
             for (i, slot) in available
                 .iter_mut()
                 .enumerate()
-                .take(candidate.material_count as usize)
+                .take(candidate.active_material_count())
             {
                 let h = world
                     .stock_ref(candidate.materials[i].stock_id)
@@ -3285,11 +3404,10 @@ fn prepare_construction(
     };
 
     if let Some(mut effect) = effect {
-        if effect.operation_id != operation_id {
-            // These demolition effects can be blocked by live consumer capacity or
-            // owner funds and retried after those inputs change. Keep their internal
-            // project sequence separate from the caller's transaction id so a fresh
-            // operation id can safely retry without mutating the failed candidate.
+        if !candidate.recoverable_commands() && effect.operation_id != operation_id {
+            // Legacy replay keeps the historical exception list. V2 uses independent
+            // Envelope identities: after a durable rejection, a new request can retry
+            // the unchanged internal effect. Old IDs still return their original result.
             if !matches!(
                 effect.kind,
                 EffectKind::WithdrawOperatingCapacity | EffectKind::ReceiveWaste
@@ -3366,7 +3484,18 @@ fn prepare_construction(
                     .checked_add(effect.cash)
                     .map_err(|_| TxError::Overflow)?;
                 let mut total_basis = effect.cash;
-                for i in 0..candidate.material_count as usize {
+                for i in 0..candidate.active_material_count() {
+                    // Governed electricity/water/fuel must use their owning system's
+                    // consumption accounting, never the ordinary material COGS path.
+                    // The policy gate keeps historical WAL outcomes unchanged.
+                    if candidate.recoverable_commands()
+                        && world
+                            .boot
+                            .as_ref()
+                            .is_some_and(|boot| boot.governs(effect.stock_ids[i]))
+                    {
+                        return Err(TxError::Unauthorized);
+                    }
                     let raw = world
                         .stock_ref(effect.stock_ids[i])
                         .map_err(|_| TxError::InvalidHandle)?;
@@ -3477,6 +3606,9 @@ fn prepare_construction(
             EffectKind::ReceiveWaste => {
                 if effect.waste_units == 0
                     || effect.waste_resource == 0
+                    || effect.waste_units != candidate.effective_waste_units()
+                    || effect.waste_resource != candidate.waste_receiver_resource
+                    || effect.cash != candidate.effective_waste_fee()
                     || effect.waste_receiver != Some(candidate.waste_receiver_account)
                     || effect.payee != candidate.waste_receiver_account
                 {
@@ -4114,7 +4246,7 @@ mod tests {
 
     #[test]
     fn road_withdrawal_requires_the_current_fully_settled_day_boundary() {
-        let day = crate::timeline::DAY as u64;
+        let day = crate::timeline::DAY;
         let mut timeline = crate::timeline::Timeline::new(3 * day);
         assert!(validate_road_effect_withdrawal_boundary(Some(&timeline), Some(3)).is_ok());
         assert!(validate_road_effect_withdrawal_boundary(Some(&timeline), Some(2)).is_err());
@@ -4123,7 +4255,7 @@ mod tests {
         timeline.progress.target = Some(4 * day);
         assert!(validate_road_effect_withdrawal_boundary(Some(&timeline), Some(3)).is_err());
         timeline.progress.target = None;
-        timeline.progress.phase = Some(crate::timeline::Phase::P0);
+        timeline.progress.phase = Some(crate::schedule::Phase::P0);
         assert!(validate_road_effect_withdrawal_boundary(Some(&timeline), Some(3)).is_err());
 
         timeline.progress.phase = None;
@@ -4133,31 +4265,26 @@ mod tests {
 
     #[test]
     fn road_effect_restore_rejects_future_or_unsettled_publication() {
-        let published_at = crate::units::GameTime::new(2 * crate::timeline::DAY).unwrap();
-        assert!(
-            validate_road_effect_publication_clock(
-                published_at,
-                Some(crate::timeline::DAY as u64),
-                Some(1),
-            )
-            .is_err()
-        );
-        assert!(
-            validate_road_effect_publication_clock(
-                published_at,
-                Some(2 * crate::timeline::DAY as u64),
-                Some(1),
-            )
-            .is_err()
-        );
-        assert!(
-            validate_road_effect_publication_clock(
-                published_at,
-                Some(2 * crate::timeline::DAY as u64),
-                Some(2),
-            )
-            .is_ok()
-        );
+        let published_at =
+            crate::units::GameTime::new(i64::try_from(2 * crate::timeline::DAY).unwrap()).unwrap();
+        assert!(validate_road_effect_publication_clock(
+            published_at,
+            Some(crate::timeline::DAY),
+            Some(1),
+        )
+        .is_err());
+        assert!(validate_road_effect_publication_clock(
+            published_at,
+            Some(2 * crate::timeline::DAY),
+            Some(1),
+        )
+        .is_err());
+        assert!(validate_road_effect_publication_clock(
+            published_at,
+            Some(2 * crate::timeline::DAY),
+            Some(2),
+        )
+        .is_ok());
     }
 
     fn engine() -> Engine {
@@ -4238,6 +4365,7 @@ mod tests {
                 schema_version: 1,
                 id: 1,
                 transport_allocation_sha256: [0; 32],
+                utility_supply: None,
                 households,
                 employers,
                 shops,

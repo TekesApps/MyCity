@@ -1,0 +1,43 @@
+
+running 4 tests
+test construction_wal_cold_reopen_retry_and_checkpointed_receipt_archive_decode ... ok
+test construction_work_money_and_materials_commit_once_across_wal_lost_response_and_cold_retry ... ok
+test operational_capacity_demolition_waste_and_close_replay_through_store ... ok
+test v106_store_wal_checkpoint_and_receipt_reopen_with_identical_identity ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.72s
+
+
+running 2 tests
+test checkpoint_restore_rejects_v2_reinterpretation_of_legacy_boot_material_binding ... ok
+test recoverable_construction_genesis_rejects_all_boot_governed_inventory_kinds ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 1 test
+test construction_material_failure_retries_after_same_lot_is_restored_and_survives_cold_recovery ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+
+
+running 3 tests
+test legacy_missing_policy_preserves_failed_start_receipt_after_canonical_retry_and_reopen ... ok
+test recoverable_start_capacity_failure_can_retry_with_new_envelope_after_release ... ok
+test recoverable_work_funds_failure_can_retry_after_protection_is_released ... FAILED
+
+failures:
+
+---- recoverable_work_funds_failure_can_retry_after_protection_is_released stdout ----
+
+thread 'recoverable_work_funds_failure_can_retry_after_protection_is_released' panicked at crates/city-storage/tests/construction_retry_policy.rs:163:5:
+unexpected model result: Err(Unauthorized)
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+construction retry artifacts retained at /Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/19-storage-construction-utility-tests/test-artifacts/mycity-construction-retry-44736-2
+
+
+failures:
+    recoverable_work_funds_failure_can_retry_after_protection_is_released
+
+test result: FAILED. 2 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s
+

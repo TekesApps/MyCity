@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "/usr/bin/time",
+    "-l",
+    "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/96a1390c6ef655cf4e50f329f36206fe540ab8b0c3dbf462b6fef3dd78844584/town_transport",
+    "road-28",
+    "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/57-town-transport-road-28/world"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/production",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-22T17:09:34.957339+00:00",
+  "source_manifest_sha256": "16d292c64c0cc339fb3c9092fa9d5b21db0e0b8ce718d02552988b0caedd31e0"
+}

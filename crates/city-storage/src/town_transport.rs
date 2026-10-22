@@ -205,7 +205,8 @@ pub(super) fn validate_allocation_project(
         .ok_or(Error::Invalid("town_transport_road_capacity_overflow"))?;
     if project.id != binding.project_id
         || project.kind
-            != if project.operating_withdrawn_at.is_some() {
+            != if project.operating_withdrawn_at.is_some() || project.is_uncommissioned_clearance()
+            {
                 mycity_core::construction::Kind::Demolish
             } else {
                 mycity_core::construction::Kind::Build
@@ -231,6 +232,11 @@ pub(super) fn validate_allocation_project(
     {
         return Err(Error::Invalid("town_transport_road_project_mismatch"));
     }
+    // A pristine bound road is valid before the timeline has been enabled.
+    // Require the clock only when there is an actual publication/withdrawal epoch.
+    if project.operating_published_at.is_none() && project.operating_withdrawn_at.is_none() {
+        return Ok(());
+    }
     let last_complete = engine
         .timeline()
         .map(|timeline| timeline.progress.last_complete)
@@ -239,7 +245,7 @@ pub(super) fn validate_allocation_project(
         .world()
         .view()
         .town
-        .map(|town| town.settled_day)
+        .map(|town| town.state.settled_day)
         .ok_or(Error::Invalid("town_transport_road_project_mismatch"))?;
     for at in [
         project.operating_published_at,
@@ -619,5 +625,329 @@ impl Store {
             &mut observer,
             &mut mycity_core::diagnostics::Trace::disabled(),
         )
+    }
+}
+
+#[cfg(test)]
+mod road_epoch_clock_tests {
+    use super::*;
+    use mycity_core::{
+        assembly::assemble,
+        construction::{Gate, GateCategory, GateDecision, Kind, Material, Project},
+        market_access::{
+            AllocationScope, DemandRepeatPolicy, FeePolicyInput, RoadCapacityEffectBinding,
+            TransportAllocationProfile, TripPartition,
+        },
+        timeline::{Command as TimelineCommand, DAY},
+        transaction::{Action, Caller, Engine, Envelope, Resource},
+        transport::{Entrance, Node, OdDemand, Opening, RoadEdge},
+        units::{GameTime, Money, Quantity},
+    };
+    use serde_json::{json, Value};
+    use sha2::{Digest, Sha256};
+    use std::{
+        fs,
+        path::PathBuf,
+        sync::atomic::{AtomicU64, Ordering},
+    };
+
+    const FIXTURE: &[u8] = include_bytes!("../../../fixtures/core-town-utility-opening.json");
+    const PROJECT_ID: u64 = 7;
+    const ROAD_RESOURCE: u32 = 81;
+    const SITE_RESOURCE: u32 = 80;
+    const BASE_CAPACITY: u32 = 2;
+    const ADDED_CAPACITY: u32 = 8;
+    static TEMP_ID: AtomicU64 = AtomicU64::new(1);
+
+    struct Temp(PathBuf);
+
+    impl Temp {
+        fn new() -> Self {
+            let id = TEMP_ID.fetch_add(1, Ordering::Relaxed);
+            let root = std::env::var_os("MYCITY_TEST_ARTIFACT_ROOT")
+                .map(PathBuf::from)
+                .unwrap_or_else(std::env::temp_dir);
+            fs::create_dir_all(&root).unwrap();
+            Self(root.join(format!("mycity-road-epoch-{}-{id}", std::process::id())))
+        }
+    }
+
+    fn project() -> Project {
+        let mut project = Project::new(
+            PROJECT_ID,
+            Kind::Build,
+            7,
+            4,
+            1,
+            SITE_RESOURCE,
+            1,
+            1,
+            Money::new(1_000_000).unwrap(),
+            Money::new(3_600).unwrap(),
+            28_800,
+            &[Gate {
+                id: 1,
+                category: GateCategory::Permit,
+                evidence_id: 0,
+                party: 1,
+                decided: GateDecision::Pending,
+            }],
+            &[Material {
+                stock_id: 15,
+                required: Quantity::new(500).unwrap(),
+                consumed: Quantity::ZERO,
+                basis_per_unit: Money::new(1_000).unwrap(),
+                basis_remainder: 0,
+            }],
+            GameTime::ZERO,
+        )
+        .unwrap();
+        project.operating_resource = ROAD_RESOURCE;
+        project.operating_base_capacity = BASE_CAPACITY;
+        project.operating_units = ADDED_CAPACITY;
+        project.operating_edge_id = 10;
+        project
+    }
+
+    fn opening() -> Opening {
+        Opening {
+            revision: 1,
+            nodes: vec![Node { id: 1, city_id: 1 }, Node { id: 2, city_id: 1 }],
+            edges: vec![
+                RoadEdge {
+                    id: 10,
+                    from: 1,
+                    to: 2,
+                    city_from: 1,
+                    city_to: 1,
+                    free_flow_seconds: 10,
+                    capacity_people: BASE_CAPACITY,
+                    mode_mask: 1,
+                    open: true,
+                    boundary_source: None,
+                },
+                RoadEdge {
+                    id: 11,
+                    from: 2,
+                    to: 1,
+                    city_from: 1,
+                    city_to: 1,
+                    free_flow_seconds: 10,
+                    capacity_people: BASE_CAPACITY,
+                    mode_mask: 1,
+                    open: true,
+                    boundary_source: None,
+                },
+            ],
+            entrances: vec![
+                Entrance {
+                    id: 1,
+                    owner: 5,
+                    node: 1,
+                    mode_mask: 1,
+                    authorized: true,
+                },
+                Entrance {
+                    id: 2,
+                    owner: 7,
+                    node: 2,
+                    mode_mask: 1,
+                    authorized: true,
+                },
+            ],
+            demands: vec![
+                OdDemand {
+                    source_id: 101,
+                    origin_entrance: 1,
+                    destination_entrance: 2,
+                    mode: 1,
+                    people: 1,
+                },
+                OdDemand {
+                    source_id: 102,
+                    origin_entrance: 2,
+                    destination_entrance: 1,
+                    mode: 1,
+                    people: 1,
+                },
+            ],
+        }
+    }
+
+    fn allocation() -> TransportAllocationProfile {
+        let opening = opening();
+        TransportAllocationProfile {
+            schema: 1,
+            world_id: 1,
+            branch_id: 1,
+            market_profile_id: 1,
+            period_seconds: DAY as u32,
+            allocation_scope: AllocationScope::SingleTownExclusive,
+            demand_repeat_policy: DemandRepeatPolicy::RepeatFixedDailyDemand,
+            road_capacity_effect: Some(RoadCapacityEffectBinding {
+                project_id: PROJECT_ID,
+                resource_id: ROAD_RESOURCE,
+                edge_id: 10,
+                base_capacity_people: BASE_CAPACITY,
+                added_capacity_people: ADDED_CAPACITY,
+            }),
+            assignment: opening.assign().unwrap(),
+            opening,
+            partitions: vec![TripPartition {
+                quote_id: 1,
+                outbound_source: 101,
+                return_source: 102,
+                trip_count: 1,
+                goods_per_trip: Quantity::new(1).unwrap(),
+            }],
+            fee_policy: FeePolicyInput {
+                provider_account: 1,
+                cents_per_travel_second: 0,
+            },
+        }
+    }
+
+    fn resources(road_capacity: u32) -> Vec<Resource> {
+        [
+            (SITE_RESOURCE, 1),
+            (ROAD_RESOURCE, road_capacity),
+            (101, 1),
+            (102, 1),
+            (103, 1),
+            (104, 1),
+            (201, 2_000),
+            (202, 2_000),
+        ]
+        .into_iter()
+        .map(|(id, capacity)| Resource::new(id, capacity).unwrap())
+        .collect()
+    }
+
+    fn opening_bytes(profile_hash: [u8; 32], project: &Project) -> Vec<u8> {
+        let mut value: Value = serde_json::from_slice(FIXTURE).unwrap();
+        value["town"]["transport_allocation_sha256"] = json!(profile_hash);
+        value["construction"] = serde_json::to_value(project).unwrap();
+        serde_json::to_vec(&value).unwrap()
+    }
+
+    fn engine(project: &Project, road_capacity: u32) -> Engine {
+        let mut value: Value = serde_json::from_slice(FIXTURE).unwrap();
+        value["construction"] = serde_json::to_value(project).unwrap();
+        Engine::new(
+            assemble(&serde_json::to_vec(&value).unwrap()).unwrap(),
+            resources(road_capacity),
+        )
+        .unwrap()
+    }
+
+    fn enable_timeline(engine: &mut Engine) {
+        engine
+            .execute(
+                Caller::System,
+                Envelope {
+                    world: 1,
+                    branch: 1,
+                    operation_id: 1,
+                    expected_revision: 0,
+                    actions: vec![Action::Timeline {
+                        command: TimelineCommand::Enable,
+                    }],
+                },
+            )
+            .unwrap();
+    }
+
+    fn set_epoch_engine(
+        at: i64,
+        withdrawn: bool,
+        last_complete: u64,
+        settled_day: u64,
+        enable: bool,
+    ) -> Engine {
+        let mut engine = engine(&project(), BASE_CAPACITY);
+        if enable {
+            enable_timeline(&mut engine);
+        }
+        let mut encoded = serde_json::to_value(engine).unwrap();
+        let construction = &mut encoded["world"]["construction"];
+        construction["kind"] = json!(if withdrawn { "demolish" } else { "build" });
+        construction["phase"] = json!(if withdrawn {
+            "demolition"
+        } else {
+            "operational"
+        });
+        construction["operating_published"] = json!(!withdrawn);
+        construction["operating_published_at"] = json!(if withdrawn { 0 } else { at });
+        construction["operating_withdrawn_at"] = if withdrawn { json!(at) } else { Value::Null };
+        for resource in encoded["resources"].as_array_mut().unwrap() {
+            if resource["id"] == json!(ROAD_RESOURCE) {
+                resource["capacity"] = json!(if withdrawn {
+                    BASE_CAPACITY
+                } else {
+                    BASE_CAPACITY + ADDED_CAPACITY
+                });
+            }
+        }
+        if enable {
+            encoded["timeline"]["progress"]["at"] = json!(last_complete);
+            encoded["timeline"]["progress"]["last_complete"] = json!(last_complete);
+        }
+        encoded["world"]["town"]["state"]["settled_day"] = json!(settled_day);
+        serde_json::from_value(encoded).unwrap()
+    }
+
+    fn assert_epoch_rejected(engine: &Engine) {
+        assert!(matches!(
+            validate_allocation_project(engine, &allocation()),
+            Err(Error::Invalid("town_transport_road_project_mismatch"))
+        ));
+    }
+
+    #[test]
+    fn store_accepts_unpublished_road_binding_before_timeline_enable() {
+        let profile = allocation();
+        let profile_bytes = serde_json::to_vec(&profile).unwrap();
+        let profile_hash: [u8; 32] = Sha256::digest(&profile_bytes).into();
+        let project = project();
+        let opening = opening_bytes(profile_hash, &project);
+        let temp = Temp::new();
+        let store = crate::Store::create_spatial_with_transport_allocation_profile(
+            &temp.0,
+            &opening,
+            resources(BASE_CAPACITY),
+            "road-epoch-clock-test-v1",
+            (
+                include_bytes!("../../../fixtures/m0-exchange-spatial.json"),
+                include_bytes!("../../../fixtures/terrain/m0-flat16.png"),
+            ),
+            &profile_bytes,
+        )
+        .unwrap();
+        assert!(store.engine().unwrap().timeline().is_none());
+        validate_allocation_project(store.engine().unwrap(), &profile).unwrap();
+    }
+
+    #[test]
+    fn publication_and_withdrawal_epochs_require_clock_and_settlement() {
+        let published_no_clock = set_epoch_engine(0, false, 0, 0, false);
+        assert_epoch_rejected(&published_no_clock);
+        let published_with_clock = set_epoch_engine(0, false, 0, 0, true);
+        validate_allocation_project(&published_with_clock, &allocation()).unwrap();
+
+        let withdrawn_no_clock = set_epoch_engine(0, true, 0, 0, false);
+        assert_epoch_rejected(&withdrawn_no_clock);
+        let withdrawn_with_clock = set_epoch_engine(0, true, 0, 0, true);
+        validate_allocation_project(&withdrawn_with_clock, &allocation()).unwrap();
+
+        let unsettled_epoch = set_epoch_engine(DAY as i64, false, DAY, 0, true);
+        assert_epoch_rejected(&unsettled_epoch);
+    }
+
+    #[test]
+    fn future_and_non_day_road_epochs_are_rejected() {
+        let future = set_epoch_engine((2 * DAY) as i64, false, DAY, 1, true);
+        assert_epoch_rejected(&future);
+        let non_day = set_epoch_engine((DAY + 1) as i64, false, 2 * DAY, 2, true);
+        assert_epoch_rejected(&non_day);
     }
 }

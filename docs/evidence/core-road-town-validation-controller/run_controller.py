@@ -58,6 +58,12 @@ SOURCE_SNAPSHOT_PATHS = (
     "docs/evidence/core-construction-compat/attempt-01/old-v106-world",
     "docs/evidence/core-construction-compat/attempt-01/old-v106-storage-probe.json",
     "docs/evidence/m0-t13a-pe1-short/reference-worlds.json",
+    "docs/town-market-scenarios.md",
+    "docs/unfinished-clearance.md",
+    "docs/town-boot-electricity.md",
+    "docs/core-road-clearance.md",
+    "docs/construction-retry-policy.md",
+    "docs/town-lifelines-joint.md",
 )
 M0_HEADLESS_COMMANDS = {
     "joint-endurance",
@@ -167,7 +173,7 @@ def preserve_controller_support(run_dir: Path) -> dict[str, object]:
     destination = run_dir / "controller-source"
     destination.mkdir(exist_ok=False)
     files = []
-    for name in ("run_controller.py", "test_controller.py", "README.md"):
+    for name in ("run_controller.py", "test_controller.py", "README.md", "native-time-format-probe.txt"):
         source = source_root / name
         if source.is_symlink() or not source.is_file():
             raise Refusal(f"controller support must be a regular retained file: {name}")
@@ -464,6 +470,18 @@ def clean_environment(artifact_root: Path, target_root: Path) -> dict[str, str]:
     return env
 
 
+def parse_native_time_metrics(stderr: str) -> dict[str, object]:
+    """macOS /usr/bin/time -l emits the byte value before its label."""
+    result: dict[str, object] = {"format": "macos_time_l", "units": "bytes"}
+    for key, label in (("max_rss", "maximum resident set size"), ("peak_footprint", "peak memory footprint")):
+        rows = re.findall(rf"^[ \t]*([0-9]+)[ \t]+{re.escape(label)}[ \t]*$", stderr, re.MULTILINE)
+        valid = len(rows) == 1 and int(rows[0]) > 0
+        result[f"{key}_bytes"] = int(rows[0]) if valid else None
+        result[f"{key}_line"] = f"{rows[0]} {label}" if valid else None
+    result["status"] = "captured" if result["max_rss_bytes"] is not None else "missing_or_ambiguous"
+    return result
+
+
 def run_command(
     label: str,
     argv: list[str],
@@ -516,17 +534,9 @@ def run_command(
     exclusive_json(command_dir / "source-after.json", source_after)
     source_changed = source_after["head"] != expected_commit or bool(source_after["status"])
     stderr_text = stderr_path.read_text(encoding="utf-8", errors="replace")
-    max_rss_line = None
-    max_rss_match = re.search(
-        r"^\s*maximum resident set size[^\n]*$",
-        stderr_text,
-        flags=re.MULTILINE | re.IGNORECASE,
-    )
-    if max_rss_match:
-        max_rss_line = max_rss_match.group(0).strip()
     runtime_metrics = {
         "wall_seconds": wall_seconds,
-        "max_rss_line": max_rss_line,
+        **(parse_native_time_metrics(stderr_text) if capture_process_rss else {"status": "not_requested"}),
         "scope": "whole CLI process including runtime; not model-only heap and not an M0 performance result",
     }
     binary_receipt: dict[str, object] = {"status": "not_found"}
@@ -568,6 +578,8 @@ def run_command(
         if binary_receipt["status"] == "not_found":
             exclusive_json(command_dir / "failure-executable.json", {"status": "not_found_in_this_command_stderr"})
         raise Refusal(f"command failed; preserving artifacts and stopping: {label} exit={result.returncode}")
+    if capture_process_rss and runtime_metrics["status"] != "captured":
+        raise Refusal(f"native memory metrics missing or ambiguous: {label}; raw stderr retained")
 
 
 def run_plan() -> list[tuple[str, list[str]]]:
@@ -577,15 +589,118 @@ def run_plan() -> list[tuple[str, list[str]]]:
         ("core-release-tests", cargo + ["test", "--locked", "--offline", "--release", "--all-targets", "-p", "mycity-core"]),
         ("storage-release-tests", cargo + ["test", "--locked", "--offline", "--release", "--all-targets", "-p", "mycity-storage"]),
         ("storage-release-examples", cargo + ["build", "--locked", "--offline", "--release", "--examples", "-p", "mycity-storage"]),
+        ("core-release-examples", cargo + ["build", "--locked", "--offline", "--release", "--examples", "-p", "mycity-core"]),
         ("strict-clippy", cargo + ["clippy", "--locked", "--offline", "--release", "--all-targets", "-p", "mycity-core", "-p", "mycity-storage", "--", "-D", "warnings"]),
     ]
+
+
+TOWN_MARKET_SCENARIOS = (
+    "base",
+    "cash-shortage",
+    "raw-shortage",
+    "no-route",
+    "capacity-cut",
+    "energy-price-rise",
+    "demand-drop",
+)
+
+
+def town_market_commands(binary: Path) -> list[tuple[str, list[str], str, str]]:
+    """Exact 28-day Engine CLI matrix from docs/town-market-scenarios.md and its test."""
+    executable = str(binary)
+    commands = [
+        (f"town-market-{profile}", [executable, "--scenario", profile], profile, profile)
+        for profile in TOWN_MARKET_SCENARIOS
+    ]
+    commands.extend(
+        [
+            (
+                "town-market-turnover-tax-500bps",
+                [executable, "--scenario", "base", "--turnover-tax-bps", "500"],
+                "base-turnover-tax-500bps",
+                "base",
+            ),
+            (
+                "town-market-turnover-tax-cash-pressure-500bps",
+                [
+                    executable,
+                    "--scenario",
+                    "base",
+                    "--company-cash",
+                    "0",
+                    "--debt-principal",
+                    "1000000",
+                    "--debt-due-day",
+                    "2",
+                    "--production-utility-cost",
+                    "50",
+                    "--turnover-tax-bps",
+                    "500",
+                ],
+                "base-cash-pressure-turnover-tax-500bps",
+                "base",
+            ),
+        ]
+    )
+    return commands
+
+
+def parse_town_market_output(stdout: str, expected_scenario: str) -> dict[str, str]:
+    """Parse the example's single key/value summary line without inventing metrics."""
+    lines = [line.strip() for line in stdout.splitlines() if line.strip()]
+    candidates = [line for line in lines if re.search(r"(?:^|\s)scenario=", line)]
+    if len(candidates) != 1:
+        raise Refusal("town_market output must contain exactly one scenario summary line")
+    line = candidates[0]
+    matches = list(re.finditer(r"(?:^|\s)([a-z_]+)=(.*?)(?=\s[a-z_]+=|$)", line))
+    fields = {match.group(1): match.group(2).strip() for match in matches}
+    if len(fields) != len(matches):
+        raise Refusal("town_market summary contains duplicate keys")
+    if fields.get("scenario") != expected_scenario or fields.get("days") != "28":
+        raise Refusal("town_market summary scenario/day count differs from the planned 28-day case")
+    if fields.get("live_transport") != "false" or fields.get("live_utility") != "false":
+        raise Refusal("town_market profile unexpectedly claims live transport or utility")
+    if fields.get("tax_policy") != "not_configured":
+        raise Refusal("town_market fixture output changed its tax-policy scope")
+    return fields
+
+
+def record_town_market_result(
+    command_dir: Path, case_id: str, expected_scenario: str, argv: list[str]
+) -> dict[str, object]:
+    stdout_path = command_dir / "stdout.log"
+    try:
+        fields = parse_town_market_output(
+            stdout_path.read_text(encoding="utf-8", errors="strict"), expected_scenario
+        )
+    except Exception as error:
+        exclusive_json(
+            command_dir / "town-market-parse-failure.json",
+            {"case_id": case_id, "error_type": type(error).__name__},
+        )
+        raise
+    result = {
+        "schema": "mycity-town-market-cli-result-v1",
+        "case_id": case_id,
+        "scenario": expected_scenario,
+        "days": 28,
+        "argv": argv,
+        "parsed_summary_fields": fields,
+        "scenario_scope": "Engine-and-Timeline 28-day profile substitute; live_transport=false; live_utility=false",
+        "economic_interpretation": "opening-capital-dependent fixture; sustainable self-funding and profitability are not proven",
+        "self_funding_status": "not_proven",
+        "tax_scope": "fixture_turnover only when the CLI option is enabled; tax_policy remains not_configured",
+        "memory_scope": "engine_owned_capacity is not whole-process memory; runtime RSS is recorded separately",
+    }
+    exclusive_json(command_dir / "town-market-result.json", result)
+    return result
 
 
 def print_plan(args: argparse.Namespace) -> None:
     print("PLAN ONLY: no commands will run. Execution requires --run and --expected-commit.")
     for label, argv in run_plan():
         print(f"{label}: {' '.join(argv)}")
-    scenarios = ("normal", "closed", "bottleneck", "expanded", "cross-boundary", "road-effect", "road-suspend", "road-28", "road-withdraw")
+    scenarios = ("normal", "closed", "bottleneck", "expanded", "cross-boundary", "road-effect", "road-suspend", "road-28", "road-withdraw", "road-clearance")
     for scenario in scenarios:
         print(
             f"town_transport/{scenario}: <target>/release/examples/town_transport {scenario} <new-world-dir>"
@@ -593,6 +708,13 @@ def print_plan(args: argparse.Namespace) -> None:
     print("town_suspend: <target>/release/examples/town_suspend <new-world-dir>")
     print("town_suspend loss: <target>/release/examples/town_suspend <new-world-dir> --loss")
     print("payroll_exit: <target>/release/examples/payroll_exit <new-world-dir>")
+    print("construction: <target>/release/examples/construction (Engine build/operating demolition; no world directory)")
+    print("unfinished_clearance: <target>/release/examples/unfinished_clearance (Engine unfinished clearance; no world directory)")
+    print("town_utility: <target>/release/examples/town_utility [--generator-failure] (Boot/Town electricity; no world directory)")
+    print("town_lifelines: <target>/release/examples/town_lifelines --store-dir <new-world-dir> [--hold-road-inspection|--generator-failure]")
+    print("town_market example: <target>/release/examples/town_market --scenario <profile> (28 game days, no world directory)")
+    for label, argv, case_id, scenario in town_market_commands(Path("<target>/release/examples/town_market")):
+        print(f"{label}: {' '.join(argv)} [case={case_id}; scenario={scenario}; no world directory]")
     print(
         "compat transport (explicit only): reopen-check <verified-copy> "
         f"{RULES_TRANSPORT_V119} <v119-reported-state-sha256>"
@@ -736,7 +858,7 @@ def do_run(args: argparse.Namespace) -> None:
 
     binaries = run_dir / "executables"
     binaries.mkdir(exist_ok=False)
-    for name in ("town_transport", "town_suspend", "payroll_exit"):
+    for name in ("town_transport", "town_suspend", "payroll_exit", "town_market", "construction", "unfinished_clearance", "town_utility", "town_lifelines"):
         source = target_root / "release" / "examples" / name
         if not source.is_file():
             raise Refusal(f"required example executable was not built: {source}")
@@ -757,6 +879,7 @@ def do_run(args: argparse.Namespace) -> None:
         ("town-transport-road-suspend", [str(binaries / "town_transport"), "road-suspend"]),
         ("town-transport-road-28", [str(binaries / "town_transport"), "road-28"]),
         ("town-transport-road-withdraw", [str(binaries / "town_transport"), "road-withdraw"]),
+        ("town-transport-road-clearance", [str(binaries / "town_transport"), "road-clearance"]),
         ("town-suspend", [str(binaries / "town_suspend")]),
         ("town-suspend-loss", [str(binaries / "town_suspend")]),
         ("payroll-exit", [str(binaries / "payroll_exit")]),
@@ -774,6 +897,69 @@ def do_run(args: argparse.Namespace) -> None:
             args.expected_commit,
             capture_process_rss=True,
         )
+        index += 1
+
+    # These Engine-only examples accept no world directory. Store/WAL recovery
+    # is independently exercised by storage-release-tests above.
+    for name in ("construction", "unfinished_clearance"):
+        run_command(
+            f"core-{name}",
+            [str(binaries / name)],
+            repo,
+            run_dir,
+            target_root,
+            index,
+            args.expected_commit,
+            capture_process_rss=True,
+        )
+        index += 1
+
+    for label, options in (("normal", []), ("generator-failure", ["--generator-failure"])):
+        run_command(
+            f"core-town-utility-{label}",
+            [str(binaries / "town_utility"), *options],
+            repo,
+            run_dir,
+            target_root,
+            index,
+            args.expected_commit,
+            capture_process_rss=True,
+        )
+        index += 1
+
+    for label, options in (
+        ("normal", []),
+        ("hold-road-inspection", ["--hold-road-inspection"]),
+        ("generator-failure", ["--generator-failure"]),
+    ):
+        world = run_dir / "worlds" / f"town-lifelines-{label}"
+        world.parent.mkdir(exist_ok=True)
+        run_command(
+            f"town-lifelines-{label}",
+            [str(binaries / "town_lifelines"), "--store-dir", str(world), *options],
+            repo,
+            run_dir,
+            target_root,
+            index,
+            args.expected_commit,
+            capture_process_rss=True,
+        )
+        index += 1
+
+    for label, argv, case_id, scenario in town_market_commands(binaries / "town_market"):
+        command_index = index
+        run_command(
+            label,
+            argv,
+            repo,
+            run_dir,
+            target_root,
+            command_index,
+            args.expected_commit,
+            capture_process_rss=True,
+        )
+        command_dir = run_dir / f"{command_index:03d}-{label}"
+        record_town_market_result(command_dir, case_id, scenario, argv)
         index += 1
 
     compat_runs: list[tuple[str, Path, str, str, dict[str, object] | None]] = []

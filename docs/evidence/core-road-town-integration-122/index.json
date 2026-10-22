@@ -1,0 +1,3644 @@
+{
+  "schema": "mycity-core-road-town-stage-evidence-v1",
+  "status": "functional stage only; no M0 or 16GB acceptance",
+  "storage": "HP P900 external USB/APFS SSD",
+  "host": "Apple M4 32GiB; not real16GB",
+  "runs": [
+    {
+      "run": "01-compile",
+      "result": {
+        "exit_code": 101,
+        "wall_seconds": 25.978176042
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/01-compile",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 398,
+          "sha256": "6ae1b3586c0b367889077907077b8e2a38a90640d7745e7a5fca61d01307fcbe"
+        },
+        {
+          "name": "exit.json",
+          "size": 54,
+          "sha256": "26741308fa8fb57dc65383dd40688c2ebf05e3059b9f28611f47f7b6e8521fe8"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 5917,
+          "sha256": "5b3f1425e12effabcc7a3d01ea4f04a80ac66ee73f1bdc66bd3caca1496c2a14"
+        }
+      ]
+    },
+    {
+      "run": "02-compile",
+      "result": {
+        "exit_code": 101,
+        "wall_seconds": 71.11382620799999,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/02-compile",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 494,
+          "sha256": "06be365b29eb5a7d4d5159dac376e0051923a4f20393ba9a631d894b5d357a8b"
+        },
+        {
+          "name": "exit.json",
+          "size": 87,
+          "sha256": "6dd21201971cd95a691f72d1847568c86d80d9405a1f403a5541bafa4c65d3d7"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 888,
+          "sha256": "2b7eb1204dc419844b74a21e7fda55b24057015df2ed762189a18cc3f3b60063"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "511630e053b795cc296fc5b1f76ac0677827a344570656f240574492fe775cbc"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/02-compile/source.zip",
+        "sha256": "032bce35529bcdcd2b9103970e5a1d6da3f939bcb6616adf3e7fde7ad76b36a0"
+      }
+    },
+    {
+      "run": "03-compile",
+      "result": {
+        "exit_code": 101,
+        "wall_seconds": 21.485310291999998,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/03-compile",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 494,
+          "sha256": "cdb13a6273f84cf784a8399512cf0871b18737cd27875eeafefec5f7316eaac1"
+        },
+        {
+          "name": "exit.json",
+          "size": 88,
+          "sha256": "208ab21e7865d808b1279674e22d5b8cf48f3c45281c748b61e5830df160e350"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 2075,
+          "sha256": "0bed34a419be62d8b670e87d302e11e339103559379762e7913bcab89e89d989"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "a54c5d8c547c87e62fbeefccac7ad6282d0dc35452f7d80629361228fa43885b"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/03-compile/source.zip",
+        "sha256": "da8db8c66b23705f7ddc52604427301c5f78df28c366851af25229fd43e6f2cf"
+      }
+    },
+    {
+      "run": "04-compile",
+      "result": {
+        "exit_code": 101,
+        "wall_seconds": 44.557378500000006,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/04-compile",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 494,
+          "sha256": "8246ef576fc94874b7101e22cec1df7caee7a05c90b8518b69284070165b6d78"
+        },
+        {
+          "name": "exit.json",
+          "size": 88,
+          "sha256": "0c56aca749e77360611abc9de640a82ea4bff1c66e151a6bc7d552db9fd1e007"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 1540,
+          "sha256": "e08f5c22bb06bed9a35b549e263fa46ed544dc5350c8afb54ed31f46bedf28fa"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "bdfa6ce7dbc8f582c83aad273bf36337e596db42b36ece94cace92621d9cf265"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/04-compile/source.zip",
+        "sha256": "4ec5497e53a4aeb5f3439ad1d693ea899e78e4aaaa7f93b69418acafc24d83b0"
+      }
+    },
+    {
+      "run": "05-compile",
+      "result": {
+        "exit_code": 101,
+        "wall_seconds": 9.124180167,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/05-compile",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 494,
+          "sha256": "ab202ba5c6f82f50376f76e0e320033c35b661b5b7c2c1cc549f6933715355bd"
+        },
+        {
+          "name": "exit.json",
+          "size": 81,
+          "sha256": "33c95643a57b2a6a6ee181b12fbff3047e1c0f8a35b1ec5def6597f804caddc8"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 1887,
+          "sha256": "0dd491d88b3b9a53ba52dfd5107ce9e4791998027a93883bcc16d7f0cba82072"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "b0b42c0d8f74487ff2cd10e62ca62017aad56461f9172c772bf436dda251f8d0"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/05-compile/source.zip",
+        "sha256": "63baf442f555623104d7fa7b2ee0d2990d65d74dc81cd38e1979fad3e759d19f"
+      }
+    },
+    {
+      "run": "06-compile",
+      "result": {
+        "exit_code": 101,
+        "wall_seconds": 2.83258375,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/06-compile",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 494,
+          "sha256": "057fd76f022d23b1b8db014d9fb8c21ad50555102fd73422cb09b71f08d195a6"
+        },
+        {
+          "name": "exit.json",
+          "size": 80,
+          "sha256": "6f327f639c56b279d6920cf4ce8db580afb4a266cb442464692a302a829ef986"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 1220,
+          "sha256": "6a51bf3fb393bad957c2abe4083fd36077283528934cc845ac8a3dbfa22b35d7"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "6440226fa47a067f9772dbe6661aa71b1fff3274710f91fb18a05a48f88606f6"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/06-compile/source.zip",
+        "sha256": "abb031a0819689d8b7c63e11c20747b3530fe45044cbd8652fcdf5b530c741ee"
+      }
+    },
+    {
+      "run": "07-compile",
+      "result": {
+        "exit_code": 101,
+        "wall_seconds": 6.6581656250000005,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/07-compile",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 494,
+          "sha256": "8803ff67c08f70349d9a9634033e5ca8be618a0ba634f8454b043ed1dcbdf1c0"
+        },
+        {
+          "name": "exit.json",
+          "size": 88,
+          "sha256": "2923987ed4a11920fbc157dc7b5f779c7f1b6f6448604399df8e2f76453e6f52"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 1146,
+          "sha256": "3c918bfdaa1829562e9148d288a047c596d68ac157d5bb97bde95bb8d427ee3d"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "7ad98af84cc8828ea2d094a3a51839c8407b72227820519c342dcdc5ffbd2d51"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/07-compile/source.zip",
+        "sha256": "bc584f8cddabd8c886c1469fce2ae8500c55df4c9af522dd52ec4f0d76237ee3"
+      }
+    },
+    {
+      "run": "08-compile",
+      "result": {
+        "exit_code": 101,
+        "wall_seconds": 21.449721625,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/08-compile",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 494,
+          "sha256": "9b3519370271eaad6d7c4c52fbfdd8723ee1e9a3bda2835e8e8483e9c37f4d6c"
+        },
+        {
+          "name": "exit.json",
+          "size": 82,
+          "sha256": "5f57c98ff1e0cde6c8f530ad3dd528a5a05917e88ed0937b36e68602b2377afd"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 2851,
+          "sha256": "d25481118aaac4afa82378bec2938cc1b4f28b8ff54dab0c668ebe85c4276e1b"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "5187419c9532ec69a85d8b8c58042f14632ead5c306074302b9440391c2cb6a3"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/08-compile/source.zip",
+        "sha256": "29c61d9dbb63e6a1d20267a89538253f29e2a983e2a5e714c807337bd6f74dbe"
+      }
+    },
+    {
+      "run": "09-compile",
+      "result": {
+        "exit_code": 101,
+        "wall_seconds": 0.8670575420000001,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/09-compile",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 494,
+          "sha256": "94a9bb71cdfc5ae5d45d1463b46022231a25118f7b6ab3a2a57d5a5c3604c24c"
+        },
+        {
+          "name": "exit.json",
+          "size": 88,
+          "sha256": "cf26cab895e0c431ca22add77182319fdddbbbc7dcbbee29e9e35a4aa81e22df"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 2851,
+          "sha256": "d25481118aaac4afa82378bec2938cc1b4f28b8ff54dab0c668ebe85c4276e1b"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "5187419c9532ec69a85d8b8c58042f14632ead5c306074302b9440391c2cb6a3"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/09-compile/source.zip",
+        "sha256": "29c61d9dbb63e6a1d20267a89538253f29e2a983e2a5e714c807337bd6f74dbe"
+      }
+    },
+    {
+      "run": "10-compile",
+      "result": {
+        "exit_code": 101,
+        "wall_seconds": 1.510957667,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/10-compile",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 494,
+          "sha256": "92c25ff84cb32ddb179074481bbfa333e712812d3af132a9ee17b02ce68de6c9"
+        },
+        {
+          "name": "exit.json",
+          "size": 81,
+          "sha256": "7cfff1f7af081fe359de7a77c4e87e8ad3ebc37db6b4fe80143c2d49b6357bf7"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 18415,
+          "sha256": "9c30738f75a38561ba025e8b0a85c589e04fbcc7495587eef7eadc63becd6c80"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "2196e5f1994747e1bc0f429afc941e802efc20174b767aafd12a8f4e7d99d192"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/10-compile/source.zip",
+        "sha256": "6b90d3253da75ec50633408c4d147f783d99966fa194eef02e820873c66d6889"
+      }
+    },
+    {
+      "run": "11-core-lib-tests",
+      "result": {
+        "exit_code": 101,
+        "wall_seconds": 28.247886041,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/11-core-lib-tests",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 472,
+          "sha256": "444009fbee6855e78200068856bebe744c29a9ef56607d02b48fd4999140a4bc"
+        },
+        {
+          "name": "exit.json",
+          "size": 82,
+          "sha256": "655eec72e63e6b644804d39bd6a7de6373c02eab9937f662f6e9529c575d774c"
+        },
+        {
+          "name": "stdout.log",
+          "size": 12149,
+          "sha256": "7cb1223392c3cbf9ea08236df657cca6bbe7a246ed46f933428b6225d59b483d"
+        },
+        {
+          "name": "stderr.log",
+          "size": 332,
+          "sha256": "5c4f0bd56d2f3484199b6ac14fec3588323c6ecbbd47b177f168c6220c86bcc7"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "aa40da9673db1a1813b2e2fd657489ee915c2ecf7dd9ce3b40aa81a6bae6aebe"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/11-core-lib-tests/source.zip",
+        "sha256": "8bbe20b3b0d36e44913cdb9357c9703b7f840851a383fd7e08de6f61640be445"
+      }
+    },
+    {
+      "run": "12-core-lib-tests",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 30.218643209,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/12-core-lib-tests",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 472,
+          "sha256": "f3a9cd2db3548717ec0a139c8b0e72aa358bdd31cb95c135f48fb9ee2153bd3e"
+        },
+        {
+          "name": "exit.json",
+          "size": 80,
+          "sha256": "472d2251712452171611a636da6e26a7195867499c45eb594a819d5722a18161"
+        },
+        {
+          "name": "stdout.log",
+          "size": 11550,
+          "sha256": "addff03d576ed17e152b32fbf17c86cbeaeba450ec4fd119b6b4c43549f706fa"
+        },
+        {
+          "name": "stderr.log",
+          "size": 275,
+          "sha256": "44898ba379647e6591707664df0cc1102e3f18b76a8698581d9e2ec359deb4d3"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "c616ddac95a18aa419626ed1e6b49617b9de6aeb60efdc2a59e624e39857d6b3"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/12-core-lib-tests/source.zip",
+        "sha256": "7eae384eec641d563960328a01fc46569a0b2c134f19a8f983eb8b40f53eee88"
+      }
+    },
+    {
+      "run": "13-all-target-compile",
+      "result": {
+        "exit_code": 101,
+        "wall_seconds": 126.932656958,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/13-all-target-compile",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 494,
+          "sha256": "14ebdff3a6cce331d3475bdaeb4f7806eb39e574210b7465eb1a847f8b36f602"
+        },
+        {
+          "name": "exit.json",
+          "size": 83,
+          "sha256": "ef198ae170c5ad4724133ac793cefe235befd200083fbee984a8d8e6959436ae"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 988,
+          "sha256": "0cfab29f6177461a3c2ee1ff68795c308161e0f505949d9bc5ddaedd09126a1c"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "c616ddac95a18aa419626ed1e6b49617b9de6aeb60efdc2a59e624e39857d6b3"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/13-all-target-compile/source.zip",
+        "sha256": "7eae384eec641d563960328a01fc46569a0b2c134f19a8f983eb8b40f53eee88"
+      }
+    },
+    {
+      "run": "14-all-target-compile",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 5.677598208,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/14-all-target-compile",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 494,
+          "sha256": "251e48a9d91381e874bb3cee310d3698fbd8895ac87590912fdbcefa95575d41"
+        },
+        {
+          "name": "exit.json",
+          "size": 79,
+          "sha256": "93c20ba8769d88a2af5988f81a66e1e94c7547656911362667f0849131c15ff7"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 6419,
+          "sha256": "17666f5a9ae7bfd2e9d4383b2874bd267bd87073064fc63f039d0e74c089f481"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "ff34c25cb3a48a745f06fb93f147fac7c3af0286a90de266af215efad39e7185"
+        },
+        {
+          "name": "executables.json",
+          "size": 20863,
+          "sha256": "af8341513014281c6f672bbe49c47aa7c50fa4afafba1e1667f50799acc1c6f4"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/14-all-target-compile/source.zip",
+        "sha256": "f29ab137abd88f236db910f603a673b9b8ab79206ebdf4f4a118cb3a2c30d89d"
+      }
+    },
+    {
+      "run": "15-core-construction-utility-tests",
+      "result": {
+        "exit_code": 101,
+        "wall_seconds": 28.272662583000002,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/15-core-construction-utility-tests",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 617,
+          "sha256": "4f6938e6808730e2a02a2089d21469d1773d31e74a0f1ac5d3e47a8e9c0f3a36"
+        },
+        {
+          "name": "exit.json",
+          "size": 88,
+          "sha256": "fb75dce24faf2b0e5632ed0f88285fb6c987ebc888d798f1735b94770e65d8b6"
+        },
+        {
+          "name": "stdout.log",
+          "size": 3966,
+          "sha256": "1dce06c23757d7538607441cc42ed88e2f6dc5bc2b0cca6f8c7561a51b7e47f8"
+        },
+        {
+          "name": "stderr.log",
+          "size": 744,
+          "sha256": "1ebc9647a43ba18e2626d3bb74eb22bfaaaae71dc2329c91540960c0c53fe58e"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "ff34c25cb3a48a745f06fb93f147fac7c3af0286a90de266af215efad39e7185"
+        },
+        {
+          "name": "executables.json",
+          "size": 1554,
+          "sha256": "14f5880374fbddc17ed75b7cee02e1c7dd674662f550e0fe8e6fc4a7ef7f2847"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/15-core-construction-utility-tests/source.zip",
+        "sha256": "f29ab137abd88f236db910f603a673b9b8ab79206ebdf4f4a118cb3a2c30d89d"
+      }
+    },
+    {
+      "run": "16-core-utility-retest",
+      "result": {
+        "exit_code": 101,
+        "wall_seconds": 2.145080042,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/16-core-utility-retest",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 500,
+          "sha256": "848d3b33e7eefb4367fd3b92de632a3c6729e4bb8bd39c7c2d40249609710074"
+        },
+        {
+          "name": "exit.json",
+          "size": 81,
+          "sha256": "8b9392c21ea278f67f3bf0e79fd23c2ad84a37c6d2bec2a1e0fa6c4cf8447b8c"
+        },
+        {
+          "name": "stdout.log",
+          "size": 1352,
+          "sha256": "9c255e79355a6db291004a0f913aa4b54df415d93d0d5720bb15479058bbb1bf"
+        },
+        {
+          "name": "stderr.log",
+          "size": 368,
+          "sha256": "7dbd483af2723d748a1cebf5cf7e39dc24a9d5d08686be452a2d3ccee43898e6"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "dfeed905ad8acd6ea6dafcc27e42524b6f225fa2555e28c6e47c0861b9a0c017"
+        },
+        {
+          "name": "executables.json",
+          "size": 393,
+          "sha256": "037e423b48cfe74c16b23c93e8dfa96606c64df07021103d247589ecb4502c01"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/16-core-utility-retest/source.zip",
+        "sha256": "4758012f929b941b60d3459cf4e7df47440130f8cd9c035fe8a7f49ff79256ac"
+      }
+    },
+    {
+      "run": "17-core-utility-retest",
+      "result": {
+        "exit_code": 101,
+        "wall_seconds": 0.113538792,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/17-core-utility-retest",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 500,
+          "sha256": "468839f0310dfd1964dec2239b3830b9085ae138102d28e7a94fff5474d0b68f"
+        },
+        {
+          "name": "exit.json",
+          "size": 81,
+          "sha256": "21969bf03429eb228b360c147d1fc8f35c55c1c4954e0ae1be9f117f83ba3388"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 1112,
+          "sha256": "c533b43819f95d409e3a65f51e12050d8dae2626dc39701392c03e2569af9b7a"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "4654631913ef3a61c6bc5b6b41483eb783067ba59eade332d1a60dcc2df45fd6"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/17-core-utility-retest/source.zip",
+        "sha256": "4d51b7d3e8d1aacbe4d91e2e24ed2f91b350caf9360497e485ed63eeac21d975"
+      }
+    },
+    {
+      "run": "18-core-utility-retest",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 1.669109625,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/18-core-utility-retest",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 500,
+          "sha256": "d52ff6e982e0f058a073a6cc879ef4cc0784bb36c6a43d3fefa3842ff432ecb3"
+        },
+        {
+          "name": "exit.json",
+          "size": 79,
+          "sha256": "cda9815a17df54892bb7f460756a815f2c07ea204966f7e5d88d0a41fb893e90"
+        },
+        {
+          "name": "stdout.log",
+          "size": 846,
+          "sha256": "44bee7b7e23588c02cc4a7be04f3e958618d18c9d5da1987b5342dee29505d77"
+        },
+        {
+          "name": "stderr.log",
+          "size": 290,
+          "sha256": "c89032dbd231d07feeb320fa6e5a3f7cd5121f375ca55a1af0325a7eb9b61a20"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "6690f87b0036779c934105d1d86108ab31fb8e3fd8dfbc7d092787d8090c1bb6"
+        },
+        {
+          "name": "executables.json",
+          "size": 393,
+          "sha256": "6be552ff238d8f679b1eabc72741ae76343d07cd30de26204d90e2c8d532954d"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/18-core-utility-retest/source.zip",
+        "sha256": "e7248a220e5f5debde113e5a28c970053b4b449078e935b770327845d8c7fb8e"
+      }
+    },
+    {
+      "run": "19-storage-construction-utility-tests",
+      "result": {
+        "exit_code": 101,
+        "wall_seconds": 4.8161573749999995,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/19-storage-construction-utility-tests",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 732,
+          "sha256": "07ba14460547194ec48991ca44732c5d2387fd4d6a59eb4e3e19b63e1f0adddc"
+        },
+        {
+          "name": "exit.json",
+          "size": 88,
+          "sha256": "8bc7a8a806b20e3305f0e5b49b503b4331cac4b26ea8eea0af0d26bdf9be6d1d"
+        },
+        {
+          "name": "stdout.log",
+          "size": 2010,
+          "sha256": "966cc3de04109bdffb3c149dac6ae869f410145b578189156080651acf08b2d9"
+        },
+        {
+          "name": "stderr.log",
+          "size": 707,
+          "sha256": "0c4a04305bce7972c315af2493d2e92cbf9d2f2655d9ec431ab02601f47bedb3"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "6690f87b0036779c934105d1d86108ab31fb8e3fd8dfbc7d092787d8090c1bb6"
+        },
+        {
+          "name": "executables.json",
+          "size": 1608,
+          "sha256": "c4516dccd2d7decb41aef78cf7d4559861ada5e35c86264bd4fb50892da570a1"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/19-storage-construction-utility-tests/source.zip",
+        "sha256": "e7248a220e5f5debde113e5a28c970053b4b449078e935b770327845d8c7fb8e"
+      }
+    },
+    {
+      "run": "20-storage-retry-clearance-utility-tests",
+      "result": {
+        "exit_code": 101,
+        "wall_seconds": 3.959852959,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/20-storage-retry-clearance-utility-tests",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 594,
+          "sha256": "3637afd5306bf67ee22fdf5852f34a3cc312d6f01ac4eea57396907a51ca9a3d"
+        },
+        {
+          "name": "exit.json",
+          "size": 81,
+          "sha256": "e59abfbba67c5e7b93804072f8795b96fd93c412c86441b910066168e4144374"
+        },
+        {
+          "name": "stdout.log",
+          "size": 2292,
+          "sha256": "7d51005052abb5142707fd114b1c7671b8a5f185f206c5eb9fecc09a7a15ae49"
+        },
+        {
+          "name": "stderr.log",
+          "size": 524,
+          "sha256": "8bbbcf74e434cb6f0fc2be09c6fe6f12e508a79b28daa8cf97328791e63f4b0d"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "350c79057b4ec6e96ecf2226a419c26d8ee0906ad30f1995eb47145f225cf7b2"
+        },
+        {
+          "name": "executables.json",
+          "size": 800,
+          "sha256": "d90a5461367f15990230938ee08463b33e4126bfb043943b95253d45cc771aad"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/20-storage-retry-clearance-utility-tests/source.zip",
+        "sha256": "2fa2256a33080c636abf1de9cc7cd1f5185c9df64f9e410c610ee351081d2ba8"
+      }
+    },
+    {
+      "run": "21-storage-clearance-tests",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 22.549742791,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/21-storage-clearance-tests",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 504,
+          "sha256": "2bf98888ac86a9909af3e3f6768110756fc950df8b8a33adf3f160b342e1ef74"
+        },
+        {
+          "name": "exit.json",
+          "size": 80,
+          "sha256": "226f968bc4731abc04ff88b6604e3f26a95b038695506031beb0718661b4c472"
+        },
+        {
+          "name": "stdout.log",
+          "size": 562,
+          "sha256": "c8d56f0d7dd51e95815772e9bb05801d681deca42048590758c437882703c2c8"
+        },
+        {
+          "name": "stderr.log",
+          "size": 299,
+          "sha256": "e09e8ecf4ab94deeb2cb7a187ca30d5802bf2193f649566bd3c133d9df094fdc"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "aaf274612dcdddfbe3f90aa4f2fc93fab0d7c2a0ca86b90ed52697bc35893d63"
+        },
+        {
+          "name": "executables.json",
+          "size": 395,
+          "sha256": "8909c7933b068639cb94ad6bc570b46f445a038d31ffa53c55f988799094d755"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/21-storage-clearance-tests/source.zip",
+        "sha256": "a8518959d46ffab2ee1f909803f0e181bc0ab0561856d5e95b789ae59d8ab5cc"
+      }
+    },
+    {
+      "run": "22-storage-utility-recovery-tests",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 2.073002917,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/22-storage-utility-recovery-tests",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 505,
+          "sha256": "3e1e8a5d78744509f66b5c7ccce22559d5512f6386b93cf6bd6318716314c0cb"
+        },
+        {
+          "name": "exit.json",
+          "size": 79,
+          "sha256": "5dad0d45ea63689dfc6bbbe303c82242e7177684f09dfc27133393035faa5f7e"
+        },
+        {
+          "name": "stdout.log",
+          "size": 271,
+          "sha256": "9bbacf23e036213855feadc77f38f98fcea6cc090170a18157a3d24a5c4c0529"
+        },
+        {
+          "name": "stderr.log",
+          "size": 300,
+          "sha256": "30b11c35ae81d3f4256e4e8f6ec444cb3aed32c4a0a9e083986d65ac7db8a2be"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "aaf274612dcdddfbe3f90aa4f2fc93fab0d7c2a0ca86b90ed52697bc35893d63"
+        },
+        {
+          "name": "executables.json",
+          "size": 397,
+          "sha256": "0089c798f89bf73c4ac8e6689f57c64b0efeac8a8c6bea06d7d1607f9ecbeb7a"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/22-storage-utility-recovery-tests/source.zip",
+        "sha256": "a8518959d46ffab2ee1f909803f0e181bc0ab0561856d5e95b789ae59d8ab5cc"
+      }
+    },
+    {
+      "run": "23-full-core-storage-tests",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 372.51622920799997,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/23-full-core-storage-tests",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 512,
+          "sha256": "a5b2ef0e33710b1b587bc7285f909ec83a300fedf2bfe056d5572f48dcb16244"
+        },
+        {
+          "name": "exit.json",
+          "size": 86,
+          "sha256": "5b373ef4cc52d713cfe124dd2a46a40e39875c828c783a8c79b886827a7f3be4"
+        },
+        {
+          "name": "stdout.log",
+          "size": 41855,
+          "sha256": "5f40f366b8f9023594500c3bb86abd1c72e77e39376d1a0edc6f7db8ba5012e7"
+        },
+        {
+          "name": "stderr.log",
+          "size": 6525,
+          "sha256": "bfc17940192c99b575f2e994bfee70b08dc6b5b5da405b1e37bf13129febb386"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "aaf274612dcdddfbe3f90aa4f2fc93fab0d7c2a0ca86b90ed52697bc35893d63"
+        },
+        {
+          "name": "executables.json",
+          "size": 19732,
+          "sha256": "14e63070ae5d2871611822d75389c98eec4e4b4d6e399fcec692a99a76868483"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/23-full-core-storage-tests/source.zip",
+        "sha256": "a8518959d46ffab2ee1f909803f0e181bc0ab0561856d5e95b789ae59d8ab5cc"
+      }
+    },
+    {
+      "run": "24-strict-clippy",
+      "result": {
+        "exit_code": 101,
+        "wall_seconds": 7.063597583,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/24-strict-clippy",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 516,
+          "sha256": "ed85023763a952c8d60c1447a22077504825e6e25affc402a0344a5cad0a8928"
+        },
+        {
+          "name": "exit.json",
+          "size": 81,
+          "sha256": "6722bd33ffe9d3fd017657b21b76fc1470fee4f264abcd90e2c98f4bfb9a5cf5"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 5373,
+          "sha256": "8a5713be3c1f481f9998757a3cac0fca517c1ea2ea485dabf9e71f38f39a9f8d"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "aaf274612dcdddfbe3f90aa4f2fc93fab0d7c2a0ca86b90ed52697bc35893d63"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/24-strict-clippy/source.zip",
+        "sha256": "a8518959d46ffab2ee1f909803f0e181bc0ab0561856d5e95b789ae59d8ab5cc"
+      }
+    },
+    {
+      "run": "25-strict-clippy",
+      "result": {
+        "exit_code": 101,
+        "wall_seconds": 5.807756291,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/25-strict-clippy",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 516,
+          "sha256": "cf656e1bc4559119d5735d72ba64feab1928e8f61ef54388779e598858e4677d"
+        },
+        {
+          "name": "exit.json",
+          "size": 81,
+          "sha256": "074c1f1b2938d97879a1e48db40e9cd844a39b8accf4e75310edac5f1eee84b9"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 1550,
+          "sha256": "54dd5f449042e0b725f14ddfa1f10316a9e1c79bb177c8f1f8ac35adacc7d3e9"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "e22208bbda82b91f2552e666b57f58ec9c4ff01fe36dc7b38a493504584e5c81"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/25-strict-clippy/source.zip",
+        "sha256": "5560cbedf7e7dc3c2f30a268fab61f8f5d3cedca9b1d12641577eba8bfae3655"
+      }
+    },
+    {
+      "run": "26-strict-clippy",
+      "result": {
+        "exit_code": 101,
+        "wall_seconds": 6.937229083,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/26-strict-clippy",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 516,
+          "sha256": "a46f8e4041960601057c54a01341245d597f8d8e4b3794536fa754bafe203d96"
+        },
+        {
+          "name": "exit.json",
+          "size": 81,
+          "sha256": "2049e97df8eb816ce35e604464222080cb2e11b9c75ac9fb289328b453c57cef"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 2151,
+          "sha256": "6f79fccb50f5d8a87ca498990bd23349adee95d77c098a86a67db550b2109c10"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "bc1233e6d1a0538f887abd28445adfe3460aacd97205b021badf89afaf47e12f"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/26-strict-clippy/source.zip",
+        "sha256": "e8f006ca4029f2a989bf9bd0c7c81e8ab5b658b7f37f862a0b8f129e351ed3cd"
+      }
+    },
+    {
+      "run": "27-strict-clippy",
+      "result": {
+        "exit_code": 101,
+        "wall_seconds": 0.75127875,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/27-strict-clippy",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 516,
+          "sha256": "2cd04486e8906eeaed7c2b3c0bf0bae2df8a118418d46ef208a7abeb6a803b64"
+        },
+        {
+          "name": "exit.json",
+          "size": 80,
+          "sha256": "1212e7e133049a1879befa671a7ee8653975be0530af125215c777f9331dd337"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 1749,
+          "sha256": "7373ee0b086f40a6792abae73b6d01605941cbf20e5e1110b4260a866a58dbe5"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "bfc9e6a2846166c4a8d5ff4917427ca6f24e0d7dd30ff0cf608b4a31dd246582"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/27-strict-clippy/source.zip",
+        "sha256": "630df658b88ee380d8681714b2204aed44e6e096c3976bc5ad1fb9fa3dd498e1"
+      }
+    },
+    {
+      "run": "28-strict-clippy",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.570388916,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/28-strict-clippy",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 516,
+          "sha256": "4d4722db2d74f4a6b28c1511635019538448a9036b44dea0fa3042d1f52a7022"
+        },
+        {
+          "name": "exit.json",
+          "size": 79,
+          "sha256": "e54b7e6c3bce487e4e4a6df61d1240854c4959034deb43e04d4c617e11921d89"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 161,
+          "sha256": "a50553c3dc974753327643f85cf95294481353098ac36506f4f9f5a0aca22055"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "a8ce426361777fc73f29a50e9d9e871007ac2a2fec456f2bd0f4ce1e765fc6a1"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/28-strict-clippy/source.zip",
+        "sha256": "e88f12c20fed4d1dba338d68f66d39fccb850ba8946ce39ea220b548f2aaee6d"
+      }
+    },
+    {
+      "run": "29-fmt-check",
+      "result": {
+        "exit_code": 1,
+        "wall_seconds": 0.6075645,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/29-fmt-check",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 383,
+          "sha256": "aabda40011e4f2a70d35ec35708367ea45c8bf1159858506ce74e2ef91d74bab"
+        },
+        {
+          "name": "exit.json",
+          "size": 77,
+          "sha256": "e67b9be1ecd3adcdc16b6aba5ead15577c7b9a9177c8220a66e5c5d318b19b45"
+        },
+        {
+          "name": "stdout.log",
+          "size": 594,
+          "sha256": "5bc9d37fd0fe18172d96bf2e509104fd3cb7aca9dda2d8a2ba452ac56cb66123"
+        },
+        {
+          "name": "stderr.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "a8ce426361777fc73f29a50e9d9e871007ac2a2fec456f2bd0f4ce1e765fc6a1"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/29-fmt-check/source.zip",
+        "sha256": "e88f12c20fed4d1dba338d68f66d39fccb850ba8946ce39ea220b548f2aaee6d"
+      }
+    },
+    {
+      "run": "30-fmt-check",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.5571969999999999,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/30-fmt-check",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 383,
+          "sha256": "139c75cbc4ba8218ccb2967bf548e50f85f708c398b19c8ba6e3cebfa2739bb9"
+        },
+        {
+          "name": "exit.json",
+          "size": 86,
+          "sha256": "9aa857fab68a41f55eb2e1bf18c7adf3c12b630799183ef269a5c9176b011886"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "88bf93b82eafde60f5fcefee8cb39dc88ce16e23ddb24d7a492e516e95a6546e"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/30-fmt-check/source.zip",
+        "sha256": "e7d913079224a3f8623daebfa2e2b6dd402715decd332ea6e0b5b4c20d83b610"
+      }
+    },
+    {
+      "run": "31-cli-build",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 45.041767708,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/31-cli-build",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 476,
+          "sha256": "b1688e5c513aed5cb35b244de00c41b4d2937d1be5338c2e3331bed59dd8be45"
+        },
+        {
+          "name": "exit.json",
+          "size": 80,
+          "sha256": "8da304ab4fa6d8740ebe1e8c499755f535f65055ab942cde834997600b1ac3df"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 364,
+          "sha256": "eddb7c47dbb1ab7fbba50a9cbf2d2003c815dea7f9ecb6fc11f39c6ee7cd1ed0"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "88bf93b82eafde60f5fcefee8cb39dc88ce16e23ddb24d7a492e516e95a6546e"
+        },
+        {
+          "name": "cli-executables.json",
+          "size": 4022,
+          "sha256": "5688aff29fae83520fa3afb553bf16fc893c367f42e69bde9e36824c0ad91d64"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/31-cli-build/source.zip",
+        "sha256": "e7d913079224a3f8623daebfa2e2b6dd402715decd332ea6e0b5b4c20d83b610"
+      }
+    },
+    {
+      "run": "32-transport-normal",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.528307375,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/32-transport-normal",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 506,
+          "sha256": "59993a5624d772e2974333f912a0095b54e916bc4bfb8b6a106cc51223ed6b47"
+        },
+        {
+          "name": "exit.json",
+          "size": 79,
+          "sha256": "9fe492ff5bd0364628356010b66ecfdbce718f12dd07e5c20111b3ac67fca93f"
+        },
+        {
+          "name": "stdout.log",
+          "size": 1103,
+          "sha256": "d2f2788b648f66b1e060bd9de9d2a849901b75de3073b58b421664c76203fd5a"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "7b1eb74b5b24efb6d2b764ed08c352c282ef117f3fe23ad540fc987c2527388c"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "88bf93b82eafde60f5fcefee8cb39dc88ce16e23ddb24d7a492e516e95a6546e"
+        },
+        {
+          "name": "runtime-metrics.json",
+          "size": 248,
+          "sha256": "c394a19e9790feab260914c2063d3a7873450522b277e2205b7afb5ff76fe09b"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/32-transport-normal/source.zip",
+        "sha256": "e7d913079224a3f8623daebfa2e2b6dd402715decd332ea6e0b5b4c20d83b610"
+      }
+    },
+    {
+      "run": "33-transport-closed",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.020734875,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/33-transport-closed",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 506,
+          "sha256": "1f27dcae166804f3c83f69c220e8c6a1e8d001bf0d93c8d111d78d63ee50cba0"
+        },
+        {
+          "name": "exit.json",
+          "size": 79,
+          "sha256": "53720a3e8fea7bf9e99fe28b9c43be899410741dd5990c873a606e2ce690c1cd"
+        },
+        {
+          "name": "stdout.log",
+          "size": 1118,
+          "sha256": "a862cfc056489f53b01f87dee2cd38fcd822f2284b0d1c391cd912d82dd6becf"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "9bdd7322da5223e9459624bcc1aaca72084de2edb3b3648c87f5fd39d35d8a64"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "88bf93b82eafde60f5fcefee8cb39dc88ce16e23ddb24d7a492e516e95a6546e"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/33-transport-closed/source.zip",
+        "sha256": "e7d913079224a3f8623daebfa2e2b6dd402715decd332ea6e0b5b4c20d83b610"
+      }
+    },
+    {
+      "run": "37-transport-normal",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.021010875,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/37-transport-normal",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 506,
+          "sha256": "dfed34b693cebab0001312302565d34c2063787a60c059a8087cfade1c336b23"
+        },
+        {
+          "name": "exit.json",
+          "size": 79,
+          "sha256": "a71f319d3cfe1de86f8af1afa363c7282151fcde9eb682d8cfbd4ee26fbd06f6"
+        },
+        {
+          "name": "stdout.log",
+          "size": 1103,
+          "sha256": "d2f2788b648f66b1e060bd9de9d2a849901b75de3073b58b421664c76203fd5a"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "ae9e7601678291d312e703a2b825f121a89189d7116cae5ce99b0c9b45d15d8f"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "88bf93b82eafde60f5fcefee8cb39dc88ce16e23ddb24d7a492e516e95a6546e"
+        },
+        {
+          "name": "runtime-metrics.json",
+          "size": 248,
+          "sha256": "c394a19e9790feab260914c2063d3a7873450522b277e2205b7afb5ff76fe09b"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/37-transport-normal/source.zip",
+        "sha256": "e7d913079224a3f8623daebfa2e2b6dd402715decd332ea6e0b5b4c20d83b610"
+      }
+    },
+    {
+      "run": "38-transport-closed",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.04036770799999999,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/38-transport-closed",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 506,
+          "sha256": "5643e87c3db853652516d44fab27866fcf45140af5146010f84a5c94178867b0"
+        },
+        {
+          "name": "exit.json",
+          "size": 87,
+          "sha256": "11e5dca4c3991d285903cb46254a1147add67a1b77ccb81590963f9f710ff04f"
+        },
+        {
+          "name": "stdout.log",
+          "size": 1118,
+          "sha256": "a862cfc056489f53b01f87dee2cd38fcd822f2284b0d1c391cd912d82dd6becf"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "dda274921f305d82b1bbf499a268b3fcd413c6a55985ef56ef363ff98c2fbb0b"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "88bf93b82eafde60f5fcefee8cb39dc88ce16e23ddb24d7a492e516e95a6546e"
+        },
+        {
+          "name": "runtime-metrics.json",
+          "size": 248,
+          "sha256": "c394a19e9790feab260914c2063d3a7873450522b277e2205b7afb5ff76fe09b"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/38-transport-closed/source.zip",
+        "sha256": "e7d913079224a3f8623daebfa2e2b6dd402715decd332ea6e0b5b4c20d83b610"
+      }
+    },
+    {
+      "run": "39-transport-congested",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.019220583,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/39-transport-congested",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 509,
+          "sha256": "867834aeed7a101911408953605659b7d9b313ee68ec4fad06c766efdf1e9d6b"
+        },
+        {
+          "name": "exit.json",
+          "size": 79,
+          "sha256": "dd8f0144bba2f45b91567389ebdc1953ef4ae63d584b6f8786a3ed27f0aa9590"
+        },
+        {
+          "name": "stdout.log",
+          "size": 1113,
+          "sha256": "a50f1ae2269d240dd654eb23750755e6523c91295759abf9fb6db9718538d791"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "42a7b10863f67cb02ea736962f3f3615d1e6c4b05d49cdae7aee2ddae1a19295"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "88bf93b82eafde60f5fcefee8cb39dc88ce16e23ddb24d7a492e516e95a6546e"
+        },
+        {
+          "name": "runtime-metrics.json",
+          "size": 248,
+          "sha256": "c394a19e9790feab260914c2063d3a7873450522b277e2205b7afb5ff76fe09b"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/39-transport-congested/source.zip",
+        "sha256": "e7d913079224a3f8623daebfa2e2b6dd402715decd332ea6e0b5b4c20d83b610"
+      }
+    },
+    {
+      "run": "40-transport-unreachable",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.016557500000000003,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/40-transport-unreachable",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 511,
+          "sha256": "862272e46965b25b25f9580cd2b00c627281d303effc21a1c793e38245822e5e"
+        },
+        {
+          "name": "exit.json",
+          "size": 88,
+          "sha256": "1f0cd435ec72177adb1eb0d2de0acbd0d05ab7c7690ff4423b665679650de1ed"
+        },
+        {
+          "name": "stdout.log",
+          "size": 777,
+          "sha256": "798b570f74d9f286dd7e39f649f96a249179880563967ff6d2deb3f565ae6064"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "40c5039104df50ab545c5454bf534f2c831689f9a58ee498fa23c915b571b4f9"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "88bf93b82eafde60f5fcefee8cb39dc88ce16e23ddb24d7a492e516e95a6546e"
+        },
+        {
+          "name": "runtime-metrics.json",
+          "size": 248,
+          "sha256": "c394a19e9790feab260914c2063d3a7873450522b277e2205b7afb5ff76fe09b"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/40-transport-unreachable/source.zip",
+        "sha256": "e7d913079224a3f8623daebfa2e2b6dd402715decd332ea6e0b5b4c20d83b610"
+      }
+    },
+    {
+      "run": "41-transport-normal-repeat",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.018246667000000008,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/41-transport-normal-repeat",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 506,
+          "sha256": "5fc316efd052023f7cae33cac0a86e9f4c3ed41081b32ff703e4f312c81134bf"
+        },
+        {
+          "name": "exit.json",
+          "size": 88,
+          "sha256": "4774510960c7b1717ac321261170c25da0f991195c03ad9b97d124b4bdaea829"
+        },
+        {
+          "name": "stdout.log",
+          "size": 1103,
+          "sha256": "d2f2788b648f66b1e060bd9de9d2a849901b75de3073b58b421664c76203fd5a"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "50647504c7f8a44eef5c9fba7579a01c16a8d710b1c48a9b6fce6b19e77d61c4"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "88bf93b82eafde60f5fcefee8cb39dc88ce16e23ddb24d7a492e516e95a6546e"
+        },
+        {
+          "name": "runtime-metrics.json",
+          "size": 248,
+          "sha256": "c394a19e9790feab260914c2063d3a7873450522b277e2205b7afb5ff76fe09b"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/41-transport-normal-repeat/source.zip",
+        "sha256": "e7d913079224a3f8623daebfa2e2b6dd402715decd332ea6e0b5b4c20d83b610"
+      }
+    },
+    {
+      "run": "42-lifelines-normal",
+      "result": {
+        "exit_code": 1,
+        "wall_seconds": 0.870048334,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/42-lifelines-normal",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 610,
+          "sha256": "3b494d7b01fef82f74e4ab9de736009dae3c027753286638f0cf249cabed323e"
+        },
+        {
+          "name": "exit.json",
+          "size": 79,
+          "sha256": "e21882ff6468a637e794e659ec23b84a91421b769f3448b4ebc3b1cd4210e7bd"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 836,
+          "sha256": "5a1c23c1df1b761a291014024a47884326a34edc7c0fc72bfea16fbd8e6de2fe"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "88bf93b82eafde60f5fcefee8cb39dc88ce16e23ddb24d7a492e516e95a6546e"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/42-lifelines-normal/source.zip",
+        "sha256": "e7d913079224a3f8623daebfa2e2b6dd402715decd332ea6e0b5b4c20d83b610"
+      }
+    },
+    {
+      "run": "45-lifelines-genesis-fix-build",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 18.670798417,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/45-lifelines-genesis-fix-build",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 468,
+          "sha256": "99957f0d97ec054299abf4cf1a48be3045c41bbebaf234cac9e015b56c59c6b2"
+        },
+        {
+          "name": "exit.json",
+          "size": 80,
+          "sha256": "8510a771377c63a7b1228ef5d895898653a67c2c253f23e3ee56006b5a02ab8a"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 168,
+          "sha256": "fb9e765574b46d946fc90e28304441b047dcab42214f0b50d7606f20a5cf5403"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "16d292c64c0cc339fb3c9092fa9d5b21db0e0b8ce718d02552988b0caedd31e0"
+        },
+        {
+          "name": "cli-executable.json",
+          "size": 253,
+          "sha256": "178168e44b31b7b5ae16740366c3071f28220f84c23aa3c22691ad9235f44c9f"
+        },
+        {
+          "name": "storage-profile.json",
+          "size": 290,
+          "sha256": "7d521873f7ac0dadeaaff4782557f90d31f8ad00844ec120e199a1edd6259a3a"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/45-lifelines-genesis-fix-build/source.zip",
+        "sha256": "f74b90952125ad79ea00b45d9bd21dbe4edf375fa30ca1d77ad9f06fc0f57907"
+      }
+    },
+    {
+      "run": "46-lifelines-normal",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 1.260370833,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/46-lifelines-normal",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 610,
+          "sha256": "23b5687fd7fe909def5392ee61920fb164ae3979e64f7ff0f370fe0ef06ec314"
+        },
+        {
+          "name": "exit.json",
+          "size": 79,
+          "sha256": "e2d2626b07171f393021225f49a23c1a57ae0f001b53bf73a18b52bd100062b7"
+        },
+        {
+          "name": "stdout.log",
+          "size": 1415,
+          "sha256": "f780901e80c2942cd5bb2bc5c003f00dc7c68033c8c302e51c417e19016e1c9a"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "6d8772b0e8f929af35f6735f3facd012d1c3d251de2a91c1fe143a4e16745bdf"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "16d292c64c0cc339fb3c9092fa9d5b21db0e0b8ce718d02552988b0caedd31e0"
+        },
+        {
+          "name": "storage-profile.json",
+          "size": 290,
+          "sha256": "7d521873f7ac0dadeaaff4782557f90d31f8ad00844ec120e199a1edd6259a3a"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/46-lifelines-normal/source.zip",
+        "sha256": "f74b90952125ad79ea00b45d9bd21dbe4edf375fa30ca1d77ad9f06fc0f57907"
+      }
+    },
+    {
+      "run": "47-lifelines-held",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.384611292,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/47-lifelines-held",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 638,
+          "sha256": "2b88c569109099ec81574237536a8b56b992b94bd4f57c2347e0ea3272d1280d"
+        },
+        {
+          "name": "exit.json",
+          "size": 79,
+          "sha256": "90d6d99564e3cfd6bccb4fc9f041300ab01979f7d89b6747cd0fded91ff20b86"
+        },
+        {
+          "name": "stdout.log",
+          "size": 1420,
+          "sha256": "50065981226e1b24efabd0f707f4470dd73cc7d2f2596a57081977e38b3b9535"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "4b01c3627f2d7af0f4a3fa143c72d6056a96df9c6593f33ca3cc0f38274cbe79"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "16d292c64c0cc339fb3c9092fa9d5b21db0e0b8ce718d02552988b0caedd31e0"
+        },
+        {
+          "name": "storage-profile.json",
+          "size": 290,
+          "sha256": "7d521873f7ac0dadeaaff4782557f90d31f8ad00844ec120e199a1edd6259a3a"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/47-lifelines-held/source.zip",
+        "sha256": "f74b90952125ad79ea00b45d9bd21dbe4edf375fa30ca1d77ad9f06fc0f57907"
+      }
+    },
+    {
+      "run": "48-lifelines-generator-failure",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.41188712499999997,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/48-lifelines-generator-failure",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 648,
+          "sha256": "361805d0b3e76c2a64fb05496eec84a480d61a0042e3f92d5609581483a038f1"
+        },
+        {
+          "name": "exit.json",
+          "size": 87,
+          "sha256": "9add924ec273efa0013694cf742002908d8040c7820f15bf4a777a156ad70373"
+        },
+        {
+          "name": "stdout.log",
+          "size": 1400,
+          "sha256": "d705b10b742c09f1c0ddbdbf081c5e54a2858d1bbce4125474f554951f15b309"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "89718edd43d23cfba71c5dbc4aae4f59b6385084d5be28f2eda8ec29e7ecb7d4"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "16d292c64c0cc339fb3c9092fa9d5b21db0e0b8ce718d02552988b0caedd31e0"
+        },
+        {
+          "name": "storage-profile.json",
+          "size": 290,
+          "sha256": "7d521873f7ac0dadeaaff4782557f90d31f8ad00844ec120e199a1edd6259a3a"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/48-lifelines-generator-failure/source.zip",
+        "sha256": "f74b90952125ad79ea00b45d9bd21dbe4edf375fa30ca1d77ad9f06fc0f57907"
+      }
+    },
+    {
+      "run": "49-cli-rebuild",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 3.638072375,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/49-cli-rebuild",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 476,
+          "sha256": "8efb1455eb62b1466fb8eea2746ffb396e89ad9d42d17cae3e7f6ce010bcf910"
+        },
+        {
+          "name": "exit.json",
+          "size": 79,
+          "sha256": "a73e24c4a7c4b097f593547e4506b53133475481620e2bf4a4ab132c9323deeb"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 167,
+          "sha256": "7c4fea9cd3f7578fa61318c03c7df0fff82c4789aee414559e5c159b62d95e2b"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "16d292c64c0cc339fb3c9092fa9d5b21db0e0b8ce718d02552988b0caedd31e0"
+        },
+        {
+          "name": "cli-executables.json",
+          "size": 1959,
+          "sha256": "833acd8a4f48ecb0db81dc302777b349177708a089977e2c1a67f7e80ee864c9"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/49-cli-rebuild/source.zip",
+        "sha256": "f74b90952125ad79ea00b45d9bd21dbe4edf375fa30ca1d77ad9f06fc0f57907"
+      }
+    },
+    {
+      "run": "50-town-transport-normal",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 1.568739209,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/50-town-transport-normal",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 610,
+          "sha256": "03a5b70ea6e9ff7bdeaf4d33eeb4cf0c2c42005f8d7ff42d79b941d2e6d0bc00"
+        },
+        {
+          "name": "exit.json",
+          "size": 79,
+          "sha256": "61175b115bd43b6fb46e842fea84f8806210bda4450d35d1bb8dbbd99c00bd7a"
+        },
+        {
+          "name": "stdout.log",
+          "size": 899,
+          "sha256": "c27a963cb93aaa9326d37b2aac5d90fcd8a4dcdcf954aa5a5e1dc82dc61eaec7"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "2dde1b83ed5fe9dc410eda8761d8e0eadce8121d22eb88eb91bba3e62c12f9e1"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "16d292c64c0cc339fb3c9092fa9d5b21db0e0b8ce718d02552988b0caedd31e0"
+        },
+        {
+          "name": "runtime-metrics.json",
+          "size": 424,
+          "sha256": "3b2c8286ce8b745640506045bfd15a01a043c17d5ee2a2d50144a5b522b15343"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/50-town-transport-normal/source.zip",
+        "sha256": "f74b90952125ad79ea00b45d9bd21dbe4edf375fa30ca1d77ad9f06fc0f57907"
+      }
+    },
+    {
+      "run": "51-town-transport-closed",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.9129275410000001,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/51-town-transport-closed",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 610,
+          "sha256": "a86ef87804dea72ba0901f8e09d2ed2d1cb41ad3211996b069c4e006809ec68c"
+        },
+        {
+          "name": "exit.json",
+          "size": 86,
+          "sha256": "c2e085d909d4baa72ae4a74f81ff1c10c679ffe334e8ff3fb068be329358d715"
+        },
+        {
+          "name": "stdout.log",
+          "size": 898,
+          "sha256": "57c218fcb2266a17f9ceb5c820f110a96cdc0a59050133b21fbac4df0a1485cd"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "3bb102e174d768f5a40c30906bf791d2b1c8db4062481fb123c6461fde0feca4"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "16d292c64c0cc339fb3c9092fa9d5b21db0e0b8ce718d02552988b0caedd31e0"
+        },
+        {
+          "name": "runtime-metrics.json",
+          "size": 424,
+          "sha256": "6079ddd1ca011f5a85adb29c9c40366d93f0572177872a2e76ea86b137227bda"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/51-town-transport-closed/source.zip",
+        "sha256": "f74b90952125ad79ea00b45d9bd21dbe4edf375fa30ca1d77ad9f06fc0f57907"
+      }
+    },
+    {
+      "run": "52-town-transport-bottleneck",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.903082667,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/52-town-transport-bottleneck",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 618,
+          "sha256": "82a258abb26bfc08691ab4e9e715a92606481c6e27da51df176b5401a016149a"
+        },
+        {
+          "name": "exit.json",
+          "size": 79,
+          "sha256": "da9a94c85a653be83089e270a0e10977b19a7be82e08a693c303156761a78e6e"
+        },
+        {
+          "name": "stdout.log",
+          "size": 901,
+          "sha256": "2a56851bb3c0a8e0c1c218f72eb44b49ccd1fb82200fd65e9b0894b197348624"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "7ba05dc78853eb4929ac80d21633a9c4efdd314e3a98c03df703e59c0450e961"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "16d292c64c0cc339fb3c9092fa9d5b21db0e0b8ce718d02552988b0caedd31e0"
+        },
+        {
+          "name": "runtime-metrics.json",
+          "size": 424,
+          "sha256": "893544f138b71c8dd3aabd9d0c4010237708b83a836400f7d77951dcce9b49a3"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/52-town-transport-bottleneck/source.zip",
+        "sha256": "f74b90952125ad79ea00b45d9bd21dbe4edf375fa30ca1d77ad9f06fc0f57907"
+      }
+    },
+    {
+      "run": "53-town-transport-expanded",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.86493675,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/53-town-transport-expanded",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 614,
+          "sha256": "9513f1f24bcec5aea680bd13bd359b017dc07cc6b92cb5058187c8d99433476f"
+        },
+        {
+          "name": "exit.json",
+          "size": 78,
+          "sha256": "0165efa29a839dd4c99ee2bf56311027ccbd53d43664514300679630e934234f"
+        },
+        {
+          "name": "stdout.log",
+          "size": 893,
+          "sha256": "1bf9e8b71acb33be2eb06666a4244b3b83c3263d0d815f396eb02bf3746874d3"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "ae872f8b1676e415a0516cf46dac0aff839793aa437534ce8695765ecf54e6bb"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "16d292c64c0cc339fb3c9092fa9d5b21db0e0b8ce718d02552988b0caedd31e0"
+        },
+        {
+          "name": "runtime-metrics.json",
+          "size": 424,
+          "sha256": "cf6c409c840995e9781a0a4e936a1dcc8c4106390617d2baebe763efe953cd96"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/53-town-transport-expanded/source.zip",
+        "sha256": "f74b90952125ad79ea00b45d9bd21dbe4edf375fa30ca1d77ad9f06fc0f57907"
+      }
+    },
+    {
+      "run": "54-town-transport-cross-boundary",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.5529265409999999,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/54-town-transport-cross-boundary",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 626,
+          "sha256": "4ca2a11aa913c07496edd357a0552b2d33f5644cc2884bb69dad658786787409"
+        },
+        {
+          "name": "exit.json",
+          "size": 86,
+          "sha256": "269e0148cb4d33d5cde1d048e997fdfabef5a2a160e1afe435016fcd002761e4"
+        },
+        {
+          "name": "stdout.log",
+          "size": 1288,
+          "sha256": "eb5c2814ba228136624015adc78861312cd60335b0b096ad7141fe6497176dad"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "ae6deac0e0a25adaf44c878678ea37e37b1da8c7e5ac77dd7475d4cfae7fde21"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "16d292c64c0cc339fb3c9092fa9d5b21db0e0b8ce718d02552988b0caedd31e0"
+        },
+        {
+          "name": "runtime-metrics.json",
+          "size": 424,
+          "sha256": "8b35d90a2597207eacdf69b05557af07cd56655e6436888d5889e9f75ad080d0"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/54-town-transport-cross-boundary/source.zip",
+        "sha256": "f74b90952125ad79ea00b45d9bd21dbe4edf375fa30ca1d77ad9f06fc0f57907"
+      }
+    },
+    {
+      "run": "55-town-transport-road-effect",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.655374875,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/55-town-transport-road-effect",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 620,
+          "sha256": "3f5a4323e7255041e4f6c1e8151a7120336523c0fc7a8f3aafc54f9694bd3590"
+        },
+        {
+          "name": "exit.json",
+          "size": 79,
+          "sha256": "01b76c85ce60a587d11879f43d37aca7dd1822a601357097850d65f1cc80fec2"
+        },
+        {
+          "name": "stdout.log",
+          "size": 1179,
+          "sha256": "5fae1c1b1698ee9d330cf4afc4d9e4b058bea369c56ca96baf7679adc5dee9f6"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "3526370539cf593c207cc9479e381b077a2d394b486178de883b496ae9ac5743"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "16d292c64c0cc339fb3c9092fa9d5b21db0e0b8ce718d02552988b0caedd31e0"
+        },
+        {
+          "name": "runtime-metrics.json",
+          "size": 424,
+          "sha256": "67dd3f72bef21871f1f430a0d5d4ba558883727e997390cd72e0b79133fb160b"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/55-town-transport-road-effect/source.zip",
+        "sha256": "f74b90952125ad79ea00b45d9bd21dbe4edf375fa30ca1d77ad9f06fc0f57907"
+      }
+    },
+    {
+      "run": "56-town-transport-road-suspend",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.9083735830000002,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/56-town-transport-road-suspend",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 622,
+          "sha256": "eff5fb48362e27098f421bb56878d659c8371c5c19b0e8c651bc8fa0339ead8d"
+        },
+        {
+          "name": "exit.json",
+          "size": 86,
+          "sha256": "9342d853f12a3e3f9c42a1ecca1ee861ca1e94971f788af6c801503bdc5c9f3c"
+        },
+        {
+          "name": "stdout.log",
+          "size": 1747,
+          "sha256": "b8ddb3b8643600fd46663e5d3e16a034b3536465ad28d04380a521a77892553d"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "899bb459c20190e0465b8d61c2907c7d4061c5a9c7496c2a51b046c0a08bee28"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "16d292c64c0cc339fb3c9092fa9d5b21db0e0b8ce718d02552988b0caedd31e0"
+        },
+        {
+          "name": "runtime-metrics.json",
+          "size": 424,
+          "sha256": "416969b2f7dcddfa31071bc6c9b95ed93e6ef9f679f90366f3b0756a99a9722d"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/56-town-transport-road-suspend/source.zip",
+        "sha256": "f74b90952125ad79ea00b45d9bd21dbe4edf375fa30ca1d77ad9f06fc0f57907"
+      }
+    },
+    {
+      "run": "57-town-transport-road-28",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 6.4680067910000005,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/57-town-transport-road-28",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 612,
+          "sha256": "845a48c27eee586d26d432d5100ca84c6ad5b5e82e2d0fdc9bd55ba0dd40c9d7"
+        },
+        {
+          "name": "exit.json",
+          "size": 86,
+          "sha256": "3507a6c192c3fc2ee7bafef3d4e9df4d36f059f05172645d847b5fbd8836e5f4"
+        },
+        {
+          "name": "stdout.log",
+          "size": 3192,
+          "sha256": "c9e4c7680962ce1e746090a7fb13583a0b2dd90931c521a601c6251b3933f251"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "4030a84b9194862b47be17c8101e7d8a4891c532836522f9262f85dedc9c7c0d"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "16d292c64c0cc339fb3c9092fa9d5b21db0e0b8ce718d02552988b0caedd31e0"
+        },
+        {
+          "name": "runtime-metrics.json",
+          "size": 424,
+          "sha256": "cbbe24ddffcb5204c7c59847837871990bee932ccb979b611bc5122d2e3fbf88"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/57-town-transport-road-28/source.zip",
+        "sha256": "f74b90952125ad79ea00b45d9bd21dbe4edf375fa30ca1d77ad9f06fc0f57907"
+      }
+    },
+    {
+      "run": "58-town-transport-road-withdraw",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.548378333,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/58-town-transport-road-withdraw",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 624,
+          "sha256": "9968314bc353ddf9f7cd07aa197d68511567c707544b527cd7356303f2c62c3a"
+        },
+        {
+          "name": "exit.json",
+          "size": 79,
+          "sha256": "8f152a023f83474c5fdc3924f86ea61580d94c65b2327aad90b4c0c65004a09a"
+        },
+        {
+          "name": "stdout.log",
+          "size": 1561,
+          "sha256": "8dd5955dd2036de5a80e313dd9f6d6f7ee847919dba931a1800638f5019d6bcf"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "2ddad5269adf0a003689ec37575fa993b4cf95c704de691e15fd3469c667e831"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "16d292c64c0cc339fb3c9092fa9d5b21db0e0b8ce718d02552988b0caedd31e0"
+        },
+        {
+          "name": "runtime-metrics.json",
+          "size": 424,
+          "sha256": "8f9937caa3f463f3f7c6bfabb5d9e26f178e3d28705942b2be00f9e6dbbf76bb"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/58-town-transport-road-withdraw/source.zip",
+        "sha256": "f74b90952125ad79ea00b45d9bd21dbe4edf375fa30ca1d77ad9f06fc0f57907"
+      }
+    },
+    {
+      "run": "59-town-transport-road-clearance",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.35638375,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/59-town-transport-road-clearance",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 626,
+          "sha256": "bb92ec2441901ff0dac592d9eec4b82e1e10cbf7059c7834235b47969f2e4ca9"
+        },
+        {
+          "name": "exit.json",
+          "size": 78,
+          "sha256": "baa95aceff358ee602caa62d51a9e39da3526f3a9dd7776bfe38c16fd7864190"
+        },
+        {
+          "name": "stdout.log",
+          "size": 850,
+          "sha256": "0264ec89ee79ad83b9c85a14730e9f06e54a823b7149444d6eba3bbf1d2153ab"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "6f05817df6a627799af40255783161c736ed06260042f9710401dbbe5bed6a27"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "16d292c64c0cc339fb3c9092fa9d5b21db0e0b8ce718d02552988b0caedd31e0"
+        },
+        {
+          "name": "runtime-metrics.json",
+          "size": 424,
+          "sha256": "ccc7683d9dfaead356c6c0b64cd50e8461370f26d1e094e8ac38dbc70b8e4c8d"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/59-town-transport-road-clearance/source.zip",
+        "sha256": "f74b90952125ad79ea00b45d9bd21dbe4edf375fa30ca1d77ad9f06fc0f57907"
+      }
+    },
+    {
+      "run": "60-town_suspend",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 1.3057126669999999,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/60-town_suspend",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 585,
+          "sha256": "b78dd2b0d3d954f05048e2b20f460d9d271d272de90467daa8473240d7a3ba6d"
+        },
+        {
+          "name": "exit.json",
+          "size": 86,
+          "sha256": "5f6c6b70b2b9c0652eda95418a319dfaa53f692505ccd6d120b141f0b8c03abd"
+        },
+        {
+          "name": "stdout.log",
+          "size": 1010,
+          "sha256": "04cff35d7bc3814086177a1519bd32c0072aad7fe7f8f65f063d72ca78603dc0"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "65747e62e017941ac1e7e10e1576c809329adb9a7aec59052a6df6309ad785aa"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "16d292c64c0cc339fb3c9092fa9d5b21db0e0b8ce718d02552988b0caedd31e0"
+        },
+        {
+          "name": "runtime-metrics.json",
+          "size": 422,
+          "sha256": "b95a1ee765b91a9e399551ff69491ddae2059bf08b96985a25483f78bdc0920d"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/60-town_suspend/source.zip",
+        "sha256": "f74b90952125ad79ea00b45d9bd21dbe4edf375fa30ca1d77ad9f06fc0f57907"
+      }
+    },
+    {
+      "run": "61-town_suspend-loss",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.60514325,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/61-town_suspend-loss",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 604,
+          "sha256": "b211590dadf078cac0fa5911561be3b8f985595b90162c2f75927d6aa059a9b0"
+        },
+        {
+          "name": "exit.json",
+          "size": 78,
+          "sha256": "11930b8f6c8aefbaa52905433d726077d7a08ae3a1e5871865de2a6f22536434"
+        },
+        {
+          "name": "stdout.log",
+          "size": 1014,
+          "sha256": "6d5ac55fa8e4f3b9b6a6c8eecd930ef06eface1c4f6fef2cc19282a578b459f3"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "f93e943ff7672f49f2bf68df616cfd9532e8f32faa4065c9250def224d11e108"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "16d292c64c0cc339fb3c9092fa9d5b21db0e0b8ce718d02552988b0caedd31e0"
+        },
+        {
+          "name": "runtime-metrics.json",
+          "size": 422,
+          "sha256": "115e9fcc5d91b25e588ee24815068b36bee27270751166b0117589eacf771af2"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/61-town_suspend-loss/source.zip",
+        "sha256": "f74b90952125ad79ea00b45d9bd21dbe4edf375fa30ca1d77ad9f06fc0f57907"
+      }
+    },
+    {
+      "run": "62-payroll_exit",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 2.819467167,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/62-payroll_exit",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 585,
+          "sha256": "d850bf51cc946df84fdaf71e75c3f053fda2ff08d36345e8ab2c1f7ee32f199d"
+        },
+        {
+          "name": "exit.json",
+          "size": 79,
+          "sha256": "c4ffefb8d7cdcc694127034409f9f04daf6e12b51787aa8c94c88cdbd85d4aed"
+        },
+        {
+          "name": "stdout.log",
+          "size": 275,
+          "sha256": "2cccadf14893deb60d4cd5023fdbcc3edb8c4ccb7e2ec981811675150b7803c6"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "28143ebb09930a6d2cd7f6497a06da3e98c14eaa99e8ec7a3aa30190bf259603"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "16d292c64c0cc339fb3c9092fa9d5b21db0e0b8ce718d02552988b0caedd31e0"
+        },
+        {
+          "name": "runtime-metrics.json",
+          "size": 422,
+          "sha256": "5a888cff82d7b0cc25c74b1e1b46767dc2a7c950eb1ff412296947753dec7e12"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/62-payroll_exit/source.zip",
+        "sha256": "f74b90952125ad79ea00b45d9bd21dbe4edf375fa30ca1d77ad9f06fc0f57907"
+      }
+    },
+    {
+      "run": "63-construction",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.6157879589999999,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/63-construction",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 495,
+          "sha256": "678dc2b879c685e422ab57ed5fc6895a740fdafdf7b7ff7e2ff07c72167a2ef9"
+        },
+        {
+          "name": "exit.json",
+          "size": 86,
+          "sha256": "52e7ca031d2829ffcf54d8801bc9e25421ee3847f91be8342c6bce24234c518a"
+        },
+        {
+          "name": "stdout.log",
+          "size": 107,
+          "sha256": "07eea67d07545bef3667df0dd51770a24bd9335f89453b994e18824fcabea781"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "9ab1711d164f5570a89270c8777369eb341120379be2cde240ceadce9220416e"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "16d292c64c0cc339fb3c9092fa9d5b21db0e0b8ce718d02552988b0caedd31e0"
+        },
+        {
+          "name": "runtime-metrics.json",
+          "size": 421,
+          "sha256": "643841d98f4be290867a535c701b421aadd0ee4eb2a0196f2db56665ab21c744"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/63-construction/source.zip",
+        "sha256": "f74b90952125ad79ea00b45d9bd21dbe4edf375fa30ca1d77ad9f06fc0f57907"
+      }
+    },
+    {
+      "run": "64-unfinished_clearance",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 1.534413917,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/64-unfinished_clearance",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 503,
+          "sha256": "297b4b39b61eb52c32cda3b5169a84e093a1684f998ac3ac70ffa01548ad3a18"
+        },
+        {
+          "name": "exit.json",
+          "size": 79,
+          "sha256": "635407a808218258d1c8fc771cbc8baadf246c2eb06b34467d0c2723466d4b63"
+        },
+        {
+          "name": "stdout.log",
+          "size": 478,
+          "sha256": "3325c688b6b28aa0a318b3299fe9bc38b39c6effc63848862bc462d3e0f4d63b"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "204fc5248601cc989e0de54d1d0d437bb5d7733cb562264783cffa7ef0bc0ecf"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "16d292c64c0cc339fb3c9092fa9d5b21db0e0b8ce718d02552988b0caedd31e0"
+        },
+        {
+          "name": "runtime-metrics.json",
+          "size": 429,
+          "sha256": "9a2be41e50f672dbb1826c9ccdcc08e9d5df720c817a12e50aee7e4b449356b6"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/64-unfinished_clearance/source.zip",
+        "sha256": "f74b90952125ad79ea00b45d9bd21dbe4edf375fa30ca1d77ad9f06fc0f57907"
+      }
+    },
+    {
+      "run": "65-town_utility",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.8026015409999999,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/65-town_utility",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 495,
+          "sha256": "074cdcc1732a8d5d1fe50b993b02d7c3b57f679f5a547d2b2044bdc70bee95dd"
+        },
+        {
+          "name": "exit.json",
+          "size": 86,
+          "sha256": "3d41b83c6e961ef35d6a55284902207c174ff00701492f08051f5a592126ac5e"
+        },
+        {
+          "name": "stdout.log",
+          "size": 971,
+          "sha256": "e6a5b11396e7be046858e227202f3bcfe4e13232cea29378763cfbedaaae7943"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "2e65d1c9e9f3d8594a63b27b863d3c541503f92ab51ba9c2a2d5a0b89554cfaa"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "16d292c64c0cc339fb3c9092fa9d5b21db0e0b8ce718d02552988b0caedd31e0"
+        },
+        {
+          "name": "runtime-metrics.json",
+          "size": 422,
+          "sha256": "a6f0fe3f0d474d03a6afcec88f02cea410e4849787665f8dd6bf052c5319ae1f"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/65-town_utility/source.zip",
+        "sha256": "f74b90952125ad79ea00b45d9bd21dbe4edf375fa30ca1d77ad9f06fc0f57907"
+      }
+    },
+    {
+      "run": "66-town_utility-failure",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.019629415999999997,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/66-town_utility-failure",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 522,
+          "sha256": "b6486e2b5df8d61e659ec48971b32d40044b5b1f40ad9bb1c9f62cfe49eef839"
+        },
+        {
+          "name": "exit.json",
+          "size": 88,
+          "sha256": "af4e2c53a1a9743448bf8cd50f1a0d87aac7e9819910dc6af1c05da30f3cd5ff"
+        },
+        {
+          "name": "stdout.log",
+          "size": 951,
+          "sha256": "e1f43b242cdd786e8a34e6287ccb63ac0babae2c3d2aacc458ce47e42e1be858"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "5687c5fcebd7e9b6c70b7692a68d20f5c9c9423af48bfaf6627fd2371384d370"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "16d292c64c0cc339fb3c9092fa9d5b21db0e0b8ce718d02552988b0caedd31e0"
+        },
+        {
+          "name": "runtime-metrics.json",
+          "size": 422,
+          "sha256": "1397326616f41f2d23fbdc15427f369091279326a51b18a6b351f342002a56a5"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/66-town_utility-failure/source.zip",
+        "sha256": "f74b90952125ad79ea00b45d9bd21dbe4edf375fa30ca1d77ad9f06fc0f57907"
+      }
+    },
+    {
+      "run": "67-legacy-writer-build",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 49.096534208,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/67-legacy-writer-build",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 506,
+          "sha256": "82db69cb9b6d594d5b94642106ce0209706001c545b38f9095fab6a3faedb445"
+        },
+        {
+          "name": "exit.json",
+          "size": 80,
+          "sha256": "4915de05bd6b17c4ba881f6146126ccb2f95584f927b54b94d79518a569e9f07"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 552,
+          "sha256": "28d2e14ce70f49bd3831d7a94c880de291b3aad1fd729a6fd0d5cc9a3e12db4c"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 39642,
+          "sha256": "765de4d5ee1f11a127cf5edf269fd43c213d9bb18c16ed2395205a53af979a56"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/67-legacy-writer-build/source.zip",
+        "sha256": "1217c937cbcdf1bd3413de0299b1999e97c5089e9320d9406cbb81330d1ecdfa"
+      }
+    },
+    {
+      "run": "69-road-epoch-tests",
+      "result": {
+        "exit_code": 101,
+        "wall_seconds": 1.4550874169999999,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/69-road-epoch-tests",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 505,
+          "sha256": "ee8ead65d6fafad24b0b66ff2480cc873365bde7b29fcd78dfaecbbfba4c9f53"
+        },
+        {
+          "name": "exit.json",
+          "size": 88,
+          "sha256": "3bd5b33f18ac5f59acdb7e1669b3927b0ed604cca2f3a79e75268d7e9acf44b1"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 10993,
+          "sha256": "3ff98242819b2a9ad2700218a7500a93fe36d6ae1e2806de0b797696610a02d6"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "eaa291352c42cbe1b41e2d694dce7003665486d99c52e747fc9c7fa10bff8152"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/69-road-epoch-tests/source.zip",
+        "sha256": "e92111dc38f1b0903482bffd71f1d06a9890a883b4ae3eee6811a74f5276bbb0"
+      }
+    },
+    {
+      "run": "71-road-epoch-tests-rebuild",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 37.312043667000005,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/71-road-epoch-tests-rebuild",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 505,
+          "sha256": "37413e27ecc9df6aaa9d4324d3582b05711e68df438c25dd6c4656c36c7dc96e"
+        },
+        {
+          "name": "exit.json",
+          "size": 86,
+          "sha256": "57d1da74c9319ef8024ca75e019db7efce883cf356b843effba41aa910415e9c"
+        },
+        {
+          "name": "stdout.log",
+          "size": 439,
+          "sha256": "570a1d7d555684b3391b6848a0f6b103da1fa4cf6acdc3ab2c7197a662bb578f"
+        },
+        {
+          "name": "stderr.log",
+          "size": 480,
+          "sha256": "eb46022500f43af150a8ef05bba7732a99d1ecdd07e79082ad2b0866fdda5263"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "eaa291352c42cbe1b41e2d694dce7003665486d99c52e747fc9c7fa10bff8152"
+        },
+        {
+          "name": "executables.json",
+          "size": 383,
+          "sha256": "5c790b5d7a2d65c1f3943e2f3d36fb43eb4741b1ce195cd63c29091d4c6e017c"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/71-road-epoch-tests-rebuild/source.zip",
+        "sha256": "e92111dc38f1b0903482bffd71f1d06a9890a883b4ae3eee6811a74f5276bbb0"
+      }
+    },
+    {
+      "run": "72-final-core-storage-tests",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 456.309971292,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/72-final-core-storage-tests",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 512,
+          "sha256": "27331a2b83803b5760db44e9a0a9540d71b1f4195c70a966c914a6103fce7662"
+        },
+        {
+          "name": "exit.json",
+          "size": 81,
+          "sha256": "daff0972da6e7633e48234baee00c46963627eb8ff5a6df44fc5298c7a824cd9"
+        },
+        {
+          "name": "stdout.log",
+          "size": 42180,
+          "sha256": "6b845ea42cc8c11633040e7ecae7ab2a924ede3e7308cb6f518bbcc1215fbae7"
+        },
+        {
+          "name": "stderr.log",
+          "size": 6525,
+          "sha256": "cd44b23fb17a4106116b7b024aab518ed1956230e9cae05c48171019dc252e5f"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "eaa291352c42cbe1b41e2d694dce7003665486d99c52e747fc9c7fa10bff8152"
+        },
+        {
+          "name": "executables.json",
+          "size": 19732,
+          "sha256": "612f6f3d79b72bf94e05fd7250adfef9f1202efeaa368996b0b7aaf4684f5ce1"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/72-final-core-storage-tests/source.zip",
+        "sha256": "e92111dc38f1b0903482bffd71f1d06a9890a883b4ae3eee6811a74f5276bbb0"
+      }
+    },
+    {
+      "run": "73-final-strict-clippy",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 9.366513042000001,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/73-final-strict-clippy",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 516,
+          "sha256": "4b513144f86e6e4e861f1ed457347422d0745ff065c0740e30eb0a9e5f46b783"
+        },
+        {
+          "name": "exit.json",
+          "size": 85,
+          "sha256": "c4b08f03763c891fac979899ee31dc2f641dc55cbe8c88c41edad05d307791a1"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 363,
+          "sha256": "b98aee1f6f7cebbf0e1e1e6aec93b1e29a4c26bf79583c2c40f6dd40c22ff1d5"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "d0624c510625c99e6d1a784b47dfc96dd98bccbc2f4dae0c5384d457c24dc3f6"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/73-final-strict-clippy/source.zip",
+        "sha256": "3b4ed843018c70687eb46316b779bfb956551742f6040d43d4052bb984caaa69"
+      }
+    },
+    {
+      "run": "74-final-fmt",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.5880755830000001,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/74-final-fmt",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 383,
+          "sha256": "19848eaadc4d3759b45df3ac6d7aedea29970d3d5b3782639c7ac0dcb0764f76"
+        },
+        {
+          "name": "exit.json",
+          "size": 86,
+          "sha256": "64c36131bb104805f595882d693c0e5506dc7c203d5e85fd503ed842317e0023"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "d0624c510625c99e6d1a784b47dfc96dd98bccbc2f4dae0c5384d457c24dc3f6"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/74-final-fmt/source.zip",
+        "sha256": "3b4ed843018c70687eb46316b779bfb956551742f6040d43d4052bb984caaa69"
+      }
+    },
+    {
+      "run": "75-workspace-consumer-check",
+      "result": {
+        "exit_code": 101,
+        "wall_seconds": 9.457890500000001,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/75-workspace-consumer-check",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 420,
+          "sha256": "bfeadf9b9dcc4430f41742b9a7e73cfb8e78ef4c9226be578c74535038643b8f"
+        },
+        {
+          "name": "exit.json",
+          "size": 87,
+          "sha256": "797190f6012fa6737926bdba6d061007a71d777fe185271f1ed58fddfb722cf9"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 1928,
+          "sha256": "5005ca3473948fb2ac2bdaacac315e6c68ec8fd84d36085c1489d6739ea6ad6e"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "d0624c510625c99e6d1a784b47dfc96dd98bccbc2f4dae0c5384d457c24dc3f6"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/75-workspace-consumer-check/source.zip",
+        "sha256": "3b4ed843018c70687eb46316b779bfb956551742f6040d43d4052bb984caaa69"
+      }
+    },
+    {
+      "run": "76-workspace-consumer-recheck",
+      "result": {
+        "exit_code": 101,
+        "wall_seconds": 3.2086862920000003,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/76-workspace-consumer-recheck",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 420,
+          "sha256": "54f411652dfe8d67f5e4ae71258540534f00c1c0dd07aabd46e37167cc9cdbbe"
+        },
+        {
+          "name": "exit.json",
+          "size": 88,
+          "sha256": "53b3bcf47a1a91a7f47e07a888d62defa63174589558449a58807ccb7420e585"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 1056,
+          "sha256": "b131a6b176facf6706ce89c74d644f6bcf2876bd4450699352a64ce16295cb1b"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "3195e9b181f124089c7c42095a82a4e932fe500b03cd606e0b62f38dc6883c5a"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/76-workspace-consumer-recheck/source.zip",
+        "sha256": "c41141cdca8f0d71880fc413ca42d4877dfd2b0cba2f98d333326e1c16849d55"
+      }
+    },
+    {
+      "run": "77-headless-cpu-log-tests",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 47.384704458,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/77-headless-cpu-log-tests",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 498,
+          "sha256": "b29fcf5fdf06b2ec87db0bb4623a9da71761dbecb976a45ad118612d465a40df"
+        },
+        {
+          "name": "exit.json",
+          "size": 80,
+          "sha256": "8f895bbe53c3186321861dd1bed771014ce719fc01f91b7ae4898d2fbaf7a79c"
+        },
+        {
+          "name": "stdout.log",
+          "size": 608,
+          "sha256": "ff9d102e38528589a11032cc8bd4388f4617cb032b60f4bac1de2767cbb2bb47"
+        },
+        {
+          "name": "stderr.log",
+          "size": 588,
+          "sha256": "241fe4584133243e74e8254b0d9a1b669eef40ebbe8804bdec09300ba1a4f7bc"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "3195e9b181f124089c7c42095a82a4e932fe500b03cd606e0b62f38dc6883c5a"
+        },
+        {
+          "name": "executables.json",
+          "size": 385,
+          "sha256": "af4f6b29c9d95676cf1de5327745c248238f9c4b8351e8e3553e53d59539bf50"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/77-headless-cpu-log-tests/source.zip",
+        "sha256": "c41141cdca8f0d71880fc413ca42d4877dfd2b0cba2f98d333326e1c16849d55"
+      }
+    },
+    {
+      "run": "78-final-workspace-check",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 2.658231125,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/78-final-workspace-check",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 420,
+          "sha256": "e0e7cf802271b2059330ac62f64d3edf7a24392d142d5a6a6d6d65e38fcfa23b"
+        },
+        {
+          "name": "exit.json",
+          "size": 79,
+          "sha256": "9f9ec80a3a6b47a1e5d443f974754089e0fdc759d085d2668c029456fb0c5f19"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 480,
+          "sha256": "6dfc7e7f9dd1b25e8ffdddf5f280fb2f8fb0d48b7290f1094b847835efbd8f3b"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "3195e9b181f124089c7c42095a82a4e932fe500b03cd606e0b62f38dc6883c5a"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/78-final-workspace-check/source.zip",
+        "sha256": "c41141cdca8f0d71880fc413ca42d4877dfd2b0cba2f98d333326e1c16849d55"
+      }
+    },
+    {
+      "run": "79-final-workspace-clippy",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 13.783293542000001,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/79-final-workspace-clippy",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 474,
+          "sha256": "dffe0cae07cf7c450642a81f387c9d2582f47fd3387a17240b41f92727e01f80"
+        },
+        {
+          "name": "exit.json",
+          "size": 86,
+          "sha256": "4e5b222354a40655ff2e4b14d14a1e79f053ba029cb18fe96ec5cf0bd802f17d"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 590,
+          "sha256": "83432c66664c18f4dc71db4ae5f574e171ebfb77610b50c20e83982f3e3d23c6"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "3195e9b181f124089c7c42095a82a4e932fe500b03cd606e0b62f38dc6883c5a"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/79-final-workspace-clippy/source.zip",
+        "sha256": "c41141cdca8f0d71880fc413ca42d4877dfd2b0cba2f98d333326e1c16849d55"
+      }
+    },
+    {
+      "run": "80-final-fmt",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.591088417,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/80-final-fmt",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 383,
+          "sha256": "b3ff091db34aef84aa7d1ac8dd7e1bb0eccaff669fcb66fcab1f68100f87960a"
+        },
+        {
+          "name": "exit.json",
+          "size": 79,
+          "sha256": "5edb90175f996c0a2ca668bd4b8d1489117763173afeea08e340a35c70d847d5"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "3195e9b181f124089c7c42095a82a4e932fe500b03cd606e0b62f38dc6883c5a"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/80-final-fmt/source.zip",
+        "sha256": "c41141cdca8f0d71880fc413ca42d4877dfd2b0cba2f98d333326e1c16849d55"
+      }
+    },
+    {
+      "run": "controller-helper-first",
+      "result": {
+        "argv": [
+          "python3",
+          "-m",
+          "unittest",
+          "-v",
+          "test_controller.py"
+        ],
+        "cwd": "/Users/frankqin/dev/MyCity-core-work/production/docs/evidence/core-road-town-validation-controller",
+        "started_utc": "2026-10-22T17:12:30.808116+00:00",
+        "exit_code": 1,
+        "wall_seconds": 0.077809125
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/controller-helper-first",
+      "files": [
+        {
+          "name": "exit.json",
+          "size": 309,
+          "sha256": "0c62216a3e4711ebd19f98aac5541cd9a51c91fcdd12d276b3c9ec75101cdaf9"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 2819,
+          "sha256": "f6021ac451133ce35e52fb940b939684d2d2373513410db1a6cf694abc31eff9"
+        }
+      ]
+    },
+    {
+      "run": "controller-helper-first-fixed",
+      "result": {
+        "argv": [
+          "python3",
+          "-m",
+          "unittest",
+          "-v",
+          "test_controller.py"
+        ],
+        "cwd": "/Users/frankqin/dev/MyCity-core-work/production/docs/evidence/core-road-town-validation-controller",
+        "started_utc": "2026-10-22T17:12:40.493528+00:00",
+        "exit_code": 0,
+        "wall_seconds": 0.08155074999999999
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/controller-helper-first-fixed",
+      "files": [
+        {
+          "name": "exit.json",
+          "size": 317,
+          "sha256": "f721c6527e5fce050e237afb7056fda93078ddb2c10d9d8bc64d51330288cb1a"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 1039,
+          "sha256": "dbe0b5b91748d53cd6abe2f8195debf7fd5a7d3921a3ea707543bf0087ef4780"
+        }
+      ]
+    },
+    {
+      "run": "economy-cli-20261022T171553Z-fee3cf85d7-town-market-base",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.6650727500000001,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/economy-cli-20261022T171553Z-fee3cf85d7-town-market-base",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 524,
+          "sha256": "14087393f9f9bf9127aab96940bd58503cde72050c227df311312ff25d1c4863"
+        },
+        {
+          "name": "exit.json",
+          "size": 86,
+          "sha256": "531375c343e63733f66e20ea8303f3407c175c378a1f43418d4ee855602e4f42"
+        },
+        {
+          "name": "stdout.log",
+          "size": 2378,
+          "sha256": "de0bda78e833527479517502020cec2f6b3342f890412c49544b83520fd96901"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "fd3f5dec9df88259740ae301218fde718eaad61473a68540c60a2a61ff0c8b69"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "eaa291352c42cbe1b41e2d694dce7003665486d99c52e747fc9c7fa10bff8152"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/economy-cli-20261022T171553Z-fee3cf85d7-town-market-base/source.zip",
+        "sha256": "e92111dc38f1b0903482bffd71f1d06a9890a883b4ae3eee6811a74f5276bbb0"
+      }
+    },
+    {
+      "run": "economy-cli-20261022T171553Z-fee3cf85d7-town-market-capacity-cut",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.027337333000000005,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/economy-cli-20261022T171553Z-fee3cf85d7-town-market-capacity-cut",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 532,
+          "sha256": "fd4d34850d617b2d1f001f5a14fbef16abd41dd20bfd22add08f895780ac4b8c"
+        },
+        {
+          "name": "exit.json",
+          "size": 88,
+          "sha256": "b82cdad6625cbda6b51ee70856fed5dc9a671e541501486479a8b606981fcf08"
+        },
+        {
+          "name": "stdout.log",
+          "size": 2382,
+          "sha256": "14fe8ebf97e0c2ad440fafa4ec8f19d3ee28b750b90989fcb81f042ec2fcf522"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "56defede394cabb0d8db4f0f3f2ea0f2a1e29216f1e1295fc9d2a79d7aaa13af"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "eaa291352c42cbe1b41e2d694dce7003665486d99c52e747fc9c7fa10bff8152"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/economy-cli-20261022T171553Z-fee3cf85d7-town-market-capacity-cut/source.zip",
+        "sha256": "e92111dc38f1b0903482bffd71f1d06a9890a883b4ae3eee6811a74f5276bbb0"
+      }
+    },
+    {
+      "run": "economy-cli-20261022T171553Z-fee3cf85d7-town-market-cash-shortage",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.026519374999999998,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/economy-cli-20261022T171553Z-fee3cf85d7-town-market-cash-shortage",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 533,
+          "sha256": "faec3a8ac89affe8f187b48097e0ce170cb87795d55186100a9bd45aef1691b6"
+        },
+        {
+          "name": "exit.json",
+          "size": 88,
+          "sha256": "7a4e47a95fe4d8fcd18ce1261e074de00af4a9e5e264874778b3fd64cb867605"
+        },
+        {
+          "name": "stdout.log",
+          "size": 2367,
+          "sha256": "703211226e5facb5c0785debbdd715b4ee137213196616055391fde37702a217"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "5c030344477870531ea3397960c51e1797f32558f1ab2ec7fb4e138a12a5fc44"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "eaa291352c42cbe1b41e2d694dce7003665486d99c52e747fc9c7fa10bff8152"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/economy-cli-20261022T171553Z-fee3cf85d7-town-market-cash-shortage/source.zip",
+        "sha256": "e92111dc38f1b0903482bffd71f1d06a9890a883b4ae3eee6811a74f5276bbb0"
+      }
+    },
+    {
+      "run": "economy-cli-20261022T171553Z-fee3cf85d7-town-market-demand-drop",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.027183709000000014,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/economy-cli-20261022T171553Z-fee3cf85d7-town-market-demand-drop",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 531,
+          "sha256": "73469a85aa2c9c346e2a38f028754c8f539840904f7144ac641ebe5f5fdade2f"
+        },
+        {
+          "name": "exit.json",
+          "size": 88,
+          "sha256": "f0dcaa10f211263d0a00b7bee703c4460ca307331fb7a203c7257537926cbdc6"
+        },
+        {
+          "name": "stdout.log",
+          "size": 2378,
+          "sha256": "1f9cf17bc67d05ab6702966a1989449da935ce266e7adce76dab719b1b74ef51"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "09f747e3841df984646784ea255557097b9366009c84cfcb87a592272abbb4cd"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "eaa291352c42cbe1b41e2d694dce7003665486d99c52e747fc9c7fa10bff8152"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/economy-cli-20261022T171553Z-fee3cf85d7-town-market-demand-drop/source.zip",
+        "sha256": "e92111dc38f1b0903482bffd71f1d06a9890a883b4ae3eee6811a74f5276bbb0"
+      }
+    },
+    {
+      "run": "economy-cli-20261022T171553Z-fee3cf85d7-town-market-energy-price-rise",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.02700416600000001,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/economy-cli-20261022T171553Z-fee3cf85d7-town-market-energy-price-rise",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 537,
+          "sha256": "cec3dd9bc28d1ce8378fdc12625921e1fa38998ec137908fe3761d71bc6cb573"
+        },
+        {
+          "name": "exit.json",
+          "size": 87,
+          "sha256": "3bfb9b64248f3eef44b719e3d8a4938d0b7f429acc2312954fd0fdabd7e2f1e8"
+        },
+        {
+          "name": "stdout.log",
+          "size": 2407,
+          "sha256": "4e0f83b00bc7289fc0ab6200f9d02749266e784c44dd5dbfee0d9fd12a931af0"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "24617f381d515a03d11cf1ef7537e209a97fd51d57d7984e755ffaab2fdfc0bd"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "eaa291352c42cbe1b41e2d694dce7003665486d99c52e747fc9c7fa10bff8152"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/economy-cli-20261022T171553Z-fee3cf85d7-town-market-energy-price-rise/source.zip",
+        "sha256": "e92111dc38f1b0903482bffd71f1d06a9890a883b4ae3eee6811a74f5276bbb0"
+      }
+    },
+    {
+      "run": "economy-cli-20261022T171553Z-fee3cf85d7-town-market-no-route",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.03338258299999999,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/economy-cli-20261022T171553Z-fee3cf85d7-town-market-no-route",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 528,
+          "sha256": "088ef84a285a3174784dbddcd233f0c73036fd31953e790b1f978790fb87b5be"
+        },
+        {
+          "name": "exit.json",
+          "size": 87,
+          "sha256": "8806150d571fe5350fd6cae5635da64dc55cc6b18470d1c064c9ae237de86c5a"
+        },
+        {
+          "name": "stdout.log",
+          "size": 2370,
+          "sha256": "2df320ec88cc4e511a4dd36d89c726435ad6f7351852fadb8e83942344a4fc39"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "d7515bdafe5e7beddbbcf57ca0c6f2806fec594a9466b173b3d5f9558d9fc4d0"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "eaa291352c42cbe1b41e2d694dce7003665486d99c52e747fc9c7fa10bff8152"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/economy-cli-20261022T171553Z-fee3cf85d7-town-market-no-route/source.zip",
+        "sha256": "e92111dc38f1b0903482bffd71f1d06a9890a883b4ae3eee6811a74f5276bbb0"
+      }
+    },
+    {
+      "run": "economy-cli-20261022T171553Z-fee3cf85d7-town-market-parameter-override",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.027988209,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/economy-cli-20261022T171553Z-fee3cf85d7-town-market-parameter-override",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 586,
+          "sha256": "3e2d1a6929e16c49b2ea8d0583057892edb78cd7d3ac2a4d4bc9f48d0a7d0ab3"
+        },
+        {
+          "name": "exit.json",
+          "size": 79,
+          "sha256": "99696087eb6cff393c9d21c0724ba68fe200e4b2056c2fd424e8f3508411dc3a"
+        },
+        {
+          "name": "stdout.log",
+          "size": 2372,
+          "sha256": "678fe9915893ee108c463e3d84b2cf4585e9af419a0a5bb9194a69e78375806e"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "3d0db8aee363b4304a5759131ff43f6347744f6922cfe2aa5c8e0938b3d08019"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "eaa291352c42cbe1b41e2d694dce7003665486d99c52e747fc9c7fa10bff8152"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/economy-cli-20261022T171553Z-fee3cf85d7-town-market-parameter-override/source.zip",
+        "sha256": "e92111dc38f1b0903482bffd71f1d06a9890a883b4ae3eee6811a74f5276bbb0"
+      }
+    },
+    {
+      "run": "economy-cli-20261022T171553Z-fee3cf85d7-town-market-raw-shortage",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.026628625000000003,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/economy-cli-20261022T171553Z-fee3cf85d7-town-market-raw-shortage",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 532,
+          "sha256": "4b944f9c69c1a485649ea4e4f88bd1f1e704dcf665ba119945b6520f0dde2db5"
+        },
+        {
+          "name": "exit.json",
+          "size": 88,
+          "sha256": "d33c479b4ac05136e961100d48daff7ca0dc3cbe0b8e5bee50cace83eaf2b992"
+        },
+        {
+          "name": "stdout.log",
+          "size": 2358,
+          "sha256": "621a62701927b34a9c337f89d5d4f593b53600593ab4ada02e7c8785c94003f5"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "b3f9162d42b672071ed4399f95c78f9eac732de4a508f1404d4af4386cec85dd"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "eaa291352c42cbe1b41e2d694dce7003665486d99c52e747fc9c7fa10bff8152"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/economy-cli-20261022T171553Z-fee3cf85d7-town-market-raw-shortage/source.zip",
+        "sha256": "e92111dc38f1b0903482bffd71f1d06a9890a883b4ae3eee6811a74f5276bbb0"
+      }
+    },
+    {
+      "run": "economy-cli-20261022T171553Z-fee3cf85d7-town-market-reject-tax-over-limit",
+      "result": {
+        "exit_code": 1,
+        "wall_seconds": 0.020254750000000002,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/economy-cli-20261022T171553Z-fee3cf85d7-town-market-reject-tax-over-limit",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 533,
+          "sha256": "675e6c210474793230f8dd0051bbae90e653b15ba177063f424681134097c408"
+        },
+        {
+          "name": "exit.json",
+          "size": 88,
+          "sha256": "0341833ed50870e32f37fd37ea4f5ba8489496d88fe86ec5192593fd84d9dde0"
+        },
+        {
+          "name": "stdout.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "stderr.log",
+          "size": 841,
+          "sha256": "94c6c5565faa5bd1e5465e735cd7f2ae0d7cc69eed5e1a9110d9ea0cde8107e2"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "eaa291352c42cbe1b41e2d694dce7003665486d99c52e747fc9c7fa10bff8152"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/economy-cli-20261022T171553Z-fee3cf85d7-town-market-reject-tax-over-limit/source.zip",
+        "sha256": "e92111dc38f1b0903482bffd71f1d06a9890a883b4ae3eee6811a74f5276bbb0"
+      }
+    },
+    {
+      "run": "economy-cli-20261022T171553Z-fee3cf85d7-town-market-turnover-tax-500bps",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.027294541000000005,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/economy-cli-20261022T171553Z-fee3cf85d7-town-market-turnover-tax-500bps",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 561,
+          "sha256": "d8e6fad3801b30c367f2ab66a01d26dcbb9925fd9f5d9c08028658eef8d8b43c"
+        },
+        {
+          "name": "exit.json",
+          "size": 88,
+          "sha256": "4fe0a97622c8fef9cf715cb1994c0e75e6a776bf55beae471522ba04a01476e6"
+        },
+        {
+          "name": "stdout.log",
+          "size": 2402,
+          "sha256": "55022b8f3fae0ee38ebfaad8709f276f2c796dc702d2ef691e0cf91417aa1da0"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "4c80404f1750e80be770fddf6a22a82e8eab1a590b279e17cfc7fa29a3e17f4c"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "eaa291352c42cbe1b41e2d694dce7003665486d99c52e747fc9c7fa10bff8152"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/economy-cli-20261022T171553Z-fee3cf85d7-town-market-turnover-tax-500bps/source.zip",
+        "sha256": "e92111dc38f1b0903482bffd71f1d06a9890a883b4ae3eee6811a74f5276bbb0"
+      }
+    },
+    {
+      "run": "economy-cli-20261022T171553Z-fee3cf85d7-town-market-turnover-tax-cash-pressure-500bps",
+      "result": {
+        "exit_code": 0,
+        "wall_seconds": 0.026626333999999988,
+        "source_unchanged": true
+      },
+      "external_full_run": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/economy-cli-20261022T171553Z-fee3cf85d7-town-market-turnover-tax-cash-pressure-500bps",
+      "files": [
+        {
+          "name": "command.json",
+          "size": 705,
+          "sha256": "eacdb2a7ebc352f02178d9459fd4545b2ab47a3360f2114b43889882d42393e9"
+        },
+        {
+          "name": "exit.json",
+          "size": 88,
+          "sha256": "1955b6509d298823013f16630c8566132ae4f98c02fc40fdb7580fe43eab8fbb"
+        },
+        {
+          "name": "stdout.log",
+          "size": 2378,
+          "sha256": "ef255a295c922fa0bb79c3d038eba04ac33e98e7a0fcc288bfe290cce81183ed"
+        },
+        {
+          "name": "stderr.log",
+          "size": 777,
+          "sha256": "8a8dbfe5d2744753f04df4a2bc784cef471d3e88914c15f6fdc5077e8fa68206"
+        },
+        {
+          "name": "source-manifest.json",
+          "size": 42972,
+          "sha256": "eaa291352c42cbe1b41e2d694dce7003665486d99c52e747fc9c7fa10bff8152"
+        }
+      ],
+      "external_source_archive": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/economy-cli-20261022T171553Z-fee3cf85d7-town-market-turnover-tax-cash-pressure-500bps/source.zip",
+        "sha256": "e92111dc38f1b0903482bffd71f1d06a9890a883b4ae3eee6811a74f5276bbb0"
+      }
+    }
+  ],
+  "final_source_archive_sha256": "c24736e0bda5282eea30486b7b748a59443d05ac77d96e175b4d1a9aea6baf15",
+  "final_source_manifest_sha256": "1788e09e1b806116d7daa2b8982f46d97ab067c70b6e769aa36304e95a8e8cbe",
+  "final_rust_and_fixtures_equal_77_test_source": true,
+  "core_storage_runtime_equal_72_test_source": true,
+  "compile_doc_fixtures_included": true,
+  "external_complete_worlds_and_failure_sources_retained": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01",
+  "fixed_executable_locations": "per-run preserved executable manifests plus old-writer attempt01; retained on external SSD or canonical evidence",
+  "cleanup_receipt": "supplement/70-shared-cache-invalidate/receipt.json"
+}

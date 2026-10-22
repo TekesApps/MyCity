@@ -380,25 +380,14 @@ pub fn execute(
     let mut trace = Trace::with_pages(&mut sink);
     let started = std::time::Instant::now();
     let mut points = [None; 14];
+    let mut transport_proof_points = [None; 2];
     let mut observer = |p| {
-        use mycity_storage::WritePoint::*;
-        let i = match p {
-            Prepared => 0,
-            WalEncoded => 1,
-            WalAdmitted => 2,
-            WalHeaderHalf => 3,
-            WalPayloadHalf => 4,
-            WalChecksumHalf => 5,
-            WalWritten => 6,
-            WalSynced => 7,
-            RootEncoded => 8,
-            RootPublished => 9,
-            CurrentEncoded => 10,
-            CurrentRenamed => 11,
-            CurrentSynced => 12,
-            Applied => 13,
-        };
-        points[i] = Some(started.elapsed().as_nanos().min(u128::from(u64::MAX)) as u64);
+        record_write_point(
+            p,
+            started.elapsed().as_nanos().min(u128::from(u64::MAX)) as u64,
+            &mut points,
+            &mut transport_proof_points,
+        );
         Ok(())
     };
     let result = store.execute_observed_diagnosed(caller, envelope, &mut observer, &mut trace);
@@ -407,12 +396,44 @@ pub fn execute(
     log.write(json!({"phase":"persistence_boundaries","operation":operation,
         "clock":"elapsed ns from Store call; fixed observer callback overhead included",
         "point_names":["prepared","wal_encoded_hashed","wal_admitted","wal_header_half","wal_payload_half","wal_checksum_half","wal_written","wal_synced","root_encoded","root_published_synced","current_encoded_hashed","current_renamed","current_directory_synced","applied"],
+        "transport_proof_point_names":["transport_proof_encoded","transport_proof_published"],
+        "transport_proof_points_ns":transport_proof_points,
         "points_ns":points,"durable_receipt":durable,"commit_status":if durable{"confirmed"}else{"unconfirmed"},"store_result":if result.is_ok(){"returned_outcome"}else{"error_requires_receipt_recovery"}}))?;
     log.record(operation, "transaction", &summary, durable)
         .map_err(|e| {
             format!("measurement_failed_after_transaction:{e};durable_receipt={durable}")
         })?;
     result.map_err(err)
+}
+
+// Keep the original fourteen diagnostic slots stable for historical consumers.
+// Proof publication belongs to separate slots and is absent on ordinary writes.
+fn record_write_point(
+    point: mycity_storage::WritePoint,
+    nanos: u64,
+    points: &mut [Option<u64>; 14],
+    transport: &mut [Option<u64>; 2],
+) {
+    use mycity_storage::WritePoint::*;
+    let slot = match point {
+        TransportProofEncoded => &mut transport[0],
+        TransportProofPublished => &mut transport[1],
+        Prepared => &mut points[0],
+        WalEncoded => &mut points[1],
+        WalAdmitted => &mut points[2],
+        WalHeaderHalf => &mut points[3],
+        WalPayloadHalf => &mut points[4],
+        WalChecksumHalf => &mut points[5],
+        WalWritten => &mut points[6],
+        WalSynced => &mut points[7],
+        RootEncoded => &mut points[8],
+        RootPublished => &mut points[9],
+        CurrentEncoded => &mut points[10],
+        CurrentRenamed => &mut points[11],
+        CurrentSynced => &mut points[12],
+        Applied => &mut points[13],
+    };
+    *slot = Some(nanos);
 }
 
 pub fn import(
@@ -452,6 +473,40 @@ pub fn enabled() -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn transport_proof_boundaries_do_not_shift_or_overwrite_legacy_slots() {
+        use mycity_storage::WritePoint::*;
+        let mut points = [None; 14];
+        let mut transport = [None; 2];
+        for (index, point) in [
+            Prepared,
+            WalEncoded,
+            WalAdmitted,
+            WalHeaderHalf,
+            WalPayloadHalf,
+            WalChecksumHalf,
+            WalWritten,
+            WalSynced,
+            RootEncoded,
+            RootPublished,
+            CurrentEncoded,
+            CurrentRenamed,
+            CurrentSynced,
+            Applied,
+        ]
+        .into_iter()
+        .enumerate()
+        {
+            record_write_point(point, index as u64, &mut points, &mut transport);
+        }
+        let legacy = points;
+        assert!(transport.iter().all(Option::is_none));
+        record_write_point(TransportProofEncoded, 100, &mut points, &mut transport);
+        record_write_point(TransportProofPublished, 101, &mut points, &mut transport);
+        assert_eq!(points, legacy);
+        assert_eq!(points, std::array::from_fn(|index| Some(index as u64)));
+        assert_eq!(transport, [Some(100), Some(101)]);
+    }
     #[test]
     fn same_pid_logs_keep_original_files_and_shared_quota_across_instances() {
         let base =

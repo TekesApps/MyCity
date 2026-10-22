@@ -1,0 +1,12 @@
+[
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/construction_retry_policy-17b076e6f50d0c83",
+    "sha256": "7b4fc47841f1e5814239ee1fa9caebc3c729cabf926e731496ba14b83144ea08",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/7b4fc47841f1e5814239ee1fa9caebc3c729cabf926e731496ba14b83144ea08/construction_retry_policy-17b076e6f50d0c83"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/town_utility_recovery-daf10af7754da488",
+    "sha256": "4c35d26c4132c26848eb13a971e31922ef0df8266e4575555d221c28b9d0059a",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/core-road-town-precommit-01/executables/4c35d26c4132c26848eb13a971e31922ef0df8266e4575555d221c28b9d0059a/town_utility_recovery-daf10af7754da488"
+  }
+]

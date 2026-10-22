@@ -1,0 +1,19 @@
+{
+  "exit_code": 0,
+  "wall_seconds": 0.873964583,
+  "command": [
+    "/Users/frankqin/dev/MyCity/docs/evidence/core-road-legacy-fixture-preparation/attempt01/writer-test-executable",
+    "export_v119_accepted_project_wal_and_checkpoint",
+    "--exact",
+    "--nocapture"
+  ],
+  "executable_sha256": "48e4b51db25491574a90a1adf4bd3fb16e4593ba545ec3b7c596c261f103d2e0",
+  "source_archive_sha256": "75d641c5696873580e8ef2a92606d49d9e6fa6dfe4489b7439c9886e5cda7bbe",
+  "freeze_manifest_sha256": "3eaac12110dca5e07bd008fe31406eff03771b554faf040ef2cdb90b97c2c0f6",
+  "business_source_sha256": "717148eab1b00e5fc183ee240240fa9150cc839f9a94aa96aaa8bb8a22f67f82",
+  "exporter_harness_sha256": "807322f6e98c623406bd2b0733c76988e8a4ef20c24f5482d310d9a909dfef9b",
+  "stdout_sha256": "34e0682cdbc082690496d3f30a6989f93f62f5972aadb5499a6afb30fb1241b5",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "storage": "HP P900 external USB/APFS SSD; retained executable in canonical evidence",
+  "scope": "actual frozen old writer compatibility fixture generation; not a historical original or performance gate"
+}

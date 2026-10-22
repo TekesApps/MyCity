@@ -1,0 +1,60 @@
+{
+  "network_revision": 4,
+  "input_fingerprint": [
+    113,
+    10,
+    206,
+    49,
+    205,
+    166,
+    31,
+    170,
+    124,
+    174,
+    71,
+    248,
+    255,
+    132,
+    231,
+    64,
+    255,
+    154,
+    236,
+    66,
+    226,
+    141,
+    6,
+    92,
+    197,
+    24,
+    17,
+    93,
+    33,
+    64,
+    232,
+    49
+  ],
+  "edge_flows": [],
+  "unserved": [
+    {
+      "source_id": 100,
+      "people": 5,
+      "reason": "NoOpenRoute"
+    }
+  ],
+  "boundary_flows": [],
+  "demand_outcomes": [
+    {
+      "source_id": 100,
+      "requested_people": 5,
+      "served_people": 0,
+      "unserved_people": 5,
+      "mean_travel_seconds": null
+    }
+  ],
+  "path_receipts": [],
+  "requested_people": 5,
+  "served_people": 0,
+  "unserved_people": 5,
+  "routing_steps": 0
+}
