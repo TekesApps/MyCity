@@ -446,3 +446,6 @@ v0.5.114：[交通市场resolver](evidence/core-market-access-integration-114/ST
 
 
 v0.5.115：[主线有限集成及2MiB诊断](evidence/core-runtime-integration-115/STATUS.md)。d19来源49 release测试、strict/fmt、真实建设关闭CLI通过；默认debug栈失败与release通过分开。ade固定候选原负载4捕获/2冷恢复通过，但normal超8,415,170B；该轮快照54文件精确退役，保留190恢复/故障原件。2MiB未替换main默认。真实交通经营联合未完成，16GB/8h not_run，M0 not_accepted。
+
+
+v0.5.116：[28日经营场景主线集成](evidence/core-market-scenarios-integration-116/STATUS.md)在2c18来源七场景+参数覆盖及example strict/fmt通过；当前Engine4100728B仅拥有容量，非M0物理证据。替身/无税/基础家庭现金耗损/退出未落账保留，M0原标准、normal失败及16GB/8h not_run不变。

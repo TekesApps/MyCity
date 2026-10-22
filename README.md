@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.115`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.116`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.116完成[真实28日经营场景主线集成](docs/evidence/core-market-scenarios-integration-116/STATUS.md)：七场景+参数覆盖、release构建/strict/fmt实测通过，工资/贷款/库存basis/现金可对账。家庭基础现金仍减少6160分，交通/公用替身、未建模税及真实退出不冒称完成；M0转完整联合smoke准备，16GB/8h未测。
 
 v0.5.115完成[主线有限运行时集成](docs/evidence/core-runtime-integration-115/STATUS.md)：49项release测试、strict/fmt及完整建设/拆除/废物/关闭CLI实测通过，修正最终现金展示。固定2MiB诊断4捕获/2冷恢复通过但normal仍超8,415,170B，未设main默认；精确回收本轮54文件约6.285GiB，190原件保留。真实交通经营联调、16GB/8h仍未完成。
 

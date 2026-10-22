@@ -1,0 +1,11 @@
+{
+  "attempt": "attempt-01",
+  "source_id": "473305527ded92e70359d9e32a1e4a76a692131281b213c1cad3ff0df365e8e7",
+  "binary_sha256": "e8330d2b1daf05117e92c8ebbe76d193886d744614ef305f4284c218bb2a6121",
+  "binary_path": "/Volumes/HP P900/dev/MyCity/work/candidate-binaries/town-market/473305527ded92e70359d9e32a1e4a76a692131281b213c1cad3ff0df365e8e7/town_market",
+  "scenario_test_exit_code": 1,
+  "failure_reason": "CLI debt_paid aggregation missed the Timeline automatic due-day claim payment; scenario regression caught cash/claim mismatch.",
+  "failure_stdout": "attempt-01/scenario-tests.stdout",
+  "failure_stderr": "attempt-01/scenario-tests.stderr",
+  "source_and_failure_preserved": true
+}

@@ -55,3 +55,9 @@ docs/evidence/core-demolition-runtime/attempt-*/*.log whitespace=-blank-at-eof,-
 docs/evidence/core-demolition-runtime/attempt-*/*.diff whitespace=-blank-at-eof,-blank-at-eol
 docs/evidence/core-runtime-integration-115/*.log whitespace=-blank-at-eof,-blank-at-eol
 docs/evidence/m0-t13a-extents-2m-joint-02/*.stdout whitespace=-blank-at-eof,-blank-at-eol
+
+# Preserve stage116 raw scenario/build records and patches verbatim.
+docs/evidence/town-market-scenarios/attempt-*/*.stdout whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/town-market-scenarios/attempt-*/*.stderr whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/town-market-scenarios/attempt-*/source.patch whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/core-market-scenarios-integration-116/*.log whitespace=-blank-at-eof,-blank-at-eol

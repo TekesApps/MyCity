@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/frankqin/dev/MyCity-core-work/economy/crates/city-core/tests/town_market_scenarios.py", line 91, in <module>
+    raise SystemExit(main())
+  File "/Users/frankqin/dev/MyCity-core-work/economy/crates/city-core/tests/town_market_scenarios.py", line 61, in main
+    check_conservation(row)
+  File "/Users/frankqin/dev/MyCity-core-work/economy/crates/city-core/tests/town_market_scenarios.py", line 33, in check_conservation
+    assert number(row, "debt_principal") == number(row, "debt_paid") + number(row, "debt_outstanding")
+AssertionError

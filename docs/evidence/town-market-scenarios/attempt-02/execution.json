@@ -1,0 +1,11 @@
+{
+  "attempt": "attempt-02",
+  "source_id": "24c571bc90683f28ccfa17b0d6ef13b3a1f07502698fade7db4a3a19205d35e3",
+  "binary_sha256": "fb141f0c370ddd1dd0637e974b3cdfa4e7c286c8556ca9b8e7bc287e6d72313d",
+  "binary_path": "/Volumes/HP P900/dev/MyCity/work/candidate-binaries/town-market/24c571bc90683f28ccfa17b0d6ef13b3a1f07502698fade7db4a3a19205d35e3/town_market",
+  "scenario_test_exit_code": 1,
+  "failure_reason": "Debt reporting passed; no-route assertion incorrectly expected unmet executable market demand instead of natural/reference need when no reachable offer exists.",
+  "failure_stdout": "attempt-02/scenario-tests.stdout",
+  "failure_stderr": "attempt-02/scenario-tests.stderr",
+  "source_and_failure_preserved": true
+}

@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/frankqin/dev/MyCity-core-work/economy/crates/city-core/tests/town_market_scenarios.py", line 91, in <module>
+    raise SystemExit(main())
+  File "/Users/frankqin/dev/MyCity-core-work/economy/crates/city-core/tests/town_market_scenarios.py", line 75, in main
+    assert number(cases["no-route"], "unmet_market_demand") > 0
+AssertionError
