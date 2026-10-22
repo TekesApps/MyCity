@@ -2359,7 +2359,12 @@ fn validate_construction_binding(
             return Err(TxError::InvalidOperation);
         }
         if project.operating_edge_id != 0 {
-            if project.kind != crate::construction::Kind::Build
+            if project.kind
+                != if project.operating_withdrawn_at.is_some() {
+                    crate::construction::Kind::Demolish
+                } else {
+                    crate::construction::Kind::Build
+                }
                 || project.site_resource == project.operating_resource
                 || (project.waste_units != 0
                     && project.waste_receiver_resource == project.operating_resource)
@@ -2372,16 +2377,19 @@ fn validate_construction_binding(
                         .iter()
                         .any(|edge| edge.resource == project.operating_resource)
                 })
-                || (project.operating_published && project.operating_published_at.is_none())
             {
                 return Err(TxError::InvalidOperation);
             }
-            if project.operating_published {
-                let published_at = project
-                    .operating_published_at
-                    .ok_or(TxError::InvalidOperation)?;
+            if let Some(published_at) = project.operating_published_at {
                 validate_road_effect_publication_clock(
                     published_at,
+                    timeline.map(|value| value.progress.last_complete),
+                    settled_day,
+                )?;
+            }
+            if let Some(withdrawn_at) = project.operating_withdrawn_at {
+                validate_road_effect_publication_clock(
+                    withdrawn_at,
                     timeline.map(|value| value.progress.last_complete),
                     settled_day,
                 )?;
@@ -2434,6 +2442,24 @@ fn validate_road_effect_publication_clock(
     if published_seconds % day != 0
         || last_complete.is_none_or(|complete| published_seconds > complete)
         || settled_day.is_none_or(|settled| published_seconds / day > settled)
+    {
+        return Err(TxError::InvalidOperation);
+    }
+    Ok(())
+}
+
+fn validate_road_effect_withdrawal_boundary(
+    timeline: Option<&crate::timeline::Timeline>,
+    settled_day: Option<u64>,
+) -> Result<(), TxError> {
+    let timeline = timeline.ok_or(TxError::InvalidOperation)?;
+    let progress = timeline.progress;
+    let day = u64::try_from(crate::timeline::DAY).map_err(|_| TxError::InvalidOperation)?;
+    if progress.phase.is_some()
+        || progress.target.is_some()
+        || progress.at != progress.last_complete
+        || progress.last_complete % day != 0
+        || settled_day != Some(progress.last_complete / day)
     {
         return Err(TxError::InvalidOperation);
     }
@@ -3115,6 +3141,12 @@ fn prepare_construction(
         Caller::System => 0,
         Caller::Account(id) => id,
     };
+    if command == EngineCommand::Start
+        && candidate.operating_edge_id != 0
+        && candidate.waste_receiver.is_some()
+    {
+        validate_road_effect_withdrawal_boundary(timeline, town.map(|state| state.settled_day))?;
+    }
     match command {
         EngineCommand::DecideGate {
             gate_id, decision, ..
@@ -3418,10 +3450,10 @@ fn prepare_construction(
                     .ok_or(TxError::Overflow)?;
             }
             EffectKind::WithdrawOperatingCapacity => {
-                if candidate.operating_edge_id != 0 {
-                    return Err(TxError::InvalidOperation);
-                }
-                if !candidate.operating_published || candidate.operating_resource == 0 {
+                if !candidate.operating_published
+                    || candidate.operating_resource == 0
+                    || candidate.operating_withdrawn_at.is_some()
+                {
                     return Err(TxError::InvalidOperation);
                 }
                 let resource = resources
@@ -4081,26 +4113,51 @@ mod tests {
     use crate::assembly::assemble;
 
     #[test]
+    fn road_withdrawal_requires_the_current_fully_settled_day_boundary() {
+        let day = crate::timeline::DAY as u64;
+        let mut timeline = crate::timeline::Timeline::new(3 * day);
+        assert!(validate_road_effect_withdrawal_boundary(Some(&timeline), Some(3)).is_ok());
+        assert!(validate_road_effect_withdrawal_boundary(Some(&timeline), Some(2)).is_err());
+        assert!(validate_road_effect_withdrawal_boundary(Some(&timeline), None).is_err());
+
+        timeline.progress.target = Some(4 * day);
+        assert!(validate_road_effect_withdrawal_boundary(Some(&timeline), Some(3)).is_err());
+        timeline.progress.target = None;
+        timeline.progress.phase = Some(crate::timeline::Phase::P0);
+        assert!(validate_road_effect_withdrawal_boundary(Some(&timeline), Some(3)).is_err());
+
+        timeline.progress.phase = None;
+        timeline.progress.at += 1;
+        assert!(validate_road_effect_withdrawal_boundary(Some(&timeline), Some(3)).is_err());
+    }
+
+    #[test]
     fn road_effect_restore_rejects_future_or_unsettled_publication() {
         let published_at = crate::units::GameTime::new(2 * crate::timeline::DAY).unwrap();
-        assert!(validate_road_effect_publication_clock(
-            published_at,
-            Some(crate::timeline::DAY as u64),
-            Some(1),
-        )
-        .is_err());
-        assert!(validate_road_effect_publication_clock(
-            published_at,
-            Some(2 * crate::timeline::DAY as u64),
-            Some(1),
-        )
-        .is_err());
-        assert!(validate_road_effect_publication_clock(
-            published_at,
-            Some(2 * crate::timeline::DAY as u64),
-            Some(2),
-        )
-        .is_ok());
+        assert!(
+            validate_road_effect_publication_clock(
+                published_at,
+                Some(crate::timeline::DAY as u64),
+                Some(1),
+            )
+            .is_err()
+        );
+        assert!(
+            validate_road_effect_publication_clock(
+                published_at,
+                Some(2 * crate::timeline::DAY as u64),
+                Some(1),
+            )
+            .is_err()
+        );
+        assert!(
+            validate_road_effect_publication_clock(
+                published_at,
+                Some(2 * crate::timeline::DAY as u64),
+                Some(2),
+            )
+            .is_ok()
+        );
     }
 
     fn engine() -> Engine {

@@ -195,14 +195,21 @@ pub(super) fn validate_allocation_project(
         .ok_or(Error::Invalid("town_transport_road_resource_missing"))?;
     let expected_capacity = project
         .operating_base_capacity
-        .checked_add(if project.operating_published {
-            project.operating_units
-        } else {
-            0
-        })
+        .checked_add(
+            if project.operating_published && project.operating_withdrawn_at.is_none() {
+                project.operating_units
+            } else {
+                0
+            },
+        )
         .ok_or(Error::Invalid("town_transport_road_capacity_overflow"))?;
     if project.id != binding.project_id
-        || project.kind != mycity_core::construction::Kind::Build
+        || project.kind
+            != if project.operating_withdrawn_at.is_some() {
+                mycity_core::construction::Kind::Demolish
+            } else {
+                mycity_core::construction::Kind::Build
+            }
         || project.operating_edge_id != binding.edge_id
         || project.operating_resource != binding.resource_id
         || project.operating_base_capacity != binding.base_capacity_people
@@ -221,9 +228,32 @@ pub(super) fn validate_allocation_project(
                 .iter()
                 .any(|edge| edge.resource == binding.resource_id)
         })
-        || (project.operating_published && project.operating_published_at.is_none())
     {
         return Err(Error::Invalid("town_transport_road_project_mismatch"));
+    }
+    let last_complete = engine
+        .timeline()
+        .map(|timeline| timeline.progress.last_complete)
+        .ok_or(Error::Invalid("town_transport_road_project_mismatch"))?;
+    let settled_day = engine
+        .world()
+        .view()
+        .town
+        .map(|town| town.settled_day)
+        .ok_or(Error::Invalid("town_transport_road_project_mismatch"))?;
+    for at in [
+        project.operating_published_at,
+        project.operating_withdrawn_at,
+    ]
+    .into_iter()
+    .flatten()
+    {
+        let seconds = u64::try_from(at.value())
+            .map_err(|_| Error::Invalid("town_transport_road_project_mismatch"))?;
+        let day = u64::from(mycity_core::timeline::DAY as u32);
+        if seconds % day != 0 || seconds > last_complete || seconds / day > settled_day {
+            return Err(Error::Invalid("town_transport_road_project_mismatch"));
+        }
     }
     Ok(())
 }
@@ -240,17 +270,28 @@ pub(super) fn validate_no_orphan_road_project(engine: &Engine) -> Result<(), Err
     Ok(())
 }
 
-fn road_effect_publication_time(
+fn road_effect_times(
     engine: &Engine,
     profile: &TransportAllocationProfile,
-) -> Result<Option<mycity_core::units::GameTime>, Error> {
+) -> Result<
+    (
+        Option<mycity_core::units::GameTime>,
+        Option<mycity_core::units::GameTime>,
+    ),
+    Error,
+> {
     validate_allocation_project(engine, profile)?;
-    Ok(profile.road_capacity_effect.and_then(|_| {
+    Ok(profile.road_capacity_effect.map_or((None, None), |_| {
         engine
             .world()
             .view()
             .construction
-            .and_then(|project| project.operating_published_at)
+            .map_or((None, None), |project| {
+                (
+                    project.operating_published_at,
+                    project.operating_withdrawn_at,
+                )
+            })
     }))
 }
 
@@ -418,9 +459,9 @@ pub(super) fn verify_proof_matches_allocation<'a>(
     service_day: u64,
     generation: u64,
 ) -> Result<SettlementDeliveryInput<'a>, Error> {
-    let published_at = road_effect_publication_time(engine, profile)?;
+    let (published_at, withdrawn_at) = road_effect_times(engine, profile)?;
     let (opening, assignment) = profile
-        .derive_for_day(service_day, published_at)
+        .derive_for_day(service_day, published_at, withdrawn_at)
         .map_err(|_| Error::Invalid("town_transport_road_epoch"))?;
     if proof.schema != 1
         || proof.world_id != profile.world_id
@@ -520,9 +561,9 @@ impl Store {
             branch_id,
             profile_id,
         )?;
-        let published_at = road_effect_publication_time(&self.engine, &profile)?;
+        let (published_at, withdrawn_at) = road_effect_times(&self.engine, &profile)?;
         let (opening, assignment) = profile
-            .derive_for_day(service_day, published_at)
+            .derive_for_day(service_day, published_at, withdrawn_at)
             .map_err(|_| Error::Invalid("town_transport_road_epoch"))?;
         let proof_view = mycity_core::market_access::TransportProofView {
             schema: 1,
