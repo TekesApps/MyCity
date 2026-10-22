@@ -1,0 +1,28 @@
+{
+  "validated_branch_commit": "d0055621d03a1bd0ba2e14cda16dc780380bf3a3",
+  "cherry_pick_commit": "12d28fa7466bae2c2163f7e79c97fb854ac8f290",
+  "validation_source": "b87c6cdb369d96d0f59f65c887be7b553b5fef01f9c1894d4c2924c750775a78",
+  "compiled_crate_and_workspace_inputs_byte_identical": [
+    ".cargo",
+    "Cargo.toml",
+    "Cargo.lock",
+    "rust-toolchain.toml",
+    "crates/city-core"
+  ],
+  "check_command": [
+    "git",
+    "diff",
+    "--exit-code",
+    "d0055621d03a1bd0ba2e14cda16dc780380bf3a3",
+    "--",
+    ".cargo",
+    "Cargo.toml",
+    "Cargo.lock",
+    "rust-toolchain.toml",
+    "crates/city-core"
+  ],
+  "check_exit": 0,
+  "fixed_binary_sha256": "52dc970850f7c2732d24b6a13f9c6b6bccf640b67bfc87e379ea507893472dec",
+  "new_joint_or_M0_validation_claimed": false,
+  "no_new_target_or_pressure_copy": true
+}

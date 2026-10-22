@@ -6,3 +6,9 @@ docs/evidence/m0-t13a-native-observer/*.stdout whitespace=-blank-at-eof
 docs/evidence/m0-t13a-native-observer-errno/*.stdout whitespace=-blank-at-eof
 docs/evidence/m0-t13a-r07-event-driven/*.stdout whitespace=-blank-at-eof
 docs/evidence/m0-t13a-r07-report-error/*.stdout whitespace=-blank-at-eof
+
+# New raw VM captures and Cargo receipts are immutable evidence, including whitespace.
+docs/evidence/m0-t13a-r07-vm/*.stdout whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/m0-t13a-pool-mapped-proof/*.stdout whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/core-independent-first-check/*/*.stdout whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/core-transport-validation/**/*.stdout whitespace=-blank-at-eof,-blank-at-eol
