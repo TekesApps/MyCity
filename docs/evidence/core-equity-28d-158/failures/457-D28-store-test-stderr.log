@@ -1,0 +1,21 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156/crates/city-core)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156/crates/city-storage)
+error: recursion limit reached while expanding `$crate::json_internal!`
+   --> crates/city-storage/tests/../examples/support/town_equity_28d.rs:519:8
+    |
+519 |       Ok(json!({
+    |  ________^
+520 | |         "scenario":scenario.name(),"rules":RULES,"game_days":DAYS,
+521 | |         "self_financing_claim":"not_asserted",
+522 | |         "input_contract":{
+...   |
+579 | |         "full_16gb":"not_run","native_process_peak":"not_measured"
+580 | |     }))
+    | |______^
+    |
+    = help: consider increasing the recursion limit by adding a `#![recursion_limit = "256"]` attribute to your crate (`town_equity_28d`)
+    = note: this error originates in the macro `$crate::json_internal` which comes from the expansion of the macro `json` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error: could not compile `mycity-storage` (test "town_equity_28d") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

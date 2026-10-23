@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "scenario": "household-cash-shortage",
+  "cash": {
+    "1": 991596,
+    "2": 62,
+    "3": 608342,
+    "4": 1200000
+  },
+  "cash_total": 2800000,
+  "produced": 220,
+  "sales": 219,
+  "raw": 60,
+  "product": 1,
+  "tax": 938,
+  "retained_before_distribution": -3767,
+  "capital_returned": 0,
+  "dividend": 0,
+  "exit_phase": "Liquidating",
+  "checkpoint": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/475-D28-final-pressure-world/checkpoint-740.json",
+  "checkpoint_sha256": "8946db09819768f02988134d9a0a53720335245f22d5bb9fa48a7c909e00fc09",
+  "sequence": 733,
+  "state_hash": "9fc53fb65489fbeb9f4ea8ba2794529e262e6250af87bd236d1819781007283d",
+  "engine_hash": "2daa702327adcbb4a6e2bf953bb3f73d9f48a0f67823ee7d4379ef9540705ae0",
+  "scope": "independent recurrence/literal cents, stock/claims/register and checkpoint digest; no WAL replay"
+}

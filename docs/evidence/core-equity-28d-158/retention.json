@@ -1,0 +1,107 @@
+{
+  "method": "exact-byte identical terminal source archive hardlink coalescing only",
+  "rows": [
+    {
+      "round": "462-D28-final-strict",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/462-D28-final-strict/source.zip",
+      "retained_identical_complete_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/461-D28-final-fmt/source.zip",
+      "sha256": "aee3b58b9ac1b6876867a5af80c00d5ca2d25a88e733f9ce93c83ca5f773d393",
+      "reason": "terminal duplicate immutable source archive; exact bytes retained at both paths via hardlink",
+      "removed_separate_allocated_bytes": 5742592
+    },
+    {
+      "round": "463-D28-final-tests",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/463-D28-final-tests/source.zip",
+      "retained_identical_complete_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/461-D28-final-fmt/source.zip",
+      "sha256": "aee3b58b9ac1b6876867a5af80c00d5ca2d25a88e733f9ce93c83ca5f773d393",
+      "reason": "terminal duplicate immutable source archive; exact bytes retained at both paths via hardlink",
+      "removed_separate_allocated_bytes": 5742592
+    },
+    {
+      "round": "464-D28-cli-build",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/464-D28-cli-build/source.zip",
+      "retained_identical_complete_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/461-D28-final-fmt/source.zip",
+      "sha256": "aee3b58b9ac1b6876867a5af80c00d5ca2d25a88e733f9ce93c83ca5f773d393",
+      "reason": "terminal duplicate immutable source archive; exact bytes retained at both paths via hardlink",
+      "removed_separate_allocated_bytes": 5742592
+    },
+    {
+      "round": "465-D28-base-cli",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/465-D28-base-cli/source.zip",
+      "retained_identical_complete_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/461-D28-final-fmt/source.zip",
+      "sha256": "aee3b58b9ac1b6876867a5af80c00d5ca2d25a88e733f9ce93c83ca5f773d393",
+      "reason": "terminal duplicate immutable source archive; exact bytes retained at both paths via hardlink",
+      "removed_separate_allocated_bytes": 5742592
+    },
+    {
+      "round": "466-D28-pressure-cli",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/466-D28-pressure-cli/source.zip",
+      "retained_identical_complete_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/461-D28-final-fmt/source.zip",
+      "sha256": "aee3b58b9ac1b6876867a5af80c00d5ca2d25a88e733f9ce93c83ca5f773d393",
+      "reason": "terminal duplicate immutable source archive; exact bytes retained at both paths via hardlink",
+      "removed_separate_allocated_bytes": 5742592
+    },
+    {
+      "round": "471-D28-report-strict",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/471-D28-report-strict/source.zip",
+      "retained_identical_complete_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/470-D28-report-fmt/source.zip",
+      "sha256": "45ae50ad7a87ae6008b673ccadb0f428347a83752a8646fe2a1d189302ebe449",
+      "reason": "terminal duplicate immutable source archive; exact bytes retained at both paths via hardlink",
+      "removed_separate_allocated_bytes": 5742592
+    },
+    {
+      "round": "472-D28-report-tests",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/472-D28-report-tests/source.zip",
+      "retained_identical_complete_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/470-D28-report-fmt/source.zip",
+      "sha256": "45ae50ad7a87ae6008b673ccadb0f428347a83752a8646fe2a1d189302ebe449",
+      "reason": "terminal duplicate immutable source archive; exact bytes retained at both paths via hardlink",
+      "removed_separate_allocated_bytes": 5742592
+    },
+    {
+      "round": "473-D28-report-build",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/473-D28-report-build/source.zip",
+      "retained_identical_complete_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/470-D28-report-fmt/source.zip",
+      "sha256": "45ae50ad7a87ae6008b673ccadb0f428347a83752a8646fe2a1d189302ebe449",
+      "reason": "terminal duplicate immutable source archive; exact bytes retained at both paths via hardlink",
+      "removed_separate_allocated_bytes": 5742592
+    },
+    {
+      "round": "474-D28-final-base",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/474-D28-final-base/source.zip",
+      "retained_identical_complete_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/470-D28-report-fmt/source.zip",
+      "sha256": "45ae50ad7a87ae6008b673ccadb0f428347a83752a8646fe2a1d189302ebe449",
+      "reason": "terminal duplicate immutable source archive; exact bytes retained at both paths via hardlink",
+      "removed_separate_allocated_bytes": 5742592
+    },
+    {
+      "round": "475-D28-final-pressure",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/475-D28-final-pressure/source.zip",
+      "retained_identical_complete_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/470-D28-report-fmt/source.zip",
+      "sha256": "45ae50ad7a87ae6008b673ccadb0f428347a83752a8646fe2a1d189302ebe449",
+      "reason": "terminal duplicate immutable source archive; exact bytes retained at both paths via hardlink",
+      "removed_separate_allocated_bytes": 5742592
+    },
+    {
+      "round": "476-D28-base-cold-reader",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/476-D28-base-cold-reader/source.zip",
+      "retained_identical_complete_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/470-D28-report-fmt/source.zip",
+      "sha256": "45ae50ad7a87ae6008b673ccadb0f428347a83752a8646fe2a1d189302ebe449",
+      "reason": "terminal duplicate immutable source archive; exact bytes retained at both paths via hardlink",
+      "removed_separate_allocated_bytes": 5742592
+    },
+    {
+      "round": "477-D28-pressure-cold-reader",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/477-D28-pressure-cold-reader/source.zip",
+      "retained_identical_complete_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/470-D28-report-fmt/source.zip",
+      "sha256": "45ae50ad7a87ae6008b673ccadb0f428347a83752a8646fe2a1d189302ebe449",
+      "reason": "terminal duplicate immutable source archive; exact bytes retained at both paths via hardlink",
+      "removed_separate_allocated_bytes": 5742592
+    }
+  ],
+  "removed_separate_file_allocated_bytes": 68911104,
+  "disk_available_delta_bytes": 71053312,
+  "disk_delta_not_attributed_exclusively": true,
+  "untouched": "all source/WIP/locks/world originals/snapshots/executables/logs/receipts/shared target; no recursive work cleanup",
+  "remaining_scope": "Every selected source.zip path remains complete and byte-identical. All restorable worlds remain intact. Full work occupancy not rescanned.",
+  "future_rule": "Reuse shared target. At each terminal stage check processes/open files and future dependencies; reclaim only proved rebuildable or exact-byte duplicate intermediate data. Ambiguous and recovery originals stay."
+}

@@ -1,0 +1,426 @@
+[
+  {
+    "round": "457-D28-store-test",
+    "external_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/457-D28-store-test",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--release",
+        "-p",
+        "mycity-storage",
+        "--test",
+        "town_equity_28d",
+        "--locked",
+        "--",
+        "--nocapture"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T22:36:23.878466+00:00",
+      "source_manifest_sha256": "5a8a67e32f55eba28f82378d4fac0d47a4ae2b44ec2d1b1159427f7b498cfdd2"
+    },
+    "result": {
+      "exit_code": 101,
+      "wall_seconds": 49.10773725,
+      "source_unchanged": true
+    }
+  },
+  {
+    "round": "459-D28-store-tests",
+    "external_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/459-D28-store-tests",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--release",
+        "-p",
+        "mycity-storage",
+        "--test",
+        "town_equity_28d",
+        "--locked",
+        "--",
+        "--nocapture"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T22:43:36.945140+00:00",
+      "source_manifest_sha256": "096bd329f627716d3c5355ca228941ad4d46c40d2c165d833e80e651ebed35c1"
+    },
+    "result": {
+      "exit_code": 101,
+      "wall_seconds": 10.61723225,
+      "source_unchanged": true
+    }
+  },
+  {
+    "round": "460-D28-checkpoint-mut-tests",
+    "external_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/460-D28-checkpoint-mut-tests",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--release",
+        "-p",
+        "mycity-storage",
+        "--test",
+        "town_equity_28d",
+        "--locked",
+        "--",
+        "--nocapture"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T22:44:37.348527+00:00",
+      "source_manifest_sha256": "c08cda7edaed8edeecd1a9ac2baed00b0e729f5c1b472eea8fd19cdbb0df9b9e"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 6.949973667,
+      "source_unchanged": true
+    }
+  },
+  {
+    "round": "461-D28-final-fmt",
+    "external_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/461-D28-final-fmt",
+    "command": {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T22:47:41.104282+00:00",
+      "source_manifest_sha256": "837bb6890adc81314454013e4401aefcf149ed2db459ca049ab5c7fdfd120416"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 0.8598385829999999,
+      "source_unchanged": true
+    }
+  },
+  {
+    "round": "462-D28-final-strict",
+    "external_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/462-D28-final-strict",
+    "command": {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T22:47:42.037271+00:00",
+      "source_manifest_sha256": "837bb6890adc81314454013e4401aefcf149ed2db459ca049ab5c7fdfd120416"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 16.848544584,
+      "source_unchanged": true
+    }
+  },
+  {
+    "round": "463-D28-final-tests",
+    "external_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/463-D28-final-tests",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--release",
+        "-p",
+        "mycity-storage",
+        "--test",
+        "town_equity_28d",
+        "--locked",
+        "--",
+        "--nocapture"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T22:47:58.957169+00:00",
+      "source_manifest_sha256": "837bb6890adc81314454013e4401aefcf149ed2db459ca049ab5c7fdfd120416"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 7.3582399579999995,
+      "source_unchanged": true
+    }
+  },
+  {
+    "round": "464-D28-cli-build",
+    "external_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/464-D28-cli-build",
+    "command": {
+      "argv": [
+        "cargo",
+        "build",
+        "--release",
+        "-p",
+        "mycity-storage",
+        "--example",
+        "town_equity_28d",
+        "--locked"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T22:48:06.386913+00:00",
+      "source_manifest_sha256": "837bb6890adc81314454013e4401aefcf149ed2db459ca049ab5c7fdfd120416"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 0.9786073750000001,
+      "source_unchanged": true
+    }
+  },
+  {
+    "round": "465-D28-base-cli",
+    "external_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/465-D28-base-cli",
+    "command": {
+      "argv": [
+        "/usr/bin/time",
+        "-l",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/464-D28-cli-build/executables/85376cb19cf36ee10b67d8e9323ca30a2266a6f44b2c5f84cf0b55cca7e73c65/town_equity_28d",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/465-D28-base-world",
+        "base"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T22:48:34.066377+00:00",
+      "source_manifest_sha256": "837bb6890adc81314454013e4401aefcf149ed2db459ca049ab5c7fdfd120416"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 4.103265125,
+      "source_unchanged": true
+    }
+  },
+  {
+    "round": "466-D28-pressure-cli",
+    "external_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/466-D28-pressure-cli",
+    "command": {
+      "argv": [
+        "/usr/bin/time",
+        "-l",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/464-D28-cli-build/executables/85376cb19cf36ee10b67d8e9323ca30a2266a6f44b2c5f84cf0b55cca7e73c65/town_equity_28d",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/466-D28-pressure-world",
+        "household-cash-shortage"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T22:48:38.241194+00:00",
+      "source_manifest_sha256": "837bb6890adc81314454013e4401aefcf149ed2db459ca049ab5c7fdfd120416"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 4.225310959000001,
+      "source_unchanged": true
+    }
+  },
+  {
+    "round": "470-D28-report-fmt",
+    "external_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/470-D28-report-fmt",
+    "command": {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T22:57:50.904852+00:00",
+      "source_manifest_sha256": "24c0ac8de635f6c4a0a91d2b8ae7cb13f0445cd1ace782f3ee4d9aaec9e7649f"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 0.9758725420000001,
+      "source_unchanged": true
+    }
+  },
+  {
+    "round": "471-D28-report-strict",
+    "external_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/471-D28-report-strict",
+    "command": {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--workspace",
+        "--all-targets",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T22:57:51.953482+00:00",
+      "source_manifest_sha256": "24c0ac8de635f6c4a0a91d2b8ae7cb13f0445cd1ace782f3ee4d9aaec9e7649f"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 4.004354,
+      "source_unchanged": true
+    }
+  },
+  {
+    "round": "472-D28-report-tests",
+    "external_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/472-D28-report-tests",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--release",
+        "-p",
+        "mycity-storage",
+        "--test",
+        "town_equity_28d",
+        "--locked",
+        "--",
+        "--nocapture"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T22:57:56.028456+00:00",
+      "source_manifest_sha256": "24c0ac8de635f6c4a0a91d2b8ae7cb13f0445cd1ace782f3ee4d9aaec9e7649f"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 61.822267916,
+      "source_unchanged": true
+    }
+  },
+  {
+    "round": "473-D28-report-build",
+    "external_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/473-D28-report-build",
+    "command": {
+      "argv": [
+        "cargo",
+        "build",
+        "--release",
+        "-p",
+        "mycity-storage",
+        "--example",
+        "town_equity_28d",
+        "--locked"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T22:58:57.921491+00:00",
+      "source_manifest_sha256": "24c0ac8de635f6c4a0a91d2b8ae7cb13f0445cd1ace782f3ee4d9aaec9e7649f"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 0.9919680830000001,
+      "source_unchanged": true
+    }
+  },
+  {
+    "round": "474-D28-final-base",
+    "external_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/474-D28-final-base",
+    "command": {
+      "argv": [
+        "/usr/bin/time",
+        "-l",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/473-D28-report-build/executables/5be50b51e6f9f9047e6b978ccb7885ad095a5592031a9252ae8d29e514e8aaf7/town_equity_28d",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/474-D28-final-base-world",
+        "base"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T23:00:13.503134+00:00",
+      "source_manifest_sha256": "24c0ac8de635f6c4a0a91d2b8ae7cb13f0445cd1ace782f3ee4d9aaec9e7649f"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 4.148637666,
+      "source_unchanged": true
+    }
+  },
+  {
+    "round": "475-D28-final-pressure",
+    "external_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/475-D28-final-pressure",
+    "command": {
+      "argv": [
+        "/usr/bin/time",
+        "-l",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/473-D28-report-build/executables/5be50b51e6f9f9047e6b978ccb7885ad095a5592031a9252ae8d29e514e8aaf7/town_equity_28d",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/475-D28-final-pressure-world",
+        "household-cash-shortage"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T23:00:17.720858+00:00",
+      "source_manifest_sha256": "24c0ac8de635f6c4a0a91d2b8ae7cb13f0445cd1ace782f3ee4d9aaec9e7649f"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 3.383763709,
+      "source_unchanged": true
+    }
+  },
+  {
+    "round": "476-D28-base-cold-reader",
+    "external_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/476-D28-base-cold-reader",
+    "command": {
+      "argv": [
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/473-D28-report-build/executables/5be50b51e6f9f9047e6b978ccb7885ad095a5592031a9252ae8d29e514e8aaf7/town_equity_28d",
+        "--verify-open",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/476-D28-base-cold/working-copy"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T23:02:51.565939+00:00",
+      "source_manifest_sha256": "24c0ac8de635f6c4a0a91d2b8ae7cb13f0445cd1ace782f3ee4d9aaec9e7649f"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 0.069463375,
+      "source_unchanged": true
+    }
+  },
+  {
+    "round": "477-D28-pressure-cold-reader",
+    "external_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/477-D28-pressure-cold-reader",
+    "command": {
+      "argv": [
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/473-D28-report-build/executables/5be50b51e6f9f9047e6b978ccb7885ad095a5592031a9252ae8d29e514e8aaf7/town_equity_28d",
+        "--verify-open",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/477-D28-pressure-cold/working-copy"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T23:04:32.590156+00:00",
+      "source_manifest_sha256": "24c0ac8de635f6c4a0a91d2b8ae7cb13f0445cd1ace782f3ee4d9aaec9e7649f"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 0.04395137499999999,
+      "source_unchanged": true
+    }
+  }
+]

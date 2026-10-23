@@ -1,0 +1,102 @@
+[
+  {
+    "path": "CURRENT.json",
+    "size": 123,
+    "sha256": "47d03f2e538480c79d7f4fb1654cae0fa09b026bee2ccc1fc4035988c7d6098b"
+  },
+  {
+    "path": "LOCK",
+    "size": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "path": "checkpoint-355.json",
+    "size": 384621,
+    "sha256": "553ac956f9e33634c369b3ee6f99f07de3386e8b9e5f867787a318bec9740995"
+  },
+  {
+    "path": "checkpoint-706.json",
+    "size": 393917,
+    "sha256": "92816e4c1f54699f55e0a40d8e2084fc8538cff44bb36fde9de1bd95c49af43f"
+  },
+  {
+    "path": "checkpoint-732.json",
+    "size": 71142,
+    "sha256": "a570ea1d36c5a7fc0618143ca9381281158e7f2ce92c811cc44cf2bf2074f498"
+  },
+  {
+    "path": "checkpoint-734.json",
+    "size": 46768,
+    "sha256": "3009ad81366697aceb4507350cec83c33be168be72a3fd5628ca3cc4b42f3273"
+  },
+  {
+    "path": "checkpoint-736.json",
+    "size": 47474,
+    "sha256": "a2621241a690f07df409e156998eae119f315e4c29db89b8fb4c51fb50c9355a"
+  },
+  {
+    "path": "checkpoint-738.json",
+    "size": 47455,
+    "sha256": "4093258ad2370f96d83309924f93430e1908edd819e9b80ca18c8f10816113d0"
+  },
+  {
+    "path": "checkpoint-740.json",
+    "size": 47021,
+    "sha256": "8946db09819768f02988134d9a0a53720335245f22d5bb9fa48a7c909e00fc09"
+  },
+  {
+    "path": "checkpoint-index-355.json",
+    "size": 1421,
+    "sha256": "260b8be38729a61e352b5960f8dcfc717d2ffed99d09a55ba35e0389d5737510"
+  },
+  {
+    "path": "checkpoint-index-706.json",
+    "size": 1603,
+    "sha256": "36c99ae1347b599dc26f6ce13052f867bb427066cbc1bb328b463ceb6c528991"
+  },
+  {
+    "path": "checkpoint-index-732.json",
+    "size": 303,
+    "sha256": "da4597eb75832009ecf90b3d54de4b42a42a51fd8c49c9144e143437b8910ca2"
+  },
+  {
+    "path": "checkpoint-index-734.json",
+    "size": 207,
+    "sha256": "934ebad926082ef25d414a757b0d1507c5ead76607a33c7ddbf9d864f1b8170d"
+  },
+  {
+    "path": "checkpoint-index-736.json",
+    "size": 207,
+    "sha256": "384f8ad813ea0c8a8dcab20c7c1289185481ebba670a6de2a118ac34999de29c"
+  },
+  {
+    "path": "checkpoint-index-738.json",
+    "size": 207,
+    "sha256": "bd281f467feace8d62e3c7761f95b4b87e045f8a3284a5378ed6cfff4c0fe85f"
+  },
+  {
+    "path": "checkpoint-index-740.json",
+    "size": 207,
+    "sha256": "48e7ec8231cda9afd5524a3f013d165015d36073ad95a0e28e41f11e58b3ee2d"
+  },
+  {
+    "path": "genesis.json",
+    "size": 10847,
+    "sha256": "7d5694e3fa3f831fcc8415ebcb435b99a52995ab46ead92f32df845f8d6afb08"
+  },
+  {
+    "path": "root-0.json",
+    "size": 517,
+    "sha256": "21812190751a61da946183fcca17a95a6fb4605d27f2b4b194ee55b7144b2874"
+  },
+  {
+    "path": "root-1.json",
+    "size": 519,
+    "sha256": "0e7c83809d9038a6f78f259d6f91b5579b3c42088aa3ed8438ac145c735c34d6"
+  },
+  {
+    "path": "wal-740.bin",
+    "size": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+]

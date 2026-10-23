@@ -1,0 +1,15 @@
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156/crates/city-storage)
+error[E0596]: cannot borrow `store` as mutable, as it is not declared as mutable
+   --> crates/city-storage/tests/../examples/support/town_equity_28d.rs:213:5
+    |
+213 |     store.checkpoint().map_err(err)?;
+    |     ^^^^^ cannot borrow as mutable
+    |
+help: consider changing this to be mutable
+    |
+211 | fn checkpoint_reopen(mut store: Store, path: &Path, boundary: &str) -> Result<Store, String> {
+    |                      +++
+
+For more information about this error, try `rustc --explain E0596`.
+error: could not compile `mycity-storage` (test "town_equity_28d") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

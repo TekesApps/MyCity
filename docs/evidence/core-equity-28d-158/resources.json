@@ -1,0 +1,51 @@
+{
+  "environment": {
+    "machine": "Mac16,1",
+    "physical_memory_bytes": 34359738368,
+    "work_and_target": "external HP P900 USB/APFS SSD"
+  },
+  "runs": [
+    {
+      "round": "474-D28-final-base",
+      "time_l_report": "        4.12 real         0.25 user         0.60 sys\n            56246272  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                3598  page reclaims\n                   6  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n               14558  voluntary context switches\n                1814  involuntary context switches\n          9075569959  instructions retired\n          3012584917  cycles elapsed\n            51773824  peak memory footprint\n",
+      "report_resource_fields": {
+        "resources": {
+          "final": {
+            "engine_owned_bytes": 3601744,
+            "store_owned_bytes": 41152716,
+            "world_owned_bytes": 101576
+          },
+          "opening": {
+            "engine_owned_bytes": 3601744,
+            "store_owned_bytes": 41152652,
+            "world_owned_bytes": 101576
+          },
+          "scope": "owned capacities, not native process peak"
+        }
+      },
+      "micro_scenario_not_full_scale": true
+    },
+    {
+      "round": "475-D28-final-pressure",
+      "time_l_report": "        3.36 real         0.22 user         0.47 sys\n            49577984  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                3191  page reclaims\n                   6  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n                   0  signals received\n               14513  voluntary context switches\n                1929  involuntary context switches\n          9006710313  instructions retired\n          2707693896  cycles elapsed\n            45121896  peak memory footprint\n",
+      "report_resource_fields": {
+        "resources": {
+          "final": {
+            "engine_owned_bytes": 3601744,
+            "store_owned_bytes": 41152720,
+            "world_owned_bytes": 101576
+          },
+          "opening": {
+            "engine_owned_bytes": 3601744,
+            "store_owned_bytes": 41152656,
+            "world_owned_bytes": 101576
+          },
+          "scope": "owned capacities, not native process peak"
+        }
+      },
+      "micro_scenario_not_full_scale": true
+    }
+  ],
+  "real_16gb_device_gate": "not_run",
+  "full_scale_m0": "not_passed"
+}

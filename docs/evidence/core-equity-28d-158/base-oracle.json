@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "scenario": "base",
+  "cash": {
+    "1": 1002100,
+    "2": 797879,
+    "3": 0,
+    "4": 1200021
+  },
+  "cash_total": 3000000,
+  "produced": 280,
+  "sales": 280,
+  "raw": 0,
+  "product": 0,
+  "tax": 1260,
+  "retained_before_distribution": 1260,
+  "capital_returned": 612800,
+  "dividend": 1260,
+  "exit_phase": "Closed",
+  "checkpoint": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/474-D28-final-base-world/checkpoint-741.json",
+  "checkpoint_sha256": "7703a12662b0ddec20a1c91ba9e1653f5638562501debddd5810bd1e022676fd",
+  "sequence": 734,
+  "state_hash": "5df06517821549485058129d1ac5340992789301f16a1dd69f572e45da9d2c3b",
+  "engine_hash": "019e3beab9e9bfadbd6858a4ef9d97a0978d98faf82fee8a6c8a85f01692093b",
+  "scope": "independent recurrence/literal cents, stock/claims/register and checkpoint digest; no WAL replay"
+}

@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156/docs/evidence/core-equity-28d-158/check_checkpoint.py", line 89, in <module>
+    engine_hash,state_hash=m.view_hashes(e,json.loads((world/'genesis.json').read_bytes()))
+  File "/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156/docs/evidence/core-wage-spatial-156/check_checkpoint.py", line 151, in view_hashes
+    "spatial": genesis["spatial"],
+KeyError: 'spatial'

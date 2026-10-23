@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156/docs/evidence/core-equity-28d-158/check_checkpoint.py", line 86, in <module>
+    assert reg['cumulative_liquidation_surplus_distributed']==0
+KeyError: 'cumulative_liquidation_surplus_distributed'

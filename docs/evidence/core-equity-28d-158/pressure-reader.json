@@ -1,0 +1,11 @@
+{
+  "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/475-D28-final-pressure-world",
+  "complete_copy": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/477-D28-pressure-cold/working-copy",
+  "full_copy_verified": true,
+  "original_unchanged": true,
+  "reader": {
+    "exit_code": 0,
+    "wall_seconds": 0.04395137499999999,
+    "source_unchanged": true
+  }
+}
