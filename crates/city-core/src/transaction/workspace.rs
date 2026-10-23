@@ -9,13 +9,17 @@ type Image = Resident<crate::timeline::Timeline>;
 type BackgroundImage = Resident<crate::background::Background>;
 pub(super) type BackgroundLease = Lease<BackgroundImage>;
 pub(super) type BackgroundWorkLease = Lease<crate::background::Work>;
-type Owner<T> = Arc<Mutex<Option<T>>>;
+pub(super) type Owner<T> = Arc<Mutex<Option<T>>>;
 pub(super) type TimelineWorkspace = Owner<Image>;
 pub(super) type TimelineLease = Lease<Image>;
 pub(super) type AccountLease = Lease<DirtyAccounts>;
 pub(super) type StockLease = Lease<DirtyStocks>;
 pub(super) type ResourceLease = Lease<ResourceRows>;
 pub(super) type CapacityLease = Lease<LeaseRows>;
+pub(super) type SpatialPermissionOwner =
+    Owner<crate::spatial_transport_permissions::SpatialPermissionState>;
+pub(super) type SpatialPermissionLease =
+    Lease<crate::spatial_transport_permissions::SpatialPermissionState>;
 pub(super) struct PreparationWorkspace {
     pub timeline: TimelineWorkspace,
     pub background: Owner<BackgroundImage>,
@@ -24,9 +28,12 @@ pub(super) struct PreparationWorkspace {
     pub stocks: Owner<DirtyStocks>,
     pub resources: Owner<ResourceRows>,
     pub leases: Owner<LeaseRows>,
+    /// Fixed backing used for the next permission-state candidate. It is allocated only for
+    /// worlds with the spatial-permission feature enabled.
+    pub spatial_permissions: SpatialPermissionOwner,
 }
 impl PreparationWorkspace {
-    pub(super) fn backing_ids(&self) -> Result<[usize; 27], String> {
+    pub(super) fn backing_ids(&self) -> Result<[usize; 28], String> {
         let t = self.timeline.lock().map_err(|_| "timeline_slot_poison")?;
         let b = self
             .background
@@ -40,6 +47,10 @@ impl PreparationWorkspace {
         let s = self.stocks.lock().map_err(|_| "stocks_slot_poison")?;
         let r = self.resources.lock().map_err(|_| "resources_slot_poison")?;
         let l = self.leases.lock().map_err(|_| "leases_slot_poison")?;
+        let p = self
+            .spatial_permissions
+            .lock()
+            .map_err(|_| "spatial_permissions_slot_poison")?;
         let t = t.as_ref().ok_or("timeline_slot_busy")?.backing();
         let b = b
             .as_ref()
@@ -75,6 +86,7 @@ impl PreparationWorkspace {
             Arc::as_ptr(&self.stocks) as usize,
             Arc::as_ptr(&self.resources) as usize,
             Arc::as_ptr(&self.leases) as usize,
+            p.as_ref().map_or(0, |state| state as *const _ as usize),
         ])
     }
 }
@@ -90,14 +102,16 @@ pub(super) fn capacity_inventory() -> (usize, usize, usize) {
         + slot::<DirtyAccounts>()
         + slot::<DirtyStocks>()
         + slot::<ResourceRows>()
-        + slot::<LeaseRows>();
+        + slot::<LeaseRows>()
+        + slot::<crate::spatial_transport_permissions::SpatialPermissionState>();
     let tables = crate::timeline::CLAIM_LIMIT * size_of::<crate::timeline::Claim>()
         + crate::timeline::PAYROLL_LIMIT * size_of::<crate::timeline::Payroll>()
         + crate::timeline::MAX_CLAIM_SOURCES * size_of::<crate::timeline::ClaimSourceRecord>()
         + crate::assembly::MAX_ACCOUNTS * size_of::<(Handle<AccountDomain>, Account)>()
         + crate::assembly::MAX_STOCKS * size_of::<(Handle<InventoryDomain>, Stock)>()
         + MAX_RESOURCES * size_of::<Resource>()
-        + MAX_LEASES * size_of::<Option<super::Lease>>();
+        + MAX_LEASES * size_of::<Option<super::Lease>>()
+        + crate::spatial_transport_permissions::SpatialPermissionState::max_owned_capacity_bytes();
     let air_payload = 128 * 128 * 16
         + crate::background::SOURCE_LIMIT * size_of::<crate::air::Source>()
         + crate::air::STRATEGY.len()
@@ -124,6 +138,7 @@ pub(super) fn reserve() -> Result<PreparationWorkspace, TxError> {
         stocks: rows()?,
         resources: rows()?,
         leases: rows()?,
+        spatial_permissions: Arc::new(Mutex::new(None)),
     })
 }
 pub(super) trait Reset {
@@ -137,6 +152,11 @@ impl Reset for crate::background::Work {
 impl Reset for BackgroundImage {
     fn reset_storage(&mut self) {
         self.deactivate();
+    }
+}
+impl Reset for crate::spatial_transport_permissions::SpatialPermissionState {
+    fn reset_storage(&mut self) {
+        self.clear_preserving_capacity();
     }
 }
 impl Lease<BackgroundImage> {
@@ -226,7 +246,7 @@ impl Record for Resource {
         }
     }
 }
-impl Record for JournalRecord {
+impl Record for HotJournalRecord {
     fn inactive() -> Self {
         Self {
             actor: 0,

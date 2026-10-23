@@ -29,7 +29,7 @@ type DirtyStocks =
     crate::model_rows::Rows<(Handle<InventoryDomain>, Stock), { crate::assembly::MAX_STOCKS }>;
 type ResourceRows = crate::model_rows::Rows<Resource, MAX_RESOURCES>;
 type LeaseRows = crate::model_rows::Rows<Option<Lease>, MAX_LEASES>;
-type JournalRows = crate::model_rows::Rows<JournalRecord, MAX_RECEIPTS>;
+type HotJournalRows = crate::model_rows::Rows<HotJournalRecord, MAX_RECEIPTS>;
 
 fn valid_background_operation(caller: Caller, env: &Envelope) -> bool {
     if env.operation_id & 0xf000_0000_0000_0000 == 0xd000_0000_0000_0000 {
@@ -121,6 +121,11 @@ pub enum Action {
         service_day: u64,
         generation: u64,
         proof_sha256: [u8; 32],
+    },
+    /// A trusted owner/authority spatial permission command. The Store publishes an Apply's
+    /// immutable transport profile version in the same durable transaction.
+    SpatialPermission {
+        command: crate::spatial_transport_permissions::SpatialPermissionCommand,
     },
     /// Permanently stop new operations for one configured town-market business. This is
     /// an operational control only; it does not approve insolvency, liquidation or closure.
@@ -269,6 +274,91 @@ pub struct JournalRecord {
     pub actions: [Option<Action>; MAX_ACTIONS],
 }
 
+/// In-memory retry window. Durable receipts continue to use the full `JournalRecord`; this
+/// resident form keeps only the spatial request identity needed for bounded diagnostics. The
+/// digest and request id are not an authorization witness.
+#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
+pub struct HotJournalRecord {
+    pub actor: u32,
+    pub emergency_eligible: bool,
+    pub operation_id: u64,
+    pub expected_revision: u64,
+    pub payload_sha256: [u8; 32],
+    pub outcome: Result<Receipt, TxError>,
+    pub actions: [Option<HotActionSummary>; MAX_ACTIONS],
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
+pub enum HotActionSummary {
+    Other,
+    SpatialPermission {
+        command_kind: u8,
+        request_id: u64,
+        command_sha256: [u8; 32],
+    },
+}
+
+impl HotJournalRecord {
+    fn from_durable(record: &JournalRecord) -> Self {
+        let mut actions = [None; MAX_ACTIONS];
+        for (index, action) in record.actions.iter().enumerate() {
+            let Some(action) = action else { continue };
+            actions[index] = Some(match action {
+                Action::SpatialPermission { command } => {
+                    use sha2::{Digest, Sha256};
+                    let bytes = serde_json::to_vec(command).expect("bounded spatial command");
+                    let (command_kind, request_id) = match command {
+                        crate::spatial_transport_permissions::SpatialPermissionCommand::Request {
+                            request,
+                            ..
+                        } => (0, request.request_id),
+                        crate::spatial_transport_permissions::SpatialPermissionCommand::Approve {
+                            approval,
+                            ..
+                        } => (1, approval.request_id),
+                        crate::spatial_transport_permissions::SpatialPermissionCommand::Withdraw {
+                            request_id,
+                            ..
+                        } => (2, *request_id),
+                        crate::spatial_transport_permissions::SpatialPermissionCommand::Apply {
+                            request_id,
+                            ..
+                        } => (3, *request_id),
+                    };
+                    HotActionSummary::SpatialPermission {
+                        command_kind,
+                        request_id,
+                        command_sha256: Sha256::digest(bytes).into(),
+                    }
+                }
+                _ => HotActionSummary::Other,
+            });
+        }
+        Self {
+            actor: record.actor,
+            emergency_eligible: record.emergency_eligible,
+            operation_id: record.operation_id,
+            expected_revision: record.expected_revision,
+            payload_sha256: record.payload_sha256,
+            outcome: record.outcome,
+            actions,
+        }
+    }
+
+    /// Confirm that a durable WAL/checkpoint receipt is the source of this hot retry summary.
+    /// This is an integrity cross-check only; it does not authorize the summarized command.
+    pub fn matches_durable(&self, record: &JournalRecord) -> bool {
+        self.actor == record.actor
+            && self.emergency_eligible == record.emergency_eligible
+            && self.operation_id == record.operation_id
+            && self.expected_revision == record.expected_revision
+            && self.payload_sha256 == record.payload_sha256
+            && self.outcome == record.outcome
+            && self.actions == Self::from_durable(record).actions
+    }
+}
+
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Resource {
@@ -306,9 +396,11 @@ pub struct Engine {
     resources: ResourceRows,
     leases: LeaseRows,
     next_token: u64,
-    journal: JournalRows,
+    journal: HotJournalRows,
     timeline: crate::model_rows::Resident<crate::timeline::Timeline>,
     background: crate::model_rows::Resident<crate::background::Background>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    spatial_permissions: Option<crate::spatial_transport_permissions::SpatialPermissionState>,
     #[serde(skip)]
     preparation_workspace: Option<workspace::PreparationWorkspace>,
 }
@@ -322,12 +414,28 @@ struct Prepared {
     region: Option<crate::region::Region>,
     construction: Option<crate::construction::Project>,
     town: Option<crate::town_runtime::MarketState>,
+    spatial_permissions: Option<workspace::SpatialPermissionLease>,
+    spatial_update_grant: Option<crate::spatial_transport_permissions::VerifiedSpatialUpdateGrant>,
     accounts: workspace::AccountLease,
     stocks: workspace::StockLease,
     resources: workspace::ResourceLease,
     leases: workspace::CapacityLease,
     next_token: u64,
     receipt: Receipt,
+}
+
+/// Ephemeral metadata from a fully prepared transaction. It is passed only to the unique
+/// persistence hook and is deliberately absent from per-receipt storage.
+#[derive(Clone, Copy, Debug, Default)]
+pub struct CommitContext<'a> {
+    pub spatial_update_grant:
+        Option<crate::spatial_transport_permissions::VerifiedSpatialUpdateGrant>,
+    pub spatial_permissions:
+        Option<&'a crate::spatial_transport_permissions::SpatialPermissionState>,
+    /// Active Engine state that was used as the authority for preparing this candidate.
+    /// Storage validates the transition against this root-pinned prior image before publishing.
+    pub prior_spatial_permissions:
+        Option<&'a crate::spatial_transport_permissions::SpatialPermissionState>,
 }
 
 pub(crate) fn preparation_workspace_capacity() -> (usize, usize, usize) {
@@ -398,7 +506,7 @@ impl Engine {
         {
             return Err(TxError::Resource);
         }
-        let mut journal = JournalRows::new().map_err(|_| TxError::WorkingLimit)?;
+        let mut journal = HotJournalRows::new().map_err(|_| TxError::WorkingLimit)?;
         journal
             .try_reserve_exact(MAX_RECEIPTS)
             .map_err(|_| TxError::WorkingLimit)?;
@@ -420,6 +528,7 @@ impl Engine {
             journal,
             timeline: crate::model_rows::Resident::empty(),
             background: crate::model_rows::Resident::empty(),
+            spatial_permissions: None,
             preparation_workspace: Some(workspace::reserve()?),
         };
         validate_construction_binding(
@@ -431,7 +540,35 @@ impl Engine {
             None,
             engine.world.town.map(|town| town.state.settled_day),
         )?;
-        if engine.owned_capacity_bytes() > ENGINE_BYTE_BUDGET {
+        let owned_capacity = engine.owned_capacity_bytes();
+        if owned_capacity > ENGINE_BYTE_BUDGET {
+            #[cfg(test)]
+            {
+                let spatial_active = engine
+                    .spatial_permissions
+                    .as_ref()
+                    .map_or(0, |state| state.owned_capacity_bytes());
+                let spatial_spare = engine
+                    .preparation_workspace
+                    .as_ref()
+                    .and_then(|workspace| {
+                        workspace.spatial_permissions.lock().ok().and_then(|slot| {
+                            slot.as_ref().map(|state| state.owned_capacity_bytes())
+                        })
+                    })
+                    .unwrap_or(0);
+                let timeline = engine.timeline.backing().owned_bytes();
+                let background = engine.background.backing().owned_bytes()
+                    - size_of::<crate::background::Background>();
+                eprintln!(
+                    "ENGINE_NEW_BUDGET_FAILURE {{\"owned\":{owned_capacity},\"budget\":{ENGINE_BYTE_BUDGET},\"engine_header\":{},\"world\":{},\"resources\":{},\"leases\":{},\"journal\":{},\"timeline\":{timeline},\"background_extra\":{background},\"spatial_active\":{spatial_active},\"spatial_spare\":{spatial_spare}}}",
+                    size_of::<Self>(),
+                    engine.world.owned_capacity_bytes(),
+                    engine.resources.capacity() * size_of::<Resource>(),
+                    engine.leases.capacity() * size_of::<Option<Lease>>(),
+                    engine.journal.capacity() * size_of::<HotJournalRecord>(),
+                );
+            }
             return Err(TxError::WorkingLimit);
         }
         Ok(engine)
@@ -451,9 +588,12 @@ impl Engine {
             resources: &'a [Resource],
             leases: &'a [Option<Lease>],
             next_token: u64,
-            journal: &'a [JournalRecord],
+            journal: &'a [HotJournalRecord],
             timeline: &'a crate::model_rows::Resident<crate::timeline::Timeline>,
             background: &'a crate::model_rows::Resident<crate::background::Background>,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            spatial_permissions:
+                &'a Option<crate::spatial_transport_permissions::SpatialPermissionState>,
         }
         struct Bounded<W> {
             inner: W,
@@ -485,6 +625,7 @@ impl Engine {
                 journal: &[],
                 timeline: &self.timeline,
                 background: &self.background,
+                spatial_permissions: &self.spatial_permissions,
             },
         )
         .map_err(|e| e.to_string())
@@ -499,6 +640,9 @@ impl Engine {
             leases: &'a [Option<Lease>],
             next_token: u64,
             timeline: &'a crate::model_rows::Resident<crate::timeline::Timeline>,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            spatial_permissions:
+                &'a Option<crate::spatial_transport_permissions::SpatialPermissionState>,
         }
         View {
             schema: "mycity-business-comparison-v2",
@@ -507,6 +651,7 @@ impl Engine {
             leases: &self.leases,
             next_token: self.next_token,
             timeline: &self.timeline,
+            spatial_permissions: &self.spatial_permissions,
         }
     }
     /// All business bytes, with only hot receipts/revision/background excluded.
@@ -570,6 +715,20 @@ impl Engine {
         // Whole-graph seed/authorization is still being migrated in this phase.
         candidate.preparation_workspace =
             Some(workspace::reserve().map_err(|e| format!("workspace:{e:?}"))?);
+        if let Some(state) = candidate.spatial_permissions.as_mut() {
+            state
+                .reserve_fixed_rows()
+                .map_err(|error| format!("spatial_permission_capacity:{error:?}"))?;
+            let spare =
+                crate::spatial_transport_permissions::SpatialPermissionState::empty_backing()
+                    .map_err(|error| format!("spatial_permission_spare:{error:?}"))?;
+            let owner = &candidate
+                .preparation_workspace
+                .as_ref()
+                .ok_or("missing_workspace")?
+                .spatial_permissions;
+            *owner.lock().map_err(|_| "spatial_permission_slot_poison")? = Some(spare);
+        }
         candidate.validate_resident()?;
         Ok(candidate)
     }
@@ -583,6 +742,21 @@ impl Engine {
             return Err("checkpoint_collection_limits".into());
         }
         candidate.world.restore_capacity()?;
+        if let Some(state) = candidate.spatial_permissions.as_ref() {
+            if state.validate().is_err()
+                || state.world_id != candidate.world.scope.world()
+                || state.branch_id != candidate.world.scope.branch()
+                || state.assets.iter().any(|asset| {
+                    candidate.world.account_handle(asset.owner_account).is_err()
+                        || candidate
+                            .world
+                            .account_handle(asset.permit_authority_account)
+                            .is_err()
+                })
+            {
+                return Err("checkpoint_spatial_permission_binding".into());
+            }
+        }
         if let Some(b) = candidate.world.boot {
             b.validate_world_shape(&candidate.world, candidate.world.exchange.is_some())?;
         }
@@ -812,7 +986,8 @@ impl Engine {
     pub fn resources(&self) -> &[Resource] {
         &self.resources
     }
-    pub fn journal(&self) -> &[JournalRecord] {
+    /// Compact in-memory retry window. Use the storage receipt archive for full action records.
+    pub fn journal(&self) -> &[HotJournalRecord] {
         &self.journal
     }
     pub fn timeline_quote(
@@ -918,15 +1093,91 @@ impl Engine {
     pub fn timeline(&self) -> Option<&crate::timeline::Timeline> {
         self.timeline.as_ref()
     }
+    pub fn spatial_permissions(
+        &self,
+    ) -> Option<&crate::spatial_transport_permissions::SpatialPermissionState> {
+        self.spatial_permissions.as_ref()
+    }
+    /// Bind an immutable, Store-validated spatial permission genesis state before the world is
+    /// published. This cannot be used after any operation or revision has been committed.
+    pub fn initialize_spatial_permissions(
+        &mut self,
+        state: crate::spatial_transport_permissions::SpatialPermissionState,
+    ) -> Result<(), TxError> {
+        if self.spatial_permissions.is_some()
+            || self.world.revision != 0
+            || !self.journal.is_empty()
+            || state.world_id != self.world.scope.world()
+            || state.branch_id != self.world.scope.branch()
+            || state.validate().is_err()
+            || state.assets.iter().any(|asset| {
+                self.world.account_handle(asset.owner_account).is_err()
+                    || self
+                        .world
+                        .account_handle(asset.permit_authority_account)
+                        .is_err()
+            })
+        {
+            return Err(TxError::InvalidOperation);
+        }
+        let workspace = self
+            .preparation_workspace
+            .as_ref()
+            .ok_or(TxError::WorkingLimit)?;
+        {
+            let mut spare = workspace
+                .spatial_permissions
+                .lock()
+                .map_err(|_| TxError::WorkingLimit)?;
+            if spare.is_none() {
+                *spare = Some(
+                    crate::spatial_transport_permissions::SpatialPermissionState::empty_backing()
+                        .map_err(|_| TxError::WorkingLimit)?,
+                );
+            }
+        }
+        self.spatial_permissions = Some(state);
+        if self.owned_capacity_bytes() > ENGINE_BYTE_BUDGET {
+            let mut active = self
+                .spatial_permissions
+                .take()
+                .ok_or(TxError::InvalidOperation)?;
+            active.clear_preserving_capacity();
+            let mut spare = workspace
+                .spatial_permissions
+                .lock()
+                .map_err(|_| TxError::WorkingLimit)?;
+            *spare = Some(active);
+            return Err(TxError::WorkingLimit);
+        }
+        Ok(())
+    }
     pub fn owned_capacity_bytes(&self) -> usize {
         let extra = self.timeline.backing().owned_bytes() + self.background.backing().owned_bytes()
             - size_of::<crate::background::Background>();
+        let spatial_workspace = self
+            .preparation_workspace
+            .as_ref()
+            .map(|workspace| {
+                workspace
+                    .spatial_permissions
+                    .lock()
+                    .unwrap_or_else(|poisoned| poisoned.into_inner())
+                    .as_ref()
+                    .map_or(0, |state| state.owned_capacity_bytes())
+            })
+            .unwrap_or(0);
         extra
             + size_of::<Self>()
             + self.world.owned_capacity_bytes()
             + self.resources.capacity() * size_of::<Resource>()
             + self.leases.capacity() * size_of::<Option<Lease>>()
-            + self.journal.capacity() * size_of::<JournalRecord>()
+            + self.journal.capacity() * size_of::<HotJournalRecord>()
+            + self
+                .spatial_permissions
+                .as_ref()
+                .map_or(0, |state| state.owned_capacity_bytes())
+            + spatial_workspace
     }
     fn state_view(&self) -> impl Serialize + '_ {
         #[derive(Serialize)]
@@ -937,6 +1188,9 @@ impl Engine {
             next_token: u64,
             timeline: &'a crate::model_rows::Resident<crate::timeline::Timeline>,
             background: &'a crate::model_rows::Resident<crate::background::Background>,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            spatial_permissions:
+                &'a Option<crate::spatial_transport_permissions::SpatialPermissionState>,
         }
         View {
             world: self.world.borrowed_view(),
@@ -945,6 +1199,7 @@ impl Engine {
             next_token: self.next_token,
             timeline: &self.timeline,
             background: &self.background,
+            spatial_permissions: &self.spatial_permissions,
         }
     }
     pub fn write_state_comparison(
@@ -1007,6 +1262,27 @@ impl Engine {
         candidate: Option<&crate::air::State>,
         transport: Option<&crate::market_access::SettlementDeliveryInput<'_>>,
         persist: impl FnOnce(&Envelope, &JournalRecord) -> Result<(), E>,
+        trace: &mut Trace<'_>,
+    ) -> Result<Result<Receipt, TxError>, E> {
+        self.execute_recorded_transport_with_context_diagnosed(
+            caller,
+            env,
+            candidate,
+            transport,
+            |envelope, record, _| persist(envelope, record),
+            trace,
+        )
+    }
+
+    /// The unique durable writer may consume a small ephemeral proof emitted by the prepared
+    /// transaction without copying it into each persistent JournalRecord/Receipt.
+    pub fn execute_recorded_transport_with_context_diagnosed<E>(
+        &mut self,
+        caller: Caller,
+        env: Envelope,
+        candidate: Option<&crate::air::State>,
+        transport: Option<&crate::market_access::SettlementDeliveryInput<'_>>,
+        persist: impl FnOnce(&Envelope, &JournalRecord, CommitContext<'_>) -> Result<(), E>,
         trace: &mut Trace<'_>,
     ) -> Result<Result<Receipt, TxError>, E> {
         if env.world != self.world.scope.world() || env.branch != self.world.scope.branch() {
@@ -1102,7 +1378,21 @@ impl Engine {
             outcome,
             actions,
         };
-        persist(&env, &record)?;
+        // Build the compact retry summary before the durable callback. A conversion failure or
+        // allocation panic must happen before publication, never after a successful WAL commit.
+        let hot_record = HotJournalRecord::from_durable(&record);
+        let commit_context = prepared.as_ref().map_or_else(
+            |_| CommitContext::default(),
+            |prepared| CommitContext {
+                spatial_update_grant: prepared.spatial_update_grant,
+                spatial_permissions: prepared.spatial_permissions.as_deref(),
+                prior_spatial_permissions: prepared
+                    .spatial_permissions
+                    .as_ref()
+                    .and(self.spatial_permissions.as_ref()),
+            },
+        );
+        persist(&env, &record, commit_context)?;
         trace.summary.hook_succeeded = true;
         if let Ok(change) = prepared {
             let started = trace.start();
@@ -1110,7 +1400,7 @@ impl Engine {
             trace.end(Class::Apply, started, 0, 1, 0);
             trace.summary.applied = true;
         }
-        self.journal.push(record);
+        self.journal.push(hot_record);
         Ok(outcome)
     }
 
@@ -1274,6 +1564,8 @@ impl Engine {
         let mut exchange = self.world.exchange;
         let mut construction = self.world.construction;
         let mut town = self.world.town.map(|m| m.state);
+        let mut spatial_permissions: Option<workspace::SpatialPermissionLease> = None;
+        let mut spatial_update_grant = None;
         let mut town_summary = None;
         let mut background =
             workspace::BackgroundLease::acquire(&storage.background, &self.background)?;
@@ -1612,6 +1904,48 @@ impl Engine {
                         town.as_ref(),
                     )?;
                 }
+                Action::SpatialPermission { command } => {
+                    if env.actions.len() != 1 {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    let Caller::Account(actor) = caller else {
+                        return Err(TxError::Unauthorized);
+                    };
+                    let current = self
+                        .spatial_permissions
+                        .as_ref()
+                        .ok_or(TxError::InvalidOperation)?;
+                    let boundary = if matches!(
+                        command,
+                        crate::spatial_transport_permissions::SpatialPermissionCommand::Apply { .. }
+                    ) {
+                        let t = timeline.as_ref().ok_or(TxError::InvalidOperation)?;
+                        let at = t.progress.last_complete;
+                        let complete = t.progress.phase.is_none()
+                            && t.progress.target.is_none()
+                            && t.progress.at == at;
+                        let at = i64::try_from(at).map_err(|_| TxError::InvalidOperation)?;
+                        Some(
+                            crate::spatial_transport_permissions::CompletedDayBoundary::from_engine_timeline(
+                                self.world.scope.world(),
+                                self.world.scope.branch(),
+                                crate::units::GameTime::new(at)
+                                    .map_err(|_| TxError::InvalidOperation)?,
+                                complete,
+                            )
+                            .map_err(|_| TxError::InvalidOperation)?,
+                        )
+                    } else {
+                        None
+                    };
+                    let owner = &storage.spatial_permissions;
+                    let mut next = workspace::SpatialPermissionLease::take(owner)?;
+                    let grant = current
+                        .copy_and_apply_into(&mut next, actor, command, boundary)
+                        .map_err(|_| TxError::InvalidOperation)?;
+                    spatial_permissions = Some(next);
+                    spatial_update_grant = grant;
+                }
                 Action::TownSettle { profile_id } => {
                     if !matches!(caller, Caller::System) || env.actions.len() != 1 {
                         return Err(TxError::Unauthorized);
@@ -1670,6 +2004,22 @@ impl Engine {
                     }
                     let market = self.world.town.ok_or(TxError::InvalidOperation)?;
                     let proof = transport.ok_or(TxError::InvalidOperation)?;
+                    let expected_allocation_sha256 =
+                        if let Some(permissions) = self.spatial_permissions.as_ref() {
+                            let Some(first) = permissions.assets().first() else {
+                                return Err(TxError::InvalidOperation);
+                            };
+                            if first.current_profile_sha256 == [0; 32]
+                                || permissions.assets().iter().any(|asset| {
+                                    asset.current_profile_sha256 != first.current_profile_sha256
+                                })
+                            {
+                                return Err(TxError::InvalidOperation);
+                            }
+                            first.current_profile_sha256
+                        } else {
+                            market.profile.transport_allocation_sha256
+                        };
                     if market.profile.id != profile_id
                         || market
                             .profile
@@ -1693,8 +2043,7 @@ impl Engine {
                         || proof.proof_sha256 != proof_sha256
                         || proof.proof.schema != 1
                         || proof.proof.profile_id != profile_id
-                        || proof.proof.allocation_profile_sha256
-                            != market.profile.transport_allocation_sha256
+                        || proof.proof.allocation_profile_sha256 != expected_allocation_sha256
                         || proof.proof.generation != generation
                         || proof.proof.period_seconds != crate::timeline::DAY as u32
                         || proof.proof.world_id != self.world.scope.world()
@@ -3092,6 +3441,13 @@ impl Engine {
             .saturating_sub(self.timeline.backing().owned_bytes())
             + bg_heap(&background)
             + timeline.backing().owned_bytes();
+        // The authoritative rows remain live while the candidate is prepared. The candidate
+        // uses the reserved spare backing, so both fixed row sets count toward the peak.
+        let projected = projected.saturating_add(
+            spatial_permissions
+                .as_ref()
+                .map_or(0, |state| state.owned_capacity_bytes()),
+        );
         if projected > ENGINE_BYTE_BUDGET {
             return Err(TxError::WorkingLimit);
         }
@@ -3113,6 +3469,8 @@ impl Engine {
             region,
             construction,
             town,
+            spatial_permissions,
+            spatial_update_grant,
             accounts,
             stocks,
             resources,
@@ -3156,6 +3514,14 @@ impl Engine {
         self.world.construction = prepared.construction;
         if let (Some(world_town), Some(state)) = (&mut self.world.town, prepared.town) {
             world_town.state = state;
+        }
+        if let Some(mut state) = prepared.spatial_permissions {
+            std::mem::swap(
+                self.spatial_permissions
+                    .as_mut()
+                    .expect("spatial source validated"),
+                &mut *state,
+            );
         }
         self.world.revision = prepared.receipt.revision;
         std::mem::swap(&mut self.resources, &mut *prepared.resources);
@@ -4372,7 +4738,7 @@ fn prepare_construction(
     if candidate.operating_edge_id != 0 {
         match command {
             EngineCommand::Cancel if !candidate.recoverable_commands() => {
-                return Err(TxError::InvalidOperation)
+                return Err(TxError::InvalidOperation);
             }
             EngineCommand::AcceptInspection { accepted: true, .. } => {
                 let timeline = timeline.ok_or(TxError::InvalidOperation)?;
@@ -5223,6 +5589,7 @@ impl Action {
                     | crate::construction::EngineCommand::Work { .. }
             } | Self::RegionMigrate { .. }
                 | Self::EquityContribute { .. }
+                | Self::SpatialPermission { .. }
                 | Self::ReserveCapacity { .. }
         )
     }
@@ -6219,6 +6586,45 @@ mod tests {
             vec![Resource::new(1, 10).unwrap(), Resource::new(2, 10).unwrap()],
         )
         .unwrap()
+    }
+
+    #[test]
+    fn diagnose_spatial_permission_layout_without_claiming_capacity_acceptance() {
+        use crate::spatial_transport_permissions::SpatialPermissionState;
+
+        assert!(size_of::<HotJournalRecord>() < size_of::<JournalRecord>());
+
+        let (workspace_tables, workspace_air, workspace_controls) = workspace::capacity_inventory();
+        let inventory = crate::model_capacity::inventory();
+        eprintln!(
+            "SPATIAL_LAYOUT {{\"engine\":{},\"prepared\":{},\"spatial_state\":{},\"spatial_state_owned_max\":{},\"lease_state\":{},\"receipt\":{},\"durable_journal_record\":{},\"hot_journal_record\":{},\"hot_journal_rows_total\":{},\"max_receipts\":{},\"max_actions\":{},\"workspace_tables\":{workspace_tables},\"workspace_air\":{workspace_air},\"workspace_controls\":{workspace_controls},\"workspace_spatial_rows\":{},\"workspace_spatial_control\":{},\"model_engine_bytes\":{},\"model_prepared_bytes\":{},\"model_retained_workspace_bytes\":{},\"engine_budget\":{ENGINE_BYTE_BUDGET}}}",
+            size_of::<Engine>(),
+            size_of::<Prepared>(),
+            size_of::<SpatialPermissionState>(),
+            SpatialPermissionState::max_owned_capacity_bytes(),
+            size_of::<workspace::SpatialPermissionLease>(),
+            size_of::<Receipt>(),
+            size_of::<JournalRecord>(),
+            size_of::<HotJournalRecord>(),
+            MAX_RECEIPTS * size_of::<HotJournalRecord>(),
+            MAX_RECEIPTS,
+            MAX_ACTIONS,
+            SpatialPermissionState::max_owned_capacity_bytes(),
+            size_of::<std::sync::Mutex<Option<SpatialPermissionState>>>() + 256,
+            inventory.engine_bytes,
+            inventory.prepared_bytes,
+            inventory.retained_preparation_workspace_bytes,
+        );
+
+        let world = assemble(include_bytes!("../../../fixtures/m0-e0-opening.json")).unwrap();
+        let result = Engine::new(
+            world,
+            vec![Resource::new(1, 10).unwrap(), Resource::new(2, 10).unwrap()],
+        );
+        eprintln!(
+            "SPATIAL_LAYOUT_LEGACY_ENGINE_NEW {{\"result\":\"{}\"}}",
+            if result.is_ok() { "ok" } else { "rejected" }
+        );
     }
 
     fn construction_utility_engine(electricity_quantity: i64, water_quantity: i64) -> Engine {

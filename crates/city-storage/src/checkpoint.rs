@@ -19,11 +19,34 @@ mod retained;
 use retained::load_index;
 pub(super) use retained::{load, verify_archive};
 
+/// Hash the exact serde_json envelope bytes without materializing a second full JSON buffer
+/// while WAL frames, decoded receipt actions and the fixed receipt archive are live.
+fn envelope_digest(envelope: &mycity_core::transaction::Envelope) -> Result<[u8; 32], Error> {
+    use sha2::{Digest, Sha256};
+
+    struct HashWriter(Sha256);
+    impl std::io::Write for HashWriter {
+        fn write(&mut self, bytes: &[u8]) -> io::Result<usize> {
+            self.0.update(bytes);
+            Ok(bytes.len())
+        }
+
+        fn flush(&mut self) -> io::Result<()> {
+            Ok(())
+        }
+    }
+
+    let mut writer = HashWriter(Sha256::new());
+    serde_json::to_writer(&mut writer, envelope)?;
+    Ok(writer.0.finalize().into())
+}
+
 pub(super) fn verify_transport_proofs(
     dir: &Path,
     reference: &Reference,
     profile: Option<&mycity_core::market_access::TransportAllocationProfile>,
     allocation_hash: Option<[u8; 32]>,
+    catalog: Option<&super::spatial_transport_updates::SpatialTransportCatalog>,
     engine: &mycity_core::transaction::Engine,
     meta: &mut MetadataWorkspace,
 ) -> Result<(), Error> {
@@ -35,7 +58,7 @@ pub(super) fn verify_transport_proofs(
         for record in &meta.receipts {
             refs.push_record(record)?;
         }
-        refs.verify(dir, meta, engine, profile, allocation_hash)?;
+        refs.verify(dir, meta, engine, profile, allocation_hash, catalog)?;
         cursor = checkpoint.previous;
     }
     Ok(())
@@ -89,17 +112,132 @@ fn archive_bytes(dir: &Path) -> Result<u64, Error> {
     Ok(total)
 }
 impl Store {
+    /// Rehydrate full, durable hot receipts from the currently committed WAL segment. The
+    /// Engine retry window stores compact summaries only; checkpoint/archive records retain
+    /// the original `JournalRecord` bytes and action payloads.
+    fn load_hot_receipts(&mut self) -> Result<(), Error> {
+        let expected = self.engine.journal().len();
+        self.io.metadata.receipts.clear();
+        if expected == 0 {
+            if self.io.root.sequence != self.io.wal_base_sequence || self.io.root.wal_end != 0 {
+                return Err(Error::Invalid("hot_receipt_segment_boundary"));
+            }
+            return Ok(());
+        }
+        if expected > MAX_RECEIPTS
+            || self.io.root.sequence.checked_sub(self.io.wal_base_sequence) != Some(expected as u64)
+        {
+            return Err(Error::Invalid("hot_receipt_count"));
+        }
+        let path = self.io.dir.join(wal_name(self.io.root.segment));
+        if fs::symlink_metadata(&path)?.file_type().is_symlink() {
+            return Err(Error::Invalid("symlink_wal"));
+        }
+        let mut wal = OpenOptions::new().read(true).open(path)?;
+        if self.io.root.wal_end > wal.metadata()?.len() {
+            return Err(Error::Invalid("committed_wal_truncated"));
+        }
+        let mut buffers = wal::Buffers::new();
+        let mut position = 0u64;
+        let mut sequence = self.io.wal_base_sequence;
+        let mut chain = self.io.wal_base_chain.clone();
+        while position < self.io.root.wal_end {
+            if self.io.root.wal_end - position < 4 {
+                return Err(Error::Invalid("committed_header_truncated"));
+            }
+            let mut length_bytes = [0; 4];
+            wal.read_exact(&mut length_bytes)?;
+            let length = u32::from_le_bytes(length_bytes) as usize;
+            if length == 0
+                || length > FRAME_LIMIT
+                || self.io.root.wal_end - position < 4 + length as u64 + 32
+            {
+                return Err(Error::Invalid("committed_frame_length"));
+            }
+            let payload = &mut buffers.frame[..length];
+            wal.read_exact(payload)?;
+            let mut checksum = [0; 32];
+            wal.read_exact(&mut checksum)?;
+            let actual = wal::checksum(&length_bytes, payload);
+            if actual != checksum {
+                return Err(Error::Invalid("committed_frame_checksum"));
+            }
+            let entry = wal::decode(payload)?;
+            sequence = sequence
+                .checked_add(1)
+                .ok_or(Error::Invalid("sequence_overflow"))?;
+            if entry.sequence != sequence || entry.previous != chain {
+                return Err(Error::Invalid("committed_frame_chain"));
+            }
+            let mut normalized = mycity_core::canonical::FixedWriter::new(&mut buffers.record);
+            self.io
+                .canonical
+                .get_mut()
+                .workspace
+                .write(entry.record.get().as_bytes(), &mut normalized)
+                .map_err(Error::Model)?;
+            let record: JournalRecord = serde_json::from_slice(normalized.as_slice())?;
+            if record.operation_id != entry.envelope.operation_id
+                || record.expected_revision != entry.envelope.expected_revision
+                || record.payload_sha256 != envelope_digest(&entry.envelope)?
+            {
+                return Err(Error::Invalid("hot_receipt_wal_identity"));
+            }
+            if self.io.metadata.receipts.len() == self.io.metadata.receipts.capacity() {
+                return Err(Error::Invalid("hot_receipt_capacity"));
+            }
+            self.io.metadata.receipts.push(record);
+            chain = super::hex(&actual);
+            position += 4 + length as u64 + 32;
+        }
+        if position != self.io.root.wal_end
+            || sequence != self.io.root.sequence
+            || chain != self.io.root.wal_chain
+            || self.io.metadata.receipts.len() != expected
+            || self
+                .engine
+                .journal()
+                .iter()
+                .zip(&self.io.metadata.receipts)
+                .any(|(hot, durable)| !hot.matches_durable(durable))
+        {
+            return Err(Error::Invalid("hot_receipt_wal_mismatch"));
+        }
+        Ok(())
+    }
+
+    fn receipt_rows_from_hot(&mut self) -> Result<(), Error> {
+        let result = self.load_hot_receipts();
+        if result.is_err() {
+            self.io.poisoned = true;
+        }
+        result
+    }
+
     /// Read an original hot or checkpointed receipt without re-executing it.
     /// Host-local diagnostic API; this does not grant mutation authority.
     pub fn receipt(&mut self, operation: u64) -> Result<Option<JournalRecord>, Error> {
         self.engine()?;
-        if let Some(record) = self
+        if self
             .engine
             .journal()
             .iter()
-            .find(|r| r.operation_id == operation)
+            .any(|r| r.operation_id == operation)
         {
-            return Ok(Some(*record));
+            let result = self.load_hot_receipts().and_then(|()| {
+                self.io
+                    .metadata
+                    .receipts
+                    .iter()
+                    .find(|r| r.operation_id == operation)
+                    .copied()
+                    .map(Some)
+                    .ok_or(Error::Invalid("hot_receipt_missing"))
+            });
+            if result.is_err() {
+                self.io.poisoned = true;
+            }
+            return result;
         }
         self.lookup_archived(operation)
     }
@@ -150,6 +288,7 @@ impl Store {
         limit: usize,
     ) -> Result<(Vec<serde_json::Value>, usize), Error> {
         let result = (|| {
+            self.receipt_rows_from_hot()?;
             let total = usize::try_from(self.io.root.sequence)
                 .map_err(|_| Error::Invalid("query_sequence_range"))?;
             if offset > total {
@@ -157,7 +296,7 @@ impl Store {
             }
             let mut rows = Vec::with_capacity(limit);
             let mut skipped = offset;
-            for (i, record) in self.engine.journal().iter().enumerate().rev() {
+            for (i, record) in self.io.metadata.receipts.iter().enumerate().rev() {
                 if skipped > 0 {
                     skipped -= 1;
                     continue;
@@ -165,7 +304,7 @@ impl Store {
                 if rows.len() == limit {
                     break;
                 }
-                rows.push(serde_json::json!({"committed_sequence":self.io.root.sequence-self.engine.journal().len()as u64+i as u64+1,"record":record}));
+                rows.push(serde_json::json!({"committed_sequence":self.io.root.sequence-self.io.metadata.receipts.len()as u64+i as u64+1,"record":record}));
             }
             if self.io.root.checkpoint_layout == 2 {
                 checkpoint_v2::rows(
@@ -244,6 +383,7 @@ impl Store {
         // Arm before any observer or persistent publication. Unwinding cannot
         // leave an apparently usable Store with a newer durable CURRENT.
         self.io.poisoned = true;
+        self.load_hot_receipts()?;
         let mut publication_started = false;
         let result = if self.io.root.checkpoint_layout == 2 {
             self.checkpoint_v2(emergency, observer, &mut publication_started)
@@ -297,7 +437,7 @@ impl Store {
                 chain: &self.io.root.wal_chain,
                 genesis_sha256: &self.io.root.genesis_sha256,
                 engine: meta.engine.as_slice(),
-                receipts: self.engine.journal(),
+                receipts: &meta.receipts,
                 previous: self.io.root.checkpoint.as_ref(),
             };
             meta.file.encode(&cp, CHECKPOINT_LIMIT as usize)?;
@@ -375,6 +515,8 @@ impl Store {
                 observer(CheckpointPoint::CurrentRenamed)
             })?;
             observer(CheckpointPoint::CurrentSynced)?;
+            self.io.wal_base_sequence = root.sequence;
+            self.io.wal_base_chain = root.wal_chain.clone();
             self.io.root = root;
             self.io.wal = new_wal;
             self.engine.retire_checkpointed_journal();
@@ -386,5 +528,49 @@ impl Store {
             observer(CheckpointPoint::Retired)?;
             Ok(())
         })()
+    }
+}
+
+#[cfg(test)]
+mod envelope_digest_tests {
+    use super::*;
+
+    #[test]
+    fn streamed_max_action_envelope_hash_matches_legacy_vec_bytes() {
+        use mycity_core::transaction::{Action, Envelope, MAX_ACTIONS};
+
+        let action = Action::SpatialPermission {
+            command:
+                mycity_core::spatial_transport_permissions::SpatialPermissionCommand::Request {
+                    expected_state_revision: 1,
+                    request: mycity_core::spatial_transport_permissions::SpatialUpdateRequest {
+                        request_id: 7,
+                        applicant_account: 2,
+                        executor_account: 3,
+                        asset_id: 5,
+                        operation:
+                            mycity_core::spatial_transport_permissions::SpatialAccessOperation::Close,
+                        surface:
+                            mycity_core::spatial_transport_permissions::SpatialAccessSurface::Road,
+                        edge_id: 9,
+                        expected_revision: 1,
+                        candidate_profile_sha256: [0xA5; 32],
+                        effective_time: mycity_core::units::GameTime::new(86_400).unwrap(),
+                        parent_profile_sha256: [0x5A; 32],
+                    },
+                },
+        };
+        let envelope = Envelope {
+            world: 1,
+            branch: 1,
+            operation_id: 99,
+            expected_revision: 4,
+            actions: vec![action; MAX_ACTIONS],
+        };
+        let legacy_bytes = super::super::json(&envelope).unwrap();
+        assert_eq!(
+            envelope_digest(&envelope).unwrap(),
+            super::super::digest(&legacy_bytes),
+        );
     }
 }

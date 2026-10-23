@@ -1,0 +1,123 @@
+{
+  "source_worktree": "/Users/frankqin/dev/MyCity-core-work/spatial-runtime-update-current",
+  "destination": "/Users/frankqin/dev/MyCity",
+  "source_base": "9d5ce7c7a9831eff8088dd0dcd6770cc9eaacfa7",
+  "main_base": "93be71bb4a0fcd2f531af61f2d902b2a984e37ee",
+  "files": [
+    {
+      "path": "crates/city-core/src/lib.rs",
+      "before_sha256": "0fe4f40d913284484cc2a713dcabfd431357759c06e7fe447dab1cb419dd546d",
+      "after_sha256": "40132f4f682700148344ae75050b88f52d61c55ec314416c0515b6c7d6774c49"
+    },
+    {
+      "path": "crates/city-core/src/model_capacity.rs",
+      "before_sha256": "527ce2e95ce47cb677b987811145ff74f97f99085c9734e3ffc56bda1ff2d828",
+      "after_sha256": "06fe70abbce85cf7874d8369b7e61c1e0bff1aa0e0850ebbfe43fa2440f94ab9"
+    },
+    {
+      "path": "crates/city-core/src/town_economy.rs",
+      "before_sha256": "48ad6a65473a5f99846eab64cb73324d613919a3a433e1cd018d9adf35de53f6",
+      "after_sha256": "b7a82cc4edebff333d0873b4a073fff8bef7e07316c86c32d67457c68dbc662d"
+    },
+    {
+      "path": "crates/city-core/src/transaction.rs",
+      "before_sha256": "bf57b80a55c13c001c1b314d6b10ff4bd88eebd5990bc75825fb006f5b77cfe5",
+      "after_sha256": "d94fdf31f0031a5d1f09294513be85b61f634d10de3fb0b6c394c4b555dc6a0a"
+    },
+    {
+      "path": "crates/city-core/src/transaction/slots.rs",
+      "before_sha256": "13d00080e0f7983e9a1e6d5e45502893b894879e9c8cb59feff667883520fdc4",
+      "after_sha256": "07931cb0b2846043c949e1493a49412375353db475feb1d4f14df2613fd10bc1"
+    },
+    {
+      "path": "crates/city-core/src/transaction/workspace.rs",
+      "before_sha256": "4bbff0a6d89d11405682e4f018fbc635741ee1762fe340b34f49200992fbf371",
+      "after_sha256": "f345907e815ebd305fd0430e119c1bb71caba33237c9c0a6e1031ba9b76a38a9"
+    },
+    {
+      "path": "crates/city-storage/src/checkpoint.rs",
+      "before_sha256": "858f26c725e0ba8898c1056091d77f8e887d3eac34758b77dbdcf5c824d63082",
+      "after_sha256": "b06f4b56c77ea5ec9fb1d833b4ed24a7be77f0e0ff4d1d995e8f1f7acb2910d8"
+    },
+    {
+      "path": "crates/city-storage/src/checkpoint/receipt_decode.rs",
+      "before_sha256": "ea18724d7f294ab8269b1e93e68ca924047b0f87e214ffb8bb3b7d8fafb31007",
+      "after_sha256": "eb8f1c99d577dab084074c11fd638c624589732a07601d8916e133582020d720"
+    },
+    {
+      "path": "crates/city-storage/src/checkpoint_v2.rs",
+      "before_sha256": "5d7bd0f9c29169529c1d9c1e160465d4cb85b055c23d7032213713c484cf162f",
+      "after_sha256": "cb2c109e3a7bd1ed3363b70c157abdd58ee9f4079cace842ee242edb81da1fff"
+    },
+    {
+      "path": "crates/city-storage/src/genesis.rs",
+      "before_sha256": "575e0f668feacc53c57487d82cedc7ad20f5295628fca413d3884cc10f822444",
+      "after_sha256": "eb08f0e555861bbb9a33c33e74211c9afdc033a4c05c69245aecdc1eeb6a0e2c"
+    },
+    {
+      "path": "crates/city-storage/src/lib.rs",
+      "before_sha256": "485aeecbd1b8cbd804f0b57ab6f223aa50aed217f610ebec55ccf2e48f22d5cb",
+      "after_sha256": "a9a937e37f29e36853dfbe722f9ddd05db92b34dd49a41bd302989e45f25ebe0"
+    },
+    {
+      "path": "crates/city-storage/src/outbox.rs",
+      "before_sha256": "6bf991fda0ae8fbc840d3ba841d528a193491913b61b1ff5619ba6a9a28b0e81",
+      "after_sha256": "dc1b43dcce7cbec6c77eaa4e9cb04cbba55925db496e01b4ee2c27d6d41607b5"
+    },
+    {
+      "path": "crates/city-storage/src/town_transport.rs",
+      "before_sha256": "3028ec658e8ea0188162b8ea244d8b442ee324ab6d58e9d2c0cbb02231427a25",
+      "after_sha256": "d9bb6ab40f1ec17cef956bb1ad52fc8018a3082746e6583928f9a37ddc026f00"
+    },
+    {
+      "path": "crates/city-storage/src/wal.rs",
+      "before_sha256": "80dc217c8d8b751e2df8a5cca73469a1f6e7f7139209a9330250f64265dab0eb",
+      "after_sha256": "9047669713dbee754a224cc5a9c04c9bf76a0cbad0c97e7e82901eae58554694"
+    },
+    {
+      "path": "crates/city-storage/tests/metadata.rs",
+      "before_sha256": "648a7b2770a0a95f2e8a0740190e40e87b0c59093befb1a19e7c69a8345d54b2",
+      "after_sha256": "cb08402c13da4fc3b8122754b6e87e2a5930f2b207367a60e2c490901267932d"
+    },
+    {
+      "path": "crates/city-core/src/spatial_transport_permissions.rs",
+      "before_sha256": null,
+      "after_sha256": "5d56f90ec4f892da27ed121919c8364a64358103001d2d534ba1a59a2716cc44"
+    },
+    {
+      "path": "crates/city-storage/examples/core_joint_equity_spatial.rs",
+      "before_sha256": null,
+      "after_sha256": "88bea1cf4b12c9ac1961320e84c160b5b9612101e2e1690d03eee4fdcdb78503"
+    },
+    {
+      "path": "crates/city-storage/examples/spatial_transport_scenario.rs",
+      "before_sha256": null,
+      "after_sha256": "3a58dabe7e7a8fd19562888b29bdd34060c657b27d48e3fea52ea82b214069f5"
+    },
+    {
+      "path": "crates/city-storage/examples/spatial_transport_updates.rs",
+      "before_sha256": null,
+      "after_sha256": "79f0504506f67e00b74a950dd6a6adbbec96cbab4fc55b81d20dd22a8f908632"
+    },
+    {
+      "path": "crates/city-storage/src/spatial_transport_updates.rs",
+      "before_sha256": null,
+      "after_sha256": "61cf5d85183e54856237982a12c7d777fe00c69438f62b32fdb113f6a51078ff"
+    },
+    {
+      "path": "crates/city-storage/tests/spatial_transport_updates.rs",
+      "before_sha256": null,
+      "after_sha256": "4d798cdf03f6b24906f5769eb3961b1e17049bcbf59a4ccec883b6aa9dea5d78"
+    },
+    {
+      "path": "docs/core-spatial-runtime-contract.md",
+      "before_sha256": null,
+      "after_sha256": "42d0e8a334ecccdb717c8a4eaedcd165517ab3c1b945ea34688a781258f3549d"
+    },
+    {
+      "path": "docs/spatial-transport-scenario-cli.md",
+      "before_sha256": null,
+      "after_sha256": "34306e39907dbe5dbb148e9a77d0d136e8aa45f5142e78b5f9eadbbe95afdbb1"
+    }
+  ]
+}

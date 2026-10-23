@@ -1,7 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.144`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.147`。已开始Rust模型与headless CLI，当前不做UI。
 
+v0.5.147完成[有限地面 WALK 道路/出入口开闭与 D+F 同存档联合运行](docs/evidence/core-spatial-runtime-147/STATUS.md)：同源237项Rust测试、strict/fmt、实际CLI、独立进程恢复和真实v144旧存档副本验证通过。几何改造、E接线、原M0性能门及真实16GB仍未完成或未测。
 v0.5.144完成[有限实缴股权、可信税费、分红和清算闭环](docs/evidence/core-equity-runtime-144/STATUS.md)：最终同源212项Rust测试、strict/fmt、实际CLI及独立检查点核账通过，政府实收分红已再次支出。原M0失败和16GB未测保持；F/E运行时接入继续推进。[实际agent分工与共享核心负责人](docs/core-task-dispatch-current.md)已固定，当前不展开UI、GPU、语音或AgentKit。
 
 v0.5.140归档[固定 full 联合正式尝试的提前失败](docs/evidence/m0-t13a-joint-formal-01/STATUS.md)：实际 1,226 秒后系统压力触发原保护，8h 未完成；normal footprint 仍超门且存在外部编译污染。原件保留，真实16GB仍未测，不宣布M0通过。

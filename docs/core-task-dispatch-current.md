@@ -25,3 +25,60 @@ Cargo与重测试由root排程，统一 `/Volumes/HP P900/dev/MyCity/target`；w
 各线分批交接源码路径、具体接口、反例、CLI/可执行场景、冷恢复原件、CPU/内存/盘增量和已知限制；补权威IO、关键事件、稳定区间、等价合批、非线性阈值及资源归属，保留参考事件路径。新动态粒度实验不替代原M0负载/门槛，真实16GB门保持not_run。大数量字段计入多份候选和恢复放大。
 
 每批root实际验证后统一提交/合并、唯一递增annotated tag并原子推送核远端。阶段结束先查占用/后续依赖，再清理明确可重建文件；完整恢复原件和故障/验收证据不以hash替代。当前各线未验证部分均不得报告完成。
+
+## v144发布后的增量验证（未发布候选）
+
+D已经在main v0.5.144提交并核验远端。root随后复用同一target对候选逐批运行：
+M0的213权限传递两测、214真实macOS读取校验一测通过，215 fresh主exe构建和216 embedded source核验通过。
+221隔离短测实际失败：controller读取Applied回执路径错误，20秒未找到初始state；尚未进入provider物理生命周期。
+真实state存在于exercise/layout/r07-state.json，clock交换和layout扫描已进行。修正路径后才具备另开唯一目录的条件，
+不改旧失败收据，不将该结果记为模型退映射失败或性能通过。
+
+E的217首次独立组件17项中15过2失败；修复首期日历边界与反例fixture后，218同类17项全部通过。
+这仍只是housing组件，不是租金实际入账或Store恢复通过；共享Timeline原Claim接线未完成。
+F的库在220/222已检查到后续test/example阶段，示例与联合场景仍在收口；所有新增恢复背板及持久篡改反例待实际测试。
+对应不可变源码ZIP、日志、实际测试exe、失败目录与JSON汇总保留在外置work/construction-utilities-current-01。
+root已接入单Store D+F联合CLI候选，当前仍未运行，不把独立场景合称联合通过。
+
+## 已登记的GitHub交接（保持原派工）
+
+在自然工作边界对齐[总览 #2](https://github.com/TekesApps/MyCity/issues/2)：
+M0 [#20](https://github.com/TekesApps/MyCity/issues/20)，D [#10](https://github.com/TekesApps/MyCity/issues/10)，
+F [#3](https://github.com/TekesApps/MyCity/issues/3)/[#6](https://github.com/TekesApps/MyCity/issues/6)，
+E [#4](https://github.com/TekesApps/MyCity/issues/4)，联合场景 [#21](https://github.com/TekesApps/MyCity/issues/21)。
+这是现有工作登记，不重开已完成D里程碑、不新增重复agent。其他模型及校准issue不自动取得实现或测量窗口；
+参考设计PR #1尚未合并main，不把设计验收作为实现通过。main当前发布仍为v144，其他分支可能消耗后续tag，
+下次发布须重新核对唯一递增版本。
+
+226布局诊断实测旧世界Engine owned=5,305,672B，超4,194,304B；JournalRecord=3,864B×1,024，
+占3,956,736B。新增Action宽度在每条16个槽中放大，是主因；空间active/spare为0，不能靠Box一个136B头解决。
+诊断测试退出0仅说明取得数据，不是构造/业务预算通过。225核心171项127过44失败，存储测试未执行。
+writer开始分离紧凑驻留日志与完整持久命令，原容量/重放/来源/检查点约束不降低。
+227/short02已读到初始回执但controller采样API不匹配而失败；清理回执确认监督进程-2退出、没有本任务残留。
+M0作者先做实际采样API契约预检，再冻结下一版控制目录；不盲重跑或宣称物理通过。
+
+## 当前验证边界（232—235）
+
+232 同源 release 实测：core 173/173、storage lib 27/27。Action 恢复为120B，原128B上限未放宽；
+紧凑日志2200B×1024，完整持久回执3352B，Engine诊断owned 3,605,136B；这不是全进程或共同8MiB门通过。
+233/235 的F Store测试均4/5；1025次实际提交跨过两次512自动归档，冷启动可读原成功/失败完整回执，
+Store owned约41.79MB，小于自身64MiB。剩余场景已越过交易断言，失败在篡改反例读取root检查点格式；仍须修复并重跑，不能报F通过。
+234 housing组件19/19实测通过，包括同一原Claim跨月应计、保留最早欠期、部分工资支付和溢出拒绝。
+这仍不包含Engine/Timeline/Store实际接线；E不能据此完成。
+M0 short03预检因外部编译器正常拒绝，model未启动，退出0不算性能通过。原normal残差仍未解决，8小时与真实16GB保持not_run。
+所有失败/成功原件和实际exe保留外置 work/construction-utilities-current-01；没有恢复原件被hash替代或删除。
+
+GitHub进一步拆分入口为 [#23](https://github.com/TekesApps/MyCity/issues/23)。当前既有工作映射：
+F有限runtime [#25](https://github.com/TekesApps/MyCity/issues/25)、E住房租金 [#26](https://github.com/TekesApps/MyCity/issues/26)、
+M0 normal/长跑 #112/#113、同Store联合 #115。索引与issue覆盖不表示实现完成，不自动开启新任务或第二测量线。
+
+## v147有限阶段发布
+
+主线255 strict、263 fmt、256组合237测试及258/259实际CLI通过；260独立进程恢复联合世界一致，
+262新代码打开真实v144 run209完整副本，现金/分红一致且旧原件未改。Advisor接受此有限发布。
+范围与资源边界见[完整证据](evidence/core-spatial-runtime-147/STATUS.md)。不是完整F或M0通过。
+E新offer组件253的22项实际通过，writer已在原F树开始真实租约/原Timeline租金接线；不是Store验收。
+F domain另在原spatial-transport-current树补几何候选，尚未导出/实测/授权发布。M0 reader栈候选仍未测。
+
+外部授权任务#31/#27/#96的源码补丁交接已完整复制到外置work/issue-31-27-96-source-handoff-20261023，
+其原工作树/源码保留；未apply/构建/测试，不打断当前F/E/M0窗口，也不视为功能完成。

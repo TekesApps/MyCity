@@ -69,11 +69,42 @@ impl ArchivedProofRefs {
         engine: &Engine,
         profile: Option<&TransportAllocationProfile>,
         allocation_hash: Option<[u8; 32]>,
+        catalog: Option<&super::spatial_transport_updates::SpatialTransportCatalog>,
     ) -> Result<(), Error> {
         for reference in &self.0 {
-            let profile = profile.ok_or(Error::Invalid("town_transport_profile_missing"))?;
-            let allocation_hash =
-                allocation_hash.ok_or(Error::Invalid("town_transport_profile_missing"))?;
+            let (profile, allocation_hash) = if let Some(catalog) = catalog {
+                let scope = engine.world().view().scope;
+                if catalog.profile_id != reference.profile_id
+                    || catalog.world_id != scope.world()
+                    || catalog.branch_id != scope.branch()
+                {
+                    return Err(Error::Invalid("town_transport_archive_profile"));
+                }
+                let hash = catalog
+                    .profile_sha256_for_service_day(reference.service_day)
+                    .map_err(|_| Error::Invalid("town_transport_catalog_service_day"))?;
+                let market = engine
+                    .world()
+                    .view()
+                    .town
+                    .ok_or(Error::Invalid("town_transport_market_missing"))?;
+                let profile = read_allocation_for_settlement(
+                    dir,
+                    metadata,
+                    &hash,
+                    catalog.world_id,
+                    catalog.branch_id,
+                    market.profile.id,
+                )?;
+                (profile, hash)
+            } else {
+                (
+                    profile
+                        .cloned()
+                        .ok_or(Error::Invalid("town_transport_profile_missing"))?,
+                    allocation_hash.ok_or(Error::Invalid("town_transport_profile_missing"))?,
+                )
+            };
             let proof = read_proof(dir, metadata, reference.proof_sha256)?;
             if reference.profile_id != profile.market_profile_id {
                 return Err(Error::Invalid("town_transport_archive_profile"));
@@ -81,7 +112,7 @@ impl ArchivedProofRefs {
             verify_proof_matches_allocation(
                 engine,
                 &proof,
-                profile,
+                &profile,
                 allocation_hash,
                 reference.proof_sha256,
                 reference.service_day,
@@ -98,6 +129,7 @@ pub(super) fn verify_latest_market_cursor(
     metadata: &mut MetadataWorkspace,
     profile: Option<&TransportAllocationProfile>,
     allocation_hash: Option<[u8; 32]>,
+    catalog: Option<&super::spatial_transport_updates::SpatialTransportCatalog>,
 ) -> Result<(), Error> {
     let Some(market) = engine.world().view().town else {
         if profile.is_some() || allocation_hash.is_some() {
@@ -124,9 +156,6 @@ pub(super) fn verify_latest_market_cursor(
     {
         return Err(Error::Invalid("town_transport_checkpoint_unbound_cursor"));
     }
-    let profile = profile.ok_or(Error::Invalid("town_transport_profile_missing"))?;
-    let allocation_hash =
-        allocation_hash.ok_or(Error::Invalid("town_transport_profile_missing"))?;
     if receipt.issued_day != market.state.settled_day
         || receipt.issued_generation != market.state.settled_day
         || receipt.consumed_generation != market.state.settled_day
@@ -135,11 +164,38 @@ pub(super) fn verify_latest_market_cursor(
     {
         return Err(Error::Invalid("town_transport_checkpoint_cursor"));
     }
+    let (profile, allocation_hash) = if let Some(catalog) = catalog {
+        if catalog.profile_id != market.profile.id
+            || catalog.world_id != engine.world().view().scope.world()
+            || catalog.branch_id != engine.world().view().scope.branch()
+        {
+            return Err(Error::Invalid("town_transport_catalog_binding"));
+        }
+        let hash = catalog
+            .profile_sha256_for_service_day(receipt.issued_day)
+            .map_err(|_| Error::Invalid("town_transport_catalog_service_day"))?;
+        let profile = read_allocation_for_settlement(
+            dir,
+            metadata,
+            &hash,
+            catalog.world_id,
+            catalog.branch_id,
+            catalog.profile_id,
+        )?;
+        (profile, hash)
+    } else {
+        (
+            profile
+                .cloned()
+                .ok_or(Error::Invalid("town_transport_profile_missing"))?,
+            allocation_hash.ok_or(Error::Invalid("town_transport_profile_missing"))?,
+        )
+    };
     let proof = read_proof(dir, metadata, receipt.issued_proof_sha256)?;
     verify_proof_matches_allocation(
         engine,
         &proof,
-        profile,
+        &profile,
         allocation_hash,
         receipt.issued_proof_sha256,
         receipt.issued_day,
@@ -348,8 +404,8 @@ pub(super) fn read_allocation(
     )
 }
 
-/// Runtime settlement reads the same genesis-hash-bound profile validated at Store open. The
-/// Engine resolver performs the one required Assignment verification for the day's settlement.
+/// Runtime settlement reads the immutable profile version selected by the committed catalog's
+/// service-day boundary. The Engine resolver performs one Assignment verification for that day.
 pub(super) fn read_allocation_for_settlement(
     dir: &Path,
     metadata: &mut MetadataWorkspace,
@@ -368,6 +424,23 @@ pub(super) fn read_allocation_for_settlement(
         return Err(Error::Invalid("town_transport_allocation_hash_or_limit"));
     }
     validate_allocation_scope(decode_allocation(bytes)?, world_id, branch_id, profile_id)
+}
+
+/// Bounded raw-byte read for immutable spatial profile revision lookup. Preserving these bytes
+/// matters because historical proofs name the hash of the originally admitted JSON encoding.
+pub(super) fn read_verified_allocation_bytes(
+    dir: &Path,
+    hash: &[u8; 32],
+) -> Result<Vec<u8>, Error> {
+    let bytes = read_file(&dir.join(name(ALLOCATION_PREFIX, hash)), PROOF_LIMIT as u64)?;
+    if super::digest(&bytes) != *hash
+        || bytes.len() > mycity_core::market_access::TRANSPORT_PROOF_SCHEMA_MAX_BYTES
+    {
+        return Err(Error::Invalid("town_transport_allocation_hash_or_limit"));
+    }
+    // The caller decodes once through `validate_allocation`; keep this helper focused on the
+    // bounded file/hash check so raw bytes and original digest are not normalized.
+    Ok(bytes)
 }
 
 pub(super) fn write_immutable(
@@ -495,8 +568,9 @@ impl Store {
         self.settle_town_market_with_observer(operation_id, |_| Ok(()))
     }
 
-    /// Issue the next fixed-profile transport proof for the authoritative complete timeline
-    /// day, persist that exact immutable proof, then settle through the existing Engine writer.
+    /// Issue the next transport proof using the immutable profile version selected for the
+    /// authoritative complete Timeline service day, then persist and settle it through the
+    /// existing Engine writer.
     pub fn settle_town_market_with_observer(
         &mut self,
         operation_id: u64,
@@ -525,14 +599,17 @@ impl Store {
             );
         }
         self.engine()?;
+        let active_profile_hash = self.current_transport_profile_hash()?;
         let view = self.engine.world().view();
         let market = view
             .town
             .ok_or(Error::Invalid("town_transport_market_missing"))?;
-        let allocation_hash = market.profile.transport_allocation_sha256;
-        if allocation_hash.iter().all(|byte| *byte == 0) {
-            return Err(Error::Invalid("town_transport_profile_unbound"));
-        }
+        let settled_day = market.state.settled_day;
+        let last_transport = market.state.last_transport;
+        let profile_id = market.profile.id;
+        let world_id = view.scope.world();
+        let branch_id = view.scope.branch();
+        let revision = view.revision;
         let timeline = self
             .engine
             .timeline()
@@ -546,19 +623,24 @@ impl Store {
             return Err(Error::Invalid("town_transport_day_incomplete"));
         }
         let service_day = at / mycity_core::timeline::DAY;
-        if market.state.settled_day.checked_add(1) != Some(service_day) {
+        let catalog = self.spatial_transport_catalog()?;
+        let allocation_hash = if let Some(catalog) = catalog.as_ref() {
+            catalog
+                .profile_sha256_for_service_day(service_day)
+                .map_err(|_| Error::Invalid("town_transport_catalog_service_day"))?
+        } else {
+            active_profile_hash
+        };
+        if allocation_hash == [0; 32] {
+            return Err(Error::Invalid("town_transport_profile_unbound"));
+        }
+        if settled_day.checked_add(1) != Some(service_day) {
             return Err(Error::Invalid("town_transport_day_not_next"));
         }
-        let generation = market
-            .state
-            .last_transport
+        let generation = last_transport
             .map_or(0, |receipt| receipt.consumed_generation)
             .checked_add(1)
             .ok_or(Error::Invalid("town_transport_generation_overflow"))?;
-        let profile_id = market.profile.id;
-        let world_id = view.scope.world();
-        let branch_id = view.scope.branch();
-        let revision = view.revision;
         let profile = read_allocation_for_settlement(
             &self.io.dir,
             &mut self.io.metadata,

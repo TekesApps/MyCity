@@ -76,7 +76,10 @@ fn prepared_metadata_is_consumed_and_reused_for_both_formats_save_archive_query_
             .model
             .unwrap();
         let image = s.engine().unwrap().export_checkpoint().unwrap();
-        let records = s.engine().unwrap().journal().to_vec();
+        let records = vec![
+            s.receipt(1).unwrap().unwrap(),
+            s.receipt(2).unwrap().unwrap(),
+        ];
         s.checkpoint().unwrap();
         if !v2 {
             let current: serde_json::Value =
@@ -166,7 +169,7 @@ fn original_legacy_checkpoint_with_large_ignored_receipt_data_and_positional_hea
         let e = movement(&s, 91);
         s.execute(Caller::System, e.clone()).unwrap().model.unwrap();
         let expected = s.engine().unwrap().export_checkpoint().unwrap();
-        let expected_record = serde_json::to_value(s.engine().unwrap().journal()[0]).unwrap();
+        let expected_record = serde_json::to_value(s.receipt(91).unwrap().unwrap()).unwrap();
         s.checkpoint().unwrap();
         drop(s);
         let world = temp.world();

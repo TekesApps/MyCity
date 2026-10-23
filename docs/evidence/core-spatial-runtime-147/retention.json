@@ -1,0 +1,63 @@
+{
+  "kind": "full-byte immutable source ZIP hardlink deduplication; no recovery file deleted",
+  "lsof_open_handles": [],
+  "mycity_runtime_comm_matches": [],
+  "canonical": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/257-main-cli-build/source.zip",
+  "files": [
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/255-main-strict/source.zip",
+      "reason": "completed same-source round; byte-identical immutable ZIP; every source/dependency byte remains accessible at every original path",
+      "round": "255-main-strict",
+      "evidence_directory": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/255-main-strict",
+      "sha256": "2c0c942bab8dd39a499b306baf3541221264c51508312f4ad204451075cd2662"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/256-main-functional/source.zip",
+      "reason": "completed same-source round; byte-identical immutable ZIP; every source/dependency byte remains accessible at every original path",
+      "round": "256-main-functional",
+      "evidence_directory": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/256-main-functional",
+      "sha256": "2c0c942bab8dd39a499b306baf3541221264c51508312f4ad204451075cd2662"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/258-main-spatial-cli/source.zip",
+      "reason": "completed same-source round; byte-identical immutable ZIP; every source/dependency byte remains accessible at every original path",
+      "round": "258-main-spatial-cli",
+      "evidence_directory": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/258-main-spatial-cli",
+      "sha256": "2c0c942bab8dd39a499b306baf3541221264c51508312f4ad204451075cd2662"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/259-main-joint-cli/source.zip",
+      "reason": "completed same-source round; byte-identical immutable ZIP; every source/dependency byte remains accessible at every original path",
+      "round": "259-main-joint-cli",
+      "evidence_directory": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/259-main-joint-cli",
+      "sha256": "2c0c942bab8dd39a499b306baf3541221264c51508312f4ad204451075cd2662"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/260-main-joint-fresh-process/source.zip",
+      "reason": "completed same-source round; byte-identical immutable ZIP; every source/dependency byte remains accessible at every original path",
+      "round": "260-main-joint-fresh-process",
+      "evidence_directory": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/260-main-joint-fresh-process",
+      "sha256": "2c0c942bab8dd39a499b306baf3541221264c51508312f4ad204451075cd2662"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/262-main-v144-fresh-process/source.zip",
+      "reason": "completed same-source round; byte-identical immutable ZIP; every source/dependency byte remains accessible at every original path",
+      "round": "262-main-v144-fresh-process",
+      "evidence_directory": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/262-main-v144-fresh-process",
+      "sha256": "2c0c942bab8dd39a499b306baf3541221264c51508312f4ad204451075cd2662"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/263-main-final-fmt/source.zip",
+      "reason": "completed same-source round; byte-identical immutable ZIP; every source/dependency byte remains accessible at every original path",
+      "round": "263-main-final-fmt",
+      "evidence_directory": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/263-main-final-fmt",
+      "sha256": "2c0c942bab8dd39a499b306baf3541221264c51508312f4ad204451075cd2662"
+    }
+  ],
+  "file_allocated_before_bytes": 40271872,
+  "file_allocated_after_bytes": 5033984,
+  "file_allocated_reduction_bytes": 35237888,
+  "volume_available_observed_delta_bytes": 35155968,
+  "available_delta_attribution": "observed only, not claimed exclusive APFS/other-task savings",
+  "retained": "all full source/dependency bytes, every original ZIP path, executables, logs, receipts, failure evidence, complete restore worlds; shared target needed by E/M0 and retained"
+}

@@ -1,0 +1,12 @@
+{
+  "source_sha256": "7370a6f2f2b02658de89b3046057e7993e0464ba46d4fdccfc1e6efedc71b9b3",
+  "source_files": 279,
+  "fixed_input_files": 291,
+  "binary": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/242-spatial-joint-cli-build/executables/a31e009289fb6549b67c3e9480e4733d12668258d707c66227f4794bb403e0e9/spatial_transport_scenario",
+  "binary_sha256": "a31e009289fb6549b67c3e9480e4733d12668258d707c66227f4794bb403e0e9",
+  "source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/242-spatial-joint-cli-build/source.zip",
+  "source_zip_sha256": "0c1bff948fdce0f99079b050674fdd3a3423132584cdabd6fc4b61f28122f194",
+  "source_identity_method": "build.rs path-string sort and framed UTF-8 path/length/content hashing; archive hash checked",
+  "storage": "external HP P900 USB/APFS SSD",
+  "embedded_source_check": "not performed for examples"
+}

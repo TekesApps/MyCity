@@ -6,7 +6,7 @@ use crate::{
     background::SOURCE_LIMIT,
     timeline::{Claim, ClaimSourceRecord, Payroll, CLAIM_LIMIT, MAX_CLAIM_SOURCES, PAYROLL_LIMIT},
     transaction::{
-        preparation_workspace_capacity, prepared_header_bytes, Engine, JournalRecord, Lease,
+        preparation_workspace_capacity, prepared_header_bytes, Engine, HotJournalRecord, Lease,
         Resource, MAX_LEASES, MAX_RECEIPTS, MAX_RESOURCES,
     },
 };
@@ -122,8 +122,13 @@ pub fn inventory() -> Inventory {
         Part::new("opening_sources", MAX_SOURCES, size_of::<OpeningSource>()),
         Part::new("resources", MAX_RESOURCES, size_of::<Resource>()),
         Part::new("leases", MAX_LEASES, size_of::<Option<Lease>>()),
-        Part::new("hot_journal", MAX_RECEIPTS, size_of::<JournalRecord>()),
+        Part::new("hot_journal", MAX_RECEIPTS, size_of::<HotJournalRecord>()),
     ];
+    engine.push(Part::new(
+        "spatial_permission_state_fixed_rows",
+        1,
+        crate::spatial_transport_permissions::SpatialPermissionState::max_owned_capacity_bytes(),
+    ));
     engine.extend(timeline_rows());
     engine.extend(background_rows());
     let mut prepared = vec![
@@ -148,6 +153,11 @@ pub fn inventory() -> Inventory {
     ];
     prepared.extend(timeline_rows());
     prepared.extend(background_rows());
+    prepared.push(Part::new(
+        "spatial_permission_candidate_fixed_rows",
+        1,
+        crate::spatial_transport_permissions::SpatialPermissionState::max_owned_capacity_bytes(),
+    ));
     let mut extra_air_state = vec![Part::new("state_inline_header", 1, size_of::<State>())];
     // Shared maximum supports the full CPU/reference kernel too, not only four shipments.
     extra_air_state.extend(air_payload(20_000));
@@ -160,7 +170,7 @@ pub fn inventory() -> Inventory {
         ),
         Part::new("per_engine_background_compute_payload", 1, work),
         Part::new(
-            "seven_slot_headers_and_conservative_arc_allowance",
+            "eight_slot_headers_and_conservative_arc_allowance",
             1,
             controls,
         ),
@@ -204,7 +214,7 @@ mod tests {
         );
         assert!(
             i.engine_bytes
-                > CLAIM_LIMIT * size_of::<Claim>() + MAX_RECEIPTS * size_of::<JournalRecord>()
+                > CLAIM_LIMIT * size_of::<Claim>() + MAX_RECEIPTS * size_of::<HotJournalRecord>()
         );
         assert!(!i.runtime_ownership_proven);
     }

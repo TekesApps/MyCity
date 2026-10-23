@@ -1,0 +1,49 @@
+{
+  "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/209-equity-release-cli-actual/world",
+  "copy": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/261-v144-full-world-copy",
+  "copied_files": [
+    {
+      "path": "CURRENT.json",
+      "bytes": 123,
+      "sha256": "826f8d8a3bbf12ee8eb13cbf45585c1c14f874dd9cb9bf3fcb67ee4513d2404b"
+    },
+    {
+      "path": "LOCK",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "checkpoint-111.json",
+      "bytes": 132305,
+      "sha256": "4e4feccd5d48da066100ca826cb1b6149431c1c2e83db74d0c12656823f69e7f"
+    },
+    {
+      "path": "checkpoint-index-111.json",
+      "bytes": 445,
+      "sha256": "448b512ddb91b7bf26de0314cc5c26cc6aa25c157cbabe49c40c928fb3848f4a"
+    },
+    {
+      "path": "genesis.json",
+      "bytes": 10871,
+      "sha256": "6384348d38c096b9bc77b59dd842cc896daa0ba1f48042cc9cb13742ecbaeda3"
+    },
+    {
+      "path": "root-0.json",
+      "bytes": 430,
+      "sha256": "891e581d58ccd6db33eab208d5b84c836d8ecf712348361277c95642bdf642d4"
+    },
+    {
+      "path": "root-1.json",
+      "bytes": 517,
+      "sha256": "c29323f206a3551680291d3db400f6782f52740152fb7fec090c6fc46169b283"
+    },
+    {
+      "path": "wal-111.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "original_unchanged": true,
+  "full_copy_verified": true,
+  "intent": "actual_v144_209_full_Store_reopen_on_new_F_source"
+}

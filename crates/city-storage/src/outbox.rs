@@ -271,16 +271,7 @@ impl Store {
         let action = Action::Inbox {
             command: Command::External { fact },
         };
-        let prior = self
-            .engine
-            .journal()
-            .iter()
-            .find(|r| r.operation_id == fact.operation_id())
-            .copied();
-        let prior = match prior {
-            Some(r) => Some(r),
-            None => self.lookup_archived(fact.operation_id())?,
-        };
+        let prior = self.receipt(fact.operation_id())?;
         let expected_revision = if let Some(r) = prior {
             if r.actor != 0 || r.actions[0] != Some(action) {
                 return Err(Error::Invalid("source_event_conflict"));

@@ -192,7 +192,7 @@ mod tests {
     use super::*;
     use mycity_core::{
         assembly::assemble,
-        transaction::{Caller, Engine, TxError},
+        transaction::{Caller, Engine, JournalRecord, TxError, MAX_ACTIONS},
         units::Money,
     };
     #[derive(Serialize)]
@@ -228,7 +228,20 @@ mod tests {
                 }],
             };
             let _ = world.execute(Caller::Account(2), request.clone());
-            let record = world.journal().last().unwrap();
+            let hot = world.journal().last().unwrap();
+            let mut actions = [None; MAX_ACTIONS];
+            for (index, action) in request.actions.iter().enumerate() {
+                actions[index] = Some(*action);
+            }
+            let record = JournalRecord {
+                actor: hot.actor,
+                emergency_eligible: hot.emergency_eligible,
+                operation_id: hot.operation_id,
+                expected_revision: hot.expected_revision,
+                payload_sha256: hot.payload_sha256,
+                outcome: hot.outcome,
+                actions,
+            };
             if id % 3 == 0 {
                 assert_eq!(record.outcome, Err(TxError::StaleRevision));
             }
@@ -238,7 +251,7 @@ mod tests {
                 id,
                 &"a".repeat(64),
                 &request,
-                record,
+                &record,
             )
             .unwrap();
             let old = json(&Old {

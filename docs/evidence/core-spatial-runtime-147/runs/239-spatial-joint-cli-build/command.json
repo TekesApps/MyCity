@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "cargo",
+    "build",
+    "--release",
+    "-p",
+    "mycity-storage",
+    "--example",
+    "spatial_transport_scenario",
+    "--example",
+    "spatial_transport_updates",
+    "--example",
+    "core_joint_equity_spatial"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/spatial-runtime-update-current",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-23T08:06:21.254277+00:00",
+  "source_manifest_sha256": "4006871d7281e4edd32199bdc911efacb45a307587b9d4f0a03b94ac4b52ed82"
+}

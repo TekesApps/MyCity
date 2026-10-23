@@ -24,6 +24,7 @@ pub mod model_rows;
 pub mod probes;
 pub mod region;
 pub mod schedule;
+pub mod spatial_transport_permissions;
 pub mod town_economy;
 pub mod town_runtime;
 pub mod town_utility;

@@ -97,6 +97,7 @@ fn action_raw(
         Construction,
         TownSettle,
         TownTransportSettle,
+        SpatialPermission,
         TownSuspendOperations,
         EquityContribute,
         EquityDistributeRetainedEarnings,
@@ -185,6 +186,12 @@ fn action_raw(
                 service_day: fields.get(2, scratch)?,
                 generation: fields.get(3, scratch)?,
                 proof_sha256: fields.get(4, scratch)?,
+            })
+        }
+        Kind::SpatialPermission => {
+            let fields = Fields::parse(raw, &["kind", "command"], false, scratch)?;
+            Ok(Output::SpatialPermission {
+                command: reader::decode(fields.raw(1)?, scratch)?,
             })
         }
         Kind::TownSuspendOperations => {

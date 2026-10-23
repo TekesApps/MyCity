@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "/usr/bin/time",
+    "-l",
+    "/Volumes/HP P900/dev/MyCity/target/release/examples/core_joint_equity_spatial",
+    "--verify",
+    "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/259-main-joint-world"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-23T08:28:43.186032+00:00",
+  "source_manifest_sha256": "ef3b4e6e86bc463c2a6bd14e212b1b4d05cecb141d1ca349d38f7d77319fd787"
+}

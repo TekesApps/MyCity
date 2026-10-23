@@ -13,6 +13,8 @@ pub(super) struct Header {
     pub rules_identity: String,
     pub checkpoint_layout: u8,
     pub spatial: Option<SpatialReference>,
+    pub spatial_permissions:
+        Option<mycity_core::spatial_transport_permissions::SpatialPermissionState>,
 }
 pub(super) fn decode(meta: &mut MetadataWorkspace) -> Result<Header, Error> {
     let fields = Fields::parse(
@@ -24,6 +26,7 @@ pub(super) fn decode(meta: &mut MetadataWorkspace) -> Result<Header, Error> {
             "opening",
             "resources",
             "spatial",
+            "spatial_permissions",
         ],
         false,
         &mut meta.parser,
@@ -49,5 +52,6 @@ pub(super) fn decode(meta: &mut MetadataWorkspace) -> Result<Header, Error> {
         rules_identity: rules.0,
         checkpoint_layout,
         spatial: fields.optional(5, &mut meta.parser)?,
+        spatial_permissions: fields.optional(6, &mut meta.parser)?,
     })
 }

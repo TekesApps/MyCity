@@ -153,6 +153,7 @@ pub(super) fn open_into(
     ceiling: u64,
     transport_profile: Option<&mycity_core::market_access::TransportAllocationProfile>,
     transport_allocation_hash: Option<[u8; 32]>,
+    transport_catalog: Option<&super::spatial_transport_updates::SpatialTransportCatalog>,
     slot: &mut mycity_core::transaction::EngineSlot,
     meta: &mut MetadataWorkspace,
 ) -> Result<(u64, String), Error> {
@@ -192,6 +193,7 @@ pub(super) fn open_into(
             slot.engine().map_err(Error::Model)?,
             transport_profile,
             transport_allocation_hash,
+            transport_catalog,
         )?;
         next = i.first - 1;
         cursor = i.previous;
@@ -386,7 +388,7 @@ impl Store {
                 sha256: image.sha256.clone(),
             };
             let prior_receipts = previous.as_ref().and_then(|s| s.receipts.clone());
-            let journal = self.engine.journal();
+            let journal = self.io.metadata.receipts.as_slice();
             let receipt = if journal.is_empty() {
                 None
             } else {
@@ -521,6 +523,8 @@ impl Store {
                 || observer(Point::CurrentRenamed),
             )?;
             observer(Point::CurrentSynced)?;
+            self.io.wal_base_sequence = root.sequence;
+            self.io.wal_base_chain = root.wal_chain.clone();
             self.io.root = root;
             self.io.wal = wal;
             self.engine.retire_checkpointed_journal();

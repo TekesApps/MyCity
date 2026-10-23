@@ -1,0 +1,44 @@
+
+running 28 tests
+test checkpoint_v2::receipts::tests::index_overflow_is_rejected_before_extra_record_materializes ... ok
+test checkpoint::envelope_digest_tests::streamed_max_action_envelope_hash_matches_legacy_vec_bytes ... ok
+test metadata::lexical::tests::ignore_and_content_keep_distinct_old_scalar_grammars ... ok
+test checkpoint::receipt_decode::context_tests::original_checkpoint_depth_context_and_ignored_depth_are_preserved ... ok
+test metadata::tests::strict_bytes_reject_before_extra_decode_and_writer_failure_preserves_backing ... ok
+test checkpoint::receipt_decode::tests::large_whitespace_ignored_fields_and_tag_last_keep_legacy_semantics ... ok
+test model_capacity::tests::feasibility_boundary_never_authorizes_current_runtime ... ok
+test spatial_transport_updates::tests::a_later_reopen_uses_a_new_profile_without_rewriting_the_closed_day ... ok
+test spatial_transport_updates::tests::accepted_raw_json_hash_remains_the_parent_and_old_proof_reference ... ok
+test spatial_transport_updates::tests::closure_is_next_day_and_old_and_new_profile_hashes_select_independently ... ok
+test spatial_transport_updates::tests::profile_chain_rejects_hash_reuse_and_duplicate_operations ... ok
+test spatial_transport_updates::tests::compact_catalog_keeps_raw_baseline_and_bounds_serialized_history ... ok
+test spatial_transport_updates::tests::update_cannot_add_edges_reopen_ungranted_edges_or_widen_entrance_authority ... ok
+test metadata::tests::metadata_counts_full_receipts_and_all_retained_file_slots ... ok
+test stream::tests::complete_stream_hash_length_and_unconsumed_tail_are_required ... ok
+test town_transport::road_epoch_clock_tests::future_and_non_day_road_epochs_are_rejected ... ok
+test checkpoint_v2::receipts::tests::borrowed_receipt_wire_matches_owned_legacy_and_arbitrary_field_order ... ok
+test town_transport::road_epoch_clock_tests::publication_and_withdrawal_epochs_require_clock_and_settlement ... ok
+test wal::tests::persisted_envelope_overflow_rejects_before_extra_action_decode ... ok
+test wal::tests::every_produced_sample_matches_old_frame_bytes_and_split_checksum ... ok
+test stream::tests::second_pass_or_validation_failure_cannot_publish_and_tmp_is_reclaimed ... ok
+test background::slot_load_tests::outer_hash_failure_invalidates_otherwise_valid_decoded_candidate ... ok
+test town_transport::road_epoch_clock_tests::store_accepts_unpublished_road_binding_before_timeline_enable ... ok
+test metadata::lexical::tests::long_escaped_keys_do_not_alias_known_identifiers_or_skip_late_errors ... ok
+test checkpoint_v2::receipts::tests::authenticated_but_malformed_body_tail_metadata_and_count_cannot_pass ... ok
+test metadata::lexical::tests::full_16mib_ignored_nesting_fits_one_initialized_bit_stack_and_overflow_recovers ... ok
+test metadata::lexical::tests::finite_known_values_reject_long_wrong_types_without_old_string_fallback ... ok
+test checkpoint::receipt_decode::tests::all_variants_match_original_typed_reader_for_map_sequence_and_bad_fields ... ok
+
+test result: ok. 28 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+
+
+running 5 tests
+test source_asset_hash_mismatch_is_rejected_before_candidate_building ... ok
+test raw_asset_parent_child_payload_and_historical_proof_binding_are_exact ... ok
+test spatial_permission_backing_survives_present_absent_present_restore ... ok
+test same_store_dual_approved_road_and_door_updates_change_trade_and_recover ... ok
+spatial_archive_source=scene:0c908df7a49207840b194ce284f1381784ac04887ac61b01d6e5af5ffc66c560 request_profile:a529a26c441f27a8cb38b7c594f694da0a7883d96d5e4fd3ccc95b14b1effeca; commits=1025 engine_hot_limit=1024 store_auto_rotate_at=512 checkpoint_generation=1028 sequence=1025 engine_owned_bytes=3608536 engine_budget=4194304 store_owned_bytes=41787356 storage_normal_budget=67108864 wal_bytes=0 wal_limit=67108864 archive_bytes=1045437 archive_limit=134217728 world_file_bytes=1045437 elapsed_ms=4979
+test spatial_request_and_failed_command_survive_two_hot_windows_and_archive_replay ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.03s
+

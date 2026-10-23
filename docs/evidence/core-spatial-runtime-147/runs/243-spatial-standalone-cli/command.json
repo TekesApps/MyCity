@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "/Volumes/HP P900/dev/MyCity/target/release/examples/spatial_transport_scenario"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/spatial-runtime-update-current",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-23T08:12:20.185599+00:00",
+  "source_manifest_sha256": "a9ebdbc34a5e95165b974c28df3f301874422e7439d0e6c2bd2ea9c022d64e02"
+}

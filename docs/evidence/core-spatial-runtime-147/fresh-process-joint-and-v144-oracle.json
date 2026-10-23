@@ -1,0 +1,15 @@
+{
+  "checks": {
+    "state_hash": true,
+    "ordinary_dividend_cents": true,
+    "final_cash_accounts_1_to_4": true,
+    "v144_accounts": true,
+    "v144_dividend": true,
+    "v144_original_unchanged": true,
+    "separate_completed_invocations": true,
+    "main_source_manifests_identical": true
+  },
+  "passed": true,
+  "scope": "actual_archived_world_copy_cold_open_not_all_historical_schemas",
+  "method": "Two completed separately invoked processes; actual command/start/elapsed/exit receipts, not inferred child PID"
+}
