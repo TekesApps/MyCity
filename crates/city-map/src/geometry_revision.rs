@@ -1,8 +1,8 @@
-//! Candidate-only, one-field geometry revision through Scene validation and WALK adaptation.
+//! Candidate-only, bounded geometry revision through Scene validation and WALK adaptation.
 //!
 //! This module never publishes a revision, grants land rights, or advances a calendar.
 use crate::{
-    geometry::{Quadratic, MAX_HOLES},
+    geometry::{Facing, Quadratic, MAX_HOLES},
     scene::{Input as SceneInput, Scene},
     terrain::Terrain,
     traffic_adapter::{
@@ -27,6 +27,13 @@ pub enum PortDimension {
 pub enum GeometryEdit {
     /// Control point only. Road start/end and all explicit network IDs remain fixed.
     RoadControlPoint(Point),
+    /// Move or reorient a door while explicitly reconnecting the first corridor segment.
+    /// Elevation, mode, width, enter/exit flags and authorization remain inherited from parent.
+    DoorPose {
+        point: Point,
+        facing: Facing,
+        first_connector_waypoint: Point,
+    },
     PortClearWidth {
         port: PortDimension,
         width_cm: u32,
@@ -269,6 +276,25 @@ pub fn build_candidate(
                 control,
                 end: prior_input.road.end,
             };
+        }
+        GeometryEdit::DoorPose {
+            point,
+            facing,
+            first_connector_waypoint,
+        } => {
+            if candidate_input.door.point == point
+                && candidate_input.door.facing == facing
+                && candidate_input.connector.get(1) == Some(&first_connector_waypoint)
+            {
+                return Err(CandidateError::NoChange);
+            }
+            if candidate_input.connector.len() < 2 {
+                return Err(CandidateError::InvalidBaseline);
+            }
+            candidate_input.door.point = point;
+            candidate_input.door.facing = facing;
+            candidate_input.connector[0] = point;
+            candidate_input.connector[1] = first_connector_waypoint;
         }
         GeometryEdit::PortClearWidth { port, width_cm } => {
             match port {

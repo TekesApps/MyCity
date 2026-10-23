@@ -1,6 +1,6 @@
 //! Materialize a finite, synthetic geometry-revision candidate for inspection.
 //!
-//! Usage: cargo run -p mycity-map --example geometry_revision_candidate -- <fresh-output-dir> [curve|door-width]
+//! Usage: cargo run -p mycity-map --example geometry_revision_candidate -- <fresh-output-dir> [curve|door-width|door-pose]
 //! This CLI never publishes the result or modifies a Store, permission state, or calendar.
 
 use mycity_core::{
@@ -165,7 +165,8 @@ fn write_new(path: &Path, bytes: &[u8]) -> Result<(), String> {
 fn parse_args() -> Result<(PathBuf, GeometryEdit), String> {
     let mut args = env::args_os().skip(1);
     let output = args.next().map(PathBuf::from).ok_or_else(|| {
-        "usage: geometry_revision_candidate <fresh-output-dir> [curve|door-width]".to_owned()
+        "usage: geometry_revision_candidate <fresh-output-dir> [curve|door-width|door-pose]"
+            .to_owned()
     })?;
     let edit = match args.next().as_deref().and_then(|value| value.to_str()) {
         None | Some("curve") => GeometryEdit::RoadControlPoint(Point { x: 3000, y: 1800 }),
@@ -173,9 +174,14 @@ fn parse_args() -> Result<(PathBuf, GeometryEdit), String> {
             port: PortDimension::DoorClearWidth,
             width_cm: 400,
         },
+        Some("door-pose") => GeometryEdit::DoorPose {
+            point: Point { x: 4000, y: 3000 },
+            facing: Facing::East,
+            first_connector_waypoint: Point { x: 5000, y: 3000 },
+        },
         Some(other) => {
             return Err(format!(
-                "unsupported edit {other:?}; choose curve or door-width"
+                "unsupported edit {other:?}; choose curve, door-width, or door-pose"
             ))
         }
     };
@@ -253,6 +259,7 @@ fn run() -> Result<(), String> {
             port: PortDimension::TerminalClearWidth,
             ..
         } => "terminal_clear_width",
+        GeometryEdit::DoorPose { .. } => "door_pose",
     };
     let report = json!({
         "schema": "mycity-m0-geometry-revision-candidate-v1",
@@ -261,6 +268,21 @@ fn run() -> Result<(), String> {
         "persistence": "not_written_to_store",
         "calendar": "not_advanced",
         "edit": edit_label,
+        "door_pose": match edit {
+            GeometryEdit::DoorPose { point, facing, first_connector_waypoint } => json!({
+                "point_cm": {"x": point.x, "y": point.y},
+                "facing": format!("{facing:?}").to_ascii_lowercase(),
+                "first_connector_waypoint_cm": {
+                    "x": first_connector_waypoint.x,
+                    "y": first_connector_waypoint.y
+                },
+                "inherited_without_mutation": [
+                    "door_z_cm", "mode", "clear_width_cm", "can_enter", "can_exit", "authorized"
+                ],
+                "anchor_and_road_endpoint_preserved": true
+            }),
+            _ => serde_json::Value::Null,
+        },
         "revisions": revision_report,
         "source_sha256": {
             "spatial_fixture_bytes": hex(sha256(SPATIAL_FIXTURE)),

@@ -1,0 +1,140 @@
+{
+  "before_allocated_bytes": 132333568,
+  "after_allocated_bytes": 44113920,
+  "allocated_reduction_bytes": 88219648,
+  "observed_available_disk_change_bytes": 88068096,
+  "disk_available_attribution": "observed only; not exclusively credited to this task",
+  "retained": "complete archive contents/all paths, original worlds/snapshots, source/WIP/dependencies, logs/receipts/failures, actual executables and shared target",
+  "scope": "only375-398 source archives, not a total work inventory",
+  "reason": "full reproducibility/recovery dependencies and next E verification require retained inputs/cache",
+  "records": [
+    {
+      "round": "376-creditor-residual-store",
+      "removed": "duplicate full archive inode allocation only",
+      "reason": "terminal runs, no open source-ZIP handles, byte-identical complete archive",
+      "retained_complete_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/375-creditor-residual-fmt/source.zip",
+      "full_original_path_still_present": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/376-creditor-residual-store/source.zip",
+      "sha256": "1f12bd10af071b076446358de9babf01a837d0ce8732b830b1295040801bcb08"
+    },
+    {
+      "round": "379-creditor-residual-store",
+      "removed": "duplicate full archive inode allocation only",
+      "reason": "terminal runs, no open source-ZIP handles, byte-identical complete archive",
+      "retained_complete_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/378-parallel-stage-fmt/source.zip",
+      "full_original_path_still_present": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/379-creditor-residual-store/source.zip",
+      "sha256": "9fb7f4eb5175122a612dbb7fdc708ab2dafc9d291efebb11f64e8221c62bb2be"
+    },
+    {
+      "round": "380-door-geometry-regression",
+      "removed": "duplicate full archive inode allocation only",
+      "reason": "terminal runs, no open source-ZIP handles, byte-identical complete archive",
+      "retained_complete_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/378-parallel-stage-fmt/source.zip",
+      "full_original_path_still_present": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/380-door-geometry-regression/source.zip",
+      "sha256": "9fb7f4eb5175122a612dbb7fdc708ab2dafc9d291efebb11f64e8221c62bb2be"
+    },
+    {
+      "round": "381-normal-pool-events",
+      "removed": "duplicate full archive inode allocation only",
+      "reason": "terminal runs, no open source-ZIP handles, byte-identical complete archive",
+      "retained_complete_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/378-parallel-stage-fmt/source.zip",
+      "full_original_path_still_present": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/381-normal-pool-events/source.zip",
+      "sha256": "9fb7f4eb5175122a612dbb7fdc708ab2dafc9d291efebb11f64e8221c62bb2be"
+    },
+    {
+      "round": "385-normal-pool-events",
+      "removed": "duplicate full archive inode allocation only",
+      "reason": "terminal runs, no open source-ZIP handles, byte-identical complete archive",
+      "retained_complete_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/384-parallel-stage-fmt/source.zip",
+      "full_original_path_still_present": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/385-normal-pool-events/source.zip",
+      "sha256": "c2bad8ee08feb5ae5e77f09ccb01f5e11e3b74b3363935a6f34c06a1fd46ac32"
+    },
+    {
+      "round": "387-final-creditor-regressions",
+      "removed": "duplicate full archive inode allocation only",
+      "reason": "terminal runs, no open source-ZIP handles, byte-identical complete archive",
+      "retained_complete_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/386-normal-pool-events/source.zip",
+      "full_original_path_still_present": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/387-final-creditor-regressions/source.zip",
+      "sha256": "bd029632b4e5e28f83364c95725bda49fa824e93e75e58f30801be8be1803925"
+    },
+    {
+      "round": "388-final-door-regressions",
+      "removed": "duplicate full archive inode allocation only",
+      "reason": "terminal runs, no open source-ZIP handles, byte-identical complete archive",
+      "retained_complete_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/386-normal-pool-events/source.zip",
+      "full_original_path_still_present": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/388-final-door-regressions/source.zip",
+      "sha256": "bd029632b4e5e28f83364c95725bda49fa824e93e75e58f30801be8be1803925"
+    },
+    {
+      "round": "389-parallel-stage-strict",
+      "removed": "duplicate full archive inode allocation only",
+      "reason": "terminal runs, no open source-ZIP handles, byte-identical complete archive",
+      "retained_complete_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/386-normal-pool-events/source.zip",
+      "full_original_path_still_present": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/389-parallel-stage-strict/source.zip",
+      "sha256": "bd029632b4e5e28f83364c95725bda49fa824e93e75e58f30801be8be1803925"
+    },
+    {
+      "round": "391-parallel-stage-strict",
+      "removed": "duplicate full archive inode allocation only",
+      "reason": "terminal runs, no open source-ZIP handles, byte-identical complete archive",
+      "retained_complete_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/390-parallel-stage-fmt/source.zip",
+      "full_original_path_still_present": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/391-parallel-stage-strict/source.zip",
+      "sha256": "22109a528dfba913a6fad053ae5519171731f30676392ab3bb30a4ff2c635403"
+    },
+    {
+      "round": "392-creditor-cli-build",
+      "removed": "duplicate full archive inode allocation only",
+      "reason": "terminal runs, no open source-ZIP handles, byte-identical complete archive",
+      "retained_complete_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/390-parallel-stage-fmt/source.zip",
+      "full_original_path_still_present": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/392-creditor-cli-build/source.zip",
+      "sha256": "22109a528dfba913a6fad053ae5519171731f30676392ab3bb30a4ff2c635403"
+    },
+    {
+      "round": "393-door-cli-build",
+      "removed": "duplicate full archive inode allocation only",
+      "reason": "terminal runs, no open source-ZIP handles, byte-identical complete archive",
+      "retained_complete_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/390-parallel-stage-fmt/source.zip",
+      "full_original_path_still_present": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/393-door-cli-build/source.zip",
+      "sha256": "22109a528dfba913a6fad053ae5519171731f30676392ab3bb30a4ff2c635403"
+    },
+    {
+      "round": "394-creditor-cli",
+      "removed": "duplicate full archive inode allocation only",
+      "reason": "terminal runs, no open source-ZIP handles, byte-identical complete archive",
+      "retained_complete_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/390-parallel-stage-fmt/source.zip",
+      "full_original_path_still_present": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/394-creditor-cli/source.zip",
+      "sha256": "22109a528dfba913a6fad053ae5519171731f30676392ab3bb30a4ff2c635403"
+    },
+    {
+      "round": "395-door-cli",
+      "removed": "duplicate full archive inode allocation only",
+      "reason": "terminal runs, no open source-ZIP handles, byte-identical complete archive",
+      "retained_complete_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/390-parallel-stage-fmt/source.zip",
+      "full_original_path_still_present": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/395-door-cli/source.zip",
+      "sha256": "22109a528dfba913a6fad053ae5519171731f30676392ab3bb30a4ff2c635403"
+    },
+    {
+      "round": "396-pool-diagnostic-cli-build",
+      "removed": "duplicate full archive inode allocation only",
+      "reason": "terminal runs, no open source-ZIP handles, byte-identical complete archive",
+      "retained_complete_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/390-parallel-stage-fmt/source.zip",
+      "full_original_path_still_present": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/396-pool-diagnostic-cli-build/source.zip",
+      "sha256": "22109a528dfba913a6fad053ae5519171731f30676392ab3bb30a4ff2c635403"
+    },
+    {
+      "round": "397-pool-memory-cli",
+      "removed": "duplicate full archive inode allocation only",
+      "reason": "terminal runs, no open source-ZIP handles, byte-identical complete archive",
+      "retained_complete_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/390-parallel-stage-fmt/source.zip",
+      "full_original_path_still_present": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/397-pool-memory-cli/source.zip",
+      "sha256": "22109a528dfba913a6fad053ae5519171731f30676392ab3bb30a4ff2c635403"
+    },
+    {
+      "round": "398-final-parallel-regression",
+      "removed": "duplicate full archive inode allocation only",
+      "reason": "terminal runs, no open source-ZIP handles, byte-identical complete archive",
+      "retained_complete_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/390-parallel-stage-fmt/source.zip",
+      "full_original_path_still_present": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/398-final-parallel-regression/source.zip",
+      "sha256": "22109a528dfba913a6fad053ae5519171731f30676392ab3bb30a4ff2c635403"
+    }
+  ]
+}

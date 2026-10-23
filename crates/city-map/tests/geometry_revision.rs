@@ -259,6 +259,173 @@ fn port_width_change_is_validated_and_does_not_invent_capacity_or_flow() {
 }
 
 #[test]
+fn door_pose_revalidates_face_connection_and_preserves_access_and_transport_contract() {
+    let (probe, terrain) = input();
+    let ds = demands();
+    let baseline = profile(&probe.scene, &terrain, &ds);
+    let bytes = serde_json::to_vec(&baseline).unwrap();
+    let result = build_candidate(
+        &probe.scene,
+        &terrain,
+        &terrain,
+        adapter(&probe.scene, &ds),
+        &baseline,
+        &bytes,
+        GeometryEdit::DoorPose {
+            point: Point { x: 4000, y: 3000 },
+            facing: Facing::East,
+            first_connector_waypoint: Point { x: 5000, y: 3000 },
+        },
+    )
+    .unwrap();
+
+    let old_door = probe.scene.door;
+    let new_door = result.scene.input().door;
+    assert_eq!(new_door.point, Point { x: 4000, y: 3000 });
+    assert_eq!(new_door.facing, Facing::East);
+    assert_eq!(new_door.z_cm, old_door.z_cm);
+    assert_eq!(new_door.mode, old_door.mode);
+    assert_eq!(new_door.clear_width_cm, old_door.clear_width_cm);
+    assert_eq!(new_door.can_enter, old_door.can_enter);
+    assert_eq!(new_door.can_exit, old_door.can_exit);
+    assert_eq!(new_door.authorized, old_door.authorized);
+    assert!(matches!(
+        result.scene.input().building.layer,
+        mycity_map::geometry::Layer::G
+    ));
+    assert_eq!(result.scene.input().connector[0], new_door.point);
+    assert_eq!(
+        result.scene.input().connector[1],
+        Point { x: 5000, y: 3000 }
+    );
+    assert_eq!(
+        result.scene.input().connector.last(),
+        Some(&result.scene.input().anchor.point)
+    );
+    assert_ne!(result.prior_scene_sha256, result.candidate_scene_sha256);
+    let candidate_profile: TransportAllocationProfile =
+        serde_json::from_slice(&result.profile_bytes).unwrap();
+    assert_eq!(baseline.opening.nodes, candidate_profile.opening.nodes);
+    assert_eq!(
+        baseline
+            .opening
+            .edges
+            .iter()
+            .map(|edge| edge.id)
+            .collect::<Vec<_>>(),
+        candidate_profile
+            .opening
+            .edges
+            .iter()
+            .map(|edge| edge.id)
+            .collect::<Vec<_>>()
+    );
+    assert!(candidate_profile
+        .opening
+        .edges
+        .iter()
+        .any(|edge| edge.id == 21));
+    assert!(candidate_profile
+        .opening
+        .edges
+        .iter()
+        .any(|edge| edge.id == 23));
+    assert_eq!(result.prior_served_people, result.candidate_served_people);
+    assert_opening_fields_unchanged_except_revision_and_travel_time(
+        &baseline.opening,
+        &candidate_profile.opening,
+    );
+}
+
+#[test]
+fn door_pose_rejects_wrong_facing_corner_clearance_denied_access_and_wrong_layer() {
+    let (probe, terrain) = input();
+    let ds = demands();
+    let baseline = profile(&probe.scene, &terrain, &ds);
+    let bytes = serde_json::to_vec(&baseline).unwrap();
+
+    let wrong_facing = build_candidate(
+        &probe.scene,
+        &terrain,
+        &terrain,
+        adapter(&probe.scene, &ds),
+        &baseline,
+        &bytes,
+        GeometryEdit::DoorPose {
+            point: Point { x: 3000, y: 2000 },
+            facing: Facing::North,
+            first_connector_waypoint: Point { x: 3000, y: 3000 },
+        },
+    );
+    assert!(matches!(
+        wrong_facing,
+        Err(CandidateError::Scene(mycity_map::Error::Direction))
+    ));
+
+    // 200 cm connector width has a 100 cm corridor radius. The door center is only
+    // 99 cm from the wall corner, below the entrance validator's available-face threshold.
+    let insufficient_corner_clearance = build_candidate(
+        &probe.scene,
+        &terrain,
+        &terrain,
+        adapter(&probe.scene, &ds),
+        &baseline,
+        &bytes,
+        GeometryEdit::DoorPose {
+            point: Point { x: 2099, y: 2000 },
+            facing: Facing::South,
+            first_connector_waypoint: Point { x: 2100, y: 1000 },
+        },
+    );
+    assert!(matches!(
+        insufficient_corner_clearance,
+        Err(CandidateError::Scene(mycity_map::Error::Bound))
+    ));
+
+    let mut denied_input = probe.scene.clone();
+    denied_input.door.authorized = false;
+    let denied_access = build_candidate(
+        &denied_input,
+        &terrain,
+        &terrain,
+        adapter(&denied_input, &ds),
+        &baseline,
+        &bytes,
+        GeometryEdit::DoorPose {
+            point: Point { x: 4000, y: 3000 },
+            facing: Facing::East,
+            first_connector_waypoint: Point { x: 5000, y: 3000 },
+        },
+    );
+    assert!(matches!(
+        denied_access,
+        Err(CandidateError::Scene(mycity_map::Error::Permission))
+    ));
+
+    let mut unsupported_layer_input = probe.scene.clone();
+    unsupported_layer_input.building.layer = mycity_map::geometry::Layer::A1;
+    let unsupported_layer = build_candidate(
+        &unsupported_layer_input,
+        &terrain,
+        &terrain,
+        adapter(&unsupported_layer_input, &ds),
+        &baseline,
+        &bytes,
+        GeometryEdit::DoorPose {
+            point: Point { x: 4000, y: 3000 },
+            facing: Facing::East,
+            first_connector_waypoint: Point { x: 5000, y: 3000 },
+        },
+    );
+    assert!(matches!(
+        unsupported_layer,
+        Err(CandidateError::Scene(
+            mycity_map::Error::NeedsDetailedValidation
+        ))
+    ));
+}
+
+#[test]
 fn invalid_support_bounds_endpoint_binding_and_modes_are_rejected() {
     let (probe, terrain) = input();
     let baseline = profile(&probe.scene, &terrain, &demands());

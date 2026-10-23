@@ -159,6 +159,40 @@ struct Event {
     typed_capacity: usize,
     summary: Summary,
     owner_actual_capacity_bytes: usize,
+    /// Rust heap/role-arena counters sampled in this process at event time.
+    /// This is not native footprint and does not include stacks or mmap pages.
+    #[serde(rename = "mem_v1")]
+    process_memory: ProcessMemory,
+}
+#[derive(Serialize)]
+struct ProcessMemory {
+    /// Versioned wire contract: each `*_bytes` array has an index map in the
+    /// accompanying evidence note; absent role arena remains JSON null.
+    heap_bytes: [usize; 2],
+    arena_bytes: Option<[usize; 5]>,
+    arena_failures: Option<u64>,
+}
+impl ProcessMemory {
+    fn capture() -> Self {
+        let heap = heap_meter::snapshot();
+        let arena = heap_meter::arena_snapshot();
+        Self {
+            heap_bytes: [
+                heap.current_requested_bytes,
+                heap.lifetime_peak_requested_bytes,
+            ],
+            arena_bytes: arena.activation.map(|activation| {
+                [
+                    activation.grant_bytes,
+                    activation.initialized_bytes,
+                    arena.current_requested_bytes,
+                    arena.lifetime_peak_requested_bytes,
+                    arena.bootstrap_quarantined_bytes,
+                ]
+            }),
+            arena_failures: arena.activation.map(|_| arena.allocation_failures),
+        }
+    }
 }
 #[derive(Debug)]
 enum ActionError {
@@ -387,6 +421,7 @@ impl Pool {
             },
             summary: self.summary,
             owner_actual_capacity_bytes: self.pages.iter().flatten().map(Page::capacity).sum(),
+            process_memory: ProcessMemory::capture(),
         };
         self.write_event(&e)
     }
@@ -1248,9 +1283,20 @@ mod tests {
         assert_eq!(report["summary"]["available_touched_bytes"], BYTES);
         assert_eq!(report["summary"]["granted_capacity_bytes"], 0);
         assert_eq!(report["rust_metadata_cap_bytes"], DIAGNOSTIC_BYTES);
-        assert!(fs::read_to_string(root.join("events.jsonl"))
-            .unwrap()
-            .contains("controlled_children_waited"));
+        let events = fs::read_to_string(root.join("events.jsonl")).unwrap();
+        assert!(events.contains("controlled_children_waited"));
+        let first: serde_json::Value =
+            serde_json::from_str(events.lines().next().unwrap()).unwrap();
+        let process_memory = &first["mem_v1"];
+        assert_eq!(process_memory["heap_bytes"].as_array().unwrap().len(), 2);
+        assert!(
+            process_memory["arena_bytes"].is_null()
+                || process_memory["arena_bytes"].as_array().unwrap().len() == 5
+        );
+        assert_eq!(
+            process_memory["arena_failures"].is_null(),
+            process_memory["arena_bytes"].is_null()
+        );
     }
     #[test]
     fn controlled_owner_failure_cannot_publish_a_successful_pool_report() {
@@ -1585,8 +1631,28 @@ mod tests {
                 maximum_prepare_to_fill_or_reap_ns: u64::MAX,
             },
             owner_actual_capacity_bytes: usize::MAX,
+            process_memory: ProcessMemory {
+                heap_bytes: [usize::MAX; 2],
+                arena_bytes: Some([usize::MAX; 5]),
+                arena_failures: Some(u64::MAX),
+            },
         };
-        assert!(serde_json::to_vec(&event).unwrap().len() < EVENT_BYTES);
+        let encoded = serde_json::to_vec(&event).unwrap();
+        assert!(
+            encoded.len() < EVENT_BYTES,
+            "encoded_max_row_bytes={} limit={EVENT_BYTES}",
+            encoded.len()
+        );
+        let decoded: serde_json::Value = serde_json::from_slice(&encoded).unwrap();
+        assert_eq!(decoded["mem_v1"]["arena_bytes"][0], usize::MAX);
+        let missing = serde_json::to_value(ProcessMemory {
+            heap_bytes: [0; 2],
+            arena_bytes: None,
+            arena_failures: None,
+        })
+        .unwrap();
+        assert!(missing["arena_bytes"].is_null());
+        assert!(missing["arena_failures"].is_null());
         // Original724 windows plus retries (up to768),960 periodic checkpoints,
         // sixteen session handoffs and64 exceptional transitions. Diagnostic bound only.
         let rows = 5 * 768 + 28_800 / PERIODIC_EVENT_SECONDS + 8 * 16 + 64;

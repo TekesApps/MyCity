@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "scope": "standalone64MiB_pool_CLI_wire_and_balanced_shutdown_not_original_M0_gate",
+  "full_artifacts": "/Volumes/HP P900/dev/MyCity/work/pm397",
+  "source_sha256": "9c8fbff6451200fceedd578ce49752a70cc1e13611769b638bf752d65ad4eaf6",
+  "binary_sha256": "e8cc51f980807a00114c49750626c1f583f2d81a820e9d80eb1fc80af8edef71",
+  "event_rows": 2,
+  "event_log_bytes": 1341,
+  "max_actual_row_bytes_including_newline": 676,
+  "first_memory": {
+    "heap_bytes": [
+      17260,
+      17260
+    ],
+    "arena_bytes": null,
+    "arena_failures": null
+  },
+  "last_memory": {
+    "heap_bytes": [
+      25185,
+      25566
+    ],
+    "arena_bytes": null,
+    "arena_failures": null
+  },
+  "balanced_after_owned_wait": true,
+  "native_peak": "not_measured",
+  "arena": "not_activated_in_standalone_probe",
+  "elapsed_seconds": 0.585511334
+}

@@ -1,8 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.153`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.154`。已开始Rust模型与headless CLI，当前不做UI。
 
-v0.5.153 adds [actual-paid-wage windows](docs/evidence/core-housing-income-153/STATUS.md), verified by canonical combined tests and a fixed CLI cold recovery. Move and full M0 remain incomplete. v0.5.152 fixes [bounded native snapshot recovery](docs/evidence/m0-t13a-native-347/STATUS.md): 29 targeted regressions and a full3.37GB original-snapshot cold recovery pass. The preceding600s native run remains failed; normal memory,8h and real16GB gates remain unmet.
+v0.5.154 verifies [creditor-first residual settlement and bounded parallel work](docs/evidence/core-parallel-154/STATUS.md), adds DoorPose candidates and bounded pool counters. Persistent geometry activation and Move remain incomplete. v0.5.153 adds [actual-paid-wage windows](docs/evidence/core-housing-income-153/STATUS.md), verified by canonical combined tests and a fixed CLI cold recovery. Move and full M0 remain incomplete. v0.5.152 fixes [bounded native snapshot recovery](docs/evidence/m0-t13a-native-347/STATUS.md): 29 targeted regressions and a full3.37GB original-snapshot cold recovery pass. The preceding600s native run remains failed; normal memory,8h and real16GB gates remain unmet.
 
 v0.5.151 adds [bounded Sim-open lifecycle receipts](docs/evidence/m0-t13a-sim-open-diagnostic/STATUS.md), verified with eight focused tests and a complete720-hour/723-target real-business CLI run plus cold recovery. It measures owned capacity, not native peak or a memory saving; original M0 gates remain unmet.
 

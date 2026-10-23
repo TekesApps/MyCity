@@ -1,0 +1,776 @@
+[
+  {
+    "label": "375-creditor-residual-fmt",
+    "command": {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T20:09:17.420774+00:00",
+      "source_manifest_sha256": "c3067370415bb0b9417bb709aaab127e9efd8ffbdb7ac551bf12e7beda3c0ab3"
+    },
+    "exit": {
+      "exit_code": 0,
+      "wall_seconds": 0.866920833,
+      "source_unchanged": true
+    },
+    "passed_test_groups": [],
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/375-creditor-residual-fmt/source.zip",
+    "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/375-creditor-residual-fmt/source-manifest.json",
+    "full_artifacts": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/375-creditor-residual-fmt/test-artifacts",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/375-creditor-residual-fmt/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/375-creditor-residual-fmt/stderr.log"
+  },
+  {
+    "label": "376-creditor-residual-store",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-storage",
+        "--test",
+        "equity_creditor_residual",
+        "--",
+        "--exact",
+        "future_creditor_blocks_equity_then_paid_in_and_surplus_are_distributed_once",
+        "--nocapture"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T20:09:18.368523+00:00",
+      "source_manifest_sha256": "c3067370415bb0b9417bb709aaab127e9efd8ffbdb7ac551bf12e7beda3c0ab3"
+    },
+    "exit": {
+      "exit_code": 101,
+      "wall_seconds": 3.116751542,
+      "source_unchanged": true
+    },
+    "passed_test_groups": [],
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/376-creditor-residual-store/source.zip",
+    "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/376-creditor-residual-store/source-manifest.json",
+    "full_artifacts": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/376-creditor-residual-store/test-artifacts",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/376-creditor-residual-store/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/376-creditor-residual-store/stderr.log"
+  },
+  {
+    "label": "377-door-pool-fmt",
+    "command": {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T20:10:50.489767+00:00",
+      "source_manifest_sha256": "daced1dbfab989c64f6bdedd17b63d1adf3fdbbf62046f8adbc693be8bfa4348"
+    },
+    "exit": {
+      "exit_code": 0,
+      "wall_seconds": 0.913568791,
+      "source_unchanged": true
+    },
+    "passed_test_groups": [],
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/377-door-pool-fmt/source.zip",
+    "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/377-door-pool-fmt/source-manifest.json",
+    "full_artifacts": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/377-door-pool-fmt/test-artifacts",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/377-door-pool-fmt/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/377-door-pool-fmt/stderr.log"
+  },
+  {
+    "label": "378-parallel-stage-fmt",
+    "command": {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T20:11:27.730574+00:00",
+      "source_manifest_sha256": "654441d17b132541fb521aaeb11686271b733f3c64900bc00135316825cecad7"
+    },
+    "exit": {
+      "exit_code": 0,
+      "wall_seconds": 0.785165,
+      "source_unchanged": true
+    },
+    "passed_test_groups": [],
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/378-parallel-stage-fmt/source.zip",
+    "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/378-parallel-stage-fmt/source-manifest.json",
+    "full_artifacts": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/378-parallel-stage-fmt/test-artifacts",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/378-parallel-stage-fmt/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/378-parallel-stage-fmt/stderr.log"
+  },
+  {
+    "label": "379-creditor-residual-store",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-storage",
+        "--test",
+        "equity_creditor_residual",
+        "--",
+        "--exact",
+        "future_creditor_blocks_equity_then_paid_in_and_surplus_are_distributed_once",
+        "--nocapture"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T20:11:28.581320+00:00",
+      "source_manifest_sha256": "654441d17b132541fb521aaeb11686271b733f3c64900bc00135316825cecad7"
+    },
+    "exit": {
+      "exit_code": 0,
+      "wall_seconds": 30.605309208,
+      "source_unchanged": true
+    },
+    "passed_test_groups": [
+      1
+    ],
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/379-creditor-residual-store/source.zip",
+    "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/379-creditor-residual-store/source-manifest.json",
+    "full_artifacts": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/379-creditor-residual-store/test-artifacts",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/379-creditor-residual-store/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/379-creditor-residual-store/stderr.log"
+  },
+  {
+    "label": "380-door-geometry-regression",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-map",
+        "--test",
+        "geometry_revision",
+        "--",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T20:11:59.312924+00:00",
+      "source_manifest_sha256": "654441d17b132541fb521aaeb11686271b733f3c64900bc00135316825cecad7"
+    },
+    "exit": {
+      "exit_code": 101,
+      "wall_seconds": 28.126463125,
+      "source_unchanged": true
+    },
+    "passed_test_groups": [],
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/380-door-geometry-regression/source.zip",
+    "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/380-door-geometry-regression/source-manifest.json",
+    "full_artifacts": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/380-door-geometry-regression/test-artifacts",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/380-door-geometry-regression/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/380-door-geometry-regression/stderr.log"
+  },
+  {
+    "label": "381-normal-pool-events",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-headless",
+        "--lib",
+        "normal_pool::tests",
+        "--",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T20:12:50.737900+00:00",
+      "source_manifest_sha256": "654441d17b132541fb521aaeb11686271b733f3c64900bc00135316825cecad7"
+    },
+    "exit": {
+      "exit_code": 101,
+      "wall_seconds": 29.175089916999998,
+      "source_unchanged": true
+    },
+    "passed_test_groups": [],
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/381-normal-pool-events/source.zip",
+    "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/381-normal-pool-events/source-manifest.json",
+    "full_artifacts": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/381-normal-pool-events/test-artifacts",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/381-normal-pool-events/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/381-normal-pool-events/stderr.log"
+  },
+  {
+    "label": "382-door-geometry-regression",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-map",
+        "--test",
+        "geometry_revision",
+        "--",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T20:14:12.496125+00:00",
+      "source_manifest_sha256": "ab692c9e13f8b846781981ff1920a602fbfc677d31455f8297b78df1a49aa20a"
+    },
+    "exit": {
+      "exit_code": 0,
+      "wall_seconds": 2.590451792,
+      "source_unchanged": true
+    },
+    "passed_test_groups": [
+      9
+    ],
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/382-door-geometry-regression/source.zip",
+    "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/382-door-geometry-regression/source-manifest.json",
+    "full_artifacts": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/382-door-geometry-regression/test-artifacts",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/382-door-geometry-regression/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/382-door-geometry-regression/stderr.log"
+  },
+  {
+    "label": "383-parallel-stage-fmt",
+    "command": {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T20:15:34.667018+00:00",
+      "source_manifest_sha256": "e698d3cd3a695af754539cbc3c05c3b3434eab7b68c6b9ffb11d72a9762aa8b1"
+    },
+    "exit": {
+      "exit_code": 1,
+      "wall_seconds": 0.7603795830000001,
+      "source_unchanged": true
+    },
+    "passed_test_groups": [],
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/383-parallel-stage-fmt/source.zip",
+    "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/383-parallel-stage-fmt/source-manifest.json",
+    "full_artifacts": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/383-parallel-stage-fmt/test-artifacts",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/383-parallel-stage-fmt/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/383-parallel-stage-fmt/stderr.log"
+  },
+  {
+    "label": "384-parallel-stage-fmt",
+    "command": {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T20:15:51.357108+00:00",
+      "source_manifest_sha256": "e14b91fd6bf45c08658153bcf96cbc78d5ee216a37fd0a7bd1e805aec344288e"
+    },
+    "exit": {
+      "exit_code": 0,
+      "wall_seconds": 0.7550747499999999,
+      "source_unchanged": true
+    },
+    "passed_test_groups": [],
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/384-parallel-stage-fmt/source.zip",
+    "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/384-parallel-stage-fmt/source-manifest.json",
+    "full_artifacts": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/384-parallel-stage-fmt/test-artifacts",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/384-parallel-stage-fmt/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/384-parallel-stage-fmt/stderr.log"
+  },
+  {
+    "label": "385-normal-pool-events",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-headless",
+        "--lib",
+        "normal_pool::tests",
+        "--",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T20:15:52.174552+00:00",
+      "source_manifest_sha256": "e14b91fd6bf45c08658153bcf96cbc78d5ee216a37fd0a7bd1e805aec344288e"
+    },
+    "exit": {
+      "exit_code": 101,
+      "wall_seconds": 9.513106,
+      "source_unchanged": true
+    },
+    "passed_test_groups": [],
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/385-normal-pool-events/source.zip",
+    "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/385-normal-pool-events/source-manifest.json",
+    "full_artifacts": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/385-normal-pool-events/test-artifacts",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/385-normal-pool-events/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/385-normal-pool-events/stderr.log"
+  },
+  {
+    "label": "386-normal-pool-events",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-headless",
+        "--lib",
+        "normal_pool::tests",
+        "--",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T20:17:50.233405+00:00",
+      "source_manifest_sha256": "9804ce79fdb78b6d48a63edd5a4f04bb14ad14ead84bd2daf3591eea27dd0947"
+    },
+    "exit": {
+      "exit_code": 0,
+      "wall_seconds": 9.912820834,
+      "source_unchanged": true
+    },
+    "passed_test_groups": [
+      9
+    ],
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/386-normal-pool-events/source.zip",
+    "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/386-normal-pool-events/source-manifest.json",
+    "full_artifacts": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/386-normal-pool-events/test-artifacts",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/386-normal-pool-events/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/386-normal-pool-events/stderr.log"
+  },
+  {
+    "label": "387-final-creditor-regressions",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-storage",
+        "--test",
+        "equity_creditor_residual",
+        "--test",
+        "equity_runtime",
+        "--test",
+        "equity_dividend_liquidation",
+        "--",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T20:18:00.245357+00:00",
+      "source_manifest_sha256": "9804ce79fdb78b6d48a63edd5a4f04bb14ad14ead84bd2daf3591eea27dd0947"
+    },
+    "exit": {
+      "exit_code": 0,
+      "wall_seconds": 5.52115625,
+      "source_unchanged": true
+    },
+    "passed_test_groups": [
+      1,
+      1,
+      2
+    ],
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/387-final-creditor-regressions/source.zip",
+    "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/387-final-creditor-regressions/source-manifest.json",
+    "full_artifacts": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/387-final-creditor-regressions/test-artifacts",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/387-final-creditor-regressions/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/387-final-creditor-regressions/stderr.log"
+  },
+  {
+    "label": "388-final-door-regressions",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-map",
+        "--test",
+        "geometry_revision",
+        "--",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T20:18:05.904803+00:00",
+      "source_manifest_sha256": "9804ce79fdb78b6d48a63edd5a4f04bb14ad14ead84bd2daf3591eea27dd0947"
+    },
+    "exit": {
+      "exit_code": 0,
+      "wall_seconds": 0.07461537500000001,
+      "source_unchanged": true
+    },
+    "passed_test_groups": [
+      9
+    ],
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/388-final-door-regressions/source.zip",
+    "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/388-final-door-regressions/source-manifest.json",
+    "full_artifacts": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/388-final-door-regressions/test-artifacts",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/388-final-door-regressions/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/388-final-door-regressions/stderr.log"
+  },
+  {
+    "label": "389-parallel-stage-strict",
+    "command": {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "--release",
+        "--workspace",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T20:18:06.078369+00:00",
+      "source_manifest_sha256": "9804ce79fdb78b6d48a63edd5a4f04bb14ad14ead84bd2daf3591eea27dd0947"
+    },
+    "exit": {
+      "exit_code": 101,
+      "wall_seconds": 7.512803292,
+      "source_unchanged": true
+    },
+    "passed_test_groups": [],
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/389-parallel-stage-strict/source.zip",
+    "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/389-parallel-stage-strict/source-manifest.json",
+    "full_artifacts": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/389-parallel-stage-strict/test-artifacts",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/389-parallel-stage-strict/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/389-parallel-stage-strict/stderr.log"
+  },
+  {
+    "label": "390-parallel-stage-fmt",
+    "command": {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T20:19:13.847295+00:00",
+      "source_manifest_sha256": "1f8302b13392b36227c06cf0935e2dfc8cd54077ab5d10c6fde331976293ac31"
+    },
+    "exit": {
+      "exit_code": 0,
+      "wall_seconds": 0.774768875,
+      "source_unchanged": true
+    },
+    "passed_test_groups": [],
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/390-parallel-stage-fmt/source.zip",
+    "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/390-parallel-stage-fmt/source-manifest.json",
+    "full_artifacts": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/390-parallel-stage-fmt/test-artifacts",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/390-parallel-stage-fmt/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/390-parallel-stage-fmt/stderr.log"
+  },
+  {
+    "label": "391-parallel-stage-strict",
+    "command": {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "--release",
+        "--workspace",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T20:19:14.691431+00:00",
+      "source_manifest_sha256": "1f8302b13392b36227c06cf0935e2dfc8cd54077ab5d10c6fde331976293ac31"
+    },
+    "exit": {
+      "exit_code": 0,
+      "wall_seconds": 6.084880334,
+      "source_unchanged": true
+    },
+    "passed_test_groups": [],
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/391-parallel-stage-strict/source.zip",
+    "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/391-parallel-stage-strict/source-manifest.json",
+    "full_artifacts": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/391-parallel-stage-strict/test-artifacts",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/391-parallel-stage-strict/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/391-parallel-stage-strict/stderr.log"
+  },
+  {
+    "label": "392-creditor-cli-build",
+    "command": {
+      "argv": [
+        "cargo",
+        "build",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-storage",
+        "--example",
+        "town_equity_creditor_residual"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T20:19:20.856581+00:00",
+      "source_manifest_sha256": "1f8302b13392b36227c06cf0935e2dfc8cd54077ab5d10c6fde331976293ac31"
+    },
+    "exit": {
+      "exit_code": 0,
+      "wall_seconds": 1.410674166,
+      "source_unchanged": true
+    },
+    "passed_test_groups": [],
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/392-creditor-cli-build/source.zip",
+    "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/392-creditor-cli-build/source-manifest.json",
+    "full_artifacts": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/392-creditor-cli-build/test-artifacts",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/392-creditor-cli-build/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/392-creditor-cli-build/stderr.log"
+  },
+  {
+    "label": "393-door-cli-build",
+    "command": {
+      "argv": [
+        "cargo",
+        "build",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-map",
+        "--example",
+        "geometry_revision_candidate"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T20:19:22.418788+00:00",
+      "source_manifest_sha256": "1f8302b13392b36227c06cf0935e2dfc8cd54077ab5d10c6fde331976293ac31"
+    },
+    "exit": {
+      "exit_code": 0,
+      "wall_seconds": 2.041358125,
+      "source_unchanged": true
+    },
+    "passed_test_groups": [],
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/393-door-cli-build/source.zip",
+    "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/393-door-cli-build/source-manifest.json",
+    "full_artifacts": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/393-door-cli-build/test-artifacts",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/393-door-cli-build/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/393-door-cli-build/stderr.log"
+  },
+  {
+    "label": "394-creditor-cli",
+    "command": {
+      "argv": [
+        "/usr/bin/time",
+        "-l",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/392-creditor-cli-build/executables/e9020709330b62940325445832d4a8206ef1158455f7820da71479f43478f8df/town_equity_creditor_residual",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/394-creditor-world"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T20:19:54.272384+00:00",
+      "source_manifest_sha256": "1f8302b13392b36227c06cf0935e2dfc8cd54077ab5d10c6fde331976293ac31"
+    },
+    "exit": {
+      "exit_code": 0,
+      "wall_seconds": 1.294840625,
+      "source_unchanged": true
+    },
+    "passed_test_groups": [],
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/394-creditor-cli/source.zip",
+    "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/394-creditor-cli/source-manifest.json",
+    "full_artifacts": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/394-creditor-cli/test-artifacts",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/394-creditor-cli/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/394-creditor-cli/stderr.log"
+  },
+  {
+    "label": "395-door-cli",
+    "command": {
+      "argv": [
+        "/usr/bin/time",
+        "-l",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/393-door-cli-build/executables/e0af967c2731cfda59ebf6dad9e3f3ecdfe8ae5f8c998053901752a2189ece0d/geometry_revision_candidate",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/395-door-candidate",
+        "door-pose"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T20:19:55.641598+00:00",
+      "source_manifest_sha256": "1f8302b13392b36227c06cf0935e2dfc8cd54077ab5d10c6fde331976293ac31"
+    },
+    "exit": {
+      "exit_code": 0,
+      "wall_seconds": 0.471944708,
+      "source_unchanged": true
+    },
+    "passed_test_groups": [],
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/395-door-cli/source.zip",
+    "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/395-door-cli/source-manifest.json",
+    "full_artifacts": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/395-door-cli/test-artifacts",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/395-door-cli/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/395-door-cli/stderr.log"
+  },
+  {
+    "label": "396-pool-diagnostic-cli-build",
+    "command": {
+      "argv": [
+        "cargo",
+        "build",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-headless",
+        "--bin",
+        "mycity-headless"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T20:20:23.254043+00:00",
+      "source_manifest_sha256": "1f8302b13392b36227c06cf0935e2dfc8cd54077ab5d10c6fde331976293ac31"
+    },
+    "exit": {
+      "exit_code": 0,
+      "wall_seconds": 33.082297667,
+      "source_unchanged": true
+    },
+    "passed_test_groups": [],
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/396-pool-diagnostic-cli-build/source.zip",
+    "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/396-pool-diagnostic-cli-build/source-manifest.json",
+    "full_artifacts": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/396-pool-diagnostic-cli-build/test-artifacts",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/396-pool-diagnostic-cli-build/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/396-pool-diagnostic-cli-build/stderr.log"
+  },
+  {
+    "label": "397-pool-memory-cli",
+    "command": {
+      "argv": [
+        "python3",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/pool-mem-v1-cli-probe.py"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T20:21:33.878455+00:00",
+      "source_manifest_sha256": "1f8302b13392b36227c06cf0935e2dfc8cd54077ab5d10c6fde331976293ac31"
+    },
+    "exit": {
+      "exit_code": 0,
+      "wall_seconds": 0.639803208,
+      "source_unchanged": true
+    },
+    "passed_test_groups": [],
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/397-pool-memory-cli/source.zip",
+    "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/397-pool-memory-cli/source-manifest.json",
+    "full_artifacts": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/397-pool-memory-cli/test-artifacts",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/397-pool-memory-cli/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/397-pool-memory-cli/stderr.log"
+  },
+  {
+    "label": "398-final-parallel-regression",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-headless",
+        "-p",
+        "mycity-storage",
+        "-p",
+        "mycity-map",
+        "--lib",
+        "--test",
+        "equity_creditor_residual",
+        "--test",
+        "equity_runtime",
+        "--test",
+        "equity_dividend_liquidation",
+        "--test",
+        "geometry_revision",
+        "--",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T20:22:52.196881+00:00",
+      "source_manifest_sha256": "1f8302b13392b36227c06cf0935e2dfc8cd54077ab5d10c6fde331976293ac31"
+    },
+    "exit": {
+      "exit_code": 0,
+      "wall_seconds": 45.565778083,
+      "source_unchanged": true
+    },
+    "passed_test_groups": [
+      102,
+      5,
+      9,
+      28,
+      1,
+      1,
+      2
+    ],
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/398-final-parallel-regression/source.zip",
+    "full_source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/398-final-parallel-regression/source-manifest.json",
+    "full_artifacts": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/398-final-parallel-regression/test-artifacts",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/398-final-parallel-regression/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/398-final-parallel-regression/stderr.log"
+  }
+]

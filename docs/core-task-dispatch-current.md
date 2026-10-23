@@ -199,3 +199,23 @@ candidate code/tests, not yet compiled or activated. E shared writer has started
 and explicit city binding in the isolated paid-wage tree, with legacy missing bindings denied
 Move; test writer waits for the exact API. All are private WIP, not v153 acceptance. Root still
 alone owns verification/publication, and all original load/cap/failure evidence remains.
+
+
+## v154 actual parallel batch
+
+Final source398 passed148 selected library/integration tests,391 strict and390fmt.
+Fixed actual394 D CLI,395 F candidate CLI and397 standalone pool CLI passed, with source
+unchanged. Advisor accepted only these bounded claims. Exact pins, original failures,
+independent literal checks, resources and retention are [recorded here](evidence/core-parallel-154/STATUS.md).
+D creditor-priority residual is actually verified, not a new ledger. DoorPose is validated
+candidate code, not same-Store geometry activation or actual sales change. Pool counters
+are diagnostic, not normal-memory savings or original M0 acceptance.
+
+Shared Engine/World/Timeline/Store ownership remains economy_scenarios. Its E Move/Wait and
+explicit-city core batch is frozen in housing-paid-wage-window-v151, with full manifest/patch
+preserved; test writer supplied2 new Store/CLI files in housing-current. All Move behavior
+is still not_run, pending root exact integration after154. Root must preserve153 income
+and152 reader changes, reject old whole-file rollback and verify actual prepayment/debt/
+city/occupancy/cash/Wait/cold invariants before release. No new duplicate workers were started.
+External source-only handoff batch7 (#104/#57/#98) remains unapplied; no original source
+worktrees or recovery evidence were released or removed by this stage.

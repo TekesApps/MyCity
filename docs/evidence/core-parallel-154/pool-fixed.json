@@ -1,0 +1,12 @@
+{
+  "source_sha256": "9c8fbff6451200fceedd578ce49752a70cc1e13611769b638bf752d65ad4eaf6",
+  "source_files": 294,
+  "fixed_input_files": 306,
+  "binary": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/396-pool-diagnostic-cli-build/executables/e8cc51f980807a00114c49750626c1f583f2d81a820e9d80eb1fc80af8edef71/mycity-headless",
+  "binary_sha256": "e8cc51f980807a00114c49750626c1f583f2d81a820e9d80eb1fc80af8edef71",
+  "source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/396-pool-diagnostic-cli-build/source.zip",
+  "source_zip_sha256": "22109a528dfba913a6fad053ae5519171731f30676392ab3bb30a4ff2c635403",
+  "source_identity_method": "build.rs path-string sort and framed UTF-8 path/length/content hashing; archive hash checked",
+  "storage": "external HP P900 USB/APFS SSD",
+  "embedded_source_check": "actual397 pool report source_sha256 equals fixed source identity"
+}

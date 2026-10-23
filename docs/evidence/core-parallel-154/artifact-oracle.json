@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "scope": "literal_checkpoint_and_candidate_artifacts_not_replay",
+  "world": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/394-creditor-world",
+  "candidate": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/395-door-candidate",
+  "sequence": 134,
+  "checkpoint_sha256": "9e5db6106342046aa118758276e1ad41e918ba2b1552fe5313f8a9df7da85f92",
+  "checks": {
+    "actual_cash": true,
+    "conserved_cash": true,
+    "same_loan_paid_once": true,
+    "capital_and_surplus": true,
+    "company_closed": true,
+    "door_literal": true,
+    "rights_inherited": true,
+    "same_road_anchor": true,
+    "geometry_revision": true,
+    "candidate_payload_hash": true,
+    "fixture_identity": true,
+    "no_activation_claim": true,
+    "fixture_has_no_traffic_delta": true
+  },
+  "cash": {
+    "1": 1000076,
+    "2": 799924,
+    "3": 0,
+    "4": 1200000
+  }
+}
