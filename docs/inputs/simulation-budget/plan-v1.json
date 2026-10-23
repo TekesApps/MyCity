@@ -1,6 +1,6 @@
 {
   "schema": "mycity-simulation-budget-experiment-plan-v1",
-  "design_revision": "BUDGET-2",
+  "design_revision": "BUDGET-3",
   "date": "2026-10-23",
   "kind": "design_only_not_runtime_loader",
   "baseline_commit": "58845dfbb61eb166e97612f0b4bc567f963a4a87",
@@ -865,5 +865,170 @@
     "single_city_population_limit": null,
     "world_supported_business_load_limit": null,
     "status": "design_only_not_run"
+  },
+  "model_strategy_contract": {
+    "catalog_reference": "docs/model-granularity-and-convergence.md BUDGET-3",
+    "scope": "per model, region and compatible group; not globally numbered tiers",
+    "minimum_credible_is_contract_not_tier": true,
+    "equivalent_requires_same_source_random_numeric_trajectory": true,
+    "unqualified_approximation": "candidate_only",
+    "models": [
+      {
+        "model_id": "identity_space_property",
+        "minimum_credible": "精确身份、权利、占用与几何",
+        "equivalent_candidate": "脏索引和版本缓存",
+        "approximate_candidate": "规划候选；正式权利判定不近似",
+        "qualification": "not_implemented_or_not_qualified",
+        "upgrade_condition": "source invalidation, threshold overlap, residual or required explanation coverage; see model row",
+        "downgrade_condition": "stable inputs, qualified joint errors, all consumers compatible, minimum hold and conversion admission; see model row",
+        "necessary_consequences_must_remain": true
+      },
+      {
+        "model_id": "population_household",
+        "minimum_credible": "实际人数住所及已接受迁移出生",
+        "equivalent_candidate": "相容来源群体合批",
+        "approximate_candidate": "行为倾向／未来分布",
+        "qualification": "not_implemented_or_not_qualified",
+        "upgrade_condition": "source invalidation, threshold overlap, residual or required explanation coverage; see model row",
+        "downgrade_condition": "stable inputs, qualified joint errors, all consumers compatible, minimum hold and conversion admission; see model row",
+        "necessary_consequences_must_remain": true
+      },
+      {
+        "model_id": "education_labor",
+        "minimum_credible": "资格、实际课时劳动、到岗及欠薪",
+        "equivalent_candidate": "解析累计和到期分页",
+        "approximate_candidate": "岗位候选匹配",
+        "qualification": "not_implemented_or_not_qualified",
+        "upgrade_condition": "source invalidation, threshold overlap, residual or required explanation coverage; see model row",
+        "downgrade_condition": "stable inputs, qualified joint errors, all consumers compatible, minimum hold and conversion admission; see model row",
+        "necessary_consequences_must_remain": true
+      },
+      {
+        "model_id": "traffic",
+        "minimum_credible": "合法接入、容量、在途积压及未解需求",
+        "equivalent_candidate": "有效路径缓存及同轨迹流合批",
+        "approximate_candidate": "候选搜索与代表窗口",
+        "qualification": "not_implemented_or_not_qualified",
+        "upgrade_condition": "source invalidation, threshold overlap, residual or required explanation coverage; see model row",
+        "downgrade_condition": "stable inputs, qualified joint errors, all consumers compatible, minimum hold and conversion admission; see model row",
+        "necessary_consequences_must_remain": true
+      },
+      {
+        "model_id": "freight_inventory",
+        "minimum_credible": "lot权属、实际在途交付及损耗",
+        "equivalent_candidate": "同责任区间累计和路线批评分",
+        "approximate_candidate": "ETA／路线候选",
+        "qualification": "not_implemented_or_not_qualified",
+        "upgrade_condition": "source invalidation, threshold overlap, residual or required explanation coverage; see model row",
+        "downgrade_condition": "stable inputs, qualified joint errors, all consumers compatible, minimum hold and conversion admission; see model row",
+        "necessary_consequences_must_remain": true
+      },
+      {
+        "model_id": "utilities",
+        "minimum_credible": "真实投入、峰容量、meter及质量",
+        "equivalent_candidate": "稳定流积分与脏子网",
+        "approximate_candidate": "需求预测",
+        "qualification": "not_implemented_or_not_qualified",
+        "upgrade_condition": "source invalidation, threshold overlap, residual or required explanation coverage; see model row",
+        "downgrade_condition": "stable inputs, qualified joint errors, all consumers compatible, minimum hold and conversion admission; see model row",
+        "necessary_consequences_must_remain": true
+      },
+      {
+        "model_id": "market_business",
+        "minimum_credible": "实际产销投入、成本及订单钱债",
+        "equivalent_candidate": "同工况积分和增量撮合",
+        "approximate_candidate": "需求价格选址预测",
+        "qualification": "not_implemented_or_not_qualified",
+        "upgrade_condition": "source invalidation, threshold overlap, residual or required explanation coverage; see model row",
+        "downgrade_condition": "stable inputs, qualified joint errors, all consumers compatible, minimum hold and conversion admission; see model row",
+        "necessary_consequences_must_remain": true
+      },
+      {
+        "model_id": "finance_tax_debt_equity",
+        "minimum_credible": "逐账户权益、税基、原票到期及余数",
+        "equivalent_candidate": "解析应计和固定顺序分页",
+        "approximate_candidate": null,
+        "qualification": "not_implemented_or_not_qualified",
+        "upgrade_condition": "source invalidation, threshold overlap, residual or required explanation coverage; see model row",
+        "downgrade_condition": "stable inputs, qualified joint errors, all consumers compatible, minimum hold and conversion admission; see model row",
+        "necessary_consequences_must_remain": true
+      },
+      {
+        "model_id": "service_hazard",
+        "minimum_credible": "资格优先级、实际占用及返回完成",
+        "equivalent_candidate": "候选合批和稳定占用积分",
+        "approximate_candidate": "需求和等待预测",
+        "qualification": "not_implemented_or_not_qualified",
+        "upgrade_condition": "source invalidation, threshold overlap, residual or required explanation coverage; see model row",
+        "downgrade_condition": "stable inputs, qualified joint errors, all consumers compatible, minimum hold and conversion admission; see model row",
+        "necessary_consequences_must_remain": true
+      },
+      {
+        "model_id": "construction_maintenance",
+        "minimum_credible": "实际进度工料、养护磨损及故障义务",
+        "equivalent_candidate": "同工况积分和相容设备包",
+        "approximate_candidate": "未来风险",
+        "qualification": "not_implemented_or_not_qualified",
+        "upgrade_condition": "source invalidation, threshold overlap, residual or required explanation coverage; see model row",
+        "downgrade_condition": "stable inputs, qualified joint errors, all consumers compatible, minimum hold and conversion admission; see model row",
+        "necessary_consequences_must_remain": true
+      },
+      {
+        "model_id": "environment_nature",
+        "minimum_credible": "完整场源窗、积分峰值及暴露覆盖",
+        "equivalent_candidate": "保数值切点合dispatch和合格halo增量",
+        "approximate_candidate": "有资格场／受体策略",
+        "qualification": "not_implemented_or_not_qualified",
+        "upgrade_condition": "source invalidation, threshold overlap, residual or required explanation coverage; see model row",
+        "downgrade_condition": "stable inputs, qualified joint errors, all consumers compatible, minimum hold and conversion admission; see model row",
+        "necessary_consequences_must_remain": true
+      },
+      {
+        "model_id": "need_satisfaction_migration",
+        "minimum_credible": "实际来源、平滑锚冷却及已发生抽样",
+        "equivalent_candidate": "相同dt平滑和同属性合批",
+        "approximate_candidate": "倾向预测",
+        "qualification": "not_implemented_or_not_qualified",
+        "upgrade_condition": "source invalidation, threshold overlap, residual or required explanation coverage; see model row",
+        "downgrade_condition": "stable inputs, qualified joint errors, all consumers compatible, minimum hold and conversion admission; see model row",
+        "necessary_consequences_must_remain": true
+      },
+      {
+        "model_id": "law_governance",
+        "minimum_credible": "权限法定时点、通知救济及证据",
+        "equivalent_candidate": "到期分页和有效规则缓存",
+        "approximate_candidate": null,
+        "qualification": "not_implemented_or_not_qualified",
+        "upgrade_condition": "source invalidation, threshold overlap, residual or required explanation coverage; see model row",
+        "downgrade_condition": "stable inputs, qualified joint errors, all consumers compatible, minimum hold and conversion admission; see model row",
+        "necessary_consequences_must_remain": true
+      },
+      {
+        "model_id": "regional_events_persistence",
+        "minimum_credible": "双钟、闭城义务、水位游标及恢复根",
+        "equivalent_candidate": "履约积分、分页和流式保存",
+        "approximate_candidate": "带age的快照预测；必要履约不近似",
+        "qualification": "not_implemented_or_not_qualified",
+        "upgrade_condition": "source invalidation, threshold overlap, residual or required explanation coverage; see model row",
+        "downgrade_condition": "stable inputs, qualified joint errors, all consumers compatible, minimum hold and conversion admission; see model row",
+        "necessary_consequences_must_remain": true
+      }
+    ],
+    "dependency_rule_required_fields": [
+      "consumer_strategy_scope",
+      "producer_allowed_strategies_or_capability_predicate",
+      "units_versions",
+      "space_time_coverage",
+      "maximum_age",
+      "error_and_peak_evidence",
+      "invalidation_trigger",
+      "on_incompatibility"
+    ],
+    "selection": "dependency-closed compatible strategy set inside shared CPU/GPU/memory budget; shared producer charged once",
+    "switch": "publish related compatible bindings at complete boundary only after all conversions validate; no partial binding",
+    "cycles": "explicit finite joint solver with frozen inputs, termination, iteration and error qualification; otherwise blocked",
+    "fallback": "lowest credible compatible set; if unaffordable reduce actual speed or backpressure, preserve obligations",
+    "cycle_iteration_budget": null,
+    "cross_model_error_qualification": null
   }
 }

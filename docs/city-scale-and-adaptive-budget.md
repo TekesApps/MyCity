@@ -1,6 +1,6 @@
 # 城市规模与运行时自适应模拟预算
 
-设计修订 BUDGET-2，2026-10-23；状态：设计及配置草案，未实现控制器、未运行校准。调查固定于 main `58845dfbb61eb166e97612f0b4bc567f963a4a87`（v0.5.140）。本轮只改文档，不编译、不跑基准、不改 M0 冻结负载／验收、不实现 UI、渲染或 AgentKit。
+设计修订 BUDGET-3，2026-10-23；状态：设计及配置草案，未实现控制器、未运行校准。调查固定于 main `58845dfbb61eb166e97612f0b4bc567f963a4a87`（v0.5.140）。本轮只改文档，不编译、不跑基准、不改 M0 冻结负载／验收、不实现 UI、渲染或 AgentKit。
 
 本文把现有规则接为可校准流程，不建立另一套权威模型。总体入口仍是 [PRODUCT_BLUEPRINT](PRODUCT_BLUEPRINT.md)；全产品容量／资源以 [P53 R03](product-runtime-budget-and-versions.md#3-r03全产品联合内存与容量) 为准，跨城以 [R54](regional-snapshots-and-interaction-ledger.md) 为准，系统粒度沿 [收敛契约](model-granularity-and-convergence.md)，执行器沿 [CG39](cpu-gpu-compute-contract.md) 与 [A55](process-worker-and-render-architecture.md)。实验、证据和分期见 [校准计划](simulation-budget-calibration-plan.md)。本设计不追溯修改任何历史结果。
 
@@ -134,7 +134,7 @@ H历史独立覆盖冷启动、30／365／3650游戏日：尚未实跑的长期�
 
 ## 3. 系统粒度和跨系统依赖
 
-各系统可执行契约见[收敛契约BUDGET-1补充](model-granularity-and-convergence.md#budget-1系统执行卡)。只用共享执行卡，不为每系统创建独立调度器或无限等级。一个scope是“系统＋地图／区域＋相容主体群”；空间区域不是资金／产权容器。
+各系统可执行契约见[收敛契约BUDGET-1补充](model-granularity-and-convergence.md#budget-1系统执行卡)。 [BUDGET-3模型策略与依赖兼容契约](model-granularity-and-convergence.md#budget-3模型策略与依赖兼容契约)逐模型明确最低可信、等价优化、允许误差和升降档；预算分配以满足依赖的策略组合为单位，不允许模型独立降档破坏消费者输入或漏必要后果。只用共享执行卡，不为每系统创建独立调度器或无限等级。一个scope是“系统＋地图／区域＋相容主体群”；空间区域不是资金／产权容器。
 
 依赖链：权利／几何与工况变化→接入／路网／公用容量版本失效→供给、交通和到岗候选→同一权威路径接纳真实活动／交付→库存／钱债／维护／排放→环境和人时暴露→需求、经营、迁居候选→原合法动作。旧结果只能作初值，不能把未来工资、预测销量或邻城快照当现货。关键依赖版本变更局部传播；无法确定影响集合就保守扩大失效范围并计成本，不能为了预算漏传播。
 
