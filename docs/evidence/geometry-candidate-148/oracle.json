@@ -1,0 +1,43 @@
+{
+  "passed": true,
+  "scope": "pinned_flat_fixture_only",
+  "results": [
+    {
+      "directory": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/296-geometry-curve-version-world",
+      "kind": "curve",
+      "checks": {
+        "candidate_only": true,
+        "exact_profile_hash": true,
+        "separate_revision_increments": true,
+        "serialized_revisions": true,
+        "endpoints_unchanged": true,
+        "explicit_capacity_unchanged": true,
+        "edge_ids": true,
+        "served_four": true,
+        "road_time_reference": true,
+        "parent_road_time_reference": true,
+        "full_outputs": true
+      },
+      "dense_length_cm": 4104.242521697484
+    },
+    {
+      "directory": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/297-geometry-door-version-world",
+      "kind": "door-width",
+      "checks": {
+        "candidate_only": true,
+        "exact_profile_hash": true,
+        "separate_revision_increments": true,
+        "serialized_revisions": true,
+        "endpoints_unchanged": true,
+        "explicit_capacity_unchanged": true,
+        "edge_ids": true,
+        "served_four": true,
+        "road_time_reference": true,
+        "parent_road_time_reference": true,
+        "full_outputs": true,
+        "no_invented_time_gain": true
+      },
+      "dense_length_cm": 4059.2149521991687
+    }
+  ]
+}

@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.147`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.148`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.148 verifies the [finite geometry candidate component](docs/evidence/geometry-candidate-148/STATUS.md): 17 release tests, strict/fmt, two actual CLI runs and a reproducible independent planar reference. It does not activate geometry in Store; E recurrence and original M0 performance gates remain incomplete.
 
 v0.5.147完成[有限地面 WALK 道路/出入口开闭与 D+F 同存档联合运行](docs/evidence/core-spatial-runtime-147/STATUS.md)：同源237项Rust测试、strict/fmt、实际CLI、独立进程恢复和真实v144旧存档副本验证通过。几何改造、E接线、原M0性能门及真实16GB仍未完成或未测。
 v0.5.144完成[有限实缴股权、可信税费、分红和清算闭环](docs/evidence/core-equity-runtime-144/STATUS.md)：最终同源212项Rust测试、strict/fmt、实际CLI及独立检查点核账通过，政府实收分红已再次支出。原M0失败和16GB未测保持；F/E运行时接入继续推进。[实际agent分工与共享核心负责人](docs/core-task-dispatch-current.md)已固定，当前不展开UI、GPU、语音或AgentKit。

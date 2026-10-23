@@ -1,0 +1,151 @@
+[
+  {
+    "label": "293-geometry-version-tests",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-map",
+        "--lib",
+        "--test",
+        "geometry_revision",
+        "--test",
+        "traffic_adapter",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T09:25:42.084337+00:00",
+      "source_manifest_sha256": "fb05093602d139339147d66a16b5dbbca046dced1c94124fc3175383b107ac61"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 8.412370791,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "294-geometry-version-strict",
+    "command": {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-map",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T09:33:24.255297+00:00",
+      "source_manifest_sha256": "fb05093602d139339147d66a16b5dbbca046dced1c94124fc3175383b107ac61"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 7.065837708,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "295-geometry-version-build",
+    "command": {
+      "argv": [
+        "cargo",
+        "build",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-map",
+        "--example",
+        "geometry_revision_candidate"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T09:34:40.412916+00:00",
+      "source_manifest_sha256": "fb05093602d139339147d66a16b5dbbca046dced1c94124fc3175383b107ac61"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 2.8724452090000003,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "296-geometry-curve-version",
+    "command": {
+      "argv": [
+        "/usr/bin/time",
+        "-l",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/295-geometry-version-build/executables/642ca4757660f9ae40014bff334e4466152166e7236c462b6ba31c364f9aea76/geometry_revision_candidate",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/296-geometry-curve-version-world",
+        "curve"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T09:34:59.542493+00:00",
+      "source_manifest_sha256": "fb05093602d139339147d66a16b5dbbca046dced1c94124fc3175383b107ac61"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 0.706335875,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "297-geometry-door-version",
+    "command": {
+      "argv": [
+        "/usr/bin/time",
+        "-l",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/295-geometry-version-build/executables/642ca4757660f9ae40014bff334e4466152166e7236c462b6ba31c364f9aea76/geometry_revision_candidate",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/297-geometry-door-version-world",
+        "door-width"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T09:35:00.388996+00:00",
+      "source_manifest_sha256": "fb05093602d139339147d66a16b5dbbca046dced1c94124fc3175383b107ac61"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 0.02916287500000002,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "298-geometry-version-fmt",
+    "command": {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T09:36:29.017200+00:00",
+      "source_manifest_sha256": "fb05093602d139339147d66a16b5dbbca046dced1c94124fc3175383b107ac61"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 0.71832325,
+      "source_unchanged": true
+    }
+  }
+]

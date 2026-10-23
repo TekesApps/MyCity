@@ -82,3 +82,14 @@ F domain另在原spatial-transport-current树补几何候选，尚未导出/实�
 
 外部授权任务#31/#27/#96的源码补丁交接已完整复制到外置work/issue-31-27-96-source-handoff-20261023，
 其原工作树/源码保留；未apply/构建/测试，不打断当前F/E/M0窗口，也不视为功能完成。
+
+## Active batch ownership after v0.5.147
+
+- Shared core: economy_scenarios alone edits Engine/World/Timeline/Store/decoder in spatial-runtime-update-current. D and finite F are published; current implementation batch is E monthly rent recurrence on the existing Claim and calendar. Other agents do not write core.
+- M0: equity_current provides the minimal two-file reader patch and actual 292 eight-case results. Root integrates onto current main and revalidates. Requested 512KiB stack has no measured physical saving; original normal/common-8MiB/endurance/real-16GB gates remain unmet.
+- D: construction_finish owns independent tests/CLI for an additional dividend-to-exit joint scenario; existing v144 functionality remains authoritative. No new ledger or shared core ownership.
+- F: joint_current_prep owns geometry_revision module/tests/example and handoff, root owns lib export, integration and evidence. This batch creates exact Scene/profile candidates with separate parent-based revision increments; it does not activate Store geometry.
+- E: scoped_index_calls owns independent recurrence oracle/scenario preparation in housing-current. Input is first-period actual evidence 277-279; expected second-period output retains cumulative paid and oldest arrears due date, bills once, pays outstanding only. Core API freeze precedes test integration.
+- Advisor handles only specific contract disputes and final fresh evidence. Root schedules every Cargo/heavy test and publishes verified small batches, with Issue #25/#26/#112/#115 implementation and unverified results.
+
+No formal physical measurement window is active. Shared external target is reused. Source/executable pins, original recovery worlds and failure evidence remain retained. Existing D+finite-F same-world evidence does not prove the pending housing joint chain or complete M0.

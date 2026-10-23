@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 pub mod assets;
 mod bounded;
 pub mod geometry;
+pub mod geometry_revision;
 pub mod gpu_layout;
 pub mod probe;
 pub mod scene;

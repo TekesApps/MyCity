@@ -59,3 +59,10 @@
 ## 进程角色分配器安全边界
 
 仅`city-role-allocator`的私有adapter模块允许经独立审查的unsafe，用于GlobalAlloc、固定上游Heap及非分配锁；该crate其余代码deny unsafe，全部业务crate继续workspace forbid。不能把此例外扩到模型、UI或其他模块。激活后禁止System fallback，启动收费块逻辑free后物理隔离保留至进程结束；真实wait之前不得返还角色授权。原normal64MiB／共同8MiB不扩大；Rust区域不是物理进程内存上限，native／stack须联合实测。
+
+## Issue 开发与验收追踪
+
+- 小改动：关联 Issue → 开发 → 验证。复杂功能：设计文档 → 拆分并关联 Issue → 按 Issue 开发 → 验证。
+- 优先复用已有 Issue；没有合适 Issue 才创建。当前入口为 #2/#23，各线细项见 docs/core-task-dispatch-current.md。
+- 开发完成须向对应 Issue 回填实现结果、实际验证结果、未验证项，以及 PR 链接（如有）。直接集成时写明提交和 tag；部分阶段不得关闭未完成的完整范围。
+- 设计变更须同步更新设计文档与关联 Issue。主 agent 统一回填共享阶段和发布证据，避免并行重复发布或互相覆盖状态。

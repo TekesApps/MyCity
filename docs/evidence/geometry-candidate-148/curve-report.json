@@ -1,0 +1,62 @@
+{
+  "authority": "synthetic fixture input only; no legal grant or permission decision",
+  "calendar": "not_advanced",
+  "edit": "road_control_point",
+  "limits": [
+    "synthetic pinned fixture only",
+    "flat terrain and WALK adapter only",
+    "candidate is not activated and has no Store, permission, or legal workflow integration",
+    "not a city-scale performance or 16GB acceptance result"
+  ],
+  "movement": {
+    "candidate_edge_free_flow_seconds": [
+      30,
+      30,
+      42,
+      42
+    ],
+    "candidate_served_people_per_period": 4,
+    "prior_edge_free_flow_seconds": [
+      30,
+      30,
+      41,
+      41
+    ],
+    "prior_served_people_per_period": 4
+  },
+  "persistence": "not_written_to_store",
+  "resource": {
+    "allocator_metadata_included": false,
+    "assembly_and_serialization_peak_included": false,
+    "baseline_scene_owned_capacity_bytes": 17505,
+    "candidate_profile_logical_bytes": 2015,
+    "candidate_result_owned_capacity_bytes": 20161,
+    "candidate_scene_included_in_candidate_result": true,
+    "candidate_scene_input_logical_bytes": 2480,
+    "diagnostic_and_output_buffers_included": false,
+    "model_wall_ms": 6,
+    "payload_logical_bytes_excluding_this_report": 4495,
+    "post_baseline_release_owned_capacity_bytes": 615129,
+    "terrain_owned_capacity_bytes": 594968
+  },
+  "result": "candidate_only_not_activated",
+  "revisions": {
+    "candidate_geometry_revision": 2,
+    "candidate_transport_revision": 2,
+    "parent_geometry_revision": 1,
+    "parent_transport_revision": 1
+  },
+  "schema": "mycity-m0-geometry-revision-candidate-v1",
+  "source_sha256": {
+    "adapter_after": "23d8b0a099a2eaab1c62ea9203cd4e7eb06bfae2d9fcca36f676b6570552dba8",
+    "adapter_before": "1bce5c59f8f97b66fa08365376157d53cb7308b2bee71a9e2d5840fd28dd7f6f",
+    "candidate_profile": "9d5a42627b516484af7d065ced2cc1df8bd1bbd1d1eb7561941fe204ff524a1f",
+    "candidate_scene": "5cd928068765d8981f75726b3d41a35e90e149a305726d74ea853585da45276b",
+    "heightmap_fixture_bytes": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8",
+    "prior_profile_raw": "ed687cf4dd1ecf9e441d787f8f5b93f9af1a67c2803259bc709adea009d82165",
+    "prior_scene": "0c908df7a49207840b194ce284f1381784ac04887ac61b01d6e5af5ffc66c560",
+    "spatial_fixture_bytes": "d7a3d9ebeeb2c92ac0a6dba3ac0683639c3cc360d7d1cf1c01d249ecb82b8da2",
+    "terrain_manifest_source": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8",
+    "terrain_state": "afc09640069721be020608c7c732eaf496ce9e347ca6bb91995d8359be1adb65"
+  }
+}
