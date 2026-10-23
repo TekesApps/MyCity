@@ -1,0 +1,44 @@
+{
+  "scope": "A v134 identical fixed source archive paths only",
+  "rows": [
+    {
+      "round": "131-transport-capacity-build",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/131-transport-capacity-build/source.zip",
+      "sha256": "50167c035bddb60f4165ea47b3c42f5844fdac75b01a68048a526a06d417b53a",
+      "allocation_before_bytes": 4276224,
+      "reason": "terminal identical complete source archive; hard-link dedup preserves original path and full bytes"
+    },
+    {
+      "round": "130-transport-capacity-strict",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/130-transport-capacity-strict/source.zip",
+      "sha256": "50167c035bddb60f4165ea47b3c42f5844fdac75b01a68048a526a06d417b53a",
+      "allocation_before_bytes": 4276224,
+      "reason": "terminal identical complete source archive; hard-link dedup preserves original path and full bytes"
+    },
+    {
+      "round": "132-transport-capacity-measured",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/132-transport-capacity-measured/source.zip",
+      "sha256": "50167c035bddb60f4165ea47b3c42f5844fdac75b01a68048a526a06d417b53a",
+      "allocation_before_bytes": 4276224,
+      "reason": "terminal identical complete source archive; hard-link dedup preserves original path and full bytes"
+    },
+    {
+      "round": "135-transport-capacity-fmt",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/135-transport-capacity-fmt/source.zip",
+      "sha256": "50167c035bddb60f4165ea47b3c42f5844fdac75b01a68048a526a06d417b53a",
+      "allocation_before_bytes": 4276224,
+      "reason": "terminal identical complete source archive; hard-link dedup preserves original path and full bytes"
+    }
+  ],
+  "anchor": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/131-transport-capacity-build/source.zip",
+  "file_allocation_before_bytes": 17104896,
+  "file_allocation_after_unique_bytes": 4276224,
+  "file_allocation_reduction_bytes": 12828672,
+  "observed_ssd_available_delta_bytes": 12787712,
+  "APFS_exclusive_reclaim_claimed": false,
+  "all_full_bytes_and_paths_retained": true,
+  "full_restore_originals_deleted": false,
+  "shared_target": "existing external shared target reused",
+  "formal_measurement_active": false,
+  "unix_time": 1792716944.964957
+}

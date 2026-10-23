@@ -1,0 +1,179 @@
+{
+  "cases": [
+    {
+      "assignment_elapsed_ns": 42427750,
+      "assignment_sha256": "b78cbab1affbfb1aca364109ef48b0c568d27674f5b382cd3dd3ca2a66756c71",
+      "case": "normal",
+      "deterministic_repeat_elapsed_ns": 35069792,
+      "deterministic_repeat_equal": true,
+      "edge_flow_records": 512,
+      "edges_with_flow": 127,
+      "input_fingerprint": "aed371e2868dc50f8655740f16431e85a36ea931055b7ec7ccc36e9de16be17d",
+      "max_edge_flow_people": 512,
+      "maximum_path_length": 127,
+      "mean_travel_seconds_max": 127000,
+      "mean_travel_seconds_min": 127000,
+      "output_inline_bytes": 192,
+      "output_vec_owned_capacity_bytes": 313344,
+      "path_edge_indices": 65024,
+      "path_receipts": 512,
+      "requested_people": 512,
+      "routing_steps": 512,
+      "served_people": 512,
+      "total_edge_flow_people": 65024,
+      "unserved_assignment_budget_exhausted": 0,
+      "unserved_capacity_exhausted": 0,
+      "unserved_no_open_route": 0,
+      "unserved_people": 0
+    },
+    {
+      "assignment_elapsed_ns": 33056792,
+      "assignment_sha256": "5c5c1528038c65c93d2213563a7f8ca261381357a5678498f9fea2693ba85094",
+      "case": "closed_preferred_lane",
+      "deterministic_repeat_elapsed_ns": 32910542,
+      "deterministic_repeat_equal": true,
+      "edge_flow_records": 384,
+      "edges_with_flow": 127,
+      "input_fingerprint": "35ca6e54e338f5fbabac93146e4b06201c72875de9b05b3e07dc689a8dad9428",
+      "max_edge_flow_people": 512,
+      "maximum_path_length": 127,
+      "mean_travel_seconds_max": 127000,
+      "mean_travel_seconds_min": 127000,
+      "output_inline_bytes": 192,
+      "output_vec_owned_capacity_bytes": 313344,
+      "path_edge_indices": 65024,
+      "path_receipts": 512,
+      "requested_people": 512,
+      "routing_steps": 512,
+      "served_people": 512,
+      "total_edge_flow_people": 65024,
+      "unserved_assignment_budget_exhausted": 0,
+      "unserved_capacity_exhausted": 0,
+      "unserved_no_open_route": 0,
+      "unserved_people": 0
+    },
+    {
+      "assignment_elapsed_ns": 34659750,
+      "assignment_sha256": "e6d3295e6b4245516e16340eb18f76ef7d2af35c60f9adff882b1422f93d49bb",
+      "case": "congested",
+      "deterministic_repeat_elapsed_ns": 35555750,
+      "deterministic_repeat_equal": true,
+      "edge_flow_records": 512,
+      "edges_with_flow": 508,
+      "input_fingerprint": "007c8aae5c98383b26ade41930afbbcaeecc5881a8c2466237b9ec2104c65842",
+      "max_edge_flow_people": 128,
+      "maximum_path_length": 127,
+      "mean_travel_seconds_max": 146050,
+      "mean_travel_seconds_min": 146050,
+      "output_inline_bytes": 192,
+      "output_vec_owned_capacity_bytes": 313344,
+      "path_edge_indices": 65024,
+      "path_receipts": 512,
+      "requested_people": 512,
+      "routing_steps": 512,
+      "served_people": 512,
+      "total_edge_flow_people": 65024,
+      "unserved_assignment_budget_exhausted": 0,
+      "unserved_capacity_exhausted": 0,
+      "unserved_no_open_route": 0,
+      "unserved_people": 0
+    },
+    {
+      "assignment_elapsed_ns": 903333,
+      "assignment_sha256": "a728f0a946fb5fcd13a458a216ce6b3e487e25b20334bfac4a40356766ab1a43",
+      "case": "no_open_road",
+      "deterministic_repeat_elapsed_ns": 874667,
+      "deterministic_repeat_equal": true,
+      "edge_flow_records": 0,
+      "edges_with_flow": 0,
+      "input_fingerprint": "306efb7031c3aa73a554f4422911368374c6b1270dc4a01db5425466ccaac1d5",
+      "max_edge_flow_people": 0,
+      "maximum_path_length": 0,
+      "mean_travel_seconds_max": null,
+      "mean_travel_seconds_min": null,
+      "output_inline_bytes": 192,
+      "output_vec_owned_capacity_bytes": 61440,
+      "path_edge_indices": 0,
+      "path_receipts": 0,
+      "requested_people": 512,
+      "routing_steps": 0,
+      "served_people": 0,
+      "total_edge_flow_people": 0,
+      "unserved_assignment_budget_exhausted": 0,
+      "unserved_capacity_exhausted": 0,
+      "unserved_no_open_route": 512,
+      "unserved_people": 512
+    }
+  ],
+  "limits": {
+    "directed_edges": 512,
+    "entrances": 128,
+    "group_od_demands": 512,
+    "nodes": 128
+  },
+  "memory": {
+    "assignment_inline_bytes_by_case": [
+      [
+        "normal",
+        192
+      ],
+      [
+        "closed_preferred_lane",
+        192
+      ],
+      [
+        "congested",
+        192
+      ],
+      [
+        "no_open_road",
+        192
+      ]
+    ],
+    "assignment_output_owned_capacity_bytes_by_case": [
+      [
+        "normal",
+        313344
+      ],
+      [
+        "closed_preferred_lane",
+        313344
+      ],
+      [
+        "congested",
+        313344
+      ],
+      [
+        "no_open_road",
+        61440
+      ]
+    ],
+    "measurement_basis": "Vec.capacity * size_of(element); excludes allocator metadata and temporary scratch",
+    "opening_inline_bytes": 104,
+    "opening_vec_owned_capacity_bytes": 39936,
+    "peak_or_transient_allocation_bytes": "not_measured",
+    "process_rss_or_footprint": "not_measured"
+  },
+  "scope": "fixed_transport_upper_bound_functional_and_timing_probe",
+  "status": "passed",
+  "timing": {
+    "determinism_repeat_total_ns": 104410751,
+    "first_assignment_total_ns": 111047625,
+    "includes_input_generation_and_serialization": true,
+    "suite_wall_elapsed_ns": 217445792
+  },
+  "topology": {
+    "all_demands_unique_and_authorized": true,
+    "cohort_people_per_demand": 1,
+    "demands": 512,
+    "edges": 512,
+    "entrances": 128,
+    "maximum_path_edge_indices": 65024,
+    "nodes": 128,
+    "route_hops_when_reachable": 127,
+    "source_id_range": [
+      10000,
+      10511
+    ]
+  }
+}

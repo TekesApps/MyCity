@@ -1,0 +1,12 @@
+{
+  "source_sha256": "cc6ac1a25ad5590df10fc6a5a549907b23e08c96725fbaea57b4f65a971080ab",
+  "source_files": 265,
+  "fixed_input_files": 277,
+  "binary": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/131-transport-capacity-build/executables/44cc3a963310fa8fd8e3a937b7832f2e4d84affbc927e814a4e5041fa2869455/transport_capacity",
+  "binary_sha256": "44cc3a963310fa8fd8e3a937b7832f2e4d84affbc927e814a4e5041fa2869455",
+  "source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/131-transport-capacity-build/source.zip",
+  "source_zip_sha256": "50167c035bddb60f4165ea47b3c42f5844fdac75b01a68048a526a06d417b53a",
+  "source_identity_method": "build.rs path-string sort and framed UTF-8 path/length/content hashing; archive hash checked",
+  "storage": "external HP P900 USB/APFS SSD",
+  "embedded_source_check": "not performed for examples"
+}

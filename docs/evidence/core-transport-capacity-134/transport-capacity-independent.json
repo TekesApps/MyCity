@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "checks": {
+    "limits_unchanged": true,
+    "four_cases_exact": true,
+    "authorized_full_127_hops": true,
+    "determinism": true,
+    "conservation": true,
+    "congestion_cost": true,
+    "closed_fallback": true,
+    "closed_all_unserved": true,
+    "output_capacity_covers_payload": true,
+    "130-transport-capacity-strict": true,
+    "131-transport-capacity-build": true,
+    "132-transport-capacity-measured": true,
+    "135-transport-capacity-fmt": true
+  },
+  "evidence_sha256": "f8670ba7117751681468a89f5cc6f6f3c5c4027472207788a51fa0534d789c1d",
+  "scope": "independent output arithmetic and child status; not allocator peak or M0 performance",
+  "storage": "external HP P900 USB/APFS SSD"
+}

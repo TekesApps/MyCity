@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "/usr/bin/time",
+    "-l",
+    "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/131-transport-capacity-build/executables/44cc3a963310fa8fd8e3a937b7832f2e4d84affbc927e814a4e5041fa2869455/transport_capacity"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/transport-capacity-current",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-23T00:50:05.545994+00:00",
+  "source_manifest_sha256": "3e85a61ebd916f513f917bf805688ab8f4ffe8ffb315ebd403d097d0e8263470"
+}

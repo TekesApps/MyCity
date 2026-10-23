@@ -1,0 +1,40 @@
+{
+  "status": "withheld_not_merged",
+  "base_commit": "3ed2702a7acdcd8ccb1a39e049aaebcde114c6b2",
+  "candidate_worktree": "/Users/frankqin/dev/MyCity-core-work/scoped-index-current",
+  "actual_tests": [
+    {
+      "run": "124-scoped-index-core-lib",
+      "exit_code": 101,
+      "wall_seconds": 26.56857525,
+      "source_unchanged": true
+    },
+    {
+      "run": "125-scoped-index-core-fixed",
+      "exit_code": 0,
+      "wall_seconds": 30.837482208,
+      "source_unchanged": true
+    },
+    {
+      "run": "126-scoped-index-integrated-libraries",
+      "exit_code": 0,
+      "wall_seconds": 112.236129708,
+      "source_unchanged": true
+    }
+  ],
+  "local_native_owned_before_bytes": 29625968,
+  "local_native_owned_after_bytes": 26026056,
+  "local_native_owned_reduction_bytes": 3599912,
+  "full_workload_physical_saving": "not_measured_not_claimed",
+  "reason": [
+    "Load construct increases padding when native owned decreases, so original full workload is not reduced",
+    "DecodeWorkspace maintains exactly64MiB with initialized tail",
+    "Original full L1 restore compares native manifest plus current fixed-byte budget with old snapshot padding; this candidate changes those contracts"
+  ],
+  "decision": "advisor independently confirmed: withhold; no full benchmark or weakening of fixture, native rows, padding or caps",
+  "legacy_native_compat_probe": "source prepared but not built/run; no compatibility pass claimed",
+  "full_old_L1_compatibility": "static contract mismatch, not executed as successful restore",
+  "production_main_unchanged": true,
+  "original_full_inputs": "all preserved; not replaced by hash",
+  "unix_time": 1792716130.536832
+}

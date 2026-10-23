@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "cargo",
+    "clippy",
+    "--release",
+    "--locked",
+    "--offline",
+    "-p",
+    "mycity-core",
+    "--example",
+    "transport_capacity",
+    "--",
+    "-D",
+    "warnings"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/transport-capacity-current",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-23T00:40:17.182458+00:00",
+  "source_manifest_sha256": "0943ea7b0816989f5bb8d6073cfe7e4dc73ce954aaa6c5b294710d8b23932fb6"
+}

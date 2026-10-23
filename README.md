@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.133`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.134`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.134: [Fixed maximum transport probe](docs/evidence/core-transport-capacity-134/STATUS.md) passed all four cases and deterministic repeats at 128 nodes, 512 edges, 128 entrances, 512 OD groups and 127 hops. Path-index memory estimate corrected. Failed fixture attempt and withheld scoped-index candidate retained; observations are not clean-performance, M0 or 16GB acceptance. Construction compensation remains under isolated validation.
 
 v0.5.133完成[显式换岗与真实设施联合验证](docs/evidence/core-employment-lifelines-133/STATUS.md)：相同开局、相同2/2/10道路容量下，日工资80/80/80与80/8/8经实际到户价4分产生销量20/20/20与20/2/2。七模式、独立账物/工资/proof核对、冷开重放及重复运行通过；零运费错误断言的失败保留。只改CLI，未实现内生求职或持续经营；M0原normal/四速/8h及真实16GB门仍未通过。
 
