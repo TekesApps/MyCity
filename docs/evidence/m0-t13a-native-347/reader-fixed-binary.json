@@ -1,0 +1,12 @@
+{
+  "source_sha256": "690710bd0ae7c6ad2707541398b2d085f8b08154f9b1a18acc6a06f03b2c3db5",
+  "source_files": 289,
+  "fixed_input_files": 301,
+  "binary": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/361-native-reader-final-build/executables/5fe5a1502c396d467f4b8c7c26dfac47b42bbbe263edcd67ca54fcfd917ab22c/mycity-headless",
+  "binary_sha256": "5fe5a1502c396d467f4b8c7c26dfac47b42bbbe263edcd67ca54fcfd917ab22c",
+  "source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/361-native-reader-final-build/source.zip",
+  "source_zip_sha256": "5249085c64affdaf15c1f336eeba63380c11e33bb8d8bfc2d6687298f7794753",
+  "source_identity_method": "build.rs path-string sort and framed UTF-8 path/length/content hashing; archive hash checked",
+  "storage": "external HP P900 USB/APFS SSD",
+  "embedded_source_check": "matched actual362 restore.reader_source_sha256"
+}

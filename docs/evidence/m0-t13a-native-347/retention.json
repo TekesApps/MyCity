@@ -1,0 +1,76 @@
+{
+  "method": "unique inode st_blocks x512; full archives remain at original paths",
+  "before_allocated_bytes": 59494400,
+  "after_allocated_bytes": 16224256,
+  "allocated_reduction_bytes": 43270144,
+  "available_disk_change_observed_bytes": 43204608,
+  "available_disk_change_attribution": "not exclusively attributed; APFS and other tasks may change free space",
+  "records": [
+    {
+      "round": "353-native-reader-producer-contract",
+      "removed": "duplicate source.zip inode allocation only; full path retained by hardlink",
+      "reason": "identical complete archive, terminal run, no open handle",
+      "retained_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/352-native-reader-final-fmt/source.zip",
+      "sha256": "7ed79423898108f2fe531d91709b648ded4424f0eb12982f4b1dbefddbf42ea8",
+      "recovery_worlds": "untouched"
+    },
+    {
+      "round": "354-native-reader-fixed-build",
+      "removed": "duplicate source.zip inode allocation only; full path retained by hardlink",
+      "reason": "identical complete archive, terminal run, no open handle",
+      "retained_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/352-native-reader-final-fmt/source.zip",
+      "sha256": "7ed79423898108f2fe531d91709b648ded4424f0eb12982f4b1dbefddbf42ea8",
+      "recovery_worlds": "untouched"
+    },
+    {
+      "round": "355-native-cold-original-snapshot",
+      "removed": "duplicate source.zip inode allocation only; full path retained by hardlink",
+      "reason": "identical complete archive, terminal run, no open handle",
+      "retained_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/352-native-reader-final-fmt/source.zip",
+      "sha256": "7ed79423898108f2fe531d91709b648ded4424f0eb12982f4b1dbefddbf42ea8",
+      "recovery_worlds": "untouched"
+    },
+    {
+      "round": "356-native-reader-regression",
+      "removed": "duplicate source.zip inode allocation only; full path retained by hardlink",
+      "reason": "identical complete archive, terminal run, no open handle",
+      "retained_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/352-native-reader-final-fmt/source.zip",
+      "sha256": "7ed79423898108f2fe531d91709b648ded4424f0eb12982f4b1dbefddbf42ea8",
+      "recovery_worlds": "untouched"
+    },
+    {
+      "round": "359-native-reader-budget-regression",
+      "removed": "duplicate source.zip inode allocation only; full path retained by hardlink",
+      "reason": "identical complete archive, terminal run, no open handle",
+      "retained_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/358-native-budget-final-fmt/source.zip",
+      "sha256": "5249085c64affdaf15c1f336eeba63380c11e33bb8d8bfc2d6687298f7794753",
+      "recovery_worlds": "untouched"
+    },
+    {
+      "round": "360-native-reader-final-strict",
+      "removed": "duplicate source.zip inode allocation only; full path retained by hardlink",
+      "reason": "identical complete archive, terminal run, no open handle",
+      "retained_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/358-native-budget-final-fmt/source.zip",
+      "sha256": "5249085c64affdaf15c1f336eeba63380c11e33bb8d8bfc2d6687298f7794753",
+      "recovery_worlds": "untouched"
+    },
+    {
+      "round": "361-native-reader-final-build",
+      "removed": "duplicate source.zip inode allocation only; full path retained by hardlink",
+      "reason": "identical complete archive, terminal run, no open handle",
+      "retained_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/358-native-budget-final-fmt/source.zip",
+      "sha256": "5249085c64affdaf15c1f336eeba63380c11e33bb8d8bfc2d6687298f7794753",
+      "recovery_worlds": "untouched"
+    },
+    {
+      "round": "362-final-native-cold-original",
+      "removed": "duplicate source.zip inode allocation only; full path retained by hardlink",
+      "reason": "identical complete archive, terminal run, no open handle",
+      "retained_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/358-native-budget-final-fmt/source.zip",
+      "sha256": "5249085c64affdaf15c1f336eeba63380c11e33bb8d8bfc2d6687298f7794753",
+      "recovery_worlds": "untouched"
+    }
+  ],
+  "preserved": "all original recovery worlds, snapshots, logs, receipts, failure evidence, executable files, source/WIP, target and lock snapshots",
+  "retained_reason": "source and executables are needed for reproducibility, original worlds for direct recovery; shared target reused by next stage"
+}

@@ -1,0 +1,299 @@
+[
+  {
+    "label": "347-native-sim-open-diagnostic",
+    "command": {
+      "argv": [
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/345-sim-memory-diagnostic-final-build/executables/6f3015ad1e88220afa505b1579fbf39d9aac16b823578aec55ab405d9aa15741/mycity-headless",
+        "native-observe",
+        "/Volumes/HP P900/dev/MyCity/work/r07-sim-open-01",
+        "--",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/345-sim-memory-diagnostic-final-build/executables/6f3015ad1e88220afa505b1579fbf39d9aac16b823578aec55ab405d9aa15741/mycity-headless",
+        "joint-endurance",
+        "/Volumes/HP P900/dev/MyCity/work/r07-sim-open-01/model",
+        "smoke"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T19:03:08.186745+00:00",
+      "source_manifest_sha256": "c6fe718a7c9af08a9e6686aa5e548d23a459c6e4b7285643a9da7f96b5633718"
+    },
+    "result": {
+      "exit_code": 2,
+      "wall_seconds": 601.91362025,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "351-native-reader-fmt",
+    "command": {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T19:26:33.468038+00:00",
+      "source_manifest_sha256": "d777fd59062919a3e272ad4a77556dd8f9ebc37a063cb84aa2bbd280e088b399"
+    },
+    "result": {
+      "exit_code": 1,
+      "wall_seconds": 0.7876007079999999,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "352-native-reader-final-fmt",
+    "command": {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T19:26:53.659249+00:00",
+      "source_manifest_sha256": "f7165d182072dc97bb144c71b4505c6386bd0fb7a8ba09f320d8195bca5e2775"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 0.7666933340000001,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "353-native-reader-producer-contract",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-headless",
+        "--lib",
+        "layout_load::tests::bounded_native_index_decoding_is_version_independent_but_restore_requires_exact_shape",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T19:26:54.489812+00:00",
+      "source_manifest_sha256": "f7165d182072dc97bb144c71b4505c6386bd0fb7a8ba09f320d8195bca5e2775"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 10.039743459,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "354-native-reader-fixed-build",
+    "command": {
+      "argv": [
+        "cargo",
+        "build",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-headless",
+        "--bin",
+        "mycity-headless"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T19:27:04.637986+00:00",
+      "source_manifest_sha256": "f7165d182072dc97bb144c71b4505c6386bd0fb7a8ba09f320d8195bca5e2775"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 32.667498625,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "355-native-cold-original-snapshot",
+    "command": {
+      "argv": [
+        "/usr/bin/time",
+        "-l",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/354-native-reader-fixed-build/executables/7ab3bb245e6cd84cd40611af2e18c90d10097e8b3e0161ac364f3c374ad1dd82/mycity-headless",
+        "layout-load-only",
+        "/Volumes/HP P900/dev/MyCity/work/r07-sim-open-01/model/layout/snapshots/snapshot-000002",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/355-native-cold-recovery-world"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T19:28:34.756768+00:00",
+      "source_manifest_sha256": "f7165d182072dc97bb144c71b4505c6386bd0fb7a8ba09f320d8195bca5e2775"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 6.634964417,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "356-native-reader-regression",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-headless",
+        "--lib",
+        "layout_load::",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T19:31:19.880788+00:00",
+      "source_manifest_sha256": "f7165d182072dc97bb144c71b4505c6386bd0fb7a8ba09f320d8195bca5e2775"
+    },
+    "result": {
+      "exit_code": 101,
+      "wall_seconds": 0.298813666,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "358-native-budget-final-fmt",
+    "command": {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T19:37:43.637918+00:00",
+      "source_manifest_sha256": "295fead9cbeb5da859bb8cce04d70005459122cc1a0577ab686cc664c9f27825"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 0.9589899999999999,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "359-native-reader-budget-regression",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-headless",
+        "--lib",
+        "layout_load::",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T19:37:44.665256+00:00",
+      "source_manifest_sha256": "295fead9cbeb5da859bb8cce04d70005459122cc1a0577ab686cc664c9f27825"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 11.494391167,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "360-native-reader-final-strict",
+    "command": {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "--release",
+        "--workspace",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T19:37:56.271197+00:00",
+      "source_manifest_sha256": "295fead9cbeb5da859bb8cce04d70005459122cc1a0577ab686cc664c9f27825"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 5.423086459,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "361-native-reader-final-build",
+    "command": {
+      "argv": [
+        "cargo",
+        "build",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-headless",
+        "--bin",
+        "mycity-headless"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T19:38:01.764404+00:00",
+      "source_manifest_sha256": "295fead9cbeb5da859bb8cce04d70005459122cc1a0577ab686cc664c9f27825"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 34.188825625,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "362-final-native-cold-original",
+    "command": {
+      "argv": [
+        "/usr/bin/time",
+        "-l",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/361-native-reader-final-build/executables/5fe5a1502c396d467f4b8c7c26dfac47b42bbbe263edcd67ca54fcfd917ab22c/mycity-headless",
+        "layout-load-only",
+        "/Volumes/HP P900/dev/MyCity/work/r07-sim-open-01/model/layout/snapshots/snapshot-000002",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/362-native-cold-recovery-world"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T19:39:48.843103+00:00",
+      "source_manifest_sha256": "295fead9cbeb5da859bb8cce04d70005459122cc1a0577ab686cc664c9f27825"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 7.098859915999999,
+      "source_unchanged": true
+    }
+  }
+]

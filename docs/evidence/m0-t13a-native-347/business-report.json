@@ -1,0 +1,25 @@
+{
+  "L1_joint": "not_run_by_this_controller",
+  "business_sha256": "01e6d8fe5dfff9cbdc4e7a2e916fdeb62312fbd57eaa046c999d659fb68aa4af",
+  "clock": {
+    "actual_wall_seconds": 212.650995209,
+    "committed_job": 130,
+    "formal": false,
+    "hours": 720,
+    "max_query_completion_lateness_seconds": 0.84275225,
+    "max_save_completion_lateness_seconds": 0.461090625,
+    "queries_completed": 2880,
+    "required_wall_seconds": 72.0,
+    "retry_job": 68,
+    "saves_completed": 96,
+    "scheduled_cold_reopen": true,
+    "targets": 723
+  },
+  "eight_hour_gate": "not_accepted_until_independent_joint_audit",
+  "entire_engine_including_metadata": "equal_independent_fault_reference",
+  "full_M0": "not_accepted",
+  "image_sha256": "f4c922bfc7a6a214e73d1c69c26386b3faa2465794dc9f77f99793a554246e02",
+  "real_16GB": "not_run",
+  "schema": "mycity-endurance-controller-v1",
+  "source_sha256": "aa552fd1f408a19147823fc84b1f8a31863c111792f2ab8b89078e69e108c9ad"
+}

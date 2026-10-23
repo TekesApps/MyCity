@@ -1,0 +1,13 @@
+{
+  "scope": "independent source/payload-byte-total/layout arithmetic checks of original index and actual Rust recovery report; not independent payload replay",
+  "payload_file_count": 29,
+  "payload_bytes": 3372538130,
+  "generation": 2,
+  "saved_iteration": 300,
+  "resumed_iteration": 301,
+  "native_owned_bytes": 30825968,
+  "provenance_increment_bytes": 1200000,
+  "decode_workspace_bytes": 67108864,
+  "work_reserve_bytes": 134217728,
+  "result": "passed"
+}

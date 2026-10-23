@@ -90,7 +90,10 @@ pub(super) struct NativeManifest {
     account_arena: ArenaLayout,
     inventory_arena: ArenaLayout,
     // Names are decoded with bounded visitors, never arbitrary String derive.
-    fields: [FieldOffset; 13],
+    // Snapshot version indicates persistence features, not native record ABI.
+    // The current producer's complete manifest is compared during restore.
+    #[serde(deserialize_with = "field_offsets")]
+    fields: Vec<FieldOffset>,
     vectors: [VectorLayout; 6],
     owned_capacity_bytes: usize,
 }
@@ -141,6 +144,35 @@ fn entries<'de, D: serde::Deserializer<'de>>(d: D) -> Result<Vec<FileEntry>, D::
         }
     }
     d.deserialize_seq(Entries)
+}
+
+fn field_offsets<'de, D: serde::Deserializer<'de>>(d: D) -> Result<Vec<FieldOffset>, D::Error> {
+    struct Fields;
+    impl<'de> Visitor<'de> for Fields {
+        type Value = Vec<FieldOffset>;
+        fn expecting(&self, f: &mut fmt::Formatter) -> fmt::Result {
+            f.write_str("at most 16 bounded native field offsets")
+        }
+        fn visit_seq<A: SeqAccess<'de>>(self, mut seq: A) -> Result<Self::Value, A::Error> {
+            let mut out = Vec::with_capacity(16);
+            while out.len() < 16 {
+                match seq.next_element()? {
+                    Some(field) => out.push(field),
+                    None => return Ok(out),
+                }
+            }
+            struct Reject;
+            impl<'de> serde::de::DeserializeSeed<'de> for Reject {
+                type Value = ();
+                fn deserialize<E: serde::Deserializer<'de>>(self, _: E) -> Result<(), E::Error> {
+                    Err(de::Error::custom("layout_index_excess_native_fields"))
+                }
+            }
+            seq.next_element_seed(Reject)?;
+            Ok(out)
+        }
+    }
+    d.deserialize_seq(Fields)
 }
 
 pub(super) fn decode(raw: &[u8]) -> Result<Index, String> {

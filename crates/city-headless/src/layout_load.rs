@@ -42,6 +42,13 @@ const ACCEPTANCE: &[u8] = include_bytes!("../../../fixtures/m0-t13a-acceptance.j
 fn err(e: impl std::fmt::Debug) -> String {
     format!("{e:?}")
 }
+fn native_shape_matches(
+    actual: &NativePressure,
+    expected: &restore_index::NativeManifest,
+) -> Result<bool, String> {
+    Ok(serde_json::to_value(actual.manifest()).map_err(err)?
+        == serde_json::to_value(expected).map_err(err)?)
+}
 #[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq)]
 #[serde(
     bound(
@@ -1426,15 +1433,13 @@ impl Load {
             io,
             |reader| native.restore_checkpoint_into(reader),
         )?;
-        if serde_json::to_value(native.manifest()).map_err(err)?
-            != serde_json::to_value(
-                manifest
-                    .native
-                    .as_ref()
-                    .ok_or("layout_restore_native_shape")?,
-            )
-            .map_err(err)?
-        {
+        if !native_shape_matches(
+            &native,
+            manifest
+                .native
+                .as_ref()
+                .ok_or("layout_restore_native_shape")?,
+        )? {
             return Err("layout_restore_native_shape".into());
         }
         let mut decoded = decode_workspace.lock().map_err(err)?;
@@ -1900,6 +1905,83 @@ fn publish_r07_report(
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn bounded_native_index_decoding_is_version_independent_but_restore_requires_exact_shape() {
+        use super::*;
+
+        // Build only the current native producer; no 3.10GiB layout is needed.
+        let producer = NativePressure::jprod().unwrap();
+        let actual = serde_json::to_value(producer.manifest()).unwrap();
+        let fields = actual["fields"].as_array().unwrap();
+        assert_eq!(fields.len(), 16);
+
+        let make_index = |schema: &str, native: Value| {
+            let layout_schema = if schema == "mycity-layout-snapshot-v2" {
+                "mycity-l1-layout-v1"
+            } else {
+                "mycity-l1-layout-v2"
+            };
+            json!({"schema":schema,"generation":2,"manifest":{
+                "schema":layout_schema,"acceptance_sha256":mycity_core::sha256(ACCEPTANCE),
+                "normal_joint_budget_bytes":NORMAL_BYTES,"external_owned_charge_bytes":0,
+                "metadata_and_io_charge_bytes":4*MIB,"cow_reserve_bytes":WORK_PAGES*MIB,
+                "native":native},"files":[]})
+        };
+
+        // Snapshot v2/v3 versions describe persistence features (including
+        // R07), not an independent native ABI selector.
+        for schema in ["mycity-layout-snapshot-v2", "mycity-layout-snapshot-v3"] {
+            let decoded = restore_index::decode(
+                &serde_json::to_vec(&make_index(schema, actual.clone())).unwrap(),
+            )
+            .unwrap();
+            assert!(
+                native_shape_matches(&producer, decoded.manifest.native.as_ref().unwrap()).unwrap()
+            );
+
+            let mut changed_name = actual.clone();
+            changed_name["fields"][0][0] = json!("Account.changed");
+            let decoded = restore_index::decode(
+                &serde_json::to_vec(&make_index(schema, changed_name)).unwrap(),
+            )
+            .unwrap();
+            assert!(
+                !native_shape_matches(&producer, decoded.manifest.native.as_ref().unwrap())
+                    .unwrap()
+            );
+
+            let mut changed_offset = actual.clone();
+            changed_offset["fields"][0][1] = json!(fields[0][1].as_u64().unwrap() + 1);
+            let decoded = restore_index::decode(
+                &serde_json::to_vec(&make_index(schema, changed_offset)).unwrap(),
+            )
+            .unwrap();
+            assert!(
+                !native_shape_matches(&producer, decoded.manifest.native.as_ref().unwrap())
+                    .unwrap()
+            );
+
+            let mut older_abi = actual.clone();
+            older_abi["fields"] = json!(fields[..13].to_vec());
+            let decoded =
+                restore_index::decode(&serde_json::to_vec(&make_index(schema, older_abi)).unwrap())
+                    .unwrap();
+            assert!(
+                !native_shape_matches(&producer, decoded.manifest.native.as_ref().unwrap())
+                    .unwrap()
+            );
+        }
+
+        let mut excess = actual;
+        excess["fields"] = json!((0..17)
+            .map(|i| json!([format!("Native.field_{i}"), i]))
+            .collect::<Vec<_>>());
+        assert!(restore_index::decode(
+            &serde_json::to_vec(&make_index("mycity-layout-snapshot-v3", excess)).unwrap(),
+        )
+        .is_err());
+    }
+
     #[test]
     fn owner_stop_requires_explicit_byte_and_publication_cutoff_is_fixed() {
         use std::time::Duration;

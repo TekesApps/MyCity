@@ -141,3 +141,19 @@ Compilation/runtime/Store/resource verification remains not_run. Its v149-based 
 are not integration-ready merely because the delivery hashes match; no shared source was
 copied over current WIP, no measurement window is assigned, and no cleanup/release of their
 original worktrees has been performed by this task.
+
+
+## v152 finite native reader repair and queued E validation
+
+347 ran fullL1/real business concurrently but failed at final cold layout restore; raw memory
+still exceeds original normal. Native ABI16 fields outgrew the reader13 bound. The repaired
+bounded parser is independent of snapshot R07 version and retains full native shape checks.
+359's29 regressions,360 strict and362 original3.37GB cold recovery pass; native provenance
+adds1.2MB within the unchanged64MiB workspace. Evidence: [native347 and repair](evidence/m0-t13a-native-347/STATUS.md).
+
+Income-only code is isolated from Move WIP on branch codex/housing-paid-wage-window-v151.
+Four actual Store cases and its real CLI pass in363/366; full recovery artifacts are retained,
+and component8456B is observed. Broader regression is running; this code is not in v152.
+No Move/geometry activation acceptance is implied. Future complex Issue ownership follows
+updated AGENTS independent child-session workflow; root retains exclusive Cargo/publication
+and shared-core integration scheduling. Existing frozen batches and unrelated WIP remain intact.

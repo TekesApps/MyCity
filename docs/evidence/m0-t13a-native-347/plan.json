@@ -1,0 +1,29 @@
+{
+  "argv": [
+    "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/345-sim-memory-diagnostic-final-build/executables/6f3015ad1e88220afa505b1579fbf39d9aac16b823578aec55ab405d9aa15741/mycity-headless",
+    "native-observe",
+    "/Volumes/HP P900/dev/MyCity/work/r07-sim-open-01",
+    "--",
+    "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/345-sim-memory-diagnostic-final-build/executables/6f3015ad1e88220afa505b1579fbf39d9aac16b823578aec55ab405d9aa15741/mycity-headless",
+    "joint-endurance",
+    "/Volumes/HP P900/dev/MyCity/work/r07-sim-open-01/model",
+    "smoke"
+  ],
+  "pin": {
+    "source_sha256": "aa552fd1f408a19147823fc84b1f8a31863c111792f2ab8b89078e69e108c9ad",
+    "source_files": 289,
+    "fixed_input_files": 301,
+    "binary": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/345-sim-memory-diagnostic-final-build/executables/6f3015ad1e88220afa505b1579fbf39d9aac16b823578aec55ab405d9aa15741/mycity-headless",
+    "binary_sha256": "6f3015ad1e88220afa505b1579fbf39d9aac16b823578aec55ab405d9aa15741",
+    "source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/345-sim-memory-diagnostic-final-build/source.zip",
+    "source_zip_sha256": "8acf6bd27906b2236088c7652696060624f26425d7a8ee58c48b9bc5d4f7960a",
+    "source_identity_method": "build.rs path-string sort and framed UTF-8 path/length/content hashing; archive hash checked",
+    "storage": "external HP P900 USB/APFS SSD",
+    "embedded_source_check": "matched actual346 report source_sha256"
+  },
+  "purpose": "600s full frozen L1 and full business native diagnostic only, no R07 runtime credit controller; no normal or endurance acceptance",
+  "preflight_compilers": [],
+  "source_tree": "canonical v0.5.151",
+  "storage": "external HP P900 USB/APFS SSD",
+  "actual16GB": "not_run"
+}

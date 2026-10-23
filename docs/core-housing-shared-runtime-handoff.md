@@ -170,3 +170,40 @@ or established the 16 GB budget. Deposits/escrow, move, end-lease, and binding d
 current spatial assets remain unsupported or unverified. The later spatial joint acceptance was
 not run as part of this evidence; do not infer it from the 312 workstream. No capacity or 16 GB gate
 is passed by this update.
+
+
+## Next paid-income observation slice (implementation WIP, not acceptance)
+
+The next Move affordability input will use actual Timeline Payroll.paid deltas, never accrued
+wages or a caller-provided income amount. One bounded ring belongs to the existing housing
+runtime:32 registered household bindings by32 day slots (31 complete days plus current day).
+At game time `now`, end is `floor(now / DAY) * DAY`; the query is `[end-31*DAY, end)`.
+Payment at exactly midnight belongs to the new day and enters the query only after that day
+completes. Multiple actual payments that day are added once. Lifetime paid is not backfilled.
+Coverage begins when trustworthy instrumentation starts; incomplete coverage is unavailable,
+whereas a fully observed zero-payment day is valid zero data. Account/household identities,
+coverage and bucket positions must cross-check on restore.
+
+Every existing payment mutation, including Advance phase payment, explicit SettlePayroll and
+supported termination/exit settlement, must update the statistical ring in the same Prepared
+transaction as the actual account and Payroll change. Cross-day Advance must attribute each
+delta to its internal event date and agree with the daily reference; a sum stamped at final
+target is invalid. Lost replies and exact retry must not duplicate statistics or cash.
+The ring is rebuildable evidence, not another wage ledger or another balance.
+
+Unbilled `accrued > billed` at a normal weekly/monthly cycle is not overdue wage debt and does
+not erase prior complete observations. Actual `billed > paid` may conservatively block Move
+as unpaid-wage risk. The returned reference is actual received wages, not a tax-net-income
+claim or future income guarantee. Unknown tax treatment cannot be silently fabricated.
+`Account.cash - protected` independently constrains the actual current move transaction;
+window wages are never added to cash again. Lack of a qualifying contract, lack of observation,
+and observed zero income require distinct status/evidence.
+
+Old Rent Claims retained after Move remain original sourced debts. A processed old Claim will
+not be picked again by the new active lease's monthly billing; explicit Timeline::SettleClaim
+must actually pay it. Reducing preloaded unearned rent may not make principal less than paid:
+that Move is rejected until refund/credit obligations exist. This is not automatic collection
+or a refund implementation. The sole shared writer wires these small slices; private tests
+and arithmetic oracle are not Store or resource acceptance. Layout, active/spare/candidate/
+restore amplification, actual payment hooks, cold recovery and combined scenarios remain to
+be measured by root before release.

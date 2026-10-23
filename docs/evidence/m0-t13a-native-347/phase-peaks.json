@@ -1,0 +1,219 @@
+{
+  "scope": "observed membership only; not causal attribution or a changed acceptance boundary",
+  "peaks": {
+    "no_observed_sim_lifecycle": {
+      "frame_index_zero_based": 6,
+      "bytes": 3341357208,
+      "t": 1.533054667,
+      "r07_applied": {
+        "source": "aa552fd1f408a19147823fc84b1f8a31863c111792f2ab8b89078e69e108c9ad",
+        "owner": {
+          "pid": 98214,
+          "start_abstime": 27705551423283,
+          "parent_pid": 98210
+        },
+        "state": {
+          "schema": 1,
+          "logical_bytes": 277662928,
+          "arena_tail_bytes": 52432,
+          "quantum_bytes": 65536,
+          "mapped_bytes": 277610496,
+          "replaced_bytes": 0,
+          "epoch": 0,
+          "reading_sequence": 5
+        },
+        "permitted_bytes": 5046896,
+        "reason": "fresh_unique_live_same_use_components"
+      },
+      "members": [
+        [
+          98209,
+          98208,
+          27705549960675,
+          5734400,
+          "observer"
+        ],
+        [
+          98210,
+          98209,
+          27705550210589,
+          3899392,
+          "joint-endurance"
+        ],
+        [
+          98211,
+          98210,
+          27705550509428,
+          49610752,
+          "normal-pool-host"
+        ],
+        [
+          98214,
+          98210,
+          27705551423283,
+          3265789952,
+          "layout-session"
+        ],
+        [
+          98236,
+          98210,
+          27705576067568,
+          3719168,
+          "scale-endurance"
+        ],
+        [
+          98237,
+          98236,
+          27705577027149,
+          28131328,
+          "scale-model-task"
+        ]
+      ],
+      "components": [
+        [
+          98209,
+          27705549960675,
+          3490104
+        ],
+        [
+          98210,
+          27705550210589,
+          1622328
+        ],
+        [
+          98211,
+          27705550509428,
+          47432016
+        ],
+        [
+          98214,
+          27705551423283,
+          3264383592
+        ],
+        [
+          98236,
+          27705576067568,
+          1311032
+        ],
+        [
+          98237,
+          27705577027149,
+          23118136
+        ]
+      ]
+    },
+    "observed_sim_lifecycle_present": {
+      "frame_index_zero_based": 602,
+      "bytes": 3337720296,
+      "t": 150.553201375,
+      "r07_applied": {
+        "source": "aa552fd1f408a19147823fc84b1f8a31863c111792f2ab8b89078e69e108c9ad",
+        "owner": {
+          "pid": 98214,
+          "start_abstime": 27705551423283,
+          "parent_pid": 98210
+        },
+        "state": {
+          "schema": 1,
+          "logical_bytes": 277662928,
+          "arena_tail_bytes": 52432,
+          "quantum_bytes": 65536,
+          "mapped_bytes": 269811712,
+          "replaced_bytes": 7798784,
+          "epoch": 6,
+          "reading_sequence": 601
+        },
+        "permitted_bytes": 7832512,
+        "reason": "fresh_unique_live_same_use_components"
+      },
+      "members": [
+        [
+          98209,
+          98208,
+          27705549960675,
+          5373952,
+          "observer"
+        ],
+        [
+          98210,
+          98209,
+          27705550210589,
+          3751936,
+          "joint-endurance"
+        ],
+        [
+          98211,
+          98210,
+          27705550509428,
+          3604480,
+          "normal-pool-host"
+        ],
+        [
+          98214,
+          98210,
+          27705551423283,
+          3256205312,
+          "layout-session"
+        ],
+        [
+          98236,
+          98210,
+          27705576067568,
+          6029312,
+          "scale-endurance"
+        ],
+        [
+          1662,
+          98236,
+          27707814018481,
+          59506688,
+          "sim-host-scale-full-probe"
+        ],
+        [
+          3874,
+          98211,
+          27709159562095,
+          10846208,
+          "compute-worker-bounded"
+        ]
+      ],
+      "components": [
+        [
+          98209,
+          27705549960675,
+          3490104
+        ],
+        [
+          98210,
+          27705550210589,
+          1622328
+        ],
+        [
+          98211,
+          27705550509428,
+          1638688
+        ],
+        [
+          98214,
+          27705551423283,
+          3256568424
+        ],
+        [
+          98236,
+          27705576067568,
+          2720080
+        ],
+        [
+          1662,
+          27707814018481,
+          64258408
+        ],
+        [
+          3874,
+          27709159562095,
+          7422264
+        ]
+      ]
+    }
+  }
+}

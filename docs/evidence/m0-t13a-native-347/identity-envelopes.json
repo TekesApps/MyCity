@@ -1,0 +1,195 @@
+{
+  "source_sha256": "aa552fd1f408a19147823fc84b1f8a31863c111792f2ab8b89078e69e108c9ad",
+  "observer_native_identity": [
+    98209,
+    27705549960675
+  ],
+  "coverage": {
+    "observer_present": 2408,
+    "observer_missing": 0,
+    "complete_group_frames": 2109,
+    "frames": 2408
+  },
+  "observer_per_minute": [
+    {
+      "minute": 0,
+      "samples": 240,
+      "median_bytes": 3490104.0,
+      "p95_bytes": 3490104,
+      "max_bytes": 3490104
+    },
+    {
+      "minute": 1,
+      "samples": 240,
+      "median_bytes": 3490104.0,
+      "p95_bytes": 3490104,
+      "max_bytes": 3490104
+    },
+    {
+      "minute": 2,
+      "samples": 240,
+      "median_bytes": 3490104.0,
+      "p95_bytes": 3490104,
+      "max_bytes": 3490104
+    },
+    {
+      "minute": 3,
+      "samples": 240,
+      "median_bytes": 3490104.0,
+      "p95_bytes": 3490104,
+      "max_bytes": 3490104
+    },
+    {
+      "minute": 4,
+      "samples": 240,
+      "median_bytes": 3490104.0,
+      "p95_bytes": 3490104,
+      "max_bytes": 3490104
+    },
+    {
+      "minute": 5,
+      "samples": 240,
+      "median_bytes": 3473720.0,
+      "p95_bytes": 3473720,
+      "max_bytes": 3473720
+    },
+    {
+      "minute": 6,
+      "samples": 240,
+      "median_bytes": 3473720.0,
+      "p95_bytes": 3473720,
+      "max_bytes": 3473720
+    },
+    {
+      "minute": 7,
+      "samples": 240,
+      "median_bytes": 3473720.0,
+      "p95_bytes": 3473720,
+      "max_bytes": 3473720
+    },
+    {
+      "minute": 8,
+      "samples": 240,
+      "median_bytes": 3473720.0,
+      "p95_bytes": 3473720,
+      "max_bytes": 3473720
+    },
+    {
+      "minute": 9,
+      "samples": 240,
+      "median_bytes": 3473720.0,
+      "p95_bytes": 3473720,
+      "max_bytes": 3473720
+    },
+    {
+      "minute": 10,
+      "samples": 8,
+      "median_bytes": 3473720.0,
+      "p95_bytes": 3473720,
+      "max_bytes": 3473720
+    }
+  ],
+  "raw_observed_group_peak": {
+    "clock_begin_ns": 1526466084,
+    "clock_end_ns": 1533054667,
+    "phys_footprint_bytes": 3341357208,
+    "components": [
+      [
+        98209,
+        27705549960675,
+        3490104
+      ],
+      [
+        98210,
+        27705550210589,
+        1622328
+      ],
+      [
+        98211,
+        27705550509428,
+        47432016
+      ],
+      [
+        98214,
+        27705551423283,
+        3264383592
+      ],
+      [
+        98236,
+        27705576067568,
+        1311032
+      ],
+      [
+        98237,
+        27705577027149,
+        23118136
+      ]
+    ]
+  },
+  "sim_lifecycle_receipts": [
+    {
+      "sim_pid": 98982,
+      "app_instance_unix_ns": 1792782227524882000,
+      "operation": "create",
+      "native_birth_candidates": [
+        27706493996027
+      ],
+      "native_clock_alignment": "not_available; no instantaneous-open footprint claim",
+      "observed_lifecycle_footprint_envelope_bytes": {
+        "min": 63996264,
+        "max": 64094568,
+        "samples": 148
+      },
+      "native_parent_link": "see exact host members and registration rows; PID uniqueness alone is insufficient"
+    },
+    {
+      "sim_pid": 717,
+      "app_instance_unix_ns": 1792782264568800000,
+      "operation": "open",
+      "native_birth_candidates": [
+        27707383044086
+      ],
+      "native_clock_alignment": "not_available; no instantaneous-open footprint claim",
+      "observed_lifecycle_footprint_envelope_bytes": {
+        "min": 64078160,
+        "max": 64242000,
+        "samples": 71
+      },
+      "native_parent_link": "see exact host members and registration rows; PID uniqueness alone is insufficient"
+    },
+    {
+      "sim_pid": 1662,
+      "app_instance_unix_ns": 1792782282527979000,
+      "operation": "open",
+      "native_birth_candidates": [
+        27707814018481
+      ],
+      "native_clock_alignment": "not_available; no instantaneous-open footprint claim",
+      "observed_lifecycle_footprint_envelope_bytes": {
+        "min": 64110952,
+        "max": 64258408,
+        "samples": 634
+      },
+      "native_parent_link": "see exact host members and registration rows; PID uniqueness alone is insufficient"
+    },
+    {
+      "sim_pid": 10110,
+      "app_instance_unix_ns": 1792782483014342000,
+      "operation": "open",
+      "native_birth_candidates": [
+        27712579020727
+      ],
+      "native_clock_alignment": "not_available; no instantaneous-open footprint claim",
+      "observed_lifecycle_footprint_envelope_bytes": {
+        "min": 64078184,
+        "max": 64127336,
+        "samples": 3
+      },
+      "native_parent_link": "see exact host members and registration rows; PID uniqueness alone is insufficient"
+    }
+  ],
+  "scope": "post-run observed native identity/envelopes; app and native clocks are not aligned here",
+  "normal_memory_acceptance": "not_accepted",
+  "eight_hour_gate": "not_run",
+  "actual16GB": "not_run"
+}

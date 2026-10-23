@@ -111,9 +111,96 @@ mod tests {
         let mut w = DecodeWorkspace::new(&expected).unwrap();
         eprintln!("workspace_manifest:{}", w.manifest());
         let id = w.identities();
+        let native = w.native.manifest();
+
+        // The persistent equity-source fields grow each native record by 8 B
+        // under the pinned Rust ABI: Account 24 -> 32 B and Stock 88 -> 96 B.
+        // Capacities and free-index backing stay frozen at the original counts.
+        assert_eq!(
+            (
+                native.account_arena.record_bytes,
+                native.account_arena.slot_bytes,
+                native.account_arena.slots_capacity,
+                native.account_arena.free_index_capacity,
+                native.account_arena.live_records,
+                native.account_arena.owned_capacity_bytes,
+            ),
+            (32, 40, 40_000, 40_000, 40_000, 1_760_080)
+        );
+        assert_eq!(
+            (
+                native.inventory_arena.record_bytes,
+                native.inventory_arena.slot_bytes,
+                native.inventory_arena.slots_capacity,
+                native.inventory_arena.free_index_capacity,
+                native.inventory_arena.live_records,
+                native.inventory_arena.owned_capacity_bytes,
+            ),
+            (96, 104, 110_000, 110_000, 110_000, 11_880_080)
+        );
+        assert_eq!(
+            native.account_arena.owned_capacity_bytes,
+            native.account_arena.header_bytes
+                + native.account_arena.slots_capacity * native.account_arena.slot_bytes
+                + native.account_arena.free_index_capacity * size_of::<u32>()
+        );
+        assert_eq!(
+            native.inventory_arena.owned_capacity_bytes,
+            native.inventory_arena.header_bytes
+                + native.inventory_arena.slots_capacity * native.inventory_arena.slot_bytes
+                + native.inventory_arena.free_index_capacity * size_of::<u32>()
+        );
+
+        let expected_vectors = [
+            ("account_index", 40_000, 40_000, 32),
+            ("inventory_index", 110_000, 110_000, 32),
+            ("claims", 180_000, 180_000, 48),
+            ("payroll", 31_200, 31_200, 120),
+            ("resources", 8, 8, 16),
+            ("leases", 64, 64, 24),
+        ];
+        assert_eq!(native.vectors.as_slice(), expected_vectors.as_slice());
+
+        // The unchanged stub workload remains 30k/160k/24k/900k records.
+        let table_counts = w.tables.iter().map(Table::count).collect::<Vec<_>>();
+        assert_eq!(table_counts.as_slice(), &[30_000, 160_000, 24_000, 900_000]);
+        let table_owned = w.tables.iter().map(Table::owned).sum::<usize>();
+        assert_eq!(table_owned, 32_144_000);
+
+        // Rebuild the native owned-byte figure from the frozen arena capacities
+        // and vector strides instead of treating the previous ABI total as a
+        // current constant. The two Arena headers are already inside NativePressure.
+        let vector_owned = native
+            .vectors
+            .iter()
+            .map(|(_, _, capacity, stride)| capacity * stride)
+            .sum::<usize>();
+        let expected_native_owned = size_of::<NativePressure>()
+            + native.account_arena.owned_capacity_bytes
+            - native.account_arena.header_bytes
+            + native.inventory_arena.owned_capacity_bytes
+            - native.inventory_arena.header_bytes
+            + vector_owned;
+        assert_eq!(size_of::<NativePressure>(), 304);
+        assert_eq!(expected_native_owned, 30_825_968);
+        assert_eq!(expected_native_owned - 29_625_968, 1_200_000);
+        assert_eq!(native.owned_capacity_bytes, expected_native_owned);
+        assert_eq!(w.native.owned_capacity_bytes(), expected_native_owned);
+
+        // Keep the original fixed 64 MiB workspace and 128 MiB work reserve.
+        // Equity provenance consumes 1.2 MB more native backing; the initialized
+        // tail shrinks by exactly that amount instead of expanding the budget.
+        let expected_tail = DECODE_BYTES
+            - (size_of::<DecodeWorkspace>() + expected_native_owned - size_of::<NativePressure>()
+                + table_owned);
+        assert_eq!(DECODE_BYTES, 64 * MIB);
+        assert_eq!(WORK_PAGES * MIB, 128 * MIB);
+        assert_eq!(COW_PAGES * MIB, 64 * MIB);
+        assert_eq!(size_of::<DecodeWorkspace>(), 464);
+        assert_eq!(expected_tail, 4_138_736);
+        assert_eq!(5_338_736 - expected_tail, 1_200_000);
+        assert_eq!(w.tail.capacity(), expected_tail);
         assert_eq!(w.owned_bytes(), DECODE_BYTES);
-        assert_eq!(w.native.owned_capacity_bytes(), 29_625_968);
-        assert_eq!(w.tables.iter().map(Table::owned).sum::<usize>(), 32_144_000);
         assert!(!w.tail.is_empty());
         for domain in &expected {
             let bytes = serde_json::to_vec(&domain.table).unwrap();
