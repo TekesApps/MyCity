@@ -1,0 +1,23 @@
+test_capacity_projection_scales_fixed_business_and_scan_based_layout_separately (test_harness.HarnessPureValidationTests) ... ok
+test_codec_rejects_crc_corruption_and_truncated_tail (test_harness.HarnessPureValidationTests) ... ok
+test_decoder_limits_expansion_to_advertised_raw_size (test_harness.HarnessPureValidationTests) ... ok
+test_decoder_rejects_advertised_raw_and_packed_sizes_before_reading_payload (test_harness.HarnessPureValidationTests) ... ok
+test_encoder_rejects_frame_over_explicit_sampling_frame_bound (test_harness.HarnessPureValidationTests) ... ok
+test_external_compiler_detection_is_exact_and_excludes_requested_pid (test_harness.HarnessPureValidationTests) ... ok
+test_fixed_source_document_rejects_ambiguous_alias_even_when_canonical_key_exists (test_harness.HarnessPureValidationTests) ... ok
+test_incompressible_full_block_is_admitted_before_disk_growth (test_harness.HarnessPureValidationTests) ... ok
+test_lossless_four_frame_blocks_preserve_original_jsonl_bytes (test_harness.HarnessPureValidationTests) ... ok
+test_macos_socket_path_limit_counts_utf8_bytes_and_terminating_nul (test_harness.HarnessPureValidationTests) ... ok
+test_near_cap_candidate_is_rejected_before_stream_growth (test_harness.HarnessPureValidationTests) ... ok
+test_observer_resolves_truncated_process_names_without_sampler_children (test_harness.HarnessPureValidationTests) ... ok
+test_observer_startup_binds_the_shared_fixed_source_key_before_child_launch (test_harness.HarnessPureValidationTests) ... ok
+test_partial_tail_flush_rechecks_latest_latency_without_writing (test_harness.HarnessPureValidationTests) ... ok
+test_peak_block_projection_catches_spike_hidden_by_average (test_harness.HarnessPureValidationTests) ... ok
+test_projection_accepts_incomplete_frame_count_as_retained_capacity_data (test_harness.HarnessPureValidationTests) ... ok
+test_projection_rejects_exceeding_original_cap_without_relaxation (test_harness.HarnessPureValidationTests) ... ok
+test_source_hash_uses_sorted_names_and_little_endian_length_prefixes (test_harness.HarnessPureValidationTests) ... ok
+
+----------------------------------------------------------------------
+Ran 18 tests in 0.021s
+
+OK

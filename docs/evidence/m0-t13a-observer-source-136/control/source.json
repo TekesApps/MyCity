@@ -1,0 +1,64 @@
+{
+  "harness_schema": "mycity-m0-t13a-joint-smoke-control-v2",
+  "prepared_from_repo": "/Users/frankqin/dev/MyCity",
+  "prepared_repo_branch": "main",
+  "prepared_repo_commit": "61587dcc0297924d014ce3c6eb7e47fd6a6503dc",
+  "preparation_scope": "static freeze and pure tests only; no admission, smoke/model launch, Cargo or pressure gate",
+  "descriptor_path": "/Volumes/HP P900/dev/MyCity/work/j3p-control/descriptor.json",
+  "descriptor_sha256": "f73fa20f32abc19120615800de52e3dfe1e5a19df0a6d2b23a447c48e9b54785",
+  "fixed_source_sha256": "a6290a562362b7ea21379726f901a61cf54d32e8d9fe2059bccf3fe44449d3d8",
+  "fixed_source_files": 264,
+  "fixed_input_files": 276,
+  "fixed_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/109-canonical-integrated-headless/source.zip",
+  "fixed_source_archive_sha256": "f083a1fe9521f390c16d4665c61ca4f6b2c5461cdf92d7dea52d5ff238391094",
+  "fixed_source_manifest": "/Volumes/HP P900/dev/MyCity/work/j3p-control/fixed-source-manifest.json",
+  "fixed_source_manifest_sha256": "f81c917add50a6c7a5f65aaec6e6bdded5b808f86890660de88cd16ed8d62b64",
+  "fixed_binary": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/109-canonical-integrated-headless/executables/8b27415ce6dc6a07660b31dd1a31bdb549615347a32bb3675b6582bad57acd26/mycity-headless",
+  "fixed_binary_sha256": "8b27415ce6dc6a07660b31dd1a31bdb549615347a32bb3675b6582bad57acd26",
+  "fixed_lock_sha256": "7da5c54a8499a07cbc71dcecce0c0095d4af3b8b6e5052783f20d188037b6dd6",
+  "acceptance_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+  "full_opening_sha256": "04c113c62b0b682f94f9abfbde7618b87bd972f3931504366be9e07c130b4726",
+  "current_checkout_relation": "current source is provenance only; fixed binary is bound by source fingerprint and exact archive",
+  "observer_requirements": {
+    "sampling_hz": 4,
+    "normal_pressure_admission_seconds": 120,
+    "maximum_non_normal_pressure_seconds": 60,
+    "maximum_swap_growth_bytes": 268435456,
+    "minimum_free_bytes": 2147483648,
+    "maximum_world_bytes": 21474836480,
+    "combined_log_cap_bytes": 268435456
+  },
+  "workload": {
+    "entrypoint": "joint-endurance NEW_DIR smoke|formal",
+    "smoke_layout_minimum_seconds": 600,
+    "formal_layout_minimum_seconds": 28800,
+    "game_hours": 720,
+    "drive_targets": 723,
+    "queries": 2880,
+    "saves": 96,
+    "normal_pool_grants_returns_fill_acknowledgements": 725,
+    "l1_l2": "same fixed binary, full business plus full layout; smoke still executes 600 seconds of layout observation"
+  },
+  "retention": {
+    "protected_original_inventory": "docs/evidence/work-migration-20261022/attempt03/protected-after.json",
+    "retain_new_two_complete_snapshots_until_actual_cold_restore_and_dependency_release": true,
+    "expected_generations_in_budget": 3
+  },
+  "run_prefixes": {
+    "smoke": "j3p",
+    "formal": "j3q",
+    "run_id": "01",
+    "work_paths": [
+      "j3p-01",
+      "j3q-01"
+    ]
+  },
+  "socket_path_proof": "unix-socket-paths.json; source-bound pathname scan and invocation/resolved external roots; UTF-8 bytes plus NUL <104",
+  "compilation_policy": "no Cargo invocation; actual smoke/formal controller requires 120 continuous normal/no-compiler seconds and never stops foreign projects",
+  "prior_smoke_policy": "none; smoke must pass under this exact source, binary, archive and support manifest before a same-source formal attempt",
+  "prepared_repo_dirty": true,
+  "prepared_repo_untracked_paths": [
+    "docs/evidence/m0-t13a-rare-control-01/"
+  ],
+  "prepared_repo_tag": "v0.5.132"
+}

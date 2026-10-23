@@ -1,0 +1,44 @@
+{
+  "pid": 47767,
+  "phase": "smoke",
+  "run_id": "01",
+  "command": [
+    "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+    "/Volumes/HP P900/dev/MyCity/work/j3n-control/observe.py",
+    "/Users/frankqin/dev/MyCity/work/j3n-01/observed",
+    "--",
+    "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/109-canonical-integrated-headless/executables/8b27415ce6dc6a07660b31dd1a31bdb549615347a32bb3675b6582bad57acd26/mycity-headless",
+    "joint-endurance",
+    "/Users/frankqin/dev/MyCity/work/j3n-01/observed/model",
+    "smoke"
+  ],
+  "source_sha256": "a6290a562362b7ea21379726f901a61cf54d32e8d9fe2059bccf3fe44449d3d8",
+  "binary_sha256": "8b27415ce6dc6a07660b31dd1a31bdb549615347a32bb3675b6582bad57acd26",
+  "support_files_sha256": {
+    "observe.py": "0d7ddad946762bb3a9b683caa71dcf99cda6de08ff14c45c6877757e0d468d5d",
+    "native_metrics.py": "4a672f7c711f30250ec493f63dad6ba95895e97ec5d10edcc99d034eb989051e",
+    "clock_exchange.py": "534642a6854928e5253521862b18b33d19ebc0d777f5a0695321adeddea264b5",
+    "readiness.py": "fa62f21677bab98c558e86fa3a54f42ecfa8b64fd1d7d3449b6401ecff4ef7ae",
+    "process_activity.py": "1abbc0771180936fa660b34db4f6428f199fd467e0f866548e8a12bdb4c58aa9",
+    "preflight.py": "672b3e4b2e227d46373a160a2e7521e52321f6f1c69e46e22b197f2a928778ec",
+    "frame_codec.py": "005be0c42f1703e0aae4d6e7597d83e65654ffb805f22456873ae042e4a9b97f",
+    "log_budget.py": "611263b7ea782d18d38c18c8078ba8813a5b7472f88796a90ca2bf0974ed8f60",
+    "run.py": "557f21287b358bf39927c102258a45f1ee833fd4027e1b5f40ae5cad0df118ee",
+    "test_harness.py": "6f3e3585adb46777314bc90cd19dc3512d14e4c9427f8c4fae8b42b38ec999d9",
+    "README.md": "3a3ec09555fdf9d2f402b25c8e72982c8b7d780e9a1e4a2dfd68f6e808adcc1e",
+    "STATUS.md": "93d129bfe4fb8929f51ccf47ca55886378be25d6773694cbceb14ea9f7c9f9c5",
+    "source.json": "86bf1580403eceb624ce4761bc2d6f9d27be561f0d1b7c770869fddea2c0b3c9",
+    "freeze.json": "244221c684502319dffc1e98e0ffc1c72653bfec882e7d626507b61d3dc15a2f",
+    "descriptor.json": "f73fa20f32abc19120615800de52e3dfe1e5a19df0a6d2b23a447c48e9b54785",
+    "fixed-source-manifest.json": "f81c917add50a6c7a5f65aaec6e6bdded5b808f86890660de88cd16ed8d62b64"
+  },
+  "removed_contaminated_mycity_environment_names": [],
+  "observer_injected_environment": [
+    "MYCITY_HEAP_LOG",
+    "MYCITY_OBSERVER_CLOCK"
+  ],
+  "pid_role": "exec observer in place after admission; no parked orchestration parent",
+  "timeout_policy": "none; wait on this same PID until terminal; never restart automatically",
+  "cargo_policy": "blocked at admission and launch; any compiler observed after launch remains recorded per frame; no process is stopped",
+  "prior_smoke": null
+}

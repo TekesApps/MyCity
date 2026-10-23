@@ -1,0 +1,7 @@
+{
+  "status": "failed_test_oracle",
+  "reason": "expected unknown_metric_class but actual frozen CLI correctly reports metrics_unknown_class; first harness exited assertion after preserving all raw child/report files",
+  "product_source_changed": false,
+  "actual_rust_fault_child_report": "/Volumes/HP P900/dev/MyCity/work/j3p-control/root-validation-01/actual-rust-report-fault/observer-report.json",
+  "rerun_is_distinct": "/Volumes/HP P900/dev/MyCity/work/j3p-control/root-validation-02"
+}

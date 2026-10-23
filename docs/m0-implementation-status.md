@@ -1,5 +1,9 @@
 # M0 Rust模型：当前范围、运行方法与验收状态
 
+## v0.5.136：观察器真实启动失败与严格来源绑定修复
+
+[原始失败及修复收据](evidence/m0-t13a-observer-source-136/STATUS.md)：j3n-01原120秒准入通过，观察器因source.json键名不匹配立即零采样退出，未形成短测。原root不重跑；新j3p-control在创建目录/模型前核对统一fixed_source_sha256，17项支持文件重新冻结，18项纯测试和真实Rust故障退出反例通过。反例未证明正向时钟握手、采样或吞吐；新smoke/formal仍各需原门实测，真实16GB not_run。该阶段未修改Rust模型与原验收负载。
+
 ## v0.5.135：工程补偿进入同一事务及持久恢复
 
 [实测与边界](evidence/core-construction-compensation-135/STATUS.md)：最终来源的142项core、93项headless、21项storage库测试及43项Engine/Store联调（合计299项）、严格检查及七个既有联合CLI通过。新定额合同只允许owner实际申报、收款方接受，转账/工程spent/初审门/付款标识同一事务提交；现金不足、保护款、收款溢出、失败/丢回复/冷开重放均有反例或恢复验证。原v106非空Store身份及七CLI输出保持一致，不把Engine单独checkpoint误称包含Store历史收据。

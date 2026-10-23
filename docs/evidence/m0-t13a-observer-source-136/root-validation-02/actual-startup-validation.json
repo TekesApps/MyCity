@@ -1,0 +1,66 @@
+{
+  "status": "passed",
+  "cases": [
+    {
+      "case": "missing-key-argument",
+      "argv": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "/Volumes/HP P900/dev/MyCity/work/j3p-control/observe.py",
+        "/Volumes/HP P900/dev/MyCity/work/j3p-control/root-validation-02/missing-key-argument",
+        "--",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/109-canonical-integrated-headless/executables/8b27415ce6dc6a07660b31dd1a31bdb549615347a32bb3675b6582bad57acd26/mycity-headless",
+        "layout-r07-session",
+        "/Volumes/HP P900/dev/MyCity/work/j3p-control/root-validation-02/missing-key-argument/model",
+        "--report-fault"
+      ],
+      "exit_code": 1,
+      "wall_seconds": 0.03655620800000001,
+      "root_exists": false,
+      "expected_root_exists": false
+    },
+    {
+      "case": "mismatch-source",
+      "argv": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "/Volumes/HP P900/dev/MyCity/work/j3p-control/observe.py",
+        "/Volumes/HP P900/dev/MyCity/work/j3p-control/root-validation-02/mismatch-source",
+        "--fixed-source-sha256",
+        "0000000000000000000000000000000000000000000000000000000000000000",
+        "--",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/109-canonical-integrated-headless/executables/8b27415ce6dc6a07660b31dd1a31bdb549615347a32bb3675b6582bad57acd26/mycity-headless",
+        "layout-r07-session",
+        "/Volumes/HP P900/dev/MyCity/work/j3p-control/root-validation-02/mismatch-source/model",
+        "--report-fault"
+      ],
+      "exit_code": 1,
+      "wall_seconds": 0.03502020800000001,
+      "root_exists": false,
+      "expected_root_exists": false
+    },
+    {
+      "case": "actual-rust-report-fault",
+      "argv": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "/Volumes/HP P900/dev/MyCity/work/j3p-control/observe.py",
+        "/Volumes/HP P900/dev/MyCity/work/j3p-control/root-validation-02/actual-rust-report-fault",
+        "--fixed-source-sha256",
+        "a6290a562362b7ea21379726f901a61cf54d32e8d9fe2059bccf3fe44449d3d8",
+        "--",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/109-canonical-integrated-headless/executables/8b27415ce6dc6a07660b31dd1a31bdb549615347a32bb3675b6582bad57acd26/mycity-headless",
+        "layout-r07-session",
+        "/Volumes/HP P900/dev/MyCity/work/j3p-control/root-validation-02/actual-rust-report-fault/model",
+        "--report-fault"
+      ],
+      "exit_code": 1,
+      "wall_seconds": 0.06486762500000001,
+      "root_exists": true,
+      "expected_root_exists": true,
+      "status": "failed",
+      "reason": "clock peer exited",
+      "model_exit_code": 2,
+      "frames_observed": 0
+    }
+  ],
+  "support_manifest_sha256": "d7e26d4fb8b1bfd2161cde183b0f88627fda3a6f065f31f9a1c29eb5bfbfc29a",
+  "scope": "negative observer startup and actual frozen Rust fault exit; no smoke, timing, or clock success credit"
+}

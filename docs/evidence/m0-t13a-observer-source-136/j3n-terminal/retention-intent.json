@@ -1,0 +1,14 @@
+{
+  "phase": "smoke",
+  "run_id": "01",
+  "source_sha256": "a6290a562362b7ea21379726f901a61cf54d32e8d9fe2059bccf3fe44449d3d8",
+  "binary_sha256": "8b27415ce6dc6a07660b31dd1a31bdb549615347a32bb3675b6582bad57acd26",
+  "new_work_root": "/Users/frankqin/dev/MyCity/work/j3n-01",
+  "new_observed_root_must_be_created_by_observer": true,
+  "retain_both_complete_snapshots_until_actual_cold_restore_and_dependency_release": true,
+  "retain_protected_190_originals": "/Users/frankqin/dev/MyCity/docs/evidence/work-migration-20261022/attempt03/protected-after.json",
+  "no_cleanup_while_run_active": true,
+  "estimated_three_generations_plus_combined_logs_bytes": 10404788662,
+  "combined_log_hard_cap_bytes": 268435456,
+  "world_hard_cap_bytes": 21474836480
+}

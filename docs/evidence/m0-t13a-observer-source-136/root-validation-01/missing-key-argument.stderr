@@ -1,0 +1,4 @@
+Bounded macOS process-tree measurement wrapper; no gameplay simulation.
+Usage: observe.py NEW_RUN_DIR --fixed-source-sha256 HASH [--artifacts-root ROOT] -- MODEL_EXECUTABLE ARGS...
+All model artifacts should be under NEW_RUN_DIR/model. Never restarts a run.
+

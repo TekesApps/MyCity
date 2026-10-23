@@ -1,0 +1,24 @@
+{
+  "schema": "mycity-joint-control-support-v1",
+  "fixed_source_sha256": "a6290a562362b7ea21379726f901a61cf54d32e8d9fe2059bccf3fe44449d3d8",
+  "fixed_binary_sha256": "8b27415ce6dc6a07660b31dd1a31bdb549615347a32bb3675b6582bad57acd26",
+  "files": {
+    "observe.py": "4765add6d2bbc19f6bf43a19e223aa03c093f7f4efc1c869ccc760ed3ef46c87",
+    "native_metrics.py": "4a672f7c711f30250ec493f63dad6ba95895e97ec5d10edcc99d034eb989051e",
+    "clock_exchange.py": "534642a6854928e5253521862b18b33d19ebc0d777f5a0695321adeddea264b5",
+    "readiness.py": "fa62f21677bab98c558e86fa3a54f42ecfa8b64fd1d7d3449b6401ecff4ef7ae",
+    "process_activity.py": "1abbc0771180936fa660b34db4f6428f199fd467e0f866548e8a12bdb4c58aa9",
+    "preflight.py": "7946caa3c1c5e7dcc2eeb3b7c9f9d5a26613246392406c30a8b901430c6af408",
+    "frame_codec.py": "005be0c42f1703e0aae4d6e7597d83e65654ffb805f22456873ae042e4a9b97f",
+    "log_budget.py": "46ce030c36a4c6e5c33312c8c2c9cd6ae6b168fc31916879fa2a70ea90537b87",
+    "run.py": "ce20159b2e7abd188cc379a429d7b14a08429e4326f0fce923ad9c32b892c882",
+    "test_harness.py": "69bd10f91711756977fe3750be394a9c3db35fafddfb304cac7545484f3c0565",
+    "source_identity.py": "3b50c3f61b162a5a457ac84fe85f9d52feaabcc0f7fac87e943fc3031757d4b1",
+    "README.md": "e67d6d8a21e68b9846e117504440bb7c4efd7ca98829d89f77570fccaadf9022",
+    "STATUS.md": "15068a50d50ba1cc38748cb4c91fe9fb3641592ea6cdf91a6dd8b1c957a81cf6",
+    "source.json": "6d52d49d858184add9e72787011162972ff082d99e0ef23d4509992f730160d2",
+    "freeze.json": "244221c684502319dffc1e98e0ffc1c72653bfec882e7d626507b61d3dc15a2f",
+    "descriptor.json": "f73fa20f32abc19120615800de52e3dfe1e5a19df0a6d2b23a447c48e9b54785",
+    "fixed-source-manifest.json": "f81c917add50a6c7a5f65aaec6e6bdded5b808f86890660de88cd16ed8d62b64"
+  }
+}

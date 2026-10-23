@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/Volumes/HP P900/dev/MyCity/work/j3p-control/observe.py", line 346, in <module>
+    if __name__=='__main__':main()
+  File "/Volumes/HP P900/dev/MyCity/work/j3p-control/observe.py", line 162, in main
+    root,artifacts_root,command,expected_source=parse_observer_startup(sys.argv,Path(__file__).with_name('source.json'))
+  File "/Volumes/HP P900/dev/MyCity/work/j3p-control/observe.py", line 148, in parse_observer_startup
+    load_fixed_source_document(source_path,expected)
+  File "/Volumes/HP P900/dev/MyCity/work/j3p-control/source_identity.py", line 24, in load_fixed_source_document
+    require_fixed_source_sha256(document, expected)
+  File "/Volumes/HP P900/dev/MyCity/work/j3p-control/source_identity.py", line 18, in require_fixed_source_sha256
+    raise ValueError("source.json fixed_source_sha256 does not match the expected frozen source")
+ValueError: source.json fixed_source_sha256 does not match the expected frozen source

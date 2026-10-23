@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "steps": [
+    {
+      "name": "unit-tests",
+      "argv": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "/Volumes/HP P900/dev/MyCity/work/j3p-control",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "static-preflight",
+      "argv": [
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
+        "/Volumes/HP P900/dev/MyCity/work/j3p-control/preflight.py"
+      ],
+      "exit_code": 0
+    }
+  ]
+}

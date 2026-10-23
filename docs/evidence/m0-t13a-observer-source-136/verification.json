@@ -1,0 +1,23 @@
+{
+  "status": "tool_fix_validated_not_smoke_pass",
+  "old_run": "/Volumes/HP P900/dev/MyCity/work/j3n-01",
+  "old_run_terminal": true,
+  "old_model_exit_code": -15,
+  "old_observer_reason": "source_sha256",
+  "old_frame_count": 0,
+  "new_control": "/Volumes/HP P900/dev/MyCity/work/j3p-control",
+  "new_support_files": 17,
+  "new_support_manifest_sha256": "d7e26d4fb8b1bfd2161cde183b0f88627fda3a6f065f31f9a1c29eb5bfbfc29a",
+  "pure_tests": 18,
+  "negative_startup_cases": 3,
+  "actual_frozen_rust_fault_exit": 2,
+  "successful_clock_handshake": "not_tested_by_negative_case",
+  "new_smoke": "not_started",
+  "new_formal": "not_started",
+  "memory_16gb_gate": "not_run",
+  "full_M0": "not_accepted",
+  "source_files_archives_and_executables": "unchanged fixed v132 bytes retained externally",
+  "storage": "HP P900 USB/APFS SSD",
+  "retention": "all old/new small control evidence retained; no temporary target or new pressure payload",
+  "validation_timestamp": 1792718753.226764
+}
