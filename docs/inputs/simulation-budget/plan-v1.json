@@ -1,6 +1,6 @@
 {
   "schema": "mycity-simulation-budget-experiment-plan-v1",
-  "design_revision": "BUDGET-1",
+  "design_revision": "BUDGET-2",
   "date": "2026-10-23",
   "kind": "design_only_not_runtime_loader",
   "baseline_commit": "58845dfbb61eb166e97612f0b4bc567f963a4a87",
@@ -791,5 +791,79 @@
     "C5",
     "C6"
   ],
-  "run_gate": "future user implementation authorization plus main-session source ownership, fixed versions, shared-target and quiet measurement window coordination required; no execution in this design turn"
+  "run_gate": "future user implementation authorization plus main-session source ownership, fixed versions, shared-target and quiet measurement window coordination required; no execution in this design turn",
+  "application_contract": {
+    "scope": "all product processes, threads, GPU allocations and closed-city necessary obligations share one application envelope",
+    "memory_source": "P53/A55 existing domains; no per-city/per-process multiplication",
+    "resource_window_wall_seconds": 1,
+    "cpu": {
+      "unit": "core_ms_per_wall_second",
+      "sustained_budget": null,
+      "measurement": "sum actual CPU service across all product threads; target hardware specific",
+      "includes": [
+        "scheduling",
+        "packing",
+        "IPC",
+        "validation",
+        "commit",
+        "product diagnostics"
+      ]
+    },
+    "gpu": {
+      "unit": "union_busy_ms_per_wall_second",
+      "sustained_budget": null,
+      "maximum_dispatch_busy_ms": null,
+      "measurement": "union of overlapping compute/render execution intervals, queue wait separately; if unavailable mark not_observed and qualify full path scope"
+    },
+    "target_game_seconds_per_wall_second": {
+      "paused": 0,
+      "observe": 144,
+      "operate": 1440,
+      "fast": 8640,
+      "high": 86400
+    },
+    "service_gates": {
+      "player_response_p95_wall_ms": null,
+      "player_response_p99_wall_ms": null,
+      "necessary_task_max_age_wall_ms_by_class": null,
+      "queue_age_must_not_diverge": true,
+      "qualification": "null gates block capacity certification; calibration experiments only until frozen"
+    },
+    "allocation": {
+      "owner": "Sim existing admission/planning layer",
+      "scope_key": [
+        "system",
+        "map_or_region",
+        "compatible_group"
+      ],
+      "purposes": [
+        "minimum_required",
+        "elastic",
+        "burst_reserve"
+      ],
+      "cpu_purpose_budgets_core_ms": null,
+      "gpu_purpose_budgets_busy_ms": null,
+      "invariant": "sum required, elastic and burst grants <= respective shared window budget; CPU/GPU units not summed",
+      "first_transfer_from": [
+        "declared burst reserve",
+        "optional previews",
+        "redundant predictions",
+        "noncritical recomputations"
+      ],
+      "protected": [
+        "due obligations",
+        "necessary maintenance",
+        "closed-city accepted fulfillment",
+        "safe exit",
+        "recovery reserves",
+        "future UI/render domain reservation"
+      ],
+      "fallback": "reduce actual speed, restrict new risk commitments, safe backpressure; never delete population or obligations"
+    },
+    "business_rate_unit": "events or demand units per game hour; also record concentration, invalidation fanout, dirty ratio and explanation scope",
+    "capacity_unit": "qualified S/D/A/H load set for specified hardware, resources, model/error and service targets",
+    "single_city_population_limit": null,
+    "world_supported_business_load_limit": null,
+    "status": "design_only_not_run"
+  }
 }

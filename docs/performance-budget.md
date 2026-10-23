@@ -2,7 +2,7 @@
 
 现行全产品预算继承[P53 R03](product-runtime-budget-and-versions.md#3-r03全产品联合内存与容量)与[A55](process-worker-and-render-architecture.md)：3.10GiB常态候选、3.5软阈、4峰值警戒；GPU最多32MiB计入求解256MiB。本文2.65／3／4和早期区域小计保留历史语义，不重新授权余量。M0冻结门仍按其原版本，不用产品软阈替换。
 
-[城市规模与运行时自适应预算](city-scale-and-adaptive-budget.md)是现有模型之上的策略／配置／校准入口，含15组代表负载、四种规模轴、局部控制、系统执行卡、CPU/GPU及[分阶段实验](simulation-budget-calibration-plan.md)。全部新配置未装配／未实测，不改本篇原负载或M0验收。
+[城市规模与运行时自适应预算](city-scale-and-adaptive-budget.md)是现有模型之上的策略／配置／校准入口，含15组代表负载、四种规模轴、局部控制、系统执行卡、CPU/GPU及[分阶段实验](simulation-budget-calibration-plan.md)。全部新配置未装配／未实测，不改本篇原负载或M0验收。 BUDGET-2优先用全游戏共享资源额度、推进／响应与误差目标、城市业务负载集合规定承载；CPU核毫秒／现实秒及GPU占用窗口数值待目标机校准，不先规定最高人口。
 
 v0.5.2当前总体范围／机制／实施版本以[完整产品蓝图](PRODUCT_BLUEPRINT.md)及四视角需求矩阵为准。本文的23首期／90CAT／延期／旧预算描述是历史切片或分类来源，不能替代完整产品完成条件，也不能否定新总体机制。
 
