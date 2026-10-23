@@ -1,0 +1,23 @@
+{
+  "supervisor_pid": 62508,
+  "source_sha256": "a6290a562362b7ea21379726f901a61cf54d32e8d9fe2059bccf3fe44449d3d8",
+  "supervisor_origin_observer_ns_min": 16470166,
+  "supervisor_origin_observer_ns_max": 19808708,
+  "uncertainty_ns": 3338542,
+  "method": "nonce-bound real request/reply; observer send <= supervisor timestamp <= observer receipt; intersect original spawn lower bound",
+  "request_sent_observer_ns": 22344375,
+  "reply_received_observer_ns": 25682917,
+  "spawn_before_observer_ns": 7464875,
+  "nonce": "8079535e6313270e0866ebd98e794984",
+  "reply": {
+    "elapsed_ns": 5874209,
+    "nonce": "8079535e6313270e0866ebd98e794984",
+    "pid": 62508,
+    "schema": "mycity-observer-clock-reply-v1",
+    "source_sha256": "a6290a562362b7ea21379726f901a61cf54d32e8d9fe2059bccf3fe44449d3d8"
+  },
+  "raw_origin_bounds_ns": [
+    16470166,
+    19808708
+  ]
+}

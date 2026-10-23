@@ -1,0 +1,16 @@
+{
+  "cadence": "formal",
+  "common_8MiB": "not_accepted",
+  "exact_normal_owned": "not_accepted",
+  "external_owned_charge_bytes": 3407872,
+  "layout_hard_failure_seconds": 35000,
+  "layout_minimum_seconds": 28800,
+  "normal_pool_bytes": 67108864,
+  "real_16GB": "not_run",
+  "scan_seconds": 1,
+  "schema": "mycity-joint-endurance-v1",
+  "scope": "full actual business plus full L1 layout pressure; fixed whole-role Rust arenas inside64MiB, native/stack separate",
+  "snapshot_seconds": 300,
+  "source_sha256": "a6290a562362b7ea21379726f901a61cf54d32e8d9fe2059bccf3fe44449d3d8",
+  "supervisor_hard_failure_seconds": 36000
+}

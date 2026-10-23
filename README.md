@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.139`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.140`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.140归档[固定 full 联合正式尝试的提前失败](docs/evidence/m0-t13a-joint-formal-01/STATUS.md)：实际 1,226 秒后系统压力触发原保护，8h 未完成；normal footprint 仍超门且存在外部编译污染。原件保留，真实16GB仍未测，不宣布M0通过。
 
 v0.5.139完成[有限空间步行接入真实Store交易](docs/evidence/core-spatial-traffic-139/STATUS.md)：实际Scene转换、OD/proof和销量因果，开放40/封路0/单向门0；冷恢复及精确重放通过。同源6测试、strict/fmt、独立账物/proof及进程资源观察通过；仅三节点微型场景，同Store运行时空间改造和其他交通方式仍未实现，不称F完整或M0通过。
 

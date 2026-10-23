@@ -1,0 +1,6 @@
+{"kind":"supervisor_started","observed_ns":2309542,"pid":62508,"sequence":null}
+{"kind":"normal_pool_ready_observed","observed_ns":42021167,"pid":null,"sequence":null}
+{"kind":"layout_ready_before_business","observed_ns":1121945500,"pid":62510,"sequence":null}
+{"kind":"business_launch_requested","observed_ns":1121966417,"pid":null,"sequence":null}
+{"kind":"business_spawned","observed_ns":1122459500,"pid":62514,"sequence":null}
+{"kind":"business_clock_started_observed","observed_ns":39183238084,"pid":62514,"sequence":null}

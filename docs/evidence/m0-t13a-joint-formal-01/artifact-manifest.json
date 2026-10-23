@@ -1,0 +1,99 @@
+{
+  "schema": "mycity-formal-failed-evidence-v1",
+  "captured_utc": "2026-10-23T04:13:33.576197+00:00",
+  "run_root": "/Volumes/HP P900/dev/MyCity/work/j3q-01",
+  "storage": "external HP P900 USB/APFS SSD; work and target external, source repository internal",
+  "model_final_report_exists": false,
+  "files": [
+    {
+      "path": "live.json",
+      "bytes": 5073,
+      "sha256": "1cb762d2592d295a71bedc34a9cc4c447badbf72f24f6184fd9a7b980d3e7ee6",
+      "published_copy": true
+    },
+    {
+      "path": "admission.json",
+      "bytes": 47,
+      "sha256": "d9af473bee350438f3ca92aface238fc5e180ae76f4f11a9002a14aeabb8e54e",
+      "published_copy": true
+    },
+    {
+      "path": "retention-intent.json",
+      "bytes": 753,
+      "sha256": "c65c7460351e154afeadc1c89ddf67f6df2d3eada1b135e4cbfe4c7c36141937",
+      "published_copy": true
+    },
+    {
+      "path": "readiness.json",
+      "bytes": 3793,
+      "sha256": "a4bab3591fcafada75e725bdf30de39a8f649369369020be08f034d2edbec903",
+      "published_copy": true
+    },
+    {
+      "path": "pressure-preflight.jsonl",
+      "bytes": 2896,
+      "sha256": "f9b5904d8d1d775749a186a7f4553fd6ecd9f718bee70b34a7901f5c18eb4a42",
+      "published_copy": true
+    },
+    {
+      "path": "observed/observer-report.json",
+      "bytes": 9682,
+      "sha256": "9521490de0e4e880a7f189379a1441ba55c29bb7c6d2734fcbb971df2d5b949f",
+      "published_copy": true
+    },
+    {
+      "path": "observed/observer-clock-map.json",
+      "bytes": 863,
+      "sha256": "cbf12794d691fa4284c7a82606cfb9b60bb73e043a614f5301ec889952521236",
+      "published_copy": true
+    },
+    {
+      "path": "observed/model/manifest.json",
+      "bytes": 624,
+      "sha256": "2f5352624a71ebd921dd20e2e2e779fd3049147af9bb85c9d60ed2d6317e0b41",
+      "published_copy": true
+    },
+    {
+      "path": "observed/model/common-events.jsonl",
+      "bytes": 528,
+      "sha256": "f8e0da6312b1b8d2496f2356e82b0ee050e21c197f7dcf8e4f2f4ca08e37cb91",
+      "published_copy": true
+    },
+    {
+      "path": "observed/host-samples.mcf",
+      "bytes": 977486,
+      "sha256": "6d346a328b3f975f45fbabe3cb52a7ff6c33b6aa08cbec3402c0c98e8349b10d",
+      "published_copy": false,
+      "retained_original": "/Volumes/HP P900/dev/MyCity/work/j3q-01/observed/host-samples.mcf"
+    },
+    {
+      "path": "observed/model/business/cpu-report.json",
+      "bytes": 9527,
+      "sha256": "7ccdff748a733134cf17e2a489f6567fed4ea51c8e731fa30b2f5644a93abb81",
+      "published_copy": false,
+      "retained_original": "/Volumes/HP P900/dev/MyCity/work/j3q-01/observed/model/business/cpu-report.json"
+    },
+    {
+      "path": "observed/model/business/cpu-final-engine.json",
+      "bytes": 2507418,
+      "sha256": "375065b04ead72b347babf37e1e212455170737057c245d96fe710212f34034c",
+      "published_copy": false,
+      "retained_original": "/Volumes/HP P900/dev/MyCity/work/j3q-01/observed/model/business/cpu-final-engine.json"
+    },
+    {
+      "path": "observed/model/business/transcript.jsonl",
+      "bytes": 970720,
+      "sha256": "b8d228f2167d9f90c06f59da12a948e9c80b82602aaa946937769acfd203e6c4",
+      "published_copy": false,
+      "retained_original": "/Volumes/HP P900/dev/MyCity/work/j3q-01/observed/model/business/transcript.jsonl"
+    },
+    {
+      "path": "observed/model/business/cpu-targets.jsonl",
+      "bytes": 142733,
+      "sha256": "54511c3ebed63d98a440512f3c912db8bf2844029ef1a999b023ede8c905b832",
+      "published_copy": false,
+      "retained_original": "/Volumes/HP P900/dev/MyCity/work/j3q-01/observed/model/business/cpu-targets.jsonl"
+    }
+  ],
+  "recovery_policy": "All actual snapshot and business original files remain on external SSD; no retirement or deletion in this stage."
+}

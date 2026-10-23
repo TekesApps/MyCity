@@ -523,3 +523,6 @@ v0.5.138：[真实有限企业退出与28日Store](evidence/core-business-liquid
 
 
 v0.5.139：[有限空间步行与实际交易](evidence/core-spatial-traffic-139/STATUS.md)。同源map5/Store1及strict/fmt通过，三份独立world开放/封路/单向门带来销量40/0/0，checkpoint/冷恢复/重放和独立proof/账物核对通过。三节点进程CPU/RSS/盘占用另列，不是整城负载；同Store空间资产/图版本编辑、桥隧与其他模式仍未实现，F/0.1/M0不宣称完整。原8h/16GB门继续保留。
+
+
+v0.5.140：[j3q-01 固定 full 正式尝试终态](evidence/m0-t13a-joint-formal-01/STATUS.md)。实际1,226.385秒后系统非normal压力60.026秒触发保护，模型SIGTERM，无完整model最终报告。4,906采样帧，285帧外部编译，组footprint峰3,355,234,768B仍超normal；不归因成仅编译干扰。原业务/快照/采样完整保留，恢复尚未核验，8h未完成，16GB not_run，M0 not_accepted。
