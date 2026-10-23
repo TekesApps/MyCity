@@ -1,5 +1,6 @@
 //! Deterministic bounded market planning. The Engine remains authoritative for all settlement.
 pub mod exit;
+pub mod equity;
 
 use crate::units::{Money, Quantity};
 use serde::{Deserialize, Serialize};
