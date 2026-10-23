@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.150`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.151`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.151 adds [bounded Sim-open lifecycle receipts](docs/evidence/m0-t13a-sim-open-diagnostic/STATUS.md), verified with eight focused tests and a complete720-hour/723-target real-business CLI run plus cold recovery. It measures owned capacity, not native peak or a memory saving; original M0 gates remain unmet.
 
 v0.5.150 verifies [finite housing lease/recurrence and a persistent D/F/E scenario](docs/evidence/core-housing-runtime-150/STATUS.md): 525 distinct tests, final strict/fmt, actual CLI, real rent/arrears, cold recovery and historical transport proofs. Move, housing route binding and original M0/real16GB gates remain incomplete.
 

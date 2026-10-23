@@ -3,7 +3,7 @@ use crate::{
     scale_model_task::{self, Mode},
     scale_reference::{self, Step, Tier},
     sim_client::Client,
-    sim_host::Command,
+    sim_host::{Command, Event},
 };
 use mycity_core::{
     read_bounded,
@@ -12,7 +12,7 @@ use mycity_core::{
     timeline::Command as Timeline,
     transaction::{Action, Envelope},
 };
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use sha2::{Digest, Sha256};
 use std::{
@@ -34,15 +34,19 @@ fn write_json(path: &Path, value: &Value) -> Result<(), String> {
     f.sync_all().map_err(err)
 }
 /// Reject before growing the encoded diagnostic buffer beyond 128KiB.
-struct LimitedBytes(Vec<u8>);
+struct LimitedBytes(Vec<u8>, usize);
 impl LimitedBytes {
+    #[cfg(test)]
     fn new() -> Self {
-        Self(Vec::with_capacity(128 * 1024))
+        Self::bounded(128 * 1024, 128 * 1024)
+    }
+    fn bounded(capacity: usize, limit: usize) -> Self {
+        Self(Vec::with_capacity(capacity.min(limit)), limit)
     }
 }
 impl Write for LimitedBytes {
     fn write(&mut self, b: &[u8]) -> std::io::Result<usize> {
-        if self.0.len().saturating_add(b.len()) > 128 * 1024 {
+        if self.0.len().saturating_add(b.len()) > self.1 {
             return Err(std::io::Error::other("scale_sim_log_record_bound"));
         }
         self.0.extend_from_slice(b);
@@ -52,6 +56,159 @@ impl Write for LimitedBytes {
         Ok(())
     }
 }
+const MAX_SIM_OPEN_DIAGNOSTIC_BYTES: usize = 4096;
+const MAX_SIM_OPEN_DIAGNOSTIC_INSTANCES: usize = 8;
+
+#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+struct DiagnosticArenaPoint {
+    clock_begin: crate::heap_meter::ClockReading,
+    role_arena: mycity_role_allocator::Snapshot,
+    clock_end: crate::heap_meter::ClockReading,
+}
+
+#[derive(Deserialize)]
+struct DiagnosticOpenWire {
+    schema: String,
+    operation: String,
+    pre_open: DiagnosticArenaPoint,
+    post_open: DiagnosticArenaPoint,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+struct DiagnosticSlotBytes {
+    owned_model_bytes: usize,
+    retained_prepare_bytes: usize,
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct DiagnosticWorkspaceWire {
+    active_slot: DiagnosticSlotBytes,
+    spare_restore_slot: DiagnosticSlotBytes,
+    candidate_owned_bytes: usize,
+    codec_backing_bytes: usize,
+    workspace_owned_bytes: usize,
+}
+
+#[derive(Debug, Serialize)]
+struct SimOpenDiagnosticReceipt {
+    schema: &'static str,
+    response_id: u64,
+    response_kind: &'static str,
+    sim_pid: u32,
+    sim_birth_unix_ns: u128,
+    event_clock: crate::heap_meter::ClockReading,
+    operation: &'static str,
+    pre_open: DiagnosticArenaPoint,
+    post_open: DiagnosticArenaPoint,
+    model_workspace: DiagnosticWorkspaceWireReceipt,
+    store_owned_bytes: usize,
+}
+
+#[derive(Clone, Copy, Debug, Serialize)]
+struct DiagnosticWorkspaceWireReceipt {
+    active_slot: DiagnosticSlotBytes,
+    spare_restore_slot: DiagnosticSlotBytes,
+    candidate_owned_bytes: usize,
+    codec_backing_bytes: usize,
+    workspace_owned_bytes: usize,
+}
+
+fn same_sim_instance(clock: crate::heap_meter::ClockReading, pid: u32, birth: u128) -> bool {
+    clock.pid == pid && clock.instance_unix_ns == birth
+}
+
+fn remember_sim_instance_once(
+    seen: &mut [Option<(u32, u128)>; MAX_SIM_OPEN_DIAGNOSTIC_INSTANCES],
+    count: &mut usize,
+    key: (u32, u128),
+) -> Result<bool, String> {
+    if seen.iter().flatten().any(|prior| *prior == key) {
+        return Ok(false);
+    }
+    if *count >= MAX_SIM_OPEN_DIAGNOSTIC_INSTANCES {
+        return Err("scale_sim_open_diagnostic_instance_limit".into());
+    }
+    seen[*count] = Some(key);
+    *count += 1;
+    Ok(true)
+}
+
+fn sim_open_diagnostic_receipt(
+    runtime: &Value,
+    event: &Event,
+    response_id: u64,
+    response_kind: &'static str,
+) -> Result<Option<SimOpenDiagnosticReceipt>, String> {
+    let Some(open_value) = runtime.get("sim_open_memory_diagnostic") else {
+        // Old protocol/source revisions have no diagnostic. Preserve their existing behavior.
+        return Ok(None);
+    };
+    let open: DiagnosticOpenWire = serde_json::from_value(open_value.clone()).map_err(err)?;
+    if open.schema != "mycity-sim-open-memory-v1" {
+        return Err("scale_sim_open_diagnostic_schema".into());
+    }
+    let operation = match open.operation.as_str() {
+        "open" => "open",
+        "create" => "create",
+        _ => return Err("scale_sim_open_diagnostic_operation".into()),
+    };
+    let workspace: DiagnosticWorkspaceWire = serde_json::from_value(
+        runtime
+            .get("sim_model_workspace")
+            .cloned()
+            .ok_or("scale_sim_open_diagnostic_workspace_missing")?,
+    )
+    .map_err(err)?;
+    let store_owned_bytes = runtime
+        .get("store_owned_bytes")
+        .and_then(Value::as_u64)
+        .and_then(|n| usize::try_from(n).ok())
+        .ok_or("scale_sim_open_diagnostic_store_capacity_missing")?;
+    let event_clock = event
+        .clock
+        .ok_or("scale_sim_open_diagnostic_event_clock_missing")?;
+    let pid = event.sim_pid;
+    let birth = open.pre_open.clock_begin.instance_unix_ns;
+    let clocks = [
+        open.pre_open.clock_begin,
+        open.pre_open.clock_end,
+        open.post_open.clock_begin,
+        open.post_open.clock_end,
+        event_clock,
+    ];
+    if pid <= 1
+        || clocks.iter().any(|c| !same_sim_instance(*c, pid, birth))
+        || open.pre_open.clock_begin.elapsed_ns > open.pre_open.clock_end.elapsed_ns
+        || open.pre_open.clock_end.elapsed_ns > open.post_open.clock_begin.elapsed_ns
+        || open.post_open.clock_begin.elapsed_ns > open.post_open.clock_end.elapsed_ns
+        || open.post_open.clock_end.elapsed_ns > event_clock.elapsed_ns
+    {
+        return Err("scale_sim_open_diagnostic_clock_identity_or_order".into());
+    }
+    Ok(Some(SimOpenDiagnosticReceipt {
+        schema: "mycity-sim-open-diagnostic-receipt-v1",
+        response_id,
+        response_kind,
+        sim_pid: pid,
+        sim_birth_unix_ns: birth,
+        event_clock,
+        operation,
+        pre_open: open.pre_open,
+        post_open: open.post_open,
+        model_workspace: DiagnosticWorkspaceWireReceipt {
+            active_slot: workspace.active_slot,
+            spare_restore_slot: workspace.spare_restore_slot,
+            candidate_owned_bytes: workspace.candidate_owned_bytes,
+            codec_backing_bytes: workspace.codec_backing_bytes,
+            workspace_owned_bytes: workspace.workspace_owned_bytes,
+        },
+        store_owned_bytes,
+    }))
+}
+
 /// Hash the same serde wire bytes without retaining a second payload buffer.
 fn payload_digest(value: &Value) -> Result<(String, usize), String> {
     struct Sink {
@@ -112,12 +269,22 @@ pub(crate) struct Experiment {
     verified: u64,
     max_boundary_seconds: f64,
     failed_attempts: u64,
+    sim_open_diagnostic_instances: [Option<(u32, u128)>; MAX_SIM_OPEN_DIAGNOSTIC_INSTANCES],
+    sim_open_diagnostic_count: usize,
 }
 impl Experiment {
     pub(crate) fn clock_origin(&self) -> Instant {
         self.began
     }
     pub(crate) fn record(&mut self, value: Value) -> Result<(), String> {
+        self.record_bounded(value, 128 * 1024, 128 * 1024)
+    }
+    fn record_bounded(
+        &mut self,
+        value: Value,
+        initial_capacity: usize,
+        maximum_row_bytes: usize,
+    ) -> Result<(), String> {
         #[derive(Serialize)]
         struct Row<'a> {
             elapsed_seconds: f64,
@@ -127,7 +294,7 @@ impl Experiment {
             elapsed_seconds: self.began.elapsed().as_secs_f64(),
             data: &value,
         };
-        let mut bytes = LimitedBytes::new();
+        let mut bytes = LimitedBytes::bounded(initial_capacity, maximum_row_bytes);
         serde_json::to_writer(&mut bytes, &row).map_err(err)?;
         if self.log_bytes + bytes.0.len() + 1 > 128 * 1024 * 1024 {
             return Err("scale_sim_log_bound".into());
@@ -136,6 +303,57 @@ impl Experiment {
         self.log.write_all(b"\n").map_err(err)?;
         self.log.flush().map_err(err)?;
         self.log_bytes += bytes.0.len() + 1;
+        Ok(())
+    }
+    fn record_open_diagnostic(
+        &mut self,
+        event: &Event,
+        runtime: Option<&Value>,
+        response_id: u64,
+        response_kind: &'static str,
+    ) -> Result<(), String> {
+        let Some(runtime) = runtime else {
+            return Ok(());
+        };
+        if runtime.get("sim_open_memory_diagnostic").is_none() {
+            // Missing field is an older source/protocol and remains compatible.
+            return Ok(());
+        }
+        let event_clock = event
+            .clock
+            .ok_or("scale_sim_open_diagnostic_event_clock_missing")?;
+        let key = (event.sim_pid, event_clock.instance_unix_ns);
+        if event.sim_pid <= 1 || event_clock.pid != event.sim_pid {
+            return Err("scale_sim_open_diagnostic_event_identity".into());
+        }
+        if self
+            .sim_open_diagnostic_instances
+            .iter()
+            .flatten()
+            .any(|seen| *seen == key)
+        {
+            return Ok(());
+        }
+        let Some(receipt) =
+            sim_open_diagnostic_receipt(runtime, event, response_id, response_kind)?
+        else {
+            return Ok(());
+        };
+        if key != (receipt.sim_pid, receipt.sim_birth_unix_ns) {
+            return Err("scale_sim_open_diagnostic_event_birth_mismatch".into());
+        }
+        if self.sim_open_diagnostic_count >= MAX_SIM_OPEN_DIAGNOSTIC_INSTANCES {
+            return Err("scale_sim_open_diagnostic_instance_limit".into());
+        }
+        let row = json!({"sim_open_memory_diagnostic":receipt});
+        self.record_bounded(row, 1024, MAX_SIM_OPEN_DIAGNOSTIC_BYTES)?;
+        if !remember_sim_instance_once(
+            &mut self.sim_open_diagnostic_instances,
+            &mut self.sim_open_diagnostic_count,
+            key,
+        )? {
+            return Err("scale_sim_open_diagnostic_duplicate_record_race".into());
+        }
         Ok(())
     }
     pub(crate) fn call(&mut self, command: Command) -> Result<Value, String> {
@@ -159,6 +377,14 @@ impl Experiment {
             let sim_host_timing = (status_requested && event.kind == "result")
                 .then(|| event.payload.pointer("/Ok/runtime/sim_host_timing"))
                 .flatten();
+            if status_requested && event.kind == "result" && event.payload.get("Ok").is_some() {
+                self.record_open_diagnostic(
+                    &event,
+                    event.payload.pointer("/Ok/runtime"),
+                    self.id,
+                    "result",
+                )?;
+            }
             self.record(json!({"response":self.id,"kind":event.kind,"seconds":started.elapsed().as_secs_f64(),"payload_sha256":payload_sha256,"payload_bytes":payload_bytes,"request_sent_ns":request_sent_ns,"response_received_ns":response_received_ns,"sim_clock":event.clock,"worker_identity":worker_identity,"sim_host_timing":sim_host_timing,"result_ok":if event.kind=="result" {Some(event.payload.get("Ok").is_some())} else {None}}))?;
             if event.kind == "result" {
                 return event
@@ -334,7 +560,8 @@ fn run_inner(dir: &Path, tier: Tier, measured: bool) -> Result<Value, String> {
     let exe = std::env::current_exe().map_err(err)?;
     let world: PathBuf = dir.join("world");
     let mut client = spawn(&exe, &world, true, tier, measured)?;
-    if client.next(Duration::from_secs(35))?.kind != "ready" {
+    let ready = client.next(Duration::from_secs(35))?;
+    if ready.kind != "ready" {
         return Err("scale_sim_not_ready".into());
     }
     let mut e = Experiment {
@@ -350,7 +577,10 @@ fn run_inner(dir: &Path, tier: Tier, measured: bool) -> Result<Value, String> {
         verified: 0,
         max_boundary_seconds: 0.0,
         failed_attempts: 0,
+        sim_open_diagnostic_instances: [None; MAX_SIM_OPEN_DIAGNOSTIC_INSTANCES],
+        sim_open_diagnostic_count: 0,
     };
+    e.record_open_diagnostic(&ready, ready.payload.get("runtime"), 0, "ready")?;
     let mut lines = BufReader::new(File::open(dir.join("cpu-targets.jsonl")).map_err(err)?);
     let mut first = None;
     let mut first_proof = None;
@@ -482,10 +712,11 @@ pub(crate) fn independent_experiment_for_tier(
     } else {
         Client::spawn_scale(&exe, &dir.join("world"), create, probe, tier)?
     };
-    if client.next(Duration::from_secs(35))?.kind != "ready" {
+    let ready = client.next(Duration::from_secs(35))?;
+    if ready.kind != "ready" {
         return Err("rare_not_ready".into());
     }
-    Ok(Experiment {
+    let mut experiment = Experiment {
         client,
         id: 0,
         log: BufWriter::with_capacity(
@@ -498,7 +729,11 @@ pub(crate) fn independent_experiment_for_tier(
         verified: 0,
         max_boundary_seconds: 0.0,
         failed_attempts: 0,
-    })
+        sim_open_diagnostic_instances: [None; MAX_SIM_OPEN_DIAGNOSTIC_INSTANCES],
+        sim_open_diagnostic_count: 0,
+    };
+    experiment.record_open_diagnostic(&ready, ready.payload.get("runtime"), 0, "ready")?;
+    Ok(experiment)
 }
 impl Experiment {
     pub(crate) fn counts(&self) -> (u64, u64, u64) {
@@ -520,6 +755,63 @@ impl Experiment {
 #[cfg(test)]
 mod buffer_tests {
     use super::*;
+    fn clock(pid: u32, birth: u128, elapsed_ns: u64) -> crate::heap_meter::ClockReading {
+        crate::heap_meter::ClockReading {
+            pid,
+            instance_unix_ns: birth,
+            elapsed_ns,
+        }
+    }
+
+    fn diagnostic_event() -> (Event, Value) {
+        let pid = 71;
+        let birth = 9001;
+        let arena = json!({
+            "activation": null,
+            "current_requested_bytes": 100,
+            "lifetime_peak_requested_bytes": 200,
+            "bootstrap_live_bytes": 0,
+            "bootstrap_peak_bytes": 0,
+            "arena_used_bytes": 100,
+            "arena_usable_bytes": 4096,
+            "bootstrap_quarantined_bytes": 0,
+            "arena_free_bytes": 3996,
+            "allocation_failures": 0
+        });
+        let point = |begin, end| {
+            json!({
+                "clock_begin":clock(pid, birth, begin),
+                "role_arena":arena.clone(),
+                "clock_end":clock(pid, birth, end)
+            })
+        };
+        let runtime = json!({
+            "sim_open_memory_diagnostic": {
+                "schema":"mycity-sim-open-memory-v1",
+                "operation":"open",
+                "pre_open":point(10, 11),
+                "post_open":point(20, 21)
+            },
+            "sim_model_workspace": {
+                "active_slot":{"owned_model_bytes":1000,"retained_prepare_bytes":300},
+                "spare_restore_slot":{"owned_model_bytes":900,"retained_prepare_bytes":250},
+                "candidate_owned_bytes":400,
+                "codec_backing_bytes":500,
+                "workspace_owned_bytes":600
+            },
+            "store_owned_bytes":700
+        });
+        let event = Event {
+            protocol: "mycity-sim-v1".into(),
+            id: 0,
+            sim_pid: pid,
+            clock: Some(clock(pid, birth, 30)),
+            kind: "ready".into(),
+            payload: json!({"runtime":runtime.clone()}),
+        };
+        (event, runtime)
+    }
+
     #[test]
     fn streaming_payload_digest_preserves_exact_old_wire_hash_and_length() {
         for value in [
@@ -549,6 +841,18 @@ mod buffer_tests {
         assert!(b.write_all(&[8]).is_err());
         assert_eq!(b.0.capacity(), cap);
         assert!(b.0.iter().all(|v| *v == 7));
+    }
+    #[test]
+    fn diagnostic_receipt_writer_enforces_its_small_row_limit() {
+        let mut b = LimitedBytes::bounded(1024, MAX_SIM_OPEN_DIAGNOSTIC_BYTES);
+        b.write_all(&vec![3; MAX_SIM_OPEN_DIAGNOSTIC_BYTES])
+            .unwrap();
+        let capacity = b.0.capacity();
+        assert!(capacity <= MAX_SIM_OPEN_DIAGNOSTIC_BYTES);
+        assert!(b.write_all(&[4]).is_err());
+        assert_eq!(b.0.len(), MAX_SIM_OPEN_DIAGNOSTIC_BYTES);
+        assert_eq!(b.0.capacity(), capacity);
+        assert!(b.0.iter().all(|byte| *byte == 3));
     }
     #[test]
     fn golden_line_reader_is_bounded_before_allocation_and_rejects_truncation() {
@@ -592,6 +896,77 @@ mod buffer_tests {
                 .unwrap()
                 .len(),
             4096
+        );
+    }
+
+    #[test]
+    fn sim_open_diagnostic_extracts_bounded_first_instance_receipt() {
+        let (event, runtime) = diagnostic_event();
+        let receipt = sim_open_diagnostic_receipt(&runtime, &event, 0, "ready")
+            .unwrap()
+            .unwrap();
+        assert_eq!(receipt.sim_pid, event.sim_pid);
+        assert_eq!(receipt.sim_birth_unix_ns, 9001);
+        assert_eq!(receipt.operation, "open");
+        assert_eq!(receipt.model_workspace.active_slot.owned_model_bytes, 1000);
+        assert_eq!(
+            receipt
+                .model_workspace
+                .spare_restore_slot
+                .retained_prepare_bytes,
+            250
+        );
+        assert_eq!(receipt.store_owned_bytes, 700);
+        assert!(serde_json::to_vec(&receipt).unwrap().len() < MAX_SIM_OPEN_DIAGNOSTIC_BYTES);
+    }
+
+    #[test]
+    fn old_protocol_without_open_diagnostic_is_ignored_without_zero_fill() {
+        let (event, _) = diagnostic_event();
+        assert!(sim_open_diagnostic_receipt(&json!({}), &event, 1, "result")
+            .unwrap()
+            .is_none());
+    }
+
+    #[test]
+    fn sim_open_diagnostic_rejects_identity_clock_and_missing_capacity() {
+        let (mut event, runtime) = diagnostic_event();
+        event.sim_pid += 1;
+        assert_eq!(
+            sim_open_diagnostic_receipt(&runtime, &event, 0, "ready").unwrap_err(),
+            "scale_sim_open_diagnostic_clock_identity_or_order"
+        );
+
+        let (event, mut runtime) = diagnostic_event();
+        runtime["sim_open_memory_diagnostic"]["post_open"]["clock_begin"]["elapsed_ns"] = 5.into();
+        assert_eq!(
+            sim_open_diagnostic_receipt(&runtime, &event, 0, "ready").unwrap_err(),
+            "scale_sim_open_diagnostic_clock_identity_or_order"
+        );
+
+        let (event, mut runtime) = diagnostic_event();
+        runtime["sim_model_workspace"]
+            .as_object_mut()
+            .unwrap()
+            .remove("codec_backing_bytes");
+        assert!(sim_open_diagnostic_receipt(&runtime, &event, 0, "ready").is_err());
+    }
+
+    #[test]
+    fn sim_open_diagnostic_has_fixed_instance_limit_and_deduplicates_birth() {
+        let mut seen = [None; MAX_SIM_OPEN_DIAGNOSTIC_INSTANCES];
+        let mut count = 0;
+        assert!(remember_sim_instance_once(&mut seen, &mut count, (71, 9001)).unwrap());
+        assert!(!remember_sim_instance_once(&mut seen, &mut count, (71, 9001)).unwrap());
+        for n in 1..MAX_SIM_OPEN_DIAGNOSTIC_INSTANCES {
+            assert!(
+                remember_sim_instance_once(&mut seen, &mut count, (71, 9001 + n as u128)).unwrap()
+            );
+        }
+        assert_eq!(count, MAX_SIM_OPEN_DIAGNOSTIC_INSTANCES);
+        assert_eq!(
+            remember_sim_instance_once(&mut seen, &mut count, (72, 9002)).unwrap_err(),
+            "scale_sim_open_diagnostic_instance_limit"
         );
     }
 }

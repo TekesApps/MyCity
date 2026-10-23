@@ -1,0 +1,92 @@
+{
+  "method": "unique inode st_blocks x512; full archives remain at original paths",
+  "before_allocated_bytes": 70234112,
+  "after_allocated_bytes": 16207872,
+  "allocated_reduction_bytes": 54026240,
+  "available_disk_change_observed_bytes": 53923840,
+  "available_disk_change_attribution": "not exclusively attributed; APFS and other tasks may change free space",
+  "records": [
+    {
+      "round": "335-sim-memory-diagnostic-build",
+      "removed": "duplicate source.zip inode allocation only; full path retained by hardlink",
+      "reason": "identical complete archive, terminal run, no open handle",
+      "retained_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/334-sim-memory-diagnostic-tests/source.zip",
+      "sha256": "09dc7d34b7616c9ae13180404c8f115d2653d60cb0218a8252228625af505706",
+      "recovery_worlds": "untouched"
+    },
+    {
+      "round": "336-full-business-diagnostic-functional",
+      "removed": "duplicate source.zip inode allocation only; full path retained by hardlink",
+      "reason": "identical complete archive, terminal run, no open handle",
+      "retained_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/334-sim-memory-diagnostic-tests/source.zip",
+      "sha256": "09dc7d34b7616c9ae13180404c8f115d2653d60cb0218a8252228625af505706",
+      "recovery_worlds": "untouched"
+    },
+    {
+      "round": "338-sim-memory-diagnostic-build",
+      "removed": "duplicate source.zip inode allocation only; full path retained by hardlink",
+      "reason": "identical complete archive, terminal run, no open handle",
+      "retained_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/337-sim-memory-diagnostic-strict/source.zip",
+      "sha256": "deb3de9834c3ca364cac674dffb6f7183866178162a5ab04b0a33a10a08d057b",
+      "recovery_worlds": "untouched"
+    },
+    {
+      "round": "339-sim-memory-diagnostic-tests",
+      "removed": "duplicate source.zip inode allocation only; full path retained by hardlink",
+      "reason": "identical complete archive, terminal run, no open handle",
+      "retained_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/337-sim-memory-diagnostic-strict/source.zip",
+      "sha256": "deb3de9834c3ca364cac674dffb6f7183866178162a5ab04b0a33a10a08d057b",
+      "recovery_worlds": "untouched"
+    },
+    {
+      "round": "340-full-business-diagnostic-functional",
+      "removed": "duplicate source.zip inode allocation only; full path retained by hardlink",
+      "reason": "identical complete archive, terminal run, no open handle",
+      "retained_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/337-sim-memory-diagnostic-strict/source.zip",
+      "sha256": "deb3de9834c3ca364cac674dffb6f7183866178162a5ab04b0a33a10a08d057b",
+      "recovery_worlds": "untouched"
+    },
+    {
+      "round": "341-sim-memory-diagnostic-fmt",
+      "removed": "duplicate source.zip inode allocation only; full path retained by hardlink",
+      "reason": "identical complete archive, terminal run, no open handle",
+      "retained_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/337-sim-memory-diagnostic-strict/source.zip",
+      "sha256": "deb3de9834c3ca364cac674dffb6f7183866178162a5ab04b0a33a10a08d057b",
+      "recovery_worlds": "untouched"
+    },
+    {
+      "round": "343-sim-memory-diagnostic-final-tests",
+      "removed": "duplicate source.zip inode allocation only; full path retained by hardlink",
+      "reason": "identical complete archive, terminal run, no open handle",
+      "retained_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/342-sim-memory-diagnostic-final-check/source.zip",
+      "sha256": "8acf6bd27906b2236088c7652696060624f26425d7a8ee58c48b9bc5d4f7960a",
+      "recovery_worlds": "untouched"
+    },
+    {
+      "round": "344-sim-memory-diagnostic-final-strict",
+      "removed": "duplicate source.zip inode allocation only; full path retained by hardlink",
+      "reason": "identical complete archive, terminal run, no open handle",
+      "retained_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/342-sim-memory-diagnostic-final-check/source.zip",
+      "sha256": "8acf6bd27906b2236088c7652696060624f26425d7a8ee58c48b9bc5d4f7960a",
+      "recovery_worlds": "untouched"
+    },
+    {
+      "round": "345-sim-memory-diagnostic-final-build",
+      "removed": "duplicate source.zip inode allocation only; full path retained by hardlink",
+      "reason": "identical complete archive, terminal run, no open handle",
+      "retained_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/342-sim-memory-diagnostic-final-check/source.zip",
+      "sha256": "8acf6bd27906b2236088c7652696060624f26425d7a8ee58c48b9bc5d4f7960a",
+      "recovery_worlds": "untouched"
+    },
+    {
+      "round": "346-final-full-business-diagnostic-functional",
+      "removed": "duplicate source.zip inode allocation only; full path retained by hardlink",
+      "reason": "identical complete archive, terminal run, no open handle",
+      "retained_evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/342-sim-memory-diagnostic-final-check/source.zip",
+      "sha256": "8acf6bd27906b2236088c7652696060624f26425d7a8ee58c48b9bc5d4f7960a",
+      "recovery_worlds": "untouched"
+    }
+  ],
+  "preserved": "all original recovery worlds, snapshots, logs, receipts, failure evidence, executable files, source/WIP, target and lock snapshots",
+  "retained_reason": "source and executables are needed for reproducibility, original worlds for direct recovery; shared target reused by next stage"
+}

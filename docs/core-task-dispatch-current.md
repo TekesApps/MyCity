@@ -110,3 +110,34 @@ M0 owned wrapper+transcript diagnostic patch is frozen in equity-current, not ye
 or physically measured. It must persist bounded source/identity/bracket evidence before a
 quiet full-business diagnostic window; it provides no memory credit by itself. Original
 normal/common8MiB/8h/real16GB gates remain unmet or not_run.
+
+## Next bounded batches after v150
+
+- Root main is frozen during all wrapped builds/tests/probes. Agents implement in their owned
+  private trees and hand off exact files/interfaces; even a new untracked test changes the
+  `crates` source manifest. No canonical edits without a root integration window.
+- M0: the two-file bounded Sim-open receipt candidate is integrated for validation only.
+  Actual results and accounting limits are in [diagnostic evidence](evidence/m0-t13a-sim-open-diagnostic/STATUS.md).
+  Root owns all Cargo/native scheduling. No memory saving or original-gate pass is claimed.
+- E core: economy_scenarios alone implements the next atomic Move/Wait slice in Ftree; tests
+  remain with scoped_index_calls in housing-current until the precise API is frozen. Old Rent
+  Claim identity remains; processed old debt requires explicit actual SettleClaim, not an
+  assumed automatic future P2. Paid greater than earned rejects moving until refund support.
+  A genuine payroll observation window is required; missing evidence persists a wait.
+  The genesis assessment source remains an explicit fixture boundary, not a computed city
+  satisfaction producer. This slice remains uncompiled/unverified.
+- F: joint_current_prep prepares original Scene/profile fixtures, independent expected causal
+  results and exact Store geometry seam in its existing private tree. It may not concurrently
+  edit shared core while E is being wired. Existing geometry component and runtime profile
+  tests do not prove Store geometry activation or housing route binding.
+- D's published actual capital/dividend/exit mechanism stays authoritative. Unsupported housing
+  earnings and obligations do not silently become distributable profit. The combined31day
+  scenario is evidence for its stated causal chain, not completion of all lines.
+
+External finite source handoff batch5 (#102 worker protocol/#120 opening loader/#97 vegetation)
+remains unapplied in `/Volumes/HP P900/dev/MyCity/work/issue-102-120-97-source-handoff-20261024`.
+Root checked all39 integrity-listed files,251018 bytes against full preserved originals.
+Compilation/runtime/Store/resource verification remains not_run. Its v149-based private trees
+are not integration-ready merely because the delivery hashes match; no shared source was
+copied over current WIP, no measurement window is assigned, and no cleanup/release of their
+original worktrees has been performed by this task.

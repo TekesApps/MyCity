@@ -1,0 +1,43 @@
+{
+  "functional_receipts": "passed",
+  "source_sha256": "aa552fd1f408a19147823fc84b1f8a31863c111792f2ab8b89078e69e108c9ad",
+  "receipts": [
+    {
+      "identity": [
+        88894,
+        1792781861323088000
+      ],
+      "operation": "create",
+      "clock_brackets_ns": [
+        0,
+        42,
+        76430000,
+        76430125,
+        82413875
+      ],
+      "store_owned_bytes": 51031263,
+      "workspace_owned_bytes_included_in_store": 15458872,
+      "serialized_line_bytes": 1936
+    },
+    {
+      "identity": [
+        96231,
+        1792782020811203000
+      ],
+      "operation": "open",
+      "clock_brackets_ns": [
+        41,
+        125,
+        66025416,
+        66025500,
+        202684875
+      ],
+      "store_owned_bytes": 51031327,
+      "workspace_owned_bytes_included_in_store": 15458872,
+      "serialized_line_bytes": 1945
+    }
+  ],
+  "native_peak_or_birth_alignment": "not_measured",
+  "performance_acceptance": "not_run",
+  "storage": "external HP P900 USB/APFS SSD"
+}

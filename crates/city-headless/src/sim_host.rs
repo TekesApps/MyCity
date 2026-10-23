@@ -256,12 +256,45 @@ fn progress(store: &Store) -> Result<Value, String> {
             "pending":b.pending().map(|p|json!({"id":p.id,"generation":p.generation,"incarnation":p.incarnation,"attempt":p.attempt,"failure":p.failure}))}))}),
     )
 }
+#[derive(Serialize)]
+struct SimArenaPoint {
+    /// Brackets the allocator snapshot; both readings must identify the same process.
+    clock_begin: crate::heap_meter::ClockReading,
+    role_arena: mycity_role_allocator::Snapshot,
+    clock_end: crate::heap_meter::ClockReading,
+}
+
+fn sim_arena_point() -> Result<SimArenaPoint, String> {
+    let clock_begin = crate::heap_meter::clock_reading();
+    let role_arena = crate::heap_meter::arena_snapshot();
+    let clock_end = crate::heap_meter::clock_reading();
+    if clock_begin.pid != clock_end.pid
+        || clock_begin.instance_unix_ns != clock_end.instance_unix_ns
+        || clock_begin.elapsed_ns > clock_end.elapsed_ns
+    {
+        return Err("sim_arena_snapshot_clock_identity".into());
+    }
+    Ok(SimArenaPoint {
+        clock_begin,
+        role_arena,
+        clock_end,
+    })
+}
+
+#[derive(Serialize)]
+struct SimOpenMemoryDiagnostic {
+    operation: &'static str,
+    pre_open: SimArenaPoint,
+    post_open: SimArenaPoint,
+}
+
 fn status(
     store: &Store,
     worker: &Option<Worker>,
     codec: &Codec,
     diag: &Option<crate::cpu_log::CpuLog>,
     timings: &SimTimings,
+    open_memory: &SimOpenMemoryDiagnostic,
 ) -> Result<Value, String> {
     // Same-phase current occupancy, before allocating the status report.
     let allocator_clock_begin = crate::heap_meter::clock_reading();
@@ -276,7 +309,9 @@ fn status(
             .map(|f| f.checkpoint_sha256())
             .transpose()?
     };
-    let runtime = json!({"allocator_boundary":{"phase":"status_entry_before_report_allocations","clock_begin":allocator_clock_begin,"clock_end":allocator_clock_end,"snapshot":allocator_boundary},"accounts":view.accounts,"boot":view.boot,"active_city":view.region.as_ref().map(|r|r.active_city),"obligations":view.region.as_ref().map(|r|r.obligations),"payroll":e.timeline().map(|t|t.payroll.iter().take(8).collect::<Vec<_>>()),"claims":e.timeline().map(|t|t.claims.iter().take(8).collect::<Vec<_>>()),"claim_count":e.timeline().map(|t|t.claims.len()),"payroll_count":e.timeline().map(|t|t.payroll.len()),"resources":e.resources(),"store_owned_bytes":store.owned_capacity_bytes().map_err(err)?,"sim_codec":codec.slots.report()?,"sim_air_input_owned_bytes":codec.air_input.owned_bytes(),"sim_timing_state_bytes":std::mem::size_of::<SimTimings>(),"diagnostics_owned_bytes":diag.as_ref().map_or(0,crate::cpu_log::CpuLog::owned_bytes)});
+    let model_workspace = store.model_workspace_identity().map_err(err)?;
+    let store_owned_bytes = store.owned_capacity_bytes().map_err(err)?;
+    let runtime = json!({"allocator_boundary":{"phase":"status_entry_before_report_allocations","clock_begin":allocator_clock_begin,"clock_end":allocator_clock_end,"snapshot":allocator_boundary},"sim_open_memory_diagnostic":{"schema":"mycity-sim-open-memory-v1","operation":open_memory.operation,"pre_open":open_memory.pre_open,"post_open":open_memory.post_open,"native_phys_footprint_bytes":null,"native_phys_footprint_source":"external_native_observer_required; null means unavailable here, not zero"},"sim_model_workspace":{"active_slot":{"owned_model_bytes":model_workspace.initial.owned_model_bytes,"retained_prepare_bytes":model_workspace.initial.retained_prepare_bytes},"spare_restore_slot":{"owned_model_bytes":model_workspace.restore.owned_model_bytes,"retained_prepare_bytes":model_workspace.restore.retained_prepare_bytes},"candidate_owned_bytes":model_workspace.candidate.owned_bytes,"codec_backing_bytes":model_workspace.codec.backing_bytes,"workspace_owned_bytes":model_workspace.owned_bytes},"store_owned_bytes":store_owned_bytes,"accounts":view.accounts,"boot":view.boot,"active_city":view.region.as_ref().map(|r|r.active_city),"obligations":view.region.as_ref().map(|r|r.obligations),"payroll":e.timeline().map(|t|t.payroll.iter().take(8).collect::<Vec<_>>()),"claims":e.timeline().map(|t|t.claims.iter().take(8).collect::<Vec<_>>()),"claim_count":e.timeline().map(|t|t.claims.len()),"payroll_count":e.timeline().map(|t|t.payroll.len()),"resources":e.resources(),"sim_codec":codec.slots.report()? ,"sim_air_input_owned_bytes":codec.air_input.owned_bytes(),"sim_timing_state_bytes":std::mem::size_of::<SimTimings>(),"diagnostics_owned_bytes":diag.as_ref().map_or(0,crate::cpu_log::CpuLog::owned_bytes)});
 
     let business_sha = {
         let _timer = timings.timer(TimingPhase::StatusBusinessDigest);
@@ -660,7 +695,7 @@ fn run_inner(
     let timings = SimTimings::new();
     let workspace = mycity_storage::StoreWorkspace::new().map_err(err)?;
     let rules = profile.rules();
-    let mut store = if create {
+    let (mut store, pre_open_memory) = if create {
         let (opening, resources) = match profile {
             Profile::Scale(tier) => (tier.opening(), crate::scale_reference::resources()?),
             Profile::Joint => (
@@ -672,7 +707,8 @@ fn run_inner(
                 crate::joint_reference::resources()?,
             ),
         };
-        Store::create_spatial_in_prepared_workspace(
+        let pre_open = sim_arena_point()?;
+        let store = Store::create_spatial_in_prepared_workspace(
             world,
             opening,
             resources,
@@ -684,9 +720,17 @@ fn run_inner(
             matches!(profile, Profile::Scale(_)),
             workspace,
         )
-        .map_err(err)?
+        .map_err(err)?;
+        (store, pre_open)
     } else {
-        Store::open_in_prepared_workspace(world, &rules, workspace).map_err(err)?
+        let pre_open = sim_arena_point()?;
+        let store = Store::open_in_prepared_workspace(world, &rules, workspace).map_err(err)?;
+        (store, pre_open)
+    };
+    let open_memory = SimOpenMemoryDiagnostic {
+        operation: if create { "create" } else { "open" },
+        pre_open: pre_open_memory,
+        post_open: sim_arena_point()?,
     };
     crate::normal_pool::broker::acknowledge_role(
         epoch,
@@ -736,7 +780,7 @@ fn run_inner(
         &mut writer,
         0,
         "ready",
-        status(&store, &worker, &codec, &diag, &timings)?,
+        status(&store, &worker, &codec, &diag, &timings, &open_memory)?,
     )?;
     while let Some(bytes) = wire::frame(&mut reader)? {
         let request: Request = serde_json::from_slice(&bytes).map_err(err)?;
@@ -745,7 +789,7 @@ fn run_inner(
         }
         let stop = matches!(request.command, Command::Stop);
         let outcome = match request.command {
-            Command::Status => status(&store, &worker, &codec, &diag, &timings),
+            Command::Status => status(&store, &worker, &codec, &diag, &timings, &open_memory),
             Command::Progress => progress(&store),
             Command::ReceiptProof { operation } => store.receipt(operation).map_err(err).and_then(|record| {
                 let bytes = serde_json::to_vec(&record).map_err(err)?;

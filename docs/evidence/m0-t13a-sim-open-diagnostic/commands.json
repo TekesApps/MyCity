@@ -1,0 +1,324 @@
+[
+  {
+    "label": "334-sim-memory-diagnostic-tests",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-headless",
+        "--lib",
+        "scale_sim::buffer_tests",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T18:40:33.455472+00:00",
+      "source_manifest_sha256": "42f29d27fd490c2d7a544d7898215b1aca598054a92ebc83bceff0b12d3d6ded"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 58.501578542000004,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "335-sim-memory-diagnostic-build",
+    "command": {
+      "argv": [
+        "cargo",
+        "build",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-headless"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T18:42:31.123102+00:00",
+      "source_manifest_sha256": "42f29d27fd490c2d7a544d7898215b1aca598054a92ebc83bceff0b12d3d6ded"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 38.70119225,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "336-full-business-diagnostic-functional",
+    "command": {
+      "argv": [
+        "/usr/bin/time",
+        "-l",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/335-sim-memory-diagnostic-build/executables/33c268ae216784dca488a660dacf0645499699d3b997f86691c03dc2cc69bb0b/mycity-headless",
+        "scale-sim-probe",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/336-full-business-diagnostic-world",
+        "full"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T18:43:21.030083+00:00",
+      "source_manifest_sha256": "42f29d27fd490c2d7a544d7898215b1aca598054a92ebc83bceff0b12d3d6ded"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 207.734738833,
+      "source_unchanged": false
+    }
+  },
+  {
+    "label": "337-sim-memory-diagnostic-strict",
+    "command": {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "--release",
+        "--workspace",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T18:48:42.623151+00:00",
+      "source_manifest_sha256": "ec86b92e10f27b0acdeb76abffce972fc6affd2dbb130e7c06377d679fb11101"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 6.350451625,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "338-sim-memory-diagnostic-build",
+    "command": {
+      "argv": [
+        "cargo",
+        "build",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-headless",
+        "--bin",
+        "mycity-headless"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T18:49:18.430562+00:00",
+      "source_manifest_sha256": "ec86b92e10f27b0acdeb76abffce972fc6affd2dbb130e7c06377d679fb11101"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 38.487209083,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "339-sim-memory-diagnostic-tests",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-headless",
+        "--lib",
+        "scale_sim::buffer_tests",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T18:50:20.215891+00:00",
+      "source_manifest_sha256": "ec86b92e10f27b0acdeb76abffce972fc6affd2dbb130e7c06377d679fb11101"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 10.049849458,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "340-full-business-diagnostic-functional",
+    "command": {
+      "argv": [
+        "/usr/bin/time",
+        "-l",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/338-sim-memory-diagnostic-build/executables/dc610b1e7ac71de66773f47f2664992a6491a2b173cf208b27b0422055605cba/mycity-headless",
+        "scale-sim-probe",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/340-full-business-diagnostic-world",
+        "full"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T18:50:43.194342+00:00",
+      "source_manifest_sha256": "ec86b92e10f27b0acdeb76abffce972fc6affd2dbb130e7c06377d679fb11101"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 208.06226437499998,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "341-sim-memory-diagnostic-fmt",
+    "command": {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T18:55:09.141462+00:00",
+      "source_manifest_sha256": "ec86b92e10f27b0acdeb76abffce972fc6affd2dbb130e7c06377d679fb11101"
+    },
+    "result": {
+      "exit_code": 1,
+      "wall_seconds": 0.9836639999999999,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "342-sim-memory-diagnostic-final-check",
+    "command": {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T18:55:39.977535+00:00",
+      "source_manifest_sha256": "c6fe718a7c9af08a9e6686aa5e548d23a459c6e4b7285643a9da7f96b5633718"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 0.7947225,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "343-sim-memory-diagnostic-final-tests",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-headless",
+        "--lib",
+        "scale_sim::buffer_tests",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T18:55:52.009329+00:00",
+      "source_manifest_sha256": "c6fe718a7c9af08a9e6686aa5e548d23a459c6e4b7285643a9da7f96b5633718"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 12.052153416000001,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "344-sim-memory-diagnostic-final-strict",
+    "command": {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "--release",
+        "--workspace",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T18:56:04.183535+00:00",
+      "source_manifest_sha256": "c6fe718a7c9af08a9e6686aa5e548d23a459c6e4b7285643a9da7f96b5633718"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 5.839944833000001,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "345-sim-memory-diagnostic-final-build",
+    "command": {
+      "argv": [
+        "cargo",
+        "build",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-headless",
+        "--bin",
+        "mycity-headless"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T18:56:10.088428+00:00",
+      "source_manifest_sha256": "c6fe718a7c9af08a9e6686aa5e548d23a459c6e4b7285643a9da7f96b5633718"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 31.676074042,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "346-final-full-business-diagnostic-functional",
+    "command": {
+      "argv": [
+        "/usr/bin/time",
+        "-l",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/345-sim-memory-diagnostic-final-build/executables/6f3015ad1e88220afa505b1579fbf39d9aac16b823578aec55ab405d9aa15741/mycity-headless",
+        "scale-sim-probe",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/346-final-full-business-diagnostic-world",
+        "full"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T18:57:04.505737+00:00",
+      "source_manifest_sha256": "c6fe718a7c9af08a9e6686aa5e548d23a459c6e4b7285643a9da7f96b5633718"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 196.909381083,
+      "source_unchanged": true
+    }
+  }
+]
