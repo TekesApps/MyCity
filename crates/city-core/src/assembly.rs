@@ -449,6 +449,10 @@ impl World {
                 self.account_handle(project.waste_receiver_account)
                     .map_err(|_| "checkpoint_construction_waste_receiver")?;
             }
+            if let Some(contract) = project.compensation {
+                self.account_handle(contract.payee)
+                    .map_err(|_| "checkpoint_construction_compensation_payee")?;
+            }
             for gate in project.gates.iter().take(project.gate_count as usize) {
                 self.account_handle(gate.party)
                     .map_err(|_| "checkpoint_construction_gate_party")?;
@@ -797,6 +801,9 @@ pub(crate) fn assemble_into(bytes: &[u8], world: &mut World) -> Result<(), Strin
         world.account_handle(project.inspector)?;
         if project.waste_receiver_account != 0 {
             world.account_handle(project.waste_receiver_account)?;
+        }
+        if let Some(contract) = project.compensation {
+            world.account_handle(contract.payee)?;
         }
         for gate in project.gates.iter().take(project.gate_count as usize) {
             world.account_handle(gate.party)?;

@@ -4,7 +4,7 @@
 
 ## 当前代码依据和责任划分
 
-M0主目录 `/Users/frankqin/dev/MyCity` 的映射pool/地址诊断已在v0.5.106发布，实际完整回归与短联合诊断见[证据](evidence/m0-t13a-pool-mapped-proof/STATUS.md)。该次原normal仍超限，不能报告性能通过。最新发布v0.5.107另含独立交通模型；未发布经济planner及隔离分支不能沿用M0的旧来源性能结果。旧冻结来源、标准和失败证据不变。原L0/L1/L2分级、四速、恢复故障及真实8小时仍按原标准逐项实测；32GiB机器不能代替真实16GB门，后者not_run。没有新证据不重复整体审查，advisor负责具体不确定事项及最终独立验收。
+M0 and the three bounded core lines are integrated through v0.5.135; exact per-version sources and execution evidence are recorded in [current status](m0-implementation-status.md). The original v106/v107 worktrees below describe the initial delegation, not today's unmerged work. The newest fixed-load physical observation remains v130, over the original normal threshold; v132 micro-hash timing is not whole-model performance. L0/L1/L2 repetitions, four speeds, faults and the real eight-hour run retain their original gates. The 32GiB host does not satisfy the real-16GB gate (`not_run`). No prior-source performance is transferred to new core features.
 
 只读代码调查确认可复用：`city-core::transaction::Engine`单写事务/幂等journal/checkpoint、`assembly::World`账户/库存、`units::GameTime`及`calendar::Date`、`timeline::Timeline`工资/税债日程、容量Resource/Lease，以及`city-storage::Store` WAL。它们有固定上限和实验域约束；PE0固定四角色/固定日销量不能被当作动态市场，Region/Exchange有限跨城路线也不是道路交通图。
 
@@ -14,7 +14,7 @@ M0主目录 `/Users/frankqin/dev/MyCity` 的映射pool/地址诊断已在v0.5.10
 | B工程 | `codex/core-construction`，同父目录construction | core construction模块、example、测试、该线文档 | 现有时间、事务、容量和账户库存；外部许可/参与方未办理必须等待 | 工料钱工时约束、停工取消改拆废物去向、验收前无运营能力；中断重试恢复不重复扣款/施工/退款；完整小场景和预算 |
 | C经济 | `codex/core-economy`，同父目录economy | core town_economy模块、example、测试、该线文档 | 只读现有World/工资到账；交通/供给DTO先显式替身，提交回现有Engine | 动态需求价格购买力库存约束、28日和压力传播、钱物核对、亏损退出；期初资金依赖及未平衡参数如实报告 |
 
-三线agent已实际派工，原独立分支从v104起步，后续各来源按实际freeze与提交记录；交通已有限集成，其余仍分批验证，不以派工或未运行的测试宣称通过。各分支允许自己的lib注册，但最终由root统一合并。共享transaction/Store/账务/持久化及主CLI由root协调单一负责人，禁止各线各造一份。隔离目录稀疏检出源代码/fixtures/.cargo，避免复制历史证据；旧设计从主目录只读。
+三线最初从v104起步，后续分支和来源按实际freeze及提交记录；三线均已有有限集成和实际证据，未完成门分别保留，不以派工或未运行的测试宣称通过。各分支允许自己的lib注册，但最终由root统一合并。共享transaction/Store/账务/持久化及主CLI由root协调单一负责人，禁止各线各造一份。隔离目录稀疏检出源代码/fixtures/.cargo，避免复制历史证据；旧设计从主目录只读。
 
 ## 已确认的真实依赖，不作为完成项掩盖
 
@@ -33,7 +33,7 @@ root持有同机重任务调度权。各agent先编码，不自行构建；只�
 ## 当前集成次序与验证门（2026-10-23更新）
 
 - A有向图/OD模型在v107实测，Store市场adapter在v119及v122有限实测；v134另在128节点／512边／128入口／512 OD固定最大输入上完成normal、部分道路关闭、拥堵和全网无路探针。它每次全量确定性重算并用指纹拒绝旧输入；增量缓存未实现。最大输入的单次CLI和Assignment owned capacity已实测，但分配峰值、完整地图吞吐及16GB/M0预算仍未测。详见[交通模型与上限预算](core-transport.md)及[v134收据](evidence/core-transport-capacity-134/STATUS.md)。
-- B投运、拆除、废物接收及关闭的Engine/Store接入已在v122限定实测；v126接入真实Boot电水与材料核算，v128验证共享材料完整生命周期，v133三日联合继续复用。定额现金补偿的原子付款及恢复校验仍在隔离候选验证中，不能将原有Compensation gate的证据审批称为已付款。旧版None兼容与新非空合同的恢复门分别验证。
+- B投运、拆除、废物接收及关闭的Engine/Store接入已在v122限定实测；v126接入真实Boot电水与材料核算，v128验证共享材料完整生命周期，v133三日联合继续复用。v135另完成定额现金补偿的原子付款及持久恢复验证，原有无合同的Compensation gate仍仅表示证据审批。旧版None兼容、新非空合同及两项损坏checkpoint拒绝分别实测；没有法律协商、估价、托管或自动退款机制。
 - C在v119已以同一Engine/TownSettle/Timeline执行28日市场及七种现金、原料、无路、容量、能源价格、需求压力，另实测营业额税fixture和贷款债权；v131另跑28日显式换岗工资／购买力对照。v133把就业变化、真实固定OD道路proof、工程和有限Boot公用接入同一Store，但仅为三日联合。现有28日就业与28日税债／道路场景仍分开，运输/公用替身、资金自给、完整税法及法律关闭均未证毕；不要将独立结果合并称为28日完整联动。见[v119经济与交通记录](evidence/core-transport-tax-integration-119/STATUS.md)、[v131就业记录](evidence/core-employment-131/STATUS.md)、[v133联合记录](evidence/core-employment-lifelines-133/STATUS.md)。
 - M0最新原满级物理诊断见v130：完整恢复窗口仍超normal 7,628,426B。v132受限整数编码只证明局部哈希改善，不能转为整机/快进通过。v134记录紧凑索引候选不合入：固定填充抵消局部字节减少，且完整旧L1恢复契约不同；不缩冻结负载或阈值来制造通过。v132同源新smoke/formal控制器已完成静态预检，但尚未启动；原三轮四速、8h、真实16GB门保持未完成。
 

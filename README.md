@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.134`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.135`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.135完成[建设定额补偿与恢复验证](docs/evidence/core-construction-compensation-135/STATUS.md)：owner申报、收款方接受、实际转账、工程支出和门状态在同一事务提交；失败不扣款，重放不复付，后续拆除复审不再次付款。最终同源299项测试、七个既有联合CLI及严格检查通过，修复两项损坏检查点校验缺口。未实现估价、协商、托管或自动退款；原M0性能、8h及真实16GB门仍未完成。
 
 v0.5.134: [Fixed maximum transport probe](docs/evidence/core-transport-capacity-134/STATUS.md) passed all four cases and deterministic repeats at 128 nodes, 512 edges, 128 entrances, 512 OD groups and 127 hops. Path-index memory estimate corrected. Failed fixture attempt and withheld scoped-index candidate retained; observations are not clean-performance, M0 or 16GB acceptance. Construction compensation remains under isolated validation.
 

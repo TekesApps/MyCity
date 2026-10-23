@@ -1,0 +1,21 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction-compensation-current/crates/city-core)
+error[E0308]: mismatched types
+    --> crates/city-core/src/construction/mod.rs:2853:21
+     |
+2853 |                     gates,
+     |                     ^^^^^ expected an array with a size of 8, found one with a size of 4
+     |
+     = note: expected array `[construction::Gate; 8]`
+                found array `[construction::Gate; 4]`
+
+error[E0308]: mismatched types
+    --> crates/city-core/src/construction/mod.rs:2902:25
+     |
+2902 |                         gates,
+     |                         ^^^^^ expected an array with a size of 8, found one with a size of 4
+     |
+     = note: expected array `[construction::Gate; 8]`
+                found array `[construction::Gate; 4]`
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `mycity-core` (lib test) due to 2 previous errors

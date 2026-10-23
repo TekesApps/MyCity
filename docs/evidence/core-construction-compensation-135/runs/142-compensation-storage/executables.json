@@ -1,0 +1,37 @@
+[
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_storage-46fdf6e079eacbdd",
+    "sha256": "cb568d2db5efefd96d74d01582e8f22d247085124086f8c2e218967bed7ed4d0",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/executables/cb568d2db5efefd96d74d01582e8f22d247085124086f8c2e218967bed7ed4d0/mycity_storage-46fdf6e079eacbdd"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/construction-aad701797c500f4c",
+    "sha256": "2bfb12ddbdb01c85c255133861f2324e1c58980f2aae10db08ac199d6c7d2df9",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/executables/2bfb12ddbdb01c85c255133861f2324e1c58980f2aae10db08ac199d6c7d2df9/construction-aad701797c500f4c"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/construction_boot_stock_isolation-e9b03803d8124a1d",
+    "sha256": "3918af9d8abfae600625f99f304ab5966c4b8a20b65184233cd970790e7c1b7f",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/executables/3918af9d8abfae600625f99f304ab5966c4b8a20b65184233cd970790e7c1b7f/construction_boot_stock_isolation-e9b03803d8124a1d"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/construction_compensation-da07d8d4ccb711d2",
+    "sha256": "576f39ddb7e2d141b2733c6802fdfd99cd44c816cabe6ea58a28cdbca7dfb701",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/executables/576f39ddb7e2d141b2733c6802fdfd99cd44c816cabe6ea58a28cdbca7dfb701/construction_compensation-da07d8d4ccb711d2"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/construction_material_retry-5d3d82a6e5235d01",
+    "sha256": "5e57109bed8108c5de074f5eaeb454b5d20390c31c20c7bb241b81519ac979ee",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/executables/5e57109bed8108c5de074f5eaeb454b5d20390c31c20c7bb241b81519ac979ee/construction_material_retry-5d3d82a6e5235d01"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/construction_utilities-688ad21356dacdfa",
+    "sha256": "c33dc16a1d0a8e0aa129bb0f9107a9036c2802daca05bfa2616d7c9ee6e3647b",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/executables/c33dc16a1d0a8e0aa129bb0f9107a9036c2802daca05bfa2616d7c9ee6e3647b/construction_utilities-688ad21356dacdfa"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/unfinished_clearance-035079e7f542b180",
+    "sha256": "06e2e42ae1fbfe13fc5495c11bada77fd18ae60e71e978381a9ba8badbe1f147",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/executables/06e2e42ae1fbfe13fc5495c11bada77fd18ae60e71e978381a9ba8badbe1f147/unfinished_clearance-035079e7f542b180"
+  }
+]

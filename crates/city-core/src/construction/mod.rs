@@ -25,6 +25,12 @@ fn zero_money2(value: &[Money; CONSTRUCTION_UTILITY_COUNT]) -> bool {
 fn no_material_accounting(value: &Option<ConstructionMaterialAccounting>) -> bool {
     value.is_none()
 }
+fn no_compensation(value: &Option<ConstructionCompensation>) -> bool {
+    value.is_none()
+}
+fn zero_u32(value: &u32) -> bool {
+    *value == 0
+}
 fn ceil_nonnegative(numerator: i128, denominator: i128) -> Result<i64, Error> {
     if numerator < 0 || denominator <= 0 {
         return Err(Error::InvalidInput);
@@ -48,6 +54,39 @@ pub struct Gate {
     pub evidence_id: u64,
     pub party: u32,
     pub decided: GateDecision,
+}
+
+/// Fixed one-time compensation authorization for the initial application review.
+/// The payment receipt is private so callers cannot mark a contract paid through the
+/// public projection API. Engine records it only in the same candidate as the transfer.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ConstructionCompensation {
+    pub gate_id: u32,
+    pub payee: u32,
+    pub application_round: u32,
+    pub amount: Money,
+    #[serde(default, skip_serializing_if = "zero_u64")]
+    settled_operation_id: u64,
+}
+
+impl ConstructionCompensation {
+    pub fn new(gate_id: u32, payee: u32, amount: Money) -> Result<Self, Error> {
+        if gate_id == 0 || payee == 0 || amount.value() <= 0 {
+            return Err(Error::InvalidInput);
+        }
+        Ok(Self {
+            gate_id,
+            payee,
+            application_round: 1,
+            amount,
+            settled_operation_id: 0,
+        })
+    }
+
+    pub fn settled_operation_id(&self) -> Option<u64> {
+        (self.settled_operation_id != 0).then_some(self.settled_operation_id)
+    }
 }
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
@@ -469,6 +508,14 @@ pub struct Project {
     pub inspected: bool,
     pub waste_accepted: bool,
     pub failure_count: u32,
+    /// Optional fixed payment for the initial compensation gate only. Missing preserves
+    /// the historical evidence-only Gate behavior and serialized Project shape.
+    #[serde(default, skip_serializing_if = "no_compensation")]
+    pub compensation: Option<ConstructionCompensation>,
+    /// Monotonic review identity used to keep the demolition review distinct from the
+    /// original application. Zero is the legacy/unfiled representation.
+    #[serde(default, skip_serializing_if = "zero_u32")]
+    review_round: u32,
 }
 
 fn work_window_capacity(from: GameTime, to: GameTime, crew: u16) -> Result<u64, Error> {
@@ -957,6 +1004,7 @@ impl Project {
                 return Err(Error::InvalidInput);
             }
         }
+        self.validate_compensation()?;
         for (i, m) in self.materials[..mc].iter().enumerate() {
             if m.stock_id == 0
                 || m.required.value() <= 0
@@ -1224,7 +1272,147 @@ impl Project {
             inspected: false,
             waste_accepted: false,
             failure_count: 0,
+            compensation: None,
+            review_round: 0,
         })
+    }
+
+    fn validate_compensation(&self) -> Result<(), Error> {
+        let Some(contract) = self.compensation else {
+            return if self.review_round == 0 {
+                Ok(())
+            } else {
+                Err(Error::InvalidInput)
+            };
+        };
+        if contract.gate_id == 0
+            || contract.payee == 0
+            || contract.payee == self.owner
+            || contract.application_round != 1
+            || contract.amount.value() <= 0
+            || contract.amount > self.budget
+            || (self.review_round == 0
+                && (!matches!(self.phase, Phase::Draft | Phase::Cancelled)
+                    || contract.settled_operation_id != 0))
+            || (self.review_round == 1 && self.phase == Phase::Draft)
+        {
+            return Err(Error::InvalidInput);
+        }
+        if self.review_round <= contract.application_round {
+            let gate = self.gates[..usize::from(self.gate_count)]
+                .iter()
+                .find(|gate| gate.id == contract.gate_id)
+                .ok_or(Error::InvalidInput)?;
+            let compensation_gates = self.gates[..usize::from(self.gate_count)]
+                .iter()
+                .filter(|gate| gate.category == GateCategory::Compensation)
+                .count();
+            if compensation_gates != 1 || gate.category != GateCategory::Compensation {
+                return Err(Error::InvalidInput);
+            }
+            if gate.party != contract.payee {
+                return Err(Error::InvalidInput);
+            }
+            if (gate.decided == GateDecision::Accepted) != (contract.settled_operation_id != 0) {
+                return Err(Error::InvalidInput);
+            }
+            if self.review_round == 1
+                && !matches!(
+                    self.phase,
+                    Phase::Draft | Phase::Review | Phase::Rejected | Phase::Cancelled
+                )
+                && contract.settled_operation_id == 0
+            {
+                return Err(Error::InvalidInput);
+            }
+        } else {
+            if contract.settled_operation_id == 0 || self.phase == Phase::Draft {
+                // A project cannot reach demolition review without clearing the original
+                // gates to enter construction/operation, and a filed project cannot
+                // return to its initial draft after this immutable payment.
+                return Err(Error::InvalidInput);
+            }
+            if self.phase == Phase::Review
+                && (self.waste_receiver.is_none()
+                    || self.waste_receiver != Some(self.waste_receiver_account)
+                    || self.waste_receiver_account == 0
+                    || self.waste_receiver_resource == 0
+                    || self.waste_units == 0
+                    || !self.site_reserved
+                    || self.site_token.is_none()
+                    || self.waste_accepted
+                    || self.pending.is_some()
+                    || !matches!(
+                        self.previous_phase,
+                        Phase::Operational | Phase::Building | Phase::Paused | Phase::Inspection
+                    ))
+            {
+                // A later Review is only reachable through BeginDemolition. Its receiver,
+                // occupied site and previous phase form the persisted review context.
+                return Err(Error::InvalidInput);
+            }
+        }
+        if contract.settled_operation_id == 0 {
+            if self.spent != Money::ZERO {
+                return Err(Error::InvalidInput);
+            }
+        } else if self.spent < contract.amount {
+            return Err(Error::InvalidInput);
+        }
+        Ok(())
+    }
+
+    /// Return the fixed transfer only for the pending compensation gate in its bound
+    /// application round. Demolition review never reuses this authorization.
+    pub(crate) fn compensation_payment_for(&self, gate_id: u32) -> Option<(u32, Money)> {
+        let contract = self.compensation?;
+        if self.review_round != contract.application_round
+            || self.phase != Phase::Review
+            || contract.gate_id != gate_id
+            || contract.settled_operation_id != 0
+        {
+            return None;
+        }
+        let gate = self.gates[..usize::from(self.gate_count)]
+            .iter()
+            .find(|gate| gate.id == gate_id)?;
+        (gate.category == GateCategory::Compensation
+            && gate.party == contract.payee
+            && gate.decided == GateDecision::Pending)
+            .then_some((contract.payee, contract.amount))
+    }
+
+    /// Record the payment receipt after the staged account transfer has succeeded.
+    /// This is crate-private and called only in the Engine candidate transaction.
+    pub(crate) fn record_compensation_settlement(
+        &mut self,
+        gate_id: u32,
+        operation_id: u64,
+    ) -> Result<(), Error> {
+        let (payee, amount) = self
+            .compensation_payment_for(gate_id)
+            .ok_or(Error::ReceiptMismatch)?;
+        if operation_id == 0 || payee == self.owner {
+            return Err(Error::ReceiptMismatch);
+        }
+        let new_spent = self
+            .spent
+            .checked_add(amount)
+            .map_err(|_| Error::Overflow)?;
+        if new_spent > self.budget {
+            return Err(Error::Funds);
+        }
+        let contract = self.compensation.as_mut().ok_or(Error::ReceiptMismatch)?;
+        if contract.settled_operation_id != 0 {
+            return Err(Error::ReceiptMismatch);
+        }
+        contract.settled_operation_id = operation_id;
+        self.spent = new_spent;
+        Ok(())
+    }
+
+    pub fn review_round(&self) -> u32 {
+        self.review_round
     }
     pub fn apply(&mut self, at: GameTime, command: Command) -> Result<Option<Effect>, Error> {
         if self.pending.is_some() {
@@ -1232,6 +1420,12 @@ impl Project {
         }
         match command {
             Command::File if self.phase == Phase::Draft => {
+                if let Some(contract) = self.compensation {
+                    if self.review_round != 0 || contract.application_round != 1 {
+                        return Err(Error::InvalidInput);
+                    }
+                    self.review_round = contract.application_round;
+                }
                 self.phase = Phase::Review;
                 Ok(None)
             }
@@ -1240,6 +1434,23 @@ impl Project {
                 decision,
                 evidence_id,
             } if self.phase == Phase::Review => {
+                let target_gate = self.gates[..self.gate_count as usize]
+                    .iter()
+                    .find(|gate| gate.id == gate_id)
+                    .ok_or(Error::InvalidInput)?;
+                if decision == GateDecision::Accepted
+                    && target_gate.category == GateCategory::Compensation
+                    && self.compensation.is_some_and(|contract| {
+                        self.review_round == contract.application_round
+                            && (contract.gate_id != gate_id
+                                || contract.payee != target_gate.party
+                                || contract.settled_operation_id == 0)
+                    })
+                {
+                    // A bound initial compensation gate cannot be accepted by the
+                    // projection without its matching, Engine-recorded payment.
+                    return Err(Error::ReceiptMismatch);
+                }
                 let g = self.gates[..self.gate_count as usize]
                     .iter_mut()
                     .find(|g| g.id == gate_id)
@@ -1431,6 +1642,11 @@ impl Project {
                 if !operating_demolition && !clearance {
                     return Err(Error::InvalidInput);
                 }
+                let next_review_round = if self.compensation.is_some() {
+                    Some(self.review_round.checked_add(1).ok_or(Error::Overflow)?)
+                } else {
+                    None
+                };
                 if gates[..gate_count as usize].iter().any(|g| {
                     g.id == 0
                         || g.party == 0
@@ -1452,6 +1668,9 @@ impl Project {
                 self.gate_count = gate_count;
                 self.waste_receiver = Some(waste_receiver);
                 self.waste_accepted = false;
+                if let Some(round) = next_review_round {
+                    self.review_round = round;
+                }
                 Ok(None)
             }
             Command::AcceptWaste
@@ -2422,5 +2641,315 @@ mod material_accounting_tests {
             basis_without_quantity.material_accounting.unwrap().rows[0].basis,
             Money::ZERO
         );
+    }
+}
+
+#[cfg(test)]
+mod compensation_contract_tests {
+    use super::*;
+
+    fn project() -> Project {
+        let mut project = Project::new(
+            91,
+            Kind::Build,
+            4,
+            3,
+            1,
+            80,
+            1,
+            1,
+            Money::new(1_000).unwrap(),
+            Money::new(100).unwrap(),
+            3_600,
+            &[
+                Gate {
+                    id: 1,
+                    category: GateCategory::Permit,
+                    evidence_id: 0,
+                    party: 1,
+                    decided: GateDecision::Pending,
+                },
+                Gate {
+                    id: 2,
+                    category: GateCategory::Compensation,
+                    evidence_id: 0,
+                    party: 2,
+                    decided: GateDecision::Pending,
+                },
+            ],
+            &[Material {
+                stock_id: 7,
+                required: Quantity::new(1_000).unwrap(),
+                consumed: Quantity::ZERO,
+                basis_per_unit: Money::new(100).unwrap(),
+                basis_remainder: 0,
+            }],
+            GameTime::ZERO,
+        )
+        .unwrap();
+        project.compensation =
+            Some(ConstructionCompensation::new(2, 2, Money::new(300).unwrap()).unwrap());
+        project
+    }
+
+    fn paid_operational_project() -> Project {
+        let at = GameTime::ZERO;
+        let mut project = project();
+        project.apply(at, Command::File).unwrap();
+        project.record_compensation_settlement(2, 7_777).unwrap();
+        project
+            .apply(
+                at,
+                Command::DecideGate {
+                    gate_id: 2,
+                    decision: GateDecision::Accepted,
+                    evidence_id: 44,
+                },
+            )
+            .unwrap();
+        project.phase = Phase::Operational;
+        project.site_reserved = true;
+        project.site_token = Some(1);
+        project.operating_resource = 81;
+        project.operating_units = 2;
+        project.operating_published = true;
+        project.waste_receiver_account = 1;
+        project.waste_receiver_resource = 82;
+        project.waste_units = 1;
+        project
+    }
+
+    #[test]
+    fn compensation_contract_is_optional_and_frozen_within_project_budget() {
+        let mut legacy = project();
+        legacy.compensation = None;
+        let value = serde_json::to_value(legacy).unwrap();
+        assert!(value.get("compensation").is_none());
+        assert!(value.get("review_round").is_none());
+        assert!(legacy.validate_profile().is_ok());
+
+        let contracted = project();
+        assert!(contracted.validate_profile().is_ok());
+        assert!(std::mem::size_of::<Project>() <= STATE_BUDGET_BYTES);
+
+        let mut self_pay = project();
+        self_pay.compensation.as_mut().unwrap().payee = self_pay.owner;
+        assert!(self_pay.validate_profile().is_err());
+
+        let mut wrong_gate = project();
+        wrong_gate.compensation.as_mut().unwrap().gate_id = 1;
+        assert!(wrong_gate.validate_profile().is_err());
+
+        let mut duplicate_compensation_gate = project();
+        duplicate_compensation_gate.gates[0].category = GateCategory::Compensation;
+        assert!(duplicate_compensation_gate.validate_profile().is_err());
+
+        let mut over_budget = project();
+        over_budget.compensation.as_mut().unwrap().amount = Money::new(1_001).unwrap();
+        assert!(over_budget.validate_profile().is_err());
+
+        let mut overrun_at_settlement = project();
+        overrun_at_settlement
+            .apply(GameTime::ZERO, Command::File)
+            .unwrap();
+        overrun_at_settlement.spent = Money::new(701).unwrap();
+        assert_eq!(
+            overrun_at_settlement.record_compensation_settlement(2, 99),
+            Err(Error::Funds)
+        );
+        assert_eq!(overrun_at_settlement.spent, Money::new(701).unwrap());
+        assert_eq!(
+            overrun_at_settlement
+                .compensation
+                .unwrap()
+                .settled_operation_id(),
+            None
+        );
+    }
+
+    #[test]
+    fn direct_projection_cannot_accept_unpaid_compensation_and_demolition_does_not_repay() {
+        let at = GameTime::ZERO;
+        let mut project = project();
+        project.apply(at, Command::File).unwrap();
+        assert_eq!(project.review_round(), 1);
+        assert_eq!(
+            project.apply(
+                at,
+                Command::DecideGate {
+                    gate_id: 2,
+                    decision: GateDecision::Accepted,
+                    evidence_id: 44,
+                }
+            ),
+            Err(Error::ReceiptMismatch)
+        );
+        assert_eq!(project.gates[1].decided, GateDecision::Pending);
+        assert_eq!(project.spent, Money::ZERO);
+        assert!(project.validate_persisted().is_ok());
+
+        project.record_compensation_settlement(2, 7_777).unwrap();
+        project
+            .apply(
+                at,
+                Command::DecideGate {
+                    gate_id: 2,
+                    decision: GateDecision::Accepted,
+                    evidence_id: 44,
+                },
+            )
+            .unwrap();
+        assert_eq!(project.spent, Money::new(300).unwrap());
+        assert_eq!(
+            project.compensation.unwrap().settled_operation_id(),
+            Some(7_777)
+        );
+        assert!(project.validate_persisted().is_ok());
+
+        project.phase = Phase::Operational;
+        project.site_reserved = true;
+        project.site_token = Some(1);
+        project.operating_resource = 81;
+        project.operating_units = 2;
+        project.operating_published = true;
+        project.waste_receiver_account = 1;
+        project.waste_receiver_resource = 82;
+        project.waste_units = 1;
+        let mut reopened = project.gates;
+        for gate in reopened.iter_mut().take(2) {
+            gate.decided = GateDecision::Pending;
+            gate.evidence_id = 0;
+        }
+        reopened[1].party = 5;
+        reopened[1].category = GateCategory::Permit;
+        project
+            .apply(
+                at,
+                Command::BeginDemolition {
+                    waste_receiver: 1,
+                    gates: reopened,
+                    gate_count: 2,
+                },
+            )
+            .unwrap();
+        assert_eq!(project.review_round(), 2);
+        assert_eq!(project.compensation_payment_for(2), None);
+        assert!(project.validate_persisted().is_ok());
+        project
+            .apply(
+                at,
+                Command::DecideGate {
+                    gate_id: 2,
+                    decision: GateDecision::Accepted,
+                    evidence_id: 45,
+                },
+            )
+            .unwrap();
+        assert_eq!(project.spent, Money::new(300).unwrap());
+        assert_eq!(project.compensation.unwrap().payee, 2);
+        assert_eq!(
+            project.compensation.unwrap().settled_operation_id(),
+            Some(7_777)
+        );
+        assert!(project.validate_persisted().is_ok());
+    }
+
+    #[test]
+    fn demolition_review_can_replace_every_gate_without_repaying_compensation() {
+        let at = GameTime::ZERO;
+        let mut project = paid_operational_project();
+        let mut gates = [Gate::default(); MAX_GATES];
+        gates[0] = Gate {
+            id: 10,
+            category: GateCategory::Permit,
+            evidence_id: 0,
+            party: 5,
+            decided: GateDecision::Pending,
+        };
+
+        project
+            .apply(
+                at,
+                Command::BeginDemolition {
+                    waste_receiver: 1,
+                    gates,
+                    gate_count: 1,
+                },
+            )
+            .unwrap();
+        assert_eq!(project.review_round(), 2);
+        assert_eq!(project.compensation_payment_for(2), None);
+        assert!(project.validate_persisted().is_ok());
+
+        project
+            .apply(
+                at,
+                Command::DecideGate {
+                    gate_id: 10,
+                    decision: GateDecision::Accepted,
+                    evidence_id: 45,
+                },
+            )
+            .unwrap();
+        assert_eq!(project.spent, Money::new(300).unwrap());
+        assert_eq!(project.compensation.unwrap().payee, 2);
+        assert_eq!(
+            project.compensation.unwrap().settled_operation_id(),
+            Some(7_777)
+        );
+        assert!(project.validate_persisted().is_ok());
+    }
+    #[test]
+    fn rejected_demolition_can_be_refiled_without_reauthorizing_initial_payment() {
+        let mut project = paid_operational_project();
+        let at = GameTime::ZERO;
+        let mut gates = [Gate::default(); MAX_GATES];
+        gates[0] = Gate {
+            id: 10,
+            category: GateCategory::Permit,
+            evidence_id: 0,
+            party: 5,
+            decided: GateDecision::Pending,
+        };
+        for round in 2..=4 {
+            project
+                .apply(
+                    at,
+                    Command::BeginDemolition {
+                        waste_receiver: 1,
+                        gates,
+                        gate_count: 1,
+                    },
+                )
+                .unwrap();
+            assert_eq!(project.review_round(), round);
+            assert_eq!(project.compensation_payment_for(2), None);
+            assert!(project.validate_persisted().is_ok());
+            let accepted = round == 4;
+            project
+                .apply(
+                    at,
+                    Command::DecideGate {
+                        gate_id: 10,
+                        decision: if accepted {
+                            GateDecision::Accepted
+                        } else {
+                            GateDecision::Rejected
+                        },
+                        evidence_id: if accepted { 10 } else { 0 },
+                    },
+                )
+                .unwrap();
+            if !accepted {
+                assert_eq!(project.phase, Phase::Operational);
+            }
+            assert_eq!(project.spent, Money::new(300).unwrap());
+            assert_eq!(project.compensation.unwrap().payee, 2);
+            assert_eq!(
+                project.compensation.unwrap().settled_operation_id(),
+                Some(7_777)
+            );
+            assert!(project.validate_persisted().is_ok());
+        }
     }
 }

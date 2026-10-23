@@ -1,0 +1,9 @@
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction-compensation-current/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 30.42s
+     Running unittests src/lib.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_storage-46fdf6e079eacbdd)
+     Running tests/construction.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/construction-aad701797c500f4c)
+     Running tests/construction_boot_stock_isolation.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/construction_boot_stock_isolation-e9b03803d8124a1d)
+     Running tests/construction_compensation.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/construction_compensation-da07d8d4ccb711d2)
+     Running tests/construction_material_retry.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/construction_material_retry-5d3d82a6e5235d01)
+     Running tests/construction_utilities.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/construction_utilities-688ad21356dacdfa)
+     Running tests/unfinished_clearance.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/unfinished_clearance-035079e7f542b180)

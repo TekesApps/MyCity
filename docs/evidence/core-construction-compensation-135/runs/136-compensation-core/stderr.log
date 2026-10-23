@@ -1,0 +1,15 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction-compensation-current/crates/city-core)
+error[E0624]: method `account_handle` is private
+    --> crates/city-core/tests/construction_engine.rs:1315:35
+     |
+1315 |     let owner = protected.world().account_handle(4).unwrap();
+     |                                   ^^^^^^^^^^^^^^ private method
+     |
+    ::: /Users/frankqin/dev/MyCity-core-work/construction-compensation-current/crates/city-core/src/assembly.rs:561:5
+     |
+561  |     pub(crate) fn account_handle(&self, id: u32) -> Result<Handle<AccountDomain>, String> {
+     |     ------------------------------------------------------------------------------------- private method defined here
+
+For more information about this error, try `rustc --explain E0624`.
+error: could not compile `mycity-core` (test "construction_engine") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

@@ -1,0 +1,12 @@
+{
+  "source_sha256": "e7743bfdc17de3fbd640085f2c2af65ecad993f010d2ce9c83a6873636e49baf",
+  "source_files": 266,
+  "fixed_input_files": 278,
+  "binary": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/147-compensation-joint-build/executables/c48b6378b77cb3847abf46a930cf96f380295881fbb187040947c6ed5d775e03/town_lifelines",
+  "binary_sha256": "c48b6378b77cb3847abf46a930cf96f380295881fbb187040947c6ed5d775e03",
+  "source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/147-compensation-joint-build/source.zip",
+  "source_zip_sha256": "5ce4a8559d4cbf14a061b598017417e8e22b4c27b8fbefb77c45caa521015400",
+  "source_identity_method": "build.rs path-string sort and framed UTF-8 path/length/content hashing; archive hash checked",
+  "storage": "external HP P900 USB/APFS SSD",
+  "embedded_source_check": "not performed for examples"
+}

@@ -1,0 +1,100 @@
+{
+  "status": "passed",
+  "checks": {
+    "142-compensation-storage": true,
+    "144-compensation-final-libraries": true,
+    "145-compensation-final-engine": true,
+    "142-compensation-storage_final_source": true,
+    "144-compensation-final-libraries_final_source": true,
+    "145-compensation-final-engine_final_source": true,
+    "143-compensation-strict_final_source": true,
+    "146-compensation-fmt_final_source": true,
+    "147-compensation-joint-build_final_source": true,
+    "148-compensation-joint-cases_final_source": true,
+    "seven_cli_cases": true,
+    "legacy_cli_unchanged_normal": true,
+    "legacy_cli_unchanged_held": true,
+    "legacy_cli_unchanged_generator-failure": true,
+    "legacy_cli_unchanged_construction-utilities": true,
+    "legacy_cli_unchanged_construction-held": true,
+    "legacy_cli_unchanged_employment-control": true,
+    "legacy_cli_unchanged_employment-change": true,
+    "complete_compensation_original_worlds": true,
+    "checkpoint_exact_transfer": true,
+    "checkpoint_money_conserved": true,
+    "checkpoint_paid_marker_and_spent": true,
+    "checkpoint_gate_matches_actual_payment": true,
+    "checkpoint_single_success_receipt": true
+  },
+  "details": {
+    "142-compensation-storage": {
+      "passed_counts": [
+        21,
+        4,
+        2,
+        2,
+        1,
+        13,
+        5
+      ],
+      "expected_counts": [
+        21,
+        4,
+        2,
+        2,
+        1,
+        13,
+        5
+      ]
+    },
+    "144-compensation-final-libraries": {
+      "passed_counts": [
+        142,
+        93
+      ],
+      "expected_counts": [
+        142,
+        93
+      ]
+    },
+    "145-compensation-final-engine": {
+      "passed_counts": [
+        16
+      ],
+      "expected_counts": [
+        16
+      ]
+    },
+    "normal": {
+      "stdout_sha256": "8705b87b8e4cf04b34b03e3d1e1e6658b09eddb6b51e486fac562ea85fbaf21a",
+      "state_hash": "4c9cab6fb9765f78da94dc44f6d135e3bfff28a10d9234a9fd6bd0be6af963eb"
+    },
+    "held": {
+      "stdout_sha256": "4eb332984b2104bd9561df523911cb74100728b5d4d168654a99ad6e87f32500",
+      "state_hash": "0279a794cd9aa51193f0e0535840ea4958c4f1d7c2ed00ed4f2be9d94ba26577"
+    },
+    "generator-failure": {
+      "stdout_sha256": "1f97839f250d4b3b782520aea98c411257e13ea81d5148c7edf208503394dff7",
+      "state_hash": "e3d18aee9f8f523f4e542cc4703910ae32118774b91a00795fb830e074672bc9"
+    },
+    "construction-utilities": {
+      "stdout_sha256": "5f00fcd516d6ded66bce1c93a09a7ca8e4fbac5b2042dff7bdd569e35d07a006",
+      "state_hash": "06f8736dcfb9fb88d0edd6863e0157ee860fa19a841706547070abfac14d3aa6"
+    },
+    "construction-held": {
+      "stdout_sha256": "f6d722012c5b7806b130249577f8624a7a1bf8e84a152fa6f7350e4263820ed8",
+      "state_hash": "e2f7eb072f2f2825c9ffb04d113fa210f1c7e94c8bacbd909938c002281caa72"
+    },
+    "employment-control": {
+      "stdout_sha256": "f5e2755ee89df6e5ce89a343700a22fae2933b7f079827147403856f9efaf662",
+      "state_hash": "b1740df31ec9a1d60d19ad2fce91e85b76b4b3fbb2182bb9c7da8ae296bded8f"
+    },
+    "employment-change": {
+      "stdout_sha256": "991d2fd8fab77ec5d8c26bc8b43e09b243d7167918f231272b549ea1dc2d0647",
+      "state_hash": "498fd63855843845a35e83152201ded5220fa8a164a28231c1beff6bc4e017c8"
+    }
+  },
+  "total_distinct_final_tests": 299,
+  "scope": "output arithmetic, identical final fixed inputs, complete retained originals and CLI legacy identity; not performance or calibrated balance",
+  "storage": "external HP P900 USB/APFS SSD"
+}

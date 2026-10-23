@@ -1,0 +1,67 @@
+{
+  "scope": "B v135 seven final fixed source archive paths only",
+  "rows": [
+    {
+      "round": "147-compensation-joint-build",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/147-compensation-joint-build/source.zip",
+      "sha256": "5ce4a8559d4cbf14a061b598017417e8e22b4c27b8fbefb77c45caa521015400",
+      "allocation_before_bytes": 4321280,
+      "reason": "terminal byte-identical complete source archive; hard-link dedup preserves complete bytes and original path"
+    },
+    {
+      "round": "142-compensation-storage",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/142-compensation-storage/source.zip",
+      "sha256": "5ce4a8559d4cbf14a061b598017417e8e22b4c27b8fbefb77c45caa521015400",
+      "allocation_before_bytes": 4321280,
+      "reason": "terminal byte-identical complete source archive; hard-link dedup preserves complete bytes and original path"
+    },
+    {
+      "round": "143-compensation-strict",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/143-compensation-strict/source.zip",
+      "sha256": "5ce4a8559d4cbf14a061b598017417e8e22b4c27b8fbefb77c45caa521015400",
+      "allocation_before_bytes": 4321280,
+      "reason": "terminal byte-identical complete source archive; hard-link dedup preserves complete bytes and original path"
+    },
+    {
+      "round": "144-compensation-final-libraries",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/144-compensation-final-libraries/source.zip",
+      "sha256": "5ce4a8559d4cbf14a061b598017417e8e22b4c27b8fbefb77c45caa521015400",
+      "allocation_before_bytes": 4321280,
+      "reason": "terminal byte-identical complete source archive; hard-link dedup preserves complete bytes and original path"
+    },
+    {
+      "round": "145-compensation-final-engine",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/145-compensation-final-engine/source.zip",
+      "sha256": "5ce4a8559d4cbf14a061b598017417e8e22b4c27b8fbefb77c45caa521015400",
+      "allocation_before_bytes": 4321280,
+      "reason": "terminal byte-identical complete source archive; hard-link dedup preserves complete bytes and original path"
+    },
+    {
+      "round": "146-compensation-fmt",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/146-compensation-fmt/source.zip",
+      "sha256": "5ce4a8559d4cbf14a061b598017417e8e22b4c27b8fbefb77c45caa521015400",
+      "allocation_before_bytes": 4321280,
+      "reason": "terminal byte-identical complete source archive; hard-link dedup preserves complete bytes and original path"
+    },
+    {
+      "round": "148-compensation-joint-cases",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/148-compensation-joint-cases/source.zip",
+      "sha256": "5ce4a8559d4cbf14a061b598017417e8e22b4c27b8fbefb77c45caa521015400",
+      "allocation_before_bytes": 4321280,
+      "reason": "terminal byte-identical complete source archive; hard-link dedup preserves complete bytes and original path"
+    }
+  ],
+  "anchor": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/147-compensation-joint-build/source.zip",
+  "file_allocation_before_bytes": 30248960,
+  "file_allocation_after_unique_bytes": 4321280,
+  "file_allocation_reduction_bytes": 25927680,
+  "observed_ssd_available_delta_bytes": 25853952,
+  "APFS_exclusive_reclaim_claimed": false,
+  "all_full_bytes_and_paths_retained": true,
+  "full_restore_originals_deleted": false,
+  "shared_target": "existing external shared target reused",
+  "formal_measurement_active": false,
+  "source_dependencies_executables_logs_retained": true,
+  "retained_business_originals": "142-compensation-storage plus 148 joint CLI worlds; needed for next recovery/integration",
+  "unix_time": 1792717680.5535748
+}

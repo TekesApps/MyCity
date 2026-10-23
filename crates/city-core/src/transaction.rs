@@ -3266,6 +3266,13 @@ fn prepare_construction(
         Caller::System => 0,
         Caller::Account(id) => id,
     };
+    if command == EngineCommand::File
+        && candidate.compensation.is_some()
+        && matches!(caller, Caller::System)
+    {
+        // A fixed compensation contract is only activated by the owner's real filing.
+        return Err(TxError::Unauthorized);
+    }
     if !candidate.recoverable_commands()
         && candidate.operating_edge_id != 0
         && matches!(
@@ -3347,6 +3354,22 @@ fn prepare_construction(
             return Err(TxError::Unauthorized);
         }
         _ => {}
+    }
+
+    // Compensation acceptance is the payment event: debit/credit, persisted receipt
+    // identity, and Gate acceptance all remain in this single Engine candidate.
+    if let EngineCommand::DecideGate {
+        gate_id,
+        decision: GateDecision::Accepted,
+        ..
+    } = command
+    {
+        if let Some((payee, amount)) = candidate.compensation_payment_for(gate_id) {
+            market_transfer(world, accounts, candidate.owner, payee, amount)?;
+            candidate
+                .record_compensation_settlement(gate_id, operation_id)
+                .map_err(TxError::Construction)?;
+        }
     }
 
     if candidate.operating_edge_id != 0 {
@@ -4600,6 +4623,50 @@ mod tests {
         .unwrap()
     }
 
+    fn construction_compensation_engine() -> Engine {
+        use crate::construction::{
+            ConstructionCompensation, Gate, GateCategory, GateDecision, Kind, Material, Project,
+        };
+        let mut opening: serde_json::Value =
+            serde_json::from_slice(include_bytes!("../../../fixtures/m0-e0-opening.json")).unwrap();
+        let mut project = Project::new(
+            7,
+            Kind::Build,
+            4,
+            3,
+            1,
+            80,
+            1,
+            1,
+            cash(100_000),
+            cash(3_600),
+            28_800,
+            &[Gate {
+                id: 1,
+                category: GateCategory::Compensation,
+                evidence_id: 0,
+                party: 2,
+                decided: GateDecision::Pending,
+            }],
+            &[Material {
+                stock_id: 1,
+                required: Quantity::new(1_000).unwrap(),
+                consumed: Quantity::ZERO,
+                basis_per_unit: cash(400),
+                basis_remainder: 0,
+            }],
+            crate::units::GameTime::ZERO,
+        )
+        .unwrap();
+        project.compensation = Some(ConstructionCompensation::new(1, 2, cash(10_000)).unwrap());
+        opening["construction"] = serde_json::to_value(project).unwrap();
+        Engine::new(
+            assemble(&serde_json::to_vec(&opening).unwrap()).unwrap(),
+            vec![Resource::new(80, 4).unwrap()],
+        )
+        .unwrap()
+    }
+
     fn construction_utility_work(e: &Engine, operation_id: u64) -> Envelope {
         Envelope {
             world: e.world.scope.world(),
@@ -4824,6 +4891,46 @@ mod tests {
         assert!(
             Engine::restore_checkpoint(&serde_json::to_vec(&mismatched_export).unwrap()).is_err()
         );
+    }
+
+    #[test]
+    fn compensation_recipient_overflow_rolls_back_staged_owner_debit_and_gate() {
+        let mut engine = construction_compensation_engine();
+        engine
+            .execute(
+                Caller::Account(4),
+                env(
+                    &engine,
+                    9_300_001,
+                    vec![Action::Construction {
+                        command: crate::construction::EngineCommand::File,
+                    }],
+                ),
+            )
+            .unwrap();
+        let recipient = engine.world.account_handle(2).unwrap();
+        let mut row = *engine.world.accounts.get(recipient).unwrap();
+        row.cash = Money::new(i64::MAX - 5).unwrap();
+        engine.world.accounts.replace(recipient, row).unwrap();
+        let before = engine.world.view();
+        let request = env(
+            &engine,
+            9_300_002,
+            vec![Action::Construction {
+                command: crate::construction::EngineCommand::DecideGate {
+                    gate_id: 1,
+                    decision: crate::construction::GateDecision::Accepted,
+                    evidence_id: 1,
+                },
+            }],
+        );
+        assert_eq!(
+            engine.execute(Caller::Account(2), request),
+            Err(TxError::Overflow)
+        );
+        let after = engine.world.view();
+        assert_eq!(after.accounts, before.accounts);
+        assert_eq!(after.construction, before.construction);
     }
     fn cash(v: i64) -> Money {
         Money::new(v).unwrap()

@@ -1,0 +1,10 @@
+
+running 5 tests
+test construction::compensation_contract_tests::rejected_demolition_can_be_refiled_without_reauthorizing_initial_payment ... ok
+test construction::compensation_contract_tests::demolition_review_can_replace_every_gate_without_repaying_compensation ... ok
+test construction::compensation_contract_tests::direct_projection_cannot_accept_unpaid_compensation_and_demolition_does_not_repay ... ok
+test construction::compensation_contract_tests::compensation_contract_is_optional_and_frozen_within_project_budget ... ok
+test transaction::tests::compensation_recipient_overflow_rolls_back_staged_owner_debit_and_gate ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 137 filtered out; finished in 0.00s
+

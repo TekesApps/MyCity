@@ -1,0 +1,72 @@
+[
+  {
+    "case": "normal",
+    "argv": [
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/147-compensation-joint-build/executables/c48b6378b77cb3847abf46a930cf96f380295881fbb187040947c6ed5d775e03/town_lifelines",
+      "--store-dir",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/148-compensation-joint-cases/cases/normal/world"
+    ],
+    "exit_code": 0
+  },
+  {
+    "case": "held",
+    "argv": [
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/147-compensation-joint-build/executables/c48b6378b77cb3847abf46a930cf96f380295881fbb187040947c6ed5d775e03/town_lifelines",
+      "--store-dir",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/148-compensation-joint-cases/cases/held/world",
+      "--hold-road-inspection"
+    ],
+    "exit_code": 0
+  },
+  {
+    "case": "generator-failure",
+    "argv": [
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/147-compensation-joint-build/executables/c48b6378b77cb3847abf46a930cf96f380295881fbb187040947c6ed5d775e03/town_lifelines",
+      "--store-dir",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/148-compensation-joint-cases/cases/generator-failure/world",
+      "--generator-failure"
+    ],
+    "exit_code": 0
+  },
+  {
+    "case": "construction-utilities",
+    "argv": [
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/147-compensation-joint-build/executables/c48b6378b77cb3847abf46a930cf96f380295881fbb187040947c6ed5d775e03/town_lifelines",
+      "--store-dir",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/148-compensation-joint-cases/cases/construction-utilities/world",
+      "--construction-utilities"
+    ],
+    "exit_code": 0
+  },
+  {
+    "case": "construction-held",
+    "argv": [
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/147-compensation-joint-build/executables/c48b6378b77cb3847abf46a930cf96f380295881fbb187040947c6ed5d775e03/town_lifelines",
+      "--store-dir",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/148-compensation-joint-cases/cases/construction-held/world",
+      "--construction-utilities",
+      "--hold-road-inspection"
+    ],
+    "exit_code": 0
+  },
+  {
+    "case": "employment-control",
+    "argv": [
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/147-compensation-joint-build/executables/c48b6378b77cb3847abf46a930cf96f380295881fbb187040947c6ed5d775e03/town_lifelines",
+      "--store-dir",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/148-compensation-joint-cases/cases/employment-control/world",
+      "--employment-control"
+    ],
+    "exit_code": 0
+  },
+  {
+    "case": "employment-change",
+    "argv": [
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/147-compensation-joint-build/executables/c48b6378b77cb3847abf46a930cf96f380295881fbb187040947c6ed5d775e03/town_lifelines",
+      "--store-dir",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/148-compensation-joint-cases/cases/employment-change/world",
+      "--employment-change"
+    ],
+    "exit_code": 0
+  }
+]

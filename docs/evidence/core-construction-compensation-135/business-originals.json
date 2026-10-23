@@ -1,0 +1,88 @@
+[
+  {
+    "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/142-compensation-storage/test-artifacts/mycity-construction-compensation-35297-0/world",
+    "copy": "docs/evidence/core-construction-compensation-135/business-originals/mycity-construction-compensation-35297-0/world",
+    "files": [
+      {
+        "path": "CURRENT.json",
+        "size": 123,
+        "sha256": "4c5282c262baab376c070080fbd6cb058d9d5fd581693da492fa728bcbf14fd8"
+      },
+      {
+        "path": "LOCK",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "checkpoint-7.json",
+        "size": 18514,
+        "sha256": "8f39f24f05dbfd8706ec409cda124f628979ab42f6606076d32f118ef35edae5"
+      },
+      {
+        "path": "checkpoint-index-7.json",
+        "size": 155,
+        "sha256": "c29939714fa27e2a1c1b942bdbc55ef0fe3a6105f45218f843e31f1951d5c7fa"
+      },
+      {
+        "path": "genesis.json",
+        "size": 10222,
+        "sha256": "832595addb43f28b99a34ea42413e967d30807036ea56fc454e72de2f360137a"
+      },
+      {
+        "path": "root-0.json",
+        "size": 511,
+        "sha256": "7ce8fff35187665b3a4bf119d826dc68a1c098456bf05a9e5a099a66cc9a9c70"
+      },
+      {
+        "path": "root-1.json",
+        "size": 512,
+        "sha256": "95ea22525fa0506fec9645c6f8d6fa9d9d168345b1447ca064fbd6e1f83e0be2"
+      },
+      {
+        "path": "wal-7.bin",
+        "size": 2024,
+        "sha256": "4818dae75edc539274e09bf4fcb07111e9ca09abcbf8112bdf116af06aef3f1d"
+      }
+    ],
+    "whole_original_retained": true,
+    "use": "actual compensation cold WAL/checkpoint/receipt replay evidence"
+  },
+  {
+    "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/142-compensation-storage/test-artifacts/mycity-construction-compensation-35297-1/world",
+    "copy": "docs/evidence/core-construction-compensation-135/business-originals/mycity-construction-compensation-35297-1/world",
+    "files": [
+      {
+        "path": "CURRENT.json",
+        "size": 123,
+        "sha256": "e9da41ab87248347d135b91a83c1fc930f13f3ed47134f6ec12c1acddd381901"
+      },
+      {
+        "path": "LOCK",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "genesis.json",
+        "size": 10210,
+        "sha256": "e49d18cd565ee9b7649ced83e6aacf00b54717779345dfb4343725d6e21ac2a9"
+      },
+      {
+        "path": "root-0.json",
+        "size": 424,
+        "sha256": "ce977a0432668a52b02890ea247e7b6c3363d04f5e1cefb8730b50f4867ace5a"
+      },
+      {
+        "path": "root-1.json",
+        "size": 424,
+        "sha256": "c83df80b435b2882745f7fa4a736882b43faa59fee205c75ee8c7294561dca9b"
+      },
+      {
+        "path": "wal.bin",
+        "size": 4463,
+        "sha256": "9606b2258e4759dff8576b9065e93999e9976bbaa6c6a33521cf4b4270c62d28"
+      }
+    ],
+    "whole_original_retained": true,
+    "use": "actual compensation cold WAL/checkpoint/receipt replay evidence"
+  }
+]

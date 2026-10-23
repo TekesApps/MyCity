@@ -1,0 +1,26 @@
+error: no test target named `construction_engine`.
+Available test targets:
+    background
+    boot
+    checkpoint
+    checkpoint_v2
+    construction
+    construction_boot_stock_isolation
+    construction_compensation
+    construction_material_retry
+    construction_retry_policy
+    construction_utilities
+    economy
+    exchange
+    inbox
+    metadata
+    payroll_exit
+    recovery
+    scale_assembly
+    spatial
+    timeline
+    town_market
+    town_suspend
+    town_utility_recovery
+    unfinished_clearance
+

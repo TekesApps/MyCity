@@ -73,3 +73,7 @@ docs/evidence/core-payroll-exit-integration-120/**/*.stdout whitespace=-blank-at
 docs/evidence/core-payroll-exit-integration-120/**/*.stderr whitespace=-blank-at-eof,-blank-at-eol
 docs/evidence/m0-t13a-remaining-controller/*.stdout whitespace=-blank-at-eof,-blank-at-eol
 docs/evidence/m0-t13a-remaining-controller/*.stderr whitespace=-blank-at-eof,-blank-at-eol
+
+# Keep v134/v135 captured output byte-identical to hash-bound originals.
+docs/evidence/core-transport-capacity-134/**/*.log whitespace=-blank-at-eof,-blank-at-eol
+docs/evidence/core-construction-compensation-135/**/*.log whitespace=-blank-at-eof,-blank-at-eol

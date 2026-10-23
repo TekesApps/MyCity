@@ -1,0 +1,21 @@
+
+running 16 tests
+test construction_action_and_journal_records_stay_inside_frozen_engine_budget ... ok
+test compensation_payment_requires_owner_filing_and_party_acceptance_and_is_exactly_once ... ok
+test authoritative_work_skips_untrusted_estimate_even_when_its_sum_overflows ... ok
+test forged_gate_or_inspector_identity_is_rejected_before_domain_mutation ... ok
+test checkpoint_cannot_relabel_paid_initial_review_as_demolition_review ... ok
+test compensation_insufficient_and_protected_funds_are_atomic ... ok
+test generic_release_cannot_break_project_site_binding_and_cold_restore_can_continue_work ... ok
+test demolition_checkpoint_resolves_historic_compensation_payee_without_current_gate ... ok
+test durable_hook_failure_does_not_publish_and_retry_after_commit_returns_original_receipt ... ok
+test engine_uses_actual_source_lot_basis_for_budget_and_rejects_actual_overrun_atomically ... ok
+test clearance_metadata_start_is_atomic_and_rejects_a_future_restored_clock ... ok
+test non_draft_checkpoint_restores_exact_site_lease_and_continues_to_operational_without_double_charge ... ok
+test retrofit_publication_and_rejected_demolition_keep_the_operating_capacity ... ok
+test operating_capacity_is_published_and_withdrawn_only_when_consumers_allow_it ... ok
+test modern_unstarted_road_can_cancel_while_legacy_rejection_is_preserved ... ok
+test insufficient_site_capacity_funds_and_materials_leave_candidate_domains_unchanged ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+

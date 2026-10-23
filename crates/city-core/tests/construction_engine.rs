@@ -1,8 +1,9 @@
 use mycity_core::{
     assembly::assemble,
     construction::{
-        AbortClearanceMaterialRule, AbortClearanceSpec, EngineCommand as C, Gate, GateCategory,
-        GateDecision, Kind, Material, Phase, Project, OPERATION_PREFIX, STATE_BUDGET_BYTES,
+        AbortClearanceMaterialRule, AbortClearanceSpec, ConstructionCompensation,
+        EngineCommand as C, Gate, GateCategory, GateDecision, Kind, Material, Phase, Project,
+        OPERATION_PREFIX, STATE_BUDGET_BYTES,
     },
     timeline::Command as T,
     transaction::{Action, Caller, Engine, Envelope, Resource, TxError},
@@ -88,6 +89,87 @@ fn engine(required: i64, budget: i64, site_capacity: u32) -> Engine {
         ],
     )
     .unwrap()
+}
+fn compensation_engine(amount: i64, budget: i64) -> Engine {
+    let mut value: Value = serde_json::from_slice(&opening(1_000, budget)).unwrap();
+    let mut project: Project = serde_json::from_value(value["construction"].clone()).unwrap();
+    project.gates[2] = Gate {
+        id: 3,
+        category: GateCategory::Compensation,
+        evidence_id: 0,
+        party: 2,
+        decided: GateDecision::Pending,
+    };
+    project.gate_count = 3;
+    project.compensation =
+        Some(ConstructionCompensation::new(3, 2, Money::new(amount).unwrap()).unwrap());
+    value["construction"] = serde_json::to_value(project).unwrap();
+    Engine::new(
+        assemble(&serde_json::to_vec(&value).unwrap()).unwrap(),
+        vec![
+            Resource::new(80, 10).unwrap(),
+            Resource::new(81, 2).unwrap(),
+            Resource::new(82, 10).unwrap(),
+        ],
+    )
+    .unwrap()
+}
+fn compensated_operational_engine() -> Engine {
+    let mut e = compensation_engine(10_000, 1_000_000);
+    construction_auto(&mut e, Caller::Account(4), C::File).unwrap();
+    construction_auto(
+        &mut e,
+        Caller::Account(2),
+        C::DecideGate {
+            gate_id: 1,
+            decision: GateDecision::Accepted,
+            evidence_id: 11,
+        },
+    )
+    .unwrap();
+    construction_auto(
+        &mut e,
+        Caller::Account(1),
+        C::DecideGate {
+            gate_id: 2,
+            decision: GateDecision::Accepted,
+            evidence_id: 12,
+        },
+    )
+    .unwrap();
+    construction_auto(
+        &mut e,
+        Caller::Account(2),
+        C::DecideGate {
+            gate_id: 3,
+            decision: GateDecision::Accepted,
+            evidence_id: 13,
+        },
+    )
+    .unwrap();
+    construction_auto(&mut e, Caller::Account(4), C::Prepare).unwrap();
+    start(&mut e).unwrap();
+    enable_timeline(&mut e);
+    advance(&mut e, END_OF_SHIFT);
+    work(&mut e).unwrap();
+    let submit = effect_id(&e);
+    construction(&mut e, Caller::Account(3), C::SubmitInspection, submit).unwrap();
+    let accept = effect_id(&e);
+    construction(
+        &mut e,
+        Caller::Account(1),
+        C::AcceptInspection {
+            inspector: 1,
+            accepted: true,
+        },
+        accept,
+    )
+    .unwrap();
+    assert_eq!(
+        e.world().view().construction.unwrap().phase,
+        Phase::Operational
+    );
+    e
 }
 fn priced_engine(
     required: i64,
@@ -1127,4 +1209,204 @@ fn construction_action_and_journal_records_stay_inside_frozen_engine_budget() {
     assert!(size_of::<Project>() <= STATE_BUDGET_BYTES);
     assert!(e.owned_capacity_bytes() <= ENGINE_BYTE_BUDGET);
     assert_eq!(ENGINE_BYTE_BUDGET, 4 * 1024 * 1024);
+}
+
+#[test]
+fn compensation_payment_requires_owner_filing_and_party_acceptance_and_is_exactly_once() {
+    let mut e = compensation_engine(10_000, 1_000_000);
+    assert_eq!(
+        construction_auto(&mut e, Caller::System, C::File),
+        Err(TxError::Unauthorized)
+    );
+    assert_eq!(
+        construction_auto(&mut e, Caller::Account(3), C::File),
+        Err(TxError::Unauthorized)
+    );
+    construction_auto(&mut e, Caller::Account(4), C::File).unwrap();
+
+    let decide = C::DecideGate {
+        gate_id: 3,
+        decision: GateDecision::Accepted,
+        evidence_id: 13,
+    };
+    assert_eq!(
+        construction_auto(&mut e, Caller::Account(3), decide),
+        Err(TxError::Unauthorized)
+    );
+    assert_eq!(
+        construction_auto(&mut e, Caller::System, decide),
+        Err(TxError::Unauthorized)
+    );
+
+    let payer_before = cash(&e, 4);
+    let payee_before = cash(&e, 2);
+    let op = 1_234_567;
+    let request = envelope(&e, op, Action::Construction { command: decide });
+    e.execute(Caller::Account(2), request.clone()).unwrap();
+    let after_payment = e.world().view();
+    let project = after_payment.construction.unwrap();
+    assert_eq!(cash(&e, 4), payer_before - 10_000);
+    assert_eq!(cash(&e, 2), payee_before + 10_000);
+    assert_eq!(project.spent, Money::new(10_000).unwrap());
+    assert_eq!(
+        project.compensation.unwrap().settled_operation_id(),
+        Some(op)
+    );
+    assert_eq!(project.gates[2].decided, GateDecision::Accepted);
+
+    let checkpoint = e.export_checkpoint().unwrap();
+    let mut recovered = Engine::restore_checkpoint(&checkpoint).unwrap();
+    // Engine-only checkpoints do not carry the Store receipt archive. The stale
+    // request must remain non-mutating; Store cold replay is covered separately.
+    assert_eq!(
+        recovered.execute(Caller::Account(2), request),
+        Err(TxError::StaleRevision)
+    );
+    assert_eq!(cash(&recovered, 4), payer_before - 10_000);
+    assert_eq!(cash(&recovered, 2), payee_before + 10_000);
+
+    let retry = envelope(&recovered, op + 1, Action::Construction { command: decide });
+    assert_eq!(
+        recovered.execute(Caller::Account(2), retry),
+        Err(TxError::Construction(
+            mycity_core::construction::Error::InvalidInput
+        ))
+    );
+    assert_eq!(cash(&recovered, 4), payer_before - 10_000);
+    assert_eq!(cash(&recovered, 2), payee_before + 10_000);
+
+    // A later rejection does not reverse an already settled compensation.
+    construction_auto(
+        &mut recovered,
+        Caller::Account(1),
+        C::DecideGate {
+            gate_id: 2,
+            decision: GateDecision::Rejected,
+            evidence_id: 0,
+        },
+    )
+    .unwrap();
+    assert_eq!(
+        recovered.world().view().construction.unwrap().phase,
+        Phase::Rejected
+    );
+    assert_eq!(cash(&recovered, 4), payer_before - 10_000);
+    assert_eq!(cash(&recovered, 2), payee_before + 10_000);
+}
+
+#[test]
+fn compensation_insufficient_and_protected_funds_are_atomic() {
+    let mut insufficient = compensation_engine(2_000_000, 3_000_000);
+    construction_auto(&mut insufficient, Caller::Account(4), C::File).unwrap();
+    let before = insufficient.world().view();
+    assert_eq!(
+        construction_auto(
+            &mut insufficient,
+            Caller::Account(2),
+            C::DecideGate {
+                gate_id: 3,
+                decision: GateDecision::Accepted,
+                evidence_id: 1,
+            },
+        ),
+        Err(TxError::InsufficientFunds)
+    );
+    let after = insufficient.world().view();
+    assert_eq!(after.accounts, before.accounts);
+    assert_eq!(after.construction, before.construction);
+
+    let mut protected = compensation_engine(10_000, 1_000_000);
+    construction_auto(&mut protected, Caller::Account(4), C::File).unwrap();
+    let owner = protected.world().account_ref(4).unwrap();
+    let owner_cash = cash(&protected, 4);
+    run(
+        &mut protected,
+        Caller::Account(4),
+        Action::Protect {
+            account: owner,
+            amount: Money::new(owner_cash - 9_999).unwrap(),
+        },
+    );
+    let before = protected.world().view();
+    assert_eq!(
+        construction_auto(
+            &mut protected,
+            Caller::Account(2),
+            C::DecideGate {
+                gate_id: 3,
+                decision: GateDecision::Accepted,
+                evidence_id: 1,
+            },
+        ),
+        Err(TxError::InsufficientFunds)
+    );
+    let after = protected.world().view();
+    assert_eq!(after.accounts, before.accounts);
+    assert_eq!(after.construction, before.construction);
+}
+
+#[test]
+fn demolition_checkpoint_resolves_historic_compensation_payee_without_current_gate() {
+    let mut e = compensated_operational_engine();
+    construction_auto(
+        &mut e,
+        Caller::Account(4),
+        C::BeginDemolition { waste_receiver: 3 },
+    )
+    .unwrap();
+    let project = e.world().view().construction.unwrap();
+    assert_eq!(project.review_round(), 2);
+    assert_eq!(project.phase, Phase::Review);
+    assert!(Engine::restore_checkpoint(&e.export_checkpoint().unwrap()).is_ok());
+
+    let checkpoint = e.export_checkpoint().unwrap();
+    let mut forged: Value = serde_json::from_slice(&checkpoint).unwrap();
+    forged["world"]["construction"]["compensation"]["payee"] = json!(99_999);
+    assert!(matches!(
+        Engine::restore_checkpoint(&serde_json::to_vec(&forged).unwrap()),
+        Err(error) if error == "checkpoint_construction_compensation_payee"
+    ));
+}
+
+#[test]
+fn checkpoint_cannot_relabel_paid_initial_review_as_demolition_review() {
+    let mut e = compensation_engine(10_000, 1_000_000);
+    construction_auto(&mut e, Caller::Account(4), C::File).unwrap();
+    construction_auto(
+        &mut e,
+        Caller::Account(2),
+        C::DecideGate {
+            gate_id: 3,
+            decision: GateDecision::Accepted,
+            evidence_id: 13,
+        },
+    )
+    .unwrap();
+    let project = e.world().view().construction.unwrap();
+    assert_eq!(project.phase, Phase::Review);
+    assert_eq!(project.review_round(), 1);
+    assert!(project
+        .compensation
+        .unwrap()
+        .settled_operation_id()
+        .is_some());
+
+    let checkpoint = e.export_checkpoint().unwrap();
+    assert!(Engine::restore_checkpoint(&checkpoint).is_ok());
+    let mut forged: Value = serde_json::from_slice(&checkpoint).unwrap();
+    forged["world"]["construction"]["review_round"] = json!(2);
+    forged["world"]["construction"]["gates"][2]["decided"] = json!("pending");
+    forged["world"]["construction"]["gates"][2]["evidence_id"] = json!(0);
+    assert!(matches!(
+        Engine::restore_checkpoint(&serde_json::to_vec(&forged).unwrap()),
+        Err(error) if error == "checkpoint_construction_profile"
+    ));
+
+    let mut forged_draft: Value = serde_json::from_slice(&checkpoint).unwrap();
+    forged_draft["world"]["construction"]["review_round"] = json!(2);
+    forged_draft["world"]["construction"]["phase"] = json!("draft");
+    assert!(matches!(
+        Engine::restore_checkpoint(&serde_json::to_vec(&forged_draft).unwrap()),
+        Err(error) if error == "checkpoint_construction_profile"
+    ));
 }

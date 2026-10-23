@@ -1,0 +1,424 @@
+{
+  "source_root": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01",
+  "archive_sha256": "5ce4a8559d4cbf14a061b598017417e8e22b4c27b8fbefb77c45caa521015400",
+  "copied_files": [
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/142-compensation-storage/command.json",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/142-compensation-storage/command.json",
+      "sha256": "e436b7f79afcabaaa1a7738049ddc60920dc131c9489b86b7fb13e25ca674194",
+      "bytes": 687,
+      "status": "already-identical"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/142-compensation-storage/executables.json",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/142-compensation-storage/executables.json",
+      "sha256": "a641b55ac59b597dcc30834043d06270846bed57a1f84e550a0b01c7074dbb43",
+      "bytes": 2821,
+      "status": "already-identical"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/142-compensation-storage/exit.json",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/142-compensation-storage/exit.json",
+      "sha256": "20b1b85194e2f06fac96c772426abcb4c5e05969e33779eec4f1f7cb3cb3e573",
+      "bytes": 80,
+      "status": "already-identical"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/142-compensation-storage/source-manifest.json",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/142-compensation-storage/source-manifest.json",
+      "sha256": "97d02971ca22f16032eb4d69e31364c9fdc8a1a228e2a1ebd7f7973aeab35516",
+      "bytes": 45564,
+      "status": "already-identical"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/142-compensation-storage/stdout.log",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/142-compensation-storage/stdout.log",
+      "sha256": "3c8d0bea450a74e6d4eae0ba0c3f6994e1aa90de5c98b45e6f17b14dd3f42c99",
+      "bytes": 5473,
+      "status": "already-identical"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/142-compensation-storage/stderr.log",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/142-compensation-storage/stderr.log",
+      "sha256": "b0379f24f18bfabe672db0e8b714f5fdb2b3cb33f07b9ca58455ac6a2dcda703",
+      "bytes": 1131,
+      "status": "already-identical"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/143-compensation-strict/command.json",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/143-compensation-strict/command.json",
+      "sha256": "c089d929f9729a39ce0e83b6513da6f6dc3d2ddf6e15c52f5bf7bd3738c02e75",
+      "bytes": 449,
+      "status": "already-identical"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/143-compensation-strict/exit.json",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/143-compensation-strict/exit.json",
+      "sha256": "aa31a23275e0246f366f1e84cf93d85d41aba8348760a1990f98f185e425c308",
+      "bytes": 80,
+      "status": "already-identical"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/143-compensation-strict/source-manifest.json",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/143-compensation-strict/source-manifest.json",
+      "sha256": "97d02971ca22f16032eb4d69e31364c9fdc8a1a228e2a1ebd7f7973aeab35516",
+      "bytes": 45564,
+      "status": "already-identical"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/143-compensation-strict/stdout.log",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/143-compensation-strict/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "status": "already-identical"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/143-compensation-strict/stderr.log",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/143-compensation-strict/stderr.log",
+      "sha256": "a74bdabdb03519c2c3687013e445af10946a1811198c1118541f5a6f425c73a3",
+      "bytes": 705,
+      "status": "already-identical"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/144-compensation-final-libraries/command.json",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/144-compensation-final-libraries/command.json",
+      "sha256": "d06adcdf7e6f1309769a51703098fcf78d521c43cd98baf20b88c8354e852481",
+      "bytes": 446,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/144-compensation-final-libraries/executables.json",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/144-compensation-final-libraries/executables.json",
+      "sha256": "ce830c1c099cd2dbcfd44f13ed87700de367a8b63e15878ec417f8fdc15197fc",
+      "bytes": 772,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/144-compensation-final-libraries/exit.json",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/144-compensation-final-libraries/exit.json",
+      "sha256": "47b833ef33d3539e0010d556f3d84cc53a46229386382afb405b6ed415f23917",
+      "bytes": 80,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/144-compensation-final-libraries/source-manifest.json",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/144-compensation-final-libraries/source-manifest.json",
+      "sha256": "97d02971ca22f16032eb4d69e31364c9fdc8a1a228e2a1ebd7f7973aeab35516",
+      "bytes": 45564,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/144-compensation-final-libraries/stdout.log",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/144-compensation-final-libraries/stdout.log",
+      "sha256": "9d969841e696cf1213e938a6921bea740b21ffbfc31243a3119f68770fd20ae5",
+      "bytes": 23199,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/144-compensation-final-libraries/stderr.log",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/144-compensation-final-libraries/stderr.log",
+      "sha256": "afc9579371d2dc6c2dd2b543d9f3df9c69d132ac121ea81fa3f7f06dfb1d3a2a",
+      "bytes": 793,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/145-compensation-final-engine/command.json",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/145-compensation-final-engine/command.json",
+      "sha256": "c779c9278d8dde6cdbda83bea333c96a24aab8ca3079a3b3e5e2ea192bdbffd7",
+      "bytes": 441,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/145-compensation-final-engine/executables.json",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/145-compensation-final-engine/executables.json",
+      "sha256": "b55ed25a300ac048e9ec174b0e73242706333c9c1ade95f62648982c73c79cde",
+      "bytes": 399,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/145-compensation-final-engine/exit.json",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/145-compensation-final-engine/exit.json",
+      "sha256": "e613e467192940bf6537523a7b57c1d2235c1e7e94d1de6683eb4b0acea061a2",
+      "bytes": 87,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/145-compensation-final-engine/source-manifest.json",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/145-compensation-final-engine/source-manifest.json",
+      "sha256": "97d02971ca22f16032eb4d69e31364c9fdc8a1a228e2a1ebd7f7973aeab35516",
+      "bytes": 45564,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/145-compensation-final-engine/stdout.log",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/145-compensation-final-engine/stdout.log",
+      "sha256": "150e2c9c46601b304d0a29dc5b13925e4a9bb6e5388a80e3daa69c933bd715ea",
+      "bytes": 1532,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/145-compensation-final-engine/stderr.log",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/145-compensation-final-engine/stderr.log",
+      "sha256": "4db9a25f5542c3c251cf1b85d666c671a3e8d56d27a305cb8d8ed45881a53f57",
+      "bytes": 191,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/146-compensation-fmt/command.json",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/146-compensation-fmt/command.json",
+      "sha256": "e3de8a1d36d3b90c7b4df34d5769b70b39e3f791c7e09a2b585e1dd4ca12e0c6",
+      "bytes": 391,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/146-compensation-fmt/exit.json",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/146-compensation-fmt/exit.json",
+      "sha256": "68674e7d431538e803a5c63f263dbb51eaa2c59729c9bf66505822c36ab1fae6",
+      "bytes": 79,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/146-compensation-fmt/source-manifest.json",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/146-compensation-fmt/source-manifest.json",
+      "sha256": "97d02971ca22f16032eb4d69e31364c9fdc8a1a228e2a1ebd7f7973aeab35516",
+      "bytes": 45564,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/146-compensation-fmt/stdout.log",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/146-compensation-fmt/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/146-compensation-fmt/stderr.log",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/146-compensation-fmt/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/147-compensation-joint-build/command.json",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/147-compensation-joint-build/command.json",
+      "sha256": "a8b213a600a1b51a934b764753680142322c0e34a588d0970f9b68b2f119f853",
+      "bytes": 476,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/147-compensation-joint-build/exit.json",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/147-compensation-joint-build/exit.json",
+      "sha256": "a03c404e064e8a666c8b659d0b81f52f91047495bbd714c301e7a4d828ad91bb",
+      "bytes": 79,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/147-compensation-joint-build/source-manifest.json",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/147-compensation-joint-build/source-manifest.json",
+      "sha256": "97d02971ca22f16032eb4d69e31364c9fdc8a1a228e2a1ebd7f7973aeab35516",
+      "bytes": 45564,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/147-compensation-joint-build/stdout.log",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/147-compensation-joint-build/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/147-compensation-joint-build/stderr.log",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/147-compensation-joint-build/stderr.log",
+      "sha256": "851d0b8331000332c21a03b4dc08e04a84f5c666076dfdff2f10a3f656355517",
+      "bytes": 190,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/148-compensation-joint-cases/command.json",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/148-compensation-joint-cases/command.json",
+      "sha256": "406cd2afd83618173f220dc0133e3eb2664b43656d7984e7cd49b3f95f0427c5",
+      "bytes": 444,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/148-compensation-joint-cases/exit.json",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/148-compensation-joint-cases/exit.json",
+      "sha256": "88d7c1b17bcce92e7eea8a769b4af64615d4c82c6a3709229a1a1936a5680afc",
+      "bytes": 79,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/148-compensation-joint-cases/source-manifest.json",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/148-compensation-joint-cases/source-manifest.json",
+      "sha256": "97d02971ca22f16032eb4d69e31364c9fdc8a1a228e2a1ebd7f7973aeab35516",
+      "bytes": 45564,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/148-compensation-joint-cases/stdout.log",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/148-compensation-joint-cases/stdout.log",
+      "sha256": "f515569c7521b49c60e930d9122201afb5b709c58cb5bd97a82a4c852bb35793",
+      "bytes": 122,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/148-compensation-joint-cases/stderr.log",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/148-compensation-joint-cases/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/148-compensation-joint-cases/cases/results.json",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/148-compensation-joint-cases/cases/results.json",
+      "sha256": "ea387e27c388f26a7f01bb0393d067214c5061b8cb78cdb19a87e10aadef29c0",
+      "bytes": 3224,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/148-compensation-joint-cases/cases/normal/stdout.log",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/148-compensation-joint-cases/cases/normal/stdout.log",
+      "sha256": "8705b87b8e4cf04b34b03e3d1e1e6658b09eddb6b51e486fac562ea85fbaf21a",
+      "bytes": 1824,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/148-compensation-joint-cases/cases/normal/stderr.log",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/148-compensation-joint-cases/cases/normal/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/148-compensation-joint-cases/cases/held/stdout.log",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/148-compensation-joint-cases/cases/held/stdout.log",
+      "sha256": "4eb332984b2104bd9561df523911cb74100728b5d4d168654a99ad6e87f32500",
+      "bytes": 1829,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/148-compensation-joint-cases/cases/held/stderr.log",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/148-compensation-joint-cases/cases/held/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/148-compensation-joint-cases/cases/generator-failure/stdout.log",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/148-compensation-joint-cases/cases/generator-failure/stdout.log",
+      "sha256": "1f97839f250d4b3b782520aea98c411257e13ea81d5148c7edf208503394dff7",
+      "bytes": 1809,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/148-compensation-joint-cases/cases/generator-failure/stderr.log",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/148-compensation-joint-cases/cases/generator-failure/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/148-compensation-joint-cases/cases/construction-utilities/stdout.log",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/148-compensation-joint-cases/cases/construction-utilities/stdout.log",
+      "sha256": "5f00fcd516d6ded66bce1c93a09a7ca8e4fbac5b2042dff7bdd569e35d07a006",
+      "bytes": 2114,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/148-compensation-joint-cases/cases/construction-utilities/stderr.log",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/148-compensation-joint-cases/cases/construction-utilities/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/148-compensation-joint-cases/cases/construction-held/stdout.log",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/148-compensation-joint-cases/cases/construction-held/stdout.log",
+      "sha256": "f6d722012c5b7806b130249577f8624a7a1bf8e84a152fa6f7350e4263820ed8",
+      "bytes": 2116,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/148-compensation-joint-cases/cases/construction-held/stderr.log",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/148-compensation-joint-cases/cases/construction-held/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/148-compensation-joint-cases/cases/employment-control/stdout.log",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/148-compensation-joint-cases/cases/employment-control/stdout.log",
+      "sha256": "f5e2755ee89df6e5ce89a343700a22fae2933b7f079827147403856f9efaf662",
+      "bytes": 2119,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/148-compensation-joint-cases/cases/employment-control/stderr.log",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/148-compensation-joint-cases/cases/employment-control/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/148-compensation-joint-cases/cases/employment-change/stdout.log",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/148-compensation-joint-cases/cases/employment-change/stdout.log",
+      "sha256": "991d2fd8fab77ec5d8c26bc8b43e09b243d7167918f231272b549ea1dc2d0647",
+      "bytes": 2114,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runs/148-compensation-joint-cases/cases/employment-change/stderr.log",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/148-compensation-joint-cases/cases/employment-change/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/compensation-independent.json",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/compensation-independent.json",
+      "sha256": "a9a798cc2120daffc48f583ffe31e835a122d482e159ad24a8fdbdcbe82d3321",
+      "bytes": 3484,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/validate-compensation.py",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/validate-compensation.py",
+      "sha256": "e25e496fc12a401105da2b3f0258607e4c6eceac3a9dacc683022b3eabf0c9a0",
+      "bytes": 3417,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/compensation-joint-binary.json",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/compensation-joint-binary.json",
+      "sha256": "3a153a57081ac92f590fcac2e968927af9823d54cfcedd5dfb4685f4778e532c",
+      "bytes": 874,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/run-compensation-joint.py",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/run-compensation-joint.py",
+      "sha256": "32660b7e77906fa6ed32b13d55aa068b3d01002df72dd47c0bd57fe3f81868e0",
+      "bytes": 1112,
+      "status": "copied"
+    },
+    {
+      "path": "docs/evidence/core-construction-compensation-135/runtime-residual-attribution/report.md",
+      "source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/runtime-residual-attribution/report.md",
+      "sha256": "39a4327dbbfcdbb54bb0c564f15370fca48066f7a1a5091f65314496f96cc85f",
+      "bytes": 3582,
+      "status": "copied"
+    }
+  ],
+  "excluded": [
+    "generated world directories and duplicated world files; original business worlds remain in external work and the separately archived business-originals/ directory"
+  ],
+  "unnecessary_local_archive_copy_removed": {
+    "path": "docs/evidence/core-construction-compensation-135/runs/shared-source-e7743bfd.zip",
+    "reason": "complete fixed archive already retained externally; avoid duplicate archive in Git/source checkout",
+    "retained_full_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/147-compensation-joint-build/source.zip",
+    "sha256": "5ce4a8559d4cbf14a061b598017417e8e22b4c27b8fbefb77c45caa521015400",
+    "file_allocation_removed_bytes": 4321280,
+    "observed_internal_available_delta_bytes": 4313088,
+    "exclusive_APFS_reclaim_claimed": false
+  }
+}

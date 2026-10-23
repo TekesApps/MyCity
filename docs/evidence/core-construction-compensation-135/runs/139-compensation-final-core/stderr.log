@@ -1,0 +1,4 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction-compensation-current/crates/city-core)
+    Finished `release` profile [optimized] target(s) in 4.19s
+     Running unittests src/lib.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_core-363f7122bd90a840)
+     Running tests/construction_engine.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/construction_engine-bbae94b7cf7feb30)
