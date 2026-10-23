@@ -1,0 +1,25 @@
+{
+  "revision": "BUDGET-2",
+  "release": "v0.5.142",
+  "base_commit": "e8e6b4b5548f231f3d1783f485d5e42dfb486741",
+  "kind": "document_only_static_validation",
+  "checks": [
+    "all changed files restricted to docs and README",
+    "JSON syntax and 15 original scenarios preserved",
+    "four target speeds times day duration equal 86400 game seconds",
+    "CPU/GPU budgets and supported limits remain uncalibrated null",
+    "local Markdown targets and heading anchors"
+  ],
+  "local_targets_checked": 245,
+  "results": "passed",
+  "build_benchmark_pressure_gpu_runs": "not_run",
+  "m0_contract": "unchanged",
+  "inputs_sha256": {
+    "README.md": "61cce5d71423def0a945c7af95acb46ba4ff6e0a2ee4dd4bdbb77f713a37cb2f",
+    "docs/PRODUCT_BLUEPRINT.md": "ccea237920820cf03849b932adc59121f69acb55e2f027df693488a19cf615b0",
+    "docs/city-scale-and-adaptive-budget.md": "137931df016f4de639f92117c1478253197a25b1c06b30bbfef6f97fb22dd445",
+    "docs/inputs/simulation-budget/plan-v1.json": "845cd49196aa1b887e5bf9a24355b26eb06aca4beaf4fd129feeaba3ef0ded60",
+    "docs/performance-budget.md": "896bda1892d2eefb5a9a18ebb7373274ec03319745589567ac414278c1594a4c",
+    "docs/simulation-budget-calibration-plan.md": "366817b9d93e7daf5e5be0d7859f7838c1f01b4cdb87604944c0e6f8bfec8556"
+  }
+}

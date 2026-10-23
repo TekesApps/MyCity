@@ -1,0 +1,34 @@
+{
+  "date": "2026-10-23",
+  "baseline_commit": "58845dfbb61eb166e97612f0b4bc567f963a4a87",
+  "kind": "document_only_static_validation",
+  "local_markdown_targets_checked": 269,
+  "scenario_rows": 15,
+  "base_numeric_rows_crosschecked": 12,
+  "checks": [
+    "JSON syntax and all map/form IDs",
+    "household and inventory arithmetic",
+    "individual world candidate caps only; not joint runtime admission",
+    "area and housing-only range arithmetic",
+    "P53/A55 domain sums and controller suballocation",
+    "all local Markdown paths and target heading anchors",
+    "base matrix numeric cells match JSON",
+    "no game source changes"
+  ],
+  "results": "passed",
+  "game_build_or_runtime_test": "not_run",
+  "real_16GB": "not_run",
+  "gpu": "not_run",
+  "advisor": "one focused read-only pass; no conservation/execution/budget/scope blockers; exact-invariant vs cross-model distinction clarified",
+  "inputs_sha256": {
+    "README.md": "9d6a3b2c534a01bc32b859e7a7bcb4dc4dbd69f211212362ed977551809f51f2",
+    "docs/PRODUCT_BLUEPRINT.md": "7532b2c016c03c6b9c7f22588f6b49e9a39e4f7df9fb89662bebe0e2bae3c041",
+    "docs/performance-budget.md": "e6957634acd918eb1b5d91ba02e5e48aa264292bad76c4d053226444c4bc6582",
+    "docs/map-sizes.md": "15cc37c889c575ddfcb8c83f8980458e4615aed1cc07cb9c36f14afa500c0ee3",
+    "docs/model-granularity-and-convergence.md": "01e577cea9aa973f65952031dc398581c18f18d45d104450672c322f48bc38f8",
+    "docs/cpu-gpu-compute-contract.md": "5f721dda3a2b62aa4e61d3bab1bb9666a921b668bd861e1690b3f16d42cdd9bd",
+    "docs/city-scale-and-adaptive-budget.md": "fcc9e17fd373fdec5aa6f4d664a87c3ae28be64f2e5b0d49092a4a1913a270b0",
+    "docs/simulation-budget-calibration-plan.md": "0b54e06fee39228e33fbd10a8ad23433220b671d8a11342fc1378606e9075d0f",
+    "docs/inputs/simulation-budget/plan-v1.json": "88782b90b58626182ccefe0181314cdd180421a6f7090a77b09e63e1df278e80"
+  }
+}

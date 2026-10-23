@@ -1,0 +1,1034 @@
+{
+  "schema": "mycity-simulation-budget-experiment-plan-v1",
+  "design_revision": "BUDGET-3",
+  "date": "2026-10-23",
+  "kind": "design_only_not_runtime_loader",
+  "baseline_commit": "58845dfbb61eb166e97612f0b4bc567f963a4a87",
+  "implementation": "pending",
+  "validation": "not_run",
+  "m0_contract": "unchanged",
+  "units": {
+    "area": "m2",
+    "time": "game_second unless explicitly wall_second",
+    "memory": "byte (GiB=2^30, MiB=2^20)",
+    "counts": "explicit records, not padding"
+  },
+  "maps": {
+    "S": {
+      "land_side": 64,
+      "land_cell_m": 16,
+      "area_m2": 1048576,
+      "environment_cell_m": 32,
+      "environment_side": 32,
+      "initial_traffic_zone_m": 128
+    },
+    "M": {
+      "land_side": 128,
+      "land_cell_m": 16,
+      "area_m2": 4194304,
+      "environment_cell_m": 32,
+      "environment_side": 64,
+      "initial_traffic_zone_m": 128
+    },
+    "L": {
+      "land_side": 256,
+      "land_cell_m": 16,
+      "area_m2": 16777216,
+      "environment_cell_m": 32,
+      "environment_side": 128,
+      "initial_traffic_zone_m": 128
+    }
+  },
+  "population_assumptions": {
+    "parameter_order": [
+      "developable_d",
+      "built_b",
+      "residential_r",
+      "FAR",
+      "occupied_o",
+      "m2_per_person_s"
+    ],
+    "forms": {
+      "L": [
+        [
+          0.55,
+          0.7
+        ],
+        [
+          0.35,
+          0.6
+        ],
+        [
+          0.5,
+          0.65
+        ],
+        [
+          0.4,
+          0.9
+        ],
+        [
+          0.8,
+          0.95
+        ],
+        [
+          45,
+          35
+        ]
+      ],
+      "H": [
+        [
+          0.65,
+          0.8
+        ],
+        [
+          0.65,
+          0.85
+        ],
+        [
+          0.45,
+          0.6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          0.85,
+          0.95
+        ],
+        [
+          40,
+          30
+        ]
+      ],
+      "I": [
+        [
+          0.55,
+          0.75
+        ],
+        [
+          0.5,
+          0.8
+        ],
+        [
+          0.15,
+          0.3
+        ],
+        [
+          0.8,
+          2
+        ],
+        [
+          0.8,
+          0.95
+        ],
+        [
+          45,
+          35
+        ]
+      ],
+      "M": [
+        [
+          0.6,
+          0.8
+        ],
+        [
+          0.6,
+          0.85
+        ],
+        [
+          0.35,
+          0.55
+        ],
+        [
+          1.5,
+          3.5
+        ],
+        [
+          0.85,
+          0.95
+        ],
+        [
+          40,
+          30
+        ]
+      ]
+    },
+    "spatial_only_intervals_rounded_people": {
+      "S": {
+        "L": [
+          718,
+          6993
+        ],
+        "H": [
+          12709,
+          81286
+        ],
+        "I": [
+          615,
+          10246
+        ],
+        "M": [
+          4211,
+          43465
+        ]
+      },
+      "M": {
+        "L": [
+          2871,
+          27972
+        ],
+        "H": [
+          50837,
+          325142
+        ],
+        "I": [
+          2461,
+          40984
+        ],
+        "M": [
+          16845,
+          173861
+        ]
+      },
+      "L": {
+        "L": [
+          11483,
+          111887
+        ],
+        "H": [
+          203348,
+          1300570
+        ],
+        "I": [
+          9843,
+          163937
+        ],
+        "M": [
+          67381,
+          695444
+        ]
+      }
+    },
+    "formula": "area_m2*d*b*r*FAR*o/s; then min(housing, jobs_served/(participation*employment), utilities); actual unit/household constraints still required"
+  },
+  "world_candidate_caps_source": "docs/product-runtime-budget-and-versions.md R03; not current Rust limits",
+  "world_candidate_caps": {
+    "maps": 8,
+    "population": 100000,
+    "households": 32768,
+    "housing_rights": 32768,
+    "operating_sites": 8192,
+    "enterprises": 4096,
+    "labor_relations": 65536,
+    "cash_accounts": 65536,
+    "obligations": 524288,
+    "inventory_lots": 131072,
+    "hot_od": 16384,
+    "path_references": 1048576,
+    "freight_batches": 10000,
+    "meters": 262144,
+    "ready_peak": 8192
+  },
+  "load_axes": [
+    "space",
+    "developed",
+    "active_business",
+    "history"
+  ],
+  "common_sweeps": {
+    "developed_business_scales": [
+      0.25,
+      0.5,
+      1.0
+    ],
+    "history_game_days": [
+      0,
+      30,
+      365,
+      3650
+    ],
+    "history_synthesis": "must label event-generated history; not measured elapsed throughput",
+    "maps_per_world": [
+      1,
+      2,
+      8
+    ],
+    "cross_city_demand_fractions": [
+      0,
+      0.1,
+      0.3
+    ],
+    "environment_channels": [
+      1,
+      8
+    ],
+    "channels_gate": "only independently implemented and qualified channels; current 8-channel case blocked",
+    "active_rate": "must be a separately fixed manifest field, no default from population"
+  },
+  "cases": [
+    {
+      "id": "S-L",
+      "population": 2000,
+      "buildings": 500,
+      "enterprises": 80,
+      "operating_sites": 100,
+      "labor_relations": 900,
+      "cash_accounts": 1000,
+      "obligations": 2000,
+      "road_nodes": 300,
+      "directed_edges": 900,
+      "hot_od": 256,
+      "freight_batches": 100,
+      "meters": 1600,
+      "ready_peak": 512,
+      "households": 800,
+      "housing_rights": 800,
+      "inventory_lots": 300,
+      "developed_fraction": null,
+      "source_relationship_manifest": null,
+      "estimated_bytes_by_domain": null,
+      "sustainable_game_seconds_per_real_second": null,
+      "status": "not_run",
+      "assembly_status": "blocked_missing_generator_and_capacity",
+      "policy_profile": "candidate_by_scope"
+    },
+    {
+      "id": "S-H",
+      "population": 16000,
+      "buildings": 1000,
+      "enterprises": 300,
+      "operating_sites": 500,
+      "labor_relations": 7200,
+      "cash_accounts": 7100,
+      "obligations": 16000,
+      "road_nodes": 700,
+      "directed_edges": 2400,
+      "hot_od": 2048,
+      "freight_batches": 500,
+      "meters": 12800,
+      "ready_peak": 2048,
+      "households": 6400,
+      "housing_rights": 6400,
+      "inventory_lots": 1500,
+      "developed_fraction": null,
+      "source_relationship_manifest": null,
+      "estimated_bytes_by_domain": null,
+      "sustainable_game_seconds_per_real_second": null,
+      "status": "not_run",
+      "assembly_status": "blocked_missing_generator_and_capacity",
+      "policy_profile": "candidate_by_scope"
+    },
+    {
+      "id": "S-I",
+      "population": 2000,
+      "buildings": 600,
+      "enterprises": 160,
+      "operating_sites": 240,
+      "labor_relations": 1200,
+      "cash_accounts": 1200,
+      "obligations": 6000,
+      "road_nodes": 600,
+      "directed_edges": 2000,
+      "hot_od": 1024,
+      "freight_batches": 1200,
+      "meters": 2200,
+      "ready_peak": 1024,
+      "households": 800,
+      "housing_rights": 800,
+      "inventory_lots": 1680,
+      "developed_fraction": null,
+      "source_relationship_manifest": null,
+      "estimated_bytes_by_domain": null,
+      "sustainable_game_seconds_per_real_second": null,
+      "status": "not_run",
+      "assembly_status": "blocked_missing_generator_and_capacity",
+      "policy_profile": "candidate_by_scope"
+    },
+    {
+      "id": "S-M",
+      "population": 10000,
+      "buildings": 1200,
+      "enterprises": 400,
+      "operating_sites": 600,
+      "labor_relations": 4500,
+      "cash_accounts": 4900,
+      "obligations": 12000,
+      "road_nodes": 900,
+      "directed_edges": 3000,
+      "hot_od": 2048,
+      "freight_batches": 800,
+      "meters": 8000,
+      "ready_peak": 2048,
+      "households": 4000,
+      "housing_rights": 4000,
+      "inventory_lots": 2000,
+      "developed_fraction": null,
+      "source_relationship_manifest": null,
+      "estimated_bytes_by_domain": null,
+      "sustainable_game_seconds_per_real_second": null,
+      "status": "not_run",
+      "assembly_status": "blocked_missing_generator_and_capacity",
+      "policy_profile": "candidate_by_scope"
+    },
+    {
+      "id": "S-T",
+      "population": 10000,
+      "buildings": 1200,
+      "enterprises": 400,
+      "operating_sites": 600,
+      "labor_relations": 4500,
+      "cash_accounts": 4900,
+      "obligations": 12000,
+      "road_nodes": 900,
+      "directed_edges": 3000,
+      "hot_od": 2048,
+      "freight_batches": 800,
+      "meters": 8000,
+      "ready_peak": 2048,
+      "households": 4000,
+      "housing_rights": 4000,
+      "inventory_lots": 2000,
+      "developed_fraction": null,
+      "source_relationship_manifest": null,
+      "estimated_bytes_by_domain": null,
+      "sustainable_game_seconds_per_real_second": null,
+      "status": "not_run",
+      "assembly_status": "blocked_missing_generator_and_capacity",
+      "policy_profile": "candidate_by_scope",
+      "baseline": "S-M",
+      "overlays": [
+        "growth",
+        "decline",
+        "due_cluster",
+        "supply_congestion",
+        "fault_switch"
+      ]
+    },
+    {
+      "id": "M-L",
+      "population": 8000,
+      "buildings": 1800,
+      "enterprises": 280,
+      "operating_sites": 400,
+      "labor_relations": 3600,
+      "cash_accounts": 3900,
+      "obligations": 8000,
+      "road_nodes": 1200,
+      "directed_edges": 3600,
+      "hot_od": 1024,
+      "freight_batches": 400,
+      "meters": 6400,
+      "ready_peak": 1024,
+      "households": 3200,
+      "housing_rights": 3200,
+      "inventory_lots": 1200,
+      "developed_fraction": null,
+      "source_relationship_manifest": null,
+      "estimated_bytes_by_domain": null,
+      "sustainable_game_seconds_per_real_second": null,
+      "status": "not_run",
+      "assembly_status": "blocked_missing_generator_and_capacity",
+      "policy_profile": "candidate_by_scope"
+    },
+    {
+      "id": "M-H",
+      "population": 50000,
+      "buildings": 4000,
+      "enterprises": 1000,
+      "operating_sites": 2000,
+      "labor_relations": 22500,
+      "cash_accounts": 23000,
+      "obligations": 60000,
+      "road_nodes": 2500,
+      "directed_edges": 10000,
+      "hot_od": 4096,
+      "freight_batches": 3000,
+      "meters": 40000,
+      "ready_peak": 4096,
+      "households": 20000,
+      "housing_rights": 20000,
+      "inventory_lots": 7000,
+      "developed_fraction": null,
+      "source_relationship_manifest": null,
+      "estimated_bytes_by_domain": null,
+      "sustainable_game_seconds_per_real_second": null,
+      "status": "not_run",
+      "assembly_status": "blocked_missing_generator_and_capacity",
+      "policy_profile": "candidate_by_scope"
+    },
+    {
+      "id": "M-I",
+      "population": 10000,
+      "buildings": 2400,
+      "enterprises": 600,
+      "operating_sites": 1000,
+      "labor_relations": 6000,
+      "cash_accounts": 5700,
+      "obligations": 30000,
+      "road_nodes": 2000,
+      "directed_edges": 8000,
+      "hot_od": 4096,
+      "freight_batches": 6000,
+      "meters": 11000,
+      "ready_peak": 4096,
+      "households": 4000,
+      "housing_rights": 4000,
+      "inventory_lots": 8000,
+      "developed_fraction": null,
+      "source_relationship_manifest": null,
+      "estimated_bytes_by_domain": null,
+      "sustainable_game_seconds_per_real_second": null,
+      "status": "not_run",
+      "assembly_status": "blocked_missing_generator_and_capacity",
+      "policy_profile": "candidate_by_scope"
+    },
+    {
+      "id": "M-M",
+      "population": 40000,
+      "buildings": 4000,
+      "enterprises": 1200,
+      "operating_sites": 2400,
+      "labor_relations": 18000,
+      "cash_accounts": 19800,
+      "obligations": 60000,
+      "road_nodes": 2500,
+      "directed_edges": 10000,
+      "hot_od": 8192,
+      "freight_batches": 4000,
+      "meters": 32000,
+      "ready_peak": 4096,
+      "households": 16000,
+      "housing_rights": 16000,
+      "inventory_lots": 8800,
+      "developed_fraction": null,
+      "source_relationship_manifest": null,
+      "estimated_bytes_by_domain": null,
+      "sustainable_game_seconds_per_real_second": null,
+      "status": "not_run",
+      "assembly_status": "blocked_missing_generator_and_capacity",
+      "policy_profile": "candidate_by_scope"
+    },
+    {
+      "id": "M-T",
+      "population": 40000,
+      "buildings": 4000,
+      "enterprises": 1200,
+      "operating_sites": 2400,
+      "labor_relations": 18000,
+      "cash_accounts": 19800,
+      "obligations": 60000,
+      "road_nodes": 2500,
+      "directed_edges": 10000,
+      "hot_od": 8192,
+      "freight_batches": 4000,
+      "meters": 32000,
+      "ready_peak": 4096,
+      "households": 16000,
+      "housing_rights": 16000,
+      "inventory_lots": 8800,
+      "developed_fraction": null,
+      "source_relationship_manifest": null,
+      "estimated_bytes_by_domain": null,
+      "sustainable_game_seconds_per_real_second": null,
+      "status": "not_run",
+      "assembly_status": "blocked_missing_generator_and_capacity",
+      "policy_profile": "candidate_by_scope",
+      "baseline": "M-M",
+      "overlays": [
+        "growth",
+        "decline",
+        "due_cluster",
+        "supply_congestion",
+        "fault_switch"
+      ]
+    },
+    {
+      "id": "L-L",
+      "population": 30000,
+      "buildings": 6000,
+      "enterprises": 900,
+      "operating_sites": 1400,
+      "labor_relations": 13500,
+      "cash_accounts": 14500,
+      "obligations": 30000,
+      "road_nodes": 4000,
+      "directed_edges": 12000,
+      "hot_od": 4096,
+      "freight_batches": 1500,
+      "meters": 24000,
+      "ready_peak": 2048,
+      "households": 12000,
+      "housing_rights": 12000,
+      "inventory_lots": 4300,
+      "developed_fraction": null,
+      "source_relationship_manifest": null,
+      "estimated_bytes_by_domain": null,
+      "sustainable_game_seconds_per_real_second": null,
+      "status": "not_run",
+      "assembly_status": "blocked_missing_generator_and_capacity",
+      "policy_profile": "candidate_by_scope"
+    },
+    {
+      "id": "L-H",
+      "population": 60000,
+      "buildings": 8000,
+      "enterprises": 2000,
+      "operating_sites": 4000,
+      "labor_relations": 27000,
+      "cash_accounts": 30200,
+      "obligations": 100000,
+      "road_nodes": 5000,
+      "directed_edges": 20000,
+      "hot_od": 12288,
+      "freight_batches": 6000,
+      "meters": 48000,
+      "ready_peak": 8192,
+      "households": 24000,
+      "housing_rights": 24000,
+      "inventory_lots": 14000,
+      "developed_fraction": null,
+      "source_relationship_manifest": null,
+      "estimated_bytes_by_domain": null,
+      "sustainable_game_seconds_per_real_second": null,
+      "status": "not_run",
+      "assembly_status": "blocked_missing_generator_and_capacity",
+      "policy_profile": "candidate_by_scope"
+    },
+    {
+      "id": "L-I",
+      "population": 30000,
+      "buildings": 7000,
+      "enterprises": 1400,
+      "operating_sites": 2400,
+      "labor_relations": 18000,
+      "cash_accounts": 16000,
+      "obligations": 90000,
+      "road_nodes": 4500,
+      "directed_edges": 18000,
+      "hot_od": 8192,
+      "freight_batches": 9000,
+      "meters": 33000,
+      "ready_peak": 8192,
+      "households": 12000,
+      "housing_rights": 12000,
+      "inventory_lots": 13800,
+      "developed_fraction": null,
+      "source_relationship_manifest": null,
+      "estimated_bytes_by_domain": null,
+      "sustainable_game_seconds_per_real_second": null,
+      "status": "not_run",
+      "assembly_status": "blocked_missing_generator_and_capacity",
+      "policy_profile": "candidate_by_scope"
+    },
+    {
+      "id": "L-M",
+      "population": 60000,
+      "buildings": 8000,
+      "enterprises": 2000,
+      "operating_sites": 4000,
+      "labor_relations": 27000,
+      "cash_accounts": 30200,
+      "obligations": 100000,
+      "road_nodes": 5000,
+      "directed_edges": 20000,
+      "hot_od": 12288,
+      "freight_batches": 6000,
+      "meters": 48000,
+      "ready_peak": 8192,
+      "households": 24000,
+      "housing_rights": 24000,
+      "inventory_lots": 14000,
+      "developed_fraction": null,
+      "source_relationship_manifest": null,
+      "estimated_bytes_by_domain": null,
+      "sustainable_game_seconds_per_real_second": null,
+      "status": "not_run",
+      "assembly_status": "blocked_missing_generator_and_capacity",
+      "policy_profile": "candidate_by_scope"
+    },
+    {
+      "id": "L-T",
+      "population": 60000,
+      "buildings": 8000,
+      "enterprises": 2000,
+      "operating_sites": 4000,
+      "labor_relations": 27000,
+      "cash_accounts": 30200,
+      "obligations": 100000,
+      "road_nodes": 5000,
+      "directed_edges": 20000,
+      "hot_od": 12288,
+      "freight_batches": 6000,
+      "meters": 48000,
+      "ready_peak": 8192,
+      "households": 24000,
+      "housing_rights": 24000,
+      "inventory_lots": 14000,
+      "developed_fraction": null,
+      "source_relationship_manifest": null,
+      "estimated_bytes_by_domain": null,
+      "sustainable_game_seconds_per_real_second": null,
+      "status": "not_run",
+      "assembly_status": "blocked_missing_generator_and_capacity",
+      "policy_profile": "candidate_by_scope",
+      "baseline": "L-M",
+      "overlays": [
+        "growth",
+        "decline",
+        "due_cluster",
+        "supply_congestion",
+        "fault_switch"
+      ]
+    }
+  ],
+  "overlays": {
+    "growth": {
+      "start_day": 1,
+      "days": 30,
+      "daily_candidate_household_fraction_of_initial": 0.01,
+      "admission": "housing/jobs/transport/future-record reservation required; reject new risk at caps"
+    },
+    "decline": {
+      "day": 3,
+      "supplied_jobs_removed_fraction": 0.2,
+      "lawful_exit_start_day": 7,
+      "retain": "old debts/assets/history and ongoing rights"
+    },
+    "due_cluster": {
+      "day": 10,
+      "fraction_of_existing_obligations": 0.25,
+      "control_spread_game_days": 7,
+      "ordering": "existing deterministic order"
+    },
+    "supply_congestion": {
+      "closure_day": 5,
+      "bottleneck_share_of_served_demand": 0.1,
+      "closure_hours": 2,
+      "supply_failure_day": 6,
+      "supply_failure_hours": 6,
+      "recovery_day": 8
+    },
+    "fault_switch": {
+      "day": 12,
+      "occurrence": "fixed before run; persisted exactly once",
+      "pressure_signal": "frozen high/low threshold trace",
+      "player_request": "local explanation requiring explicit coverage"
+    }
+  },
+  "controller_candidate": {
+    "proposal_period_wall_seconds": 1,
+    "observation_window_wall_seconds": 30,
+    "tail_min_samples": 100,
+    "enter_authorized_fraction": 0.8,
+    "exit_authorized_fraction": 0.6,
+    "enter_consecutive_windows": 3,
+    "exit_consecutive_windows": 5,
+    "exit_task_p95_budget_fraction": 0.8,
+    "minimum_hold_wall_seconds": 30,
+    "effective_boundary": "phase=None,last_complete,before next continuation ticket",
+    "max_candidate_stable_game_seconds": 3600,
+    "scope_slots": 256,
+    "scope_and_cost_metadata_bytes": 262144,
+    "metadata_parent": "A55 existing runtime task 8MiB; reserve 256KiB within it; verify remaining capacity"
+  },
+  "gpu_candidate": {
+    "path": "Rust/wgpu/WGSL capabilities frozen at implementation",
+    "inflight_compute_submissions": 1,
+    "readback_slots": 2,
+    "shared_solver_domain_bytes": 268435456,
+    "gpu_max_bytes_inside_solver": 33554432,
+    "whole_path_comparison_required": true,
+    "cpu_full_validation_included": true,
+    "crossover_load_range": null,
+    "current_status": "not_implemented_not_run"
+  },
+  "error_qualification": {
+    "status": "unqualified",
+    "absolute_bound": null,
+    "relative_bound": null,
+    "cumulative_bound": null,
+    "supported_window_game_seconds": null,
+    "max_data_age_game_seconds": null,
+    "threshold_guard": null,
+    "null_semantics": "blocked for authoritative approximate consequences; no default epsilon",
+    "exact_invariant_tolerance_quantized_units": 0
+  },
+  "resources": {
+    "source": "P53/A55, not a replacement for frozen M0",
+    "normal_target_GiB": 3.1,
+    "soft_GiB": 3.5,
+    "peak_warning_GiB": 4,
+    "new_experiment_disk_total_GiB": 24,
+    "per_stage_run_disk_GiB": {
+      "C0_C1": 2,
+      "C2_C3": 4,
+      "C4": 4,
+      "C5_C6": 8
+    },
+    "raw_long_run_logs_MiB_max": 512,
+    "shared_target": "/Users/frankqin/dev/MyCity/target",
+    "work": "/Users/frankqin/dev/MyCity/work",
+    "resolved_storage": "external HP P900 USB/APFS SSD; verify before any run"
+  },
+  "experiment_ids": [
+    "E1",
+    "E2",
+    "E3",
+    "E4",
+    "E5",
+    "E6",
+    "E7",
+    "E8",
+    "E9"
+  ],
+  "stages": [
+    "C0",
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6"
+  ],
+  "run_gate": "future user implementation authorization plus main-session source ownership, fixed versions, shared-target and quiet measurement window coordination required; no execution in this design turn",
+  "application_contract": {
+    "scope": "all product processes, threads, GPU allocations and closed-city necessary obligations share one application envelope",
+    "memory_source": "P53/A55 existing domains; no per-city/per-process multiplication",
+    "resource_window_wall_seconds": 1,
+    "cpu": {
+      "unit": "core_ms_per_wall_second",
+      "sustained_budget": null,
+      "measurement": "sum actual CPU service across all product threads; target hardware specific",
+      "includes": [
+        "scheduling",
+        "packing",
+        "IPC",
+        "validation",
+        "commit",
+        "product diagnostics"
+      ]
+    },
+    "gpu": {
+      "unit": "union_busy_ms_per_wall_second",
+      "sustained_budget": null,
+      "maximum_dispatch_busy_ms": null,
+      "measurement": "union of overlapping compute/render execution intervals, queue wait separately; if unavailable mark not_observed and qualify full path scope"
+    },
+    "target_game_seconds_per_wall_second": {
+      "paused": 0,
+      "observe": 144,
+      "operate": 1440,
+      "fast": 8640,
+      "high": 86400
+    },
+    "service_gates": {
+      "player_response_p95_wall_ms": null,
+      "player_response_p99_wall_ms": null,
+      "necessary_task_max_age_wall_ms_by_class": null,
+      "queue_age_must_not_diverge": true,
+      "qualification": "null gates block capacity certification; calibration experiments only until frozen"
+    },
+    "allocation": {
+      "owner": "Sim existing admission/planning layer",
+      "scope_key": [
+        "system",
+        "map_or_region",
+        "compatible_group"
+      ],
+      "purposes": [
+        "minimum_required",
+        "elastic",
+        "burst_reserve"
+      ],
+      "cpu_purpose_budgets_core_ms": null,
+      "gpu_purpose_budgets_busy_ms": null,
+      "invariant": "sum required, elastic and burst grants <= respective shared window budget; CPU/GPU units not summed",
+      "first_transfer_from": [
+        "declared burst reserve",
+        "optional previews",
+        "redundant predictions",
+        "noncritical recomputations"
+      ],
+      "protected": [
+        "due obligations",
+        "necessary maintenance",
+        "closed-city accepted fulfillment",
+        "safe exit",
+        "recovery reserves",
+        "future UI/render domain reservation"
+      ],
+      "fallback": "reduce actual speed, restrict new risk commitments, safe backpressure; never delete population or obligations"
+    },
+    "business_rate_unit": "events or demand units per game hour; also record concentration, invalidation fanout, dirty ratio and explanation scope",
+    "capacity_unit": "qualified S/D/A/H load set for specified hardware, resources, model/error and service targets",
+    "single_city_population_limit": null,
+    "world_supported_business_load_limit": null,
+    "status": "design_only_not_run"
+  },
+  "model_strategy_contract": {
+    "catalog_reference": "docs/model-granularity-and-convergence.md BUDGET-3",
+    "scope": "per model, region and compatible group; not globally numbered tiers",
+    "minimum_credible_is_contract_not_tier": true,
+    "equivalent_requires_same_source_random_numeric_trajectory": true,
+    "unqualified_approximation": "candidate_only",
+    "models": [
+      {
+        "model_id": "identity_space_property",
+        "minimum_credible": "精确身份、权利、占用与几何",
+        "equivalent_candidate": "脏索引和版本缓存",
+        "approximate_candidate": "规划候选；正式权利判定不近似",
+        "qualification": "not_implemented_or_not_qualified",
+        "upgrade_condition": "source invalidation, threshold overlap, residual or required explanation coverage; see model row",
+        "downgrade_condition": "stable inputs, qualified joint errors, all consumers compatible, minimum hold and conversion admission; see model row",
+        "necessary_consequences_must_remain": true
+      },
+      {
+        "model_id": "population_household",
+        "minimum_credible": "实际人数住所及已接受迁移出生",
+        "equivalent_candidate": "相容来源群体合批",
+        "approximate_candidate": "行为倾向／未来分布",
+        "qualification": "not_implemented_or_not_qualified",
+        "upgrade_condition": "source invalidation, threshold overlap, residual or required explanation coverage; see model row",
+        "downgrade_condition": "stable inputs, qualified joint errors, all consumers compatible, minimum hold and conversion admission; see model row",
+        "necessary_consequences_must_remain": true
+      },
+      {
+        "model_id": "education_labor",
+        "minimum_credible": "资格、实际课时劳动、到岗及欠薪",
+        "equivalent_candidate": "解析累计和到期分页",
+        "approximate_candidate": "岗位候选匹配",
+        "qualification": "not_implemented_or_not_qualified",
+        "upgrade_condition": "source invalidation, threshold overlap, residual or required explanation coverage; see model row",
+        "downgrade_condition": "stable inputs, qualified joint errors, all consumers compatible, minimum hold and conversion admission; see model row",
+        "necessary_consequences_must_remain": true
+      },
+      {
+        "model_id": "traffic",
+        "minimum_credible": "合法接入、容量、在途积压及未解需求",
+        "equivalent_candidate": "有效路径缓存及同轨迹流合批",
+        "approximate_candidate": "候选搜索与代表窗口",
+        "qualification": "not_implemented_or_not_qualified",
+        "upgrade_condition": "source invalidation, threshold overlap, residual or required explanation coverage; see model row",
+        "downgrade_condition": "stable inputs, qualified joint errors, all consumers compatible, minimum hold and conversion admission; see model row",
+        "necessary_consequences_must_remain": true
+      },
+      {
+        "model_id": "freight_inventory",
+        "minimum_credible": "lot权属、实际在途交付及损耗",
+        "equivalent_candidate": "同责任区间累计和路线批评分",
+        "approximate_candidate": "ETA／路线候选",
+        "qualification": "not_implemented_or_not_qualified",
+        "upgrade_condition": "source invalidation, threshold overlap, residual or required explanation coverage; see model row",
+        "downgrade_condition": "stable inputs, qualified joint errors, all consumers compatible, minimum hold and conversion admission; see model row",
+        "necessary_consequences_must_remain": true
+      },
+      {
+        "model_id": "utilities",
+        "minimum_credible": "真实投入、峰容量、meter及质量",
+        "equivalent_candidate": "稳定流积分与脏子网",
+        "approximate_candidate": "需求预测",
+        "qualification": "not_implemented_or_not_qualified",
+        "upgrade_condition": "source invalidation, threshold overlap, residual or required explanation coverage; see model row",
+        "downgrade_condition": "stable inputs, qualified joint errors, all consumers compatible, minimum hold and conversion admission; see model row",
+        "necessary_consequences_must_remain": true
+      },
+      {
+        "model_id": "market_business",
+        "minimum_credible": "实际产销投入、成本及订单钱债",
+        "equivalent_candidate": "同工况积分和增量撮合",
+        "approximate_candidate": "需求价格选址预测",
+        "qualification": "not_implemented_or_not_qualified",
+        "upgrade_condition": "source invalidation, threshold overlap, residual or required explanation coverage; see model row",
+        "downgrade_condition": "stable inputs, qualified joint errors, all consumers compatible, minimum hold and conversion admission; see model row",
+        "necessary_consequences_must_remain": true
+      },
+      {
+        "model_id": "finance_tax_debt_equity",
+        "minimum_credible": "逐账户权益、税基、原票到期及余数",
+        "equivalent_candidate": "解析应计和固定顺序分页",
+        "approximate_candidate": null,
+        "qualification": "not_implemented_or_not_qualified",
+        "upgrade_condition": "source invalidation, threshold overlap, residual or required explanation coverage; see model row",
+        "downgrade_condition": "stable inputs, qualified joint errors, all consumers compatible, minimum hold and conversion admission; see model row",
+        "necessary_consequences_must_remain": true
+      },
+      {
+        "model_id": "service_hazard",
+        "minimum_credible": "资格优先级、实际占用及返回完成",
+        "equivalent_candidate": "候选合批和稳定占用积分",
+        "approximate_candidate": "需求和等待预测",
+        "qualification": "not_implemented_or_not_qualified",
+        "upgrade_condition": "source invalidation, threshold overlap, residual or required explanation coverage; see model row",
+        "downgrade_condition": "stable inputs, qualified joint errors, all consumers compatible, minimum hold and conversion admission; see model row",
+        "necessary_consequences_must_remain": true
+      },
+      {
+        "model_id": "construction_maintenance",
+        "minimum_credible": "实际进度工料、养护磨损及故障义务",
+        "equivalent_candidate": "同工况积分和相容设备包",
+        "approximate_candidate": "未来风险",
+        "qualification": "not_implemented_or_not_qualified",
+        "upgrade_condition": "source invalidation, threshold overlap, residual or required explanation coverage; see model row",
+        "downgrade_condition": "stable inputs, qualified joint errors, all consumers compatible, minimum hold and conversion admission; see model row",
+        "necessary_consequences_must_remain": true
+      },
+      {
+        "model_id": "environment_nature",
+        "minimum_credible": "完整场源窗、积分峰值及暴露覆盖",
+        "equivalent_candidate": "保数值切点合dispatch和合格halo增量",
+        "approximate_candidate": "有资格场／受体策略",
+        "qualification": "not_implemented_or_not_qualified",
+        "upgrade_condition": "source invalidation, threshold overlap, residual or required explanation coverage; see model row",
+        "downgrade_condition": "stable inputs, qualified joint errors, all consumers compatible, minimum hold and conversion admission; see model row",
+        "necessary_consequences_must_remain": true
+      },
+      {
+        "model_id": "need_satisfaction_migration",
+        "minimum_credible": "实际来源、平滑锚冷却及已发生抽样",
+        "equivalent_candidate": "相同dt平滑和同属性合批",
+        "approximate_candidate": "倾向预测",
+        "qualification": "not_implemented_or_not_qualified",
+        "upgrade_condition": "source invalidation, threshold overlap, residual or required explanation coverage; see model row",
+        "downgrade_condition": "stable inputs, qualified joint errors, all consumers compatible, minimum hold and conversion admission; see model row",
+        "necessary_consequences_must_remain": true
+      },
+      {
+        "model_id": "law_governance",
+        "minimum_credible": "权限法定时点、通知救济及证据",
+        "equivalent_candidate": "到期分页和有效规则缓存",
+        "approximate_candidate": null,
+        "qualification": "not_implemented_or_not_qualified",
+        "upgrade_condition": "source invalidation, threshold overlap, residual or required explanation coverage; see model row",
+        "downgrade_condition": "stable inputs, qualified joint errors, all consumers compatible, minimum hold and conversion admission; see model row",
+        "necessary_consequences_must_remain": true
+      },
+      {
+        "model_id": "regional_events_persistence",
+        "minimum_credible": "双钟、闭城义务、水位游标及恢复根",
+        "equivalent_candidate": "履约积分、分页和流式保存",
+        "approximate_candidate": "带age的快照预测；必要履约不近似",
+        "qualification": "not_implemented_or_not_qualified",
+        "upgrade_condition": "source invalidation, threshold overlap, residual or required explanation coverage; see model row",
+        "downgrade_condition": "stable inputs, qualified joint errors, all consumers compatible, minimum hold and conversion admission; see model row",
+        "necessary_consequences_must_remain": true
+      }
+    ],
+    "dependency_rule_required_fields": [
+      "consumer_strategy_scope",
+      "producer_allowed_strategies_or_capability_predicate",
+      "units_versions",
+      "space_time_coverage",
+      "maximum_age",
+      "error_and_peak_evidence",
+      "invalidation_trigger",
+      "on_incompatibility"
+    ],
+    "selection": "dependency-closed compatible strategy set inside shared CPU/GPU/memory budget; shared producer charged once",
+    "switch": "publish related compatible bindings at complete boundary only after all conversions validate; no partial binding",
+    "cycles": "explicit finite joint solver with frozen inputs, termination, iteration and error qualification; otherwise blocked",
+    "fallback": "lowest credible compatible set; if unaffordable reduce actual speed or backpressure, preserve obligations",
+    "cycle_iteration_budget": null,
+    "cross_model_error_qualification": null
+  }
+}

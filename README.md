@@ -1,6 +1,12 @@
 # MyCity
 
-仓库发布版本：`v0.5.140`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.143`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.143补充[模型策略与依赖兼容契约](docs/model-granularity-and-convergence.md#budget-3模型策略与依赖兼容契约)：14类模型明确最低可信、等价优化、允许误差和升降档；以兼容策略组合协调上下游和循环依赖，在总预算内让额但不漏必要业务后果。仅设计／配置与验收补充，未实现或运行测试。
+
+v0.5.142将[全游戏共同预算与承载约束](docs/city-scale-and-adaptive-budget.md#0-首要产品约束全游戏预算推进目标与业务承载)置于设计首位：所有产品进程与GPU共用预算，联合规定推进／响应目标与业务负载，并定义拥堵等局部复杂情况的加额、让额及超额减速；具体承载上限、CPU/GPU时间额留实测。仅文档／配置补充，M0标准和历史证据不变。
+
+v0.5.141补齐[城市规模与运行时自适应预算设计](docs/city-scale-and-adaptive-budget.md)及[校准实施计划](docs/simulation-budget-calibration-plan.md)：15组代表负载草案、14类系统粒度与误差／切换契约、局部控制、CPU/GPU完整成本与共同预算。仅文档和实验JSON，未修改游戏代码或运行编译／基准；M0原冻结负载、normal及8h／真实16GB门不变，人口上限与可持续倍率未测。
 
 v0.5.140归档[固定 full 联合正式尝试的提前失败](docs/evidence/m0-t13a-joint-formal-01/STATUS.md)：实际 1,226 秒后系统压力触发原保护，8h 未完成；normal footprint 仍超门且存在外部编译污染。原件保留，真实16GB仍未测，不宣布M0通过。
 

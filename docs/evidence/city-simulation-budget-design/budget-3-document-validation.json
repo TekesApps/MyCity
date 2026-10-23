@@ -1,0 +1,26 @@
+{
+  "revision": "BUDGET-3",
+  "release": "v0.5.143",
+  "base_commit": "5994340b617dbd561db0c064a132c4e4427a7306",
+  "kind": "document_only_static_validation",
+  "checks": [
+    "all changes limited to README/docs",
+    "JSON parses; 15 representative cases retained",
+    "14 unique model strategy cards cover minima, equivalent/approximate candidates and upgrade/downgrade gates",
+    "finance and legal authoritative strategies have no approximate candidate",
+    "unqualified cyclic solving and error composition remain blocked",
+    "local links and anchors"
+  ],
+  "local_targets_checked": 204,
+  "results": "passed",
+  "implementation_or_runtime_validation": "not_run",
+  "m0_contract": "unchanged",
+  "inputs_sha256": {
+    "README.md": "3c24a6082aceb9db8ad5703a3ee4eec967d1bb554dd7a3bf741a8744fe30cac2",
+    "docs/PRODUCT_BLUEPRINT.md": "e35261f6f9e5414478fc34eba03075395e77323992fd8cd72238d3f999bf1d59",
+    "docs/city-scale-and-adaptive-budget.md": "458d937cbef46971824038330e7cbbd43e52dde2efe05180eea372a63494d5ae",
+    "docs/inputs/simulation-budget/plan-v1.json": "2f374984c42819f9d012e6a2ef0c558cc73f2e2b7f16d95f33fdbd7edcb0d062",
+    "docs/model-granularity-and-convergence.md": "1c74437719300df4aa10c230a73b43d6d55c780f500af14621ccc685648422ef",
+    "docs/simulation-budget-calibration-plan.md": "a4d4887ecde65afddd376f3604c3ca506327328d67febc95d0309971ecb142e3"
+  }
+}
