@@ -1,0 +1,18 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/spatial-transport-current/crates/city-core)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity-core-work/spatial-transport-current/crates/city-map)
+error[E0618]: expected function, found `Scene`
+   --> crates/city-map/tests/traffic_adapter.rs:145:17
+    |
+17  | fn scene(door_can_enter: bool) -> Scene {
+    | --------------------------------------- this function of the same name is available here, but it's shadowed by the local binding
+...
+134 |     let scene = scene(true);
+    |         ----- `scene` has type `Scene`
+...
+145 |     let scene = scene(false);
+    |                 ^^^^^-------
+    |                 |
+    |                 call expression requires function
+
+For more information about this error, try `rustc --explain E0618`.
+error: could not compile `mycity-map` (test "traffic_adapter") due to 1 previous error

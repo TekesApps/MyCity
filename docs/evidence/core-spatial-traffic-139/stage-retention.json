@@ -1,0 +1,21 @@
+{
+  "duplicate_archives": [
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/174-spatial-strict-final/source.zip",
+      "prior_allocated": 4468736,
+      "all_bytes_retained_as_hardlink_to": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/175-spatial-final-tests/source.zip",
+      "sha256": "f542c75aa9a8986651db9f66fbadbd006883ec3e583ea719144495f2538c5506"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/176-spatial-fmt/source.zip",
+      "prior_allocated": 4468736,
+      "all_bytes_retained_as_hardlink_to": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/175-spatial-final-tests/source.zip",
+      "sha256": "f542c75aa9a8986651db9f66fbadbd006883ec3e583ea719144495f2538c5506"
+    }
+  ],
+  "removed_duplicate_file_allocation": 8937472,
+  "observed_available_delta": 8912896,
+  "not_APFS_exclusive_reclaim": true,
+  "all_business_and_restore_originals": "retained",
+  "shared_target": "reused, no independent target; next D/E validation still depends on cache"
+}

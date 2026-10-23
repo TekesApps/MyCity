@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "cargo",
+    "test",
+    "--release",
+    "--locked",
+    "--offline",
+    "-p",
+    "mycity-map",
+    "--test",
+    "traffic_adapter",
+    "--",
+    "--nocapture"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/spatial-transport-current",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-23T03:18:52.303844+00:00",
+  "source_manifest_sha256": "6faeb01ec96109e72af88ef0566e8c7f8510bbbe0bbbb75b6e56b4a629546f93"
+}

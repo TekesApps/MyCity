@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.138`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.139`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.139完成[有限空间步行接入真实Store交易](docs/evidence/core-spatial-traffic-139/STATUS.md)：实际Scene转换、OD/proof和销量因果，开放40/封路0/单向门0；冷恢复及精确重放通过。同源6测试、strict/fmt、独立账物/proof及进程资源观察通过；仅三节点微型场景，同Store运行时空间改造和其他交通方式仍未实现，不称F完整或M0通过。
 
 v0.5.138完成[有限真实企业清算与28日Store场景](docs/evidence/core-business-liquidation-138/STATUS.md)：库存销售后实付工资/债并关闭、现金不足保留债务，WAL/checkpoint冷恢复与重放通过。最终同源170测试、严格检查、五CLI及三组独立检查点账物核对通过；此前455完整回归分来源列示。动态税、股权残值、住宅及空间交通联动尚未完成，原M0/8h/16GB门保持未完成。
 

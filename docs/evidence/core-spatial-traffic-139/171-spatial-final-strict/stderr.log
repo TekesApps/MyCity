@@ -1,0 +1,43 @@
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/spatial-transport-current/crates/city-core)
+    Checking mycity-role-allocator v0.1.0 (/Users/frankqin/dev/MyCity-core-work/spatial-transport-current/crates/city-role-allocator)
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity-core-work/spatial-transport-current/crates/city-headless)
+    Checking mycity-map v0.1.0 (/Users/frankqin/dev/MyCity-core-work/spatial-transport-current/crates/city-map)
+    Checking mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/spatial-transport-current/crates/city-storage)
+error: used `assert_eq!` with a literal bool
+   --> crates/city-storage/tests/spatial_transport_market.rs:345:5
+    |
+345 |     assert_eq!(proof.assignment.matches(&proof.opening), true);
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#bool_assert_comparison
+    = note: `-D clippy::bool-assert-comparison` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::bool_assert_comparison)]`
+help: replace it with `assert!(..)`
+    |
+345 -     assert_eq!(proof.assignment.matches(&proof.opening), true);
+345 +     assert!(proof.assignment.matches(&proof.opening));
+    |
+
+error: use of `format!` to build up a string from an iterator
+   --> crates/city-storage/tests/spatial_transport_market.rs:438:5
+    |
+438 |     digest.iter().map(|byte| format!("{byte:02x}")).collect()
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+help: call `fold` instead
+   --> crates/city-storage/tests/spatial_transport_market.rs:438:19
+    |
+438 |     digest.iter().map(|byte| format!("{byte:02x}")).collect()
+    |                   ^^^
+help: ... and use the `write!` macro here
+   --> crates/city-storage/tests/spatial_transport_market.rs:438:30
+    |
+438 |     digest.iter().map(|byte| format!("{byte:02x}")).collect()
+    |                              ^^^^^^^^^^^^^^^^^^^^^
+    = note: this can be written more efficiently by appending to a `String` directly
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#format_collect
+    = note: `-D clippy::format-collect` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::format_collect)]`
+
+error: could not compile `mycity-storage` (test "spatial_transport_market") due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...

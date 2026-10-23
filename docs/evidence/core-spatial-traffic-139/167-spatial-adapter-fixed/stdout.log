@@ -1,0 +1,19 @@
+
+running 5 tests
+test rejects_wrong_map_nearby_terminal_wrong_height_and_missing_authority ... FAILED
+test rejects_unsupported_modes_and_bad_facility_capacities ... FAILED
+test capacity_and_closed_facilities_change_assignment_results ... FAILED
+test explicit_geometry_and_facility_config_produce_transportable_walk_flow ... FAILED
+test directionality_and_entrance_adjustments_remove_real_graph_paths ... FAILED
+
+failures:
+
+failures:
+    capacity_and_closed_facilities_change_assignment_results
+    directionality_and_entrance_adjustments_remove_real_graph_paths
+    explicit_geometry_and_facility_config_produce_transportable_walk_flow
+    rejects_unsupported_modes_and_bad_facility_capacities
+    rejects_wrong_map_nearby_terminal_wrong_height_and_missing_authority
+
+test result: FAILED. 0 passed; 5 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

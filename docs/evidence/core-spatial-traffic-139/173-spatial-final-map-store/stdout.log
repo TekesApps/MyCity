@@ -1,0 +1,16 @@
+
+running 5 tests
+test rejects_wrong_map_nearby_terminal_wrong_height_and_missing_authority ... ok
+test explicit_geometry_and_facility_config_produce_transportable_walk_flow ... ok
+test capacity_and_closed_facilities_change_assignment_results ... ok
+test rejects_unsupported_modes_and_bad_facility_capacities ... ok
+test directionality_and_entrance_adjustments_remove_real_graph_paths ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 1 test
+test spatial_walk_access_changes_store_market_arrival_trade_and_survives_cold_replay ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.66s
+

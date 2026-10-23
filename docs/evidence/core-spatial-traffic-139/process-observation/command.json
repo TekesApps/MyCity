@@ -1,0 +1,27 @@
+{
+  "argv": [
+    "/usr/bin/time",
+    "-l",
+    "-o",
+    "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/177-spatial-process-observation/time.txt",
+    "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/175-spatial-final-tests/executables/c72c2519b8a7229b8095bd15cfdff250e458404705525f9a6b195bb91334b83d/spatial_transport_market-7fe912451cd65917",
+    "--exact",
+    "spatial_walk_access_changes_store_market_arrival_trade_and_survives_cold_replay",
+    "--nocapture"
+  ],
+  "fixed": {
+    "source_sha256": "5b3b290e8207cde98c46e63170c7d32ba73393ac88502b6ff00a9f682af70d86",
+    "source_files": 272,
+    "fixed_input_files": 284,
+    "binary": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/175-spatial-final-tests/executables/c72c2519b8a7229b8095bd15cfdff250e458404705525f9a6b195bb91334b83d/spatial_transport_market-7fe912451cd65917",
+    "binary_sha256": "c72c2519b8a7229b8095bd15cfdff250e458404705525f9a6b195bb91334b83d",
+    "source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/175-spatial-final-tests/source.zip",
+    "source_zip_sha256": "f542c75aa9a8986651db9f66fbadbd006883ec3e583ea719144495f2538c5506",
+    "source_identity_method": "build.rs path-string sort and framed UTF-8 path/length/content hashing; archive hash checked",
+    "storage": "external HP P900 USB/APFS SSD",
+    "embedded_source_check": "not performed for test harness"
+  },
+  "includes": "one test harness running three micro-worlds sequentially",
+  "performance_acceptance": false,
+  "storage": "external HP P900 USB/APFS SSD"
+}

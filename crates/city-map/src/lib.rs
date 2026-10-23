@@ -7,6 +7,7 @@ pub mod gpu_layout;
 pub mod probe;
 pub mod scene;
 pub mod terrain;
+pub mod traffic_adapter;
 
 pub const SCHEMA: &str = "mycity-m0-spatial-v1";
 pub const XY_LIMIT_CM: i64 = 1_000_000_000;

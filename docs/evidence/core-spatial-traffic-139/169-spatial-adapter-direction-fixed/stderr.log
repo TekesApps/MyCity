@@ -1,0 +1,3 @@
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity-core-work/spatial-transport-current/crates/city-map)
+    Finished `release` profile [optimized] target(s) in 3.98s
+     Running tests/traffic_adapter.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/traffic_adapter-c7a434287f0135da)

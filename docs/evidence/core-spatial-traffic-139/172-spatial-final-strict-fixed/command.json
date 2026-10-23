@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "cargo",
+    "clippy",
+    "--release",
+    "--locked",
+    "--offline",
+    "--workspace",
+    "--all-targets",
+    "--",
+    "-D",
+    "warnings"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/spatial-transport-current",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-23T03:31:22.035116+00:00",
+  "source_manifest_sha256": "5bb31a18bb448c8b7f41ff3d498843f44ff394df0ef31c6eb745c62dfd439828"
+}

@@ -520,3 +520,6 @@ v0.5.119：[交通履约／营业额税主线集成](evidence/core-transport-tax
 
 
 v0.5.138：[真实有限企业退出与28日Store](evidence/core-business-liquidation-138/STATUS.md)。最终同源146 core+21 storage库+3退出Store及strict/fmt、五CLI通过；此前455全回归独立来源列示。实际工资/债清偿及Closed冷恢复、重放完成；三组28日保留未售库存/正残值并等待，不能叫全部退出完结。动态税、D持久股权与清算剩余、E住宅、F空间交通及完整联合仍未完成。CLI owned4105728B<4MiB，微型RSS/磁盘另列；不沿用旧M0物理结果到新来源。M0最新smoke见v137，clean/normal未通过、8h未启动、真实16GB not_run。
+
+
+v0.5.139：[有限空间步行与实际交易](evidence/core-spatial-traffic-139/STATUS.md)。同源map5/Store1及strict/fmt通过，三份独立world开放/封路/单向门带来销量40/0/0，checkpoint/冷恢复/重放和独立proof/账物核对通过。三节点进程CPU/RSS/盘占用另列，不是整城负载；同Store空间资产/图版本编辑、桥隧与其他模式仍未实现，F/0.1/M0不宣称完整。原8h/16GB门继续保留。

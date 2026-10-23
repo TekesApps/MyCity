@@ -1,0 +1,10 @@
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity-core-work/spatial-transport-current/crates/city-map)
+    Finished `release` profile [optimized] target(s) in 1.64s
+     Running tests/traffic_adapter.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/traffic_adapter-c7a434287f0135da)
+
+thread 'directionality_and_entrance_adjustments_remove_real_graph_paths' panicked at crates/city-map/tests/traffic_adapter.rs:161:5:
+assertion `left == right` failed
+  left: 3
+ right: 0
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: test failed, to rerun pass `-p mycity-map --test traffic_adapter`

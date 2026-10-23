@@ -1,0 +1,13 @@
+{
+  "final_source": "5b3b290e8207cde98c46e63170c7d32ba73393ac88502b6ff00a9f682af70d86",
+  "map_tests": 5,
+  "store_integration_tests": 1,
+  "store_scenarios_inside_test": 3,
+  "source_unchanged": true,
+  "strict_all_workspace_targets": "passed",
+  "fmt": "passed",
+  "independent_proof_checkpoint_cash_stock_cases": 3,
+  "full_F": "not_complete_runtime_spatial_edits_and_other_modes_not_implemented",
+  "M0": "not_accepted",
+  "real_16GB": "not_run"
+}

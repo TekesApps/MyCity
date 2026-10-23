@@ -88,3 +88,6 @@ docs/evidence/m0-t13a-observer-source-136/old-control/frame_codec.py whitespace=
 
 # Preserve v138 captured validation logs verbatim.
 docs/evidence/core-business-liquidation-138/**/*.log whitespace=-blank-at-eof,-blank-at-eol
+
+# Preserve v139 raw failed/successful test logs verbatim.
+docs/evidence/core-spatial-traffic-139/**/*.log whitespace=-blank-at-eof,-blank-at-eol

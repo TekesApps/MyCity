@@ -1,0 +1,12 @@
+[
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/traffic_adapter-74e3a26bc466cb60",
+    "sha256": "22f35a3179eb2b6bd6cb852b8876054a5d0ae1a70a3bca48e2962770b5882f27",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/executables/22f35a3179eb2b6bd6cb852b8876054a5d0ae1a70a3bca48e2962770b5882f27/traffic_adapter-74e3a26bc466cb60"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/spatial_transport_market-7fe912451cd65917",
+    "sha256": "c72c2519b8a7229b8095bd15cfdff250e458404705525f9a6b195bb91334b83d",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/executables/c72c2519b8a7229b8095bd15cfdff250e458404705525f9a6b195bb91334b83d/spatial_transport_market-7fe912451cd65917"
+  }
+]
