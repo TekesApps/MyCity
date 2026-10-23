@@ -1,0 +1,59 @@
+{
+  "endurance_1800_seconds": "not_run",
+  "memory_16gb_gate": "not_run",
+  "numerical_comparison": "same_cpu_full_state_exact_not_independent_algorithm",
+  "schema": "mycity-sim-probe-v1",
+  "source_sha256": "6bd52483c23818c747bfb178248400b3cf5dd079549ab3a2d4d1f846c781c0ca",
+  "wall_seconds": 2.957981959,
+  "whole_process_group_measurement": "not_run",
+  "cases": [
+    {
+      "case": "baseline",
+      "persistent_reopen_verified": true,
+      "complete_air_state_sha256": "bf83c94575957c72b9340a087add4895776b5829d0922f237777c2de53f5e7e3",
+      "business_without_revision_sha256": "f791c3fed82ff160e428ca926047b024eba8cfb76fb8e06236921f716c33bdc3"
+    },
+    {
+      "case": "worker_sources",
+      "persistent_reopen_verified": true,
+      "complete_air_state_sha256": "bf83c94575957c72b9340a087add4895776b5829d0922f237777c2de53f5e7e3",
+      "business_without_revision_sha256": "f791c3fed82ff160e428ca926047b024eba8cfb76fb8e06236921f716c33bdc3"
+    },
+    {
+      "case": "worker_cells",
+      "persistent_reopen_verified": true,
+      "complete_air_state_sha256": "bf83c94575957c72b9340a087add4895776b5829d0922f237777c2de53f5e7e3",
+      "business_without_revision_sha256": "f791c3fed82ff160e428ca926047b024eba8cfb76fb8e06236921f716c33bdc3"
+    },
+    {
+      "case": "sim_worker_cells",
+      "persistent_reopen_verified": true,
+      "complete_air_state_sha256": "bf83c94575957c72b9340a087add4895776b5829d0922f237777c2de53f5e7e3",
+      "business_without_revision_sha256": "f791c3fed82ff160e428ca926047b024eba8cfb76fb8e06236921f716c33bdc3"
+    },
+    {
+      "case": "sim_leased",
+      "persistent_reopen_verified": true,
+      "complete_air_state_sha256": "bf83c94575957c72b9340a087add4895776b5829d0922f237777c2de53f5e7e3",
+      "business_without_revision_sha256": "f791c3fed82ff160e428ca926047b024eba8cfb76fb8e06236921f716c33bdc3"
+    },
+    {
+      "case": "sim_asset",
+      "persistent_reopen_verified": true,
+      "complete_air_state_sha256": "bf83c94575957c72b9340a087add4895776b5829d0922f237777c2de53f5e7e3",
+      "business_without_revision_sha256": "f791c3fed82ff160e428ca926047b024eba8cfb76fb8e06236921f716c33bdc3"
+    },
+    {
+      "case": "sim_committed_reply",
+      "persistent_reopen_verified": true,
+      "complete_air_state_sha256": "bf83c94575957c72b9340a087add4895776b5829d0922f237777c2de53f5e7e3",
+      "business_without_revision_sha256": "f791c3fed82ff160e428ca926047b024eba8cfb76fb8e06236921f716c33bdc3"
+    },
+    {
+      "case": "cancel_retry",
+      "persistent_reopen_verified": true,
+      "complete_air_state_sha256": "bf83c94575957c72b9340a087add4895776b5829d0922f237777c2de53f5e7e3",
+      "business_without_revision_sha256": "f791c3fed82ff160e428ca926047b024eba8cfb76fb8e06236921f716c33bdc3"
+    }
+  ]
+}

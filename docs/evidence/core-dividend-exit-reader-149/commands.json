@@ -1,0 +1,178 @@
+[
+  {
+    "label": "299-equity-dividend-liquidation",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-storage",
+        "--test",
+        "equity_dividend_liquidation",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T09:38:34.578157+00:00",
+      "source_manifest_sha256": "5d3bec6a518e9865bdabcba5d7dccf75523fcd9f2c9f7c0475767472eb97badc"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 53.422256374999996,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "300-main-reader-tests",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-headless",
+        "ipc_reader_tests",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T09:39:47.026420+00:00",
+      "source_manifest_sha256": "b69ea05fed995081dd3c97fc8b8161d81c36deb7d01e536407ff28986b92ee0d"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 119.433363875,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "301-main-reader-build",
+    "command": {
+      "argv": [
+        "cargo",
+        "build",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-headless"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T09:42:04.234060+00:00",
+      "source_manifest_sha256": "b69ea05fed995081dd3c97fc8b8161d81c36deb7d01e536407ff28986b92ee0d"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 0.071915583,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "302-main-reader-sim",
+    "command": {
+      "argv": [
+        "/usr/bin/time",
+        "-l",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/301-main-reader-build/executables/f462d9120e4e639d5926bfd593232f967f4eb568e9506127a90efcea5adc0c56/mycity-headless",
+        "sim-probe",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/302-main-reader-sim-world"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T09:42:21.593623+00:00",
+      "source_manifest_sha256": "b69ea05fed995081dd3c97fc8b8161d81c36deb7d01e536407ff28986b92ee0d"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 3.591677667,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "303-reader-dividend-strict",
+    "command": {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "--release",
+        "--workspace",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T09:42:34.560452+00:00",
+      "source_manifest_sha256": "b69ea05fed995081dd3c97fc8b8161d81c36deb7d01e536407ff28986b92ee0d"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 17.639887458,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "304-final-dividend-exit",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-storage",
+        "--test",
+        "equity_dividend_liquidation",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T09:43:04.954031+00:00",
+      "source_manifest_sha256": "b69ea05fed995081dd3c97fc8b8161d81c36deb7d01e536407ff28986b92ee0d"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 0.6768945,
+      "source_unchanged": true
+    }
+  },
+  {
+    "label": "305-reader-dividend-fmt",
+    "command": {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T09:43:48.089920+00:00",
+      "source_manifest_sha256": "b69ea05fed995081dd3c97fc8b8161d81c36deb7d01e536407ff28986b92ee0d"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 0.775527792,
+      "source_unchanged": true
+    }
+  }
+]

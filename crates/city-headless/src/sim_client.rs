@@ -162,7 +162,7 @@ impl Client {
         let input = child.stdin.take();
         let stdout = child.stdout.take().ok_or("sim_stdout")?;
         let (sender, receiver) = mpsc::sync_channel(4);
-        let reader = thread::spawn(move || {
+        let reader = match wire::spawn_ipc_reader("sim-ipc-reader", move || {
             let mut r = BufReader::with_capacity(8192, stdout);
             loop {
                 let result = match wire::frame(&mut r) {
@@ -175,7 +175,18 @@ impl Client {
                     break;
                 }
             }
-        });
+        }) {
+            Ok(reader) => reader,
+            Err(error) => {
+                wire::kill_wait_then(&mut child, |_, pid, status| {
+                    if let Some(s) = supervisor.as_mut() {
+                        s.after_sim_wait(pid, status)?;
+                    }
+                    Ok(())
+                })?;
+                return Err(error);
+            }
+        };
         Ok(Self {
             child,
             supervisor,

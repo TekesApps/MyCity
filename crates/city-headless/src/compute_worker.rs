@@ -16,8 +16,36 @@ use std::{
 
 pub const PROTOCOL: &str = "mycity-air-worker-v1";
 pub const CONTROL_BYTES: usize = 64 * 1024;
+/// IPC readers only decode fixed, non-recursive protocol records (at most one
+/// `CONTROL_BYTES` frame); do not reserve the platform's default thread stack
+/// for each long-lived reader. This is a requested stack reservation, not a
+/// physical-memory credit or a measured RSS reduction.
+pub(crate) const IPC_READER_STACK_BYTES: usize = 512 * 1024;
 pub const DIRECTORY_BYTES: u64 = 32 * 1024 * 1024;
 pub const DIRECTORY_FILES: usize = 32;
+
+pub(crate) fn spawn_ipc_reader(
+    name: &'static str,
+    task: impl FnOnce() + Send + 'static,
+) -> Result<thread::JoinHandle<()>, String> {
+    thread::Builder::new()
+        .name(name.into())
+        .stack_size(IPC_READER_STACK_BYTES)
+        .spawn(task)
+        .map_err(|error| format!("ipc_reader_spawn:{name}:{error}"))
+}
+
+pub(crate) fn kill_wait_then<T>(
+    child: &mut Child,
+    after_wait: impl FnOnce(&mut Child, u32, ExitStatus) -> Result<T, String>,
+) -> Result<T, String> {
+    let pid = child.id();
+    let _ = child.kill();
+    let status = child
+        .wait()
+        .map_err(|error| format!("ipc_reader_child_wait:{error}"))?;
+    after_wait(child, pid, status)
+}
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(deny_unknown_fields)]
@@ -626,12 +654,12 @@ impl Worker {
         pool: Option<&Path>,
     ) -> Result<Self, String> {
         if bounded && pool.is_none() {
-            if let Some((lease, stream)) =
+            if let Some((mut lease, stream)) =
                 crate::normal_pool::broker::Lease::spawn_from_env(root, gated)?
             {
                 let stdout = stream.try_clone().map_err(|e| e.to_string())?;
                 let (sender, receiver) = mpsc::sync_channel(4);
-                let reader = thread::spawn(move || {
+                let reader = match spawn_ipc_reader("worker-ipc-reader", move || {
                     let mut r = BufReader::with_capacity(8192, stdout);
                     loop {
                         let result = match frame(&mut r) {
@@ -646,7 +674,14 @@ impl Worker {
                             break;
                         }
                     }
-                });
+                }) {
+                    Ok(reader) => reader,
+                    Err(error) => {
+                        drop(stream);
+                        lease.stop(true)?;
+                        return Err(error);
+                    }
+                };
                 return Ok(Self {
                     child: None,
                     broker: Some(lease),
@@ -698,7 +733,7 @@ impl Worker {
         let stdin = child.stdin.take().map(Input::Pipe);
         let stdout = child.stdout.take().ok_or("worker_stdout")?;
         let (sender, receiver) = mpsc::sync_channel(4);
-        let reader = thread::spawn(move || {
+        let reader = match spawn_ipc_reader("worker-ipc-reader", move || {
             let mut r = BufReader::with_capacity(8192, stdout);
             loop {
                 let result = match frame(&mut r) {
@@ -711,7 +746,18 @@ impl Worker {
                     break;
                 }
             }
-        });
+        }) {
+            Ok(reader) => reader,
+            Err(error) => {
+                kill_wait_then(&mut child, |_, pid, status| {
+                    if let Some(grant) = pool_grant.as_mut() {
+                        grant.after_wait(pid, status)?;
+                    }
+                    Ok(())
+                })?;
+                return Err(error);
+            }
+        };
         Ok(Self {
             child: Some(child),
             broker: None,
@@ -947,5 +993,90 @@ mod fixed_asset_tests {
             crate::worker_slots::OWNER_BYTES
         );
         fs::remove_dir_all(root).unwrap();
+    }
+}
+
+#[cfg(test)]
+mod ipc_reader_tests {
+    use super::*;
+    use std::io::Write;
+    use std::os::unix::net::UnixStream;
+
+    #[test]
+    fn ipc_reader_uses_bounded_stack_reads_a_maximum_frame_and_exits_on_eof() {
+        assert_eq!(IPC_READER_STACK_BYTES, 512 * 1024);
+        let (mut writer, reader_stream) = UnixStream::pair().unwrap();
+        let reader = spawn_ipc_reader("ipc-reader-contract-test", move || {
+            let mut buffered = BufReader::with_capacity(8192, reader_stream);
+            let payload = frame(&mut buffered).unwrap().unwrap();
+            assert_eq!(payload.len(), CONTROL_BYTES);
+            let event: Event = serde_json::from_slice(&payload).unwrap();
+            assert_eq!(event.protocol, PROTOCOL);
+            assert!(frame(&mut buffered).unwrap().is_none());
+        })
+        .unwrap();
+
+        let event = Event {
+            protocol: PROTOCOL.into(),
+            ticket: Ticket {
+                world: 1,
+                branch: 1,
+                job: 1,
+                incarnation: 1,
+                generation: 1,
+                attempt: 1,
+                base_revision: 1,
+                field_version: 1,
+                start: 0,
+                end: 1,
+                rules_sha256: "0".repeat(64),
+                source_sha256: "0".repeat(64),
+                input_sha256: "0".repeat(64),
+                checkpoint_sha256: "0".repeat(64),
+            },
+            pid: 1,
+            stage: Stage::Complete,
+            candidate_sha256: Some("0".repeat(64)),
+            candidate_bytes: CONTROL_BYTES,
+            cursor: None,
+        };
+        let mut bytes = serde_json::to_vec(&event).unwrap();
+        assert!(bytes.len() < CONTROL_BYTES - 1);
+        // A bounded, ignored JSON string reaches the maximum accepted frame size.
+        bytes.pop();
+        // The total framed bytes include both the closing brace and newline.
+        bytes.extend(std::iter::repeat(b' ').take(CONTROL_BYTES - 2 - bytes.len()));
+        bytes.push(b'}');
+        bytes.push(b'\n');
+        writer.write_all(&bytes).unwrap();
+        drop(writer);
+        reader.join().unwrap();
+    }
+
+    #[test]
+    fn reader_spawn_failure_cleanup_kills_and_waits_owned_child() {
+        let mut child = Command::new("/bin/sleep").arg("30").spawn().unwrap();
+        let child_id = child.id();
+        let reaped = kill_wait_then(&mut child, |child, pid, status| {
+            assert_eq!(pid, child_id);
+            assert!(!status.success());
+            assert!(child.try_wait().unwrap().is_some());
+            Ok(true)
+        })
+        .unwrap();
+        assert!(reaped);
+    }
+
+    #[test]
+    fn ipc_reader_rejects_oversized_and_truncated_frames() {
+        let oversized = vec![b'x'; CONTROL_BYTES + 1];
+        assert_eq!(
+            frame(&mut BufReader::new(std::io::Cursor::new(oversized))).unwrap_err(),
+            "worker_control_bytes"
+        );
+        assert_eq!(
+            frame(&mut BufReader::new(std::io::Cursor::new(b"partial"))).unwrap_err(),
+            "worker_truncated_frame"
+        );
     }
 }

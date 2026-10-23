@@ -1,0 +1,12 @@
+{
+  "source_sha256": "6bd52483c23818c747bfb178248400b3cf5dd079549ab3a2d4d1f846c781c0ca",
+  "source_files": 285,
+  "fixed_input_files": 297,
+  "binary": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/301-main-reader-build/executables/f462d9120e4e639d5926bfd593232f967f4eb568e9506127a90efcea5adc0c56/mycity-headless",
+  "binary_sha256": "f462d9120e4e639d5926bfd593232f967f4eb568e9506127a90efcea5adc0c56",
+  "source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/301-main-reader-build/source.zip",
+  "source_zip_sha256": "1ce596870975e26da952bfa5b08aaed7983b6c3d5468f4777621cb5e7768abcc",
+  "source_identity_method": "build.rs path-string sort and framed UTF-8 path/length/content hashing; archive hash checked",
+  "storage": "external HP P900 USB/APFS SSD",
+  "embedded_source_check": "actual sim-probe report source_sha256 matched fixed archive source identity"
+}

@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.148`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.149`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.149 verifies [dividend-to-liquidation persistence and the bounded IPC reader](docs/evidence/core-dividend-exit-reader-149/STATUS.md): actual capital return/recovery, three reader tests and eight Sim/worker persistent scenarios on main. No physical-memory saving or original M0 performance pass is claimed.
 
 v0.5.148 verifies the [finite geometry candidate component](docs/evidence/geometry-candidate-148/STATUS.md): 17 release tests, strict/fmt, two actual CLI runs and a reproducible independent planar reference. It does not activate geometry in Store; E recurrence and original M0 performance gates remain incomplete.
 

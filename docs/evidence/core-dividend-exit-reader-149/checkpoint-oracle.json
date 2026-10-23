@@ -1,0 +1,19 @@
+{
+  "checkpoint": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/299-equity-dividend-liquidation/test-artifacts/mycity-equity-dividend-liquidation-91959-0/world/checkpoint-111.json",
+  "sha256": "79d4922d853b62c9a9a126dbfd4b9a4e554cbefc2b902d6552917d4542cdcde8",
+  "checks": {
+    "cash_exact": true,
+    "cash_conserved": true,
+    "dividend45": true,
+    "capital620100": true,
+    "closed": true,
+    "paid_in_by_holder": true
+  },
+  "cash": {
+    "1": 1000075,
+    "2": 799924,
+    "3": 0,
+    "4": 1200001
+  },
+  "scope": "actual retained checkpoint, independent decoding and literal integer account oracle; not a replay verifier"
+}
