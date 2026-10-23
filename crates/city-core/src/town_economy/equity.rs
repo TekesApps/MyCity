@@ -5,8 +5,7 @@
 //! accounting close, creditor protections and operation receipt before calling its mutation
 //! function. A receipt identifier is a link to that authority, never proof by itself.
 
-use crate::units::Money;
-use serde::de::{SeqAccess, Visitor};
+use crate::{model_rows::Record, town_runtime::FixedRows, units::Money};
 use serde::{Deserialize, Serialize};
 use std::fmt;
 
@@ -16,55 +15,6 @@ pub const MAX_DIRECT_SHAREHOLDERS: usize = 8;
 pub const WORLD_EQUITY_RELATION_BUDGET: usize = 8192;
 /// One game currency unit is 100 cents. The initial policy issues one share per unit.
 pub const INITIAL_CENTS_PER_SHARE: i64 = 100;
-
-struct BoundedHolders(Vec<EquityHolder>);
-
-impl<'de> Deserialize<'de> for BoundedHolders {
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-    where
-        D: serde::Deserializer<'de>,
-    {
-        struct HolderVisitor;
-
-        impl<'de> Visitor<'de> for HolderVisitor {
-            type Value = BoundedHolders;
-
-            fn expecting(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-                write!(
-                    formatter,
-                    "at most {MAX_DIRECT_SHAREHOLDERS} equity holders"
-                )
-            }
-
-            fn visit_seq<A>(self, mut sequence: A) -> Result<Self::Value, A::Error>
-            where
-                A: SeqAccess<'de>,
-            {
-                let capacity = sequence
-                    .size_hint()
-                    .unwrap_or(0)
-                    .min(MAX_DIRECT_SHAREHOLDERS);
-                let mut holders = Vec::with_capacity(capacity);
-                while let Some(holder) = sequence.next_element()? {
-                    if holders.len() == MAX_DIRECT_SHAREHOLDERS {
-                        return Err(serde::de::Error::custom("equity_holder_limit"));
-                    }
-                    holders.push(holder);
-                }
-                Ok(BoundedHolders(holders))
-            }
-        }
-
-        deserializer.deserialize_seq(HolderVisitor)
-    }
-}
-
-fn deserialize_holders<'de, D>(deserializer: D) -> Result<Vec<EquityHolder>, D::Error>
-where
-    D: serde::Deserializer<'de>,
-{
-    BoundedHolders::deserialize(deserializer).map(|rows| rows.0)
-}
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
@@ -142,42 +92,28 @@ pub struct EquityHolder {
     pub paid_in: Money,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
+impl Record for EquityHolder {
+    fn inactive() -> Self {
+        Self {
+            party: EquityParty {
+                kind: PartyKind::Person,
+                id: 0,
+            },
+            account: 0,
+            shares: 0,
+            paid_in: Money::ZERO,
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct EquityRegister {
     pub company: u32,
     pub policy: EquityPolicy,
     pub revision: u64,
     pub issued_shares: u64,
-    holders: Vec<EquityHolder>,
-}
-
-impl<'de> Deserialize<'de> for EquityRegister {
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-    where
-        D: serde::Deserializer<'de>,
-    {
-        #[derive(Deserialize)]
-        #[serde(deny_unknown_fields)]
-        struct EncodedRegister {
-            company: u32,
-            policy: EquityPolicy,
-            revision: u64,
-            issued_shares: u64,
-            #[serde(deserialize_with = "deserialize_holders")]
-            holders: Vec<EquityHolder>,
-        }
-
-        let encoded = EncodedRegister::deserialize(deserializer)?;
-        let register = Self {
-            company: encoded.company,
-            policy: encoded.policy,
-            revision: encoded.revision,
-            issued_shares: encoded.issued_shares,
-            holders: encoded.holders,
-        };
-        register.validate().map_err(serde::de::Error::custom)?;
-        Ok(register)
-    }
+    holders: FixedRows<EquityHolder, MAX_DIRECT_SHAREHOLDERS>,
 }
 
 impl EquityRegister {
@@ -191,12 +127,12 @@ impl EquityRegister {
             policy,
             revision: 0,
             issued_shares: 0,
-            holders: Vec::with_capacity(MAX_DIRECT_SHAREHOLDERS),
+            holders: FixedRows::new(),
         })
     }
 
     pub fn holders(&self) -> &[EquityHolder] {
-        &self.holders
+        self.holders.as_slice()
     }
 
     pub fn validate(&self) -> Result<(), EquityError> {
@@ -206,7 +142,7 @@ impl EquityRegister {
         }
         let mut shares = 0_u64;
         let mut previous = None;
-        for holder in &self.holders {
+        for holder in self.holders.as_slice() {
             if holder.party.id == 0 || holder.account == 0 || holder.shares == 0 {
                 return Err(EquityError::InvalidRegister);
             }
@@ -264,6 +200,7 @@ impl EquityRegister {
         }
         let paid_in = self
             .holders
+            .as_slice()
             .iter()
             .find(|holder| holder.party == contribution.party)
             .map(|holder| holder.paid_in)
@@ -272,20 +209,21 @@ impl EquityRegister {
             .map_err(|_| EquityError::Overflow)?;
         let current_shares = self
             .holders
+            .as_slice()
             .iter()
             .find(|holder| holder.party == contribution.party)
             .map_or(0, |holder| holder.shares);
         let updated_shares = current_shares
             .checked_add(contribution.shares)
             .ok_or(EquityError::Overflow)?;
-        let position = match self
+        let existing = self
             .holders
-            .binary_search_by_key(&contribution.party, |holder| holder.party)
-        {
-            Ok(index) => index,
-            Err(index) if self.holders.len() < MAX_DIRECT_SHAREHOLDERS => index,
-            Err(_) => return Err(EquityError::HolderCapExceeded),
-        };
+            .as_slice()
+            .iter()
+            .position(|holder| holder.party == contribution.party);
+        if existing.is_none() && self.holders.len() >= MAX_DIRECT_SHAREHOLDERS {
+            return Err(EquityError::HolderCapExceeded);
+        }
         if contribution.party.kind == PartyKind::Company {
             return Err(EquityError::InvalidContribution);
         }
@@ -296,14 +234,37 @@ impl EquityRegister {
             shares: updated_shares,
             paid_in,
         };
-        if position < self.holders.len() && self.holders[position].party == contribution.party {
-            if self.holders[position].account != contribution.account {
+        if let Some(index) = existing {
+            if self.holders.as_slice()[index].account != contribution.account {
                 return Err(EquityError::AccountBindingChanged);
             }
-            self.holders[position] = holder;
-        } else {
-            self.holders.insert(position, holder);
         }
+        let mut next_holders = FixedRows::new();
+        let mut inserted = false;
+        for current in self.holders.as_slice() {
+            if !inserted && current.party > holder.party {
+                next_holders
+                    .push(holder)
+                    .map_err(|_| EquityError::HolderCapExceeded)?;
+                inserted = true;
+            }
+            if current.party == holder.party {
+                next_holders
+                    .push(holder)
+                    .map_err(|_| EquityError::HolderCapExceeded)?;
+                inserted = true;
+            } else {
+                next_holders
+                    .push(*current)
+                    .map_err(|_| EquityError::HolderCapExceeded)?;
+            }
+        }
+        if !inserted {
+            next_holders
+                .push(holder)
+                .map_err(|_| EquityError::HolderCapExceeded)?;
+        }
+        self.holders = next_holders;
         self.issued_shares = new_total;
         self.revision = next_revision;
         self.validate()
