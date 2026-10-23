@@ -8,6 +8,8 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 pub const CLAIM_LIMIT: usize = 20000;
+/// Bounded provenance only; the actual liability remains in ordinary Claim rows.
+pub const MAX_CLAIM_SOURCES: usize = 256;
 pub const PAYROLL_LIMIT: usize = 64;
 pub const PAGE_LIMIT: u16 = 8192;
 pub const HEAP_LIMIT: usize = 2 * 1024 * 1024;
@@ -202,6 +204,76 @@ pub struct Claim {
     pub principal: Money,
     pub paid: Money,
     pub processed: bool,
+    /// One-based index into Timeline.claim_sources; zero means no trusted provenance.
+    /// Kept compact because this record is reserved CLAIM_LIMIT times.
+    #[serde(default, skip_serializing_if = "is_zero_u32")]
+    pub source_ref: u32,
+}
+// A u32 reference occupies existing alignment slack after the bool on supported 64-bit targets;
+// never regress to a per-Claim heap object or large inline Option.
+const _: () = assert!(std::mem::size_of::<Claim>() <= 48);
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct TaxClaimSource {
+    pub company: u32,
+    pub policy_id: u32,
+    pub kind: crate::town_runtime::TaxKind,
+    pub period: u64,
+    pub settlement_operation_id: u64,
+    pub taxable_basis: Money,
+    pub assessed: Money,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct LoanClaimSource {
+    pub lender: u32,
+    pub borrower: u32,
+    pub principal: Money,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
+pub enum ClaimSource {
+    Tax { details: TaxClaimSource },
+    Loan { details: LoanClaimSource },
+}
+
+/// Sparse provenance row keyed back to the ordinary Timeline Claim. This table is not a
+/// second debt ledger: principal and paid remain authoritative on Claim.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ClaimSourceRecord {
+    pub claim_id: u64,
+    pub source: ClaimSource,
+}
+const _: () = assert!(std::mem::size_of::<ClaimSourceRecord>() <= 64);
+const _: () = assert!(MAX_CLAIM_SOURCES * std::mem::size_of::<ClaimSourceRecord>() <= 16 * 1024);
+impl crate::model_rows::Record for ClaimSourceRecord {
+    fn inactive() -> Self {
+        Self {
+            claim_id: 0,
+            source: ClaimSource::Loan {
+                details: LoanClaimSource {
+                    lender: 0,
+                    borrower: 0,
+                    principal: Money::ZERO,
+                },
+            },
+        }
+    }
+}
+fn empty_claim_sources() -> crate::model_rows::Rows<ClaimSourceRecord, MAX_CLAIM_SOURCES> {
+    crate::model_rows::Rows::new().expect("bounded tax source rows")
+}
+fn claim_sources_is_empty(
+    rows: &crate::model_rows::Rows<ClaimSourceRecord, MAX_CLAIM_SOURCES>,
+) -> bool {
+    rows.is_empty()
+}
+fn is_zero_u32(value: &u32) -> bool {
+    *value == 0
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -222,6 +294,12 @@ pub struct Timeline {
     pub progress: Progress,
     pub claims: crate::model_rows::Rows<Claim, CLAIM_LIMIT>,
     pub payroll: crate::model_rows::Rows<Payroll, PAYROLL_LIMIT>,
+    /// Sparse trusted provenance for generated tax/loan claims; omitted when empty for legacy wire.
+    #[serde(
+        default = "empty_claim_sources",
+        skip_serializing_if = "claim_sources_is_empty"
+    )]
+    pub claim_sources: crate::model_rows::Rows<ClaimSourceRecord, MAX_CLAIM_SOURCES>,
 }
 
 impl crate::model_rows::Record for Claim {
@@ -234,6 +312,7 @@ impl crate::model_rows::Record for Claim {
             principal: Money::ZERO,
             paid: Money::ZERO,
             processed: false,
+            source_ref: 0,
         }
     }
 }
@@ -273,6 +352,7 @@ impl Clone for Timeline {
         self.progress = other.progress;
         self.claims.copy_active_from(&other.claims);
         self.payroll.copy_active_from(&other.payroll);
+        self.claim_sources.copy_active_from(&other.claim_sources);
     }
 }
 impl crate::model_rows::ResidentValue for Timeline {
@@ -350,6 +430,7 @@ impl Timeline {
     pub(crate) fn reset_at(&mut self, now: u64) {
         self.claims.clear();
         self.payroll.clear();
+        self.claim_sources.clear();
         self.progress = Progress {
             target: None,
             at: now,
@@ -377,16 +458,82 @@ impl Timeline {
             },
             claims: crate::model_rows::Rows::new().expect("fixed claims backing"),
             payroll: crate::model_rows::Rows::new().expect("fixed payroll backing"),
+            claim_sources: empty_claim_sources(),
         }
     }
     pub fn owned_bytes(&self) -> usize {
         self.claims.capacity() * std::mem::size_of::<Claim>()
             + self.payroll.capacity() * std::mem::size_of::<Payroll>()
+            + self.claim_sources.capacity() * std::mem::size_of::<ClaimSourceRecord>()
+    }
+    /// Resolve provenance through the bounded sparse table. Claim principal and paid remain
+    /// the authoritative tax amount/outstanding balance.
+    pub fn source_for_claim_id(&self, claim_id: u64) -> Option<ClaimSource> {
+        let claim = self.claims.iter().find(|claim| claim.id == claim_id)?;
+        self.source_for_claim(claim)
+    }
+    /// O(1) provenance lookup when the Timeline Claim record is already in hand.
+    pub fn source_for_claim(&self, claim: &Claim) -> Option<ClaimSource> {
+        let index = usize::try_from(claim.source_ref.checked_sub(1)?).ok()?;
+        let record = self.claim_sources.get(index)?;
+        (record.claim_id == claim.id).then_some(record.source)
+    }
+    pub fn tax_source_for_claim_id(&self, claim_id: u64) -> Option<TaxClaimSource> {
+        match self.source_for_claim_id(claim_id)? {
+            ClaimSource::Tax { details } => Some(details),
+            ClaimSource::Loan { .. } => None,
+        }
+    }
+    pub fn tax_source_for_claim(&self, claim: &Claim) -> Option<TaxClaimSource> {
+        match self.source_for_claim(claim)? {
+            ClaimSource::Tax { details } => Some(details),
+            ClaimSource::Loan { .. } => None,
+        }
+    }
+    pub fn loan_source_for_claim(&self, claim: &Claim) -> Option<LoanClaimSource> {
+        match self.source_for_claim(claim)? {
+            ClaimSource::Loan { details } => Some(details),
+            ClaimSource::Tax { .. } => None,
+        }
+    }
+    /// Append source metadata atomically to the candidate Timeline. A full table refuses the
+    /// settlement; it never drops provenance or the ordinary debt row.
+    pub(crate) fn push_tax_claim_source(
+        &mut self,
+        claim_id: u64,
+        source: TaxClaimSource,
+    ) -> Result<u32, TxError> {
+        self.push_claim_source(claim_id, ClaimSource::Tax { details: source })
+    }
+    pub(crate) fn push_loan_claim_source(
+        &mut self,
+        claim_id: u64,
+        source: LoanClaimSource,
+    ) -> Result<u32, TxError> {
+        self.push_claim_source(claim_id, ClaimSource::Loan { details: source })
+    }
+    fn push_claim_source(&mut self, claim_id: u64, source: ClaimSource) -> Result<u32, TxError> {
+        if claim_id == 0
+            || self.claim_sources.len() >= MAX_CLAIM_SOURCES
+            || self
+                .claim_sources
+                .last()
+                .is_some_and(|row| row.claim_id >= claim_id)
+        {
+            return Err(TxError::WorkingLimit);
+        }
+        let reference =
+            u32::try_from(self.claim_sources.len() + 1).map_err(|_| TxError::Overflow)?;
+        self.claim_sources
+            .try_push(ClaimSourceRecord { claim_id, source })
+            .map_err(|_| TxError::WorkingLimit)?;
+        Ok(reference)
     }
     pub(crate) fn validate(&self) -> Result<(), TxError> {
         let p = self.progress;
         if self.claims.len() > CLAIM_LIMIT
             || self.payroll.len() > PAYROLL_LIMIT
+            || self.claim_sources.len() > MAX_CLAIM_SOURCES
             || self.owned_bytes() > HEAP_LIMIT
             || p.last_complete > p.at
             || p.at - p.last_complete > 3600
@@ -427,6 +574,59 @@ impl Timeline {
                 return Err(TxError::Timeline(Error::Input));
             }
         }
+        for (index, row) in self.claim_sources.iter().enumerate() {
+            let reference = u32::try_from(index + 1).map_err(|_| TxError::Overflow)?;
+            let claim_position = self
+                .claims
+                .binary_search_by_key(&row.claim_id, |claim| claim.id);
+            let source_matches_claim = claim_position.is_ok_and(|position| {
+                let claim = &self.claims[position];
+                if claim.source_ref != reference {
+                    return false;
+                }
+                match row.source {
+                    ClaimSource::Tax { details } => {
+                        claim.payer == details.company
+                            && claim.principal == details.assessed
+                            && details.assessed > Money::ZERO
+                            && details.taxable_basis > Money::ZERO
+                            && details.period > 0
+                            && details.settlement_operation_id > 0
+                            && details
+                                .period
+                                .checked_add(1)
+                                .and_then(|day| day.checked_mul(DAY))
+                                == Some(claim.due)
+                    }
+                    ClaimSource::Loan { details } => {
+                        details.lender != 0
+                            && details.borrower != 0
+                            && details.lender != details.borrower
+                            && details.principal > Money::ZERO
+                            && claim.payer == details.borrower
+                            && claim.payee == details.lender
+                            && claim.principal == details.principal
+                    }
+                }
+            });
+            if row.claim_id == 0
+                || (index > 0 && self.claim_sources[index - 1].claim_id >= row.claim_id)
+                || claim_position.is_err()
+                || !source_matches_claim
+            {
+                return Err(TxError::Timeline(Error::Input));
+            }
+        }
+        for claim in &self.claims {
+            if claim.source_ref != 0
+                && self
+                    .claim_sources
+                    .get((claim.source_ref - 1) as usize)
+                    .is_none_or(|row| row.claim_id != claim.id)
+            {
+                return Err(TxError::Timeline(Error::Input));
+            }
+        }
         for (i, c) in self.payroll.iter().enumerate() {
             if c.spec.id == 0
                 || (i > 0 && self.payroll[i - 1].spec.id >= c.spec.id)
@@ -463,10 +663,14 @@ impl Timeline {
 
 impl crate::restore_into::Restore for Timeline {
     fn restore<'de, D: serde::Deserializer<'de>>(&mut self, d: D) -> Result<(), D::Error> {
+        // A missing sparse table is the legacy wire representation. Clear before decoding so
+        // restoring an older checkpoint into a reused resident cannot retain stale provenance.
+        self.claim_sources.clear();
         crate::restore_into::object!(d,self,Timeline,7u64,{
         progress,0=>Copy,
         claims,1=>Into,
         payroll,2=>Into,
+        claim_sources,3=>Into,
         })?;
         Ok(())
     }
@@ -503,5 +707,113 @@ mod fixed_cycle_decode_tests {
         ] {
             assert!(serde_json::from_str::<Cycle>(bad).is_err(), "{bad}");
         }
+    }
+}
+
+#[cfg(test)]
+mod sparse_tax_source_tests {
+    use super::*;
+
+    fn source() -> TaxClaimSource {
+        TaxClaimSource {
+            company: 7,
+            policy_id: 3,
+            kind: crate::town_runtime::TaxKind::DailyRealizedMarketMargin,
+            period: 1,
+            settlement_operation_id: 41,
+            taxable_basis: Money::new(1_000).unwrap(),
+            assessed: Money::new(50).unwrap(),
+        }
+    }
+
+    #[test]
+    fn legacy_empty_timeline_wire_stays_without_sparse_field() {
+        let timeline = Timeline::new(0);
+        let encoded = serde_json::to_string(&timeline).unwrap();
+        assert!(!encoded.contains("claim_sources"));
+        assert!(!encoded.contains("source_ref"));
+        let decoded: Timeline = serde_json::from_str(&encoded).unwrap();
+        assert_eq!(decoded, timeline);
+        assert!(decoded.claim_sources.is_empty());
+    }
+
+    #[test]
+    fn sparse_tax_source_roundtrips_with_ordinary_claim_as_debt_authority() {
+        let mut timeline = Timeline::new(0);
+        let reference = timeline.push_tax_claim_source(1, source()).unwrap();
+        timeline
+            .claims
+            .try_push(Claim {
+                id: 1,
+                payer: 7,
+                payee: 9,
+                due: 2 * DAY,
+                principal: Money::new(50).unwrap(),
+                paid: Money::ZERO,
+                processed: false,
+                source_ref: reference,
+            })
+            .unwrap();
+        timeline.validate().unwrap();
+        assert_eq!(timeline.tax_source_for_claim_id(1), Some(source()));
+
+        let clone = timeline.clone();
+        assert_eq!(clone, timeline);
+        let encoded = serde_json::to_string(&timeline).unwrap();
+        let decoded: Timeline = serde_json::from_str(&encoded).unwrap();
+        decoded.validate().unwrap();
+        assert_eq!(decoded, timeline);
+        assert_eq!(decoded.claims[0].principal, Money::new(50).unwrap());
+        assert_eq!(decoded.claims[0].paid, Money::ZERO);
+    }
+
+    #[test]
+    fn loan_source_is_distinct_from_tax_and_matches_original_claim_terms() {
+        let mut timeline = Timeline::new(0);
+        let loan = LoanClaimSource {
+            lender: 5,
+            borrower: 7,
+            principal: Money::new(1_000).unwrap(),
+        };
+        let reference = timeline.push_loan_claim_source(1, loan).unwrap();
+        timeline.progress.at = DAY;
+        timeline.progress.last_complete = DAY;
+        timeline
+            .claims
+            .try_push(Claim {
+                id: 1,
+                payer: loan.borrower,
+                payee: loan.lender,
+                due: DAY,
+                principal: loan.principal,
+                paid: loan.principal,
+                processed: true,
+                source_ref: reference,
+            })
+            .unwrap();
+        timeline.validate().unwrap();
+        assert_eq!(
+            timeline.loan_source_for_claim(&timeline.claims[0]),
+            Some(loan)
+        );
+        assert_eq!(timeline.tax_source_for_claim(&timeline.claims[0]), None);
+        let encoded = serde_json::to_string(&timeline).unwrap();
+        let decoded: Timeline = serde_json::from_str(&encoded).unwrap();
+        decoded.validate().unwrap();
+        assert_eq!(decoded, timeline);
+    }
+
+    #[test]
+    fn full_sparse_table_backpressures_without_dropping_existing_sources() {
+        let mut timeline = Timeline::new(0);
+        for claim_id in 1..=MAX_CLAIM_SOURCES as u64 {
+            timeline.push_tax_claim_source(claim_id, source()).unwrap();
+        }
+        assert_eq!(timeline.claim_sources.len(), MAX_CLAIM_SOURCES);
+        assert_eq!(
+            timeline.push_tax_claim_source(MAX_CLAIM_SOURCES as u64 + 1, source()),
+            Err(TxError::WorkingLimit)
+        );
+        assert_eq!(timeline.claim_sources.len(), MAX_CLAIM_SOURCES);
     }
 }

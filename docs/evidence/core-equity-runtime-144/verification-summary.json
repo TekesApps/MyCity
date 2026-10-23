@@ -1,0 +1,234 @@
+{
+  "source": {
+    "source_sha256": "b0e3adb1991b583981550738b77817ee126da0b037a27d610165bc3d66e8c462",
+    "source_files": 275,
+    "fixed_input_files": 287,
+    "binary": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/208-equity-final-cli/executables/2fd3af2d1f407a43cf84505a41bdc8a13cecce2bf79efd04719f626153843b18/town_equity",
+    "binary_sha256": "2fd3af2d1f407a43cf84505a41bdc8a13cecce2bf79efd04719f626153843b18",
+    "source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/208-equity-final-cli/source.zip",
+    "source_zip_sha256": "61b145212ec9a15cccc6964bb21ec974efc7f817216de48be0eb52b5540cd29b",
+    "source_identity_method": "build.rs path-string sort and framed UTF-8 path/length/content hashing; archive hash checked",
+    "storage": "external HP P900 USB/APFS SSD",
+    "embedded_source_check": "not performed for examples"
+  },
+  "final_source_manifests_equal": true,
+  "final_stages": [
+    "205-equity-final-format",
+    "206-equity-final-strict",
+    "207-equity-final-functional",
+    "208-equity-final-cli"
+  ],
+  "test_groups": [
+    162,
+    13,
+    5,
+    5,
+    21,
+    2,
+    1,
+    3
+  ],
+  "test_total": 212,
+  "source_archives": [
+    {
+      "stage": "178-equity-first-check",
+      "archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/178-equity-first-check/source.zip",
+      "archive_bytes": 4586555,
+      "archive_sha256": "3f2dbeb72f04e6473b887c88440f5e7696947f0f2d078d324ed4a85237db91fe",
+      "source_manifest_sha256": "b8913510de709d5f2d36ffe49dc0f5edc24a8dc791d00a77613c75c9145b0a45"
+    },
+    {
+      "stage": "179-equity-first-compile",
+      "archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/179-equity-first-compile/source.zip",
+      "archive_bytes": 4586555,
+      "archive_sha256": "3f2dbeb72f04e6473b887c88440f5e7696947f0f2d078d324ed4a85237db91fe",
+      "source_manifest_sha256": "b8913510de709d5f2d36ffe49dc0f5edc24a8dc791d00a77613c75c9145b0a45"
+    },
+    {
+      "stage": "180-equity-compile-test",
+      "archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/180-equity-compile-test/source.zip",
+      "archive_bytes": 4588346,
+      "archive_sha256": "2203b53fc722c406887199831ec8f64adae5d8d2058c7c493ad1ad04e9d463f5",
+      "source_manifest_sha256": "b19540590f2fcc430066b36db08dd99f1fd667eb0cf0e6ed074b0df123df9941"
+    },
+    {
+      "stage": "181-equity-release-test",
+      "archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/181-equity-release-test/source.zip",
+      "archive_bytes": 4588346,
+      "archive_sha256": "2203b53fc722c406887199831ec8f64adae5d8d2058c7c493ad1ad04e9d463f5",
+      "source_manifest_sha256": "b19540590f2fcc430066b36db08dd99f1fd667eb0cf0e6ed074b0df123df9941"
+    },
+    {
+      "stage": "182-equity-provenance-test",
+      "archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/182-equity-provenance-test/source.zip",
+      "archive_bytes": 4588463,
+      "archive_sha256": "7611241e72bcc5171b82795051dcb223387e7403d74ec30760a8694d47e20a7b",
+      "source_manifest_sha256": "232d5b2aaeeda7e2d05aa65bcd298c91ba892a7e4f7191bf1cb3b5a2116a80aa"
+    },
+    {
+      "stage": "183-equity-genesis-test",
+      "archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/183-equity-genesis-test/source.zip",
+      "archive_bytes": 4590537,
+      "archive_sha256": "be1190e71761d599bb5490bcdb44d9bde179d0c1d425c82398e61df4bcb25769",
+      "source_manifest_sha256": "dc9f532849b96f6c7445b19a24b07cffce21804090ffbbe3956b27644a12d4bf"
+    },
+    {
+      "stage": "184-equity-settlement-test",
+      "archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/184-equity-settlement-test/source.zip",
+      "archive_bytes": 4596312,
+      "archive_sha256": "0850b868713455722e3a17b56b0d9f9c432e5efa3e27f8aa3fa9addacbeda930",
+      "source_manifest_sha256": "af27b8fa80aaa30110263562e1c2e4ffc7d055289b2bd6e1e3dc6e5c766a6071"
+    },
+    {
+      "stage": "185-equity-liquidation-test",
+      "archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/185-equity-liquidation-test/source.zip",
+      "archive_bytes": 4601564,
+      "archive_sha256": "8f7e5365ebc9f33938511190b9ef4feb6425dbacc38ef11bd3b0aa8118b607dc",
+      "source_manifest_sha256": "5f11c0e37ce7464d51b670094fe7afc56dc69fa1ef75891fce57611eedc8a4dc"
+    },
+    {
+      "stage": "186-equity-core-regression",
+      "archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/186-equity-core-regression/source.zip",
+      "archive_bytes": 4601564,
+      "archive_sha256": "8f7e5365ebc9f33938511190b9ef4feb6425dbacc38ef11bd3b0aa8118b607dc",
+      "source_manifest_sha256": "5f11c0e37ce7464d51b670094fe7afc56dc69fa1ef75891fce57611eedc8a4dc"
+    },
+    {
+      "stage": "187-equity-core-regression",
+      "archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/187-equity-core-regression/source.zip",
+      "archive_bytes": 4601892,
+      "archive_sha256": "68b37a2bce54b83751e65bb93453e21b65e6fc0f060819f8696e9abbc20efa4d",
+      "source_manifest_sha256": "d612d4b01b9332e53787b0020f97a8ad0311cc730a0da8585d8818bbb2d39684"
+    },
+    {
+      "stage": "188-equity-strict",
+      "archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/188-equity-strict/source.zip",
+      "archive_bytes": 4603174,
+      "archive_sha256": "51981522e79a9f77d57bc668e593c6d63f16e37892b45e3c0523e1f6c2ffeddd",
+      "source_manifest_sha256": "56022ae70a98577c0120348663227ea76edb042576614e96662c63e6c3f3531d"
+    },
+    {
+      "stage": "190-equity-strict",
+      "archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/190-equity-strict/source.zip",
+      "archive_bytes": 4603857,
+      "archive_sha256": "3f1a851c70406a61e449d3f1b1743d4df24d298e180a79425052edcfcc5c163f",
+      "source_manifest_sha256": "76f0a1a63b4ad41f10cb2335f3beafcdd0df57f8cecc738c26f6503a94f87ea6"
+    },
+    {
+      "stage": "191-equity-strict",
+      "archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/191-equity-strict/source.zip",
+      "archive_bytes": 4603631,
+      "archive_sha256": "78b927d5983901f3989ff806383602c837119beb2f5c8f7957fd37a8dedaea87",
+      "source_manifest_sha256": "45171afa756014d62cddb37f986096adafa9a40b062f3f34dd534090b5eac5ab"
+    },
+    {
+      "stage": "192-equity-strict",
+      "archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/192-equity-strict/source.zip",
+      "archive_bytes": 4603632,
+      "archive_sha256": "efcb77911f3242a11079165e021d5e256a3d319507c9c7e0c1e2cd709b8abf3c",
+      "source_manifest_sha256": "6ee1e6467bad7ff2953cad68f5dc3984cb8087972cb83b77f4bd891568f6b585"
+    },
+    {
+      "stage": "193-equity-final-core",
+      "archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/193-equity-final-core/source.zip",
+      "archive_bytes": 4603632,
+      "archive_sha256": "efcb77911f3242a11079165e021d5e256a3d319507c9c7e0c1e2cd709b8abf3c",
+      "source_manifest_sha256": "6ee1e6467bad7ff2953cad68f5dc3984cb8087972cb83b77f4bd891568f6b585"
+    },
+    {
+      "stage": "194-equity-final-storage",
+      "archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/194-equity-final-storage/source.zip",
+      "archive_bytes": 4603632,
+      "archive_sha256": "efcb77911f3242a11079165e021d5e256a3d319507c9c7e0c1e2cd709b8abf3c",
+      "source_manifest_sha256": "6ee1e6467bad7ff2953cad68f5dc3984cb8087972cb83b77f4bd891568f6b585"
+    },
+    {
+      "stage": "195-equity-final-storage",
+      "archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/195-equity-final-storage/source.zip",
+      "archive_bytes": 4603632,
+      "archive_sha256": "efcb77911f3242a11079165e021d5e256a3d319507c9c7e0c1e2cd709b8abf3c",
+      "source_manifest_sha256": "6ee1e6467bad7ff2953cad68f5dc3984cb8087972cb83b77f4bd891568f6b585"
+    },
+    {
+      "stage": "196-equity-cli-build",
+      "archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/196-equity-cli-build/source.zip",
+      "archive_bytes": 4603632,
+      "archive_sha256": "efcb77911f3242a11079165e021d5e256a3d319507c9c7e0c1e2cd709b8abf3c",
+      "source_manifest_sha256": "6ee1e6467bad7ff2953cad68f5dc3984cb8087972cb83b77f4bd891568f6b585"
+    },
+    {
+      "stage": "198-equity-integrated-libraries",
+      "archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/198-equity-integrated-libraries/source.zip",
+      "archive_bytes": 4637629,
+      "archive_sha256": "30038565110cd0404206e35372508f6836c305b21bdf9103ee36b28e8aa26efb",
+      "source_manifest_sha256": "e2acb8ec6551cf15d7ef5afa700f28631b34616f960c9a1abd7691b566e204b1"
+    },
+    {
+      "stage": "199-equity-integrated-store",
+      "archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/199-equity-integrated-store/source.zip",
+      "archive_bytes": 4637629,
+      "archive_sha256": "30038565110cd0404206e35372508f6836c305b21bdf9103ee36b28e8aa26efb",
+      "source_manifest_sha256": "e2acb8ec6551cf15d7ef5afa700f28631b34616f960c9a1abd7691b566e204b1"
+    },
+    {
+      "stage": "200-equity-integrated-map",
+      "archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/200-equity-integrated-map/source.zip",
+      "archive_bytes": 4637629,
+      "archive_sha256": "30038565110cd0404206e35372508f6836c305b21bdf9103ee36b28e8aa26efb",
+      "source_manifest_sha256": "e2acb8ec6551cf15d7ef5afa700f28631b34616f960c9a1abd7691b566e204b1"
+    },
+    {
+      "stage": "201-equity-integrated-strict",
+      "archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/201-equity-integrated-strict/source.zip",
+      "archive_bytes": 4637629,
+      "archive_sha256": "30038565110cd0404206e35372508f6836c305b21bdf9103ee36b28e8aa26efb",
+      "source_manifest_sha256": "e2acb8ec6551cf15d7ef5afa700f28631b34616f960c9a1abd7691b566e204b1"
+    },
+    {
+      "stage": "202-equity-integrated-cli",
+      "archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/202-equity-integrated-cli/source.zip",
+      "archive_bytes": 4637629,
+      "archive_sha256": "30038565110cd0404206e35372508f6836c305b21bdf9103ee36b28e8aa26efb",
+      "source_manifest_sha256": "e2acb8ec6551cf15d7ef5afa700f28631b34616f960c9a1abd7691b566e204b1"
+    },
+    {
+      "stage": "204-equity-integrated-format",
+      "archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/204-equity-integrated-format/source.zip",
+      "archive_bytes": 4637629,
+      "archive_sha256": "30038565110cd0404206e35372508f6836c305b21bdf9103ee36b28e8aa26efb",
+      "source_manifest_sha256": "e2acb8ec6551cf15d7ef5afa700f28631b34616f960c9a1abd7691b566e204b1"
+    },
+    {
+      "stage": "205-equity-final-format",
+      "archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/205-equity-final-format/source.zip",
+      "archive_bytes": 4637629,
+      "archive_sha256": "61b145212ec9a15cccc6964bb21ec974efc7f817216de48be0eb52b5540cd29b",
+      "source_manifest_sha256": "4602d68d3a16e75adab340d17420f9f5c73876190c018cc191e3819963e54ef3"
+    },
+    {
+      "stage": "206-equity-final-strict",
+      "archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/206-equity-final-strict/source.zip",
+      "archive_bytes": 4637629,
+      "archive_sha256": "61b145212ec9a15cccc6964bb21ec974efc7f817216de48be0eb52b5540cd29b",
+      "source_manifest_sha256": "4602d68d3a16e75adab340d17420f9f5c73876190c018cc191e3819963e54ef3"
+    },
+    {
+      "stage": "207-equity-final-functional",
+      "archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/207-equity-final-functional/source.zip",
+      "archive_bytes": 4637629,
+      "archive_sha256": "61b145212ec9a15cccc6964bb21ec974efc7f817216de48be0eb52b5540cd29b",
+      "source_manifest_sha256": "4602d68d3a16e75adab340d17420f9f5c73876190c018cc191e3819963e54ef3"
+    },
+    {
+      "stage": "208-equity-final-cli",
+      "archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/208-equity-final-cli/source.zip",
+      "archive_bytes": 4637629,
+      "archive_sha256": "61b145212ec9a15cccc6964bb21ec974efc7f817216de48be0eb52b5540cd29b",
+      "source_manifest_sha256": "4602d68d3a16e75adab340d17420f9f5c73876190c018cc191e3819963e54ef3"
+    }
+  ],
+  "world_retention": "all full test and CLI worlds plus failure worlds retained on external SSD",
+  "full_M0": "not_accepted",
+  "real_16GB": "not_run",
+  "debug_default_stack": "failed_retained_180"
+}

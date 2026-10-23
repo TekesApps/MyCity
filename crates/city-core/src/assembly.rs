@@ -15,6 +15,10 @@ pub const MAX_STOCKS: usize = 128;
 pub const MAX_SOURCES: usize = MAX_ACCOUNTS + MAX_STOCKS;
 pub const WORLD_BYTE_BUDGET: usize = 128 * 1024;
 
+fn is_zero_u32(value: &u32) -> bool {
+    *value == 0
+}
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum Role {
@@ -96,6 +100,9 @@ pub(crate) struct Account {
     pub role: Role,
     pub cash: Money,
     pub protected: Money,
+    /// Genesis source for chartered company cash. Zero on legacy/non-chartered accounts.
+    #[serde(default, skip_serializing_if = "is_zero_u32")]
+    pub opening_source_id: u32,
 }
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
 pub(crate) struct Stock {
@@ -108,6 +115,16 @@ pub(crate) struct Stock {
     pub origin_quantity: Quantity,
     pub origin_basis: Money,
     pub offset: Quantity,
+    /// Immutable genesis source for chartered company inventory; zero otherwise.
+    #[serde(default, skip_serializing_if = "is_zero_u32")]
+    pub opening_source_id: u32,
+    /// Immutable source amount, distinct from the mutable basis of later production lots.
+    #[serde(default, skip_serializing_if = "is_zero_money")]
+    pub opening_basis: Money,
+}
+
+fn is_zero_money(value: &Money) -> bool {
+    *value == Money::ZERO
 }
 
 #[derive(Serialize, Deserialize)]
@@ -137,6 +154,8 @@ pub struct AccountView {
     pub role: Role,
     pub cash: Money,
     pub protected: Money,
+    #[serde(skip_serializing_if = "is_zero_u32")]
+    pub opening_source_id: u32,
 }
 #[derive(Debug, PartialEq, Eq, Serialize)]
 pub struct StockView {
@@ -149,6 +168,10 @@ pub struct StockView {
     pub origin_quantity: Quantity,
     pub origin_basis: Money,
     pub offset: Quantity,
+    #[serde(skip_serializing_if = "is_zero_u32")]
+    pub opening_source_id: u32,
+    #[serde(skip_serializing_if = "is_zero_money")]
+    pub opening_basis: Money,
 }
 #[derive(Debug, PartialEq, Eq, Serialize)]
 pub struct WorldView {
@@ -256,6 +279,7 @@ impl Serialize for AccountViews<'_> {
                 role: a.role,
                 cash: a.cash,
                 protected: a.protected,
+                opening_source_id: a.opening_source_id,
             })?;
         }
         seq.end()
@@ -278,6 +302,8 @@ impl Serialize for StockViews<'_> {
                 origin_quantity: v.origin_quantity,
                 origin_basis: v.origin_basis,
                 offset: v.offset,
+                opening_source_id: v.opening_source_id,
+                opening_basis: v.opening_basis,
             })?;
         }
         seq.end()
@@ -416,6 +442,10 @@ impl World {
                 .map_err(|_| "checkpoint_account_handle")?;
             if a.id != *id
                 || a.protected > a.cash
+                || (a.opening_source_id != 0
+                    && self
+                        .opening_source(a.opening_source_id)
+                        .is_none_or(|source| source.kind != SourceKind::CashCapital))
                 || self.account_ids[..i].iter().any(|(old, _)| old == id)
             {
                 return Err("checkpoint_account_index".into());
@@ -426,7 +456,19 @@ impl World {
             self.accounts
                 .get(stock.owner)
                 .map_err(|_| "checkpoint_stock_owner")?;
-            if stock.id != *id || self.stock_ids[..i].iter().any(|(old, _)| old == id) {
+            let opening_source = if stock.opening_source_id == 0 {
+                None
+            } else {
+                self.opening_source(stock.opening_source_id)
+            };
+            if stock.id != *id
+                || self.stock_ids[..i].iter().any(|(old, _)| old == id)
+                || (stock.opening_source_id != 0
+                    && opening_source.is_none_or(|source| {
+                        source.kind != SourceKind::InventoryCapital
+                            || source.amount != stock.opening_basis
+                    }))
+            {
                 return Err("checkpoint_stock_index".into());
             }
         }
@@ -570,6 +612,9 @@ impl World {
             .map(|i| self.stock_ids[i].1)
             .map_err(|_| "missing_stock".into())
     }
+    pub(crate) fn opening_source(&self, id: u32) -> Option<OpeningSource> {
+        self.sources.iter().find(|source| source.id == id).copied()
+    }
     pub fn view(&self) -> WorldView {
         WorldView {
             schema: if self.construction.is_some() || self.town.is_some() {
@@ -590,6 +635,7 @@ impl World {
                         role: a.role,
                         cash: a.cash,
                         protected: a.protected,
+                        opening_source_id: a.opening_source_id,
                     }
                 })
                 .collect(),
@@ -608,6 +654,8 @@ impl World {
                         origin_quantity: s.origin_quantity,
                         origin_basis: s.origin_basis,
                         offset: s.offset,
+                        opening_source_id: s.opening_source_id,
+                        opening_basis: s.opening_basis,
                     }
                 })
                 .collect(),
@@ -750,6 +798,17 @@ pub(crate) fn assemble_into(bytes: &[u8], world: &mut World) -> Result<(), Strin
                 role: a.role,
                 cash: a.cash,
                 protected: Money::ZERO,
+                opening_source_id: input
+                    .town
+                    .as_ref()
+                    .filter(|profile| {
+                        profile
+                            .equity_charters
+                            .as_slice()
+                            .iter()
+                            .any(|charter| charter.company == a.id)
+                    })
+                    .map_or(0, |_| a.source),
             })
             .map_err(|e| format!("{e:?}"))?;
         world.account_ids.push((a.id, h));
@@ -768,6 +827,28 @@ pub(crate) fn assemble_into(bytes: &[u8], world: &mut World) -> Result<(), Strin
                 origin_quantity: s.quantity,
                 origin_basis: s.basis,
                 offset: Quantity::ZERO,
+                opening_source_id: input
+                    .town
+                    .as_ref()
+                    .filter(|profile| {
+                        profile
+                            .equity_charters
+                            .as_slice()
+                            .iter()
+                            .any(|charter| charter.company == s.owner)
+                    })
+                    .map_or(0, |_| s.source),
+                opening_basis: input
+                    .town
+                    .as_ref()
+                    .filter(|profile| {
+                        profile
+                            .equity_charters
+                            .as_slice()
+                            .iter()
+                            .any(|charter| charter.company == s.owner)
+                    })
+                    .map_or(Money::ZERO, |_| s.basis),
             })
             .map_err(|e| format!("{e:?}"))?;
         world.stock_ids.push((s.id, h));
@@ -992,6 +1073,8 @@ mod tests {
             transport_allocation_sha256: [0; 32],
             utility_supply: None,
             exit_policy: None,
+            equity_charters: FixedRows::new(),
+            tax_rules: FixedRows::new(),
             households,
             employers,
             shops,

@@ -1,0 +1,24 @@
+{
+  "argv": [
+    "/usr/bin/time",
+    "-l",
+    "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/208-equity-final-cli/executables/2fd3af2d1f407a43cf84505a41bdc8a13cecce2bf79efd04719f626153843b18/town_equity",
+    "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/209-equity-release-cli-actual/world"
+  ],
+  "exit_code": 0,
+  "wall_seconds": 1.013648791,
+  "fixed_source": {
+    "source_sha256": "b0e3adb1991b583981550738b77817ee126da0b037a27d610165bc3d66e8c462",
+    "source_files": 275,
+    "fixed_input_files": 287,
+    "binary": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/208-equity-final-cli/executables/2fd3af2d1f407a43cf84505a41bdc8a13cecce2bf79efd04719f626153843b18/town_equity",
+    "binary_sha256": "2fd3af2d1f407a43cf84505a41bdc8a13cecce2bf79efd04719f626153843b18",
+    "source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/208-equity-final-cli/source.zip",
+    "source_zip_sha256": "61b145212ec9a15cccc6964bb21ec974efc7f817216de48be0eb52b5540cd29b",
+    "source_identity_method": "build.rs path-string sort and framed UTF-8 path/length/content hashing; archive hash checked",
+    "storage": "external HP P900 USB/APFS SSD",
+    "embedded_source_check": "not performed for examples"
+  },
+  "storage": "external HP P900 USB/APFS SSD; work and target external",
+  "scope": "actual finite business CLI, not city-scale or quiet performance acceptance"
+}

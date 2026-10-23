@@ -1,0 +1,41 @@
+
+running 21 tests
+test background::slot_load_tests::outer_hash_failure_invalidates_otherwise_valid_decoded_candidate ... ok
+test checkpoint::receipt_decode::context_tests::original_checkpoint_depth_context_and_ignored_depth_are_preserved ... ok
+test checkpoint::receipt_decode::tests::all_variants_match_original_typed_reader_for_map_sequence_and_bad_fields ... ok
+test checkpoint::receipt_decode::tests::large_whitespace_ignored_fields_and_tag_last_keep_legacy_semantics ... ok
+test checkpoint_v2::receipts::tests::authenticated_but_malformed_body_tail_metadata_and_count_cannot_pass ... ok
+test checkpoint_v2::receipts::tests::borrowed_receipt_wire_matches_owned_legacy_and_arbitrary_field_order ... ok
+test checkpoint_v2::receipts::tests::index_overflow_is_rejected_before_extra_record_materializes ... ok
+test metadata::lexical::tests::finite_known_values_reject_long_wrong_types_without_old_string_fallback ... ok
+test metadata::lexical::tests::full_16mib_ignored_nesting_fits_one_initialized_bit_stack_and_overflow_recovers ... ok
+test metadata::lexical::tests::ignore_and_content_keep_distinct_old_scalar_grammars ... ok
+test metadata::lexical::tests::long_escaped_keys_do_not_alias_known_identifiers_or_skip_late_errors ... ok
+test metadata::tests::metadata_counts_full_receipts_and_all_retained_file_slots ... ok
+test metadata::tests::strict_bytes_reject_before_extra_decode_and_writer_failure_preserves_backing ... ok
+test model_capacity::tests::feasibility_boundary_never_authorizes_current_runtime ... ok
+test stream::tests::complete_stream_hash_length_and_unconsumed_tail_are_required ... ok
+test stream::tests::second_pass_or_validation_failure_cannot_publish_and_tmp_is_reclaimed ... ok
+test town_transport::road_epoch_clock_tests::future_and_non_day_road_epochs_are_rejected ... ok
+test town_transport::road_epoch_clock_tests::publication_and_withdrawal_epochs_require_clock_and_settlement ... ok
+test town_transport::road_epoch_clock_tests::store_accepts_unpublished_road_binding_before_timeline_enable ... ok
+test wal::tests::every_produced_sample_matches_old_frame_bytes_and_split_checksum ... ok
+test wal::tests::persisted_envelope_overflow_rejects_before_extra_action_decode ... ok
+
+test result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.78s
+
+
+running 2 tests
+test actual_contributions_tax_dividend_treasury_spend_and_liquidation_survive_recovery ... ok
+test loss_and_paid_unmodeled_claims_cannot_be_distributed ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.12s
+
+
+running 3 tests
+test incomplete_policy_and_unregistered_cash_residual_wait_without_bypass_or_distribution ... ok
+test liquidation_sells_existing_market_stock_then_pays_wages_and_debt_once_across_recovery ... ok
+test secured_claims_share_partial_exit_cash_by_stable_id_and_remain_liquidating ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.42s
+

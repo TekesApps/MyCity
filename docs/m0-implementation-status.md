@@ -526,3 +526,5 @@ v0.5.139：[有限空间步行与实际交易](evidence/core-spatial-traffic-139
 
 
 v0.5.140：[j3q-01 固定 full 正式尝试终态](evidence/m0-t13a-joint-formal-01/STATUS.md)。实际1,226.385秒后系统非normal压力60.026秒触发保护，模型SIGTERM，无完整model最终报告。4,906采样帧，285帧外部编译，组footprint峰3,355,234,768B仍超normal；不归因成仅编译干扰。原业务/快照/采样完整保留，恢复尚未核验，8h未完成，16GB not_run，M0 not_accepted。
+
+v0.5.144：[实际实缴股权、可信税费、分红及清算返还](evidence/core-equity-runtime-144/STATUS.md)。最终同源212项Rust测试、strict/fmt和CLI通过，现金/库存/完整checkpoint独立核对相符；政府实际收到分红后真实再支出。Engine owned4,125,880B，Claim来源使用有界稀疏表；新增来源字段在原L1记录中放大1,200,000B，未自动继承旧物理预算。计算契约、反例、失败史及默认debug栈溢出限制均保留。M0/16GB未通过；F/E运行时存档接入由[实际派工](core-task-dispatch-current.md)继续，不能以模块源码算完成。

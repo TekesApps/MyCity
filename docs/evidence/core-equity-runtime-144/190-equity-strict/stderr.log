@@ -1,0 +1,29 @@
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/equity-runtime-current/crates/city-core)
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity-core-work/equity-runtime-current/crates/city-headless)
+error: you seem to be trying to use `match` for destructuring a single pattern. Consider using `if let`
+    --> crates/city-core/src/town_runtime.rs:1186:33
+     |
+1186 | / ...                   match matched_stock.replace(stock) {
+1187 | | ...                       Some(_) => {
+1188 | | ...                           return Err(
+1189 | | ...                               "town_equity_opening_inventory_source_mismatch",
+...    |
+1192 | | ...                       None => {}
+1193 | | ...                   }
+     | |_______________________^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#single_match
+     = note: `-D clippy::single-match` implied by `-D warnings`
+     = help: to override `-D warnings` add `#[allow(clippy::single_match)]`
+help: try
+     |
+1186 ~                                 if let Some(_) = matched_stock.replace(stock) {
+1187 +                                     return Err(
+1188 +                                         "town_equity_opening_inventory_source_mismatch",
+1189 +                                     );
+1190 +                                 }
+     |
+
+error: could not compile `mycity-core` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `mycity-core` (lib test) due to 1 previous error

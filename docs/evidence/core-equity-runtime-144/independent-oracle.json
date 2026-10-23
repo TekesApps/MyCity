@@ -1,0 +1,24 @@
+{
+  "scope": "independent formula and direct complete checkpoint bytes, not fresh-process restore execution",
+  "accounts": {
+    "1": 1000075,
+    "2": 799924,
+    "3": 0,
+    "4": 1200001
+  },
+  "cash_total": 3000000,
+  "margin": 90,
+  "tax": 45,
+  "dividend": 45,
+  "dividend_by_holder": {
+    "1": 1,
+    "2": 44
+  },
+  "capital_by_holder": {
+    "1": 10000,
+    "2": 610100
+  },
+  "checkpoint_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/209-equity-release-cli-actual/world/checkpoint-111.json",
+  "checkpoint_sha256": "4e4feccd5d48da066100ca826cb1b6149431c1c2e83db74d0c12656823f69e7f",
+  "all_checks_passed": true
+}

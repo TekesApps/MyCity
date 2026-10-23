@@ -1,0 +1,479 @@
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/equity-runtime-current/crates/city-core)
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity-core-work/equity-runtime-current/crates/city-headless)
+    Checking mycity-map v0.1.0 (/Users/frankqin/dev/MyCity-core-work/equity-runtime-current/crates/city-map)
+    Checking mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/equity-runtime-current/crates/city-storage)
+error[E0277]: `mycity_storage::Error` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:64:16
+    |
+64  |     let view = store.engine().map_err(err)?.world().view();
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^ `mycity_storage::Error` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_storage::Error`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_storage::Error` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:64:39
+    |
+64  |     let view = store.engine().map_err(err)?.world().view();
+    |                                       ^^^ `mycity_storage::Error` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_storage::Error`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_storage::Error` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:76:19
+    |
+76  |     let outcome = store.execute(caller, envelope).map_err(err)?;
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `mycity_storage::Error` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_storage::Error`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_storage::Error` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:76:59
+    |
+76  |     let outcome = store.execute(caller, envelope).map_err(err)?;
+    |                                                           ^^^ `mycity_storage::Error` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_storage::Error`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_storage::Error` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:96:12
+    |
+96  |           if store
+    |  ____________^
+97  | |             .engine()
+98  | |             .map_err(err)?
+    | |_________________________^ `mycity_storage::Error` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_storage::Error`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_storage::Error` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:98:22
+    |
+98  |             .map_err(err)?
+    |                      ^^^ `mycity_storage::Error` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_storage::Error`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_storage::Error` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:112:5
+    |
+112 | /     store
+113 | |         .engine()
+114 | |         .map_err(err)?
+    | |_____________________^ `mycity_storage::Error` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_storage::Error`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_storage::Error` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:114:18
+    |
+114 |         .map_err(err)?
+    |                  ^^^ `mycity_storage::Error` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_storage::Error`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_storage::Error` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:126:8
+    |
+126 |       Ok(store
+    |  ________^
+127 | |         .engine()
+128 | |         .map_err(err)?
+    | |_____________________^ `mycity_storage::Error` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_storage::Error`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_storage::Error` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:128:18
+    |
+128 |         .map_err(err)?
+    |                  ^^^ `mycity_storage::Error` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_storage::Error`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_storage::Error` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:149:21
+    |
+149 |     let mut store = Store::create(&path, &bytes, vec![], RULES).map_err(err)?;
+    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `mycity_storage::Error` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_storage::Error`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_storage::Error` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:149:73
+    |
+149 |     let mut store = Store::create(&path, &bytes, vec![], RULES).map_err(err)?;
+    |                                                                         ^^^ `mycity_storage::Error` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_storage::Error`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_storage::Error` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:204:24
+    |
+204 |         let timeline = store.engine().map_err(err)?.timeline().ok_or("timeline")?;
+    |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^ `mycity_storage::Error` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_storage::Error`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_storage::Error` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:204:47
+    |
+204 |         let timeline = store.engine().map_err(err)?.timeline().ok_or("timeline")?;
+    |                                               ^^^ `mycity_storage::Error` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_storage::Error`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_storage::Error` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:223:20
+    |
+223 |     let timeline = store.engine().map_err(err)?.timeline().ok_or("timeline")?;
+    |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^ `mycity_storage::Error` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_storage::Error`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_storage::Error` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:223:43
+    |
+223 |     let timeline = store.engine().map_err(err)?.timeline().ok_or("timeline")?;
+    |                                           ^^^ `mycity_storage::Error` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_storage::Error`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_storage::Error` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:246:16
+    |
+246 |       let town = store
+    |  ________________^
+247 | |         .engine()
+248 | |         .map_err(err)?
+    | |_____________________^ `mycity_storage::Error` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_storage::Error`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_storage::Error` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:248:18
+    |
+248 |         .map_err(err)?
+    |                  ^^^ `mycity_storage::Error` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_storage::Error`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_storage::Error` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:260:20
+    |
+260 |       let treasury = store
+    |  ____________________^
+261 | |         .engine()
+262 | |         .map_err(err)?
+    | |_____________________^ `mycity_storage::Error` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_storage::Error`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_storage::Error` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:262:18
+    |
+262 |         .map_err(err)?
+    |                  ^^^ `mycity_storage::Error` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_storage::Error`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_storage::Error` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:266:19
+    |
+266 |       let service = store
+    |  ___________________^
+267 | |         .engine()
+268 | |         .map_err(err)?
+    | |_____________________^ `mycity_storage::Error` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_storage::Error`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_storage::Error` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:268:18
+    |
+268 |         .map_err(err)?
+    |                  ^^^ `mycity_storage::Error` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_storage::Error`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_storage::Error` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:305:20
+    |
+305 |       let preclose = store
+    |  ____________________^
+306 | |         .engine()
+307 | |         .map_err(err)?
+    | |_____________________^ `mycity_storage::Error` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_storage::Error`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_storage::Error` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:307:18
+    |
+307 |         .map_err(err)?
+    |                  ^^^ `mycity_storage::Error` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_storage::Error`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_core::units::ArithmeticError` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:313:20
+    |
+313 |       let returned = register
+    |  ____________________^
+314 | |         .cumulative_capital_returned
+315 | |         .checked_add(register.cumulative_liquidation_surplus_distributed)
+316 | |         .map_err(err)?;
+    | |_____________________^ `mycity_core::units::ArithmeticError` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_core::units::ArithmeticError`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_core::units::ArithmeticError` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:316:18
+    |
+316 |         .map_err(err)?;
+    |                  ^^^ `mycity_core::units::ArithmeticError` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_core::units::ArithmeticError`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_storage::Error` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:330:23
+    |
+330 |     let final_world = store.engine().map_err(err)?.world().view();
+    |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^ `mycity_storage::Error` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_storage::Error`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_storage::Error` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:330:46
+    |
+330 |     let final_world = store.engine().map_err(err)?.world().view();
+    |                                              ^^^ `mycity_storage::Error` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_storage::Error`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_storage::Error` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:347:24
+    |
+347 |     let final_engine = store.engine().map_err(err)?;
+    |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^ `mycity_storage::Error` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_storage::Error`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_storage::Error` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:347:47
+    |
+347 |     let final_engine = store.engine().map_err(err)?;
+    |                                               ^^^ `mycity_storage::Error` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_storage::Error`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_storage::Error` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:401:5
+    |
+401 |     store.checkpoint().map_err(err)?;
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ `mycity_storage::Error` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_storage::Error`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+error[E0277]: `mycity_storage::Error` doesn't implement `std::fmt::Display`
+   --> crates/city-storage/examples/town_equity.rs:401:32
+    |
+401 |     store.checkpoint().map_err(err)?;
+    |                                ^^^ `mycity_storage::Error` cannot be formatted with the default formatter
+    |
+    = help: the trait `std::fmt::Display` is not implemented for `mycity_storage::Error`
+    = note: in format strings you may be able to use `{:?}` (or {:#?} for pretty-print) instead
+note: required by a bound in `err`
+   --> crates/city-storage/examples/town_equity.rs:137:20
+    |
+137 | fn err(error: impl std::fmt::Display) -> String {
+    |                    ^^^^^^^^^^^^^^^^^ required by this bound in `err`
+
+For more information about this error, try `rustc --explain E0277`.
+error: could not compile `mycity-storage` (example "town_equity") due to 32 previous errors
+warning: build failed, waiting for other jobs to finish...

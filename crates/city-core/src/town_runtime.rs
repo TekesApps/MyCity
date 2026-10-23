@@ -20,6 +20,7 @@ pub const MAX_SUSPENDED_OPERATORS: usize =
     crate::town_economy::MAX_EMPLOYERS + crate::town_economy::MAX_SHOP_STOCK_LOTS;
 pub const MAX_EXIT_CLAIM_BINDINGS: usize = crate::town_economy::exit::MAX_EXIT_LIABILITIES;
 pub const MAX_EXIT_PAYROLL_BINDINGS: usize = crate::timeline::PAYROLL_LIMIT;
+pub const MAX_COMPANY_TAX_RULES: usize = crate::town_economy::equity::MAX_EQUITY_COMPANIES;
 
 /// A fixed-capacity table that serializes only active values. Its complete backing is
 /// inline in World and therefore charged by `size_of::<World>()`.
@@ -175,6 +176,65 @@ pub struct ExitPolicy {
     pub payroll: FixedRows<ExitPayrollBinding, MAX_EXIT_PAYROLL_BINDINGS>,
 }
 
+/// Explicit first-version tax basis. It is a fixture policy, not a complete tax code.
+/// The margin is measured from actual TownSettle sale proceeds/basis and idle payroll.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum TaxKind {
+    DailyRealizedMarketMargin,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct CompanyTaxRule {
+    pub company: u32,
+    pub policy_id: u32,
+    pub kind: TaxKind,
+    pub authority_account: u32,
+    pub rate_basis_points: u16,
+}
+
+impl Record for CompanyTaxRule {
+    fn inactive() -> Self {
+        Self {
+            company: 0,
+            policy_id: 0,
+            kind: TaxKind::DailyRealizedMarketMargin,
+            authority_account: 0,
+            rate_basis_points: 0,
+        }
+    }
+}
+
+/// Persistent assessment coverage and accumulated after-tax realized operating result.
+/// It carries no cash or duplicate debt balance; the actual tax liability is a Timeline Claim.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct TaxAssessmentCursor {
+    pub company: u32,
+    pub policy_id: u32,
+    pub through_day: u64,
+    pub last_operation_id: u64,
+    pub last_claim_id: u64,
+    pub cumulative_assessed: Money,
+    /// Signed cents: sales margin minus goods basis, uncapitalized idle wages and assessed tax.
+    pub retained_earnings_cents: i64,
+}
+
+impl Record for TaxAssessmentCursor {
+    fn inactive() -> Self {
+        Self {
+            company: 0,
+            policy_id: 0,
+            through_day: 0,
+            last_operation_id: 0,
+            last_claim_id: 0,
+            cumulative_assessed: Money::ZERO,
+            retained_earnings_cents: 0,
+        }
+    }
+}
+
 impl ExitPolicy {
     fn validate(&self) -> Result<(), &'static str> {
         let p = self.priority_policy;
@@ -233,6 +293,17 @@ pub struct MarketProfile {
     /// Optional genesis-bound liquidation authority. Omitted for legacy markets.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub exit_policy: Option<ExitPolicy>,
+    /// Up to four companies may have immutable, opening-bound share charters. Empty is
+    /// omitted so existing worlds keep their canonical representation.
+    #[serde(default, skip_serializing_if = "FixedRows::is_empty")]
+    pub equity_charters: FixedRows<
+        crate::town_economy::equity::EquityCharter,
+        { crate::town_economy::equity::MAX_EQUITY_COMPANIES },
+    >,
+    /// Opening-bound bounded first-version business tax sources. Missing means there is no
+    /// authoritative tax-coverage proof, so positive residual distribution remains blocked.
+    #[serde(default, skip_serializing_if = "FixedRows::is_empty")]
+    pub tax_rules: FixedRows<CompanyTaxRule, MAX_COMPANY_TAX_RULES>,
     pub households: FixedRows<HouseholdGroup, { crate::town_economy::MAX_HOUSEHOLD_GROUPS }>,
     pub employers: FixedRows<EmployerSpec, { crate::town_economy::MAX_EMPLOYERS }>,
     pub shops: FixedRows<ShopSnapshot, { crate::town_economy::MAX_SHOP_STOCK_LOTS }>,
@@ -242,6 +313,39 @@ pub struct MarketProfile {
 
 impl MarketProfile {
     pub fn validate(&self) -> Result<(), &'static str> {
+        if self.profile_equity_charters_invalid() {
+            return Err("town_equity_charter");
+        }
+        if self
+            .tax_rules
+            .as_slice()
+            .iter()
+            .enumerate()
+            .any(|(index, rule)| {
+                rule.company == 0
+                || rule.policy_id == 0
+                || rule.authority_account == 0
+                || rule.authority_account == rule.company
+                || rule.rate_basis_points > 10_000
+                || (index > 0 && self.tax_rules.as_slice()[index - 1].company >= rule.company)
+                || !self.equity_charters.as_slice().iter().any(|row| row.company == rule.company)
+                || !(self.employers.as_slice().iter().any(|row| row.account == rule.company)
+                    || self.shops.as_slice().iter().any(|row| row.account == rule.company))
+                // First-version tax coverage does not include independently operated freight,
+                // utility or disposal businesses; reject those mixed roles rather than treating
+                // their gross receipts as profit.
+                || self.delivery.as_slice().iter().any(|quote| {
+                    quote.freight_account == rule.company || quote.utility_account == rule.company
+                })
+                || self.recipes.as_slice().iter().any(|recipe| {
+                    recipe.utility_account == rule.company
+                        || recipe.freight_account == rule.company
+                        || recipe.disposal_account == rule.company
+                })
+            })
+        {
+            return Err("town_tax_rule");
+        }
         if self
             .exit_policy
             .is_some_and(|policy| policy.validate().is_err())
@@ -358,12 +462,32 @@ impl MarketProfile {
         Ok(())
     }
 
+    fn profile_equity_charters_invalid(&self) -> bool {
+        let charters = self.equity_charters.as_slice();
+        charters.iter().enumerate().any(|(index, charter)| {
+            charter.validate().is_err()
+                || (index > 0 && charters[index - 1].company >= charter.company)
+                || !(self
+                    .employers
+                    .as_slice()
+                    .iter()
+                    .any(|row| row.account == charter.company)
+                    || self
+                        .shops
+                        .as_slice()
+                        .iter()
+                        .any(|row| row.account == charter.company))
+        })
+    }
+
     pub fn owned_bytes(&self) -> usize {
         self.households.capacity_bytes()
             + self.employers.capacity_bytes()
             + self.shops.capacity_bytes()
             + self.recipes.capacity_bytes()
             + self.delivery.capacity_bytes()
+            + self.equity_charters.capacity_bytes()
+            + self.tax_rules.capacity_bytes()
             + self.exit_policy.map_or(0, |policy| {
                 policy.claims.capacity_bytes() + policy.payroll.capacity_bytes()
             })
@@ -516,6 +640,15 @@ pub struct MarketState {
     /// Active first-version business exit. Missing preserves existing world bytes.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub exit: Option<ExitRuntime>,
+    /// Durable issued-share registers. Empty is omitted to preserve old world bytes.
+    #[serde(default, skip_serializing_if = "FixedRows::is_empty")]
+    pub equity_registers: FixedRows<
+        crate::town_economy::equity::EquityRegister,
+        { crate::town_economy::equity::MAX_EQUITY_COMPANIES },
+    >,
+    /// Compact per-company assessment coverage; tax debts remain Timeline claims.
+    #[serde(default, skip_serializing_if = "FixedRows::is_empty")]
+    pub tax_cursors: FixedRows<TaxAssessmentCursor, MAX_COMPANY_TAX_RULES>,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -589,6 +722,8 @@ impl MarketState {
             recipe_output_remainders: FixedRows::new(),
             suspended_operators: FixedRows::new(),
             exit: None,
+            equity_registers: FixedRows::new(),
+            tax_cursors: FixedRows::new(),
         }
     }
 }
@@ -609,10 +744,35 @@ pub struct TownMarket {
 impl TownMarket {
     pub fn new(profile: MarketProfile) -> Result<Self, &'static str> {
         profile.validate()?;
-        Ok(Self {
-            profile,
-            state: MarketState::new(),
-        })
+        let mut state = MarketState::new();
+        for charter in profile.equity_charters.as_slice() {
+            state
+                .equity_registers
+                .push(
+                    crate::town_economy::equity::EquityRegister::from_charter(
+                        charter.company,
+                        charter.policy,
+                        charter.investors.as_slice(),
+                    )
+                    .map_err(|_| "town_equity_charter")?,
+                )
+                .map_err(|_| "town_equity_capacity")?;
+        }
+        for rule in profile.tax_rules.as_slice() {
+            state
+                .tax_cursors
+                .push(TaxAssessmentCursor {
+                    company: rule.company,
+                    policy_id: rule.policy_id,
+                    through_day: 0,
+                    last_operation_id: 0,
+                    last_claim_id: 0,
+                    cumulative_assessed: Money::ZERO,
+                    retained_earnings_cents: 0,
+                })
+                .map_err(|_| "town_tax_capacity")?;
+        }
+        Ok(Self { profile, state })
     }
 
     pub fn owned_bytes(&self) -> usize {
@@ -620,6 +780,8 @@ impl TownMarket {
             + self.state.payroll.capacity_bytes()
             + self.state.recipe_output_remainders.capacity_bytes()
             + self.state.suspended_operators.capacity_bytes()
+            + self.state.equity_registers.capacity_bytes()
+            + self.state.tax_cursors.capacity_bytes()
     }
 
     pub fn validate_persisted(&self) -> Result<(), &'static str> {
@@ -646,6 +808,60 @@ impl TownMarket {
         };
         if self.state.payroll.len() > MAX_PAYROLL_CURSORS
             || self.state.suspended_operators.len() > MAX_SUSPENDED_OPERATORS
+            || self.state.equity_registers.len() != self.profile.equity_charters.len()
+            || self
+                .state
+                .equity_registers
+                .as_slice()
+                .iter()
+                .enumerate()
+                .any(|(index, register)| {
+                    let Some(charter) = self.profile.equity_charters.as_slice().get(index) else {
+                        return true;
+                    };
+                    register.validate().is_err()
+                        || register.company != charter.company
+                        || register.policy != charter.policy
+                        || register.opening_issued_shares
+                            != charter
+                                .investors
+                                .as_slice()
+                                .iter()
+                                .map(|binding| binding.opening_shares)
+                                .try_fold(0_u64, u64::checked_add)
+                                .unwrap_or(u64::MAX)
+                        || charter.investors.as_slice().iter().any(|binding| {
+                            register
+                                .holders()
+                                .iter()
+                                .find(|holder| holder.party == binding.party)
+                                .map_or(binding.opening_shares != 0, |holder| {
+                                    holder.account != binding.account
+                                        || holder.shares < binding.opening_shares
+                                })
+                        })
+                        || register.holders().iter().any(|holder| {
+                            charter.binding_for_party(holder.party) != Some(holder.account)
+                        })
+                })
+            || self.state.tax_cursors.len() != self.profile.tax_rules.len()
+            || self
+                .state
+                .tax_cursors
+                .as_slice()
+                .iter()
+                .enumerate()
+                .any(|(index, cursor)| {
+                    let Some(rule) = self.profile.tax_rules.as_slice().get(index) else {
+                        return true;
+                    };
+                    cursor.company != rule.company
+                        || cursor.policy_id != rule.policy_id
+                        || cursor.through_day > self.state.settled_day
+                        || (cursor.through_day == 0 && cursor.last_operation_id != 0)
+                        || (cursor.through_day > 0 && cursor.last_operation_id == 0)
+                        || cursor.cumulative_assessed < Money::ZERO
+                })
             || self.state.exit.is_some_and(|exit| {
                 exit.policy_id == 0
                     || exit.company_account == 0
@@ -699,6 +915,59 @@ impl TownMarket {
 
     pub fn validate_world(&self, world: &crate::assembly::World) -> Result<(), &'static str> {
         self.profile.validate()?;
+        for charter in self.profile.equity_charters.as_slice() {
+            let company_handle = world.account_handle(charter.company).ok();
+            let company = company_handle.and_then(|handle| world.accounts.get(handle).ok());
+            if company.is_none_or(|account| account.role != crate::assembly::Role::Company) {
+                return Err("town_equity_company");
+            }
+            self.state
+                .equity_registers
+                .as_slice()
+                .iter()
+                .find(|register| register.company == charter.company)
+                .ok_or("town_equity_register")?;
+            for binding in charter.investors.as_slice() {
+                let account = world
+                    .account_handle(binding.account)
+                    .ok()
+                    .and_then(|handle| world.accounts.get(handle).ok())
+                    .ok_or("town_equity_investor")?;
+                let role_matches = match binding.party.kind {
+                    crate::town_economy::equity::PartyKind::Person => {
+                        // Personhood is the explicit immutable charter mapping. Existing
+                        // Household accounts may fund it, but do not become residence data.
+                        account.role == crate::assembly::Role::Household
+                    }
+                    crate::town_economy::equity::PartyKind::Household => {
+                        account.role == crate::assembly::Role::Household
+                    }
+                    crate::town_economy::equity::PartyKind::Treasury => {
+                        account.role == crate::assembly::Role::Treasury
+                    }
+                    crate::town_economy::equity::PartyKind::Company => false,
+                };
+                if !role_matches {
+                    return Err("town_equity_investor_role");
+                }
+            }
+        }
+        self.validate_equity_opening_sources(world, false)?;
+        for rule in self.profile.tax_rules.as_slice() {
+            let company = world
+                .account_handle(rule.company)
+                .ok()
+                .and_then(|handle| world.accounts.get(handle).ok());
+            let authority = world
+                .account_handle(rule.authority_account)
+                .ok()
+                .and_then(|handle| world.accounts.get(handle).ok());
+            if company.is_none_or(|account| account.role != crate::assembly::Role::Company)
+                || authority.is_none_or(|account| account.role != crate::assembly::Role::Treasury)
+            {
+                return Err("town_tax_authority");
+            }
+        }
         if let Some(binding) = self.profile.utility_supply {
             let boot = world.boot.as_ref().ok_or("town_utility_boot")?;
             let stock = world
@@ -848,6 +1117,119 @@ impl TownMarket {
         Ok(())
     }
 
+    /// Validate immutable endowment provenance without comparing it to current balances.
+    /// `initial` is true only during assembly and additionally checks current cash/basis still
+    /// equals the source amount before any operation has run.
+    fn validate_equity_opening_sources(
+        &self,
+        world: &crate::assembly::World,
+        initial: bool,
+    ) -> Result<(), &'static str> {
+        let mut seen = [0_u32;
+            crate::town_economy::equity::MAX_EQUITY_COMPANIES
+                * crate::town_economy::equity::MAX_EQUITY_OPENING_SOURCES];
+        let mut seen_len = 0_usize;
+        for charter in self.profile.equity_charters.as_slice() {
+            let company_handle = world
+                .account_handle(charter.company)
+                .map_err(|_| "town_equity_company")?;
+            let company = world
+                .accounts
+                .get(company_handle)
+                .map_err(|_| "town_equity_company")?;
+            if company.opening_source_id == 0
+                || !charter
+                    .opening_sources
+                    .as_slice()
+                    .iter()
+                    .any(|binding| binding.source_id == company.opening_source_id)
+            {
+                return Err("town_equity_opening_cash_source_unassigned");
+            }
+            let mut capital_by_holder =
+                [0_i128; crate::town_economy::equity::MAX_DIRECT_SHAREHOLDERS];
+            for source_binding in charter.opening_sources.as_slice() {
+                if seen[..seen_len].contains(&source_binding.source_id) {
+                    return Err("town_equity_opening_source_reused");
+                }
+                if seen_len == seen.len() {
+                    return Err("town_equity_opening_source_limit");
+                }
+                seen[seen_len] = source_binding.source_id;
+                seen_len += 1;
+                let source = world
+                    .opening_source(source_binding.source_id)
+                    .ok_or("town_equity_opening_source_missing")?;
+                let holder_index = charter
+                    .investors
+                    .as_slice()
+                    .iter()
+                    .position(|binding| binding.party == source_binding.party)
+                    .ok_or("town_equity_opening_source_party")?;
+                match source.kind {
+                    crate::assembly::SourceKind::CashCapital => {
+                        if company.opening_source_id != source.id
+                            || (initial && company.cash != source.amount)
+                        {
+                            return Err("town_equity_opening_cash_source_mismatch");
+                        }
+                    }
+                    crate::assembly::SourceKind::InventoryCapital => {
+                        let mut matched_stock = None;
+                        for (_, handle) in world.stock_ids.iter() {
+                            let stock = world
+                                .stocks
+                                .get(*handle)
+                                .map_err(|_| "town_equity_opening_inventory_source_mismatch")?;
+                            if stock.owner == company_handle
+                                && stock.opening_source_id == source.id
+                                && matched_stock.replace(stock).is_some()
+                            {
+                                return Err("town_equity_opening_inventory_source_mismatch");
+                            }
+                        }
+                        let stock =
+                            matched_stock.ok_or("town_equity_opening_inventory_source_mismatch")?;
+                        if stock.opening_basis != source.amount
+                            || (initial && stock.basis != stock.opening_basis)
+                        {
+                            return Err("town_equity_opening_inventory_source_mismatch");
+                        }
+                    }
+                }
+                capital_by_holder[holder_index] = capital_by_holder[holder_index]
+                    .checked_add(i128::from(source.amount.value()))
+                    .ok_or("town_equity_capital_overflow")?;
+            }
+            for (_, handle) in world.stock_ids.iter() {
+                let stock = world
+                    .stocks
+                    .get(*handle)
+                    .map_err(|_| "town_equity_opening_inventory_source_unassigned")?;
+                if stock.owner != company_handle {
+                    continue;
+                }
+                if !charter
+                    .opening_sources
+                    .as_slice()
+                    .iter()
+                    .any(|binding| binding.source_id == stock.opening_source_id)
+                {
+                    return Err("town_equity_opening_inventory_source_unassigned");
+                }
+            }
+            for (index, investor) in charter.investors.as_slice().iter().enumerate() {
+                let represented = i128::from(investor.opening_shares)
+                    .checked_mul(i128::from(charter.policy.cents_per_share))
+                    .ok_or("town_equity_capital_overflow")?;
+                if represented != capital_by_holder[index] {
+                    return Err("town_equity_opening_holder_source_mismatch");
+                }
+            }
+        }
+        Ok(())
+    }
+
     /// Genesis may require dedicated output lots to be empty before the first
     /// production run. Restored runtime worlds must allow unsold inventory.
     pub fn validate_initial_world(
@@ -855,6 +1237,43 @@ impl TownMarket {
         world: &crate::assembly::World,
     ) -> Result<(), &'static str> {
         self.validate_world(world)?;
+        self.validate_equity_opening_sources(world, true)?;
+        for charter in self.profile.equity_charters.as_slice() {
+            charter.validate().map_err(|_| "town_equity_charter")?;
+            let company_handle = world
+                .account_handle(charter.company)
+                .map_err(|_| "town_equity_company")?;
+            let company = world
+                .accounts
+                .get(company_handle)
+                .map_err(|_| "town_equity_company")?;
+            let register = self
+                .state
+                .equity_registers
+                .as_slice()
+                .iter()
+                .find(|register| register.company == charter.company)
+                .ok_or("town_equity_register")?;
+            if company.role != crate::assembly::Role::Company || company.opening_source_id == 0 {
+                return Err("town_equity_company_opening_source");
+            }
+            let registered_shares = charter
+                .investors
+                .as_slice()
+                .iter()
+                .map(|investor| investor.opening_shares)
+                .try_fold(0_u64, u64::checked_add)
+                .ok_or("town_equity_capital_overflow")?;
+            let registered_capital = i128::from(register.opening_issued_shares)
+                .checked_mul(i128::from(register.policy.cents_per_share))
+                .ok_or("town_equity_capital_overflow")?;
+            if registered_shares != register.opening_issued_shares
+                || registered_capital != i128::from(register.opening_paid_in.value())
+                || register.issued_shares != register.opening_issued_shares
+            {
+                return Err("town_equity_opening_share_mismatch");
+            }
+        }
         if self.profile.recipes.as_slice().iter().any(|recipe| {
             world
                 .stock_handle(recipe.output_stock_id)
@@ -943,6 +1362,8 @@ mod transport_cursor_tests {
             transport_allocation_sha256: [0; 32],
             utility_supply: None,
             exit_policy: None,
+            equity_charters: FixedRows::new(),
+            tax_rules: FixedRows::new(),
             households,
             employers,
             shops,

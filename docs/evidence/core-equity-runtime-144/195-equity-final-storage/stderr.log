@@ -1,0 +1,17 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/equity-runtime-current/crates/city-core)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity-core-work/equity-runtime-current/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/equity-runtime-current/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 1m 08s
+     Running unittests src/lib.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_storage-46fdf6e079eacbdd)
+     Running tests/equity_runtime.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/equity_runtime-068ee147ad1d9e32)
+EQUITY_RUNTIME_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/195-equity-final-storage/test-artifacts/mycity-equity-runtime-21884-0
+EQUITY_RUNTIME_PRESERVED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/195-equity-final-storage/test-artifacts/mycity-equity-runtime-21884-0
+EQUITY_RUNTIME_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/195-equity-final-storage/test-artifacts/mycity-equity-runtime-21884-1
+EQUITY_RUNTIME_PRESERVED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/195-equity-final-storage/test-artifacts/mycity-equity-runtime-21884-1
+     Running tests/town_business_exit.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/town_business_exit-9dbbef9d7f9e3ff2)
+TOWN_BUSINESS_EXIT_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/195-equity-final-storage/test-artifacts/mycity-town-business-exit-22027-0
+TOWN_BUSINESS_EXIT_PRESERVED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/195-equity-final-storage/test-artifacts/mycity-town-business-exit-22027-0
+TOWN_BUSINESS_EXIT_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/195-equity-final-storage/test-artifacts/mycity-town-business-exit-22027-1
+TOWN_BUSINESS_EXIT_PRESERVED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/195-equity-final-storage/test-artifacts/mycity-town-business-exit-22027-1
+TOWN_BUSINESS_EXIT_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/195-equity-final-storage/test-artifacts/mycity-town-business-exit-22027-2
+TOWN_BUSINESS_EXIT_PRESERVED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/195-equity-final-storage/test-artifacts/mycity-town-business-exit-22027-2

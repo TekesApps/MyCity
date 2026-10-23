@@ -1,0 +1,6 @@
+{
+  "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/180-equity-compile-test/executables/330fe6ba489431ff0586c8f51053d84e202561bec7d2771ea540f191358f9782/equity_runtime-b51d6e484404cadc",
+  "sha256": "330fe6ba489431ff0586c8f51053d84e202561bec7d2771ea540f191358f9782",
+  "bytes": 26889088,
+  "scope": "failed debug test stack overflow evidence; no release behavior or default-stack acceptance"
+}

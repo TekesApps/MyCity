@@ -1,0 +1,12 @@
+
+running 2 tests
+test actual_contributions_tax_dividend_treasury_spend_and_liquidation_survive_recovery ... FAILED
+test loss_and_paid_unmodeled_claims_cannot_be_distributed ... ok
+
+failures:
+
+failures:
+    actual_contributions_tax_dividend_treasury_spend_and_liquidation_survive_recovery
+
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.59s
+

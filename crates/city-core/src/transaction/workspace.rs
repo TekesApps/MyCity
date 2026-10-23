@@ -93,6 +93,7 @@ pub(super) fn capacity_inventory() -> (usize, usize, usize) {
         + slot::<LeaseRows>();
     let tables = crate::timeline::CLAIM_LIMIT * size_of::<crate::timeline::Claim>()
         + crate::timeline::PAYROLL_LIMIT * size_of::<crate::timeline::Payroll>()
+        + crate::timeline::MAX_CLAIM_SOURCES * size_of::<crate::timeline::ClaimSourceRecord>()
         + crate::assembly::MAX_ACCOUNTS * size_of::<(Handle<AccountDomain>, Account)>()
         + crate::assembly::MAX_STOCKS * size_of::<(Handle<InventoryDomain>, Stock)>()
         + MAX_RESOURCES * size_of::<Resource>()
@@ -247,6 +248,7 @@ impl Record for (Handle<AccountDomain>, Account) {
                 role: crate::assembly::Role::Treasury,
                 cash: Money::ZERO,
                 protected: Money::ZERO,
+                opening_source_id: 0,
             },
         )
     }
@@ -265,6 +267,8 @@ impl Record for (Handle<InventoryDomain>, Stock) {
                 origin_quantity: Quantity::ZERO,
                 origin_basis: Money::ZERO,
                 offset: Quantity::ZERO,
+                opening_source_id: 0,
+                opening_basis: Money::ZERO,
             },
         )
     }

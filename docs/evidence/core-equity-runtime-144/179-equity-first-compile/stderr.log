@@ -1,0 +1,85 @@
+   Compiling sha2-asm v0.6.4
+   Compiling sha2 v0.10.9
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/equity-runtime-current/crates/city-core)
+error[E0425]: cannot find value `market` in this scope
+    --> crates/city-core/src/transaction.rs:2136:26
+     |
+2136 |                         &market.profile,
+     |                          ^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `market` in this scope
+    --> crates/city-core/src/transaction.rs:2143:26
+     |
+2143 |                         &market.profile,
+     |                          ^^^^^^ not found in this scope
+
+error[E0603]: struct import `InventoryDomain` is private
+    --> crates/city-core/src/transaction.rs:2746:79
+     |
+2746 | ...                   |stock_ref: crate::arena::Handle<crate::assembly::InventoryDomain>| {
+     |                                                                         ^^^^^^^^^^^^^^^ private struct import
+     |
+note: the struct import `InventoryDomain` is defined here...
+    --> crates/city-core/src/assembly.rs:4:43
+     |
+4    |     arena::{AccountDomain, Arena, Handle, InventoryDomain, Scope},
+     |                                           ^^^^^^^^^^^^^^^
+note: ...and refers to the struct `InventoryDomain` which is defined here
+    --> crates/city-core/src/arena.rs:75:1
+     |
+75   | pub struct InventoryDomain;
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^ you could import this directly
+help: consider importing this struct instead
+     |
+2746 |                             |stock_ref: crate::arena::Handle<crate::arena::InventoryDomain>| {
+     |                                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+help: import `InventoryDomain` directly
+     |
+2746 |                             |stock_ref: crate::arena::Handle<arena::InventoryDomain>| {
+     |                                                              ~~~~~~~~~~~~~~~~~~~~~~
+
+error[E0063]: missing fields `cumulative_capital_returned`, `cumulative_dividends_distributed` and `cumulative_liquidation_surplus_distributed` in initializer of `EquityRegister`
+   --> crates/city-core/src/town_economy/equity.rs:570:9
+    |
+570 |         Self {
+    |         ^^^^ missing `cumulative_capital_returned`, `cumulative_dividends_distributed` and `cumulative_liquidation_surplus_distributed`
+
+error[E0599]: no method named `iter` found for struct `arena::Arena` in the current scope
+    --> crates/city-core/src/town_runtime.rs:1179:56
+     |
+1179 |                         let mut matches = world.stocks.iter().filter(|(_, stock)| {
+     |                                                        ^^^^ method not found in `Arena<InventoryDomain, Stock>`
+     |
+    ::: crates/city-core/src/arena.rs:126:1
+     |
+126  | pub struct Arena<D: Domain, T: Copy> {
+     | ------------------------------------ method `iter` not found for this struct
+
+error[E0599]: no method named `iter` found for struct `arena::Arena` in the current scope
+    --> crates/city-core/src/town_runtime.rs:1199:18
+     |
+1197 |               for (_, stock) in world
+     |  _______________________________-
+1198 | |                 .stocks
+1199 | |                 .iter()
+     | |                 -^^^^ method not found in `Arena<InventoryDomain, Stock>`
+     | |_________________|
+     |
+     |
+    ::: crates/city-core/src/arena.rs:126:1
+     |
+126  |   pub struct Arena<D: Domain, T: Copy> {
+     |   ------------------------------------ method `iter` not found for this struct
+
+warning: unused variable: `register`
+   --> crates/city-core/src/town_runtime.rs:924:17
+    |
+924 |             let register = self
+    |                 ^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_register`
+    |
+    = note: `#[warn(unused_variables)]` on by default
+
+Some errors have detailed explanations: E0063, E0425, E0599, E0603.
+For more information about an error, try `rustc --explain E0063`.
+warning: `mycity-core` (lib) generated 1 warning
+error: could not compile `mycity-core` (lib) due to 6 previous errors; 1 warning emitted

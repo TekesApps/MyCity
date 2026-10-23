@@ -1,0 +1,17 @@
+[
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/equity_runtime-068ee147ad1d9e32",
+    "sha256": "bcc78ff69c216baf2581406f3dfd112b14a12404a24e97dea67771111c74478a",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/executables/bcc78ff69c216baf2581406f3dfd112b14a12404a24e97dea67771111c74478a/equity_runtime-068ee147ad1d9e32"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/spatial_transport_market-7fe912451cd65917",
+    "sha256": "c7e02f95674f2e8e6a86066b85fef7c84abf3039b6317be92e339f3e4a385444",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/executables/c7e02f95674f2e8e6a86066b85fef7c84abf3039b6317be92e339f3e4a385444/spatial_transport_market-7fe912451cd65917"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/town_business_exit-9dbbef9d7f9e3ff2",
+    "sha256": "00414eae2ed72afde5513a4cf505a80d11601851e1cd322e9cb42860a530c23e",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/executables/00414eae2ed72afde5513a4cf505a80d11601851e1cd322e9cb42860a530c23e/town_business_exit-9dbbef9d7f9e3ff2"
+  }
+]

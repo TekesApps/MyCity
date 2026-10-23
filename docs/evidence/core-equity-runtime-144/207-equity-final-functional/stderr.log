@@ -1,0 +1,40 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 1m 41s
+     Running unittests src/lib.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_core-7cf04b75eddcf4d5)
+construction_project_size_bytes=1664
+action_size_bytes=80
+
+thread 'transaction::workspace::tests::failed_or_unwound_hook_preserves_authority_then_commit_swaps_backing' panicked at crates/city-core/src/transaction/workspace.rs:379:17:
+persist unwind
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'transaction::workspace::tests::reentry_is_rejected_and_unwind_returns_same_initialized_rows' panicked at crates/city-core/src/transaction/workspace.rs:307:13:
+prepare callback unwind
+     Running tests/town_business_exit.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/town_business_exit-793357524d7b2dda)
+     Running unittests src/lib.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_map-2730aaa9e2c4ac8b)
+     Running tests/traffic_adapter.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/traffic_adapter-74e3a26bc466cb60)
+     Running unittests src/lib.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_storage-46fdf6e079eacbdd)
+     Running tests/equity_runtime.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/equity_runtime-068ee147ad1d9e32)
+EQUITY_RUNTIME_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/207-equity-final-functional/test-artifacts/mycity-equity-runtime-36176-0
+EQUITY_RUNTIME_PRESERVED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/207-equity-final-functional/test-artifacts/mycity-equity-runtime-36176-0
+EQUITY_RUNTIME_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/207-equity-final-functional/test-artifacts/mycity-equity-runtime-36176-1
+EQUITY_RUNTIME_PRESERVED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/207-equity-final-functional/test-artifacts/mycity-equity-runtime-36176-1
+     Running tests/spatial_transport_market.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/spatial_transport_market-7fe912451cd65917)
+SPATIAL_MARKET_ARTIFACT_CREATED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/207-equity-final-functional/test-artifacts/mycity-spatial-market-36207-1792731971460407000-0
+SPATIAL_MARKET_METRICS={"adapter_wall_ns":42583,"allocation_profile_file_logical_bytes":2243,"assignment_owned_vec_capacity_bytes_including_path_edge_ids":20864,"assignment_wall_ns":106500,"checkpoint_wall_ns":9930333,"cold_open_wall_ns":9877209,"exact_replay_wall_ns":656458,"opening_owned_vec_capacity_bytes":400,"proof_file_logical_bytes":2315,"scenario":"open","scope":"3_node_single_map_walk_microfixture_not_scale_performance","store_create_wall_ns":23826917,"store_owned_create_bytes":41537958,"store_owned_postcoldopen_bytes":41538022,"store_owned_postsettlement_bytes":41537958,"store_path":"/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/207-equity-final-functional/test-artifacts/mycity-spatial-market-36207-1792731971460407000-0/world","store_settlement_wall_ns_including_proof_io":7080875,"timeline_advance_wall_ns":175726000}
+SPATIAL_MARKET_ARTIFACT_PRESERVED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/207-equity-final-functional/test-artifacts/mycity-spatial-market-36207-1792731971460407000-0
+SPATIAL_MARKET_ARTIFACT_CREATED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/207-equity-final-functional/test-artifacts/mycity-spatial-market-36207-1792731971689912000-1
+SPATIAL_MARKET_METRICS={"adapter_wall_ns":3292,"allocation_profile_file_logical_bytes":2123,"assignment_owned_vec_capacity_bytes_including_path_edge_ids":20912,"assignment_wall_ns":9000,"checkpoint_wall_ns":10849250,"cold_open_wall_ns":11836041,"exact_replay_wall_ns":1302458,"opening_owned_vec_capacity_bytes":400,"proof_file_logical_bytes":2200,"scenario":"road_closed","scope":"3_node_single_map_walk_microfixture_not_scale_performance","store_create_wall_ns":15479125,"store_owned_create_bytes":41537958,"store_owned_postcoldopen_bytes":41538022,"store_owned_postsettlement_bytes":41537958,"store_path":"/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/207-equity-final-functional/test-artifacts/mycity-spatial-market-36207-1792731971689912000-1/world","store_settlement_wall_ns_including_proof_io":8393583,"timeline_advance_wall_ns":110576583}
+SPATIAL_MARKET_ARTIFACT_PRESERVED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/207-equity-final-functional/test-artifacts/mycity-spatial-market-36207-1792731971689912000-1
+SPATIAL_MARKET_ARTIFACT_CREATED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/207-equity-final-functional/test-artifacts/mycity-spatial-market-36207-1792731971850469000-2
+SPATIAL_MARKET_METRICS={"adapter_wall_ns":8083,"allocation_profile_file_logical_bytes":2037,"assignment_owned_vec_capacity_bytes_including_path_edge_ids":20896,"assignment_wall_ns":25417,"checkpoint_wall_ns":10597750,"cold_open_wall_ns":9904917,"exact_replay_wall_ns":657667,"opening_owned_vec_capacity_bytes":400,"proof_file_logical_bytes":2111,"scenario":"door_cannot_enter","scope":"3_node_single_map_walk_microfixture_not_scale_performance","store_create_wall_ns":16361167,"store_owned_create_bytes":41537958,"store_owned_postcoldopen_bytes":41538022,"store_owned_postsettlement_bytes":41537958,"store_path":"/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/207-equity-final-functional/test-artifacts/mycity-spatial-market-36207-1792731971850469000-2/world","store_settlement_wall_ns_including_proof_io":6862958,"timeline_advance_wall_ns":129885500}
+SPATIAL_MARKET_ARTIFACT_PRESERVED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/207-equity-final-functional/test-artifacts/mycity-spatial-market-36207-1792731971850469000-2
+     Running tests/town_business_exit.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/town_business_exit-9dbbef9d7f9e3ff2)
+TOWN_BUSINESS_EXIT_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/207-equity-final-functional/test-artifacts/mycity-town-business-exit-36215-0
+TOWN_BUSINESS_EXIT_PRESERVED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/207-equity-final-functional/test-artifacts/mycity-town-business-exit-36215-0
+TOWN_BUSINESS_EXIT_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/207-equity-final-functional/test-artifacts/mycity-town-business-exit-36215-1
+TOWN_BUSINESS_EXIT_PRESERVED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/207-equity-final-functional/test-artifacts/mycity-town-business-exit-36215-1
+TOWN_BUSINESS_EXIT_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/207-equity-final-functional/test-artifacts/mycity-town-business-exit-36215-2
+TOWN_BUSINESS_EXIT_PRESERVED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/207-equity-final-functional/test-artifacts/mycity-town-business-exit-36215-2

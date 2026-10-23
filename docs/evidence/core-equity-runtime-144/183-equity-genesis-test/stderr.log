@@ -1,0 +1,14 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/equity-runtime-current/crates/city-core)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity-core-work/equity-runtime-current/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/equity-runtime-current/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 52.42s
+     Running tests/equity_runtime.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/equity_runtime-068ee147ad1d9e32)
+EQUITY_RUNTIME_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/183-equity-genesis-test/test-artifacts/mycity-equity-runtime-84877-0
+
+thread 'actual_contributions_tax_dividend_treasury_spend_and_liquidation_survive_recovery' panicked at crates/city-storage/tests/equity_runtime.rs:386:34:
+called `Result::unwrap()` on an `Err` value: InvalidOperation
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+EQUITY_RUNTIME_PRESERVED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/183-equity-genesis-test/test-artifacts/mycity-equity-runtime-84877-0
+EQUITY_RUNTIME_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/183-equity-genesis-test/test-artifacts/mycity-equity-runtime-84877-1
+EQUITY_RUNTIME_PRESERVED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/183-equity-genesis-test/test-artifacts/mycity-equity-runtime-84877-1
+error: test failed, to rerun pass `-p mycity-storage --test equity_runtime`

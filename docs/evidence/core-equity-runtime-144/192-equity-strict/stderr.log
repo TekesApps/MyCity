@@ -1,0 +1,5 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity-core-work/equity-runtime-current/crates/city-headless)
+    Checking mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/equity-runtime-current/crates/city-storage)
+    Checking mycity-map v0.1.0 (/Users/frankqin/dev/MyCity-core-work/equity-runtime-current/crates/city-map)
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/equity-runtime-current/crates/city-core)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 5.88s

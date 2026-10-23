@@ -1,0 +1,8 @@
+Diff in /Users/frankqin/dev/MyCity/crates/city-core/src/town_economy.rs:1:
+ //! Deterministic bounded market planning. The Engine remains authoritative for all settlement.
+-pub mod exit;
+ pub mod equity;
++pub mod exit;
+ 
+ use crate::units::{Money, Quantity};
+ use serde::{Deserialize, Serialize};

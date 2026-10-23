@@ -1,0 +1,98 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/equity-runtime-current/crates/city-core)
+error[E0433]: failed to resolve: use of undeclared type `FixedRows`
+    --> crates/city-core/src/transaction.rs:7182:17
+     |
+7182 |                 FixedRows::<ExitClaimBinding, { crate::town_runtime::MAX_EXIT_CLAIM_BINDINGS }>::new(
+     |                 ^^^^^^^^^ use of undeclared type `FixedRows`
+     |
+help: consider importing this struct
+     |
+6156 +     use crate::town_runtime::FixedRows;
+     |
+
+error[E0433]: failed to resolve: use of undeclared type `FixedRows`
+    --> crates/city-core/src/transaction.rs:7184:22
+     |
+7184 |             payroll: FixedRows::<
+     |                      ^^^^^^^^^ use of undeclared type `FixedRows`
+     |
+help: consider importing this struct
+     |
+6156 +     use crate::town_runtime::FixedRows;
+     |
+
+error[E0599]: no method named `get_mut` found for struct `arena::Arena` in the current scope
+    --> crates/city-core/src/transaction.rs:7082:14
+     |
+7080 | /         e.world
+7081 | |             .accounts
+7082 | |             .get_mut(company_handle)
+     | |             -^^^^^^^ method not found in `Arena<AccountDomain, Account>`
+     | |_____________|
+     |
+     |
+    ::: crates/city-core/src/arena.rs:126:1
+     |
+126  |   pub struct Arena<D: Domain, T: Copy> {
+     |   ------------------------------------ method `get_mut` not found for this struct
+     |
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following trait defines an item `get_mut`, perhaps you need to implement it:
+             candidate #1: `SliceIndex`
+
+error[E0599]: no method named `get_mut` found for struct `arena::Arena` in the current scope
+    --> crates/city-core/src/transaction.rs:7114:26
+     |
+7114 |         e.world.accounts.get_mut(company).unwrap().cash = cash(250);
+     |                          ^^^^^^^ method not found in `Arena<AccountDomain, Account>`
+     |
+    ::: crates/city-core/src/arena.rs:126:1
+     |
+126  | pub struct Arena<D: Domain, T: Copy> {
+     | ------------------------------------ method `get_mut` not found for this struct
+     |
+     = help: items from traits can only be used if the trait is implemented and in scope
+     = note: the following trait defines an item `get_mut`, perhaps you need to implement it:
+             candidate #1: `SliceIndex`
+
+error[E0308]: mismatched types
+    --> crates/city-core/src/transaction.rs:7349:28
+     |
+7349 |         genesis.timeline = None;
+     |         ----------------   ^^^^ expected `Resident<Timeline>`, found `Option<_>`
+     |         |
+     |         expected due to the type of this binding
+     |
+     = note: expected struct `model_rows::Resident<timeline::Timeline>`
+                  found enum `std::option::Option<_>`
+
+error[E0599]: no method named `is_none` found for struct `model_rows::Resident` in the current scope
+    --> crates/city-core/src/transaction.rs:7363:34
+     |
+7363 |         assert!(genesis.timeline.is_none());
+     |                                  ^^^^^^^
+     |
+    ::: crates/city-core/src/model_rows.rs:199:1
+     |
+199  | pub(crate) struct Resident<T> {
+     | ----------------------------- method `is_none` not found for this struct
+     |
+help: there is a method `is_some` with a similar name
+     |
+7363 |         assert!(genesis.timeline.is_some());
+     |                                  ~~~~~~~
+
+error[E0599]: no method named `loan_source_for_claim_id` found for reference `&timeline::Timeline` in the current scope
+    --> crates/city-core/src/transaction.rs:7456:22
+     |
+7456 |             timeline.loan_source_for_claim_id(1),
+     |                      ^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+help: there is a method `loan_source_for_claim` with a similar name
+     |
+7456 |             timeline.loan_source_for_claim(1),
+     |                      ~~~~~~~~~~~~~~~~~~~~~
+
+Some errors have detailed explanations: E0308, E0433, E0599.
+For more information about an error, try `rustc --explain E0308`.
+error: could not compile `mycity-core` (lib test) due to 7 previous errors

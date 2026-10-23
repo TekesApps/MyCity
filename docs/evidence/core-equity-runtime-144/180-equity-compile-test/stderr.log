@@ -1,0 +1,14 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/equity-runtime-current/crates/city-core)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity-core-work/equity-runtime-current/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/equity-runtime-current/crates/city-storage)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 15.02s
+     Running tests/equity_runtime.rs (/Volumes/HP P900/dev/MyCity/target/debug/deps/equity_runtime-b51d6e484404cadc)
+EQUITY_RUNTIME_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/180-equity-compile-test/test-artifacts/mycity-equity-runtime-79916-0
+EQUITY_RUNTIME_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/180-equity-compile-test/test-artifacts/mycity-equity-runtime-79916-1
+
+thread 'actual_contributions_tax_dividend_treasury_spend_and_liquidation_survive_recovery' has overflowed its stack
+fatal runtime error: stack overflow
+error: test failed, to rerun pass `-p mycity-storage --test equity_runtime`
+
+Caused by:
+  process didn't exit successfully: `/Volumes/HP P900/dev/MyCity/target/debug/deps/equity_runtime-b51d6e484404cadc --nocapture` (signal: 6, SIGABRT: process abort signal)

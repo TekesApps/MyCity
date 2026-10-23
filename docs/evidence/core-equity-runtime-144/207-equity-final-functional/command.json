@@ -1,0 +1,31 @@
+{
+  "argv": [
+    "cargo",
+    "test",
+    "--locked",
+    "--release",
+    "-p",
+    "mycity-core",
+    "-p",
+    "mycity-map",
+    "-p",
+    "mycity-storage",
+    "--lib",
+    "--test",
+    "equity_runtime",
+    "--test",
+    "town_business_exit",
+    "--test",
+    "spatial_transport_market",
+    "--test",
+    "traffic_adapter",
+    "--",
+    "--nocapture",
+    "--test-threads=1"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-23T05:04:17.790743+00:00",
+  "source_manifest_sha256": "4602d68d3a16e75adab340d17420f9f5c73876190c018cc191e3819963e54ef3"
+}

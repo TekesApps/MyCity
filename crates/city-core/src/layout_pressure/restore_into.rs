@@ -172,7 +172,23 @@ mod tests {
         let canonical = serde_json::to_vec(&original).unwrap();
         let reversed = serde_json::to_vec(&Reverse(&original)).unwrap();
         let mut target = NativePressure::jprod().unwrap();
-        assert_eq!(target.owned_capacity_bytes(), 29_625_968);
+        const BASELINE_OWNED_BYTES: usize = 29_625_968;
+        const ACCOUNT_COUNT: usize = 40_000;
+        const STOCK_COUNT: usize = 110_000;
+        const LEGACY_ACCOUNT_BYTES: usize = 24;
+        const LEGACY_STOCK_BYTES: usize = 88;
+        let account_record_bytes = target.accounts.layout().record_bytes;
+        let stock_record_bytes = target.inventory.layout().record_bytes;
+        assert_eq!(account_record_bytes, 32);
+        assert_eq!(stock_record_bytes, 96);
+        let provenance_row_growth = ACCOUNT_COUNT * (account_record_bytes - LEGACY_ACCOUNT_BYTES)
+            + STOCK_COUNT * (stock_record_bytes - LEGACY_STOCK_BYTES);
+        assert_eq!(provenance_row_growth, 1_200_000);
+        assert_eq!(
+            target.owned_capacity_bytes(),
+            BASELINE_OWNED_BYTES + provenance_row_growth
+        );
+        assert_eq!(target.owned_capacity_bytes(), 30_825_968);
         assert_eq!(
             target.manifest().owned_capacity_bytes,
             target.owned_capacity_bytes()

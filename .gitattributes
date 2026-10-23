@@ -91,3 +91,6 @@ docs/evidence/core-business-liquidation-138/**/*.log whitespace=-blank-at-eof,-b
 
 # Preserve v139 raw failed/successful test logs verbatim.
 docs/evidence/core-spatial-traffic-139/**/*.log whitespace=-blank-at-eof,-blank-at-eol
+
+# Preserve v144 failed and successful validation output byte-for-byte.
+docs/evidence/core-equity-runtime-144/**/*.log whitespace=-blank-at-eof,-blank-at-eol

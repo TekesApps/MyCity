@@ -1,0 +1,21 @@
+
+running 2 tests
+test actual_contributions_tax_dividend_treasury_spend_and_liquidation_survive_recovery ... ok
+test loss_and_paid_unmodeled_claims_cannot_be_distributed ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.13s
+
+
+running 1 test
+test spatial_walk_access_changes_store_market_arrival_trade_and_survives_cold_replay ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.48s
+
+
+running 3 tests
+test incomplete_policy_and_unregistered_cash_residual_wait_without_bypass_or_distribution ... ok
+test liquidation_sells_existing_market_stock_then_pays_wages_and_debt_once_across_recovery ... ok
+test secured_claims_share_partial_exit_cash_by_stable_id_and_remain_liquidating ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.19s
+

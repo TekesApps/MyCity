@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "cargo",
+    "test",
+    "--locked",
+    "--release",
+    "-p",
+    "mycity-storage",
+    "--test",
+    "equity_runtime",
+    "--",
+    "--nocapture",
+    "--test-threads=1"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/equity-runtime-current",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-23T04:14:38.166404+00:00",
+  "source_manifest_sha256": "b19540590f2fcc430066b36db08dd99f1fd667eb0cf0e6ed074b0df123df9941"
+}

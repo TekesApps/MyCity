@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "cargo",
+    "clippy",
+    "--locked",
+    "--workspace",
+    "--all-targets",
+    "--",
+    "-D",
+    "warnings"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/equity-runtime-current",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-23T04:41:10.456256+00:00",
+  "source_manifest_sha256": "45171afa756014d62cddb37f986096adafa9a40b062f3f34dd534090b5eac5ab"
+}

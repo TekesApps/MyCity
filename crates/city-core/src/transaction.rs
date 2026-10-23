@@ -128,6 +128,18 @@ pub enum Action {
         profile_id: u32,
         company_account: u32,
     },
+    /// Issue ordinary shares for a charter-bound actual account contribution. The caller
+    /// chooses no party or account identity; both resolve through the immutable opening charter.
+    EquityContribute {
+        company: u32,
+        amount: Money,
+    },
+    /// Pay a bounded, pro-rata cash distribution from actual retained operating earnings.
+    /// The caller is the immutable charter's distribution authority, never CitySystem.
+    EquityDistributeRetainedEarnings {
+        company: u32,
+        requested: Money,
+    },
     /// Start the bounded, policy-authorized exit workflow for a configured company.
     BeginExit {
         company: u32,
@@ -1612,10 +1624,23 @@ impl Engine {
                             .iter()
                             .any(|byte| *byte != 0)
                         || town.is_none()
+                        || market
+                            .profile
+                            .equity_charters
+                            .as_slice()
+                            .iter()
+                            .any(|charter| {
+                                town.as_ref().is_none_or(|state| {
+                                    state.equity_registers.as_slice().iter().all(|register| {
+                                        register.company != charter.company
+                                            || register.issued_shares == 0
+                                    })
+                                })
+                            })
                     {
                         return Err(TxError::InvalidOperation);
                     }
-                    let t = timeline.as_ref().ok_or(TxError::InvalidOperation)?;
+                    let t = timeline.as_mut().ok_or(TxError::InvalidOperation)?;
                     town_summary = Some(prepare_town_settlement(TownSettlementContext {
                         operation_id: env.operation_id,
                         world_id: self.world.scope.world(),
@@ -1652,6 +1677,19 @@ impl Engine {
                             .iter()
                             .all(|byte| *byte == 0)
                         || town.is_none()
+                        || market
+                            .profile
+                            .equity_charters
+                            .as_slice()
+                            .iter()
+                            .any(|charter| {
+                                town.as_ref().is_none_or(|state| {
+                                    state.equity_registers.as_slice().iter().all(|register| {
+                                        register.company != charter.company
+                                            || register.issued_shares == 0
+                                    })
+                                })
+                            })
                         || proof.proof_sha256 != proof_sha256
                         || proof.proof.schema != 1
                         || proof.proof.profile_id != profile_id
@@ -1665,7 +1703,7 @@ impl Engine {
                     {
                         return Err(TxError::InvalidOperation);
                     }
-                    let t = timeline.as_ref().ok_or(TxError::InvalidOperation)?;
+                    let t = timeline.as_mut().ok_or(TxError::InvalidOperation)?;
                     let expected_generation = town
                         .as_ref()
                         .and_then(|state| state.last_transport)
@@ -1777,6 +1815,280 @@ impl Engine {
                             .map_err(|_| TxError::InvalidOperation)?;
                     }
                 }
+                Action::EquityContribute { company, amount } => {
+                    if env.actions.len() != 1 || amount <= Money::ZERO {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    let Caller::Account(investor_account) = caller else {
+                        return Err(TxError::Unauthorized);
+                    };
+                    let market = self.world.town.ok_or(TxError::InvalidOperation)?;
+                    if market.state.settled_day != 0
+                        || timeline.as_ref().is_some_and(|timeline| {
+                            timeline.progress.at != 0
+                                || timeline.progress.last_complete != 0
+                                || timeline.progress.phase.is_some()
+                                || timeline.progress.target.is_some()
+                        })
+                    {
+                        // Opening contributions and share issuance happen before operations;
+                        // later fundraising/dilution requires a separately authorized issue.
+                        return Err(TxError::InvalidOperation);
+                    }
+                    let charter = market
+                        .profile
+                        .equity_charters
+                        .as_slice()
+                        .iter()
+                        .find(|charter| charter.company == company)
+                        .ok_or(TxError::InvalidOperation)?;
+                    let party = charter
+                        .binding_for_account(investor_account)
+                        .ok_or(TxError::Unauthorized)?;
+                    let account_role = self
+                        .world
+                        .account_handle(investor_account)
+                        .ok()
+                        .and_then(|handle| self.world.accounts.get(handle).ok())
+                        .map(|account| account.role)
+                        .ok_or(TxError::InvalidHandle)?;
+                    let role_matches = match party.kind {
+                        crate::town_economy::equity::PartyKind::Person
+                        | crate::town_economy::equity::PartyKind::Household => {
+                            account_role == crate::assembly::Role::Household
+                        }
+                        crate::town_economy::equity::PartyKind::Treasury => {
+                            account_role == crate::assembly::Role::Treasury
+                        }
+                        crate::town_economy::equity::PartyKind::Company => false,
+                    };
+                    if !role_matches || market_is_exiting(town.as_ref(), company) {
+                        return Err(TxError::Unauthorized);
+                    }
+                    let shares = u64::try_from(amount.value())
+                        .map_err(|_| TxError::InvalidOperation)?
+                        / u64::try_from(crate::town_economy::equity::INITIAL_CENTS_PER_SHARE)
+                            .map_err(|_| TxError::InvalidOperation)?;
+                    if shares == 0
+                        || i128::from(shares)
+                            * i128::from(crate::town_economy::equity::INITIAL_CENTS_PER_SHARE)
+                            != i128::from(amount.value())
+                    {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    let register = town
+                        .as_mut()
+                        .ok_or(TxError::InvalidOperation)?
+                        .equity_registers
+                        .as_mut_slice()
+                        .iter_mut()
+                        .find(|register| register.company == company)
+                        .ok_or(TxError::InvalidOperation)?;
+                    register.validate().map_err(|_| TxError::InvalidOperation)?;
+                    if register.policy != charter.policy
+                        || charter.binding_for_party(party) != Some(investor_account)
+                    {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    // The non-serializable proof is minted only after the protected cash
+                    // transfer has succeeded in this same Prepared candidate.
+                    market_transfer(
+                        &self.world,
+                        &mut accounts,
+                        investor_account,
+                        company,
+                        amount,
+                    )?;
+                    let transfer =
+                        crate::town_economy::equity::CommittedCashTransfer::after_staged_transfer(
+                            env.operation_id,
+                            investor_account,
+                            company,
+                            amount,
+                        )
+                        .map_err(|_| TxError::InvalidOperation)?;
+                    register
+                        .commit_paid_contribution(
+                            crate::town_economy::equity::PaidContribution {
+                                party,
+                                account: investor_account,
+                                shares,
+                                amount,
+                                receipt_id: env.operation_id,
+                            },
+                            transfer,
+                        )
+                        .map_err(|_| TxError::InvalidOperation)?;
+                    settled[action_index] = Some(amount);
+                }
+                Action::EquityDistributeRetainedEarnings { company, requested } => {
+                    if env.actions.len() != 1 || requested <= Money::ZERO {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    let Caller::Account(caller_account) = caller else {
+                        return Err(TxError::Unauthorized);
+                    };
+                    let market = self.world.town.ok_or(TxError::InvalidOperation)?;
+                    let charter = market
+                        .profile
+                        .equity_charters
+                        .as_slice()
+                        .iter()
+                        .find(|charter| charter.company == company)
+                        .copied()
+                        .ok_or(TxError::InvalidOperation)?;
+                    if charter.binding_for_party(charter.distribution_authority)
+                        != Some(caller_account)
+                    {
+                        return Err(TxError::Unauthorized);
+                    }
+                    let authority_role = self
+                        .world
+                        .account_handle(caller_account)
+                        .ok()
+                        .and_then(|handle| self.world.accounts.get(handle).ok())
+                        .map(|account| account.role)
+                        .ok_or(TxError::InvalidHandle)?;
+                    let authority_role_matches = match charter.distribution_authority.kind {
+                        crate::town_economy::equity::PartyKind::Person
+                        | crate::town_economy::equity::PartyKind::Household => {
+                            authority_role == crate::assembly::Role::Household
+                        }
+                        crate::town_economy::equity::PartyKind::Treasury => {
+                            authority_role == crate::assembly::Role::Treasury
+                        }
+                        crate::town_economy::equity::PartyKind::Company => false,
+                    };
+                    if !authority_role_matches {
+                        return Err(TxError::Unauthorized);
+                    }
+                    let policy = market
+                        .profile
+                        .exit_policy
+                        .filter(|policy| policy.company_account == company)
+                        .ok_or(TxError::InvalidOperation)?;
+                    let current = timeline.as_ref().ok_or(TxError::InvalidOperation)?;
+                    let state = town.as_ref().ok_or(TxError::InvalidOperation)?;
+                    let at = current.progress.last_complete;
+                    if market_is_exiting(town.as_ref(), company)
+                        || market_is_suspended(town.as_ref(), company)
+                        || current.progress.phase.is_some()
+                        || current.progress.target.is_some()
+                        || at == 0
+                        || at % crate::timeline::DAY != 0
+                        || state.settled_day != at / crate::timeline::DAY
+                        || !policy.claims_complete
+                        || !policy.asset_register_complete
+                        || !policy.employment_exit_terms_complete
+                        || !exit_timeline_bindings_match(&policy, current, &market.profile, state)
+                        || !tax_assessments_cover_exit(company, &market.profile, state, current)
+                        || dividend_has_unresolved_or_unmodeled_liability(company, current)
+                        || dividend_has_unmodeled_income_source(&self.world, company)
+                    {
+                        return Err(TxError::InvalidOperation);
+                    }
+
+                    let register = state
+                        .equity_registers
+                        .as_slice()
+                        .iter()
+                        .find(|register| register.company == company)
+                        .copied()
+                        .ok_or(TxError::InvalidOperation)?;
+                    register.validate().map_err(|_| TxError::InvalidOperation)?;
+                    if register.policy != charter.policy || register.issued_shares == 0 {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    let cursor = town
+                        .as_ref()
+                        .ok_or(TxError::InvalidOperation)?
+                        .tax_cursors
+                        .as_slice()
+                        .iter()
+                        .find(|cursor| cursor.company == company)
+                        .copied()
+                        .filter(|cursor| {
+                            cursor.policy_id
+                                == market
+                                    .profile
+                                    .tax_rules
+                                    .as_slice()
+                                    .iter()
+                                    .find(|rule| rule.company == company)
+                                    .map(|rule| rule.policy_id)
+                                    .unwrap_or(0)
+                        })
+                        .ok_or(TxError::InvalidOperation)?;
+                    if cursor.through_day != state.settled_day
+                        || cursor.last_operation_id != state.last_summary.operation_id
+                        || cursor.retained_earnings_cents <= 0
+                    {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    let company_raw = self
+                        .world
+                        .account_ref(company)
+                        .map_err(|_| TxError::InvalidHandle)?;
+                    let company_index = stage_account(&self.world, &mut accounts, company_raw)?;
+                    let spendable = accounts[company_index]
+                        .1
+                        .cash
+                        .checked_sub(accounts[company_index].1.protected)
+                        .map_err(|_| TxError::Protection)?;
+                    let retained = Money::new(cursor.retained_earnings_cents)
+                        .map_err(|_| TxError::InvalidOperation)?;
+                    let amount = requested.min(retained).min(spendable);
+                    if amount <= Money::ZERO {
+                        return Err(TxError::InsufficientFunds);
+                    }
+                    let allocations =
+                        crate::town_economy::equity::allocate_pro_rata(amount, register.holders())
+                            .map_err(|_| TxError::InvalidOperation)?;
+                    let mut paid = Money::ZERO;
+                    for allocation in allocations {
+                        if allocation.amount == Money::ZERO {
+                            continue;
+                        }
+                        post_exit_payment(
+                            &self.world,
+                            &mut accounts,
+                            company,
+                            allocation.account,
+                            allocation.amount,
+                        )?;
+                        paid = paid
+                            .checked_add(allocation.amount)
+                            .map_err(|_| TxError::Overflow)?;
+                    }
+                    if paid != amount {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    let cursor = town
+                        .as_mut()
+                        .ok_or(TxError::InvalidOperation)?
+                        .tax_cursors
+                        .as_mut_slice()
+                        .iter_mut()
+                        .find(|cursor| cursor.company == company)
+                        .ok_or(TxError::InvalidOperation)?;
+                    cursor.retained_earnings_cents = cursor
+                        .retained_earnings_cents
+                        .checked_sub(paid.value())
+                        .ok_or(TxError::Overflow)?;
+                    let register = town
+                        .as_mut()
+                        .ok_or(TxError::InvalidOperation)?
+                        .equity_registers
+                        .as_mut_slice()
+                        .iter_mut()
+                        .find(|register| register.company == company)
+                        .ok_or(TxError::InvalidOperation)?;
+                    register.cumulative_dividends_distributed = register
+                        .cumulative_dividends_distributed
+                        .checked_add(paid)
+                        .map_err(|_| TxError::Overflow)?;
+                    settled[action_index] = Some(paid);
+                }
                 Action::BeginExit { company, policy_id } => {
                     if env.actions.len() != 1 {
                         return Err(TxError::InvalidOperation);
@@ -1819,7 +2131,21 @@ impl Engine {
                     {
                         return Err(TxError::InvalidOperation);
                     }
-                    if !exit_timeline_bindings_match(policy, current) {
+                    let market_profile = &self.world.town.ok_or(TxError::InvalidOperation)?.profile;
+                    if !exit_timeline_bindings_match(
+                        policy,
+                        current,
+                        market_profile,
+                        town.as_ref().ok_or(TxError::InvalidOperation)?,
+                    ) {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    if !tax_assessments_cover_exit(
+                        company,
+                        market_profile,
+                        town.as_ref().ok_or(TxError::InvalidOperation)?,
+                        current,
+                    ) {
                         return Err(TxError::InvalidOperation);
                     }
                     if exit_has_unsupported_receivables(company, current) {
@@ -1905,83 +2231,142 @@ impl Engine {
                         return Err(TxError::InvalidOperation);
                     }
                     let current = timeline.as_ref().ok_or(TxError::InvalidOperation)?;
-                    if !exit_timeline_bindings_match(policy, current) {
+                    if !exit_timeline_bindings_match(
+                        policy,
+                        current,
+                        &market.profile,
+                        town.as_ref().ok_or(TxError::InvalidOperation)?,
+                    ) {
                         return Err(TxError::InvalidOperation);
                     }
                     if exit_has_unsupported_receivables(company, current) {
                         return Err(TxError::InvalidOperation);
                     }
-                    let snapshot = build_exit_snapshot(
-                        &self.world,
+                    let snapshot = build_exit_snapshot(ExitSnapshotInputs {
+                        world: &self.world,
                         policy,
-                        current,
-                        &accounts,
-                        &stocks,
-                        env.operation_id,
-                    )?;
-                    let plan = crate::town_economy::exit::plan_exit(&snapshot)
+                        profile: &market.profile,
+                        market_state: town.as_ref().ok_or(TxError::InvalidOperation)?,
+                        timeline: current,
+                        accounts: &accounts,
+                        stocks: &stocks,
+                        operation_id: env.operation_id,
+                    })?;
+                    let mut plan = crate::town_economy::exit::plan_exit(&snapshot)
                         .map_err(|_| TxError::InvalidOperation)?;
+                    if market
+                        .profile
+                        .equity_charters
+                        .as_slice()
+                        .iter()
+                        .any(|charter| charter.company == company)
+                    {
+                        let register = town
+                            .as_ref()
+                            .and_then(|state| {
+                                state
+                                    .equity_registers
+                                    .as_slice()
+                                    .iter()
+                                    .find(|register| register.company == company)
+                            })
+                            .ok_or(TxError::InvalidOperation)?;
+                        apply_equity_exit_distribution(&mut plan, register)?;
+                    }
+                    let mut exit_settled = Money::ZERO;
                     for action in plan.actions {
-                        let crate::town_economy::exit::ExitAction::SettleLiability {
-                            source,
-                            payee,
-                            amount,
-                        } = action
-                        else {
-                            continue;
-                        };
-                        match source {
-                            crate::town_economy::exit::LiabilitySource::TimelineClaim { id } => {
-                                let timeline =
-                                    timeline.as_mut().ok_or(TxError::InvalidOperation)?;
-                                let claim = timeline
-                                    .claims
-                                    .iter_mut()
-                                    .find(|claim| {
-                                        claim.id == id
-                                            && claim.payer == company
-                                            && claim.payee == payee
-                                    })
-                                    .ok_or(TxError::InvalidOperation)?;
-                                let due = claim
-                                    .principal
-                                    .checked_sub(claim.paid)
-                                    .map_err(|_| TxError::InvalidOperation)?;
-                                if amount > due {
-                                    return Err(TxError::InvalidOperation);
+                        match action {
+                            crate::town_economy::exit::ExitAction::SettleLiability {
+                                source,
+                                payee,
+                                amount,
+                            } => match source {
+                                crate::town_economy::exit::LiabilitySource::TimelineClaim {
+                                    id,
+                                } => {
+                                    let timeline =
+                                        timeline.as_mut().ok_or(TxError::InvalidOperation)?;
+                                    let claim = timeline
+                                        .claims
+                                        .iter_mut()
+                                        .find(|claim| {
+                                            claim.id == id
+                                                && claim.payer == company
+                                                && claim.payee == payee
+                                        })
+                                        .ok_or(TxError::InvalidOperation)?;
+                                    let due = claim
+                                        .principal
+                                        .checked_sub(claim.paid)
+                                        .map_err(|_| TxError::InvalidOperation)?;
+                                    if amount > due {
+                                        return Err(TxError::InvalidOperation);
+                                    }
+                                    post_exit_payment(
+                                        &self.world,
+                                        &mut accounts,
+                                        company,
+                                        payee,
+                                        amount,
+                                    )?;
+                                    exit_settled = exit_settled
+                                        .checked_add(amount)
+                                        .map_err(|_| TxError::Overflow)?;
+                                    claim.paid = claim
+                                        .paid
+                                        .checked_add(amount)
+                                        .map_err(|_| TxError::Overflow)?;
                                 }
-                                post_exit_payment(
-                                    &self.world,
-                                    &mut accounts,
-                                    company,
-                                    payee,
-                                    amount,
-                                )?;
-                                claim.paid = claim
-                                    .paid
-                                    .checked_add(amount)
-                                    .map_err(|_| TxError::Overflow)?;
-                            }
-                            crate::town_economy::exit::LiabilitySource::PayrollArrears { id } => {
-                                let timeline =
-                                    timeline.as_mut().ok_or(TxError::InvalidOperation)?;
-                                let payroll = timeline
-                                    .payroll
-                                    .iter_mut()
-                                    .find(|row| {
-                                        row.spec.id == id
-                                            && row.spec.payer == company
-                                            && row.spec.payee == payee
+                                crate::town_economy::exit::LiabilitySource::PayrollArrears {
+                                    id,
+                                } => {
+                                    let timeline =
+                                        timeline.as_mut().ok_or(TxError::InvalidOperation)?;
+                                    let payroll = timeline
+                                        .payroll
+                                        .iter_mut()
+                                        .find(|row| {
+                                            row.spec.id == id
+                                                && row.spec.payer == company
+                                                && row.spec.payee == payee
+                                        })
+                                        .ok_or(TxError::InvalidOperation)?;
+                                    let due = payroll
+                                        .accrued
+                                        .checked_sub(payroll.paid)
+                                        .map_err(|_| TxError::InvalidOperation)?;
+                                    if payroll.working
+                                        || payroll.next_due.is_some()
+                                        || payroll.billed != payroll.accrued
+                                        || amount > due
+                                    {
+                                        return Err(TxError::InvalidOperation);
+                                    }
+                                    post_exit_payment(
+                                        &self.world,
+                                        &mut accounts,
+                                        company,
+                                        payee,
+                                        amount,
+                                    )?;
+                                    exit_settled = exit_settled
+                                        .checked_add(amount)
+                                        .map_err(|_| TxError::Overflow)?;
+                                    payroll.paid = payroll
+                                        .paid
+                                        .checked_add(amount)
+                                        .map_err(|_| TxError::Overflow)?;
+                                }
+                            },
+                            crate::town_economy::exit::ExitAction::DistributeResidual {
+                                shareholder,
+                                amount,
+                            } => {
+                                if !snapshot.tax_assessment_complete
+                                    || !snapshot.shareholders_complete
+                                    || !snapshot.shareholders.iter().any(|row| {
+                                        row.account == shareholder && amount > Money::ZERO
                                     })
-                                    .ok_or(TxError::InvalidOperation)?;
-                                let due = payroll
-                                    .accrued
-                                    .checked_sub(payroll.paid)
-                                    .map_err(|_| TxError::InvalidOperation)?;
-                                if payroll.working
-                                    || payroll.next_due.is_some()
-                                    || payroll.billed != payroll.accrued
-                                    || amount > due
                                 {
                                     return Err(TxError::InvalidOperation);
                                 }
@@ -1989,15 +2374,31 @@ impl Engine {
                                     &self.world,
                                     &mut accounts,
                                     company,
-                                    payee,
+                                    shareholder,
                                     amount,
                                 )?;
-                                payroll.paid = payroll
-                                    .paid
+                                let register = town
+                                    .as_mut()
+                                    .and_then(|state| {
+                                        state
+                                            .equity_registers
+                                            .as_mut_slice()
+                                            .iter_mut()
+                                            .find(|register| register.company == company)
+                                    })
+                                    .ok_or(TxError::InvalidOperation)?;
+                                register
+                                    .record_liquidation_distribution(amount)
+                                    .map_err(|_| TxError::InvalidOperation)?;
+                                exit_settled = exit_settled
                                     .checked_add(amount)
                                     .map_err(|_| TxError::Overflow)?;
                             }
+                            _ => {}
                         }
+                    }
+                    if exit_settled > Money::ZERO {
+                        settled[action_index] = Some(exit_settled);
                     }
                 }
                 Action::CloseExit { company } => {
@@ -2040,14 +2441,16 @@ impl Engine {
                     {
                         return Err(TxError::InvalidOperation);
                     }
-                    let snapshot = build_exit_snapshot(
-                        &self.world,
+                    let snapshot = build_exit_snapshot(ExitSnapshotInputs {
+                        world: &self.world,
                         policy,
-                        timeline.as_ref().ok_or(TxError::InvalidOperation)?,
-                        &accounts,
-                        &stocks,
-                        env.operation_id,
-                    )?;
+                        profile: &market.profile,
+                        market_state: town.as_ref().ok_or(TxError::InvalidOperation)?,
+                        timeline: timeline.as_ref().ok_or(TxError::InvalidOperation)?,
+                        accounts: &accounts,
+                        stocks: &stocks,
+                        operation_id: env.operation_id,
+                    })?;
                     if exit_has_unsupported_receivables(
                         company,
                         timeline.as_ref().ok_or(TxError::InvalidOperation)?,
@@ -2273,6 +2676,19 @@ impl Engine {
                     }
                     let payer = accounts[f].1.id;
                     let payee = accounts[t].1.id;
+                    if self.world.town.is_some_and(|market| {
+                        market
+                            .profile
+                            .equity_charters
+                            .as_slice()
+                            .iter()
+                            .any(|charter| charter.company == payer || charter.company == payee)
+                    }) {
+                        // Chartered businesses use explicit contribution and distribution
+                        // actions; ordinary transfers cannot bypass share issuance or payout
+                        // authorization, or create an unclassified source of distributable cash.
+                        return Err(TxError::InvalidOperation);
+                    }
                     if market_is_exiting(town.as_ref(), payer)
                         || town.as_ref().is_some_and(|state| {
                             state.exit.is_some_and(|exit| {
@@ -2346,6 +2762,29 @@ impl Engine {
                     }
                 }
                 Action::MoveStock { from, to, quantity } => {
+                    if self.world.town.is_some_and(|market| {
+                        let chartered =
+                            |stock_ref: crate::arena::Handle<crate::arena::InventoryDomain>| {
+                                self.world.stocks.get(stock_ref).ok().is_some_and(|stock| {
+                                    self.world
+                                        .accounts
+                                        .get(stock.owner)
+                                        .ok()
+                                        .is_some_and(|owner| {
+                                            market
+                                                .profile
+                                                .equity_charters
+                                                .as_slice()
+                                                .iter()
+                                                .any(|charter| charter.company == owner.id)
+                                        })
+                                })
+                            };
+                        self.world.stocks.resolve(from).ok().is_some_and(chartered)
+                            || self.world.stocks.resolve(to).ok().is_some_and(chartered)
+                    }) {
+                        return Err(TxError::InvalidOperation);
+                    }
                     if let Some(e) = exchange {
                         let mut ids = [0; 2];
                         for (i, raw) in [from, to].iter().enumerate() {
@@ -2948,7 +3387,7 @@ struct TownSettlementContext<'a> {
     world: &'a World,
     profile: &'a crate::town_runtime::MarketProfile,
     state: &'a mut Option<crate::town_runtime::MarketState>,
-    timeline: &'a crate::timeline::Timeline,
+    timeline: &'a mut crate::timeline::Timeline,
     accounts: &'a mut DirtyAccounts,
     stocks: &'a mut DirtyStocks,
     boot: &'a mut Option<crate::boot::Boot>,
@@ -3548,6 +3987,15 @@ fn prepare_town_settlement(
         wages_accrued,
         idle_labor_expense,
     };
+    apply_company_tax_assessments(
+        profile,
+        market_state,
+        timeline,
+        &batch,
+        &worker_deltas,
+        day,
+        operation_id,
+    )?;
     // Record both actual application and the authoritative planner reconciliation in one
     // persisted cursor. Timeline has already paid any due wages; no second wage transfer occurs.
     let _labor_paid_by_timeline = reconciled.worker_days;
@@ -3555,6 +4003,150 @@ fn prepare_town_settlement(
     market_state.last_transport = transport_receipt;
     market_state.last_summary = summary;
     Ok(summary)
+}
+
+fn apply_company_tax_assessments(
+    profile: &crate::town_runtime::MarketProfile,
+    market_state: &mut crate::town_runtime::MarketState,
+    timeline: &mut crate::timeline::Timeline,
+    batch: &crate::town_economy::SettlementBatch,
+    worker_deltas: &[(u32, u32, u64, i64, i64)],
+    day: u64,
+    operation_id: u64,
+) -> Result<(), TxError> {
+    use crate::town_economy::PlanLine;
+    for rule in profile.tax_rules.as_slice() {
+        let mut sales_cents = 0_i128;
+        let mut sold_basis_cents = 0_i128;
+        let mut accrued_wages_cents = 0_i128;
+        let mut capitalized_labor_cents = 0_i128;
+        for (_, payer, _, accrued, _) in worker_deltas {
+            if *payer == rule.company {
+                accrued_wages_cents = accrued_wages_cents
+                    .checked_add(i128::from(*accrued))
+                    .ok_or(TxError::Overflow)?;
+            }
+        }
+        for line in &batch.lines {
+            match *line {
+                PlanLine::Sale {
+                    shop_account,
+                    goods_basis,
+                    goods_payment,
+                    ..
+                } if shop_account == rule.company => {
+                    sales_cents = sales_cents
+                        .checked_add(i128::from(goods_payment.value()))
+                        .ok_or(TxError::Overflow)?;
+                    sold_basis_cents = sold_basis_cents
+                        .checked_add(i128::from(goods_basis.value()))
+                        .ok_or(TxError::Overflow)?;
+                }
+                PlanLine::Produce {
+                    employer,
+                    labor_cost,
+                    ..
+                } if employer == rule.company => {
+                    capitalized_labor_cents = capitalized_labor_cents
+                        .checked_add(i128::from(labor_cost.value()))
+                        .ok_or(TxError::Overflow)?;
+                }
+                _ => {}
+            }
+        }
+        let idle_labor = accrued_wages_cents
+            .checked_sub(capitalized_labor_cents)
+            .ok_or(TxError::InvalidOperation)?;
+        let margin_cents = sales_cents
+            .checked_sub(sold_basis_cents)
+            .and_then(|v| v.checked_sub(idle_labor))
+            .ok_or(TxError::Overflow)?;
+        let taxable_cents = margin_cents.max(0);
+        let assessed_cents = taxable_cents
+            .checked_mul(i128::from(rule.rate_basis_points))
+            .ok_or(TxError::Overflow)?
+            / 10_000;
+        let assessed = Money::new(i64::try_from(assessed_cents).map_err(|_| TxError::Overflow)?)
+            .map_err(|_| TxError::Overflow)?;
+        let taxable_basis =
+            Money::new(i64::try_from(taxable_cents).map_err(|_| TxError::Overflow)?)
+                .map_err(|_| TxError::Overflow)?;
+
+        let cursor = market_state
+            .tax_cursors
+            .as_mut_slice()
+            .iter_mut()
+            .find(|cursor| cursor.company == rule.company)
+            .filter(|cursor| cursor.policy_id == rule.policy_id)
+            .ok_or(TxError::InvalidOperation)?;
+        if cursor.through_day.checked_add(1) != Some(day)
+            || (day == 1 && cursor.last_operation_id != 0)
+            || operation_id == 0
+        {
+            return Err(TxError::InvalidOperation);
+        }
+
+        let claim_id = if assessed > Money::ZERO {
+            let id = timeline
+                .claims
+                .last()
+                .map_or(1, |claim| claim.id.checked_add(1).unwrap_or(0));
+            if id == 0 || timeline.claims.len() >= crate::timeline::CLAIM_LIMIT {
+                return Err(TxError::WorkingLimit);
+            }
+            let due = day
+                .checked_add(1)
+                .and_then(|next_day| next_day.checked_mul(crate::timeline::DAY))
+                .ok_or(TxError::Overflow)?;
+            timeline
+                .claims
+                .try_reserve_exact(1)
+                .map_err(|_| TxError::WorkingLimit)?;
+            let source_ref = timeline.push_tax_claim_source(
+                id,
+                crate::timeline::TaxClaimSource {
+                    company: rule.company,
+                    policy_id: rule.policy_id,
+                    kind: rule.kind,
+                    period: day,
+                    settlement_operation_id: operation_id,
+                    taxable_basis,
+                    assessed,
+                },
+            )?;
+            timeline.claims.push(crate::timeline::Claim {
+                id,
+                payer: rule.company,
+                payee: rule.authority_account,
+                due,
+                principal: assessed,
+                paid: Money::ZERO,
+                processed: false,
+                source_ref,
+            });
+            cursor.last_claim_id = id;
+            id
+        } else {
+            cursor.last_claim_id
+        };
+        let after_tax_margin = margin_cents
+            .checked_sub(assessed_cents)
+            .ok_or(TxError::Overflow)?;
+        cursor.retained_earnings_cents = i64::try_from(
+            i128::from(cursor.retained_earnings_cents)
+                .checked_add(after_tax_margin)
+                .ok_or(TxError::Overflow)?,
+        )
+        .map_err(|_| TxError::Overflow)?;
+        cursor.cumulative_assessed = cursor
+            .cumulative_assessed
+            .checked_add(assessed)
+            .map_err(|_| TxError::Overflow)?;
+        cursor.through_day = day;
+        cursor.last_operation_id = operation_id;
+        cursor.last_claim_id = claim_id;
+    }
+    Ok(())
 }
 
 fn stock_slice_basis(stock: &Stock, quantity: Quantity) -> Result<Money, TxError> {
@@ -4630,6 +5222,7 @@ impl Action {
                 command: crate::construction::EngineCommand::Start
                     | crate::construction::EngineCommand::Work { .. }
             } | Self::RegionMigrate { .. }
+                | Self::EquityContribute { .. }
                 | Self::ReserveCapacity { .. }
         )
     }
@@ -4741,7 +5334,8 @@ fn validate_town_exit_state(
         .ok_or("town_exit_policy_missing")?;
     let timeline = timeline.ok_or("town_exit_without_timeline")?;
     if runtime.started_at > timeline.progress.last_complete
-        || !exit_timeline_bindings_match(&policy, timeline)
+        || !exit_timeline_bindings_match(&policy, timeline, profile, state)
+        || !tax_assessments_cover_exit(runtime.company_account, profile, state, timeline)
         || exit_has_unsupported_receivables(runtime.company_account, timeline)
     {
         return Err("town_exit_clock_or_binding");
@@ -4883,6 +5477,8 @@ fn town_exit_policy(
 fn exit_timeline_bindings_match(
     policy: &crate::town_runtime::ExitPolicy,
     timeline: &crate::timeline::Timeline,
+    profile: &crate::town_runtime::MarketProfile,
+    state: &crate::town_runtime::MarketState,
 ) -> bool {
     let claim_count = timeline
         .claims
@@ -4896,7 +5492,6 @@ fn exit_timeline_bindings_match(
         .count();
     if claim_count > crate::town_runtime::MAX_EXIT_CLAIM_BINDINGS
         || payroll_count > crate::town_runtime::MAX_EXIT_PAYROLL_BINDINGS
-        || claim_count != policy.claims.len()
         || payroll_count != policy.payroll.len()
     {
         return false;
@@ -4906,14 +5501,46 @@ fn exit_timeline_bindings_match(
         .iter()
         .filter(|claim| claim.payer == policy.company_account)
     {
-        if !policy
+        let dynamic_tax_required = profile
+            .equity_charters
+            .as_slice()
+            .iter()
+            .any(|charter| charter.company == policy.company_account);
+        let static_binding = policy
             .claims
             .as_slice()
             .iter()
-            .any(|binding| binding.id == claim.id && binding.payee == claim.payee)
+            .find(|binding| binding.id == claim.id && binding.payee == claim.payee);
+        let dynamic_tax = timeline
+            .tax_source_for_claim(claim)
+            .is_some_and(|source| tax_claim_source_matches(profile, state, claim, source));
+        if static_binding.is_none() && !dynamic_tax
+            || static_binding.is_some_and(|binding| {
+                dynamic_tax_required
+                    && binding.class == crate::town_economy::exit::ClaimClass::Tax
+                    && !dynamic_tax
+            })
         {
             return false;
         }
+    }
+    let known_claim_count = timeline
+        .claims
+        .iter()
+        .filter(|claim| {
+            claim.payer == policy.company_account
+                && (policy
+                    .claims
+                    .as_slice()
+                    .iter()
+                    .any(|binding| binding.id == claim.id && binding.payee == claim.payee)
+                    || timeline.tax_source_for_claim(claim).is_some_and(|source| {
+                        tax_claim_source_matches(profile, state, claim, source)
+                    }))
+        })
+        .count();
+    if known_claim_count != claim_count {
+        return false;
     }
     for row in timeline
         .payroll
@@ -4949,6 +5576,168 @@ fn exit_timeline_bindings_match(
         }
     }
     true
+}
+
+fn tax_claim_source_matches(
+    profile: &crate::town_runtime::MarketProfile,
+    state: &crate::town_runtime::MarketState,
+    claim: &crate::timeline::Claim,
+    source: crate::timeline::TaxClaimSource,
+) -> bool {
+    let Some(rule) = profile
+        .tax_rules
+        .as_slice()
+        .iter()
+        .find(|rule| rule.company == source.company && rule.policy_id == source.policy_id)
+    else {
+        return false;
+    };
+    let Some(cursor) = state
+        .tax_cursors
+        .as_slice()
+        .iter()
+        .find(|cursor| cursor.company == rule.company && cursor.policy_id == rule.policy_id)
+    else {
+        return false;
+    };
+    let expected_tax = i128::from(source.taxable_basis.value())
+        .checked_mul(i128::from(rule.rate_basis_points))
+        .map(|value| value / 10_000)
+        .and_then(|value| i64::try_from(value).ok());
+    let expected_due = source
+        .period
+        .checked_add(1)
+        .and_then(|day| day.checked_mul(crate::timeline::DAY));
+    claim.id > 0
+        && claim.payer == source.company
+        && claim.payee == rule.authority_account
+        && claim.principal == source.assessed
+        && claim.principal > Money::ZERO
+        && source.assessed.value() > 0
+        && source.taxable_basis.value() > 0
+        && source.kind == rule.kind
+        && source.period > 0
+        && source.period <= cursor.through_day
+        && source.settlement_operation_id > 0
+        && source.settlement_operation_id <= cursor.last_operation_id
+        && expected_tax == Some(source.assessed.value())
+        && expected_due == Some(claim.due)
+}
+
+fn tax_assessments_cover_exit(
+    company: u32,
+    profile: &crate::town_runtime::MarketProfile,
+    state: &crate::town_runtime::MarketState,
+    timeline: &crate::timeline::Timeline,
+) -> bool {
+    let dynamic_tax_required = profile
+        .equity_charters
+        .as_slice()
+        .iter()
+        .any(|charter| charter.company == company);
+    if !dynamic_tax_required {
+        // Legacy C exits use the explicit prototype completeness input. This is not a
+        // measured or generated tax ledger; D-chartered companies require the real cursor.
+        return profile
+            .exit_policy
+            .filter(|policy| policy.company_account == company)
+            .is_some_and(|policy| policy.tax_assessment_complete)
+            && timeline
+                .claims
+                .iter()
+                .filter(|claim| claim.payer == company)
+                .all(|claim| claim.source_ref == 0);
+    }
+    let Some(rule) = profile
+        .tax_rules
+        .as_slice()
+        .iter()
+        .find(|rule| rule.company == company)
+    else {
+        return false;
+    };
+    let Some(cursor) = state
+        .tax_cursors
+        .as_slice()
+        .iter()
+        .find(|cursor| cursor.company == company && cursor.policy_id == rule.policy_id)
+    else {
+        return false;
+    };
+    state.settled_day > 0
+        && cursor.through_day == state.settled_day
+        && cursor.last_operation_id == state.last_summary.operation_id
+        && timeline.claims.iter().all(|claim| {
+            if claim.payer != company {
+                return true;
+            }
+            match timeline.source_for_claim(claim) {
+                None => claim.source_ref == 0,
+                Some(crate::timeline::ClaimSource::Loan { .. }) => true,
+                Some(crate::timeline::ClaimSource::Tax { details }) => {
+                    tax_claim_source_matches(profile, state, claim, details)
+                }
+            }
+        })
+}
+
+fn dividend_has_unresolved_or_unmodeled_liability(
+    company: u32,
+    timeline: &crate::timeline::Timeline,
+) -> bool {
+    timeline.claims.iter().any(|claim| {
+        // Only a fully settled Timeline::Lend receivable is a known company asset. Ordinary
+        // paid Claims can represent compensation, fees or other costs and remain unmodeled.
+        let settled_known_loan = timeline.loan_source_for_claim(claim).is_some()
+            && claim.paid == claim.principal
+            && claim.processed;
+        (claim.payee == company && !settled_known_loan)
+            || (claim.payer == company
+                && (claim.paid != claim.principal
+                    || !claim.processed
+                    || timeline.source_for_claim(claim).is_none()))
+    }) || timeline.payroll.iter().any(|row| {
+        row.spec.payee == company
+            || (row.spec.payer == company
+                && (row.accrued != row.paid
+                    || row.billed != row.accrued
+                    || row.working
+                    || row.next_due.is_some()
+                    || row.pending_cycle.is_some()))
+    })
+}
+
+fn dividend_has_unmodeled_income_source(world: &World, company: u32) -> bool {
+    // The prototype margin cursor models TownSettle goods sales, sold-lot basis, idle wages
+    // and its own tax claim. Revenue through unrelated ledgers has no trusted margin source,
+    // so block distributions when this account participates in one of them.
+    world.exchange.as_ref().is_some_and(|exchange| {
+        exchange
+            .accounts
+            .iter()
+            .any(|binding| binding.account == company)
+            || exchange.quotes.iter().any(|quote| {
+                [quote.spec.seller, quote.spec.buyer, quote.spec.carrier].contains(&company)
+            })
+    }) || world
+        .boot
+        .as_ref()
+        .is_some_and(|boot| [boot.operator, boot.contractor].contains(&company))
+        || world
+            .construction
+            .as_ref()
+            .is_some_and(|project| [project.owner, project.contractor].contains(&company))
+        || world
+            .economy
+            .as_ref()
+            .is_some_and(|economy| economy.accounts.contains(&company))
+        || world.region.as_ref().is_some_and(|region| {
+            region
+                .obligations
+                .iter()
+                .flatten()
+                .any(|obligation| obligation.payer == company || obligation.payee == company)
+        })
 }
 
 fn exit_has_pending_payroll_cycle(company: u32, timeline: &crate::timeline::Timeline) -> bool {
@@ -5008,14 +5797,30 @@ fn town_exit_profile_dependency(
         })
 }
 
-fn build_exit_snapshot(
-    world: &World,
-    policy: &crate::town_runtime::ExitPolicy,
-    timeline: &crate::timeline::Timeline,
-    accounts: &DirtyAccounts,
-    stocks: &DirtyStocks,
+struct ExitSnapshotInputs<'a> {
+    world: &'a World,
+    policy: &'a crate::town_runtime::ExitPolicy,
+    profile: &'a crate::town_runtime::MarketProfile,
+    market_state: &'a crate::town_runtime::MarketState,
+    timeline: &'a crate::timeline::Timeline,
+    accounts: &'a DirtyAccounts,
+    stocks: &'a DirtyStocks,
     operation_id: u64,
+}
+
+fn build_exit_snapshot(
+    input: ExitSnapshotInputs<'_>,
 ) -> Result<crate::town_economy::exit::ExitSnapshot, TxError> {
+    let ExitSnapshotInputs {
+        world,
+        policy,
+        profile,
+        market_state,
+        timeline,
+        accounts,
+        stocks,
+        operation_id,
+    } = input;
     use crate::town_economy::exit::{
         ExitInventoryLot, ExitLiability, ExitPayroll, ExitSnapshot, ExitTrigger, LiabilitySource,
     };
@@ -5037,12 +5842,32 @@ fn build_exit_snapshot(
         .iter()
         .filter(|claim| claim.payer == policy.company_account)
     {
-        let binding = policy
+        let dynamic_tax_required = profile
+            .equity_charters
+            .as_slice()
+            .iter()
+            .any(|charter| charter.company == policy.company_account);
+        let static_binding = policy
             .claims
             .as_slice()
             .iter()
-            .find(|binding| binding.id == claim.id && binding.payee == claim.payee)
-            .ok_or(TxError::InvalidOperation)?;
+            .find(|binding| binding.id == claim.id && binding.payee == claim.payee);
+        let dynamic_tax = timeline
+            .tax_source_for_claim(claim)
+            .is_some_and(|source| tax_claim_source_matches(profile, market_state, claim, source));
+        let class = if let Some(binding) = static_binding {
+            if dynamic_tax_required
+                && binding.class == crate::town_economy::exit::ClaimClass::Tax
+                && !dynamic_tax
+            {
+                return Err(TxError::InvalidOperation);
+            }
+            binding.class
+        } else if dynamic_tax {
+            crate::town_economy::exit::ClaimClass::Tax
+        } else {
+            return Err(TxError::InvalidOperation);
+        };
         let outstanding = claim
             .principal
             .checked_sub(claim.paid)
@@ -5050,7 +5875,7 @@ fn build_exit_snapshot(
         if outstanding > Money::ZERO {
             liabilities.push(ExitLiability {
                 source: LiabilitySource::TimelineClaim { id: claim.id },
-                class: binding.class,
+                class,
                 payee: claim.payee,
                 due_at: claim
                     .due
@@ -5108,7 +5933,6 @@ fn build_exit_snapshot(
         (class_index, source, id)
     });
     payroll_rows.sort_by_key(|row| row.id);
-    let profile = world.town.ok_or(TxError::InvalidOperation)?.profile;
     let mut inventory = Vec::new();
     for (stock_id, handle) in world.stock_ids.iter() {
         let original = world
@@ -5148,6 +5972,41 @@ fn build_exit_snapshot(
             sale_ready,
         });
     }
+    let register = market_state
+        .equity_registers
+        .as_slice()
+        .iter()
+        .find(|register| register.company == policy.company_account);
+    let charter = profile
+        .equity_charters
+        .as_slice()
+        .iter()
+        .find(|charter| charter.company == policy.company_account);
+    let shareholders_complete = match (charter, register) {
+        (Some(charter), Some(register)) => {
+            register.validate().is_ok()
+                && register.policy == charter.policy
+                && register
+                    .holders()
+                    .iter()
+                    .all(|holder| charter.binding_for_party(holder.party) == Some(holder.account))
+        }
+        _ => false,
+    };
+    let mut shareholders: Vec<_> = register
+        .filter(|_| shareholders_complete)
+        .map(|register| {
+            register
+                .holders()
+                .iter()
+                .map(|holder| crate::town_economy::exit::Shareholder {
+                    account: holder.account,
+                    shares: holder.shares,
+                })
+                .collect()
+        })
+        .unwrap_or_default();
+    shareholders.sort_by_key(|holder| holder.account);
     let snapshot = ExitSnapshot {
         schema: "mycity-business-exit-v0.1".to_owned(),
         world: world.scope.world(),
@@ -5164,17 +6023,65 @@ fn build_exit_snapshot(
         trigger: ExitTrigger::Voluntary,
         priority_policy: Some(policy.priority_policy),
         legal_clearance: policy.legal_clearance,
-        claims_complete: policy.claims_complete && exit_timeline_bindings_match(policy, timeline),
-        tax_assessment_complete: policy.tax_assessment_complete,
+        claims_complete: policy.claims_complete
+            && exit_timeline_bindings_match(policy, timeline, profile, market_state),
+        // This is derived from per-period actual-settlement cursors and source-tagged Timeline
+        // claims. The old genesis boolean is retained only for wire compatibility.
+        tax_assessment_complete: tax_assessments_cover_exit(
+            policy.company_account,
+            profile,
+            market_state,
+            timeline,
+        ),
         asset_register_complete: policy.asset_register_complete,
         employment_exit_terms_complete: policy.employment_exit_terms_complete,
         liabilities,
         payroll: payroll_rows,
         inventory,
-        shareholders_complete: false,
-        shareholders: Vec::new(),
+        shareholders_complete,
+        shareholders,
     };
     Ok(snapshot)
+}
+
+fn apply_equity_exit_distribution(
+    plan: &mut crate::town_economy::exit::ExitPlan,
+    register: &crate::town_economy::equity::EquityRegister,
+) -> Result<(), TxError> {
+    use crate::town_economy::exit::ExitAction;
+
+    let mut distribution_index = None;
+    let mut residual = Money::ZERO;
+    for (index, action) in plan.actions.iter().enumerate() {
+        if let ExitAction::DistributeResidual { amount, .. } = action {
+            distribution_index.get_or_insert(index);
+            residual = residual
+                .checked_add(*amount)
+                .map_err(|_| TxError::Overflow)?;
+        }
+    }
+    let Some(index) = distribution_index else {
+        return Ok(());
+    };
+
+    let allocations = crate::town_economy::equity::allocate_pro_rata(residual, register.holders())
+        .map_err(|_| TxError::InvalidOperation)?;
+    plan.actions
+        .retain(|action| !matches!(action, ExitAction::DistributeResidual { .. }));
+    for (offset, allocation) in allocations
+        .into_iter()
+        .filter(|allocation| allocation.amount > Money::ZERO)
+        .enumerate()
+    {
+        plan.actions.insert(
+            index + offset,
+            ExitAction::DistributeResidual {
+                shareholder: allocation.account,
+                amount: allocation.amount,
+            },
+        );
+    }
+    Ok(())
 }
 
 fn post_exit_payment(
@@ -5832,11 +6739,40 @@ mod tests {
         }
     }
     fn market_engine() -> Engine {
+        market_engine_from(engine())
+    }
+
+    fn equity_market_engine() -> Engine {
+        let mut opening: serde_json::Value =
+            serde_json::from_slice(include_bytes!("../../../fixtures/m0-e0-opening.json")).unwrap();
+        for account in opening["accounts"].as_array_mut().unwrap() {
+            if account["id"] == 3 {
+                account["cash"] = serde_json::json!(0);
+            }
+        }
+        for source in opening["sources"].as_array_mut().unwrap() {
+            if source["id"] == 3 {
+                source["amount"] = serde_json::json!(0);
+            }
+        }
+        let bytes = serde_json::to_vec(&opening).unwrap();
+        let e = Engine::new(
+            assemble(&bytes).unwrap(),
+            vec![Resource::new(1, 10).unwrap(), Resource::new(2, 10).unwrap()],
+        )
+        .unwrap();
+        let mut e = market_engine_from(e);
+        let progress = &mut e.timeline.as_mut().unwrap().progress;
+        progress.last_complete = 0;
+        progress.at = 0;
+        e
+    }
+
+    fn market_engine_from(mut e: Engine) -> Engine {
         use crate::{
             town_economy::{DeliveryQuote, HouseholdGroup, ShopSnapshot},
             town_runtime::{EmployerSpec, FixedRows, MarketProfile, TownMarket},
         };
-        let mut e = engine();
         let mut households = FixedRows::<HouseholdGroup, 64>::new();
         households
             .push(HouseholdGroup {
@@ -5889,6 +6825,8 @@ mod tests {
                 transport_allocation_sha256: [0; 32],
                 utility_supply: None,
                 exit_policy: None,
+                equity_charters: FixedRows::new(),
+                tax_rules: FixedRows::new(),
                 households,
                 employers,
                 shops,
@@ -6122,6 +7060,473 @@ mod tests {
         assert_eq!(e.state_hash(), after);
         eprintln!("action_size_bytes={}", std::mem::size_of::<Action>());
         assert!(std::mem::size_of::<Action>() <= 128);
+    }
+
+    fn install_equity_charter(e: &mut Engine) {
+        use crate::town_economy::equity::{
+            EquityCharter, EquityInvestorBinding, EquityOpeningSourceBinding, EquityParty,
+            EquityPolicy, EquityRegister, PartyKind,
+        };
+        let mut investors = crate::town_runtime::FixedRows::new();
+        investors
+            .push(EquityInvestorBinding {
+                party: EquityParty {
+                    kind: PartyKind::Person,
+                    id: 7001,
+                },
+                account: 2,
+                opening_shares: 0,
+            })
+            .unwrap();
+        let policy = EquityPolicy::initial(77, 1000);
+        let party = EquityParty {
+            kind: PartyKind::Person,
+            id: 7001,
+        };
+        let mut opening_sources = crate::town_runtime::FixedRows::new();
+        opening_sources
+            .push(EquityOpeningSourceBinding {
+                source_id: 3,
+                party,
+            })
+            .unwrap();
+        let company_handle = e.world.account_handle(3).unwrap();
+        let mut company_account = *e.world.accounts.get(company_handle).unwrap();
+        company_account.opening_source_id = 3;
+        e.world
+            .accounts
+            .replace(company_handle, company_account)
+            .unwrap();
+        let town = e.world.town.as_mut().unwrap();
+        town.profile
+            .equity_charters
+            .push(EquityCharter {
+                company: 3,
+                policy,
+                distribution_authority: party,
+                investors,
+                opening_sources,
+            })
+            .unwrap();
+        town.state
+            .equity_registers
+            .push(EquityRegister::empty(3, policy).unwrap())
+            .unwrap();
+        e.world.town.unwrap().validate_world(&e.world).unwrap();
+    }
+
+    #[test]
+    fn opening_endowment_tracks_exact_sources_and_is_not_recomputed_from_live_assets() {
+        let mut e = equity_market_engine();
+        install_equity_charter(&mut e);
+        let town = e.world.town.unwrap();
+        assert!(town.validate_initial_world(&e.world).is_ok());
+        let register = town.state.equity_registers.as_slice()[0];
+        assert_eq!(register.opening_issued_shares, 0);
+        assert_eq!(register.opening_paid_in, Money::ZERO);
+
+        let company = e.world.account_handle(3).unwrap();
+        let mut company_account = *e.world.accounts.get(company).unwrap();
+        company_account.cash = cash(250);
+        e.world.accounts.replace(company, company_account).unwrap();
+        assert!(town.validate_world(&e.world).is_ok());
+        assert!(town.validate_initial_world(&e.world).is_err());
+
+        e.world
+            .town
+            .as_mut()
+            .unwrap()
+            .profile
+            .equity_charters
+            .as_mut_slice()[0]
+            .opening_sources
+            .as_mut_slice()[0]
+            .source_id = 4;
+        assert!(e.world.town.unwrap().validate_world(&e.world).is_err());
+    }
+
+    fn install_test_tax_coverage(e: &mut Engine, retained_cents: i64) {
+        use crate::town_runtime::{
+            CompanyTaxRule, ExitClaimBinding, ExitPayrollBinding, ExitPolicy, FixedRows,
+            TaxAssessmentCursor, TaxKind,
+        };
+        let town = e.world.town.as_mut().unwrap();
+        town.profile
+            .tax_rules
+            .push(CompanyTaxRule {
+                company: 3,
+                policy_id: 77,
+                kind: TaxKind::DailyRealizedMarketMargin,
+                authority_account: 1,
+                rate_basis_points: 0,
+            })
+            .unwrap();
+        town.state
+            .tax_cursors
+            .push(TaxAssessmentCursor {
+                company: 3,
+                policy_id: 77,
+                through_day: 1,
+                last_operation_id: 500,
+                last_claim_id: 0,
+                cumulative_assessed: Money::ZERO,
+                retained_earnings_cents: retained_cents,
+            })
+            .unwrap();
+        let classes = [
+            crate::town_economy::exit::ClaimClass::Tax,
+            crate::town_economy::exit::ClaimClass::Wage,
+            crate::town_economy::exit::ClaimClass::SecuredDebt,
+            crate::town_economy::exit::ClaimClass::UnsecuredDebt,
+            crate::town_economy::exit::ClaimClass::Other,
+        ];
+        town.profile.exit_policy = Some(ExitPolicy {
+            policy_id: 78,
+            company_account: 3,
+            requester: 1,
+            executor: 4,
+            legal_clearance: crate::town_economy::exit::LegalClearance::Cleared,
+            priority_policy: crate::town_economy::exit::ExitPriorityPolicy {
+                order: classes,
+                within_tier:
+                    crate::town_economy::exit::WithinTierRule::ProRataByOutstandingStableId,
+            },
+            claims_complete: true,
+            tax_assessment_complete: false,
+            asset_register_complete: true,
+            employment_exit_terms_complete: true,
+            claims:
+                FixedRows::<ExitClaimBinding, { crate::town_runtime::MAX_EXIT_CLAIM_BINDINGS }>::new(
+                ),
+            payroll: FixedRows::<
+                ExitPayrollBinding,
+                { crate::town_runtime::MAX_EXIT_PAYROLL_BINDINGS },
+            >::new(),
+        });
+        town.state.settled_day = 1;
+        town.state.last_summary.day = 1;
+        town.state.last_summary.operation_id = 500;
+        let timeline = e.timeline.as_mut().unwrap();
+        timeline.progress.last_complete = crate::timeline::DAY;
+        timeline.progress.at = crate::timeline::DAY;
+        e.world.town.unwrap().validate_world(&e.world).unwrap();
+    }
+
+    #[test]
+    fn retained_earnings_distribution_is_bound_pro_rata_and_cannot_exceed_net_profit() {
+        let mut e = equity_market_engine();
+        install_equity_charter(&mut e);
+        e.execute(
+            Caller::Account(2),
+            env(
+                &e,
+                9_400_120,
+                vec![Action::EquityContribute {
+                    company: 3,
+                    amount: cash(1_200),
+                }],
+            ),
+        )
+        .unwrap();
+        install_test_tax_coverage(&mut e, 600);
+        let before = e.state_hash();
+        let action = Action::EquityDistributeRetainedEarnings {
+            company: 3,
+            requested: cash(500),
+        };
+        assert_eq!(
+            e.execute(Caller::System, env(&e, 9_400_121, vec![action])),
+            Err(TxError::Unauthorized)
+        );
+        assert_eq!(
+            e.execute(Caller::Account(4), env(&e, 9_400_122, vec![action])),
+            Err(TxError::Unauthorized)
+        );
+        assert_eq!(e.state_hash(), before);
+
+        let receipt = e
+            .execute(Caller::Account(2), env(&e, 9_400_123, vec![action]))
+            .unwrap();
+        assert_eq!(receipt.settled[0], Some(cash(500)));
+        let view = e.world.view();
+        assert_eq!(
+            view.accounts
+                .iter()
+                .find(|account| account.id == 3)
+                .unwrap()
+                .cash,
+            cash(700)
+        );
+        assert_eq!(
+            view.accounts
+                .iter()
+                .find(|account| account.id == 2)
+                .unwrap()
+                .cash,
+            cash(199_300)
+        );
+        let cursor = view.town.unwrap().state.tax_cursors.as_slice()[0];
+        assert_eq!(cursor.retained_earnings_cents, 100);
+        assert_eq!(
+            view.town.unwrap().state.equity_registers.as_slice()[0]
+                .cumulative_dividends_distributed,
+            cash(500)
+        );
+
+        let next = Action::EquityDistributeRetainedEarnings {
+            company: 3,
+            requested: cash(500),
+        };
+        let second = e
+            .execute(Caller::Account(2), env(&e, 9_400_124, vec![next]))
+            .unwrap();
+        assert_eq!(second.settled[0], Some(cash(100)));
+        let cursor = e.world.view().town.unwrap().state.tax_cursors.as_slice()[0];
+        assert_eq!(cursor.retained_earnings_cents, 0);
+        assert_eq!(
+            e.world
+                .view()
+                .town
+                .unwrap()
+                .state
+                .equity_registers
+                .as_slice()[0]
+                .cumulative_dividends_distributed,
+            cash(600)
+        );
+        assert!(e
+            .execute(Caller::Account(2), env(&e, 9_400_125, vec![next]))
+            .is_err());
+    }
+
+    #[test]
+    fn equity_contribution_requires_charter_bound_caller_and_commits_cash_with_shares() {
+        use crate::town_economy::equity::{EquityParty, PartyKind};
+        let mut e = equity_market_engine();
+        install_equity_charter(&mut e);
+        let investor_cash_before = e
+            .world
+            .view()
+            .accounts
+            .iter()
+            .find(|a| a.id == 2)
+            .unwrap()
+            .cash;
+        let company_cash_before = e
+            .world
+            .view()
+            .accounts
+            .iter()
+            .find(|a| a.id == 3)
+            .unwrap()
+            .cash;
+        let request = env(
+            &e,
+            9_400_100,
+            vec![Action::EquityContribute {
+                company: 3,
+                amount: cash(1_200),
+            }],
+        );
+        let receipt = e.execute(Caller::Account(2), request.clone()).unwrap();
+        let view = e.world.view();
+        assert_eq!(
+            view.accounts.iter().find(|a| a.id == 2).unwrap().cash,
+            investor_cash_before.checked_sub(cash(1_200)).unwrap()
+        );
+        assert_eq!(
+            view.accounts.iter().find(|a| a.id == 3).unwrap().cash,
+            company_cash_before.checked_add(cash(1_200)).unwrap()
+        );
+        assert_eq!(receipt.settled[0], Some(cash(1_200)));
+        let market = view.town.unwrap();
+        let register = market.state.equity_registers.as_slice().first().unwrap();
+        assert_eq!(register.issued_shares, 12);
+        assert_eq!(
+            register.holders(),
+            &[crate::town_economy::equity::EquityHolder {
+                party: EquityParty {
+                    kind: PartyKind::Person,
+                    id: 7001
+                },
+                account: 2,
+                shares: 12,
+                paid_in: cash(1_200),
+            }]
+        );
+        assert_eq!(e.execute(Caller::Account(2), request).unwrap(), receipt);
+        let restored = Engine::restore_checkpoint(&e.export_checkpoint().unwrap()).unwrap();
+        assert_eq!(restored.state_hash(), e.state_hash());
+    }
+
+    #[test]
+    fn equity_contribution_is_allowed_before_timeline_creation_but_not_after_time_advances() {
+        let mut genesis = equity_market_engine();
+        install_equity_charter(&mut genesis);
+        genesis.timeline.deactivate();
+        let investor_before = genesis.world.view().accounts[1].cash;
+        let company_before = genesis.world.view().accounts[2].cash;
+        let request = env(
+            &genesis,
+            9_400_130,
+            vec![Action::EquityContribute {
+                company: 3,
+                amount: cash(1_200),
+            }],
+        );
+
+        let receipt = genesis.execute(Caller::Account(2), request).unwrap();
+        assert_eq!(receipt.settled[0], Some(cash(1_200)));
+        assert!(!genesis.timeline.is_some());
+        let accounts = genesis.world.view().accounts;
+        assert_eq!(
+            accounts[1].cash,
+            investor_before.checked_sub(cash(1_200)).unwrap()
+        );
+        assert_eq!(
+            accounts[2].cash,
+            company_before.checked_add(cash(1_200)).unwrap()
+        );
+        assert_eq!(
+            genesis
+                .world
+                .view()
+                .town
+                .unwrap()
+                .state
+                .equity_registers
+                .as_slice()[0]
+                .issued_shares,
+            12
+        );
+
+        let mut started = equity_market_engine();
+        install_equity_charter(&mut started);
+        started.timeline.as_mut().unwrap().progress.at = 1;
+        let before = started.state_hash();
+        assert_eq!(
+            started.execute(
+                Caller::Account(2),
+                env(
+                    &started,
+                    9_400_131,
+                    vec![Action::EquityContribute {
+                        company: 3,
+                        amount: cash(1_200),
+                    }],
+                ),
+            ),
+            Err(TxError::InvalidOperation)
+        );
+        assert_eq!(started.state_hash(), before);
+    }
+
+    #[test]
+    fn unchartered_lend_keeps_legacy_timeline_wire_without_sparse_provenance() {
+        let mut e = engine();
+        issue(
+            &mut e,
+            Action::Timeline {
+                command: crate::timeline::Command::Enable,
+            },
+        );
+        issue(
+            &mut e,
+            Action::Timeline {
+                command: crate::timeline::Command::Lend {
+                    id: 1,
+                    lender: 2,
+                    borrower: 3,
+                    principal: cash(1_000),
+                    due: crate::timeline::DAY,
+                },
+            },
+        );
+
+        let timeline = e.timeline().unwrap();
+        assert_eq!(timeline.claims[0].source_ref, 0);
+        assert!(timeline.claim_sources.is_empty());
+        let encoded = serde_json::to_value(timeline).unwrap();
+        assert!(encoded.get("claim_sources").is_none());
+        assert!(encoded["claims"][0].get("source_ref").is_none());
+    }
+
+    #[test]
+    fn chartered_company_lend_records_real_loan_provenance() {
+        let mut e = equity_market_engine();
+        install_equity_charter(&mut e);
+        issue(
+            &mut e,
+            Action::Timeline {
+                command: crate::timeline::Command::Lend {
+                    id: 1,
+                    lender: 2,
+                    borrower: 3,
+                    principal: cash(1_000),
+                    due: 2 * crate::timeline::DAY,
+                },
+            },
+        );
+
+        let timeline = e.timeline().unwrap();
+        let claim = timeline.claims.iter().find(|claim| claim.id == 1).unwrap();
+        assert_eq!(
+            timeline.loan_source_for_claim(claim),
+            Some(crate::timeline::LoanClaimSource {
+                lender: 2,
+                borrower: 3,
+                principal: cash(1_000),
+            })
+        );
+        assert_eq!(timeline.claims[0].source_ref, 1);
+        assert_eq!(timeline.claim_sources.len(), 1);
+    }
+
+    #[test]
+    fn equity_contribution_rejects_system_unbound_fractional_and_exit_frozen_inputs() {
+        let mut e = equity_market_engine();
+        install_equity_charter(&mut e);
+        let action = Action::EquityContribute {
+            company: 3,
+            amount: cash(100),
+        };
+        let before = e.state_hash();
+        assert_eq!(
+            e.execute(Caller::System, env(&e, 9_400_101, vec![action])),
+            Err(TxError::Unauthorized)
+        );
+        assert_eq!(
+            e.execute(Caller::Account(4), env(&e, 9_400_102, vec![action])),
+            Err(TxError::Unauthorized)
+        );
+        assert_eq!(e.state_hash(), before);
+        assert_eq!(
+            e.execute(
+                Caller::Account(2),
+                env(
+                    &e,
+                    9_400_103,
+                    vec![Action::EquityContribute {
+                        company: 3,
+                        amount: cash(99)
+                    }]
+                )
+            ),
+            Err(TxError::InvalidOperation)
+        );
+        assert_eq!(e.state_hash(), before);
+        e.world.town.as_mut().unwrap().state.exit = Some(crate::town_runtime::ExitRuntime {
+            policy_id: 1,
+            company_account: 3,
+            started_at: crate::timeline::DAY,
+            phase: crate::town_runtime::ExitPhase::Liquidating,
+        });
+        let frozen_hash = e.state_hash();
+        assert_eq!(
+            e.execute(Caller::Account(2), env(&e, 9_400_104, vec![action])),
+            Err(TxError::Unauthorized)
+        );
+        assert_eq!(e.state_hash(), frozen_hash);
     }
 
     #[test]

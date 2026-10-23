@@ -1,0 +1,10 @@
+{
+  "all_source_manifests_equal": true,
+  "stages": [
+    "192-equity-strict",
+    "193-equity-final-core",
+    "195-equity-final-storage",
+    "196-equity-cli-build"
+  ],
+  "source_sha256": "c27bc7aeb365616ca2bb7f5c2ab032e15e7c075968f2c9ad92dd6ce7c17bdffe"
+}
