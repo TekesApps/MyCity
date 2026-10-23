@@ -1,0 +1,341 @@
+{
+  "distinct_tests_passed": 525,
+  "discarded_failed_suite": "321 storage construction target only; whole target rerun323; core construction10 retained",
+  "successful_suites": [
+    {
+      "run": "321-housing-final-regressions",
+      "target": "unittests src/lib.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_core-7cf04b75eddcf4d5",
+      "passed": 197
+    },
+    {
+      "run": "321-housing-final-regressions",
+      "target": "tests/air.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/air-e9c1758577d185bf",
+      "passed": 13
+    },
+    {
+      "run": "321-housing-final-regressions",
+      "target": "tests/air_workspace.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/air_workspace-1205670a6e24fe07",
+      "passed": 3
+    },
+    {
+      "run": "321-housing-final-regressions",
+      "target": "tests/background.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/background-13180b77b72ac51a",
+      "passed": 5
+    },
+    {
+      "run": "321-housing-final-regressions",
+      "target": "tests/boot.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/boot-a998cdd1a02794d2",
+      "passed": 13
+    },
+    {
+      "run": "321-housing-final-regressions",
+      "target": "tests/construction.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/construction-6b067e433e9ed972",
+      "passed": 10
+    },
+    {
+      "run": "321-housing-final-regressions",
+      "target": "tests/construction_engine.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/construction_engine-aba7807d3972f8af",
+      "passed": 16
+    },
+    {
+      "run": "321-housing-final-regressions",
+      "target": "tests/economy.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/economy-6405ae6fd96a73da",
+      "passed": 13
+    },
+    {
+      "run": "321-housing-final-regressions",
+      "target": "tests/exchange.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/exchange-25f1319fa4586c48",
+      "passed": 12
+    },
+    {
+      "run": "321-housing-final-regressions",
+      "target": "tests/layout_pressure.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/layout_pressure-676c1c5d483c4209",
+      "passed": 2
+    },
+    {
+      "run": "321-housing-final-regressions",
+      "target": "tests/market_access.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/market_access-8079d631da38981a",
+      "passed": 16
+    },
+    {
+      "run": "321-housing-final-regressions",
+      "target": "tests/region.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/region-31f7a824ad709362",
+      "passed": 5
+    },
+    {
+      "run": "321-housing-final-regressions",
+      "target": "tests/resource_capacity.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/resource_capacity-1d9fe1eef7802aa3",
+      "passed": 2
+    },
+    {
+      "run": "321-housing-final-regressions",
+      "target": "tests/scale_assembly.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/scale_assembly-a177c496173f3006",
+      "passed": 7
+    },
+    {
+      "run": "321-housing-final-regressions",
+      "target": "tests/sha256_vectors.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/sha256_vectors-e560932d85c330e9",
+      "passed": 1
+    },
+    {
+      "run": "321-housing-final-regressions",
+      "target": "tests/timeline.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/timeline-eb1e476686df0cea",
+      "passed": 16
+    },
+    {
+      "run": "321-housing-final-regressions",
+      "target": "tests/town_business_exit.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/town_business_exit-793357524d7b2dda",
+      "passed": 13
+    },
+    {
+      "run": "321-housing-final-regressions",
+      "target": "tests/town_utility_binding.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/town_utility_binding-f54249571f09e5d6",
+      "passed": 6
+    },
+    {
+      "run": "321-housing-final-regressions",
+      "target": "tests/town_utility_engine.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/town_utility_engine-00c0742f3648fa87",
+      "passed": 9
+    },
+    {
+      "run": "321-housing-final-regressions",
+      "target": "unittests src/lib.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_storage-46fdf6e079eacbdd",
+      "passed": 28
+    },
+    {
+      "run": "321-housing-final-regressions",
+      "target": "unittests src/bin/construction_utilities.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/construction_utilities-3fdda604e5594528",
+      "passed": 0
+    },
+    {
+      "run": "321-housing-final-regressions",
+      "target": "unittests src/bin/mycity-storage-worker.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_storage_worker-cfad69f3667db819",
+      "passed": 0
+    },
+    {
+      "run": "321-housing-final-regressions",
+      "target": "tests/background.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/background-79107b471a7e6007",
+      "passed": 12
+    },
+    {
+      "run": "321-housing-final-regressions",
+      "target": "tests/boot.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/boot-c75c77749a719126",
+      "passed": 2
+    },
+    {
+      "run": "321-housing-final-regressions",
+      "target": "tests/checkpoint.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/checkpoint-0459b9608f2b9c08",
+      "passed": 6
+    },
+    {
+      "run": "321-housing-final-regressions",
+      "target": "tests/checkpoint_v2.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/checkpoint_v2-d29737589feb2244",
+      "passed": 8
+    },
+    {
+      "run": "322-housing-remaining-storage",
+      "target": "tests/construction_boot_stock_isolation.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/construction_boot_stock_isolation-e9b03803d8124a1d",
+      "passed": 2
+    },
+    {
+      "run": "322-housing-remaining-storage",
+      "target": "tests/construction_compensation.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/construction_compensation-da07d8d4ccb711d2",
+      "passed": 2
+    },
+    {
+      "run": "322-housing-remaining-storage",
+      "target": "tests/construction_material_retry.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/construction_material_retry-5d3d82a6e5235d01",
+      "passed": 1
+    },
+    {
+      "run": "322-housing-remaining-storage",
+      "target": "tests/construction_retry_policy.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/construction_retry_policy-2e995b2772ade537",
+      "passed": 3
+    },
+    {
+      "run": "322-housing-remaining-storage",
+      "target": "tests/construction_utilities.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/construction_utilities-688ad21356dacdfa",
+      "passed": 13
+    },
+    {
+      "run": "322-housing-remaining-storage",
+      "target": "tests/economy.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/economy-46732995a35779e9",
+      "passed": 2
+    },
+    {
+      "run": "322-housing-remaining-storage",
+      "target": "tests/equity_dividend_liquidation.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/equity_dividend_liquidation-c9736c7fafb93580",
+      "passed": 1
+    },
+    {
+      "run": "322-housing-remaining-storage",
+      "target": "tests/equity_runtime.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/equity_runtime-068ee147ad1d9e32",
+      "passed": 2
+    },
+    {
+      "run": "322-housing-remaining-storage",
+      "target": "tests/exchange.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/exchange-c05f6b81177a31d8",
+      "passed": 4
+    },
+    {
+      "run": "322-housing-remaining-storage",
+      "target": "tests/housing_equity_spatial.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/housing_equity_spatial-3aa5fca7da1fa94f",
+      "passed": 1
+    },
+    {
+      "run": "322-housing-remaining-storage",
+      "target": "tests/housing_runtime.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/housing_runtime-a32187a59f39756b",
+      "passed": 2
+    },
+    {
+      "run": "322-housing-remaining-storage",
+      "target": "tests/inbox.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/inbox-b1501ec8238beb73",
+      "passed": 14
+    },
+    {
+      "run": "322-housing-remaining-storage",
+      "target": "tests/metadata.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/metadata-16de3aab3f659022",
+      "passed": 2
+    },
+    {
+      "run": "322-housing-remaining-storage",
+      "target": "tests/payroll_exit.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/payroll_exit-473ef777ccc6861d",
+      "passed": 3
+    },
+    {
+      "run": "322-housing-remaining-storage",
+      "target": "tests/recovery.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/recovery-51e0c6eb8daf1103",
+      "passed": 15
+    },
+    {
+      "run": "322-housing-remaining-storage",
+      "target": "tests/scale_assembly.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/scale_assembly-ffeb34df6700383c",
+      "passed": 2
+    },
+    {
+      "run": "322-housing-remaining-storage",
+      "target": "tests/spatial.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/spatial-459ed041e7c95507",
+      "passed": 9
+    },
+    {
+      "run": "322-housing-remaining-storage",
+      "target": "tests/spatial_transport_market.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/spatial_transport_market-7fe912451cd65917",
+      "passed": 1
+    },
+    {
+      "run": "322-housing-remaining-storage",
+      "target": "tests/spatial_transport_updates.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/spatial_transport_updates-b6543d11ac1df78c",
+      "passed": 5
+    },
+    {
+      "run": "322-housing-remaining-storage",
+      "target": "tests/timeline.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/timeline-9c14a2ecb55ff7d4",
+      "passed": 7
+    },
+    {
+      "run": "322-housing-remaining-storage",
+      "target": "tests/town_business_exit.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/town_business_exit-9dbbef9d7f9e3ff2",
+      "passed": 3
+    },
+    {
+      "run": "322-housing-remaining-storage",
+      "target": "tests/town_market.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/town_market-d170e674585cdafe",
+      "passed": 3
+    },
+    {
+      "run": "322-housing-remaining-storage",
+      "target": "tests/town_suspend.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/town_suspend-462b6ca6c65bb584",
+      "passed": 2
+    },
+    {
+      "run": "322-housing-remaining-storage",
+      "target": "tests/town_utility_recovery.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/town_utility_recovery-5d7b4b4b24517c0a",
+      "passed": 2
+    },
+    {
+      "run": "322-housing-remaining-storage",
+      "target": "tests/unfinished_clearance.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/unfinished_clearance-035079e7f542b180",
+      "passed": 5
+    },
+    {
+      "run": "323-construction-legacy-full-record",
+      "target": "tests/construction.rs",
+      "executable": "/Volumes/HP P900/dev/MyCity/target/release/deps/construction-aad701797c500f4c",
+      "passed": 4
+    }
+  ],
+  "source_changes_321_to_final": [
+    {
+      "path": "crates/city-core/src/lib.rs",
+      "before": "670702da6cb229340182c8cda29aecf09391209fe095ac679e5ce35b68bef181",
+      "final": "210475a0916a09673756584cda598b6d30dc6a76e587a7e86ebc2ae5c4143e77"
+    },
+    {
+      "path": "crates/city-storage/examples/town_housing.rs",
+      "before": "64f74b3abf414a7dfb9d2b595192cb01ea8c5488d7ca064e7912aff2392af117",
+      "final": "7b8b6d26d092aa5778bb124f2c1ff483605530090f5fc7315b28f477da101255"
+    },
+    {
+      "path": "crates/city-storage/tests/construction.rs",
+      "before": "b6c5d1a9f64b1ee941ca93dd9838934e929ccc9712c2daf85fb815ddeff193b9",
+      "final": "4dfd56c81ad9f7f3796a15dca9edf374b06d196dd14bcc815e394f512dca61c6"
+    },
+    {
+      "path": "crates/city-storage/tests/housing_runtime.rs",
+      "before": "07fa546f2b61865f31b3103c6bb139f68ec8711bd5e3e9d71b73159b68a12fc8",
+      "final": "f1ba9d4da9f0adef6e020ff37823627b414087b4bd23d378dfd2b1dea46372b7"
+    }
+  ],
+  "final_followup": "330 reran all7 construction/housing/joint tests after pinned-format changes;329fmt and333strict;331/332CLI"
+}

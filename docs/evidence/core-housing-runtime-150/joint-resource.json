@@ -1,0 +1,54 @@
+{
+  "records": [
+    {
+      "engine_owned_capacity_bytes": 3616712,
+      "first_three_market_sales": null,
+      "housing_configured_units": 1,
+      "housing_state_unit_rows": 1,
+      "native_peak_bytes": null,
+      "native_peak_status": "not_measured",
+      "phase": "created",
+      "rent_claim": null,
+      "scope": "owned model/store capacities for this one-unit microfixture; not process peak or M0 performance",
+      "store_owned_capacity_bytes": 41795484,
+      "total_cash_cents": null
+    },
+    {
+      "engine_owned_capacity_bytes": 3616712,
+      "first_three_market_sales": [
+        10,
+        0,
+        10
+      ],
+      "housing_configured_units": 1,
+      "housing_state_unit_rows": 1,
+      "native_peak_bytes": null,
+      "native_peak_status": "not_measured",
+      "phase": "final_recovered",
+      "rent_claim": {
+        "arrears_cents": 73646,
+        "paid_cents": 189580,
+        "principal_cents": 263226
+      },
+      "scope": "owned model/store capacities for this one-unit microfixture; not process peak or M0 performance",
+      "store_owned_capacity_bytes": 41798948,
+      "total_cash_cents": 3000000
+    }
+  ],
+  "host_memory_bytes": 34359738368,
+  "host_model": "Mac16,1",
+  "storage": "external HP P900 USB/APFS SSD",
+  "native_micro_run328": {
+    "max_rss_bytes": 56082432,
+    "peak_footprint_bytes": 50626920,
+    "wall_seconds": 4.71
+  },
+  "final_cli_run332": {
+    "max_rss_bytes": 48988160,
+    "peak_footprint_bytes": 44777856,
+    "wall_seconds": 6.99
+  },
+  "memory_16gb_gate": "not_run",
+  "max32_units_gate": "not_run",
+  "whole_original_M0_gate": "not_passed"
+}

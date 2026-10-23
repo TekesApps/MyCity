@@ -43,6 +43,7 @@ pub(super) struct Frame<'a, 'd> {
     pub stocks: &'a mut DirtyStocks,
     pub resources: &'a mut ResourceRows,
     pub leases: &'a mut LeaseRows,
+    pub housing: &'a mut Option<crate::housing::HousingState>,
     pub next_token: &'a mut u64,
 }
 impl Frame<'_, '_> {
@@ -323,23 +324,48 @@ impl Frame<'_, '_> {
                 }
             }
             C::SettleClaim { id } => {
-                let c = t
+                let index = t
                     .claims
-                    .iter_mut()
-                    .find(|c| c.id == id)
+                    .iter()
+                    .position(|claim| claim.id == id)
                     .ok_or(err(E::Input))?;
-                if !c.processed {
+                let before = t.claims[index];
+                if !before.processed {
                     return Err(err(E::Input));
                 }
                 let paid = self.pay(
-                    c.payer,
-                    c.payee,
-                    c.principal
-                        .checked_sub(c.paid)
+                    before.payer,
+                    before.payee,
+                    before
+                        .principal
+                        .checked_sub(before.paid)
                         .map_err(|_| TxError::Overflow)?,
                 )?;
-                c.paid = c.paid.checked_add(paid).map_err(|_| TxError::Overflow)?;
+                t.claims[index].paid = before
+                    .paid
+                    .checked_add(paid)
+                    .map_err(|_| TxError::Overflow)?;
                 t.progress.page_paid = paid;
+                if let Some(crate::timeline::ClaimSource::Rent { details }) =
+                    t.source_for_claim(&t.claims[index])
+                {
+                    let housing = self.housing.as_mut().ok_or(err(E::Input))?;
+                    let unit = housing
+                        .units()
+                        .iter()
+                        .find(|unit| unit.unit_id == details.unit_id)
+                        .copied()
+                        .ok_or(err(E::Input))?;
+                    let patch = crate::housing::plan_rent_claim_reference_sync(
+                        unit,
+                        details.tenant,
+                        t.claims[index],
+                    )
+                    .map_err(|_| err(E::Input))?;
+                    housing
+                        .apply_transaction(&[patch])
+                        .map_err(|_| err(E::Input))?;
+                }
             }
             C::Advance { target, limit } => {
                 if limit == 0
@@ -409,6 +435,11 @@ impl Frame<'_, '_> {
         for c in &t.claims {
             if !c.processed {
                 take(c.due)?;
+            }
+        }
+        if let Some(housing) = self.housing.as_ref() {
+            for unit in housing.units().iter().filter(|unit| unit.lease_id != 0) {
+                take(u64::try_from(unit.next_due_at.value()).map_err(|_| TxError::Overflow)?)?;
             }
         }
         for c in &t.payroll {
@@ -489,6 +520,16 @@ impl Frame<'_, '_> {
         let payroll_accrual = p.phase == Some(P::P0) && (p.cursor as usize) < t.payroll.len();
         let class = match (p.phase, p.lane) {
             (Some(P::P0), _) if payroll_accrual => Class::Payroll,
+            (Some(P::P1), _)
+                if self.housing.as_ref().is_some_and(|housing| {
+                    housing.units().iter().any(|unit| {
+                        unit.lease_id != 0
+                            && u64::try_from(unit.next_due_at.value()).ok() == Some(p.at)
+                    })
+                }) =>
+            {
+                Class::Claims
+            }
             (Some(P::P2), 0) => Class::Claims,
             (Some(P::P2), 1) => Class::Payroll,
             _ => Class::Region,
@@ -496,7 +537,11 @@ impl Frame<'_, '_> {
         let accrual_changed = payroll_accrual && t.payroll[p.cursor as usize].last_accrual < p.at;
         let result = self.one_inner(t);
         let nanos = self.trace.nanos(Some(started));
-        let scanned = if p.phase == Some(P::P2) && p.lane <= 1 {
+        let scanned = if p.phase == Some(P::P1) {
+            self.housing
+                .as_ref()
+                .map_or(0, |housing| housing.units().len() as u64)
+        } else if p.phase == Some(P::P2) && p.lane <= 1 {
             let len = if p.lane == 0 {
                 t.claims.len()
             } else {
@@ -624,6 +669,7 @@ impl Frame<'_, '_> {
                         }
                     }
                 }
+                self.accrue_housing_rent_occurrences(t, at)?;
                 t.progress.phase = Some(P::P2);
             }
             P::P2 => self.rights(t)?,
@@ -693,10 +739,35 @@ impl Frame<'_, '_> {
                 while (t.progress.cursor as usize) < t.claims.len() {
                     let i = t.progress.cursor as usize;
                     t.progress.cursor += 1;
-                    let c = &mut t.claims[i];
-                    if !c.processed && c.due == at {
-                        let paid = self.pay(c.payer, c.payee, c.principal)?;
-                        c.paid = paid;
+                    let original = t.claims[i];
+                    let rent_source = t.rent_source_for_claim(&original);
+                    let rent_due_now = if rent_source.is_some() {
+                        self.rent_occurrence_is_current(t, &original, at)?
+                    } else {
+                        false
+                    };
+                    if !original.processed && (original.due == at || rent_due_now) {
+                        if rent_source.is_some() && !rent_due_now {
+                            return Err(err(E::Input));
+                        }
+                        let due = if rent_source.is_some() {
+                            original
+                                .principal
+                                .checked_sub(original.paid)
+                                .map_err(|_| TxError::Overflow)?
+                        } else {
+                            original.principal
+                        };
+                        let paid = self.pay(original.payer, original.payee, due)?;
+                        let c = &mut t.claims[i];
+                        c.paid = if rent_source.is_some() {
+                            original
+                                .paid
+                                .checked_add(paid)
+                                .map_err(|_| TxError::Overflow)?
+                        } else {
+                            paid
+                        };
                         c.processed = true;
                         t.progress.page_paid = t
                             .progress
@@ -704,6 +775,26 @@ impl Frame<'_, '_> {
                             .checked_add(paid)
                             .map_err(|_| TxError::Overflow)?;
                         t.progress.page_sources += 1;
+                        if let Some(crate::timeline::ClaimSource::Rent { details }) =
+                            t.source_for_claim(&t.claims[i])
+                        {
+                            let housing = self.housing.as_mut().ok_or(err(E::Input))?;
+                            let unit = housing
+                                .units()
+                                .iter()
+                                .find(|unit| unit.unit_id == details.unit_id)
+                                .copied()
+                                .ok_or(err(E::Input))?;
+                            let patch = crate::housing::plan_rent_claim_reference_sync(
+                                unit,
+                                details.tenant,
+                                t.claims[i],
+                            )
+                            .map_err(|_| err(E::Input))?;
+                            housing
+                                .apply_transaction(&[patch])
+                                .map_err(|_| err(E::Input))?;
+                        }
                         return Ok(());
                     }
                 }
@@ -827,6 +918,112 @@ impl Frame<'_, '_> {
         }
         Ok(())
     }
+
+    fn rent_occurrence_is_current(
+        &self,
+        t: &Timeline,
+        claim: &crate::timeline::Claim,
+        at: u64,
+    ) -> Result<bool, TxError> {
+        let Some(details) = t.rent_source_for_claim(claim) else {
+            return Ok(false);
+        };
+        let housing = self.housing.as_ref().ok_or(err(E::Input))?;
+        let unit = housing
+            .units()
+            .iter()
+            .find(|unit| unit.unit_id == details.unit_id)
+            .ok_or(err(E::Input))?;
+        if unit.lease_id != details.lease_id
+            || u64::from(unit.lease_id) != claim.id
+            || unit.owner_account != details.landlord
+            || claim.payer != details.tenant
+            || claim.payee != details.landlord
+        {
+            return Err(err(E::Input));
+        }
+        Ok(
+            u64::try_from(unit.last_accounted_at.value()).map_err(|_| TxError::Overflow)? == at
+                && u64::try_from(unit.next_due_at.value()).map_err(|_| TxError::Overflow)? > at,
+        )
+    }
+
+    fn accrue_housing_rent_occurrences(
+        &mut self,
+        t: &mut Timeline,
+        at: u64,
+    ) -> Result<(), TxError> {
+        let Some(housing) = self.housing.as_mut() else {
+            return Ok(());
+        };
+        let due_at = crate::units::GameTime::new(i64::try_from(at).map_err(|_| TxError::Overflow)?)
+            .map_err(|_| err(E::Calendar))?;
+        let unit_count = housing.units().len();
+        for unit_index in 0..unit_count {
+            let unit = housing.units()[unit_index];
+            if unit.lease_id == 0
+                || u64::try_from(unit.next_due_at.value()).map_err(|_| TxError::Overflow)? != at
+            {
+                continue;
+            }
+            let household = self
+                .world
+                .housing
+                .as_ref()
+                .ok_or(err(E::Input))?
+                .opening
+                .households
+                .iter()
+                .find(|row| row.household_id == unit.household_id)
+                .ok_or(err(E::Input))?;
+            let claim_id = u64::from(unit.lease_id);
+            let claim_index = t.claims.binary_search_by_key(&claim_id, |claim| claim.id);
+            let existing = match claim_index {
+                Ok(index) => {
+                    let claim = t.claims[index];
+                    let source = t.rent_source_for_claim(&claim).ok_or(err(E::Input))?;
+                    if source.unit_id != unit.unit_id
+                        || source.lease_id != unit.lease_id
+                        || source.tenant != household.account
+                        || source.landlord != unit.owner_account
+                    {
+                        return Err(err(E::Input));
+                    }
+                    Some(claim)
+                }
+                Err(_) => None,
+            };
+            let plan = crate::housing::plan_rent_occurrence(
+                unit,
+                household.account,
+                unit.owner_account,
+                due_at,
+                existing,
+            )
+            .map_err(|_| err(E::Input))?;
+            if plan.expected_claim != existing {
+                return Err(err(E::Input));
+            }
+            if let Ok(index) = claim_index {
+                t.claims[index] = plan.updated_claim;
+            } else {
+                t.insert_rent_claim(
+                    plan.updated_claim,
+                    crate::timeline::RentClaimSource {
+                        landlord: unit.owner_account,
+                        tenant: household.account,
+                        lease_id: unit.lease_id,
+                        unit_id: unit.unit_id,
+                    },
+                )?;
+            }
+            housing
+                .apply_rent_occurrence(plan)
+                .map_err(|_| err(E::Input))?;
+            t.progress.page_sources += 1;
+        }
+        Ok(())
+    }
 }
 pub(super) fn validate(engine: &Engine, t: &Timeline) -> Result<(), TxError> {
     t.validate()?;
@@ -872,6 +1069,99 @@ pub(super) fn validate(engine: &Engine, t: &Timeline) -> Result<(), TxError> {
         };
         if c.last_accrual != last {
             return Err(err(E::Cursor));
+        }
+    }
+    validate_housing_rent(engine, t)?;
+    Ok(())
+}
+
+fn validate_housing_rent(engine: &Engine, timeline: &Timeline) -> Result<(), TxError> {
+    let Some(runtime) = engine.world.housing.as_ref() else {
+        return if timeline
+            .claims
+            .iter()
+            .any(|claim| timeline.rent_source_for_claim(claim).is_some())
+        {
+            Err(err(E::Input))
+        } else {
+            Ok(())
+        };
+    };
+    let progress = timeline.progress;
+    for claim in &timeline.claims {
+        let Some(source) = timeline.rent_source_for_claim(claim) else {
+            continue;
+        };
+        let unit = runtime
+            .state
+            .units()
+            .iter()
+            .find(|unit| unit.unit_id == source.unit_id)
+            .ok_or(err(E::Input))?;
+        let household = runtime
+            .opening
+            .households
+            .iter()
+            .find(|row| row.household_id == unit.household_id)
+            .ok_or(err(E::Input))?;
+        let last_accounted =
+            u64::try_from(unit.last_accounted_at.value()).map_err(|_| TxError::Overflow)?;
+        let next_due = u64::try_from(unit.next_due_at.value()).map_err(|_| TxError::Overflow)?;
+        if unit.lease_id == 0
+            || unit.lease_id != source.lease_id
+            || claim.id != u64::from(unit.lease_id)
+            || source.landlord != unit.owner_account
+            || source.tenant != household.account
+            || claim.payer != source.tenant
+            || claim.payee != source.landlord
+            || claim.principal <= Money::ZERO
+            || claim.paid > claim.principal
+            || last_accounted >= next_due
+        {
+            return Err(err(E::Input));
+        }
+        if claim.processed {
+            continue;
+        }
+        let claim_due = claim.due;
+        if claim_due > progress.at {
+            if claim_due != next_due {
+                return Err(err(E::Input));
+            }
+            continue;
+        }
+        match progress.phase {
+            Some(P::P0) if next_due == progress.at && claim_due == progress.at => {}
+            Some(P::P1) if next_due == progress.at && claim_due <= progress.at => {}
+            Some(P::P2)
+                if last_accounted == progress.at
+                    && next_due > progress.at
+                    && progress.lane == 0
+                    && timeline
+                        .claims
+                        .binary_search_by_key(&claim.id, |row| row.id)
+                        .is_ok_and(|index| index >= progress.cursor as usize) => {}
+            _ => return Err(err(E::Input)),
+        }
+    }
+    for unit in runtime
+        .state
+        .units()
+        .iter()
+        .filter(|unit| unit.lease_id != 0)
+    {
+        let claim_index = timeline
+            .claims
+            .binary_search_by_key(&u64::from(unit.lease_id), |claim| claim.id)
+            .map_err(|_| err(E::Input))?;
+        let source = timeline
+            .rent_source_for_claim(&timeline.claims[claim_index])
+            .ok_or(err(E::Input))?;
+        if source.unit_id != unit.unit_id
+            || source.lease_id != unit.lease_id
+            || source.landlord != unit.owner_account
+        {
+            return Err(err(E::Input));
         }
     }
     Ok(())

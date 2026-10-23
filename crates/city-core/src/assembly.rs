@@ -6,7 +6,7 @@ use crate::{
     units::{Money, Quantity},
     Bootstrap, INPUT_LIMIT,
 };
-use serde::{Deserialize, Serialize};
+use serde::{de::Visitor, Deserialize, Deserializer, Serialize};
 use std::mem::size_of;
 
 pub const ASSEMBLY_SCHEMA: &str = "mycity-m0-opening-v1";
@@ -92,6 +92,9 @@ pub struct Opening {
     /// compact Engine actions and persist in the same World/checkpoint.
     #[serde(default)]
     pub town: Option<crate::town_runtime::MarketProfile>,
+    /// Optional bounded housing stock and immutable one-shot lease-offer catalogue.
+    #[serde(default)]
+    pub housing: Option<crate::housing::OpeningHousing>,
 }
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
@@ -123,6 +126,53 @@ pub(crate) struct Stock {
     pub opening_basis: Money,
 }
 
+/// Optional bounded housing runtime. The Box keeps the common no-housing World header stable;
+/// its owned bytes are charged explicitly to the existing World budget when present.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct HousingRuntime {
+    pub(crate) opening: crate::housing::OpeningHousing,
+    pub(crate) state: crate::housing::HousingState,
+}
+impl HousingRuntime {
+    fn owned_capacity_bytes(&self) -> usize {
+        size_of::<Self>() + self.opening.owned_capacity_bytes() + self.state.owned_capacity_bytes()
+    }
+}
+
+impl crate::restore_into::Restore for Option<Box<HousingRuntime>> {
+    fn restore<'de, D: Deserializer<'de>>(&mut self, deserializer: D) -> Result<(), D::Error> {
+        struct HousingOptionInto<'a>(&'a mut Option<Box<HousingRuntime>>);
+        impl<'de> Visitor<'de> for HousingOptionInto<'_> {
+            type Value = ();
+
+            fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
+                formatter.write_str("optional bounded housing runtime")
+            }
+
+            fn visit_none<E: serde::de::Error>(self) -> Result<(), E> {
+                *self.0 = None;
+                Ok(())
+            }
+
+            fn visit_unit<E: serde::de::Error>(self) -> Result<(), E> {
+                self.visit_none()
+            }
+
+            fn visit_some<D2: Deserializer<'de>>(self, deserializer: D2) -> Result<(), D2::Error> {
+                // OpeningHousing rows have a fixed 32-row ceiling and HousingState checks its
+                // encoded limit before allocating. Decode exactly one such bounded runtime,
+                // then box it; this is never a generic/unbounded Box restore.
+                *self.0 = None;
+                let runtime = HousingRuntime::deserialize(deserializer)?;
+                *self.0 = Some(Box::new(runtime));
+                Ok(())
+            }
+        }
+        deserializer.deserialize_option(HousingOptionInto(self))
+    }
+}
+
 fn is_zero_money(value: &Money) -> bool {
     *value == Money::ZERO
 }
@@ -146,6 +196,8 @@ pub struct World {
     pub(crate) construction: Option<crate::construction::Project>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) town: Option<crate::town_runtime::TownMarket>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub(crate) housing: Option<Box<HousingRuntime>>,
 }
 
 #[derive(Debug, PartialEq, Eq, Serialize)]
@@ -173,6 +225,17 @@ pub struct StockView {
     #[serde(skip_serializing_if = "is_zero_money")]
     pub opening_basis: Money,
 }
+/// Publicly observable housing summary. Immutable offer terms and genesis source registrations
+/// remain in the checkpoint/runtime, while a view copies only the bounded mutable unit state.
+#[derive(Debug, PartialEq, Eq, Serialize)]
+pub struct HousingView {
+    pub unit_limit: u8,
+    pub dwelling_count: u8,
+    pub household_registration_count: u8,
+    pub lease_offer_count: u8,
+    pub units: Vec<crate::housing::HousingUnit>,
+    pub consumed_offer_ids: Vec<u64>,
+}
 #[derive(Debug, PartialEq, Eq, Serialize)]
 pub struct WorldView {
     pub schema: &'static str,
@@ -190,6 +253,8 @@ pub struct WorldView {
     pub construction: Option<crate::construction::Project>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub town: Option<crate::town_runtime::TownMarket>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub housing: Option<HousingView>,
 }
 
 impl Record for OpeningSource {
@@ -248,6 +313,8 @@ pub(crate) struct BusinessWorld<'a> {
     construction: &'a Option<crate::construction::Project>,
     #[serde(skip_serializing_if = "Option::is_none")]
     town: &'a Option<crate::town_runtime::TownMarket>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    housing: &'a Option<Box<HousingRuntime>>,
 }
 #[derive(Serialize)]
 pub(crate) struct BorrowedWorldView<'a> {
@@ -266,6 +333,8 @@ pub(crate) struct BorrowedWorldView<'a> {
     construction: &'a Option<crate::construction::Project>,
     #[serde(skip_serializing_if = "Option::is_none")]
     town: &'a Option<crate::town_runtime::TownMarket>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    housing: &'a Option<Box<HousingRuntime>>,
 }
 struct AccountViews<'a>(&'a World);
 impl Serialize for AccountViews<'_> {
@@ -329,6 +398,7 @@ impl World {
             exchange: None,
             construction: None,
             town: None,
+            housing: None,
         })
     }
     pub(crate) fn reset_backing(&mut self) {
@@ -346,6 +416,7 @@ impl World {
         self.exchange = None;
         self.construction = None;
         self.town = None;
+        self.housing = None;
     }
     pub(crate) fn copy_into(&self, target: &mut Self) -> Result<(), String> {
         self.accounts.copy_into(&mut target.accounts)?;
@@ -362,6 +433,7 @@ impl World {
         target.exchange = self.exchange;
         target.construction = self.construction;
         target.town = self.town;
+        target.housing = self.housing.clone();
         Ok(())
     }
     pub(crate) fn backing_ids(&self) -> [usize; 7] {
@@ -393,11 +465,14 @@ impl World {
             exchange: &self.exchange,
             construction: &self.construction,
             town: &self.town,
+            housing: &self.housing,
         }
     }
     pub(crate) fn borrowed_view(&self) -> BorrowedWorldView<'_> {
         BorrowedWorldView {
-            schema: if self.construction.is_some() || self.town.is_some() {
+            schema: if self.housing.is_some() {
+                "mycity-m0-state-v8"
+            } else if self.construction.is_some() || self.town.is_some() {
                 "mycity-m0-state-v7"
             } else {
                 "mycity-m0-state-v6"
@@ -414,6 +489,7 @@ impl World {
             exchange: &self.exchange,
             construction: &self.construction,
             town: &self.town,
+            housing: &self.housing,
         }
     }
     pub(crate) fn restore_capacity(&mut self) -> Result<(), String> {
@@ -589,7 +665,60 @@ impl World {
             town.validate_world(self)
                 .map_err(|_| "checkpoint_town_binding")?;
         }
-        if self.owned_capacity_bytes() > WORLD_BYTE_BUDGET {
+        if let Some(housing) = self.housing.as_ref() {
+            housing
+                .opening
+                .validate()
+                .map_err(|_| "checkpoint_housing_opening")?;
+            if housing.state.unit_limit() != usize::from(housing.opening.unit_limit) {
+                return Err("checkpoint_housing_limit".into());
+            }
+            let facts: Vec<_> = housing
+                .opening
+                .dwellings
+                .iter()
+                .map(|row| row.fact)
+                .collect();
+            housing
+                .state
+                .validate_with_snapshot(&facts)
+                .map_err(|_| "checkpoint_housing_snapshot")?;
+            for dwelling in housing.opening.dwellings.iter() {
+                self.account_handle(dwelling.fact.owner_account)
+                    .map_err(|_| "checkpoint_housing_owner")?;
+            }
+            for household in housing.opening.households.iter() {
+                let handle = self
+                    .account_handle(household.account)
+                    .map_err(|_| "checkpoint_housing_household")?;
+                if self
+                    .accounts
+                    .get(handle)
+                    .map_err(|_| "checkpoint_housing_household")?
+                    .role
+                    != Role::Household
+                {
+                    return Err("checkpoint_housing_household_role".into());
+                }
+            }
+            validate_housing_town_household_bindings(
+                self.town.as_ref().map(|market| &market.profile),
+                &housing.opening,
+            )
+            .map_err(|_| "checkpoint_housing_town_household")?;
+            for offer in housing.opening.lease_offers.iter() {
+                self.account_handle(offer.owner_account)
+                    .map_err(|_| "checkpoint_housing_offer_owner")?;
+                self.account_handle(offer.tenant_account)
+                    .map_err(|_| "checkpoint_housing_offer_tenant")?;
+            }
+        }
+        let housing_scratch = if self.housing.is_some() {
+            crate::housing::MAX_VALIDATION_SCRATCH_BYTES
+        } else {
+            0
+        };
+        if self.owned_capacity_bytes().saturating_add(housing_scratch) > WORLD_BYTE_BUDGET {
             return Err("checkpoint_world_budget".into());
         }
         Ok(())
@@ -617,7 +746,9 @@ impl World {
     }
     pub fn view(&self) -> WorldView {
         WorldView {
-            schema: if self.construction.is_some() || self.town.is_some() {
+            schema: if self.housing.is_some() {
+                "mycity-m0-state-v8"
+            } else if self.construction.is_some() || self.town.is_some() {
                 "mycity-m0-state-v7"
             } else {
                 "mycity-m0-state-v6"
@@ -666,6 +797,14 @@ impl World {
             exchange: self.exchange,
             construction: self.construction,
             town: self.town,
+            housing: self.housing.as_deref().map(|housing| HousingView {
+                unit_limit: housing.opening.unit_limit,
+                dwelling_count: housing.opening.dwellings.len() as u8,
+                household_registration_count: housing.opening.households.len() as u8,
+                lease_offer_count: housing.opening.lease_offers.len() as u8,
+                units: housing.state.units().to_vec(),
+                consumed_offer_ids: housing.state.consumed_genesis_offer_ids().collect(),
+            }),
         }
     }
     pub fn state_hash(&self) -> String {
@@ -677,6 +816,10 @@ impl World {
             + self.account_ids.capacity() * size_of::<(u32, Handle<AccountDomain>)>()
             + self.stock_ids.capacity() * size_of::<(u32, Handle<InventoryDomain>)>()
             + self.sources.capacity() * size_of::<OpeningSource>()
+            + self
+                .housing
+                .as_ref()
+                .map_or(0, |housing| housing.owned_capacity_bytes())
             + size_of::<Self>()
             - size_of::<Arena<AccountDomain, Account>>()
             - size_of::<Arena<InventoryDomain, Stock>>()
@@ -688,7 +831,45 @@ impl World {
         let headers = size_of::<Self>()
             - size_of::<Arena<AccountDomain, Account>>()
             - size_of::<Arena<InventoryDomain, Stock>>();
-        serde_json::json!({"accounts":self.accounts.layout(),"stocks":self.stocks.layout(),"index_capacity_bytes":index_bytes,"construction_slot_bytes":size_of::<Option<crate::construction::Project>>(),"town_market_slot_bytes":size_of::<Option<crate::town_runtime::TownMarket>>(),"town_market_slot_included_in_world_remaining_header_bytes":true,"town_profile_owned_bytes":self.town.map_or(0,|town|town.owned_bytes()),"construction_slot_included_in_world_remaining_header_bytes":true,"opening_sources_capacity_bytes":source_bytes,"world_remaining_header_bytes":headers,"owned_capacity_bytes":self.accounts.owned_bytes()+self.stocks.owned_bytes()+index_bytes+source_bytes+headers,"allocator_metadata_included":false,"temporary_parse_and_view_pages_included":false})
+        let mut layout = serde_json::json!({"accounts":self.accounts.layout(),"stocks":self.stocks.layout(),"index_capacity_bytes":index_bytes,"construction_slot_bytes":size_of::<Option<crate::construction::Project>>(),"town_market_slot_bytes":size_of::<Option<crate::town_runtime::TownMarket>>(),"town_market_slot_included_in_world_remaining_header_bytes":true,"town_profile_owned_bytes":self.town.map_or(0,|town|town.owned_bytes()),"construction_slot_included_in_world_remaining_header_bytes":true,"opening_sources_capacity_bytes":source_bytes,"world_remaining_header_bytes":headers,"owned_capacity_bytes":self.accounts.owned_bytes()+self.stocks.owned_bytes()+index_bytes+source_bytes+headers,"allocator_metadata_included":false,"temporary_parse_and_view_pages_included":false});
+        if let Some(housing) = self.housing.as_ref() {
+            let object = layout.as_object_mut().expect("layout object");
+            object.insert(
+                "housing_opening_bytes".into(),
+                housing.opening.owned_capacity_bytes().into(),
+            );
+            object.insert(
+                "housing_dwelling_bytes".into(),
+                (housing.opening.dwellings.capacity()
+                    * size_of::<crate::housing::OpeningDwelling>())
+                .into(),
+            );
+            object.insert(
+                "housing_household_registration_bytes".into(),
+                (housing.opening.households.capacity()
+                    * size_of::<crate::housing::OpeningHousehold>())
+                .into(),
+            );
+            object.insert(
+                "housing_lease_offer_bytes".into(),
+                (housing.opening.lease_offers.capacity()
+                    * size_of::<crate::housing::GenesisLeaseOffer>())
+                .into(),
+            );
+            object.insert(
+                "housing_state_bytes".into(),
+                housing.state.owned_capacity_bytes().into(),
+            );
+            object.insert(
+                "housing_unit_limit".into(),
+                housing.opening.unit_limit.into(),
+            );
+            object.insert(
+                "owned_capacity_bytes".into(),
+                self.owned_capacity_bytes().into(),
+            );
+        }
+        layout
     }
 }
 
@@ -943,12 +1124,69 @@ pub(crate) fn assemble_into(bytes: &[u8], world: &mut World) -> Result<(), Strin
     if let Some(town) = world.town {
         town.validate_initial_world(world).map_err(str::to_owned)?;
     }
-    if world.owned_capacity_bytes() > WORLD_BYTE_BUDGET {
+    if let Some(opening) = input.housing {
+        let state = crate::housing::HousingState::from_opening(&opening)
+            .map_err(|error| format!("housing_opening:{error:?}"))?;
+        for dwelling in opening.dwellings.iter() {
+            world.account_handle(dwelling.fact.owner_account)?;
+        }
+        for offer in opening.lease_offers.iter() {
+            world.account_handle(offer.owner_account)?;
+            world.account_handle(offer.tenant_account)?;
+        }
+        for household in opening.households.iter() {
+            let handle = world.account_handle(household.account)?;
+            if world
+                .accounts
+                .get(handle)
+                .map_err(|_| "housing_household_account")?
+                .role
+                != Role::Household
+            {
+                return Err("housing_household_role".into());
+            }
+        }
+        validate_housing_town_household_bindings(
+            world.town.as_ref().map(|market| &market.profile),
+            &opening,
+        )?;
+        world.housing = Some(Box::new(HousingRuntime { opening, state }));
+    }
+    let housing_scratch = if world.housing.is_some() {
+        crate::housing::MAX_VALIDATION_SCRATCH_BYTES
+    } else {
+        0
+    };
+    if world.owned_capacity_bytes().saturating_add(housing_scratch) > WORLD_BYTE_BUDGET {
         return Err("world_byte_limit".into());
     }
     // Exercise the same checked ID index used by subsequent model commands.
     for (id, _) in &world.stock_ids {
         world.stock_handle(*id)?;
+    }
+    Ok(())
+}
+
+fn validate_housing_town_household_bindings(
+    profile: Option<&crate::town_runtime::MarketProfile>,
+    opening: &crate::housing::OpeningHousing,
+) -> Result<(), String> {
+    let Some(profile) = profile else {
+        return Ok(());
+    };
+    for household in opening.households.iter() {
+        let groups = profile.households.as_slice();
+        let id_match = groups
+            .iter()
+            .find(|group| group.id == household.household_id);
+        let account_match = groups
+            .iter()
+            .find(|group| group.account == household.account);
+        if id_match.is_some_and(|group| group.account != household.account)
+            || account_match.is_some_and(|group| group.id != household.household_id)
+        {
+            return Err("housing_town_household_account".into());
+        }
     }
     Ok(())
 }
@@ -959,6 +1197,7 @@ impl crate::restore_into::Restore for World {
         // restoring such a checkpoint over a world with a project cannot retain stale state.
         self.construction = None;
         self.town = None;
+        self.housing = None;
         crate::restore_into::object!(d,self,World,255u64,{
         scope,0=>Copy,
         seed,1=>Copy,
@@ -974,6 +1213,7 @@ impl crate::restore_into::Restore for World {
         exchange,11=>Copy,
         construction,12=>Copy,
         town,13=>Copy,
+        housing,14=>Into,
         })?;
         Ok(())
     }

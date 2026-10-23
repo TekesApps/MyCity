@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.149`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.150`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.150 verifies [finite housing lease/recurrence and a persistent D/F/E scenario](docs/evidence/core-housing-runtime-150/STATUS.md): 525 distinct tests, final strict/fmt, actual CLI, real rent/arrears, cold recovery and historical transport proofs. Move, housing route binding and original M0/real16GB gates remain incomplete.
 
 v0.5.149 verifies [dividend-to-liquidation persistence and the bounded IPC reader](docs/evidence/core-dividend-exit-reader-149/STATUS.md): actual capital return/recovery, three reader tests and eight Sim/worker persistent scenarios on main. No physical-memory saving or original M0 performance pass is claimed.
 

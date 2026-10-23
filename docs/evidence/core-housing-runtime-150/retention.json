@@ -1,0 +1,25 @@
+{
+  "scope": [
+    "293-geometry-version-tests",
+    "294-geometry-version-strict",
+    "295-geometry-version-build",
+    "296-geometry-curve-version",
+    "297-geometry-door-version",
+    "298-geometry-version-fmt"
+  ],
+  "operation": "coalesce five byte-identical immutable source archives using same-volume hardlinks; retain all six original full-file paths",
+  "reason": "terminal successful geometry batch, byte-for-byte duplicated complete archives, no open handles; no recovery world changed",
+  "preserved_anchor": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/295-geometry-version-build/source.zip",
+  "sha256": "5db73a1c2c4d2c8154e0aae61a40818ca3280da42b2ec109759a90bb6d8ad055",
+  "lsof_returncode": 1,
+  "allocated_before_unique_bytes": 30474240,
+  "allocated_after_unique_bytes": 5079040,
+  "allocated_reduction_bytes": 25395200,
+  "disk_available_before": 1894700425216,
+  "disk_available_after": 1894725771264,
+  "observed_disk_available_delta": 25346048,
+  "disk_delta_attribution": "observation only; APFS and other tasks may change disk free space",
+  "no_deleted_recovery_snapshots": true,
+  "no_target_cleanup": "shared target needed for E and current reader, retained",
+  "timestamp_unix": 1792749012.501436
+}

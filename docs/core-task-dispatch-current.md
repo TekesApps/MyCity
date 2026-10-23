@@ -4,7 +4,7 @@
 
 ## 唯一共享核心负责人
 
-`economy_scenarios` 是 Engine/World/assembly/Timeline/事务候选/Store提交及receipt decoder的唯一修改负责人。D树已冻结供root验证；该writer当前在 `/Users/frankqin/dev/MyCity-core-work/spatial-runtime-update-current` 接入F事务和版本根。D仅在真实回归时重开，F后再交接E。root维护集成与验证；其他agent不得同时修改这些共享结构，也不另造时钟、账本或持久化。
+`economy_scenarios` 是 Engine/World/assembly/Timeline/事务候选/Store提交及receipt decoder的唯一修改负责人。D与有限F已发布；该writer在 `/Users/frankqin/dev/MyCity-core-work/spatial-runtime-update-current` 交付E租约与周期租金后冻结核心，由root按明确白名单集成main验证。root维护集成与验证；其他agent不得同时修改这些共享结构，也不另造时钟、账本或持久化。下表保留各线原合同，最新小批次及验证状态见文末。
 
 ## 当前批次
 
@@ -93,3 +93,20 @@ F domain另在原spatial-transport-current树补几何候选，尚未导出/实�
 - Advisor handles only specific contract disputes and final fresh evidence. Root schedules every Cargo/heavy test and publishes verified small batches, with Issue #25/#26/#112/#115 implementation and unverified results.
 
 No formal physical measurement window is active. Shared external target is reused. Source/executable pins, original recovery worlds and failure evidence remain retained. Existing D+finite-F same-world evidence does not prove the pending housing joint chain or complete M0.
+
+## Verified finite E integration, 2026-10-24
+
+Stage v0.5.150 integrates the frozen lease/recurrence implementation and an actual31-day
+D/F/E Store scenario. Authoritative details and full verification provenance are in
+[evidence/core-housing-runtime-150/STATUS.md](evidence/core-housing-runtime-150/STATUS.md).
+525 distinct core/storage tests are covered across321/322/323;330 reruns the7 final affected
+cases.329 fmt,333 workspace strict and331/332 actual fixed CLI pass. The original failed
+attempts stay recorded; no assertion constant was changed to erase the v106 durable identity.
+
+The shared writer remains economy_scenarios. Its next migration helper stays only in Ftree,
+unexported and untested; no Move/EndLease/escrow/residential route binding is published.
+Root alone integrates, schedules Cargo/native windows, records issue results and publishes.
+M0 owned wrapper+transcript diagnostic patch is frozen in equity-current, not yet integrated
+or physically measured. It must persist bounded source/identity/bracket evidence before a
+quiet full-business diagnostic window; it provides no memory credit by itself. Original
+normal/common8MiB/8h/real16GB gates remain unmet or not_run.

@@ -713,13 +713,19 @@ fn v106_store_wal_checkpoint_and_receipt_reopen_with_identical_identity() {
         fs::write(path.join(name), bytes).unwrap();
     }
     let mut store = Store::open(&path, V106_RULES).unwrap();
-    let (view, journal_hash, engine_hash, world_hash) = {
+    let (view, hot_journal_hash, hot_operation_ids, engine_hash, world_hash) = {
         let engine = store.engine().unwrap();
         let view = engine.world().view();
-        let journal_hash = mycity_core::sha256(&serde_json::to_vec(engine.journal()).unwrap());
+        let hot_journal_hash = mycity_core::sha256(&serde_json::to_vec(engine.journal()).unwrap());
+        let hot_operation_ids = engine
+            .journal()
+            .iter()
+            .map(|record| record.operation_id)
+            .collect::<Vec<_>>();
         (
             view,
-            journal_hash,
+            hot_journal_hash,
+            hot_operation_ids,
             engine.state_hash(),
             engine.world().state_hash(),
         )
@@ -733,7 +739,31 @@ fn v106_store_wal_checkpoint_and_receipt_reopen_with_identical_identity() {
     assert!(!world_hash.is_empty());
     let store_hash_before_replay = store.state_hash().unwrap();
     assert_eq!(store.committed_sequence(), 2);
-    assert_eq!(journal_hash, LEGACY_JOURNAL);
+    assert_eq!(hot_operation_ids, [1, 2]);
+    // Engine::journal is now a compact resident retry window. Its JSON is intentionally not
+    // the historical full JournalRecord vector; Store::receipt returns the exact durable
+    // records, whose canonical serialization must retain the v106 identity hash.
+    let durable_journal = hot_operation_ids
+        .iter()
+        .map(|operation_id| {
+            store
+                .receipt(*operation_id)
+                .unwrap()
+                .expect("full durable v106 receipt")
+        })
+        .collect::<Vec<_>>();
+    let durable_journal_hash = mycity_core::sha256(&serde_json::to_vec(&durable_journal).unwrap());
+    assert_eq!(durable_journal_hash, LEGACY_JOURNAL);
+    assert_ne!(hot_journal_hash, durable_journal_hash);
+    for (hot, durable) in store
+        .engine()
+        .unwrap()
+        .journal()
+        .iter()
+        .zip(durable_journal.iter())
+    {
+        assert!(hot.matches_durable(durable));
+    }
     assert_eq!(
         view.accounts
             .iter()

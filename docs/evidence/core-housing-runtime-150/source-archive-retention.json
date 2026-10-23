@@ -1,0 +1,41 @@
+{
+  "scope": [
+    "322-housing-remaining-storage",
+    "323-construction-legacy-full-record",
+    "324-housing-final-strict",
+    "325-housing-final-cli-build",
+    "326-housing-final-cli",
+    "327-housing-final-fmt",
+    "328-housing-joint-native"
+  ],
+  "replaced_duplicate_physical_files": [
+    "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/322-housing-remaining-storage/source.zip",
+    "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/323-construction-legacy-full-record/source.zip",
+    "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/324-housing-final-strict/source.zip",
+    "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/326-housing-final-cli/source.zip",
+    "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/327-housing-final-fmt/source.zip",
+    "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/328-housing-joint-native/source.zip"
+  ],
+  "operation": "same-volume hardlink coalescing; all original full archive paths and bytes retained",
+  "reason": "terminal known verification rounds; exact SHA256 equality; no open handles; no recovery world or executable removed",
+  "allocated_before_unique_bytes": 37703680,
+  "allocated_after_unique_bytes": 5386240,
+  "allocated_reduction_bytes": 32317440,
+  "disk_available_before": 1894101536768,
+  "disk_available_after": 1894133784576,
+  "observed_disk_available_delta": 32247808,
+  "disk_delta_attribution": "not exclusively attributable to this task; APFS/other tasks may change available space",
+  "hash_groups": {
+    "fc075704438103e0fe65ff1b0eac52a499b2419db7f8b2378a8e9a04b4763668": [
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/322-housing-remaining-storage/source.zip",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/323-construction-legacy-full-record/source.zip",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/324-housing-final-strict/source.zip",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/325-housing-final-cli-build/source.zip",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/326-housing-final-cli/source.zip",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/327-housing-final-fmt/source.zip",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/328-housing-joint-native/source.zip"
+    ]
+  },
+  "shared_target": "retained and reused; current E/M0 validation dependency",
+  "timestamp_unix": 1792780542.583086
+}

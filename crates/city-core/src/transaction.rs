@@ -127,6 +127,12 @@ pub enum Action {
     SpatialPermission {
         command: crate::spatial_transport_permissions::SpatialPermissionCommand,
     },
+    /// Select one immutable genesis lease offer; all lease terms resolve from that trusted row.
+    /// This compact variant stays within the hot-journal Action size limit.
+    HousingLease {
+        offer_id: u64,
+        offer_sha256: [u8; 32],
+    },
     /// Permanently stop new operations for one configured town-market business. This is
     /// an operational control only; it does not approve insolvency, liquidation or closure.
     TownSuspendOperations {
@@ -413,6 +419,7 @@ struct Prepared {
     economy: Option<crate::economy::Economy>,
     region: Option<crate::region::Region>,
     construction: Option<crate::construction::Project>,
+    housing: Option<crate::housing::HousingState>,
     town: Option<crate::town_runtime::MarketState>,
     spatial_permissions: Option<workspace::SpatialPermissionLease>,
     spatial_update_grant: Option<crate::spatial_transport_permissions::VerifiedSpatialUpdateGrant>,
@@ -1030,6 +1037,11 @@ impl Engine {
             .iter()
             .filter(|c| !c.processed && c.due == progress.at)
             .count()
+            + self
+                .world
+                .housing
+                .as_ref()
+                .map_or(0, |housing| housing.state.units().len())
             + 2 * t.payroll.len()
             + 16
             + 16
@@ -1564,6 +1576,7 @@ impl Engine {
         let mut exchange = self.world.exchange;
         let mut construction = self.world.construction;
         let mut town = self.world.town.map(|m| m.state);
+        let mut housing: Option<crate::housing::HousingState> = None;
         let mut spatial_permissions: Option<workspace::SpatialPermissionLease> = None;
         let mut spatial_update_grant = None;
         let mut town_summary = None;
@@ -1571,6 +1584,20 @@ impl Engine {
             workspace::BackgroundLease::acquire(&storage.background, &self.background)?;
         let mut background_work = workspace::BackgroundWorkLease::take(&storage.background_work)?;
         for (action_index, action) in env.actions.iter().enumerate() {
+            if matches!(
+                action,
+                Action::Timeline {
+                    command: crate::timeline::Command::Advance { .. }
+                        | crate::timeline::Command::SettleClaim { .. }
+                }
+            ) && housing.is_none()
+            {
+                housing = self
+                    .world
+                    .housing
+                    .as_deref()
+                    .map(|runtime| runtime.state.clone());
+            }
             let domain_start = if matches!(
                 action,
                 Action::Boot { .. }
@@ -1721,6 +1748,7 @@ impl Engine {
                         stocks: &mut stocks,
                         resources: &mut resources,
                         leases: &mut leases,
+                        housing: &mut housing,
                         next_token: &mut next_token,
                     }
                     .command(&mut timeline, command)?;
@@ -1902,6 +1930,32 @@ impl Engine {
                         &mut created_tokens[action_index],
                         timeline.as_ref(),
                         town.as_ref(),
+                    )?;
+                }
+                Action::HousingLease {
+                    offer_id,
+                    offer_sha256,
+                } => {
+                    if env.actions.len() != 1 {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    if housing.is_none() {
+                        housing = self
+                            .world
+                            .housing
+                            .as_deref()
+                            .map(|runtime| runtime.state.clone());
+                    }
+                    let state = housing.as_mut().ok_or(TxError::InvalidOperation)?;
+                    let timeline_state = timeline.as_mut().ok_or(TxError::InvalidOperation)?;
+                    prepare_housing_lease(
+                        caller,
+                        offer_id,
+                        offer_sha256,
+                        &self.world,
+                        state,
+                        timeline_state,
+                        &mut accounts,
                     )?;
                 }
                 Action::SpatialPermission { command } => {
@@ -2149,6 +2203,7 @@ impl Engine {
                                 stocks: &mut stocks,
                                 resources: &mut resources,
                                 leases: &mut leases,
+                                housing: &mut housing,
                                 next_token: &mut next_token,
                             }
                             .command(&mut timeline, crate::timeline::Command::EndForExit { id })?;
@@ -2527,6 +2582,7 @@ impl Engine {
                             stocks: &mut stocks,
                             resources: &mut resources,
                             leases: &mut leases,
+                            housing: &mut housing,
                             next_token: &mut next_token,
                         }
                         .command(&mut timeline, crate::timeline::Command::EndForExit { id })?;
@@ -3443,11 +3499,17 @@ impl Engine {
             + timeline.backing().owned_bytes();
         // The authoritative rows remain live while the candidate is prepared. The candidate
         // uses the reserved spare backing, so both fixed row sets count toward the peak.
-        let projected = projected.saturating_add(
-            spatial_permissions
-                .as_ref()
-                .map_or(0, |state| state.owned_capacity_bytes()),
-        );
+        let projected = projected
+            .saturating_add(
+                spatial_permissions
+                    .as_ref()
+                    .map_or(0, |state| state.owned_capacity_bytes()),
+            )
+            .saturating_add(
+                housing
+                    .as_ref()
+                    .map_or(0, |state| state.owned_capacity_bytes()),
+            );
         if projected > ENGINE_BYTE_BUDGET {
             return Err(TxError::WorkingLimit);
         }
@@ -3468,6 +3530,7 @@ impl Engine {
             economy,
             region,
             construction,
+            housing,
             town,
             spatial_permissions,
             spatial_update_grant,
@@ -3514,6 +3577,9 @@ impl Engine {
         self.world.construction = prepared.construction;
         if let (Some(world_town), Some(state)) = (&mut self.world.town, prepared.town) {
             world_town.state = state;
+        }
+        if let (Some(world_housing), Some(state)) = (&mut self.world.housing, prepared.housing) {
+            world_housing.state = state;
         }
         if let Some(mut state) = prepared.spatial_permissions {
             std::mem::swap(
@@ -4593,6 +4659,134 @@ fn market_transfer(
     Ok(())
 }
 
+fn prepare_housing_lease(
+    caller: Caller,
+    offer_id: u64,
+    expected_offer_sha256: [u8; 32],
+    world: &World,
+    state: &mut crate::housing::HousingState,
+    timeline: &mut crate::timeline::Timeline,
+    accounts: &mut DirtyAccounts,
+) -> Result<(), TxError> {
+    if !matches!(caller, Caller::Account(_))
+        || timeline.progress.phase.is_some()
+        || timeline.progress.target.is_some()
+        || timeline.progress.at != timeline.progress.last_complete
+    {
+        return Err(TxError::InvalidOperation);
+    }
+    let Caller::Account(tenant_account) = caller else {
+        unreachable!()
+    };
+    let runtime = world.housing.as_deref().ok_or(TxError::InvalidOperation)?;
+    let offer = runtime
+        .opening
+        .lease_offer(offer_id)
+        .map_err(|_| TxError::InvalidOperation)?;
+    if crate::housing::genesis_lease_offer_sha256(offer) != expected_offer_sha256 {
+        return Err(TxError::InvalidOperation);
+    }
+    let unit_id = offer.unit_id;
+    let current = state
+        .units()
+        .iter()
+        .find(|unit| unit.unit_id == unit_id)
+        .copied()
+        .ok_or(TxError::InvalidOperation)?;
+    let dwelling = runtime
+        .opening
+        .dwellings
+        .binary_search_by_key(&unit_id, |row| row.fact.unit_id)
+        .ok()
+        .map(|index| runtime.opening.dwellings[index].fact)
+        .ok_or(TxError::InvalidOperation)?;
+    let accepted_at = crate::units::GameTime::new(
+        i64::try_from(timeline.progress.last_complete).map_err(|_| TxError::Overflow)?,
+    )
+    .map_err(|_| TxError::InvalidOperation)?;
+    let terms = offer.executable_terms();
+    if terms.deposit != Money::ZERO || terms.starts_at != accepted_at {
+        return Err(TxError::InvalidOperation);
+    }
+    let authorization = crate::housing::validate_genesis_lease_offer(
+        &runtime.opening,
+        offer_id,
+        dwelling,
+        world.scope.world(),
+        world.scope.branch(),
+        tenant_account,
+        accepted_at,
+        terms,
+    )
+    .map_err(|_| TxError::InvalidOperation)?;
+    if authorization.people() == 0 || authorization.tenant_account() != tenant_account {
+        return Err(TxError::InvalidOperation);
+    }
+    let tenant_handle = world
+        .account_handle(tenant_account)
+        .map_err(|_| TxError::InvalidHandle)?;
+    let tenant = world
+        .accounts
+        .get(tenant_handle)
+        .map_err(|_| TxError::InvalidHandle)?;
+    if tenant.role != crate::assembly::Role::Household {
+        return Err(TxError::Unauthorized);
+    }
+    world
+        .account_handle(terms.escrow_account)
+        .map_err(|_| TxError::InvalidHandle)?;
+    let tenant_index = stage_account(
+        world,
+        accounts,
+        world
+            .account_ref(tenant_account)
+            .map_err(|_| TxError::InvalidHandle)?,
+    )?;
+    let budget = crate::housing::HouseholdBudget {
+        household_id: authorization.household_id(),
+        account: crate::town_economy::AccountSnapshot {
+            account: tenant_account,
+            cash: accounts[tenant_index].1.cash,
+            protected: accounts[tenant_index].1.protected,
+        },
+        people: authorization.people(),
+        net_income_per_month: Money::ZERO,
+        essential_costs_per_month: Money::ZERO,
+        income_observed_at: accepted_at,
+        income_window_complete: false,
+        income_source_version: 0,
+    };
+    let plan = crate::housing::plan_lease(current, dwelling, budget, terms)
+        .map_err(|_| TxError::InvalidOperation)?;
+    if plan.first_due_amount <= Money::ZERO {
+        return Err(TxError::InvalidOperation);
+    }
+    let due =
+        u64::try_from(plan.updated_unit.next_due_at.value()).map_err(|_| TxError::Overflow)?;
+    timeline.insert_rent_claim(
+        crate::timeline::Claim {
+            id: u64::from(terms.lease_id),
+            payer: tenant_account,
+            payee: authorization.owner_account(),
+            due,
+            principal: plan.first_due_amount,
+            paid: Money::ZERO,
+            processed: false,
+            source_ref: 0,
+        },
+        crate::timeline::RentClaimSource {
+            landlord: authorization.owner_account(),
+            tenant: tenant_account,
+            lease_id: terms.lease_id,
+            unit_id,
+        },
+    )?;
+    state
+        .apply_genesis_offer_lease(plan, authorization)
+        .map_err(|_| TxError::InvalidOperation)?;
+    Ok(())
+}
+
 /// Applies the bounded construction projection and its external effects to the same
 /// candidate Engine state. The caller publishes this candidate only after the Store's
 /// durable hook succeeds.
@@ -4738,7 +4932,7 @@ fn prepare_construction(
     if candidate.operating_edge_id != 0 {
         match command {
             EngineCommand::Cancel if !candidate.recoverable_commands() => {
-                return Err(TxError::InvalidOperation);
+                return Err(TxError::InvalidOperation)
             }
             EngineCommand::AcceptInspection { accepted: true, .. } => {
                 let timeline = timeline.ok_or(TxError::InvalidOperation)?;
@@ -5590,6 +5784,7 @@ impl Action {
             } | Self::RegionMigrate { .. }
                 | Self::EquityContribute { .. }
                 | Self::SpatialPermission { .. }
+                | Self::HousingLease { .. }
                 | Self::ReserveCapacity { .. }
         )
     }
@@ -6041,6 +6236,7 @@ fn tax_assessments_cover_exit(
             match timeline.source_for_claim(claim) {
                 None => claim.source_ref == 0,
                 Some(crate::timeline::ClaimSource::Loan { .. }) => true,
+                Some(crate::timeline::ClaimSource::Rent { .. }) => false,
                 Some(crate::timeline::ClaimSource::Tax { details }) => {
                     tax_claim_source_matches(profile, state, claim, details)
                 }
@@ -6062,7 +6258,8 @@ fn dividend_has_unresolved_or_unmodeled_liability(
             || (claim.payer == company
                 && (claim.paid != claim.principal
                     || !claim.processed
-                    || timeline.source_for_claim(claim).is_none()))
+                    || timeline.source_for_claim(claim).is_none()
+                    || timeline.rent_source_for_claim(claim).is_some()))
     }) || timeline.payroll.iter().any(|row| {
         row.spec.payee == company
             || (row.spec.payer == company
@@ -6115,14 +6312,14 @@ fn exit_has_pending_payroll_cycle(company: u32, timeline: &crate::timeline::Time
 }
 
 fn exit_has_unsupported_receivables(company: u32, timeline: &crate::timeline::Timeline) -> bool {
-    timeline
-        .claims
-        .iter()
-        .any(|claim| claim.payee == company && claim.principal > claim.paid)
-        || timeline.payroll.iter().any(|row| {
-            row.spec.payee == company
-                && (row.accrued > row.paid || row.working || row.next_due.is_some())
-        })
+    timeline.claims.iter().any(|claim| {
+        timeline.rent_source_for_claim(claim).is_some()
+            && (claim.payer == company || claim.payee == company)
+            || claim.payee == company && claim.principal > claim.paid
+    }) || timeline.payroll.iter().any(|row| {
+        row.spec.payee == company
+            && (row.accrued > row.paid || row.working || row.next_due.is_some())
+    })
 }
 
 fn town_exit_dependencies(

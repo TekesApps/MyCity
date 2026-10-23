@@ -16,6 +16,7 @@ pub mod diagnostics;
 pub mod economy;
 pub mod exchange;
 pub mod fixed_restore;
+pub mod housing;
 pub mod inbox;
 pub mod layout_pressure;
 pub mod market_access;

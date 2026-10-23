@@ -98,6 +98,7 @@ fn action_raw(
         TownSettle,
         TownTransportSettle,
         SpatialPermission,
+        HousingLease,
         TownSuspendOperations,
         EquityContribute,
         EquityDistributeRetainedEarnings,
@@ -192,6 +193,13 @@ fn action_raw(
             let fields = Fields::parse(raw, &["kind", "command"], false, scratch)?;
             Ok(Output::SpatialPermission {
                 command: reader::decode(fields.raw(1)?, scratch)?,
+            })
+        }
+        Kind::HousingLease => {
+            let fields = Fields::parse(raw, &["kind", "offer_id", "offer_sha256"], false, scratch)?;
+            Ok(Output::HousingLease {
+                offer_id: fields.get(1, scratch)?,
+                offer_sha256: fields.get(2, scratch)?,
             })
         }
         Kind::TownSuspendOperations => {
@@ -785,6 +793,7 @@ mod tests {
             r#"{"kind":"timeline","command":{"kind":"advance","target":1,"limit":1}}"#,
             r#"{"kind":"town_transport_settle","profile_id":1,"service_day":1,"generation":1,"proof_sha256":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}"#,
             r#"{"kind":"town_suspend_operations","profile_id":1,"company_account":3}"#,
+            r#"{"kind":"housing_lease","offer_id":1,"offer_sha256":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}"#,
             r#"{"kind":"equity_contribute","company":3,"amount":100}"#,
             r#"{"kind":"equity_distribute_retained_earnings","company":3,"requested":100}"#,
             r#"{"kind":"inbox","command":{"kind":"enable"}}"#,

@@ -233,11 +233,23 @@ pub struct LoanClaimSource {
     pub principal: Money,
 }
 
+/// Provenance for a rent Claim generated from an Engine-authorized housing occurrence.
+/// Claim principal/paid remain the sole debt balance; this row only identifies the lease.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct RentClaimSource {
+    pub landlord: u32,
+    pub tenant: u32,
+    pub lease_id: u32,
+    pub unit_id: u32,
+}
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum ClaimSource {
     Tax { details: TaxClaimSource },
     Loan { details: LoanClaimSource },
+    Rent { details: RentClaimSource },
 }
 
 /// Sparse provenance row keyed back to the ordinary Timeline Claim. This table is not a
@@ -481,20 +493,30 @@ impl Timeline {
     pub fn tax_source_for_claim_id(&self, claim_id: u64) -> Option<TaxClaimSource> {
         match self.source_for_claim_id(claim_id)? {
             ClaimSource::Tax { details } => Some(details),
-            ClaimSource::Loan { .. } => None,
+            ClaimSource::Loan { .. } | ClaimSource::Rent { .. } => None,
         }
     }
     pub fn tax_source_for_claim(&self, claim: &Claim) -> Option<TaxClaimSource> {
         match self.source_for_claim(claim)? {
             ClaimSource::Tax { details } => Some(details),
-            ClaimSource::Loan { .. } => None,
+            ClaimSource::Loan { .. } | ClaimSource::Rent { .. } => None,
         }
     }
     pub fn loan_source_for_claim(&self, claim: &Claim) -> Option<LoanClaimSource> {
         match self.source_for_claim(claim)? {
             ClaimSource::Loan { details } => Some(details),
-            ClaimSource::Tax { .. } => None,
+            ClaimSource::Tax { .. } | ClaimSource::Rent { .. } => None,
         }
+    }
+    pub fn rent_source_for_claim(&self, claim: &Claim) -> Option<RentClaimSource> {
+        match self.source_for_claim(claim)? {
+            ClaimSource::Rent { details } => Some(details),
+            ClaimSource::Tax { .. } | ClaimSource::Loan { .. } => None,
+        }
+    }
+    pub fn rent_source_for_claim_id(&self, claim_id: u64) -> Option<RentClaimSource> {
+        let claim = self.claims.iter().find(|claim| claim.id == claim_id)?;
+        self.rent_source_for_claim(claim)
     }
     /// Append source metadata atomically to the candidate Timeline. A full table refuses the
     /// settlement; it never drops provenance or the ordinary debt row.
@@ -512,22 +534,92 @@ impl Timeline {
     ) -> Result<u32, TxError> {
         self.push_claim_source(claim_id, ClaimSource::Loan { details: source })
     }
+    pub(crate) fn push_rent_claim_source(
+        &mut self,
+        claim_id: u64,
+        source: RentClaimSource,
+    ) -> Result<u32, TxError> {
+        self.push_claim_source(claim_id, ClaimSource::Rent { details: source })
+    }
     fn push_claim_source(&mut self, claim_id: u64, source: ClaimSource) -> Result<u32, TxError> {
-        if claim_id == 0
-            || self.claim_sources.len() >= MAX_CLAIM_SOURCES
-            || self
-                .claim_sources
-                .last()
-                .is_some_and(|row| row.claim_id >= claim_id)
-        {
+        if claim_id == 0 || self.claim_sources.len() >= MAX_CLAIM_SOURCES {
             return Err(TxError::WorkingLimit);
         }
-        let reference =
-            u32::try_from(self.claim_sources.len() + 1).map_err(|_| TxError::Overflow)?;
+        let index = match self
+            .claim_sources
+            .binary_search_by_key(&claim_id, |row| row.claim_id)
+        {
+            Ok(_) => return Err(TxError::InvalidOperation),
+            Err(index) => index,
+        };
+        let old_len = self.claim_sources.len();
+        let reference = u32::try_from(index + 1).map_err(|_| TxError::Overflow)?;
         self.claim_sources
-            .try_push(ClaimSourceRecord { claim_id, source })
+            .try_reserve_exact(1)
             .map_err(|_| TxError::WorkingLimit)?;
+        self.claim_sources.resize(
+            old_len + 1,
+            ClaimSourceRecord {
+                claim_id: 0,
+                source: ClaimSource::Loan {
+                    details: LoanClaimSource {
+                        lender: 0,
+                        borrower: 0,
+                        principal: Money::ZERO,
+                    },
+                },
+            },
+        );
+        for row_index in (index..old_len).rev() {
+            self.claim_sources[row_index + 1] = self.claim_sources[row_index];
+        }
+        for claim in self.claims.iter_mut() {
+            if claim.source_ref >= reference {
+                claim.source_ref = claim.source_ref.checked_add(1).ok_or(TxError::Overflow)?;
+            }
+        }
+        self.claim_sources[index] = ClaimSourceRecord { claim_id, source };
         Ok(reference)
+    }
+
+    /// Insert an Engine-created housing Claim and its source link into the ordinary Timeline.
+    /// Cash remains unpaid until the regular P2 boundary; this method creates no second ledger.
+    pub(crate) fn insert_rent_claim(
+        &mut self,
+        mut claim: Claim,
+        source: RentClaimSource,
+    ) -> Result<(), TxError> {
+        if claim.id == 0
+            || claim.payer != source.tenant
+            || claim.payee != source.landlord
+            || claim.id != u64::from(source.lease_id)
+            || claim.principal <= Money::ZERO
+            || claim.paid != Money::ZERO
+            || claim.processed
+            || claim.due <= self.progress.last_complete
+            || self.claims.len() >= CLAIM_LIMIT
+        {
+            return Err(TxError::InvalidOperation);
+        }
+        let index = match self.claims.binary_search_by_key(&claim.id, |row| row.id) {
+            Ok(_) => return Err(TxError::InvalidOperation),
+            Err(index) => index,
+        };
+        let old_len = self.claims.len();
+        self.claims
+            .try_reserve_exact(1)
+            .map_err(|_| TxError::WorkingLimit)?;
+        self.claims.resize(
+            old_len + 1,
+            <Claim as crate::model_rows::Record>::inactive(),
+        );
+        for row_index in (index..old_len).rev() {
+            self.claims[row_index + 1] = self.claims[row_index];
+        }
+        let reference = self.push_rent_claim_source(claim.id, source)?;
+        claim.source_ref = reference;
+        self.claims[index] = claim;
+        Ok(())
     }
     pub(crate) fn validate(&self) -> Result<(), TxError> {
         let p = self.progress;
@@ -557,14 +649,20 @@ impl Timeline {
             return Err(TxError::Timeline(Error::Cursor));
         }
         for (i, c) in self.claims.iter().enumerate() {
+            let rent_occurrence_in_progress = self.rent_source_for_claim(c).is_some()
+                && match p.phase {
+                    Some(Phase::P1) => true,
+                    Some(Phase::P2) => p.lane == 0 && i >= p.cursor as usize,
+                    _ => false,
+                };
             if c.id == 0
                 || c.payer == c.payee
                 || c.paid > c.principal
-                || (!c.processed && c.paid != Money::ZERO)
+                || (!c.processed && c.paid != Money::ZERO && !rent_occurrence_in_progress)
                 || (c.processed && c.due > p.at)
                 || (i > 0 && self.claims[i - 1].id >= c.id)
-                || (!c.processed && c.due <= p.last_complete)
-                || (!c.processed && c.due < p.at)
+                || (!c.processed && c.due <= p.last_complete && !rent_occurrence_in_progress)
+                || (!c.processed && c.due < p.at && !rent_occurrence_in_progress)
                 || (!c.processed
                     && c.due == p.at
                     && (p.phase.is_none()
@@ -606,6 +704,16 @@ impl Timeline {
                             && claim.payer == details.borrower
                             && claim.payee == details.lender
                             && claim.principal == details.principal
+                    }
+                    ClaimSource::Rent { details } => {
+                        details.landlord != 0
+                            && details.tenant != 0
+                            && details.landlord != details.tenant
+                            && details.lease_id != 0
+                            && details.unit_id != 0
+                            && claim.id == u64::from(details.lease_id)
+                            && claim.payer == details.tenant
+                            && claim.payee == details.landlord
                     }
                 }
             });
@@ -815,5 +923,60 @@ mod sparse_tax_source_tests {
             Err(TxError::WorkingLimit)
         );
         assert_eq!(timeline.claim_sources.len(), MAX_CLAIM_SOURCES);
+    }
+
+    #[test]
+    fn rent_claim_insert_reorders_sparse_sources_and_keeps_tax_reference_exact() {
+        let mut timeline = Timeline::new(0);
+        let tax_source = source();
+        let tax_ref = timeline.push_tax_claim_source(20, tax_source).unwrap();
+        timeline
+            .claims
+            .try_push(Claim {
+                id: 20,
+                payer: tax_source.company,
+                payee: 9,
+                due: 2 * DAY,
+                principal: tax_source.assessed,
+                paid: Money::ZERO,
+                processed: false,
+                source_ref: tax_ref,
+            })
+            .unwrap();
+        timeline
+            .insert_rent_claim(
+                Claim {
+                    id: 10,
+                    payer: 8,
+                    payee: 11,
+                    due: DAY,
+                    principal: Money::new(400).unwrap(),
+                    paid: Money::ZERO,
+                    processed: false,
+                    source_ref: 0,
+                },
+                RentClaimSource {
+                    landlord: 11,
+                    tenant: 8,
+                    lease_id: 10,
+                    unit_id: 2,
+                },
+            )
+            .unwrap();
+        assert_eq!(timeline.claims[0].id, 10);
+        assert_eq!(timeline.claims[0].source_ref, 1);
+        assert_eq!(timeline.claims[1].id, 20);
+        assert_eq!(timeline.claims[1].source_ref, 2);
+        assert_eq!(timeline.tax_source_for_claim_id(20), Some(tax_source));
+        assert_eq!(
+            timeline.rent_source_for_claim_id(10),
+            Some(RentClaimSource {
+                landlord: 11,
+                tenant: 8,
+                lease_id: 10,
+                unit_id: 2,
+            })
+        );
+        timeline.validate().unwrap();
     }
 }

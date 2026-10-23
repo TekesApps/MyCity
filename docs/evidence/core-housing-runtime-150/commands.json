@@ -1,0 +1,380 @@
+[
+  {
+    "run": "321-housing-final-regressions",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-core",
+        "-p",
+        "mycity-storage",
+        "--lib",
+        "--tests",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T13:29:58.725407+00:00",
+      "source_manifest_sha256": "66268ea89cf38b8ed4f6f6f8ef857e604e341bc05d15726091b3b4eeb8727113"
+    },
+    "result": {
+      "exit_code": 101,
+      "wall_seconds": 316.384011,
+      "source_unchanged": true
+    }
+  },
+  {
+    "run": "322-housing-remaining-storage",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-storage",
+        "--test",
+        "construction_boot_stock_isolation",
+        "--test",
+        "construction_compensation",
+        "--test",
+        "construction_material_retry",
+        "--test",
+        "construction_retry_policy",
+        "--test",
+        "construction_utilities",
+        "--test",
+        "economy",
+        "--test",
+        "equity_dividend_liquidation",
+        "--test",
+        "equity_runtime",
+        "--test",
+        "exchange",
+        "--test",
+        "housing_equity_spatial",
+        "--test",
+        "housing_runtime",
+        "--test",
+        "inbox",
+        "--test",
+        "metadata",
+        "--test",
+        "payroll_exit",
+        "--test",
+        "recovery",
+        "--test",
+        "scale_assembly",
+        "--test",
+        "spatial",
+        "--test",
+        "spatial_transport_market",
+        "--test",
+        "spatial_transport_updates",
+        "--test",
+        "timeline",
+        "--test",
+        "town_business_exit",
+        "--test",
+        "town_market",
+        "--test",
+        "town_suspend",
+        "--test",
+        "town_utility_recovery",
+        "--test",
+        "unfinished_clearance",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T18:22:19.304716+00:00",
+      "source_manifest_sha256": "25e27bc2b1f3356fb268b01e19edf742d5b98e551922c30429d827f2775ead04"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 182.39655854199998,
+      "source_unchanged": true
+    }
+  },
+  {
+    "run": "323-construction-legacy-full-record",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-storage",
+        "--test",
+        "construction",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T18:25:34.476052+00:00",
+      "source_manifest_sha256": "25e27bc2b1f3356fb268b01e19edf742d5b98e551922c30429d827f2775ead04"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 4.636540125000001,
+      "source_unchanged": true
+    }
+  },
+  {
+    "run": "324-housing-final-strict",
+    "command": {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "--release",
+        "--workspace",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T18:26:05.348535+00:00",
+      "source_manifest_sha256": "25e27bc2b1f3356fb268b01e19edf742d5b98e551922c30429d827f2775ead04"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 5.231002292,
+      "source_unchanged": true
+    }
+  },
+  {
+    "run": "325-housing-final-cli-build",
+    "command": {
+      "argv": [
+        "cargo",
+        "build",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-storage",
+        "--example",
+        "town_housing"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T18:27:09.094428+00:00",
+      "source_manifest_sha256": "25e27bc2b1f3356fb268b01e19edf742d5b98e551922c30429d827f2775ead04"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 1.894379917,
+      "source_unchanged": true
+    }
+  },
+  {
+    "run": "326-housing-final-cli",
+    "command": {
+      "argv": [
+        "/usr/bin/time",
+        "-l",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/325-housing-final-cli-build/executables/9ee7dabec1d37b4135b4e444c5c7934aade4551f17257f5d6a5021ddb5e50351/town_housing",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/326-housing-final-cli-world"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T18:27:49.400930+00:00",
+      "source_manifest_sha256": "25e27bc2b1f3356fb268b01e19edf742d5b98e551922c30429d827f2775ead04"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 7.086029209,
+      "source_unchanged": true
+    }
+  },
+  {
+    "run": "327-housing-final-fmt",
+    "command": {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T18:28:27.493786+00:00",
+      "source_manifest_sha256": "25e27bc2b1f3356fb268b01e19edf742d5b98e551922c30429d827f2775ead04"
+    },
+    "result": {
+      "exit_code": 1,
+      "wall_seconds": 0.827746917,
+      "source_unchanged": true
+    }
+  },
+  {
+    "run": "328-housing-joint-native",
+    "command": {
+      "argv": [
+        "/usr/bin/time",
+        "-l",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/executables/796e9931f42c06ffe8a2df1b38a791619e264101c3bb6dccf8ee2966e3fc632c/housing_equity_spatial-3aa5fca7da1fa94f",
+        "--exact",
+        "housing_rent_market_road_and_equity_share_one_world_and_rent_blocks_distribution_and_exit",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T18:28:28.420326+00:00",
+      "source_manifest_sha256": "25e27bc2b1f3356fb268b01e19edf742d5b98e551922c30429d827f2775ead04"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 4.735299959,
+      "source_unchanged": true
+    }
+  },
+  {
+    "run": "329-housing-pinned-fmt",
+    "command": {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T18:29:49.173692+00:00",
+      "source_manifest_sha256": "eaeb18ab489aa9b43dbbdf23f8ac6e5a869f5cc791f64426ce7dc569168d2594"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 0.792132458,
+      "source_unchanged": true
+    }
+  },
+  {
+    "run": "330-housing-final-source-tests",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-storage",
+        "--test",
+        "housing_runtime",
+        "--test",
+        "housing_equity_spatial",
+        "--test",
+        "construction",
+        "--",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T18:29:50.034828+00:00",
+      "source_manifest_sha256": "eaeb18ab489aa9b43dbbdf23f8ac6e5a869f5cc791f64426ce7dc569168d2594"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 84.623014083,
+      "source_unchanged": true
+    }
+  },
+  {
+    "run": "331-housing-published-source-cli",
+    "command": {
+      "argv": [
+        "cargo",
+        "build",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-storage",
+        "--example",
+        "town_housing"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T18:31:39.567504+00:00",
+      "source_manifest_sha256": "eaeb18ab489aa9b43dbbdf23f8ac6e5a869f5cc791f64426ce7dc569168d2594"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 1.4532726660000002,
+      "source_unchanged": true
+    }
+  },
+  {
+    "run": "332-housing-published-source-run",
+    "command": {
+      "argv": [
+        "/usr/bin/time",
+        "-l",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/331-housing-published-source-cli/executables/8940eb5590408ea5cbb58c9c8f21def0a5da5a74b6b5f333b1e92e5bf1f14713/town_housing",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/332-housing-published-source-world"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T18:32:13.040007+00:00",
+      "source_manifest_sha256": "eaeb18ab489aa9b43dbbdf23f8ac6e5a869f5cc791f64426ce7dc569168d2594"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 7.020272291,
+      "source_unchanged": true
+    }
+  },
+  {
+    "run": "333-housing-published-source-strict",
+    "command": {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "--release",
+        "--workspace",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T18:33:21.655327+00:00",
+      "source_manifest_sha256": "eaeb18ab489aa9b43dbbdf23f8ac6e5a869f5cc791f64426ce7dc569168d2594"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 18.756509375,
+      "source_unchanged": true
+    }
+  }
+]
