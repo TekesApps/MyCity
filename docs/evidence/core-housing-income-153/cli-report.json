@@ -1,0 +1,60 @@
+{
+  "artifact_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/374-integrated-income-world",
+  "checkpoint_cold_open_equal": true,
+  "elapsed_total_ms": 3521,
+  "expected_paid_wages_cents": 198400,
+  "resource_samples": [
+    {
+      "artifact_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/374-integrated-income-world",
+      "elapsed_ms": 16,
+      "engine_owned_capacity_bytes": 3609920,
+      "housing_paid_wage_window_owned_bytes": 0,
+      "stage": "store_created_before_timeline_enable",
+      "store_owned_capacity_bytes": 41160831
+    },
+    {
+      "artifact_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/374-integrated-income-world",
+      "elapsed_ms": 21,
+      "engine_owned_capacity_bytes": 3618376,
+      "housing_paid_wage_window_owned_bytes": 8456,
+      "stage": "timeline_enabled",
+      "store_owned_capacity_bytes": 41169287
+    },
+    {
+      "artifact_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/374-integrated-income-world",
+      "elapsed_ms": 54,
+      "engine_owned_capacity_bytes": 3618376,
+      "housing_paid_wage_window_owned_bytes": 8456,
+      "stage": "payroll_registered_before_simulation",
+      "store_owned_capacity_bytes": 41169287
+    },
+    {
+      "artifact_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/374-integrated-income-world",
+      "elapsed_ms": 3521,
+      "engine_owned_capacity_bytes": 3618376,
+      "housing_paid_wage_window_owned_bytes": 8456,
+      "stage": "cold_open_after_day_32_checkpoint",
+      "store_owned_capacity_bytes": 41169351
+    }
+  ],
+  "scenario": "actual_store_paid_wage_window",
+  "timeline_day_31": {
+    "paid_wages_cents": 0,
+    "payment_at_midnight_is_excluded": true,
+    "status": "Complete",
+    "window_days": [
+      0,
+      31
+    ]
+  },
+  "timeline_day_32": {
+    "active_contracts": 1,
+    "paid_wages_cents": 198400,
+    "qualifying_contracts": 1,
+    "status": "Complete",
+    "window_days": [
+      1,
+      32
+    ]
+  }
+}

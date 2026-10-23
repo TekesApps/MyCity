@@ -139,6 +139,29 @@ pub struct OpeningHousing {
     pub lease_offers: Rows<GenesisLeaseOffer, MAX_GENESIS_LEASE_OFFERS>,
 }
 
+/// Read-only recent wage-payment evidence for a registered household.
+/// This is an actual paid-wage measure, not net income or a cash balance.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum PaidWageWindowStatus {
+    CoverageIncomplete,
+    NoQualifiedPayroll,
+    BilledArrears,
+    Complete,
+    Invalid,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct PaidWageWindowView {
+    pub status: PaidWageWindowStatus,
+    pub household_id: u32,
+    pub account: u32,
+    pub start_day: Option<u64>,
+    pub end_day: Option<u64>,
+    pub actual_paid_wages: Money,
+    pub qualifying_contracts: u16,
+    pub active_contracts: u16,
+}
+
 fn empty_opening_households() -> Rows<OpeningHousehold, MAX_M0_HOUSING_UNITS> {
     Rows::new().expect("fixed opening household rows")
 }

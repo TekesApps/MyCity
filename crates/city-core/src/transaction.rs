@@ -420,6 +420,7 @@ struct Prepared {
     region: Option<crate::region::Region>,
     construction: Option<crate::construction::Project>,
     housing: Option<crate::housing::HousingState>,
+    housing_wage_window: Option<Box<crate::housing_income::PaidWageWindow>>,
     town: Option<crate::town_runtime::MarketState>,
     spatial_permissions: Option<workspace::SpatialPermissionLease>,
     spatial_update_grant: Option<crate::spatial_transport_permissions::VerifiedSpatialUpdateGrant>,
@@ -915,6 +916,15 @@ impl Engine {
         if let Some(t) = self.timeline.as_ref() {
             timeline_driver::validate(self, t)?;
         }
+        if let Some(runtime) = self.world.housing.as_deref() {
+            match (runtime.paid_wages.as_deref(), self.timeline.as_ref()) {
+                (Some(window), Some(timeline)) => window
+                    .validate(&runtime.opening, timeline)
+                    .map_err(|_| TxError::InvalidOperation)?,
+                (Some(_), None) => return Err(TxError::InvalidOperation),
+                (None, _) => {}
+            }
+        }
         let economy = self.world.economy;
         let boot = self.world.boot;
         let exchange = self.world.exchange;
@@ -1104,6 +1114,63 @@ impl Engine {
     }
     pub fn timeline(&self) -> Option<&crate::timeline::Timeline> {
         self.timeline.as_ref()
+    }
+    /// Actual household payroll cash received in the latest 31 complete game days.
+    /// This excludes other income and personal tax withholding; it is not disposable net income.
+    pub fn housing_paid_wage_window(
+        &self,
+        household_id: u32,
+    ) -> Option<crate::housing::PaidWageWindowView> {
+        let runtime = self.world.housing.as_deref()?;
+        let timeline = self.timeline.as_ref()?;
+        let account = runtime
+            .opening
+            .households
+            .iter()
+            .find(|row| row.household_id == household_id)
+            .map(|row| row.account)?;
+        let fallback = |status| crate::housing::PaidWageWindowView {
+            status,
+            household_id,
+            account,
+            start_day: None,
+            end_day: None,
+            actual_paid_wages: Money::ZERO,
+            qualifying_contracts: 0,
+            active_contracts: 0,
+        };
+        let Some(window) = runtime.paid_wages.as_deref() else {
+            return Some(fallback(
+                crate::housing::PaidWageWindowStatus::CoverageIncomplete,
+            ));
+        };
+        match window.summarize(&runtime.opening, timeline, household_id) {
+            Ok(summary) => {
+                let status = if summary.billed_arrears {
+                    crate::housing::PaidWageWindowStatus::BilledArrears
+                } else if summary.qualifying_contracts == 0 && summary.paid_wages == Money::ZERO {
+                    crate::housing::PaidWageWindowStatus::NoQualifiedPayroll
+                } else {
+                    crate::housing::PaidWageWindowStatus::Complete
+                };
+                Some(crate::housing::PaidWageWindowView {
+                    status,
+                    household_id,
+                    account,
+                    start_day: Some(summary.start_day),
+                    end_day: Some(summary.end_day),
+                    actual_paid_wages: summary.paid_wages,
+                    qualifying_contracts: summary.qualifying_contracts,
+                    active_contracts: summary.active_contracts,
+                })
+            }
+            Err(crate::housing_income::PaidWageError::IncompleteBoundary)
+            | Err(crate::housing_income::PaidWageError::CoverageIncomplete)
+            | Err(crate::housing_income::PaidWageError::Uninitialized) => Some(fallback(
+                crate::housing::PaidWageWindowStatus::CoverageIncomplete,
+            )),
+            Err(_) => Some(fallback(crate::housing::PaidWageWindowStatus::Invalid)),
+        }
     }
     pub fn spatial_permissions(
         &self,
@@ -1577,6 +1644,7 @@ impl Engine {
         let mut construction = self.world.construction;
         let mut town = self.world.town.map(|m| m.state);
         let mut housing: Option<crate::housing::HousingState> = None;
+        let mut housing_wage_window: Option<Box<crate::housing_income::PaidWageWindow>> = None;
         let mut spatial_permissions: Option<workspace::SpatialPermissionLease> = None;
         let mut spatial_update_grant = None;
         let mut town_summary = None;
@@ -1642,6 +1710,16 @@ impl Engine {
                 )
             {
                 return Err(TxError::Timeline(crate::timeline::Error::LegacyClock));
+            }
+            if matches!(action, Action::Timeline { .. } | Action::SettleExit { .. })
+                && housing_wage_window.is_none()
+            {
+                housing_wage_window = self.world.housing.as_deref().map(|runtime| {
+                    runtime
+                        .paid_wages
+                        .clone()
+                        .unwrap_or_else(|| Box::new(crate::housing_income::PaidWageWindow::new()))
+                });
             }
             match *action {
                 Action::Background { command } => {
@@ -1749,6 +1827,7 @@ impl Engine {
                         resources: &mut resources,
                         leases: &mut leases,
                         housing: &mut housing,
+                        housing_wage_window: &mut housing_wage_window,
                         next_token: &mut next_token,
                     }
                     .command(&mut timeline, command)?;
@@ -2204,6 +2283,7 @@ impl Engine {
                                 resources: &mut resources,
                                 leases: &mut leases,
                                 housing: &mut housing,
+                                housing_wage_window: &mut housing_wage_window,
                                 next_token: &mut next_token,
                             }
                             .command(&mut timeline, crate::timeline::Command::EndForExit { id })?;
@@ -2583,6 +2663,7 @@ impl Engine {
                             resources: &mut resources,
                             leases: &mut leases,
                             housing: &mut housing,
+                            housing_wage_window: &mut housing_wage_window,
                             next_token: &mut next_token,
                         }
                         .command(&mut timeline, crate::timeline::Command::EndForExit { id })?;
@@ -2634,6 +2715,13 @@ impl Engine {
                         })
                     {
                         return Err(TxError::InvalidOperation);
+                    }
+                    if self.world.housing.is_some() {
+                        housing_wage_window
+                            .as_mut()
+                            .ok_or(TxError::InvalidOperation)?
+                            .begin_coverage(at)
+                            .map_err(|_| TxError::InvalidOperation)?;
                     }
                     let current = timeline.as_ref().ok_or(TxError::InvalidOperation)?;
                     if !exit_timeline_bindings_match(
@@ -2761,6 +2849,25 @@ impl Engine {
                                         .paid
                                         .checked_add(amount)
                                         .map_err(|_| TxError::Overflow)?;
+                                    if let Some(housing) = self.world.housing.as_deref() {
+                                        if housing
+                                            .opening
+                                            .households
+                                            .iter()
+                                            .any(|row| row.account == payee)
+                                        {
+                                            housing_wage_window
+                                                .as_mut()
+                                                .ok_or(TxError::InvalidOperation)?
+                                                .record_paid_delta(
+                                                    &housing.opening,
+                                                    payee,
+                                                    amount,
+                                                    at,
+                                                )
+                                                .map_err(|_| TxError::InvalidOperation)?;
+                                        }
+                                    }
                                 }
                             },
                             crate::town_economy::exit::ExitAction::DistributeResidual {
@@ -3509,7 +3616,11 @@ impl Engine {
                 housing
                     .as_ref()
                     .map_or(0, |state| state.owned_capacity_bytes()),
-            );
+            )
+            .saturating_add(housing_wage_window.as_deref().map_or(
+                0,
+                crate::housing_income::PaidWageWindow::owned_capacity_bytes,
+            ));
         if projected > ENGINE_BYTE_BUDGET {
             return Err(TxError::WorkingLimit);
         }
@@ -3531,6 +3642,7 @@ impl Engine {
             region,
             construction,
             housing,
+            housing_wage_window,
             town,
             spatial_permissions,
             spatial_update_grant,
@@ -3580,6 +3692,11 @@ impl Engine {
         }
         if let (Some(world_housing), Some(state)) = (&mut self.world.housing, prepared.housing) {
             world_housing.state = state;
+        }
+        if let (Some(world_housing), Some(window)) =
+            (&mut self.world.housing, prepared.housing_wage_window)
+        {
+            world_housing.paid_wages = Some(window);
         }
         if let Some(mut state) = prepared.spatial_permissions {
             std::mem::swap(

@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "scope": "literal_paid_wage_checkpoint_not_WAL_replay",
+  "world": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/374-integrated-income-world",
+  "checkpoint": "checkpoint-771.json",
+  "sequence": 770,
+  "checkpoint_sha256": "4a25e0d3434a88ef0f600a177012e65fd1f27ad6e0700b4d22d71fe519d0dc0e",
+  "checks": {
+    "completed_day32": true,
+    "one_actual_monthly_payment": true,
+    "observed_since_day0": true,
+    "ring_shape": true,
+    "only_day31_received_cash": true,
+    "no_other_household_payment": true,
+    "actual_accounts": true,
+    "conserved_total_cash": true,
+    "unoccupied_fixture_is_not_move": true,
+    "no_rent_claim_in_income_only_fixture": true
+  },
+  "cash": {
+    "1": 1000000,
+    "2": 398400,
+    "3": 401600,
+    "4": 1200000
+  }
+}

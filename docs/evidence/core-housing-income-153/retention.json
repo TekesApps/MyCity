@@ -1,0 +1,83 @@
+{
+  "before_allocated_bytes": 65617920,
+  "after_allocated_bytes": 10936320,
+  "allocated_reduction_bytes": 54681600,
+  "available_disk_change_observed_bytes": 54681600,
+  "disk_available_attribution": "observed only; APFS/other tasks changes are not credited",
+  "records": [
+    {
+      "round": "364-income-window-fmt",
+      "removed": "duplicate full source ZIP inode allocation, not path or data",
+      "reason": "terminal runs, identical complete byte contents, no open archive handles",
+      "retained_full_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/363-income-window-store/source.zip",
+      "sha256": "40b67bc561b7a2e937fc7c30749344b43ecc109cd5c265c51038f773af7a4593"
+    },
+    {
+      "round": "365-income-window-cli-build",
+      "removed": "duplicate full source ZIP inode allocation, not path or data",
+      "reason": "terminal runs, identical complete byte contents, no open archive handles",
+      "retained_full_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/363-income-window-store/source.zip",
+      "sha256": "40b67bc561b7a2e937fc7c30749344b43ecc109cd5c265c51038f773af7a4593"
+    },
+    {
+      "round": "366-income-window-cli",
+      "removed": "duplicate full source ZIP inode allocation, not path or data",
+      "reason": "terminal runs, identical complete byte contents, no open archive handles",
+      "retained_full_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/363-income-window-store/source.zip",
+      "sha256": "40b67bc561b7a2e937fc7c30749344b43ecc109cd5c265c51038f773af7a4593"
+    },
+    {
+      "round": "367-income-window-core-storage-regression",
+      "removed": "duplicate full source ZIP inode allocation, not path or data",
+      "reason": "terminal runs, identical complete byte contents, no open archive handles",
+      "retained_full_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/363-income-window-store/source.zip",
+      "sha256": "40b67bc561b7a2e937fc7c30749344b43ecc109cd5c265c51038f773af7a4593"
+    },
+    {
+      "round": "368-income-window-strict",
+      "removed": "duplicate full source ZIP inode allocation, not path or data",
+      "reason": "terminal runs, identical complete byte contents, no open archive handles",
+      "retained_full_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/363-income-window-store/source.zip",
+      "sha256": "40b67bc561b7a2e937fc7c30749344b43ecc109cd5c265c51038f773af7a4593"
+    },
+    {
+      "round": "370-integrated-income-joint",
+      "removed": "duplicate full source ZIP inode allocation, not path or data",
+      "reason": "terminal runs, identical complete byte contents, no open archive handles",
+      "retained_full_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/369-integrated-income-fmt/source.zip",
+      "sha256": "0042fb46001ed34033669bca6fa2cd8533e39d7612556dbe47cadc0241964117"
+    },
+    {
+      "round": "371-integrated-core-map-headless",
+      "removed": "duplicate full source ZIP inode allocation, not path or data",
+      "reason": "terminal runs, identical complete byte contents, no open archive handles",
+      "retained_full_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/369-integrated-income-fmt/source.zip",
+      "sha256": "0042fb46001ed34033669bca6fa2cd8533e39d7612556dbe47cadc0241964117"
+    },
+    {
+      "round": "372-integrated-income-strict",
+      "removed": "duplicate full source ZIP inode allocation, not path or data",
+      "reason": "terminal runs, identical complete byte contents, no open archive handles",
+      "retained_full_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/369-integrated-income-fmt/source.zip",
+      "sha256": "0042fb46001ed34033669bca6fa2cd8533e39d7612556dbe47cadc0241964117"
+    },
+    {
+      "round": "373-integrated-income-cli-build",
+      "removed": "duplicate full source ZIP inode allocation, not path or data",
+      "reason": "terminal runs, identical complete byte contents, no open archive handles",
+      "retained_full_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/369-integrated-income-fmt/source.zip",
+      "sha256": "0042fb46001ed34033669bca6fa2cd8533e39d7612556dbe47cadc0241964117"
+    },
+    {
+      "round": "374-integrated-income-cli",
+      "removed": "duplicate full source ZIP inode allocation, not path or data",
+      "reason": "terminal runs, identical complete byte contents, no open archive handles",
+      "retained_full_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/369-integrated-income-fmt/source.zip",
+      "sha256": "0042fb46001ed34033669bca6fa2cd8533e39d7612556dbe47cadc0241964117"
+    }
+  ],
+  "preserved": "all complete source archive paths and bytes, recovery worlds/snapshots, exes, logs/receipts/failures/WIP/dependency pins/shared target",
+  "remaining_selected_archive_allocation_only_bytes": 10936320,
+  "not_total_work_inventory": true,
+  "reason_retained": "complete recovery and reproducibility evidence; shared target required by next F/M0/E verification"
+}

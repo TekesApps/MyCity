@@ -1,0 +1,6 @@
+{
+  "first_attempt": "failed tenant_actual_cash expectation omitted fixture opening cash200000c",
+  "actual_checkpoint_cash": 398400,
+  "correct_literal": "opening200000 + actual wages198400 =398400",
+  "scope": "independent metadata oracle only; production and CLI source unchanged"
+}

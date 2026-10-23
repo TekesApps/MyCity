@@ -1,0 +1,52 @@
+{
+  "passed": true,
+  "scope": "fixed_one_unit_joint_checkpoint_and_raw_proofs",
+  "world": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/370-integrated-income-joint/test-artifacts/mycity-housing-equity-spatial-58757-0/world",
+  "checkpoint": "checkpoint-793.json",
+  "sequence": 791,
+  "checkpoint_sha256": "fb1715a7b9bd2cea0a98378ffe7301866ae2dde3620afd97d8e36576f1103f7d",
+  "checks": {
+    "accounts": true,
+    "total_cash": true,
+    "rent_single_claim": true,
+    "rent_source": true,
+    "occupancy": true,
+    "one_consumed_offer": true,
+    "market_day31": true,
+    "literal_invoice_and_rent": true,
+    "historical_profiles": true,
+    "transport_zero_fee": true,
+    "access_changes_actual_arrival": true,
+    "directed_return_remains_open": true,
+    "total_served": true
+  },
+  "accounts": {
+    "1": 990130,
+    "2": 0,
+    "3": 809870,
+    "4": 1200000
+  },
+  "proofs": {
+    "2": {
+      "profile_hash": "3b57be5a460bf11895b47cf199d7f4b52f067017d6779552c2d6074efebb5a37",
+      "served": 4,
+      "outbound": 0,
+      "return": 4,
+      "fee_rate": 0
+    },
+    "3": {
+      "profile_hash": "9f86fdd201d5541e0b6cf77370a1031b1814e93af2ac490c870b3b28a775815e",
+      "served": 8,
+      "outbound": 4,
+      "return": 4,
+      "fee_rate": 0
+    },
+    "1": {
+      "profile_hash": "bee304a3a85a9a172388ef69c22feb2d52d490225b6e66723712df7cb457fefe",
+      "served": 8,
+      "outbound": 4,
+      "return": 4,
+      "fee_rate": 0
+    }
+  }
+}

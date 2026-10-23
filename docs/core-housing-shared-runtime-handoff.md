@@ -207,3 +207,20 @@ or a refund implementation. The sole shared writer wires these small slices; pri
 and arithmetic oracle are not Store or resource acceptance. Layout, active/spare/candidate/
 restore amplification, actual payment hooks, cold recovery and combined scenarios remain to
 be measured by root before release.
+
+
+## Actual paid-wage slice, v0.5.153
+
+The finite actual-paid tracker is now integrated and actually tested on canonical source;
+[exact evidence and computation/resource contract](evidence/core-housing-income-153/STATUS.md)
+supersede the preceding WIP label for this tracker only. Move, Wait, historical rent ownership,
+city binding and refunds remain unimplemented in published code. This is an actual-paid wages
+input, not all household income or guaranteed affordability. Root preserves the daily reference,
+all failed tests and complete cold-recovery worlds. Single ring8456B does not prove whole-process
+or maximum32-household resource acceptance.
+
+Next Move city boundary: Region can hold multiple cities, and active_city is switchable.
+The next OpeningHousing registration needs explicit immutable city identity checked against
+Region.cities, inherited by all of its units/offers. Existing missing bindings stay readable
+and retain original lease/billing/repayment behavior but cannot authorize Move; no default to
+current active city during restore. This is a design dependency, not implemented in v153.

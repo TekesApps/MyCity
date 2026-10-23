@@ -133,10 +133,18 @@ pub(crate) struct Stock {
 pub(crate) struct HousingRuntime {
     pub(crate) opening: crate::housing::OpeningHousing,
     pub(crate) state: crate::housing::HousingState,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub(crate) paid_wages: Option<Box<crate::housing_income::PaidWageWindow>>,
 }
 impl HousingRuntime {
     fn owned_capacity_bytes(&self) -> usize {
-        size_of::<Self>() + self.opening.owned_capacity_bytes() + self.state.owned_capacity_bytes()
+        size_of::<Self>()
+            + self.opening.owned_capacity_bytes()
+            + self.state.owned_capacity_bytes()
+            + self.paid_wages.as_deref().map_or(
+                0,
+                crate::housing_income::PaidWageWindow::owned_capacity_bytes,
+            )
     }
 }
 
@@ -861,6 +869,17 @@ impl World {
                 housing.state.owned_capacity_bytes().into(),
             );
             object.insert(
+                "housing_paid_wage_window_bytes".into(),
+                housing
+                    .paid_wages
+                    .as_deref()
+                    .map_or(
+                        0,
+                        crate::housing_income::PaidWageWindow::owned_capacity_bytes,
+                    )
+                    .into(),
+            );
+            object.insert(
                 "housing_unit_limit".into(),
                 housing.opening.unit_limit.into(),
             );
@@ -1150,7 +1169,11 @@ pub(crate) fn assemble_into(bytes: &[u8], world: &mut World) -> Result<(), Strin
             world.town.as_ref().map(|market| &market.profile),
             &opening,
         )?;
-        world.housing = Some(Box::new(HousingRuntime { opening, state }));
+        world.housing = Some(Box::new(HousingRuntime {
+            opening,
+            state,
+            paid_wages: None,
+        }));
     }
     let housing_scratch = if world.housing.is_some() {
         crate::housing::MAX_VALIDATION_SCRATCH_BYTES

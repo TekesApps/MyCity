@@ -157,3 +157,45 @@ and component8456B is observed. Broader regression is running; this code is not 
 No Move/geometry activation acceptance is implied. Future complex Issue ownership follows
 updated AGENTS independent child-session workflow; root retains exclusive Cargo/publication
 and shared-core integration scheduling. Existing frozen batches and unrelated WIP remain intact.
+
+
+## Active parallel execution, 2026-10-24 (after v152 local commit)
+
+Root checked all existing agent states, canonical main, registered branches/worktrees and
+uncommitted files before dispatch. Existing agents were revived; no duplicate worker or
+new clock/ledger/storage was introduced. Unrelated rare-control evidence and old Move WIP
+remain untouched. Cargo/native processes were absent before the integration window.
+
+| Slice / Issue | Owner and file boundary | Input -> output / dependency / handoff | Actual completion criterion |
+|---|---|---|---|
+| M0 / #112 #113 | equity_current, private headless candidate only | Original347 native failure and memory ownership -> specific bounded fix and rerun prerequisites; core read-only | Root runs original frozen load after relevant fix; retain all failed evidence, normal/common8MiB/8h/real16GB remain unmet |
+| D / #10 #115 | construction_finish, new equity_creditor_residual test/example only in equity-runtime-current | Published equity/actual loan/exit APIs -> same-Store creditor-first residual and recovery oracle | Actual execution, exact cash and sourced debt, capital vs surplus, replay and cold restore; no new ledger |
+| E core / #26 | economy_scenarios, sole Engine/World/Timeline/Store author | Frozen actual-paid-wage window -> next small atomic Move/Wait slice; old mixed WIP isolated | Unique residence/capacity, original debt identity and earned principal, real transfers and persisted wait; tested by root |
+| E evidence / #26 | scoped_index_calls, housing-current new tests/examples only | Exact core API and existing numerical oracle -> executable Move/Wait counterexamples | Actual Store/CLI, fail-atomic and cold replay; source-only oracle is not completion |
+| F / #25 #115 | joint_current_prep, spatial-transport-current tests/fixtures/handoff only | Current main scene/profile API -> first persistent geometry activation contract | Same-world road/entrance change alters arrival/trade; historical proof and recovery remain valid. Shared core queued after E lease handoff |
+| Advisor | scoped_handle_advice, read-only | New363/366/367/368 evidence -> finite income-window acceptance | Concrete authority/window/recovery/resource blockers only, no repetitive general review |
+| Integration | root, canonical integration/evidence/release | Exact8-file income whitelist on top of reader fix -> combined source tests and pinned CLI | Actual same-source combined validation, issue result backfill, unique tag and verified remote push |
+
+The income-only private source passed367 core/storage regression and368 strict with source
+unchanged; this does not substitute canonical integration. Root copied exactly6 core files
+and2 test/CLI files after verifying canonical destination bytes equal their151 baseline.
+The three152 reader repair files were not replaced. Runs369-373 are root's serialized
+canonical verification queue using the existing external shared target. No formal performance
+window is active; all agents still avoid Cargo/heavy tests until root grants a window.
+
+
+## v153 actual integration result
+
+Income-only8-file batch is actually integrated on top of152.369fmt/370five Store cases/
+371core201+headless102+map5/372strict/373build/374fixedCLI pass with source unchanged.
+Independent literal income and retained joint checkpoint/profile checks pass; initial opening-
+cash expectation correction is recorded. Advisor accepts this finite release. Full evidence:
+[evidence/core-housing-income-153](evidence/core-housing-income-153/STATUS.md).
+
+Agents continued independently: M0 found6,334,090B noneligible overhead not yet attributable to
+a safely reclaimable allocation and supplied a bounded pool-event diagnostic candidate only;
+no memory fix/gate pass. D is writing actual creditor/residual Store cases. F supplied DoorPose
+candidate code/tests, not yet compiled or activated. E shared writer has started real Move/Wait
+and explicit city binding in the isolated paid-wage tree, with legacy missing bindings denied
+Move; test writer waits for the exact API. All are private WIP, not v153 acceptance. Root still
+alone owns verification/publication, and all original load/cap/failure evidence remains.

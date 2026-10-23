@@ -44,6 +44,7 @@ pub(super) struct Frame<'a, 'd> {
     pub resources: &'a mut ResourceRows,
     pub leases: &'a mut LeaseRows,
     pub housing: &'a mut Option<crate::housing::HousingState>,
+    pub housing_wage_window: &'a mut Option<Box<crate::housing_income::PaidWageWindow>>,
     pub next_token: &'a mut u64,
 }
 impl Frame<'_, '_> {
@@ -66,6 +67,41 @@ impl Frame<'_, '_> {
             .account_ref(payee)
             .map_err(|_| TxError::InvalidHandle)?;
         Ok(())
+    }
+    fn ensure_housing_wage_coverage(&mut self, at: u64) -> Result<(), TxError> {
+        if self.world.housing.is_none() {
+            return Ok(());
+        }
+        self.housing_wage_window
+            .get_or_insert_with(|| Box::new(crate::housing_income::PaidWageWindow::new()))
+            .begin_coverage(at)
+            .map_err(|_| TxError::InvalidOperation)
+    }
+    fn record_household_payroll_payment(
+        &mut self,
+        payee_account: u32,
+        amount: Money,
+        at: u64,
+    ) -> Result<(), TxError> {
+        if amount == Money::ZERO {
+            return Ok(());
+        }
+        let Some(runtime) = self.world.housing.as_deref() else {
+            return Ok(());
+        };
+        if runtime
+            .opening
+            .households
+            .iter()
+            .all(|household| household.account != payee_account)
+        {
+            return Ok(());
+        }
+        self.housing_wage_window
+            .as_mut()
+            .ok_or(TxError::InvalidOperation)?
+            .record_paid_delta(&runtime.opening, payee_account, amount, at)
+            .map_err(|_| TxError::InvalidOperation)
     }
     fn pay(&mut self, payer: u32, payee: u32, due: Money) -> Result<Money, TxError> {
         // Accrual and processing continue, but automatic lanes cannot bypass exit ranking.
@@ -92,13 +128,16 @@ impl Frame<'_, '_> {
             if slot.is_some() {
                 return Err(err(E::Duplicate));
             }
-            slot.activate().reset_at(self.now());
+            let now = self.now();
+            slot.activate().reset_at(now);
+            self.ensure_housing_wage_coverage(now)?;
             return Ok(());
         }
         let t = slot.as_mut().ok_or(err(E::Input))?;
         if !matches!(command, C::Advance { .. } | C::CancelAdvance) && t.progress.target.is_some() {
             return Err(err(E::Busy));
         }
+        self.ensure_housing_wage_coverage(t.progress.last_complete)?;
         t.progress.page_paid = Money::ZERO;
         t.progress.page_sources = 0;
         match command {
@@ -321,6 +360,8 @@ impl Frame<'_, '_> {
                     )?;
                     c.paid = c.paid.checked_add(paid).map_err(|_| TxError::Overflow)?;
                     t.progress.page_paid = paid;
+                    let payee = c.spec.payee;
+                    self.record_household_payroll_payment(payee, paid, t.progress.last_complete)?;
                 }
             }
             C::SettleClaim { id } => {
@@ -820,6 +861,8 @@ impl Frame<'_, '_> {
                             .checked_add(paid)
                             .map_err(|_| TxError::Overflow)?;
                         t.progress.page_sources += 1;
+                        let payee = c.spec.payee;
+                        self.record_household_payroll_payment(payee, paid, at)?;
                         return Ok(());
                     }
                 }
