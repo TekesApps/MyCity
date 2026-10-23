@@ -38,6 +38,9 @@ impl<T: Record, const N: usize> Rows<T, N> {
     pub fn capacity(&self) -> usize {
         N
     }
+    pub fn is_empty(&self) -> bool {
+        self.active == 0
+    }
     pub fn try_reserve_exact(&mut self, additional: usize) -> Result<(), &'static str> {
         if self.active.checked_add(additional).is_some_and(|v| v <= N) {
             Ok(())

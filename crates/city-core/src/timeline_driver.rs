@@ -128,12 +128,32 @@ impl Frame<'_, '_> {
                 t.claims
                     .try_reserve_exact(1)
                     .map_err(|_| TxError::WorkingLimit)?;
+                let equity_company_loan = self.world.town.is_some_and(|market| {
+                    market
+                        .profile
+                        .equity_charters
+                        .as_slice()
+                        .iter()
+                        .any(|charter| charter.company == lender || charter.company == borrower)
+                });
                 let mut ledger = EconomicLedger {
                     world: self.world,
                     accounts: self.accounts,
                     stocks: self.stocks,
                 };
                 crate::economy::Ledger::pay(&mut ledger, lender, borrower, principal, false)?;
+                let source_ref = if equity_company_loan {
+                    t.push_loan_claim_source(
+                        id,
+                        t::LoanClaimSource {
+                            lender,
+                            borrower,
+                            principal,
+                        },
+                    )?
+                } else {
+                    0
+                };
                 t.claims.push(t::Claim {
                     id,
                     payer: borrower,
@@ -142,6 +162,7 @@ impl Frame<'_, '_> {
                     principal,
                     paid: Money::ZERO,
                     processed: false,
+                    source_ref,
                 });
             }
             C::Claims {
@@ -182,6 +203,7 @@ impl Frame<'_, '_> {
                         principal: amount,
                         paid: Money::ZERO,
                         processed: false,
+                        source_ref: 0,
                     });
                 }
             }

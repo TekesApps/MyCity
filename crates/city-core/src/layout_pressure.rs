@@ -79,6 +79,7 @@ impl NativePressure {
                         role: Role::Household,
                         cash: Money::new(i64::from(id)).map_err(fail)?,
                         protected: Money::ZERO,
+                        opening_source_id: 0,
                     })
                     .map_err(fail)?,
             );
@@ -96,6 +97,8 @@ impl NativePressure {
                         origin_quantity: Quantity::new(i64::from(id)).map_err(fail)?,
                         origin_basis: Money::new(i64::from(id)).map_err(fail)?,
                         offset: Quantity::ZERO,
+                        opening_source_id: 0,
+                        opening_basis: Money::ZERO,
                     })
                     .map_err(fail)?,
             );
@@ -110,6 +113,7 @@ impl NativePressure {
                 principal: Money::new(1).map_err(fail)?,
                 paid: Money::ZERO,
                 processed: false,
+                source_ref: 0,
             });
         }
         let mut payroll = Vec::with_capacity(31200);
@@ -211,6 +215,10 @@ impl NativePressure {
                     "Account.protected",
                     std::mem::offset_of!(Account, protected),
                 ),
+                (
+                    "Account.opening_source_id",
+                    std::mem::offset_of!(Account, opening_source_id),
+                ),
                 ("Stock.id", std::mem::offset_of!(Stock, id)),
                 ("Stock.owner", std::mem::offset_of!(Stock, owner)),
                 ("Stock.commodity", std::mem::offset_of!(Stock, commodity)),
@@ -226,6 +234,14 @@ impl NativePressure {
                     std::mem::offset_of!(Stock, origin_basis),
                 ),
                 ("Stock.offset", std::mem::offset_of!(Stock, offset)),
+                (
+                    "Stock.opening_source_id",
+                    std::mem::offset_of!(Stock, opening_source_id),
+                ),
+                (
+                    "Stock.opening_basis",
+                    std::mem::offset_of!(Stock, opening_basis),
+                ),
             ],
             account_arena: self.accounts.layout(),
             inventory_arena: self.inventory.layout(),

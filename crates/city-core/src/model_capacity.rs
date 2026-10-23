@@ -4,7 +4,7 @@ use crate::{
     arena::{AccountDomain, Arena, Handle, InventoryDomain},
     assembly::{Account, OpeningSource, Stock, World, MAX_ACCOUNTS, MAX_SOURCES, MAX_STOCKS},
     background::SOURCE_LIMIT,
-    timeline::{Claim, Payroll, CLAIM_LIMIT, PAYROLL_LIMIT},
+    timeline::{Claim, ClaimSourceRecord, Payroll, CLAIM_LIMIT, MAX_CLAIM_SOURCES, PAYROLL_LIMIT},
     transaction::{
         preparation_workspace_capacity, prepared_header_bytes, Engine, JournalRecord, Lease,
         Resource, MAX_LEASES, MAX_RECEIPTS, MAX_RESOURCES,
@@ -46,10 +46,15 @@ pub struct Inventory {
     pub runtime_ownership_proven: bool,
 }
 
-fn timeline_rows() -> [Part; 2] {
+fn timeline_rows() -> [Part; 3] {
     [
         Part::new("claims", CLAIM_LIMIT, size_of::<Claim>()),
         Part::new("payroll", PAYROLL_LIMIT, size_of::<Payroll>()),
+        Part::new(
+            "sparse_claim_sources",
+            MAX_CLAIM_SOURCES,
+            size_of::<ClaimSourceRecord>(),
+        ),
     ]
 }
 fn air_payload(sources: usize) -> Vec<Part> {

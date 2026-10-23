@@ -98,6 +98,8 @@ fn action_raw(
         TownSettle,
         TownTransportSettle,
         TownSuspendOperations,
+        EquityContribute,
+        EquityDistributeRetainedEarnings,
         BeginExit,
         SettleExit,
         CloseExit,
@@ -195,6 +197,20 @@ fn action_raw(
             Ok(Output::TownSuspendOperations {
                 profile_id: fields.get(1, scratch)?,
                 company_account: fields.get(2, scratch)?,
+            })
+        }
+        Kind::EquityContribute => {
+            let fields = Fields::parse(raw, &["kind", "company", "amount"], false, scratch)?;
+            Ok(Output::EquityContribute {
+                company: fields.get(1, scratch)?,
+                amount: fields.get(2, scratch)?,
+            })
+        }
+        Kind::EquityDistributeRetainedEarnings => {
+            let fields = Fields::parse(raw, &["kind", "company", "requested"], false, scratch)?;
+            Ok(Output::EquityDistributeRetainedEarnings {
+                company: fields.get(1, scratch)?,
+                requested: fields.get(2, scratch)?,
             })
         }
         Kind::BeginExit => {
@@ -762,6 +778,8 @@ mod tests {
             r#"{"kind":"timeline","command":{"kind":"advance","target":1,"limit":1}}"#,
             r#"{"kind":"town_transport_settle","profile_id":1,"service_day":1,"generation":1,"proof_sha256":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}"#,
             r#"{"kind":"town_suspend_operations","profile_id":1,"company_account":3}"#,
+            r#"{"kind":"equity_contribute","company":3,"amount":100}"#,
+            r#"{"kind":"equity_distribute_retained_earnings","company":3,"requested":100}"#,
             r#"{"kind":"inbox","command":{"kind":"enable"}}"#,
             r#"{"kind":"inbox","command":{"kind":"external","fact":{"source":1,"event":1,"debtor":1,"creditor":2,"amount":1,"due":1,"reason":"emergency_repair"}}}"#,
             r#"{"kind":"inbox","command":{"kind":"receive","quote":1}}"#,

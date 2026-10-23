@@ -1,9 +1,9 @@
 //! Persistent bounded equity records and exact share-proportional allocation.
 //!
-//! This module does not establish that cash was transferred or that a dividend is legally
-//! distributable. The Engine's private commit path must verify the actual account transfer,
-//! accounting close, creditor protections and operation receipt before calling its mutation
-//! function. A receipt identifier is a link to that authority, never proof by itself.
+//! Immutable opening charters bind legal principals to existing account identities. This
+//! module does not establish that cash was transferred or that a dividend is legally
+//! distributable; the transaction layer supplies a private proof only after staging a real
+//! protected-cash transfer in the same candidate.
 
 use crate::{model_rows::Record, town_runtime::FixedRows, units::Money};
 use serde::{Deserialize, Serialize};
@@ -15,6 +15,10 @@ pub const MAX_DIRECT_SHAREHOLDERS: usize = 8;
 pub const WORLD_EQUITY_RELATION_BUDGET: usize = 8192;
 /// One game currency unit is 100 cents. The initial policy issues one share per unit.
 pub const INITIAL_CENTS_PER_SHARE: i64 = 100;
+pub const MAX_EQUITY_COMPANIES: usize = 4;
+/// Opening endowment provenance is deliberately bounded per company. Larger seed inventories
+/// must be consolidated into fewer source lots before charter registration.
+pub const MAX_EQUITY_OPENING_SOURCES: usize = 32;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
@@ -64,7 +68,7 @@ impl EquityPolicy {
         }
     }
 
-    fn validate(self) -> Result<(), EquityError> {
+    pub(crate) fn validate(self) -> Result<(), EquityError> {
         if self.policy_id == 0
             || self.version != 1
             || self.cents_per_share != INITIAL_CENTS_PER_SHARE
@@ -77,6 +81,156 @@ impl EquityPolicy {
             return Err(EquityError::InvalidPolicy);
         }
         Ok(())
+    }
+}
+
+/// One immutable opening identity-to-account binding. A Person identity is meaningful only
+/// because this charter explicitly registered it; it does not imply a resident/home link.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct EquityInvestorBinding {
+    pub party: EquityParty,
+    pub account: u32,
+    /// Explicit genesis ownership for capital already assigned to this company. The sum is
+    /// checked against company cash plus its opening inventory basis before operations.
+    pub opening_shares: u64,
+}
+
+/// Immutable assignment of one actual opening source to the person/household receiving its
+/// endowment shares. This is provenance for genesis assets, not a recorded cash contribution.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct EquityOpeningSourceBinding {
+    pub source_id: u32,
+    pub party: EquityParty,
+}
+
+impl Record for EquityOpeningSourceBinding {
+    fn inactive() -> Self {
+        Self {
+            source_id: 0,
+            party: EquityParty {
+                kind: PartyKind::Person,
+                id: 0,
+            },
+        }
+    }
+}
+
+impl Record for EquityInvestorBinding {
+    fn inactive() -> Self {
+        Self {
+            party: EquityParty {
+                kind: PartyKind::Person,
+                id: 0,
+            },
+            account: 0,
+            opening_shares: 0,
+        }
+    }
+}
+
+/// Fixed opening authority for one company's initial share issue. Bindings are immutable
+/// during this first version; there is no secondary market or account reassignment action.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct EquityCharter {
+    pub company: u32,
+    pub policy: EquityPolicy,
+    /// Explicit opening-bound signatory for ordinary retained-earnings distributions. This
+    /// is a declared authority, not a majority-vote or general company-governance model.
+    pub distribution_authority: EquityParty,
+    pub investors: FixedRows<EquityInvestorBinding, MAX_DIRECT_SHAREHOLDERS>,
+    /// Exact source IDs behind opening company cash and owned stock basis. No aggregate-only
+    /// endowment declaration is accepted.
+    #[serde(default)]
+    pub opening_sources: FixedRows<EquityOpeningSourceBinding, MAX_EQUITY_OPENING_SOURCES>,
+}
+
+impl Record for EquityCharter {
+    fn inactive() -> Self {
+        Self {
+            company: 0,
+            policy: EquityPolicy::initial(0, 1),
+            distribution_authority: EquityParty {
+                kind: PartyKind::Person,
+                id: 0,
+            },
+            investors: FixedRows::new(),
+            opening_sources: FixedRows::new(),
+        }
+    }
+}
+
+impl EquityCharter {
+    pub(crate) fn validate(&self) -> Result<(), EquityError> {
+        self.policy.validate()?;
+        if self.company == 0
+            || self.investors.is_empty()
+            || self.distribution_authority.id == 0
+            || self
+                .binding_for_party(self.distribution_authority)
+                .is_none()
+        {
+            return Err(EquityError::InvalidRegister);
+        }
+        let mut previous = None;
+        let mut opening_shares = 0_u64;
+        for binding in self.investors.as_slice() {
+            if binding.party.id == 0
+                || binding.account == 0
+                || binding.party.kind == PartyKind::Company
+            {
+                return Err(EquityError::InvalidRegister);
+            }
+            opening_shares = opening_shares
+                .checked_add(binding.opening_shares)
+                .ok_or(EquityError::Overflow)?;
+            if previous.is_some_and(|party| party >= binding.party) {
+                return Err(EquityError::DuplicateOrUnsortedHolder);
+            }
+            if self
+                .investors
+                .as_slice()
+                .iter()
+                .any(|other| other.party != binding.party && other.account == binding.account)
+            {
+                return Err(EquityError::AccountBindingChanged);
+            }
+            previous = Some(binding.party);
+        }
+        if opening_shares > self.policy.max_issued_shares {
+            return Err(EquityError::IssueCapExceeded);
+        }
+        let mut previous_source = 0;
+        for source in self.opening_sources.as_slice() {
+            if source.source_id == 0
+                || source.source_id <= previous_source
+                || source.party.id == 0
+                || source.party.kind == PartyKind::Company
+                || self.binding_for_party(source.party).is_none()
+            {
+                return Err(EquityError::InvalidRegister);
+            }
+            previous_source = source.source_id;
+        }
+        Ok(())
+    }
+
+    pub(crate) fn binding_for_account(&self, account: u32) -> Option<EquityParty> {
+        self.investors
+            .as_slice()
+            .iter()
+            .find(|binding| binding.account == account)
+            .map(|binding| binding.party)
+    }
+
+    pub(crate) fn binding_for_party(&self, party: EquityParty) -> Option<u32> {
+        self.investors
+            .as_slice()
+            .iter()
+            .find(|binding| binding.party == party)
+            .map(|binding| binding.account)
     }
 }
 
@@ -113,7 +267,22 @@ pub struct EquityRegister {
     pub policy: EquityPolicy,
     pub revision: u64,
     pub issued_shares: u64,
+    pub opening_issued_shares: u64,
+    pub opening_paid_in: Money,
+    /// C liquidation capital returned; never an operating expense or loss.
+    #[serde(default, skip_serializing_if = "is_zero_money")]
+    pub cumulative_capital_returned: Money,
+    /// Liquidation proceeds above paid-in capital, separate from ordinary retained earnings.
+    #[serde(default, skip_serializing_if = "is_zero_money")]
+    pub cumulative_liquidation_surplus_distributed: Money,
+    /// Ordinary operating distributions; separate from both paid-in capital and C liquidation.
+    #[serde(default, skip_serializing_if = "is_zero_money")]
+    pub cumulative_dividends_distributed: Money,
     holders: FixedRows<EquityHolder, MAX_DIRECT_SHAREHOLDERS>,
+}
+
+fn is_zero_money(value: &Money) -> bool {
+    *value == Money::ZERO
 }
 
 impl EquityRegister {
@@ -127,12 +296,119 @@ impl EquityRegister {
             policy,
             revision: 0,
             issued_shares: 0,
+            opening_issued_shares: 0,
+            opening_paid_in: Money::ZERO,
+            cumulative_capital_returned: Money::ZERO,
+            cumulative_liquidation_surplus_distributed: Money::ZERO,
+            cumulative_dividends_distributed: Money::ZERO,
             holders: FixedRows::new(),
         })
     }
 
+    pub fn from_charter(
+        company: u32,
+        policy: EquityPolicy,
+        bindings: &[EquityInvestorBinding],
+    ) -> Result<Self, EquityError> {
+        let mut register = Self::empty(company, policy)?;
+        for binding in bindings {
+            if binding.opening_shares == 0 {
+                continue;
+            }
+            let amount = checked_cents_per_share(binding.opening_shares, policy.cents_per_share)?;
+            let contribution = PaidContribution {
+                party: binding.party,
+                account: binding.account,
+                shares: binding.opening_shares,
+                amount,
+                receipt_id: 1,
+            };
+            // Genesis ownership is seeded from the immutable charter only after assembly
+            // validates each opening source ID against its exact company asset.
+            register.seed_opening_contribution(contribution)?;
+        }
+        if register.issued_shares > 0 {
+            register.revision = 1;
+        }
+        register.validate()?;
+        Ok(register)
+    }
+
+    fn seed_opening_contribution(
+        &mut self,
+        contribution: PaidContribution,
+    ) -> Result<(), EquityError> {
+        if self.issued_shares != 0
+            && self
+                .holders
+                .as_slice()
+                .last()
+                .is_some_and(|holder| holder.party >= contribution.party)
+        {
+            return Err(EquityError::DuplicateOrUnsortedHolder);
+        }
+        let total_shares = self
+            .issued_shares
+            .checked_add(contribution.shares)
+            .ok_or(EquityError::Overflow)?;
+        if total_shares > self.policy.max_issued_shares {
+            return Err(EquityError::IssueCapExceeded);
+        }
+        self.holders
+            .push(EquityHolder {
+                party: contribution.party,
+                account: contribution.account,
+                shares: contribution.shares,
+                paid_in: contribution.amount,
+            })
+            .map_err(|_| EquityError::HolderCapExceeded)?;
+        self.issued_shares = total_shares;
+        self.opening_issued_shares = total_shares;
+        self.opening_paid_in = self
+            .opening_paid_in
+            .checked_add(contribution.amount)
+            .map_err(|_| EquityError::Overflow)?;
+        Ok(())
+    }
+
     pub fn holders(&self) -> &[EquityHolder] {
         self.holders.as_slice()
+    }
+
+    pub(crate) fn record_liquidation_distribution(
+        &mut self,
+        amount: Money,
+    ) -> Result<(Money, Money), EquityError> {
+        if amount <= Money::ZERO {
+            return Err(EquityError::InvalidRegister);
+        }
+        let paid_in = self
+            .holders
+            .as_slice()
+            .iter()
+            .try_fold(0_i128, |sum, holder| {
+                sum.checked_add(i128::from(holder.paid_in.value()))
+            })
+            .ok_or(EquityError::Overflow)?;
+        let unpaid_capital = paid_in
+            .checked_sub(i128::from(self.cumulative_capital_returned.value()))
+            .ok_or(EquityError::Overflow)?
+            .max(0);
+        let capital_value = i128::from(amount.value()).min(unpaid_capital);
+        let surplus_value = i128::from(amount.value()) - capital_value;
+        let capital = Money::new(i64::try_from(capital_value).map_err(|_| EquityError::Overflow)?)
+            .map_err(|_| EquityError::Overflow)?;
+        let surplus = Money::new(i64::try_from(surplus_value).map_err(|_| EquityError::Overflow)?)
+            .map_err(|_| EquityError::Overflow)?;
+        self.cumulative_capital_returned = self
+            .cumulative_capital_returned
+            .checked_add(capital)
+            .map_err(|_| EquityError::Overflow)?;
+        self.cumulative_liquidation_surplus_distributed = self
+            .cumulative_liquidation_surplus_distributed
+            .checked_add(surplus)
+            .map_err(|_| EquityError::Overflow)?;
+        Ok((capital, surplus))
     }
 
     pub fn validate(&self) -> Result<(), EquityError> {
@@ -164,6 +440,24 @@ impl EquityRegister {
         if shares != self.issued_shares || shares > self.policy.max_issued_shares {
             return Err(EquityError::ShareCountMismatch);
         }
+        let expected_opening =
+            checked_cents_per_share(self.opening_issued_shares, self.policy.cents_per_share)?;
+        if self.opening_issued_shares > self.issued_shares
+            || self.opening_paid_in != expected_opening
+            || (self.revision == 0) != (self.issued_shares == 0)
+            || self.cumulative_capital_returned < Money::ZERO
+            || self.cumulative_liquidation_surplus_distributed < Money::ZERO
+            || self.cumulative_dividends_distributed < Money::ZERO
+            || i128::from(self.cumulative_capital_returned.value())
+                > self
+                    .holders
+                    .as_slice()
+                    .iter()
+                    .map(|holder| i128::from(holder.paid_in.value()))
+                    .sum::<i128>()
+        {
+            return Err(EquityError::ShareCountMismatch);
+        }
         Ok(())
     }
 
@@ -173,17 +467,17 @@ impl EquityRegister {
     pub(crate) fn commit_paid_contribution(
         &mut self,
         contribution: PaidContribution,
-        authorized_by_valid_charter: bool,
-        payment_committed_in_candidate: bool,
+        transfer: CommittedCashTransfer,
     ) -> Result<(), EquityError> {
-        if !authorized_by_valid_charter || !payment_committed_in_candidate {
-            return Err(EquityError::UncommittedContribution);
-        }
         self.validate()?;
         if contribution.receipt_id == 0
             || contribution.party.id == 0
             || contribution.account == 0
             || contribution.shares == 0
+            || transfer.operation_id == 0
+            || transfer.from != contribution.account
+            || transfer.to != self.company
+            || transfer.amount != contribution.amount
         {
             return Err(EquityError::InvalidContribution);
         }
@@ -271,6 +565,23 @@ impl EquityRegister {
     }
 }
 
+impl Record for EquityRegister {
+    fn inactive() -> Self {
+        Self {
+            company: 0,
+            policy: EquityPolicy::initial(0, 1),
+            revision: 0,
+            issued_shares: 0,
+            opening_issued_shares: 0,
+            opening_paid_in: Money::ZERO,
+            cumulative_capital_returned: Money::ZERO,
+            cumulative_liquidation_surplus_distributed: Money::ZERO,
+            cumulative_dividends_distributed: Money::ZERO,
+            holders: FixedRows::new(),
+        }
+    }
+}
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(crate) struct PaidContribution {
     pub party: EquityParty,
@@ -278,6 +589,35 @@ pub(crate) struct PaidContribution {
     pub shares: u64,
     pub amount: Money,
     pub receipt_id: u64,
+}
+
+/// Non-serializable proof minted only by the transaction module after the actual staged cash
+/// transfer succeeds. Private fields prevent callers from asserting the two old booleans.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) struct CommittedCashTransfer {
+    operation_id: u64,
+    from: u32,
+    to: u32,
+    amount: Money,
+}
+
+impl CommittedCashTransfer {
+    pub(crate) fn after_staged_transfer(
+        operation_id: u64,
+        from: u32,
+        to: u32,
+        amount: Money,
+    ) -> Result<Self, EquityError> {
+        if operation_id == 0 || from == 0 || to == 0 || from == to || amount <= Money::ZERO {
+            return Err(EquityError::UncommittedContribution);
+        }
+        Ok(Self {
+            operation_id,
+            from,
+            to,
+            amount,
+        })
+    }
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -430,6 +770,8 @@ mod tests {
     #[test]
     fn persisted_register_roundtrips_and_rejects_oversized_holder_arrays() {
         let mut register = EquityRegister::empty(7, EquityPolicy::initial(1, 100)).unwrap();
+        let proof = CommittedCashTransfer::after_staged_transfer(9, 2, 7, Money::new(300).unwrap())
+            .unwrap();
         register
             .commit_paid_contribution(
                 PaidContribution {
@@ -439,8 +781,7 @@ mod tests {
                     amount: Money::new(300).unwrap(),
                     receipt_id: 9,
                 },
-                true,
-                true,
+                proof,
             )
             .unwrap();
         let encoded = serde_json::to_vec(&register).unwrap();
@@ -468,14 +809,18 @@ mod tests {
             receipt_id: 5,
         };
         assert_eq!(
-            register.commit_paid_contribution(contribution, true, false),
+            CommittedCashTransfer::after_staged_transfer(0, 1, 7, Money::new(200).unwrap()),
             Err(EquityError::UncommittedContribution)
         );
         assert_eq!(register.issued_shares, 0);
         let mut wrong_amount = contribution;
         wrong_amount.amount = Money::new(199).unwrap();
         assert_eq!(
-            register.commit_paid_contribution(wrong_amount, true, true),
+            register.commit_paid_contribution(
+                wrong_amount,
+                CommittedCashTransfer::after_staged_transfer(5, 1, 7, Money::new(199).unwrap())
+                    .unwrap()
+            ),
             Err(EquityError::ContributionAmountMismatch)
         );
         assert_eq!(register.issued_shares, 0);
@@ -491,8 +836,10 @@ mod tests {
             amount: Money::new(200).unwrap(),
             receipt_id: 1,
         };
+        let proof = CommittedCashTransfer::after_staged_transfer(1, 1, 7, Money::new(200).unwrap())
+            .unwrap();
         register
-            .commit_paid_contribution(contribution, true, true)
+            .commit_paid_contribution(contribution, proof)
             .unwrap();
         let mut changed_account = contribution;
         changed_account.account = 2;
@@ -500,7 +847,11 @@ mod tests {
         changed_account.amount = Money::new(100).unwrap();
         changed_account.receipt_id = 2;
         assert_eq!(
-            register.commit_paid_contribution(changed_account, true, true),
+            register.commit_paid_contribution(
+                changed_account,
+                CommittedCashTransfer::after_staged_transfer(2, 2, 7, Money::new(100).unwrap())
+                    .unwrap()
+            ),
             Err(EquityError::AccountBindingChanged)
         );
         let mut over_cap = contribution;
@@ -510,7 +861,11 @@ mod tests {
         over_cap.amount = Money::new(300).unwrap();
         over_cap.receipt_id = 3;
         assert_eq!(
-            register.commit_paid_contribution(over_cap, true, true),
+            register.commit_paid_contribution(
+                over_cap,
+                CommittedCashTransfer::after_staged_transfer(3, 2, 7, Money::new(300).unwrap())
+                    .unwrap()
+            ),
             Err(EquityError::IssueCapExceeded)
         );
     }
