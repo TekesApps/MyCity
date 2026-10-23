@@ -6,6 +6,10 @@
 
 T13-A的当前构造边界见[固定词法容量阶段](evidence/m0-t13a-fixed-lexical/STATUS.md)：Store实际消费core双root／prepare、空间及Meta工作区；v1／genesis／v2收据正文使用Meta保留1MiB bit栈和借用span，区分忽略与Content校验。固定解析不等于整个冷开零分配；当前broker仍只授予既有IO／worker包，完整角色控制暂态及其授权仍在[NEXT](evidence/m0-t13a-fixed-lexical/NEXT.md)，不能据组件构造证明normal64或共享诊断预算已通过。
 
+## EXEC-1执行登记入口
+
+[模型—任务—执行方清单](model-task-execution-register.md)按v0.5.144已提交源码区分14类逻辑模型、显式动作、已接Timeline的周期／到期源、Sim内任务及单空气worker，补充激活／休眠、分级请求、兼容组合与共同预算接口。通用多模型池和资源／策略协商仍待实现；模型数不等于进程数。本补充仅文档，不迁移业务代码或修改冻结验收。
+
 ## 1. 一句话结构与当前部署
 
 一个权威模拟核心拥有城市状态与排程，通过一个持久化提交口修改世界；工具、未来App、Agent和渲染通过命令／只读投影使用它，计算worker只产生可拒绝、可重算的候选。

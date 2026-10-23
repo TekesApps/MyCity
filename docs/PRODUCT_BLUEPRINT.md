@@ -62,6 +62,8 @@ M0验证核心数据／钟／账／保存及真实16GB；0.1文本市长交通�
 
 ## 7. 进程与GPU部署补充（A55）
 
+[EXEC-1执行清单](model-task-execution-register.md)作为软件架构的激活／周期／任务／执行方及策略资源接口登记，覆盖14类逻辑模型并区分当前有限实现和候选路径；不等于14个worker或通用协商已实现。
+
 [进程、worker与GPU渲染架构](process-worker-and-render-architecture.md)区分App交互监督、Sim权威调度、纯计算worker和GPU Owner；首个图形原型候选为App专用渲染线程，独立Render Host需单独验证跨进程呈现／共享与总预算。替代将“同一进程CPU/GPU”当作所有模块必须共进程的部署前提，仍使用同一台16GB机器的联合预算。此为文档决策；进程池、图形和T05-B当前都不能据此签收。
 
 
