@@ -1,0 +1,287 @@
+{
+  "L1": "absent",
+  "all_daily_budgets_met": true,
+  "business_targets_complete_seconds": 188.313779083,
+  "cold_proof_and_shutdown_seconds": 0.580887667,
+  "cold_ready_seconds": 0.178245084,
+  "common_8MiB": "not_accepted",
+  "completed_hours": 720,
+  "days": [
+    {
+      "adjacent_business_completion_seconds": 7.086369208,
+      "budget_met": true,
+      "business_durable_seconds": 7.086369208,
+      "day": 1,
+      "fixed_period_start_seconds": null,
+      "fixed_period_to_business_seconds": null
+    },
+    {
+      "adjacent_business_completion_seconds": 6.382583917,
+      "budget_met": true,
+      "business_durable_seconds": 13.468953125,
+      "day": 2,
+      "fixed_period_start_seconds": null,
+      "fixed_period_to_business_seconds": null
+    },
+    {
+      "adjacent_business_completion_seconds": 5.6679917920000005,
+      "budget_met": true,
+      "business_durable_seconds": 19.136944917,
+      "day": 3,
+      "fixed_period_start_seconds": null,
+      "fixed_period_to_business_seconds": null
+    },
+    {
+      "adjacent_business_completion_seconds": 6.03558675,
+      "budget_met": true,
+      "business_durable_seconds": 25.172531667,
+      "day": 4,
+      "fixed_period_start_seconds": null,
+      "fixed_period_to_business_seconds": null
+    },
+    {
+      "adjacent_business_completion_seconds": 6.00197525,
+      "budget_met": true,
+      "business_durable_seconds": 31.174506917,
+      "day": 5,
+      "fixed_period_start_seconds": null,
+      "fixed_period_to_business_seconds": null
+    },
+    {
+      "adjacent_business_completion_seconds": 6.20829075,
+      "budget_met": true,
+      "business_durable_seconds": 37.382797667,
+      "day": 6,
+      "fixed_period_start_seconds": null,
+      "fixed_period_to_business_seconds": null
+    },
+    {
+      "adjacent_business_completion_seconds": 6.016004458,
+      "budget_met": true,
+      "business_durable_seconds": 43.398802125,
+      "day": 7,
+      "fixed_period_start_seconds": null,
+      "fixed_period_to_business_seconds": null
+    },
+    {
+      "adjacent_business_completion_seconds": 5.80767,
+      "budget_met": true,
+      "business_durable_seconds": 49.206472125,
+      "day": 8,
+      "fixed_period_start_seconds": null,
+      "fixed_period_to_business_seconds": null
+    },
+    {
+      "adjacent_business_completion_seconds": 5.898365375,
+      "budget_met": true,
+      "business_durable_seconds": 55.1048375,
+      "day": 9,
+      "fixed_period_start_seconds": null,
+      "fixed_period_to_business_seconds": null
+    },
+    {
+      "adjacent_business_completion_seconds": 6.108875792,
+      "budget_met": true,
+      "business_durable_seconds": 61.213713292,
+      "day": 10,
+      "fixed_period_start_seconds": null,
+      "fixed_period_to_business_seconds": null
+    },
+    {
+      "adjacent_business_completion_seconds": 6.462280666,
+      "budget_met": true,
+      "business_durable_seconds": 67.675993958,
+      "day": 11,
+      "fixed_period_start_seconds": null,
+      "fixed_period_to_business_seconds": null
+    },
+    {
+      "adjacent_business_completion_seconds": 6.029364959,
+      "budget_met": true,
+      "business_durable_seconds": 73.705358917,
+      "day": 12,
+      "fixed_period_start_seconds": null,
+      "fixed_period_to_business_seconds": null
+    },
+    {
+      "adjacent_business_completion_seconds": 5.95620025,
+      "budget_met": true,
+      "business_durable_seconds": 79.661559167,
+      "day": 13,
+      "fixed_period_start_seconds": null,
+      "fixed_period_to_business_seconds": null
+    },
+    {
+      "adjacent_business_completion_seconds": 6.367126041,
+      "budget_met": true,
+      "business_durable_seconds": 86.028685208,
+      "day": 14,
+      "fixed_period_start_seconds": null,
+      "fixed_period_to_business_seconds": null
+    },
+    {
+      "adjacent_business_completion_seconds": 6.125598292,
+      "budget_met": true,
+      "business_durable_seconds": 92.1542835,
+      "day": 15,
+      "fixed_period_start_seconds": null,
+      "fixed_period_to_business_seconds": null
+    },
+    {
+      "adjacent_business_completion_seconds": 6.368629042,
+      "budget_met": true,
+      "business_durable_seconds": 98.522912542,
+      "day": 16,
+      "fixed_period_start_seconds": null,
+      "fixed_period_to_business_seconds": null
+    },
+    {
+      "adjacent_business_completion_seconds": 6.382081833,
+      "budget_met": true,
+      "business_durable_seconds": 104.904994375,
+      "day": 17,
+      "fixed_period_start_seconds": null,
+      "fixed_period_to_business_seconds": null
+    },
+    {
+      "adjacent_business_completion_seconds": 5.797130458,
+      "budget_met": true,
+      "business_durable_seconds": 110.702124833,
+      "day": 18,
+      "fixed_period_start_seconds": null,
+      "fixed_period_to_business_seconds": null
+    },
+    {
+      "adjacent_business_completion_seconds": 5.671472792,
+      "budget_met": true,
+      "business_durable_seconds": 116.373597625,
+      "day": 19,
+      "fixed_period_start_seconds": null,
+      "fixed_period_to_business_seconds": null
+    },
+    {
+      "adjacent_business_completion_seconds": 5.65533525,
+      "budget_met": true,
+      "business_durable_seconds": 122.028932875,
+      "day": 20,
+      "fixed_period_start_seconds": null,
+      "fixed_period_to_business_seconds": null
+    },
+    {
+      "adjacent_business_completion_seconds": 5.877888042,
+      "budget_met": true,
+      "business_durable_seconds": 127.906820917,
+      "day": 21,
+      "fixed_period_start_seconds": null,
+      "fixed_period_to_business_seconds": null
+    },
+    {
+      "adjacent_business_completion_seconds": 6.243535166,
+      "budget_met": true,
+      "business_durable_seconds": 134.150356083,
+      "day": 22,
+      "fixed_period_start_seconds": null,
+      "fixed_period_to_business_seconds": null
+    },
+    {
+      "adjacent_business_completion_seconds": 7.629259875,
+      "budget_met": true,
+      "business_durable_seconds": 141.779615958,
+      "day": 23,
+      "fixed_period_start_seconds": null,
+      "fixed_period_to_business_seconds": null
+    },
+    {
+      "adjacent_business_completion_seconds": 9.138508709,
+      "budget_met": true,
+      "business_durable_seconds": 150.918124667,
+      "day": 24,
+      "fixed_period_start_seconds": null,
+      "fixed_period_to_business_seconds": null
+    },
+    {
+      "adjacent_business_completion_seconds": 6.729950416,
+      "budget_met": true,
+      "business_durable_seconds": 157.648075083,
+      "day": 25,
+      "fixed_period_start_seconds": null,
+      "fixed_period_to_business_seconds": null
+    },
+    {
+      "adjacent_business_completion_seconds": 6.336639917,
+      "budget_met": true,
+      "business_durable_seconds": 163.984715,
+      "day": 26,
+      "fixed_period_start_seconds": null,
+      "fixed_period_to_business_seconds": null
+    },
+    {
+      "adjacent_business_completion_seconds": 6.100305708,
+      "budget_met": true,
+      "business_durable_seconds": 170.085020708,
+      "day": 27,
+      "fixed_period_start_seconds": null,
+      "fixed_period_to_business_seconds": null
+    },
+    {
+      "adjacent_business_completion_seconds": 6.084945875,
+      "budget_met": true,
+      "business_durable_seconds": 176.169966583,
+      "day": 28,
+      "fixed_period_start_seconds": null,
+      "fixed_period_to_business_seconds": null
+    },
+    {
+      "adjacent_business_completion_seconds": 6.021783459,
+      "budget_met": true,
+      "business_durable_seconds": 182.191750042,
+      "day": 29,
+      "fixed_period_start_seconds": null,
+      "fixed_period_to_business_seconds": null
+    },
+    {
+      "adjacent_business_completion_seconds": 6.122006125,
+      "budget_met": true,
+      "business_durable_seconds": 188.313756167,
+      "day": 30,
+      "fixed_period_start_seconds": null,
+      "fixed_period_to_business_seconds": null
+    }
+  ],
+  "eight_hour": "not_run",
+  "entire_engine_including_metadata": "equal_independent_normal_reference",
+  "evaluation_day_budget_seconds": 60.0,
+  "exact_normal_owned": "not_accepted",
+  "final_checkpoint_completed_seconds": 188.402428667,
+  "final_checkpoint_request_id": 6039,
+  "final_checkpoint_submitted_seconds": 188.313779083,
+  "final_day_with_checkpoint_seconds": 6.210691291,
+  "full_M0": "not_accepted",
+  "full_profile_60_actual_operating_target": "not_evaluated_other_tier_or_rate",
+  "full_profile_unpaced_target": "passed_this_run",
+  "image_sha256": "375065b04ead72b347babf37e1e212455170737057c245d96fe710212f34034c",
+  "legacy_session_speed": "not_retested",
+  "mandatory_pe0_gate": "not_evaluated_other_profile",
+  "maximum_query_completion_lateness_seconds": 0.243067417,
+  "maximum_save_completion_lateness_seconds": 0.0,
+  "next_unpublished_query_deadline_seconds": 190.0,
+  "next_unpublished_save_deadline_seconds": 300.0,
+  "operating_wall_seconds": 188.402441333,
+  "periodic_queries_completed": 18,
+  "periodic_saves_completed": 0,
+  "profile": "L2_full_actual",
+  "publication_end_seconds": 188.402428667,
+  "rate": "unpaced",
+  "real_16GB": "not_run",
+  "reference_wall_seconds": 38.274677833,
+  "schema": "mycity-speed-driver-v1",
+  "sim_ready_seconds": 0.069004875,
+  "source_sha256": "d3d463d45db7cb589a68c7d22ac7781debea6c75bad6d1225df5cb19c6aec17e",
+  "speed_target_met": true,
+  "target_day_wall_seconds": null,
+  "tier": "full",
+  "verified_targets": 723,
+  "whole_30day_budget_met": true,
+  "whole_driver_wall_seconds": 227.258007042,
+  "worker_windows": 724
+}

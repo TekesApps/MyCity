@@ -1,0 +1,3 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/canonical-integer-current/crates/city-core)
+    Finished `release` profile [optimized] target(s) in 25.37s
+     Running unittests src/lib.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_core-363f7122bd90a840)

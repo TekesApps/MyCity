@@ -1,0 +1,11 @@
+{
+  "old_source": "d3d463d45db7cb589a68c7d22ac7781debea6c75bad6d1225df5cb19c6aec17e",
+  "integrated_source": "a6290a562362b7ea21379726f901a61cf54d32e8d9fe2059bccf3fe44449d3d8",
+  "changed_existing_crate_files": [],
+  "added_crate_files": [
+    "crates/city-core/examples/town_employment.rs"
+  ],
+  "all_existing_crate_bytes_equal": true,
+  "not_same_complete_source": true,
+  "identity_correction_receipt": "integer-source-identity-correction.json"
+}

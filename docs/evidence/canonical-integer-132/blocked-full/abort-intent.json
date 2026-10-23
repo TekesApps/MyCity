@@ -1,0 +1,10 @@
+{
+  "reason": "repeated observed external compilation prevents admission; retire own prelaunch wait to resume model validation, not a measured model failure",
+  "model_started": false,
+  "own_parent_identity": "22552 80467 Fri Oct 23 07:11:02 2026     /Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python run_profile.py",
+  "own_readiness_identity": "22566 22552 Fri Oct 23 07:11:02 2026     /Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python /Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-joint-smoke-control-03/readiness.py /Volumes/HP P900/dev/MyCity/work/int-full-01",
+  "observed_external_compile_samples": 46,
+  "last_elapsed_seconds": 449.8884635,
+  "signal": "SIGTERM only own exact readiness helper; external processes untouched",
+  "time_unix": 1792711114.695838
+}

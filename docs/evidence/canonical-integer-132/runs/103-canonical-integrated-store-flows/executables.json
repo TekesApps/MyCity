@@ -1,0 +1,22 @@
+[
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/construction_utilities-688ad21356dacdfa",
+    "sha256": "f7f6ba265efe053161bad57032b7a6080f80bba38c65d5f2cb88479f76b05f2f",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/executables/f7f6ba265efe053161bad57032b7a6080f80bba38c65d5f2cb88479f76b05f2f/construction_utilities-688ad21356dacdfa"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/town_market-d170e674585cdafe",
+    "sha256": "8eb3c2abd39e2cb1839346213217fcbc03d91033773fa7684a88c8f6027c198d",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/executables/8eb3c2abd39e2cb1839346213217fcbc03d91033773fa7684a88c8f6027c198d/town_market-d170e674585cdafe"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/town_suspend-462b6ca6c65bb584",
+    "sha256": "d9f68f0d95be640f5399520898efbeac96934cfa3886d1225ffdee85d09cee8e",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/executables/d9f68f0d95be640f5399520898efbeac96934cfa3886d1225ffdee85d09cee8e/town_suspend-462b6ca6c65bb584"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/town_utility_recovery-5d7b4b4b24517c0a",
+    "sha256": "84cb10ed2684d208f65804fcb64c604160dfb4b870d54e0ab1073119682128b8",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/executables/84cb10ed2684d208f65804fcb64c604160dfb4b870d54e0ab1073119682128b8/town_utility_recovery-5d7b4b4b24517c0a"
+  }
+]

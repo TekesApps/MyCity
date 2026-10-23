@@ -1,0 +1,71 @@
+{
+  "timestamp_unix": 1792713594.563735,
+  "scope": "v132 terminal fixed input source ZIP duplication only",
+  "rows": [
+    {
+      "round": "107-canonical-integrated-examples",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/107-canonical-integrated-examples/source.zip",
+      "operation": "replace duplicate with hard link; complete bytes and original path preserved",
+      "reason": "terminal validation, identical immutable source archive, lsof found no handles",
+      "evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/107-canonical-integrated-examples/exit.json",
+      "sha256": "f083a1fe9521f390c16d4665c61ca4f6b2c5461cdf92d7dea52d5ff238391094",
+      "prior_allocated_bytes": 4243456
+    },
+    {
+      "round": "108-canonical-integrated-clis",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/108-canonical-integrated-clis/source.zip",
+      "operation": "replace duplicate with hard link; complete bytes and original path preserved",
+      "reason": "terminal validation, identical immutable source archive, lsof found no handles",
+      "evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/108-canonical-integrated-clis/exit.json",
+      "sha256": "f083a1fe9521f390c16d4665c61ca4f6b2c5461cdf92d7dea52d5ff238391094",
+      "prior_allocated_bytes": 4243456
+    },
+    {
+      "round": "109-canonical-integrated-headless",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/109-canonical-integrated-headless/source.zip",
+      "operation": "replace duplicate with hard link; complete bytes and original path preserved",
+      "reason": "terminal validation, identical immutable source archive, lsof found no handles",
+      "evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/109-canonical-integrated-headless/exit.json",
+      "sha256": "f083a1fe9521f390c16d4665c61ca4f6b2c5461cdf92d7dea52d5ff238391094",
+      "prior_allocated_bytes": 4243456
+    },
+    {
+      "round": "110-canonical-integrated-format",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/110-canonical-integrated-format/source.zip",
+      "operation": "replace duplicate with hard link; complete bytes and original path preserved",
+      "reason": "terminal validation, identical immutable source archive, lsof found no handles",
+      "evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/110-canonical-integrated-format/exit.json",
+      "sha256": "f083a1fe9521f390c16d4665c61ca4f6b2c5461cdf92d7dea52d5ff238391094",
+      "prior_allocated_bytes": 4243456
+    },
+    {
+      "round": "111-canonical-integrated-baseline",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/111-canonical-integrated-baseline/source.zip",
+      "operation": "replace duplicate with hard link; complete bytes and original path preserved",
+      "reason": "terminal validation, identical immutable source archive, lsof found no handles",
+      "evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/111-canonical-integrated-baseline/exit.json",
+      "sha256": "f083a1fe9521f390c16d4665c61ca4f6b2c5461cdf92d7dea52d5ff238391094",
+      "prior_allocated_bytes": 4243456
+    },
+    {
+      "round": "112-canonical-integrated-baseline-corrected",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/112-canonical-integrated-baseline-corrected/source.zip",
+      "operation": "replace duplicate with hard link; complete bytes and original path preserved",
+      "reason": "terminal validation, identical immutable source archive, lsof found no handles",
+      "evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/112-canonical-integrated-baseline-corrected/exit.json",
+      "sha256": "f083a1fe9521f390c16d4665c61ca4f6b2c5461cdf92d7dea52d5ff238391094",
+      "prior_allocated_bytes": 4243456
+    }
+  ],
+  "anchor": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/106-canonical-integrated-strict-inputs/source.zip",
+  "file_allocation_before_bytes": 29704192,
+  "file_allocation_after_unique_bytes": 4243456,
+  "file_allocation_reduction_bytes": 25460736,
+  "observed_ssd_available_delta_bytes": 25395200,
+  "APFS_exclusive_reclaim_claimed": false,
+  "full_restore_originals_deleted": false,
+  "source_dependencies_executables_logs_retained": true,
+  "shared_target": "reused unchanged, no new target/cache created",
+  "protected_190_originals": "untouched",
+  "model_or_formal_measurement_active": false
+}

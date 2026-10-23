@@ -1,0 +1,4 @@
+    Checking mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/canonical-integer-current/crates/city-storage)
+    Checking mycity-map v0.1.0 (/Users/frankqin/dev/MyCity-core-work/canonical-integer-current/crates/city-map)
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/canonical-integer-current/crates/city-core)
+    Finished `release` profile [optimized] target(s) in 1.80s

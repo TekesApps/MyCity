@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/run-integrated-baseline.py", line 7, in <module>
+    a=json.loads(p.stdout);assert a['source_sha256']==m['source_sha256']
+AssertionError

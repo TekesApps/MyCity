@@ -1,0 +1,9 @@
+{
+  "initial_incorrect_source_sha256": "b2ca0114363b7c6713b3e3388634d7c3a1f268de27a460a43fedde95fb2e12d5",
+  "correct_source_sha256": "a6290a562362b7ea21379726f901a61cf54d32e8d9fe2059bccf3fe44449d3d8",
+  "reason": "Pathlib component ordering differs from build.rs string ordering; source bytes, ZIP and executable unchanged",
+  "source_files": 264,
+  "verified_against": "111 actual headless embedded source metadata",
+  "failed_verification": "111 exit1 preserved",
+  "performance_credit": "none"
+}

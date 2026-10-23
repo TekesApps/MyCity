@@ -1,0 +1,27 @@
+{
+  "source_sha256": "a6290a562362b7ea21379726f901a61cf54d32e8d9fe2059bccf3fe44449d3d8",
+  "source_files": 264,
+  "fixed_input_files": 276,
+  "source_zip": "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/107-canonical-integrated-examples/source.zip",
+  "source_zip_sha256": "f083a1fe9521f390c16d4665c61ca4f6b2c5461cdf92d7dea52d5ff238391094",
+  "source_hash_scope": "headless build.rs source inputs; docs are additional fixed inputs",
+  "storage": "external HP P900 USB/APFS SSD",
+  "binaries": [
+    {
+      "name": "town_employment",
+      "binary": "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/107-canonical-integrated-examples/executables/cc6238902889348c908993b61ebd61946025a3be83cc9037115d731978973b9e/town_employment",
+      "binary_sha256": "cc6238902889348c908993b61ebd61946025a3be83cc9037115d731978973b9e"
+    },
+    {
+      "name": "town_lifelines",
+      "binary": "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/107-canonical-integrated-examples/executables/798b6456d037645bcc41dbdde5d1c6405e44b7494cec7396071c79aaf90e9c55/town_lifelines",
+      "binary_sha256": "798b6456d037645bcc41dbdde5d1c6405e44b7494cec7396071c79aaf90e9c55"
+    },
+    {
+      "name": "canonical_integer_probe",
+      "binary": "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/107-canonical-integrated-examples/executables/e02a0613dac86168b2e1c9186b4054debb7f0c747eae4be40a7a1be6b4f4ea96/canonical_integer_probe",
+      "binary_sha256": "e02a0613dac86168b2e1c9186b4054debb7f0c747eae4be40a7a1be6b4f4ea96"
+    }
+  ],
+  "source_identity_correction": "Initial record iterated pathlib path-part order; corrected to build.rs UTF-8 path string sort. Fixed files/ZIP and binary bytes unchanged."
+}

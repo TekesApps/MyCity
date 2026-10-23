@@ -1,0 +1,12 @@
+[
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_headless-bd191120ee0d5aca",
+    "sha256": "3025fd5ad5274241afa4d52d2854d9380bdd5663fbfc2a590d5865e76cd312c1",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/executables/3025fd5ad5274241afa4d52d2854d9380bdd5663fbfc2a590d5865e76cd312c1/mycity_headless-bd191120ee0d5aca"
+  },
+  {
+    "built_path": "/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_storage-f5979fb2759bf06a",
+    "sha256": "f80e44bf3126978cc6a57ac6ee62e30ecf8b9f864567e5c38b43c16b151e1a53",
+    "preserved": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/executables/f80e44bf3126978cc6a57ac6ee62e30ecf8b9f864567e5c38b43c16b151e1a53/mycity_storage-f5979fb2759bf06a"
+  }
+]

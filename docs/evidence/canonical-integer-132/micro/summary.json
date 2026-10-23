@@ -1,0 +1,168 @@
+{
+  "scope": "isolated real Engine microdiagnostic, not M0 or clean formal performance acceptance",
+  "records": {
+    "baseline": {
+      "binary": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/84-canonical-integer-baseline-bin/executables/83563e5f5eb26fcea4cbdb294dba5ca8d55eee5001ba2122546aa9790f441d3d/canonical_integer_probe",
+      "binary_sha256": "83563e5f5eb26fcea4cbdb294dba5ca8d55eee5001ba2122546aa9790f441d3d",
+      "source_sha256": "1dd02682e44fc44f8dccad11cb340b9820ae729f1d4f553ed250b4f8394a3d2c",
+      "source_files": 263,
+      "source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/84-canonical-integer-baseline-bin/source.zip",
+      "source_zip_sha256": "44c45a3c2ceb1585077251c2894a9eafaa5c0a3105f379b70a77e0e21b01d8f3",
+      "scope": "original production canonical, v129 core plus benchmark example; no integer optimization yet",
+      "storage": "HP P900 external USB/APFS SSD"
+    },
+    "candidate": {
+      "binary": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/87-canonical-integer-candidate-bin/executables/5aa20f8f075019ec61ab19a12bf91f02a01454df31de89487799c9ea50e35d42/canonical_integer_probe",
+      "binary_sha256": "5aa20f8f075019ec61ab19a12bf91f02a01454df31de89487799c9ea50e35d42",
+      "source_sha256": "d3d463d45db7cb589a68c7d22ac7781debea6c75bad6d1225df5cb19c6aec17e",
+      "source_files": 263,
+      "source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/87-canonical-integer-candidate-bin/source.zip",
+      "source_zip_sha256": "bc8430e3600ca3c01e01dc0d49d549666721701c88662235e8947910fbcbe24d",
+      "scope": "restricted <=18 digit integer fastpath; candidate not merged",
+      "storage": "HP P900 external USB/APFS SSD"
+    }
+  },
+  "ordering": "ABBAAB, each process one warmup and seven measured whole canonical hashes",
+  "runs": [
+    {
+      "index": 0,
+      "kind": "baseline",
+      "argv": [
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/84-canonical-integer-baseline-bin/executables/83563e5f5eb26fcea4cbdb294dba5ca8d55eee5001ba2122546aa9790f441d3d/canonical_integer_probe",
+        "/Volumes/HP P900/dev/MyCity/work/timing-full-v128-02/observed/model/business/reference/cpu-final-engine.json"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 1.075325375,
+      "median_ns": 37686541,
+      "round_ns": [
+        37603167,
+        37572459,
+        38437250,
+        38517375,
+        37255667,
+        37686541,
+        38425458
+      ],
+      "compiler_before": [],
+      "compiler_after": []
+    },
+    {
+      "index": 1,
+      "kind": "candidate",
+      "argv": [
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/87-canonical-integer-candidate-bin/executables/5aa20f8f075019ec61ab19a12bf91f02a01454df31de89487799c9ea50e35d42/canonical_integer_probe",
+        "/Volumes/HP P900/dev/MyCity/work/timing-full-v128-02/observed/model/business/reference/cpu-final-engine.json"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 2.0543320830000003,
+      "median_ns": 36433083,
+      "round_ns": [
+        35756583,
+        36523875,
+        36433083,
+        35531291,
+        36606167,
+        35979000,
+        37227542
+      ],
+      "compiler_before": [],
+      "compiler_after": []
+    },
+    {
+      "index": 2,
+      "kind": "candidate",
+      "argv": [
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/87-canonical-integer-candidate-bin/executables/5aa20f8f075019ec61ab19a12bf91f02a01454df31de89487799c9ea50e35d42/canonical_integer_probe",
+        "/Volumes/HP P900/dev/MyCity/work/timing-full-v128-02/observed/model/business/reference/cpu-final-engine.json"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 1.0502060410000005,
+      "median_ns": 36565875,
+      "round_ns": [
+        35499958,
+        36065834,
+        36633375,
+        36565875,
+        36370000,
+        36666916,
+        36963084
+      ],
+      "compiler_before": [],
+      "compiler_after": []
+    },
+    {
+      "index": 3,
+      "kind": "baseline",
+      "argv": [
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/84-canonical-integer-baseline-bin/executables/83563e5f5eb26fcea4cbdb294dba5ca8d55eee5001ba2122546aa9790f441d3d/canonical_integer_probe",
+        "/Volumes/HP P900/dev/MyCity/work/timing-full-v128-02/observed/model/business/reference/cpu-final-engine.json"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 1.0623605830000002,
+      "median_ns": 37727667,
+      "round_ns": [
+        37941250,
+        37469917,
+        36981459,
+        37346542,
+        37843250,
+        37727667,
+        38300125
+      ],
+      "compiler_before": [],
+      "compiler_after": []
+    },
+    {
+      "index": 4,
+      "kind": "baseline",
+      "argv": [
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/84-canonical-integer-baseline-bin/executables/83563e5f5eb26fcea4cbdb294dba5ca8d55eee5001ba2122546aa9790f441d3d/canonical_integer_probe",
+        "/Volumes/HP P900/dev/MyCity/work/timing-full-v128-02/observed/model/business/reference/cpu-final-engine.json"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 1.0791193339999996,
+      "median_ns": 39039375,
+      "round_ns": [
+        39217333,
+        38909041,
+        39656375,
+        39485208,
+        39039375,
+        38525250,
+        38468250
+      ],
+      "compiler_before": [],
+      "compiler_after": []
+    },
+    {
+      "index": 5,
+      "kind": "candidate",
+      "argv": [
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/87-canonical-integer-candidate-bin/executables/5aa20f8f075019ec61ab19a12bf91f02a01454df31de89487799c9ea50e35d42/canonical_integer_probe",
+        "/Volumes/HP P900/dev/MyCity/work/timing-full-v128-02/observed/model/business/reference/cpu-final-engine.json"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 1.0526498749999993,
+      "median_ns": 36301291,
+      "round_ns": [
+        36569959,
+        36734167,
+        36921667,
+        35847709,
+        36301291,
+        36238750,
+        36097708
+      ],
+      "compiler_before": [],
+      "compiler_after": []
+    }
+  ],
+  "all_hashes_match": true,
+  "median_ns": {
+    "baseline": 38300125,
+    "candidate": 36433083
+  },
+  "median_reduction_fraction": 0.04874767380002021,
+  "activity_limits": "compiler snapshots before and after each process only, not continuous workload measurement",
+  "storage": "32GiB M4; HP P900 USB/APFS external SSD; real16GB not_run"
+}

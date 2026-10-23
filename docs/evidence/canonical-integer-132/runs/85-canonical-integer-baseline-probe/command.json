@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/84-canonical-integer-baseline-bin/executables/83563e5f5eb26fcea4cbdb294dba5ca8d55eee5001ba2122546aa9790f441d3d/canonical_integer_probe",
+    "/Volumes/HP P900/dev/MyCity/work/timing-full-v128-02/observed/model/business/reference/cpu-final-engine.json"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/canonical-integer-current",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-22T22:57:43.663194+00:00",
+  "source_manifest_sha256": "1ac7fbf6af81e25c56e0cd1be18697fb81ac6b6332639a2a213a3bbc1d4a095f"
+}

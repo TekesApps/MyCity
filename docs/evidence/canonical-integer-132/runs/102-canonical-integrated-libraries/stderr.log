@@ -1,0 +1,6 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity-core-work/canonical-integer-current/crates/city-headless)
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/canonical-integer-current/crates/city-core)
+    Finished `release` profile [optimized] target(s) in 30.74s
+     Running unittests src/lib.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_core-3e1c4965578400af)
+     Running unittests src/lib.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_headless-bd191120ee0d5aca)
+     Running unittests src/lib.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_storage-f5979fb2759bf06a)

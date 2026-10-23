@@ -1,0 +1,8 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/canonical-integer-current/crates/city-core)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity-core-work/canonical-integer-current/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/canonical-integer-current/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 54.72s
+     Running tests/construction_utilities.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/construction_utilities-688ad21356dacdfa)
+     Running tests/town_market.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/town_market-d170e674585cdafe)
+     Running tests/town_suspend.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/town_suspend-462b6ca6c65bb584)
+     Running tests/town_utility_recovery.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/town_utility_recovery-5d7b4b4b24517c0a)

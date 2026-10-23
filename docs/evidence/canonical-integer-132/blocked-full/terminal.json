@@ -1,0 +1,1808 @@
+{
+  "admission": {
+    "activity_in_final_120_seconds": [
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 26844,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:17:12 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28173,
+            "ppid": 26844,
+            "start_identity": "Fri Oct 23 07:17:15 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28174,
+            "ppid": 26844,
+            "start_identity": "Fri Oct 23 07:17:15 2026"
+          }
+        ],
+        "elapsed_seconds": 373.221084916,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 26844,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:17:12 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28186,
+            "ppid": 26844,
+            "start_identity": "Fri Oct 23 07:17:17 2026"
+          }
+        ],
+        "elapsed_seconds": 378.267385708,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 28269,
+            "ppid": 28233,
+            "start_identity": "Fri Oct 23 07:17:24 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28287,
+            "ppid": 28269,
+            "start_identity": "Fri Oct 23 07:17:25 2026"
+          }
+        ],
+        "elapsed_seconds": 383.30350625,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 28269,
+            "ppid": 28233,
+            "start_identity": "Fri Oct 23 07:17:24 2026"
+          }
+        ],
+        "elapsed_seconds": 388.348153083,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 28355,
+            "ppid": 28233,
+            "start_identity": "Fri Oct 23 07:17:31 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28390,
+            "ppid": 28355,
+            "start_identity": "Fri Oct 23 07:17:35 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28391,
+            "ppid": 28355,
+            "start_identity": "Fri Oct 23 07:17:36 2026"
+          }
+        ],
+        "elapsed_seconds": 393.383251708,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 28355,
+            "ppid": 28233,
+            "start_identity": "Fri Oct 23 07:17:31 2026"
+          }
+        ],
+        "elapsed_seconds": 398.429531375,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 28513,
+            "ppid": 28233,
+            "start_identity": "Fri Oct 23 07:17:42 2026"
+          }
+        ],
+        "elapsed_seconds": 403.460122625,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 28539,
+            "ppid": 28233,
+            "start_identity": "Fri Oct 23 07:17:47 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28597,
+            "ppid": 28539,
+            "start_identity": "Fri Oct 23 07:17:49 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28599,
+            "ppid": 28539,
+            "start_identity": "Fri Oct 23 07:17:50 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28600,
+            "ppid": 28539,
+            "start_identity": "Fri Oct 23 07:17:50 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28601,
+            "ppid": 28539,
+            "start_identity": "Fri Oct 23 07:17:50 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28602,
+            "ppid": 28539,
+            "start_identity": "Fri Oct 23 07:17:50 2026"
+          }
+        ],
+        "elapsed_seconds": 408.51011816600004,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 28658,
+            "ppid": 28233,
+            "start_identity": "Fri Oct 23 07:17:53 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28697,
+            "ppid": 28658,
+            "start_identity": "Fri Oct 23 07:17:56 2026"
+          }
+        ],
+        "elapsed_seconds": 413.54609245800003,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 28733,
+            "ppid": 28233,
+            "start_identity": "Fri Oct 23 07:17:59 2026"
+          }
+        ],
+        "elapsed_seconds": 418.577367041,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 28764,
+            "ppid": 28761,
+            "start_identity": "Fri Oct 23 07:18:03 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/clippy-driver",
+            "pid": 28852,
+            "ppid": 28764,
+            "start_identity": "Fri Oct 23 07:18:06 2026"
+          }
+        ],
+        "elapsed_seconds": 423.614141125,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 28920,
+            "ppid": 28919,
+            "start_identity": "Fri Oct 23 07:18:10 2026"
+          }
+        ],
+        "elapsed_seconds": 428.656458583,
+        "heavy_mycity": []
+      }
+    ],
+    "activity_observed": [
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 22995,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:12:30 2026"
+          }
+        ],
+        "elapsed_seconds": 90.971500541,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 22995,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:12:30 2026"
+          }
+        ],
+        "elapsed_seconds": 96.008199208,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 22995,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:12:30 2026"
+          }
+        ],
+        "elapsed_seconds": 101.04112720799999,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 22995,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:12:30 2026"
+          }
+        ],
+        "elapsed_seconds": 106.074484375,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 22995,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:12:30 2026"
+          }
+        ],
+        "elapsed_seconds": 111.110028458,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 22995,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:12:30 2026"
+          }
+        ],
+        "elapsed_seconds": 116.13724512499999,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 22995,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:12:30 2026"
+          }
+        ],
+        "elapsed_seconds": 121.172805458,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 22995,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:12:30 2026"
+          }
+        ],
+        "elapsed_seconds": 126.20969808299999,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 22995,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:12:30 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 23191,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:13:08 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 23230,
+            "ppid": 23191,
+            "start_identity": "Fri Oct 23 07:13:12 2026"
+          }
+        ],
+        "elapsed_seconds": 131.24656183300002,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 24728,
+            "ppid": 23265,
+            "start_identity": "Fri Oct 23 07:13:18 2026"
+          }
+        ],
+        "elapsed_seconds": 136.3025605,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 24728,
+            "ppid": 23265,
+            "start_identity": "Fri Oct 23 07:13:18 2026"
+          }
+        ],
+        "elapsed_seconds": 141.35915875,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 24803,
+            "ppid": 23265,
+            "start_identity": "Fri Oct 23 07:13:26 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 24821,
+            "ppid": 24803,
+            "start_identity": "Fri Oct 23 07:13:28 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 24832,
+            "ppid": 24803,
+            "start_identity": "Fri Oct 23 07:13:29 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 24833,
+            "ppid": 24803,
+            "start_identity": "Fri Oct 23 07:13:29 2026"
+          }
+        ],
+        "elapsed_seconds": 146.40001525000002,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 24803,
+            "ppid": 23265,
+            "start_identity": "Fri Oct 23 07:13:26 2026"
+          }
+        ],
+        "elapsed_seconds": 151.435370583,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 24908,
+            "ppid": 23265,
+            "start_identity": "Fri Oct 23 07:13:35 2026"
+          }
+        ],
+        "elapsed_seconds": 156.46244991600003,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 24934,
+            "ppid": 23265,
+            "start_identity": "Fri Oct 23 07:13:41 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 24953,
+            "ppid": 24934,
+            "start_identity": "Fri Oct 23 07:13:43 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 24957,
+            "ppid": 24934,
+            "start_identity": "Fri Oct 23 07:13:43 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 24958,
+            "ppid": 24934,
+            "start_identity": "Fri Oct 23 07:13:43 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 24959,
+            "ppid": 24934,
+            "start_identity": "Fri Oct 23 07:13:43 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 24960,
+            "ppid": 24934,
+            "start_identity": "Fri Oct 23 07:13:43 2026"
+          }
+        ],
+        "elapsed_seconds": 161.515989875,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 24989,
+            "ppid": 23265,
+            "start_identity": "Fri Oct 23 07:13:47 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 24998,
+            "ppid": 24989,
+            "start_identity": "Fri Oct 23 07:13:48 2026"
+          }
+        ],
+        "elapsed_seconds": 166.54529316600002,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25022,
+            "ppid": 23265,
+            "start_identity": "Fri Oct 23 07:13:52 2026"
+          }
+        ],
+        "elapsed_seconds": 171.57860820800002,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25051,
+            "ppid": 25048,
+            "start_identity": "Fri Oct 23 07:13:56 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/clippy-driver",
+            "pid": 25092,
+            "ppid": 25051,
+            "start_identity": "Fri Oct 23 07:13:58 2026"
+          }
+        ],
+        "elapsed_seconds": 176.60860541600002,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25613,
+            "ppid": 25568,
+            "start_identity": "Fri Oct 23 07:15:11 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 25655,
+            "ppid": 25613,
+            "start_identity": "Fri Oct 23 07:15:14 2026"
+          }
+        ],
+        "elapsed_seconds": 252.27657487500002,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25688,
+            "ppid": 25568,
+            "start_identity": "Fri Oct 23 07:15:17 2026"
+          }
+        ],
+        "elapsed_seconds": 257.308764041,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25688,
+            "ppid": 25568,
+            "start_identity": "Fri Oct 23 07:15:17 2026"
+          }
+        ],
+        "elapsed_seconds": 262.379592375,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25688,
+            "ppid": 25568,
+            "start_identity": "Fri Oct 23 07:15:17 2026"
+          }
+        ],
+        "elapsed_seconds": 267.416870083,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25688,
+            "ppid": 25568,
+            "start_identity": "Fri Oct 23 07:15:17 2026"
+          }
+        ],
+        "elapsed_seconds": 272.457170958,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25688,
+            "ppid": 25568,
+            "start_identity": "Fri Oct 23 07:15:17 2026"
+          }
+        ],
+        "elapsed_seconds": 277.493664458,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25688,
+            "ppid": 25568,
+            "start_identity": "Fri Oct 23 07:15:17 2026"
+          }
+        ],
+        "elapsed_seconds": 282.530462208,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25568,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:15:06 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25841,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:15:44 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 25913,
+            "ppid": 25841,
+            "start_identity": "Fri Oct 23 07:15:50 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 25914,
+            "ppid": 25841,
+            "start_identity": "Fri Oct 23 07:15:50 2026"
+          }
+        ],
+        "elapsed_seconds": 287.56833041600004,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25568,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:15:06 2026"
+          }
+        ],
+        "elapsed_seconds": 292.600383,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25568,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:15:06 2026"
+          }
+        ],
+        "elapsed_seconds": 297.63382475000003,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25568,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:15:06 2026"
+          }
+        ],
+        "elapsed_seconds": 302.6711885,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25568,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:15:06 2026"
+          }
+        ],
+        "elapsed_seconds": 307.700054541,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25568,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:15:06 2026"
+          }
+        ],
+        "elapsed_seconds": 312.731983625,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25568,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:15:06 2026"
+          }
+        ],
+        "elapsed_seconds": 317.767818583,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25568,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:15:06 2026"
+          }
+        ],
+        "elapsed_seconds": 322.802006291,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25568,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:15:06 2026"
+          }
+        ],
+        "elapsed_seconds": 327.832321958,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25568,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:15:06 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 26137,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:16:33 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 26161,
+            "ppid": 26137,
+            "start_identity": "Fri Oct 23 07:16:35 2026"
+          }
+        ],
+        "elapsed_seconds": 332.87019425,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 26844,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:17:12 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28173,
+            "ppid": 26844,
+            "start_identity": "Fri Oct 23 07:17:15 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28174,
+            "ppid": 26844,
+            "start_identity": "Fri Oct 23 07:17:15 2026"
+          }
+        ],
+        "elapsed_seconds": 373.221084916,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 26844,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:17:12 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28186,
+            "ppid": 26844,
+            "start_identity": "Fri Oct 23 07:17:17 2026"
+          }
+        ],
+        "elapsed_seconds": 378.267385708,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 28269,
+            "ppid": 28233,
+            "start_identity": "Fri Oct 23 07:17:24 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28287,
+            "ppid": 28269,
+            "start_identity": "Fri Oct 23 07:17:25 2026"
+          }
+        ],
+        "elapsed_seconds": 383.30350625,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 28269,
+            "ppid": 28233,
+            "start_identity": "Fri Oct 23 07:17:24 2026"
+          }
+        ],
+        "elapsed_seconds": 388.348153083,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 28355,
+            "ppid": 28233,
+            "start_identity": "Fri Oct 23 07:17:31 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28390,
+            "ppid": 28355,
+            "start_identity": "Fri Oct 23 07:17:35 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28391,
+            "ppid": 28355,
+            "start_identity": "Fri Oct 23 07:17:36 2026"
+          }
+        ],
+        "elapsed_seconds": 393.383251708,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 28355,
+            "ppid": 28233,
+            "start_identity": "Fri Oct 23 07:17:31 2026"
+          }
+        ],
+        "elapsed_seconds": 398.429531375,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 28513,
+            "ppid": 28233,
+            "start_identity": "Fri Oct 23 07:17:42 2026"
+          }
+        ],
+        "elapsed_seconds": 403.460122625,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 28539,
+            "ppid": 28233,
+            "start_identity": "Fri Oct 23 07:17:47 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28597,
+            "ppid": 28539,
+            "start_identity": "Fri Oct 23 07:17:49 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28599,
+            "ppid": 28539,
+            "start_identity": "Fri Oct 23 07:17:50 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28600,
+            "ppid": 28539,
+            "start_identity": "Fri Oct 23 07:17:50 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28601,
+            "ppid": 28539,
+            "start_identity": "Fri Oct 23 07:17:50 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28602,
+            "ppid": 28539,
+            "start_identity": "Fri Oct 23 07:17:50 2026"
+          }
+        ],
+        "elapsed_seconds": 408.51011816600004,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 28658,
+            "ppid": 28233,
+            "start_identity": "Fri Oct 23 07:17:53 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28697,
+            "ppid": 28658,
+            "start_identity": "Fri Oct 23 07:17:56 2026"
+          }
+        ],
+        "elapsed_seconds": 413.54609245800003,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 28733,
+            "ppid": 28233,
+            "start_identity": "Fri Oct 23 07:17:59 2026"
+          }
+        ],
+        "elapsed_seconds": 418.577367041,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 28764,
+            "ppid": 28761,
+            "start_identity": "Fri Oct 23 07:18:03 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/clippy-driver",
+            "pid": 28852,
+            "ppid": 28764,
+            "start_identity": "Fri Oct 23 07:18:06 2026"
+          }
+        ],
+        "elapsed_seconds": 423.614141125,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 28920,
+            "ppid": 28919,
+            "start_identity": "Fri Oct 23 07:18:10 2026"
+          }
+        ],
+        "elapsed_seconds": 428.656458583,
+        "heavy_mycity": []
+      }
+    ],
+    "exit_code": -15,
+    "final_120_seconds_start": 333.850542791,
+    "normal_pressure_gate": null,
+    "status": "blocked"
+  },
+  "ended_utc": "2026-10-22T23:18:36.704234+00:00",
+  "helper_hashes": {
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-joint-smoke-control-03/process_activity.py": "1abbc0771180936fa660b34db4f6428f199fd467e0f866548e8a12bdb4c58aa9",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-joint-smoke-control-03/readiness.py": "fa62f21677bab98c558e86fa3a54f42ecfa8b64fd1d7d3449b6401ecff4ef7ae",
+    "/Users/frankqin/dev/MyCity/docs/evidence/m0-t13a-joint-smoke-control-03/support-manifest.json": "aded3e653c0f0da488ffda0a5110441d8dfc1a97987f1d9fdf89642e5adbebe7",
+    "/Volumes/HP P900/dev/MyCity/work/speed-full-v125-01/run_speed.py": "32311cb97680b55f58ae4f74f50ead3ab11106421a4e28d706cc9c927ddfb45d"
+  },
+  "identity": {
+    "acceptance_fixture_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+    "archive_entries": 263,
+    "binary": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/92-canonical-integer-headless-bin/executables/453c6215f1637458847e4882116e0046ab43a1da6b7fd0b0529550cadd7ba282/mycity-headless",
+    "binary_embeds_source_fingerprint": true,
+    "binary_sha256": "453c6215f1637458847e4882116e0046ab43a1da6b7fd0b0529550cadd7ba282",
+    "build_source_entries": 263,
+    "full_unpaced_workload_checks": {
+      "30 days": true,
+      "720 hours": true,
+      "723 targets": true,
+      "724 windows": true,
+      "speed-run entrypoint": true,
+      "unpaced mode": true
+    },
+    "source_sha256": "d3d463d45db7cb589a68c7d22ac7781debea6c75bad6d1225df5cb19c6aec17e",
+    "source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/92-canonical-integer-headless-bin/source.zip",
+    "source_zip_sha256": "bc8430e3600ca3c01e01dc0d49d549666721701c88662235e8947910fbcbe24d"
+  },
+  "model_started": false,
+  "pre_readiness_processes": {
+    "compilers": [],
+    "heavy_mycity": []
+  },
+  "readiness": {
+    "activity_observed": [
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 22995,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:12:30 2026"
+          }
+        ],
+        "elapsed_seconds": 90.971500541,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 22995,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:12:30 2026"
+          }
+        ],
+        "elapsed_seconds": 96.008199208,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 22995,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:12:30 2026"
+          }
+        ],
+        "elapsed_seconds": 101.04112720799999,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 22995,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:12:30 2026"
+          }
+        ],
+        "elapsed_seconds": 106.074484375,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 22995,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:12:30 2026"
+          }
+        ],
+        "elapsed_seconds": 111.110028458,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 22995,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:12:30 2026"
+          }
+        ],
+        "elapsed_seconds": 116.13724512499999,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 22995,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:12:30 2026"
+          }
+        ],
+        "elapsed_seconds": 121.172805458,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 22995,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:12:30 2026"
+          }
+        ],
+        "elapsed_seconds": 126.20969808299999,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 22995,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:12:30 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 23191,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:13:08 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 23230,
+            "ppid": 23191,
+            "start_identity": "Fri Oct 23 07:13:12 2026"
+          }
+        ],
+        "elapsed_seconds": 131.24656183300002,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 24728,
+            "ppid": 23265,
+            "start_identity": "Fri Oct 23 07:13:18 2026"
+          }
+        ],
+        "elapsed_seconds": 136.3025605,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 24728,
+            "ppid": 23265,
+            "start_identity": "Fri Oct 23 07:13:18 2026"
+          }
+        ],
+        "elapsed_seconds": 141.35915875,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 24803,
+            "ppid": 23265,
+            "start_identity": "Fri Oct 23 07:13:26 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 24821,
+            "ppid": 24803,
+            "start_identity": "Fri Oct 23 07:13:28 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 24832,
+            "ppid": 24803,
+            "start_identity": "Fri Oct 23 07:13:29 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 24833,
+            "ppid": 24803,
+            "start_identity": "Fri Oct 23 07:13:29 2026"
+          }
+        ],
+        "elapsed_seconds": 146.40001525000002,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 24803,
+            "ppid": 23265,
+            "start_identity": "Fri Oct 23 07:13:26 2026"
+          }
+        ],
+        "elapsed_seconds": 151.435370583,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 24908,
+            "ppid": 23265,
+            "start_identity": "Fri Oct 23 07:13:35 2026"
+          }
+        ],
+        "elapsed_seconds": 156.46244991600003,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 24934,
+            "ppid": 23265,
+            "start_identity": "Fri Oct 23 07:13:41 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 24953,
+            "ppid": 24934,
+            "start_identity": "Fri Oct 23 07:13:43 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 24957,
+            "ppid": 24934,
+            "start_identity": "Fri Oct 23 07:13:43 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 24958,
+            "ppid": 24934,
+            "start_identity": "Fri Oct 23 07:13:43 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 24959,
+            "ppid": 24934,
+            "start_identity": "Fri Oct 23 07:13:43 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 24960,
+            "ppid": 24934,
+            "start_identity": "Fri Oct 23 07:13:43 2026"
+          }
+        ],
+        "elapsed_seconds": 161.515989875,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 24989,
+            "ppid": 23265,
+            "start_identity": "Fri Oct 23 07:13:47 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 24998,
+            "ppid": 24989,
+            "start_identity": "Fri Oct 23 07:13:48 2026"
+          }
+        ],
+        "elapsed_seconds": 166.54529316600002,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25022,
+            "ppid": 23265,
+            "start_identity": "Fri Oct 23 07:13:52 2026"
+          }
+        ],
+        "elapsed_seconds": 171.57860820800002,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25051,
+            "ppid": 25048,
+            "start_identity": "Fri Oct 23 07:13:56 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/clippy-driver",
+            "pid": 25092,
+            "ppid": 25051,
+            "start_identity": "Fri Oct 23 07:13:58 2026"
+          }
+        ],
+        "elapsed_seconds": 176.60860541600002,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25613,
+            "ppid": 25568,
+            "start_identity": "Fri Oct 23 07:15:11 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 25655,
+            "ppid": 25613,
+            "start_identity": "Fri Oct 23 07:15:14 2026"
+          }
+        ],
+        "elapsed_seconds": 252.27657487500002,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25688,
+            "ppid": 25568,
+            "start_identity": "Fri Oct 23 07:15:17 2026"
+          }
+        ],
+        "elapsed_seconds": 257.308764041,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25688,
+            "ppid": 25568,
+            "start_identity": "Fri Oct 23 07:15:17 2026"
+          }
+        ],
+        "elapsed_seconds": 262.379592375,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25688,
+            "ppid": 25568,
+            "start_identity": "Fri Oct 23 07:15:17 2026"
+          }
+        ],
+        "elapsed_seconds": 267.416870083,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25688,
+            "ppid": 25568,
+            "start_identity": "Fri Oct 23 07:15:17 2026"
+          }
+        ],
+        "elapsed_seconds": 272.457170958,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25688,
+            "ppid": 25568,
+            "start_identity": "Fri Oct 23 07:15:17 2026"
+          }
+        ],
+        "elapsed_seconds": 277.493664458,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25688,
+            "ppid": 25568,
+            "start_identity": "Fri Oct 23 07:15:17 2026"
+          }
+        ],
+        "elapsed_seconds": 282.530462208,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25568,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:15:06 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25841,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:15:44 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 25913,
+            "ppid": 25841,
+            "start_identity": "Fri Oct 23 07:15:50 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 25914,
+            "ppid": 25841,
+            "start_identity": "Fri Oct 23 07:15:50 2026"
+          }
+        ],
+        "elapsed_seconds": 287.56833041600004,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25568,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:15:06 2026"
+          }
+        ],
+        "elapsed_seconds": 292.600383,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25568,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:15:06 2026"
+          }
+        ],
+        "elapsed_seconds": 297.63382475000003,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25568,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:15:06 2026"
+          }
+        ],
+        "elapsed_seconds": 302.6711885,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25568,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:15:06 2026"
+          }
+        ],
+        "elapsed_seconds": 307.700054541,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25568,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:15:06 2026"
+          }
+        ],
+        "elapsed_seconds": 312.731983625,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25568,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:15:06 2026"
+          }
+        ],
+        "elapsed_seconds": 317.767818583,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25568,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:15:06 2026"
+          }
+        ],
+        "elapsed_seconds": 322.802006291,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25568,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:15:06 2026"
+          }
+        ],
+        "elapsed_seconds": 327.832321958,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 25568,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:15:06 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 26137,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:16:33 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 26161,
+            "ppid": 26137,
+            "start_identity": "Fri Oct 23 07:16:35 2026"
+          }
+        ],
+        "elapsed_seconds": 332.87019425,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 26844,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:17:12 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28173,
+            "ppid": 26844,
+            "start_identity": "Fri Oct 23 07:17:15 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28174,
+            "ppid": 26844,
+            "start_identity": "Fri Oct 23 07:17:15 2026"
+          }
+        ],
+        "elapsed_seconds": 373.221084916,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 26844,
+            "ppid": 80467,
+            "start_identity": "Fri Oct 23 07:17:12 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28186,
+            "ppid": 26844,
+            "start_identity": "Fri Oct 23 07:17:17 2026"
+          }
+        ],
+        "elapsed_seconds": 378.267385708,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 28269,
+            "ppid": 28233,
+            "start_identity": "Fri Oct 23 07:17:24 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28287,
+            "ppid": 28269,
+            "start_identity": "Fri Oct 23 07:17:25 2026"
+          }
+        ],
+        "elapsed_seconds": 383.30350625,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 28269,
+            "ppid": 28233,
+            "start_identity": "Fri Oct 23 07:17:24 2026"
+          }
+        ],
+        "elapsed_seconds": 388.348153083,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 28355,
+            "ppid": 28233,
+            "start_identity": "Fri Oct 23 07:17:31 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28390,
+            "ppid": 28355,
+            "start_identity": "Fri Oct 23 07:17:35 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28391,
+            "ppid": 28355,
+            "start_identity": "Fri Oct 23 07:17:36 2026"
+          }
+        ],
+        "elapsed_seconds": 393.383251708,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 28355,
+            "ppid": 28233,
+            "start_identity": "Fri Oct 23 07:17:31 2026"
+          }
+        ],
+        "elapsed_seconds": 398.429531375,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 28513,
+            "ppid": 28233,
+            "start_identity": "Fri Oct 23 07:17:42 2026"
+          }
+        ],
+        "elapsed_seconds": 403.460122625,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 28539,
+            "ppid": 28233,
+            "start_identity": "Fri Oct 23 07:17:47 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28597,
+            "ppid": 28539,
+            "start_identity": "Fri Oct 23 07:17:49 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28599,
+            "ppid": 28539,
+            "start_identity": "Fri Oct 23 07:17:50 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28600,
+            "ppid": 28539,
+            "start_identity": "Fri Oct 23 07:17:50 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28601,
+            "ppid": 28539,
+            "start_identity": "Fri Oct 23 07:17:50 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28602,
+            "ppid": 28539,
+            "start_identity": "Fri Oct 23 07:17:50 2026"
+          }
+        ],
+        "elapsed_seconds": 408.51011816600004,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 28658,
+            "ppid": 28233,
+            "start_identity": "Fri Oct 23 07:17:53 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/rustc",
+            "pid": 28697,
+            "ppid": 28658,
+            "start_identity": "Fri Oct 23 07:17:56 2026"
+          }
+        ],
+        "elapsed_seconds": 413.54609245800003,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 28733,
+            "ppid": 28233,
+            "start_identity": "Fri Oct 23 07:17:59 2026"
+          }
+        ],
+        "elapsed_seconds": 418.577367041,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 28764,
+            "ppid": 28761,
+            "start_identity": "Fri Oct 23 07:18:03 2026"
+          },
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/clippy-driver",
+            "pid": 28852,
+            "ppid": 28764,
+            "start_identity": "Fri Oct 23 07:18:06 2026"
+          }
+        ],
+        "elapsed_seconds": 423.614141125,
+        "heavy_mycity": []
+      },
+      {
+        "compilers": [
+          {
+            "comm": "/Users/frankqin/.rustup/toolchains/1.95.0-aarch64-apple-darwin/bin/cargo",
+            "pid": 28920,
+            "ppid": 28919,
+            "start_identity": "Fri Oct 23 07:18:10 2026"
+          }
+        ],
+        "elapsed_seconds": 428.656458583,
+        "heavy_mycity": []
+      }
+    ],
+    "elapsed_seconds": 453.850542791,
+    "exit_code": -15,
+    "owned_popen_cleanup": [],
+    "pid": 22566
+  },
+  "readiness_helper_cleanup": [],
+  "schema": "mycity-unpaced-full-timing-v128-v1",
+  "scope": "full-tier unpaced segment timing diagnostic; no performance/M0/L1/8h/16GB acceptance",
+  "socket_paths": {
+    "max_formatted_broker_socket": {
+      "limit_exclusive": 104,
+      "path": "/tmp/mc-w-ffffffffffffffff-18446744073709551615-ffffffffffffffff.sock",
+      "utf8_bytes_plus_nul": 70
+    },
+    "normal_pool_socket": {
+      "limit_exclusive": 104,
+      "path": "/Volumes/HP P900/dev/MyCity/work/int-full-01/observed/model/normal-pool/pool.sock",
+      "utf8_bytes_plus_nul": 82
+    },
+    "source_inventory": "verified from exact source archive; both normal-pool and broker bind/connect families retained"
+  },
+  "started_utc": "2026-10-22T23:11:02.721612+00:00",
+  "state": "blocked_admission",
+  "storage": {
+    "available_bytes": 1910140510208,
+    "estimated_snapshot_bytes_each": 3378784402,
+    "free_floor_bytes": 2147483648,
+    "required_free_bytes": 12552272310,
+    "resolved_work": "/Volumes/HP P900/dev/MyCity/work/int-full-01",
+    "retention": "keep both full run roots and source/executable until explicit evidence review; never clean automatically",
+    "three_generations_plus_log_cap_bytes": 10404788662,
+    "volume": {
+      "bus_protocol": "USB",
+      "external_device": true,
+      "filesystem": "apfs",
+      "internal": false,
+      "mount_point": "/Volumes/HP P900",
+      "volume_uuid": "4289CF6D-F09D-4831-8558-4AB223E4EE04"
+    }
+  }
+}

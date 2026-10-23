@@ -1,0 +1,40 @@
+
+running 13 tests
+test construction_utility_store_prepared_failure_is_unchanged_and_retryable ... ok
+test construction_utility_store_protection_covers_combined_utilities_and_labor ... ok
+test construction_shared_exchange_raw_sink_is_durable_without_duplicate_material_payment ... ok
+test construction_utility_store_applied_lost_reply_reopens_and_replays_once ... ok
+test construction_utility_store_shortage_keeps_old_failure_and_new_id_works_after_boot_refill ... ok
+test construction_utilities_store_work_replays_coldopens_and_pause_does_not_reset_meter ... ok
+test partial_build_clearance_keeps_material_sink_and_continues_utility_meter_through_cold_replay ... ok
+test published_build_demolition_preserves_full_material_sink_and_cumulative_utility_usage ... ok
+test exchange_raw7_half_build_clearance_and_close_preserve_raw_sink_through_recovery ... ok
+test shared_boot_electricity_construction_work_before_town_market_uses_one_inventory_pool ... ok
+test shared_boot_electricity_cross_city_dispatch_then_work_and_town_share_source_stock ... ok
+test shared_boot_electricity_town_market_before_construction_leaves_no_work_supply ... ok
+test exchange_raw7_complete_build_and_operational_demolition_preserve_sink_through_recovery ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.72s
+
+
+running 3 tests
+test town_work_and_market_day_recover_once_after_applied_reply_loss ... ok
+test partial_paid_shift_with_unsold_inventory_is_idle_not_recipe_remainder ... ok
+test twenty_eight_day_store_checkpoints_reopen_with_contiguous_receipts_and_work_remainders ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 19.50s
+
+
+running 2 tests
+test loss_fixture_measures_operating_loss_then_suspends_only_that_business ... ok
+test stop_operations_is_atomic_durable_and_does_not_stop_unrelated_business ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.44s
+
+
+running 2 tests
+test town_utility_applied_lost_reply_and_same_day_retry_are_exactly_once ... ok
+test town_utility_prepared_failure_and_same_day_retry_are_exactly_once ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.49s
+

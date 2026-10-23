@@ -1,0 +1,14 @@
+{
+  "exit_code": 0,
+  "command": [
+    "python3",
+    "verify_profile.py",
+    "/Users/frankqin/dev/MyCity",
+    "/Volumes/HP P900/dev/MyCity/work/int-func-01",
+    "--descriptor-root",
+    "/Volumes/HP P900/dev/MyCity/work/int-func-01",
+    "--output",
+    "/Volumes/HP P900/dev/MyCity/work/int-func-01/verification.json"
+  ],
+  "scope": "independent full functional verification, no quiet admission/performance acceptance"
+}

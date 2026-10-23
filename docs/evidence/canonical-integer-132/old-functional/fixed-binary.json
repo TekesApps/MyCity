@@ -1,0 +1,10 @@
+{
+  "binary": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/92-canonical-integer-headless-bin/executables/453c6215f1637458847e4882116e0046ab43a1da6b7fd0b0529550cadd7ba282/mycity-headless",
+  "binary_sha256": "453c6215f1637458847e4882116e0046ab43a1da6b7fd0b0529550cadd7ba282",
+  "source_sha256": "d3d463d45db7cb589a68c7d22ac7781debea6c75bad6d1225df5cb19c6aec17e",
+  "source_files": 263,
+  "source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/92-canonical-integer-headless-bin/source.zip",
+  "source_zip_sha256": "bc8430e3600ca3c01e01dc0d49d549666721701c88662235e8947910fbcbe24d",
+  "scope": "restricted integer fastpath, original full workload unchanged; runtime not yet tested",
+  "storage": "HP P900 external USB/APFS SSD"
+}

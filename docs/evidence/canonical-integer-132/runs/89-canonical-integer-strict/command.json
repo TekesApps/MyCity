@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "cargo",
+    "clippy",
+    "--release",
+    "--locked",
+    "--offline",
+    "-p",
+    "mycity-core",
+    "--all-targets",
+    "--",
+    "-D",
+    "warnings"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/canonical-integer-current",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-22T23:04:02.082727+00:00",
+  "source_manifest_sha256": "500042a336656600b1a52d8ca03d43b845abe78faa2607910c101389bb7b37f3"
+}

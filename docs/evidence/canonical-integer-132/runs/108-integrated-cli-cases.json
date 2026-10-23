@@ -1,0 +1,29 @@
+{
+  "cases": [
+    {
+      "case": "normal",
+      "exit_code": 0
+    },
+    {
+      "case": "held",
+      "exit_code": 0
+    },
+    {
+      "case": "generator-failure",
+      "exit_code": 0
+    },
+    {
+      "case": "construction-utilities",
+      "exit_code": 0
+    },
+    {
+      "case": "construction-held",
+      "exit_code": 0
+    },
+    {
+      "case": "employment",
+      "exit_code": 0
+    }
+  ],
+  "all_exit_zero": true
+}

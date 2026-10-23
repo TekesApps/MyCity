@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "cargo",
+    "build",
+    "--release",
+    "--locked",
+    "--offline",
+    "-p",
+    "mycity-headless",
+    "--bin",
+    "mycity-headless"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/canonical-integer-current",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-22T23:57:16.805023+00:00",
+  "source_manifest_sha256": "f81c917add50a6c7a5f65aaec6e6bdded5b808f86890660de88cd16ed8d62b64"
+}

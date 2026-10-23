@@ -1,0 +1,32 @@
+{
+  "fixed_diagnostic_record": {
+    "acceptance_fixture_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+    "binary_sha256": "453c6215f1637458847e4882116e0046ab43a1da6b7fd0b0529550cadd7ba282",
+    "path": "/Volumes/HP P900/dev/MyCity/work/int-func-01/integer-headless-binary.json",
+    "record_sha256": "ae66526443b832b1964d21e1e5241966648cee0b0766665830a02bc81c9b754e",
+    "source_sha256": "d3d463d45db7cb589a68c7d22ac7781debea6c75bad6d1225df5cb19c6aec17e",
+    "source_zip_sha256": "bc8430e3600ca3c01e01dc0d49d549666721701c88662235e8947910fbcbe24d",
+    "status": "fixed"
+  },
+  "prepared_files_sha256": {
+    "run_profile.py": "00c4042b9973871818aacc824951a1c76f6b62d38d0342dc6e5fc84fec773e9a",
+    "test_profile.py": "6b903b81b442bf1b4c3d6d9e3e859503c2b757d77e8fe858e77e004b42dc5c05",
+    "verify_profile.py": "418549220cb151e2c449ec27fd8065d749bfa7cd899fa39d10e5a1ad333c0d72"
+  },
+  "pressure_safety": {
+    "compiler_activity": "record_only",
+    "heavy_mycity_before_launch": "blocks_without_killing",
+    "required_continuous_normal_seconds": 120,
+    "timeout_seconds": 900
+  },
+  "quiet_admission": "not_run_for_functional_validation",
+  "run_root": "/Volumes/HP P900/dev/MyCity/work/int-func-01",
+  "schema": "mycity-int-functional-prepared-manifest-v1",
+  "scope": "full-tier integer functional validation only; not clean performance, M0, L1, 8h, or 16GB acceptance",
+  "support_files_sha256": {
+    "support/process_activity.py": "1abbc0771180936fa660b34db4f6428f199fd467e0f866548e8a12bdb4c58aa9",
+    "support/readiness.py": "fa62f21677bab98c558e86fa3a54f42ecfa8b64fd1d7d3449b6401ecff4ef7ae",
+    "support/support-manifest.json": "aded3e653c0f0da488ffda0a5110441d8dfc1a97987f1d9fdf89642e5adbebe7",
+    "support/timing_profile_v128.py": "596b8777817e806fbc3f824114d7c222725df4037140b0d2f9934ef5cd33683a"
+  }
+}

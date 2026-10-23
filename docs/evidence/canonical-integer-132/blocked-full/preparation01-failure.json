@@ -1,0 +1,7 @@
+{
+  "actual_exit_code": 1,
+  "tests": 13,
+  "failures": 1,
+  "failure": "new ROOT.name int-full-01 compared with stale expected timing-full-v128-02",
+  "model_started": false
+}

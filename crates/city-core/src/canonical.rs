@@ -186,6 +186,25 @@ impl<'de> Deserialize<'de> for Valid {
         d.deserialize_any(V)
     }
 }
+
+/// The existing JSON validation pass has already accepted this token. These short
+/// integer spellings are therefore safe to emit unchanged and avoid constructing
+/// a `serde_json::Number`; every other number retains the Number parse/encode path.
+fn is_short_integer(bytes: &[u8]) -> bool {
+    let digits = if bytes.first() == Some(&b'-') {
+        &bytes[1..]
+    } else {
+        bytes
+    };
+    if digits == b"0" {
+        return bytes == b"0";
+    }
+    if digits.is_empty() || digits.len() > 18 || !matches!(digits[0], b'1'..=b'9') {
+        return false;
+    }
+    digits[1..].iter().all(u8::is_ascii_digit)
+}
+
 /// Trusted, reusable backing. All128 traversal frames are initialized and charged
 /// once; input can never drive capacity, recursive allocation or frame growth.
 pub struct Workspace {
@@ -258,9 +277,16 @@ impl Workspace {
                         .write_all(node.as_bytes())
                         .map_err(|e| e.to_string())?,
                     _ => {
-                        let value: serde_json::Number =
-                            serde_json::from_str(node).map_err(|e| e.to_string())?;
-                        serde_json::to_writer(&mut writer, &value).map_err(|e| e.to_string())?;
+                        if is_short_integer(node.as_bytes()) {
+                            writer
+                                .write_all(node.as_bytes())
+                                .map_err(|e| e.to_string())?;
+                        } else {
+                            let value: serde_json::Number =
+                                serde_json::from_str(node).map_err(|e| e.to_string())?;
+                            serde_json::to_writer(&mut writer, &value)
+                                .map_err(|e| e.to_string())?;
+                        }
                     }
                 }
                 continue;
@@ -457,6 +483,8 @@ mod tests {
         let mut actual = Vec::new();
         work.write(text.as_bytes(), &mut actual).unwrap();
         assert_eq!(actual, expected, "{text}");
+        use sha2::{Digest, Sha256};
+        assert_eq!(Sha256::digest(&actual), Sha256::digest(&expected), "{text}");
     }
     #[test]
     fn old_value_is_an_independent_oracle_for_duplicates_escapes_and_numbers() {
@@ -534,6 +562,82 @@ mod tests {
             assert!(work.write(text.as_bytes(), io::sink()).is_err());
         }
         compare(&mut work, r#"{"a":1e100,"a":1}"#);
+        compare(
+            &mut work,
+            r#"{"a":18446744073709551616,"a":1,"b":-9223372036854775809,"b":-2}"#,
+        );
+    }
+    #[test]
+    fn short_integer_fast_path_matches_value_bytes_and_sha_at_boundaries() {
+        for token in [
+            b"0".as_slice(),
+            b"1",
+            b"-1",
+            b"123456789012345678",
+            b"-123456789012345678",
+        ] {
+            assert!(is_short_integer(token), "{token:?}");
+        }
+        for token in [
+            b"-0".as_slice(),
+            b"1234567890123456789",
+            b"-1234567890123456789",
+            b"01",
+            b"1.0",
+            b"1e0",
+        ] {
+            assert!(!is_short_integer(token), "{token:?}");
+        }
+        let mut work = Workspace::new().unwrap();
+        compare(
+            &mut work,
+            r#"[0,1,-1,123456789012345678,-123456789012345678,1234567890123456789,-1234567890123456789,9223372036854775807,-9223372036854775808,18446744073709551615,-0,0.0,-0.0,1e0,1E+5,1.25,-1.25e-2]"#,
+        );
+        compare(
+            &mut work,
+            r#"{"zero":0,"positive18":123456789012345678,"negative18":-123456789012345678,"positive19":1234567890123456789,"negative19":-1234567890123456789,"i64_min":-9223372036854775808,"i64_max":9223372036854775807,"u64_max":18446744073709551615,"negative_zero":-0,"fraction":1.0,"exponent":1e0}"#,
+        );
+    }
+    #[test]
+    fn fast_path_preserves_writer_errors_capacity_boundary_and_workspace_reuse() {
+        struct FailAfter {
+            successful_writes: usize,
+            writes: usize,
+        }
+        impl Write for FailAfter {
+            fn write(&mut self, bytes: &[u8]) -> io::Result<usize> {
+                if self.writes == self.successful_writes {
+                    return Err(io::Error::other("forced_writer_error"));
+                }
+                self.writes += 1;
+                Ok(bytes.len())
+            }
+            fn flush(&mut self) -> io::Result<()> {
+                Ok(())
+            }
+        }
+
+        let mut work = Workspace::new().unwrap();
+        let mut exact = [0u8; 5];
+        work.write(b"[1,2]", FixedWriter::new(&mut exact)).unwrap();
+        assert_eq!(&exact, b"[1,2]");
+
+        let mut short = [0u8; 4];
+        assert!(work
+            .write(b"[1,2]", FixedWriter::new(&mut short))
+            .unwrap_err()
+            .contains("canonical_codec_bound"));
+        assert!(work
+            .write(
+                b"[1,2]",
+                FailAfter {
+                    successful_writes: 3,
+                    writes: 0
+                },
+            )
+            .unwrap_err()
+            .contains("forced_writer_error"));
+        compare(&mut work, "[0,-1,123456789012345678,-0,1.0]");
     }
     #[test]
     fn fixed_codec_and_writer_failure_never_fall_back_to_allocation() {
