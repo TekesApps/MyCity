@@ -29,3 +29,7 @@ Status的business/full是不同投影，checkpoint字节SHA不能替代当前Eng
 两代完整原件仍在 `/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001` 与 `snapshot-000002`，各32文件，按st_blocks合计6770327552B（不含目录，不是APFS独占物理空间）。固定exe、ZIP、依赖及全部原始日志仍完整保留；此发布中的hash/报告不替代原件。原190份迁移保护原件未改动；本轮新增恢复基线仍有后续依赖，不删除。
 
 本轮复用共享target，无新独立缓存；未清理业务输入或压力原件。前一v129源码ZIP去重的89395200B属于前阶段，不重复算成本轮释放。
+
+## 2026-10-23恢复基线交接与退役
+
+上述“完整原件仍在/仍有依赖”描述是v130发布时的历史状态。后续当前全额基线已由j3p第二代及受保护旧部分prefix完整原件承接，实际当前reader兼容恢复通过后，精确退役两代v128的pressure.bin和work-reserve.bin；它们现已不可直接完整恢复。其余组件、日志、source/exe保留，见[交接与精确清单](../m0-t13a-smoke-handoff-137/STATUS.md)。

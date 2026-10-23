@@ -1,0 +1,648 @@
+{
+  "delete_allowlist": [
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/pressure.bin",
+      "size": 3040632438,
+      "allocated": 3040632832,
+      "dev": 16777248,
+      "inode": 1764855,
+      "nlink": 1,
+      "mtime_ns": 1792709734925832665
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/work-reserve.bin",
+      "size": 134217728,
+      "allocated": 134217728,
+      "dev": 16777248,
+      "inode": 1764877,
+      "nlink": 1,
+      "mtime_ns": 1792709735089240232
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/pressure.bin",
+      "size": 3040632438,
+      "allocated": 3040632832,
+      "dev": 16777248,
+      "inode": 1764956,
+      "nlink": 1,
+      "mtime_ns": 1792709747076882238
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/work-reserve.bin",
+      "size": 134217728,
+      "allocated": 134217728,
+      "dev": 16777248,
+      "inode": 1764978,
+      "nlink": 1,
+      "mtime_ns": 1792709747240479765
+    }
+  ],
+  "round": "v128-native-01",
+  "reason": "pure rebuildable synthetic pressure/reserve; actual full baseline handed off to j3p generation2 and legacy prefix compatibility recovered by current reader",
+  "full_baseline": "/Volumes/HP P900/dev/MyCity/work/j3p-01/observed/model/layout/snapshots/snapshot-000002",
+  "legacy_recovery": "/Volumes/HP P900/dev/MyCity/work/j3p-legacy-prefix-recovery-01",
+  "retained_old_components": [
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/passenger_batches.json",
+      "size": 14813630,
+      "allocated": 14815232,
+      "dev": 16777248,
+      "inode": 1764841,
+      "nlink": 1,
+      "mtime_ns": 1792709731387637201,
+      "sha256": "5395485902b0b50f665f1d972be360f0968ead26f3a5a6cc69ce20866d7b6586"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/native-restore-bound.json",
+      "size": 163,
+      "allocated": 4096,
+      "dev": 16777248,
+      "inode": 1764887,
+      "nlink": 1,
+      "mtime_ns": 1792709736124622595,
+      "sha256": "1bc2ee76daf47a4858f8869fde2bd478b31870485866883f02ee2ce5a03e19b9"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/teaching_batches.json",
+      "size": 220123,
+      "allocated": 221184,
+      "dev": 16777248,
+      "inode": 1764851,
+      "nlink": 1,
+      "mtime_ns": 1792709731466961875,
+      "sha256": "c2acc7e0bff85be162f3aa325a16f16117cf058ff07798ff9d2d8d261130661c"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/visitors.json",
+      "size": 690521,
+      "allocated": 692224,
+      "dev": 16777248,
+      "inode": 1764831,
+      "nlink": 1,
+      "mtime_ns": 1792709731113056329,
+      "sha256": "da50ab93414feb3adb8ed61fc7db097685f7d54eaaf61519abc581ea6ca1e6db"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/current_services.json",
+      "size": 551619,
+      "allocated": 552960,
+      "dev": 16777248,
+      "inode": 1764852,
+      "nlink": 1,
+      "mtime_ns": 1792709731471396714,
+      "sha256": "ce36e5ee99eb53403c3ab6f1a09e6144819e93d663374aa138bd36e1d6ecab67"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/car_vehicles.json",
+      "size": 6209212,
+      "allocated": 6209536,
+      "dev": 16777248,
+      "inode": 1764844,
+      "nlink": 1,
+      "mtime_ns": 1792709731429444228,
+      "sha256": "6af743614a5111a333b9f327461fc1c2db13441d571f7f7073afc2222c3edb94"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/models.json",
+      "size": 399,
+      "allocated": 4096,
+      "dev": 16777248,
+      "inode": 1764848,
+      "nlink": 1,
+      "mtime_ns": 1792709731450402284,
+      "sha256": "464f6b505cf21b6c6ce8fdc4a7b59886f6d709df7d34901102ddcf9763eb20ec"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/analysis_tasks.json",
+      "size": 22170,
+      "allocated": 24576,
+      "dev": 16777248,
+      "inode": 1764847,
+      "nlink": 1,
+      "mtime_ns": 1792709731446634244,
+      "sha256": "ecf2eee90e87a656fb49e5a23457146d1eddbafa16311f218ca601b71dfdffbd"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/operators.json",
+      "size": 917651,
+      "allocated": 921600,
+      "dev": 16777248,
+      "inode": 1764832,
+      "nlink": 1,
+      "mtime_ns": 1792709731119160393,
+      "sha256": "9a04b08911d53eb76ef4d3e21b7bd90952aca39eb60540199bd37d3b2a761c54"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/path_refs.json",
+      "size": 4722328,
+      "allocated": 4722688,
+      "dev": 16777248,
+      "inode": 1764839,
+      "nlink": 1,
+      "mtime_ns": 1792709731328837202,
+      "sha256": "22dd70d215552416e832bff45e3d639417269683417ff0a2531b82e75b22ca7f"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/meter.json",
+      "size": 59090761,
+      "allocated": 59092992,
+      "dev": 16777248,
+      "inode": 1764835,
+      "nlink": 1,
+      "mtime_ns": 1792709731251563924,
+      "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/bus_train_vehicles.json",
+      "size": 736200,
+      "allocated": 737280,
+      "dev": 16777248,
+      "inode": 1764842,
+      "nlink": 1,
+      "mtime_ns": 1792709731405592267,
+      "sha256": "20dce9e9aa5b2804164917308428b0df3a7fbc6c14a59cc7a7e1c07ef3d9ef7b"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/equity_links.json",
+      "size": 2453947,
+      "allocated": 2457600,
+      "dev": 16777248,
+      "inode": 1764834,
+      "nlink": 1,
+      "mtime_ns": 1792709731135259856,
+      "sha256": "fa41a9f768748013714b0e2ccab7b624dc8faf50bda7e8c5f65119155023957b"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/native.json",
+      "size": 65299383,
+      "allocated": 65302528,
+      "dev": 16777248,
+      "inode": 1764825,
+      "nlink": 1,
+      "mtime_ns": 1792709730973506223,
+      "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/entities.json",
+      "size": 1368255,
+      "allocated": 1372160,
+      "dev": 16777248,
+      "inode": 1764833,
+      "nlink": 1,
+      "mtime_ns": 1792709731125326876,
+      "sha256": "db1dabe1d763fb4efae5e29a004b057f67ac60fd8c49e913e7fc6a68fe902c80"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/cargo_batches.json",
+      "size": 3131844,
+      "allocated": 3133440,
+      "dev": 16777248,
+      "inode": 1764840,
+      "nlink": 1,
+      "mtime_ns": 1792709731350270513,
+      "sha256": "ccca291ac558b5724d79aa3da6017fbb0c79a0ffe6e2d514dce8ae7098c2d698"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/ship_aircraft_vehicles.json",
+      "size": 183429,
+      "allocated": 184320,
+      "dev": 16777248,
+      "inode": 1764843,
+      "nlink": 1,
+      "mtime_ns": 1792709731410022230,
+      "sha256": "abaa5b8c26e0b87ae20a9aac79b7b40189b64e84bc919033e4b3a38b48e5cf8a"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/cases.json",
+      "size": 24909,
+      "allocated": 28672,
+      "dev": 16777248,
+      "inode": 1764853,
+      "nlink": 1,
+      "mtime_ns": 1792709731475520341,
+      "sha256": "744bcbbec2787fa1a2c513ba7b530f1366f5ab0cd461347f43e3cec3b8b76b3b"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/general_contracts.json",
+      "size": 1101276,
+      "allocated": 1101824,
+      "dev": 16777248,
+      "inode": 1764836,
+      "nlink": 1,
+      "mtime_ns": 1792709731280297562,
+      "sha256": "9d5a9af34fcf4347739ca021ee9e7fbfb929151741f2574a823f2b245cc66b79"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/maps.json",
+      "size": 2942,
+      "allocated": 4096,
+      "dev": 16777248,
+      "inode": 1764827,
+      "nlink": 1,
+      "mtime_ns": 1792709730987910751,
+      "sha256": "ae761e9b61d12349e7981d67af0348b7d695ac0f5afbdbe9c8c3397456b247ae"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/bills.json",
+      "size": 11091,
+      "allocated": 12288,
+      "dev": 16777248,
+      "inode": 1764854,
+      "nlink": 1,
+      "mtime_ns": 1792709731478928086,
+      "sha256": "ca1116d31f876fdc002ecc09173b768390ac80a0858dd4008a0b7e93a8c75584"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/team_members.json",
+      "size": 11688,
+      "allocated": 12288,
+      "dev": 16777248,
+      "inode": 1764846,
+      "nlink": 1,
+      "mtime_ns": 1792709731443482919,
+      "sha256": "dcb1def449b163d6e8d4e844a94cbace4be2e0157b352a95e3e41563bb9f7033"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/matters.json",
+      "size": 82934,
+      "allocated": 86016,
+      "dev": 16777248,
+      "inode": 1764845,
+      "nlink": 1,
+      "mtime_ns": 1792709731440072966,
+      "sha256": "e9c44415a18648aacb1632f1dff4d23c4d9065a329400d79c53f55f5a097cc0e"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/households.json",
+      "size": 15359282,
+      "allocated": 15360000,
+      "dev": 16777248,
+      "inode": 1764828,
+      "nlink": 1,
+      "mtime_ns": 1792709731019089040,
+      "sha256": "e3fb17426646d2b0d7be91d37ac60007116cbbdb0fb47df9dcb6b19e19866558"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/index.json",
+      "size": 18087,
+      "allocated": 20480,
+      "dev": 16777248,
+      "inode": 1764915,
+      "nlink": 1,
+      "mtime_ns": 1792709741271970636,
+      "sha256": "f2bc0e191be8b5cb5a6d87f056a4c31d74a79cdf39baf0ece0bb21070a35be9b"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/allocation-phases.bin",
+      "size": 7808,
+      "allocated": 8192,
+      "dev": 16777248,
+      "inode": 1764824,
+      "nlink": 1,
+      "mtime_ns": 1792709741229035847,
+      "sha256": "8fd257771e57fcd59ccaf3fabbec9cc21978ecc669ec60943a746116b7d406a4"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/housing.json",
+      "size": 16677375,
+      "allocated": 16678912,
+      "dev": 16777248,
+      "inode": 1764829,
+      "nlink": 1,
+      "mtime_ns": 1792709731074839923,
+      "sha256": "945e089c974fae08f7afdb0ce31e329a8a2f56ebedcecf2af2594d0a0d6bfd40"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/preview.json",
+      "size": 399,
+      "allocated": 4096,
+      "dev": 16777248,
+      "inode": 1764849,
+      "nlink": 1,
+      "mtime_ns": 1792709731454218408,
+      "sha256": "14befb84351445a252e881f1bbd872c814aa5d8d5482b5f24e8c2f07428ff6e8"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/hosts.json",
+      "size": 1419868,
+      "allocated": 1421312,
+      "dev": 16777248,
+      "inode": 1764850,
+      "nlink": 1,
+      "mtime_ns": 1792709731460451140,
+      "sha256": "9dd1b2bad52cffc8b9287d68802b58313ba1faa0f431db9c623fdb5dffe16122"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000001/od.json",
+      "size": 5423128,
+      "allocated": 5427200,
+      "dev": 16777248,
+      "inode": 1764837,
+      "nlink": 1,
+      "mtime_ns": 1792709731296906238,
+      "sha256": "9752dcc442e0ac5ce3176c39f682feba7da95b4eb122d2963de544cbab0e1b19"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/passenger_batches.json",
+      "size": 14813630,
+      "allocated": 14815232,
+      "dev": 16777248,
+      "inode": 1764942,
+      "nlink": 1,
+      "mtime_ns": 1792709742996444436,
+      "sha256": "5395485902b0b50f665f1d972be360f0968ead26f3a5a6cc69ce20866d7b6586"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/native-restore-bound.json",
+      "size": 163,
+      "allocated": 4096,
+      "dev": 16777248,
+      "inode": 1764987,
+      "nlink": 1,
+      "mtime_ns": 1792709748260877927,
+      "sha256": "1bc2ee76daf47a4858f8869fde2bd478b31870485866883f02ee2ce5a03e19b9"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/teaching_batches.json",
+      "size": 220123,
+      "allocated": 221184,
+      "dev": 16777248,
+      "inode": 1764952,
+      "nlink": 1,
+      "mtime_ns": 1792709743118511689,
+      "sha256": "c2acc7e0bff85be162f3aa325a16f16117cf058ff07798ff9d2d8d261130661c"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/visitors.json",
+      "size": 690521,
+      "allocated": 692224,
+      "dev": 16777248,
+      "inode": 1764933,
+      "nlink": 1,
+      "mtime_ns": 1792709742670799563,
+      "sha256": "da50ab93414feb3adb8ed61fc7db097685f7d54eaaf61519abc581ea6ca1e6db"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/current_services.json",
+      "size": 551619,
+      "allocated": 552960,
+      "dev": 16777248,
+      "inode": 1764953,
+      "nlink": 1,
+      "mtime_ns": 1792709743137731977,
+      "sha256": "ce36e5ee99eb53403c3ab6f1a09e6144819e93d663374aa138bd36e1d6ecab67"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/car_vehicles.json",
+      "size": 6209212,
+      "allocated": 6209536,
+      "dev": 16777248,
+      "inode": 1764945,
+      "nlink": 1,
+      "mtime_ns": 1792709743048491155,
+      "sha256": "6af743614a5111a333b9f327461fc1c2db13441d571f7f7073afc2222c3edb94"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/models.json",
+      "size": 399,
+      "allocated": 4096,
+      "dev": 16777248,
+      "inode": 1764949,
+      "nlink": 1,
+      "mtime_ns": 1792709743104292247,
+      "sha256": "464f6b505cf21b6c6ce8fdc4a7b59886f6d709df7d34901102ddcf9763eb20ec"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/analysis_tasks.json",
+      "size": 22170,
+      "allocated": 24576,
+      "dev": 16777248,
+      "inode": 1764948,
+      "nlink": 1,
+      "mtime_ns": 1792709743101804346,
+      "sha256": "ecf2eee90e87a656fb49e5a23457146d1eddbafa16311f218ca601b71dfdffbd"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/operators.json",
+      "size": 917651,
+      "allocated": 921600,
+      "dev": 16777248,
+      "inode": 1764934,
+      "nlink": 1,
+      "mtime_ns": 1792709742690445146,
+      "sha256": "9a04b08911d53eb76ef4d3e21b7bd90952aca39eb60540199bd37d3b2a761c54"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/path_refs.json",
+      "size": 4722328,
+      "allocated": 4722688,
+      "dev": 16777248,
+      "inode": 1764940,
+      "nlink": 1,
+      "mtime_ns": 1792709742931635498,
+      "sha256": "22dd70d215552416e832bff45e3d639417269683417ff0a2531b82e75b22ca7f"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/meter.json",
+      "size": 59090761,
+      "allocated": 59092992,
+      "dev": 16777248,
+      "inode": 1764937,
+      "nlink": 1,
+      "mtime_ns": 1792709742829364038,
+      "sha256": "2769aae9b586c884dc2385fc51bc948fb32bef32c3aff75a25ae1cfd2c6d3e2c"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/bus_train_vehicles.json",
+      "size": 736200,
+      "allocated": 737280,
+      "dev": 16777248,
+      "inode": 1764943,
+      "nlink": 1,
+      "mtime_ns": 1792709743025189032,
+      "sha256": "20dce9e9aa5b2804164917308428b0df3a7fbc6c14a59cc7a7e1c07ef3d9ef7b"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/equity_links.json",
+      "size": 2453947,
+      "allocated": 2457600,
+      "dev": 16777248,
+      "inode": 1764936,
+      "nlink": 1,
+      "mtime_ns": 1792709742714863697,
+      "sha256": "fa41a9f768748013714b0e2ccab7b624dc8faf50bda7e8c5f65119155023957b"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/native.json",
+      "size": 65299383,
+      "allocated": 65302528,
+      "dev": 16777248,
+      "inode": 1764925,
+      "nlink": 1,
+      "mtime_ns": 1792709742515425664,
+      "sha256": "621b0f13c1c5b1232dd95cd3703136bbb322c7d35476e30f91e111e4f5b6b67d"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/entities.json",
+      "size": 1368255,
+      "allocated": 1372160,
+      "dev": 16777248,
+      "inode": 1764935,
+      "nlink": 1,
+      "mtime_ns": 1792709742702193980,
+      "sha256": "db1dabe1d763fb4efae5e29a004b057f67ac60fd8c49e913e7fc6a68fe902c80"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/cargo_batches.json",
+      "size": 3131844,
+      "allocated": 3133440,
+      "dev": 16777248,
+      "inode": 1764941,
+      "nlink": 1,
+      "mtime_ns": 1792709742962958705,
+      "sha256": "ccca291ac558b5724d79aa3da6017fbb0c79a0ffe6e2d514dce8ae7098c2d698"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/ship_aircraft_vehicles.json",
+      "size": 183429,
+      "allocated": 184320,
+      "dev": 16777248,
+      "inode": 1764944,
+      "nlink": 1,
+      "mtime_ns": 1792709743032902531,
+      "sha256": "abaa5b8c26e0b87ae20a9aac79b7b40189b64e84bc919033e4b3a38b48e5cf8a"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/cases.json",
+      "size": 24909,
+      "allocated": 28672,
+      "dev": 16777248,
+      "inode": 1764954,
+      "nlink": 1,
+      "mtime_ns": 1792709743141017053,
+      "sha256": "744bcbbec2787fa1a2c513ba7b530f1366f5ab0cd461347f43e3cec3b8b76b3b"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/general_contracts.json",
+      "size": 1101276,
+      "allocated": 1101824,
+      "dev": 16777248,
+      "inode": 1764938,
+      "nlink": 1,
+      "mtime_ns": 1792709742848112528,
+      "sha256": "9d5a9af34fcf4347739ca021ee9e7fbfb929151741f2574a823f2b245cc66b79"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/maps.json",
+      "size": 2942,
+      "allocated": 4096,
+      "dev": 16777248,
+      "inode": 1764929,
+      "nlink": 1,
+      "mtime_ns": 1792709742541594567,
+      "sha256": "ae761e9b61d12349e7981d67af0348b7d695ac0f5afbdbe9c8c3397456b247ae"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/bills.json",
+      "size": 11091,
+      "allocated": 12288,
+      "dev": 16777248,
+      "inode": 1764955,
+      "nlink": 1,
+      "mtime_ns": 1792709743148970263,
+      "sha256": "ca1116d31f876fdc002ecc09173b768390ac80a0858dd4008a0b7e93a8c75584"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/team_members.json",
+      "size": 11688,
+      "allocated": 12288,
+      "dev": 16777248,
+      "inode": 1764947,
+      "nlink": 1,
+      "mtime_ns": 1792709743089798593,
+      "sha256": "dcb1def449b163d6e8d4e844a94cbace4be2e0157b352a95e3e41563bb9f7033"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/matters.json",
+      "size": 82934,
+      "allocated": 86016,
+      "dev": 16777248,
+      "inode": 1764946,
+      "nlink": 1,
+      "mtime_ns": 1792709743082350347,
+      "sha256": "e9c44415a18648aacb1632f1dff4d23c4d9065a329400d79c53f55f5a097cc0e"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/households.json",
+      "size": 15359282,
+      "allocated": 15360000,
+      "dev": 16777248,
+      "inode": 1764930,
+      "nlink": 1,
+      "mtime_ns": 1792709742568588728,
+      "sha256": "e3fb17426646d2b0d7be91d37ac60007116cbbdb0fb47df9dcb6b19e19866558"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/index.json",
+      "size": 18089,
+      "allocated": 20480,
+      "dev": 16777248,
+      "inode": 1765023,
+      "nlink": 1,
+      "mtime_ns": 1792709753591609495,
+      "sha256": "086ebf3f2489e59785d89297740ff6a845368804997084d1ba0376aec5e4b24a"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/allocation-phases.bin",
+      "size": 7808,
+      "allocated": 8192,
+      "dev": 16777248,
+      "inode": 1764924,
+      "nlink": 1,
+      "mtime_ns": 1792709753582810110,
+      "sha256": "53b46adae4aa3f36193021e41f7789ceae1fb62fbf141ae5508144c2e5b84143"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/housing.json",
+      "size": 16677375,
+      "allocated": 16678912,
+      "dev": 16777248,
+      "inode": 1764931,
+      "nlink": 1,
+      "mtime_ns": 1792709742631236435,
+      "sha256": "945e089c974fae08f7afdb0ce31e329a8a2f56ebedcecf2af2594d0a0d6bfd40"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/preview.json",
+      "size": 399,
+      "allocated": 4096,
+      "dev": 16777248,
+      "inode": 1764950,
+      "nlink": 1,
+      "mtime_ns": 1792709743106744481,
+      "sha256": "14befb84351445a252e881f1bbd872c814aa5d8d5482b5f24e8c2f07428ff6e8"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/hosts.json",
+      "size": 1419868,
+      "allocated": 1421312,
+      "dev": 16777248,
+      "inode": 1764951,
+      "nlink": 1,
+      "mtime_ns": 1792709743111962703,
+      "sha256": "9dd1b2bad52cffc8b9287d68802b58313ba1faa0f431db9c623fdb5dffe16122"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/v128-native-01/combined-control/model/layout/snapshots/snapshot-000002/od.json",
+      "size": 5423128,
+      "allocated": 5427200,
+      "dev": 16777248,
+      "inode": 1764939,
+      "nlink": 1,
+      "mtime_ns": 1792709742883548737,
+      "sha256": "9752dcc442e0ac5ce3176c39f682feba7da95b4eb122d2963de544cbab0e1b19"
+    }
+  ],
+  "old_generations_direct_restore_after": false,
+  "protected_190_not_deleted": true
+}

@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.136`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.137`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.137记录[M0实际smoke、旧格式冷恢复与基线交接](docs/evidence/m0-t13a-smoke-handoff-137/STATUS.md)：600次布局扫描及完整业务/恢复完成；外部编译干扰、缺测及快进超预算明确保留，clean/normal未通过。仅精确回收旧两代4份合成载荷，分配空间约5.914GiB；当前及旧兼容恢复原件完整保留。8h未启动，真实16GB仍not_run；C—F隔离开发不算本发布完成。
 
 v0.5.136修复[M0观察器来源键绑定](docs/evidence/m0-t13a-observer-source-136/STATUS.md)：原j3n通过准入后因工具字段错误零采样退出，失败原件保留。新控制器统一严格来源校验，18项Python测试、静态预检及真实冻结Rust故障退出路径验证通过；未运行新的smoke或8h，不改原负载/阈值。C线后续正在隔离实现真实企业清算与关闭，现有亏损停运不改称退出。
 

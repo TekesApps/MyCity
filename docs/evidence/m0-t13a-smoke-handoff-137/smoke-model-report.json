@@ -1,0 +1,18 @@
+{
+  "L1_coverage": "ready before business spawn; stop after complete business exit",
+  "business_and_layout_completed": true,
+  "cadence": "smoke",
+  "common_8MiB": "not_accepted",
+  "eight_hour": "not_run",
+  "exact_normal_owned": "not_accepted",
+  "formal_steady": "not_run",
+  "four_speeds": "not_run",
+  "full_M0": "not_accepted",
+  "latest_restored_generation": 2,
+  "layout_scans": 600,
+  "real_16GB": "not_run",
+  "schema": "mycity-joint-endurance-v1",
+  "source_sha256": "a6290a562362b7ea21379726f901a61cf54d32e8d9fe2059bccf3fe44449d3d8",
+  "supervisor_requested_heap_peak_bytes": 115590,
+  "whole_ns": 607201567708
+}

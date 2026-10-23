@@ -1,0 +1,10 @@
+{
+  "evidence_sha256_manifest": "verified",
+  "local_links": "verified",
+  "retirement_allocated_bytes": 6349701120,
+  "work_du_allocated_bytes": 103753355264,
+  "target_du_allocated_bytes": 4295131136,
+  "clean_performance": "not_accepted",
+  "eight_hour": "not_started",
+  "real_16GB": "not_run"
+}

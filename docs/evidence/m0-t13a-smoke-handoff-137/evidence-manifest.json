@@ -1,0 +1,56 @@
+[
+  {
+    "evidence": "smoke-observer-report.json",
+    "original": "/Volumes/HP P900/dev/MyCity/work/j3p-01/observed/observer-report.json",
+    "bytes": 9532,
+    "sha256": "3b16698b67a4fd09d44f89e7664a0501bf5a9faa8ad758065ff1d0b773a5d1e2"
+  },
+  {
+    "evidence": "smoke-model-report.json",
+    "original": "/Volumes/HP P900/dev/MyCity/work/j3p-01/observed/model/report.json",
+    "bytes": 626,
+    "sha256": "99ad134aeb7b0ded9e7e5fd257cf953eaf48db5d40254805eae61d805e2b5356"
+  },
+  {
+    "evidence": "functional-formal-eligibility.json",
+    "original": "/Volumes/HP P900/dev/MyCity/work/j3p-01/functional-formal-eligibility.json",
+    "bytes": 616,
+    "sha256": "861655360be27562b9d3e02b1bde0618871f70ce7b3695b21bac92f305c108b8"
+  },
+  {
+    "evidence": "log-budget.json",
+    "original": "/Volumes/HP P900/dev/MyCity/work/j3p-01/log-budget.json",
+    "bytes": 485346,
+    "sha256": "0ac7d1ab2e8c3858b2b490f8c9562b6a70a21c619e3a68b3e4216a1be5801527"
+  },
+  {
+    "evidence": "legacy-recovery-report.json",
+    "original": "/Volumes/HP P900/dev/MyCity/work/j3p-legacy-prefix-recovery-01/result/report.json",
+    "bytes": 15098,
+    "sha256": "546a3b361bb7c40bb7d03233afc9ec01ec00dbd88bda3faedb1a9832e999eff2"
+  },
+  {
+    "evidence": "legacy-recovery-exit.json",
+    "original": "/Volumes/HP P900/dev/MyCity/work/j3p-legacy-prefix-recovery-01/exit.json",
+    "bytes": 68,
+    "sha256": "061326fc039d70e07f44c8d792659c4517d238c00667731ed3f5d53e7c55dc94"
+  },
+  {
+    "evidence": "historical-control-restored.json",
+    "original": "/Volumes/HP P900/dev/MyCity/work/j3p-legacy-prefix-recovery-01/historical-control-restored.json",
+    "bytes": 139,
+    "sha256": "d4641788b58922b24e5d76bd62f988353e5ee38c74760d8faecce032f3dd3f4c"
+  },
+  {
+    "evidence": "retirement-intent.json",
+    "original": "/Volumes/HP P900/dev/MyCity/work/j3p-baseline-handoff-retirement-01/intent.json",
+    "bytes": 24968,
+    "sha256": "370768d546e00c288312516a741ddff981627cc9eaaae692e10b0eeb1c8948a4"
+  },
+  {
+    "evidence": "retirement-result.json",
+    "original": "/Volumes/HP P900/dev/MyCity/work/j3p-baseline-handoff-retirement-01/result.json",
+    "bytes": 491,
+    "sha256": "096b142aaf573f74096854ffe6be638e7c36bc0b9854e35a5bba0eba3b95cf2e"
+  }
+]

@@ -81,3 +81,7 @@ docs/evidence/core-construction-compensation-135/**/*.log whitespace=-blank-at-e
 # Preserve v136 failed and repaired observer subprocess receipts verbatim.
 docs/evidence/m0-t13a-observer-source-136/**/*.stdout whitespace=-blank-at-eof,-blank-at-eol
 docs/evidence/m0-t13a-observer-source-136/**/*.stderr whitespace=-blank-at-eof,-blank-at-eol
+
+# Hash-bound observer support bytes retain historical EOF whitespace.
+docs/evidence/m0-t13a-observer-source-136/control/frame_codec.py whitespace=-blank-at-eof
+docs/evidence/m0-t13a-observer-source-136/old-control/frame_codec.py whitespace=-blank-at-eof

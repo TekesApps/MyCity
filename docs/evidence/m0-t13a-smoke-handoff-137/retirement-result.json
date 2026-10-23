@@ -1,0 +1,13 @@
+{
+  "deleted_files": 4,
+  "deleted_allocated_bytes": 6349701120,
+  "deleted_logical_bytes": 6349700332,
+  "observed_volume_available_before": 1899067043840,
+  "observed_volume_available_after": 1905416724480,
+  "observed_available_delta": 6349680640,
+  "not_apfs_exclusive_reclaimed_bytes": true,
+  "old_generations_direct_restore": false,
+  "retained_components_unchanged": true,
+  "current_full_and_protected_legacy_originals_retained": true,
+  "storage": "external HP P900 USB/APFS SSD"
+}

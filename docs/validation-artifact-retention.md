@@ -1,5 +1,7 @@
 # 验证产物回收规则
 
+**v0.5.137基线交接回收**：[实际恢复与清单](evidence/m0-t13a-smoke-handoff-137/STATUS.md)：当前reader对受保护旧部分prefix完整冷恢复并继续扫描，通过后仅退役v128两代4份pressure/reserve，分配空间6349701120B；卷可用空间变化另列。旧两代不可直接完整恢复，当前j3p与旧兼容输入完整保留。
+
 **v0.5.112诊断终态回收**：[本轮结果](evidence/m0-t13a-extents-joint-retry-02/STATUS.md)精确退役54份新诊断pressure/reserve及逐字节既有gzip匹配组件6,748,553,216B，190迁移后原件前后全SHA保留。两代已不可直接完整恢复；成功冷开属于退役前实测。真实执行统计按resolved外置work/target与work卷，旧prepare对symlink的0读数已另纠正，不能用于回收成果。
 
 **work现行位置与保护身份**：[完整迁移记录](evidence/work-migration-20261022/STATUS.md)。work原路径链接外置HP P900 SSD，原件均在，190份新卷保护身份见该记录；历史same-inode收据不等于当前身份。后续记录实际存储路径/卷/空间，新IO基线注明外置USB/APFS SSD；源码卷df不能代替work所在卷空间。
