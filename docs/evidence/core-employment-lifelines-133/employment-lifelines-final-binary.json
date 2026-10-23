@@ -1,0 +1,11 @@
+{
+  "source_sha256": "9bc7e340cc4bf167040d10ac95233d69977fa61d4c8e2e94f212af56e4ca7324",
+  "source_files": 264,
+  "fixed_input_files": 276,
+  "source_zip": "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/116-employment-lifelines-build/source.zip",
+  "source_zip_sha256": "4d0c58467595b53c716507fda272f36389a7504fc56c9b4a8b2874952059d272",
+  "binary": "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/116-employment-lifelines-build/executables/ee74915c942c70de01aa1a8756d058051043fbf8b92ccca123fbed204002508b/town_lifelines",
+  "binary_sha256": "ee74915c942c70de01aa1a8756d058051043fbf8b92ccca123fbed204002508b",
+  "scope": "town_lifelines example-only on v132 shared core; no embedded headless source ID",
+  "storage": "HP P900 external USB/APFS SSD"
+}

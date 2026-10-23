@@ -1,0 +1,21 @@
+{
+  "argv": [
+    "cargo",
+    "clippy",
+    "--release",
+    "--locked",
+    "--offline",
+    "-p",
+    "mycity-storage",
+    "--example",
+    "town_lifelines",
+    "--",
+    "-D",
+    "warnings"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/employment-lifelines-current",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-23T00:03:39.097438+00:00",
+  "source_manifest_sha256": "e89941b33d4ed52a36f48bbce59716ad3b4dd30ebd714b276466fdc4e3a4c3b8"
+}

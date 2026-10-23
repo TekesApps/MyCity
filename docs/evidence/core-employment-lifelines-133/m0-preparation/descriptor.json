@@ -1,0 +1,12 @@
+{
+  "source_sha256": "a6290a562362b7ea21379726f901a61cf54d32e8d9fe2059bccf3fe44449d3d8",
+  "source_files": 264,
+  "fixed_input_files": 276,
+  "storage": "external HP P900 USB/APFS SSD",
+  "binary": "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/109-canonical-integrated-headless/executables/8b27415ce6dc6a07660b31dd1a31bdb549615347a32bb3675b6582bad57acd26/mycity-headless",
+  "binary_sha256": "8b27415ce6dc6a07660b31dd1a31bdb549615347a32bb3675b6582bad57acd26",
+  "source_zip": "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/109-canonical-integrated-headless/source.zip",
+  "source_zip_sha256": "f083a1fe9521f390c16d4665c61ca4f6b2c5461cdf92d7dea52d5ff238391094",
+  "scope": "final integrated binary; not granted prior-source performance evidence",
+  "source_identity_correction": "Initial record iterated pathlib path-part order; corrected to build.rs UTF-8 path string sort. Fixed files/ZIP and binary bytes unchanged."
+}

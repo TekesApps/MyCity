@@ -1,0 +1,72 @@
+[
+  {
+    "case": "normal",
+    "argv": [
+      "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/116-employment-lifelines-build/executables/ee74915c942c70de01aa1a8756d058051043fbf8b92ccca123fbed204002508b/town_lifelines",
+      "--store-dir",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/117-employment-lifelines-cases/cases/normal/world"
+    ],
+    "exit_code": 0
+  },
+  {
+    "case": "held",
+    "argv": [
+      "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/116-employment-lifelines-build/executables/ee74915c942c70de01aa1a8756d058051043fbf8b92ccca123fbed204002508b/town_lifelines",
+      "--store-dir",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/117-employment-lifelines-cases/cases/held/world",
+      "--hold-road-inspection"
+    ],
+    "exit_code": 0
+  },
+  {
+    "case": "generator-failure",
+    "argv": [
+      "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/116-employment-lifelines-build/executables/ee74915c942c70de01aa1a8756d058051043fbf8b92ccca123fbed204002508b/town_lifelines",
+      "--store-dir",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/117-employment-lifelines-cases/cases/generator-failure/world",
+      "--generator-failure"
+    ],
+    "exit_code": 0
+  },
+  {
+    "case": "construction-utilities",
+    "argv": [
+      "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/116-employment-lifelines-build/executables/ee74915c942c70de01aa1a8756d058051043fbf8b92ccca123fbed204002508b/town_lifelines",
+      "--store-dir",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/117-employment-lifelines-cases/cases/construction-utilities/world",
+      "--construction-utilities"
+    ],
+    "exit_code": 1
+  },
+  {
+    "case": "construction-held",
+    "argv": [
+      "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/116-employment-lifelines-build/executables/ee74915c942c70de01aa1a8756d058051043fbf8b92ccca123fbed204002508b/town_lifelines",
+      "--store-dir",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/117-employment-lifelines-cases/cases/construction-held/world",
+      "--construction-utilities",
+      "--hold-road-inspection"
+    ],
+    "exit_code": 1
+  },
+  {
+    "case": "employment-control",
+    "argv": [
+      "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/116-employment-lifelines-build/executables/ee74915c942c70de01aa1a8756d058051043fbf8b92ccca123fbed204002508b/town_lifelines",
+      "--store-dir",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/117-employment-lifelines-cases/cases/employment-control/world",
+      "--employment-control"
+    ],
+    "exit_code": 1
+  },
+  {
+    "case": "employment-change",
+    "argv": [
+      "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/116-employment-lifelines-build/executables/ee74915c942c70de01aa1a8756d058051043fbf8b92ccca123fbed204002508b/town_lifelines",
+      "--store-dir",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/117-employment-lifelines-cases/cases/employment-change/world",
+      "--employment-change"
+    ],
+    "exit_code": 1
+  }
+]

@@ -1,0 +1,146 @@
+{
+  "checks": [
+    "seven case receipts have process exit 0 and successful mode/scope output",
+    "five pre-existing modes preserve 108 business fields and exact state hashes",
+    "employment control/change full genesis.json and embedded opening bytes match exactly",
+    "every account cash and stock basis is backed by matching opening source",
+    "daily sales are recomputed from demand, cash, inventory, fixed quote price, transport fee, and proof-backed route capacity",
+    "old/new payroll intervals, work seconds, accrued/paid wages, household cash, market spend and final inventory reconcile",
+    "traffic proof IDs, entrances, directions, route paths, capacities, profile identity, and cold checkpoint are checked",
+    "employment comparisons do not require equal proof hashes; normalized daily traffic structure is compared"
+  ],
+  "common_opening": {
+    "full_genesis_files_equal": true,
+    "genesis_file_sha256": "56048a4bcece3e5c8c261c0fe28168d85690697d7303445b48762abcbedaee80",
+    "household_5_open_cash_cents": 0,
+    "new_employer_8_open_cash_cents": 1000,
+    "opening_bytes_equal": true,
+    "opening_sha256": "b9b070cda8e0e4833f72ea2dcd4e7d64f3e66a857b5fff0e0f257a9cbf17d666",
+    "source_18_zeroed": true,
+    "source_25_added": true,
+    "source_backed_capital_basis_cents": 3106100,
+    "source_backed_inventory_basis_cents": 5100,
+    "source_backed_total_cash_cents": 3101000
+  },
+  "employment_economy_and_traffic": {
+    "change_daily_wages_cents": [
+      80,
+      8,
+      8
+    ],
+    "change_final_cash_and_inventory_checked_from_cold_checkpoint": true,
+    "change_goods_and_freight_cents": {
+      "freight": 72,
+      "goods": 24,
+      "total": 96
+    },
+    "change_sales_by_day": [
+      20,
+      2,
+      2
+    ],
+    "computed_demand_units_per_day": 100,
+    "control_daily_wages_cents": [
+      80,
+      80,
+      80
+    ],
+    "control_final_cash_and_inventory_checked_from_cold_checkpoint": true,
+    "control_goods_and_freight_cents": {
+      "freight": 180,
+      "goods": 60,
+      "total": 240
+    },
+    "control_sales_by_day": [
+      20,
+      20,
+      20
+    ],
+    "effective_delivered_unit_price_derived_per_day": 4,
+    "goods_per_trip": 10,
+    "known_cli_field_semantics": {
+      "market_payment_total": "not_used_as_goods_sales; it sums the utility operator payment returned by settle_three_day_market"
+    },
+    "relative_employer_and_freight_provider_cashflows_reconciled": true,
+    "scope_limits": {
+      "continuous_self_funding": "not_demonstrated",
+      "employment_assignment": "trusted_fixture_input",
+      "endogenous_job_search": "not_implemented",
+      "legal_employment_approval": "not_modeled",
+      "transport_od": "fixed_sources_101_102"
+    },
+    "shelf_price_cents_per_unit": 1,
+    "traffic_structures_match_without_hash_equality": true
+  },
+  "failures": [],
+  "historical_five_mode_regression": {
+    "construction-held": {
+      "cash_conserved": "true",
+      "day1_capacity": "2",
+      "day1_produced": "100",
+      "day1_sales": "20",
+      "day2_capacity": "2",
+      "day2_produced": "0",
+      "day2_sales": "20",
+      "day3_capacity": "2",
+      "day3_produced": "0",
+      "day3_sales": "20",
+      "final_cold_open_equal": "true",
+      "inspection_held": "true",
+      "state_hash": "e2f7eb072f2f2825c9ffb04d113fa210f1c7e94c8bacbd909938c002281caa72"
+    },
+    "construction-utilities": {
+      "cash_conserved": "true",
+      "day1_capacity": "2",
+      "day1_produced": "100",
+      "day1_sales": "20",
+      "day2_capacity": "2",
+      "day2_produced": "0",
+      "day2_sales": "20",
+      "day3_capacity": "10",
+      "day3_produced": "0",
+      "day3_sales": "60",
+      "electricity_fee": "8000",
+      "electricity_used": "400000",
+      "final_cold_open_equal": "true",
+      "state_hash": "06f8736dcfb9fb88d0edd6863e0157ee860fa19a841706547070abfac14d3aa6",
+      "water_fee": "4000",
+      "water_used": "400000"
+    },
+    "generator-failure": {
+      "boot_electricity_export_total": "0",
+      "cash_conserved": "true",
+      "day1_produced": "0",
+      "day1_sales": "0",
+      "day2_produced": "0",
+      "day2_sales": "0",
+      "road_capacity_after_inspection": "10",
+      "state_hash": "e3d18aee9f8f523f4e542cc4703910ae32118774b91a00795fb830e074672bc9"
+    },
+    "held": {
+      "cash_conserved": "true",
+      "day1_produced": "0",
+      "day1_sales": "0",
+      "day2_produced": "100",
+      "day2_sales": "20",
+      "inspection_held": "true",
+      "road_capacity_after_inspection": "2",
+      "state_hash": "0279a794cd9aa51193f0e0535840ea4958c4f1d7c2ed00ed4f2be9d94ba26577"
+    },
+    "normal": {
+      "cash_conserved": "true",
+      "cold_open_state_hash_equal": "true",
+      "day1_produced": "0",
+      "day1_sales": "0",
+      "day2_produced": "100",
+      "day2_sales": "100",
+      "road_capacity_after_inspection": "10",
+      "state_hash": "4c9cab6fb9765f78da94dc44f6d135e3bfff28a10d9234a9fd6bd0be6af963eb"
+    }
+  },
+  "missing_evidence": [],
+  "model_or_cargo_executed": false,
+  "performance_acceptance": "not_in_scope",
+  "scope": "independent_functional_case_audit",
+  "status": "passed"
+}

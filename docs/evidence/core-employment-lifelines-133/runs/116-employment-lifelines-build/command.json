@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "cargo",
+    "build",
+    "--release",
+    "--locked",
+    "--offline",
+    "-p",
+    "mycity-storage",
+    "--example",
+    "town_lifelines"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/employment-lifelines-current",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-23T00:04:19.620795+00:00",
+  "source_manifest_sha256": "65ccc5935b4afd4cd12d754747c3e1a7f49c7f5b2d781d616dcd98d6aee74dd9"
+}

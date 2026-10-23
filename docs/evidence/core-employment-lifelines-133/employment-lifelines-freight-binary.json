@@ -1,0 +1,11 @@
+{
+  "source_sha256": "04aaac50820e1403f1e762cdd6402750ae1af7e671d0c35da5f15edb7188c6f8",
+  "source_files": 264,
+  "fixed_input_files": 276,
+  "source_zip": "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/119-employment-lifelines-freight-build/source.zip",
+  "source_zip_sha256": "c90a08e3c8c981e6a8d4183f1a31acaf305125e91d62e387af218d73313e4636",
+  "binary": "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/119-employment-lifelines-freight-build/executables/c1cd739f6063ad5d0e5d3d7cdeb444a9db24084d92e9fe6a36d47c8ae890330b/town_lifelines",
+  "binary_sha256": "c1cd739f6063ad5d0e5d3d7cdeb444a9db24084d92e9fe6a36d47c8ae890330b",
+  "scope": "town_lifelines example-only; real transport freight retained; shared production core unchanged from v132",
+  "storage": "HP P900 external USB/APFS SSD"
+}

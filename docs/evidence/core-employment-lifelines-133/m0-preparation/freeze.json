@@ -1,0 +1,17 @@
+{
+  "schema": "mycity-fixed-joint-control-freeze-v2",
+  "source_sha256": "a6290a562362b7ea21379726f901a61cf54d32e8d9fe2059bccf3fe44449d3d8",
+  "source_files": 264,
+  "fixed_input_files": 276,
+  "lock_sha256": "7da5c54a8499a07cbc71dcecce0c0095d4af3b8b6e5052783f20d188037b6dd6",
+  "acceptance_sha256": "876ea995ea7834bfcea59b2ef8fa56d502aed9006477bcc67bcaa3f5cd944508",
+  "full_opening_sha256": "04c113c62b0b682f94f9abfbde7618b87bd972f3931504366be9e07c130b4726",
+  "source_zip_sha256": "f083a1fe9521f390c16d4665c61ca4f6b2c5461cdf92d7dea52d5ff238391094",
+  "source_manifest_sha256": "f81c917add50a6c7a5f65aaec6e6bdded5b808f86890660de88cd16ed8d62b64",
+  "binary_sha256": "8b27415ce6dc6a07660b31dd1a31bdb549615347a32bb3675b6582bad57acd26",
+  "descriptor_sha256": "f73fa20f32abc19120615800de52e3dfe1e5a19df0a6d2b23a447c48e9b54785",
+  "prepared_repo_commit": "61587dcc0297924d014ce3c6eb7e47fd6a6503dc",
+  "cargo_invoked": false,
+  "pressure_started": false,
+  "prepared_repo_tag": "v0.5.132"
+}

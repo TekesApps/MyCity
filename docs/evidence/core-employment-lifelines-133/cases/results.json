@@ -1,0 +1,72 @@
+[
+  {
+    "case": "normal",
+    "argv": [
+      "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/119-employment-lifelines-freight-build/executables/c1cd739f6063ad5d0e5d3d7cdeb444a9db24084d92e9fe6a36d47c8ae890330b/town_lifelines",
+      "--store-dir",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/120-employment-lifelines-freight-cases/cases/normal/world"
+    ],
+    "exit_code": 0
+  },
+  {
+    "case": "held",
+    "argv": [
+      "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/119-employment-lifelines-freight-build/executables/c1cd739f6063ad5d0e5d3d7cdeb444a9db24084d92e9fe6a36d47c8ae890330b/town_lifelines",
+      "--store-dir",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/120-employment-lifelines-freight-cases/cases/held/world",
+      "--hold-road-inspection"
+    ],
+    "exit_code": 0
+  },
+  {
+    "case": "generator-failure",
+    "argv": [
+      "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/119-employment-lifelines-freight-build/executables/c1cd739f6063ad5d0e5d3d7cdeb444a9db24084d92e9fe6a36d47c8ae890330b/town_lifelines",
+      "--store-dir",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/120-employment-lifelines-freight-cases/cases/generator-failure/world",
+      "--generator-failure"
+    ],
+    "exit_code": 0
+  },
+  {
+    "case": "construction-utilities",
+    "argv": [
+      "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/119-employment-lifelines-freight-build/executables/c1cd739f6063ad5d0e5d3d7cdeb444a9db24084d92e9fe6a36d47c8ae890330b/town_lifelines",
+      "--store-dir",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/120-employment-lifelines-freight-cases/cases/construction-utilities/world",
+      "--construction-utilities"
+    ],
+    "exit_code": 0
+  },
+  {
+    "case": "construction-held",
+    "argv": [
+      "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/119-employment-lifelines-freight-build/executables/c1cd739f6063ad5d0e5d3d7cdeb444a9db24084d92e9fe6a36d47c8ae890330b/town_lifelines",
+      "--store-dir",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/120-employment-lifelines-freight-cases/cases/construction-held/world",
+      "--construction-utilities",
+      "--hold-road-inspection"
+    ],
+    "exit_code": 0
+  },
+  {
+    "case": "employment-control",
+    "argv": [
+      "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/119-employment-lifelines-freight-build/executables/c1cd739f6063ad5d0e5d3d7cdeb444a9db24084d92e9fe6a36d47c8ae890330b/town_lifelines",
+      "--store-dir",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/120-employment-lifelines-freight-cases/cases/employment-control/world",
+      "--employment-control"
+    ],
+    "exit_code": 0
+  },
+  {
+    "case": "employment-change",
+    "argv": [
+      "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/119-employment-lifelines-freight-build/executables/c1cd739f6063ad5d0e5d3d7cdeb444a9db24084d92e9fe6a36d47c8ae890330b/town_lifelines",
+      "--store-dir",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/120-employment-lifelines-freight-cases/cases/employment-change/world",
+      "--employment-change"
+    ],
+    "exit_code": 0
+  }
+]

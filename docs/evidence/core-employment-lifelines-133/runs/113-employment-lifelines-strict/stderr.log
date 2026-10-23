@@ -1,0 +1,33 @@
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/employment-lifelines-current/crates/city-core)
+    Checking mycity-map v0.1.0 (/Users/frankqin/dev/MyCity-core-work/employment-lifelines-current/crates/city-map)
+    Checking mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/employment-lifelines-current/crates/city-storage)
+error[E0502]: cannot borrow `store` as mutable because it is also borrowed as immutable
+    --> crates/city-storage/examples/town_lifelines.rs:1170:5
+     |
+1101 |     let timeline = store
+     |                    ----- immutable borrow occurs here
+...
+1170 |     store.checkpoint().map_err(err)?;
+     |     ^^^^^^^^^^^^^^^^^^ mutable borrow occurs here
+...
+1318 |         new_employer_payroll.map_or(0, |payroll| payroll.paid.value()),
+     |         -------------------- immutable borrow later used here
+
+error[E0505]: cannot move out of `store` because it is borrowed
+    --> crates/city-storage/examples/town_lifelines.rs:1171:10
+     |
+579  |     mut store: Store,
+     |     --------- binding `store` declared here
+...
+1101 |     let timeline = store
+     |                    ----- borrow of `store` occurs here
+...
+1171 |     drop(store);
+     |          ^^^^^ move out of `store` occurs here
+...
+1318 |         new_employer_payroll.map_or(0, |payroll| payroll.paid.value()),
+     |         -------------------- borrow later used here
+
+Some errors have detailed explanations: E0502, E0505.
+For more information about an error, try `rustc --explain E0502`.
+error: could not compile `mycity-storage` (example "town_lifelines") due to 2 previous errors

@@ -1,0 +1,42 @@
+{
+  "commands": [
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "/Volumes/HP P900/dev/MyCity/work/j3n-control",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "cwd": "/Volumes/HP P900/dev/MyCity/work/j3n-control",
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python3",
+        "/Volumes/HP P900/dev/MyCity/work/j3n-control/preflight.py"
+      ],
+      "cwd": "/Volumes/HP P900/dev/MyCity/work/j3n-control",
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python3",
+        "-c",
+        "import run; run.verify_support_manifest(); print(\"support_manifest_matched\")"
+      ],
+      "cwd": "/Volumes/HP P900/dev/MyCity/work/j3n-control",
+      "exit_code": 0
+    }
+  ],
+  "support_manifest_sha256": "17316fe02f583936516ebfdde2dfda250ffbd62f0005f371b2c01bb1082eb9e5",
+  "scope": "pure tests and static source/storage/path checks only",
+  "admission_started": false,
+  "model_started": false,
+  "formal_acceptance": false,
+  "unix_time": 1792714553.947576
+}

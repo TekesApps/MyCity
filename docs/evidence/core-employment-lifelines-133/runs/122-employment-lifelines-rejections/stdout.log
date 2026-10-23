@@ -1,0 +1,50 @@
+[
+  {
+    "case": "conflicting-employment",
+    "exit_code": 1,
+    "store_created": false,
+    "argv": [
+      "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/119-employment-lifelines-freight-build/executables/c1cd739f6063ad5d0e5d3d7cdeb444a9db24084d92e9fe6a36d47c8ae890330b/town_lifelines",
+      "--store-dir",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/122-employment-lifelines-rejections/conflicting-employment-must-not-exist",
+      "--employment-control",
+      "--employment-change"
+    ]
+  },
+  {
+    "case": "held-employment",
+    "exit_code": 1,
+    "store_created": false,
+    "argv": [
+      "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/119-employment-lifelines-freight-build/executables/c1cd739f6063ad5d0e5d3d7cdeb444a9db24084d92e9fe6a36d47c8ae890330b/town_lifelines",
+      "--store-dir",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/122-employment-lifelines-rejections/held-employment-must-not-exist",
+      "--employment-change",
+      "--hold-road-inspection"
+    ]
+  },
+  {
+    "case": "failed-generator-employment",
+    "exit_code": 1,
+    "store_created": false,
+    "argv": [
+      "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/119-employment-lifelines-freight-build/executables/c1cd739f6063ad5d0e5d3d7cdeb444a9db24084d92e9fe6a36d47c8ae890330b/town_lifelines",
+      "--store-dir",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/122-employment-lifelines-rejections/failed-generator-employment-must-not-exist",
+      "--employment-change",
+      "--generator-failure"
+    ]
+  },
+  {
+    "case": "existing-store",
+    "exit_code": 1,
+    "world_file_hashes_unchanged": true,
+    "world_files": 18,
+    "argv": [
+      "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/119-employment-lifelines-freight-build/executables/c1cd739f6063ad5d0e5d3d7cdeb444a9db24084d92e9fe6a36d47c8ae890330b/town_lifelines",
+      "--employment-change",
+      "--store-dir",
+      "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/120-employment-lifelines-freight-cases/cases/employment-change/world"
+    ]
+  }
+]

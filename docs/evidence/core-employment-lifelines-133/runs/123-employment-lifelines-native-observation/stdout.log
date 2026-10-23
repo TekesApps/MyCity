@@ -1,0 +1,40 @@
+{
+  "runs": [
+    {
+      "case": "employment-control",
+      "argv": [
+        "/usr/bin/time",
+        "-l",
+        "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/119-employment-lifelines-freight-build/executables/c1cd739f6063ad5d0e5d3d7cdeb444a9db24084d92e9fe6a36d47c8ae890330b/town_lifelines",
+        "--store-dir",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/123-employment-lifelines-native-observation/employment-control/world",
+        "--employment-control"
+      ],
+      "exit_code": 0,
+      "state_hash_matches_120": "b1740df31ec9a1d60d19ad2fce91e85b76b4b3fbb2182bb9c7da8ae296bded8f",
+      "max_rss_bytes": 57917440,
+      "peak_footprint_bytes": 53576064,
+      "time_stderr": "stderr.log"
+    },
+    {
+      "case": "employment-change",
+      "argv": [
+        "/usr/bin/time",
+        "-l",
+        "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/119-employment-lifelines-freight-build/executables/c1cd739f6063ad5d0e5d3d7cdeb444a9db24084d92e9fe6a36d47c8ae890330b/town_lifelines",
+        "--store-dir",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/123-employment-lifelines-native-observation/employment-change/world",
+        "--employment-change"
+      ],
+      "exit_code": 0,
+      "state_hash_matches_120": "498fd63855843845a35e83152201ded5220fa8a164a28231c1beff6bc4e017c8",
+      "max_rss_bytes": 54951936,
+      "peak_footprint_bytes": 50626968,
+      "time_stderr": "stderr.log"
+    }
+  ],
+  "scope": "two small CLI whole-process observations and deterministic repeat, no clean admission, no incremental allocation or 16GB/M0 performance pass",
+  "storage": "external HP P900 USB/APFS SSD",
+  "source_sha256": "04aaac50820e1403f1e762cdd6402750ae1af7e671d0c35da5f15edb7188c6f8",
+  "binary_sha256": "c1cd739f6063ad5d0e5d3d7cdeb444a9db24084d92e9fe6a36d47c8ae890330b"
+}

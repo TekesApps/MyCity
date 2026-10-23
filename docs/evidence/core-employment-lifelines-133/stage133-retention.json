@@ -1,0 +1,58 @@
+{
+  "scope": "v133 fixed source ZIP duplicates only",
+  "rows": [
+    {
+      "round": "119-employment-lifelines-freight-build",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/119-employment-lifelines-freight-build/source.zip",
+      "reason": "terminal, no lsof handles, identical full fixed-input ZIP; replace with hard link preserving complete bytes and original path",
+      "sha256": "c90a08e3c8c981e6a8d4183f1a31acaf305125e91d62e387af218d73313e4636",
+      "evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/119-employment-lifelines-freight-build/exit.json",
+      "prior_allocation_bytes": 4259840
+    },
+    {
+      "round": "120-employment-lifelines-freight-cases",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/120-employment-lifelines-freight-cases/source.zip",
+      "reason": "terminal, no lsof handles, identical full fixed-input ZIP; replace with hard link preserving complete bytes and original path",
+      "sha256": "c90a08e3c8c981e6a8d4183f1a31acaf305125e91d62e387af218d73313e4636",
+      "evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/120-employment-lifelines-freight-cases/exit.json",
+      "prior_allocation_bytes": 4259840
+    },
+    {
+      "round": "121-employment-lifelines-format",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/121-employment-lifelines-format/source.zip",
+      "reason": "terminal, no lsof handles, identical full fixed-input ZIP; replace with hard link preserving complete bytes and original path",
+      "sha256": "c90a08e3c8c981e6a8d4183f1a31acaf305125e91d62e387af218d73313e4636",
+      "evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/121-employment-lifelines-format/exit.json",
+      "prior_allocation_bytes": 4259840
+    },
+    {
+      "round": "122-employment-lifelines-rejections",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/122-employment-lifelines-rejections/source.zip",
+      "reason": "terminal, no lsof handles, identical full fixed-input ZIP; replace with hard link preserving complete bytes and original path",
+      "sha256": "c90a08e3c8c981e6a8d4183f1a31acaf305125e91d62e387af218d73313e4636",
+      "evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/122-employment-lifelines-rejections/exit.json",
+      "prior_allocation_bytes": 4259840
+    },
+    {
+      "round": "123-employment-lifelines-native-observation",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/123-employment-lifelines-native-observation/source.zip",
+      "reason": "terminal, no lsof handles, identical full fixed-input ZIP; replace with hard link preserving complete bytes and original path",
+      "sha256": "c90a08e3c8c981e6a8d4183f1a31acaf305125e91d62e387af218d73313e4636",
+      "evidence": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/123-employment-lifelines-native-observation/exit.json",
+      "prior_allocation_bytes": 4259840
+    }
+  ],
+  "anchor": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/118-employment-lifelines-freight-strict/source.zip",
+  "file_allocation_before_bytes": 25559040,
+  "file_allocation_after_unique_bytes": 4259840,
+  "file_allocation_reduction_bytes": 21299200,
+  "observed_ssd_available_delta_bytes": 21250048,
+  "APFS_exclusive_reclaim_claimed": false,
+  "all_full_bytes_and_paths_retained": true,
+  "full_restore_originals_deleted": false,
+  "source_dependencies_executables_logs_retained": true,
+  "shared_target": "existing external shared target reused; no new target",
+  "protected_190_originals": "untouched",
+  "formal_measurement_active": false,
+  "unix_time": 1792714605.6557639
+}

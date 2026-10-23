@@ -1,0 +1,100 @@
+{
+  "status": "passed_frozen_pathname_uds_inventory",
+  "path_basis_includes_resolved_external_work": "/Volumes/HP P900/dev/MyCity/work",
+  "sun_path_limit_bytes": 104,
+  "rule": "UTF-8 pathname byte count plus terminating NUL must be strictly less than 104",
+  "pathname_bind_sites": [
+    {
+      "source": "crates/city-headless/src/normal_pool/broker.rs",
+      "line": 773,
+      "text": "let listener = UnixListener::bind(&endpoint).map_err(err)?;"
+    },
+    {
+      "source": "crates/city-headless/src/normal_pool.rs",
+      "line": 917,
+      "text": "let listener = UnixListener::bind(root.join(\"pool.sock\")).map_err(err)?;"
+    }
+  ],
+  "pathname_connect_sites": [
+    {
+      "source": "crates/city-headless/src/normal_pool/broker.rs",
+      "line": 375,
+      "text": "let stream = UnixStream::connect(endpoint).map_err(err)?;"
+    },
+    {
+      "source": "crates/city-headless/src/normal_pool.rs",
+      "line": 693,
+      "text": "let mut socket = UnixStream::connect(root.join(\"pool.sock\")).map_err(err)?;"
+    },
+    {
+      "source": "crates/city-headless/tests/normal_pool.rs",
+      "line": 227,
+      "text": "let mut socket = UnixStream::connect(root.join(\"pool.sock\")).unwrap();"
+    },
+    {
+      "source": "crates/city-headless/tests/normal_pool.rs",
+      "line": 234,
+      "text": "let mut socket = UnixStream::connect(root.join(\"pool.sock\")).unwrap();"
+    },
+    {
+      "source": "crates/city-headless/tests/normal_pool.rs",
+      "line": 374,
+      "text": "let s = UnixStream::connect(root.join(\"pool.sock\")).unwrap();"
+    }
+  ],
+  "socketpair_transport": "compute-worker uses inherited anonymous UnixStream descriptors; no filesystem pathname",
+  "normal_pool_path_derivation": "joint_driver dir.join(normal-pool) -> normal_pool root.join(pool.sock); shared by business/layout workers",
+  "run_paths": [
+    {
+      "run_name": "j3n-01",
+      "path_basis": "invocation_symlink_path",
+      "model_root": "/Users/frankqin/dev/MyCity/work/j3n-01/observed/model",
+      "normal_pool_socket": {
+        "path": "/Users/frankqin/dev/MyCity/work/j3n-01/observed/model/normal-pool/pool.sock",
+        "utf8_bytes_plus_nul": 76,
+        "sun_path_bytes": 104,
+        "valid": true
+      }
+    },
+    {
+      "run_name": "j3n-01",
+      "path_basis": "resolved_external_path",
+      "model_root": "/Volumes/HP P900/dev/MyCity/work/j3n-01/observed/model",
+      "normal_pool_socket": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/j3n-01/observed/model/normal-pool/pool.sock",
+        "utf8_bytes_plus_nul": 77,
+        "sun_path_bytes": 104,
+        "valid": true
+      }
+    },
+    {
+      "run_name": "j3o-01",
+      "path_basis": "invocation_symlink_path",
+      "model_root": "/Users/frankqin/dev/MyCity/work/j3o-01/observed/model",
+      "normal_pool_socket": {
+        "path": "/Users/frankqin/dev/MyCity/work/j3o-01/observed/model/normal-pool/pool.sock",
+        "utf8_bytes_plus_nul": 76,
+        "sun_path_bytes": 104,
+        "valid": true
+      }
+    },
+    {
+      "run_name": "j3o-01",
+      "path_basis": "resolved_external_path",
+      "model_root": "/Volumes/HP P900/dev/MyCity/work/j3o-01/observed/model",
+      "normal_pool_socket": {
+        "path": "/Volumes/HP P900/dev/MyCity/work/j3o-01/observed/model/normal-pool/pool.sock",
+        "utf8_bytes_plus_nul": 77,
+        "sun_path_bytes": 104,
+        "valid": true
+      }
+    }
+  ],
+  "max_formatted_broker_socket": {
+    "path": "/tmp/mc-w-ffffffffffffffff-18446744073709551615-ffffffffffffffff.sock",
+    "utf8_bytes_plus_nul": 70,
+    "sun_path_bytes": 104,
+    "valid": true
+  },
+  "all_bind_and_connect_paths_fit": true
+}

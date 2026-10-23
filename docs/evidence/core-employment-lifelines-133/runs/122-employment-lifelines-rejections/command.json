@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "python3",
+    "/Users/frankqin/dev/MyCity/work/construction-utilities-current-01/check-employment-lifelines-rejections.py"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/employment-lifelines-current",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-23T00:10:17.103451+00:00",
+  "source_manifest_sha256": "cc897c191cd7810ab2f0e0811715bec0f369b25222df6c479718a18e4481bb0c"
+}

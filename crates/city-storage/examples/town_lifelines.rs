@@ -45,12 +45,35 @@ const ROAD_RESOURCE: u32 = 81;
 const SHIFT_END: u64 = 17 * 3_600;
 const CONSTRUCTION_SHORTAGE_OPERATION: u64 = 81_003;
 const CONSTRUCTION_WORK_LIMIT_OPERATION: u64 = 81_004;
+const NEW_EMPLOYER: u32 = 8;
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum EmploymentScenario {
+    None,
+    Control,
+    Change,
+}
+
+impl EmploymentScenario {
+    fn enabled(self) -> bool {
+        self != Self::None
+    }
+
+    fn label(self) -> &'static str {
+        match self {
+            Self::None => "none",
+            Self::Control => "employment-control",
+            Self::Change => "employment-change",
+        }
+    }
+}
 
 #[derive(Clone, Copy)]
 struct Options {
     hold_road_inspection: bool,
     generator_failure: bool,
     construction_utilities: bool,
+    employment: EmploymentScenario,
 }
 
 fn err(value: impl std::fmt::Debug) -> String {
@@ -237,8 +260,36 @@ fn project(construction_utilities: bool) -> Result<Project, String> {
     Ok(project)
 }
 
-fn opening_bytes(profile_sha256: [u8; 32], project: &Project) -> Result<Vec<u8>, String> {
+fn opening_bytes(
+    profile_sha256: [u8; 32],
+    project: &Project,
+    employment: EmploymentScenario,
+) -> Result<Vec<u8>, String> {
     let mut value: Value = serde_json::from_slice(FIXTURE).map_err(err)?;
+    if employment.enabled() {
+        // Both comparison modes use the same opening. Move the original 1,000 cash
+        // capital from the household to a new, idle employer so wages remain funded
+        // without injecting extra aggregate cash into the experiment.
+        value["sources"][18]["amount"] = 0.into();
+        value["sources"]
+            .as_array_mut()
+            .ok_or("fixture_sources_not_array")?
+            .push(serde_json::json!({
+                "id": 25,
+                "kind": "cash_capital",
+                "amount": 1000
+            }));
+        value["accounts"][4]["cash"] = 0.into();
+        value["accounts"]
+            .as_array_mut()
+            .ok_or("fixture_accounts_not_array")?
+            .push(serde_json::json!({
+                "id": NEW_EMPLOYER,
+                "role": "company",
+                "cash": 1000,
+                "source": 25
+            }));
+    }
     value["town"]["transport_allocation_sha256"] =
         serde_json::to_value(profile_sha256).map_err(err)?;
     value["construction"] = serde_json::to_value(project).map_err(err)?;
@@ -262,20 +313,29 @@ fn resources() -> Result<Vec<Resource>, String> {
 }
 
 fn execute_action(store: &mut Store, caller: Caller, action: Action) -> Result<(), String> {
+    execute_action_with_id(store, caller, action).map(|_| ())
+}
+
+fn execute_action_with_id(
+    store: &mut Store,
+    caller: Caller,
+    action: Action,
+) -> Result<u64, String> {
     let view = store.engine().map_err(err)?.world().view();
+    let operation_id = store.committed_sequence() + 1;
     let outcome = store
         .execute(
             caller,
             Envelope {
                 world: view.scope.world(),
                 branch: view.scope.branch(),
-                operation_id: store.committed_sequence() + 1,
+                operation_id,
                 expected_revision: view.revision,
                 actions: vec![action],
             },
         )
         .map_err(err)?;
-    outcome.model.map(|_| ()).map_err(err)
+    outcome.model.map(|_| operation_id).map_err(err)
 }
 
 fn construction_effect_id(store: &Store) -> Result<u64, String> {
@@ -294,6 +354,14 @@ fn construction_action(
     caller: Caller,
     command: ConstructionCommand,
 ) -> Result<(), String> {
+    construction_action_with_id(store, caller, command).map(|_| ())
+}
+
+fn construction_action_with_id(
+    store: &mut Store,
+    caller: Caller,
+    command: ConstructionCommand,
+) -> Result<u64, String> {
     let view = store.engine().map_err(err)?.world().view();
     let operation_id = if matches!(
         command,
@@ -318,22 +386,20 @@ fn construction_action(
             },
         )
         .map_err(err)?;
-    outcome.model.map(|_| ()).map_err(err)
+    outcome.model.map(|_| operation_id).map_err(err)
 }
 
-fn replay_construction_record(
-    store: &mut Store,
-    record: JournalRecord,
-    expected_success: bool,
-) -> Result<(), String> {
-    if record.actor != CONTRACTOR {
-        return Err("construction_receipt_actor_mismatch".into());
-    }
+fn replay_record_exact(store: &mut Store, record: JournalRecord) -> Result<(), String> {
     let view = store.engine().map_err(err)?.world().view();
     let actions = record.actions.into_iter().flatten().collect();
+    let caller = if record.actor == 0 {
+        Caller::System
+    } else {
+        Caller::Account(record.actor)
+    };
     let replay = store
         .execute(
-            Caller::Account(CONTRACTOR),
+            caller,
             Envelope {
                 world: view.scope.world(),
                 branch: view.scope.branch(),
@@ -343,11 +409,8 @@ fn replay_construction_record(
             },
         )
         .map_err(err)?;
-    if replay.model != record.outcome || replay.model.is_ok() != expected_success {
-        return Err(format!(
-            "construction_receipt_replay_changed:{}",
-            record.operation_id
-        ));
+    if replay.model != record.outcome || !replay.has_persistent_receipt {
+        return Err(format!("journal_replay_changed:{}", record.operation_id));
     }
     Ok(())
 }
@@ -516,8 +579,12 @@ fn run_construction_utilities_three_days(
     mut store: Store,
     initial_cash: i128,
     initial_raw: Quantity,
-    hold_road_inspection: bool,
+    options: Options,
+    initial_payroll_operation_id: u64,
+    mut contract_operation_ids: Vec<u64>,
 ) -> Result<(), String> {
+    let hold_road_inspection = options.hold_road_inspection;
+    let employment = options.employment;
     let electricity_before_failure = stock_quantity(&store, ELECTRICITY_STOCK)?;
     let water_before_failure = stock_quantity(&store, WATER_STOCK)?;
     if electricity_before_failure != Quantity::ZERO
@@ -552,6 +619,7 @@ fn run_construction_utilities_three_days(
         )
         .map_err(err)?;
     let shortage_error = shortage.model.err().ok_or("shortage_work_succeeded")?;
+    contract_operation_ids.push(CONSTRUCTION_SHORTAGE_OPERATION);
     if shortage_error != TxError::Boot(mycity_core::boot::Error::Input)
         || !shortage.has_persistent_receipt
     {
@@ -579,11 +647,12 @@ fn run_construction_utilities_three_days(
         return Err("day_zero_shortage_partially_committed".into());
     }
 
-    construction_action(
+    let pause_operation_id = construction_action_with_id(
         &mut store,
         Caller::Account(CONTRACTOR),
         ConstructionCommand::Pause,
     )?;
+    contract_operation_ids.push(pause_operation_id);
     let paused = store
         .engine()
         .map_err(err)?
@@ -626,11 +695,12 @@ fn run_construction_utilities_three_days(
     {
         return Err("day_zero_generator_batch_or_water_mismatch".into());
     }
-    construction_action(
+    let resume_operation_id = construction_action_with_id(
         &mut store,
         Caller::Account(CONTRACTOR),
         ConstructionCommand::Resume,
     )?;
+    contract_operation_ids.push(resume_operation_id);
     let resumed = store
         .engine()
         .map_err(err)?
@@ -684,6 +754,7 @@ fn run_construction_utilities_three_days(
         .model
         .err()
         .ok_or("same_shift_work_succeeded")?;
+    contract_operation_ids.push(CONSTRUCTION_WORK_LIMIT_OPERATION);
     if work_limit_error != TxError::Construction(mycity_core::construction::Error::WorkLimit)
         || !limited_retry.has_persistent_receipt
     {
@@ -717,6 +788,98 @@ fn run_construction_utilities_three_days(
     {
         return Err("day_one_generator_batch_not_available_before_market".into());
     }
+    let day_one_household_cash = account_cash(&store, HOUSEHOLD)?;
+    let mut employment_operation_ids = vec![initial_payroll_operation_id];
+    if employment == EmploymentScenario::Change {
+        let before_switch = store
+            .engine()
+            .map_err(err)?
+            .timeline()
+            .ok_or("timeline missing at employment switch")?;
+        if before_switch.progress.last_complete != DAY
+            || before_switch.progress.phase.is_some()
+            || before_switch.progress.target.is_some()
+        {
+            return Err("employment_switch_not_at_completed_day_one_boundary".into());
+        }
+        let old_before = before_switch
+            .payroll
+            .iter()
+            .find(|payroll| payroll.spec.id == 1)
+            .copied()
+            .ok_or("original_factory_payroll_missing")?;
+        if old_before.paid != Money::new(80).map_err(err)?
+            || old_before.accrued != old_before.paid
+            || old_before.work_seconds != 28_800
+        {
+            return Err("day_one_original_wage_not_fully_settled".into());
+        }
+        let terminate_id = execute_action_with_id(
+            &mut store,
+            Caller::System,
+            Action::Timeline {
+                command: TimelineCommand::Terminate { id: 1 },
+            },
+        )?;
+        employment_operation_ids.push(terminate_id);
+        let after_terminate = store
+            .engine()
+            .map_err(err)?
+            .timeline()
+            .ok_or("timeline missing after employment termination")?;
+        let old_after = after_terminate
+            .payroll
+            .iter()
+            .find(|payroll| payroll.spec.id == 1)
+            .copied()
+            .ok_or("terminated_factory_payroll_missing")?;
+        if old_after.working
+            || old_after.next_due.is_some()
+            || old_after.spec.ends_at != DAY
+            || old_after.paid != old_before.paid
+            || old_after.accrued != old_after.paid
+        {
+            return Err("old_employer_payroll_not_closed_without_arrears".into());
+        }
+        let add_id = execute_action_with_id(
+            &mut store,
+            Caller::System,
+            Action::Timeline {
+                command: TimelineCommand::AddPayroll {
+                    spec: PayrollSpec {
+                        id: 2,
+                        payer: NEW_EMPLOYER,
+                        payee: HOUSEHOLD,
+                        home_city: 1,
+                        hourly_cents: Money::new(1).map_err(err)?,
+                        cycle: Cycle::Daily,
+                        ends_at: 7 * DAY,
+                    },
+                },
+            },
+        )?;
+        employment_operation_ids.push(add_id);
+        let after_hire = store
+            .engine()
+            .map_err(err)?
+            .timeline()
+            .ok_or("timeline missing after employment start")?;
+        let new_payroll = after_hire
+            .payroll
+            .iter()
+            .find(|payroll| payroll.spec.id == 2)
+            .copied()
+            .ok_or("new_employer_payroll_missing")?;
+        if new_payroll.spec.payer != NEW_EMPLOYER
+            || new_payroll.spec.payee != HOUSEHOLD
+            || new_payroll.spec.hourly_cents != Money::new(1).map_err(err)?
+            || new_payroll.started != DAY
+            || new_payroll.last_accrual != DAY
+            || new_payroll.work_seconds != 0
+        {
+            return Err("new_employer_payroll_not_started_at_day_one_boundary".into());
+        }
+    }
 
     let electricity_after_day_one = stock_quantity(&store, ELECTRICITY_STOCK)?;
     execute_action(
@@ -743,7 +906,7 @@ fn run_construction_utilities_three_days(
     let work_at = DAY + SHIFT_END;
     advance_to(&mut store, work_at)?;
     let successful_work_id = construction_effect_id(&store)?;
-    construction_action(
+    let success_work_record_id = construction_action_with_id(
         &mut store,
         Caller::Account(CONTRACTOR),
         ConstructionCommand::Work {
@@ -752,6 +915,10 @@ fn run_construction_utilities_three_days(
             worker_seconds: 28_800,
         },
     )?;
+    if success_work_record_id != successful_work_id {
+        return Err("successful_work_operation_id_mismatch".into());
+    }
+    contract_operation_ids.push(success_work_record_id);
     let project_after_work = store
         .engine()
         .map_err(err)?
@@ -772,21 +939,23 @@ fn run_construction_utilities_three_days(
     {
         return Err("day_one_full_shift_work_or_utility_meter_mismatch".into());
     }
-    construction_action(
+    let submit_inspection_id = construction_action_with_id(
         &mut store,
         Caller::Account(CONTRACTOR),
         ConstructionCommand::SubmitInspection,
     )?;
+    contract_operation_ids.push(submit_inspection_id);
 
     advance_to(&mut store, 2 * DAY)?;
     let electricity_before_day_two = stock_quantity(&store, ELECTRICITY_STOCK)?;
     let (day_two, day_two_proof, day_two_payment, day_two_basis) =
         settle_three_day_market(dir, &mut store, 80_002, 2, 2)?;
+    let day_two_household_cash = account_cash(&store, HOUSEHOLD)?;
     if stock_quantity(&store, ELECTRICITY_STOCK)? > electricity_before_day_two {
         return Err("day_two_settlement_created_electricity".into());
     }
     if !hold_road_inspection {
-        construction_action(
+        let accept_inspection_id = construction_action_with_id(
             &mut store,
             Caller::Account(PERMIT_AUTHORITY),
             ConstructionCommand::AcceptInspection {
@@ -794,6 +963,7 @@ fn run_construction_utilities_three_days(
                 accepted: true,
             },
         )?;
+        contract_operation_ids.push(accept_inspection_id);
     }
     let published = store
         .engine()
@@ -840,8 +1010,39 @@ fn run_construction_utilities_three_days(
         return Err("finite_generator_water_remainder_mismatch".into());
     }
     advance_to(&mut store, 3 * DAY)?;
+    let day_three_cash_before_market = account_cash(&store, HOUSEHOLD)?;
+    let day_three_stock_before_market = stock_quantity(&store, PRODUCT_STOCK)?;
     let (day_three, day_three_proof, day_three_payment, day_three_basis) =
         settle_three_day_market(dir, &mut store, 80_003, 3, expected_day_three_capacity)?;
+    let day_three_household_cash = account_cash(&store, HOUSEHOLD)?;
+    // Real transport resolution replaces the opening quote's zero freight with a route
+    // charge. Day three has no new production or utility fees in this fixed experiment,
+    // so its goods and freight payments are both paid by the single household. Do not
+    // attribute construction/Boot producer charges to household consumption.
+    if day_three.produced != Quantity::ZERO || day_three.utilities != Money::ZERO {
+        return Err("day_three_fixture_has_mixed_producer_costs".into());
+    }
+    let day_three_household_market_payment = day_three
+        .goods_payments
+        .checked_add(day_three.freight)
+        .map_err(err)?;
+    let day_three_available_stock = day_three_stock_before_market
+        .checked_add(day_three.produced)
+        .map_err(err)?;
+    if day_three_household_market_payment.value() > day_three_cash_before_market.value()
+        || day_three_household_cash.value()
+            != day_three_cash_before_market
+                .value()
+                .checked_sub(day_three_household_market_payment.value())
+                .ok_or("day_three_household_cash_underflow")?
+        || day_three.actual_sales > day_three_available_stock
+    {
+        return Err("day_three_purchase_or_stock_conservation_mismatch".into());
+    }
+    if employment == EmploymentScenario::Change && day_three.actual_sales >= day_three.market_demand
+    {
+        return Err("day_three_low_wage_did_not_constrain_purchasing_power".into());
+    }
 
     let expected_utility_quantities = [Quantity::new(400_000).map_err(err)?; 2];
     let expected_utility_fees = [
@@ -902,22 +1103,72 @@ fn run_construction_utilities_three_days(
         return Err("three_day_physical_or_cash_conservation_mismatch".into());
     }
 
-    let timeline_payroll = store
+    let timeline = store
         .engine()
         .map_err(err)?
         .timeline()
-        .ok_or("timeline missing")?
-        .payroll
+        .ok_or("timeline missing")?;
+    let payrolls = timeline.payroll.iter().copied().collect::<Vec<_>>();
+    let payroll_occurrences = payrolls.iter().try_fold(0u64, |sum, payroll| {
+        sum.checked_add(payroll.occurrences)
+            .ok_or_else(|| "payroll_occurrence_overflow".to_owned())
+    })?;
+    let payroll_paid = payrolls.iter().try_fold(Money::ZERO, |sum, payroll| {
+        sum.checked_add(payroll.paid).map_err(err)
+    })?;
+    let old_factory_payroll = payrolls
         .iter()
-        .next()
+        .find(|payroll| payroll.spec.id == 1)
         .copied()
-        .ok_or("daily payroll missing")?;
-    if timeline_payroll.occurrences != 3 || timeline_payroll.paid != Money::new(240).map_err(err)? {
-        return Err(format!(
-            "three_day_payroll_mismatch:occurrences={}:paid={}",
-            timeline_payroll.occurrences,
-            timeline_payroll.paid.value()
-        ));
+        .ok_or("original_factory_payroll_missing_after_run")?;
+    let new_employer_payroll = payrolls
+        .iter()
+        .find(|payroll| payroll.spec.id == 2)
+        .copied();
+    match employment {
+        EmploymentScenario::None | EmploymentScenario::Control => {
+            if new_employer_payroll.is_some()
+                || old_factory_payroll.occurrences != 3
+                || old_factory_payroll.paid != Money::new(240).map_err(err)?
+                || old_factory_payroll.work_seconds != 86_400
+                || old_factory_payroll.spec.payer != COMPANY
+            {
+                return Err("control_employment_payroll_mismatch".into());
+            }
+        }
+        EmploymentScenario::Change => {
+            let new_payroll = new_employer_payroll.ok_or("new_employer_payroll_missing")?;
+            if old_factory_payroll.occurrences != 1
+                || old_factory_payroll.paid != Money::new(80).map_err(err)?
+                || old_factory_payroll.work_seconds != 28_800
+                || old_factory_payroll.spec.ends_at != DAY
+                || new_payroll.occurrences != 2
+                || new_payroll.paid != Money::new(16).map_err(err)?
+                || new_payroll.work_seconds != 57_600
+                || new_payroll.spec.payer != NEW_EMPLOYER
+            {
+                return Err("employment_change_payroll_or_no_overlap_mismatch".into());
+            }
+        }
+    }
+    let contractually_paid = payroll_paid;
+    if employment.enabled() && cash_total(&store)? != initial_cash {
+        return Err("employment_mode_opening_or_cash_conservation_mismatch".into());
+    }
+    let new_employer_cash = if employment.enabled() {
+        account_cash(&store, NEW_EMPLOYER)?
+    } else {
+        Money::ZERO
+    };
+    match employment {
+        EmploymentScenario::None => {}
+        EmploymentScenario::Control if new_employer_cash != Money::new(1_000).map_err(err)? => {
+            return Err("control_new_employer_capital_changed_without_payroll".into());
+        }
+        EmploymentScenario::Change if new_employer_cash != Money::new(984).map_err(err)? => {
+            return Err("new_employer_payroll_not_paid_from_its_own_account".into());
+        }
+        _ => {}
     }
 
     let before_cold_hash = store.state_hash().map_err(err)?;
@@ -974,12 +1225,23 @@ fn run_construction_utilities_three_days(
         return Err("construction_failure_or_success_receipt_changed_after_recovery".into());
     }
     let sequence_before_replay = recovered.committed_sequence();
-    for (record, expected_success) in [
-        (shortage_record, false),
-        (work_limit_record, false),
-        (success_record, true),
-    ] {
-        replay_construction_record(&mut recovered, record, expected_success)?;
+    if !contract_operation_ids.contains(&CONSTRUCTION_SHORTAGE_OPERATION)
+        || !contract_operation_ids.contains(&CONSTRUCTION_WORK_LIMIT_OPERATION)
+        || !contract_operation_ids.contains(&successful_work_id)
+    {
+        return Err("construction_replay_set_incomplete".into());
+    }
+    for operation_id in contract_operation_ids {
+        let record = recovered
+            .receipt(operation_id)
+            .map_err(err)?
+            .ok_or("construction_receipt_missing_after_recovery")?;
+        replay_record_exact(&mut recovered, record)?;
+        if recovered.committed_sequence() != sequence_before_replay
+            || recovered.state_hash().map_err(err)? != after_cold_hash
+        {
+            return Err(format!("construction_replay_changed_state:{operation_id}"));
+        }
     }
     for (operation_id, _, expected_summary) in expected_market {
         let replay = recovered.settle_town_market(operation_id).map_err(err)?;
@@ -993,6 +1255,28 @@ fn run_construction_utilities_three_days(
             ));
         }
     }
+    let mut employment_records = Vec::with_capacity(employment_operation_ids.len());
+    for operation_id in employment_operation_ids {
+        let record = recovered
+            .receipt(operation_id)
+            .map_err(err)?
+            .ok_or("employment_payroll_receipt_missing_after_recovery")?;
+        if record.outcome.is_err() {
+            return Err(format!("employment_payroll_receipt_failed:{operation_id}"));
+        }
+        employment_records.push(record);
+    }
+    for record in employment_records {
+        let operation_id = record.operation_id;
+        replay_record_exact(&mut recovered, record)?;
+        if recovered.committed_sequence() != sequence_before_replay
+            || recovered.state_hash().map_err(err)? != after_cold_hash
+        {
+            return Err(format!(
+                "employment_payroll_replay_changed_state:{operation_id}"
+            ));
+        }
+    }
     if recovered.committed_sequence() != sequence_before_replay
         || recovered.state_hash().map_err(err)? != after_cold_hash
     {
@@ -1000,13 +1284,23 @@ fn run_construction_utilities_three_days(
     }
 
     println!(
-        "mode={} day0_shortage={:?} pause_checkpoint=true resume_checkpoint=true immediate_work_limit={:?} day1_sales={} day2_sales={} day3_sales={} day1_produced={} day2_produced={} day3_produced={} day1_capacity=2 day2_capacity=2 day3_capacity={} inspection_held={} day1_proof_sha256={} day2_proof_sha256={} day3_proof_sha256={} construction_elapsed_seconds={} construction_worker_seconds=28800 electricity_used={} water_used={} electricity_fee={} water_fee={} generator_batches=3 electricity_remaining={} water_remaining={} local_electricity_export={} local_electricity_basis={} local_construction_electricity={} local_construction_water={} payroll_occurrences={} payroll_paid={} market_payment_total={} cash_conserved=true pause_resume_durable=true final_cold_open_equal=true three_markets_and_three_construction_receipts_replay_exact=true raw_initial={} raw_remaining={} state_hash={}",
+        "mode={} employment={} day0_shortage={:?} pause_checkpoint=true resume_checkpoint=true immediate_work_limit={:?} day1_sales={} day2_sales={} day3_sales={} day1_household_cash_after_market={} day2_household_cash_after_market={} day3_household_cash_before_market={} day3_household_cash_after_market={} day3_market_spend={} day3_goods_payment={} day3_freight={} day3_utilities={} day3_stock_available={} day1_produced={} day2_produced={} day3_produced={} day1_capacity=2 day2_capacity=2 day3_capacity={} inspection_held={} day1_proof_sha256={} day2_proof_sha256={} day3_proof_sha256={} construction_elapsed_seconds={} construction_worker_seconds=28800 electricity_used={} water_used={} electricity_fee={} water_fee={} generator_batches=3 electricity_remaining={} water_remaining={} local_electricity_export={} local_electricity_basis={} local_construction_electricity={} local_construction_water={} payroll_occurrences={} payroll_paid={} old_factory_paid={} new_employer_paid={} old_factory_work_seconds={} new_employer_work_seconds={} new_employer_cash_final={} new_employer_has_production_recipe=false employment_operation_replay_exact=true market_payment_total={} cash_conserved=true pause_resume_durable=true final_cold_open_equal=true all_contract_payroll_and_market_receipts_replay_exact=true raw_initial={} raw_remaining={} state_hash={}",
         if hold_road_inspection { "construction-utilities-three-day-held" } else { "construction-utilities-three-day" },
+        employment.label(),
         shortage_error,
         work_limit_error,
         day_one.actual_sales.value(),
         day_two.actual_sales.value(),
         day_three.actual_sales.value(),
+        day_one_household_cash.value(),
+        day_two_household_cash.value(),
+        day_three_cash_before_market.value(),
+        day_three_household_cash.value(),
+        day_three_household_market_payment.value(),
+        day_three.goods_payments.value(),
+        day_three.freight.value(),
+        day_three.utilities.value(),
+        day_three_available_stock.value(),
         day_one.produced.value(),
         day_two.produced.value(),
         day_three.produced.value(),
@@ -1026,14 +1320,19 @@ fn run_construction_utilities_three_days(
         boot.local_electricity_basis.value(),
         boot.local_construction_exported[0].value(),
         boot.local_construction_exported[1].value(),
-        timeline_payroll.occurrences,
-        timeline_payroll.paid.value(),
+        payroll_occurrences,
+        contractually_paid.value(),
+        old_factory_payroll.paid.value(),
+        new_employer_payroll.map_or(0, |payroll| payroll.paid.value()),
+        old_factory_payroll.work_seconds,
+        new_employer_payroll.map_or(0, |payroll| payroll.work_seconds),
+        new_employer_cash.value(),
         market_payments.value(),
         initial_raw.value(),
         stock_quantity(&recovered, RAW_STOCK)?.value(),
         after_cold_hash,
     );
-    println!("scope=store_road_construction_boot_town fixed_od=true construction_labor=explicit_input days=3 automatic_outage_pause=not_implemented resume_supply_interlock=not_implemented continuous_supply=not_implemented steady_state=not_demonstrated balance=not_calibrated");
+    println!("scope=store_road_construction_boot_town fixed_od=true construction_labor=explicit_input days=3 employment_assignment=trusted_fixture_input endogenous_job_search=not_implemented legal_employment_approval=not_modeled new_employer_production_recipe=none automatic_outage_pause=not_implemented resume_supply_interlock=not_implemented continuous_supply=not_implemented steady_state=not_demonstrated balance=not_calibrated");
     Ok(())
 }
 
@@ -1081,8 +1380,9 @@ fn run(dir: &Path, options: Options) -> Result<(), String> {
     }
     let opening = opening();
     let profile_bytes = allocation_profile(opening)?;
-    let project = project(options.construction_utilities)?;
-    let opening_bytes = opening_bytes(hash(&profile_bytes), &project)?;
+    let construction_utilities = options.construction_utilities || options.employment.enabled();
+    let project = project(construction_utilities)?;
+    let opening_bytes = opening_bytes(hash(&profile_bytes), &project, options.employment)?;
     let mut store = Store::create_spatial_with_transport_allocation_profile(
         dir,
         &opening_bytes,
@@ -1097,7 +1397,14 @@ fn run(dir: &Path, options: Options) -> Result<(), String> {
     .map_err(err)?;
     let initial_cash = cash_total(&store)?;
     let initial_raw = stock_quantity(&store, RAW_STOCK)?;
+    if options.employment.enabled()
+        && (account_cash(&store, HOUSEHOLD)? != Money::ZERO
+            || account_cash(&store, NEW_EMPLOYER)? != Money::new(1_000).map_err(err)?)
+    {
+        return Err("employment_fixture_source_capital_mismatch".into());
+    }
 
+    let mut contract_operation_ids = Vec::new();
     for (caller, command) in [
         (Caller::Account(COMPANY), ConstructionCommand::File),
         (
@@ -1119,7 +1426,7 @@ fn run(dir: &Path, options: Options) -> Result<(), String> {
         (Caller::Account(COMPANY), ConstructionCommand::Prepare),
         (Caller::Account(COMPANY), ConstructionCommand::Start),
     ] {
-        construction_action(&mut store, caller, command)?;
+        contract_operation_ids.push(construction_action_with_id(&mut store, caller, command)?);
     }
 
     execute_action(
@@ -1139,6 +1446,7 @@ fn run(dir: &Path, options: Options) -> Result<(), String> {
             command: TimelineCommand::Enable,
         },
     )?;
+    let initial_payroll_operation_id = store.committed_sequence() + 1;
     execute_action(
         &mut store,
         Caller::System,
@@ -1157,13 +1465,15 @@ fn run(dir: &Path, options: Options) -> Result<(), String> {
         },
     )?;
     advance_to(&mut store, SHIFT_END)?;
-    if options.construction_utilities {
+    if construction_utilities {
         return run_construction_utilities_three_days(
             dir,
             store,
             initial_cash,
             initial_raw,
-            options.hold_road_inspection,
+            options,
+            initial_payroll_operation_id,
+            contract_operation_ids,
         );
     }
     construction_action(
@@ -1502,6 +1812,7 @@ fn parse_args() -> Result<(PathBuf, Options), String> {
         hold_road_inspection: false,
         generator_failure: false,
         construction_utilities: false,
+        employment: EmploymentScenario::None,
     };
     let mut args = env::args().skip(1);
     while let Some(argument) = args.next() {
@@ -1509,8 +1820,20 @@ fn parse_args() -> Result<(PathBuf, Options), String> {
             "--hold-road-inspection" => options.hold_road_inspection = true,
             "--generator-failure" => options.generator_failure = true,
             "--construction-utilities" => options.construction_utilities = true,
+            "--employment-control" => {
+                if options.employment != EmploymentScenario::None {
+                    return Err("choose only one employment scenario".into());
+                }
+                options.employment = EmploymentScenario::Control;
+            }
+            "--employment-change" => {
+                if options.employment != EmploymentScenario::None {
+                    return Err("choose only one employment scenario".into());
+                }
+                options.employment = EmploymentScenario::Change;
+            }
             "--store-dir" => store_dir = args.next().map(PathBuf::from),
-            _ => return Err(format!("usage: town_lifelines --store-dir PATH [--hold-road-inspection] [--generator-failure] [--construction-utilities] (unknown:{argument})")),
+            _ => return Err(format!("usage: town_lifelines --store-dir PATH [--hold-road-inspection] [--generator-failure] [--construction-utilities] [--employment-control|--employment-change] (unknown:{argument})")),
         }
     }
     if options.hold_road_inspection && options.generator_failure {
@@ -1520,6 +1843,14 @@ fn parse_args() -> Result<(PathBuf, Options), String> {
     }
     if options.construction_utilities && options.generator_failure {
         return Err("--construction-utilities requires a successful generator".into());
+    }
+    if options.employment != EmploymentScenario::None && options.generator_failure {
+        return Err("employment scenarios require a successful generator".into());
+    }
+    if options.employment.enabled() && options.hold_road_inspection {
+        return Err(
+            "employment comparison requires the day-three road-capacity publication".into(),
+        );
     }
     Ok((
         store_dir.ok_or("missing_required_argument:--store-dir")?,
