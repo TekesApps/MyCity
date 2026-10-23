@@ -1,0 +1,14 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 54.98s
+     Running tests/housing_move_store_runtime.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/housing_move_store_runtime-e019692822cda5ea)
+HOUSING_MOVE_ARTIFACT_CREATED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/404-move-store/test-artifacts/mycity-housing-move-store-79551-0
+HOUSING_MOVE_ARTIFACT_PRESERVED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/404-move-store/test-artifacts/mycity-housing-move-store-79551-0
+HOUSING_MOVE_ARTIFACT_CREATED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/404-move-store/test-artifacts/mycity-housing-move-store-79551-1
+
+thread 'wait_move_and_old_claim_settlement_survive_cold_open_and_lost_replies' panicked at crates/city-storage/tests/housing_move_store_runtime.rs:418:47:
+called `Result::unwrap()` on an `Err` value: Model("checkpoint_world_budget")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+HOUSING_MOVE_ARTIFACT_PRESERVED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/404-move-store/test-artifacts/mycity-housing-move-store-79551-1
+error: test failed, to rerun pass `-p mycity-storage --test housing_move_store_runtime`

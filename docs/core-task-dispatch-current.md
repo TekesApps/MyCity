@@ -219,3 +219,92 @@ and152 reader changes, reject old whole-file rollback and verify actual prepayme
 city/occupancy/cash/Wait/cold invariants before release. No new duplicate workers were started.
 External source-only handoff batch7 (#104/#57/#98) remains unapplied; no original source
 worktrees or recovery evidence were released or removed by this stage.
+
+
+## Next E integration in progress after154 (not released)
+
+Root integrated exactly16 manifest-listed core/decoder/mechanical housing fixture/new Store
+case/CLI files onto154. The initial handoff path guard rejected a wrong decoder location
+before any copy;399 therefore checked unchanged154 and is NOT Move evidence. Correct400
+integration uses checkpoint/receipt_decode.rs and is pinned by move-integration-400.json.
+Actual400 workspace all-target check failed with source unchanged: new bounded row Record
+implementations/imports and GameTime arithmetic need correction. The sole shared writer is
+fixing those concrete errors in its private tree; source400 and full logs are retained.
+No Move, wait, city compatibility, old-claim recovery or new resource acceptance is claimed.
+Root does not overwrite D/F/M0 or unrelated rare-control WIP and has not tagged this candidate.
+
+
+401 corrected compilation and402fmt pass;403 core202 tests pass, with actual size_of9472B
+opening rows and3072B move payload (Box/header/restore peak separate).404 Store cases1pass/
+1fail: city-less legacy can cold-open and rejects Move; first persisted Wait cannot cold-open
+because checkpoint_world_budget. Full failure world/executable retained. Advisor identified
+World128KiB owned+scratch guard, distinct from Engine4MiB; do not raise either cap. Candidate
+publication must enforce the same World guard as restore, and MoveRuntime Box header must
+be accounted. Test owner verified input counts are under existing limits (2units,3cities,
+1assessment/1candidate); do not shrink fixture to erase this failure. Shared writer is doing
+exact capacity attribution/real layout correction; no new E stage/tag is accepted yet.
+
+
+## Active next batches after154 / current E verification
+
+Root preserved all canonical WIP and reused the six existing owners (no duplicate starts).
+Shared-core ownership stays economy_scenarios; root alone runs Cargo, native validation and
+publication using the same external target. No formal performance window is currently active.
+
+- E: scoped_index_calls owns only housing_move_store_runtime.rs and town_housing_move.rs in
+  housing-current. Correct the412 oracle using actual earned wages while retaining city-switch
+  coverage; do not change core/caps to fit the old expected amount. Advisor resolved this concrete
+  question against R54: ordinary dormant-city labor freezes, already earned21000 remains payable.
+  Root integrates exact frozen files, reruns Store/CLI/broad regression and preserves failed worlds.
+- F: economy_scenarios starts the next private Store activation increment; joint_current_prep owns
+  F test/example inputs and independently expected traffic/trade changes. DoorPose candidate pass
+  alone remains insufficient. Handoff must retain profile/geometry versions and old proof identity.
+- D/joint: construction_finish prepares a bounded existing-API joint test/example connecting housing
+  income/cash to consumption, actual transport/trade and trusted distributable returns. Missing
+  seams are explicit dependencies for the shared writer, not new ledgers or clocks.
+- M0: equity_current investigates safely attributable noneligible startup overhead and proposes
+  a reproducible bounded experiment/fix. Counters alone are not savings; no same-load long rerun
+  without a related fix/environment change. Raw347, all original thresholds and not_run gates stay.
+- Advisor: only concrete disputes/acceptance/final fresh evidence. No generic repeat review.
+
+Each line hands off exact source hashes, actual executable scenarios and counterexamples,
+complete recovery originals, resource deltas and limits. Root can release small passing batches;
+none of this marks unfinished lines or combined performance accepted.
+
+
+## Concrete integration dependency: housing/cash and transport demand
+
+The existing joint housing/equity/spatial Store scenario has real rent, wages, road closure/
+restoration, delivery, sales, trusted inventory basis and tax consequences. It does not yet bind
+HousingMove's new unit to trip origin: Opening.demands/RepeatFixedDailyDemand and immutable
+transport OD are fixed. Actual cash can limit a sale without changing issued trip demand.
+The next D/joint small batch therefore tests real wage cash → actual sales → margin/tax →
+shareholder payout → fiscal use while reporting unchanged transport demand. It must not be
+called the entire housing → transport causal chain.
+
+A separate pending core seam must bind an authoritative dwelling entrance/household group to
+OD origin, issue a new bounded demand/profile generation after an authorized change, and keep
+old service-day proof identity and exactly-once consumption. Do not let test-only reassignment,
+a caller quote or a planner mutate authoritative traffic. Scene geometry activation is the
+current F priority; the housing OD bridge remains explicit, neither silently dropped nor
+expanded into an unreviewed clock/ledger replacement. Overall A—F completion remains open.
+
+
+## Verified finite E batch155
+
+Canonical415 broad540 passed before the final historical-restore correction;421 selected45,
+then final425core204/426Move4,423fmt/424strict/427build and actual fixed428CLI all passed.
+429 fresh-process complete-copy checkpoint recovery and430 final reader on original404 full
+working copy passed; independent checkpoint cash/Claim/state digest agrees. Advisor accepts
+this finite release. [Evidence and limitations](evidence/core-housing-move-155/STATUS.md) include
+2-unit lifetime-offer restriction, separate3-unit re-let, near-budget rejection, static scores,
+missing housing→OD and all unpassed M0/full/16GB gates. Raw recovery originals remain complete.
+
+F writer is implementing explicit immutable adapter basis and descriptor-backed geometry grants
+in fresh spatial-geometry-v154; test owner has written genesis/old-close/geometry-cost candidates,
+not yet Cargo/Store tested. D joint owner has delivered a private wage-cash→real spatial trade→
+tax/dividend/fiscal candidate with fixed OD, not yet tested. M0 owner delivered a private real
+Model lifecycle diagnostic with original347 event fixture, not a memory fix/test pass. Root
+continues integration as small bounded batches using shared target; no parallel Cargo or old
+whole-file rollback. Twenty identical terminal399-430 source ZIPs share full hardlink content;
+selected allocated space reduced107.32MiB, separate APFS availability observation retained.

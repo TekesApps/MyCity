@@ -1,0 +1,159 @@
+{
+  "scope": "only completed399-430 source.zip files; not all work or target",
+  "before_selected_unique_file_allocated_bytes": 179904512,
+  "after_selected_unique_file_allocated_bytes": 67371008,
+  "selected_file_allocation_reduction_bytes": 112533504,
+  "volume_available_bytes_before": 1877339615232,
+  "volume_available_bytes_after": 1877452783616,
+  "observed_volume_available_change_bytes": 113168384,
+  "physical_free_space_attribution": "APFS sharing and other tasks can change free space; observed delta is not exclusively credited to this task",
+  "coalesced_paths": [
+    {
+      "round": "402-move-fmt",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/402-move-fmt/source.zip",
+      "retained_full_bytes_at": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/401-move-integrated-check/source.zip",
+      "reason": "terminal validation; byte-identical source ZIP coalesced as hardlink; all original full paths and contents retained",
+      "sha256": "657b86d9d5439a1b3084a02aceef14503712612401b585d4f3f063a327b992d2"
+    },
+    {
+      "round": "403-move-core-regression",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/403-move-core-regression/source.zip",
+      "retained_full_bytes_at": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/401-move-integrated-check/source.zip",
+      "reason": "terminal validation; byte-identical source ZIP coalesced as hardlink; all original full paths and contents retained",
+      "sha256": "657b86d9d5439a1b3084a02aceef14503712612401b585d4f3f063a327b992d2"
+    },
+    {
+      "round": "404-move-store",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/404-move-store/source.zip",
+      "retained_full_bytes_at": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/401-move-integrated-check/source.zip",
+      "reason": "terminal validation; byte-identical source ZIP coalesced as hardlink; all original full paths and contents retained",
+      "sha256": "657b86d9d5439a1b3084a02aceef14503712612401b585d4f3f063a327b992d2"
+    },
+    {
+      "round": "406-move-budget-core",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/406-move-budget-core/source.zip",
+      "retained_full_bytes_at": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/405-move-budget-fmt/source.zip",
+      "reason": "terminal validation; byte-identical source ZIP coalesced as hardlink; all original full paths and contents retained",
+      "sha256": "ea61e58a8286959d8582ba96af6d9ea908a0c415bffa25364c2c62d7fe4f7fe8"
+    },
+    {
+      "round": "407-move-budget-store",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/407-move-budget-store/source.zip",
+      "retained_full_bytes_at": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/405-move-budget-fmt/source.zip",
+      "reason": "terminal validation; byte-identical source ZIP coalesced as hardlink; all original full paths and contents retained",
+      "sha256": "ea61e58a8286959d8582ba96af6d9ea908a0c415bffa25364c2c62d7fe4f7fe8"
+    },
+    {
+      "round": "408-pending-move-cli-build",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/408-pending-move-cli-build/source.zip",
+      "retained_full_bytes_at": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/405-move-budget-fmt/source.zip",
+      "reason": "terminal validation; byte-identical source ZIP coalesced as hardlink; all original full paths and contents retained",
+      "sha256": "ea61e58a8286959d8582ba96af6d9ea908a0c415bffa25364c2c62d7fe4f7fe8"
+    },
+    {
+      "round": "409-original404-reopen",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/409-original404-reopen/source.zip",
+      "retained_full_bytes_at": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/405-move-budget-fmt/source.zip",
+      "reason": "terminal validation; byte-identical source ZIP coalesced as hardlink; all original full paths and contents retained",
+      "sha256": "ea61e58a8286959d8582ba96af6d9ea908a0c415bffa25364c2c62d7fe4f7fe8"
+    },
+    {
+      "round": "411-move-p2-core",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/411-move-p2-core/source.zip",
+      "retained_full_bytes_at": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/410-move-p2-fmt/source.zip",
+      "reason": "terminal validation; byte-identical source ZIP coalesced as hardlink; all original full paths and contents retained",
+      "sha256": "00b2e424aef634effd6629997a564d3423b1964f3ec1ba0cd31e1714758eeb8b"
+    },
+    {
+      "round": "412-move-p2-store",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/412-move-p2-store/source.zip",
+      "retained_full_bytes_at": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/410-move-p2-fmt/source.zip",
+      "reason": "terminal validation; byte-identical source ZIP coalesced as hardlink; all original full paths and contents retained",
+      "sha256": "00b2e424aef634effd6629997a564d3423b1964f3ec1ba0cd31e1714758eeb8b"
+    },
+    {
+      "round": "415-move-core-storage-regression",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/415-move-core-storage-regression/source.zip",
+      "retained_full_bytes_at": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/414-move-historical-store/source.zip",
+      "reason": "terminal validation; byte-identical source ZIP coalesced as hardlink; all original full paths and contents retained",
+      "sha256": "899865f7336073f9a1ce884630ca2621170cc35e0c3db37ead8fe3b1031adec9"
+    },
+    {
+      "round": "419-move-final-core",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/419-move-final-core/source.zip",
+      "retained_full_bytes_at": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/418-move-final-fmt/source.zip",
+      "reason": "terminal validation; byte-identical source ZIP coalesced as hardlink; all original full paths and contents retained",
+      "sha256": "24c4df647b7a000d43944b85fcaed767abcde2ecdaf121fdcf4e4c8c1eb95be0"
+    },
+    {
+      "round": "420-move-final-storage",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/420-move-final-storage/source.zip",
+      "retained_full_bytes_at": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/418-move-final-fmt/source.zip",
+      "reason": "terminal validation; byte-identical source ZIP coalesced as hardlink; all original full paths and contents retained",
+      "sha256": "24c4df647b7a000d43944b85fcaed767abcde2ecdaf121fdcf4e4c8c1eb95be0"
+    },
+    {
+      "round": "422-move-final-strict",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/422-move-final-strict/source.zip",
+      "retained_full_bytes_at": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/421-move-final-storage/source.zip",
+      "reason": "terminal validation; byte-identical source ZIP coalesced as hardlink; all original full paths and contents retained",
+      "sha256": "b2279e8ea09cd6494d2809197259c5f6a29eecdf480b9098a6d40659b85bdcc8"
+    },
+    {
+      "round": "424-move-final-strict",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/424-move-final-strict/source.zip",
+      "retained_full_bytes_at": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/423-move-final-fmt/source.zip",
+      "reason": "terminal validation; byte-identical source ZIP coalesced as hardlink; all original full paths and contents retained",
+      "sha256": "7e522a2ba9e7b2c5821bce793bd0e9f5cdf101d9b20ec6083fe4245e7d3eb2d7"
+    },
+    {
+      "round": "425-move-final-core",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/425-move-final-core/source.zip",
+      "retained_full_bytes_at": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/423-move-final-fmt/source.zip",
+      "reason": "terminal validation; byte-identical source ZIP coalesced as hardlink; all original full paths and contents retained",
+      "sha256": "7e522a2ba9e7b2c5821bce793bd0e9f5cdf101d9b20ec6083fe4245e7d3eb2d7"
+    },
+    {
+      "round": "426-move-final-store",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/426-move-final-store/source.zip",
+      "retained_full_bytes_at": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/423-move-final-fmt/source.zip",
+      "reason": "terminal validation; byte-identical source ZIP coalesced as hardlink; all original full paths and contents retained",
+      "sha256": "7e522a2ba9e7b2c5821bce793bd0e9f5cdf101d9b20ec6083fe4245e7d3eb2d7"
+    },
+    {
+      "round": "427-move-final-cli-build",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/427-move-final-cli-build/source.zip",
+      "retained_full_bytes_at": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/423-move-final-fmt/source.zip",
+      "reason": "terminal validation; byte-identical source ZIP coalesced as hardlink; all original full paths and contents retained",
+      "sha256": "7e522a2ba9e7b2c5821bce793bd0e9f5cdf101d9b20ec6083fe4245e7d3eb2d7"
+    },
+    {
+      "round": "428-move-final-cli",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/428-move-final-cli/source.zip",
+      "retained_full_bytes_at": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/423-move-final-fmt/source.zip",
+      "reason": "terminal validation; byte-identical source ZIP coalesced as hardlink; all original full paths and contents retained",
+      "sha256": "7e522a2ba9e7b2c5821bce793bd0e9f5cdf101d9b20ec6083fe4245e7d3eb2d7"
+    },
+    {
+      "round": "429-move-fresh-reopen",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/429-move-fresh-reopen/source.zip",
+      "retained_full_bytes_at": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/423-move-final-fmt/source.zip",
+      "reason": "terminal validation; byte-identical source ZIP coalesced as hardlink; all original full paths and contents retained",
+      "sha256": "7e522a2ba9e7b2c5821bce793bd0e9f5cdf101d9b20ec6083fe4245e7d3eb2d7"
+    },
+    {
+      "round": "430-original404-final-reopen",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/430-original404-final-reopen/source.zip",
+      "retained_full_bytes_at": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/423-move-final-fmt/source.zip",
+      "reason": "terminal validation; byte-identical source ZIP coalesced as hardlink; all original full paths and contents retained",
+      "sha256": "7e522a2ba9e7b2c5821bce793bd0e9f5cdf101d9b20ec6083fe4245e7d3eb2d7"
+    }
+  ],
+  "deleted_recovery_snapshots": 0,
+  "preserved": "all source/WIP/lockfiles, existing target, executables, logs/receipts, full404 and new final recovery originals/copies, original347 and other unreviewed data",
+  "dependency_check": "all selected rounds terminal and lsof no selected archive handles; no original recovery reader was opened during this action",
+  "observed_whole_work_du_kib": 118121776,
+  "observed_whole_target_du_kib": 5098300,
+  "whole_tree_observation_note": "one post-stage du observation, shared work includes other rounds/tasks; not all is disposable or attributable to this stage",
+  "retained_reasons": "current full recovery and original failed load inputs, pinned source/executables/receipts, future recovery dependencies and unreviewed shared work remain; no prefix-based deletion"
+}

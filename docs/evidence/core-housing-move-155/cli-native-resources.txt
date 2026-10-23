@@ -1,0 +1,19 @@
+HOUSING_MOVE_WORLD=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/428-move-final-world
+        5.85 real         0.25 user         1.24 sys
+            57262080  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+                3660  page reclaims
+                   6  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+               19383  voluntary context switches
+                2987  involuntary context switches
+          9259536098  instructions retired
+          3940111208  cycles elapsed
+            52969856  peak memory footprint

@@ -1,0 +1,67 @@
+{
+  "source_original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/428-move-final-world",
+  "working_copy": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/429-move-fresh-world-copy",
+  "method": "complete APFS clone and all file byte hashes; original never opened by reader",
+  "files": [
+    {
+      "path": "CURRENT.json",
+      "bytes": 123,
+      "sha256": "687a71f6b73feb94aa161b902b7f49237e29cb50a3a755c014ff5d420a857b49"
+    },
+    {
+      "path": "LOCK",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "checkpoint-1018.json",
+      "bytes": 133924,
+      "sha256": "793464818367ddc8fa419dcb6f62761fc248eae4dc7266b3d823712bf0198eda"
+    },
+    {
+      "path": "checkpoint-341.json",
+      "bytes": 369998,
+      "sha256": "af08033df5fb3d52d76ed94f905fe3eb86242b090879ce5379792a3d5599fad3"
+    },
+    {
+      "path": "checkpoint-918.json",
+      "bytes": 604695,
+      "sha256": "b072d8e098d26e523860b8087794bfda29920bb043e0a143753741614f8f1eda"
+    },
+    {
+      "path": "checkpoint-index-1018.json",
+      "bytes": 615,
+      "sha256": "838332e181f76515b61d3b6e8f3fb30e9894d2e1a956b8afe4755735dd100f83"
+    },
+    {
+      "path": "checkpoint-index-341.json",
+      "bytes": 1365,
+      "sha256": "ceda5115887987ef895d832da0d5d46b1eb790fd8cc22d9767c351c8c82f4e8c"
+    },
+    {
+      "path": "checkpoint-index-918.json",
+      "bytes": 2507,
+      "sha256": "7366f4de2a4f17dfda49f2a0949be6741f7dc7cb6c306d510622d4281502bc32"
+    },
+    {
+      "path": "genesis.json",
+      "bytes": 14032,
+      "sha256": "b0b15412c9ab49020f028a78cacb81406c05dcd5cbdf1f731b917cae3925eb35"
+    },
+    {
+      "path": "root-0.json",
+      "bytes": 521,
+      "sha256": "2041581d767f5d23b09a5dcfb8cad5afd0893a01c8a659c73e9543c3844f3848"
+    },
+    {
+      "path": "root-1.json",
+      "bytes": 524,
+      "sha256": "720fb67255c1dc5d865f6ab4e01b643977964d1b6c0873d156fd5a6a03464f02"
+    },
+    {
+      "path": "wal-1018.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

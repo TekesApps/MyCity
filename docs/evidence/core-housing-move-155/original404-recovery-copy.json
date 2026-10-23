@@ -1,0 +1,60 @@
+{
+  "source_original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/404-move-store/test-artifacts/mycity-housing-move-store-79551-1/world",
+  "working_copy": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/410-original404-world-copy",
+  "method": "complete APFS clone copy, every file byte hash checked; original not opened",
+  "files": [
+    {
+      "path": "CURRENT.json",
+      "size": 123,
+      "sha256": "83bc96bcb37f4750a8a2ca99798e6b30e382f53e754bfdd8c4d75cb21b7d8286"
+    },
+    {
+      "path": "LOCK",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "checkpoint-341.json",
+      "size": 369998,
+      "sha256": "af08033df5fb3d52d76ed94f905fe3eb86242b090879ce5379792a3d5599fad3"
+    },
+    {
+      "path": "checkpoint-index-341.json",
+      "size": 1365,
+      "sha256": "ceda5115887987ef895d832da0d5d46b1eb790fd8cc22d9767c351c8c82f4e8c"
+    },
+    {
+      "path": "genesis.json",
+      "size": 14032,
+      "sha256": "b0b15412c9ab49020f028a78cacb81406c05dcd5cbdf1f731b917cae3925eb35"
+    },
+    {
+      "path": "root-0.json",
+      "size": 430,
+      "sha256": "cee3113b265819814c6de2bef8a41b36488c9fbc35656120b4800dc2b364bafd"
+    },
+    {
+      "path": "root-1.json",
+      "size": 517,
+      "sha256": "74b37190bef2452de8803bcfce1bbe70f3516a65f8abf0ec55c153b35d16cd71"
+    },
+    {
+      "path": "wal-341.bin",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "total_logical_bytes": 386465,
+  "state": "complete original copy actually opened; no commands",
+  "reader_run": "409-original404-reopen",
+  "original_after_reader_all_hashes_equal": true,
+  "original_checkpoint_engine_sha256": "9d1bf9aab2be3d68d5cf18a315c0ca7c35875d4c1ef3a0df8efe6bf38217dff2",
+  "new_reader_state_hash": "1b5befa9f0921f698ccb74196348829caf82b51f67c89d3720da643b84797066",
+  "raw_checkpoint_engine_bytes_hash_note": "Archive payload SHA differs by definition from Store state digest: state view omits journal and applies canonical Store wrapper; raw comparison is not evidence of state mismatch.",
+  "canonical_state_check": {
+    "method": "BorrowedWorldView v8 with sorted AccountView/StockView and opening_sources, Engine state without hot journal, canonical Store wrapper v1 null spatial",
+    "expected_store_hash": "1b5befa9f0921f698ccb74196348829caf82b51f67c89d3720da643b84797066",
+    "reader_store_hash": "1b5befa9f0921f698ccb74196348829caf82b51f67c89d3720da643b84797066",
+    "equal": true
+  }
+}

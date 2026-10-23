@@ -44,10 +44,44 @@ pub(super) struct Frame<'a, 'd> {
     pub resources: &'a mut ResourceRows,
     pub leases: &'a mut LeaseRows,
     pub housing: &'a mut Option<crate::housing::HousingState>,
+    pub housing_move_history: Option<&'a crate::housing_runtime_move::MoveRuntimeState>,
     pub housing_wage_window: &'a mut Option<Box<crate::housing_income::PaidWageWindow>>,
     pub next_token: &'a mut u64,
 }
 impl Frame<'_, '_> {
+    fn sync_rent_claim(
+        &mut self,
+        source: crate::timeline::RentClaimSource,
+        claim: crate::timeline::Claim,
+    ) -> Result<(), TxError> {
+        // A moved-out lease keeps its original Claim and source so the arrears remain
+        // explicitly settleable. Its former unit may now be vacant or leased to another
+        // household; do not try to synchronize that historical Claim into the current unit.
+        if self
+            .housing_move_history
+            .and_then(|history| history.historical_source(&claim))
+            == Some(source)
+        {
+            return Ok(());
+        }
+        if let Some(housing) = self.housing.as_mut() {
+            if let Some(unit) = housing
+                .units()
+                .iter()
+                .find(|unit| unit.unit_id == source.unit_id && unit.lease_id == source.lease_id)
+                .copied()
+            {
+                let patch =
+                    crate::housing::plan_rent_claim_reference_sync(unit, source.tenant, claim)
+                        .map_err(|_| TxError::InvalidOperation)?;
+                housing
+                    .apply_transaction(&[patch])
+                    .map_err(|_| TxError::InvalidOperation)?;
+                return Ok(());
+            }
+        }
+        Err(TxError::InvalidOperation)
+    }
     fn now(&self) -> u64 {
         self.region
             .as_ref()
@@ -390,22 +424,7 @@ impl Frame<'_, '_> {
                 if let Some(crate::timeline::ClaimSource::Rent { details }) =
                     t.source_for_claim(&t.claims[index])
                 {
-                    let housing = self.housing.as_mut().ok_or(err(E::Input))?;
-                    let unit = housing
-                        .units()
-                        .iter()
-                        .find(|unit| unit.unit_id == details.unit_id)
-                        .copied()
-                        .ok_or(err(E::Input))?;
-                    let patch = crate::housing::plan_rent_claim_reference_sync(
-                        unit,
-                        details.tenant,
-                        t.claims[index],
-                    )
-                    .map_err(|_| err(E::Input))?;
-                    housing
-                        .apply_transaction(&[patch])
-                        .map_err(|_| err(E::Input))?;
+                    self.sync_rent_claim(details, t.claims[index])?;
                 }
             }
             C::Advance { target, limit } => {
@@ -782,10 +801,23 @@ impl Frame<'_, '_> {
                     t.progress.cursor += 1;
                     let original = t.claims[i];
                     let rent_source = t.rent_source_for_claim(&original);
-                    let rent_due_now = if rent_source.is_some() {
-                        self.rent_occurrence_is_current(t, &original, at)?
-                    } else {
-                        false
+                    let rent_due_now = match rent_source {
+                        Some(source)
+                            if is_historical_rent_claim(
+                                self.housing_move_history,
+                                &original,
+                                source,
+                            ) =>
+                        {
+                            // A moved-out lease retains its original Timeline Claim and source
+                            // as historical debt. Its old unit is intentionally vacant, so it
+                            // must not pass the active-unit rent-occurrence check. If the old
+                            // Claim still has an unprocessed contractual due date, the ordinary
+                            // `original.due == at` path below continues to settle it.
+                            false
+                        }
+                        Some(_) => self.rent_occurrence_is_current(t, &original, at)?,
+                        None => false,
                     };
                     if !original.processed && (original.due == at || rent_due_now) {
                         if rent_source.is_some() && !rent_due_now {
@@ -819,22 +851,7 @@ impl Frame<'_, '_> {
                         if let Some(crate::timeline::ClaimSource::Rent { details }) =
                             t.source_for_claim(&t.claims[i])
                         {
-                            let housing = self.housing.as_mut().ok_or(err(E::Input))?;
-                            let unit = housing
-                                .units()
-                                .iter()
-                                .find(|unit| unit.unit_id == details.unit_id)
-                                .copied()
-                                .ok_or(err(E::Input))?;
-                            let patch = crate::housing::plan_rent_claim_reference_sync(
-                                unit,
-                                details.tenant,
-                                t.claims[i],
-                            )
-                            .map_err(|_| err(E::Input))?;
-                            housing
-                                .apply_transaction(&[patch])
-                                .map_err(|_| err(E::Input))?;
+                            self.sync_rent_claim(details, t.claims[i])?;
                         }
                         return Ok(());
                     }
@@ -1068,6 +1085,15 @@ impl Frame<'_, '_> {
         Ok(())
     }
 }
+
+fn is_historical_rent_claim(
+    history: Option<&crate::housing_runtime_move::MoveRuntimeState>,
+    claim: &crate::timeline::Claim,
+    source: crate::timeline::RentClaimSource,
+) -> bool {
+    history.and_then(|moves| moves.historical_source(claim)) == Some(source)
+}
+
 pub(super) fn validate(engine: &Engine, t: &Timeline) -> Result<(), TxError> {
     t.validate()?;
     let p = t.progress;
@@ -1135,12 +1161,34 @@ fn validate_housing_rent(engine: &Engine, timeline: &Timeline) -> Result<(), TxE
         let Some(source) = timeline.rent_source_for_claim(claim) else {
             continue;
         };
-        let unit = runtime
+        // Historical rent provenance wins over the current unit index. A moved-out
+        // claim keeps its original unit and lease IDs, but that unit may now hold a
+        // different active lease. The move-state validator below separately enforces
+        // that each retained source is owned by exactly one active or historical row.
+        if let Some(history) = runtime
+            .moves
+            .as_deref()
+            .and_then(|moves| moves.historical_source(claim))
+        {
+            if history != source
+                || claim.id != u64::from(source.lease_id)
+                || claim.payer != source.tenant
+                || claim.payee != source.landlord
+                || claim.principal <= Money::ZERO
+                || claim.paid > claim.principal
+            {
+                return Err(err(E::Input));
+            }
+            continue;
+        }
+        let Some(unit) = runtime
             .state
             .units()
             .iter()
-            .find(|unit| unit.unit_id == source.unit_id)
-            .ok_or(err(E::Input))?;
+            .find(|unit| unit.unit_id == source.unit_id && unit.lease_id == source.lease_id)
+        else {
+            return Err(err(E::Input));
+        };
         let household = runtime
             .opening
             .households
@@ -1208,4 +1256,59 @@ fn validate_housing_rent(engine: &Engine, timeline: &Timeline) -> Result<(), TxE
         }
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn historical_rent_claim_skips_active_lease_occurrence_validation() {
+        use crate::{
+            housing_runtime_move::{HistoricalLease, MoveRuntimeState},
+            timeline::{Claim, RentClaimSource},
+            units::Money,
+        };
+
+        let source = RentClaimSource {
+            landlord: 4,
+            tenant: 2,
+            lease_id: 9_001,
+            unit_id: 101,
+        };
+        let claim = Claim {
+            id: 9_001,
+            payer: source.tenant,
+            payee: source.landlord,
+            due: crate::timeline::DAY,
+            principal: Money::new(10).unwrap(),
+            paid: Money::new(4).unwrap(),
+            processed: true,
+            source_ref: 1,
+        };
+        let mut history = MoveRuntimeState::default();
+        history
+            .append_history(HistoricalLease {
+                city_id: 1,
+                household_id: 501,
+                unit_id: source.unit_id,
+                lease_id: source.lease_id,
+                closed_at: crate::units::GameTime::new(2 * crate::timeline::DAY as i64).unwrap(),
+                claim_id: claim.id,
+                source,
+            })
+            .unwrap();
+
+        assert!(is_historical_rent_claim(Some(&history), &claim, source));
+        assert!(!is_historical_rent_claim(None, &claim, source));
+        let mismatched = RentClaimSource {
+            unit_id: source.unit_id + 1,
+            ..source
+        };
+        assert!(!is_historical_rent_claim(
+            Some(&history),
+            &claim,
+            mismatched
+        ));
+    }
 }

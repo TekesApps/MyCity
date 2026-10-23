@@ -1,0 +1,12 @@
+{
+  "source_sha256": "0fb53229d3f00c7342b9e4387e08055c8ce1c3637209c953358944fb4150f2ec",
+  "source_files": 297,
+  "fixed_input_files": 309,
+  "binary": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/427-move-final-cli-build/executables/d5cf0dc683a8f23ab8fc61fd82279a5ff32d868df716ab1ca9f633e2a0ce1c4c/town_housing_move",
+  "binary_sha256": "d5cf0dc683a8f23ab8fc61fd82279a5ff32d868df716ab1ca9f633e2a0ce1c4c",
+  "source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/427-move-final-cli-build/source.zip",
+  "source_zip_sha256": "7e522a2ba9e7b2c5821bce793bd0e9f5cdf101d9b20ec6083fe4245e7d3eb2d7",
+  "source_identity_method": "build.rs path-string sort and framed UTF-8 path/length/content hashing; archive hash checked",
+  "storage": "external HP P900 USB/APFS SSD",
+  "embedded_source_check": "not performed for examples"
+}

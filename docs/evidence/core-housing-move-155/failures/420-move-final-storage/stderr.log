@@ -1,0 +1,26 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+error[E0599]: no method named `copied` found for enum `Option<MoveWaitRecord>` in the current scope
+   --> crates/city-storage/tests/housing_move_store_runtime.rs:835:10
+    |
+829 |       let wait = store
+    |  ________________-
+830 | |         .engine()
+831 | |         .unwrap()
+832 | |         .housing_move_state()
+833 | |         .unwrap()
+834 | |         .wait_for(HOUSEHOLD)
+835 | |         .copied()
+    | |         -^^^^^^ `Option<MoveWaitRecord>` is not an iterator
+    | |_________|
+    |
+    |
+help: call `.into_iter()` first
+    |
+835 |         .into_iter().copied()
+    |          ++++++++++++
+
+For more information about this error, try `rustc --explain E0599`.
+error: could not compile `mycity-storage` (test "housing_move_store_runtime") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

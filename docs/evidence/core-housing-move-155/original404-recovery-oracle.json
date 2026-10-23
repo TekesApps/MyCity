@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "scope": "original bytes and literal canonical checkpoint state; actual reader execution is separate409",
+  "original": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/404-move-store/test-artifacts/mycity-housing-move-store-79551-1/world",
+  "working_copy": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/410-original404-world-copy",
+  "files": 8,
+  "total_original_logical_bytes": 386465,
+  "expected_store_state_hash": "1b5befa9f0921f698ccb74196348829caf82b51f67c89d3720da643b84797066",
+  "reader_store_state_hash": "1b5befa9f0921f698ccb74196348829caf82b51f67c89d3720da643b84797066",
+  "sequence": 340,
+  "original_all_bytes_unchanged": true,
+  "world_owned": 127928,
+  "same_conservative_scratch": 2048,
+  "world_cap": 131072,
+  "move_runtime_owned": 96
+}

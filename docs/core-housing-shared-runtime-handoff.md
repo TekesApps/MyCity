@@ -224,3 +224,72 @@ The next OpeningHousing registration needs explicit immutable city identity chec
 Region.cities, inherited by all of its units/offers. Existing missing bindings stay readable
 and retain original lease/billing/repayment behavior but cannot authorize Move; no default to
 current active city during restore. This is a design dependency, not implemented in v153.
+
+
+## Pending Move/Wait integration: authoritative computation boundary
+
+This section describes the currently integrated, unreleased candidate; it does not mark the
+remaining Store/CLI/regression gates passed. It supersedes the earlier **768-byte** housing
+validation scratch estimate: the actual current constant is 32 × (DwellingFact32 + four u64
+keys32) = **2048 bytes**. World128KiB, Engine4MiB and all original M0 limits remain unchanged.
+
+- **Authority:** immutable OpeningHousing city binding (validated against Region.cities),
+  registered household/account, unit and lease offers, sourced movement assessment/version,
+  completed 31-day actual-paid wage window, current cash/protection, existing Rent Claim and
+  consumed offers. No income, city, permission, balance or offer terms come from caller text.
+  The compact HousingMove selects an assessment/city and prior Wait operation ID; these are
+  selectors/CAS guards, not replacements for authoritative facts. Current assessments and
+  environment observations are explicit genesis fixtures, not live environmental providers.
+- **Triggers/output:** an explicit request revalidates every fact. A successful Move atomically
+  changes occupancy, consumes the new offer, transfers the real moving fee, accrues only earned
+  old rent, keeps the old sourced Claim, creates the new lease Claim, records bounded history,
+  and clears the matching Wait. Wait records its reason/version without reserving a home or
+  moving money. Retrying the same durable operation returns its recorded result; a later retry
+  with a new operation must supply the current Wait CAS and revalidate capacity/affordability.
+- **Stable intervals:** absence of a request does not repeatedly search homes. Wage observation
+  is a complete-day rolling window; incomplete coverage is unknown. Housing bills only at its
+  calendar boundary. A processed historical rent debt stays an actual Claim and is collected
+  by explicit SettleClaim, not by assuming the new lease's P2 will revisit it.
+- **Exact boundaries:** caller/identity, unique home/capacity, offer reuse, wage coverage,
+  stale assessment/Wait, improvement/cooldown, protected cash and principal>=paid must be checked
+  separately. Nonzero deposit/refund/travel-time variants remain rejected in this finite slice.
+  Legacy missing city bindings remain readable and billable but cannot authorize new Move.
+  Changing active city never rebinds the immutable housing portfolio.
+- **Equivalent batching:** retain existing event/calendar reference and integer prorating. Due
+  sources may share a prepared page only when original order, rounding, source identity and
+  boundary semantics remain identical. Do not multiply a month, wage cycle or improvement
+  threshold across transitions. Do not add observed wages to cash again. Threshold crossings,
+  moves, explicit settlement, city activation and missing data require event-level handling.
+- **City activation:** ordinary Payroll accrues work only in its home active city (or its
+  explicitly unbound home_city=0 case). R54 freezes autonomous inactive-city work; already earned
+  wages still bill/pay on their scheduled boundaries. last_accrual advances during dormancy,
+  so reopening does not invent missed labor. This does not authorize freezing accepted cross-city
+  fulfillment labor; those explicit obligations retain their own existing bounded contract.
+- **Resource ownership:** World owns the optional MoveRuntime Box and its two lazy bounded Vecs,
+  each capped at32. Actual Vec capacities plus48-byte Box payload header are counted; a one-Wait
+  state uses96 bytes, not a preallocated unrelated32-row history. The prepare gate includes
+  projected World ownership plus the same2048 restore scratch before business publication.
+  Allocation failure/budget denial leaves business state unchanged but may persist the ordinary
+  failed receipt. Full32+32 payload/header3120 bytes is a ceiling, not an admission guarantee:
+  combined World capacity can reject earlier. Prepared/active/restore copies and process native
+  footprint remain separate measurements; neither lazy allocation nor a micro scenario proves
+  the original M0 memory gate or real16GB device acceptance.
+
+Reference execution stays existing Engine Prepared → Store WAL/receipt → checkpoint/cold-open,
+with the daily Timeline path and original source/Claim IDs. The original404 failed Wait world
+is fully retained; a complete copy cold-opened under the corrected candidate with96 Move bytes,
+World127928 plus2048 scratch=129976 below131072, and independently reconstructed Store hash equal.
+412's legal near-limit18-unit rejection scenario passed without raising the cap or shrinking the
+primary two-unit scenario. Its main Move scenario still has a test wage oracle correction pending;
+no full Move acceptance is inferred from those partial results.
+
+
+## Actual finite Move/Wait stage, v0.5.155
+
+The preceding pending label is superseded only for the now-verified finite Move/Wait, explicit
+city binding and historical-claim settlement paths. [Actual source/executable, Store/CLI,
+independent final-snapshot recovery and resource evidence](evidence/core-housing-move-155/STATUS.md)
+include the separate3-unit re-let case and original404 recovery. A2-unit prototype still has a
+lifetime2-consumed-offer bound; third acceptance is not proven or silently enabled. All household
+income, live environment/service providers, deposits/refunds, nonzero relocation travel time,
+residence→OD, maximum combined counts and original scale/16GB gates remain outside acceptance.

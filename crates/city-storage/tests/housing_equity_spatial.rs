@@ -722,9 +722,12 @@ fn opening_housing() -> OpeningHousing {
     offers.try_push(offer).unwrap();
     OpeningHousing {
         unit_limit: 1,
+        city_id: None,
         dwellings,
         households,
         lease_offers: offers,
+        move_assessments: mycity_core::model_rows::Rows::new().unwrap(),
+        move_candidates: mycity_core::model_rows::Rows::new().unwrap(),
     }
 }
 

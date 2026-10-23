@@ -1,0 +1,15 @@
+{
+  "files": [
+    [
+      "crates/city-core/src/housing_runtime_move.rs",
+      "f2ac0cfeea312d3913a3fb8d213d07f3f17dd71631978c1f449b979422359850",
+      "a2cad6b1a9d9a3bf116e7f939fccf9fa9691823e6d997395698dc1e3780aab93"
+    ],
+    [
+      "crates/city-core/src/timeline_driver.rs",
+      "cc9e6f0185fc86e3abbf1238dbbca4fb2d154ccdce3f7f37d5832f45683cdabe",
+      "3d95e4f1f67316e1858a7a8c77b060c75204f4bbd207f7038885a9ef8310aa52"
+    ]
+  ],
+  "reason": "Default equivalent derive and test-module relocation only; original422lint failure retained"
+}

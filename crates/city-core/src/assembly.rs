@@ -135,6 +135,8 @@ pub(crate) struct HousingRuntime {
     pub(crate) state: crate::housing::HousingState,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub(crate) paid_wages: Option<Box<crate::housing_income::PaidWageWindow>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub(crate) moves: Option<Box<crate::housing_runtime_move::MoveRuntimeState>>,
 }
 impl HousingRuntime {
     fn owned_capacity_bytes(&self) -> usize {
@@ -144,6 +146,10 @@ impl HousingRuntime {
             + self.paid_wages.as_deref().map_or(
                 0,
                 crate::housing_income::PaidWageWindow::owned_capacity_bytes,
+            )
+            + self.moves.as_deref().map_or(
+                0,
+                crate::housing_runtime_move::MoveRuntimeState::owned_capacity_bytes,
             )
     }
 }
@@ -678,8 +684,20 @@ impl World {
                 .opening
                 .validate()
                 .map_err(|_| "checkpoint_housing_opening")?;
+            if housing.opening.city_id.is_some_and(|id| {
+                self.region
+                    .as_ref()
+                    .is_none_or(|region| !region.contains_city(id))
+            }) {
+                return Err("checkpoint_housing_city".into());
+            }
             if housing.state.unit_limit() != usize::from(housing.opening.unit_limit) {
                 return Err("checkpoint_housing_limit".into());
+            }
+            if let Some(moves) = housing.moves.as_deref() {
+                moves
+                    .validate(&housing.opening, housing.opening.city_id)
+                    .map_err(str::to_owned)?;
             }
             let facts: Vec<_> = housing
                 .opening
@@ -863,6 +881,29 @@ impl World {
                 (housing.opening.lease_offers.capacity()
                     * size_of::<crate::housing::GenesisLeaseOffer>())
                 .into(),
+            );
+            object.insert(
+                "housing_move_assessments_bytes".into(),
+                (housing.opening.move_assessments.capacity()
+                    * size_of::<crate::housing::OpeningMoveAssessment>())
+                .into(),
+            );
+            object.insert(
+                "housing_move_candidates_bytes".into(),
+                (housing.opening.move_candidates.capacity()
+                    * size_of::<crate::housing::OpeningMoveCandidate>())
+                .into(),
+            );
+            object.insert(
+                "housing_move_runtime_bytes".into(),
+                housing
+                    .moves
+                    .as_deref()
+                    .map_or(
+                        0,
+                        crate::housing_runtime_move::MoveRuntimeState::owned_capacity_bytes,
+                    )
+                    .into(),
             );
             object.insert(
                 "housing_state_bytes".into(),
@@ -1144,6 +1185,14 @@ pub(crate) fn assemble_into(bytes: &[u8], world: &mut World) -> Result<(), Strin
         town.validate_initial_world(world).map_err(str::to_owned)?;
     }
     if let Some(opening) = input.housing {
+        if opening.city_id.is_some_and(|id| {
+            world
+                .region
+                .as_ref()
+                .is_none_or(|region| !region.contains_city(id))
+        }) {
+            return Err("housing_city".into());
+        }
         let state = crate::housing::HousingState::from_opening(&opening)
             .map_err(|error| format!("housing_opening:{error:?}"))?;
         for dwelling in opening.dwellings.iter() {
@@ -1173,6 +1222,7 @@ pub(crate) fn assemble_into(bytes: &[u8], world: &mut World) -> Result<(), Strin
             opening,
             state,
             paid_wages: None,
+            moves: None,
         }));
     }
     let housing_scratch = if world.housing.is_some() {

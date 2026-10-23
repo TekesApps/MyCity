@@ -129,6 +129,10 @@ impl Record for OpeningDwelling {
 #[serde(deny_unknown_fields)]
 pub struct OpeningHousing {
     pub unit_limit: u8,
+    /// Immutable city identity for this housing portfolio. `None` preserves legacy saves but
+    /// disables every new move until a trusted opening is supplied.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub city_id: Option<u32>,
     pub dwellings: Rows<OpeningDwelling, MAX_M0_HOUSING_UNITS>,
     /// Host-supplied bounded identity registrations used by offers. These are explicit opening
     /// facts; they do not claim to discover households from account IDs.
@@ -137,6 +141,113 @@ pub struct OpeningHousing {
     /// Immutable host-supplied one-shot opening offers; runtime lease actions select by ID and
     /// cannot provide or replace these records.
     pub lease_offers: Rows<GenesisLeaseOffer, MAX_GENESIS_LEASE_OFFERS>,
+    /// Trusted, versioned assessment evidence used by Engine move selectors.
+    #[serde(
+        default = "empty_move_assessments",
+        skip_serializing_if = "Rows::is_empty"
+    )]
+    pub move_assessments: Rows<OpeningMoveAssessment, MAX_M0_HOUSING_UNITS>,
+    /// Bounded alternatives. Every row resolves to one immutable lease offer.
+    #[serde(
+        default = "empty_move_candidates",
+        skip_serializing_if = "Rows::is_empty"
+    )]
+    pub move_candidates: Rows<OpeningMoveCandidate, MAX_M0_HOUSING_UNITS>,
+}
+
+fn empty_move_assessments() -> Rows<OpeningMoveAssessment, MAX_M0_HOUSING_UNITS> {
+    Rows::new().expect("fixed move assessment rows")
+}
+fn empty_move_candidates() -> Rows<OpeningMoveCandidate, MAX_M0_HOUSING_UNITS> {
+    Rows::new().expect("fixed move candidate rows")
+}
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct OpeningMoveAssessment {
+    pub assessment_id: u64,
+    pub household_id: u32,
+    pub source_id: u64,
+    pub version: u64,
+    pub old_score: MoveScore,
+    pub low_since: Option<GameTime>,
+    pub covered_through: GameTime,
+    pub continuous_low_and_covered: bool,
+    pub cooldown_until: Option<GameTime>,
+    pub essential_costs_per_month: Money,
+}
+impl Record for OpeningMoveAssessment {
+    fn inactive() -> Self {
+        Self {
+            assessment_id: 0,
+            household_id: 0,
+            source_id: 0,
+            version: 0,
+            old_score: MoveScore {
+                lower: 0,
+                upper: 0,
+                fully_covered: false,
+                environment_source: 0,
+                public_service_source: 0,
+                source_version: 0,
+                assessed_at: GameTime::ZERO,
+                valid_through: GameTime::ZERO,
+                hard_failure_mask: 0,
+            },
+            low_since: None,
+            covered_through: GameTime::ZERO,
+            continuous_low_and_covered: false,
+            cooldown_until: None,
+            essential_costs_per_month: Money::ZERO,
+        }
+    }
+}
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct OpeningMoveCandidate {
+    pub assessment_id: u64,
+    pub offer_id: u64,
+    pub score: MoveScore,
+    pub move_cost: MoveCostQuote,
+}
+impl Record for OpeningMoveCandidate {
+    fn inactive() -> Self {
+        Self {
+            assessment_id: 0,
+            offer_id: 0,
+            score: MoveScore {
+                lower: 0,
+                upper: 0,
+                fully_covered: false,
+                environment_source: 0,
+                public_service_source: 0,
+                source_version: 0,
+                assessed_at: GameTime::ZERO,
+                valid_through: GameTime::ZERO,
+                hard_failure_mask: 0,
+            },
+            move_cost: MoveCostQuote {
+                source_id: 0,
+                valid_through: GameTime::ZERO,
+                reachable: false,
+                travel_seconds: 0,
+                moving_charge: Money::ZERO,
+                moving_provider_account: 0,
+                old_lease_close_due: Money::ZERO,
+                old_close_payee_account: 0,
+                old_clause_version: 0,
+                old_contract_exit_source_id: 0,
+                old_escrow_account: 0,
+                deposit_resolution_source_id: 0,
+                old_deposit_refund_authorized: Money::ZERO,
+                old_deposit_deduction_authorized: Money::ZERO,
+                old_deposit_deduction_account: 0,
+            },
+        }
+    }
 }
 
 /// Read-only recent wage-payment evidence for a registered household.
@@ -325,6 +436,8 @@ impl OpeningHousing {
         self.dwellings.capacity() * size_of::<OpeningDwelling>()
             + self.households.capacity() * size_of::<OpeningHousehold>()
             + self.lease_offers.capacity() * size_of::<GenesisLeaseOffer>()
+            + self.move_assessments.capacity() * size_of::<OpeningMoveAssessment>()
+            + self.move_candidates.capacity() * size_of::<OpeningMoveCandidate>()
     }
 
     pub fn household(&self, household_id: u32) -> Result<OpeningHousehold, HousingError> {
@@ -358,12 +471,62 @@ impl OpeningHousing {
                 .any(|pair| pair[0].fact.unit_id >= pair[1].fact.unit_id)
             || self.lease_offers.len() > usize::from(self.unit_limit)
             || self.households.len() > usize::from(self.unit_limit)
+            || self.city_id == Some(0)
+            || self.move_assessments.len() > usize::from(self.unit_limit)
+            || self.move_candidates.len() > usize::from(self.unit_limit)
+            || self
+                .move_assessments
+                .windows(2)
+                .any(|w| w[0].assessment_id >= w[1].assessment_id)
+            || self
+                .move_candidates
+                .windows(2)
+                .any(|w| (w[0].assessment_id, w[0].offer_id) >= (w[1].assessment_id, w[1].offer_id))
+            || ((!self.move_assessments.is_empty() || !self.move_candidates.is_empty())
+                && self.city_id.is_none())
             || self
                 .lease_offers
                 .windows(2)
                 .any(|pair| pair[0].offer_id >= pair[1].offer_id)
         {
             return Err(HousingError::DuplicateIdentity);
+        }
+        for assessment in &self.move_assessments {
+            if assessment.assessment_id == 0
+                || assessment.household_id == 0
+                || assessment.source_id == 0
+                || assessment.version == 0
+                || assessment.essential_costs_per_month < Money::ZERO
+                || self.household(assessment.household_id).is_err()
+                || assessment.old_score.source_version != assessment.version
+                || assessment.old_score.environment_source == 0
+                || assessment.old_score.public_service_source == 0
+                || self.move_assessments.iter().any(|other| {
+                    other.assessment_id != assessment.assessment_id
+                        && other.household_id == assessment.household_id
+                })
+            {
+                return Err(HousingError::InvalidIdentity);
+            }
+        }
+        for candidate in &self.move_candidates {
+            let assessment = self
+                .move_assessments
+                .binary_search_by_key(&candidate.assessment_id, |x| x.assessment_id)
+                .ok()
+                .map(|i| self.move_assessments[i]);
+            let offer = self
+                .lease_offers
+                .binary_search_by_key(&candidate.offer_id, |x| x.offer_id)
+                .ok()
+                .map(|i| self.lease_offers[i]);
+            if candidate.assessment_id == 0
+                || candidate.offer_id == 0
+                || assessment.is_none_or(|a| a.household_id != offer.map_or(0, |o| o.household_id))
+                || offer.is_none()
+            {
+                return Err(HousingError::OfferMismatch);
+            }
         }
         for (index, dwelling) in self.dwellings.iter().enumerate() {
             validate_dwelling(dwelling.fact)?;
@@ -794,7 +957,8 @@ pub struct RentOccurrencePlan {
     pub rounded_up_fractional_cent: bool,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct MoveScore {
     pub lower: u8,
     pub upper: u8,
@@ -808,7 +972,8 @@ pub struct MoveScore {
     pub hard_failure_mask: u32,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct MoveTrigger {
     /// Persisted by the satisfaction/family model after 14 full, continuously observed days.
     pub low_since: Option<GameTime>,
@@ -817,7 +982,8 @@ pub struct MoveTrigger {
     pub cooldown_until: Option<GameTime>,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct MoveCostQuote {
     pub source_id: u64,
     pub valid_through: GameTime,
@@ -825,7 +991,8 @@ pub struct MoveCostQuote {
     pub travel_seconds: u64,
     pub moving_charge: Money,
     pub moving_provider_account: u32,
-    /// Old lease rent/exit charges, excluding old arrears already in the shared debt ledger.
+    /// Immediate old-lease termination fee only. Earned rent is accrued on the ordinary
+    /// Timeline Claim and never included in this cash quote.
     pub old_lease_close_due: Money,
     pub old_close_payee_account: u32,
     pub old_clause_version: u32,
@@ -845,7 +1012,8 @@ pub struct MoveCandidate {
     pub move_cost: MoveCostQuote,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
 pub enum MoveWait {
     SatisfactionWindow,
     Cooldown,
@@ -865,6 +1033,9 @@ pub struct MovePlan {
     pub updated_old_unit: HousingUnit,
     pub updated_new_unit: HousingUnit,
     pub new_first_due_amount: Money,
+    /// Rent earned through the move instant is accrued to the existing Timeline Claim; it is
+    /// never sent as an immediate cash transfer by the move transaction.
+    pub old_final_rent_accrual: Money,
     pub effects: [CashTransfer; 5],
     pub effect_count: u8,
     /// Prior rent/deposit disputes stay linked to the old lease in the shared ledger.
@@ -1566,6 +1737,39 @@ impl HousingState {
                 updated: plan.updated_new_unit,
             },
         ])
+    }
+
+    pub fn apply_genesis_offer_move(
+        &mut self,
+        plan: MovePlan,
+        authorization: GenesisLeaseAuthorization,
+        applied_at: GameTime,
+    ) -> Result<(), HousingError> {
+        if authorization.offer_id == 0
+            || authorization.unit_id != plan.new_unit_id
+            || authorization.household_id != plan.household_id
+            || authorization.tenant_account == 0
+            || authorization.terms_sha256 == [0; 32]
+            || self
+                .consumed_offer_ids
+                .binary_search_by_key(&authorization.offer_id, |id| id.0)
+                .is_ok()
+            || self.consumed_offer_ids.len() >= self.unit_limit
+        {
+            return Err(HousingError::OfferMismatch);
+        }
+        self.apply_move(plan, applied_at)?;
+        let index = self
+            .consumed_offer_ids
+            .binary_search_by_key(&authorization.offer_id, |id| id.0)
+            .unwrap_err();
+        let len = self.consumed_offer_ids.len();
+        self.consumed_offer_ids.push(ConsumedOfferId(0));
+        for row in (index..len).rev() {
+            self.consumed_offer_ids[row + 1] = self.consumed_offer_ids[row];
+        }
+        self.consumed_offer_ids[index] = ConsumedOfferId(authorization.offer_id);
+        Ok(())
     }
 
     /// Validates an at-most-two-row prepared update with no allocation. The Engine must stage
@@ -2461,9 +2665,7 @@ pub fn plan_move(
         } else {
             accrue_rent(old, effective_at).map_err(|_| MoveWait::EvidenceIncomplete)?
         };
-        let old_close_due = old_final_due
-            .checked_add(candidate.move_cost.old_lease_close_due)
-            .map_err(|_| MoveWait::EvidenceIncomplete)?;
+        let old_close_due = candidate.move_cost.old_lease_close_due;
         let gross_cost = candidate
             .terms
             .deposit
@@ -2538,6 +2740,7 @@ pub fn plan_move(
             updated_old_unit: updated_old,
             updated_new_unit: updated_new,
             new_first_due_amount,
+            old_final_rent_accrual: old_final_due,
             effects,
             effect_count: 5,
             old_arrears_ref_retained_by_ledger: existing_old_arrears_ref,
@@ -2679,6 +2882,7 @@ mod tests {
         }
         OpeningHousing {
             unit_limit: dwellings.len() as u8,
+            city_id: None,
             dwellings: dwelling_rows,
             households: {
                 let mut rows = Rows::new().unwrap();
@@ -2699,6 +2903,8 @@ mod tests {
                 rows
             },
             lease_offers: offer_rows,
+            move_assessments: Rows::new().unwrap(),
+            move_candidates: Rows::new().unwrap(),
         }
     }
 
@@ -3126,9 +3332,12 @@ mod tests {
             .unwrap();
         let opening = OpeningHousing {
             unit_limit: 2,
+            city_id: None,
             dwellings,
             households: Rows::new().unwrap(),
             lease_offers: Rows::new().unwrap(),
+            move_assessments: Rows::new().unwrap(),
+            move_candidates: Rows::new().unwrap(),
         };
         let state = HousingState::from_opening(&opening).unwrap();
         assert_eq!(state.unit_limit(), 2);
@@ -3867,7 +4076,8 @@ mod tests {
         assert_eq!(plan.effective_at, effective);
         // This lease starts at the supported epoch. The final partial invoice must use its
         // persisted February due boundary, not infer a December 2000 interval from `now`.
-        assert_eq!(plan.effects[1].amount, money(22_648));
+        assert_eq!(plan.old_final_rent_accrual, money(22_648));
+        assert_eq!(plan.effects[1].amount, Money::ZERO);
         assert_eq!(plan.new_first_due_amount, money(27_353));
         assert_eq!(plan.updated_old_unit.household_id, 0);
         assert_eq!(plan.updated_new_unit.household_id, 101);

@@ -1,0 +1,13 @@
+
+running 3 tests
+test legacy_cityless_housing_can_reopen_but_cannot_authorize_a_move ... ok
+test over_budget_wait_is_rejected_without_model_changes_and_replays_after_cold_open ... ok
+test wait_move_and_old_claim_settlement_survive_cold_open_and_lost_replies ... FAILED
+
+failures:
+
+failures:
+    wait_move_and_old_claim_settlement_survive_cold_open_and_lost_replies
+
+test result: FAILED. 2 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 10.79s
+

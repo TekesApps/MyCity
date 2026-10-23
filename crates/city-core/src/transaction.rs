@@ -3,7 +3,7 @@ use crate::diagnostics::{Class, Role, Trace};
 use crate::{
     arena::{AccountDomain, Handle, InventoryDomain, RawHandle},
     assembly::{Account, Stock, World},
-    units::{Money, Quantity},
+    units::{GameTime, Money, Quantity},
 };
 use serde::{Deserialize, Serialize};
 use std::mem::size_of;
@@ -132,6 +132,13 @@ pub enum Action {
     HousingLease {
         offer_id: u64,
         offer_sha256: [u8; 32],
+    },
+    /// Re-evaluate one trusted housing assessment. A wait retry is guarded by its exact prior
+    /// operation ID; all candidate terms are resolved from immutable OpeningHousing rows.
+    HousingMove {
+        assessment_id: u64,
+        city_id: u32,
+        expected_wait_operation_id: u64,
     },
     /// Permanently stop new operations for one configured town-market business. This is
     /// an operational control only; it does not approve insolvency, liquidation or closure.
@@ -421,6 +428,7 @@ struct Prepared {
     construction: Option<crate::construction::Project>,
     housing: Option<crate::housing::HousingState>,
     housing_wage_window: Option<Box<crate::housing_income::PaidWageWindow>>,
+    housing_moves: Option<Box<crate::housing_runtime_move::MoveRuntimeState>>,
     town: Option<crate::town_runtime::MarketState>,
     spatial_permissions: Option<workspace::SpatialPermissionLease>,
     spatial_update_grant: Option<crate::spatial_transport_permissions::VerifiedSpatialUpdateGrant>,
@@ -924,6 +932,13 @@ impl Engine {
                 (Some(_), None) => return Err(TxError::InvalidOperation),
                 (None, _) => {}
             }
+            if let (Some(moves), Some(timeline)) =
+                (runtime.moves.as_deref(), self.timeline.as_ref())
+            {
+                moves
+                    .validate_timeline(&runtime.opening, &runtime.state, timeline)
+                    .map_err(|_| TxError::InvalidOperation)?;
+            }
         }
         let economy = self.world.economy;
         let boot = self.world.boot;
@@ -1171,6 +1186,9 @@ impl Engine {
             )),
             Err(_) => Some(fallback(crate::housing::PaidWageWindowStatus::Invalid)),
         }
+    }
+    pub fn housing_move_state(&self) -> Option<&crate::housing_runtime_move::MoveRuntimeState> {
+        self.world.housing.as_deref()?.moves.as_deref()
     }
     pub fn spatial_permissions(
         &self,
@@ -1645,6 +1663,8 @@ impl Engine {
         let mut town = self.world.town.map(|m| m.state);
         let mut housing: Option<crate::housing::HousingState> = None;
         let mut housing_wage_window: Option<Box<crate::housing_income::PaidWageWindow>> = None;
+        let mut housing_moves: Option<Box<crate::housing_runtime_move::MoveRuntimeState>> = None;
+        let mut housing_move_scratch_bytes = 0usize;
         let mut spatial_permissions: Option<workspace::SpatialPermissionLease> = None;
         let mut spatial_update_grant = None;
         let mut town_summary = None;
@@ -1827,6 +1847,11 @@ impl Engine {
                         resources: &mut resources,
                         leases: &mut leases,
                         housing: &mut housing,
+                        housing_move_history: self
+                            .world
+                            .housing
+                            .as_deref()
+                            .and_then(|runtime| runtime.moves.as_deref()),
                         housing_wage_window: &mut housing_wage_window,
                         next_token: &mut next_token,
                     }
@@ -2035,6 +2060,56 @@ impl Engine {
                         state,
                         timeline_state,
                         &mut accounts,
+                    )?;
+                }
+                Action::HousingMove {
+                    assessment_id,
+                    city_id,
+                    expected_wait_operation_id,
+                } => {
+                    if env.actions.len() != 1 {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    if housing.is_none() {
+                        housing = self
+                            .world
+                            .housing
+                            .as_deref()
+                            .map(|runtime| runtime.state.clone());
+                    }
+                    if housing_moves.is_none() {
+                        housing_moves = self.world.housing.as_deref().map(|runtime| {
+                            runtime
+                                .moves
+                                .as_deref()
+                                .cloned()
+                                .map(Box::new)
+                                .unwrap_or_else(|| {
+                                    Box::new(
+                                        crate::housing_runtime_move::MoveRuntimeState::default(),
+                                    )
+                                })
+                        });
+                    }
+                    let state = housing.as_mut().ok_or(TxError::InvalidOperation)?;
+                    let move_state = housing_moves.as_mut().ok_or(TxError::InvalidOperation)?;
+                    let timeline_state = timeline.as_mut().ok_or(TxError::InvalidOperation)?;
+                    let window = housing_wage_window
+                        .as_deref()
+                        .or_else(|| self.world.housing.as_deref()?.paid_wages.as_deref());
+                    prepare_housing_move(
+                        caller,
+                        assessment_id,
+                        city_id,
+                        expected_wait_operation_id,
+                        env.operation_id,
+                        &self.world,
+                        state,
+                        move_state,
+                        timeline_state,
+                        window,
+                        &mut accounts,
+                        &mut housing_move_scratch_bytes,
                     )?;
                 }
                 Action::SpatialPermission { command } => {
@@ -2283,6 +2358,11 @@ impl Engine {
                                 resources: &mut resources,
                                 leases: &mut leases,
                                 housing: &mut housing,
+                                housing_move_history: self
+                                    .world
+                                    .housing
+                                    .as_deref()
+                                    .and_then(|runtime| runtime.moves.as_deref()),
                                 housing_wage_window: &mut housing_wage_window,
                                 next_token: &mut next_token,
                             }
@@ -2663,6 +2743,11 @@ impl Engine {
                             resources: &mut resources,
                             leases: &mut leases,
                             housing: &mut housing,
+                            housing_move_history: self
+                                .world
+                                .housing
+                                .as_deref()
+                                .and_then(|runtime| runtime.moves.as_deref()),
                             housing_wage_window: &mut housing_wage_window,
                             next_token: &mut next_token,
                         }
@@ -3571,6 +3656,16 @@ impl Engine {
         if let Some(t) = timeline.as_ref() {
             t.validate()?;
         }
+        if let (Some(runtime), Some(timeline_state)) =
+            (self.world.housing.as_deref(), timeline.as_ref())
+        {
+            if let Some(moves) = housing_moves.as_deref().or(runtime.moves.as_deref()) {
+                let housing_state = housing.as_ref().unwrap_or(&runtime.state);
+                moves
+                    .validate_timeline(&runtime.opening, housing_state, timeline_state)
+                    .map_err(|_| TxError::InvalidOperation)?;
+            }
+        }
         validate_town_suspension_consistency(town.as_ref(), timeline.as_ref())
             .map_err(|_| TxError::InvalidOperation)?;
         validate_town_exit_state(
@@ -3621,6 +3716,64 @@ impl Engine {
                 0,
                 crate::housing_income::PaidWageWindow::owned_capacity_bytes,
             ));
+        let projected = projected.saturating_add(housing_moves.as_deref().map_or(
+            0,
+            crate::housing_runtime_move::MoveRuntimeState::owned_capacity_bytes,
+        ));
+        // The durable candidate must also satisfy the exact World budget checked by
+        // assemble/restore. Engine's broader 4 MiB check does not substitute for this gate:
+        // otherwise a Wait could commit successfully and then be rejected on cold open.
+        let projected_world_owned = self.world.housing.as_deref().map_or_else(
+            || self.world.owned_capacity_bytes(),
+            |runtime| {
+                let current_parts = runtime.state.owned_capacity_bytes()
+                    + runtime.paid_wages.as_deref().map_or(
+                        0,
+                        crate::housing_income::PaidWageWindow::owned_capacity_bytes,
+                    )
+                    + runtime.moves.as_deref().map_or(
+                        0,
+                        crate::housing_runtime_move::MoveRuntimeState::owned_capacity_bytes,
+                    );
+                let candidate_parts = housing.as_ref().map_or_else(
+                    || runtime.state.owned_capacity_bytes(),
+                    crate::housing::HousingState::owned_capacity_bytes,
+                ) + housing_wage_window.as_deref().map_or_else(
+                    || {
+                        runtime.paid_wages.as_deref().map_or(
+                            0,
+                            crate::housing_income::PaidWageWindow::owned_capacity_bytes,
+                        )
+                    },
+                    crate::housing_income::PaidWageWindow::owned_capacity_bytes,
+                ) + housing_moves.as_deref().map_or_else(
+                    || {
+                        runtime.moves.as_deref().map_or(
+                            0,
+                            crate::housing_runtime_move::MoveRuntimeState::owned_capacity_bytes,
+                        )
+                    },
+                    crate::housing_runtime_move::MoveRuntimeState::owned_capacity_bytes,
+                );
+                self.world
+                    .owned_capacity_bytes()
+                    .saturating_sub(current_parts)
+                    .saturating_add(candidate_parts)
+            },
+        );
+        let world_validation_scratch = if self.world.housing.is_some() {
+            crate::housing::MAX_VALIDATION_SCRATCH_BYTES
+        } else {
+            0
+        };
+        if projected_world_owned.saturating_add(world_validation_scratch)
+            > crate::assembly::WORLD_BYTE_BUDGET
+        {
+            return Err(TxError::WorkingLimit);
+        }
+        // Move planning uses one bounded candidate vector. It is released before this point,
+        // but it coexists with the active World and the Prepared copies while planning runs.
+        let projected = projected.saturating_add(housing_move_scratch_bytes);
         if projected > ENGINE_BYTE_BUDGET {
             return Err(TxError::WorkingLimit);
         }
@@ -3643,6 +3796,7 @@ impl Engine {
             construction,
             housing,
             housing_wage_window,
+            housing_moves,
             town,
             spatial_permissions,
             spatial_update_grant,
@@ -3697,6 +3851,11 @@ impl Engine {
             (&mut self.world.housing, prepared.housing_wage_window)
         {
             world_housing.paid_wages = Some(window);
+        }
+        if let (Some(world_housing), Some(moves)) =
+            (&mut self.world.housing, prepared.housing_moves)
+        {
+            world_housing.moves = Some(moves);
         }
         if let Some(mut state) = prepared.spatial_permissions {
             std::mem::swap(
@@ -4904,6 +5063,373 @@ fn prepare_housing_lease(
     Ok(())
 }
 
+#[allow(clippy::too_many_arguments)]
+fn prepare_housing_move(
+    caller: Caller,
+    assessment_id: u64,
+    requested_city_id: u32,
+    expected_wait_operation_id: u64,
+    operation_id: u64,
+    world: &World,
+    state: &mut crate::housing::HousingState,
+    move_state: &mut crate::housing_runtime_move::MoveRuntimeState,
+    timeline: &mut crate::timeline::Timeline,
+    wage_window: Option<&crate::housing_income::PaidWageWindow>,
+    accounts: &mut DirtyAccounts,
+    scratch_bytes: &mut usize,
+) -> Result<(), TxError> {
+    let Caller::Account(tenant_account) = caller else {
+        return Err(TxError::Unauthorized);
+    };
+    let runtime = world.housing.as_deref().ok_or(TxError::InvalidOperation)?;
+    let opening = &runtime.opening;
+    let city_id = opening.city_id.ok_or(TxError::InvalidOperation)?;
+    if world
+        .region
+        .as_ref()
+        .is_none_or(|region| !region.contains_city(city_id))
+        || timeline.progress.phase.is_some()
+        || timeline.progress.target.is_some()
+        || timeline.progress.at != timeline.progress.last_complete
+        || timeline.progress.last_complete % crate::timeline::DAY != 0
+        || assessment_id == 0
+        || requested_city_id != city_id
+        || operation_id == 0
+    {
+        return Err(TxError::InvalidOperation);
+    }
+    let assessment = opening
+        .move_assessments
+        .binary_search_by_key(&assessment_id, |row| row.assessment_id)
+        .ok()
+        .map(|i| opening.move_assessments[i])
+        .ok_or(TxError::InvalidOperation)?;
+    let household = opening
+        .household(assessment.household_id)
+        .map_err(|_| TxError::InvalidOperation)?;
+    if household.account != tenant_account {
+        return Err(TxError::Unauthorized);
+    }
+    let prior_wait = move_state.wait_for(household.household_id);
+    if prior_wait.map_or(0, |wait| wait.operation_id) != expected_wait_operation_id {
+        return Err(TxError::InvalidOperation);
+    }
+    let timeline_day = GameTime::new(
+        i64::try_from(timeline.progress.last_complete).map_err(|_| TxError::Overflow)?,
+    )
+    .map_err(|_| TxError::InvalidOperation)?;
+    let current_unit = state
+        .units()
+        .iter()
+        .find(|unit| unit.household_id == household.household_id)
+        .copied()
+        .ok_or(TxError::InvalidOperation)?;
+    if current_unit.lease_id == 0 || current_unit.deposit_held != Money::ZERO {
+        return Err(TxError::InvalidOperation);
+    }
+    let make_wait = |reason| crate::housing_runtime_move::MoveWaitRecord {
+        operation_id,
+        household_id: household.household_id,
+        city_id,
+        assessment_id,
+        assessment_version: assessment.version,
+        observed_at: timeline_day,
+        reason,
+    };
+    let Some(wage_window) = wage_window else {
+        move_state
+            .record_wait(
+                make_wait(crate::housing::MoveWait::EvidenceIncomplete),
+                expected_wait_operation_id,
+            )
+            .map_err(|_| TxError::InvalidOperation)?;
+        return Ok(());
+    };
+    let summary = match wage_window.summarize(opening, timeline, household.household_id) {
+        Ok(summary) => summary,
+        Err(_) => {
+            move_state
+                .record_wait(
+                    make_wait(crate::housing::MoveWait::EvidenceIncomplete),
+                    expected_wait_operation_id,
+                )
+                .map_err(|_| TxError::InvalidOperation)?;
+            return Ok(());
+        }
+    };
+    if summary.billed_arrears || summary.qualifying_contracts == 0 {
+        move_state
+            .record_wait(
+                make_wait(crate::housing::MoveWait::EvidenceIncomplete),
+                expected_wait_operation_id,
+            )
+            .map_err(|_| TxError::InvalidOperation)?;
+        return Ok(());
+    }
+    let account_handle = world
+        .account_handle(tenant_account)
+        .map_err(|_| TxError::InvalidHandle)?;
+    let account = world
+        .accounts
+        .get(account_handle)
+        .map_err(|_| TxError::InvalidHandle)?;
+    if account.role != crate::assembly::Role::Household {
+        return Err(TxError::Unauthorized);
+    }
+    let tenant_index = stage_account(
+        world,
+        accounts,
+        world
+            .account_ref(tenant_account)
+            .map_err(|_| TxError::InvalidHandle)?,
+    )?;
+    let tenant_snapshot = accounts[tenant_index].1;
+    let budget = crate::housing::HouseholdBudget {
+        household_id: household.household_id,
+        account: crate::town_economy::AccountSnapshot {
+            account: tenant_account,
+            cash: tenant_snapshot.cash,
+            protected: tenant_snapshot.protected,
+        },
+        people: household.people,
+        // The planner uses this as a soft affordability reference. It is actual paid wages in
+        // the observed 31-day window, not net disposable income or a promised future wage.
+        net_income_per_month: summary.paid_wages,
+        essential_costs_per_month: assessment.essential_costs_per_month,
+        income_observed_at: timeline_day,
+        income_window_complete: true,
+        income_source_version: assessment.version,
+    };
+    let candidate_count = opening
+        .move_candidates
+        .iter()
+        .filter(|row| row.assessment_id == assessment_id)
+        .count();
+    if candidate_count > crate::housing::MAX_MOVE_CANDIDATES {
+        return Err(TxError::InvalidOperation);
+    }
+    let mut candidates = Vec::new();
+    // The pre-count establishes the hard bound before requesting any additional memory.
+    candidates
+        .try_reserve_exact(candidate_count)
+        .map_err(|_| TxError::WorkingLimit)?;
+    for row in opening
+        .move_candidates
+        .iter()
+        .filter(|row| row.assessment_id == assessment_id)
+    {
+        let offer = opening
+            .lease_offer(row.offer_id)
+            .map_err(|_| TxError::InvalidOperation)?;
+        if offer.deposit != Money::ZERO
+            || row.move_cost.travel_seconds != 0
+            || row.move_cost.old_deposit_refund_authorized != Money::ZERO
+            || row.move_cost.old_deposit_deduction_authorized != Money::ZERO
+        {
+            continue;
+        }
+        let dwelling = opening
+            .dwellings
+            .iter()
+            .find(|d| d.fact.unit_id == offer.unit_id)
+            .map(|d| d.fact)
+            .ok_or(TxError::InvalidOperation)?;
+        candidates.push(crate::housing::MoveCandidate {
+            dwelling,
+            terms: offer.executable_terms(),
+            score: row.score,
+            move_cost: row.move_cost,
+        });
+    }
+    *scratch_bytes = candidates
+        .capacity()
+        .checked_mul(size_of::<crate::housing::MoveCandidate>())
+        .ok_or(TxError::Overflow)?;
+    let cooldown_delta = GameTime::new(
+        i64::try_from(crate::housing::MOVE_COOLDOWN_DAYS * 86_400)
+            .map_err(|_| TxError::Overflow)?,
+    )
+    .map_err(|_| TxError::Overflow)?;
+    let post_move_cooldown = move_state
+        .history()
+        .iter()
+        .filter(|history| history.household_id == household.household_id)
+        .try_fold(None, |latest: Option<GameTime>, history| {
+            let candidate = history
+                .closed_at
+                .checked_add(cooldown_delta)
+                .map_err(|_| TxError::Overflow)?;
+            Ok::<_, TxError>(Some(latest.map_or(candidate, |prior| prior.max(candidate))))
+        })?;
+    let cooldown_until = match (assessment.cooldown_until, post_move_cooldown) {
+        (Some(a), Some(b)) => Some(a.max(b)),
+        (Some(a), None) => Some(a),
+        (None, Some(b)) => Some(b),
+        (None, None) => None,
+    };
+    let trigger = crate::housing::MoveTrigger {
+        low_since: assessment.low_since,
+        covered_through: assessment.covered_through,
+        continuous_low_and_covered: assessment.continuous_low_and_covered,
+        cooldown_until,
+    };
+    let plan = match crate::housing::plan_move(
+        state,
+        budget,
+        assessment.old_score,
+        trigger,
+        timeline_day,
+        &candidates,
+        current_unit.arrears_ref,
+    ) {
+        Ok(plan) => plan,
+        Err(reason) => {
+            move_state
+                .record_wait(make_wait(reason), expected_wait_operation_id)
+                .map_err(|_| TxError::InvalidOperation)?;
+            return Ok(());
+        }
+    };
+    if plan.effective_at != timeline_day
+        || plan.old_deposit_liability_retained_by_ledger != Money::ZERO
+        || plan.effects[0].amount != Money::ZERO
+        || plan.effects[3].amount != Money::ZERO
+        || plan.effects[4].amount != Money::ZERO
+    {
+        return Err(TxError::InvalidOperation);
+    }
+    if move_state.history().len() >= crate::housing_runtime_move::MAX_HISTORICAL_LEASES {
+        return Err(TxError::WorkingLimit);
+    }
+    let new_offer_id = opening
+        .move_candidates
+        .iter()
+        .filter(|row| row.assessment_id == assessment_id)
+        .find_map(|row| {
+            opening
+                .lease_offers
+                .iter()
+                .find(|offer| offer.offer_id == row.offer_id && offer.unit_id == plan.new_unit_id)
+                .map(|offer| offer.offer_id)
+        })
+        .ok_or(TxError::InvalidOperation)?;
+    let new_offer = opening
+        .lease_offer(new_offer_id)
+        .map_err(|_| TxError::InvalidOperation)?;
+    if timeline
+        .claims
+        .last()
+        .is_some_and(|claim| u64::from(new_offer.lease_id) <= claim.id)
+    {
+        // Timeline source_ref is a compact one-based row index. Appending above the current
+        // high-water keeps every pre-existing rent Claim's source reference byte-stable.
+        return Err(TxError::InvalidOperation);
+    }
+    let authorization = crate::housing::validate_genesis_lease_offer(
+        opening,
+        new_offer.offer_id,
+        candidates
+            .iter()
+            .find(|candidate| candidate.dwelling.unit_id == plan.new_unit_id)
+            .ok_or(TxError::InvalidOperation)?
+            .dwelling,
+        world.scope.world(),
+        world.scope.branch(),
+        tenant_account,
+        timeline_day,
+        new_offer.executable_terms(),
+    )
+    .map_err(|_| TxError::InvalidOperation)?;
+    let old_claim_index = timeline
+        .claims
+        .binary_search_by_key(&u64::from(current_unit.lease_id), |claim| claim.id)
+        .map_err(|_| TxError::InvalidOperation)?;
+    let old_claim = timeline.claims[old_claim_index];
+    let old_source = timeline
+        .rent_source_for_claim(&old_claim)
+        .ok_or(TxError::InvalidOperation)?;
+    if old_source.tenant != tenant_account
+        || old_source.unit_id != current_unit.unit_id
+        || old_source.lease_id != current_unit.lease_id
+        || old_source.landlord != current_unit.owner_account
+        || old_claim.payer != tenant_account
+        || old_claim.payee != current_unit.owner_account
+        || old_claim.principal < old_claim.paid
+    {
+        return Err(TxError::InvalidOperation);
+    }
+    let prior_invoice = old_claim.due
+        == u64::try_from(current_unit.next_due_at.value()).map_err(|_| TxError::Overflow)?
+        && !old_claim.processed
+        && old_claim.paid == Money::ZERO;
+    let new_principal = if prior_invoice {
+        plan.old_final_rent_accrual
+    } else {
+        old_claim
+            .principal
+            .checked_add(plan.old_final_rent_accrual)
+            .map_err(|_| TxError::Overflow)?
+    };
+    if old_claim.paid > new_principal {
+        return Err(TxError::InvalidOperation);
+    }
+    let mut updated_old_claim = old_claim;
+    updated_old_claim.principal = new_principal;
+    timeline.claims[old_claim_index] = updated_old_claim;
+    let new_claim_id = u64::from(new_offer.lease_id);
+    let due =
+        u64::try_from(plan.updated_new_unit.next_due_at.value()).map_err(|_| TxError::Overflow)?;
+    timeline.insert_rent_claim(
+        crate::timeline::Claim {
+            id: new_claim_id,
+            payer: tenant_account,
+            payee: new_offer.owner_account,
+            due,
+            principal: plan.new_first_due_amount,
+            paid: Money::ZERO,
+            processed: false,
+            source_ref: 0,
+        },
+        crate::timeline::RentClaimSource {
+            landlord: new_offer.owner_account,
+            tenant: tenant_account,
+            lease_id: new_offer.lease_id,
+            unit_id: new_offer.unit_id,
+        },
+    )?;
+    for effect in plan.effects.iter().take(usize::from(plan.effect_count)) {
+        if effect.amount > Money::ZERO {
+            market_transfer(
+                world,
+                accounts,
+                effect.from_account,
+                effect.to_account,
+                effect.amount,
+            )?;
+        }
+    }
+    state
+        .apply_genesis_offer_move(plan, authorization, plan.effective_at)
+        .map_err(|_| TxError::InvalidOperation)?;
+    move_state
+        .append_history(crate::housing_runtime_move::HistoricalLease {
+            city_id,
+            household_id: household.household_id,
+            unit_id: current_unit.unit_id,
+            lease_id: current_unit.lease_id,
+            closed_at: plan.effective_at,
+            claim_id: old_claim.id,
+            source: old_source,
+        })
+        .map_err(|_| TxError::WorkingLimit)?;
+    if expected_wait_operation_id != 0 {
+        move_state
+            .clear_wait(household.household_id, expected_wait_operation_id)
+            .map_err(|_| TxError::InvalidOperation)?;
+    }
+    Ok(())
+}
+
 /// Applies the bounded construction projection and its external effects to the same
 /// candidate Engine state. The caller publishes this candidate only after the Store's
 /// durable hook succeeds.
@@ -5902,6 +6428,7 @@ impl Action {
                 | Self::EquityContribute { .. }
                 | Self::SpatialPermission { .. }
                 | Self::HousingLease { .. }
+                | Self::HousingMove { .. }
                 | Self::ReserveCapacity { .. }
         )
     }

@@ -225,6 +225,9 @@ impl Region {
     pub fn city(&self, id: u32) -> Result<City, Error> {
         self.cities[self.index(id)?].ok_or(Error::City)
     }
+    pub fn contains_city(&self, id: u32) -> bool {
+        self.index(id).is_ok()
+    }
     pub(crate) fn bump(&mut self) -> Result<(), Error> {
         self.sequence = self.sequence.checked_add(1).ok_or(Error::Overflow)?;
         Ok(())

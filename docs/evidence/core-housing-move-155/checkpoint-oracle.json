@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "scope": "literal cash/claim report and independent canonical checkpoint business digest; no WAL replay",
+  "sequence": 1015,
+  "store_state_hash": "c3b0e6e7482f21a492619557211517794db8ca6d2570cdc86f1f2dc6aef209d1",
+  "cash": {
+    "1": 1000000,
+    "2": 0,
+    "3": 344000,
+    "4": 1541000
+  },
+  "cash_total": 2885000,
+  "old_principal": 383226,
+  "old_paid": 341000,
+  "old_outstanding": 42226,
+  "new_unpaid": 30000,
+  "world": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/428-move-final-world",
+  "report": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/428-move-final-cli/stdout.log"
+}

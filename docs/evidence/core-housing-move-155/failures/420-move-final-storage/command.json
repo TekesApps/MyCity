@@ -1,0 +1,31 @@
+{
+  "argv": [
+    "cargo",
+    "test",
+    "--locked",
+    "--release",
+    "-p",
+    "mycity-storage",
+    "--lib",
+    "--test",
+    "housing_move_store_runtime",
+    "--test",
+    "housing_runtime",
+    "--test",
+    "housing_wage_window_runtime",
+    "--test",
+    "housing_equity_spatial",
+    "--test",
+    "equity_creditor_residual",
+    "--test",
+    "spatial_transport_updates",
+    "--",
+    "--test-threads=1",
+    "--nocapture"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-23T21:22:33.741310+00:00",
+  "source_manifest_sha256": "f548431b49fa2acd5142b36de61be4d742d8d808e1bbd1c11500e322e68d22be"
+}

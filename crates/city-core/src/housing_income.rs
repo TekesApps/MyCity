@@ -303,9 +303,12 @@ mod tests {
     fn opening() -> OpeningHousing {
         let mut opening = OpeningHousing {
             unit_limit: 1,
+            city_id: None,
             dwellings: crate::model_rows::Rows::new().unwrap(),
             households: crate::model_rows::Rows::new().unwrap(),
             lease_offers: crate::model_rows::Rows::new().unwrap(),
+            move_assessments: crate::model_rows::Rows::new().unwrap(),
+            move_candidates: crate::model_rows::Rows::new().unwrap(),
         };
         opening
             .households

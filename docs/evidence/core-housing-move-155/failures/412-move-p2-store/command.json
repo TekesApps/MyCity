@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "cargo",
+    "test",
+    "--locked",
+    "--release",
+    "-p",
+    "mycity-storage",
+    "--test",
+    "housing_move_store_runtime",
+    "--",
+    "--test-threads=1",
+    "--nocapture"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-23T20:54:49.346265+00:00",
+  "source_manifest_sha256": "b52656efcdde17467ac8ba9649897c5c35c7fe05859d6eca24501c8fb2b87b37"
+}

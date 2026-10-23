@@ -1,0 +1,17 @@
+{
+  "files": [
+    [
+      "/Users/frankqin/dev/MyCity-core-work/housing-paid-wage-window-v151",
+      "crates/city-core/src/timeline_driver.rs",
+      "b6c994a358c7b83b8c5c032811839122bf3e56bc4470fe9f46c57e7c0113e1ae",
+      "8bca933dfcbf4d0a92e6760081ea66340efc61274173784424d0d92bb73aeb7a"
+    ],
+    [
+      "/Users/frankqin/dev/MyCity-core-work/housing-current",
+      "crates/city-storage/tests/housing_move_store_runtime.rs",
+      "148f053daadddaaf1501ab0a5ce9fc79f12c6679751b354b2f0ee76b7d5623e2",
+      "c0c56c7fb05620c64f5d845e85b8136fb5b201ce0dc8540660c208df7b26c00f"
+    ]
+  ],
+  "failed_receipt": "413 op1018 invalid_operation retained"
+}

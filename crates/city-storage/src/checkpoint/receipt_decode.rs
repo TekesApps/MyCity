@@ -99,6 +99,7 @@ fn action_raw(
         TownTransportSettle,
         SpatialPermission,
         HousingLease,
+        HousingMove,
         TownSuspendOperations,
         EquityContribute,
         EquityDistributeRetainedEarnings,
@@ -200,6 +201,24 @@ fn action_raw(
             Ok(Output::HousingLease {
                 offer_id: fields.get(1, scratch)?,
                 offer_sha256: fields.get(2, scratch)?,
+            })
+        }
+        Kind::HousingMove => {
+            let fields = Fields::parse(
+                raw,
+                &[
+                    "kind",
+                    "assessment_id",
+                    "city_id",
+                    "expected_wait_operation_id",
+                ],
+                false,
+                scratch,
+            )?;
+            Ok(Output::HousingMove {
+                assessment_id: fields.get(1, scratch)?,
+                city_id: fields.get(2, scratch)?,
+                expected_wait_operation_id: fields.get(3, scratch)?,
             })
         }
         Kind::TownSuspendOperations => {

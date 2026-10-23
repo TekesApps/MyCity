@@ -1,0 +1,23 @@
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+    Checking mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+    Checking mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+error[E0308]: mismatched types
+   --> crates/city-storage/examples/town_housing_move.rs:283:44
+    |
+283 |         .find(|payroll| payroll.spec.id == id)
+    |                                            ^^ expected `u32`, found `u64`
+
+error[E0277]: can't compare `u32` with `u64`
+   --> crates/city-storage/examples/town_housing_move.rs:283:41
+    |
+283 |         .find(|payroll| payroll.spec.id == id)
+    |                                         ^^ no implementation for `u32 == u64`
+    |
+    = help: the trait `PartialEq<u64>` is not implemented for `u32`
+    = help: the following other types implement trait `PartialEq<Rhs>`:
+              `u32` implements `PartialEq<Value>`
+              `u32` implements `PartialEq`
+
+Some errors have detailed explanations: E0277, E0308.
+For more information about an error, try `rustc --explain E0277`.
+error: could not compile `mycity-storage` (example "town_housing_move") due to 2 previous errors

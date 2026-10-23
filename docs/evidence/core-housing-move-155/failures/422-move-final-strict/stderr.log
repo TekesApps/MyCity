@@ -1,0 +1,42 @@
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+error: this `impl` can be derived
+   --> crates/city-core/src/housing_runtime_move.rs:100:1
+    |
+100 | / impl Default for MoveRuntimeState {
+101 | |     fn default() -> Self {
+102 | |         Self {
+103 | |             historical_leases: Vec::new(),
+...   |
+107 | | }
+    | |_^
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#derivable_impls
+    = note: `-D clippy::derivable-impls` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::derivable_impls)]`
+help: replace the manual implementation with a derive attribute
+    |
+41  + #[derive(Default)]
+42  ~ pub struct MoveRuntimeState {
+    |
+
+error: could not compile `mycity-core` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: items after a test module
+    --> crates/city-core/src/timeline_driver.rs:1098:1
+     |
+1098 | mod tests {
+     | ^^^^^^^^^
+...
+1151 | pub(super) fn validate(engine: &Engine, t: &Timeline) -> Result<(), TxError> {
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+1201 | fn validate_housing_rent(engine: &Engine, timeline: &Timeline) -> Result<(), TxError> {
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#items_after_test_module
+     = note: `-D clippy::items-after-test-module` implied by `-D warnings`
+     = help: to override `-D warnings` add `#[allow(clippy::items_after_test_module)]`
+     = help: move the items to before the test module was defined
+
+error: could not compile `mycity-core` (lib test) due to 2 previous errors

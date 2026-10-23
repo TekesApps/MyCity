@@ -1,0 +1,1184 @@
+{
+  "account_cash_total_final": 2885000,
+  "checkpoint_cold_restore": "passed",
+  "claims": {
+    "new_final": {
+      "due": 5097600,
+      "id": 9002,
+      "paid": 0,
+      "payee": 4,
+      "payer": 2,
+      "principal": 30000,
+      "processed": false,
+      "source_ref": 2
+    },
+    "new_outstanding": 30000,
+    "old_final": {
+      "due": 2678400,
+      "id": 9001,
+      "paid": 341000,
+      "payee": 4,
+      "payer": 2,
+      "principal": 383226,
+      "processed": true,
+      "source_ref": 1
+    },
+    "old_outstanding": 42226
+  },
+  "historical_leases_final": [
+    {
+      "city_id": 1,
+      "claim_id": 9001,
+      "closed_at": 3283200,
+      "household_id": 501,
+      "lease_id": 9001,
+      "source": {
+        "landlord": 4,
+        "lease_id": 9001,
+        "tenant": 2,
+        "unit_id": 101
+      },
+      "unit_id": 101
+    }
+  ],
+  "mode": "run",
+  "moving_fee": {
+    "amount": 10000,
+    "provider_account": 3,
+    "provider_cash_final": 344000
+  },
+  "owned_capacity_scope": "Rust-owned capacities only; not process RSS or native peak",
+  "rules_identity": "m0-storage-process-fixture-v1",
+  "stages": {
+    "aftermove": {
+      "account_cash_total": 2885000,
+      "accounts": [
+        {
+          "cash": 1000000,
+          "id": 1,
+          "protected": 0
+        },
+        {
+          "cash": 56774,
+          "id": 2,
+          "protected": 0
+        },
+        {
+          "cash": 365000,
+          "id": 3,
+          "protected": 0
+        },
+        {
+          "cash": 1463226,
+          "id": 4,
+          "protected": 0
+        }
+      ],
+      "active_city": 3,
+      "housing": {
+        "consumed_offer_ids": [
+          9001,
+          9002
+        ],
+        "dwelling_count": 2,
+        "household_registration_count": 1,
+        "lease_offer_count": 2,
+        "unit_limit": 2,
+        "units": [
+          {
+            "arrears_ref": 0,
+            "billing_anchor": 0,
+            "building_id": 10,
+            "clause_version": 0,
+            "deposit_held": 0,
+            "household_id": 0,
+            "last_accounted_at": 0,
+            "lease_id": 0,
+            "next_due_at": 0,
+            "owner_account": 4,
+            "rent_per_cycle": 0,
+            "unit_id": 101
+          },
+          {
+            "arrears_ref": 0,
+            "billing_anchor": 1,
+            "building_id": 11,
+            "clause_version": 1,
+            "deposit_held": 0,
+            "household_id": 501,
+            "last_accounted_at": 3283200,
+            "lease_id": 9002,
+            "next_due_at": 5097600,
+            "owner_account": 4,
+            "rent_per_cycle": 40000,
+            "unit_id": 102
+          }
+        ]
+      },
+      "housing_move": {
+        "historical_leases": [
+          {
+            "city_id": 1,
+            "claim_id": 9001,
+            "closed_at": 3283200,
+            "household_id": 501,
+            "lease_id": 9001,
+            "source": {
+              "landlord": 4,
+              "lease_id": 9001,
+              "tenant": 2,
+              "unit_id": 101
+            },
+            "unit_id": 101
+          }
+        ],
+        "waits": []
+      },
+      "owned_capacity_bytes": {
+        "engine": 3628096,
+        "measurement": "owned_capacity_api_only_not_native_peak",
+        "store": 41179064,
+        "world_components": {
+          "accounts": {
+            "free_index_capacity": 64,
+            "header_bytes": 80,
+            "live_records": 4,
+            "owned_capacity_bytes": 2896,
+            "record_bytes": 32,
+            "slot_bytes": 40,
+            "slots_capacity": 64
+          },
+          "allocator_metadata_included": false,
+          "construction_slot_bytes": 1664,
+          "construction_slot_included_in_world_remaining_header_bytes": true,
+          "housing_dwelling_bytes": 1280,
+          "housing_household_registration_bytes": 768,
+          "housing_lease_offer_bytes": 5888,
+          "housing_move_assessments_bytes": 4352,
+          "housing_move_candidates_bytes": 5120,
+          "housing_move_runtime_bytes": 96,
+          "housing_opening_bytes": 17408,
+          "housing_paid_wage_window_bytes": 8456,
+          "housing_state_bytes": 144,
+          "housing_unit_limit": 2,
+          "index_capacity_bytes": 7680,
+          "opening_sources_capacity_bytes": 3072,
+          "owned_capacity_bytes": 127928,
+          "stocks": {
+            "free_index_capacity": 128,
+            "header_bytes": 80,
+            "live_records": 1,
+            "owned_capacity_bytes": 13904,
+            "record_bytes": 96,
+            "slot_bytes": 104,
+            "slots_capacity": 128
+          },
+          "temporary_parse_and_view_pages_included": false,
+          "town_market_slot_bytes": 50368,
+          "town_market_slot_included_in_world_remaining_header_bytes": true,
+          "town_profile_owned_bytes": 0,
+          "world_remaining_header_bytes": 74024
+        }
+      },
+      "sequence": 918,
+      "stage": "aftermove",
+      "state_hash": "348cd18554222ed3467ec96dfce7c3e4a3785e7d1fc493678666b693131fa07f",
+      "timeline": {
+        "claims": [
+          {
+            "due": 2678400,
+            "id": 9001,
+            "paid": 263226,
+            "payee": 4,
+            "payer": 2,
+            "principal": 383226,
+            "processed": true,
+            "source_ref": 1
+          },
+          {
+            "due": 5097600,
+            "id": 9002,
+            "paid": 0,
+            "payee": 4,
+            "payer": 2,
+            "principal": 30000,
+            "processed": false,
+            "source_ref": 2
+          }
+        ],
+        "payroll": [
+          {
+            "accrued": 266000,
+            "billed": 245000,
+            "last_accrual": 3283200,
+            "next_due": 3628800,
+            "occurrences": 5,
+            "paid": 245000,
+            "pending_cycle": null,
+            "remainder": 0,
+            "spec": {
+              "cycle": {
+                "kind": "weekly"
+              },
+              "ends_at": 12960000,
+              "home_city": 2,
+              "hourly_cents": 875,
+              "id": 700,
+              "payee": 2,
+              "payer": 3
+            },
+            "started": 0,
+            "work_seconds": 1094400,
+            "working": true
+          }
+        ],
+        "progress": {
+          "at": 3283200,
+          "cursor": 0,
+          "lane": 0,
+          "last_complete": 3283200,
+          "page_paid": 0,
+          "page_sources": 0,
+          "phase": null,
+          "serial": 912,
+          "target": null
+        }
+      }
+    },
+    "afterwait": {
+      "account_cash_total": 2885000,
+      "accounts": [
+        {
+          "cash": 1000000,
+          "id": 1,
+          "protected": 0
+        },
+        {
+          "cash": 183000,
+          "id": 2,
+          "protected": 0
+        },
+        {
+          "cash": 502000,
+          "id": 3,
+          "protected": 0
+        },
+        {
+          "cash": 1200000,
+          "id": 4,
+          "protected": 0
+        }
+      ],
+      "active_city": 2,
+      "housing": {
+        "consumed_offer_ids": [
+          9001
+        ],
+        "dwelling_count": 2,
+        "household_registration_count": 1,
+        "lease_offer_count": 2,
+        "unit_limit": 2,
+        "units": [
+          {
+            "arrears_ref": 0,
+            "billing_anchor": 1,
+            "building_id": 10,
+            "clause_version": 1,
+            "deposit_held": 0,
+            "household_id": 501,
+            "last_accounted_at": 1209600,
+            "lease_id": 9001,
+            "next_due_at": 2678400,
+            "owner_account": 4,
+            "rent_per_cycle": 480000,
+            "unit_id": 101
+          },
+          {
+            "arrears_ref": 0,
+            "billing_anchor": 0,
+            "building_id": 11,
+            "clause_version": 0,
+            "deposit_held": 0,
+            "household_id": 0,
+            "last_accounted_at": 0,
+            "lease_id": 0,
+            "next_due_at": 0,
+            "owner_account": 4,
+            "rent_per_cycle": 0,
+            "unit_id": 102
+          }
+        ]
+      },
+      "housing_move": {
+        "historical_leases": [],
+        "waits": [
+          {
+            "assessment_id": 501,
+            "assessment_version": 1,
+            "city_id": 1,
+            "household_id": 501,
+            "observed_at": 1209600,
+            "operation_id": 340,
+            "reason": "evidence_incomplete"
+          }
+        ]
+      },
+      "owned_capacity_bytes": {
+        "engine": 3628096,
+        "measurement": "owned_capacity_api_only_not_native_peak",
+        "store": 41179000,
+        "world_components": {
+          "accounts": {
+            "free_index_capacity": 64,
+            "header_bytes": 80,
+            "live_records": 4,
+            "owned_capacity_bytes": 2896,
+            "record_bytes": 32,
+            "slot_bytes": 40,
+            "slots_capacity": 64
+          },
+          "allocator_metadata_included": false,
+          "construction_slot_bytes": 1664,
+          "construction_slot_included_in_world_remaining_header_bytes": true,
+          "housing_dwelling_bytes": 1280,
+          "housing_household_registration_bytes": 768,
+          "housing_lease_offer_bytes": 5888,
+          "housing_move_assessments_bytes": 4352,
+          "housing_move_candidates_bytes": 5120,
+          "housing_move_runtime_bytes": 96,
+          "housing_opening_bytes": 17408,
+          "housing_paid_wage_window_bytes": 8456,
+          "housing_state_bytes": 144,
+          "housing_unit_limit": 2,
+          "index_capacity_bytes": 7680,
+          "opening_sources_capacity_bytes": 3072,
+          "owned_capacity_bytes": 127928,
+          "stocks": {
+            "free_index_capacity": 128,
+            "header_bytes": 80,
+            "live_records": 1,
+            "owned_capacity_bytes": 13904,
+            "record_bytes": 96,
+            "slot_bytes": 104,
+            "slots_capacity": 128
+          },
+          "temporary_parse_and_view_pages_included": false,
+          "town_market_slot_bytes": 50368,
+          "town_market_slot_included_in_world_remaining_header_bytes": true,
+          "town_profile_owned_bytes": 0,
+          "world_remaining_header_bytes": 74024
+        }
+      },
+      "sequence": 340,
+      "stage": "afterwait",
+      "state_hash": "1b5befa9f0921f698ccb74196348829caf82b51f67c89d3720da643b84797066",
+      "timeline": {
+        "claims": [
+          {
+            "due": 2678400,
+            "id": 9001,
+            "paid": 0,
+            "payee": 4,
+            "payer": 2,
+            "principal": 263226,
+            "processed": false,
+            "source_ref": 1
+          }
+        ],
+        "payroll": [
+          {
+            "accrued": 98000,
+            "billed": 98000,
+            "last_accrual": 1209600,
+            "next_due": 1814400,
+            "occurrences": 2,
+            "paid": 98000,
+            "pending_cycle": null,
+            "remainder": 0,
+            "spec": {
+              "cycle": {
+                "kind": "weekly"
+              },
+              "ends_at": 12960000,
+              "home_city": 2,
+              "hourly_cents": 875,
+              "id": 700,
+              "payee": 2,
+              "payer": 3
+            },
+            "started": 0,
+            "work_seconds": 403200,
+            "working": true
+          }
+        ],
+        "progress": {
+          "at": 1209600,
+          "cursor": 0,
+          "lane": 0,
+          "last_complete": 1209600,
+          "page_paid": 49000,
+          "page_sources": 1,
+          "phase": null,
+          "serial": 336,
+          "target": null
+        }
+      }
+    },
+    "day42_before_settlement": {
+      "account_cash_total": 2885000,
+      "accounts": [
+        {
+          "cash": 1000000,
+          "id": 1,
+          "protected": 0
+        },
+        {
+          "cash": 77774,
+          "id": 2,
+          "protected": 0
+        },
+        {
+          "cash": 344000,
+          "id": 3,
+          "protected": 0
+        },
+        {
+          "cash": 1463226,
+          "id": 4,
+          "protected": 0
+        }
+      ],
+      "active_city": 3,
+      "housing": {
+        "consumed_offer_ids": [
+          9001,
+          9002
+        ],
+        "dwelling_count": 2,
+        "household_registration_count": 1,
+        "lease_offer_count": 2,
+        "unit_limit": 2,
+        "units": [
+          {
+            "arrears_ref": 0,
+            "billing_anchor": 0,
+            "building_id": 10,
+            "clause_version": 0,
+            "deposit_held": 0,
+            "household_id": 0,
+            "last_accounted_at": 0,
+            "lease_id": 0,
+            "next_due_at": 0,
+            "owner_account": 4,
+            "rent_per_cycle": 0,
+            "unit_id": 101
+          },
+          {
+            "arrears_ref": 0,
+            "billing_anchor": 1,
+            "building_id": 11,
+            "clause_version": 1,
+            "deposit_held": 0,
+            "household_id": 501,
+            "last_accounted_at": 3283200,
+            "lease_id": 9002,
+            "next_due_at": 5097600,
+            "owner_account": 4,
+            "rent_per_cycle": 40000,
+            "unit_id": 102
+          }
+        ]
+      },
+      "housing_move": {
+        "historical_leases": [
+          {
+            "city_id": 1,
+            "claim_id": 9001,
+            "closed_at": 3283200,
+            "household_id": 501,
+            "lease_id": 9001,
+            "source": {
+              "landlord": 4,
+              "lease_id": 9001,
+              "tenant": 2,
+              "unit_id": 101
+            },
+            "unit_id": 101
+          }
+        ],
+        "waits": []
+      },
+      "owned_capacity_bytes": {
+        "engine": 3628096,
+        "measurement": "owned_capacity_api_only_not_native_peak",
+        "store": 41179064,
+        "world_components": {
+          "accounts": {
+            "free_index_capacity": 64,
+            "header_bytes": 80,
+            "live_records": 4,
+            "owned_capacity_bytes": 2896,
+            "record_bytes": 32,
+            "slot_bytes": 40,
+            "slots_capacity": 64
+          },
+          "allocator_metadata_included": false,
+          "construction_slot_bytes": 1664,
+          "construction_slot_included_in_world_remaining_header_bytes": true,
+          "housing_dwelling_bytes": 1280,
+          "housing_household_registration_bytes": 768,
+          "housing_lease_offer_bytes": 5888,
+          "housing_move_assessments_bytes": 4352,
+          "housing_move_candidates_bytes": 5120,
+          "housing_move_runtime_bytes": 96,
+          "housing_opening_bytes": 17408,
+          "housing_paid_wage_window_bytes": 8456,
+          "housing_state_bytes": 144,
+          "housing_unit_limit": 2,
+          "index_capacity_bytes": 7680,
+          "opening_sources_capacity_bytes": 3072,
+          "owned_capacity_bytes": 127928,
+          "stocks": {
+            "free_index_capacity": 128,
+            "header_bytes": 80,
+            "live_records": 1,
+            "owned_capacity_bytes": 13904,
+            "record_bytes": 96,
+            "slot_bytes": 104,
+            "slots_capacity": 128
+          },
+          "temporary_parse_and_view_pages_included": false,
+          "town_market_slot_bytes": 50368,
+          "town_market_slot_included_in_world_remaining_header_bytes": true,
+          "town_profile_owned_bytes": 0,
+          "world_remaining_header_bytes": 74024
+        }
+      },
+      "sequence": 1014,
+      "stage": "day42_before_settlement",
+      "state_hash": "c55a77998063f82dc6043d13e7c3a385ed50b1a4ba397f94ee6811f4e6dc0c00",
+      "timeline": {
+        "claims": [
+          {
+            "due": 2678400,
+            "id": 9001,
+            "paid": 263226,
+            "payee": 4,
+            "payer": 2,
+            "principal": 383226,
+            "processed": true,
+            "source_ref": 1
+          },
+          {
+            "due": 5097600,
+            "id": 9002,
+            "paid": 0,
+            "payee": 4,
+            "payer": 2,
+            "principal": 30000,
+            "processed": false,
+            "source_ref": 2
+          }
+        ],
+        "payroll": [
+          {
+            "accrued": 266000,
+            "billed": 266000,
+            "last_accrual": 3628800,
+            "next_due": 4233600,
+            "occurrences": 6,
+            "paid": 266000,
+            "pending_cycle": null,
+            "remainder": 0,
+            "spec": {
+              "cycle": {
+                "kind": "weekly"
+              },
+              "ends_at": 12960000,
+              "home_city": 2,
+              "hourly_cents": 875,
+              "id": 700,
+              "payee": 2,
+              "payer": 3
+            },
+            "started": 0,
+            "work_seconds": 1094400,
+            "working": true
+          }
+        ],
+        "progress": {
+          "at": 3628800,
+          "cursor": 0,
+          "lane": 0,
+          "last_complete": 3628800,
+          "page_paid": 21000,
+          "page_sources": 1,
+          "phase": null,
+          "serial": 1008,
+          "target": null
+        }
+      }
+    },
+    "final_before_checkpoint": {
+      "account_cash_total": 2885000,
+      "accounts": [
+        {
+          "cash": 1000000,
+          "id": 1,
+          "protected": 0
+        },
+        {
+          "cash": 0,
+          "id": 2,
+          "protected": 0
+        },
+        {
+          "cash": 344000,
+          "id": 3,
+          "protected": 0
+        },
+        {
+          "cash": 1541000,
+          "id": 4,
+          "protected": 0
+        }
+      ],
+      "active_city": 3,
+      "housing": {
+        "consumed_offer_ids": [
+          9001,
+          9002
+        ],
+        "dwelling_count": 2,
+        "household_registration_count": 1,
+        "lease_offer_count": 2,
+        "unit_limit": 2,
+        "units": [
+          {
+            "arrears_ref": 0,
+            "billing_anchor": 0,
+            "building_id": 10,
+            "clause_version": 0,
+            "deposit_held": 0,
+            "household_id": 0,
+            "last_accounted_at": 0,
+            "lease_id": 0,
+            "next_due_at": 0,
+            "owner_account": 4,
+            "rent_per_cycle": 0,
+            "unit_id": 101
+          },
+          {
+            "arrears_ref": 0,
+            "billing_anchor": 1,
+            "building_id": 11,
+            "clause_version": 1,
+            "deposit_held": 0,
+            "household_id": 501,
+            "last_accounted_at": 3283200,
+            "lease_id": 9002,
+            "next_due_at": 5097600,
+            "owner_account": 4,
+            "rent_per_cycle": 40000,
+            "unit_id": 102
+          }
+        ]
+      },
+      "housing_move": {
+        "historical_leases": [
+          {
+            "city_id": 1,
+            "claim_id": 9001,
+            "closed_at": 3283200,
+            "household_id": 501,
+            "lease_id": 9001,
+            "source": {
+              "landlord": 4,
+              "lease_id": 9001,
+              "tenant": 2,
+              "unit_id": 101
+            },
+            "unit_id": 101
+          }
+        ],
+        "waits": []
+      },
+      "owned_capacity_bytes": {
+        "engine": 3628096,
+        "measurement": "owned_capacity_api_only_not_native_peak",
+        "store": 41179064,
+        "world_components": {
+          "accounts": {
+            "free_index_capacity": 64,
+            "header_bytes": 80,
+            "live_records": 4,
+            "owned_capacity_bytes": 2896,
+            "record_bytes": 32,
+            "slot_bytes": 40,
+            "slots_capacity": 64
+          },
+          "allocator_metadata_included": false,
+          "construction_slot_bytes": 1664,
+          "construction_slot_included_in_world_remaining_header_bytes": true,
+          "housing_dwelling_bytes": 1280,
+          "housing_household_registration_bytes": 768,
+          "housing_lease_offer_bytes": 5888,
+          "housing_move_assessments_bytes": 4352,
+          "housing_move_candidates_bytes": 5120,
+          "housing_move_runtime_bytes": 96,
+          "housing_opening_bytes": 17408,
+          "housing_paid_wage_window_bytes": 8456,
+          "housing_state_bytes": 144,
+          "housing_unit_limit": 2,
+          "index_capacity_bytes": 7680,
+          "opening_sources_capacity_bytes": 3072,
+          "owned_capacity_bytes": 127928,
+          "stocks": {
+            "free_index_capacity": 128,
+            "header_bytes": 80,
+            "live_records": 1,
+            "owned_capacity_bytes": 13904,
+            "record_bytes": 96,
+            "slot_bytes": 104,
+            "slots_capacity": 128
+          },
+          "temporary_parse_and_view_pages_included": false,
+          "town_market_slot_bytes": 50368,
+          "town_market_slot_included_in_world_remaining_header_bytes": true,
+          "town_profile_owned_bytes": 0,
+          "world_remaining_header_bytes": 74024
+        }
+      },
+      "sequence": 1015,
+      "stage": "final_before_checkpoint",
+      "state_hash": "c3b0e6e7482f21a492619557211517794db8ca6d2570cdc86f1f2dc6aef209d1",
+      "timeline": {
+        "claims": [
+          {
+            "due": 2678400,
+            "id": 9001,
+            "paid": 341000,
+            "payee": 4,
+            "payer": 2,
+            "principal": 383226,
+            "processed": true,
+            "source_ref": 1
+          },
+          {
+            "due": 5097600,
+            "id": 9002,
+            "paid": 0,
+            "payee": 4,
+            "payer": 2,
+            "principal": 30000,
+            "processed": false,
+            "source_ref": 2
+          }
+        ],
+        "payroll": [
+          {
+            "accrued": 266000,
+            "billed": 266000,
+            "last_accrual": 3628800,
+            "next_due": 4233600,
+            "occurrences": 6,
+            "paid": 266000,
+            "pending_cycle": null,
+            "remainder": 0,
+            "spec": {
+              "cycle": {
+                "kind": "weekly"
+              },
+              "ends_at": 12960000,
+              "home_city": 2,
+              "hourly_cents": 875,
+              "id": 700,
+              "payee": 2,
+              "payer": 3
+            },
+            "started": 0,
+            "work_seconds": 1094400,
+            "working": true
+          }
+        ],
+        "progress": {
+          "at": 3628800,
+          "cursor": 0,
+          "lane": 0,
+          "last_complete": 3628800,
+          "page_paid": 77774,
+          "page_sources": 0,
+          "phase": null,
+          "serial": 1008,
+          "target": null
+        }
+      }
+    },
+    "finalcold": {
+      "account_cash_total": 2885000,
+      "accounts": [
+        {
+          "cash": 1000000,
+          "id": 1,
+          "protected": 0
+        },
+        {
+          "cash": 0,
+          "id": 2,
+          "protected": 0
+        },
+        {
+          "cash": 344000,
+          "id": 3,
+          "protected": 0
+        },
+        {
+          "cash": 1541000,
+          "id": 4,
+          "protected": 0
+        }
+      ],
+      "active_city": 3,
+      "housing": {
+        "consumed_offer_ids": [
+          9001,
+          9002
+        ],
+        "dwelling_count": 2,
+        "household_registration_count": 1,
+        "lease_offer_count": 2,
+        "unit_limit": 2,
+        "units": [
+          {
+            "arrears_ref": 0,
+            "billing_anchor": 0,
+            "building_id": 10,
+            "clause_version": 0,
+            "deposit_held": 0,
+            "household_id": 0,
+            "last_accounted_at": 0,
+            "lease_id": 0,
+            "next_due_at": 0,
+            "owner_account": 4,
+            "rent_per_cycle": 0,
+            "unit_id": 101
+          },
+          {
+            "arrears_ref": 0,
+            "billing_anchor": 1,
+            "building_id": 11,
+            "clause_version": 1,
+            "deposit_held": 0,
+            "household_id": 501,
+            "last_accounted_at": 3283200,
+            "lease_id": 9002,
+            "next_due_at": 5097600,
+            "owner_account": 4,
+            "rent_per_cycle": 40000,
+            "unit_id": 102
+          }
+        ]
+      },
+      "housing_move": {
+        "historical_leases": [
+          {
+            "city_id": 1,
+            "claim_id": 9001,
+            "closed_at": 3283200,
+            "household_id": 501,
+            "lease_id": 9001,
+            "source": {
+              "landlord": 4,
+              "lease_id": 9001,
+              "tenant": 2,
+              "unit_id": 101
+            },
+            "unit_id": 101
+          }
+        ],
+        "waits": []
+      },
+      "owned_capacity_bytes": {
+        "engine": 3628096,
+        "measurement": "owned_capacity_api_only_not_native_peak",
+        "store": 41179064,
+        "world_components": {
+          "accounts": {
+            "free_index_capacity": 64,
+            "header_bytes": 80,
+            "live_records": 4,
+            "owned_capacity_bytes": 2896,
+            "record_bytes": 32,
+            "slot_bytes": 40,
+            "slots_capacity": 64
+          },
+          "allocator_metadata_included": false,
+          "construction_slot_bytes": 1664,
+          "construction_slot_included_in_world_remaining_header_bytes": true,
+          "housing_dwelling_bytes": 1280,
+          "housing_household_registration_bytes": 768,
+          "housing_lease_offer_bytes": 5888,
+          "housing_move_assessments_bytes": 4352,
+          "housing_move_candidates_bytes": 5120,
+          "housing_move_runtime_bytes": 96,
+          "housing_opening_bytes": 17408,
+          "housing_paid_wage_window_bytes": 8456,
+          "housing_state_bytes": 144,
+          "housing_unit_limit": 2,
+          "index_capacity_bytes": 7680,
+          "opening_sources_capacity_bytes": 3072,
+          "owned_capacity_bytes": 127928,
+          "stocks": {
+            "free_index_capacity": 128,
+            "header_bytes": 80,
+            "live_records": 1,
+            "owned_capacity_bytes": 13904,
+            "record_bytes": 96,
+            "slot_bytes": 104,
+            "slots_capacity": 128
+          },
+          "temporary_parse_and_view_pages_included": false,
+          "town_market_slot_bytes": 50368,
+          "town_market_slot_included_in_world_remaining_header_bytes": true,
+          "town_profile_owned_bytes": 0,
+          "world_remaining_header_bytes": 74024
+        }
+      },
+      "sequence": 1015,
+      "stage": "finalcold",
+      "state_hash": "c3b0e6e7482f21a492619557211517794db8ca6d2570cdc86f1f2dc6aef209d1",
+      "timeline": {
+        "claims": [
+          {
+            "due": 2678400,
+            "id": 9001,
+            "paid": 341000,
+            "payee": 4,
+            "payer": 2,
+            "principal": 383226,
+            "processed": true,
+            "source_ref": 1
+          },
+          {
+            "due": 5097600,
+            "id": 9002,
+            "paid": 0,
+            "payee": 4,
+            "payer": 2,
+            "principal": 30000,
+            "processed": false,
+            "source_ref": 2
+          }
+        ],
+        "payroll": [
+          {
+            "accrued": 266000,
+            "billed": 266000,
+            "last_accrual": 3628800,
+            "next_due": 4233600,
+            "occurrences": 6,
+            "paid": 266000,
+            "pending_cycle": null,
+            "remainder": 0,
+            "spec": {
+              "cycle": {
+                "kind": "weekly"
+              },
+              "ends_at": 12960000,
+              "home_city": 2,
+              "hourly_cents": 875,
+              "id": 700,
+              "payee": 2,
+              "payer": 3
+            },
+            "started": 0,
+            "work_seconds": 1094400,
+            "working": true
+          }
+        ],
+        "progress": {
+          "at": 3628800,
+          "cursor": 0,
+          "lane": 0,
+          "last_complete": 3628800,
+          "page_paid": 77774,
+          "page_sources": 0,
+          "phase": null,
+          "serial": 1008,
+          "target": null
+        }
+      }
+    },
+    "opening": {
+      "account_cash_total": 2885000,
+      "accounts": [
+        {
+          "cash": 1000000,
+          "id": 1,
+          "protected": 0
+        },
+        {
+          "cash": 85000,
+          "id": 2,
+          "protected": 0
+        },
+        {
+          "cash": 600000,
+          "id": 3,
+          "protected": 0
+        },
+        {
+          "cash": 1200000,
+          "id": 4,
+          "protected": 0
+        }
+      ],
+      "active_city": 2,
+      "housing": {
+        "consumed_offer_ids": [],
+        "dwelling_count": 2,
+        "household_registration_count": 1,
+        "lease_offer_count": 2,
+        "unit_limit": 2,
+        "units": [
+          {
+            "arrears_ref": 0,
+            "billing_anchor": 0,
+            "building_id": 10,
+            "clause_version": 0,
+            "deposit_held": 0,
+            "household_id": 0,
+            "last_accounted_at": 0,
+            "lease_id": 0,
+            "next_due_at": 0,
+            "owner_account": 4,
+            "rent_per_cycle": 0,
+            "unit_id": 101
+          },
+          {
+            "arrears_ref": 0,
+            "billing_anchor": 0,
+            "building_id": 11,
+            "clause_version": 0,
+            "deposit_held": 0,
+            "household_id": 0,
+            "last_accounted_at": 0,
+            "lease_id": 0,
+            "next_due_at": 0,
+            "owner_account": 4,
+            "rent_per_cycle": 0,
+            "unit_id": 102
+          }
+        ]
+      },
+      "housing_move": {
+        "historical_leases": [],
+        "waits": []
+      },
+      "owned_capacity_bytes": {
+        "engine": 3619544,
+        "measurement": "owned_capacity_api_only_not_native_peak",
+        "store": 41170448,
+        "world_components": {
+          "accounts": {
+            "free_index_capacity": 64,
+            "header_bytes": 80,
+            "live_records": 4,
+            "owned_capacity_bytes": 2896,
+            "record_bytes": 32,
+            "slot_bytes": 40,
+            "slots_capacity": 64
+          },
+          "allocator_metadata_included": false,
+          "construction_slot_bytes": 1664,
+          "construction_slot_included_in_world_remaining_header_bytes": true,
+          "housing_dwelling_bytes": 1280,
+          "housing_household_registration_bytes": 768,
+          "housing_lease_offer_bytes": 5888,
+          "housing_move_assessments_bytes": 4352,
+          "housing_move_candidates_bytes": 5120,
+          "housing_move_runtime_bytes": 0,
+          "housing_opening_bytes": 17408,
+          "housing_paid_wage_window_bytes": 0,
+          "housing_state_bytes": 144,
+          "housing_unit_limit": 2,
+          "index_capacity_bytes": 7680,
+          "opening_sources_capacity_bytes": 3072,
+          "owned_capacity_bytes": 119376,
+          "stocks": {
+            "free_index_capacity": 128,
+            "header_bytes": 80,
+            "live_records": 1,
+            "owned_capacity_bytes": 13904,
+            "record_bytes": 96,
+            "slot_bytes": 104,
+            "slots_capacity": 128
+          },
+          "temporary_parse_and_view_pages_included": false,
+          "town_market_slot_bytes": 50368,
+          "town_market_slot_included_in_world_remaining_header_bytes": true,
+          "town_profile_owned_bytes": 0,
+          "world_remaining_header_bytes": 74024
+        }
+      },
+      "sequence": 0,
+      "stage": "opening",
+      "state_hash": "90e2062f9f45a7d3de967ab5b09ee8e8d3eac9dc6a020285780a29b9374917a6",
+      "timeline": null
+    }
+  },
+  "tenant_cash_final": 0,
+  "wages": {
+    "day38": {
+      "accrued": 266000,
+      "billed": 245000,
+      "last_accrual": 3283200,
+      "next_due": 3628800,
+      "occurrences": 5,
+      "paid": 245000,
+      "pending_cycle": null,
+      "remainder": 0,
+      "spec": {
+        "cycle": {
+          "kind": "weekly"
+        },
+        "ends_at": 12960000,
+        "home_city": 2,
+        "hourly_cents": 875,
+        "id": 700,
+        "payee": 2,
+        "payer": 3
+      },
+      "started": 0,
+      "work_seconds": 1094400,
+      "working": true
+    },
+    "day42": {
+      "accrued": 266000,
+      "billed": 266000,
+      "last_accrual": 3628800,
+      "next_due": 4233600,
+      "occurrences": 6,
+      "paid": 266000,
+      "pending_cycle": null,
+      "remainder": 0,
+      "spec": {
+        "cycle": {
+          "kind": "weekly"
+        },
+        "ends_at": 12960000,
+        "home_city": 2,
+        "hourly_cents": 875,
+        "id": 700,
+        "payee": 2,
+        "payer": 3
+      },
+      "started": 0,
+      "work_seconds": 1094400,
+      "working": true
+    },
+    "day42_paid_delta": 21000
+  },
+  "waits_final": [],
+  "world_path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/428-move-final-world"
+}

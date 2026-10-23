@@ -73,3 +73,44 @@ without an additional complete encoded JSON Vec. Legacy WAL bytes and maximum-ac
 equivalence were tested in 237. Resident Engine owned bytes and Store normal owned capacity
 are separate from native process footprint, transient allocation high-water marks and common
 8 MiB diagnostics; these results cannot certify the latter gates.
+
+
+## Next geometry activation seam (private implementation, not accepted)
+
+A geometric Scene update must not reinterpret `current_profile_sha256` as a generic target hash.
+Existing profile identity, Close/Restore request digest, grants and old recovery bytes retain
+their meanings. A separate compact geometry selector refers to an immutable bounded descriptor:
+world/branch/asset, parent Scene SHA and geometry revision, parent profile SHA and transport
+revision, candidate Scene/profile SHAs and their next revisions. Approval uses a distinct domain
+and includes the descriptor SHA with existing actor/role context. Two different Scenes that
+happen to produce the same transport profile cannot reuse each other's approval.
+
+Store must bound/read/hash the complete descriptor and referenced originals, derive the candidate
+from the active Scene/profile, and admit only the authorized geometry delta before the Engine
+receives verified facts. Apply publishes Scene and profile identities atomically with the existing
+receipt/WAL/root flow. Old service-day proofs resolve against their original complete Scene/profile
+witnesses. Stale geometry parent, even with a correct profile parent, is rejected. Missing or changed
+originals fail closed; hashes alone are not recoverable geometry witnesses.
+
+The first pending slice is one supported WALK Road control-point change with unchanged endpoints,
+permissions, capacity, OD and speed. Door relocation, widening and multi-mode geometry remain
+separate scopes. The independent proposed fixture distinguishes71→72 seconds one-way and142→144
+round trip; using an explicitly labeled10c/s tariff makes40Q freight differ by80c. These are
+candidate integer expectations, not actual Store acceptance. Real assignment, trade, version history,
+lost reply/cold replay, stale approval and descriptor-tamper counterexamples must run before passing.
+
+New optional request/descriptor/version backing must be bounded, count headers and actual capacity,
+and preserve legacy absent-state cost/identity. Action-size and combined Engine/World/Store ownership
+and transient restore cost need actual verification; existing M0 and16GB budgets do not automatically
+cover new Scene history. Root integrates only exact fresh-baseline deltas from the sole core writer.
+
+
+Geometry derivation also requires a persisted immutable adapter basis (speed, capacity,
+direction and other conversion settings). A rounded edge time cannot recover its original
+speed uniquely. The new explicit genesis path must retain bounded complete adapter input/config
+and its hash, rederive the genesis profile and compare it with the supplied profile. Catalog/root
+and geometry approval descriptor bind this basis hash. Every subsequent geometry candidate uses
+the same basis with the current Scene. A100cm/s test fixture is explicit input, not an implicit
+city-wide default. Existing profile-only worlds remain readable and keep Close/Restore support,
+but Geometry requests without this trustworthy basis reject; migration requires a separate
+explicit provenance design. Include basis original/decode/restore bytes in resource accounting.

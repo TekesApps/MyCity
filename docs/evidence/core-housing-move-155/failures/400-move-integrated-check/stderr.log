@@ -1,0 +1,2392 @@
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+error[E0433]: failed to resolve: use of undeclared type `GameTime`
+    --> crates/city-core/src/transaction.rs:5066:24
+     |
+5066 |     let timeline_day = GameTime::new(
+     |                        ^^^^^^^^ use of undeclared type `GameTime`
+     |
+help: consider importing this struct
+     |
+2    + use crate::units::GameTime;
+     |
+
+error[E0412]: cannot find type `GameTime` in this scope
+    --> crates/city-core/src/transaction.rs:5203:41
+     |
+5203 |         .try_fold(None, |latest: Option<GameTime>, history| {
+     |                                         ^^^^^^^^ not found in this scope
+     |
+help: consider importing this struct
+     |
+2    + use crate::units::GameTime;
+     |
+
+error[E0277]: the trait bound `OpeningMoveAssessment: Record` is not satisfied
+   --> crates/city-core/src/housing.rs:149:27
+    |
+149 |     pub move_assessments: Rows<OpeningMoveAssessment, MAX_M0_HOUSING_UNITS>,
+    |                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Record` is not implemented for `OpeningMoveAssessment`
+    |
+    = help: the following other types implement trait `Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              ConsumedOfferId
+              DeliveryQuote
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveCandidate: Record` is not satisfied
+   --> crates/city-core/src/housing.rs:155:26
+    |
+155 |     pub move_candidates: Rows<OpeningMoveCandidate, MAX_M0_HOUSING_UNITS>,
+    |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Record` is not implemented for `OpeningMoveCandidate`
+    |
+    = help: the following other types implement trait `Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              ConsumedOfferId
+              DeliveryQuote
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveAssessment: Record` is not satisfied
+   --> crates/city-core/src/housing.rs:158:32
+    |
+158 | fn empty_move_assessments() -> Rows<OpeningMoveAssessment, MAX_M0_HOUSING_UNITS> {
+    |                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Record` is not implemented for `OpeningMoveAssessment`
+    |
+    = help: the following other types implement trait `Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              ConsumedOfferId
+              DeliveryQuote
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveCandidate: Record` is not satisfied
+   --> crates/city-core/src/housing.rs:161:31
+    |
+161 | fn empty_move_candidates() -> Rows<OpeningMoveCandidate, MAX_M0_HOUSING_UNITS> {
+    |                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Record` is not implemented for `OpeningMoveCandidate`
+    |
+    = help: the following other types implement trait `Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              ConsumedOfferId
+              DeliveryQuote
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0599]: the method `capacity` exists for struct `Rows<OpeningMoveAssessment, 32>`, but its trait bounds were not satisfied
+   --> crates/city-core/src/assembly.rs:887:51
+    |
+887 |                 (housing.opening.move_assessments.capacity()
+    |                                                   ^^^^^^^^ method cannot be called on `Rows<OpeningMoveAssessment, 32>` due to unsatisfied trait bounds
+    |
+   ::: crates/city-core/src/housing.rs:168:1
+    |
+168 | pub struct OpeningMoveAssessment {
+    | -------------------------------- doesn't satisfy `OpeningMoveAssessment: Record`
+    |
+   ::: crates/city-core/src/model_rows.rs:18:1
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    | ------------------------------------------ method `capacity` not found for this struct
+    |
+note: trait bound `OpeningMoveAssessment: Record` was not satisfied
+   --> crates/city-core/src/model_rows.rs:22:9
+    |
+22  | impl<T: Record, const N: usize> Rows<T, N> {
+    |         ^^^^^^                  ----------
+    |         |
+    |         unsatisfied trait bound introduced here
+note: the trait `Record` must be implemented
+   --> crates/city-core/src/model_rows.rs:13:1
+    |
+13  | pub trait Record: Copy {
+    | ^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0599]: the method `capacity` exists for struct `Rows<OpeningMoveCandidate, 32>`, but its trait bounds were not satisfied
+   --> crates/city-core/src/assembly.rs:893:50
+    |
+893 |                 (housing.opening.move_candidates.capacity()
+    |                                                  ^^^^^^^^ method cannot be called on `Rows<OpeningMoveCandidate, 32>` due to unsatisfied trait bounds
+    |
+   ::: crates/city-core/src/housing.rs:184:1
+    |
+184 | pub struct OpeningMoveCandidate {
+    | ------------------------------- doesn't satisfy `OpeningMoveCandidate: Record`
+    |
+   ::: crates/city-core/src/model_rows.rs:18:1
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    | ------------------------------------------ method `capacity` not found for this struct
+    |
+note: trait bound `OpeningMoveCandidate: Record` was not satisfied
+   --> crates/city-core/src/model_rows.rs:22:9
+    |
+22  | impl<T: Record, const N: usize> Rows<T, N> {
+    |         ^^^^^^                  ----------
+    |         |
+    |         unsatisfied trait bound introduced here
+note: the trait `Record` must be implemented
+   --> crates/city-core/src/model_rows.rs:13:1
+    |
+13  | pub trait Record: Copy {
+    | ^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0277]: the trait bound `OpeningMoveAssessment: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing.rs:149:27
+    |
+149 |     pub move_assessments: Rows<OpeningMoveAssessment, MAX_M0_HOUSING_UNITS>,
+    |                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveAssessment`
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveCandidate: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing.rs:155:26
+    |
+155 |     pub move_candidates: Rows<OpeningMoveCandidate, MAX_M0_HOUSING_UNITS>,
+    |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveCandidate`
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveAssessment: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing.rs:158:32
+    |
+158 | fn empty_move_assessments() -> Rows<OpeningMoveAssessment, MAX_M0_HOUSING_UNITS> {
+    |                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveAssessment`
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveCandidate: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing.rs:161:31
+    |
+161 | fn empty_move_candidates() -> Rows<OpeningMoveCandidate, MAX_M0_HOUSING_UNITS> {
+    |                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveCandidate`
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveAssessment: Record` is not satisfied
+   --> crates/city-core/src/housing.rs:149:5
+    |
+128 | #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+    |          ----- in this derive macro expansion
+...
+149 |     pub move_assessments: Rows<OpeningMoveAssessment, MAX_M0_HOUSING_UNITS>,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Record` is not implemented for `OpeningMoveAssessment`
+    |
+    = help: the following other types implement trait `Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              ConsumedOfferId
+              DeliveryQuote
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+    = note: this error originates in the derive macro `Clone` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `OpeningMoveCandidate: Record` is not satisfied
+   --> crates/city-core/src/housing.rs:155:5
+    |
+128 | #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+    |          ----- in this derive macro expansion
+...
+155 |     pub move_candidates: Rows<OpeningMoveCandidate, MAX_M0_HOUSING_UNITS>,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Record` is not implemented for `OpeningMoveCandidate`
+    |
+    = help: the following other types implement trait `Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              ConsumedOfferId
+              DeliveryQuote
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+    = note: this error originates in the derive macro `Clone` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `OpeningMoveAssessment: Record` is not satisfied
+   --> crates/city-core/src/housing.rs:149:5
+    |
+128 | #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+    |                 ----- in this derive macro expansion
+...
+149 |     pub move_assessments: Rows<OpeningMoveAssessment, MAX_M0_HOUSING_UNITS>,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Record` is not implemented for `OpeningMoveAssessment`
+    |
+    = help: the following other types implement trait `Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              ConsumedOfferId
+              DeliveryQuote
+            and 35 others
+note: required for `model_rows::Rows<OpeningMoveAssessment, 32>` to implement `Debug`
+   --> crates/city-core/src/model_rows.rs:17:10
+    |
+17  | #[derive(Debug)]
+    |          ^^^^^
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ------ unsatisfied trait bound introduced in this `derive` macro
+    = note: required for the cast from `&model_rows::Rows<OpeningMoveAssessment, 32>` to `&dyn Debug`
+    = note: this error originates in the derive macro `Debug` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `OpeningMoveCandidate: Record` is not satisfied
+   --> crates/city-core/src/housing.rs:155:5
+    |
+128 | #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+    |                 ----- in this derive macro expansion
+...
+155 |     pub move_candidates: Rows<OpeningMoveCandidate, MAX_M0_HOUSING_UNITS>,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Record` is not implemented for `OpeningMoveCandidate`
+    |
+    = help: the following other types implement trait `Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              ConsumedOfferId
+              DeliveryQuote
+            and 35 others
+note: required for `model_rows::Rows<OpeningMoveCandidate, 32>` to implement `Debug`
+   --> crates/city-core/src/model_rows.rs:17:10
+    |
+17  | #[derive(Debug)]
+    |          ^^^^^
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ------ unsatisfied trait bound introduced in this `derive` macro
+    = note: 1 redundant requirement hidden
+    = note: required for `&model_rows::Rows<OpeningMoveCandidate, 32>` to implement `Debug`
+    = note: required for the cast from `&&model_rows::Rows<OpeningMoveCandidate, 32>` to `&dyn Debug`
+    = note: this error originates in the derive macro `Debug` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0369]: binary operation `==` cannot be applied to type `model_rows::Rows<OpeningMoveAssessment, 32>`
+   --> crates/city-core/src/housing.rs:149:5
+    |
+128 | #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+    |                        --------- in this derive macro expansion
+...
+149 |     pub move_assessments: Rows<OpeningMoveAssessment, MAX_M0_HOUSING_UNITS>,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+note: an implementation of `Record` might be missing for `OpeningMoveAssessment`
+   --> crates/city-core/src/housing.rs:168:1
+    |
+168 | pub struct OpeningMoveAssessment {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ must implement `Record`
+note: the trait `Record` must be implemented
+   --> crates/city-core/src/model_rows.rs:13:1
+    |
+13  | pub trait Record: Copy {
+    | ^^^^^^^^^^^^^^^^^^^^^^
+    = note: this error originates in the derive macro `PartialEq` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0369]: binary operation `==` cannot be applied to type `model_rows::Rows<OpeningMoveCandidate, 32>`
+   --> crates/city-core/src/housing.rs:155:5
+    |
+128 | #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+    |                        --------- in this derive macro expansion
+...
+155 |     pub move_candidates: Rows<OpeningMoveCandidate, MAX_M0_HOUSING_UNITS>,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+note: an implementation of `Record` might be missing for `OpeningMoveCandidate`
+   --> crates/city-core/src/housing.rs:184:1
+    |
+184 | pub struct OpeningMoveCandidate {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ must implement `Record`
+note: the trait `Record` must be implemented
+   --> crates/city-core/src/model_rows.rs:13:1
+    |
+13  | pub trait Record: Copy {
+    | ^^^^^^^^^^^^^^^^^^^^^^
+    = note: this error originates in the derive macro `PartialEq` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `OpeningMoveAssessment: Record` is not satisfied
+   --> crates/city-core/src/housing.rs:149:5
+    |
+128 | #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+    |                                   -- in this derive macro expansion
+...
+149 |     pub move_assessments: Rows<OpeningMoveAssessment, MAX_M0_HOUSING_UNITS>,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Record` is not implemented for `OpeningMoveAssessment`
+    |
+    = help: the following other types implement trait `Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              ConsumedOfferId
+              DeliveryQuote
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+    = note: this error originates in the derive macro `Eq` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `OpeningMoveCandidate: Record` is not satisfied
+   --> crates/city-core/src/housing.rs:155:5
+    |
+128 | #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+    |                                   -- in this derive macro expansion
+...
+155 |     pub move_candidates: Rows<OpeningMoveCandidate, MAX_M0_HOUSING_UNITS>,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Record` is not implemented for `OpeningMoveCandidate`
+    |
+    = help: the following other types implement trait `Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              ConsumedOfferId
+              DeliveryQuote
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+    = note: this error originates in the derive macro `Eq` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `OpeningMoveAssessment: Record` is not satisfied
+   --> crates/city-core/src/housing.rs:147:31
+    |
+147 |         skip_serializing_if = "Rows::is_empty"
+    |                               ^^^^^^^^^^^^^^^^ the trait `Record` is not implemented for `OpeningMoveAssessment`
+    |
+    = help: the following other types implement trait `Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              ConsumedOfferId
+              DeliveryQuote
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveAssessment: Record` is not satisfied
+   --> crates/city-core/src/housing.rs:128:39
+    |
+128 | #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+    |                                       ^^^^^^^^^ the trait `Record` is not implemented for `OpeningMoveAssessment`
+...
+147 |         skip_serializing_if = "Rows::is_empty"
+    |                               ---------------- required by a bound introduced by this call
+    |
+    = help: the following other types implement trait `Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              ConsumedOfferId
+              DeliveryQuote
+            and 35 others
+note: required by a bound in `model_rows::Rows::<T, N>::is_empty`
+   --> crates/city-core/src/model_rows.rs:22:9
+    |
+22  | impl<T: Record, const N: usize> Rows<T, N> {
+    |         ^^^^^^ required by this bound in `Rows::<T, N>::is_empty`
+...
+41  |     pub fn is_empty(&self) -> bool {
+    |            -------- required by a bound in this associated function
+    = note: this error originates in the derive macro `Serialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `OpeningMoveCandidate: Record` is not satisfied
+   --> crates/city-core/src/housing.rs:153:31
+    |
+153 |         skip_serializing_if = "Rows::is_empty"
+    |                               ^^^^^^^^^^^^^^^^ the trait `Record` is not implemented for `OpeningMoveCandidate`
+    |
+    = help: the following other types implement trait `Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              ConsumedOfferId
+              DeliveryQuote
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveCandidate: Record` is not satisfied
+   --> crates/city-core/src/housing.rs:128:39
+    |
+128 | #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+    |                                       ^^^^^^^^^ the trait `Record` is not implemented for `OpeningMoveCandidate`
+...
+153 |         skip_serializing_if = "Rows::is_empty"
+    |                               ---------------- required by a bound introduced by this call
+    |
+    = help: the following other types implement trait `Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              ConsumedOfferId
+              DeliveryQuote
+            and 35 others
+note: required by a bound in `model_rows::Rows::<T, N>::is_empty`
+   --> crates/city-core/src/model_rows.rs:22:9
+    |
+22  | impl<T: Record, const N: usize> Rows<T, N> {
+    |         ^^^^^^ required by this bound in `Rows::<T, N>::is_empty`
+...
+41  |     pub fn is_empty(&self) -> bool {
+    |            -------- required by a bound in this associated function
+    = note: this error originates in the derive macro `Serialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `OpeningMoveAssessment: Record` is not satisfied
+   --> crates/city-core/src/housing.rs:128:50
+    |
+128 | #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+    |                                                  ^^^^^^^^^^^ the trait `Record` is not implemented for `OpeningMoveAssessment`
+    |
+    = help: the following other types implement trait `Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              ConsumedOfferId
+              DeliveryQuote
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+    = note: this error originates in the derive macro `Deserialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `OpeningMoveAssessment: Record` is not satisfied
+   --> crates/city-core/src/housing.rs:146:19
+    |
+146 |         default = "empty_move_assessments",
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Record` is not implemented for `OpeningMoveAssessment`
+    |
+    = help: the following other types implement trait `Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              ConsumedOfferId
+              DeliveryQuote
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveCandidate: Record` is not satisfied
+   --> crates/city-core/src/housing.rs:128:50
+    |
+128 | #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+    |                                                  ^^^^^^^^^^^ the trait `Record` is not implemented for `OpeningMoveCandidate`
+    |
+    = help: the following other types implement trait `Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              ConsumedOfferId
+              DeliveryQuote
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+    = note: this error originates in the derive macro `Deserialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `OpeningMoveCandidate: Record` is not satisfied
+   --> crates/city-core/src/housing.rs:152:19
+    |
+152 |         default = "empty_move_candidates",
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^ the trait `Record` is not implemented for `OpeningMoveCandidate`
+    |
+    = help: the following other types implement trait `Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              ConsumedOfferId
+              DeliveryQuote
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveAssessment: Record` is not satisfied
+   --> crates/city-core/src/housing.rs:159:5
+    |
+159 |     Rows::new().expect("fixed move assessment rows")
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Record` is not implemented for `OpeningMoveAssessment`
+    |
+    = help: the following other types implement trait `Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              ConsumedOfferId
+              DeliveryQuote
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveAssessment: Record` is not satisfied
+   --> crates/city-core/src/housing.rs:159:5
+    |
+159 |     Rows::new().expect("fixed move assessment rows")
+    |     ^^^^^^^^^^^ the trait `Record` is not implemented for `OpeningMoveAssessment`
+    |
+    = help: the following other types implement trait `Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              ConsumedOfferId
+              DeliveryQuote
+            and 35 others
+note: required by a bound in `model_rows::Rows::<T, N>::new`
+   --> crates/city-core/src/model_rows.rs:22:9
+    |
+22  | impl<T: Record, const N: usize> Rows<T, N> {
+    |         ^^^^^^ required by this bound in `Rows::<T, N>::new`
+23  |     pub fn new() -> Result<Self, &'static str> {
+    |            --- required by a bound in this associated function
+
+error[E0277]: the trait bound `OpeningMoveAssessment: Record` is not satisfied
+   --> crates/city-core/src/housing.rs:159:5
+    |
+159 |     Rows::new().expect("fixed move assessment rows")
+    |     ^^^^ the trait `Record` is not implemented for `OpeningMoveAssessment`
+    |
+    = help: the following other types implement trait `Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              ConsumedOfferId
+              DeliveryQuote
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveCandidate: Record` is not satisfied
+   --> crates/city-core/src/housing.rs:162:5
+    |
+162 |     Rows::new().expect("fixed move candidate rows")
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `Record` is not implemented for `OpeningMoveCandidate`
+    |
+    = help: the following other types implement trait `Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              ConsumedOfferId
+              DeliveryQuote
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveCandidate: Record` is not satisfied
+   --> crates/city-core/src/housing.rs:162:5
+    |
+162 |     Rows::new().expect("fixed move candidate rows")
+    |     ^^^^^^^^^^^ the trait `Record` is not implemented for `OpeningMoveCandidate`
+    |
+    = help: the following other types implement trait `Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              ConsumedOfferId
+              DeliveryQuote
+            and 35 others
+note: required by a bound in `model_rows::Rows::<T, N>::new`
+   --> crates/city-core/src/model_rows.rs:22:9
+    |
+22  | impl<T: Record, const N: usize> Rows<T, N> {
+    |         ^^^^^^ required by this bound in `Rows::<T, N>::new`
+23  |     pub fn new() -> Result<Self, &'static str> {
+    |            --- required by a bound in this associated function
+
+error[E0277]: the trait bound `OpeningMoveCandidate: Record` is not satisfied
+   --> crates/city-core/src/housing.rs:162:5
+    |
+162 |     Rows::new().expect("fixed move candidate rows")
+    |     ^^^^ the trait `Record` is not implemented for `OpeningMoveCandidate`
+    |
+    = help: the following other types implement trait `Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              ConsumedOfferId
+              DeliveryQuote
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0599]: the method `capacity` exists for struct `Rows<OpeningMoveAssessment, 32>`, but its trait bounds were not satisfied
+   --> crates/city-core/src/housing.rs:377:37
+    |
+168 | pub struct OpeningMoveAssessment {
+    | -------------------------------- doesn't satisfy `OpeningMoveAssessment: Record`
+...
+377 |             + self.move_assessments.capacity() * size_of::<OpeningMoveAssessment>()
+    |                                     ^^^^^^^^ method cannot be called on `Rows<OpeningMoveAssessment, 32>` due to unsatisfied trait bounds
+    |
+   ::: crates/city-core/src/model_rows.rs:18:1
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    | ------------------------------------------ method `capacity` not found for this struct
+    |
+note: trait bound `OpeningMoveAssessment: Record` was not satisfied
+   --> crates/city-core/src/model_rows.rs:22:9
+    |
+22  | impl<T: Record, const N: usize> Rows<T, N> {
+    |         ^^^^^^                  ----------
+    |         |
+    |         unsatisfied trait bound introduced here
+note: the trait `Record` must be implemented
+   --> crates/city-core/src/model_rows.rs:13:1
+    |
+13  | pub trait Record: Copy {
+    | ^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0599]: the method `capacity` exists for struct `Rows<OpeningMoveCandidate, 32>`, but its trait bounds were not satisfied
+   --> crates/city-core/src/housing.rs:378:36
+    |
+184 | pub struct OpeningMoveCandidate {
+    | ------------------------------- doesn't satisfy `OpeningMoveCandidate: Record`
+...
+378 |             + self.move_candidates.capacity() * size_of::<OpeningMoveCandidate>()
+    |                                    ^^^^^^^^ method cannot be called on `Rows<OpeningMoveCandidate, 32>` due to unsatisfied trait bounds
+    |
+   ::: crates/city-core/src/model_rows.rs:18:1
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    | ------------------------------------------ method `capacity` not found for this struct
+    |
+note: trait bound `OpeningMoveCandidate: Record` was not satisfied
+   --> crates/city-core/src/model_rows.rs:22:9
+    |
+22  | impl<T: Record, const N: usize> Rows<T, N> {
+    |         ^^^^^^                  ----------
+    |         |
+    |         unsatisfied trait bound introduced here
+note: the trait `Record` must be implemented
+   --> crates/city-core/src/model_rows.rs:13:1
+    |
+13  | pub trait Record: Copy {
+    | ^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0599]: no method named `len` found for struct `model_rows::Rows` in the current scope
+   --> crates/city-core/src/housing.rs:413:38
+    |
+413 |             || self.move_assessments.len() > usize::from(self.unit_limit)
+    |                                      ^^^ method not found in `Rows<OpeningMoveAssessment, 32>`
+    |
+   ::: crates/city-core/src/model_rows.rs:18:1
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    | ------------------------------------------ method `len` not found for this struct
+    |
+    = help: items from traits can only be used if the trait is implemented and in scope
+    = note: the following traits define an item `len`, perhaps you need to implement one of them:
+            candidate #1: `ExactSizeIterator`
+            candidate #2: `Len`
+
+error[E0599]: no method named `len` found for struct `model_rows::Rows` in the current scope
+   --> crates/city-core/src/housing.rs:414:37
+    |
+414 |             || self.move_candidates.len() > usize::from(self.unit_limit)
+    |                                     ^^^ method not found in `Rows<OpeningMoveCandidate, 32>`
+    |
+   ::: crates/city-core/src/model_rows.rs:18:1
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    | ------------------------------------------ method `len` not found for this struct
+    |
+    = help: items from traits can only be used if the trait is implemented and in scope
+    = note: the following traits define an item `len`, perhaps you need to implement one of them:
+            candidate #1: `ExactSizeIterator`
+            candidate #2: `Len`
+
+error[E0599]: no method named `windows` found for struct `model_rows::Rows` in the current scope
+   --> crates/city-core/src/housing.rs:417:18
+    |
+415 |               || self
+    |  ________________-
+416 | |                 .move_assessments
+417 | |                 .windows(2)
+    | |                 -^^^^^^^ method not found in `Rows<OpeningMoveAssessment, 32>`
+    | |_________________|
+    |
+    |
+   ::: crates/city-core/src/model_rows.rs:18:1
+    |
+18  |   pub struct Rows<T: Record, const N: usize> {
+    |   ------------------------------------------ method `windows` not found for this struct
+
+error[E0599]: no method named `windows` found for struct `model_rows::Rows` in the current scope
+   --> crates/city-core/src/housing.rs:421:18
+    |
+419 |               || self
+    |  ________________-
+420 | |                 .move_candidates
+421 | |                 .windows(2)
+    | |                 -^^^^^^^ method not found in `Rows<OpeningMoveCandidate, 32>`
+    | |_________________|
+    |
+    |
+   ::: crates/city-core/src/model_rows.rs:18:1
+    |
+18  |   pub struct Rows<T: Record, const N: usize> {
+    |   ------------------------------------------ method `windows` not found for this struct
+
+error[E0599]: the method `is_empty` exists for struct `Rows<OpeningMoveAssessment, 32>`, but its trait bounds were not satisfied
+   --> crates/city-core/src/housing.rs:423:41
+    |
+168 | pub struct OpeningMoveAssessment {
+    | -------------------------------- doesn't satisfy `OpeningMoveAssessment: Record`
+...
+423 |             || ((!self.move_assessments.is_empty() || !self.move_candidates.is_empty())
+    |                                         ^^^^^^^^ method cannot be called on `Rows<OpeningMoveAssessment, 32>` due to unsatisfied trait bounds
+    |
+   ::: crates/city-core/src/model_rows.rs:18:1
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    | ------------------------------------------ method `is_empty` not found for this struct
+    |
+note: trait bound `OpeningMoveAssessment: Record` was not satisfied
+   --> crates/city-core/src/model_rows.rs:22:9
+    |
+22  | impl<T: Record, const N: usize> Rows<T, N> {
+    |         ^^^^^^                  ----------
+    |         |
+    |         unsatisfied trait bound introduced here
+note: the trait `Record` must be implemented
+   --> crates/city-core/src/model_rows.rs:13:1
+    |
+13  | pub trait Record: Copy {
+    | ^^^^^^^^^^^^^^^^^^^^^^
+    = help: items from traits can only be used if the trait is implemented and in scope
+    = note: the following trait defines an item `is_empty`, perhaps you need to implement it:
+            candidate #1: `ExactSizeIterator`
+
+error[E0599]: the method `is_empty` exists for struct `Rows<OpeningMoveCandidate, 32>`, but its trait bounds were not satisfied
+   --> crates/city-core/src/housing.rs:423:77
+    |
+184 | pub struct OpeningMoveCandidate {
+    | ------------------------------- doesn't satisfy `OpeningMoveCandidate: Record`
+...
+423 |             || ((!self.move_assessments.is_empty() || !self.move_candidates.is_empty())
+    |                                                                             ^^^^^^^^ method cannot be called on `Rows<OpeningMoveCandidate, 32>` due to unsatisfied trait bounds
+    |
+   ::: crates/city-core/src/model_rows.rs:18:1
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    | ------------------------------------------ method `is_empty` not found for this struct
+    |
+note: trait bound `OpeningMoveCandidate: Record` was not satisfied
+   --> crates/city-core/src/model_rows.rs:22:9
+    |
+22  | impl<T: Record, const N: usize> Rows<T, N> {
+    |         ^^^^^^                  ----------
+    |         |
+    |         unsatisfied trait bound introduced here
+note: the trait `Record` must be implemented
+   --> crates/city-core/src/model_rows.rs:13:1
+    |
+13  | pub trait Record: Copy {
+    | ^^^^^^^^^^^^^^^^^^^^^^
+    = help: items from traits can only be used if the trait is implemented and in scope
+    = note: the following trait defines an item `is_empty`, perhaps you need to implement it:
+            candidate #1: `ExactSizeIterator`
+
+error[E0277]: the trait bound `OpeningMoveAssessment: Record` is not satisfied
+   --> crates/city-core/src/housing.rs:432:27
+    |
+432 |         for assessment in &self.move_assessments {
+    |                           ^^^^^^^^^^^^^^^^^^^^^^ the trait `Record` is not implemented for `OpeningMoveAssessment`
+    |
+    = help: the following other types implement trait `Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              ConsumedOfferId
+              DeliveryQuote
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: `&model_rows::Rows<OpeningMoveAssessment, 32>` is not an iterator
+   --> crates/city-core/src/housing.rs:432:27
+    |
+432 |         for assessment in &self.move_assessments {
+    |                           ^^^^^^^^^^^^^^^^^^^^^^ `&model_rows::Rows<OpeningMoveAssessment, 32>` is not an iterator
+    |
+    = help: the trait `IntoIterator` is not implemented for `&model_rows::Rows<OpeningMoveAssessment, 32>`
+    = help: the following other types implement trait `IntoIterator`:
+              &model_rows::Rows<T, N>
+              &mut model_rows::Rows<T, N>
+
+error[E0599]: no method named `iter` found for struct `model_rows::Rows` in the current scope
+   --> crates/city-core/src/housing.rs:442:42
+    |
+442 |                 || self.move_assessments.iter().any(|other| {
+    |                                          ^^^^ method not found in `Rows<OpeningMoveAssessment, 32>`
+    |
+   ::: crates/city-core/src/model_rows.rs:18:1
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    | ------------------------------------------ method `iter` not found for this struct
+
+error[E0277]: the trait bound `OpeningMoveCandidate: Record` is not satisfied
+   --> crates/city-core/src/housing.rs:450:26
+    |
+450 |         for candidate in &self.move_candidates {
+    |                          ^^^^^^^^^^^^^^^^^^^^^ the trait `Record` is not implemented for `OpeningMoveCandidate`
+    |
+    = help: the following other types implement trait `Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              ConsumedOfferId
+              DeliveryQuote
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: `&model_rows::Rows<OpeningMoveCandidate, 32>` is not an iterator
+   --> crates/city-core/src/housing.rs:450:26
+    |
+450 |         for candidate in &self.move_candidates {
+    |                          ^^^^^^^^^^^^^^^^^^^^^ `&model_rows::Rows<OpeningMoveCandidate, 32>` is not an iterator
+    |
+    = help: the trait `IntoIterator` is not implemented for `&model_rows::Rows<OpeningMoveCandidate, 32>`
+    = help: the following other types implement trait `IntoIterator`:
+              &model_rows::Rows<T, N>
+              &mut model_rows::Rows<T, N>
+
+error[E0599]: no method named `binary_search_by_key` found for struct `model_rows::Rows` in the current scope
+   --> crates/city-core/src/housing.rs:453:18
+    |
+451 |               let assessment = self
+    |  ______________________________-
+452 | |                 .move_assessments
+453 | |                 .binary_search_by_key(&candidate.assessment_id, |x| x.assessment_id)
+    | |                 -^^^^^^^^^^^^^^^^^^^^ method not found in `Rows<OpeningMoveAssessment, 32>`
+    | |_________________|
+    |
+    |
+   ::: crates/city-core/src/model_rows.rs:18:1
+    |
+18  |   pub struct Rows<T: Record, const N: usize> {
+    |   ------------------------------------------ method `binary_search_by_key` not found for this struct
+
+error[E0608]: cannot index into a value of type `model_rows::Rows<OpeningMoveAssessment, 32>`
+   --> crates/city-core/src/housing.rs:455:47
+    |
+455 |                 .map(|i| self.move_assessments[i]);
+    |                                               ^^^
+
+error[E0599]: no method named `binary_search_by_key` found for struct `model_rows::Rows` in the current scope
+   --> crates/city-core/src/housing_runtime_move.rs:169:22
+    |
+167 |                   || opening
+    |  ____________________-
+168 | |                     .move_assessments
+169 | |                     .binary_search_by_key(&w.assessment_id, |a| a.assessment_id)
+    | |                     -^^^^^^^^^^^^^^^^^^^^ method not found in `Rows<OpeningMoveAssessment, 32>`
+    | |_____________________|
+    |
+    |
+   ::: crates/city-core/src/model_rows.rs:18:1
+    |
+18  |   pub struct Rows<T: Record, const N: usize> {
+    |   ------------------------------------------ method `binary_search_by_key` not found for this struct
+
+error[E0608]: cannot index into a value of type `model_rows::Rows<OpeningMoveAssessment, 32>`
+   --> crates/city-core/src/housing_runtime_move.rs:172:49
+    |
+172 |                         opening.move_assessments[index].version != w.assessment_version
+    |                                                 ^^^^^^^
+
+error[E0599]: the method `capacity` exists for struct `Rows<OpeningMoveAssessment, 32>`, but its trait bounds were not satisfied
+   --> crates/city-core/src/assembly.rs:887:51
+    |
+887 |                 (housing.opening.move_assessments.capacity()
+    |                                                   ^^^^^^^^ method cannot be called on `Rows<OpeningMoveAssessment, 32>` due to unsatisfied trait bounds
+    |
+   ::: crates/city-core/src/housing.rs:168:1
+    |
+168 | pub struct OpeningMoveAssessment {
+    | -------------------------------- doesn't satisfy `OpeningMoveAssessment: model_rows::Record`
+    |
+   ::: crates/city-core/src/model_rows.rs:18:1
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    | ------------------------------------------ method `capacity` not found for this struct
+    |
+note: trait bound `OpeningMoveAssessment: model_rows::Record` was not satisfied
+   --> crates/city-core/src/model_rows.rs:22:9
+    |
+22  | impl<T: Record, const N: usize> Rows<T, N> {
+    |         ^^^^^^                  ----------
+    |         |
+    |         unsatisfied trait bound introduced here
+note: the trait `model_rows::Record` must be implemented
+   --> crates/city-core/src/model_rows.rs:13:1
+    |
+13  | pub trait Record: Copy {
+    | ^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0599]: the method `capacity` exists for struct `Rows<OpeningMoveCandidate, 32>`, but its trait bounds were not satisfied
+   --> crates/city-core/src/assembly.rs:893:50
+    |
+893 |                 (housing.opening.move_candidates.capacity()
+    |                                                  ^^^^^^^^ method cannot be called on `Rows<OpeningMoveCandidate, 32>` due to unsatisfied trait bounds
+    |
+   ::: crates/city-core/src/housing.rs:184:1
+    |
+184 | pub struct OpeningMoveCandidate {
+    | ------------------------------- doesn't satisfy `OpeningMoveCandidate: model_rows::Record`
+    |
+   ::: crates/city-core/src/model_rows.rs:18:1
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    | ------------------------------------------ method `capacity` not found for this struct
+    |
+note: trait bound `OpeningMoveCandidate: model_rows::Record` was not satisfied
+   --> crates/city-core/src/model_rows.rs:22:9
+    |
+22  | impl<T: Record, const N: usize> Rows<T, N> {
+    |         ^^^^^^                  ----------
+    |         |
+    |         unsatisfied trait bound introduced here
+note: the trait `model_rows::Record` must be implemented
+   --> crates/city-core/src/model_rows.rs:13:1
+    |
+13  | pub trait Record: Copy {
+    | ^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0277]: the trait bound `OpeningMoveAssessment: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing.rs:149:5
+    |
+128 | #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+    |          ----- in this derive macro expansion
+...
+149 |     pub move_assessments: Rows<OpeningMoveAssessment, MAX_M0_HOUSING_UNITS>,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveAssessment`
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+    = note: this error originates in the derive macro `Clone` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `OpeningMoveCandidate: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing.rs:155:5
+    |
+128 | #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+    |          ----- in this derive macro expansion
+...
+155 |     pub move_candidates: Rows<OpeningMoveCandidate, MAX_M0_HOUSING_UNITS>,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveCandidate`
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+    = note: this error originates in the derive macro `Clone` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `OpeningMoveAssessment: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing.rs:149:5
+    |
+128 | #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+    |                 ----- in this derive macro expansion
+...
+149 |     pub move_assessments: Rows<OpeningMoveAssessment, MAX_M0_HOUSING_UNITS>,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveAssessment`
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 35 others
+note: required for `model_rows::Rows<OpeningMoveAssessment, 32>` to implement `Debug`
+   --> crates/city-core/src/model_rows.rs:17:10
+    |
+17  | #[derive(Debug)]
+    |          ^^^^^
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ------ unsatisfied trait bound introduced in this `derive` macro
+    = note: required for the cast from `&model_rows::Rows<OpeningMoveAssessment, 32>` to `&dyn Debug`
+    = note: this error originates in the derive macro `Debug` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `OpeningMoveCandidate: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing.rs:155:5
+    |
+128 | #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+    |                 ----- in this derive macro expansion
+...
+155 |     pub move_candidates: Rows<OpeningMoveCandidate, MAX_M0_HOUSING_UNITS>,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveCandidate`
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 35 others
+note: required for `model_rows::Rows<OpeningMoveCandidate, 32>` to implement `Debug`
+   --> crates/city-core/src/model_rows.rs:17:10
+    |
+17  | #[derive(Debug)]
+    |          ^^^^^
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ------ unsatisfied trait bound introduced in this `derive` macro
+    = note: 1 redundant requirement hidden
+    = note: required for `&model_rows::Rows<OpeningMoveCandidate, 32>` to implement `Debug`
+    = note: required for the cast from `&&model_rows::Rows<OpeningMoveCandidate, 32>` to `&dyn Debug`
+    = note: this error originates in the derive macro `Debug` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0369]: binary operation `==` cannot be applied to type `model_rows::Rows<OpeningMoveAssessment, 32>`
+   --> crates/city-core/src/housing.rs:149:5
+    |
+128 | #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+    |                        --------- in this derive macro expansion
+...
+149 |     pub move_assessments: Rows<OpeningMoveAssessment, MAX_M0_HOUSING_UNITS>,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+note: an implementation of `model_rows::Record` might be missing for `OpeningMoveAssessment`
+   --> crates/city-core/src/housing.rs:168:1
+    |
+168 | pub struct OpeningMoveAssessment {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ must implement `model_rows::Record`
+note: the trait `model_rows::Record` must be implemented
+   --> crates/city-core/src/model_rows.rs:13:1
+    |
+13  | pub trait Record: Copy {
+    | ^^^^^^^^^^^^^^^^^^^^^^
+    = note: this error originates in the derive macro `PartialEq` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0369]: binary operation `==` cannot be applied to type `model_rows::Rows<OpeningMoveCandidate, 32>`
+   --> crates/city-core/src/housing.rs:155:5
+    |
+128 | #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+    |                        --------- in this derive macro expansion
+...
+155 |     pub move_candidates: Rows<OpeningMoveCandidate, MAX_M0_HOUSING_UNITS>,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+note: an implementation of `model_rows::Record` might be missing for `OpeningMoveCandidate`
+   --> crates/city-core/src/housing.rs:184:1
+    |
+184 | pub struct OpeningMoveCandidate {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ must implement `model_rows::Record`
+note: the trait `model_rows::Record` must be implemented
+   --> crates/city-core/src/model_rows.rs:13:1
+    |
+13  | pub trait Record: Copy {
+    | ^^^^^^^^^^^^^^^^^^^^^^
+    = note: this error originates in the derive macro `PartialEq` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `OpeningMoveAssessment: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing.rs:149:5
+    |
+128 | #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+    |                                   -- in this derive macro expansion
+...
+149 |     pub move_assessments: Rows<OpeningMoveAssessment, MAX_M0_HOUSING_UNITS>,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveAssessment`
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+    = note: this error originates in the derive macro `Eq` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `OpeningMoveCandidate: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing.rs:155:5
+    |
+128 | #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+    |                                   -- in this derive macro expansion
+...
+155 |     pub move_candidates: Rows<OpeningMoveCandidate, MAX_M0_HOUSING_UNITS>,
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveCandidate`
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+    = note: this error originates in the derive macro `Eq` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `OpeningMoveAssessment: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing.rs:147:31
+    |
+147 |         skip_serializing_if = "Rows::is_empty"
+    |                               ^^^^^^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveAssessment`
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveAssessment: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing.rs:128:39
+    |
+128 | #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+    |                                       ^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveAssessment`
+...
+147 |         skip_serializing_if = "Rows::is_empty"
+    |                               ---------------- required by a bound introduced by this call
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 35 others
+note: required by a bound in `model_rows::Rows::<T, N>::is_empty`
+   --> crates/city-core/src/model_rows.rs:22:9
+    |
+22  | impl<T: Record, const N: usize> Rows<T, N> {
+    |         ^^^^^^ required by this bound in `Rows::<T, N>::is_empty`
+...
+41  |     pub fn is_empty(&self) -> bool {
+    |            -------- required by a bound in this associated function
+    = note: this error originates in the derive macro `Serialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `OpeningMoveCandidate: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing.rs:153:31
+    |
+153 |         skip_serializing_if = "Rows::is_empty"
+    |                               ^^^^^^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveCandidate`
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveCandidate: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing.rs:128:39
+    |
+128 | #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+    |                                       ^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveCandidate`
+...
+153 |         skip_serializing_if = "Rows::is_empty"
+    |                               ---------------- required by a bound introduced by this call
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 35 others
+note: required by a bound in `model_rows::Rows::<T, N>::is_empty`
+   --> crates/city-core/src/model_rows.rs:22:9
+    |
+22  | impl<T: Record, const N: usize> Rows<T, N> {
+    |         ^^^^^^ required by this bound in `Rows::<T, N>::is_empty`
+...
+41  |     pub fn is_empty(&self) -> bool {
+    |            -------- required by a bound in this associated function
+    = note: this error originates in the derive macro `Serialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `OpeningMoveAssessment: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing.rs:128:50
+    |
+128 | #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+    |                                                  ^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveAssessment`
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+    = note: this error originates in the derive macro `Deserialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `OpeningMoveAssessment: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing.rs:146:19
+    |
+146 |         default = "empty_move_assessments",
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveAssessment`
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveCandidate: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing.rs:128:50
+    |
+128 | #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+    |                                                  ^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveCandidate`
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+    = note: this error originates in the derive macro `Deserialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `OpeningMoveCandidate: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing.rs:152:19
+    |
+152 |         default = "empty_move_candidates",
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveCandidate`
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveAssessment: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing.rs:159:5
+    |
+159 |     Rows::new().expect("fixed move assessment rows")
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveAssessment`
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveAssessment: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing.rs:159:5
+    |
+159 |     Rows::new().expect("fixed move assessment rows")
+    |     ^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveAssessment`
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 35 others
+note: required by a bound in `model_rows::Rows::<T, N>::new`
+   --> crates/city-core/src/model_rows.rs:22:9
+    |
+22  | impl<T: Record, const N: usize> Rows<T, N> {
+    |         ^^^^^^ required by this bound in `Rows::<T, N>::new`
+23  |     pub fn new() -> Result<Self, &'static str> {
+    |            --- required by a bound in this associated function
+
+error[E0277]: the trait bound `OpeningMoveAssessment: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing.rs:159:5
+    |
+159 |     Rows::new().expect("fixed move assessment rows")
+    |     ^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveAssessment`
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveCandidate: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing.rs:162:5
+    |
+162 |     Rows::new().expect("fixed move candidate rows")
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveCandidate`
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveCandidate: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing.rs:162:5
+    |
+162 |     Rows::new().expect("fixed move candidate rows")
+    |     ^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveCandidate`
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 35 others
+note: required by a bound in `model_rows::Rows::<T, N>::new`
+   --> crates/city-core/src/model_rows.rs:22:9
+    |
+22  | impl<T: Record, const N: usize> Rows<T, N> {
+    |         ^^^^^^ required by this bound in `Rows::<T, N>::new`
+23  |     pub fn new() -> Result<Self, &'static str> {
+    |            --- required by a bound in this associated function
+
+error[E0277]: the trait bound `OpeningMoveCandidate: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing.rs:162:5
+    |
+162 |     Rows::new().expect("fixed move candidate rows")
+    |     ^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveCandidate`
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0599]: the method `capacity` exists for struct `Rows<OpeningMoveAssessment, 32>`, but its trait bounds were not satisfied
+   --> crates/city-core/src/housing.rs:377:37
+    |
+168 | pub struct OpeningMoveAssessment {
+    | -------------------------------- doesn't satisfy `OpeningMoveAssessment: model_rows::Record`
+...
+377 |             + self.move_assessments.capacity() * size_of::<OpeningMoveAssessment>()
+    |                                     ^^^^^^^^ method cannot be called on `Rows<OpeningMoveAssessment, 32>` due to unsatisfied trait bounds
+    |
+   ::: crates/city-core/src/model_rows.rs:18:1
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    | ------------------------------------------ method `capacity` not found for this struct
+    |
+note: trait bound `OpeningMoveAssessment: model_rows::Record` was not satisfied
+   --> crates/city-core/src/model_rows.rs:22:9
+    |
+22  | impl<T: Record, const N: usize> Rows<T, N> {
+    |         ^^^^^^                  ----------
+    |         |
+    |         unsatisfied trait bound introduced here
+note: the trait `model_rows::Record` must be implemented
+   --> crates/city-core/src/model_rows.rs:13:1
+    |
+13  | pub trait Record: Copy {
+    | ^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0599]: the method `capacity` exists for struct `Rows<OpeningMoveCandidate, 32>`, but its trait bounds were not satisfied
+   --> crates/city-core/src/housing.rs:378:36
+    |
+184 | pub struct OpeningMoveCandidate {
+    | ------------------------------- doesn't satisfy `OpeningMoveCandidate: model_rows::Record`
+...
+378 |             + self.move_candidates.capacity() * size_of::<OpeningMoveCandidate>()
+    |                                    ^^^^^^^^ method cannot be called on `Rows<OpeningMoveCandidate, 32>` due to unsatisfied trait bounds
+    |
+   ::: crates/city-core/src/model_rows.rs:18:1
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    | ------------------------------------------ method `capacity` not found for this struct
+    |
+note: trait bound `OpeningMoveCandidate: model_rows::Record` was not satisfied
+   --> crates/city-core/src/model_rows.rs:22:9
+    |
+22  | impl<T: Record, const N: usize> Rows<T, N> {
+    |         ^^^^^^                  ----------
+    |         |
+    |         unsatisfied trait bound introduced here
+note: the trait `model_rows::Record` must be implemented
+   --> crates/city-core/src/model_rows.rs:13:1
+    |
+13  | pub trait Record: Copy {
+    | ^^^^^^^^^^^^^^^^^^^^^^
+
+error[E0631]: type mismatch in function arguments
+   --> crates/city-core/src/timeline_driver.rs:426:34
+    |
+21  | fn err(e: E) -> TxError {
+    | ----------------------- found signature defined here
+...
+426 |                         .map_err(err)?;
+    |                          ------- ^^^ expected due to this
+    |                          |
+    |                          required by a bound introduced by this call
+    |
+    = note: expected function signature `fn(transaction::TxError) -> _`
+               found function signature `fn(timeline::Error) -> _`
+note: required by a bound in `Result::<T, E>::map_err`
+   --> /Users/frankqin/.rustup/toolchains/1.85.1-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/result.rs:853:26
+    |
+853 |     pub fn map_err<F, O: FnOnce(E) -> F>(self, op: O) -> Result<T, F> {
+    |                          ^^^^^^^^^^^^^^ required by this bound in `Result::<T, E>::map_err`
+help: consider wrapping the function in a closure
+    |
+426 |                         .map_err(|arg0: transaction::TxError| err(/* timeline::Error */))?;
+    |                                  ++++++++++++++++++++++++++++    +++++++++++++++++++++++
+
+error[E0599]: the method `is_empty` exists for struct `Rows<OpeningMoveAssessment, 32>`, but its trait bounds were not satisfied
+   --> crates/city-core/src/housing.rs:423:41
+    |
+168 | pub struct OpeningMoveAssessment {
+    | -------------------------------- doesn't satisfy `OpeningMoveAssessment: model_rows::Record`
+...
+423 |             || ((!self.move_assessments.is_empty() || !self.move_candidates.is_empty())
+    |                                         ^^^^^^^^ method cannot be called on `Rows<OpeningMoveAssessment, 32>` due to unsatisfied trait bounds
+    |
+   ::: crates/city-core/src/model_rows.rs:18:1
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    | ------------------------------------------ method `is_empty` not found for this struct
+    |
+note: trait bound `OpeningMoveAssessment: model_rows::Record` was not satisfied
+   --> crates/city-core/src/model_rows.rs:22:9
+    |
+22  | impl<T: Record, const N: usize> Rows<T, N> {
+    |         ^^^^^^                  ----------
+    |         |
+    |         unsatisfied trait bound introduced here
+note: the trait `model_rows::Record` must be implemented
+   --> crates/city-core/src/model_rows.rs:13:1
+    |
+13  | pub trait Record: Copy {
+    | ^^^^^^^^^^^^^^^^^^^^^^
+    = help: items from traits can only be used if the trait is implemented and in scope
+    = note: the following trait defines an item `is_empty`, perhaps you need to implement it:
+            candidate #1: `ExactSizeIterator`
+
+error[E0631]: type mismatch in function arguments
+   --> crates/city-core/src/timeline_driver.rs:840:80
+    |
+21  | fn err(e: E) -> TxError {
+    | ----------------------- found signature defined here
+...
+840 |                             self.sync_rent_claim(details, t.claims[i]).map_err(err)?;
+    |                                                                        ------- ^^^ expected due to this
+    |                                                                        |
+    |                                                                        required by a bound introduced by this call
+    |
+    = note: expected function signature `fn(transaction::TxError) -> _`
+               found function signature `fn(timeline::Error) -> _`
+note: required by a bound in `Result::<T, E>::map_err`
+   --> /Users/frankqin/.rustup/toolchains/1.85.1-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/result.rs:853:26
+    |
+853 |     pub fn map_err<F, O: FnOnce(E) -> F>(self, op: O) -> Result<T, F> {
+    |                          ^^^^^^^^^^^^^^ required by this bound in `Result::<T, E>::map_err`
+help: consider wrapping the function in a closure
+    |
+840 |                             self.sync_rent_claim(details, t.claims[i]).map_err(|arg0: transaction::TxError| err(/* timeline::Error */))?;
+    |                                                                                ++++++++++++++++++++++++++++    +++++++++++++++++++++++
+
+error[E0599]: the method `is_empty` exists for struct `Rows<OpeningMoveCandidate, 32>`, but its trait bounds were not satisfied
+   --> crates/city-core/src/housing.rs:423:77
+    |
+184 | pub struct OpeningMoveCandidate {
+    | ------------------------------- doesn't satisfy `OpeningMoveCandidate: model_rows::Record`
+...
+423 |             || ((!self.move_assessments.is_empty() || !self.move_candidates.is_empty())
+    |                                                                             ^^^^^^^^ method cannot be called on `Rows<OpeningMoveCandidate, 32>` due to unsatisfied trait bounds
+    |
+   ::: crates/city-core/src/model_rows.rs:18:1
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    | ------------------------------------------ method `is_empty` not found for this struct
+    |
+note: trait bound `OpeningMoveCandidate: model_rows::Record` was not satisfied
+   --> crates/city-core/src/model_rows.rs:22:9
+    |
+22  | impl<T: Record, const N: usize> Rows<T, N> {
+    |         ^^^^^^                  ----------
+    |         |
+    |         unsatisfied trait bound introduced here
+note: the trait `model_rows::Record` must be implemented
+   --> crates/city-core/src/model_rows.rs:13:1
+    |
+13  | pub trait Record: Copy {
+    | ^^^^^^^^^^^^^^^^^^^^^^
+    = help: items from traits can only be used if the trait is implemented and in scope
+    = note: the following trait defines an item `is_empty`, perhaps you need to implement it:
+            candidate #1: `ExactSizeIterator`
+
+error[E0277]: the trait bound `OpeningMoveAssessment: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing.rs:432:27
+    |
+432 |         for assessment in &self.move_assessments {
+    |                           ^^^^^^^^^^^^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveAssessment`
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveCandidate: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing.rs:450:26
+    |
+450 |         for candidate in &self.move_candidates {
+    |                          ^^^^^^^^^^^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveCandidate`
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 35 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveAssessment: model_rows::Record` is not satisfied
+    --> crates/city-core/src/housing.rs:2844:31
+     |
+2844 |             move_assessments: Rows::new().unwrap(),
+     |                               ^^^^^^^^^^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveAssessment`
+     |
+     = help: the following other types implement trait `model_rows::Record`:
+               (arena::Handle<arena::AccountDomain>, assembly::Account)
+               (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+               (u32, arena::Handle<D>)
+               City
+               ClaimSourceRecord
+               CompanyTaxRule
+               EquityCharter
+               EquityInvestorBinding
+             and 35 others
+note: required by a bound in `model_rows::Rows`
+    --> crates/city-core/src/model_rows.rs:18:20
+     |
+18   | pub struct Rows<T: Record, const N: usize> {
+     |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveCandidate: model_rows::Record` is not satisfied
+    --> crates/city-core/src/housing.rs:2845:30
+     |
+2845 |             move_candidates: Rows::new().unwrap(),
+     |                              ^^^^^^^^^^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveCandidate`
+     |
+     = help: the following other types implement trait `model_rows::Record`:
+               (arena::Handle<arena::AccountDomain>, assembly::Account)
+               (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+               (u32, arena::Handle<D>)
+               City
+               ClaimSourceRecord
+               CompanyTaxRule
+               EquityCharter
+               EquityInvestorBinding
+             and 35 others
+note: required by a bound in `model_rows::Rows`
+    --> crates/city-core/src/model_rows.rs:18:20
+     |
+18   | pub struct Rows<T: Record, const N: usize> {
+     |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveAssessment: model_rows::Record` is not satisfied
+    --> crates/city-core/src/housing.rs:2844:31
+     |
+2844 |             move_assessments: Rows::new().unwrap(),
+     |                               ^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveAssessment`
+     |
+     = help: the following other types implement trait `model_rows::Record`:
+               (arena::Handle<arena::AccountDomain>, assembly::Account)
+               (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+               (u32, arena::Handle<D>)
+               City
+               ClaimSourceRecord
+               CompanyTaxRule
+               EquityCharter
+               EquityInvestorBinding
+             and 35 others
+note: required by a bound in `model_rows::Rows::<T, N>::new`
+    --> crates/city-core/src/model_rows.rs:22:9
+     |
+22   | impl<T: Record, const N: usize> Rows<T, N> {
+     |         ^^^^^^ required by this bound in `Rows::<T, N>::new`
+23   |     pub fn new() -> Result<Self, &'static str> {
+     |            --- required by a bound in this associated function
+
+error[E0277]: the trait bound `OpeningMoveAssessment: model_rows::Record` is not satisfied
+    --> crates/city-core/src/housing.rs:2844:31
+     |
+2844 |             move_assessments: Rows::new().unwrap(),
+     |                               ^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveAssessment`
+     |
+     = help: the following other types implement trait `model_rows::Record`:
+               (arena::Handle<arena::AccountDomain>, assembly::Account)
+               (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+               (u32, arena::Handle<D>)
+               City
+               ClaimSourceRecord
+               CompanyTaxRule
+               EquityCharter
+               EquityInvestorBinding
+             and 35 others
+note: required by a bound in `model_rows::Rows`
+    --> crates/city-core/src/model_rows.rs:18:20
+     |
+18   | pub struct Rows<T: Record, const N: usize> {
+     |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveCandidate: model_rows::Record` is not satisfied
+    --> crates/city-core/src/housing.rs:2845:30
+     |
+2845 |             move_candidates: Rows::new().unwrap(),
+     |                              ^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveCandidate`
+     |
+     = help: the following other types implement trait `model_rows::Record`:
+               (arena::Handle<arena::AccountDomain>, assembly::Account)
+               (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+               (u32, arena::Handle<D>)
+               City
+               ClaimSourceRecord
+               CompanyTaxRule
+               EquityCharter
+               EquityInvestorBinding
+             and 35 others
+note: required by a bound in `model_rows::Rows::<T, N>::new`
+    --> crates/city-core/src/model_rows.rs:22:9
+     |
+22   | impl<T: Record, const N: usize> Rows<T, N> {
+     |         ^^^^^^ required by this bound in `Rows::<T, N>::new`
+23   |     pub fn new() -> Result<Self, &'static str> {
+     |            --- required by a bound in this associated function
+
+error[E0277]: the trait bound `OpeningMoveCandidate: model_rows::Record` is not satisfied
+    --> crates/city-core/src/housing.rs:2845:30
+     |
+2845 |             move_candidates: Rows::new().unwrap(),
+     |                              ^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveCandidate`
+     |
+     = help: the following other types implement trait `model_rows::Record`:
+               (arena::Handle<arena::AccountDomain>, assembly::Account)
+               (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+               (u32, arena::Handle<D>)
+               City
+               ClaimSourceRecord
+               CompanyTaxRule
+               EquityCharter
+               EquityInvestorBinding
+             and 35 others
+note: required by a bound in `model_rows::Rows`
+    --> crates/city-core/src/model_rows.rs:18:20
+     |
+18   | pub struct Rows<T: Record, const N: usize> {
+     |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveAssessment: model_rows::Record` is not satisfied
+    --> crates/city-core/src/housing.rs:3277:31
+     |
+3277 |             move_assessments: Rows::new().unwrap(),
+     |                               ^^^^^^^^^^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveAssessment`
+     |
+     = help: the following other types implement trait `model_rows::Record`:
+               (arena::Handle<arena::AccountDomain>, assembly::Account)
+               (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+               (u32, arena::Handle<D>)
+               City
+               ClaimSourceRecord
+               CompanyTaxRule
+               EquityCharter
+               EquityInvestorBinding
+             and 35 others
+note: required by a bound in `model_rows::Rows`
+    --> crates/city-core/src/model_rows.rs:18:20
+     |
+18   | pub struct Rows<T: Record, const N: usize> {
+     |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveCandidate: model_rows::Record` is not satisfied
+    --> crates/city-core/src/housing.rs:3278:30
+     |
+3278 |             move_candidates: Rows::new().unwrap(),
+     |                              ^^^^^^^^^^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveCandidate`
+     |
+     = help: the following other types implement trait `model_rows::Record`:
+               (arena::Handle<arena::AccountDomain>, assembly::Account)
+               (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+               (u32, arena::Handle<D>)
+               City
+               ClaimSourceRecord
+               CompanyTaxRule
+               EquityCharter
+               EquityInvestorBinding
+             and 35 others
+note: required by a bound in `model_rows::Rows`
+    --> crates/city-core/src/model_rows.rs:18:20
+     |
+18   | pub struct Rows<T: Record, const N: usize> {
+     |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveAssessment: model_rows::Record` is not satisfied
+    --> crates/city-core/src/housing.rs:3277:31
+     |
+3277 |             move_assessments: Rows::new().unwrap(),
+     |                               ^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveAssessment`
+     |
+     = help: the following other types implement trait `model_rows::Record`:
+               (arena::Handle<arena::AccountDomain>, assembly::Account)
+               (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+               (u32, arena::Handle<D>)
+               City
+               ClaimSourceRecord
+               CompanyTaxRule
+               EquityCharter
+               EquityInvestorBinding
+             and 35 others
+note: required by a bound in `model_rows::Rows::<T, N>::new`
+    --> crates/city-core/src/model_rows.rs:22:9
+     |
+22   | impl<T: Record, const N: usize> Rows<T, N> {
+     |         ^^^^^^ required by this bound in `Rows::<T, N>::new`
+23   |     pub fn new() -> Result<Self, &'static str> {
+     |            --- required by a bound in this associated function
+
+error[E0277]: the trait bound `OpeningMoveAssessment: model_rows::Record` is not satisfied
+    --> crates/city-core/src/housing.rs:3277:31
+     |
+3277 |             move_assessments: Rows::new().unwrap(),
+     |                               ^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveAssessment`
+     |
+     = help: the following other types implement trait `model_rows::Record`:
+               (arena::Handle<arena::AccountDomain>, assembly::Account)
+               (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+               (u32, arena::Handle<D>)
+               City
+               ClaimSourceRecord
+               CompanyTaxRule
+               EquityCharter
+               EquityInvestorBinding
+             and 35 others
+note: required by a bound in `model_rows::Rows`
+    --> crates/city-core/src/model_rows.rs:18:20
+     |
+18   | pub struct Rows<T: Record, const N: usize> {
+     |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveCandidate: model_rows::Record` is not satisfied
+    --> crates/city-core/src/housing.rs:3278:30
+     |
+3278 |             move_candidates: Rows::new().unwrap(),
+     |                              ^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveCandidate`
+     |
+     = help: the following other types implement trait `model_rows::Record`:
+               (arena::Handle<arena::AccountDomain>, assembly::Account)
+               (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+               (u32, arena::Handle<D>)
+               City
+               ClaimSourceRecord
+               CompanyTaxRule
+               EquityCharter
+               EquityInvestorBinding
+             and 35 others
+note: required by a bound in `model_rows::Rows::<T, N>::new`
+    --> crates/city-core/src/model_rows.rs:22:9
+     |
+22   | impl<T: Record, const N: usize> Rows<T, N> {
+     |         ^^^^^^ required by this bound in `Rows::<T, N>::new`
+23   |     pub fn new() -> Result<Self, &'static str> {
+     |            --- required by a bound in this associated function
+
+error[E0277]: the trait bound `OpeningMoveCandidate: model_rows::Record` is not satisfied
+    --> crates/city-core/src/housing.rs:3278:30
+     |
+3278 |             move_candidates: Rows::new().unwrap(),
+     |                              ^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveCandidate`
+     |
+     = help: the following other types implement trait `model_rows::Record`:
+               (arena::Handle<arena::AccountDomain>, assembly::Account)
+               (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+               (u32, arena::Handle<D>)
+               City
+               ClaimSourceRecord
+               CompanyTaxRule
+               EquityCharter
+               EquityInvestorBinding
+             and 35 others
+note: required by a bound in `model_rows::Rows`
+    --> crates/city-core/src/model_rows.rs:18:20
+     |
+18   | pub struct Rows<T: Record, const N: usize> {
+     |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveAssessment: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing_income.rs:310:31
+    |
+310 |             move_assessments: crate::model_rows::Rows::new().unwrap(),
+    |                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveAssessment`
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 34 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveCandidate: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing_income.rs:311:30
+    |
+311 |             move_candidates: crate::model_rows::Rows::new().unwrap(),
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveCandidate`
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 34 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveAssessment: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing_income.rs:310:31
+    |
+310 |             move_assessments: crate::model_rows::Rows::new().unwrap(),
+    |                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveAssessment`
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 34 others
+note: required by a bound in `model_rows::Rows::<T, N>::new`
+   --> crates/city-core/src/model_rows.rs:22:9
+    |
+22  | impl<T: Record, const N: usize> Rows<T, N> {
+    |         ^^^^^^ required by this bound in `Rows::<T, N>::new`
+23  |     pub fn new() -> Result<Self, &'static str> {
+    |            --- required by a bound in this associated function
+
+error[E0277]: the trait bound `OpeningMoveAssessment: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing_income.rs:310:31
+    |
+310 |             move_assessments: crate::model_rows::Rows::new().unwrap(),
+    |                               ^^^^^^^^^^^^^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveAssessment`
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 34 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0277]: the trait bound `OpeningMoveCandidate: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing_income.rs:311:30
+    |
+311 |             move_candidates: crate::model_rows::Rows::new().unwrap(),
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveCandidate`
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 34 others
+note: required by a bound in `model_rows::Rows::<T, N>::new`
+   --> crates/city-core/src/model_rows.rs:22:9
+    |
+22  | impl<T: Record, const N: usize> Rows<T, N> {
+    |         ^^^^^^ required by this bound in `Rows::<T, N>::new`
+23  |     pub fn new() -> Result<Self, &'static str> {
+    |            --- required by a bound in this associated function
+
+error[E0277]: the trait bound `OpeningMoveCandidate: model_rows::Record` is not satisfied
+   --> crates/city-core/src/housing_income.rs:311:30
+    |
+311 |             move_candidates: crate::model_rows::Rows::new().unwrap(),
+    |                              ^^^^^^^^^^^^^^^^^^^^^^^ the trait `model_rows::Record` is not implemented for `OpeningMoveCandidate`
+    |
+    = help: the following other types implement trait `model_rows::Record`:
+              (arena::Handle<arena::AccountDomain>, assembly::Account)
+              (arena::Handle<arena::InventoryDomain>, assembly::Stock)
+              (u32, arena::Handle<D>)
+              City
+              ClaimSourceRecord
+              CompanyTaxRule
+              EquityCharter
+              EquityInvestorBinding
+            and 34 others
+note: required by a bound in `model_rows::Rows`
+   --> crates/city-core/src/model_rows.rs:18:20
+    |
+18  | pub struct Rows<T: Record, const N: usize> {
+    |                    ^^^^^^ required by this bound in `Rows`
+
+error[E0599]: no method named `binary_search_by_key` found for struct `model_rows::Rows` in the current scope
+    --> crates/city-core/src/transaction.rs:5052:10
+     |
+5050 |       let assessment = opening
+     |  ______________________-
+5051 | |         .move_assessments
+5052 | |         .binary_search_by_key(&assessment_id, |row| row.assessment_id)
+     | |         -^^^^^^^^^^^^^^^^^^^^ method not found in `Rows<OpeningMoveAssessment, 32>`
+     | |_________|
+     |
+     |
+    ::: crates/city-core/src/model_rows.rs:18:1
+     |
+18   |   pub struct Rows<T: Record, const N: usize> {
+     |   ------------------------------------------ method `binary_search_by_key` not found for this struct
+
+error[E0608]: cannot index into a value of type `model_rows::Rows<OpeningMoveAssessment, 32>`
+    --> crates/city-core/src/transaction.rs:5054:42
+     |
+5054 |         .map(|i| opening.move_assessments[i])
+     |                                          ^^^
+
+error[E0599]: no method named `iter` found for struct `model_rows::Rows` in the current scope
+    --> crates/city-core/src/transaction.rs:5154:10
+     |
+5152 |       let candidate_count = opening
+     |  ___________________________-
+5153 | |         .move_candidates
+5154 | |         .iter()
+     | |         -^^^^ method not found in `Rows<OpeningMoveCandidate, 32>`
+     | |_________|
+     |
+     |
+    ::: crates/city-core/src/model_rows.rs:18:1
+     |
+18   |   pub struct Rows<T: Record, const N: usize> {
+     |   ------------------------------------------ method `iter` not found for this struct
+
+error[E0599]: no method named `iter` found for struct `model_rows::Rows` in the current scope
+    --> crates/city-core/src/transaction.rs:5167:10
+     |
+5165 |       for row in opening
+     |  ________________-
+5166 | |         .move_candidates
+5167 | |         .iter()
+     | |         -^^^^ method not found in `Rows<OpeningMoveCandidate, 32>`
+     | |_________|
+     |
+     |
+    ::: crates/city-core/src/model_rows.rs:18:1
+     |
+18   |   pub struct Rows<T: Record, const N: usize> {
+     |   ------------------------------------------ method `iter` not found for this struct
+
+error[E0308]: mismatched types
+    --> crates/city-core/src/transaction.rs:5206:30
+     |
+5206 |                 .checked_add(cooldown_delta)
+     |                  ----------- ^^^^^^^^^^^^^^ expected `GameTime`, found `i64`
+     |                  |
+     |                  arguments to this method are incorrect
+     |
+note: method defined here
+    --> crates/city-core/src/units.rs:34:20
+     |
+34   |             pub fn checked_add(self, other: Self) -> Result<Self, ArithmeticError> {
+     |                    ^^^^^^^^^^^       -----------
+...
+68   | nonnegative_unit!(GameTime); // seconds since world epoch
+     | --------------------------- in this macro invocation
+     = note: this error originates in the macro `nonnegative_unit` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: try wrapping the expression in `units::GameTime` (its field is private, but it's local to this crate and its privacy can be changed)
+     |
+5206 |                 .checked_add(units::GameTime(cooldown_delta))
+     |                              ++++++++++++++++              +
+
+error[E0599]: no method named `iter` found for struct `model_rows::Rows` in the current scope
+    --> crates/city-core/src/transaction.rs:5252:10
+     |
+5250 |       let new_offer_id = opening
+     |  ________________________-
+5251 | |         .move_candidates
+5252 | |         .iter()
+     | |         -^^^^ method not found in `Rows<OpeningMoveCandidate, 32>`
+     | |_________|
+     |
+     |
+    ::: crates/city-core/src/model_rows.rs:18:1
+     |
+18   |   pub struct Rows<T: Record, const N: usize> {
+     |   ------------------------------------------ method `iter` not found for this struct
+
+Some errors have detailed explanations: E0277, E0308, E0369, E0412, E0433, E0599, E0608, E0631.
+For more information about an error, try `rustc --explain E0277`.
+error: could not compile `mycity-core` (lib) due to 55 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `mycity-core` (lib test) due to 73 previous errors

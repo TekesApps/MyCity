@@ -1,0 +1,5 @@
+{
+  "reason": "416 actual compile PayrollSpec.id is u32; helper selector corrected without financial change",
+  "file": "crates/city-storage/examples/town_housing_move.rs",
+  "sha256": "d5fd898332f993f791c541a0e884f00cf268bf47b061e3a49832cde5adf73e80"
+}
