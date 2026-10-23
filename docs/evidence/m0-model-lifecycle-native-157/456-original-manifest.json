@@ -1,0 +1,91 @@
+{
+  "original_path": "/Volumes/HP P900/dev/MyCity/work/model-lifecycle-native-456",
+  "files": [
+    {
+      "path": "heaps.jsonl",
+      "bytes": 2485,
+      "sha256": "a847946dcde0c0d21ab163920e93dac08b57fae733240b9c5fcea11e1103b9ca"
+    },
+    {
+      "path": "model/cpu-final-engine.json",
+      "bytes": 2507418,
+      "sha256": "375065b04ead72b347babf37e1e212455170737057c245d96fe710212f34034c"
+    },
+    {
+      "path": "model/cpu-report.json",
+      "bytes": 9527,
+      "sha256": "888cbe25b5277624ab2b55a9f16f77555f5648485a9b047ae9cc516c331a90dc"
+    },
+    {
+      "path": "model/cpu-targets.jsonl",
+      "bytes": 142733,
+      "sha256": "54511c3ebed63d98a440512f3c912db8bf2844029ef1a999b023ede8c905b832"
+    },
+    {
+      "path": "model/reference/child.json",
+      "bytes": 32,
+      "sha256": "e239a677ba1a93bcb46433b91eefc32fe331989254677dd9fe699618b7f29dfd"
+    },
+    {
+      "path": "model/reference/cpu-final-engine.json",
+      "bytes": 2507418,
+      "sha256": "375065b04ead72b347babf37e1e212455170737057c245d96fe710212f34034c"
+    },
+    {
+      "path": "model/reference/cpu-report.json",
+      "bytes": 9527,
+      "sha256": "888cbe25b5277624ab2b55a9f16f77555f5648485a9b047ae9cc516c331a90dc"
+    },
+    {
+      "path": "model/reference/cpu-targets.jsonl",
+      "bytes": 142733,
+      "sha256": "54511c3ebed63d98a440512f3c912db8bf2844029ef1a999b023ede8c905b832"
+    },
+    {
+      "path": "model/reference/request.json",
+      "bytes": 564,
+      "sha256": "356b113e3eea3948a51633a684073486f5a9a91a332c24bdb6d001f10fabe05b"
+    },
+    {
+      "path": "model/reference/result.json",
+      "bytes": 1110,
+      "sha256": "4f88d45177d0d5b8229747f6ce923216d1b1d968efca6aa8e6bd0c6e781a2f0b"
+    },
+    {
+      "path": "model/reference/stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "model/reference/stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "model-lifecycle-diagnostic.json",
+      "bytes": 1481,
+      "sha256": "52d1fe2b2f57bd3ff362619af4a3f5bd87d40996c942d9a9eae3344ca26fb3ff"
+    },
+    {
+      "path": "normal-pool/events.jsonl",
+      "bytes": 9372,
+      "sha256": "13580656b11e247afac5a792af092db61614fa966f6c8d699a8f11d96565c3dc"
+    },
+    {
+      "path": "normal-pool/ready.json",
+      "bytes": 233,
+      "sha256": "de632d84747f8686056e4ffa91536108b830a2bf9b0c287d51cf7876f96a1a32"
+    },
+    {
+      "path": "normal-pool/report.json",
+      "bytes": 1344,
+      "sha256": "33843231d9503d7b88104d2ec7364694659abd93e7c05f6b526c3598f24e90a8"
+    },
+    {
+      "path": "normal-pool.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "original_complete_retained": true
+}

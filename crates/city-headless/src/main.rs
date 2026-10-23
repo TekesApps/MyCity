@@ -173,6 +173,17 @@ fn run() -> Result<(), String> {
             mycity_headless::pe0_speed::driver(std::path::Path::new(&args[2]), rate)
         };
     }
+    if args
+        .get(1)
+        .is_some_and(|a| a == "normal-pool-model-diagnostic")
+    {
+        if args.len() != 3 {
+            return Err("usage: mycity-headless normal-pool-model-diagnostic NEW_DIR".into());
+        }
+        return mycity_headless::normal_pool::model_lifecycle_diagnostic(std::path::Path::new(
+            &args[2],
+        ));
+    }
     if args.get(1).is_some_and(|a| a == "normal-pool-host") {
         if args.len() != 3 {
             return Err("usage: mycity-headless normal-pool-host NEW_DIR".into());

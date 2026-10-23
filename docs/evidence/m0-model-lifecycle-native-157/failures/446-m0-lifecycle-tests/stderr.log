@@ -1,0 +1,4 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156/crates/city-headless)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.05s
+     Running unittests src/lib.rs (/Volumes/HP P900/dev/MyCity/target/debug/deps/mycity_headless-4c46ed0410755bdc)
+error: test failed, to rerun pass `-p mycity-headless --lib`

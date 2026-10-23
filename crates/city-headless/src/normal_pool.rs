@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 use std::os::unix::net::{UnixListener, UnixStream};
 use std::{
     fs::{self, File},
-    io::{BufWriter, Read, Write},
+    io::{BufRead, BufWriter, Read, Write},
     path::{Path, PathBuf},
     process::{Child, ChildStdin, Command, ExitStatus, Stdio},
     sync::{
@@ -932,6 +932,327 @@ impl WorkerGrant {
 pub fn serve(root: &Path) -> Result<(), String> {
     serve_inner(root, true, None, |_| Ok(false))
 }
+
+/// One real Model workspace lifecycle without L1 pressure or a Sim process.
+/// Native footprint is external-observer data, never inferred from heap counters.
+pub fn model_lifecycle_diagnostic(root: &Path) -> Result<(), String> {
+    if !root.is_absolute() {
+        return Err("normal_model_diagnostic_absolute_root".into());
+    }
+    let parent = root
+        .parent()
+        .ok_or("normal_model_diagnostic_parent")?
+        .canonicalize()
+        .map_err(err)?;
+    let name = root
+        .file_name()
+        .ok_or("normal_model_diagnostic_root_name")?;
+    let canonical_root = parent.join(name);
+    if root != canonical_root {
+        return Err("normal_model_diagnostic_canonical_root_required".into());
+    }
+    match fs::symlink_metadata(root) {
+        Ok(_) => return Err("normal_model_diagnostic_root_exists".into()),
+        Err(e) if e.kind() == std::io::ErrorKind::NotFound => (),
+        Err(e) => return Err(err(e)),
+    }
+    let pool_root = root.join("normal-pool");
+    let configured_pool = std::env::var_os("MYCITY_NORMAL_POOL")
+        .map(PathBuf::from)
+        .ok_or("normal_model_diagnostic_pool_env")?;
+    let heap_log = root.join("heaps.jsonl");
+    let configured_heap_log = std::env::var_os("MYCITY_HEAP_LOG")
+        .map(PathBuf::from)
+        .ok_or("normal_model_diagnostic_heap_log_env")?;
+    if configured_pool != pool_root || configured_heap_log != heap_log {
+        return Err("normal_model_diagnostic_environment".into());
+    }
+    fs::create_dir(root).map_err(err)?;
+    fs::create_dir(root.join("model")).map_err(err)?;
+
+    let exe = std::env::current_exe().map_err(err)?;
+    let mut pool = Process::spawn(&exe, &pool_root, Some(&heap_log))?;
+    let model = crate::scale_model_task::run(
+        &root.join("model"),
+        crate::scale_reference::Tier::parse("full")?,
+        crate::scale_model_task::Mode::Reference,
+    );
+    let pool_pid = pool.child.id();
+    let pool_stop = pool.finish(); // The pool is always joined before validation.
+    let ready = ready(&pool_root)?;
+    if ready.pid != pool_pid || ready.boot == 0 {
+        return Err("normal_model_diagnostic_pool_process_identity".into());
+    }
+    let model = model?;
+    // `run` validates result.json against this binary's SOURCE before returning.
+    // The lifecycle rows are then bound to that validated result by PID + birth.
+    let lifecycle = validate_model_lifecycle(
+        &pool_root.join("events.jsonl"),
+        Some((model.pid, model.instance_unix_ns)),
+    );
+    pool_stop?;
+    lifecycle?;
+    if ready.source.as_str() != SOURCE || ready.capacity_bytes != BYTES {
+        return Err("normal_model_diagnostic_pool_source_or_capacity".into());
+    }
+    let report = serde_json::json!({
+        "schema": "mycity-normal-pool-model-lifecycle-diagnostic-v1",
+        "source_sha256": SOURCE,
+        "diagnostic_only": true,
+        "native_footprint": "external_observer_required; not inferred from allocator counters",
+        "pool": {"pid": ready.pid, "application_instance_unix_ns": ready.boot, "source_sha256": SOURCE, "capacity_bytes": ready.capacity_bytes},
+        "model_helper": {"pid": model.pid, "application_instance_unix_ns": model.instance_unix_ns, "source_sha256": SOURCE, "result_source_validated_by_scale_model_task": true, "tier": "full", "mode": "reference"},
+        "event_log": "normal-pool/events.jsonl",
+        "event_log_binding": "fresh_run_directory_and_ready_pid_application_instance; each model event pid_application_instance matches validated result record",
+        "native_process_identity": "external observer must independently capture macOS proc_pidinfo processstart and bind same pid, executable, and live observation window; application_instance_unix_ns is not OS process birth",
+        "event_reader_limits": {"rows_max": MODEL_LIFECYCLE_ROW_COUNT, "row_bytes_max_including_newline": MODEL_LIFECYCLE_ROW_BYTES, "production_event_row_cap_bytes_unchanged": EVENT_BYTES},
+        "heap_log": "heaps.jsonl",
+        "l1_pressure": "not_started",
+        "sim": "not_started",
+        "acceptance": "not_a_memory_or_performance_gate"
+    });
+    write_diagnostic_json(&root.join("model-lifecycle-diagnostic.json"), &report)
+}
+
+const MODEL_LIFECYCLE_ROW_BYTES: usize = 2048;
+const MODEL_LIFECYCLE_ROW_COUNT: usize = 64;
+const MODEL_LIFECYCLE_PHASES: [&str; 4] = ["prepared", "filled", "retiring", "returned"];
+const MODEL_LIFECYCLE_AVAILABLE_PREPARED: usize = BYTES - workspace::Kind::Model.bytes();
+
+fn validate_model_lifecycle(path: &Path, expected: Option<(u32, u128)>) -> Result<(), String> {
+    let (expected_pid, expected_birth) = expected.ok_or("normal_model_diagnostic_model_failed")?;
+    let mut reader = std::io::BufReader::with_capacity(
+        MODEL_LIFECYCLE_ROW_BYTES,
+        File::open(path).map_err(err)?,
+    );
+    let mut line = Vec::with_capacity(MODEL_LIFECYCLE_ROW_BYTES);
+    let mut row_count = 0usize;
+    let mut phase_index = 0usize;
+    let mut generation = None;
+    let mut previous_ns = 0u64;
+    loop {
+        line.clear();
+        let mut terminated = false;
+        while !terminated {
+            let available = reader.fill_buf().map_err(err)?;
+            if available.is_empty() {
+                if line.is_empty() {
+                    break;
+                }
+                return Err("normal_model_diagnostic_partial_event".into());
+            }
+            let take = available
+                .iter()
+                .position(|b| *b == b'\n')
+                .map_or(available.len(), |i| i + 1);
+            if line.len().saturating_add(take) > MODEL_LIFECYCLE_ROW_BYTES {
+                return Err("normal_model_diagnostic_event_row_bound".into());
+            }
+            terminated = available[take - 1] == b'\n';
+            line.extend_from_slice(&available[..take]);
+            reader.consume(take);
+        }
+        if line.is_empty() {
+            break;
+        }
+        row_count += 1;
+        if row_count > MODEL_LIFECYCLE_ROW_COUNT {
+            return Err("normal_model_diagnostic_event_count_bound".into());
+        }
+        let event: serde_json::Value = serde_json::from_slice(&line).map_err(err)?;
+        if event.get("owner_kind").and_then(serde_json::Value::as_str) != Some("model") {
+            continue;
+        }
+        let kind = event
+            .get("kind")
+            .and_then(serde_json::Value::as_str)
+            .ok_or("normal_model_diagnostic_event_kind")?;
+        let phase = event
+            .get("phase")
+            .and_then(serde_json::Value::as_str)
+            .ok_or("normal_model_diagnostic_event_phase")?;
+        if phase_index >= MODEL_LIFECYCLE_PHASES.len()
+            || phase != MODEL_LIFECYCLE_PHASES[phase_index]
+        {
+            return Err("normal_model_diagnostic_lifecycle_order".into());
+        }
+        let expected_kind = match phase {
+            "prepared" => "prepared_before_helper_spawn",
+            "filled" => "helper_actual_compare_slots_filled",
+            "retiring" => "retiring_after_helper_wait_or_cancel",
+            "returned" => "returned_after_helper_wait_or_cancel",
+            _ => return Err("normal_model_diagnostic_phase_unknown".into()),
+        };
+        if kind != expected_kind {
+            return Err("normal_model_diagnostic_lifecycle_kind".into());
+        }
+        let event_ns = event
+            .get("observed_ns")
+            .and_then(serde_json::Value::as_u64)
+            .ok_or("normal_model_diagnostic_event_clock")?;
+        if event_ns < previous_ns {
+            return Err("normal_model_diagnostic_event_clock_order".into());
+        }
+        previous_ns = event_ns;
+        let event_generation = event
+            .get("generation")
+            .and_then(serde_json::Value::as_u64)
+            .ok_or("normal_model_diagnostic_generation")?;
+        if generation
+            .replace(event_generation)
+            .is_some_and(|old| old != event_generation)
+        {
+            return Err("normal_model_diagnostic_generation_changed".into());
+        }
+        let identity = event
+            .get("identity")
+            .ok_or("normal_model_diagnostic_identity_missing")?;
+        let pid = event
+            .get("pid")
+            .ok_or("normal_model_diagnostic_pid_missing")?;
+        let arena = event
+            .get("arena")
+            .ok_or("normal_model_diagnostic_arena_missing")?;
+        let summary = event
+            .get("summary")
+            .ok_or("normal_model_diagnostic_summary_missing")?;
+        let pool_touched = event
+            .get("pool_touched_bytes")
+            .and_then(serde_json::Value::as_u64)
+            .ok_or("normal_model_diagnostic_pool_touched_missing")?;
+        let pool_capacity = summary
+            .get("capacity_bytes")
+            .and_then(serde_json::Value::as_u64)
+            .ok_or("normal_model_diagnostic_pool_capacity_missing")?;
+        let available = summary
+            .get("available_touched_bytes")
+            .and_then(serde_json::Value::as_u64)
+            .ok_or("normal_model_diagnostic_pool_available_missing")?;
+        let workspace_capacity = summary
+            .get("workspace_capacity_bytes")
+            .and_then(serde_json::Value::as_u64)
+            .ok_or("normal_model_diagnostic_workspace_capacity_missing")?;
+        let granted_capacity = summary
+            .get("granted_capacity_bytes")
+            .and_then(serde_json::Value::as_u64)
+            .ok_or("normal_model_diagnostic_granted_capacity_missing")?;
+        let expected_capacity = workspace::Kind::Model.bytes() as u64;
+        if pool_capacity != BYTES as u64
+            || event
+                .get("capacity_bytes")
+                .and_then(serde_json::Value::as_u64)
+                != Some(expected_capacity)
+        {
+            return Err("normal_model_diagnostic_pool_capacity_ledger".into());
+        }
+        if phase == "prepared" {
+            let capacity = event
+                .get("capacity_bytes")
+                .and_then(serde_json::Value::as_u64)
+                .ok_or("normal_model_diagnostic_capacity_missing")?;
+            if !identity.is_null()
+                || !pid.is_null()
+                || !arena.is_null()
+                || capacity as usize != workspace::Kind::Model.bytes()
+            {
+                return Err("normal_model_diagnostic_prepared_shape".into());
+            }
+            if available != MODEL_LIFECYCLE_AVAILABLE_PREPARED as u64
+                || workspace_capacity != expected_capacity
+                || granted_capacity != expected_capacity
+                || pool_touched != MODEL_LIFECYCLE_AVAILABLE_PREPARED as u64
+            {
+                return Err("normal_model_diagnostic_prepared_pool_ledger".into());
+            }
+        } else {
+            let identity_pid = identity
+                .get("process_pid")
+                .and_then(serde_json::Value::as_u64)
+                .ok_or("normal_model_diagnostic_identity_pid")?;
+            let birth = identity
+                .get("process_instance_unix_ns")
+                .and_then(serde_json::Value::as_u64)
+                .map(u128::from)
+                .ok_or("normal_model_diagnostic_identity_birth")?;
+            if pid.as_u64() != Some(u64::from(expected_pid))
+                || identity_pid != u64::from(expected_pid)
+                || birth != expected_birth
+            {
+                return Err("normal_model_diagnostic_identity_mismatch".into());
+            }
+            let arena = arena
+                .get("activation")
+                .filter(|a| !a.is_null())
+                .ok_or("normal_model_diagnostic_activation_missing")?;
+            let capacity = arena
+                .get("grant_bytes")
+                .and_then(serde_json::Value::as_u64)
+                .ok_or("normal_model_diagnostic_capacity_missing")?;
+            let initialized = arena
+                .get("initialized_bytes")
+                .and_then(serde_json::Value::as_u64)
+                .ok_or("normal_model_diagnostic_initialized_missing")?;
+            let arena_bytes = arena
+                .get("arena_bytes")
+                .and_then(serde_json::Value::as_u64)
+                .ok_or("normal_model_diagnostic_arena_bytes_missing")?;
+            let bootstrap = arena
+                .get("bootstrap_charged_bytes")
+                .and_then(serde_json::Value::as_u64)
+                .ok_or("normal_model_diagnostic_bootstrap_missing")?;
+            let adapter_header = arena
+                .get("adapter_header_bytes")
+                .and_then(serde_json::Value::as_u64)
+                .ok_or("normal_model_diagnostic_adapter_header_missing")?;
+            let peak = event
+                .get("arena")
+                .and_then(|a| a.get("lifetime_peak_requested_bytes"))
+                .and_then(serde_json::Value::as_u64)
+                .ok_or("normal_model_diagnostic_requested_peak_missing")?;
+            if capacity != workspace::Kind::Model.bytes() as u64
+                || arena_bytes == 0
+                || initialized != arena_bytes
+                || arena_bytes
+                    .checked_add(bootstrap)
+                    .and_then(|n| n.checked_add(adapter_header))
+                    != Some(capacity)
+                || peak > arena_bytes
+            {
+                return Err("normal_model_diagnostic_arena_bounds".into());
+            }
+            let expected_returned = phase == "returned";
+            let (expected_available, expected_workspace, expected_granted) = if expected_returned {
+                (BYTES as u64, 0, 0)
+            } else {
+                (
+                    MODEL_LIFECYCLE_AVAILABLE_PREPARED as u64,
+                    expected_capacity,
+                    expected_capacity,
+                )
+            };
+            if available != expected_available
+                || workspace_capacity != expected_workspace
+                || granted_capacity != expected_granted
+                || pool_touched != expected_available
+            {
+                return Err("normal_model_diagnostic_active_pool_ledger".into());
+            }
+        }
+        phase_index += 1;
+    }
+    if phase_index != MODEL_LIFECYCLE_PHASES.len() {
+        return Err("normal_model_diagnostic_lifecycle_incomplete".into());
+    }
+    Ok(())
+}
+
+fn write_diagnostic_json(path: &Path, value: &serde_json::Value) -> Result<(), String> {
+    let mut file = File::create_new(path).map_err(err)?;
+    serde_json::to_writer_pretty(&mut file, value).map_err(err)?;
+    file.write_all(b"\n").map_err(err)?;
+    file.sync_all().map_err(err)
+}
+
 /// The same pool service/backing with a bounded nonblocking owner state machine.
 /// The caller must actually wait every owned child before requesting shutdown.
 /// This is a diagnostic candidate, not additional model or native memory credit.
@@ -1657,5 +1978,118 @@ mod tests {
         // sixteen session handoffs and64 exceptional transitions. Diagnostic bound only.
         let rows = 5 * 768 + 28_800 / PERIODIC_EVENT_SECONDS + 8 * 16 + 64;
         assert!(rows as usize * EVENT_BYTES < 8 * MIB);
+    }
+}
+
+#[cfg(test)]
+mod model_lifecycle_diagnostic_tests {
+    use super::*;
+    use std::sync::atomic::{AtomicU64, Ordering};
+
+    static NEXT: AtomicU64 = AtomicU64::new(0);
+
+    fn write_events(rows: &[serde_json::Value]) -> PathBuf {
+        let id = NEXT.fetch_add(1, Ordering::Relaxed);
+        let path = std::env::temp_dir().join(format!(
+            "mycity-model-lifecycle-{}-{id}.jsonl",
+            std::process::id()
+        ));
+        let mut file = File::create_new(&path).unwrap();
+        for row in rows {
+            serde_json::to_writer(&mut file, row).unwrap();
+            file.write_all(b"\n").unwrap();
+        }
+        file.sync_all().unwrap();
+        path
+    }
+
+    fn write_fixture(contents: &str) -> PathBuf {
+        let id = NEXT.fetch_add(1, Ordering::Relaxed);
+        let path = std::env::temp_dir().join(format!(
+            "mycity-model-lifecycle-fixture-{}-{id}.jsonl",
+            std::process::id()
+        ));
+        fs::write(&path, contents).unwrap();
+        path
+    }
+
+    fn rows() -> Vec<serde_json::Value> {
+        let capacity = workspace::Kind::Model.bytes();
+        let available = MODEL_LIFECYCLE_AVAILABLE_PREPARED;
+        let mut rows = vec![serde_json::json!({
+            "kind":"prepared_before_helper_spawn", "owner_kind":"model", "phase":"prepared",
+            "generation":7, "observed_ns":10, "pid":null, "identity":null,
+            "capacity_bytes":capacity, "arena":null, "pool_touched_bytes":available,
+            "summary":{"capacity_bytes":BYTES,"available_touched_bytes":available,
+                "workspace_capacity_bytes":capacity,"granted_capacity_bytes":capacity}
+        })];
+        for (kind, phase, observed_ns) in [
+            ("helper_actual_compare_slots_filled", "filled", 20),
+            ("retiring_after_helper_wait_or_cancel", "retiring", 30),
+            ("returned_after_helper_wait_or_cancel", "returned", 40),
+        ] {
+            rows.push(serde_json::json!({
+                "kind":kind, "owner_kind":"model", "phase":phase, "generation":7,
+                "observed_ns":observed_ns, "pid":120,
+                "identity":{"process_pid":120,"process_instance_unix_ns":500},
+                "arena":{"activation":{"grant_bytes":capacity,"arena_bytes":capacity-9350,
+                         "bootstrap_charged_bytes":9190,"adapter_header_bytes":160,
+                         "initialized_bytes":capacity-9350},
+                         "lifetime_peak_requested_bytes":8*MIB},
+                "capacity_bytes":capacity,
+                "pool_touched_bytes":if phase == "returned" { BYTES } else { available },
+                "summary":{"capacity_bytes":BYTES,
+                    "available_touched_bytes":if phase == "returned" { BYTES } else { available },
+                    "workspace_capacity_bytes":if phase == "returned" { 0 } else { capacity },
+                    "granted_capacity_bytes":if phase == "returned" { 0 } else { capacity }}
+            }));
+        }
+        rows
+    }
+
+    #[test]
+    fn retained_347_full_cycle_rows_match_current_bounded_reader_and_pool_ledger() {
+        // Exact event rows 2, 5, 7, and 8 from the retained 347 full cycle.
+        let path = write_fixture(include_str!(
+            "../../../fixtures/m0-model-lifecycle-347-events.jsonl"
+        ));
+        let result = validate_model_lifecycle(&path, Some((98237, 1_792_782_189_317_231_000)));
+        assert!(
+            result.is_ok(),
+            "retained 347 lifecycle rejected: {result:?}"
+        );
+        fs::remove_file(path).unwrap();
+    }
+
+    #[test]
+    fn model_diagnostic_requires_complete_identity_bound_lifecycle() {
+        let path = write_events(&rows());
+        assert!(validate_model_lifecycle(&path, Some((120, 500))).is_ok());
+        fs::remove_file(path).unwrap();
+
+        let mut missing = rows();
+        missing.pop();
+        let path = write_events(&missing);
+        assert!(validate_model_lifecycle(&path, Some((120, 500))).is_err());
+        fs::remove_file(path).unwrap();
+
+        let mut wrong_birth = rows();
+        wrong_birth[2]["identity"]["process_instance_unix_ns"] = serde_json::json!(501);
+        let path = write_events(&wrong_birth);
+        assert!(validate_model_lifecycle(&path, Some((120, 500))).is_err());
+        fs::remove_file(path).unwrap();
+
+        let mut wrong_ledger = rows();
+        wrong_ledger[3]["summary"]["available_touched_bytes"] = serde_json::json!(BYTES - MIB);
+        let path = write_events(&wrong_ledger);
+        assert!(validate_model_lifecycle(&path, Some((120, 500))).is_err());
+        fs::remove_file(path).unwrap();
+
+        let mut wrong_arena_accounting = rows();
+        wrong_arena_accounting[1]["arena"]["activation"]["bootstrap_charged_bytes"] =
+            serde_json::json!(9191);
+        let path = write_events(&wrong_arena_accounting);
+        assert!(validate_model_lifecycle(&path, Some((120, 500))).is_err());
+        fs::remove_file(path).unwrap();
     }
 }

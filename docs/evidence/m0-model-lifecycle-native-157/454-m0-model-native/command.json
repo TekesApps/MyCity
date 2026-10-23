@@ -1,0 +1,40 @@
+{
+  "cli": [
+    "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/451-m0-lifecycle-build/executables/dda0d9b244cce0b162c17d9b1625e9e6b3caff96a7ba4e8ebd669c1fb6134f39/mycity-headless",
+    "normal-pool-model-diagnostic",
+    "/Volumes/HP P900/dev/MyCity/work/model-lifecycle-native-454"
+  ],
+  "observer": [
+    "python3",
+    "-B",
+    "/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156/docs/evidence/m0-model-lifecycle-observer-candidate/observe_model_lifecycle.py",
+    "--run-root",
+    "/Volumes/HP P900/dev/MyCity/work/model-lifecycle-native-454",
+    "--output",
+    "/Volumes/HP P900/dev/MyCity/work/model-lifecycle-native-454.native-observer.jsonl",
+    "--supervisor-pid",
+    "56699",
+    "--exe",
+    "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/451-m0-lifecycle-build/executables/dda0d9b244cce0b162c17d9b1625e9e6b3caff96a7ba4e8ebd669c1fb6134f39/mycity-headless",
+    "--exe-sha256",
+    "dda0d9b244cce0b162c17d9b1625e9e6b3caff96a7ba4e8ebd669c1fb6134f39",
+    "--source-sha256",
+    "3d30cb8918d9f7466b244b7a4722782f6965ab7b10ac3aab8a064bd6020b746a"
+  ],
+  "cli_pid": 56699,
+  "MYCITY_NORMAL_POOL": "/Volumes/HP P900/dev/MyCity/work/model-lifecycle-native-454/normal-pool",
+  "MYCITY_HEAP_LOG": "/Volumes/HP P900/dev/MyCity/work/model-lifecycle-native-454/heaps.jsonl",
+  "pin": {
+    "source_sha256": "3d30cb8918d9f7466b244b7a4722782f6965ab7b10ac3aab8a064bd6020b746a",
+    "source_files": 301,
+    "fixed_input_files": 313,
+    "binary": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/451-m0-lifecycle-build/executables/dda0d9b244cce0b162c17d9b1625e9e6b3caff96a7ba4e8ebd669c1fb6134f39/mycity-headless",
+    "binary_sha256": "dda0d9b244cce0b162c17d9b1625e9e6b3caff96a7ba4e8ebd669c1fb6134f39",
+    "source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/451-m0-lifecycle-build/source.zip",
+    "source_zip_sha256": "a27f4d9b5fb096b98ceb97c725126c7fb52989306d288aefb69a2b35ecb82d5a",
+    "source_identity_method": "build.rs path-string sort and framed UTF-8 path/length/content hashing; archive hash checked",
+    "storage": "external HP P900 USB/APFS SSD",
+    "embedded_source_check": "baseline actual JSON source_sha256 matches framed build source"
+  },
+  "native_not_formal_M0": true
+}

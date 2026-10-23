@@ -1,0 +1,32 @@
+{
+  "acceptance": "not_a_memory_or_performance_gate",
+  "diagnostic_only": true,
+  "event_log": "normal-pool/events.jsonl",
+  "event_log_binding": "fresh_run_directory_and_ready_pid_application_instance; each model event pid_application_instance matches validated result record",
+  "event_reader_limits": {
+    "production_event_row_cap_bytes_unchanged": 1536,
+    "row_bytes_max_including_newline": 2048,
+    "rows_max": 64
+  },
+  "heap_log": "heaps.jsonl",
+  "l1_pressure": "not_started",
+  "model_helper": {
+    "application_instance_unix_ns": 1792794503508906000,
+    "mode": "reference",
+    "pid": 57626,
+    "result_source_validated_by_scale_model_task": true,
+    "source_sha256": "3d30cb8918d9f7466b244b7a4722782f6965ab7b10ac3aab8a064bd6020b746a",
+    "tier": "full"
+  },
+  "native_footprint": "external_observer_required; not inferred from allocator counters",
+  "native_process_identity": "external observer must independently capture macOS proc_pidinfo processstart and bind same pid, executable, and live observation window; application_instance_unix_ns is not OS process birth",
+  "pool": {
+    "application_instance_unix_ns": 1792794503436107000,
+    "capacity_bytes": 67108864,
+    "pid": 57624,
+    "source_sha256": "3d30cb8918d9f7466b244b7a4722782f6965ab7b10ac3aab8a064bd6020b746a"
+  },
+  "schema": "mycity-normal-pool-model-lifecycle-diagnostic-v1",
+  "sim": "not_started",
+  "source_sha256": "3d30cb8918d9f7466b244b7a4722782f6965ab7b10ac3aab8a064bd6020b746a"
+}

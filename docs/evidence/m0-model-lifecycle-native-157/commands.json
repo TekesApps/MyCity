@@ -1,0 +1,174 @@
+[
+  {
+    "round": "445-m0-lifecycle-unit",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "-p",
+        "mycity-headless",
+        "--lib",
+        "model_lifecycle_diagnostic_tests",
+        "--locked"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T22:18:29.605858+00:00",
+      "source_manifest_sha256": "5fcde08c69389024472cacdd0433052b6d26ca3dcd366ce220d4c44e8417aeb4"
+    },
+    "result": {
+      "exit_code": 101,
+      "wall_seconds": 20.937794958,
+      "source_unchanged": true
+    },
+    "source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/445-m0-lifecycle-unit/source.zip"
+  },
+  {
+    "round": "446-m0-lifecycle-tests",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "-p",
+        "mycity-headless",
+        "--lib",
+        "normal_pool",
+        "--locked"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T22:19:47.580404+00:00",
+      "source_manifest_sha256": "b9cf4cd0e3074619dbccdb0e12e31f2c1e925fea319851ecd01b1d4f37703a18"
+    },
+    "result": {
+      "exit_code": 101,
+      "wall_seconds": 10.818171,
+      "source_unchanged": true
+    },
+    "source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/446-m0-lifecycle-tests/source.zip"
+  },
+  {
+    "round": "447-m0-lifecycle-tests",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "-p",
+        "mycity-headless",
+        "--lib",
+        "normal_pool",
+        "--locked"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T22:22:06.989598+00:00",
+      "source_manifest_sha256": "4c55b328980357476538e8c6cd124ff9f078b21bb19ab304eaa52145d4e45ef0"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 8.032704333,
+      "source_unchanged": true
+    },
+    "source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/447-m0-lifecycle-tests/source.zip"
+  },
+  {
+    "round": "448-m0-lifecycle-fmt",
+    "command": {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T22:22:29.827935+00:00",
+      "source_manifest_sha256": "4c55b328980357476538e8c6cd124ff9f078b21bb19ab304eaa52145d4e45ef0"
+    },
+    "result": {
+      "exit_code": 1,
+      "wall_seconds": 0.901754125,
+      "source_unchanged": true
+    },
+    "source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/448-m0-lifecycle-fmt/source.zip"
+  },
+  {
+    "round": "449-m0-lifecycle-fmt",
+    "command": {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T22:22:39.316877+00:00",
+      "source_manifest_sha256": "4258cdf66ffd8d83f29ef89157dcc6472a9792281535c563d875333e0cd6a9c1"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 0.833467916,
+      "source_unchanged": true
+    },
+    "source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/449-m0-lifecycle-fmt/source.zip"
+  },
+  {
+    "round": "450-m0-lifecycle-strict",
+    "command": {
+      "argv": [
+        "cargo",
+        "clippy",
+        "-p",
+        "mycity-headless",
+        "--all-targets",
+        "--locked",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T22:22:40.221547+00:00",
+      "source_manifest_sha256": "4258cdf66ffd8d83f29ef89157dcc6472a9792281535c563d875333e0cd6a9c1"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 14.561750042,
+      "source_unchanged": true
+    },
+    "source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/450-m0-lifecycle-strict/source.zip"
+  },
+  {
+    "round": "451-m0-lifecycle-build",
+    "command": {
+      "argv": [
+        "cargo",
+        "build",
+        "--release",
+        "-p",
+        "mycity-headless",
+        "--locked"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T22:22:54.861405+00:00",
+      "source_manifest_sha256": "4258cdf66ffd8d83f29ef89157dcc6472a9792281535c563d875333e0cd6a9c1"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 92.95255008299999,
+      "source_unchanged": true
+    },
+    "source_zip": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/451-m0-lifecycle-build/source.zip"
+  }
+]

@@ -1,0 +1,25 @@
+{
+  "cli_exit_code": 0,
+  "observer_exit_code": 2,
+  "wall_seconds": 36.808827875,
+  "source_unchanged": true,
+  "run_original": "/Volumes/HP P900/dev/MyCity/work/model-lifecycle-native-454",
+  "observer_original": "/Volumes/HP P900/dev/MyCity/work/model-lifecycle-native-454.native-observer.jsonl",
+  "native_is_not_M0_acceptance": true,
+  "observer_terminal": {
+    "attempted_sample_count": 0,
+    "captured_phase_names": [],
+    "captured_sample_count": 0,
+    "cli_exit_code": "recorded_separately_by_shell_wait",
+    "diagnostic_is_not_memory_or_performance_acceptance": true,
+    "lifecycle_four_events": false,
+    "native_four_phase_samples": false,
+    "numbers_substituted_with_zero": false,
+    "observer_elapsed_monotonic_ns": 756917,
+    "reason": "RuntimeError:pinned observer support hash mismatch: native_metrics.py",
+    "status": "fail_closed",
+    "type": "observer_terminal"
+  },
+  "observer_rows": 1,
+  "observer_bytes": 463
+}

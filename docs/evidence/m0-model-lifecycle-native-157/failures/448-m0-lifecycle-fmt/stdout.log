@@ -1,0 +1,12 @@
+Diff in /Users/frankqin/dev/MyCity-core-work/root-m0-lifecycle-v156/crates/city-headless/src/normal_pool.rs:2054:
+             "../../../fixtures/m0-model-lifecycle-347-events.jsonl"
+         ));
+         let result = validate_model_lifecycle(&path, Some((98237, 1_792_782_189_317_231_000)));
+-        assert!(result.is_ok(), "retained 347 lifecycle rejected: {result:?}");
++        assert!(
++            result.is_ok(),
++            "retained 347 lifecycle rejected: {result:?}"
++        );
+         fs::remove_file(path).unwrap();
+     }
+ 

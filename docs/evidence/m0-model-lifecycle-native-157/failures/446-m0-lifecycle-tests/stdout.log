@@ -1,0 +1,33 @@
+
+running 16 tests
+test normal_pool::tests::control_wire_bound_truncation_trailing_and_escape_reject_before_growth ... ok
+test normal_pool::tests::control_wire_into_reports_truncation_and_io_failure ... ok
+test normal_pool::tests::control_wire_into_reuses_buffer_without_leaking_previous_frame_bytes ... ok
+test normal_pool::tests::control_wire_into_accepts_maximum_legal_frame_and_rejects_overflow_and_trailing_bytes ... ok
+test normal_pool::tests::every_control_variant_round_trips_u128_without_a_dynamic_tagged_content_tree ... ok
+test normal_pool::tests::fixed_event_envelope_covers_u128_and_original_eight_hour_diagnostics ... ok
+test normal_pool::model_lifecycle_diagnostic_tests::retained_347_full_cycle_rows_match_current_bounded_reader_and_pool_ledger ... FAILED
+test normal_pool::mapped_pages::tests::fixed_payload_cap_and_replacement_identity_are_independent_of_rust_heap ... ok
+test normal_pool::model_lifecycle_diagnostic_tests::model_diagnostic_requires_complete_identity_bound_lifecycle ... ok
+test normal_pool::tests::controlled_owner_failure_cannot_publish_a_successful_pool_report ... ok
+test normal_pool::tests::controlled_owner_keeps_original_backing_and_requires_balanced_shutdown ... ok
+test normal_pool::broker::tests::helper_capability_cannot_start_worker_or_overlap_a_live_session ... ok
+test normal_pool::workspace::tests::sim_and_worker_use_distinct_real_pages_and_do_not_return_each_others_capacity ... ok
+test normal_pool::broker::tests::old_generation_capabilities_and_legacy_calls_cannot_touch_new_registration ... ok
+test normal_pool::tests::actual_64mib_pages_grant_identity_and_duplicate_receipts_never_double_credit ... ok
+test normal_pool::workspace::tests::bounded_table_overflow_duplicate_generation_and_partial_refill_fail_closed ... ok
+
+failures:
+
+---- normal_pool::model_lifecycle_diagnostic_tests::retained_347_full_cycle_rows_match_current_bounded_reader_and_pool_ledger stdout ----
+
+thread 'normal_pool::model_lifecycle_diagnostic_tests::retained_347_full_cycle_rows_match_current_bounded_reader_and_pool_ledger' panicked at crates/city-headless/src/normal_pool.rs:2038:9:
+retained 347 lifecycle rejected: Err("normal_model_diagnostic_arena_bounds")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    normal_pool::model_lifecycle_diagnostic_tests::retained_347_full_cycle_rows_match_current_bounded_reader_and_pool_ledger
+
+test result: FAILED. 15 passed; 1 failed; 0 ignored; 0 measured; 88 filtered out; finished in 8.16s
+

@@ -1,0 +1,20 @@
+
+running 2 tests
+test normal_pool::model_lifecycle_diagnostic_tests::retained_347_full_cycle_rows_match_current_bounded_reader_and_pool_ledger ... FAILED
+test normal_pool::model_lifecycle_diagnostic_tests::model_diagnostic_requires_complete_identity_bound_lifecycle ... ok
+
+failures:
+
+---- normal_pool::model_lifecycle_diagnostic_tests::retained_347_full_cycle_rows_match_current_bounded_reader_and_pool_ledger stdout ----
+
+thread 'normal_pool::model_lifecycle_diagnostic_tests::retained_347_full_cycle_rows_match_current_bounded_reader_and_pool_ledger' panicked at crates/city-headless/src/normal_pool.rs:2037:9:
+assertion failed: validate_model_lifecycle(&path,
+        Some((98237, 1_792_782_188_317_231_000))).is_ok()
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    normal_pool::model_lifecycle_diagnostic_tests::retained_347_full_cycle_rows_match_current_bounded_reader_and_pool_ledger
+
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 102 filtered out; finished in 0.04s
+

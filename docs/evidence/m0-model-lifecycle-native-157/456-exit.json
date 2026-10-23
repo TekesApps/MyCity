@@ -1,0 +1,40 @@
+{
+  "cli_exit_code": 0,
+  "observer_exit_code": 0,
+  "wall_seconds": 35.93122225,
+  "source_unchanged": true,
+  "run_original": "/Volumes/HP P900/dev/MyCity/work/model-lifecycle-native-456",
+  "observer_original": "/Volumes/HP P900/dev/MyCity/work/model-lifecycle-native-456.native-observer.jsonl",
+  "native_is_not_M0_acceptance": true,
+  "observer_terminal": {
+    "attempted_sample_count": 37,
+    "captured_phase_names": [
+      "filled"
+    ],
+    "captured_sample_count": 35,
+    "cli_exit_code": "recorded_separately_by_shell_wait",
+    "diagnostic_is_not_memory_or_performance_acceptance": true,
+    "event_phases": [
+      "prepared",
+      "filled",
+      "retiring",
+      "returned"
+    ],
+    "lifecycle_four_events": true,
+    "native_four_phase_samples": false,
+    "native_region_stack": "not captured; see per-process reason",
+    "observer_elapsed_monotonic_ns": 35879298166,
+    "phases_seen": [
+      "prepared",
+      "filled",
+      "retiring",
+      "returned"
+    ],
+    "reason": "report_present_and_pool_confirmed_absent",
+    "report_acceptance": "not_a_memory_or_performance_gate",
+    "status": "diagnostic_capture_incomplete",
+    "type": "observer_terminal"
+  },
+  "observer_rows": 39,
+  "observer_bytes": 156116
+}

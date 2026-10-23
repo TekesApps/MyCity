@@ -1,0 +1,35 @@
+{
+  "selected_rounds": "445-451 source.zip only",
+  "allocated_before": 39960576,
+  "allocated_after": 22831104,
+  "allocated_reduction": 17129472,
+  "volume_free_before": 1867825160192,
+  "volume_free_after": 1867842248704,
+  "volume_free_delta_not_exclusively_attributed": 17088512,
+  "changes": [
+    {
+      "round": "448-m0-lifecycle-fmt",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/448-m0-lifecycle-fmt/source.zip",
+      "canonical_identical_full_source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/447-m0-lifecycle-tests/source.zip",
+      "sha256": "a79023d82e8ec5d7c769d30bb73bb8f5f8aaa2facbcf649eeaae40cb95de77a3",
+      "reason": "byte-identical terminal immutable complete source archive; no recovery/binary removed"
+    },
+    {
+      "round": "450-m0-lifecycle-strict",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/450-m0-lifecycle-strict/source.zip",
+      "canonical_identical_full_source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/449-m0-lifecycle-fmt/source.zip",
+      "sha256": "a27f4d9b5fb096b98ceb97c725126c7fb52989306d288aefb69a2b35ecb82d5a",
+      "reason": "byte-identical terminal immutable complete source archive; no recovery/binary removed"
+    },
+    {
+      "round": "451-m0-lifecycle-build",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/451-m0-lifecycle-build/source.zip",
+      "canonical_identical_full_source": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/449-m0-lifecycle-fmt/source.zip",
+      "sha256": "a27f4d9b5fb096b98ceb97c725126c7fb52989306d288aefb69a2b35ecb82d5a",
+      "reason": "byte-identical terminal immutable complete source archive; no recovery/binary removed"
+    }
+  ],
+  "recovery_originals_preserved": true,
+  "shared_target_preserved_for_next_F_build": true,
+  "full_work_scan": "not_run; no current total-size claim"
+}

@@ -1,0 +1,7 @@
+{
+  "status": "preflight_blocked",
+  "cli_started": false,
+  "observer_started": false,
+  "reason": "another shell running Cargo fmt; no process stopped",
+  "native_result": "not_run"
+}

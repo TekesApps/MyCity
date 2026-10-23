@@ -1,0 +1,62 @@
+{
+  "filled_identity_complete_samples": 35,
+  "roles": {
+    "supervisor": {
+      "pid": 57622,
+      "os_process_start_abstime": 28001069194868,
+      "footprint_min_bytes": 1425720,
+      "footprint_max_bytes": 1425720,
+      "rss_min_bytes": 3653632,
+      "rss_max_bytes": 3653632,
+      "thread_counts": [
+        1
+      ]
+    },
+    "pool": {
+      "pid": 57624,
+      "os_process_start_abstime": 28001069272410,
+      "footprint_min_bytes": 47464832,
+      "footprint_max_bytes": 47464832,
+      "rss_min_bytes": 49512448,
+      "rss_max_bytes": 49512448,
+      "thread_counts": [
+        2
+      ]
+    },
+    "model_helper": {
+      "pid": 57626,
+      "os_process_start_abstime": 28001071018662,
+      "footprint_min_bytes": 23118160,
+      "footprint_max_bytes": 23118160,
+      "rss_min_bytes": 28033024,
+      "rss_max_bytes": 29016064,
+      "thread_counts": [
+        2
+      ]
+    }
+  },
+  "sequential_capture_group_span_ns": {
+    "min": 5422458,
+    "max": 6116416
+  },
+  "observer_self_footprint_max_bytes": 16154936,
+  "observer_self_rss_max_bytes": 20840448,
+  "compiler_count_max_in_captured_samples": 0,
+  "native_four_phase_samples": false,
+  "region_stack": "unavailable",
+  "original347_residual_unchanged": true,
+  "not_a_synchronized_peak": true,
+  "source_sha256": "3d30cb8918d9f7466b244b7a4722782f6965ab7b10ac3aab8a064bd6020b746a",
+  "cpu_full_reference_counts": {
+    "accounts": 64,
+    "cities": 8,
+    "claims": 20000,
+    "inflight_peak": 4,
+    "payroll": 64,
+    "quotes": 8,
+    "stocks": 128
+  },
+  "cpu_completed_hour_targets": 720,
+  "cpu_game_seconds": 2592000,
+  "cpu_work_wall_seconds_not_full_load_performance": 34.756823208
+}

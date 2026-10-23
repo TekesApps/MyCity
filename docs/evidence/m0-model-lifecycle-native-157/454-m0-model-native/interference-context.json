@@ -1,0 +1,6 @@
+{
+  "active_before": [],
+  "diagnostic_only": true,
+  "clean_performance_acceptance": false,
+  "other_processes_not_stopped": true
+}

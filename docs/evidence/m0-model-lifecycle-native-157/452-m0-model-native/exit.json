@@ -1,0 +1,8 @@
+{
+  "status": "preflight_blocked",
+  "cli_started": false,
+  "observer_started": false,
+  "reason": "other Cargo51329 active; no process stopped",
+  "native_result": "not_run",
+  "source_executable": "451 fixed descriptor"
+}

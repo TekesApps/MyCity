@@ -334,3 +334,21 @@ Household cash affects purchases and tax/dividends; no origin reassignment is in
 
 Root completed the pending156 independent v7 checkpoint/cash/equity/tax/proof oracle with
 exit0. This closes that finite joint scenario; M0/F/housing→OD dependencies stay open.
+
+
+## Root M0 diagnostic increment157 / continuing parallel handoffs
+
+Root v156 isolated worktree retains canonical F WIP while integrating only Model lifecycle
+CLI, bounded observer and retained347 fixture. Actual447 normal_pool16 tests,449fmt,450strict,
+451release/embedded source identity and456real helper run complete. CLI/observer0 is finite:
+35filled native samples only, four events but incomplete native four phases. Original347
+residual and original normal/common8MiB/speed/8h failures stay; real16GBnot_run. See
+[evidence](evidence/m0-model-lifecycle-native-157/STATUS.md), including445/446/448/454 failures.
+
+F actual443/444compile failures are retained in canonical uncommitted geometry evidence.
+The sole writer fixes constructor/serde/optional-witness and independent asset/Scene/transport
+revision bindings; advisor resolved that concrete token dispute. F is not accepted. D owner
+froze new existing-API28-day scenario/test/CLI source only (not_run), without replacing the
+previous actual28-day cases or claiming ongoing self-finance. E owner delivered a minimal
+2-unit/3-immutable-offer compatibility/capacity handoff only, with no ignored test or core
+mutation; dynamic offer generations remain later. No duplicate core writer or Cargo window.
