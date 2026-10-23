@@ -1,0 +1,27 @@
+[
+  {
+    "case": "closed",
+    "exit_code": 0,
+    "observed_wall_seconds": 0.808893125
+  },
+  {
+    "case": "waiting",
+    "exit_code": 0,
+    "observed_wall_seconds": 0.24911333400000002
+  },
+  {
+    "case": "base28",
+    "exit_code": 0,
+    "observed_wall_seconds": 3.900191583
+  },
+  {
+    "case": "cash28",
+    "exit_code": 0,
+    "observed_wall_seconds": 3.4915175830000003
+  },
+  {
+    "case": "energy28",
+    "exit_code": 0,
+    "observed_wall_seconds": 3.57941325
+  }
+]

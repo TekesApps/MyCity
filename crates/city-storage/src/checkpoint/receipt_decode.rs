@@ -98,6 +98,9 @@ fn action_raw(
         TownSettle,
         TownTransportSettle,
         TownSuspendOperations,
+        BeginExit,
+        SettleExit,
+        CloseExit,
         RegionSettleDebt,
         RegionActivate,
         RegionAdvance,
@@ -192,6 +195,25 @@ fn action_raw(
             Ok(Output::TownSuspendOperations {
                 profile_id: fields.get(1, scratch)?,
                 company_account: fields.get(2, scratch)?,
+            })
+        }
+        Kind::BeginExit => {
+            let fields = Fields::parse(raw, &["kind", "company", "policy_id"], false, scratch)?;
+            Ok(Output::BeginExit {
+                company: fields.get(1, scratch)?,
+                policy_id: fields.get(2, scratch)?,
+            })
+        }
+        Kind::SettleExit => {
+            let fields = Fields::parse(raw, &["kind", "company"], false, scratch)?;
+            Ok(Output::SettleExit {
+                company: fields.get(1, scratch)?,
+            })
+        }
+        Kind::CloseExit => {
+            let fields = Fields::parse(raw, &["kind", "company"], false, scratch)?;
+            Ok(Output::CloseExit {
+                company: fields.get(1, scratch)?,
             })
         }
         Kind::RegionSettleDebt => {

@@ -1,0 +1,15 @@
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction-compensation-current/crates/city-headless)
+    Checking mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction-compensation-current/crates/city-storage)
+error: variable does not need to be mutable
+   --> crates/city-storage/examples/town_business_28d.rs:437:9
+    |
+437 |     let mut store = checkpoint_reopen(store, &path, "after_exit_settlement_and_close_attempt")?;
+    |         ----^^^^^
+    |         |
+    |         help: remove this `mut`
+    |
+    = note: `-D unused-mut` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(unused_mut)]`
+
+error: could not compile `mycity-storage` (example "town_business_28d") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...

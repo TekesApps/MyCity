@@ -1,0 +1,746 @@
+
+running 146 tests
+test air::wire::tests::short_writes_errors_and_original_byte_bound_are_not_bypassed ... ok
+test arena::checkpoint_tests::last_generation_free_survives_reopen_then_exhausted_slot_stays_retired ... ok
+test arena::checkpoint_tests::checkpoint_preserves_free_stack_generation_and_retired_slots ... ok
+test arena::restore::tests::inplace_sparse_free_stack_and_last_generation_reuse_trusted_backing ... ok
+test arena::checkpoint_tests::general_restore_is_order_independent_bounded_and_never_reallocates_or_expands_max ... ok
+test arena::tests::fixed_diagnostic_arena_rejects_shape_and_preserves_handles ... ok
+test air::report_hash_tests::fixed_scratch_report_matches_the_previous_complete_wire_hashes ... ok
+test air::report_hash_tests::fixed_buffer_hash_is_chunk_and_flush_independent ... ok
+test arena::tests::full_tables_preserve_existing_state_and_owned_capacity ... ok
+test arena::tests::generation_exhaustion_retires_slot_instead_of_resurrecting_old_handle ... ok
+test arena::tests::wrong_world_branch_domain_and_generation_are_rejected ... ok
+test assembly::tests::input_order_does_not_change_world_identity_or_hash ... ok
+test assembly::tests::duplicate_sources_missing_owners_and_cost_mismatches_reject ... ok
+test assembly::tests::sources_and_independent_initial_worlds_are_exact ... ok
+test assembly::tests::oversized_counts_and_unspent_initial_sources_do_not_publish_a_world ... ok
+test assembly::tests::restore_of_preconstruction_object_clears_reused_optional_slot ... ok
+test air::wire::tests::every_decimal_boundary_and_chunk_tail_matches_independent_serde ... ok
+test assembly::tests::town_configuration_is_omitted_when_absent_and_legacy_restore_clears_reused_slot ... ok
+test bounded_decode::tests::lexical_guards_precede_scratch_and_keep_escaped_known_schema_valid ... ok
+test calendar::tests::dates_round_trip_and_reject_invalid_bounds ... ok
+test calendar::tests::month_anchor_does_not_drift_after_february ... ok
+test calendar::tests::rent_30_days_is_not_calendar_month_or_four_weeks ... ok
+test canonical::tests::fast_path_preserves_writer_errors_capacity_boundary_and_workspace_reuse ... ok
+test canonical::tests::fixed_codec_and_writer_failure_never_fall_back_to_allocation ... ok
+test canonical::tests::old_value_is_an_independent_oracle_for_duplicates_escapes_and_numbers ... ok
+test canonical::tests::overwritten_values_still_obey_old_value_validity ... ok
+test construction::compensation_contract_tests::demolition_review_can_replace_every_gate_without_repaying_compensation ... ok
+test canonical::tests::short_integer_fast_path_matches_value_bytes_and_sha_at_boundaries ... ok
+test construction::compensation_contract_tests::compensation_contract_is_optional_and_frozen_within_project_budget ... ok
+test background::tests::real_dispatched_freight_produces_bounded_source_but_paused_link_does_not ... ok
+test construction::compensation_contract_tests::direct_projection_cannot_accept_unpaid_compensation_and_demolition_does_not_repay ... ok
+test construction::compensation_contract_tests::rejected_demolition_can_be_refiled_without_reauthorizing_initial_payment ... ok
+test construction::construction_utility_rounding_tests::cumulative_ceil_charges_are_partition_invariant_and_tiny_work_is_not_free ... ok
+test construction::construction_utility_rounding_tests::utility_contract_rejects_self_supply_and_invalid_rounding_denominators ... ok
+test construction::material_accounting_tests::material_accounting_rejects_orphaned_and_unbacked_rows ... ok
+test construction::material_accounting_tests::material_accounting_survives_cancellation_and_normal_demolition_sink ... ok
+test construction::material_accounting_tests::material_accounting_rejects_unknown_effect_stock_and_basis_without_quantity ... ok
+test construction::road_effect_legacy_serde_tests::approved_road_demolition_records_one_permanent_withdrawal_boundary ... ok
+test construction::material_accounting_tests::opening_material_accounting_records_success_and_ignores_failed_receipts ... ok
+test construction::road_effect_legacy_serde_tests::clearance_profile_rejects_unrepresentable_full_material_work ... ok
+test construction::road_effect_legacy_serde_tests::road_publication_cannot_precede_final_construction_work ... ok
+test fixed_restore::tests::capacity_overflow_and_extra_record_reject_before_record_decode ... ok
+test construction::material_accounting_tests::optional_material_accounting_is_omitted_for_legacy_and_enablement_is_one_time ... ok
+test fixed_restore::tests::existing_slice_survives_partial_failure_and_retry_without_replacement ... ok
+test construction::road_effect_legacy_serde_tests::legacy_project_defaults_new_road_fields_without_changing_json ... ok
+test fixed_restore::tests::fixed_counts_eof_and_token_limits_reject_malformed_streams ... ok
+test fixed_restore::tests::nested_ignored_field_is_bounded_before_parser_scratch_can_grow ... ok
+test fixed_restore::tests::record_budget_is_checked_before_reservation ... ok
+test market_access::proof_schema_tests::legacy_transport_profile_omits_absent_road_effect ... ok
+test market_access::proof_schema_tests::road_project_changes_capacity_only_after_the_published_day ... ok
+test model_capacity::tests::every_domain_copy_and_full_dirty_stock_table_is_included ... ok
+test model_rows::tests::copy_reset_and_shorter_restore_keep_full_backing_and_wire ... ok
+test model_rows::tests::overflow_rejected_before_decoding_the_extra_value ... ok
+test model_rows::tests::inactive_timeline_retains_capacity_and_enable_does_not_allocate_rows ... ok
+test market_access::proof_schema_tests::maximal_bounded_transport_json_fits_the_frozen_schema_limit ... ok
+test schedule::tests::large_same_time_source_pages_finish_before_advancing_world ... ok
+test schedule::tests::bookmark_continues_remaining_pages_without_reprocessing_old_sources ... ok
+test schedule::tests::pause_and_old_ack_do_not_change_cursor_or_time ... ok
+test schedule::tests::bookmark_cannot_be_loaded_into_another_world_or_branch ... ok
+test schedule::tests::per_source_randomness_ignores_paging_and_is_domain_separated ... ok
+test schedule::tests::phase_order_and_interval_cap_are_independent_of_input_order ... ok
+test tests::digest_has_known_reference_value ... ok
+test tests::stream_bound_does_not_depend_on_file_metadata ... ok
+test timeline::fixed_cycle_decode_tests::cycle_field_order_and_canonical_bytes_stay_compatible_without_content ... ok
+test tests::unsupported_or_ambiguous_bootstrap_is_rejected ... ok
+test town_economy::tests::duplicate_recipe_or_quote_identity_is_rejected ... ok
+test town_economy::tests::elapsed_work_scales_output_and_carries_only_fractional_numerator ... ok
+test town_economy::tests::empty_cheap_offer_does_not_set_demand_price_for_expensive_stock ... ok
+test town_economy::tests::energy_price_and_falling_demand_reduce_production_and_sales ... ok
+test town_economy::tests::execution_day_uses_actual_seconds_and_exact_labor_cost ... ok
+test town_economy::tests::exhausted_cheap_route_then_expensive_route_reprices_remaining_demand ... ok
+test town_economy::tests::offer_iteration_order_does_not_change_the_plan ... ok
+test town_economy::tests::plan_is_deterministic_bounded_and_does_not_mutate_authoritative_input ... ok
+test town_economy::tests::price_increase_keeps_reference_need_visible_as_unmet ... ok
+test town_economy::tests::producer_cash_and_recipe_input_limit_output ... ok
+test town_economy::tests::recipes_compete_for_one_shared_utility_pool ... ok
+test town_economy::tests::reconciliation_balances_counterparties_and_rejects_stale_or_tampered_batch ... ok
+test town_economy::tests::route_capacity_is_consumed_once_per_route_and_good ... ok
+test town_economy::tests::remaining_cheap_inventory_then_expensive_offer_reprices_only_marginal_units ... ok
+test town_economy::tests::stockout_no_cash_and_closed_road_propagate_as_unmet_demand ... ok
+test town_economy::tests::unreachable_route_and_empty_stock_never_create_sales ... ok
+test town_economy::tests::sales_are_limited_by_actual_stock_and_cash ... ok
+test town_runtime::transport_cursor_tests::empty_suspension_state_keeps_legacy_json_shape_and_defaults_on_restore ... ok
+test town_runtime::transport_cursor_tests::persisted_transport_cursor_must_match_bound_profile_and_settled_day ... ok
+test schedule::tests::malformed_bookmarks_and_changed_sources_reject ... ok
+test background::tests::three_failed_attempts_or_bad_input_leave_required_job_without_unbounded_retry ... ok
+test transaction::tests::account_cannot_unprotect_or_redirect_reserved_funds ... ok
+test transaction::tests::capacity_lifecycle_releases_once_and_never_reuses_token ... ok
+test transaction::tests::compensation_recipient_overflow_rolls_back_staged_owner_debit_and_gate ... ok
+test canonical::tests::large_arrays_and_nested_objects_use_same_fixed_backing_and_errors_do_not_poison_reuse ... ok
+test transaction::tests::checkpoint_rejects_future_suspension_and_resumed_or_unbilled_payroll ... ok
+test transaction::tests::construction_legacy_unaccounted_exchange_material_sink_remains_rejected ... ok
+test transaction::tests::construction_work_exports_and_pays_both_utilities_once_with_the_shared_boot_pool ... ok
+test background::tests::restart_fences_old_attempt_and_preserves_continuous_committed_field ... ok
+test transaction::tests::construction_utility_supplier_can_also_be_contractor_and_receives_combined_payments ... ok
+test transaction::tests::construction_utility_shortage_and_protected_combined_cost_leave_no_partial_export ... ok
+test transaction::tests::failed_late_action_leaves_no_partial_cash_or_capacity ... ok
+test transaction::tests::foreign_capacity_reference_cannot_resolve_same_number_in_another_world ... ok
+test transaction::tests::persistence_hook_failure_publishes_neither_model_changes_nor_receipt ... ok
+test transaction::tests::construction_boot_checkpoint_rejects_export_mismatch_and_basis_without_quantity ... ok
+test transaction::tests::protection_is_not_new_cash_and_payment_converts_once ... ok
+test transaction::tests::road_effect_restore_rejects_future_or_unsettled_publication ... ok
+test transaction::tests::lot_cost_is_invariant_under_splitting_and_internal_transfer ... ok
+test transaction::tests::road_withdrawal_requires_the_current_fully_settled_day_boundary ... ok
+test transaction::tests::retry_is_exact_and_changed_payload_or_actor_cannot_reuse_receipt ... ok
+test transaction::tests::suspended_construction_guard_blocks_new_build_and_demolition_entry_only ... ok
+test transaction::tests::stock_and_payment_commit_as_one_with_conserved_quantity_and_basis ... ok
+test transaction::tests::stale_revision_scope_and_foreign_handles_do_not_write ... ok
+test transaction::tests::town_day_is_one_atomic_engine_receipt_and_retry_does_not_repeat_sale ... ok
+test transaction::tests::town_durable_hook_failure_does_not_publish_cash_stock_or_day ... ok
+test transaction::tests::town_exit_blocks_unregistered_timeline_receivables_before_liquidation ... ok
+test transaction::tests::town_assigns_exact_partial_worker_seconds_and_reconciles_100_101_wages ... ok
+test transaction::tests::town_exit_rejects_pending_payroll_cycle_amendment_before_stopping_work ... ok
+test transaction::tests::engine_market_scenarios_propagate_cash_material_route_price_and_need_changes ... ok
+test transaction::tests::town_exit_rejects_company_claim_sets_larger_than_policy_capacity ... ok
+test transaction::tests::town_production_uses_real_timeline_wages_and_preserves_lot_basis ... ok
+test transaction::tests::town_suspend_persistence_hook_failure_leaves_all_state_unchanged ... ok
+test transaction::tests::two_resource_request_does_not_hold_one_when_second_is_unavailable ... ok
+test transaction::workspace::tests::reentry_is_rejected_and_unwind_returns_same_initialized_rows ... ok
+test transaction::workspace::tests::failed_or_unwound_hook_preserves_authority_then_commit_swaps_backing ... ok
+test transaction::tests::town_suspend_stops_payroll_and_market_operations_but_preserves_liabilities ... ok
+test transport::tests::assignment_reports_capacity_closed_route_and_budget_failures_separately ... ok
+test transport::tests::boundary_transit_is_counted_once_under_its_source_key ... ok
+test transport::tests::capacity_limits_served_people_and_expansion_changes_cost ... ok
+test transport::tests::duplicate_demand_and_boundary_sources_are_rejected ... ok
+test transport::tests::closed_directed_road_changes_reachable_assignment ... ok
+test transport::tests::edge_city_labels_must_match_the_cities_of_both_nodes ... ok
+test transport::tests::entrance_must_allow_the_demand_mode ... ok
+test transport::tests::final_route_cost_matches_final_edge_cost_after_loading ... ok
+test transport::tests::identical_input_produces_identical_aggregates ... ok
+test transport::tests::input_fingerprint_detects_same_revision_changes_and_ignores_record_order ... ok
+test transport::tests::nearby_geometry_without_granted_entrance_does_not_create_access ... ok
+test transport::tests::no_path_is_reported_as_unserved ... ok
+test transport::tests::path_receipts_are_stable_edge_ids_and_verify_all_output_fields ... ok
+test transport::tests::proof_vectors_reject_excess_rows_before_growing_past_trusted_limits ... ok
+test transport::tests::same_node_entrances_are_zero_cost_reachable ... ok
+test units::tests::failed_accrual_preserves_carry ... ok
+test units::tests::negative_values_and_overflow_cannot_enter_exact_units ... ok
+test units::tests::splitting_and_restoring_time_does_not_drop_fractional_cost ... ok
+test transaction::tests::town_exit_sells_real_inventory_pays_bound_claim_once_and_closes_at_zero_cash ... ok
+test transaction::tests::weekly_timeline_payroll_catchup_does_not_block_daily_town_settlement ... ok
+test transaction::tests::full_journal_backpressures_without_erasing_prior_receipts ... ok
+test background::tests::fixed_background_lifecycle_keeps_all_backings_and_old_numerical_bytes ... ok
+test air::slot::tests::checksum_schema_unknown_duplicate_tail_and_limits_cannot_publish ... ok
+test air::slot::tests::same_slot_partial_complete_bad_good_and_general_profile_boundary ... ok
+test layout_pressure::restore_into::tests::full_native_target_reuses_all_ten_backings_after_errors_and_reordered_fields ... ok
+
+test result: ok. 146 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.90s
+
+
+running 13 tests
+AIR_F64 {"game_seconds":60,"max_absolute_error":1.7495727515637327e-6,"numeric_ledger_residual":0.0,"source_micro":375000}
+test partial_candidate_never_publishes_field_integral_time_or_diagnostics ... ok
+test pulse_spreads_from_a_single_cell_on_later_steps ... ok
+test continuous_windows_preserve_field_integral_and_source_ledger ... ok
+test checksum_stale_identity_invalid_cursor_and_nonfinite_restore_are_rejected ... ok
+test unknown_boundary_bad_sources_and_limits_do_not_silently_substitute_zero ... ok
+test streamed_checkpoint_handles_partial_writers_exact_size_and_interrupted_output ... ok
+test decoder_rejects_excess_rows_before_accepting_source_or_checkpoint_vectors ... ok
+test diagnostics_keep_air_checkpoint_exact_and_exclude_page_sink_from_parent_clock ... ok
+AIR_F64 {"game_seconds":86400,"max_absolute_error":0.00001626952190303399,"numeric_ledger_residual":1.8189894035458565e-12,"source_micro":540000000}
+test checkpoint_digest_preserves_complete_and_continued_state_identity ... ok
+AIR_DENSE {"checkpoint_bytes":1887078,"owned_bytes":662624,"source_struct_bytes":20,"sources":20000,"state":{"background":655.3600006103516,"boundary_exchange":-0.01624505087244743,"complete":true,"decay":655.5977509802356,"emitted_micro":24500140,"field_sha256":"e1001088379e8c758a9d4d94cb244c19db2ca1895c8ba7bd59748d0bc7a20efd","input_sha256":"6d457cedcc2f7f538fd5422f6d27b4629422b4f7147abb36a097583ba3a45cc7","integral_sha256":"188e6c0211ab1cb435934082e9eac2bf89095be0c4877105c7a3959369158440","maximum":2.005220413208008,"minimum":2.000075340270996,"owned_bytes":662624,"progress":null,"rounding_residual":-0.0021656020325231725,"side":128,"steps":4,"strategy":"run36-air-f32-v1","sum":32792.2439789772,"target":120,"time":120}}
+test dense_source_pages_and_mid_source_mid_tile_checkpoints_are_bit_exact ... ok
+test constant_background_is_exact_for_all_map_sizes_and_full_day_integral ... ok
+AIR_F64 {"game_seconds":2592000,"max_absolute_error":0.000024170802187306606,"numeric_ledger_residual":3.590512278606184e-7,"source_micro":16200000000}
+test independent_f64_single_step_day_and_fixed_thirty_day_window ... ok
+test streamed_borrowed_checkpoints_are_byte_identical_to_legacy_owned_format ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.87s
+
+
+running 3 tests
+test parser_limits_invalid_pages_and_output_failure_never_leave_loaded_partial_data ... ok
+test excess_rows_are_rejected_before_decoding_the_extra_value_and_failure_refills ... ok
+test fixed_workspace_preserves_every_source_and_cell_page_and_original_encoding ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.57s
+
+
+running 5 tests
+test checkpoint_cannot_erase_a_pending_obligation_or_detach_its_timeline ... ok
+test final_admission_namespace_cannot_be_burned_by_rejection_or_another_action ... ok
+test atomic_rebind_fences_running_attempt_and_exhaustion_does_not_reset ... ok
+test pending_job_survives_checkpoint_and_stale_attempt_cannot_open_the_observation_barrier ... ok
+test p4_requires_complete_candidate_and_commit_hook_remains_the_only_publication_boundary ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+
+running 13 tests
+test malformed_profiles_sources_units_and_shared_clock_mixes_are_rejected ... ok
+test independent_economic_and_regional_clocks_cannot_be_mixed_with_boot ... ok
+test restarting_cold_cleared_work_keeps_old_loss_and_requires_new_real_inputs ... ok
+test no_seed_rejects_both_dependencies_and_time_does_not_create_outputs ... ok
+test battery_then_actual_water_then_generator_and_parallel_cycles_conserve_inputs_and_fees ... ok
+test half_steps_match_one_step_and_due_output_is_not_visible_to_earlier_start ... ok
+test authorization_hook_failure_late_batch_error_and_generic_bypasses_cannot_partially_publish ... ok
+test water_tank_is_an_alternative_real_seed_not_a_future_generator_promise ... ok
+test reversed_resource_request_has_identical_tokens_and_releasing_then_new_id_retry_succeeds ... ok
+test faults_keep_actual_losses_and_receivers_then_cleanup_releases_only_work_leases ... ok
+test reverse_requests_use_same_pool_and_failed_request_leaves_no_partial_claim_or_cash ... ok
+test fuel_aquifer_battery_cash_and_output_capacity_are_finite ... ok
+test worst_fault_outlet_reservations_reject_new_work_before_any_consumption ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 10 tests
+test cancellation_never_releases_started_capacity_or_refunds_spend ... ok
+test identical_effect_replay_is_stable_and_definitive_failure_does_not_charge_twice ... ok
+test clearance_requires_a_valid_opening_spec_and_state_remains_within_budget ... ok
+test cannot_activate_uninspected_or_demolish_without_parties_and_waste_receiver ... ok
+test consent_materials_wages_and_inspection_gate_occupancy ... ok
+test unfinished_clearance_freezes_real_spend_and_consumption_then_releases_site_once ... ok
+test work_is_rejected_when_cash_or_total_project_budget_is_insufficient ... ok
+test zero_consumption_clearance_uses_base_work_without_fabricating_waste_or_fee ... ok
+test wall_speed_does_not_change_game_calendar_work_and_weekend_is_not_workday ... ok
+test pending_effect_survives_serialization_and_cannot_be_acked_twice ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 16 tests
+test construction_action_and_journal_records_stay_inside_frozen_engine_budget ... ok
+test forged_gate_or_inspector_identity_is_rejected_before_domain_mutation ... ok
+test authoritative_work_skips_untrusted_estimate_even_when_its_sum_overflows ... ok
+test compensation_insufficient_and_protected_funds_are_atomic ... ok
+test compensation_payment_requires_owner_filing_and_party_acceptance_and_is_exactly_once ... ok
+test checkpoint_cannot_relabel_paid_initial_review_as_demolition_review ... ok
+test durable_hook_failure_does_not_publish_and_retry_after_commit_returns_original_receipt ... ok
+test engine_uses_actual_source_lot_basis_for_budget_and_rejects_actual_overrun_atomically ... ok
+test demolition_checkpoint_resolves_historic_compensation_payee_without_current_gate ... ok
+test generic_release_cannot_break_project_site_binding_and_cold_restore_can_continue_work ... ok
+test retrofit_publication_and_rejected_demolition_keep_the_operating_capacity ... ok
+test clearance_metadata_start_is_atomic_and_rejects_a_future_restored_clock ... ok
+test non_draft_checkpoint_restores_exact_site_lease_and_continues_to_operational_without_double_charge ... ok
+test operating_capacity_is_published_and_withdrawn_only_when_consumers_allow_it ... ok
+test insufficient_site_capacity_funds_and_materials_leave_candidate_domains_unchanged ... ok
+test modern_unstarted_road_can_cancel_while_legacy_rejection_is_preserved ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 13 tests
+test independent_capacity_pool_cannot_be_enabled_beside_private_economic_corridor ... ok
+test external_debt_cannot_reuse_generated_refund_or_tax_source ... ok
+test malformed_profiles_overlapping_batches_and_conflicting_region_clock_are_rejected ... ok
+test pe1_insolvent_supplier_retains_refund_claim_and_cancellation_does_not_mint_money ... ok
+test pe1_existing_debt_is_part_paid_then_handed_off_without_changing_parties_or_disappearing_on_exit ... ok
+test advances_split_at_events_restore_equivalent_business_state_and_never_open_next_day_early ... ok
+test pe1_prepayment_cancel_keeps_delivered_labor_and_creates_only_one_real_refund ... ok
+test suspended_guaranteed_wages_are_expense_and_cumulative_tax_can_fall_without_cash_refund ... ok
+test economic_caller_protection_stock_and_disk_failure_gates_leave_no_partial_commit ... ok
+test month_end_tax_cash_shortfall_survives_activity_handoff_and_never_mints_payment ... ok
+test pe1_twenty_units_exhaust_without_new_labor_wages_products_or_deleting_existing_tax ... ok
+test pe0_reaches_all_independent_thirty_day_oracles_through_actual_hourly_transactions ... ok
+test pe1_low_household_cash_records_failed_whole_order_retains_costed_old_lots_and_keeps_running ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+
+running 12 tests
+test opening_capital_cannot_reuse_generated_purchase_lot_namespace ... ok
+test malformed_geometry_custody_type_and_missing_pool_are_rejected ... ok
+test old_due_at_arrival_cannot_spend_later_delivery_income_or_silently_repay_old_arrears ... ok
+test electric_and_water_link_failure_keeps_buffers_money_and_capacity_then_delivers_after_expiry ... ok
+test freight_blocks_otherwise_eligible_population_and_closed_city_fault_preserves_losses ... ok
+test accepted_boot_finishes_while_closed_then_real_multihop_goods_and_utilities_settle_once ... ok
+test resource_type_swaps_cannot_bypass_boot_and_original_lot_intervals_survive_buyer_costs ... ok
+test expiry_keeps_old_debt_and_already_accepted_delivery_while_split_steps_keep_business_results ... ok
+test broken_link_pauses_actual_goods_and_people_without_erasing_reservations_or_fees ... ok
+test population_freight_boot_and_utility_compete_in_actual_shared_pools ... ok
+test protections_lease_ownership_clock_scope_hook_and_late_error_are_real_gates ... ok
+test full_shipments_expiry_distance_storage_loss_and_insufficient_funds_reject_atomically ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 2 tests
+T13A_NATIVE {"schema":"mycity-native-layout-v1","scope":"actual_types_synthetic_records_not_business_simulation","account_arena":{"record_bytes":24,"slot_bytes":32,"header_bytes":80,"slots_capacity":40000,"free_index_capacity":40000,"owned_capacity_bytes":1440080,"live_records":40000},"inventory_arena":{"record_bytes":88,"slot_bytes":96,"header_bytes":80,"slots_capacity":110000,"free_index_capacity":110000,"owned_capacity_bytes":11000080,"live_records":110000},"fields":[["Account.id",16],["Account.role",20],["Account.cash",0],["Account.protected",8],["Stock.id",72],["Stock.owner",0],["Stock.commodity",80],["Stock.quantity",32],["Stock.basis",40],["Stock.lot_id",76],["Stock.origin_quantity",48],["Stock.origin_basis",56],["Stock.offset",64]],"vectors":[["account_index",40000,40000,32],["inventory_index",110000,110000,32],["claims",180000,180000,48],["payroll",31200,31200,120],["resources",8,8,16],["leases",64,64,24]],"owned_capacity_bytes":29625968} checkpoint_bytes=65299383
+test native_jprod_storage_counts_real_widths_and_all_scanned_records ... ok
+T13A_NATIVE_REAL_IO seconds=0.876673125 bytes=65299383
+test native_full_snapshot_roundtrip_and_truncation_use_real_files ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.89s
+
+
+running 16 tests
+test explicit_entrance_owner_binding_rejects_wrong_account ... ok
+test resolver_partitions_shared_od_service_once_across_multiple_goods ... ok
+test duplicate_quote_partition_is_rejected ... ok
+test capacity_shortfall_yields_only_served_roundtrips_and_unmet_market_demand ... ok
+test cross_city_market_roundtrip_reports_only_its_actual_boundary_sources ... ok
+test expanded_capacity_allows_more_sales_from_same_od_demand ... ok
+test resolver_rejects_stale_and_forged_assignments_and_wrong_entrance_owner ... ok
+test resolver_returns_dynamic_quotes_and_audit_without_mutating_input_or_planning ... ok
+test missing_or_forged_path_receipt_cannot_supply_access_capacity ... ok
+test no_return_service_means_no_accessible_sales_or_fake_completion ... ok
+test round_trip_access_caps_goods_and_uses_external_tariff_for_pure_plan ... ok
+test same_revision_graph_edit_invalidates_assignment ... ok
+test same_od_is_shared_across_goods_without_reissuing_served_trips ... ok
+test unauthorized_entrance_is_rejected_even_when_geometrically_at_the_road_node ... ok
+test snapshot_resolver_binds_compact_generation_ref_and_profile_without_expanding_command_data ... ok
+test unrelated_cross_city_od_does_not_block_local_market_access ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 5 tests
+test switching_does_not_catch_up_replay_or_replenish_and_sleep_cannot_erase_debt ... ok
+test persisted_hook_failure_and_late_action_failure_roll_back_the_entire_region ... ok
+test remote_discovery_and_approximate_migration_preserve_actual_people ... ok
+test malformed_sources_bounds_and_overflow_never_admit_partial_worlds ... ok
+test due_order_and_cash_do_not_depend_on_advance_chunk_size ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 2 tests
+test sixteen_resources_roundtrip_and_seventeenth_or_duplicate_cannot_enter_model ... ok
+test actual_workspace_and_resource_capacity_are_reported_inside_existing_budgets ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 7 tests
+test scale_receiving_pool_capacity_rejects_before_any_second_shipment_side_effect ... ok
+test scale_air_rejects_a_freight_source_outside_finite_field_but_not_unemitting_frames ... ok
+test legacy_three_city_wire_input_stays_valid_and_does_not_accept_expanded_tables ... ok
+test scale_receiving_cost_pool_keeps_two_purchase_prices_and_rolls_back_failed_commit ... ok
+test full_world_assembles_and_extra_nonzero_stock_is_outside_managed_conservation_domains ... ok
+test scaled_shape_is_bounded_and_invalid_structure_rejects_both_initialization_and_restore ... ok
+test stream_restore_matches_full_image_and_rejects_bad_tail_io_and_limits ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+
+running 1 test
+test sha256_preserves_fixed_vectors_and_incremental_block_boundaries ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 16 tests
+test diagnostics_distinguish_empty_scan_from_zero_cash_debt_processing ... ok
+test end_for_exit_rejects_incomplete_time_and_non_system_caller ... ok
+test end_for_exit_before_first_work_and_after_natural_end_are_safe ... ok
+test joint_boot_transport_periodic_debt_and_population_use_real_dynamic_sources ... ok
+test end_for_exit_bills_earned_wages_without_payment_and_survives_checkpoint_retry ... ok
+test later_page_can_touch_all_sixty_four_admitted_accounts ... ok
+test one_clock_no_new_action_in_frozen_stage_and_target_cannot_change ... ok
+test inactive_city_gets_no_autonomous_work_and_payment_insufficiency_keeps_claim ... ok
+test end_for_exit_preserves_prior_payments_and_only_bills_new_arrears ... ok
+test daily_weekly_monthly_same_earned_wages_fraction_carry_and_exit_debt ... ok
+test mid_wage_page_is_valid_and_p4_never_changes_money ... ok
+test economic_dynamic_same_time_work_wage_output_and_tax_match_legacy_thirty_days ... ok
+test diagnostics_preserve_complete_state_quotes_retries_and_failed_persistence ... ok
+TIMELINE_20000 {"actual_claims":20000,"cash_paid_cents":20000,"checkpoint_bytes":1682746,"engine_owned_bytes":4105728,"progress":{"at":3600,"cursor":0,"lane":0,"last_complete":3600,"page_paid":3618,"page_sources":3618,"phase":null,"serial":3,"target":null}}
+test real_twenty_thousand_payments_page_and_checkpoint_without_duplicate_cash ... ok
+test end_for_exit_preserves_pending_cycle_and_fraction_through_engine_checkpoint_restore ... ok
+test monthly_anchor_leap_century_year_end_stop_and_frequency_change_keep_old_due ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.42s
+
+
+running 13 tests
+test due_wages_and_debts_follow_explicit_priority_without_owner_distribution ... ok
+test fully_cleared_company_pays_claims_before_pro_rata_residual ... ok
+test maximum_bounded_snapshot_and_plan_heap_estimate_fit_the_budget ... ok
+test incomplete_employment_terms_do_not_cancel_payroll ... ok
+test inventory_offer_is_not_cash_and_requires_a_fresh_snapshot_to_distribute ... ok
+test future_claims_block_distribution_even_when_no_due_claims_remain ... ok
+test duplicate_liability_identity_and_invalid_lot_basis_are_rejected ... ok
+test personal_inventory_cannot_be_counted_as_company_asset ... ok
+test missing_tax_or_legal_completeness_blocks_claims_and_distribution ... ok
+test missing_share_register_does_not_block_due_creditor_payment_but_blocks_residual ... ok
+test same_tier_partial_payment_uses_pro_rata_integer_cents_and_stable_remainder ... ok
+test solvent_fixture_keeps_protected_cash_and_distributes_only_company_residual ... ok
+test unreviewed_priority_and_oversized_snapshots_fail_closed ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 6 tests
+test optional_supply_binding_stays_within_the_documented_fixed_slot ... ok
+test binding_converts_with_floor_and_exact_integer_cost ... ok
+test conversion_and_cost_overflow_are_rejected ... ok
+test zero_stock_and_zero_output_cost_remain_zero ... ok
+test zero_identity_conversion_and_tariff_are_invalid ... ok
+test serde_rejects_unknown_fields_and_preserves_binding ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 9 tests
+test invalid_boot_binding_and_stale_legacy_power_controls_are_rejected ... ok
+test opening_utility_stock_is_the_existing_electricity_commodity_and_boot_owner ... ok
+test legacy_profile_without_boot_binding_remains_compatible ... ok
+test two_recipes_share_one_boot_stock_pool_and_cannot_over_export ... ok
+test insufficient_company_cash_skips_production_without_blocking_settlement ... ok
+test actual_town_day_exports_only_consumed_electricity_and_does_not_refill_next_day ... ok
+test metadata_precommit_failure_and_checkpoint_retry_export_exactly_once ... ok
+test accepted_cross_city_quote_uses_shared_pool_before_local_market_and_survives_checkpoint ... ok
+test only_completed_generator_output_can_supply_the_next_market_day ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 21 tests
+test checkpoint_v2::receipts::tests::index_overflow_is_rejected_before_extra_record_materializes ... ok
+test metadata::lexical::tests::ignore_and_content_keep_distinct_old_scalar_grammars ... ok
+test checkpoint::receipt_decode::context_tests::original_checkpoint_depth_context_and_ignored_depth_are_preserved ... ok
+test metadata::tests::strict_bytes_reject_before_extra_decode_and_writer_failure_preserves_backing ... ok
+test model_capacity::tests::feasibility_boundary_never_authorizes_current_runtime ... ok
+test stream::tests::complete_stream_hash_length_and_unconsumed_tail_are_required ... ok
+test checkpoint::receipt_decode::tests::large_whitespace_ignored_fields_and_tag_last_keep_legacy_semantics ... ok
+test town_transport::road_epoch_clock_tests::future_and_non_day_road_epochs_are_rejected ... ok
+test metadata::tests::metadata_counts_full_receipts_and_all_retained_file_slots ... ok
+test town_transport::road_epoch_clock_tests::publication_and_withdrawal_epochs_require_clock_and_settlement ... ok
+test wal::tests::every_produced_sample_matches_old_frame_bytes_and_split_checksum ... ok
+test wal::tests::persisted_envelope_overflow_rejects_before_extra_action_decode ... ok
+test checkpoint_v2::receipts::tests::borrowed_receipt_wire_matches_owned_legacy_and_arbitrary_field_order ... ok
+test stream::tests::second_pass_or_validation_failure_cannot_publish_and_tmp_is_reclaimed ... ok
+test town_transport::road_epoch_clock_tests::store_accepts_unpublished_road_binding_before_timeline_enable ... ok
+test background::slot_load_tests::outer_hash_failure_invalidates_otherwise_valid_decoded_candidate ... ok
+test metadata::lexical::tests::long_escaped_keys_do_not_alias_known_identifiers_or_skip_late_errors ... ok
+test checkpoint_v2::receipts::tests::authenticated_but_malformed_body_tail_metadata_and_count_cannot_pass ... ok
+test metadata::lexical::tests::full_16mib_ignored_nesting_fits_one_initialized_bit_stack_and_overflow_recovers ... ok
+test metadata::lexical::tests::finite_known_values_reject_long_wrong_types_without_old_string_fallback ... ok
+test checkpoint::receipt_decode::tests::all_variants_match_original_typed_reader_for_map_sequence_and_bad_fields ... ok
+
+test result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 12 tests
+test retained_candidate_slot_spans_bad_import_staged_checkpoint_wal_reopen_and_retry ... ok
+test canonical_accept_rejections_do_not_create_wal_or_cold_failed_receipts ... ok
+test staged_asset_survives_midflight_checkpoint_restart_and_generation_rebind ... ok
+test normal_disk_exhaustion_preserves_background_and_timeline_funding ... ok
+test committed_missing_or_corrupt_asset_is_rejected_before_tail_truncation_and_gc ... ok
+test v2_staged_asset_checkpoint_reopen_accept_and_gc_preserve_original_receipts ... ok
+test wrong_window_finite_forgery_and_old_job_cannot_consume_reservation_or_replace_field ... ok
+test worker_cache_charge_survives_missing_files_and_moves_out_of_task_reserve_once ... ok
+test empty_and_real_freight_large_pages_have_funded_barrier_and_restore_exactly_once ... ok
+BACKGROUND_ASSET_ROTATION accepted=33 max_live_assets=32; checkpoint precedes next admission and cold receipt survives GC
+test result_reference_limit_checkpoints_before_new_obligation_and_keeps_cold_receipts ... ok
+BACKGROUND_ACTUAL_PROCESS_EXITS import=7 accept=11; original numerical state, ticket and receipt restored once
+test actual_process_exit_at_every_import_and_accept_boundary_restores_original_result ... ok
+BACKGROUND_RECEIPT_FLOOD rejected_requests=914 actual_source_cleanup=25; background and clock reserve remain independently usable
+test failed_operation_flood_cannot_consume_dedicated_control_or_receipt_slots ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 36.51s
+
+
+running 2 tests
+test startup_wip_and_leases_restore_with_immutable_spatial_assets_and_uncertain_io ... ok
+actual_boot_process_exits=88; pump_and_generator_start_complete_fault_cleanup; full_old_or_new_root_and_exactly_once_retry_verified
+test pump_and_generator_start_complete_fault_and_cleanup_survive_88_real_process_exits ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.23s
+
+
+running 6 tests
+test capacity_rejection_before_checkpoint_io_does_not_poison ... ok
+test committed_archive_corruption_stops_recovery_and_does_not_fall_back ... ok
+test checkpoint_unwind_requires_reopen_even_after_current_or_retirement ... ok
+checkpoint_actual_process_exits=6
+test actual_process_exit_at_every_checkpoint_publication_boundary ... ok
+test retry_at_exact_rotation_threshold_does_not_become_a_new_operation ... ok
+test more_than_two_hot_windows_exact_success_and_failure_retry_after_restart has been running for over 60 seconds
+checkpoint_boundary: commits=2100 original_hot_limit=1024 sequence=2100 status={"sequence":2100,"generation":2106,"hot_receipts":0,"wal_bytes":0,"archive_bytes":2040951,"archive_limit":134217728}
+test more_than_two_hot_windows_exact_success_and_failure_retry_after_restart ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 77.56s
+
+
+running 8 tests
+test streamed_v2_capacity_rejection_before_any_output_remains_usable ... ok
+test borrowed_checkpoint_has_all_fields_and_excludes_only_hot_journal ... ok
+test prebuilt_workspace_is_consumed_by_create_and_cold_open_without_replacing_roots ... ok
+
+running 1 test
+test repeated_real_v2_save_and_reopen_reuse_same_validation_slot_backing ... ok
+
+running 1 test
+
+running 1 test
+test streamed_checkpoint_unwind_never_leaves_a_usable_stale_store ... ok
+test current_world_history_and_receipt_corruption_are_rejected_without_rollback ... ok
+
+running 1 test
+
+running 1 test
+
+running 1 test
+
+running 1 test
+
+running 1 test
+
+running 1 test
+
+running 1 test
+test real_process_exit_at_each_v2_publication_and_gc_boundary_keeps_full_state ... ok
+test multiple_hot_windows_failed_receipts_queries_and_empty_saves_keep_originals ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 33.55s
+
+
+running 4 tests
+test v106_store_wal_checkpoint_and_receipt_reopen_with_identical_identity ... ok
+test construction_wal_cold_reopen_retry_and_checkpointed_receipt_archive_decode ... ok
+test construction_work_money_and_materials_commit_once_across_wal_lost_response_and_cold_retry ... ok
+test operational_capacity_demolition_waste_and_close_replay_through_store ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.49s
+
+
+running 2 tests
+test recoverable_construction_genesis_rejects_all_boot_governed_inventory_kinds ... ok
+test checkpoint_restore_rejects_v2_reinterpretation_of_legacy_boot_material_binding ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 2 tests
+test failed_payment_receipt_survives_cold_open_and_new_operation_can_retry_after_funding ... ok
+test compensation_transfer_is_atomic_and_exactly_once_across_cold_wal_and_checkpoint_replay ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+
+running 1 test
+test construction_material_failure_retries_after_same_lot_is_restored_and_survives_cold_recovery ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+
+
+running 3 tests
+test legacy_missing_policy_preserves_failed_start_receipt_after_canonical_retry_and_reopen ... ok
+test recoverable_start_capacity_failure_can_retry_with_new_envelope_after_release ... ok
+test recoverable_work_funds_failure_can_retry_after_protection_is_released ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+
+
+running 13 tests
+test construction_utility_store_prepared_failure_is_unchanged_and_retryable ... ok
+test construction_utility_store_applied_lost_reply_reopens_and_replays_once ... ok
+test construction_utility_store_protection_covers_combined_utilities_and_labor ... ok
+test construction_shared_exchange_raw_sink_is_durable_without_duplicate_material_payment ... ok
+test construction_utility_store_shortage_keeps_old_failure_and_new_id_works_after_boot_refill ... ok
+test construction_utilities_store_work_replays_coldopens_and_pause_does_not_reset_meter ... ok
+test partial_build_clearance_keeps_material_sink_and_continues_utility_meter_through_cold_replay ... ok
+test published_build_demolition_preserves_full_material_sink_and_cumulative_utility_usage ... ok
+test exchange_raw7_half_build_clearance_and_close_preserve_raw_sink_through_recovery ... ok
+test shared_boot_electricity_construction_work_before_town_market_uses_one_inventory_pool ... ok
+test shared_boot_electricity_cross_city_dispatch_then_work_and_town_share_source_stock ... ok
+test shared_boot_electricity_town_market_before_construction_leaves_no_work_supply ... ok
+test exchange_raw7_complete_build_and_operational_demolition_preserve_sink_through_recovery ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.76s
+
+
+running 2 tests
+test economic_io_uncertainty_hides_state_until_reopen_then_retry_is_exactly_once ... ok
+actual_process_exits=44 stages=raw_dispatch,goods_delivery,refund,day30_tax; old_or_new_root_and_exactly_once_retry_verified
+test economic_transactions_survive_process_exit_at_every_wal_and_response_boundary ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 23.21s
+
+
+running 4 tests
+test regional_store_requires_bound_spatial_frames_and_flat_template_before_creating_directory ... ok
+test uncertain_arrival_settlement_hides_writer_and_recovers_once_with_provenance ... ok
+test full_checkpoints_keep_running_failed_and_paused_physical_state ... ok
+actual_exchange_process_exits=121; joint_ledger_clock_capacity_payment_spatial_root_and_exactly_once_retry_verified
+test regional_fulfilment_recovers_joint_old_or_new_state_at_121_actual_process_exits ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 9.16s
+
+
+running 14 tests
+test no_room_for_necessary_fact_stops_advancement_and_retains_source_without_false_ack ... ok
+test archived_fact_creation_and_actual_cash_settlement_remain_directly_traceable ... ok
+test paused_clock_and_repeated_link_toggles_are_not_unbounded_emergency_work ... ok
+test producer_is_bounded_and_pauses_without_dropping_the_seventeenth_fact ... ok
+external_source_actual_process_exits=3; durable pending before application; world-root and source-ack interruption retries once
+test actual_external_producer_and_ack_process_exits_preserve_exactly_once ... ok
+test external_cannot_bypass_registered_pending_or_take_the_incident_reserve ... ok
+test invalid_and_unchanged_controls_cannot_spend_emergency_storage ... ok
+external: 12/12 working full; event5 NoAck and source pending survive restart; unpaid handoff frees one working slot without erasing 700000c claim; replay once; explicit upstream frontier required
+test external_pending_full_inbox_restart_unpaid_handoff_and_source_alignment ... ok
+test query_pages_are_complete_provenanced_and_reject_stale_cursor ... ok
+inbox: normal=4 emergency=4 full=8; four paused deliveries resume in preallocated slots; 120c liabilities paid once; handoff retains debtor/creditor; restart and old/fresh notification retries exact
+test full_inbox_retains_obligations_handoff_does_not_erase_debt_and_delivery_uses_reserved_slots ... ok
+test source_publication_crashes_retry_from_durable_pending_and_missing_source_is_not_ignored ... ok
+disk normal full: cancellation, repair, handoff, delivery, payment and release succeeded using persisted reserve; used=106377
+test normal_disk_exhaustion_preserves_emergency_exit_and_quota_on_reopen ... ok
+inbox_delivery_actual_process_exits=11; facts, four invoices, materials, capacity and once-only handling liabilities share one durable root
+test physical_facts_and_exit_survive_real_process_exits_and_exact_retries ... ok
+test normal_rotation_at_threshold_cannot_consume_the_emergency_reserve ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 20.69s
+
+
+running 2 tests
+test original_legacy_checkpoint_with_large_ignored_receipt_data_and_positional_headers_reopens ... ok
+test prepared_metadata_is_consumed_and_reused_for_both_formats_save_archive_query_and_cold_open ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.09s
+
+
+running 3 tests
+test payroll_exit_rejects_incomplete_advance_then_non_system_caller_at_complete_time ... ok
+PAYROLL_EXIT_WRITE_RECOVERY point=WalHeaderHalf committed_before_retry=false
+test payroll_exit_checkpoint_reopen_replay_and_explicit_settlement_conserve_cash ... ok
+PAYROLL_EXIT_WRITE_RECOVERY point=Applied committed_before_retry=true
+test payroll_exit_write_uncertainty_reopens_and_replays_exactly_once_before_settlement ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.11s
+
+
+running 15 tests
+test oversized_command_is_rejected_before_serializing_and_never_changes_storage ... ok
+test incompatible_rules_reject_instead_of_recalculating_history ... ok
+test a_second_process_cannot_open_a_world_while_writer_lock_is_held ... ok
+test acknowledged_success_and_operation_coverage_survive_reopen_without_double_payment ... ok
+test borrowed_store_hash_preserves_old_outer_value_and_reuses_wal_workspace ... ok
+test only_tail_outside_the_validated_committed_boundary_is_truncated ... ok
+test recovery_reclaims_only_known_unreferenced_atomic_temp_files ... ok
+test regional_clocks_migrants_debt_and_snapshot_watermarks_recover_atomically_once ... ok
+test publication_callback_unwind_requires_recovery_and_preserves_committed_receipt ... ok
+test injected_io_uncertainty_poisoning_prevents_further_writes_until_recovery ... ok
+test committed_corruption_or_missing_dependency_never_falls_back_to_old_root ... ok
+test store_ownership_handoff_reopens_immediately_during_parallel_process_spawn ... ok
+test replay_preserves_old_value_last_key_and_rejects_ignored_unknown_fields_before_tail_gc ... ok
+test abrupt_process_exit_at_each_boundary_retains_exactly_the_published_operation ... ok
+test regional_process_exit_never_publishes_half_population_half_clock_or_half_payment ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.15s
+
+
+running 2 tests
+
+running 1 test
+
+running 1 test
+test nonzero_extra_stock_indices_lots_and_original_receipts_survive_wal_and_cold_checkpoint_reopen ... ok
+
+running 1 test
+
+running 1 test
+
+running 1 test
+
+running 1 test
+
+running 1 test
+T13A_SCALE actual_process_exits=7; nonzero quantity/basis/lot/owner/index recovered old-or-new and once-only retry
+test actual_process_exits_keep_scaled_extra_stock_old_or_new_and_retry_once ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.63s
+
+
+running 9 tests
+test invalid_sources_and_cross_world_branch_or_seed_fail_before_any_directory_is_created ... ok
+test spatial_financial_and_regional_state_restore_under_one_root_without_double_capital_or_payment ... ok
+test uncertain_transaction_hides_both_model_and_space_until_joint_recovery ... ok
+test matching_file_checksums_cannot_hide_wrong_identity_or_terrain_interpretation ... ok
+test create_io_failure_before_publication_retains_incomplete_directory_and_after_publication_requires_reopen ... ok
+test v1_v2_schema_and_derived_hash_gates_do_not_silently_drop_space ... ok
+test corrupt_missing_nonregular_or_symlink_space_never_opens_or_truncates_wal_tail ... ok
+test abrupt_creation_exit_publishes_all_dependencies_and_capital_or_no_world ... ok
+test abrupt_transaction_exit_preserves_space_with_the_correct_financial_and_regional_root ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.21s
+
+
+running 7 tests
+test continuation_limit_and_receipt_reserve_are_bound_and_retry_never_spends_twice ... ok
+T05_RESERVE {"capacity":{"background_reserved_bytes":0,"continuation_reserved_bytes":0,"hard_blocked":false,"normal_blocked":false,"normal_limit":138453,"reason":null,"total_bytes":4149845,"used_bytes":21232,"worker_cache_actual_bytes":0,"worker_cache_charged_bytes":0},"clock_extension_rejected":true,"complete_boundary":3600,"remote_goal_not_completed":7200,"unpaid_cents":1}
+test reserved_pure_phase_and_zero_cash_debt_pages_finish_when_normal_full_then_stop ... ok
+test full_fact_inbox_during_boundary_allows_safe_handoff_and_source_reconciliation ... ok
+test calendar_payroll_old_interval_and_partial_debt_survive_real_checkpoint_and_reopen ... ok
+T05_DENSE {"actual_paid_cents":20000,"checkpoint":{"archive_bytes":11650731,"archive_limit":134217728,"generation":83,"hot_receipts":0,"sequence":81,"wal_bytes":0},"claims":20000,"engine_owned_bytes":4105728,"physical_capacity":{"background_reserved_bytes":0,"continuation_reserved_bytes":0,"hard_blocked":false,"normal_blocked":false,"normal_limit":125829120,"reason":null,"total_bytes":134217728,"used_bytes":11650731,"worker_cache_actual_bytes":0,"worker_cache_charged_bytes":0}}
+test dense_actual_payments_checkpoint_mid_page_retry_and_bounded_query ... ok
+T05_ACTUAL_PROCESS_EXITS=33; pure cursor, zero-cash liability, final boundary under normal disk exhaustion
+test actual_process_exits_preserve_pure_cursor_zero_cash_and_final_ticket_release ... ok
+test stale_advance_flood_cannot_spend_live_ticket_receipt_slots ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 36.23s
+
+
+running 3 tests
+test secured_claims_share_partial_exit_cash_by_stable_id_and_remain_liquidating ... ok
+test liquidation_sells_existing_market_stock_then_pays_wages_and_debt_once_across_recovery ... ok
+test incomplete_policy_and_unregistered_cash_residual_wait_without_bypass_or_distribution ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.91s
+
+
+running 3 tests
+test town_work_and_market_day_recover_once_after_applied_reply_loss ... ok
+test partial_paid_shift_with_unsold_inventory_is_idle_not_recipe_remainder ... ok
+test twenty_eight_day_store_checkpoints_reopen_with_contiguous_receipts_and_work_remainders ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 24.84s
+
+
+running 2 tests
+test loss_fixture_measures_operating_loss_then_suspends_only_that_business ... ok
+test stop_operations_is_atomic_durable_and_does_not_stop_unrelated_business ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.42s
+
+
+running 2 tests
+test town_utility_applied_lost_reply_and_same_day_retry_are_exactly_once ... ok
+test town_utility_prepared_failure_and_same_day_retry_are_exactly_once ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.48s
+
+
+running 5 tests
+test no_waste_still_requires_base_clearance_labor_and_does_not_charge_or_fake_receipt_units ... ok
+test insufficient_cash_preserves_site_and_has_no_disposal_fee ... ok
+test precommit_clearance_waste_failure_cold_recovers_unmodified_then_charges_once_on_retry ... ok
+test full_receiver_capacity_preserves_half_built_site_without_fee_or_clearance ... ok
+test unfinished_project_clearance_start_waste_and_close_recover_without_duplicate_effects ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.53s
+

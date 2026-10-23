@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.137`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.138`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.138完成[有限真实企业清算与28日Store场景](docs/evidence/core-business-liquidation-138/STATUS.md)：库存销售后实付工资/债并关闭、现金不足保留债务，WAL/checkpoint冷恢复与重放通过。最终同源170测试、严格检查、五CLI及三组独立检查点账物核对通过；此前455完整回归分来源列示。动态税、股权残值、住宅及空间交通联动尚未完成，原M0/8h/16GB门保持未完成。
 
 v0.5.137记录[M0实际smoke、旧格式冷恢复与基线交接](docs/evidence/m0-t13a-smoke-handoff-137/STATUS.md)：600次布局扫描及完整业务/恢复完成；外部编译干扰、缺测及快进超预算明确保留，clean/normal未通过。仅精确回收旧两代4份合成载荷，分配空间约5.914GiB；当前及旧兼容恢复原件完整保留。8h未启动，真实16GB仍not_run；C—F隔离开发不算本发布完成。
 

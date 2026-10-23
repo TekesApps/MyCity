@@ -1,0 +1,125 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction-compensation-current/crates/city-core)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction-compensation-current/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction-compensation-current/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 3m 01s
+     Running unittests src/lib.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_core-7cf04b75eddcf4d5)
+construction_project_size_bytes=1664
+action_size_bytes=80
+
+thread 'transaction::workspace::tests::reentry_is_rejected_and_unwind_returns_same_initialized_rows' panicked at crates/city-core/src/transaction/workspace.rs:303:13:
+prepare callback unwind
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'transaction::workspace::tests::failed_or_unwound_hook_preserves_authority_then_commit_swaps_backing' panicked at crates/city-core/src/transaction/workspace.rs:375:17:
+persist unwind
+     Running tests/air.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/air-e9c1758577d185bf)
+     Running tests/air_workspace.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/air_workspace-1205670a6e24fe07)
+     Running tests/background.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/background-13180b77b72ac51a)
+     Running tests/boot.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/boot-a998cdd1a02794d2)
+     Running tests/construction.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/construction-6b067e433e9ed972)
+     Running tests/construction_engine.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/construction_engine-aba7807d3972f8af)
+     Running tests/economy.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/economy-6405ae6fd96a73da)
+     Running tests/exchange.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/exchange-25f1319fa4586c48)
+     Running tests/layout_pressure.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/layout_pressure-676c1c5d483c4209)
+     Running tests/market_access.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/market_access-8079d631da38981a)
+     Running tests/region.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/region-31f7a824ad709362)
+     Running tests/resource_capacity.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/resource_capacity-1d9fe1eef7802aa3)
+RESOURCE_CAPACITY {"engine_byte_budget":4194304,"engine_owned_bytes":4105728,"max_resources":16,"per_backing_delta_from_original_eight":128,"per_resource_backing_bytes":256,"resource_record_bytes":16,"scope":"actual allocated capacity inventory, not native footprint or allocator peak","workspace":{"candidate":{"backing":[4352903056,4352903072,47731802272,47749447680,47749513216,47749578752,4352903040,47731179840],"owned_bytes":262840},"codec":{"backing_bytes":4920320,"byte_backing":20120076288,"traversal_backing":47749709824},"initial":{"background_tables":[4352854688,4352894480,4352894560,47742042112,47742107648,47742173184,4352894640,4352894624],"engine_tables":[47731769856,47731754496,20107493376],"owned_model_bytes":4105728,"preparation_backing":[47742304256,47731523584,4352894912,4352894928,4352895008,47743352832,47743418368,47743483904,4352895088,4352895072,4352895936,4352895952,4352896032,47743614976,47743680512,47743762432,47727037952,47731654656,47731770368,47731757568,4352894736,4352895184,4352896112,4352896560,4352896624,4352896688,4352896752],"retained_prepare_bytes":1516368,"timeline_tables":[47741075456,47731515392],"world":47740993536,"world_tables":[4352889360,47731769344,47731220480,4352891408,47731329536,47731348480,47731477504]},"owned_bytes":16427416,"restore":{"background_tables":[4352897920,4352897936,4352898016,47747399680,47747465216,47747596288,4352899120,4352899104],"engine_tables":[47731770880,47731759104,20115881984],"owned_model_bytes":4105728,"preparation_backing":[47747956736,47731556352,4352900352,4352900368,4352900448,47748923392,47748988928,47749054464,47731802112,4352901536,4352902320,4352902336,47731802192,47749185536,47749251072,47749316608,47727045120,47731687424,47731771648,47731762176,4352900176,4352901568,4352902416,4352902864,47731179792,4352902928,4352902992],"retained_prepare_bytes":1516368,"timeline_tables":[47746170880,47731548160],"world":47746088960,"world_tables":[47727181824,47731770624,47731245056,4352896800,47731334656,47731358720,47731483648]}}}
+     Running tests/scale_assembly.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/scale_assembly-a177c496173f3006)
+     Running tests/sha256_vectors.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/sha256_vectors-e560932d85c330e9)
+     Running tests/timeline.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/timeline-eb1e476686df0cea)
+     Running tests/town_business_exit.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/town_business_exit-793357524d7b2dda)
+     Running tests/town_utility_binding.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/town_utility_binding-f54249571f09e5d6)
+     Running tests/town_utility_engine.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/town_utility_engine-00c0742f3648fa87)
+     Running unittests src/lib.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_storage-46fdf6e079eacbdd)
+     Running unittests src/bin/construction_utilities.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/construction_utilities-3fdda604e5594528)
+     Running unittests src/bin/mycity-storage-worker.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_storage_worker-cfad69f3667db819)
+     Running tests/background.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/background-79107b471a7e6007)
+     Running tests/boot.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/boot-c75c77749a719126)
+     Running tests/checkpoint.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/checkpoint-0459b9608f2b9c08)
+
+thread 'checkpoint_unwind_requires_reopen_even_after_current_or_retirement' panicked at crates/city-storage/tests/checkpoint.rs:202:21:
+checkpoint unwind SnapshotSynced
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'checkpoint_unwind_requires_reopen_even_after_current_or_retirement' panicked at crates/city-storage/tests/checkpoint.rs:202:21:
+checkpoint unwind CurrentSynced
+
+thread 'checkpoint_unwind_requires_reopen_even_after_current_or_retirement' panicked at crates/city-storage/tests/checkpoint.rs:202:21:
+checkpoint unwind Retired
+     Running tests/checkpoint_v2.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/checkpoint_v2-d29737589feb2244)
+
+thread 'streamed_checkpoint_unwind_never_leaves_a_usable_stale_store' panicked at crates/city-storage/tests/checkpoint_v2.rs:309:21:
+checkpoint unwind WorldSynced
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'streamed_checkpoint_unwind_never_leaves_a_usable_stale_store' panicked at crates/city-storage/tests/checkpoint_v2.rs:309:21:
+checkpoint unwind ReceiptsSynced
+
+thread 'streamed_checkpoint_unwind_never_leaves_a_usable_stale_store' panicked at crates/city-storage/tests/checkpoint_v2.rs:309:21:
+checkpoint unwind RootPublished
+
+thread 'streamed_checkpoint_unwind_never_leaves_a_usable_stale_store' panicked at crates/city-storage/tests/checkpoint_v2.rs:309:21:
+checkpoint unwind CurrentSynced
+
+thread 'streamed_checkpoint_unwind_never_leaves_a_usable_stale_store' panicked at crates/city-storage/tests/checkpoint_v2.rs:309:21:
+checkpoint unwind Retired
+     Running tests/construction.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/construction-aad701797c500f4c)
+     Running tests/construction_boot_stock_isolation.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/construction_boot_stock_isolation-e9b03803d8124a1d)
+     Running tests/construction_compensation.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/construction_compensation-da07d8d4ccb711d2)
+mycity compensation test artifacts retained at /Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-construction-compensation-24426-1
+mycity compensation test artifacts retained at /Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-construction-compensation-24426-0
+     Running tests/construction_material_retry.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/construction_material_retry-5d3d82a6e5235d01)
+     Running tests/construction_retry_policy.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/construction_retry_policy-2e995b2772ade537)
+     Running tests/construction_utilities.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/construction_utilities-688ad21356dacdfa)
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-construction-utilities-24478-1
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-construction-utilities-24478-0
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-construction-utilities-24478-2
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-construction-utilities-24478-6
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-construction-utilities-24478-5
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-construction-utilities-24478-9
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-construction-utilities-24478-3
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-construction-utilities-24478-8
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-construction-utilities-24478-7
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-construction-utilities-24478-4
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-construction-utilities-24478-10
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-construction-utilities-24478-11
+CONSTRUCTION_UTILITIES_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-construction-utilities-24478-12
+CONSTRUCTION_UTILITIES_PRESERVED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-construction-utilities-24478-6
+CONSTRUCTION_UTILITIES_PRESERVED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-construction-utilities-24478-5
+     Running tests/economy.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/economy-46732995a35779e9)
+     Running tests/exchange.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/exchange-c05f6b81177a31d8)
+     Running tests/inbox.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/inbox-b1501ec8238beb73)
+     Running tests/metadata.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/metadata-16de3aab3f659022)
+     Running tests/payroll_exit.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/payroll_exit-473ef777ccc6861d)
+PAYROLL_EXIT_ARTIFACT_CREATED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-payroll-exit-26334-1
+PAYROLL_EXIT_ARTIFACT_CREATED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-payroll-exit-26334-0
+PAYROLL_EXIT_ARTIFACT_CREATED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-payroll-exit-26334-2
+PAYROLL_EXIT_ARTIFACT_CREATED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-payroll-exit-26334-3
+     Running tests/recovery.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/recovery-51e0c6eb8daf1103)
+
+thread 'publication_callback_unwind_requires_recovery_and_preserves_committed_receipt' panicked at crates/city-storage/tests/recovery.rs:68:21:
+durable callback unwind
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'publication_callback_unwind_requires_recovery_and_preserves_committed_receipt' panicked at crates/city-storage/tests/recovery.rs:68:21:
+durable callback unwind
+     Running tests/scale_assembly.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/scale_assembly-ffeb34df6700383c)
+     Running tests/spatial.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/spatial-459ed041e7c95507)
+     Running tests/timeline.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/timeline-9c14a2ecb55ff7d4)
+     Running tests/town_business_exit.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/town_business_exit-9dbbef9d7f9e3ff2)
+TOWN_BUSINESS_EXIT_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-town-business-exit-27649-0
+TOWN_BUSINESS_EXIT_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-town-business-exit-27649-1
+TOWN_BUSINESS_EXIT_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-town-business-exit-27649-2
+TOWN_BUSINESS_EXIT_PRESERVED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-town-business-exit-27649-0
+TOWN_BUSINESS_EXIT_PRESERVED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-town-business-exit-27649-1
+TOWN_BUSINESS_EXIT_PRESERVED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-town-business-exit-27649-2
+     Running tests/town_market.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/town_market-d170e674585cdafe)
+28_day_store_fixture=daily_sellout_need100 receipt_count=703 town_receipts=[(1, 27), (2, 52), (3, 77), (4, 102), (5, 127), (6, 152), (7, 177), (8, 202), (9, 227), (10, 252), (11, 277), (12, 302), (13, 327), (14, 352), (15, 377), (16, 402), (17, 427), (18, 452), (19, 477), (20, 502), (21, 527), (22, 552), (23, 577), (24, 602), (25, 627), (26, 652), (27, 677), (28, 703)] final_snapshot=Snapshot { sequence: 703, hash: "54da4b070a6c7523793b3afaeca47bc11855c7e0e62147e46137747f74a02630", cash: [(1, 1008100), (2, 746201), (3, 845699), (4, 1200000)], stocks: [(1, 600000, 240000, 5), (2, 97300, 97300, 6), (3, 0, 0, 0)], payroll: Payroll { spec: PayrollSpec { id: 1, payer: 3, payee: 2, home_city: 0, hourly_cents: Money(100), cycle: Daily, ends_at: 2365260 }, started: 0, last_accrual: 2419200, next_due: None, working: false, pending_cycle: None, accrued: Money(21601), billed: Money(21601), paid: Money(21601), remainder: 2400, occurrences: 28, work_seconds: 777660 }, settled_day: 28, summary: MarketSummary { day: 28, operation_id: 703, reference_need: Quantity(100), market_demand: Quantity(0), actual_sales: Quantity(0), unmet_market_demand: Quantity(0), produced: Quantity(0), waste: Quantity(0), goods_payments: Money(0), freight: Money(0), utilities: Money(0), disposal: Money(0), labor_basis: Money(0), wages_accrued: Money(1), idle_labor_expense: Money(1) }, payroll_cursor: PayrollCursor { id: 1, work_seconds: 777660, accrued: Money(21601), paid: Money(21601) }, output_remainder: RecipeOutputRemainder { recipe_id: 1, numerator: 6000 } }
+     Running tests/town_suspend.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/town_suspend-462b6ca6c65bb584)
+TOWN_SUSPEND_ARTIFACT_CREATED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-town-suspend-27985-1
+TOWN_SUSPEND_ARTIFACT_CREATED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-town-suspend-27985-0
+     Running tests/town_utility_recovery.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/town_utility_recovery-5d7b4b4b24517c0a)
+TOWN_UTILITY_ARTIFACT_CREATED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-town-utility-recovery-28006-1
+TOWN_UTILITY_ARTIFACT_CREATED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/157-town-exit-core-storage-tests/test-artifacts/mycity-town-utility-recovery-28006-0
+     Running tests/unfinished_clearance.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/unfinished_clearance-035079e7f542b180)

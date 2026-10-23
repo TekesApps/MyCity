@@ -602,12 +602,12 @@ pub fn plan_exit(snapshot: &ExitSnapshot) -> Result<ExitPlan, ExitError> {
         plan.status = ExitStatus::WaitingForInventorySale;
         return Ok(plan);
     }
-    if !snapshot.shareholders_complete {
+    if cash_left > Money::ZERO && !snapshot.shareholders_complete {
         plan.blocked = Some(ExitBlock::MissingShareholderRegister);
         plan.status = ExitStatus::Blocked;
         return Ok(plan);
     }
-    if snapshot.shareholders.is_empty() {
+    if cash_left > Money::ZERO && snapshot.shareholders.is_empty() {
         plan.blocked = Some(ExitBlock::InvalidShareholderRegister);
         plan.status = ExitStatus::Blocked;
         return Ok(plan);

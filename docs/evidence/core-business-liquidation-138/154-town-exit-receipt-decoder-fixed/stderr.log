@@ -1,0 +1,17 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction-compensation-current/crates/city-core)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction-compensation-current/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 2m 04s
+     Running unittests src/lib.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/mycity_core-7cf04b75eddcf4d5)
+construction_project_size_bytes=1664
+action_size_bytes=80
+
+thread 'transaction::tests::town_exit_sells_real_inventory_pays_bound_claim_once_and_closes_at_zero_cash' panicked at crates/city-core/src/transaction.rs:6306:62:
+called `Result::unwrap()` on an `Err` value: Overflow
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'transaction::workspace::tests::reentry_is_rejected_and_unwind_returns_same_initialized_rows' panicked at crates/city-core/src/transaction/workspace.rs:303:13:
+prepare callback unwind
+
+thread 'transaction::workspace::tests::failed_or_unwound_hook_preserves_authority_then_commit_swaps_backing' panicked at crates/city-core/src/transaction/workspace.rs:375:17:
+persist unwind
+error: test failed, to rerun pass `-p mycity-core --lib`

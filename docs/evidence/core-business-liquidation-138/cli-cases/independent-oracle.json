@@ -1,0 +1,47 @@
+[
+  {
+    "case": "base28",
+    "independent_cash_and_inventory_oracle": "passed",
+    "accounts": {
+      "1": 1000860,
+      "2": 193840,
+      "3": 605300,
+      "4": 1200000
+    },
+    "checkpoint": "checkpoint-710.json",
+    "max_rss_bytes_including_cli_and_store": 52510720,
+    "world_logical_bytes": 784112,
+    "world_allocated_bytes_not_APFS_exclusive": 819200,
+    "performance_acceptance": false
+  },
+  {
+    "case": "cash28",
+    "independent_cash_and_inventory_oracle": "passed",
+    "accounts": {
+      "1": 1000738,
+      "2": 62,
+      "3": 599200,
+      "4": 1200000
+    },
+    "checkpoint": "checkpoint-710.json",
+    "max_rss_bytes_including_cli_and_store": 48529408,
+    "world_logical_bytes": 783829,
+    "world_allocated_bytes_not_APFS_exclusive": 815104,
+    "performance_acceptance": false
+  },
+  {
+    "case": "energy28",
+    "independent_cash_and_inventory_oracle": "passed",
+    "accounts": {
+      "1": 1300560,
+      "2": 193840,
+      "3": 305600,
+      "4": 1200000
+    },
+    "checkpoint": "checkpoint-710.json",
+    "max_rss_bytes_including_cli_and_store": 48496640,
+    "world_logical_bytes": 784214,
+    "world_allocated_bytes_not_APFS_exclusive": 819200,
+    "performance_acceptance": false
+  }
+]

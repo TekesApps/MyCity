@@ -517,3 +517,6 @@ v0.5.117：[原负载完整联合smoke](evidence/m0-t13a-joint-smoke-control-02/
 v0.5.118：[03观测器离线修复](evidence/m0-t13a-joint-smoke-control-03/STATUS.md)在保留缺测和原标准下拆分功能启动资格与物理验收；16纯测试及2441原始帧无损往返通过，按固定业务／布局扫描分开预测日志161392895B，写盘前复核原256MiB上限。新smoke/formal未运行，不替代normal/common失败或剩余原规模门；16GB/8h not_run，M0不通过。本轮删除0B。
 
 v0.5.119：[交通履约／营业额税主线集成](evidence/core-transport-tax-integration-119/STATUS.md)717148来源主线110 core lib+4建设恢复测试、4真实交通CLI、11经济配置与strict/fmt通过；候选349完整core/storage测试另列，93源码／Rust测试文件相等已核对。proof跨日／恢复／容量反例真实完成，成本压力欠税工资债务均保留，首轮fixture失败保留。新增运行heap未测，动态工程道路效果与真实退出仍在隔离线；M0原32c冻结来源/负载/标准不变，8h/16GB not_run，不签完整M0。本轮删除0B。
+
+
+v0.5.138：[真实有限企业退出与28日Store](evidence/core-business-liquidation-138/STATUS.md)。最终同源146 core+21 storage库+3退出Store及strict/fmt、五CLI通过；此前455全回归独立来源列示。实际工资/债清偿及Closed冷恢复、重放完成；三组28日保留未售库存/正残值并等待，不能叫全部退出完结。动态税、D持久股权与清算剩余、E住宅、F空间交通及完整联合仍未完成。CLI owned4105728B<4MiB，微型RSS/磁盘另列；不沿用旧M0物理结果到新来源。M0最新smoke见v137，clean/normal未通过、8h未启动、真实16GB not_run。

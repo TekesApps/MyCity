@@ -1,0 +1,5 @@
+{
+  "result": "harness_precondition_failed",
+  "reason": "incorrectly assumed every CLI writes checkpoint; two-day CLI retains WAL only, actual checkpoint/cold recovery covered by separate Store tests",
+  "product_state_modified": false
+}

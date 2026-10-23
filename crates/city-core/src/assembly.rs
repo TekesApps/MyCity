@@ -991,6 +991,7 @@ mod tests {
             id: 1,
             transport_allocation_sha256: [0; 32],
             utility_supply: None,
+            exit_policy: None,
             households,
             employers,
             shops,

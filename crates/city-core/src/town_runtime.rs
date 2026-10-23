@@ -18,6 +18,8 @@ pub const MAX_MARKET_LANES: usize = 512;
 pub const MAX_PAYROLL_CURSORS: usize = crate::timeline::PAYROLL_LIMIT;
 pub const MAX_SUSPENDED_OPERATORS: usize =
     crate::town_economy::MAX_EMPLOYERS + crate::town_economy::MAX_SHOP_STOCK_LOTS;
+pub const MAX_EXIT_CLAIM_BINDINGS: usize = crate::town_economy::exit::MAX_EXIT_LIABILITIES;
+pub const MAX_EXIT_PAYROLL_BINDINGS: usize = crate::timeline::PAYROLL_LIMIT;
 
 /// A fixed-capacity table that serializes only active values. Its complete backing is
 /// inline in World and therefore charged by `size_of::<World>()`.
@@ -121,6 +123,101 @@ impl Record for EmployerSpec {
     }
 }
 
+/// Genesis authority mapping for an actual Timeline claim. Unknown/unlisted claims stop exit.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ExitClaimBinding {
+    pub id: u64,
+    pub payee: u32,
+    pub class: crate::town_economy::exit::ClaimClass,
+}
+
+impl Record for ExitClaimBinding {
+    fn inactive() -> Self {
+        Self {
+            id: 0,
+            payee: 0,
+            class: crate::town_economy::exit::ClaimClass::Other,
+        }
+    }
+}
+
+/// Genesis binding for an actual Timeline payroll row owed by the exiting company.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ExitPayrollBinding {
+    pub id: u32,
+    pub payee: u32,
+}
+
+impl Record for ExitPayrollBinding {
+    fn inactive() -> Self {
+        Self { id: 0, payee: 0 }
+    }
+}
+
+/// Trusted, finite authority and completeness declaration for the bounded first exit path.
+/// These values are immutable genesis inputs; actions can only name this policy.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ExitPolicy {
+    pub policy_id: u32,
+    pub company_account: u32,
+    pub requester: u32,
+    pub executor: u32,
+    pub legal_clearance: crate::town_economy::exit::LegalClearance,
+    pub priority_policy: crate::town_economy::exit::ExitPriorityPolicy,
+    pub claims_complete: bool,
+    pub tax_assessment_complete: bool,
+    pub asset_register_complete: bool,
+    pub employment_exit_terms_complete: bool,
+    pub claims: FixedRows<ExitClaimBinding, MAX_EXIT_CLAIM_BINDINGS>,
+    pub payroll: FixedRows<ExitPayrollBinding, MAX_EXIT_PAYROLL_BINDINGS>,
+}
+
+impl ExitPolicy {
+    fn validate(&self) -> Result<(), &'static str> {
+        let p = self.priority_policy;
+        let classes = [
+            crate::town_economy::exit::ClaimClass::Tax,
+            crate::town_economy::exit::ClaimClass::Wage,
+            crate::town_economy::exit::ClaimClass::SecuredDebt,
+            crate::town_economy::exit::ClaimClass::UnsecuredDebt,
+            crate::town_economy::exit::ClaimClass::Other,
+        ];
+        if self.policy_id == 0
+            || self.company_account == 0
+            || self.requester == 0
+            || self.executor == 0
+            || self.company_account == self.requester
+            || self.company_account == self.executor
+            || self.requester == self.executor
+            || p.within_tier
+                != crate::town_economy::exit::WithinTierRule::ProRataByOutstandingStableId
+            || classes.iter().any(|class| !p.order.contains(class))
+            || self.claims.as_slice().iter().enumerate().any(|(i, row)| {
+                self.claims.as_slice()[..i]
+                    .iter()
+                    .any(|prior| prior.id == row.id)
+            })
+            || self
+                .claims
+                .as_slice()
+                .iter()
+                .any(|row| row.id == 0 || row.payee == 0)
+            || duplicate_by(self.payroll.as_slice(), |row| row.id)
+            || self
+                .payroll
+                .as_slice()
+                .iter()
+                .any(|row| row.id == 0 || row.payee == 0)
+        {
+            return Err("town_exit_policy");
+        }
+        Ok(())
+    }
+}
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct MarketProfile {
@@ -133,6 +230,9 @@ pub struct MarketProfile {
     /// Optional genesis-bound physical electricity supply; absent preserves legacy bytes.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub utility_supply: Option<crate::town_utility::BootSupplyBinding>,
+    /// Optional genesis-bound liquidation authority. Omitted for legacy markets.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub exit_policy: Option<ExitPolicy>,
     pub households: FixedRows<HouseholdGroup, { crate::town_economy::MAX_HOUSEHOLD_GROUPS }>,
     pub employers: FixedRows<EmployerSpec, { crate::town_economy::MAX_EMPLOYERS }>,
     pub shops: FixedRows<ShopSnapshot, { crate::town_economy::MAX_SHOP_STOCK_LOTS }>,
@@ -142,6 +242,12 @@ pub struct MarketProfile {
 
 impl MarketProfile {
     pub fn validate(&self) -> Result<(), &'static str> {
+        if self
+            .exit_policy
+            .is_some_and(|policy| policy.validate().is_err())
+        {
+            return Err("town_exit_policy");
+        }
         if self.utility_supply.is_some_and(|binding| {
             binding.validate().is_err()
                 || self.recipes.as_slice().iter().any(|recipe| {
@@ -258,6 +364,9 @@ impl MarketProfile {
             + self.shops.capacity_bytes()
             + self.recipes.capacity_bytes()
             + self.delivery.capacity_bytes()
+            + self.exit_policy.map_or(0, |policy| {
+                policy.claims.capacity_bytes() + policy.payroll.capacity_bytes()
+            })
     }
 }
 
@@ -404,6 +513,25 @@ pub struct MarketState {
     /// representation and canonical hash for worlds that have never suspended a business.
     #[serde(default, skip_serializing_if = "FixedRows::is_empty")]
     pub suspended_operators: FixedRows<SuspendedOperator, MAX_SUSPENDED_OPERATORS>,
+    /// Active first-version business exit. Missing preserves existing world bytes.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub exit: Option<ExitRuntime>,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum ExitPhase {
+    Liquidating,
+    Closed,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ExitRuntime {
+    pub policy_id: u32,
+    pub company_account: u32,
+    pub started_at: u64,
+    pub phase: ExitPhase,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -460,6 +588,7 @@ impl MarketState {
             payroll: FixedRows::new(),
             recipe_output_remainders: FixedRows::new(),
             suspended_operators: FixedRows::new(),
+            exit: None,
         }
     }
 }
@@ -517,6 +646,13 @@ impl TownMarket {
         };
         if self.state.payroll.len() > MAX_PAYROLL_CURSORS
             || self.state.suspended_operators.len() > MAX_SUSPENDED_OPERATORS
+            || self.state.exit.is_some_and(|exit| {
+                exit.policy_id == 0
+                    || exit.company_account == 0
+                    || exit.started_at == 0
+                    || exit.started_at % crate::timeline::DAY != 0
+                    || exit.started_at / crate::timeline::DAY > self.state.settled_day
+            })
             || self
                 .state
                 .suspended_operators
@@ -588,6 +724,44 @@ impl TownMarket {
         }
         let has_account = |id| world.account_handle(id).is_ok();
         let has_stock = |id| world.stock_handle(id).is_ok();
+        if let Some(policy) = self.profile.exit_policy {
+            let company = world
+                .account_handle(policy.company_account)
+                .ok()
+                .and_then(|handle| world.accounts.get(handle).ok());
+            let requester = world
+                .account_handle(policy.requester)
+                .ok()
+                .and_then(|handle| world.accounts.get(handle).ok());
+            let executor = world
+                .account_handle(policy.executor)
+                .ok()
+                .and_then(|handle| world.accounts.get(handle).ok());
+            if company.is_none_or(|account| account.role != crate::assembly::Role::Company)
+                || requester.is_none()
+                || executor.is_none()
+                || policy.claims.as_slice().iter().any(|binding| {
+                    binding.payee == policy.company_account || !has_account(binding.payee)
+                })
+                || policy.payroll.as_slice().iter().any(|binding| {
+                    binding.payee == policy.company_account || !has_account(binding.payee)
+                })
+                || !(self
+                    .profile
+                    .employers
+                    .as_slice()
+                    .iter()
+                    .any(|row| row.account == policy.company_account)
+                    || self
+                        .profile
+                        .shops
+                        .as_slice()
+                        .iter()
+                        .any(|row| row.account == policy.company_account))
+            {
+                return Err("town_exit_policy_authority");
+            }
+        }
         if self
             .profile
             .households
@@ -768,6 +942,7 @@ mod transport_cursor_tests {
             id: 1,
             transport_allocation_sha256: [0; 32],
             utility_supply: None,
+            exit_policy: None,
             households,
             employers,
             shops,

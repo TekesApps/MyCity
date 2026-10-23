@@ -1,0 +1,45 @@
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction-compensation-current/crates/city-core)
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction-compensation-current/crates/city-headless)
+error: this boolean expression can be simplified
+    --> crates/city-core/src/transaction.rs:4760:13
+     |
+4760 | /             (claim.payer == runtime.company_account && claim.paid != claim.principal)
+4761 | |                 || (claim.payee == runtime.company_account && claim.paid != claim.principal)
+     | |____________________________________________________________________________________________^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#nonminimal_bool
+     = note: `-D clippy::nonminimal-bool` implied by `-D warnings`
+     = help: to override `-D warnings` add `#[allow(clippy::nonminimal_bool)]`
+help: try
+     |
+4760 |             !(claim.paid == claim.principal || claim.payer != runtime.company_account && claim.payee != runtime.company_account)
+     |
+4760 |             (claim.payee == runtime.company_account || claim.payer == runtime.company_account) && claim.paid != claim.principal
+     |
+
+error: the following explicit lifetimes could be elided: 'a
+    --> crates/city-core/src/transaction.rs:4868:21
+     |
+4868 | fn town_exit_policy<'a>(
+     |                     ^^
+4869 |     world: &'a World,
+     |             ^^
+...
+4872 | ) -> Result<&'a crate::town_runtime::ExitPolicy, TxError> {
+     |              ^^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_lifetimes
+     = note: `-D clippy::needless-lifetimes` implied by `-D warnings`
+     = help: to override `-D warnings` add `#[allow(clippy::needless_lifetimes)]`
+help: elide the lifetimes
+     |
+4868 ~ fn town_exit_policy(
+4869 ~     world: &World,
+4870 |     company: u32,
+4871 |     policy_id: u32,
+4872 ~ ) -> Result<&crate::town_runtime::ExitPolicy, TxError> {
+     |
+
+error: could not compile `mycity-core` (lib) due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `mycity-core` (lib test) due to 2 previous errors

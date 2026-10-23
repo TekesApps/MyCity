@@ -1,0 +1,21 @@
+{
+  "final_source_sha256": "252bd5ea4d21bcea88a0d53de499eb5fe6ec79b91568034d677f2cf02f11c3c7",
+  "final_source_manifest_equal": [
+    "161",
+    "162",
+    "163",
+    "165",
+    "166"
+  ],
+  "final_core_tests": 146,
+  "final_storage_library_tests": 21,
+  "final_exit_storage_tests": 3,
+  "prior_full_core_storage_regression": 455,
+  "prior_full_regression_source_note": "157 precedes two equivalent core lint simplifications and new example fixes; not identical to final source",
+  "actual_cli_cases": 5,
+  "independent_28d_checkpoint_cash_stock_oracles": 3,
+  "source_files": 269,
+  "fixed_inputs": 281,
+  "full_M0": "not_accepted",
+  "real_16GB": "not_run"
+}

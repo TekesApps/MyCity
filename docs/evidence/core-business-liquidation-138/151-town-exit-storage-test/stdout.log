@@ -1,0 +1,15 @@
+
+running 3 tests
+test secured_claims_share_partial_exit_cash_by_stable_id_and_remain_liquidating ... FAILED
+test incomplete_policy_and_unregistered_cash_residual_wait_without_bypass_or_distribution ... FAILED
+test liquidation_sells_existing_market_stock_then_pays_wages_and_debt_once_across_recovery ... FAILED
+
+failures:
+
+failures:
+    incomplete_policy_and_unregistered_cash_residual_wait_without_bypass_or_distribution
+    liquidation_sells_existing_market_stock_then_pays_wages_and_debt_once_across_recovery
+    secured_claims_share_partial_exit_cash_by_stable_id_and_remain_liquidating
+
+test result: FAILED. 0 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+

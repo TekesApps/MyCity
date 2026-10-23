@@ -128,6 +128,19 @@ pub enum Action {
         profile_id: u32,
         company_account: u32,
     },
+    /// Start the bounded, policy-authorized exit workflow for a configured company.
+    BeginExit {
+        company: u32,
+        policy_id: u32,
+    },
+    /// Settle due liabilities from actual cash and inventory proceeds recorded by the Engine.
+    SettleExit {
+        company: u32,
+    },
+    /// Close only after all supported obligations and assets are resolved with no residual cash.
+    CloseExit {
+        company: u32,
+    },
     RegionSettleDebt {
         obligation: u32,
     },
@@ -595,6 +608,18 @@ impl Engine {
             candidate.timeline.as_ref(),
         )
         .map_err(|_| "checkpoint_town_suspension")?;
+        validate_town_exit_state(
+            candidate.world.town.as_ref().map(|market| &market.profile),
+            candidate.world.town.as_ref().map(|market| &market.state),
+            candidate.timeline.as_ref(),
+        )
+        .map_err(|_| "checkpoint_town_exit")?;
+        validate_town_exit_world(
+            &candidate.world,
+            candidate.timeline.as_ref(),
+            &candidate.leases,
+        )
+        .map_err(|_| "checkpoint_town_exit_assets")?;
 
         for (i, r) in candidate.resources.iter().enumerate() {
             if r.id == 0 || candidate.resources[..i].iter().any(|p| p.id == r.id) {
@@ -1356,12 +1381,27 @@ impl Engine {
                         ..
                     } = command
                     {
-                        if [lender, borrower]
-                            .iter()
-                            .any(|id| market_is_suspended(town.as_ref(), *id))
-                        {
+                        if [lender, borrower].iter().any(|id| {
+                            market_is_suspended(town.as_ref(), *id)
+                                || market_is_exiting(town.as_ref(), *id)
+                        }) {
                             return Err(TxError::InvalidOperation);
                         }
+                    }
+                    let payroll_id = match command {
+                        crate::timeline::Command::StopWork { id }
+                        | crate::timeline::Command::ChangeCycle { id, .. }
+                        | crate::timeline::Command::Terminate { id }
+                        | crate::timeline::Command::EndForExit { id } => Some(id),
+                        _ => None,
+                    };
+                    if payroll_id.is_some_and(|id| {
+                        timeline
+                            .as_ref()
+                            .and_then(|t| t.payroll.iter().find(|row| row.spec.id == id))
+                            .is_some_and(|row| market_is_exiting(town.as_ref(), row.spec.payer))
+                    }) {
+                        return Err(TxError::InvalidOperation);
                     }
                     timeline_driver::Frame {
                         trace,
@@ -1437,10 +1477,10 @@ impl Engine {
                             .find(|row| row.spec.id == quote)
                             .ok_or(TxError::InvalidOperation)?
                             .spec;
-                        if [spec.seller, spec.buyer, spec.carrier]
-                            .iter()
-                            .any(|id| market_is_suspended(town.as_ref(), *id))
-                        {
+                        if [spec.seller, spec.buyer, spec.carrier].iter().any(|id| {
+                            market_is_suspended(town.as_ref(), *id)
+                                || market_is_exiting(town.as_ref(), *id)
+                        }) {
                             return Err(TxError::InvalidOperation);
                         }
                     }
@@ -1483,10 +1523,10 @@ impl Engine {
                     }
                     if matches!(command, crate::boot::Command::Start { .. }) {
                         let b = boot.as_ref().ok_or(TxError::InvalidOperation)?;
-                        if [b.operator, b.contractor]
-                            .iter()
-                            .any(|id| market_is_suspended(town.as_ref(), *id))
-                        {
+                        if [b.operator, b.contractor].iter().any(|id| {
+                            market_is_suspended(town.as_ref(), *id)
+                                || market_is_exiting(town.as_ref(), *id)
+                        }) {
                             return Err(TxError::InvalidOperation);
                         }
                     }
@@ -1533,10 +1573,13 @@ impl Engine {
                         return Err(TxError::InvalidOperation);
                     }
                     let p = construction.as_mut().ok_or(TxError::InvalidOperation)?;
-                    if construction_operation_requires_active_business(command)
+                    if (construction_operation_requires_active_business(command)
                         && [p.owner, p.contractor]
                             .iter()
-                            .any(|id| market_is_suspended(town.as_ref(), *id))
+                            .any(|id| market_is_suspended(town.as_ref(), *id)))
+                        || [p.owner, p.contractor]
+                            .iter()
+                            .any(|id| market_is_exiting(town.as_ref(), *id))
                     {
                         return Err(TxError::InvalidOperation);
                     }
@@ -1664,6 +1707,7 @@ impl Engine {
                     let at = current_timeline.progress.last_complete;
                     if profile.id != profile_id
                         || company_account == 0
+                        || market_is_exiting(town.as_ref(), company_account)
                         || !(profile
                             .employers
                             .as_slice()
@@ -1733,6 +1777,323 @@ impl Engine {
                             .map_err(|_| TxError::InvalidOperation)?;
                     }
                 }
+                Action::BeginExit { company, policy_id } => {
+                    if env.actions.len() != 1 {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    let policy = town_exit_policy(&self.world, company, policy_id)?;
+                    if !matches!(caller, Caller::Account(id) if id == policy.requester) {
+                        return Err(TxError::Unauthorized);
+                    }
+                    let current = timeline.as_ref().ok_or(TxError::InvalidOperation)?;
+                    let state = town.as_ref().ok_or(TxError::InvalidOperation)?;
+                    let at = current.progress.last_complete;
+                    if current.progress.phase.is_some()
+                        || current.progress.target.is_some()
+                        || at == 0
+                        || at % crate::timeline::DAY != 0
+                        || state.settled_day != at / crate::timeline::DAY
+                        || state.exit.is_some()
+                        || state
+                            .suspended_operators
+                            .as_slice()
+                            .iter()
+                            .any(|row| row.account == company)
+                        || town_exit_dependencies(
+                            company,
+                            exchange.as_ref(),
+                            boot.as_ref(),
+                            economy.as_ref(),
+                            construction.as_ref(),
+                            &leases,
+                        )
+                        || town_exit_profile_dependency(
+                            &self.world.town.ok_or(TxError::InvalidOperation)?.profile,
+                            company,
+                        )
+                        || region.as_ref().is_some_and(|r| {
+                            r.obligations.iter().flatten().any(|obligation| {
+                                obligation.payer == company || obligation.payee == company
+                            })
+                        })
+                    {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    if !exit_timeline_bindings_match(policy, current) {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    if exit_has_unsupported_receivables(company, current) {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    // A queued payroll-cycle change is an unresolved future employment
+                    // obligation. The bounded exit path can stop current payroll, but it
+                    // does not adjudicate or silently discard a pending cycle amendment.
+                    if exit_has_pending_payroll_cycle(company, current) {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    let payroll_ids: Vec<u32> = current
+                        .payroll
+                        .iter()
+                        .filter(|row| row.spec.payer == company)
+                        .map(|row| row.spec.id)
+                        .collect();
+                    for id in payroll_ids {
+                        timeline_driver::Frame {
+                            trace,
+                            world: &self.world,
+                            town: &mut town,
+                            background: &mut background,
+                            background_work: &mut background_work,
+                            region: &mut region,
+                            economy: &mut economy,
+                            boot: &mut boot,
+                            exchange: &mut exchange,
+                            accounts: &mut accounts,
+                            stocks: &mut stocks,
+                            resources: &mut resources,
+                            leases: &mut leases,
+                            next_token: &mut next_token,
+                        }
+                        .command(&mut timeline, crate::timeline::Command::EndForExit { id })?;
+                    }
+                    let state = town.as_mut().ok_or(TxError::InvalidOperation)?;
+                    state.exit = Some(crate::town_runtime::ExitRuntime {
+                        policy_id,
+                        company_account: company,
+                        started_at: at,
+                        phase: crate::town_runtime::ExitPhase::Liquidating,
+                    });
+                }
+                Action::SettleExit { company } => {
+                    if env.actions.len() != 1 {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    let market = self.world.town.ok_or(TxError::InvalidOperation)?;
+                    let runtime = town
+                        .as_ref()
+                        .and_then(|state| state.exit)
+                        .filter(|exit| exit.company_account == company)
+                        .ok_or(TxError::InvalidOperation)?;
+                    let policy = town_exit_policy(&self.world, company, runtime.policy_id)?;
+                    if !matches!(caller, Caller::Account(id) if id == policy.executor) {
+                        return Err(TxError::Unauthorized);
+                    }
+                    let current = timeline.as_ref().ok_or(TxError::InvalidOperation)?;
+                    let at = current.progress.last_complete;
+                    if runtime.phase != crate::town_runtime::ExitPhase::Liquidating
+                        || current.progress.phase.is_some()
+                        || current.progress.target.is_some()
+                        || at == 0
+                        || at % crate::timeline::DAY != 0
+                        || town.as_ref().map(|state| state.settled_day)
+                            != Some(at / crate::timeline::DAY)
+                        || town_exit_dependencies(
+                            company,
+                            exchange.as_ref(),
+                            boot.as_ref(),
+                            economy.as_ref(),
+                            construction.as_ref(),
+                            &leases,
+                        )
+                        || town_exit_profile_dependency(&market.profile, company)
+                        || region.as_ref().is_some_and(|r| {
+                            r.obligations.iter().flatten().any(|obligation| {
+                                obligation.payer == company || obligation.payee == company
+                            })
+                        })
+                    {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    let current = timeline.as_ref().ok_or(TxError::InvalidOperation)?;
+                    if !exit_timeline_bindings_match(policy, current) {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    if exit_has_unsupported_receivables(company, current) {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    let snapshot = build_exit_snapshot(
+                        &self.world,
+                        policy,
+                        current,
+                        &accounts,
+                        &stocks,
+                        env.operation_id,
+                    )?;
+                    let plan = crate::town_economy::exit::plan_exit(&snapshot)
+                        .map_err(|_| TxError::InvalidOperation)?;
+                    for action in plan.actions {
+                        let crate::town_economy::exit::ExitAction::SettleLiability {
+                            source,
+                            payee,
+                            amount,
+                        } = action
+                        else {
+                            continue;
+                        };
+                        match source {
+                            crate::town_economy::exit::LiabilitySource::TimelineClaim { id } => {
+                                let timeline =
+                                    timeline.as_mut().ok_or(TxError::InvalidOperation)?;
+                                let claim = timeline
+                                    .claims
+                                    .iter_mut()
+                                    .find(|claim| {
+                                        claim.id == id
+                                            && claim.payer == company
+                                            && claim.payee == payee
+                                    })
+                                    .ok_or(TxError::InvalidOperation)?;
+                                let due = claim
+                                    .principal
+                                    .checked_sub(claim.paid)
+                                    .map_err(|_| TxError::InvalidOperation)?;
+                                if amount > due {
+                                    return Err(TxError::InvalidOperation);
+                                }
+                                post_exit_payment(
+                                    &self.world,
+                                    &mut accounts,
+                                    company,
+                                    payee,
+                                    amount,
+                                )?;
+                                claim.paid = claim
+                                    .paid
+                                    .checked_add(amount)
+                                    .map_err(|_| TxError::Overflow)?;
+                            }
+                            crate::town_economy::exit::LiabilitySource::PayrollArrears { id } => {
+                                let timeline =
+                                    timeline.as_mut().ok_or(TxError::InvalidOperation)?;
+                                let payroll = timeline
+                                    .payroll
+                                    .iter_mut()
+                                    .find(|row| {
+                                        row.spec.id == id
+                                            && row.spec.payer == company
+                                            && row.spec.payee == payee
+                                    })
+                                    .ok_or(TxError::InvalidOperation)?;
+                                let due = payroll
+                                    .accrued
+                                    .checked_sub(payroll.paid)
+                                    .map_err(|_| TxError::InvalidOperation)?;
+                                if payroll.working
+                                    || payroll.next_due.is_some()
+                                    || payroll.billed != payroll.accrued
+                                    || amount > due
+                                {
+                                    return Err(TxError::InvalidOperation);
+                                }
+                                post_exit_payment(
+                                    &self.world,
+                                    &mut accounts,
+                                    company,
+                                    payee,
+                                    amount,
+                                )?;
+                                payroll.paid = payroll
+                                    .paid
+                                    .checked_add(amount)
+                                    .map_err(|_| TxError::Overflow)?;
+                            }
+                        }
+                    }
+                }
+                Action::CloseExit { company } => {
+                    if env.actions.len() != 1 {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    let market = self.world.town.ok_or(TxError::InvalidOperation)?;
+                    let runtime = town
+                        .as_ref()
+                        .and_then(|state| state.exit)
+                        .filter(|exit| exit.company_account == company)
+                        .ok_or(TxError::InvalidOperation)?;
+                    let policy = town_exit_policy(&self.world, company, runtime.policy_id)?;
+                    if !matches!(caller, Caller::Account(id) if id == policy.executor) {
+                        return Err(TxError::Unauthorized);
+                    }
+                    let current = timeline.as_ref().ok_or(TxError::InvalidOperation)?;
+                    let at = current.progress.last_complete;
+                    if runtime.phase != crate::town_runtime::ExitPhase::Liquidating
+                        || current.progress.phase.is_some()
+                        || current.progress.target.is_some()
+                        || at == 0
+                        || at % crate::timeline::DAY != 0
+                        || town.as_ref().map(|state| state.settled_day)
+                            != Some(at / crate::timeline::DAY)
+                        || town_exit_dependencies(
+                            company,
+                            exchange.as_ref(),
+                            boot.as_ref(),
+                            economy.as_ref(),
+                            construction.as_ref(),
+                            &leases,
+                        )
+                        || town_exit_profile_dependency(&market.profile, company)
+                        || region.as_ref().is_some_and(|r| {
+                            r.obligations.iter().flatten().any(|obligation| {
+                                obligation.payer == company || obligation.payee == company
+                            })
+                        })
+                    {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    let snapshot = build_exit_snapshot(
+                        &self.world,
+                        policy,
+                        timeline.as_ref().ok_or(TxError::InvalidOperation)?,
+                        &accounts,
+                        &stocks,
+                        env.operation_id,
+                    )?;
+                    if exit_has_unsupported_receivables(
+                        company,
+                        timeline.as_ref().ok_or(TxError::InvalidOperation)?,
+                    ) {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    let plan = crate::town_economy::exit::plan_exit(&snapshot)
+                        .map_err(|_| TxError::InvalidOperation)?;
+                    if plan.status != crate::town_economy::exit::ExitStatus::ReadyToClose
+                        || !plan.actions.iter().any(|action| {
+                            matches!(action, crate::town_economy::exit::ExitAction::FinalizeCompanyExit { company: id } if *id == company)
+                        })
+                        || !plan.actions.iter().all(|action| {
+                            matches!(
+                                action,
+                                crate::town_economy::exit::ExitAction::StopNewProduction { .. }
+                                    | crate::town_economy::exit::ExitAction::StopNewInputs { .. }
+                                    | crate::town_economy::exit::ExitAction::FinalizeCompanyExit { .. }
+                            )
+                        })
+                    {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    let account = accounts
+                        .iter()
+                        .find(|(handle, _)| {
+                            self.world.account_handle(company).ok() == Some(*handle)
+                        })
+                        .map(|(_, account)| *account)
+                        .or_else(|| {
+                            self.world
+                                .account_handle(company)
+                                .ok()
+                                .and_then(|handle| self.world.accounts.get(handle).ok().copied())
+                        })
+                        .ok_or(TxError::InvalidHandle)?;
+                    if account.cash != Money::ZERO || account.protected != Money::ZERO {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    town.as_mut()
+                        .ok_or(TxError::InvalidOperation)?
+                        .exit
+                        .as_mut()
+                        .ok_or(TxError::InvalidOperation)?
+                        .phase = crate::town_runtime::ExitPhase::Closed;
+                }
                 Action::RegionSettleDebt { obligation } => {
                     if !matches!(caller, Caller::System) {
                         return Err(TxError::Unauthorized);
@@ -1744,6 +2105,9 @@ impl Engine {
                         .flatten()
                         .find(|o| o.id == obligation)
                         .ok_or(TxError::InvalidOperation)?;
+                    if market_is_exiting(town.as_ref(), o.payer) {
+                        return Err(TxError::InvalidOperation);
+                    }
                     let due = o.arrears;
                     settle_obligation(&self.world, &mut accounts, o)?;
                     settled[action_index] =
@@ -1907,6 +2271,21 @@ impl Engine {
                     if !caller.permits(accounts[f].1.id) {
                         return Err(TxError::Unauthorized);
                     }
+                    let payer = accounts[f].1.id;
+                    let payee = accounts[t].1.id;
+                    if market_is_exiting(town.as_ref(), payer)
+                        || town.as_ref().is_some_and(|state| {
+                            state.exit.is_some_and(|exit| {
+                                exit.phase == crate::town_runtime::ExitPhase::Closed
+                                    && exit.company_account == payee
+                            })
+                        })
+                        || matches!(action, Action::PayProtected { .. })
+                            && (market_is_exiting(town.as_ref(), payee)
+                                || market_is_exiting(town.as_ref(), payer))
+                    {
+                        return Err(TxError::InvalidOperation);
+                    }
                     if matches!(action, Action::PayProtected { .. }) {
                         // Source-bound release rules are not implemented yet. Host-only
                         // laboratory primitive; account ownership alone is not authority.
@@ -1948,6 +2327,9 @@ impl Engine {
                     let i = stage_account(&self.world, &mut accounts, account)?;
                     if !caller.permits(accounts[i].1.id) {
                         return Err(TxError::Unauthorized);
+                    }
+                    if market_is_exiting(town.as_ref(), accounts[i].1.id) {
+                        return Err(TxError::InvalidOperation);
                     }
                     let a = &mut accounts[i].1;
                     a.protected = if matches!(action, Action::Protect { .. }) {
@@ -2021,6 +2403,16 @@ impl Engine {
                     }
                     let f = stage_stock(&self.world, &mut stocks, from)?;
                     let t = stage_stock(&self.world, &mut stocks, to)?;
+                    for stock in [stocks[f].1, stocks[t].1] {
+                        let owner = self
+                            .world
+                            .accounts
+                            .get(stock.owner)
+                            .map_err(|_| TxError::InvalidHandle)?;
+                        if market_is_exiting(town.as_ref(), owner.id) {
+                            return Err(TxError::InvalidOperation);
+                        }
+                    }
                     if f == t
                         || quantity == Quantity::ZERO
                         || stocks[f].1.commodity != stocks[t].1.commodity
@@ -2093,7 +2485,9 @@ impl Engine {
                 }
                 Action::ReserveCapacity { resource, units } => {
                     if let Caller::Account(account) = caller {
-                        if market_is_suspended(town.as_ref(), account) {
+                        if market_is_suspended(town.as_ref(), account)
+                            || market_is_exiting(town.as_ref(), account)
+                        {
                             return Err(TxError::InvalidOperation);
                         }
                     }
@@ -2228,6 +2622,12 @@ impl Engine {
         }
         validate_town_suspension_consistency(town.as_ref(), timeline.as_ref())
             .map_err(|_| TxError::InvalidOperation)?;
+        validate_town_exit_state(
+            self.world.town.as_ref().map(|market| &market.profile),
+            town.as_ref(),
+            timeline.as_ref(),
+        )
+        .map_err(|_| TxError::InvalidOperation)?;
         let timeline_progress = if env
             .actions
             .iter()
@@ -2880,13 +3280,18 @@ fn prepare_town_settlement(
         .iter()
         .map(|row| row.account)
         .collect();
-    if !suspended.is_empty() {
-        input
-            .shops
-            .retain(|shop| !suspended.contains(&shop.account));
-        input
-            .recipes
-            .retain(|recipe| !suspended.contains(&recipe.employer));
+    let exit = market_state.exit;
+    let closed_company = exit
+        .filter(|runtime| runtime.phase == crate::town_runtime::ExitPhase::Closed)
+        .map(|runtime| runtime.company_account);
+    if !suspended.is_empty() || exit.is_some() {
+        input.shops.retain(|shop| {
+            !suspended.contains(&shop.account) && closed_company != Some(shop.account)
+        });
+        input.recipes.retain(|recipe| {
+            !suspended.contains(&recipe.employer)
+                && exit.is_none_or(|runtime| runtime.company_account != recipe.employer)
+        });
         let active_recipe_ids: Vec<u32> = input
             .recipes
             .iter()
@@ -4250,6 +4655,9 @@ impl Action {
                     | crate::exchange::Command::SetLink { .. }
             } | Self::RegionAdvance { .. }
                 | Self::RegionSettleDebt { .. }
+                | Self::BeginExit { .. }
+                | Self::SettleExit { .. }
+                | Self::CloseExit { .. }
                 | Self::ReleaseCapacity { .. }
                 | Self::Boot {
                     command: crate::boot::Command::Fault { .. }
@@ -4270,6 +4678,18 @@ pub(super) fn market_is_suspended(
                 .as_slice()
                 .iter()
                 .any(|row| row.account == account)
+        })
+}
+
+pub(super) fn market_is_exiting(
+    state: Option<&crate::town_runtime::MarketState>,
+    account: u32,
+) -> bool {
+    account != 0
+        && state.is_some_and(|state| {
+            state
+                .exit
+                .is_some_and(|exit| exit.company_account == account)
         })
 }
 
@@ -4295,6 +4715,113 @@ fn validate_town_suspension_consistency(
                     || payroll.billed != payroll.accrued)
         }) {
             return Err("town_suspended_payroll_active");
+        }
+    }
+    Ok(())
+}
+
+fn validate_town_exit_state(
+    profile: Option<&crate::town_runtime::MarketProfile>,
+    state: Option<&crate::town_runtime::MarketState>,
+    timeline: Option<&crate::timeline::Timeline>,
+) -> Result<(), &'static str> {
+    let Some(state) = state else {
+        return Ok(());
+    };
+    let Some(runtime) = state.exit else {
+        return Ok(());
+    };
+    let profile = profile.ok_or("town_exit_without_profile")?;
+    let policy = profile
+        .exit_policy
+        .filter(|policy| {
+            policy.policy_id == runtime.policy_id
+                && policy.company_account == runtime.company_account
+        })
+        .ok_or("town_exit_policy_missing")?;
+    let timeline = timeline.ok_or("town_exit_without_timeline")?;
+    if runtime.started_at > timeline.progress.last_complete
+        || !exit_timeline_bindings_match(&policy, timeline)
+        || exit_has_unsupported_receivables(runtime.company_account, timeline)
+    {
+        return Err("town_exit_clock_or_binding");
+    }
+    if timeline.payroll.iter().any(|payroll| {
+        payroll.spec.payer == runtime.company_account
+            && (payroll.working
+                || payroll.next_due.is_some()
+                || payroll.pending_cycle.is_some()
+                || payroll.billed != payroll.accrued)
+    }) {
+        return Err("town_exit_payroll_active");
+    }
+    if runtime.phase == crate::town_runtime::ExitPhase::Closed
+        && (timeline.claims.iter().any(|claim| {
+            (claim.payer == runtime.company_account || claim.payee == runtime.company_account)
+                && claim.paid != claim.principal
+        }) || timeline.payroll.iter().any(|payroll| {
+            (payroll.spec.payer == runtime.company_account && payroll.paid != payroll.accrued)
+                || (payroll.spec.payee == runtime.company_account
+                    && (payroll.paid != payroll.accrued
+                        || payroll.working
+                        || payroll.next_due.is_some()))
+        }))
+    {
+        return Err("town_exit_closed_with_liability");
+    }
+    Ok(())
+}
+
+fn validate_town_exit_world(
+    world: &World,
+    timeline: Option<&crate::timeline::Timeline>,
+    leases: &LeaseRows,
+) -> Result<(), &'static str> {
+    let Some(market) = world.town else {
+        return Ok(());
+    };
+    let Some(runtime) = market.state.exit else {
+        return Ok(());
+    };
+    let region_has_company_obligation = world.region.is_some_and(|region| {
+        region.obligations.iter().flatten().any(|obligation| {
+            obligation.payer == runtime.company_account
+                || obligation.payee == runtime.company_account
+        })
+    });
+    if region_has_company_obligation
+        || town_exit_profile_dependency(&market.profile, runtime.company_account)
+        || town_exit_dependencies(
+            runtime.company_account,
+            world.exchange.as_ref(),
+            world.boot.as_ref(),
+            world.economy.as_ref(),
+            world.construction.as_ref(),
+            leases,
+        )
+    {
+        return Err("town_exit_dependency");
+    }
+    if runtime.phase == crate::town_runtime::ExitPhase::Closed {
+        let account = world
+            .account_handle(runtime.company_account)
+            .ok()
+            .and_then(|handle| world.accounts.get(handle).ok())
+            .ok_or("town_exit_company_missing")?;
+        if account.cash != Money::ZERO
+            || account.protected != Money::ZERO
+            || world.stock_ids.iter().any(|(_, handle)| {
+                world.stocks.get(*handle).is_ok_and(|stock| {
+                    world
+                        .accounts
+                        .get(stock.owner)
+                        .is_ok_and(|owner| owner.id == runtime.company_account)
+                        && stock.quantity != Quantity::ZERO
+                })
+            })
+            || timeline.is_none()
+        {
+            return Err("town_exit_closed_with_assets");
         }
     }
     Ok(())
@@ -4336,6 +4863,363 @@ fn active_company_dependency(
             )
     });
     reserved_capacity || exchange_pending || boot_active || construction_active
+}
+
+fn town_exit_policy(
+    world: &World,
+    company: u32,
+    policy_id: u32,
+) -> Result<&crate::town_runtime::ExitPolicy, TxError> {
+    let market = world.town.as_ref().ok_or(TxError::InvalidOperation)?;
+    let policy = market
+        .profile
+        .exit_policy
+        .as_ref()
+        .filter(|policy| policy.company_account == company && policy.policy_id == policy_id)
+        .ok_or(TxError::InvalidOperation)?;
+    Ok(policy)
+}
+
+fn exit_timeline_bindings_match(
+    policy: &crate::town_runtime::ExitPolicy,
+    timeline: &crate::timeline::Timeline,
+) -> bool {
+    let claim_count = timeline
+        .claims
+        .iter()
+        .filter(|claim| claim.payer == policy.company_account)
+        .count();
+    let payroll_count = timeline
+        .payroll
+        .iter()
+        .filter(|row| row.spec.payer == policy.company_account)
+        .count();
+    if claim_count > crate::town_runtime::MAX_EXIT_CLAIM_BINDINGS
+        || payroll_count > crate::town_runtime::MAX_EXIT_PAYROLL_BINDINGS
+        || claim_count != policy.claims.len()
+        || payroll_count != policy.payroll.len()
+    {
+        return false;
+    }
+    for claim in timeline
+        .claims
+        .iter()
+        .filter(|claim| claim.payer == policy.company_account)
+    {
+        if !policy
+            .claims
+            .as_slice()
+            .iter()
+            .any(|binding| binding.id == claim.id && binding.payee == claim.payee)
+        {
+            return false;
+        }
+    }
+    for row in timeline
+        .payroll
+        .iter()
+        .filter(|row| row.spec.payer == policy.company_account)
+    {
+        if !policy
+            .payroll
+            .as_slice()
+            .iter()
+            .any(|binding| binding.id == row.spec.id && binding.payee == row.spec.payee)
+        {
+            return false;
+        }
+    }
+    // Genesis bindings may not point at a row which never existed in this timeline.
+    for binding in policy.claims.as_slice() {
+        if !timeline.claims.iter().any(|claim| {
+            claim.payer == policy.company_account
+                && claim.id == binding.id
+                && claim.payee == binding.payee
+        }) {
+            return false;
+        }
+    }
+    for binding in policy.payroll.as_slice() {
+        if !timeline.payroll.iter().any(|row| {
+            row.spec.payer == policy.company_account
+                && row.spec.id == binding.id
+                && row.spec.payee == binding.payee
+        }) {
+            return false;
+        }
+    }
+    true
+}
+
+fn exit_has_pending_payroll_cycle(company: u32, timeline: &crate::timeline::Timeline) -> bool {
+    timeline
+        .payroll
+        .iter()
+        .any(|row| row.spec.payer == company && row.pending_cycle.is_some())
+}
+
+fn exit_has_unsupported_receivables(company: u32, timeline: &crate::timeline::Timeline) -> bool {
+    timeline
+        .claims
+        .iter()
+        .any(|claim| claim.payee == company && claim.principal > claim.paid)
+        || timeline.payroll.iter().any(|row| {
+            row.spec.payee == company
+                && (row.accrued > row.paid || row.working || row.next_due.is_some())
+        })
+}
+
+fn town_exit_dependencies(
+    company: u32,
+    exchange: Option<&crate::exchange::Exchange>,
+    boot: Option<&crate::boot::Boot>,
+    economy: Option<&crate::economy::Economy>,
+    construction: Option<&crate::construction::Project>,
+    leases: &LeaseRows,
+) -> bool {
+    leases.iter().flatten().any(|lease| lease.actor == company)
+        || exchange.is_some_and(|exchange| {
+            exchange.quotes.iter().any(|quote| {
+                [quote.spec.seller, quote.spec.buyer, quote.spec.carrier].contains(&company)
+            })
+        })
+        || boot.is_some_and(|boot| [boot.operator, boot.contractor].contains(&company))
+        || economy.is_some_and(|economy| economy.accounts.contains(&company))
+        || construction
+            .is_some_and(|project| [project.owner, project.contractor].contains(&company))
+}
+
+fn town_exit_profile_dependency(
+    profile: &crate::town_runtime::MarketProfile,
+    company: u32,
+) -> bool {
+    profile
+        .delivery
+        .as_slice()
+        .iter()
+        .any(|quote| quote.freight_account == company || quote.utility_account == company)
+        || profile.recipes.as_slice().iter().any(|recipe| {
+            [
+                recipe.utility_account,
+                recipe.freight_account,
+                recipe.disposal_account,
+            ]
+            .contains(&company)
+        })
+}
+
+fn build_exit_snapshot(
+    world: &World,
+    policy: &crate::town_runtime::ExitPolicy,
+    timeline: &crate::timeline::Timeline,
+    accounts: &DirtyAccounts,
+    stocks: &DirtyStocks,
+    operation_id: u64,
+) -> Result<crate::town_economy::exit::ExitSnapshot, TxError> {
+    use crate::town_economy::exit::{
+        ExitInventoryLot, ExitLiability, ExitPayroll, ExitSnapshot, ExitTrigger, LiabilitySource,
+    };
+    use crate::town_economy::{AccountSnapshot, InventorySnapshot};
+    let company_handle = world
+        .account_handle(policy.company_account)
+        .map_err(|_| TxError::InvalidHandle)?;
+    let company_account = accounts
+        .iter()
+        .find(|(handle, _)| *handle == company_handle)
+        .map(|(_, account)| *account)
+        .or_else(|| world.accounts.get(company_handle).ok().copied())
+        .ok_or(TxError::InvalidHandle)?;
+    let day = timeline.progress.last_complete / crate::timeline::DAY;
+    let mut liabilities = Vec::new();
+    let mut payroll_rows = Vec::new();
+    for claim in timeline
+        .claims
+        .iter()
+        .filter(|claim| claim.payer == policy.company_account)
+    {
+        let binding = policy
+            .claims
+            .as_slice()
+            .iter()
+            .find(|binding| binding.id == claim.id && binding.payee == claim.payee)
+            .ok_or(TxError::InvalidOperation)?;
+        let outstanding = claim
+            .principal
+            .checked_sub(claim.paid)
+            .map_err(|_| TxError::InvalidOperation)?;
+        if outstanding > Money::ZERO {
+            liabilities.push(ExitLiability {
+                source: LiabilitySource::TimelineClaim { id: claim.id },
+                class: binding.class,
+                payee: claim.payee,
+                due_at: claim
+                    .due
+                    .checked_add(crate::timeline::DAY - 1)
+                    .ok_or(TxError::Overflow)?
+                    / crate::timeline::DAY,
+                outstanding,
+            });
+        }
+    }
+    for payroll in timeline
+        .payroll
+        .iter()
+        .filter(|row| row.spec.payer == policy.company_account)
+    {
+        if !policy
+            .payroll
+            .as_slice()
+            .iter()
+            .any(|binding| binding.id == payroll.spec.id && binding.payee == payroll.spec.payee)
+        {
+            return Err(TxError::InvalidOperation);
+        }
+        payroll_rows.push(ExitPayroll {
+            id: payroll.spec.id,
+            active: payroll.working || payroll.next_due.is_some(),
+        });
+        let outstanding = payroll
+            .accrued
+            .checked_sub(payroll.paid)
+            .map_err(|_| TxError::InvalidOperation)?;
+        if outstanding > Money::ZERO {
+            liabilities.push(ExitLiability {
+                source: LiabilitySource::PayrollArrears {
+                    id: payroll.spec.id,
+                },
+                class: crate::town_economy::exit::ClaimClass::Wage,
+                payee: payroll.spec.payee,
+                due_at: day,
+                outstanding,
+            });
+        }
+    }
+    liabilities.sort_by_key(|row| {
+        let class_index = policy
+            .priority_policy
+            .order
+            .iter()
+            .position(|class| *class == row.class)
+            .unwrap_or(usize::MAX);
+        let (source, id) = match row.source {
+            LiabilitySource::TimelineClaim { id } => (0_u8, id),
+            LiabilitySource::PayrollArrears { id } => (1_u8, u64::from(id)),
+        };
+        (class_index, source, id)
+    });
+    payroll_rows.sort_by_key(|row| row.id);
+    let profile = world.town.ok_or(TxError::InvalidOperation)?.profile;
+    let mut inventory = Vec::new();
+    for (stock_id, handle) in world.stock_ids.iter() {
+        let original = world
+            .stocks
+            .get(*handle)
+            .map_err(|_| TxError::InvalidHandle)?;
+        let owner = world
+            .accounts
+            .get(original.owner)
+            .map_err(|_| TxError::InvalidHandle)?;
+        if owner.id != policy.company_account {
+            continue;
+        }
+        let stock = stocks
+            .iter()
+            .find(|(staged, _)| *staged == *handle)
+            .map_or(*original, |(_, staged)| *staged);
+        if stock.quantity == Quantity::ZERO {
+            continue;
+        }
+        let sale_ready = profile
+            .shops
+            .as_slice()
+            .iter()
+            .any(|shop| shop.account == policy.company_account && shop.stock_id == *stock_id);
+        inventory.push(ExitInventoryLot {
+            inventory: InventorySnapshot {
+                stock_id: *stock_id,
+                owner: policy.company_account,
+                good: crate::town_runtime::commodity_good(stock.commodity),
+                quantity: stock.quantity,
+                spendable_basis: stock.basis,
+                origin_quantity: stock.origin_quantity,
+                origin_basis: stock.origin_basis,
+                offset: stock.offset,
+            },
+            sale_ready,
+        });
+    }
+    let snapshot = ExitSnapshot {
+        schema: "mycity-business-exit-v0.1".to_owned(),
+        world: world.scope.world(),
+        branch: world.scope.branch(),
+        revision: world.revision,
+        day,
+        operation_id,
+        company: policy.company_account,
+        company_account: AccountSnapshot {
+            account: company_account.id,
+            cash: company_account.cash,
+            protected: company_account.protected,
+        },
+        trigger: ExitTrigger::Voluntary,
+        priority_policy: Some(policy.priority_policy),
+        legal_clearance: policy.legal_clearance,
+        claims_complete: policy.claims_complete && exit_timeline_bindings_match(policy, timeline),
+        tax_assessment_complete: policy.tax_assessment_complete,
+        asset_register_complete: policy.asset_register_complete,
+        employment_exit_terms_complete: policy.employment_exit_terms_complete,
+        liabilities,
+        payroll: payroll_rows,
+        inventory,
+        shareholders_complete: false,
+        shareholders: Vec::new(),
+    };
+    Ok(snapshot)
+}
+
+fn post_exit_payment(
+    world: &World,
+    accounts: &mut DirtyAccounts,
+    payer: u32,
+    payee: u32,
+    amount: Money,
+) -> Result<(), TxError> {
+    if amount <= Money::ZERO || payer == payee {
+        return Err(TxError::InvalidOperation);
+    }
+    let payer_index = stage_account(
+        world,
+        accounts,
+        world
+            .account_ref(payer)
+            .map_err(|_| TxError::InvalidHandle)?,
+    )?;
+    let payee_index = stage_account(
+        world,
+        accounts,
+        world
+            .account_ref(payee)
+            .map_err(|_| TxError::InvalidHandle)?,
+    )?;
+    let available = accounts[payer_index]
+        .1
+        .cash
+        .checked_sub(accounts[payer_index].1.protected)
+        .map_err(|_| TxError::Protection)?;
+    if available < amount {
+        return Err(TxError::InsufficientFunds);
+    }
+    accounts[payer_index].1.cash = accounts[payer_index]
+        .1
+        .cash
+        .checked_sub(amount)
+        .map_err(|_| TxError::InsufficientFunds)?;
+    accounts[payee_index].1.cash = accounts[payee_index]
+        .1
+        .cash
+        .checked_add(amount)
+        .map_err(|_| TxError::Overflow)?;
+    Ok(())
 }
 
 fn construction_operation_requires_active_business(
@@ -5004,6 +5888,7 @@ mod tests {
                 id: 1,
                 transport_allocation_sha256: [0; 32],
                 utility_supply: None,
+                exit_policy: None,
                 households,
                 employers,
                 shops,
@@ -5147,10 +6032,14 @@ mod tests {
     }
 
     fn issue(e: &mut Engine, action: Action) -> Receipt {
+        issue_as(e, Caller::System, action)
+    }
+
+    fn issue_as(e: &mut Engine, caller: Caller, action: Action) -> Receipt {
         let view = e.world.view();
         let action_description = format!("{action:?}");
         e.execute(
-            Caller::System,
+            caller,
             Envelope {
                 world: view.scope.world(),
                 branch: view.scope.branch(),
@@ -5160,6 +6049,52 @@ mod tests {
             },
         )
         .unwrap_or_else(|error| panic!("action {action_description} failed: {error:?}"))
+    }
+
+    fn install_exit_policy(e: &mut Engine) {
+        use crate::town_economy::exit::{
+            ClaimClass, ExitPriorityPolicy, LegalClearance, WithinTierRule,
+        };
+        use crate::town_runtime::{ExitClaimBinding, ExitPayrollBinding, ExitPolicy, FixedRows};
+        let mut classes = [
+            ClaimClass::Tax,
+            ClaimClass::Wage,
+            ClaimClass::SecuredDebt,
+            ClaimClass::UnsecuredDebt,
+            ClaimClass::Other,
+        ];
+        classes.rotate_right(1);
+        let mut claims = FixedRows::new();
+        claims
+            .push(ExitClaimBinding {
+                id: 100,
+                payee: 4,
+                class: ClaimClass::UnsecuredDebt,
+            })
+            .unwrap();
+        let mut payroll = FixedRows::new();
+        payroll
+            .push(ExitPayrollBinding { id: 1, payee: 2 })
+            .unwrap();
+        let policy = ExitPolicy {
+            policy_id: 1,
+            company_account: 3,
+            requester: 4,
+            executor: 1,
+            legal_clearance: LegalClearance::Cleared,
+            priority_policy: ExitPriorityPolicy {
+                order: classes,
+                within_tier: WithinTierRule::ProRataByOutstandingStableId,
+            },
+            claims_complete: true,
+            tax_assessment_complete: true,
+            asset_register_complete: true,
+            employment_exit_terms_complete: true,
+            claims,
+            payroll,
+        };
+        e.world.town.as_mut().unwrap().profile.exit_policy = Some(policy);
+        e.world.town.unwrap().validate_world(&e.world).unwrap();
     }
 
     #[test]
@@ -5266,6 +6201,389 @@ mod tests {
             view.town.unwrap().state.payroll.as_slice()[0].paid,
             cash(800)
         );
+    }
+
+    #[test]
+    fn town_exit_sells_real_inventory_pays_bound_claim_once_and_closes_at_zero_cash() {
+        let mut e = productive_market_engine_with(ProductiveMarketConfig {
+            raw_quantity: 100,
+            household_need: 100,
+            ..ProductiveMarketConfig::default()
+        });
+        install_exit_policy(&mut e);
+        advance_productive_day(&mut e);
+        let day_one = issue(&mut e, Action::TownSettle { profile_id: 1 })
+            .town
+            .unwrap();
+        assert_eq!(day_one.produced, Quantity::new(100).unwrap());
+        assert_eq!(day_one.actual_sales, Quantity::new(100).unwrap());
+        let company_cash = e
+            .world
+            .view()
+            .accounts
+            .iter()
+            .find(|row| row.id == 3)
+            .unwrap()
+            .cash;
+        assert!(company_cash > Money::ZERO);
+        issue(
+            &mut e,
+            Action::Timeline {
+                command: crate::timeline::Command::Claims {
+                    first_id: 100,
+                    count: 1,
+                    payer: 3,
+                    payee: 4,
+                    amount: company_cash,
+                    due: 2 * crate::timeline::DAY,
+                },
+            },
+        );
+        issue_as(
+            &mut e,
+            Caller::Account(4),
+            Action::BeginExit {
+                company: 3,
+                policy_id: 1,
+            },
+        );
+        let payroll = &e.timeline().unwrap().payroll[0];
+        assert!(!payroll.working);
+        assert_eq!(payroll.next_due, None);
+        assert_eq!(payroll.billed, payroll.accrued);
+        let before_unauthorized = e.state_hash();
+        let unauthorized = e.execute(
+            Caller::System,
+            env(&e, 900_100, vec![Action::SettleExit { company: 3 }]),
+        );
+        assert_eq!(unauthorized, Err(TxError::Unauthorized));
+        assert_eq!(e.state_hash(), before_unauthorized);
+
+        for _ in 0..100 {
+            issue(
+                &mut e,
+                Action::Timeline {
+                    command: crate::timeline::Command::Advance {
+                        target: 2 * crate::timeline::DAY,
+                        limit: 8192,
+                    },
+                },
+            );
+            if e.timeline().unwrap().progress.target.is_none() {
+                break;
+            }
+        }
+        let receipt = issue(&mut e, Action::TownSettle { profile_id: 1 });
+        assert_eq!(receipt.town.unwrap().produced, Quantity::ZERO);
+        assert_eq!(receipt.town.unwrap().actual_sales, Quantity::ZERO);
+        let payroll = &e.timeline().unwrap().payroll[0];
+        assert_eq!(payroll.work_seconds, 8 * 3600);
+        let claim = &e.timeline().unwrap().claims[0];
+        assert!(claim.processed);
+        assert_eq!(claim.paid, Money::ZERO); // automatic payment cannot bypass exit ranking
+        let settlement = env(&e, 900_101, vec![Action::SettleExit { company: 3 }]);
+        let pre_settlement = e.state_hash();
+        // The payee can receive proceeds, but a failed staged credit must roll back both sides.
+        let payee_handle = e.world.account_handle(4).unwrap();
+        let original_payee = *e.world.accounts.get(payee_handle).unwrap();
+        let mut overflow_payee = original_payee;
+        overflow_payee.cash = Money::new(i64::MAX).unwrap();
+        e.world
+            .accounts
+            .replace(payee_handle, overflow_payee)
+            .unwrap();
+        let before_failed_settlement = e.state_hash();
+        assert_eq!(
+            e.execute(Caller::Account(1), settlement.clone()),
+            Err(TxError::Overflow)
+        );
+        assert_eq!(e.state_hash(), before_failed_settlement);
+        e.world
+            .accounts
+            .replace(payee_handle, original_payee)
+            .unwrap();
+        assert_eq!(e.state_hash(), pre_settlement);
+        let replay_failed = e.execute(Caller::Account(1), settlement.clone());
+        assert_eq!(replay_failed, Err(TxError::Overflow));
+        assert_eq!(e.state_hash(), pre_settlement);
+        assert_eq!(
+            e.journal()
+                .last()
+                .map(|record| (record.operation_id, record.outcome)),
+            Some((900_101, Err(TxError::Overflow))),
+            "a rejected operation remains an immutable idempotent receipt"
+        );
+        let successful_settlement = env(&e, 900_111, settlement.actions);
+        let paid = e
+            .execute(Caller::Account(1), successful_settlement)
+            .unwrap();
+        assert_eq!(paid.revision, e.world.revision);
+        assert_eq!(e.timeline().unwrap().claims[0].paid, company_cash);
+        let after_payment = e.world.view();
+        assert_eq!(
+            after_payment
+                .accounts
+                .iter()
+                .find(|row| row.id == 3)
+                .unwrap()
+                .cash,
+            Money::ZERO
+        );
+        assert_eq!(
+            after_payment
+                .accounts
+                .iter()
+                .find(|row| row.id == 4)
+                .unwrap()
+                .cash,
+            original_payee.cash.checked_add(company_cash).unwrap()
+        );
+        let checkpoint = e.export_checkpoint().unwrap();
+        let restored = Engine::restore_checkpoint(&checkpoint).unwrap();
+        assert_eq!(restored.state_hash(), e.state_hash());
+        let before_close = e.state_hash();
+        let close_envelope = env(&e, 900_112, vec![Action::CloseExit { company: 3 }]);
+        let close = e
+            .execute(Caller::Account(1), close_envelope.clone())
+            .unwrap();
+        assert_eq!(close.revision, e.world.revision);
+        assert_ne!(e.state_hash(), before_close);
+        assert_eq!(
+            e.world.town.unwrap().state.exit.unwrap().phase,
+            crate::town_runtime::ExitPhase::Closed
+        );
+        let closed = e.state_hash();
+        let replay = e.execute(Caller::Account(1), close_envelope);
+        assert_eq!(replay, Ok(close));
+        assert_eq!(e.state_hash(), closed);
+
+        let inbound_stock = e.execute(
+            Caller::Account(4),
+            env(
+                &e,
+                900_109,
+                vec![Action::MoveStock {
+                    from: e.world.stock_ref(1).unwrap(),
+                    to: e.world.stock_ref(2).unwrap(),
+                    quantity: Quantity::new(1).unwrap(),
+                }],
+            ),
+        );
+        assert_eq!(inbound_stock, Err(TxError::InvalidOperation));
+        assert_eq!(e.state_hash(), closed);
+
+        let inbound_transfer = e.execute(
+            Caller::Account(4),
+            env(
+                &e,
+                900_103,
+                vec![Action::Transfer {
+                    from: e.world.account_ref(4).unwrap(),
+                    to: e.world.account_ref(3).unwrap(),
+                    amount: cash(1),
+                }],
+            ),
+        );
+        assert_eq!(inbound_transfer, Err(TxError::InvalidOperation));
+        assert_eq!(e.state_hash(), closed);
+
+        let inbound_claim = e.execute(
+            Caller::System,
+            env(
+                &e,
+                900_104,
+                vec![Action::Timeline {
+                    command: crate::timeline::Command::Claims {
+                        first_id: 200,
+                        count: 1,
+                        payer: 4,
+                        payee: 3,
+                        amount: cash(1),
+                        due: 3 * crate::timeline::DAY,
+                    },
+                }],
+            ),
+        );
+        assert_eq!(inbound_claim, Err(TxError::InvalidOperation));
+        assert_eq!(e.state_hash(), closed);
+
+        let inbound_loan = e.execute(
+            Caller::System,
+            env(
+                &e,
+                900_106,
+                vec![Action::Timeline {
+                    command: crate::timeline::Command::Lend {
+                        id: 300,
+                        lender: 4,
+                        borrower: 3,
+                        principal: cash(1),
+                        due: 3 * crate::timeline::DAY,
+                    },
+                }],
+            ),
+        );
+        assert_eq!(inbound_loan, Err(TxError::InvalidOperation));
+        assert_eq!(e.state_hash(), closed);
+
+        let inbound_payroll = e.execute(
+            Caller::System,
+            env(
+                &e,
+                900_107,
+                vec![Action::Timeline {
+                    command: crate::timeline::Command::AddPayroll {
+                        spec: crate::timeline::PayrollSpec {
+                            id: 2,
+                            payer: 4,
+                            payee: 3,
+                            home_city: 0,
+                            hourly_cents: cash(100),
+                            cycle: crate::timeline::Cycle::Daily,
+                            ends_at: 4 * crate::timeline::DAY,
+                        },
+                    },
+                }],
+            ),
+        );
+        assert_eq!(
+            inbound_payroll,
+            Err(TxError::Timeline(crate::timeline::Error::Input))
+        );
+        assert_eq!(e.state_hash(), closed);
+    }
+
+    #[test]
+    fn town_exit_blocks_unregistered_timeline_receivables_before_liquidation() {
+        let mut e = productive_market_engine();
+        install_exit_policy(&mut e);
+        advance_productive_day(&mut e);
+        issue(&mut e, Action::TownSettle { profile_id: 1 });
+        issue(
+            &mut e,
+            Action::Timeline {
+                command: crate::timeline::Command::Claims {
+                    first_id: 100,
+                    count: 1,
+                    payer: 3,
+                    payee: 4,
+                    amount: cash(100),
+                    due: 2 * crate::timeline::DAY,
+                },
+            },
+        );
+        issue(
+            &mut e,
+            Action::Timeline {
+                command: crate::timeline::Command::Lend {
+                    id: 500,
+                    lender: 3,
+                    borrower: 4,
+                    principal: cash(1_000),
+                    due: 2 * crate::timeline::DAY,
+                },
+            },
+        );
+        let before = e.state_hash();
+        let result = e.execute(
+            Caller::Account(4),
+            env(
+                &e,
+                900_108,
+                vec![Action::BeginExit {
+                    company: 3,
+                    policy_id: 1,
+                }],
+            ),
+        );
+        assert_eq!(result, Err(TxError::InvalidOperation));
+        assert_eq!(e.state_hash(), before);
+        assert!(e.world.town.unwrap().state.exit.is_none());
+    }
+
+    #[test]
+    fn town_exit_rejects_company_claim_sets_larger_than_policy_capacity() {
+        let mut e = productive_market_engine();
+        install_exit_policy(&mut e);
+        advance_productive_day(&mut e);
+        issue(&mut e, Action::TownSettle { profile_id: 1 });
+        issue(
+            &mut e,
+            Action::Timeline {
+                command: crate::timeline::Command::Claims {
+                    first_id: 200,
+                    count: (crate::town_runtime::MAX_EXIT_CLAIM_BINDINGS + 1) as u32,
+                    payer: 3,
+                    payee: 4,
+                    amount: cash(1),
+                    due: 2 * crate::timeline::DAY,
+                },
+            },
+        );
+        let before = e.state_hash();
+        let result = e.execute(
+            Caller::Account(4),
+            env(
+                &e,
+                900_109,
+                vec![Action::BeginExit {
+                    company: 3,
+                    policy_id: 1,
+                }],
+            ),
+        );
+        assert_eq!(result, Err(TxError::InvalidOperation));
+        assert_eq!(e.state_hash(), before);
+        assert!(e.world.town.unwrap().state.exit.is_none());
+    }
+
+    #[test]
+    fn town_exit_rejects_pending_payroll_cycle_amendment_before_stopping_work() {
+        let mut e = productive_market_engine();
+        install_exit_policy(&mut e);
+        advance_productive_day(&mut e);
+        issue(&mut e, Action::TownSettle { profile_id: 1 });
+        issue(
+            &mut e,
+            Action::Timeline {
+                command: crate::timeline::Command::Claims {
+                    first_id: 100,
+                    count: 1,
+                    payer: 3,
+                    payee: 4,
+                    amount: cash(100),
+                    due: 2 * crate::timeline::DAY,
+                },
+            },
+        );
+        issue(
+            &mut e,
+            Action::Timeline {
+                command: crate::timeline::Command::ChangeCycle {
+                    id: 1,
+                    cycle: crate::timeline::Cycle::Weekly,
+                },
+            },
+        );
+        assert_eq!(
+            e.timeline().unwrap().payroll[0].pending_cycle,
+            Some(crate::timeline::Cycle::Weekly)
+        );
+        let before = e.state_hash();
+        let result = e.execute(
+            Caller::Account(4),
+            env(
+                &e,
+                900_110,
+                vec![Action::BeginExit {
+                    company: 3,
+                    policy_id: 1,
+                }],
+            ),
+        );
+        assert_eq!(result, Err(TxError::InvalidOperation));
+        assert_eq!(e.state_hash(), before);
+        assert!(e.world.town.unwrap().state.exit.is_none());
     }
 
     #[test]

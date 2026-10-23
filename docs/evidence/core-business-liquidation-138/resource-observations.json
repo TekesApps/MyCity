@@ -1,0 +1,57 @@
+[
+  {
+    "case": "base28",
+    "real_seconds": 3.89,
+    "user_seconds": 0.16,
+    "system_seconds": 0.54,
+    "rss_bytes": 52510720,
+    "logical_world_bytes": 784112,
+    "allocated_world_bytes_not_apfs_exclusive": 819200,
+    "includes_CLI_Store_and_OS_overhead": true,
+    "clean_performance": false
+  },
+  {
+    "case": "cash28",
+    "real_seconds": 3.48,
+    "user_seconds": 0.17,
+    "system_seconds": 0.66,
+    "rss_bytes": 48529408,
+    "logical_world_bytes": 783829,
+    "allocated_world_bytes_not_apfs_exclusive": 815104,
+    "includes_CLI_Store_and_OS_overhead": true,
+    "clean_performance": false
+  },
+  {
+    "case": "closed",
+    "real_seconds": 0.8,
+    "user_seconds": 0.01,
+    "system_seconds": 0.03,
+    "rss_bytes": 46432256,
+    "logical_world_bytes": 81704,
+    "allocated_world_bytes_not_apfs_exclusive": 94208,
+    "includes_CLI_Store_and_OS_overhead": true,
+    "clean_performance": false
+  },
+  {
+    "case": "energy28",
+    "real_seconds": 3.57,
+    "user_seconds": 0.18,
+    "system_seconds": 0.68,
+    "rss_bytes": 48496640,
+    "logical_world_bytes": 784214,
+    "allocated_world_bytes_not_apfs_exclusive": 819200,
+    "includes_CLI_Store_and_OS_overhead": true,
+    "clean_performance": false
+  },
+  {
+    "case": "waiting",
+    "real_seconds": 0.24,
+    "user_seconds": 0.01,
+    "system_seconds": 0.03,
+    "rss_bytes": 46399488,
+    "logical_world_bytes": 78531,
+    "allocated_world_bytes_not_apfs_exclusive": 94208,
+    "includes_CLI_Store_and_OS_overhead": true,
+    "clean_performance": false
+  }
+]

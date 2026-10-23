@@ -1,0 +1,2 @@
+mode=closed startup_grant=20 self_funding=false day1_produced=20 day1_sales=10 day2_produced=0 day2_sales=10 company_cash=0 household_cash=198760 wage_paid=800 debt_paid=1200 raw_remaining=0 product_remaining=0 phase=Closed route_source=77 fixed_quote_substitute=true full_road_network=not_tested
+memory_layout_bytes project=1664 project_bound=2048 engine_owned_capacity=4105728 engine_bound=4194304 market_profile=41368 market_state=4752 exit_policy=1576 process_peak=not_measured physical_memory_acceptance=not_measured full_16gb=not_run

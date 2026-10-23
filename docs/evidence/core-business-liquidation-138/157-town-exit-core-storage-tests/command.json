@@ -1,0 +1,22 @@
+{
+  "argv": [
+    "cargo",
+    "test",
+    "--release",
+    "--locked",
+    "--offline",
+    "-p",
+    "mycity-core",
+    "-p",
+    "mycity-storage",
+    "--lib",
+    "--tests",
+    "--",
+    "--nocapture"
+  ],
+  "cwd": "/Users/frankqin/dev/MyCity-core-work/construction-compensation-current",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "rust_min_stack": "unset",
+  "started_utc": "2026-10-23T02:55:58.242798+00:00",
+  "source_manifest_sha256": "474ce387b5a27fd93167af9b0bcce7b5ca490c40591484d99c40a35a80595b47"
+}

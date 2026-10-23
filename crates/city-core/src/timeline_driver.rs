@@ -67,6 +67,10 @@ impl Frame<'_, '_> {
         Ok(())
     }
     fn pay(&mut self, payer: u32, payee: u32, due: Money) -> Result<Money, TxError> {
+        // Accrual and processing continue, but automatic lanes cannot bypass exit ranking.
+        if super::market_is_exiting(self.town.as_ref(), payer) {
+            return Ok(Money::ZERO);
+        }
         let mut l = EconomicLedger {
             world: self.world,
             accounts: self.accounts,
@@ -184,6 +188,8 @@ impl Frame<'_, '_> {
             C::AddPayroll { spec } => {
                 if self.town.as_ref().is_some_and(|state| {
                     crate::transaction::market_is_suspended(Some(state), spec.payer)
+                        || crate::transaction::market_is_exiting(Some(state), spec.payer)
+                        || crate::transaction::market_is_exiting(Some(state), spec.payee)
                 }) {
                     return Err(err(E::Input));
                 }

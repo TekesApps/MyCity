@@ -1,0 +1,24 @@
+   Compiling mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction-compensation-current/crates/city-core)
+   Compiling mycity-map v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction-compensation-current/crates/city-map)
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction-compensation-current/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 50.89s
+     Running tests/town_business_exit.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/town_business_exit-9dbbef9d7f9e3ff2)
+TOWN_BUSINESS_EXIT_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/151-town-exit-storage-test/test-artifacts/mycity-town-business-exit-95922-0
+TOWN_BUSINESS_EXIT_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/151-town-exit-storage-test/test-artifacts/mycity-town-business-exit-95922-2
+TOWN_BUSINESS_EXIT_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/151-town-exit-storage-test/test-artifacts/mycity-town-business-exit-95922-1
+
+thread 'secured_claims_share_partial_exit_cash_by_stable_id_and_remain_liquidating' panicked at crates/city-storage/tests/town_business_exit.rs:122:50:
+called `Result::unwrap()` on an `Err` value: Model("town_profile_header")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+TOWN_BUSINESS_EXIT_PRESERVED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/151-town-exit-storage-test/test-artifacts/mycity-town-business-exit-95922-0
+
+thread 'incomplete_policy_and_unregistered_cash_residual_wait_without_bypass_or_distribution' panicked at crates/city-storage/tests/town_business_exit.rs:122:50:
+called `Result::unwrap()` on an `Err` value: Model("town_profile_header")
+TOWN_BUSINESS_EXIT_PRESERVED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/151-town-exit-storage-test/test-artifacts/mycity-town-business-exit-95922-2
+
+thread 'liquidation_sells_existing_market_stock_then_pays_wages_and_debt_once_across_recovery' panicked at crates/city-storage/tests/town_business_exit.rs:351:5:
+assertion `left == right` failed: startup grant cycles back as actual utility fees
+  left: 1000020
+ right: 1000000
+TOWN_BUSINESS_EXIT_PRESERVED=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/151-town-exit-storage-test/test-artifacts/mycity-town-business-exit-95922-1
+error: test failed, to rerun pass `-p mycity-storage --test town_business_exit`

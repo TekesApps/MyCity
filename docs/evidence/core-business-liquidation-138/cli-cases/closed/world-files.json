@@ -1,0 +1,38 @@
+[
+  {
+    "relative": "genesis.json",
+    "size": 8134,
+    "allocated": 8192,
+    "sha256": "565914e754a64d0c0700a109937b4485ee9f2cf0f69acbdf786c4bf5df92492f"
+  },
+  {
+    "relative": "LOCK",
+    "size": 0,
+    "allocated": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "relative": "wal.bin",
+    "size": 72593,
+    "allocated": 73728,
+    "sha256": "44356efc64d34a9f59204d693b151870d9628cba04c8b13f65cb4d1d80205108"
+  },
+  {
+    "relative": "root-0.json",
+    "size": 427,
+    "allocated": 4096,
+    "sha256": "056569000de7f0578b400d49dcd8c16101409f40aba029f2b87fdc4b8b4adf65"
+  },
+  {
+    "relative": "root-1.json",
+    "size": 427,
+    "allocated": 4096,
+    "sha256": "55b029853d40c5c89aa1135499b2e5b031415db83bfcea7b8fc7e007684d52a8"
+  },
+  {
+    "relative": "CURRENT.json",
+    "size": 123,
+    "allocated": 4096,
+    "sha256": "4cc692d813f73b53f5e35fc9035739f78460063c03e6cbefa241c7fbb236e8fc"
+  }
+]

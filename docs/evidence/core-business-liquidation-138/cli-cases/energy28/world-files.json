@@ -1,0 +1,86 @@
+[
+  {
+    "relative": "genesis.json",
+    "size": 8216,
+    "allocated": 12288,
+    "sha256": "87a8ed43e0ea9fd67532073dc6891912297d0b6058ba7d366502a7d577206876"
+  },
+  {
+    "relative": "wal-710.bin",
+    "size": 0,
+    "allocated": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "relative": "checkpoint-707.json",
+    "size": 19214,
+    "allocated": 20480,
+    "sha256": "ffd0801f4c6bcc9d11403e9fe72f5584c46cf8f7042ad6738b86ee42f8dd04e9"
+  },
+  {
+    "relative": "checkpoint-index-707.json",
+    "size": 207,
+    "allocated": 4096,
+    "sha256": "627fc075a1980a19f9b974b08ba644b34604eebe149000b11080b40fbd1f7364"
+  },
+  {
+    "relative": "LOCK",
+    "size": 0,
+    "allocated": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "relative": "checkpoint-index-710.json",
+    "size": 211,
+    "allocated": 4096,
+    "sha256": "64c859513c47d49ada14375c2bb8f73a9ad90cd8a4f512b8c8152772e90790c6"
+  },
+  {
+    "relative": "checkpoint-710.json",
+    "size": 19572,
+    "allocated": 20480,
+    "sha256": "184b6220427f0148ce39d01899cf81d1b88b41b1a24866995f5613fe830f9eba"
+  },
+  {
+    "relative": "root-0.json",
+    "size": 517,
+    "allocated": 4096,
+    "sha256": "aeda4d13fc69d3c64d6a135a1af66bf3b7d9864602c2168c48ce99b65701ffba"
+  },
+  {
+    "relative": "checkpoint-index-705.json",
+    "size": 1603,
+    "allocated": 4096,
+    "sha256": "8c7baec81c52b9295fa4fb4862fd39ac24a0c6cdfb328189b9c5c504e96c0468"
+  },
+  {
+    "relative": "checkpoint-705.json",
+    "size": 365695,
+    "allocated": 368640,
+    "sha256": "0c5cf59690fc3c28800c68523101fadb4c2f123765fc669e0990d323368a2031"
+  },
+  {
+    "relative": "checkpoint-354.json",
+    "size": 366919,
+    "allocated": 368640,
+    "sha256": "5f41a257ecec8b5cd9a83bd6fffc3e4e8bfc1c479abd2b32599ebc996ed132dc"
+  },
+  {
+    "relative": "checkpoint-index-354.json",
+    "size": 1417,
+    "allocated": 4096,
+    "sha256": "06a8015105c8beacf9767943168bde6f3552591088356f4ead264906af83a65a"
+  },
+  {
+    "relative": "root-1.json",
+    "size": 520,
+    "allocated": 4096,
+    "sha256": "809899ea3b3ed1c2876c0dde18d99bf3c34f26cc2c7ea25af0b440694a82e971"
+  },
+  {
+    "relative": "CURRENT.json",
+    "size": 123,
+    "allocated": 4096,
+    "sha256": "0cd97864a3ebb7a225e2a1084b1a97683d172f986715efbd16bf6a7980c398a4"
+  }
+]

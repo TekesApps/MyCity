@@ -1,0 +1,2 @@
+mode=waiting day1_sales=0 day2_sales=0 company_cash=0 unpaid_claims=99 phase=Liquidating close=blocked route_source=none full_road_network=not_tested
+memory_layout_bytes project=1664 project_bound=2048 engine_owned_capacity=4105728 engine_bound=4194304 market_profile=41368 market_state=4752 exit_policy=1576 process_peak=not_measured physical_memory_acceptance=not_measured full_16gb=not_run

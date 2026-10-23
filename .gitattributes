@@ -85,3 +85,6 @@ docs/evidence/m0-t13a-observer-source-136/**/*.stderr whitespace=-blank-at-eof,-
 # Hash-bound observer support bytes retain historical EOF whitespace.
 docs/evidence/m0-t13a-observer-source-136/control/frame_codec.py whitespace=-blank-at-eof
 docs/evidence/m0-t13a-observer-source-136/old-control/frame_codec.py whitespace=-blank-at-eof
+
+# Preserve v138 captured validation logs verbatim.
+docs/evidence/core-business-liquidation-138/**/*.log whitespace=-blank-at-eof,-blank-at-eol

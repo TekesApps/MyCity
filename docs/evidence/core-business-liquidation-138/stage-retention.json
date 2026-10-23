@@ -1,0 +1,39 @@
+{
+  "hardlink_deduplicated_archives": [
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/161-town-exit-strict-final/source.zip",
+      "prior_allocated_bytes": 4435968,
+      "preserved_as_full_byte_hardlink_to": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/163-town-exit-cli-build/source.zip",
+      "sha256": "2f6466593a72730cdfe7199804e6724d285b4c5a92ad473d201d68139edafdaa",
+      "reason": "byte-identical final source/dependency archive; all required source paths/full contents retained"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/162-town-exit-final-core/source.zip",
+      "prior_allocated_bytes": 4435968,
+      "preserved_as_full_byte_hardlink_to": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/163-town-exit-cli-build/source.zip",
+      "sha256": "2f6466593a72730cdfe7199804e6724d285b4c5a92ad473d201d68139edafdaa",
+      "reason": "byte-identical final source/dependency archive; all required source paths/full contents retained"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/165-town-exit-final-storage/source.zip",
+      "prior_allocated_bytes": 4435968,
+      "preserved_as_full_byte_hardlink_to": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/163-town-exit-cli-build/source.zip",
+      "sha256": "2f6466593a72730cdfe7199804e6724d285b4c5a92ad473d201d68139edafdaa",
+      "reason": "byte-identical final source/dependency archive; all required source paths/full contents retained"
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/166-town-exit-fmt/source.zip",
+      "prior_allocated_bytes": 4435968,
+      "preserved_as_full_byte_hardlink_to": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/163-town-exit-cli-build/source.zip",
+      "sha256": "2f6466593a72730cdfe7199804e6724d285b4c5a92ad473d201d68139edafdaa",
+      "reason": "byte-identical final source/dependency archive; all required source paths/full contents retained"
+    }
+  ],
+  "duplicate_file_allocation_removed_bytes": 17743872,
+  "observed_available_delta_bytes": 17719296,
+  "not_APFS_exclusive_reclaimed": true,
+  "source_and_restore_inputs_deleted": false,
+  "shared_target": "reused; not cleaned",
+  "protected_originals": "not touched",
+  "full_CLI_and_Store_worlds": "retained for D integration/restore; original bytes retained"
+}

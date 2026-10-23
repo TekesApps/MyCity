@@ -1,0 +1,23 @@
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction-compensation-current/crates/city-core)
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction-compensation-current/crates/city-headless)
+    Checking mycity-map v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction-compensation-current/crates/city-map)
+    Checking mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity-core-work/construction-compensation-current/crates/city-storage)
+error[E0308]: mismatched types
+   --> crates/city-storage/examples/town_business_28d.rs:423:12
+    |
+422 |     let settle_status = match settle.model {
+    |                               ------------ this expression has type `std::result::Result<mycity_core::transaction::Receipt, mycity_core::transaction::TxError>`
+423 |         Ok(()) => "settlement_ready".to_owned(),
+    |            ^^ expected `Receipt`, found `()`
+
+error[E0308]: mismatched types
+   --> crates/city-storage/examples/town_business_28d.rs:434:12
+    |
+433 |     let close_status = match close.model {
+    |                              ----------- this expression has type `std::result::Result<mycity_core::transaction::Receipt, mycity_core::transaction::TxError>`
+434 |         Ok(()) => "closed".to_owned(),
+    |            ^^ expected `Receipt`, found `()`
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `mycity-storage` (example "town_business_28d") due to 2 previous errors
+warning: build failed, waiting for other jobs to finish...
