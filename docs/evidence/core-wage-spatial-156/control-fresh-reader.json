@@ -1,0 +1,12 @@
+{
+  "engine_owned_bytes": 3608544,
+  "mode": "verify_open_working_copy",
+  "model_commands_executed": 0,
+  "native_peak": "not_measured",
+  "receipt_sequence": 79,
+  "rules": "household-wage-spatial-equity-v1",
+  "state_hash": "cbff86fc5bfdab2b1263b49492552b09ce53d980facbb1557d59df420d214ea5",
+  "store_owned_bytes": 41790725,
+  "working_copy": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/441-wage-control-cold/working-copy",
+  "world_owned_bytes": 101576
+}

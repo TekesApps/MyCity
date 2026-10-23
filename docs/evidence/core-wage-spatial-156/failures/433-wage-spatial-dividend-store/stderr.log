@@ -1,0 +1,20 @@
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+error[E0308]: mismatched types
+   --> crates/city-storage/tests/../examples/support/household_wage_spatial.rs:475:5
+    |
+474 |   fn served_pair(proof: &TransportProofAsset) -> [i64; 2] {
+    |                                                  -------- expected `[i64; 2]` because of return type
+475 | /     [101, 102].map(|source| {
+476 | |         proof
+477 | |             .assignment
+478 | |             .demand_outcomes
+...   |
+482 | |             .served_people
+483 | |     })
+    | |______^ expected `[i64; 2]`, found `[u32; 2]`
+    |
+    = note: expected array `[i64; 2]`
+               found array `[u32; 2]`
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `mycity-storage` (test "household_wage_spatial_equity") due to 1 previous error

@@ -308,3 +308,29 @@ Model lifecycle diagnostic with original347 event fixture, not a memory fix/test
 continues integration as small bounded batches using shared target; no parallel Cargo or old
 whole-file rollback. Twenty identical terminal399-430 source ZIPs share full hardlink content;
 selected allocated space reduced107.32MiB, separate APFS availability observation retained.
+
+
+## Live batches after155 (2026-10-24)
+
+The existing agents/branches were checked and reused; no duplicate workers and no unrelated
+WIP overwrite. Root is the sole Cargo/measurement/release scheduler; economy_scenarios remains
+the only Engine/World/Timeline/Store/decoder author. All evidence and shared target use external
+HP P900 USB/APFS SSD. No formal measurement is currently running.
+
+| Batch / owner | Exclusive files | Handoff / dependencies | Actual completion boundary |
+|---|---|---|---|
+| M0 / equity_current | Private normal_pool.rs diagnostic and bounded native observer, original fixture, offline attribution note | Root supplies CLI entry, pins fresh source/exe and schedules isolated diagnostic; original347/normal caps unchanged | Source-only diagnostic/observer; no physical fix, no long rerun, real16GB not_run |
+| D joint / construction_finish | New household_wage_spatial support/test/CLI and independent oracle | Existing155 core read-only; root integrates exactly3 scenario files and executes/reviews recovery | Final436fmt/437strict/438 five Store checks/439build/440fixedCLI/441–442 fresh full-copy opens actually pass; independent oracle pending |
+| F shared / economy_scenarios | Private spatial-geometry-v154 core, catalog, basis, Store activation | Geometry-only context patch over155; cannot roll back final E historical rent/Default changes | New stage/grant/Apply implementation remains uncompiled; root verifies before any release |
+| F scenario / joint_current_prep | Same private tree tests/examples only | Actual Store API from shared writer; same-world geometry→trade→history→recovery, then CLI | Frozen test a0bb952d… is source-only/not_run; test owner may not modify catalog |
+| E / scoped_index_calls | Existing housing-current test/CLI files only | Published155 is authoritative; keep private WIP and do not recopy old helper fixes | Finite Move/Wait/re-let/cold evidence accepted; lifetime offer cap and missing dwelling→OD remain |
+| Advisor / scoped_handle_advice | Read-only concrete plan/results | New failures or final fixed evidence only | Finite D review accepts stated evidence; no oracle signature before it runs |
+| Root | Canonical integration, evidence, joint interfaces, version/Issue receipts | Exact manifests, protected WIP, one Cargo window, complete originals | Continues small passing releases; no all-lines/M0 completion claim |
+
+D fixed439 source5c1ddbdd… and executable0cda6575… bind the actual440 run. Its two-world
+control preserves the same fixed spatial OD and differs by actual480c supplemental wages.
+Household cash affects purchases and tax/dividends; no origin reassignment is invented. See
+[evidence/core-wage-spatial-156](evidence/core-wage-spatial-156/STATUS.md) as results finalize.
+
+Root completed the pending156 independent v7 checkpoint/cash/equity/tax/proof oracle with
+exit0. This closes that finite joint scenario; M0/F/housing→OD dependencies stay open.

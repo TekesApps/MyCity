@@ -1,0 +1,353 @@
+[
+  {
+    "round": "431-wage-spatial-check",
+    "command": {
+      "argv": [
+        "cargo",
+        "check",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-storage",
+        "--test",
+        "household_wage_spatial_equity",
+        "--example",
+        "town_household_wage_spatial"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T21:42:45.781869+00:00",
+      "source_manifest_sha256": "193b9347b63ace0393129d8203551c1e334cb347e2dc8d5140b4fb108142f12d"
+    },
+    "result": {
+      "exit_code": 101,
+      "wall_seconds": 6.3840921669999995,
+      "source_unchanged": true
+    },
+    "source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/431-wage-spatial-check/source-manifest.json",
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/431-wage-spatial-check/source.zip",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/431-wage-spatial-check/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/431-wage-spatial-check/stderr.log"
+  },
+  {
+    "round": "432-wage-spatial-store",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-storage",
+        "--test",
+        "household_wage_spatial_equity",
+        "--",
+        "--nocapture"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T21:43:26.044418+00:00",
+      "source_manifest_sha256": "b295898ebe0162f58ef0e7c8de82db9747d7566d115b5641c6978db9ebc07ed6"
+    },
+    "result": {
+      "exit_code": 101,
+      "wall_seconds": 4.096573167,
+      "source_unchanged": true
+    },
+    "source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/432-wage-spatial-store/source-manifest.json",
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/432-wage-spatial-store/source.zip",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/432-wage-spatial-store/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/432-wage-spatial-store/stderr.log"
+  },
+  {
+    "round": "433-wage-spatial-dividend-store",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-storage",
+        "--test",
+        "household_wage_spatial_equity",
+        "--",
+        "--nocapture"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T21:47:28.692434+00:00",
+      "source_manifest_sha256": "34fe168e61c34275aec0c5f4385b05d18f740d08b62ea02e2cc469e18797e5e5"
+    },
+    "result": {
+      "exit_code": 101,
+      "wall_seconds": 0.204638667,
+      "source_unchanged": true
+    },
+    "source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/433-wage-spatial-dividend-store/source-manifest.json",
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/433-wage-spatial-dividend-store/source.zip",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/433-wage-spatial-dividend-store/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/433-wage-spatial-dividend-store/stderr.log"
+  },
+  {
+    "round": "434-wage-spatial-dividend-store",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-storage",
+        "--test",
+        "household_wage_spatial_equity",
+        "--",
+        "--nocapture"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T21:48:04.943863+00:00",
+      "source_manifest_sha256": "b9694ae9b3e9be126f40f0e8c37a29bfa9137d374024accf33c60f11bfdd5678"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 4.025835334,
+      "source_unchanged": true
+    },
+    "source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/434-wage-spatial-dividend-store/source-manifest.json",
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/434-wage-spatial-dividend-store/source.zip",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/434-wage-spatial-dividend-store/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/434-wage-spatial-dividend-store/stderr.log"
+  },
+  {
+    "round": "435-wage-final-store",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-storage",
+        "--test",
+        "household_wage_spatial_equity",
+        "--",
+        "--nocapture"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T21:54:03.260096+00:00",
+      "source_manifest_sha256": "5181345a3f4d2f17456f8c3f2b8f0dc7a6ea0ec772b214433ac3bf21813557c3"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 5.095809417,
+      "source_unchanged": true
+    },
+    "source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/435-wage-final-store/source-manifest.json",
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/435-wage-final-store/source.zip",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/435-wage-final-store/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/435-wage-final-store/stderr.log"
+  },
+  {
+    "round": "436-wage-final-fmt",
+    "command": {
+      "argv": [
+        "cargo",
+        "fmt",
+        "--all",
+        "--",
+        "--check"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T21:56:20.680247+00:00",
+      "source_manifest_sha256": "a363e2d2ca5a2939853d0b7d2538a0888747cdec39d458132bd19f1685f7dfa0"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 0.9487915000000001,
+      "source_unchanged": true
+    },
+    "source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/436-wage-final-fmt/source-manifest.json",
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/436-wage-final-fmt/source.zip",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/436-wage-final-fmt/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/436-wage-final-fmt/stderr.log"
+  },
+  {
+    "round": "437-wage-final-strict",
+    "command": {
+      "argv": [
+        "cargo",
+        "clippy",
+        "--locked",
+        "--release",
+        "--workspace",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T21:56:21.693918+00:00",
+      "source_manifest_sha256": "a363e2d2ca5a2939853d0b7d2538a0888747cdec39d458132bd19f1685f7dfa0"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 6.2495882499999995,
+      "source_unchanged": true
+    },
+    "source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/437-wage-final-strict/source-manifest.json",
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/437-wage-final-strict/source.zip",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/437-wage-final-strict/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/437-wage-final-strict/stderr.log"
+  },
+  {
+    "round": "438-wage-final-storage",
+    "command": {
+      "argv": [
+        "cargo",
+        "test",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-storage",
+        "--test",
+        "household_wage_spatial_equity",
+        "--test",
+        "equity_creditor_residual",
+        "--test",
+        "equity_runtime",
+        "--test",
+        "housing_equity_spatial",
+        "--",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T21:56:28.016717+00:00",
+      "source_manifest_sha256": "a363e2d2ca5a2939853d0b7d2538a0888747cdec39d458132bd19f1685f7dfa0"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 16.069579083,
+      "source_unchanged": true
+    },
+    "source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/438-wage-final-storage/source-manifest.json",
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/438-wage-final-storage/source.zip",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/438-wage-final-storage/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/438-wage-final-storage/stderr.log"
+  },
+  {
+    "round": "439-wage-final-cli-build",
+    "command": {
+      "argv": [
+        "cargo",
+        "build",
+        "--locked",
+        "--release",
+        "-p",
+        "mycity-storage",
+        "--example",
+        "town_household_wage_spatial"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T21:56:44.252525+00:00",
+      "source_manifest_sha256": "a363e2d2ca5a2939853d0b7d2538a0888747cdec39d458132bd19f1685f7dfa0"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 2.326179459,
+      "source_unchanged": true
+    },
+    "source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/439-wage-final-cli-build/source-manifest.json",
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/439-wage-final-cli-build/source.zip",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/439-wage-final-cli-build/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/439-wage-final-cli-build/stderr.log"
+  },
+  {
+    "round": "440-wage-spatial-cli",
+    "command": {
+      "argv": [
+        "/usr/bin/time",
+        "-l",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/439-wage-final-cli-build/executables/0cda65754abde746b2787f682c60d38db90a75f1b49ebd0cb682cdf918c29afa/town_household_wage_spatial",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/440-wage-spatial-worlds"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T22:00:19.169076+00:00",
+      "source_manifest_sha256": "a363e2d2ca5a2939853d0b7d2538a0888747cdec39d458132bd19f1685f7dfa0"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 2.2512880830000004,
+      "source_unchanged": true
+    },
+    "source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/440-wage-spatial-cli/source-manifest.json",
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/440-wage-spatial-cli/source.zip",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/440-wage-spatial-cli/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/440-wage-spatial-cli/stderr.log"
+  },
+  {
+    "round": "441-wage-control-cold-reader",
+    "command": {
+      "argv": [
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/439-wage-final-cli-build/executables/0cda65754abde746b2787f682c60d38db90a75f1b49ebd0cb682cdf918c29afa/town_household_wage_spatial",
+        "--verify-open",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/441-wage-control-cold/working-copy"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T22:08:35.290366+00:00",
+      "source_manifest_sha256": "a363e2d2ca5a2939853d0b7d2538a0888747cdec39d458132bd19f1685f7dfa0"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 0.033982333,
+      "source_unchanged": true
+    },
+    "source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/441-wage-control-cold-reader/source-manifest.json",
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/441-wage-control-cold-reader/source.zip",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/441-wage-control-cold-reader/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/441-wage-control-cold-reader/stderr.log"
+  },
+  {
+    "round": "442-wage-higher-cold-reader",
+    "command": {
+      "argv": [
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/439-wage-final-cli-build/executables/0cda65754abde746b2787f682c60d38db90a75f1b49ebd0cb682cdf918c29afa/town_household_wage_spatial",
+        "--verify-open",
+        "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/442-wage-higher-cold/working-copy"
+      ],
+      "cwd": "/Users/frankqin/dev/MyCity",
+      "target": "/Volumes/HP P900/dev/MyCity/target",
+      "rust_min_stack": "unset",
+      "started_utc": "2026-10-23T22:08:35.511301+00:00",
+      "source_manifest_sha256": "a363e2d2ca5a2939853d0b7d2538a0888747cdec39d458132bd19f1685f7dfa0"
+    },
+    "result": {
+      "exit_code": 0,
+      "wall_seconds": 0.028826917,
+      "source_unchanged": true
+    },
+    "source_manifest": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/442-wage-higher-cold-reader/source-manifest.json",
+    "full_source_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/442-wage-higher-cold-reader/source.zip",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/442-wage-higher-cold-reader/stdout.log",
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/442-wage-higher-cold-reader/stderr.log"
+  }
+]

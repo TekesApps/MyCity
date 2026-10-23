@@ -1,0 +1,103 @@
+{
+  "control": {
+    "dividend_total": 0,
+    "final_cold_engine_owned_bytes": 3608544,
+    "final_cold_receipt_sequence": 79,
+    "final_cold_state_hash": "cbff86fc5bfdab2b1263b49492552b09ce53d980facbb1557d59df420d214ea5",
+    "final_cold_store_owned_bytes": 41790722,
+    "final_cold_world_owned_bytes": 101576,
+    "government_dividend": 0,
+    "household_cash_after_day1": 93,
+    "household_cash_final": 590,
+    "household_dividend": 0,
+    "opening_engine_owned_bytes": 3608544,
+    "opening_receipt_sequence": 0,
+    "opening_state_hash": "3e9c2134a02894916158378a8b0fb7a7cbbf63354f8a3a2703e8242ae99bb3f6",
+    "opening_store_owned_bytes": 41787258,
+    "opening_world_owned_bytes": 101576,
+    "rejected_dividend_reason": "InvalidOperation",
+    "retained_earnings_before_distribution": -741,
+    "sales_by_day": [
+      7,
+      3
+    ],
+    "seller_payroll_paid": 1600,
+    "served_people_by_day": [
+      [
+        4,
+        4
+      ],
+      [
+        4,
+        4
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "state_hash": "cbff86fc5bfdab2b1263b49492552b09ce53d980facbb1557d59df420d214ea5",
+    "supplemental_payroll_paid": 0,
+    "tax_assessed_by_day": [
+      31,
+      0
+    ],
+    "taxable_basis_by_day": [
+      63,
+      0
+    ]
+  },
+  "higher_wage": {
+    "dividend_total": 90,
+    "final_cold_engine_owned_bytes": 3608544,
+    "final_cold_receipt_sequence": 81,
+    "final_cold_state_hash": "68bdebd9decd7d3af1e3bf149b53440ad0c88e0bc501aeca5f6cac8085e4e030",
+    "final_cold_store_owned_bytes": 41790726,
+    "final_cold_world_owned_bytes": 101576,
+    "government_dividend": 13,
+    "household_cash_after_day1": 30,
+    "household_cash_final": 137,
+    "household_dividend": 77,
+    "opening_engine_owned_bytes": 3608544,
+    "opening_receipt_sequence": 0,
+    "opening_state_hash": "3e9c2134a02894916158378a8b0fb7a7cbbf63354f8a3a2703e8242ae99bb3f6",
+    "opening_store_owned_bytes": 41787262,
+    "opening_world_owned_bytes": 101576,
+    "rejected_dividend_reason": null,
+    "retained_earnings_before_distribution": 90,
+    "sales_by_day": [
+      10,
+      10
+    ],
+    "seller_payroll_paid": 1600,
+    "served_people_by_day": [
+      [
+        4,
+        4
+      ],
+      [
+        4,
+        4
+      ],
+      [
+        4,
+        4
+      ]
+    ],
+    "state_hash": "68bdebd9decd7d3af1e3bf149b53440ad0c88e0bc501aeca5f6cac8085e4e030",
+    "supplemental_payroll_paid": 480,
+    "supplier_fiscal_receipt": 13,
+    "tax_assessed_by_day": [
+      45,
+      45
+    ],
+    "taxable_basis_by_day": [
+      90,
+      90
+    ],
+    "treasury_after_fiscal_transfer": 900130
+  },
+  "native_peak": "not_measured",
+  "route": "map-derived spatial profile with fixed OD; wages do not alter demand or trip origins",
+  "total_cash": 2805000
+}

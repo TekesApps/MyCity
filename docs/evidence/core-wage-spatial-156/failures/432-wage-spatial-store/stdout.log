@@ -1,0 +1,11 @@
+
+running 1 test
+test wage_sensitive_market_uses_verified_fixed_od_and_returns_tax_dividend_to_fiscal_spend ... FAILED
+
+failures:
+
+failures:
+    wage_sensitive_market_uses_verified_fixed_od_and_returns_tax_dividend_to_fiscal_spend
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.22s
+

@@ -1,0 +1,65 @@
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+    Checking mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+    Checking mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+warning: unused imports: `GameTime` and `calendar::Date`
+  --> crates/city-storage/examples/support/household_wage_spatial.rs:5:5
+   |
+5  |     calendar::Date,
+   |     ^^^^^^^^^^^^^^
+...
+17 |     units::{GameTime, Money, Quantity},
+   |             ^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` on by default
+
+warning: unused imports: `GameTime` and `calendar::Date`
+  --> crates/city-storage/tests/../examples/support/household_wage_spatial.rs:5:5
+   |
+5  |     calendar::Date,
+   |     ^^^^^^^^^^^^^^
+...
+17 |     units::{GameTime, Money, Quantity},
+   |             ^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` on by default
+
+error[E0308]: mismatched types
+   --> crates/city-storage/examples/support/household_wage_spatial.rs:474:5
+    |
+473 |   fn served_pair(proof: &TransportProofAsset) -> [i64; 2] {
+    |                                                  -------- expected `[i64; 2]` because of return type
+474 | /     [101, 102].map(|source| {
+475 | |         proof
+476 | |             .assignment
+477 | |             .demand_outcomes
+...   |
+481 | |             .served_people
+482 | |     })
+    | |______^ expected `[i64; 2]`, found `[u32; 2]`
+    |
+    = note: expected array `[i64; 2]`
+               found array `[u32; 2]`
+
+error[E0308]: mismatched types
+   --> crates/city-storage/tests/../examples/support/household_wage_spatial.rs:474:5
+    |
+473 |   fn served_pair(proof: &TransportProofAsset) -> [i64; 2] {
+    |                                                  -------- expected `[i64; 2]` because of return type
+474 | /     [101, 102].map(|source| {
+475 | |         proof
+476 | |             .assignment
+477 | |             .demand_outcomes
+...   |
+481 | |             .served_people
+482 | |     })
+    | |______^ expected `[i64; 2]`, found `[u32; 2]`
+    |
+    = note: expected array `[i64; 2]`
+               found array `[u32; 2]`
+
+For more information about this error, try `rustc --explain E0308`.
+warning: `mycity-storage` (example "town_household_wage_spatial") generated 1 warning
+error: could not compile `mycity-storage` (example "town_household_wage_spatial") due to 1 previous error; 1 warning emitted
+warning: build failed, waiting for other jobs to finish...
+warning: `mycity-storage` (test "household_wage_spatial_equity") generated 1 warning
+error: could not compile `mycity-storage` (test "household_wage_spatial_equity") due to 1 previous error; 1 warning emitted

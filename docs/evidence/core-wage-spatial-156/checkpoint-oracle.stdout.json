@@ -1,0 +1,76 @@
+{
+  "build_receipt": {
+    "exit_code": 0,
+    "source_unchanged": true,
+    "wall_seconds": 2.326179459
+  },
+  "cli_receipt": {
+    "exit_code": 0,
+    "source_unchanged": true,
+    "wall_seconds": 2.2512880830000004
+  },
+  "limitations": [
+    "The oracle verifies retained checkpoints and independent cold-open receipts; it does not replay model commands.",
+    "OD/trip sources are fixed and identical; this does not prove wage or migration changes traffic.",
+    "The measured owned-capacity counters are not process peak memory or a 16GB acceptance."
+  ],
+  "model_commands_executed_by_oracle": 0,
+  "passed": true,
+  "results": {
+    "control": {
+      "cash": {
+        "1": 900051,
+        "2": 590,
+        "3": 699359,
+        "4": 1200000,
+        "5": 5000
+      },
+      "checkpoint": "checkpoint-80.json",
+      "checkpoint_sha256": "f39f933950e953f8c3a86f4504c6dc9bb680d31a40464ae7fc25fa80b55b6a33",
+      "cold_reader_mode_commands": 0,
+      "engine_hash": "fca3e59b05339fabfe8a25bb6a74cd8a05b62e6e15dc06a7c481543573b47c04",
+      "owned_bytes": {
+        "cli_final_cold_engine": 3608544,
+        "cli_final_cold_store": 41790722,
+        "cli_final_cold_world": 101576,
+        "independent_reader_store": 41790725
+      },
+      "proof_sha256_by_day": [
+        "ee9b94e666e291359b0a2f1b4619ff3ad3a41848a54aa1ec97adf445a8a92dc1",
+        "df6e97761036e5af2ea834b451a7cc1b48eb7866e3e59b3446d018582f2244ce",
+        "aaee1f9a95fbbe926d55db20c05459bff018dacaac2571fb08ee950c5a1e0bfe"
+      ],
+      "sequence": 79,
+      "state_hash": "cbff86fc5bfdab2b1263b49492552b09ce53d980facbb1557d59df420d214ea5",
+      "total_cash": 2805000
+    },
+    "higher-wage": {
+      "cash": {
+        "1": 900130,
+        "2": 137,
+        "3": 700200,
+        "4": 1200013,
+        "5": 4520
+      },
+      "checkpoint": "checkpoint-82.json",
+      "checkpoint_sha256": "33aff167dc1d12b49077818d6939a8ee05f7bcee1df7705f8fa9558fc4f45f15",
+      "cold_reader_mode_commands": 0,
+      "engine_hash": "3103f39462ad4b8abca0bfe69db96b2991690d9ed8de85d39f72d154aabd89d8",
+      "owned_bytes": {
+        "cli_final_cold_engine": 3608544,
+        "cli_final_cold_store": 41790726,
+        "cli_final_cold_world": 101576,
+        "independent_reader_store": 41790724
+      },
+      "proof_sha256_by_day": [
+        "ee9b94e666e291359b0a2f1b4619ff3ad3a41848a54aa1ec97adf445a8a92dc1",
+        "df6e97761036e5af2ea834b451a7cc1b48eb7866e3e59b3446d018582f2244ce",
+        "aaee1f9a95fbbe926d55db20c05459bff018dacaac2571fb08ee950c5a1e0bfe"
+      ],
+      "sequence": 81,
+      "state_hash": "68bdebd9decd7d3af1e3bf149b53440ad0c88e0bc501aeca5f6cac8085e4e030",
+      "total_cash": 2805000
+    }
+  },
+  "scope": "independent literal checkpoint/hash/cash/equity/tax/transport oracle"
+}

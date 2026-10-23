@@ -1,0 +1,62 @@
+{
+  "selection": "terminal431-442 source.zip only",
+  "allocated_before": 68173824,
+  "allocated_after": 34062336,
+  "allocated_reduction": 34111488,
+  "volume_free_before": 1870123749376,
+  "volume_free_after": 1870157803520,
+  "volume_free_delta_not_exclusively_attributed": 34054144,
+  "paths": [
+    {
+      "round": "437-wage-final-strict",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/437-wage-final-strict/source.zip",
+      "canonical_identical_full_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/436-wage-final-fmt/source.zip",
+      "sha256": "68e38170c173da3946684569ff46215d856b7d99368cb9445a8209dc9a3cea28",
+      "old_allocated_bytes": 5685248,
+      "reason": "terminal byte-identical immutable complete source archive; hardlink retains full bytes at every evidence path"
+    },
+    {
+      "round": "438-wage-final-storage",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/438-wage-final-storage/source.zip",
+      "canonical_identical_full_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/436-wage-final-fmt/source.zip",
+      "sha256": "68e38170c173da3946684569ff46215d856b7d99368cb9445a8209dc9a3cea28",
+      "old_allocated_bytes": 5685248,
+      "reason": "terminal byte-identical immutable complete source archive; hardlink retains full bytes at every evidence path"
+    },
+    {
+      "round": "439-wage-final-cli-build",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/439-wage-final-cli-build/source.zip",
+      "canonical_identical_full_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/436-wage-final-fmt/source.zip",
+      "sha256": "68e38170c173da3946684569ff46215d856b7d99368cb9445a8209dc9a3cea28",
+      "old_allocated_bytes": 5685248,
+      "reason": "terminal byte-identical immutable complete source archive; hardlink retains full bytes at every evidence path"
+    },
+    {
+      "round": "440-wage-spatial-cli",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/440-wage-spatial-cli/source.zip",
+      "canonical_identical_full_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/436-wage-final-fmt/source.zip",
+      "sha256": "68e38170c173da3946684569ff46215d856b7d99368cb9445a8209dc9a3cea28",
+      "old_allocated_bytes": 5685248,
+      "reason": "terminal byte-identical immutable complete source archive; hardlink retains full bytes at every evidence path"
+    },
+    {
+      "round": "441-wage-control-cold-reader",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/441-wage-control-cold-reader/source.zip",
+      "canonical_identical_full_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/436-wage-final-fmt/source.zip",
+      "sha256": "68e38170c173da3946684569ff46215d856b7d99368cb9445a8209dc9a3cea28",
+      "old_allocated_bytes": 5685248,
+      "reason": "terminal byte-identical immutable complete source archive; hardlink retains full bytes at every evidence path"
+    },
+    {
+      "round": "442-wage-higher-cold-reader",
+      "path": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/442-wage-higher-cold-reader/source.zip",
+      "canonical_identical_full_archive": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/436-wage-final-fmt/source.zip",
+      "sha256": "68e38170c173da3946684569ff46215d856b7d99368cb9445a8209dc9a3cea28",
+      "old_allocated_bytes": 5685248,
+      "reason": "terminal byte-identical immutable complete source archive; hardlink retains full bytes at every evidence path"
+    }
+  ],
+  "recovery_originals_deleted": false,
+  "executables_deleted": false,
+  "work_and_target_external_ssd": true
+}

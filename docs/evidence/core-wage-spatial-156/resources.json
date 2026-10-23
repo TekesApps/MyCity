@@ -1,0 +1,19 @@
+{
+  "micro_cli": {
+    "real_seconds": 2.23,
+    "user_seconds": 0.33,
+    "system_seconds": 0.15,
+    "maximum_rss_bytes": 55361536,
+    "peak_physical_footprint_bytes": 50250088,
+    "provider": "actual /usr/bin/time -l in 440 stderr"
+  },
+  "engine_owned_bytes_each_world": 3608544,
+  "world_owned_bytes_each_world": 101576,
+  "engine_world_delta_bytes": 0,
+  "store_owned_delta_bytes_each": 3464,
+  "native_full_scale": "not_run",
+  "physical_16gb": "not_run",
+  "device_memory_bytes": 34359738368,
+  "storage": "external HP P900 USB/APFS SSD",
+  "no_production_resident_fields_added": true
+}

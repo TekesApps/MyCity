@@ -1,0 +1,12 @@
+{
+  "engine_owned_bytes": 3608544,
+  "mode": "verify_open_working_copy",
+  "model_commands_executed": 0,
+  "native_peak": "not_measured",
+  "receipt_sequence": 81,
+  "rules": "household-wage-spatial-equity-v1",
+  "state_hash": "68bdebd9decd7d3af1e3bf149b53440ad0c88e0bc501aeca5f6cac8085e4e030",
+  "store_owned_bytes": 41790724,
+  "working_copy": "/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/442-wage-higher-cold/working-copy",
+  "world_owned_bytes": 101576
+}

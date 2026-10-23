@@ -1,0 +1,11 @@
+   Compiling mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+    Finished `release` profile [optimized] target(s) in 2.32s
+     Running tests/household_wage_spatial_equity.rs (/Volumes/HP P900/dev/MyCity/target/release/deps/household_wage_spatial_equity-469c01079d5faf66)
+HOUSEHOLD_WAGE_SPATIAL_ARTIFACT=/Volumes/HP P900/dev/MyCity/work/construction-utilities-current-01/432-wage-spatial-store/test-artifacts/mycity-household-wage-spatial-24390-0
+
+thread 'wage_sensitive_market_uses_verified_fixed_od_and_returns_tax_dividend_to_fiscal_spend' panicked at crates/city-storage/tests/../examples/support/household_wage_spatial.rs:664:5:
+assertion `left == right` failed
+  left: 137
+ right: 60
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+error: test failed, to rerun pass `-p mycity-storage --test household_wage_spatial_equity`
