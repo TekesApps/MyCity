@@ -20,7 +20,9 @@ static NEXT: AtomicU64 = AtomicU64::new(0);
 struct Temp(PathBuf);
 impl Temp {
     fn new() -> Self {
-        let p = std::env::temp_dir().join(format!(
+        let base = std::env::var_os("MYCITY_POOL_TEST_ARTIFACT_ROOT").map(PathBuf::from)
+            .unwrap_or_else(std::env::temp_dir);
+        let p = base.join(format!(
             "mc-pool-{}-{}",
             std::process::id(),
             NEXT.fetch_add(1, Ordering::Relaxed)
@@ -38,11 +40,21 @@ impl Temp {
 }
 impl Drop for Temp {
     fn drop(&mut self) {
-        let _ = fs::remove_dir_all(&self.0);
+        if std::thread::panicking() || std::env::var_os("MYCITY_POOL_TEST_ARTIFACT_ROOT").is_some() {
+            eprintln!("worker_regression_fixture_retained:{}", self.0.display());
+        } else {
+            let _ = fs::remove_dir_all(&self.0);
+        }
     }
 }
 fn exe() -> &'static Path {
-    Path::new(env!("CARGO_BIN_EXE_mycity-headless"))
+    static EXE: std::sync::OnceLock<PathBuf> = std::sync::OnceLock::new();
+    EXE.get_or_init(|| {
+        let path = std::env::var_os("MYCITY_PROTOCOL_WORKER_EXE").map(PathBuf::from)
+            .unwrap_or_else(|| PathBuf::from(env!("CARGO_BIN_EXE_mycity-headless")));
+        assert!(path.is_absolute() && path.is_file(), "actual fixed CLI absent");
+        path
+    }).as_path()
 }
 fn state() -> State {
     State::new(Input {
@@ -97,7 +109,8 @@ fn real_worker_retains_and_reuses_slots_until_owned_wait_then_returns_actual_pag
         BYTES
     );
     let tasks = t.tasks(1);
-    let mut worker = Worker::spawn_bounded_in_pool(exe(), &tasks, &root, false).unwrap();
+    let mut worker = Worker::new();
+    worker.start_bounded(exe(), &tasks, Some(&root), false).unwrap();
     let s = normal_pool::status(&root).unwrap();
     assert_eq!(s.available_touched_bytes, BYTES - GRANT_BYTES);
     assert_eq!(s.fill_acknowledgements, 0);
@@ -163,20 +176,22 @@ fn killed_workers_only_return_capacity_after_parent_wait_and_spawn_failure_abort
     let t = Temp::new();
     let root = t.0.join("pool");
     let mut pool = Process::spawn(exe(), &root, None).unwrap();
-    assert!(Worker::spawn_bounded_in_pool(
-        Path::new("/nonexistent-mycity-worker"),
-        &t.tasks(0),
-        &root,
-        false
-    )
-    .is_err());
+    let mut failed = Worker::new();
+    assert!(failed.start_bounded(Path::new("/nonexistent-mycity-worker"),
+        &t.tasks(0), Some(&root), false).is_err());
+    // Failed spawn keeps the original unspawned grant until explicit Abort ACK.
+    assert!(!failed.is_empty());
+    assert_eq!(normal_pool::status(&root).unwrap().returns, 0);
+    failed.retire(Duration::ZERO).unwrap();
+    assert!(failed.is_empty());
     assert_eq!(normal_pool::status(&root).unwrap().returns, 1);
     for (i, stage) in [Stage::Sources, Stage::Cells, Stage::Published]
         .into_iter()
         .enumerate()
     {
         let tasks = t.tasks(i + 1);
-        let mut worker = Worker::spawn_bounded_in_pool(exe(), &tasks, &root, true).unwrap();
+        let mut worker = Worker::new();
+        worker.start_bounded(exe(), &tasks, Some(&root), true).unwrap();
         worker
             .submit(&request(&tasks, &state(), i as u64 + 1))
             .unwrap();
@@ -317,11 +332,12 @@ fn internal_mutation_failures_terminate_service_without_publishing_balanced_cred
             std::thread::sleep(Duration::from_millis(5));
         }
         let tasks = t.tasks(i);
-        let result = Worker::spawn_bounded_in_pool(exe(), &tasks, &root, false);
+        let mut worker = Worker::new();
+        let result = worker.start_bounded(exe(), &tasks, Some(&root), false);
         if fault == "after-attach-event" {
             assert!(result.is_err());
         } else {
-            let mut worker = result.unwrap();
+            result.unwrap();
             worker.submit(&request(&tasks, &state(), 1)).unwrap();
             loop {
                 let e = worker.next(Duration::from_secs(5)).unwrap();
@@ -540,7 +556,8 @@ fn mapped_pool_unmaps_before_grant_and_rebuilds_only_after_owned_wait() {
     fs::create_dir(&tasks).unwrap();
     fs::create_dir(tasks.join("inputs")).unwrap();
     fs::create_dir(tasks.join("candidates")).unwrap();
-    let mut worker = Worker::spawn_bounded_in_pool(exe(), &tasks, &root, false).unwrap();
+    let mut worker = Worker::new();
+    worker.start_bounded(exe(), &tasks, Some(&root), false).unwrap();
     let during = capture(identity.pid, Some(identity), Instant::now()).unwrap();
     let during_vm = vm(identity.pid);
     let during_list = top(&root);

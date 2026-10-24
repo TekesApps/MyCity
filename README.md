@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.154`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.159`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.159 固定[当前有限集成基线](docs/evidence/release-association-20261024/STATUS.md)：默认栈恢复修复、同槽期初输入、容量只读投影、F/E 持久化、实际 Sim 调度观察及 CPU Worker 生命周期已有分项实测。未激活的教育源码仍为候选；动态总预算控制、生产 provider、完整 M0 与真实16GB均未完成。旧失败和无关 WIP 保留。
 
 v0.5.154 verifies [creditor-first residual settlement and bounded parallel work](docs/evidence/core-parallel-154/STATUS.md), adds DoorPose candidates and bounded pool counters. Persistent geometry activation and Move remain incomplete. v0.5.153 adds [actual-paid-wage windows](docs/evidence/core-housing-income-153/STATUS.md), verified by canonical combined tests and a fixed CLI cold recovery. Move and full M0 remain incomplete. v0.5.152 fixes [bounded native snapshot recovery](docs/evidence/m0-t13a-native-347/STATUS.md): 29 targeted regressions and a full3.37GB original-snapshot cold recovery pass. The preceding600s native run remains failed; normal memory,8h and real16GB gates remain unmet.
 

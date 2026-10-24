@@ -15,6 +15,8 @@ pub(super) struct Header {
     pub spatial: Option<SpatialReference>,
     pub spatial_permissions:
         Option<mycity_core::spatial_transport_permissions::SpatialPermissionState>,
+    pub geometry_adapter_basis:
+        Option<crate::spatial_geometry_updates::SpatialGeometryAdapterBasis>,
 }
 pub(super) fn decode(meta: &mut MetadataWorkspace) -> Result<Header, Error> {
     let fields = Fields::parse(
@@ -27,6 +29,7 @@ pub(super) fn decode(meta: &mut MetadataWorkspace) -> Result<Header, Error> {
             "resources",
             "spatial",
             "spatial_permissions",
+            "geometry_adapter_basis",
         ],
         false,
         &mut meta.parser,
@@ -53,5 +56,6 @@ pub(super) fn decode(meta: &mut MetadataWorkspace) -> Result<Header, Error> {
         checkpoint_layout,
         spatial: fields.optional(5, &mut meta.parser)?,
         spatial_permissions: fields.optional(6, &mut meta.parser)?,
+        geometry_adapter_basis: fields.optional(7, &mut meta.parser)?,
     })
 }

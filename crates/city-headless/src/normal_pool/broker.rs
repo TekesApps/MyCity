@@ -752,75 +752,83 @@ pub struct Lease {
     pid: u32,
     stopped: Option<ExitStatus>,
 }
-impl Lease {
-    pub fn spawn_from_env(root: &Path, gated: bool) -> Result<Option<(Self, UnixStream)>, String> {
-        let Some(raw) = std::env::var_os("MYCITY_BROKER_SESSION") else {
-            return Ok(None);
-        };
+/// Start request owner exists before RPC. An unconfirmed Start is never replayed:
+/// broker may already own a Child; only the original supervisor session can retire it.
+#[must_use = "retain until Started is stored, or terminate the original session"]
+pub struct PendingStart {
+    root: PathBuf,
+    ready: Ready,
+    binding: Binding,
+    endpoint: PathBuf,
+    listener: UnixListener,
+    request: Op,
+    attempted: bool,
+    confirmed: bool,
+}
+impl PendingStart {
+    pub fn from_env(root: &Path, gated: bool) -> Result<Option<Self>, String> {
+        let Some(raw) = std::env::var_os("MYCITY_BROKER_SESSION") else { return Ok(None); };
         let binding: Binding = crate::control_data::decode(
             raw.to_str().ok_or("normal_broker_binding_utf8")?.as_bytes(),
         )?;
-        let pool = std::env::var_os("MYCITY_NORMAL_POOL").ok_or("normal_broker_pool_absent")?;
-        let pool = PathBuf::from(pool);
+        let pool = PathBuf::from(std::env::var_os("MYCITY_NORMAL_POOL")
+            .ok_or("normal_broker_pool_absent")?);
         let ready = ready(&pool)?;
         let endpoint = endpoint_path(ready, binding);
-        struct Endpoint(PathBuf);
-        impl Drop for Endpoint {
-            fn drop(&mut self) {
-                let _ = fs::remove_file(&self.0);
-            }
-        }
+        // Construct/validate all request fields before binding any endpoint or sending RPC.
+        let request = Op::Start {
+            generation: binding.generation, key: binding.key,
+            endpoint: Text::new(endpoint.to_str().ok_or("normal_broker_endpoint_utf8")?)?,
+            root: Text::new(root.to_str().ok_or("normal_broker_root_utf8")?)?,
+            instance: heap_meter::process_instance(), gated,
+            diagnostics: crate::cpu_log::enabled(),
+        };
         let listener = UnixListener::bind(&endpoint).map_err(err)?;
-        let cleanup = Endpoint(endpoint.clone());
-        fs::set_permissions(
-            &endpoint,
-            <fs::Permissions as std::os::unix::fs::PermissionsExt>::from_mode(0o600),
-        )
-        .map_err(err)?;
-        listener.set_nonblocking(true).map_err(err)?;
-        let result = rpc(
-            &pool,
-            ready,
-            Op::Start {
-                generation: binding.generation,
-                key: binding.key,
-                endpoint: Text::new(endpoint.to_str().ok_or("normal_broker_endpoint_utf8")?)?,
-                root: Text::new(root.to_str().ok_or("normal_broker_root_utf8")?)?,
-                instance: heap_meter::process_instance(),
-                gated,
-                diagnostics: crate::cpu_log::enabled(),
-            },
-        )?;
+        let pending = Self { root: pool, ready, binding, endpoint, listener, request,
+            attempted: false, confirmed: false };
+        fs::set_permissions(&pending.endpoint,
+            <fs::Permissions as std::os::unix::fs::PermissionsExt>::from_mode(0o600)).map_err(err)?;
+        pending.listener.set_nonblocking(true).map_err(err)?;
+        Ok(Some(pending))
+    }
+    pub fn unconfirmed(&self) -> bool { self.attempted && !self.confirmed }
+    /// Caller stores the returned Lease before ANY accept/clone/reader operation.
+    pub fn start(&mut self) -> Result<Lease, String> {
+        if self.attempted { return Err("normal_broker_start_not_replayable".into()); }
+        self.attempted = true;
+        let result = rpc(&self.root, self.ready, self.request)?;
         let Receipt::Started { lease, pid } = result else {
             return Err("normal_broker_start_receipt".into());
         };
+        if lease == 0 || pid == 0 { return Err("normal_broker_start_identity".into()); }
+        self.confirmed = true;
+        Ok(Lease { root: std::mem::take(&mut self.root), ready: self.ready,
+            binding: self.binding, id: lease, pid, stopped: None })
+    }
+    pub fn accept(&mut self) -> Result<UnixStream, String> {
+        if !self.confirmed { return Err("normal_broker_start_unconfirmed".into()); }
         let began = Instant::now();
         let stream = loop {
-            match listener.accept() {
-                Ok((s, _)) => break s,
-                Err(e)
-                    if e.kind() == std::io::ErrorKind::WouldBlock
-                        && began.elapsed() < Duration::from_secs(2) =>
-                {
-                    std::thread::sleep(Duration::from_millis(2))
+            match self.listener.accept() {
+                Ok((stream, _)) => break stream,
+                Err(e) if e.kind() == std::io::ErrorKind::WouldBlock
+                    && began.elapsed() < Duration::from_secs(2) => {
+                    std::thread::sleep(Duration::from_millis(2));
                 }
                 Err(e) => return Err(err(e)),
             }
         };
         stream.set_nonblocking(false).map_err(err)?;
-        drop(cleanup);
-        Ok(Some((
-            Self {
-                root: pool,
-                ready,
-                binding,
-                id: lease,
-                pid,
-                stopped: None,
-            },
-            stream,
-        )))
+        Ok(stream)
     }
+}
+impl Drop for PendingStart {
+    fn drop(&mut self) {
+        // Unknown Start is NOT cancellation. Preserve its path for original revoke.
+        if !self.unconfirmed() { let _ = cleanup_endpoint(self.ready, self.binding); }
+    }
+}
+impl Lease {
     pub fn pid(&self) -> u32 {
         self.pid
     }

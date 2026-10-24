@@ -278,7 +278,7 @@ impl ExitPolicy {
     }
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct MarketProfile {
     pub schema_version: u16,
@@ -309,6 +309,114 @@ pub struct MarketProfile {
     pub shops: FixedRows<ShopSnapshot, { crate::town_economy::MAX_SHOP_STOCK_LOTS }>,
     pub recipes: FixedRows<Recipe, { crate::town_economy::MAX_RECIPES }>,
     pub delivery: FixedRows<DeliveryQuote, MAX_MARKET_LANES>,
+}
+
+// Scratch for every MarketProfile decode (including restore callers): bounded heap row headers avoid returning fixed arrays
+// through nested serde visitors. Runtime FixedRows, wire format and limits are unchanged.
+struct ProfileDecodeRows<T: Record, const N: usize>(crate::model_rows::Rows<T, N>);
+impl<T: Record, const N: usize> ProfileDecodeRows<T, N> {
+    #[inline(never)]
+    fn into_fixed(self) -> FixedRows<T, N> {
+        let mut rows = FixedRows::new();
+        // This private backing was bounded while decoding; copying preserves row order.
+        for value in self.0.iter() {
+            rows.values[usize::from(rows.active)] = *value;
+            rows.active += 1;
+        }
+        rows
+    }
+}
+impl<'de, T: Record + Deserialize<'de>, const N: usize> Deserialize<'de>
+    for ProfileDecodeRows<T, N>
+{
+    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        struct Read<T: Record, const N: usize>(std::marker::PhantomData<T>);
+        impl<'de, T: Record + Deserialize<'de>, const N: usize> Visitor<'de> for Read<T, N> {
+            type Value = ProfileDecodeRows<T, N>;
+            fn expecting(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+                write!(f, "at most {N} fixed town rows")
+            }
+            fn visit_seq<A: SeqAccess<'de>>(self, mut seq: A) -> Result<Self::Value, A::Error> {
+                let mut rows = crate::model_rows::Rows::<T, N>::new().map_err(de::Error::custom)?;
+                // Retain the original extra-element decode order and exact row-bound error.
+                while let Some(value) = seq.next_element::<T>()? {
+                    if rows.len() == N {
+                        return Err(de::Error::custom("town_profile_rows_full"));
+                    }
+                    rows.try_push(value).map_err(de::Error::custom)?;
+                }
+                Ok(ProfileDecodeRows(rows))
+            }
+        }
+        d.deserialize_seq(Read::<T, N>(std::marker::PhantomData))
+    }
+}
+fn present_profile_rows<'de, D, T, const N: usize>(
+    d: D,
+) -> Result<Option<ProfileDecodeRows<T, N>>, D::Error>
+where
+    D: Deserializer<'de>,
+    T: Record + Deserialize<'de>,
+{
+    // Missing optional rows default to None, but an explicit null remains invalid.
+    ProfileDecodeRows::deserialize(d).map(Some)
+}
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields, rename = "MarketProfile")]
+struct ProfileDecode {
+    schema_version: u16,
+    id: u32,
+    #[serde(default)]
+    transport_allocation_sha256: [u8; 32],
+    #[serde(default)]
+    utility_supply: Option<crate::town_utility::BootSupplyBinding>,
+    #[serde(default)]
+    exit_policy: Option<ExitPolicy>,
+    #[serde(default, deserialize_with = "present_profile_rows")]
+    equity_charters: Option<
+        ProfileDecodeRows<
+            crate::town_economy::equity::EquityCharter,
+            { crate::town_economy::equity::MAX_EQUITY_COMPANIES },
+        >,
+    >,
+    #[serde(default, deserialize_with = "present_profile_rows")]
+    tax_rules: Option<ProfileDecodeRows<CompanyTaxRule, MAX_COMPANY_TAX_RULES>>,
+    households: ProfileDecodeRows<HouseholdGroup, { crate::town_economy::MAX_HOUSEHOLD_GROUPS }>,
+    employers: ProfileDecodeRows<EmployerSpec, { crate::town_economy::MAX_EMPLOYERS }>,
+    shops: ProfileDecodeRows<ShopSnapshot, { crate::town_economy::MAX_SHOP_STOCK_LOTS }>,
+    recipes: ProfileDecodeRows<Recipe, { crate::town_economy::MAX_RECIPES }>,
+    delivery: ProfileDecodeRows<DeliveryQuote, MAX_MARKET_LANES>,
+}
+impl ProfileDecode {
+    #[inline(never)]
+    fn finish(self) -> MarketProfile {
+        MarketProfile {
+            schema_version: self.schema_version,
+            id: self.id,
+            transport_allocation_sha256: self.transport_allocation_sha256,
+            utility_supply: self.utility_supply,
+            exit_policy: self.exit_policy,
+            equity_charters: match self.equity_charters {
+                Some(rows) => rows.into_fixed(),
+                None => FixedRows::new(),
+            },
+            tax_rules: match self.tax_rules {
+                Some(rows) => rows.into_fixed(),
+                None => FixedRows::new(),
+            },
+            households: self.households.into_fixed(),
+            employers: self.employers.into_fixed(),
+            shops: self.shops.into_fixed(),
+            recipes: self.recipes.into_fixed(),
+            delivery: self.delivery.into_fixed(),
+        }
+    }
+}
+impl<'de> Deserialize<'de> for MarketProfile {
+    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        // Complete serde decoding before materializing the final inline runtime value.
+        ProfileDecode::deserialize(d).map(ProfileDecode::finish)
+    }
 }
 
 impl MarketProfile {
@@ -734,11 +842,35 @@ impl Default for MarketState {
     }
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct TownMarket {
     pub profile: MarketProfile,
     pub state: MarketState,
+}
+
+// Decode-only scratch; both runtime fields remain inline and their wire is unchanged.
+mod private_townmarketdecode {
+    use super::*;
+    #[derive(Deserialize)]
+    #[serde(deny_unknown_fields, rename = "TownMarket")]
+    pub(super) struct TownMarket {
+        profile: Box<MarketProfile>,
+        state: Box<MarketState>,
+    }
+    impl TownMarket {
+        #[inline(never)]
+        pub(super) fn finish(self) -> super::TownMarket {
+            super::TownMarket { profile: *self.profile, state: *self.state }
+        }
+    }
+}
+type TownMarketDecode = private_townmarketdecode::TownMarket;
+
+impl<'de> Deserialize<'de> for TownMarket {
+    fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        TownMarketDecode::deserialize(deserializer).map(TownMarketDecode::finish)
+    }
 }
 
 impl TownMarket {
@@ -1417,5 +1549,23 @@ mod transport_cursor_tests {
         let restored: MarketState = serde_json::from_value(encoded).unwrap();
         assert_eq!(restored, state);
         assert!(restored.suspended_operators.is_empty());
+    }
+}
+
+#[cfg(test)]
+mod profile_decode_layout {
+    use super::*;
+    #[test]
+    #[ignore = "bounded scratch layout diagnostic; not native peak evidence"]
+    fn bounded_scratch_layout() {
+        let mandatory = crate::town_economy::MAX_HOUSEHOLD_GROUPS * size_of::<HouseholdGroup>()
+            + crate::town_economy::MAX_EMPLOYERS * size_of::<EmployerSpec>()
+            + crate::town_economy::MAX_SHOP_STOCK_LOTS * size_of::<ShopSnapshot>()
+            + crate::town_economy::MAX_RECIPES * size_of::<Recipe>()
+            + MAX_MARKET_LANES * size_of::<DeliveryQuote>();
+        let optional = crate::town_economy::equity::MAX_EQUITY_COMPANIES
+            * size_of::<crate::town_economy::equity::EquityCharter>()
+            + MAX_COMPANY_TAX_RULES * size_of::<CompanyTaxRule>();
+        eprintln!("profile_decode_layout mandatory_backing_bytes={mandatory} optional_backing_bytes={optional} max_backing_bytes={} wire_header_bytes={} runtime_profile_bytes={} allocations=5_to_7 excludes_allocator_metadata_and_stack_temporaries",mandatory+optional,size_of::<ProfileDecode>(),size_of::<MarketProfile>());
     }
 }

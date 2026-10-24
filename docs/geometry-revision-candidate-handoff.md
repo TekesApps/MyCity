@@ -24,6 +24,10 @@ The future writer should accept a candidate only after re-reading its parent Sce
 
 ## Runtime activation boundary and next implementation batch
 
+The status in this section records the earlier candidate-only stage. Its future-tense Store
+requirements are superseded by the source-only implementation update at the end of this file;
+the remaining verification conditions there still apply.
+
 The current Store integration is for opening and restoring one existing access edge, not changing geometry. `SpatialPermissionCommand` and `SpatialUpdateRequest` in `city-core/src/spatial_transport_permissions.rs` authorize `Close`/`Restore` against one genesis-registered surface and edge; the request binds a candidate allocation-profile hash but has no candidate Scene hash or geometry revision. `Store::stage_spatial_transport_candidate` in `city-storage/src/lib.rs` accepts a proposed `Opening`, requires its transport revision to be the current revision plus one, and accepts exactly one `open`-bit transition on that managed edge. A curve candidate changes travel times and geometry revisions without changing an access bit, so it cannot pass that edge-change contract.
 
 The existing commit boundary is the right publication point to extend. On successful `Apply`, `Persistence::append_inner` validates the candidate Engine permission state and grant, calls `prepare_spatial_apply_catalog`, stages immutable assets and the next catalog, then publishes the new catalog digest through the same Root update as the WAL-backed Engine receipt. Keep that single transaction and reuse its timeline-derived `effective_service_day`; do not add another Store, clock, or journal. Today `SpatialTransportVersionRecord` binds an authorization witness and profile hash while the catalog keeps one fixed `source_scene_sha256`. `load_spatial_transport_catalog_on_open` checks that hash against the genesis `SpatialReference`, whose `spatial-input.json` and terrain files remain immutable. `town_transport::ArchivedProofRefs` resolves historical traffic proofs by the catalog's profile hash for their service day.
@@ -36,3 +40,42 @@ The geometry path needs these shared interfaces before a candidate can be activa
 - Extend cold-open/history validation from genesis: re-read the exact Scene and profile assets, replay each approved geometry transition and compare the final Engine permission state and active hashes. Preserve the old Scene/profile versions. Keep existing profile-by-service-day proof lookup unchanged for old proofs; add a parallel Scene-version resolver for active planning/inspection at a requested service day, using the same catalog boundary rather than a second clock.
 
 The smallest useful next batch is one persistent-world integration test for a single existing WALK road with an in-bounds quadratic control-point move. It should use the real Store request, separate owner and permit approvals, a completed Timeline boundary, and the existing Apply commit path. Assert that the exact candidate Scene and profile hashes become active together; the accepted geometry and transport revisions each advance from their own parent; the travel-time-derived proof changes on the first effective service day while edge IDs, endpoints, direction, capacities, speeds, OD demand and served-population limits remain fixed; the prior day's proof still resolves to its old profile; and cold reopen plus exact replay restores the same active Scene/profile pair. Include specific rejections for missing approval, stale Scene parent, changed candidate bytes, out-of-bounds/collision geometry, and tampered catalog witness. This would connect the candidate to runtime activation; the current CLI and candidate-only tests do not meet that condition.
+
+## Update: private Store activation candidate (source-only, not run)
+
+The implementation in `spatial-geometry-v154` now adds that Store seam in source. `Store::stage_road_geometry_candidate` stages immutable canonical Scene input, derived profile bytes and a descriptor. A later `SpatialGeometry::Request`, separate owner/authority approvals and `Apply` are still required. The Store revalidates exact descriptor, parent Scene/profile, pinned adapter basis, candidate Scene/profile bytes and authority witness before recording an Apply.
+
+On successful Apply, `Persistence::append_inner` appends a schema-3 catalog row with the complete geometry witness and descriptor, bound to the actual Engine operation ID, receipt revision and Store sequence. The catalog sidecar and its root pointer publish with the Engine receipt/state in the same existing Root commit. The active `SpatialAssets::scene` changes only after a successful Engine receipt. Failed operations do not switch the active Scene/profile/catalog references; pre-staged immutable files can remain orphaned.
+
+Cold open validates geometry witness and catalog bindings from immutable genesis permissions, rebuilds each Scene/profile transition from the pinned terrain and adapter basis, verifies canonical bytes and hashes, and restores the final Scene. Existing transport proofs continue selecting their immutable profile by service day. Existing transport Close/Restore records retain their original path.
+
+This batch is not compiled or executed. Store-level Apply/trade/cold-reopen, failure injection, schema-2 legacy catalog recovery and mixed geometry/Close/Restore cases remain for the root's serialized verification. The current writer rejects geometry edits when non-genesis access-state is active, supports the RoadControlPoint edit on a managed Road whose permission revision matches the Scene geometry revision, and rejects envelopes with multiple geometry actions or mixed transport-permission actions. Runtime Scene rebuild memory peaks and full catalog-capacity behavior remain unmeasured; this candidate proves no performance or 16 GB acceptance.
+
+## Takeover validation repair: access after authorized geometry (2026-10-24)
+
+The first resumed fixed-source run passed seven of the original eight Store tests. It exposed
+an actual mixed-chain failure: preparing a Close after an authorized geometry edit still
+compared travel-cost structure with genesis. The retained failed run is
+`work/takeover-validation-20261024/01-F-original-eight`; it remains a failure record.
+
+The repair separates two existing responsibilities. Genesis raw hash, source Scene identity,
+fixed economic assumptions and initially-open access ceiling remain immutable. The structural
+anchor is the exact profile hash of the latest fully witnessed geometry row in the current
+validated catalog prefix, or genesis if none exists. Only the crate-internal catalog path may
+select this anchor; an arbitrary current profile is not a structural authority. Hot preparation
+and append recomputation bind genesis, current chain tail and this anchor before checking the
+single authorized edge toggle. The old public pure-access API remains strict-genesis.
+
+Cold replay starts at genesis and advances its structural anchor only after geometry witness,
+descriptor and Scene/profile rebuilding all succeed. Each ordinary access row uses the same
+transition check, including exact edge/operation, capacity/topology, revision and genesis
+permission ceiling. The exact previous profile bytes advance with each replayed row, allowing
+a later geometry to rebuild against its actual predecessor. Catalog parent/schema metadata
+changes only after append prevalidation on the valid prefix; the final catalog validates
+before replacing the prior object. Historical profiles/proofs retain their original bytes.
+
+The original advisor reviewed the repair, caught and then confirmed correction of a temporary
+catalog-parent ordering issue. No remaining static blocker was reported. The retained eight
+test names now also exercise two geometry edits separated by Close/Restore and cold opens;
+two unit counterexamples reject structural changes and expanded initial access. Execution
+results are reported in the current evidence STATUS, not inferred from this design note.

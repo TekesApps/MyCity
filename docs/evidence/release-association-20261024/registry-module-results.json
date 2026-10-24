@@ -1,0 +1,22 @@
+[
+  {
+    "name": "task_registry",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/release-association-20261024/registry-module-exes-04/task_registry",
+      "--test-threads=1"
+    ],
+    "exit": 0,
+    "executable_sha256": "10946162e4f682be61dfd2ab833eb7058fae9b68cd478ed94e646a68c2a23ebb",
+    "summary": "ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+  },
+  {
+    "name": "task_registry_adapter",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/release-association-20261024/registry-module-exes-04/task_registry_adapter",
+      "--test-threads=1"
+    ],
+    "exit": 0,
+    "executable_sha256": "35ca1b388bafeb76f0a5ec3f51bd7567ef48e9a89b76ecae52aa4cb387b1992e",
+    "summary": "ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s"
+  }
+]

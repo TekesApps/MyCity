@@ -58,6 +58,23 @@ impl SpatialAssets {
     pub fn scene(&self) -> &Scene {
         &self.scene
     }
+    /// Build a candidate Scene against the already verified resident terrain. The caller must
+    /// separately establish geometry authorization and publish its immutable source through the
+    /// Store transaction before replacing the active Scene.
+    pub fn build_scene_input(&self, input: crate::scene::Input) -> Result<Scene, Error> {
+        if input.map.world != self.identity.world
+            || input.map.branch != self.identity.branch
+            || input.map.map != self.scene.input().map.map
+            || input.terrain_revision != self.scene.input().terrain_revision
+        {
+            return Err(Error::Input);
+        }
+        Scene::assemble(input, &self.terrain, &self.terrain)
+    }
+    /// Install a fully validated Scene after its Store root publication has committed.
+    pub fn replace_scene(&mut self, scene: Scene) {
+        self.scene = scene;
+    }
     pub fn owned_capacity_bytes(&self) -> usize {
         std::mem::size_of::<Self>() - std::mem::size_of::<Terrain>() - std::mem::size_of::<Scene>()
             + self.identity.schema.capacity()

@@ -1,0 +1,1114 @@
+{
+  "release": "v0.5.159",
+  "base_commit": "ae28b8cda8041c7bd106a28cccdc3deab051b032",
+  "SOURCE_identity": "be142b7b957e48acedbe7fa52f44eed13400b83dccfe6a9d44349e5afd57a0ca",
+  "SOURCE_files": 343,
+  "ancillary_root_fixtures": 3,
+  "gates": {
+    "stack": {
+      "issues": [
+        122,
+        123
+      ],
+      "state": "active finite repair",
+      "evidence": "../stack-faults-122-123-20261024/STATUS.md",
+      "limits": "Original wire/type and default debug stack; no native memory or M0 pass."
+    },
+    "geometry": {
+      "issues": [
+        25
+      ],
+      "state": "active finite Store geometry",
+      "evidence": "../core-spatial-geometry-current/STATUS.md",
+      "limits": "Synthetic map/OD/rights inputs; current F8+unit8, historical scenarios and current four readers/two rejections; general CLI wrapper branches not all separately run."
+    },
+    "income": {
+      "issues": [
+        26
+      ],
+      "state": "finite executable scenario",
+      "evidence": "../core-spatial-geometry-current/STATUS.md",
+      "limits": "Supplied scores; E10 current tests and fixed historical CLI plus current copy reader; no real score provider."
+    },
+    "capacity": {
+      "issues": [
+        118
+      ],
+      "state": "active read-only projection",
+      "evidence": "../capacity-read-20261024/STATUS.md",
+      "limits": "Five default-debug cases; not admission, physical provider, units/aliases/windows/rights resolution."
+    },
+    "opening": {
+      "issues": [
+        120
+      ],
+      "state": "active bounded parsed input and same-slot Store factory",
+      "evidence": "../opening-input-store-20261024/STATUS.md",
+      "limits": "Six parent tests and twelve fresh children; no all-power-loss cutpoints/general CLI selector/production provider."
+    },
+    "registry": {
+      "issues": [
+        101
+      ],
+      "state": "active advisory Sim observation and bounded module",
+      "evidence": "../task-registry-dispatch-20261024/STATUS.md",
+      "limits": "Two current actual dispatch tests plus13 core/8 adapter; no new scheduler/grant authority, missing-clock live injection uncovered."
+    },
+    "worker": {
+      "issues": [
+        102
+      ],
+      "state": "active finite CPU Worker/Sim/broker lifecycle",
+      "evidence": "../worker-pending-rpc-20261024/STATUS.md",
+      "limits": "37 selected tests; excludes mapped native observer; r03 report binding and supervisor pre-RPC retention still pending; no GPU fence or general forced-termination proof."
+    },
+    "education": {
+      "issues": [
+        54
+      ],
+      "state": "inactive source candidate; no core export",
+      "evidence": "../stack-faults-122-123-20261024/STATUS.md",
+      "limits": "14 synthetic source candidate tests only; no production attendance/capacity/qualification/Store integration."
+    }
+  },
+  "changed_runtime_inputs": [
+    {
+      "path": "crates/city-core/src/assembly.rs",
+      "sha256": "58fc5b39f8b28986a6e4ab59f9717b3eeec584bda31f2d7b65daef508ebc666a",
+      "bytes": 63371,
+      "tracked_before": true,
+      "groups": [
+        "stack",
+        "capacity"
+      ],
+      "hunk_headers": [
+        "@@ -75,2 +75 @@ pub struct OpeningStock {",
+        "@@ -78 +76,0 @@ pub struct Opening {",
+        "@@ -89 +86,0 @@ pub struct Opening {",
+        "@@ -93 +89,0 @@ pub struct Opening {",
+        "@@ -96 +91,0 @@ pub struct Opening {",
+        "@@ -99,0 +95,58 @@ pub struct Opening {",
+        "@@ -194 +247 @@ fn is_zero_money(value: &Money) -> bool {",
+        "@@ -216,0 +270,58 @@ pub struct World {",
+        "@@ -772,0 +884,4 @@ impl World {",
+        "@@ -947 +1062 @@ pub(crate) fn assemble_into(bytes: &[u8], world: &mut World) -> Result<(), Strin",
+        "@@ -953,0 +1069,7 @@ pub(crate) fn assemble_into(bytes: &[u8], world: &mut World) -> Result<(), Strin",
+        "@@ -1523,0 +1646,4 @@ mod tests {"
+      ],
+      "new_file_whole_scope": false
+    },
+    {
+      "path": "crates/city-core/src/assembly_decode_compat_tests.rs",
+      "sha256": "71829b5af96a28eb59de8390bed45704e00099fede3668b8a424bf6cd736be3b",
+      "bytes": 10676,
+      "tracked_before": false,
+      "groups": [
+        "stack"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-core/src/education.rs",
+      "sha256": "84d25017e47e5b76647024fd2af6c2e22dec91ee780fbe9ae867bbe891a91f2d",
+      "bytes": 21137,
+      "tracked_before": false,
+      "groups": [
+        "education"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-core/src/lib.rs",
+      "sha256": "15d51f9f6ad33e4b74505357cd9e39e3a2c89293a53a405a71907d34c96373f5",
+      "bytes": 5783,
+      "tracked_before": true,
+      "groups": [
+        "geometry",
+        "opening",
+        "registry"
+      ],
+      "hunk_headers": [
+        "@@ -29,0 +30 @@ pub mod schedule;",
+        "@@ -177,0 +179,6 @@ mod restore_into;"
+      ],
+      "new_file_whole_scope": false
+    },
+    {
+      "path": "crates/city-core/src/model_capacity.rs",
+      "sha256": "aa09fa012d84ec7c1272694f108ff9c1c8ae1c1ef2ffad11b6eb7eab243b69df",
+      "bytes": 8355,
+      "tracked_before": true,
+      "groups": [
+        "geometry"
+      ],
+      "hunk_headers": [
+        "@@ -131,0 +132,5 @@ pub fn inventory() -> Inventory {",
+        "@@ -160,0 +166,5 @@ pub fn inventory() -> Inventory {",
+        "@@ -206,0 +217,16 @@ mod tests {"
+      ],
+      "new_file_whole_scope": false
+    },
+    {
+      "path": "crates/city-core/src/opening_loader.rs",
+      "sha256": "547fadc691f942234b1fdfcb515355004ccb1742f164ae02d8aaafdf42778665",
+      "bytes": 4655,
+      "tracked_before": false,
+      "groups": [
+        "opening"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-core/src/spatial_geometry_permissions.rs",
+      "sha256": "3867a6d615ca5f36ff6554ff294e8c186385058a705ede06a5ae8305182fe59e",
+      "bytes": 36381,
+      "tracked_before": false,
+      "groups": [
+        "geometry"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-core/src/spatial_transport_permissions.rs",
+      "sha256": "e59e0053bdabecc302517460f1d84569cedd9ee615a359c121ecc54b7755e046",
+      "bytes": 85626,
+      "tracked_before": true,
+      "groups": [
+        "geometry"
+      ],
+      "hunk_headers": [
+        "@@ -1130,0 +1131,107 @@ impl SpatialPermissionState {"
+      ],
+      "new_file_whole_scope": false
+    },
+    {
+      "path": "crates/city-core/src/task_registry.rs",
+      "sha256": "46416b1c6e7af291c2285c2ab70b2c9c74e819b9fd27221b2712ca93dcce724b",
+      "bytes": 12194,
+      "tracked_before": false,
+      "groups": [
+        "registry"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-core/src/town_runtime.rs",
+      "sha256": "d6b3edeb0a0241f5a8fa4cae43a9a8b33d83f8181ba81430df3698d189396ee9",
+      "bytes": 61545,
+      "tracked_before": true,
+      "groups": [
+        "stack"
+      ],
+      "hunk_headers": [
+        "@@ -281 +281 @@ impl ExitPolicy {",
+        "@@ -313,0 +314,108 @@ pub struct MarketProfile {",
+        "@@ -737 +845 @@ impl Default for MarketState {",
+        "@@ -743,0 +852,24 @@ pub struct TownMarket {",
+        "@@ -1421,0 +1554,18 @@ mod transport_cursor_tests {"
+      ],
+      "new_file_whole_scope": false
+    },
+    {
+      "path": "crates/city-core/src/transaction.rs",
+      "sha256": "652e238036e6000e68397a49b17f649a8fba7a5bd889b7ea9125d57653032aa1",
+      "bytes": 420787,
+      "tracked_before": true,
+      "groups": [
+        "geometry",
+        "stack"
+      ],
+      "hunk_headers": [
+        "@@ -129,0 +130,5 @@ pub enum Action {",
+        "@@ -312,0 +318,4 @@ pub enum HotActionSummary {",
+        "@@ -347,0 +357,22 @@ impl HotJournalRecord {",
+        "@@ -416,0 +448,2 @@ pub struct Engine {",
+        "@@ -434,0 +468,2 @@ struct Prepared {",
+        "@@ -454,0 +490,4 @@ pub struct CommitContext<'a> {",
+        "@@ -547,0 +587 @@ impl Engine {",
+        "@@ -566,0 +607,4 @@ impl Engine {",
+        "@@ -580 +624 @@ impl Engine {",
+        "@@ -612,0 +657,2 @@ impl Engine {",
+        "@@ -644,0 +691 @@ impl Engine {",
+        "@@ -661,0 +709,2 @@ impl Engine {",
+        "@@ -670,0 +720 @@ impl Engine {",
+        "@@ -775,0 +826,22 @@ impl Engine {",
+        "@@ -1197,0 +1270,5 @@ impl Engine {",
+        "@@ -1276,0 +1354,4 @@ impl Engine {",
+        "@@ -1290,0 +1372,2 @@ impl Engine {",
+        "@@ -1299,0 +1383 @@ impl Engine {",
+        "@@ -1486,4 +1570,4 @@ impl Engine {",
+        "@@ -1663 +1747 @@ impl Engine {",
+        "@@ -1669,0 +1754,2 @@ impl Engine {",
+        "@@ -2156,0 +2243,49 @@ impl Engine {",
+        "@@ -2161 +2296 @@ impl Engine {",
+        "@@ -2213 +2348 @@ impl Engine {",
+        "@@ -2298 +2433 @@ impl Engine {",
+        "@@ -2389 +2524 @@ impl Engine {",
+        "@@ -2495 +2630 @@ impl Engine {",
+        "@@ -2687 +2822 @@ impl Engine {",
+        "@@ -2698 +2833 @@ impl Engine {",
+        "@@ -2768 +2903 @@ impl Engine {",
+        "@@ -3005 +3140 @@ impl Engine {",
+        "@@ -3276 +3411 @@ impl Engine {",
+        "@@ -3362 +3497 @@ impl Engine {",
+        "@@ -3722,0 +3858,8 @@ impl Engine {",
+        "@@ -3802,0 +3946,2 @@ impl Engine {",
+        "@@ -3867,0 +4013,3 @@ impl Engine {",
+        "@@ -6429,0 +6578 @@ impl Action {"
+      ],
+      "new_file_whole_scope": false
+    },
+    {
+      "path": "crates/city-core/src/transaction/slots.rs",
+      "sha256": "e0bd631b61da74e134fee471ef974a3a0ed60c446203d35fcfb6a2b047ca9dab",
+      "bytes": 17101,
+      "tracked_before": true,
+      "groups": [
+        "geometry",
+        "stack"
+      ],
+      "hunk_headers": [
+        "@@ -103,0 +104 @@ impl EngineSlot {",
+        "@@ -213,0 +215 @@ impl EngineSlot {",
+        "@@ -311,0 +314 @@ impl Restore for Engine {",
+        "@@ -348,0 +352,3 @@ impl Restore for Engine {"
+      ],
+      "new_file_whole_scope": false
+    },
+    {
+      "path": "crates/city-core/tests/education.rs",
+      "sha256": "bf05aa3e1e342afc296cb500612d0f958cdca375ea54171256266bbfd6c42e8d",
+      "bytes": 19180,
+      "tracked_before": false,
+      "groups": [
+        "education"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-core/tests/fixtures/issue-120/canonical/core-town-utility-opening.json",
+      "sha256": "c9d3713d817fada2054641260c220447f7f2496d64f1ac5340bfa3e1cba4e2a0",
+      "bytes": 15917,
+      "tracked_before": false,
+      "groups": [
+        "opening"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-core/tests/fixtures/issue-120/canonical/m0-background-joint-opening.json",
+      "sha256": "8f9b0281a4855eb568de58baa1b569a36c9c3cf9d6522d94f6b18abde108ec0c",
+      "bytes": 13466,
+      "tracked_before": false,
+      "groups": [
+        "opening"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-core/tests/fixtures/issue-120/canonical/m0-boot-opening.json",
+      "sha256": "d2505d4b292ee8745de0266178168853f09a0a71a767b8e74598bf0f105f12da",
+      "bytes": 2612,
+      "tracked_before": false,
+      "groups": [
+        "opening"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-core/tests/fixtures/issue-120/canonical/m0-e0-opening.json",
+      "sha256": "6756555697457b3de5307086610a108c88d15650c6e668da0cdf990ca52b874c",
+      "bytes": 857,
+      "tracked_before": false,
+      "groups": [
+        "opening"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-core/tests/fixtures/issue-120/canonical/m0-economy-opening.json",
+      "sha256": "964ee93769377f4d2ecae7e4b20bdfb191c61acbf1960f8a89109b3507771f94",
+      "bytes": 8688,
+      "tracked_before": false,
+      "groups": [
+        "opening"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-core/tests/fixtures/issue-120/canonical/m0-exchange-opening.json",
+      "sha256": "e8471dd9b12a69fc5710dcb13fb43860ced9be046c07ec72e7ba6d3f45da6fe9",
+      "bytes": 13118,
+      "tracked_before": false,
+      "groups": [
+        "opening"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-core/tests/fixtures/issue-120/canonical/m0-region-opening.json",
+      "sha256": "b654f042638d2efd3b058b87590a1c0446dcec2112faa99f10f6eefafed91544",
+      "bytes": 2300,
+      "tracked_before": false,
+      "groups": [
+        "opening"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-core/tests/fixtures/issue-120/canonical/source-manifest.json",
+      "sha256": "3f0c63cf948a0bc2a42b865ee604cd7f0d32e08eb7dec60f391ebf171d4ef7ac",
+      "bytes": 1271,
+      "tracked_before": false,
+      "groups": [
+        "opening"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-core/tests/fixtures/issue-120/diagnostic-v3/opening_loader-tests-original.rs",
+      "sha256": "00da3de1636ce02ef2d21a459623574960a2a18bf2795502518e47f887106837",
+      "bytes": 12455,
+      "tracked_before": false,
+      "groups": [
+        "opening"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-core/tests/fixtures/issue-120/diagnostic-v3/opening_loader.rs",
+      "sha256": "74a73a1e9e0e259180fe3ba2e25fd300ea8dd0d6d9f0aa47cd1695f9ae3fd961",
+      "bytes": 4520,
+      "tracked_before": false,
+      "groups": [
+        "opening"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-core/tests/fixtures/issue-120/opening.json",
+      "sha256": "15619083300c66c0871f90bbaca29ba35d6a28b5fe39e374f437766320a8a450",
+      "bytes": 354,
+      "tracked_before": false,
+      "groups": [
+        "opening"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-core/tests/opening_loader.rs",
+      "sha256": "32230106b6b8ffb57b50795aa66adaa908364e938efe064d5cbfec9b22e8c55c",
+      "bytes": 19669,
+      "tracked_before": false,
+      "groups": [
+        "opening"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-core/tests/task_registry.rs",
+      "sha256": "65961c53610be602276d40921eb02843743e8dc35f3489a4812fcf89f6551d37",
+      "bytes": 15181,
+      "tracked_before": false,
+      "groups": [
+        "registry"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-core/tests/town_profile_decode.rs",
+      "sha256": "7c62d7bdf76b6d600e1bd68929a0c67a72c1360694539dfaf3192a70b4081490",
+      "bytes": 7825,
+      "tracked_before": false,
+      "groups": [
+        "stack"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-headless/src/background_probe.rs",
+      "sha256": "e3dd35e2262fbc67db8fd368306ab3e9828860e8466e52c1c11e66f2825ad3b7",
+      "bytes": 9993,
+      "tracked_before": true,
+      "groups": [
+        "worker"
+      ],
+      "hunk_headers": [
+        "@@ -45,0 +46,3 @@ pub fn run(dir: &Path) -> Result<Value, String> {",
+        "@@ -89 +92 @@ pub fn run(dir: &Path) -> Result<Value, String> {"
+      ],
+      "new_file_whole_scope": false
+    },
+    {
+      "path": "crates/city-headless/src/compute_worker.rs",
+      "sha256": "c12733d0c8c37ba27dc1acc37e6ef8c1ee40554ef5cc10e22f05c80a44d749ea",
+      "bytes": 41737,
+      "tracked_before": true,
+      "groups": [
+        "worker"
+      ],
+      "hunk_headers": [
+        "@@ -616,0 +617 @@ impl Write for Input {",
+        "@@ -626,0 +628,4 @@ pub struct Worker {",
+        "@@ -629,106 +634,19 @@ impl Worker {",
+        "@@ -736 +654,2 @@ impl Worker {",
+        "@@ -745,3 +664,31 @@ impl Worker {",
+        "@@ -749,10 +696,46 @@ impl Worker {",
+        "@@ -759,0 +743,2 @@ impl Worker {",
+        "@@ -761,11 +746,7 @@ impl Worker {",
+        "@@ -791,5 +772 @@ impl Worker {",
+        "@@ -806,0 +784 @@ impl Worker {",
+        "@@ -853,3 +831,2 @@ impl Worker {",
+        "@@ -860,3 +837,2 @@ impl Worker {",
+        "@@ -864,0 +841 @@ impl Worker {",
+        "@@ -867,17 +844,3 @@ impl Worker {",
+        "@@ -884,0 +848,2 @@ impl Worker {",
+        "@@ -887,0 +853,14 @@ impl Worker {",
+        "@@ -888,0 +868,3 @@ impl Worker {",
+        "@@ -891,5 +873,2 @@ impl Worker {",
+        "@@ -898,28 +877,14 @@ impl Worker {",
+        "@@ -927 +892 @@ impl Worker {",
+        "@@ -929,0 +895 @@ impl Worker {",
+        "@@ -932 +898,39 @@ impl Drop for Worker {"
+      ],
+      "new_file_whole_scope": false
+    },
+    {
+      "path": "crates/city-headless/src/lib.rs",
+      "sha256": "3981c697d45b05d55ea173fae00078a36bcf6e25ee4650e5c5454d1985dfe192",
+      "bytes": 982,
+      "tracked_before": true,
+      "groups": [
+        "worker",
+        "registry"
+      ],
+      "hunk_headers": [
+        "@@ -65,0 +66,3 @@ pub(crate) mod vm_trace;"
+      ],
+      "new_file_whole_scope": false
+    },
+    {
+      "path": "crates/city-headless/src/normal_pool.rs",
+      "sha256": "aca5d9d36ef52d9cf9148dc1a194c5b6e242751dda8134cde31cbb44b2b0fae8",
+      "bytes": 86101,
+      "tracked_before": true,
+      "groups": [
+        "worker"
+      ],
+      "hunk_headers": [
+        "@@ -4,0 +5,3 @@ pub mod broker;",
+        "@@ -211,0 +215,4 @@ enum Fault {",
+        "@@ -212,0 +220,2 @@ enum Fault {",
+        "@@ -243,0 +253,4 @@ impl Pool {",
+        "@@ -244,0 +258,2 @@ impl Pool {",
+        "@@ -623,0 +639,4 @@ impl Pool {",
+        "@@ -751,0 +771,60 @@ pub fn status(root: &Path) -> Result<Summary, String> {",
+        "@@ -767,0 +847,2 @@ impl Grant {",
+        "@@ -789,0 +871,12 @@ impl Grant {",
+        "@@ -933 +1026 @@ pub fn serve(root: &Path) -> Result<(), String> {",
+        "@@ -1264 +1357 @@ pub(crate) fn serve_controlled(",
+        "@@ -1269,0 +1363 @@ fn serve_inner(",
+        "@@ -1292,0 +1387,10 @@ fn serve_inner(",
+        "@@ -1355,0 +1460,6 @@ fn serve_inner(",
+        "@@ -1391,0 +1502,6 @@ fn serve_inner(",
+        "@@ -1399,0 +1516,2 @@ fn serve_inner("
+      ],
+      "new_file_whole_scope": false
+    },
+    {
+      "path": "crates/city-headless/src/normal_pool/broker.rs",
+      "sha256": "415a361568bf26160348642c13ab1ee79867043a6a272ad5772003cd84f2fad0",
+      "bytes": 36512,
+      "tracked_before": true,
+      "groups": [
+        "worker"
+      ],
+      "hunk_headers": [
+        "@@ -755,5 +755,16 @@ pub struct Lease {",
+        "@@ -763,2 +774,2 @@ impl Lease {",
+        "@@ -767,6 +778,8 @@ impl Lease {",
+        "@@ -774,20 +787,13 @@ impl Lease {",
+        "@@ -796,0 +803,7 @@ impl Lease {",
+        "@@ -799,7 +812,5 @@ impl Lease {",
+        "@@ -811,12 +822,7 @@ impl Lease {",
+        "@@ -823,0 +830,2 @@ impl Lease {"
+      ],
+      "new_file_whole_scope": false
+    },
+    {
+      "path": "crates/city-headless/src/normal_pool_pending_tests.rs",
+      "sha256": "d339ec6773385689a9ad9b96e30ec1783fb5eafe414583bde798a878a3e13da5",
+      "bytes": 30568,
+      "tracked_before": false,
+      "groups": [
+        "worker"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-headless/src/sim_host.rs",
+      "sha256": "ce8ef151d9448c3a4a164259953de26c0f4bc8743c53ebbd696b656dd3037367",
+      "bytes": 38363,
+      "tracked_before": true,
+      "groups": [
+        "worker",
+        "registry"
+      ],
+      "hunk_headers": [
+        "@@ -293 +293 @@ fn status(",
+        "@@ -329 +329 @@ fn status(",
+        "@@ -362,0 +363,41 @@ struct Required<'a> {",
+        "@@ -365 +406 @@ fn required(",
+        "@@ -397,0 +439 @@ fn required(",
+        "@@ -399,3 +441 @@ fn required(",
+        "@@ -411,0 +452,2 @@ fn required(",
+        "@@ -481,6 +523,2 @@ fn required(",
+        "@@ -493 +531 @@ fn required(",
+        "@@ -578,3 +616 @@ fn required(",
+        "@@ -690,0 +727,5 @@ fn run_inner(",
+        "@@ -774 +814,0 @@ fn run_inner(",
+        "@@ -783 +823 @@ fn run_inner(",
+        "@@ -792 +832 @@ fn run_inner(",
+        "@@ -814 +854 @@ fn run_inner(",
+        "@@ -829 +869 @@ fn run_inner(",
+        "@@ -866,0 +907,6 @@ fn run_inner(",
+        "@@ -871,3 +917 @@ fn run_inner("
+      ],
+      "new_file_whole_scope": false
+    },
+    {
+      "path": "crates/city-headless/src/task_registry_adapter.rs",
+      "sha256": "d83fc8fad10df1416e24c3dcb4607686441d70eb11080d07058c8631b327d131",
+      "bytes": 8621,
+      "tracked_before": false,
+      "groups": [
+        "registry"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-headless/src/worker_probe.rs",
+      "sha256": "c20847fa0b6a6ee0f6821f208ec42ad2f8b35c8ebbec89b682986017d3cf330d",
+      "bytes": 7623,
+      "tracked_before": true,
+      "groups": [
+        "worker"
+      ],
+      "hunk_headers": [
+        "@@ -95,0 +96,3 @@ pub fn run(dir: &Path) -> Result<Value, String> {",
+        "@@ -102 +105 @@ pub fn run(dir: &Path) -> Result<Value, String> {",
+        "@@ -110 +113 @@ pub fn run(dir: &Path) -> Result<Value, String> {",
+        "@@ -117 +120 @@ pub fn run(dir: &Path) -> Result<Value, String> {",
+        "@@ -125 +128 @@ pub fn run(dir: &Path) -> Result<Value, String> {",
+        "@@ -141 +144 @@ pub fn run(dir: &Path) -> Result<Value, String> {",
+        "@@ -145 +148 @@ pub fn run(dir: &Path) -> Result<Value, String> {",
+        "@@ -170,0 +174 @@ pub fn run(dir: &Path) -> Result<Value, String> {",
+        "@@ -172 +176 @@ pub fn run(dir: &Path) -> Result<Value, String> {",
+        "@@ -175 +179 @@ pub fn run(dir: &Path) -> Result<Value, String> {",
+        "@@ -180 +184 @@ pub fn run(dir: &Path) -> Result<Value, String> {"
+      ],
+      "new_file_whole_scope": false
+    },
+    {
+      "path": "crates/city-headless/tests/broker.rs",
+      "sha256": "99f2d5bee929ded159ca0989069d0ceba3243f1283249e6cdb408d2d3731c289",
+      "bytes": 22936,
+      "tracked_before": true,
+      "groups": [
+        "worker"
+      ],
+      "hunk_headers": [
+        "@@ -47 +47,7 @@ fn exe() -> &'static Path {",
+        "@@ -489,0 +496,87 @@ fn partial_sim_workspace_refill_after_real_child_exit_stops_pool_without_false_c"
+      ],
+      "new_file_whole_scope": false
+    },
+    {
+      "path": "crates/city-headless/tests/compute_worker.rs",
+      "sha256": "d5fe0a0c997319e4f85f1064f6463fd7a1803338029b9f5753fae4e842cdddef",
+      "bytes": 17536,
+      "tracked_before": true,
+      "groups": [
+        "worker"
+      ],
+      "hunk_headers": [
+        "@@ -19 +19,3 @@ impl Temp {",
+        "@@ -37 +39,5 @@ impl Drop for Temp {",
+        "@@ -41 +47,7 @@ fn executable() -> &'static Path {",
+        "@@ -242 +254,2 @@ fn stopping_worker_without_draining_its_response_reaps_child() {",
+        "@@ -321 +334,2 @@ fn bounded_cache_clears_retry_residue_and_real_worker_stays_within_charge() {",
+        "@@ -354 +368,2 @@ fn completed_worker_can_exit_on_eof_while_active_stop_still_kills() {"
+      ],
+      "new_file_whole_scope": false
+    },
+    {
+      "path": "crates/city-headless/tests/normal_pool.rs",
+      "sha256": "77bd1720b7d3f38cac4a8e4be97d5d16391da9fda27029824d1cdbe566a14440",
+      "bytes": 23937,
+      "tracked_before": true,
+      "groups": [
+        "worker"
+      ],
+      "hunk_headers": [
+        "@@ -23 +23,3 @@ impl Temp {",
+        "@@ -41 +43,5 @@ impl Drop for Temp {",
+        "@@ -45 +51,7 @@ fn exe() -> &'static Path {",
+        "@@ -100 +112,2 @@ fn real_worker_retains_and_reuses_slots_until_owned_wait_then_returns_actual_pag",
+        "@@ -166,7 +179,8 @@ fn killed_workers_only_return_capacity_after_parent_wait_and_spawn_failure_abort",
+        "@@ -179 +193,2 @@ fn killed_workers_only_return_capacity_after_parent_wait_and_spawn_failure_abort",
+        "@@ -320 +335,2 @@ fn internal_mutation_failures_terminate_service_without_publishing_balanced_cred",
+        "@@ -324 +340 @@ fn internal_mutation_failures_terminate_service_without_publishing_balanced_cred",
+        "@@ -543 +559,2 @@ fn mapped_pool_unmaps_before_grant_and_rebuilds_only_after_owned_wait() {"
+      ],
+      "new_file_whole_scope": false
+    },
+    {
+      "path": "crates/city-headless/tests/task_registry_adapter.rs",
+      "sha256": "ca7c655eb0d9eee418392d70556485c8262800f7e27d87b7d2a355c5ab467760",
+      "bytes": 7715,
+      "tracked_before": false,
+      "groups": [
+        "registry"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-headless/tests/task_registry_dispatch.rs",
+      "sha256": "e8e0160064dd8336aa1fff77ebbe05b884b9edef52398e2096fd35ef64ccacd9",
+      "bytes": 16832,
+      "tracked_before": false,
+      "groups": [
+        "registry"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-map/src/assets.rs",
+      "sha256": "43caf7e12749649c40401ec56d3e2da1049be4b45d434d81ff4499bf6a172f0c",
+      "bytes": 3352,
+      "tracked_before": true,
+      "groups": [
+        "geometry"
+      ],
+      "hunk_headers": [
+        "@@ -60,0 +61,17 @@ impl SpatialAssets {"
+      ],
+      "new_file_whole_scope": false
+    },
+    {
+      "path": "crates/city-map/src/traffic_adapter.rs",
+      "sha256": "dbb39708e528510348eb72b10e1738368d3a33c080d16c29b48c12d74eca2012",
+      "bytes": 9788,
+      "tracked_before": true,
+      "groups": [
+        "geometry"
+      ],
+      "hunk_headers": [
+        "@@ -11,0 +12 @@ use mycity_core::transport::{self, Entrance, Node, OdDemand, Opening, RoadEdge};",
+        "@@ -27 +28 @@ pub enum AdapterError {",
+        "@@ -35 +36,2 @@ pub enum RoadDirection {",
+        "@@ -44 +46,2 @@ pub struct FacilityOperation {",
+        "@@ -52 +55,2 @@ pub struct TerminalGrant {"
+      ],
+      "new_file_whole_scope": false
+    },
+    {
+      "path": "crates/city-storage/examples/spatial_geometry_scenario.rs",
+      "sha256": "0da54b6b741f961d0432b19ca232b2f47b43c3c42fdcb462802b65eaedf0be62",
+      "bytes": 7761,
+      "tracked_before": false,
+      "groups": [
+        "geometry"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-storage/examples/support/spatial_geometry_apply.rs",
+      "sha256": "e28f9b326fddbd69dcb2880795378fe9ba2adce177ef1f02b5bcc8e75c62b041",
+      "bytes": 45269,
+      "tracked_before": false,
+      "groups": [
+        "geometry"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-storage/examples/town_housing_income_move.rs",
+      "sha256": "85111701175451a1397fcf008e217d7f297fdb6e36a0c4af98bba54ece6c6f94",
+      "bytes": 32522,
+      "tracked_before": false,
+      "groups": [
+        "income"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-storage/src/capacity_read.rs",
+      "sha256": "639edbdf640d6898f5805bdb924c8960f92d10bc9d83de23160284e204777553",
+      "bytes": 7381,
+      "tracked_before": false,
+      "groups": [
+        "capacity"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-storage/src/checkpoint/receipt_decode.rs",
+      "sha256": "c20a45845966d0acdd84028ce993a11f8f97fe2ff56009b4edf7aa5d43ce5c47",
+      "bytes": 39029,
+      "tracked_before": true,
+      "groups": [
+        "geometry"
+      ],
+      "hunk_headers": [
+        "@@ -100,0 +101 @@ fn action_raw(",
+        "@@ -198,0 +200,6 @@ fn action_raw("
+      ],
+      "new_file_whole_scope": false
+    },
+    {
+      "path": "crates/city-storage/src/genesis.rs",
+      "sha256": "744f1a02fde7dd345f705d322e61bffc865f109c9600cee4d4c6d8109f607a6b",
+      "bytes": 2018,
+      "tracked_before": true,
+      "groups": [
+        "geometry"
+      ],
+      "hunk_headers": [
+        "@@ -17,0 +18,2 @@ pub(super) struct Header {",
+        "@@ -29,0 +32 @@ pub(super) fn decode(meta: &mut MetadataWorkspace) -> Result<Header, Error> {",
+        "@@ -55,0 +59 @@ pub(super) fn decode(meta: &mut MetadataWorkspace) -> Result<Header, Error> {"
+      ],
+      "new_file_whole_scope": false
+    },
+    {
+      "path": "crates/city-storage/src/lib.rs",
+      "sha256": "ef8ffa0417969f935a6652c358099912af723b13799c7a9c3112c76323f087ea",
+      "bytes": 177899,
+      "tracked_before": true,
+      "groups": [
+        "geometry",
+        "opening",
+        "capacity"
+      ],
+      "hunk_headers": [
+        "@@ -9,0 +10 @@ mod genesis;",
+        "@@ -26,0 +28 @@ mod spatial;",
+        "@@ -40,0 +43 @@ use serde::{Deserialize, Serialize};",
+        "@@ -117,0 +121,2 @@ struct Genesis<'a> {",
+        "@@ -194,0 +200 @@ pub struct Store {",
+        "@@ -267,0 +274,47 @@ fn validate_spatial_genesis_permissions(",
+        "@@ -540,0 +594 @@ impl Store {",
+        "@@ -565,0 +620 @@ impl Store {",
+        "@@ -592,0 +648 @@ impl Store {",
+        "@@ -621,0 +678,32 @@ impl Store {",
+        "@@ -628 +716 @@ impl Store {",
+        "@@ -630 +718 @@ impl Store {",
+        "@@ -643,0 +732 @@ impl Store {",
+        "@@ -645,0 +735 @@ impl Store {",
+        "@@ -654,2 +744,2 @@ impl Store {",
+        "@@ -708,0 +799,12 @@ impl Store {",
+        "@@ -790 +892,5 @@ impl Store {",
+        "@@ -802,0 +909 @@ impl Store {",
+        "@@ -858,0 +966 @@ impl Store {",
+        "@@ -978 +1086,2 @@ impl Store {",
+        "@@ -980,3 +1089,4 @@ impl Store {",
+        "@@ -991,0 +1102,12 @@ impl Store {",
+        "@@ -1014,2 +1136 @@ impl Store {",
+        "@@ -1031,0 +1153,12 @@ impl Store {",
+        "@@ -1036 +1169,3 @@ impl Store {",
+        "@@ -1100,0 +1236,3 @@ impl Store {",
+        "@@ -1102,12 +1239,0 @@ impl Store {",
+        "@@ -1150,0 +1277,10 @@ impl Store {",
+        "@@ -1324,0 +1461 @@ impl Store {",
+        "@@ -1385,0 +1523,73 @@ impl Store {",
+        "@@ -1467,0 +1678,3 @@ impl Store {",
+        "@@ -1472,0 +1686,153 @@ impl Store {",
+        "@@ -1574,0 +1941,234 @@ impl Store {",
+        "@@ -1886,0 +2487,63 @@ impl Store {",
+        "@@ -1994,0 +2658,2 @@ impl Store {",
+        "@@ -2007,0 +2673,2 @@ impl Store {",
+        "@@ -2023,0 +2691,8 @@ impl Store {",
+        "@@ -2049,0 +2725,2 @@ impl Persistence {",
+        "@@ -2060,0 +2738,2 @@ impl Persistence {",
+        "@@ -2075,0 +2755,2 @@ impl Persistence {",
+        "@@ -2110,0 +2792,22 @@ impl Persistence {",
+        "@@ -2115 +2818,2 @@ impl Persistence {",
+        "@@ -2116,0 +2821,7 @@ impl Persistence {",
+        "@@ -2119,0 +2831,30 @@ impl Persistence {",
+        "@@ -2132,5 +2873,31 @@ impl Persistence {",
+        "@@ -2176,0 +2944,26 @@ impl Persistence {",
+        "@@ -2383,0 +3177,11 @@ impl Persistence {",
+        "@@ -2398 +3202 @@ impl Persistence {",
+        "@@ -2399,0 +3204 @@ impl Persistence {",
+        "@@ -2425 +3230 @@ impl Persistence {",
+        "@@ -2426,0 +3232 @@ impl Persistence {",
+        "@@ -2455,0 +3262,163 @@ impl Persistence {",
+        "@@ -2462,0 +3432,2 @@ fn load_spatial_transport_catalog_on_open(",
+        "@@ -2523,0 +3495,38 @@ fn load_spatial_transport_catalog_on_open(",
+        "@@ -2561,11 +3570,34 @@ fn load_spatial_transport_catalog_on_open(",
+        "@@ -2573 +3605,9 @@ fn load_spatial_transport_catalog_on_open(",
+        "@@ -2575 +3615 @@ fn load_spatial_transport_catalog_on_open(",
+        "@@ -2577,30 +3617,28 @@ fn load_spatial_transport_catalog_on_open(",
+        "@@ -2608,8 +3646,65 @@ fn load_spatial_transport_catalog_on_open(",
+        "@@ -2616,0 +3712,2 @@ fn load_spatial_transport_catalog_on_open(",
+        "@@ -2619,0 +3717,3 @@ fn load_spatial_transport_catalog_on_open(",
+        "@@ -2695 +3795,34 @@ fn replay_spatial_transport_permissions(",
+        "@@ -2730,0 +3864,245 @@ fn replay_spatial_transport_permissions(",
+        "@@ -2894,0 +4273,3 @@ fn identity(engine: &Engine) -> Bootstrap {"
+      ],
+      "new_file_whole_scope": false
+    },
+    {
+      "path": "crates/city-storage/src/opening_input.rs",
+      "sha256": "4ccfe8f1bef942bc02c5fce6a06ba9fb99ec63fe27e0a71d021b464748d99ffe",
+      "bytes": 3601,
+      "tracked_before": false,
+      "groups": [
+        "opening"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-storage/src/spatial_geometry_updates.rs",
+      "sha256": "12bed07c6b02486eba1f7410e9196bbb67cf4c2cabd4d52f037f61fb12275257",
+      "bytes": 8839,
+      "tracked_before": false,
+      "groups": [
+        "geometry"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-storage/src/spatial_transport_updates.rs",
+      "sha256": "4998305ed97e7849e9680dc384c2d47f374ed856c03f237e67d639e385d2cc97",
+      "bytes": 90561,
+      "tracked_before": true,
+      "groups": [
+        "geometry"
+      ],
+      "hunk_headers": [
+        "@@ -7,0 +8,3 @@ use mycity_core::market_access::TransportAllocationProfile;",
+        "@@ -18,2 +21,4 @@ use std::{fmt, path::Path};",
+        "@@ -240 +245,6 @@ pub struct SpatialTransportVersionRecord {",
+        "@@ -508,2 +518,4 @@ impl SpatialTransportCatalog {",
+        "@@ -539,2 +551,6 @@ impl SpatialTransportCatalog {",
+        "@@ -571 +587,11 @@ impl SpatialTransportCatalog {",
+        "@@ -575 +601 @@ impl SpatialTransportCatalog {",
+        "@@ -577,2 +603,3 @@ impl SpatialTransportCatalog {",
+        "@@ -600,0 +628,51 @@ impl SpatialTransportCatalog {",
+        "@@ -608,0 +687 @@ impl SpatialTransportCatalog {",
+        "@@ -610 +689,2 @@ impl SpatialTransportCatalog {",
+        "@@ -614,0 +695,108 @@ impl SpatialTransportCatalog {",
+        "@@ -617,0 +806 @@ impl SpatialTransportCatalog {",
+        "@@ -639 +828 @@ impl SpatialTransportCatalog {",
+        "@@ -640,0 +830 @@ impl SpatialTransportCatalog {",
+        "@@ -709 +899,3 @@ impl SpatialTransportCatalog {",
+        "@@ -716 +908 @@ impl SpatialTransportCatalog {",
+        "@@ -737 +929,3 @@ fn record_authorization_witness_matches(",
+        "@@ -776,0 +971,41 @@ fn record_authorization_witness_matches(",
+        "@@ -919,0 +1155,13 @@ pub fn prepare_version(",
+        "@@ -946 +1194 @@ pub fn prepare_version(",
+        "@@ -947,0 +1196 @@ pub fn prepare_version(",
+        "@@ -979,0 +1229 @@ pub fn prepare_version(",
+        "@@ -988,0 +1239,18 @@ fn build_version(",
+        "@@ -1010,2 +1278 @@ fn build_version(",
+        "@@ -1023,2 +1289,0 @@ fn build_version(",
+        "@@ -1252,0 +1518,27 @@ pub fn encoded_profile_asset(",
+        "@@ -1359,0 +1652,41 @@ mod tests {",
+        "@@ -1863 +2196 @@ mod tests {",
+        "@@ -1867 +2200,3 @@ mod tests {",
+        "@@ -1886,0 +2222,2 @@ mod tests {"
+      ],
+      "new_file_whole_scope": false
+    },
+    {
+      "path": "crates/city-storage/tests/capacity_read.rs",
+      "sha256": "797e65cd5c2b3d94f8f2dfbe30d73522da17b52ec8242a0035fcae13ff57d680",
+      "bytes": 11001,
+      "tracked_before": false,
+      "groups": [
+        "capacity"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-storage/tests/fixtures/opening-input-store/boot.json",
+      "sha256": "d2505d4b292ee8745de0266178168853f09a0a71a767b8e74598bf0f105f12da",
+      "bytes": 2612,
+      "tracked_before": false,
+      "groups": [
+        "opening"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-storage/tests/fixtures/opening-input-store/e0.json",
+      "sha256": "6756555697457b3de5307086610a108c88d15650c6e668da0cdf990ca52b874c",
+      "bytes": 857,
+      "tracked_before": false,
+      "groups": [
+        "opening"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-storage/tests/fixtures/opening-input-store/expected-ledgers.json",
+      "sha256": "e730f9d05284e4ef273b8433a8ddc15585eaf864b0a8d14c5d54c5039a1236a5",
+      "bytes": 2205,
+      "tracked_before": false,
+      "groups": [
+        "opening"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-storage/tests/fixtures/opening-input-store/flat16.png",
+      "sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8",
+      "bytes": 207,
+      "tracked_before": false,
+      "groups": [
+        "opening"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-storage/tests/fixtures/opening-input-store/source-manifest.json",
+      "sha256": "405938585870636a72d36eb4ef7fb605b57a4881bc79990e7a821a4371ee537e",
+      "bytes": 2210,
+      "tracked_before": false,
+      "groups": [
+        "opening"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-storage/tests/fixtures/opening-input-store/spatial.json",
+      "sha256": "1891b68e1190fac29e3dc83a1d5d96ba3fa972cc7594fb8106ccbe179cdd29d6",
+      "bytes": 3679,
+      "tracked_before": false,
+      "groups": [
+        "opening"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-storage/tests/fixtures/opening-input-store/town.json",
+      "sha256": "c9d3713d817fada2054641260c220447f7f2496d64f1ac5340bfa3e1cba4e2a0",
+      "bytes": 15917,
+      "tracked_before": false,
+      "groups": [
+        "opening"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-storage/tests/opening_input_store.rs",
+      "sha256": "4cef3b4b4426e47bdd931d3ba4f2a87daaa36b1162acf46b5e7f867cbbc1ebc6",
+      "bytes": 20930,
+      "tracked_before": false,
+      "groups": [
+        "opening"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "crates/city-storage/tests/spatial_transport_updates.rs",
+      "sha256": "0fdc884addfaf4a91b6fe319a1a7cf80256b7214fbafa4309b3748bd3ca5a94c",
+      "bytes": 63782,
+      "tracked_before": true,
+      "groups": [
+        "geometry"
+      ],
+      "hunk_headers": [
+        "@@ -0,0 +1,3 @@",
+        "@@ -12,0 +16 @@ use mycity_core::{",
+        "@@ -15 +19 @@ use mycity_core::{",
+        "@@ -18,0 +23 @@ use mycity_map::{",
+        "@@ -23,2 +28 @@ use mycity_map::{",
+        "@@ -28 +32,4 @@ use mycity_map::{",
+        "@@ -219,5 +226,2 @@ fn source_asset_hash_mismatch_is_rejected_before_candidate_building() {",
+        "@@ -239,40 +243,30 @@ fn scene_profile_and_hash() -> (TransportAllocationProfile, [u8; 32]) {",
+        "@@ -280,2 +273,0 @@ fn scene_profile_and_hash() -> (TransportAllocationProfile, [u8; 32]) {",
+        "@@ -283,2 +275,21 @@ fn scene_profile_and_hash() -> (TransportAllocationProfile, [u8; 32]) {",
+        "@@ -336,0 +348,20 @@ fn opening_with_market(allocation_hash: [u8; 32]) -> Vec<u8> {",
+        "@@ -395,0 +427,308 @@ fn create_store(path: &std::path::Path) -> (Store, TransportAllocationProfile, ["
+      ],
+      "new_file_whole_scope": false
+    },
+    {
+      "path": "tests/fixtures/issue-101/air-empty-sources-30.json",
+      "sha256": "03178f78324b6bba9e82cadc3633e51764109e92179ba5b6358aa525ed26db64",
+      "bytes": 198,
+      "tracked_before": false,
+      "groups": [
+        "registry"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "tests/fixtures/issue-101/air-empty-sources.json",
+      "sha256": "1a436b88b17530d637f25d9b7b5f0fefe0f43e068544990d08292d8890527667",
+      "bytes": 198,
+      "tracked_before": false,
+      "groups": [
+        "registry"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    },
+    {
+      "path": "tests/fixtures/issue-101/sim-air-contract.json",
+      "sha256": "ae625e2e9f50381b6e1c4e91555325b3c1d5d3e8bae161e66a07879edb600612",
+      "bytes": 1069,
+      "tracked_before": false,
+      "groups": [
+        "registry"
+      ],
+      "hunk_headers": [],
+      "new_file_whole_scope": true
+    }
+  ],
+  "exclusions": "M0 observer/clock Python and docs WIP, rare-control WIP; all originals retained. Inactive education presence is not an activation or complete issue pass.",
+  "validation": "Finite focused commands only, no aggregate full-suite, native/16GB/M0/GPU/performance claim. Existing budgets and frozen standards unchanged."
+}

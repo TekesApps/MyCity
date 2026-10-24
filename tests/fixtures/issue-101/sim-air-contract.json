@@ -1,0 +1,35 @@
+{
+  "fixture_kind": "contract_only_not_provider_evidence",
+  "case": "positive_world_interval_with_zero_new_air_sources",
+  "input": {
+    "world_id": 7,
+    "branch_id": 2,
+    "city_id": 11,
+    "snapshot_token": 19,
+    "source_id": 41,
+    "source_version": 7,
+    "window_start_seconds": 0,
+    "window_end_seconds": 60,
+    "due_world_seconds": 60,
+    "dirty": true,
+    "necessary": true,
+    "resume_cursor": 0,
+    "new_air_source_count": 0,
+    "now_world_seconds": 60
+  },
+  "expected": {
+    "candidate_count": 1,
+    "source_id": 41,
+    "source_version": 7,
+    "reason": "Dirty",
+    "necessary": true,
+    "acknowledged": false,
+    "committed": false
+  },
+  "boundary_notes": {
+    "air_rule": "positive_world_interval_requires_progress_even_with_zero_new_sources",
+    "obligation_rule": "accepted_due_survives_pause_queue_pressure_cancelled_attempt_and_process_exit",
+    "clock_rule": "world_seconds_interaction_seconds_and_city_development_seconds_are_distinct",
+    "commit_rule": "wake_proposal_or_dispatch_does_not_acknowledge_or_commit"
+  }
+}

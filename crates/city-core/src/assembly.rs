@@ -72,10 +72,8 @@ pub struct OpeningStock {
     pub source: u32,
 }
 
-#[derive(Debug, Deserialize)]
-#[serde(deny_unknown_fields)]
+#[derive(Debug)]
 pub struct Opening {
-    #[serde(deserialize_with = "crate::bounded_decode::text64")]
     pub schema: String,
     pub bootstrap: Bootstrap,
     pub sources: Rows<OpeningSource, MAX_SOURCES>,
@@ -86,15 +84,70 @@ pub struct Opening {
     pub boot: Option<crate::boot::Opening>,
     pub exchange: Option<crate::exchange::Opening>,
     /// Optional fixed one-project prototype profile. Runtime changes only through Engine actions.
-    #[serde(default)]
     pub construction: Option<crate::construction::Project>,
     /// Optional fixed market profile. It is genesis configuration; runtime changes use
     /// compact Engine actions and persist in the same World/checkpoint.
-    #[serde(default)]
     pub town: Option<crate::town_runtime::MarketProfile>,
     /// Optional bounded housing stock and immutable one-shot lease-offer catalogue.
-    #[serde(default)]
     pub housing: Option<crate::housing::OpeningHousing>,
+}
+
+// Decode-only backing reduces the derived visitor's aggregate stack temporaries.
+// Each present optional value has one bounded short-lived allocation; all callers,
+// including genesis rebuild during recovery, must account for this scratch.
+mod private_openingdecode {
+    use super::*;
+    #[derive(Debug, Deserialize)]
+    #[serde(deny_unknown_fields, rename = "Opening")]
+    pub(super) struct Opening {
+        #[serde(deserialize_with = "crate::bounded_decode::text64")]
+        schema: String,
+        bootstrap: Bootstrap,
+        sources: Rows<OpeningSource, MAX_SOURCES>,
+        accounts: Rows<OpeningAccount, MAX_ACCOUNTS>,
+        stocks: Rows<OpeningStock, MAX_STOCKS>,
+        region: Option<Box<crate::region::Opening>>,
+        economy: Option<Box<crate::economy::Opening>>,
+        boot: Option<Box<crate::boot::Opening>>,
+        exchange: Option<Box<crate::exchange::Opening>>,
+        /// Optional fixed one-project prototype profile. Runtime changes only through Engine actions.
+        #[serde(default)]
+        construction: Option<Box<crate::construction::Project>>,
+        /// Optional fixed market profile. It is genesis configuration; runtime changes use
+        /// compact Engine actions and persist in the same World/checkpoint.
+        #[serde(default)]
+        town: Option<Box<crate::town_runtime::MarketProfile>>,
+        /// Optional bounded housing stock and immutable one-shot lease-offer catalogue.
+        #[serde(default)]
+        housing: Option<Box<crate::housing::OpeningHousing>>,
+    }
+
+    impl Opening {
+        #[inline(never)]
+        pub(super) fn finish(self) -> super::Opening {
+            super::Opening {
+                schema: self.schema,
+                bootstrap: self.bootstrap,
+                sources: self.sources,
+                accounts: self.accounts,
+                stocks: self.stocks,
+                region: self.region.map(|value| *value),
+                economy: self.economy.map(|value| *value),
+                boot: self.boot.map(|value| *value),
+                exchange: self.exchange.map(|value| *value),
+                construction: self.construction.map(|value| *value),
+                town: self.town.map(|value| *value),
+                housing: self.housing.map(|value| *value),
+            }
+        }
+    }
+}
+type OpeningDecode = private_openingdecode::Opening;
+
+impl<'de> Deserialize<'de> for Opening {
+    fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        OpeningDecode::deserialize(deserializer).map(OpeningDecode::finish)
+    }
 }
 
 #[derive(Clone, Copy, Debug, Serialize, Deserialize)]
@@ -191,7 +244,7 @@ fn is_zero_money(value: &Money) -> bool {
     *value == Money::ZERO
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize)]
 #[serde(deny_unknown_fields)]
 pub struct World {
     pub(crate) scope: Scope,
@@ -212,6 +265,64 @@ pub struct World {
     pub(crate) town: Option<crate::town_runtime::TownMarket>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub(crate) housing: Option<Box<HousingRuntime>>,
+}
+
+// Restore-only scratch: retain the wire and runtime layout while avoiding a large
+// generated World visitor frame. Move all backing; never reinitialize capital.
+mod private_worlddecode {
+    use super::*;
+    #[derive(Deserialize)]
+    #[serde(deny_unknown_fields, rename = "World")]
+    pub(super) struct World {
+        scope: Scope,
+        seed: u64,
+        revision: u64,
+        accounts: Arena<AccountDomain, Account>,
+        stocks: Arena<InventoryDomain, Stock>,
+        account_ids: Rows<(u32, Handle<AccountDomain>), MAX_ACCOUNTS>,
+        stock_ids: Rows<(u32, Handle<InventoryDomain>), MAX_STOCKS>,
+        sources: Rows<OpeningSource, MAX_SOURCES>,
+        region: Option<crate::region::Region>,
+        economy: Option<crate::economy::Economy>,
+        boot: Option<crate::boot::Boot>,
+        exchange: Option<crate::exchange::Exchange>,
+        #[serde(skip_serializing_if = "Option::is_none")]
+        construction: Option<crate::construction::Project>,
+        #[serde(skip_serializing_if = "Option::is_none")]
+        town: Option<Box<crate::town_runtime::TownMarket>>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        housing: Option<Box<HousingRuntime>>,
+    }
+
+    impl World {
+        #[inline(never)]
+        pub(super) fn finish(self) -> super::World {
+            super::World {
+                scope: self.scope,
+                seed: self.seed,
+                revision: self.revision,
+                accounts: self.accounts,
+                stocks: self.stocks,
+                account_ids: self.account_ids,
+                stock_ids: self.stock_ids,
+                sources: self.sources,
+                region: self.region,
+                economy: self.economy,
+                boot: self.boot,
+                exchange: self.exchange,
+                construction: self.construction,
+                town: self.town.map(|value| *value),
+                housing: self.housing,
+            }
+        }
+    }
+}
+type WorldDecode = private_worlddecode::World;
+
+impl<'de> Deserialize<'de> for World {
+    fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        WorldDecode::deserialize(deserializer).map(WorldDecode::finish)
+    }
 }
 
 #[derive(Debug, PartialEq, Eq, Serialize)]
@@ -770,6 +881,10 @@ impl World {
     pub(crate) fn opening_source(&self, id: u32) -> Option<OpeningSource> {
         self.sources.iter().find(|source| source.id == id).copied()
     }
+    /// Narrow in-process observation; this pair grants no publication or physical rights.
+    pub fn scope_revision(&self) -> (Scope, u64) {
+        (self.scope, self.revision)
+    }
     pub fn view(&self) -> WorldView {
         WorldView {
             schema: if self.housing.is_some() {
@@ -944,13 +1059,20 @@ pub(crate) fn assemble_into(bytes: &[u8], world: &mut World) -> Result<(), Strin
         return Err("input_too_large".into());
     }
     crate::bounded_decode::guard(bytes)?;
-    let mut input: Opening = serde_json::from_slice(bytes).map_err(|e| {
+    let input: Opening = serde_json::from_slice(bytes).map_err(|e| {
         if e.to_string().contains("model_rows_extra_record") {
             "opening_count_limit".to_owned()
         } else {
             e.to_string()
         }
     })?;
+    assemble_opening_into(input, world)
+}
+
+// Decode must finish before reserving the larger validation/assembly frame.
+// Moving the same parsed input preserves all original checks and publication rules.
+#[inline(never)]
+fn assemble_opening_into(mut input: Opening, world: &mut World) -> Result<(), String> {
     if input.schema != ASSEMBLY_SCHEMA {
         return Err("unsupported_opening_schema".into());
     }
@@ -1521,3 +1643,7 @@ mod tests {
         );
     }
 }
+
+#[cfg(all(test, not(debug_assertions)))]
+#[path = "assembly_decode_compat_tests.rs"]
+mod decode_compat_tests;

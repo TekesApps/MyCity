@@ -1,8 +1,14 @@
 # MyCity 当前实际派工与交接
 
+**2026-10-24 当前接管状态：**本聊天 root 是唯一 canonical 集成、共享核心修改、串行验证
+与版本发布负责人；旧主会话已由用户停止，不再联系或等待其释放。当前有限集成发布基线为
+v0.5.159；保留的 WIP 只按最新已验证阶段登记。下文各带日期/轮次的旧派工与失败记录是
+历史证据，不恢复旧 writer 授权、不覆盖文末最新实际状态。最新已过 CPU 生命周期37项与
+发布前 F/E26项、四个正向 fresh reader/两个拒绝反例见文末及各 STATUS。分项发布范围与限制见 release-association-20261024/STATUS.md。
+
 2026-10-23初次核对主线main v0.5.140，root复用既有agents，没有重复启动同线。D随后验证并合入v0.5.144；M0、F、E的WIP仍留在各自原树。非本任务 `docs/evidence/m0-t13a-rare-control-01/` 保留。范围为Rust模型/CLI；没有UI/GPU/语音/AgentKit。本表是执行合同，不是全目标完成声明。
 
-## 唯一共享核心负责人
+## 历史共享核心负责人（接管前）
 
 `economy_scenarios` 是 Engine/World/assembly/Timeline/事务候选/Store提交及receipt decoder的唯一修改负责人。D与有限F已发布；该writer在 `/Users/frankqin/dev/MyCity-core-work/spatial-runtime-update-current` 交付E租约与周期租金后冻结核心，由root按明确白名单集成main验证。root维护集成与验证；其他agent不得同时修改这些共享结构，也不另造时钟、账本或持久化。下表保留各线原合同，最新小批次及验证状态见文末。
 
@@ -352,3 +358,223 @@ froze new existing-API28-day scenario/test/CLI source only (not_run), without re
 previous actual28-day cases or claiming ongoing self-finance. E owner delivered a minimal
 2-unit/3-immutable-offer compatibility/capacity handoff only, with no ignored test or core
 mutation; dynamic offer generations remain later. No duplicate core writer or Cargo window.
+
+
+## Takeover parallel queue — 2026-10-24
+
+This section supersedes the historical owner assignments above. The old main chat is
+stopped. Current coordinator `01a166fc-e444-7602-ad22-3a8551dda487` owns canonical
+integration, shared core changes, serial compilation/testing and release scheduling.
+Canonical HEAD is v0.5.158 / `ae28b8cda8041c7bd106a28cccdc3deab051b032` with protected
+uncommitted F/E/M0 WIP; a HEAD alone is not the current source identity. Each adapter must
+record the actual read-set hashes. Previous candidate source acceptance is not integration
+acceptance. Existing F/E finite results and M0 entry/clock diagnostics retain their stated
+limits; neither establishes M0 performance or real16GB acceptance.
+
+| Priority / Issue | Owner and independent write scope | Entry condition / completion gate |
+|---|---|---|
+| P0 #120 | Chat `01a16b67-c377-7b22-b44c-065d4f43d504`; reuse original opening-loader tree, module/tests/fixtures/handoff | Real Opening/schema and bounded input adapter; assembler interoperability, raw-byte source identity and negative cases. Root alone chooses parsed-Opening seam and edits assembly/CLI/genesis. |
+| P0 #101 | Existing chat `01a1682f-f3ce-7f61-833c-a31d55a43b34`; original registry files plus new headless task_registry_adapter module/test | Adapt real Background Job inputs to bounded hints. Required positive-dt air responsibility, actual ACK and dispatch stay in existing owner. Missing durable snapshot identity remains explicit; root wires sim_host and exports. |
+| P1 #118 | Existing chat `01a1682f-f0de-7241-b895-0bbfa1386c5b`; handoff interface increment only for now | Read real Resource/Lease/Engine/Store and propose minimal snapshot/clock/receipt contract. Root must settle missing shared semantics before adapter implementation; no invented authority or second capacity pool. |
+| Coordinator #25/#26/#112 | Current main only; existing shared-core WIP and frozen evidence | Keep geometry/housing recovery results; continue bounded native observer diagnosis separately. Serial verification windows, no concurrent private Cargo/native runs. |
+| Waiting #31/#32 | Original owners retained, no new assignment | Reliable geometry/rights/profile/quote providers and explicit versioned equipment meter-boundary decision before real adapters. Nonzero references are insufficient. |
+| Waiting #102 → #103 → #104 | Original modules retained, no new assignment | Actual #101 source/due/context observations and validated protocol/compatibility chain before real resource grants. Cancellation never proves resources released. |
+| Waiting #73/#74/#75/#57/#54 | Original modules retained, no duplicate assignment | Real capacity, actual travel/attendance/fulfilment and authoritative receipt adapters; plans do not prove delivery. #54 finite synthetic tests already passed, production providers remain pending. |
+| Waiting #85/#86/#94/#96/#97/#98/#61/#117/#36 | Original modules retained, no duplicate assignment | Versioned real input/units/ownership adapters and cross-resource causal boundaries before joint integration; unknown and unresolved must not become actual shortage. |
+| Later #105–#111/#113/#114 | Not dispatched | Correct integrated representative load and recovery baseline first; GPU/full-path, long-run and true16GB need separate qualified measurement windows and hardware. |
+
+The first two source lanes may run concurrently; #118 interface investigation does not
+write their files. All three read shared core only. Per lane incremental source/fixture
+budget <=8MiB and handoff package <=16MiB are planning caps, not measured runtime budgets.
+No new target/cache, reset/rebase, source-tree cleanup, publication or issue closure by the
+issue owners. Complete initial and final originals must remain recoverable.
+
+Handoff must include actual files/API, exact upstream read-set, fixed fixture versus real
+provider distinctions, independent expected outcomes, remaining dependencies, resource
+limits and requested serial commands. Current main schedules builds/tests using the existing
+HP P900 target/work, then requests advisor review of concrete changes/results, returns
+blockers to the same implementer and records implementation/validation/unverified/PR status
+in the existing issue. A source-only handoff cannot close the whole issue. Cleanup follows
+complete durable archive, stopped writers, process-use and recovery-dependency checks;
+no waiting on or waking the stopped main chat. All unlisted issues remain unassigned by
+this increment, not implicitly complete or newly owned.
+
+### Current queue validation increment
+
+#101 original advisor accepted the finite real-Job adapter source. Root's canonical serial
+core registry tests passed13/13 and headless adapter tests passed8/8; see
+`work/parallel-issue101-validation-20261024/`. Only the core module export was wired; actual
+Sim required/dispatch/ACK/Store paths and durable-token/recovery/resource gates remain pending.
+Warnings and synthetic real-domain input limits are recorded in Issue#101.
+
+#120 compiled in both initial and boxed revisions, but each aborted in its first default-stack
+test with stack overflow; zero tests confirmed passed. Both source revisions, fixed executables
+and failed logs are retained under `work/parallel-issue120-validation-20261024/`. The same owner
+is diagnosing the concrete assembler/adapter stack boundary; no global stack or product budget
+increase has been made. Source review acceptance is not an execution pass.
+
+#118 P1 interface evidence is delivered; no physical adapter has been implemented. Store's
+existing receipt lookup should be reused. Missing units/physical aliases/future windows/rights
+prevent enabling the old full physical candidate constructor from bare scalar rows.
+
+### Approved #118 read-only implementation boundary
+
+Following the original advisor's finite P1 review, root approved the same #118 owner to
+implement `city-storage/src/capacity_read.rs` and its dedicated tests/fixtures/handoff. Root
+added only `World::scope_revision()` to return existing scalar metadata without allocating
+a WorldView. Shared Store/receipt/transaction internals and module exports remain root-owned.
+The adapter may only inspect the current original scalar pool and sequential original
+receipt lookup within one exclusively managed Store instance, with guarded stamp checks.
+It must preserve partial/absent clock, unknown physical dimensions/alias/window/rights,
+original errors and full receipt outcomes. No physical provider, detached authentication,
+new ledger, capacity mutation or automatic retry is authorized. Actual implementation and
+serial Store tests remain pending; original candidate-only tests cannot establish this gate.
+
+### #120 finite retained-path result
+
+Root fixed the concrete town Opening decode stack failure with bounded profile scratch;
+[finite evidence](evidence/opening-loader-retained-20261024/STATUS.md) records opening6,
+wire4, correctly selected runtime2, exit13 and utility-binding6 passing tests. Two broader
+equity/utility default-stack failures also reproduce with the original town file under the
+same WIP and remain unresolved. No full regression/Store/publication/M0/16GB acceptance.
+Scratch backing max42,272bytes plus1,872-byte header, allocator/stack overlap and native peaks
+remain separately accountable on all profile-decode callers. #120 remains open; same-slot
+Store publication and recovery integration are the next gate, not a second initialization.
+
+The two independent default-stack failures are tracked separately as #122 (equity) and #123 (utility); they do not alter frozen M0 gates or become implicit passes after the finite #120 fix. No duplicate developer was assigned.
+
+### #118 read gate actual result
+
+Original advisor accepted frozen retention/budget corrections; root's existing release
+validation configuration passed5/5 real-Store read tests. [Evidence](evidence/capacity-read-20261024/STATUS.md)
+retains four release worlds and all debug failures. Default-debug Store creation still aborts;
+release success does not resolve it. No physical provider/admission/resource/M0 pass follows.
+This finite read gate permits next #101 real Sim observation/dispatch wiring, then #120 same-slot
+Store initialization/publication/recovery. Shared control and commit paths stay root-owned.
+
+### #101 actual Sim hook result
+
+[Real-process evidence](evidence/task-registry-dispatch-20261024/STATUS.md): original advisor
+accepted source; fixed release CLI/test with matching source identity passed2/2. Required
+positive-dt zero-source execution, cancel/retry and original cold receipt replay are observed.
+This is advisory wiring only; #102/#103/#104 control and formal budgets remain pending.
+Next sequential verification is #120 same retained slot Store publication/recovery; original
+Ticket/commit authority, M0 frozen gates and protected WIP remain unchanged.
+
+### #120 same-slot Store actual result
+
+[Finite Store evidence](evidence/opening-input-store-20261024/STATUS.md): serial release build
+and six parent tests passed; 12 actual fresh-process recovery probes each passed. Original
+advisor reviewed concrete results and found no new blocker. Original prepared slot, raw bytes,
+genesis/root identity, actual 137-cent WAL/checkpoint recovery and CURRENT cutpoints are covered.
+No production authority, physical power-loss, resource-peak, complete #120 or M0 pass follows.
+#118 read gate, #101 advisory Sim hook and this #120 finite gate are now validated in dependency
+order. #122/#123 and #118 default-debug stack failures remain open; preserve WIP and all evidence.
+
+### Post-#120 next real integration ownership
+
+#102 owner chat `01a16bad-d5a1-77e0-9990-fcb8c473cadf` reuses the original issue102
+worktree and archived v149 source; it owns only protocol schema, a new private headless
+adapter, dedicated tests/fixture and handoff. Root alone modifies compute_worker/sim_host/
+normal_pool/broker and module exports. No private builds/tests or duplicate allocator.
+Original advisor accepted keeping actual wait/retirement capability private to the Child
+owner, with the original pool/broker as sole return authority. Core scalar validation cannot
+prove OS wait. Cancel/report/idle never retire resources; spawned-but-attach-ACK-lost still
+requires wait, and reaped-but-pool-communication-failed retains retry capability. Broker
+Child ownership is not duplicated in Sim. GPU/Hybrid remain disabled without device fences.
+#103 waits for this actual lifecycle path; #104 follows qualified strategy transitions and
+real owner costs. One existing CPU air worker is the first integration target, not14 workers
+or a proven global CPU/GPU grant controller. Full issues remain open.
+
+Root short diagnostics for #122/#123 preserve exact assertions and default stack. Test-only
+stage markers and fixed binaries are archived under `work/stack-faults-122-123-20261024/`;
+no M0 load or formal measurement is run. Initial markers narrow both failures to the opening/
+Engine construction region, not yet to WorldView or a proven shared root cause. All diagnostic
+markers must be removed byte-for-byte after localization; no unrelated WIP may be reverted.
+
+#102 first actual-owner adapter source review found two activation blockers: error paths
+can drop the sole Child/Grant owner, and legacy2MiB report bounds do not fit the existing
+8MiB air checkpoint ceiling. Original implementer is repairing its private API/handoff;
+root must retain failed owners until successful wait/Reap and preserve original workload.
+No activation or measured_report is allowed with fabricated work/scratch counters.
+
+[Stack short-diagnostic evidence](evidence/stack-faults-122-123-20261024/STATUS.md) records
+original Opening decode aborts and the failed private-scratch candidate: #122 then reaches
+first transaction execute before aborting. All candidate/marker source edits were reverted
+to exact pre-diagnostic originals, leaving protected WIP intact. #122/#123 remain open.
+
+### #122/#123 finite repair accepted; next #102 shared window
+
+[Final stack evidence](evidence/stack-faults-122-123-20261024/STATUS.md) records original
+default failures repaired without changing stack/workload,209 release core and4 profile
+passes,9 debug utility and6 retained-loader passes, Store6parents/12 cold children and
+5 debug capacity reads. Original advisor accepted finite source/results; historical failed
+full command206/1/1 remains recorded plus corrected F-fixture exact1/1. Publication/version
+association is still pending coordinated handling of protected WIP; full issues are not
+closed by candidate-only evidence.
+
+#102 revision03 also passed source-only narrow review: boot/session binding preserves
+u128 boot high bits. Root's shared hook must retain a pending Prepare request/key BEFORE
+RPC so lost replies can retry the same capability, retain partial Worker/Grant on every
+post-spawn failure, and keep original Reap/broker the only credit return. No alternate
+prepare/key or fabricated work counters can count as recovery. Real shared lifecycle/pool
+fault tests remain not_run. Root schedules this next; private modules remain frozen.
+
+### #102 pending Prepare shared increment
+
+Root added `normal_pool::PendingGrant`: it owns the original Ready, full-width boot,
+parent instance and key before RPC. A failed resolve retains the same request; a successful
+resolve transfers the original Grant once. Original advisor's concrete source review found
+no blocker for this finite increment. Serial `cargo check -p mycity-headless --lib --locked
+--offline` passed; this is compilation, not lifecycle or memory acceptance. The first command
+used an incorrect package name and failed before compilation; its log is retained.
+
+Real service cutpoints distinguish successful Prepare/Attach/Reap followed by a lost reply
+from an explicit Reap rejection before action. The dedicated real RPC fixture is owned by
+the existing #102 implementer; root alone integrates and runs it. Logs/originals live under
+`work/issue102-integration-20261024/` (256MiB evidence planning cap); short retained socket
+roots under the same external work avoid Unix path limits. No secret capability is logged.
+Old `Grant::prepare/from_env`, Worker partial-spawn errors and Sim retirement containers
+are still unmigrated. Passing this API gate cannot close #102 or activate #103/#104.
+
+[Actual finite RPC results](evidence/worker-pending-rpc-20261024/STATUS.md): serial release
+build and4/4 real service/RPC tests passed on fixed source/executable. Four final original
+pool reports balance one grant/one return; independent phase checks distinguish server
+mutation from local acknowledgement. Original source/executable/logs retained. Next root
+window uniformly migrates actual spawn callers to persistent WorkerSlot, including broker
+Started-before-accept retention and unconfirmed Start/session exit. No lossy temporary
+String wrapper may drop a live owner. M0 load/standards and unrelated WIP unchanged.
+
+### #102 actual CPU lifecycle gate passed
+
+[Stage08 actual results](evidence/worker-pending-rpc-20261024/STATUS.md#stage08-persistent-actual-workersimbroker-ownership)
+supersede the preceding unmigrated-caller status: root migrated all actual spawn callers to
+persistent Worker/start methods, retained original Prepare/Child/Grant/Lease before later
+failure points, and retired before Rebind. Structured Start-unconfirmed state now ends Sim
+after the original result; original supervisor actual wait/revoke remains sole recovery.
+The original advisor's concrete blocker was fixed and verified with no second command.
+
+Serialized frozen source08:9 RPC/Worker/unwind +2 new broker +10 compute +6 pool protocol
++8 existing broker +2 #101 dispatch =37 selected tests passed. One native mapped observer
+test explicitly not_run; formal M0/pressure/GPU/native16GiB acceptance unchanged. Source,
+fixed executables, worlds, receipts and failure logs retained under existing HP work.
+Advisor accepted concrete results without new blockers. Remaining #102 work is r03 actual
+identity/report wiring and truthful measurement/compatibility, not replaying this finished
+CPU retirement audit. #103/#104 are not activated. Coherent protected-WIP version association
+is next; no full issue closure or release claimed yet.
+
+[Current-source publication prerequisite](evidence/release-association-20261024/STATUS.md):
+F8+unit8 and E4+2+4 passed26/26, four fresh reader processes reproduced business/state on
+verified full copies of old recovery originals, and two corrupt copies retained their exact
+rejections. Advisor accepted this finite gate. Historical F443/444 failures remain historical;
+they are not current compile failures. Publication still requires a per-hunk scope and exact
+version/read-set association; no blind whole-WIP commit and no M0/16GiB claim.
+
+## v0.5.159 finite integration association
+
+Current root owns integration and publication. Runtime per-file/hunk groups and limitations are
+recorded in [the release manifest](evidence/release-association-20261024/publication-manifest.json).
+The original registry module13 and adapter8 tests also passed on the same current source.
+#54 remains inactive; #101 advisory observation is not a scheduler; #118 read model is not admission.
+#102 r03 reports and supervisor registration retention remain next, before #103/#104 activation.
+M0 Python WIP is deliberately retained outside this commit; no original frozen gate changes.

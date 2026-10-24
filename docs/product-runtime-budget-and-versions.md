@@ -246,3 +246,30 @@ T13A-0执行冻结v0.5.30：[模型规模与性能](m0-model-scale-performance.m
 
 
 T13A-1a v0.5.31：实际native诊断布局owned29625968B，字段／Arena／索引宽度由Rust导出；65,299,383B JSON实文件保存恢复属于布局证据。真实满级Engine为64／128／8城／64工资／20000债项，30日最终owned3927304B，接近既有4MiB门但未扩门。完整L1七域压力、观测及真实高峰仍未测；不得把29.6MB部分布局直接加在3.10GiB完整padding外。详见[子阶段证据](evidence/m0-t13a-assembly/STATUS.md)。
+
+### 2026-10-24 bounded decode / default-stack repair accounting (candidate)
+
+Issues #122/#123 track default-debug stack faults independently of frozen M0. The fixed
+failed binary's prepare_diagnosed frame reserves0x28d000+0x330+32 bytes; borrowing the same
+original TownMarket profile instead of copying it reduces that observed debug frame to
+0x3e000+0xe70+32. This is compiler-frame evidence for the tested binary, not RSS/native
+peak or a resource credit, and no global/test stack allowance changes.
+
+Private Opening/World/TownMarket decode scratch preserves public inline types and original
+wire; consuming finish functions move the original Arena/Rows/backing and do not rebuild
+capital, cursors or rights. Every caller (including genesis rebuild and general checkpoint
+restore) accounts for scratch, not only initial load. Opening present optional boxes request
+up to48,400 bytes in seven bounded allocations; absent fields request no box. World town
+scratch requests50,368 bytes when present. Town profile/state scratch requests50,368 bytes
+in two boxes. Existing profile-row decode scratch up to42,272 bytes remains separately
+accountable. These are component requests across decoding/conversion phases, not proof
+that all are simultaneously live or a total peak upper bound; allocator/native stack and
+final-value overlaps still need joint measurement. No new resource pool or extra budget is
+granted: attribute them within existing runtime/high-peak work ownership; M0 normal/common
+limits, full-product3.10GiB planning envelope and true16GB gates remain unchanged.
+
+Old-derive compatibility is checked against independently retained type mirrors, including
+legacy absence/null/duplicate/error behavior and non-initial cumulative values. Those old
+large-frame mirrors are release-only test oracles; original failing business cases continue
+to execute on the unchanged default debug stack. Source/tests/limited results and remaining
+validation are recorded in [stack evidence](evidence/stack-faults-122-123-20261024/STATUS.md).

@@ -1,0 +1,42 @@
+{
+  "canonical_head": "ae28b8cda8041c7bd106a28cccdc3deab051b032",
+  "note": "Actual canonical WIP including three new root-owned Store input entrypoints/core export; no shared source copied into private tree.",
+  "fixtures": {
+    "e0.json": {
+      "canonical_path": "fixtures/m0-e0-opening.json",
+      "bytes": 857,
+      "sha256": "6756555697457b3de5307086610a108c88d15650c6e668da0cdf990ca52b874c"
+    },
+    "boot.json": {
+      "canonical_path": "fixtures/m0-boot-opening.json",
+      "bytes": 2612,
+      "sha256": "d2505d4b292ee8745de0266178168853f09a0a71a767b8e74598bf0f105f12da"
+    },
+    "town.json": {
+      "canonical_path": "fixtures/core-town-utility-opening.json",
+      "bytes": 15917,
+      "sha256": "c9d3713d817fada2054641260c220447f7f2496d64f1ac5340bfa3e1cba4e2a0"
+    },
+    "spatial.json": {
+      "canonical_path": "fixtures/m0-exchange-spatial.json",
+      "bytes": 3679,
+      "sha256": "1891b68e1190fac29e3dc83a1d5d96ba3fa972cc7594fb8106ccbe179cdd29d6"
+    },
+    "flat16.png": {
+      "canonical_path": "fixtures/terrain/m0-flat16.png",
+      "bytes": 207,
+      "sha256": "cfc5e674bb900da72162e4d7a9f6225a4497d8d31ed5f7ea09695ffac6a6fad8"
+    }
+  },
+  "api_sha256": {
+    "crates/city-storage/src/lib.rs": "ef8ffa0417969f935a6652c358099912af723b13799c7a9c3112c76323f087ea",
+    "crates/city-storage/src/genesis.rs": "744f1a02fde7dd345f705d322e61bffc865f109c9600cee4d4c6d8109f607a6b",
+    "crates/city-storage/src/spatial.rs": "57ae63fb607054b73b0d0b2187ac2efc1b7502d4b98ccfc909751b86d5ee7de0",
+    "crates/city-storage/src/checkpoint.rs": "d4e842d421027fff023f09c80d4c5fc80242f0e92d168189bfec6a82a3fdbc4c",
+    "crates/city-core/src/opening_loader.rs": "547fadc691f942234b1fdfcb515355004ccb1742f164ae02d8aaafdf42778665",
+    "crates/city-core/src/transaction/slots.rs": "e0bd631b61da74e134fee471ef974a3a0ed60c446203d35fcfb6a2b047ca9dab",
+    "crates/city-core/src/transaction/bundle.rs": "405961995b104d3ed2a27769ec4b067d01ee0dd4d6c5713c82cdc42f9c509030",
+    "crates/city-storage/src/opening_input.rs": "4ccfe8f1bef942bc02c5fce6a06ba9fb99ec63fe27e0a71d021b464748d99ffe",
+    "crates/city-core/src/lib.rs": "15d51f9f6ad33e4b74505357cd9e39e3a2c89293a53a405a71907d34c96373f5"
+  }
+}

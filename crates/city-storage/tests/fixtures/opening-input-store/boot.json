@@ -1,0 +1,164 @@
+{
+  "schema": "mycity-m0-opening-v1",
+  "bootstrap": {
+    "schema": "mycity-m0-bootstrap-v1",
+    "world": 1,
+    "branch": 1,
+    "seed": 7,
+    "laboratory_only": true
+  },
+  "sources": [
+    {
+      "id": 1,
+      "kind": "cash_capital",
+      "amount": 1000000
+    },
+    {
+      "id": 2,
+      "kind": "cash_capital",
+      "amount": 200000
+    },
+    {
+      "id": 3,
+      "kind": "cash_capital",
+      "amount": 600000
+    },
+    {
+      "id": 4,
+      "kind": "cash_capital",
+      "amount": 1200000
+    },
+    {
+      "id": 5,
+      "kind": "inventory_capital",
+      "amount": 2000
+    },
+    {
+      "id": 6,
+      "kind": "inventory_capital",
+      "amount": 100
+    },
+    {
+      "id": 7,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 8,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 9,
+      "kind": "inventory_capital",
+      "amount": 0
+    },
+    {
+      "id": 10,
+      "kind": "inventory_capital",
+      "amount": 0
+    }
+  ],
+  "accounts": [
+    {
+      "id": 1,
+      "role": "treasury",
+      "cash": 1000000,
+      "source": 1
+    },
+    {
+      "id": 2,
+      "role": "household",
+      "cash": 200000,
+      "source": 2
+    },
+    {
+      "id": 3,
+      "role": "company",
+      "cash": 600000,
+      "source": 3
+    },
+    {
+      "id": 4,
+      "role": "supplier",
+      "cash": 1200000,
+      "source": 4
+    }
+  ],
+  "stocks": [
+    {
+      "id": 1,
+      "owner": 3,
+      "commodity": "fuel",
+      "quantity": 5000,
+      "basis": 2000,
+      "source": 5
+    },
+    {
+      "id": 2,
+      "owner": 3,
+      "commodity": "electricity",
+      "quantity": 100000,
+      "basis": 100,
+      "source": 6
+    },
+    {
+      "id": 3,
+      "owner": 3,
+      "commodity": "water",
+      "quantity": 0,
+      "basis": 0,
+      "source": 7
+    },
+    {
+      "id": 4,
+      "owner": 3,
+      "commodity": "raw_water",
+      "quantity": 6000000,
+      "basis": 0,
+      "source": 8
+    },
+    {
+      "id": 5,
+      "owner": 3,
+      "commodity": "waste_water",
+      "quantity": 0,
+      "basis": 0,
+      "source": 9
+    },
+    {
+      "id": 6,
+      "owner": 3,
+      "commodity": "heat",
+      "quantity": 0,
+      "basis": 0,
+      "source": 10
+    }
+  ],
+  "boot": {
+    "schema": "mycity-m0-boot-v1",
+    "profile": "pboot-cold-micro-v1",
+    "operator": 3,
+    "contractor": 4,
+    "stocks": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "resources": [
+      101,
+      102
+    ],
+    "limits": [
+      5000,
+      2000000,
+      6000000,
+      6000000,
+      6000000,
+      10000000
+    ]
+  }
+}

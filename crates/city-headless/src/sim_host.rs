@@ -290,7 +290,7 @@ struct SimOpenMemoryDiagnostic {
 
 fn status(
     store: &Store,
-    worker: &Option<Worker>,
+    worker: &Worker,
     codec: &Codec,
     diag: &Option<crate::cpu_log::CpuLog>,
     timings: &SimTimings,
@@ -326,7 +326,7 @@ fn status(
     Ok(
         json!({"revision":view.revision,"sequence":store.committed_sequence(),"business_sha256":business_sha,"runtime":runtime,"timeline":e.timeline().map(|t|t.progress),
  "background":b.map(|b|json!({"version":b.version(),"time":b.time(),"incarnation":b.incarnation(),"pending":b.pending().map(|j|json!({"id":j.id,"generation":j.generation,"attempt":j.attempt,"running":j.running,"failure":j.failure,"start":j.start,"end":j.end})),"field":b.field().map(|f|f.report()),"state_sha256":air_sha})),
- "state_sha256":state_sha,"capacity":store.capacity_status().map_err(err)?,"worker_pid":worker.as_ref().map(|w|w.pid()),"source_sha256":env!("MYCITY_SOURCE_SHA256"),"memory_16gb_gate":"not_run"}),
+ "state_sha256":state_sha,"capacity":store.capacity_status().map_err(err)?,"worker_pid":worker.pid_opt(),"source_sha256":env!("MYCITY_SOURCE_SHA256"),"memory_16gb_gate":"not_run"}),
     )
 }
 fn control(
@@ -360,9 +360,50 @@ struct Required<'a> {
     diag: &'a mut Option<crate::cpu_log::CpuLog>,
     timings: &'a SimTimings,
 }
+// Advisory only. Failure to produce a hint never removes or gates the existing
+// mandatory job. This token binds one local read, not a persistent source identity.
+fn required_registry_observation(store: &Store) -> Value {
+    use crate::task_registry_adapter::{observe_required, OwnerView};
+    let engine = match store.engine() {
+        Ok(engine) => engine,
+        Err(_) => {
+            return json!({"schema":"mycity-task-registry-observation-v1",
+            "state":"store_unavailable", "snapshot_token_durable":false,
+            "required_preserved":true, "clock":"world", "now":null})
+        }
+    };
+    let (scope, _) = engine.world().scope_revision();
+    let now = engine.timeline().map(|timeline| timeline.progress.at);
+    let background = engine.background();
+    let pending = background.and_then(|background| background.pending());
+    let state = match (background, now) {
+        (Some(background), Some(now)) => format!(
+            "{:?}",
+            observe_required(
+                background,
+                OwnerView {
+                    scope,
+                    city_id: None,
+                    world_time_seconds: u64::from(now),
+                    snapshot_token: store.committed_sequence().checked_add(1)
+                },
+                &[]
+            )
+            .state
+        ),
+        (_, None) => "owner_clock_unavailable".into(),
+        (None, _) => "background_unavailable".into(),
+    };
+    json!({"schema":"mycity-task-registry-observation-v1", "state":state,
+        "snapshot_token_durable":false, "required_preserved":true,
+        "world":scope.world(), "branch":scope.branch(), "clock":"world", "now":now,
+        "job":pending.map(|job|job.id), "start":pending.map(|job|job.start),
+        "end":pending.map(|job|job.end), "generation":pending.map(|job|job.generation),
+        "attempt":pending.map(|job|job.attempt)})
+}
 fn required(
     store: &mut Store,
-    worker: &mut Option<Worker>,
+    worker: &mut Worker,
     codec: &mut Codec,
     context: Required<'_>,
     w: &mut impl Write,
@@ -395,10 +436,9 @@ fn required(
         {
             return Err("sim_retry_exhausted_or_wrong_job".into());
         }
+        let mut registry = required_registry_observation(store);
         // Old process is reaped before clearing any file or binding a new execution epoch.
-        if let Some(mut old) = worker.take() {
-            old.stop_when_idle(Duration::from_secs(1))?;
-        }
+        worker.retire(Duration::from_secs(1))?;
         let (cache, cache_fence) = {
             let _timer = timings.timer(TimingPhase::CacheRecoverRebindReset);
             let cache = store.prepare_worker_cache().map_err(err)?;
@@ -409,6 +449,8 @@ fn required(
             // Keep the exclusive fence alive through input publication and spawn.
             (cache, cache_fence)
         };
+        // RebindLease changed execution identity; refresh from the actual new job.
+        registry["rebound"] = required_registry_observation(store);
         let _input_timer = timings.timer(TimingPhase::InputEncodePublish);
         let b = store
             .engine()
@@ -478,19 +520,15 @@ fn required(
             let exe = std::env::current_exe().map_err(err)?;
             let mut first_response_timer =
                 Some(timings.timer(TimingPhase::WorkerSpawnRegisterToFirstResponse));
-            *worker = Some(if gated {
-                Worker::spawn_bounded_probe(&exe, &cache)?
-            } else {
-                Worker::spawn_bounded(&exe, &cache)?
-            });
-            let child = worker.as_mut().ok_or("sim_worker_missing")?;
+            worker.start_bounded(&exe, &cache, None, gated)?;
+            let child = &mut *worker;
             worker_cache::register(&cache, child.pid(), &exe)?;
             drop(cache_fence);
             event(
                 w,
                 id,
                 "worker_started",
-                json!({"worker_pid":child.pid(),"broker_lease":child.broker_lease(),"ticket":request.ticket}),
+                json!({"worker_pid":child.pid(),"broker_lease":child.broker_lease(),"ticket":request.ticket,"registry":registry}),
             )?;
             child.submit(&request)?;
             for index in 0..4 {
@@ -575,9 +613,7 @@ fn required(
         let imported = match attempt {
             Ok(b) => b,
             Err(error) => {
-                if let Some(mut old) = worker.take() {
-                    old.stop()?;
-                }
+                worker.retire(Duration::ZERO)?;
                 control(
                     store,
                     B::Fail {
@@ -689,6 +725,11 @@ fn run_inner(
     probe_enabled: bool,
     profile: Profile,
 ) -> Result<(), String> {
+    crate::compute_worker::with_worker(|worker| run_owned(world, create, probe_enabled, profile, worker))
+}
+fn run_owned(
+    world: &Path, create: bool, probe_enabled: bool, profile: Profile, worker: &mut Worker,
+) -> Result<(), String> {
     let epoch =
         crate::normal_pool::broker::activate_role(crate::normal_pool::workspace::Kind::SimCodec)?;
     let mut codec = Codec::new(epoch)?;
@@ -771,7 +812,6 @@ fn run_inner(
         log.set_external_diagnostics_owned_bytes(owned_bytes)?;
     }
     codec.log(&mut diag)?;
-    let mut worker = None;
     let stdin = std::io::stdin();
     let mut reader = BufReader::with_capacity(8192, stdin.lock());
     let stdout = std::io::stdout();
@@ -780,7 +820,7 @@ fn run_inner(
         &mut writer,
         0,
         "ready",
-        status(&store, &worker, &codec, &diag, &timings, &open_memory)?,
+        status(&store, worker, &codec, &diag, &timings, &open_memory)?,
     )?;
     while let Some(bytes) = wire::frame(&mut reader)? {
         let request: Request = serde_json::from_slice(&bytes).map_err(err)?;
@@ -789,7 +829,7 @@ fn run_inner(
         }
         let stop = matches!(request.command, Command::Stop);
         let outcome = match request.command {
-            Command::Status => status(&store, &worker, &codec, &diag, &timings, &open_memory),
+            Command::Status => status(&store, worker, &codec, &diag, &timings, &open_memory),
             Command::Progress => progress(&store),
             Command::ReceiptProof { operation } => store.receipt(operation).map_err(err).and_then(|record| {
                 let bytes = serde_json::to_vec(&record).map_err(err)?;
@@ -811,7 +851,7 @@ fn run_inner(
             }
             Command::RunRequired { job } => required(
                 &mut store,
-                &mut worker,
+                worker,
                 &mut codec,
                 Required {
                     id: request.id,
@@ -826,7 +866,7 @@ fn run_inner(
             ),
             Command::ProbeRequired { job, point } if probe_enabled => required(
                 &mut store,
-                &mut worker,
+                worker,
                 &mut codec,
                 Required {
                     id: request.id,
@@ -864,13 +904,17 @@ fn run_inner(
             "result",
             serde_json::to_value(outcome).map_err(err)?,
         )?;
+        // Start may already have created a broker-owned Child without a receipt.
+        // No local Lease exists to Stop it: end THIS Sim session so its original
+        // supervisor can actually wait and revoke. Do not wait for another command.
+        if worker.requires_session_exit() {
+            return Err("sim_worker_session_exit_required".into());
+        }
         if stop {
             break;
         }
     }
-    if let Some(mut old) = worker.take() {
-        old.stop_when_idle(Duration::from_secs(1))?;
-    }
+    worker.retire(Duration::from_secs(1))?;
     if let Some(log) = diag.as_mut() {
         log.finish()?;
     }

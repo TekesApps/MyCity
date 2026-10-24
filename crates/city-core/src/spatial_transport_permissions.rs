@@ -1128,6 +1128,113 @@ impl SpatialPermissionState {
         }
     }
 
+    /// Store-authorized geometry Apply advances the shared active profile reference and the
+    /// targeted road asset revision. Store validates the immutable descriptor and its parent
+    /// scene/profile on the same prepare path before this grant is committed; catalog replay
+    /// performs that validation again from the retained descriptor and authorization witness.
+    /// This narrow mutation accepts only the private verified token, never caller-supplied IDs.
+    pub fn apply_geometry_profile_revision(
+        &mut self,
+        grant: crate::spatial_geometry_permissions::VerifiedGeometryGrant,
+    ) -> Result<(), Error> {
+        self.validate()?;
+        let asset_id = grant.asset_id();
+        let expected_revision = grant.expected_asset_revision();
+        let candidate_profile_sha256 = grant.candidate_profile_sha256();
+        if grant.world_id() != self.world_id
+            || grant.branch_id() != self.branch_id
+            || grant.descriptor_sha256() == [0; 32]
+            || grant.parent_profile_sha256() == [0; 32]
+            || candidate_profile_sha256 == [0; 32]
+            || self
+                .assets
+                .iter()
+                .any(|asset| asset.current_profile_sha256 != grant.parent_profile_sha256())
+        {
+            return Err(Error::InvalidRequest);
+        }
+        let index = self
+            .assets
+            .iter()
+            .position(|asset| asset.asset_id == asset_id)
+            .ok_or(Error::InvalidRequest)?;
+        let asset = &self.assets[index];
+        if asset.kind != SpatialAssetKind::Road || asset.revision != expected_revision {
+            return Err(Error::StaleRevision);
+        }
+        let next_revision = asset.revision.checked_add(1).ok_or(Error::Overflow)?;
+        for candidate in &mut self.assets {
+            candidate.current_profile_sha256 = candidate_profile_sha256;
+        }
+        self.assets[index].revision = next_revision;
+        self.validate()
+    }
+
+    pub fn validate_geometry_profile_transition(
+        prior: &Self,
+        candidate: &Self,
+        grant: crate::spatial_geometry_permissions::VerifiedGeometryGrant,
+    ) -> Result<(), Error> {
+        prior.validate()?;
+        candidate.validate()?;
+        let asset_id = grant.asset_id();
+        let expected_revision = grant.expected_asset_revision();
+        let candidate_profile_sha256 = grant.candidate_profile_sha256();
+        if prior.schema != candidate.schema
+            || prior.world_id != candidate.world_id
+            || prior.branch_id != candidate.branch_id
+            || prior.world_id != grant.world_id()
+            || prior.branch_id != grant.branch_id()
+            || prior.revision != candidate.revision
+            || prior.request_id_highwater != candidate.request_id_highwater
+            || prior.requests != candidate.requests
+            || prior.approvals != candidate.approvals
+            || prior.assets.len() != candidate.assets.len()
+            || candidate_profile_sha256 == [0; 32]
+            || grant.descriptor_sha256() == [0; 32]
+            || grant.parent_profile_sha256() == [0; 32]
+        {
+            return Err(Error::InvalidRequest);
+        }
+        if prior
+            .assets
+            .iter()
+            .any(|asset| asset.current_profile_sha256 != grant.parent_profile_sha256())
+        {
+            return Err(Error::InvalidRequest);
+        }
+        let mut found = false;
+        for (before, after) in prior.assets.iter().zip(&candidate.assets) {
+            let expected_asset_revision = if before.asset_id == asset_id {
+                if found
+                    || before.kind != SpatialAssetKind::Road
+                    || before.revision != expected_revision
+                {
+                    return Err(Error::InvalidRequest);
+                }
+                found = true;
+                before.revision.checked_add(1).ok_or(Error::Overflow)?
+            } else {
+                before.revision
+            };
+            if before.asset_id != after.asset_id
+                || before.kind != after.kind
+                || before.owner_account != after.owner_account
+                || before.permit_authority_account != after.permit_authority_account
+                || before.source_scene_sha256 != after.source_scene_sha256
+                || before.edges != after.edges
+                || after.revision != expected_asset_revision
+                || after.current_profile_sha256 != candidate_profile_sha256
+            {
+                return Err(Error::InvalidRequest);
+            }
+        }
+        if !found {
+            return Err(Error::InvalidRequest);
+        }
+        Ok(())
+    }
+
     fn apply_in_place(
         &mut self,
         actor_account: u32,

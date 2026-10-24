@@ -7,6 +7,7 @@ pub use background::{
 };
 mod capacity;
 mod genesis;
+mod opening_input;
 mod metadata;
 mod prepared;
 pub use metadata::{MetadataIdentity, MetadataWorkspace};
@@ -24,6 +25,7 @@ mod stream;
 mod wal;
 pub use capacity::{CapacityPolicy, CapacityStatus};
 mod spatial;
+pub mod spatial_geometry_updates;
 pub mod spatial_transport_updates;
 mod town_transport;
 pub use checkpoint::{CheckpointPoint, CheckpointStatus};
@@ -38,6 +40,7 @@ use mycity_core::{
 };
 use mycity_map::assets::SpatialAssets;
 use serde::{Deserialize, Serialize};
+use sha2::{Digest, Sha256};
 pub use spatial::{CreatePoint, SpatialReference};
 use std::{
     fs::{self, File, OpenOptions},
@@ -115,6 +118,8 @@ struct Genesis<'a> {
     #[serde(skip_serializing_if = "Option::is_none")]
     spatial_permissions:
         Option<&'a mycity_core::spatial_transport_permissions::SpatialPermissionState>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    geometry_adapter_basis: Option<&'a spatial_geometry_updates::SpatialGeometryAdapterBasis>,
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -192,6 +197,7 @@ pub struct Store {
     air_candidate: mycity_core::air::BackgroundStateSlot,
     spatial: Option<SpatialAssets>,
     spatial_ref: Option<SpatialReference>,
+    geometry_adapter_basis: Option<spatial_geometry_updates::SpatialGeometryAdapterBasis>,
     io: Persistence,
 }
 
@@ -261,6 +267,53 @@ fn validate_spatial_genesis_permissions(
                 _ => return Err(Error::Invalid("spatial_permissions_surface_kind_mismatch")),
             }
         }
+    }
+    Ok(())
+}
+
+fn validate_geometry_adapter_genesis(
+    engine: &Engine,
+    assets: &SpatialAssets,
+    profile: &mycity_core::market_access::TransportAllocationProfile,
+    basis: &spatial_geometry_updates::SpatialGeometryAdapterBasis,
+) -> Result<(), Error> {
+    basis.validate()?;
+    let view = engine.world().view();
+    if basis.world_id != view.scope.world()
+        || basis.branch_id != view.scope.branch()
+        || basis.profile_id != profile.market_profile_id
+        || basis.expected_map_id != assets.scene().input().map.map
+        || !view
+            .accounts
+            .iter()
+            .any(|account| account.id == basis.building_owner_id)
+        || !view
+            .accounts
+            .iter()
+            .any(|account| account.id == basis.terminal.owner_id)
+        || !view.region.is_some_and(|region| {
+            region
+                .cities
+                .iter()
+                .flatten()
+                .any(|city| city.id == basis.city_id)
+        })
+        || basis.adapter_input(profile.opening.revision).revision == 0
+    {
+        return Err(Error::Invalid("geometry_adapter_genesis_scope"));
+    }
+    let opening = mycity_map::traffic_adapter::adapt(
+        assets.scene(),
+        basis.adapter_input(profile.opening.revision),
+    )
+    .map_err(|_| Error::Invalid("geometry_adapter_genesis_invalid"))?;
+    if opening != profile.opening
+        || opening
+            .assign()
+            .map_err(|_| Error::Invalid("geometry_adapter_genesis_assignment"))?
+            != profile.assignment
+    {
+        return Err(Error::Invalid("geometry_adapter_genesis_profile_mismatch"));
     }
     Ok(())
 }
@@ -538,6 +591,7 @@ impl Store {
             None,
             setup,
             None,
+            None,
             observer,
         )
     }
@@ -562,6 +616,7 @@ impl Store {
                 None,
                 MetadataWorkspace::new()?,
             ),
+            None,
             None,
             |_| Ok(()),
         )
@@ -589,6 +644,7 @@ impl Store {
                 None,
                 MetadataWorkspace::new()?,
             ),
+            None,
             None,
             |_| Ok(()),
         )
@@ -619,15 +675,47 @@ impl Store {
                 MetadataWorkspace::new()?,
             ),
             Some(permissions),
+            None,
+            |_| Ok(()),
+        )
+    }
+    /// Create a spatial Store whose transport adapter is bound to explicit immutable genesis
+    /// inputs. Legacy constructors do not synthesize this policy or infer speeds from rounded
+    /// edge times.
+    pub fn create_spatial_with_geometry_basis(
+        dir: &Path,
+        opening: &[u8],
+        resources: Vec<Resource>,
+        rules_identity: &str,
+        bundle: (&[u8], &[u8]),
+        allocation_profile: &[u8],
+        permissions: mycity_core::spatial_transport_permissions::SpatialPermissionState,
+        adapter_basis: spatial_geometry_updates::SpatialGeometryAdapterBasis,
+    ) -> Result<Self, Error> {
+        Self::create_in_workspace_with_transport(
+            dir,
+            opening,
+            resources,
+            rules_identity,
+            Some(bundle),
+            Some(allocation_profile),
+            (
+                0,
+                mycity_core::transaction::EngineWorkspace::new().map_err(Error::Model)?,
+                None,
+                MetadataWorkspace::new()?,
+            ),
+            Some(permissions),
+            Some(adapter_basis),
             |_| Ok(()),
         )
     }
     // Preserve the existing workspace setup tuple and observer API while adding an optional
     // immutable transport allocation at genesis.
     #[allow(clippy::too_many_arguments)]
-    fn create_in_workspace_with_transport(
+    fn create_in_workspace_with_transport<I: opening_input::GenesisOpening + ?Sized>(
         dir: &Path,
-        opening: &[u8],
+        opening_input: &I,
         resources: Vec<Resource>,
         rules_identity: &str,
         bundle: Option<(&[u8], &[u8])>,
@@ -641,8 +729,10 @@ impl Store {
         spatial_permissions: Option<
             mycity_core::spatial_transport_permissions::SpatialPermissionState,
         >,
+        geometry_adapter_basis: Option<spatial_geometry_updates::SpatialGeometryAdapterBasis>,
         mut observer: impl FnMut(CreatePoint) -> io::Result<()>,
     ) -> Result<Self, Error> {
+        let opening = opening_input.original_bytes();
         if opening.len() as u64 > INPUT_LIMIT
             || rules_identity.is_empty()
             || rules_identity.len() > 128
@@ -651,8 +741,8 @@ impl Store {
         }
         let (checkpoint_layout, workspace, spatial_workspace, mut metadata) = setup;
         let (mut initial, restore_workspace, air_candidate, codec) = workspace.into_parts();
-        initial
-            .initialize_into(opening, &resources)
+        opening_input
+            .initialize_slot(&mut initial, &resources)
             .map_err(Error::Model)?;
         let mut engine = initial.into_engine().map_err(Error::Model)?;
         let allocation_hash = town_transport::allocation_ref(&engine);
@@ -705,6 +795,18 @@ impl Store {
             engine
                 .initialize_spatial_permissions(copy_spatial_permissions_into_engine(permissions)?)
                 .map_err(|error| Error::Model(format!("{error:?}")))?;
+        }
+        if let Some(basis) = geometry_adapter_basis.as_ref() {
+            let assets = spatial
+                .as_ref()
+                .ok_or(Error::Invalid("geometry_adapter_requires_scene"))?;
+            let profile = allocation_profile
+                .as_ref()
+                .ok_or(Error::Invalid("geometry_adapter_requires_transport"))?;
+            if spatial_permissions.is_none() {
+                return Err(Error::Invalid("geometry_adapter_requires_permissions"));
+            }
+            validate_geometry_adapter_genesis(&engine, assets, profile, basis)?;
         }
         let initial_spatial_catalog = if let (Some(permissions), Some(reference), Some(hash)) = (
             spatial_permissions.as_ref(),
@@ -787,7 +889,11 @@ impl Store {
             &Genesis {
                 schema: if spatial_ref.is_some() {
                     if spatial_permissions.is_some() {
-                        "mycity-m0-genesis-v3"
+                        if geometry_adapter_basis.is_some() {
+                            "mycity-m0-genesis-v4"
+                        } else {
+                            "mycity-m0-genesis-v3"
+                        }
                     } else {
                         "mycity-m0-genesis-v2"
                     }
@@ -800,6 +906,7 @@ impl Store {
                 resources: &resources,
                 spatial: spatial_ref.as_ref(),
                 spatial_permissions: spatial_permissions.as_ref(),
+                geometry_adapter_basis: geometry_adapter_basis.as_ref(),
             },
             GENESIS_LIMIT as usize,
         )?;
@@ -856,6 +963,7 @@ impl Store {
             air_candidate,
             spatial,
             spatial_ref,
+            geometry_adapter_basis,
             io: Persistence {
                 owner_pid: std::process::id(),
                 dir: dir.to_owned(),
@@ -975,11 +1083,13 @@ impl Store {
             (
                 genesis.schema.as_str(),
                 genesis.spatial.is_some(),
-                genesis.spatial_permissions.is_some()
+                genesis.spatial_permissions.is_some(),
+                genesis.geometry_adapter_basis.is_some()
             ),
-            ("mycity-m0-genesis-v1", false, false)
-                | ("mycity-m0-genesis-v2", true, false)
-                | ("mycity-m0-genesis-v3", true, true)
+            ("mycity-m0-genesis-v1", false, false, false)
+                | ("mycity-m0-genesis-v2", true, false, false)
+                | ("mycity-m0-genesis-v3", true, true, false)
+                | ("mycity-m0-genesis-v4", true, true, true)
         );
         if !valid_schema || genesis.rules_identity != rules_identity {
             return Err(Error::Invalid("unsupported_rules_or_schema"));
@@ -989,6 +1099,18 @@ impl Store {
             .initialize_into(metadata.opening.as_slice(), &metadata.resources)
             .map_err(Error::Model)?;
         let mut genesis_engine = initial.into_engine().map_err(Error::Model)?;
+        let spatial_ref = genesis.spatial;
+        let mut spatial = spatial_ref
+            .as_ref()
+            .map(|reference| {
+                reference.load_with_workspace(
+                    dir,
+                    &identity(&genesis_engine),
+                    spatial_workspace,
+                    Some(&mut metadata),
+                )
+            })
+            .transpose()?;
         let transport_profile_hash = town_transport::allocation_ref(&genesis_engine);
         let transport_profile = if let Some(hash) = transport_profile_hash {
             let town = genesis_engine
@@ -1011,8 +1133,7 @@ impl Store {
             None
         };
         if let Some(permissions) = genesis.spatial_permissions.as_ref() {
-            let spatial_ref = genesis
-                .spatial
+            let spatial_ref = spatial_ref
                 .as_ref()
                 .ok_or(Error::Invalid("spatial_permissions_require_scene"))?;
             let profile = transport_profile
@@ -1029,11 +1150,25 @@ impl Store {
                 .initialize_spatial_permissions(copy_spatial_permissions_into_engine(permissions)?)
                 .map_err(|error| Error::Model(format!("{error:?}")))?;
         }
+        if let Some(basis) = genesis.geometry_adapter_basis.as_ref() {
+            let assets = spatial
+                .as_ref()
+                .ok_or(Error::Invalid("geometry_adapter_requires_scene"))?;
+            let profile = transport_profile
+                .as_ref()
+                .ok_or(Error::Invalid("geometry_adapter_requires_transport"))?;
+            if genesis.spatial_permissions.is_none() {
+                return Err(Error::Invalid("geometry_adapter_requires_permissions"));
+            }
+            validate_geometry_adapter_genesis(&genesis_engine, assets, profile, basis)?;
+        }
         let transport_catalog = load_spatial_transport_catalog_on_open(
             dir,
             root.spatial_transport_catalog_sha256,
             &genesis_engine,
-            genesis.spatial.as_ref(),
+            spatial_ref.as_ref(),
+            spatial.as_mut(),
+            genesis.geometry_adapter_basis.as_ref(),
             transport_profile_hash,
             &mut metadata,
         )?;
@@ -1098,19 +1233,10 @@ impl Store {
             )?;
         }
         let mut engine = genesis_engine;
+        if genesis.geometry_adapter_basis.is_none() && engine.spatial_geometry().is_some() {
+            return Err(Error::Invalid("spatial_geometry_adapter_basis_missing"));
+        }
         outbox::verify(dir, engine.world().view().scope)?;
-        let spatial_ref = genesis.spatial;
-        let spatial = spatial_ref
-            .as_ref()
-            .map(|r| {
-                r.load_with_workspace(
-                    dir,
-                    &identity(&engine),
-                    spatial_workspace,
-                    Some(&mut metadata),
-                )
-            })
-            .transpose()?;
         spatial::validate_exchange_binding(&engine, spatial.as_ref())?;
         let wal_path = dir.join(checkpoint::wal_name(root.segment));
         if fs::symlink_metadata(&wal_path)?.file_type().is_symlink() {
@@ -1147,6 +1273,16 @@ impl Store {
             sequence += 1;
             if entry.sequence != sequence || entry.previous != chain {
                 return Err(Error::Invalid("committed_frame_chain"));
+            }
+            if genesis.geometry_adapter_basis.is_none()
+                && entry.envelope.actions.iter().any(|action| {
+                    matches!(
+                        action,
+                        mycity_core::transaction::Action::SpatialGeometry { .. }
+                    )
+                })
+            {
+                return Err(Error::Invalid("spatial_geometry_adapter_basis_missing"));
             }
             let mut normalized = mycity_core::canonical::FixedWriter::new(&mut buffers.record);
             canonical
@@ -1322,6 +1458,7 @@ impl Store {
             air_candidate,
             spatial,
             spatial_ref,
+            geometry_adapter_basis: genesis.geometry_adapter_basis,
             io: Persistence {
                 owner_pid: std::process::id(),
                 dir: dir.to_owned(),
@@ -1382,6 +1519,79 @@ impl Store {
     pub fn spatial(&self) -> Result<Option<&SpatialAssets>, Error> {
         self.engine()?;
         Ok(self.spatial.as_ref())
+    }
+    /// Rebuild the immutable Scene active for one service day using the same transport catalog
+    /// boundary used by historical proof selection. This returns an owned bounded Scene and does
+    /// not change the Store's currently active Scene or advance simulation time.
+    pub fn spatial_scene_for_service_day(
+        &mut self,
+        service_day: u64,
+    ) -> Result<Option<mycity_map::scene::Scene>, Error> {
+        self.engine()?;
+        let Some(active_assets) = self.spatial.as_ref() else {
+            return Ok(None);
+        };
+        let input = if let Some(catalog_hash) = self.io.root.spatial_transport_catalog_sha256 {
+            let catalog = spatial_transport_updates::read_spatial_transport_catalog(
+                &self.io.dir,
+                catalog_hash,
+            )
+            .map_err(|_| Error::Invalid("spatial_catalog_corrupt"))?;
+            let permissions = self
+                .engine
+                .spatial_permissions()
+                .ok_or(Error::Invalid("spatial_permissions_missing"))?;
+            let asset = permissions
+                .assets()
+                .first()
+                .ok_or(Error::Invalid("spatial_permission_asset_missing"))?;
+            let context = permissions
+                .authorization_context(asset.asset_id)
+                .map_err(|_| Error::Invalid("spatial_catalog_authority_context"))?;
+            catalog
+                .validate_with_context(context)
+                .map_err(|_| Error::Invalid("spatial_catalog_corrupt"))?;
+            let descriptor = catalog
+                .versions()
+                .iter()
+                .take_while(|version| version.effective_service_day <= service_day)
+                .filter_map(|version| version.geometry_descriptor)
+                .last();
+            if let Some(descriptor) = descriptor {
+                let bytes = spatial_geometry_updates::read_scene_input(
+                    &self.io.dir,
+                    descriptor.candidate_scene_input_sha256,
+                )?;
+                let input: mycity_map::scene::Input = serde_json::from_slice(&bytes)
+                    .map_err(|_| Error::Invalid("spatial_geometry_scene_decode"))?;
+                if serde_json::to_vec(&input)? != bytes
+                    || input.geometry_revision != descriptor.candidate_geometry_revision
+                {
+                    return Err(Error::Invalid("spatial_geometry_scene_noncanonical"));
+                }
+                input
+            } else {
+                let reference = self
+                    .spatial_ref
+                    .as_ref()
+                    .ok_or(Error::Invalid("spatial_reference_missing"))?;
+                let genesis_assets = reference.load_with_workspace(
+                    &self.io.dir,
+                    &identity(&self.engine),
+                    None,
+                    Some(&mut self.io.metadata),
+                )?;
+                genesis_assets.scene().input().clone()
+            }
+        } else {
+            active_assets.scene().input().clone()
+        };
+        self.spatial
+            .as_ref()
+            .ok_or(Error::Invalid("spatial_scene_missing"))?
+            .build_scene_input(input)
+            .map(Some)
+            .map_err(|_| Error::Invalid("spatial_historical_scene_invalid"))
     }
     pub fn spatial_reference(&self) -> Result<Option<&SpatialReference>, Error> {
         self.engine()?;
@@ -1465,10 +1675,166 @@ impl Store {
             })
             + self.spatial_reference()?.map_or(0, |r| {
                 r.owned_capacity_bytes() - std::mem::size_of::<SpatialReference>()
+            })
+            + self.geometry_adapter_basis.as_ref().map_or(0, |basis| {
+                basis.owned_capacity_bytes() - std::mem::size_of_val(basis)
             }))
     }
     pub fn committed_sequence(&self) -> u64 {
         self.io.root.sequence
+    }
+    pub fn geometry_adapter_basis(
+        &self,
+    ) -> Result<Option<&spatial_geometry_updates::SpatialGeometryAdapterBasis>, Error> {
+        self.engine()?;
+        Ok(self.geometry_adapter_basis.as_ref())
+    }
+    /// Stage a candidate road-control-point revision under immutable content hashes.
+    /// Staging does not authorize or publish it; a later geometry request must reference the
+    /// returned descriptor hash and obtain the separate owner and authority approvals.
+    pub fn stage_road_geometry_candidate(
+        &mut self,
+        asset_id: u32,
+        control_point: mycity_map::Point,
+        effective_service_day: u64,
+    ) -> Result<[u8; 32], Error> {
+        use mycity_core::spatial_geometry_permissions::{
+            GeometryRevisionDescriptor, SPATIAL_GEOMETRY_SCHEMA,
+        };
+        use mycity_core::spatial_transport_permissions::SpatialAssetKind;
+
+        if self.io.poisoned || self.io.owner_pid != std::process::id() {
+            return Err(Error::RecoveryRequired);
+        }
+        self.validate_geometry_baseline()?;
+        let profile_hash = self.current_transport_profile_hash()?;
+        let basis = self
+            .geometry_adapter_basis
+            .as_ref()
+            .ok_or(Error::Invalid("spatial_geometry_adapter_basis_missing"))?;
+        let permissions = self
+            .engine
+            .spatial_permissions()
+            .ok_or(Error::Invalid("spatial_permissions_missing"))?;
+        permissions
+            .assets()
+            .iter()
+            .find(|asset| asset.asset_id == asset_id && asset.kind == SpatialAssetKind::Road)
+            .ok_or(Error::Invalid("spatial_geometry_road_asset_missing"))?;
+        // Access changes advance the asset revision without changing Scene geometry.
+        // The catalog-bound current profile and later request/grant bind both counters
+        // independently; a staging preview must not require them to be equal.
+
+        let (world_id, branch_id, profile_id, completed_day) = {
+            let view = self.engine.world().view();
+            let profile_id = view
+                .town
+                .ok_or(Error::Invalid("geometry_transport_market_missing"))?
+                .profile
+                .id;
+            let progress = self
+                .engine
+                .timeline()
+                .ok_or(Error::Invalid("spatial_geometry_timeline_missing"))?
+                .progress;
+            if progress.phase.is_some()
+                || progress.target.is_some()
+                || progress.at != progress.last_complete
+                || progress.last_complete % mycity_core::timeline::DAY != 0
+            {
+                return Err(Error::Invalid("spatial_geometry_calendar_not_complete"));
+            }
+            (
+                view.scope.world(),
+                view.scope.branch(),
+                profile_id,
+                progress.last_complete / mycity_core::timeline::DAY,
+            )
+        };
+        if effective_service_day != completed_day.saturating_add(1) {
+            return Err(Error::Invalid("spatial_geometry_effective_day"));
+        }
+
+        let profile = town_transport::read_allocation(
+            &self.io.dir,
+            &mut self.io.metadata,
+            &profile_hash,
+            world_id,
+            branch_id,
+            profile_id,
+        )?;
+        let prior_profile_bytes =
+            town_transport::read_verified_allocation_bytes(&self.io.dir, &profile_hash)?;
+        let assets = self
+            .spatial
+            .as_ref()
+            .ok_or(Error::Invalid("geometry_scene_missing"))?;
+        let prior_scene = assets.scene();
+        let candidate = mycity_map::geometry_revision::build_candidate(
+            prior_scene.input(),
+            assets.terrain(),
+            assets.terrain(),
+            basis.adapter_input(profile.opening.revision),
+            &profile,
+            &prior_profile_bytes,
+            mycity_map::geometry_revision::GeometryEdit::RoadControlPoint(control_point),
+        )
+        .map_err(|_| Error::Invalid("spatial_geometry_candidate_rebuild"))?;
+        let candidate_scene_bytes = serde_json::to_vec(candidate.scene.input())?;
+        let candidate_scene_input_sha256: [u8; 32] = Sha256::digest(&candidate_scene_bytes).into();
+        let candidate_scene_state_sha256 = parse_digest(&candidate.candidate_scene_sha256)?;
+        let candidate_profile_sha256 = candidate.candidate_profile_sha256;
+        let candidate_transport_revision = profile
+            .opening
+            .revision
+            .checked_add(1)
+            .ok_or(Error::Invalid("spatial_profile_revision_overflow"))?;
+        let descriptor = GeometryRevisionDescriptor {
+            schema: SPATIAL_GEOMETRY_SCHEMA,
+            world_id,
+            branch_id,
+            asset_id,
+            parent_geometry_revision: prior_scene.input().geometry_revision,
+            parent_scene_input_sha256: Sha256::digest(serde_json::to_vec(prior_scene.input())?)
+                .into(),
+            parent_scene_state_sha256: parse_digest(&prior_scene.state_hash())?,
+            parent_transport_revision: profile.opening.revision,
+            parent_profile_sha256: profile_hash,
+            adapter_basis_sha256: basis.sha256()?,
+            candidate_geometry_revision: candidate.scene.input().geometry_revision,
+            candidate_scene_input_sha256,
+            candidate_scene_state_sha256,
+            candidate_transport_revision,
+            candidate_profile_sha256,
+            effective_service_day,
+        };
+        let encoded_descriptor = spatial_geometry_updates::encode_descriptor(&descriptor)?;
+        let encoded_profile = spatial_transport_updates::EncodedProfileAsset {
+            bytes: candidate.profile_bytes,
+            sha256: candidate_profile_sha256,
+        };
+
+        spatial_geometry_updates::stage_scene_input(
+            &self.io.dir,
+            self.io.root.capacity,
+            &candidate_scene_bytes,
+            candidate_scene_input_sha256,
+        )?;
+        spatial_transport_updates::stage_profile_asset(
+            &self.io.dir,
+            self.io.root.capacity,
+            world_id,
+            branch_id,
+            profile_id,
+            &encoded_profile,
+        )
+        .map_err(|_| Error::Invalid("spatial_geometry_profile_stage"))?;
+        spatial_geometry_updates::stage_descriptor(
+            &self.io.dir,
+            self.io.root.capacity,
+            &encoded_descriptor,
+        )?;
+        Ok(encoded_descriptor.sha256)
     }
     fn spatial_transport_catalog(
         &mut self,
@@ -1571,6 +1937,240 @@ impl Store {
             return Err(Error::Invalid("spatial_catalog_engine_binding"));
         }
         Ok(active)
+    }
+    fn validate_geometry_baseline(&mut self) -> Result<(), Error> {
+        let hash = self.current_transport_profile_hash()?;
+        let basis = self
+            .geometry_adapter_basis
+            .as_ref()
+            .ok_or(Error::Invalid("spatial_geometry_adapter_basis_missing"))?;
+        let view = self.engine()?.world().view();
+        let market_id = view
+            .town
+            .ok_or(Error::Invalid("geometry_transport_market_missing"))?
+            .profile
+            .id;
+        let profile = town_transport::read_allocation(
+            &self.io.dir,
+            &mut self.io.metadata,
+            &hash,
+            view.scope.world(),
+            view.scope.branch(),
+            market_id,
+        )?;
+        let assets = self
+            .spatial
+            .as_ref()
+            .ok_or(Error::Invalid("geometry_scene_missing"))?;
+        let derived = mycity_map::traffic_adapter::adapt(
+            assets.scene(),
+            basis.adapter_input(profile.opening.revision),
+        )
+        .map_err(|_| Error::Invalid("geometry_adapter_basis_invalid"))?;
+        if derived != profile.opening
+            || derived
+                .assign()
+                .map_err(|_| Error::Invalid("geometry_adapter_assignment_invalid"))?
+                != profile.assignment
+        {
+            // Until a geometry catalog is active, never rebuild a closed or otherwise modified
+            // transport profile from genesis defaults. That would silently reopen access.
+            return Err(Error::Invalid("geometry_non_genesis_transport_state"));
+        }
+        Ok(())
+    }
+    fn validate_geometry_descriptor_for_command(
+        &mut self,
+        command: mycity_core::spatial_geometry_permissions::SpatialGeometryCommand,
+    ) -> Result<(), Error> {
+        use mycity_core::spatial_geometry_permissions::SpatialGeometryCommand as Command;
+        let descriptor_hash = match command {
+            Command::Request {
+                descriptor_sha256, ..
+            }
+            | Command::Approve {
+                descriptor_sha256, ..
+            }
+            | Command::Withdraw {
+                descriptor_sha256, ..
+            }
+            | Command::Apply {
+                descriptor_sha256, ..
+            } => descriptor_sha256,
+        };
+        let descriptor = spatial_geometry_updates::read_descriptor(&self.io.dir, descriptor_hash)?;
+        let current_profile_hash = self.current_transport_profile_hash()?;
+        let basis = self
+            .geometry_adapter_basis
+            .as_ref()
+            .ok_or(Error::Invalid("spatial_geometry_adapter_basis_missing"))?;
+        let (world_id, branch_id, market_id) = {
+            let view = self.engine()?.world().view();
+            let market_id = view
+                .town
+                .ok_or(Error::Invalid("geometry_transport_market_missing"))?
+                .profile
+                .id;
+            (view.scope.world(), view.scope.branch(), market_id)
+        };
+        let current_profile = town_transport::read_allocation(
+            &self.io.dir,
+            &mut self.io.metadata,
+            &current_profile_hash,
+            world_id,
+            branch_id,
+            market_id,
+        )?;
+        let current_profile_bytes =
+            town_transport::read_verified_allocation_bytes(&self.io.dir, &current_profile_hash)?;
+        let current_assets = self
+            .spatial
+            .as_ref()
+            .ok_or(Error::Invalid("geometry_scene_missing"))?;
+        let scene = current_assets.scene();
+        let parent_input_bytes = serde_json::to_vec(scene.input())?;
+        let parent_input_hash = digest(&parent_input_bytes);
+        let parent_scene_hash = parse_digest(&scene.state_hash())?;
+        let expected_geometry_revision = scene.input().geometry_revision;
+        let (requested_asset, expected_asset_revision) = match command {
+            Command::Request {
+                asset_id,
+                expected_asset_revision,
+                ..
+            } => (asset_id, expected_asset_revision),
+            Command::Approve { request_id, .. }
+            | Command::Withdraw { request_id, .. }
+            | Command::Apply { request_id, .. } => self
+                .engine
+                .spatial_geometry()
+                .and_then(|state| {
+                    state
+                        .requests()
+                        .iter()
+                        .find(|row| row.request.request_id == request_id)
+                        .map(|row| (row.request.asset_id, row.request.expected_asset_revision))
+                })
+                .ok_or(Error::Invalid("spatial_geometry_request_missing"))?,
+        };
+        let permission_asset = self
+            .engine
+            .spatial_permissions()
+            .and_then(|permissions| {
+                permissions
+                    .assets()
+                    .iter()
+                    .find(|asset| asset.asset_id == requested_asset)
+            })
+            .ok_or(Error::Invalid("spatial_geometry_asset_missing"))?;
+        if descriptor.world_id != world_id
+            || descriptor.branch_id != branch_id
+            || descriptor.asset_id != requested_asset
+            || permission_asset.kind
+                != mycity_core::spatial_transport_permissions::SpatialAssetKind::Road
+            || permission_asset.revision != expected_asset_revision
+            || descriptor.adapter_basis_sha256 != basis.sha256()?
+            || descriptor.parent_geometry_revision != expected_geometry_revision
+            || descriptor.parent_scene_input_sha256 != parent_input_hash
+            || descriptor.parent_scene_state_sha256 != parent_scene_hash
+            || descriptor.parent_transport_revision != current_profile.opening.revision
+            || descriptor.parent_profile_sha256 != current_profile_hash
+            || basis.expected_map_id != scene.input().map.map
+        {
+            return Err(Error::Invalid(
+                "spatial_geometry_descriptor_parent_mismatch",
+            ));
+        }
+        if let Command::Request {
+            expected_geometry_revision,
+            ..
+        } = command
+        {
+            if expected_geometry_revision != descriptor.parent_geometry_revision {
+                return Err(Error::Invalid("spatial_geometry_request_revision"));
+            }
+        }
+        if let Command::Apply {
+            candidate_profile_sha256,
+            ..
+        } = command
+        {
+            if candidate_profile_sha256 != descriptor.candidate_profile_sha256 {
+                return Err(Error::Invalid("spatial_geometry_apply_profile_hash"));
+            }
+        }
+
+        let timeline = self
+            .engine
+            .timeline()
+            .ok_or(Error::Invalid("spatial_geometry_timeline_missing"))?;
+        let progress = timeline.progress;
+        if progress.phase.is_some()
+            || progress.target.is_some()
+            || progress.at != progress.last_complete
+            || progress.last_complete % mycity_core::timeline::DAY != 0
+        {
+            return Err(Error::Invalid("spatial_geometry_calendar_not_complete"));
+        }
+        let completed_day = progress.last_complete / mycity_core::timeline::DAY;
+        match command {
+            Command::Apply { .. }
+                if descriptor.effective_service_day != completed_day.saturating_add(1) =>
+            {
+                return Err(Error::Invalid("spatial_geometry_effective_day"));
+            }
+            Command::Request { .. } | Command::Approve { .. } | Command::Withdraw { .. }
+                if descriptor.effective_service_day <= completed_day =>
+            {
+                return Err(Error::Invalid("spatial_geometry_effective_day"));
+            }
+            _ => {}
+        }
+
+        let candidate_scene_bytes = spatial_geometry_updates::read_scene_input(
+            &self.io.dir,
+            descriptor.candidate_scene_input_sha256,
+        )?;
+        let candidate_input: mycity_map::scene::Input =
+            serde_json::from_slice(&candidate_scene_bytes)
+                .map_err(|_| Error::Invalid("spatial_geometry_candidate_scene"))?;
+        if serde_json::to_vec(&candidate_input)? != candidate_scene_bytes
+            || candidate_input.geometry_revision != descriptor.candidate_geometry_revision
+        {
+            return Err(Error::Invalid("spatial_geometry_candidate_scene_canonical"));
+        }
+        let candidate_profile_bytes = town_transport::read_verified_allocation_bytes(
+            &self.io.dir,
+            &descriptor.candidate_profile_sha256,
+        )?;
+        let prior_profile: mycity_core::market_access::TransportAllocationProfile =
+            serde_json::from_slice(&current_profile_bytes)
+                .map_err(|_| Error::Invalid("spatial_geometry_parent_profile"))?;
+        let candidate = mycity_map::geometry_revision::build_candidate(
+            scene.input(),
+            current_assets.terrain(),
+            current_assets.terrain(),
+            basis.adapter_input(current_profile.opening.revision),
+            &prior_profile,
+            &current_profile_bytes,
+            mycity_map::geometry_revision::GeometryEdit::RoadControlPoint(
+                candidate_input.road.control,
+            ),
+        )
+        .map_err(|_| Error::Invalid("spatial_geometry_candidate_rebuild"))?;
+        let canonical_candidate_input = serde_json::to_vec(candidate.scene.input())?;
+        if candidate.scene.state_hash() != hex(&descriptor.candidate_scene_state_sha256)
+            || digest(&canonical_candidate_input) != descriptor.candidate_scene_input_sha256
+            || canonical_candidate_input != candidate_scene_bytes
+            || digest(&candidate.profile_bytes) != descriptor.candidate_profile_sha256
+            || candidate.profile_bytes != candidate_profile_bytes
+            || candidate.candidate_profile_sha256 != descriptor.candidate_profile_sha256
+            || candidate.candidate_scene_sha256 != hex(&descriptor.candidate_scene_state_sha256)
+            || descriptor.candidate_transport_revision
+                != current_profile.opening.revision.saturating_add(1)
+        {
+            return Err(Error::Invalid("spatial_geometry_candidate_mismatch"));
+        }
+        Ok(())
     }
     fn validate_spatial_request_candidate(
         &mut self,
@@ -1884,6 +2484,69 @@ impl Store {
                 committed_sequence: self.io.root.sequence,
             });
         }
+        if envelope.actions.iter().any(|action| {
+            matches!(
+                action,
+                mycity_core::transaction::Action::SpatialGeometry { .. }
+            )
+        }) && self.geometry_adapter_basis.is_none()
+        {
+            return Err(Error::Invalid("spatial_geometry_adapter_basis_missing"));
+        }
+        let geometry_command = envelope.actions.iter().find_map(|action| match action {
+            mycity_core::transaction::Action::SpatialGeometry { command } => Some(*command),
+            _ => None,
+        });
+        let geometry_action_count = envelope
+            .actions
+            .iter()
+            .filter(|action| {
+                matches!(
+                    action,
+                    mycity_core::transaction::Action::SpatialGeometry { .. }
+                )
+            })
+            .count();
+        let has_transport_permission_action = envelope.actions.iter().any(|action| {
+            matches!(
+                action,
+                mycity_core::transaction::Action::SpatialPermission { .. }
+            )
+        });
+        if geometry_action_count > 1
+            || geometry_command.is_some() && has_transport_permission_action
+        {
+            return Err(Error::Invalid("spatial_geometry_action_batch_unsupported"));
+        }
+        if let Some(command) = geometry_command {
+            self.validate_geometry_baseline()?;
+            self.validate_geometry_descriptor_for_command(command)?;
+        }
+        let pending_geometry_scene = if let Some(
+            mycity_core::spatial_geometry_permissions::SpatialGeometryCommand::Apply {
+                descriptor_sha256,
+                ..
+            },
+        ) = geometry_command
+        {
+            let descriptor =
+                spatial_geometry_updates::read_descriptor(&self.io.dir, descriptor_sha256)?;
+            let bytes = spatial_geometry_updates::read_scene_input(
+                &self.io.dir,
+                descriptor.candidate_scene_input_sha256,
+            )?;
+            let input: mycity_map::scene::Input = serde_json::from_slice(&bytes)
+                .map_err(|_| Error::Invalid("spatial_geometry_candidate_scene"))?;
+            Some(
+                self.spatial
+                    .as_ref()
+                    .ok_or(Error::Invalid("spatial_geometry_scene_missing"))?
+                    .build_scene_input(input)
+                    .map_err(|_| Error::Invalid("spatial_geometry_scene_build"))?,
+            )
+        } else {
+            None
+        };
         for action in &envelope.actions {
             if let mycity_core::transaction::Action::SpatialPermission {
                 command:
@@ -1992,6 +2655,8 @@ impl Store {
         } else {
             None
         };
+        let active_scene = self.spatial.as_ref().map(|assets| assets.scene());
+        let adapter_basis = self.geometry_adapter_basis.as_ref();
         let io = &mut self.io;
         let result = self
             .engine
@@ -2005,6 +2670,8 @@ impl Store {
                         env,
                         record,
                         commit_context,
+                        active_scene,
+                        adapter_basis,
                         continuation_plan.as_ref(),
                         &background_plan,
                         &mut observer,
@@ -2021,6 +2688,14 @@ impl Store {
                 return Err(e);
             }
         };
+        if result.is_ok() {
+            if let Some(scene) = pending_geometry_scene {
+                self.spatial
+                    .as_mut()
+                    .ok_or(Error::Invalid("spatial_geometry_scene_missing"))?
+                    .replace_scene(scene);
+            }
+        }
         // Keep fail-closed across an observer unwind after durable/model publication.
         self.io.poisoned = true;
         if let Err(e) = observer(WritePoint::Applied) {
@@ -2047,6 +2722,8 @@ impl Persistence {
         envelope: &Envelope,
         record: &JournalRecord,
         commit_context: CommitContext<'_>,
+        active_scene: Option<&mycity_map::scene::Scene>,
+        adapter_basis: Option<&spatial_geometry_updates::SpatialGeometryAdapterBasis>,
         continuation_plan: Option<&Continuation>,
         background_plan: &background::Plan,
         observer: &mut impl FnMut(WritePoint) -> io::Result<()>,
@@ -2058,6 +2735,8 @@ impl Persistence {
             envelope,
             record,
             commit_context,
+            active_scene,
+            adapter_basis,
             continuation_plan,
             background_plan,
             observer,
@@ -2073,6 +2752,8 @@ impl Persistence {
         envelope: &Envelope,
         record: &JournalRecord,
         commit_context: CommitContext<'_>,
+        active_scene: Option<&mycity_map::scene::Scene>,
+        adapter_basis: Option<&spatial_geometry_updates::SpatialGeometryAdapterBasis>,
         continuation_plan: Option<&Continuation>,
         background_plan: &background::Plan,
         observer: &mut impl FnMut(WritePoint) -> io::Result<()>,
@@ -2108,14 +2789,74 @@ impl Persistence {
                 mycity_core::transaction::Action::SpatialPermission { .. }
             )
         });
+        let geometry_command = envelope.actions.iter().find_map(|action| match action {
+            mycity_core::transaction::Action::SpatialGeometry { command } => Some(*command),
+            _ => None,
+        });
+        let has_geometry_apply = matches!(
+            geometry_command,
+            Some(mycity_core::spatial_geometry_permissions::SpatialGeometryCommand::Apply { .. })
+        );
+        let has_geometry_action = geometry_command.is_some();
+        let geometry_action_count = envelope
+            .actions
+            .iter()
+            .filter(|action| {
+                matches!(
+                    action,
+                    mycity_core::transaction::Action::SpatialGeometry { .. }
+                )
+            })
+            .count();
+        if geometry_action_count > 1 || has_geometry_action && has_spatial_action {
+            return Err(Error::Invalid("spatial_geometry_action_batch_unsupported"));
+        }
         if (record.outcome.is_ok()
             && has_spatial_apply != commit_context.spatial_update_grant.is_some())
             || (record.outcome.is_err() && commit_context.spatial_update_grant.is_some())
             || (record.outcome.is_ok()
-                && has_spatial_action != commit_context.spatial_permissions.is_some())
+                && (has_spatial_action || has_geometry_apply)
+                    != commit_context.spatial_permissions.is_some())
             || (record.outcome.is_err() && commit_context.spatial_permissions.is_some())
+            || (record.outcome.is_ok()
+                && has_geometry_action != commit_context.spatial_geometry.is_some())
+            || (record.outcome.is_ok()
+                && has_geometry_apply != commit_context.spatial_geometry_grant.is_some())
+            || (record.outcome.is_err()
+                && (commit_context.spatial_geometry.is_some()
+                    || commit_context.spatial_geometry_grant.is_some()))
         {
             return Err(Error::Invalid("spatial_commit_context_mismatch"));
+        }
+        if let Some(candidate_state) = commit_context.spatial_geometry {
+            let permissions = commit_context
+                .prior_spatial_permissions
+                .ok_or(Error::Invalid("spatial_geometry_permissions_missing"))?;
+            candidate_state
+                .validate_against(permissions)
+                .map_err(|_| Error::Invalid("spatial_geometry_candidate_invalid"))?;
+            if candidate_state.world_id != envelope.world
+                || candidate_state.branch_id != envelope.branch
+            {
+                return Err(Error::Invalid("spatial_geometry_candidate_scope"));
+            }
+            let command =
+                geometry_command.ok_or(Error::Invalid("spatial_geometry_action_missing"))?;
+            let mut replay = if let Some(prior) = commit_context.prior_spatial_geometry {
+                prior.clone()
+            } else {
+                mycity_core::spatial_geometry_permissions::SpatialGeometryState::new(
+                    envelope.world,
+                    envelope.branch,
+                )
+                .map_err(|_| Error::Invalid("spatial_geometry_state_genesis"))?
+            };
+            let grant = replay
+                .apply(record.actor, command, permissions)
+                .map_err(|_| Error::Invalid("spatial_geometry_transition"))?;
+            if &replay != candidate_state || grant != commit_context.spatial_geometry_grant {
+                return Err(Error::Invalid("spatial_geometry_transition_mismatch"));
+            }
         }
         if let Some(candidate_state) = commit_context.spatial_permissions {
             candidate_state
@@ -2129,11 +2870,37 @@ impl Persistence {
             let current_state = commit_context
                 .prior_spatial_permissions
                 .ok_or(Error::Invalid("spatial_permissions_missing"))?;
-            validate_spatial_candidate_transition(
-                candidate_state,
-                current_state,
-                commit_context.spatial_update_grant,
-            )?;
+            if let Some(grant) = commit_context.spatial_update_grant {
+                validate_spatial_candidate_transition(candidate_state, current_state, Some(grant))?;
+            } else if has_geometry_apply {
+                let grant = commit_context
+                    .spatial_geometry_grant
+                    .ok_or(Error::Invalid("spatial_geometry_grant_missing"))?;
+                mycity_core::spatial_transport_permissions::SpatialPermissionState::validate_geometry_profile_transition(
+                    current_state,
+                    candidate_state,
+                    grant,
+                )
+                .map_err(|_| Error::Invalid("spatial_geometry_profile_transition"))?;
+            } else {
+                let command = record
+                    .actions
+                    .iter()
+                    .flatten()
+                    .find_map(|action| match action {
+                        mycity_core::transaction::Action::SpatialPermission { command } => {
+                            Some(*command)
+                        }
+                        _ => None,
+                    })
+                    .ok_or(Error::Invalid("spatial_candidate_action_missing"))?;
+                validate_spatial_permission_nonapply_transition(
+                    candidate_state,
+                    current_state,
+                    record.actor,
+                    command,
+                )?;
+            }
         }
         if let Some(grant) = commit_context.spatial_update_grant {
             let receipt = record
@@ -2173,6 +2940,32 @@ impl Persistence {
                     candidate_state,
                     sequence,
                 )?);
+            }
+            if has_geometry_apply {
+                let receipt = record
+                    .outcome
+                    .as_ref()
+                    .map_err(|_| Error::Invalid("spatial_geometry_apply_without_receipt"))?;
+                let grant = commit_context
+                    .spatial_geometry_grant
+                    .ok_or(Error::Invalid("spatial_geometry_grant_missing"))?;
+                next_spatial_catalog = Some(
+                    self.prepare_geometry_apply_catalog(
+                        envelope,
+                        receipt,
+                        grant,
+                        commit_context
+                            .spatial_permissions
+                            .ok_or(Error::Invalid("spatial_geometry_candidate_missing"))?,
+                        commit_context
+                            .prior_spatial_permissions
+                            .ok_or(Error::Invalid("spatial_geometry_permissions_missing"))?,
+                        active_scene.ok_or(Error::Invalid("spatial_geometry_scene_missing"))?,
+                        adapter_basis
+                            .ok_or(Error::Invalid("spatial_geometry_adapter_basis_missing"))?,
+                        sequence,
+                    )?,
+                );
             }
         }
         let mut buffers = wal::Buffers::new();
@@ -2381,6 +3174,17 @@ impl Persistence {
             catalog.profile_id,
         )
         .map_err(|_| Error::Invalid("spatial_baseline_profile_corrupt"))?;
+        let structural_hash = catalog
+            .structural_anchor_sha256()
+            .map_err(|_| Error::Invalid("spatial_structural_anchor"))?;
+        let structural_profile = spatial_transport_updates::VerifiedAllocationAsset::read_immutable(
+            &self.dir,
+            structural_hash,
+            catalog.world_id,
+            catalog.branch_id,
+            catalog.profile_id,
+        )
+        .map_err(|_| Error::Invalid("spatial_structural_profile_corrupt"))?;
         let candidate_profile = spatial_transport_updates::VerifiedAllocationAsset::read_immutable(
             &self.dir,
             grant.candidate_profile_sha256(),
@@ -2395,8 +3199,9 @@ impl Persistence {
             .checked_add(1)
             .and_then(|version| u64::try_from(version).ok())
             .ok_or(Error::Invalid("spatial_version_overflow"))?;
-        let version = spatial_transport_updates::prepare_version(
+        let version = catalog.prepare_access_version(
             &baseline_profile.as_ref(),
+            &structural_profile.as_ref(),
             &current_profile.as_ref(),
             &grant,
             version_number,
@@ -2422,8 +3227,9 @@ impl Persistence {
             store_sequence: sequence,
         };
         catalog
-            .append_authorized(
+            .append_authorized_with_structure(
                 &baseline_profile.as_ref(),
+                &structural_profile.as_ref(),
                 &current_profile.as_ref(),
                 &version,
                 &grant,
@@ -2453,6 +3259,169 @@ impl Persistence {
         .map_err(|_| Error::Invalid("spatial_catalog_stage"))?;
         Ok(encoded_catalog.sha256)
     }
+
+    fn prepare_geometry_apply_catalog(
+        &self,
+        envelope: &Envelope,
+        receipt: &Receipt,
+        grant: mycity_core::spatial_geometry_permissions::VerifiedGeometryGrant,
+        candidate_state: &mycity_core::spatial_transport_permissions::SpatialPermissionState,
+        current_permissions: &mycity_core::spatial_transport_permissions::SpatialPermissionState,
+        active_scene: &mycity_map::scene::Scene,
+        adapter_basis: &spatial_geometry_updates::SpatialGeometryAdapterBasis,
+        sequence: u64,
+    ) -> Result<[u8; 32], Error> {
+        let parent_catalog_sha256 = self
+            .root
+            .spatial_transport_catalog_sha256
+            .ok_or(Error::Invalid("spatial_catalog_pointer_missing"))?;
+        let mut catalog = spatial_transport_updates::read_spatial_transport_catalog(
+            &self.dir,
+            parent_catalog_sha256,
+        )
+        .map_err(|_| Error::Invalid("spatial_catalog_corrupt"))?;
+        let descriptor =
+            spatial_geometry_updates::read_descriptor(&self.dir, grant.descriptor_sha256())?;
+        mycity_core::spatial_geometry_permissions::validate_authorization_witness(
+            &descriptor,
+            grant.witness(),
+            current_permissions,
+        )
+        .map_err(|_| Error::Invalid("spatial_geometry_authorization_witness"))?;
+        let context = current_permissions
+            .authorization_context(descriptor.asset_id)
+            .map_err(|_| Error::Invalid("spatial_catalog_authority_context"))?;
+        catalog
+            .validate_with_context(context)
+            .map_err(|_| Error::Invalid("spatial_catalog_corrupt"))?;
+        let current_profile_sha256 = catalog
+            .versions()
+            .last()
+            .map_or(catalog.baseline_profile_sha256, |version| {
+                version.profile_sha256
+            });
+        let current_profile = spatial_transport_updates::VerifiedAllocationAsset::read_immutable(
+            &self.dir,
+            current_profile_sha256,
+            catalog.world_id,
+            catalog.branch_id,
+            catalog.profile_id,
+        )
+        .map_err(|_| Error::Invalid("spatial_current_profile_corrupt"))?;
+        let candidate_profile = spatial_transport_updates::VerifiedAllocationAsset::read_immutable(
+            &self.dir,
+            grant.candidate_profile_sha256(),
+            catalog.world_id,
+            catalog.branch_id,
+            catalog.profile_id,
+        )
+        .map_err(|_| Error::Invalid("spatial_candidate_profile_corrupt"))?;
+        let candidate_scene_bytes = spatial_geometry_updates::read_scene_input(
+            &self.dir,
+            descriptor.candidate_scene_input_sha256,
+        )?;
+        let candidate_scene_input: mycity_map::scene::Input =
+            serde_json::from_slice(&candidate_scene_bytes)
+                .map_err(|_| Error::Invalid("spatial_geometry_candidate_scene"))?;
+        if serde_json::to_vec(&candidate_scene_input)? != candidate_scene_bytes
+            || candidate_scene_input.geometry_revision != descriptor.candidate_geometry_revision
+        {
+            return Err(Error::Invalid("spatial_geometry_candidate_scene_binding"));
+        }
+        let active_scene_bytes = serde_json::to_vec(active_scene.input())?;
+        let expected_next_revision = candidate_state
+            .assets()
+            .iter()
+            .find(|asset| asset.asset_id == descriptor.asset_id)
+            .map(|asset| asset.revision)
+            .ok_or(Error::Invalid("spatial_geometry_asset_missing"))?;
+        if grant.request().asset_id != descriptor.asset_id
+            || grant.expected_asset_revision().checked_add(1) != Some(expected_next_revision)
+            || descriptor.world_id != envelope.world
+            || descriptor.branch_id != envelope.branch
+            || descriptor.parent_geometry_revision != active_scene.input().geometry_revision
+            || descriptor.parent_scene_input_sha256 != digest(&active_scene_bytes)
+            || descriptor.parent_scene_state_sha256 != parse_digest(&active_scene.state_hash())?
+            || descriptor.adapter_basis_sha256 != adapter_basis.sha256()?
+            || descriptor.parent_profile_sha256 != current_profile_sha256
+            || descriptor.candidate_profile_sha256 != grant.candidate_profile_sha256()
+            || candidate_profile.asset_sha256() != grant.candidate_profile_sha256()
+        {
+            return Err(Error::Invalid("spatial_geometry_catalog_binding"));
+        }
+        let mut matching_apply = false;
+        for action in &envelope.actions {
+            match action {
+                mycity_core::transaction::Action::SpatialGeometry {
+                    command:
+                        mycity_core::spatial_geometry_permissions::SpatialGeometryCommand::Apply {
+                            request_id,
+                            descriptor_sha256,
+                            candidate_profile_sha256,
+                            ..
+                        },
+                } if *request_id == grant.request().request_id
+                    && *descriptor_sha256 == grant.descriptor_sha256()
+                    && *candidate_profile_sha256 == grant.candidate_profile_sha256()
+                    && !matching_apply =>
+                {
+                    matching_apply = true;
+                }
+                mycity_core::transaction::Action::SpatialGeometry { .. } => {
+                    return Err(Error::Invalid("spatial_geometry_apply_action_mismatch"));
+                }
+                _ => {}
+            }
+        }
+        if !matching_apply {
+            return Err(Error::Invalid("spatial_geometry_apply_action_missing"));
+        }
+        let commit = spatial_transport_updates::SpatialTransportCommitBinding {
+            engine_operation_id: envelope.operation_id,
+            receipt_operation_id: receipt.operation_id,
+            receipt_revision: receipt.revision,
+            store_sequence: sequence,
+        };
+        catalog
+            .append_geometry_authorized(
+                &current_profile.as_ref(),
+                &candidate_profile.as_ref(),
+                descriptor,
+                grant,
+                commit,
+                parent_catalog_sha256,
+            )
+            .map_err(|_| Error::Invalid("spatial_geometry_catalog_append"))?;
+        catalog
+            .validate_with_context(context)
+            .map_err(|_| Error::Invalid("spatial_geometry_catalog_binding"))?;
+        let profile_bytes = town_transport::read_verified_allocation_bytes(
+            &self.dir,
+            &grant.candidate_profile_sha256(),
+        )?;
+        let encoded_profile = spatial_transport_updates::EncodedProfileAsset {
+            bytes: profile_bytes,
+            sha256: grant.candidate_profile_sha256(),
+        };
+        spatial_transport_updates::stage_profile_asset(
+            &self.dir,
+            self.root.capacity,
+            catalog.world_id,
+            catalog.branch_id,
+            catalog.profile_id,
+            &encoded_profile,
+        )
+        .map_err(|_| Error::Invalid("spatial_geometry_profile_stage"))?;
+        let encoded_catalog = spatial_transport_updates::encode_spatial_transport_catalog(&catalog)
+            .map_err(|_| Error::Invalid("spatial_geometry_catalog_encode"))?;
+        spatial_transport_updates::stage_spatial_transport_catalog(
+            &self.dir,
+            self.root.capacity,
+            &encoded_catalog,
+        )
+        .map_err(|_| Error::Invalid("spatial_geometry_catalog_stage"))?;
+        Ok(encoded_catalog.sha256)
+    }
 }
 
 fn load_spatial_transport_catalog_on_open(
@@ -2460,6 +3429,8 @@ fn load_spatial_transport_catalog_on_open(
     pointer: Option<[u8; 32]>,
     genesis_engine: &Engine,
     spatial_ref: Option<&SpatialReference>,
+    spatial_assets: Option<&mut SpatialAssets>,
+    adapter_basis: Option<&spatial_geometry_updates::SpatialGeometryAdapterBasis>,
     baseline_hash: Option<[u8; 32]>,
     metadata: &mut MetadataWorkspace,
 ) -> Result<Option<spatial_transport_updates::SpatialTransportCatalog>, Error> {
@@ -2521,6 +3492,44 @@ fn load_spatial_transport_catalog_on_open(
         world.scope.branch(),
         market.profile.id,
     )?;
+    let mut previous_profile_bytes =
+        town_transport::read_verified_allocation_bytes(dir, &baseline_hash)?;
+    let genesis_profile = previous_profile.clone();
+    let mut structural_profile = previous_profile.clone();
+    let mut replayed_permissions =
+        mycity_core::spatial_transport_permissions::SpatialPermissionState::empty_backing()
+            .map_err(|_| Error::Invalid("spatial_permission_replay_capacity"))?;
+    permissions
+        .copy_into(&mut replayed_permissions)
+        .map_err(|_| Error::Invalid("spatial_permission_genesis_invalid"))?;
+    let mut geometry_assets = spatial_assets;
+    let has_geometry_versions = catalog
+        .versions()
+        .iter()
+        .any(|record| record.geometry_descriptor.is_some() || record.geometry_witness.is_some());
+    let mut active_scene = if has_geometry_versions {
+        Some(
+            mycity_map::scene::Scene::assemble(
+                geometry_assets
+                    .as_deref()
+                    .ok_or(Error::Invalid("spatial_geometry_scene_missing"))?
+                    .scene()
+                    .input()
+                    .clone(),
+                geometry_assets
+                    .as_deref()
+                    .ok_or(Error::Invalid("spatial_geometry_scene_missing"))?
+                    .terrain(),
+                geometry_assets
+                    .as_deref()
+                    .ok_or(Error::Invalid("spatial_geometry_scene_missing"))?
+                    .terrain(),
+            )
+            .map_err(|error| Error::Model(format!("{error:?}")))?,
+        )
+    } else {
+        None
+    };
     let mut previous_profile_hash = baseline_hash;
     for version in catalog.versions() {
         if version.previous_profile_sha256 != previous_profile_hash {
@@ -2558,64 +3567,155 @@ fn load_spatial_transport_catalog_on_open(
         {
             return Err(Error::Invalid("spatial_catalog_profile_delta"));
         }
-        let mut changed_edge = None;
-        for old in &old_opening.edges {
-            let new = new_opening
+        if let (Some(descriptor), Some(witness)) =
+            (version.geometry_descriptor, version.geometry_witness)
+        {
+            let basis =
+                adapter_basis.ok_or(Error::Invalid("spatial_geometry_adapter_basis_missing"))?;
+            let assets = geometry_assets
+                .as_deref()
+                .ok_or(Error::Invalid("spatial_geometry_scene_missing"))?;
+            let verified_grant =
+                mycity_core::spatial_geometry_permissions::validate_authorization_witness(
+                    &descriptor,
+                    witness,
+                    &replayed_permissions,
+                )
+                .map_err(|_| Error::Invalid("spatial_geometry_authorization_witness"))?;
+            let scene = active_scene
+                .as_ref()
+                .ok_or(Error::Invalid("spatial_geometry_scene_missing"))?;
+            let scene_input_bytes = serde_json::to_vec(scene.input())?;
+            if descriptor.world_id != world.scope.world()
+                || descriptor.branch_id != world.scope.branch()
+                || descriptor.asset_id != version.changed_asset_id
+                || descriptor.parent_scene_input_sha256 != digest(&scene_input_bytes)
+                || descriptor.parent_scene_state_sha256 != parse_digest(&scene.state_hash())?
+                || descriptor.parent_geometry_revision != scene.input().geometry_revision
+                || descriptor.parent_transport_revision != old_opening.revision
+                || descriptor.parent_profile_sha256 != previous_profile_hash
+                || descriptor.adapter_basis_sha256 != basis.sha256()?
+                || descriptor.candidate_geometry_revision
+                    != descriptor.parent_geometry_revision.saturating_add(1)
+                || descriptor.candidate_transport_revision != new_opening.revision
+                || descriptor.effective_service_day != version.effective_service_day
+            {
+                return Err(Error::Invalid("spatial_geometry_descriptor_chain"));
+            }
+            let candidate_bytes = spatial_geometry_updates::read_scene_input(
+                dir,
+                descriptor.candidate_scene_input_sha256,
+            )?;
+            let candidate_input: mycity_map::scene::Input =
+                serde_json::from_slice(&candidate_bytes)
+                    .map_err(|_| Error::Invalid("spatial_geometry_scene_decode"))?;
+            if serde_json::to_vec(&candidate_input)? != candidate_bytes
+                || candidate_input.geometry_revision != descriptor.candidate_geometry_revision
+            {
+                return Err(Error::Invalid("spatial_geometry_scene_noncanonical"));
+            }
+            let candidate_profile_bytes =
+                town_transport::read_verified_allocation_bytes(dir, &version.profile_sha256)?;
+            let candidate = mycity_map::geometry_revision::build_candidate(
+                scene.input(),
+                assets.terrain(),
+                assets.terrain(),
+                basis.adapter_input(old_opening.revision),
+                &previous_profile,
+                &previous_profile_bytes,
+                mycity_map::geometry_revision::GeometryEdit::RoadControlPoint(
+                    candidate_input.road.control,
+                ),
+            )
+            .map_err(|_| Error::Invalid("spatial_geometry_candidate_rebuild"))?;
+            if candidate.scene.input().geometry_revision != descriptor.candidate_geometry_revision
+                || candidate.scene.state_hash() != hex(&descriptor.candidate_scene_state_sha256)
+                || serde_json::to_vec(candidate.scene.input())? != candidate_bytes
+                || candidate.profile_bytes != candidate_profile_bytes
+                || digest(&candidate.profile_bytes) != version.profile_sha256
+                || candidate.scene.input().road.control != candidate_input.road.control
+            {
+                return Err(Error::Invalid("spatial_geometry_candidate_mismatch"));
+            }
+            replayed_permissions
+                .apply_geometry_profile_revision(verified_grant)
+                .map_err(|_| Error::Invalid("spatial_catalog_geometry_revision"))?;
+            structural_profile = profile.clone();
+            active_scene = Some(candidate.scene);
+        } else {
+            if version.geometry_descriptor.is_some() || version.geometry_witness.is_some() {
+                return Err(Error::Invalid("spatial_catalog_geometry_witness"));
+            }
+            let witness = version
+                .authorization_witness
+                .ok_or(Error::Invalid("spatial_catalog_authorization_witness"))?;
+            let request = witness.request;
+            let (changed_edge, operation) = spatial_transport_updates::validate_access_profile_transition(
+                &genesis_profile,
+                &structural_profile,
+                &previous_profile,
+                &profile.opening,
+            )
+            .map_err(|_| Error::Invalid("spatial_catalog_access_profile_delta"))?;
+            if changed_edge != request.edge_id || operation != request.operation {
+                return Err(Error::Invalid("spatial_catalog_access_edge_delta"));
+            }
+            let asset = replayed_permissions
+                .assets()
+                .iter()
+                .find(|asset| asset.asset_id == request.asset_id)
+                .ok_or(Error::Invalid("spatial_catalog_asset_missing"))?;
+            let managed_edge = asset
                 .edges
                 .iter()
-                .find(|edge| edge.id == old.id)
-                .ok_or(Error::Invalid("spatial_catalog_profile_topology"))?;
-            let mut expected = *old;
-            expected.open = new.open;
-            if expected != *new {
-                return Err(Error::Invalid("spatial_catalog_profile_edge_change"));
-            }
-            if old.open != new.open && changed_edge.replace((old.id, old.open, new.open)).is_some()
+                .find(|edge| edge.edge_id == request.edge_id)
+                .ok_or(Error::Invalid("spatial_catalog_edge_missing"))?;
+            let (expected_was_open, operation_bit) = match request.operation {
+                mycity_core::spatial_transport_permissions::SpatialAccessOperation::Close => (
+                    true,
+                    mycity_core::spatial_transport_permissions::SPATIAL_ALLOW_CLOSE,
+                ),
+                mycity_core::spatial_transport_permissions::SpatialAccessOperation::Restore => (
+                    false,
+                    mycity_core::spatial_transport_permissions::SPATIAL_ALLOW_RESTORE,
+                ),
+            };
+            if request.request_id != version.request_id
+                || request.asset_id != version.changed_asset_id
+                || asset.kind != version.asset_kind
+                || request.expected_revision.checked_add(1) != Some(version.asset_revision)
+                || request.surface != version.surface
+                || request.edge_id != version.edge_id
+                || request.parent_profile_sha256 != previous_profile_hash
+                || request.candidate_profile_sha256 != version.profile_sha256
+                || version.previous_profile_sha256 != previous_profile_hash
+                || u64::try_from(request.effective_time.value()).ok()
+                    != version
+                        .effective_service_day
+                        .checked_mul(mycity_core::timeline::DAY)
+                || managed_edge.surface != request.surface
+                || !managed_edge.initially_open
+                || managed_edge.currently_open != expected_was_open
+                || managed_edge.allowed_operations & operation_bit == 0
             {
-                return Err(Error::Invalid("spatial_catalog_multiple_edge_changes"));
+                return Err(Error::Invalid("spatial_catalog_edge_permission"));
             }
+            replayed_permissions
+                .replay_authorized_update(
+                    request,
+                    witness.owner_approval,
+                    witness.authority_approval,
+                    version.authorization_evidence_sha256,
+                )
+                .map_err(|_| Error::Invalid("spatial_catalog_authorization_replay"))?;
         }
-        let (edge_id, was_open, is_open) =
-            changed_edge.ok_or(Error::Invalid("spatial_catalog_profile_delta"))?;
-        if edge_id != version.edge_id {
-            return Err(Error::Invalid("spatial_catalog_profile_delta"));
-        }
-        let asset = permissions
-            .assets()
-            .iter()
-            .find(|asset| asset.asset_id == version.changed_asset_id)
-            .ok_or(Error::Invalid("spatial_catalog_asset_missing"))?;
-        let managed_edge = asset
-            .edges
-            .iter()
-            .find(|edge| edge.edge_id == version.edge_id && edge.surface == version.surface)
-            .ok_or(Error::Invalid("spatial_catalog_edge_unmanaged"))?;
-        let prior_edge_updates = catalog
-            .versions()
-            .iter()
-            .take_while(|prior| prior.version < version.version)
-            .filter(|prior| {
-                prior.changed_asset_id == version.changed_asset_id
-                    && prior.edge_id == version.edge_id
-            })
-            .count();
-        let expected_was_open = managed_edge.initially_open ^ (prior_edge_updates % 2 != 0);
-        let operation_bit = if was_open && !is_open {
-            mycity_core::spatial_transport_permissions::SPATIAL_ALLOW_CLOSE
-        } else if !was_open && is_open {
-            mycity_core::spatial_transport_permissions::SPATIAL_ALLOW_RESTORE
-        } else {
-            return Err(Error::Invalid("spatial_catalog_profile_delta"));
-        };
-        if asset.kind != version.asset_kind
-            || !managed_edge.initially_open
-            || was_open != expected_was_open
-            || managed_edge.allowed_operations & operation_bit == 0
-        {
-            return Err(Error::Invalid("spatial_catalog_edge_permission"));
-        }
+        previous_profile_bytes =
+            town_transport::read_verified_allocation_bytes(dir, &version.profile_sha256)?;
         previous_profile = profile;
         previous_profile_hash = version.profile_sha256;
+    }
+    if let (Some(assets), Some(scene)) = (geometry_assets.as_deref_mut(), active_scene) {
+        assets.replace_scene(scene);
     }
 
     let mut current = catalog.clone();
@@ -2692,7 +3792,40 @@ fn replay_spatial_transport_permissions(
         .copy_into(&mut replayed)
         .map_err(|_| Error::Invalid("spatial_permission_genesis_invalid"))?;
     for version in catalog.versions() {
-        let witness = version.authorization_witness;
+        if let (Some(descriptor), Some(witness)) =
+            (version.geometry_descriptor, version.geometry_witness)
+        {
+            let verified_grant =
+                mycity_core::spatial_geometry_permissions::validate_authorization_witness(
+                    &descriptor,
+                    witness,
+                    &replayed,
+                )
+                .map_err(|_| Error::Invalid("spatial_catalog_geometry_authorization"))?;
+            if version.request_id != witness.request.request_id
+                || version.changed_asset_id != descriptor.asset_id
+                || version.asset_kind
+                    != mycity_core::spatial_transport_permissions::SpatialAssetKind::Road
+                || version.asset_revision
+                    != verified_grant.expected_asset_revision().saturating_add(1)
+                || version.effective_service_day != descriptor.effective_service_day
+                || version.previous_profile_sha256 != descriptor.parent_profile_sha256
+                || version.profile_sha256 != descriptor.candidate_profile_sha256
+                || version.authorization_evidence_sha256
+                    != descriptor
+                        .sha256()
+                        .map_err(|_| Error::Invalid("spatial_catalog_geometry_descriptor"))?
+            {
+                return Err(Error::Invalid("spatial_catalog_geometry_binding"));
+            }
+            replayed
+                .apply_geometry_profile_revision(verified_grant)
+                .map_err(|_| Error::Invalid("spatial_catalog_geometry_revision"))?;
+            continue;
+        }
+        let witness = version
+            .authorization_witness
+            .ok_or(Error::Invalid("spatial_catalog_authorization_witness"))?;
         let request = witness.request;
         if request.asset_id != version.changed_asset_id
             || request.surface != version.surface
@@ -2726,6 +3859,251 @@ fn replay_spatial_transport_permissions(
         }
     }
     Ok(replayed)
+}
+
+fn validate_spatial_permission_nonapply_transition(
+    candidate: &mycity_core::spatial_transport_permissions::SpatialPermissionState,
+    current: &mycity_core::spatial_transport_permissions::SpatialPermissionState,
+    actor: u32,
+    command: mycity_core::spatial_transport_permissions::SpatialPermissionCommand,
+) -> Result<(), Error> {
+    use mycity_core::spatial_transport_permissions::{
+        request_sha256, SpatialAccessOperation, SpatialApprovalRole, SpatialPermissionCommand,
+        SpatialUpdateRequestRecord, SPATIAL_ALLOW_CLOSE, SPATIAL_ALLOW_RESTORE,
+    };
+
+    candidate
+        .validate()
+        .map_err(|_| Error::Invalid("spatial_candidate_invalid"))?;
+    current
+        .validate()
+        .map_err(|_| Error::Invalid("spatial_current_invalid"))?;
+    if candidate.schema != current.schema
+        || candidate.world_id != current.world_id
+        || candidate.branch_id != current.branch_id
+        || candidate.assets != current.assets
+        || current.revision.checked_add(1) != Some(candidate.revision)
+    {
+        return Err(Error::Invalid("spatial_candidate_nonapply_identity"));
+    }
+
+    let requests_match = |left: &[SpatialUpdateRequestRecord],
+                          right: &[SpatialUpdateRequestRecord]| {
+        left.len() == right.len()
+            && left
+                .iter()
+                .zip(right)
+                .all(|(left, right)| left.request == right.request)
+    };
+
+    match command {
+        SpatialPermissionCommand::Request {
+            expected_state_revision,
+            request,
+        } => {
+            let asset = current
+                .assets
+                .iter()
+                .find(|asset| asset.asset_id == request.asset_id)
+                .ok_or(Error::Invalid("spatial_candidate_request_asset"))?;
+            let edge = asset
+                .edges
+                .iter()
+                .find(|edge| edge.edge_id == request.edge_id)
+                .ok_or(Error::Invalid("spatial_candidate_request_edge"))?;
+            let operation_bit = match request.operation {
+                SpatialAccessOperation::Close => SPATIAL_ALLOW_CLOSE,
+                SpatialAccessOperation::Restore => SPATIAL_ALLOW_RESTORE,
+            };
+            let operation_matches = match request.operation {
+                SpatialAccessOperation::Close => edge.currently_open,
+                SpatialAccessOperation::Restore => !edge.currently_open,
+            };
+            let effective_day = u64::try_from(request.effective_time.value())
+                .is_ok_and(|seconds| seconds % mycity_core::timeline::DAY == 0);
+            if expected_state_revision != current.revision
+                || actor == 0
+                || actor != request.applicant_account
+                || request.request_id <= current.request_id_highwater
+                || request.executor_account == 0
+                || request.executor_account == request.applicant_account
+                || request.executor_account == asset.permit_authority_account
+                || request.expected_revision != asset.revision
+                || request.parent_profile_sha256 != asset.current_profile_sha256
+                || request.candidate_profile_sha256 == [0; 32]
+                || request.candidate_profile_sha256 == request.parent_profile_sha256
+                || request.effective_time.value() <= 0
+                || !effective_day
+                || edge.surface != request.surface
+                || !edge.initially_open
+                || edge.allowed_operations & operation_bit == 0
+                || !operation_matches
+                || current
+                    .requests
+                    .iter()
+                    .any(|row| row.request.asset_id == request.asset_id)
+                || candidate.request_id_highwater != request.request_id
+                || candidate.requests.len() != current.requests.len() + 1
+                || candidate
+                    .requests
+                    .last()
+                    .is_none_or(|record| record.request != request)
+                || !requests_match(
+                    &candidate.requests[..candidate.requests.len() - 1],
+                    &current.requests,
+                )
+                || candidate.approvals != current.approvals
+            {
+                return Err(Error::Invalid("spatial_candidate_request_transition"));
+            }
+        }
+        SpatialPermissionCommand::Approve {
+            expected_state_revision,
+            approval,
+        } => {
+            let request = current
+                .requests
+                .iter()
+                .find(|record| record.request.request_id == approval.request_id)
+                .map(|record| &record.request)
+                .ok_or(Error::Invalid("spatial_candidate_approval_request"))?;
+            let context = current
+                .authorization_context(request.asset_id)
+                .map_err(|_| Error::Invalid("spatial_candidate_approval_context"))?;
+            let digest = request_sha256(context, request)
+                .map_err(|_| Error::Invalid("spatial_candidate_approval_digest"))?;
+            let asset = current
+                .assets
+                .iter()
+                .find(|asset| asset.asset_id == request.asset_id)
+                .ok_or(Error::Invalid("spatial_candidate_approval_asset"))?;
+            let role_matches = match approval.role {
+                SpatialApprovalRole::OwnerConsent => {
+                    approval.approver_account == asset.owner_account
+                }
+                SpatialApprovalRole::AuthorityPermit => {
+                    approval.approver_account == asset.permit_authority_account
+                        && approval.approver_account != request.applicant_account
+                        && approval.approver_account != request.executor_account
+                }
+            };
+            let approval_valid = expected_state_revision == current.revision
+                && actor != 0
+                && actor == approval.approver_account
+                && approval.request_sha256 == digest
+                && role_matches
+                && !current.approvals.iter().any(|prior| {
+                    prior.request_id == approval.request_id && prior.role == approval.role
+                });
+            if !approval_valid || candidate.request_id_highwater != current.request_id_highwater {
+                return Err(Error::Invalid("spatial_candidate_approval_transition"));
+            }
+            if approval.approved {
+                if !requests_match(&candidate.requests, &current.requests)
+                    || candidate.approvals.len() != current.approvals.len() + 1
+                    || candidate.approvals.last() != Some(&approval)
+                    || candidate.approvals[..candidate.approvals.len() - 1] != current.approvals
+                {
+                    return Err(Error::Invalid("spatial_candidate_approval_rows"));
+                }
+            } else if candidate
+                .requests
+                .iter()
+                .zip(
+                    current
+                        .requests
+                        .iter()
+                        .filter(|row| row.request.request_id != approval.request_id),
+                )
+                .any(|(candidate, expected)| candidate.request != expected.request)
+                || candidate.requests.len()
+                    != current
+                        .requests
+                        .iter()
+                        .filter(|row| row.request.request_id != approval.request_id)
+                        .count()
+                || candidate
+                    .approvals
+                    .iter()
+                    .zip(
+                        current
+                            .approvals
+                            .iter()
+                            .filter(|row| row.request_id != approval.request_id),
+                    )
+                    .any(|(candidate, expected)| candidate != expected)
+                || candidate.approvals.len()
+                    != current
+                        .approvals
+                        .iter()
+                        .filter(|row| row.request_id != approval.request_id)
+                        .count()
+            {
+                return Err(Error::Invalid("spatial_candidate_veto_rows"));
+            }
+        }
+        SpatialPermissionCommand::Withdraw {
+            expected_state_revision,
+            request_id,
+            request_sha256: supplied_digest,
+        } => {
+            let request = current
+                .requests
+                .iter()
+                .find(|record| record.request.request_id == request_id)
+                .map(|record| &record.request)
+                .ok_or(Error::Invalid("spatial_candidate_withdraw_request"))?;
+            let context = current
+                .authorization_context(request.asset_id)
+                .map_err(|_| Error::Invalid("spatial_candidate_withdraw_context"))?;
+            let digest = request_sha256(context, request)
+                .map_err(|_| Error::Invalid("spatial_candidate_withdraw_digest"))?;
+            if expected_state_revision != current.revision
+                || actor == 0
+                || actor != request.applicant_account
+                || supplied_digest != digest
+                || candidate.request_id_highwater != current.request_id_highwater
+                || candidate
+                    .requests
+                    .iter()
+                    .zip(
+                        current
+                            .requests
+                            .iter()
+                            .filter(|row| row.request.request_id != request_id),
+                    )
+                    .any(|(candidate, expected)| candidate.request != expected.request)
+                || candidate.requests.len()
+                    != current
+                        .requests
+                        .iter()
+                        .filter(|row| row.request.request_id != request_id)
+                        .count()
+                || candidate
+                    .approvals
+                    .iter()
+                    .zip(
+                        current
+                            .approvals
+                            .iter()
+                            .filter(|row| row.request_id != request_id),
+                    )
+                    .any(|(candidate, expected)| candidate != expected)
+                || candidate.approvals.len()
+                    != current
+                        .approvals
+                        .iter()
+                        .filter(|row| row.request_id != request_id)
+                        .count()
+            {
+                return Err(Error::Invalid("spatial_candidate_withdraw_transition"));
+            }
+        }
+        SpatialPermissionCommand::Apply { .. } => {
+            return Err(Error::Invalid("spatial_candidate_apply_grant_missing"));
+        }
+    }
+    Ok(())
 }
 
 fn validate_spatial_candidate_transition(
@@ -2892,3 +4270,6 @@ fn identity(engine: &Engine) -> Bootstrap {
         laboratory_only: true,
     }
 }
+
+/// Diagnostic current scalar-capacity observation; no admission authority.
+pub mod capacity_read;

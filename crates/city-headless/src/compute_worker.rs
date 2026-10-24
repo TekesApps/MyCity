@@ -614,6 +614,7 @@ impl Write for Input {
         }
     }
 }
+#[must_use = "hold the owner through start errors and acknowledged retirement"]
 pub struct Worker {
     child: Option<Child>,
     broker: Option<crate::normal_pool::broker::Lease>,
@@ -624,116 +625,34 @@ pub struct Worker {
     root: PathBuf,
     gated: bool,
     pool_grant: Option<crate::normal_pool::Grant>,
+    pending_grant: Option<crate::normal_pool::PendingGrant>,
+    broker_start: Option<crate::normal_pool::broker::PendingStart>,
+    reaped: Option<ExitStatus>,
+    ready_to_submit: bool,
 }
 impl Worker {
-    pub fn spawn(executable: &Path, root: &Path) -> Result<Self, String> {
-        Self::spawn_inner(executable, root, false, false, None)
+    /// Empty persistent owner; no RPC, process spawn or capacity mutation.
+    pub fn new() -> Self {
+        Self { child: None, broker: None, stdin: None, receiver: None, reader: None,
+            outstanding: None, root: PathBuf::new(), gated: false, pool_grant: None,
+            pending_grant: None, broker_start: None, reaped: None, ready_to_submit: false }
     }
-    pub fn spawn_probe_gated(executable: &Path, root: &Path) -> Result<Self, String> {
-        Self::spawn_inner(executable, root, true, false, None)
+    pub fn is_empty(&self) -> bool {
+        self.child.is_none() && self.broker.is_none() && self.pending_grant.is_none()
+            && self.pool_grant.is_none() && self.broker_start.is_none() && self.reader.is_none()
     }
-    pub fn spawn_bounded_probe(executable: &Path, root: &Path) -> Result<Self, String> {
-        Self::spawn_inner(executable, root, true, true, None)
+    pub fn start_unbounded(&mut self, executable: &Path, root: &Path, gated: bool)
+        -> Result<(), String> {
+        self.start(executable, root, gated, false, None)
     }
-    pub fn spawn_bounded(executable: &Path, root: &Path) -> Result<Self, String> {
-        Self::spawn_inner(executable, root, false, true, None)
+    pub fn start_bounded(&mut self, executable: &Path, root: &Path,
+        pool: Option<&Path>, gated: bool) -> Result<(), String> {
+        self.start(executable, root, gated, true, pool)
     }
-    pub fn spawn_bounded_in_pool(
-        executable: &Path,
-        root: &Path,
-        pool: &Path,
-        gated: bool,
-    ) -> Result<Self, String> {
-        Self::spawn_inner(executable, root, gated, true, Some(pool))
-    }
-    fn spawn_inner(
-        executable: &Path,
-        root: &Path,
-        gated: bool,
-        bounded: bool,
-        pool: Option<&Path>,
-    ) -> Result<Self, String> {
-        if bounded && pool.is_none() {
-            if let Some((mut lease, stream)) =
-                crate::normal_pool::broker::Lease::spawn_from_env(root, gated)?
-            {
-                let stdout = stream.try_clone().map_err(|e| e.to_string())?;
-                let (sender, receiver) = mpsc::sync_channel(4);
-                let reader = match spawn_ipc_reader("worker-ipc-reader", move || {
-                    let mut r = BufReader::with_capacity(8192, stdout);
-                    loop {
-                        let result = match frame(&mut r) {
-                            Ok(Some(b)) => {
-                                serde_json::from_slice::<Event>(&b).map_err(|e| e.to_string())
-                            }
-                            Ok(None) => Err("worker_eof".into()),
-                            Err(e) => Err(e),
-                        };
-                        let failed = result.is_err();
-                        if sender.send(result).is_err() || failed {
-                            break;
-                        }
-                    }
-                }) {
-                    Ok(reader) => reader,
-                    Err(error) => {
-                        drop(stream);
-                        lease.stop(true)?;
-                        return Err(error);
-                    }
-                };
-                return Ok(Self {
-                    child: None,
-                    broker: Some(lease),
-                    stdin: Some(Input::Socket(stream)),
-                    receiver: Some(receiver),
-                    reader: Some(reader),
-                    outstanding: None,
-                    root: root.to_owned(),
-                    gated,
-                    pool_grant: None,
-                });
-            }
-        }
-        let mut pool_grant = if bounded {
-            match pool {
-                Some(root) => Some(crate::normal_pool::Grant::prepare(root)?),
-                None => crate::normal_pool::Grant::from_env()?,
-            }
-        } else {
-            None
-        };
-        let mut command = Command::new(executable);
-        command
-            .arg(if gated && bounded {
-                "compute-worker-bounded-probe"
-            } else if gated {
-                "compute-worker-probe-gated"
-            } else if bounded {
-                "compute-worker-bounded"
-            } else {
-                "compute-worker"
-            })
-            .arg(root)
-            .stdin(Stdio::piped())
-            .stdout(Stdio::piped())
-            .stderr(Stdio::null());
-        if let Some(grant) = pool_grant.as_ref() {
-            grant.configure(&mut command)?;
-        }
-        let mut child = command.spawn().map_err(|e| e.to_string())?;
-        if let Some(grant) = pool_grant.as_mut() {
-            if let Err(error) = grant.attach(child.id()) {
-                let _ = child.kill();
-                let status = child.wait().map_err(|e| e.to_string())?;
-                grant.after_wait(child.id(), status)?;
-                return Err(error);
-            }
-        }
-        let stdin = child.stdin.take().map(Input::Pipe);
-        let stdout = child.stdout.take().ok_or("worker_stdout")?;
+    fn install_reader(&mut self, stdout: impl Read + Send + 'static) -> Result<(), String> {
         let (sender, receiver) = mpsc::sync_channel(4);
-        let reader = match spawn_ipc_reader("worker-ipc-reader", move || {
+        self.receiver = Some(receiver);
+        self.reader = Some(spawn_ipc_reader("worker-ipc-reader", move || {
             let mut r = BufReader::with_capacity(8192, stdout);
             loop {
                 let result = match frame(&mut r) {
@@ -742,33 +661,95 @@ impl Worker {
                     Err(e) => Err(e),
                 };
                 let failed = result.is_err();
-                if sender.send(result).is_err() || failed {
-                    break;
-                }
+                if sender.send(result).is_err() || failed { break; }
             }
-        }) {
-            Ok(reader) => reader,
-            Err(error) => {
-                kill_wait_then(&mut child, |_, pid, status| {
-                    if let Some(grant) = pool_grant.as_mut() {
-                        grant.after_wait(pid, status)?;
-                    }
-                    Ok(())
-                })?;
-                return Err(error);
+        })?);
+        self.ready_to_submit = true;
+        Ok(())
+    }
+    fn start(&mut self, executable: &Path, root: &Path, gated: bool,
+        bounded: bool, pool: Option<&Path>) -> Result<(), String> {
+        if !self.is_empty() { return Err("worker_owner_not_retired".into()); }
+        self.root = root.to_owned();
+        self.gated = gated;
+        self.ready_to_submit = false;
+        if bounded && pool.is_none() {
+            self.broker_start = crate::normal_pool::broker::PendingStart::from_env(root, gated)?;
+            if self.broker_start.is_some() {
+                // Store Started lease BEFORE accept, clone, or reader setup can fail.
+                self.broker = Some(self.broker_start.as_mut().expect("start owner").start()?);
+                let stream = self.broker_start.as_mut().expect("start owner").accept()?;
+                self.stdin = Some(Input::Socket(stream));
+                let Some(Input::Socket(stream)) = self.stdin.as_ref() else { unreachable!() };
+                let stdout = stream.try_clone().map_err(|e| e.to_string())?;
+                return self.install_reader(stdout);
             }
+        }
+        if bounded {
+            let pool_root = pool.map(Path::to_owned)
+                .or_else(|| std::env::var_os("MYCITY_NORMAL_POOL").map(PathBuf::from));
+            if let Some(root) = pool_root {
+                self.pending_grant = Some(crate::normal_pool::PendingGrant::new(&root)?);
+                self.pool_grant = Some(self.pending_grant.as_mut().expect("prepare owner").resolve()?);
+                self.pending_grant = None; // resolved request has transferred, no capability lost
+            }
+        }
+        let mut command = Command::new(executable);
+        command.arg(if gated && bounded { "compute-worker-bounded-probe" }
+            else if gated { "compute-worker-probe-gated" }
+            else if bounded { "compute-worker-bounded" } else { "compute-worker" })
+            .arg(root).stdin(Stdio::piped()).stdout(Stdio::piped()).stderr(Stdio::null());
+        if let Some(grant) = self.pool_grant.as_ref() { grant.configure(&mut command)?; }
+        // From this assignment onward the original Child never lives in a fallible local.
+        self.child = Some(command.spawn().map_err(|e| e.to_string())?);
+        if let Some(grant) = self.pool_grant.as_mut() {
+            grant.attach(self.child.as_ref().expect("child owner").id())?;
+        }
+        let child = self.child.as_mut().expect("child owner");
+        self.stdin = Some(Input::Pipe(child.stdin.take().ok_or("worker_stdin")?));
+        let stdout = child.stdout.take().ok_or("worker_stdout")?;
+        self.install_reader(stdout)
+    }
+    /// Absence means no known worker PID, not a synthetic zero or proof of retirement.
+    pub fn pid_opt(&self) -> Option<u32> {
+        self.child.as_ref().map(Child::id).or_else(|| self.broker.as_ref().map(|lease| lease.pid()))
+    }
+    pub fn requires_session_exit(&self) -> bool {
+        self.broker.is_none()
+            && self.broker_start.as_ref().is_some_and(|start| start.unconfirmed())
+    }
+    pub fn retirement_state(&self) -> serde_json::Value {
+        serde_json::json!({"worker_pid": self.pid_opt(),
+            "pending_prepare": self.pending_grant.is_some(),
+            "direct_grant": self.pool_grant.as_ref().map(|grant| grant.protocol_identity()),
+            "broker_lease": self.broker_lease(),
+            "broker_start_unconfirmed": self.broker_start.as_ref().is_some_and(|start| start.unconfirmed()),
+            "actual_exit_cached": self.reaped.is_some(), "ready_to_submit": self.ready_to_submit,
+            "empty": self.is_empty()})
+    }
+    /// The SAME owner retries. Never clear an uncertain Prepare/Start or a failed Reap.
+    pub fn retire(&mut self, timeout: Duration) -> Result<Option<ExitStatus>, String> {
+        if self.is_empty() { return Ok(None); }
+        if self.requires_session_exit() {
+            return Err("worker_broker_start_unconfirmed_session_exit_required".into());
+        }
+        let status = if self.child.is_some() || self.broker.is_some() {
+            Some(self.stop_when_idle(timeout)?)
+        } else {
+            if self.pending_grant.is_some() {
+                self.pool_grant = Some(self.pending_grant.as_mut().expect("prepare owner").resolve()?);
+                self.pending_grant = None;
+            }
+            if let Some(grant) = self.pool_grant.as_mut() { grant.abort_unspawned()?; }
+            None
         };
-        Ok(Self {
-            child: Some(child),
-            broker: None,
-            stdin,
-            receiver: Some(receiver),
-            reader: Some(reader),
-            outstanding: None,
-            root: root.to_owned(),
-            gated,
-            pool_grant,
-        })
+        // Only acknowledged retirement reaches this point. Child status is not a substitute
+        // for original pool acknowledgement. Reader has joined on the spawned path.
+        self.child = None; self.broker = None; self.pool_grant = None;
+        self.pending_grant = None; self.broker_start = None; self.reaped = None;
+        self.stdin = None; self.receiver = None; self.outstanding = None;
+        self.ready_to_submit = false;
+        Ok(status)
     }
     /// Only the probe transport uses ACKs; ordinary workers never wait for one.
     pub fn acknowledge_probe(&mut self, event: &Event) -> Result<(), String> {
@@ -788,11 +769,7 @@ impl Worker {
         )
     }
     pub fn pid(&self) -> u32 {
-        match (&self.child, &self.broker) {
-            (Some(child), None) => child.id(),
-            (None, Some(lease)) => lease.pid(),
-            _ => unreachable!("worker ownership"),
-        }
+        self.pid_opt().expect("known spawned worker PID")
     }
     pub fn broker_lease(&self) -> Option<u64> {
         self.broker.as_ref().map(|lease| lease.id())
@@ -804,6 +781,7 @@ impl Worker {
         self.stdin.take();
     }
     pub fn submit(&mut self, request: &Request) -> Result<(), String> {
+        if !self.ready_to_submit { return Err("worker_not_ready".into()); }
         if self.outstanding.is_some() {
             return Err("worker_busy".into());
         }
@@ -850,86 +828,112 @@ impl Worker {
     /// Completed workers may close stdin and flush their final evidence. Active
     /// jobs retain the existing kill path. Deadline expiry is still a real kill.
     pub fn stop_when_idle(&mut self, timeout: Duration) -> Result<ExitStatus, String> {
-        if self.outstanding.is_some() {
-            return self.stop();
-        }
+        if self.outstanding.is_some() { return self.stop(); }
+        self.ready_to_submit = false;
         self.close_input();
         self.receiver.take();
         if let Some(lease) = self.broker.as_mut() {
             let status = lease.stop(false)?;
-            if let Some(reader) = self.reader.take() {
-                reader.join().map_err(|_| "worker_reader_panic")?;
-            }
+            self.reaped = Some(status); // broker's original waited receipt, not local Child wait
+            self.join_reader()?;
             return Ok(status);
         }
+        if self.child.is_none() { return Err("worker_no_spawned_owner_use_retire".into()); }
         let deadline = std::time::Instant::now() + timeout;
         loop {
-            if let Some(status) = self
-                .child
-                .as_mut()
-                .expect("direct owner")
-                .try_wait()
-                .map_err(|e| e.to_string())?
-            {
-                if let Some(reader) = self.reader.take() {
-                    reader.join().map_err(|_| "worker_reader_panic")?;
-                }
-                if let Some(grant) = self.pool_grant.as_mut() {
-                    grant.after_wait(self.child.as_ref().expect("direct owner").id(), status)?;
-                }
-                return Ok(status);
+            if self.reaped.is_none() {
+                self.reaped = self.child.as_mut().expect("direct owner")
+                    .try_wait().map_err(|e| e.to_string())?;
             }
-            if std::time::Instant::now() >= deadline {
-                return self.stop();
-            }
+            if self.reaped.is_some() { return self.publish_direct_wait(); }
+            if std::time::Instant::now() >= deadline { return self.stop(); }
             std::thread::sleep(Duration::from_millis(2));
         }
     }
-    pub fn stop(&mut self) -> Result<ExitStatus, String> {
-        if let Some(lease) = self.broker.as_mut() {
-            let status = lease.stop(true)?;
-            self.close_input();
-            self.receiver.take();
-            if let Some(reader) = self.reader.take() {
-                reader.join().map_err(|_| "worker_reader_panic")?;
-            }
-            return Ok(status);
-        }
-        // Kill also interrupts an executing job; no cooperative cancellation assumption.
-        if self
-            .child
-            .as_mut()
-            .expect("direct owner")
-            .try_wait()
-            .map_err(|e| e.to_string())?
-            .is_none()
-        {
-            self.child
-                .as_mut()
-                .expect("direct owner")
-                .kill()
-                .map_err(|e| e.to_string())?;
-        }
-        let status = self
-            .child
-            .as_mut()
-            .expect("direct owner")
-            .wait()
-            .map_err(|e| e.to_string())?;
-        if let Some(grant) = self.pool_grant.as_mut() {
-            grant.after_wait(self.child.as_ref().expect("direct owner").id(), status)?;
-        }
-        self.stdin.take();
-        self.receiver.take(); // unblock a reader blocked on its bounded sender before join
+    fn join_reader(&mut self) -> Result<(), String> {
         if let Some(reader) = self.reader.take() {
             reader.join().map_err(|_| "worker_reader_panic")?;
         }
+        Ok(())
+    }
+    fn publish_direct_wait(&mut self) -> Result<ExitStatus, String> {
+        let status = self.reaped.ok_or("worker_actual_wait_missing")?;
+        if let Some(grant) = self.pool_grant.as_mut() {
+            grant.after_wait(self.child.as_ref().ok_or("worker_child_owner_missing")?.id(), status)?;
+        }
+        self.join_reader()?;
         Ok(status)
     }
+    pub fn stop(&mut self) -> Result<ExitStatus, String> {
+        self.ready_to_submit = false;
+        self.close_input();
+        self.receiver.take(); // unblock bounded sender before join
+        if let Some(lease) = self.broker.as_mut() {
+            let status = lease.stop(true)?;
+            self.reaped = Some(status);
+            self.join_reader()?;
+            return Ok(status);
+        }
+        let child = self.child.as_mut().ok_or("worker_no_spawned_owner_use_retire")?;
+        if self.reaped.is_none() {
+            self.reaped = child.try_wait().map_err(|e| e.to_string())?;
+            if self.reaped.is_none() {
+                // A kill error is not a wait result. Still attempt real wait; if wait
+                // fails, original Child/Grant stay in this owner for explicit retry.
+                if let Err(error) = child.kill() {
+                    self.reaped = child.try_wait().map_err(|e| e.to_string())?;
+                    if self.reaped.is_none() { return Err(format!("worker_kill_unconfirmed:{error}")); }
+                }
+                if self.reaped.is_none() {
+                    self.reaped = Some(child.wait().map_err(|e| e.to_string())?);
+                }
+            }
+        }
+        self.publish_direct_wait()
+    }
 }
+impl Default for Worker { fn default() -> Self { Self::new() } }
 impl Drop for Worker {
     fn drop(&mut self) {
-        let _ = self.stop();
+        if let Err(error) = self.retire(Duration::ZERO) {
+            // Best effort only. Reliable normal-error/unwind retirement belongs to
+            // with_worker; forced process death needs the existing external owner.
+            eprintln!("worker_drop_retirement_unconfirmed:{error}");
+        }
+    }
+}
+
+/// Keep one original owner outside the work closure, including during unwind.
+/// Two finite attempts recover one-shot transport faults; persistent errors are
+/// explicit failures, never 'cleaned up'. Managed Sim must then exit its session
+/// so original supervisor wait/revoke can run. Standalone probes report unrecovered
+/// responsibility and terminate; they have no fictional external recovery owner.
+pub fn with_worker<T>(work: impl FnOnce(&mut Worker) -> Result<T, String>) -> Result<T, String> {
+    let mut owner = Worker::new();
+    with_worker_on(&mut owner, work)
+}
+/// An outer session/fixture may retain this exact owner even if retirement fails
+/// and the original panic is resumed. This does not manufacture a recovery token.
+pub fn with_worker_on<T>(owner: &mut Worker,
+    work: impl FnOnce(&mut Worker) -> Result<T, String>) -> Result<T, String> {
+    let outcome = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| work(owner)));
+    let mut retirement = owner.retire(Duration::from_secs(1));
+    if let Err(error) = retirement.as_ref() {
+        eprintln!("worker_retirement_retry:{error}:{}", owner.retirement_state());
+        retirement = owner.retire(Duration::from_secs(1));
+    }
+    match outcome {
+        Err(panic) => {
+            if let Err(error) = retirement {
+                eprintln!("worker_unwind_retirement_unconfirmed:{error}:{}", owner.retirement_state());
+            }
+            std::panic::resume_unwind(panic)
+        }
+        Ok(result) => match retirement {
+            Ok(_) => result,
+            Err(error) => Err(format!("worker_retirement_unconfirmed:{error}:{};work_error:{}",
+                owner.retirement_state(), result.err().as_deref().unwrap_or("none"))),
+        },
     }
 }
 

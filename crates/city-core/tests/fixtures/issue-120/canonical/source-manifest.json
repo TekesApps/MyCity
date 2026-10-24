@@ -1,0 +1,34 @@
+{
+  "canonical_head": "ae28b8cda8041c7bd106a28cccdc3deab051b032",
+  "note": "Exact existing repository fixtures; laboratory configurations, not real provider acceptance.",
+  "files": {
+    "fixtures/m0-e0-opening.json": {
+      "sha256": "6756555697457b3de5307086610a108c88d15650c6e668da0cdf990ca52b874c",
+      "bytes": 857
+    },
+    "fixtures/m0-region-opening.json": {
+      "sha256": "b654f042638d2efd3b058b87590a1c0446dcec2112faa99f10f6eefafed91544",
+      "bytes": 2300
+    },
+    "fixtures/m0-economy-opening.json": {
+      "sha256": "964ee93769377f4d2ecae7e4b20bdfb191c61acbf1960f8a89109b3507771f94",
+      "bytes": 8688
+    },
+    "fixtures/m0-boot-opening.json": {
+      "sha256": "d2505d4b292ee8745de0266178168853f09a0a71a767b8e74598bf0f105f12da",
+      "bytes": 2612
+    },
+    "fixtures/m0-exchange-opening.json": {
+      "sha256": "e8471dd9b12a69fc5710dcb13fb43860ced9be046c07ec72e7ba6d3f45da6fe9",
+      "bytes": 13118
+    },
+    "fixtures/m0-background-joint-opening.json": {
+      "sha256": "8f9b0281a4855eb568de58baa1b569a36c9c3cf9d6522d94f6b18abde108ec0c",
+      "bytes": 13466
+    },
+    "fixtures/core-town-utility-opening.json": {
+      "sha256": "c9d3713d817fada2054641260c220447f7f2496d64f1ac5340bfa3e1cba4e2a0",
+      "bytes": 15917
+    }
+  }
+}

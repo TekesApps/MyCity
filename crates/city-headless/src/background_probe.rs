@@ -43,6 +43,9 @@ fn apply(s: &mut Store, a: Action) -> Result<Envelope, String> {
     Ok(cmd)
 }
 pub fn run(dir: &Path) -> Result<Value, String> {
+    protocol::with_worker(|worker| run_owned(dir, worker))
+}
+fn run_owned(dir: &Path, worker: &mut Worker) -> Result<Value, String> {
     fs::create_dir(dir).map_err(err)?;
     let rules = format!("background-w2:{}", env!("MYCITY_SOURCE_SHA256"));
     let world = dir.join("world");
@@ -86,7 +89,7 @@ pub fn run(dir: &Path) -> Result<Value, String> {
     fs::create_dir(&task_root).map_err(err)?;
     fs::create_dir(task_root.join("inputs")).map_err(err)?;
     fs::create_dir(task_root.join("candidates")).map_err(err)?;
-    let mut worker = Worker::spawn(&std::env::current_exe().map_err(err)?, &task_root)?;
+    worker.start_unbounded(&std::env::current_exe().map_err(err)?, &task_root, false)?;
     let worker_pid = worker.pid();
     let started = Instant::now();
     let mut jobs = Vec::new();

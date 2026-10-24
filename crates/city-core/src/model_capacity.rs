@@ -129,6 +129,11 @@ pub fn inventory() -> Inventory {
         1,
         crate::spatial_transport_permissions::SpatialPermissionState::max_owned_capacity_bytes(),
     ));
+    engine.push(Part::new(
+        "spatial_geometry_request_and_approval_rows",
+        1,
+        crate::spatial_geometry_permissions::SpatialGeometryState::max_owned_rows_bytes(),
+    ));
     engine.extend(timeline_rows());
     engine.extend(background_rows());
     let mut prepared = vec![
@@ -157,6 +162,11 @@ pub fn inventory() -> Inventory {
         "spatial_permission_candidate_fixed_rows",
         1,
         crate::spatial_transport_permissions::SpatialPermissionState::max_owned_capacity_bytes(),
+    ));
+    prepared.push(Part::new(
+        "spatial_geometry_candidate_request_and_approval_rows",
+        1,
+        crate::spatial_geometry_permissions::SpatialGeometryState::max_owned_rows_bytes(),
     ));
     let mut extra_air_state = vec![Part::new("state_inline_header", 1, size_of::<State>())];
     // Shared maximum supports the full CPU/reference kernel too, not only four shipments.
@@ -203,6 +213,22 @@ mod tests {
                 .unwrap()
                 .count,
             MAX_STOCKS
+        );
+        assert_eq!(
+            i.engine
+                .iter()
+                .find(|p| p.name == "spatial_geometry_request_and_approval_rows")
+                .unwrap()
+                .bytes,
+            crate::spatial_geometry_permissions::SpatialGeometryState::max_owned_rows_bytes()
+        );
+        assert_eq!(
+            i.prepared
+                .iter()
+                .find(|p| p.name == "spatial_geometry_candidate_request_and_approval_rows")
+                .unwrap()
+                .bytes,
+            crate::spatial_geometry_permissions::SpatialGeometryState::max_owned_rows_bytes()
         );
         assert!(
             i.prepared

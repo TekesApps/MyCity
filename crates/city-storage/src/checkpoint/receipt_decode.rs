@@ -98,6 +98,7 @@ fn action_raw(
         TownSettle,
         TownTransportSettle,
         SpatialPermission,
+        SpatialGeometry,
         HousingLease,
         HousingMove,
         TownSuspendOperations,
@@ -193,6 +194,12 @@ fn action_raw(
         Kind::SpatialPermission => {
             let fields = Fields::parse(raw, &["kind", "command"], false, scratch)?;
             Ok(Output::SpatialPermission {
+                command: reader::decode(fields.raw(1)?, scratch)?,
+            })
+        }
+        Kind::SpatialGeometry => {
+            let fields = Fields::parse(raw, &["kind", "command"], false, scratch)?;
+            Ok(Output::SpatialGeometry {
                 command: reader::decode(fields.raw(1)?, scratch)?,
             })
         }

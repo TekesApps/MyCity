@@ -5,6 +5,9 @@
 //! advance the calendar, or mutate an open Store. The unique writer must publish those changes
 //! together at the existing transaction boundary before they can affect a settlement.
 use mycity_core::market_access::TransportAllocationProfile;
+use mycity_core::spatial_geometry_permissions::{
+    GeometryRevisionDescriptor, SpatialGeometryAuthorizationWitness, VerifiedGeometryGrant,
+};
 use mycity_core::spatial_transport_permissions::{
     approval_evidence_sha256, request_sha256, SpatialAccessOperation, SpatialAccessSurface,
     SpatialAssetKind, SpatialAuthorizationContext, SpatialAuthorizationWitness,
@@ -15,8 +18,10 @@ use serde::{de, Deserialize, Deserializer, Serialize};
 use sha2::{Digest, Sha256};
 use std::{fmt, path::Path};
 
-/// Schema 2 adds the exact owner/authority authorization witness to each immutable version row.
-pub const SPATIAL_TRANSPORT_VERSION_SCHEMA: u16 = 2;
+/// Schema 3 adds geometry-derived Scene/profile revisions alongside the schema-2 transport
+/// authorization witness. Schema-2 records remain readable as the previous catalog chain.
+pub const SPATIAL_TRANSPORT_VERSION_SCHEMA: u16 = 3;
+const LEGACY_SPATIAL_TRANSPORT_VERSION_SCHEMA: u16 = 2;
 pub const MAX_SPATIAL_TRANSPORT_VERSIONS: usize = 128;
 pub const MAX_SPATIAL_TRANSPORT_ASSETS: usize = 8;
 /// The complete catalog is an immutable sidecar, never Engine input or metadata payload.
@@ -237,7 +242,12 @@ pub struct SpatialTransportVersionRecord {
     pub source_scene_sha256: [u8; 32],
     pub authorization_evidence_sha256: [u8; 32],
     /// Original request and both accepted approvals; the digest is not a substitute for evidence.
-    pub authorization_witness: SpatialAuthorizationWitness,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub authorization_witness: Option<SpatialAuthorizationWitness>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub geometry_descriptor: Option<GeometryRevisionDescriptor>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub geometry_witness: Option<SpatialGeometryAuthorizationWitness>,
     pub previous_profile_sha256: [u8; 32],
     pub profile_sha256: [u8; 32],
     pub surface: SpatialAccessSurface,
@@ -505,8 +515,10 @@ impl SpatialTransportCatalog {
         {
             return Err(UpdateError::InvalidVersionChain);
         }
-        if self.schema != SPATIAL_TRANSPORT_VERSION_SCHEMA
-            || self.world_id == 0
+        if !matches!(
+            self.schema,
+            LEGACY_SPATIAL_TRANSPORT_VERSION_SCHEMA | SPATIAL_TRANSPORT_VERSION_SCHEMA
+        ) || self.world_id == 0
             || self.branch_id == 0
             || self.profile_id == 0
             || self.source_scene_sha256 == [0; 32]
@@ -536,8 +548,12 @@ impl SpatialTransportCatalog {
         let mut receipt_revision = 0;
         let mut store_sequence = 0;
         for (index, record) in self.versions.iter().enumerate() {
-            if record.schema != SPATIAL_TRANSPORT_VERSION_SCHEMA
-                || record.request_id == 0
+            let is_geometry =
+                record.geometry_descriptor.is_some() || record.geometry_witness.is_some();
+            if !matches!(
+                record.schema,
+                LEGACY_SPATIAL_TRANSPORT_VERSION_SCHEMA | SPATIAL_TRANSPORT_VERSION_SCHEMA
+            ) || record.request_id == 0
                 || record.engine_operation_id == 0
                 || record.changed_asset_id == 0
                 || record.asset_revision == 0
@@ -568,14 +584,25 @@ impl SpatialTransportCatalog {
                 || record.effective_service_day <= day
                 || record.source_scene_sha256 != self.source_scene_sha256
                 || record.authorization_evidence_sha256 == [0; 32]
-                || !record_authorization_witness_matches(record, context)
+                || if is_geometry {
+                    record.authorization_witness.is_some()
+                        || record.geometry_descriptor.is_none()
+                        || record.geometry_witness.is_none()
+                        || !record_geometry_witness_matches(record)
+                } else {
+                    record.authorization_witness.is_none()
+                        || record.geometry_descriptor.is_some()
+                        || record.geometry_witness.is_some()
+                        || !record_authorization_witness_matches(record, context)
+                }
                 || record.previous_profile_sha256 != parent
                 || record.profile_sha256 == [0; 32]
                 || record.profile_sha256 == parent
-                || record.edge_id == 0
+                || (!is_geometry && record.edge_id == 0)
                 || self.versions[..index].iter().any(|prior| {
-                    prior.request_id == record.request_id
-                        || prior.engine_operation_id == record.engine_operation_id
+                    prior.engine_operation_id == record.engine_operation_id
+                        || prior.request_id == record.request_id
+                            && (prior.geometry_descriptor.is_some() == is_geometry)
                 })
             {
                 return Err(UpdateError::InvalidVersionChain);
@@ -599,6 +626,57 @@ impl SpatialTransportCatalog {
         commit: SpatialTransportCommitBinding,
         parent_catalog_sha256: [u8; 32],
     ) -> Result<(), UpdateError> {
+        self.append_authorized_with_structure(
+            baseline_ref, baseline_ref, current_ref, version, grant, commit,
+            parent_catalog_sha256,
+        )
+    }
+
+    /// Select only a witnessed geometry revision in this already validated prefix. This
+    /// selects an immutable asset; it does not authenticate a Scene or confer authority.
+    pub(crate) fn structural_anchor_sha256(&self) -> Result<[u8; 32], UpdateError> {
+        self.validate()?;
+        Ok(self.versions.iter().rev().find(|row| {
+            row.geometry_descriptor.is_some() && row.geometry_witness.is_some()
+        }).map_or(self.baseline_profile_sha256, |row| row.profile_sha256))
+    }
+
+    #[allow(clippy::too_many_arguments)]
+    pub(crate) fn prepare_access_version(
+        &self,
+        baseline_ref: &VerifiedAllocationRef<'_>,
+        structural_ref: &VerifiedAllocationRef<'_>,
+        current_ref: &VerifiedAllocationRef<'_>,
+        grant: &VerifiedSpatialUpdateGrant,
+        version: u64,
+        proposed_opening: Opening,
+    ) -> Result<SpatialTransportVersion, UpdateError> {
+        let parent = self.versions.last()
+            .map_or(self.baseline_profile_sha256, |row| row.profile_sha256);
+        if baseline_ref.asset_sha256 != self.baseline_profile_sha256
+            || structural_ref.asset_sha256 != self.structural_anchor_sha256()?
+            || current_ref.asset_sha256 != parent
+            || version != self.versions.len() as u64 + 1
+            || grant.source_scene_sha256() != self.source_scene_sha256
+        {
+            return Err(UpdateError::InvalidVersionChain);
+        }
+        prepare_version_with_structure(
+            baseline_ref, structural_ref, current_ref, grant, version, proposed_opening,
+        )
+    }
+
+    #[allow(clippy::too_many_arguments)]
+    pub(crate) fn append_authorized_with_structure(
+        &mut self,
+        baseline_ref: &VerifiedAllocationRef<'_>,
+        structural_ref: &VerifiedAllocationRef<'_>,
+        current_ref: &VerifiedAllocationRef<'_>,
+        version: &SpatialTransportVersion,
+        grant: &VerifiedSpatialUpdateGrant,
+        commit: SpatialTransportCommitBinding,
+        parent_catalog_sha256: [u8; 32],
+    ) -> Result<(), UpdateError> {
         self.validate()?;
         let mut next = self.clone();
         next.reserve_asset_rows()?;
@@ -606,15 +684,126 @@ impl SpatialTransportCatalog {
         if parent_catalog_sha256 == [0; 32] {
             return Err(UpdateError::InvalidVersionChain);
         }
+        next.append_in_place(baseline_ref, structural_ref, current_ref, version, grant, commit)?;
         next.parent_catalog_sha256 = parent_catalog_sha256;
-        next.append_in_place(baseline_ref, current_ref, version, grant, commit)?;
+        next.schema = SPATIAL_TRANSPORT_VERSION_SCHEMA;
+        next.validate()?;
         *self = next;
         Ok(())
     }
 
+    /// Append a Store-validated geometry-derived profile revision. Its authorization remains in
+    /// the independent geometry domain; it is never represented as a road Close/Restore grant.
+    pub fn append_geometry_authorized(
+        &mut self,
+        current_ref: &VerifiedAllocationRef<'_>,
+        candidate_ref: &VerifiedAllocationRef<'_>,
+        descriptor: GeometryRevisionDescriptor,
+        grant: VerifiedGeometryGrant,
+        commit: SpatialTransportCommitBinding,
+        parent_catalog_sha256: [u8; 32],
+    ) -> Result<(), UpdateError> {
+        self.validate()?;
+        commit.validate()?;
+        descriptor
+            .validate()
+            .map_err(|_| UpdateError::InvalidAuthorizedCandidate)?;
+        let mut next = self.clone();
+        next.reserve_asset_rows()?;
+        next.reserve_rows()?;
+        next.schema = SPATIAL_TRANSPORT_VERSION_SCHEMA;
+        if parent_catalog_sha256 == [0; 32] {
+            return Err(UpdateError::InvalidVersionChain);
+        }
+        next.parent_catalog_sha256 = parent_catalog_sha256;
+        let request = grant.request();
+        let previous_profile = self
+            .versions
+            .last()
+            .map_or(self.baseline_profile_sha256, |record| record.profile_sha256);
+        let previous_day = self
+            .versions
+            .last()
+            .map_or(0, |record| record.effective_service_day);
+        let previous_geometry_revision = self
+            .current_asset_revision(request.asset_id)
+            .ok_or(UpdateError::InvalidAuthorizedCandidate)?;
+        let descriptor_sha256 = descriptor
+            .sha256()
+            .map_err(|_| UpdateError::InvalidAuthorizedCandidate)?;
+        if self.versions.len() == MAX_SPATIAL_TRANSPORT_VERSIONS
+            || current_ref.asset_sha256 != previous_profile
+            || current_ref.profile.world_id != self.world_id
+            || current_ref.profile.branch_id != self.branch_id
+            || current_ref.profile.market_profile_id != self.profile_id
+            || candidate_ref.profile.world_id != self.world_id
+            || candidate_ref.profile.branch_id != self.branch_id
+            || candidate_ref.profile.market_profile_id != self.profile_id
+            || candidate_ref.asset_sha256 != descriptor.candidate_profile_sha256
+            || request.descriptor_sha256 != descriptor_sha256
+            || request.asset_id != descriptor.asset_id
+            || request.expected_geometry_revision != descriptor.parent_geometry_revision
+            || request.expected_asset_revision != grant.expected_asset_revision()
+            || request.expected_asset_revision != previous_geometry_revision.1
+            || previous_geometry_revision.0 != SpatialAssetKind::Road
+            || descriptor.world_id != self.world_id
+            || descriptor.branch_id != self.branch_id
+            || descriptor.parent_transport_revision != current_ref.profile.opening.revision
+            || descriptor.candidate_transport_revision != candidate_ref.profile.opening.revision
+            || descriptor.candidate_transport_revision
+                != descriptor.parent_transport_revision.saturating_add(1)
+            || descriptor.parent_profile_sha256 != current_ref.asset_sha256
+            || descriptor.candidate_profile_sha256 != candidate_ref.asset_sha256
+            || descriptor.effective_service_day <= previous_day
+            || descriptor.effective_service_day == 0
+            || descriptor.adapter_basis_sha256 == [0; 32]
+            || grant.world_id() != self.world_id
+            || grant.branch_id() != self.branch_id
+            || grant.asset_id() != request.asset_id
+            || grant.parent_profile_sha256() != current_ref.asset_sha256
+            || grant.candidate_profile_sha256() != candidate_ref.asset_sha256
+            || grant.descriptor_sha256() != descriptor_sha256
+            || commit.receipt_operation_id != commit.engine_operation_id
+        {
+            return Err(UpdateError::InvalidAuthorizedCandidate);
+        }
+        let source_scene = self.source_scene_sha256;
+        let record = SpatialTransportVersionRecord {
+            schema: SPATIAL_TRANSPORT_VERSION_SCHEMA,
+            request_id: request.request_id,
+            version: self.versions.len() as u64 + 1,
+            effective_service_day: descriptor.effective_service_day,
+            engine_operation_id: commit.engine_operation_id,
+            receipt_operation_id: commit.receipt_operation_id,
+            receipt_revision: commit.receipt_revision,
+            store_sequence: commit.store_sequence,
+            changed_asset_id: request.asset_id,
+            asset_kind: SpatialAssetKind::Road,
+            asset_revision: request
+                .expected_asset_revision
+                .checked_add(1)
+                .ok_or(UpdateError::InvalidAuthorizedCandidate)?,
+            source_scene_sha256: source_scene,
+            authorization_evidence_sha256: descriptor_sha256,
+            authorization_witness: None,
+            geometry_descriptor: Some(descriptor),
+            geometry_witness: Some(grant.witness()),
+            previous_profile_sha256: current_ref.asset_sha256,
+            profile_sha256: candidate_ref.asset_sha256,
+            surface: SpatialAccessSurface::Road,
+            edge_id: 0,
+        };
+        next.versions.push(record);
+        next.validate()?;
+        *self = next;
+        Ok(())
+    }
+
+    #[allow(clippy::too_many_arguments)]
     fn append_in_place(
         &mut self,
         baseline_ref: &VerifiedAllocationRef<'_>,
+        structural_ref: &VerifiedAllocationRef<'_>,
         current_ref: &VerifiedAllocationRef<'_>,
         version: &SpatialTransportVersion,
         grant: &VerifiedSpatialUpdateGrant,
@@ -636,8 +825,9 @@ impl SpatialTransportCatalog {
         {
             return Err(UpdateError::InvalidVersionChain);
         }
-        let recomputed = prepare_version(
+        let recomputed = self.prepare_access_version(
             baseline_ref,
+            structural_ref,
             current_ref,
             grant,
             version.version,
@@ -706,14 +896,16 @@ impl SpatialTransportCatalog {
             asset_revision: version.asset_revision,
             source_scene_sha256: version.source_scene_sha256,
             authorization_evidence_sha256: version.authorization_evidence_sha256,
-            authorization_witness: grant.witness(),
+            authorization_witness: Some(grant.witness()),
+            geometry_descriptor: None,
+            geometry_witness: None,
             previous_profile_sha256: version.previous_profile_sha256,
             profile_sha256: version.profile_sha256,
             surface: version.surface,
             edge_id: version.edge_id,
         };
         self.versions.push(record);
-        self.validate()
+        Ok(())
     }
 
     pub fn profile_sha256_for_service_day(
@@ -734,7 +926,9 @@ fn record_authorization_witness_matches(
     record: &SpatialTransportVersionRecord,
     context: SpatialAuthorizationContext,
 ) -> bool {
-    let witness = record.authorization_witness;
+    let Some(witness) = record.authorization_witness else {
+        return false;
+    };
     let request = witness.request;
     let Ok(request_digest) = request_sha256(context, &request) else {
         return false;
@@ -772,6 +966,47 @@ fn record_authorization_witness_matches(
             &witness.owner_approval,
             &witness.authority_approval,
         ) == Ok(record.authorization_evidence_sha256)
+}
+
+fn record_geometry_witness_matches(record: &SpatialTransportVersionRecord) -> bool {
+    let (Some(descriptor), Some(witness)) = (record.geometry_descriptor, record.geometry_witness)
+    else {
+        return false;
+    };
+    let Ok(descriptor_sha256) = descriptor.sha256() else {
+        return false;
+    };
+    let request = witness.request;
+    record.authorization_evidence_sha256 == descriptor_sha256
+        && record.request_id == request.request_id
+        && record.changed_asset_id == descriptor.asset_id
+        && record.asset_kind == SpatialAssetKind::Road
+        && record.asset_revision == request.expected_asset_revision.saturating_add(1)
+        && record.effective_service_day == descriptor.effective_service_day
+        && record.previous_profile_sha256 == descriptor.parent_profile_sha256
+        && record.profile_sha256 == descriptor.candidate_profile_sha256
+        && request.expected_geometry_revision == descriptor.parent_geometry_revision
+        && request.descriptor_sha256 == descriptor_sha256
+        && request.asset_id == descriptor.asset_id
+        && request.expected_asset_revision > 0
+        && request.expected_asset_revision.checked_add(1) == Some(record.asset_revision)
+        && request.expected_geometry_revision.checked_add(1)
+            == Some(descriptor.candidate_geometry_revision)
+        && descriptor.parent_transport_revision.checked_add(1)
+            == Some(descriptor.candidate_transport_revision)
+        && descriptor.parent_profile_sha256 == record.previous_profile_sha256
+        && descriptor.candidate_profile_sha256 == record.profile_sha256
+        && witness.owner_approval.request_id == request.request_id
+        && witness.authority_approval.request_id == request.request_id
+        && witness.owner_approval.request_sha256 != [0; 32]
+        && witness.owner_approval.request_sha256 == witness.authority_approval.request_sha256
+        && witness.owner_approval.role
+            == mycity_core::spatial_geometry_permissions::GeometryApprovalRole::OwnerConsent
+        && witness.authority_approval.role
+            == mycity_core::spatial_geometry_permissions::GeometryApprovalRole::AuthorityPermit
+        && witness.owner_approval.approved
+        && witness.authority_approval.approved
+        && witness.owner_approval.approver_account != witness.authority_approval.approver_account
 }
 
 /// Small writer-facing payload. It does not itself grant legal authority or commit anything;
@@ -918,6 +1153,19 @@ pub fn prepare_version(
     version: u64,
     proposed_opening: Opening,
 ) -> Result<SpatialTransportVersion, UpdateError> {
+    prepare_version_with_structure(
+        baseline_ref, baseline_ref, current_ref, grant, version, proposed_opening,
+    )
+}
+
+fn prepare_version_with_structure(
+    baseline_ref: &VerifiedAllocationRef<'_>,
+    structural_ref: &VerifiedAllocationRef<'_>,
+    current_ref: &VerifiedAllocationRef<'_>,
+    grant: &VerifiedSpatialUpdateGrant,
+    version: u64,
+    proposed_opening: Opening,
+) -> Result<SpatialTransportVersion, UpdateError> {
     let current = current_ref.profile;
     if grant.world_id() != current.world_id
         || grant.branch_id() != current.branch_id
@@ -943,8 +1191,9 @@ pub fn prepare_version(
         .effective_service_day()
         .checked_sub(1)
         .ok_or(UpdateError::InvalidEffectiveDay)?;
-    let mut prepared = build_version(
+    let mut prepared = build_version_with_structure(
         baseline_ref,
+        structural_ref,
         current_ref,
         grant.source_scene_sha256(),
         grant.evidence_sha256(),
@@ -977,8 +1226,27 @@ pub fn prepare_version(
 // identity, authorization evidence, settled boundary, chain version, unique request ID, and
 // proposed opening each have separate validation and must not be collapsed into caller input.
 #[allow(clippy::too_many_arguments)]
+#[cfg(test)]
 fn build_version(
     baseline_ref: &VerifiedAllocationRef<'_>,
+    current_ref: &VerifiedAllocationRef<'_>,
+    source_scene_sha256: [u8; 32],
+    authorization_evidence_sha256: [u8; 32],
+    settled_day: u64,
+    version: u64,
+    request_id: u64,
+    proposed_opening: Opening,
+) -> Result<SpatialTransportVersion, UpdateError> {
+    build_version_with_structure(
+        baseline_ref, baseline_ref, current_ref, source_scene_sha256,
+        authorization_evidence_sha256, settled_day, version, request_id, proposed_opening,
+    )
+}
+
+#[allow(clippy::too_many_arguments)]
+fn build_version_with_structure(
+    baseline_ref: &VerifiedAllocationRef<'_>,
+    structural_ref: &VerifiedAllocationRef<'_>,
     current_ref: &VerifiedAllocationRef<'_>,
     source_scene_sha256: [u8; 32],
     authorization_evidence_sha256: [u8; 32],
@@ -1007,8 +1275,7 @@ fn build_version(
     if current_profile_sha256 == [0; 32] || baseline_ref.asset_sha256 == [0; 32] {
         return Err(UpdateError::StaleCurrentProfile);
     }
-    check_bounded_spatial_change(&baseline.opening, &current.opening)?;
-    check_initial_open_permissions(&baseline.opening, &current.opening)?;
+    validate_access_profile_transition(baseline, structural_ref.profile, current, &proposed_opening)?;
     let effective_service_day = settled_day
         .checked_add(1)
         .ok_or(UpdateError::InvalidEffectiveDay)?;
@@ -1020,8 +1287,6 @@ fn build_version(
     if proposed_opening.revision != expected_revision {
         return Err(UpdateError::InvalidRevision);
     }
-    check_bounded_spatial_change(&baseline.opening, &proposed_opening)?;
-    check_initial_open_permissions(&baseline.opening, &proposed_opening)?;
 
     let mut profile = current.clone();
     profile.opening = proposed_opening;
@@ -1250,6 +1515,33 @@ pub fn encoded_profile_asset(
     Ok(EncodedProfileAsset { bytes, sha256 })
 }
 
+/// Shared hot-commit/cold-prefix check. The Store must authenticate the structural anchor
+/// against the last rebuilt geometry record; genesis remains the access-rights ceiling.
+pub(crate) fn validate_access_profile_transition(
+    genesis: &TransportAllocationProfile,
+    structural: &TransportAllocationProfile,
+    current: &TransportAllocationProfile,
+    proposed: &Opening,
+) -> Result<(u32, SpatialAccessOperation), UpdateError> {
+    if !same_fixed_assumptions(genesis, structural)
+        || !same_fixed_assumptions(genesis, current)
+        || genesis.validate().is_err()
+        || structural.validate().is_err()
+        || current.validate().is_err()
+    {
+        return Err(UpdateError::InvalidIdentity);
+    }
+    if current.opening.revision.checked_add(1) != Some(proposed.revision) {
+        return Err(UpdateError::InvalidRevision);
+    }
+    check_bounded_spatial_change(&structural.opening, &current.opening)?;
+    check_bounded_spatial_change(&structural.opening, proposed)?;
+    check_initial_open_permissions(&genesis.opening, &structural.opening)?;
+    check_initial_open_permissions(&genesis.opening, &current.opening)?;
+    check_initial_open_permissions(&genesis.opening, proposed)?;
+    changed_access_edge(&current.opening, proposed)
+}
+
 /// Compare immutable geometry/topology/capacity while allowing the operating open bit to toggle.
 /// This helper is also used for candidate preview against the *current* profile, where restoring
 /// an edge closed by an earlier authorized update must remain representable. Genesis permission
@@ -1357,6 +1649,47 @@ fn same_fixed_assumptions(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn geometry_anchor_allows_access_change_without_allowing_another_structural_edit() {
+        let genesis = profile();
+        let mut geometry = genesis.clone();
+        geometry.opening.revision = 2;
+        geometry.opening.edges[0].free_flow_seconds = 11;
+        geometry.assignment = geometry.opening.assign().unwrap();
+        let mut close = geometry.opening.clone();
+        close.revision = 3;
+        close.edges[0].open = false;
+        assert_eq!(
+            validate_access_profile_transition(&genesis, &geometry, &geometry, &close),
+            Ok((10, SpatialAccessOperation::Close))
+        );
+        assert!(validate_access_profile_transition(&genesis, &genesis, &geometry, &close).is_err());
+        let mut changed_cost = close.clone();
+        changed_cost.edges[0].free_flow_seconds += 1;
+        assert!(validate_access_profile_transition(&genesis, &geometry, &geometry, &changed_cost).is_err());
+        let mut changed_capacity = close;
+        changed_capacity.edges[0].capacity_people += 1;
+        assert!(validate_access_profile_transition(&genesis, &geometry, &geometry, &changed_capacity).is_err());
+    }
+
+    #[test]
+    fn geometry_anchor_never_expands_genesis_initial_access_rights() {
+        let mut genesis = profile();
+        genesis.opening.edges[1].open = false;
+        genesis.assignment = genesis.opening.assign().unwrap();
+        let mut geometry = genesis.clone();
+        geometry.opening.revision = 2;
+        geometry.opening.edges[0].free_flow_seconds = 11;
+        geometry.assignment = geometry.opening.assign().unwrap();
+        let mut unauthorized_restore = geometry.opening.clone();
+        unauthorized_restore.revision = 3;
+        unauthorized_restore.edges[1].open = true;
+        assert_eq!(
+            validate_access_profile_transition(&genesis, &geometry, &geometry, &unauthorized_restore),
+            Err(UpdateError::PermissionExpanded)
+        );
+    }
     use mycity_core::{
         market_access::{AllocationScope, DemandRepeatPolicy, FeePolicyInput, TripPartition},
         timeline::DAY,
@@ -1860,11 +2193,13 @@ mod tests {
             asset_revision: 2,
             source_scene_sha256: [5; 32],
             authorization_evidence_sha256: evidence_digest,
-            authorization_witness: SpatialAuthorizationWitness {
+            authorization_witness: Some(SpatialAuthorizationWitness {
                 request: witness_request,
                 owner_approval,
                 authority_approval,
-            },
+            }),
+            geometry_descriptor: None,
+            geometry_witness: None,
             previous_profile_sha256: [2; 32],
             profile_sha256: [3; 32],
             surface: SpatialAccessSurface::Road,
@@ -1884,6 +2219,8 @@ mod tests {
         let mut forged_witness = row;
         forged_witness
             .authorization_witness
+            .as_mut()
+            .unwrap()
             .authority_approval
             .approver_account = 21;
         assert!(!record_authorization_witness_matches(

@@ -16,7 +16,9 @@ static NEXT: AtomicU64 = AtomicU64::new(0);
 struct Temp(PathBuf);
 impl Temp {
     fn new() -> Self {
-        let path = std::env::temp_dir().join(format!(
+        let base = std::env::var_os("MYCITY_COMPUTE_TEST_ARTIFACT_ROOT").map(PathBuf::from)
+            .unwrap_or_else(std::env::temp_dir);
+        let path = base.join(format!(
             "mycity-compute-{}-{}",
             std::process::id(),
             NEXT.fetch_add(1, Ordering::Relaxed)
@@ -34,11 +36,21 @@ impl Temp {
 }
 impl Drop for Temp {
     fn drop(&mut self) {
-        let _ = fs::remove_dir_all(&self.0);
+        if std::thread::panicking() || std::env::var_os("MYCITY_COMPUTE_TEST_ARTIFACT_ROOT").is_some() {
+            eprintln!("worker_regression_fixture_retained:{}", self.0.display());
+        } else {
+            let _ = fs::remove_dir_all(&self.0);
+        }
     }
 }
 fn executable() -> &'static Path {
-    Path::new(env!("CARGO_BIN_EXE_mycity-headless"))
+    static EXE: std::sync::OnceLock<PathBuf> = std::sync::OnceLock::new();
+    EXE.get_or_init(|| {
+        let path = std::env::var_os("MYCITY_PROTOCOL_WORKER_EXE").map(PathBuf::from)
+            .unwrap_or_else(|| PathBuf::from(env!("CARGO_BIN_EXE_mycity-headless")));
+        assert!(path.is_absolute() && path.is_file(), "actual fixed CLI absent");
+        path
+    }).as_path()
 }
 fn state() -> State {
     State::new(Input {
@@ -239,7 +251,8 @@ fn stopping_worker_without_draining_its_response_reaps_child() {
     let root = t.task_root();
     let base = state();
     let request = request(&root, &base);
-    let mut worker = Worker::spawn(executable(), &root).unwrap();
+    let mut worker = Worker::new();
+    worker.start_unbounded(executable(), &root, false).unwrap();
     worker.submit(&request).unwrap();
     assert!(worker.submit(&request).is_err());
     let mut completed = false;
@@ -318,7 +331,8 @@ fn bounded_cache_clears_retry_residue_and_real_worker_stays_within_charge() {
     }
     let state = state();
     let req = request(&root, &state);
-    let mut worker = Worker::spawn_bounded(executable(), &root).unwrap();
+    let mut worker = Worker::new();
+    worker.start_bounded(executable(), &root, None, false).unwrap();
     worker.submit(&req).unwrap();
     loop {
         let event = worker.next(Duration::from_secs(10)).unwrap();
@@ -351,7 +365,8 @@ fn completed_worker_can_exit_on_eof_while_active_stop_still_kills() {
     let root = temp.task_root();
     let base = state();
     let task = request(&root, &base);
-    let mut worker = Worker::spawn(executable(), &root).unwrap();
+    let mut worker = Worker::new();
+    worker.start_unbounded(executable(), &root, false).unwrap();
     worker.submit(&task).unwrap();
     let mut complete = false;
     for _ in 0..8 {

@@ -2,6 +2,9 @@
 //! Sim/model/stream roles own one fixed allocator region, authenticated before
 //! construction; worker backing retains its separate5MiB grant. Native/stack separate.
 pub mod broker;
+#[cfg(test)]
+#[path = "normal_pool_pending_tests.rs"]
+mod pending_tests;
 mod mapped_pages;
 pub(crate) mod workspace;
 use crate::{control_data::Text, heap_meter, worker_slots};
@@ -209,7 +212,13 @@ enum Fault {
     ReturnSecondPage,
     WorkspaceReturnSecondPage,
     AfterAttachEvent,
+    AfterPrepareReply,
+    AfterAttachReply,
+    BeforeReapAction,
+    AfterReapReply,
     AfterBrokerSpawnPause,
+    AfterBrokerStartReply,
+    AfterBrokerStopReply,
     AfterBrokerBindReply,
     BeforeBrokerRevoke,
     AfterBrokerRevokeReply,
@@ -241,7 +250,13 @@ impl Pool {
             Some("return-page-2") => Some(Fault::ReturnSecondPage),
             Some("workspace-return-page-2") => Some(Fault::WorkspaceReturnSecondPage),
             Some("after-attach-event") => Some(Fault::AfterAttachEvent),
+            Some("after-prepare-reply") => Some(Fault::AfterPrepareReply),
+            Some("after-attach-reply") => Some(Fault::AfterAttachReply),
+            Some("before-reap-action") => Some(Fault::BeforeReapAction),
+            Some("after-reap-reply") => Some(Fault::AfterReapReply),
             Some("after-broker-spawn-pause") => Some(Fault::AfterBrokerSpawnPause),
+            Some("after-broker-start-reply") => Some(Fault::AfterBrokerStartReply),
+            Some("after-broker-stop-reply") => Some(Fault::AfterBrokerStopReply),
             Some("after-broker-bind-reply") => Some(Fault::AfterBrokerBindReply),
             Some("before-broker-revoke") => Some(Fault::BeforeBrokerRevoke),
             Some("after-broker-revoke-reply") => Some(Fault::AfterBrokerRevokeReply),
@@ -621,6 +636,10 @@ impl Pool {
                 pid,
                 exit_success,
             } => {
+                if self.fault == Some(Fault::BeforeReapAction) {
+                    self.fault = None;
+                    return Err(ActionError::Rejected("normal_pool_injected_before_reap"));
+                }
                 if self
                     .last
                     .is_some_and(|v| v.id == id && v.key == key && v.pid == Some(pid))
@@ -749,6 +768,66 @@ fn call(root: &Path, r: Ready, action: Op) -> Result<Reply, String> {
 pub fn status(root: &Path) -> Result<Summary, String> {
     Ok(call(root, ready(root)?, Op::Status)?.summary)
 }
+/// A single in-flight Prepare request, owned BEFORE any RPC can mutate the pool.
+/// Errors keep the original boot/key/request for explicit same-owner retry. Dropping
+/// an unresolved request is NOT cancellation or credit; its caller must retain it.
+/// No Clone/serde/Debug: this contains a live, private capability, not a wait proof.
+#[must_use = "retain an unresolved Prepare until the same request resolves"]
+pub struct PendingGrant {
+    root: PathBuf,
+    ready: Ready,
+    parent: u32,
+    parent_instance: u128,
+    key: Text<64>,
+    resolved: bool,
+}
+impl PendingGrant {
+    pub fn new(root: &Path) -> Result<Self, String> {
+        Ok(Self {
+            root: root.to_owned(),
+            ready: ready(root)?,
+            parent: std::process::id(),
+            parent_instance: heap_meter::process_instance(),
+            key: secret()?,
+            resolved: false,
+        })
+    }
+    pub fn resolve(&mut self) -> Result<Grant, String> {
+        if self.resolved {
+            return Err("normal_pool_prepare_already_resolved".into());
+        }
+        if self.parent != std::process::id()
+            || self.parent_instance != heap_meter::process_instance()
+        {
+            return Err("normal_pool_prepare_owner".into());
+        }
+        let reply = call(&self.root, self.ready, Op::Prepare {
+            parent: self.parent, parent_instance: self.parent_instance, key: self.key,
+        })?;
+        // The unchanged wire has no Reply boot field. Bind both ends of this RPC
+        // to the same validated Ready; do not silently continue on a restarted pool.
+        let after = ready(&self.root)?;
+        if after.boot != self.ready.boot || after.pid != self.ready.pid {
+            return Err("normal_pool_old_boot".into());
+        }
+        let id = reply.id.filter(|id| *id != 0 && *id <= MAX_GRANTS)
+            .ok_or("normal_pool_reply_id")?;
+        let worker_key = reply.worker_key.ok_or("normal_pool_reply_key")?;
+        if worker_key.as_str().len() != 64
+            || !worker_key.as_str().bytes().all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b))
+            || reply.broker.is_some() || reply.summary.capacity_bytes != BYTES
+        {
+            return Err("normal_pool_prepare_reply_shape".into());
+        }
+        let grant = Grant {
+            root: std::mem::take(&mut self.root), ready: self.ready, id, key: self.key,
+            worker_key, pid: None, returned: false,
+        };
+        self.resolved = true;
+        Ok(grant)
+    }
+}
+
 /// Parent-only capability. Reclaim is only called after the owned Child wait.
 pub struct Grant {
     root: PathBuf,
@@ -765,6 +844,8 @@ impl Grant {
             .map(|root| Self::prepare(Path::new(&root)))
             .transpose()
     }
+    /// Legacy convenience path. It cannot retain an unconfirmed Prepare on error;
+    /// new lifecycle owners must hold PendingGrant before sending the request.
     pub fn prepare(root: &Path) -> Result<Self, String> {
         let ready = ready(root)?;
         let key = secret()?;
@@ -786,6 +867,18 @@ impl Grant {
             pid: None,
             returned: false,
         })
+    }
+    pub(crate) fn protocol_identity(&self) -> (u128, u64) {
+        (self.ready.boot, self.id)
+    }
+    /// Original unspawned cancellation, acknowledged before the caller clears its owner.
+    /// A failed Attach has already saved pid and can never use this path.
+    pub fn abort_unspawned(&mut self) -> Result<(), String> {
+        if self.returned { return Ok(()); }
+        if self.pid.is_some() { return Err("normal_pool_abort_spawned".into()); }
+        call(&self.root, self.ready, Op::Abort { id: self.id, key: self.key })?;
+        self.returned = true;
+        Ok(())
     }
     pub fn configure(&self, cmd: &mut Command) -> Result<(), String> {
         let binding = WorkerBinding {
@@ -930,7 +1023,7 @@ impl WorkerGrant {
 }
 /// One bounded owner server; private control connection commands are short-lived.
 pub fn serve(root: &Path) -> Result<(), String> {
-    serve_inner(root, true, None, |_| Ok(false))
+    serve_inner(root, true, None, None, |_| Ok(false))
 }
 
 /// One real Model workspace lifecycle without L1 pressure or a Sim process.
@@ -1261,12 +1354,13 @@ pub(crate) fn serve_controlled(
     vm_trace: bool,
     control: impl FnMut(&Summary) -> Result<bool, String>,
 ) -> Result<(), String> {
-    serve_inner(root, false, Some(vm_trace), control)
+    serve_inner(root, false, Some(vm_trace), None, control)
 }
 fn serve_inner(
     root: &Path,
     watch_parent: bool,
     explicit_vm_trace: Option<bool>,
+    explicit_fault: Option<Fault>,
     mut control: impl FnMut(&Summary) -> Result<bool, String>,
 ) -> Result<(), String> {
     fs::create_dir(root).map_err(err)?;
@@ -1290,6 +1384,16 @@ fn serve_inner(
             .map_err(err)?;
     }
     let mut pool = Pool::new(root)?;
+    if let Some(fault) = explicit_fault {
+        pool.fault = Some(fault);
+        pool.ready.fault_injection = Some(Text::new(match fault {
+            Fault::AfterPrepareReply => "after-prepare-reply",
+            Fault::AfterAttachReply => "after-attach-reply",
+            Fault::BeforeReapAction => "before-reap-action",
+            Fault::AfterReapReply => "after-reap-reply",
+            _ => return Err("normal_pool_controlled_fault".into()),
+        })?);
+    }
     // In the combined root this allocation uses the already active 256 KiB
     // diagnostic arena. Keep one fixed frame buffer for the entire service loop.
     let mut control_buffer = Vec::new();
@@ -1353,6 +1457,12 @@ fn serve_inner(
                     pool.fault = None;
                     continue; // fault lab: request lost before mutation, no credit granted
                 }
+                let legacy_reply_fault = match request.as_ref().ok().map(|r| r.action) {
+                    Some(Op::Prepare { .. }) => Some(Fault::AfterPrepareReply),
+                    Some(Op::Attach { .. }) => Some(Fault::AfterAttachReply),
+                    Some(Op::Reap { .. }) => Some(Fault::AfterReapReply),
+                    _ => None,
+                };
                 let answer = match request {
                     Ok(r) if r.source.as_str() != SOURCE => {
                         Err(ActionError::Rejected("normal_pool_request_source"))
@@ -1389,6 +1499,12 @@ fn serve_inner(
                         }
                     }
                 };
+                if reply.error.is_none() && legacy_reply_fault.is_some()
+                    && pool.fault == legacy_reply_fault
+                {
+                    pool.fault = None;
+                    continue; // real successful action; close before any Reply bytes
+                }
                 // A lost reply does not undo the grant. All successful actions are
                 // idempotent under the same capability; no automatic credit on EOF.
                 match (pool.fault, reply.broker) {
@@ -1397,6 +1513,8 @@ fn serve_inner(
                         std::thread::sleep(Duration::from_secs(2)); // fault lab: Sim can die before Start receipt
                     }
                     (Some(Fault::AfterBrokerBindReply), Some(broker::Receipt::Bound { .. }))
+                    | (Some(Fault::AfterBrokerStartReply), Some(broker::Receipt::Started { .. }))
+                    | (Some(Fault::AfterBrokerStopReply), Some(broker::Receipt::Stopped { .. }))
                     | (
                         Some(Fault::AfterBrokerRevokeReply),
                         Some(broker::Receipt::Revoked { .. }),

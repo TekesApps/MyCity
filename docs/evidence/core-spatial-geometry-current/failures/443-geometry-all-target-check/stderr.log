@@ -1,0 +1,53 @@
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+error[E0308]: `?` operator has incompatible types
+   --> crates/city-core/src/spatial_geometry_permissions.rs:314:32
+    |
+314 |     #[serde(deserialize_with = "request_rows")]
+    |                                ^^^^^^^^^^^^^^ expected `Vec<GeometryRequestRecord>`, found `Vec<GeometryRequest>`
+    |
+    = note: `?` operator cannot convert from `Vec<GeometryRequest>` to `Vec<GeometryRequestRecord>`
+    = note: expected struct `Vec<GeometryRequestRecord>`
+               found struct `Vec<GeometryRequest>`
+
+error[E0599]: no method named `active_requests` found for reference `&SpatialGeometryState` in the current scope
+   --> crates/city-core/src/transaction.rs:830:32
+    |
+830 |             for entry in state.active_requests() {
+    |                                ^^^^^^^^^^^^^^^
+    |
+help: there is a method `requests` with a similar name
+    |
+830 |             for entry in state.requests() {
+    |                                ~~~~~~~~
+
+error[E0599]: no method named `active_requests` found for struct `spatial_geometry_permissions::SpatialGeometryState` in the current scope
+   --> crates/city-core/src/spatial_geometry_permissions.rs:764:23
+    |
+308 | pub struct SpatialGeometryState {
+    | ------------------------------- method `active_requests` not found for this struct
+...
+764 |         assert!(state.active_requests().is_empty());
+    |                       ^^^^^^^^^^^^^^^
+    |
+help: there is a method `requests` with a similar name
+    |
+764 |         assert!(state.requests().is_empty());
+    |                       ~~~~~~~~
+
+error[E0599]: no method named `active_requests` found for reference `&spatial_geometry_permissions::SpatialGeometryState` in the current scope
+   --> crates/city-core/src/transaction.rs:830:32
+    |
+830 |             for entry in state.active_requests() {
+    |                                ^^^^^^^^^^^^^^^
+    |
+help: there is a method `requests` with a similar name
+    |
+830 |             for entry in state.requests() {
+    |                                ~~~~~~~~
+
+Some errors have detailed explanations: E0308, E0599.
+For more information about an error, try `rustc --explain E0308`.
+error: could not compile `mycity-core` (lib) due to 3 previous errors
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `mycity-core` (lib test) due to 4 previous errors

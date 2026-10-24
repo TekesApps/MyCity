@@ -1,0 +1,989 @@
+    Checking mycity-core v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-core)
+   Compiling mycity-headless v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-headless)
+    Checking mycity-map v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-map)
+    Checking mycity-storage v0.1.0 (/Users/frankqin/dev/MyCity/crates/city-storage)
+error[E0423]: expected value, found module `spatial`
+    --> crates/city-storage/src/lib.rs:1136:26
+     |
+196  |     spatial: Option<SpatialAssets>,
+     |     ------- a field by that name exists in `Self`
+...
+1136 |             let assets = spatial
+     |                          ^^^^^^^
+
+error[E0425]: cannot find value `spatial_ref` in this scope
+    --> crates/city-storage/src/lib.rs:1151:13
+     |
+197  |     spatial_ref: Option<SpatialReference>,
+     |     ----------- a field by that name exists in `Self`
+...
+1151 |             spatial_ref,
+     |             ^^^^^^^^^^^
+
+error[E0423]: expected value, found module `spatial`
+    --> crates/city-storage/src/lib.rs:1152:13
+     |
+196  |     spatial: Option<SpatialAssets>,
+     |     ------- a field by that name exists in `Self`
+...
+1152 |             spatial.as_mut(),
+     |             ^^^^^^^
+
+error[E0433]: failed to resolve: use of undeclared type `Sha256`
+    --> crates/city-storage/src/lib.rs:1786:54
+     |
+1786 |         let candidate_scene_input_sha256: [u8; 32] = Sha256::digest(&candidate_scene_bytes).into();
+     |                                                      ^^^^^^ use of undeclared type `Sha256`
+     |
+help: consider importing this type alias
+     |
+4    + use sha2::Sha256;
+     |
+
+error[E0433]: failed to resolve: use of undeclared type `Sha256`
+    --> crates/city-storage/src/lib.rs:1800:40
+     |
+1800 |             parent_scene_input_sha256: Sha256::digest(serde_json::to_vec(prior_scene.input())?)
+     |                                        ^^^^^^ use of undeclared type `Sha256`
+     |
+help: consider importing this type alias
+     |
+4    + use sha2::Sha256;
+     |
+
+error[E0425]: cannot find value `asset` in this scope
+    --> crates/city-storage/src/lib.rs:3606:12
+     |
+3606 |         if asset.kind != version.asset_kind
+     |            ^^^^^ not found in this scope
+
+error[E0425]: cannot find value `managed_edge` in this scope
+    --> crates/city-storage/src/lib.rs:3607:17
+     |
+3607 |             || !managed_edge.initially_open
+     |                 ^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `was_open` in this scope
+    --> crates/city-storage/src/lib.rs:3608:16
+     |
+3608 |             || was_open != expected_was_open
+     |                ^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `expected_was_open` in this scope
+    --> crates/city-storage/src/lib.rs:3608:28
+     |
+3608 |             || was_open != expected_was_open
+     |                            ^^^^^^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `managed_edge` in this scope
+    --> crates/city-storage/src/lib.rs:3609:16
+     |
+3609 |             || managed_edge.allowed_operations & operation_bit == 0
+     |                ^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find value `operation_bit` in this scope
+    --> crates/city-storage/src/lib.rs:3609:50
+     |
+3609 |             || managed_edge.allowed_operations & operation_bit == 0
+     |                                                  ^^^^^^^^^^^^^ not found in this scope
+
+error[E0277]: the trait bound `AdapterIds: serde::Serialize` is not satisfied
+    --> crates/city-storage/src/spatial_geometry_updates.rs:74:24
+     |
+74   | #[derive(Clone, Debug, Serialize, Deserialize)]
+     |                        ^^^^^^^^^ the trait `_::_serde::Serialize` is not implemented for `AdapterIds`
+...
+84   |     pub ids: mycity_map::traffic_adapter::AdapterIds,
+     |     --- required by a bound introduced by this call
+     |
+     = note: for local types consider adding `#[derive(serde::Serialize)]` to your `AdapterIds` type
+     = note: for types from other crates check whether the crate offers a `serde` feature flag
+     = help: the following other types implement trait `_::_serde::Serialize`:
+               &'a T
+               &'a mut T
+               ()
+               (T,)
+               (T0, T1)
+               (T0, T1, T2)
+               (T0, T1, T2, T3)
+               (T0, T1, T2, T3, T4)
+             and 444 others
+note: required by a bound in `_::_serde::ser::SerializeStruct::serialize_field`
+    --> /Users/frankqin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.229/src/ser/mod.rs:1917:21
+     |
+1915 |     fn serialize_field<T>(&mut self, key: &'static str, value: &T) -> Result<(), Self::Error>
+     |        --------------- required by a bound in this associated function
+1916 |     where
+1917 |         T: ?Sized + Serialize;
+     |                     ^^^^^^^^^ required by this bound in `SerializeStruct::serialize_field`
+     = note: this error originates in the derive macro `Serialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `TerminalGrant: serde::Serialize` is not satisfied
+    --> crates/city-storage/src/spatial_geometry_updates.rs:74:24
+     |
+74   | #[derive(Clone, Debug, Serialize, Deserialize)]
+     |                        ^^^^^^^^^ the trait `_::_serde::Serialize` is not implemented for `TerminalGrant`
+...
+85   |     pub terminal: mycity_map::traffic_adapter::TerminalGrant,
+     |     --- required by a bound introduced by this call
+     |
+     = note: for local types consider adding `#[derive(serde::Serialize)]` to your `TerminalGrant` type
+     = note: for types from other crates check whether the crate offers a `serde` feature flag
+     = help: the following other types implement trait `_::_serde::Serialize`:
+               &'a T
+               &'a mut T
+               ()
+               (T,)
+               (T0, T1)
+               (T0, T1, T2)
+               (T0, T1, T2, T3)
+               (T0, T1, T2, T3, T4)
+             and 444 others
+note: required by a bound in `_::_serde::ser::SerializeStruct::serialize_field`
+    --> /Users/frankqin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.229/src/ser/mod.rs:1917:21
+     |
+1915 |     fn serialize_field<T>(&mut self, key: &'static str, value: &T) -> Result<(), Self::Error>
+     |        --------------- required by a bound in this associated function
+1916 |     where
+1917 |         T: ?Sized + Serialize;
+     |                     ^^^^^^^^^ required by this bound in `SerializeStruct::serialize_field`
+     = note: this error originates in the derive macro `Serialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `FacilityOperation: serde::Serialize` is not satisfied
+    --> crates/city-storage/src/spatial_geometry_updates.rs:74:24
+     |
+74   | #[derive(Clone, Debug, Serialize, Deserialize)]
+     |                        ^^^^^^^^^ the trait `_::_serde::Serialize` is not implemented for `FacilityOperation`
+...
+86   |     pub connector: mycity_map::traffic_adapter::FacilityOperation,
+     |     --- required by a bound introduced by this call
+     |
+     = note: for local types consider adding `#[derive(serde::Serialize)]` to your `FacilityOperation` type
+     = note: for types from other crates check whether the crate offers a `serde` feature flag
+     = help: the following other types implement trait `_::_serde::Serialize`:
+               &'a T
+               &'a mut T
+               ()
+               (T,)
+               (T0, T1)
+               (T0, T1, T2)
+               (T0, T1, T2, T3)
+               (T0, T1, T2, T3, T4)
+             and 444 others
+note: required by a bound in `_::_serde::ser::SerializeStruct::serialize_field`
+    --> /Users/frankqin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.229/src/ser/mod.rs:1917:21
+     |
+1915 |     fn serialize_field<T>(&mut self, key: &'static str, value: &T) -> Result<(), Self::Error>
+     |        --------------- required by a bound in this associated function
+1916 |     where
+1917 |         T: ?Sized + Serialize;
+     |                     ^^^^^^^^^ required by this bound in `SerializeStruct::serialize_field`
+     = note: this error originates in the derive macro `Serialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `RoadDirection: serde::Serialize` is not satisfied
+    --> crates/city-storage/src/spatial_geometry_updates.rs:74:24
+     |
+74   | #[derive(Clone, Debug, Serialize, Deserialize)]
+     |                        ^^^^^^^^^ the trait `_::_serde::Serialize` is not implemented for `RoadDirection`
+...
+88   |     pub road_direction: mycity_map::traffic_adapter::RoadDirection,
+     |     --- required by a bound introduced by this call
+     |
+     = note: for local types consider adding `#[derive(serde::Serialize)]` to your `RoadDirection` type
+     = note: for types from other crates check whether the crate offers a `serde` feature flag
+     = help: the following other types implement trait `_::_serde::Serialize`:
+               &'a T
+               &'a mut T
+               ()
+               (T,)
+               (T0, T1)
+               (T0, T1, T2)
+               (T0, T1, T2, T3)
+               (T0, T1, T2, T3, T4)
+             and 444 others
+note: required by a bound in `_::_serde::ser::SerializeStruct::serialize_field`
+    --> /Users/frankqin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.229/src/ser/mod.rs:1917:21
+     |
+1915 |     fn serialize_field<T>(&mut self, key: &'static str, value: &T) -> Result<(), Self::Error>
+     |        --------------- required by a bound in this associated function
+1916 |     where
+1917 |         T: ?Sized + Serialize;
+     |                     ^^^^^^^^^ required by this bound in `SerializeStruct::serialize_field`
+     = note: this error originates in the derive macro `Serialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `AdapterIds: serde::Deserialize<'de>` is not satisfied
+    --> crates/city-storage/src/spatial_geometry_updates.rs:84:14
+     |
+84   |     pub ids: mycity_map::traffic_adapter::AdapterIds,
+     |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `_::_serde::Deserialize<'_>` is not implemented for `AdapterIds`
+     |
+     = note: for local types consider adding `#[derive(serde::Deserialize)]` to your `AdapterIds` type
+     = note: for types from other crates check whether the crate offers a `serde` feature flag
+     = help: the following other types implement trait `_::_serde::Deserialize<'de>`:
+               &'a [u8]
+               &'a serde_json::value::RawValue
+               &'a std::path::Path
+               &'a str
+               ()
+               (T,)
+               (T0, T1)
+               (T0, T1, T2)
+             and 439 others
+note: required by a bound in `next_element`
+    --> /Users/frankqin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.229/src/de/mod.rs:1771:12
+     |
+1769 |     fn next_element<T>(&mut self) -> Result<Option<T>, Self::Error>
+     |        ------------ required by a bound in this associated function
+1770 |     where
+1771 |         T: Deserialize<'de>,
+     |            ^^^^^^^^^^^^^^^^ required by this bound in `SeqAccess::next_element`
+
+error[E0277]: the trait bound `TerminalGrant: serde::Deserialize<'de>` is not satisfied
+    --> crates/city-storage/src/spatial_geometry_updates.rs:85:19
+     |
+85   |     pub terminal: mycity_map::traffic_adapter::TerminalGrant,
+     |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `_::_serde::Deserialize<'_>` is not implemented for `TerminalGrant`
+     |
+     = note: for local types consider adding `#[derive(serde::Deserialize)]` to your `TerminalGrant` type
+     = note: for types from other crates check whether the crate offers a `serde` feature flag
+     = help: the following other types implement trait `_::_serde::Deserialize<'de>`:
+               &'a [u8]
+               &'a serde_json::value::RawValue
+               &'a std::path::Path
+               &'a str
+               ()
+               (T,)
+               (T0, T1)
+               (T0, T1, T2)
+             and 439 others
+note: required by a bound in `next_element`
+    --> /Users/frankqin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.229/src/de/mod.rs:1771:12
+     |
+1769 |     fn next_element<T>(&mut self) -> Result<Option<T>, Self::Error>
+     |        ------------ required by a bound in this associated function
+1770 |     where
+1771 |         T: Deserialize<'de>,
+     |            ^^^^^^^^^^^^^^^^ required by this bound in `SeqAccess::next_element`
+
+error[E0277]: the trait bound `FacilityOperation: serde::Deserialize<'de>` is not satisfied
+    --> crates/city-storage/src/spatial_geometry_updates.rs:86:20
+     |
+86   |     pub connector: mycity_map::traffic_adapter::FacilityOperation,
+     |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `_::_serde::Deserialize<'_>` is not implemented for `FacilityOperation`
+     |
+     = note: for local types consider adding `#[derive(serde::Deserialize)]` to your `FacilityOperation` type
+     = note: for types from other crates check whether the crate offers a `serde` feature flag
+     = help: the following other types implement trait `_::_serde::Deserialize<'de>`:
+               &'a [u8]
+               &'a serde_json::value::RawValue
+               &'a std::path::Path
+               &'a str
+               ()
+               (T,)
+               (T0, T1)
+               (T0, T1, T2)
+             and 439 others
+note: required by a bound in `next_element`
+    --> /Users/frankqin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.229/src/de/mod.rs:1771:12
+     |
+1769 |     fn next_element<T>(&mut self) -> Result<Option<T>, Self::Error>
+     |        ------------ required by a bound in this associated function
+1770 |     where
+1771 |         T: Deserialize<'de>,
+     |            ^^^^^^^^^^^^^^^^ required by this bound in `SeqAccess::next_element`
+
+error[E0277]: the trait bound `FacilityOperation: serde::Deserialize<'de>` is not satisfied
+    --> crates/city-storage/src/spatial_geometry_updates.rs:87:15
+     |
+87   |     pub road: mycity_map::traffic_adapter::FacilityOperation,
+     |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `_::_serde::Deserialize<'_>` is not implemented for `FacilityOperation`
+     |
+     = note: for local types consider adding `#[derive(serde::Deserialize)]` to your `FacilityOperation` type
+     = note: for types from other crates check whether the crate offers a `serde` feature flag
+     = help: the following other types implement trait `_::_serde::Deserialize<'de>`:
+               &'a [u8]
+               &'a serde_json::value::RawValue
+               &'a std::path::Path
+               &'a str
+               ()
+               (T,)
+               (T0, T1)
+               (T0, T1, T2)
+             and 439 others
+note: required by a bound in `next_element`
+    --> /Users/frankqin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.229/src/de/mod.rs:1771:12
+     |
+1769 |     fn next_element<T>(&mut self) -> Result<Option<T>, Self::Error>
+     |        ------------ required by a bound in this associated function
+1770 |     where
+1771 |         T: Deserialize<'de>,
+     |            ^^^^^^^^^^^^^^^^ required by this bound in `SeqAccess::next_element`
+
+error[E0277]: the trait bound `RoadDirection: serde::Deserialize<'de>` is not satisfied
+    --> crates/city-storage/src/spatial_geometry_updates.rs:88:25
+     |
+88   |     pub road_direction: mycity_map::traffic_adapter::RoadDirection,
+     |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `_::_serde::Deserialize<'_>` is not implemented for `RoadDirection`
+     |
+     = note: for local types consider adding `#[derive(serde::Deserialize)]` to your `RoadDirection` type
+     = note: for types from other crates check whether the crate offers a `serde` feature flag
+     = help: the following other types implement trait `_::_serde::Deserialize<'de>`:
+               &'a [u8]
+               &'a serde_json::value::RawValue
+               &'a std::path::Path
+               &'a str
+               ()
+               (T,)
+               (T0, T1)
+               (T0, T1, T2)
+             and 439 others
+note: required by a bound in `next_element`
+    --> /Users/frankqin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.229/src/de/mod.rs:1771:12
+     |
+1769 |     fn next_element<T>(&mut self) -> Result<Option<T>, Self::Error>
+     |        ------------ required by a bound in this associated function
+1770 |     where
+1771 |         T: Deserialize<'de>,
+     |            ^^^^^^^^^^^^^^^^ required by this bound in `SeqAccess::next_element`
+
+error[E0277]: the trait bound `AdapterIds: serde::Deserialize<'de>` is not satisfied
+    --> crates/city-storage/src/spatial_geometry_updates.rs:84:14
+     |
+84   |     pub ids: mycity_map::traffic_adapter::AdapterIds,
+     |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `_::_serde::Deserialize<'_>` is not implemented for `AdapterIds`
+     |
+     = note: for local types consider adding `#[derive(serde::Deserialize)]` to your `AdapterIds` type
+     = note: for types from other crates check whether the crate offers a `serde` feature flag
+     = help: the following other types implement trait `_::_serde::Deserialize<'de>`:
+               &'a [u8]
+               &'a serde_json::value::RawValue
+               &'a std::path::Path
+               &'a str
+               ()
+               (T,)
+               (T0, T1)
+               (T0, T1, T2)
+             and 439 others
+note: required by a bound in `next_value`
+    --> /Users/frankqin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.229/src/de/mod.rs:1916:12
+     |
+1914 |     fn next_value<V>(&mut self) -> Result<V, Self::Error>
+     |        ---------- required by a bound in this associated function
+1915 |     where
+1916 |         V: Deserialize<'de>,
+     |            ^^^^^^^^^^^^^^^^ required by this bound in `MapAccess::next_value`
+
+error[E0277]: the trait bound `TerminalGrant: serde::Deserialize<'de>` is not satisfied
+    --> crates/city-storage/src/spatial_geometry_updates.rs:85:19
+     |
+85   |     pub terminal: mycity_map::traffic_adapter::TerminalGrant,
+     |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `_::_serde::Deserialize<'_>` is not implemented for `TerminalGrant`
+     |
+     = note: for local types consider adding `#[derive(serde::Deserialize)]` to your `TerminalGrant` type
+     = note: for types from other crates check whether the crate offers a `serde` feature flag
+     = help: the following other types implement trait `_::_serde::Deserialize<'de>`:
+               &'a [u8]
+               &'a serde_json::value::RawValue
+               &'a std::path::Path
+               &'a str
+               ()
+               (T,)
+               (T0, T1)
+               (T0, T1, T2)
+             and 439 others
+note: required by a bound in `next_value`
+    --> /Users/frankqin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.229/src/de/mod.rs:1916:12
+     |
+1914 |     fn next_value<V>(&mut self) -> Result<V, Self::Error>
+     |        ---------- required by a bound in this associated function
+1915 |     where
+1916 |         V: Deserialize<'de>,
+     |            ^^^^^^^^^^^^^^^^ required by this bound in `MapAccess::next_value`
+
+error[E0277]: the trait bound `FacilityOperation: serde::Deserialize<'de>` is not satisfied
+    --> crates/city-storage/src/spatial_geometry_updates.rs:86:20
+     |
+86   |     pub connector: mycity_map::traffic_adapter::FacilityOperation,
+     |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `_::_serde::Deserialize<'_>` is not implemented for `FacilityOperation`
+     |
+     = note: for local types consider adding `#[derive(serde::Deserialize)]` to your `FacilityOperation` type
+     = note: for types from other crates check whether the crate offers a `serde` feature flag
+     = help: the following other types implement trait `_::_serde::Deserialize<'de>`:
+               &'a [u8]
+               &'a serde_json::value::RawValue
+               &'a std::path::Path
+               &'a str
+               ()
+               (T,)
+               (T0, T1)
+               (T0, T1, T2)
+             and 439 others
+note: required by a bound in `next_value`
+    --> /Users/frankqin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.229/src/de/mod.rs:1916:12
+     |
+1914 |     fn next_value<V>(&mut self) -> Result<V, Self::Error>
+     |        ---------- required by a bound in this associated function
+1915 |     where
+1916 |         V: Deserialize<'de>,
+     |            ^^^^^^^^^^^^^^^^ required by this bound in `MapAccess::next_value`
+
+error[E0277]: the trait bound `FacilityOperation: serde::Deserialize<'de>` is not satisfied
+    --> crates/city-storage/src/spatial_geometry_updates.rs:87:15
+     |
+87   |     pub road: mycity_map::traffic_adapter::FacilityOperation,
+     |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `_::_serde::Deserialize<'_>` is not implemented for `FacilityOperation`
+     |
+     = note: for local types consider adding `#[derive(serde::Deserialize)]` to your `FacilityOperation` type
+     = note: for types from other crates check whether the crate offers a `serde` feature flag
+     = help: the following other types implement trait `_::_serde::Deserialize<'de>`:
+               &'a [u8]
+               &'a serde_json::value::RawValue
+               &'a std::path::Path
+               &'a str
+               ()
+               (T,)
+               (T0, T1)
+               (T0, T1, T2)
+             and 439 others
+note: required by a bound in `next_value`
+    --> /Users/frankqin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.229/src/de/mod.rs:1916:12
+     |
+1914 |     fn next_value<V>(&mut self) -> Result<V, Self::Error>
+     |        ---------- required by a bound in this associated function
+1915 |     where
+1916 |         V: Deserialize<'de>,
+     |            ^^^^^^^^^^^^^^^^ required by this bound in `MapAccess::next_value`
+
+error[E0277]: the trait bound `RoadDirection: serde::Deserialize<'de>` is not satisfied
+    --> crates/city-storage/src/spatial_geometry_updates.rs:88:25
+     |
+88   |     pub road_direction: mycity_map::traffic_adapter::RoadDirection,
+     |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the trait `_::_serde::Deserialize<'_>` is not implemented for `RoadDirection`
+     |
+     = note: for local types consider adding `#[derive(serde::Deserialize)]` to your `RoadDirection` type
+     = note: for types from other crates check whether the crate offers a `serde` feature flag
+     = help: the following other types implement trait `_::_serde::Deserialize<'de>`:
+               &'a [u8]
+               &'a serde_json::value::RawValue
+               &'a std::path::Path
+               &'a str
+               ()
+               (T,)
+               (T0, T1)
+               (T0, T1, T2)
+             and 439 others
+note: required by a bound in `next_value`
+    --> /Users/frankqin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde_core-1.0.229/src/de/mod.rs:1916:12
+     |
+1914 |     fn next_value<V>(&mut self) -> Result<V, Self::Error>
+     |        ---------- required by a bound in this associated function
+1915 |     where
+1916 |         V: Deserialize<'de>,
+     |            ^^^^^^^^^^^^^^^^ required by this bound in `MapAccess::next_value`
+
+error[E0277]: the trait bound `AdapterIds: serde::Deserialize<'de>` is not satisfied
+  --> crates/city-storage/src/spatial_geometry_updates.rs:74:35
+   |
+74 | #[derive(Clone, Debug, Serialize, Deserialize)]
+   |                                   ^^^^^^^^^^^ the trait `_::_serde::Deserialize<'_>` is not implemented for `AdapterIds`
+   |
+   = note: for local types consider adding `#[derive(serde::Deserialize)]` to your `AdapterIds` type
+   = note: for types from other crates check whether the crate offers a `serde` feature flag
+   = help: the following other types implement trait `_::_serde::Deserialize<'de>`:
+             &'a [u8]
+             &'a serde_json::value::RawValue
+             &'a std::path::Path
+             &'a str
+             ()
+             (T,)
+             (T0, T1)
+             (T0, T1, T2)
+           and 439 others
+note: required by a bound in `_::_serde::__private229::de::missing_field`
+  --> /Users/frankqin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/de.rs:26:8
+   |
+24 | pub fn missing_field<'de, V, E>(field: &'static str) -> Result<V, E>
+   |        ------------- required by a bound in this function
+25 | where
+26 |     V: Deserialize<'de>,
+   |        ^^^^^^^^^^^^^^^^ required by this bound in `missing_field`
+   = note: this error originates in the derive macro `Deserialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `TerminalGrant: serde::Deserialize<'de>` is not satisfied
+  --> crates/city-storage/src/spatial_geometry_updates.rs:74:35
+   |
+74 | #[derive(Clone, Debug, Serialize, Deserialize)]
+   |                                   ^^^^^^^^^^^ the trait `_::_serde::Deserialize<'_>` is not implemented for `TerminalGrant`
+   |
+   = note: for local types consider adding `#[derive(serde::Deserialize)]` to your `TerminalGrant` type
+   = note: for types from other crates check whether the crate offers a `serde` feature flag
+   = help: the following other types implement trait `_::_serde::Deserialize<'de>`:
+             &'a [u8]
+             &'a serde_json::value::RawValue
+             &'a std::path::Path
+             &'a str
+             ()
+             (T,)
+             (T0, T1)
+             (T0, T1, T2)
+           and 439 others
+note: required by a bound in `_::_serde::__private229::de::missing_field`
+  --> /Users/frankqin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/de.rs:26:8
+   |
+24 | pub fn missing_field<'de, V, E>(field: &'static str) -> Result<V, E>
+   |        ------------- required by a bound in this function
+25 | where
+26 |     V: Deserialize<'de>,
+   |        ^^^^^^^^^^^^^^^^ required by this bound in `missing_field`
+   = note: this error originates in the derive macro `Deserialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `FacilityOperation: serde::Deserialize<'de>` is not satisfied
+  --> crates/city-storage/src/spatial_geometry_updates.rs:74:35
+   |
+74 | #[derive(Clone, Debug, Serialize, Deserialize)]
+   |                                   ^^^^^^^^^^^ the trait `_::_serde::Deserialize<'_>` is not implemented for `FacilityOperation`
+   |
+   = note: for local types consider adding `#[derive(serde::Deserialize)]` to your `FacilityOperation` type
+   = note: for types from other crates check whether the crate offers a `serde` feature flag
+   = help: the following other types implement trait `_::_serde::Deserialize<'de>`:
+             &'a [u8]
+             &'a serde_json::value::RawValue
+             &'a std::path::Path
+             &'a str
+             ()
+             (T,)
+             (T0, T1)
+             (T0, T1, T2)
+           and 439 others
+note: required by a bound in `_::_serde::__private229::de::missing_field`
+  --> /Users/frankqin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/de.rs:26:8
+   |
+24 | pub fn missing_field<'de, V, E>(field: &'static str) -> Result<V, E>
+   |        ------------- required by a bound in this function
+25 | where
+26 |     V: Deserialize<'de>,
+   |        ^^^^^^^^^^^^^^^^ required by this bound in `missing_field`
+   = note: this error originates in the derive macro `Deserialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0277]: the trait bound `RoadDirection: serde::Deserialize<'de>` is not satisfied
+  --> crates/city-storage/src/spatial_geometry_updates.rs:74:35
+   |
+74 | #[derive(Clone, Debug, Serialize, Deserialize)]
+   |                                   ^^^^^^^^^^^ the trait `_::_serde::Deserialize<'_>` is not implemented for `RoadDirection`
+   |
+   = note: for local types consider adding `#[derive(serde::Deserialize)]` to your `RoadDirection` type
+   = note: for types from other crates check whether the crate offers a `serde` feature flag
+   = help: the following other types implement trait `_::_serde::Deserialize<'de>`:
+             &'a [u8]
+             &'a serde_json::value::RawValue
+             &'a std::path::Path
+             &'a str
+             ()
+             (T,)
+             (T0, T1)
+             (T0, T1, T2)
+           and 439 others
+note: required by a bound in `_::_serde::__private229::de::missing_field`
+  --> /Users/frankqin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.229/src/private/de.rs:26:8
+   |
+24 | pub fn missing_field<'de, V, E>(field: &'static str) -> Result<V, E>
+   |        ------------- required by a bound in this function
+25 | where
+26 |     V: Deserialize<'de>,
+   |        ^^^^^^^^^^^^^^^^ required by this bound in `missing_field`
+   = note: this error originates in the derive macro `Deserialize` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+error[E0061]: this function takes 10 arguments but 9 arguments were supplied
+   --> crates/city-storage/src/lib.rs:583:9
+    |
+583 |         Self::create_in_workspace_with_transport(
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+592 |             observer,
+    |             -------- argument #9 of type `std::option::Option<SpatialGeometryAdapterBasis>` is missing
+    |
+note: associated function defined here
+   --> crates/city-storage/src/lib.rs:711:8
+    |
+711 |       fn create_in_workspace_with_transport(
+    |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+712 |           dir: &Path,
+    |           ----------
+713 |           opening: &[u8],
+    |           --------------
+714 |           resources: Vec<Resource>,
+    |           ------------------------
+715 |           rules_identity: &str,
+    |           --------------------
+716 |           bundle: Option<(&[u8], &[u8])>,
+    |           ------------------------------
+717 |           allocation_bytes: Option<&[u8]>,
+    |           -------------------------------
+718 | /         setup: (
+719 | |             u8,
+720 | |             mycity_core::transaction::EngineWorkspace,
+721 | |             Option<mycity_map::assets::SpatialWorkspace>,
+722 | |             MetadataWorkspace,
+723 | |         ),
+    | |_________-
+724 | /         spatial_permissions: Option<
+725 | |             mycity_core::spatial_transport_permissions::SpatialPermissionState,
+726 | |         >,
+    | |_________-
+727 |           geometry_adapter_basis: Option<spatial_geometry_updates::SpatialGeometryAdapterBasis>,
+    |           -------------------------------------------------------------------------------------
+728 |           mut observer: impl FnMut(CreatePoint) -> io::Result<()>,
+    |           -------------------------------------------------------
+help: provide the argument
+    |
+583 |         Self::create_in_workspace_with_transport(dir, opening, resources, rules_identity, bundle, None, setup, None, /* std::option::Option<SpatialGeometryAdapterBasis> */, observer)
+    |                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+error[E0061]: this function takes 10 arguments but 9 arguments were supplied
+   --> crates/city-storage/src/lib.rs:603:9
+    |
+603 |         Self::create_in_workspace_with_transport(
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+617 |             |_| Ok(()),
+    |             ---------- argument #9 of type `std::option::Option<SpatialGeometryAdapterBasis>` is missing
+    |
+note: associated function defined here
+   --> crates/city-storage/src/lib.rs:711:8
+    |
+711 |       fn create_in_workspace_with_transport(
+    |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+712 |           dir: &Path,
+    |           ----------
+713 |           opening: &[u8],
+    |           --------------
+714 |           resources: Vec<Resource>,
+    |           ------------------------
+715 |           rules_identity: &str,
+    |           --------------------
+716 |           bundle: Option<(&[u8], &[u8])>,
+    |           ------------------------------
+717 |           allocation_bytes: Option<&[u8]>,
+    |           -------------------------------
+718 | /         setup: (
+719 | |             u8,
+720 | |             mycity_core::transaction::EngineWorkspace,
+721 | |             Option<mycity_map::assets::SpatialWorkspace>,
+722 | |             MetadataWorkspace,
+723 | |         ),
+    | |_________-
+724 | /         spatial_permissions: Option<
+725 | |             mycity_core::spatial_transport_permissions::SpatialPermissionState,
+726 | |         >,
+    | |_________-
+727 |           geometry_adapter_basis: Option<spatial_geometry_updates::SpatialGeometryAdapterBasis>,
+    |           -------------------------------------------------------------------------------------
+728 |           mut observer: impl FnMut(CreatePoint) -> io::Result<()>,
+    |           -------------------------------------------------------
+help: provide the argument
+    |
+603 ~         Self::create_in_workspace_with_transport(dir, opening, resources, rules_identity, None, Some(allocation_profile), (
+604 +                 0,
+605 +                 mycity_core::transaction::EngineWorkspace::new().map_err(Error::Model)?,
+606 +                 None,
+607 +                 MetadataWorkspace::new()?,
+608 +             ), None, /* std::option::Option<SpatialGeometryAdapterBasis> */, |_| Ok(()))
+    |
+
+error[E0061]: this function takes 10 arguments but 9 arguments were supplied
+   --> crates/city-storage/src/lib.rs:630:9
+    |
+630 |         Self::create_in_workspace_with_transport(
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+644 |             |_| Ok(()),
+    |             ---------- argument #9 of type `std::option::Option<SpatialGeometryAdapterBasis>` is missing
+    |
+note: associated function defined here
+   --> crates/city-storage/src/lib.rs:711:8
+    |
+711 |       fn create_in_workspace_with_transport(
+    |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+712 |           dir: &Path,
+    |           ----------
+713 |           opening: &[u8],
+    |           --------------
+714 |           resources: Vec<Resource>,
+    |           ------------------------
+715 |           rules_identity: &str,
+    |           --------------------
+716 |           bundle: Option<(&[u8], &[u8])>,
+    |           ------------------------------
+717 |           allocation_bytes: Option<&[u8]>,
+    |           -------------------------------
+718 | /         setup: (
+719 | |             u8,
+720 | |             mycity_core::transaction::EngineWorkspace,
+721 | |             Option<mycity_map::assets::SpatialWorkspace>,
+722 | |             MetadataWorkspace,
+723 | |         ),
+    | |_________-
+724 | /         spatial_permissions: Option<
+725 | |             mycity_core::spatial_transport_permissions::SpatialPermissionState,
+726 | |         >,
+    | |_________-
+727 |           geometry_adapter_basis: Option<spatial_geometry_updates::SpatialGeometryAdapterBasis>,
+    |           -------------------------------------------------------------------------------------
+728 |           mut observer: impl FnMut(CreatePoint) -> io::Result<()>,
+    |           -------------------------------------------------------
+help: provide the argument
+    |
+630 ~         Self::create_in_workspace_with_transport(dir, opening, resources, rules_identity, Some(bundle), Some(allocation_profile), (
+631 +                 0,
+632 +                 mycity_core::transaction::EngineWorkspace::new().map_err(Error::Model)?,
+633 +                 None,
+634 +                 MetadataWorkspace::new()?,
+635 +             ), None, /* std::option::Option<SpatialGeometryAdapterBasis> */, |_| Ok(()))
+    |
+
+error[E0308]: mismatched types
+    --> crates/city-storage/src/lib.rs:1083:13
+     |
+1077 | /             (
+1078 | |                 genesis.schema.as_str(),
+1079 | |                 genesis.spatial.is_some(),
+1080 | |                 genesis.spatial_permissions.is_some(),
+1081 | |                 genesis.geometry_adapter_basis.is_some()
+1082 | |             ),
+     | |_____________- this expression has type `(&str, bool, bool, bool)`
+1083 |               ("mycity-m0-genesis-v1", false, false)
+     |               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected a tuple with 4 elements, found one with 3 elements
+     |
+     = note: expected tuple `(&str, bool, bool, bool)`
+                found tuple `(_, _, _)`
+
+error[E0308]: mismatched types
+    --> crates/city-storage/src/lib.rs:1084:19
+     |
+1077 | /             (
+1078 | |                 genesis.schema.as_str(),
+1079 | |                 genesis.spatial.is_some(),
+1080 | |                 genesis.spatial_permissions.is_some(),
+1081 | |                 genesis.geometry_adapter_basis.is_some()
+1082 | |             ),
+     | |_____________- this expression has type `(&str, bool, bool, bool)`
+1083 |               ("mycity-m0-genesis-v1", false, false)
+1084 |                   | ("mycity-m0-genesis-v2", true, false)
+     |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected a tuple with 4 elements, found one with 3 elements
+     |
+     = note: expected tuple `(&str, bool, bool, bool)`
+                found tuple `(_, _, _)`
+
+error[E0308]: mismatched types
+    --> crates/city-storage/src/lib.rs:1085:19
+     |
+1077 | /             (
+1078 | |                 genesis.schema.as_str(),
+1079 | |                 genesis.spatial.is_some(),
+1080 | |                 genesis.spatial_permissions.is_some(),
+1081 | |                 genesis.geometry_adapter_basis.is_some()
+1082 | |             ),
+     | |_____________- this expression has type `(&str, bool, bool, bool)`
+...
+1085 |                   | ("mycity-m0-genesis-v3", true, true)
+     |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected a tuple with 4 elements, found one with 3 elements
+     |
+     = note: expected tuple `(&str, bool, bool, bool)`
+                found tuple `(_, _, _)`
+
+error[E0369]: cannot add `usize` to `Result<usize, _>`
+    --> crates/city-storage/src/lib.rs:1673:13
+     |
+1633 | /         Ok(std::mem::size_of::<Self>() - std::mem::size_of::<Engine>()
+1634 | |             + self.engine()?.owned_capacity_bytes()
+1635 | |             + spare.owned_model_bytes
+1636 | |             - std::mem::size_of::<Engine>()
+...    |
+1671 | |                 r.owned_capacity_bytes() - std::mem::size_of::<SpatialReference>()
+1672 | |             }))
+     | |_______________- Result<usize, _>
+1673 |               + self.geometry_adapter_basis.as_ref().map_or(0, |basis| {
+     |  _____________^_-
+1674 | |                 basis.owned_capacity_bytes() - std::mem::size_of_val(basis)
+1675 | |             })
+     | |______________- usize
+     |
+note: the foreign item type `Result<usize, _>` doesn't implement `Add<usize>`
+    --> /Users/frankqin/.rustup/toolchains/1.85.1-aarch64-apple-darwin/lib/rustlib/src/rust/library/core/src/result.rs:528:1
+     |
+528  | pub enum Result<T, E> {
+     | ^^^^^^^^^^^^^^^^^^^^^ not implement `Add<usize>`
+
+error[E0609]: no field `engine` on type `&Persistence`
+    --> crates/city-storage/src/lib.rs:3239:14
+     |
+3239 |             .engine
+     |              ^^^^^^ unknown field
+     |
+help: one of the expressions' fields has a field of the same name
+     |
+3239 |             .metadata.engine
+     |              +++++++++
+
+error[E0609]: no field `spatial` on type `&Persistence`
+    --> crates/city-storage/src/lib.rs:3289:14
+     |
+3289 |             .spatial
+     |              ^^^^^^^ unknown field
+     |
+     = note: available fields are: `owner_pid`, `dir`, `_lock`, `wal`, `root` ... and 7 others
+
+error[E0609]: no field `geometry_adapter_basis` on type `&Persistence`
+    --> crates/city-storage/src/lib.rs:3295:14
+     |
+3295 |             .geometry_adapter_basis
+     |              ^^^^^^^^^^^^^^^^^^^^^^ unknown field
+     |
+     = note: available fields are: `owner_pid`, `dir`, `_lock`, `wal`, `root` ... and 7 others
+
+error[E0599]: no method named `world_id` found for struct `VerifiedGeometryGrant` in the current scope
+    --> crates/city-storage/src/lib.rs:3304:18
+     |
+3304 |         if grant.world_id() != envelope.world
+     |                  ^^^^^^^^ method not found in `VerifiedGeometryGrant`
+
+error[E0599]: no method named `branch_id` found for struct `VerifiedGeometryGrant` in the current scope
+    --> crates/city-storage/src/lib.rs:3305:22
+     |
+3305 |             || grant.branch_id() != envelope.branch
+     |                      ^^^^^^^^^ method not found in `VerifiedGeometryGrant`
+
+error[E0599]: no method named `ok_or` found for reference `&SpatialPermissionState` in the current scope
+    --> crates/city-storage/src/lib.rs:3540:29
+     |
+3540 |                 permissions.ok_or(Error::Invalid("spatial_geometry_permissions_missing"))?;
+     |                             ^^^^^ method not found in `&SpatialPermissionState`
+     |
+note: there's an earlier shadowed binding `permissions` of type `std::option::Option<&SpatialPermissionState>` that has method `ok_or` available
+    --> crates/city-storage/src/lib.rs:3406:9
+     |
+3406 |     let permissions = genesis_engine.spatial_permissions();
+     |         ^^^^^^^^^^^ `permissions` of type `std::option::Option<&SpatialPermissionState>` that has method `ok_or` defined earlier here
+3407 |     let (Some(pointer), Some(permissions), Some(spatial_ref), Some(baseline_hash)) =
+     |                              ----------- earlier `permissions` shadowed here with type `&SpatialPermissionState`
+
+error[E0624]: method `apply_geometry_profile_revision` is private
+    --> crates/city-storage/src/lib.rs:3719:18
+     |
+3719 |                   .apply_geometry_profile_revision(
+     |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ private method
+     |
+    ::: /Users/frankqin/dev/MyCity/crates/city-core/src/spatial_transport_permissions.rs:1134:5
+     |
+1134 | /     pub(crate) fn apply_geometry_profile_revision(
+1135 | |         &mut self,
+1136 | |         asset_id: u32,
+1137 | |         expected_revision: u64,
+1138 | |         candidate_profile_sha256: [u8; 32],
+1139 | |     ) -> Result<(), Error> {
+     | |__________________________- private method defined here
+
+error[E0609]: no field `request` on type `std::option::Option<SpatialAuthorizationWitness>`
+    --> crates/city-storage/src/lib.rs:3728:31
+     |
+3728 |         let request = witness.request;
+     |                               ^^^^^^^ unknown field
+     |
+help: one of the expressions' fields has a field of the same name
+     |
+3728 |         let request = witness.unwrap().request;
+     |                               +++++++++
+
+error[E0609]: no field `request` on type `std::option::Option<SpatialAuthorizationWitness>`
+    --> crates/city-storage/src/lib.rs:3745:25
+     |
+3745 |                 witness.request,
+     |                         ^^^^^^^ unknown field
+     |
+help: one of the expressions' fields has a field of the same name
+     |
+3745 |                 witness.unwrap().request,
+     |                         +++++++++
+
+error[E0609]: no field `owner_approval` on type `std::option::Option<SpatialAuthorizationWitness>`
+    --> crates/city-storage/src/lib.rs:3746:25
+     |
+3746 |                 witness.owner_approval,
+     |                         ^^^^^^^^^^^^^^ unknown field
+     |
+help: one of the expressions' fields has a field of the same name
+     |
+3746 |                 witness.unwrap().owner_approval,
+     |                         +++++++++
+
+error[E0609]: no field `authority_approval` on type `std::option::Option<SpatialAuthorizationWitness>`
+    --> crates/city-storage/src/lib.rs:3747:25
+     |
+3747 |                 witness.authority_approval,
+     |                         ^^^^^^^^^^^^^^^^^^ unknown field
+     |
+help: one of the expressions' fields has a field of the same name
+     |
+3747 |                 witness.unwrap().authority_approval,
+     |                         +++++++++
+
+Some errors have detailed explanations: E0061, E0277, E0308, E0369, E0423, E0425, E0433, E0599, E0609...
+For more information about an error, try `rustc --explain E0061`.
+error: could not compile `mycity-storage` (lib) due to 47 previous errors
+warning: build failed, waiting for other jobs to finish...
+error[E0609]: no field `authority_approval` on type `std::option::Option<mycity_core::spatial_transport_permissions::SpatialAuthorizationWitness>`
+    --> crates/city-storage/src/spatial_transport_updates.rs:2062:14
+     |
+2062 |             .authority_approval
+     |              ^^^^^^^^^^^^^^^^^^ unknown field
+     |
+help: one of the expressions' fields has a field of the same name
+     |
+2062 |             .unwrap().authority_approval
+     |              +++++++++
+
+error[E0609]: no field `request` on type `std::option::Option<mycity_core::spatial_transport_permissions::SpatialAuthorizationWitness>`
+    --> crates/city-storage/src/lib.rs:3728:31
+     |
+3728 |         let request = witness.request;
+     |                               ^^^^^^^ unknown field
+     |
+help: one of the expressions' fields has a field of the same name
+     |
+3728 |         let request = witness.unwrap().request;
+     |                               +++++++++
+
+error[E0609]: no field `request` on type `std::option::Option<mycity_core::spatial_transport_permissions::SpatialAuthorizationWitness>`
+    --> crates/city-storage/src/lib.rs:3745:25
+     |
+3745 |                 witness.request,
+     |                         ^^^^^^^ unknown field
+     |
+help: one of the expressions' fields has a field of the same name
+     |
+3745 |                 witness.unwrap().request,
+     |                         +++++++++
+
+error[E0609]: no field `owner_approval` on type `std::option::Option<mycity_core::spatial_transport_permissions::SpatialAuthorizationWitness>`
+    --> crates/city-storage/src/lib.rs:3746:25
+     |
+3746 |                 witness.owner_approval,
+     |                         ^^^^^^^^^^^^^^ unknown field
+     |
+help: one of the expressions' fields has a field of the same name
+     |
+3746 |                 witness.unwrap().owner_approval,
+     |                         +++++++++
+
+error[E0609]: no field `authority_approval` on type `std::option::Option<mycity_core::spatial_transport_permissions::SpatialAuthorizationWitness>`
+    --> crates/city-storage/src/lib.rs:3747:25
+     |
+3747 |                 witness.authority_approval,
+     |                         ^^^^^^^^^^^^^^^^^^ unknown field
+     |
+help: one of the expressions' fields has a field of the same name
+     |
+3747 |                 witness.unwrap().authority_approval,
+     |                         +++++++++
+
+error: could not compile `mycity-storage` (lib test) due to 48 previous errors

@@ -1,0 +1,20 @@
+{
+  "schema": "mycity-m0-opening-v1",
+  "bootstrap": {"schema": "mycity-m0-bootstrap-v1", "world": 1, "branch": 1, "seed": 7, "laboratory_only": true},
+  "sources": [
+    {"id": 1, "kind": "cash_capital", "amount": 1000000},
+    {"id": 2, "kind": "cash_capital", "amount": 200000},
+    {"id": 3, "kind": "cash_capital", "amount": 600000},
+    {"id": 4, "kind": "cash_capital", "amount": 1200000},
+    {"id": 5, "kind": "inventory_capital", "amount": 240000}
+  ],
+  "accounts": [
+    {"id": 1, "role": "treasury", "cash": 1000000, "source": 1},
+    {"id": 2, "role": "household", "cash": 200000, "source": 2},
+    {"id": 3, "role": "company", "cash": 600000, "source": 3},
+    {"id": 4, "role": "supplier", "cash": 1200000, "source": 4}
+  ],
+  "stocks": [
+    {"id": 1, "owner": 4, "commodity": "raw", "quantity": 600000, "basis": 240000, "source": 5}
+  ]
+}

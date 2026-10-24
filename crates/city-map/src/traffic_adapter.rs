@@ -9,6 +9,7 @@ use crate::{
     scene::Scene,
 };
 use mycity_core::transport::{self, Entrance, Node, OdDemand, Opening, RoadEdge};
+use serde::{Deserialize, Serialize};
 
 pub const WALK_MODE_MASK: u8 = 1;
 pub const MAX_ADAPTER_DEMANDS: usize = transport::MAX_DEMANDS;
@@ -24,7 +25,7 @@ pub enum AdapterError {
     Transport(transport::Error),
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum RoadDirection {
     StartToEnd,
     EndToStart,
@@ -32,7 +33,8 @@ pub enum RoadDirection {
 }
 
 /// Positive capacity and speed are per assignment period and centimetres per second.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct FacilityOperation {
     pub capacity_people_per_period: u32,
     pub free_flow_speed_cm_per_second: u32,
@@ -41,7 +43,8 @@ pub struct FacilityOperation {
 
 /// Explicit permission to attach the scene's road start to an existing graph terminal.
 /// This is a declared topology grant, never a nearest-port lookup.
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct TerminalGrant {
     pub owner_id: u32,
     pub entrance_id: u32,
@@ -49,7 +52,8 @@ pub struct TerminalGrant {
 }
 
 /// All IDs are stable within the resulting Opening and must be nonzero and distinct.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct AdapterIds {
     pub building_node: u32,
     pub anchor_node: u32,

@@ -1,0 +1,17 @@
+{
+  "e0": {
+    "accounts": [[1,"treasury",1000000,1],[2,"household",200000,2],[3,"company",600000,3],[4,"supplier",1200000,4]],
+    "sources": [[1,"cash_capital",1000000],[2,"cash_capital",200000],[3,"cash_capital",600000],[4,"cash_capital",1200000],[5,"inventory_capital",240000]],
+    "stocks": [[1,4,"raw",600000,240000,5]]
+  },
+  "boot": {
+    "accounts": [[1,"treasury",1000000,1],[2,"household",200000,2],[3,"company",600000,3],[4,"supplier",1200000,4]],
+    "sources": [[1,"cash_capital",1000000],[2,"cash_capital",200000],[3,"cash_capital",600000],[4,"cash_capital",1200000],[5,"inventory_capital",2000],[6,"inventory_capital",100],[7,"inventory_capital",0],[8,"inventory_capital",0],[9,"inventory_capital",0],[10,"inventory_capital",0]],
+    "stocks": [[1,3,"fuel",5000,2000,5],[2,3,"electricity",100000,100,6],[3,3,"water",0,0,7],[4,3,"raw_water",6000000,0,8],[5,3,"waste_water",0,0,9],[6,3,"heat",0,0,10]]
+  },
+  "town": {
+    "accounts": [[1,"treasury",1000000,1],[2,"company",200000,2],[3,"company",600000,3],[4,"supplier",1200000,4],[5,"household",1000,19],[6,"household",0,20],[7,"company",100000,21]],
+    "sources": [[1,"cash_capital",1000000],[2,"cash_capital",200000],[3,"cash_capital",600000],[4,"cash_capital",1200000],[5,"inventory_capital",2000],[6,"inventory_capital",100],[7,"inventory_capital",0],[8,"inventory_capital",0],[9,"inventory_capital",0],[10,"inventory_capital",0],[11,"inventory_capital",2000],[12,"inventory_capital",0],[13,"inventory_capital",0],[14,"inventory_capital",0],[15,"inventory_capital",0],[16,"inventory_capital",0],[17,"inventory_capital",0],[18,"inventory_capital",0],[19,"cash_capital",1000],[20,"cash_capital",0],[21,"cash_capital",100000],[22,"inventory_capital",1000],[23,"inventory_capital",0],[24,"inventory_capital",0]],
+    "stocks": [[1,3,"fuel",5000,2000,5],[2,3,"electricity",100000,100,6],[3,3,"water",0,0,7],[4,3,"raw_water",6000000,0,8],[5,3,"waste_water",0,0,9],[6,3,"heat",0,0,10],[7,4,"raw",5000,2000,11],[8,2,"raw",0,0,12],[9,2,"raw",0,0,13],[10,2,"raw",0,0,14],[11,2,"raw",0,0,15],[12,2,"raw",0,0,16],[13,2,"electricity",0,0,17],[14,2,"water",0,0,18],[15,7,"raw",1000,1000,22],[16,7,"product",0,0,23],[17,7,"product",0,0,24]]
+  }
+}

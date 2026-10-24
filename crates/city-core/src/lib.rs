@@ -27,6 +27,7 @@ pub mod model_rows;
 pub mod probes;
 pub mod region;
 pub mod schedule;
+pub mod spatial_geometry_permissions;
 pub mod spatial_transport_permissions;
 pub mod town_economy;
 pub mod town_runtime;
@@ -175,3 +176,9 @@ pub mod timeline;
 pub mod background;
 
 mod restore_into;
+
+/// Bounded advisory task eligibility; dispatch remains with the existing owner.
+pub mod task_registry;
+
+/// Immutable bounded opening transport into caller-owned retained model backing.
+pub mod opening_loader;

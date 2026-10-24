@@ -93,13 +93,16 @@ fn candidate(dir: &Path, request: &Request, base: &State, event: &Event) -> Resu
     protocol::verify_candidate(request, base, &bytes)
 }
 pub fn run(dir: &Path) -> Result<Value, String> {
+    protocol::with_worker(|worker| run_owned(dir, worker))
+}
+fn run_owned(dir: &Path, worker: &mut Worker) -> Result<Value, String> {
     fs::create_dir(dir).map_err(|e| e.to_string())?;
     let executable = std::env::current_exe().map_err(|e| e.to_string())?;
     let started = Instant::now();
     let persistent = dir.join("persistent");
     root(&persistent)?;
     let base = State::new(task(60, false))?;
-    let mut worker = Worker::spawn(&executable, &persistent)?;
+    worker.start_unbounded(&executable, &persistent, false)?;
     let pid = worker.pid();
     let first = request(&persistent, &base, 1, 1)?;
     worker.submit(&first)?;
@@ -107,14 +110,14 @@ pub fn run(dir: &Path) -> Result<Value, String> {
         return Err("worker_probe_unbounded_inflight".into());
     }
     let mut events = Vec::new();
-    let e = until(&mut worker, Stage::Complete, &mut events)?;
+    let e = until(worker, Stage::Complete, &mut events)?;
     let result = candidate(&persistent, &first, &base, &e)?;
     let mut next_input = task(180, false);
     next_input.clear_sources()?;
     let next = result.continue_from_boundary(next_input)?;
     let second = request(&persistent, &next, 2, 1)?;
     worker.submit(&second)?;
-    let e = until(&mut worker, Stage::Complete, &mut events)?;
+    let e = until(worker, Stage::Complete, &mut events)?;
     let final_state = candidate(&persistent, &second, &next, &e)?;
     if worker.pid() != pid
         || final_state.report().time != 180
@@ -122,7 +125,7 @@ pub fn run(dir: &Path) -> Result<Value, String> {
     {
         return Err("worker_probe_continuity".into());
     }
-    worker.stop()?;
+    worker.retire(Duration::ZERO)?;
     fs::write(
         persistent.join("events.json"),
         serde_json::to_vec_pretty(&events).map_err(|e| e.to_string())?,
@@ -138,11 +141,11 @@ pub fn run(dir: &Path) -> Result<Value, String> {
         root(&case)?;
         let base = State::new(task(target, dense))?;
         let first = request(&case, &base, 1, 1)?;
-        let mut worker = Worker::spawn_probe_gated(&executable, &case)?;
+        worker.start_unbounded(&executable, &case, true)?;
         let killed_pid = worker.pid();
         worker.submit(&first)?;
         let mut events = Vec::new();
-        let last = until(&mut worker, stage, &mut events)?;
+        let last = until(worker, stage, &mut events)?;
         if stage != Stage::Published
             && fs::read_dir(case.join("candidates"))
                 .map_err(|e| e.to_string())?
@@ -168,16 +171,17 @@ pub fn run(dir: &Path) -> Result<Value, String> {
         if killed_status.code().is_some() {
             return Err("worker_probe_not_killed".into());
         }
+        worker.retire(Duration::ZERO)?;
         let retry = request(&case, &base, 1, 2)?;
-        let mut worker = Worker::spawn(&executable, &case)?;
+        worker.start_unbounded(&executable, &case, false)?;
         let recovered_pid = worker.pid();
         worker.submit(&retry)?;
-        let e = until(&mut worker, Stage::Complete, &mut events)?;
+        let e = until(worker, Stage::Complete, &mut events)?;
         let restored = candidate(&case, &retry, &base, &e)?;
         if stage == Stage::Published && last.candidate_sha256 != e.candidate_sha256 {
             return Err("worker_probe_publish_not_idempotent".into());
         }
-        worker.stop()?;
+        worker.retire(Duration::ZERO)?;
         fs::write(
             case.join("events.json"),
             serde_json::to_vec_pretty(&events).map_err(|e| e.to_string())?,

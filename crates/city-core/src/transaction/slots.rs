@@ -101,6 +101,7 @@ impl EngineSlot {
         self.engine.journal.clear();
         self.engine.timeline.deactivate();
         self.engine.background.deactivate();
+        self.engine.spatial_geometry = None;
         if let Some(mut state) = self.engine.spatial_permissions.take() {
             state.clear_preserving_capacity();
             if let Some(workspace) = self.engine.preparation_workspace.as_ref() {
@@ -211,6 +212,7 @@ impl EngineSlot {
                 // four full states instead of the admitted three-state peak.
                 self.engine.spatial_permissions = Some(state);
             }
+            self.engine.spatial_geometry = source.spatial_geometry.clone();
             self.engine.validate_resident()
         })();
         match result {
@@ -309,6 +311,7 @@ impl Restore for Engine {
                         "timeline" => 1 << 5,
                         "background" => 1 << 6,
                         "spatial_permissions" => 1 << 7,
+                        "spatial_geometry" => 1 << 8,
                         _ => return Err(serde::de::Error::custom("restore_unknown_field")),
                     };
                     if seen & bit != 0 {
@@ -345,6 +348,9 @@ impl Restore for Engine {
                                 target: &mut value.spatial_permissions,
                                 spare: &workspace.spatial_permissions,
                             })?;
+                        }
+                        "spatial_geometry" => {
+                            value.spatial_geometry = map.next_value()?;
                         }
                         _ => unreachable!(),
                     }

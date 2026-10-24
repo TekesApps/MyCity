@@ -127,6 +127,11 @@ pub enum Action {
     SpatialPermission {
         command: crate::spatial_transport_permissions::SpatialPermissionCommand,
     },
+    /// Authorize one immutable geometry+transport descriptor. Scene/profile bytes and the
+    /// descriptor are Store-validated; this compact selector alone never publishes them.
+    SpatialGeometry {
+        command: crate::spatial_geometry_permissions::SpatialGeometryCommand,
+    },
     /// Select one immutable genesis lease offer; all lease terms resolve from that trusted row.
     /// This compact variant stays within the hot-journal Action size limit.
     HousingLease {
@@ -310,6 +315,10 @@ pub enum HotActionSummary {
         request_id: u64,
         command_sha256: [u8; 32],
     },
+    SpatialGeometry {
+        command_kind: u8,
+        command_sha256: [u8; 32],
+    },
 }
 
 impl HotJournalRecord {
@@ -342,6 +351,28 @@ impl HotJournalRecord {
                     HotActionSummary::SpatialPermission {
                         command_kind,
                         request_id,
+                        command_sha256: Sha256::digest(bytes).into(),
+                    }
+                }
+                Action::SpatialGeometry { command } => {
+                    use sha2::{Digest, Sha256};
+                    let bytes = serde_json::to_vec(command).expect("bounded geometry command");
+                    let command_kind = match command {
+                        crate::spatial_geometry_permissions::SpatialGeometryCommand::Request {
+                            ..
+                        } => 0,
+                        crate::spatial_geometry_permissions::SpatialGeometryCommand::Approve {
+                            ..
+                        } => 1,
+                        crate::spatial_geometry_permissions::SpatialGeometryCommand::Withdraw {
+                            ..
+                        } => 2,
+                        crate::spatial_geometry_permissions::SpatialGeometryCommand::Apply {
+                            ..
+                        } => 3,
+                    };
+                    HotActionSummary::SpatialGeometry {
+                        command_kind,
                         command_sha256: Sha256::digest(bytes).into(),
                     }
                 }
@@ -414,6 +445,8 @@ pub struct Engine {
     background: crate::model_rows::Resident<crate::background::Background>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     spatial_permissions: Option<crate::spatial_transport_permissions::SpatialPermissionState>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    spatial_geometry: Option<crate::spatial_geometry_permissions::SpatialGeometryState>,
     #[serde(skip)]
     preparation_workspace: Option<workspace::PreparationWorkspace>,
 }
@@ -432,6 +465,8 @@ struct Prepared {
     town: Option<crate::town_runtime::MarketState>,
     spatial_permissions: Option<workspace::SpatialPermissionLease>,
     spatial_update_grant: Option<crate::spatial_transport_permissions::VerifiedSpatialUpdateGrant>,
+    spatial_geometry: Option<crate::spatial_geometry_permissions::SpatialGeometryState>,
+    spatial_geometry_grant: Option<crate::spatial_geometry_permissions::VerifiedGeometryGrant>,
     accounts: workspace::AccountLease,
     stocks: workspace::StockLease,
     resources: workspace::ResourceLease,
@@ -452,6 +487,10 @@ pub struct CommitContext<'a> {
     /// Storage validates the transition against this root-pinned prior image before publishing.
     pub prior_spatial_permissions:
         Option<&'a crate::spatial_transport_permissions::SpatialPermissionState>,
+    pub spatial_geometry_grant: Option<crate::spatial_geometry_permissions::VerifiedGeometryGrant>,
+    pub spatial_geometry: Option<&'a crate::spatial_geometry_permissions::SpatialGeometryState>,
+    pub prior_spatial_geometry:
+        Option<&'a crate::spatial_geometry_permissions::SpatialGeometryState>,
 }
 
 pub(crate) fn preparation_workspace_capacity() -> (usize, usize, usize) {
@@ -545,6 +584,7 @@ impl Engine {
             timeline: crate::model_rows::Resident::empty(),
             background: crate::model_rows::Resident::empty(),
             spatial_permissions: None,
+            spatial_geometry: None,
             preparation_workspace: Some(workspace::reserve()?),
         };
         validate_construction_binding(
@@ -564,6 +604,10 @@ impl Engine {
                     .spatial_permissions
                     .as_ref()
                     .map_or(0, |state| state.owned_capacity_bytes());
+                let geometry_active = engine
+                    .spatial_geometry
+                    .as_ref()
+                    .map_or(0, |state| state.owned_rows_bytes());
                 let spatial_spare = engine
                     .preparation_workspace
                     .as_ref()
@@ -577,7 +621,7 @@ impl Engine {
                 let background = engine.background.backing().owned_bytes()
                     - size_of::<crate::background::Background>();
                 eprintln!(
-                    "ENGINE_NEW_BUDGET_FAILURE {{\"owned\":{owned_capacity},\"budget\":{ENGINE_BYTE_BUDGET},\"engine_header\":{},\"world\":{},\"resources\":{},\"leases\":{},\"journal\":{},\"timeline\":{timeline},\"background_extra\":{background},\"spatial_active\":{spatial_active},\"spatial_spare\":{spatial_spare}}}",
+                    "ENGINE_NEW_BUDGET_FAILURE {{\"owned\":{owned_capacity},\"budget\":{ENGINE_BYTE_BUDGET},\"engine_header\":{},\"world\":{},\"resources\":{},\"leases\":{},\"journal\":{},\"timeline\":{timeline},\"background_extra\":{background},\"spatial_active\":{spatial_active},\"spatial_spare\":{spatial_spare},\"geometry_rows\":{geometry_active}}}",
                     size_of::<Self>(),
                     engine.world.owned_capacity_bytes(),
                     engine.resources.capacity() * size_of::<Resource>(),
@@ -610,6 +654,8 @@ impl Engine {
             #[serde(skip_serializing_if = "Option::is_none")]
             spatial_permissions:
                 &'a Option<crate::spatial_transport_permissions::SpatialPermissionState>,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            spatial_geometry: &'a Option<crate::spatial_geometry_permissions::SpatialGeometryState>,
         }
         struct Bounded<W> {
             inner: W,
@@ -642,6 +688,7 @@ impl Engine {
                 timeline: &self.timeline,
                 background: &self.background,
                 spatial_permissions: &self.spatial_permissions,
+                spatial_geometry: &self.spatial_geometry,
             },
         )
         .map_err(|e| e.to_string())
@@ -659,6 +706,8 @@ impl Engine {
             #[serde(skip_serializing_if = "Option::is_none")]
             spatial_permissions:
                 &'a Option<crate::spatial_transport_permissions::SpatialPermissionState>,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            spatial_geometry: &'a Option<crate::spatial_geometry_permissions::SpatialGeometryState>,
         }
         View {
             schema: "mycity-business-comparison-v2",
@@ -668,6 +717,7 @@ impl Engine {
             next_token: self.next_token,
             timeline: &self.timeline,
             spatial_permissions: &self.spatial_permissions,
+            spatial_geometry: &self.spatial_geometry,
         }
     }
     /// All business bytes, with only hot receipts/revision/background excluded.
@@ -771,6 +821,28 @@ impl Engine {
                 })
             {
                 return Err("checkpoint_spatial_permission_binding".into());
+            }
+        }
+        if let Some(state) = candidate.spatial_geometry.as_ref() {
+            let permissions = candidate
+                .spatial_permissions
+                .as_ref()
+                .ok_or("checkpoint_spatial_geometry_without_permissions")?;
+            state
+                .validate_against(permissions)
+                .map_err(|error| format!("checkpoint_spatial_geometry_binding:{error:?}"))?;
+            for entry in state.requests() {
+                if candidate
+                    .world
+                    .account_handle(entry.request.applicant_account)
+                    .is_err()
+                    || candidate
+                        .world
+                        .account_handle(entry.request.executor_account)
+                        .is_err()
+                {
+                    return Err("checkpoint_spatial_geometry_account".into());
+                }
             }
         }
         if let Some(b) = candidate.world.boot {
@@ -1195,6 +1267,11 @@ impl Engine {
     ) -> Option<&crate::spatial_transport_permissions::SpatialPermissionState> {
         self.spatial_permissions.as_ref()
     }
+    pub fn spatial_geometry(
+        &self,
+    ) -> Option<&crate::spatial_geometry_permissions::SpatialGeometryState> {
+        self.spatial_geometry.as_ref()
+    }
     /// Bind an immutable, Store-validated spatial permission genesis state before the world is
     /// published. This cannot be used after any operation or revision has been committed.
     pub fn initialize_spatial_permissions(
@@ -1274,6 +1351,10 @@ impl Engine {
                 .spatial_permissions
                 .as_ref()
                 .map_or(0, |state| state.owned_capacity_bytes())
+            + self
+                .spatial_geometry
+                .as_ref()
+                .map_or(0, |state| state.owned_rows_bytes())
             + spatial_workspace
     }
     fn state_view(&self) -> impl Serialize + '_ {
@@ -1288,6 +1369,8 @@ impl Engine {
             #[serde(skip_serializing_if = "Option::is_none")]
             spatial_permissions:
                 &'a Option<crate::spatial_transport_permissions::SpatialPermissionState>,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            spatial_geometry: &'a Option<crate::spatial_geometry_permissions::SpatialGeometryState>,
         }
         View {
             world: self.world.borrowed_view(),
@@ -1297,6 +1380,7 @@ impl Engine {
             timeline: &self.timeline,
             background: &self.background,
             spatial_permissions: &self.spatial_permissions,
+            spatial_geometry: &self.spatial_geometry,
         }
     }
     pub fn write_state_comparison(
@@ -1483,10 +1567,10 @@ impl Engine {
             |prepared| CommitContext {
                 spatial_update_grant: prepared.spatial_update_grant,
                 spatial_permissions: prepared.spatial_permissions.as_deref(),
-                prior_spatial_permissions: prepared
-                    .spatial_permissions
-                    .as_ref()
-                    .and(self.spatial_permissions.as_ref()),
+                prior_spatial_permissions: self.spatial_permissions.as_ref(),
+                spatial_geometry_grant: prepared.spatial_geometry_grant,
+                spatial_geometry: prepared.spatial_geometry.as_ref(),
+                prior_spatial_geometry: self.spatial_geometry.as_ref(),
             },
         );
         persist(&env, &record, commit_context)?;
@@ -1660,13 +1744,15 @@ impl Engine {
         let mut boot = self.world.boot;
         let mut exchange = self.world.exchange;
         let mut construction = self.world.construction;
-        let mut town = self.world.town.map(|m| m.state);
+        let mut town = self.world.town.as_ref().map(|m| m.state);
         let mut housing: Option<crate::housing::HousingState> = None;
         let mut housing_wage_window: Option<Box<crate::housing_income::PaidWageWindow>> = None;
         let mut housing_moves: Option<Box<crate::housing_runtime_move::MoveRuntimeState>> = None;
         let mut housing_move_scratch_bytes = 0usize;
         let mut spatial_permissions: Option<workspace::SpatialPermissionLease> = None;
         let mut spatial_update_grant = None;
+        let mut spatial_geometry = None;
+        let mut spatial_geometry_grant = None;
         let mut town_summary = None;
         let mut background =
             workspace::BackgroundLease::acquire(&storage.background, &self.background)?;
@@ -2154,11 +2240,60 @@ impl Engine {
                     spatial_permissions = Some(next);
                     spatial_update_grant = grant;
                 }
+                Action::SpatialGeometry { command } => {
+                    if env.actions.len() != 1 {
+                        return Err(TxError::InvalidOperation);
+                    }
+                    let Caller::Account(actor) = caller else {
+                        return Err(TxError::Unauthorized);
+                    };
+                    let permissions = self
+                        .spatial_permissions
+                        .as_ref()
+                        .ok_or(TxError::InvalidOperation)?;
+                    if let crate::spatial_geometry_permissions::SpatialGeometryCommand::Request {
+                        executor_account,
+                        ..
+                    } = command
+                    {
+                        self.world
+                            .account_handle(executor_account)
+                            .map_err(|_| TxError::Unauthorized)?;
+                    }
+                    let mut next = if let Some(state) = spatial_geometry
+                        .take()
+                        .or_else(|| self.spatial_geometry.clone())
+                    {
+                        state
+                    } else {
+                        crate::spatial_geometry_permissions::SpatialGeometryState::new(
+                            self.world.scope.world(),
+                            self.world.scope.branch(),
+                        )
+                        .map_err(|_| TxError::InvalidOperation)?
+                    };
+                    let grant = next
+                        .apply(actor, command, permissions)
+                        .map_err(|_| TxError::InvalidOperation)?;
+                    if let Some(geometry_grant) = grant {
+                        let mut next_permissions =
+                            workspace::SpatialPermissionLease::take(&storage.spatial_permissions)?;
+                        permissions
+                            .copy_into(&mut next_permissions)
+                            .map_err(|_| TxError::InvalidOperation)?;
+                        next_permissions
+                            .apply_geometry_profile_revision(geometry_grant)
+                            .map_err(|_| TxError::InvalidOperation)?;
+                        spatial_permissions = Some(next_permissions);
+                    }
+                    spatial_geometry = Some(next);
+                    spatial_geometry_grant = grant;
+                }
                 Action::TownSettle { profile_id } => {
                     if !matches!(caller, Caller::System) || env.actions.len() != 1 {
                         return Err(TxError::Unauthorized);
                     }
-                    let market = self.world.town.ok_or(TxError::InvalidOperation)?;
+                    let market = self.world.town.as_ref().ok_or(TxError::InvalidOperation)?;
                     if market.profile.id != profile_id
                         || market
                             .profile
@@ -2210,7 +2345,7 @@ impl Engine {
                     if !matches!(caller, Caller::System) || env.actions.len() != 1 {
                         return Err(TxError::Unauthorized);
                     }
-                    let market = self.world.town.ok_or(TxError::InvalidOperation)?;
+                    let market = self.world.town.as_ref().ok_or(TxError::InvalidOperation)?;
                     let proof = transport.ok_or(TxError::InvalidOperation)?;
                     let expected_allocation_sha256 =
                         if let Some(permissions) = self.spatial_permissions.as_ref() {
@@ -2295,7 +2430,7 @@ impl Engine {
                     if !matches!(caller, Caller::System) || env.actions.len() != 1 {
                         return Err(TxError::Unauthorized);
                     }
-                    let market = self.world.town.ok_or(TxError::InvalidOperation)?;
+                    let market = self.world.town.as_ref().ok_or(TxError::InvalidOperation)?;
                     let profile = &market.profile;
                     let current_timeline = timeline.as_ref().ok_or(TxError::InvalidOperation)?;
                     let state = town.as_ref().ok_or(TxError::InvalidOperation)?;
@@ -2386,7 +2521,7 @@ impl Engine {
                     let Caller::Account(investor_account) = caller else {
                         return Err(TxError::Unauthorized);
                     };
-                    let market = self.world.town.ok_or(TxError::InvalidOperation)?;
+                    let market = self.world.town.as_ref().ok_or(TxError::InvalidOperation)?;
                     if market.state.settled_day != 0
                         || timeline.as_ref().is_some_and(|timeline| {
                             timeline.progress.at != 0
@@ -2492,7 +2627,7 @@ impl Engine {
                     let Caller::Account(caller_account) = caller else {
                         return Err(TxError::Unauthorized);
                     };
-                    let market = self.world.town.ok_or(TxError::InvalidOperation)?;
+                    let market = self.world.town.as_ref().ok_or(TxError::InvalidOperation)?;
                     let charter = market
                         .profile
                         .equity_charters
@@ -2684,7 +2819,7 @@ impl Engine {
                             &leases,
                         )
                         || town_exit_profile_dependency(
-                            &self.world.town.ok_or(TxError::InvalidOperation)?.profile,
+                            &self.world.town.as_ref().ok_or(TxError::InvalidOperation)?.profile,
                             company,
                         )
                         || region.as_ref().is_some_and(|r| {
@@ -2695,7 +2830,7 @@ impl Engine {
                     {
                         return Err(TxError::InvalidOperation);
                     }
-                    let market_profile = &self.world.town.ok_or(TxError::InvalidOperation)?.profile;
+                    let market_profile = &self.world.town.as_ref().ok_or(TxError::InvalidOperation)?.profile;
                     if !exit_timeline_bindings_match(
                         policy,
                         current,
@@ -2765,7 +2900,7 @@ impl Engine {
                     if env.actions.len() != 1 {
                         return Err(TxError::InvalidOperation);
                     }
-                    let market = self.world.town.ok_or(TxError::InvalidOperation)?;
+                    let market = self.world.town.as_ref().ok_or(TxError::InvalidOperation)?;
                     let runtime = town
                         .as_ref()
                         .and_then(|state| state.exit)
@@ -3002,7 +3137,7 @@ impl Engine {
                     if env.actions.len() != 1 {
                         return Err(TxError::InvalidOperation);
                     }
-                    let market = self.world.town.ok_or(TxError::InvalidOperation)?;
+                    let market = self.world.town.as_ref().ok_or(TxError::InvalidOperation)?;
                     let runtime = town
                         .as_ref()
                         .and_then(|state| state.exit)
@@ -3273,7 +3408,7 @@ impl Engine {
                     }
                     let payer = accounts[f].1.id;
                     let payee = accounts[t].1.id;
-                    if self.world.town.is_some_and(|market| {
+                    if self.world.town.as_ref().is_some_and(|market| {
                         market
                             .profile
                             .equity_charters
@@ -3359,7 +3494,7 @@ impl Engine {
                     }
                 }
                 Action::MoveStock { from, to, quantity } => {
-                    if self.world.town.is_some_and(|market| {
+                    if self.world.town.as_ref().is_some_and(|market| {
                         let chartered =
                             |stock_ref: crate::arena::Handle<crate::arena::InventoryDomain>| {
                                 self.world.stocks.get(stock_ref).ok().is_some_and(|stock| {
@@ -3720,6 +3855,14 @@ impl Engine {
             0,
             crate::housing_runtime_move::MoveRuntimeState::owned_capacity_bytes,
         ));
+        let projected = projected.saturating_add(spatial_geometry.as_ref().map_or(
+            0,
+            |state: &crate::spatial_geometry_permissions::SpatialGeometryState| {
+                // The candidate's inline Option<State> header is part of Prepared's root
+                // layout. Only its separately owned request/approval rows are added here.
+                state.owned_rows_bytes()
+            },
+        ));
         // The durable candidate must also satisfy the exact World budget checked by
         // assemble/restore. Engine's broader 4 MiB check does not substitute for this gate:
         // otherwise a Wait could commit successfully and then be rejected on cold open.
@@ -3800,6 +3943,8 @@ impl Engine {
             town,
             spatial_permissions,
             spatial_update_grant,
+            spatial_geometry,
+            spatial_geometry_grant,
             accounts,
             stocks,
             resources,
@@ -3864,6 +4009,9 @@ impl Engine {
                     .expect("spatial source validated"),
                 &mut *state,
             );
+        }
+        if let Some(state) = prepared.spatial_geometry {
+            self.spatial_geometry = Some(state);
         }
         self.world.revision = prepared.receipt.revision;
         std::mem::swap(&mut self.resources, &mut *prepared.resources);
@@ -6427,6 +6575,7 @@ impl Action {
             } | Self::RegionMigrate { .. }
                 | Self::EquityContribute { .. }
                 | Self::SpatialPermission { .. }
+                | Self::SpatialGeometry { .. }
                 | Self::HousingLease { .. }
                 | Self::HousingMove { .. }
                 | Self::ReserveCapacity { .. }

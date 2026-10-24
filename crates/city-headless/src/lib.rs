@@ -63,3 +63,6 @@ pub mod r07_runtime;
 pub mod r07_exercise;
 
 pub(crate) mod vm_trace;
+
+// Real pending-job hints; the original required dispatcher remains authoritative.
+pub(crate) mod task_registry_adapter;

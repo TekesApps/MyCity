@@ -1,0 +1,9 @@
+{
+  "schema": "run36-air-f32-v1",
+  "side": 128,
+  "target": 30,
+  "initial_micro": 2000000,
+  "boundary_micro": [2000000, 2000000, 2000000, 2000000],
+  "boundary_until": 2592000,
+  "sources": []
+}

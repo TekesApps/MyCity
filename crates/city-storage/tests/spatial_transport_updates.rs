@@ -1,3 +1,6 @@
+#[path = "../examples/support/spatial_geometry_apply.rs"]
+mod geometry_apply_support;
+
 use mycity_core::{
     market_access::{
         AllocationScope, DemandRepeatPolicy, FeePolicyInput, TransportAllocationProfile,
@@ -10,22 +13,26 @@ use mycity_core::{
         SPATIAL_ALLOW_RESTORE,
     },
     timeline::{Command as TimelineCommand, DAY},
+    town_economy::{AccountSnapshot, HouseholdGroup, MarketInput, ShopSnapshot},
     transaction::{Action, Caller, Envelope},
     transport::{Entrance, Node, OdDemand, Opening, RoadEdge},
-    units::{GameTime, Quantity},
+    units::{GameTime, Money, Quantity},
 };
 use mycity_map::{
     geometry::{Facing, Mode, Port},
+    geometry_revision::{build_candidate, CandidateError, GeometryEdit},
     probe,
     scene::Scene,
     terrain::import,
     traffic_adapter::{
-        adapt, AdapterIds, AdapterInput, FacilityOperation, RoadDirection, TerminalGrant,
-        WALK_MODE_MASK,
+        adapt, AdapterIds, FacilityOperation, RoadDirection, TerminalGrant, WALK_MODE_MASK,
     },
     Point,
 };
-use mycity_storage::{spatial_transport_updates::*, Store, WritePoint};
+use mycity_storage::{
+    spatial_geometry_updates::SpatialGeometryAdapterBasis, spatial_transport_updates::*, Store,
+    WritePoint,
+};
 use serde_json::Value;
 use sha2::{Digest, Sha256};
 use std::{
@@ -216,11 +223,8 @@ fn source_asset_hash_mismatch_is_rejected_before_candidate_building() {
     );
 }
 
-fn scene_profile_and_hash() -> (TransportAllocationProfile, [u8; 32]) {
-    let input: probe::Input = serde_json::from_slice(SPATIAL_FIXTURE).unwrap();
-    let terrain = import(input.terrain, HEIGHTMAP_FIXTURE, 1, 0).unwrap();
-    let scene = Scene::assemble(input.scene, &terrain, &terrain).unwrap();
-    let demands = [
+fn geometry_adapter_basis(scene: &Scene) -> SpatialGeometryAdapterBasis {
+    let demands = vec![
         OdDemand {
             source_id: 101,
             origin_entrance: 11,
@@ -236,52 +240,59 @@ fn scene_profile_and_hash() -> (TransportAllocationProfile, [u8; 32]) {
             people: 4,
         },
     ];
-    let opening = adapt(
-        &scene,
-        AdapterInput {
-            expected_map_id: 1,
-            city_id: 1,
-            revision: 1,
-            building_owner_id: 2,
-            ids: AdapterIds {
-                building_node: 1,
-                anchor_node: 2,
-                terminal_node: 3,
-                building_entrance: 11,
-                connector_forward_edge: 21,
-                connector_reverse_edge: 22,
-                road_forward_edge: 23,
-                road_reverse_edge: 24,
-            },
-            terminal: TerminalGrant {
-                owner_id: 3,
-                entrance_id: 12,
-                port: Port {
-                    point: Point { x: 1000, y: 1000 },
-                    z_cm: 0,
-                    mode: Mode::Walk,
-                    facing: Facing::West,
-                    clear_width_cm: 700,
-                    can_enter: true,
-                    can_exit: true,
-                    authorized: true,
-                },
-            },
-            connector: FacilityOperation {
-                capacity_people_per_period: 4,
-                free_flow_speed_cm_per_second: 100,
-                open: true,
-            },
-            road: FacilityOperation {
-                capacity_people_per_period: 4,
-                free_flow_speed_cm_per_second: 100,
-                open: true,
-            },
-            road_direction: RoadDirection::Both,
-            demands: &demands,
+    SpatialGeometryAdapterBasis {
+        schema: mycity_storage::spatial_geometry_updates::ADAPTER_BASIS_SCHEMA,
+        world_id: scene.input().map.world,
+        branch_id: scene.input().map.branch,
+        profile_id: 1,
+        expected_map_id: scene.input().map.map,
+        city_id: 1,
+        building_owner_id: 2,
+        ids: AdapterIds {
+            building_node: 1,
+            anchor_node: 2,
+            terminal_node: 3,
+            building_entrance: 11,
+            connector_forward_edge: 21,
+            connector_reverse_edge: 22,
+            road_forward_edge: 23,
+            road_reverse_edge: 24,
         },
-    )
-    .unwrap();
+        terminal: TerminalGrant {
+            owner_id: 3,
+            entrance_id: 12,
+            port: Port {
+                point: Point { x: 1000, y: 1000 },
+                z_cm: 0,
+                mode: Mode::Walk,
+                facing: Facing::West,
+                clear_width_cm: 700,
+                can_enter: true,
+                can_exit: true,
+                authorized: true,
+            },
+        },
+        connector: FacilityOperation {
+            capacity_people_per_period: 4,
+            free_flow_speed_cm_per_second: 100,
+            open: true,
+        },
+        road: FacilityOperation {
+            capacity_people_per_period: 4,
+            free_flow_speed_cm_per_second: 100,
+            open: true,
+        },
+        road_direction: RoadDirection::Both,
+        demands,
+    }
+}
+
+fn scene_profile_and_hash() -> (TransportAllocationProfile, [u8; 32]) {
+    let input: probe::Input = serde_json::from_slice(SPATIAL_FIXTURE).unwrap();
+    let terrain = import(input.terrain, HEIGHTMAP_FIXTURE, 1, 0).unwrap();
+    let scene = Scene::assemble(input.scene, &terrain, &terrain).unwrap();
+    let basis = geometry_adapter_basis(&scene);
+    let opening = adapt(&scene, basis.adapter_input(1)).unwrap();
     let assignment = opening.assign().unwrap();
     let profile = TransportAllocationProfile {
         schema: 1,
@@ -330,6 +341,26 @@ fn opening_with_market(allocation_hash: [u8; 32]) -> Vec<u8> {
         "shops":[{"shop_id":1,"account":3,"stock_id":3,"good":1,"shelf_price_per_q":100}],
         "recipes":[],
         "delivery":[{"quote_id":1,"shop":1,"household_group":1,"good":1,"reachable":true,"route_source":77,"freight_account":1,"utility_account":1,"available_capacity":100,"freight_per_q":1,"utility_surcharge_per_q":0}]
+    });
+    serde_json::to_vec(&value).unwrap()
+}
+
+fn opening_with_market_and_registered_city(allocation_hash: [u8; 32]) -> Vec<u8> {
+    let mut value: Value = serde_json::from_slice(&opening_with_market(allocation_hash)).unwrap();
+    // Geometry adapter basis city_id=1 must resolve against a real registered Region city.
+    // Keep the market fixture's accounts, seed, stocks, and balances intact.
+    value["region"] = serde_json::json!({
+        "schema": "mycity-m0-region-v1",
+        "active_city": 1,
+        "cities": [{
+            "id": 1,
+            "development_elapsed": 0,
+            "population": 100,
+            "willing": 0,
+            "housing_capacity": 4000
+        }],
+        "routes": [],
+        "obligations": []
     });
     serde_json::to_vec(&value).unwrap()
 }
@@ -391,6 +422,314 @@ fn create_store(path: &std::path::Path) -> (Store, TransportAllocationProfile, [
     )
     .unwrap();
     (store, profile, scene_hash)
+}
+
+fn geometry_oracle_freight_per_q(profile: &TransportAllocationProfile) -> i64 {
+    let input = MarketInput {
+        schema: "geometry-oracle-v1".to_owned(),
+        world: profile.world_id,
+        branch: profile.branch_id,
+        revision: 1,
+        day: 1,
+        operation_id: 1,
+        households: vec![HouseholdGroup {
+            id: 1,
+            account: 2,
+            households: 1,
+            need_good: 1,
+            need_per_household: Quantity::new(40).unwrap(),
+            reference_price_per_q: Money::new(10_000).unwrap(),
+        }],
+        employers: Vec::new(),
+        accounts: vec![
+            AccountSnapshot {
+                account: 1,
+                cash: Money::new(1_000_000).unwrap(),
+                protected: Money::new(0).unwrap(),
+            },
+            AccountSnapshot {
+                account: 2,
+                cash: Money::new(1_000_000).unwrap(),
+                protected: Money::new(0).unwrap(),
+            },
+            AccountSnapshot {
+                account: 3,
+                cash: Money::new(1_000_000).unwrap(),
+                protected: Money::new(0).unwrap(),
+            },
+        ],
+        inventories: Vec::new(),
+        shops: vec![ShopSnapshot {
+            shop_id: 1,
+            account: 3,
+            stock_id: 3,
+            good: 1,
+            shelf_price_per_q: Money::new(100).unwrap(),
+        }],
+        recipes: Vec::new(),
+        delivery: vec![mycity_core::town_economy::DeliveryQuote {
+            quote_id: 1,
+            shop: 1,
+            household_group: 1,
+            good: 1,
+            reachable: true,
+            route_source: 77,
+            freight_account: 3,
+            utility_account: 1,
+            available_capacity: Quantity::new(100).unwrap(),
+            freight_per_q: Money::new(0).unwrap(),
+            utility_surcharge_per_q: Money::new(0).unwrap(),
+        }],
+    };
+    mycity_core::market_access::resolve_delivery_quotes(
+        &input,
+        &profile.opening,
+        &profile.assignment,
+        &profile.partitions,
+        profile.fee_policy,
+    )
+    .unwrap()
+    .delivery_quotes[0]
+        .freight_per_q
+        .value()
+}
+
+#[test]
+fn geometry_basis_genesis_preserves_baseline_and_curve_fee_oracle() {
+    let source: probe::Input = serde_json::from_slice(SPATIAL_FIXTURE).unwrap();
+    let terrain = import(source.terrain.clone(), HEIGHTMAP_FIXTURE, 1, 0).unwrap();
+    let scene = Scene::assemble(source.scene.clone(), &terrain, &terrain).unwrap();
+    let basis = geometry_adapter_basis(&scene);
+    basis.validate().unwrap();
+    let basis_hash = basis.sha256().unwrap();
+    let genesis_road_open = basis.road.open;
+
+    let (mut baseline, scene_hash) = scene_profile_and_hash();
+    baseline.fee_policy.cents_per_travel_second = 10;
+    let baseline_bytes = serde_json::to_vec(&baseline).unwrap();
+    let result = build_candidate(
+        &source.scene,
+        &terrain,
+        &terrain,
+        basis.adapter_input(baseline.opening.revision),
+        &baseline,
+        &baseline_bytes,
+        mycity_map::geometry_revision::GeometryEdit::RoadControlPoint(Point { x: 3000, y: 1800 }),
+    )
+    .unwrap();
+    let candidate: TransportAllocationProfile =
+        serde_json::from_slice(&result.profile_bytes).unwrap();
+    let travel_seconds = |profile: &TransportAllocationProfile, edge_id| {
+        profile
+            .opening
+            .edges
+            .iter()
+            .find(|edge| edge.id == edge_id)
+            .unwrap()
+            .free_flow_seconds
+    };
+    assert_eq!(travel_seconds(&baseline, 23), 41);
+    assert_eq!(travel_seconds(&baseline, 24), 41);
+    assert_eq!(travel_seconds(&candidate, 23), 42);
+    assert_eq!(travel_seconds(&candidate, 24), 42);
+    for source_id in [101, 102] {
+        let baseline_outcome = baseline
+            .assignment
+            .demand_outcomes
+            .iter()
+            .find(|outcome| outcome.source_id == source_id)
+            .unwrap();
+        let candidate_outcome = candidate
+            .assignment
+            .demand_outcomes
+            .iter()
+            .find(|outcome| outcome.source_id == source_id)
+            .unwrap();
+        assert_eq!(baseline_outcome.served_people, 4);
+        assert_eq!(candidate_outcome.served_people, 4);
+        // `mean_travel_seconds` uses the assigned congested edge costs, not the
+        // 71/72-second free-flow path length. At full capacity BPR floors
+        // 30s*1.15 to 34s and 41/42s*1.15 to 47/48s, giving 81/82s per path.
+        assert_eq!(baseline_outcome.mean_travel_seconds, Some(81));
+        assert_eq!(candidate_outcome.mean_travel_seconds, Some(82));
+    }
+    assert_eq!(geometry_oracle_freight_per_q(&baseline), 162);
+    assert_eq!(geometry_oracle_freight_per_q(&candidate), 164);
+    assert_eq!(
+        (164 - 162) * 40,
+        80,
+        "round trip 2*81/2*82 seconds at 10 cents/second, four trips of 10 units: 6480/6560 total cents, or 162/164 cents per unit"
+    );
+
+    let root = std::env::var_os("MYCITY_TEST_ARTIFACT_ROOT")
+        .map(PathBuf::from)
+        .unwrap_or_else(std::env::temp_dir);
+    fs::create_dir_all(&root).unwrap();
+    let world = root.join(format!(
+        "mycity-spatial-geometry-genesis-{}-{}",
+        std::process::id(),
+        TEMP_ID.fetch_add(1, Ordering::Relaxed)
+    ));
+    let profile_hash: [u8; 32] = Sha256::digest(&baseline_bytes).into();
+    let mut store = Store::create_spatial_with_geometry_basis(
+        &world,
+        &opening_with_market_and_registered_city(profile_hash),
+        vec![],
+        SPATIAL_RULES,
+        (SPATIAL_FIXTURE, HEIGHTMAP_FIXTURE),
+        &baseline_bytes,
+        permission_state(scene_hash, profile_hash),
+        basis.clone(),
+    )
+    .unwrap();
+    assert_eq!(
+        store
+            .geometry_adapter_basis()
+            .unwrap()
+            .unwrap()
+            .sha256()
+            .unwrap(),
+        basis_hash
+    );
+    let (sales, proof_hash, outbound, returning) = settle(&mut store, &world, 1);
+    assert_eq!((sales, outbound, returning), (40, 4, 4));
+    assert_eq!(
+        store
+            .engine()
+            .unwrap()
+            .world()
+            .view()
+            .town
+            .as_ref()
+            .unwrap()
+            .state
+            .last_summary
+            .freight
+            .value(),
+        6_480
+    );
+    let proof_bytes =
+        fs::read(world.join(format!("town-proof-{}.json", hex(&proof_hash)))).unwrap();
+    let proof: mycity_core::market_access::TransportProofAsset =
+        serde_json::from_slice(&proof_bytes).unwrap();
+    assert_eq!(proof.service_day, 1);
+    assert_eq!(proof.allocation_profile_sha256, profile_hash);
+    assert_eq!(
+        proof
+            .assignment
+            .demand_outcomes
+            .iter()
+            .map(|outcome| (outcome.source_id, outcome.mean_travel_seconds))
+            .collect::<Vec<_>>(),
+        vec![(101, Some(81)), (102, Some(81))]
+    );
+    let settled_state_hash = store.state_hash().unwrap();
+    let settled_sequence = store.committed_sequence();
+    let settled_receipt =
+        serde_json::to_vec(&store.receipt(settled_sequence).unwrap().unwrap()).unwrap();
+    drop(store);
+
+    let mut cold = Store::open(&world, SPATIAL_RULES).unwrap();
+    assert_eq!(cold.state_hash().unwrap(), settled_state_hash);
+    assert_eq!(cold.committed_sequence(), settled_sequence);
+    assert_eq!(
+        serde_json::to_vec(&cold.receipt(settled_sequence).unwrap().unwrap()).unwrap(),
+        settled_receipt
+    );
+    assert_eq!(
+        cold.geometry_adapter_basis()
+            .unwrap()
+            .unwrap()
+            .sha256()
+            .unwrap(),
+        basis_hash
+    );
+
+    // The fixed genesis basis still says the road is open. After an authorized Close,
+    // geometry candidate construction against the active profile must reject that mismatch;
+    // it cannot silently rebuild the road open from the immutable basis.
+    let (close_road, close_digest) = submit_request(
+        &mut cold,
+        &world,
+        70,
+        SpatialAccessOperation::Close,
+        24,
+        SpatialAccessSurface::Road,
+        2,
+        1,
+        3,
+        4,
+        2,
+        true,
+    );
+    advance_to_day(&mut cold, 2);
+    apply_request(&mut cold, close_road.request_id, close_digest, 1);
+    let active_profile_hash = cold
+        .engine()
+        .unwrap()
+        .spatial_permissions()
+        .unwrap()
+        .assets()
+        .iter()
+        .find(|asset| asset.asset_id == 70)
+        .unwrap()
+        .current_profile_sha256;
+    let active_profile =
+        VerifiedAllocationAsset::read_immutable(&world, active_profile_hash, 1, 1, 1).unwrap();
+    assert!(
+        !active_profile
+            .profile()
+            .opening
+            .edges
+            .iter()
+            .find(|edge| edge.id == 24)
+            .unwrap()
+            .open
+    );
+    assert!(genesis_road_open);
+    let active_profile_bytes = serde_json::to_vec(active_profile.profile()).unwrap();
+    let before_rejected_candidate = cold.state_hash().unwrap();
+    let rejected = build_candidate(
+        &source.scene,
+        &terrain,
+        &terrain,
+        basis.adapter_input(active_profile.profile().opening.revision),
+        active_profile.profile(),
+        &active_profile_bytes,
+        GeometryEdit::RoadControlPoint(Point { x: 3000, y: 1800 }),
+    );
+    assert!(matches!(rejected, Err(CandidateError::InvalidBaseline)));
+    assert_eq!(cold.state_hash().unwrap(), before_rejected_candidate);
+}
+
+#[test]
+fn same_store_authorized_geometry_revision_changes_trade_and_cold_replays() {
+    let root = std::env::var_os("MYCITY_TEST_ARTIFACT_ROOT")
+        .map(PathBuf::from)
+        .unwrap_or_else(std::env::temp_dir);
+    let world = root.join(format!(
+        "mycity-spatial-geometry-apply-{}-{}",
+        std::process::id(),
+        TEMP_ID.fetch_add(1, Ordering::Relaxed)
+    ));
+    geometry_apply_support::run(&world);
+}
+
+#[test]
+fn pending_geometry_apply_is_rejected_after_target_or_other_asset_close() {
+    let root = std::env::var_os("MYCITY_TEST_ARTIFACT_ROOT")
+        .map(PathBuf::from)
+        .unwrap_or_else(std::env::temp_dir);
+    fs::create_dir_all(&root).unwrap();
+    for changed_asset_id in [70, 71] {
+        let world = root.join(format!(
+            "mycity-spatial-geometry-stale-{}-{}-{}",
+            std::process::id(),
+            changed_asset_id,
+            TEMP_ID.fetch_add(1, Ordering::Relaxed)
+        ));
+        geometry_apply_support::run_stale_geometry_after_access_close(&world, changed_asset_id);
+    }
 }
 
 #[derive(Clone, Copy)]

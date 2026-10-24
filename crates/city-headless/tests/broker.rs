@@ -44,7 +44,13 @@ impl Drop for Temp {
     }
 }
 fn exe() -> &'static Path {
-    Path::new(env!("CARGO_BIN_EXE_mycity-headless"))
+    static EXE: std::sync::OnceLock<PathBuf> = std::sync::OnceLock::new();
+    EXE.get_or_init(|| {
+        let path = std::env::var_os("MYCITY_PROTOCOL_WORKER_EXE").map(PathBuf::from)
+            .unwrap_or_else(|| PathBuf::from(env!("CARGO_BIN_EXE_mycity-headless")));
+        assert!(path.is_absolute() && path.is_file(), "actual fixed CLI absent");
+        path
+    }).as_path()
 }
 fn call(c: &mut Client, id: &mut u64, command: Command) -> Value {
     *id += 1;
@@ -486,4 +492,91 @@ fn partial_sim_workspace_refill_after_real_child_exit_stops_pool_without_false_c
         .iter()
         .any(|r| r["kind"] == "returned_after_sim_wait_or_cancel"));
     assert!(!root.join("report.json").exists());
+}
+
+
+/// Actual lost Started reply must terminate Sim without waiting for another command.
+/// Only original Client's real Sim wait/revoke may retire broker's unknown worker.
+#[test]
+fn lost_started_reply_exits_session_without_another_command_then_cold_retries() {
+    assert!(std::env::var_os("MYCITY_BROKER_TEST_ARTIFACT_ROOT").is_some(),
+        "set existing external evidence root; this test retains originals");
+    let t = Temp::new();
+    let root = t.0.join("pool");
+    let world = t.0.join("world");
+    let mut pool = FaultPool::spawn(&root, "after-broker-start-reply");
+    let mut client = Client::spawn_in_pool(exe(), &world, true, false, &root).unwrap();
+    client.next(Duration::from_secs(10)).unwrap();
+    let mut id = 0;
+    prepare(&mut client, &mut id);
+    id += 1;
+    client.submit(id, Command::RunRequired { job: 1 }).unwrap();
+    let mut result = None;
+    for _ in 0..8 {
+        let event = client.next(Duration::from_secs(10)).unwrap();
+        if event.kind == "result" { result = Some(event); break; }
+        assert_ne!(event.kind, "worker_started"); // no acknowledged Lease reached Sim
+    }
+    let result = result.expect("lost Start must produce a bounded error result");
+    assert!(result.payload["Err"].as_str().is_some(), "{result:?}");
+    assert!(client.worker_pid().is_none());
+    let before_wait = normal_pool::status(&root).unwrap();
+    assert_eq!(before_wait.grants, 1);
+    assert_eq!(before_wait.returns, 0); // EOF/Sim exit is NOT broker wait/revoke
+    fs::write(t.0.join("lost-start-result.json"), serde_json::to_vec_pretty(&result).unwrap()).unwrap();
+    fs::write(t.0.join("before-supervisor-wait.json"), serde_json::to_vec_pretty(&before_wait).unwrap()).unwrap();
+    // No Stop, SIGKILL, input close, or second command: the fixed Sim must exit itself.
+    client.wait_for_sim_exit(Duration::from_secs(3)).unwrap();
+    let after = normal_pool::status(&root).unwrap();
+    assert_eq!(after.grants, 1); assert_eq!(after.returns, 1);
+    assert_eq!(after.workspace_grants, after.workspace_returns);
+    assert_eq!(after.available_touched_bytes, BYTES);
+    fs::write(t.0.join("after-supervisor-wait.json"), serde_json::to_vec_pretty(&after).unwrap()).unwrap();
+    let mut recovered = Client::spawn_in_pool(exe(), &world, false, false, &root).unwrap();
+    recovered.next(Duration::from_secs(10)).unwrap();
+    let completed = call(&mut recovered, &mut id, Command::RunRequired { job: 1 });
+    assert_eq!(completed["replayed"], false);
+    let state = call(&mut recovered, &mut id, Command::Status);
+    assert_eq!(state["background"]["time"], 30);
+    fs::write(t.0.join("cold-result.json"), serde_json::to_vec_pretty(&state).unwrap()).unwrap();
+    call(&mut recovered, &mut id, Command::Stop);
+    recovered.stop().unwrap(); client.stop().unwrap();
+    let final_state = normal_pool::status(&root).unwrap();
+    assert_eq!(final_state.grants, 2); assert_eq!(final_state.returns, 2);
+    assert_eq!(final_state.available_touched_bytes, BYTES);
+    pool.finish();
+}
+
+#[test]
+fn lost_stopped_reply_retries_original_lease_without_duplicate_credit_or_lost_receipt() {
+    assert!(std::env::var_os("MYCITY_BROKER_TEST_ARTIFACT_ROOT").is_some(),
+        "set existing external evidence root; this test retains originals");
+    let t = Temp::new();
+    let root = t.0.join("pool"); let world = t.0.join("world");
+    let mut pool = FaultPool::spawn(&root, "after-broker-stop-reply");
+    let mut client = Client::spawn_in_pool(exe(), &world, true, false, &root).unwrap();
+    client.next(Duration::from_secs(10)).unwrap(); let mut id = 0;
+    prepare(&mut client, &mut id);
+    let completed = call(&mut client, &mut id, Command::RunRequired { job: 1 });
+    assert_eq!(completed["replayed"], false);
+    let before_stop = normal_pool::status(&root).unwrap();
+    assert_eq!(before_stop.grants, 1); assert_eq!(before_stop.returns, 0);
+    call(&mut client, &mut id, Command::Stop);
+    client.wait_for_sim_exit(Duration::from_secs(3)).unwrap();
+    let after = normal_pool::status(&root).unwrap();
+    assert_eq!(after.grants, 1); assert_eq!(after.returns, 1);
+    assert_eq!(after.available_touched_bytes, BYTES);
+    fs::write(t.0.join("after-lost-stop-recovery.json"), serde_json::to_vec_pretty(&after).unwrap()).unwrap();
+    let mut recovered = Client::spawn_in_pool(exe(), &world, false, false, &root).unwrap();
+    recovered.next(Duration::from_secs(10)).unwrap();
+    let replayed = call(&mut recovered, &mut id, Command::RunRequired { job: 1 });
+    assert_eq!(replayed["replayed"], true);
+    assert_eq!(replayed["record"], completed["record"]); // original durable receipt
+    call(&mut recovered, &mut id, Command::Stop);
+    recovered.stop().unwrap(); client.stop().unwrap();
+    let final_state = normal_pool::status(&root).unwrap();
+    assert_eq!(final_state.grants, 1); assert_eq!(final_state.returns, 1);
+    assert_eq!(final_state.workspace_grants, final_state.workspace_returns);
+    assert_eq!(final_state.available_touched_bytes, BYTES);
+    pool.finish();
 }
