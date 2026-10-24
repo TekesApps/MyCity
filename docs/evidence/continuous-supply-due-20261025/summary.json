@@ -1,0 +1,27 @@
+{
+  "release_distinct_parent_tests": 27,
+  "additional_debug_same_parent_executions": 1,
+  "fresh_store_recovery_children": 6,
+  "all_pass": true,
+  "source": "source03",
+  "base": "539f09f9c48e8010f38f9db341648624ecfc9cbc",
+  "source_inputs": 433,
+  "protected_unrelated_files_unchanged": 24,
+  "hardware": "Mac16,1 32GiB Rust1.85.1 HP P900 USB/APFS",
+  "artifact_budget_bytes": 805306368,
+  "tests_not_acceptance": [
+    "real16GiB",
+    "native total peak",
+    "GPU",
+    "long stress",
+    "M0 frozen load",
+    "population/fast-forward support limit",
+    "all model scheduling",
+    "full service delivery"
+  ],
+  "failed_attempts_retained": [
+    "source01 compile E0308",
+    "source02 two Sim startup missing spatial",
+    "diagnosis02 fixed CLI on complete failure-world copy"
+  ]
+}

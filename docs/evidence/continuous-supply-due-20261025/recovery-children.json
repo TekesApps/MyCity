@@ -1,0 +1,56 @@
+[
+  {
+    "file": "attempt03/MYCITY_OPENING_CONTINUOUS_SUPPLY_TEST_ROOT/opening-continuous-supply-14612-1792879602409402000/wal-recovery-result.json",
+    "exit_code": 0,
+    "pid": 14613,
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/continuous-supply-due-20261025/attempt03/MYCITY_OPENING_CONTINUOUS_SUPPLY_TEST_ROOT/opening-continuous-supply-14612-1792879602409402000/wal-recovery-stderr.log",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/continuous-supply-due-20261025/attempt03/MYCITY_OPENING_CONTINUOUS_SUPPLY_TEST_ROOT/opening-continuous-supply-14612-1792879602409402000/wal-recovery-stdout.log",
+    "success": true,
+    "timed_out": false,
+    "wait_error": null
+  },
+  {
+    "file": "attempt03/MYCITY_OPENING_CONTINUOUS_SUPPLY_TEST_ROOT/opening-continuous-supply-14612-1792879602409402000/checkpoint-recovery-result.json",
+    "exit_code": 0,
+    "pid": 14614,
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/continuous-supply-due-20261025/attempt03/MYCITY_OPENING_CONTINUOUS_SUPPLY_TEST_ROOT/opening-continuous-supply-14612-1792879602409402000/checkpoint-recovery-stderr.log",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/continuous-supply-due-20261025/attempt03/MYCITY_OPENING_CONTINUOUS_SUPPLY_TEST_ROOT/opening-continuous-supply-14612-1792879602409402000/checkpoint-recovery-stdout.log",
+    "success": true,
+    "timed_out": false,
+    "wait_error": null
+  },
+  {
+    "file": "attempt03/MYCITY_CONTINUOUS_SUPPLY_TEST_ROOT/supply-14609-1792879601449614000/wal-reader-result.json",
+    "exit_code": 0,
+    "pid": 14610,
+    "timed_out": false,
+    "wait_error": null
+  },
+  {
+    "file": "attempt03/MYCITY_CONTINUOUS_SUPPLY_TEST_ROOT/supply-14609-1792879601449614000/checkpoint-reader-result.json",
+    "exit_code": 0,
+    "pid": 14611,
+    "timed_out": false,
+    "wait_error": null
+  },
+  {
+    "file": "attempt03-debug/worlds/opening-continuous-supply-15322-1792879665128134000/wal-recovery-result.json",
+    "exit_code": 0,
+    "pid": 15336,
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/continuous-supply-due-20261025/attempt03-debug/worlds/opening-continuous-supply-15322-1792879665128134000/wal-recovery-stderr.log",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/continuous-supply-due-20261025/attempt03-debug/worlds/opening-continuous-supply-15322-1792879665128134000/wal-recovery-stdout.log",
+    "success": true,
+    "timed_out": false,
+    "wait_error": null
+  },
+  {
+    "file": "attempt03-debug/worlds/opening-continuous-supply-15322-1792879665128134000/checkpoint-recovery-result.json",
+    "exit_code": 0,
+    "pid": 15337,
+    "stderr": "/Volumes/HP P900/dev/MyCity/work/continuous-supply-due-20261025/attempt03-debug/worlds/opening-continuous-supply-15322-1792879665128134000/checkpoint-recovery-stderr.log",
+    "stdout": "/Volumes/HP P900/dev/MyCity/work/continuous-supply-due-20261025/attempt03-debug/worlds/opening-continuous-supply-15322-1792879665128134000/checkpoint-recovery-stdout.log",
+    "success": true,
+    "timed_out": false,
+    "wait_error": null
+  }
+]

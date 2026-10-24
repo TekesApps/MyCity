@@ -991,3 +991,12 @@ source-lane registration remains a next integration task. Its existing NoWork is
 never evidence that all live supply duties are absent. Original #85/#86 trees retired only
 after complete14-file originals, fixed bases/branches and no-writer/no-occupancy checks;
 no main WIP/shared repo/target/evidence deleted.
+
+
+## v0.5.185 - #101 original supply RunDue, then #120 OpeningInput
+
+Original #101 owner repaired type widening and legitimate Sim spatial setup; root exclusively wired authenticated small DueView and original Sim/client path. Original #120 worker supplied the new same-slot OpeningInput test. Original advisor accepted narrow source/repair/result gates.27 different release parents + one same-parent default-debug execution and six fresh Store recovery children pass; source01 compile and source02 startup failures remain complete. All24 protected WIP files unchanged.
+
+Actual RunDue uses original funded page width1 or original accepted-target next-boundary admission policy1/32, one original Advance, earlier true-NoWork priority, C collision and exact receipt recovery. Real raw-water stop5000 retains target7200. New OpeningInput same-slot/WAL/CP/Stop3 recovery passes. [Full evidence and limits](evidence/continuous-supply-due-20261025/STATUS.md). Full issues remain open, no PR or M0/16GB/performance acceptance.
+
+Next actual provider dependency for #57: #92 quality-source/real treatment/result provenance, followed by #85 compatible delivery and root consumption; current process water stays quality unknown. Original #85 owner performed only a read-only gap map, no new implementation assigned. Protected employment/payroll, shared member work intervals, real dispatch/return and remaining #101/#120 integration scopes stay outstanding. Do not treat pure candidates or fixture quality codes as certified water.

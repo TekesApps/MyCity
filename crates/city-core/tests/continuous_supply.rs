@@ -64,6 +64,10 @@ fn raw_checkpoint_preserves_fraction_but_is_not_an_authenticated_provider(){
     let mut e=engine(input());enable(&mut e,1);start(&mut e,2,1,3);advance(&mut e,1,10);
     let bytes=e.export_checkpoint().unwrap();let mut raw=Engine::restore_checkpoint(&bytes).unwrap();
     assert_eq!(supply(&e),supply(&raw));assert!(!raw.continuous_supply_is_authenticated());
+    let due=e.continuous_supply_due_state().unwrap().unwrap();
+    assert_eq!(due.cursor,supply(&e).cursor);
+    assert_eq!(Some(due.registration),e.continuous_supply_registration());
+    assert_eq!(raw.continuous_supply_due_state(),Err(TxError::InvalidOperation));
     let env=envelope(&raw,500,Action::ContinuousSupply{command:Command::Stop});
     assert_eq!(raw.execute(Caller::Account(1),env),Err(TxError::InvalidOperation));
 }

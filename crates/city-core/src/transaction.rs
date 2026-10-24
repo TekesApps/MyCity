@@ -1195,6 +1195,13 @@ impl Engine {
     /// This digest deliberately excludes ordinal, active rows and consumed cursors.
     pub fn continuous_supply_is_authenticated(&self)->bool{self.world.continuous_supply.as_deref().is_none_or(|r|r.is_ready())}
     pub fn continuous_supply_registration(&self)->Option<[u8;32]>{self.world.continuous_supply.as_deref().map(|r|r.registration().expect("validated supply registration"))}
+    /// Raw restore is an error, not an empty source lane. Charge bounded digest scratch first.
+    pub fn continuous_supply_due_state(&self)->Result<Option<crate::continuous_supply::DueView>,TxError>{
+        if self.world.continuous_supply.is_some() && self.owned_capacity_bytes()
+            .checked_add(crate::continuous_supply::MAX_WORKSPACE_BYTES)
+            .is_none_or(|n|n>ENGINE_BYTE_BUDGET){return Err(TxError::WorkingLimit);}
+        self.world.continuous_supply.as_deref().map(|r|r.due_view()).transpose()
+    }
     pub fn continuous_supply_receipt_operations(&self)->[Option<u64>;crate::continuous_supply::MAX_RUNS+1]{crate::continuous_supply::restore_operations(&self.world)}
     pub fn begin_continuous_supply_restore(&self)->Result<crate::continuous_supply::RestoreCheck,String>{crate::continuous_supply::begin_restore(&self.world).map_err(|e|format!("supply_restore:{e:?}"))}
     pub fn check_continuous_supply_restore_receipt(&self,c:&mut crate::continuous_supply::RestoreCheck,index:usize,record:&JournalRecord)->Result<(),String>{crate::continuous_supply::check_restore(&self.world,c,index,record).map_err(|e|format!("supply_restore_receipt:{e:?}"))}

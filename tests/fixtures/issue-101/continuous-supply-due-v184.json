@@ -1,0 +1,14 @@
+{
+  "schema": "mycity-continuous-supply-due-v184",
+  "city_id": 42,
+  "source_id": 86,
+  "source_version": 1,
+  "clock": "development",
+  "accepted_target": 7200,
+  "funded_page_limit": 1,
+  "sim_funded_page_limit": 1,
+  "admission_policy_version": 1,
+  "admission_page_limit": 32,
+  "statuses": ["running", "stopped", "faulted"],
+  "delivery_claim": false
+}

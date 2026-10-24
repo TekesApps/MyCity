@@ -296,3 +296,8 @@ original credits return; original64MiB/8MiB stays fixed. No simultaneous Sim adm
 Next concurrency design retains one Sim unique writer and bounded independent Worker slots,
 original total admission, per-slot retirement and serial candidate validation. Full104/16GB/
 GPU/M0 and earlier debug stack faults remain open. This gate is not whole-game acceptance.
+
+
+### v0.5.185 original continuous-supply required lane
+
+[Actual finite gate](evidence/continuous-supply-due-20261025/STATUS.md):27 different release parents, one additional default-debug execution and six fresh Store recovery children pass. Existing Background -> Service -> Supply ordering only falls through true NoWork. FundedContinuation retains full original reservation/page width; NextBoundaryAdmission uses accepted target only, explicit policy1/width32 and original Store admission, never implied future funding. Zero current windows retain full binding without fabricated TaskKey; necessary progress cannot be a serial-only loop. One selected C Envelope precedes at most one original Advance; collision/uncertainty preserves original receipt-based recovery, no blind reselection. No new worker, clock, pool, queue or grant manager. Full scheduler/adaptive-model/16GB/GPU/M0 acceptance remains open.

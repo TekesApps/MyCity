@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.184`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.185`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.185 adds [original supply RunDue and OpeningInput recovery](docs/evidence/continuous-supply-due-20261025/STATUS.md):27 different release parents, one additional default-debug execution and six independent Store recovery children pass. Existing task priorities, original receipts and accepted targets survive hard supply stops; full issues and M0 remain open.
 
 v0.5.184 接通[固定机组与两泵的原账连续供给](docs/evidence/continuous-service-supply-20261025/STATUS.md)：87项不同release测试、另1次默认debug执行与10个独立恢复子进程通过；分数投入、有限接收、一次启动费和非零时点停启恢复均有实际证据。#57仅组件验证，卫生水与真实服务履约、完整#85/#86和M0仍未完成。
 

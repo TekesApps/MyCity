@@ -80,6 +80,10 @@ pub enum DueError {
     MissingContinuation,
     ContinuationExhausted,
     InvalidServiceSnapshot,
+    InvalidSupplyDueView,
+    InvalidSupplySnapshot,
+    MissingSupplyContinuation,
+    SupplyContinuationExhausted,
 }
 
 impl DueError {
@@ -93,9 +97,21 @@ impl DueError {
             Self::MissingContinuation => "missing_continuation",
             Self::ContinuationExhausted => "continuation_exhausted",
             Self::InvalidServiceSnapshot => "invalid_service_snapshot",
+            Self::InvalidSupplyDueView => "invalid_supply_due_view",
+            Self::InvalidSupplySnapshot => "invalid_supply_snapshot",
+            Self::MissingSupplyContinuation => "missing_supply_continuation",
+            Self::SupplyContinuationExhausted => "supply_continuation_exhausted",
         }
     }
 }
+
+mod supply;
+pub use supply::{
+    select_supply_continuation, select_supply_continuation_with_missing_hint,
+    validate_supply_continuation, SelectedSupplyContinuation, SupplyPlanKind,
+    SupplySelection, SupplySelectionMode, SupplyZeroReason,
+    SUPPLY_ADMISSION_PAGE_LIMIT, SUPPLY_ADMISSION_POLICY_VERSION,
+};
 
 impl std::fmt::Display for DueError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {

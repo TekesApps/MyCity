@@ -1,0 +1,15 @@
+{
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/continuous-supply-due-20261025/programs03-debug/opening_continuous_supply_store",
+    "--nocapture",
+    "--test-threads=1"
+  ],
+  "exit_code": 0,
+  "summary": [
+    "ok",
+    "1",
+    "0",
+    "1"
+  ],
+  "mode": "unoptimized default test stack, additional execution of same parent case, not extra distinct test"
+}

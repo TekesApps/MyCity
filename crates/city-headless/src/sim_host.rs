@@ -363,8 +363,7 @@ fn service_run_due(
     use crate::required_dispatch::{self as due, ServiceSelection, SelectionMode};
     if active_worker { return Err("sim_dispatch_busy".into()); }
     let selected = match due::select_service_continuation(store, active_worker).map_err(err)? {
-        ServiceSelection::NoWork => return Ok(json!({"dispatch":"required_registry_v1",
-            "state":"no_work", "required_preserved":true})),
+        ServiceSelection::NoWork => return supply_run_due(store,active_worker,diag,id,writer),
         ServiceSelection::Busy => return Err("sim_dispatch_busy".into()),
         ServiceSelection::Selected(selected) => selected,
     };
@@ -415,6 +414,82 @@ fn service_run_due(
         "before_sequence":before_sequence, "before_serial":before.serial,
         "after_serial":after.serial, "boundary_at":before.at,
         "timeline":after, "outcome":outcome, "service_delivery_claimed":false}))
+}
+
+/// Source lane follows true NoWork from both earlier mandatory lanes.
+fn supply_run_due(
+    store: &mut Store,
+    active_worker: bool,
+    diag: &mut Option<crate::cpu_log::CpuLog>,
+    id: u64,
+    writer: &mut impl Write,
+) -> Result<Value, String> {
+    use crate::required_dispatch::{self as due, SupplySelection, SupplySelectionMode};
+    if active_worker { return Err("sim_dispatch_busy".into()); }
+    let selected = match due::select_supply_continuation(store, active_worker).map_err(err)? {
+        SupplySelection::NoWork => return Ok(json!({"dispatch":"required_registry_v1",
+            "state":"no_work", "required_preserved":true})),
+        SupplySelection::Busy => return Err("sim_dispatch_busy".into()),
+        SupplySelection::Selected(selected) => selected,
+    };
+    due::validate_supply_continuation(store, &selected, active_worker).map_err(err)?;
+    let engine = store.engine().map_err(err)?;
+    let (scope, revision) = engine.world().scope_revision();
+    let before = engine.timeline().ok_or("supply_due_missing_timeline")?.progress;
+    let before_sequence = store.committed_sequence();
+    let operation = SERVICE_CONTINUATION_PREFIX | before_sequence.checked_add(1)
+        .filter(|n| *n <= background::JOB_ID_LIMIT).ok_or("sim_control_id")?;
+    let envelope = Envelope { world:scope.world(), branch:scope.branch(),
+        operation_id:operation, expected_revision:revision,
+        actions:vec![Action::Timeline { command:mycity_core::timeline::Command::Advance {
+            target:selected.target(), limit:selected.page_limit(),
+        }}] };
+    let mode = match selected.mode() {
+        SupplySelectionMode::RegistrySelected => "registry_selected",
+        SupplySelectionMode::MandatoryFallback => "mandatory_fallback",
+        SupplySelectionMode::MandatoryZeroBoundary => "mandatory_zero_boundary",
+    };
+    let task_key = selected.key().map(|key| json!({"scope":{"world_id":key.scope.world_id,
+        "branch_id":key.scope.branch_id,"city_id":key.scope.city_id},
+        "clock":{"kind":"development","city_id":key.scope.city_id},
+        "source_id":key.source_id,"source_version":key.source_version,
+        "window":{"start":key.window.start,"end":key.window.end},"cursor":key.cursor}));
+    let source_before = engine.continuous_supply_due_state().map_err(err)?;
+    if store.receipt(operation)
+        .map_err(|e|format!("supply_due_recovery_required:operation={operation}:{e:?}"))?.is_some() {
+        return Err(format!("supply_due_namespace_collision:operation={operation};use_original_reserved_manual_advance"));
+    }
+    // Frame failure means no execution. Successful write does not prove the peer
+    // received it: without this exact identity the peer must recover, never retry
+    // a fresh selection blindly after an uncertain transport failure.
+    event(writer,id,"supply_continuation_selected",json!({
+        "dispatch":"required_registry_v3", "envelope":envelope,
+        "before_sequence":before_sequence, "before_serial":before.serial,
+        "task_key":task_key, "selection_mode":mode,
+        "plan_kind":format!("{:?}",selected.plan_kind()), "policy_version":selected.policy_version(),
+        "zero_reason":format!("{:?}",selected.zero_reason()),
+        "recovery":"original_receipt_and_recovered_outcome_and_serial; no automatic RunDue retry"
+    }))?;
+    let outcome = crate::cpu_log::execute(store,Caller::System,envelope,diag)
+        .map_err(|e|format!("supply_due_recovery_required:operation={operation}:{e}"))?;
+    outcome.model.as_ref().map_err(|e|format!("supply_due_model_rejected:operation={operation}:{e:?}"))?;
+    if !outcome.has_persistent_receipt { return Err(format!("supply_due_receipt_unconfirmed:operation={operation}")); }
+    let after = store.engine().map_err(err)?.timeline().ok_or("supply_due_missing_timeline")?.progress;
+    let source_after = store.engine().map_err(err)?.continuous_supply_due_state().map_err(err)?;
+    // A serial increment alone must not turn a zero-width loop into useful work.
+    if selected.zero_reason().is_some() && source_before == source_after
+        && before.target == after.target && before.last_complete == after.last_complete
+        && before.phase == after.phase && before.lane == after.lane && before.cursor == after.cursor {
+        return Err(format!("supply_due_zero_progress:operation={operation};recover_original_outcome"));
+    }
+    let boundary_completed = after.phase.is_none() && after.last_complete >= before.at;
+    Ok(json!({"dispatch":"required_registry_v3",
+        "dispatch_state":if boundary_completed {"boundary_completed"} else {"page_committed"},
+        "selection_mode":mode, "selected_operation":operation,
+        "plan_kind":format!("{:?}",selected.plan_kind()), "policy_version":selected.policy_version(),
+        "before_sequence":before_sequence, "before_serial":before.serial,
+        "after_serial":after.serial, "boundary_at":if boundary_completed {after.last_complete} else {after.at},
+        "timeline":after, "outcome":outcome, "supply_delivery_claimed":false}))
 }
 
 fn control(

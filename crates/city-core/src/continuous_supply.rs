@@ -69,6 +69,14 @@ pub(crate) struct Runtime {
     #[serde(skip)] ready:bool,
 }
 
+/// Small authenticated observation; never an execution grant or a replacement ledger.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+pub struct DueView {
+    pub version:u32, pub scope:crate::arena::Scope,
+    pub city_id:u32, pub source_id:u64, pub fingerprint:[u8;32],
+    pub registration:[u8;32], pub cursor:u64, pub status:g::Status,
+}
+
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
 pub struct View {
     pub version:u32, pub city_id:u32, pub cursor:u64, pub genset:g::State,
@@ -97,6 +105,12 @@ fn instant(r:&Runtime,at:u64)->g::Instant{g::Instant{scope:r.config.scope,clock:
 impl Runtime {
     pub(crate) const fn owned_bytes()->usize{size_of::<Self>()}
     pub(crate) fn registration(&self)->Result<[u8;32],TxError>{digest(&(&self.opening,&self.config,&self.raw_lot))}
+    pub(crate) fn due_view(&self)->Result<DueView,TxError>{
+        if !self.ready {return Err(TxError::InvalidOperation);}
+        Ok(DueView{version:VERSION,scope:self.config.scope,city_id:self.opening.city_id,
+            source_id:self.opening.source_id,fingerprint:digest(self)?,
+            registration:self.registration()?,cursor:self.cursor(),status:self.genset.status})
+    }
     pub(crate) fn governs(&self,id:u32)->bool{self.opening.stocks.contains(&id)}
     pub(crate) fn is_ready(&self)->bool{self.ready}
     pub(crate) fn cursor(&self)->u64{self.genset.cursor}

@@ -1,0 +1,129 @@
+[
+  {
+    "name": "legacy-service-cursor-unit",
+    "program": "headless-release-mycity_headless",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/continuous-supply-due-20261025/programs03/headless-release-mycity_headless",
+      "required_dispatch::service_cursor_tests::",
+      "--nocapture",
+      "--test-threads=1"
+    ],
+    "exit_code": 0,
+    "timed_out": false,
+    "elapsed_seconds": 0.5176928043365479,
+    "summary": [
+      "ok",
+      "1",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "supply-selector-store-sim",
+    "program": "headless-release-continuous_supply_due",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/continuous-supply-due-20261025/programs03/headless-release-continuous_supply_due",
+      "--nocapture",
+      "--test-threads=1"
+    ],
+    "exit_code": 0,
+    "timed_out": false,
+    "elapsed_seconds": 2.2596731185913086,
+    "summary": [
+      "ok",
+      "4",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "legacy-required-eight",
+    "program": "headless-release-task_registry_due",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/continuous-supply-due-20261025/programs03/headless-release-task_registry_due",
+      "--nocapture",
+      "--test-threads=1"
+    ],
+    "exit_code": 0,
+    "timed_out": false,
+    "elapsed_seconds": 1.6968989372253418,
+    "summary": [
+      "ok",
+      "8",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "legacy-service-three",
+    "program": "headless-release-service_needs_due",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/continuous-supply-due-20261025/programs03/headless-release-service_needs_due",
+      "--nocapture",
+      "--test-threads=1"
+    ],
+    "exit_code": 0,
+    "timed_out": false,
+    "elapsed_seconds": 1.957869052886963,
+    "summary": [
+      "ok",
+      "3",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "core-supply-nine",
+    "program": "core-release-continuous_supply",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/continuous-supply-due-20261025/programs03/core-release-continuous_supply",
+      "--nocapture",
+      "--test-threads=1"
+    ],
+    "exit_code": 0,
+    "timed_out": false,
+    "elapsed_seconds": 0.5542728900909424,
+    "summary": [
+      "ok",
+      "9",
+      "0",
+      "0"
+    ]
+  },
+  {
+    "name": "original-supply-store",
+    "program": "storage-release-continuous_supply_store",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/continuous-supply-due-20261025/programs03/storage-release-continuous_supply_store",
+      "--nocapture",
+      "--test-threads=1"
+    ],
+    "exit_code": 0,
+    "timed_out": false,
+    "elapsed_seconds": 0.8341319561004639,
+    "summary": [
+      "ok",
+      "1",
+      "0",
+      "1"
+    ]
+  },
+  {
+    "name": "opening-input-same-slot-supply",
+    "program": "storage-release-opening_continuous_supply_store",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/continuous-supply-due-20261025/programs03/storage-release-opening_continuous_supply_store",
+      "--nocapture",
+      "--test-threads=1"
+    ],
+    "exit_code": 0,
+    "timed_out": false,
+    "elapsed_seconds": 0.7664473056793213,
+    "summary": [
+      "ok",
+      "1",
+      "0",
+      "1"
+    ]
+  }
+]
