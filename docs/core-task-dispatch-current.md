@@ -811,10 +811,20 @@ Full49 including general Goal/Monitor/SimIPC/providers and wider privacy remains
 #54 original owner frozen03 is now accepted by the original advisor after B1/B2 repairs:
 full pending/stop/history/final reserve, retained authenticated actual endpoint, Stop refusing
 unsupported actual evidence, required strategy_version2 refusing implicit old-state upgrade.
-All16 runtime test sources remain not_run; these sources have not been adopted into shared
-World/Store. Root's next bridge is actual shared member-activity/education progress, immutable
-Opening, original receipt-anchor authentication, Timeline and same-commit/cold recovery.
+Original owner execution remained not_run; root adopted and actually verified runtime16,
+prior education14 and core230 (260 distinct component tests). Root then implemented the
+actual Opening/World/member ledger/Timeline/Store bridge, with six real recovery parents.
+These results do not convert synthetic witnesses into external provider certification.
 No second writer, capacity pool or silent old-candidate migration is authorized.
+
+Root source11 removes seven unnecessary full World projections in Store cold open, using
+the same original scope/profile fields. This fixes a new education default-debug overflow;
+original #122/#123 exacts pass separately and stay closed. Source05 release340 passes and
+source11 new education debug6 passes are distinct evidence generations. Final source12
+adds independent189104B typed restore admission before copying; public4MiB gate unchanged.
+Workspace all-target check/build0, release341 distinct passes and default-debug9 executions
+(oldexacts2/newbudget1/education6) pass. Full54 stays open; see the retained failures,
+scope and budget limits in [education authority evidence](evidence/education-authority-20261024/STATUS.md).
 
 Current dependency check found no safe additional real-provider parallel increment among
 #57/#61/#98/#73 before that shared seam and authenticated inputs. Repeating synthetic DTO/

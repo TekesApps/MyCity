@@ -1,0 +1,13 @@
+{
+  "source_sha256": "1d98934dd540b40bd9b8f2e265aba7f990422b0c1a668944d7fb166345290bc3",
+  "final_release_distinct_passed": 341,
+  "default_debug_executions_passed": 9,
+  "full_issue54": "open",
+  "M0_changed": false,
+  "native16GB": "not_run",
+  "artifact_logical_bytes": 687952522,
+  "artifact_budget": 805306368,
+  "full_originals": "/Volumes/HP P900/dev/MyCity/work/education-authority-integration-20261024",
+  "unrelated_WIP_unchanged": 24,
+  "pr": "none"
+}

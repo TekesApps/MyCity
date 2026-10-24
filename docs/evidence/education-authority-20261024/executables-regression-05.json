@@ -1,0 +1,105 @@
+{
+  "source_sha256": "381652fdbb62c013169cc4e97e6cb10385232687d4020c788ae0cde4e1213626",
+  "executables": [
+    {
+      "target": "checkpoint",
+      "kind": [
+        "test"
+      ],
+      "source_executable": "/Users/frankqin/dev/MyCity/target/release/deps/checkpoint-0459b9608f2b9c08",
+      "executable": "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-regression-05/checkpoint-0459b9608f2b9c08",
+      "sha256": "90fbed8b7409c839d85c5e7beb8e06e34b9fc8a02ebd897b5fe97ed29b872594",
+      "bytes": 11842224
+    },
+    {
+      "target": "checkpoint_v2",
+      "kind": [
+        "test"
+      ],
+      "source_executable": "/Users/frankqin/dev/MyCity/target/release/deps/checkpoint_v2-d29737589feb2244",
+      "executable": "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-regression-05/checkpoint_v2-d29737589feb2244",
+      "sha256": "99c1be39e027d3e72913a5188e51b1a20b7ce1da2102a53666247eb6b791e401",
+      "bytes": 13952560
+    },
+    {
+      "target": "education",
+      "kind": [
+        "test"
+      ],
+      "source_executable": "/Users/frankqin/dev/MyCity/target/release/deps/education-a84b4fec6c6484d3",
+      "executable": "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-regression-05/education-a84b4fec6c6484d3",
+      "sha256": "82ae97f971b5e2ea5053e503919a3547578a32cbee3b9662ce6fb1f32e990e96",
+      "bytes": 1008656
+    },
+    {
+      "target": "education_authority",
+      "kind": [
+        "test"
+      ],
+      "source_executable": "/Users/frankqin/dev/MyCity/target/release/deps/education_authority-d8a0c9c05d47bc5a",
+      "executable": "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-regression-05/education_authority-d8a0c9c05d47bc5a",
+      "sha256": "f4c53767e0874fe705951c86cc164657090f7a68c3b3fbd231b961beaf01f4c7",
+      "bytes": 12004624
+    },
+    {
+      "target": "education_runtime",
+      "kind": [
+        "test"
+      ],
+      "source_executable": "/Users/frankqin/dev/MyCity/target/release/deps/education_runtime-cd56aa19ae2b26a1",
+      "executable": "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-regression-05/education_runtime-cd56aa19ae2b26a1",
+      "sha256": "1449469f21f3f4db3143c2cce7790ab241c3dcc84adeda552eaf8686ae3c5a5e",
+      "bytes": 1816128
+    },
+    {
+      "target": "mycity_core",
+      "kind": [
+        "lib"
+      ],
+      "source_executable": "/Users/frankqin/dev/MyCity/target/release/deps/mycity_core-7cf04b75eddcf4d5",
+      "executable": "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-regression-05/mycity_core-7cf04b75eddcf4d5",
+      "sha256": "b0e842a2e6ad0af6bc434f96abec4b1cd34976bc8c9497f17f288eb9bb74f450",
+      "bytes": 8181024
+    },
+    {
+      "target": "mycity_storage",
+      "kind": [
+        "lib"
+      ],
+      "source_executable": "/Users/frankqin/dev/MyCity/target/release/deps/mycity_storage-46fdf6e079eacbdd",
+      "executable": "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-regression-05/mycity_storage-46fdf6e079eacbdd",
+      "sha256": "4fe486edcaa92d7ea3c7b35554b63df5061ce9a70ff703ef4eb7258de6efd5f1",
+      "bytes": 13279488
+    },
+    {
+      "target": "opening_venue_store",
+      "kind": [
+        "test"
+      ],
+      "source_executable": "/Users/frankqin/dev/MyCity/target/release/deps/opening_venue_store-f703f4ba8ada0c88",
+      "executable": "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-regression-05/opening_venue_store-f703f4ba8ada0c88",
+      "sha256": "6127d266c875c633f8e54c00ac55e987210fe41b9a7adbf4868701ac7c022d13",
+      "bytes": 10524800
+    },
+    {
+      "target": "recovery",
+      "kind": [
+        "test"
+      ],
+      "source_executable": "/Users/frankqin/dev/MyCity/target/release/deps/recovery-51e0c6eb8daf1103",
+      "executable": "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-regression-05/recovery-51e0c6eb8daf1103",
+      "sha256": "82600bea93058800c7d297e90acd1348ef8809bf7ef2fcb7da2166e584fe8d8d",
+      "bytes": 11398256
+    },
+    {
+      "target": "venue_capacity",
+      "kind": [
+        "test"
+      ],
+      "source_executable": "/Users/frankqin/dev/MyCity/target/release/deps/venue_capacity-0c78b1e0f6555456",
+      "executable": "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-regression-05/venue_capacity-0c78b1e0f6555456",
+      "sha256": "d77771c018595448828425c05132878af4a580d242603123aaeda5ba65ba5171",
+      "bytes": 12131008
+    }
+  ]
+}

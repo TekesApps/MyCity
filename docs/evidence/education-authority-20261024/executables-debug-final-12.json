@@ -1,0 +1,23 @@
+{
+  "source_sha256": "1d98934dd540b40bd9b8f2e265aba7f990422b0c1a668944d7fb166345290bc3",
+  "executables": [
+    {
+      "target": "town_utility_engine",
+      "executable": "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-debug-exacts-12/town_utility_engine-b95415f719304b3f",
+      "bytes": 21612744,
+      "sha256": "470490496462abed535b70281445f31e7c0b8e7ea40b4e88f0d45a78589f8e40"
+    },
+    {
+      "target": "mycity_core",
+      "executable": "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-debug-exacts-12/mycity_core-ed5a5f45626d8fb5",
+      "bytes": 28332768,
+      "sha256": "76e62875c0e9c697add3f4d6c3c1162bfd72fbfb3a165f2c870c29186f7b4f1f"
+    },
+    {
+      "target": "education_authority",
+      "executable": "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-debug-12/education_authority-7e99c248b2001644",
+      "bytes": 40788328,
+      "sha256": "b24c95bad70d47e35a6c918673800a174f009ce593c4130ab9cd79b079a233a9"
+    }
+  ]
+}

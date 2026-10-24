@@ -1,0 +1,71 @@
+{
+  "source_sha256": "381652fdbb62c013169cc4e97e6cb10385232687d4020c788ae0cde4e1213626",
+  "initial_failures": "two missing MYCITY_QUERY_TEST_WORK setup failures retained, environment corrected only; no code/assertion changes",
+  "results": [
+    {
+      "target": "mycity_storage",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-regression-05/mycity_storage-46fdf6e079eacbdd",
+        "query::tests::actual_",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "executable_sha256": "4fe486edcaa92d7ea3c7b35554b63df5061ce9a70ff703ef4eb7258de6efd5f1",
+      "pid": 58698,
+      "exit": 0,
+      "timeout": false,
+      "seconds": 0.8503382205963135,
+      "summaries": [
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 32 filtered out; finished in 0.84s"
+      ]
+    },
+    {
+      "target": "opening_venue_store",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-regression-05/opening_venue_store-f703f4ba8ada0c88",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "executable_sha256": "6127d266c875c633f8e54c00ac55e987210fe41b9a7adbf4868701ac7c022d13",
+      "pid": 58700,
+      "exit": 0,
+      "timeout": false,
+      "seconds": 0.825211763381958,
+      "summaries": [
+        "test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.28s"
+      ]
+    },
+    {
+      "target": "recovery",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-regression-05/recovery-51e0c6eb8daf1103",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "executable_sha256": "82600bea93058800c7d297e90acd1348ef8809bf7ef2fcb7da2166e584fe8d8d",
+      "pid": 58707,
+      "exit": 0,
+      "timeout": false,
+      "seconds": 3.1029410362243652,
+      "summaries": [
+        "test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.61s"
+      ]
+    },
+    {
+      "target": "venue_capacity",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-regression-05/venue_capacity-0c78b1e0f6555456",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "executable_sha256": "d77771c018595448828425c05132878af4a580d242603123aaeda5ba65ba5171",
+      "pid": 58892,
+      "exit": 0,
+      "timeout": false,
+      "seconds": 0.9832220077514648,
+      "summaries": [
+        "test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.52s"
+      ]
+    }
+  ]
+}

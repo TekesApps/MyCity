@@ -111,6 +111,26 @@ fn archive_bytes(dir: &Path) -> Result<u64, Error> {
     }
     Ok(total)
 }
+/// Shared by live Store and pre-publication cold/WAL recovery. Authenticates only
+/// the receipt chain bound by this exact root, never a caller-provided record file.
+pub(super) fn lookup_archived_at(dir:&Path,root:&Root,operation:u64,metadata:&mut MetadataWorkspace)
+    ->Result<Option<JournalRecord>,Error> {
+    if root.checkpoint_layout==2 {
+        return checkpoint_v2::lookup(dir,root.checkpoint_v2.as_ref(),operation,metadata);
+    }
+    let mut cursor=root.checkpoint.clone();
+    while let Some(reference)=cursor {
+        let index=load_index(dir,&reference,metadata)?;
+        if metadata.operations.contains(&operation) {
+            load(dir,&reference,metadata)?;
+            return metadata.receipts.iter().find(|r|r.operation_id==operation).copied()
+                .map(Some).ok_or(Error::Invalid("checkpoint_missing_receipt"));
+        }
+        cursor=index.previous;
+    }
+    Ok(None)
+}
+
 impl Store {
     /// Rehydrate full, durable hot receipts from the currently committed WAL segment. The
     /// Engine retry window stores compact summaries only; checkpoint/archive records retain
@@ -245,43 +265,11 @@ impl Store {
         &mut self,
         operation: u64,
     ) -> Result<Option<JournalRecord>, Error> {
-        if self.io.root.checkpoint_layout == 2 {
-            let result = checkpoint_v2::lookup(
-                &self.io.dir,
-                self.io.root.checkpoint_v2.as_ref(),
-                operation,
-                &mut self.io.metadata,
-            );
-            if result.is_err() {
-                self.io.poisoned = true;
-            }
-            return result;
-        }
-        let result = (|| {
-            let mut cursor = self.io.root.checkpoint.clone();
-            while let Some(r) = cursor {
-                let index = load_index(&self.io.dir, &r, &mut self.io.metadata)?;
-                if self.io.metadata.operations.contains(&operation) {
-                    load(&self.io.dir, &r, &mut self.io.metadata)?;
-                    return self
-                        .io
-                        .metadata
-                        .receipts
-                        .iter()
-                        .find(|r| r.operation_id == operation)
-                        .copied()
-                        .map(Some)
-                        .ok_or(Error::Invalid("checkpoint_missing_receipt"));
-                }
-                cursor = index.previous;
-            }
-            Ok(None)
-        })();
-        if result.is_err() {
-            self.io.poisoned = true;
-        }
+        let result=lookup_archived_at(&self.io.dir,&self.io.root,operation,&mut self.io.metadata);
+        if result.is_err() {self.io.poisoned=true;}
         result
     }
+
     pub(super) fn receipt_rows(
         &mut self,
         offset: usize,

@@ -1,0 +1,6 @@
+{
+  "owned_child_pid": 60336,
+  "exact_command": "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-debug-07/education_authority-7e99c248b2001644 --exact actual_preparation_instruction_shared_members_and_compact_lost_reply_recover --test-threads=1 --nocapture",
+  "action": "SIGKILL debugger-owned suspended/orphaned test process after debugger timeout; no other process stopped",
+  "tests_passed": false
+}

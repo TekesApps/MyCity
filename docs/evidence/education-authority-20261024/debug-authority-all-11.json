@@ -1,0 +1,12 @@
+{
+  "exit": 0,
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-debug-11/education_authority-7e99c248b2001644",
+    "--test-threads=1",
+    "--nocapture"
+  ],
+  "seconds": 7.575641870498657,
+  "executable_sha256": "c0717dee58a9f1b85d2ba7c3e36c7fbfca345186f6e72288ef88f5bd4356fcd9",
+  "source_sha256": "8ab66fb6cd015339e9a3559a39f7d35a410c43e4847906fc58458fa62ceea7aa",
+  "RUST_MIN_STACK": "unset"
+}

@@ -135,10 +135,14 @@ pub fn inventory() -> Inventory {
         crate::spatial_geometry_permissions::SpatialGeometryState::max_owned_rows_bytes(),
     ));
     engine.push(Part::new("managed_venue_optional_max_owned_bytes", 1, crate::venue_runtime::Runtime::max_owned_bytes()));
+    engine.push(Part::new("education_optional_max_owned_bytes",1,crate::education_runtime::Runtime::owned_bytes()));
+    engine.push(Part::new("shared_member_activity_optional_max_owned_bytes",1,crate::member_activity::Ledger::owned_bytes()));
     engine.extend(timeline_rows());
     engine.extend(background_rows());
     let mut prepared = vec![
         Part::new("managed_venue_usage_candidate_rows", 1, crate::venue_runtime::UseCandidate::payload_bytes()),
+        Part::new("education_and_member_prepared_overlap_max_bytes",1,crate::education_authority::candidate_bytes()),
+        Part::new("education_restore_extra_typed_workspace_bytes",1,crate::education_authority::restore_workspace_bytes()),
         Part::new(
             "prepared_inline_root_including_fixed_domain_copies",
             1,

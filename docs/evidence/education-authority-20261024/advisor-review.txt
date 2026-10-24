@@ -1,0 +1,1 @@
+Original advisor accepted source04 finite bridge, added v2 finite test coverage, and source05 release results. 340 distinct parent tests; storage first32pass2failed from missing evidence-directory env, corrected env same binary2pass. Original failed run retained. Debug exact cases and new education debug gate pending. Full54, native/stack peaks,16GB and M0 not accepted.

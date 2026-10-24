@@ -1,0 +1,19 @@
+{
+  "exit": 101,
+  "command": [
+    "cargo",
+    "check",
+    "-p",
+    "mycity-core",
+    "-p",
+    "mycity-storage",
+    "--all-targets",
+    "--release",
+    "--locked",
+    "--offline",
+    "-j",
+    "1"
+  ],
+  "seconds": 5.183291912078857,
+  "source_sha256": "cd7fe3f44105df21773d76c97acfbf96ccd9c279ae8189b68b2a05cf863fa7cb"
+}

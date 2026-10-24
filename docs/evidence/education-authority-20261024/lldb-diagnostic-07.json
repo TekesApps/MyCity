@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/usr/bin/lldb",
+    "--batch",
+    "-o",
+    "run",
+    "-o",
+    "thread backtrace all",
+    "--",
+    "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-debug-07/education_authority-7e99c248b2001644",
+    "--exact",
+    "actual_preparation_instruction_shared_members_and_compact_lost_reply_recover",
+    "--test-threads=1",
+    "--nocapture"
+  ],
+  "exit": -9,
+  "debugger_diagnostic_only": true
+}

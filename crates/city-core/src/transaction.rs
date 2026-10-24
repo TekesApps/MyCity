@@ -91,6 +91,7 @@ pub enum Action {
     /// Selector into the genesis-bound venue contract. Explicit System activity commands
     /// are raw game-host presence facts, not transport/education fulfillment proofs.
     Venue { use_id: u64, command: crate::venue_runtime::Command },
+    Education { command: crate::education_authority::Command },
     Background {
         command: crate::background::Command,
     },
@@ -456,6 +457,7 @@ pub struct Engine {
 }
 
 struct Prepared {
+    education: Option<crate::education_authority::Candidate>,
     venue: Option<crate::venue_runtime::UseCandidate>,
     timeline: workspace::TimelineLease,
     background: workspace::BackgroundLease,
@@ -593,6 +595,7 @@ impl Engine {
             preparation_workspace: Some(workspace::reserve()?),
         };
         venue_driver::validate(&engine.world, &engine.resources, &engine.leases, engine.timeline.as_ref(), None)?;
+        crate::education_authority::validate(&engine.world, engine.timeline.as_ref())?;
         validate_construction_binding(
             engine.world.construction,
             &engine.resources,
@@ -992,6 +995,9 @@ impl Engine {
         candidate
             .validate_checkpoint_runtime()
             .map_err(|e| format!("checkpoint_invariant:{e:?}"))?;
+        if candidate.world.education.as_ref().is_some_and(|r| !r.is_ready() && r.prefix_anchor().is_none()) {
+            candidate.authenticate_education_restore(None)?;
+        }
         candidate.journal.clear();
         if candidate.owned_capacity_bytes() > ENGINE_BYTE_BUDGET {
             return Err("checkpoint_engine_budget".into());
@@ -999,6 +1005,7 @@ impl Engine {
         Ok(())
     }
     fn validate_checkpoint_runtime(&self) -> Result<(), TxError> {
+        crate::education_authority::validate(&self.world, self.timeline.as_ref())?;
         venue_driver::validate(&self.world, &self.resources, &self.leases, self.timeline.as_ref(), None)?;
         if let Some(t) = self.timeline.as_ref() {
             timeline_driver::validate(self, t)?;
@@ -1105,6 +1112,36 @@ impl Engine {
         let timeline = self.timeline.as_ref()?;
         if timeline.progress.phase.is_some() || timeline.progress.target.is_some() { return None; }
         Some(runtime.exit_due(use_id, timeline.progress.last_complete))
+    }
+
+    pub fn education_restore_anchor(&self) -> Option<crate::education_runtime::ReceiptAnchor> {
+        self.world.education.as_deref().and_then(|r| r.prefix_anchor())
+    }
+    pub fn education_is_authenticated(&self) -> bool {
+        self.world.education.as_deref().is_none_or(|r| r.is_ready())
+    }
+    pub fn validate_education_compaction_receipt(&self,expected:[u8;32],anchor:crate::education_runtime::ReceiptAnchor,
+        record:&JournalRecord)->Result<(),TxError> {
+        crate::education_authority::completed(self.timeline.as_ref())?;
+        crate::education_authority::validate_compaction(&self.world,expected,anchor,record)
+    }
+    /// Stable immutable registration identity, for Store's independently reconstructed genesis.
+    pub fn education_registration(&self) -> Option<([u8;32],[u8;32])> {
+        self.world.education.as_deref().map(|r|(r.opening().fingerprint().expect("bounded registration"),r.opening().population_origin))
+    }
+    /// Trusted Store supplies ONLY its root-authenticated original anchor record. Neither
+    /// JSON nor this API alone constitutes Store authentication. Publication remains in Store.
+    pub fn authenticate_education_restore(&mut self, receipt: Option<&JournalRecord>) -> Result<(),String> {
+        self.authenticate_education_restore_with_limit(receipt,ENGINE_BYTE_BUDGET)
+    }
+    fn authenticate_education_restore_with_limit(&mut self,receipt:Option<&JournalRecord>,limit:usize)->Result<(),String> {
+        if self.world.education.is_some() && self.owned_capacity_bytes()
+            .checked_add(crate::education_authority::restore_workspace_bytes())
+            .is_none_or(|n| n>limit.min(ENGINE_BYTE_BUDGET)) { return Err("education_restore_budget".into()); }
+        let restored=crate::education_authority::restore(&self.world,receipt)
+            .map_err(|e|format!("education_restore:{e:?}"))?;
+        if let Some(restored)=restored {self.world.education=Some(restored);}
+        Ok(())
     }
 
     /// Compact in-memory retry window. Use the storage receipt archive for full action records.
@@ -1483,6 +1520,18 @@ impl Engine {
         persist: impl FnOnce(&Envelope, &JournalRecord, CommitContext<'_>) -> Result<(), E>,
         trace: &mut Trace<'_>,
     ) -> Result<Result<Receipt, TxError>, E> {
+        self.execute_recorded_education_diagnosed(caller,env,candidate,transport,None,persist,trace)
+    }
+    /// Explicit trusted-host seam. Old raw Engine entry points resolve no receipt and
+    /// cannot Compact; Store authenticates a single prior receipt before calling this.
+    pub fn execute_recorded_education_diagnosed<E>(
+        &mut self, caller: Caller, env: Envelope, candidate: Option<&crate::air::State>,
+        transport: Option<&crate::market_access::SettlementDeliveryInput<'_>>,
+        education_receipt: Option<&JournalRecord>,
+        persist: impl FnOnce(&Envelope,&JournalRecord,CommitContext<'_>)->Result<(),E>,
+        trace: &mut Trace<'_>,
+    ) -> Result<Result<Receipt, TxError>, E> {
+        if !self.education_is_authenticated() {return Ok(Err(TxError::InvalidOperation));}
         if env.world != self.world.scope.world() || env.branch != self.world.scope.branch() {
             return Ok(Err(TxError::WrongScope));
         }
@@ -1544,7 +1593,7 @@ impl Engine {
         } else if env.expected_revision != self.world.revision {
             Err(TxError::StaleRevision)
         } else {
-            self.prepare_diagnosed(caller, &env, candidate, transport, trace)
+            self.prepare_education_diagnosed(caller, &env, candidate, transport, education_receipt, trace)
         };
         trace.end(
             Class::Prepare,
@@ -1611,6 +1660,11 @@ impl Engine {
         env: &Envelope,
         trace: &mut Trace<'_>,
     ) -> bool {
+        self.can_advance_existing_responsibility_with_education(caller,env,None,trace)
+    }
+    pub fn can_advance_existing_responsibility_with_education(
+        &self,caller:Caller,env:&Envelope,receipt:Option<&JournalRecord>,trace:&mut Trace<'_>,
+    )->bool {
         if env.world != self.world.scope.world()
             || env.branch != self.world.scope.branch()
             || env.expected_revision != self.world.revision
@@ -1620,7 +1674,7 @@ impl Engine {
         let old = trace.role;
         trace.role = Role::Quote;
         let started = trace.start();
-        let prepared = self.prepare_diagnosed(caller, env, None, None, trace);
+        let prepared = self.prepare_education_diagnosed(caller, env, None, None, receipt, trace);
         trace.end(Class::Prepare, started, 0, u64::from(prepared.is_ok()), 0);
         trace.role = old;
         prepared
@@ -1632,6 +1686,15 @@ impl Engine {
             return false;
         }
         match env.actions[0] {
+            Action::Education{..} if env.actions[0].is_responsibility_control()=>{
+                self.world.education.as_deref().zip(p.education.as_ref()).is_some_and(|(old,new)|
+                    new.runtime.consumed_sequence()>old.consumed_sequence() || new.runtime.recent_count()<old.recent_count())
+            }
+            Action::Venue{command:crate::venue_runtime::Command::SafeExit{..}|crate::venue_runtime::Command::CancelReserved,..}=>{
+                self.world.venue.as_deref().zip(p.venue.as_ref()).is_some_and(|(old,new)|
+                    old.states.iter().filter(|s|matches!(s.status,crate::venue_capacity::UseStatus::Actual|crate::venue_capacity::UseStatus::Reserved)).count()
+                    >new.states.iter().filter(|s|matches!(s.status,crate::venue_capacity::UseStatus::Actual|crate::venue_capacity::UseStatus::Reserved)).count())
+            }
             Action::Timeline {
                 command:
                     crate::timeline::Command::Advance { .. }
@@ -1728,11 +1791,18 @@ impl Engine {
         }
     }
     fn prepare_diagnosed(
+        &self,caller:Caller,env:&Envelope,candidate:Option<&crate::air::State>,
+        transport:Option<&crate::market_access::SettlementDeliveryInput<'_>>,trace:&mut Trace<'_>,
+    )->Result<Prepared,TxError> {
+        self.prepare_education_diagnosed(caller,env,candidate,transport,None,trace)
+    }
+    fn prepare_education_diagnosed(
         &self,
         caller: Caller,
         env: &Envelope,
         candidate: Option<&crate::air::State>,
         transport: Option<&crate::market_access::SettlementDeliveryInput<'_>>,
+        education_receipt: Option<&JournalRecord>,
         trace: &mut Trace<'_>,
     ) -> Result<Prepared, TxError> {
         let next_revision = self
@@ -1745,6 +1815,7 @@ impl Engine {
             .as_ref()
             .ok_or(TxError::WorkingLimit)?;
         let mut venue = None;
+        let mut education = None;
         let mut timeline = workspace::TimelineLease::acquire(&storage.timeline, &self.timeline)?;
         let mut accounts = workspace::AccountLease::take(&storage.accounts)?;
         let mut stocks = workspace::StockLease::take(&storage.stocks)?;
@@ -3672,9 +3743,22 @@ impl Engine {
                         .checked_add(cost)
                         .map_err(|_| TxError::Overflow)?;
                 }
+                Action::Education { command } => {
+                    if self.owned_capacity_bytes().checked_add(crate::education_authority::candidate_bytes()).is_none_or(|n|n>ENGINE_BYTE_BUDGET) {
+                        return Err(TxError::WorkingLimit);
+                    }
+                    education=Some(crate::education_authority::prepare(&self.world,self.timeline.as_ref(),caller,env,command,education_receipt)?);
+                }
                 Action::Venue { use_id, command } => {
                     let (candidate, token) = venue_driver::prepare(self, caller, env, use_id, command,
                         &mut resources, &mut leases, &mut next_token)?;
+                    if let crate::venue_runtime::Command::SafeExit {event_id,..}=command {
+                        let needs=self.world.education.as_deref().is_some_and(|r|r.opening().courses.iter().flatten()
+                            .any(|c|c.use_id==use_id && r.pending(c.enrollment.cohort).unwrap_or(false)));
+                        if needs && self.owned_capacity_bytes().checked_add(crate::education_authority::candidate_bytes()
+                            +crate::venue_runtime::UseCandidate::payload_bytes()).is_none_or(|n|n>ENGINE_BYTE_BUDGET) {return Err(TxError::WorkingLimit);}
+                        education=crate::education_authority::stop_for_exit(&self.world,self.timeline.as_ref(),env,use_id,event_id,&candidate)?;
+                    }
                     venue = Some(candidate);
                     created_tokens[action_index] = token;
                 }
@@ -3882,6 +3966,7 @@ impl Engine {
                 crate::housing_income::PaidWageWindow::owned_capacity_bytes,
             ));
         let projected = projected.saturating_add(venue.as_ref().map_or(0, |_| crate::venue_runtime::UseCandidate::payload_bytes()));
+        let projected = projected.saturating_add(education.as_ref().map_or(0, |_| crate::education_authority::candidate_bytes()));
         let projected = projected.saturating_add(housing_moves.as_deref().map_or(
             0,
             crate::housing_runtime_move::MoveRuntimeState::owned_capacity_bytes,
@@ -3968,7 +4053,9 @@ impl Engine {
         }
         venue_driver::validate_domain_bindings(&self.world, boot.as_ref(), exchange.as_ref(), construction.as_ref())?;
         venue_driver::validate(&self.world, &resources, &leases, timeline.as_ref(), venue.as_ref())?;
+        crate::education_authority::validate_candidate(&self.world,timeline.as_ref(),education.as_ref(),venue.as_ref())?;
         Ok(Prepared {
+            education,
             venue,
             timeline,
             background,
@@ -4026,6 +4113,10 @@ impl Engine {
         self.world.economy = prepared.economy;
         self.world.region = prepared.region;
         self.world.construction = prepared.construction;
+        if let Some(candidate)=prepared.education {
+            self.world.education=Some(candidate.runtime);
+            self.world.member_activity=Some(candidate.ledger);
+        }
         if let Some(candidate) = prepared.venue {
             let runtime = self.world.venue.as_mut().expect("prepared venue source");
             runtime.states = candidate.states;
@@ -6602,6 +6693,10 @@ impl crate::exchange::Ledger for BootLedger<'_> {
 
 impl Action {
     pub fn is_new_commitment(&self) -> bool {
+        if let Self::Education {command:crate::education_authority::Command::Event {command,..}}=self {
+            return matches!(command.action,crate::education_runtime::Action::ActivateNoInstruction
+                |crate::education_runtime::Action::BeginPreparation|crate::education_runtime::Action::BeginLesson);
+        }
         matches!(
             self,
             Self::Background {
@@ -6628,6 +6723,17 @@ impl Action {
     }
     /// Only management of existing obligations can draw on storage's emergency reserve.
     pub fn is_responsibility_control(&self) -> bool {
+        if let Self::Education {command}=self {
+            return match command {
+                crate::education_authority::Command::Compact{..}=>true,
+                crate::education_authority::Command::Event{command,..}=>matches!(command.action,
+                    crate::education_runtime::Action::SettlePreparation{..}|crate::education_runtime::Action::SettleLesson{..}
+                    |crate::education_runtime::Action::SettleAfterExit{..}|crate::education_runtime::Action::NoInstruction{..}),
+            };
+        }
+        if matches!(self,Self::Venue {command:crate::venue_runtime::Command::SafeExit{..}|crate::venue_runtime::Command::CancelReserved,..}) {
+            return true;
+        }
         matches!(
             self,
             Self::Timeline {
@@ -10485,5 +10591,28 @@ mod tests {
         for cleanup in [C::Pause, C::Cancel, C::AcceptWaste, C::Close] {
             assert!(!construction_operation_requires_active_business(cleanup));
         }
+    }
+}
+
+#[cfg(test)]
+mod education_restore_budget_tests {
+    use super::*;
+    #[test]
+    fn restore_workspace_admission_refuses_before_copy_and_preserves_original() {
+        let input=include_bytes!("../../city-storage/tests/fixtures/education-store/free-offline-v1.json");
+        let mut engine=Engine::new(crate::assembly::assemble(input).unwrap(),
+            vec![Resource::new(501,4).unwrap(),Resource::new(502,4).unwrap(),Resource::new(503,5).unwrap()]).unwrap();
+        let extra=crate::education_authority::restore_workspace_bytes();
+        assert!(extra>crate::education_authority::candidate_bytes());
+        let required=engine.owned_capacity_bytes().checked_add(extra).unwrap();
+        assert!(required<=ENGINE_BYTE_BUDGET);
+        let before=engine.business_comparison_checkpoint().unwrap();
+        let pointer=engine.world.education.as_deref().unwrap() as *const _;
+        assert_eq!(engine.authenticate_education_restore_with_limit(None,required-1),Err("education_restore_budget".into()));
+        assert_eq!(pointer,engine.world.education.as_deref().unwrap() as *const _);
+        assert_eq!(before,engine.business_comparison_checkpoint().unwrap());
+        engine.authenticate_education_restore_with_limit(None,required).unwrap();
+        assert!(engine.education_is_authenticated());
+        assert_eq!(before,engine.business_comparison_checkpoint().unwrap());
     }
 }

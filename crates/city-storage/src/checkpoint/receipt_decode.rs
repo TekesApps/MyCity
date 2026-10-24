@@ -88,6 +88,7 @@ fn action_raw(
     #[derive(Deserialize)]
     #[serde(rename_all = "snake_case")]
     enum Kind {
+        Education,
         Venue,
         Background,
         Timeline,
@@ -124,6 +125,10 @@ fn action_raw(
     validate_content(raw, scratch)?;
     let kind: Kind = tag(raw, scratch)?;
     match kind {
+        Kind::Education => {
+            let fields=Fields::parse(raw,&["kind","command"],false,scratch)?;
+            Ok(Output::Education {command:reader::decode(fields.raw(1)?,scratch)?})
+        }
         Kind::Venue => {
             let fields = Fields::parse(raw, &["kind", "use_id", "command"], false, scratch)?;
             Ok(Output::Venue {

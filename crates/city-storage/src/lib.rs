@@ -1113,18 +1113,15 @@ impl Store {
             .transpose()?;
         let transport_profile_hash = town_transport::allocation_ref(&genesis_engine);
         let transport_profile = if let Some(hash) = transport_profile_hash {
-            let town = genesis_engine
-                .world()
-                .view()
-                .town
+            let profile_id = genesis_engine.world().town_profile_id()
                 .ok_or(Error::Invalid("town_transport_market_missing"))?;
             let profile = town_transport::read_allocation(
                 dir,
                 &mut metadata,
                 &hash,
-                genesis_engine.world().view().scope.world(),
-                genesis_engine.world().view().scope.branch(),
-                town.profile.id,
+                genesis_engine.world().scope_revision().0.world(),
+                genesis_engine.world().scope_revision().0.branch(),
+                profile_id,
             )?;
             town_transport::validate_allocation_project(&genesis_engine, &profile)?;
             Some(profile)
@@ -1179,6 +1176,7 @@ impl Store {
         {
             return Err(Error::Invalid("checkpoint_layout_binding"));
         }
+        let original_education_registration=genesis_engine.education_registration();
         let (mut sequence, mut chain) = if let Some(reference) = &root.checkpoint_v2 {
             let (sequence, chain) = checkpoint_v2::open_into(
                 dir,
@@ -1211,6 +1209,16 @@ impl Store {
         } else {
             (0, root.genesis_sha256.clone())
         };
+        if genesis_engine.education_registration()!=original_education_registration {
+            return Err(Error::Invalid("checkpoint_education_genesis_binding"));
+        }
+        if !genesis_engine.education_is_authenticated() {
+            let receipt=if let Some(anchor)=genesis_engine.education_restore_anchor() {
+                Some(checkpoint::lookup_archived_at(dir,&root,anchor.store_ref,&mut metadata)?
+                    .ok_or(Error::Invalid("education_anchor_receipt_missing"))?)
+            } else {None};
+            genesis_engine.authenticate_education_restore(receipt.as_ref()).map_err(Error::Model)?;
+        }
         let wal_base_sequence = sequence;
         let wal_base_chain = chain.clone();
         town_transport::verify_latest_market_cursor(
@@ -1236,7 +1244,7 @@ impl Store {
         if genesis.geometry_adapter_basis.is_none() && engine.spatial_geometry().is_some() {
             return Err(Error::Invalid("spatial_geometry_adapter_basis_missing"));
         }
-        outbox::verify(dir, engine.world().view().scope)?;
+        outbox::verify(dir, engine.world().scope_revision().0)?;
         spatial::validate_exchange_binding(&engine, spatial.as_ref())?;
         let wal_path = dir.join(checkpoint::wal_name(root.segment));
         if fs::symlink_metadata(&wal_path)?.file_type().is_symlink() {
@@ -1354,19 +1362,14 @@ impl Store {
                 let allocation_hash = (*selected_hash)
                     .or(transport_profile_hash)
                     .ok_or(Error::Invalid("town_transport_profile_missing"))?;
-                let market_profile_id = engine
-                    .world()
-                    .view()
-                    .town
-                    .ok_or(Error::Invalid("town_transport_market_missing"))?
-                    .profile
-                    .id;
+                let market_profile_id = engine.world().town_profile_id()
+                    .ok_or(Error::Invalid("town_transport_market_missing"))?;
                 let profile = town_transport::read_allocation_for_settlement(
                     dir,
                     &mut metadata,
                     &allocation_hash,
-                    engine.world().view().scope.world(),
-                    engine.world().view().scope.branch(),
+                    engine.world().scope_revision().0.world(),
+                    engine.world().scope_revision().0.branch(),
                     market_profile_id,
                 )?;
                 let input = town_transport::verify_proof_matches_allocation(
@@ -1385,13 +1388,22 @@ impl Store {
             } else {
                 None
             };
+            let education_receipt=if record.outcome.is_ok() {
+                match entry.envelope.actions.as_slice() {
+                    [mycity_core::transaction::Action::Education {command:mycity_core::education_authority::Command::Compact {anchor,..}}]=>
+                        Some(checkpoint::lookup_archived_at(dir,&root,anchor.store_ref,&mut metadata)?
+                            .ok_or(Error::Invalid("education_anchor_receipt_missing"))?),
+                    _=>None,
+                }
+            } else {None};
             let mut called = false;
-            let _ = engine.execute_recorded_transport_diagnosed(
+            let _ = engine.execute_recorded_education_diagnosed(
                 caller,
                 entry.envelope,
                 candidate,
                 transport_input.as_ref(),
-                |_, record| -> Result<(), Error> {
+                education_receipt.as_ref(),
+                |_, record, _| -> Result<(), Error> {
                     called = true;
                     if !wal::matches(
                         &mut canonical.get_mut().workspace,
@@ -1477,7 +1489,7 @@ impl Store {
     }
 
     pub fn engine(&self) -> Result<&Engine, Error> {
-        if self.io.poisoned || self.io.owner_pid != std::process::id() {
+        if self.io.poisoned || self.io.owner_pid != std::process::id() || !self.engine.education_is_authenticated() {
             Err(Error::RecoveryRequired)
         } else {
             Ok(&self.engine)
@@ -2520,6 +2532,30 @@ impl Store {
                 committed_sequence: self.io.root.sequence,
             });
         }
+        // Exact original-op retries above precede every checkpoint/anchor read.
+        // Only one bounded prior receipt is resolved, never a caller-supplied record.
+        let education_receipt=if matches!(caller,Caller::System)
+            && envelope.expected_revision==self.engine.world().scope_revision().1 {
+            match envelope.actions.as_slice() {
+                [mycity_core::transaction::Action::Education {command:mycity_core::education_authority::Command::Compact {expected_runtime,anchor}}]=>{
+                    if anchor.store_ref==envelope.operation_id {return Err(Error::Invalid("education_self_anchor"));}
+                    let prior=self.receipt(anchor.store_ref)?.ok_or(Error::Invalid("education_anchor_receipt_missing"))?;
+                    self.engine.validate_education_compaction_receipt(*expected_runtime,*anchor,&prior)
+                        .map_err(|_|Error::Invalid("education_anchor_receipt_binding"))?;
+                    match self.checkpoint() {
+                        Ok(())=>{},
+                        Err(Error::Capacity{..}) if self.engine.can_advance_existing_responsibility_with_education(caller,&envelope,Some(&prior),trace)=>{
+                            self.checkpoint_emergency()?;
+                        },
+                        Err(e)=>return Err(e),
+                    }
+                    let archived=self.lookup_archived(anchor.store_ref)?.ok_or(Error::Invalid("education_anchor_receipt_missing"))?;
+                    self.engine.validate_education_compaction_receipt(*expected_runtime,*anchor,&archived)
+                        .map_err(|_|Error::Invalid("education_anchor_receipt_binding"))?;
+                    Some(archived)
+                },_=>None,
+            }
+        } else {None};
         if envelope.actions.iter().any(|action| {
             matches!(
                 action,
@@ -2687,7 +2723,7 @@ impl Store {
                     if self.engine.journal().len() == MAX_RECEIPTS
                         && self
                             .engine
-                            .can_advance_existing_responsibility_diagnosed(caller, &envelope, trace)
+                            .can_advance_existing_responsibility_with_education(caller, &envelope, education_receipt.as_ref(), trace)
                     {
                         self.checkpoint_emergency()?;
                     }
@@ -2705,11 +2741,12 @@ impl Store {
         let io = &mut self.io;
         let result = self
             .engine
-            .execute_recorded_transport_with_context_diagnosed(
+            .execute_recorded_education_diagnosed(
                 caller,
                 envelope,
                 candidate,
                 transport,
+                education_receipt.as_ref(),
                 |env, record, commit_context| {
                     io.append(
                         env,

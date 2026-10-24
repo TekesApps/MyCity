@@ -1,7 +1,7 @@
 //! Root-private mutual exclusion of actually admitted member activities.
 //! This is not capacity, teaching proof, or a public fact-ingress API. The root must
 //! authenticate population/clock/source and commit this candidate with its business
-//! progress and receipt atomically. Currently not wired to World/Store.
+//! progress and receipt atomically. Domain adapters never own a second ledger.
 use crate::{arena::Scope, model_rows::{Record, Rows}};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
@@ -198,7 +198,7 @@ impl Record for Active {
         members: [None; 2], started: 0, settled_through: 0, start_operation_id: 0 } }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct Ledger {
     version: u32,
@@ -252,6 +252,7 @@ impl Ledger {
     }
     pub fn active(&self) -> &[Active] { &self.active }
     pub fn next_ordinal(&self) -> Result<u64, Error> { self.last_ordinal.checked_add(1).ok_or(Error::Overflow) }
+    pub(crate) fn fingerprint(&self) -> [u8;32] { self.binding() }
     /// Integrity is necessary but not source authentication. Root must separately
     /// compare all binding fields with the actual World's immutable population.
     pub fn validate_binding(&self, scope: Scope, origin: [u8; 32], people: u64, epoch: u64, completed: u64) -> Result<(), Error> {

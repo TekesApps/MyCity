@@ -3,16 +3,19 @@
 //! No Engine/Store, certificate publication, money movement or capacity pool lives here.
 use crate::units::{GameTime, Money};
 use sha2::{Digest, Sha256};
+use serde::{Deserialize, Serialize};
 
 pub const VERSION: u32 = 1;
 pub const MAX_CLASS: u16 = 30;
 pub const TEACHING_DAYS_PER_YEAR: u32 = 200;
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Clock { Development }
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct Identity { pub world: u64, pub branch: u64, pub scope: u64 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct Window { pub start: GameTime, pub end: GameTime }
 impl Window {
     fn seconds(self) -> Result<u64, Error> {
@@ -79,9 +82,10 @@ pub fn enrollment_binding(e: Enrollment, c: Course) -> [u8;32] {
         c.reference,c.path as u64,c.cents_per_hour.value() as u64])
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Path { Basic, Secondary, Vocational, University, Retraining, Endorsement }
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct Course {
     pub reference: u64,
     pub path: Path,
@@ -102,16 +106,17 @@ impl Course {
     pub fn minimum_days(self) -> u64 {
         match self.path { Path::Retraining => 90, Path::Endorsement => 180, _ => 0 }
     }
-    fn daily_seconds(self) -> u64 {
+    pub(crate) fn daily_seconds(self) -> u64 {
         if self.path == Path::Retraining { 2 * 3600 } else { 4 * 3600 }
     }
-    fn seats(self) -> u16 { if self.path == Path::Retraining { 10 } else { MAX_CLASS } }
+    pub(crate) fn seats(self) -> u16 { if self.path == Path::Retraining { 10 } else { MAX_CLASS } }
 }
 
 /// One homogeneous cohort, not one resident agent. roster_ref resolves exact membership
 /// externally. Different progress, fees, attendance or ownership requires an original-writer
 /// conservative split, which this module deliberately does not implement.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct Enrollment {
     pub cohort: u64,
     pub generation: u64,
@@ -123,14 +128,15 @@ pub struct Enrollment {
     pub fee_contract_ref: u64,
     pub obligations_ref: u64,
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct Progress {
     pub actual_seconds_per_learner: u64,
     pub actual_teaching_days: u32,
     pub fee_cents_per_learner: Money,
     pub fee_remainder: u16,
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Status { Active, Paused, ClosedAwaitingTransfer }
 /// Private fields prevent arbitrary progress reset/injection via the public API.
 /// Clone is only an in-memory continuation candidate, NOT durable Store recovery.
@@ -147,12 +153,32 @@ pub struct Cohort {
     status: Status,
     last_root: [u8; 32],
 }
+/// Crate-only bounded persistence data. Deserializing this is not permission to use it:
+/// the runtime validates its original-root anchor and replays its bounded activity journal.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct CohortCheckpoint {
+    pub(crate) identity: Identity,
+    pub(crate) enrollment: Enrollment,
+    pub(crate) course: Course,
+    pub(crate) progress: Progress,
+    pub(crate) cursor: GameTime,
+    pub(crate) sequence: u64,
+    pub(crate) day: i64,
+    pub(crate) day_seconds: u64,
+    pub(crate) status: Status,
+    pub(crate) last_root: [u8;32],
+}
 impl Cohort {
+    fn validate_registration(e: Enrollment, course: Course) -> Result<(), Error> {
+        if [e.cohort,e.generation,e.roster_ref,e.class,e.school,e.fee_contract_ref,e.obligations_ref,course.reference]
+            .contains(&0) || e.learners == 0 || e.learners > course.seats() { return Err(Error::Invalid); }
+        Ok(())
+    }
     pub fn begin(view: View, enrollment: Enrollment, course: Course,
         curriculum: Option<Fact>, roster: Option<Fact>) -> Result<Self, Error> {
         let e = enrollment;
-        if [e.cohort,e.generation,e.roster_ref,e.class,e.school,e.fee_contract_ref,e.obligations_ref,course.reference]
-            .contains(&0) || e.learners == 0 || e.learners > course.seats() { return Err(Error::Invalid); }
+        Self::validate_registration(e,course)?;
         let end = GameTime::new(e.started.value().checked_add(1).ok_or(Error::Overflow)?)
             .map_err(|_| Error::Overflow)?;
         let w = Window { start: e.started, end };
@@ -163,6 +189,32 @@ impl Cohort {
             progress:Progress { actual_seconds_per_learner:0,actual_teaching_days:0,
                 fee_cents_per_learner:Money::ZERO,fee_remainder:0 },
             cursor:e.started,sequence:0,day:-1,day_seconds:0,status:Status::Active,last_root:view.root })
+    }
+    pub(crate) fn checkpoint(self) -> CohortCheckpoint {
+        CohortCheckpoint {identity:self.identity,enrollment:self.enrollment,course:self.course,
+            progress:self.progress,cursor:self.cursor,sequence:self.sequence,day:self.day,
+            day_seconds:self.day_seconds,status:self.status,last_root:self.last_root}
+    }
+    pub(crate) fn from_checkpoint(c: CohortCheckpoint) -> Result<Self, Error> {
+        Self::validate_registration(c.enrollment,c.course)?;
+        if [c.identity.world,c.identity.branch,c.identity.scope].contains(&0) || c.last_root == [0;32]
+            || c.cursor < c.enrollment.started || c.day_seconds > c.course.daily_seconds()
+            || c.progress.fee_remainder >= 3600
+            || c.progress.actual_seconds_per_learner < c.day_seconds
+            || c.sequence < u64::from(c.progress.actual_teaching_days)
+            || c.progress.actual_seconds_per_learner > u64::from(c.progress.actual_teaching_days) * c.course.daily_seconds()
+        { return Err(Error::Invalid); }
+        if c.progress.actual_teaching_days == 0 {
+            if c.day != -1 || c.day_seconds != 0 || c.progress.actual_seconds_per_learner != 0 {
+                return Err(Error::Invalid);
+            }
+        } else if c.cursor == GameTime::ZERO || c.day < c.enrollment.started.value()/86400 || c.day_seconds == 0
+            || c.day > (c.cursor.value()-1)/86400 { return Err(Error::Invalid); }
+        let numerator = u128::from(c.progress.actual_seconds_per_learner) * c.course.cents_per_hour.value() as u128;
+        if numerator / 3600 != c.progress.fee_cents_per_learner.value() as u128
+            || numerator % 3600 != u128::from(c.progress.fee_remainder) { return Err(Error::Invalid); }
+        Ok(Self {identity:c.identity,enrollment:c.enrollment,course:c.course,progress:c.progress,
+            cursor:c.cursor,sequence:c.sequence,day:c.day,day_seconds:c.day_seconds,status:c.status,last_root:c.last_root})
     }
     pub fn progress(&self) -> Progress { self.progress }
     pub fn enrollment(&self) -> Enrollment { self.enrollment }

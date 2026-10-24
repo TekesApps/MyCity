@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.176`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.177`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.177 接入[有限免费线下教育的原权威与恢复](docs/evidence/education-authority-20261024/STATUS.md)：Opening/World、唯一成员活动账及原 Store 同笔提交，退出保留未知历史，压缩认证原票；341 项不同 release 测试和 9 次默认 debug 验证通过。修复冷开重复大投影导致的新栈问题，并独立核算恢复工作区；完整 #54、16GB 与 M0 仍开放。
 
 v0.5.176 接入[本地操作员观测与原票读取权限](docs/evidence/operator-observation-20261024/STATUS.md)，24 项不同测试通过；原 CLI Page 格式保留，账户不能绕过操作员查询门，自己的成功/失败原票仍可冷热恢复。完整 #49、账户隔离、真实 16GB 与 M0 继续开放。v175 的[有限 E 住房包](docs/evidence/housing-no-candidate-wait-20261024/STATUS.md)已收口，父 #4 继续开放。
 

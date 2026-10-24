@@ -1,0 +1,14 @@
+00000001001c50c8 <mycity_storage::Store::open_with_workspaces::h7238169a4a383351>:
+1001c50c8: a9be6ffc    	stp	x28, x27, [sp, #-0x20]!
+1001c50cc: a9017bfd    	stp	x29, x30, [sp, #0x10]
+1001c50d0: 910043fd    	add	x29, sp, #0x10
+1001c50d4: d140c7e9    	sub	x9, sp, #0x31, lsl #12  ; =0x31000
+1001c50d8: d14007ff    	sub	sp, sp, #0x1, lsl #12   ; =0x1000
+1001c50dc: f90003ff    	str	xzr, [sp]
+1001c50e0: eb2963ff    	cmp	sp, x9
+1001c50e4: 54ffffa1    	b.ne	0x1001c50d8 <mycity_storage::Store::open_with_workspaces::h7238169a4a383351+0x10>
+1001c50e8: d12903ff    	sub	sp, sp, #0xa40
+1001c50ec: f90003ff    	str	xzr, [sp]
+1001c50f0: 9140c3e9    	add	x9, sp, #0x30, lsl #12  ; =0x30000
+1001c50f4: 912d8129    	add	x9, x9, #0xb60
+1001c50f8: f90477e9    	str	x9, [sp, #0x8e8]

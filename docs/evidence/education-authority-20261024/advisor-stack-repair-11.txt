@@ -1,0 +1,1 @@
+Original advisor: seven narrow reads preserve authority/semantics and errors; no Runtime/rule/limit/stack/test change. Fixed frame evidence plus unmarked source11 exact passes supports concrete new cold-open repair, pending all6 default-debug and final regression results. Original #122/#123 remain closed and separately passed.

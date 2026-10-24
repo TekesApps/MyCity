@@ -1,0 +1,139 @@
+{
+  "source_sha256": "381652fdbb62c013169cc4e97e6cb10385232687d4020c788ae0cde4e1213626",
+  "results": [
+    {
+      "target": "checkpoint",
+      "kind": [
+        "test"
+      ],
+      "executable_sha256": "90fbed8b7409c839d85c5e7beb8e06e34b9fc8a02ebd897b5fe97ed29b872594",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-regression-05/checkpoint-0459b9608f2b9c08",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 58490,
+      "exit": 0,
+      "timeout": false,
+      "seconds": 15.73955488204956,
+      "summaries": [
+        "test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 15.24s"
+      ]
+    },
+    {
+      "target": "checkpoint_v2",
+      "kind": [
+        "test"
+      ],
+      "executable_sha256": "99c1be39e027d3e72913a5188e51b1a20b7ce1da2102a53666247eb6b791e401",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-regression-05/checkpoint_v2-d29737589feb2244",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 58535,
+      "exit": 0,
+      "timeout": false,
+      "seconds": 7.448912858963013,
+      "summaries": [
+        "test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.93s"
+      ]
+    },
+    {
+      "target": "education",
+      "kind": [
+        "test"
+      ],
+      "executable_sha256": "82ae97f971b5e2ea5053e503919a3547578a32cbee3b9662ce6fb1f32e990e96",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-regression-05/education-a84b4fec6c6484d3",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 58585,
+      "exit": 0,
+      "timeout": false,
+      "seconds": 0.6028249263763428,
+      "summaries": [
+        "test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s"
+      ]
+    },
+    {
+      "target": "education_authority",
+      "kind": [
+        "test"
+      ],
+      "executable_sha256": "f4c53767e0874fe705951c86cc164657090f7a68c3b3fbd231b961beaf01f4c7",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-regression-05/education_authority-d8a0c9c05d47bc5a",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 58586,
+      "exit": 0,
+      "timeout": false,
+      "seconds": 1.4009721279144287,
+      "summaries": [
+        "test result: ok. 6 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 1.14s"
+      ]
+    },
+    {
+      "target": "education_runtime",
+      "kind": [
+        "test"
+      ],
+      "executable_sha256": "1449469f21f3f4db3143c2cce7790ab241c3dcc84adeda552eaf8686ae3c5a5e",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-regression-05/education_runtime-cd56aa19ae2b26a1",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 58590,
+      "exit": 0,
+      "timeout": false,
+      "seconds": 0.48390722274780273,
+      "summaries": [
+        "test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s"
+      ]
+    },
+    {
+      "target": "mycity_core",
+      "kind": [
+        "lib"
+      ],
+      "executable_sha256": "b0e842a2e6ad0af6bc434f96abec4b1cd34976bc8c9497f17f288eb9bb74f450",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-regression-05/mycity_core-7cf04b75eddcf4d5",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 58591,
+      "exit": 0,
+      "timeout": false,
+      "seconds": 4.70846700668335,
+      "summaries": [
+        "test result: ok. 230 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 4.15s"
+      ]
+    },
+    {
+      "target": "mycity_storage",
+      "kind": [
+        "lib"
+      ],
+      "executable_sha256": "4fe486edcaa92d7ea3c7b35554b63df5061ce9a70ff703ef4eb7258de6efd5f1",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-regression-05/mycity_storage-46fdf6e079eacbdd",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 58595,
+      "exit": 101,
+      "timeout": false,
+      "seconds": 1.1725869178771973,
+      "summaries": [
+        "test result: FAILED. 32 passed; 2 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.67s"
+      ]
+    }
+  ],
+  "legacy_temp_worlds": "original fixture tests may self-remove their disposable worlds; source/bins/logs retained; new education and venue worlds retained"
+}

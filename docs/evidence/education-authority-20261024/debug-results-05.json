@@ -1,0 +1,56 @@
+{
+  "source_sha256": "381652fdbb62c013169cc4e97e6cb10385232687d4020c788ae0cde4e1213626",
+  "results": [
+    {
+      "target": "mycity_core",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-debug-05/mycity_core-86c4be35b28f622c",
+        "--exact",
+        "transaction::tests::equity_contribution_is_allowed_before_timeline_creation_but_not_after_time_advances",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "executable_sha256": "31b47fc2f0b58c28fc59e60473f509ab0b5a28634da58be0a4ae41acd1ae5be7",
+      "pid": 59519,
+      "exit": 0,
+      "timeout": false,
+      "seconds": 0.7185890674591064,
+      "summaries": [
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 228 filtered out; finished in 0.07s"
+      ]
+    },
+    {
+      "target": "town_utility_engine",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-debug-05/town_utility_engine-21c3b21e06dc8738",
+        "--exact",
+        "accepted_cross_city_quote_uses_shared_pool_before_local_market_and_survives_checkpoint",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "executable_sha256": "4e6a0544e41a363797cc4bc8f7d3029f73a362e8fe4e61ccd4bf21a9e72784f1",
+      "pid": 59522,
+      "exit": 0,
+      "timeout": false,
+      "seconds": 0.7228391170501709,
+      "summaries": [
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 8 filtered out; finished in 0.10s"
+      ]
+    },
+    {
+      "target": "education_authority",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-debug-05/education_authority-7e99c248b2001644",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "executable_sha256": "95b28907cee17d8c2c34f8e2fbdab5dfc60035281c740ceabf205306b3971cda",
+      "pid": 59526,
+      "exit": -6,
+      "timeout": false,
+      "seconds": 1.5330376625061035,
+      "summaries": []
+    }
+  ],
+  "default_stack": true
+}

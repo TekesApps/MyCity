@@ -1,0 +1,15 @@
+{
+  "base": "crates/city-storage/tests/fixtures/opening-venue-store/managed-people-v1-opening.json",
+  "base_sha256": "eb8529e57b6b3af3550656a17275dc34b02a0674c31b9e13cbf8756d6dc812b8",
+  "fixture": "crates/city-storage/tests/fixtures/education-store/free-offline-v1.json",
+  "fixture_sha256": "978e4536cba6ce391767bf47bdaafa1e5576a0408beb5eeeb2c1187be3a9befd",
+  "population_sha256": "37a6818f8f12d3fe128a47cfd410ecb0fa53b2f1b67f267077a0a9edcca2c1c9",
+  "declared_changes": [
+    "new education explicit free offline course registrations",
+    "same original10 HousingGenesis people; teacher[2,3),learners[0,2)",
+    "single existing original venue offer with explicit teacher1 instead of visitor1",
+    "new immutable use window[0,400000), not a runtime change",
+    "two courses share original venue use and exact people, no extra capacity"
+  ],
+  "meaning": "legal synthetic game Opening for actual Store integration, not external credentials or full-product/M0 load"
+}

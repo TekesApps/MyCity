@@ -28,6 +28,7 @@ mod old_opening {
         #[serde(default)]
         pub housing: Option<crate::housing::OpeningHousing>,
         pub venue: Option<crate::venue_runtime::Opening>,
+        pub education: Option<crate::education_runtime::Opening>,
     }
 }
 use old_opening::Opening as MirrorOpening;
@@ -57,6 +58,10 @@ mod old_world {
         pub(crate) housing: Option<Box<HousingRuntime>>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         pub(crate) venue: Option<Box<crate::venue_runtime::Runtime>>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub(crate) education: Option<Box<crate::education_runtime::Runtime>>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub(crate) member_activity: Option<Box<crate::member_activity::Ledger>>,
     }
 }
 use old_world::World as MirrorWorld;

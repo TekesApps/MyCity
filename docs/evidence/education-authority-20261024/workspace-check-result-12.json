@@ -1,0 +1,16 @@
+{
+  "exit": 0,
+  "command": [
+    "cargo",
+    "check",
+    "--workspace",
+    "--all-targets",
+    "--release",
+    "--locked",
+    "--offline",
+    "-j",
+    "1"
+  ],
+  "seconds": 29.972646236419678,
+  "source_sha256": "1d98934dd540b40bd9b8f2e265aba7f990422b0c1a668944d7fb166345290bc3"
+}

@@ -1,0 +1,29 @@
+{
+  "unchanged_count": 24,
+  "files": [
+    "docs/evidence/m0-model-lifecycle-observer-candidate/ENTRY-CLOCK-STATUS.md",
+    "docs/evidence/m0-model-lifecycle-observer-candidate/README.md",
+    "docs/evidence/m0-model-lifecycle-observer-candidate/README.vm-region.md",
+    "docs/evidence/m0-model-lifecycle-observer-candidate/clock_handshake.py",
+    "docs/evidence/m0-model-lifecycle-observer-candidate/observe_model_lifecycle.py",
+    "docs/evidence/m0-model-lifecycle-observer-candidate/observe_vm_regions.py",
+    "docs/evidence/m0-model-lifecycle-observer-candidate/test_clock_handshake.py",
+    "docs/evidence/m0-model-lifecycle-observer-candidate/test_observe_vm_regions_synthetic.py",
+    "docs/evidence/m0-t13a-rare-control-01/README.md",
+    "docs/evidence/m0-t13a-rare-control-01/admission.py",
+    "docs/evidence/m0-t13a-rare-control-01/batch_audit.py",
+    "docs/evidence/m0-t13a-rare-control-01/duration_audit.py",
+    "docs/evidence/m0-t13a-rare-control-01/observer_contract.py",
+    "docs/evidence/m0-t13a-rare-control-01/report_contract.py",
+    "docs/evidence/m0-t13a-rare-control-01/run.py",
+    "docs/evidence/m0-t13a-rare-control-01/source.schema.json",
+    "docs/evidence/m0-t13a-rare-control-01/test_admission.py",
+    "docs/evidence/m0-t13a-rare-control-01/test_batch_audit.py",
+    "docs/evidence/m0-t13a-rare-control-01/test_duration_audit.py",
+    "docs/evidence/m0-t13a-rare-control-01/test_launch_contract.py",
+    "docs/evidence/m0-t13a-rare-control-01/test_observer_contract.py",
+    "docs/evidence/m0-t13a-rare-control-01/test_report_contract.py",
+    "docs/evidence/m0-t13a-rare-control-01/test_runner.py",
+    "docs/m0-implementation-status.md"
+  ]
+}

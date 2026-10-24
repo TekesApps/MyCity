@@ -1,0 +1,15 @@
+{
+  "source_sha256": "381652fdbb62c013169cc4e97e6cb10385232687d4020c788ae0cde4e1213626",
+  "executable": "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-05/education_authority-d8a0c9c05d47bc5a",
+  "executable_sha256": "f4c53767e0874fe705951c86cc164657090f7a68c3b3fbd231b961beaf01f4c7",
+  "bytes": 12004624,
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/education-authority-integration-20261024/bin-05/education_authority-d8a0c9c05d47bc5a",
+    "--test-threads=1",
+    "--nocapture"
+  ],
+  "pid": 57482,
+  "exit": 0,
+  "timeout": false,
+  "seconds": 2.7255301475524902
+}
