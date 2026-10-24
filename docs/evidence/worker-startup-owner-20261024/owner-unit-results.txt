@@ -1,0 +1,8 @@
+
+running 3 tests
+test normal_pool::startup_owner_tests::new_owner_is_empty_and_child_access_is_checked ... ok
+test normal_pool::startup_owner_tests::no_pool_configuration_does_not_spawn_or_claim_a_child ... ok
+test normal_pool::startup_owner_tests::retained_owner_layout_is_reported_without_native_memory_claim ... startup_owner_bytes=2128 pending_registration_bytes=1664 supervisor_bytes=416 child_bytes=24
+ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 114 filtered out; finished in 0.00s

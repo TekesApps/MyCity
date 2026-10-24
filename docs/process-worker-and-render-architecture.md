@@ -190,3 +190,26 @@ v0.5.63阶段证据见[工作区范围](evidence/m0-t13a-air-workspace/DESIGN.md
 ## T13-A原生测量与失主收尾
 
 [原生CLI观测器](m0-native-observer.md)补充固定exe、root专属进程组、出生身份采样、非阻塞生命周期日志和失主整组终止的有限实现。它是验收工具，不代替City的事件调度或持久writer；强杀与正常归还、完整恢复分别报告。当前物理normal门仍失败，不把功能实验与分配账升级为全产品或性能验收。
+
+
+## 2026-10-24 registration/startup ownership integration contract (#102)
+
+This supplements the existing CPU broker authority; it creates no new pool or scheduler.
+Before Register mutates the original broker, a retained PendingRegistration fixes full Ready,
+secret, kind and expected generation from a read-only epoch query. Exact replay returns the
+same receipt; after closure that generation cannot revive. Cancel/revoke retirement uses the
+original capability and acknowledgement; EOF, cancellation or requested kill is not real wait.
+
+One persistent startup owner stores the actual Child before Bind and caches an OS ExitStatus
+before any revoke/ack RPC. Failed resolve/cancel/wait/revoke retains original responsibilities;
+unknown registration is not assumed unallocated. A changed broker boot remains unresolved,
+not eligible for replay into a new pool. Actual wait/kill cannot depend on broker availability.
+Retirement of a live child requires protocol stop or explicit kill/wait before blocking retire.
+
+Client and model/helper callers must keep the same owner beyond their complete fallible and
+panic scope, including initial Ready handling and cold reopen. A String error cannot silently
+destroy an unresolved owner. Outer cleanup must run while its original pool remains alive;
+terminal failure reports unresolved responsibility and cannot continue new launches. Source-only
+APIs and compatibility constructors do not meet this gate. Current backend/common-owner finite
+results and remaining migration are [tracked separately](evidence/worker-startup-owner-20261024/STATUS.md).
+No acceptance/resource credit follows from layout counts or these finite lifecycle tests.

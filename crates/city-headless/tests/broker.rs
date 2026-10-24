@@ -580,3 +580,156 @@ fn lost_stopped_reply_retries_original_lease_without_duplicate_credit_or_lost_re
     assert_eq!(final_state.available_touched_bytes, BYTES);
     pool.finish();
 }
+
+#[test]
+fn lost_register_reply_retains_original_request_and_resolves_exactly_once() {
+    use normal_pool::broker::PendingRegistration;
+    let t = Temp::new();
+    let root = t.0.join("pool");
+    let mut pool = FaultPool::spawn(&root, "after-broker-register-reply");
+    let mut pending = PendingRegistration::new(&root).unwrap();
+    assert!(pending.resolve().is_err());
+    let unknown = normal_pool::status(&root).unwrap();
+    assert_eq!(unknown.workspace_grants, 1);
+    assert_eq!(unknown.workspace_returns, 0);
+    let mut owner = pending.resolve().unwrap();
+    assert!(pending.resolve().is_err(), "registration capability transfers only once");
+    assert_eq!(normal_pool::status(&root).unwrap().workspace_grants, 1);
+    owner.cancel_unspawned().unwrap();
+    owner.cancel_unspawned().unwrap();
+    let done = normal_pool::status(&root).unwrap();
+    assert_eq!(done.available_touched_bytes, BYTES);
+    assert_eq!(done.workspace_grants, 1);
+    assert_eq!(done.workspace_returns, 1);
+    pool.finish();
+}
+#[test]
+fn lost_unspawned_cancel_reply_retains_owner_and_blocks_replacement_until_ack() {
+    use normal_pool::broker::PendingRegistration;
+    let t = Temp::new();
+    let root = t.0.join("pool");
+    let mut pool = FaultPool::spawn(&root, "after-broker-cancel-reply");
+    let mut pending = PendingRegistration::new(&root).unwrap();
+    let mut owner = pending.resolve().unwrap();
+    assert!(owner.cancel_unspawned().is_err());
+    assert!(Supervisor::register(&root).is_err());
+    assert_eq!(normal_pool::status(&root).unwrap().workspace_returns, 1);
+    owner.cancel_unspawned().unwrap();
+    let mut next = PendingRegistration::new(&root).unwrap().resolve().unwrap();
+    next.cancel_unspawned().unwrap();
+    let done = normal_pool::status(&root).unwrap();
+    assert_eq!(done.workspace_grants, 2);
+    assert_eq!(done.workspace_returns, 2);
+    assert_eq!(done.available_touched_bytes, BYTES);
+    pool.finish();
+}
+
+#[test]
+fn cancel_reply_fault_cannot_consume_a_revoke_or_acknowledgement_reply() {
+    use normal_pool::broker::PendingRegistration;
+    let t = Temp::new();
+    let root = t.0.join("pool");
+    let mut pool = FaultPool::spawn(&root, "after-broker-cancel-reply");
+    let mut client = Client::spawn_in_pool(exe(), &t.0.join("world"), true, false, &root).unwrap();
+    assert_eq!(client.next(Duration::from_secs(10)).unwrap().kind, "ready");
+    client.stop().expect("Revoke and AcknowledgeRevoke are not Cancel cutpoints");
+    let mut next = PendingRegistration::new(&root).unwrap().resolve().unwrap();
+    assert!(next.cancel_unspawned().is_err(), "Cancel cutpoint must remain armed");
+    next.cancel_unspawned().unwrap();
+    let done = normal_pool::status(&root).unwrap();
+    assert_eq!(done.workspace_grants, done.workspace_returns);
+    assert_eq!(done.available_touched_bytes, BYTES);
+    pool.finish();
+}
+
+#[test]
+fn startup_owner_resolves_unknown_register_before_explicit_cancel() {
+    use normal_pool::broker::StartupOwner;
+    let t = Temp::new();
+    let root = t.0.join("pool");
+    let mut pool = FaultPool::spawn(&root, "after-broker-register-reply");
+    let mut owner = StartupOwner::new();
+    owner.prepare_sim(&root).unwrap();
+    assert!(owner.resolve().is_err());
+    assert!(!owner.is_empty());
+    assert_eq!(owner.pid_opt().unwrap(), None);
+    assert_eq!(normal_pool::status(&root).unwrap().workspace_grants, 1);
+    owner.retire().unwrap();
+    assert!(owner.is_empty());
+    let done = normal_pool::status(&root).unwrap();
+    assert_eq!(done.workspace_grants, 1);
+    assert_eq!(done.workspace_returns, 1);
+    pool.finish();
+}
+
+#[test]
+fn startup_owner_keeps_real_wait_and_original_child_across_lost_revoke() {
+    use normal_pool::broker::StartupOwner;
+    use std::os::unix::process::ExitStatusExt;
+    let t = Temp::new();
+    let root = t.0.join("pool");
+    let mut pool = FaultPool::spawn(&root, "after-broker-revoke-reply");
+    let mut owner = StartupOwner::new();
+    owner.prepare_sim(&root).unwrap();
+    owner.resolve().unwrap();
+    let pid = owner.spawn(std::process::Command::new("/bin/sleep").arg("30")).unwrap();
+    let actual = owner.kill_wait().unwrap();
+    assert!(owner.retire().is_err());
+    assert_eq!(owner.pid_opt().unwrap(), Some(pid));
+    assert_eq!(owner.real_exit_status().unwrap().unwrap().into_raw(), actual.into_raw());
+    assert!(!owner.is_empty());
+    assert!(owner.spawn(&mut std::process::Command::new("/bin/true")).is_err());
+    owner.retire().unwrap();
+    assert!(owner.is_empty());
+    let done = normal_pool::status(&root).unwrap();
+    assert_eq!(done.workspace_grants, 1);
+    assert_eq!(done.workspace_returns, 1);
+    assert_eq!(done.available_touched_bytes, BYTES);
+    pool.finish();
+}
+
+#[test]
+fn startup_owner_waits_real_child_despite_lost_bind_reply() {
+    use normal_pool::broker::StartupOwner;
+    let t = Temp::new();
+    let root = t.0.join("pool");
+    let mut pool = FaultPool::spawn(&root, "after-broker-bind-reply");
+    let mut owner = StartupOwner::new();
+    owner.prepare_sim(&root).unwrap();
+    owner.resolve().unwrap();
+    assert!(owner.spawn(std::process::Command::new("/bin/sleep").arg("30")).is_err());
+    assert!(owner.pid_opt().unwrap().is_some());
+    owner.kill_wait().unwrap();
+    assert!(owner.real_exit_status().unwrap().is_some());
+    owner.retire().unwrap();
+    assert!(owner.is_empty());
+    let done = normal_pool::status(&root).unwrap();
+    assert_eq!(done.workspace_grants, done.workspace_returns);
+    pool.finish();
+}
+
+#[test]
+fn startup_owner_does_not_adopt_replacement_broker_after_unknown_registration() {
+    use normal_pool::broker::StartupOwner;
+    let t = Temp::new();
+    let root = t.0.join("pool");
+    let mut old_pool = FaultPool::spawn(&root, "after-broker-register-reply");
+    let mut owner = StartupOwner::new();
+    owner.prepare_sim(&root).unwrap();
+    assert!(owner.resolve().is_err());
+    assert_eq!(normal_pool::status(&root).unwrap().workspace_grants, 1);
+    old_pool.child.kill().unwrap();
+    old_pool.child.wait().unwrap();
+    fs::rename(&root, t.0.join("original-dead-pool")).unwrap();
+    let mut replacement = Process::spawn(exe(), &root, None).unwrap();
+    assert!(owner.retire().is_err());
+    assert!(owner.resolve().is_err());
+    assert!(!owner.is_empty(), "unknown original responsibility is retained");
+    assert_eq!(owner.pid_opt().unwrap(), None);
+    let untouched = normal_pool::status(&root).unwrap();
+    assert_eq!(untouched.workspace_grants, 0);
+    assert_eq!(untouched.available_touched_bytes, BYTES);
+    replacement.finish().unwrap();
+    // Original service was deliberately killed: no report/credit is fabricated.
+    assert!(!t.0.join("original-dead-pool/report.json").exists());
+}

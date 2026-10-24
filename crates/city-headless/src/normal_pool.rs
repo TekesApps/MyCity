@@ -44,7 +44,7 @@ fn secret() -> Result<Text<64>, String> {
         .map_err(err)?;
     Text::new(&mycity_core::sha256(&b))
 }
-#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Ready {
     schema: Text<48>,
@@ -220,6 +220,8 @@ enum Fault {
     AfterBrokerStartReply,
     AfterBrokerStopReply,
     AfterBrokerBindReply,
+    AfterBrokerRegisterReply,
+    AfterBrokerCancelReply,
     BeforeBrokerRevoke,
     AfterBrokerRevokeReply,
 }
@@ -258,6 +260,8 @@ impl Pool {
             Some("after-broker-start-reply") => Some(Fault::AfterBrokerStartReply),
             Some("after-broker-stop-reply") => Some(Fault::AfterBrokerStopReply),
             Some("after-broker-bind-reply") => Some(Fault::AfterBrokerBindReply),
+            Some("after-broker-register-reply") => Some(Fault::AfterBrokerRegisterReply),
+            Some("after-broker-cancel-reply") => Some(Fault::AfterBrokerCancelReply),
             Some("before-broker-revoke") => Some(Fault::BeforeBrokerRevoke),
             Some("after-broker-revoke-reply") => Some(Fault::AfterBrokerRevokeReply),
             Some(_) => return Err("normal_pool_fault_mode".into()),
@@ -1457,6 +1461,11 @@ fn serve_inner(
                     pool.fault = None;
                     continue; // fault lab: request lost before mutation, no credit granted
                 }
+                let registration_reply_fault = match request.as_ref().ok().map(|r| r.action) {
+                    Some(Op::Broker(broker::Op::Register { .. })) => Some(Fault::AfterBrokerRegisterReply),
+                    Some(Op::Broker(broker::Op::Cancel { .. })) => Some(Fault::AfterBrokerCancelReply),
+                    _ => None,
+                };
                 let legacy_reply_fault = match request.as_ref().ok().map(|r| r.action) {
                     Some(Op::Prepare { .. }) => Some(Fault::AfterPrepareReply),
                     Some(Op::Attach { .. }) => Some(Fault::AfterAttachReply),
@@ -1504,6 +1513,12 @@ fn serve_inner(
                 {
                     pool.fault = None;
                     continue; // real successful action; close before any Reply bytes
+                }
+                if reply.error.is_none() && registration_reply_fault.is_some()
+                    && pool.fault == registration_reply_fault
+                {
+                    pool.fault = None;
+                    continue; // exact Register/Cancel mutation succeeded; discard only its own reply
                 }
                 // A lost reply does not undo the grant. All successful actions are
                 // idempotent under the same capability; no automatic credit on EOF.
@@ -2211,3 +2226,7 @@ mod model_lifecycle_diagnostic_tests {
         fs::remove_file(path).unwrap();
     }
 }
+
+mod startup_owner;
+#[cfg(test)]
+mod startup_owner_tests;

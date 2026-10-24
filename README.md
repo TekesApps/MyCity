@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.159`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.160`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.160 验证[注册重试与共用启动 owner 前置机制](docs/evidence/worker-startup-owner-20261024/STATUS.md)：原请求重放不重复授额，旧注册不能复活，实际 wait 与回收确认分开保留。23项分项记录通过；完整 Client/Model 调用入口迁移及动态授额仍未完成，不关闭 #102。
 
 v0.5.159 固定[当前有限集成基线](docs/evidence/release-association-20261024/STATUS.md)：默认栈恢复修复、同槽期初输入、容量只读投影、F/E 持久化、实际 Sim 调度观察及 CPU Worker 生命周期已有分项实测。未激活的教育源码仍为候选；动态总预算控制、生产 provider、完整 M0 与真实16GB均未完成。旧失败和无关 WIP 保留。
 

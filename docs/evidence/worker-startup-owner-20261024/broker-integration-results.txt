@@ -1,0 +1,21 @@
+
+running 17 tests
+test actual_sim_spawn_permission_failure_cancels_unbound_registration ... ok
+test broker_death_is_fail_closed_and_cannot_adopt_old_ready_or_claim_return ... ok
+test broker_owned_worker_fault_retries_inside_same_sim_without_double_credit ... ok
+test broker_wait_and_real_sim_death_revoke_restore_capacity_and_cold_result ... ok
+test cancel_reply_fault_cannot_consume_a_revoke_or_acknowledgement_reply ... ok
+test lost_bind_reply_reaps_actual_sim_and_cancels_generation_before_replacement ... ok
+test lost_register_reply_retains_original_request_and_resolves_exactly_once ... ok
+test lost_revoke_request_or_reply_retries_after_real_sim_wait_without_duplicate_credit ... ok
+test lost_started_reply_exits_session_without_another_command_then_cold_retries ... ok
+test lost_stopped_reply_retries_original_lease_without_duplicate_credit_or_lost_receipt ... ok
+test lost_unspawned_cancel_reply_retains_owner_and_blocks_replacement_until_ack ... ok
+test partial_sim_workspace_refill_after_real_child_exit_stops_pool_without_false_credit ... ok
+test sim_killed_after_worker_spawn_before_start_reply_recovers_without_knowing_worker_id ... ok
+test startup_owner_does_not_adopt_replacement_broker_after_unknown_registration ... ok
+test startup_owner_keeps_real_wait_and_original_child_across_lost_revoke ... ok
+test startup_owner_resolves_unknown_register_before_explicit_cancel ... ok
+test startup_owner_waits_real_child_despite_lost_bind_reply ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.00s

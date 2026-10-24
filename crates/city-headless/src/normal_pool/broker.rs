@@ -1,6 +1,7 @@
 //! Broker owns real worker Children; Sim owns only a capability and a data socket.
 //! Supervisor authority is held by the Client that owns and waits for the real Sim Child.
 use super::*;
+pub use super::startup_owner::StartupOwner;
 use std::os::{
     fd::OwnedFd,
     unix::{fs::FileTypeExt, process::ExitStatusExt},
@@ -11,7 +12,9 @@ use std::os::{
 // Fixed stack control storage avoids hidden heap allocations for large Start fields.
 #[allow(clippy::large_enum_variant)]
 pub(super) enum Op {
+    RegistrationEpoch,
     Register {
+        expected_generation: u64,
         supervisor: Text<64>,
         #[serde(default)]
         kind: workspace::Kind,
@@ -74,6 +77,7 @@ pub(super) enum Op {
 #[derive(Clone, Copy, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case", deny_unknown_fields)]
 pub(super) enum Receipt {
+    RegistrationEpoch { next: u64 },
     Registered { generation: u64, key: Text<64> },
     Bound { generation: u64 },
     Authorized { generation: u64, capacity: usize },
@@ -192,7 +196,20 @@ impl Pool {
     }
     pub(super) fn broker_action(&mut self, op: Op) -> Result<Receipt, ActionError> {
         match op {
-            Op::Register { supervisor, kind } => {
+            Op::RegistrationEpoch => Ok(Receipt::RegistrationEpoch { next: self.broker.next }),
+            Op::Register { supervisor, kind, expected_generation } => {
+                // Exact original request can resolve a lost reply. It never allocates twice.
+                if let Some(session) = self.broker.session {
+                    if session.supervisor == supervisor && session.kind == kind
+                        && session.generation == expected_generation
+                    {
+                        return Ok(Receipt::Registered { generation: session.generation, key: session.key });
+                    }
+                }
+                // A closed request cannot become a fresh registration, even after later sessions.
+                if expected_generation != self.broker.next + 1 {
+                    return Err(ActionError::Rejected("normal_broker_registration_epoch"));
+                }
                 if self.broker.registered() || self.active.is_some() {
                     return Err(ActionError::Rejected("normal_broker_session_busy"));
                 }
@@ -236,6 +253,9 @@ impl Pool {
                 Ok(Receipt::Bound { generation })
             }
             Op::Cancel { generation, key } => {
+                if self.broker.last_closed == Some((generation, key)) {
+                    return Ok(Receipt::Revoked { generation });
+                }
                 let s = self.broker.session(generation, key, true)?;
                 if s.pid.is_some() || self.broker.owned.is_some() {
                     return Err(ActionError::Rejected("normal_broker_cancel_spawned"));
@@ -249,6 +269,7 @@ impl Pool {
                 )?;
                 self.retire_codec(generation)?;
                 self.event("broker_unspawned_cancelled", None)?;
+                self.broker.awaiting_revoke_ack = true;
                 self.broker.session = None;
                 self.broker.last_closed = Some((generation, key));
                 Ok(Receipt::Revoked { generation })
@@ -500,6 +521,44 @@ fn cleanup_endpoint(ready: Ready, binding: Binding) -> Result<(), String> {
         Err(e) => Err(err(e)),
     }
 }
+/// Original registration capability, retained before any state-changing RPC.
+/// No Clone, serialization or Debug: secret capability must not escape to diagnostics.
+#[must_use = "retain registration until resolved or explicitly retired"]
+pub struct PendingRegistration {
+    root: PathBuf,
+    ready: Ready,
+    request: Op,
+    transferred: bool,
+}
+impl PendingRegistration {
+    pub fn new(root: &Path) -> Result<Self, String> { Self::new_kind(root, workspace::Kind::SimCodec) }
+    pub(crate) fn new_kind(root: &Path, kind: workspace::Kind) -> Result<Self, String> {
+        let ready = ready(root)?;
+        let Receipt::RegistrationEpoch { next } = rpc(root, ready, Op::RegistrationEpoch)? else {
+            return Err("normal_broker_registration_epoch_receipt".into());
+        };
+        let expected_generation = next.checked_add(1).ok_or("normal_broker_registration_epoch")?;
+        let request = Op::Register { expected_generation, supervisor: secret()?, kind };
+        Ok(Self { root: root.to_owned(), ready, request, transferred: false })
+    }
+    /// Failure leaves the SAME request/boot/secret here. Caller must retain this owner.
+    pub fn resolve(&mut self) -> Result<Supervisor, String> {
+        if self.transferred { return Err("normal_broker_registration_transferred".into()); }
+        if ready(&self.root)? != self.ready { return Err("normal_broker_registration_ready_changed".into()); }
+        let Op::Register { expected_generation, supervisor, .. } = self.request else { unreachable!() };
+        let Receipt::Registered { generation, key: sim_key } = rpc(&self.root, self.ready, self.request)? else {
+            return Err("normal_broker_register_receipt".into());
+        };
+        if generation != expected_generation || sim_key.as_str().len() != 64
+            || !sim_key.as_str().bytes().all(|b| b.is_ascii_hexdigit())
+        { return Err("normal_broker_register_generation_or_key".into()); }
+        if ready(&self.root)? != self.ready { return Err("normal_broker_registration_ready_changed".into()); }
+        self.transferred = true;
+        Ok(Supervisor { root: std::mem::take(&mut self.root), ready: self.ready,
+            binding: Binding { generation, key: supervisor }, sim_key, pid: None, closed: false })
+    }
+}
+
 /// Held only by the process owning the real Sim Child. Never serialized to Sim.
 pub struct Supervisor {
     root: PathBuf,
@@ -525,30 +584,24 @@ impl Supervisor {
         Self::register_kind(root, workspace::Kind::HelperCompare)
     }
     pub(crate) fn register_kind(root: &Path, kind: workspace::Kind) -> Result<Self, String> {
-        let ready = ready(root)?;
-        let key = secret()?;
-        let Receipt::Registered {
-            generation,
-            key: sim_key,
-        } = rpc(
-            root,
-            ready,
-            Op::Register {
-                supervisor: key,
-                kind,
-            },
-        )?
-        else {
-            return Err("normal_broker_register_receipt".into());
-        };
-        Ok(Self {
-            root: root.to_owned(),
-            ready,
-            binding: Binding { generation, key },
-            sim_key,
-            pid: None,
-            closed: false,
-        })
+        // Legacy callers are migrated in the following integration step. This entry is
+        // deliberately kept visibly separate; it does not establish retained-startup safety.
+        PendingRegistration::new_kind(root, kind)?.resolve()
+    }
+    /// Only legal before a Child exists; retain this owner until both replies confirm.
+    pub fn cancel_unspawned(&mut self) -> Result<(), String> {
+        if self.closed { return Ok(()); }
+        if self.pid.is_some() { return Err("normal_broker_cancel_spawned".into()); }
+        match rpc(&self.root, self.ready, Op::Cancel { generation: self.binding.generation, key: self.binding.key })? {
+            Receipt::Revoked { generation } if generation == self.binding.generation => self.acknowledge_closed(),
+            _ => Err("normal_broker_cancel_receipt".into()),
+        }
+    }
+    fn acknowledge_closed(&mut self) -> Result<(), String> {
+        match rpc(&self.root, self.ready, Op::AcknowledgeRevoke { generation: self.binding.generation, key: self.binding.key })? {
+            Receipt::Revoked { generation } if generation == self.binding.generation => { self.closed = true; Ok(()) },
+            _ => Err("normal_broker_revoke_ack_receipt".into()),
+        }
     }
     pub fn configure(&self, cmd: &mut Command) -> Result<(), String> {
         cmd.env("MYCITY_NORMAL_POOL", &self.root)
@@ -630,14 +683,7 @@ impl Supervisor {
 impl Drop for Supervisor {
     fn drop(&mut self) {
         if self.pid.is_none() && !self.closed {
-            let _ = rpc(
-                &self.root,
-                self.ready,
-                Op::Cancel {
-                    generation: self.binding.generation,
-                    key: self.binding.key,
-                },
-            );
+            let _ = self.cancel_unspawned();
         }
     }
 }
@@ -865,6 +911,42 @@ impl Lease {
 mod tests {
     use super::*;
     #[test]
+    fn exact_registration_replay_never_reallocates_or_resurrects_closed_epochs() {
+        let root = std::env::temp_dir().join(format!("mc-register-epochs-{}-{}", std::process::id(), heap_meter::process_instance()));
+        fs::create_dir(&root).unwrap();
+        let mut pool = Pool::new(&root).unwrap();
+        let secret1 = secret().unwrap();
+        let original = Op::Register { supervisor: secret1, kind: workspace::Kind::SimCodec, expected_generation: 1 };
+        let Receipt::Registered { generation, key } = pool.broker_action(original).unwrap() else { panic!("register") };
+        let before = pool.summary;
+        let events = pool.event_bytes;
+        let Receipt::Registered { generation: again, key: again_key } = pool.broker_action(original).unwrap() else { panic!("replay") };
+        assert_eq!((again, again_key), (generation, key));
+        assert_eq!(pool.summary.workspace_grants, before.workspace_grants);
+        assert_eq!(pool.event_bytes, events);
+        assert!(pool.broker_action(Op::Register { supervisor: secret1, kind: workspace::Kind::Model, expected_generation: 1 }).is_err());
+        assert!(pool.broker_action(Op::Register { supervisor: secret().unwrap(), kind: workspace::Kind::SimCodec, expected_generation: 2 }).is_err());
+        pool.broker_action(Op::Cancel { generation, key: secret1 }).unwrap();
+        let returns = pool.summary.workspace_returns;
+        pool.broker_action(Op::Cancel { generation, key: secret1 }).unwrap();
+        assert_eq!(pool.summary.workspace_returns, returns);
+        assert!(pool.broker_action(original).is_err());
+        let secret2 = secret().unwrap();
+        let next = Op::Register { supervisor: secret2, kind: workspace::Kind::SimCodec, expected_generation: 2 };
+        assert!(pool.broker_action(next).is_err(), "cancel without ack must block a new session");
+        pool.broker_action(Op::AcknowledgeRevoke { generation, key: secret1 }).unwrap();
+        let Receipt::Registered { generation: g2, .. } = pool.broker_action(next).unwrap() else { panic!("new") };
+        assert!(pool.broker_action(original).is_err());
+        pool.broker_action(Op::Cancel { generation: g2, key: secret2 }).unwrap();
+        pool.broker_action(Op::AcknowledgeRevoke { generation: g2, key: secret2 }).unwrap();
+        assert!(pool.broker_action(original).is_err(), "even an older-than-last tombstone cannot revive");
+        assert_eq!(pool.summary.workspace_grants, 2);
+        assert_eq!(pool.summary.workspace_returns, 2);
+        assert_eq!(pool.summary.available_touched_bytes, BYTES);
+        drop(pool);
+        fs::remove_dir_all(root).unwrap();
+    }
+    #[test]
     fn helper_capability_cannot_start_worker_or_overlap_a_live_session() {
         let root = std::env::temp_dir().join(format!(
             "mc-helper-auth-{}-{}",
@@ -876,6 +958,7 @@ mod tests {
         let supervisor = secret().unwrap();
         let Receipt::Registered { generation, key } = pool
             .broker_action(Op::Register {
+                expected_generation: pool.broker.next + 1,
                 supervisor,
                 kind: workspace::Kind::HelperCompare,
             })
@@ -899,6 +982,7 @@ mod tests {
         ));
         assert!(pool
             .broker_action(Op::Register {
+                expected_generation: pool.broker.next + 1,
                 supervisor: secret().unwrap(),
                 kind: workspace::Kind::SimCodec
             })
@@ -927,6 +1011,7 @@ mod tests {
             key: old_key,
         } = pool
             .broker_action(Op::Register {
+                expected_generation: pool.broker.next + 1,
                 supervisor,
                 kind: workspace::Kind::SimCodec,
             })
@@ -939,12 +1024,14 @@ mod tests {
             key: supervisor,
         })
         .unwrap();
+        pool.broker_action(Op::AcknowledgeRevoke { generation: old, key: supervisor }).unwrap();
         let supervisor2 = secret().unwrap();
         let Receipt::Registered {
             generation: new,
             key: new_key,
         } = pool
             .broker_action(Op::Register {
+                expected_generation: pool.broker.next + 1,
                 supervisor: supervisor2,
                 kind: workspace::Kind::SimCodec,
             })
