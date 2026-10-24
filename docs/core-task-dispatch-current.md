@@ -922,3 +922,23 @@ Temporary service equipment must join real utility solving; do not replace requi
 network input with an initial electricity stock. Original57 owner remains the service
 owner; root next freezes natural-need/Timeline and actual provider/resource interfaces.
 Full57/85, true16GB/GPU/native peak/M0 remain open, not blocked by a new external condition.
+
+
+## v0.5.182 — real natural needs on original Housing/Timeline/Store (#57)
+
+Original57 owner service_needs module integrated by root, one shared writer. Explicit
+noRegion fixed-city profile binds original households; real successful HousingLease
+records first rental-occupancy entry. Original boundary and P5 drain deadline/occurrence
+pages before last_complete; original Store authenticates entry receipts and genesis.
+Strict opening/restore city exception applies only to complete new registration; old
+bare-city/Region/move gates are unchanged. Original continuation width and spatial seed
+bindings are preserved in corrected tests. Effects are current/summary sources, not
+independent Journal bodies.
+
+Actual workspace/check/build pass;300 different release parents,18 defaultdebug executions,
+48 fresh child processes pass with unchanged423 inputs/10 programs/24 WIP. Advisor source
+blocker on joint transient peak repaired and narrow/result reviews accepted. All failure
+originals retained; work/service-natural-needs-20261025 evidence planning revised from
+384MiB to1GiB for retained failed program sets, not a game budget increase. Real device is
+32GiB; no native/16GB/speed/GPU/M0 acceptance. Full57 dispatch/actual onsite utility/work/
+fees/safe return/multicity and utility provider85/86 dependencies remain open.

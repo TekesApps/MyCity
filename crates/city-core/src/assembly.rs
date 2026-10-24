@@ -95,6 +95,7 @@ pub struct Opening {
     pub qualification: Option<crate::qualification_authority::Opening>,
     /// Explicit shared member ledger registration, independent of any consumer.
     pub member_activity: Option<crate::member_authority::Registration>,
+    pub service_needs: Option<crate::service_needs::Opening>,
 }
 
 // Decode-only backing reduces the derived visitor's aggregate stack temporaries.
@@ -133,6 +134,8 @@ mod private_openingdecode {
         qualification: Option<Box<crate::qualification_authority::Opening>>,
         #[serde(default)]
         member_activity: Option<Box<crate::member_authority::Registration>>,
+        #[serde(default)]
+        service_needs: Option<Box<crate::service_needs::Opening>>,
     }
 
     impl Opening {
@@ -154,6 +157,7 @@ mod private_openingdecode {
                 venue: self.venue.map(|value| *value),
                 education: self.education.map(|value| *value),
                 qualification: self.qualification.map(|value| *value),
+                service_needs: self.service_needs.map(|value| *value),
                 member_activity: self.member_activity.map(|value| *value),
             }
         }
@@ -290,6 +294,8 @@ pub struct World {
     pub(crate) member_activity: Option<Box<crate::member_activity::Ledger>>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub(crate) qualification: Option<Box<crate::qualification_authority::Runtime>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub(crate) service_needs: Option<Box<crate::service_needs::Runtime>>,
 }
 
 // Restore-only scratch: retain the wire and runtime layout while avoiding a large
@@ -325,6 +331,8 @@ mod private_worlddecode {
         member_activity: Option<Box<crate::member_activity::Ledger>>,
         #[serde(default)]
         qualification: Option<Box<crate::qualification_authority::Runtime>>,
+        #[serde(default)]
+        service_needs: Option<Box<crate::service_needs::Runtime>>,
     }
 
     impl World {
@@ -350,6 +358,7 @@ mod private_worlddecode {
                 education: self.education,
                 member_activity: self.member_activity,
                 qualification: self.qualification,
+                service_needs: self.service_needs,
             }
         }
     }
@@ -433,6 +442,8 @@ pub struct WorldView {
     pub member_activity: Option<crate::education_authority::MemberView>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub qualification: Option<crate::qualification_authority::View>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub service_needs: Option<crate::service_needs_authority::View>,
 }
 
 impl Record for OpeningSource {
@@ -501,6 +512,8 @@ pub(crate) struct BusinessWorld<'a> {
     member_activity: &'a Option<Box<crate::member_activity::Ledger>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     qualification: &'a Option<Box<crate::qualification_authority::Runtime>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    service_needs: &'a Option<Box<crate::service_needs::Runtime>>,
 }
 #[derive(Serialize)]
 pub(crate) struct BorrowedWorldView<'a> {
@@ -529,6 +542,8 @@ pub(crate) struct BorrowedWorldView<'a> {
     member_activity: &'a Option<Box<crate::member_activity::Ledger>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     qualification: &'a Option<Box<crate::qualification_authority::Runtime>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    service_needs: &'a Option<Box<crate::service_needs::Runtime>>,
 }
 struct AccountViews<'a>(&'a World);
 impl Serialize for AccountViews<'_> {
@@ -597,6 +612,7 @@ impl World {
             education: None,
             member_activity: None,
             qualification: None,
+            service_needs: None,
         })
     }
     pub(crate) fn reset_backing(&mut self) {
@@ -619,6 +635,7 @@ impl World {
         self.education = None;
         self.member_activity = None;
         self.qualification = None;
+        self.service_needs = None;
     }
     pub(crate) fn copy_into(&self, target: &mut Self) -> Result<(), String> {
         self.accounts.copy_into(&mut target.accounts)?;
@@ -640,6 +657,7 @@ impl World {
         target.education = self.education.clone();
         target.member_activity = self.member_activity.clone();
         target.qualification = self.qualification.clone();
+        target.service_needs = self.service_needs.clone();
         Ok(())
     }
     pub(crate) fn backing_ids(&self) -> [usize; 7] {
@@ -676,11 +694,14 @@ impl World {
             education: &self.education,
             member_activity: &self.member_activity,
             qualification: &self.qualification,
+            service_needs: &self.service_needs,
         }
     }
     pub(crate) fn borrowed_view(&self) -> BorrowedWorldView<'_> {
         BorrowedWorldView {
-            schema: if self.member_activity.is_some() && self.education.is_none() {
+            schema: if self.service_needs.is_some() {
+                "mycity-m0-state-v13"
+            } else if self.member_activity.is_some() && self.education.is_none() {
                 "mycity-m0-state-v12"
             } else if self.qualification.is_some() {
                 "mycity-m0-state-v11"
@@ -712,6 +733,7 @@ impl World {
             education: &self.education,
             member_activity: &self.member_activity,
             qualification: &self.qualification,
+            service_needs: &self.service_needs,
         }
     }
     pub(crate) fn restore_capacity(&mut self) -> Result<(), String> {
@@ -893,9 +915,10 @@ impl World {
                 .validate()
                 .map_err(|_| "checkpoint_housing_opening")?;
             if housing.opening.city_id.is_some_and(|id| {
-                self.region
-                    .as_ref()
-                    .is_none_or(|region| !region.contains_city(id))
+                self.region.as_ref().map_or_else(
+                    || !self.service_needs.as_deref().is_some_and(|runtime|
+                        crate::service_needs_authority::allows_local_city(runtime.opening(),self.scope,self.seed,&housing.opening)),
+                    |region| !region.contains_city(id))
             }) {
                 return Err("checkpoint_housing_city".into());
             }
@@ -1004,7 +1027,9 @@ impl World {
     }
     pub fn view(&self) -> WorldView {
         WorldView {
-            schema: if self.member_activity.is_some() && self.education.is_none() {
+            schema: if self.service_needs.is_some() {
+                "mycity-m0-state-v13"
+            } else if self.member_activity.is_some() && self.education.is_none() {
                 "mycity-m0-state-v12"
             } else if self.qualification.is_some() {
                 "mycity-m0-state-v11"
@@ -1074,6 +1099,7 @@ impl World {
             education: self.education.as_deref().map(crate::education_authority::view),
             member_activity: self.member_activity.as_deref().map(crate::education_authority::member_view),
             qualification: self.qualification.as_deref().map(crate::qualification_authority::view),
+            service_needs: self.service_needs.as_deref().map(crate::service_needs_authority::view),
             venue: self.venue.as_deref().map(|venue| VenueView {
                 venue_count: venue.opening.venues.len(), offer_count: venue.opening.offers.len(),
                 population_origin_sha256: venue.population_origin_sha256,
@@ -1091,10 +1117,12 @@ impl World {
         let education_owned = self.education.as_ref().map_or(0, |_| crate::education_runtime::Runtime::owned_bytes());
         let member_owned = self.member_activity.as_ref().map_or(0, |_| crate::member_activity::Ledger::owned_bytes());
         total_world_owned.checked_sub(venue_owned + education_owned + member_owned
-            + self.qualification.as_ref().map_or(0, |_| crate::qualification_authority::Runtime::owned_bytes()))
+            + self.qualification.as_ref().map_or(0, |_| crate::qualification_authority::Runtime::owned_bytes())
+            + self.service_needs.as_ref().map_or(0, |_| crate::service_needs::Runtime::owned_bytes()))
             .and_then(|base| base.checked_add(validation_scratch))
             .is_some_and(|base| base <= WORLD_BYTE_BUDGET)
             && venue_owned <= crate::venue_runtime::Runtime::max_owned_bytes()
+            && self.service_needs.as_ref().is_none_or(|_|crate::service_needs::Runtime::owned_bytes()<=crate::service_needs_authority::MAX_OWNED_BYTES)
             && total_world_owned.checked_add(validation_scratch)
                 .is_some_and(|total| total <= crate::transaction::ENGINE_BYTE_BUDGET)
     }
@@ -1108,6 +1136,7 @@ impl World {
             + self.education.as_ref().map_or(0, |_| crate::education_runtime::Runtime::owned_bytes())
             + self.member_activity.as_ref().map_or(0, |_| crate::member_activity::Ledger::owned_bytes())
             + self.qualification.as_ref().map_or(0, |_| crate::qualification_authority::Runtime::owned_bytes())
+            + self.service_needs.as_ref().map_or(0, |_| crate::service_needs::Runtime::owned_bytes())
             + self
                 .housing
                 .as_ref()
@@ -1152,6 +1181,14 @@ impl World {
                 object.insert("member_activity_profile".into(),"member-activity-opening-v1".into());
                 object.insert("member_registration_decode_typed_bytes".into(),size_of::<crate::member_authority::Registration>().into());
             }
+        }
+        if self.service_needs.is_some() {
+            let object=layout.as_object_mut().expect("layout object");
+            object.insert("service_needs_owned_bytes".into(),crate::service_needs::Runtime::owned_bytes().into());
+            object.insert("service_needs_owned_cap_bytes".into(),crate::service_needs_authority::MAX_OWNED_BYTES.into());
+            object.insert("service_needs_prepare_extra_bytes".into(),(crate::service_needs::Runtime::owned_bytes()+crate::service_needs::Runtime::candidate_bytes()).into());
+            object.insert("service_needs_restore_extra_bytes".into(),crate::service_needs::Runtime::restore_workspace_bytes().into());
+            object.insert("service_needs_decode_typed_bytes".into(),size_of::<crate::service_needs::Opening>().into());
         }
         if self.qualification.is_some() {
             let object=layout.as_object_mut().expect("layout object");
@@ -1501,10 +1538,10 @@ fn assemble_opening_into(mut input: Opening, world: &mut World) -> Result<(), St
     }
     if let Some(opening) = input.housing {
         if opening.city_id.is_some_and(|id| {
-            world
-                .region
-                .as_ref()
-                .is_none_or(|region| !region.contains_city(id))
+            world.region.as_ref().map_or_else(
+                || !input.service_needs.as_ref().is_some_and(|needs|
+                    crate::service_needs_authority::allows_local_city(needs,world.scope,world.seed,&opening)),
+                |region| !region.contains_city(id))
         }) {
             return Err("housing_city".into());
         }
@@ -1581,6 +1618,14 @@ fn assemble_opening_into(mut input: Opening, world: &mut World) -> Result<(), St
         }
         world.qualification=Some(crate::qualification_authority::initialize(opening,world)?);
     }
+    if let Some(opening)=input.service_needs {
+        let extra=crate::service_needs::Runtime::owned_bytes()+size_of::<crate::service_needs::Opening>();
+        if crate::service_needs::Runtime::owned_bytes()>crate::service_needs_authority::MAX_OWNED_BYTES
+            || world.owned_capacity_bytes().checked_add(extra).and_then(|n|n.checked_add(crate::housing::MAX_VALIDATION_SCRATCH_BYTES)).is_none_or(|n|n>crate::transaction::ENGINE_BYTE_BUDGET) {
+            return Err("service_needs_world_budget_before_allocation".into());
+        }
+        world.service_needs=Some(crate::service_needs_authority::initialize(opening,world)?);
+    }
     let housing_scratch = if world.housing.is_some() {
         crate::housing::MAX_VALIDATION_SCRATCH_BYTES
     } else {
@@ -1631,6 +1676,7 @@ impl crate::restore_into::Restore for World {
         self.education = None;
         self.member_activity = None;
         self.qualification = None;
+        self.service_needs = None;
         crate::restore_into::object!(d,self,World,255u64,{
         scope,0=>Copy,
         seed,1=>Copy,
@@ -1651,6 +1697,7 @@ impl crate::restore_into::Restore for World {
         education,16=>Into,
         member_activity,17=>Into,
         qualification,18=>Into,
+        service_needs,19=>Into,
         })?;
         Ok(())
     }

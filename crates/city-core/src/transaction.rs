@@ -460,6 +460,7 @@ pub struct Engine {
 }
 
 struct Prepared {
+    service_needs: Option<Box<crate::service_needs::Runtime>>,
     qualification: Option<crate::qualification_authority::Candidate>,
     education: Option<crate::education_authority::Candidate>,
     venue: Option<crate::venue_runtime::UseCandidate>,
@@ -600,6 +601,7 @@ impl Engine {
         };
         venue_driver::validate(&engine.world, &engine.resources, &engine.leases, engine.timeline.as_ref(), None)?;
         crate::education_authority::validate(&engine.world, engine.timeline.as_ref())?;
+        crate::service_needs_authority::validate(&engine.world,engine.world.service_needs.as_deref(),engine.timeline.as_ref(),engine.world.region.as_ref())?;
         if let Some(q)=engine.world.qualification.as_deref(){q.validate(&engine.world)?;}
         validate_construction_binding(
             engine.world.construction,
@@ -1003,6 +1005,9 @@ impl Engine {
         if candidate.world.education.as_ref().is_some_and(|r| !r.is_ready() && r.prefix_anchor().is_none()) {
             candidate.authenticate_education_restore(None)?;
         }
+        if candidate.world.service_needs.as_ref().is_some_and(|r|r.households().iter().all(|h|h.entry.is_none())) {
+            let check=candidate.begin_service_needs_restore()?;candidate.finish_service_needs_restore(check)?;
+        }
         candidate.journal.clear();
         if candidate.owned_capacity_bytes() > ENGINE_BYTE_BUDGET {
             return Err("checkpoint_engine_budget".into());
@@ -1010,9 +1015,11 @@ impl Engine {
         Ok(())
     }
     fn validate_checkpoint_runtime(&self) -> Result<(), TxError> {
+        if self.world.service_needs.is_some() && self.owned_capacity_bytes().checked_add(crate::service_needs::Runtime::restore_workspace_bytes()).is_none_or(|n|n>ENGINE_BYTE_BUDGET){return Err(TxError::WorkingLimit);}
         if self.world.qualification.is_some() && self.owned_capacity_bytes().checked_add(crate::qualification_authority::restore_bytes())
             .is_none_or(|n|n>ENGINE_BYTE_BUDGET){return Err(TxError::WorkingLimit);}
         crate::education_authority::validate(&self.world, self.timeline.as_ref())?;
+        crate::service_needs_authority::validate(&self.world,self.world.service_needs.as_deref(),self.timeline.as_ref(),self.world.region.as_ref())?;
         if let Some(q)=self.world.qualification.as_deref(){q.validate(&self.world)?;}
         venue_driver::validate(&self.world, &self.resources, &self.leases, self.timeline.as_ref(), None)?;
         if let Some(t) = self.timeline.as_ref() {
@@ -1180,6 +1187,26 @@ impl Engine {
     }
     /// Store binds presence and immutable namespace against the original genesis.
     /// This digest deliberately excludes ordinal, active rows and consumed cursors.
+    pub fn service_needs_is_authenticated(&self)->bool {self.world.service_needs.as_deref().is_none_or(|r|r.is_ready())}
+    pub fn service_needs_receipt_operations(&self)->[Option<u64>;crate::service_needs::MAX_HOUSEHOLDS] {
+        let mut out=[None;crate::service_needs::MAX_HOUSEHOLDS];
+        if let Some(r)=self.world.service_needs.as_deref(){for (i,h) in r.households().iter().enumerate(){out[i]=h.entry.map(|e|e.operation_id);}} out
+    }
+    pub fn begin_service_needs_restore(&self)->Result<crate::service_needs_authority::RestoreCheck,String>{
+        crate::service_needs_authority::begin_restore(&self.world).map_err(|e|format!("service_needs_restore:{e:?}"))
+    }
+    pub fn check_service_needs_restore_receipt(&self,check:&mut crate::service_needs_authority::RestoreCheck,index:usize,record:&JournalRecord)->Result<(),String>{
+        crate::service_needs_authority::check_restore(&self.world,check,index,record).map_err(|e|format!("service_needs_receipt:{e:?}"))
+    }
+    pub fn finish_service_needs_restore(&mut self,check:crate::service_needs_authority::RestoreCheck)->Result<(),String>{
+        crate::service_needs_authority::finish_restore(&mut self.world,check).map_err(|e|format!("service_needs_restore:{e:?}"))
+    }
+    pub fn service_needs_registration(&self)->Option<[u8;32]> {
+        self.world.service_needs.as_deref().map(|r|r.registration_fingerprint().expect("validated needs registration"))
+    }
+    pub fn service_needs_summary(&self)->Option<crate::service_needs_authority::View> {
+        self.world.service_needs.as_deref().map(crate::service_needs_authority::view)
+    }
     pub fn member_activity_registration(&self)->Option<[u8;32]> {
         crate::member_authority::registration(&self.world)
     }
@@ -1598,7 +1625,7 @@ impl Engine {
         persist: impl FnOnce(&Envelope,&JournalRecord,CommitContext<'_>)->Result<(),E>,
         trace: &mut Trace<'_>,
     ) -> Result<Result<Receipt, TxError>, E> {
-        if !self.education_is_authenticated() || !self.qualification_is_authenticated() {return Ok(Err(TxError::InvalidOperation));}
+        if !self.education_is_authenticated() || !self.qualification_is_authenticated() || !self.service_needs_is_authenticated() {return Ok(Err(TxError::InvalidOperation));}
         if env.world != self.world.scope.world() || env.branch != self.world.scope.branch() {
             return Ok(Err(TxError::WrongScope));
         }
@@ -1892,6 +1919,15 @@ impl Engine {
             .preparation_workspace
             .as_ref()
             .ok_or(TxError::WorkingLimit)?;
+        // A service candidate can overlap the original housing copy and wage window
+        // created later by the same sole Timeline/HousingLease action. Reserve that
+        // conservative maximum BEFORE cloning, then recheck the actual final union.
+        let service_working_base=self.owned_capacity_bytes()
+            .saturating_add(crate::service_needs::Runtime::owned_bytes())
+            .saturating_add(self.world.housing.as_deref().map_or(0,|r|
+                r.state.owned_capacity_bytes()+size_of::<crate::housing_income::PaidWageWindow>()));
+        if self.world.service_needs.is_some(){crate::service_needs_authority::check_peak(service_working_base,ENGINE_BYTE_BUDGET)?;}
+        let mut service_needs = self.world.service_needs.clone();
         let mut venue = None;
         let mut education = None;
         let mut qualification = None;
@@ -2089,6 +2125,9 @@ impl Engine {
                     timeline_driver::Frame {
                         trace,
                         world: &self.world,
+                        service_needs: &mut service_needs,
+                        operation_id: env.operation_id,
+                        service_working_base,
                         town: &mut town,
                         background: &mut background,
                         background_work: &mut background_work,
@@ -2315,6 +2354,8 @@ impl Engine {
                         timeline_state,
                         &mut accounts,
                     )?;
+                    crate::service_needs_authority::record_entry(
+                        &self.world, &mut service_needs, offer_id, timeline_state, env.operation_id)?;
                 }
                 Action::HousingMove {
                     assessment_id,
@@ -2649,6 +2690,9 @@ impl Engine {
                             timeline_driver::Frame {
                                 trace,
                                 world: &self.world,
+                                service_needs: &mut service_needs,
+                                operation_id: env.operation_id,
+                                service_working_base,
                                 town: &mut town,
                                 background: &mut background,
                                 background_work: &mut background_work,
@@ -3034,6 +3078,9 @@ impl Engine {
                         timeline_driver::Frame {
                             trace,
                             world: &self.world,
+                            service_needs: &mut service_needs,
+                            operation_id: env.operation_id,
+                            service_working_base,
                             town: &mut town,
                             background: &mut background,
                             background_work: &mut background_work,
@@ -4050,6 +4097,8 @@ impl Engine {
                 0,
                 crate::housing_income::PaidWageWindow::owned_capacity_bytes,
             ));
+        let projected = projected.saturating_add(service_needs.as_ref().map_or(0, |_|
+            crate::service_needs::Runtime::owned_bytes()+crate::service_needs::Runtime::candidate_bytes()));
         let projected = projected.saturating_add(venue.as_ref().map_or(0, |_| crate::venue_runtime::UseCandidate::payload_bytes()));
         let projected = projected.saturating_add(education.as_ref().map_or(0, |_| crate::education_authority::candidate_bytes()))
             .saturating_add(qualification.as_ref().map_or(0, |_| crate::qualification_authority::candidate_bytes()));
@@ -4140,7 +4189,9 @@ impl Engine {
         venue_driver::validate_domain_bindings(&self.world, boot.as_ref(), exchange.as_ref(), construction.as_ref())?;
         venue_driver::validate(&self.world, &resources, &leases, timeline.as_ref(), venue.as_ref())?;
         crate::education_authority::validate_candidate(&self.world,timeline.as_ref(),education.as_ref(),venue.as_ref())?;
+        crate::service_needs_authority::validate(&self.world,service_needs.as_deref(),timeline.as_ref(),region.as_ref())?;
         Ok(Prepared {
+            service_needs,
             qualification,
             education,
             venue,
@@ -4199,6 +4250,7 @@ impl Engine {
         self.world.boot = prepared.boot;
         self.world.economy = prepared.economy;
         self.world.region = prepared.region;
+        self.world.service_needs = prepared.service_needs;
         self.world.construction = prepared.construction;
         if let Some(candidate)=prepared.qualification {
             debug_assert_eq!(self.world.qualification.as_deref().expect("prepared qualification").fingerprint().ok(),Some(candidate.expected));

@@ -1,0 +1,148 @@
+[
+  {
+    "label": "workspace-check",
+    "pid": 9801,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "WIP24_unchanged": true,
+    "summaries": []
+  },
+  {
+    "label": "build-core-release",
+    "pid": 9876,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "WIP24_unchanged": true,
+    "summaries": []
+  },
+  {
+    "label": "build-store-release",
+    "pid": 9877,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "WIP24_unchanged": true,
+    "summaries": []
+  },
+  {
+    "label": "build-store-debug",
+    "pid": 9905,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "WIP24_unchanged": true,
+    "summaries": []
+  },
+  {
+    "label": "run-core-lib-release",
+    "pid": 9915,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "WIP24_unchanged": true,
+    "summaries": [
+      "test result: ok. 271 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 3.99s"
+    ]
+  },
+  {
+    "label": "run-core-service_needs-release",
+    "pid": 9951,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "WIP24_unchanged": true,
+    "summaries": [
+      "test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+    ]
+  },
+  {
+    "label": "run-service_needs-store-release",
+    "pid": 9955,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "WIP24_unchanged": true,
+    "summaries": [
+      "test result: ok. 3 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 43.70s"
+    ]
+  },
+  {
+    "label": "run-member_authority-store-release",
+    "pid": 10166,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "WIP24_unchanged": true,
+    "summaries": [
+      "test result: ok. 3 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.54s"
+    ]
+  },
+  {
+    "label": "run-education_authority-store-release",
+    "pid": 10185,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "WIP24_unchanged": true,
+    "summaries": [
+      "test result: ok. 6 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 1.10s"
+    ]
+  },
+  {
+    "label": "run-qualification_authority-store-release",
+    "pid": 10220,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "WIP24_unchanged": true,
+    "summaries": [
+      "test result: ok. 6 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 15.37s"
+    ]
+  },
+  {
+    "label": "run-service_needs-store-debug",
+    "pid": 10333,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "WIP24_unchanged": true,
+    "summaries": [
+      "test result: ok. 3 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 105.11s"
+    ]
+  },
+  {
+    "label": "run-member_authority-store-debug",
+    "pid": 10712,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "WIP24_unchanged": true,
+    "summaries": [
+      "test result: ok. 3 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 4.60s"
+    ]
+  },
+  {
+    "label": "run-education_authority-store-debug",
+    "pid": 10746,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "WIP24_unchanged": true,
+    "summaries": [
+      "test result: ok. 6 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 7.52s"
+    ]
+  },
+  {
+    "label": "run-qualification_authority-store-debug",
+    "pid": 10780,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "WIP24_unchanged": true,
+    "summaries": [
+      "test result: ok. 6 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 41.74s"
+    ]
+  }
+]

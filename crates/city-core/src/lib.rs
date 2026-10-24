@@ -196,3 +196,6 @@ pub mod task_registry;
 
 /// Immutable bounded opening transport into caller-owned retained model backing.
 pub mod opening_loader;
+
+pub mod service_needs;
+pub mod service_needs_authority;

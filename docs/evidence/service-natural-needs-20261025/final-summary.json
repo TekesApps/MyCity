@@ -1,0 +1,510 @@
+{
+  "source_files": 423,
+  "source_zip_sha256": "944490a6654e0b5493fc70906281aad2ec7ca16c3d6f9aaf1d729252f7dd8ab7",
+  "results": {
+    "run-core-lib-release": 271,
+    "run-core-service_needs-release": 11,
+    "run-service_needs-store-release": 3,
+    "run-member_authority-store-release": 3,
+    "run-education_authority-store-release": 6,
+    "run-qualification_authority-store-release": 6,
+    "run-service_needs-store-debug": 3,
+    "run-member_authority-store-debug": 3,
+    "run-education_authority-store-debug": 6,
+    "run-qualification_authority-store-debug": 6
+  },
+  "release_distinct_parents": 300,
+  "debug_additional_executions": 18,
+  "fresh_children": [
+    {
+      "path": "attempt07/worlds/MYCITY_EDUCATION_TEST_WORK/lesson-10185-0/child-1/exit.json",
+      "pid": 10213,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10213,
+        "success": true,
+        "timeout": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_EDUCATION_TEST_WORK/lesson-10185-0/child-2/exit.json",
+      "pid": 10214,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10214,
+        "success": true,
+        "timeout": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_EDUCATION_TEST_WORK/lesson-10746-0/child-1/exit.json",
+      "pid": 10759,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10759,
+        "success": true,
+        "timeout": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_EDUCATION_TEST_WORK/lesson-10746-0/child-2/exit.json",
+      "pid": 10760,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10760,
+        "success": true,
+        "timeout": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_EDUCATION_TEST_WORK/v2-anchor-gc-10185-7/child-8/exit.json",
+      "pid": 10216,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10216,
+        "success": true,
+        "timeout": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_EDUCATION_TEST_WORK/v2-anchor-gc-10746-7/child-8/exit.json",
+      "pid": 10778,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10778,
+        "success": true,
+        "timeout": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_MEMBER_TEST_WORK/education-shared-10166-0/fresh-1/exit.json",
+      "pid": 10167,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10167,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_MEMBER_TEST_WORK/education-shared-10166-0/fresh-2/exit.json",
+      "pid": 10168,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10168,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_MEMBER_TEST_WORK/education-shared-10712-0/fresh-1/exit.json",
+      "pid": 10717,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10717,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_MEMBER_TEST_WORK/education-shared-10712-0/fresh-2/exit.json",
+      "pid": 10718,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10718,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_MEMBER_TEST_WORK/standalone-classic-10166-4/fresh-5/exit.json",
+      "pid": 10169,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10169,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_MEMBER_TEST_WORK/standalone-classic-10166-4/fresh-6/exit.json",
+      "pid": 10170,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10170,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_MEMBER_TEST_WORK/standalone-classic-10712-4/fresh-5/exit.json",
+      "pid": 10732,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10732,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_MEMBER_TEST_WORK/standalone-classic-10712-4/fresh-6/exit.json",
+      "pid": 10733,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10733,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_MEMBER_TEST_WORK/standalone-spatial-10166-7/fresh-8/exit.json",
+      "pid": 10181,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10181,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_MEMBER_TEST_WORK/standalone-spatial-10166-7/fresh-9/exit.json",
+      "pid": 10184,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10184,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_MEMBER_TEST_WORK/standalone-spatial-10712-7/fresh-8/exit.json",
+      "pid": 10735,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10735,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_MEMBER_TEST_WORK/standalone-spatial-10712-7/fresh-9/exit.json",
+      "pid": 10737,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10737,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_QUALIFICATION_TEST_WORK/baseline-v3-10220-4/fresh-5/exit.json",
+      "pid": 10237,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10237,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_QUALIFICATION_TEST_WORK/baseline-v3-10220-4/fresh-6/exit.json",
+      "pid": 10238,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10238,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_QUALIFICATION_TEST_WORK/baseline-v3-10780-4/fresh-5/exit.json",
+      "pid": 10789,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10789,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_QUALIFICATION_TEST_WORK/baseline-v3-10780-4/fresh-6/exit.json",
+      "pid": 10790,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10790,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_QUALIFICATION_TEST_WORK/baseline-v3-spatial-10220-1/fresh-2/exit.json",
+      "pid": 10235,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10235,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_QUALIFICATION_TEST_WORK/baseline-v3-spatial-10220-1/fresh-3/exit.json",
+      "pid": 10236,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10236,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_QUALIFICATION_TEST_WORK/baseline-v3-spatial-10780-1/fresh-2/exit.json",
+      "pid": 10784,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10784,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_QUALIFICATION_TEST_WORK/baseline-v3-spatial-10780-1/fresh-3/exit.json",
+      "pid": 10788,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10788,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_QUALIFICATION_TEST_WORK/real-course-10220-9/fresh-10/exit.json",
+      "pid": 10318,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10318,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_QUALIFICATION_TEST_WORK/real-course-10220-9/fresh-11/exit.json",
+      "pid": 10328,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10328,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_QUALIFICATION_TEST_WORK/real-course-10220-9/fresh-12/exit.json",
+      "pid": 10331,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10331,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_QUALIFICATION_TEST_WORK/real-course-10780-9/fresh-10/exit.json",
+      "pid": 10806,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10806,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_QUALIFICATION_TEST_WORK/real-course-10780-9/fresh-11/exit.json",
+      "pid": 10807,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10807,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_QUALIFICATION_TEST_WORK/real-course-10780-9/fresh-12/exit.json",
+      "pid": 10808,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10808,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_SERVICE_TEST_WORK/classic-10333-2/fresh-3/exit.json",
+      "pid": 10390,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10390,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_SERVICE_TEST_WORK/classic-10333-2/fresh-4/exit.json",
+      "pid": 10391,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10391,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_SERVICE_TEST_WORK/classic-10333-2/fresh-5/exit.json",
+      "pid": 10409,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10409,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_SERVICE_TEST_WORK/classic-10333-2/fresh-6/exit.json",
+      "pid": 10410,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10410,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_SERVICE_TEST_WORK/classic-9955-2/fresh-3/exit.json",
+      "pid": 9956,
+      "original_metadata": {
+        "code": 0,
+        "pid": 9956,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_SERVICE_TEST_WORK/classic-9955-2/fresh-4/exit.json",
+      "pid": 9957,
+      "original_metadata": {
+        "code": 0,
+        "pid": 9957,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_SERVICE_TEST_WORK/classic-9955-2/fresh-5/exit.json",
+      "pid": 9958,
+      "original_metadata": {
+        "code": 0,
+        "pid": 9958,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_SERVICE_TEST_WORK/classic-9955-2/fresh-6/exit.json",
+      "pid": 9959,
+      "original_metadata": {
+        "code": 0,
+        "pid": 9959,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_SERVICE_TEST_WORK/spatial-10333-7/fresh-10/exit.json",
+      "pid": 10586,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10586,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_SERVICE_TEST_WORK/spatial-10333-7/fresh-11/exit.json",
+      "pid": 10587,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10587,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_SERVICE_TEST_WORK/spatial-10333-7/fresh-8/exit.json",
+      "pid": 10577,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10577,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_SERVICE_TEST_WORK/spatial-10333-7/fresh-9/exit.json",
+      "pid": 10579,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10579,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_SERVICE_TEST_WORK/spatial-9955-7/fresh-10/exit.json",
+      "pid": 10065,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10065,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_SERVICE_TEST_WORK/spatial-9955-7/fresh-11/exit.json",
+      "pid": 10066,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10066,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_SERVICE_TEST_WORK/spatial-9955-7/fresh-8/exit.json",
+      "pid": 10063,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10063,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "attempt07/worlds/MYCITY_SERVICE_TEST_WORK/spatial-9955-7/fresh-9/exit.json",
+      "pid": 10064,
+      "original_metadata": {
+        "code": 0,
+        "pid": 10064,
+        "success": true,
+        "timed_out": false
+      }
+    }
+  ],
+  "source_executables_and_WIP24_unchanged": true,
+  "fixed_executables": 10,
+  "identical_frozen_executables_reused": 8,
+  "retained_files_before_final_receipts": 1863,
+  "retained_logical_bytes_before_final_receipts": 907986393,
+  "retention_cap_bytes": 1073741824,
+  "old_estimate_cap_bytes": 402653184,
+  "M0_frozen_unchanged": true,
+  "sixteen_GB_acceptance": false,
+  "full_issue57_complete": false
+}

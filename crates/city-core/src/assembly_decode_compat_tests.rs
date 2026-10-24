@@ -31,6 +31,7 @@ mod old_opening {
         pub education: Option<crate::education_runtime::Opening>,
         pub qualification: Option<crate::qualification_authority::Opening>,
         pub member_activity: Option<crate::member_authority::Registration>,
+        pub service_needs: Option<crate::service_needs::Opening>,
     }
 }
 use old_opening::Opening as MirrorOpening;
@@ -66,6 +67,8 @@ mod old_world {
         pub(crate) member_activity: Option<Box<crate::member_activity::Ledger>>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         pub(crate) qualification: Option<Box<crate::qualification_authority::Runtime>>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub(crate) service_needs: Option<Box<crate::service_needs::Runtime>>,
     }
 }
 use old_world::World as MirrorWorld;
@@ -242,6 +245,10 @@ fn opening_legacy_derive_wire_acceptance_and_errors_match() {
     registered["member_activity"]=serde_json::to_value(crate::member_authority::Registration{version:1,
         scope:crate::arena::Scope::new(1,1).unwrap(),population_origin:[7;32],total_people:10,epoch:1}).unwrap();
     values.push(registered); // Parser equivalence only, not a valid population provider.
+    let mut needs=values.last().unwrap().clone();
+    needs["service_needs"]=json!({"version":1,"profile":"LocalDevelopmentNaturalNeedsV1","scope":{"world":1,"branch":1},"seed":7,"city_id":1,
+        "households":[{"household_id":7,"source_id":7001,"generation":1,"people":10}]});
+    values.push(needs); // Current parser coverage, not a claim of authentic entry.
     let mut count = 0;
     for value in values {
         for bytes in cases(&value) {

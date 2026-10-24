@@ -32,6 +32,9 @@ fn check_time(at: u64) -> Result<(), TxError> {
 pub(super) struct Frame<'a, 'd> {
     pub trace: &'a mut crate::diagnostics::Trace<'d>,
     pub world: &'a World,
+    pub service_needs: &'a mut Option<Box<crate::service_needs::Runtime>>,
+    pub operation_id: u64,
+    pub service_working_base: usize,
     pub town: &'a mut Option<crate::town_runtime::MarketState>,
     pub background: &'a mut crate::model_rows::Resident<crate::background::Background>,
     pub background_work: &'a mut crate::background::Work,
@@ -492,6 +495,9 @@ impl Frame<'_, '_> {
             at = at.min(due);
             Ok(())
         };
+        if let Some(service)=self.service_needs.as_deref() {
+            if let Some(due)=service.next_due().map_err(|_|TxError::InvalidOperation)? {take(due)?;}
+        }
         for c in &t.claims {
             if !c.processed {
                 take(c.due)?;
@@ -778,6 +784,7 @@ impl Frame<'_, '_> {
                 {
                     self.economy_event(t)?;
                 } else {
+                    if !crate::service_needs_authority::due_page(self.service_needs,at,self.operation_id,self.service_working_base,crate::transaction::ENGINE_BYTE_BUDGET)? {return Ok(());}
                     t.progress.last_complete = at;
                     t.progress.phase = None;
                     t.progress.cursor = 0;
