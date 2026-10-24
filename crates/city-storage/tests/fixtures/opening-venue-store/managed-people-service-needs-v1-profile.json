@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "profile": "LocalDevelopmentNaturalNeedsV1",
+  "scope": { "world": 1, "branch": 1 },
+  "seed": 107,
+  "city_id": 1,
+  "households": [
+    { "household_id": 7, "source_id": 7001, "generation": 1, "people": 10 }
+  ]
+}

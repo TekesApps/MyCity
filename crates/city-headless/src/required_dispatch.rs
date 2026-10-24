@@ -76,6 +76,10 @@ pub enum DueError {
     MissingTimeline,
     InvalidPendingSnapshot,
     SelectionChanged,
+    InvalidDueView,
+    MissingContinuation,
+    ContinuationExhausted,
+    InvalidServiceSnapshot,
 }
 
 impl DueError {
@@ -85,6 +89,10 @@ impl DueError {
             Self::MissingTimeline => "missing_timeline",
             Self::InvalidPendingSnapshot => "invalid_pending_snapshot",
             Self::SelectionChanged => "selection_changed",
+            Self::InvalidDueView => "invalid_due_view",
+            Self::MissingContinuation => "missing_continuation",
+            Self::ContinuationExhausted => "continuation_exhausted",
+            Self::InvalidServiceSnapshot => "invalid_service_snapshot",
         }
     }
 }
@@ -313,4 +321,302 @@ pub fn validate_required(
         return Err(DueError::SelectionChanged);
     }
     Ok(())
+}
+
+// Service-needs P5 continuation is a separate required lane from Background.
+// Keep this typed API independent so the existing Background selection and
+// dispatch contract above remains unchanged.
+
+use mycity_core::{
+    service_needs::{self, Subphase},
+    service_needs_authority,
+    task_registry::{
+        evaluate, CachedOutput, ClockInstant, ClockKind, ConsumerDemand,
+        Snapshot as RegistrySnapshot, Source, WakeCandidate, WorkWindow,
+    },
+    timeline::Progress,
+};
+
+use mycity_storage::{CONTINUATION_MAX_PAGES, CONTINUATION_PAGE_BYTES};
+
+pub const SERVICE_NEEDS_SOURCE_ID: u64 = 0x534e_0000_0000_0001;
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+struct ContinuationBinding {
+    start: u64,
+    at: u64,
+    target: u64,
+    next_serial: u64,
+    page_limit: u16,
+    remaining_pages: u32,
+    remaining_bytes: u64,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum ServiceSelection {
+    NoWork,
+    Busy,
+    Selected(SelectedServiceContinuation),
+}
+
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct SelectedServiceContinuation {
+    key: TaskKey,
+    mode: SelectionMode,
+    sequence: u64,
+    scope: Scope,
+    progress: Progress,
+    due: service_needs_authority::DueView,
+    continuation: ContinuationBinding,
+}
+
+impl SelectedServiceContinuation {
+    pub fn target(&self) -> u64 { self.continuation.target }
+    pub fn page_limit(&self) -> u16 { self.continuation.page_limit }
+    pub fn key(&self) -> &TaskKey { &self.key }
+    pub fn mode(&self) -> SelectionMode { self.mode }
+    pub fn at(&self) -> u64 { self.progress.at }
+    pub fn sequence(&self) -> u64 { self.sequence }
+}
+
+#[derive(Clone)]
+struct ServiceSnapshot {
+    scope: Scope,
+    identity: ScopeIdentity,
+    sequence: u64,
+    progress: Progress,
+    due: service_needs_authority::DueView,
+    continuation: ContinuationBinding,
+    key: TaskKey,
+}
+
+fn nonzero_digest(value: &[u8; 32]) -> bool { value.iter().any(|byte| *byte != 0) }
+
+/// Cursor zero means the accepted P5 page has not started its service run.
+/// Started cursors encode subphase and row, so Deadlines row zero differs from
+/// both the unstarted state and Occurrences row zero.
+fn service_cursor(run: Option<service_needs::DueRun>) -> u64 {
+    match run {
+        None => 0,
+        Some(run) => {
+            let subphase = match run.subphase { Subphase::Deadlines => 0, Subphase::Occurrences => 1 };
+            1 + u64::from(run.next_household) * 2 + subphase
+        }
+    }
+}
+
+fn service_snapshot(store: &Store) -> Result<Option<ServiceSnapshot>, DueError> {
+    let engine = store.engine().map_err(|_| DueError::StoreUnavailable)?;
+    let Some(due) = engine.service_needs_due_state().map_err(|_| DueError::InvalidDueView)? else {
+        return Ok(None);
+    };
+    if due.version != service_needs::VERSION
+        || due.city_id == 0
+        || !nonzero_digest(&due.fingerprint)
+        || !nonzero_digest(&due.registration)
+        || engine.service_needs_registration() != Some(due.registration)
+    {
+        return Err(DueError::InvalidDueView);
+    }
+    let Some(timeline) = engine.timeline() else {
+        if due.pending.is_some() || due.covered_through != 0 { return Err(DueError::MissingTimeline); }
+        return Ok(None);
+    };
+    let progress = timeline.progress;
+    let p5 = progress.phase == Some(Phase::P5);
+    if due.covered_through < progress.last_complete || due.covered_through > progress.at {
+        return Err(DueError::InvalidDueView);
+    }
+    let due_owned = due.pending.is_some()
+        || due.covered_through < progress.at
+        || due.next_due == Some(progress.at);
+    if !p5 {
+        if due.pending.is_some() || due.covered_through != progress.last_complete {
+            return Err(DueError::InvalidServiceSnapshot);
+        }
+        return Ok(None);
+    }
+    if !due_owned { return Ok(None); }
+    if progress.at <= progress.last_complete
+        || progress.target.is_none()
+        || due.covered_through != progress.last_complete && due.covered_through != progress.at
+        || due.pending.is_some_and(|run| run.at != progress.at)
+    {
+        return Err(DueError::InvalidDueView);
+    }
+    let Some(raw_continuation) = store.continuation_status().map_err(|_| DueError::StoreUnavailable)? else {
+        return Err(DueError::MissingContinuation);
+    };
+    if raw_continuation.remaining_pages == 0 || raw_continuation.remaining_bytes == 0 {
+        return Err(DueError::ContinuationExhausted);
+    }
+    if raw_continuation.remaining_pages > CONTINUATION_MAX_PAGES
+        || raw_continuation.remaining_bytes
+            != u64::from(raw_continuation.remaining_pages) * CONTINUATION_PAGE_BYTES
+        || raw_continuation.at < raw_continuation.start
+        || raw_continuation.at - raw_continuation.start > 3600
+        || raw_continuation.target < raw_continuation.at
+        || raw_continuation.start != progress.last_complete
+        || raw_continuation.at != progress.at
+        || Some(raw_continuation.target) != progress.target
+        || raw_continuation.next_serial != progress.serial
+        || raw_continuation.page_limit == 0
+        || raw_continuation.page_limit > mycity_core::timeline::PAGE_LIMIT
+    {
+        return Err(DueError::InvalidServiceSnapshot);
+    }
+    let continuation = ContinuationBinding {
+        start: raw_continuation.start,
+        at: raw_continuation.at,
+        target: raw_continuation.target,
+        next_serial: raw_continuation.next_serial,
+        page_limit: raw_continuation.page_limit,
+        remaining_pages: raw_continuation.remaining_pages,
+        remaining_bytes: raw_continuation.remaining_bytes,
+    };
+    let (scope, _) = engine.world().scope_revision();
+    let identity = ScopeIdentity {
+        world_id: scope.world(),
+        branch_id: scope.branch(),
+        city_id: Some(due.city_id),
+    };
+    if identity.world_id == 0 || identity.branch_id == 0 {
+        return Err(DueError::InvalidServiceSnapshot);
+    }
+    let window = WorkWindow { start: progress.last_complete, end: progress.at };
+    if !window.is_valid() { return Err(DueError::InvalidServiceSnapshot); }
+    let key = TaskKey {
+        scope: identity,
+        clock: ClockKind::Development { city_id: due.city_id },
+        source_id: SERVICE_NEEDS_SOURCE_ID,
+        // Schema version for the stable city service occurrence, not a model version.
+        source_version: 1,
+        window,
+        cursor: service_cursor(due.pending),
+    };
+    Ok(Some(ServiceSnapshot {
+        scope,
+        identity,
+        sequence: store.committed_sequence(),
+        progress,
+        due,
+        continuation,
+        key,
+    }))
+}
+
+fn registry_candidate(snapshot: &ServiceSnapshot) -> Option<WakeCandidate> {
+    let token = snapshot.sequence.checked_add(1).filter(|token| *token != 0)?;
+    let key = snapshot.key;
+    let source = [Source {
+        scope: snapshot.identity,
+        id: key.source_id,
+        version: key.source_version,
+        clock: key.clock,
+        due: Some(snapshot.progress.at),
+        dirty: false,
+        necessary: true,
+        window: key.window,
+        cursor: key.cursor,
+    }];
+    let demand = [ConsumerDemand {
+        scope: snapshot.identity,
+        consumer_id: key.source_id,
+        source_id: key.source_id,
+        clock: key.clock,
+        required_version: key.source_version,
+        window: key.window,
+        max_age_seconds: 0,
+        necessary: true,
+    }];
+    let now = ClockInstant { kind: key.clock, seconds: snapshot.progress.at };
+    let page = evaluate(
+        RegistrySnapshot {
+            scope: snapshot.identity,
+            token,
+            sources: &source,
+            demands: &demand,
+            caches: &[] as &[CachedOutput],
+            outstanding: &[],
+        },
+        now,
+        mycity_core::task_registry::RequestCursor::begin(snapshot.identity, token, now),
+        1,
+    ).ok()?;
+    page.items.into_iter().next()
+}
+
+fn service_selection(snapshot: ServiceSnapshot, mode: SelectionMode) -> ServiceSelection {
+    ServiceSelection::Selected(SelectedServiceContinuation {
+        key: snapshot.key,
+        mode,
+        sequence: snapshot.sequence,
+        scope: snapshot.scope,
+        progress: snapshot.progress,
+        due: snapshot.due,
+        continuation: snapshot.continuation,
+    })
+}
+
+pub fn select_service_continuation(
+    store: &Store,
+    worker_active_execution: bool,
+) -> Result<ServiceSelection, DueError> {
+    let Some(snapshot) = service_snapshot(store)? else { return Ok(ServiceSelection::NoWork); };
+    if worker_active_execution { return Ok(ServiceSelection::Busy); }
+    let mode = registry_candidate(&snapshot).filter(|candidate| {
+        candidate.key == snapshot.key
+            && candidate.clock == snapshot.key.clock
+            && candidate.due == Some(snapshot.progress.at)
+            && candidate.necessary
+    }).map_or(SelectionMode::MandatoryFallback, |_| SelectionMode::RegistrySelected);
+    Ok(service_selection(snapshot, mode))
+}
+
+/// Explicitly simulate a missing registry hint; the accepted Store obligation
+/// remains selected and can only proceed through the original Advance receipt.
+pub fn select_service_continuation_with_missing_hint(
+    store: &Store,
+    worker_active_execution: bool,
+) -> Result<ServiceSelection, DueError> {
+    let Some(snapshot) = service_snapshot(store)? else { return Ok(ServiceSelection::NoWork); };
+    if worker_active_execution { return Ok(ServiceSelection::Busy); }
+    Ok(service_selection(snapshot, SelectionMode::MandatoryFallback))
+}
+
+pub fn validate_service_continuation(
+    store: &Store,
+    selected: &SelectedServiceContinuation,
+    worker_active_execution: bool,
+) -> Result<(), DueError> {
+    if worker_active_execution { return Err(DueError::SelectionChanged); }
+    let Some(current) = service_snapshot(store).map_err(|error| match error {
+        DueError::MissingTimeline | DueError::MissingContinuation | DueError::ContinuationExhausted
+        | DueError::InvalidDueView | DueError::InvalidServiceSnapshot => DueError::SelectionChanged,
+        other => other,
+    })? else { return Err(DueError::SelectionChanged); };
+    if current.scope != selected.scope
+        || current.identity != selected.key.scope
+        || current.sequence != selected.sequence
+        || current.progress != selected.progress
+        || current.due != selected.due
+        || current.continuation != selected.continuation
+        || current.key != selected.key
+    {
+        return Err(DueError::SelectionChanged);
+    }
+    Ok(())
+}
+
+#[cfg(test)]
+mod service_cursor_tests {
+    use super::service_cursor;
+    use mycity_core::service_needs::{DueRun, Subphase};
+
+    #[test]
+    fn service_cursor_separates_unstarted_and_subphase_row_zero() {
+        assert_eq!(service_cursor(None), 0);
+        assert_eq!(service_cursor(Some(DueRun { at: 28_800, next_household: 0, subphase: Subphase::Deadlines })), 1);
+        assert_eq!(service_cursor(Some(DueRun { at: 28_800, next_household: 0, subphase: Subphase::Occurrences })), 2);
+    }
 }

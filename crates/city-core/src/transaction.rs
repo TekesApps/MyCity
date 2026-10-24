@@ -1207,6 +1207,10 @@ impl Engine {
     pub fn service_needs_summary(&self)->Option<crate::service_needs_authority::View> {
         self.world.service_needs.as_deref().map(crate::service_needs_authority::view)
     }
+    /// Unauthenticated restored data is an error, never an absence of due work.
+    pub fn service_needs_due_state(&self)->Result<Option<crate::service_needs_authority::DueView>,TxError> {
+        self.world.service_needs.as_deref().map(crate::service_needs_authority::due_view).transpose()
+    }
     pub fn member_activity_registration(&self)->Option<[u8;32]> {
         crate::member_authority::registration(&self.world)
     }

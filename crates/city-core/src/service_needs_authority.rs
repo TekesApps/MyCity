@@ -5,6 +5,27 @@ use serde::{Serialize,Deserialize};
 /// Explicit 32-household prototype allocation inside original Engine/role totals.
 pub const MAX_OWNED_BYTES:usize=16*1024;
 
+/// Small authenticated scheduling observation. It grants no execution authority;
+/// the original Store continuation and revision must still be revalidated.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+pub struct DueView {
+    pub version: u32,
+    pub city_id: u32,
+    pub fingerprint: [u8;32],
+    pub registration: [u8;32],
+    pub covered_through: u64,
+    pub pending: Option<n::DueRun>,
+    pub next_due: Option<u64>,
+}
+pub(crate) fn due_view(runtime:&n::Runtime)->Result<DueView,TxError> {
+    if !runtime.is_ready() { return Err(TxError::InvalidOperation); }
+    Ok(DueView { version:n::VERSION, city_id:runtime.opening().city_id,
+        fingerprint:runtime.fingerprint().map_err(bad)?,
+        registration:runtime.registration_fingerprint().map_err(bad)?,
+        covered_through:runtime.covered_through(), pending:runtime.pending(),
+        next_due:runtime.next_due().map_err(bad)? })
+}
+
 #[derive(Debug, PartialEq, Eq, Serialize)]
 pub struct View {
     pub version: u32, pub city_id: u32, pub fingerprint: [u8;32],

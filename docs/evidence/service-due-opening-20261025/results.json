@@ -1,0 +1,90 @@
+[
+  {
+    "label": "run-capacity_read-storage-release",
+    "pid": 28818,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "WIP24_unchanged": true,
+    "summaries": [
+      "test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s"
+    ]
+  },
+  {
+    "label": "run-venue_capacity-storage-release",
+    "pid": 28822,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "WIP24_unchanged": true,
+    "summaries": [
+      "test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.47s"
+    ]
+  },
+  {
+    "label": "run-task_registry_due-headless-release",
+    "pid": 28860,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "WIP24_unchanged": true,
+    "summaries": [
+      "test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.81s"
+    ]
+  },
+  {
+    "label": "run-service_needs_due-headless-release",
+    "pid": 28953,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "WIP24_unchanged": true,
+    "summaries": [
+      "test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.40s"
+    ]
+  },
+  {
+    "label": "run-mycity_headless-headless-release",
+    "pid": 29004,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "WIP24_unchanged": true,
+    "summaries": [
+      "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 171 filtered out; finished in 0.00s"
+    ]
+  },
+  {
+    "label": "run-opening_venue_store-storage-release",
+    "pid": 29010,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "WIP24_unchanged": true,
+    "summaries": [
+      "test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.34s"
+    ]
+  },
+  {
+    "label": "run-opening_service_needs_store-storage-release",
+    "pid": 29032,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "WIP24_unchanged": true,
+    "summaries": [
+      "test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.54s"
+    ]
+  },
+  {
+    "label": "run-opening_service_needs_store-storage-debug",
+    "pid": 29102,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "WIP24_unchanged": true,
+    "summaries": [
+      "test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 2.04s"
+    ]
+  }
+]

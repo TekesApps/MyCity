@@ -1,0 +1,74 @@
+{
+  "source_files": 9717,
+  "source_zip_sha256": "ab28acafcf3170815e2afb658fe2302ff87cc33ec84073a21d20889e3f7b6140",
+  "release_distinct_parent_tests": 29,
+  "debug_additional_executions": 1,
+  "counts": {
+    "run-capacity_read-storage-release": 5,
+    "run-venue_capacity-storage-release": 10,
+    "run-task_registry_due-headless-release": 8,
+    "run-service_needs_due-headless-release": 3,
+    "run-mycity_headless-headless-release": 1,
+    "run-opening_venue_store-storage-release": 1,
+    "run-opening_service_needs_store-storage-release": 1,
+    "run-opening_service_needs_store-storage-debug": 1
+  },
+  "child_exit_records": [
+    {
+      "file": "attempt02/worlds/MYCITY_OPENING_SERVICE_TEST_ROOT/opening-service-29032-1792872829756837000-0/wal-recovery-result.json",
+      "metadata": {
+        "exit_code": 0,
+        "pid": 29033,
+        "stderr": "/Volumes/HP P900/dev/MyCity/work/service-due-opening-20261025/attempt02/worlds/MYCITY_OPENING_SERVICE_TEST_ROOT/opening-service-29032-1792872829756837000-0/wal-recovery-stderr.log",
+        "stdout": "/Volumes/HP P900/dev/MyCity/work/service-due-opening-20261025/attempt02/worlds/MYCITY_OPENING_SERVICE_TEST_ROOT/opening-service-29032-1792872829756837000-0/wal-recovery-stdout.log",
+        "success": true,
+        "timed_out": false,
+        "wait_error": null
+      }
+    },
+    {
+      "file": "attempt02/worlds/MYCITY_OPENING_SERVICE_TEST_ROOT/opening-service-29032-1792872829756837000-0/checkpoint-recovery-result.json",
+      "metadata": {
+        "exit_code": 0,
+        "pid": 29034,
+        "stderr": "/Volumes/HP P900/dev/MyCity/work/service-due-opening-20261025/attempt02/worlds/MYCITY_OPENING_SERVICE_TEST_ROOT/opening-service-29032-1792872829756837000-0/checkpoint-recovery-stderr.log",
+        "stdout": "/Volumes/HP P900/dev/MyCity/work/service-due-opening-20261025/attempt02/worlds/MYCITY_OPENING_SERVICE_TEST_ROOT/opening-service-29032-1792872829756837000-0/checkpoint-recovery-stdout.log",
+        "success": true,
+        "timed_out": false,
+        "wait_error": null
+      }
+    },
+    {
+      "file": "attempt02/worlds/MYCITY_OPENING_SERVICE_TEST_ROOT/opening-service-29102-1792872832187743000-0/wal-recovery-result.json",
+      "metadata": {
+        "exit_code": 0,
+        "pid": 29123,
+        "stderr": "/Volumes/HP P900/dev/MyCity/work/service-due-opening-20261025/attempt02/worlds/MYCITY_OPENING_SERVICE_TEST_ROOT/opening-service-29102-1792872832187743000-0/wal-recovery-stderr.log",
+        "stdout": "/Volumes/HP P900/dev/MyCity/work/service-due-opening-20261025/attempt02/worlds/MYCITY_OPENING_SERVICE_TEST_ROOT/opening-service-29102-1792872832187743000-0/wal-recovery-stdout.log",
+        "success": true,
+        "timed_out": false,
+        "wait_error": null
+      }
+    },
+    {
+      "file": "attempt02/worlds/MYCITY_OPENING_SERVICE_TEST_ROOT/opening-service-29102-1792872832187743000-0/checkpoint-recovery-result.json",
+      "metadata": {
+        "exit_code": 0,
+        "pid": 29128,
+        "stderr": "/Volumes/HP P900/dev/MyCity/work/service-due-opening-20261025/attempt02/worlds/MYCITY_OPENING_SERVICE_TEST_ROOT/opening-service-29102-1792872832187743000-0/checkpoint-recovery-stderr.log",
+        "stdout": "/Volumes/HP P900/dev/MyCity/work/service-due-opening-20261025/attempt02/worlds/MYCITY_OPENING_SERVICE_TEST_ROOT/opening-service-29102-1792872832187743000-0/checkpoint-recovery-stdout.log",
+        "success": true,
+        "timed_out": false,
+        "wait_error": null
+      }
+    }
+  ],
+  "source_unchanged": true,
+  "fixed_programs_unchanged": true,
+  "WIP24_unchanged": true,
+  "initial_failed_attempt": "attempt01 missed MYCITY_VENUE_TEST_ROOT, 0/10 reached business assertions; full failures retained",
+  "same_source_programs_reused_without_rebuild": true,
+  "M0_contract_unchanged": true,
+  "true16GB_GPU_long_stress": "not_run",
+  "runtime_performance_acceptance": false
+}

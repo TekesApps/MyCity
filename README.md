@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.182`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.183`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.183 补齐[P5 必要续页调度与开局恢复联合门](docs/evidence/service-due-opening-20261025/STATUS.md)：29项不同release测试、另1次默认debug执行通过；C操作碰撞保留原责任，原票恢复不多推进一页，OpeningInput同槽及WAL/checkpoint恢复有实际证据。完整#57/#101/#120与M0仍未完成。
 
 v0.5.182 接通[真实自然需要与期限](docs/evidence/service-natural-needs-20261025/STATUS.md)：原 HousingLease 同笔登记合法租赁入场，原 Timeline/P5 分页与 Store 原票恢复；300项不同release测试、另18次默认debug执行及48个独立恢复子进程通过。完整#57派遣、现场投入、收费和返程仍待接线，原M0门不改。
 

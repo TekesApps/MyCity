@@ -18,6 +18,10 @@ use std::{
     time::{Duration, Instant},
 };
 const PROTOCOL: &str = "mycity-sim-v1";
+// required_registry_v2 service continuation; old worlds may already contain C
+// operations. Detect them explicitly instead of treating a historical ticket as
+// this page. The original manual Advance remains the collision recovery path.
+const SERVICE_CONTINUATION_PREFIX: u64 = 0xc000_0000_0000_0000;
 
 // Fixed-size counters make timing visible without adding a per-request log.
 // `Cell` lets scoped timers update the report across early returns and retries.
@@ -119,7 +123,8 @@ pub enum Command {
     Progress,
     Execute { envelope: Envelope },
     RunRequired { job: u64 },
-    /// Select at most one real due mandatory job; does not advance the world clock.
+    /// Select one real mandatory job or one page of an already accepted P5
+    /// boundary. It never accepts a new future Timeline target.
     RunDue,
     RunRequiredSliced { job: u64, plan: String, quota: crate::air_turns::Quota },
     PageControl { control: PageControl },
@@ -344,6 +349,74 @@ fn status(
  "state_sha256":state_sha,"capacity":store.capacity_status().map_err(err)?,"worker_pid":worker.pid_opt(),"source_sha256":env!("MYCITY_SOURCE_SHA256"),"memory_16gb_gate":"not_run"}),
     )
 }
+/// Continue only the original Store's already-funded Timeline reservation.
+/// A lost response is NOT permission to send another RunDue: retain the selected
+/// envelope, query its original receipt, and inspect recovered outcome/serial.
+/// ReceiptProof presence alone does not distinguish a success from a failed ticket.
+fn service_run_due(
+    store: &mut Store,
+    active_worker: bool,
+    diag: &mut Option<crate::cpu_log::CpuLog>,
+    id: u64,
+    writer: &mut impl Write,
+) -> Result<Value, String> {
+    use crate::required_dispatch::{self as due, ServiceSelection, SelectionMode};
+    if active_worker { return Err("sim_dispatch_busy".into()); }
+    let selected = match due::select_service_continuation(store, active_worker).map_err(err)? {
+        ServiceSelection::NoWork => return Ok(json!({"dispatch":"required_registry_v1",
+            "state":"no_work", "required_preserved":true})),
+        ServiceSelection::Busy => return Err("sim_dispatch_busy".into()),
+        ServiceSelection::Selected(selected) => selected,
+    };
+    due::validate_service_continuation(store, &selected, active_worker).map_err(err)?;
+    let engine = store.engine().map_err(err)?;
+    let (scope, revision) = engine.world().scope_revision();
+    let before = engine.timeline().ok_or("service_due_missing_timeline")?.progress;
+    let before_sequence = store.committed_sequence();
+    let operation = SERVICE_CONTINUATION_PREFIX | before_sequence.checked_add(1)
+        .filter(|n| *n <= background::JOB_ID_LIMIT).ok_or("sim_control_id")?;
+    let envelope = Envelope { world:scope.world(), branch:scope.branch(),
+        operation_id:operation, expected_revision:revision,
+        actions:vec![Action::Timeline { command:mycity_core::timeline::Command::Advance {
+            target:selected.target(), limit:selected.page_limit(),
+        }}] };
+    let mode = match selected.mode() {
+        SelectionMode::RegistrySelected => "registry_selected",
+        SelectionMode::MandatoryFallback => "mandatory_fallback",
+    };
+    let key = selected.key();
+    let task_key = json!({"scope":{"world_id":key.scope.world_id,
+        "branch_id":key.scope.branch_id,"city_id":key.scope.city_id},
+        "clock":{"kind":"development","city_id":key.scope.city_id},
+        "source_id":key.source_id,"source_version":key.source_version,
+        "window":{"start":key.window.start,"end":key.window.end},"cursor":key.cursor});
+    if store.receipt(operation)
+        .map_err(|e|format!("service_due_recovery_required:operation={operation}:{e:?}"))?.is_some() {
+        return Err(format!("service_due_namespace_collision:operation={operation};use_original_reserved_manual_advance"));
+    }
+    // Frame failure means no execution. Successful write does not prove the peer
+    // received it: without this exact identity the peer must recover, never retry
+    // a fresh selection blindly after an uncertain transport failure.
+    event(writer,id,"service_continuation_selected",json!({
+        "dispatch":"required_registry_v2", "envelope":envelope,
+        "before_sequence":before_sequence, "before_serial":before.serial,
+        "task_key":task_key, "selection_mode":mode,
+        "recovery":"original_receipt_and_recovered_outcome_and_serial; no automatic RunDue retry"
+    }))?;
+    let outcome = crate::cpu_log::execute(store,Caller::System,envelope,diag)
+        .map_err(|e|format!("service_due_recovery_required:operation={operation}:{e}"))?;
+    outcome.model.as_ref().map_err(|e|format!("service_due_model_rejected:operation={operation}:{e:?}"))?;
+    if !outcome.has_persistent_receipt { return Err(format!("service_due_receipt_unconfirmed:operation={operation}")); }
+    let after = store.engine().map_err(err)?.timeline().ok_or("service_due_missing_timeline")?.progress;
+    let boundary_completed = after.last_complete == before.at && after.phase.is_none();
+    Ok(json!({"dispatch":"required_registry_v2",
+        "dispatch_state":if boundary_completed {"boundary_completed"} else {"page_committed"},
+        "selection_mode":mode, "selected_operation":operation,
+        "before_sequence":before_sequence, "before_serial":before.serial,
+        "after_serial":after.serial, "boundary_at":before.at,
+        "timeline":after, "outcome":outcome, "service_delivery_claimed":false}))
+}
+
 fn control(
     store: &mut Store,
     command: B,
@@ -918,7 +991,7 @@ fn run_owned(
             }),
             Command::Execute { envelope } => {
                 let prefix = envelope.operation_id & 0xf000_0000_0000_0000;
-                if matches!(prefix, 0xd000_0000_0000_0000 | 0xe000_0000_0000_0000)
+                if matches!(prefix, SERVICE_CONTINUATION_PREFIX | 0xd000_0000_0000_0000 | 0xe000_0000_0000_0000)
                     || envelope
                         .actions
                         .iter()
@@ -934,8 +1007,8 @@ fn run_owned(
                 use crate::required_dispatch::{select_required, Selection, SelectionMode};
                 match select_required(&store, worker.has_active_execution()).map_err(err) {
                     Err(error) => Err(error),
-                    Ok(Selection::NoWork) => Ok(json!({"dispatch":"required_registry_v1",
-                        "state":"no_work", "required_preserved":true})),
+                    Ok(Selection::NoWork) => service_run_due(&mut store,
+                        worker.has_active_execution(), &mut diag,request.id,&mut writer),
                     Ok(Selection::Busy) => Err("sim_dispatch_busy".into()),
                     Ok(Selection::Backpressure(reason)) => Err(format!("sim_dispatch_backpressure:{}",reason.as_code())),
                     Ok(Selection::Selected(selected)) => {

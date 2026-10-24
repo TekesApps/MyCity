@@ -1,0 +1,19 @@
+{
+  "schema": "mycity-service-needs-due-v182",
+  "target": 28800,
+  "page_limit": 1,
+  "window_start": 25200,
+  "phase": "P5",
+  "clock": "development",
+  "city_id": 1,
+  "source_id_hex": "534e000000000001",
+  "source_version": 1,
+  "unstarted_cursor": 0,
+  "deadlines_row_zero_cursor": 1,
+  "occurrences_row_zero_cursor": 2,
+  "seed": 107,
+  "household_id": 7,
+  "household_source_id": 7001,
+  "expected_first_due_at": 28800,
+  "expected_delivery_claim": false
+}

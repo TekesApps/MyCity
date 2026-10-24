@@ -942,3 +942,23 @@ originals retained; work/service-natural-needs-20261025 evidence planning revise
 384MiB to1GiB for retained failed program sets, not a game budget increase. Real device is
 32GiB; no native/16GB/speed/GPU/M0 acceptance. Full57 dispatch/actual onsite utility/work/
 fees/safe return/multicity and utility provider85/86 dependencies remain open.
+
+
+## v0.5.183 — service P5 required continuation and OpeningInput recovery
+
+Root integrates original #101 owner typed service selection and original #120 worker test.
+Authenticated small DueView binds existing Progress, Store sequence, registration/runtime
+fingerprints and full original reservation; missing hints retain necessary work. Only original
+Background NoWork permits the CPU P5 lane; one RunDue performs one original funded Advance,
+without a new worker, scheduler or future target. required_registry_v2 uses checked C sequence
+identity, pre-event receipt collision detection, and exact original receipt recovery; generic
+Execute reserves C/D/E. A collision preserves continuation and original legal manual Advance.
+
+Actual 29 distinct release parents plus one default-debug execution passed; four new Opening
+fresh reader processes verified original entry authentication across WAL/checkpoint. Slot
+legacy/service/legacy/failed-candidate/service transitions retain publication and trust gates.
+Original advisor accepted source and actual finite result. Initial runner missing-env failures
+remain preserved; source and fixed programs unchanged on retry. 24 unrelated WIP unchanged.
+[Evidence and explicit artifact-budget overrun](evidence/service-due-opening-20261025/STATUS.md).
+Full57/101/120 stay open; no delivery/native/16GB/GPU/long-stress/M0 acceptance, no stack/budget
+relaxation. No new tree or automation; original owner remains frozen, root sole shared writer.
