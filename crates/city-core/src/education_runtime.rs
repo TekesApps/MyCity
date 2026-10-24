@@ -368,6 +368,13 @@ impl Runtime {
     pub(crate) fn progress(&self, cohort: u64) -> Result<Option<e::Progress>, Error> {
         let slot = self.slot(cohort)?; Ok(self.states[slot].cohort.map(|c| c.progress))
     }
+    /// Materialize the original current course state for root completion checks.
+    /// This does not settle activities or change the v2 persisted representation.
+    pub(crate) fn cohort_for_completion(&self, cohort: u64) -> Result<Option<Cohort>, Error> {
+        if !self.ready { return Err(Error::Restore); }
+        self.states[self.slot(cohort)?].cohort.map(Cohort::from_checkpoint)
+            .transpose().map_err(Error::from)
+    }
     pub(crate) fn consumed_sequence(&self) -> u64 { self.consumed_sequence }
     pub(crate) fn next_sequence(&self) -> Result<u64, Error> { self.consumed_sequence.checked_add(1).ok_or(Error::Limit) }
     pub(crate) fn last_source(&self) -> Option<Origin> { self.last_source }

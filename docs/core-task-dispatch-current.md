@@ -831,3 +831,31 @@ Current dependency check found no safe additional real-provider parallel increme
 planner delivery would not advance real integration. Keep original owners and originals:
 #57 needs need/depart/onsite/return facts; #61 replayable activity+place/field coverage;
 #98 unit/versioned actual emission/noise sources; #73 plans are not actual passenger trips.
+
+
+### v0.5.178 qualification authority, exact reads and #124
+
+Root integrated original #54 completion and #55 read modules plus one qualification authority
+into original Opening/World/Prepared/Store, preserving original source author snapshots and
+single writer. Free retraining actual hours/calendar/exam/prerequisite gates, exact latest-exam
+anchors, original receipt authentication, grant/revocation and bounded exact job-read paging
+are now executable. No second wallet/resource pool or applicant-supplied authentication marker.
+Full54/55 remain open: paid education, transfers/all-course and actual hiring/Payroll are pending.
+
+[Actual evidence](evidence/qualification-authority-20261025/STATUS.md): final unmarked source17
+passes381 different release parents and12 default-debug executions separately. Six final
+qualification child probes pass; three original states match source09 release/source17
+release/debug hashes and facts. Action120B satisfies the unchanged128B assertion. Earlier
+source06 Action344B failure, source08 E0425, new #124 default-stack failure/diagnostics and
+native crash originals remain intact. Removing two unnecessary whole WorldView scope
+projections fixes this particular checkpoint-restore overflow without changing comparison,
+publication, layout or budgets; original advisor accepts final result and #124 closure. No full
+16GB/M0/native peak, universal stack safety or performance conclusion.24 protected WIP unchanged.
+
+Next true business integration is #57's original public-service owner, subject to an explicit
+local Development-clock profile, dedicated original Resource/Lease meaning, qualification and
+member namespace independent of unrelated teaching. Need/depart/arrival/work/safe-return and
+fee facts must remain distinct. Old service_core source has InteractionSeconds and is not yet
+canonical/runtime-authoritative; plans and venue Enter cannot replace actual travel or service.
+No duplicate owner, new clock/pool or repeat DTO-only milestone is assigned. Original target/work,
+M0 frozen standards, full recovery originals and root shared-file ownership remain unchanged.

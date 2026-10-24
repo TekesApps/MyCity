@@ -1177,6 +1177,7 @@ impl Store {
             return Err(Error::Invalid("checkpoint_layout_binding"));
         }
         let original_education_registration=genesis_engine.education_registration();
+        let original_qualification_registration=genesis_engine.qualification_registration();
         let (mut sequence, mut chain) = if let Some(reference) = &root.checkpoint_v2 {
             let (sequence, chain) = checkpoint_v2::open_into(
                 dir,
@@ -1209,6 +1210,9 @@ impl Store {
         } else {
             (0, root.genesis_sha256.clone())
         };
+        if genesis_engine.qualification_registration()!=original_qualification_registration {
+            return Err(Error::Invalid("qualification_genesis_registration_mismatch"));
+        }
         if genesis_engine.education_registration()!=original_education_registration {
             return Err(Error::Invalid("checkpoint_education_genesis_binding"));
         }
@@ -1219,6 +1223,20 @@ impl Store {
             } else {None};
             genesis_engine.authenticate_education_restore(receipt.as_ref()).map_err(Error::Model)?;
         }
+        if !genesis_engine.qualification_is_authenticated() {
+            let mut check=genesis_engine.begin_qualification_restore().map_err(Error::Model)?
+                .ok_or(Error::Invalid("qualification_restore_missing"))?;
+            let refs=genesis_engine.qualification_receipt_operations().map_err(|_|Error::Invalid("qualification_receipt_locator"))?;
+            for (index,operation) in refs.into_iter().enumerate() {
+                if let Some(operation)=operation {
+                    let original=checkpoint::lookup_archived_at(dir,&root,operation,&mut metadata)?
+                        .ok_or(Error::Invalid("qualification_receipt_missing"))?;
+                    genesis_engine.check_qualification_restore_receipt(&mut check,index,&original).map_err(Error::Model)?;
+                }
+            }
+            genesis_engine.finish_qualification_restore(check).map_err(Error::Model)?;
+        }
+
         let wal_base_sequence = sequence;
         let wal_base_chain = chain.clone();
         town_transport::verify_latest_market_cursor(
@@ -1396,13 +1414,23 @@ impl Store {
                     _=>None,
                 }
             } else {None};
+            let qualification_receipt=if record.outcome.is_ok() {
+                match entry.envelope.actions.as_slice() {
+                    [mycity_core::transaction::Action::Qualification{command}]=>{
+                        if let Some(operation)=engine.qualification_prior_operation(*command).map_err(|_|Error::Invalid("qualification_replay_reference"))? {
+                            Some(checkpoint::lookup_archived_at(dir,&root,operation,&mut metadata)?.ok_or(Error::Invalid("qualification_receipt_missing"))?)
+                        } else {None}
+                    },_=>None,
+                }
+            } else {None};
             let mut called = false;
-            let _ = engine.execute_recorded_education_diagnosed(
+            let _ = engine.execute_recorded_models_diagnosed(
                 caller,
                 entry.envelope,
                 candidate,
                 transport_input.as_ref(),
                 education_receipt.as_ref(),
+                qualification_receipt.as_ref(),
                 |_, record, _| -> Result<(), Error> {
                     called = true;
                     if !wal::matches(
@@ -1489,7 +1517,7 @@ impl Store {
     }
 
     pub fn engine(&self) -> Result<&Engine, Error> {
-        if self.io.poisoned || self.io.owner_pid != std::process::id() || !self.engine.education_is_authenticated() {
+        if self.io.poisoned || self.io.owner_pid != std::process::id() || !self.engine.education_is_authenticated() || !self.engine.qualification_is_authenticated() {
             Err(Error::RecoveryRequired)
         } else {
             Ok(&self.engine)
@@ -2486,8 +2514,11 @@ impl Store {
         if self.io.poisoned || self.io.owner_pid != std::process::id() {
             return Err(Error::RecoveryRequired);
         }
-        if envelope.world != self.engine.world().view().scope.world()
-            || envelope.branch != self.engine.world().view().scope.branch()
+        // Scope checks need identity only, not two full by-value World views
+        // whose caller frame remains live during checkpoint/cold validation.
+        let scope = self.engine.world().scope_revision().0;
+        if envelope.world != scope.world()
+            || envelope.branch != scope.branch()
             || envelope.actions.len() > mycity_core::transaction::MAX_ACTIONS
             || envelope.actions.is_empty()
             || envelope.operation_id == 0
@@ -2677,6 +2708,23 @@ impl Store {
                 return Err(e);
             }
         };
+        let qualification_receipt=if matches!(caller,Caller::System)
+            && envelope.expected_revision==self.engine.world().scope_revision().1 {
+            match envelope.actions.as_slice() {
+                [mycity_core::transaction::Action::Qualification{command}]=>{
+                    if let Some(operation)=self.engine.qualification_prior_operation(*command).map_err(|_|Error::Invalid("qualification_reference"))? {
+                        if operation==envelope.operation_id {return Err(Error::Invalid("qualification_self_reference"));}
+                        let original=self.receipt(operation)?.ok_or(Error::Invalid("qualification_receipt_missing"))?;
+                        match self.checkpoint() {
+                            Ok(())=>{},
+                            Err(Error::Capacity{..}) if self.engine.can_advance_existing_responsibility_with_models(caller,&envelope,None,Some(&original),trace)=>{self.checkpoint_emergency()?;},
+                            Err(error)=>return Err(error),
+                        }
+                        Some(self.lookup_archived(operation)?.ok_or(Error::Invalid("qualification_receipt_missing"))?)
+                    } else {None}
+                },_=>None,
+            }
+        } else {None};
         let background_funded = self.background_funded_quote(
             caller,
             &envelope,
@@ -2723,7 +2771,7 @@ impl Store {
                     if self.engine.journal().len() == MAX_RECEIPTS
                         && self
                             .engine
-                            .can_advance_existing_responsibility_with_education(caller, &envelope, education_receipt.as_ref(), trace)
+                            .can_advance_existing_responsibility_with_models(caller, &envelope, education_receipt.as_ref(), qualification_receipt.as_ref(), trace)
                     {
                         self.checkpoint_emergency()?;
                     }
@@ -2741,12 +2789,13 @@ impl Store {
         let io = &mut self.io;
         let result = self
             .engine
-            .execute_recorded_education_diagnosed(
+            .execute_recorded_models_diagnosed(
                 caller,
                 envelope,
                 candidate,
                 transport,
                 education_receipt.as_ref(),
+                qualification_receipt.as_ref(),
                 |env, record, commit_context| {
                     io.append(
                         env,

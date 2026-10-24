@@ -92,6 +92,7 @@ pub struct Opening {
     pub housing: Option<crate::housing::OpeningHousing>,
     pub venue: Option<crate::venue_runtime::Opening>,
     pub education: Option<crate::education_runtime::Opening>,
+    pub qualification: Option<crate::qualification_authority::Opening>,
 }
 
 // Decode-only backing reduces the derived visitor's aggregate stack temporaries.
@@ -126,6 +127,8 @@ mod private_openingdecode {
         venue: Option<Box<crate::venue_runtime::Opening>>,
         #[serde(default)]
         education: Option<Box<crate::education_runtime::Opening>>,
+        #[serde(default)]
+        qualification: Option<Box<crate::qualification_authority::Opening>>,
     }
 
     impl Opening {
@@ -146,6 +149,7 @@ mod private_openingdecode {
                 housing: self.housing.map(|value| *value),
                 venue: self.venue.map(|value| *value),
                 education: self.education.map(|value| *value),
+                qualification: self.qualification.map(|value| *value),
             }
         }
     }
@@ -279,6 +283,8 @@ pub struct World {
     pub(crate) education: Option<Box<crate::education_runtime::Runtime>>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub(crate) member_activity: Option<Box<crate::member_activity::Ledger>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub(crate) qualification: Option<Box<crate::qualification_authority::Runtime>>,
 }
 
 // Restore-only scratch: retain the wire and runtime layout while avoiding a large
@@ -312,6 +318,8 @@ mod private_worlddecode {
         education: Option<Box<crate::education_runtime::Runtime>>,
         #[serde(default)]
         member_activity: Option<Box<crate::member_activity::Ledger>>,
+        #[serde(default)]
+        qualification: Option<Box<crate::qualification_authority::Runtime>>,
     }
 
     impl World {
@@ -336,6 +344,7 @@ mod private_worlddecode {
                 venue: self.venue,
                 education: self.education,
                 member_activity: self.member_activity,
+                qualification: self.qualification,
             }
         }
     }
@@ -417,6 +426,8 @@ pub struct WorldView {
     pub education: Option<crate::education_authority::View>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub member_activity: Option<crate::education_authority::MemberView>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub qualification: Option<crate::qualification_authority::View>,
 }
 
 impl Record for OpeningSource {
@@ -483,6 +494,8 @@ pub(crate) struct BusinessWorld<'a> {
     education: &'a Option<Box<crate::education_runtime::Runtime>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     member_activity: &'a Option<Box<crate::member_activity::Ledger>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    qualification: &'a Option<Box<crate::qualification_authority::Runtime>>,
 }
 #[derive(Serialize)]
 pub(crate) struct BorrowedWorldView<'a> {
@@ -509,6 +522,8 @@ pub(crate) struct BorrowedWorldView<'a> {
     education: &'a Option<Box<crate::education_runtime::Runtime>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     member_activity: &'a Option<Box<crate::member_activity::Ledger>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    qualification: &'a Option<Box<crate::qualification_authority::Runtime>>,
 }
 struct AccountViews<'a>(&'a World);
 impl Serialize for AccountViews<'_> {
@@ -576,6 +591,7 @@ impl World {
             venue: None,
             education: None,
             member_activity: None,
+            qualification: None,
         })
     }
     pub(crate) fn reset_backing(&mut self) {
@@ -597,6 +613,7 @@ impl World {
         self.venue = None;
         self.education = None;
         self.member_activity = None;
+        self.qualification = None;
     }
     pub(crate) fn copy_into(&self, target: &mut Self) -> Result<(), String> {
         self.accounts.copy_into(&mut target.accounts)?;
@@ -617,6 +634,7 @@ impl World {
         target.venue = self.venue.clone();
         target.education = self.education.clone();
         target.member_activity = self.member_activity.clone();
+        target.qualification = self.qualification.clone();
         Ok(())
     }
     pub(crate) fn backing_ids(&self) -> [usize; 7] {
@@ -652,11 +670,14 @@ impl World {
             venue: &self.venue,
             education: &self.education,
             member_activity: &self.member_activity,
+            qualification: &self.qualification,
         }
     }
     pub(crate) fn borrowed_view(&self) -> BorrowedWorldView<'_> {
         BorrowedWorldView {
-            schema: if self.education.is_some() || self.member_activity.is_some() {
+            schema: if self.qualification.is_some() {
+                "mycity-m0-state-v11"
+            } else if self.education.is_some() || self.member_activity.is_some() {
                 "mycity-m0-state-v10"
             } else if self.venue.is_some() {
                 "mycity-m0-state-v9"
@@ -683,6 +704,7 @@ impl World {
             venue: &self.venue,
             education: &self.education,
             member_activity: &self.member_activity,
+            qualification: &self.qualification,
         }
     }
     pub(crate) fn restore_capacity(&mut self) -> Result<(), String> {
@@ -975,7 +997,9 @@ impl World {
     }
     pub fn view(&self) -> WorldView {
         WorldView {
-            schema: if self.education.is_some() || self.member_activity.is_some() {
+            schema: if self.qualification.is_some() {
+                "mycity-m0-state-v11"
+            } else if self.education.is_some() || self.member_activity.is_some() {
                 "mycity-m0-state-v10"
             } else if self.venue.is_some() {
                 "mycity-m0-state-v9"
@@ -1040,6 +1064,7 @@ impl World {
             }),
             education: self.education.as_deref().map(crate::education_authority::view),
             member_activity: self.member_activity.as_deref().map(crate::education_authority::member_view),
+            qualification: self.qualification.as_deref().map(crate::qualification_authority::view),
             venue: self.venue.as_deref().map(|venue| VenueView {
                 venue_count: venue.opening.venues.len(), offer_count: venue.opening.offers.len(),
                 population_origin_sha256: venue.population_origin_sha256,
@@ -1056,7 +1081,8 @@ impl World {
         let venue_owned = self.venue.as_deref().map_or(0, crate::venue_runtime::Runtime::owned_bytes);
         let education_owned = self.education.as_ref().map_or(0, |_| crate::education_runtime::Runtime::owned_bytes());
         let member_owned = self.member_activity.as_ref().map_or(0, |_| crate::member_activity::Ledger::owned_bytes());
-        total_world_owned.checked_sub(venue_owned + education_owned + member_owned)
+        total_world_owned.checked_sub(venue_owned + education_owned + member_owned
+            + self.qualification.as_ref().map_or(0, |_| crate::qualification_authority::Runtime::owned_bytes()))
             .and_then(|base| base.checked_add(validation_scratch))
             .is_some_and(|base| base <= WORLD_BYTE_BUDGET)
             && venue_owned <= crate::venue_runtime::Runtime::max_owned_bytes()
@@ -1072,6 +1098,7 @@ impl World {
             + self.venue.as_deref().map_or(0, crate::venue_runtime::Runtime::owned_bytes)
             + self.education.as_ref().map_or(0, |_| crate::education_runtime::Runtime::owned_bytes())
             + self.member_activity.as_ref().map_or(0, |_| crate::member_activity::Ledger::owned_bytes())
+            + self.qualification.as_ref().map_or(0, |_| crate::qualification_authority::Runtime::owned_bytes())
             + self
                 .housing
                 .as_ref()
@@ -1112,6 +1139,19 @@ impl World {
             object.insert("education_restore_extra_typed_workspace_bytes".into(), crate::education_authority::restore_workspace_bytes().into());
             object.insert("world_base_owned_capacity_bytes".into(), (self.owned_capacity_bytes()-venue-education-member).into());
             object.insert("owned_capacity_bytes".into(), self.owned_capacity_bytes().into());
+        }
+        if self.qualification.is_some() {
+            let object=layout.as_object_mut().expect("layout object");
+            let bytes=crate::qualification_authority::Runtime::owned_bytes();
+            object.insert("qualification_profile".into(),"immutable-game-opening-v1".into());
+            object.insert("qualification_owned_bytes".into(),bytes.into());
+            object.insert("qualification_prepare_extra_estimate_bytes".into(),crate::qualification_authority::candidate_bytes().into());
+            object.insert("qualification_restore_extra_estimate_bytes".into(),crate::qualification_authority::restore_bytes().into());
+            object.insert("qualification_decode_typed_bytes".into(),size_of::<crate::qualification_authority::Opening>().into());
+            object.insert("world_base_owned_capacity_bytes".into(),(self.owned_capacity_bytes()
+                -self.venue.as_deref().map_or(0,crate::venue_runtime::Runtime::owned_bytes)
+                -self.education.as_ref().map_or(0,|_|crate::education_runtime::Runtime::owned_bytes())
+                -self.member_activity.as_ref().map_or(0,|_|crate::member_activity::Ledger::owned_bytes())-bytes).into());
         }
         if let Some(housing) = self.housing.as_ref() {
             let object = layout.as_object_mut().expect("layout object");
@@ -1513,6 +1553,13 @@ fn assemble_opening_into(mut input: Opening, world: &mut World) -> Result<(), St
         let (runtime,ledger)=crate::education_authority::initialize(opening,world)?;
         world.education=Some(runtime);world.member_activity=Some(ledger);
     }
+    if let Some(opening)=input.qualification {
+        let extra=crate::qualification_authority::Runtime::owned_bytes()+crate::qualification_authority::restore_bytes();
+        if world.owned_capacity_bytes().checked_add(extra).is_none_or(|n|n>crate::transaction::ENGINE_BYTE_BUDGET) {
+            return Err("qualification_world_budget_before_allocation".into());
+        }
+        world.qualification=Some(crate::qualification_authority::initialize(opening,world)?);
+    }
     let housing_scratch = if world.housing.is_some() {
         crate::housing::MAX_VALIDATION_SCRATCH_BYTES
     } else {
@@ -1562,6 +1609,7 @@ impl crate::restore_into::Restore for World {
         self.venue = None;
         self.education = None;
         self.member_activity = None;
+        self.qualification = None;
         crate::restore_into::object!(d,self,World,255u64,{
         scope,0=>Copy,
         seed,1=>Copy,
@@ -1581,6 +1629,7 @@ impl crate::restore_into::Restore for World {
         venue,15=>Into,
         education,16=>Into,
         member_activity,17=>Into,
+        qualification,18=>Into,
         })?;
         Ok(())
     }

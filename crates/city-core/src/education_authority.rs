@@ -231,6 +231,10 @@ pub(crate) fn prepare(world:&World,timeline:Option<&Timeline>,caller:Caller,env:
     validate(world,timeline)?;let tick=completed(timeline)?;let mut candidate=copy_candidate(world)?;
     match command {
         Command::Event {expected_epoch,expected_sequence,command,actual}=>{
+            if matches!(command.action,r::Action::BeginPreparation|r::Action::BeginLesson|r::Action::ActivateNoInstruction)
+                && crate::qualification_authority::completed_course(world,command.cohort) {
+                return Err(TxError::InvalidOperation);
+            }
             let source=origin(world,&candidate.runtime,env,env.operation_id,tick)?;
             if expected_epoch!=source.stream_epoch || expected_sequence!=source.stream_sequence
                 || matches!(command.action,r::Action::StopForExit{..}) {return Err(TxError::InvalidOperation);}

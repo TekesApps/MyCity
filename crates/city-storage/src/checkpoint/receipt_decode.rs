@@ -23,6 +23,7 @@ pub(crate) fn decode_raw(
             "payload_sha256",
             "outcome",
             "actions",
+            "qualification_context",
         ],
         true,
         scratch,
@@ -48,6 +49,7 @@ pub(crate) fn decode_raw(
         payload_sha256: fields.get(4, scratch)?,
         outcome: fields.get(5, scratch)?,
         actions,
+        qualification_context: fields.optional(7, scratch)?,
     })
 }
 #[cfg(test)]
@@ -88,6 +90,7 @@ fn action_raw(
     #[derive(Deserialize)]
     #[serde(rename_all = "snake_case")]
     enum Kind {
+        Qualification,
         Education,
         Venue,
         Background,
@@ -125,6 +128,10 @@ fn action_raw(
     validate_content(raw, scratch)?;
     let kind: Kind = tag(raw, scratch)?;
     match kind {
+        Kind::Qualification => {
+            let fields=Fields::parse(raw,&["kind","command"],false,scratch)?;
+            Ok(Output::Qualification {command:reader::decode(fields.raw(1)?,scratch)?})
+        }
         Kind::Education => {
             let fields=Fields::parse(raw,&["kind","command"],false,scratch)?;
             Ok(Output::Education {command:reader::decode(fields.raw(1)?,scratch)?})
@@ -967,6 +974,7 @@ mod tests {
             payload_sha256: [0; 32],
             outcome: Err(TxError::StaleRevision),
             actions: [None; MAX_ACTIONS],
+            qualification_context: None,
         };
         let raw = serde_json::to_string(&r).unwrap();
         compare_record(&raw.replacen("{", &format!("{{{}", " ".repeat(65536)), 1));
@@ -1013,6 +1021,7 @@ mod context_tests {
             payload_sha256: [0; 32],
             outcome: Err(TxError::StaleRevision),
             actions: [None; MAX_ACTIONS],
+            qualification_context: None,
         };
         let mut value = serde_json::to_value(record).unwrap();
         for depth in 116..=132 {
@@ -1064,4 +1073,27 @@ mod context_tests {
             serde_json::to_value(new).unwrap()
         );
     }
+    #[test]
+    fn qualification_context_none_preserves_exact_legacy_record_bytes() {
+        let raw=format!(r#"{{"actor":0,"emergency_eligible":false,"operation_id":1,"expected_revision":0,"payload_sha256":[{}],"outcome":{{"Err":"stale_revision"}},"actions":[{}]}}"#,
+            vec!["0";32].join(","),vec!["null";16].join(","));
+        // A frozen seven-field wire, independently spelled rather than generated
+        // from the new record type. No Context is silently added on reencoding.
+        let typed:JournalRecord=serde_json::from_str(&raw).unwrap();
+        assert!(typed.qualification_context.is_none());
+        assert_eq!(serde_json::to_string(&typed).unwrap(),raw);
+        let bounded=decode(&raw).unwrap();
+        assert!(bounded.qualification_context.is_none());
+        assert_eq!(serde_json::to_string(&bounded).unwrap(),raw);
+        let mut value=serde_json::to_value(typed).unwrap();
+        let source=mycity_core::member_qualification::ReadSource{scope:mycity_core::arena::Scope::new(1,1).unwrap(),
+            population_origin:[2;32],member_version:1,root:[3;32],revision:0,as_of:mycity_core::units::GameTime::ZERO};
+        value["qualification_context"]=serde_json::to_value(mycity_core::qualification_authority::Context::Source{source}).unwrap();
+        let raw=serde_json::to_string(&value).unwrap();
+        assert_eq!(serde_json::to_value(serde_json::from_str::<JournalRecord>(&raw).unwrap()).unwrap(),serde_json::to_value(decode(&raw).unwrap()).unwrap());
+        let decoded=decode(&raw).unwrap();assert!(decoded.qualification_context.is_some());
+        let raw=raw.replacen("\"qualification_context\":", "\"qualification_context\":null,\"qualification_context\":",1);
+        assert!(serde_json::from_str::<JournalRecord>(&raw).is_err());assert!(decode(&raw).is_err());
+    }
+
 }

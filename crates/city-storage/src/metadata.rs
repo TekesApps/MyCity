@@ -216,6 +216,7 @@ impl MetadataWorkspace {
             payload_sha256: [0; 32],
             outcome: Err(TxError::InvalidOperation),
             actions: [None; mycity_core::transaction::MAX_ACTIONS],
+            qualification_context: None,
         };
         Ok(Self {
             file: Bytes::new(checkpoint::CHECKPOINT_LIMIT as usize)?,

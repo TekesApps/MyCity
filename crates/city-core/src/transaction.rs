@@ -92,6 +92,7 @@ pub enum Action {
     /// are raw game-host presence facts, not transport/education fulfillment proofs.
     Venue { use_id: u64, command: crate::venue_runtime::Command },
     Education { command: crate::education_authority::Command },
+    Qualification { command: crate::qualification_authority::Command },
     Background {
         command: crate::background::Command,
     },
@@ -295,6 +296,8 @@ pub struct JournalRecord {
     pub payload_sha256: [u8; 32],
     pub outcome: Result<Receipt, TxError>,
     pub actions: [Option<Action>; MAX_ACTIONS],
+    #[serde(default, skip_serializing_if="Option::is_none")]
+    pub qualification_context: Option<crate::qualification_authority::Context>,
 }
 
 /// In-memory retry window. Durable receipts continue to use the full `JournalRecord`; this
@@ -457,6 +460,7 @@ pub struct Engine {
 }
 
 struct Prepared {
+    qualification: Option<crate::qualification_authority::Candidate>,
     education: Option<crate::education_authority::Candidate>,
     venue: Option<crate::venue_runtime::UseCandidate>,
     timeline: workspace::TimelineLease,
@@ -596,6 +600,7 @@ impl Engine {
         };
         venue_driver::validate(&engine.world, &engine.resources, &engine.leases, engine.timeline.as_ref(), None)?;
         crate::education_authority::validate(&engine.world, engine.timeline.as_ref())?;
+        if let Some(q)=engine.world.qualification.as_deref(){q.validate(&engine.world)?;}
         validate_construction_binding(
             engine.world.construction,
             &engine.resources,
@@ -1005,7 +1010,10 @@ impl Engine {
         Ok(())
     }
     fn validate_checkpoint_runtime(&self) -> Result<(), TxError> {
+        if self.world.qualification.is_some() && self.owned_capacity_bytes().checked_add(crate::qualification_authority::restore_bytes())
+            .is_none_or(|n|n>ENGINE_BYTE_BUDGET){return Err(TxError::WorkingLimit);}
         crate::education_authority::validate(&self.world, self.timeline.as_ref())?;
+        if let Some(q)=self.world.qualification.as_deref(){q.validate(&self.world)?;}
         venue_driver::validate(&self.world, &self.resources, &self.leases, self.timeline.as_ref(), None)?;
         if let Some(t) = self.timeline.as_ref() {
             timeline_driver::validate(self, t)?;
@@ -1116,6 +1124,47 @@ impl Engine {
 
     pub fn education_restore_anchor(&self) -> Option<crate::education_runtime::ReceiptAnchor> {
         self.world.education.as_deref().and_then(|r| r.prefix_anchor())
+    }
+    pub fn qualification_is_authenticated(&self)->bool {
+        self.world.qualification.as_deref().is_none_or(|r|r.is_ready())
+    }
+    pub fn qualification_registration(&self)->Option<[u8;32]> {
+        self.world.qualification.as_deref().map(|r|r.registration_hash().expect("validated registration"))
+    }
+    pub fn qualification_source(&self)->Result<crate::member_qualification::ReadSource,TxError> {
+        if !self.qualification_is_authenticated(){return Err(TxError::InvalidOperation);}
+        crate::qualification_authority::source(&self.world,self.timeline.as_ref())
+    }
+    /// Template for an original System request, not an occurred fact or certificate.
+    pub fn qualification_examination_input(&self,slot:u8,attempt:u32,event:u64,operation:u64,
+        content:u32,outcome:crate::course_completion::GroupResult)->Result<crate::course_completion::ExaminationRecord,TxError> {
+        crate::qualification_authority::examination_input(&self.world,self.timeline.as_ref(),slot,attempt,event,operation,content,outcome)
+    }
+    pub fn check_job_qualification(&self,request:crate::qualification_authority::JobRequirements)->Result<crate::qualification_authority::JobCheck,TxError> {
+        if self.owned_capacity_bytes().checked_add(crate::qualification_authority::query_extra_bytes()).is_none_or(|n|n>ENGINE_BYTE_BUDGET){return Err(TxError::WorkingLimit);}
+        crate::qualification_authority::check_job(&self.world,self.timeline.as_ref(),request)
+    }
+    pub fn qualification_prior_operation(&self,command:crate::qualification_authority::Command)->Result<Option<u64>,TxError> {
+        crate::qualification_authority::prior_operation(&self.world,command)
+    }
+    pub fn qualification_examination_anchor(&self,slot:u8)->Result<crate::qualification_authority::ExaminationAnchor,TxError> {
+        crate::qualification_authority::examination_anchor(&self.world,slot)
+    }
+    pub fn qualification_receipt_operations(&self)->Result<[Option<u64>;12],TxError> {
+        Ok(crate::qualification_authority::references(&self.world)?.map(|r|r.map(|(op,_)|op)))
+    }
+    pub fn begin_qualification_restore(&self)->Result<Option<crate::qualification_authority::RestoreCheck>,String> {
+        if self.world.qualification.is_none(){return Ok(None);}
+        if self.owned_capacity_bytes().checked_add(crate::qualification_authority::restore_bytes()).is_none_or(|n|n>ENGINE_BYTE_BUDGET){return Err("qualification_restore_budget".into());}
+        crate::qualification_authority::begin_restore(&self.world).map(Some).map_err(|e|format!("qualification_restore:{e:?}"))
+    }
+    pub fn check_qualification_restore_receipt(&self,check:&mut crate::qualification_authority::RestoreCheck,index:usize,record:&JournalRecord)->Result<(),String> {
+        crate::qualification_authority::check_restore(&self.world,check,index,record).map_err(|e|format!("qualification_original_receipt:{e:?}"))
+    }
+    pub fn finish_qualification_restore(&mut self,check:crate::qualification_authority::RestoreCheck)->Result<(),String> {
+        if self.owned_capacity_bytes().checked_add(crate::qualification_authority::restore_bytes()).is_none_or(|n|n>ENGINE_BYTE_BUDGET){return Err("qualification_restore_budget".into());}
+        let next=crate::qualification_authority::finish_restore(&self.world,check).map_err(|e|format!("qualification_restore:{e:?}"))?;
+        self.world.qualification=Some(next);Ok(())
     }
     pub fn education_is_authenticated(&self) -> bool {
         self.world.education.as_deref().is_none_or(|r| r.is_ready())
@@ -1531,7 +1580,17 @@ impl Engine {
         persist: impl FnOnce(&Envelope,&JournalRecord,CommitContext<'_>)->Result<(),E>,
         trace: &mut Trace<'_>,
     ) -> Result<Result<Receipt, TxError>, E> {
-        if !self.education_is_authenticated() {return Ok(Err(TxError::InvalidOperation));}
+        self.execute_recorded_models_diagnosed(caller,env,candidate,transport,education_receipt,None,persist,trace)
+    }
+    pub fn execute_recorded_models_diagnosed<E>(
+        &mut self, caller: Caller, env: Envelope, candidate: Option<&crate::air::State>,
+        transport: Option<&crate::market_access::SettlementDeliveryInput<'_>>,
+        education_receipt: Option<&JournalRecord>,
+        qualification_receipt: Option<&JournalRecord>,
+        persist: impl FnOnce(&Envelope,&JournalRecord,CommitContext<'_>)->Result<(),E>,
+        trace: &mut Trace<'_>,
+    ) -> Result<Result<Receipt, TxError>, E> {
+        if !self.education_is_authenticated() || !self.qualification_is_authenticated() {return Ok(Err(TxError::InvalidOperation));}
         if env.world != self.world.scope.world() || env.branch != self.world.scope.branch() {
             return Ok(Err(TxError::WrongScope));
         }
@@ -1593,7 +1652,7 @@ impl Engine {
         } else if env.expected_revision != self.world.revision {
             Err(TxError::StaleRevision)
         } else {
-            self.prepare_education_diagnosed(caller, &env, candidate, transport, education_receipt, trace)
+            self.prepare_education_diagnosed(caller, &env, candidate, transport, education_receipt, qualification_receipt, trace)
         };
         trace.end(
             Class::Prepare,
@@ -1624,6 +1683,7 @@ impl Engine {
             payload_sha256: digest,
             outcome,
             actions,
+            qualification_context: prepared.as_ref().ok().and_then(|p|p.qualification.as_ref().map(|q|q.context)),
         };
         // Build the compact retry summary before the durable callback. A conversion failure or
         // allocation panic must happen before publication, never after a successful WAL commit.
@@ -1665,6 +1725,11 @@ impl Engine {
     pub fn can_advance_existing_responsibility_with_education(
         &self,caller:Caller,env:&Envelope,receipt:Option<&JournalRecord>,trace:&mut Trace<'_>,
     )->bool {
+        self.can_advance_existing_responsibility_with_models(caller,env,receipt,None,trace)
+    }
+    pub fn can_advance_existing_responsibility_with_models(
+        &self,caller:Caller,env:&Envelope,receipt:Option<&JournalRecord>,qualification_receipt:Option<&JournalRecord>,trace:&mut Trace<'_>,
+    )->bool {
         if env.world != self.world.scope.world()
             || env.branch != self.world.scope.branch()
             || env.expected_revision != self.world.revision
@@ -1674,7 +1739,7 @@ impl Engine {
         let old = trace.role;
         trace.role = Role::Quote;
         let started = trace.start();
-        let prepared = self.prepare_education_diagnosed(caller, env, None, None, receipt, trace);
+        let prepared = self.prepare_education_diagnosed(caller, env, None, None, receipt, qualification_receipt, trace);
         trace.end(Class::Prepare, started, 0, u64::from(prepared.is_ok()), 0);
         trace.role = old;
         prepared
@@ -1686,6 +1751,10 @@ impl Engine {
             return false;
         }
         match env.actions[0] {
+            Action::Qualification{..} if env.actions[0].is_responsibility_control()=>{
+                self.world.qualification.as_deref().zip(p.qualification.as_ref()).is_some_and(|(old,new)|
+                    old.fingerprint().ok()!=new.next.fingerprint().ok())
+            },
             Action::Education{..} if env.actions[0].is_responsibility_control()=>{
                 self.world.education.as_deref().zip(p.education.as_ref()).is_some_and(|(old,new)|
                     new.runtime.consumed_sequence()>old.consumed_sequence() || new.runtime.recent_count()<old.recent_count())
@@ -1794,7 +1863,7 @@ impl Engine {
         &self,caller:Caller,env:&Envelope,candidate:Option<&crate::air::State>,
         transport:Option<&crate::market_access::SettlementDeliveryInput<'_>>,trace:&mut Trace<'_>,
     )->Result<Prepared,TxError> {
-        self.prepare_education_diagnosed(caller,env,candidate,transport,None,trace)
+        self.prepare_education_diagnosed(caller,env,candidate,transport,None,None,trace)
     }
     fn prepare_education_diagnosed(
         &self,
@@ -1803,6 +1872,7 @@ impl Engine {
         candidate: Option<&crate::air::State>,
         transport: Option<&crate::market_access::SettlementDeliveryInput<'_>>,
         education_receipt: Option<&JournalRecord>,
+        qualification_receipt: Option<&JournalRecord>,
         trace: &mut Trace<'_>,
     ) -> Result<Prepared, TxError> {
         let next_revision = self
@@ -1816,6 +1886,7 @@ impl Engine {
             .ok_or(TxError::WorkingLimit)?;
         let mut venue = None;
         let mut education = None;
+        let mut qualification = None;
         let mut timeline = workspace::TimelineLease::acquire(&storage.timeline, &self.timeline)?;
         let mut accounts = workspace::AccountLease::take(&storage.accounts)?;
         let mut stocks = workspace::StockLease::take(&storage.stocks)?;
@@ -3743,6 +3814,12 @@ impl Engine {
                         .checked_add(cost)
                         .map_err(|_| TxError::Overflow)?;
                 }
+                Action::Qualification {command}=>{
+                    if self.owned_capacity_bytes().checked_add(crate::qualification_authority::candidate_bytes()).is_none_or(|n|n>ENGINE_BYTE_BUDGET) {
+                        return Err(TxError::WorkingLimit);
+                    }
+                    qualification=Some(crate::qualification_authority::prepare(&self.world,self.timeline.as_ref(),caller,env,command,qualification_receipt)?);
+                },
                 Action::Education { command } => {
                     if self.owned_capacity_bytes().checked_add(crate::education_authority::candidate_bytes()).is_none_or(|n|n>ENGINE_BYTE_BUDGET) {
                         return Err(TxError::WorkingLimit);
@@ -3966,7 +4043,8 @@ impl Engine {
                 crate::housing_income::PaidWageWindow::owned_capacity_bytes,
             ));
         let projected = projected.saturating_add(venue.as_ref().map_or(0, |_| crate::venue_runtime::UseCandidate::payload_bytes()));
-        let projected = projected.saturating_add(education.as_ref().map_or(0, |_| crate::education_authority::candidate_bytes()));
+        let projected = projected.saturating_add(education.as_ref().map_or(0, |_| crate::education_authority::candidate_bytes()))
+            .saturating_add(qualification.as_ref().map_or(0, |_| crate::qualification_authority::candidate_bytes()));
         let projected = projected.saturating_add(housing_moves.as_deref().map_or(
             0,
             crate::housing_runtime_move::MoveRuntimeState::owned_capacity_bytes,
@@ -4055,6 +4133,7 @@ impl Engine {
         venue_driver::validate(&self.world, &resources, &leases, timeline.as_ref(), venue.as_ref())?;
         crate::education_authority::validate_candidate(&self.world,timeline.as_ref(),education.as_ref(),venue.as_ref())?;
         Ok(Prepared {
+            qualification,
             education,
             venue,
             timeline,
@@ -4113,6 +4192,10 @@ impl Engine {
         self.world.economy = prepared.economy;
         self.world.region = prepared.region;
         self.world.construction = prepared.construction;
+        if let Some(candidate)=prepared.qualification {
+            debug_assert_eq!(self.world.qualification.as_deref().expect("prepared qualification").fingerprint().ok(),Some(candidate.expected));
+            self.world.qualification=Some(candidate.next);
+        }
         if let Some(candidate)=prepared.education {
             self.world.education=Some(candidate.runtime);
             self.world.member_activity=Some(candidate.ledger);
@@ -6723,6 +6806,8 @@ impl Action {
     }
     /// Only management of existing obligations can draw on storage's emergency reserve.
     pub fn is_responsibility_control(&self) -> bool {
+        if matches!(self,Self::Qualification{command:crate::qualification_authority::Command::Complete{..}|crate::qualification_authority::Command::Revoke{..}}){return true;}
+
         if let Self::Education {command}=self {
             return match command {
                 crate::education_authority::Command::Compact{..}=>true,

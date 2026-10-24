@@ -10,7 +10,7 @@ pub(crate) const MAX_ACTIVE: usize = 32;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
-pub(crate) struct Members { pub start: u64, pub end: u64 }
+pub struct Members { pub start: u64, pub end: u64 }
 impl Members {
     fn valid(self, people: u64) -> bool { self.start < self.end && self.end <= people }
     fn overlaps(self, other: Self) -> bool { self.start < other.end && other.start < self.end }
