@@ -1,0 +1,223 @@
+{
+  "release": [
+    {
+      "name": "unit-carry-lot",
+      "program": "core-release-mycity_core",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/continuous-service-supply-20261025/programs06/core-release-mycity_core",
+        "units::tests::",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 0.7184450626373291,
+      "summary": [
+        "ok",
+        "6",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "name": "unit-joint-budget",
+      "program": "core-release-mycity_core",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/continuous-service-supply-20261025/programs06/core-release-mycity_core",
+        "continuous_supply::tests::",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 0.006384134292602539,
+      "summary": [
+        "ok",
+        "1",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "name": "legacy-construction-boot",
+      "program": "core-release-mycity_core",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/continuous-service-supply-20261025/programs06/core-release-mycity_core",
+        "transaction::tests::construction_work_exports_and_pays_both_utilities_once_with_the_shared_boot_pool",
+        "--exact",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 0.0062792301177978516,
+      "summary": [
+        "ok",
+        "1",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "name": "legacy-lot",
+      "program": "core-release-mycity_core",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/continuous-service-supply-20261025/programs06/core-release-mycity_core",
+        "transaction::tests::lot_cost_is_invariant_under_splitting_and_internal_transfer",
+        "--exact",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 0.006278038024902344,
+      "summary": [
+        "ok",
+        "1",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "name": "genset-component",
+      "program": "core-release-electric_dispatch_continuous_genset",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/continuous-service-supply-20261025/programs06/core-release-electric_dispatch_continuous_genset",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 0.8847007751464844,
+      "summary": [
+        "ok",
+        "24",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "name": "network-v3-component",
+      "program": "core-release-utility_network_v3",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/continuous-service-supply-20261025/programs06/core-release-utility_network_v3",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 0.607140064239502,
+      "summary": [
+        "ok",
+        "20",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "name": "delivery-component",
+      "program": "core-release-service_delivery_runtime",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/continuous-service-supply-20261025/programs06/core-release-service_delivery_runtime",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 0.4810600280761719,
+      "summary": [
+        "ok",
+        "22",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "name": "original-joint-supply",
+      "program": "core-release-continuous_supply",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/continuous-service-supply-20261025/programs06/core-release-continuous_supply",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 0.6037881374359131,
+      "summary": [
+        "ok",
+        "9",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "name": "original-supply-store",
+      "program": "storage-release-continuous_supply_store",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/continuous-service-supply-20261025/programs06/storage-release-continuous_supply_store",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 1.026118278503418,
+      "summary": [
+        "ok",
+        "1",
+        "0",
+        "1"
+      ]
+    },
+    {
+      "name": "legacy-opening-venue",
+      "program": "storage-release-opening_venue_store",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/continuous-service-supply-20261025/programs06/storage-release-opening_venue_store",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 0.822037935256958,
+      "summary": [
+        "ok",
+        "1",
+        "0",
+        "1"
+      ]
+    },
+    {
+      "name": "legacy-opening-service",
+      "program": "storage-release-opening_service_needs_store",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/continuous-service-supply-20261025/programs06/storage-release-opening_service_needs_store",
+        "--nocapture",
+        "--test-threads=1"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "elapsed_seconds": 1.1342501640319824,
+      "summary": [
+        "ok",
+        "1",
+        "0",
+        "1"
+      ]
+    }
+  ],
+  "additional_debug": {
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/continuous-service-supply-20261025/programs06-debug/continuous_supply_store",
+      "--nocapture",
+      "--test-threads=1"
+    ],
+    "exit_code": 0,
+    "summary": [
+      "ok",
+      "1",
+      "0",
+      "1"
+    ],
+    "mode": "unoptimized default test stack, additional execution of same parent case, not extra distinct test"
+  }
+}

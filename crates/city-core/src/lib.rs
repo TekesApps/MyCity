@@ -199,3 +199,10 @@ pub mod opening_loader;
 
 pub mod service_needs;
 pub mod service_needs_authority;
+
+/// Exact, bounded candidates; only continuous_supply writes the original ledger.
+#[path = "electric_dispatch/continuous_genset.rs"]
+pub mod continuous_genset;
+#[path = "utility_network/rational_v3.rs"]
+pub mod utility_rational_v3;
+pub mod continuous_supply;

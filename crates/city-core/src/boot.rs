@@ -680,15 +680,13 @@ fn take(l: &mut impl Ledger, id: u32, quantity: Quantity, frozen: bool) -> Resul
         .checked_sub(quantity)
         .map_err(|_| error(Error::Input))?;
     let cost = if frozen {
-        let end = plus(s.offset, quantity)?;
-        let d = i128::from(s.origin_quantity.value());
-        if d == 0 || end > s.origin_quantity {
-            return Err(error(Error::Invariant));
-        }
-        let amount = i128::from(s.origin_basis.value()) * i128::from(end.value()) / d
-            - i128::from(s.origin_basis.value()) * i128::from(s.offset.value()) / d;
+        let (end,cost)=crate::units::frozen_lot_basis_delta(
+            s.origin_quantity,s.origin_basis,s.offset,quantity).map_err(|e|match e {
+                crate::units::LotBasisError::Origin=>error(Error::Invariant),
+                crate::units::LotBasisError::Overflow=>TxError::Overflow,
+            })?;
         s.offset = end;
-        amount
+        i128::from(cost.value())
     } else {
         if s.quantity == Quantity::ZERO {
             return Err(error(Error::Input));

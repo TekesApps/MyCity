@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.183`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.184`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.184 接通[固定机组与两泵的原账连续供给](docs/evidence/continuous-service-supply-20261025/STATUS.md)：87项不同release测试、另1次默认debug执行与10个独立恢复子进程通过；分数投入、有限接收、一次启动费和非零时点停启恢复均有实际证据。#57仅组件验证，卫生水与真实服务履约、完整#85/#86和M0仍未完成。
 
 v0.5.183 补齐[P5 必要续页调度与开局恢复联合门](docs/evidence/service-due-opening-20261025/STATUS.md)：29项不同release测试、另1次默认debug执行通过；C操作碰撞保留原责任，原票恢复不多推进一页，OpeningInput同槽及WAL/checkpoint恢复有实际证据。完整#57/#101/#120与M0仍未完成。
 

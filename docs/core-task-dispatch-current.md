@@ -962,3 +962,32 @@ remain preserved; source and fixed programs unchanged on retry. 24 unrelated WIP
 [Evidence and explicit artifact-budget overrun](evidence/service-due-opening-20261025/STATUS.md).
 Full57/101/120 stay open; no delivery/native/16GB/GPU/long-stress/M0 acceptance, no stack/budget
 relaxation. No new tree or automation; original owner remains frozen, root sole shared writer.
+
+
+## v0.5.184 — original-ledger continuous supply, finite coupled production
+
+Original #85/#86 owners froze rational V3 and ContinuousGensetV1; original #57 owner
+repaired historical-return/deadline/WorkComplete coverage blockers. Root single writer
+integrated fixed genset + mask-selected pumps through original Stock/cash/Resource/Lease,
+Timeline/P5 hard boundaries and Store genesis/original-receipt authentication. No second
+clock/pool/battery, no sanitary certificate and no delivery_ref fabrication. V3 checks
+actual uniform prepared prefixes; root owns lifetime fractions and costs.
+
+87 distinct release parents, one additional default-debug parent and10 fresh recovery
+children pass. Actual sizeof/owned: Runtime1856B, genset candidate952B, Engine3603736B;
+96KiB preparation is reservation, not native peak. Original budgets/stacks/M0 unchanged.
+Source03 compile failure and source04 Stop/CP failure originals remain; source06 adds
+actual control receipt clock anchors, no missing-at fallback. Original advisor source/
+narrow/result gates accepted. Full #57/#85/#86/#120 stay open, no PR.
+
+[Evidence](evidence/continuous-service-supply-20261025/STATUS.md). Next original-owner
+dependencies: sanitary/usage-certified water source; protected real employment/payroll
+and canonical crew claims; shared member historical intervals and root #57 actual
+dispatch/work/return; open-network changes/SOC/maintenance remain separate. All tests
+and integration remain root serial on original HP P900 target/work; no old main contact.
+
+The new supply owner currently advances through original Timeline/Advance; #101 RunDue
+source-lane registration remains a next integration task. Its existing NoWork is lane-scoped,
+never evidence that all live supply duties are absent. Original #85/#86 trees retired only
+after complete14-file originals, fixed bases/branches and no-writer/no-occupancy checks;
+no main WIP/shared repo/target/evidence deleted.

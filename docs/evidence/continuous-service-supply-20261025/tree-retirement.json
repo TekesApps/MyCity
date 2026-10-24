@@ -1,0 +1,120 @@
+[
+  {
+    "issue": "85",
+    "tree": "/Users/frankqin/.codex/worktrees/issue85-utility-network/MyCity",
+    "baseline": "31dd72a904bbc987e3fbae59801a90e5f13eaf93",
+    "branch_retained": "codex/issue85-utility-network",
+    "common_repo_retained": "/Users/frankqin/dev/MyCity/.git",
+    "files": [
+      {
+        "file": "crates/city-core/src/utility_network.rs",
+        "bytes": 18700,
+        "sha256": "e778e854517d4f607b0e5f8bf22346401dcf8c12141ff7db82dc822633165725",
+        "archive": "/Users/frankqin/dev/MyCity/work/continuous-service-supply-20261025/retired-tree-originals/85/crates/city-core/src/utility_network.rs"
+      },
+      {
+        "file": "crates/city-core/src/utility_network/continuous.rs",
+        "bytes": 25341,
+        "sha256": "a1abb6f066b8f4d0a355543120f315c28e4cf0924ec33332d4070e94a780cab3",
+        "archive": "/Users/frankqin/dev/MyCity/work/continuous-service-supply-20261025/retired-tree-originals/85/crates/city-core/src/utility_network/continuous.rs"
+      },
+      {
+        "file": "crates/city-core/src/utility_network/rational_v3.rs",
+        "bytes": 38180,
+        "sha256": "ae2809b0034716dc193a973e583097fd8e77224ca3bd675e3b83316a739e94c5",
+        "archive": "/Users/frankqin/dev/MyCity/work/continuous-service-supply-20261025/retired-tree-originals/85/crates/city-core/src/utility_network/rational_v3.rs"
+      },
+      {
+        "file": "crates/city-core/tests/utility_network.rs",
+        "bytes": 24309,
+        "sha256": "99e7f9df150170de90c378d0f183ce30ff10e027ea4c51a75a5d7a8c6ae40387",
+        "archive": "/Users/frankqin/dev/MyCity/work/continuous-service-supply-20261025/retired-tree-originals/85/crates/city-core/tests/utility_network.rs"
+      },
+      {
+        "file": "crates/city-core/tests/utility_network_v3.rs",
+        "bytes": 22048,
+        "sha256": "6434138bb31b2638004eb3e22de02af1ed2cfb37644aa538442e4adeb3da319f",
+        "archive": "/Users/frankqin/dev/MyCity/work/continuous-service-supply-20261025/retired-tree-originals/85/crates/city-core/tests/utility_network_v3.rs"
+      },
+      {
+        "file": "docs/handoffs/issue-85-utility-network-v3.md",
+        "bytes": 14905,
+        "sha256": "cae37367829443dde7131a60c8aa2c49b24f4f0f3582703b6ec14d140a573167",
+        "archive": "/Users/frankqin/dev/MyCity/work/continuous-service-supply-20261025/retired-tree-originals/85/docs/handoffs/issue-85-utility-network-v3.md"
+      },
+      {
+        "file": "docs/handoffs/issue-85-utility-network.md",
+        "bytes": 30941,
+        "sha256": "49e6407c7c666e28da34ee04101826afb21f678703185c6ad95246032f5bda5c",
+        "archive": "/Users/frankqin/dev/MyCity/work/continuous-service-supply-20261025/retired-tree-originals/85/docs/handoffs/issue-85-utility-network.md"
+      },
+      {
+        "file": "tests/fixtures/issue-85/cases.rs",
+        "bytes": 2184,
+        "sha256": "8d543f8f2d248d757abd6695b277325dfeec99954f3fa305e78344584efb20f7",
+        "archive": "/Users/frankqin/dev/MyCity/work/continuous-service-supply-20261025/retired-tree-originals/85/tests/fixtures/issue-85/cases.rs"
+      },
+      {
+        "file": "tests/fixtures/issue-85/v3.rs",
+        "bytes": 3177,
+        "sha256": "ca120bf2ce134adda937cf9536572f7dc88bb307111609cfae558ddef9a60fe8",
+        "archive": "/Users/frankqin/dev/MyCity/work/continuous-service-supply-20261025/retired-tree-originals/85/tests/fixtures/issue-85/v3.rs"
+      }
+    ],
+    "writers": "original owners explicitly frozen and idle",
+    "occupancy": "lsof exit1, no output or errors",
+    "state": "retired_only_exact_worktree_branch_and_common_repo_and_all_evidence_retained",
+    "remove_exit_code": 0,
+    "stdout": "",
+    "stderr": "",
+    "observed_internal_volume_free_delta_bytes": 648921088,
+    "space_note": "Observed filesystem change, not isolated APFS physical reclaim. Archive logical bytes are not claimed as reclaimed."
+  },
+  {
+    "issue": "86",
+    "tree": "/Users/frankqin/.codex/worktrees/issue86-electric-dispatch/MyCity",
+    "baseline": "ae28b8cda8041c7bd106a28cccdc3deab051b032",
+    "branch_retained": "codex/issue86-electric-dispatch",
+    "common_repo_retained": "/Users/frankqin/dev/MyCity/.git",
+    "files": [
+      {
+        "file": "crates/city-core/src/electric_dispatch.rs",
+        "bytes": 18404,
+        "sha256": "5fd81c7273da0b1493675fd287b4744d46dabfaf940b5bbe00bd7c6cfa45e3ba",
+        "archive": "/Users/frankqin/dev/MyCity/work/continuous-service-supply-20261025/retired-tree-originals/86/crates/city-core/src/electric_dispatch.rs"
+      },
+      {
+        "file": "crates/city-core/src/electric_dispatch/continuous_genset.rs",
+        "bytes": 28149,
+        "sha256": "6abafe357451afcb50980e2391d579723a8941d8fc7a21d7d82271e6aff05e1b",
+        "archive": "/Users/frankqin/dev/MyCity/work/continuous-service-supply-20261025/retired-tree-originals/86/crates/city-core/src/electric_dispatch/continuous_genset.rs"
+      },
+      {
+        "file": "crates/city-core/tests/electric_dispatch.rs",
+        "bytes": 10157,
+        "sha256": "704644eaf1fe2736e83a52d2075471fdad036212b38d1db6c168c91f2a3fffa9",
+        "archive": "/Users/frankqin/dev/MyCity/work/continuous-service-supply-20261025/retired-tree-originals/86/crates/city-core/tests/electric_dispatch.rs"
+      },
+      {
+        "file": "crates/city-core/tests/electric_dispatch_continuous_genset.rs",
+        "bytes": 24213,
+        "sha256": "0c1a214b6c50e659a419c8690a72d41de3760d82d1a444bbd0823a15d25f7081",
+        "archive": "/Users/frankqin/dev/MyCity/work/continuous-service-supply-20261025/retired-tree-originals/86/crates/city-core/tests/electric_dispatch_continuous_genset.rs"
+      },
+      {
+        "file": "docs/handoffs/issue-86-electric-dispatch.md",
+        "bytes": 36852,
+        "sha256": "edc87ab6313a2ca90459bb4d32173fc92687b6d9892bf7fe9806c7b930aed7b0",
+        "archive": "/Users/frankqin/dev/MyCity/work/continuous-service-supply-20261025/retired-tree-originals/86/docs/handoffs/issue-86-electric-dispatch.md"
+      }
+    ],
+    "writers": "original owners explicitly frozen and idle",
+    "occupancy": "lsof exit1, no output or errors",
+    "state": "retired_only_exact_worktree_branch_and_common_repo_and_all_evidence_retained",
+    "remove_exit_code": 0,
+    "stdout": "",
+    "stderr": "",
+    "observed_internal_volume_free_delta_bytes": 651501568,
+    "space_note": "Observed filesystem change, not isolated APFS physical reclaim. Archive logical bytes are not claimed as reclaimed."
+  }
+]

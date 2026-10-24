@@ -1,0 +1,141 @@
+{
+  "base": "8295ad192b33ec56dc0001a24fdd4ce52f9f4898",
+  "source": "source06",
+  "actual_hardware": {
+    "model": "Mac16,1",
+    "physical_memory_bytes": 34359738368,
+    "storage": "HP P900 USB/APFS",
+    "target": "/Volumes/HP P900/dev/MyCity/target",
+    "work": "/Volumes/HP P900/dev/MyCity/work",
+    "rust": "1.85.1"
+  },
+  "release_distinct_parent_tests": 87,
+  "additional_default_debug_parent_executions": 1,
+  "fresh_recovery_children": [
+    {
+      "file": "attempt06/MYCITY_OPENING_STORE_TEST_ROOT/issue120-venue-68335-1792877112123063000-0/wal-recovery-result.json",
+      "pid": 68341,
+      "exit_code": 0
+    },
+    {
+      "file": "attempt06/MYCITY_OPENING_STORE_TEST_ROOT/issue120-venue-68335-1792877112123063000-0/checkpoint-recovery-result.json",
+      "pid": 68342,
+      "exit_code": 0
+    },
+    {
+      "file": "attempt06/MYCITY_OPENING_STORE_TEST_ROOT/issue120-venue-68335-1792877112123063000-0/after-current-recovery-result.json",
+      "pid": 68343,
+      "exit_code": 0
+    },
+    {
+      "file": "attempt06/MYCITY_OPENING_STORE_TEST_ROOT/issue120-venue-68335-1792877112123063000-0/after-current-checkpoint-result.json",
+      "pid": 68344,
+      "exit_code": 0
+    },
+    {
+      "file": "attempt06/MYCITY_OPENING_SERVICE_TEST_ROOT/opening-service-68345-1792877113015482000-0/wal-recovery-result.json",
+      "pid": 68354,
+      "exit_code": 0
+    },
+    {
+      "file": "attempt06/MYCITY_OPENING_SERVICE_TEST_ROOT/opening-service-68345-1792877113015482000-0/checkpoint-recovery-result.json",
+      "pid": 68355,
+      "exit_code": 0
+    },
+    {
+      "file": "attempt06/MYCITY_CONTINUOUS_SUPPLY_TEST_ROOT/supply-68330-1792877111056089000/wal-reader-result.json",
+      "pid": 68333,
+      "exit_code": 0
+    },
+    {
+      "file": "attempt06/MYCITY_CONTINUOUS_SUPPLY_TEST_ROOT/supply-68330-1792877111056089000/checkpoint-reader-result.json",
+      "pid": 68334,
+      "exit_code": 0
+    },
+    {
+      "file": "attempt06-debug/worlds/supply-68918-1792877231850749000/wal-reader-result.json",
+      "pid": 68919,
+      "exit_code": 0
+    },
+    {
+      "file": "attempt06-debug/worlds/supply-68918-1792877231850749000/checkpoint-reader-result.json",
+      "pid": 68921,
+      "exit_code": 0
+    }
+  ],
+  "counts": {
+    "unit-carry-lot": 6,
+    "unit-joint-budget": 1,
+    "legacy-construction-boot": 1,
+    "legacy-lot": 1,
+    "genset-component": 24,
+    "network-v3-component": 20,
+    "delivery-component": 22,
+    "original-joint-supply": 9,
+    "original-supply-store": 1,
+    "legacy-opening-venue": 1,
+    "legacy-opening-service": 1
+  },
+  "frozen_build_input_files": 429,
+  "source_zip_sha256": "fd284f5c884851d37f523c7eba86483cb560fbad4f7468f2fedc631ca0723105",
+  "protected_WIP_unchanged": 24,
+  "budget_layout": {
+    "checkpoint_encoded_bytes": 5884,
+    "engine_limit_bytes": 4194304,
+    "initial_engine_owned_bytes": 3603736,
+    "one_second_engine_owned_bytes": 3603736,
+    "scope": "actual Rust model capacities/sizeof; excludes native RSS/stack/GPU; not 16GB or performance acceptance",
+    "started_engine_owned_bytes": 3603736,
+    "types": {
+      "genset_candidate_header_bytes": 952,
+      "joint_extra_reserved_bytes": 98304,
+      "max_runs": 16,
+      "native_stack_gpu_and_16gb": "not_measured",
+      "owned_cap_bytes": 16384,
+      "runtime_owned_bytes": 1856,
+      "seven_stock_read_bytes": 672
+    },
+    "world_layout": {
+      "accounts": {
+        "free_index_capacity": 64,
+        "header_bytes": 80,
+        "live_records": 2,
+        "owned_capacity_bytes": 2896,
+        "record_bytes": 32,
+        "slot_bytes": 40,
+        "slots_capacity": 64
+      },
+      "allocator_metadata_included": false,
+      "construction_slot_bytes": 1664,
+      "construction_slot_included_in_world_remaining_header_bytes": true,
+      "index_capacity_bytes": 7680,
+      "opening_sources_capacity_bytes": 3072,
+      "owned_capacity_bytes": 101624,
+      "stocks": {
+        "free_index_capacity": 128,
+        "header_bytes": 80,
+        "live_records": 7,
+        "owned_capacity_bytes": 13904,
+        "record_bytes": 96,
+        "slot_bytes": 104,
+        "slots_capacity": 128
+      },
+      "temporary_parse_and_view_pages_included": false,
+      "town_market_slot_bytes": 50368,
+      "town_market_slot_included_in_world_remaining_header_bytes": true,
+      "town_profile_owned_bytes": 0,
+      "world_remaining_header_bytes": 74072
+    }
+  },
+  "artifact_budget_bytes": 805306368,
+  "scope": "finite original-ledger genset+pump production; no sanitary service delivery; partial85/86/57 open",
+  "not_run": [
+    "real16GB",
+    "native_peak_memory",
+    "sustainable_speed",
+    "GPU",
+    "long_stress",
+    "M0_acceptance",
+    "actual_service_dispatch_and_onsite_work"
+  ]
+}

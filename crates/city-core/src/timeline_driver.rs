@@ -33,6 +33,7 @@ pub(super) struct Frame<'a, 'd> {
     pub trace: &'a mut crate::diagnostics::Trace<'d>,
     pub world: &'a World,
     pub service_needs: &'a mut Option<Box<crate::service_needs::Runtime>>,
+    pub continuous_supply: &'a mut Option<Box<crate::continuous_supply::Runtime>>,
     pub operation_id: u64,
     pub service_working_base: usize,
     pub town: &'a mut Option<crate::town_runtime::MarketState>,
@@ -481,7 +482,7 @@ impl Frame<'_, '_> {
         }
         Ok(())
     }
-    fn boundary(&self, t: &mut Timeline) -> Result<(), TxError> {
+    fn boundary(&mut self, t: &mut Timeline) -> Result<(), TxError> {
         let now = t.progress.last_complete;
         let mut at = t
             .progress
@@ -495,6 +496,10 @@ impl Frame<'_, '_> {
             at = at.min(due);
             Ok(())
         };
+        if let Some(supply)=self.continuous_supply.as_deref(){
+            let mut ledger=ledger!(self);
+            if let Some(due)=supply.boundary(&mut ledger,now)?{take(due)?;}
+        }
         if let Some(service)=self.service_needs.as_deref() {
             if let Some(due)=service.next_due().map_err(|_|TxError::InvalidOperation)? {take(due)?;}
         }
@@ -784,6 +789,12 @@ impl Frame<'_, '_> {
                 {
                     self.economy_event(t)?;
                 } else {
+                    if let Some(supply)=self.continuous_supply.as_deref_mut(){
+                        let root=crate::continuous_supply::source_root(self.world,supply)?;
+                        let revision=self.world.revision.checked_add(1).ok_or(TxError::Overflow)?;
+                        let mut ledger=ledger!(self);
+                        supply.advance(&mut ledger,at,self.operation_id,root,revision)?;
+                    }
                     if !crate::service_needs_authority::due_page(self.service_needs,at,self.operation_id,self.service_working_base,crate::transaction::ENGINE_BYTE_BUDGET)? {return Ok(());}
                     t.progress.last_complete = at;
                     t.progress.phase = None;

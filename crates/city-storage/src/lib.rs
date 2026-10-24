@@ -1180,6 +1180,7 @@ impl Store {
         let original_qualification_registration=genesis_engine.qualification_registration();
         let original_member_registration=genesis_engine.member_activity_registration();
         let original_service_needs_registration=genesis_engine.service_needs_registration();
+        let original_continuous_supply_registration=genesis_engine.continuous_supply_registration();
         let (mut sequence, mut chain) = if let Some(reference) = &root.checkpoint_v2 {
             let (sequence, chain) = checkpoint_v2::open_into(
                 dir,
@@ -1215,6 +1216,7 @@ impl Store {
         if genesis_engine.qualification_registration()!=original_qualification_registration {
             return Err(Error::Invalid("qualification_genesis_registration_mismatch"));
         }
+        if genesis_engine.continuous_supply_registration()!=original_continuous_supply_registration{return Err(Error::Invalid("continuous_supply_genesis_registration_mismatch"));}
         if genesis_engine.service_needs_registration()!=original_service_needs_registration {
             return Err(Error::Invalid("service_needs_genesis_registration_mismatch"));
         }
@@ -1255,6 +1257,15 @@ impl Store {
                 }
             }
             genesis_engine.finish_service_needs_restore(check).map_err(Error::Model)?;
+        }
+
+        if !genesis_engine.continuous_supply_is_authenticated(){
+            let mut check=genesis_engine.begin_continuous_supply_restore().map_err(Error::Model)?;
+            for(index,operation)in genesis_engine.continuous_supply_receipt_operations().into_iter().enumerate(){if let Some(operation)=operation{
+                let original=checkpoint::lookup_archived_at(dir,&root,operation,&mut metadata)?.ok_or(Error::Invalid("continuous_supply_receipt_missing"))?;
+                genesis_engine.check_continuous_supply_restore_receipt(&mut check,index,&original).map_err(Error::Model)?;
+            }}
+            genesis_engine.finish_continuous_supply_restore(check).map_err(Error::Model)?;
         }
 
         let wal_base_sequence = sequence;
