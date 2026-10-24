@@ -1758,3 +1758,33 @@ fn spatial_request_and_failed_command_survive_two_hot_windows_and_archive_replay
     assert_eq!(cold.committed_sequence(), TOTAL_COMMITS);
     assert_eq!(cold.state_hash().unwrap(), state_hash);
 }
+
+#[test]
+fn stale_geometry_requests_remain_withdrawable_after_target_and_other_asset_close() {
+    let root = PathBuf::from(
+        std::env::var_os("MYCITY_TEST_ARTIFACT_ROOT")
+            .expect("explicit external artifact root required"),
+    );
+    for asset in [70, 71] {
+        let world = root.join(format!(
+            "withdraw-stale-{}-{asset}-{}",
+            std::process::id(),
+            TEMP_ID.fetch_add(1, Ordering::Relaxed)
+        ));
+        geometry_apply_support::run_stale_geometry_withdrawal(&world, asset);
+    }
+}
+
+#[test]
+fn expired_geometry_request_withdraws_after_effective_day_at_non_midnight_tick() {
+    let root = PathBuf::from(
+        std::env::var_os("MYCITY_TEST_ARTIFACT_ROOT")
+            .expect("explicit external artifact root required"),
+    );
+    let world = root.join(format!(
+        "withdraw-expired-{}-{}",
+        std::process::id(),
+        TEMP_ID.fetch_add(1, Ordering::Relaxed)
+    ));
+    geometry_apply_support::run_expired_geometry_withdrawal(&world);
+}

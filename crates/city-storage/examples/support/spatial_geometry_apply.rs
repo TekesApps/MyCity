@@ -707,7 +707,10 @@ pub fn run(world: &std::path::Path) {
         Err(mycity_core::transaction::TxError::OperationConflict)
     );
     assert!(!changed_retry_outcome.has_persistent_receipt);
-    assert_eq!(changed_retry_outcome.committed_sequence, sequence_before_retry);
+    assert_eq!(
+        changed_retry_outcome.committed_sequence,
+        sequence_before_retry
+    );
     assert_eq!(cold.committed_sequence(), sequence_before_retry);
     assert_eq!(cold.state_hash().unwrap(), state_before_retry);
     assert_eq!(
@@ -960,10 +963,29 @@ fn apply_transport_access_change(
 }
 
 pub fn run_stale_geometry_after_access_close(world: &std::path::Path, changed_asset_id: u32) {
+    run_stale_geometry_inner(world, changed_asset_id, false);
+}
+
+pub fn run_stale_geometry_withdrawal(world: &std::path::Path, changed_asset_id: u32) {
+    run_stale_geometry_inner(world, changed_asset_id, true);
+}
+
+fn run_stale_geometry_inner(world: &std::path::Path, changed_asset_id: u32, withdraw: bool) {
     run(world);
-    let historical_proofs: Vec<_> = fs::read_dir(world).unwrap().map(|entry| entry.unwrap().path())
-        .filter(|path| path.file_name().unwrap().to_string_lossy().starts_with("town-proof-"))
-        .map(|path| { let bytes = fs::read(&path).unwrap(); (path, bytes) }).collect();
+    let historical_proofs: Vec<_> = fs::read_dir(world)
+        .unwrap()
+        .map(|entry| entry.unwrap().path())
+        .filter(|path| {
+            path.file_name()
+                .unwrap()
+                .to_string_lossy()
+                .starts_with("town-proof-")
+        })
+        .map(|path| {
+            let bytes = fs::read(&path).unwrap();
+            (path, bytes)
+        })
+        .collect();
     let mut store = Store::open(world, SPATIAL_RULES).unwrap();
     let descriptor_sha256 = store
         .stage_road_geometry_candidate(70, Point { x: 3200, y: 1800 }, 3)
@@ -1129,6 +1151,15 @@ pub fn run_stale_geometry_after_access_close(world: &std::path::Path, changed_as
         })
     );
 
+    if withdraw {
+        drop(store);
+        exercise_geometry_withdrawal(world, request_id, descriptor_sha256);
+        for (path, bytes) in historical_proofs {
+            assert_eq!(fs::read(path).unwrap(), bytes);
+        }
+        return;
+    }
+
     // Keep the first Close world recoverable, then restore through the same dual-approved
     // path. The genesis permissions are unchanged even though geometry changed travel costs.
     drop(store);
@@ -1136,14 +1167,32 @@ pub fn run_stale_geometry_after_access_close(world: &std::path::Path, changed_as
     assert_eq!(store.state_hash().unwrap(), before_rejected_apply_state);
     assert_eq!(store.committed_sequence(), before_rejected_apply_sequence);
     apply_transport_access_change(
-        &mut store, world, changed_asset_id, edge_id, surface, owner, applicant, 4,
+        &mut store,
+        world,
+        changed_asset_id,
+        edge_id,
+        surface,
+        owner,
+        applicant,
+        4,
         SpatialAccessOperation::Restore,
     );
     apply_later_geometry(&mut store, world, 5);
     // A further Close/Restore must anchor to this second geometry, not the first or genesis.
-    for (day, operation) in [(6, SpatialAccessOperation::Close), (7, SpatialAccessOperation::Restore)] {
+    for (day, operation) in [
+        (6, SpatialAccessOperation::Close),
+        (7, SpatialAccessOperation::Restore),
+    ] {
         apply_transport_access_change(
-            &mut store, world, changed_asset_id, edge_id, surface, owner, applicant, day, operation,
+            &mut store,
+            world,
+            changed_asset_id,
+            edge_id,
+            surface,
+            owner,
+            applicant,
+            day,
+            operation,
         );
         let hash = store.state_hash().unwrap();
         let sequence = store.committed_sequence();
@@ -1152,7 +1201,10 @@ pub fn run_stale_geometry_after_access_close(world: &std::path::Path, changed_as
         store = Store::open(world, SPATIAL_RULES).unwrap();
         assert_eq!(store.state_hash().unwrap(), hash);
         assert_eq!(store.committed_sequence(), sequence);
-        assert_eq!(store.spatial().unwrap().unwrap().scene().state_hash(), scene_hash);
+        assert_eq!(
+            store.spatial().unwrap().unwrap().scene().state_hash(),
+            scene_hash
+        );
     }
     for (path, bytes) in historical_proofs {
         assert_eq!(fs::read(path).unwrap(), bytes);
@@ -1163,43 +1215,411 @@ fn apply_later_geometry(store: &mut Store, world: &std::path::Path, day: u64) {
     let descriptor_sha256 = store
         .stage_road_geometry_candidate(70, Point { x: 3200, y: 1800 }, day)
         .unwrap();
-    let descriptor = mycity_storage::spatial_geometry_updates::read_descriptor(world, descriptor_sha256)
-        .unwrap();
+    let descriptor =
+        mycity_storage::spatial_geometry_updates::read_descriptor(world, descriptor_sha256)
+            .unwrap();
     let state = store.engine().unwrap().spatial_geometry().unwrap();
     let request_id = state.request_id_highwater + 1;
     let expected_state_revision = state.revision();
     let expected_asset_revision = current_catalog_asset_revision(world, 70);
-    assert!(run_action(store, Caller::Account(2), Action::SpatialGeometry {
-        command: SpatialGeometryCommand::Request {
-            expected_state_revision, request_id, executor_account: 1, asset_id: 70,
-            expected_geometry_revision: descriptor.parent_geometry_revision,
-            expected_asset_revision, descriptor_sha256,
-        },
-    }).model.is_ok());
-    for account in [3, 4] {
-        let expected_state_revision = store.engine().unwrap().spatial_geometry().unwrap().revision();
-        assert!(run_action(store, Caller::Account(account), Action::SpatialGeometry {
-            command: SpatialGeometryCommand::Approve {
-                expected_state_revision, request_id, descriptor_sha256, approved: true,
+    assert!(run_action(
+        store,
+        Caller::Account(2),
+        Action::SpatialGeometry {
+            command: SpatialGeometryCommand::Request {
+                expected_state_revision,
+                request_id,
+                executor_account: 1,
+                asset_id: 70,
+                expected_geometry_revision: descriptor.parent_geometry_revision,
+                expected_asset_revision,
+                descriptor_sha256,
             },
-        }).model.is_ok());
+        }
+    )
+    .model
+    .is_ok());
+    for account in [3, 4] {
+        let expected_state_revision = store
+            .engine()
+            .unwrap()
+            .spatial_geometry()
+            .unwrap()
+            .revision();
+        assert!(run_action(
+            store,
+            Caller::Account(account),
+            Action::SpatialGeometry {
+                command: SpatialGeometryCommand::Approve {
+                    expected_state_revision,
+                    request_id,
+                    descriptor_sha256,
+                    approved: true,
+                },
+            }
+        )
+        .model
+        .is_ok());
     }
     // Commit geometry at the preceding completed boundary; it activates next service day.
     advance_to_day(store, day - 1);
-    let expected_state_revision = store.engine().unwrap().spatial_geometry().unwrap().revision();
-    assert!(run_action(store, Caller::Account(1), Action::SpatialGeometry {
-        command: SpatialGeometryCommand::Apply {
-            expected_state_revision, request_id, descriptor_sha256,
-            candidate_profile_sha256: descriptor.candidate_profile_sha256,
-        },
-    }).model.is_ok());
+    let expected_state_revision = store
+        .engine()
+        .unwrap()
+        .spatial_geometry()
+        .unwrap()
+        .revision();
+    assert!(run_action(
+        store,
+        Caller::Account(1),
+        Action::SpatialGeometry {
+            command: SpatialGeometryCommand::Apply {
+                expected_state_revision,
+                request_id,
+                descriptor_sha256,
+                candidate_profile_sha256: descriptor.candidate_profile_sha256,
+            },
+        }
+    )
+    .model
+    .is_ok());
     let scene_hash = store.spatial().unwrap().unwrap().scene().state_hash();
-    assert_eq!(store.spatial().unwrap().unwrap().scene().input().geometry_revision, 3);
+    assert_eq!(
+        store
+            .spatial()
+            .unwrap()
+            .unwrap()
+            .scene()
+            .input()
+            .geometry_revision,
+        3
+    );
     let hash = store.state_hash().unwrap();
     let sequence = store.committed_sequence();
     store.checkpoint().unwrap();
     // The caller subsequently drops and cold-opens this full multi-geometry catalog.
     assert_eq!(store.state_hash().unwrap(), hash);
     assert_eq!(store.committed_sequence(), sequence);
-    assert_eq!(store.spatial().unwrap().unwrap().scene().state_hash(), scene_hash);
+    assert_eq!(
+        store.spatial().unwrap().unwrap().scene().state_hash(),
+        scene_hash
+    );
+}
+
+fn exercise_geometry_withdrawal(
+    world: &std::path::Path,
+    request_id: u64,
+    descriptor_sha256: [u8; 32],
+) {
+    let mut store = Store::open(world, SPATIAL_RULES).unwrap();
+    let scene = store.spatial().unwrap().unwrap().scene().state_hash();
+    let view_before = serde_json::to_value(store.engine().unwrap().world().view()).unwrap();
+    let geometry_before = serde_json::to_value(store.engine().unwrap().spatial_geometry()).unwrap();
+    let permissions_before =
+        serde_json::to_value(store.engine().unwrap().spatial_permissions()).unwrap();
+    let withdraw = |revision, hash| Action::SpatialGeometry {
+        command: SpatialGeometryCommand::Withdraw {
+            expected_state_revision: revision,
+            request_id,
+            descriptor_sha256: hash,
+        },
+    };
+    let state_revision = store
+        .engine()
+        .unwrap()
+        .spatial_geometry()
+        .unwrap()
+        .revision();
+    let sequence_before = store.committed_sequence();
+    let mut wrong_hash = descriptor_sha256;
+    wrong_hash[0] ^= 1;
+    let scope = store.engine().unwrap().world().scope_revision();
+    let bad = store.execute(
+        Caller::Account(2),
+        Envelope {
+            world: scope.0.world(),
+            branch: scope.0.branch(),
+            operation_id: sequence_before + 1,
+            expected_revision: scope.1,
+            actions: vec![withdraw(state_revision, wrong_hash)],
+        },
+    );
+    assert!(bad.is_err());
+    assert_eq!(store.committed_sequence(), sequence_before);
+    assert_eq!(
+        serde_json::to_value(store.engine().unwrap().spatial_geometry()).unwrap(),
+        geometry_before
+    );
+    // The designated executor is not the applicant, owner, or permit authority.
+    let denied = run_action(
+        &mut store,
+        Caller::Account(1),
+        withdraw(state_revision, descriptor_sha256),
+    );
+    assert_eq!(
+        denied.model,
+        Err(mycity_core::transaction::TxError::InvalidOperation)
+    );
+    assert!(denied.has_persistent_receipt);
+    assert_eq!(
+        serde_json::to_value(store.engine().unwrap().world().view()).unwrap(),
+        view_before
+    );
+    assert_eq!(
+        serde_json::to_value(store.engine().unwrap().spatial_geometry()).unwrap(),
+        geometry_before
+    );
+    let state_revision = store
+        .engine()
+        .unwrap()
+        .spatial_geometry()
+        .unwrap()
+        .revision();
+    let scope = store.engine().unwrap().world().scope_revision();
+    let original = Envelope {
+        world: scope.0.world(),
+        branch: scope.0.branch(),
+        operation_id: store.committed_sequence() + 1,
+        expected_revision: scope.1,
+        actions: vec![withdraw(state_revision, descriptor_sha256)],
+    };
+    let mut applied = false;
+    let lost = store.execute_with_observer(Caller::Account(2), original.clone(), |point| {
+        if point == WritePoint::Applied {
+            applied = true;
+            return Err(io::Error::new(
+                io::ErrorKind::Other,
+                "withdraw-applied-response-lost",
+            ));
+        }
+        Ok(())
+    });
+    assert!(
+        applied,
+        "legal withdrawal must reach original commit path: {lost:?}"
+    );
+    assert!(matches!(lost, Err(mycity_storage::Error::Io(_))));
+    // Release the original lock before cold-opening the uncertain committed result.
+    drop(store);
+    let mut store = Store::open(world, SPATIAL_RULES).unwrap();
+    let state = store.engine().unwrap().spatial_geometry().unwrap();
+    assert!(!state
+        .requests()
+        .iter()
+        .any(|r| r.request.request_id == request_id));
+    assert!(serde_json::to_value(state).unwrap()["approvals"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .all(|a| a["request_id"] != request_id));
+    let after = store.state_hash().unwrap();
+    let sequence = store.committed_sequence();
+    let receipt = serde_json::to_vec(&store.receipt(original.operation_id).unwrap()).unwrap();
+    assert!(store
+        .execute(Caller::Account(2), original.clone())
+        .unwrap()
+        .model
+        .is_ok());
+    assert_eq!(store.state_hash().unwrap(), after);
+    assert_eq!(store.committed_sequence(), sequence);
+    assert_eq!(
+        store.spatial().unwrap().unwrap().scene().state_hash(),
+        scene
+    );
+    let after_view = serde_json::to_value(store.engine().unwrap().world().view()).unwrap();
+    let mut expected_view = view_before.clone();
+    expected_view["revision"] = serde_json::json!(view_before["revision"].as_u64().unwrap() + 1);
+    // Exactly the one successful withdrawal advances World revision; all other
+    // World fields, accounts, stocks and business progress remain identical.
+    assert_eq!(after_view, expected_view);
+    assert_eq!(
+        serde_json::to_value(store.engine().unwrap().spatial_permissions()).unwrap(),
+        permissions_before
+    );
+    store.checkpoint().unwrap();
+    drop(store);
+    let mut store = Store::open(world, SPATIAL_RULES).unwrap();
+    assert_eq!(store.state_hash().unwrap(), after);
+    assert_eq!(store.committed_sequence(), sequence);
+    assert_eq!(
+        serde_json::to_vec(&store.receipt(original.operation_id).unwrap()).unwrap(),
+        receipt
+    );
+    assert!(store
+        .execute(Caller::Account(2), original)
+        .unwrap()
+        .model
+        .is_ok());
+    assert_eq!(store.state_hash().unwrap(), after);
+    assert_eq!(store.committed_sequence(), sequence);
+    eprintln!("WITHDRAW_RESTORED request={request_id} sequence={sequence} state={after}");
+}
+
+pub fn run_expired_geometry_withdrawal(world: &std::path::Path) {
+    run(world);
+    let mut store = Store::open(world, SPATIAL_RULES).unwrap();
+    let day = store
+        .engine()
+        .unwrap()
+        .timeline()
+        .unwrap()
+        .progress
+        .last_complete
+        / DAY
+        + 1;
+    let hash = store
+        .stage_road_geometry_candidate(70, Point { x: 3200, y: 1800 }, day)
+        .unwrap();
+    let descriptor =
+        mycity_storage::spatial_geometry_updates::read_descriptor(world, hash).unwrap();
+    let request_id = store
+        .engine()
+        .unwrap()
+        .spatial_geometry()
+        .unwrap()
+        .request_id_highwater
+        + 1;
+    let revision = store
+        .engine()
+        .unwrap()
+        .spatial_geometry()
+        .unwrap()
+        .revision();
+    assert!(run_action(
+        &mut store,
+        Caller::Account(2),
+        Action::SpatialGeometry {
+            command: SpatialGeometryCommand::Request {
+                expected_state_revision: revision,
+                request_id,
+                executor_account: 1,
+                asset_id: 70,
+                expected_geometry_revision: descriptor.parent_geometry_revision,
+                expected_asset_revision: current_catalog_asset_revision(world, 70),
+                descriptor_sha256: hash
+            }
+        }
+    )
+    .model
+    .is_ok());
+    for account in [3, 4] {
+        let revision = store
+            .engine()
+            .unwrap()
+            .spatial_geometry()
+            .unwrap()
+            .revision();
+        assert!(run_action(
+            &mut store,
+            Caller::Account(account),
+            Action::SpatialGeometry {
+                command: SpatialGeometryCommand::Approve {
+                    expected_state_revision: revision,
+                    request_id,
+                    descriptor_sha256: hash,
+                    approved: true
+                }
+            }
+        )
+        .model
+        .is_ok());
+    }
+    advance_to_day(&mut store, day + 1);
+    let target = (day + 1) * DAY + 1;
+    for _ in 0..128 {
+        if store
+            .engine()
+            .unwrap()
+            .timeline()
+            .unwrap()
+            .progress
+            .last_complete
+            == target
+        {
+            break;
+        }
+        assert!(run_action(
+            &mut store,
+            Caller::System,
+            Action::Timeline {
+                command: TimelineCommand::Advance {
+                    target,
+                    limit: 8192
+                }
+            }
+        )
+        .model
+        .is_ok());
+    }
+    let progress = store.engine().unwrap().timeline().unwrap().progress;
+    assert_eq!(progress.last_complete, target);
+    assert!(progress.phase.is_none() && progress.target.is_none());
+    assert_ne!(progress.last_complete % DAY, 0);
+    drop(store);
+    exercise_geometry_withdrawal(world, request_id, hash);
+    // Freed authority slots admit a new request; highwater identity never resets.
+    let mut store = Store::open(world, SPATIAL_RULES).unwrap();
+    assert_eq!(
+        store
+            .engine()
+            .unwrap()
+            .spatial_geometry()
+            .unwrap()
+            .active_request_count(),
+        0
+    );
+    advance_to_day(&mut store, day + 2);
+    let next_hash = store
+        .stage_road_geometry_candidate(70, Point { x: 3200, y: 1800 }, day + 3)
+        .unwrap();
+    let next_descriptor =
+        mycity_storage::spatial_geometry_updates::read_descriptor(world, next_hash).unwrap();
+    let state = store.engine().unwrap().spatial_geometry().unwrap();
+    assert_eq!(state.request_id_highwater, request_id);
+    let revision = state.revision();
+    assert!(run_action(
+        &mut store,
+        Caller::Account(2),
+        Action::SpatialGeometry {
+            command: SpatialGeometryCommand::Request {
+                expected_state_revision: revision,
+                request_id: request_id + 1,
+                executor_account: 1,
+                asset_id: 70,
+                expected_geometry_revision: next_descriptor.parent_geometry_revision,
+                expected_asset_revision: current_catalog_asset_revision(world, 70),
+                descriptor_sha256: next_hash,
+            }
+        }
+    )
+    .model
+    .is_ok());
+    let revision = store
+        .engine()
+        .unwrap()
+        .spatial_geometry()
+        .unwrap()
+        .revision();
+    assert!(run_action(
+        &mut store,
+        Caller::Account(2),
+        Action::SpatialGeometry {
+            command: SpatialGeometryCommand::Withdraw {
+                expected_state_revision: revision,
+                request_id: request_id + 1,
+                descriptor_sha256: next_hash,
+            }
+        }
+    )
+    .model
+    .is_ok());
+    assert_eq!(
+        store
+            .engine()
+            .unwrap()
+            .spatial_geometry()
+            .unwrap()
+            .active_request_count(),
+        0
+    );
 }

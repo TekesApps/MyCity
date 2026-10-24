@@ -1,0 +1,39 @@
+
+running 34 tests
+test background::slot_load_tests::outer_hash_failure_invalidates_otherwise_valid_decoded_candidate ... ok
+test checkpoint::envelope_digest_tests::streamed_max_action_envelope_hash_matches_legacy_vec_bytes ... ok
+test checkpoint::receipt_decode::context_tests::original_checkpoint_depth_context_and_ignored_depth_are_preserved ... ok
+test checkpoint::receipt_decode::tests::all_variants_match_original_typed_reader_for_map_sequence_and_bad_fields ... ok
+test checkpoint::receipt_decode::tests::large_whitespace_ignored_fields_and_tag_last_keep_legacy_semantics ... ok
+test checkpoint_v2::receipts::tests::authenticated_but_malformed_body_tail_metadata_and_count_cannot_pass ... ok
+test checkpoint_v2::receipts::tests::borrowed_receipt_wire_matches_owned_legacy_and_arbitrary_field_order ... ok
+test checkpoint_v2::receipts::tests::index_overflow_is_rejected_before_extra_record_materializes ... ok
+test metadata::lexical::tests::finite_known_values_reject_long_wrong_types_without_old_string_fallback ... ok
+test metadata::lexical::tests::full_16mib_ignored_nesting_fits_one_initialized_bit_stack_and_overflow_recovers ... ok
+test metadata::lexical::tests::ignore_and_content_keep_distinct_old_scalar_grammars ... ok
+test metadata::lexical::tests::long_escaped_keys_do_not_alias_known_identifiers_or_skip_late_errors ... ok
+test metadata::tests::metadata_counts_full_receipts_and_all_retained_file_slots ... ok
+test metadata::tests::strict_bytes_reject_before_extra_decode_and_writer_failure_preserves_backing ... ok
+test model_capacity::tests::feasibility_boundary_never_authorizes_current_runtime ... ok
+test query::tests::actual_offsets_limits_and_off_page_source_errors_are_not_hidden ... ok
+test query::tests::actual_store_pages_match_frozen_v172_oracle_before_and_after_recovery ... ok
+test query::tests::beyond_end_offset_rejects_without_projecting ... ok
+test query::tests::skipped_rows_never_project_or_grow_the_output_vector ... ok
+test spatial_transport_updates::tests::a_later_reopen_uses_a_new_profile_without_rewriting_the_closed_day ... ok
+test spatial_transport_updates::tests::accepted_raw_json_hash_remains_the_parent_and_old_proof_reference ... ok
+test spatial_transport_updates::tests::closure_is_next_day_and_old_and_new_profile_hashes_select_independently ... ok
+test spatial_transport_updates::tests::compact_catalog_keeps_raw_baseline_and_bounds_serialized_history ... ok
+test spatial_transport_updates::tests::geometry_anchor_allows_access_change_without_allowing_another_structural_edit ... ok
+test spatial_transport_updates::tests::geometry_anchor_never_expands_genesis_initial_access_rights ... ok
+test spatial_transport_updates::tests::profile_chain_rejects_hash_reuse_and_duplicate_operations ... ok
+test spatial_transport_updates::tests::update_cannot_add_edges_reopen_ungranted_edges_or_widen_entrance_authority ... ok
+test stream::tests::complete_stream_hash_length_and_unconsumed_tail_are_required ... ok
+test stream::tests::second_pass_or_validation_failure_cannot_publish_and_tmp_is_reclaimed ... ok
+test town_transport::road_epoch_clock_tests::future_and_non_day_road_epochs_are_rejected ... ok
+test town_transport::road_epoch_clock_tests::publication_and_withdrawal_epochs_require_clock_and_settlement ... ok
+test town_transport::road_epoch_clock_tests::store_accepts_unpublished_road_binding_before_timeline_enable ... ok
+test wal::tests::every_produced_sample_matches_old_frame_bytes_and_split_checksum ... ok
+test wal::tests::persisted_envelope_overflow_rejects_before_extra_action_decode ... ok
+
+test result: ok. 34 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.44s
+

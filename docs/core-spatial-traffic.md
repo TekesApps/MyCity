@@ -46,4 +46,33 @@
 
 这些能力仍属于产品总体设计目标或后续实现范围；本阶段仅证明一条明确获准的地面步行路径可以改变已有 Store 市场结算，并按现有持久化机制恢复和重放。
 
-三个场景是独立期初配置world的因果对照，不是同一Store运行时编辑空间。当前没有空间资产更新与交通profile/revision同根提交协议；该项仍是F缺口，不能以本轮对照代替。
+v139 的上述三个场景是独立期初配置 world 的因果对照，当时尚未实现同一 Store 的运行时编辑。后续 v147 的 Close/Restore 与 v159 的 Scene/profile 几何同根提交、历史 proof 和冷恢复，见下列现行 #25 登记及固定证据；不以旧对照冒充后续实现。
+
+## F 同步任务与资源登记（#25 有限工作包）
+
+这里登记已实现的单图地面 WALK、原道路/入口开闭及受权几何版本更新，不新增 worker、时钟或调度器。#25 从父 #3/#6 划出的范围是这个实际 Store 包；桥隧、其它交通模式、生产地图/OD/权利 provider 与全城承载继续由原父/后续 issue 跟踪。
+
+| 契约 | 当前规则、执行方与验证路径 |
+|---|---|
+| 激活与周期 | 显式提案/批准/Apply/Withdraw 命令，同步 CPU 执行；无周期 tick、后台 worker、独立任务队列或新 IPC。候选重建是新计算承诺；已接纳的撤回、原票重试、恢复及历史解释不能因未激活而丢失。 |
+| 两种时间 | 计算任务没有自有 clock_kind；业务适用日沿原 Timeline 的完整日边界，candidate effective day 必须为 completed_day+1。不是另建次日唤醒/激活任务，不回拨时钟。Withdraw 不触发候选生效，不要求午夜或候选尚未到期。 |
+| 事实与最小状态 | 真实 caller、原 Request/Approve/Withdraw/Apply 与 operation/receipt、双角色授权、Scene/profile/hash/revision、adapter basis、当日 proof 和必要的完整持久来源。几何相交/候选生成不授予产权或通行权。 |
+| 输入与覆盖 | 固定已验证 Scene、原 transport profile 与明确 AdapterInput，world/branch/asset、父/候选 Scene input/state hash、geometry 与 transport 各自 revision、basis hash、effective day。单图已支持模式以外拒绝；没有从地图面积猜覆盖。 |
+| 有效期与重新求解 | 无独立 TTL。Request/Approve/Apply 沿候选激活门重新核对父版本/hash/basis 与适用日，拒绝 stale，不热换原批准目标。Withdraw 单独核原 request/descriptor 的 scope、asset、内容 hash 和真实权限，不要求旧 parent 仍是当前版本，不重建 candidate。Request 行仅由明确 Withdraw 或成功 Apply 消费，不用超时删除义务。 |
+| 候选与迭代 | 原有限 CPU 路径：验证 prior→组装 candidate Scene→adapter→transport assignment→编码 Scene/profile/descriptor；nodes≤128、edges≤512、demands≤512、assignment steps≤512，均沿原算法和整单位规则。没有新增自适应等级/近似模型或 GPU 更快结论。 |
+| 唯一 writer 与提交 | 调用 Store 的宿主 PID 同步计算；Engine prepare 验证单条 SpatialGeometry Action、原 caller 与授权，再沿既有 WAL/catalog/root 提交同一 Scene/profile。未通过验证的候选不变成已发生事实；lost reply 用原 Envelope/receipt 重试，不能另发新业务 ID。 |
+| CPU 持有量与工作区 | 输入≤64 KiB、Scene geometry budget 1 MiB、profile 仍受原 TRANSPORT_PROOF_SCHEMA_MAX_BYTES 约束；descriptor≤4 KiB、transport catalog≤128 KiB；权威表≤8 requests/16 approvals，并计入 Engine prepare 的 projected owned budget。Engine 4 MiB、既有 Store normal 64 MiB 等门不扩大。build_candidate 的 prior/candidate clone、assignment 与编码临时区必须另计，candidate_owned_capacity_bytes 只是保留量，尚非其瞬时峰。 |
+| 缓存、IPC、GPU | 无新增 geometry 专属缓存、IPC payload、worker 或 GPU 缓冲；Store 仍使用共享 metadata/workspace，不能把共享部分记为免费或再逐任务重复收费。未测与渲染竞争或设备路径。 |
+| 磁盘与增长 | content-addressed Scene/profile/descriptor、catalog、原 WAL/receipt/proof 按既有文件界限持久化；引用未解除不删除完整原件。每次新版本可增文件与历史，不能以热表有界宣称永久磁盘有界；磁盘/APFS 实际分配增量未测。 |
+| 退出、失败与恢复 | 无异步 geometry worker 因而无独立取消/退休协议。拒绝 stale/权限/预算时保留原状态与已发生责任；Apply 已提交后不得通过撤销候选回滚事实。checkpoint/cold replay、旧 proof 与完整 catalog/Scene 来源保留；缺失/篡改恢复来源明确拒绝，不伪造历史。 |
+| 策略与精度 | 本包仅原可信 CPU 策略，不动态降低几何/授权精度；观测厘米、原 revision/hash 和业务分币/原算法结果。误差与承载参数没有额外实测资格，不把有限分配结果解释为全城交通最优。 |
+
+源码责任点：`city-core/src/transaction.rs` 的 SpatialGeometry prepare 与 projected budget，`city-core/src/spatial_geometry_permissions.rs` 的 descriptor/8 request/16 approval；`city-storage/src/lib.rs` 的 stage_road_geometry_candidate、validate_geometry_descriptor_for_command、owned_capacity_bytes；`city-storage/src/spatial_geometry_updates.rs` 与 spatial_transport_updates.rs 的持久编码界限；`city-map/src/geometry_revision.rs::build_candidate`。这些同步入口没有伪装成 #101 的周期 worker。
+
+### 固定业务与资源证据
+
+[已发布关联证据](evidence/release-association-20261024/STATUS.md)和[完整历史尝试/最终运行](evidence/core-spatial-geometry-current/STATUS.md)保留 source `be142b7b957e48acedbe7fa52f44eed13400b83dccfe6a9d44349e5afd57a0ca`、固定程序与原始日志：原 F Store 8/8、storage 反例 8/8，以及完整副本的独立新进程冷读/缺来源拒绝。几何改动后实际 travel 81→82 秒、40 件运费 6480→6560 分而销量仍为 40；原开闭路径另有同 Store 销量 40/0/40/0/20。不能因为几何案例销量相同而抹掉实际通路/成本变化，也不能把 WALK 到店当成真实货运配送。
+
+该几何 microfixture 的 Store owned capacity 约 41,783,052–41,783,055 B，world logical files 106,250 B，均为整个固定场景而非 geometry 单独增量。邻近 1025-commit 场景的 Engine 3,608,632/4,194,304 B、Store 41,787,700/67,108,864 B 与 archive 1,045,431/134,217,728 B 是不同负载，不能借作本几何耗时/峰值。完整源码、实际程序、失败世界/成功世界及原票保留在外置 HP P900 `work/release-association-20261024/` 和原 construction-utilities/takeover 包；hash 不代替原件。
+
+CPU 构造瞬时峰、native/RSS/stack 联合峰、物理磁盘增量、真实 16GB、GPU 与正式 M0/长压力仍 not_run；32GiB Mac 与 HP P900 USB/APFS 的有限正确性/逻辑预算证据不外推这些门。它们仍由父/联合验收 issue 负责，不把 #25 的原有限功能范围事后改写为全城性能通过。

@@ -1979,6 +1979,42 @@ impl Store {
         }
         Ok(())
     }
+    /// Withdrawal retires an original commitment; it must remain possible after
+    /// its activation parent or service day has become stale. Keep the durable
+    /// descriptor binding, while the core still checks actor and state revision.
+    fn validate_geometry_withdrawal(
+        &mut self,
+        request_id: u64,
+        descriptor_sha256: [u8; 32],
+    ) -> Result<(), Error> {
+        let (scope, _) = self.engine()?.world().scope_revision();
+        let geometry = self
+            .engine
+            .spatial_geometry()
+            .ok_or(Error::Invalid("spatial_geometry_request_missing"))?;
+        let request = geometry
+            .requests()
+            .iter()
+            .find(|row| row.request.request_id == request_id)
+            .map(|row| row.request)
+            .ok_or(Error::Invalid("spatial_geometry_request_missing"))?;
+        if geometry.world_id != scope.world()
+            || geometry.branch_id != scope.branch()
+            || request.descriptor_sha256 != descriptor_sha256
+        {
+            return Err(Error::Invalid("spatial_geometry_withdraw_request_mismatch"));
+        }
+        let descriptor =
+            spatial_geometry_updates::read_descriptor(&self.io.dir, descriptor_sha256)?;
+        if descriptor.world_id != scope.world()
+            || descriptor.branch_id != scope.branch()
+            || descriptor.asset_id != request.asset_id
+            || descriptor.parent_geometry_revision != request.expected_geometry_revision
+        {
+            return Err(Error::Invalid("spatial_geometry_withdraw_descriptor_mismatch"));
+        }
+        Ok(())
+    }
     fn validate_geometry_descriptor_for_command(
         &mut self,
         command: mycity_core::spatial_geometry_permissions::SpatialGeometryCommand,
@@ -2519,8 +2555,17 @@ impl Store {
             return Err(Error::Invalid("spatial_geometry_action_batch_unsupported"));
         }
         if let Some(command) = geometry_command {
-            self.validate_geometry_baseline()?;
-            self.validate_geometry_descriptor_for_command(command)?;
+            if let mycity_core::spatial_geometry_permissions::SpatialGeometryCommand::Withdraw {
+                request_id,
+                descriptor_sha256,
+                ..
+            } = command
+            {
+                self.validate_geometry_withdrawal(request_id, descriptor_sha256)?;
+            } else {
+                self.validate_geometry_baseline()?;
+                self.validate_geometry_descriptor_for_command(command)?;
+            }
         }
         let pending_geometry_scene = if let Some(
             mycity_core::spatial_geometry_permissions::SpatialGeometryCommand::Apply {

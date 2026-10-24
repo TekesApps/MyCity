@@ -1,0 +1,144 @@
+{
+  "source": "F-all-02.log",
+  "metrics": [
+    {
+      "world": "/Users/frankqin/dev/MyCity/work/geometry-withdrawal-20261024/worlds-02/withdraw-expired-88470-1",
+      "freight_cents": [
+        6480,
+        6560
+      ],
+      "sales": [
+        40,
+        40
+      ],
+      "served_people": [
+        [
+          4,
+          4
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "store_owned_capacity_bytes_after_cold": 41783032,
+      "world_logical_file_bytes": 106250
+    },
+    {
+      "world": "/Users/frankqin/dev/MyCity/work/geometry-withdrawal-20261024/worlds-02/mycity-spatial-geometry-stale-88470-70-3",
+      "freight_cents": [
+        6480,
+        6560
+      ],
+      "sales": [
+        40,
+        40
+      ],
+      "served_people": [
+        [
+          4,
+          4
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "store_owned_capacity_bytes_after_cold": 41783048,
+      "world_logical_file_bytes": 106250
+    },
+    {
+      "world": "/Users/frankqin/dev/MyCity/work/geometry-withdrawal-20261024/worlds-02/mycity-spatial-geometry-stale-88470-71-4",
+      "freight_cents": [
+        6480,
+        6560
+      ],
+      "sales": [
+        40,
+        40
+      ],
+      "served_people": [
+        [
+          4,
+          4
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "store_owned_capacity_bytes_after_cold": 41783048,
+      "world_logical_file_bytes": 106250
+    },
+    {
+      "world": "/Users/frankqin/dev/MyCity/work/geometry-withdrawal-20261024/worlds-02/mycity-spatial-geometry-apply-88470-5",
+      "freight_cents": [
+        6480,
+        6560
+      ],
+      "sales": [
+        40,
+        40
+      ],
+      "served_people": [
+        [
+          4,
+          4
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "store_owned_capacity_bytes_after_cold": 41783045,
+      "world_logical_file_bytes": 106250
+    },
+    {
+      "world": "/Users/frankqin/dev/MyCity/work/geometry-withdrawal-20261024/worlds-02/withdraw-stale-88470-70-9",
+      "freight_cents": [
+        6480,
+        6560
+      ],
+      "sales": [
+        40,
+        40
+      ],
+      "served_people": [
+        [
+          4,
+          4
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "store_owned_capacity_bytes_after_cold": 41783033,
+      "world_logical_file_bytes": 106250
+    },
+    {
+      "world": "/Users/frankqin/dev/MyCity/work/geometry-withdrawal-20261024/worlds-02/withdraw-stale-88470-71-10",
+      "freight_cents": [
+        6480,
+        6560
+      ],
+      "sales": [
+        40,
+        40
+      ],
+      "served_people": [
+        [
+          4,
+          4
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "store_owned_capacity_bytes_after_cold": 41783034,
+      "world_logical_file_bytes": 106250
+    }
+  ],
+  "not_claimed": "feature delta, transient/native peaks, or performance benchmark"
+}

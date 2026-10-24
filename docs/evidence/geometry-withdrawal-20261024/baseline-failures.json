@@ -1,0 +1,48 @@
+{
+  "source_sha256": "35f57948d8e4ecb8926884f7dc47cd190bb6cfd91c7a0c06f0abe922404b4966",
+  "exe_sha256": "f7031d2f07c1f387afeee901e6a8402b91783cec2c9b8bfd4c0e14233b21e4d9",
+  "runs": [
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/geometry-withdrawal-20261024/bin-01/spatial_transport_updates",
+        "stale_geometry_requests_remain_withdrawable_after_target_and_other_asset_close",
+        "--exact",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit": 101,
+      "seconds": 1.54783296585083,
+      "counts": [
+        [
+          "FAILED",
+          "0",
+          "1",
+          "0"
+        ]
+      ],
+      "log": "stale-01.log",
+      "interpretation": "baseline defect reproduction; failure is not acceptance"
+    },
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/geometry-withdrawal-20261024/bin-01/spatial_transport_updates",
+        "expired_geometry_request_withdraws_after_effective_day_at_non_midnight_tick",
+        "--exact",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit": 101,
+      "seconds": 1.1159343719482422,
+      "counts": [
+        [
+          "FAILED",
+          "0",
+          "1",
+          "0"
+        ]
+      ],
+      "log": "expired-01.log",
+      "interpretation": "baseline defect reproduction; failure is not acceptance"
+    }
+  ]
+}

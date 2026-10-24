@@ -1,0 +1,12 @@
+{
+  "spatial_transport_updates": {
+    "file": "/Users/frankqin/dev/MyCity/work/geometry-withdrawal-20261024/bin-02/spatial_transport_updates",
+    "bytes": 11042976,
+    "sha256": "b00fb8d0e5ae4145120b3c5126dfd6d7891423f0d7dc5a4559e6b62194188218"
+  },
+  "mycity_storage": {
+    "file": "/Users/frankqin/dev/MyCity/work/geometry-withdrawal-20261024/bin-02/mycity_storage",
+    "bytes": 11824800,
+    "sha256": "1c192dd5877f21e4397954619d717312aa5beb149a9c307d26534df7c15aa247"
+  }
+}

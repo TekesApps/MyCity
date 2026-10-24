@@ -1,0 +1,90 @@
+{
+  "source_sha256": "e14a14dce0cbf9dac0c5f465f0e6744336415c23734e7a3372ff88aa8f60b425",
+  "runs": [
+    {
+      "label": "new-stale",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/geometry-withdrawal-20261024/bin-02/spatial_transport_updates",
+        "stale_geometry_requests_remain_withdrawable_after_target_and_other_asset_close",
+        "--exact",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit": 0,
+      "seconds": 2.518179178237915,
+      "counts": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ],
+      "log": "new-stale-02.log",
+      "exe_sha256": "b00fb8d0e5ae4145120b3c5126dfd6d7891423f0d7dc5a4559e6b62194188218"
+    },
+    {
+      "label": "new-expired",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/geometry-withdrawal-20261024/bin-02/spatial_transport_updates",
+        "expired_geometry_request_withdraws_after_effective_day_at_non_midnight_tick",
+        "--exact",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit": 0,
+      "seconds": 0.9529528617858887,
+      "counts": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ],
+      "log": "new-expired-02.log",
+      "exe_sha256": "b00fb8d0e5ae4145120b3c5126dfd6d7891423f0d7dc5a4559e6b62194188218"
+    },
+    {
+      "label": "F-all",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/geometry-withdrawal-20261024/bin-02/spatial_transport_updates",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit": 0,
+      "seconds": 13.430289268493652,
+      "counts": [
+        [
+          "ok",
+          "10",
+          "0",
+          "0"
+        ]
+      ],
+      "log": "F-all-02.log",
+      "exe_sha256": "b00fb8d0e5ae4145120b3c5126dfd6d7891423f0d7dc5a4559e6b62194188218"
+    },
+    {
+      "label": "storage-unit",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/geometry-withdrawal-20261024/bin-02/mycity_storage",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit": 0,
+      "seconds": 1.9660820960998535,
+      "counts": [
+        [
+          "ok",
+          "34",
+          "0",
+          "0"
+        ]
+      ],
+      "log": "storage-unit-02.log",
+      "exe_sha256": "1c192dd5877f21e4397954619d717312aa5beb149a9c307d26534df7c15aa247"
+    }
+  ],
+  "distinct_count_rule": "F-all + storage-unit only; initial2 tests repeat insideF-all"
+}

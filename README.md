@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.173`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.174`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.174 修复[失效/过期几何申请无法撤回](docs/evidence/geometry-withdrawal-20261024/STATUS.md)，44 项不同测试通过，并补齐原有限 F 工作包 #25 的同步任务和资源登记；不代表父级全城交通或 M0 验收。
 
 v0.5.173 修复 [Store 分页临时投影](docs/evidence/query-page-projection-20261024/STATUS.md)，6 项限定串行回归通过；完整 #49 仍未完成。
 
