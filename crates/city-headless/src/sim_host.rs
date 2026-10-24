@@ -119,6 +119,8 @@ pub enum Command {
     Progress,
     Execute { envelope: Envelope },
     RunRequired { job: u64 },
+    /// Select at most one real due mandatory job; does not advance the world clock.
+    RunDue,
     RunRequiredSliced { job: u64, plan: String, quota: crate::air_turns::Quota },
     PageControl { control: PageControl },
     ProbeRequired { job: u64, point: ProbePoint },
@@ -373,6 +375,7 @@ struct Required<'a> {
     rules: &'a str,
     diag: &'a mut Option<crate::cpu_log::CpuLog>,
     timings: &'a SimTimings,
+    selection: Option<&'a crate::required_dispatch::SelectedRequired>,
 }
 // Advisory only. Failure to produce a hint never removes or gates the existing
 // mandatory job. This token binds one local read, not a persistent source identity.
@@ -431,6 +434,7 @@ fn required(
         rules,
         diag,
         timings,
+        mut selection,
     } = context;
     let _request_timer = timings.timer(TimingPhase::RunRequired);
     let operation = background::accept_operation_id(job)?;
@@ -459,6 +463,14 @@ fn required(
             let cache = store.prepare_worker_cache().map_err(err)?;
             let exe = std::env::current_exe().map_err(err)?;
             let cache_fence = worker_cache::recover_exclusive(&cache, &exe)?;
+            // RunDue selections are ephemeral and never become authority merely
+            // because a hint was produced. Retirement retains its original owner;
+            // before the first rebind, reread the actual Store identity and job.
+            if let Some(selected) = selection.take() {
+                crate::required_dispatch::validate_required(
+                    store, selected, worker.has_active_execution(),
+                ).map_err(err)?;
+            }
             control(store, B::RebindLease { job }, diag)?;
             worker_cache::reset_after_worker_stopped(&cache)?;
             // Keep the exclusive fence alive through input publication and spawn.
@@ -918,6 +930,33 @@ fn run_owned(
                         .and_then(|v| serde_json::to_value(v).map_err(err))
                 }
             }
+            Command::RunDue => {
+                use crate::required_dispatch::{select_required, Selection, SelectionMode};
+                match select_required(&store, worker.has_active_execution()).map_err(err) {
+                    Err(error) => Err(error),
+                    Ok(Selection::NoWork) => Ok(json!({"dispatch":"required_registry_v1",
+                        "state":"no_work", "required_preserved":true})),
+                    Ok(Selection::Busy) => Err("sim_dispatch_busy".into()),
+                    Ok(Selection::Backpressure(reason)) => Err(format!("sim_dispatch_backpressure:{}",reason.as_code())),
+                    Ok(Selection::Selected(selected)) => {
+                        let job = selected.job();
+                        let mode = match selected.mode() {
+                            SelectionMode::RegistrySelected => "registry_selected",
+                            SelectionMode::MandatoryFallback => "mandatory_fallback",
+                        };
+                        required(&mut store,worker,&mut codec,Required {
+                            id:request.id,job,quota:None,rules:&rules,diag:&mut diag,
+                            timings:&timings,selection:Some(&selected),
+                        },&mut writer,&mut reader,None).map(|mut value| {
+                            value["dispatch"] = json!("required_registry_v1");
+                            value["dispatch_state"] = json!("completed");
+                            value["selection_mode"] = json!(mode);
+                            value["selected_job"] = json!(job);
+                            value
+                        })
+                    }
+                }
+            }
             Command::RunRequired { job } => required(
                 &mut store,
                 worker,
@@ -929,6 +968,7 @@ fn run_owned(
                     rules: &rules,
                     diag:&mut diag,
                     timings:&timings,
+                    selection:None,
                 },
                 &mut writer,
                 &mut reader,
@@ -939,7 +979,7 @@ fn run_owned(
                     Err("sim_page_plan".into())
                 } else {
                     required(&mut store,worker,&mut codec,Required {
-                        id:request.id,job,quota:Some(quota),rules:&rules,diag:&mut diag,timings:&timings,
+                        id:request.id,job,quota:Some(quota),rules:&rules,diag:&mut diag,timings:&timings,selection:None,
                     },&mut writer,&mut reader,None)
                 }
             }
@@ -955,6 +995,7 @@ fn run_owned(
                     rules: &rules,
                     diag:&mut diag,
                     timings:&timings,
+                    selection:None,
                 },
                 &mut writer,
                 &mut reader,

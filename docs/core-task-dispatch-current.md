@@ -2,7 +2,7 @@
 
 **2026-10-24 当前接管状态：**本聊天 root 是唯一 canonical 集成、共享核心修改、串行验证
 与版本发布负责人；旧主会话已由用户停止，不再联系或等待其释放。当前有限集成发布基线为
-v0.5.159；保留的 WIP 只按最新已验证阶段登记。下文各带日期/轮次的旧派工与失败记录是
+v0.5.169；保留的 WIP 只按最新已验证阶段登记。下文各带日期/轮次的旧派工与失败记录是
 历史证据，不恢复旧 writer 授权、不覆盖文末最新实际状态。最新已过 CPU 生命周期37项与
 发布前 F/E26项、四个正向 fresh reader/两个拒绝反例见文末及各 STATUS。分项发布范围与限制见 release-association-20261024/STATUS.md。
 
@@ -708,3 +708,33 @@ Root remains sole shared writer and serial verifier; original118 pure owner is f
 Next: real101 due-task dispatch binding, then120 managed-venue same-slot publication/recovery;
 54/57 must consume only proved actual presence and retain missing upstream facts as Unknown.
 Two default-debug stack faults #122/#123 remain separate;24 unrelated WIP unchanged.
+
+
+### Active after v168: #101 selection and #120 venue opening bridge
+
+Original101 owner alone writes required_dispatch.rs/task_registry_due.rs/private handoff in
+codex/issue101-due-v168. Root alone adds Sim RunDue, pre-Rebind identity validation, export
+and Worker active-request observation; idle retained Child differs from an active request.
+Real pending uses progress.at/end at P1–P4 and keeps original retirement/Ticket/Accept/receipt;
+no second queue/clock or autoAdvance. Source still not_run until owner freeze/advisor/root
+serial validation. Invalid hint/cache never deletes mandatory work; true hard/clock/binding
+failure backpressures with the obligation intact.
+
+Original120 worker independently writes opening_venue_store.rs/its small fixture/handoff in
+codex/issue120-venue-v168. This validates the new managed_people_v1 path through original
+OpeningInput/workspace/Store, not a repeat claim for already-tested E0/Boot/Town. No shared
+Store changes by that owner; root reviews actual source, validates after101 serially and
+records any real integration gap. No code/fixture from private trees is yet an acceptance.
+Both keep full originals, explicit external evidence roots and no compile/test/fmt/push/PR
+by owners. Root retains sole Cargo/measurement/release window; no timers or old-main contact.
+
+
+### v0.5.169 actual required-dispatch gate (#101)
+
+[Finite evidence](evidence/required-dispatch-20261024/STATUS.md):8 groups/86 distinct tests
+pass;7 actual due-worker Tickets bind fixed SOURCE. P4 selection does not autoAdvance;
+idle child/cold running differ from active execution, original retirement/Rebind/Accept
+and hard backpressure preserve obligations. Original advisor accepts finite source/results.
+Full multi-domain101/global budget/16GB/M0 remains open;24 unrelated WIP unchanged.
+120's independent freeze05 source fixes were narrowly accepted but still not_run; root now
+queues its new venue same-slot Store/fresh-reader gate after this verified source phase.

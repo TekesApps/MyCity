@@ -824,6 +824,12 @@ impl Worker {
     pub fn pid_opt(&self) -> Option<u32> {
         self.child.as_ref().map(Child::id).or_else(|| self.broker.as_ref().map(|lease| lease.pid()))
     }
+    /// Actual retained request ownership, not process residency or a persisted
+    /// Background::Job.running flag. A completed idle child still needs original
+    /// retirement before reuse, but must not block selection of the next window.
+    pub fn has_active_execution(&self) -> bool {
+        self.outstanding.is_some() || self.requires_session_exit()
+    }
     pub fn requires_session_exit(&self) -> bool {
         self.broker.is_none()
             && self.broker_start.as_ref().is_some_and(|start| start.unconfirmed())

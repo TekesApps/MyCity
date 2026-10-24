@@ -1,0 +1,121 @@
+{
+  "source_sha256": "9aa32c9f1baf5b71709cdce5118d4322a9b662411ebac356a2efa970f57f23b6",
+  "build_script_source_sha256": "31a429a2ad11cbaf18e7168853a7108cafbf4dbdc96f2415bb0ce8830915c455",
+  "passed": 86,
+  "groups": [
+    {
+      "name": "registry-core",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/issue101-required-dispatch-20261024/bin-04/city-core-task_registry",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 6881,
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 0.44034600257873535,
+      "summary": "ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+    },
+    {
+      "name": "registry-adapter",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/issue101-required-dispatch-20261024/bin-04/city-headless-task_registry_adapter",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 6882,
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 0.49326372146606445,
+      "summary": "ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s"
+    },
+    {
+      "name": "required-due",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/issue101-required-dispatch-20261024/bin-04/city-headless-task_registry_due",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 6901,
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 2.6460230350494385,
+      "summary": "ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.94s"
+    },
+    {
+      "name": "old-dispatch",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/issue101-required-dispatch-20261024/bin-04/city-headless-task_registry_dispatch",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 6975,
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 1.7662887573242188,
+      "summary": "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.55s"
+    },
+    {
+      "name": "actual-control",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/issue101-required-dispatch-20261024/bin-04/city-headless-air_turn_control",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 7009,
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 5.599600076675415,
+      "summary": "ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.14s"
+    },
+    {
+      "name": "compute",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/issue101-required-dispatch-20261024/bin-04/city-headless-compute_worker",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 7315,
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 2.3263537883758545,
+      "summary": "ok. 13 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 1.89s"
+    },
+    {
+      "name": "broker",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/issue101-required-dispatch-20261024/bin-04/city-headless-broker",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 7375,
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 15.039273023605347,
+      "summary": "ok. 23 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 14.49s"
+    },
+    {
+      "name": "sim",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/issue101-required-dispatch-20261024/bin-04/city-headless-sim_host",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 7708,
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 2.824770927429199,
+      "summary": "ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.35s"
+    }
+  ],
+  "world_root": "/Volumes/HP P900/dev/MyCity/work/p101due04-6866",
+  "retained_regular_files": 1026,
+  "retained_logical_bytes": 105944651,
+  "actual_due_worker_starts": 7,
+  "all_actual_due_tickets_bind_build_source": true,
+  "additional_fixture_inputs": 7,
+  "native_peak": "unknown",
+  "full_issue": "open",
+  "m0": "unchanged",
+  "stack_faults": "#122 #123 separate"
+}

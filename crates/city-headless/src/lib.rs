@@ -70,3 +70,6 @@ pub(crate) mod vm_trace;
 
 // Real pending-job hints; the original required dispatcher remains authoritative.
 pub(crate) mod task_registry_adapter;
+
+// Bounded selection from the original required job; no queue or grant ownership.
+pub mod required_dispatch;

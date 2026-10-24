@@ -1,0 +1,135 @@
+[
+  {
+    "transcript": "/Volumes/HP P900/dev/MyCity/work/p101due04-6866/due/run-due-cold-rebind-6901-1792835944243917000/events.jsonl",
+    "ticket": {
+      "attempt": 1,
+      "base_revision": 3,
+      "branch": 1,
+      "checkpoint_sha256": "89baf6b0a3d4e57dd0b2346d0a051705adc19416d54f38e0baf2c3f65bffa526",
+      "end": 30,
+      "field_version": 0,
+      "generation": 1,
+      "incarnation": 1,
+      "input_sha256": "6f7c9458f2c36b0dc39bb3a67a0561ca6eeceeeacf17c4a4f55e5db54a579e1c",
+      "job": 1,
+      "rules_sha256": "2aea69eec26fe994c8a9b78c703ba874f1e74678bf5c561938e357929e2f0949",
+      "source_sha256": "31a429a2ad11cbaf18e7168853a7108cafbf4dbdc96f2415bb0ce8830915c455",
+      "start": 0,
+      "world": 1
+    }
+  },
+  {
+    "transcript": "/Volumes/HP P900/dev/MyCity/work/p101due04-6866/due/run-due-cold-rebind-6901-1792835944243917000/events.jsonl",
+    "ticket": {
+      "attempt": 2,
+      "base_revision": 3,
+      "branch": 1,
+      "checkpoint_sha256": "89baf6b0a3d4e57dd0b2346d0a051705adc19416d54f38e0baf2c3f65bffa526",
+      "end": 30,
+      "field_version": 0,
+      "generation": 2,
+      "incarnation": 2,
+      "input_sha256": "6f7c9458f2c36b0dc39bb3a67a0561ca6eeceeeacf17c4a4f55e5db54a579e1c",
+      "job": 1,
+      "rules_sha256": "2aea69eec26fe994c8a9b78c703ba874f1e74678bf5c561938e357929e2f0949",
+      "source_sha256": "31a429a2ad11cbaf18e7168853a7108cafbf4dbdc96f2415bb0ce8830915c455",
+      "start": 0,
+      "world": 1
+    }
+  },
+  {
+    "transcript": "/Volumes/HP P900/dev/MyCity/work/p101due04-6866/due/run-due-idle-child-6901-1792835945259101000/events.jsonl",
+    "ticket": {
+      "attempt": 1,
+      "base_revision": 3,
+      "branch": 1,
+      "checkpoint_sha256": "89baf6b0a3d4e57dd0b2346d0a051705adc19416d54f38e0baf2c3f65bffa526",
+      "end": 30,
+      "field_version": 0,
+      "generation": 1,
+      "incarnation": 1,
+      "input_sha256": "6f7c9458f2c36b0dc39bb3a67a0561ca6eeceeeacf17c4a4f55e5db54a579e1c",
+      "job": 1,
+      "rules_sha256": "2aea69eec26fe994c8a9b78c703ba874f1e74678bf5c561938e357929e2f0949",
+      "source_sha256": "31a429a2ad11cbaf18e7168853a7108cafbf4dbdc96f2415bb0ce8830915c455",
+      "start": 0,
+      "world": 1
+    }
+  },
+  {
+    "transcript": "/Volumes/HP P900/dev/MyCity/work/p101due04-6866/due/run-due-idle-child-6901-1792835945259101000/events.jsonl",
+    "ticket": {
+      "attempt": 1,
+      "base_revision": 7,
+      "branch": 1,
+      "checkpoint_sha256": "383089f2482501dd0ad80acb786ce5107986fff84f466c4461b3244c4f8581b7",
+      "end": 60,
+      "field_version": 1,
+      "generation": 1,
+      "incarnation": 2,
+      "input_sha256": "808553761548c420b8b63b4aeba7f3484bcf916c53f2dd527a68184eb9266fd2",
+      "job": 2,
+      "rules_sha256": "2aea69eec26fe994c8a9b78c703ba874f1e74678bf5c561938e357929e2f0949",
+      "source_sha256": "31a429a2ad11cbaf18e7168853a7108cafbf4dbdc96f2415bb0ce8830915c455",
+      "start": 30,
+      "world": 1
+    }
+  },
+  {
+    "transcript": "/Volumes/HP P900/dev/MyCity/work/p101due04-6866/due/run-due-attempt-limit-6901-1792835945016533000/events.jsonl",
+    "ticket": {
+      "attempt": 1,
+      "base_revision": 3,
+      "branch": 1,
+      "checkpoint_sha256": "89baf6b0a3d4e57dd0b2346d0a051705adc19416d54f38e0baf2c3f65bffa526",
+      "end": 30,
+      "field_version": 0,
+      "generation": 1,
+      "incarnation": 1,
+      "input_sha256": "6f7c9458f2c36b0dc39bb3a67a0561ca6eeceeeacf17c4a4f55e5db54a579e1c",
+      "job": 1,
+      "rules_sha256": "2aea69eec26fe994c8a9b78c703ba874f1e74678bf5c561938e357929e2f0949",
+      "source_sha256": "31a429a2ad11cbaf18e7168853a7108cafbf4dbdc96f2415bb0ce8830915c455",
+      "start": 0,
+      "world": 1
+    }
+  },
+  {
+    "transcript": "/Volumes/HP P900/dev/MyCity/work/p101due04-6866/due/run-due-attempt-limit-6901-1792835945016533000/events.jsonl",
+    "ticket": {
+      "attempt": 2,
+      "base_revision": 3,
+      "branch": 1,
+      "checkpoint_sha256": "89baf6b0a3d4e57dd0b2346d0a051705adc19416d54f38e0baf2c3f65bffa526",
+      "end": 30,
+      "field_version": 0,
+      "generation": 2,
+      "incarnation": 2,
+      "input_sha256": "6f7c9458f2c36b0dc39bb3a67a0561ca6eeceeeacf17c4a4f55e5db54a579e1c",
+      "job": 1,
+      "rules_sha256": "2aea69eec26fe994c8a9b78c703ba874f1e74678bf5c561938e357929e2f0949",
+      "source_sha256": "31a429a2ad11cbaf18e7168853a7108cafbf4dbdc96f2415bb0ce8830915c455",
+      "start": 0,
+      "world": 1
+    }
+  },
+  {
+    "transcript": "/Volumes/HP P900/dev/MyCity/work/p101due04-6866/due/run-due-attempt-limit-6901-1792835945016533000/events.jsonl",
+    "ticket": {
+      "attempt": 3,
+      "base_revision": 3,
+      "branch": 1,
+      "checkpoint_sha256": "89baf6b0a3d4e57dd0b2346d0a051705adc19416d54f38e0baf2c3f65bffa526",
+      "end": 30,
+      "field_version": 0,
+      "generation": 3,
+      "incarnation": 3,
+      "input_sha256": "6f7c9458f2c36b0dc39bb3a67a0561ca6eeceeeacf17c4a4f55e5db54a579e1c",
+      "job": 1,
+      "rules_sha256": "2aea69eec26fe994c8a9b78c703ba874f1e74678bf5c561938e357929e2f0949",
+      "source_sha256": "31a429a2ad11cbaf18e7168853a7108cafbf4dbdc96f2415bb0ce8830915c455",
+      "start": 0,
+      "world": 1
+    }
+  }
+]

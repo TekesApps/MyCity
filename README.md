@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.168`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.169`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.169 接入[原必要任务的真实选择](docs/evidence/required-dispatch-20261024/STATUS.md)：86 项串行测试通过，RunDue 在 P4 选择原空气待办，保留取消、重绑和到期责任；不自动推进时钟，完整多模型调度和 M0 仍未完成。
 
 v0.5.168 接入[受管场所原池容量与恢复](docs/evidence/venue-authority-20261024/STATUS.md)：123 项串行测试通过，实际占用、退出、重放和旧格式槽复用有有限证据；新预算分区、失败原件与未完成 provider 均明确保留，完整 #118 和 M0 仍开放。
 
