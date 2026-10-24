@@ -119,12 +119,24 @@ pub enum Command {
     Progress,
     Execute { envelope: Envelope },
     RunRequired { job: u64 },
+    RunRequiredSliced { job: u64, plan: String, quota: crate::air_turns::Quota },
+    PageControl { control: PageControl },
     ProbeRequired { job: u64, point: ProbePoint },
     ProbeAck { point: ProbePoint, cancel: bool },
     Checkpoint,
     ReceiptProof { operation: u64 },
     ProbeExhaust { envelope: Envelope },
     Stop,
+}
+/// Production page control, never a fault-probe ACK. All messages retain the
+/// original request id and sole Worker owner while the computation is paused.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
+pub enum PageControl {
+    Observe,
+    ReceiptProof { operation: u64 },
+    Continue { next: crate::air_turns::Continue },
+    Cancel,
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
@@ -357,6 +369,7 @@ fn control(
 struct Required<'a> {
     id: u64,
     job: u64,
+    quota: Option<crate::air_turns::Quota>,
     rules: &'a str,
     diag: &'a mut Option<crate::cpu_log::CpuLog>,
     timings: &'a SimTimings,
@@ -414,6 +427,7 @@ fn required(
     let Required {
         id,
         job,
+        quota,
         rules,
         diag,
         timings,
@@ -476,6 +490,7 @@ fn required(
         let request = Work {
             protocol: wire::PROTOCOL.into(),
             strategy: mycity_core::air::STRATEGY.into(),
+            controlled: quota,
             ticket: Ticket {
                 world: view.scope.world(),
                 branch: view.scope.branch(),
@@ -517,6 +532,8 @@ fn required(
         }
         let gated = probe.is_some();
         let mut cancelled = false;
+        // A sliced attempt never implicitly restarts after an ambiguous control/transport outcome.
+        let control_failure = quota.is_some();
         let attempt = (|| -> Result<_, String> {
             let exe = std::env::current_exe().map_err(err)?;
             let mut first_response_timer =
@@ -532,12 +549,15 @@ fn required(
                 json!({"worker_pid":child.pid(),"broker_lease":child.broker_lease(),"ticket":request.ticket,"registry":registry}),
             )?;
             child.submit(&request)?;
-            for index in 0..4 {
+            let mut index = 0u64;
+            loop {
+                if quota.is_none() && index >= 4 { return Err("sim_worker_incomplete".into()); }
                 let wait_timer =
                     (index != 0).then(|| timings.timer(TimingPhase::WorkerProgressWaitAfterFirst));
                 let progress = child.next(Duration::from_secs(30))?;
                 drop(wait_timer);
                 drop(first_response_timer.take());
+                index = index.checked_add(1).ok_or("sim_worker_event_counter")?;
                 event(
                     w,
                     id,
@@ -548,6 +568,46 @@ fn required(
                         progress_value
                     },
                 )?;
+                if progress.stage == Stage::SliceBoundary {
+                    let boundary = progress.turn.as_ref().ok_or("sim_missing_turn_boundary")?;
+                    event(w,id,"page_boundary",json!({"ticket":request.ticket,"boundary":boundary,
+                        "plan":crate::air_turns::PLAN_ID,"publication":"not_complete",
+                        "task_observation":child.task_observation()}))?;
+                    // Stream one bounded control at a time. While paused, the same Sim can
+                    // answer observations/proofs or cancel; no unrelated mutation/second writer.
+                    loop {
+                        let bytes = wire::frame(reader)?.ok_or("sim_page_control_eof")?;
+                        let control_request: Request = serde_json::from_slice(&bytes).map_err(err)?;
+                        if control_request.protocol != PROTOCOL || control_request.id != id {
+                            return Err("sim_page_control_identity".into());
+                        }
+                        match control_request.command {
+                            Command::PageControl { control: PageControl::Continue { next } } => {
+                                child.continue_pages(next)?;
+                                break;
+                            }
+                            Command::PageControl { control: PageControl::Cancel } => {
+                                cancelled = true;
+                                return Err("sim_attempt_cancelled".into());
+                            }
+                            Command::PageControl { control: PageControl::Observe } => {
+                                event(w,id,"page_control_result",json!({"Ok":{
+                                    "progress":crate::sim_host::progress(store)?,
+                                    "worker_owner":child.retirement_state(),
+                                    "task_observation":child.task_observation(),
+                                    "still_unresolved":true}}))?;
+                            }
+                            Command::PageControl { control: PageControl::ReceiptProof { operation } } => {
+                                let record=store.receipt(operation).map_err(err)?;
+                                event(w,id,"page_control_result",json!({"Ok":{
+                                    "operation":operation,"present":record.is_some(),
+                                    "record":record}}))?;
+                            }
+                            _ => return Err("sim_unexpected_page_control".into()),
+                        }
+                    }
+                    continue;
+                }
                 let point = match progress.stage {
                     Stage::Sources => Some(ProbePoint::WorkerSources),
                     Stage::Cells => Some(ProbePoint::WorkerCells),
@@ -612,7 +672,6 @@ fn required(
                         });
                 }
             }
-            Err("sim_worker_incomplete".into())
         })();
         codec.log(diag)?;
         let imported = match attempt {
@@ -640,6 +699,11 @@ fn required(
                 )?;
                 if cancelled {
                     return Err("sim_attempt_cancelled".into());
+                }
+                if control_failure {
+                    // A rejected/uncertain control terminates this command after actual
+                    // retirement. It must never auto-start another numerical attempt.
+                    return Err(format!("sim_sliced_attempt_terminated:{error}"));
                 }
                 continue;
             }
@@ -861,6 +925,7 @@ fn run_owned(
                 Required {
                     id: request.id,
                     job,
+                    quota: None,
                     rules: &rules,
                     diag:&mut diag,
                     timings:&timings,
@@ -869,6 +934,16 @@ fn run_owned(
                 &mut reader,
                 None,
             ),
+            Command::RunRequiredSliced { job, plan, quota } => {
+                if plan != crate::air_turns::PLAN_ID || quota.validate().is_err() {
+                    Err("sim_page_plan".into())
+                } else {
+                    required(&mut store,worker,&mut codec,Required {
+                        id:request.id,job,quota:Some(quota),rules:&rules,diag:&mut diag,timings:&timings,
+                    },&mut writer,&mut reader,None)
+                }
+            }
+            Command::PageControl { .. } => Err("sim_page_control_not_waiting".into()),
             Command::ProbeRequired { job, point } if probe_enabled => required(
                 &mut store,
                 worker,
@@ -876,6 +951,7 @@ fn run_owned(
                 Required {
                     id: request.id,
                     job,
+                    quota: None,
                     rules: &rules,
                     diag:&mut diag,
                     timings:&timings,

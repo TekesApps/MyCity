@@ -1,8 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.163`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.164`。已开始Rust模型与headless CLI，当前不做UI。
 
-v0.5.163 接入[真实 worker CPU 计量](docs/evidence/worker-cpu-clock-20261024/STATUS.md)：74 项限定测试通过；显式 air wire v2、独立宿主耗时及未知计量边界保留，完整 #102 和 M0 仍未完成。
+v0.5.164 接入[精确分页与生产暂停/继续](docs/evidence/air-page-control-20261024/STATUS.md)：313 项串行测试通过，保留原任务、授额及提交边界；完整 #103、自动总预算与 M0 仍未完成。
 
 v0.5.159 固定[当前有限集成基线](docs/evidence/release-association-20261024/STATUS.md)：默认栈恢复修复、同槽期初输入、容量只读投影、F/E 持久化、实际 Sim 调度观察及 CPU Worker 生命周期已有分项实测。未激活的教育源码仍为候选；动态总预算控制、生产 provider、完整 M0 与真实16GB均未完成。旧失败和无关 WIP 保留。
 

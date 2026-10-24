@@ -80,6 +80,7 @@ fn request(dir: &Path, state: &State, job: u64) -> Request {
     Request {
         protocol: PROTOCOL.into(),
         strategy: STRATEGY.into(),
+        controlled: None,
         ticket: Ticket {
             world: 1,
             branch: 1,

@@ -14,7 +14,7 @@ use std::{
     time::Duration,
 };
 
-pub const PROTOCOL: &str = "mycity-air-worker-v2";
+pub const PROTOCOL: &str = "mycity-air-worker-v3";
 pub const CONTROL_BYTES: usize = 64 * 1024;
 /// IPC readers only decode fixed, non-recursive protocol records (at most one
 /// `CONTROL_BYTES` frame); do not reserve the platform's default thread stack
@@ -81,10 +81,13 @@ pub struct Request {
     pub protocol: String,
     pub strategy: String,
     pub ticket: Ticket,
+    #[serde(default)]
+    pub controlled: Option<crate::air_turns::Quota>,
 }
 #[derive(Clone, Copy, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum Stage {
+    SliceBoundary,
     Sources,
     Cells,
     Published,
@@ -102,6 +105,8 @@ pub struct Event {
     pub cursor: Option<u32>,
     #[serde(default)]
     pub cpu: Option<cpu_metrics::CpuTelemetry>,
+    #[serde(default)]
+    pub turn: Option<crate::air_turns::Boundary>,
 }
 #[derive(Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -321,10 +326,10 @@ impl TaskState<'_> {
             Self::Fixed(s) => s.progress(),
         }
     }
-    fn page(&mut self, sources: u32, cells: u32) -> Result<(), String> {
+    fn page(&mut self, sources: u32, cells: u32) -> Result<mycity_core::air::PageWork, String> {
         match self {
-            Self::Owned(s) => s.page(sources, cells),
-            Self::Fixed(s) => s.page(sources, cells),
+            Self::Owned(s) => s.page_counted(sources, cells),
+            Self::Fixed(s) => s.page_counted(sources, cells),
         }
     }
     fn page_diagnosed(
@@ -332,10 +337,10 @@ impl TaskState<'_> {
         sources: u32,
         cells: u32,
         trace: &mut mycity_core::diagnostics::Trace<'_>,
-    ) -> Result<(), String> {
+    ) -> Result<mycity_core::air::PageWork, String> {
         match self {
-            Self::Owned(s) => s.page_diagnosed(sources, cells, trace),
-            Self::Fixed(s) => s.page_diagnosed(sources, cells, trace),
+            Self::Owned(s) => s.page_counted_diagnosed(sources, cells, trace),
+            Self::Fixed(s) => s.page_counted_diagnosed(sources, cells, trace),
         }
     }
     fn checkpoint_to(&mut self, writer: &mut impl Write) -> Result<usize, String> {
@@ -380,6 +385,7 @@ fn validate_request(request: &Request) -> Result<(), String> {
     {
         return Err("worker_ticket".into());
     }
+    if let Some(quota) = request.controlled { quota.validate().map_err(|e| format!("worker_turn_quota:{e:?}"))?; }
     Ok(())
 }
 fn input<'a>(
@@ -425,6 +431,7 @@ fn emit(
     size: usize,
     cursor: Option<u32>,
     cpu: Option<&mut cpu_metrics::CpuAttemptSampler>,
+    turn: Option<&crate::air_turns::Boundary>,
 ) -> Result<(), String> {
     write_frame(
         w,
@@ -437,8 +444,20 @@ fn emit(
             candidate_bytes: size,
             cursor,
             cpu: cpu.map(|sampler| sampler.sample_before_event()),
+            turn: turn.cloned(),
         },
     )
+}
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+struct ContinueFrame {
+    protocol: String,
+    ticket: Ticket,
+    continue_turn: crate::air_turns::Continue,
+}
+fn page_counts(work: mycity_core::air::PageWork) -> crate::air_turns::WorkCounters {
+    crate::air_turns::WorkCounters { sources: u64::from(work.sources), cells: u64::from(work.cells),
+        integrated_cells: u64::from(work.integrated_cells), segments: u64::from(work.segments), pages: u64::from(work.pages) }
 }
 /// Blocking child entry point. One control request at a time; stdin EOF stops it.
 pub fn run(root: &Path) -> Result<(), String> {
@@ -499,7 +518,11 @@ fn run_inner(root: &Path, gated: bool, bounded: bool) -> Result<(), String> {
     while let Some(bytes) = frame(&mut reader)? {
         let request: Request = serde_json::from_slice(&bytes).map_err(|e| e.to_string())?;
         validate_request(&request)?;
-        let mut cpu = cpu_metrics::CpuAttemptSampler::begin(crate::heap_meter::process_instance());
+        if gated && request.controlled.is_some() { return Err("worker_controlled_probe_conflict".into()); }
+        let instance = crate::heap_meter::process_instance();
+        let mut cpu = cpu_metrics::CpuAttemptSampler::begin(instance);
+        let mut turns = request.controlled.map(|quota| crate::air_turns::ChildTurns::new(instance.to_string(), quota))
+            .transpose().map_err(|e| format!("worker_turn_begin:{e:?}"))?;
         let _cache_fence = if bounded {
             Some(crate::worker_cache::exclusive(root)?)
         } else {
@@ -548,27 +571,49 @@ fn run_inner(root: &Path, gated: bool, bounded: bool) -> Result<(), String> {
         }
         let mut source_seen = false;
         let mut cells_seen = false;
+        let mut turn_work = crate::air_turns::WorkCounters::ZERO;
         while !state.complete() {
-            if let Some(log) = diag.as_mut() {
+            let quota = turns.as_ref().map(|t| t.quota());
+            let sources = quota.map_or(if bounded && gated { 1 } else { 256 }, |q| q.source_limit);
+            let cells = quota.map_or(256, |q| q.cell_limit);
+            let work = if let Some(log) = diag.as_mut() {
                 let mut sink = |p| log.page(p);
                 let mut trace = mycity_core::diagnostics::Trace::with_pages(&mut sink);
-                state.page_diagnosed(if bounded && gated { 1 } else { 256 }, 256, &mut trace)?;
+                let work = state.page_diagnosed(sources, cells, &mut trace)?;
                 log.check()?;
-            } else {
-                state.page(if bounded && gated { 1 } else { 256 }, 256)?;
-            }
+                work
+            } else { state.page(sources, cells)? };
+            if turns.is_some() { turn_work = turn_work.checked_add(page_counts(work)).map_err(|e| format!("worker_work_count:{e:?}"))?; }
             if let Some(p) = state.progress() {
                 let (seen, stage) = match p.phase {
                     Phase::Sources => (&mut source_seen, Stage::Sources),
                     Phase::Cells => (&mut cells_seen, Stage::Cells),
                 };
                 if !*seen && p.cursor > 0 {
-                    emit(&mut writer, &request.ticket, stage, None, 0, Some(p.cursor), (!omit_cpu).then_some(&mut cpu))?;
+                    emit(&mut writer, &request.ticket, stage, None, 0, Some(p.cursor), (!omit_cpu).then_some(&mut cpu), None)?;
                     gate(&mut reader, &request, stage, gated)?;
                     *seen = true;
                 }
             }
+            if let Some(actor) = turns.as_mut() {
+                if !state.complete() && turn_work.pages >= u64::from(actor.quota().pages) {
+                    let boundary = actor.reach_boundary(turn_work).map_err(|e| format!("worker_turn_boundary:{e:?}"))?;
+                    emit(&mut writer, &request.ticket, Stage::SliceBoundary, None, 0, None,
+                        Some(&mut cpu), Some(&boundary))?;
+                    let bytes = frame(&mut reader)?.ok_or("worker_continue_eof")?;
+                    let next: ContinueFrame = serde_json::from_slice(&bytes).map_err(|e| e.to_string())?;
+                    if next.protocol != PROTOCOL || next.ticket != request.ticket { return Err("worker_continue_ticket".into()); }
+                    actor.accept_continue(&next.continue_turn).map_err(|e| format!("worker_continue_rejected:{e:?}"))?;
+                    turn_work = crate::air_turns::WorkCounters::ZERO;
+                }
+            }
         }
+        let final_turn = if let Some(actor) = turns.as_mut() {
+            let boundary = crate::air_turns::Boundary { plan_version: crate::air_turns::PLAN_VERSION,
+                turn: actor.turn(), process_instance: instance.to_string(), work: turn_work };
+            actor.finish(turn_work).map_err(|e| format!("worker_turn_finish:{e:?}"))?;
+            Some(boundary)
+        } else { None };
         let (hash, size) = if let Some(owner) = slots.as_mut() {
             owner.with_slot(crate::worker_slots::Kind::Candidate, |bytes| {
                 let size = state.checkpoint_to(bytes)?;
@@ -588,6 +633,7 @@ fn run_inner(root: &Path, gated: bool, bounded: bool) -> Result<(), String> {
             size,
             None,
             (!omit_cpu).then_some(&mut cpu),
+            final_turn.as_ref(),
         )?;
         gate(&mut reader, &request, Stage::Published, gated)?;
         state.finish(diag.as_mut())?;
@@ -610,6 +656,7 @@ fn run_inner(root: &Path, gated: bool, bounded: bool) -> Result<(), String> {
             size,
             None,
             (!omit_cpu).then_some(&mut cpu),
+            final_turn.as_ref(),
         )?;
     }
     if let Some(log) = diag.as_mut() {
@@ -644,6 +691,10 @@ pub struct Worker {
     // Observation metadata only; the existing owned Child/lease remains authoritative.
     owner_process_instance: u128,
     observed_process_instance: Option<u128>,
+    controlled: Option<crate::air_turns::Quota>,
+    turns: Option<crate::air_turns::OwnerTurns>,
+    inflight_continue: Option<crate::air_turns::Continue>,
+    final_turn: Option<crate::air_turns::Boundary>,
     observation: Option<protocol_observation::Attempt>,
     observation_error: Option<&'static str>,
     child: Option<Child>,
@@ -664,7 +715,7 @@ impl Worker {
     /// Empty persistent owner; no RPC, process spawn or capacity mutation.
     pub fn new() -> Self {
         Self { owner_process_instance: crate::heap_meter::process_instance(),
-            observation: None, observation_error: None, observed_process_instance: None,
+            observation: None, observation_error: None, observed_process_instance: None, controlled: None, turns: None, inflight_continue: None, final_turn: None,
             child: None, broker: None, stdin: None, receiver: None, reader: None,
             outstanding: None, root: PathBuf::new(), gated: false, pool_grant: None,
             pending_grant: None, broker_start: None, reaped: None, ready_to_submit: false }
@@ -820,6 +871,8 @@ impl Worker {
         if self.outstanding.is_some() {
             return Err("worker_busy".into());
         }
+        self.controlled = request.controlled;
+        self.turns = None; self.inflight_continue = None; self.final_turn = None;
         let sent_at = std::time::Instant::now();
         write_frame(self.stdin.as_mut().ok_or("worker_stopped")?, request)?;
         self.outstanding = Some(request.ticket.clone());
@@ -833,12 +886,16 @@ impl Worker {
     /// Missing/failed projection never changes required work or the canonical wire checks.
     pub fn task_observation(&self) -> serde_json::Value {
         let data = self.observation.as_ref().and_then(|attempt| attempt.latest());
-        serde_json::json!({"schema":"mycity-cpu-task-observation-v2",
+        serde_json::json!({"schema":"mycity-cpu-task-observation-v3",
             "state":if self.observation_error.is_some() {"unavailable"} else if data.is_some() {"observed"} else {"not_yet_observed"},
             "reason":self.observation_error, "data":data,
             "owner_retired_now":self.is_empty(), "retained_last_attempt":true,
             "authority":"observation_only_not_grant_store_acceptance_or_resource_return",
-            "queue_age":"unknown_not_instrumented"})
+            "queue_age":"unknown_not_instrumented",
+            "controlled":self.controlled, "turn_waiting":self.turns.as_ref().is_some_and(|t|t.is_waiting()),
+            "inflight_continue":self.inflight_continue, "work_counts":self.turns.as_ref().map(|t|t.total()),
+            "turn_quota":self.turns.as_ref().map(|t|t.quota()), "turn":self.turns.as_ref().map(|t|t.turn()),
+            "plan":self.controlled.map(|_|crate::air_turns::PLAN_ID)})
     }
     pub fn next(&mut self, timeout: Duration) -> Result<Event, String> {
         let event = self
@@ -856,6 +913,8 @@ impl Worker {
             return Err("worker_response_identity".into());
         }
         match event.stage {
+            Stage::SliceBoundary if self.controlled.is_some() && event.candidate_sha256.is_none()
+                && event.candidate_bytes == 0 && event.cursor.is_none() && event.turn.is_some() => {},
             Stage::Sources | Stage::Cells
                 if event.candidate_sha256.is_none()
                     && event.candidate_bytes == 0
@@ -875,6 +934,7 @@ impl Worker {
             }
             _ => return Err("worker_response_shape".into()),
         }
+        self.observe_turn(&event)?;
         // Only after the existing full-ticket and actual asset/hash/length checks.
         // An unavailable observation must never turn valid business into a rejection.
         if let Some(cpu) = event.cpu.as_ref().filter(|cpu| cpu.validate().is_ok()) {
@@ -890,6 +950,52 @@ impl Worker {
             }
         }
         Ok(event)
+    }
+    fn observe_turn(&mut self, event: &Event) -> Result<(), String> {
+        if !matches!(event.stage, Stage::SliceBoundary | Stage::Published | Stage::Complete) {
+            return if event.turn.is_none() { Ok(()) } else { Err("worker_unexpected_turn".into()) };
+        }
+        let Some(initial) = self.controlled else {
+            return if event.turn.is_none() { Ok(()) } else { Err("worker_uncontrolled_turn".into()) };
+        };
+        let boundary = event.turn.as_ref().ok_or("worker_missing_turn")?;
+        crate::air_turns::validate_process_instance(&boundary.process_instance).map_err(|_| "worker_turn_instance")?;
+        let instance = boundary.process_instance.parse::<u128>().map_err(|_| "worker_turn_instance")?;
+        if self.observed_process_instance.is_some_and(|old| old != instance) { return Err("worker_turn_stale_instance".into()); }
+        self.observed_process_instance = Some(instance);
+        if self.turns.is_none() { self.turns = Some(crate::air_turns::OwnerTurns::new(boundary.process_instance.clone(), initial).map_err(|_| "worker_turn_owner")?); }
+        let actor = self.turns.as_mut().expect("turn owner");
+        if event.stage == Stage::Complete {
+            return if actor.is_finished() && self.final_turn.as_ref() == Some(boundary) { Ok(()) }
+                else { Err("worker_turn_complete_binding".into()) };
+        }
+        let quota = actor.quota(); let work = boundary.work;
+        if boundary.plan_version != crate::air_turns::PLAN_VERSION || boundary.turn != actor.turn()
+            || work.pages == 0 || work.pages > u64::from(quota.pages)
+            || work.sources > u64::from(quota.source_limit) * work.pages
+            || work.cells > u64::from(quota.cell_limit) * work.pages || work.segments > work.pages
+            || work.integrated_cells > 16384 * work.segments { return Err("worker_turn_work_shape".into()); }
+        if event.stage == Stage::SliceBoundary {
+            actor.accept_boundary(boundary).map_err(|e| format!("worker_turn_boundary:{e:?}"))?;
+        } else {
+            // Outer instance/turn/full Ticket bound above, final turn delta counted once.
+            actor.finish(work).map_err(|e| format!("worker_turn_finish:{e:?}"))?;
+            self.final_turn = Some(boundary.clone());
+        }
+        self.inflight_continue = None;
+        Ok(())
+    }
+    /// One prepared Continue per verified waiting boundary. Any send error retains
+    /// the exact uncertain message and original owner; callers must retire, never resend.
+    pub fn continue_pages(&mut self, control: crate::air_turns::Continue) -> Result<(), String> {
+        if self.inflight_continue.is_some() { return Err("worker_continue_uncertain_or_inflight".into()); }
+        let mut next = self.turns.as_ref().ok_or("worker_not_controlled")?.clone();
+        let expected = next.prepare_continue(control.quota).map_err(|e| format!("worker_continue_state:{e:?}"))?;
+        if expected != control { return Err("worker_continue_identity".into()); }
+        let ticket = self.outstanding.clone().ok_or("worker_no_outstanding")?;
+        self.turns = Some(next); self.inflight_continue = Some(control.clone());
+        write_frame(self.stdin.as_mut().ok_or("worker_stopped")?,
+            &ContinueFrame { protocol: PROTOCOL.into(), ticket, continue_turn: control })
     }
     /// Completed workers may close stdin and flush their final evidence. Active
     /// jobs retain the existing kill path. Deadline expiry is still a real kill.
@@ -1110,6 +1216,7 @@ mod ipc_reader_tests {
             candidate_bytes: CONTROL_BYTES,
             cursor: None,
             cpu: None,
+            turn: None,
         };
         let mut bytes = serde_json::to_vec(&event).unwrap();
         assert!(bytes.len() < CONTROL_BYTES - 1);

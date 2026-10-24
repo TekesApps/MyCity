@@ -158,6 +158,7 @@ fn run_owned(dir: &Path, worker: &mut Worker) -> Result<Value, String> {
         let request = Request {
             protocol: PROTOCOL.into(),
             strategy: mycity_core::air::STRATEGY.into(),
+        controlled: None,
             ticket,
         };
         worker.submit(&request)?;

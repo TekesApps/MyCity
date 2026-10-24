@@ -140,3 +140,39 @@ fn parser_limits_invalid_pages_and_output_failure_never_leave_loaded_partial_dat
     workspace.checkpoint_to(&mut actual).unwrap();
     assert_eq!(actual, original);
 }
+
+#[test]
+fn actual_counted_pages_preserve_order_across_quota_switches_and_partial_restore() {
+    use mycity_core::air::PageWork;
+    for source_count in [0, 1, 37] {
+        let mut value = input(32, source_count); value.target = 121; value.boundary_until = 121;
+        for source in value.sources.iter_mut() { source.end = 121; }
+        let mut reference=State::new(value.clone()).unwrap();
+        while !reference.complete() { reference.page(8192,1024).unwrap(); }
+        let expected=reference.checkpoint().unwrap();
+        for pattern in [0,1,2] {
+            let mut state=State::new(value.clone()).unwrap(); let mut fixed=AirWorkspace::new().unwrap();
+            fixed.restore(&state.checkpoint().unwrap()).unwrap();
+            let mut totals=PageWork::default(); let mut turn=0;
+            while !state.complete() {
+                let (sources,cells)=match pattern {0=>(8192,1024),1=>(3,17),_=>if turn%2==0 {(1,5)}else{(31,63)}};
+                let work=state.page_counted(sources,cells).unwrap();
+                let fixed_work=fixed.page_counted(sources,cells).unwrap(); assert_eq!(fixed_work,work);
+                totals.sources+=work.sources;totals.cells+=work.cells;totals.integrated_cells+=work.integrated_cells;
+                totals.segments+=work.segments;totals.pages+=work.pages;
+                if work.segments==1 { assert_eq!(work.integrated_cells,1024); }
+                let checkpoint=state.checkpoint().unwrap(); let mut bytes=Vec::new();fixed.checkpoint_to(&mut bytes).unwrap();
+                assert_eq!(checkpoint,bytes);
+                if turn%23==0 { state=State::restore(&checkpoint).unwrap();fixed.restore(&checkpoint).unwrap(); }
+                turn+=1;
+            }
+            assert_eq!(state.checkpoint().unwrap(),expected);
+            assert_eq!(totals.segments,3); assert_eq!(totals.sources,source_count*3);
+            assert_eq!(totals.cells,1024*3); assert_eq!(totals.integrated_cells,1024*3);
+            assert_eq!(state.page_counted(1,1).unwrap(),PageWork::default());
+            assert_eq!(fixed.page_counted(1,1).unwrap(),PageWork::default());
+            let before=state.checkpoint().unwrap();assert!(state.page_counted(0,1).is_err());
+            assert_eq!(state.checkpoint().unwrap(),before);
+        }
+    }
+}

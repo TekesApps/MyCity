@@ -245,6 +245,17 @@ pub enum Phase {
     Sources,
     Cells,
 }
+/// Successful work actually executed by one page. Units remain distinct;
+/// the segment-end integration pass is additional to cell updates.
+#[derive(Clone, Copy, Debug, Default, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
+pub struct PageWork {
+    pub sources: u32,
+    pub cells: u32,
+    pub integrated_cells: u32,
+    pub segments: u32,
+    pub pages: u32,
+}
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(deny_unknown_fields)]
 pub struct Progress {
@@ -497,9 +508,17 @@ impl State {
         cell_limit: u32,
         trace: &mut crate::diagnostics::Trace<'_>,
     ) -> Result<(), String> {
+        self.page_counted_diagnosed(source_limit, cell_limit, trace).map(|_| ())
+    }
+    pub fn page_counted_diagnosed(
+        &mut self,
+        source_limit: u32,
+        cell_limit: u32,
+        trace: &mut crate::diagnostics::Trace<'_>,
+    ) -> Result<PageWork, String> {
         use crate::diagnostics::{AirPage, Class};
         let Some(start) = trace.start() else {
-            return self.page(source_limit, cell_limit);
+            return self.page_counted(source_limit, cell_limit);
         };
         let (class, items) = if self.complete() {
             (Class::AirEmpty, 0)
@@ -525,7 +544,7 @@ impl State {
                 )
             }
         };
-        let result = self.page(source_limit, cell_limit);
+        let result = self.page_counted(source_limit, cell_limit);
         let nanos = trace.nanos(Some(start));
         trace.page(AirPage {
             role: trace.role,
@@ -540,12 +559,18 @@ impl State {
     }
     /// One source page OR one cell page. A completed segment publishes atomically in memory.
     pub fn page(&mut self, source_limit: u32, cell_limit: u32) -> Result<(), String> {
+        self.page_counted(source_limit, cell_limit).map(|_| ())
+    }
+    /// Count only successful loop bodies, not requested quota or a progress cursor.
+    pub fn page_counted(&mut self, source_limit: u32, cell_limit: u32) -> Result<PageWork, String> {
+        let mut work = PageWork::default();
         if source_limit == 0 || source_limit > 8192 || cell_limit == 0 || cell_limit > 1024 {
             return Err("air_page_limit".into());
         }
         if self.complete() {
-            return Ok(());
+            return Ok(work);
         }
+        work.pages = 1;
         if self.progress.is_none() {
             self.scratch.fill(0);
             self.pending = Totals::default();
@@ -577,6 +602,7 @@ impl State {
                     f64::from(after) - f64::from(before) - micro as f64 / 1_000_000.0,
                 );
                 self.scratch[i] = after.to_bits();
+                work.sources += 1;
             }
             self.progress = Some(if end == self.input.sources.len() {
                 Progress {
@@ -590,7 +616,7 @@ impl State {
                     ..p
                 }
             });
-            return Ok(());
+            return Ok(work);
         }
         let h = dt as f32 / 60.0;
         let r = 0.02f32 * h;
@@ -655,13 +681,14 @@ impl State {
                 + f64::from(source)
                 + f64::from(d) * 2.0;
             Totals::add(&mut self.pending.rounding, f64::from(next) - ideal);
+            work.cells += 1;
         }
         if end < n {
             self.progress = Some(Progress {
                 cursor: end as u32,
                 ..p
             });
-            return Ok(());
+            return Ok(work);
         }
         for i in 0..n {
             let area = 0.5
@@ -669,13 +696,15 @@ impl State {
                     + f64::from(f32::from_bits(self.scratch[i])))
                 * f64::from(dt);
             self.integral[i] = (f64::from_bits(self.integral[i]) + area).to_bits();
+            work.integrated_cells += 1;
         }
         std::mem::swap(&mut self.field, &mut self.scratch);
         self.totals.merge(&self.pending);
         self.time = p.end;
         self.steps += 1;
         self.progress = None;
-        Ok(())
+        work.segments = 1;
+        Ok(work)
     }
     /// Same immutable checkpoint wire format; stream into an unpublished bounded
     /// destination. An I/O failure may leave a prefix, never a valid publication.

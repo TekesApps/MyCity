@@ -281,29 +281,36 @@ impl AirWorkspace {
         }
     }
     pub fn page(&mut self, sources: u32, cells: u32) -> Result<(), String> {
+        self.page_counted(sources, cells).map(|_| ())
+    }
+    pub fn page_counted(&mut self, sources: u32, cells: u32) -> Result<PageWork, String> {
         self.ready()?;
-        let result = self.state.page(sources, cells);
-        if let Err(e) = result {
-            self.reset()?;
-            return Err(e);
+        let result = self.state.page_counted(sources, cells);
+        match result {
+            Err(e) => { self.reset()?; Err(e) }
+            Ok(work) => {
+                self.pages = self.pages.checked_add(u64::from(work.pages)).ok_or("air_workspace_counter")?;
+                Ok(work)
+            }
         }
-        self.pages = self.pages.checked_add(1).ok_or("air_workspace_counter")?;
-        Ok(())
     }
     pub fn page_diagnosed(
-        &mut self,
-        sources: u32,
-        cells: u32,
-        trace: &mut crate::diagnostics::Trace<'_>,
+        &mut self, sources: u32, cells: u32, trace: &mut crate::diagnostics::Trace<'_>,
     ) -> Result<(), String> {
+        self.page_counted_diagnosed(sources, cells, trace).map(|_| ())
+    }
+    pub fn page_counted_diagnosed(
+        &mut self, sources: u32, cells: u32, trace: &mut crate::diagnostics::Trace<'_>,
+    ) -> Result<PageWork, String> {
         self.ready()?;
-        let result = self.state.page_diagnosed(sources, cells, trace);
-        if let Err(e) = result {
-            self.reset()?;
-            return Err(e);
+        let result = self.state.page_counted_diagnosed(sources, cells, trace);
+        match result {
+            Err(e) => { self.reset()?; Err(e) }
+            Ok(work) => {
+                self.pages = self.pages.checked_add(u64::from(work.pages)).ok_or("air_workspace_counter")?;
+                Ok(work)
+            }
         }
-        self.pages = self.pages.checked_add(1).ok_or("air_workspace_counter")?;
-        Ok(())
     }
     pub fn checkpoint_to(&mut self, writer: &mut impl Write) -> Result<usize, String> {
         self.ready()?;

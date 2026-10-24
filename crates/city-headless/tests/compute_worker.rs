@@ -75,6 +75,7 @@ fn request(dir: &Path, state: &State) -> Request {
     Request {
         protocol: PROTOCOL.into(),
         strategy: STRATEGY.into(),
+        controlled: None,
         ticket: Ticket {
             world: 1,
             branch: 1,
@@ -127,6 +128,7 @@ fn stale_source_unknown_schema_wrong_input_and_attempt_overflow_fail_without_can
         "source",
         "schema",
         "old_protocol",
+        "old_v2",
         "input",
         "attempt",
         "start",
@@ -142,6 +144,7 @@ fn stale_source_unknown_schema_wrong_input_and_attempt_overflow_fail_without_can
             "source" => value["ticket"]["source_sha256"] = json!("0".repeat(64)),
             "schema" => value["protocol"] = json!("future-worker"),
             "old_protocol" => value["protocol"] = json!("mycity-air-worker-v1"),
+            "old_v2" => value["protocol"] = json!("mycity-air-worker-v2"),
             "input" => value["ticket"]["input_sha256"] = json!("0".repeat(64)),
             "attempt" => value["ticket"]["attempt"] = json!(4),
             "start" => value["ticket"]["start"] = json!(1),

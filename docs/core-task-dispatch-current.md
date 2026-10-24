@@ -625,3 +625,16 @@ partial kill is nonfinal, missing metrics never block necessary business, and or
 wait/retirement remains authoritative. Work/scratch/queue/native/total resource costs stay unknown.
 Full102/103/104 and M0 remain open. Next gate is equivalent page slicing plus actual safe-boundary
 yield/continue, work counts and latency/cost calibration, not a fictitious alternate model.
+
+
+## v0.5.164 actual equivalent air page control (#103 finite increment)
+
+[Exact page-control evidence](evidence/air-page-control-20261024/STATUS.md): independent issue
+child supplies pure bounded air_turns, root integrates actual loop counts, explicit wire3 and
+original Sim/Worker owner.313 serial tests pass, plus one preserved-v163/current alternating-
+quota checkpoint comparison. Production RunRequiredSliced permits pause/query/continue/cancel;
+wrong/uncertain control ends the sliced command after actual retirement and preserved failure,
+never auto-starts another attempt. Pause keeps original grant and required Job. Core pages
+count Sources/Cells/integration/commits separately; no fabricated generic work-cost unit.
+This single exact strategy does not activate old approximate dependency/catalog candidates or
+an automatic total budget controller. Full103/104 remain open; original M0 gates unchanged.

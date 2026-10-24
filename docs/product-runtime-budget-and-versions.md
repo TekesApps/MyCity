@@ -305,3 +305,19 @@ this stage establishes no native-memory credit, whole-game peak or new admission
 Work units, scratch peak and resource-cost calibration remain unknown; #103/#104 must not fill
 unknown cost with zero or infer it from cursor, requested page limits, CPU time or wall time.
 Necessary accepted work continues under the original owner/grant; no GPU or M0 gate changes.
+
+
+## v0.5.164 page quotas and actual work have different meanings
+
+[Actual exact-page control](evidence/air-page-control-20261024/STATUS.md) records requested
+source/cell/page limits separately from actual sources/cells/integrated cells/segments/pages.
+Final integration is a full-grid pass even with tiny last cell quota; quota is not a calibrated
+CPU deadline or total-cost guarantee. Completed no-op counts zero, not fabricated zero cost
+for unknown work. Typed counters have independent units and do not fill ResourceCost with CPU
+nanoseconds or zero. Metadata/control Strings and retained turn state stay charged to existing
+role arenas; extra stack/layout/native peak and control/switch cost still need measurement.
+Pause is real blocked execution with scratch/grant retained, not memory release. Invalid control
+retires through the original owner and preserves required obligations; only explicit new command
+retries. Plan version1 selects the same exact model, not a quality downgrade. The controller may
+use this interface after calibration; current automatic whole-game budget/16GB/GPU/M0 gates
+remain unmet and original frozen loads/standards are unchanged.

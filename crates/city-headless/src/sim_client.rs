@@ -267,10 +267,18 @@ impl Client {
                     return Err("sim_broker_worker_lease_absent".into());
                 }
             }
-            "worker_progress" | "attempt_failed" | "probe_barrier" if event.id != 0 => (),
+            "worker_progress" | "attempt_failed" | "probe_barrier" | "page_boundary" | "page_control_result" if event.id != 0 => (),
             _ => return Err("sim_event_kind".into()),
         }
         Ok(event)
+    }
+    /// Send a production control for the outstanding sliced request, without
+    /// clearing ownership or pretending it is a second Sim command completion.
+    pub fn control_pages(&mut self, control: crate::sim_host::PageControl) -> Result<(), String> {
+        let id=self.outstanding.filter(|id|*id!=0).ok_or("sim_not_waiting")?;
+        wire::write_frame(self.input.as_mut().ok_or("sim_stopped")?,&Request {
+            protocol:"mycity-sim-v1".into(),id,command:SimCommand::PageControl{control},
+        })
     }
     pub fn acknowledge_probe(
         &mut self,

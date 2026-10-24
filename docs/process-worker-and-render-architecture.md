@@ -246,3 +246,16 @@ business. Same Child/Lease application instance is pinned, never PID-only replac
 observations cannot establish completion or retirement. Exact decoder failure remains a protocol
 error; missing or semantically invalid decodable telemetry degrades measurement only. Windows
 clock support remains Unknown/Unsupported, not a validated backend.
+
+
+### v0.5.164 exact page-boundary production control
+
+[Finite source/results](evidence/air-page-control-20261024/STATUS.md) define the active air wire3
+and fixed exact page-plan1. Continue is separate from probe ACK and bound to full Ticket,
+application instance, current plan/turn and finite quota. There is one outstanding boundary;
+invalid/duplicate/uncertain control cannot implicitly restart a sliced attempt. The original
+owner retains resources until actual retirement. Original Sim can answer Observe/receipt proof
+or cancel at pause without accepting unrelated business mutations. Numerical strategy, Store
+writer and original uncontrolled M0 execution remain. Current control is explicitly driven;
+no automatic multi-model or CPU/GPU budget controller is claimed. Cold Sim recovery retries
+original frozen input, not an alleged durable private page cursor.

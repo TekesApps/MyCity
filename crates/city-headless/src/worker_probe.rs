@@ -16,6 +16,7 @@ fn request(root: &Path, state: &State, job: u64, generation: u32) -> Result<Requ
     Ok(Request {
         protocol: PROTOCOL.into(),
         strategy: STRATEGY.into(),
+        controlled: None,
         ticket: Ticket {
             world: 1,
             branch: 1,

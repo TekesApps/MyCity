@@ -197,6 +197,7 @@ fn execution_identity(worker: &Worker) -> Result<schema::CpuExecutionIdentity, &
 
 fn candidate_evidence(event: &Event) -> Result<schema::CandidateEvidence, &'static str> {
     match event.stage {
+        Stage::SliceBoundary => Ok(schema::CandidateEvidence::NoCandidate),
         Stage::Sources | Stage::Cells => event.cursor
             .filter(|cursor| *cursor > 0)
             .map(|cursor_claim| schema::CandidateEvidence::None { cursor_claim })
@@ -214,6 +215,7 @@ fn candidate_evidence(event: &Event) -> Result<schema::CandidateEvidence, &'stat
 
 fn observed_stage(stage: Stage) -> schema::ObservedStage {
     match stage {
+        Stage::SliceBoundary => schema::ObservedStage::SliceBoundary,
         Stage::Sources => schema::ObservedStage::Sources,
         Stage::Cells => schema::ObservedStage::Cells,
         Stage::Published => schema::ObservedStage::Published,

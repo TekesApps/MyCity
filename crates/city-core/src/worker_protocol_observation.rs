@@ -59,7 +59,7 @@ mod decimal_u128 {
     }
 }
 
-pub const OBSERVATION_VERSION: u16 = 2;
+pub const OBSERVATION_VERSION: u16 = 3;
 pub const MAX_WIRE_LABEL_BYTES: usize = 64;
 pub const MAX_CPU_CANDIDATE_BYTES: u64 = 8 * 1024 * 1024;
 
@@ -363,6 +363,7 @@ impl Measurement {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum ObservedStage {
+    SliceBoundary,
     Sources,
     Cells,
     Published,
@@ -372,6 +373,7 @@ pub enum ObservedStage {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "origin", rename_all = "snake_case", deny_unknown_fields)]
 pub enum CandidateEvidence {
+    NoCandidate,
     None { cursor_claim: u32 },
     WorkerDeclared { sha256: [u8; 32], bytes: u64 },
     HostReadHashValidated { sha256: [u8; 32], bytes: u64 },
@@ -446,6 +448,7 @@ impl CpuObservation {
         self.execution.validate()?;
         self.measurements.validate()?;
         match (self.stage, self.candidate) {
+            (ObservedStage::SliceBoundary, CandidateEvidence::NoCandidate) => Ok(()),
             (ObservedStage::Sources | ObservedStage::Cells,
                 CandidateEvidence::None { cursor_claim }) if cursor_claim > 0 => Ok(()),
             (ObservedStage::Published | ObservedStage::Complete,
