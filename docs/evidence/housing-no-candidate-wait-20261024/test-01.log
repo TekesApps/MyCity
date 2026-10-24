@@ -1,0 +1,9 @@
+
+running 2 tests
+test not_yet_eligible_candidate_wait_moves_with_original_token_when_lease_start_arrives ... ISSUE26_NO_CANDIDATE_ARTIFACT_PRESERVED=/Volumes/HP P900/dev/MyCity/work/finite-fe-closure-20261024/worlds-01/issue26-no-candidate-4607-0
+ok
+test unreachable_candidate_wait_survives_cold_open_and_original_token_retry ... ISSUE26_NO_CANDIDATE_ARTIFACT_PRESERVED=/Volumes/HP P900/dev/MyCity/work/finite-fe-closure-20261024/worlds-01/issue26-no-candidate-4607-1
+ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 16.97s
+

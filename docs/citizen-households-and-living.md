@@ -154,6 +154,23 @@ v0.4.25现行粒度与预算以 [整体分配审查](granularity-allocation-audi
 
 [连续窗口案例](worked-example-two-buildings-shared-facilities.md) 中，家庭A1购买已经实际腾空、无租约的A4单元，同时继续租住A1单元；不同H的owner与F实际住所不可混写。该交易仍是首版限定全款空房买卖，不开放在住租转购。随后回购空置A4仅解决产权，实际居住A1—A3的租约结清、迁出、真实接收与必要补偿仍各自完成。家庭A4已迁往D，不随原单元买卖转移或重新生成；每户押金及生活保护均留原账户／责任来源。
 
+## E 有限运行包的任务与资源登记（#26）
+
+本节登记已实现的有限 Housing/Timeline/Store 路径，不代表本篇完整生活、买卖、通勤或城市承载设计已实现。设计中的 32768 套不是当前可配置或实测支持量；当前原型最多 32 套，有限正确性证据使用一至两套合法输入。父 #4 与完整产品验收继续开放。[本次证据](evidence/housing-no-candidate-wait-20261024/STATUS.md)补齐无合适房源的真实 Store Wait/恢复反例。
+
+| 契约 | 当前实现与责任 |
+|---|---|
+| 激活、周期和时钟 | 显式 HousingLease/HousingMove 同步 CPU 命令；租金、实付工资和到期义务沿原 Development Timeline/calendar 推进与原阶段提交。住房没有独立 worker、时钟或调度队列。暂停不积累；恢复从原游标继续，未请求迁居不能停止已发生租金和债务责任。 |
+| 最小权威状态 | 原 household/unit/lease/offer 身份、产权及实际占用、应计区间和余数、原账本现金/Claim、本来已付工资覆盖、历史租约和 Wait CAS operation。没有第二钱包或平均家庭现金；工资应收不能充当已付收入。 |
+| 来源、覆盖与失效 | 不可变 OpeningHousing 的 offer/assessment/candidate 版本和哈希，当前 household/city、完整 Timeline 边界及实际已付工资窗口。Wait 重评使用原 Wait operation CAS；窗口不完整返回 EvidenceIncomplete，不推断零收入或真实住房短缺。当前没有热换住房目录/实时 OD/评分 provider。 |
+| 候选与精度 | 单次最多 16 候选，原整数金额、秒、原租金区间和余数算法；32 个原型住房/家庭槽，Wait 和历史租约各最多 32。CandidateLimit 是求解额度不足，不能据此认定无房。NoReachableCandidate 仅描述给定有界不可变候选集合，不证明全城无可达住房。稳定期间沿原事件切段/合批；没有新近似档位或允许抹平欠款的误差。 |
+| 唯一 writer 与提交 | 同一 Store 宿主 prepare/validate/WAL/commit；搬迁费用、占用转换、旧债务和新租约在原事务提交边界生效。失败保留状态；丢响应重试原 Envelope/receipt，不能换新业务 ID 重扣或发新住房。 |
+| CPU、工作区和缓存 | HousingState/Opening、PaidWageWindow、可选 MoveRuntimeState 按实际 capacity 纳入 World/Engine owned 和 projected prepare；候选 Vec、验证 scratch、clone/编码/恢复重叠另计，不能用最终 owned 冒充峰值。沿原 Engine 4MiB/Store 64MiB 门，不扩角色 8MiB/全游戏预算。无住房专属 IPC/GPU/后台缓存；共享账本、Timeline、Store 只计一次，其临时副本另计。 |
+| 退出、背压与历史 | 历史/Wait 表满须拒绝新的计算承诺，不丢旧租约欠款或删除家庭。Wait 不释放实际住所；Move 清理当前占用但历史债务仍沿原 Claim。恢复保留原租约、Wait CAS、实付覆盖、日历与原票；缺失细节标未知，不能重生成已经发生的历史。 |
+| 磁盘与资格 | WAL、checkpoint、receipt 和旧租约追溯有历史增长；热表有界不等于永久存档有界。保留完整原件到恢复依赖释放与新完整基线成立，hash 不代数据。当前唯一可信 CPU 策略，无动态升降档或 GPU 更快资格；native 联合峰、真实 16GB、长期增长和 M0 承载仍未通过。 |
+
+历史资源证据须保留各自版本：[v150](evidence/core-housing-runtime-150/joint-resource.json)一套住房场景，[v153](evidence/core-housing-income-153/STATUS.md)实际付薪来源，[v155](evidence/core-housing-move-155/resources.json)两套迁居场景。v155 Engine owned 3628096B、Store 约 41179000–41179069B 是那个 microfixture 的整场景 API 保留量；不是本次新增测试的峰值，也不是住房独占量或原 M0 验收。其 native 采样及存档大小只支持同一固定小场景，不能借给另一配置或 32GiB 推断 16GB 通过。
+
 ## v0.4.33家庭毛薪、净收入与税费
 
 [有限财政规则](fiscal-recurring-budget-contract.md) 下，家庭应收工资按毛薪，实际清偿时雇主同步付家庭净薪及劳动归属城市税款。只有净薪是本次可消费现金；税基不是所有家庭转入，卖房／押金／救助／承包服务不能随意算工资。家庭跨雇主／发薪周期的同城税累计保留，居住迁移不重复征旧工作城税，税率改动不倒改旧劳动段。

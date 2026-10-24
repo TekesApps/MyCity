@@ -1,0 +1,13 @@
+{
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/finite-fe-closure-20261024/bin-01/housing_no_candidate_wait_store-830dee01e513ab24",
+    "--test-threads=1",
+    "--nocapture"
+  ],
+  "exit": 0,
+  "seconds": 17.608667135238647,
+  "executable_sha256": "272f223d5fa384e4c8cbab2116529b845e5874ff8979f41ae83b66ab6962d58e",
+  "source_sha256": "6d46a388cf20735a144c9d352837a35e460e0fefe4c65a2346e7eea1e1f07b98",
+  "worlds": "/Users/frankqin/dev/MyCity/work/finite-fe-closure-20261024/worlds-01",
+  "RUST_MIN_STACK": null
+}

@@ -1,0 +1,1 @@
+Original advisor read root test-result-01.json and test-01.log: 2/2 actual Store tests pass; supports finite no-candidate Wait, cold recovery and original receipt retry, not complete housing or resource performance. Source gate accepted separately. Reviewer ran no tests.

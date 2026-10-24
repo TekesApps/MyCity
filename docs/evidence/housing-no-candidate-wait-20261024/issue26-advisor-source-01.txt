@@ -1,0 +1,1 @@
+Original advisor read frozen actual source: NoReachableCandidate and CandidateNotBetter (day37 vs immutable offer day38), not EvidenceIncomplete; Opening only before creation, actual paid wage window, original Wait/CAS/cold/retry and side-effect oracles. Finite source accepted for serial validation; author all not_run, not issue closure proof.

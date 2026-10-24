@@ -1,0 +1,19 @@
+{
+  "exit": 0,
+  "seconds": 2.7803890705108643,
+  "command": [
+    "cargo",
+    "test",
+    "-p",
+    "mycity-storage",
+    "--test",
+    "housing_no_candidate_wait_store",
+    "--release",
+    "--locked",
+    "--offline",
+    "-j",
+    "1",
+    "--no-run",
+    "--message-format=json"
+  ]
+}

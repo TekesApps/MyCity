@@ -1,8 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.174`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.175`。已开始Rust模型与headless CLI，当前不做UI。
 
-v0.5.174 修复[失效/过期几何申请无法撤回](docs/evidence/geometry-withdrawal-20261024/STATUS.md)，44 项不同测试通过，并补齐原有限 F 工作包 #25 的同步任务和资源登记；不代表父级全城交通或 M0 验收。
+v0.5.175 补齐[无合适住房的真实 Store 等待与恢复](docs/evidence/housing-no-candidate-wait-20261024/STATUS.md)，新增 2 项测试通过，结合既有证据及任务资源登记收口原有限 E 工作包 #26；完整住房、父级 #4、16GB 与 M0 验收继续开放。此前 v0.5.174 的[几何撤回修复](docs/evidence/geometry-withdrawal-20261024/STATUS.md)保留原有限 F 证据。
 
 v0.5.173 修复 [Store 分页临时投影](docs/evidence/query-page-projection-20261024/STATUS.md)，6 项限定串行回归通过；完整 #49 仍未完成。
 
