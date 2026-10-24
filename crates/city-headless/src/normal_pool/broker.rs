@@ -521,6 +521,8 @@ fn cleanup_endpoint(ready: Ready, binding: Binding) -> Result<(), String> {
         Err(e) => Err(err(e)),
     }
 }
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum RegistrationState { Unsent, Unknown, Rejected, Transferred }
 /// Original registration capability, retained before any state-changing RPC.
 /// No Clone, serialization or Debug: secret capability must not escape to diagnostics.
 #[must_use = "retain registration until resolved or explicitly retired"]
@@ -528,10 +530,12 @@ pub struct PendingRegistration {
     root: PathBuf,
     ready: Ready,
     request: Op,
-    transferred: bool,
+    state: RegistrationState,
 }
 impl PendingRegistration {
     pub fn new(root: &Path) -> Result<Self, String> { Self::new_kind(root, workspace::Kind::SimCodec) }
+    pub fn new_model(root: &Path) -> Result<Self, String> { Self::new_kind(root, workspace::Kind::Model) }
+    pub fn new_helper(root: &Path) -> Result<Self, String> { Self::new_kind(root, workspace::Kind::HelperCompare) }
     pub(crate) fn new_kind(root: &Path, kind: workspace::Kind) -> Result<Self, String> {
         let ready = ready(root)?;
         let Receipt::RegistrationEpoch { next } = rpc(root, ready, Op::RegistrationEpoch)? else {
@@ -539,21 +543,36 @@ impl PendingRegistration {
         };
         let expected_generation = next.checked_add(1).ok_or("normal_broker_registration_epoch")?;
         let request = Op::Register { expected_generation, supervisor: secret()?, kind };
-        Ok(Self { root: root.to_owned(), ready, request, transferred: false })
+        Ok(Self { root: root.to_owned(), ready, request, state: RegistrationState::Unsent })
+    }
+    pub(crate) fn definitely_unallocated(&self) -> bool {
+        matches!(self.state, RegistrationState::Unsent | RegistrationState::Rejected)
     }
     /// Failure leaves the SAME request/boot/secret here. Caller must retain this owner.
     pub fn resolve(&mut self) -> Result<Supervisor, String> {
-        if self.transferred { return Err("normal_broker_registration_transferred".into()); }
+        if self.state == RegistrationState::Transferred { return Err("normal_broker_registration_transferred".into()); }
         if ready(&self.root)? != self.ready { return Err("normal_broker_registration_ready_changed".into()); }
         let Op::Register { expected_generation, supervisor, .. } = self.request else { unreachable!() };
-        let Receipt::Registered { generation, key: sim_key } = rpc(&self.root, self.ready, self.request)? else {
+        let earlier_unknown = self.state == RegistrationState::Unknown;
+        self.state = RegistrationState::Unknown; // before any state-changing transport
+        let reply = call_reply(&self.root, self.ready, super::Op::Broker(self.request))?;
+        if let Some(error) = reply.error {
+            if reply.broker.is_some() || reply.id.is_some() || reply.worker_key.is_some() {
+                return Err("normal_broker_inconsistent_rejection".into());
+            }
+            // Register rejection precedes mutation. A later rejection cannot undo
+            // an earlier ambiguous attempt, and IO text is never this evidence.
+            if !earlier_unknown { self.state = RegistrationState::Rejected; }
+            return Err(error.as_str().to_owned());
+        }
+        let Some(Receipt::Registered { generation, key: sim_key }) = reply.broker else {
             return Err("normal_broker_register_receipt".into());
         };
         if generation != expected_generation || sim_key.as_str().len() != 64
             || !sim_key.as_str().bytes().all(|b| b.is_ascii_hexdigit())
         { return Err("normal_broker_register_generation_or_key".into()); }
         if ready(&self.root)? != self.ready { return Err("normal_broker_registration_ready_changed".into()); }
-        self.transferred = true;
+        self.state = RegistrationState::Transferred;
         Ok(Supervisor { root: std::mem::take(&mut self.root), ready: self.ready,
             binding: Binding { generation, key: supervisor }, sim_key, pid: None, closed: false })
     }
@@ -569,25 +588,6 @@ pub struct Supervisor {
     closed: bool,
 }
 impl Supervisor {
-    pub fn from_env() -> Result<Option<Self>, String> {
-        std::env::var_os("MYCITY_NORMAL_POOL")
-            .map(|p| Self::register(Path::new(&p)))
-            .transpose()
-    }
-    pub fn register(root: &Path) -> Result<Self, String> {
-        Self::register_kind(root, workspace::Kind::SimCodec)
-    }
-    pub fn register_model(root: &Path) -> Result<Self, String> {
-        Self::register_kind(root, workspace::Kind::Model)
-    }
-    pub fn register_helper(root: &Path) -> Result<Self, String> {
-        Self::register_kind(root, workspace::Kind::HelperCompare)
-    }
-    pub(crate) fn register_kind(root: &Path, kind: workspace::Kind) -> Result<Self, String> {
-        // Legacy callers are migrated in the following integration step. This entry is
-        // deliberately kept visibly separate; it does not establish retained-startup safety.
-        PendingRegistration::new_kind(root, kind)?.resolve()
-    }
     /// Only legal before a Child exists; retain this owner until both replies confirm.
     pub fn cancel_unspawned(&mut self) -> Result<(), String> {
         if self.closed { return Ok(()); }

@@ -93,8 +93,10 @@ impl Run {
                 }
             })
             .expect("open append-only retained event transcript");
+        let mut client = Client::new();
+        client.start_probe(executable, world, create).expect("spawn isolated probe Sim");
         Self {
-            client: Client::spawn_probe(executable, world, create).expect("spawn isolated probe Sim"),
+            client,
             command_id: 0,
             transcript: BufWriter::new(file),
             event_count: 0,
@@ -216,7 +218,7 @@ impl Run {
     }
 
     fn replace_after_stop(&mut self, executable: &Path, world: &Path) {
-        self.client = Client::spawn_probe(executable, world, false).expect("reopen preserved world");
+        self.client.start_probe(executable, world, false).expect("reopen preserved world");
         let ready = self.next();
         assert_eq!(ready["kind"], "ready");
     }

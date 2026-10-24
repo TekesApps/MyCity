@@ -259,8 +259,8 @@ pub(crate) fn target_line(reader: &mut impl BufRead) -> Result<Option<Vec<u8>>, 
         }
     }
 }
-pub(crate) struct Experiment {
-    pub(crate) client: Client,
+pub(crate) struct Experiment<'a> {
+    pub(crate) client: &'a mut Client,
     pub(crate) id: u64,
     log: BufWriter<File>,
     log_bytes: usize,
@@ -272,7 +272,7 @@ pub(crate) struct Experiment {
     sim_open_diagnostic_instances: [Option<(u32, u128)>; MAX_SIM_OPEN_DIAGNOSTIC_INSTANCES],
     sim_open_diagnostic_count: usize,
 }
-impl Experiment {
+impl Experiment<'_> {
     pub(crate) fn clock_origin(&self) -> Instant {
         self.began
     }
@@ -530,7 +530,7 @@ pub fn run_measured(dir: &Path, tier: Tier, measured: bool) -> Result<Value, Str
             "budget_acceptance":"not_accepted_until_measured_component_contracts"}),
         )?;
     }
-    let result = run_inner(&dir, tier, measured);
+    let result = crate::sim_client::with_client_scope(|client| run_inner(&dir, tier, measured, client));
     if let Err(error) = &result {
         write_json(
             &dir.join("failure.json"),
@@ -539,27 +539,28 @@ pub fn run_measured(dir: &Path, tier: Tier, measured: bool) -> Result<Value, Str
     }
     result
 }
-fn spawn(
+fn start(
+    client: &mut Client,
     exe: &Path,
     world: &Path,
     create: bool,
     tier: Tier,
     measured: bool,
-) -> Result<Client, String> {
+) -> Result<(), String> {
     if measured {
-        Client::spawn_scale_measured(exe, world, create, false, tier)
+        client.start_scale_measured(exe, world, create, false, tier)
     } else {
-        Client::spawn_scale(exe, world, create, false, tier)
+        client.start_scale(exe, world, create, false, tier)
     }
 }
-fn run_inner(dir: &Path, tier: Tier, measured: bool) -> Result<Value, String> {
+fn run_inner(dir: &Path, tier: Tier, measured: bool, client: &mut Client) -> Result<Value, String> {
     // Model proof children remain in the observed process tree and budget.
     scale_model_task::run(dir, tier, Mode::Reference)?;
     let oracle: Value =
         serde_json::from_slice(&read(&dir.join("cpu-report.json"), 65536)?).map_err(err)?;
     let exe = std::env::current_exe().map_err(err)?;
     let world: PathBuf = dir.join("world");
-    let mut client = spawn(&exe, &world, true, tier, measured)?;
+    start(client, &exe, &world, true, tier, measured)?;
     let ready = client.next(Duration::from_secs(35))?;
     if ready.kind != "ready" {
         return Err("scale_sim_not_ready".into());
@@ -621,7 +622,7 @@ fn run_inner(dir: &Path, tier: Tier, measured: bool) -> Result<Value, String> {
     let before = scale_model_task::run(dir, tier, Mode::BeforeReopen)?;
     let saved_sequence = before.root.ok_or("scale_sim_before_root")?.sequence;
     let cold_started = Instant::now();
-    e.client = spawn(&exe, &world, false, tier, measured)?;
+    start(e.client, &exe, &world, false, tier, measured)?;
     let ready = e.client.next(Duration::from_secs(35))?;
     if ready.kind != "ready" {
         return Err("scale_sim_cold_ready".into());
@@ -683,35 +684,35 @@ fn run_inner(dir: &Path, tier: Tier, measured: bool) -> Result<Value, String> {
 }
 
 /// Real full-profile process experiment for independently restored diagnostic branches.
-pub(crate) fn independent_experiment(
+pub(crate) fn independent_experiment<'a>(
+    client: &'a mut Client,
     dir: &Path,
     create: bool,
     measured: bool,
-) -> Result<Experiment, String> {
-    independent_experiment_options(dir, create, measured, false)
+) -> Result<Experiment<'a>, String> {
+    independent_experiment_options(client, dir, create, measured, false)
 }
-pub(crate) fn independent_experiment_options(
+pub(crate) fn independent_experiment_options<'a>(
+    client: &'a mut Client,
     dir: &Path,
     create: bool,
     measured: bool,
     probe: bool,
-) -> Result<Experiment, String> {
-    independent_experiment_for_tier(dir, create, measured, probe, Tier::Full)
+) -> Result<Experiment<'a>, String> {
+    independent_experiment_for_tier(client, dir, create, measured, probe, Tier::Full)
 }
 /// Same real experiment setup, using the explicitly selected scale profile.
-pub(crate) fn independent_experiment_for_tier(
+pub(crate) fn independent_experiment_for_tier<'a>(
+    client: &'a mut Client,
     dir: &Path,
     create: bool,
     measured: bool,
     probe: bool,
     tier: Tier,
-) -> Result<Experiment, String> {
+) -> Result<Experiment<'a>, String> {
     let exe = std::env::current_exe().map_err(err)?;
-    let mut client = if measured {
-        Client::spawn_scale_measured(&exe, &dir.join("world"), create, probe, tier)?
-    } else {
-        Client::spawn_scale(&exe, &dir.join("world"), create, probe, tier)?
-    };
+    if measured { client.start_scale_measured(&exe, &dir.join("world"), create, probe, tier)?; }
+    else { client.start_scale(&exe, &dir.join("world"), create, probe, tier)?; }
     let ready = client.next(Duration::from_secs(35))?;
     if ready.kind != "ready" {
         return Err("rare_not_ready".into());
@@ -735,7 +736,7 @@ pub(crate) fn independent_experiment_for_tier(
     experiment.record_open_diagnostic(&ready, ready.payload.get("runtime"), 0, "ready")?;
     Ok(experiment)
 }
-impl Experiment {
+impl Experiment<'_> {
     pub(crate) fn counts(&self) -> (u64, u64, u64) {
         (self.windows, self.verified, self.failed_attempts)
     }

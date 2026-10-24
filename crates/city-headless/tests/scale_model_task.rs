@@ -1,3 +1,5 @@
+#[path = "support/lifecycle_artifacts.rs"]
+mod lifecycle_artifacts;
 use mycity_headless::{
     scale_model_task::{self as task, Mode},
     scale_reference::Tier,
@@ -14,7 +16,7 @@ static NEXT: AtomicU64 = AtomicU64::new(0);
 struct Temp(PathBuf);
 impl Temp {
     fn new() -> Self {
-        let path = std::env::temp_dir().join(format!(
+        let path = lifecycle_artifacts::root().join(format!(
             "mycity-model-task-{}-{}",
             std::process::id(),
             NEXT.fetch_add(1, Ordering::Relaxed)
@@ -25,11 +27,11 @@ impl Temp {
 }
 impl Drop for Temp {
     fn drop(&mut self) {
-        let _ = fs::remove_dir_all(&self.0);
+        let _ = lifecycle_artifacts::cleanup(&self.0);
     }
 }
 fn exe() -> &'static str {
-    env!("CARGO_BIN_EXE_mycity-headless")
+    lifecycle_artifacts::exe().to_str().unwrap()
 }
 #[test]
 fn invalid_source_partial_and_old_result_never_authorize_a_task() {
@@ -191,11 +193,12 @@ fn killing_supervisor_closes_parent_pipe_and_stops_reference_child() {
 #[test]
 fn fixed_before_reopen_borrows_real_pool_pages_and_returns_only_after_wait() {
     use mycity_headless::{
-        normal_pool::{broker::Supervisor, Process},
+        normal_pool::{broker::PendingRegistration, Process},
         sim_client::Client,
     };
     let t = Temp::new();
-    let mut sim = Client::spawn_scale(
+    let mut sim = Client::new();
+    sim.start_scale(
         std::path::Path::new(exe()),
         &t.0.join("world"),
         true,
@@ -211,7 +214,8 @@ fn fixed_before_reopen_borrows_real_pool_pages_and_returns_only_after_wait() {
     sim.stop().unwrap();
     let mut pool = Process::spawn(std::path::Path::new(exe()), &t.0.join("pool"), None).unwrap();
     let dir = task::prepare(&t.0, Tier::Small, Mode::BeforeReopen).unwrap();
-    let mut supervisor = Supervisor::register_helper(pool.root()).unwrap();
+    let mut registration = PendingRegistration::new_helper(pool.root()).unwrap();
+    let mut supervisor = registration.resolve().unwrap();
     let mut cmd = Command::new(exe());
     supervisor.configure(&mut cmd).unwrap();
     let child = cmd
@@ -266,13 +270,15 @@ fn fixed_before_reopen_borrows_real_pool_pages_and_returns_only_after_wait() {
 }
 #[test]
 fn helper_killed_before_allocation_keeps_grant_until_real_wait_and_can_cancel_unspawned() {
-    use mycity_headless::normal_pool::{broker::Supervisor, Process};
+    use mycity_headless::normal_pool::{broker::PendingRegistration, Process};
     let t = Temp::new();
     let mut pool = Process::spawn(std::path::Path::new(exe()), &t.0.join("pool"), None).unwrap();
     // An unspawned supervisor Drop must use Cancel, not fake a successful wait.
-    drop(Supervisor::register_helper(pool.root()).unwrap());
+    let mut registration = PendingRegistration::new_helper(pool.root()).unwrap();
+    drop(registration.resolve().unwrap());
     let dir = task::prepare(&t.0, Tier::Small, Mode::BeforeReopen).unwrap();
-    let mut supervisor = Supervisor::register_helper(pool.root()).unwrap();
+    let mut registration = PendingRegistration::new_helper(pool.root()).unwrap();
+    let mut supervisor = registration.resolve().unwrap();
     let mut cmd = Command::new(exe());
     supervisor.configure(&mut cmd).unwrap();
     // Parent pipe gate keeps this real child before Owner allocation/Filled.
@@ -289,22 +295,25 @@ fn helper_killed_before_allocation_keeps_grant_until_real_wait_and_can_cancel_un
     child.kill().unwrap();
     let status = child.wait().unwrap();
     assert!(!status.success());
-    assert!(Supervisor::register_helper(pool.root()).is_err());
+    let mut registration = PendingRegistration::new_helper(pool.root()).unwrap();
+    assert!(registration.resolve().is_err());
     supervisor.after_sim_wait(child.id(), status).unwrap();
-    drop(Supervisor::register_helper(pool.root()).unwrap());
+    let mut registration = PendingRegistration::new_helper(pool.root()).unwrap();
+    drop(registration.resolve().unwrap());
     assert!(!dir.join("result.json").exists());
     pool.finish().unwrap();
 }
 
 #[test]
 fn filled_helper_death_and_parent_sigkill_never_credit_without_actual_wait() {
-    use mycity_headless::normal_pool::{broker::Supervisor, Process};
+    use mycity_headless::normal_pool::{broker::PendingRegistration, Process};
     use std::io::Write;
     use std::os::unix::process::ExitStatusExt;
     // The same harness runs this small supervisor in a real separate process.
     if let Some(root) = std::env::var_os("MYCITY_HELPER_PARENT_DRIVER") {
         let root = PathBuf::from(root);
-        let mut supervisor = Supervisor::register_helper(&root.join("pool")).unwrap();
+        let mut registration = PendingRegistration::new_helper(&root.join("pool")).unwrap();
+        let mut supervisor = registration.resolve().unwrap();
         let dir = root.join("before-reopen");
         let mut cmd = Command::new(exe());
         supervisor.configure(&mut cmd).unwrap();
@@ -335,7 +344,8 @@ fn filled_helper_death_and_parent_sigkill_never_credit_without_actual_wait() {
     let t = Temp::new();
     let mut pool = Process::spawn(std::path::Path::new(exe()), &t.0.join("pool"), None).unwrap();
     let dir = task::prepare(&t.0, Tier::Small, Mode::BeforeReopen).unwrap();
-    let mut supervisor = Supervisor::register_helper(pool.root()).unwrap();
+    let mut registration = PendingRegistration::new_helper(pool.root()).unwrap();
+    let mut supervisor = registration.resolve().unwrap();
     let mut cmd = Command::new(exe());
     supervisor.configure(&mut cmd).unwrap();
     let mut child = cmd
@@ -358,7 +368,8 @@ fn filled_helper_death_and_parent_sigkill_never_credit_without_actual_wait() {
     child.kill().unwrap();
     let status = child.wait().unwrap();
     assert_eq!(status.signal(), Some(9));
-    assert!(Supervisor::register_helper(pool.root()).is_err());
+    let mut registration = PendingRegistration::new_helper(pool.root()).unwrap();
+    assert!(registration.resolve().is_err());
     supervisor.after_sim_wait(child.id(), status).unwrap();
     supervisor.after_sim_wait(child.id(), status).unwrap(); // idempotent credit
     pool.finish().unwrap();
@@ -391,7 +402,8 @@ fn filled_helper_death_and_parent_sigkill_never_credit_without_actual_wait() {
     assert_eq!(parent.wait().unwrap().signal(), Some(9));
     // EOF asks helper to exit but is never accepted as proof that grants can return.
     std::thread::sleep(Duration::from_millis(100));
-    assert!(Supervisor::register_helper(pool.root()).is_err());
+    let mut registration = PendingRegistration::new_helper(pool.root()).unwrap();
+    assert!(registration.resolve().is_err());
     assert!(!dir.join("result.json").exists());
     assert!(pool.finish().unwrap_err().contains("normal_pool_exit"));
     let lines = fs::read_to_string(orphan.0.join("pool/events.jsonl")).unwrap();

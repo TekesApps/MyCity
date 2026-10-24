@@ -7,7 +7,7 @@ use mycity_core::{
     transaction::{Action, Envelope},
 };
 use mycity_headless::{
-    normal_pool::{self, broker::Supervisor, Process, BYTES},
+    normal_pool::{self, broker::PendingRegistration, Process, BYTES},
     sim_client::Client,
     sim_host::{Command, ProbePoint},
 };
@@ -137,7 +137,8 @@ fn broker_wait_and_real_sim_death_revoke_restore_capacity_and_cold_result() {
         let root = t.0.join("pool");
         let world = t.0.join("world");
         let mut pool = Process::spawn(exe(), &root, None).unwrap();
-        let mut c = Client::spawn_in_pool(exe(), &world, true, true, &root).unwrap();
+        let mut c = Client::new();
+    c.start_in_pool(exe(), &world, true, true, &root).unwrap();
         c.next(Duration::from_secs(10)).unwrap();
         let mut id = 0;
         let initial = normal_pool::status(&root).unwrap();
@@ -154,7 +155,8 @@ fn broker_wait_and_real_sim_death_revoke_restore_capacity_and_cold_result() {
             true
         );
         prepare(&mut c, &mut id);
-        assert!(Supervisor::register(&root).is_err());
+        let mut registration = PendingRegistration::new(&root).unwrap();
+        assert!(registration.resolve().is_err());
         id += 1;
         c.submit(id, Command::ProbeRequired { job: 1, point })
             .unwrap();
@@ -200,7 +202,8 @@ fn broker_wait_and_real_sim_death_revoke_restore_capacity_and_cold_result() {
         assert_eq!(after.workspace_grants, after.workspace_returns);
         assert_eq!(after.workspace_capacity_bytes, 0);
         assert_eq!(after.grants, after.returns);
-        let mut recovered = Client::spawn_in_pool(exe(), &world, false, false, &root).unwrap();
+        let mut recovered = Client::new();
+    recovered.start_in_pool(exe(), &world, false, false, &root).unwrap();
         recovered.next(Duration::from_secs(10)).unwrap();
         let result = call(&mut recovered, &mut id, Command::RunRequired { job: 1 });
         assert_eq!(result["replayed"], point == ProbePoint::Committed);
@@ -227,7 +230,8 @@ fn broker_owned_worker_fault_retries_inside_same_sim_without_double_credit() {
     let t = Temp::new();
     let root = t.0.join("pool");
     let mut pool = Process::spawn(exe(), &root, None).unwrap();
-    let mut c = Client::spawn_in_pool(exe(), &t.0.join("world"), true, true, &root).unwrap();
+    let mut c = Client::new();
+    c.start_in_pool(exe(), &t.0.join("world"), true, true, &root).unwrap();
     c.next(Duration::from_secs(10)).unwrap();
     let mut id = 0;
     prepare(&mut c, &mut id);
@@ -320,8 +324,12 @@ fn lost_bind_reply_reaps_actual_sim_and_cancels_generation_before_replacement() 
     let t = Temp::new();
     let root = t.0.join("pool");
     let mut p = FaultPool::spawn(&root, "after-broker-bind-reply");
-    assert!(Client::spawn_in_pool(exe(), &t.0.join("world"), true, false, &root).is_err());
-    let mut c = Client::spawn_in_pool(exe(), &t.0.join("replacement"), true, false, &root).unwrap();
+    let mut failed = Client::new();
+    assert!(failed.start_in_pool(exe(), &t.0.join("world"), true, false, &root).is_err());
+    assert!(!failed.is_empty());
+    failed.stop().unwrap();
+    let mut c = Client::new();
+    c.start_in_pool(exe(), &t.0.join("replacement"), true, false, &root).unwrap();
     c.next(Duration::from_secs(10)).unwrap();
     c.stop().unwrap();
     let s = normal_pool::status(&root).unwrap();
@@ -335,7 +343,8 @@ fn lost_revoke_request_or_reply_retries_after_real_sim_wait_without_duplicate_cr
         let t = Temp::new();
         let root = t.0.join("pool");
         let mut p = FaultPool::spawn(&root, fault);
-        let mut c = Client::spawn_in_pool(exe(), &t.0.join("world"), true, true, &root).unwrap();
+        let mut c = Client::new();
+    c.start_in_pool(exe(), &t.0.join("world"), true, true, &root).unwrap();
         c.next(Duration::from_secs(10)).unwrap();
         let mut id = 0;
         prepare(&mut c, &mut id);
@@ -364,15 +373,16 @@ fn lost_revoke_request_or_reply_retries_after_real_sim_wait_without_duplicate_cr
                 1
             }
         );
-        assert!(Supervisor::register(&root).is_err()); // actual reap alone cannot bypass receipt acknowledgement
+        let mut registration = PendingRegistration::new(&root).unwrap();
+        assert!(registration.resolve().is_err()); // actual reap alone cannot bypass receipt acknowledgement
         c.wait_for_sim_exit(Duration::from_secs(3)).unwrap();
         c.wait_for_sim_exit(Duration::from_secs(3)).unwrap();
         let after = normal_pool::status(&root).unwrap();
         assert_eq!(after.grants, 1);
         assert_eq!(after.returns, 1);
         assert_eq!(after.available_touched_bytes, BYTES);
-        let mut replacement =
-            Client::spawn_in_pool(exe(), &t.0.join("replacement"), true, false, &root).unwrap();
+        let mut replacement = Client::new();
+    replacement.start_in_pool(exe(), &t.0.join("replacement"), true, false, &root).unwrap();
         replacement.next(Duration::from_secs(10)).unwrap();
         replacement.stop().unwrap();
         c.stop().unwrap();
@@ -384,7 +394,8 @@ fn sim_killed_after_worker_spawn_before_start_reply_recovers_without_knowing_wor
     let t = Temp::new();
     let root = t.0.join("pool");
     let mut p = FaultPool::spawn(&root, "after-broker-spawn-pause");
-    let mut c = Client::spawn_in_pool(exe(), &t.0.join("world"), true, false, &root).unwrap();
+    let mut c = Client::new();
+    c.start_in_pool(exe(), &t.0.join("world"), true, false, &root).unwrap();
     c.next(Duration::from_secs(10)).unwrap();
     let mut id = 0;
     prepare(&mut c, &mut id);
@@ -418,8 +429,12 @@ fn actual_sim_spawn_permission_failure_cancels_unbound_registration() {
     let mut pool = Process::spawn(exe(), &root, None).unwrap();
     let nonexe = t.0.join("not-executable");
     fs::write(&nonexe, b"fixture, not an executable").unwrap();
-    assert!(Client::spawn_in_pool(&nonexe, &t.0.join("world"), true, false, &root).is_err());
-    let mut c = Client::spawn_in_pool(exe(), &t.0.join("replacement"), true, false, &root).unwrap();
+    let mut failed = Client::new();
+    assert!(failed.start_in_pool(&nonexe, &t.0.join("world"), true, false, &root).is_err());
+    assert!(!failed.is_empty());
+    failed.stop().unwrap();
+    let mut c = Client::new();
+    c.start_in_pool(exe(), &t.0.join("replacement"), true, false, &root).unwrap();
     c.next(Duration::from_secs(10)).unwrap();
     c.stop().unwrap();
     assert_eq!(normal_pool::status(&root).unwrap().grants, 0);
@@ -433,7 +448,8 @@ fn broker_death_is_fail_closed_and_cannot_adopt_old_ready_or_claim_return() {
     let t = Temp::new();
     let root = t.0.join("pool");
     let mut pool = FaultPool::spawn(&root, "after-broker-spawn-pause");
-    let mut c = Client::spawn_in_pool(exe(), &t.0.join("world"), true, true, &root).unwrap();
+    let mut c = Client::new();
+    c.start_in_pool(exe(), &t.0.join("world"), true, true, &root).unwrap();
     c.next(Duration::from_secs(10)).unwrap();
     let mut id = 0;
     prepare(&mut c, &mut id);
@@ -466,7 +482,8 @@ fn partial_sim_workspace_refill_after_real_child_exit_stops_pool_without_false_c
     let t = Temp::new();
     let root = t.0.join("pool");
     let mut pool = FaultPool::spawn(&root, "workspace-return-page-2");
-    let mut c = Client::spawn_in_pool(exe(), &t.0.join("world"), true, false, &root).unwrap();
+    let mut c = Client::new();
+    c.start_in_pool(exe(), &t.0.join("world"), true, false, &root).unwrap();
     c.next(Duration::from_secs(10)).unwrap();
     let mut id = 0;
     call(&mut c, &mut id, Command::Stop);
@@ -505,7 +522,8 @@ fn lost_started_reply_exits_session_without_another_command_then_cold_retries() 
     let root = t.0.join("pool");
     let world = t.0.join("world");
     let mut pool = FaultPool::spawn(&root, "after-broker-start-reply");
-    let mut client = Client::spawn_in_pool(exe(), &world, true, false, &root).unwrap();
+    let mut client = Client::new();
+    client.start_in_pool(exe(), &world, true, false, &root).unwrap();
     client.next(Duration::from_secs(10)).unwrap();
     let mut id = 0;
     prepare(&mut client, &mut id);
@@ -532,7 +550,8 @@ fn lost_started_reply_exits_session_without_another_command_then_cold_retries() 
     assert_eq!(after.workspace_grants, after.workspace_returns);
     assert_eq!(after.available_touched_bytes, BYTES);
     fs::write(t.0.join("after-supervisor-wait.json"), serde_json::to_vec_pretty(&after).unwrap()).unwrap();
-    let mut recovered = Client::spawn_in_pool(exe(), &world, false, false, &root).unwrap();
+    let mut recovered = Client::new();
+    recovered.start_in_pool(exe(), &world, false, false, &root).unwrap();
     recovered.next(Duration::from_secs(10)).unwrap();
     let completed = call(&mut recovered, &mut id, Command::RunRequired { job: 1 });
     assert_eq!(completed["replayed"], false);
@@ -554,7 +573,8 @@ fn lost_stopped_reply_retries_original_lease_without_duplicate_credit_or_lost_re
     let t = Temp::new();
     let root = t.0.join("pool"); let world = t.0.join("world");
     let mut pool = FaultPool::spawn(&root, "after-broker-stop-reply");
-    let mut client = Client::spawn_in_pool(exe(), &world, true, false, &root).unwrap();
+    let mut client = Client::new();
+    client.start_in_pool(exe(), &world, true, false, &root).unwrap();
     client.next(Duration::from_secs(10)).unwrap(); let mut id = 0;
     prepare(&mut client, &mut id);
     let completed = call(&mut client, &mut id, Command::RunRequired { job: 1 });
@@ -567,7 +587,8 @@ fn lost_stopped_reply_retries_original_lease_without_duplicate_credit_or_lost_re
     assert_eq!(after.grants, 1); assert_eq!(after.returns, 1);
     assert_eq!(after.available_touched_bytes, BYTES);
     fs::write(t.0.join("after-lost-stop-recovery.json"), serde_json::to_vec_pretty(&after).unwrap()).unwrap();
-    let mut recovered = Client::spawn_in_pool(exe(), &world, false, false, &root).unwrap();
+    let mut recovered = Client::new();
+    recovered.start_in_pool(exe(), &world, false, false, &root).unwrap();
     recovered.next(Duration::from_secs(10)).unwrap();
     let replayed = call(&mut recovered, &mut id, Command::RunRequired { job: 1 });
     assert_eq!(replayed["replayed"], true);
@@ -612,7 +633,8 @@ fn lost_unspawned_cancel_reply_retains_owner_and_blocks_replacement_until_ack() 
     let mut pending = PendingRegistration::new(&root).unwrap();
     let mut owner = pending.resolve().unwrap();
     assert!(owner.cancel_unspawned().is_err());
-    assert!(Supervisor::register(&root).is_err());
+    let mut registration = PendingRegistration::new(&root).unwrap();
+    assert!(registration.resolve().is_err());
     assert_eq!(normal_pool::status(&root).unwrap().workspace_returns, 1);
     owner.cancel_unspawned().unwrap();
     let mut next = PendingRegistration::new(&root).unwrap().resolve().unwrap();
@@ -630,7 +652,8 @@ fn cancel_reply_fault_cannot_consume_a_revoke_or_acknowledgement_reply() {
     let t = Temp::new();
     let root = t.0.join("pool");
     let mut pool = FaultPool::spawn(&root, "after-broker-cancel-reply");
-    let mut client = Client::spawn_in_pool(exe(), &t.0.join("world"), true, false, &root).unwrap();
+    let mut client = Client::new();
+    client.start_in_pool(exe(), &t.0.join("world"), true, false, &root).unwrap();
     assert_eq!(client.next(Duration::from_secs(10)).unwrap().kind, "ready");
     client.stop().expect("Revoke and AcknowledgeRevoke are not Cancel cutpoints");
     let mut next = PendingRegistration::new(&root).unwrap().resolve().unwrap();
@@ -733,3 +756,6 @@ fn startup_owner_does_not_adopt_replacement_broker_after_unknown_registration() 
     // Original service was deliberately killed: no report/credit is fabricated.
     assert!(!t.0.join("original-dead-pool/report.json").exists());
 }
+
+#[path = "support/client_slot_lifecycle.rs"]
+mod client_slot_lifecycle;

@@ -578,3 +578,15 @@ The original registry module13 and adapter8 tests also passed on the same curren
 #54 remains inactive; #101 advisory observation is not a scheduler; #118 read model is not admission.
 #102 r03 reports and supervisor registration retention remain next, before #103/#104 activation.
 M0 Python WIP is deliberately retained outside this commit; no original frozen gate changes.
+
+
+## v0.5.161 Client/Model owner caller migration
+
+Root integrated the original #102 worker regression source and migrated actual Sim/Model/helper
+entry scopes to one persistent owner. [Finite results](evidence/worker-client-slot-20261024/STATUS.md):
+76 focused tests plus real Model lifecycle/Sim probe parent entries passed; original advisor
+accepted the finite gate. Terminal unresolved responsibility and deliberate dead/unbalanced
+pool cases are not recovery. All24 unrelated WIP files and original evidence remain intact.
+Next: bind r03 report identity to actual wire/owner and retain Unknown measurements; resolve
+v1 2MiB versus actual air8MiB capability explicitly before #103/#104 activation. #101 advisory
+and #118 read model are not new scheduling/admission authorities; full issues stay open.

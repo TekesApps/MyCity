@@ -1,0 +1,164 @@
+[
+  {
+    "name": "protocol-unit",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/issue102-client-slot-20261024/bin-09/unit",
+      "normal_pool::broker::tests::",
+      "--test-threads=1"
+    ],
+    "pid": 13807,
+    "exit": 0,
+    "timed_out": false,
+    "elapsed_seconds": 0.9478528499603271,
+    "log": "/Volumes/HP P900/dev/MyCity/work/issue102-client-slot-20261024/protocol-unit-09.log",
+    "summary": "ok. 3 passed; 0 failed; 0 ignored; 0 measured; 114 filtered out; finished in 0.30s"
+  },
+  {
+    "name": "owner-unit",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/issue102-client-slot-20261024/bin-09/unit",
+      "normal_pool::startup_owner_tests::",
+      "--nocapture",
+      "--test-threads=1"
+    ],
+    "pid": 13810,
+    "exit": 0,
+    "timed_out": false,
+    "elapsed_seconds": 0.005276918411254883,
+    "log": "/Volumes/HP P900/dev/MyCity/work/issue102-client-slot-20261024/owner-unit-09.log",
+    "summary": "ok. 3 passed; 0 failed; 0 ignored; 0 measured; 114 filtered out; finished in 0.00s"
+  },
+  {
+    "name": "rpc-worker-unit",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/issue102-client-slot-20261024/bin-09/unit",
+      "normal_pool::pending_tests::",
+      "--test-threads=1"
+    ],
+    "pid": 13811,
+    "exit": 0,
+    "timed_out": false,
+    "elapsed_seconds": 3.2940690517425537,
+    "log": "/Volumes/HP P900/dev/MyCity/work/issue102-client-slot-20261024/rpc-worker-unit-09.log",
+    "summary": "ok. 9 passed; 0 failed; 0 ignored; 0 measured; 108 filtered out; finished in 3.25s"
+  },
+  {
+    "name": "broker",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/issue102-client-slot-20261024/bin-09/broker",
+      "--test-threads=1"
+    ],
+    "pid": 13840,
+    "exit": 0,
+    "timed_out": false,
+    "elapsed_seconds": 15.662482023239136,
+    "log": "/Volumes/HP P900/dev/MyCity/work/issue102-client-slot-20261024/broker-09.log",
+    "summary": "ok. 23 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 14.48s"
+  },
+  {
+    "name": "sim-host",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/issue102-client-slot-20261024/bin-09/sim_host",
+      "--test-threads=1"
+    ],
+    "pid": 14356,
+    "exit": 0,
+    "timed_out": false,
+    "elapsed_seconds": 3.378343343734741,
+    "log": "/Volumes/HP P900/dev/MyCity/work/issue102-client-slot-20261024/sim-host-09.log",
+    "summary": "ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.60s"
+  },
+  {
+    "name": "role-arena",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/issue102-client-slot-20261024/bin-09/role_arena",
+      "--test-threads=1"
+    ],
+    "pid": 14656,
+    "exit": 0,
+    "timed_out": false,
+    "elapsed_seconds": 17.64675211906433,
+    "log": "/Volumes/HP P900/dev/MyCity/work/issue102-client-slot-20261024/role-arena-09.log",
+    "summary": "ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 17.13s"
+  },
+  {
+    "name": "model-helper",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/issue102-client-slot-20261024/bin-09/scale_model_task",
+      "--test-threads=1"
+    ],
+    "pid": 14788,
+    "exit": 0,
+    "timed_out": false,
+    "elapsed_seconds": 16.633384943008423,
+    "log": "/Volumes/HP P900/dev/MyCity/work/issue102-client-slot-20261024/model-helper-09.log",
+    "summary": "ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 16.07s"
+  },
+  {
+    "name": "registry-dispatch",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/issue102-client-slot-20261024/bin-09/task_registry_dispatch",
+      "--test-threads=1"
+    ],
+    "pid": 14944,
+    "exit": 0,
+    "timed_out": false,
+    "elapsed_seconds": 1.4800529479980469,
+    "log": "/Volumes/HP P900/dev/MyCity/work/issue102-client-slot-20261024/registry-dispatch-09.log",
+    "summary": "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.89s"
+  },
+  {
+    "name": "profiles",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/issue102-client-slot-20261024/bin-09/scale_sim",
+      "--test-threads=1"
+    ],
+    "pid": 14980,
+    "exit": 0,
+    "timed_out": false,
+    "elapsed_seconds": 4.296169996261597,
+    "log": "/Volumes/HP P900/dev/MyCity/work/issue102-client-slot-20261024/profiles-09.log",
+    "summary": "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.74s"
+  },
+  {
+    "name": "joint",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/issue102-client-slot-20261024/bin-09/joint_sim",
+      "--test-threads=1"
+    ],
+    "pid": 15073,
+    "exit": 0,
+    "timed_out": false,
+    "elapsed_seconds": 37.13197326660156,
+    "log": "/Volumes/HP P900/dev/MyCity/work/issue102-client-slot-20261024/joint-09.log",
+    "summary": "ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 36.47s"
+  },
+  {
+    "name": "compute",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/issue102-client-slot-20261024/bin-09/compute_worker",
+      "--test-threads=1"
+    ],
+    "pid": 16782,
+    "exit": 0,
+    "timed_out": false,
+    "elapsed_seconds": 2.3834688663482666,
+    "log": "/Volumes/HP P900/dev/MyCity/work/issue102-client-slot-20261024/compute-09.log",
+    "summary": "ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.75s"
+  },
+  {
+    "name": "pool",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/issue102-client-slot-20261024/bin-09/normal_pool",
+      "--skip",
+      "mapped_pool_unmaps_before_grant_and_rebuilds_only_after_owned_wait",
+      "--test-threads=1"
+    ],
+    "pid": 16831,
+    "exit": 0,
+    "timed_out": false,
+    "elapsed_seconds": 3.899768114089966,
+    "log": "/Volumes/HP P900/dev/MyCity/work/issue102-client-slot-20261024/pool-09.log",
+    "summary": "ok. 6 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 3.35s"
+  }
+]

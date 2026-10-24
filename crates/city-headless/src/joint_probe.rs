@@ -22,8 +22,8 @@ use std::{
 fn err(e: impl std::fmt::Debug) -> String {
     format!("{e:?}")
 }
-struct Experiment {
-    client: Client,
+struct Experiment<'a> {
+    client: &'a mut Client,
     reference: Reference,
     policy: Policy,
     world: PathBuf,
@@ -41,7 +41,7 @@ struct Experiment {
     latencies: Vec<f64>,
     attempt_failures: u64,
 }
-impl Experiment {
+impl Experiment<'_> {
     fn record(&mut self, value: Value) -> Result<(), String> {
         let line = json!({"elapsed_seconds":self.started.elapsed().as_secs_f64(),"data":value});
         let raw = serde_json::to_vec(&line).map_err(err)?;
@@ -172,8 +172,8 @@ impl Experiment {
                 return Err("joint_sim_kill".into());
             }
             self.client.wait_for_sim_exit(Duration::from_secs(2))?;
-            let next = Client::spawn_joint(&self.exe, &self.world, false, true)?;
-            let mut old = std::mem::replace(&mut self.client, next);
+            self.client.stop()?;
+            self.client.start_joint(&self.exe, &self.world, false, true)?;
             group_sampler::declare(
                 &self.registry,
                 self.client.pid(),
@@ -194,7 +194,6 @@ impl Experiment {
                 return Err("joint_lost_reply_not_original".into());
             }
             self.faults.push(json!({"kind":"sim_sigkill_committed_before_reply","job":job,"old_sim_pid":old_sim,"new_sim_pid":self.client.pid(),"old_worker_pid":old_worker,"barrier":barrier,"before":before,"reopened":ready.payload,"result":result}));
-            old.stop()?;
             self.sim_failed = true;
         } else {
             self.call(Command::RunRequired { job })?;
@@ -246,6 +245,9 @@ impl Experiment {
     }
 }
 pub fn run(dir: &Path, wall_seconds: u64) -> Result<Value, String> {
+    crate::sim_client::with_client_scope(|client| run_inner(dir, wall_seconds, client))
+}
+fn run_inner(dir: &Path, wall_seconds: u64, client: &mut Client) -> Result<Value, String> {
     let policy = joint::policy()?;
     if wall_seconds != 0 && !(policy.minimum_wall_seconds..=2100).contains(&wall_seconds) {
         return Err("joint_wall_must_be_zero_dry_or_1800_to_2100".into());
@@ -256,7 +258,7 @@ pub fn run(dir: &Path, wall_seconds: u64) -> Result<Value, String> {
     let mut sampler = Sampler::start(&dir.join("group-samples.jsonl"), &world)?;
     let system_before = group_sampler::system_snapshot()?;
     let exe = std::env::current_exe().map_err(err)?;
-    let client = Client::spawn_joint(&exe, &world, true, true)?;
+    client.start_joint(&exe, &world, true, true)?;
     group_sampler::declare(
         &sampler.registry,
         client.pid(),
@@ -384,15 +386,13 @@ pub fn run(dir: &Path, wall_seconds: u64) -> Result<Value, String> {
     }
     e.call(Command::Stop)?;
     e.client.stop()?;
-    let reopened = Client::spawn_joint(&e.exe, &e.world, false, false)?;
+    e.client.start_joint(&e.exe, &e.world, false, false)?;
     group_sampler::declare(
         &sampler.registry,
-        reopened.pid(),
+        e.client.pid(),
         "sim",
         Some(std::process::id()),
     )?;
-    let mut old = std::mem::replace(&mut e.client, reopened);
-    old.stop()?;
     let ready = e.next()?;
     if ready.kind != "ready"
         || ready.payload["business_sha256"] != reference["business_sha256"]

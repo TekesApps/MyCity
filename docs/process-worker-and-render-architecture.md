@@ -213,3 +213,13 @@ terminal failure reports unresolved responsibility and cannot continue new launc
 APIs and compatibility constructors do not meet this gate. Current backend/common-owner finite
 results and remaining migration are [tracked separately](evidence/worker-startup-owner-20261024/STATUS.md).
 No acceptance/resource credit follows from layout counts or these finite lifecycle tests.
+
+
+### v0.5.161 actual caller migration
+
+Client/Model/helper and their outer fallible/panic scopes now use the retained owner contract.
+First definite preallocation rejection is distinct from unknown Register responsibility; only
+real wait plus original retirement permits reuse. Two failed finite cleanup attempts produce
+an explicit unresolved receipt and terminal CLI exit2, never fabricated return credit.
+[Finite source and actual execution](evidence/worker-client-slot-20261024/STATUS.md) cover the
+shared mechanism and two real parent entries; r03 reports/measurements and full102 remain open.

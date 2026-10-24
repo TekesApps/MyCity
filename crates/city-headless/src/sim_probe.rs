@@ -21,13 +21,13 @@ use std::{
 fn err(e: impl std::fmt::Debug) -> String {
     format!("{e:?}")
 }
-struct Run {
-    client: Client,
+struct Run<'a> {
+    client: &'a mut Client,
     id: u64,
     log: File,
     lines: usize,
 }
-impl Run {
+impl Run<'_> {
     fn record(&mut self, value: Value) -> Result<(), String> {
         self.lines += 1;
         if self.lines > 512 {
@@ -123,6 +123,9 @@ impl Run {
     }
 }
 pub fn run(dir: &Path) -> Result<Value, String> {
+    crate::sim_client::with_client_scope(|client| run_inner(dir, client))
+}
+fn run_inner(dir: &Path, client: &mut Client) -> Result<Value, String> {
     fs::create_dir(dir).map_err(err)?;
     let dir = dir.canonicalize().map_err(err)?;
     let exe = std::env::current_exe().map_err(err)?;
@@ -143,9 +146,9 @@ pub fn run(dir: &Path) -> Result<Value, String> {
         let case = dir.join(name);
         fs::create_dir(&case).map_err(err)?;
         let world = case.join("world");
-        let client = Client::spawn_probe(&exe, &world, true)?;
+        client.start_probe(&exe, &world, true)?;
         let mut run = Run {
-            client,
+            client: &mut *client,
             id: 0,
             log: File::create(case.join("transcript.jsonl")).map_err(err)?,
             lines: 0,
@@ -156,7 +159,6 @@ pub fn run(dir: &Path) -> Result<Value, String> {
         }
         let sim_pid = run.client.pid();
         run.prepare()?;
-        let mut old = None;
         let mut fault = None;
         let receipt = if let Some(point) = point {
             run.start(Command::ProbeRequired { job: 1, point })?;
@@ -175,8 +177,8 @@ pub fn run(dir: &Path) -> Result<Value, String> {
                     return Err("sim_probe_kill".into());
                 }
                 run.client.wait_for_sim_exit(Duration::from_secs(2))?;
-                let replacement = Client::spawn(&exe, &world, false)?;
-                old = Some(std::mem::replace(&mut run.client, replacement));
+                run.client.stop()?;
+                run.client.start(&exe, &world, false)?;
                 if run.next()?.kind != "ready" {
                     return Err("sim_probe_reopen_not_ready".into());
                 }
@@ -221,9 +223,6 @@ pub fn run(dir: &Path) -> Result<Value, String> {
         }
         run.call(Command::Stop)?;
         run.client.stop()?;
-        if let Some(mut previous) = old {
-            previous.stop()?;
-        }
         run.log.sync_all().map_err(err)?;
         // Read only after sole writer has exited. Normalize revision, not business state.
         let store = mycity_storage::Store::open(

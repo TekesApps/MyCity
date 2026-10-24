@@ -1,4 +1,6 @@
 //! Fast process integration only. The >=1800s gate is deliberately not claimed here.
+#[path = "support/lifecycle_artifacts.rs"]
+mod lifecycle_artifacts;
 use mycity_core::{
     boot::{Command as B, Facility},
     schedule::Phase,
@@ -12,7 +14,6 @@ use mycity_headless::{
 };
 use serde_json::Value;
 use std::{
-    path::Path,
     time::{Duration, Instant},
 };
 struct Run {
@@ -87,10 +88,11 @@ impl Run {
 fn seven_day_independent_sim_and_direct_cpu_match_without_endurance_claim() {
     let started = Instant::now();
     let p = joint::policy().unwrap();
-    let root = std::env::temp_dir().join(format!("mycity-joint-smoke-{}", std::process::id()));
+    let root = lifecycle_artifacts::root().join(format!("mycity-joint-smoke-{}", std::process::id()));
     std::fs::create_dir(&root).unwrap();
-    let mut client = Client::spawn_joint(
-        Path::new(env!("CARGO_BIN_EXE_mycity-headless")),
+    let mut client = Client::new();
+    client.start_joint(
+        lifecycle_artifacts::exe(),
         &root.join("world"),
         true,
         false,
@@ -140,6 +142,6 @@ fn seven_day_independent_sim_and_direct_cpu_match_without_endurance_claim() {
     run.call(Command::Checkpoint);
     run.call(Command::Stop);
     run.client.stop().unwrap();
-    std::fs::remove_dir_all(root).unwrap();
+    lifecycle_artifacts::cleanup(root).unwrap();
     println!("W4_FAST_JOINT wall_seconds={} windows={} all_business_and_air_exact=true endurance_1800_seconds=NOT_RUN whole_group_resources=NOT_RUN",started.elapsed().as_secs_f64(),run.reference.windows);
 }

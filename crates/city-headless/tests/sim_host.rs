@@ -1,3 +1,5 @@
+#[path = "support/lifecycle_artifacts.rs"]
+mod lifecycle_artifacts;
 use mycity_core::{
     background::Command as B,
     exchange::Command as X,
@@ -7,7 +9,7 @@ use mycity_core::{
 };
 use mycity_headless::{sim_client::Client, sim_host::Command};
 use serde_json::Value;
-use std::{path::Path, time::Duration};
+use std::time::Duration;
 fn call(client: &mut Client, id: &mut u64, command: Command) -> Value {
     *id += 1;
     client.submit(*id, command).unwrap();
@@ -34,11 +36,12 @@ fn action(client: &mut Client, id: &mut u64, a: Action) {
 }
 #[test]
 fn independent_sim_owns_lock_runs_worker_and_returns_original_cold_receipt_after_reopen() {
-    let dir = std::env::temp_dir().join(format!("mycity-independent-sim-{}", std::process::id()));
+    let dir = lifecycle_artifacts::root().join(format!("mycity-independent-sim-{}", std::process::id()));
     std::fs::create_dir(&dir).unwrap();
     let world = dir.join("world");
-    let executable = Path::new(env!("CARGO_BIN_EXE_mycity-headless"));
-    let mut client = Client::spawn(executable, &world, true).unwrap();
+    let executable = lifecycle_artifacts::exe();
+    let mut client = Client::new();
+    client.start(executable, &world, true).unwrap();
     assert_eq!(client.next(Duration::from_secs(10)).unwrap().kind, "ready");
     assert_ne!(client.pid(), std::process::id());
     assert!(matches!(
@@ -90,7 +93,8 @@ fn independent_sim_owns_lock_runs_worker_and_returns_original_cold_receipt_after
     call(&mut client, &mut id, Command::Checkpoint);
     call(&mut client, &mut id, Command::Stop);
     client.stop().unwrap();
-    let mut reopened = Client::spawn(executable, &world, false).unwrap();
+    let mut reopened = Client::new();
+    reopened.start(executable, &world, false).unwrap();
     assert_eq!(
         reopened.next(Duration::from_secs(10)).unwrap().kind,
         "ready"
@@ -100,7 +104,7 @@ fn independent_sim_owns_lock_runs_worker_and_returns_original_cold_receipt_after
     assert_eq!(first["record"], again["record"]);
     call(&mut reopened, &mut id, Command::Stop);
     reopened.stop().unwrap();
-    std::fs::remove_dir_all(dir).unwrap();
+    lifecycle_artifacts::cleanup(dir).unwrap();
 }
 
 fn prepare(client: &mut Client, id: &mut u64) {
@@ -153,18 +157,19 @@ fn barrier(client: &mut Client) -> Value {
 #[test]
 fn actual_worker_sigkill_in_sources_and_cells_retries_in_same_sim_with_new_generation() {
     use mycity_headless::sim_host::ProbePoint;
-    let exe = Path::new(env!("CARGO_BIN_EXE_mycity-headless"));
+    let exe = lifecycle_artifacts::exe();
     for (index, point) in [ProbePoint::WorkerSources, ProbePoint::WorkerCells]
         .into_iter()
         .enumerate()
     {
-        let root = std::env::temp_dir().join(format!(
+        let root = lifecycle_artifacts::root().join(format!(
             "mycity-sim-worker-kill-{}-{index}",
             std::process::id()
         ));
         std::fs::create_dir(&root).unwrap();
         let world = root.join("world");
-        let mut client = Client::spawn_probe(exe, &world, true).unwrap();
+        let mut client = Client::new();
+    client.start_probe(exe, &world, true).unwrap();
         client.next(Duration::from_secs(10)).unwrap();
         let mut id = 0;
         prepare(&mut client, &mut id);
@@ -199,13 +204,13 @@ fn actual_worker_sigkill_in_sources_and_cells_retries_in_same_sim_with_new_gener
         assert_eq!(state["background"]["incarnation"], 2);
         call(&mut client, &mut id, Command::Stop);
         client.stop().unwrap();
-        std::fs::remove_dir_all(root).unwrap();
+        lifecycle_artifacts::cleanup(root).unwrap();
     }
 }
 #[test]
 fn actual_sim_sigkill_at_lease_uncommitted_asset_and_committed_reply_recovers() {
     use mycity_headless::sim_host::ProbePoint;
-    let exe = Path::new(env!("CARGO_BIN_EXE_mycity-headless"));
+    let exe = lifecycle_artifacts::exe();
     let mut reference = None;
     for (index, point) in [
         ProbePoint::WorkerCells,
@@ -217,10 +222,11 @@ fn actual_sim_sigkill_at_lease_uncommitted_asset_and_committed_reply_recovers() 
     .enumerate()
     {
         let root =
-            std::env::temp_dir().join(format!("mycity-sim-kill-{}-{index}", std::process::id()));
+            lifecycle_artifacts::root().join(format!("mycity-sim-kill-{}-{index}", std::process::id()));
         std::fs::create_dir(&root).unwrap();
         let world = root.join("world");
-        let mut client = Client::spawn_probe(exe, &world, true).unwrap();
+        let mut client = Client::new();
+    client.start_probe(exe, &world, true).unwrap();
         client.next(Duration::from_secs(10)).unwrap();
         let mut id = 0;
         prepare(&mut client, &mut id);
@@ -236,7 +242,8 @@ fn actual_sim_sigkill_at_lease_uncommitted_asset_and_committed_reply_recovers() 
             .unwrap()
             .success());
         client.wait_for_sim_exit(Duration::from_secs(2)).unwrap();
-        let mut recovered = Client::spawn(exe, &world, false).unwrap();
+        let mut recovered = Client::new();
+    recovered.start(exe, &world, false).unwrap();
         let ready = recovered.next(Duration::from_secs(10)).unwrap();
         if point == ProbePoint::Committed {
             assert_eq!(ready.payload["background"]["version"], 1);
@@ -261,16 +268,17 @@ fn actual_sim_sigkill_at_lease_uncommitted_asset_and_committed_reply_recovers() 
         call(&mut recovered, &mut id, Command::Stop);
         recovered.stop().unwrap();
         client.stop().unwrap();
-        std::fs::remove_dir_all(root).unwrap();
+        lifecycle_artifacts::cleanup(root).unwrap();
     }
 }
 #[test]
 fn cancelling_attempt_keeps_required_barrier_and_manual_retry_completes() {
     use mycity_headless::sim_host::ProbePoint;
-    let exe = Path::new(env!("CARGO_BIN_EXE_mycity-headless"));
-    let root = std::env::temp_dir().join(format!("mycity-sim-cancel-{}", std::process::id()));
+    let exe = lifecycle_artifacts::exe();
+    let root = lifecycle_artifacts::root().join(format!("mycity-sim-cancel-{}", std::process::id()));
     std::fs::create_dir(&root).unwrap();
-    let mut client = Client::spawn_probe(exe, &root.join("world"), true).unwrap();
+    let mut client = Client::new();
+    client.start_probe(exe, &root.join("world"), true).unwrap();
     client.next(Duration::from_secs(10)).unwrap();
     let mut id = 0;
     prepare(&mut client, &mut id);
@@ -307,15 +315,16 @@ fn cancelling_attempt_keeps_required_barrier_and_manual_retry_completes() {
     assert_eq!(state["background"]["time"], 30);
     call(&mut client, &mut id, Command::Stop);
     client.stop().unwrap();
-    std::fs::remove_dir_all(root).unwrap();
+    lifecycle_artifacts::cleanup(root).unwrap();
 }
 
 #[test]
 fn internal_control_namespace_cannot_be_preoccupied_by_execute() {
-    let exe = Path::new(env!("CARGO_BIN_EXE_mycity-headless"));
-    let root = std::env::temp_dir().join(format!("mycity-sim-namespace-{}", std::process::id()));
+    let exe = lifecycle_artifacts::exe();
+    let root = lifecycle_artifacts::root().join(format!("mycity-sim-namespace-{}", std::process::id()));
     std::fs::create_dir(&root).unwrap();
-    let mut client = Client::spawn(exe, &root.join("world"), true).unwrap();
+    let mut client = Client::new();
+    client.start(exe, &root.join("world"), true).unwrap();
     client.next(Duration::from_secs(10)).unwrap();
     let mut id = 0;
     prepare(&mut client, &mut id);
@@ -341,15 +350,16 @@ fn internal_control_namespace_cannot_be_preoccupied_by_execute() {
     call(&mut client, &mut id, Command::RunRequired { job: 1 });
     call(&mut client, &mut id, Command::Stop);
     client.stop().unwrap();
-    std::fs::remove_dir_all(root).unwrap();
+    lifecycle_artifacts::cleanup(root).unwrap();
 }
 #[test]
 fn three_real_cancelled_workers_exhaust_attempts_without_erasing_required_job() {
     use mycity_headless::sim_host::ProbePoint;
-    let exe = Path::new(env!("CARGO_BIN_EXE_mycity-headless"));
-    let root = std::env::temp_dir().join(format!("mycity-sim-exhausted-{}", std::process::id()));
+    let exe = lifecycle_artifacts::exe();
+    let root = lifecycle_artifacts::root().join(format!("mycity-sim-exhausted-{}", std::process::id()));
     std::fs::create_dir(&root).unwrap();
-    let mut client = Client::spawn_probe(exe, &root.join("world"), true).unwrap();
+    let mut client = Client::new();
+    client.start_probe(exe, &root.join("world"), true).unwrap();
     client.next(Duration::from_secs(10)).unwrap();
     let mut id = 0;
     prepare(&mut client, &mut id);
@@ -385,5 +395,5 @@ fn three_real_cancelled_workers_exhaust_attempts_without_erasing_required_job() 
     assert_eq!(event.payload["Err"], "sim_retry_exhausted_or_wrong_job");
     call(&mut client, &mut id, Command::Stop);
     client.stop().unwrap();
-    std::fs::remove_dir_all(root).unwrap();
+    lifecycle_artifacts::cleanup(root).unwrap();
 }

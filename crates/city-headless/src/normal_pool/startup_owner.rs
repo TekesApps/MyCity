@@ -18,7 +18,18 @@ pub struct StartupOwner {
     real_exit: Option<ExitStatus>,
 }
 
+#[derive(serde::Serialize)]
+pub(crate) struct OwnerObservation {
+    pid: Option<u32>,
+    actual_wait: bool,
+    exit_success: Option<bool>,
+}
 impl StartupOwner {
+    pub(crate) fn observation(&self) -> OwnerObservation {
+        OwnerObservation { pid: self.child.as_ref().map(Child::id),
+            actual_wait: self.real_exit.is_some(), exit_success: self.real_exit.map(|s| s.success()) }
+    }
+
     /// Construct local empty state only; does not inspect or contact the broker.
     pub fn new() -> Self {
         Self {
@@ -71,6 +82,8 @@ impl StartupOwner {
         self.pending = None;
         Ok(())
     }
+
+    pub(crate) fn supervisor(&self) -> Option<&Supervisor> { self.supervisor.as_ref() }
 
     /// Configure a command from the held supervisor before spawning it.
     /// The no-broker path leaves command configuration to its caller.
@@ -194,7 +207,9 @@ impl StartupOwner {
         // A failed resolve may have reached the broker even if its reply was
         // lost. Retry the original retained request, then explicitly cancel
         // the returned supervisor; never infer that pending means unallocated.
-        if self.pending.is_some() && self.supervisor.is_none() {
+        if self.pending.as_ref().is_some_and(PendingRegistration::definitely_unallocated) {
+            self.pending = None; // no request or explicit first rejection; no allocation/refund
+        } else if self.pending.is_some() && self.supervisor.is_none() {
             self.resolve()?;
         }
 
@@ -228,5 +243,58 @@ impl StartupOwner {
         self.pending = None;
         self.bind_acknowledged = false;
         Ok(())
+    }
+}
+
+/// Final CLI-owned scope. Ordinary errors and panics cannot dispose an unresolved
+/// owner: cleanup runs while it is still here. Persistent failure terminates this
+/// process explicitly, without a false retirement or another startup attempt.
+pub(crate) fn supervised_scope<O, T>(
+    mut owner: O,
+    body: impl FnOnce(&mut O) -> Result<T, String>,
+    mut cleanup: impl FnMut(&mut O) -> Result<(), String>,
+    label: &'static str,
+    observe: impl FnOnce(&O) -> OwnerObservation,
+) -> Result<T, String> {
+    let outcome = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| body(&mut owner)));
+    let mut unresolved = None;
+    for _ in 0..2 {
+        match cleanup(&mut owner) {
+            Ok(()) => { unresolved = None; break; }
+            Err(error) => unresolved = Some(error),
+        }
+    }
+    if let Some(error) = unresolved {
+        // No secret/owner Debug output. This is a failure receipt, never a refund.
+        fn bounded(value: &str) -> &str {
+            let mut end = value.len().min(512);
+            while !value.is_char_boundary(end) { end -= 1; }
+            &value[..end]
+        }
+        let body_error = match &outcome {
+            Ok(Err(error)) => Some(bounded(error)),
+            Err(_) => Some("panic;original_hook_already_ran"),
+            _ => None,
+        };
+        #[derive(serde::Serialize)]
+        struct Terminal<'a> {
+            schema: &'static str, scope: &'static str, pid: u32,
+            cleanup_error: &'a str, body_error: Option<&'a str>,
+            retired: bool, new_start_forbidden: bool, owner: OwnerObservation,
+        }
+        let receipt = Terminal { schema: "mycity-unresolved-owner-v1", scope: label,
+            pid: std::process::id(), cleanup_error: bounded(&error), body_error,
+            retired: false, new_start_forbidden: true, owner: observe(&owner) };
+        // Stream borrowed bounded strings; no extra encoded diagnostic buffer.
+        use std::io::Write;
+        let mut stderr = std::io::stderr().lock();
+        let _ = serde_json::to_writer(&mut stderr, &receipt);
+        let _ = stderr.write_all(b"\n");
+        let _ = stderr.flush();
+        std::process::exit(2);
+    }
+    match outcome {
+        Ok(result) => result,
+        Err(panic) => std::panic::resume_unwind(panic),
     }
 }

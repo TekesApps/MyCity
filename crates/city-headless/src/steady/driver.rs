@@ -29,8 +29,17 @@ fn prefix(
     events: &mut Events,
     cutoff: Duration,
 ) -> Result<(), String> {
+    crate::sim_client::with_client_scope(|client| prefix_inner(dir, reference, events, cutoff, client))
+}
+fn prefix_inner(
+    dir: &Path,
+    reference: &Path,
+    events: &mut Events,
+    cutoff: Duration,
+    client: &mut crate::sim_client::Client,
+) -> Result<(), String> {
     fs::create_dir(dir).map_err(err)?;
-    let mut e = scale_sim::independent_experiment(dir, true, true)?;
+    let mut e = scale_sim::independent_experiment(client, dir, true, true)?;
     events.write("warmup_experiment_clock", json!({"path":dir,"experiment_origin_driver_ns":e.clock_origin().duration_since(events.began).as_nanos()}))?;
     let mut lines =
         std::io::BufReader::new(File::open(reference.join("cpu-targets.jsonl")).map_err(err)?);

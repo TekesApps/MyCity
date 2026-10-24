@@ -1,0 +1,26 @@
+[
+  {
+    "name": "model",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/issue102-client-slot-20261024/bin-09/mycity-headless",
+      "normal-pool-model-diagnostic",
+      "/Volumes/HP P900/dev/MyCity/work/p102-entry10/model"
+    ],
+    "pid": 21470,
+    "exit": 0,
+    "elapsed_seconds": 37.63827896118164,
+    "root": "/Volumes/HP P900/dev/MyCity/work/p102-entry10/model"
+  },
+  {
+    "name": "sim",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/issue102-client-slot-20261024/bin-09/mycity-headless",
+      "sim-probe",
+      "/Volumes/HP P900/dev/MyCity/work/p102-entry10/sim"
+    ],
+    "pid": 22054,
+    "exit": 0,
+    "elapsed_seconds": 2.754199266433716,
+    "root": "/Volumes/HP P900/dev/MyCity/work/p102-entry10/sim"
+  }
+]

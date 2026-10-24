@@ -744,7 +744,7 @@ fn ready(root: &Path) -> Result<Ready, String> {
     }
     Ok(r)
 }
-fn call(root: &Path, r: Ready, action: Op) -> Result<Reply, String> {
+fn call_reply(root: &Path, r: Ready, action: Op) -> Result<Reply, String> {
     if ready(root)?.boot != r.boot {
         return Err("normal_pool_old_boot".into());
     }
@@ -763,7 +763,10 @@ fn call(root: &Path, r: Ready, action: Op) -> Result<Reply, String> {
             action,
         },
     )?;
-    let reply: Reply = read_wire(&mut socket)?;
+    read_wire(&mut socket).map_err(str::to_owned)
+}
+fn call(root: &Path, r: Ready, action: Op) -> Result<Reply, String> {
+    let reply = call_reply(root, r, action)?;
     if let Some(e) = reply.error {
         return Err(e.as_str().into());
     }
@@ -2230,3 +2233,5 @@ mod model_lifecycle_diagnostic_tests {
 mod startup_owner;
 #[cfg(test)]
 mod startup_owner_tests;
+
+pub(crate) use startup_owner::supervised_scope;

@@ -177,10 +177,13 @@ fn cpu_drive(e: &mut Engine, target: u64) -> Result<(), String> {
     Err("rare_cpu_bound".into())
 }
 pub fn anchors(dir: &Path) -> Result<Value, String> {
+    crate::sim_client::with_client_scope(|client| anchors_inner(dir, client))
+}
+fn anchors_inner(dir: &Path, client: &mut crate::sim_client::Client) -> Result<Value, String> {
     let dir = checked_dir(dir)?;
     let source = dir.join("source");
     fs::create_dir(&source).map_err(err)?;
-    let mut sim = scale_sim::independent_experiment(&source, true, false)?;
+    let mut sim = scale_sim::independent_experiment(client, &source, true, false)?;
     let mut cpu = Reference::from_unstarted_engine(
         Engine::new(
             assemble(scale_reference::OPENING)?,
@@ -218,7 +221,7 @@ pub fn anchors(dir: &Path) -> Result<Value, String> {
     let claims = dir.join("claims");
     fs::create_dir(&claims).map_err(err)?;
     copy_world(&source.join("world"), &claims.join("world"))?;
-    let mut sim = scale_sim::independent_experiment(&claims, false, false)?;
+    let mut sim = scale_sim::independent_experiment(client, &claims, false, false)?;
     cpu.drive(180)?;
     sim.drive(180, &expected(&cpu.engine, 180)?)?;
     for sequence in 1..=4 {
@@ -254,6 +257,9 @@ pub fn anchors(dir: &Path) -> Result<Value, String> {
     Ok(result)
 }
 pub fn trial(anchors: &Path, dir: &Path, kind: &str) -> Result<Value, String> {
+    crate::sim_client::with_client_scope(|client| trial_inner(anchors, dir, kind, client))
+}
+fn trial_inner(anchors: &Path, dir: &Path, kind: &str, client: &mut crate::sim_client::Client) -> Result<Value, String> {
     let target = match kind {
         "source" => 180,
         "claims" => 86400,
@@ -271,7 +277,7 @@ pub fn trial(anchors: &Path, dir: &Path, kind: &str) -> Result<Value, String> {
     let golden = Engine::restore_checkpoint(&expected_bytes)?;
     let point = expected(&golden, target)?;
     drop(golden);
-    let mut sim = scale_sim::independent_experiment(&dir, false, true)?;
+    let mut sim = scale_sim::independent_experiment(client, &dir, false, true)?;
     sim.drive(target, &point)?;
     sim.save_stop()?;
     let (actual, root) = scale_sim::image(&dir.join("world"))?;

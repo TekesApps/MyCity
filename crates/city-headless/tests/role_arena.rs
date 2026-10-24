@@ -1,10 +1,12 @@
 //! Actual complete role grants and OOM recovery, not formal performance evidence.
+#[path = "support/lifecycle_artifacts.rs"]
+mod lifecycle_artifacts;
 use mycity_core::{
     timeline::Command as T,
     transaction::{Action, Envelope},
 };
 use mycity_headless::{
-    normal_pool::{self, broker::Supervisor, Process},
+    normal_pool::{self, broker::PendingRegistration, Process},
     sim_client::Client,
     sim_host::Command as C,
 };
@@ -21,7 +23,7 @@ const MIB: usize = 1024 * 1024;
 struct Temp(PathBuf);
 impl Temp {
     fn new() -> Self {
-        let p = std::env::temp_dir().join(format!(
+        let p = lifecycle_artifacts::root().join(format!(
             "city-role-arena-{}-{}",
             std::process::id(),
             NEXT.fetch_add(1, Ordering::Relaxed)
@@ -33,12 +35,12 @@ impl Temp {
 impl Drop for Temp {
     fn drop(&mut self) {
         if !std::thread::panicking() {
-            let _ = fs::remove_dir_all(&self.0);
+            let _ = lifecycle_artifacts::cleanup(&self.0);
         }
     }
 }
 fn exe() -> &'static Path {
-    Path::new(env!("CARGO_BIN_EXE_mycity-headless"))
+    lifecycle_artifacts::exe()
 }
 fn events(p: &Path) -> Vec<Value> {
     fs::read_to_string(p.join("events.jsonl"))
@@ -62,12 +64,14 @@ fn sim_full_arena_fills_after_models_and_unknown_durable_oom_recovers_original_t
     let t = Temp::new();
     let mut pool = Process::spawn(exe(), &t.0.join("pool"), None).unwrap();
     let world = t.0.join("world");
-    let mut c = Client::spawn_in_pool(exe(), &world, true, true, pool.root()).unwrap();
+    let mut c = Client::new();
+    c.start_in_pool(exe(), &world, true, true, pool.root()).unwrap();
     assert_eq!(c.next(Duration::from_secs(10)).unwrap().kind, "ready");
     let s = normal_pool::status(pool.root()).unwrap();
     assert_eq!(s.granted_capacity_bytes, 59 * MIB);
     assert_eq!(s.available_touched_bytes, 5 * MIB);
-    assert!(Supervisor::register_model(pool.root()).is_err());
+    let mut registration = PendingRegistration::new_model(pool.root()).unwrap();
+    assert!(registration.resolve().is_err());
     let e = events(pool.root());
     let filled = e
         .iter()
@@ -97,7 +101,8 @@ fn sim_full_arena_fills_after_models_and_unknown_durable_oom_recovers_original_t
     let returned = normal_pool::status(pool.root()).unwrap();
     assert_eq!(returned.available_touched_bytes, 64 * MIB);
     assert_eq!(returned.workspace_grants, returned.workspace_returns);
-    let mut c = Client::spawn_in_pool(exe(), &world, false, false, pool.root()).unwrap();
+    let mut c = Client::new();
+    c.start_in_pool(exe(), &world, false, false, pool.root()).unwrap();
     assert_eq!(c.next(Duration::from_secs(10)).unwrap().kind, "ready");
     let before = call(&mut c, 1, C::Status);
     assert_eq!(before["sequence"], 1);
@@ -122,7 +127,8 @@ fn sim_full_arena_fills_after_models_and_unknown_durable_oom_recovers_original_t
 fn construction_oom_cannot_fill_or_refund_before_the_parent_actually_waits() {
     let t = Temp::new();
     let mut pool = Process::spawn(exe(), &t.0.join("pool"), None).unwrap();
-    let mut supervisor = Supervisor::register(pool.root()).unwrap();
+    let mut registration = PendingRegistration::new(pool.root()).unwrap();
+    let mut supervisor = registration.resolve().unwrap();
     let mut cmd = Command::new(exe());
     supervisor.configure(&mut cmd).unwrap();
     let child = cmd
@@ -167,14 +173,16 @@ fn complete_reference_and_sim_sessions_cannot_overlap_and_twenty_mib_is_returned
     let t = Temp::new();
     let mut pool = Process::spawn(exe(), &t.0.join("pool"), None).unwrap();
     let dir = task::prepare(&t.0, Tier::Small, Mode::Reference).unwrap();
-    let mut supervisor = Supervisor::register_model(pool.root()).unwrap();
+    let mut registration = PendingRegistration::new_model(pool.root()).unwrap();
+    let mut supervisor = registration.resolve().unwrap();
     assert_eq!(
         normal_pool::status(pool.root())
             .unwrap()
             .granted_capacity_bytes,
         20 * MIB
     );
-    assert!(Supervisor::register(pool.root()).is_err());
+    let mut registration = PendingRegistration::new(pool.root()).unwrap();
+    assert!(registration.resolve().is_err());
     let mut cmd = Command::new(exe());
     supervisor.configure(&mut cmd).unwrap();
     let child = cmd

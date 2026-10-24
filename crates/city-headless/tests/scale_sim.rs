@@ -1,3 +1,5 @@
+#[path = "support/lifecycle_artifacts.rs"]
+mod lifecycle_artifacts;
 use mycity_core::transaction::Envelope;
 use mycity_headless::{
     scale_reference::{self, Step},
@@ -5,7 +7,7 @@ use mycity_headless::{
     sim_host::Command,
 };
 use serde_json::Value;
-use std::{path::Path, time::Duration};
+use std::time::Duration;
 fn call(c: &mut Client, id: &mut u64, command: Command) -> Value {
     *id += 1;
     c.submit(*id, command).unwrap();
@@ -47,15 +49,16 @@ fn named_profiles_have_frozen_counts_v2_identity_and_read_only_bounded_progress(
     use scale_reference::Tier;
     for tier in [Tier::Small, Tier::Medium, Tier::Full] {
         let (accounts, _, payroll, claims) = tier.counts();
-        let dir = std::env::temp_dir().join(format!(
+        let dir = lifecycle_artifacts::root().join(format!(
             "mycity-scale-profile-{}-{}",
             std::process::id(),
             tier.name()
         ));
         std::fs::create_dir(&dir).unwrap();
         let world = dir.join("world");
-        let exe = Path::new(env!("CARGO_BIN_EXE_mycity-headless"));
-        let mut c = Client::spawn_scale(exe, &world, true, false, tier).unwrap();
+        let exe = lifecycle_artifacts::exe();
+        let mut c = Client::new();
+    c.start_scale(exe, &world, true, false, tier).unwrap();
         let ready = c.next(Duration::from_secs(15)).unwrap();
         assert_eq!(ready.kind, "ready");
         assert_eq!(
@@ -142,11 +145,13 @@ fn named_profiles_have_frozen_counts_v2_identity_and_read_only_bounded_progress(
         call(&mut c, &mut id, Command::Checkpoint);
         c.stop().unwrap();
         let current = std::fs::read(world.join("CURRENT.json")).unwrap();
-        let mut wrong = Client::spawn_joint(exe, &world, false, false).unwrap();
+        let mut wrong = Client::new();
+    wrong.start_joint(exe, &world, false, false).unwrap();
         assert!(wrong.next(Duration::from_secs(15)).is_err());
         wrong.stop().unwrap();
         assert_eq!(std::fs::read(world.join("CURRENT.json")).unwrap(), current);
-        let mut c = Client::spawn_scale(exe, &world, false, false, tier).unwrap();
+        let mut c = Client::new();
+    c.start_scale(exe, &world, false, false, tier).unwrap();
         assert_eq!(c.next(Duration::from_secs(15)).unwrap().kind, "ready");
         assert_eq!(
             call(
@@ -172,6 +177,6 @@ fn named_profiles_have_frozen_counts_v2_identity_and_read_only_bounded_progress(
         )
         .unwrap();
         assert_eq!(root["checkpoint_layout"], 2);
-        std::fs::remove_dir_all(dir).unwrap();
+        lifecycle_artifacts::cleanup(dir).unwrap();
     }
 }

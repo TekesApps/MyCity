@@ -5,7 +5,6 @@ use crate::{
     scale_model_task::{self, Mode},
     scale_reference::{self, Step, Tier},
     scale_sim::{self, Experiment},
-    sim_client::Client,
     sim_host::Command,
 };
 use mycity_core::read_bounded;
@@ -250,12 +249,12 @@ pub fn driver(dir: &Path, rate: Rate) -> Result<(), String> {
     driver_tier(dir, Tier::Full, rate)
 }
 pub fn driver_tier(dir: &Path, tier: Tier, rate: Rate) -> Result<(), String> {
-    driver_inner(dir, tier, rate, None)
+    crate::sim_client::with_client_scope(|client| driver_inner(dir, tier, rate, None, client))
 }
 /// Reference is prepared before warmup; no measured city exists before anchor.
 pub(crate) fn steady_driver(dir: &Path, anchor: Instant, span: Duration) -> Result<(), String> {
     scale_model_task::validate_reference(&dir.join("reference"), Tier::Full)?;
-    driver_inner(
+    crate::sim_client::with_client_scope(|client| driver_inner(
         dir,
         Tier::Full,
         Rate::parse(if span == Duration::from_secs(1800) {
@@ -263,14 +262,15 @@ pub(crate) fn steady_driver(dir: &Path, anchor: Instant, span: Duration) -> Resu
         } else {
             "unpaced"
         })?,
-        Some((anchor, span)),
-    )
+        Some((anchor, span)), client,
+    ))
 }
 fn driver_inner(
     dir: &Path,
     tier: Tier,
     rate: Rate,
     steady: Option<(Instant, Duration)>,
+    client: &mut crate::sim_client::Client,
 ) -> Result<(), String> {
     if steady.is_none() {
         fs::create_dir(dir).map_err(err)?;
@@ -304,7 +304,7 @@ fn driver_inner(
         maximum_query_lateness: Duration::ZERO,
         maximum_save_lateness: Duration::ZERO,
     };
-    let mut e = scale_sim::independent_experiment_for_tier(&dir, true, true, false, tier)?;
+    let mut e = scale_sim::independent_experiment_for_tier(client, &dir, true, true, false, tier)?;
     e.record(json!({"experiment_origin_measurement_ns":e.clock_origin().duration_since(clock.began).as_nanos(),"mapping":"same process Instant offset; origin before actual Sim creation"}))?;
     let sim_ready_seconds = clock.elapsed().as_secs_f64();
     e.record(json!({"speed_operating_started_before_sim_create":true,"sim_ready_seconds":sim_ready_seconds}))?;
@@ -430,7 +430,7 @@ fn driver_inner(
     e.client.stop()?;
     scale_model_task::run(&dir, tier, Mode::BeforeReopen)?;
     let cold = Instant::now();
-    e.client = Client::spawn_scale_measured(
+    e.client.start_scale_measured(
         &std::env::current_exe().map_err(err)?,
         &dir.join("world"),
         false,

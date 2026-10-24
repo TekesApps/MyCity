@@ -6,14 +6,22 @@ use crate::{
 use std::{
     io::BufReader,
     path::{Path, PathBuf},
-    process::{Child, ChildStdin, Command, Stdio},
+    process::{ChildStdin, Command, Stdio},
     sync::mpsc::{self, Receiver},
     thread::{self, JoinHandle},
     time::Duration,
 };
+/// Explicit laboratory cuts at the existing partial-startup error boundaries.
+/// These do not claim to reproduce OS pipe/thread allocation failure.
+#[doc(hidden)]
+#[derive(Clone, Copy, PartialEq, Eq)]
+pub enum StartupFault { MissingStdout, ReaderRejected }
+
+#[must_use = "retain the Client slot until explicit stop confirms retirement"]
 pub struct Client {
-    child: Child,
-    supervisor: Option<crate::normal_pool::broker::Supervisor>,
+    owner: crate::normal_pool::broker::StartupOwner,
+    last_pid: Option<u32>,
+    waited_and_retired: bool,
     worker_lease: Option<u64>,
     input: Option<ChildStdin>,
     receiver: Option<Receiver<Result<Event, String>>>,
@@ -24,19 +32,30 @@ pub struct Client {
     executable: PathBuf,
 }
 impl Client {
-    pub fn spawn(executable: &Path, world: &Path, create: bool) -> Result<Self, String> {
-        Self::spawn_inner(executable, world, create, false, Profile::Base, false, None)
+    /// Empty local slot; no process, broker request or capacity side effect.
+    pub fn new() -> Self {
+        Self { owner: crate::normal_pool::broker::StartupOwner::new(), last_pid: None, waited_and_retired: false,
+            worker_lease: None, input: None, receiver: None, reader: None,
+            outstanding: None, worker_pid: None, cache_root: PathBuf::new(), executable: PathBuf::new() }
     }
-    pub fn spawn_probe(executable: &Path, world: &Path, create: bool) -> Result<Self, String> {
-        Self::spawn_inner(executable, world, create, true, Profile::Base, false, None)
+    pub fn is_empty(&self) -> bool {
+        self.owner.is_empty() && self.input.is_none() && self.receiver.is_none() && self.reader.is_none()
     }
-    pub fn spawn_joint(
+
+    pub fn start(&mut self, executable: &Path, world: &Path, create: bool) -> Result<(), String> {
+        self.start_inner(executable, world, create, false, Profile::Base, false, None)
+    }
+    pub fn start_probe(&mut self, executable: &Path, world: &Path, create: bool) -> Result<(), String> {
+        self.start_inner(executable, world, create, true, Profile::Base, false, None)
+    }
+    pub fn start_joint(
+        &mut self,
         executable: &Path,
         world: &Path,
         create: bool,
         probe: bool,
-    ) -> Result<Self, String> {
-        Self::spawn_inner(
+    ) -> Result<(), String> {
+        self.start_inner(
             executable,
             world,
             create,
@@ -46,13 +65,14 @@ impl Client {
             None,
         )
     }
-    pub fn spawn_scale_full(
+    pub fn start_scale_full(
+        &mut self,
         executable: &Path,
         world: &Path,
         create: bool,
         probe: bool,
-    ) -> Result<Self, String> {
-        Self::spawn_scale(
+    ) -> Result<(), String> {
+        self.start_scale(
             executable,
             world,
             create,
@@ -60,14 +80,15 @@ impl Client {
             crate::scale_reference::Tier::Full,
         )
     }
-    pub fn spawn_scale(
+    pub fn start_scale(
+        &mut self,
         executable: &Path,
         world: &Path,
         create: bool,
         probe: bool,
         tier: crate::scale_reference::Tier,
-    ) -> Result<Self, String> {
-        Self::spawn_inner(
+    ) -> Result<(), String> {
+        self.start_inner(
             executable,
             world,
             create,
@@ -77,14 +98,15 @@ impl Client {
             None,
         )
     }
-    pub fn spawn_scale_measured(
+    pub fn start_scale_measured(
+        &mut self,
         executable: &Path,
         world: &Path,
         create: bool,
         probe: bool,
         tier: crate::scale_reference::Tier,
-    ) -> Result<Self, String> {
-        Self::spawn_inner(
+    ) -> Result<(), String> {
+        self.start_inner(
             executable,
             world,
             create,
@@ -95,14 +117,15 @@ impl Client {
         )
     }
     /// Explicit pool avoids process-global environment mutation in real integration tests.
-    pub fn spawn_in_pool(
+    pub fn start_in_pool(
+        &mut self,
         executable: &Path,
         world: &Path,
         create: bool,
         probe: bool,
         pool: &Path,
-    ) -> Result<Self, String> {
-        Self::spawn_inner(
+    ) -> Result<(), String> {
+        self.start_inner(
             executable,
             world,
             create,
@@ -112,7 +135,8 @@ impl Client {
             Some(pool),
         )
     }
-    fn spawn_inner(
+    fn start_inner(
+        &mut self,
         executable: &Path,
         world: &Path,
         create: bool,
@@ -120,49 +144,62 @@ impl Client {
         profile: Profile,
         measured: bool,
         pool: Option<&Path>,
-    ) -> Result<Self, String> {
+    ) -> Result<(), String> {
+        self.start_inner_with_fault(executable, world, create, probe, profile, measured, pool, None)
+    }
+    #[doc(hidden)]
+    pub fn start_in_pool_with_fault(&mut self, executable: &Path, world: &Path, create: bool,
+        pool: &Path, fault: StartupFault) -> Result<(), String>
+    {
+        self.start_inner_with_fault(executable, world, create, false, Profile::Base, false, Some(pool), Some(fault))
+    }
+    fn start_inner_with_fault(
+        &mut self,
+        executable: &Path,
+        world: &Path,
+        create: bool,
+        probe: bool,
+        profile: Profile,
+        measured: bool,
+        pool: Option<&Path>,
+        fault: Option<StartupFault>,
+    ) -> Result<(), String> {
+        if !self.is_empty() { return Err("sim_slot_not_empty".into()); }
+        self.waited_and_retired = false;
+        self.last_pid = None;
         if !world.is_absolute() {
             return Err("sim_world_absolute_path_required".into());
         }
         let executable = executable.canonicalize().map_err(|e| e.to_string())?;
-        let mut supervisor = match pool {
-            Some(root) => Some(crate::normal_pool::broker::Supervisor::register(root)?),
-            None => crate::normal_pool::broker::Supervisor::from_env()?,
-        };
+        self.executable = executable.clone();
+        self.cache_root = world.join("air-worker");
+        let configured = pool.map(Path::to_owned).or_else(|| std::env::var_os("MYCITY_NORMAL_POOL").map(PathBuf::from));
+        if let Some(root) = configured.as_ref() {
+            self.owner.prepare_sim(root)?;
+            self.owner.resolve()?;
+        }
         let mut command = Command::new(&executable);
-        if let Some(s) = supervisor.as_ref() {
-            s.configure(&mut command)?;
-        } else {
-            command
-                .env_remove("MYCITY_BROKER_SESSION")
-                .env_remove("MYCITY_BROKER_SUPERVISOR");
+        if configured.is_none() {
+            command.env_remove("MYCITY_BROKER_SESSION").env_remove("MYCITY_BROKER_SUPERVISOR");
         }
         if measured {
             command.env("MYCITY_DIAGNOSTICS", "1");
         } else {
             command.env_remove("MYCITY_DIAGNOSTICS");
         }
-        let mut child = command
-            .arg(profile.command(probe))
-            .arg(if create { "create" } else { "open" })
-            .arg(world)
-            .stdin(Stdio::piped())
-            .stdout(Stdio::piped())
-            .stderr(Stdio::null())
-            .spawn()
-            .map_err(|e| e.to_string())?;
-        if let Some(s) = supervisor.as_mut() {
-            if let Err(e) = s.bind(child.id()) {
-                let _ = child.kill();
-                let status = child.wait().map_err(|e| e.to_string())?;
-                s.after_sim_wait(child.id(), status)?;
-                return Err(e);
-            }
-        }
-        let input = child.stdin.take();
-        let stdout = child.stdout.take().ok_or("sim_stdout")?;
+        command.arg(profile.command(probe))
+            .arg(if create { "create" } else { "open" }).arg(world)
+            .stdin(Stdio::piped()).stdout(Stdio::piped()).stderr(Stdio::null());
+        let spawned = self.owner.spawn(&mut command);
+        self.last_pid = self.owner.pid_opt()?;
+        spawned?;
+        self.input = self.owner.child_mut()?.stdin.take();
+        if fault == Some(StartupFault::MissingStdout) { self.owner.child_mut()?.stdout.take(); }
+        let stdout = self.owner.child_mut()?.stdout.take().ok_or("sim_stdout")?;
         let (sender, receiver) = mpsc::sync_channel(4);
-        let reader = match wire::spawn_ipc_reader("sim-ipc-reader", move || {
+        self.receiver = Some(receiver);
+        if fault == Some(StartupFault::ReaderRejected) { return Err("sim_injected_reader_spawn_rejected".into()); }
+        let reader = wire::spawn_ipc_reader("sim-ipc-reader", move || {
             let mut r = BufReader::with_capacity(8192, stdout);
             loop {
                 let result = match wire::frame(&mut r) {
@@ -175,33 +212,13 @@ impl Client {
                     break;
                 }
             }
-        }) {
-            Ok(reader) => reader,
-            Err(error) => {
-                wire::kill_wait_then(&mut child, |_, pid, status| {
-                    if let Some(s) = supervisor.as_mut() {
-                        s.after_sim_wait(pid, status)?;
-                    }
-                    Ok(())
-                })?;
-                return Err(error);
-            }
-        };
-        Ok(Self {
-            child,
-            supervisor,
-            worker_lease: None,
-            input,
-            receiver: Some(receiver),
-            reader: Some(reader),
-            outstanding: Some(0),
-            worker_pid: None,
-            cache_root: world.join("air-worker"),
-            executable,
-        })
+        })?;
+        self.reader = Some(reader);
+        self.outstanding = Some(0);
+        Ok(())
     }
     pub fn pid(&self) -> u32 {
-        self.child.id()
+        self.last_pid.expect("Sim PID exists only after an actual spawn")
     }
     pub fn submit(&mut self, id: u64, command: SimCommand) -> Result<(), String> {
         if id == 0 || self.outstanding.is_some() {
@@ -246,7 +263,7 @@ impl Client {
                 }
                 self.worker_pid = Some(pid);
                 self.worker_lease = event.payload["broker_lease"].as_u64();
-                if self.supervisor.is_some() && self.worker_lease.is_none() {
+                if self.owner.supervisor().is_some() && self.worker_lease.is_none() {
                     return Err("sim_broker_worker_lease_absent".into());
                 }
             }
@@ -281,7 +298,7 @@ impl Client {
         let Some(pid) = self.worker_pid else {
             return Ok(());
         };
-        if let Some(s) = self.supervisor.as_ref() {
+        if let Some(s) = self.owner.supervisor() {
             s.kill_worker(
                 pid,
                 self.worker_lease.ok_or("sim_broker_worker_lease_absent")?,
@@ -335,60 +352,60 @@ impl Client {
     /// Reap only Sim after an external signal; deliberately leaves worker recovery
     /// to a new supervisor/Sim and its persistent registry + OS fence.
     pub fn wait_for_sim_exit(&mut self, timeout: Duration) -> Result<(), String> {
+        if self.waited_and_retired { return Ok(()); }
         let deadline = std::time::Instant::now() + timeout;
         loop {
-            if let Some(status) = self.child.try_wait().map_err(|e| e.to_string())? {
-                self.after_sim_wait(status)?;
-                return Ok(());
-            }
-            if std::time::Instant::now() >= deadline {
-                return Err("sim_exit_timeout".into());
-            }
+            if self.owner.try_wait()?.is_some() { self.after_sim_wait()?; return Ok(()); }
+            if std::time::Instant::now() >= deadline { return Err("sim_exit_timeout".into()); }
             thread::sleep(Duration::from_millis(10));
         }
     }
-    fn after_sim_wait(&mut self, status: std::process::ExitStatus) -> Result<(), String> {
-        if let Some(s) = self.supervisor.as_mut() {
-            s.after_sim_wait(self.child.id(), status)?;
+    fn after_sim_wait(&mut self) -> Result<(), String> {
+        if self.owner.supervisor().is_some() {
+            self.owner.retire()?;
             self.worker_pid = None;
             self.worker_lease = None;
         } else {
             self.kill_owned_worker()?;
+            self.owner.retire()?;
         }
+        self.waited_and_retired = true;
         Ok(())
     }
     pub fn kill_sim(&mut self) -> Result<(), String> {
-        if self.child.try_wait().map_err(|e| e.to_string())?.is_none() {
-            self.child.kill().map_err(|e| e.to_string())?;
-        }
-        let status = self.child.wait().map_err(|e| e.to_string())?;
-        self.after_sim_wait(status)?;
+        if self.waited_and_retired { return self.stop(); }
+        self.owner.kill_wait()?;
+        self.after_sim_wait()?;
         self.stop()
     }
     pub fn stop(&mut self) -> Result<(), String> {
         self.input.take();
-        // Caller normally sends Stop and drains its reply first. This is a bounded reap.
-        let deadline = std::time::Instant::now() + Duration::from_secs(2);
-        let status = loop {
-            if let Some(status) = self.child.try_wait().map_err(|e| e.to_string())? {
-                break status;
+        if self.owner.pid_opt()?.is_some() {
+            let deadline = std::time::Instant::now() + Duration::from_secs(2);
+            loop {
+                if self.owner.try_wait()?.is_some() { break; }
+                if std::time::Instant::now() >= deadline { self.owner.kill_wait()?; break; }
+                thread::sleep(Duration::from_millis(10));
             }
-            if std::time::Instant::now() >= deadline {
-                self.child.kill().map_err(|e| e.to_string())?;
-                break self.child.wait().map_err(|e| e.to_string())?;
-            }
-            thread::sleep(Duration::from_millis(10));
-        };
-        self.after_sim_wait(status)?;
+            self.after_sim_wait()?;
+        } else { self.owner.retire()?; }
         self.receiver.take();
-        if let Some(reader) = self.reader.take() {
-            reader.join().map_err(|_| "sim_reader_panic")?;
-        }
+        self.outstanding = None;
+        if let Some(reader) = self.reader.take() { reader.join().map_err(|_| "sim_reader_panic")?; }
         Ok(())
     }
+
 }
 impl Drop for Client {
     fn drop(&mut self) {
         let _ = self.stop();
     }
 }
+
+/// The slot outlives every fallible/panic operation in the closure. This is a CLI
+/// terminal boundary: persistent retirement failure is reported and exits(2).
+pub fn with_client_scope<T>(body: impl FnOnce(&mut Client) -> Result<T, String>) -> Result<T, String> {
+    crate::normal_pool::supervised_scope(Client::new(), body, Client::stop, "sim-client", |client| client.owner.observation())
+}
+
+impl Default for Client { fn default() -> Self { Self::new() } }

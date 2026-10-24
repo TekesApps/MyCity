@@ -71,14 +71,14 @@ impl Clock {
     }
 }
 struct Driver<'a> {
-    e: Experiment,
+    e: Experiment<'a>,
     clock: Option<Clock>,
     dir: &'a Path,
     first: Option<(mycity_core::transaction::Envelope, Value)>,
 }
 impl Driver<'_> {
-    fn spawn(&self) -> Result<Client, String> {
-        Client::spawn_scale_measured(
+    fn restart(&mut self) -> Result<(), String> {
+        self.e.client.start_scale_measured(
             &std::env::current_exe().map_err(|e| e.to_string())?,
             &self.dir.join("world"),
             false,
@@ -114,7 +114,7 @@ impl Driver<'_> {
         let before = self.e.call(Command::Status)?;
         self.e.call(Command::Stop)?;
         self.e.client.stop()?;
-        self.e.client = self.spawn()?;
+        self.restart()?;
         if self.e.client.next(Duration::from_secs(35))?.kind != "ready" {
             return Err("endurance_reopen_ready".into());
         }
@@ -256,7 +256,7 @@ impl Driver<'_> {
                             return Err("endurance_committed_identity".into());
                         }
                         self.e.client.kill_sim()?;
-                        self.e.client = self.spawn()?;
+                        self.restart()?;
                         if self.e.client.next(Duration::from_secs(35))?.kind != "ready" {
                             return Err("endurance_fault_ready".into());
                         }
@@ -345,7 +345,7 @@ pub fn run(dir: &Path, cadence: Cadence) -> Result<Value, String> {
         &dir.join("controller-manifest.json"),
         &json!({"source_sha256":env!("MYCITY_SOURCE_SHA256"),"formal":cadence.formal(),"hour_wall_seconds":cadence.hour().as_secs_f64(),"game_hours":720,"periodic_saves":96,"L1":"external_joint_runner_required","eight_hour_gate":"not_accepted_until_independent_joint_audit"}),
     )?;
-    let result = run_inner(&dir, cadence);
+    let result = crate::sim_client::with_client_scope(|client| run_inner(&dir, cadence, client));
     if let Err(error) = &result {
         save(
             &dir.join("failure.json"),
@@ -354,9 +354,9 @@ pub fn run(dir: &Path, cadence: Cadence) -> Result<Value, String> {
     }
     result
 }
-fn run_inner(dir: &Path, cadence: Cadence) -> Result<Value, String> {
+fn run_inner<'a>(dir: &'a Path, cadence: Cadence, client: &'a mut Client) -> Result<Value, String> {
     scale_model_task::run(dir, Tier::Full, Mode::Reference)?;
-    let e = scale_sim::independent_experiment_options(dir, true, true, true)?;
+    let e = scale_sim::independent_experiment_options(client, dir, true, true, true)?;
     let mut d = Driver {
         e,
         clock: None,
@@ -441,7 +441,7 @@ fn run_inner(dir: &Path, cadence: Cadence) -> Result<Value, String> {
     d.e.client.stop()?;
     scale_model_task::run_retry(dir, Tier::Full, Mode::FaultReference, Some(retry_job))?;
     scale_model_task::run(dir, Tier::Full, Mode::BeforeReopen)?;
-    d.e.client = d.spawn()?;
+    d.restart()?;
     if d.e.client.next(Duration::from_secs(35))?.kind != "ready" {
         return Err("endurance_final_ready".into());
     }

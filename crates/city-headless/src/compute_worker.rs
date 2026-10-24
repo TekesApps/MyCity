@@ -35,6 +35,7 @@ pub(crate) fn spawn_ipc_reader(
         .map_err(|error| format!("ipc_reader_spawn:{name}:{error}"))
 }
 
+#[cfg(test)]
 pub(crate) fn kill_wait_then<T>(
     child: &mut Child,
     after_wait: impl FnOnce(&mut Child, u32, ExitStatus) -> Result<T, String>,

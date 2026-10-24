@@ -12,7 +12,7 @@ use std::{
     fs::{self, File},
     io::{BufWriter, Read, Write},
     path::{Path, PathBuf},
-    process::{Child, Command, Stdio},
+    process::{Command, Stdio},
     time::{Duration, Instant},
 };
 mod stream;
@@ -553,15 +553,6 @@ pub fn validate(dir: &Path) -> Result<ResultRecord, String> {
     stream::validate_proof(dir, &r, tier, &result)?;
     Ok(result)
 }
-struct Job(Child);
-impl Drop for Job {
-    fn drop(&mut self) {
-        if self.0.try_wait().ok().flatten().is_none() {
-            let _ = self.0.kill();
-        }
-        let _ = self.0.wait();
-    }
-}
 pub fn prepare(root: &Path, tier: Tier, mode: Mode) -> Result<PathBuf, String> {
     prepare_retry(root, tier, mode, None)
 }
@@ -602,65 +593,47 @@ pub(crate) fn run_retry(
     mode: Mode,
     retry_job: Option<u64>,
 ) -> Result<ResultRecord, String> {
+    crate::normal_pool::supervised_scope(crate::normal_pool::broker::StartupOwner::new(),
+        |owner| run_retry_owned(root, tier, mode, retry_job, owner),
+        |owner| { if owner.pid_opt()?.is_some() { owner.kill_wait()?; } owner.retire() }, "model-helper", |owner| owner.observation())
+}
+fn run_retry_owned(
+    root: &Path,
+    tier: Tier,
+    mode: Mode,
+    retry_job: Option<u64>,
+    owner: &mut crate::normal_pool::broker::StartupOwner,
+) -> Result<ResultRecord, String> {
     let dir = prepare_retry(root, tier, mode, retry_job)?;
-    // Register releases the exact pages before child allocation. Supervisor is
-    // declared before Job; Job must kill+wait before any explicit credit return.
+    // The outer scope already owns the startup slot. Register precedes child
+    // allocation; real wait precedes original revoke/ack and any credit.
     let fixed = matches!(
         mode,
         Mode::BeforeReopen | Mode::CompareEndurance | Mode::CompareSpeed
     );
-    let mut supervisor = std::env::var_os("MYCITY_NORMAL_POOL")
-        .map(|p| {
-            crate::normal_pool::broker::Supervisor::register_kind(
-                Path::new(&p),
-                if fixed {
-                    crate::normal_pool::workspace::Kind::HelperCompare
-                } else {
-                    crate::normal_pool::workspace::Kind::Model
-                },
-            )
-        })
-        .transpose()?;
+    if let Some(root) = std::env::var_os("MYCITY_NORMAL_POOL") {
+        owner.prepare(Path::new(&root), if fixed { crate::normal_pool::workspace::Kind::HelperCompare }
+            else { crate::normal_pool::workspace::Kind::Model })?;
+        owner.resolve()?;
+    }
     let mut command = Command::new(std::env::current_exe().map_err(err)?);
-    if let Some(s) = supervisor.as_ref() {
-        s.configure(&mut command)?;
-    }
-    // Standalone work has the same fixed role arena but no external pool grant.
-    else {
-        command.env_remove("MYCITY_BROKER_SESSION");
-    }
-    let mut job = Job(command
-        .arg("scale-model-task")
-        .arg(&dir)
-        .arg("parent-pipe")
+    command.env_remove("MYCITY_BROKER_SESSION").env_remove("MYCITY_BROKER_SUPERVISOR");
+    command.arg("scale-model-task").arg(&dir).arg("parent-pipe")
         .stdin(Stdio::piped())
-        .stdout(Stdio::from(
-            File::create_new(dir.join("stdout")).map_err(err)?,
-        ))
-        .stderr(Stdio::from(
-            File::create_new(dir.join("stderr")).map_err(err)?,
-        ))
-        .spawn()
-        .map_err(err)?);
-    if let Some(s) = supervisor.as_mut() {
-        if let Err(error) = s.bind(job.0.id()) {
-            let _ = job.0.kill();
-            let status = job.0.wait().map_err(err)?;
-            s.after_sim_wait(job.0.id(), status)?;
-            return Err(error);
-        }
-    }
+        .stdout(Stdio::from(File::create_new(dir.join("stdout")).map_err(err)?))
+        .stderr(Stdio::from(File::create_new(dir.join("stderr")).map_err(err)?));
+    let pid = owner.spawn(&mut command)?;
     // Publish identity before releasing the child to model work. Keep stdin
     // alive until child exit; abrupt parent death closes it at the kernel.
     let outcome = (|| {
         publish(&dir, "child.json", 4096, |file| {
             serde_json::to_writer(
                 file,
-                &serde_json::json!({"pid":job.0.id(),"parent_pid":std::process::id()}),
+                &serde_json::json!({"pid":pid,"parent_pid":std::process::id()}),
             )
             .map_err(err)
         })?;
-        job.0
+        owner.child_mut()?
             .stdin
             .as_mut()
             .ok_or("model_task_parent_pipe")?
@@ -668,7 +641,7 @@ pub(crate) fn run_retry(
             .map_err(err)?;
         let began = Instant::now();
         let status = loop {
-            if let Some(status) = job.0.try_wait().map_err(err)? {
+            if let Some(status) = owner.try_wait()? {
                 break status;
             }
             if began.elapsed() > Duration::from_secs(600) {
@@ -678,25 +651,13 @@ pub(crate) fn run_retry(
         };
         Ok::<_, String>(status)
     })();
-    let status = match outcome {
-        Ok(status) => status,
-        Err(error) => {
-            let _ = job.0.kill();
-            let status = job.0.wait().map_err(err)?;
-            if let Some(s) = supervisor.as_mut() {
-                s.after_sim_wait(job.0.id(), status)?;
-            }
-            return Err(error);
-        }
-    };
-    if let Some(s) = supervisor.as_mut() {
-        s.after_sim_wait(job.0.id(), status)?;
-    }
+    let status = outcome?;
+    owner.retire()?;
     if !status.success() {
-        return Err(format!("model_task_child_failed:{}:{status}", job.0.id()));
+        return Err(format!("model_task_child_failed:{}:{status}", pid));
     }
     let result = validate(&dir)?;
-    if result.pid != job.0.id() {
+    if result.pid != pid {
         return Err("model_task_child_pid".into());
     }
     // Preserve the original public artifact paths; publication never overwrites.
@@ -738,7 +699,8 @@ pub fn reference_probe(dir: &Path, tier: Tier) -> Result<ResultRecord, String> {
 // Diagnostic control frames and path conversion reserve are distinct. Fixed
 // metadata must remain within the 16KiB part of the 64KiB metadata/path bill.
 const _: () = assert!(
-    std::mem::size_of::<Request>() * 2
+    std::mem::size_of::<crate::normal_pool::broker::StartupOwner>()
+        + std::mem::size_of::<Request>() * 2
         + std::mem::size_of::<ResultRecord>() * 3
         + std::mem::size_of::<Root>() * 3
         + std::mem::size_of::<Index>() * 2
