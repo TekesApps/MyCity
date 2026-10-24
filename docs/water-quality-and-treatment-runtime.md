@@ -50,6 +50,14 @@ Planning hard caps16KiB saved state and96KiB candidate workspace are reverse-des
 
 Raw restore is not an authenticated provider. Original opening registration and committed source/treatment/consumption receipts authenticate facts after save/load; preserve policy version, exact remainders, source/port cursor, gross/outflow costs and event/random identities. No unknown history is invented. Retain fixed actual inputs/programs/all failure/full recovery originals on the existing HP P900 target/work; no extra target or deletion of WIP. Stage artifact plan768MiB, preflight before execution, no measurement-time cleanup.
 
+### Idle coverage policy1
+
+Production requests continue to require strictly positive input. A separate `IdleFacts`/`IdleCandidate` path covers a continuous `[base.cursor,until)` interval only when root authenticates its entire original Timeline and accepted-work history. A currently stopped machine, nonzero receipt ID or checkpoint digest does not prove that history. The production verifier gains no idle authority: `verifies_idle` defaults to false.
+
+An accepted idle candidate changes only the cursor and checked sequence; processed quantities, prefetched inputs, StreamBasis, every WIP and cost, obligations and resource occupancy remain unchanged, with a full zero Delta. Revalidation compares fresh facts and the original base digest and recomputes the complete candidate. It neither manufactures electric/cost receipts nor renews a source/use permission. Subsequent production must independently authenticate its true new window, e.g. production to3, idle3..1000, production1000..1001.
+
+Structural restore may accept a later cursor and positive sequence with zero processed quantity only while the initial StreamBasis and all previous configuration, amount and time bounds hold. This is not historical authentication or `ready`; root still needs original idle receipts, including recovery and exact original-envelope retry. Split and merged idle intervals preserve material and costs, while their sequence counts may differ. No load-time cursor repair is permitted. The current component interface does not supply that root history verifier or Store persistence.
+
 ## Acceptance sequence and limits
 
 1. Component independent oracle:100m3 mass/volume/reagent/power closure,20L fractional dose, exact harmful threshold, unknown/other rejection, mix/leak/evaporation, full finite sinks, precision budget, stale/tampered restore, equivalent split/merged prefixes and WIP/cost closure.

@@ -6,6 +6,8 @@ use sha2::{Digest, Sha256};
 use std::cmp::Ordering;
 
 pub const VERSION: u32 = 1;
+/// Cursor-only idle coverage policy; does not change production or chemistry policy.
+pub const IDLE_POLICY_VERSION: u32 = 1;
 pub const PRECISION_VERSION: u32 = 1;
 /// Independent water/mass precision policy; NOT the electric network's denominator grant.
 pub const MAX_DENOMINATOR: u64 = 1_000_000_000_000_000_000;
@@ -279,7 +281,22 @@ pub struct RootFacts {
     pub electricity_basis_cents:u64, pub personnel_cents:u64, pub residual_cents:u64,
     pub cash_available_cents:u64, pub cost_receipt_ref:u64, pub supply_receipt_ref:u64,
 }
-pub trait RootVerifier { fn verifies(&self, config:&Config, base:&Checkpoint, request:Request, facts:&RootFacts)->bool; }
+/// Historical whole-interval idle evidence. An ID/digest or current stopped status
+/// is insufficient: root must authenticate original Timeline coverage and ensure no
+/// already accepted treatment work is skipped. No electricity/cost ticket is invented.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct IdleFacts {
+    pub policy_version:u32, pub binding:Binding, pub from:u64, pub until:u64,
+    pub read_version:u64, pub timeline_revision:u64, pub idle_receipt_ref:u64,
+}
+pub trait RootVerifier {
+    fn verifies(&self, config:&Config, base:&Checkpoint, request:Request, facts:&RootFacts)->bool;
+    /// Default-deny preserves the production-only verifier's authority boundary.
+    /// Implementations check complete [from,until) history, original source receipts,
+    /// accepted-work revision and root epoch/CAS. No use/right renewal or liability release.
+    fn verifies_idle(&self, _config:&Config, _base:&Checkpoint, _facts:&IdleFacts)->bool { false }
+}
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Meters {
@@ -306,6 +323,22 @@ pub struct Delta {
 pub struct Candidate {
     pub version:u32, pub base_digest:[u8;32], pub facts:RootFacts, pub request:Request,
     pub next:Checkpoint, pub delta:Delta,
+}
+/// Separate typed candidate: never a zero-input production candidate or provider grant.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct IdleCandidate {
+    pub policy_version:u32, pub base_digest:[u8;32], pub facts:IdleFacts,
+    pub next:Checkpoint, pub delta:Delta,
+}
+impl Delta {
+    fn zero()->Self {
+        Self { input_ml:Exact::ZERO,reagent_mq:Exact::ZERO,electricity_mwh:Exact::ZERO,
+            product:Composition::known_zero(Exact::ZERO),concentrate:Composition::known_zero(Exact::ZERO),
+            sludge:Composition::known_zero(Exact::ZERO),raw_take_ml:0,reagent_take_mq:0,
+            raw_take_basis_cents:0,reagent_take_basis_cents:0,
+            raw_converted_basis:Exact::ZERO,reagent_converted_basis:Exact::ZERO,root_interval_cost_cents:0 }
+    }
 }
 fn digest<T:Serialize>(x:&T)->Result<[u8;32],Error> {
     // Fixed structs/arrays only: no unbounded strings, maps, vectors or histories.
@@ -357,7 +390,8 @@ impl Config {
         if checkpoint.version!=VERSION || checkpoint.config_digest!=digest(self)?
             || checkpoint.cursor<self.binding.origin_cursor || checkpoint.sequence>checkpoint.cursor-self.binding.origin_cursor
             || (checkpoint.sequence==0 && (checkpoint.cursor!=self.binding.origin_cursor || !checkpoint.processed_ml.is_zero() || checkpoint.raw_stream_basis!=self.initial_stream_basis()))
-            || (checkpoint.sequence!=0 && (checkpoint.processed_ml.is_zero() || checkpoint.cursor==self.binding.origin_cursor)) {
+            || (checkpoint.sequence!=0 && checkpoint.cursor==self.binding.origin_cursor)
+            || (checkpoint.processed_ml.is_zero() && checkpoint.raw_stream_basis!=self.initial_stream_basis()) {
             return Err(Error::Stale);
         }
         self.meters_at(checkpoint.processed_ml,checkpoint.raw_stream_basis)?;
@@ -449,6 +483,32 @@ impl Config {
         let next=Checkpoint { version:VERSION,config_digest:cp.config_digest,cursor:request.until,
             sequence:cp.sequence.checked_add(1).ok_or(Error::Overflow)?,processed_ml:input,raw_stream_basis:facts.raw_stream_basis_after };
         Ok(Candidate { version:VERSION,base_digest:digest(cp)?,facts:facts.clone(),request,next,delta })
+    }
+    /// Advance only the verified historical idle cursor. All persisted material,
+    /// prefetched WIP, original StreamBasis and every derived meter/cost stay unchanged.
+    /// This is a proposal: only root's original Envelope/receipt writer can commit it.
+    pub fn cover_idle<V:RootVerifier>(&self, verifier:&V, base:&State, facts:&IdleFacts, work:u32)->Result<IdleCandidate,Error> {
+        if work==0 { return Err(Error::WorkBudget); }
+        self.restore(base.checkpoint.clone())?;
+        let cp=&base.checkpoint;
+        if facts.policy_version!=IDLE_POLICY_VERSION { return Err(Error::Invalid); }
+        if facts.binding!=self.binding || facts.from!=cp.cursor { return Err(Error::Stale); }
+        if facts.until<=facts.from { return Err(Error::Invalid); }
+        if facts.read_version==0 || facts.timeline_revision==0 || facts.idle_receipt_ref==0
+            || !verifier.verifies_idle(self,cp,facts) { return Err(Error::Unauthorized); }
+        let mut next=cp.clone();
+        next.cursor=facts.until;
+        next.sequence=cp.sequence.checked_add(1).ok_or(Error::Overflow)?;
+        self.restore(next.clone())?;
+        Ok(IdleCandidate { policy_version:IDLE_POLICY_VERSION,base_digest:digest(cp)?,
+            facts:facts.clone(),next,delta:Delta::zero() })
+    }
+    pub fn revalidate_idle<V:RootVerifier>(&self, verifier:&V, base:&State, candidate:&IdleCandidate, fresh:&IdleFacts)->Result<State,Error> {
+        if candidate.policy_version!=IDLE_POLICY_VERSION || candidate.base_digest!=digest(&base.checkpoint)?
+            || &candidate.facts!=fresh { return Err(Error::Stale); }
+        let expected=self.cover_idle(verifier,base,fresh,1)?;
+        if &expected!=candidate { return Err(Error::Stale); }
+        self.restore(candidate.next.clone())
     }
     /// Recompute against fresh root facts. Digests and nonzero references are never authority.
     pub fn revalidate<V:RootVerifier>(&self, verifier:&V, base:&State, candidate:&Candidate, fresh:&RootFacts)->Result<State,Error> {

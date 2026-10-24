@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/water-treatment-20261025/programs02/water_treatment",
+    "--nocapture",
+    "--test-threads=1"
+  ],
+  "exit_code": 0,
+  "timed_out": false,
+  "elapsed_seconds": 0.5220534169999951,
+  "scope": "pure component synthetic RootVerifier incl idle; actual root/Store/Stock/power not proven",
+  "source_and_24_wip_unchanged": true
+}

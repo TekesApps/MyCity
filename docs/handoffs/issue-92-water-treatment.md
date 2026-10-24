@@ -206,3 +206,79 @@ freeze so a self-referential handoff hash is not embedded here.
 ## Root actual component gate - v0.5.186
 
 The writer not_run history above remains. Root froze436 build inputs, added only public module export, passed release workspace check/build and18 actual serial component tests under synthetic RootVerifier, with24 unrelated WIP files unchanged. Original advisor reviewed actual logs/results. [Evidence and limits](../evidence/water-treatment-component-20261025/STATUS.md). No real source/Stock/World/Timeline/Store adapter or use qualification is accepted by this gate. Full #92 remains open. Root must continue the existing generated-water path, not replace it with initial certified water.
+
+## Follow-up owner source: explicit idle coverage seam (after v186)
+
+Root reported publication of the limited component gate at v0.5.186,
+`eb018559dae59f75d863110313022c3d597c2eae`, and #92 result comment 6390430767.
+Those previous 18 component tests and the original owner's not_run history are retained;
+they do not verify this new idle source or the actual growing-water bridge. Root preserved
+v186 original source/tests/program/archive before requesting this bounded follow-up.
+No new Issue, writer, worktree, target, release, PR or independent verifier was created.
+
+The actual bridge needs to represent processing through second 3, no purification during
+[3,1000), then actual supply during [1000,1001). It must not relabel that last second as
+supply for [3,1001), accept a zero-input production prepare, or auto-fill a cursor on load.
+Root's architecture scope is `work/water-treatment-20261025/NEXT-ROOT-BRIDGE.md`.
+Global design, actual runtime, Envelope/receipts and Issue updates remain root-owned.
+
+New API, with original positive-input production prepare unchanged:
+
+- `IDLE_POLICY_VERSION = 1`, separate from chemistry/production policy.
+- `IdleFacts { policy_version, binding, from, until, read_version, timeline_revision,
+  idle_receipt_ref }`. All versions/references must be nonzero and binding must match;
+  `from == base.cursor`, `until > from`. References are not authenticity by themselves.
+- `RootVerifier::verifies_idle(&Config, &Checkpoint, &IdleFacts) -> bool` defaults to
+  **false**. Existing production-only verifiers cannot silently authorize idle. Root must
+  prove complete original Timeline history for the entire [from,until), no purification
+  and no skipped already accepted work, plus source receipt/CAS/read-version identity.
+  Current Stopped or an arbitrary NoWork result is insufficient authority. The independent
+  idle proof requires no fabricated electricity or cost ticket.
+- `Config::cover_idle(verifier, base, facts, work) -> IdleCandidate` clones base, changes
+  only cursor and checked sequence, validates structure and returns zero Delta.
+- `IdleCandidate { policy_version, base_digest, facts, next, delta }` is a separate type.
+  `Config::revalidate_idle(verifier, base, candidate, fresh_facts) -> State` checks policy,
+  CAS/base digest and exact fresh facts, rechecks historical authorization and recomputes
+  the complete candidate. Old receipts, changed facts, altered cost/material delta,
+  StreamBasis/processed/sequence tampering and a stale base fail without mutation.
+
+All existing processed quantities, original Stock takes, fractional input/output masses,
+reagent WIP, confirmed StreamBasis and every cost field remain unchanged by idle. Delta
+includes zero electricity, root interval cost, take basis and converted basis, and zero
+compositions on every outlet. Idle neither renews source or use permits nor releases
+labor, disposal, money or legal obligations. Root's other original systems must retain any
+such obligations during idle; no elapsed-time exemption is granted by this component.
+
+Restore now permits positive sequence with zero processed **only** at a cursor later than
+origin, within the original sequence/elapsed bound and with initial raw StreamBasis
+(None for FrozenLot, zero cumulative basis for stream). Original config digest, precision,
+finite source/reagent/cumulative material and stream basis validation remain. Structural
+admission is not historical idle/Store proof: root must persist and authenticate original
+Idle Envelope/receipt before readiness. No restore call moves the cursor or invents work.
+A later production request still must use exactly that restored cursor as its `from`.
+
+Six additional test functions were written (24 total source functions): initial idle and
+restore in both modes; production to3/idle to1000/actual next interval; merged versus split
+idle with nonzero fractional stream/reagent WIP and all cost meters unchanged; stale/
+nonzero delta/StreamBasis tampering; complete-history/default-deny/accepted-work refusal;
+policy/epoch/zero-work/zero-reference/terminal-u64 cursor bounds. The new idle verifier is
+only a synthetic historical interval fixture. Equality of zero idle deltas and unchanged
+Meters says nothing about arbitrary external production interval charges: original
+production fixtures charge 31 cents per segment and do **not** prove fee partition
+equivalence. No prior production test is relabelled as a fee-invariance test.
+
+Resource shape stays fixed: one idle candidate uses fixed-size fields, one cloned
+Checkpoint and zero Delta; no list/history, scheduler, new clock or growing allocation.
+Idle revalidation/old-new state/serde/restore overlap remains inside root's unchanged total
+admission obligation; 16/96KiB planning caps are not grants or new measured maxima.
+
+**Current follow-up verification: not_run.** Owner performed source edits/read review and
+`git diff --check` only; no cargo, rustc, fmt, test/executable script, benchmark, pressure,
+GPU or actual Stock/Timeline/Store/fee/use verification was run. The small raw-v1 fixture
+is unchanged. Only original module, tests and this handoff changed. Minimal future root-only
+serial command remains `cargo test -p mycity-core --test water_treatment -- --test-threads=1`,
+after advisor source review and root's own frozen-input/target/resource admission gate.
+
+## Root actual idle component gate, v0.5.187
+
+Original advisor source narrow review accepted; workspace release all-target check and24 release component tests passed serially under synthetic verifiers.436 source inputs/fixed executable/24 protected WIP unchanged. Six Idle tests were actually run; this is not original Timeline history/Store authentication, actual power or generated-stock/cost integration. Full #92 open, no PR. Root evidence: docs/evidence/water-treatment-idle-20261025/STATUS.md and work/water-treatment-20261025 source02/programs02/attempt02. Original18 gate and all originals retained.

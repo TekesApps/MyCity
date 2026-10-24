@@ -1,8 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.186`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.187`。已开始Rust模型与headless CLI，当前不做UI。
 
-v0.5.186 adds the [exact water-treatment component](docs/evidence/water-treatment-component-20261025/STATUS.md):18 release tests pass under synthetic RootVerifier. Actual generated-water, joint power, World/Store and use-authority integration remain pending; full #92 stays open.
+v0.5.187 adds [cursor-only idle coverage](docs/evidence/water-treatment-idle-20261025/STATUS.md):24 release component tests pass under synthetic RootVerifier. Actual historical idle authentication, generated-water, joint power, World/Store and use-authority integration remain pending; full #92 stays open.
 
 v0.5.185 adds [original supply RunDue and OpeningInput recovery](docs/evidence/continuous-supply-due-20261025/STATUS.md):27 different release parents, one additional default-debug execution and six independent Store recovery children pass. Existing task priorities, original receipts and accepted targets survive hard supply stops; full issues and M0 remain open.
 

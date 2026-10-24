@@ -1,0 +1,33 @@
+[
+  {
+    "name": "workspace-check",
+    "command": [
+      "cargo",
+      "check",
+      "--locked",
+      "--workspace",
+      "--all-targets",
+      "--release",
+      "--message-format=json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 14.076808167
+  },
+  {
+    "name": "component-release",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--no-run",
+      "--release",
+      "-p",
+      "mycity-core",
+      "--test",
+      "water_treatment",
+      "--message-format=json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 44.309456291000004
+  }
+]

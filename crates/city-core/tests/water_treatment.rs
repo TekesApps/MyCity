@@ -273,3 +273,157 @@ fn stream_wrong_ports_or_nonconserving_root_basis_cannot_enter_checkpoint() {
     let mut cp=s.checkpoint(); cp.raw_stream_basis=None;
     assert_eq!(c.restore(cp),Err(Error::Stale));
 }
+
+/// Synthetic historical interval evidence, never a real Timeline/provider verifier.
+struct IdleHistory { from:u64, until:u64, accepted_work:Option<(u64,u64)> }
+impl RootVerifier for IdleHistory {
+    fn verifies(&self,_:&Config,_:&Checkpoint,_:Request,_:&RootFacts)->bool { true }
+    fn verifies_idle(&self,c:&Config,base:&Checkpoint,facts:&IdleFacts)->bool {
+        facts.binding==c.binding && facts.from==base.cursor && facts.from>=self.from
+            && facts.until<=self.until && facts.read_version==1 && facts.timeline_revision==77
+            && facts.idle_receipt_ref==88 && self.accepted_work.map_or(true,|(from,until)| {
+                facts.until<=from || facts.from>=until
+            })
+    }
+}
+fn idle_facts(c:&Config,from:u64,until:u64)->IdleFacts {
+    IdleFacts { policy_version:IDLE_POLICY_VERSION,binding:c.binding,from,until,
+        read_version:1,timeline_revision:77,idle_receipt_ref:88 }
+}
+fn idle(c:&Config,s:&State,until:u64)->(State,IdleCandidate) {
+    let from=s.checkpoint().cursor;
+    let history=IdleHistory { from,until,accepted_work:None };
+    let facts=idle_facts(c,from,until);
+    let can=c.cover_idle(&history,s,&facts,1).unwrap();
+    let next=c.revalidate_idle(&history,s,&can,&facts).unwrap();
+    (next,can)
+}
+fn assert_idle_zero(delta:&Delta) {
+    assert_eq!(delta.input_ml,Exact::ZERO); assert_eq!(delta.reagent_mq,Exact::ZERO);
+    assert_eq!(delta.electricity_mwh,Exact::ZERO);
+    for out in [delta.product,delta.concentrate,delta.sludge] { assert_eq!(out,Composition::known_zero(Exact::ZERO)); }
+    assert_eq!(delta.raw_take_ml,0); assert_eq!(delta.reagent_take_mq,0);
+    assert_eq!(delta.raw_take_basis_cents,0); assert_eq!(delta.reagent_take_basis_cents,0);
+    assert_eq!(delta.raw_converted_basis,Exact::ZERO); assert_eq!(delta.reagent_converted_basis,Exact::ZERO);
+    assert_eq!(delta.root_interval_cost_cents,0);
+}
+#[test]
+fn initial_idle_restores_zero_material_and_original_stream_basis_without_production() {
+    for stream in [false,true] {
+        let mut c=config(); if stream { c.raw_basis=RawBasisMode::RootConfirmedStream { ports:[104,105] }; }
+        let s=c.open().unwrap(); let before=c.meters(&s).unwrap();
+        let (after,can)=idle(&c,&s,1000);
+        assert_idle_zero(&can.delta);
+        assert_eq!(after.checkpoint().processed_ml,Exact::ZERO);
+        assert_eq!(after.checkpoint().raw_stream_basis,s.checkpoint().raw_stream_basis);
+        assert_eq!(after.checkpoint().cursor,1000); assert_eq!(after.checkpoint().sequence,1);
+        let bytes=serde_json::to_vec(&after.checkpoint()).unwrap();
+        let saved:Checkpoint=serde_json::from_slice(&bytes).unwrap();
+        let restored=c.restore(saved).unwrap();
+        assert_eq!(c.meters(&restored).unwrap(),before);
+        // Structural restore did not grant a production-only verifier idle authority.
+        assert_eq!(c.cover_idle(&FixtureVerifier,&restored,&idle_facts(&c,1000,1001),1),Err(Error::Unauthorized));
+    }
+}
+#[test]
+fn production_to_three_idle_to_thousand_then_only_real_next_interval_is_used() {
+    let c=config(); let (at_three,_)=advance(&c,&c.open().unwrap(),3,e(20_000));
+    let before=c.meters(&at_three).unwrap(); let (at_thousand,can)=idle(&c,&at_three,1000);
+    assert_idle_zero(&can.delta); assert_eq!(c.meters(&at_thousand).unwrap(),before);
+    let z=facts(&c,1000,1001);
+    let req=Request { until:1001,input_ml:e(1) };
+    let production=c.prepare(&FixtureVerifier,&at_thousand,req,&z,1).unwrap();
+    assert_eq!(production.facts.from,1000); assert_eq!(production.facts.until,1001);
+    let after=c.revalidate(&FixtureVerifier,&at_thousand,&production,&z).unwrap();
+    assert_eq!(after.checkpoint().processed_ml,e(20_001));
+    let mut false_interval=z; false_interval.from=3;
+    assert_eq!(c.prepare(&FixtureVerifier,&at_thousand,req,&false_interval,1),Err(Error::Stale));
+    // Production remains positive-only, including after legitimate idle coverage.
+    assert_eq!(c.prepare(&FixtureVerifier,&at_thousand,Request { until:1001,input_ml:Exact::ZERO },&facts(&c,1000,1001),1),Err(Error::Invalid));
+}
+#[test]
+fn split_and_merged_idle_preserve_fractional_material_wip_and_every_cost_meter() {
+    let mut c=config(); c.raw_basis=RawBasisMode::RootConfirmedStream { ports:[104,105] };
+    let start=c.open().unwrap(); let mut z=facts(&c,0,3);
+    z.raw_stream_basis_after=Some(StreamBasis { taken_cents:7,converted:e(2),wip:e(5) });
+    let production=c.prepare(&FixtureVerifier,&start,Request { until:3,input_ml:f(1,2) },&z,1).unwrap();
+    let base=c.revalidate(&FixtureVerifier,&start,&production,&z).unwrap();
+    let (merged,one)=idle(&c,&base,1000);
+    let (part,two)=idle(&c,&base,4); let (split,three)=idle(&c,&part,1000);
+    for can in [&one,&two,&three] { assert_idle_zero(&can.delta); }
+    assert_eq!(c.meters(&merged),c.meters(&base)); assert_eq!(c.meters(&split),c.meters(&base));
+    assert_eq!(merged.checkpoint().processed_ml,split.checkpoint().processed_ml);
+    assert_eq!(merged.checkpoint().raw_stream_basis,split.checkpoint().raw_stream_basis);
+    assert_eq!(merged.checkpoint().cursor,split.checkpoint().cursor);
+    assert_eq!(merged.checkpoint().sequence+1,split.checkpoint().sequence);
+    assert_eq!(c.meters(&merged).unwrap().raw_wip_basis,e(5));
+    // Only idle deltas are zero: this does not assert arbitrary external production
+    // interval costs (the separate 31-cent synthetic fixture) are partition invariant.
+}
+#[test]
+fn idle_rejects_stale_base_freshness_old_receipts_nonzero_deltas_and_basis_tampering() {
+    let mut c=config(); c.raw_basis=RawBasisMode::RootConfirmedStream { ports:[104,105] };
+    let base=c.open().unwrap(); let (next,can)=idle(&c,&base,1000);
+    let history=IdleHistory { from:0,until:2000,accepted_work:None };
+    assert_eq!(c.revalidate_idle(&history,&next,&can,&can.facts),Err(Error::Stale));
+    let mut fresh=can.facts.clone(); fresh.timeline_revision+=1;
+    assert_eq!(c.revalidate_idle(&history,&base,&can,&fresh),Err(Error::Stale));
+    fresh=can.facts.clone(); fresh.idle_receipt_ref=87;
+    assert_eq!(c.cover_idle(&history,&base,&fresh,1),Err(Error::Unauthorized));
+    let mut altered=can.clone(); altered.policy_version+=1;
+    assert_eq!(c.revalidate_idle(&history,&base,&altered,&can.facts),Err(Error::Stale));
+    altered=can.clone(); altered.delta.raw_take_ml=1;
+    assert_eq!(c.revalidate_idle(&history,&base,&altered,&can.facts),Err(Error::Stale));
+    altered=can.clone(); altered.delta.root_interval_cost_cents=1;
+    assert_eq!(c.revalidate_idle(&history,&base,&altered,&can.facts),Err(Error::Stale));
+    altered=can.clone(); altered.delta.product.harmful_mq=m(1);
+    assert_eq!(c.revalidate_idle(&history,&base,&altered,&can.facts),Err(Error::Stale));
+    altered=can.clone(); altered.next.raw_stream_basis=Some(StreamBasis { taken_cents:1,converted:e(1),wip:e(0) });
+    assert_eq!(c.revalidate_idle(&history,&base,&altered,&can.facts),Err(Error::Stale));
+    altered=can.clone(); altered.next.processed_ml=e(1);
+    assert_eq!(c.revalidate_idle(&history,&base,&altered,&can.facts),Err(Error::Stale));
+    altered=can.clone(); altered.next.sequence=u64::MAX;
+    assert_eq!(c.revalidate_idle(&history,&base,&altered,&can.facts),Err(Error::Stale));
+    let mut forged=next.checkpoint(); forged.raw_stream_basis=Some(StreamBasis { taken_cents:1,converted:e(1),wip:e(0) });
+    assert_eq!(c.restore(forged),Err(Error::Stale));
+}
+#[test]
+fn idle_needs_full_history_and_cannot_skip_accepted_work_or_use_default_authority() {
+    let c=config(); let base=c.open().unwrap(); let z=idle_facts(&c,0,1000);
+    assert_eq!(c.cover_idle(&FixtureVerifier,&base,&z,1),Err(Error::Unauthorized));
+    assert_eq!(c.cover_idle(&RejectVerifier,&base,&z,1),Err(Error::Unauthorized));
+    let partial=IdleHistory { from:500,until:1000,accepted_work:None };
+    assert_eq!(c.cover_idle(&partial,&base,&z,1),Err(Error::Unauthorized));
+    let accepted=IdleHistory { from:0,until:1000,accepted_work:Some((30,31)) };
+    assert_eq!(c.cover_idle(&accepted,&base,&z,1),Err(Error::Unauthorized));
+    let history=IdleHistory { from:0,until:1000,accepted_work:None };
+    let can=c.cover_idle(&history,&base,&z,1).unwrap();
+    assert_eq!(c.revalidate_idle(&accepted,&base,&can,&z),Err(Error::Unauthorized));
+    assert_eq!(base.checkpoint(),c.open().unwrap().checkpoint());
+}
+#[test]
+fn idle_policy_bounds_epoch_zero_work_and_terminal_cursor_do_not_wrap() {
+    let c=config(); let base=c.open().unwrap();
+    let history=IdleHistory { from:0,until:u64::MAX,accepted_work:None };
+    let original=idle_facts(&c,0,1);
+    assert_eq!(c.cover_idle(&history,&base,&original,0),Err(Error::WorkBudget));
+    let mut z=original.clone(); z.policy_version+=1;
+    assert_eq!(c.cover_idle(&history,&base,&z,1),Err(Error::Invalid));
+    z=original.clone(); z.until=0;
+    assert_eq!(c.cover_idle(&history,&base,&z,1),Err(Error::Invalid));
+    z=original.clone(); z.binding.root_epoch+=1;
+    assert_eq!(c.cover_idle(&history,&base,&z,1),Err(Error::Stale));
+    z=original.clone(); z.read_version=0;
+    assert_eq!(c.cover_idle(&history,&base,&z,1),Err(Error::Unauthorized));
+    z=original.clone(); z.timeline_revision=0;
+    assert_eq!(c.cover_idle(&history,&base,&z,1),Err(Error::Unauthorized));
+    z=original.clone(); z.idle_receipt_ref=0;
+    assert_eq!(c.cover_idle(&history,&base,&z,1),Err(Error::Unauthorized));
+    z=idle_facts(&c,0,u64::MAX);
+    let can=c.cover_idle(&history,&base,&z,1).unwrap();
+    let terminal=c.revalidate_idle(&history,&base,&can,&z).unwrap();
+    assert_eq!(terminal.checkpoint().cursor,u64::MAX); assert_eq!(terminal.checkpoint().sequence,1);
+    assert_eq!(c.cover_idle(&history,&terminal,&idle_facts(&c,u64::MAX,u64::MAX),1),Err(Error::Invalid));
+    let mut invalid=terminal.checkpoint(); invalid.cursor=0;
+    assert_eq!(c.restore(invalid),Err(Error::Stale));
+}

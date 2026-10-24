@@ -1,0 +1,13 @@
+# #92 idle coverage component gate
+
+v0.5.187 candidate, baseline v0.5.186 `eb018559dae59f75d863110313022c3d597c2eae`; original owner `01a16ffe-dbe1-7a62-b610-c5e72d490d7e`, original advisor `/root/three_module_delivery_advisor`, root shared writer/serial verifier. No new worktree, target or timer.
+
+Separate policy1 Idle covers only the interval authenticated by root, defaults to refusal and changes cursor/checked sequence only. All material/WIP/StreamBasis/cost fields remain unchanged with zero Delta. CAS/fresh-fact recomputation rejects altered candidates; zero-production structural recovery preserves initial StreamBasis. Production requests still require positive volume.
+
+Actual serial commands: `cargo check --locked --workspace --all-targets --release --message-format=json`; `cargo test --locked --no-run --release -p mycity-core --test water_treatment --message-format=json`; then the copied fixed test executable with `--nocapture --test-threads=1`. All exit0,24 passed/0 failed/ignored/filtered; no timeout. Source02 freezes436 inputs; source/program hashes and24 protected WIP matched before/after. Source01/programs01/18-test originals and all failure evidence retained.
+
+Six new tests cover initial idle+restore; production3→idle1000→production1000..1001; split/merged idle preserving fractional WIP/material/all cost; stale/changed facts, candidate/basis/nonzero Delta tampering; default-refusal, incomplete history and skipped accepted work; policy/time/work/terminal sequence bounds. Synthetic verifiers prove component contracts only; they are not actual whole-Timeline evidence or original electricity/cost receipts.
+
+Original advisor source review found no new causal/conservation/authority/restore blocker. Actual historical idle authentication and original Envelope/Store retry/recovery remain **not implemented**. Generated-stock debit/net projection, production cost curve, joint pump/generator/treatment allocation, real employment/personnel/residual/use authority and full #92 remain pending.16/96KiB are planning caps, not actual joint workspace acceptance. No16GB/GPU/performance/M0 or sanitary-use claim; frozen loads/standards and64/8/4MiB budgets unchanged. No PR; issue remains open.
+
+Machine Mac16,1/32GiB/Rust1.85.1; existing external HP P900 USB/APFS target/work. Complete evidence at `work/water-treatment-20261025/`: source02 ZIP+manifest, fixed programs02+manifest, attempt02 logs, build02-status/result02, original advisor, protected WIP, all previous originals and publication/issue receipts.768MiB stage cap; logical bytes are not APFS freed space. No recovery source or cache removed during validation.
