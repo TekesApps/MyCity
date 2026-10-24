@@ -43,6 +43,11 @@ enum Command {
         limit: usize,
         cursor: Option<String>,
     },
+    ObserveQuery {
+        section: Query,
+        limit: usize,
+        cursor: Option<String>,
+    },
 }
 fn storage_error(e: Error) -> Value {
     match e {
@@ -167,7 +172,13 @@ impl Session {
                 self.status()
             }
             Command::Receipt { operation_id } => {
-                let record = self.store.receipt(operation_id).map_err(storage_error)?;
+                // Store authenticates the original hot/archive record before visibility.
+                // Missing and another actor's record share one unknown response.
+                let record = self.store.receipt(operation_id).map_err(storage_error)?
+                    .filter(|record| match self.caller {
+                        Caller::System => true,
+                        Caller::Account(account) => record.actor == account,
+                    });
                 Ok(
                     json!({"state":if record.is_some(){"recorded"}else{"unknown"},"record":record,"sequence":self.store.committed_sequence()}),
                 )
@@ -176,12 +187,24 @@ impl Session {
                 section,
                 limit,
                 cursor,
-            } => serde_json::to_value(
-                self.store
+            } => {
+                if !matches!(self.caller, Caller::System) {
+                    return Err(json!({"code":"query_operator_required"}));
+                }
+                serde_json::to_value(self.store
                     .query(section, cursor.as_deref(), limit)
-                    .map_err(storage_error)?,
-            )
-            .map_err(|_| json!({"code":"encoding"})),
+                    .map_err(storage_error)?)
+                    .map_err(|_| json!({"code":"encoding"}))
+            }
+            Command::ObserveQuery { section, limit, cursor } => {
+                if !matches!(self.caller, Caller::System) {
+                    return Err(json!({"code":"query_operator_required"}));
+                }
+                serde_json::to_value(crate::query_observation::observe(
+                    &mut self.store, section, cursor.as_deref(), limit,
+                ).map_err(storage_error)?)
+                    .map_err(|_| json!({"code":"encoding"}))
+            }
             command @ (Command::Submit { .. } | Command::Step { .. } | Command::Run { .. }) => {
                 let mode = match &command {
                     Command::Step { .. } => 1,

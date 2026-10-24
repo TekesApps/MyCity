@@ -89,3 +89,20 @@ T10-A只交付有限 profile 的命令入口与实验控制。全源因果调度
 ## v0.5.21：T05-B分页接入
 
 新增timeline查询和Progress／complete_boundary，status区分last_complete与工作时刻，显示持久续做票。Timeline启用后旧独立推进器拒绝；其分页Advance只走暂停step，run返回timeline_step_only，不声称新协调器已通过倍率性能门。完整协议和未实现边界见[T05-B契约](m0-timeline-runtime.md)，真实CLI处理中状态／只读查询／重开有本版测试。原上文v0.5.19的速度观测只属于该冻结版本。
+
+## Operator 观测与原票读取边界（#49/#45，v176 有限接线）
+
+这是 v173 分页修复之后的合同与 v176 有限实现；[固定来源与实际结果](evidence/operator-observation-20261024/STATUS.md)区分源码审查与 root 执行。独立 `query_observation` owner 只写真实 Store 查询适配器，root 独占 CLI/session 路由、caller 门、验证和发布。它不授予完整账户可见性，也不接入通用 Sim IPC 查询。
+
+- 原独立 CLI `query WORLD RULES ...` 继续是可信本地 operator 诊断，保留原 Page 输出及 cursor 语义。新增 `observe-query` 与 session `observe_query` 使用显式 `mycity-operator-observation-v1` schema，内含同次原 Page；不静默替换旧 CLI 消费者的格式。
+- session 的旧 `query` 和新 `observe_query` 在调用 Store 查询前统一检查可信 argv 选择的 `Caller::System`；账户返回稳定 `query_operator_required`。不能仅限制新路径而保留账户绕回 raw Query；JSON 仍不能声明 caller。
+- 账户仍可查自己提交的成功、失败原票。依据原 `JournalRecord.actor` 与可信 Account ID 精确匹配，不能根据 actions 涉及哪一个钱包推断权限；System 保留完整诊断。hot 与 archived 使用同一过滤，先完成原 Store 校验，存档损坏/恢复错误照常传播。
+- 账户侧缺失与不可见统一返回 `state: "unknown"`、无 record，含义是“没有可返回的本人原票”，不证明 operation 未发生。未知提交必须查询/重试原 Envelope，不能换 operation 重做。撤销回复、pause/reopen 与查询权限不撤销已发生事实。
+- 观测适配器只移动原 Page 的所有权并追加有界元数据，不 clone 整页/World 或引入新缓存；序列化和输出缓冲仍须另计。原 sequence/state/snapshot hash/cursor、处理中边界、真实 last_complete 与 working/target 分开。通用行标签明确是 Store 返回的记录或诊断状态，不能把 live 存储/来源诊断一概叫作 committed 业务事实，也不能把计划当已发生交付。
+- coverage、source/version、observed_at/age、事实/预测、阻断和条件 ETA 均须有对应来源；缺 provider 显式 typed Unknown。区域快照的原观测时点和 age 可解释；transport remaining_seconds 不能直接变成 ETA。没有新的预测、Goal/Monitor 或事项因果 provider，不在薄适配器里补造它们。
+
+只读访问本身不推进时间、改随机、释放占用或收回义务。Store 内部诊断 API 不被改造成猜测式逐行权限过滤器。Status、其它控制/诊断与未来玩家可见性仍须各自明确，Query/Receipt 局部门不能冒称整个账户 session 已实现私有数据隔离。
+
+验收须使用实际 session/CLI 进程：账户对所有旧/new query 拒绝且不返回行，System 正常分页；本人成功/失败、他人/System、缺失和 checkpoint archived 原票同规则；本人失响应后按原 Envelope 恢复；旧 CLI Page 格式、stale cursor 和 Store 错误保持。来源元数据不得拼接另一个 revision 的状态。仍使用原外置 target/work 串行排程，保留所有原始失败和恢复世界，不扩大原 M0/16GB 结论。
+
+本次实际模块 5/5、新入口 3/3、原 session 16/16，共 24 项不同测试通过。模块实际测试限额、游标/失效、源状态错误与 working/complete 分离；新入口实际验证冷热原票和 actor 门。未专门向 session Receipt 路径注入损坏归档；保留该项待验证，不能用源码错误传播代替实际注入。Status 等其它入口的账户隔离和完整 #49 仍开放。

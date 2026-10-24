@@ -1,8 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.175`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.176`。已开始Rust模型与headless CLI，当前不做UI。
 
-v0.5.175 补齐[无合适住房的真实 Store 等待与恢复](docs/evidence/housing-no-candidate-wait-20261024/STATUS.md)，新增 2 项测试通过，结合既有证据及任务资源登记收口原有限 E 工作包 #26；完整住房、父级 #4、16GB 与 M0 验收继续开放。此前 v0.5.174 的[几何撤回修复](docs/evidence/geometry-withdrawal-20261024/STATUS.md)保留原有限 F 证据。
+v0.5.176 接入[本地操作员观测与原票读取权限](docs/evidence/operator-observation-20261024/STATUS.md)，24 项不同测试通过；原 CLI Page 格式保留，账户不能绕过操作员查询门，自己的成功/失败原票仍可冷热恢复。完整 #49、账户隔离、真实 16GB 与 M0 继续开放。v175 的[有限 E 住房包](docs/evidence/housing-no-candidate-wait-20261024/STATUS.md)已收口，父 #4 继续开放。
 
 v0.5.173 修复 [Store 分页临时投影](docs/evidence/query-page-projection-20261024/STATUS.md)，6 项限定串行回归通过；完整 #49 仍未完成。
 

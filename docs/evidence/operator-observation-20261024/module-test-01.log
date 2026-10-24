@@ -1,0 +1,19 @@
+
+running 5 tests
+test query_observation::tests::actual_paused_transport_remaining_is_not_eta_or_delivery ... ok
+test query_observation::tests::actual_query_errors_limits_and_old_cursors_pass_through ... ok
+test query_observation::tests::actual_snapshot_provenance_is_same_store_and_has_narrow_coverage ... ok
+test query_observation::tests::actual_store_all_sections_pages_and_reopen_preserve_raw_page ... ok
+test query_observation::tests::actual_timeline_processing_is_not_promoted_to_last_complete ... 
+thread 'query_observation::tests::actual_timeline_processing_is_not_promoted_to_last_complete' panicked at crates/city-headless/src/query_observation_tests.rs:47:58:
+called `Result::unwrap()` on an `Err` value: Invalid("timeline_page_limit_too_small")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+FAILED
+
+failures:
+
+failures:
+    query_observation::tests::actual_timeline_processing_is_not_promoted_to_last_complete
+
+test result: FAILED. 4 passed; 1 failed; 0 ignored; 0 measured; 11 filtered out; finished in 0.68s
+

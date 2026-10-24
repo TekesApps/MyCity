@@ -1,0 +1,10 @@
+{
+  "regular_files": 238,
+  "logical_bytes": 106929880,
+  "planning_budget_bytes": 134217728,
+  "physical_peak": "not_measured",
+  "retained_new_entry_children": 12,
+  "retained_new_entry_regular_files": 90,
+  "retained_new_entry_logical_bytes": 69786,
+  "no_unrelated_wip_deleted": true
+}

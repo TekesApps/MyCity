@@ -1,0 +1,16 @@
+[
+  {
+    "label": "module",
+    "exit": 101,
+    "seconds": 1.4117059707641602,
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/operator-observation-20261024/bin-01/mycity_headless-ca2115b48c37af05-tests",
+      "query_observation::tests::",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "worlds": "/Users/frankqin/dev/MyCity/work/operator-observation-20261024/worlds-module-01",
+    "source_sha256": "d992d5b065458e418892de2302454fb830bda142ee7e7f6543b48256f177e7b7",
+    "default_stack": true
+  }
+]

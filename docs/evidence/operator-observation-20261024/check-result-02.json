@@ -1,0 +1,19 @@
+{
+  "exit": 0,
+  "seconds": 8.246334075927734,
+  "command": [
+    "cargo",
+    "check",
+    "-p",
+    "mycity-headless",
+    "--all-targets",
+    "--release",
+    "--locked",
+    "--offline",
+    "-j",
+    "1"
+  ],
+  "actual_generation": "source02",
+  "raw_log": "check-02.log",
+  "provenance_note": "freeze02 wrote this new summary to01 filename accidentally; original01 timing JSON overwritten, not reconstructed; original01 raw log/source/bin retained"
+}

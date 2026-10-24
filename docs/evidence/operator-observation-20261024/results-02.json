@@ -1,0 +1,42 @@
+[
+  {
+    "label": "module",
+    "exit": 0,
+    "seconds": 1.4827661514282227,
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/operator-observation-20261024/bin-02/mycity_headless-ca2115b48c37af05-tests",
+      "query_observation::tests::",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "worlds": "/Users/frankqin/dev/MyCity/work/operator-observation-20261024/worlds-module-02",
+    "source_sha256": "ef65f5bb95bf247125cf99f0dce3268891b0cb0cfa3e8a3bc485037b0f0eeb8b",
+    "default_stack": true
+  },
+  {
+    "label": "entry",
+    "exit": 0,
+    "seconds": 1.5592761039733887,
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/operator-observation-20261024/bin-02/session_observation_access-9838382b70c2ea1e-tests",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "worlds": "/Users/frankqin/dev/MyCity/work/operator-observation-20261024/worlds-entry-02",
+    "source_sha256": "ef65f5bb95bf247125cf99f0dce3268891b0cb0cfa3e8a3bc485037b0f0eeb8b",
+    "default_stack": true
+  },
+  {
+    "label": "session-regression",
+    "exit": 0,
+    "seconds": 61.02649807929993,
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/operator-observation-20261024/bin-02/session-6ed0323947d9bc2e-tests",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "worlds": "/Users/frankqin/dev/MyCity/work/operator-observation-20261024/worlds-session-regression-02",
+    "source_sha256": "ef65f5bb95bf247125cf99f0dce3268891b0cb0cfa3e8a3bc485037b0f0eeb8b",
+    "default_stack": true
+  }
+]

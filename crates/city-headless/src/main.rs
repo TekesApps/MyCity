@@ -6,6 +6,7 @@ mod economy_probe;
 mod exchange_probe;
 mod opening_cli;
 mod opening_source_provider;
+mod query_observation;
 mod session;
 mod timeline_probe;
 mod worker_probe;
@@ -707,6 +708,22 @@ fn run() -> Result<(), String> {
             )?)
             .map_err(|e| e.to_string())?
         );
+        return Ok(());
+    }
+    if args.get(1).is_some_and(|a| a == "observe-query") {
+        if !(5..=7).contains(&args.len()) {
+            return Err("usage: mycity-headless observe-query WORLD RULES <contracts|fulfilment|arrears|capacity|blocked|recovery|receipts|timeline> [1..64] [cursor]".into());
+        }
+        let query: mycity_storage::Query =
+            serde_json::from_value(json!(args[4])).map_err(|e| e.to_string())?;
+        let limit = args.get(5).map(|s| s.parse::<usize>()).transpose()
+            .map_err(|e| e.to_string())?.unwrap_or(16);
+        let mut store = mycity_storage::Store::open(std::path::Path::new(&args[2]), &args[3])
+            .map_err(|e| format!("{e:?}"))?;
+        let observation = query_observation::observe(
+            &mut store, query, args.get(6).map(String::as_str), limit,
+        ).map_err(|e| format!("{e:?}"))?;
+        println!("{}", serde_json::to_string_pretty(&observation).map_err(|e| e.to_string())?);
         return Ok(());
     }
     if args.get(1).is_some_and(|a| a == "query") {

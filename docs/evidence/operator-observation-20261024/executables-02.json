@@ -1,0 +1,18 @@
+{
+  "/Users/frankqin/dev/MyCity/target/release/mycity-headless": {
+    "copy": "/Users/frankqin/dev/MyCity/work/operator-observation-20261024/bin-02/mycity-headless-normal",
+    "sha256": "b510f71310778ad5711c91146329ceccb16ef2b44234cc0de92c07adc09883a3"
+  },
+  "/Users/frankqin/dev/MyCity/target/release/deps/mycity_headless-ca2115b48c37af05": {
+    "copy": "/Users/frankqin/dev/MyCity/work/operator-observation-20261024/bin-02/mycity_headless-ca2115b48c37af05-tests",
+    "sha256": "80b77ced7bce90b83907e1bc2b43e895f03e34b93b257ddd8bb5ad74374d62c8"
+  },
+  "/Users/frankqin/dev/MyCity/target/release/deps/session_observation_access-9838382b70c2ea1e": {
+    "copy": "/Users/frankqin/dev/MyCity/work/operator-observation-20261024/bin-02/session_observation_access-9838382b70c2ea1e-tests",
+    "sha256": "00594c564733ebfee1039193dead55ff233f69e4faa020c027b42475ea4f2f62"
+  },
+  "/Users/frankqin/dev/MyCity/target/release/deps/session-6ed0323947d9bc2e": {
+    "copy": "/Users/frankqin/dev/MyCity/work/operator-observation-20261024/bin-02/session-6ed0323947d9bc2e-tests",
+    "sha256": "7d95836eab7969eb1ff6c168a2be971908aa87e6e33bde22dd4e62a29a26c59d"
+  }
+}

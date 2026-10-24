@@ -1,0 +1,22 @@
+
+running 16 tests
+test checkpoint_persists_without_clock_or_pacing_reset_and_retains_original_receipt ... ok
+test command_conflicts_scope_revision_and_paging_do_not_change_business_state ... ok
+test disk_backpressure_cannot_be_bypassed_by_step_or_speed ... ok
+test four_real_paced_speeds_preserve_business_result_without_claiming_throughput ... ok
+test huge_time_speed_and_stale_cursor_reject_without_mutation ... ok
+test independent_boot_profile_completes_real_pump_before_pause_confirmation ... ok
+test json_cannot_elevate_identity_and_failed_transactions_remain_queryable ... ok
+test malformed_and_oversized_input_are_bounded_and_do_not_commit ... ok
+test old_source_identity_cannot_be_used_to_write_with_new_binary ... ok
+test paced_economy_day_matches_unpaced_committed_business_and_reports_real_wall_time ... T10_PACED_DAY {"actual_game_seconds_per_wall_second":1501.2764368329729,"actual_wall_seconds":57.5510265,"game_seconds":86400,"memory_16gb_gate":"not_run","persistent_commits":24,"same_state_as_unpaced":true,"source_sha256":"8eeb909858a20b01f9535775aee8b7fa707457f2c3b95306562bf4aabb6a457f","state_sha256":"e12c19954ca89e978f61c64e4ce74e58c4aa4b99b095a663613288fd1e99849d","store_owned_capacity_bytes":41153041,"target_exactly_met":true,"target_wall_seconds":60}
+ok
+test pause_step_run_and_cold_receipt_are_exact_across_real_reopen ... ok
+test replay_conflict_and_rejected_requests_cannot_reset_release ... ok
+test slicing_across_due_boundaries_changes_no_cash_obligation_or_clock ... ok
+test source_reconciliation_blocks_clock_but_preserves_observation ... ok
+test timeline_partial_status_query_reopen_and_exact_receipt ... ok
+test timeline_probe_runs_real_three_profiles_and_reports_scope ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 60.39s
+

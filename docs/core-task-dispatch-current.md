@@ -794,3 +794,30 @@ its dedicated runtime in its original private tree, still author not_run; root d
 unfinished private source. Full54/57/118, native16GB and M0 remain open;24 WIP unchanged.
 #107 read-only audit found no existing migration writer seam; no preflight-only substitute
 was dispatched as executable migration. Keep original root/recovery evidence intact.
+
+### v0.5.175–176 current finite acceptance and next shared bridge
+
+#25/v174 and #26/v175 completed their original finite F/E packages after original advisor
+scope audits and actual Store recovery gates; both issues are closed, parents/full product
+remain open. [Housing Wait evidence](evidence/housing-no-candidate-wait-20261024/STATUS.md)
+retains the new2/2 plus version-specific prior evidence. No full16GB/M0/32-household claim.
+
+#49/v176 [operator observation and receipt gate](evidence/operator-observation-20261024/STATUS.md)
+passes24 distinct tests (module5/newprocess3/oldsession16), preserving initial4pass/1fail.
+Trusted System gates old/new session query; own successful/failed original receipts remain
+visible to their actor in hot/archive paths; unknown is not permission to reissue business.
+Full49 including general Goal/Monitor/SimIPC/providers and wider privacy remains open.
+
+#54 original owner frozen03 is now accepted by the original advisor after B1/B2 repairs:
+full pending/stop/history/final reserve, retained authenticated actual endpoint, Stop refusing
+unsupported actual evidence, required strategy_version2 refusing implicit old-state upgrade.
+All16 runtime test sources remain not_run; these sources have not been adopted into shared
+World/Store. Root's next bridge is actual shared member-activity/education progress, immutable
+Opening, original receipt-anchor authentication, Timeline and same-commit/cold recovery.
+No second writer, capacity pool or silent old-candidate migration is authorized.
+
+Current dependency check found no safe additional real-provider parallel increment among
+#57/#61/#98/#73 before that shared seam and authenticated inputs. Repeating synthetic DTO/
+planner delivery would not advance real integration. Keep original owners and originals:
+#57 needs need/depart/onsite/return facts; #61 replayable activity+place/field coverage;
+#98 unit/versioned actual emission/noise sources; #73 plans are not actual passenger trips.

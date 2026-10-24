@@ -1,0 +1,1 @@
+Original advisor compared full01 to02 diff. Prior diagnostic-vs-committed label blocker resolved. Only label, two expected assertions and descriptions changed; original Page/errors/cursor/Unknown/query unchanged. Source adoption acceptable. Five tests and real entry authorization not_run.

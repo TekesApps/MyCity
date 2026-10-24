@@ -1,0 +1,11 @@
+
+running 3 tests
+test account_cannot_bypass_operator_query_gate_or_self_elevate ... OBSERVATION_ENTRY_ARTIFACT=/Users/frankqin/dev/MyCity/work/operator-observation-20261024/worlds-entry-02/entry-query-gates-23503-0
+ok
+test raw_cli_and_operator_session_remain_exact_while_observations_add_unknowns ... OBSERVATION_ENTRY_ARTIFACT=/Users/frankqin/dev/MyCity/work/operator-observation-20261024/worlds-entry-02/entry-operator-compatibility-23503-2
+ok
+test receipt_visibility_preserves_own_success_failure_and_retry_hot_and_archived ... OBSERVATION_ENTRY_ARTIFACT=/Users/frankqin/dev/MyCity/work/operator-observation-20261024/worlds-entry-02/entry-receipt-visibility-23503-6
+ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.00s
+
