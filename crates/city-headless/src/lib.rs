@@ -1,6 +1,8 @@
 //! Bounded process protocol shared by the CLI supervisor and its integration tests.
 pub mod air_turns;
 pub mod air_page_metrics;
+pub mod air_page_policy;
+pub mod adaptive_client;
 pub mod compute_worker;
 
 pub mod sim_host;

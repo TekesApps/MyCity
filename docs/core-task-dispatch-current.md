@@ -653,3 +653,19 @@ No automatic controller is activated. Next is explicit bounded automatic Continu
 already-granted task, varying pages only, with conservative Unknown/zero handling, minimum
 hold/hysteresis and reported irreducible segment-page overrun. It cannot increase admission,
 concurrency or assume freed resident memory. Whole-game cost/16GB/GPU/M0/full104 remain open.
+
+
+## v0.5.166 actual automatic exact-page control (#104 finite increment)
+
+[Actual automatic Continue evidence](evidence/air-auto-continue-20261024/STATUS.md) records
+production Client-side AdaptiveSession borrowing the original owner. A boundary returns one
+pending decision; the next step attempts it once. Pages1/2/4/8/16 only, source/cell unchanged;
+real positive page wall samples, two-turn trend/hold and conservative Unknown/zero fallback.
+Query responses precede Continue, cancel/drop/initial and Continue uncertain writes retain
+original responsibilities. Typed timeout alone permits repoll; auxiliary final sample failure
+is unavailable observation, never business rejection.111 serial tests pass, including10 actual
+control cases and byte-identical688908B fixed/automatic checkpoint. Recorded target change is
+a test stimulus, not calibrated fixed-target capacity. Original advisor accepts finite scope.
+Full104/whole-game multidimensional budget, speed/backpressure/fairness,16GB/GPU/M0 stay open.
+Next budget work must attach measured shared process/resident costs and existing allocator
+constraints; it cannot turn this per-task wall preference into global CPU/memory admission.

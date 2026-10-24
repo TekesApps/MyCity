@@ -334,3 +334,15 @@ sampling stays unavailable without changing original work/retirement/Store autho
 capture overhead; short samples and known0ns readings do not prove free work, a hard tail
 bound, resident budget or capacity. Automatic Continue and full-game control still need the
 next actual implementation/calibration; full104/103 and original M0/16GB/GPU gates stay open.
+
+
+### v0.5.166 bounded automatic Continue on an already-granted exact task
+
+[Actual control evidence](evidence/air-auto-continue-20261024/STATUS.md): production borrowed
+AdaptiveSession lives in Client supervision, reusing original Sim/Worker/Store/Broker authority.
+At a verified boundary it returns one pending pages-only decision and next step attempts it
+once; boundary query/cancel/retarget remain possible. Failed writes retain original ownership;
+typed Timeout alone is repollable, auxiliary sample changes cannot reject original result.
+111 serial tests and full fixed/automatic checkpoint equality support this finite path, with
+explicit test target switching. This is not whole-game budget scheduling, calibrated minimum
+wall holding time, hard deadline,16GB/GPU/M0 or population/fast-forward capacity acceptance.

@@ -11,6 +11,8 @@ use std::{
     thread::{self, JoinHandle},
     time::Duration,
 };
+#[derive(Debug)]
+pub enum ReceiveError { Timeout, Fault(String) }
 /// Explicit laboratory cuts at the existing partial-startup error boundaries.
 /// These do not claim to reproduce OS pipe/thread allocation failure.
 #[doc(hidden)]
@@ -39,7 +41,7 @@ impl Client {
             outstanding: None, worker_pid: None, cache_root: PathBuf::new(), executable: PathBuf::new() }
     }
     pub fn is_empty(&self) -> bool {
-        self.owner.is_empty() && self.input.is_none() && self.receiver.is_none() && self.reader.is_none()
+        self.owner.is_empty() && self.input.is_none() && self.receiver.is_none() && self.reader.is_none() && self.outstanding.is_none()
     }
 
     pub fn start(&mut self, executable: &Path, world: &Path, create: bool) -> Result<(), String> {
@@ -235,13 +237,31 @@ impl Client {
         self.outstanding = Some(id);
         Ok(())
     }
+    /// Adaptive startup reserves the id before any write. A failed/partial write
+    /// is not proof that Sim saw no command; only original stop/retirement clears it.
+    pub(crate) fn submit_retained(&mut self,id:u64,command:SimCommand)->Result<(),String> {
+        if id==0 || self.outstanding.is_some() {return Err("sim_busy_or_id".into());}
+        self.outstanding=Some(id);
+        wire::write_frame(self.input.as_mut().ok_or("sim_stopped")?,&Request {
+            protocol:"mycity-sim-v1".into(),id,command,
+        })
+    }
     pub fn next(&mut self, timeout: Duration) -> Result<Event, String> {
-        let event = self
-            .receiver
-            .as_ref()
-            .ok_or("sim_stopped")?
-            .recv_timeout(timeout)
-            .map_err(|e| e.to_string())??;
+        self.next_typed(timeout).map_err(|e|match e {
+            ReceiveError::Timeout=>"sim_receive_timeout".into(),ReceiveError::Fault(message)=>message,
+        })
+    }
+    /// Only Timeout is a nonterminal observation timeout. Decode, channel and
+    /// identity faults are distinct and must never be skipped as an empty poll.
+    pub fn next_typed(&mut self, timeout: Duration) -> Result<Event, ReceiveError> {
+        let event=self.receiver.as_ref().ok_or_else(||ReceiveError::Fault("sim_stopped".into()))?
+            .recv_timeout(timeout).map_err(|e|match e {
+                mpsc::RecvTimeoutError::Timeout=>ReceiveError::Timeout,
+                mpsc::RecvTimeoutError::Disconnected=>ReceiveError::Fault("sim_receive_disconnected".into()),
+            })?.map_err(ReceiveError::Fault)?;
+        self.accept_event(event).map_err(ReceiveError::Fault)
+    }
+    fn accept_event(&mut self,event:Event)->Result<Event,String> {
         if event.protocol != "mycity-sim-v1"
             || event.sim_pid != self.pid()
             || Some(event.id) != self.outstanding
@@ -417,3 +437,22 @@ pub fn with_client_scope<T>(body: impl FnOnce(&mut Client) -> Result<T, String>)
 }
 
 impl Default for Client { fn default() -> Self { Self::new() } }
+
+#[cfg(test)]
+mod typed_receive_tests {
+    use super::*;
+    #[test]
+    fn timeout_is_distinct_from_channel_decode_and_identity_faults() {
+        // Pure typed transport seam, not evidence of an executed command or process.
+        let (tx,rx)=mpsc::sync_channel(1);let mut client=Client::new();
+        client.receiver=Some(rx);client.outstanding=Some(1);client.last_pid=Some(123);
+        assert!(matches!(client.next_typed(Duration::ZERO),Err(ReceiveError::Timeout)));
+        tx.send(Err("literal_decode_fault".into())).unwrap();
+        assert!(matches!(client.next_typed(Duration::ZERO),Err(ReceiveError::Fault(_))));
+        tx.send(Ok(Event{protocol:"wrong".into(),sim_pid:123,id:1,clock:None,kind:"result".into(),payload:serde_json::json!({})})).unwrap();
+        assert!(matches!(client.next_typed(Duration::ZERO),Err(ReceiveError::Fault(_))));
+        assert_eq!(client.outstanding,Some(1));drop(tx);
+        assert!(matches!(client.next_typed(Duration::ZERO),Err(ReceiveError::Fault(_))));
+        client.stop().unwrap();assert!(client.is_empty());
+    }
+}

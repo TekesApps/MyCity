@@ -178,3 +178,139 @@ fn real_broker_pause_keeps_original_grant_charged_until_actual_retirement() {
     assert_eq!(retired.grants,retired.returns);assert_eq!(retired.available_touched_bytes,BYTES);
     fs::write(folder.join("retired-pool.json"),serde_json::to_vec_pretty(&retired).unwrap()).unwrap();pool.finish().unwrap();
 }
+
+fn drive_adaptive(run:&mut Run,retarget_to_force_transition:bool)->Value {
+    use mycity_headless::{adaptive_client::{AdaptiveSession,Phase as AutoPhase,Purpose},air_page_policy::{Config,Reason}};
+    run.id+=1;let log=run.events_path.with_extension("adaptive.json");let mut rows=Vec::new();
+    let q=Quota{source_limit:1,cell_limit:256,pages:1};
+    let mut session=AdaptiveSession::start(&mut run.client,run.id,1,q,Config{target_ns:1_000_000_000}).unwrap();
+    let mut up=false;let mut down=false;let mut held=false;let mut retargeted=false;let mut queried=false;let mut terminal=false;
+    let mut result=None;let mut expected_pages=1u16;let mut last_sent_turn=0;
+    for _ in 0..1024 {
+        let step=session.step(Duration::from_secs(10)).unwrap();
+        if let Some(sent)=session.last_attempted_decision() {
+            if sent.boundary.turn!=last_sent_turn {
+                assert_eq!(sent.decision.current_quota.source_limit,q.source_limit);
+                assert_eq!(sent.decision.next_quota.cell_limit,q.cell_limit);
+                assert_eq!(sent.decision.next_quota.source_limit,q.source_limit);
+                assert!(matches!(sent.decision.next_quota.pages,1|2|4|8|16));
+                up|=sent.decision.reason==Reason::StepUp;down|=sent.decision.reason==Reason::StepDown;
+                expected_pages=sent.decision.next_quota.pages;last_sent_turn=sent.boundary.turn;
+                rows.push(json!({"actually_attempted_continue":sent}));
+            }
+        }
+        if let Some(report)=step.decision.as_ref() {
+            if report.purpose==Purpose::PendingNextTurn {
+                assert_eq!(report.decision.current_quota.pages,expected_pages);
+                assert_eq!(report.boundary.work.pages,u64::from(expected_pages));
+                held|=report.decision.current_quota==report.decision.next_quota;
+            } else {
+                terminal=true;assert_eq!(report.decision.current_quota,report.decision.next_quota);
+                if retargeted {assert!(report.decision.integration_overrun);assert!(report.decision.irreducible_overrun);}
+            }
+        }
+        rows.push(json!({"event":step.event,"decision":step.decision}));
+        fs::write(&log,serde_json::to_vec_pretty(&rows).unwrap()).unwrap();
+        if session.phase()==AutoPhase::BoundaryReady {
+            if !queried {
+                let pending=session.pending_decision().unwrap().clone();
+                session.observe().unwrap();assert_eq!(session.phase(),AutoPhase::QueryPending);
+                assert!(session.cancel().is_err());assert!(session.retarget(Config{target_ns:1}).is_err());
+                let response=session.step(Duration::from_secs(10)).unwrap();assert_eq!(response.event.kind,"page_control_result");
+                assert_eq!(session.phase(),AutoPhase::BoundaryReady);assert!(session.last_attempted_decision().is_none());
+                assert_eq!(session.pending_decision().unwrap().boundary,pending.boundary);
+                rows.push(json!({"query_observe":response.event}));
+                session.receipt_proof(0xe000000000000001).unwrap();let proof=session.step(Duration::from_secs(10)).unwrap();
+                assert_eq!(proof.event.payload["Ok"]["present"],false);assert_eq!(session.phase(),AutoPhase::BoundaryReady);
+                rows.push(json!({"query_proof":proof.event}));queried=true;
+            }
+            if retarget_to_force_transition && up && !retargeted
+                && session.pending_decision().unwrap().decision.known_sample.is_some_and(|s|s.wall_ns>1) {
+                let changed=session.retarget(Config{target_ns:1}).unwrap();
+                rows.push(json!({"explicit_test_target_change_after_actual_positive_sample":changed}));
+                retargeted=true;
+            }
+        }
+        if session.phase()==AutoPhase::Finished {
+            assert_eq!(rows.last().unwrap().get("event").map(|e|e["kind"].clone()),Some(json!("result")));
+            assert!(step.event.payload.get("Err").is_none(),"{:?}",step.event);
+            result=Some(step.event.payload["Ok"].clone());break;
+        }
+    }
+    assert!(terminal&&queried&&held);if retarget_to_force_transition {assert!(up&&down&&retargeted,"up={up} down={down} retargeted={retargeted}");}
+    fs::write(&log,serde_json::to_vec_pretty(&rows).unwrap()).unwrap();result.expect("adaptive command completed")
+}
+
+#[test]
+fn production_adaptive_session_uses_real_samples_for_up_down_hold_and_exact_checkpoint() {
+    let mut reference=Run::new(root("adaptive-reference"),true);reference.prepare();reference.call(Command::RunRequired{job:1});
+    let expected=reference.call(Command::Status);reference.stop();
+    let mut run=Run::new(root("adaptive-transitions"),true);run.prepare();drive_adaptive(&mut run,true);
+    let actual=run.call(Command::Status);assert_eq!(actual["background"]["time"],30);assert_eq!(candidate(&actual),candidate(&expected));run.stop();
+}
+#[test]
+fn production_adaptive_cancel_preserves_required_job_through_cold_restore() {
+    use mycity_headless::{adaptive_client::{AdaptiveSession,Phase as AutoPhase},air_page_policy::Config};
+    let folder=root("adaptive-cancel");let mut run=Run::new(folder.clone(),true);run.prepare();run.id+=1;
+    {
+        let mut session=AdaptiveSession::start(&mut run.client,run.id,1,quota(),Config{target_ns:1_000_000}).unwrap();
+        loop {let s=session.step(Duration::from_secs(10)).unwrap();if s.event.kind=="page_boundary"{break;}}
+        session.cancel().unwrap();assert_eq!(session.phase(),AutoPhase::CancelPending);
+        assert!(session.pending_decision().is_none());assert!(session.observe().is_err());
+        loop {let s=session.step(Duration::from_secs(10)).unwrap();if s.event.kind=="result"{assert!(s.event.payload.get("Err").is_some());break;}}
+        assert!(session.last_attempted_decision().is_none());
+    }
+    let pending=run.call(Command::Status);assert_eq!(pending["background"]["time"],0);assert_eq!(pending["background"]["pending"]["id"],1);
+    run.call(Command::Checkpoint);run.stop();drop(run);
+    let mut restored=Run::new(folder,false);assert_eq!(restored.call(Command::Status)["background"]["pending"],pending["background"]["pending"]);
+    drive_adaptive(&mut restored,false);assert_eq!(restored.call(Command::Status)["background"]["time"],30);restored.stop();
+}
+#[test]
+fn dropping_adaptive_borrow_keeps_original_client_and_job_owned_until_explicit_cancel() {
+    use mycity_headless::{adaptive_client::AdaptiveSession,air_page_policy::Config};
+    let mut run=Run::new(root("adaptive-drop"),true);run.prepare();run.id+=1;
+    {
+        let mut session=AdaptiveSession::start(&mut run.client,run.id,1,quota(),Config{target_ns:1_000_000}).unwrap();
+        loop {if session.step(Duration::from_secs(10)).unwrap().event.kind=="page_boundary"{break;}}
+    }
+    assert!(!run.client.is_empty());assert!(run.client.submit(run.id+1,Command::Status).is_err());
+    run.client.control_pages(PageControl::Observe).unwrap();let observed=run.next();assert_eq!(observed.kind,"page_control_result");
+    assert_eq!(observed.payload["Ok"]["worker_owner"]["empty"],false);assert_eq!(observed.payload["Ok"]["still_unresolved"],true);
+    run.client.control_pages(PageControl::Cancel).unwrap();loop {if run.next().kind=="result"{break;}}
+    assert_eq!(run.call(Command::Status)["background"]["time"],0);run.stop();
+}
+fn kill_only_known_test_sim_and_confirm_terminal(pid:u32) {
+    // pid is exclusively the Client child created by this test, never another project.
+    assert!(Process::new("kill").args(["-KILL",&pid.to_string()]).status().unwrap().success());
+    let until=std::time::Instant::now()+Duration::from_secs(5);
+    loop {
+        let output=Process::new("ps").args(["-p",&pid.to_string(),"-o","stat="]).output().unwrap();
+        if !output.status.success() || String::from_utf8_lossy(&output.stdout).trim().starts_with('Z') {return;}
+        assert!(std::time::Instant::now()<until);std::thread::sleep(Duration::from_millis(10));
+    }
+}
+#[test]
+fn actual_continue_send_failure_is_consumed_once_and_original_owner_retires() {
+    use mycity_headless::{adaptive_client::{AdaptiveSession,Phase as AutoPhase},air_page_policy::Config};
+    let mut run=Run::new(root("adaptive-send-failure"),true);run.prepare();run.id+=1;let sim=run.client.pid();
+    {
+        let mut session=AdaptiveSession::start(&mut run.client,run.id,1,quota(),Config{target_ns:1_000_000}).unwrap();
+        loop {if session.step(Duration::from_secs(10)).unwrap().event.kind=="page_boundary"{break;}}
+        let boundary=session.pending_decision().unwrap().boundary.clone();kill_only_known_test_sim_and_confirm_terminal(sim);
+        assert!(session.step(Duration::from_secs(10)).is_err());assert_eq!(session.phase(),AutoPhase::ControlUncertain);
+        assert_eq!(session.last_attempted_decision().unwrap().boundary,boundary);assert!(session.pending_decision().is_none());
+        assert!(session.step(Duration::from_secs(10)).is_err());assert_eq!(session.last_attempted_decision().unwrap().boundary,boundary);
+        session.retire().unwrap();assert_eq!(session.phase(),AutoPhase::Finished);
+    }
+    assert!(run.client.is_empty());
+    // Deliberately no fake result/refund or implicit new attempt after Sim death.
+}
+#[test]
+fn actual_failed_initial_adaptive_submit_keeps_client_busy_until_original_retirement() {
+    use mycity_headless::{adaptive_client::AdaptiveSession,air_page_policy::Config};
+    let mut run=Run::new(root("adaptive-start-failure"),true);run.prepare();let sim=run.client.pid();
+    kill_only_known_test_sim_and_confirm_terminal(sim);run.id+=1;
+    assert!(AdaptiveSession::start(&mut run.client,run.id,1,quota(),Config{target_ns:1_000_000}).is_err());
+    assert!(run.client.submit(run.id+1,Command::Status).is_err());assert!(!run.client.is_empty());
+    run.client.stop().unwrap();assert!(run.client.is_empty());
+}
