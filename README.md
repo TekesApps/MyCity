@@ -1,8 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.187`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.188`。已开始Rust模型与headless CLI，当前不做UI。
 
-v0.5.187 adds [cursor-only idle coverage](docs/evidence/water-treatment-idle-20261025/STATUS.md):24 release component tests pass under synthetic RootVerifier. Actual historical idle authentication, generated-water, joint power, World/Store and use-authority integration remain pending; full #92 stays open.
+v0.5.188 unifies original source-lot cost arithmetic and verifies [allocation-cycle prefix costs](docs/evidence/continuous-supply-cost-20261025/STATUS.md):3 arithmetic tests and9 original continuous-supply regressions pass. V2 withdrawal/joint treatment/Store integration remains pending. The previous24-test Idle component gate remains limited to synthetic RootVerifier; full #92 stays open.
 
 v0.5.185 adds [original supply RunDue and OpeningInput recovery](docs/evidence/continuous-supply-due-20261025/STATUS.md):27 different release parents, one additional default-debug execution and six independent Store recovery children pass. Existing task priorities, original receipts and accepted targets survive hard supply stops; full issues and M0 remain open.
 

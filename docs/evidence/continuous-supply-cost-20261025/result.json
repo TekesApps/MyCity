@@ -1,0 +1,29 @@
+[
+  {
+    "name": "mycity_core",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/water-treatment-20261025/programs04/mycity_core",
+      "continuous_supply::cost_curve::tests::",
+      "--nocapture",
+      "--test-threads=1"
+    ],
+    "exit_code": 0,
+    "timed_out": false,
+    "elapsed_seconds": 0.5783540839999972,
+    "scope": "source cost arithmetic and old V1 original-ledger regression; actual V2 outflow/treatment/Store pending",
+    "source_and_24_wip_unchanged": true
+  },
+  {
+    "name": "continuous_supply",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/water-treatment-20261025/programs04/continuous_supply",
+      "--nocapture",
+      "--test-threads=1"
+    ],
+    "exit_code": 0,
+    "timed_out": false,
+    "elapsed_seconds": 0.353196374999996,
+    "scope": "source cost arithmetic and old V1 original-ledger regression; actual V2 outflow/treatment/Store pending",
+    "source_and_24_wip_unchanged": true
+  }
+]

@@ -1,0 +1,34 @@
+[
+  {
+    "name": "workspace-check",
+    "command": [
+      "cargo",
+      "check",
+      "--locked",
+      "--workspace",
+      "--all-targets",
+      "--release",
+      "--message-format=json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 13.454661999999999
+  },
+  {
+    "name": "cost-source-release",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--no-run",
+      "--release",
+      "-p",
+      "mycity-core",
+      "--lib",
+      "--test",
+      "continuous_supply",
+      "--message-format=json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 46.434590958
+  }
+]

@@ -9,6 +9,7 @@ use crate::{assembly::{Commodity, Stock, World},
 use serde::{Deserialize, Deserializer, Serialize};
 use std::mem::size_of;
 use sha2::{Digest, Sha256};
+mod cost_curve;
 
 pub const VERSION:u32=1;
 pub const MAX_OWNED_BYTES:usize=16*1024;
@@ -409,11 +410,9 @@ fn check_actual_uniform_prefix(r:&Runtime,generated:&g::Candidate,mask:u8,revisi
 }
 
 fn converted_at(config:&g::Config,raw_lot:&g::InputLot,seconds:u64,raw:u64)->Result<Money,TxError>{
-    let fuel=u128::from(config.fuel.basis.value() as u64)*u128::from(mul(seconds,50)?)
-        /(u128::from(config.fuel.quantity.value() as u64)*3);
-    m(u64::try_from(fuel).map_err(|_|TxError::Overflow)?)?
-        .checked_add(basis(&config.water,mul(seconds,1000)?)?).map_err(bad)?
-        .checked_add(basis(raw_lot,raw)?).map_err(bad)
+    let fuel=cost_curve::lot_prefix(&config.fuel,u128::from(mul(seconds,50)?),3)?;
+    m(fuel)?.checked_add(m(cost_curve::lot_prefix(&config.water,u128::from(mul(seconds,1000)?),1)?)?).map_err(bad)?
+        .checked_add(m(cost_curve::lot_prefix(raw_lot,u128::from(raw),1)?)?).map_err(bad)
 }
 
 pub(crate) fn source_root(world:&World,r:&Runtime)->Result<[u8;32],TxError>{

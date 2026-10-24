@@ -1,0 +1,14 @@
+[
+  {
+    "name": "mycity_core",
+    "path": "/Volumes/HP P900/dev/MyCity/work/water-treatment-20261025/programs04/mycity_core",
+    "sha256": "5db49374ad8ffce6396956fb180281965c5d7d7d3a2e5a76ff3d79c15c3356ae",
+    "bytes": 9715280
+  },
+  {
+    "name": "continuous_supply",
+    "path": "/Volumes/HP P900/dev/MyCity/work/water-treatment-20261025/programs04/continuous_supply",
+    "sha256": "cded17cf365677b14458904380d0b32c393b5e6050ef620d9030b2125d00e2c1",
+    "bytes": 6654592
+  }
+]
