@@ -1,0 +1,110 @@
+{
+  "fixed_files": 413,
+  "source_zip_sha256": "4a4cd0e40a1bc09c39d94f627f41081a5b25607161a6aee871977df9a37cf8aa",
+  "release_distinct_parent_tests": 274,
+  "debug_executions": 6,
+  "real_fresh_children": [
+    {
+      "path": "worlds/baseline-v3-58727-4/fresh-5/exit.json",
+      "code": 0,
+      "pid": 58781,
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "path": "worlds/baseline-v3-58727-4/fresh-6/exit.json",
+      "code": 0,
+      "pid": 58784,
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "path": "worlds/real-course-58727-9/fresh-10/exit.json",
+      "code": 0,
+      "pid": 59035,
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "path": "worlds/real-course-58727-9/fresh-11/exit.json",
+      "code": 0,
+      "pid": 59036,
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "path": "worlds/real-course-58727-9/fresh-12/exit.json",
+      "code": 0,
+      "pid": 59037,
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "path": "worlds/baseline-v3-59041-4/fresh-5/exit.json",
+      "code": 0,
+      "pid": 59061,
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "path": "worlds/baseline-v3-59041-4/fresh-6/exit.json",
+      "code": 0,
+      "pid": 59062,
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "path": "worlds/real-course-59041-9/fresh-10/exit.json",
+      "code": 0,
+      "pid": 59423,
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "path": "worlds/real-course-59041-9/fresh-11/exit.json",
+      "code": 0,
+      "pid": 59424,
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "path": "worlds/real-course-59041-9/fresh-12/exit.json",
+      "code": 0,
+      "pid": 59460,
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "path": "worlds/baseline-v3-spatial-59041-1/fresh-2/exit.json",
+      "code": 0,
+      "pid": 59047,
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "path": "worlds/baseline-v3-spatial-59041-1/fresh-3/exit.json",
+      "code": 0,
+      "pid": 59048,
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "path": "worlds/baseline-v3-spatial-58727-1/fresh-2/exit.json",
+      "code": 0,
+      "pid": 58767,
+      "success": true,
+      "timed_out": false
+    },
+    {
+      "path": "worlds/baseline-v3-spatial-58727-1/fresh-3/exit.json",
+      "code": 0,
+      "pid": 58768,
+      "success": true,
+      "timed_out": false
+    }
+  ],
+  "final_code_and_exes_unchanged": true,
+  "initial_attempt": "all passed, retained; then only stronger self-consistent fake origin/scope tests; no game code change",
+  "default_stack": "unchanged RUST_MIN_STACK unset",
+  "M0": "unchanged/not claimed"
+}

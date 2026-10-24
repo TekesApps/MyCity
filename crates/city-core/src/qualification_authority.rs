@@ -126,11 +126,26 @@ fn result(bit:m::BaseQualification)->Result<q::Course,TxError> {
 /// All ids use exact version1 unsigned-u64 big-endian encoding in sixteen bytes.
 /// Policy and fact directories cannot disagree and choose a definition at runtime.
 fn registration(world:&World,opening:&Opening)->Result<q::ValidatedGenesis,TxError> {
-    if opening.protocol_version!=2 {return Err(TxError::InvalidOperation);}
-    let edu=world.education.as_deref().ok_or(TxError::InvalidOperation)?;
     let facts=&opening.facts;
-    if facts.scope!=world.scope || facts.population_origin!=edu.opening().population_origin {return Err(TxError::WrongScope);}
-    let total=world.housing.as_deref().ok_or(TxError::InvalidOperation)?.opening.households.iter()
+    let edu=match opening.protocol_version {
+        2=>Some(world.education.as_deref().ok_or(TxError::InvalidOperation)?),
+        3=>{
+            // Explicit baseline-only protocol: no exam/result authority or dormant
+            // course directory may be smuggled into a world without teaching.
+            if facts.course_results.iter().any(Option::is_some) || opening.policies.iter().any(Option::is_some)
+                || facts.rules.iter().any(Option::is_some) || facts.issuers.iter().any(Option::is_some)
+                || facts.authority.permitted_results!=0 {return Err(TxError::InvalidOperation);}
+            None
+        },_=>return Err(TxError::InvalidOperation),
+    };
+    if let Some(edu)=edu {
+        // Retain v2's original validation/error order before resolving Housing.
+        if facts.scope!=world.scope || facts.population_origin!=edu.opening().population_origin {return Err(TxError::WrongScope);}
+    }
+    let housing=&world.housing.as_deref().ok_or(TxError::InvalidOperation)?.opening;
+    let origin=match edu {Some(edu)=>edu.opening().population_origin,None=>m::housing_population_origin(world.scope,housing)};
+    if facts.scope!=world.scope || facts.population_origin!=origin {return Err(TxError::WrongScope);}
+    let total=housing.households.iter()
         .try_fold(0u64,|sum,h|sum.checked_add(u64::from(h.people)).ok_or(TxError::Overflow))?;
     if total!=facts.total_people {return Err(TxError::InvalidOperation);}
     let mut members=[None;4];let mut entitlements=[None;4];let mut cohorts=[0;4];let mut generations=[0;4];let mut rosters=[[0;32];4];
@@ -138,6 +153,7 @@ fn registration(world:&World,opening:&Opening)->Result<q::ValidatedGenesis,TxErr
         match (facts.course_results[slot],opening.policies[slot]) {
             (None,None)=>{},
             (Some(r),Some(p))=>{
+                let edu=edu.ok_or(TxError::InvalidOperation)?;
                 let reg=edu.opening().courses.iter().flatten().find(|x|x.enrollment.cohort==r.cohort_id).ok_or(TxError::InvalidOperation)?;
                 let issuer=facts.issuers.iter().flatten().find(|x|x.id==r.issuer_id).ok_or(TxError::InvalidOperation)?;
                 let rule=facts.rules.iter().flatten().find(|x|x.id==r.rule_id).ok_or(TxError::InvalidOperation)?;
@@ -165,12 +181,18 @@ fn registration(world:&World,opening:&Opening)->Result<q::ValidatedGenesis,TxErr
 pub(crate) fn initialize(opening:Opening,world:&World)->Result<Box<Runtime>,String> {
     let proof=registration(world,&opening).map_err(|e|format!("qualification_registration:{e:?}"))?;
     let state=q::State::new(opening.facts,&proof).map_err(|e|format!("qualification_opening:{e:?}"))?;
-    Ok(Box::new(Runtime{protocol_version:2,state,policies:opening.policies}))
+    Ok(Box::new(Runtime{protocol_version:opening.protocol_version,state,policies:opening.policies}))
 }
 impl Runtime {
     pub(crate) fn fingerprint(&self)->Result<[u8;32],TxError> {digest(self,b"qualification-runtime-v2\0",32*1024)}
     pub(crate) fn registration_hash(&self)->Result<[u8;32],TxError> {
-        digest(&(&self.state.opening,self.policies),b"qualification-registration-v2\0",32*1024)
+        // Preserve published v2 exactly. Baseline-only v3 authenticates its
+        // explicit protocol too, including Store genesis/checkpoint comparison.
+        if self.protocol_version==2 {
+            digest(&(&self.state.opening,self.policies),b"qualification-registration-v2\0",32*1024)
+        } else {
+            digest(&(self.protocol_version,&self.state.opening,self.policies),b"qualification-registration-v3\0",32*1024)
+        }
     }
     pub(crate) fn is_ready(&self)->bool {self.state.is_ready()}
     pub(crate) fn owned_bytes()->usize {std::mem::size_of::<Self>()}
@@ -437,5 +459,16 @@ mod tests {
         assert!(!state.query(source,request.members).unwrap().complete);
         let result=check_source(&state,source,request).unwrap();assert_eq!(result.status,JobStatus::Ineligible);
         assert!(result.reason.contains("SkillBelowMinimum")&&result.reason.contains("start: 30"));
+    }
+    #[test]
+    fn baseline_registration_version_is_bound_without_changing_published_v2_digest() {
+        let (state,_)=sparse(false);
+        let mut runtime=Runtime{protocol_version:2,state,policies:[None;4]};
+        let old=digest(&(&runtime.state.opening,runtime.policies),b"qualification-registration-v2\0",32*1024).unwrap();
+        assert_eq!(runtime.registration_hash().unwrap(),old);
+        runtime.protocol_version=3;
+        assert_ne!(runtime.registration_hash().unwrap(),old);
+        let v3=runtime.registration_hash().unwrap();runtime.protocol_version=4;
+        assert_ne!(runtime.registration_hash().unwrap(),v3);
     }
 }

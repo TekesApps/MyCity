@@ -248,3 +248,96 @@ fn qualification_store_child() {
     if p.checkpoint{s.checkpoint().unwrap();}assert_eq!(job(&s,0).status,status);
     fs::write(p.result,serde_json::to_vec(&json!({"pid":std::process::id(),"hash":s.state_hash().unwrap(),"status":format!("{status:?}"),"replayed":true,"checkpoint":p.checkpoint})).unwrap()).unwrap();
 }
+
+/// Explicit new game Opening, not a credential inferred from simulated lessons.
+fn baseline_input()->Vec<u8> {
+    let mut raw:Value=serde_json::from_slice(&input()).unwrap();
+    raw.as_object_mut().unwrap().remove("education");raw.as_object_mut().unwrap().remove("venue");
+    let q=&mut raw["qualification"];q["protocol_version"]=json!(3);
+    q["policies"]=json!([null,null,null,null]);
+    for key in ["course_results","rules","issuers"] {q["facts"][key]=json!([null,null,null,null]);}
+    q["facts"]["authority"]["permitted_results"]=json!(0);
+    q["facts"]["baselines"][0]["base_known"]=json!(false);
+    q["facts"]["baselines"][0]["base_mask"]=json!(BaseQualification::Electric.bit()|BaseQualification::Police.bit());
+    serde_json::to_vec(&raw).unwrap()
+}
+fn baseline_roundtrip(spatial:bool) {
+    let path=directory(if spatial{"baseline-v3-spatial"}else{"baseline-v3"});let world=path.join("world");let bytes=baseline_input();
+    fs::write(path.join("opening.json"),&bytes).unwrap();
+    let mut s=if spatial {Store::create_spatial_v2(&world,&bytes,vec![],RULES,
+        include_bytes!("../../../fixtures/m0-exchange-spatial.json"),include_bytes!("../../../fixtures/terrain/m0-flat16.png")).unwrap()}
+        else {Store::create(&world,&bytes,vec![],RULES).unwrap()};
+    assert!(s.engine().unwrap().world().view().education.is_none());
+    assert!(s.engine().unwrap().world().view().venue.is_none());
+    assert!(s.engine().unwrap().world().view().member_activity.is_none());
+    assert!(s.engine().unwrap().qualification_source().is_err()); // No invented clock.
+    let enabled=apply(&mut s,Caller::System,Action::Timeline{command:T::Enable});
+    let request=q::JobRequirements{members:MemberRange{start:0,end:2},minimum_background:Some(Background::General),minimum_skill:Some(Skill::Technical),
+        required_base_mask:BaseQualification::Police.bit(),required_endorsement_mask:0};
+    assert_eq!(s.engine().unwrap().check_job_qualification(request).unwrap().status,q::JobStatus::Eligible);
+    assert_eq!(s.engine().unwrap().check_job_qualification(q::JobRequirements{required_base_mask:BaseQualification::Driver.bit(),..request}).unwrap().status,q::JobStatus::Unknown);
+    assert_eq!(s.engine().unwrap().check_job_qualification(q::JobRequirements{required_endorsement_mask:1,..request}).unwrap().status,q::JobStatus::Unknown);
+    assert!(s.engine().unwrap().qualification_examination_input(0,1,2,2,1023,GroupResult::Pass).is_err());
+    let source=s.engine().unwrap().qualification_source().unwrap();
+    reject(&mut s,Caller::System,Action::Qualification{command:Q::Revoke{slot:0,expected_root:source.root}});
+    fs::write(path.join("layout.json"),serde_json::to_vec_pretty(&s.engine().unwrap().world().layout()).unwrap()).unwrap();
+    let cp=s.engine().unwrap().export_checkpoint().unwrap();let unready=Engine::restore_checkpoint(&cp).unwrap();
+    assert!(!unready.qualification_is_authenticated());assert!(unready.check_job_qualification(request).is_err());
+    let hash=s.state_hash().unwrap();drop(s);
+    probe(&path,&world,&hash,&enabled,q::JobStatus::Eligible,true);
+    probe(&path,&world,&hash,&enabled,q::JobStatus::Eligible,false);
+    let s=Store::open(&world,RULES).unwrap();assert!(s.engine().unwrap().qualification_is_authenticated());
+    assert_eq!(s.engine().unwrap().check_job_qualification(request).unwrap().status,q::JobStatus::Eligible);
+    let mut slot=EngineSlot::new().unwrap();slot.restore_into(&cp).unwrap();assert!(!slot.engine().unwrap().qualification_is_authenticated());
+    let old=Engine::new(mycity_core::assembly::assemble(include_bytes!("../../../fixtures/m0-e0-opening.json")).unwrap(),vec![]).unwrap();
+    slot.restore_into(&old.export_checkpoint().unwrap()).unwrap();assert!(slot.engine().unwrap().world().view().qualification.is_none());
+}
+#[test]
+fn baseline_only_without_teaching_or_venue_retains_original_store_authority() {baseline_roundtrip(false);}
+#[test]
+fn baseline_only_spatial_same_slot_recovery_does_not_trust_serde_ready() {baseline_roundtrip(true);}
+#[test]
+fn baseline_only_rejects_unbound_population_and_dormant_course_authority() {
+    let path=directory("baseline-gates");let bytes=baseline_input();
+    // A valid control reaches the real business path before testing counterexamples.
+    drop(Store::create(&path.join("valid"),&bytes,vec![],RULES).unwrap());
+    let original:Value=serde_json::from_slice(&input()).unwrap();let base:Value=serde_json::from_slice(&bytes).unwrap();
+    for case in ["legacy-v2","future-version","no-housing","wrong-origin","wrong-count","wrong-scope","range","source","course","policy","issuer","rule","grant-mask"] {
+        let mut bad=base.clone();match case {
+            "legacy-v2"=>bad["qualification"]["protocol_version"]=json!(2),
+            "future-version"=>bad["qualification"]["protocol_version"]=json!(4),
+            "no-housing"=>{bad.as_object_mut().unwrap().remove("housing");},
+            "wrong-origin"=>{
+                let mut origin=bad["qualification"]["facts"]["population_origin"].clone();
+                origin[0]=json!(origin[0].as_u64().unwrap()^1);
+                bad["qualification"]["facts"]["population_origin"]=origin.clone();
+                bad["qualification"]["facts"]["authority"]["population_origin"]=origin.clone();
+                for source in bad["qualification"]["facts"]["baseline_sources"].as_array_mut().unwrap().iter_mut().filter(|x|!x.is_null()) {
+                    source["population_origin"]=origin.clone();
+                }
+            },
+            "wrong-count"=>bad["qualification"]["facts"]["total_people"]=json!(11),
+            "wrong-scope"=>{
+                let scope=serde_json::to_value(Scope::new(2,1).unwrap()).unwrap();
+                bad["qualification"]["facts"]["scope"]=scope.clone();
+                bad["qualification"]["facts"]["authority"]["scope"]=scope.clone();
+                for source in bad["qualification"]["facts"]["baseline_sources"].as_array_mut().unwrap().iter_mut().filter(|x|!x.is_null()) {source["scope"]=scope.clone();}
+            },
+            "range"=>bad["qualification"]["facts"]["baselines"][0]["members"]["end"]=json!(11),
+            "source"=>bad["qualification"]["facts"]["baselines"][0]["source_id"]=serde_json::to_value([0u8;16]).unwrap(),
+            "course"=>bad["qualification"]["facts"]["course_results"]=original["qualification"]["facts"]["course_results"].clone(),
+            "policy"=>bad["qualification"]["policies"]=original["qualification"]["policies"].clone(),
+            "issuer"=>bad["qualification"]["facts"]["issuers"]=original["qualification"]["facts"]["issuers"].clone(),
+            "rule"=>bad["qualification"]["facts"]["rules"]=original["qualification"]["facts"]["rules"].clone(),
+            "grant-mask"=>bad["qualification"]["facts"]["authority"]["permitted_results"]=json!(2),
+            _=>unreachable!(),
+        }
+        if matches!(case,"wrong-origin"|"wrong-scope") {
+            // Self-consistent fake registry must pass pure State validation:
+            // only the original World/Housing binding can reject these inputs.
+            let facts:f::Opening=serde_json::from_value(bad["qualification"]["facts"].clone()).unwrap();facts.validate().unwrap();
+        }
+        let bytes=serde_json::to_vec(&bad).unwrap();fs::write(path.join(format!("{case}.json")),&bytes).unwrap();
+        assert!(Store::create(&path.join(case),&bytes,vec![],RULES).is_err(),"accepted {case}");assert!(!path.join(case).join("CURRENT.json").exists());
+    }
+}

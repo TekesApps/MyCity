@@ -3,7 +3,23 @@
 //! The root-owned original transaction writer alone publishes qualification state.
 use crate::{arena::Scope,units::GameTime};
 use serde::{Deserialize,Serialize};
+use sha2::{Digest,Sha256};
 pub use crate::member_activity::Members as MemberRange;
+
+/// Original immutable Housing membership namespace. Keep the historical venue
+/// domain and exact validated row order: moving this helper does not migrate ids.
+/// Call only after the original Housing directory validation, never sort inputs.
+pub(crate) fn housing_population_origin(scope:Scope,housing:&crate::housing::OpeningHousing)->[u8;32] {
+    let mut h=Sha256::new();
+    h.update(b"venue-housing-genesis-members-v1\0household-id-ascending");
+    h.update(scope.world().to_le_bytes());h.update(scope.branch().to_le_bytes());
+    h.update((housing.households.len() as u64).to_le_bytes());
+    for row in housing.households.iter() {
+        h.update(row.household_id.to_le_bytes());h.update(row.account.to_le_bytes());
+        h.update(row.people.to_le_bytes());h.update(row.source_id.to_le_bytes());
+    }
+    h.finalize().into()
+}
 
 pub const MAX_READ_ROWS:usize=16;
 #[derive(Clone,Copy,Debug,PartialEq,Eq,Serialize,Deserialize)]

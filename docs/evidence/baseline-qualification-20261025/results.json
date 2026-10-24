@@ -1,0 +1,62 @@
+[
+  {
+    "label": "build-core-release",
+    "pid": 58502,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "wip24_unchanged": true,
+    "summaries": []
+  },
+  {
+    "label": "build-store-release",
+    "pid": 58503,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "wip24_unchanged": true,
+    "summaries": []
+  },
+  {
+    "label": "build-store-debug",
+    "pid": 58687,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "wip24_unchanged": true,
+    "summaries": []
+  },
+  {
+    "label": "run-core-release",
+    "pid": 58694,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "wip24_unchanged": true,
+    "summaries": [
+      "test result: ok. 268 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 4.09s"
+    ]
+  },
+  {
+    "label": "run-store-release",
+    "pid": 58727,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "wip24_unchanged": true,
+    "summaries": [
+      "test result: ok. 6 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 15.03s"
+    ]
+  },
+  {
+    "label": "run-store-debug",
+    "pid": 59041,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "wip24_unchanged": true,
+    "summaries": [
+      "test result: ok. 6 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 44.02s"
+    ]
+  }
+]

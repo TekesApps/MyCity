@@ -231,18 +231,7 @@ impl Record for v::UseState {
 /// Exact relevant frozen population-content identity, itself bound by Store's original
 /// genesis/Opening hash. No per-member allocation or account-alias inference occurs.
 fn population_origin(scope: Scope, housing: &crate::housing::OpeningHousing) -> [u8; 32] {
-    let mut h = Sha256::new();
-    h.update(b"venue-housing-genesis-members-v1\0household-id-ascending");
-    h.update(scope.world().to_le_bytes());
-    h.update(scope.branch().to_le_bytes());
-    h.update((housing.households.len() as u64).to_le_bytes());
-    for row in housing.households.iter() {
-        h.update(row.household_id.to_le_bytes());
-        h.update(row.account.to_le_bytes());
-        h.update(row.people.to_le_bytes());
-        h.update(row.source_id.to_le_bytes());
-    }
-    h.finalize().into()
+    crate::member_qualification::housing_population_origin(scope,housing)
 }
 
 /// Only mutable per-use tables are copied during prepare. The immutable directory and

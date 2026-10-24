@@ -877,3 +877,23 @@ This supplements175; full parents4/54/55 and118/101/120 stay open.122/123 are se
 closed since159;124 separately closed178. No new stack defect, M0/load/standard change,
 true16GB, GPU, native peak or speed claim. Full fixed originals/worlds/logs stay on
 existing HP P900 target/work; no timer, old-main contact or private-tree deletion.
+
+
+### v0.5.180 original baseline-only qualification prerequisite (#55/#57)
+
+[Actual gate](evidence/baseline-qualification-20261025/STATUS.md): protocol3 supports
+original baseline registration without education/venue/member ledger. Existing State,
+exact Housing namespace and Store genesis authority remain; no course/issuer/rule/policy
+or result-grant permission. Protocol2 registration bytes/order remain, protocol3 digest
+binds explicit version.274 different release tests +6 default-debug executions pass,
+14 real fresh children exit0. Original advisor accepts concrete source and actual results.
+Both complete source attempts/fixed exes/worlds remain;24 protected WIP unchanged.
+
+Original57 owner read-only preflight completed at179; no duplicate developer or tree.
+Next genuine service gate requires root independent member-ledger initialization,
+explicit no-Region fixed-city Development profile, original crew/vehicle/tools resources,
+actual lifecycle and natural-need/return/financial duties. Existing Region development_elapsed
+also includes RegionAdvance interaction increments; never adopt it as certified local
+Development history or reconstruct absent city-active intervals. Multi-city certification
+needs explicit migration/source boundaries. Full55/57,16GB/GPU/native peak/M0 remain open;
+root sole shared writer and serial verifier. No full product closure or new timer.
