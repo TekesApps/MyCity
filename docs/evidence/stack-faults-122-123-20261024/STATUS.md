@@ -1,5 +1,13 @@
 # #122/#123 short default-stack diagnosis — 2026-10-24
 
+Current status: **both defects were repaired, verified and closed in v0.5.159**
+(`1bee5b4c9ec49ebd41e0b555fb8bcbe7e8efaca5`); live Issue states were rechecked
+on2026-10-25. The chronological failures and pending statements below describe
+their original diagnostic stages. They are retained, not current blockers.
+The later [qualification checkpoint defect #124](../qualification-authority-20261025/STATUS.md)
+has its own evidence and v0.5.178 repair. None establishes universal stack safety
+or changes the frozen M0 standards.
+
 Both original exact cases still fail with SIGABRT on the unchanged default test stack.
 Root ran only short serialized debug builds/exact tests on the existing HP P900 target/work.
 No M0 load, assertion, stack allowance or production budget was changed.

@@ -1,0 +1,64 @@
+[
+  {
+    "label": "build-storage",
+    "pid": 48956,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "wip_unchanged": true,
+    "summaries": []
+  },
+  {
+    "label": "build-dispatch",
+    "pid": 48971,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "wip_unchanged": true,
+    "summaries": []
+  },
+  {
+    "label": "capacity_read",
+    "pid": 50191,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "wip_unchanged": true,
+    "summaries": [
+      "test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s"
+    ]
+  },
+  {
+    "label": "venue_capacity",
+    "pid": 50214,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "wip_unchanged": true,
+    "summaries": [
+      "test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.57s"
+    ]
+  },
+  {
+    "label": "task_registry_due",
+    "pid": 50215,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "wip_unchanged": true,
+    "summaries": [
+      "test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.90s"
+    ]
+  },
+  {
+    "label": "opening_venue_store",
+    "pid": 50310,
+    "exit": 0,
+    "timed_out": false,
+    "source_unchanged": true,
+    "wip_unchanged": true,
+    "summaries": [
+      "test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.33s"
+    ]
+  }
+]

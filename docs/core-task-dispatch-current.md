@@ -859,3 +859,21 @@ fee facts must remain distinct. Old service_core source has InteractionSeconds a
 canonical/runtime-authoritative; plans and venue Enter cannot replace actual travel or service.
 No duplicate owner, new clock/pool or repeat DTO-only milestone is assigned. Original target/work,
 M0 frozen standards, full recovery originals and root shared-file ownership remain unchanged.
+
+
+### v0.5.179 current-source dependency-chain and E regression
+
+No game code or test changes. Root rechecked actual v178 source in the requested
+118 →101 →120 order after original advisor retention preflight: capacity5 +venue10,
+required dispatch8 and same-slot Store1 =24 distinct parent tests pass; four real
+120 fresh children exit0 without timeout/wait error. Final source/exe/actual CLI
+and24 protected WIP hashes match. Original advisor accepts finite actual result;
+no repeat test required. [Evidence](evidence/dependency-chain-regression-20261025/STATUS.md).
+
+Separate fixed-v178 [E regression](evidence/qualification-e-regression-20261025/STATUS.md)
+passes13 distinct housing parents and original CLI/fresh-verify2 executions. Literal
+cash/debt/moving/day42 oracle and complete-copy recovery preserve original world.
+This supplements175; full parents4/54/55 and118/101/120 stay open.122/123 are separately
+closed since159;124 separately closed178. No new stack defect, M0/load/standard change,
+true16GB, GPU, native peak or speed claim. Full fixed originals/worlds/logs stay on
+existing HP P900 target/work; no timer, old-main contact or private-tree deletion.

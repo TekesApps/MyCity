@@ -1,0 +1,75 @@
+[
+  {
+    "label": "housing_runtime",
+    "pid": 45076,
+    "exit": 0,
+    "timed_out": false,
+    "seconds": 15.120532035827637,
+    "source_unchanged": true,
+    "summaries": [
+      "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 14.61s"
+    ]
+  },
+  {
+    "label": "housing_wage_window_runtime",
+    "pid": 45122,
+    "exit": 0,
+    "timed_out": false,
+    "seconds": 30.014085054397583,
+    "source_unchanged": true,
+    "summaries": [
+      "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 29.52s"
+    ]
+  },
+  {
+    "label": "housing_move_store_runtime",
+    "pid": 45462,
+    "exit": 0,
+    "timed_out": false,
+    "seconds": 15.10031509399414,
+    "source_unchanged": true,
+    "summaries": [
+      "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 14.56s"
+    ]
+  },
+  {
+    "label": "housing_no_candidate_wait_store",
+    "pid": 45604,
+    "exit": 0,
+    "timed_out": false,
+    "seconds": 8.791360855102539,
+    "source_unchanged": true,
+    "summaries": [
+      "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.24s"
+    ]
+  },
+  {
+    "label": "housing_equity_spatial",
+    "pid": 45695,
+    "exit": 0,
+    "timed_out": false,
+    "seconds": 4.5393500328063965,
+    "source_unchanged": true,
+    "summaries": [
+      "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.96s"
+    ]
+  },
+  {
+    "label": "cli-run",
+    "pid": 45717,
+    "exit": 0,
+    "timed_out": false,
+    "seconds": 5.010607004165649,
+    "source_unchanged": true,
+    "summaries": []
+  },
+  {
+    "label": "cli-fresh-verify",
+    "pid": 45735,
+    "exit": 0,
+    "timed_out": false,
+    "seconds": 0.04204893112182617,
+    "source_unchanged": true,
+    "summaries": []
+  }
+]

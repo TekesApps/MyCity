@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.178`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.179`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.179 补齐 v178 的[依赖链回归](docs/evidence/dependency-chain-regression-20261025/STATUS.md)与[E住房回归](docs/evidence/qualification-e-regression-20261025/STATUS.md)：#118→#101→#120 共24项主测试、4次独立恢复通过；住房13项与两次CLI执行通过。仅发布实际证据，不改游戏代码、M0标准或完整Issue状态，WIP与恢复原件保留。
 
 v0.5.178 接入[原资格状态、考试完成与只读就业门](docs/evidence/qualification-authority-20261025/STATUS.md)：紧凑 Action 与原票 Context、授予/撤销及冷热恢复，381 项不同 release 测试、12 次默认 debug 验证通过。修复新发现的 #124 栈溢出，原 #122/#123 保持独立；完整 #54/#55、真实招聘、16GB 与 M0 仍开放。
 
