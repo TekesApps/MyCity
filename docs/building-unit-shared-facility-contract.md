@@ -333,3 +333,11 @@ Scope、同一游戏人口origin、明确epoch及实际Development完成时点�
 排他。实测逻辑布局Ledger3192B、候选3352B（同时6544B）还需与业务runtime、共享
 prepare、解码及恢复副本共同准入；此数不是RSS/物理峰值，也不改变4MiB/8MiB/64MiB
 旧门或M0。关联实现/失败/回归见[有限证据](evidence/member-activity-authority-20261024/STATUS.md)。
+
+### 共享成员账的独立登记和消费者认领（#57 接线前置）
+
+Opening 的可选 member_activity 登记显式声明版本1、原Housing人口scope/hash/人数与epoch1，缺字段不自动启用；它不是活动事实或第二人口表。旧教育输入继续隐式建立同一本账；显式登记与教育同时存在时，先确定唯一账，教育核对并借用，不重建或重置ordinal。旧教育World字节和schema不改，仅无教育而显式存在账的新形态采用state-v12。旧无此登记/无教育的存档仍无成员账。
+
+共享校验检查原人口、原Timeline已完成水位、半开区间、序号和关闭预留；教育逐条认领自己的活动。没有消费者只能保留初始空账，不能塞入伪造过去游标；ServiceWork须等真实service状态逐条接线后才支持。没有公开通用Begin/End，不允许actor绕过业务准入。原教育消费者的结算/退出不依赖新可选字段存在，必要结束仍保留。
+
+Store按原genesis比较成员账存在性与不可变namespace摘要；摘要不含动态ordinal、active和settled游标。恢复保留原动态状态，不能拿genesis的零游标重置或错误拒绝已发生的教育活动；不支持删掉消费者后保留孤儿活动的迁移。解析注册、resident账、候选、恢复重叠分别计原总预算，原32活动槽/4MiB/8MiB/64MiB及M0标准不变。实现/验证单独记证据，不以空账已登记宣称公服运行。

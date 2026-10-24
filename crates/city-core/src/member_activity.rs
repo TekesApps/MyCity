@@ -45,6 +45,14 @@ mod tests {
         assert_eq!(l.active().len(), 1);
     }
     #[test]
+    fn registration_identity_does_not_reset_or_compare_dynamic_ordinal_to_genesis() {
+        let mut l=ledger(100);let registration=l.registration_fingerprint();let original=l.fingerprint();
+        let id=begin(&mut l,0,2,10);assert_eq!(l.registration_fingerprint(),registration);
+        close(&mut l,id,20);assert_eq!(l.registration_fingerprint(),registration);
+        assert_ne!(l.fingerprint(),original);assert_eq!(l.next_ordinal(),Ok(3));
+        l.epoch+=1;assert_ne!(l.registration_fingerprint(),registration);
+    }
+    #[test]
     fn teacher_and_learners_are_one_atomic_nonoverlapping_claim() {
         let mut l = ledger(100);
         let bad = [Some(Members { start: 0, end: 10 }), Some(Members { start: 9, end: 11 })];
@@ -253,6 +261,13 @@ impl Ledger {
     pub fn active(&self) -> &[Active] { &self.active }
     pub fn next_ordinal(&self) -> Result<u64, Error> { self.last_ordinal.checked_add(1).ok_or(Error::Overflow) }
     pub(crate) fn fingerprint(&self) -> [u8;32] { self.binding() }
+    /// Immutable registration only. Never compare dynamic watermarks to genesis.
+    pub(crate) fn registration_fingerprint(&self)->[u8;32] {
+        let mut h=Sha256::new();h.update(b"member-ledger-registration-v1\0");
+        h.update(self.version.to_le_bytes());h.update(self.scope.world().to_le_bytes());h.update(self.scope.branch().to_le_bytes());
+        h.update(self.population_origin);h.update(self.people.to_le_bytes());h.update(self.epoch.to_le_bytes());h.finalize().into()
+    }
+    pub(crate) fn is_pristine(&self)->bool {self.last_ordinal==0 && self.last_tick==0 && self.active.is_empty()}
     /// Integrity is necessary but not source authentication. Root must separately
     /// compare all binding fields with the actual World's immutable population.
     pub fn validate_binding(&self, scope: Scope, origin: [u8; 32], people: u64, epoch: u64, completed: u64) -> Result<(), Error> {

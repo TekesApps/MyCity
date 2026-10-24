@@ -30,6 +30,7 @@ mod old_opening {
         pub venue: Option<crate::venue_runtime::Opening>,
         pub education: Option<crate::education_runtime::Opening>,
         pub qualification: Option<crate::qualification_authority::Opening>,
+        pub member_activity: Option<crate::member_authority::Registration>,
     }
 }
 use old_opening::Opening as MirrorOpening;
@@ -237,6 +238,10 @@ fn opening_legacy_derive_wire_acceptance_and_errors_match() {
     extras["housing"] = json!({"unit_limit":8,"dwellings":[],"lease_offers":[]});
     values.push(extras);
     values.push(serde_json::from_slice(include_bytes!("../../city-storage/tests/fixtures/opening-venue-store/managed-people-v1-opening.json")).unwrap());
+    let mut registered=values.last().unwrap().clone();
+    registered["member_activity"]=serde_json::to_value(crate::member_authority::Registration{version:1,
+        scope:crate::arena::Scope::new(1,1).unwrap(),population_origin:[7;32],total_people:10,epoch:1}).unwrap();
+    values.push(registered); // Parser equivalence only, not a valid population provider.
     let mut count = 0;
     for value in values {
         for bytes in cases(&value) {

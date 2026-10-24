@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.180`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.181`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.181 接通[独立登记的唯一成员活动账](docs/evidence/independent-member-authority-20261025/STATUS.md)：教育借用原账，Store核开局身份并保留动态游标；285项不同release测试、另15次默认debug执行及32次独立恢复成功。完整#57的自然需求和出勤履约仍待接线，原M0门不改。
 
 v0.5.180 接通[无教育依赖的原始基础资格登记](docs/evidence/baseline-qualification-20261025/STATUS.md)：显式协议3复用原资格状态、Housing人口身份与Store认证恢复，274项不同release测试及6次默认debug执行通过，14次独立恢复成功。旧协议2保持原口径；完整#55/#57、真实招聘与M0仍开放。
 

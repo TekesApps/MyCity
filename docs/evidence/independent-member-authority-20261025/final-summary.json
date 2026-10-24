@@ -1,0 +1,398 @@
+{
+  "files": 416,
+  "source_zip_sha256": "11ab0ff9aacfed894d5ac89840731bb79b93adcd893b2195ed8911f9ecf3a1ec",
+  "release_distinct_parents": 285,
+  "debug_executions": 15,
+  "fresh_children": [
+    {
+      "path": "worlds/MYCITY_MEMBER_TEST_WORK/standalone-spatial-74738-7/fresh-8/exit.json",
+      "pid": 74814,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 74814,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_MEMBER_TEST_WORK/standalone-spatial-74738-7/fresh-9/exit.json",
+      "pid": 74815,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 74815,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_MEMBER_TEST_WORK/standalone-classic-74738-4/fresh-5/exit.json",
+      "pid": 74810,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 74810,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_MEMBER_TEST_WORK/standalone-classic-74738-4/fresh-6/exit.json",
+      "pid": 74811,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 74811,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_MEMBER_TEST_WORK/education-shared-74563-0/fresh-2/exit.json",
+      "pid": 74565,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 74565,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_MEMBER_TEST_WORK/education-shared-74563-0/fresh-1/exit.json",
+      "pid": 74564,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 74564,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_MEMBER_TEST_WORK/education-shared-74738-0/fresh-2/exit.json",
+      "pid": 74769,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 74769,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_MEMBER_TEST_WORK/education-shared-74738-0/fresh-1/exit.json",
+      "pid": 74762,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 74762,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_MEMBER_TEST_WORK/standalone-classic-74563-4/fresh-5/exit.json",
+      "pid": 74566,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 74566,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_MEMBER_TEST_WORK/standalone-classic-74563-4/fresh-6/exit.json",
+      "pid": 74567,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 74567,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_MEMBER_TEST_WORK/standalone-spatial-74563-7/fresh-8/exit.json",
+      "pid": 74568,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 74568,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_MEMBER_TEST_WORK/standalone-spatial-74563-7/fresh-9/exit.json",
+      "pid": 74569,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 74569,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_EDUCATION_TEST_WORK/v2-anchor-gc-74587-7/child-8/exit.json",
+      "pid": 74590,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 74590,
+        "success": true,
+        "timeout": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_EDUCATION_TEST_WORK/v2-anchor-gc-74819-7/child-8/exit.json",
+      "pid": 74847,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 74847,
+        "success": true,
+        "timeout": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_EDUCATION_TEST_WORK/lesson-74819-0/child-2/exit.json",
+      "pid": 74844,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 74844,
+        "success": true,
+        "timeout": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_EDUCATION_TEST_WORK/lesson-74819-0/child-1/exit.json",
+      "pid": 74828,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 74828,
+        "success": true,
+        "timeout": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_EDUCATION_TEST_WORK/lesson-74587-0/child-2/exit.json",
+      "pid": 74589,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 74589,
+        "success": true,
+        "timeout": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_EDUCATION_TEST_WORK/lesson-74587-0/child-1/exit.json",
+      "pid": 74588,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 74588,
+        "success": true,
+        "timeout": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_QUALIFICATION_TEST_WORK/baseline-v3-spatial-74591-1/fresh-2/exit.json",
+      "pid": 74593,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 74593,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_QUALIFICATION_TEST_WORK/baseline-v3-spatial-74591-1/fresh-3/exit.json",
+      "pid": 74594,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 74594,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_QUALIFICATION_TEST_WORK/baseline-v3-spatial-74851-1/fresh-2/exit.json",
+      "pid": 74857,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 74857,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_QUALIFICATION_TEST_WORK/baseline-v3-spatial-74851-1/fresh-3/exit.json",
+      "pid": 74858,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 74858,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_QUALIFICATION_TEST_WORK/baseline-v3-74851-4/fresh-5/exit.json",
+      "pid": 74878,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 74878,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_QUALIFICATION_TEST_WORK/baseline-v3-74851-4/fresh-6/exit.json",
+      "pid": 74879,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 74879,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_QUALIFICATION_TEST_WORK/real-course-74851-9/fresh-10/exit.json",
+      "pid": 75007,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 75007,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_QUALIFICATION_TEST_WORK/real-course-74851-9/fresh-11/exit.json",
+      "pid": 75047,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 75047,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_QUALIFICATION_TEST_WORK/real-course-74851-9/fresh-12/exit.json",
+      "pid": 75082,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 75082,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_QUALIFICATION_TEST_WORK/real-course-74591-9/fresh-10/exit.json",
+      "pid": 74734,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 74734,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_QUALIFICATION_TEST_WORK/real-course-74591-9/fresh-11/exit.json",
+      "pid": 74736,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 74736,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_QUALIFICATION_TEST_WORK/real-course-74591-9/fresh-12/exit.json",
+      "pid": 74737,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 74737,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_QUALIFICATION_TEST_WORK/baseline-v3-74591-4/fresh-5/exit.json",
+      "pid": 74595,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 74595,
+        "success": true,
+        "timed_out": false
+      }
+    },
+    {
+      "path": "worlds/MYCITY_QUALIFICATION_TEST_WORK/baseline-v3-74591-4/fresh-6/exit.json",
+      "pid": 74596,
+      "code": 0,
+      "timed_out": false,
+      "original_metadata": {
+        "code": 0,
+        "pid": 74596,
+        "success": true,
+        "timed_out": false
+      }
+    }
+  ],
+  "source_and_exes_unchanged": true,
+  "24_WIP_unchanged": true,
+  "M0": "unchanged/not claimed",
+  "retained_regular_files": 1292,
+  "retained_logical_bytes": 214384400,
+  "artifact_cap_bytes": 268435456
+}

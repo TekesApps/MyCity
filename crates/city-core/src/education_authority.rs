@@ -6,7 +6,7 @@ use crate::{assembly::World, arena::Scope, education as e, education_runtime as 
 use serde::{Serialize,Deserialize};
 use sha2::{Digest,Sha256};
 
-const MEMBER_EPOCH: u64 = 1;
+const MEMBER_EPOCH: u64 = crate::member_authority::EPOCH;
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag="kind",rename_all="snake_case",deny_unknown_fields)]
 pub enum Command {
@@ -69,7 +69,7 @@ fn registered_offer(venue:&venue_runtime::Runtime,use_id:u64)->Result<r::Registe
         visitors:offer.population.visitors,enrollment:offer.population.enrollment,
         window:e::Window{start:time(offer.window.start)?,end:time(offer.window.end)?}})
 }
-pub(crate) fn initialize(opening:r::Opening,world:&World)->Result<(Box<r::Runtime>,Box<m::Ledger>),String> {
+pub(crate) fn initialize(opening:r::Opening,world:&World)->Result<Box<r::Runtime>,String> {
     let venue=world.venue.as_deref().ok_or("education_venue_missing")?;
     let population=people(world).map_err(|_|"education_population_missing")?;
     if opening.identity.world!=world.scope.world() || opening.identity.branch!=world.scope.branch()
@@ -89,9 +89,10 @@ pub(crate) fn initialize(opening:r::Opening,world:&World)->Result<(Box<r::Runtim
     let authority=r::VerifiedOpening::after_root_opening_validation(opening.identity,opening.fingerprint().map_err(|_|"education_opening_hash")?,
         opening.registration_origin().map_err(|_|"education_origin_hash")?,venue.population_origin_sha256,population,
         &offers,&qualifications,&free);
-    let ledger=m::Ledger::new(world.scope,venue.population_origin_sha256,population,MEMBER_EPOCH,0).map_err(|_|"education_ledger")?;
+    let ledger=world.member_activity.as_deref().ok_or("education_ledger_missing")?;
+    ledger.validate_binding(world.scope,venue.population_origin_sha256,population,MEMBER_EPOCH,0).map_err(|_|"education_ledger")?;
     let runtime=r::Runtime::new(opening,authority).map_err(|_|"education_registration_invalid")?;
-    Ok((Box::new(runtime),Box::new(ledger)))
+    Ok(Box::new(runtime))
 }
 fn kind(k:r::ActivityKind)->Result<m::Kind,TxError> {
     match k {r::ActivityKind::Preparation=>Ok(m::Kind::EducationPreparation),
@@ -129,8 +130,10 @@ pub(crate) fn validate_candidate(world:&World,timeline:Option<&Timeline>,candida
 }
 fn validate_parts(world:&World,timeline:Option<&Timeline>,education:Option<&r::Runtime>,member:Option<&m::Ledger>,
     proposed_venue:Option<&venue_runtime::UseCandidate>)->Result<(),TxError> {
+    crate::member_authority::validate(world,timeline,member)?;
     match (education,member) {
         (None,None)=>Ok(()),
+        (None,Some(ledger)) if ledger.is_pristine()=>Ok(()),
         (Some(runtime),Some(ledger))=>{
             let venue=world.venue.as_deref().ok_or(TxError::InvalidOperation)?;
             let tick=if timeline.is_none() && runtime.consumed_sequence()==0 {0} else {

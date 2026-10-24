@@ -1178,6 +1178,14 @@ impl Engine {
     pub fn education_registration(&self) -> Option<([u8;32],[u8;32])> {
         self.world.education.as_deref().map(|r|(r.opening().fingerprint().expect("bounded registration"),r.opening().population_origin))
     }
+    /// Store binds presence and immutable namespace against the original genesis.
+    /// This digest deliberately excludes ordinal, active rows and consumed cursors.
+    pub fn member_activity_registration(&self)->Option<[u8;32]> {
+        crate::member_authority::registration(&self.world)
+    }
+    pub fn member_activity_summary(&self)->Option<crate::education_authority::MemberView> {
+        self.world.member_activity.as_deref().map(crate::education_authority::member_view)
+    }
     /// Trusted Store supplies ONLY its root-authenticated original anchor record. Neither
     /// JSON nor this API alone constitutes Store authentication. Publication remains in Store.
     pub fn authenticate_education_restore(&mut self, receipt: Option<&JournalRecord>) -> Result<(),String> {

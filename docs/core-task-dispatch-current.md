@@ -897,3 +897,28 @@ also includes RegionAdvance interaction increments; never adopt it as certified 
 Development history or reconstruct absent city-active intervals. Multi-city certification
 needs explicit migration/source boundaries. Full55/57,16GB/GPU/native peak/M0 remain open;
 root sole shared writer and serial verifier. No full product closure or new timer.
+
+
+### v0.5.181 independent shared member registration (#57 prerequisite)
+
+[Actual evidence](evidence/independent-member-authority-20261025/STATUS.md): explicit
+Opening.member_activity establishes the original ledger; old education implicit path
+stays supported, consumer borrows one ledger. Store compares original genesis presence
+and immutable namespace, not dynamic ordinal. No-education state uses explicit v12;
+old education bytes/schema stay. No consumer permits only pristine, ServiceWork remains
+unsupported until actual service runtime claims its rows; no generic Begin/End exposed.
+
+Workspace/alltarget release check and selected builds exit0.285 different release
+parents,15 separate defaultdebug executions and32 actual fresh children pass. Source,
+fixed executables and24 WIP unchanged. Original advisor concrete/result gates accepted.
+Complete originals/worlds retained under original HP P900 work,256MiB planning cap;
+shared target cache still needed, no tree created or recovery evidence removed.
+
+Original85 owner read-only provider preflight: original Boot stock/Town/construction
+consumption and Exchange arrival are not yet authenticated same-window public-service
+delivery/one-time consumption. Existing utility_network V2 remains unintegrated candidate,
+with unit/producer/quality/network/consumer and original atomic writer dependencies.
+Temporary service equipment must join real utility solving; do not replace required
+network input with an initial electricity stock. Original57 owner remains the service
+owner; root next freezes natural-need/Timeline and actual provider/resource interfaces.
+Full57/85, true16GB/GPU/native peak/M0 remain open, not blocked by a new external condition.

@@ -1178,6 +1178,7 @@ impl Store {
         }
         let original_education_registration=genesis_engine.education_registration();
         let original_qualification_registration=genesis_engine.qualification_registration();
+        let original_member_registration=genesis_engine.member_activity_registration();
         let (mut sequence, mut chain) = if let Some(reference) = &root.checkpoint_v2 {
             let (sequence, chain) = checkpoint_v2::open_into(
                 dir,
@@ -1212,6 +1213,9 @@ impl Store {
         };
         if genesis_engine.qualification_registration()!=original_qualification_registration {
             return Err(Error::Invalid("qualification_genesis_registration_mismatch"));
+        }
+        if genesis_engine.member_activity_registration()!=original_member_registration {
+            return Err(Error::Invalid("member_genesis_registration_mismatch"));
         }
         if genesis_engine.education_registration()!=original_education_registration {
             return Err(Error::Invalid("checkpoint_education_genesis_binding"));

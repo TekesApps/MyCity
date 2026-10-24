@@ -27,6 +27,7 @@ pub mod layout_pressure;
 pub mod market_access;
 // Root-private shared member exclusion; World/Store integration is a separate gate.
 pub(crate) mod member_activity;
+pub mod member_authority;
 pub mod member_qualification;
 pub mod qualification_state;
 pub(crate) mod labor_qualification;

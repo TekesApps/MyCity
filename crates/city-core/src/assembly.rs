@@ -93,6 +93,8 @@ pub struct Opening {
     pub venue: Option<crate::venue_runtime::Opening>,
     pub education: Option<crate::education_runtime::Opening>,
     pub qualification: Option<crate::qualification_authority::Opening>,
+    /// Explicit shared member ledger registration, independent of any consumer.
+    pub member_activity: Option<crate::member_authority::Registration>,
 }
 
 // Decode-only backing reduces the derived visitor's aggregate stack temporaries.
@@ -129,6 +131,8 @@ mod private_openingdecode {
         education: Option<Box<crate::education_runtime::Opening>>,
         #[serde(default)]
         qualification: Option<Box<crate::qualification_authority::Opening>>,
+        #[serde(default)]
+        member_activity: Option<Box<crate::member_authority::Registration>>,
     }
 
     impl Opening {
@@ -150,6 +154,7 @@ mod private_openingdecode {
                 venue: self.venue.map(|value| *value),
                 education: self.education.map(|value| *value),
                 qualification: self.qualification.map(|value| *value),
+                member_activity: self.member_activity.map(|value| *value),
             }
         }
     }
@@ -675,7 +680,9 @@ impl World {
     }
     pub(crate) fn borrowed_view(&self) -> BorrowedWorldView<'_> {
         BorrowedWorldView {
-            schema: if self.qualification.is_some() {
+            schema: if self.member_activity.is_some() && self.education.is_none() {
+                "mycity-m0-state-v12"
+            } else if self.qualification.is_some() {
                 "mycity-m0-state-v11"
             } else if self.education.is_some() || self.member_activity.is_some() {
                 "mycity-m0-state-v10"
@@ -997,7 +1004,9 @@ impl World {
     }
     pub fn view(&self) -> WorldView {
         WorldView {
-            schema: if self.qualification.is_some() {
+            schema: if self.member_activity.is_some() && self.education.is_none() {
+                "mycity-m0-state-v12"
+            } else if self.qualification.is_some() {
                 "mycity-m0-state-v11"
             } else if self.education.is_some() || self.member_activity.is_some() {
                 "mycity-m0-state-v10"
@@ -1135,10 +1144,14 @@ impl World {
             let venue = self.venue.as_deref().map_or(0, crate::venue_runtime::Runtime::owned_bytes);
             object.insert("education_owned_bytes".into(), education.into());
             object.insert("member_activity_owned_bytes".into(), member.into());
-            object.insert("education_prepare_max_bytes".into(), crate::education_authority::candidate_bytes().into());
-            object.insert("education_restore_extra_typed_workspace_bytes".into(), crate::education_authority::restore_workspace_bytes().into());
+            object.insert("education_prepare_max_bytes".into(), if self.education.is_some(){crate::education_authority::candidate_bytes()}else{0}.into());
+            object.insert("education_restore_extra_typed_workspace_bytes".into(), if self.education.is_some(){crate::education_authority::restore_workspace_bytes()}else{0}.into());
             object.insert("world_base_owned_capacity_bytes".into(), (self.owned_capacity_bytes()-venue-education-member).into());
             object.insert("owned_capacity_bytes".into(), self.owned_capacity_bytes().into());
+            if self.education.is_none() {
+                object.insert("member_activity_profile".into(),"member-activity-opening-v1".into());
+                object.insert("member_registration_decode_typed_bytes".into(),size_of::<crate::member_authority::Registration>().into());
+            }
         }
         if self.qualification.is_some() {
             let object=layout.as_object_mut().expect("layout object");
@@ -1543,15 +1556,23 @@ fn assemble_opening_into(mut input: Opening, world: &mut World) -> Result<(), St
         }
         world.venue = Some(Box::new(runtime));
     }
+    if let Some(registration)=input.member_activity {
+        let additional=crate::member_activity::Ledger::owned_bytes()+size_of::<crate::member_authority::Registration>();
+        if world.owned_capacity_bytes().checked_add(additional)
+            .and_then(|n|n.checked_add(crate::housing::MAX_VALIDATION_SCRATCH_BYTES))
+            .is_none_or(|n|n>crate::transaction::ENGINE_BYTE_BUDGET) {return Err("member_world_budget_before_allocation".into());}
+        world.member_activity=Some(crate::member_authority::initialize(registration,world)?);
+    }
     if let Some(opening) = input.education {
-        let additional = crate::education_runtime::Runtime::owned_bytes() + crate::member_activity::Ledger::owned_bytes();
+        let additional = crate::education_runtime::Runtime::owned_bytes()
+            + if world.member_activity.is_none(){crate::member_activity::Ledger::owned_bytes()}else{0};
         if world.owned_capacity_bytes().checked_add(additional)
             .and_then(|n| n.checked_add(crate::housing::MAX_VALIDATION_SCRATCH_BYTES))
             .is_none_or(|n| n > crate::transaction::ENGINE_BYTE_BUDGET) {
             return Err("education_world_budget_before_allocation".into());
         }
-        let (runtime,ledger)=crate::education_authority::initialize(opening,world)?;
-        world.education=Some(runtime);world.member_activity=Some(ledger);
+        if world.member_activity.is_none() {world.member_activity=Some(crate::member_authority::initialize_education(world)?);}
+        world.education=Some(crate::education_authority::initialize(opening,world)?);
     }
     if let Some(opening)=input.qualification {
         let extra=crate::qualification_authority::Runtime::owned_bytes()+crate::qualification_authority::restore_bytes();
