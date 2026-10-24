@@ -1,0 +1,74 @@
+[
+  {
+    "record": "/Volumes/HP P900/dev/MyCity/work/p120venue12-45809/venue-opening/issue120-venue-45833-1792837602379314000-0/wal-recovery-result.json",
+    "result": {
+      "child_pid": 45841,
+      "exit_code": 0,
+      "probe": {
+        "phase": "wal-recovery",
+        "world": "/Volumes/HP P900/dev/MyCity/work/p120venue12-45809/venue-opening/issue120-venue-45833-1792837602379314000-0/managed-venue-world"
+      },
+      "stderr_bytes": 0,
+      "stderr_path": "/Volumes/HP P900/dev/MyCity/work/p120venue12-45809/venue-opening/issue120-venue-45833-1792837602379314000-0/wal-recovery-stderr.log",
+      "stdout_bytes": 760,
+      "stdout_path": "/Volumes/HP P900/dev/MyCity/work/p120venue12-45809/venue-opening/issue120-venue-45833-1792837602379314000-0/wal-recovery-stdout.log",
+      "success": true,
+      "timed_out": false,
+      "wait_error": null
+    }
+  },
+  {
+    "record": "/Volumes/HP P900/dev/MyCity/work/p120venue12-45809/venue-opening/issue120-venue-45833-1792837602379314000-0/checkpoint-recovery-result.json",
+    "result": {
+      "child_pid": 45844,
+      "exit_code": 0,
+      "probe": {
+        "phase": "checkpoint-recovery",
+        "world": "/Volumes/HP P900/dev/MyCity/work/p120venue12-45809/venue-opening/issue120-venue-45833-1792837602379314000-0/managed-venue-world"
+      },
+      "stderr_bytes": 0,
+      "stderr_path": "/Volumes/HP P900/dev/MyCity/work/p120venue12-45809/venue-opening/issue120-venue-45833-1792837602379314000-0/checkpoint-recovery-stderr.log",
+      "stdout_bytes": 767,
+      "stdout_path": "/Volumes/HP P900/dev/MyCity/work/p120venue12-45809/venue-opening/issue120-venue-45833-1792837602379314000-0/checkpoint-recovery-stdout.log",
+      "success": true,
+      "timed_out": false,
+      "wait_error": null
+    }
+  },
+  {
+    "record": "/Volumes/HP P900/dev/MyCity/work/p120venue12-45809/venue-opening/issue120-venue-45833-1792837602379314000-0/after-current-recovery-result.json",
+    "result": {
+      "child_pid": 45849,
+      "exit_code": 0,
+      "probe": {
+        "phase": "after-current-recovery",
+        "world": "/Volumes/HP P900/dev/MyCity/work/p120venue12-45809/venue-opening/issue120-venue-45833-1792837602379314000-0/after-current-response-lost"
+      },
+      "stderr_bytes": 0,
+      "stderr_path": "/Volumes/HP P900/dev/MyCity/work/p120venue12-45809/venue-opening/issue120-venue-45833-1792837602379314000-0/after-current-recovery-stderr.log",
+      "stdout_bytes": 241,
+      "stdout_path": "/Volumes/HP P900/dev/MyCity/work/p120venue12-45809/venue-opening/issue120-venue-45833-1792837602379314000-0/after-current-recovery-stdout.log",
+      "success": true,
+      "timed_out": false,
+      "wait_error": null
+    }
+  },
+  {
+    "record": "/Volumes/HP P900/dev/MyCity/work/p120venue12-45809/venue-opening/issue120-venue-45833-1792837602379314000-0/after-current-checkpoint-result.json",
+    "result": {
+      "child_pid": 45863,
+      "exit_code": 0,
+      "probe": {
+        "phase": "after-current-checkpoint",
+        "world": "/Volumes/HP P900/dev/MyCity/work/p120venue12-45809/venue-opening/issue120-venue-45833-1792837602379314000-0/after-current-response-lost"
+      },
+      "stderr_bytes": 0,
+      "stderr_path": "/Volumes/HP P900/dev/MyCity/work/p120venue12-45809/venue-opening/issue120-venue-45833-1792837602379314000-0/after-current-checkpoint-stderr.log",
+      "stdout_bytes": 242,
+      "stdout_path": "/Volumes/HP P900/dev/MyCity/work/p120venue12-45809/venue-opening/issue120-venue-45833-1792837602379314000-0/after-current-checkpoint-stdout.log",
+      "success": true,
+      "timed_out": false,
+      "wait_error": null
+    }
+  }
+]

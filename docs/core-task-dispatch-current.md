@@ -2,7 +2,7 @@
 
 **2026-10-24 当前接管状态：**本聊天 root 是唯一 canonical 集成、共享核心修改、串行验证
 与版本发布负责人；旧主会话已由用户停止，不再联系或等待其释放。当前有限集成发布基线为
-v0.5.169；保留的 WIP 只按最新已验证阶段登记。下文各带日期/轮次的旧派工与失败记录是
+v0.5.170；保留的 WIP 只按最新已验证阶段登记。下文各带日期/轮次的旧派工与失败记录是
 历史证据，不恢复旧 writer 授权、不覆盖文末最新实际状态。最新已过 CPU 生命周期37项与
 发布前 F/E26项、四个正向 fresh reader/两个拒绝反例见文末及各 STATUS。分项发布范围与限制见 release-association-20261024/STATUS.md。
 
@@ -738,3 +738,17 @@ and hard backpressure preserve obligations. Original advisor accepts finite sour
 Full multi-domain101/global budget/16GB/M0 remains open;24 unrelated WIP unchanged.
 120's independent freeze05 source fixes were narrowly accepted but still not_run; root now
 queues its new venue same-slot Store/fresh-reader gate after this verified source phase.
+
+
+### v0.5.170 managed-venue same-slot Store evidence (#120)
+
+[Actual finite gate](evidence/opening-venue-store-20261024/STATUS.md):17 distinct main tests
+pass; new parent starts4 independent successful fresh helpers. Existing Store implementation
+already supports this bounded optional profile: no shared game/Store code changed this phase.
+Same caller slot/raw genesis/counters/receipt replay/checkpoint and post-CURRENT lost-response
+recovery,137-cent spent-capital preservation and no-overwrite all pass. Original source06
+compile/run09 oracle failures are preserved; independent source assertions follow original
+charter field semantics, fixture unchanged. Original advisor accepts actual finite gate.
+Full120/CSV/typed profiles/migrations/production provider/native16GB/M0 remain open, as do
+separate #122/#123 debug faults.24 unrelated WIP unchanged. Root retains sole shared writer,
+serial verifier and release ownership; source-only54/57 still require truthful actual adapters.

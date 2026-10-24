@@ -1,0 +1,62 @@
+{
+  "source_sha256": "156a361b13f13466f51427ac1da3e96f2bd3af40fa43e2db47c70a9f50133f0f",
+  "build_script_source_sha256": "118b6ee3b81f5dddb4c03d6ba0801b37f9849296a25c20c6ba6f8a537b1a8eef",
+  "passed": 17,
+  "successful_groups": [
+    {
+      "name": "venue-opening",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/issue120-venue-store-20261024/bin-12/city-storage-opening_venue_store",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 45833,
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 1.0674870014190674,
+      "summary": "ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.52s"
+    },
+    {
+      "name": "old-opening",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/issue120-venue-store-20261024/bin-12/city-storage-opening_input_store",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 45865,
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 1.242405891418457,
+      "summary": "ok. 6 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.76s"
+    },
+    {
+      "name": "actual-venue",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/issue120-venue-store-20261024/bin-12/city-storage-venue_capacity",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 45891,
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 1.0148251056671143,
+      "summary": "ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.50s"
+    }
+  ],
+  "new_parent_tests": 1,
+  "new_fresh_child_invocations": 4,
+  "child_helpers_not_extra_main_passes": true,
+  "world_root": "/Volumes/HP P900/dev/MyCity/work/p120venue12-45809",
+  "retained_regular_files": 255,
+  "retained_logical_bytes": 818103,
+  "additional_literal_inputs": 7,
+  "native_peak": "unknown",
+  "full_issue": "open",
+  "m0": "unchanged",
+  "hardware": "Mac16,1/32GiB HP P900 USB/APFS existing target/work",
+  "prior_failures": [
+    "check06 Store Debug test diagnostics",
+    "run09 runtime charter field incorrectly assumed generic input source"
+  ],
+  "two_stack_faults": "#122 #123 separate"
+}

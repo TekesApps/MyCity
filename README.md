@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.169`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.170`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.170 补齐[场所开局同槽发布与恢复证据](docs/evidence/opening-venue-store-20261024/STATUS.md)：17 项串行测试及四次新进程恢复通过；共享 Store 实现未改，期初资本不重发、原目录不覆写，完整 #120 和 M0 仍开放。
 
 v0.5.169 接入[原必要任务的真实选择](docs/evidence/required-dispatch-20261024/STATUS.md)：86 项串行测试通过，RunDue 在 P4 选择原空气待办，保留取消、重绑和到期责任；不自动推进时钟，完整多模型调度和 M0 仍未完成。
 
