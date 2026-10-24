@@ -2,7 +2,7 @@
 
 **2026-10-24 当前接管状态：**本聊天 root 是唯一 canonical 集成、共享核心修改、串行验证
 与版本发布负责人；旧主会话已由用户停止，不再联系或等待其释放。当前有限集成发布基线为
-v0.5.170；保留的 WIP 只按最新已验证阶段登记。下文各带日期/轮次的旧派工与失败记录是
+v0.5.171；保留的 WIP 只按最新已验证阶段登记。下文各带日期/轮次的旧派工与失败记录是
 历史证据，不恢复旧 writer 授权、不覆盖文末最新实际状态。最新已过 CPU 生命周期37项与
 发布前 F/E26项、四个正向 fresh reader/两个拒绝反例见文末及各 STATUS。分项发布范围与限制见 release-association-20261024/STATUS.md。
 
@@ -752,3 +752,24 @@ charter field semantics, fixture unchanged. Original advisor accepts actual fini
 Full120/CSV/typed profiles/migrations/production provider/native16GB/M0 remain open, as do
 separate #122/#123 debug faults.24 unrelated WIP unchanged. Root retains sole shared writer,
 serial verifier and release ownership; source-only54/57 still require truthful actual adapters.
+
+
+### v0.5.171 live Issue reconciliation and next actual education boundary
+
+Live GitHub GET confirms #122/#123 are **closed**, repaired and published in v0.5.159
+(commit1bee5b4c9ec49ebd41e0b555fb8bcbe7e8efaca5). Later entries that carried “open”
+or implied an unresolved defect were stale status propagation, not new failures. Historical
+failed runs/originals remain immutable; no duplicate defect work or new execution is needed.
+Recent venue result summary metadata is corrected, without altering the actual123/86/17
+run results. Old chronological “pending/open” entries are historical, not current ownership.
+
+Next #54 original owner resumes dedicated education_runtime/test/fixture/handoff source;
+root alone owns shared member-activity interval authority, Opening/World/transaction/Store/
+restore/receipt/export/budget. [Adopted design boundary](building-unit-shared-facility-contract.md#教育实际活动接线边界v171设计未实现)
+requires exact role members and game-opening qualification provenance, actual preparation/
+instruction distinct from venue presence, original completed Development tick and cross-day
+cuts. Original advisor recommended this actual vertical path;14 prior pure synthetic tests
+are not production integration. No new timers, duplicate owner or second capacity pool.
+#57 outbound service remains a separate lifecycle: venue Enter cannot mean departure,
+arrival, actual work and safe return. Its original candidate is not yet canonical or tested.
+Full54/57 and actual shared adapters remain pending; existing24 WIP and M0 gates unchanged.

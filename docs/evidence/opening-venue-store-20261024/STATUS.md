@@ -1,5 +1,7 @@
 # #120 managed venue same-slot publication and recovery
 
+
+Current-state correction (v0.5.171): live #122/#123 are closed after the v0.5.159 repair and validation (commit `1bee5b4c9ec49ebd41e0b555fb8bcbe7e8efaca5`). Any later “open” wording below was stale bookkeeping, not a newly observed failure. Historical failures and complete recovery originals remain retained; actual results in this report are unchanged.
 v0.5.170 adds acceptance evidence for the existing v169 Store path. It adds only test source,
 a byte-identical synthetic input fixture and documentation; no shared game/Store implementation
 changed. Full120 remains open. Original owner supplied/fixed the dedicated source; root alone
@@ -93,6 +95,6 @@ Full CSV/profile/typed references and units/clock mappings, general migrations a
 rights are not implemented by these tests. Production init-opening/provider end-to-end for
 this venue profile is not exercised; prior162 finite CLI evidence remains separately scoped.
 No device-loss, arbitrary filesystem kill or race, platform portability/native peak,16GB/GPU/
-longstress/M0 acceptance. Two default-debug stack faults #122/#123 remain separately open.
+longstress/M0 acceptance. The two #122/#123 default-debug defects were already repaired and closed in v0.5.159; their historical evidence stays separate.
 Next54/57 adapters need actual upstream facts and cannot turn these presence facts into
 attendance, qualifications, service delivery or future capacity guarantees.

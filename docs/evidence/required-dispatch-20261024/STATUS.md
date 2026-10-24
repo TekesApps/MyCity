@@ -1,5 +1,7 @@
 # #101 real required-task selection
 
+
+Current-state correction (v0.5.171): live #122/#123 are closed after the v0.5.159 repair and validation (commit `1bee5b4c9ec49ebd41e0b555fb8bcbe7e8efaca5`). Any later “open” wording below was stale bookkeeping, not a newly observed failure. Historical failures and complete recovery originals remain retained; actual results in this report are unchanged.
 v0.5.169 integrates the original101 owner's finite module/tests above v0.5.168. Root alone
 changed shared Sim/Worker/exports and ran the serialized verification. Full101 remains open.
 This is real selection for one existing mandatory air Job, not universal city scheduling.

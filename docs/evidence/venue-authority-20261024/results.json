@@ -209,5 +209,6 @@
   "m0": "unchanged",
   "hardware": "Mac16,1/32GiB",
   "storage": "HP P900 USB/APFS; existing shared target/work",
-  "two_debug_stack_faults": "open #122 #123"
+  "two_debug_stack_faults": "closed #122 #123, repaired/published v0.5.159; historical failures retained",
+  "status_reconciliation": "v0.5.171 live Issue GET; prior open metadata was stale, actual run results unchanged"
 }

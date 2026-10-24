@@ -1,5 +1,7 @@
 # #118 original-pool managed venue authority
 
+
+Current-state correction (v0.5.171): live #122/#123 are closed after the v0.5.159 repair and validation (commit `1bee5b4c9ec49ebd41e0b555fb8bcbe7e8efaca5`). Any later “open” wording below was stale bookkeeping, not a newly observed failure. Historical failures and complete recovery originals remain retained; actual results in this report are unchanged.
 This phase extends v0.5.167 with an explicit optional `managed_people_v1` profile.
 Full #118 remains open. The original Resource/Lease pool alone holds capacity;
 venue registration is immutable provenance, and use metadata is not a second pool.
