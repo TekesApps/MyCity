@@ -322,6 +322,7 @@ fn status(
         store.state_hash().map_err(err)?
     };
     let mut runtime = runtime;
+    runtime["worker_task_observation"] = worker.task_observation();
     runtime["sim_host_timing"] = timings.report();
     Ok(
         json!({"revision":view.revision,"sequence":store.committed_sequence(),"business_sha256":business_sha,"runtime":runtime,"timeline":e.timeline().map(|t|t.progress),
@@ -541,7 +542,11 @@ fn required(
                     w,
                     id,
                     "worker_progress",
-                    serde_json::to_value(&progress).map_err(err)?,
+                    {
+                        let mut progress_value = serde_json::to_value(&progress).map_err(err)?;
+                        progress_value["task_observation"] = child.task_observation();
+                        progress_value
+                    },
                 )?;
                 let point = match progress.stage {
                     Stage::Sources => Some(ProbePoint::WorkerSources),

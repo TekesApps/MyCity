@@ -1,8 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.161`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.162`。已开始Rust模型与headless CLI，当前不做UI。
 
-v0.5.161 完成[Client/Model 持久 owner 调用接线](docs/evidence/worker-client-slot-20261024/STATUS.md)：76 项限定测试及两个真实父入口通过，错误与 panic 收尾保留原责任。完整 #102 报告接线及动态授额仍未完成，不改变 M0 冻结标准。
+v0.5.162 接入[CPU 任务旁路报告与显式本地开局 CLI](docs/evidence/worker-observation-opening-cli-20261024/STATUS.md)：65 项限定测试通过，保留未知计量、原 Store 单槽与真实退休边界；完整 #102/#120 及 M0 仍未完成。
 
 v0.5.159 固定[当前有限集成基线](docs/evidence/release-association-20261024/STATUS.md)：默认栈恢复修复、同槽期初输入、容量只读投影、F/E 持久化、实际 Sim 调度观察及 CPU Worker 生命周期已有分项实测。未激活的教育源码仍为候选；动态总预算控制、生产 provider、完整 M0 与真实16GB均未完成。旧失败和无关 WIP 保留。
 

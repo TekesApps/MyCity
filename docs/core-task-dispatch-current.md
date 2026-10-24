@@ -140,13 +140,14 @@ normal/common8MiB/8h/real16GB gates remain unmet or not_run.
   earnings and obligations do not silently become distributable profit. The combined31day
   scenario is evidence for its stated causal chain, not completion of all lines.
 
-External finite source handoff batch5 (#102 worker protocol/#120 opening loader/#97 vegetation)
-remains unapplied in `/Volumes/HP P900/dev/MyCity/work/issue-102-120-97-source-handoff-20261024`.
-Root checked all39 integrity-listed files,251018 bytes against full preserved originals.
-Compilation/runtime/Store/resource verification remains not_run. Its v149-based private trees
-are not integration-ready merely because the delivery hashes match; no shared source was
-copied over current WIP, no measurement window is assigned, and no cleanup/release of their
-original worktrees has been performed by this task.
+Original finite source handoff batch5 (#102 worker protocol/#120 opening loader/#97 vegetation)
+is retained in `/Volumes/HP P900/dev/MyCity/work/issue-102-120-97-source-handoff-20261024`.
+Root originally checked39 integrity-listed files/251018 bytes; that v149 handoff was source-only,
+not compilation/Store/resource acceptance. Later bounded102 ownership/observation and120
+same-slot/local-file increments have separate current evidence below; #97 vegetation remains
+unapplied and execution not_run. Complete originals remain recoverable independently of the
+old checkout. Current102/120 private trees are retained for continuing issue work; obsolete
+other trees are released only after a fresh complete-original/identity/occupancy audit.
 
 
 ## v152 finite native reader repair and queued E validation
@@ -590,3 +591,25 @@ pool cases are not recovery. All24 unrelated WIP files and original evidence rem
 Next: bind r03 report identity to actual wire/owner and retain Unknown measurements; resolve
 v1 2MiB versus actual air8MiB capability explicitly before #103/#104 activation. #101 advisory
 and #118 read model are not new scheduling/admission authorities; full issues stay open.
+
+
+## v0.5.162 actual CPU observation / selected opening files
+
+#102 original owner supplied v2 CPU observation; root wired canonical Worker/Sim status and
+validated full Ticket, actual direct/unpooled/broker evidence without grants or fabricated metrics.
+#120 original owner supplied local regular-file provider; root wired init-opening into original
+Store factory and actual fresh-reader/recreation rejection gates. [65-test finite evidence](evidence/worker-observation-opening-cli-20261024/STATUS.md).
+Neither full issue closes: common in-Sim task/report and actual measurements/103104 remain;
+120 still lacks full CSV/profile/typed mappings and migration/external rights evidence. #54
+waits authoritative school/attendance/capacity inputs; plans/fixtures cannot produce those facts.
+24 unrelated WIP unchanged, original stopped chat never contacted; root remains sole integrator.
+
+
+### Obsolete batch5–7 checkout release
+
+After fresh Git identity, all tracked/untracked/ignored status, exact full-original byte/hash,
+frozen ownership and empty occupancy checks, root removed only the seven standard worktrees
+for97/103/61/28/104/57/98 with Git. Their28 exclusive files remain in the original HP P900
+full-source packages; branches/common repo/target/work evidence stay intact.102/120 trees
+are retained for continuing work. [Release receipt](evidence/worker-observation-opening-cli-20261024/worktree-release.json).
+This changes checkout retention only; unapplied source and not_run business gates remain so.

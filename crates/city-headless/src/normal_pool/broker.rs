@@ -875,6 +875,10 @@ impl Drop for PendingStart {
     }
 }
 impl Lease {
+    /// Non-secret identity of this exact acknowledged lease; not a wait or return permit.
+    pub(crate) fn observation_identity(&self) -> (u128, u64, u64) {
+        (self.ready.boot, self.binding.generation, self.id)
+    }
     pub fn pid(&self) -> u32 {
         self.pid
     }

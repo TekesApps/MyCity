@@ -24,6 +24,12 @@ pub(crate) const IPC_READER_STACK_BYTES: usize = 512 * 1024;
 pub const DIRECTORY_BYTES: u64 = 32 * 1024 * 1024;
 pub const DIRECTORY_FILES: usize = 32;
 
+#[path = "worker_protocol_observation.rs"]
+mod protocol_observation;
+// Inline state only. Bounded label/digest Strings and transient JSON allocations are
+// separate and remain charged to the original role arena; this is not native memory.
+const _: () = assert!(std::mem::size_of::<protocol_observation::Attempt>() <= 4096);
+
 pub(crate) fn spawn_ipc_reader(
     name: &'static str,
     task: impl FnOnce() + Send + 'static,
@@ -617,6 +623,11 @@ impl Write for Input {
 }
 #[must_use = "hold the owner through start errors and acknowledged retirement"]
 pub struct Worker {
+    // Captured from this actual supervising process, never derived from a task/PID.
+    // Observation metadata only; the existing owned Child/lease remains authoritative.
+    owner_process_instance: u128,
+    observation: Option<protocol_observation::Attempt>,
+    observation_error: Option<&'static str>,
     child: Option<Child>,
     broker: Option<crate::normal_pool::broker::Lease>,
     stdin: Option<Input>,
@@ -634,7 +645,9 @@ pub struct Worker {
 impl Worker {
     /// Empty persistent owner; no RPC, process spawn or capacity mutation.
     pub fn new() -> Self {
-        Self { child: None, broker: None, stdin: None, receiver: None, reader: None,
+        Self { owner_process_instance: crate::heap_meter::process_instance(),
+            observation: None, observation_error: None,
+            child: None, broker: None, stdin: None, receiver: None, reader: None,
             outstanding: None, root: PathBuf::new(), gated: false, pool_grant: None,
             pending_grant: None, broker_start: None, reaped: None, ready_to_submit: false }
     }
@@ -671,6 +684,8 @@ impl Worker {
     fn start(&mut self, executable: &Path, root: &Path, gated: bool,
         bounded: bool, pool: Option<&Path>) -> Result<(), String> {
         if !self.is_empty() { return Err("worker_owner_not_retired".into()); }
+        self.observation = None;
+        self.observation_error = None;
         self.root = root.to_owned();
         self.gated = gated;
         self.ready_to_submit = false;
@@ -788,7 +803,22 @@ impl Worker {
         }
         write_frame(self.stdin.as_mut().ok_or("worker_stopped")?, request)?;
         self.outstanding = Some(request.ticket.clone());
+        match protocol_observation::Attempt::begin(request, self) {
+            Ok(attempt) => { self.observation = Some(attempt); self.observation_error = None; }
+            Err(reason) => { self.observation = None; self.observation_error = Some(reason); }
+        }
         Ok(())
+    }
+    /// Latest attempt observation only. It is not a live-owner, Store, or retirement receipt.
+    /// Missing/failed projection never changes required work or the canonical wire checks.
+    pub fn task_observation(&self) -> serde_json::Value {
+        let data = self.observation.as_ref().and_then(|attempt| attempt.latest());
+        serde_json::json!({"schema":"mycity-cpu-task-observation-v2",
+            "state":if self.observation_error.is_some() {"unavailable"} else if data.is_some() {"observed"} else {"not_yet_observed"},
+            "reason":self.observation_error, "data":data,
+            "owner_retired_now":self.is_empty(), "retained_last_attempt":true,
+            "authority":"observation_only_not_grant_store_acceptance_or_resource_return",
+            "queue_age":"unknown_not_instrumented"})
     }
     pub fn next(&mut self, timeout: Duration) -> Result<Event, String> {
         let event = self
@@ -823,6 +853,14 @@ impl Worker {
                 }
             }
             _ => return Err("worker_response_shape".into()),
+        }
+        // Only after the existing full-ticket and actual asset/hash/length checks.
+        // An unavailable observation must never turn valid business into a rejection.
+        if let Some(mut attempt) = self.observation.take() {
+            match attempt.observe_after_next(self, &event) {
+                Ok(_) => self.observation = Some(attempt),
+                Err(reason) => self.observation_error = Some(reason),
+            }
         }
         Ok(event)
     }

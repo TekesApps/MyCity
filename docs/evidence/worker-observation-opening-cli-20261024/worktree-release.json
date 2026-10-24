@@ -1,0 +1,30 @@
+{
+  "removed_issues": [
+    97,
+    103,
+    61,
+    28,
+    104,
+    57,
+    98
+  ],
+  "preserved_issues": [
+    102,
+    120
+  ],
+  "removed_tree_paths": [
+    "/Users/frankqin/.codex/worktrees/issue97-vegetation/MyCity",
+    "/Users/frankqin/.codex/worktrees/issue103-compatible-strategies/MyCity",
+    "/Users/frankqin/.codex/worktrees/issue61-exposure/MyCity",
+    "/Users/frankqin/.codex/worktrees/issue28-terrain-search/MyCity",
+    "/Users/frankqin/.codex/worktrees/issue104-resource-controller/MyCity",
+    "/Users/frankqin/.codex/worktrees/issue57-service-core/MyCity",
+    "/Users/frankqin/.codex/worktrees/issue98-fields-noise/MyCity"
+  ],
+  "all_archived_untracked_files": 28,
+  "all_branches_and_archives_retained": true,
+  "logical_regular_bytes": 4344051152,
+  "observed_APFS_available_delta_bytes": 4553605120,
+  "space_note": "APFS available-space observation is affected by snapshots/other writers; not an exact attributable reclaim. Logical bytes are separate.",
+  "evidence": "/Volumes/HP P900/dev/MyCity/work/worktree-release-audit-20261024"
+}

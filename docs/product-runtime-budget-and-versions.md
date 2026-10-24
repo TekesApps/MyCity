@@ -273,3 +273,22 @@ legacy absence/null/duplicate/error behavior and non-initial cumulative values. 
 large-frame mirrors are release-only test oracles; original failing business cases continue
 to execute on the unchanged default debug stack. Source/tests/limited results and remaining
 validation are recorded in [stack evidence](evidence/stack-faults-122-123-20261024/STATUS.md).
+
+
+## v0.5.162 显式本地开局输入（#120 有限落地）
+
+新增命令 `mycity-headless init-opening NEW_WORLD OPENING_JSON RESOURCES_JSON [SPATIAL_JSON HEIGHT_PNG]`。
+路径必须显式提供；不推算容量、不默认夹具。当前 provider 仅 macOS 采用安全非阻塞打开后的
+regular-file 门及实际句柄/命名路径元数据核对；其他平台返回 unsupported。OS 可读只证明本次读取，
+不证明许可、产权或业务认证；原始字节/hash/打开的文件身份是来源说明。
+
+资源文件是新版本 `{"schema":"mycity-resources-v1","resources":[{"id":101,"capacity":2}]}`，
+本地适配上限4096B/16行，每层拒绝未知字段，不允许 reserved/occupied；ID 非零唯一，转换
+原 Resource::new 后仍经唯一 EngineSlot 的原身份/容量/跨引用门。显式空数组不绕过必需资源。
+opening 与 spatial JSON 沿用64KiB，普通 PNG 沿原16MiB；normal 角色空间门不因此放宽。
+
+所有输入先读完再调用既有 Store 单槽 factory，空间包成对显式提供。加载不是语义接纳，
+初始化/发布不确定时保留目录并重新打开判定，不重新建城或重发资本。输入上限不代表总峰值
+内存；JSON解码、资源Vec、空间副本、诊断与Store工作区仍按各域计费。
+[有限真实文件及恢复证据](evidence/worker-observation-opening-cli-20261024/STATUS.md)不覆盖
+通用 CSV/profile 构造、全部 typed/单位/clock 映射、迁移、外部许可或全产品资源验收。

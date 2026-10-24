@@ -579,6 +579,17 @@ fn lost_stopped_reply_retries_original_lease_without_duplicate_credit_or_lost_re
     prepare(&mut client, &mut id);
     let completed = call(&mut client, &mut id, Command::RunRequired { job: 1 });
     assert_eq!(completed["replayed"], false);
+    let observed_status = call(&mut client, &mut id, Command::Status);
+    let observation = &observed_status["runtime"]["worker_task_observation"];
+    assert_eq!(observation["state"], "observed");
+    assert_eq!(observation["data"]["stage"], "complete");
+    assert_eq!(observation["data"]["request"]["ticket"]["job"], 1);
+    assert_eq!(observation["data"]["execution"]["allocation"]["kind"], "broker_lease");
+    assert!(observation["data"]["execution"]["allocation"]["pool_boot"].as_str().unwrap().parse::<u128>().unwrap() != 0);
+    assert!(observation["data"]["execution"]["process_instance"].is_null());
+    assert_eq!(observation["data"]["measurements"]["cpu_time"]["value"]["state"], "unknown");
+    assert_eq!(observation["data"]["candidate"]["origin"], "host_read_hash_validated");
+    fs::write(t.0.join("actual-broker-observation.json"), serde_json::to_vec_pretty(observation).unwrap()).unwrap();
     let before_stop = normal_pool::status(&root).unwrap();
     assert_eq!(before_stop.grants, 1); assert_eq!(before_stop.returns, 0);
     call(&mut client, &mut id, Command::Stop);

@@ -1,0 +1,379 @@
+{
+  "schema": "mycity-observation-opening-finite-evidence-v1",
+  "source_sha256": "5b33e5f0adbd6b86ee85fe9515f29bf56cc43d82d0684b384724793d57db93b0",
+  "passed": 65,
+  "ignored_helpers": 2,
+  "commands": 8,
+  "observations": [
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/compute/mycity-compute-58448-3/observed-1.json",
+      "pid": 58522,
+      "kind": "unpooled",
+      "job": 1,
+      "candidate": {
+        "bytes": 43787,
+        "origin": "host_read_hash_validated",
+        "sha256": [
+          254,
+          13,
+          117,
+          17,
+          166,
+          55,
+          55,
+          177,
+          17,
+          229,
+          126,
+          18,
+          158,
+          94,
+          134,
+          170,
+          133,
+          82,
+          250,
+          204,
+          160,
+          109,
+          18,
+          137,
+          225,
+          165,
+          180,
+          101,
+          115,
+          251,
+          215,
+          136
+        ]
+      }
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/compute/mycity-compute-58448-3/observed-2.json",
+      "pid": 58522,
+      "kind": "unpooled",
+      "job": 2,
+      "candidate": {
+        "bytes": 43787,
+        "origin": "host_read_hash_validated",
+        "sha256": [
+          254,
+          13,
+          117,
+          17,
+          166,
+          55,
+          55,
+          177,
+          17,
+          229,
+          126,
+          18,
+          158,
+          94,
+          134,
+          170,
+          133,
+          82,
+          250,
+          204,
+          160,
+          109,
+          18,
+          137,
+          225,
+          165,
+          180,
+          101,
+          115,
+          251,
+          215,
+          136
+        ]
+      }
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/compute/mycity-compute-58448-4/observed-1.json",
+      "pid": 58524,
+      "kind": "direct_grant",
+      "job": 1,
+      "candidate": {
+        "bytes": 43787,
+        "origin": "host_read_hash_validated",
+        "sha256": [
+          254,
+          13,
+          117,
+          17,
+          166,
+          55,
+          55,
+          177,
+          17,
+          229,
+          126,
+          18,
+          158,
+          94,
+          134,
+          170,
+          133,
+          82,
+          250,
+          204,
+          160,
+          109,
+          18,
+          137,
+          225,
+          165,
+          180,
+          101,
+          115,
+          251,
+          215,
+          136
+        ]
+      }
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/compute/mycity-compute-58448-4/observed-2.json",
+      "pid": 58524,
+      "kind": "direct_grant",
+      "job": 2,
+      "candidate": {
+        "bytes": 43787,
+        "origin": "host_read_hash_validated",
+        "sha256": [
+          254,
+          13,
+          117,
+          17,
+          166,
+          55,
+          55,
+          177,
+          17,
+          229,
+          126,
+          18,
+          158,
+          94,
+          134,
+          170,
+          133,
+          82,
+          250,
+          204,
+          160,
+          109,
+          18,
+          137,
+          225,
+          165,
+          180,
+          101,
+          115,
+          251,
+          215,
+          136
+        ]
+      }
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-21/actual-broker-observation.json",
+      "pid": 58891,
+      "kind": "broker_lease",
+      "lease": 1
+    }
+  ],
+  "opening_worlds": [
+    {
+      "world": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/cli/town-59317/world",
+      "raw_bytes": 15917,
+      "raw_sha256": "c9d3713d817fada2054641260c220447f7f2496d64f1ac5340bfa3e1cba4e2a0",
+      "genesis_original_bytes_equal": true
+    },
+    {
+      "world": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/cli/e0-59317/world",
+      "raw_bytes": 861,
+      "raw_sha256": "4494bac77e99e54694d4197921e4126f5f13514c65e326ba7068d9f6cbbf35ed",
+      "genesis_original_bytes_equal": true
+    }
+  ],
+  "cli_command_statuses": [
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/cli/town-59317/bad-resource.status.json",
+      "exit": 2,
+      "pid": 59352
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/cli/town-59317/town-create.status.json",
+      "exit": 0,
+      "pid": 59351
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/cli/town-59317/invalid-opening.status.json",
+      "exit": 2,
+      "pid": 59353
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/cli/town-59317/missing-spatial.status.json",
+      "exit": 2,
+      "pid": 59350
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/cli/e0-59317/reject-recreate.status.json",
+      "exit": 2,
+      "pid": 59362
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/cli/e0-59317/create.status.json",
+      "exit": 0,
+      "pid": 59360
+    }
+  ],
+  "independent_reader_test_pid": 59317,
+  "restored_e0_account1_cash_cents": 999863,
+  "actual_artifact_regular_files": 675,
+  "actual_artifact_logical_bytes": 64178771,
+  "special_entries_not_read_as_bytes": [
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-26/pool/pool.sock",
+      "kind": 49152
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-19/pool/pool.sock",
+      "kind": 49152
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-8/pool/pool.sock",
+      "kind": 49152
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-21/pool/pool.sock",
+      "kind": 49152
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-17/pool/pool.sock",
+      "kind": 49152
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-1/pool/pool.sock",
+      "kind": 49152
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-28/pool/pool.sock",
+      "kind": 49152
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-10/pool/pool.sock",
+      "kind": 49152
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-6/pool/pool.sock",
+      "kind": 49152
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-11/pool/pool.sock",
+      "kind": 49152
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-7/pool/pool.sock",
+      "kind": 49152
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-16/pool/pool.sock",
+      "kind": 49152
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-0/pool/pool.sock",
+      "kind": 49152
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-20/pool/pool.sock",
+      "kind": 49152
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-9/pool/pool.sock",
+      "kind": 49152
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-27/pool/pool.sock",
+      "kind": 49152
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-18/pool/pool.sock",
+      "kind": 49152
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-22/pool/pool.sock",
+      "kind": 49152
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-25/original-dead-pool/pool.sock",
+      "kind": 49152
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-25/pool/pool.sock",
+      "kind": 49152
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-13/pool/pool.sock",
+      "kind": 49152
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-5/pool/pool.sock",
+      "kind": 49152
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-14/pool/pool.sock",
+      "kind": 49152
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-2/pool/pool.sock",
+      "kind": 49152
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-15/pool/pool.sock",
+      "kind": 49152
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-3/pool/pool.sock",
+      "kind": 49152
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-12/pool/pool.sock",
+      "kind": 49152
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-4/pool/pool.sock",
+      "kind": 49152
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-24/pool/pool.sock",
+      "kind": 49152
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/broker/mc-broker-58538-23/pool/pool.sock",
+      "kind": 49152
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/source/mycity-opening-source-58445-9-fifo.json",
+      "kind": 4096
+    },
+    {
+      "path": "/Volumes/HP P900/dev/MyCity/work/p102r11-58414/compute/mycity-compute-58448-4/pool/pool.sock",
+      "kind": 49152
+    }
+  ],
+  "limitations": [
+    "Unknown CPU/work/scratch/queue metrics",
+    "not Store acceptance report",
+    "macOS local provider only",
+    "no native/GPU/true16GB/longstress/M0 gate"
+  ],
+  "all355_source_and_fixed_executable_hashes_unchanged": true,
+  "restored_e0_account4_cash_cents": 1200137
+}

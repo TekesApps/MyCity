@@ -1,0 +1,117 @@
+[
+  {
+    "name": "core-observation",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/issue102-report-observation-20261024/bin-11/core-unit",
+      "worker_protocol_observation::",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "pid": 58427,
+    "exit": 0,
+    "timed_out": false,
+    "seconds": 0.7248849868774414,
+    "log": "/Volumes/HP P900/dev/MyCity/work/issue102-report-observation-20261024/core-observation-11.log",
+    "summary": "ok. 9 passed; 0 failed; 0 ignored; 0 measured; 210 filtered out; finished in 0.00s"
+  },
+  {
+    "name": "headless-observation",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/issue102-report-observation-20261024/bin-11/headless-unit",
+      "compute_worker::protocol_observation::",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "pid": 58431,
+    "exit": 0,
+    "timed_out": false,
+    "seconds": 0.6179230213165283,
+    "log": "/Volumes/HP P900/dev/MyCity/work/issue102-report-observation-20261024/headless-observation-11.log",
+    "summary": "ok. 4 passed; 0 failed; 0 ignored; 0 measured; 117 filtered out; finished in 0.00s"
+  },
+  {
+    "name": "opening-provider",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/issue102-report-observation-20261024/bin-11/cli-unit",
+      "opening_source_provider::",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "pid": 58445,
+    "exit": 0,
+    "timed_out": false,
+    "seconds": 0.4665558338165283,
+    "log": "/Volumes/HP P900/dev/MyCity/work/issue102-report-observation-20261024/opening-provider-11.log",
+    "summary": "ok. 8 passed; 0 failed; 1 ignored; 0 measured; 2 filtered out; finished in 0.02s"
+  },
+  {
+    "name": "compute",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/issue102-report-observation-20261024/bin-11/compute_worker",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "pid": 58448,
+    "exit": 0,
+    "timed_out": false,
+    "seconds": 3.1348049640655518,
+    "log": "/Volumes/HP P900/dev/MyCity/work/issue102-report-observation-20261024/compute-11.log",
+    "summary": "ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.58s"
+  },
+  {
+    "name": "broker",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/issue102-report-observation-20261024/bin-11/broker",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "pid": 58538,
+    "exit": 0,
+    "timed_out": false,
+    "seconds": 16.13239097595215,
+    "log": "/Volumes/HP P900/dev/MyCity/work/issue102-report-observation-20261024/broker-11.log",
+    "summary": "ok. 23 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 15.57s"
+  },
+  {
+    "name": "sim-host",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/issue102-report-observation-20261024/bin-11/sim_host",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "pid": 58960,
+    "exit": 0,
+    "timed_out": false,
+    "seconds": 3.435755968093872,
+    "log": "/Volumes/HP P900/dev/MyCity/work/issue102-report-observation-20261024/sim-host-11.log",
+    "summary": "ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.89s"
+  },
+  {
+    "name": "registry-dispatch",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/issue102-report-observation-20261024/bin-11/task_registry_dispatch",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "pid": 59229,
+    "exit": 0,
+    "timed_out": false,
+    "seconds": 1.2621467113494873,
+    "log": "/Volumes/HP P900/dev/MyCity/work/issue102-report-observation-20261024/registry-dispatch-11.log",
+    "summary": "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.76s"
+  },
+  {
+    "name": "opening-cli",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/issue102-report-observation-20261024/bin-11/opening_cli",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "pid": 59317,
+    "exit": 0,
+    "timed_out": false,
+    "seconds": 0.7730607986450195,
+    "log": "/Volumes/HP P900/dev/MyCity/work/issue102-report-observation-20261024/opening-cli-11.log",
+    "summary": "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s"
+  }
+]

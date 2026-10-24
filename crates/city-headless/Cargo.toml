@@ -27,5 +27,5 @@ workspace = true
 [target.'cfg(target_os = "macos")'.dependencies]
 libproc = "=0.14.11"
 sysctl = "=0.6.0"
-rustix = { version = "=1.1.5", features = ["process", "time"] }
+rustix = { version = "=1.1.5", features = ["fs", "process", "time"] }
 errno = "=0.3.14"

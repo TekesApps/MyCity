@@ -483,3 +483,67 @@ fn existing_candidate_corruption_is_rejected_without_replacing_it() {
         .contains("worker_asset_checksum"));
     assert_eq!(fs::read(path).unwrap(), b"corrupted");
 }
+
+
+#[test]
+fn actual_unpooled_and_direct_owned_reports_bind_wire_and_validated_asset() {
+    use mycity_headless::normal_pool::{Process, BYTES};
+    use mycity_core::worker_protocol_observation::{CpuObservation, CpuAllocationIdentity, CandidateEvidence, MeasurementValue};
+    for pooled in [false, true] {
+        let t = Temp::new();
+        let root = t.task_root();
+        let mut pool = pooled.then(|| Process::spawn(executable(), &t.0.join("pool"), None).unwrap());
+        let mut req = request(&root, &state());
+        protocol::with_worker(|worker| {
+            if let Some(pool) = pool.as_ref() {
+                worker.start_bounded(executable(), &root, Some(pool.root()), false)?;
+            } else { worker.start_unbounded(executable(), &root, false)?; }
+            let actual_pid = worker.pid();
+            for occurrence in 1..=2 {
+                req.ticket.job = occurrence;
+                worker.submit(&req)?;
+                loop {
+                    let e = worker.next(Duration::from_secs(10))?;
+                    let report = worker.task_observation();
+                    assert_eq!(report["state"], "observed");
+                    let observation: CpuObservation = serde_json::from_value(report["data"].clone()).unwrap();
+                    assert_eq!(observation.execution.pid, actual_pid);
+                    assert_eq!(observation.execution.process_instance, None);
+                    assert!(observation.execution.supervisor_owner_instance.is_some());
+                    assert_eq!(observation.request.ticket.job, occurrence);
+                    assert_eq!(observation.request.ticket.base_revision, 0);
+                    assert_eq!(observation.request.ticket.field_version, 0);
+                    assert_eq!(observation.request.ticket.incarnation, req.ticket.incarnation);
+                    assert_eq!(observation.request.strategy, req.strategy);
+                    assert!(matches!(observation.measurements.cpu_time.value, MeasurementValue::Unknown { .. }));
+                    assert!(matches!(observation.measurements.work_units.value, MeasurementValue::Unknown { .. }));
+                    match observation.execution.allocation {
+                        CpuAllocationIdentity::DirectGrant { pool_boot, grant_id } => {
+                            assert!(pooled && pool_boot != 0 && grant_id != 0);
+                        },
+                        CpuAllocationIdentity::Unpooled => assert!(!pooled),
+                        other => panic!("unexpected actual allocation {other:?}"),
+                    }
+                    if e.stage == Stage::Complete {
+                        let bytes = protocol::read_asset(&root.join("candidates"), e.candidate_sha256.as_deref().unwrap())?;
+                        match observation.candidate {
+                            CandidateEvidence::HostReadHashValidated { sha256: hash, bytes: n } => {
+                                assert_eq!(n, bytes.len() as u64);
+                                assert_eq!(hash.iter().map(|v|format!("{v:02x}")).collect::<String>(), sha256(&bytes));
+                            }, other => panic!("unvalidated {other:?}"),
+                        }
+                        fs::write(t.0.join(format!("observed-{occurrence}.json")), serde_json::to_vec_pretty(&report).unwrap()).unwrap();
+                        break;
+                    }
+                }
+            }
+            Ok(())
+        }).unwrap();
+        if let Some(pool) = pool.as_mut() {
+            let summary = mycity_headless::normal_pool::status(pool.root()).unwrap();
+            assert_eq!(summary.grants, summary.returns);
+            assert_eq!(summary.available_touched_bytes, BYTES);
+            pool.finish().unwrap();
+        }
+    }
+}

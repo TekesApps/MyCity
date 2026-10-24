@@ -4,6 +4,8 @@ mod boot_probe;
 mod continuity;
 mod economy_probe;
 mod exchange_probe;
+mod opening_cli;
+mod opening_source_provider;
 mod session;
 mod timeline_probe;
 mod worker_probe;
@@ -29,6 +31,11 @@ fn run() -> Result<(), String> {
         .enumerate()
         .filter_map(|(i, a)| (!(i == 1 && a == "native-observed-root")).then_some(a))
         .collect();
+    if args.get(1).is_some_and(|a| a == "init-opening") {
+        let report = opening_cli::initialize(&args)?;
+        println!("{}", serde_json::to_string_pretty(&report).map_err(|e| e.to_string())?);
+        return Ok(());
+    }
     #[cfg(target_os = "macos")]
     if args.get(1).is_some_and(|a| a == "native-observe") {
         if args.len() < 6 || args[3] != "--" {

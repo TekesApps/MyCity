@@ -223,3 +223,14 @@ real wait plus original retirement permits reuse. Two failed finite cleanup atte
 an explicit unresolved receipt and terminal CLI exit2, never fabricated return credit.
 [Finite source and actual execution](evidence/worker-client-slot-20261024/STATUS.md) cover the
 shared mechanism and two real parent entries; r03 reports/measurements and full102 remain open.
+
+
+### v0.5.162 CPU observation v2
+
+Actual Worker submit retains full Request; next projects after canonical asset checks, one latest
+report per owner. Full task/attempt identity and Direct/Broker/Unpooled/Unknown remain distinct;
+u128 instances use lossless decimal strings. Unknown CPU/work/scratch/queue data never becomes0
+or a fabricated grant. Report failures cannot suppress necessary work, certify Store acceptance
+or return credit. CPU8MiB is the original candidate capability, not all-model resource credit.
+[Actual finite source/results](evidence/worker-observation-opening-cli-20261024/STATUS.md) keep
+generic in-Sim task integration, real metrics and103/104 dynamic grants explicitly pending.
