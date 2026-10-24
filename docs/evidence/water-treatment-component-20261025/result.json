@@ -1,0 +1,17 @@
+{
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/water-treatment-20261025/programs01/water_treatment",
+    "--nocapture",
+    "--test-threads=1"
+  ],
+  "exit_code": 0,
+  "timed_out": false,
+  "elapsed_seconds": 1.3591480255126953,
+  "summary": [
+    "ok",
+    "18",
+    "0",
+    "0"
+  ],
+  "scope": "pure component synthetic RootVerifier, no game integration/actual treatment/use claim"
+}

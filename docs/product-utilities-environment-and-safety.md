@@ -174,3 +174,8 @@ NG独立计量原M4096不够22800独立单元时，完整产品新增M-utility�
 
 
 v0.5.24 N01／N02补充：[树种适生与空气作用](tree-species-climate-and-air.md)明确经纬度→气候／场地→树种可选和生长条件、非重复冠层及有界作用；无配准／缺参不得默认为适生或净化，当前CPU参考尚无树作用。按新48KiB设计份额准入，主线不扩逐树模拟。
+
+
+### U03 implementation vertical contract (proposed, after v0.5.185)
+
+[Water quality and treatment runtime](water-quality-and-treatment-runtime.md) binds original generated process water, exact source masses/WIP, same-window power, classified costs and residual custody. New implementation and acceptance remain pending; original unknown water is not certified by this document. Full #92 and U03 sewage/rights/network requirements stay open.

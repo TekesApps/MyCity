@@ -1,0 +1,26 @@
+{
+  "phase": "component only",
+  "baseline": "v0.5.185 /9720dad54a30f4f1cc6f3a76a674bac4a0e72c72",
+  "release_component_tests": 18,
+  "all_pass": true,
+  "source_inputs": 436,
+  "protected_wip_unchanged": 24,
+  "root_verifier": "synthetic fixture/RejectVerifier only; no original production authority adapter",
+  "implemented": [
+    "exact composition side records and purification candidate",
+    "fractional dose and cumulative WIP",
+    "Unknown/mix/leak/evaporation conservation",
+    "explicit original stream ports and source-confirmed cost interface",
+    "stale/recompute/structural restore checks"
+  ],
+  "not_implemented": [
+    "original generated-stream cost/outflow/net projection",
+    "joint generator/pumps/treatment actual allocation",
+    "actual source/permissions/personnel/residual/fee authority",
+    "World/Stock/Timeline/Store materialization/authentication",
+    "actual sanitary use or57 delivery",
+    "complete92 rights/networks/sewage",
+    "16KiB/96KiB joint prepare/restore peak acceptance",
+    "real16GB/GPU/native/performance/M0 gates"
+  ]
+}

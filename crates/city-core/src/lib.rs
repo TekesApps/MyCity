@@ -46,6 +46,7 @@ pub mod town_utility;
 pub mod transaction;
 pub mod transport;
 pub mod units;
+pub mod water_treatment;
 pub mod venue_capacity;
 pub mod venue_runtime;
 pub mod worker_protocol_observation;

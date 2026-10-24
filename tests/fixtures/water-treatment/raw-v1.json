@@ -1,0 +1,11 @@
+{
+  "profile": "RawPurificationV1",
+  "precision_version": 1,
+  "units": {"water": "mL", "mass": "mQ", "electricity": "mWh"},
+  "input": {"water": 100000000, "harmful": 100, "suspended": 10, "allowed_dissolved": 0, "other": 0, "reagent": 100, "electricity": 20000000},
+  "product": {"water": 98000000, "harmful": 1, "suspended": 0, "allowed_dissolved": 10, "other": 0},
+  "concentrate": {"water": 2000000, "harmful": 99, "suspended": 0, "allowed_dissolved": 20, "other": 0},
+  "sludge": {"water": 0, "harmful": 0, "suspended": 10, "allowed_dissolved": 70, "other": 0},
+  "twenty_liter_reagent": {"whole": 0, "rem": 1, "den": 50},
+  "authority": "synthetic arithmetic oracle only; no Stock, actual supply, permit or health certificate"
+}
