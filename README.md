@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.171`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.172`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.172 新增[内部成员活动互斥组件](docs/evidence/member-activity-authority-20261024/STATUS.md)，并修正 venue 扩展后的解码参考镜像；244 项串行测试通过，真实教学及 World/Store 接线尚未完成。
 
 v0.5.171 校正近期状态登记：#122/#123 已在 v0.5.159 修复并关闭，失败原件继续保留；冻结下一步教育实际活动接线边界，尚未宣称实现通过。
 

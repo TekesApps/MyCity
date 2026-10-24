@@ -1,0 +1,26 @@
+[
+  {
+    "label": "core",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/member-activity-authority-20261024/bin-05/core",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "pid": 82824,
+    "exit": 0,
+    "timeout": false,
+    "seconds": 4.6704161167144775
+  },
+  {
+    "label": "education",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/member-activity-authority-20261024/bin-05/education",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "pid": 82858,
+    "exit": 0,
+    "timeout": false,
+    "seconds": 0.5495691299438477
+  }
+]

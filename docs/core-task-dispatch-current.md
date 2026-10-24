@@ -2,7 +2,7 @@
 
 **2026-10-24 当前接管状态：**本聊天 root 是唯一 canonical 集成、共享核心修改、串行验证
 与版本发布负责人；旧主会话已由用户停止，不再联系或等待其释放。当前有限集成发布基线为
-v0.5.171；保留的 WIP 只按最新已验证阶段登记。下文各带日期/轮次的旧派工与失败记录是
+v0.5.172；保留的 WIP 只按最新已验证阶段登记。下文各带日期/轮次的旧派工与失败记录是
 历史证据，不恢复旧 writer 授权、不覆盖文末最新实际状态。最新已过 CPU 生命周期37项与
 发布前 F/E26项、四个正向 fresh reader/两个拒绝反例见文末及各 STATUS。分项发布范围与限制见 release-association-20261024/STATUS.md。
 
@@ -773,3 +773,24 @@ are not production integration. No new timers, duplicate owner or second capacit
 #57 outbound service remains a separate lifecycle: venue Enter cannot mean departure,
 arrival, actual work and safe return. Its original candidate is not yet canonical or tested.
 Full54/57 and actual shared adapters remain pending; existing24 WIP and M0 gates unchanged.
+
+
+### v0.5.172 internal shared member activity and current-schema reference repair
+
+[Actual evidence](evidence/member-activity-authority-20261024/STATUS.md): root-private32-active
+ledger now implements atomic two-range exclusion, ongoing responsibility, day-boundary
+nonclosing settlement and admitted-stream replay watermarks. Every active reserves a close
+ordinal even atMAX; rejected new work does not consume it. No capacity or wallet is duplicated.
+Logical resident3192B + candidate3352B are separately charged components, not native peak or
+an automatic grant. World/Store/domain progress integration remains pending under root.
+
+Source04 check/build0; full core230pass/1ignored and education14pass=244 distinct. Member10
+is included. First source02 core228/2fail/1ignored remains retained: current direct-derive
+mirrors omitted the v168 venue extension. Test-only mirror fields now match current schema,
+with a separately frozen15-field legacy World byte oracle, all6 legacy Opening fixtures and
+new venue cases. No production decoder/assertion normalization or M0 change. Original
+advisor accepts concrete fix and actual finite results. Original54 owner is actively building
+its dedicated runtime in its original private tree, still author not_run; root does not copy
+unfinished private source. Full54/57/118, native16GB and M0 remain open;24 WIP unchanged.
+#107 read-only audit found no existing migration writer seam; no preflight-only substitute
+was dispatched as executable migration. Keep original root/recovery evidence intact.

@@ -1,0 +1,12 @@
+{
+  "education": {
+    "file": "/Volumes/HP P900/dev/MyCity/work/member-activity-authority-20261024/bin-05/education",
+    "sha256": "f7efee91fd6c5a7caf8cea9f3dd4da4fc46551ee9b39e5931f64885beabf4f17",
+    "bytes": 1008656
+  },
+  "core": {
+    "file": "/Volumes/HP P900/dev/MyCity/work/member-activity-authority-20261024/bin-05/core",
+    "sha256": "6445b2e00cec2c7f76a3963b186e535aec954a78b435246e3a183f50f709ed37",
+    "bytes": 7582704
+  }
+}

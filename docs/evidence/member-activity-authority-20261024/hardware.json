@@ -1,0 +1,8 @@
+{
+  "model": "Mac16,1",
+  "physical_memory": 34359738368,
+  "os": "ProductName:\t\tmacOS\nProductVersion:\t\t26.6.2\nBuildVersion:\t\t25G83\n",
+  "rust": "rustc 1.85.1 (4eb161250 2025-03-15)",
+  "storage": "existing HP P900 USB/APFS target/work",
+  "scope": "functional component correctness, not performance/native peak/16GB/M0"
+}

@@ -1,0 +1,31 @@
+{
+  "source_sha256": "20f1f2303e310722a5fb92895fe10c97d963145eac85f1a8603154c6b2defa78",
+  "source_files": 447,
+  "check_exit": 0,
+  "build_exit": 0,
+  "core_passed": 230,
+  "core_ignored": 1,
+  "education_passed": 14,
+  "distinct_passed": 244,
+  "member_component_tests_included": 10,
+  "opening_mirror_cases": 256,
+  "layout": {
+    "ledger": 3192,
+    "candidate": 3352,
+    "simultaneous_logical_bytes": 6544,
+    "active_record": 96,
+    "active_capacity": 32
+  },
+  "prior_failed_core": {
+    "passed": 228,
+    "failed": 2,
+    "ignored": 1,
+    "retained": true
+  },
+  "world_store_integration": "not implemented",
+  "checkpoint_authority": "not_run",
+  "whole_domain_exclusion": "not established",
+  "16GB": "not_run",
+  "M0": "unchanged",
+  "advisor": "original read-only source/fix/results review; no blocker finite publication"
+}

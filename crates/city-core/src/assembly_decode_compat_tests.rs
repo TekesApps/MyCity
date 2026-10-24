@@ -1,4 +1,6 @@
-//! Independent old-derive mirrors; run in release because the old generated frames are the regression oracle.
+//! Direct-derive mirrors of the CURRENT schema, compared with the small-carrier decoder.
+//! Run in release: large derived frames intentionally remain the independent strategy oracle.
+//! The frozen pre-venue World shape remains below as a separate legacy wire oracle.
 mod old_opening {
     use super::*;
     #[allow(dead_code)] // Fields are compared through derived Debug in this legacy mirror.
@@ -25,6 +27,7 @@ mod old_opening {
         /// Optional bounded housing stock and immutable one-shot lease-offer catalogue.
         #[serde(default)]
         pub housing: Option<crate::housing::OpeningHousing>,
+        pub venue: Option<crate::venue_runtime::Opening>,
     }
 }
 use old_opening::Opening as MirrorOpening;
@@ -52,9 +55,39 @@ mod old_world {
         pub(crate) town: Option<crate::town_runtime::TownMarket>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         pub(crate) housing: Option<Box<HousingRuntime>>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub(crate) venue: Option<Box<crate::venue_runtime::Runtime>>,
     }
 }
 use old_world::World as MirrorWorld;
+
+// Exact pre-venue field shape retained, not updated with the current schema.
+mod legacy_world {
+    use super::*;
+    #[derive(Serialize, Deserialize)]
+    #[serde(deny_unknown_fields, rename = "World")]
+    pub(super) struct World {
+        pub(crate) scope: Scope,
+        pub(crate) seed: u64,
+        pub(crate) revision: u64,
+        pub(crate) accounts: Arena<AccountDomain, Account>,
+        pub(crate) stocks: Arena<InventoryDomain, Stock>,
+        pub(crate) account_ids: Rows<(u32, Handle<AccountDomain>), MAX_ACCOUNTS>,
+        pub(crate) stock_ids: Rows<(u32, Handle<InventoryDomain>), MAX_STOCKS>,
+        sources: Rows<OpeningSource, MAX_SOURCES>,
+        pub(crate) region: Option<crate::region::Region>,
+        pub(crate) economy: Option<crate::economy::Economy>,
+        pub(crate) boot: Option<crate::boot::Boot>,
+        pub(crate) exchange: Option<crate::exchange::Exchange>,
+        #[serde(skip_serializing_if = "Option::is_none")]
+        pub(crate) construction: Option<crate::construction::Project>,
+        #[serde(skip_serializing_if = "Option::is_none")]
+        pub(crate) town: Option<crate::town_runtime::TownMarket>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub(crate) housing: Option<Box<HousingRuntime>>,
+    }
+}
+use legacy_world::World as LegacyWorld;
 
 mod old_townmarket {
     use super::*;
@@ -152,6 +185,14 @@ fn compare_world(bytes: &[u8]) {
         _ => panic!("World compatibility diverged"),
     }
 }
+fn compare_legacy_world(bytes: &[u8]) {
+    let legacy: LegacyWorld = serde_json::from_slice(bytes).unwrap();
+    let original_wire = serde_json::to_vec(&legacy).unwrap();
+    let current: World = serde_json::from_slice(&original_wire).unwrap();
+    assert!(current.venue.is_none());
+    assert!(!serde_json::from_slice::<Value>(&original_wire).unwrap().as_object().unwrap().contains_key("venue"));
+    assert_eq!(serde_json::to_vec(&current).unwrap(), original_wire);
+}
 fn compare_town(bytes: &[u8]) {
     match (
         serde_json::from_slice::<MirrorTownMarket>(bytes),
@@ -175,6 +216,10 @@ fn opening_legacy_derive_wire_acceptance_and_errors_match() {
         include_bytes!("../../../fixtures/m0-exchange-opening.json"),
         include_bytes!("../../../fixtures/core-town-utility-opening.json"),
     ];
+    for bytes in fixtures {
+        assert!(serde_json::from_slice::<Value>(bytes).unwrap().get("venue").is_none());
+        assert!(serde_json::from_slice::<Opening>(bytes).unwrap().venue.is_none());
+    }
     let mut values: Vec<Value> = fixtures
         .iter()
         .map(|b| serde_json::from_slice(b).unwrap())
@@ -183,6 +228,7 @@ fn opening_legacy_derive_wire_acceptance_and_errors_match() {
     extras["construction"] = serde_json::to_value(project_fixture()).unwrap();
     extras["housing"] = json!({"unit_limit":8,"dwellings":[],"lease_offers":[]});
     values.push(extras);
+    values.push(serde_json::from_slice(include_bytes!("../../city-storage/tests/fixtures/opening-venue-store/managed-people-v1-opening.json")).unwrap());
     let mut count = 0;
     for value in values {
         for bytes in cases(&value) {
@@ -278,12 +324,17 @@ fn non_initial_town_and_world_legacy_wire_match() {
         restored.state.equity_registers.as_slice()[0].cumulative_dividends_distributed,
         Money::new(23).unwrap()
     );
+    compare_legacy_world(&serde_json::to_vec(&world).unwrap());
     for bytes in cases(&serde_json::to_value(&world).unwrap()) {
         compare_world(&bytes);
     }
     let legacy = assemble(include_bytes!("../../../fixtures/m0-e0-opening.json")).unwrap();
+    compare_legacy_world(&serde_json::to_vec(&legacy).unwrap());
     for bytes in cases(&serde_json::to_value(legacy).unwrap()) {
         compare_world(&bytes);
     }
+    let venue = assemble(include_bytes!("../../city-storage/tests/fixtures/opening-venue-store/managed-people-v1-opening.json")).unwrap();
+    assert!(venue.venue.is_some());
+    for bytes in cases(&serde_json::to_value(&venue).unwrap()) { compare_world(&bytes); }
     eprintln!("decode layout opening={} opening_scratch={} world={} world_scratch={} town={} town_scratch={}",size_of::<Opening>(),size_of::<OpeningDecode>(),size_of::<World>(),size_of::<WorldDecode>(),size_of::<TownMarket>(),size_of::<(Box<MarketProfile>,Box<MarketState>)>());
 }
