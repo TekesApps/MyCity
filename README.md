@@ -1,8 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.166`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.167`。已开始Rust模型与headless CLI，当前不做UI。
 
-v0.5.166 接入[实际有界自动分页控制](docs/evidence/air-auto-continue-20261024/STATUS.md)：111 项串行测试通过，保留原 owner、取消和恢复责任；全游戏多维预算及 M0 仍未完成。
+v0.5.167 补齐[共享 broker 准入与恢复验证](docs/evidence/air-shared-broker-20261024/STATUS.md)：114 项串行测试通过，确认单 Sim 准入隔离、取消归还与冷恢复；多 Worker 并行、全游戏预算及 M0 仍未完成。
 
 v0.5.165 接入[实际页执行采样](docs/evidence/air-page-sampling-20261024/STATUS.md)：91 项串行测试及 12 次旧新 worker 对比通过；采样与暂停等待分开，自动总预算仍未激活。
 

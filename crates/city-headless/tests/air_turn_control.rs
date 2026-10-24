@@ -22,8 +22,9 @@ impl Run {
         let events_path=folder.join(format!("events-session-{}.json",NEXT.fetch_add(1,Ordering::Relaxed)));
         let mut r=Self{client,id:0,events:Vec::new(),events_path};assert_eq!(r.next().kind,"ready");r
     }
-    fn pooled(folder:PathBuf,pool:&Path)->Self {
-        let mut client=Client::new();client.start_in_pool(&exe(),&folder.join("world"),true,false,pool).unwrap();
+    fn pooled(folder:PathBuf,pool:&Path)->Self {Self::pooled_mode(folder,pool,true)}
+    fn pooled_mode(folder:PathBuf,pool:&Path,create:bool)->Self {
+        let mut client=Client::new();client.start_in_pool(&exe(),&folder.join("world"),create,false,pool).unwrap();
         let events_path=folder.join(format!("events-session-{}.json",NEXT.fetch_add(1,Ordering::Relaxed)));
         let mut r=Self{client,id:0,events:Vec::new(),events_path};assert_eq!(r.next().kind,"ready");r
     }
@@ -313,4 +314,99 @@ fn actual_failed_initial_adaptive_submit_keeps_client_busy_until_original_retire
     assert!(AdaptiveSession::start(&mut run.client,run.id,1,quota(),Config{target_ns:1_000_000}).is_err());
     assert!(run.client.submit(run.id+1,Command::Status).is_err());assert!(!run.client.is_empty());
     run.client.stop().unwrap();assert!(run.client.is_empty());
+}
+
+fn auto_step_record(session:&mut mycity_headless::adaptive_client::AdaptiveSession<'_>,rows:&mut Vec<Value>)->mycity_headless::adaptive_client::Step {
+    let step=session.step(Duration::from_secs(10)).unwrap();
+    rows.push(json!({"event":step.event,"decision":step.decision,"phase":session.phase(),"attempted":session.last_attempted_decision()}));
+    assert!(rows.len()<=1024);step
+}
+fn auto_reach_boundary(session:&mut mycity_headless::adaptive_client::AdaptiveSession<'_>,rows:&mut Vec<Value>) {
+    loop {let step=auto_step_record(session,rows);assert_ne!(step.event.kind,"result");if step.event.kind=="page_boundary"{break;}}
+}
+fn auto_drain_success(session:&mut mycity_headless::adaptive_client::AdaptiveSession<'_>,rows:&mut Vec<Value>) {
+    loop {let step=auto_step_record(session,rows);if step.event.kind=="result"{assert!(step.event.payload.get("Err").is_none(),"{:?}",step.event);break;}}
+}
+#[test]
+fn actual_broker_rejects_second_context_without_credit_then_reuses_after_retirement() {
+    use mycity_headless::{normal_pool::{self,Process as Pool,BYTES},adaptive_client::{AdaptiveSession,Phase as AP},air_page_policy::Config};
+    let folder=root("pa2");let mut pool=Pool::spawn(&exe(),&folder.join("p"),None).unwrap();
+    let mut a=Run::pooled(root("pa"),pool.root());a.prepare();a.id+=1;let mut rows=Vec::new();
+    let mut sa=AdaptiveSession::start(&mut a.client,a.id,1,quota(),Config{target_ns:1_000_000}).unwrap();
+    auto_reach_boundary(&mut sa,&mut rows);sa.observe().unwrap();let before=auto_step_record(&mut sa,&mut rows);
+    let owner_before=before.event.payload["Ok"]["worker_owner"].clone();let work_before=before.event.payload["Ok"]["task_observation"]["work_counts"].clone();
+    assert!(owner_before["broker_lease"].as_u64().is_some());assert_eq!(owner_before["empty"],false);
+    let a_only=normal_pool::status(pool.root()).unwrap();assert!(a_only.available_touched_bytes<BYTES);
+    let second=root("pb");let mut rejected=Client::new();
+    let rejection=rejected.start_in_pool(&exe(),&second.join("world"),true,false,pool.root()).unwrap_err();
+    // Original broker explicitly supports only one Sim session. Never relax it
+    // merely to make a parallel test pass or treat a rejected registration as a grant.
+    rejected.stop().unwrap();assert!(rejected.is_empty());assert_eq!(rejection,"normal_broker_session_busy");
+    let after_b=normal_pool::status(pool.root()).unwrap();
+    assert_eq!(after_b.grants,a_only.grants);assert_eq!(after_b.returns,a_only.returns);
+    assert_eq!(after_b.available_touched_bytes,a_only.available_touched_bytes);
+    assert_eq!(after_b.granted_capacity_bytes,a_only.granted_capacity_bytes);
+    sa.observe().unwrap();let after=auto_step_record(&mut sa,&mut rows);
+    assert_eq!(sa.phase(),AP::BoundaryReady);assert!(sa.last_attempted_decision().is_none());
+    assert_eq!(after.event.payload["Ok"]["worker_owner"]["broker_lease"],owner_before["broker_lease"]);
+    assert_eq!(after.event.payload["Ok"]["worker_owner"]["empty"],false);
+    assert_eq!(after.event.payload["Ok"]["task_observation"]["work_counts"],work_before);
+    assert_eq!(after.event.payload["Ok"]["progress"]["background"]["time"],0);
+    auto_drain_success(&mut sa,&mut rows);drop(sa);
+    let a_done=a.call(Command::Status);assert_eq!(a_done["background"]["time"],30);a.stop();
+    let mut b=Run::pooled(second,pool.root());b.prepare();drive_adaptive(&mut b,false);
+    let b_done=b.call(Command::Status);assert_eq!(b_done["background"]["time"],30);assert_eq!(candidate(&a_done),candidate(&b_done));b.stop();
+    let final_pool=normal_pool::status(pool.root()).unwrap();assert_eq!(final_pool.grants,final_pool.returns);assert_eq!(final_pool.available_touched_bytes,BYTES);
+    fs::write(folder.join("a-steps.json"),serde_json::to_vec_pretty(&rows).unwrap()).unwrap();
+    fs::write(folder.join("pool-states.json"),serde_json::to_vec_pretty(&json!({"a_only":a_only,"second_registration_rejected":rejection,"after_rejection":after_b,"all_retired":final_pool})).unwrap()).unwrap();pool.finish().unwrap();
+}
+#[test]
+fn actual_pooled_automatic_cancel_releases_only_retired_roles_and_cold_restores_obligation() {
+    use mycity_headless::{normal_pool::{self,Process as Pool,BYTES},adaptive_client::AdaptiveSession,air_page_policy::Config};
+    let folder=root("pc");let world=root("pcw");let mut pool=Pool::spawn(&exe(),&folder.join("p"),None).unwrap();
+    let mut run=Run::pooled(world.clone(),pool.root());run.prepare();run.id+=1;let mut rows=Vec::new();
+    {
+        let mut session=AdaptiveSession::start(&mut run.client,run.id,1,quota(),Config{target_ns:1_000_000}).unwrap();
+        auto_reach_boundary(&mut session,&mut rows);let paused=normal_pool::status(pool.root()).unwrap();assert!(paused.grants>paused.returns);
+        session.cancel().unwrap();loop {let s=auto_step_record(&mut session,&mut rows);if s.event.kind=="result"{assert!(s.event.payload.get("Err").is_some());break;}}
+    }
+    let pending=run.call(Command::Status);assert_eq!(pending["background"]["time"],0);assert_eq!(pending["background"]["pending"]["id"],1);
+    run.call(Command::Checkpoint);run.stop();let retired=normal_pool::status(pool.root()).unwrap();assert_eq!(retired.grants,retired.returns);assert_eq!(retired.available_touched_bytes,BYTES);drop(run);
+    let mut restored=Run::pooled_mode(world,pool.root(),false);assert_eq!(restored.call(Command::Status)["background"]["pending"],pending["background"]["pending"]);
+    drive_adaptive(&mut restored,false);assert_eq!(restored.call(Command::Status)["background"]["time"],30);restored.stop();
+    let final_pool=normal_pool::status(pool.root()).unwrap();assert_eq!(final_pool.grants,final_pool.returns);assert_eq!(final_pool.available_touched_bytes,BYTES);
+    fs::write(folder.join("steps.json"),serde_json::to_vec_pretty(&rows).unwrap()).unwrap();fs::write(folder.join("pool-states.json"),serde_json::to_vec_pretty(&json!({"after_cancel_and_stop":retired,"all_retired":final_pool})).unwrap()).unwrap();pool.finish().unwrap();
+}
+#[test]
+fn actual_pooled_uncertain_continue_retires_original_family_and_cold_recovers_required_job() {
+    use mycity_headless::{normal_pool::{self,Process as Pool,BYTES},adaptive_client::{AdaptiveSession,Phase as AP},air_page_policy::Config};
+    let folder=root("pf");let world=root("pfw");let mut pool=Pool::spawn(&exe(),&folder.join("p"),None).unwrap();
+    let mut run=Run::pooled(world.clone(),pool.root());run.prepare();run.id+=1;let sim=run.client.pid();let mut rows=Vec::new();let before_ticket;
+    {
+        let mut session=AdaptiveSession::start(&mut run.client,run.id,1,quota(),Config{target_ns:1_000_000}).unwrap();
+        auto_reach_boundary(&mut session,&mut rows);before_ticket=session.pending_decision().unwrap().ticket.clone();
+        kill_only_known_test_sim_and_confirm_terminal(sim);
+        let error=session.step(Duration::from_secs(10)).unwrap_err();assert_eq!(session.phase(),AP::ControlUncertain);
+        rows.push(json!({"actual_continue_error":error,"phase":session.phase(),"attempted_once":session.last_attempted_decision()}));
+        assert!(session.pending_decision().is_none());assert!(session.step(Duration::from_secs(10)).is_err());
+        session.retire().unwrap();assert_eq!(session.phase(),AP::Finished);
+    }
+    assert!(run.client.is_empty());let retired=normal_pool::status(pool.root()).unwrap();assert_eq!(retired.grants,retired.returns);assert_eq!(retired.available_touched_bytes,BYTES);drop(run);
+    let mut restored=Run::pooled_mode(world,pool.root(),false);let pending=restored.call(Command::Status);
+    assert_eq!(pending["background"]["time"],0);assert_eq!(pending["background"]["pending"]["id"],1);
+    restored.id+=1;
+    {
+        let mut session=AdaptiveSession::start(&mut restored.client,restored.id,1,quota(),Config{target_ns:1_000_000}).unwrap();
+        auto_reach_boundary(&mut session,&mut rows);let new_ticket=session.pending_decision().unwrap().ticket.clone();
+        let before=serde_json::to_value(&before_ticket).unwrap();let after=serde_json::to_value(&new_ticket).unwrap();
+        for key in ["world","branch","job","base_revision","field_version","start","end","rules_sha256","source_sha256","input_sha256","checkpoint_sha256"] {
+            assert_eq!(before[key],after[key],"stable business ticket {key}");
+        }
+        assert_ne!(before_ticket.incarnation,new_ticket.incarnation);
+        rows.push(json!({"before_fault_ticket":before_ticket,"explicit_recovery_ticket":new_ticket,"stable_fields_equal":true}));
+        auto_drain_success(&mut session,&mut rows);
+    }
+    assert_eq!(restored.call(Command::Status)["background"]["time"],30);restored.stop();
+    let final_pool=normal_pool::status(pool.root()).unwrap();assert_eq!(final_pool.grants,final_pool.returns);assert_eq!(final_pool.available_touched_bytes,BYTES);
+    fs::write(folder.join("steps.json"),serde_json::to_vec_pretty(&rows).unwrap()).unwrap();fs::write(folder.join("pool-states.json"),serde_json::to_vec_pretty(&json!({"after_original_family_retired":retired,"all_retired":final_pool})).unwrap()).unwrap();pool.finish().unwrap();
 }

@@ -669,3 +669,15 @@ a test stimulus, not calibrated fixed-target capacity. Original advisor accepts 
 Full104/whole-game multidimensional budget, speed/backpressure/fairness,16GB/GPU/M0 stay open.
 Next budget work must attach measured shared process/resident costs and existing allocator
 constraints; it cannot turn this per-task wall preference into global CPU/memory admission.
+
+
+### v0.5.167 shared broker admission/recovery (#104 finite gate)
+
+[Actual evidence](evidence/air-shared-broker-20261024/STATUS.md):114 serial tests pass,
+including13 actual controls. A paused task retains lease/work; a second Sim gets exact busy
+rejection without credit changes, then runs after original retirement. Pooled cancel and
+uncertain Continue retain necessary Jobs through cold Store reopen. Only actually retired
+original credits return; original64MiB/8MiB stays fixed. No simultaneous Sim admission added.
+Next concurrency design retains one Sim unique writer and bounded independent Worker slots,
+original total admission, per-slot retirement and serial candidate validation. Full104/16GB/
+GPU/M0 and earlier debug stack faults remain open. This gate is not whole-game acceptance.
