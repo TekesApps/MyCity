@@ -1,0 +1,39 @@
+{
+  "original": "/Volumes/HP P900/dev/MyCity/work/v118diag10-53928/lifecycle-53942-0/world",
+  "fixture": "/Users/frankqin/dev/MyCity/crates/city-storage/tests/fixtures/venue-checkpoint-before-receipt-fix",
+  "source_sha256": "fb9faceb20dc849b325103afb08a96c9e7210c7b01ef65fe935e5d21495d9603",
+  "files": {
+    "CURRENT.json": {
+      "bytes": 123,
+      "sha256": "92af16c52da1356775fa52b5cf8f46b7a95029fce072525483ad3f24201d75f8"
+    },
+    "LOCK": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "checkpoint-5.json": {
+      "bytes": 35572,
+      "sha256": "cbb8d7867d803369084b8535d51b546c85105e6355d6e1a6522e9eb99919a77c"
+    },
+    "checkpoint-index-5.json": {
+      "bytes": 121,
+      "sha256": "36cbeba7b6fac821534ee083f0421182b4f1ea36b7af43185c771984f476202c"
+    },
+    "genesis.json": {
+      "bytes": 12124,
+      "sha256": "086f33a9c918cfc75e75122e673cf789d7ff2e7c4bec425b57dae9a8d94d2810"
+    },
+    "root-0.json": {
+      "bytes": 424,
+      "sha256": "0c0eef1d432332cfc160eb720ec2c7046a5a5a8b6b04f68b5dc5b4aec9d881d5"
+    },
+    "root-1.json": {
+      "bytes": 509,
+      "sha256": "b83f80ccb87ea7504d50c5b94242fd32976d9c4a984c3a794b9150f86b84bd90"
+    },
+    "wal-5.bin": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

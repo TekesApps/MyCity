@@ -90,6 +90,7 @@ pub struct Opening {
     pub town: Option<crate::town_runtime::MarketProfile>,
     /// Optional bounded housing stock and immutable one-shot lease-offer catalogue.
     pub housing: Option<crate::housing::OpeningHousing>,
+    pub venue: Option<crate::venue_runtime::Opening>,
 }
 
 // Decode-only backing reduces the derived visitor's aggregate stack temporaries.
@@ -120,6 +121,8 @@ mod private_openingdecode {
         /// Optional bounded housing stock and immutable one-shot lease-offer catalogue.
         #[serde(default)]
         housing: Option<Box<crate::housing::OpeningHousing>>,
+        #[serde(default)]
+        venue: Option<Box<crate::venue_runtime::Opening>>,
     }
 
     impl Opening {
@@ -138,6 +141,7 @@ mod private_openingdecode {
                 construction: self.construction.map(|value| *value),
                 town: self.town.map(|value| *value),
                 housing: self.housing.map(|value| *value),
+                venue: self.venue.map(|value| *value),
             }
         }
     }
@@ -265,6 +269,8 @@ pub struct World {
     pub(crate) town: Option<crate::town_runtime::TownMarket>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub(crate) housing: Option<Box<HousingRuntime>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub(crate) venue: Option<Box<crate::venue_runtime::Runtime>>,
 }
 
 // Restore-only scratch: retain the wire and runtime layout while avoiding a large
@@ -292,6 +298,8 @@ mod private_worlddecode {
         town: Option<Box<crate::town_runtime::TownMarket>>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         housing: Option<Box<HousingRuntime>>,
+        #[serde(default)]
+        venue: Option<Box<crate::venue_runtime::Runtime>>,
     }
 
     impl World {
@@ -313,6 +321,7 @@ mod private_worlddecode {
                 construction: self.construction,
                 town: self.town.map(|value| *value),
                 housing: self.housing,
+                venue: self.venue,
             }
         }
     }
@@ -362,6 +371,14 @@ pub struct HousingView {
     pub consumed_offer_ids: Vec<u64>,
 }
 #[derive(Debug, PartialEq, Eq, Serialize)]
+pub struct VenueView {
+    pub venue_count: usize,
+    pub offer_count: usize,
+    pub population_origin_sha256: [u8; 32],
+    pub uses: Vec<crate::venue_capacity::UseState>,
+    pub activities: Vec<crate::venue_runtime::ActivityFacts>,
+}
+#[derive(Debug, PartialEq, Eq, Serialize)]
 pub struct WorldView {
     pub schema: &'static str,
     pub scope: Scope,
@@ -380,6 +397,8 @@ pub struct WorldView {
     pub town: Option<crate::town_runtime::TownMarket>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub housing: Option<HousingView>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub venue: Option<VenueView>,
 }
 
 impl Record for OpeningSource {
@@ -440,6 +459,8 @@ pub(crate) struct BusinessWorld<'a> {
     town: &'a Option<crate::town_runtime::TownMarket>,
     #[serde(skip_serializing_if = "Option::is_none")]
     housing: &'a Option<Box<HousingRuntime>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    venue: &'a Option<Box<crate::venue_runtime::Runtime>>,
 }
 #[derive(Serialize)]
 pub(crate) struct BorrowedWorldView<'a> {
@@ -460,6 +481,8 @@ pub(crate) struct BorrowedWorldView<'a> {
     town: &'a Option<crate::town_runtime::TownMarket>,
     #[serde(skip_serializing_if = "Option::is_none")]
     housing: &'a Option<Box<HousingRuntime>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    venue: &'a Option<Box<crate::venue_runtime::Runtime>>,
 }
 struct AccountViews<'a>(&'a World);
 impl Serialize for AccountViews<'_> {
@@ -524,6 +547,7 @@ impl World {
             construction: None,
             town: None,
             housing: None,
+            venue: None,
         })
     }
     pub(crate) fn reset_backing(&mut self) {
@@ -542,6 +566,7 @@ impl World {
         self.construction = None;
         self.town = None;
         self.housing = None;
+        self.venue = None;
     }
     pub(crate) fn copy_into(&self, target: &mut Self) -> Result<(), String> {
         self.accounts.copy_into(&mut target.accounts)?;
@@ -559,6 +584,7 @@ impl World {
         target.construction = self.construction;
         target.town = self.town;
         target.housing = self.housing.clone();
+        target.venue = self.venue.clone();
         Ok(())
     }
     pub(crate) fn backing_ids(&self) -> [usize; 7] {
@@ -591,11 +617,14 @@ impl World {
             construction: &self.construction,
             town: &self.town,
             housing: &self.housing,
+            venue: &self.venue,
         }
     }
     pub(crate) fn borrowed_view(&self) -> BorrowedWorldView<'_> {
         BorrowedWorldView {
-            schema: if self.housing.is_some() {
+            schema: if self.venue.is_some() {
+                "mycity-m0-state-v9"
+            } else if self.housing.is_some() {
                 "mycity-m0-state-v8"
             } else if self.construction.is_some() || self.town.is_some() {
                 "mycity-m0-state-v7"
@@ -615,6 +644,7 @@ impl World {
             construction: &self.construction,
             town: &self.town,
             housing: &self.housing,
+            venue: &self.venue,
         }
     }
     pub(crate) fn restore_capacity(&mut self) -> Result<(), String> {
@@ -850,12 +880,20 @@ impl World {
                     .map_err(|_| "checkpoint_housing_offer_tenant")?;
             }
         }
+        if let Some(venue) = self.venue.as_deref() {
+            venue.validate_population(self.scope, self.housing.as_deref().map(|h| &h.opening))?;
+            venue.validate_facts()?;
+            for row in venue.opening.venues.iter() {
+                self.account_handle(row.owner)?;
+                self.account_handle(row.operator)?;
+            }
+        }
         let housing_scratch = if self.housing.is_some() {
             crate::housing::MAX_VALIDATION_SCRATCH_BYTES
         } else {
             0
         };
-        if self.owned_capacity_bytes().saturating_add(housing_scratch) > WORLD_BYTE_BUDGET {
+        if !self.projected_budget_fits(self.owned_capacity_bytes(), housing_scratch) {
             return Err("checkpoint_world_budget".into());
         }
         Ok(())
@@ -887,7 +925,9 @@ impl World {
     }
     pub fn view(&self) -> WorldView {
         WorldView {
-            schema: if self.housing.is_some() {
+            schema: if self.venue.is_some() {
+                "mycity-m0-state-v9"
+            } else if self.housing.is_some() {
                 "mycity-m0-state-v8"
             } else if self.construction.is_some() || self.town.is_some() {
                 "mycity-m0-state-v7"
@@ -946,10 +986,26 @@ impl World {
                 units: housing.state.units().to_vec(),
                 consumed_offer_ids: housing.state.consumed_genesis_offer_ids().collect(),
             }),
+            venue: self.venue.as_deref().map(|venue| VenueView {
+                venue_count: venue.opening.venues.len(), offer_count: venue.opening.offers.len(),
+                population_origin_sha256: venue.population_origin_sha256,
+                uses: venue.states.to_vec(), activities: venue.facts.to_vec(),
+            }),
         }
     }
     pub fn state_hash(&self) -> String {
         sha256(&serde_json::to_vec(&self.view()).expect("finite exact world"))
+    }
+    /// Legacy base+Housing retains its original 128KiB gate. The explicit optional venue
+    /// profile is separately charged, never hidden from total Engine/role accounting.
+    pub(crate) fn projected_budget_fits(&self, total_world_owned: usize, validation_scratch: usize) -> bool {
+        let venue_owned = self.venue.as_deref().map_or(0, crate::venue_runtime::Runtime::owned_bytes);
+        total_world_owned.checked_sub(venue_owned)
+            .and_then(|base| base.checked_add(validation_scratch))
+            .is_some_and(|base| base <= WORLD_BYTE_BUDGET)
+            && venue_owned <= crate::venue_runtime::Runtime::max_owned_bytes()
+            && total_world_owned.checked_add(validation_scratch)
+                .is_some_and(|total| total <= crate::transaction::ENGINE_BYTE_BUDGET)
     }
     pub(crate) fn owned_capacity_bytes(&self) -> usize {
         self.accounts.owned_bytes()
@@ -957,6 +1013,7 @@ impl World {
             + self.account_ids.capacity() * size_of::<(u32, Handle<AccountDomain>)>()
             + self.stock_ids.capacity() * size_of::<(u32, Handle<InventoryDomain>)>()
             + self.sources.capacity() * size_of::<OpeningSource>()
+            + self.venue.as_deref().map_or(0, crate::venue_runtime::Runtime::owned_bytes)
             + self
                 .housing
                 .as_ref()
@@ -973,6 +1030,19 @@ impl World {
             - size_of::<Arena<AccountDomain, Account>>()
             - size_of::<Arena<InventoryDomain, Stock>>();
         let mut layout = serde_json::json!({"accounts":self.accounts.layout(),"stocks":self.stocks.layout(),"index_capacity_bytes":index_bytes,"construction_slot_bytes":size_of::<Option<crate::construction::Project>>(),"town_market_slot_bytes":size_of::<Option<crate::town_runtime::TownMarket>>(),"town_market_slot_included_in_world_remaining_header_bytes":true,"town_profile_owned_bytes":self.town.map_or(0,|town|town.owned_bytes()),"construction_slot_included_in_world_remaining_header_bytes":true,"opening_sources_capacity_bytes":source_bytes,"world_remaining_header_bytes":headers,"owned_capacity_bytes":self.accounts.owned_bytes()+self.stocks.owned_bytes()+index_bytes+source_bytes+headers,"allocator_metadata_included":false,"temporary_parse_and_view_pages_included":false});
+        if let Some(venue) = self.venue.as_deref() {
+            let object = layout.as_object_mut().expect("layout object");
+            object.insert("venue_owned_capacity_bytes".into(), venue.owned_bytes().into());
+            object.insert("world_base_budget_bytes".into(), WORLD_BYTE_BUDGET.into());
+            object.insert("world_base_owned_capacity_bytes".into(), (self.owned_capacity_bytes() - venue.owned_bytes()).into());
+            object.insert("venue_profile".into(), "managed_people_v1".into());
+            object.insert("venue_profile_max_owned_bytes".into(), crate::venue_runtime::Runtime::max_owned_bytes().into());
+            object.insert("venue_runtime_header_bytes".into(), size_of::<crate::venue_runtime::Runtime>().into());
+            object.insert("venue_decode_opening_header_bytes".into(), size_of::<crate::venue_runtime::Opening>().into());
+            object.insert("venue_decode_catalogue_backing_bytes".into(), (crate::venue_capacity::MAX_VENUES * (size_of::<crate::venue_capacity::VenueDefinition>() + size_of::<crate::venue_runtime::RegisteredLimit>()) + crate::venue_capacity::MAX_USE_OFFERS * size_of::<crate::venue_capacity::UseOffer>()).into());
+            object.insert("venue_usage_prepare_payload_bytes".into(), crate::venue_runtime::UseCandidate::payload_bytes().into());
+            object.insert("owned_capacity_bytes".into(), self.owned_capacity_bytes().into());
+        }
         if let Some(housing) = self.housing.as_ref() {
             let object = layout.as_object_mut().expect("layout object");
             object.insert(
@@ -1347,12 +1417,28 @@ fn assemble_opening_into(mut input: Opening, world: &mut World) -> Result<(), St
             moves: None,
         }));
     }
+    if let Some(opening) = input.venue {
+        if !world.projected_budget_fits(world.owned_capacity_bytes(), crate::housing::MAX_VALIDATION_SCRATCH_BYTES)
+            || world.owned_capacity_bytes().checked_add(crate::venue_runtime::Runtime::max_owned_bytes())
+                .and_then(|n| n.checked_add(crate::housing::MAX_VALIDATION_SCRATCH_BYTES))
+                .is_none_or(|n| n > crate::transaction::ENGINE_BYTE_BUDGET) {
+            return Err("venue_world_budget_before_allocation".into());
+        }
+        let housing = world.housing.as_deref().ok_or("venue_population_source_missing")?;
+        let runtime = crate::venue_runtime::Runtime::new(opening, world.scope, &housing.opening)?;
+        runtime.validate_population(world.scope, Some(&housing.opening))?;
+        for venue in runtime.opening.venues.iter() {
+            world.account_handle(venue.owner)?;
+            world.account_handle(venue.operator)?;
+        }
+        world.venue = Some(Box::new(runtime));
+    }
     let housing_scratch = if world.housing.is_some() {
         crate::housing::MAX_VALIDATION_SCRATCH_BYTES
     } else {
         0
     };
-    if world.owned_capacity_bytes().saturating_add(housing_scratch) > WORLD_BYTE_BUDGET {
+    if !world.projected_budget_fits(world.owned_capacity_bytes(), housing_scratch) {
         return Err("world_byte_limit".into());
     }
     // Exercise the same checked ID index used by subsequent model commands.
@@ -1393,6 +1479,7 @@ impl crate::restore_into::Restore for World {
         self.construction = None;
         self.town = None;
         self.housing = None;
+        self.venue = None;
         crate::restore_into::object!(d,self,World,255u64,{
         scope,0=>Copy,
         seed,1=>Copy,
@@ -1409,6 +1496,7 @@ impl crate::restore_into::Restore for World {
         construction,12=>Copy,
         town,13=>Copy,
         housing,14=>Into,
+        venue,15=>Into,
         })?;
         Ok(())
     }

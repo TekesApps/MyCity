@@ -13,6 +13,7 @@ pub use bundle::{EngineWorkspace, EngineWorkspaceIdentity};
 #[path = "timeline_driver.rs"]
 mod timeline_driver;
 mod workspace;
+mod venue_driver;
 pub use slots::{EngineSlot, SlotIdentity};
 
 pub const MAX_ACTIONS: usize = 16;
@@ -87,6 +88,9 @@ impl Caller {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum Action {
+    /// Selector into the genesis-bound venue contract. Explicit System activity commands
+    /// are raw game-host presence facts, not transport/education fulfillment proofs.
+    Venue { use_id: u64, command: crate::venue_runtime::Command },
     Background {
         command: crate::background::Command,
     },
@@ -452,6 +456,7 @@ pub struct Engine {
 }
 
 struct Prepared {
+    venue: Option<crate::venue_runtime::UseCandidate>,
     timeline: workspace::TimelineLease,
     background: workspace::BackgroundLease,
     exchange: Option<crate::exchange::Exchange>,
@@ -587,6 +592,7 @@ impl Engine {
             spatial_geometry: None,
             preparation_workspace: Some(workspace::reserve()?),
         };
+        venue_driver::validate(&engine.world, &engine.resources, &engine.leases, engine.timeline.as_ref(), None)?;
         validate_construction_binding(
             engine.world.construction,
             &engine.resources,
@@ -993,6 +999,7 @@ impl Engine {
         Ok(())
     }
     fn validate_checkpoint_runtime(&self) -> Result<(), TxError> {
+        venue_driver::validate(&self.world, &self.resources, &self.leases, self.timeline.as_ref(), None)?;
         if let Some(t) = self.timeline.as_ref() {
             timeline_driver::validate(self, t)?;
         }
@@ -1090,6 +1097,16 @@ impl Engine {
     pub fn resources(&self) -> &[Resource] {
         &self.resources
     }
+    /// Reliable due observation only at the original stable Timeline boundary. This read
+    /// cannot release an actual group, and absence of a clock is not a false due result.
+    pub fn venue_exit_due(&self, use_id: u64) -> Option<bool> {
+        let runtime = self.world.venue.as_deref()?;
+        runtime.states.iter().find(|row| row.use_id == use_id)?;
+        let timeline = self.timeline.as_ref()?;
+        if timeline.progress.phase.is_some() || timeline.progress.target.is_some() { return None; }
+        Some(runtime.exit_due(use_id, timeline.progress.last_complete))
+    }
+
     /// Compact in-memory retry window. Use the storage receipt archive for full action records.
     pub fn journal(&self) -> &[HotJournalRecord] {
         &self.journal
@@ -1727,6 +1744,7 @@ impl Engine {
             .preparation_workspace
             .as_ref()
             .ok_or(TxError::WorkingLimit)?;
+        let mut venue = None;
         let mut timeline = workspace::TimelineLease::acquire(&storage.timeline, &self.timeline)?;
         let mut accounts = workspace::AccountLease::take(&storage.accounts)?;
         let mut stocks = workspace::StockLease::take(&storage.stocks)?;
@@ -3654,7 +3672,16 @@ impl Engine {
                         .checked_add(cost)
                         .map_err(|_| TxError::Overflow)?;
                 }
+                Action::Venue { use_id, command } => {
+                    let (candidate, token) = venue_driver::prepare(self, caller, env, use_id, command,
+                        &mut resources, &mut leases, &mut next_token)?;
+                    venue = Some(candidate);
+                    created_tokens[action_index] = token;
+                }
                 Action::ReserveCapacity { resource, units } => {
+                    if self.world.venue.as_deref().is_some_and(|v| v.is_managed(resource)) {
+                        return Err(TxError::Unauthorized);
+                    }
                     if let Caller::Account(account) = caller {
                         if market_is_suspended(town.as_ref(), account)
                             || market_is_exiting(town.as_ref(), account)
@@ -3709,6 +3736,9 @@ impl Engine {
                         .find(|l| l.as_ref().is_some_and(|l| l.token == token.number))
                         .ok_or(TxError::Lease)?;
                     let l = slot.as_mut().ok_or(TxError::Lease)?;
+                    if self.world.venue.as_deref().is_some_and(|v| v.is_managed(l.resource)) {
+                        return Err(TxError::Unauthorized);
+                    }
                     if !matches!(caller, Caller::System) && l.actor != caller.key() {
                         return Err(TxError::Unauthorized);
                     }
@@ -3851,6 +3881,7 @@ impl Engine {
                 0,
                 crate::housing_income::PaidWageWindow::owned_capacity_bytes,
             ));
+        let projected = projected.saturating_add(venue.as_ref().map_or(0, |_| crate::venue_runtime::UseCandidate::payload_bytes()));
         let projected = projected.saturating_add(housing_moves.as_deref().map_or(
             0,
             crate::housing_runtime_move::MoveRuntimeState::owned_capacity_bytes,
@@ -3909,9 +3940,7 @@ impl Engine {
         } else {
             0
         };
-        if projected_world_owned.saturating_add(world_validation_scratch)
-            > crate::assembly::WORLD_BYTE_BUDGET
-        {
+        if !self.world.projected_budget_fits(projected_world_owned, world_validation_scratch) {
             return Err(TxError::WorkingLimit);
         }
         // Move planning uses one bounded candidate vector. It is released before this point,
@@ -3929,7 +3958,18 @@ impl Engine {
             timeline.as_ref(),
             town.as_ref().map(|market| market.settled_day),
         )?;
+        if let (Some(runtime), Some(exit)) = (self.world.venue.as_deref(), town.as_ref().and_then(|state| state.exit)) {
+            if exit.phase == crate::town_runtime::ExitPhase::Closed
+                && venue.as_ref().map_or(&runtime.states[..], |c| &c.states[..]).iter().any(|state|
+                    state.accepted_operator == exit.company_account
+                    && matches!(state.status, crate::venue_capacity::UseStatus::Reserved | crate::venue_capacity::UseStatus::Actual)) {
+                return Err(TxError::InvalidOperation);
+            }
+        }
+        venue_driver::validate_domain_bindings(&self.world, boot.as_ref(), exchange.as_ref(), construction.as_ref())?;
+        venue_driver::validate(&self.world, &resources, &leases, timeline.as_ref(), venue.as_ref())?;
         Ok(Prepared {
+            venue,
             timeline,
             background,
             exchange,
@@ -3986,6 +4026,11 @@ impl Engine {
         self.world.economy = prepared.economy;
         self.world.region = prepared.region;
         self.world.construction = prepared.construction;
+        if let Some(candidate) = prepared.venue {
+            let runtime = self.world.venue.as_mut().expect("prepared venue source");
+            runtime.states = candidate.states;
+            runtime.facts = candidate.facts;
+        }
         if let (Some(world_town), Some(state)) = (&mut self.world.town, prepared.town) {
             world_town.state = state;
         }

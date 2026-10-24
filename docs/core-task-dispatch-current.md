@@ -681,3 +681,30 @@ original credits return; original64MiB/8MiB stays fixed. No simultaneous Sim adm
 Next concurrency design retains one Sim unique writer and bounded independent Worker slots,
 original total admission, per-slot retirement and serial candidate validation. Full104/16GB/
 GPU/M0 and earlier debug stack faults remain open. This gate is not whole-game acceptance.
+
+
+### #118 managed venue authority gate — active after v0.5.167
+
+Original #118 owner implements the dedicated bounded venue_capacity pure rules/test source
+in an isolated v167 tree; root alone owns shared Opening/World/Engine/Store/restore/transaction
+integration. [Existing facility contract](building-unit-shared-facility-contract.md) now states
+the first managed people-present unit, canonical resource/rights, conservative whole-group
+reservation/use, actual-exit responsibility and no generic/internal-effect bypass. Existing
+capacity_read remains observation; no physical admission/proof is promoted from Unknown.
+Next actual gate is original-pool Store atomicity and cold replay, then54/57 adapters. Two old
+debug stack failures remain separate; all new code awaits root serial fixed-source validation.
+
+
+### v0.5.168 actual original-pool venue gate (#118)
+
+[Finite source/results](evidence/venue-authority-20261024/STATUS.md):123 distinct tests pass
+on one fixed source/executable set; original failed checkpoint recovery and legacy optional
+slot clearing now pass. Keep all earlier compiler/business/runner failures separately.
+Original advisor accepts finite gate, not full118 or native/M0/16GB. `managed_people_v1`
+explicitly separates the new51040B venue profile from unchanged base128KiB, while charging
+full World/Engine/preparation and retaining original4MiB/8MiB/64MiB gates. This is not old
+joint128KiB acceptance. System raw activity remains host input, not transport/teaching proof.
+Root remains sole shared writer and serial verifier; original118 pure owner is frozen.
+Next: real101 due-task dispatch binding, then120 managed-venue same-slot publication/recovery;
+54/57 must consume only proved actual presence and retain missing upstream facts as Unknown.
+Two default-debug stack faults #122/#123 remain separate;24 unrelated WIP unchanged.

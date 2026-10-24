@@ -35,6 +35,8 @@ pub mod town_utility;
 pub mod transaction;
 pub mod transport;
 pub mod units;
+pub mod venue_capacity;
+pub mod venue_runtime;
 pub mod worker_protocol_observation;
 
 pub const SCHEMA: &str = "mycity-m0-bootstrap-v1";

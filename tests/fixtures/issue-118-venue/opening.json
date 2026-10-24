@@ -1,0 +1,103 @@
+{
+  "scope": { "world": 77, "branch": 4 },
+  "venues": [
+    {
+      "venue_id": 101,
+      "resource_id": 11,
+      "aliases": [901, null, null, null],
+      "owner": 7,
+      "operator": 8,
+      "purpose": 3,
+      "permit_version": 5
+    },
+    {
+      "venue_id": 102,
+      "resource_id": 12,
+      "aliases": [902, null, null, null],
+      "owner": 7,
+      "operator": 9,
+      "purpose": 4,
+      "permit_version": 5
+    }
+  ],
+  "resources": [
+    { "id": 11, "capacity": 8, "reserved": 0, "occupied": 0 },
+    { "id": 12, "capacity": 8, "reserved": 0, "occupied": 0 },
+    { "id": 99, "capacity": 20, "reserved": 0, "occupied": 0 }
+  ],
+  "non_venue_resource_ids": [99],
+  "offers": [
+    {
+      "use_id": 501,
+      "venue_id": 101,
+      "group_id": 601,
+      "partition": {
+        "group_id": 601,
+        "partition_source_id": 7001,
+        "partition_version": 2,
+        "member_range_start": 1000,
+        "member_range_end": 1003
+      },
+      "population": {
+        "learners": 2,
+        "teachers": 1,
+        "staff": 0,
+        "visitors": 0,
+        "enrollment": 2
+      },
+      "purpose": 3,
+      "operator": 8,
+      "window": { "start": 10, "end": 20 },
+      "source_refs": [
+        {
+          "kind": "genesis",
+          "scope": { "world": 77, "branch": 4 },
+          "revision": 0,
+          "operation_id": 0,
+          "event_id": 0,
+          "source_id": 8101
+        },
+        null,
+        null,
+        null
+      ],
+      "accepted_version": 5
+    },
+    {
+      "use_id": 502,
+      "venue_id": 102,
+      "group_id": 602,
+      "partition": {
+        "group_id": 602,
+        "partition_source_id": 7001,
+        "partition_version": 2,
+        "member_range_start": 2000,
+        "member_range_end": 2002
+      },
+      "population": {
+        "learners": 1,
+        "teachers": 1,
+        "staff": 0,
+        "visitors": 0,
+        "enrollment": 1
+      },
+      "purpose": 4,
+      "operator": 9,
+      "window": { "start": 12, "end": 18 },
+      "source_refs": [
+        {
+          "kind": "genesis",
+          "scope": { "world": 77, "branch": 4 },
+          "revision": 0,
+          "operation_id": 0,
+          "event_id": 0,
+          "source_id": 8102
+        },
+        null,
+        null,
+        null
+      ],
+      "accepted_version": 5
+    }
+  ]
+}

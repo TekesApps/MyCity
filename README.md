@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.167`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.168`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.168 接入[受管场所原池容量与恢复](docs/evidence/venue-authority-20261024/STATUS.md)：123 项串行测试通过，实际占用、退出、重放和旧格式槽复用有有限证据；新预算分区、失败原件与未完成 provider 均明确保留，完整 #118 和 M0 仍开放。
 
 v0.5.167 补齐[共享 broker 准入与恢复验证](docs/evidence/air-shared-broker-20261024/STATUS.md)：114 项串行测试通过，确认单 Sim 准入隔离、取消归还与冷恢复；多 Worker 并行、全游戏预算及 M0 仍未完成。
 

@@ -88,6 +88,7 @@ fn action_raw(
     #[derive(Deserialize)]
     #[serde(rename_all = "snake_case")]
     enum Kind {
+        Venue,
         Background,
         Timeline,
         Inbox,
@@ -123,6 +124,13 @@ fn action_raw(
     validate_content(raw, scratch)?;
     let kind: Kind = tag(raw, scratch)?;
     match kind {
+        Kind::Venue => {
+            let fields = Fields::parse(raw, &["kind", "use_id", "command"], false, scratch)?;
+            Ok(Output::Venue {
+                use_id: fields.get(1, scratch)?,
+                command: reader::decode(fields.raw(2)?, scratch)?,
+            })
+        }
         Kind::Background => {
             let fields = Fields::parse(raw, &["kind", "command"], false, scratch)?;
             Ok(Output::Background {
@@ -799,6 +807,10 @@ mod tests {
     #[test]
     fn all_variants_match_original_typed_reader_for_map_sequence_and_bad_fields() {
         let cases = [
+            r#"{"kind":"venue","use_id":1,"command":{"kind":"accept"}}"#,
+            r#"{"kind":"venue","use_id":1,"command":{"kind":"cancel_reserved"}}"#,
+            r#"{"kind":"venue","use_id":1,"command":{"kind":"enter","event_id":7,"token_number":2,"occurred_at":0}}"#,
+            r#"{"kind":"venue","use_id":1,"command":{"kind":"safe_exit","event_id":8,"token_number":2,"occurred_at":10}}"#,
             r#"{"kind":"background","command":{"kind":"enable"}}"#,
             r#"{"kind":"background","command":{"kind":"restart"}}"#,
             r#"{"kind":"background","command":{"kind":"lease","job":1}}"#,
@@ -893,21 +905,36 @@ mod tests {
             if let Some(command) = value.get("command") {
                 let cmd = command.as_object().unwrap();
                 let kind = cmd["kind"].as_str().unwrap();
-                let domain = value["kind"].as_str().unwrap();
-                let source = Fields::parse(
-                    Raw::root(raw.as_bytes()),
-                    &["kind", "command"],
-                    false,
-                    &mut Scratch::new().unwrap(),
-                )
-                .unwrap();
-                let mut parser = serde_json::Deserializer::from_slice(source.raw(1).unwrap().bytes);
+                let is_venue = value["kind"] == "venue";
+                let mut context = value.clone();
+                context.as_object_mut().unwrap().remove("command");
+                let prefix = serde_json::to_string(&context).unwrap();
+                // Preserve all original outer fields while injecting the command as RAW
+                // JSON. A DOM round-trip of body would erase duplicate-key counterexamples.
+                let wrap = |body: &str| format!("{},\"command\":{body}}}", &prefix[..prefix.len()-1]);
+                let mut scratch = Scratch::new().unwrap();
+                let command_raw = if is_venue {
+                    Fields::parse(
+                        Raw::root(raw.as_bytes()),
+                        &["kind", "use_id", "command"],
+                        false,
+                        &mut scratch,
+                    ).unwrap().raw(2).unwrap()
+                } else {
+                    Fields::parse(
+                        Raw::root(raw.as_bytes()),
+                        &["kind", "command"],
+                        false,
+                        &mut scratch,
+                    ).unwrap().raw(1).unwrap()
+                };
+                let mut parser = serde_json::Deserializer::from_slice(command_raw.bytes);
                 let values = serde::Deserializer::deserialize_map(&mut parser, Pairs).unwrap();
                 let sequence = format!(
                     "[{}]",
                     values.iter().map(|v| v.get()).collect::<Vec<_>>().join(",")
                 );
-                compare_action(&format!("{{\"command\":{sequence},\"kind\":\"{domain}\"}}"));
+                compare_action(&wrap(&sequence));
                 for body in [
                     format!("{{\"junk\":[1,2],\"kind\":\"{kind}\"}}"),
                     format!("{{\"junk\":1,\"junk\":2,\"kind\":\"{kind}\"}}"),
@@ -915,7 +942,7 @@ mod tests {
                     format!("[\"{kind}\"]"),
                     format!("[\"{kind}\",1]"),
                 ] {
-                    compare_action(&format!("{{\"command\":{body},\"kind\":\"{domain}\"}}"));
+                    compare_action(&wrap(&body));
                 }
             }
         }

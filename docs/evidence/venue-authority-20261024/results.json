@@ -1,0 +1,213 @@
+{
+  "source_sha256": "b34682dd8f3aac091a6ad12775a00de99b9bf93e9b030d67af1c2f92757ba8cc",
+  "distinct_passed": 123,
+  "successful_groups": [
+    {
+      "name": "receipt-decoder",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/issue118-venue-authority-20261024/bin-14/city-storage-mycity_storage",
+        "checkpoint::receipt_decode::tests::",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 76517,
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 0.714777946472168,
+      "summary": "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 28 filtered out; finished in 0.22s"
+    },
+    {
+      "name": "pure-venue",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/issue118-venue-authority-20261024/bin-14/city-core-venue_capacity_tests",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 76534,
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 0.4855458736419678,
+      "summary": "ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+    },
+    {
+      "name": "actual-venue",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/issue118-venue-authority-20261024/bin-14/city-storage-venue_capacity",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 76536,
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 1.2490510940551758,
+      "summary": "ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.69s"
+    },
+    {
+      "name": "capacity-read",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/issue118-venue-authority-20261024/bin-14/city-storage-capacity_read",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 76544,
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 0.7813560962677002,
+      "summary": "ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s"
+    },
+    {
+      "name": "resource-pool",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/issue118-venue-authority-20261024/bin-14/city-core-resource_capacity",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 76553,
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 0.5336160659790039,
+      "summary": "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+    },
+    {
+      "name": "construction-core",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/issue118-venue-authority-20261024/bin-14/city-core-construction",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 76565,
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 0.8942220211029053,
+      "summary": "ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s"
+    },
+    {
+      "name": "construction-store",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/issue118-venue-authority-20261024/bin-14/city-storage-construction",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 76578,
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 2.3558669090270996,
+      "summary": "ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.62s"
+    },
+    {
+      "name": "recovery",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/issue118-venue-authority-20261024/bin-14/city-storage-recovery",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 76607,
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 5.835290193557739,
+      "summary": "ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.31s"
+    },
+    {
+      "name": "opening-input",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/issue118-venue-authority-20261024/bin-14/city-storage-opening_input_store",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 77165,
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 0.9260091781616211,
+      "summary": "ok. 6 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.91s"
+    },
+    {
+      "name": "housing",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/issue118-venue-authority-20261024/bin-14/city-storage-housing_runtime",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 77187,
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 15.980209827423096,
+      "summary": "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 15.43s"
+    },
+    {
+      "name": "actual-control",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/issue118-venue-authority-20261024/bin-14/city-headless-air_turn_control",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 77834,
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 5.899805068969727,
+      "summary": "ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.44s"
+    },
+    {
+      "name": "compute",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/issue118-venue-authority-20261024/bin-14/city-headless-compute_worker",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 78185,
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 2.7164618968963623,
+      "summary": "ok. 13 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 2.21s"
+    },
+    {
+      "name": "broker",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/issue118-venue-authority-20261024/bin-14/city-headless-broker",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 78252,
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 15.894541263580322,
+      "summary": "ok. 23 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 15.44s"
+    },
+    {
+      "name": "sim",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/issue118-venue-authority-20261024/bin-14/city-headless-sim_host",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 78703,
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 2.8630096912384033,
+      "summary": "ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.40s"
+    },
+    {
+      "name": "registry",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/issue118-venue-authority-20261024/bin-14/city-headless-task_registry_dispatch",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 78982,
+      "exit": 0,
+      "timed_out": false,
+      "seconds": 1.4079999923706055,
+      "summary": "ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.86s"
+    }
+  ],
+  "retained_regular_files": 1170,
+  "retained_world_logical_bytes": 101265483,
+  "roots": [
+    "/Volumes/HP P900/dev/MyCity/work/v118run14-76501",
+    "/Volumes/HP P900/dev/MyCity/work/v118run15-77150"
+  ],
+  "physical_peak": "not_measured",
+  "m0": "unchanged",
+  "hardware": "Mac16,1/32GiB",
+  "storage": "HP P900 USB/APFS; existing shared target/work",
+  "two_debug_stack_faults": "open #122 #123"
+}
