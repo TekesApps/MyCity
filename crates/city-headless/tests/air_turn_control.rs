@@ -71,12 +71,30 @@ fn real_sim_pauses_answers_queries_changes_quota_and_commits_exact_reference() {
     run.control(PageControl::Observe);let again=run.control_result();
     assert_eq!(again["task_observation"]["work_counts"],paused["task_observation"]["work_counts"]);
     assert_eq!(again["task_observation"]["data"],paused["task_observation"]["data"]);
+    let first_metrics=paused["task_observation"]["page_execution_metrics"].clone();
+    assert!(!first_metrics.is_null(),"{paused}");
+    std::thread::sleep(Duration::from_millis(25)); // intentional pause, not numerical work
+    run.control(PageControl::Observe);let held=run.control_result();
+    assert_eq!(held["task_observation"]["page_execution_metrics"],first_metrics);
+    assert!(held["task_observation"]["host_current_pause_ns"].as_u64().unwrap() >= 20_000_000);
     run.finish_sliced(first);let actual=run.call(Command::Status);
     assert_eq!(actual["background"]["time"],30);assert_eq!(candidate(&actual),candidate(&expected));
     assert_eq!(actual["runtime"]["worker_task_observation"]["data"]["stage"],"complete");
     let counts=&actual["runtime"]["worker_task_observation"]["work_counts"];
     assert_eq!(counts["cells"],16384);assert_eq!(counts["integrated_cells"],16384);assert_eq!(counts["segments"],1);
     assert_eq!(run.events.iter().filter(|e|e["kind"]=="worker_started").count(),1);
+    let observation=&actual["runtime"]["worker_task_observation"];
+    assert!(observation["page_metrics_error"].is_null(),"{observation}");
+    assert_eq!(observation["host_turn_response"]["kind"],"continue_send_to_boundary");
+    assert!(observation["host_turn_response"]["ns"].as_u64().is_some());
+    for e in run.events.iter().filter(|e|e["kind"]=="worker_progress"
+        && (e["payload"]["stage"]=="sources" || e["payload"]["stage"]=="cells")) {
+        assert!(e["payload"]["task_observation"]["page_execution_metrics"].is_null());
+    }
+    let terminal:Vec<_>=run.events.iter().filter(|e|e["kind"]=="worker_progress"
+        && (e["payload"]["stage"]=="published" || e["payload"]["stage"]=="complete")).collect();
+    assert_eq!(terminal.len(),2);assert_eq!(terminal[0]["payload"]["page_metrics"],terminal[1]["payload"]["page_metrics"]);
+    assert!(!terminal[0]["payload"]["page_metrics"].is_null());
     run.stop();
 }
 #[test]

@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.164`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.165`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.165 接入[实际页执行采样](docs/evidence/air-page-sampling-20261024/STATUS.md)：91 项串行测试及 12 次旧新 worker 对比通过；采样与暂停等待分开，自动总预算仍未激活。
 
 v0.5.164 接入[精确分页与生产暂停/继续](docs/evidence/air-page-control-20261024/STATUS.md)：313 项串行测试通过，保留原任务、授额及提交边界；完整 #103、自动总预算与 M0 仍未完成。
 

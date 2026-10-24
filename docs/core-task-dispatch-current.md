@@ -638,3 +638,18 @@ never auto-starts another attempt. Pause keeps original grant and required Job. 
 count Sources/Cells/integration/commits separately; no fabricated generic work-cost unit.
 This single exact strategy does not activate old approximate dependency/catalog candidates or
 an automatic total budget controller. Full103/104 remain open; original M0 gates unchanged.
+
+
+## v0.5.165 actual air page sampling (#104 finite input gate)
+
+[Actual sampling evidence](evidence/air-page-sampling-20261024/STATUS.md) records same-child
+page wall/CPU brackets, separate ordinary/segment-integration groups and local parent
+response/pause intervals. Explicit wire4 reuses actual exact-page control. Continue clears
+old summary before new turn/quota observations; final summary freezes across Published/Complete.
+Invalid/missing metrics become unavailable, never business rejection, free cost or admission.
+91 serial tests pass;12 additional paired v164/new actual worker runs retain byte-identical
+full checkpoints. All raw scheduling noise and failed first type-annotation build are retained.
+No automatic controller is activated. Next is explicit bounded automatic Continue for an
+already-granted task, varying pages only, with conservative Unknown/zero handling, minimum
+hold/hysteresis and reported irreducible segment-page overrun. It cannot increase admission,
+concurrency or assume freed resident memory. Whole-game cost/16GB/GPU/M0/full104 remain open.

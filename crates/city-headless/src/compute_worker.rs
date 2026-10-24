@@ -14,7 +14,7 @@ use std::{
     time::Duration,
 };
 
-pub const PROTOCOL: &str = "mycity-air-worker-v3";
+pub const PROTOCOL: &str = "mycity-air-worker-v4";
 pub const CONTROL_BYTES: usize = 64 * 1024;
 /// IPC readers only decode fixed, non-recursive protocol records (at most one
 /// `CONTROL_BYTES` frame); do not reserve the platform's default thread stack
@@ -107,6 +107,8 @@ pub struct Event {
     pub cpu: Option<cpu_metrics::CpuTelemetry>,
     #[serde(default)]
     pub turn: Option<crate::air_turns::Boundary>,
+    #[serde(default)]
+    pub page_metrics: Option<crate::air_page_metrics::Summary>,
 }
 #[derive(Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -432,6 +434,7 @@ fn emit(
     cursor: Option<u32>,
     cpu: Option<&mut cpu_metrics::CpuAttemptSampler>,
     turn: Option<&crate::air_turns::Boundary>,
+    page_metrics: Option<&crate::air_page_metrics::Summary>,
 ) -> Result<(), String> {
     write_frame(
         w,
@@ -445,6 +448,7 @@ fn emit(
             cursor,
             cpu: cpu.map(|sampler| sampler.sample_before_event()),
             turn: turn.cloned(),
+            page_metrics: page_metrics.cloned(),
         },
     )
 }
@@ -572,6 +576,7 @@ fn run_inner(root: &Path, gated: bool, bounded: bool) -> Result<(), String> {
         let mut source_seen = false;
         let mut cells_seen = false;
         let mut turn_work = crate::air_turns::WorkCounters::ZERO;
+        let mut page_sampler = crate::air_page_metrics::Sampler::new();
         while !state.complete() {
             let quota = turns.as_ref().map(|t| t.quota());
             let sources = quota.map_or(if bounded && gated { 1 } else { 256 }, |q| q.source_limit);
@@ -579,10 +584,17 @@ fn run_inner(root: &Path, gated: bool, bounded: bool) -> Result<(), String> {
             let work = if let Some(log) = diag.as_mut() {
                 let mut sink = |p| log.page(p);
                 let mut trace = mycity_core::diagnostics::Trace::with_pages(&mut sink);
+                let token = turns.as_ref().map(|_| page_sampler.begin_page());
                 let work = state.page_diagnosed(sources, cells, &mut trace)?;
+                if let Some(token) = token { page_sampler.end_page(token, page_counts(work)); }
                 log.check()?;
                 work
-            } else { state.page(sources, cells)? };
+            } else {
+                let token = turns.as_ref().map(|_| page_sampler.begin_page());
+                let work = state.page(sources, cells)?;
+                if let Some(token) = token { page_sampler.end_page(token, page_counts(work)); }
+                work
+            };
             if turns.is_some() { turn_work = turn_work.checked_add(page_counts(work)).map_err(|e| format!("worker_work_count:{e:?}"))?; }
             if let Some(p) = state.progress() {
                 let (seen, stage) = match p.phase {
@@ -590,7 +602,7 @@ fn run_inner(root: &Path, gated: bool, bounded: bool) -> Result<(), String> {
                     Phase::Cells => (&mut cells_seen, Stage::Cells),
                 };
                 if !*seen && p.cursor > 0 {
-                    emit(&mut writer, &request.ticket, stage, None, 0, Some(p.cursor), (!omit_cpu).then_some(&mut cpu), None)?;
+                    emit(&mut writer, &request.ticket, stage, None, 0, Some(p.cursor), (!omit_cpu).then_some(&mut cpu), None, None)?;
                     gate(&mut reader, &request, stage, gated)?;
                     *seen = true;
                 }
@@ -599,12 +611,13 @@ fn run_inner(root: &Path, gated: bool, bounded: bool) -> Result<(), String> {
                 if !state.complete() && turn_work.pages >= u64::from(actor.quota().pages) {
                     let boundary = actor.reach_boundary(turn_work).map_err(|e| format!("worker_turn_boundary:{e:?}"))?;
                     emit(&mut writer, &request.ticket, Stage::SliceBoundary, None, 0, None,
-                        Some(&mut cpu), Some(&boundary))?;
+                        Some(&mut cpu), Some(&boundary), Some(&page_sampler.summary()))?;
                     let bytes = frame(&mut reader)?.ok_or("worker_continue_eof")?;
                     let next: ContinueFrame = serde_json::from_slice(&bytes).map_err(|e| e.to_string())?;
                     if next.protocol != PROTOCOL || next.ticket != request.ticket { return Err("worker_continue_ticket".into()); }
                     actor.accept_continue(&next.continue_turn).map_err(|e| format!("worker_continue_rejected:{e:?}"))?;
                     turn_work = crate::air_turns::WorkCounters::ZERO;
+                    page_sampler.reset();
                 }
             }
         }
@@ -614,6 +627,7 @@ fn run_inner(root: &Path, gated: bool, bounded: bool) -> Result<(), String> {
             actor.finish(turn_work).map_err(|e| format!("worker_turn_finish:{e:?}"))?;
             Some(boundary)
         } else { None };
+        let final_metrics = final_turn.as_ref().map(|_| page_sampler.summary());
         let (hash, size) = if let Some(owner) = slots.as_mut() {
             owner.with_slot(crate::worker_slots::Kind::Candidate, |bytes| {
                 let size = state.checkpoint_to(bytes)?;
@@ -634,6 +648,7 @@ fn run_inner(root: &Path, gated: bool, bounded: bool) -> Result<(), String> {
             None,
             (!omit_cpu).then_some(&mut cpu),
             final_turn.as_ref(),
+            final_metrics.as_ref(),
         )?;
         gate(&mut reader, &request, Stage::Published, gated)?;
         state.finish(diag.as_mut())?;
@@ -657,6 +672,7 @@ fn run_inner(root: &Path, gated: bool, bounded: bool) -> Result<(), String> {
             None,
             (!omit_cpu).then_some(&mut cpu),
             final_turn.as_ref(),
+            final_metrics.as_ref(),
         )?;
     }
     if let Some(log) = diag.as_mut() {
@@ -695,6 +711,14 @@ pub struct Worker {
     turns: Option<crate::air_turns::OwnerTurns>,
     inflight_continue: Option<crate::air_turns::Continue>,
     final_turn: Option<crate::air_turns::Boundary>,
+    page_metrics: Option<crate::air_page_metrics::Summary>,
+    page_metrics_error: Option<&'static str>,
+    response_started: Option<std::time::Instant>,
+    paused_since: Option<std::time::Instant>,
+    last_pause_ns: Option<u64>,
+    last_pause_end: &'static str,
+    response_ns: Option<u64>,
+    response_kind: &'static str,
     observation: Option<protocol_observation::Attempt>,
     observation_error: Option<&'static str>,
     child: Option<Child>,
@@ -715,7 +739,7 @@ impl Worker {
     /// Empty persistent owner; no RPC, process spawn or capacity mutation.
     pub fn new() -> Self {
         Self { owner_process_instance: crate::heap_meter::process_instance(),
-            observation: None, observation_error: None, observed_process_instance: None, controlled: None, turns: None, inflight_continue: None, final_turn: None,
+            observation: None, observation_error: None, observed_process_instance: None, controlled: None, turns: None, inflight_continue: None, final_turn: None, page_metrics: None, page_metrics_error: None, response_started: None, paused_since: None, last_pause_ns: None, last_pause_end: "none", response_ns: None, response_kind: "not_started",
             child: None, broker: None, stdin: None, receiver: None, reader: None,
             outstanding: None, root: PathBuf::new(), gated: false, pool_grant: None,
             pending_grant: None, broker_start: None, reaped: None, ready_to_submit: false }
@@ -835,6 +859,11 @@ impl Worker {
         self.pending_grant = None; self.broker_start = None; self.reaped = None;
         self.stdin = None; self.receiver = None; self.outstanding = None;
         self.ready_to_submit = false;
+        if let Some(start) = self.paused_since.take() {
+            self.last_pause_ns = u64::try_from(start.elapsed().as_nanos()).ok();
+            self.last_pause_end = "actual_retirement_including_owner_retirement_wait";
+        }
+        self.response_started = None;
         Ok(status)
     }
     /// Only the probe transport uses ACKs; ordinary workers never wait for one.
@@ -873,7 +902,11 @@ impl Worker {
         }
         self.controlled = request.controlled;
         self.turns = None; self.inflight_continue = None; self.final_turn = None;
+        self.page_metrics = None; self.page_metrics_error = None;
+        self.paused_since = None; self.last_pause_ns = None; self.last_pause_end = "none"; self.response_ns = None;
+        self.response_kind = "initial_submit_including_preparation";
         let sent_at = std::time::Instant::now();
+        self.response_started = Some(sent_at);
         write_frame(self.stdin.as_mut().ok_or("worker_stopped")?, request)?;
         self.outstanding = Some(request.ticket.clone());
         match protocol_observation::Attempt::begin(request, self, sent_at) {
@@ -886,7 +919,7 @@ impl Worker {
     /// Missing/failed projection never changes required work or the canonical wire checks.
     pub fn task_observation(&self) -> serde_json::Value {
         let data = self.observation.as_ref().and_then(|attempt| attempt.latest());
-        serde_json::json!({"schema":"mycity-cpu-task-observation-v3",
+        serde_json::json!({"schema":"mycity-cpu-task-observation-v4",
             "state":if self.observation_error.is_some() {"unavailable"} else if data.is_some() {"observed"} else {"not_yet_observed"},
             "reason":self.observation_error, "data":data,
             "owner_retired_now":self.is_empty(), "retained_last_attempt":true,
@@ -895,7 +928,12 @@ impl Worker {
             "controlled":self.controlled, "turn_waiting":self.turns.as_ref().is_some_and(|t|t.is_waiting()),
             "inflight_continue":self.inflight_continue, "work_counts":self.turns.as_ref().map(|t|t.total()),
             "turn_quota":self.turns.as_ref().map(|t|t.quota()), "turn":self.turns.as_ref().map(|t|t.turn()),
-            "plan":self.controlled.map(|_|crate::air_turns::PLAN_ID)})
+            "plan":self.controlled.map(|_|crate::air_turns::PLAN_ID),
+            "page_execution_metrics":self.page_metrics, "page_metrics_error":self.page_metrics_error,
+            "host_turn_response":{"ns":self.response_ns,"kind":self.response_kind,
+                "source":"same_owner_monotonic_clock","includes":"transport_scheduling_and_child_work"},
+            "host_last_boundary_interval_ns":self.last_pause_ns, "host_last_boundary_interval_end":self.last_pause_end,
+            "host_current_pause_ns":self.paused_since.and_then(|start|u64::try_from(start.elapsed().as_nanos()).ok())})
     }
     pub fn next(&mut self, timeout: Duration) -> Result<Event, String> {
         let event = self
@@ -935,6 +973,7 @@ impl Worker {
             _ => return Err("worker_response_shape".into()),
         }
         self.observe_turn(&event)?;
+        self.observe_page_metrics(&event, received_at);
         // Only after the existing full-ticket and actual asset/hash/length checks.
         // An unavailable observation must never turn valid business into a rejection.
         if let Some(cpu) = event.cpu.as_ref().filter(|cpu| cpu.validate().is_ok()) {
@@ -985,6 +1024,32 @@ impl Worker {
         self.inflight_continue = None;
         Ok(())
     }
+    // Observation is never publication/grant authority. Malformed/missing sampling
+    // becomes unavailable while original business validation remains authoritative.
+    fn observe_page_metrics(&mut self, event: &Event, received_at: std::time::Instant) {
+        if self.controlled.is_none() || !matches!(event.stage, Stage::SliceBoundary | Stage::Published | Stage::Complete) { return; }
+        if event.stage == Stage::Complete {
+            if event.page_metrics.as_ref() != self.page_metrics.as_ref() {
+                self.page_metrics = None; self.page_metrics_error = Some("final_summary_changed_or_unavailable");
+            }
+            return;
+        }
+        self.response_ns = self.response_started.take().and_then(|start|
+            received_at.checked_duration_since(start)).and_then(|d|u64::try_from(d.as_nanos()).ok());
+        self.paused_since = (event.stage == Stage::SliceBoundary).then_some(received_at);
+        self.page_metrics = None; self.page_metrics_error = Some("missing_or_invalid_page_summary");
+        if let (Some(summary), Some(boundary)) = (event.page_metrics.as_ref(),event.turn.as_ref()) {
+            if summary.validate().is_ok() && summary.turn.as_ref().is_some_and(|turn| turn.work == boundary.work) {
+                self.page_metrics = Some(summary.clone()); self.page_metrics_error = None;
+            }
+        }
+    }
+    fn begin_next_turn_observation(&mut self) {
+        // Never label the previous turn's sample with the newly selected quota.
+        // Historical boundary Events retain the frozen old sample.
+        self.page_metrics = None;
+        self.page_metrics_error = Some("turn_running_not_yet_sampled");
+    }
     /// One prepared Continue per verified waiting boundary. Any send error retains
     /// the exact uncertain message and original owner; callers must retire, never resend.
     pub fn continue_pages(&mut self, control: crate::air_turns::Continue) -> Result<(), String> {
@@ -993,6 +1058,12 @@ impl Worker {
         let expected = next.prepare_continue(control.quota).map_err(|e| format!("worker_continue_state:{e:?}"))?;
         if expected != control { return Err("worker_continue_identity".into()); }
         let ticket = self.outstanding.clone().ok_or("worker_no_outstanding")?;
+        let send_start = std::time::Instant::now();
+        self.last_pause_ns = self.paused_since.take().and_then(|start|send_start.checked_duration_since(start))
+            .and_then(|d|u64::try_from(d.as_nanos()).ok());
+        self.last_pause_end = "continue_send";
+        self.begin_next_turn_observation();
+        self.response_started = Some(send_start); self.response_kind = "continue_send_to_boundary"; self.response_ns = None;
         self.turns = Some(next); self.inflight_continue = Some(control.clone());
         write_frame(self.stdin.as_mut().ok_or("worker_stopped")?,
             &ContinueFrame { protocol: PROTOCOL.into(), ticket, continue_turn: control })
@@ -1217,6 +1288,7 @@ mod ipc_reader_tests {
             cursor: None,
             cpu: None,
             turn: None,
+            page_metrics: None,
         };
         let mut bytes = serde_json::to_vec(&event).unwrap();
         assert!(bytes.len() < CONTROL_BYTES - 1);
@@ -1256,5 +1328,60 @@ mod ipc_reader_tests {
             frame(&mut BufReader::new(std::io::Cursor::new(b"partial"))).unwrap_err(),
             "worker_truncated_frame"
         );
+    }
+}
+
+#[cfg(test)]
+mod page_metrics_projection_tests {
+    use super::*;
+    use crate::air_page_metrics::{Axis,Group,Nanoseconds as Ns,Summary,Turn,VERSION};
+    fn fixture() -> Event {
+        let known=|ns|Ns::Known{ns};
+        let axis=|ns|Axis{total:known(ns),max_page:known(ns)};
+        let zero=Group{pages:0,wall:axis(0),cpu:axis(0)};
+        let work=crate::air_turns::WorkCounters{cells:1,pages:1,..Default::default()};
+        Event {protocol:PROTOCOL.into(),ticket:Ticket{world:1,branch:1,job:1,incarnation:1,generation:1,attempt:1,
+            base_revision:0,field_version:0,start:0,end:1,rules_sha256:"a".repeat(64),source_sha256:"b".repeat(64),
+            input_sha256:"c".repeat(64),checkpoint_sha256:"d".repeat(64)},pid:1,stage:Stage::SliceBoundary,
+            candidate_sha256:None,candidate_bytes:0,cursor:None,cpu:None,
+            turn:Some(crate::air_turns::Boundary{plan_version:1,turn:1,process_instance:"1".into(),work}),
+            page_metrics:Some(Summary{version:VERSION,work,turn:Some(Turn{work,ordinary:Group{pages:1,wall:axis(10),cpu:axis(7)},
+                integration:zero,wall:axis(10),cpu:axis(7)}),unavailable:None})}
+    }
+    #[test]
+    fn missing_invalid_or_mismatched_sampling_is_unavailable_without_business_error() {
+        // Pure projection seam only; no claim that these literal samples executed.
+        for fault in ["missing","version","work"] {
+            let mut worker=Worker::new();worker.controlled=Some(crate::air_turns::Quota{source_limit:1,cell_limit:1,pages:1});
+            let mut event=fixture();
+            match fault {"missing"=>event.page_metrics=None,"version"=>event.page_metrics.as_mut().unwrap().version+=1,
+                _=>event.turn.as_mut().unwrap().work.cells=2}
+            worker.observe_page_metrics(&event,std::time::Instant::now());
+            assert!(worker.page_metrics.is_none());assert!(worker.page_metrics_error.is_some());
+            assert!(worker.turns.is_none());assert!(worker.outstanding.is_none()); // no dispatch/commit mutation
+        }
+    }
+    #[test]
+    fn previous_turn_summary_is_not_relabelled_when_next_quota_starts() {
+        let mut worker=Worker::new();worker.controlled=Some(crate::air_turns::Quota{source_limit:1,cell_limit:1,pages:1});
+        let event=fixture();worker.observe_page_metrics(&event,std::time::Instant::now());
+        assert!(worker.page_metrics.is_some());
+        worker.begin_next_turn_observation();
+        let observation=worker.task_observation();
+        assert!(observation["page_execution_metrics"].is_null());
+        assert_eq!(observation["page_metrics_error"],"turn_running_not_yet_sampled");
+        assert!(event.page_metrics.is_some()); // original boundary evidence is frozen
+    }
+    #[test]
+    fn final_summary_is_retained_once_and_changed_complete_is_unavailable() {
+        let mut worker=Worker::new();worker.controlled=Some(crate::air_turns::Quota{source_limit:1,cell_limit:1,pages:1});
+        let mut event=fixture();event.stage=Stage::Published;
+        worker.observe_page_metrics(&event,std::time::Instant::now());let original=worker.page_metrics;
+        assert!(original.is_some());assert!(worker.page_metrics_error.is_none());
+        event.stage=Stage::Complete;worker.observe_page_metrics(&event,std::time::Instant::now());
+        assert_eq!(worker.page_metrics,original);assert!(worker.page_metrics_error.is_none());
+        event.page_metrics.as_mut().unwrap().version+=1;
+        worker.observe_page_metrics(&event,std::time::Instant::now());assert!(worker.page_metrics.is_none());
+        assert_eq!(worker.page_metrics_error,Some("final_summary_changed_or_unavailable"));
     }
 }

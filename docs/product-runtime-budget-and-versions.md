@@ -321,3 +321,16 @@ retires through the original owner and preserves required obligations; only expl
 retries. Plan version1 selects the same exact model, not a quality downgrade. The controller may
 use this interface after calibration; current automatic whole-game budget/16GB/GPU/M0 gates
 remain unmet and original frozen loads/standards are unchanged.
+
+
+### v0.5.165 finite exact-page cost observation
+
+See [actual page sampling evidence](evidence/air-page-sampling-20261024/STATUS.md).
+Wire4 adds bounded successful-page wall/CPU brackets with ordinary/whole-grid-integration
+separation; parent local response/pause clocks remain different observations. Last-turn
+summary is cleared before Continue changes quota, final summary is frozen, and missing/bad
+sampling stays unavailable without changing original work/retirement/Store authority.
+91 serial tests and12 exact-checkpoint old/new runs support this limited path. Timers include
+capture overhead; short samples and known0ns readings do not prove free work, a hard tail
+bound, resident budget or capacity. Automatic Continue and full-game control still need the
+next actual implementation/calibration; full104/103 and original M0/16GB/GPU gates stay open.

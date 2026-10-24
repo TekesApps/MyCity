@@ -61,6 +61,7 @@ fn current_candidate_is_host_read_validated_but_not_store_accepted() {
         cursor: None,
         cpu: None,
         turn: None,
+        page_metrics: None,
     };
     let candidate = candidate_evidence(&event).unwrap();
     assert_eq!(candidate, schema::CandidateEvidence::HostReadHashValidated {
@@ -83,6 +84,7 @@ fn progress_cursor_is_a_worker_claim_not_measured_work() {
         cursor: Some(8192),
         cpu: None,
         turn: None,
+        page_metrics: None,
     };
     assert_eq!(
         candidate_evidence(&event).unwrap(),
@@ -117,6 +119,7 @@ fn malformed_or_oversized_candidate_claim_is_rejected_by_core_schema() {
         cursor: None,
         cpu: None,
         turn: None,
+        page_metrics: None,
     };
     let observation = schema::CpuObservation {
         version: schema::OBSERVATION_VERSION,
@@ -162,6 +165,7 @@ fn cpu_event(start_ns: u64, end_ns: u64) -> Event {
     Event { protocol: PROTOCOL.into(), ticket: request().ticket, pid: 909, stage: Stage::Cells,
         candidate_sha256: None, candidate_bytes: 0, cursor: Some(1),
         turn: None,
+        page_metrics: None,
         cpu: Some(super::super::cpu_metrics::CpuTelemetry {
             metrics_version: 1, process_instance: Some("11".into()),
             source: super::super::cpu_metrics::MetricSource::ChildProcessAccounting,

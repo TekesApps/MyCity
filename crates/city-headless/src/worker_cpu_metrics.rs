@@ -280,7 +280,7 @@ impl CpuAttemptSampler {
 }
 
 #[cfg(target_os = "macos")]
-fn read_process_cpu_ns() -> Result<u64, UnknownReason> {
+pub(crate) fn read_process_cpu_ns() -> Result<u64, UnknownReason> {
     let timespec = rustix::time::clock_gettime_dynamic(
         rustix::time::DynamicClockId::Known(rustix::time::ClockId::ProcessCPUTime),
     )
@@ -290,7 +290,7 @@ fn read_process_cpu_ns() -> Result<u64, UnknownReason> {
 }
 
 #[cfg(not(target_os = "macos"))]
-fn read_process_cpu_ns() -> Result<u64, UnknownReason> {
+pub(crate) fn read_process_cpu_ns() -> Result<u64, UnknownReason> {
     Err(UnknownReason::UnsupportedPlatform)
 }
 
