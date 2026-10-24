@@ -292,3 +292,16 @@ opening 与 spatial JSON 沿用64KiB，普通 PNG 沿原16MiB；normal 角色空
 内存；JSON解码、资源Vec、空间副本、诊断与Store工作区仍按各域计费。
 [有限真实文件及恢复证据](evidence/worker-observation-opening-cli-20261024/STATUS.md)不覆盖
 通用 CSV/profile 构造、全部 typed/单位/clock 映射、迁移、外部许可或全产品资源验收。
+
+
+## v0.5.163 real CPU clock is an observation, not a total budget
+
+[Actual CPU-clock evidence](evidence/worker-cpu-clock-20261024/STATUS.md) provides cumulative
+request process CPU and owner-local elapsed on the existing single air worker. CPU includes
+all worker threads and request preparation; do not add cumulative stage samples or interpret
+elapsed as exclusive CPU/queue age. A partial killed task has only its last observed interval.
+Metadata allocations/strings and owner timing state remain charged to existing role arenas;
+this stage establishes no native-memory credit, whole-game peak or new admission allowance.
+Work units, scratch peak and resource-cost calibration remain unknown; #103/#104 must not fill
+unknown cost with zero or infer it from cursor, requested page limits, CPU time or wall time.
+Necessary accepted work continues under the original owner/grant; no GPU or M0 gate changes.

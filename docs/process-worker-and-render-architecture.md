@@ -234,3 +234,15 @@ or a fabricated grant. Report failures cannot suppress necessary work, certify S
 or return credit. CPU8MiB is the original candidate capability, not all-model resource credit.
 [Actual finite source/results](evidence/worker-observation-opening-cli-20261024/STATUS.md) keep
 generic in-Sim task integration, real metrics and103/104 dynamic grants explicitly pending.
+
+
+### v0.5.163 air-v2 actual CPU observation boundary
+
+The active air wire is now explicit `mycity-air-worker-v2`; historical v1 binaries/inputs retain
+original provenance and are not mixed. [Finite CPU evidence](evidence/worker-cpu-clock-20261024/STATUS.md)
+separates request process CPU (all threads, child POSIX clock), host send-start/receive elapsed,
+and still-unknown work/scratch/queue/native costs. Metadata does not grant resources or commit
+business. Same Child/Lease application instance is pinned, never PID-only replaced; partial
+observations cannot establish completion or retirement. Exact decoder failure remains a protocol
+error; missing or semantically invalid decodable telemetry degrades measurement only. Windows
+clock support remains Unknown/Unsupported, not a validated backend.

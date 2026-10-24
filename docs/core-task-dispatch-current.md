@@ -613,3 +613,15 @@ for97/103/61/28/104/57/98 with Git. Their28 exclusive files remain in the origin
 full-source packages; branches/common repo/target/work evidence stay intact.102/120 trees
 are retained for continuing work. [Release receipt](evidence/worker-observation-opening-cli-20261024/worktree-release.json).
 This changes checkout retention only; unapplied source and not_run business gates remain so.
+
+
+## v0.5.163 actual child CPU accounting (#102 finite increment)
+
+[Fixed-source CPU-clock evidence](evidence/worker-cpu-clock-20261024/STATUS.md) records explicit
+air wire2, actual child ProcessCPUTime and independent owner send-start/receive elapsed.
+74 selected tests pass serially; preserve the source05 new-test12/1/1 failure separately.
+Only validated current owned wire binds the application instance; samples are cumulative,
+partial kill is nonfinal, missing metrics never block necessary business, and original actual
+wait/retirement remains authoritative. Work/scratch/queue/native/total resource costs stay unknown.
+Full102/103/104 and M0 remain open. Next gate is equivalent page slicing plus actual safe-boundary
+yield/continue, work counts and latency/cost calibration, not a fictitious alternate model.

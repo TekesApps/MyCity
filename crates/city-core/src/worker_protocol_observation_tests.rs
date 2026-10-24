@@ -271,3 +271,32 @@ fn measurement_slots_are_bound_and_work_or_scratch_cannot_be_fabricated() {
         Err(ObservationError::InvalidMeasurement)
     );
 }
+
+#[test]
+fn application_instance_refines_once_without_rewriting_prior_unknown_history() {
+    let identity = request(); let owner = execution();
+    let mut attempt = AttemptObservation::new(identity.clone(), owner).unwrap();
+    attempt.record(observation(identity.clone(), owner, 1)).unwrap();
+    attempt.bind_process_instance(u128::MAX).unwrap();
+    assert_eq!(attempt.latest().unwrap().execution.process_instance, None);
+    assert!(attempt.bind_process_instance(0).is_err());
+    assert!(attempt.bind_process_instance(2).is_err());
+    assert!(attempt.record(observation(identity.clone(), owner, 1)).is_err());
+    let mut bound = owner; bound.process_instance = Some(u128::MAX);
+    attempt.record(observation(identity, bound, 1)).unwrap();
+    assert_eq!(attempt.latest().unwrap().execution.process_instance, Some(u128::MAX));
+}
+
+#[test]
+fn child_cpu_clock_is_distinct_from_host_elapsed_and_requires_exact_delta() {
+    let mut metric = Measurement {
+        meaning: MeasurementMeaning::ProcessCpuTime, unit: MeasurementUnit::Nanoseconds,
+        value: MeasurementValue::Known { value: 20 }, source: MeasurementSource::ChildProcessAccounting,
+        interval: Some(MonotonicInterval { start_ns: 100, end_ns: 120 }),
+    };
+    metric.validate().unwrap();
+    metric.value = MeasurementValue::Known { value: 19 };
+    assert_eq!(metric.validate(), Err(ObservationError::InvalidMeasurement));
+    metric.value = MeasurementValue::Known { value: 20 }; metric.source = MeasurementSource::HostMonotonicClock;
+    assert_eq!(metric.validate(), Err(ObservationError::InvalidMeasurement));
+}

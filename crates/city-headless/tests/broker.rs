@@ -586,8 +586,8 @@ fn lost_stopped_reply_retries_original_lease_without_duplicate_credit_or_lost_re
     assert_eq!(observation["data"]["request"]["ticket"]["job"], 1);
     assert_eq!(observation["data"]["execution"]["allocation"]["kind"], "broker_lease");
     assert!(observation["data"]["execution"]["allocation"]["pool_boot"].as_str().unwrap().parse::<u128>().unwrap() != 0);
-    assert!(observation["data"]["execution"]["process_instance"].is_null());
-    assert_eq!(observation["data"]["measurements"]["cpu_time"]["value"]["state"], "unknown");
+    assert!(observation["data"]["execution"]["process_instance"].as_str().unwrap().parse::<u128>().unwrap() != 0);
+    assert_eq!(observation["data"]["measurements"]["cpu_time"]["value"]["state"], "known");
     assert_eq!(observation["data"]["candidate"]["origin"], "host_read_hash_validated");
     fs::write(t.0.join("actual-broker-observation.json"), serde_json::to_vec_pretty(observation).unwrap()).unwrap();
     let before_stop = normal_pool::status(&root).unwrap();

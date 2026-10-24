@@ -58,6 +58,7 @@ fn current_candidate_is_host_read_validated_but_not_store_accepted() {
         candidate_sha256: Some("a".repeat(64)),
         candidate_bytes: 8 * 1024 * 1024,
         cursor: None,
+        cpu: None,
     };
     let candidate = candidate_evidence(&event).unwrap();
     assert_eq!(candidate, schema::CandidateEvidence::HostReadHashValidated {
@@ -78,6 +79,7 @@ fn progress_cursor_is_a_worker_claim_not_measured_work() {
         candidate_sha256: None,
         candidate_bytes: 0,
         cursor: Some(8192),
+        cpu: None,
     };
     assert_eq!(
         candidate_evidence(&event).unwrap(),
@@ -110,6 +112,7 @@ fn malformed_or_oversized_candidate_claim_is_rejected_by_core_schema() {
         candidate_sha256: Some("a".repeat(64)),
         candidate_bytes: 8 * 1024 * 1024 + 1,
         cursor: None,
+        cpu: None,
     };
     let observation = schema::CpuObservation {
         version: schema::OBSERVATION_VERSION,
@@ -142,4 +145,44 @@ fn request_to_wire(identity: &schema::RequestIdentity) -> super::super::Ticket {
         input_sha256: hex(&identity.ticket.input_sha256),
         checkpoint_sha256: hex(&identity.ticket.checkpoint_sha256),
     }
+}
+
+fn metric_attempt() -> Attempt {
+    let request = request();
+    let owner = schema::CpuExecutionIdentity { pid: 909, process_instance: Some(11),
+        supervisor_owner_instance: Some(12), allocation: schema::CpuAllocationIdentity::Unpooled };
+    Attempt { state: schema::AttemptObservation::new(request_identity(&request).unwrap(), owner).unwrap(),
+        request, sent_at: std::time::Instant::now(), cpu_interval: None, invalid_cpu: false }
+}
+fn cpu_event(start_ns: u64, end_ns: u64) -> Event {
+    Event { protocol: PROTOCOL.into(), ticket: request().ticket, pid: 909, stage: Stage::Cells,
+        candidate_sha256: None, candidate_bytes: 0, cursor: Some(1),
+        cpu: Some(super::super::cpu_metrics::CpuTelemetry {
+            metrics_version: 1, process_instance: Some("11".into()),
+            source: super::super::cpu_metrics::MetricSource::ChildProcessAccounting,
+            process_cpu_time: super::super::cpu_metrics::CpuTimeValue::Known {
+                cumulative: super::super::cpu_metrics::KnownCpuTime { start_ns, end_ns, delta_ns: end_ns-start_ns },
+            },
+        }),
+    }
+}
+#[test]
+fn parent_rejects_instance_replacement_start_changes_and_regression_without_forging_zero() {
+    for change in 0..4 {
+        let mut attempt = metric_attempt();
+        assert!(matches!(attempt.cpu_measurement(&cpu_event(100,120), Some(11)).value, schema::MeasurementValue::Known { value: 20 }));
+        let mut event = cpu_event(100,130);
+        match change {
+            0 => event.cpu.as_mut().unwrap().process_instance = Some("13".into()),
+            1 => event = cpu_event(101,130),
+            2 => event = cpu_event(100,119),
+            _ => event.cpu.as_mut().unwrap().metrics_version = 99,
+        }
+        assert!(matches!(attempt.cpu_measurement(&event, Some(11)).value, schema::MeasurementValue::Unknown { .. }));
+        // Invalid continuity cannot silently heal with a newer well-shaped number.
+        assert!(matches!(attempt.cpu_measurement(&cpu_event(100,150), Some(11)).value, schema::MeasurementValue::Unknown { .. }));
+    }
+    let mut attempt = metric_attempt(); let mut event = cpu_event(100,120); event.cpu = None;
+    assert!(matches!(attempt.cpu_measurement(&event, Some(11)).value, schema::MeasurementValue::Unknown { .. }));
+    assert!(matches!(attempt.cpu_measurement(&cpu_event(100,130), Some(11)).value, schema::MeasurementValue::Known { value: 30 }));
 }

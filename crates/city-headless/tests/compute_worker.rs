@@ -126,6 +126,7 @@ fn stale_source_unknown_schema_wrong_input_and_attempt_overflow_fail_without_can
     for name in [
         "source",
         "schema",
+        "old_protocol",
         "input",
         "attempt",
         "start",
@@ -140,6 +141,7 @@ fn stale_source_unknown_schema_wrong_input_and_attempt_overflow_fail_without_can
         match name {
             "source" => value["ticket"]["source_sha256"] = json!("0".repeat(64)),
             "schema" => value["protocol"] = json!("future-worker"),
+            "old_protocol" => value["protocol"] = json!("mycity-air-worker-v1"),
             "input" => value["ticket"]["input_sha256"] = json!("0".repeat(64)),
             "attempt" => value["ticket"]["attempt"] = json!(4),
             "start" => value["ticket"]["start"] = json!(1),
@@ -499,23 +501,39 @@ fn actual_unpooled_and_direct_owned_reports_bind_wire_and_validated_asset() {
                 worker.start_bounded(executable(), &root, Some(pool.root()), false)?;
             } else { worker.start_unbounded(executable(), &root, false)?; }
             let actual_pid = worker.pid();
+            let mut pinned_instance = None;
+            let mut previous_end = None;
             for occurrence in 1..=2 {
                 req.ticket.job = occurrence;
                 worker.submit(&req)?;
+                let mut attempt_start = None;
+                let mut last_cpu = 0;
+                let mut last_elapsed = 0;
                 loop {
                     let e = worker.next(Duration::from_secs(10))?;
                     let report = worker.task_observation();
                     assert_eq!(report["state"], "observed");
                     let observation: CpuObservation = serde_json::from_value(report["data"].clone()).unwrap();
                     assert_eq!(observation.execution.pid, actual_pid);
-                    assert_eq!(observation.execution.process_instance, None);
+                    let instance = observation.execution.process_instance.expect("actual app instance");
+                    assert_eq!(*pinned_instance.get_or_insert(instance), instance);
                     assert!(observation.execution.supervisor_owner_instance.is_some());
                     assert_eq!(observation.request.ticket.job, occurrence);
                     assert_eq!(observation.request.ticket.base_revision, 0);
                     assert_eq!(observation.request.ticket.field_version, 0);
                     assert_eq!(observation.request.ticket.incarnation, req.ticket.incarnation);
                     assert_eq!(observation.request.strategy, req.strategy);
-                    assert!(matches!(observation.measurements.cpu_time.value, MeasurementValue::Unknown { .. }));
+                    let metric = observation.measurements.cpu_time;
+                    assert_eq!(metric.source, mycity_core::worker_protocol_observation::MeasurementSource::ChildProcessAccounting);
+                    let interval = metric.interval.unwrap();
+                    assert_eq!(*attempt_start.get_or_insert(interval.start_ns), interval.start_ns);
+                    if let Some(end) = previous_end { assert!(interval.start_ns >= end); }
+                    let MeasurementValue::Known { value } = metric.value else { panic!("CPU unknown: {metric:?}"); };
+                    assert!(value >= last_cpu); last_cpu = value;
+                    let MeasurementValue::Known { value: elapsed } = observation.measurements.elapsed_time.value else { panic!("elapsed unknown"); };
+                    assert!(elapsed >= last_elapsed); last_elapsed = elapsed;
+                    if e.stage == Stage::Complete { previous_end = Some(interval.end_ns); }
+                    fs::write(t.0.join(format!("stage-{occurrence}-{:?}.json", e.stage)), serde_json::to_vec_pretty(&report).unwrap()).unwrap();
                     assert!(matches!(observation.measurements.work_units.value, MeasurementValue::Unknown { .. }));
                     match observation.execution.allocation {
                         CpuAllocationIdentity::DirectGrant { pool_boot, grant_id } => {
@@ -546,4 +564,63 @@ fn actual_unpooled_and_direct_owned_reports_bind_wire_and_validated_asset() {
             pool.finish().unwrap();
         }
     }
+}
+
+#[test]
+fn actual_omitted_cpu_telemetry_does_not_block_valid_business() {
+    let out = Command::new(std::env::current_exe().unwrap())
+        .args(["cpu_omission_child_probe", "--exact", "--ignored", "--nocapture", "--test-threads=1"])
+        .env("MYCITY_AIR_CPU_TELEMETRY_OMIT", "1")
+        .output().unwrap();
+    assert!(out.status.success(), "{}\n{}", String::from_utf8_lossy(&out.stdout), String::from_utf8_lossy(&out.stderr));
+    assert!(String::from_utf8_lossy(&out.stdout).contains("1 passed"));
+}
+#[test]
+#[ignore = "explicit fresh-process fault-lab helper; parent invokes it"]
+fn cpu_omission_child_probe() {
+    use mycity_core::worker_protocol_observation::{CpuObservation, MeasurementValue};
+    assert!(std::env::var_os("MYCITY_AIR_CPU_TELEMETRY_OMIT").is_some());
+    let t=Temp::new(); let root=t.task_root(); let base=state(); let req=request(&root,&base);
+    let mut expected=base.clone(); while !expected.complete() { expected.page(256,256).unwrap(); }
+    protocol::with_worker(|worker| {
+        worker.start_unbounded(executable(), &root, true)?; worker.submit(&req)?;
+        loop {
+            let event=worker.next(Duration::from_secs(10))?; assert!(event.cpu.is_none());
+            let report=worker.task_observation(); assert_eq!(report["state"], "observed");
+            let observation:CpuObservation=serde_json::from_value(report["data"].clone()).unwrap();
+            assert!(matches!(observation.measurements.cpu_time.value, MeasurementValue::Unknown { .. }));
+            assert!(matches!(observation.measurements.elapsed_time.value, MeasurementValue::Known { .. }));
+            assert!(observation.execution.process_instance.is_none());
+            fs::write(t.0.join(format!("omitted-{:?}.json",event.stage)),serde_json::to_vec_pretty(&report).unwrap()).unwrap();
+            if event.stage == Stage::Complete {
+                assert_eq!(protocol::read_asset(&root.join("candidates"),event.candidate_sha256.as_deref().unwrap())?,expected.checkpoint()?);
+                break;
+            }
+            worker.acknowledge_probe(&event)?;
+        }
+        Ok(())
+    }).unwrap();
+}
+#[test]
+fn killed_attempt_retains_only_last_partial_cpu_observation() {
+    use mycity_core::worker_protocol_observation::{CpuObservation, MeasurementValue, ObservedStage};
+    let t=Temp::new(); let root=t.task_root(); let req=request(&root,&state());
+    protocol::with_worker(|worker| {
+        worker.start_unbounded(executable(), &root, true)?; worker.submit(&req)?;
+        let event=worker.next(Duration::from_secs(10))?;
+        assert!(matches!(event.stage, Stage::Sources | Stage::Cells));
+        let before=worker.task_observation(); worker.stop()?;
+        let after=worker.task_observation(); assert_eq!(before["data"],after["data"]);
+        // stop proves wait but retains the original owner until explicit retirement.
+        assert_eq!(after["owner_retired_now"],false);
+        worker.retire(Duration::from_secs(1))?;
+        let retired = worker.task_observation();
+        assert_eq!(retired["owner_retired_now"],true);
+        assert_eq!(retired["data"],after["data"]);
+        let observation:CpuObservation=serde_json::from_value(after["data"].clone()).unwrap();
+        assert_ne!(observation.stage,ObservedStage::Complete);
+        assert!(matches!(observation.measurements.cpu_time.value,MeasurementValue::Known { .. }));
+        fs::write(t.0.join("killed-partial-cpu.json"),serde_json::to_vec_pretty(&after).unwrap()).unwrap();
+        Ok(())
+    }).unwrap();
 }

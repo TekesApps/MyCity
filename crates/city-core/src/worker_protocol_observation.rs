@@ -187,7 +187,7 @@ impl CpuAllocationIdentity {
 pub struct CpuExecutionIdentity {
     /// PID comes from the retained real Child or broker Lease, never Event.pid alone.
     pub pid: u32,
-    /// Child birth instance is absent from the current worker wire and remains Unknown.
+    /// Worker application instance from the retained owned transport, not OS birth time.
     #[serde(
         serialize_with = "decimal_u128::serialize_option",
         deserialize_with = "decimal_u128::deserialize_option"
@@ -236,6 +236,7 @@ pub enum MeasurementUnit {
 pub enum MeasurementSource {
     HostMonotonicClock,
     HostProcessAccounting,
+    ChildProcessAccounting,
     Unavailable,
 }
 
@@ -245,6 +246,9 @@ pub enum UnknownMeasurementReason {
     NotInstrumented,
     ChildProcessInstanceUnavailable,
     PoolIdentityUnavailable,
+    InvalidChildTelemetry,
+    ChildClockUnavailable,
+    HostClockUnavailable,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
@@ -321,7 +325,8 @@ impl Measurement {
                 }
                 match self.meaning {
                     MeasurementMeaning::ProcessCpuTime
-                        if self.source != MeasurementSource::HostProcessAccounting =>
+                        if !matches!(self.source, MeasurementSource::HostProcessAccounting | MeasurementSource::ChildProcessAccounting)
+                            || value != interval.end_ns - interval.start_ns =>
                     {
                         return Err(ObservationError::InvalidMeasurement);
                     }
@@ -473,6 +478,16 @@ impl AttemptObservation {
         request.validate()?;
         execution.validate()?;
         Ok(Self { request, execution, latest: None })
+    }
+
+    /// Refine an unknown application instance once, through the same retained owner.
+    /// This does not rewrite earlier observations or authorize resources/commits.
+    pub fn bind_process_instance(&mut self, instance: u128) -> Result<(), ObservationError> {
+        if instance == 0 || self.execution.process_instance.is_some_and(|old| old != instance) {
+            return Err(ObservationError::StaleAttemptOrProcess);
+        }
+        self.execution.process_instance = Some(instance);
+        Ok(())
     }
 
     pub fn record(&mut self, observation: CpuObservation) -> Result<(), ObservationError> {

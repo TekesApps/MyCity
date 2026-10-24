@@ -14,7 +14,7 @@ use std::{
     time::Duration,
 };
 
-pub const PROTOCOL: &str = "mycity-air-worker-v1";
+pub const PROTOCOL: &str = "mycity-air-worker-v2";
 pub const CONTROL_BYTES: usize = 64 * 1024;
 /// IPC readers only decode fixed, non-recursive protocol records (at most one
 /// `CONTROL_BYTES` frame); do not reserve the platform's default thread stack
@@ -23,6 +23,9 @@ pub const CONTROL_BYTES: usize = 64 * 1024;
 pub(crate) const IPC_READER_STACK_BYTES: usize = 512 * 1024;
 pub const DIRECTORY_BYTES: u64 = 32 * 1024 * 1024;
 pub const DIRECTORY_FILES: usize = 32;
+
+#[path = "worker_cpu_metrics.rs"]
+pub mod cpu_metrics;
 
 #[path = "worker_protocol_observation.rs"]
 mod protocol_observation;
@@ -97,6 +100,8 @@ pub struct Event {
     pub candidate_sha256: Option<String>,
     pub candidate_bytes: usize,
     pub cursor: Option<u32>,
+    #[serde(default)]
+    pub cpu: Option<cpu_metrics::CpuTelemetry>,
 }
 #[derive(Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -357,12 +362,7 @@ impl TaskState<'_> {
         Ok(())
     }
 }
-fn input<'a>(
-    root: &Path,
-    request: &Request,
-    slots: Option<&mut crate::worker_slots::Owner>,
-    kernel: Option<&'a mut AirWorkspace>,
-) -> Result<TaskState<'a>, String> {
+fn validate_request(request: &Request) -> Result<(), String> {
     let t = &request.ticket;
     if request.protocol != PROTOCOL
         || request.strategy != STRATEGY
@@ -380,6 +380,15 @@ fn input<'a>(
     {
         return Err("worker_ticket".into());
     }
+    Ok(())
+}
+fn input<'a>(
+    root: &Path,
+    request: &Request,
+    slots: Option<&mut crate::worker_slots::Owner>,
+    kernel: Option<&'a mut AirWorkspace>,
+) -> Result<TaskState<'a>, String> {
+    let t = &request.ticket;
     directory_usage(&root.join("inputs"))?;
     match (slots, kernel) {
         (Some(owner), Some(kernel)) => {
@@ -415,6 +424,7 @@ fn emit(
     candidate: Option<&str>,
     size: usize,
     cursor: Option<u32>,
+    cpu: Option<&mut cpu_metrics::CpuAttemptSampler>,
 ) -> Result<(), String> {
     write_frame(
         w,
@@ -426,6 +436,7 @@ fn emit(
             candidate_sha256: candidate.map(str::to_owned),
             candidate_bytes: size,
             cursor,
+            cpu: cpu.map(|sampler| sampler.sample_before_event()),
         },
     )
 }
@@ -483,8 +494,12 @@ fn run_inner(root: &Path, gated: bool, bounded: bool) -> Result<(), String> {
     } else {
         None
     };
+    // Explicit fault-lab omission only; ordinary execution always samples.
+    let omit_cpu = gated && std::env::var_os("MYCITY_AIR_CPU_TELEMETRY_OMIT").is_some();
     while let Some(bytes) = frame(&mut reader)? {
         let request: Request = serde_json::from_slice(&bytes).map_err(|e| e.to_string())?;
+        validate_request(&request)?;
+        let mut cpu = cpu_metrics::CpuAttemptSampler::begin(crate::heap_meter::process_instance());
         let _cache_fence = if bounded {
             Some(crate::worker_cache::exclusive(root)?)
         } else {
@@ -548,7 +563,7 @@ fn run_inner(root: &Path, gated: bool, bounded: bool) -> Result<(), String> {
                     Phase::Cells => (&mut cells_seen, Stage::Cells),
                 };
                 if !*seen && p.cursor > 0 {
-                    emit(&mut writer, &request.ticket, stage, None, 0, Some(p.cursor))?;
+                    emit(&mut writer, &request.ticket, stage, None, 0, Some(p.cursor), (!omit_cpu).then_some(&mut cpu))?;
                     gate(&mut reader, &request, stage, gated)?;
                     *seen = true;
                 }
@@ -572,6 +587,7 @@ fn run_inner(root: &Path, gated: bool, bounded: bool) -> Result<(), String> {
             Some(&hash),
             size,
             None,
+            (!omit_cpu).then_some(&mut cpu),
         )?;
         gate(&mut reader, &request, Stage::Published, gated)?;
         state.finish(diag.as_mut())?;
@@ -593,6 +609,7 @@ fn run_inner(root: &Path, gated: bool, bounded: bool) -> Result<(), String> {
             Some(&hash),
             size,
             None,
+            (!omit_cpu).then_some(&mut cpu),
         )?;
     }
     if let Some(log) = diag.as_mut() {
@@ -626,6 +643,7 @@ pub struct Worker {
     // Captured from this actual supervising process, never derived from a task/PID.
     // Observation metadata only; the existing owned Child/lease remains authoritative.
     owner_process_instance: u128,
+    observed_process_instance: Option<u128>,
     observation: Option<protocol_observation::Attempt>,
     observation_error: Option<&'static str>,
     child: Option<Child>,
@@ -646,7 +664,7 @@ impl Worker {
     /// Empty persistent owner; no RPC, process spawn or capacity mutation.
     pub fn new() -> Self {
         Self { owner_process_instance: crate::heap_meter::process_instance(),
-            observation: None, observation_error: None,
+            observation: None, observation_error: None, observed_process_instance: None,
             child: None, broker: None, stdin: None, receiver: None, reader: None,
             outstanding: None, root: PathBuf::new(), gated: false, pool_grant: None,
             pending_grant: None, broker_start: None, reaped: None, ready_to_submit: false }
@@ -686,6 +704,7 @@ impl Worker {
         if !self.is_empty() { return Err("worker_owner_not_retired".into()); }
         self.observation = None;
         self.observation_error = None;
+        self.observed_process_instance = None;
         self.root = root.to_owned();
         self.gated = gated;
         self.ready_to_submit = false;
@@ -801,9 +820,10 @@ impl Worker {
         if self.outstanding.is_some() {
             return Err("worker_busy".into());
         }
+        let sent_at = std::time::Instant::now();
         write_frame(self.stdin.as_mut().ok_or("worker_stopped")?, request)?;
         self.outstanding = Some(request.ticket.clone());
-        match protocol_observation::Attempt::begin(request, self) {
+        match protocol_observation::Attempt::begin(request, self, sent_at) {
             Ok(attempt) => { self.observation = Some(attempt); self.observation_error = None; }
             Err(reason) => { self.observation = None; self.observation_error = Some(reason); }
         }
@@ -827,6 +847,7 @@ impl Worker {
             .ok_or("worker_stopped")?
             .recv_timeout(timeout)
             .map_err(|e| e.to_string())??;
+        let received_at = std::time::Instant::now();
         if event.protocol != PROTOCOL
             || event.pid != self.pid()
             || Some(&event.ticket) != self.outstanding.as_ref()
@@ -856,8 +877,14 @@ impl Worker {
         }
         // Only after the existing full-ticket and actual asset/hash/length checks.
         // An unavailable observation must never turn valid business into a rejection.
+        if let Some(cpu) = event.cpu.as_ref().filter(|cpu| cpu.validate().is_ok()) {
+            if let Some(instance) = cpu.process_instance.as_deref().and_then(|s| s.parse::<u128>().ok()) {
+                // Never replace a known application instance on a still-owned Child/Lease.
+                if self.observed_process_instance.is_none() { self.observed_process_instance = Some(instance); }
+            }
+        }
         if let Some(mut attempt) = self.observation.take() {
-            match attempt.observe_after_next(self, &event) {
+            match attempt.observe_after_next(self, &event, received_at) {
                 Ok(_) => self.observation = Some(attempt),
                 Err(reason) => self.observation_error = Some(reason),
             }
@@ -1082,6 +1109,7 @@ mod ipc_reader_tests {
             candidate_sha256: Some("0".repeat(64)),
             candidate_bytes: CONTROL_BYTES,
             cursor: None,
+            cpu: None,
         };
         let mut bytes = serde_json::to_vec(&event).unwrap();
         assert!(bytes.len() < CONTROL_BYTES - 1);

@@ -9,17 +9,19 @@ use mycity_core::worker_protocol_observation as schema;
 pub(super) struct Attempt {
     request: Request,
     state: schema::AttemptObservation,
+    sent_at: std::time::Instant,
+    cpu_interval: Option<(u64, u64)>,
+    invalid_cpu: bool,
 }
 
 impl Attempt {
-    /// Call only after a real owned worker exists. Missing child birth identity
-    /// remains Unknown; owner identity comes from the actual Worker at creation.
-    pub(super) fn begin(request: &Request, worker: &Worker) -> Result<Self, &'static str> {
+    /// Retain the same-owner send-start clock; decode/transfer/wait are included in elapsed.
+    pub(super) fn begin(request: &Request, worker: &Worker, sent_at: std::time::Instant) -> Result<Self, &'static str> {
         let identity = request_identity(request)?;
         let execution = execution_identity(worker)?;
         let state = schema::AttemptObservation::new(identity, execution)
             .map_err(|_| "worker_observation_identity")?;
-        Ok(Self { request: request.clone(), state })
+        Ok(Self { request: request.clone(), state, sent_at, cpu_interval: None, invalid_cpu: false })
     }
 
     /// Call from Worker::next only after its existing event identity and
@@ -29,6 +31,7 @@ impl Attempt {
         &mut self,
         worker: &Worker,
         event: &Event,
+        received_at: std::time::Instant,
     ) -> Result<&schema::CpuObservation, &'static str> {
         if event.protocol != self.request.protocol || event.ticket != self.request.ticket {
             return Err("worker_observation_wire_binding");
@@ -37,21 +40,73 @@ impl Attempt {
         if event.pid != execution.pid {
             return Err("worker_observation_process_binding");
         }
+        if let Some(instance) = execution.process_instance {
+            self.state.bind_process_instance(instance)
+                .map_err(|_| "worker_observation_stale_instance")?;
+        }
         let candidate = candidate_evidence(event)?;
+        let mut measurements = schema::CpuMeasurements::unavailable();
+        measurements.elapsed_time = match received_at.checked_duration_since(self.sent_at)
+            .and_then(|duration| u64::try_from(duration.as_nanos()).ok()) {
+            Some(end_ns) => schema::Measurement {
+                meaning: schema::MeasurementMeaning::HostElapsedFromSubmitToReceive,
+                unit: schema::MeasurementUnit::Nanoseconds,
+                source: schema::MeasurementSource::HostMonotonicClock,
+                interval: Some(schema::MonotonicInterval { start_ns: 0, end_ns }),
+                value: schema::MeasurementValue::Known { value: end_ns },
+            },
+            None => schema::Measurement::unknown(schema::MeasurementMeaning::HostElapsedFromSubmitToReceive,
+                schema::MeasurementUnit::Nanoseconds, schema::UnknownMeasurementReason::HostClockUnavailable),
+        };
+        measurements.cpu_time = self.cpu_measurement(event, execution.process_instance);
         let observation = schema::CpuObservation {
             version: schema::OBSERVATION_VERSION,
             request: request_identity(&self.request)?,
             execution,
             stage: observed_stage(event.stage),
             candidate,
-            // Existing CPU wire supplies no CPU time, elapsed interval, work
-            // counter, or per-attempt scratch peak. Do not infer these from
-            // cursor, capacity, or output bytes.
-            measurements: schema::CpuMeasurements::unavailable(),
+            measurements,
         };
         self.state.record(observation)
             .map_err(|_| "worker_observation_stale_execution")?;
         self.state.latest().ok_or("worker_observation_missing")
+    }
+
+    fn cpu_measurement(&mut self, event: &Event, instance: Option<u128>) -> schema::Measurement {
+        use super::cpu_metrics::CpuTimeValue;
+        let unknown = |reason| schema::Measurement::unknown(schema::MeasurementMeaning::ProcessCpuTime,
+            schema::MeasurementUnit::Nanoseconds, reason);
+        let Some(cpu) = event.cpu.as_ref() else {
+            return unknown(schema::UnknownMeasurementReason::NotInstrumented);
+        };
+        if self.invalid_cpu || cpu.validate().is_err()
+            || cpu.process_instance.as_deref().and_then(|value| value.parse::<u128>().ok()) != instance
+            || instance.is_none() {
+            self.invalid_cpu = true;
+            return unknown(schema::UnknownMeasurementReason::InvalidChildTelemetry);
+        }
+        match cpu.process_cpu_time {
+            CpuTimeValue::Known { cumulative } => {
+                if self.cpu_interval.is_some_and(|(start, end)| start != cumulative.start_ns || end > cumulative.end_ns) {
+                    self.invalid_cpu = true;
+                    return unknown(schema::UnknownMeasurementReason::InvalidChildTelemetry);
+                }
+                self.cpu_interval = Some((cumulative.start_ns, cumulative.end_ns));
+                schema::Measurement {
+                    meaning: schema::MeasurementMeaning::ProcessCpuTime,
+                    unit: schema::MeasurementUnit::Nanoseconds,
+                    source: schema::MeasurementSource::ChildProcessAccounting,
+                    interval: Some(schema::MonotonicInterval { start_ns: cumulative.start_ns, end_ns: cumulative.end_ns }),
+                    value: schema::MeasurementValue::Known { value: cumulative.delta_ns },
+                }
+            }
+            CpuTimeValue::Unknown { reason, .. } => {
+                if matches!(reason, super::cpu_metrics::UnknownReason::ClockWentBackwards
+                    | super::cpu_metrics::UnknownReason::InvalidTimespec
+                    | super::cpu_metrics::UnknownReason::NanosecondOverflow) { self.invalid_cpu = true; }
+                unknown(schema::UnknownMeasurementReason::ChildClockUnavailable)
+            }
+        }
     }
 
     pub(super) fn latest(&self) -> Option<&schema::CpuObservation> {
@@ -127,7 +182,7 @@ fn execution_identity(worker: &Worker) -> Result<schema::CpuExecutionIdentity, &
             reason: schema::UnknownAllocationReason::MissingPoolIdentity,
         },
     };
-    let process_instance = None; // Current Event has PID but no child birth-instance field.
+    let process_instance = worker.observed_process_instance; // App instance, not OS birth timestamp.
     let supervisor_owner_instance = (worker.owner_process_instance != 0)
         .then_some(worker.owner_process_instance);
     let execution = schema::CpuExecutionIdentity {
