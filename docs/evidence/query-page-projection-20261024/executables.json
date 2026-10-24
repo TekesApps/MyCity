@@ -1,0 +1,17 @@
+{
+  "timeline": {
+    "file": "/Users/frankqin/dev/MyCity/work/query-page-projection-20261024/bin-05/timeline",
+    "bytes": 9896336,
+    "sha256": "62525f07bfe373b45eb0a6d8a9814d3bfd55a261b8add3e3aaf6b7e1e9329698"
+  },
+  "inbox": {
+    "file": "/Users/frankqin/dev/MyCity/work/query-page-projection-20261024/bin-05/inbox",
+    "bytes": 9888208,
+    "sha256": "aa0beee0cefa6059cf224a4fdf613317353d7e4c252cd174759bda56d50e62e9"
+  },
+  "mycity_storage": {
+    "file": "/Users/frankqin/dev/MyCity/work/query-page-projection-20261024/bin-05/mycity_storage",
+    "bytes": 11824704,
+    "sha256": "44fa315f37b1fbd6a64f4ef8e4e42873db4a230bfff1bac12c243942a2e2fafa"
+  }
+}

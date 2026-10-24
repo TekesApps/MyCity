@@ -1,0 +1,10 @@
+{
+  "model": "Mac16,1",
+  "physical_bytes": 34359738368,
+  "os": "macOS-26.6.2-arm64-arm-64bit",
+  "rust": "rustc 1.85.1 (4eb161250 2025-03-15)",
+  "target": "/Volumes/HP P900/dev/MyCity/target",
+  "work": "/Volumes/HP P900/dev/MyCity/work",
+  "storage": "HP P900 external USB/APFS",
+  "claims": "correctness regression only; no perf/native 16GB/M0 acceptance; other projects may build independently; no processes stopped"
+}

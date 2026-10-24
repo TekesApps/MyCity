@@ -1,0 +1,64 @@
+{
+  "source02": {
+    "check": "check-02.log",
+    "result": {
+      "exit": 101,
+      "seconds": 6.950404167175293,
+      "command": [
+        "cargo",
+        "check",
+        "-p",
+        "mycity-storage",
+        "--all-targets",
+        "--release",
+        "--locked",
+        "--offline",
+        "-j",
+        "1"
+      ]
+    },
+    "status": "E0502 test closure borrow; copy generation fixed"
+  },
+  "source03": {
+    "result": {
+      "source_sha256": "4b82e8981675863dd61df96d98e4bc915c7380e6c421029ed8badc56eb8954d7",
+      "runs": [
+        {
+          "label": "query",
+          "command": [
+            "/Users/frankqin/dev/MyCity/work/query-page-projection-20261024/bin-03/mycity_storage",
+            "query::tests::",
+            "--test-threads=1",
+            "--nocapture"
+          ],
+          "exit": 101,
+          "seconds": 1.2889940738677979,
+          "counts": [
+            [
+              "FAILED",
+              "3",
+              "1",
+              "0"
+            ]
+          ],
+          "log": "query-03.log",
+          "exe_sha256": "3fd3c97ab27a383556a0be21729159da1d79c7b91979dae3756bd88bf4ad4016"
+        }
+      ]
+    },
+    "world_root": "/Users/frankqin/dev/MyCity/work/query-page-projection-20261024/worlds-03",
+    "status": "3pass1fail legitimate InboxFull fixture; original WAL/source/exe/world retained"
+  },
+  "source04": {
+    "cancel": {
+      "reason": "New e0 test fixture has no Region: use Payroll home_city0. Cancel only own no-run build before running known-invalid fixture. No business change; source04/check/log retained; no tests source04.",
+      "pid": 47895,
+      "parent": 47758,
+      "signal": "SIGINT",
+      "identity": "47758 /Users/frankqin/.rustup/toolchains/1.85.1-aarch64-apple-darwin/bin/cargo test -p mycity-storage --lib --test inbox --test timeline --release --locked --offline -j 1 --no-run --message-format=json"
+    },
+    "status": "not tested; cancellation not pass"
+  },
+  "setup05": "setup-05-note.txt; prior source path corrected before build",
+  "archive": "/Users/frankqin/dev/MyCity/work/query-page-projection-20261024"
+}

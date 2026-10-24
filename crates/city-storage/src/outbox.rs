@@ -197,7 +197,7 @@ impl Store {
         } else {
             Queue {
                 schema: String::new(),
-                scope: self.engine.world().view().scope,
+                scope: self.engine.world().scope_revision().0,
                 next_event: 1,
                 pending: vec![],
             }

@@ -1,0 +1,68 @@
+{
+  "source_sha256": "9319b46363d3fdb8589a9aaf0b3752c588a4311bcbbd5490435a1a25d7be6925",
+  "runs": [
+    {
+      "label": "query",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/query-page-projection-20261024/bin-05/mycity_storage",
+        "query::tests::",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit": 0,
+      "seconds": 1.2215800285339355,
+      "counts": [
+        [
+          "ok",
+          "4",
+          "0",
+          "0"
+        ]
+      ],
+      "log": "query-05.log",
+      "exe_sha256": "44fa315f37b1fbd6a64f4ef8e4e42873db4a230bfff1bac12c243942a2e2fafa"
+    },
+    {
+      "label": "existing-inbox-query",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/query-page-projection-20261024/bin-05/inbox",
+        "query_pages_are_complete_provenanced_and_reject_stale_cursor",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit": 0,
+      "seconds": 1.9726629257202148,
+      "counts": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ],
+      "log": "existing-inbox-query-05.log",
+      "exe_sha256": "aa0beee0cefa6059cf224a4fdf613317353d7e4c252cd174759bda56d50e62e9"
+    },
+    {
+      "label": "existing-timeline-query",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/query-page-projection-20261024/bin-05/timeline",
+        "dense_actual_payments_checkpoint_mid_page_retry_and_bounded_query",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit": 0,
+      "seconds": 3.232423782348633,
+      "counts": [
+        [
+          "ok",
+          "1",
+          "0",
+          "0"
+        ]
+      ],
+      "log": "existing-timeline-query-05.log",
+      "exe_sha256": "62525f07bfe373b45eb0a6d8a9814d3bfd55a261b8add3e3aaf6b7e1e9329698"
+    }
+  ]
+}

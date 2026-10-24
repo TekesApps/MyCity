@@ -1,0 +1,7 @@
+
+running 1 test
+test dense_actual_payments_checkpoint_mid_page_retry_and_bounded_query ... T05_DENSE {"actual_paid_cents":20000,"checkpoint":{"archive_bytes":11650731,"archive_limit":134217728,"generation":83,"hot_receipts":0,"sequence":81,"wal_bytes":0},"claims":20000,"engine_owned_bytes":3601840,"physical_capacity":{"background_reserved_bytes":0,"continuation_reserved_bytes":0,"hard_blocked":false,"normal_blocked":false,"normal_limit":125829120,"reason":null,"total_bytes":134217728,"used_bytes":11650731,"worker_cache_actual_bytes":0,"worker_cache_charged_bytes":0}}
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 1.09s
+

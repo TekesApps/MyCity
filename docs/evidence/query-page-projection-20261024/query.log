@@ -1,0 +1,9 @@
+
+running 4 tests
+test query::tests::actual_offsets_limits_and_off_page_source_errors_are_not_hidden ... ok
+test query::tests::actual_store_pages_match_frozen_v172_oracle_before_and_after_recovery ... ok
+test query::tests::beyond_end_offset_rejects_without_projecting ... ok
+test query::tests::skipped_rows_never_project_or_grow_the_output_vector ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 30 filtered out; finished in 0.59s
+

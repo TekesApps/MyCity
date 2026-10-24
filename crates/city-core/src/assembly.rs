@@ -923,6 +923,14 @@ impl World {
     pub fn scope_revision(&self) -> (Scope, u64) {
         (self.scope, self.revision)
     }
+    /// Immutable query access without constructing the complete owned WorldView.
+    pub fn query_region(&self) -> Option<&crate::region::Region> {
+        self.region.as_ref()
+    }
+    /// Immutable query access; publication still belongs to the transaction writer.
+    pub fn query_exchange(&self) -> Option<&crate::exchange::Exchange> {
+        self.exchange.as_ref()
+    }
     pub fn view(&self) -> WorldView {
         WorldView {
             schema: if self.venue.is_some() {
