@@ -4,7 +4,7 @@
 
 ## 当前实际在制
 
-#132与同线缺陷#148均已完整有限验收、回填并实际关闭。v191收尾快照为0+0；当前已将#133激活为root唯一共享接线，实际1+0，上限仍1+2。文件/版本/验收入口及原始身份已固定，原组件冻结；真实V2原P5/Stock/费用/出流及生产冷恢复专项已实跑；当前source26共享33组和source27默认栈8组已终态通过，资源口径及完整验收仍待，不提前关闭。父任务持续推进、冻结交付及24项无关observer/M0 WIP不算活跃开发，无新增worker/会话/target/定时任务。
+#132/#148已在v190完整验收并关闭；#133已在v192按原有限四项合同实际验收、发布、回填并关闭，父#92仍开放。当前收尾0共享+0独立准备，上限1+2；#134缺真实交通/人员/到返履约来源，随后按具体依赖消化#135–137既有积压，不新增源码批次。24项无关observer/M0 WIP及完整恢复原件保留。
 
 原#55实施方facility_work.rs source04继续冻结，SHA6773e22d14dfd5964a6b5c47e2c4ccdbf9b96fe07ea9f747311689c179122003；关闭后不授予新写权。近项具体会话、文件、版本、接线与验收入口见[机器台账](inputs/issue-ledger/execution-flow.json)。
 
@@ -19,7 +19,7 @@
 
 |任务|责任与当前执行状态|所需具体能力与真实接线|差项|
 |---|---|---|---|
-|#133|root当前唯一共享接线；原#92会话01a16ffe-dbe1-7a62-b610-c5e72d490d7e组件冻结|已验#132/v190、#144/v185、v186/187净化组件与v188费用曲线；同源Runtime/V2→原Stock/P5/Water/Store|原账专项已接且修订7；source26共享33/source27原6+新2默认栈已通过；完整资源归属与关闭证据待收口，不以历史专项替代完整合同|
+|#133|已完成；root集成/验收，原92组件冻结|v192真实取水/双岗位处理/原Stock出流/成本恢复；共享33、默认原6+新2、有限真实Sim角色|已完整回填/发布并独立回读Closed；父92及整机/M0范围另开放|
 |#134|root集成；原#57会话01a16a4c-ba5a-7dd1-8c04-51461a76b405冻结，阻塞|原service_delivery_runtime、member/Resource/Lease/need/资金和真实交通水质来源|实际人员、到达返程、用水与有限残责缺失；#73/#74计划不算履约，不等整个父领域关闭|
 |#135|root接线；原#101会话01a1682f-f3ce-7f61-833c-a31d55a43b34冻结，排队|原task_registry与#130/v185真实due消费者→原Timeline/writer|通用source/due/dirty、版本/age/覆盖及恢复唤醒桥缺，不造第二执行器|
 |#136|root接线；原#118会话01a1682f-f0de-7241-b895-0bbfa1386c5b冻结，排队|v149固定physical_capacity候选与#125原Resource/Lease共池|通用canonical/模式/时窗/占用/退出恢复桥缺；IntervalLitres仍unsupported/unknown，不能以峰值代区间守恒|
@@ -86,3 +86,11 @@ resource30读取18个实际完成的原Store世界：World总owned196352B；按�
 原advisor核清共同8MiB是诊断总额，不是Store或每角色上限。既有normal64MiB池授予SimCodec59MiB、HelperCompare6MiB、Model20MiB，按可用容量准入，未扩总额。source32新增有限正常角色玩法，首跑在pool启动前因Unixsocket路径过长失败；原件保留，仅缩短显式原SSD证据根，固定程序不变，source33原玩法+池内玩法两项均exit0。实际3秒生产/49L搬移/存档后，在真实Sim角色续产、重启、checkpoint、冷开和退出；5观察点failures0，最大观测请求峰56670767B、arena使用56655648B<=usable61865528B。准备角色完整Store最大52196039B，不能用unpooled42.85MB替代。3次实际角色授予/归还，池67108864B全部回收；并未运行长压或验收整机native/16GB/速度/M0。
 
 完整证据仍work/water-treatment-runtime-20261025；短socket与完整世界原件在work/w33，不清理或遗失引用；合计1770732134B低于事前2GiB。当前原advisor只复核这个具体后继角色门，随后完成#133完整合同/发布前证据核对；保持1+0及Issue开放，无新提交/tag/PR。
+
+## v193实际关闭快照（游戏实现与验收v192）
+
+#133已回填完整原合同/实际正常与拒绝边界/原票/恢复/资源、提交1e88dde/v0.5.192及无PR，并独立回读Closed/stage:done；父92清单已勾选且Open。发布时main/tag/README独立核对。实际收尾0+0，无活跃worker/新派工；原预算和M0不变。
+
+本窗口新验收业务2（132、133），历史补登记0，缺陷关闭1（148）；已交付积压仍21待集成/0待验证，133此前不是这21纯模块之一，不伪减。可靠首可实施/全范围首次源码交付未知，两类耗时保持unknown，实际验收/关闭时刻见[关闭记录](evidence/water-treatment-runtime-20261025/closure.json)。v193只追踪关闭，不算新业务。
+
+下一共享顺序：134仍依赖真实出行/人员/到返provider，不能用73/74计划替代；先135原source/due/dirty目录到已有consumer与Timeline接线，再按实际依赖136原共池canonical时窗和137 typed开局provider。排队不授写权，激活前固定文件/真实输入与验收入口。

@@ -1,25 +1,16 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-25T21:15:16.189770+00:00",
-  "source_head": "ea310a0fdb5c620d4aa9c24ec1a6e8e8d2fe621c",
-  "candidate": "finite133 complete four-item contract verified; v192 publication and actual issue close pending; global M0/native/16GB not accepted",
+  "last_snapshot_at": "2026-10-25T21:19:54.773159+00:00",
+  "source_head": "1e88dde6157f150518e8db63443554d8465afa73",
+  "candidate": "game192 finite133 published/actually closed; ledger193 closure only, no repeated game count",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
     "shared_core_lanes": 1,
     "independent_preparations": 2,
     "reason_for_adjustment_required": true
   },
-  "active_shared_work": [
-    {
-      "lane": "core-1",
-      "business_issue": 133,
-      "related_defects": [],
-      "owner_session": "01a166fc-e444-7602-ad22-3a8551dda487",
-      "evidence_root": "work/water-treatment-runtime-20261025",
-      "phase": "Current shared26:33 groups passed; default27:original6+new2 passed; actual original64MiB pool finite normal-role source33 passed and narrow advisor accepted. Full133 evidence/release/closure reconciliation next; native/M0/16GB separate."
-    }
-  ],
+  "active_shared_work": [],
   "active_independent_preparations": [],
   "counting_rules": {
     "parents_are_not_active_work": true,
@@ -82,7 +73,8 @@
   },
   "window_completed": {
     "new_accepted_business": [
-      132
+      132,
+      133
     ],
     "historical_backfill_business": [],
     "defects_closed": [
@@ -189,7 +181,7 @@
     },
     {
       "issue": 133,
-      "execution_state": "active:core-1",
+      "execution_state": "completed:closed",
       "implementation_owner_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "integration_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "files_or_activation_boundary": [
@@ -220,17 +212,16 @@
         "new explicit original source chemistry/reagent/use/finite receivers and fees require typed validated V2 opening; not guessed from V1"
       ],
       "acceptance_entry_and_gaps": [
-        "All original finite133 four checklist requirements verified; see docs/evidence/water-treatment-runtime-20261025/STATUS.md and acceptance34-verified.json",
-        "Pending unique annotated v192 publication/independent remote checks, exact implementation+results/not_run/PR backfill and actual issue close; no parent92/global-M0 acceptance"
+        "Original finite133 full contract actually verified, published1e88dde/v192 and issue closed; no finite remaining gap; parent92/M0/hardware not implied"
       ],
       "real_integration_seam": "Same original continuous_supply Runtime strictV2 boxed state, original Prepared/P5/Stock/Resource/Lease/member/wages/cost/Store source context/RunDue; no second pool/clock/ticket archive",
-      "new_write_authority": true,
+      "new_write_authority": false,
       "timing": {
         "ready_at": null,
         "readiness_confirmed_at": "2026-10-25T09:53:10.645379+00:00",
         "full_scope_source_delivered_at": null,
-        "accepted_at": null,
-        "issue_closed_at": null,
+        "accepted_at": "2026-10-25T21:17:32Z",
+        "issue_closed_at": "2026-10-25T21:17:34Z",
         "ready_to_acceptance_seconds": null,
         "source_to_acceptance_seconds": null,
         "unknown_reason": "Historical first-ready/full-scope delivery event not established; no inferred timestamp"
@@ -617,6 +608,19 @@
       "scope": "synthetic component37 only, old24+new13; no new business acceptance/closure",
       "actual_WIP": [
         1,
+        0
+      ]
+    },
+    {
+      "event": "finite133-full-contract-accepted-published-and-closed",
+      "issue": 133,
+      "at": "2026-10-25T21:17:34Z",
+      "implementation_commit": "1e88dde6157f150518e8db63443554d8465afa73",
+      "tag": "v0.5.192",
+      "evidence": "docs/evidence/water-treatment-runtime-20261025/closure.json",
+      "scope": "new finite business acceptance, not historical backfill or parent/hardware completion",
+      "actual_WIP": [
+        0,
         0
       ]
     }

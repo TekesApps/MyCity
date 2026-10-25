@@ -1,0 +1,26 @@
+{
+  "at": "2026-10-25T21:20:19.249182+00:00",
+  "actual_closed_business": [
+    132,
+    133
+  ],
+  "historical_backfill": [],
+  "closed_defects": [
+    148
+  ],
+  "133_closed_92_open_and_done_label_verified": true,
+  "registry10_fresh_body_hashes_and_parent_list_match": true,
+  "graphs_acyclic": true,
+  "timings_not_invented": true,
+  "actual_WIP": [
+    0,
+    0
+  ],
+  "unrelated_WIP24_preserved": true,
+  "current_game_code_unchanged_since192": true,
+  "source_target_work": "original HP P900 only",
+  "combined_retained_logical_bytes": 1773614704,
+  "retention_cap_bytes": 2147483648,
+  "publication": "game192 REST verified; ledger193 only",
+  "whole_goal": "active; full nonUI not complete"
+}

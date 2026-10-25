@@ -1,0 +1,39 @@
+{
+  "observed_at": "2026-10-25T21:19:54.773159+00:00",
+  "business_issue": 133,
+  "parent_issue": 92,
+  "parent_state": "open",
+  "implementation_commit": "1e88dde6157f150518e8db63443554d8465afa73",
+  "implementation_tag": "v0.5.192",
+  "annotated_tag_object": "99c63ba17645a19dae9c6ea17f1f735c754b9288",
+  "accepted_at": "2026-10-25T21:17:32Z",
+  "closed_at": "2026-10-25T21:17:34Z",
+  "acceptance_comment_url": "https://github.com/TekesApps/MyCity/issues/133#issuecomment-6403414179",
+  "pr": null,
+  "new_business_accepted_this_window": [
+    132,
+    133
+  ],
+  "historical_backfill_this_window": [],
+  "defects_closed_this_window": [
+    148
+  ],
+  "current_delivered_backlog": {
+    "integration": 21,
+    "validation": 0
+  },
+  "timings": {
+    "ready_at": null,
+    "full_scope_source_delivered_at": null,
+    "ready_to_acceptance_seconds": null,
+    "source_to_acceptance_seconds": null,
+    "reason": "No reliable first-ready/full-scope-source historical event; no inferred dates"
+  },
+  "actual_WIP": [
+    0,
+    0
+  ],
+  "next": "134 blocked on concrete real travel/personnel/return provider; consume existing135/136/137 integration by concrete dependencies without a source-only batch",
+  "global_goal": "active all established nonUI, not complete",
+  "no_native_16GB_M0_speed_acceptance": true
+}
