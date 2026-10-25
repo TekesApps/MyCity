@@ -58,6 +58,24 @@ pub(crate) fn check_job(world:&World,timeline:Option<&Timeline>,request:JobRequi
     let src=source(world,timeline)?;
     check_source(&r.state,src,request)
 }
+/// Sole Timeline writer may read the real preceding completed tick while a
+/// transaction-local P0..P5 continuation is in progress. No external time ingress.
+pub(crate) fn check_job_at_boundary(world:&World,completed:u64,request:JobRequirements)->Result<JobCheck,TxError>{
+    let r=world.qualification.as_deref().ok_or(TxError::InvalidOperation)?;
+    if !r.is_ready(){return Err(TxError::InvalidOperation);}
+    let src=source_at_tick(world,completed)?;check_source(&r.state,src,request)
+}
+/// Existing qualification windows are inclusive at integer game ticks. Their
+/// next possible change is valid_from or valid_until+1; never average over it.
+pub(crate) fn next_source_change(world:&World,now:u64)->Result<Option<u64>,TxError>{
+    let Some(r)=world.qualification.as_deref()else{return Ok(None);};let mut next=None;
+    let mut take=|at:GameTime,end:bool|->Result<(),TxError>{let mut v=u64::try_from(at.value()).map_err(fail)?;
+        if end{v=v.checked_add(1).ok_or(TxError::Overflow)?;}if v>now{next=Some(next.map_or(v,|n:u64|n.min(v)));}Ok(())};
+    take(r.state.opening.authority.issued_at,false)?;take(r.state.opening.authority.valid_until,true)?;
+    for b in r.state.opening.baseline_sources.iter().flatten(){take(b.valid_from,false)?;take(b.valid_until,true)?;}
+    for g in r.state.slots.iter().filter_map(|s|s.grant){take(g.occurred_at,false)?;take(g.valid_until,true)?;}
+    Ok(next)
+}
 /// Exact bounded paging over the original State, not relabelling an incomplete
 /// caller projection as complete. At most41 segments => at most3 pages of16.
 fn check_source(state:&q::State,src:ReadSource,request:JobRequirements)->Result<JobCheck,TxError> {
@@ -207,8 +225,11 @@ pub(crate) fn view(runtime:&Runtime)->View {
         completed:std::array::from_fn(|i|runtime.state.slots[i].status==q::CourseStatus::Completed)}
 }
 pub(crate) fn source(world:&World,timeline:Option<&Timeline>)->Result<ReadSource,TxError> {
-    let runtime=world.qualification.as_deref().ok_or(TxError::InvalidOperation)?;
     let tick=crate::education_authority::completed(timeline)?;
+    source_at_tick(world,tick)
+}
+fn source_at_tick(world:&World,tick:u64)->Result<ReadSource,TxError>{
+    let runtime=world.qualification.as_deref().ok_or(TxError::InvalidOperation)?;
     Ok(ReadSource{scope:world.scope,population_origin:runtime.state.opening.population_origin,
         member_version:runtime.state.opening.member_version,
         root:digest(&world.borrowed_view(),b"qualification-current-world-v1\0",crate::transaction::ENGINE_BYTE_BUDGET)?,

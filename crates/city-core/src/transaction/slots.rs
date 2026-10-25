@@ -129,6 +129,8 @@ impl EngineSlot {
     }
     pub fn restore_reader_into(&mut self, reader: impl Read) -> Result<(), String> {
         self.reset_preserving_capacity();
+        // Explicit null legacy model keys can briefly decode one empty bounded carrier.
+        if self.engine.owned_capacity_bytes().checked_add(World::operating_header_bytes()).is_none_or(|n|n>ENGINE_BYTE_BUDGET){return Err("operating_header_restore_budget".into());}
         struct Limited<R> {
             reader: R,
             bytes: usize,

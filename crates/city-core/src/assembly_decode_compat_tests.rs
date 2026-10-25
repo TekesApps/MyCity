@@ -32,6 +32,8 @@ mod old_opening {
         pub qualification: Option<crate::qualification_authority::Opening>,
         pub member_activity: Option<crate::member_authority::Registration>,
         pub service_needs: Option<crate::service_needs::Opening>,
+        pub continuous_supply: Option<crate::continuous_supply::Opening>,
+        pub facility_work: Option<crate::facility_authority::Opening>,
     }
 }
 use old_opening::Opening as MirrorOpening;
@@ -69,6 +71,10 @@ mod old_world {
         pub(crate) qualification: Option<Box<crate::qualification_authority::Runtime>>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         pub(crate) service_needs: Option<Box<crate::service_needs::Runtime>>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub(crate) continuous_supply: Option<Box<crate::continuous_supply::Runtime>>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        pub(crate) facility_work: Option<Box<crate::facility_authority::Runtime>>,
     }
 }
 use old_world::World as MirrorWorld;
@@ -249,6 +255,8 @@ fn opening_legacy_derive_wire_acceptance_and_errors_match() {
     needs["service_needs"]=json!({"version":1,"profile":"LocalDevelopmentNaturalNeedsV1","scope":{"world":1,"branch":1},"seed":7,"city_id":1,
         "households":[{"household_id":7,"source_id":7001,"generation":1,"people":10}]});
     values.push(needs); // Current parser coverage, not a claim of authentic entry.
+    values.push(serde_json::from_slice(include_bytes!("../../../tests/fixtures/facility-work/electric-v1-opening.json")).unwrap());
+    values.push(serde_json::from_slice(include_bytes!("../../../tests/fixtures/facility-work/electric-v2-opening.json")).unwrap());
     let mut count = 0;
     for value in values {
         for bytes in cases(&value) {
@@ -357,4 +365,38 @@ fn non_initial_town_and_world_legacy_wire_match() {
     assert!(venue.venue.is_some());
     for bytes in cases(&serde_json::to_value(&venue).unwrap()) { compare_world(&bytes); }
     eprintln!("decode layout opening={} opening_scratch={} world={} world_scratch={} town={} town_scratch={}",size_of::<Opening>(),size_of::<OpeningDecode>(),size_of::<World>(),size_of::<WorldDecode>(),size_of::<TownMarket>(),size_of::<(Box<MarketProfile>,Box<MarketState>)>());
+}
+
+#[test]
+fn optional_operating_carrier_preserves_flat_wire_copy_and_null_restore() {
+    let active=assemble(include_bytes!("../../../tests/fixtures/facility-work/electric-v2-opening.json")).unwrap();
+    let active_bytes=serde_json::to_vec(&active).unwrap();
+    let value:Value=serde_json::from_slice(&active_bytes).unwrap();
+    assert!(value.get("operating_models").is_none());
+    assert!(value.get("continuous_supply").is_some());
+    assert!(value.get("facility_work").is_some());
+    assert_eq!(active.operating_owned_bytes(),3*size_of::<usize>());
+    for bytes in cases(&value){compare_world(&bytes);}
+
+    let empty=assemble(include_bytes!("../../../fixtures/m0-e0-opening.json")).unwrap();
+    let empty_bytes=serde_json::to_vec(&empty).unwrap();
+    assert!(empty.operating_models.is_none());
+    let mut explicit_null:Value=serde_json::from_slice(&empty_bytes).unwrap();
+    for key in ["service_needs","continuous_supply","facility_work"]{explicit_null[key]=Value::Null;}
+    let explicit_null=serde_json::to_vec(&explicit_null).unwrap();
+    let decoded:World=serde_json::from_slice(&explicit_null).unwrap();
+    assert!(decoded.operating_models.is_none());
+    assert_eq!(serde_json::to_vec(&decoded).unwrap(),empty_bytes);
+
+    let mut reused=assemble(include_bytes!("../../../fixtures/m0-e0-opening.json")).unwrap();
+    active.copy_into(&mut reused).unwrap();
+    assert_eq!(serde_json::to_vec(&reused).unwrap(),active_bytes);
+    let mut decoder=serde_json::Deserializer::from_slice(&explicit_null);
+    crate::restore_into::Restore::restore(&mut reused,&mut decoder).unwrap();
+    decoder.end().unwrap();
+    assert!(reused.operating_models.is_none());
+    assert_eq!(reused.owned_capacity_bytes(),empty.owned_capacity_bytes());
+    assert_eq!(serde_json::to_vec(&reused).unwrap(),empty_bytes);
+    active.copy_into(&mut reused).unwrap();
+    assert_eq!(serde_json::to_vec(&reused).unwrap(),active_bytes);
 }

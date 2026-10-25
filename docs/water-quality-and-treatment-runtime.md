@@ -1,6 +1,6 @@
 # Water quality and treatment runtime contract
 
-Design revision2,2026-10-25. This extends [U03](product-utilities-environment-and-safety.md) and the existing single-writer/physical ledger contract; it does not replace budget or model rules. Issue [#92](https://github.com/TekesApps/MyCity/issues/92), upstream #85/#86/#96/#94, downstream #57. Baseline v0.5.185. All new implementation/acceptance below is pending unless its own evidence says otherwise.
+Design revision3,2026-10-25. This extends [U03](product-utilities-environment-and-safety.md) and the existing single-writer/physical ledger contract; it does not replace budget or model rules. Issue [#92](https://github.com/TekesApps/MyCity/issues/92), upstream #85/#86/#96/#94, downstream #57. Baseline v0.5.185. All new implementation/acceptance below is pending unless its own evidence says otherwise.
 
 ## Scope, authority and unknown
 
@@ -36,6 +36,14 @@ The initial two-pump V2 water startup share is half of the actual300-cent genset
 
 After pump stop, later generator fuel/cooling cost belongs to actual treatment or explicit loss, never reprices already produced/transferred process water. The old fixed-mask run-duration invariant must remain for old profiles; the new profile records actual generator seconds, pump-mask segments and purifier conversion independently. New state and receipt/schema are explicitly versioned; no silent hot mutation of existing V1 roots.
 
+### Explicit V2 authority boundary
+
+The new profile uses the same original continuous-supply Runtime with a bounded optional boxed V2 substate; it creates neither another generator nor an inventory pool. V1 requires no V2 substate and retains its exact original wire and recomputation path. V2 requires its explicit matching profile/version and substate. Missing V2 state is a restore error, not permission to create defaults or derive unknown outflow history from V1 gross totals. Registration, original tickets and recovery bind the version. All substate backing, staged clones and restore overlap count within existing caps.
+
+V2 pump-mask transitions are execution segments of the same original accepted run. Pump-off releases only the real pump leases; the original generator and its required lease continue without another Start or fee. Mask0 is pumps-off, never a substitute for a stopped genset. V2 independently recomputes its bounded segments, gross/outflow/net projection, actual power and purpose costs; V1's fixed-mask production-duration validator is not reused for changed semantics. Existing DueView, actual facility source coverage and lease/receipt restore must understand that same V2 state. Electric work follows true generator execution and Water work follows true treatment execution.
+
+Admission reserves representation for necessary stop/fault/raw-exhaustion/receiver-exhaustion closure. Optional switching may be rejected when its bounded segment/cycle table is full; existing safe exit cannot require unavailable capacity for a new segment. Ordinary P5 pages preserve the allocation-cycle identity and prefix carry. Stage implementation first establishes explicit V2 structure/restore and original Stock net projection, then the same-P5 joint execution/Water-work bridge, then actual mask transitions, retry and cold recovery. This is a design contract for #133, not evidence that any V2 provider is available.
+
 ## Joint power, devices and hard boundaries
 
 Original generator24kW; two pumps6kW each produce72m3/h together. U03 treatment needs0.2kWh/m3, so with pumps running only12kW remains and at most60m3/h raw input can be processed. Source, pump and treatment constraints must be solved jointly before original materialization. Do not reuse electricity already assigned to Heat, spend future generation to start the loop, duplicate a meter or lower the flow simply to avoid fractional math.
@@ -47,6 +55,8 @@ Earliest source/fuel/cooling/output/concentrate/sludge/permission event cuts the
 All electric input has a declared final heat/other sink; source native heat, pump heat and treatment heat cannot be double-counted. Root allocates original source input/start costs and actual personnel/residual costs once, using frozen per-purpose segments. A zero nominal fee is not proof of free actual labor. Missing employment, actual cost, occupancy or use qualification stays unknown/pending and cannot be filled with a boolean.
 
 ## Execution, persistence and budget
+
+Actual operation prerequisite: [facility operation runtime](facility-operation-runtime.md) defines root-owned actual equipment/member intervals and original wage/funding responsibilities. Qualification, venue presence or existing09–17 Payroll does not substitute for actual0..5500 operation. The first real joint gate must consume those actual intervals; do not assume a free unattended plant merely to pass it. This prerequisite can be implemented before full recruitment or #57 dispatch without changing their remaining scopes.
 
 #92 owner may write only water_treatment.rs, its test source/small fixtures/handoff: bounded exact composition/transfer/purification proposals, revalidation, structure-only restore and source/precision tests. Root alone changes Opening/World/Stock/supply, device/joint power, resources/personnel/payment, Action/receipt/Store authentication, exports and headless scheduling. Pure candidates are not actual delivered water.
 

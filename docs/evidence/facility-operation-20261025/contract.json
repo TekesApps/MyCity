@@ -1,0 +1,132 @@
+{
+  "as_of": "2026-10-25T09:03:29.931419+00:00",
+  "source": "source23 (game identical22)",
+  "issues_open": [
+    132,
+    148
+  ],
+  "gates": [
+    {
+      "gate": "132-admission",
+      "contract": "Original immutable Electric301 contract / on-site qualified original member / actor and funded window; missing cover refuses, not real shortage",
+      "evidence": "regression23/facility_operation.stdout",
+      "oracle_or_limit": "admission_requires_real_presence_actor_qualification_and_funding; unknown_or_absent_qualification_and_unfunded_window_refuse_atomically",
+      "status": "passed"
+    },
+    {
+      "gate": "132-actual",
+      "contract": "Original P5 source interval, member time, real cash/cost, split wage numerator and hard source/shift/qualification/exit cuts",
+      "evidence": "regression23/facility_operation.stdout",
+      "oracle_or_limit": "actual_p5_wages_original_cash_cost_and_split_remainders; actual_raw_boundary_closes_operator_preserving_fraction; shift_and_qualification_boundaries_stop_before_unqualified_production; safe_exit_and_emergency_stop_reduce_real_responsibility",
+      "status": "passed"
+    },
+    {
+      "gate": "132-identity",
+      "contract": "IDs identify transactions rather than order; old Payroll exclusion both directions",
+      "evidence": "regression23/facility_operation.stdout",
+      "oracle_or_limit": "operation_identity_does_not_imply_commit_order; payroll_and_facility_admission_are_mutually_exclusive_in_both_orders",
+      "status": "passed"
+    },
+    {
+      "gate": "132-income",
+      "contract": "Original complete paid-wage window only, shared with old Payroll and housing; version2, missing/forged anchors cannot become history",
+      "evidence": "regression23/facility_operation.stdout",
+      "oracle_or_limit": "actually_paid_facility_wages_reach_the_original_complete_housing_window; authority_v2_rejects_old_genesis_and_deleted_checkpoint_versions; old_payroll_and_facility_share_the_original_income_buckets_without_overlap",
+      "status": "passed"
+    },
+    {
+      "gate": "132-funds",
+      "contract": "No foreign wallet or protection diversion; original funds paid once; fractional stop and failed-request replay",
+      "evidence": "funds-guard23-world/result.json",
+      "oracle_or_limit": "Independent frozen-input standalone probe using exact original compiled rlibs; same-process reopen, not independent cold",
+      "status": "passed"
+    },
+    {
+      "gate": "132-store",
+      "contract": "Original WAL/checkpoint retry/lost reply, authenticated actual interval/payment/stop; partial old Payroll restore; forged local hash refusal",
+      "evidence": "regression23/facility_operation_store.stdout",
+      "oracle_or_limit": "5 parent tests and3 independently launched cold children, counted separately",
+      "status": "passed"
+    },
+    {
+      "gate": "132-shared",
+      "contract": "Latest same-game-source core/storage/education/qualification/member/checkpoint/housing/opening input/venue/supply shared regressions",
+      "evidence": "primary23-combined.json",
+      "oracle_or_limit": "18 distinct groups; original missing-env attempt remains failed, exact fixed executable resumed",
+      "status": "passed"
+    },
+    {
+      "gate": "132-affected",
+      "contract": "Income/exit/spatial/recovery/service affected regressions; education component tests alone not actual-world acceptance",
+      "evidence": "extra23-combined.json",
+      "oracle_or_limit": "all10 actual groups passed; interrupted original fifth retained and exact fixed binary resume0",
+      "status": "passed"
+    },
+    {
+      "gate": "132-default-stack",
+      "contract": "Original concrete122/123/124 cases plus facility13 and2 Store exact cases on original default test stack",
+      "evidence": "regression23-debug/results.json",
+      "oracle_or_limit": "all6 original default-stack groups actual0, positive test counts independently checked; no stack override",
+      "status": "passed"
+    },
+    {
+      "gate": "148-layout",
+      "contract": "Original18unit World gate131072, no fixture/budget change, carrier present24B explicitly charged and None absent; flat/null/copy/reused restore compatibility",
+      "evidence": "run22-facility_operation-legacy_housing_header_stays_legal_before_the_original_wait_boundary-result.json",
+      "oracle_or_limit": "World74224 vs74240; independent current/legacy layout and mirror tests",
+      "status": "passed"
+    },
+    {
+      "gate": "148-original-store",
+      "contract": "Original18unit Enable,96B Wait refusal/no mutation, original failed receipt replay/cold restore",
+      "evidence": "regression23/housing_move_store_runtime.stdout",
+      "oracle_or_limit": "All4 original housingMove tests pass current frozen game code",
+      "status": "passed"
+    },
+    {
+      "gate": "148-encapsulation",
+      "contract": "No new public carrier mutation bypass or uncharged empty allocation",
+      "evidence": "advisor-source22-private-slots-accepted.txt",
+      "oracle_or_limit": "Original advisor narrow blocker recheck; concrete source proof only",
+      "status": "source_review_accepted"
+    },
+    {
+      "gate": "148-default-stack",
+      "contract": "Original default-stack behavior after changed private carrier path",
+      "evidence": "regression23-debug/results.json",
+      "oracle_or_limit": "all6 original default-stack groups actual0, positive test counts independently checked; no stack override",
+      "status": "passed"
+    },
+    {
+      "gate": "publication",
+      "contract": "Exact owned files, version/README/tag/main independently checked; issue full backfill and parent/ledger synchronization",
+      "evidence": "coordinator-state.json",
+      "oracle_or_limit": "Unpublished/noPR; no issue close before all required gates",
+      "status": "pending"
+    }
+  ],
+  "excluded_from_finite_contract": [
+    "actual Water/treatment provider133",
+    "recruitment or general shift matching full55",
+    "UI/render/GPU/AgentKit",
+    "real16GB/native peak/sustained speed/long stress; independent hardware issues remain open"
+  ],
+  "historical_failures_preserved": [
+    "source06 WorkingLimit",
+    "source09 mirror failures",
+    "source12 real complete-income counterexample",
+    "source18 original shared housing gate",
+    "source19 exact16B red case",
+    "source21 encapsulation blocked, never executed",
+    "source23 original opening env setup failure",
+    "source23 resume evidence768MiB guard stop"
+  ],
+  "necessary_limits_unchanged": [
+    "World128KiB",
+    "Engine4MiB",
+    "role8MiB",
+    "normal64MiB",
+    "default stack",
+    "M0 frozen load/standards"
+  ]
+}

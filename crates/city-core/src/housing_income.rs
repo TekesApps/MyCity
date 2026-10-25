@@ -12,6 +12,10 @@ use crate::{
 use serde::{Deserialize, Serialize};
 use std::mem::size_of;
 
+/// Bounded original authority counters, not another money balance.
+#[derive(Clone,Copy)]
+pub(crate) struct PaidWageSource {pub account:u32,pub paid:u64}
+
 pub(crate) const PAID_WAGE_WINDOW_DAYS: u64 = 31;
 pub(crate) const PAID_WAGE_RING_DAYS: usize = 32;
 const MAX_WAGE_HOUSEHOLDS: usize = 32;
@@ -214,6 +218,9 @@ impl PaidWageWindow {
         opening: &OpeningHousing,
         timeline: &Timeline,
     ) -> Result<(), PaidWageError> {
+        self.validate_with_sources(opening,timeline,&[None;4])
+    }
+    pub(crate) fn validate_with_sources(&self,opening:&OpeningHousing,timeline:&Timeline,sources:&[Option<PaidWageSource>;4])->Result<(),PaidWageError>{
         if self.coverage_start_day_plus_one == 0 {
             if self.days.iter().any(|day| !day.is_empty()) {
                 return Err(PaidWageError::Invalid);
@@ -254,7 +261,8 @@ impl PaidWageWindow {
                         .map_err(|_| PaidWageError::Overflow)?;
                 }
             }
-            let available = timeline
+            let available:u128=if sources.iter().all(Option::is_none){
+                let available = timeline
                 .payroll
                 .iter()
                 .filter(|payroll| payroll.spec.payee == household.account)
@@ -262,7 +270,13 @@ impl PaidWageWindow {
                     total.checked_add(payroll.paid)
                 })
                 .map_err(|_| PaidWageError::Overflow)?;
-            if observed > available {
+                u128::try_from(available.value()).map_err(|_|PaidWageError::Invalid)?
+            }else{
+                let mut total=0u128;
+                for p in timeline.payroll.iter().filter(|p|p.spec.payee==household.account){total=total.checked_add(u128::try_from(p.paid.value()).map_err(|_|PaidWageError::Invalid)?).ok_or(PaidWageError::Overflow)?;}
+                for source in sources.iter().flatten().filter(|s|s.account==household.account){total=total.checked_add(u128::from(source.paid)).ok_or(PaidWageError::Overflow)?;}total
+            };
+            if u128::try_from(observed.value()).map_err(|_|PaidWageError::Invalid)?>available {
                 return Err(PaidWageError::Invalid);
             }
         }

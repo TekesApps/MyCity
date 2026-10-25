@@ -47,6 +47,8 @@ pub mod transaction;
 pub mod transport;
 pub mod units;
 pub mod water_treatment;
+pub mod facility_work;
+pub mod facility_authority;
 pub mod venue_capacity;
 pub mod venue_runtime;
 pub mod worker_protocol_observation;

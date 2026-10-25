@@ -48,12 +48,14 @@ pub struct Opening {
 #[serde(deny_unknown_fields)]
 pub enum Command { Start{run_id:u64,pumps:u8}, Stop, Fault{fault_ref:u64} }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub enum StopCause { Explicit, Fault(u64), InputOrReceiverBoundary }
+pub enum StopCause { Explicit, Fault(u64), InputOrReceiverBoundary, OperatorBoundary }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Run {
     pub id:u64, pub operation:u64, pub pumps:u8, pub started_at:u64,
     pub ended_at:Option<u64>, pub stop_cause:Option<StopCause>,
     pub production_seconds:u64,
+    #[serde(default,skip_serializing_if="money_is_zero")]
+    pub operator_labor_basis:Money,
 }
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -61,6 +63,8 @@ pub(crate) struct Runtime {
     opening:Opening, config:g::Config, genset:g::State,
     raw_lot:g::InputLot,
     raw_used_ml:u64, produced_ml:[u64;2], output_basis:[Money;2],
+    #[serde(default,skip_serializing_if="money_is_zero")]
+    operator_labor_basis:Money,
     /// Start money remains WIP until real production, or is expensed on a zero-work stop.
     startup_wip:Money, zero_work_expense:Money, pump_start_fees:Money,
     run_converted_base:Money, run_output_base:[Money;2],
@@ -83,12 +87,15 @@ pub struct View {
     pub version:u32, pub city_id:u32, pub cursor:u64, pub genset:g::State,
     pub machine_meters:g::Meters,
     pub produced_ml:[u64;2], pub output_basis:[Money;2], pub raw_used_ml:u64,
+    #[serde(skip_serializing_if="money_is_zero")]
+    pub operator_labor_basis:Money,
     pub heat_mwh:u64, pub heat_remainder_numerator:u64, pub denominator:u64,
     pub startup_wip:Money, pub zero_work_expense:Money,
     pub runs:[Option<Run>;MAX_RUNS],
     pub sanitary_quality_known:bool,
 }
 
+fn money_is_zero(v:&Money)->bool{*v==Money::ZERO}
 fn bad(_:impl std::fmt::Debug)->TxError {TxError::InvalidOperation}
 fn q(v:u64)->Result<Quantity,TxError>{Quantity::new(i64::try_from(v).map_err(|_|TxError::Overflow)?).map_err(bad)}
 fn m(v:u64)->Result<Money,TxError>{Money::new(i64::try_from(v).map_err(|_|TxError::Overflow)?).map_err(bad)}
@@ -126,7 +133,7 @@ impl Runtime {
     pub(crate) fn view(&self)->Result<View,TxError>{let (heat,rem)=self.heat()?;Ok(View{
         version:VERSION,city_id:self.opening.city_id,cursor:self.cursor(),genset:self.genset.clone(),
         machine_meters:g::ContinuousGensetV1::meters(&self.config,&self.genset).map_err(bad)?,
-        produced_ml:self.produced_ml,output_basis:self.output_basis,raw_used_ml:self.raw_used_ml,
+        produced_ml:self.produced_ml,output_basis:self.output_basis,raw_used_ml:self.raw_used_ml,operator_labor_basis:self.operator_labor_basis,
         heat_mwh:heat,heat_remainder_numerator:rem,denominator:3,
         startup_wip:self.startup_wip,zero_work_expense:self.zero_work_expense,runs:self.runs,
         sanitary_quality_known:false})}
@@ -205,7 +212,7 @@ impl Runtime {
                 self.run_converted_base=self.converted_basis()?;self.run_output_base=self.output_basis;
                 self.materialize(l,c)?;
                 *self.runs.iter_mut().find(|r|r.is_none()).ok_or(TxError::WorkingLimit)?=Some(Run{
-                    id:run_id,operation,pumps,started_at:at,ended_at:None,stop_cause:None,production_seconds:0});
+                    id:run_id,operation,pumps,started_at:at,ended_at:None,stop_cause:None,production_seconds:0,operator_labor_basis:Money::ZERO});
             },
             Command::Stop=>self.stop(l,&view,StopCause::Explicit)?,
             Command::Fault{fault_ref}=>{
@@ -225,6 +232,11 @@ impl Runtime {
         self.startup_wip=Money::ZERO;
         let run=self.run_mut().ok_or(TxError::InvalidOperation)?;run.ended_at=Some(view.at.second);run.stop_cause=Some(cause);
         Ok(())
+    }
+    pub(crate) fn stop_for_operator(&mut self,l:&mut impl Ledger,at:u64,operation:u64,root:[u8;32],revision:u64)->Result<(),TxError>{
+        if !self.ready||at!=self.cursor()||operation==0{return Err(TxError::InvalidOperation);}
+        if self.genset.status==g::Status::Running{let view=self.authority(l,at,root,revision)?;self.stop(l,&view,StopCause::OperatorBoundary)?;self.last_operation=operation;}
+        self.validate_stocks(&self.stocks(l)?)
     }
     /// P5 joint original-ledger prefix. It does not advance or own a second clock.
     pub(crate) fn advance(&mut self,l:&mut impl Ledger,at:u64,operation:u64,root:[u8;32],revision:u64)->Result<(),TxError>{
@@ -263,7 +275,7 @@ impl Runtime {
                 let prev_seconds=self.run().ok_or(TxError::InvalidOperation)?.production_seconds;
                 if prev_seconds==0{Money::ZERO}else{m(g::START_FEE_CENTS+PUMP_START_CENTS*count)?}
             };
-            let total=old_converted.checked_add(fee).map_err(bad)?;
+            let total=old_converted.checked_add(fee).map_err(bad)?.checked_add(self.run().ok_or(TxError::InvalidOperation)?.operator_labor_basis).map_err(bad)?;
             if total<prior_assigned{return Err(TxError::InvalidOperation);}
             let assigned=match mask{1=>[total,Money::ZERO],2=>[Money::ZERO,total],3=>{
                 let a=m(total.value() as u64/2)?;[a,total.checked_sub(a).map_err(bad)?]},_=>return Err(TxError::InvalidOperation)};
@@ -279,6 +291,22 @@ impl Runtime {
         }
         let remaining=self.available_seconds(&self.stocks(l)?,mask)?;
         if remaining==0{let view=self.authority(l,at,root,revision)?;self.stop(l,&view,StopCause::InputOrReceiverBoundary)?;self.last_operation=operation;}
+        self.validate_stocks(&self.stocks(l)?)
+    }
+    /// Root supplies ONLY a same-Prepared actual operator wage delta after original
+    /// member settlement and protected cash debit/credit. No public cost ingress.
+    pub(crate) fn book_operator_wage(&mut self,l:&mut impl Ledger,amount:Money,operation:u64)->Result<(),TxError>{
+        if amount==Money::ZERO{return Ok(());}
+        if self.last_operation!=operation||self.run().is_none_or(|r|r.production_seconds==0){return Err(TxError::InvalidOperation);}
+        self.validate_stocks(&self.stocks(l)?)?;
+        self.operator_labor_basis=self.operator_labor_basis.checked_add(amount).map_err(bad)?;
+        let r=self.run_mut().ok_or(TxError::InvalidOperation)?;
+        r.operator_labor_basis=r.operator_labor_basis.checked_add(amount).map_err(bad)?;
+        let mask=r.pumps;let count=u64::from(mask.count_ones());let labor=r.operator_labor_basis;
+        let total=self.converted_basis()?.checked_sub(self.run_converted_base).map_err(bad)?
+            .checked_add(m(g::START_FEE_CENTS+PUMP_START_CENTS*count)?).map_err(bad)?.checked_add(labor).map_err(bad)?;
+        let assigned=match mask{1=>[total,Money::ZERO],2=>[Money::ZERO,total],3=>{let a=m(total.value() as u64/2)?;[a,total.checked_sub(a).map_err(bad)?]},_=>return Err(TxError::InvalidOperation)};
+        for i in 0..2{self.output_basis[i]=self.run_output_base[i].checked_add(assigned[i]).map_err(bad)?;set_output(l,self.opening.stocks[i+3],self.produced_ml[i],self.output_basis[i])?;}
         self.validate_stocks(&self.stocks(l)?)
     }
     fn validate_stocks(&self,s:&[Stock;7])->Result<(),TxError>{
@@ -300,7 +328,7 @@ impl Runtime {
             || self.produced_ml.iter().zip(self.opening.water_capacities_ml).any(|(n,cap)|*n>cap)
             || meters.wastewater_ml>self.opening.wastewater_capacity_ml{return Err(TxError::Stock);}
         let cost=self.converted_basis()?.checked_add(meters.start_fees).map_err(bad)?
-            .checked_add(self.pump_start_fees).map_err(bad)?;
+            .checked_add(self.pump_start_fees).map_err(bad)?.checked_add(self.operator_labor_basis).map_err(bad)?;
         let placed=self.output_basis[0].checked_add(self.output_basis[1]).map_err(bad)?
             .checked_add(self.startup_wip).map_err(bad)?.checked_add(self.zero_work_expense).map_err(bad)?;
         if cost!=placed{return Err(TxError::Stock);}
@@ -316,8 +344,9 @@ impl Runtime {
             if r.ended_at.is_some()||r.production_seconds!=self.cursor()-r.started_at{return Err(TxError::InvalidOperation);}
         } else if self.run().is_some_and(|r|r.ended_at.is_none())||self.tokens.iter().any(Option::is_some){return Err(TxError::Lease);}
         let mut active=0;let mut raw=0;let mut outputs=[0;2];let mut output_cost=[Money::ZERO;2];
-        let mut expected_received=0;let mut pump_fees=0;let mut expense=Money::ZERO;let mut startup=Money::ZERO;
+        let mut expected_received=0;let mut pump_fees=0;let mut expense=Money::ZERO;let mut startup=Money::ZERO;let mut labor=Money::ZERO;
         for run in &runs {
+            labor=labor.checked_add(run.operator_labor_basis).map_err(bad)?;
             let before=converted_at(&self.config,&self.raw_lot,active,raw)?;
             if Some(run.id)==self.run().map(|r|r.id)
                 && (self.run_converted_base!=before||self.run_output_base!=output_cost){return Err(TxError::Stock);}
@@ -330,16 +359,17 @@ impl Runtime {
             pump_fees=add(pump_fees,mul(PUMP_START_CENTS,count)?)?;
             let fee=m(add(g::START_FEE_CENTS,mul(PUMP_START_CENTS,count)?)?)?;
             if run.production_seconds==0 {
+                if run.operator_labor_basis!=Money::ZERO{return Err(TxError::Stock);}
                 if run.ended_at.is_some(){expense=expense.checked_add(fee).map_err(bad)?;}else{startup=fee;}
             }else{
-                let total=converted_at(&self.config,&self.raw_lot,active,raw)?.checked_sub(before).map_err(bad)?.checked_add(fee).map_err(bad)?;
+                let total=converted_at(&self.config,&self.raw_lot,active,raw)?.checked_sub(before).map_err(bad)?.checked_add(fee).map_err(bad)?.checked_add(run.operator_labor_basis).map_err(bad)?;
                 let allocated=match run.pumps{1=>[total,Money::ZERO],2=>[Money::ZERO,total],3=>{
                     let a=m(total.value() as u64/2)?;[a,total.checked_sub(a).map_err(bad)?]},_=>return Err(TxError::InvalidOperation)};
                 for i in 0..2{output_cost[i]=output_cost[i].checked_add(allocated[i]).map_err(bad)?;}
             }
         }
         if active!=self.genset.active_seconds||raw!=self.raw_used_ml||outputs!=self.produced_ml
-            ||output_cost!=self.output_basis||m(pump_fees)?!=self.pump_start_fees
+            ||labor!=self.operator_labor_basis||output_cost!=self.output_basis||m(pump_fees)?!=self.pump_start_fees
             ||expense!=self.zero_work_expense||startup!=self.startup_wip
             ||expected_received!=add(mul(self.genset.received_mwh,3)?,self.genset.received_remainder_numerator)?
             ||self.run().map_or(0,|r|r.id)!=self.genset.run_id{return Err(TxError::InvalidOperation);}
@@ -449,6 +479,8 @@ pub(crate) fn check_restore(world:&World,c:&mut RestoreCheck,index:usize,record:
         match record.actions[0]{
             Some(Action::ContinuousSupply{..}) if record.actor==r.opening.owner&&at==Some(r.cursor())=>{},
             Some(Action::Timeline{command:crate::timeline::Command::Advance{..}})if record.actor==0&&at==Some(r.cursor())=>{},
+            Some(Action::FacilityWork{command:crate::facility_authority::Command::Stop{contract_id}})if at==Some(r.cursor())&&world.facility_work.as_deref().is_some_and(|f|f.state.opening().contracts.iter().flatten().any(|c|c.id==contract_id&&c.device_id==u64::from(r.opening.resources[0])&&c.employer_account==r.opening.owner&&(record.actor==0||record.actor==c.employer_account||record.actor==c.employee_account)))=>{},
+            Some(Action::Venue{use_id,command:crate::venue_runtime::Command::SafeExit{..}})if record.actor==0&&at==Some(r.cursor())&&world.facility_work.as_deref().is_some_and(|f|f.state.opening().contracts.iter().flatten().any(|c|c.venue_use_id==use_id&&c.device_id==u64::from(r.opening.resources[0])&&c.employer_account==r.opening.owner))=>{},
             _=>return Err(TxError::InvalidOperation),
         }
     }
@@ -456,7 +488,7 @@ pub(crate) fn check_restore(world:&World,c:&mut RestoreCheck,index:usize,record:
 }
 pub(crate) fn finish_restore(world:&mut World,c:RestoreCheck)->Result<(),TxError>{
     let ops=restore_operations(world);
-    let r=world.continuous_supply.as_deref_mut().ok_or(TxError::InvalidOperation)?;
+    let r=world.continuous_supply_mut().ok_or(TxError::InvalidOperation)?;
     if digest(r)?!=c.fingerprint||ops.iter().enumerate().any(|(i,op)|op.is_some()&&!c.checked[i]){return Err(TxError::InvalidOperation);}
     r.ready=true;Ok(())
 }
@@ -509,7 +541,7 @@ pub(crate) fn initialize(opening:Opening,world:&World)->Result<Box<Runtime>,Stri
         heat_peak_w:opening.heat_peak_w,wastewater_peak_ml_per_second:opening.wastewater_peak_ml_per_second,
         consumer_ref:Some(opening.source_id),consumer_version:1};
     let genset=g::ContinuousGensetV1::opening(&config,g::Instant{scope:world.scope,clock:config.clock,second:0}).map_err(|_|fail())?;
-    let r=Box::new(Runtime{opening,config,genset,raw_lot:lot(s[2]),raw_used_ml:0,produced_ml:[0;2],output_basis:[Money::ZERO;2],
+    let r=Box::new(Runtime{opening,config,genset,raw_lot:lot(s[2]),raw_used_ml:0,produced_ml:[0;2],output_basis:[Money::ZERO;2],operator_labor_basis:Money::ZERO,
         startup_wip:Money::ZERO,zero_work_expense:Money::ZERO,pump_start_fees:Money::ZERO,
         run_converted_base:Money::ZERO,run_output_base:[Money::ZERO;2],runs:[None;MAX_RUNS],tokens:[None;crate::exchange::PATH],last_operation:0,ready:true});
     r.validate_stocks(&s).map_err(|_|fail())?;Ok(r)

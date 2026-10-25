@@ -1,6 +1,8 @@
 # MyCity Issue 执行与验收台账
 
-2026-10-25，文档发布 v0.5.189。总体入口仍为 [PRODUCT_BLUEPRINT](PRODUCT_BLUEPRINT.md)；需求原文以 [逐条需求矩阵](product-coverage-and-requirements.md) 为准。本轮不修改游戏代码，不重新运行历史测试，不改变 M0 负载/门槛。当前未提交设施操作 WIP 和所有失败/恢复原件保留。
+当前实际在制与阶段速度口径见[execution-current](execution-current.md)和[execution-flow.json](inputs/issue-ledger/execution-flow.json)：共享1+独立准备0，不用领域父任务数、总关闭比例或tag数表示交付。
+
+2026-10-25，阶段版本 v0.5.190。总体入口仍为 [PRODUCT_BLUEPRINT](PRODUCT_BLUEPRINT.md)；需求原文以 [逐条需求矩阵](product-coverage-and-requirements.md) 为准。v189结构整理不修改游戏代码或重跑历史测试；v190实际验证#132设施操作/工资与#148原住房预算兼容，完整终态见[当前设施证据](evidence/facility-operation-20261025/STATUS.md)。Issue关闭在发布证据回填后执行，尚不把候选tag当成功能验收。M0负载/门槛、无关WIP和全部失败/恢复原件保持。
 
 ## 覆盖和归属
 
@@ -49,8 +51,8 @@
 
 |任务|状态|所需具体能力/差项|
 |---|---|---|
-|[#132](https://github.com/TekesApps/MyCity/issues/132)|待验证|source08实际core9+Store3+2cold children+旧供给9通过；原module18通过；最终共享/教育资格回归、旧票兼容及发布尚缺；source01/05/06/07失败全保留|
-|[#133](https://github.com/TekesApps/MyCity/issues/133)|开发中|当前没有V2实际原writer/合格出水消费桥；不新派开发，root按原owner交付集成|
+|[#132](https://github.com/TekesApps/MyCity/issues/132)|待验证|source16专属core12、source17 Store5+3cold通过；v2实际工资窗口反例已修复；source18共享回归运行中，扩展收入/退出/默认栈与发布未完成；所有失败保留|
+|[#133](https://github.com/TekesApps/MyCity/issues/133)|待开发|当前没有V2实际原writer/合格出水消费桥；不新派开发，root按原owner交付集成|
 |[#134](https://github.com/TekesApps/MyCity/issues/134)|阻塞|原交付已冻结；由原实施方按排程补模块，root唯一集成；当前未派新任务|
 |[#135](https://github.com/TekesApps/MyCity/issues/135)|待集成|通用候选到实际目录/全部必要provider未完成；原交付先集成，不新派工|
 |[#136](https://github.com/TekesApps/MyCity/issues/136)|待集成|限定consumer已验不等于全模式；开工前先固定实际专属路径与原owner，当前无新写授权|
@@ -62,7 +64,7 @@
 |[#142](https://github.com/TekesApps/MyCity/issues/142)|待开发|当前设施工资是固定有限合同，不是完整招聘或自适应调薪；未派工|
 |[#143](https://github.com/TekesApps/MyCity/issues/143)|阻塞|政策性延期，无开发/编译/测试授权；本轮仅建立范围归属|
 
-当前132固定source08已实际通过core9、Store3（另2次独立冷恢复）和原continuous_supply9；原module18也已通过。最终共享/教育资格/旧票与联合布局回归、发布未完成，132及55/92不关闭。source06曾因HotReceipt扩张触原WorkingLimit；改原持久JournalRecord上下文，不升原限，所有失败/固定程序/world原件保留。
+当前132显式authority v2将真实paid增量接入原住房工资窗口；source16 core12与source17 Store5（另3次独立冷恢复）通过。source18工作区检查通过，共享回归仍在串行运行；扩展工资/退出/F/恢复和默认栈门、最终发布未齐，132及55/92不关闭。此前实际4分工资丢失反例source12与旧v1实验原件继续保留。source06曾因HotReceipt扩张触原WorkingLimit；改原持久JournalRecord上下文，不升原限，所有失败/固定程序/world原件保留。
 
 前八批交付不是新派工队列；先消化既有源码与未验证provider：
 
@@ -100,3 +102,7 @@
 每轮：核对新需求与已有Issue → 固定独立业务合同/owner/文件/具体能力依赖 → 优先消化既有交付 → 串行实际验证和恢复 → 回填实现/实际结果/not_run/提交tag/PR → 完整子任务关闭 → 刷新父清单及REQ台账。未达标保留开放；父任务仍按自身完整范围验收。见[AGENTS.md](../AGENTS.md)。
 
 本轮结构整理证据保留`work/issue-structure-20261025/`，预算128MiB；原123Issue/185评论/99原生关系、完整修改前后正文、关闭请求/回读、覆盖提案与审计结论均保留。源WIP不入本次文档提交；24个无关观察/M0文件保持字节一致。外置恢复原件不删除；没有新tree/target/timer。
+
+### #148: original housing header budget regression
+
+Defect [#148](https://github.com/TekesApps/MyCity/issues/148) belongs to #4. Source18 original18-unit Enable failed; source19 independently measured131088B against original131072B. The private optional carrier reduces World by16B and counts its present24B wrapper once. Source23 actual layout/flat-wire/null/copy/original96B Wait and cold replay pass; latest18 shared/10 affected/6 default-stack groups also pass. Historical #26 and stack defects122-124 remain separate closed scopes; fixtures, budgets and M0 gates are unchanged. #132/#148 finite evidence is complete, stage publication/Issue final backfill is next; domain parents remain open.

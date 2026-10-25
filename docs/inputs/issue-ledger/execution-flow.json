@@ -1,0 +1,526 @@
+{
+  "schema": "mycity-execution-flow-v1",
+  "baseline_at": "2026-10-25T02:39:00Z",
+  "last_snapshot_at": "2026-10-25T09:02:15.700307+00:00",
+  "source_head": "b43eb93c8d53b691ada5d609c693d1faba0075f3",
+  "candidate": "source23 full finite evidence verified; stage v0.5.190 publication/Issue final backfill pending",
+  "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
+  "limits": {
+    "shared_core_lanes": 1,
+    "independent_preparations": 2,
+    "reason_for_adjustment_required": true
+  },
+  "active_shared_work": [
+    {
+      "lane": "core-1",
+      "business_issue": 132,
+      "related_defects": [
+        148
+      ],
+      "owner_session": "01a166fc-e444-7602-ad22-3a8551dda487",
+      "phase": "finite132/148 evidence verified18 primary+10 affected+6 default-stack+funds+3cold; publication/backfill active, no closure yet"
+    }
+  ],
+  "active_independent_preparations": [],
+  "counting_rules": {
+    "parents_are_not_active_work": true,
+    "frozen_deliveries_are_not_active_workers": true,
+    "defect_and_related_business_share_one_core_lane": true,
+    "no_complete_product_ratio_or_tag_metric": true
+  },
+  "baseline_catalogue": {
+    "historical_business_backfill_closed": [
+      125,
+      126,
+      127,
+      128,
+      129,
+      130,
+      131,
+      144,
+      145,
+      146,
+      147
+    ],
+    "earlier_finite_FE_business_closed": [
+      25,
+      26
+    ],
+    "earlier_defects_closed": [
+      122,
+      123,
+      124
+    ],
+    "source_delivered_pending_integration": [
+      137,
+      136,
+      135,
+      117,
+      104,
+      103,
+      102,
+      98,
+      97,
+      96,
+      94,
+      85,
+      75,
+      74,
+      73,
+      61,
+      36,
+      32,
+      31,
+      28,
+      27
+    ],
+    "source_delivered_pending_validation": [
+      132
+    ],
+    "open_defects": [
+      148
+    ]
+  },
+  "window_completed": {
+    "new_accepted_business": [],
+    "historical_backfill_business": [],
+    "defects_closed": []
+  },
+  "near_term_contracts": [
+    {
+      "issue": 132,
+      "execution_state": "active:core-1",
+      "implementation_owner_session": "01a166fc-e444-7602-ad22-3a8551dda487",
+      "integration_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
+      "files_or_activation_boundary": [
+        "crates/city-core/src/assembly.rs",
+        "crates/city-core/src/assembly_decode_compat_tests.rs",
+        "crates/city-core/src/continuous_supply.rs",
+        "crates/city-core/src/education_authority.rs",
+        "crates/city-core/src/facility_authority.rs",
+        "crates/city-core/src/housing_income.rs",
+        "crates/city-core/src/lib.rs",
+        "crates/city-core/src/member_activity.rs",
+        "crates/city-core/src/member_authority.rs",
+        "crates/city-core/src/qualification_authority.rs",
+        "crates/city-core/src/restore_into.rs",
+        "crates/city-core/src/service_needs_authority.rs",
+        "crates/city-core/src/timeline_driver.rs",
+        "crates/city-core/src/transaction.rs",
+        "crates/city-core/src/transaction/slots.rs",
+        "crates/city-core/tests/continuous_supply.rs",
+        "crates/city-core/tests/facility_operation.rs",
+        "crates/city-storage/src/checkpoint/receipt_decode.rs",
+        "crates/city-storage/src/checkpoint_v2/receipts.rs",
+        "crates/city-storage/src/lib.rs",
+        "crates/city-storage/src/metadata.rs",
+        "crates/city-storage/src/wal.rs",
+        "crates/city-storage/tests/facility_operation_store.rs",
+        "tests/fixtures/facility-work/electric-v1-opening.json",
+        "tests/fixtures/facility-work/electric-v2-opening.json",
+        "tests/fixtures/facility-work/legacy-housing18-opening.json",
+        "tests/fixtures/facility-work/legacy-housing2-opening.json",
+        "tests/fixtures/facility-work/opening.rs"
+      ],
+      "required_specific_capabilities": [
+        "OriginalElectric301 from v185; qualification v180; one member ledger v181; original funds, venue and Store receipts",
+        "source22 private operating carrier fixes defect148; not accepted by earlier source17 tests"
+      ],
+      "acceptance_entry_and_gaps": [
+        "Original18unit/96B Wait and cold restore; actual facility Store5",
+        "Latest same-game-source core/storage/education/qualification/member/checkpoint/income/exit/F and original default-stack gates",
+        "Normal/refusal/boundary/pay-once/restore/resource evidence then commit/tag/PR backfill and closure"
+      ],
+      "real_integration_seam": "Root Engine/Prepared, actual P5 source/member/wages, original household window, original JournalRecord and Store slot",
+      "new_write_authority": true,
+      "timing": {
+        "ready_at": null,
+        "readiness_confirmed_at": "2026-10-25T02:39:00Z",
+        "full_scope_source_delivered_at": null,
+        "accepted_at": null,
+        "issue_closed_at": null,
+        "ready_to_acceptance_seconds": null,
+        "source_to_acceptance_seconds": null,
+        "unknown_reason": "Historical first-ready/full-scope delivery event not established; no inferred timestamp"
+      },
+      "frozen_module_owner": {
+        "session": "01a16e84-6dc2-7e23-9ad9-c3ef3b8c7683",
+        "file": "crates/city-core/src/facility_work.rs",
+        "sha256": "6773e22d14dfd5964a6b5c47e2c4ccdbf9b96fe07ea9f747311689c179122003",
+        "state": "source04 frozen; root reads/builds but does not write"
+      }
+    },
+    {
+      "issue": 148,
+      "execution_state": "active:defect-within-core-1",
+      "implementation_owner_session": "01a166fc-e444-7602-ad22-3a8551dda487",
+      "integration_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
+      "files_or_activation_boundary": [
+        "crates/city-core/src/assembly.rs",
+        "crates/city-core/src/restore_into.rs",
+        "crates/city-core/src/transaction/slots.rs",
+        "crates/city-core/src/transaction.rs",
+        "crates/city-core/tests/facility_operation.rs",
+        "crates/city-core/src/assembly_decode_compat_tests.rs",
+        "crates/city-core/src/continuous_supply.rs (private mutable adapter only)",
+        "crates/city-core/src/service_needs_authority.rs (private mutable adapter only)",
+        "crates/city-core/src/facility_authority.rs (private mutable adapter only)"
+      ],
+      "required_specific_capabilities": [
+        "Original18unit input unchanged; World128KiB, window8456B, scratch2048B; original96B Wait",
+        "No public mutable carrier or hidden pointer charges"
+      ],
+      "acceptance_entry_and_gaps": [
+        "source22 exact header and flat/null/copy passed",
+        "OriginalStore18unit/96B Wait/retry/cold gate passed; facility and latest affected/default-stack regression pending",
+        "Publish/backfill before defect close"
+      ],
+      "real_integration_seam": "Physical optional carrier and private original-field restore accessors; no new business model",
+      "new_write_authority": true,
+      "timing": {
+        "ready_at": null,
+        "readiness_confirmed_at": null,
+        "full_scope_source_delivered_at": null,
+        "accepted_at": null,
+        "issue_closed_at": null,
+        "ready_to_acceptance_seconds": null,
+        "source_to_acceptance_seconds": null,
+        "unknown_reason": "Historical first-ready/full-scope delivery event not established; no inferred timestamp"
+      }
+    },
+    {
+      "issue": 133,
+      "execution_state": "queued:not-dispatched",
+      "implementation_owner_session": null,
+      "integration_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
+      "files_or_activation_boundary": [
+        "crates/city-core/src/continuous_supply.rs",
+        "crates/city-core/src/continuous_supply/cost_curve.rs",
+        "crates/city-core/src/water_treatment_authority.rs (planned new root adapter)",
+        "crates/city-core/src/facility_authority.rs",
+        "crates/city-core/src/timeline_driver.rs",
+        "crates/city-core/tests/water_treatment_runtime.rs (planned)",
+        "crates/city-storage/tests/water_treatment_store.rs (planned)"
+      ],
+      "required_specific_capabilities": [
+        "Accepted actual operator/funds/receipt seam from132, limited genset/twinpump144",
+        "Existing water_treatment component v186/187, original cost-curve v188; design revision3 V2 profile/strict substate",
+        "Real source chemistry/use, reagent and finite residual endpoints; no inferred old quality"
+      ],
+      "acceptance_entry_and_gaps": [
+        "Implement typed gross/outflow/net and same-P5 true12/24kW/cost closure",
+        "Actual Water labor/wages/permission proof, no future-output startup",
+        "Split/merge, originalStock/receipt retries and cold restore; derive endpoint, no hardcoded5500"
+      ],
+      "real_integration_seam": "Same original source Runtime/V2 state + Root Prepared Stock/quality/member/cost/Store; component water_treatment.rs remains original frozen-owner read-only",
+      "new_write_authority": false,
+      "timing": {
+        "ready_at": null,
+        "readiness_confirmed_at": null,
+        "full_scope_source_delivered_at": null,
+        "accepted_at": null,
+        "issue_closed_at": null,
+        "ready_to_acceptance_seconds": null,
+        "source_to_acceptance_seconds": null,
+        "unknown_reason": "Historical first-ready/full-scope delivery event not established; no inferred timestamp"
+      },
+      "canonical_source_identity": {
+        "crates/city-core/src/continuous_supply.rs": "7484756963e7b49a5cbd9b734261faaf97ee1a54ab14847b421778fe9f7f9fb5",
+        "crates/city-core/src/continuous_supply/cost_curve.rs": "014b9084c76a788346014d841786fa88f5a9ed6ceec770e5014b97d32f2e67fb",
+        "crates/city-core/src/facility_authority.rs": "a8fc092b7035430e53bc213d64665b910f67e25aa24bd0b502749b0fe9b76479",
+        "crates/city-core/src/timeline_driver.rs": "962dd3b593c7f56591732571b24e698ccc6063f2ca6020bc295d3c9adad6cfa3"
+      },
+      "original_frozen_owner_chat": "01a16ffe-dbe1-7a62-b610-c5e72d490d7e"
+    },
+    {
+      "issue": 134,
+      "execution_state": "blocked:not-dispatched",
+      "implementation_owner_session": null,
+      "integration_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
+      "files_or_activation_boundary": [
+        "crates/city-core/src/service_delivery_runtime.rs (original owner module; frozen/read-only until reactivation)",
+        "crates/city-core/src/service_delivery_authority.rs (planned root adapter)",
+        "crates/city-core/src/member_authority.rs",
+        "crates/city-core/src/transaction.rs",
+        "crates/city-core/src/timeline_driver.rs",
+        "crates/city-storage/tests/service_delivery_store.rs (planned)"
+      ],
+      "required_specific_capabilities": [
+        "Actual resources/accepted use and Water source from133 as needed by profile",
+        "Real authenticated travel/arrival/return and member-work evidence;73/74 candidate plan/status is not fulfilment",
+        "Original resource/lease/funds/need identities"
+      ],
+      "acceptance_entry_and_gaps": [
+        "Real dispatch/work/consumption/return and persistent residual responsibility missing",
+        "Freeze first real profile inputs/oracle with original57 owner before activating",
+        "OriginalPool concurrency, failures, replay, checkpoint/cold recovery"
+      ],
+      "real_integration_seam": "Root need linkage, original members/ResourceLease, actual delivery and Store; no second workforce/bed/clock",
+      "new_write_authority": false,
+      "timing": {
+        "ready_at": null,
+        "readiness_confirmed_at": null,
+        "full_scope_source_delivered_at": null,
+        "accepted_at": null,
+        "issue_closed_at": null,
+        "ready_to_acceptance_seconds": null,
+        "source_to_acceptance_seconds": null,
+        "unknown_reason": "Historical first-ready/full-scope delivery event not established; no inferred timestamp"
+      },
+      "original_frozen_owner_chat": "01a16a4c-ba5a-7dd1-8c04-51461a76b405",
+      "predecessor_candidate_delivery": {
+        "at": "2026-10-23T20:19:05.945905+00:00",
+        "receipt": "work/issue-104-57-98-source-handoff-20261024/handoff-receipt.json",
+        "relation": "inherited earlier frozen component; not proof of complete current business-contract delivery or acceptance",
+        "waiting_age_seconds_at_baseline": 109194.054095
+      },
+      "canonical_source_identity": {
+        "crates/city-core/src/member_authority.rs": "9a11430079ffd44e1caf91d28eb17080764021706a23c7acf28241d4359ee726",
+        "crates/city-core/src/transaction.rs": "7255d0f28d3511b07d0866155fcec40d8846712528f6b401c8c6d27562564dc3",
+        "crates/city-core/src/timeline_driver.rs": "962dd3b593c7f56591732571b24e698ccc6063f2ca6020bc295d3c9adad6cfa3"
+      },
+      "required_source_identity": {
+        "module_version": 2,
+        "policy": "LocalDevelopmentExplicitHostActivityV1",
+        "current_module_sha256": "c140059a29be8a4d267f8a8aaeb6c20c214659bef8dd5c0edfe234b9562d4c30",
+        "meaning": "module state only, not real fulfilment authority"
+      }
+    },
+    {
+      "issue": 135,
+      "execution_state": "queued:not-dispatched",
+      "implementation_owner_session": null,
+      "integration_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
+      "files_or_activation_boundary": [
+        "crates/city-core/src/task_registry.rs (original module frozen)",
+        "crates/city-core/src/timeline_driver.rs",
+        "crates/city-core/src/transaction.rs",
+        "crates/city-core/tests/task_registry.rs",
+        "crates/city-storage/tests/task_registry_store.rs (planned)"
+      ],
+      "required_specific_capabilities": [
+        "Original101 fixed generic source/due/dirty candidate",
+        "Existing finite real due consumers130/v185 and original Timeline phase/continuation boundaries",
+        "Real source versions/coverage/age; no required full upstream-domain closure"
+      ],
+      "acceptance_entry_and_gaps": [
+        "General provider registration/wakeup to actual Timeline queue/writer missing",
+        "Source mutation/retry/recovery must retain due/dirty/cursor responsibility; no new scheduler",
+        "Confirm exact module-owner/API and first acceptance input before activation"
+      ],
+      "real_integration_seam": "Existing Timeline and source owners; candidate directory never dispatches or commits itself",
+      "new_write_authority": false,
+      "timing": {
+        "ready_at": null,
+        "readiness_confirmed_at": null,
+        "full_scope_source_delivered_at": null,
+        "accepted_at": null,
+        "issue_closed_at": null,
+        "ready_to_acceptance_seconds": null,
+        "source_to_acceptance_seconds": null,
+        "unknown_reason": "Historical first-ready/full-scope delivery event not established; no inferred timestamp"
+      },
+      "original_frozen_owner_chat": "01a1682f-f3ce-7f61-833c-a31d55a43b34",
+      "predecessor_candidate_delivery": {
+        "at": "2026-10-23T18:23:23.015403+00:00",
+        "receipt": "work/issue-118-101-73-85-source-handoff-20261023/coordinator-state.json",
+        "relation": "inherited earlier frozen component; not proof of complete current business-contract delivery or acceptance",
+        "waiting_age_seconds_at_baseline": 116136.984597
+      },
+      "required_source_identity": {
+        "baseline": "037f3cf89755430bd8cc56922d8f673497bdf6c3",
+        "original_files": [
+          {
+            "path": "crates/city-core/src/task_registry.rs",
+            "bytes": 12194,
+            "sha256": "46416b1c6e7af291c2285c2ab70b2c9c74e819b9fd27221b2712ca93dcce724b"
+          },
+          {
+            "path": "crates/city-core/tests/task_registry.rs",
+            "bytes": 15181,
+            "sha256": "65961c53610be602276d40921eb02843743e8dc35f3489a4812fcf89f6551d37"
+          },
+          {
+            "path": "docs/handoffs/issue-101-task-registry.md",
+            "bytes": 11481,
+            "sha256": "094f083e1059c1c148dd534e86a8e1f449780b4dfc64a9e7119ad1892ebae91f"
+          },
+          {
+            "path": "tests/fixtures/issue-101/sim-air-contract.json",
+            "bytes": 1069,
+            "sha256": "ae625e2e9f50381b6e1c4e91555325b3c1d5d3e8bae161e66a07879edb600612"
+          }
+        ],
+        "current_module_sha256": "46416b1c6e7af291c2285c2ab70b2c9c74e819b9fd27221b2712ca93dcce724b"
+      }
+    },
+    {
+      "issue": 136,
+      "execution_state": "queued:not-dispatched",
+      "implementation_owner_session": null,
+      "integration_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
+      "files_or_activation_boundary": [
+        "crates/city-core/src/physical_capacity.rs (frozen candidate; reactivation required)",
+        "crates/city-core/tests/physical_capacity.rs (frozen candidate; reactivation required)",
+        "docs/handoffs/issue-118-physical-capacity.md (frozen candidate; reactivation required)",
+        "tests/fixtures/issue-118/pump-power-flow.json (frozen candidate; reactivation required)",
+        "tests/fixtures/issue-118/shared-entrance-rail.json (frozen candidate; reactivation required)",
+        "crates/city-core/src/transaction.rs (root sole writer)",
+        "crates/city-core/src/venue_runtime.rs (root sole writer)",
+        "crates/city-storage/tests/physical_capacity_store.rs (planned)"
+      ],
+      "required_specific_capabilities": [
+        "OriginalResource/Lease identity and original canonical conflict/time-window key",
+        "Managed-venue finite capability125/v168/171 is available; other modes not implied"
+      ],
+      "acceptance_entry_and_gaps": [
+        "Reconfirm original manifest/API/file lease before activation",
+        "Generic mode/time-window candidate to one real reserve/occupy/release authority missing",
+        "Conflicting owners/overlaps/expiry/closure and original retry/cold restore",
+        "Original candidate IntervalLitres remains unsupported/unknown; interval total cannot be substituted by peak rate or claimed conserved; restore/refusal and any required implementation remain explicit."
+      ],
+      "real_integration_seam": "OriginalResource/Lease writer; no duplicate capacity pool",
+      "new_write_authority": false,
+      "timing": {
+        "ready_at": null,
+        "readiness_confirmed_at": null,
+        "full_scope_source_delivered_at": null,
+        "accepted_at": null,
+        "issue_closed_at": null,
+        "ready_to_acceptance_seconds": null,
+        "source_to_acceptance_seconds": null,
+        "unknown_reason": "Historical first-ready/full-scope delivery event not established; no inferred timestamp"
+      },
+      "original_frozen_owner_chat": "01a1682f-f0de-7241-b895-0bbfa1386c5b",
+      "predecessor_candidate_delivery": {
+        "at": "2026-10-23T18:23:23.015403+00:00",
+        "receipt": "work/issue-118-101-73-85-source-handoff-20261023/coordinator-state.json",
+        "relation": "inherited earlier frozen component; not proof of complete current business-contract delivery or acceptance",
+        "waiting_age_seconds_at_baseline": 116136.984597
+      },
+      "required_source_identity": {
+        "baseline": "037f3cf89755430bd8cc56922d8f673497bdf6c3",
+        "original_files": [
+          {
+            "path": "crates/city-core/src/physical_capacity.rs",
+            "bytes": 14626,
+            "sha256": "2f4322a6873a50ef2ac29be51ffe34c67593203ad370d289d077355f0d1a4626"
+          },
+          {
+            "path": "crates/city-core/tests/physical_capacity.rs",
+            "bytes": 22721,
+            "sha256": "1590d3f3e445ec732dc5b81705c11317b888ffcd67e4b84b2d6c9952c1b89999"
+          },
+          {
+            "path": "docs/handoffs/issue-118-physical-capacity.md",
+            "bytes": 6487,
+            "sha256": "d1574b9efcdf36e5764362f78680f14cf009881af7ad2bab6782ef03fec42f88"
+          },
+          {
+            "path": "tests/fixtures/issue-118/pump-power-flow.json",
+            "bytes": 1328,
+            "sha256": "a4ef5cae4ca982b6809d8342b1966a165b256b5a31e80f47f6037a922c9b3605"
+          },
+          {
+            "path": "tests/fixtures/issue-118/shared-entrance-rail.json",
+            "bytes": 1065,
+            "sha256": "8ead1352fe710a145855e01b6be9cb521424334f550a89583f3133d14eb9ef7b"
+          }
+        ],
+        "status": "generic candidate not yet applied to canonical"
+      }
+    },
+    {
+      "issue": 137,
+      "execution_state": "queued:not-dispatched",
+      "implementation_owner_session": null,
+      "integration_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
+      "files_or_activation_boundary": [
+        "crates/city-core/src/opening_loader.rs",
+        "crates/city-headless/src/opening_source_provider.rs",
+        "crates/city-storage/src/lib.rs",
+        "crates/city-storage/tests/opening_input_store.rs",
+        "crates/city-storage/tests/opening_typed_provider_store.rs (planned)"
+      ],
+      "required_specific_capabilities": [
+        "Original120 candidate and current explicit-file provider; fixed-profile same-slot131 already available",
+        "Typed provider/schema/unit/clock/source-reference contracts at declared versions"
+      ],
+      "acceptance_entry_and_gaps": [
+        "General factory/provider/schema bridge absent; actual byte/file provenance not rights certification",
+        "Explicit bad unit/ref/version/duplicate capital and same-slot failure/recovery",
+        "Confirm exact adapter file ownership and legal profile inputs before activation"
+      ],
+      "real_integration_seam": "Existing OpeningInput, assembly and Store unpublished slot; no second loader authority",
+      "new_write_authority": false,
+      "timing": {
+        "ready_at": null,
+        "readiness_confirmed_at": null,
+        "full_scope_source_delivered_at": null,
+        "accepted_at": null,
+        "issue_closed_at": null,
+        "ready_to_acceptance_seconds": null,
+        "source_to_acceptance_seconds": null,
+        "unknown_reason": "Historical first-ready/full-scope delivery event not established; no inferred timestamp"
+      },
+      "original_frozen_owner": "current-chat issue120 worker candidate; no active lease",
+      "predecessor_candidate_delivery": {
+        "at": "2026-10-23T18:53:19.790267+00:00",
+        "receipt": "work/issue-102-120-97-source-handoff-20261024/handoff-receipt.json",
+        "relation": "inherited earlier frozen component; not proof of complete current business-contract delivery or acceptance",
+        "waiting_age_seconds_at_baseline": 114340.209733
+      },
+      "canonical_source_identity": {
+        "crates/city-core/src/opening_loader.rs": "547fadc691f942234b1fdfcb515355004ccb1742f164ae02d8aaafdf42778665",
+        "crates/city-headless/src/opening_source_provider.rs": "5c36fa4aa58bebbcdf6dbcf11e537fd19863438984173f7a57252c22046d1b62",
+        "crates/city-storage/src/lib.rs": "dfa9798ec5a781939bba7f5d11dd06d4650c81fa84634677cf43a755df7c3475",
+        "crates/city-storage/tests/opening_input_store.rs": "4cef3b4b4426e47bdd931d3ba4f2a87daaa36b1162acf46b5e7f867cbbc1ebc6"
+      }
+    }
+  ],
+  "duration_policy": {
+    "ready_to_acceptance": "accepted_at - earliest evidenced full owner/file/dependency/acceptance-entry readiness; unknown if first timestamp absent",
+    "source_to_acceptance": "accepted_at - evidenced source delivery for that contract/version; predecessor-candidate time reported separately",
+    "no_proxy_start": "Do not use issue creation, file mtime, commit/tag or current confirmation as an invented historical first-ready/delivery time",
+    "accepted_at": "root full-contract evidence decision; issue_closed_at and remote release independently recorded",
+    "future_events": "append at explicit assignment, full-scope source delivery, acceptance and close; stage summaries only, no scheduler/daemon"
+  },
+  "artifact_retention": {
+    "evidence_root": "work/execution-flow-20261025",
+    "budget_bytes": 8388608,
+    "retain_until": "superseding complete baseline with all referenced issue/source/test/recovery records; no cleanup during execution"
+  },
+  "events": [
+    {
+      "observed_at": "2026-10-25T02:39:00Z",
+      "kind": "baseline",
+      "business_acceptance_delta": 0,
+      "historical_backfill_delta": 0,
+      "defect_closure_delta": 0
+    },
+    {
+      "observed_at": "2026-10-25T02:51:43Z",
+      "kind": "verification_gates_observed",
+      "issue": 148,
+      "source": "source22",
+      "gates": [
+        "exact header131072<=131072",
+        "flat wire/null/copy",
+        "original Store18unit96B Wait/retry/cold",
+        "facility Store5 and3 cold (verify child results separately)"
+      ],
+      "counts_as_business_acceptance": false,
+      "counts_as_defect_close": false
+    },
+    {
+      "kind": "classification_only",
+      "issues": {
+        "133": "stage:todo actual bridge queued",
+        "148": "stage:validation fix implemented, gates pending"
+      },
+      "business_acceptance_delta": 0,
+      "historical_backfill_delta": 0,
+      "defect_closure_delta": 0
+    }
+  ]
+}

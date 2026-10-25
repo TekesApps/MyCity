@@ -25,13 +25,17 @@ pub(crate) fn initialize_education(world:&World)->Result<Box<m::Ledger>,String> 
     initialize(expected(world).map_err(|_|"education_population_missing")?,world)
 }
 pub(crate) fn validate(world:&World,timeline:Option<&Timeline>,ledger:Option<&m::Ledger>)->Result<(),TxError> {
-    let Some(ledger)=ledger else {return Ok(());};
+    validate_with_facility(world,timeline,ledger,world.facility_work.as_deref())
+}
+pub(crate) fn validate_with_facility(world:&World,timeline:Option<&Timeline>,ledger:Option<&m::Ledger>,facility:Option<&crate::facility_authority::Runtime>)->Result<(),TxError>{
+    let Some(ledger)=ledger else {return if facility.is_some(){Err(TxError::InvalidOperation)}else{Ok(())};};
     let registration=expected(world)?;
     ledger.validate_binding(registration.scope,registration.population_origin,registration.total_people,EPOCH,
-        timeline.map_or(0,|t|t.progress.last_complete)).map_err(|_|TxError::InvalidOperation)?;
+        timeline.map_or(0,|t|if t.progress.phase==Some(crate::schedule::Phase::P5){t.progress.at}else{t.progress.last_complete})).map_err(|_|TxError::InvalidOperation)?;
     // Every active row needs an actual domain owner, not merely a legal Kind.
     // Until the service runtime is wired there is no ServiceWork consumer.
-    if ledger.active().iter().any(|row|row.kind==m::Kind::ServiceWork) {return Err(TxError::InvalidOperation);}
+    if ledger.active().iter().any(|row|row.kind==m::Kind::ServiceWork){return Err(TxError::InvalidOperation);}
+    crate::facility_authority::validate_rows(world,facility,Some(ledger),timeline.map_or(0,|t|if t.progress.phase==Some(crate::schedule::Phase::P5){t.progress.at}else{t.progress.last_complete}))?;
     Ok(())
 }
 pub(crate) fn registration(world:&World)->Option<[u8;32]> {

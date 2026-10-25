@@ -1,0 +1,15 @@
+{
+  "observed_at": "2026-10-25T08:54:11.719290+00:00",
+  "hardware_model": "Mac16,1",
+  "physical_memory_bytes": 34359738368,
+  "architecture": "arm64",
+  "rustc": "rustc 1.85.1 (4eb161250 2025-03-15)",
+  "target_realpath": "/Volumes/HP P900/dev/MyCity/target",
+  "work_realpath": "/Volumes/HP P900/dev/MyCity/work",
+  "external_volume_available_bytes": 216864481280,
+  "stack_override_present": false,
+  "execution": "root serial one MyCity test process; default-stack debug now building/running, not yet accepted",
+  "storage_environment": "existing HP P900 USB/APFS",
+  "functional_diagnostic_only": true,
+  "native_peak_or_real16GB_or_sustained_speed": "not measured by these tests; unrelated project activity not stopped"
+}

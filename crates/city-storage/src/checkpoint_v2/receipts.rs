@@ -124,7 +124,7 @@ mod tests {
             payload_sha256: [0; 32],
             outcome: Err(TxError::StaleRevision),
             actions: [None; 16],
-            qualification_context: None,
+            qualification_context: None, facility_context:None,
         };
         let index = ReceiptIndex {
             schema: "mycity-receipt-index-v2".into(),

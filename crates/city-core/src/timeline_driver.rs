@@ -34,6 +34,8 @@ pub(super) struct Frame<'a, 'd> {
     pub world: &'a World,
     pub service_needs: &'a mut Option<Box<crate::service_needs::Runtime>>,
     pub continuous_supply: &'a mut Option<Box<crate::continuous_supply::Runtime>>,
+    pub facility_work: &'a mut Option<Box<crate::facility_authority::Runtime>>,
+    pub facility_member: &'a mut Option<Box<crate::member_activity::Ledger>>,
     pub operation_id: u64,
     pub service_working_base: usize,
     pub town: &'a mut Option<crate::town_runtime::MarketState>,
@@ -286,6 +288,7 @@ impl Frame<'_, '_> {
                 }
             }
             C::AddPayroll { spec } => {
+                crate::facility_authority::check_payroll(self.facility_work.as_deref(),spec.payee,t.progress.last_complete,spec.ends_at,true)?;
                 if self.town.as_ref().is_some_and(|state| {
                     crate::transaction::market_is_suspended(Some(state), spec.payer)
                         || crate::transaction::market_is_exiting(Some(state), spec.payer)
@@ -499,6 +502,9 @@ impl Frame<'_, '_> {
         if let Some(supply)=self.continuous_supply.as_deref(){
             let mut ledger=ledger!(self);
             if let Some(due)=supply.boundary(&mut ledger,now)?{take(due)?;}
+        }
+        if let Some(facility)=self.facility_work.as_deref(){
+            if let Some(due)=crate::facility_authority::next_boundary(self.world,Some(facility),t,self.continuous_supply.as_deref())?{take(due)?;}
         }
         if let Some(service)=self.service_needs.as_deref() {
             if let Some(due)=service.next_due().map_err(|_|TxError::InvalidOperation)? {take(due)?;}
@@ -793,7 +799,20 @@ impl Frame<'_, '_> {
                         let root=crate::continuous_supply::source_root(self.world,supply)?;
                         let revision=self.world.revision.checked_add(1).ok_or(TxError::Overflow)?;
                         let mut ledger=ledger!(self);
+                        if let Some(f)=self.facility_work.as_deref(){
+                            if supply.cursor()==t.progress.last_complete&&!crate::facility_authority::can_continue(self.world,f,t.progress.last_complete)?{
+                                supply.stop_for_operator(&mut ledger,t.progress.last_complete,self.operation_id,root,revision)?;
+                            }
+                        }
                         supply.advance(&mut ledger,at,self.operation_id,root,revision)?;
+                        if let (Some(f),Some(m))=(self.facility_work.as_deref_mut(),self.facility_member.as_deref_mut()){
+                            if !crate::facility_authority::can_continue(self.world,f,at)?{supply.stop_for_operator(&mut ledger,at,self.operation_id,root,revision)?;}
+                            let before=crate::facility_authority::paid_snapshot(f);
+                            let wage=crate::facility_authority::settle_device(self.world,f,m,supply,self.operation_id,at,&mut ledger)?;
+                            supply.book_operator_wage(&mut ledger,wage,self.operation_id)?;
+                            drop(ledger);
+                            crate::facility_authority::record_actual_wages(self.world,before,f,self.operation_id,at,self.housing_wage_window)?;
+                        }
                     }
                     if !crate::service_needs_authority::due_page(self.service_needs,at,self.operation_id,self.service_working_base,crate::transaction::ENGINE_BYTE_BUDGET)? {return Ok(());}
                     t.progress.last_complete = at;

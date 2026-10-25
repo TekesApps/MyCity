@@ -1,10 +1,15 @@
 # MyCity 当前实际派工与交接
 
+**2026-10-25 实际在制：**共享1项（#132及关联缺陷#148），独立准备0项，上限1+2。[当前执行/责任/差项](execution-current.md)与[机器快照](inputs/issue-ledger/execution-flow.json)为准；父任务持续推进、冻结交付和保留WIP不计活跃派工。后续133/134/135–137排队，未授予新写权。
+
 **2026-10-25 当前执行入口：**[Issue执行与验收台账](issue-execution-ledger.md)及GitHub #2/#23。
 当前root是唯一共享writer、串行验证和发布/关闭负责人；旧主会话已停止，下面旧派工不再授权。
 领域父任务保留，11个已验历史业务子任务按原完整合同追溯关闭；132–143保持开放，144–147属历史有限合同。
-当前132设施工时工资仍是未提交WIP，source08限定core9/Store3/原供给9与2冷进程通过，
-最终共享/教育资格回归未齐；不随本轮文档tag发布游戏代码。接着沿133真实处理水→134实际公服，
+当前132设施工时工资仍是未提交WIP；实际工资已接原住房收入窗口并显式版本化为authority v2。
+source16专属core12、source17 Store5与3冷进程通过，原advisor窄复核无新增源码阻断；
+source18工作区检查通过、共享回归仍运行，扩展收入/退出/default-debug及发布未齐。
+最新实际证据见[设施操作STATUS](evidence/facility-operation-20261025/STATUS.md)，不能据v189文档tag宣称游戏接线发布。
+接着沿133真实处理水→134实际公服，
 再消化135/136/137等既有通用交付。新收费/基础教育/转学/招聘/调薪138–142未派工。
 各Issue的stage标签/父清单/具体能力依赖为当前任务状态；下文带版本的旧结果仅是历史证据。
 
@@ -1023,3 +1028,7 @@ Original owner added separate default-deny Idle facts/candidate, zero Delta, cur
 Root shared writer extracted bounded original lot-prefix arithmetic and reused it in V1 continuous-supply validation, with9 original regressions passing. Proposed V2 twin-port cost helper uses one original allocation-cycle origin, deterministic A/B production order and cumulative endpoint differences;3 independent arithmetic tests pass after original advisor found and root corrected a segment-reset/oracle blocker. Source03 originals and weak passing tests remain preserved, not accepted. [Evidence](evidence/continuous-supply-cost-20261025/STATUS.md). No V2 runtime/Stock outflow/Store provider is connected yet; root must persist/authenticate immutable cycle origin and actual port cursors before that gate. Original full scope and frozen limits remain open.
 
 Actual next root work: original ports104/105 classified consumption and frozen per-run/purpose production curves (no mutable average repricing); raw103 source chemistry from explicit new input, never old unknown-history invention; true joint generator/pump/purifier prefixes and exact WIP/residual/cost projection. Pump raw hard stop releases pumps while generator can handle real backlog, nominal/profile and allocation policy explicit. No future electricity/old Heat reuse, no independent initial qualified source shortcut. Full92/85/86/57 and hardware/M0 limits stay outstanding.
+
+## v0.5.190 有限设施工时工资与原预算回归
+
+#132/#148同源18组共享、10组受影响、6组原默认栈及资金保护/原票/冷恢复均有实际终态通过，[完整证据](evidence/facility-operation-20261025/STATUS.md)。原18单元/96B Wait与World128KiB、Engine4MiB、角色8MiB、normal64MiB及M0冻结标准不变。当前root仍唯一writer，实际在制1+0；正在阶段发布/最终Issue回填，未提前计关闭。随后按具体依赖接#133，再解阻#134并消化#135–137，不新增源码批次或唤醒旧主会话。领域父和真实16GB/native/性能/长期门保持开放。

@@ -1,8 +1,8 @@
 {
   "schema": "mycity-issue-ledger-v1",
   "date": "2026-10-25",
-  "release": "v0.5.189",
-  "scope": "完整既定产品；本轮只整理Issue/文档，UI单独延期",
+  "release": "v0.5.190",
+  "scope": "完整既定产品；既有结构台账与本轮132/148有限实际验收，UI单独延期",
   "coordination": "当前root唯一共享writer/串行验证；旧主会话停用",
   "states": [
     "待开发",
@@ -16,7 +16,8 @@
   "defects": [
     122,
     123,
-    124
+    124,
+    148
   ],
   "hardware_issue": 114,
   "issues": [
@@ -87,7 +88,7 @@
       "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
       "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "c260f7af635fc6a2933071e87b059638945e641549cabde42505e83a5dc1a6ce"
+      "issue_body_sha256": "3655cafc327824e4191d31d03add72a1b72d4141af2a19b838529eb300bb2d72"
     },
     {
       "issue": 5,
@@ -2120,7 +2121,7 @@
       "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
       "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "0e3ff39ec23c60e9e687476783a43533dbc814f3cce92cb64c0996d8de19d8d5"
+      "issue_body_sha256": "c61a2664a457021d07bc118fe5417253755cd717f4606ce90e401df361e6fdc2"
     },
     {
       "issue": 93,
@@ -3094,18 +3095,21 @@
         "begin/interval/payment/stop原票摘要及篡改/冷恢复拒绝",
         "补齐最新源码workspace/教育资格/旧场景回归与普通布局准入，再发布"
       ],
-      "remaining": "source08实际core9+Store3+2cold children+旧供给9通过；原module18通过；最终共享/教育资格回归、旧票兼容及发布尚缺；source01/05/06/07失败全保留",
-      "evidence": "work/facility-operation-20261025/source08-build-inputs.json；run08-*固定程序/日志/完整world",
-      "implementation_tags": "未发布；基线v0.5.188",
+      "remaining": "完整有限证据18组主回归/10组受影响/6组默认栈/资金保护/原票和冷恢复已通过；v190发布及Issue最终回填关闭仍待执行，父范围保持开放",
+      "evidence": "docs/evidence/facility-operation-20261025/STATUS.md、results.json；work/facility-operation-20261025/acceptance23-verified.json和完整失败/固定程序/恢复原件",
+      "implementation_tags": "v0.5.190阶段发布准备中；测试通过不提前声明tag已发布或Issue已关闭",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "0765d59525bf652b43096af5ebd8b55dec5e1866bb16663009b0a04a9fd83143"
+      "issue_body_sha256": "32b660afaf7448ed3e497a9bc578306239f86720197fe02709a17fc0debd619a",
+      "execution_state": "active:core-1",
+      "execution_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
+      "execution_contract": "docs/inputs/issue-ledger/execution-flow.json"
     },
     {
       "issue": 133,
       "title": "[业务子任务] 有限取水—真实处理批—合格出水：原水量/质量/受电/人员与成本闭环",
       "url": "https://github.com/TekesApps/MyCity/issues/133",
       "parent": 92,
-      "stage": "开发中",
+      "stage": "待开发",
       "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
       "write_authority": [
         "crates/city-core/src/water_treatment.rs（如原owner交付路径，以交付manifest为准）",
@@ -3124,11 +3128,14 @@
         "输出真实lot归属与成本，有限残余去向、重试/恢复和原票因果",
         "实际联合场景及CPU/内存/磁盘增量；未解不能判短缺"
       ],
-      "remaining": "当前没有V2实际原writer/合格出水消费桥；不新派开发，root按原owner交付集成",
+      "remaining": "显式V2 profile+原Runtime有界子状态架构已由原advisor确认并同步设计修订3；实际净Stock/出流/联合P5/Water岗位/Store恢复仍未实现，not_run",
       "evidence": "docs/handoffs/issue-92-water-treatment.md; docs/water-quality-and-treatment-runtime.md",
       "implementation_tags": "v0.5.186–188仅组件/idle/成本前置已发布",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "afa6dc8bed132f1b31d2d9fd265df70527bbb3c98fc0755532b5204fbbc05b24"
+      "issue_body_sha256": "ca602af538f9c692a9bc2336290511035bc2877f2fa79972d32fd1fa3b547f84",
+      "execution_state": "queued:not-dispatched",
+      "execution_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
+      "execution_contract": "docs/inputs/issue-ledger/execution-flow.json"
     },
     {
       "issue": 134,
@@ -3157,7 +3164,10 @@
       "evidence": "docs/handoffs/issue-57-service-delivery-runtime.md",
       "implementation_tags": "父#57自然需求/目录前置已发布；本履约桥未验",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "1725fdeac7f800433d0d69c838a63100fda1c91031991a0a505b170471be655e"
+      "issue_body_sha256": "6c8457780e1c9c5e8bdc719392de1b9be144bb6920110b9bb35af528f61d06fd",
+      "execution_state": "queued:not-dispatched",
+      "execution_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
+      "execution_contract": "docs/inputs/issue-ledger/execution-flow.json"
     },
     {
       "issue": 135,
@@ -3186,7 +3196,10 @@
       "evidence": "docs/handoffs/issue-101-due-v168.md; docs/handoffs/issue-101-service-needs-due-v182.md",
       "implementation_tags": "仅部分consumer已发布",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "ca32c76e35031e42ea410654587da3fd877806975d6b632f276c804fc3f6787d"
+      "issue_body_sha256": "9d9cbfba56ffb2ef5c63d75507cf2c721372862af711f8ec7cb095bd9448beab",
+      "execution_state": "queued:not-dispatched",
+      "execution_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
+      "execution_contract": "docs/inputs/issue-ledger/execution-flow.json"
     },
     {
       "issue": 136,
@@ -3214,7 +3227,10 @@
       "evidence": "原第四批#118完整handoff/patch/恢复原件",
       "implementation_tags": "原场所能力已发布；本通用内核未完整接线",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "1ffacf7a2aae3ced3c4a3c725e4f36867ae8f23d4d2cdc2faa81d3fac5c3df81"
+      "issue_body_sha256": "0d1260a66fa51163645c5c448ef5dff60649f8160322199ac6b43f55bc90d741",
+      "execution_state": "queued:not-dispatched",
+      "execution_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
+      "execution_contract": "docs/inputs/issue-ledger/execution-flow.json"
     },
     {
       "issue": 137,
@@ -3243,7 +3259,10 @@
       "evidence": "原第五批#120交付及opening-input-store相关STATUS",
       "implementation_tags": "仅指定合法profile同槽路径已验",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "a7edbe1d67fe6d6eca3fe38fb733d518a10f9ac61be05de458c30e277e9059e2"
+      "issue_body_sha256": "d124d5ecae3930e3e4876093ff70abcdd623c906e06bc017a4f2bd93b90ee504",
+      "execution_state": "queued:not-dispatched",
+      "execution_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
+      "execution_contract": "docs/inputs/issue-ledger/execution-flow.json"
     },
     {
       "issue": 138,
@@ -3530,6 +3549,36 @@
       "implementation_tags": "v0.5.135",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
       "issue_body_sha256": "55879cfd7f028e092621ad98255107c3fb7075edfa27466859b2f7836e4f8930"
+    },
+    {
+      "issue": 148,
+      "title": "[缺陷/housing-budget] 可选模型常驻指针使原18单元前置越过128KiB World门",
+      "url": "https://github.com/TekesApps/MyCity/issues/148",
+      "parent": 4,
+      "stage": "待验证",
+      "owner": "current root: sole shared writer and serial verifier",
+      "write_authority": [
+        "assembly.rs, transaction.rs/slots.rs, restore_into.rs; three authority private-mutable adapters; dedicated tests/fixtures/evidence; owner facility_work.rs frozen"
+      ],
+      "scope": "Original18-unit Enable admission and unchanged96B Wait boundary; no budget/workload/wire/authority change",
+      "required_capabilities": [
+        "OriginalWorld128KiB, housing paid-window and exact18-unit fixture",
+        "OriginalStore retry/cold recovery; not whole parent completion"
+      ],
+      "acceptance": [
+        "Measure actual World/header/window8456/scratch2048 and original18-unit admission",
+        "Original96B Wait crosses World gate without model changes; original retry/cold recovery",
+        "Flat wire/hash/null/copy/reused-slot and no public mutable carrier",
+        "Originaladvisor narrow review, latest regressions and release backfill"
+      ],
+      "remaining": "完整有限证据18组主回归/10组受影响/6组默认栈/资金保护/原票和冷恢复已通过；v190发布及Issue最终回填关闭仍待执行，父范围保持开放",
+      "evidence": "docs/evidence/facility-operation-20261025/STATUS.md、results.json；work/facility-operation-20261025/acceptance23-verified.json和完整失败/固定程序/恢复原件",
+      "implementation_tags": "v0.5.190阶段发布准备中；测试通过不提前声明tag已发布或Issue已关闭",
+      "pr": "none",
+      "issue_body_sha256": "0876175c90cba16673c3d21e69cc6986915ef37dcb4b80c684e45a10447f183d",
+      "execution_state": "active:core-1",
+      "execution_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
+      "execution_contract": "docs/inputs/issue-ledger/execution-flow.json"
     }
   ],
   "capability_edges": [
@@ -3578,8 +3627,10 @@
         125,
         128,
         129,
-        144
-      ]
+        144,
+        148
+      ],
+      "meaning": "Required original World-budget compatibility capability; no need to close whole housing domain"
     },
     {
       "consumer": 133,
@@ -3670,6 +3721,23 @@
       "consumer": 114,
       "requires": [],
       "missing": "real16GiB device + frozen protocol; 32GiB cannot substitute"
+    },
+    {
+      "consumer": 148,
+      "requires": [
+        26
+      ],
+      "meaning": "Original finite housing fixture/128KiB/96B Wait contract, not current whole parent completion"
     }
-  ]
+  ],
+  "unpublished_execution_update": {
+    "baseline_at": "2026-10-25T02:39:00Z",
+    "shared_core_in_progress": 1,
+    "independent_preparations_active": 0,
+    "limits": [
+      1,
+      2
+    ],
+    "note": "No new acceptance or closure; existing release field remains published v189 baseline"
+  }
 }

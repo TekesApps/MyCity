@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.189`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.190`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.190 接通[原发电机设施操作、实际工时与工资](docs/evidence/facility-operation-20261025/STATUS.md)：同源18组共享回归、10组受影响回归、6组原默认栈验证和独立资金保护补验通过，原票/WAL/checkpoint/冷恢复有保留证据；修复原18单元住房前置16B越界，未改128KiB/96B断言或M0门。有限范围归#132/#148，完整#55/#86/#92、公服履约、真实16GB/native与完整M0仍开放。后续实际在制和差项见[执行清单](docs/execution-current.md)。
 
 v0.5.189 整理[业务Issue执行与验收台账](docs/issue-execution-ledger.md)：保留领域父任务，按独立业务能力回填历史实际验收和剩余接线，UI延期、缺陷与真实16GB门单列。仅文档/Issue整理；当前设施工时工资WIP尚缺最终联合回归，不随本tag作为游戏功能发布。
 

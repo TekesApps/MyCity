@@ -90,8 +90,14 @@ impl<'de> Deserialize<'de> for Key {
         d.deserialize_str(V)
     }
 }
+// Optional private accessors keep physical carriers out of the public mutable API.
+macro_rules! field_mut {
+    ($value:ident,$field:ident)=>{&mut $value.$field};
+    ($value:ident,$field:ident,$accessor:ident)=>{$value.$accessor()};
+}
+pub(crate) use field_mut;
 macro_rules! object {
- ($decoder:expr,$target:expr,$ty:ty,$required:expr,{$($field:ident,$bit:expr=>$kind:ident),*$(,)?})=>{{
+ ($decoder:expr,$target:expr,$ty:ty,$required:expr,{$($field:ident,$bit:expr=>$kind:ident$(($accessor:ident))?),*$(,)?})=>{{
     struct Read<'a>(&'a mut $ty);
     impl<'de> serde::de::Visitor<'de> for Read<'_> {
         type Value=();
@@ -102,7 +108,7 @@ macro_rules! object {
                 match key.as_str() {$(stringify!($field)=>{
                     let bit=1u64<<$bit;
                     if seen&bit!=0{return Err(serde::de::Error::custom("restore_duplicate_field"));}
-                    seen|=bit;a.next_value_seed(crate::restore_into::$kind(&mut value.$field))?;
+                    seen|=bit;a.next_value_seed(crate::restore_into::$kind(crate::restore_into::field_mut!(value,$field $(,$accessor)?)))?;
                 }),*,_=>return Err(serde::de::Error::custom("restore_unknown_field"))}
             }
             if seen&$required != $required {return Err(serde::de::Error::custom("restore_missing_field"));}

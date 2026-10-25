@@ -121,19 +121,19 @@ fn projection(runtime:&r::Runtime,ledger:&m::Ledger)->Result<Vec<r::SharedActivi
     } Ok(rows)
 }
 pub(crate) fn validate(world:&World,timeline:Option<&Timeline>)->Result<(),TxError> {
-    validate_parts(world,timeline,world.education.as_deref(),world.member_activity.as_deref(),None)
+    validate_parts(world,timeline,world.education.as_deref(),world.member_activity.as_deref(),None,world.facility_work.as_deref())
 }
 pub(crate) fn validate_candidate(world:&World,timeline:Option<&Timeline>,candidate:Option<&Candidate>,
-    venue:Option<&venue_runtime::UseCandidate>)->Result<(),TxError> {
+    venue:Option<&venue_runtime::UseCandidate>,member:Option<&m::Ledger>,facility:Option<&crate::facility_authority::Runtime>)->Result<(),TxError> {
     validate_parts(world,timeline,candidate.map(|c|&*c.runtime).or(world.education.as_deref()),
-        candidate.map(|c|&*c.ledger).or(world.member_activity.as_deref()),venue)
+        member.or(candidate.map(|c|&*c.ledger)).or(world.member_activity.as_deref()),venue,facility)
 }
 fn validate_parts(world:&World,timeline:Option<&Timeline>,education:Option<&r::Runtime>,member:Option<&m::Ledger>,
-    proposed_venue:Option<&venue_runtime::UseCandidate>)->Result<(),TxError> {
-    crate::member_authority::validate(world,timeline,member)?;
+    proposed_venue:Option<&venue_runtime::UseCandidate>,facility:Option<&crate::facility_authority::Runtime>)->Result<(),TxError> {
+    crate::member_authority::validate_with_facility(world,timeline,member,facility)?;
     match (education,member) {
         (None,None)=>Ok(()),
-        (None,Some(ledger)) if ledger.is_pristine()=>Ok(()),
+        (None,Some(ledger)) if ledger.is_pristine() || (facility.is_some() && !ledger.active().iter().any(|a|matches!(a.kind,m::Kind::EducationPreparation|m::Kind::EducationInstruction)))=>Ok(()),
         (Some(runtime),Some(ledger))=>{
             let venue=world.venue.as_deref().ok_or(TxError::InvalidOperation)?;
             let tick=if timeline.is_none() && runtime.consumed_sequence()==0 {0} else {
@@ -145,7 +145,7 @@ fn validate_parts(world:&World,timeline:Option<&Timeline>,education:Option<&r::R
                 || runtime.last_source().is_some_and(|s|s.occurred_at.value() as u64>tick || s.revision>world.revision) {
                 return Err(TxError::InvalidOperation);
             }
-            ledger.validate_binding(world.scope,venue.population_origin_sha256,people(world)?,MEMBER_EPOCH,tick).map_err(fail)?;
+            ledger.validate_binding(world.scope,venue.population_origin_sha256,people(world)?,MEMBER_EPOCH,timeline.map_or(tick,|t|if t.progress.phase==Some(crate::schedule::Phase::P5){t.progress.at}else{tick})).map_err(fail)?;
             for reg in input.courses.iter().flatten() {
                 registered_offer(venue,reg.use_id)?;
                 let states=proposed_venue.map_or(&venue.states[..],|v|&v.states[..]);

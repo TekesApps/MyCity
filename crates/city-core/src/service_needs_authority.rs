@@ -131,7 +131,7 @@ pub(crate) fn check_restore(world:&World,check:&mut RestoreCheck,index:usize,rec
     check.checked[index]=true;Ok(())
 }
 pub(crate) fn finish_restore(world:&mut World,check:RestoreCheck)->Result<(),TxError>{
-    let r=world.service_needs.as_deref_mut().ok_or(TxError::InvalidOperation)?;
+    let r=world.service_needs_mut().ok_or(TxError::InvalidOperation)?;
     if r.fingerprint().map_err(bad)?!=check.expected
         || r.households().iter().enumerate().any(|(i,h)|h.entry.is_some()&&!check.checked[i]) {return Err(TxError::InvalidOperation);}
     r.mark_authenticated().map_err(bad)?;Ok(())

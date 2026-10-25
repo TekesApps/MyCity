@@ -24,6 +24,7 @@ pub(crate) fn decode_raw(
             "outcome",
             "actions",
             "qualification_context",
+            "facility_context",
         ],
         true,
         scratch,
@@ -50,6 +51,7 @@ pub(crate) fn decode_raw(
         outcome: fields.get(5, scratch)?,
         actions,
         qualification_context: fields.optional(7, scratch)?,
+        facility_context:fields.optional(8,scratch)?,
     })
 }
 #[cfg(test)]
@@ -90,6 +92,7 @@ fn action_raw(
     #[derive(Deserialize)]
     #[serde(rename_all = "snake_case")]
     enum Kind {
+        FacilityWork,
         ContinuousSupply,
         Qualification,
         Education,
@@ -129,6 +132,10 @@ fn action_raw(
     validate_content(raw, scratch)?;
     let kind: Kind = tag(raw, scratch)?;
     match kind {
+        Kind::FacilityWork => {
+            let fields=Fields::parse(raw,&["kind","command"],false,scratch)?;
+            Ok(Output::FacilityWork{command:reader::decode(fields.raw(1)?,scratch)?})
+        }
         Kind::ContinuousSupply => {
             let fields=Fields::parse(raw,&["kind","command"],false,scratch)?;
             Ok(Output::ContinuousSupply{command:reader::decode(fields.raw(1)?,scratch)?})
@@ -979,7 +986,7 @@ mod tests {
             payload_sha256: [0; 32],
             outcome: Err(TxError::StaleRevision),
             actions: [None; MAX_ACTIONS],
-            qualification_context: None,
+            qualification_context: None, facility_context:None,
         };
         let raw = serde_json::to_string(&r).unwrap();
         compare_record(&raw.replacen("{", &format!("{{{}", " ".repeat(65536)), 1));
@@ -1026,7 +1033,7 @@ mod context_tests {
             payload_sha256: [0; 32],
             outcome: Err(TxError::StaleRevision),
             actions: [None; MAX_ACTIONS],
-            qualification_context: None,
+            qualification_context: None, facility_context:None,
         };
         let mut value = serde_json::to_value(record).unwrap();
         for depth in 116..=132 {

@@ -1,0 +1,285 @@
+{
+  "observed_at": "2026-10-25T09:02:48.803632+00:00",
+  "source": "source23, exact game bytes also22",
+  "finite_issues": [
+    132,
+    148
+  ],
+  "normal_refusal_boundary_income_funds_retry_restore_compatibility": "passed by concrete referenced original tests and independent supplement",
+  "primary_groups": 18,
+  "affected_groups": 10,
+  "default_stack_groups": 6,
+  "test_summary_counts": [
+    {
+      "target": "mycity_core",
+      "parent_tests_passed": 297,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23/mycity_core.stdout",
+      "sha256": "d834aba02235f5dc976bdaf76d49927bb39b98435322e29dae2e357797196dad"
+    },
+    {
+      "target": "mycity_storage",
+      "parent_tests_passed": 35,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23/mycity_storage.stdout",
+      "sha256": "93078a476ef9be1f45441ddfa9df973b56da739eddf87cadbca997550fe3108a"
+    },
+    {
+      "target": "facility_operation",
+      "parent_tests_passed": 13,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23/facility_operation.stdout",
+      "sha256": "5a83f7b5ae70b5c32be2748eaececd3ae1f8fea01f388be6128692411d328408"
+    },
+    {
+      "target": "facility_operation_store",
+      "parent_tests_passed": 5,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23/facility_operation_store.stdout",
+      "sha256": "3bdf7465c37c7d08a776da75cb3ba8316fef7dd8c1912fb7ad523ce60c076469"
+    },
+    {
+      "target": "continuous_supply",
+      "parent_tests_passed": 9,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23/continuous_supply.stdout",
+      "sha256": "996c39d56cd1f1a700aee1cc237aed77dbc5e378d9f1a86027d7b4001ea20b03"
+    },
+    {
+      "target": "continuous_supply_store",
+      "parent_tests_passed": 1,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23/continuous_supply_store.stdout",
+      "sha256": "cf92ee111a36718f4e8dfe51e643e8badbdf9f4ac3474fc85510618f8d35d997"
+    },
+    {
+      "target": "education_authority",
+      "parent_tests_passed": 6,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23/education_authority.stdout",
+      "sha256": "b83a5f44cda7762684cf5ca66954c327cdfa3bc7748ac38630a73e94c301faad"
+    },
+    {
+      "target": "qualification_authority",
+      "parent_tests_passed": 6,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23/qualification_authority.stdout",
+      "sha256": "b2215e69624413fbd1dcbefca21586a09b24c7b7f1766c849498e2780a602263"
+    },
+    {
+      "target": "member_authority",
+      "parent_tests_passed": 3,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23/member_authority.stdout",
+      "sha256": "26d16b085072832ad8aeae5a45a37c5f0d38190abb0b6fb7c200b692000b45aa"
+    },
+    {
+      "target": "checkpoint",
+      "parent_tests_passed": 6,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23/checkpoint.stdout",
+      "sha256": "1216ffc1f17f51606e13a6230e93e4586cc8010f5fe56cbef5fa7de94e64acbc"
+    },
+    {
+      "target": "checkpoint_v2",
+      "parent_tests_passed": 8,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23/checkpoint_v2.stdout",
+      "sha256": "5208434bfe9e7bfe2b63bd9b5433d854c267c75a1f4adc46472a2996c4647c4d"
+    },
+    {
+      "target": "housing_runtime",
+      "parent_tests_passed": 2,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23/housing_runtime.stdout",
+      "sha256": "f4572c6597fd0dadb39d990c2e6a17081d99bdab0927d5601be7ad77d9c8116e"
+    },
+    {
+      "target": "housing_move_store_runtime",
+      "parent_tests_passed": 4,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23/housing_move_store_runtime.stdout",
+      "sha256": "de5e1314df4953fd3cdfa63730f047f5994665921ecc215baef9ef4ccce72c87"
+    },
+    {
+      "target": "housing_no_candidate_wait_store",
+      "parent_tests_passed": 2,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23/housing_no_candidate_wait_store.stdout",
+      "sha256": "6e9f883a0f4130ccb05031a6e737fe108433080054fd4a336e7e6bc23a63c88e"
+    },
+    {
+      "target": "housing_equity_spatial",
+      "parent_tests_passed": 1,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23/housing_equity_spatial.stdout",
+      "sha256": "a398216a26d2ba792b7bf4c90fc256112fc48c23880e3745c2009f31aca7c1b2"
+    },
+    {
+      "target": "opening_input_store",
+      "parent_tests_passed": 6,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23-openings/opening_input_store.stdout",
+      "sha256": "f0c73dea17fbb862b3a038da9d0c5128cdbdcfc345fa487c118ea76bc4b025f5"
+    },
+    {
+      "target": "opening_venue_store",
+      "parent_tests_passed": 1,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23-openings/opening_venue_store.stdout",
+      "sha256": "720671e1336777c8b4fa63678f1d04cee4ec801bbcac092fb953f9076d08a44b"
+    },
+    {
+      "target": "opening_continuous_supply_store",
+      "parent_tests_passed": 1,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23-final-opening/stdout.log",
+      "sha256": "87430b4a38d663a8b660f1f6aa8823529cb2f8abee0bc693e48b2c0a60766852"
+    },
+    {
+      "target": "city-core-education_runtime",
+      "parent_tests_passed": 16,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23-extra/city-core-education_runtime.stdout",
+      "sha256": "85c3c8ad4bd571efc8b2f856408bb37c0705d8678845e4177f8ef13123d22074"
+    },
+    {
+      "target": "city-storage-housing_wage_window_runtime",
+      "parent_tests_passed": 4,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23-extra/city-storage-housing_wage_window_runtime.stdout",
+      "sha256": "3e5f319ff79543e229c5f9a26ea06fcd59f2080da1755702f3653b6f693f5fe6"
+    },
+    {
+      "target": "city-storage-household_wage_spatial_equity",
+      "parent_tests_passed": 1,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23-extra/city-storage-household_wage_spatial_equity.stdout",
+      "sha256": "661658abcabbcc0afc21caf11e3a05ad851e35179e96d82824f303a57b5c9111"
+    },
+    {
+      "target": "city-storage-payroll_exit",
+      "parent_tests_passed": 3,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23-extra/city-storage-payroll_exit.stdout",
+      "sha256": "19e5a89db75ffb32c7f85d57933fb28455cf1413cbb9f8eb6804388ebe18d777"
+    },
+    {
+      "target": "city-storage-spatial_transport_updates",
+      "parent_tests_passed": 10,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23-extra-resume/city-storage-spatial_transport_updates.stdout",
+      "sha256": "bebe52eb2c61b3de79daae238374a5e542f6c71d85b803e9bbdf2447f758022f"
+    },
+    {
+      "target": "city-storage-recovery",
+      "parent_tests_passed": 15,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23-extra-resume/city-storage-recovery.stdout",
+      "sha256": "ab9977f6eccdd72b83fdeadf6ce8d3190b5c54757111606e646d182aa539f0ed"
+    },
+    {
+      "target": "city-storage-venue_capacity",
+      "parent_tests_passed": 10,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23-extra-resume/city-storage-venue_capacity.stdout",
+      "sha256": "8e146e981d0ac0060d01dbe6984cf695a6114796dda5b9028e9baa28acf1c27a"
+    },
+    {
+      "target": "city-core-service_needs",
+      "parent_tests_passed": 11,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23-extra-resume/city-core-service_needs.stdout",
+      "sha256": "e7935e68955149f6178e5837ed096aeeb626a50a5b53ee4de98d074639f03ff4"
+    },
+    {
+      "target": "city-storage-service_needs",
+      "parent_tests_passed": 3,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23-extra-resume/city-storage-service_needs.stdout",
+      "sha256": "d00af33814cef2bbfdfe85ee31414bac6d0ab04741c7b72cad4afac3eaf07be4"
+    },
+    {
+      "target": "city-storage-opening_service_needs_store",
+      "parent_tests_passed": 1,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23-extra-resume/city-storage-opening_service_needs_store.stdout",
+      "sha256": "7c1a906432eab0fe52f7b58b1b188afa6cc58ba3a2800aa66f2adca875743852"
+    },
+    {
+      "target": "1-mycity_core",
+      "parent_tests_passed": 1,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23-debug/1-mycity_core.stdout",
+      "sha256": "61f8e3015ab7294f1badd9c09db01cd329e4689aae3f5b709c6a5b31de062b80"
+    },
+    {
+      "target": "2-town_utility_engine",
+      "parent_tests_passed": 1,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23-debug/2-town_utility_engine.stdout",
+      "sha256": "c415c77e1353ab1f90cb47dc73f475faf9d7e22a6db2c75f9f0ca7eb8dc21cd3"
+    },
+    {
+      "target": "3-qualification_authority",
+      "parent_tests_passed": 1,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23-debug/3-qualification_authority.stdout",
+      "sha256": "7677a01aa275e2a5a38eefb8e740ba3a89595a4c96c1016a96a38b9586852ecb"
+    },
+    {
+      "target": "4-facility_operation",
+      "parent_tests_passed": 13,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23-debug/4-facility_operation.stdout",
+      "sha256": "5967ad5d9789240eb39d25dddb82429fd9a03689ba76e30ae3eaf1efb45ee167"
+    },
+    {
+      "target": "5-facility_operation_store",
+      "parent_tests_passed": 1,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23-debug/5-facility_operation_store.stdout",
+      "sha256": "dfbc787bb739c716ccc31eced73d6dfe98083978820282bd5f92722712c68957"
+    },
+    {
+      "target": "6-facility_operation_store",
+      "parent_tests_passed": 1,
+      "log": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23-debug/6-facility_operation_store.stdout",
+      "sha256": "05c361d1b34b3e4f4ba43bc14101edd671ef41c1b2b9a26785334e1e0f0d687c"
+    }
+  ],
+  "independent_latest_facility_cold_children": [
+    {
+      "file": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23/facility_operation_store-worlds/facility-64257-1792897349175699000/checkpoint-cold-result.json",
+      "sha256": "af02e69be85663fb01e814c78c36f56b3c455bba568783bbac781ae7cd72efe9",
+      "world": "/Volumes/HP P900/dev/MyCity/work/facility-operation-20261025/regression23/facility_operation_store-worlds/facility-64257-1792897349175699000/world"
+    },
+    {
+      "file": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23/facility_operation_store-worlds/facility-64257-1792897349175699000/wal-cold-result.json",
+      "sha256": "efc48a01c2d8c06b602e64d68ba35c77005ca89c8f390b4d828da04e87e11cf8",
+      "world": "/Volumes/HP P900/dev/MyCity/work/facility-operation-20261025/regression23/facility_operation_store-worlds/facility-64257-1792897349175699000/world"
+    },
+    {
+      "file": "/Users/frankqin/dev/MyCity/work/facility-operation-20261025/regression23/facility_operation_store-worlds/facility-64257-1792897354194949000/mixed-income-cold-result.json",
+      "sha256": "ad7a701868e8641411407dfb29dc588a42fe7a263bcdda53ddc5d29bd9341d8c",
+      "world": "/Volumes/HP P900/dev/MyCity/work/facility-operation-20261025/regression23/facility_operation_store-worlds/facility-64257-1792897354194949000/world"
+    }
+  ],
+  "funds_probe": {
+    "actual_paid": 4,
+    "cash_total": 3000000,
+    "failed_request_and_stop_replay_once": true,
+    "foreign_wallet_bindings": [
+      {
+        "employee": 3,
+        "error": "facility_employee"
+      },
+      {
+        "employee": 4,
+        "error": "facility_employee"
+      }
+    ],
+    "independent_cold": "covered separately by original facilityStore3 children, not this probe",
+    "native_real16gb": "not_run",
+    "original_employee": [
+      200004,
+      0
+    ],
+    "original_employer": [
+      599294,
+      0
+    ],
+    "original_other_recipient": [
+      1200702,
+      0
+    ],
+    "retained_subcent_numerator": 4,
+    "same_process_checkpoint_reopen": true,
+    "sequence": 16,
+    "state_hash": "17ad7d690602b50f4b32c50f1ddbe5587aa44ff8cbacb2251115cb62fe8f390c",
+    "status": "passed",
+    "wage_protection": 7202
+  },
+  "protected_unrelated_wip": 24,
+  "owner_kernel_unchanged": true,
+  "evidence_logical_bytes": 1286944481,
+  "evidence_cap_bytes": 1610612736,
+  "limits": "World128KiB/Engine4MiB/role8MiB/normal64MiB/default stacks/M0 frozen unchanged",
+  "hardware": "Mac16,1/32GiB HP P900 USB APFS, Rust1.85.1; concurrent other-project activity, no performance inference",
+  "not_run_or_outside_finite_scope": [
+    "actual Water provider133",
+    "recruitment/general employment55",
+    "UI/render/GPU/AgentKit",
+    "native peak",
+    "real16GB",
+    "sustained speed/long stress"
+  ],
+  "publication_and_issue_closure": "pending, not claimed by this evidence-only verifier"
+}
