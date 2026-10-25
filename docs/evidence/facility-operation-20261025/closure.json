@@ -1,0 +1,54 @@
+{
+  "observed_at": "2026-10-25T09:13:29.872509+00:00",
+  "game_commit": "ea310a0fdb5c620d4aa9c24ec1a6e8e8d2fe621c",
+  "game_tag": "v0.5.190",
+  "annotated_tag_object": "d575d732440cdb49ae3dfdd7057012b7de8c456e",
+  "independent_remote_publication_and_issue_connector_readback": true,
+  "closed": {
+    "132": {
+      "issue": 132,
+      "state": "closed",
+      "state_reason": "completed",
+      "accepted_at": "2026-10-25T09:07:27Z",
+      "closed_at": "2026-10-25T09:07:29Z",
+      "final_comment": 6395753718,
+      "url": "https://github.com/TekesApps/MyCity/issues/132",
+      "body_sha256": "35eb29aa3e5ceb02de8eb930b75b7f2e22bd15acb7b6eb0e8bbaee07d744c551",
+      "labels": [
+        "stage:done",
+        "type:capability"
+      ]
+    },
+    "148": {
+      "issue": 148,
+      "state": "closed",
+      "state_reason": "completed",
+      "accepted_at": "2026-10-25T09:07:31Z",
+      "closed_at": "2026-10-25T09:07:33Z",
+      "final_comment": 6395754445,
+      "url": "https://github.com/TekesApps/MyCity/issues/148",
+      "body_sha256": "7539ca55e6eb722ba6c33e1aff80c48271d2c011098c129002cff1127b699ef0",
+      "labels": [
+        "stage:done",
+        "type:defect"
+      ]
+    }
+  },
+  "direct_parents_remain_open": {
+    "55": "open",
+    "4": "open"
+  },
+  "window_counts": {
+    "new_accepted_business": 1,
+    "historical_backfill_business": 0,
+    "defects_closed": 1
+  },
+  "current_delivered_backlog": {
+    "integration": 21,
+    "validation": 0
+  },
+  "first_ready_or_full_scope_source_delivery_unknown": true,
+  "duration_policy": "Accepted decision timestamp is original root final-comment created_at, not tag/mtime; missing first-ready/source delivery stay unknown.",
+  "PR": "none",
+  "metadata_stage": "v0.5.191 docs only, not another business acceptance"
+}

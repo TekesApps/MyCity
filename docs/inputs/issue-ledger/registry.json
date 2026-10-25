@@ -1,8 +1,8 @@
 {
   "schema": "mycity-issue-ledger-v1",
   "date": "2026-10-25",
-  "release": "v0.5.190",
-  "scope": "完整既定产品；既有结构台账与本轮132/148有限实际验收，UI单独延期",
+  "release": "v0.5.191",
+  "scope": "完整既定产品；v190有限业务132与缺陷148真实验收关闭，v191仅同步台账，UI单独延期",
   "coordination": "当前root唯一共享writer/串行验证；旧主会话停用",
   "states": [
     "待开发",
@@ -88,7 +88,7 @@
       "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
       "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "3655cafc327824e4191d31d03add72a1b72d4141af2a19b838529eb300bb2d72"
+      "issue_body_sha256": "b5749fcb5d2ee81eec07dca110e2d19f0856f7d9416f5142c1068e0fbe602ff5"
     },
     {
       "issue": 5,
@@ -1277,7 +1277,7 @@
       "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
       "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "09f0ae6bda5dea16ee29ad06addc18d0a2270d56a79874f14033172c4c5be52c"
+      "issue_body_sha256": "de8783f96e3b88dc40982a45b59947bf4ea63a56e1fa9ed9b338c77d17ac2253"
     },
     {
       "issue": 56,
@@ -3074,7 +3074,7 @@
       "title": "[业务子任务] 设施操作工时与工资：原发电机岗位、原资金和原票恢复接线",
       "url": "https://github.com/TekesApps/MyCity/issues/132",
       "parent": 55,
-      "stage": "待验证",
+      "stage": "完成",
       "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
       "write_authority": [
         "crates/city-core/src/facility_work.rs（原#55 owner已冻结）",
@@ -3095,12 +3095,12 @@
         "begin/interval/payment/stop原票摘要及篡改/冷恢复拒绝",
         "补齐最新源码workspace/教育资格/旧场景回归与普通布局准入，再发布"
       ],
-      "remaining": "完整有限证据18组主回归/10组受影响/6组默认栈/资金保护/原票和冷恢复已通过；v190发布及Issue最终回填关闭仍待执行，父范围保持开放",
-      "evidence": "docs/evidence/facility-operation-20261025/STATUS.md、results.json；work/facility-operation-20261025/acceptance23-verified.json和完整失败/固定程序/恢复原件",
-      "implementation_tags": "v0.5.190阶段发布准备中；测试通过不提前声明tag已发布或Issue已关闭",
-      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "32b660afaf7448ed3e497a9bc578306239f86720197fe02709a17fc0debd619a",
-      "execution_state": "active:core-1",
+      "remaining": "有限Electric301工时/工资/共享收入/原票恢复合同已验证关闭；Water和通用招聘匹配仍属后续或父范围。",
+      "evidence": "v0.5.190 docs/evidence/facility-operation-20261025/STATUS.md、results.json、closure.json；HP P900完整固定源码/程序/失败/原票/cold world保留。",
+      "implementation_tags": "ea310a0fdb5c620d4aa9c24ec1a6e8e8d2fe621c / annotated v0.5.190 (game finite acceptance); v0.5.191 only closure ledger documentation",
+      "pr": "无PR；root直接集成，原子推送后独立REST核对main/tag/目标。",
+      "issue_body_sha256": "35eb29aa3e5ceb02de8eb930b75b7f2e22bd15acb7b6eb0e8bbaee07d744c551",
+      "execution_state": "completed:closed",
       "execution_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "execution_contract": "docs/inputs/issue-ledger/execution-flow.json"
     },
@@ -3555,7 +3555,7 @@
       "title": "[缺陷/housing-budget] 可选模型常驻指针使原18单元前置越过128KiB World门",
       "url": "https://github.com/TekesApps/MyCity/issues/148",
       "parent": 4,
-      "stage": "待验证",
+      "stage": "完成",
       "owner": "current root: sole shared writer and serial verifier",
       "write_authority": [
         "assembly.rs, transaction.rs/slots.rs, restore_into.rs; three authority private-mutable adapters; dedicated tests/fixtures/evidence; owner facility_work.rs frozen"
@@ -3571,12 +3571,12 @@
         "Flat wire/hash/null/copy/reused-slot and no public mutable carrier",
         "Originaladvisor narrow review, latest regressions and release backfill"
       ],
-      "remaining": "完整有限证据18组主回归/10组受影响/6组默认栈/资金保护/原票和冷恢复已通过；v190发布及Issue最终回填关闭仍待执行，父范围保持开放",
-      "evidence": "docs/evidence/facility-operation-20261025/STATUS.md、results.json；work/facility-operation-20261025/acceptance23-verified.json和完整失败/固定程序/恢复原件",
-      "implementation_tags": "v0.5.190阶段发布准备中；测试通过不提前声明tag已发布或Issue已关闭",
-      "pr": "none",
-      "issue_body_sha256": "0876175c90cba16673c3d21e69cc6986915ef37dcb4b80c684e45a10447f183d",
-      "execution_state": "active:core-1",
+      "remaining": "原18-unit/96B Wait布局预算、私有封装和恢复已验证关闭；完整住房/M0/native/16GB门另行开放。",
+      "evidence": "v0.5.190 docs/evidence/facility-operation-20261025/STATUS.md、results.json、closure.json；HP P900完整固定源码/程序/失败/原票/cold world保留。",
+      "implementation_tags": "ea310a0fdb5c620d4aa9c24ec1a6e8e8d2fe621c / annotated v0.5.190 (game finite acceptance); v0.5.191 only closure ledger documentation",
+      "pr": "无PR；root直接集成，原子推送后独立REST核对main/tag/目标。",
+      "issue_body_sha256": "7539ca55e6eb722ba6c33e1aff80c48271d2c011098c129002cff1127b699ef0",
+      "execution_state": "completed:closed",
       "execution_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "execution_contract": "docs/inputs/issue-ledger/execution-flow.json"
     }

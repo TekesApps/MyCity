@@ -1,6 +1,6 @@
 # #132 actual facility operation and original wages
 
-Stage v0.5.190,2026-10-25. **Finite source23 business evidence passed; publication and final Issue backfill pending at this snapshot.** Root is the sole shared writer/verifier. Original #55 owner facility_work source04 remains frozen. No PR. Only original genset Resource301/Electric is accepted here; Water/treatment, recruitment/general shifts and full parent scopes remain open.
+Stage v0.5.190,2026-10-25. **Published v0.5.190; finite business132 and defect148 actually closed after complete evidence/backfill.** Root is the sole shared writer/verifier. Original #55 owner facility_work source04 remains frozen. No PR. Only original genset Resource301/Electric is accepted here; Water/treatment, recruitment/general shifts and full parent scopes remain open.
 
 ## Actual implementation and finite contract
 
@@ -43,4 +43,4 @@ Tested input manifest/source ZIP, fixed programs, complete dedicated recovery wo
 
 Actual Mac16,1/32GiB, Rust1.85.1, existing HP P900 USB/APFS target/work. Other-project activity was not stopped; timings are functional diagnostics. World128KiB/Engine4MiB/role8MiB/normal64MiB/default stacks and original M0 load/standards unchanged. Native peak, real16GB, sustained speed/long stress, UI/render/GPU/AgentKit not accepted by these tests; separate hardware/M0 issues remain open.
 
-#132 and defect#148 alone are ready for stage publication and complete Issue backfill/closure; full #55/#86/#92/#57 remain open. Current WIP1+0 and next dependencies/gaps are in [execution-current](../../execution-current.md) and [flow ledger](../../inputs/issue-ledger/execution-flow.json). No new worker/chat/target/timer; no stopped old-main contact. Source/historical-backfill/defect throughput remains separate; no closure counted before actual Issue closure.
+#132 and defect#148 are actually closed after v190 publication/backfill; full #55/#86/#92/#57 remain open. Exact closure times, comment IDs and separate velocity counters: [closure.json](closure.json). Current closeout snapshot WIP0+0 and next dependencies/gaps are in [execution-current](../../execution-current.md) and [flow ledger](../../inputs/issue-ledger/execution-flow.json). No new worker/chat/target/timer; no stopped old-main contact. Current window: new accepted business1, historical backfill0, defect closure1; backlog21 integration/0 validation. Unknown starts remain unknown. v191 only documents closure, not another game acceptance.

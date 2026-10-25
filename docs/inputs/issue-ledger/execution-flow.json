@@ -1,26 +1,16 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-25T09:02:15.700307+00:00",
-  "source_head": "b43eb93c8d53b691ada5d609c693d1faba0075f3",
-  "candidate": "source23 full finite evidence verified; stage v0.5.190 publication/Issue final backfill pending",
+  "last_snapshot_at": "2026-10-25T09:13:29.872509+00:00",
+  "source_head": "ea310a0fdb5c620d4aa9c24ec1a6e8e8d2fe621c",
+  "candidate": "v190 finite132/148 actually accepted and closed; v191 docs-only closure metadata",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
     "shared_core_lanes": 1,
     "independent_preparations": 2,
     "reason_for_adjustment_required": true
   },
-  "active_shared_work": [
-    {
-      "lane": "core-1",
-      "business_issue": 132,
-      "related_defects": [
-        148
-      ],
-      "owner_session": "01a166fc-e444-7602-ad22-3a8551dda487",
-      "phase": "finite132/148 evidence verified18 primary+10 affected+6 default-stack+funds+3cold; publication/backfill active, no closure yet"
-    }
-  ],
+  "active_shared_work": [],
   "active_independent_preparations": [],
   "counting_rules": {
     "parents_are_not_active_work": true,
@@ -82,14 +72,18 @@
     ]
   },
   "window_completed": {
-    "new_accepted_business": [],
+    "new_accepted_business": [
+      132
+    ],
     "historical_backfill_business": [],
-    "defects_closed": []
+    "defects_closed": [
+      148
+    ]
   },
   "near_term_contracts": [
     {
       "issue": 132,
-      "execution_state": "active:core-1",
+      "execution_state": "completed:closed",
       "implementation_owner_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "integration_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "files_or_activation_boundary": [
@@ -127,18 +121,16 @@
         "source22 private operating carrier fixes defect148; not accepted by earlier source17 tests"
       ],
       "acceptance_entry_and_gaps": [
-        "Original18unit/96B Wait and cold restore; actual facility Store5",
-        "Latest same-game-source core/storage/education/qualification/member/checkpoint/income/exit/F and original default-stack gates",
-        "Normal/refusal/boundary/pay-once/restore/resource evidence then commit/tag/PR backfill and closure"
+        "Finite contract passed18 primary/10 affected/6 default-stack/funds/independentcold, published v190 and Issue closed; no finite remaining gap"
       ],
       "real_integration_seam": "Root Engine/Prepared, actual P5 source/member/wages, original household window, original JournalRecord and Store slot",
-      "new_write_authority": true,
+      "new_write_authority": false,
       "timing": {
         "ready_at": null,
         "readiness_confirmed_at": "2026-10-25T02:39:00Z",
         "full_scope_source_delivered_at": null,
-        "accepted_at": null,
-        "issue_closed_at": null,
+        "accepted_at": "2026-10-25T09:07:27Z",
+        "issue_closed_at": "2026-10-25T09:07:29Z",
         "ready_to_acceptance_seconds": null,
         "source_to_acceptance_seconds": null,
         "unknown_reason": "Historical first-ready/full-scope delivery event not established; no inferred timestamp"
@@ -152,7 +144,7 @@
     },
     {
       "issue": 148,
-      "execution_state": "active:defect-within-core-1",
+      "execution_state": "completed:closed",
       "implementation_owner_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "integration_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "files_or_activation_boundary": [
@@ -171,18 +163,16 @@
         "No public mutable carrier or hidden pointer charges"
       ],
       "acceptance_entry_and_gaps": [
-        "source22 exact header and flat/null/copy passed",
-        "OriginalStore18unit/96B Wait/retry/cold gate passed; facility and latest affected/default-stack regression pending",
-        "Publish/backfill before defect close"
+        "Finite contract passed18 primary/10 affected/6 default-stack/funds/independentcold, published v190 and Issue closed; no finite remaining gap"
       ],
       "real_integration_seam": "Physical optional carrier and private original-field restore accessors; no new business model",
-      "new_write_authority": true,
+      "new_write_authority": false,
       "timing": {
         "ready_at": null,
         "readiness_confirmed_at": null,
         "full_scope_source_delivered_at": null,
-        "accepted_at": null,
-        "issue_closed_at": null,
+        "accepted_at": "2026-10-25T09:07:31Z",
+        "issue_closed_at": "2026-10-25T09:07:33Z",
         "ready_to_acceptance_seconds": null,
         "source_to_acceptance_seconds": null,
         "unknown_reason": "Historical first-ready/full-scope delivery event not established; no inferred timestamp"
@@ -521,6 +511,65 @@
       "business_acceptance_delta": 0,
       "historical_backfill_delta": 0,
       "defect_closure_delta": 0
+    },
+    {
+      "observed_at": "2026-10-25T09:07:14.712447+00:00",
+      "kind": "game_stage_publication_verified",
+      "commit": "ea310a0fdb5c620d4aa9c24ec1a6e8e8d2fe621c",
+      "tag": "v0.5.190",
+      "business_acceptance_delta": 0,
+      "historical_backfill_delta": 0,
+      "defect_closure_delta": 0
+    },
+    {
+      "observed_at": "2026-10-25T09:07:27Z",
+      "kind": "finite_business_accepted_and_closed",
+      "issue": 132,
+      "closed_at": "2026-10-25T09:07:29Z",
+      "comment": 6395753718,
+      "business_acceptance_delta": 1,
+      "historical_backfill_delta": 0,
+      "defect_closure_delta": 0,
+      "first_ready": null,
+      "first_full_scope_source_delivery": null
+    },
+    {
+      "observed_at": "2026-10-25T09:07:31Z",
+      "kind": "concrete_defect_fixed_and_closed",
+      "issue": 148,
+      "closed_at": "2026-10-25T09:07:33Z",
+      "comment": 6395754445,
+      "business_acceptance_delta": 0,
+      "historical_backfill_delta": 0,
+      "defect_closure_delta": 1,
+      "first_ready": null,
+      "first_full_scope_source_delivery": null
     }
-  ]
+  ],
+  "current_backlog": {
+    "source_delivered_pending_integration": [
+      137,
+      136,
+      135,
+      117,
+      104,
+      103,
+      102,
+      98,
+      97,
+      96,
+      94,
+      85,
+      75,
+      74,
+      73,
+      61,
+      36,
+      32,
+      31,
+      28,
+      27
+    ],
+    "source_delivered_pending_validation": []
+  }
 }

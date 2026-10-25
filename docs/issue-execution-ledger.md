@@ -1,8 +1,8 @@
 # MyCity Issue 执行与验收台账
 
-当前实际在制与阶段速度口径见[execution-current](execution-current.md)和[execution-flow.json](inputs/issue-ledger/execution-flow.json)：共享1+独立准备0，不用领域父任务数、总关闭比例或tag数表示交付。
+当前实际在制与阶段速度见[执行清单](execution-current.md)和[机器台账](inputs/issue-ledger/execution-flow.json)：本次收尾共享0+独立准备0，上限仍1+2；132/148已关，133未激活，不以父数/关闭比例/tag数表示交付。
 
-2026-10-25，阶段版本 v0.5.190。总体入口仍为 [PRODUCT_BLUEPRINT](PRODUCT_BLUEPRINT.md)；需求原文以 [逐条需求矩阵](product-coverage-and-requirements.md) 为准。v189结构整理不修改游戏代码或重跑历史测试；v190实际验证#132设施操作/工资与#148原住房预算兼容，完整终态见[当前设施证据](evidence/facility-operation-20261025/STATUS.md)。Issue关闭在发布证据回填后执行，尚不把候选tag当成功能验收。M0负载/门槛、无关WIP和全部失败/恢复原件保持。
+2026-10-25，台账阶段v0.5.191，游戏实际验收v0.5.190。总体入口为[PRODUCT_BLUEPRINT](PRODUCT_BLUEPRINT.md)，需求见[逐条矩阵](product-coverage-and-requirements.md)。#132有限业务和#148布局缺陷已完整验收、发布、回填并实际关闭；父域/M0/16GB仍开放，见[设施证据](evidence/facility-operation-20261025/STATUS.md)。v191只同步关闭，不重跑或重复计业务；WIP和失败恢复原件保留。
 
 ## 覆盖和归属
 
@@ -106,3 +106,7 @@
 ### #148: original housing header budget regression
 
 Defect [#148](https://github.com/TekesApps/MyCity/issues/148) belongs to #4. Source18 original18-unit Enable failed; source19 independently measured131088B against original131072B. The private optional carrier reduces World by16B and counts its present24B wrapper once. Source23 actual layout/flat-wire/null/copy/original96B Wait and cold replay pass; latest18 shared/10 affected/6 default-stack groups also pass. Historical #26 and stack defects122-124 remain separate closed scopes; fixtures, budgets and M0 gates are unchanged. #132/#148 finite evidence is complete, stage publication/Issue final backfill is next; domain parents remain open.
+
+## v0.5.191 实际关闭与下一轮
+
+#132（新验收业务）和#148（具体缺陷）在v190完整实际证据及发布回填后已关闭，直接父#55/#4清单同步且仍开放。本阶段历史补登记0，当前积压21待集成/0待验证，收尾实际0+0。下一共享项#133排队未激活，随后按来源解阻#134并消化#135–137。起点缺可靠证据的验收耗时仍unknown；见[实际关闭记录](evidence/facility-operation-20261025/closure.json)。v191只是台账同步，不算第二项业务验收；未改M0、WIP/恢复原件，不新增派工或调度器。

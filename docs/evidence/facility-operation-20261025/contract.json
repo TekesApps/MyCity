@@ -1,10 +1,7 @@
 {
-  "as_of": "2026-10-25T09:03:29.931419+00:00",
+  "as_of": "2026-10-25T09:17:53.234773+00:00",
   "source": "source23 (game identical22)",
-  "issues_open": [
-    132,
-    148
-  ],
+  "issues_open": [],
   "gates": [
     {
       "gate": "132-admission",
@@ -100,9 +97,9 @@
     {
       "gate": "publication",
       "contract": "Exact owned files, version/README/tag/main independently checked; issue full backfill and parent/ledger synchronization",
-      "evidence": "coordinator-state.json",
-      "oracle_or_limit": "Unpublished/noPR; no issue close before all required gates",
-      "status": "pending"
+      "evidence": "publication190-remote-verified.json; closure191/closure.json; independent_issue_parent_connector_readbacks",
+      "oracle_or_limit": "ea310a0/v0.5.190 main/annotatedtag/target exact;132/148 final actual results/not_run/commit/tag/noPR backfill then closed; parents55/4 open",
+      "status": "passed"
     }
   ],
   "excluded_from_finite_contract": [
@@ -128,5 +125,9 @@
     "normal64MiB",
     "default stack",
     "M0 frozen load/standards"
+  ],
+  "finite_issues_closed": [
+    132,
+    148
   ]
 }
