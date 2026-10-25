@@ -4,7 +4,7 @@
 
 ## 当前实际在制
 
-#132/#148已在v190完整验收并关闭；#133已在v192按原有限四项合同实际验收、发布、回填并关闭，父#92仍开放。当前收尾0共享+0独立准备，上限1+2；#134缺真实交通/人员/到返履约来源，随后按具体依赖消化#135–137既有积压，不新增源码批次。24项无关observer/M0 WIP及完整恢复原件保留。
+#132/#148(v190)与#133(v192)已完整有限验收并关闭，父域仍开放。当前root共享1项#135，原101独立预期已完成冻结（准备0项），上限1+2；无新增实施线/会话/target/timer。24项无关observer/M0 WIP与完整失败/恢复原件保留。
 
 原#55实施方facility_work.rs source04继续冻结，SHA6773e22d14dfd5964a6b5c47e2c4ccdbf9b96fe07ea9f747311689c179122003；关闭后不授予新写权。近项具体会话、文件、版本、接线与验收入口见[机器台账](inputs/issue-ledger/execution-flow.json)。
 
@@ -94,3 +94,13 @@ resource30读取18个实际完成的原Store世界：World总owned196352B；按�
 本窗口新验收业务2（132、133），历史补登记0，缺陷关闭1（148）；已交付积压仍21待集成/0待验证，133此前不是这21纯模块之一，不伪减。可靠首可实施/全范围首次源码交付未知，两类耗时保持unknown，实际验收/关闭时刻见[关闭记录](evidence/water-treatment-runtime-20261025/closure.json)。v193只追踪关闭，不算新业务。
 
 下一共享顺序：134仍依赖真实出行/人员/到返provider，不能用73/74计划替代；先135原source/due/dirty目录到已有consumer与Timeline接线，再按实际依赖136原共池canonical时窗和137 typed开局provider。排队不授写权，激活前固定文件/真实输入与验收入口。
+
+## 当前已激活135：通用目录真实接线
+
+root唯一writer，实际1+0，上限1+2，基线0797e22/v193；确切headless5源码+1专属测试见work/task-registry-directory-20261026/ownership-and-acceptance.json。原纯目录/Timeline/Store/worker/IPC/allocator/Cargo及24WIP只读。发现无可选来源时已接受Timeline的同步责任欠通用RunDue入口；本轮以外层provider/clock分区和真实版本/覆盖age/dirty进入实际路由，并补原Timeline聚合续页，不只包三selectors。全部新增实现/测试/资源待验，当前无新提交/tag/PR或关闭。134真实来源仍阻塞；135完整合同后再136/137，无新源码批次/聊天/target/timer；事前证据保留512MiB，原M0不变。
+
+#135当前源02新增Store/真实Sim两项通过，源03受影响原6组通过；包含V2原59MiB角色观察，五点failures0/峰56670760B而非整机验收。源01原失败完整复制件只读查票/状态确认C3及原target保留，未盲重发；原件不变。原101已按明确64KiB工作文件补独立预期，当前1+1，源码全部只读。仍欠完整provider版本/coverage-age/dirty与namespace/capacity/恢复/资源补证，135未提交/无PR/Open。
+
+## #135最新实际结果（source07/08/10）
+
+最新9项、受影响原6组及原纯组件13项均实际通过，正常500分借款与既有1000分区域付款的原票/保存恢复结果与原参考一致；前者实际业务、129Claims准入代理及纯缓存组件分列。原advisor最后具体窄核无阻断，详见[完整合同与限制](evidence/task-registry-directory-20261026/STATUS.md)。实际1+0，24WIP不变；尚未发布/回填关闭，不提前增加验收关闭统计。未来provider/cache、整机/M0/16GB/速度仍未验。

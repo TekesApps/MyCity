@@ -61,6 +61,11 @@ pub struct SelectedRequired {
 }
 
 impl SelectedRequired {
+    pub(crate) fn directory_key(&self) -> TaskKey { self.key }
+    pub(crate) fn directory_binding(&self) -> &ActualJobBinding { &self.binding }
+    pub(crate) fn directory_hint(&mut self, valid: bool) {
+        if !valid { self.mode = SelectionMode::MandatoryFallback; }
+    }
     pub fn job(&self) -> u64 {
         self.job
     }
@@ -387,6 +392,9 @@ pub struct SelectedServiceContinuation {
 }
 
 impl SelectedServiceContinuation {
+    pub(crate) fn directory_hint(&mut self, valid: bool) {
+        if !valid { self.mode = SelectionMode::MandatoryFallback; }
+    }
     pub fn target(&self) -> u64 { self.continuation.target }
     pub fn page_limit(&self) -> u16 { self.continuation.page_limit }
     pub fn key(&self) -> &TaskKey { &self.key }

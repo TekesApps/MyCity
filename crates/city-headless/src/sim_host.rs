@@ -352,6 +352,34 @@ fn status(
 /// Continue only the original Store's already-funded Timeline reservation.
 /// A lost response is NOT permission to send another RunDue: retain the selected
 /// envelope, query its original receipt, and inspect recovered outcome/serial.
+/// Continue an original accepted Timeline even with no optional domain provider.
+fn timeline_run_due(
+    store:&mut Store,active_worker:bool,diag:&mut Option<crate::cpu_log::CpuLog>,
+    id:u64,writer:&mut impl Write,selected:&crate::task_registry_directory::SelectedTimeline,
+) -> Result<Value,String> {
+    crate::task_registry_directory::validate_timeline(store,selected,active_worker).map_err(err)?;
+    let e=store.engine().map_err(err)?;
+    let (scope,revision)=e.world().scope_revision();
+    let before=e.timeline().ok_or("timeline_due_missing_clock")?.progress;
+    let sequence=store.committed_sequence();
+    let operation=SERVICE_CONTINUATION_PREFIX|sequence.checked_add(1)
+        .filter(|v|*v<=background::JOB_ID_LIMIT).ok_or("sim_control_id")?;
+    if store.receipt(operation).map_err(err)?.is_some(){return Err(format!("timeline_due_namespace_collision:operation={operation};use_original_reserved_manual_advance"));}
+    let envelope=Envelope{world:scope.world(),branch:scope.branch(),operation_id:operation,expected_revision:revision,
+        actions:vec![Action::Timeline{command:mycity_core::timeline::Command::Advance{target:selected.target(),limit:selected.page_limit()}}]};
+    event(writer,id,"timeline_continuation_selected",json!({"dispatch":"required_registry_v3","envelope":envelope,
+        "before_sequence":sequence,"before_serial":before.serial,"zero_width":before.at==before.last_complete,
+        "plan":if selected.is_admission(){"original_next_boundary_admission"}else{"original_funded_continuation"},
+        "recovery":"original_receipt_and_recovered_outcome_and_serial; no automatic RunDue retry"}))?;
+    let outcome=crate::cpu_log::execute(store,Caller::System,envelope,diag)
+        .map_err(|e|format!("timeline_due_recovery_required:operation={operation}:{e}"))?;
+    outcome.model.as_ref().map_err(|e|format!("timeline_due_model_rejected:operation={operation}:{e:?}"))?;
+    if !outcome.has_persistent_receipt{return Err(format!("timeline_due_receipt_unconfirmed:operation={operation}"));}
+    let after=store.engine().map_err(err)?.timeline().ok_or("timeline_due_missing_clock")?.progress;
+    Ok(json!({"dispatch":"required_registry_v3","dispatch_state":"page_committed","selected_operation":operation,
+        "before_sequence":sequence,"before_serial":before.serial,"after_serial":after.serial,"timeline":after,"outcome":outcome}))
+}
+
 /// ReceiptProof presence alone does not distinguish a success from a failed ticket.
 fn service_run_due(
     store: &mut Store,
@@ -359,14 +387,10 @@ fn service_run_due(
     diag: &mut Option<crate::cpu_log::CpuLog>,
     id: u64,
     writer: &mut impl Write,
+    selected: &crate::required_dispatch::SelectedServiceContinuation,
 ) -> Result<Value, String> {
-    use crate::required_dispatch::{self as due, ServiceSelection, SelectionMode};
+    use crate::required_dispatch::{self as due, SelectionMode};
     if active_worker { return Err("sim_dispatch_busy".into()); }
-    let selected = match due::select_service_continuation(store, active_worker).map_err(err)? {
-        ServiceSelection::NoWork => return supply_run_due(store,active_worker,diag,id,writer),
-        ServiceSelection::Busy => return Err("sim_dispatch_busy".into()),
-        ServiceSelection::Selected(selected) => selected,
-    };
     due::validate_service_continuation(store, &selected, active_worker).map_err(err)?;
     let engine = store.engine().map_err(err)?;
     let (scope, revision) = engine.world().scope_revision();
@@ -423,15 +447,10 @@ fn supply_run_due(
     diag: &mut Option<crate::cpu_log::CpuLog>,
     id: u64,
     writer: &mut impl Write,
+    selected: &crate::required_dispatch::SelectedSupplyContinuation,
 ) -> Result<Value, String> {
-    use crate::required_dispatch::{self as due, SupplySelection, SupplySelectionMode};
+    use crate::required_dispatch::{self as due, SupplySelectionMode};
     if active_worker { return Err("sim_dispatch_busy".into()); }
-    let selected = match due::select_supply_continuation(store, active_worker).map_err(err)? {
-        SupplySelection::NoWork => return Ok(json!({"dispatch":"required_registry_v1",
-            "state":"no_work", "required_preserved":true})),
-        SupplySelection::Busy => return Err("sim_dispatch_busy".into()),
-        SupplySelection::Selected(selected) => selected,
-    };
     due::validate_supply_continuation(store, &selected, active_worker).map_err(err)?;
     let engine = store.engine().map_err(err)?;
     let (scope, revision) = engine.world().scope_revision();
@@ -1079,29 +1098,36 @@ fn run_owned(
                 }
             }
             Command::RunDue => {
-                use crate::required_dispatch::{select_required, Selection, SelectionMode};
-                match select_required(&store, worker.has_active_execution()).map_err(err) {
-                    Err(error) => Err(error),
-                    Ok(Selection::NoWork) => service_run_due(&mut store,
-                        worker.has_active_execution(), &mut diag,request.id,&mut writer),
-                    Ok(Selection::Busy) => Err("sim_dispatch_busy".into()),
-                    Ok(Selection::Backpressure(reason)) => Err(format!("sim_dispatch_backpressure:{}",reason.as_code())),
-                    Ok(Selection::Selected(selected)) => {
-                        let job = selected.job();
-                        let mode = match selected.mode() {
-                            SelectionMode::RegistrySelected => "registry_selected",
-                            SelectionMode::MandatoryFallback => "mandatory_fallback",
-                        };
-                        required(&mut store,worker,&mut codec,Required {
-                            id:request.id,job,quota:None,rules:&rules,diag:&mut diag,
-                            timings:&timings,selection:Some(&selected),
-                        },&mut writer,&mut reader,None).map(|mut value| {
-                            value["dispatch"] = json!("required_registry_v1");
-                            value["dispatch_state"] = json!("completed");
-                            value["selection_mode"] = json!(mode);
-                            value["selected_job"] = json!(job);
-                            value
-                        })
+                use crate::task_registry_directory::{self as directory, Route, Action as Selected};
+                let directory=directory::collect(&store,worker.has_active_execution());
+                match directory {
+                    Err(error)=>Err(err(error)),
+                    Ok(directory)=>{
+                        let report=directory.report().map_err(err);
+                        // No Store write intervenes here. Each selected original handler
+                        // validates its own complete context at the commit/rebind boundary;
+                        // avoid a redundant whole-directory collection and fingerprint pass.
+                        match report {
+                            Err(error)=>Err(error),
+                            Ok(report)=>{
+                                let result=match directory.route().clone() {
+                                    Route::NoWork=>Ok(json!({"dispatch":"required_registry_v1","state":"no_work","required_preserved":true})),
+                                    Route::Busy=>Err("sim_dispatch_busy".into()),
+                                    Route::Blocked(reason)=>Err(format!("sim_dispatch_backpressure:{}",reason.as_code())),
+                                    Route::Selected(Selected::Air(selected))=>{
+                                        let job=selected.job();
+                                        let mode=match selected.mode(){crate::required_dispatch::SelectionMode::RegistrySelected=>"registry_selected",crate::required_dispatch::SelectionMode::MandatoryFallback=>"mandatory_fallback"};
+                                        required(&mut store,worker,&mut codec,Required{id:request.id,job,quota:None,rules:&rules,diag:&mut diag,timings:&timings,selection:Some(&selected)},&mut writer,&mut reader,None).map(|mut v|{
+                                            v["dispatch"]=json!("required_registry_v1");v["dispatch_state"]=json!("completed");v["selection_mode"]=json!(mode);v["selected_job"]=json!(job);v
+                                        })
+                                    },
+                                    Route::Selected(Selected::Service(selected))=>service_run_due(&mut store,worker.has_active_execution(),&mut diag,request.id,&mut writer,&selected),
+                                    Route::Selected(Selected::Supply(selected))=>supply_run_due(&mut store,worker.has_active_execution(),&mut diag,request.id,&mut writer,&selected),
+                                    Route::Selected(Selected::Timeline(selected))=>timeline_run_due(&mut store,worker.has_active_execution(),&mut diag,request.id,&mut writer,&selected),
+                                };
+                                result.map(|mut v|{v["task_directory"]=report;v})
+                            }
+                        }
                     }
                 }
             }

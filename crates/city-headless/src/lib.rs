@@ -73,3 +73,5 @@ pub(crate) mod task_registry_adapter;
 
 // Bounded selection from the original required job; no queue or grant ownership.
 pub mod required_dispatch;
+
+pub mod task_registry_directory;

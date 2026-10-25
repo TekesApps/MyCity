@@ -1,0 +1,13 @@
+{
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/task-registry-directory-20261026/source07-directory-test-fixed",
+    "--test-threads=1",
+    "--nocapture"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 3.1280865419999913,
+  "test_sha256": "6ea60a8a9604b7db7051f78d92a62a5dba132ccfd64fc579a84c56279afecabc",
+  "headless_sha256": "59ca94409913122fd3b188ecd7cddf0d3a280f926eda8eeb1efee17707d3655c",
+  "retained_root": "/Volumes/HP P900/dev/MyCity/work/task-registry-directory-20261026/run07",
+  "scope": "initial originalTimeline real directory/Store/Sim gates, not complete135/wholeM0/hardware"
+}

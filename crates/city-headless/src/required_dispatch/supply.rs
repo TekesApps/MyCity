@@ -91,6 +91,11 @@ pub struct SelectedSupplyContinuation {
 }
 
 impl SelectedSupplyContinuation {
+    pub(crate) fn directory_hint(&mut self, valid: bool) {
+        if !valid && self.mode == SupplySelectionMode::RegistrySelected {
+            self.mode = SupplySelectionMode::MandatoryFallback;
+        }
+    }
     pub fn target(&self) -> u64 { self.target }
     pub fn page_limit(&self) -> u16 { self.page_limit }
     pub fn key(&self) -> Option<&TaskKey> { self.key.as_ref() }

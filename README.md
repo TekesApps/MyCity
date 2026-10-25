@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.193`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.194`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.194 接通[通用任务目录与原消费者](docs/evidence/task-registry-directory-20261026/STATUS.md)：真实版本/覆盖/dirty进入原RunDue，原Timeline已接受责任可续办，同P5多来源只提交一次。最新9项、受影响原6组、原纯13及正常借款/区域付款保存恢复通过；当前角色授额不变。阶段发布后回填#135，父101/真实16GB/M0/全局性能仍开放；无PR。
 
 v0.5.193 同步已在v0.5.192真实验收、发布并关闭的#133有限取水—处理—原库存出水业务及父清单/统计。本窗口新验收业务2（132/133）、历史补登记0、缺陷1（148），21项待集成/0待验证；本tag仅关闭台账，不重复计业务。[完整证据](docs/evidence/water-treatment-runtime-20261025/STATUS.md)。父92/M0/native/16GB/速度及UI/GPU仍未完成。
 

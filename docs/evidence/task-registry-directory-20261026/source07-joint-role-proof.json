@@ -1,0 +1,75 @@
+{
+  "at": "2026-10-25T22:27:57.622059+00:00",
+  "inputs": "source07-build-inputs.json/zip",
+  "programs": "source07-result.json frozen binaries",
+  "scope": "real same-key service/supply joint P5 in original Sim normal-role, complete directory report/clone/original reader/writer flow then checkpoint/status/owned exit",
+  "new_directory_metadata_plan_bytes": 32768,
+  "metadata_plan_is_not_hard_peak_proof": true,
+  "observations": [
+    {
+      "event": "ready",
+      "sim_pid": 89890,
+      "activation": {
+        "adapter_header_bytes": 160,
+        "arena_bytes": 61865501,
+        "arena_start": 45231374336,
+        "bootstrap_charged_bytes": 323,
+        "grant_bytes": 61865984,
+        "initialized_bytes": 61865501,
+        "pid": 89890
+      },
+      "arena_used_bytes": 56505920,
+      "arena_usable_bytes": 61865496,
+      "current_requested_bytes": 56506201,
+      "lifetime_peak_requested_bytes": 56522689,
+      "allocation_failures": 0,
+      "store_owned_bytes": 52046412
+    },
+    {
+      "event": "result",
+      "sim_pid": 89890,
+      "activation": {
+        "adapter_header_bytes": 160,
+        "arena_bytes": 61865501,
+        "arena_start": 45231374336,
+        "bootstrap_charged_bytes": 323,
+        "grant_bytes": 61865984,
+        "initialized_bytes": 61865501,
+        "pid": 89890
+      },
+      "arena_used_bytes": 56545952,
+      "arena_usable_bytes": 61865496,
+      "current_requested_bytes": 56546217,
+      "lifetime_peak_requested_bytes": 56589064,
+      "allocation_failures": 0,
+      "store_owned_bytes": 52086348
+    }
+  ],
+  "max_observed_lifetime_requested_bytes": 56589064,
+  "full_pool_return": {
+    "capacity_bytes": 67108864,
+    "available_touched_bytes": 67108864,
+    "granted_capacity_bytes": 0,
+    "workspace_capacity_bytes": 0,
+    "workspace_grants": 1,
+    "workspace_returns": 1,
+    "workspace_fills": 1,
+    "grants": 0,
+    "returns": 0,
+    "fill_acknowledgements": 0,
+    "scans": 5,
+    "rejected_requests": 0,
+    "maximum_prepare_to_fill_or_reap_ns": 23014166
+  },
+  "actual_world_root": "/Volumes/HP P900/dev/MyCity/work/task-registry-directory-20261026/run07/same-key-joint-89826-1792967129206358000",
+  "pool_root_evidence": "/Volumes/HP P900/dev/MyCity/work/r37",
+  "test_tool_scope": "parent Rust test holds separate original-reference Store; this is test-tool overhead outside the shipping Sim role, not free memory or a whole-game budget pass",
+  "not_measured": [
+    "native/OS/stack complete physical peak",
+    "entire game/process tree/GPU",
+    "true16GB",
+    "M0/full physical joint64/diagnostic8",
+    "sustainable fast-forward/long term"
+  ],
+  "source08_latest_existing6": "pending current program/build"
+}

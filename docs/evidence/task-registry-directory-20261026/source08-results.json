@@ -1,0 +1,80 @@
+[
+  {
+    "target": "task_registry_adapter",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/task-registry-directory-20261026/source08-task_registry_adapter-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.45738324999999946,
+    "test_sha256": "a67f919e8bdbf8c7028f953d5b1e5a608751dc31fd1b7e32bc02af709c47923b",
+    "main_sha256": "59ca94409913122fd3b188ecd7cddf0d3a280f926eda8eeb1efee17707d3655c",
+    "retained_root": "/Volumes/HP P900/dev/MyCity/work/task-registry-directory-20261026/run08/task_registry_adapter"
+  },
+  {
+    "target": "task_registry_dispatch",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/task-registry-directory-20261026/source08-task_registry_dispatch-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.4515018339999983,
+    "test_sha256": "d95a3f834e55cb82426c262fe493841911bc1d1e92271a095919498be9de240b",
+    "main_sha256": "59ca94409913122fd3b188ecd7cddf0d3a280f926eda8eeb1efee17707d3655c",
+    "retained_root": "/Volumes/HP P900/dev/MyCity/work/task-registry-directory-20261026/run08/task_registry_dispatch"
+  },
+  {
+    "target": "task_registry_due",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/task-registry-directory-20261026/source08-task_registry_due-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.8952515000000005,
+    "test_sha256": "9b88e71e0c987c6ed80125fda57847a23bab38eeaa3fcaa671fffdd4eaf7f346",
+    "main_sha256": "59ca94409913122fd3b188ecd7cddf0d3a280f926eda8eeb1efee17707d3655c",
+    "retained_root": "/Volumes/HP P900/dev/MyCity/work/task-registry-directory-20261026/run08/task_registry_due"
+  },
+  {
+    "target": "service_needs_due",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/task-registry-directory-20261026/source08-service_needs_due-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 2.600387375000004,
+    "test_sha256": "121e29f4b8feef11a200ba9bad1aca77fa7df2c705e60eded45e9d41a8e510ca",
+    "main_sha256": "59ca94409913122fd3b188ecd7cddf0d3a280f926eda8eeb1efee17707d3655c",
+    "retained_root": "/Volumes/HP P900/dev/MyCity/work/task-registry-directory-20261026/run08/service_needs_due"
+  },
+  {
+    "target": "continuous_supply_due",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/task-registry-directory-20261026/source08-continuous_supply_due-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.2841717499999987,
+    "test_sha256": "e12105f47476ad3f564fe0e7806a24a598179e6653896fa092626b879936b6be",
+    "main_sha256": "59ca94409913122fd3b188ecd7cddf0d3a280f926eda8eeb1efee17707d3655c",
+    "retained_root": "/Volumes/HP P900/dev/MyCity/work/task-registry-directory-20261026/run08/continuous_supply_due"
+  },
+  {
+    "target": "water_treatment_due",
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/task-registry-directory-20261026/source08-water_treatment_due-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.9970669999999942,
+    "test_sha256": "16b10834681a96e6da6ecb2b81ea3da77a929a55c137ebb0cd44ef6e34a357c4",
+    "main_sha256": "59ca94409913122fd3b188ecd7cddf0d3a280f926eda8eeb1efee17707d3655c",
+    "retained_root": "/Volumes/HP P900/dev/MyCity/work/r38"
+  }
+]

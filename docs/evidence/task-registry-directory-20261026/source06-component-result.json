@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/task-registry-directory-20261026/source06-pure-registry-fixed",
+    "--test-threads=1",
+    "--nocapture"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 0.46547675,
+  "sha256": "10946162e4f682be61dfd2ab833eb7058fae9b68cd478ed94e646a68c2a23ebb",
+  "scope": "original pure interface version/scope/clock/coverage-age/cache/outstanding/limit rules only; no real reusable-cache game-provider hit or freshness claim",
+  "fixed_game_inputs": "source04-build-inputs.json/zip; unchanged"
+}

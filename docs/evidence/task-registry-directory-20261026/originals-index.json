@@ -1,0 +1,21 @@
+{
+  "manifest": "/Volumes/HP P900/dev/MyCity/work/task-registry-directory-20261026/complete-originals-manifest.json",
+  "manifest_sha256": "da1551161e40f4f439a26444a4c2eafb55f2467b050914acb9ca99bfda930ae2",
+  "files": 1396,
+  "logical_bytes": 513585687,
+  "retention_budget_bytes": 536870912,
+  "complete_roots": [
+    "/Volumes/HP P900/dev/MyCity/work/task-registry-directory-20261026",
+    "/Volumes/HP P900/dev/MyCity/work/r35",
+    "/Volumes/HP P900/dev/MyCity/work/r36",
+    "/Volumes/HP P900/dev/MyCity/work/r37",
+    "/Volumes/HP P900/dev/MyCity/work/r38"
+  ],
+  "retention": "all referenced full source/fixed executables/failure and save recovery originals retained; index is not substitute",
+  "mutable_coordinator_files_excluded": [
+    "complete-originals-manifest.json",
+    "coordinator-state.json",
+    "final-artifact-check.json"
+  ],
+  "scope": "frozen originals existing at snapshot; subsequent publication/Issue receipts appended separately"
+}

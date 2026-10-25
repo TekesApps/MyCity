@@ -1,16 +1,25 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-25T21:19:54.773159+00:00",
+  "last_snapshot_at": "2026-10-25T22:53:01.064813+00:00",
   "source_head": "1e88dde6157f150518e8db63443554d8465afa73",
-  "candidate": "game192 finite133 published/actually closed; ledger193 closure only, no repeated game count",
+  "candidate": "135 current source07 new9/source08 affected6/source06 pure13/source10 actual finance passed; publication and issue closure pending",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
     "shared_core_lanes": 1,
     "independent_preparations": 2,
     "reason_for_adjustment_required": true
   },
-  "active_shared_work": [],
+  "active_shared_work": [
+    {
+      "lane": "core-1",
+      "business_issue": 135,
+      "related_defects": [],
+      "owner_session": "01a166fc-e444-7602-ad22-3a8551dda487",
+      "evidence_root": "work/task-registry-directory-20261026",
+      "phase": "135 current source07 new9/source08 affected6/source06 pure13/source10 actual finance passed; publication and issue closure pending"
+    }
+  ],
   "active_independent_preparations": [],
   "counting_rules": {
     "parents_are_not_active_work": true,
@@ -298,15 +307,17 @@
     },
     {
       "issue": 135,
-      "execution_state": "queued:not-dispatched",
-      "implementation_owner_session": null,
+      "execution_state": "active:core-1",
+      "implementation_owner_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "integration_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "files_or_activation_boundary": [
-        "crates/city-core/src/task_registry.rs (original module frozen)",
-        "crates/city-core/src/timeline_driver.rs",
-        "crates/city-core/src/transaction.rs",
-        "crates/city-core/tests/task_registry.rs",
-        "crates/city-storage/tests/task_registry_store.rs (planned)"
+        "crates/city-headless/src/task_registry_directory.rs",
+        "crates/city-headless/src/required_dispatch.rs",
+        "crates/city-headless/src/required_dispatch/supply.rs",
+        "crates/city-headless/src/sim_host.rs",
+        "crates/city-headless/src/lib.rs",
+        "crates/city-headless/tests/task_registry_directory.rs",
+        "crates/city-headless/src/sim_client.rs"
       ],
       "required_specific_capabilities": [
         "Original101 fixed generic source/due/dirty candidate",
@@ -314,12 +325,10 @@
         "Real source versions/coverage/age; no required full upstream-domain closure"
       ],
       "acceptance_entry_and_gaps": [
-        "General provider registration/wakeup to actual Timeline queue/writer missing",
-        "Source mutation/retry/recovery must retain due/dirty/cursor responsibility; no new scheduler",
-        "Confirm exact module-owner/API and first acceptance input before activation"
+        "Original135 four-item full contract; actual version/coverage age/dirty plus directory routing, Timeline aggregate, hard barriers, original retry/cold recovery and owned role budgets all pending"
       ],
-      "real_integration_seam": "Existing Timeline and source owners; candidate directory never dispatches or commits itself",
-      "new_write_authority": false,
+      "real_integration_seam": "headless RunDue -> bounded provider-partitioned directory -> existing original selectors/validators/Timeline/Store writer, no second clock/queue",
+      "new_write_authority": true,
       "timing": {
         "ready_at": null,
         "readiness_confirmed_at": null,

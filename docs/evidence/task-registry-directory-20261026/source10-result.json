@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/Users/frankqin/dev/MyCity/work/task-registry-directory-20261026/source10-normal-loan-fixed",
+    "/Volumes/HP P900/dev/MyCity/work/task-registry-directory-20261026/normal-loan10",
+    "/Volumes/HP P900/dev/MyCity/work/task-registry-directory-20261026/source07-headless-fixed",
+    "sim-w3:5eab0d8de3f012bb7fa949615e94a4c6805d62fd0b7734fa1015ab262e3abf63",
+    "/Users/frankqin/dev/MyCity/fixtures/m0-exchange-opening.json",
+    "/Users/frankqin/dev/MyCity/fixtures/m0-exchange-spatial.json",
+    "/Users/frankqin/dev/MyCity/fixtures/terrain/m0-flat16.png"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 1.2608518750000002,
+  "fixed_sha256": "a35c1db0301536d05fe536a9a51c214396f2bf1dcb142d6eb7a74af7b5fe5a59",
+  "headless_sha256": "59ca94409913122fd3b188ecd7cddf0d3a280f926eda8eeb1efee17707d3655c",
+  "scope": "actual normal loan disbursement/repayment originalTimeline route/cold/exact retry, separate from Claims budget proxy"
+}

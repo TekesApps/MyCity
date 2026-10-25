@@ -301,3 +301,21 @@ GPU/M0 and earlier debug stack faults remain open. This gate is not whole-game a
 ### v0.5.185 original continuous-supply required lane
 
 [Actual finite gate](evidence/continuous-supply-due-20261025/STATUS.md):27 different release parents, one additional default-debug execution and six fresh Store recovery children pass. Existing Background -> Service -> Supply ordering only falls through true NoWork. FundedContinuation retains full original reservation/page width; NextBoundaryAdmission uses accepted target only, explicit policy1/width32 and original Store admission, never implied future funding. Zero current windows retain full binding without fabricated TaskKey; necessary progress cannot be a serial-only loop. One selected C Envelope precedes at most one original Advance; collision/uncertainty preserves original receipt-based recovery, no blind reselection. No new worker, clock, pool, queue or grant manager. Full scheduler/adaptive-model/16GB/GPU/M0 acceptance remains open.
+
+### #135 通用source/due/dirty目录真实接线（2026-10-26，设计待实现）
+
+目录必须实际驱动原RunDue，不能仅观测或三路selector包壳。复用现有task_registry纯有界评估；外层(ProviderKind,TaskKey)同时分区source/cache/demand/outstanding，同scope/clock评估后按原阶段屏障合并，不跨钟比较due/age。版本、dirty依据、覆盖/观测年龄来自真实原状态，未知不填0/假缓存；Store sequence仅快照CAS，不是业务版本。目录可完全重建，不持久新ACK/完成位或事件队列。
+
+当前真实provider为空气、服务需求、连续供给，以及原Timeline聚合项（原P0–P5同步工资/claim/住房/区域/教育/设施等）。无可选模型的已接受Timeline目标也必须由原Continuation续页，不能被NoWork遗忘。原pending air/失败阻塞保留P4屏障，P5/源provider共享同一Timeline执行组，不能对同页双结算；零窗保留原typed continuation而非伪正窗。无原接受target时不造未来推进；phaseNone且原target仍在时只尝试原Store显式有界准入，不授新预算。
+
+初始固定4provider/有界目录，未登记的未来来源保持未支持/unknown，不宣称全产品任务已完成。目录无真实来源/Invalid/Blocked、额度不足时保留责任，只有所有相关原provider明确NoWork且无更早阶段责任才能NoWork。原writer复核完整原绑定后仍用原Envelope/receipt/保存恢复，失响应按原票恢复，目录丢失可重建。实施者root唯一共享writer；接口/真实输入/反例/冷恢复/资源覆盖原完整#135合同后才关闭；当前全部新增验证not_run。
+
+#### #135候选策略2：覆盖与观测来源分开（2026-10-26）
+
+源02新增2项、源03既有6组是旧候选实际结果，不替代策略2。独立原101预期明确：Service/Supply schema常量不是内容版本；完整原DueView的fingerprint/registration/游标与Air完整Job绑定才反映实际状态。目录将其保留并对完整快照复核，seq只CAS。处理覆盖终点不自动成为采样时间，coverage_lag_game_seconds只表示同原writer时钟的处理缺口，不能当可复用缓存的新鲜度。当前四provider没有提供认证可复用cache时，cache_observation_age_seconds始终Unknown，纯目录评估caches=[]，仍路由原必要计算/续页。真实Known coverage仍来自原状态，不把所有输入都变Unknown；不得绕过版本/窗口/Continuation硬门。缓存命中/过期的原PureDTO规则与实际缺源执行分列，不伪造端到端缓存证据。
+
+策略2源04正验证合法新开局的同Store同clock同TaskKey多provider分区、同P5执行组、实际field版本变化、schema/内容/无关CAS对照、零窗/原票/冷恢复；129原Claims只用于准入预算拒绝替身，不能宣称真实城市业务规模/M0验收。原字段、固定源码/失败/程序/完整恢复原件保留，仍未关闭完整135。
+
+#### #135策略2实际结果
+
+[完整有限合同证据](evidence/task-registry-directory-20261026/STATUS.md)：当前真实目录路由、联合同key/P5、零窗/版本/原票/冷恢复及原角色资源已实际验证。collect/report到选择无Store写入，因此去掉立即重复收集；各原handler提交/重绑定仍复核完整原context，延迟快照public validate保留。32KiB仅metadata计划，不是完整峰证明；无缓存来源保持Unknown。正常借款与既有区域义务共同履约、保存恢复/原票一次，不能漏业务来满足预期。完整父#101与全局/M0/16GB门仍开放。

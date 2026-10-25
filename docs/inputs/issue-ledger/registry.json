@@ -3191,12 +3191,16 @@
       "title": "[业务子任务] 通用source/due/dirty目录：原consumer版本/覆盖与恢复唤醒接线",
       "url": "https://github.com/TekesApps/MyCity/issues/135",
       "parent": 101,
-      "stage": "待集成",
-      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "stage": "开发中",
+      "owner": "当前root唯一共享writer/集成/串行验收；原101冻结，无新增实施线",
       "write_authority": [
-        "crates/city-core/src/task_registry.rs",
-        "专属registry tests/fixture/handoff",
-        "原required dispatch/Timeline/Store仅root"
+        "crates/city-headless/src/task_registry_directory.rs",
+        "crates/city-headless/src/required_dispatch.rs",
+        "crates/city-headless/src/required_dispatch/supply.rs",
+        "crates/city-headless/src/sim_host.rs",
+        "crates/city-headless/src/lib.rs",
+        "crates/city-headless/tests/task_registry_directory.rs",
+        "crates/city-headless/src/sim_client.rs"
       ],
       "scope": "消化task_registry通用模块，把原有效来源/版本、due、dirty、coverage age与原consumer一体登记；复用Timeline/worker，不造独立执行器。各领域业务结果仍由各自owner提交。",
       "required_capabilities": [
@@ -3209,12 +3213,12 @@
         "恢复重建唤醒目录不补造已发生事实，无第二时钟/队列",
         "真实原consumer联合恢复和边界/预算拒绝实际验证"
       ],
-      "remaining": "通用候选到实际目录/全部必要provider未完成；原交付先集成，不新派工",
-      "evidence": "docs/handoffs/issue-101-due-v168.md; docs/handoffs/issue-101-service-needs-due-v182.md",
-      "implementation_tags": "仅部分consumer已发布",
+      "remaining": "当前9新项/6既有组/13纯组件及真实借款保存恢复已通过；阶段发布/完整回填关闭待完成；未来认证缓存provider/整机硬件归父域",
+      "evidence": "docs/evidence/task-registry-directory-20261026/STATUS.md；原work五根完整原件保留",
+      "implementation_tags": "当前拟v0.5.194，发布后回填确切提交/tag；无PR",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "9d9cbfba56ffb2ef5c63d75507cf2c721372862af711f8ec7cb095bd9448beab",
-      "execution_state": "queued:not-dispatched",
+      "issue_body_sha256": "5f04f7d27f39a5247d1a44b0148f8a0af74241ec941eb4f94ccc9e1764b71cde",
+      "execution_state": "active:core-1",
       "execution_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "execution_contract": "docs/inputs/issue-ledger/execution-flow.json"
     },

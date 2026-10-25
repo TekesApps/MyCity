@@ -1,0 +1,57 @@
+{
+  "audit_kind": "artifact consistency, not a new game test",
+  "source_inputs_verified": 456,
+  "preserved_wip": 24,
+  "current_new_tests": 9,
+  "affected_groups": 6,
+  "pure_component_tests": 13,
+  "normal_loan_and_regional_due": {
+    "actual_disbursement_cash": [
+      200500,
+      599500
+    ],
+    "actual_original_zero_interest_loan": true,
+    "borrower": 2,
+    "cold_sim_no_new_future_target": true,
+    "due": 30,
+    "final_cash": [
+      201000,
+      599000
+    ],
+    "final_hash": "46ecf3479a066916042f71fae4572dde54668d1776bbb8a94824d4dbf510543b",
+    "lender": 3,
+    "loan_and_C_retry_once": true,
+    "not_pressure_proxy": true,
+    "original_C_pages": 12,
+    "original_manual_reference_equal": true,
+    "original_regional_obligation": {
+      "arrears": 0,
+      "next_due": 60,
+      "paid_cents": 1000,
+      "payee": 2,
+      "payer": 3
+    },
+    "principal_cents": 500,
+    "scope": "finite existing loan business via original Timeline aggregate, not full debt/finance/M0/native/16GB/speed acceptance",
+    "sequence": 15,
+    "total_cash": 3000000
+  },
+  "current_main_sha256": "59ca94409913122fd3b188ecd7cddf0d3a280f926eda8eeb1efee17707d3655c",
+  "complete_roots": [
+    "/Volumes/HP P900/dev/MyCity/work/task-registry-directory-20261026",
+    "/Volumes/HP P900/dev/MyCity/work/r35",
+    "/Volumes/HP P900/dev/MyCity/work/r36",
+    "/Volumes/HP P900/dev/MyCity/work/r37",
+    "/Volumes/HP P900/dev/MyCity/work/r38"
+  ],
+  "logical_bytes": 513574749,
+  "disk_budget_bytes": 536870912,
+  "not_proved": [
+    "native whole-process peak",
+    "whole-game/GPU shared budget",
+    "real 16GB",
+    "M0 frozen gate",
+    "sustainable speed",
+    "future cache provider"
+  ]
+}

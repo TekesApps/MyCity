@@ -288,7 +288,8 @@ impl Client {
                 }
             }
             "worker_progress" | "attempt_failed" | "probe_barrier" | "page_boundary" | "page_control_result"
-                | "service_continuation_selected" | "supply_continuation_selected" if event.id != 0 => (),
+                | "service_continuation_selected" | "supply_continuation_selected"
+                | "timeline_continuation_selected" if event.id != 0 => (),
             _ => return Err("sim_event_kind".into()),
         }
         Ok(event)
