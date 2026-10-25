@@ -1,7 +1,7 @@
 {
   "schema": "mycity-issue-ledger-v1",
   "date": "2026-10-25",
-  "release": "v0.5.191",
+  "release": "v0.5.195",
   "scope": "完整既定产品；v190有限业务132与缺陷148真实验收关闭，v191仅同步台账，UI单独延期",
   "coordination": "当前root唯一共享writer/串行验证；旧主会话停用",
   "states": [
@@ -2335,7 +2335,7 @@
       "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
       "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "7bcf27d6ef1ce2236b52c607264d2000d55c2365a65bbfc4907e67a72c756eb6"
+      "issue_body_sha256": "415e3fd31e593365c85ca9d3454409f927e17f87bb6f122b6ba3ae21cc5e2a15"
     },
     {
       "issue": 102,
@@ -3191,7 +3191,7 @@
       "title": "[业务子任务] 通用source/due/dirty目录：原consumer版本/覆盖与恢复唤醒接线",
       "url": "https://github.com/TekesApps/MyCity/issues/135",
       "parent": 101,
-      "stage": "开发中",
+      "stage": "完成",
       "owner": "当前root唯一共享writer/集成/串行验收；原101冻结，无新增实施线",
       "write_authority": [
         "crates/city-headless/src/task_registry_directory.rs",
@@ -3213,12 +3213,12 @@
         "恢复重建唤醒目录不补造已发生事实，无第二时钟/队列",
         "真实原consumer联合恢复和边界/预算拒绝实际验证"
       ],
-      "remaining": "当前9新项/6既有组/13纯组件及真实借款保存恢复已通过；阶段发布/完整回填关闭待完成；未来认证缓存provider/整机硬件归父域",
+      "remaining": "本完整有限子合同无剩余；父101未来provider/cache/全局硬件仍开放",
       "evidence": "docs/evidence/task-registry-directory-20261026/STATUS.md；原work五根完整原件保留",
-      "implementation_tags": "当前拟v0.5.194，发布后回填确切提交/tag；无PR",
+      "implementation_tags": "30a2dc4d95569a1baca8d939a3c0250216e190f5 / v0.5.194；v195仅关闭台账，无PR",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "5f04f7d27f39a5247d1a44b0148f8a0af74241ec941eb4f94ccc9e1764b71cde",
-      "execution_state": "active:core-1",
+      "issue_body_sha256": "2699d1dfb4703aa891c65c3e81066b71915777a95a4b4a95d2ed1b654a684cb0",
+      "execution_state": "completed:closed",
       "execution_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "execution_contract": "docs/inputs/issue-ledger/execution-flow.json"
     },

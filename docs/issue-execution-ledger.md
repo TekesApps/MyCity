@@ -1,6 +1,6 @@
 # MyCity Issue 执行与验收台账
 
-当前实际在制与速度见[执行清单](execution-current.md)和[机器台账](inputs/issue-ledger/execution-flow.json)：当前1共享（#135）+0准备，上限1+2；#135实际验证齐备待发布回填，132/133/148已实际验收并关闭，父域仍开放，不以总关闭比例或tag计产品进度。
+当前实际在制与速度见[执行清单](execution-current.md)和[机器台账](inputs/issue-ledger/execution-flow.json)：收尾0共享+0准备，上限1+2；132/133/135及缺陷148已实际验收并关闭，父域仍开放。本窗口业务3、历史补关0、缺陷1，20待集成/0待验证；不以总关闭比例或tag计产品进度。
 
 2026-10-25，台账阶段v0.5.191，游戏实际验收v0.5.190。总体入口为[PRODUCT_BLUEPRINT](PRODUCT_BLUEPRINT.md)，需求见[逐条矩阵](product-coverage-and-requirements.md)。#132有限业务和#148布局缺陷已完整验收、发布、回填并实际关闭；父域/M0/16GB仍开放，见[设施证据](evidence/facility-operation-20261025/STATUS.md)。v191只同步关闭，不重跑或重复计业务；WIP和失败恢复原件保留。
 
@@ -122,3 +122,7 @@ v190的#132/#148已关，v191只同步台账。当前root将#133激活为唯一�
 ## v193当前关闭台账
 
 有限#133按完整四项合同及v192实际实现/共享/default-stack/原票/保存恢复/有限角色资源验收、回填并关闭；父92清单勾选但仍Open。窗口新业务2（132/133）、历史补登记0、缺陷1（148），21待集成/0待验证，首可实施/全范围首源码时间缺证则耗时unknown。[实际时刻与原件](evidence/water-treatment-runtime-20261025/closure.json)。v193只记录关闭，不重复计新业务；实际0+0，下一按来源处理134与既有135–137。
+
+## v195关闭台账
+
+#135游戏增量在v194完整实际验收并发布，Issue及父101清单已独立回读；[关闭记录](evidence/task-registry-directory-20261026/closure.json)。本次文档不重复计业务。下一136/137按具体依赖消化，134缺真实到返来源；未知耗时起点不杜撰。

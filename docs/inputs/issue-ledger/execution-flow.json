@@ -1,25 +1,16 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-25T22:53:01.064813+00:00",
-  "source_head": "1e88dde6157f150518e8db63443554d8465afa73",
-  "candidate": "135 current source07 new9/source08 affected6/source06 pure13/source10 actual finance passed; publication and issue closure pending",
+  "last_snapshot_at": "2026-10-25T22:55:44.399437+00:00",
+  "source_head": "30a2dc4d95569a1baca8d939a3c0250216e190f5",
+  "candidate": "135 finite business accepted published v194/backfilled closed; closure docs v195 only; next136 queued not activated",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
     "shared_core_lanes": 1,
     "independent_preparations": 2,
     "reason_for_adjustment_required": true
   },
-  "active_shared_work": [
-    {
-      "lane": "core-1",
-      "business_issue": 135,
-      "related_defects": [],
-      "owner_session": "01a166fc-e444-7602-ad22-3a8551dda487",
-      "evidence_root": "work/task-registry-directory-20261026",
-      "phase": "135 current source07 new9/source08 affected6/source06 pure13/source10 actual finance passed; publication and issue closure pending"
-    }
-  ],
+  "active_shared_work": [],
   "active_independent_preparations": [],
   "counting_rules": {
     "parents_are_not_active_work": true,
@@ -83,7 +74,8 @@
   "window_completed": {
     "new_accepted_business": [
       132,
-      133
+      133,
+      135
     ],
     "historical_backfill_business": [],
     "defects_closed": [
@@ -307,7 +299,7 @@
     },
     {
       "issue": 135,
-      "execution_state": "active:core-1",
+      "execution_state": "completed:closed",
       "implementation_owner_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "integration_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "files_or_activation_boundary": [
@@ -325,16 +317,16 @@
         "Real source versions/coverage/age; no required full upstream-domain closure"
       ],
       "acceptance_entry_and_gaps": [
-        "Original135 four-item full contract; actual version/coverage age/dirty plus directory routing, Timeline aggregate, hard barriers, original retry/cold recovery and owned role budgets all pending"
+        "Original full finite135 four-item contract passed: current9/affected6/pure13 + real loan/regional original-ticket save/cold recovery; published v194 and issue closed; future provider/cache/global hardware remains parent scope"
       ],
       "real_integration_seam": "headless RunDue -> bounded provider-partitioned directory -> existing original selectors/validators/Timeline/Store writer, no second clock/queue",
-      "new_write_authority": true,
+      "new_write_authority": false,
       "timing": {
         "ready_at": null,
         "readiness_confirmed_at": null,
         "full_scope_source_delivered_at": null,
-        "accepted_at": null,
-        "issue_closed_at": null,
+        "accepted_at": "2026-10-25T22:54:41Z",
+        "issue_closed_at": "2026-10-25T22:54:57Z",
         "ready_to_acceptance_seconds": null,
         "source_to_acceptance_seconds": null,
         "unknown_reason": "Historical first-ready/full-scope delivery event not established; no inferred timestamp"
@@ -638,7 +630,6 @@
     "source_delivered_pending_integration": [
       137,
       136,
-      135,
       117,
       104,
       103,

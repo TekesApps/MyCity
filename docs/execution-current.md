@@ -4,7 +4,7 @@
 
 ## 当前实际在制
 
-#132/#148(v190)与#133(v192)已完整有限验收并关闭，父域仍开放。当前root共享1项#135，原101独立预期已完成冻结（准备0项），上限1+2；无新增实施线/会话/target/timer。24项无关observer/M0 WIP与完整失败/恢复原件保留。
+#132/#148(v190)、#133(v192)及#135(v194)已实际完整有限验收并关闭，父域仍开放。当前收尾0共享+0准备，上限1+2；下一#136排队未激活。24项无关observer/M0 WIP及失败/恢复原件保留。
 
 原#55实施方facility_work.rs source04继续冻结，SHA6773e22d14dfd5964a6b5c47e2c4ccdbf9b96fe07ea9f747311689c179122003；关闭后不授予新写权。近项具体会话、文件、版本、接线与验收入口见[机器台账](inputs/issue-ledger/execution-flow.json)。
 
@@ -21,7 +21,7 @@
 |---|---|---|---|
 |#133|已完成；root集成/验收，原92组件冻结|v192真实取水/双岗位处理/原Stock出流/成本恢复；共享33、默认原6+新2、有限真实Sim角色|已完整回填/发布并独立回读Closed；父92及整机/M0范围另开放|
 |#134|root集成；原#57会话01a16a4c-ba5a-7dd1-8c04-51461a76b405冻结，阻塞|原service_delivery_runtime、member/Resource/Lease/need/资金和真实交通水质来源|实际人员、到达返程、用水与有限残责缺失；#73/#74计划不算履约，不等整个父领域关闭|
-|#135|root接线；原#101会话01a1682f-f3ce-7f61-833c-a31d55a43b34冻结，排队|原task_registry与#130/v185真实due消费者→原Timeline/writer|通用source/due/dirty、版本/age/覆盖及恢复唤醒桥缺，不造第二执行器|
+|#135|root已验收关闭；原101预期冻结|v194四真实provider目录→原RunDue/Timeline/writer|完整有限子合同已闭，父101未来provider/cache/全局门仍开放|
 |#136|root接线；原#118会话01a1682f-f0de-7241-b895-0bbfa1386c5b冻结，排队|v149固定physical_capacity候选与#125原Resource/Lease共池|通用canonical/模式/时窗/占用/退出恢复桥缺；IntervalLitres仍unsupported/unknown，不能以峰值代区间守恒|
 |#137|root接线；原#120当前聊天worker冻结，排队|原opening_loader/显式provider与#131同槽Store|通用factory/schema/单位clock/引用provider及失败恢复桥缺；hash不是权利认证|
 
@@ -104,3 +104,7 @@ root唯一writer，实际1+0，上限1+2，基线0797e22/v193；确切headless5�
 ## #135最新实际结果（source07/08/10）
 
 最新9项、受影响原6组及原纯组件13项均实际通过，正常500分借款与既有1000分区域付款的原票/保存恢复结果与原参考一致；前者实际业务、129Claims准入代理及纯缓存组件分列。原advisor最后具体窄核无阻断，详见[完整合同与限制](evidence/task-registry-directory-20261026/STATUS.md)。实际1+0，24WIP不变；尚未发布/回填关闭，不提前增加验收关闭统计。未来provider/cache、整机/M0/16GB/速度仍未验。
+
+## #135实际关闭与下一顺序
+
+v194提交30a2dc4d95569a1baca8d939a3c0250216e190f5，原子推送并REST核对；#135实际Closed/stage:done，父101勾选后保持Open。[关闭回读](evidence/task-registry-directory-20261026/closure.json)。本窗口新验收业务3（132/133/135）、历史补关0、缺陷1（148），积压20待集成/0待验证；v195仅台账，不计第二项业务。当前0+0，接下来先核#136原canonical容量与Store接线差项，再#137 typed开局；#134仍缺实际交通/到返来源，不把计划当到达。原可靠起点未知的耗时仍unknown，不造统计起点。
