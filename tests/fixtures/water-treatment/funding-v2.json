@@ -1,0 +1,25 @@
+{
+  "version": 2,
+  "profile": "ActualFundingV2",
+  "scope": "synthetic funding classification oracle, not a root Stock, payment, Store or fee-policy proof",
+  "converted_inputs_cents": {"raw": 101, "reagent": 37},
+  "interval_basis_cents": {
+    "electricity": 17,
+    "personnel": 11,
+    "equipment_operation": 5,
+    "maintenance_use": 7,
+    "residual_acceptance": 3,
+    "residual_custody": 2
+  },
+  "expected": {
+    "total_basis_cents": 183,
+    "original_stock_cents": 155,
+    "same_prepared_paid_cents": 16,
+    "prior_receipt_paid_cents": 12,
+    "cash_due_now_cents": 0,
+    "accrued_payable_cents": 0,
+    "cash_available_cents": 0
+  },
+  "cash_failure": {"custody_due_now_cents": 2, "cash_available_cents": 1, "result": "UnresolvedCost"},
+  "terms": "All positive fee numbers are test-only original-contract inputs, not new runtime rates or obligations. Zero means this explicit contract has no such fee; no repair or disposal is proved."
+}

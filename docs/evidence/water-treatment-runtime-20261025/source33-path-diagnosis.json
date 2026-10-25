@@ -1,0 +1,7 @@
+{
+  "previous": "source32-result.json",
+  "actual_failure": "macOS Unix-domain socket path exceeds SUN_LEN before pool started",
+  "fix": "shorter explicit retained original SSD work root w33; same frozen executable/source/tests/loads/standards; no model change",
+  "recovery_root": "/Volumes/HP P900/dev/MyCity/work/w33",
+  "originals_retained": true
+}

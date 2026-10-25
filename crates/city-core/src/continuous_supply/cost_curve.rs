@@ -41,6 +41,53 @@ pub(crate) struct Prefix {
     pub ports_cents:[u64;2],
 }
 
+/// V2 arithmetic only. Root must bind these terms/carry to an original contract
+/// and the actual covered allocation-cycle prefix before using this price.
+/// Paid cash is deliberately absent: paying an earned wage later cannot reprice
+/// a previously produced or transferred water prefix. This is no work grant.
+#[derive(Clone, Copy, Debug)]
+pub(crate) struct LaborPrefix {
+    pub hourly_cents_per_member:u64,
+    pub members:u64,
+    pub carried_numerator:u64,
+    pub actual_seconds:u64,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) struct LaborShares {
+    pub water:u64,
+    pub other:u64,
+}
+
+impl LaborPrefix {
+    /// Exact position inside already covered work; no future input or final
+    /// output denominator. Original wage carry survives a real cycle boundary.
+    pub(crate) fn earned_at(&self,num:u128,den:u128)->Result<u64,TxError> {
+        if den==0||self.members==0||self.carried_numerator>=3600 {
+            return Err(TxError::InvalidOperation);
+        }
+        let covered=u128::from(self.actual_seconds).checked_mul(den).ok_or(TxError::Overflow)?;
+        if num>covered {return Err(TxError::InvalidOperation);}
+        let rate=u128::from(self.hourly_cents_per_member).checked_mul(u128::from(self.members)).ok_or(TxError::Overflow)?;
+        let carry=u128::from(self.carried_numerator).checked_mul(den).ok_or(TxError::Overflow)?;
+        let numerator=rate.checked_mul(num).and_then(|n|n.checked_add(carry)).ok_or(TxError::Overflow)?;
+        let denominator=den.checked_mul(3600).ok_or(TxError::Overflow)?;
+        let earned=u64::try_from(numerator/denominator).map_err(|_|TxError::Overflow)?;
+        if earned>i64::MAX as u64 {return Err(TxError::Overflow);}
+        Ok(earned)
+    }
+    pub(crate) fn shares_at(&self,num:u128,den:u128)->Result<LaborShares,TxError> {
+        let earned=self.earned_at(num,den)?;
+        Ok(LaborShares{water:earned/2,other:earned-earned/2})
+    }
+    pub(crate) fn between(&self,from:u64,until:u64)->Result<LaborShares,TxError> {
+        if until<from {return Err(TxError::InvalidOperation);}
+        let a=self.shares_at(u128::from(from),1)?;
+        let b=self.shares_at(u128::from(until),1)?;
+        Ok(LaborShares{water:b.water-a.water,other:b.other-a.other})
+    }
+}
+
 impl TwinPortAllocationCycle<'_> {
     fn generator_at(&self, seconds_num:u128, seconds_den:u128)->Result<u64,TxError> {
         let fuel=lot_prefix(self.fuel,seconds_num.checked_mul(50).ok_or(TxError::Overflow)?,seconds_den.checked_mul(3).ok_or(TxError::Overflow)?)?;
@@ -71,6 +118,26 @@ impl TwinPortAllocationCycle<'_> {
     pub(crate) fn between(&self, from:u64, until:u64)->Result<Prefix,TxError> {
         if until<from { return Err(TxError::InvalidOperation); }
         let a=self.prefix(from)?;let b=self.prefix(until)?;
+        Ok(Prefix{ports_ml:[b.ports_ml[0]-a.ports_ml[0],b.ports_ml[1]-a.ports_ml[1]],
+            ports_cents:[b.ports_cents[0].checked_sub(a.ports_cents[0]).ok_or(TxError::Stock)?,b.ports_cents[1].checked_sub(a.ports_cents[1]).ok_or(TxError::Stock)?]})
+    }
+    fn port_with_labor(&self,labor:&LaborPrefix,port:usize,ml:u64)->Result<u64,TxError> {
+        if port>1 {return Err(TxError::InvalidOperation);}
+        // Both physical ports at this production position define H(q), before
+        // the cumulative A/B split; adding half a wage to each port would round
+        // twice and lose the complementary cent.
+        let physical=self.port(0,ml)?.checked_add(self.port(1,ml)?).ok_or(TxError::Overflow)?;
+        let share=labor.shares_at(u128::from(ml),10_000)?;
+        let total=physical.checked_add(share.water).ok_or(TxError::Overflow)?;
+        Ok(if port==0 {total/2}else{total-total/2})
+    }
+    pub(crate) fn prefix_with_labor(&self,labor:&LaborPrefix,total_ml:u64)->Result<Prefix,TxError> {
+        let a=total_ml/2+total_ml%2;let b=total_ml/2;
+        Ok(Prefix{ports_ml:[a,b],ports_cents:[self.port_with_labor(labor,0,a)?,self.port_with_labor(labor,1,b)?]})
+    }
+    pub(crate) fn between_with_labor(&self,labor:&LaborPrefix,from:u64,until:u64)->Result<Prefix,TxError> {
+        if until<from {return Err(TxError::InvalidOperation);}
+        let a=self.prefix_with_labor(labor,from)?;let b=self.prefix_with_labor(labor,until)?;
         Ok(Prefix{ports_ml:[b.ports_ml[0]-a.ports_ml[0],b.ports_ml[1]-a.ports_ml[1]],
             ports_cents:[b.ports_cents[0].checked_sub(a.ports_cents[0]).ok_or(TxError::Stock)?,b.ports_cents[1].checked_sub(a.ports_cents[1]).ok_or(TxError::Stock)?]})
     }
@@ -138,5 +205,41 @@ mod tests {
         assert_eq!(first_other+second_other,78-39+150);
         assert_eq!(first_water+second_water+first_other+second_other,78+40+700);
         assert_eq!(first.prefix(100_000_000).unwrap(),old);
+    }
+    #[test]
+    fn v2_earned_labor_keeps_cycle_carry_and_refuses_uncovered_positions(){
+        let e=LaborPrefix{hourly_cents_per_member:3601,members:1,carried_numerator:0,actual_seconds:5500};
+        assert_eq!(e.shares_at(3,1).unwrap(),LaborShares{water:1,other:2});
+        assert_eq!(e.shares_at(4,1).unwrap(),LaborShares{water:2,other:2});
+        assert_eq!(e.between(3,4).unwrap(),LaborShares{water:1,other:0});
+        assert_eq!(e.earned_at(5500,1).unwrap(),5501);
+        assert_eq!(e.earned_at(5501,1),Err(TxError::InvalidOperation));
+        assert_eq!(e.earned_at(1,0),Err(TxError::InvalidOperation));
+        assert_eq!(e.between(4,3),Err(TxError::InvalidOperation));
+        let carry=LaborPrefix{hourly_cents_per_member:1,members:1,carried_numerator:3599,actual_seconds:1};
+        assert_eq!(carry.earned_at(0,1).unwrap(),0);
+        assert_eq!(carry.earned_at(1,1).unwrap(),1);
+        let huge=LaborPrefix{hourly_cents_per_member:u64::MAX,members:u64::MAX,carried_numerator:0,actual_seconds:2};
+        assert_eq!(huge.earned_at(2,1),Err(TxError::Overflow));
+    }
+    #[test]
+    fn v2_same_original_labor_and_physical_prefix_have_page_independent_prices(){
+        let f=lot(101,100_000,100_000);let w=lot(102,6_000_000,18_000);let raw=lot(103,100_000_000,50_000);
+        let mut c=TwinPortAllocationCycle{fuel:&f,cooling:&w,raw:&raw,origin_active_seconds:0,origin_raw_ml:0,observed_each_ml:40_000,water_start_cents:550};
+        let e=LaborPrefix{hourly_cents_per_member:3601,members:1,carried_numerator:0,actual_seconds:5000};
+        // Independent original lot/wage oracle in the root's V2 fixture:
+        // Hphysical(4)=629; floor(E(4)/2)=2, giving631, split315/316.
+        assert_eq!(c.prefix(80_000).unwrap().ports_cents,[314,315]);
+        let full=c.prefix_with_labor(&e,80_000).unwrap();assert_eq!(full.ports_cents,[315,316]);
+        let first=c.between_with_labor(&e,0,60_000).unwrap();assert_eq!(first.ports_cents,[305,305]);
+        let next=c.between_with_labor(&e,60_000,80_000).unwrap();assert_eq!(next.ports_cents,[10,11]);
+        for i in 0..2 {assert_eq!(first.ports_cents[i]+next.ports_cents[i],full.ports_cents[i]);}
+        // Later production expands only the observed bound, never the old price.
+        c.observed_each_ml=50_000_000;assert_eq!(c.prefix_with_labor(&e,80_000).unwrap(),full);
+        assert_eq!(c.prefix_with_labor(&e,100_000_000).unwrap().ports_cents.iter().sum::<u64>(),102216);
+        let uncovered=LaborPrefix{actual_seconds:3,..e};
+        assert_eq!(c.prefix_with_labor(&uncovered,80_000),Err(TxError::InvalidOperation));
+        // Actual Engine late-payment/Stock/WAL tests are still required; this
+        // arithmetic helper cannot authenticate a contract or commit a wage.
     }
 }

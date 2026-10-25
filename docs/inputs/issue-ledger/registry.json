@@ -2121,7 +2121,7 @@
       "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
       "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "c61a2664a457021d07bc118fe5417253755cd717f4606ce90e401df361e6fdc2"
+      "issue_body_sha256": "cd4827dfff0f8af9124c17e235cb8b2ddea3ecacef28a46932ae9fdb8d88f5b2"
     },
     {
       "issue": 93,
@@ -3109,12 +3109,29 @@
       "title": "[业务子任务] 有限取水—真实处理批—合格出水：原水量/质量/受电/人员与成本闭环",
       "url": "https://github.com/TekesApps/MyCity/issues/133",
       "parent": 92,
-      "stage": "待开发",
-      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "stage": "开发中",
+      "owner": "当前root会话01a166fc-e444-7602-ad22-3a8551dda487唯一共享接线/集成/串行验收；原#92内核owner冻结，仅原advisor窄核具体P5劳动成本阻断。",
       "write_authority": [
-        "crates/city-core/src/water_treatment.rs（如原owner交付路径，以交付manifest为准）",
-        "共享continuous_supply/World/Timeline/Stock/Store仅root",
-        "专属处理批测试/fixture/handoff"
+        "crates/city-core/src/assembly.rs",
+        "crates/city-core/src/assembly_decode_compat_tests.rs",
+        "crates/city-core/src/continuous_supply.rs",
+        "crates/city-core/src/continuous_supply/cost_curve.rs",
+        "crates/city-core/src/continuous_supply/v2.rs",
+        "crates/city-core/src/water_treatment_authority.rs",
+        "crates/city-core/src/facility_authority.rs",
+        "crates/city-core/src/timeline_driver.rs",
+        "crates/city-core/src/transaction.rs",
+        "crates/city-core/src/transaction/slots.rs",
+        "crates/city-core/src/restore_into.rs",
+        "crates/city-core/src/lib.rs",
+        "crates/city-storage/src/lib.rs",
+        "crates/city-headless/src/required_dispatch/supply.rs",
+        "crates/city-core/tests/water_treatment_runtime.rs",
+        "crates/city-storage/tests/water_treatment_store.rs",
+        "crates/city-headless/tests/water_treatment_due.rs",
+        "tests/fixtures/water-treatment-runtime/opening.rs",
+        "tests/fixtures/water-treatment-runtime/joint-v2-opening.json",
+        "tests/fixtures/water-treatment-runtime/independent-expected.json"
       ],
       "scope": "消化原#92/85/86已交付内核，接真实处理批和原Stock/Store；原gen/twinpump切段、泵停后用途分配、污染质量/损耗/辅料/人员与维护保管。保留旧V1，新V2显式版本；不以原源库存或未来出水冒充认证供水。",
       "required_capabilities": [
@@ -3128,12 +3145,12 @@
         "输出真实lot归属与成本，有限残余去向、重试/恢复和原票因果",
         "实际联合场景及CPU/内存/磁盘增量；未解不能判短缺"
       ],
-      "remaining": "显式V2 profile+原Runtime有界子状态架构已由原advisor确认并同步设计修订3；实际净Stock/出流/联合P5/Water岗位/Store恢复仍未实现，not_run",
-      "evidence": "docs/handoffs/issue-92-water-treatment.md; docs/water-quality-and-treatment-runtime.md",
-      "implementation_tags": "v0.5.186–188仅组件/idle/成本前置已发布",
+      "remaining": "普通游戏存档回归定位并修复产品搬移票漏带原时钟，source25 Store4项/18world30cold通过；修复后最新共享/原默认栈/资源与旧存档兼容门待验，保持Open。未按推演新增安全专项。",
+      "evidence": "work/water-treatment-runtime-20261025/source23-save-failure-diagnosis.json、完整失败world；source25-results.json/save-25-artifacts；source21修复前共享33组另存，不代最新修复验证。",
+      "implementation_tags": "前置ea310a0/v0.5.190已验132；715758a/v0.5.191仅台账；当前133增量未提交/未发布，PR无。",
       "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
-      "issue_body_sha256": "ca602af538f9c692a9bc2336290511035bc2877f2fa79972d32fd1fa3b547f84",
-      "execution_state": "queued:not-dispatched",
+      "issue_body_sha256": "26f2b45af177e5b73697940437c4f9e50fb039bda621be6bc6cfe18ac6d96fba",
+      "execution_state": "active:core-1",
       "execution_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "execution_contract": "docs/inputs/issue-ledger/execution-flow.json"
     },

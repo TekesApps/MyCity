@@ -1,0 +1,4432 @@
+{
+  "observed_at": "2026-10-25T21:13:33.790774+00:00",
+  "issue": 133,
+  "finite_business_contract": "all four original133 checklist requirements evidenced; publication/backfill/actual close pending",
+  "current_production_files_rechecked": 216,
+  "latest_source32_test_fixture_files_rechecked": 422,
+  "shared_functional_groups": 33,
+  "default_stack_groups": 8,
+  "original_default_groups": 6,
+  "headless_original_and_pooled_tests": 2,
+  "groups_overlap_not_unique_business_count": true,
+  "current_store_worlds": 18,
+  "current_store_independent_cold_processes": 30,
+  "ordinary_save_interrupt_scenarios": 8,
+  "resource_owned": {
+    "all_common8_target_fit": false,
+    "cases": 18,
+    "limits_unchanged": "original base+Housing128KiB; separately budgeted modules included in full Engine4MiB/role8MiB; normal64MiB/default stacks/original M0",
+    "max_base_plus_private_facility_upper": 130144,
+    "max_engine_owned": 3696608,
+    "max_engine_plus_source_reserve": 3794912,
+    "max_source_encoded": 7186,
+    "max_source_owned": 5984,
+    "max_store_owned": 42850559,
+    "max_world_owned": 196352,
+    "not_measured": [
+      "native/allocator/OS/stack peak",
+      "real16GB hardware",
+      "sustainable city speed",
+      "GPU/render/UI"
+    ],
+    "rows": [
+      {
+        "base_plus_private_facility_upper": 130144,
+        "common8_target_fit": false,
+        "engine_owned": 3696608,
+        "engine_plus_source_reserve": 3794912,
+        "metadata_workspace": {
+          "backings": [
+            25581060096,
+            25597837312,
+            45931823104,
+            45936017408,
+            45936082944,
+            45936148480,
+            25602031616,
+            4383215360,
+            4383223552,
+            45936214016
+          ],
+          "byte_capacities": [
+            16777216,
+            4194304,
+            32768,
+            65536,
+            65536,
+            65536
+          ],
+          "lexical_capacity_bytes": 1048576,
+          "operations_capacity_bytes": 8192,
+          "owned_bytes": 26665512,
+          "receipt_capacity_bytes": 4407296,
+          "resource_capacity_bytes": 256
+        },
+        "model_workspace": {
+          "candidate": {
+            "backing": [
+              4383215200,
+              4383215216,
+              4383215296,
+              45929054208,
+              45929119744,
+              45929185280,
+              4383215120,
+              4383215136
+            ],
+            "owned_bytes": 262840
+          },
+          "codec": {
+            "backing_bytes": 4920320,
+            "byte_backing": 25576865792,
+            "traversal_backing": 45929316352
+          },
+          "initial": {
+            "background_tables": [
+              4383210704,
+              4383210720,
+              4383210800,
+              45927284736,
+              45927350272,
+              45927415808,
+              4383210880,
+              4383210864
+            ],
+            "engine_tables": [
+              4383210448,
+              4383208912,
+              25572671488
+            ],
+            "owned_model_bytes": 3696608,
+            "preparation_backing": [
+              45927628800,
+              45915340800,
+              4383211184,
+              4383211200,
+              4383211280,
+              45927546880,
+              45928595456,
+              45928660992,
+              4383211360,
+              4383211344,
+              4383212208,
+              4383212224,
+              4383212304,
+              45928792064,
+              45928857600,
+              45928923136,
+              45919305728,
+              45915471872,
+              4383212944,
+              4383213264,
+              4383210976,
+              4383211456,
+              4383212384,
+              4383212832,
+              4383212896,
+              4383213216,
+              4383214816,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45926318080,
+              45915332608
+            ],
+            "world": 45926236160,
+            "world_tables": [
+              45919291904,
+              4383208144,
+              45915105280,
+              4383208400,
+              45919294464,
+              45915198464,
+              45915586560
+            ]
+          },
+          "owned_bytes": 15553864,
+          "restore": {
+            "background_tables": [
+              4383176512,
+              4383176592,
+              4383184816,
+              45924483072,
+              45924548608,
+              45924614144,
+              4383199904,
+              4383176656
+            ],
+            "engine_tables": [
+              4383176256,
+              4383174720,
+              25568477184
+            ],
+            "owned_model_bytes": 3601872,
+            "preparation_backing": [
+              45924745216,
+              45915324416,
+              4383176672,
+              4383176688,
+              4383200208,
+              45925711872,
+              45925777408,
+              45925842944,
+              4383200288,
+              4383176752,
+              4383201136,
+              4383201152,
+              4383201232,
+              45925974016,
+              45926039552,
+              45926105088,
+              4383201744,
+              45915455488,
+              4383205968,
+              4383206288,
+              4383200000,
+              4383200384,
+              4383201312,
+              4383205856,
+              4383205920,
+              4383206240,
+              4383207840,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45923516416,
+              4383191712
+            ],
+            "world": 45923434496,
+            "world_tables": [
+              4383171648,
+              4383184560,
+              45915062272,
+              4383174208,
+              45919289344,
+              45915193344,
+              4383188640
+            ]
+          }
+        },
+        "separately_reported_modules": 66208,
+        "sequence": 12,
+        "source_cursor": 5500,
+        "source_declared_workspace_reserve": 98304,
+        "source_encoded": 7118,
+        "source_owned": 5984,
+        "source_segments": [
+          {
+            "constrained_tail": null,
+            "electric_contract": 1,
+            "electric_hourly_cents": 3601,
+            "electric_members": 1,
+            "electric_wage_carry": 0,
+            "ended_at": 5000,
+            "generator_seconds": 5000,
+            "generator_seconds_base": 0,
+            "other_start_cents": 150,
+            "processed_base": {
+              "den": 1,
+              "rem": 0,
+              "whole": 0
+            },
+            "processed_until": {
+              "den": 3,
+              "rem": 1,
+              "whole": 83333333
+            },
+            "produced_each_base": 0,
+            "pumps": 3,
+            "raw_ml_base": 0,
+            "source_run": 1,
+            "source_start_revision": 8,
+            "started_at": 0,
+            "treatment_seconds": 5000,
+            "water_contract": 2,
+            "water_hourly_cents": 3601,
+            "water_members": 1,
+            "water_start_cents": 550,
+            "water_wage_carry": 0
+          },
+          {
+            "constrained_tail": null,
+            "electric_contract": 1,
+            "electric_hourly_cents": 3601,
+            "electric_members": 1,
+            "electric_wage_carry": 1400,
+            "ended_at": 5500,
+            "generator_seconds": 500,
+            "generator_seconds_base": 5000,
+            "other_start_cents": 0,
+            "processed_base": {
+              "den": 3,
+              "rem": 1,
+              "whole": 83333333
+            },
+            "processed_until": {
+              "den": 1,
+              "rem": 0,
+              "whole": 100000000
+            },
+            "produced_each_base": 50000000,
+            "pumps": 0,
+            "raw_ml_base": 100000000,
+            "source_run": 1,
+            "source_start_revision": 8,
+            "started_at": 5000,
+            "treatment_seconds": 500,
+            "water_contract": 2,
+            "water_hourly_cents": 3601,
+            "water_members": 1,
+            "water_start_cents": 0,
+            "water_wage_carry": 1400
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "source_snapshot_sha_note": "complete original world and fixed binary retained separately; no native RSS claim",
+        "store_owned": 42850559,
+        "world": "/Volumes/HP P900/dev/MyCity/work/water-treatment-runtime-20261025/shared26-artifacts/mycity-storage-water_treatment_store/water-85649-1792960832827649000/world",
+        "world_owned": 196352
+      },
+      {
+        "base_plus_private_facility_upper": 130144,
+        "common8_target_fit": false,
+        "engine_owned": 3696608,
+        "engine_plus_source_reserve": 3794912,
+        "metadata_workspace": {
+          "backings": [
+            25581060096,
+            25576865792,
+            45931823104,
+            45942636544,
+            45942702080,
+            45942767616,
+            25602031616,
+            45932560384,
+            45911360256,
+            45942833152
+          ],
+          "byte_capacities": [
+            16777216,
+            4194304,
+            32768,
+            65536,
+            65536,
+            65536
+          ],
+          "lexical_capacity_bytes": 1048576,
+          "operations_capacity_bytes": 8192,
+          "owned_bytes": 26665512,
+          "receipt_capacity_bytes": 4407296,
+          "resource_capacity_bytes": 256
+        },
+        "model_workspace": {
+          "candidate": {
+            "backing": [
+              4383171648,
+              45911851712,
+              45912163168,
+              45941637120,
+              45941702656,
+              45941768192,
+              4383242352,
+              45911851648
+            ],
+            "owned_bytes": 262840
+          },
+          "codec": {
+            "backing_bytes": 4920320,
+            "byte_backing": 25597837312,
+            "traversal_backing": 45941899264
+          },
+          "initial": {
+            "background_tables": [
+              4383240320,
+              45911851072,
+              45912163088,
+              45939867648,
+              45939933184,
+              45939998720,
+              4383240400,
+              45912163104
+            ],
+            "engine_tables": [
+              45932085248,
+              45910854656,
+              25572671488
+            ],
+            "owned_model_bytes": 3696608,
+            "preparation_backing": [
+              45940211712,
+              45915348992,
+              4383240704,
+              45911851008,
+              45912163120,
+              45940129792,
+              45941178368,
+              45941243904,
+              4383240784,
+              45912163136,
+              4383241632,
+              45911851456,
+              45912163152,
+              45941374976,
+              45941440512,
+              45941506048,
+              45919309824,
+              45915471872,
+              45932086528,
+              45910856192,
+              4383240496,
+              4383240880,
+              4383241728,
+              45919256976,
+              45911851536,
+              45919257040,
+              45919257104,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45938900992,
+              45915340800
+            ],
+            "world": 45938819072,
+            "world_tables": [
+              45919294464,
+              45932085504,
+              45915105280,
+              45932102144,
+              45919297024,
+              45915198464,
+              45915589632
+            ]
+          },
+          "owned_bytes": 15553864,
+          "restore": {
+            "background_tables": [
+              4383184560,
+              45911851392,
+              45912163008,
+              45937065984,
+              45937131520,
+              45937197056,
+              4383184640,
+              45912163024
+            ],
+            "engine_tables": [
+              45932086016,
+              45910851584,
+              25568477184
+            ],
+            "owned_model_bytes": 3601872,
+            "preparation_backing": [
+              45937328128,
+              45915332608,
+              4383238672,
+              45911851328,
+              45912163040,
+              45938294784,
+              45938360320,
+              45938425856,
+              4383238752,
+              45912163056,
+              4383239600,
+              45911851264,
+              45912163072,
+              45938556928,
+              45938622464,
+              45938688000,
+              45919305728,
+              45915455488,
+              45932085760,
+              45910853120,
+              4383238464,
+              4383238848,
+              4383239696,
+              45919257168,
+              45911851216,
+              45919256848,
+              45919256912,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45936099328,
+              45915324416
+            ],
+            "world": 45936017408,
+            "world_tables": [
+              45919289344,
+              45932086272,
+              45915062272,
+              45932101632,
+              45919291904,
+              45915193344,
+              45915586560
+            ]
+          }
+        },
+        "separately_reported_modules": 66208,
+        "sequence": 14,
+        "source_cursor": 5500,
+        "source_declared_workspace_reserve": 98304,
+        "source_encoded": 7186,
+        "source_owned": 5984,
+        "source_segments": [
+          {
+            "constrained_tail": null,
+            "electric_contract": 1,
+            "electric_hourly_cents": 3601,
+            "electric_members": 1,
+            "electric_wage_carry": 0,
+            "ended_at": 5000,
+            "generator_seconds": 5000,
+            "generator_seconds_base": 0,
+            "other_start_cents": 150,
+            "processed_base": {
+              "den": 1,
+              "rem": 0,
+              "whole": 0
+            },
+            "processed_until": {
+              "den": 3,
+              "rem": 1,
+              "whole": 83333333
+            },
+            "produced_each_base": 0,
+            "pumps": 3,
+            "raw_ml_base": 0,
+            "source_run": 1,
+            "source_start_revision": 8,
+            "started_at": 0,
+            "treatment_seconds": 5000,
+            "water_contract": 2,
+            "water_hourly_cents": 3601,
+            "water_members": 1,
+            "water_start_cents": 550,
+            "water_wage_carry": 0
+          },
+          {
+            "constrained_tail": null,
+            "electric_contract": 1,
+            "electric_hourly_cents": 3601,
+            "electric_members": 1,
+            "electric_wage_carry": 1400,
+            "ended_at": 5500,
+            "generator_seconds": 500,
+            "generator_seconds_base": 5000,
+            "other_start_cents": 0,
+            "processed_base": {
+              "den": 3,
+              "rem": 1,
+              "whole": 83333333
+            },
+            "processed_until": {
+              "den": 1,
+              "rem": 0,
+              "whole": 100000000
+            },
+            "produced_each_base": 50000000,
+            "pumps": 0,
+            "raw_ml_base": 100000000,
+            "source_run": 1,
+            "source_start_revision": 8,
+            "started_at": 5000,
+            "treatment_seconds": 500,
+            "water_contract": 2,
+            "water_hourly_cents": 3601,
+            "water_members": 1,
+            "water_start_cents": 0,
+            "water_wage_carry": 1400
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "source_snapshot_sha_note": "complete original world and fixed binary retained separately; no native RSS claim",
+        "store_owned": 42850559,
+        "world": "/Volumes/HP P900/dev/MyCity/work/water-treatment-runtime-20261025/shared26-artifacts/mycity-storage-water_treatment_store/water-85649-1792960833214676000/world",
+        "world_owned": 196352
+      },
+      {
+        "base_plus_private_facility_upper": 130144,
+        "common8_target_fit": false,
+        "engine_owned": 3696608,
+        "engine_plus_source_reserve": 3794912,
+        "metadata_workspace": {
+          "backings": [
+            25581060096,
+            25597837312,
+            45931823104,
+            45946830848,
+            45946896384,
+            45946961920,
+            25602031616,
+            45932560384,
+            45911360256,
+            45947027456
+          ],
+          "byte_capacities": [
+            16777216,
+            4194304,
+            32768,
+            65536,
+            65536,
+            65536
+          ],
+          "lexical_capacity_bytes": 1048576,
+          "operations_capacity_bytes": 8192,
+          "owned_bytes": 26665512,
+          "receipt_capacity_bytes": 4407296,
+          "resource_capacity_bytes": 256
+        },
+        "model_workspace": {
+          "candidate": {
+            "backing": [
+              45911851712,
+              45912163088,
+              45933069088,
+              45945831424,
+              45945896960,
+              45945962496,
+              45933035520,
+              45911851648
+            ],
+            "owned_bytes": 262840
+          },
+          "codec": {
+            "backing_bytes": 4920320,
+            "byte_backing": 25576865792,
+            "traversal_backing": 45946093568
+          },
+          "initial": {
+            "background_tables": [
+              45911851328,
+              45912163008,
+              45933068688,
+              45944061952,
+              45944127488,
+              45944193024,
+              45933068768,
+              45912163152
+            ],
+            "engine_tables": [
+              45932086272,
+              45910854656,
+              25572671488
+            ],
+            "owned_model_bytes": 3696608,
+            "preparation_backing": [
+              45944406016,
+              45915348992,
+              45911851392,
+              45912163136,
+              45933068848,
+              45944324096,
+              45945372672,
+              45945438208,
+              45933068928,
+              45912163120,
+              45911851456,
+              45912163104,
+              45933069008,
+              45945569280,
+              45945634816,
+              45945700352,
+              45919309824,
+              45915471872,
+              45932086528,
+              45910856192,
+              4383176064,
+              4383171664,
+              4383172432,
+              45919257168,
+              45911851536,
+              45919257104,
+              45919257040,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45943095296,
+              45915340800
+            ],
+            "world": 45943013376,
+            "world_tables": [
+              45919294464,
+              45932086016,
+              45915105280,
+              45932102144,
+              45919297024,
+              45915198464,
+              45915589632
+            ]
+          },
+          "owned_bytes": 15553864,
+          "restore": {
+            "background_tables": [
+              45911851008,
+              45912163168,
+              45933068288,
+              45941260288,
+              45941325824,
+              45941391360,
+              45933068368,
+              45912163072
+            ],
+            "engine_tables": [
+              45932085504,
+              45910851584,
+              25568477184
+            ],
+            "owned_model_bytes": 3601872,
+            "preparation_backing": [
+              45941522432,
+              45915332608,
+              45911851072,
+              45912163056,
+              45933068448,
+              45942489088,
+              45942554624,
+              45942620160,
+              45933068528,
+              45912163040,
+              45911851136,
+              45912163024,
+              45933068608,
+              45942751232,
+              45942816768,
+              45942882304,
+              45919305728,
+              45915455488,
+              45932085760,
+              45910853120,
+              4383184576,
+              4383174656,
+              4383175424,
+              45919257232,
+              45911851216,
+              45919256912,
+              45919256848,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45940293632,
+              45915324416
+            ],
+            "world": 45940211712,
+            "world_tables": [
+              45919289344,
+              45932085248,
+              45915062272,
+              45932101632,
+              45919291904,
+              45915193344,
+              45915586560
+            ]
+          }
+        },
+        "separately_reported_modules": 66208,
+        "sequence": 9,
+        "source_cursor": 4,
+        "source_declared_workspace_reserve": 98304,
+        "source_encoded": 6389,
+        "source_owned": 5984,
+        "source_segments": [
+          {
+            "constrained_tail": null,
+            "electric_contract": 1,
+            "electric_hourly_cents": 3601,
+            "electric_members": 1,
+            "electric_wage_carry": 0,
+            "ended_at": null,
+            "generator_seconds": 4,
+            "generator_seconds_base": 0,
+            "other_start_cents": 150,
+            "processed_base": {
+              "den": 1,
+              "rem": 0,
+              "whole": 0
+            },
+            "processed_until": {
+              "den": 3,
+              "rem": 2,
+              "whole": 66666
+            },
+            "produced_each_base": 0,
+            "pumps": 3,
+            "raw_ml_base": 0,
+            "source_run": 1,
+            "source_start_revision": 8,
+            "started_at": 0,
+            "treatment_seconds": 4,
+            "water_contract": 2,
+            "water_hourly_cents": 3601,
+            "water_members": 1,
+            "water_start_cents": 550,
+            "water_wage_carry": 0
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "source_snapshot_sha_note": "complete original world and fixed binary retained separately; no native RSS claim",
+        "store_owned": 42850559,
+        "world": "/Volumes/HP P900/dev/MyCity/work/water-treatment-runtime-20261025/shared26-artifacts/mycity-storage-water_treatment_store/water-85649-1792960833514867000/world",
+        "world_owned": 196352
+      },
+      {
+        "base_plus_private_facility_upper": 130144,
+        "common8_target_fit": false,
+        "engine_owned": 3696608,
+        "engine_plus_source_reserve": 3794912,
+        "metadata_workspace": {
+          "backings": [
+            25581060096,
+            25576865792,
+            45931823104,
+            45938442240,
+            45938507776,
+            45938573312,
+            25602031616,
+            45932560384,
+            45911360256,
+            45938638848
+          ],
+          "byte_capacities": [
+            16777216,
+            4194304,
+            32768,
+            65536,
+            65536,
+            65536
+          ],
+          "lexical_capacity_bytes": 1048576,
+          "operations_capacity_bytes": 8192,
+          "owned_bytes": 26665512,
+          "receipt_capacity_bytes": 4407296,
+          "resource_capacity_bytes": 256
+        },
+        "model_workspace": {
+          "candidate": {
+            "backing": [
+              45911851712,
+              45912163008,
+              45933069088,
+              45937442816,
+              45937508352,
+              45937573888,
+              45933035520,
+              45911851648
+            ],
+            "owned_bytes": 262840
+          },
+          "codec": {
+            "backing_bytes": 4920320,
+            "byte_backing": 25597837312,
+            "traversal_backing": 45937704960
+          },
+          "initial": {
+            "background_tables": [
+              45911851328,
+              45912163168,
+              45933068688,
+              45948256256,
+              45948321792,
+              45948387328,
+              45933068768,
+              45912163104
+            ],
+            "engine_tables": [
+              45932086272,
+              45910854656,
+              25572671488
+            ],
+            "owned_model_bytes": 3696608,
+            "preparation_backing": [
+              45936017408,
+              45915348992,
+              45911851392,
+              45912163120,
+              45933068848,
+              45936984064,
+              45937049600,
+              45948518400,
+              45933068928,
+              45912163136,
+              45911851456,
+              45912163152,
+              45933069008,
+              45937180672,
+              45937246208,
+              45937311744,
+              45919309824,
+              45915471872,
+              45932086528,
+              45910856192,
+              45933134064,
+              45912440848,
+              45933150672,
+              45919257232,
+              45911851536,
+              45919257040,
+              45919257104,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45947289600,
+              45915340800
+            ],
+            "world": 45947207680,
+            "world_tables": [
+              45919294464,
+              45932086016,
+              45915105280,
+              45932102144,
+              45919297024,
+              45915198464,
+              45915589632
+            ]
+          },
+          "owned_bytes": 15553864,
+          "restore": {
+            "background_tables": [
+              45911851008,
+              45912163088,
+              45933068288,
+              45945454592,
+              45945520128,
+              45945585664,
+              45933068368,
+              45912163024
+            ],
+            "engine_tables": [
+              45932085504,
+              45910851584,
+              25568477184
+            ],
+            "owned_model_bytes": 3601872,
+            "preparation_backing": [
+              45945716736,
+              45915332608,
+              45911851072,
+              45912163040,
+              45933068448,
+              45946683392,
+              45946748928,
+              45946814464,
+              45933068528,
+              45912163056,
+              45911851136,
+              45912163072,
+              45933068608,
+              45946945536,
+              45947011072,
+              45947076608,
+              45919305728,
+              45915455488,
+              45932085760,
+              45910853120,
+              45933133840,
+              4383174656,
+              45933150224,
+              45919256976,
+              45911851216,
+              45919256848,
+              45919256912,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45944487936,
+              45915324416
+            ],
+            "world": 45944406016,
+            "world_tables": [
+              45919289344,
+              45932085248,
+              45915062272,
+              45932101632,
+              45919291904,
+              45915193344,
+              45915586560
+            ]
+          }
+        },
+        "separately_reported_modules": 66208,
+        "sequence": 9,
+        "source_cursor": 4,
+        "source_declared_workspace_reserve": 98304,
+        "source_encoded": 6389,
+        "source_owned": 5984,
+        "source_segments": [
+          {
+            "constrained_tail": null,
+            "electric_contract": 1,
+            "electric_hourly_cents": 3601,
+            "electric_members": 1,
+            "electric_wage_carry": 0,
+            "ended_at": null,
+            "generator_seconds": 4,
+            "generator_seconds_base": 0,
+            "other_start_cents": 150,
+            "processed_base": {
+              "den": 1,
+              "rem": 0,
+              "whole": 0
+            },
+            "processed_until": {
+              "den": 3,
+              "rem": 2,
+              "whole": 66666
+            },
+            "produced_each_base": 0,
+            "pumps": 3,
+            "raw_ml_base": 0,
+            "source_run": 1,
+            "source_start_revision": 8,
+            "started_at": 0,
+            "treatment_seconds": 4,
+            "water_contract": 2,
+            "water_hourly_cents": 3601,
+            "water_members": 1,
+            "water_start_cents": 550,
+            "water_wage_carry": 0
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "source_snapshot_sha_note": "complete original world and fixed binary retained separately; no native RSS claim",
+        "store_owned": 42850559,
+        "world": "/Volumes/HP P900/dev/MyCity/work/water-treatment-runtime-20261025/shared26-artifacts/mycity-storage-water_treatment_store/water-85649-1792960833634892000/world",
+        "world_owned": 196352
+      },
+      {
+        "base_plus_private_facility_upper": 130144,
+        "common8_target_fit": false,
+        "engine_owned": 3696608,
+        "engine_plus_source_reserve": 3794912,
+        "metadata_workspace": {
+          "backings": [
+            25581060096,
+            25597837312,
+            45931823104,
+            45942636544,
+            45942702080,
+            45942767616,
+            25602031616,
+            45932560384,
+            45911360256,
+            45942833152
+          ],
+          "byte_capacities": [
+            16777216,
+            4194304,
+            32768,
+            65536,
+            65536,
+            65536
+          ],
+          "lexical_capacity_bytes": 1048576,
+          "operations_capacity_bytes": 8192,
+          "owned_bytes": 26665512,
+          "receipt_capacity_bytes": 4407296,
+          "resource_capacity_bytes": 256
+        },
+        "model_workspace": {
+          "candidate": {
+            "backing": [
+              45911851712,
+              45912163168,
+              45933069088,
+              45941637120,
+              45941702656,
+              45941768192,
+              45933035520,
+              45911851648
+            ],
+            "owned_bytes": 262840
+          },
+          "codec": {
+            "backing_bytes": 4920320,
+            "byte_backing": 25576865792,
+            "traversal_backing": 45941899264
+          },
+          "initial": {
+            "background_tables": [
+              45911851328,
+              45912163088,
+              45933068688,
+              45939867648,
+              45939933184,
+              45939998720,
+              45933068768,
+              45912163152
+            ],
+            "engine_tables": [
+              45932086272,
+              45910854656,
+              25572671488
+            ],
+            "owned_model_bytes": 3696608,
+            "preparation_backing": [
+              45940211712,
+              45915348992,
+              45911851392,
+              45912163136,
+              45933068848,
+              45940129792,
+              45941178368,
+              45941243904,
+              45933068928,
+              45912163120,
+              45911851456,
+              45912163104,
+              45933069008,
+              45941374976,
+              45941440512,
+              45941506048,
+              45919309824,
+              45915471872,
+              45932086528,
+              45910856192,
+              45933134064,
+              45912441616,
+              45933150672,
+              45919256976,
+              45911851536,
+              45919257104,
+              45919257040,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45938900992,
+              45915340800
+            ],
+            "world": 45938819072,
+            "world_tables": [
+              45919294464,
+              45932086016,
+              45915105280,
+              45932102144,
+              45919297024,
+              45915198464,
+              45915589632
+            ]
+          },
+          "owned_bytes": 15553864,
+          "restore": {
+            "background_tables": [
+              45911851008,
+              45912163008,
+              45933068288,
+              45937065984,
+              45937131520,
+              45937197056,
+              45933068368,
+              45912163072
+            ],
+            "engine_tables": [
+              45932085504,
+              45910851584,
+              25568477184
+            ],
+            "owned_model_bytes": 3601872,
+            "preparation_backing": [
+              45937328128,
+              45915332608,
+              45911851072,
+              45912163056,
+              45933068448,
+              45938294784,
+              45938360320,
+              45938425856,
+              45933068528,
+              45912163040,
+              45911851136,
+              45912163024,
+              45933068608,
+              45938556928,
+              45938622464,
+              45938688000,
+              45919305728,
+              45915455488,
+              45932085760,
+              45910853120,
+              45933133840,
+              45912440848,
+              45933150224,
+              45919257168,
+              45911851216,
+              45919256912,
+              45919256848,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45936099328,
+              45915324416
+            ],
+            "world": 45936017408,
+            "world_tables": [
+              45919289344,
+              45932085248,
+              45915062272,
+              45932101632,
+              45919291904,
+              45915193344,
+              45915586560
+            ]
+          }
+        },
+        "separately_reported_modules": 66208,
+        "sequence": 9,
+        "source_cursor": 4,
+        "source_declared_workspace_reserve": 98304,
+        "source_encoded": 6389,
+        "source_owned": 5984,
+        "source_segments": [
+          {
+            "constrained_tail": null,
+            "electric_contract": 1,
+            "electric_hourly_cents": 3601,
+            "electric_members": 1,
+            "electric_wage_carry": 0,
+            "ended_at": null,
+            "generator_seconds": 4,
+            "generator_seconds_base": 0,
+            "other_start_cents": 150,
+            "processed_base": {
+              "den": 1,
+              "rem": 0,
+              "whole": 0
+            },
+            "processed_until": {
+              "den": 3,
+              "rem": 2,
+              "whole": 66666
+            },
+            "produced_each_base": 0,
+            "pumps": 3,
+            "raw_ml_base": 0,
+            "source_run": 1,
+            "source_start_revision": 8,
+            "started_at": 0,
+            "treatment_seconds": 4,
+            "water_contract": 2,
+            "water_hourly_cents": 3601,
+            "water_members": 1,
+            "water_start_cents": 550,
+            "water_wage_carry": 0
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "source_snapshot_sha_note": "complete original world and fixed binary retained separately; no native RSS claim",
+        "store_owned": 42850559,
+        "world": "/Volumes/HP P900/dev/MyCity/work/water-treatment-runtime-20261025/shared26-artifacts/mycity-storage-water_treatment_store/water-85649-1792960833758633000/world",
+        "world_owned": 196352
+      },
+      {
+        "base_plus_private_facility_upper": 130144,
+        "common8_target_fit": false,
+        "engine_owned": 3696608,
+        "engine_plus_source_reserve": 3794912,
+        "metadata_workspace": {
+          "backings": [
+            25581060096,
+            25576865792,
+            45931823104,
+            45946830848,
+            45946896384,
+            45946961920,
+            25602031616,
+            45932560384,
+            45911360256,
+            45947027456
+          ],
+          "byte_capacities": [
+            16777216,
+            4194304,
+            32768,
+            65536,
+            65536,
+            65536
+          ],
+          "lexical_capacity_bytes": 1048576,
+          "operations_capacity_bytes": 8192,
+          "owned_bytes": 26665512,
+          "receipt_capacity_bytes": 4407296,
+          "resource_capacity_bytes": 256
+        },
+        "model_workspace": {
+          "candidate": {
+            "backing": [
+              45911851712,
+              45912163088,
+              45933069088,
+              45945831424,
+              45945896960,
+              45945962496,
+              45933035520,
+              45911851648
+            ],
+            "owned_bytes": 262840
+          },
+          "codec": {
+            "backing_bytes": 4920320,
+            "byte_backing": 25597837312,
+            "traversal_backing": 45946093568
+          },
+          "initial": {
+            "background_tables": [
+              45911851328,
+              45912163008,
+              45933068688,
+              45944061952,
+              45944127488,
+              45944193024,
+              45933068768,
+              45912163104
+            ],
+            "engine_tables": [
+              45932086272,
+              45910854656,
+              25572671488
+            ],
+            "owned_model_bytes": 3696608,
+            "preparation_backing": [
+              45944406016,
+              45915348992,
+              45911851392,
+              45912163120,
+              45933068848,
+              45944324096,
+              45945372672,
+              45945438208,
+              45933068928,
+              45912163136,
+              45911851456,
+              45912163152,
+              45933069008,
+              45945569280,
+              45945634816,
+              45945700352,
+              45919309824,
+              45915471872,
+              45932086016,
+              45910856192,
+              45933134064,
+              45912441616,
+              45933150672,
+              45919257168,
+              45911851536,
+              45919257040,
+              45919257104,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45943095296,
+              45915340800
+            ],
+            "world": 45943013376,
+            "world_tables": [
+              45919294464,
+              45932086528,
+              45915105280,
+              45932102144,
+              45919297024,
+              45915198464,
+              45915589632
+            ]
+          },
+          "owned_bytes": 15553864,
+          "restore": {
+            "background_tables": [
+              45911851008,
+              45912163168,
+              45933068288,
+              45941260288,
+              45941325824,
+              45941391360,
+              45933068368,
+              45912163024
+            ],
+            "engine_tables": [
+              45932085504,
+              45910851584,
+              25568477184
+            ],
+            "owned_model_bytes": 3601872,
+            "preparation_backing": [
+              45941522432,
+              45915332608,
+              45911851072,
+              45912163040,
+              45933068448,
+              45942489088,
+              45942554624,
+              45942620160,
+              45933068528,
+              45912163056,
+              45911851136,
+              45912163072,
+              45933068608,
+              45942751232,
+              45942816768,
+              45942882304,
+              45919305728,
+              45915455488,
+              45932085248,
+              45910853120,
+              45933133840,
+              45912440848,
+              45933150224,
+              45919257232,
+              45911851216,
+              45919256848,
+              45919256912,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45940293632,
+              45915324416
+            ],
+            "world": 45940211712,
+            "world_tables": [
+              45919289344,
+              45932085760,
+              45915062272,
+              45932101632,
+              45919291904,
+              45915193344,
+              45915586560
+            ]
+          }
+        },
+        "separately_reported_modules": 66208,
+        "sequence": 9,
+        "source_cursor": 4,
+        "source_declared_workspace_reserve": 98304,
+        "source_encoded": 6389,
+        "source_owned": 5984,
+        "source_segments": [
+          {
+            "constrained_tail": null,
+            "electric_contract": 1,
+            "electric_hourly_cents": 3601,
+            "electric_members": 1,
+            "electric_wage_carry": 0,
+            "ended_at": null,
+            "generator_seconds": 4,
+            "generator_seconds_base": 0,
+            "other_start_cents": 150,
+            "processed_base": {
+              "den": 1,
+              "rem": 0,
+              "whole": 0
+            },
+            "processed_until": {
+              "den": 3,
+              "rem": 2,
+              "whole": 66666
+            },
+            "produced_each_base": 0,
+            "pumps": 3,
+            "raw_ml_base": 0,
+            "source_run": 1,
+            "source_start_revision": 8,
+            "started_at": 0,
+            "treatment_seconds": 4,
+            "water_contract": 2,
+            "water_hourly_cents": 3601,
+            "water_members": 1,
+            "water_start_cents": 550,
+            "water_wage_carry": 0
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "source_snapshot_sha_note": "complete original world and fixed binary retained separately; no native RSS claim",
+        "store_owned": 42850559,
+        "world": "/Volumes/HP P900/dev/MyCity/work/water-treatment-runtime-20261025/shared26-artifacts/mycity-storage-water_treatment_store/water-85649-1792960833883603000/world",
+        "world_owned": 196352
+      },
+      {
+        "base_plus_private_facility_upper": 130144,
+        "common8_target_fit": false,
+        "engine_owned": 3696608,
+        "engine_plus_source_reserve": 3794912,
+        "metadata_workspace": {
+          "backings": [
+            25581060096,
+            25597837312,
+            45931823104,
+            45938442240,
+            45938507776,
+            45938573312,
+            25602031616,
+            45932560384,
+            45911360256,
+            45938638848
+          ],
+          "byte_capacities": [
+            16777216,
+            4194304,
+            32768,
+            65536,
+            65536,
+            65536
+          ],
+          "lexical_capacity_bytes": 1048576,
+          "operations_capacity_bytes": 8192,
+          "owned_bytes": 26665512,
+          "receipt_capacity_bytes": 4407296,
+          "resource_capacity_bytes": 256
+        },
+        "model_workspace": {
+          "candidate": {
+            "backing": [
+              45911851712,
+              45912163008,
+              45933069088,
+              45937442816,
+              45937508352,
+              45937573888,
+              45933035520,
+              45911851648
+            ],
+            "owned_bytes": 262840
+          },
+          "codec": {
+            "backing_bytes": 4920320,
+            "byte_backing": 25576865792,
+            "traversal_backing": 45937704960
+          },
+          "initial": {
+            "background_tables": [
+              45911851328,
+              45912163168,
+              45933068688,
+              45948256256,
+              45948321792,
+              45948387328,
+              45933068768,
+              45912163152
+            ],
+            "engine_tables": [
+              45932086272,
+              45910854656,
+              25572671488
+            ],
+            "owned_model_bytes": 3696608,
+            "preparation_backing": [
+              45936017408,
+              45915348992,
+              45911851392,
+              45912163136,
+              45933068848,
+              45936984064,
+              45937049600,
+              45948518400,
+              45933068928,
+              45912163120,
+              45911851456,
+              45912163104,
+              45933069008,
+              45937180672,
+              45937246208,
+              45937311744,
+              45919309824,
+              45915471872,
+              45932086528,
+              45910856192,
+              45933134064,
+              45912441616,
+              45933150672,
+              45919257232,
+              45911851536,
+              45919257104,
+              45919257040,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45947289600,
+              45915340800
+            ],
+            "world": 45947207680,
+            "world_tables": [
+              45919294464,
+              45932086016,
+              45915105280,
+              45932102144,
+              45919297024,
+              45915198464,
+              45915589632
+            ]
+          },
+          "owned_bytes": 15553864,
+          "restore": {
+            "background_tables": [
+              45911851008,
+              45912163088,
+              45933068288,
+              45945454592,
+              45945520128,
+              45945585664,
+              45933068368,
+              45912163072
+            ],
+            "engine_tables": [
+              45932085504,
+              45910851584,
+              25568477184
+            ],
+            "owned_model_bytes": 3601872,
+            "preparation_backing": [
+              45945716736,
+              45915332608,
+              45911851072,
+              45912163056,
+              45933068448,
+              45946683392,
+              45946748928,
+              45946814464,
+              45933068528,
+              45912163040,
+              45911851136,
+              45912163024,
+              45933068608,
+              45946945536,
+              45947011072,
+              45947076608,
+              45919305728,
+              45915455488,
+              45932085760,
+              45910853120,
+              45933133840,
+              45912440848,
+              45933150224,
+              45919256976,
+              45911851216,
+              45919256912,
+              45919256848,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45944487936,
+              45915324416
+            ],
+            "world": 45944406016,
+            "world_tables": [
+              45919289344,
+              45932085248,
+              45915062272,
+              45932101632,
+              45919291904,
+              45915193344,
+              45915586560
+            ]
+          }
+        },
+        "separately_reported_modules": 66208,
+        "sequence": 9,
+        "source_cursor": 4,
+        "source_declared_workspace_reserve": 98304,
+        "source_encoded": 6389,
+        "source_owned": 5984,
+        "source_segments": [
+          {
+            "constrained_tail": null,
+            "electric_contract": 1,
+            "electric_hourly_cents": 3601,
+            "electric_members": 1,
+            "electric_wage_carry": 0,
+            "ended_at": null,
+            "generator_seconds": 4,
+            "generator_seconds_base": 0,
+            "other_start_cents": 150,
+            "processed_base": {
+              "den": 1,
+              "rem": 0,
+              "whole": 0
+            },
+            "processed_until": {
+              "den": 3,
+              "rem": 2,
+              "whole": 66666
+            },
+            "produced_each_base": 0,
+            "pumps": 3,
+            "raw_ml_base": 0,
+            "source_run": 1,
+            "source_start_revision": 8,
+            "started_at": 0,
+            "treatment_seconds": 4,
+            "water_contract": 2,
+            "water_hourly_cents": 3601,
+            "water_members": 1,
+            "water_start_cents": 550,
+            "water_wage_carry": 0
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "source_snapshot_sha_note": "complete original world and fixed binary retained separately; no native RSS claim",
+        "store_owned": 42850559,
+        "world": "/Volumes/HP P900/dev/MyCity/work/water-treatment-runtime-20261025/shared26-artifacts/mycity-storage-water_treatment_store/water-85649-1792960834012128000/world",
+        "world_owned": 196352
+      },
+      {
+        "base_plus_private_facility_upper": 130144,
+        "common8_target_fit": false,
+        "engine_owned": 3696608,
+        "engine_plus_source_reserve": 3794912,
+        "metadata_workspace": {
+          "backings": [
+            25581060096,
+            25576865792,
+            45931823104,
+            45942636544,
+            45942702080,
+            45942767616,
+            25602031616,
+            45932560384,
+            45911360256,
+            45942833152
+          ],
+          "byte_capacities": [
+            16777216,
+            4194304,
+            32768,
+            65536,
+            65536,
+            65536
+          ],
+          "lexical_capacity_bytes": 1048576,
+          "operations_capacity_bytes": 8192,
+          "owned_bytes": 26665512,
+          "receipt_capacity_bytes": 4407296,
+          "resource_capacity_bytes": 256
+        },
+        "model_workspace": {
+          "candidate": {
+            "backing": [
+              45911851712,
+              45912163168,
+              45933069088,
+              45941637120,
+              45941702656,
+              45941768192,
+              45933035520,
+              45911851648
+            ],
+            "owned_bytes": 262840
+          },
+          "codec": {
+            "backing_bytes": 4920320,
+            "byte_backing": 25597837312,
+            "traversal_backing": 45941899264
+          },
+          "initial": {
+            "background_tables": [
+              45911851328,
+              45912163088,
+              45933068688,
+              45939867648,
+              45939933184,
+              45939998720,
+              45933068768,
+              45912163104
+            ],
+            "engine_tables": [
+              45932086272,
+              45910854656,
+              25572671488
+            ],
+            "owned_model_bytes": 3696608,
+            "preparation_backing": [
+              45940211712,
+              45915348992,
+              45911851392,
+              45912163120,
+              45933068848,
+              45940129792,
+              45941178368,
+              45941243904,
+              45933068928,
+              45912163136,
+              45911851456,
+              45912163152,
+              45933069008,
+              45941374976,
+              45941440512,
+              45941506048,
+              45919309824,
+              45915471872,
+              45932086016,
+              45910856192,
+              45933134064,
+              45912441616,
+              45933150672,
+              45919256976,
+              45911851536,
+              45919257040,
+              45919257104,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45938900992,
+              45915340800
+            ],
+            "world": 45938819072,
+            "world_tables": [
+              45919294464,
+              45932086528,
+              45915105280,
+              45932102144,
+              45919297024,
+              45915198464,
+              45915589632
+            ]
+          },
+          "owned_bytes": 15553864,
+          "restore": {
+            "background_tables": [
+              45911851008,
+              45912163008,
+              45933068288,
+              45937065984,
+              45937131520,
+              45937197056,
+              45933068368,
+              45912163024
+            ],
+            "engine_tables": [
+              45932085504,
+              45910851584,
+              25568477184
+            ],
+            "owned_model_bytes": 3601872,
+            "preparation_backing": [
+              45937328128,
+              45915332608,
+              45911851072,
+              45912163040,
+              45933068448,
+              45938294784,
+              45938360320,
+              45938425856,
+              45933068528,
+              45912163056,
+              45911851136,
+              45912163072,
+              45933068608,
+              45938556928,
+              45938622464,
+              45938688000,
+              45919305728,
+              45915455488,
+              45932085248,
+              45910853120,
+              45933133840,
+              45912440848,
+              45933150224,
+              45919257168,
+              45911851216,
+              45919256848,
+              45919256912,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45936099328,
+              45915324416
+            ],
+            "world": 45936017408,
+            "world_tables": [
+              45919289344,
+              45932085760,
+              45915062272,
+              45932101632,
+              45919291904,
+              45915193344,
+              45915586560
+            ]
+          }
+        },
+        "separately_reported_modules": 66208,
+        "sequence": 10,
+        "source_cursor": 3,
+        "source_declared_workspace_reserve": 98304,
+        "source_encoded": 6390,
+        "source_owned": 5984,
+        "source_segments": [
+          {
+            "constrained_tail": null,
+            "electric_contract": 1,
+            "electric_hourly_cents": 3601,
+            "electric_members": 1,
+            "electric_wage_carry": 0,
+            "ended_at": null,
+            "generator_seconds": 3,
+            "generator_seconds_base": 0,
+            "other_start_cents": 150,
+            "processed_base": {
+              "den": 1,
+              "rem": 0,
+              "whole": 0
+            },
+            "processed_until": {
+              "den": 1,
+              "rem": 0,
+              "whole": 50000
+            },
+            "produced_each_base": 0,
+            "pumps": 3,
+            "raw_ml_base": 0,
+            "source_run": 1,
+            "source_start_revision": 8,
+            "started_at": 0,
+            "treatment_seconds": 3,
+            "water_contract": 2,
+            "water_hourly_cents": 3601,
+            "water_members": 1,
+            "water_start_cents": 550,
+            "water_wage_carry": 0
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "source_snapshot_sha_note": "complete original world and fixed binary retained separately; no native RSS claim",
+        "store_owned": 42850559,
+        "world": "/Volumes/HP P900/dev/MyCity/work/water-treatment-runtime-20261025/shared26-artifacts/mycity-storage-water_treatment_store/water-85649-1792960834131474000/world",
+        "world_owned": 196352
+      },
+      {
+        "base_plus_private_facility_upper": 130144,
+        "common8_target_fit": false,
+        "engine_owned": 3696608,
+        "engine_plus_source_reserve": 3794912,
+        "metadata_workspace": {
+          "backings": [
+            25581060096,
+            25597837312,
+            45931823104,
+            45946830848,
+            45946896384,
+            45946961920,
+            25602031616,
+            45932560384,
+            45911360256,
+            45947027456
+          ],
+          "byte_capacities": [
+            16777216,
+            4194304,
+            32768,
+            65536,
+            65536,
+            65536
+          ],
+          "lexical_capacity_bytes": 1048576,
+          "operations_capacity_bytes": 8192,
+          "owned_bytes": 26665512,
+          "receipt_capacity_bytes": 4407296,
+          "resource_capacity_bytes": 256
+        },
+        "model_workspace": {
+          "candidate": {
+            "backing": [
+              45911851712,
+              45912163088,
+              45933069088,
+              45945831424,
+              45945896960,
+              45945962496,
+              45933035520,
+              45911851648
+            ],
+            "owned_bytes": 262840
+          },
+          "codec": {
+            "backing_bytes": 4920320,
+            "byte_backing": 25576865792,
+            "traversal_backing": 45946093568
+          },
+          "initial": {
+            "background_tables": [
+              45911851328,
+              45912163008,
+              45933068688,
+              45944061952,
+              45944127488,
+              45944193024,
+              45933068768,
+              45912163152
+            ],
+            "engine_tables": [
+              45932086272,
+              45910854656,
+              25572671488
+            ],
+            "owned_model_bytes": 3696608,
+            "preparation_backing": [
+              45944406016,
+              45915348992,
+              45911851392,
+              45912163136,
+              45933068848,
+              45944324096,
+              45945372672,
+              45945438208,
+              45933068928,
+              45912163120,
+              45911851456,
+              45912163104,
+              45933069008,
+              45945569280,
+              45945634816,
+              45945700352,
+              45919309824,
+              45915471872,
+              45932086528,
+              45910856192,
+              45933134064,
+              45912441616,
+              45933150672,
+              45919257168,
+              45911851536,
+              45919257104,
+              45919257040,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45943095296,
+              45915340800
+            ],
+            "world": 45943013376,
+            "world_tables": [
+              45919294464,
+              45932086016,
+              45915105280,
+              45932102144,
+              45919297024,
+              45915198464,
+              45915589632
+            ]
+          },
+          "owned_bytes": 15553864,
+          "restore": {
+            "background_tables": [
+              45911851008,
+              45912163168,
+              45933068288,
+              45941260288,
+              45941325824,
+              45941391360,
+              45933068368,
+              45912163072
+            ],
+            "engine_tables": [
+              45932085504,
+              45910851584,
+              25568477184
+            ],
+            "owned_model_bytes": 3601872,
+            "preparation_backing": [
+              45941522432,
+              45915332608,
+              45911851072,
+              45912163056,
+              45933068448,
+              45942489088,
+              45942554624,
+              45942620160,
+              45933068528,
+              45912163040,
+              45911851136,
+              45912163024,
+              45933068608,
+              45942751232,
+              45942816768,
+              45942882304,
+              45919305728,
+              45915455488,
+              45932085760,
+              45910853120,
+              45933133840,
+              45912440848,
+              45933150224,
+              45919257232,
+              45911851216,
+              45919256912,
+              45919256848,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45940293632,
+              45915324416
+            ],
+            "world": 45940211712,
+            "world_tables": [
+              45919289344,
+              45932085248,
+              45915062272,
+              45932101632,
+              45919291904,
+              45915193344,
+              45915586560
+            ]
+          }
+        },
+        "separately_reported_modules": 66208,
+        "sequence": 10,
+        "source_cursor": 3,
+        "source_declared_workspace_reserve": 98304,
+        "source_encoded": 6390,
+        "source_owned": 5984,
+        "source_segments": [
+          {
+            "constrained_tail": null,
+            "electric_contract": 1,
+            "electric_hourly_cents": 3601,
+            "electric_members": 1,
+            "electric_wage_carry": 0,
+            "ended_at": null,
+            "generator_seconds": 3,
+            "generator_seconds_base": 0,
+            "other_start_cents": 150,
+            "processed_base": {
+              "den": 1,
+              "rem": 0,
+              "whole": 0
+            },
+            "processed_until": {
+              "den": 1,
+              "rem": 0,
+              "whole": 50000
+            },
+            "produced_each_base": 0,
+            "pumps": 3,
+            "raw_ml_base": 0,
+            "source_run": 1,
+            "source_start_revision": 8,
+            "started_at": 0,
+            "treatment_seconds": 3,
+            "water_contract": 2,
+            "water_hourly_cents": 3601,
+            "water_members": 1,
+            "water_start_cents": 550,
+            "water_wage_carry": 0
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "source_snapshot_sha_note": "complete original world and fixed binary retained separately; no native RSS claim",
+        "store_owned": 42850559,
+        "world": "/Volumes/HP P900/dev/MyCity/work/water-treatment-runtime-20261025/shared26-artifacts/mycity-storage-water_treatment_store/water-85649-1792960834248130000/world",
+        "world_owned": 196352
+      },
+      {
+        "base_plus_private_facility_upper": 130144,
+        "common8_target_fit": false,
+        "engine_owned": 3696608,
+        "engine_plus_source_reserve": 3794912,
+        "metadata_workspace": {
+          "backings": [
+            25581060096,
+            25576865792,
+            45931823104,
+            45938442240,
+            45938507776,
+            45938573312,
+            25602031616,
+            45932560384,
+            45911360256,
+            45938638848
+          ],
+          "byte_capacities": [
+            16777216,
+            4194304,
+            32768,
+            65536,
+            65536,
+            65536
+          ],
+          "lexical_capacity_bytes": 1048576,
+          "operations_capacity_bytes": 8192,
+          "owned_bytes": 26665512,
+          "receipt_capacity_bytes": 4407296,
+          "resource_capacity_bytes": 256
+        },
+        "model_workspace": {
+          "candidate": {
+            "backing": [
+              45911851712,
+              45912163008,
+              45933069088,
+              45937442816,
+              45937508352,
+              45937573888,
+              45933035520,
+              45911851648
+            ],
+            "owned_bytes": 262840
+          },
+          "codec": {
+            "backing_bytes": 4920320,
+            "byte_backing": 25597837312,
+            "traversal_backing": 45937704960
+          },
+          "initial": {
+            "background_tables": [
+              45911851328,
+              45912163168,
+              45933068688,
+              45948256256,
+              45948321792,
+              45948387328,
+              45933068768,
+              45912163104
+            ],
+            "engine_tables": [
+              45932086272,
+              45910854656,
+              25572671488
+            ],
+            "owned_model_bytes": 3696608,
+            "preparation_backing": [
+              45936017408,
+              45915348992,
+              45911851392,
+              45912163120,
+              45933068848,
+              45936984064,
+              45937049600,
+              45948518400,
+              45933068928,
+              45912163136,
+              45911851456,
+              45912163152,
+              45933069008,
+              45937180672,
+              45937246208,
+              45937311744,
+              45919309824,
+              45915471872,
+              45932086528,
+              45910856192,
+              45933134064,
+              45912441616,
+              45933150672,
+              45919257232,
+              45911851536,
+              45919257040,
+              45919257104,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45947289600,
+              45915340800
+            ],
+            "world": 45947207680,
+            "world_tables": [
+              45919294464,
+              45932086016,
+              45915105280,
+              45932102144,
+              45919297024,
+              45915198464,
+              45915589632
+            ]
+          },
+          "owned_bytes": 15553864,
+          "restore": {
+            "background_tables": [
+              45911851008,
+              45912163088,
+              45933068288,
+              45945454592,
+              45945520128,
+              45945585664,
+              45933068368,
+              45912163024
+            ],
+            "engine_tables": [
+              45932085504,
+              45910851584,
+              25568477184
+            ],
+            "owned_model_bytes": 3601872,
+            "preparation_backing": [
+              45945716736,
+              45915332608,
+              45911851072,
+              45912163040,
+              45933068448,
+              45946683392,
+              45946748928,
+              45946814464,
+              45933068528,
+              45912163056,
+              45911851136,
+              45912163072,
+              45933068608,
+              45946945536,
+              45947011072,
+              45947076608,
+              45919305728,
+              45915455488,
+              45932085760,
+              45910853120,
+              45933133840,
+              45912440848,
+              45933150224,
+              45919256976,
+              45911851216,
+              45919256848,
+              45919256912,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45944487936,
+              45915324416
+            ],
+            "world": 45944406016,
+            "world_tables": [
+              45919289344,
+              45932085248,
+              45915062272,
+              45932101632,
+              45919291904,
+              45915193344,
+              45915586560
+            ]
+          }
+        },
+        "separately_reported_modules": 66208,
+        "sequence": 10,
+        "source_cursor": 3,
+        "source_declared_workspace_reserve": 98304,
+        "source_encoded": 6390,
+        "source_owned": 5984,
+        "source_segments": [
+          {
+            "constrained_tail": null,
+            "electric_contract": 1,
+            "electric_hourly_cents": 3601,
+            "electric_members": 1,
+            "electric_wage_carry": 0,
+            "ended_at": null,
+            "generator_seconds": 3,
+            "generator_seconds_base": 0,
+            "other_start_cents": 150,
+            "processed_base": {
+              "den": 1,
+              "rem": 0,
+              "whole": 0
+            },
+            "processed_until": {
+              "den": 1,
+              "rem": 0,
+              "whole": 50000
+            },
+            "produced_each_base": 0,
+            "pumps": 3,
+            "raw_ml_base": 0,
+            "source_run": 1,
+            "source_start_revision": 8,
+            "started_at": 0,
+            "treatment_seconds": 3,
+            "water_contract": 2,
+            "water_hourly_cents": 3601,
+            "water_members": 1,
+            "water_start_cents": 550,
+            "water_wage_carry": 0
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "source_snapshot_sha_note": "complete original world and fixed binary retained separately; no native RSS claim",
+        "store_owned": 42850559,
+        "world": "/Volumes/HP P900/dev/MyCity/work/water-treatment-runtime-20261025/shared26-artifacts/mycity-storage-water_treatment_store/water-85649-1792960834373050000/world",
+        "world_owned": 196352
+      },
+      {
+        "base_plus_private_facility_upper": 130144,
+        "common8_target_fit": false,
+        "engine_owned": 3696608,
+        "engine_plus_source_reserve": 3794912,
+        "metadata_workspace": {
+          "backings": [
+            25581060096,
+            25597837312,
+            45931823104,
+            45942636544,
+            45942702080,
+            45942767616,
+            25602031616,
+            45932560384,
+            45911360256,
+            45942833152
+          ],
+          "byte_capacities": [
+            16777216,
+            4194304,
+            32768,
+            65536,
+            65536,
+            65536
+          ],
+          "lexical_capacity_bytes": 1048576,
+          "operations_capacity_bytes": 8192,
+          "owned_bytes": 26665512,
+          "receipt_capacity_bytes": 4407296,
+          "resource_capacity_bytes": 256
+        },
+        "model_workspace": {
+          "candidate": {
+            "backing": [
+              45911851712,
+              45912163168,
+              45933069088,
+              45941637120,
+              45941702656,
+              45941768192,
+              45933035520,
+              45911851648
+            ],
+            "owned_bytes": 262840
+          },
+          "codec": {
+            "backing_bytes": 4920320,
+            "byte_backing": 25576865792,
+            "traversal_backing": 45941899264
+          },
+          "initial": {
+            "background_tables": [
+              45911851328,
+              45912163088,
+              45933068688,
+              45939867648,
+              45939933184,
+              45939998720,
+              45933068768,
+              45912163152
+            ],
+            "engine_tables": [
+              45932086272,
+              45910854656,
+              25572671488
+            ],
+            "owned_model_bytes": 3696608,
+            "preparation_backing": [
+              45940211712,
+              45915348992,
+              45911851392,
+              45912163136,
+              45933068848,
+              45940129792,
+              45941178368,
+              45941243904,
+              45933068928,
+              45912163120,
+              45911851456,
+              45912163104,
+              45933069008,
+              45941374976,
+              45941440512,
+              45941506048,
+              45919309824,
+              45915471872,
+              45932086528,
+              45910856192,
+              45933134064,
+              45912441616,
+              45933150672,
+              45919256976,
+              45911851536,
+              45919257104,
+              45919257040,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45938900992,
+              45915340800
+            ],
+            "world": 45938819072,
+            "world_tables": [
+              45919294464,
+              45932086016,
+              45915105280,
+              45932102144,
+              45919297024,
+              45915198464,
+              45915589632
+            ]
+          },
+          "owned_bytes": 15553864,
+          "restore": {
+            "background_tables": [
+              45911851008,
+              45912163008,
+              45933068288,
+              45937065984,
+              45937131520,
+              45937197056,
+              45933068368,
+              45912163072
+            ],
+            "engine_tables": [
+              45932085504,
+              45910851584,
+              25568477184
+            ],
+            "owned_model_bytes": 3601872,
+            "preparation_backing": [
+              45937328128,
+              45915332608,
+              45911851072,
+              45912163056,
+              45933068448,
+              45938294784,
+              45938360320,
+              45938425856,
+              45933068528,
+              45912163040,
+              45911851136,
+              45912163024,
+              45933068608,
+              45938556928,
+              45938622464,
+              45938688000,
+              45919305728,
+              45915455488,
+              45932085760,
+              45910853120,
+              45933133840,
+              45912440848,
+              45933150224,
+              45919257168,
+              45911851216,
+              45919256912,
+              45919256848,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45936099328,
+              45915324416
+            ],
+            "world": 45936017408,
+            "world_tables": [
+              45919289344,
+              45932085248,
+              45915062272,
+              45932101632,
+              45919291904,
+              45915193344,
+              45915586560
+            ]
+          }
+        },
+        "separately_reported_modules": 66208,
+        "sequence": 10,
+        "source_cursor": 3,
+        "source_declared_workspace_reserve": 98304,
+        "source_encoded": 6390,
+        "source_owned": 5984,
+        "source_segments": [
+          {
+            "constrained_tail": null,
+            "electric_contract": 1,
+            "electric_hourly_cents": 3601,
+            "electric_members": 1,
+            "electric_wage_carry": 0,
+            "ended_at": null,
+            "generator_seconds": 3,
+            "generator_seconds_base": 0,
+            "other_start_cents": 150,
+            "processed_base": {
+              "den": 1,
+              "rem": 0,
+              "whole": 0
+            },
+            "processed_until": {
+              "den": 1,
+              "rem": 0,
+              "whole": 50000
+            },
+            "produced_each_base": 0,
+            "pumps": 3,
+            "raw_ml_base": 0,
+            "source_run": 1,
+            "source_start_revision": 8,
+            "started_at": 0,
+            "treatment_seconds": 3,
+            "water_contract": 2,
+            "water_hourly_cents": 3601,
+            "water_members": 1,
+            "water_start_cents": 550,
+            "water_wage_carry": 0
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "source_snapshot_sha_note": "complete original world and fixed binary retained separately; no native RSS claim",
+        "store_owned": 42850559,
+        "world": "/Volumes/HP P900/dev/MyCity/work/water-treatment-runtime-20261025/shared26-artifacts/mycity-storage-water_treatment_store/water-85649-1792960834498036000/world",
+        "world_owned": 196352
+      },
+      {
+        "base_plus_private_facility_upper": 130144,
+        "common8_target_fit": false,
+        "engine_owned": 3696608,
+        "engine_plus_source_reserve": 3794912,
+        "metadata_workspace": {
+          "backings": [
+            25581060096,
+            25576865792,
+            45931823104,
+            45946830848,
+            45946896384,
+            45946961920,
+            25602031616,
+            45932560384,
+            45911360256,
+            45947027456
+          ],
+          "byte_capacities": [
+            16777216,
+            4194304,
+            32768,
+            65536,
+            65536,
+            65536
+          ],
+          "lexical_capacity_bytes": 1048576,
+          "operations_capacity_bytes": 8192,
+          "owned_bytes": 26665512,
+          "receipt_capacity_bytes": 4407296,
+          "resource_capacity_bytes": 256
+        },
+        "model_workspace": {
+          "candidate": {
+            "backing": [
+              45911851712,
+              45912163088,
+              45933069088,
+              45945831424,
+              45945896960,
+              45945962496,
+              45933035520,
+              45911851648
+            ],
+            "owned_bytes": 262840
+          },
+          "codec": {
+            "backing_bytes": 4920320,
+            "byte_backing": 25597837312,
+            "traversal_backing": 45946093568
+          },
+          "initial": {
+            "background_tables": [
+              45911851328,
+              45912163008,
+              45933068688,
+              45944061952,
+              45944127488,
+              45944193024,
+              45933068768,
+              45912163104
+            ],
+            "engine_tables": [
+              45932086272,
+              45910854656,
+              25572671488
+            ],
+            "owned_model_bytes": 3696608,
+            "preparation_backing": [
+              45944406016,
+              45915348992,
+              45911851392,
+              45912163120,
+              45933068848,
+              45944324096,
+              45945372672,
+              45945438208,
+              45933068928,
+              45912163136,
+              45911851456,
+              45912163152,
+              45933069008,
+              45945569280,
+              45945634816,
+              45945700352,
+              45919309824,
+              45915471872,
+              45932086528,
+              45910856192,
+              45933134064,
+              45912441616,
+              45933150672,
+              45919257168,
+              45911851536,
+              45919257040,
+              45919257104,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45943095296,
+              45915340800
+            ],
+            "world": 45943013376,
+            "world_tables": [
+              45919294464,
+              45932086016,
+              45915105280,
+              45932102144,
+              45919297024,
+              45915198464,
+              45915589632
+            ]
+          },
+          "owned_bytes": 15553864,
+          "restore": {
+            "background_tables": [
+              45911851008,
+              45912163168,
+              45933068288,
+              45941260288,
+              45941325824,
+              45941391360,
+              45933068368,
+              45912163024
+            ],
+            "engine_tables": [
+              45932085504,
+              45910851584,
+              25568477184
+            ],
+            "owned_model_bytes": 3601872,
+            "preparation_backing": [
+              45941522432,
+              45915332608,
+              45911851072,
+              45912163040,
+              45933068448,
+              45942489088,
+              45942554624,
+              45942620160,
+              45933068528,
+              45912163056,
+              45911851136,
+              45912163072,
+              45933068608,
+              45942751232,
+              45942816768,
+              45942882304,
+              45919305728,
+              45915455488,
+              45932085760,
+              45910853120,
+              45933133840,
+              45912440848,
+              45933150224,
+              45919257232,
+              45911851216,
+              45919256848,
+              45919256912,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45940293632,
+              45915324416
+            ],
+            "world": 45940211712,
+            "world_tables": [
+              45919289344,
+              45932085248,
+              45915062272,
+              45932101632,
+              45919291904,
+              45915193344,
+              45915586560
+            ]
+          }
+        },
+        "separately_reported_modules": 66208,
+        "sequence": 10,
+        "source_cursor": 3,
+        "source_declared_workspace_reserve": 98304,
+        "source_encoded": 6390,
+        "source_owned": 5984,
+        "source_segments": [
+          {
+            "constrained_tail": null,
+            "electric_contract": 1,
+            "electric_hourly_cents": 3601,
+            "electric_members": 1,
+            "electric_wage_carry": 0,
+            "ended_at": null,
+            "generator_seconds": 3,
+            "generator_seconds_base": 0,
+            "other_start_cents": 150,
+            "processed_base": {
+              "den": 1,
+              "rem": 0,
+              "whole": 0
+            },
+            "processed_until": {
+              "den": 1,
+              "rem": 0,
+              "whole": 50000
+            },
+            "produced_each_base": 0,
+            "pumps": 3,
+            "raw_ml_base": 0,
+            "source_run": 1,
+            "source_start_revision": 8,
+            "started_at": 0,
+            "treatment_seconds": 3,
+            "water_contract": 2,
+            "water_hourly_cents": 3601,
+            "water_members": 1,
+            "water_start_cents": 550,
+            "water_wage_carry": 0
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "source_snapshot_sha_note": "complete original world and fixed binary retained separately; no native RSS claim",
+        "store_owned": 42850559,
+        "world": "/Volumes/HP P900/dev/MyCity/work/water-treatment-runtime-20261025/shared26-artifacts/mycity-storage-water_treatment_store/water-85649-1792960834628418000/world",
+        "world_owned": 196352
+      },
+      {
+        "base_plus_private_facility_upper": 130144,
+        "common8_target_fit": false,
+        "engine_owned": 3696608,
+        "engine_plus_source_reserve": 3794912,
+        "metadata_workspace": {
+          "backings": [
+            25581060096,
+            25597837312,
+            45931823104,
+            45938442240,
+            45938507776,
+            45938573312,
+            25602031616,
+            45932560384,
+            45911360256,
+            45938638848
+          ],
+          "byte_capacities": [
+            16777216,
+            4194304,
+            32768,
+            65536,
+            65536,
+            65536
+          ],
+          "lexical_capacity_bytes": 1048576,
+          "operations_capacity_bytes": 8192,
+          "owned_bytes": 26665512,
+          "receipt_capacity_bytes": 4407296,
+          "resource_capacity_bytes": 256
+        },
+        "model_workspace": {
+          "candidate": {
+            "backing": [
+              45911851712,
+              45912163008,
+              45933069088,
+              45937442816,
+              45937508352,
+              45937573888,
+              45933035520,
+              45911851648
+            ],
+            "owned_bytes": 262840
+          },
+          "codec": {
+            "backing_bytes": 4920320,
+            "byte_backing": 25576865792,
+            "traversal_backing": 45937704960
+          },
+          "initial": {
+            "background_tables": [
+              45911851328,
+              45912163168,
+              45933068688,
+              45948256256,
+              45948321792,
+              45948387328,
+              45933068768,
+              45912163152
+            ],
+            "engine_tables": [
+              45932086272,
+              45910854656,
+              25572671488
+            ],
+            "owned_model_bytes": 3696608,
+            "preparation_backing": [
+              45936017408,
+              45915348992,
+              45911851392,
+              45912163136,
+              45933068848,
+              45936984064,
+              45937049600,
+              45948518400,
+              45933068928,
+              45912163120,
+              45911851456,
+              45912163104,
+              45933069008,
+              45937180672,
+              45937246208,
+              45937311744,
+              45919309824,
+              45915471872,
+              45932086528,
+              45910856192,
+              45933134064,
+              45912441616,
+              45933150672,
+              45919257232,
+              45911851536,
+              45919257104,
+              45919257040,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45947289600,
+              45915340800
+            ],
+            "world": 45947207680,
+            "world_tables": [
+              45919294464,
+              45932086016,
+              45915105280,
+              45932102144,
+              45919297024,
+              45915198464,
+              45915589632
+            ]
+          },
+          "owned_bytes": 15553864,
+          "restore": {
+            "background_tables": [
+              45911851008,
+              45912163088,
+              45933068288,
+              45945454592,
+              45945520128,
+              45945585664,
+              45933068368,
+              45912163072
+            ],
+            "engine_tables": [
+              45932085504,
+              45910851584,
+              25568477184
+            ],
+            "owned_model_bytes": 3601872,
+            "preparation_backing": [
+              45945716736,
+              45915332608,
+              45911851072,
+              45912163056,
+              45933068448,
+              45946683392,
+              45946748928,
+              45946814464,
+              45933068528,
+              45912163040,
+              45911851136,
+              45912163024,
+              45933068608,
+              45946945536,
+              45947011072,
+              45947076608,
+              45919305728,
+              45915455488,
+              45932085760,
+              45910853120,
+              45933133840,
+              45912440848,
+              45933150224,
+              45919256976,
+              45911851216,
+              45919256912,
+              45919256848,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45944487936,
+              45915324416
+            ],
+            "world": 45944406016,
+            "world_tables": [
+              45919289344,
+              45932085248,
+              45915062272,
+              45932101632,
+              45919291904,
+              45915193344,
+              45915586560
+            ]
+          }
+        },
+        "separately_reported_modules": 66208,
+        "sequence": 13,
+        "source_cursor": 5500,
+        "source_declared_workspace_reserve": 98304,
+        "source_encoded": 7122,
+        "source_owned": 5984,
+        "source_segments": [
+          {
+            "constrained_tail": null,
+            "electric_contract": 1,
+            "electric_hourly_cents": 3601,
+            "electric_members": 1,
+            "electric_wage_carry": 0,
+            "ended_at": 5000,
+            "generator_seconds": 5000,
+            "generator_seconds_base": 0,
+            "other_start_cents": 150,
+            "processed_base": {
+              "den": 1,
+              "rem": 0,
+              "whole": 0
+            },
+            "processed_until": {
+              "den": 3,
+              "rem": 1,
+              "whole": 83333333
+            },
+            "produced_each_base": 0,
+            "pumps": 3,
+            "raw_ml_base": 0,
+            "source_run": 1,
+            "source_start_revision": 8,
+            "started_at": 0,
+            "treatment_seconds": 5000,
+            "water_contract": 2,
+            "water_hourly_cents": 3601,
+            "water_members": 1,
+            "water_start_cents": 550,
+            "water_wage_carry": 0
+          },
+          {
+            "constrained_tail": null,
+            "electric_contract": 1,
+            "electric_hourly_cents": 3601,
+            "electric_members": 1,
+            "electric_wage_carry": 1400,
+            "ended_at": 5500,
+            "generator_seconds": 500,
+            "generator_seconds_base": 5000,
+            "other_start_cents": 0,
+            "processed_base": {
+              "den": 3,
+              "rem": 1,
+              "whole": 83333333
+            },
+            "processed_until": {
+              "den": 1,
+              "rem": 0,
+              "whole": 100000000
+            },
+            "produced_each_base": 50000000,
+            "pumps": 0,
+            "raw_ml_base": 100000000,
+            "source_run": 1,
+            "source_start_revision": 8,
+            "started_at": 5000,
+            "treatment_seconds": 500,
+            "water_contract": 2,
+            "water_hourly_cents": 3601,
+            "water_members": 1,
+            "water_start_cents": 0,
+            "water_wage_carry": 1400
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "source_snapshot_sha_note": "complete original world and fixed binary retained separately; no native RSS claim",
+        "store_owned": 42850559,
+        "world": "/Volumes/HP P900/dev/MyCity/work/water-treatment-runtime-20261025/shared26-artifacts/mycity-storage-water_treatment_store/water-85649-1792960834748199000/world",
+        "world_owned": 196352
+      },
+      {
+        "base_plus_private_facility_upper": 130144,
+        "common8_target_fit": false,
+        "engine_owned": 3696608,
+        "engine_plus_source_reserve": 3794912,
+        "metadata_workspace": {
+          "backings": [
+            25581060096,
+            25576865792,
+            45931823104,
+            45942636544,
+            45942702080,
+            45942767616,
+            25602031616,
+            45932560384,
+            45911360256,
+            45942833152
+          ],
+          "byte_capacities": [
+            16777216,
+            4194304,
+            32768,
+            65536,
+            65536,
+            65536
+          ],
+          "lexical_capacity_bytes": 1048576,
+          "operations_capacity_bytes": 8192,
+          "owned_bytes": 26665512,
+          "receipt_capacity_bytes": 4407296,
+          "resource_capacity_bytes": 256
+        },
+        "model_workspace": {
+          "candidate": {
+            "backing": [
+              45911851712,
+              45912163168,
+              45933069088,
+              45941637120,
+              45941702656,
+              45941768192,
+              45933035520,
+              45911851648
+            ],
+            "owned_bytes": 262840
+          },
+          "codec": {
+            "backing_bytes": 4920320,
+            "byte_backing": 25597837312,
+            "traversal_backing": 45941899264
+          },
+          "initial": {
+            "background_tables": [
+              45911851328,
+              45912163088,
+              45933068688,
+              45939867648,
+              45939933184,
+              45939998720,
+              45933068768,
+              45912163104
+            ],
+            "engine_tables": [
+              45932086272,
+              45910854656,
+              25572671488
+            ],
+            "owned_model_bytes": 3696608,
+            "preparation_backing": [
+              45940211712,
+              45915348992,
+              45911851392,
+              45912163120,
+              45933068848,
+              45940129792,
+              45941178368,
+              45941243904,
+              45933068928,
+              45912163136,
+              45911851456,
+              45912163152,
+              45933069008,
+              45941374976,
+              45941440512,
+              45941506048,
+              45919309824,
+              45915471872,
+              45932086528,
+              45910856192,
+              45933134064,
+              45912441616,
+              45933150672,
+              45919256976,
+              45911851536,
+              45919257040,
+              45919257104,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45938900992,
+              45915340800
+            ],
+            "world": 45938819072,
+            "world_tables": [
+              45919294464,
+              45932086016,
+              45915105280,
+              45932102144,
+              45919297024,
+              45915198464,
+              45915589632
+            ]
+          },
+          "owned_bytes": 15553864,
+          "restore": {
+            "background_tables": [
+              45911851008,
+              45912163008,
+              45933068288,
+              45937065984,
+              45937131520,
+              45937197056,
+              45933068368,
+              45912163024
+            ],
+            "engine_tables": [
+              45932085504,
+              45910851584,
+              25568477184
+            ],
+            "owned_model_bytes": 3601872,
+            "preparation_backing": [
+              45937328128,
+              45915332608,
+              45911851072,
+              45912163040,
+              45933068448,
+              45938294784,
+              45938360320,
+              45938425856,
+              45933068528,
+              45912163056,
+              45911851136,
+              45912163072,
+              45933068608,
+              45938556928,
+              45938622464,
+              45938688000,
+              45919305728,
+              45915455488,
+              45932085760,
+              45910853120,
+              45933133840,
+              45912440848,
+              45933150224,
+              45919257168,
+              45911851216,
+              45919256848,
+              45919256912,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45936099328,
+              45915324416
+            ],
+            "world": 45936017408,
+            "world_tables": [
+              45919289344,
+              45932085248,
+              45915062272,
+              45932101632,
+              45919291904,
+              45915193344,
+              45915586560
+            ]
+          }
+        },
+        "separately_reported_modules": 66208,
+        "sequence": 13,
+        "source_cursor": 5500,
+        "source_declared_workspace_reserve": 98304,
+        "source_encoded": 7122,
+        "source_owned": 5984,
+        "source_segments": [
+          {
+            "constrained_tail": null,
+            "electric_contract": 1,
+            "electric_hourly_cents": 3601,
+            "electric_members": 1,
+            "electric_wage_carry": 0,
+            "ended_at": 5000,
+            "generator_seconds": 5000,
+            "generator_seconds_base": 0,
+            "other_start_cents": 150,
+            "processed_base": {
+              "den": 1,
+              "rem": 0,
+              "whole": 0
+            },
+            "processed_until": {
+              "den": 3,
+              "rem": 1,
+              "whole": 83333333
+            },
+            "produced_each_base": 0,
+            "pumps": 3,
+            "raw_ml_base": 0,
+            "source_run": 1,
+            "source_start_revision": 8,
+            "started_at": 0,
+            "treatment_seconds": 5000,
+            "water_contract": 2,
+            "water_hourly_cents": 3601,
+            "water_members": 1,
+            "water_start_cents": 550,
+            "water_wage_carry": 0
+          },
+          {
+            "constrained_tail": null,
+            "electric_contract": 1,
+            "electric_hourly_cents": 3601,
+            "electric_members": 1,
+            "electric_wage_carry": 1400,
+            "ended_at": 5500,
+            "generator_seconds": 500,
+            "generator_seconds_base": 5000,
+            "other_start_cents": 0,
+            "processed_base": {
+              "den": 3,
+              "rem": 1,
+              "whole": 83333333
+            },
+            "processed_until": {
+              "den": 1,
+              "rem": 0,
+              "whole": 100000000
+            },
+            "produced_each_base": 50000000,
+            "pumps": 0,
+            "raw_ml_base": 100000000,
+            "source_run": 1,
+            "source_start_revision": 8,
+            "started_at": 5000,
+            "treatment_seconds": 500,
+            "water_contract": 2,
+            "water_hourly_cents": 3601,
+            "water_members": 1,
+            "water_start_cents": 0,
+            "water_wage_carry": 1400
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "source_snapshot_sha_note": "complete original world and fixed binary retained separately; no native RSS claim",
+        "store_owned": 42850559,
+        "world": "/Volumes/HP P900/dev/MyCity/work/water-treatment-runtime-20261025/shared26-artifacts/mycity-storage-water_treatment_store/water-85649-1792960834927405000/world",
+        "world_owned": 196352
+      },
+      {
+        "base_plus_private_facility_upper": 130144,
+        "common8_target_fit": false,
+        "engine_owned": 3696608,
+        "engine_plus_source_reserve": 3794912,
+        "metadata_workspace": {
+          "backings": [
+            25581060096,
+            25597837312,
+            45931823104,
+            45946830848,
+            45946896384,
+            45946961920,
+            25602031616,
+            45932560384,
+            45911360256,
+            45947027456
+          ],
+          "byte_capacities": [
+            16777216,
+            4194304,
+            32768,
+            65536,
+            65536,
+            65536
+          ],
+          "lexical_capacity_bytes": 1048576,
+          "operations_capacity_bytes": 8192,
+          "owned_bytes": 26665512,
+          "receipt_capacity_bytes": 4407296,
+          "resource_capacity_bytes": 256
+        },
+        "model_workspace": {
+          "candidate": {
+            "backing": [
+              45911851712,
+              45912163088,
+              45933069088,
+              45945831424,
+              45945896960,
+              45945962496,
+              45933035520,
+              45911851648
+            ],
+            "owned_bytes": 262840
+          },
+          "codec": {
+            "backing_bytes": 4920320,
+            "byte_backing": 25576865792,
+            "traversal_backing": 45946093568
+          },
+          "initial": {
+            "background_tables": [
+              45911851328,
+              45912163008,
+              45933068688,
+              45944061952,
+              45944127488,
+              45944193024,
+              45933068768,
+              45912163152
+            ],
+            "engine_tables": [
+              45932086272,
+              45910854656,
+              25572671488
+            ],
+            "owned_model_bytes": 3696608,
+            "preparation_backing": [
+              45944406016,
+              45915348992,
+              45911851392,
+              45912163136,
+              45933068848,
+              45944324096,
+              45945372672,
+              45945438208,
+              45933068928,
+              45912163120,
+              45911851456,
+              45912163104,
+              45933069008,
+              45945569280,
+              45945634816,
+              45945700352,
+              45919309824,
+              45915471872,
+              45932086528,
+              45910856192,
+              45933134064,
+              45912441616,
+              45933150672,
+              45919257168,
+              45911851536,
+              45919257104,
+              45919257040,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45943095296,
+              45915340800
+            ],
+            "world": 45943013376,
+            "world_tables": [
+              45919294464,
+              45932086016,
+              45915105280,
+              45932102144,
+              45919297024,
+              45915198464,
+              45915589632
+            ]
+          },
+          "owned_bytes": 15553864,
+          "restore": {
+            "background_tables": [
+              45911851008,
+              45912163168,
+              45933068288,
+              45941260288,
+              45941325824,
+              45941391360,
+              45933068368,
+              45912163072
+            ],
+            "engine_tables": [
+              45932085504,
+              45910851584,
+              25568477184
+            ],
+            "owned_model_bytes": 3601872,
+            "preparation_backing": [
+              45941522432,
+              45915332608,
+              45911851072,
+              45912163056,
+              45933068448,
+              45942489088,
+              45942554624,
+              45942620160,
+              45933068528,
+              45912163040,
+              45911851136,
+              45912163024,
+              45933068608,
+              45942751232,
+              45942816768,
+              45942882304,
+              45919305728,
+              45915455488,
+              45932085760,
+              45910853120,
+              45933133840,
+              45912440848,
+              45933150224,
+              45919257232,
+              45911851216,
+              45919256912,
+              45919256848,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45940293632,
+              45915324416
+            ],
+            "world": 45940211712,
+            "world_tables": [
+              45919289344,
+              45932085248,
+              45915062272,
+              45932101632,
+              45919291904,
+              45915193344,
+              45915586560
+            ]
+          }
+        },
+        "separately_reported_modules": 66208,
+        "sequence": 9,
+        "source_cursor": 0,
+        "source_declared_workspace_reserve": 98304,
+        "source_encoded": 6294,
+        "source_owned": 5984,
+        "source_segments": [
+          {
+            "constrained_tail": null,
+            "electric_contract": 1,
+            "electric_hourly_cents": 3601,
+            "electric_members": 1,
+            "electric_wage_carry": 0,
+            "ended_at": 0,
+            "generator_seconds": 0,
+            "generator_seconds_base": 0,
+            "other_start_cents": 150,
+            "processed_base": {
+              "den": 1,
+              "rem": 0,
+              "whole": 0
+            },
+            "processed_until": {
+              "den": 1,
+              "rem": 0,
+              "whole": 0
+            },
+            "produced_each_base": 0,
+            "pumps": 3,
+            "raw_ml_base": 0,
+            "source_run": 1,
+            "source_start_revision": 8,
+            "started_at": 0,
+            "treatment_seconds": 0,
+            "water_contract": 2,
+            "water_hourly_cents": 3601,
+            "water_members": 1,
+            "water_start_cents": 550,
+            "water_wage_carry": 0
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "source_snapshot_sha_note": "complete original world and fixed binary retained separately; no native RSS claim",
+        "store_owned": 42850559,
+        "world": "/Volumes/HP P900/dev/MyCity/work/water-treatment-runtime-20261025/shared26-artifacts/mycity-storage-water_treatment_store/water-85649-1792960835149025000/world",
+        "world_owned": 196352
+      },
+      {
+        "base_plus_private_facility_upper": 130144,
+        "common8_target_fit": false,
+        "engine_owned": 3696608,
+        "engine_plus_source_reserve": 3794912,
+        "metadata_workspace": {
+          "backings": [
+            25581060096,
+            25576865792,
+            45931823104,
+            45938442240,
+            45938507776,
+            45938573312,
+            25602031616,
+            45932560384,
+            45911360256,
+            45938638848
+          ],
+          "byte_capacities": [
+            16777216,
+            4194304,
+            32768,
+            65536,
+            65536,
+            65536
+          ],
+          "lexical_capacity_bytes": 1048576,
+          "operations_capacity_bytes": 8192,
+          "owned_bytes": 26665512,
+          "receipt_capacity_bytes": 4407296,
+          "resource_capacity_bytes": 256
+        },
+        "model_workspace": {
+          "candidate": {
+            "backing": [
+              45911851712,
+              45912163008,
+              45933069088,
+              45937442816,
+              45937508352,
+              45937573888,
+              45933035520,
+              45911851648
+            ],
+            "owned_bytes": 262840
+          },
+          "codec": {
+            "backing_bytes": 4920320,
+            "byte_backing": 25597837312,
+            "traversal_backing": 45937704960
+          },
+          "initial": {
+            "background_tables": [
+              45911851328,
+              45912163168,
+              45933068688,
+              45948256256,
+              45948321792,
+              45948387328,
+              45933068768,
+              45912163104
+            ],
+            "engine_tables": [
+              45932086272,
+              45910854656,
+              25572671488
+            ],
+            "owned_model_bytes": 3696608,
+            "preparation_backing": [
+              45936017408,
+              45915348992,
+              45911851392,
+              45912163120,
+              45933068848,
+              45936984064,
+              45937049600,
+              45948518400,
+              45933068928,
+              45912163136,
+              45911851456,
+              45912163152,
+              45933069008,
+              45937180672,
+              45937246208,
+              45937311744,
+              45919309824,
+              45915471872,
+              45932086528,
+              45910856192,
+              45933134064,
+              45912441616,
+              45933150672,
+              45919257232,
+              45911851536,
+              45919257040,
+              45919257104,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45947289600,
+              45915340800
+            ],
+            "world": 45947207680,
+            "world_tables": [
+              45919294464,
+              45932086016,
+              45915105280,
+              45932102144,
+              45919297024,
+              45915198464,
+              45915589632
+            ]
+          },
+          "owned_bytes": 15553864,
+          "restore": {
+            "background_tables": [
+              45911851008,
+              45912163088,
+              45933068288,
+              45945454592,
+              45945520128,
+              45945585664,
+              45933068368,
+              45912163024
+            ],
+            "engine_tables": [
+              45932085504,
+              45910851584,
+              25568477184
+            ],
+            "owned_model_bytes": 3601872,
+            "preparation_backing": [
+              45945716736,
+              45915332608,
+              45911851072,
+              45912163040,
+              45933068448,
+              45946683392,
+              45946748928,
+              45946814464,
+              45933068528,
+              45912163056,
+              45911851136,
+              45912163072,
+              45933068608,
+              45946945536,
+              45947011072,
+              45947076608,
+              45919305728,
+              45915455488,
+              45932085760,
+              45910853120,
+              45933133840,
+              45912440848,
+              45933150224,
+              45919256976,
+              45911851216,
+              45919256848,
+              45919256912,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45944487936,
+              45915324416
+            ],
+            "world": 45944406016,
+            "world_tables": [
+              45919289344,
+              45932085248,
+              45915062272,
+              45932101632,
+              45919291904,
+              45915193344,
+              45915586560
+            ]
+          }
+        },
+        "separately_reported_modules": 66208,
+        "sequence": 9,
+        "source_cursor": 0,
+        "source_declared_workspace_reserve": 98304,
+        "source_encoded": 6319,
+        "source_owned": 5984,
+        "source_segments": [
+          {
+            "constrained_tail": null,
+            "electric_contract": 1,
+            "electric_hourly_cents": 3601,
+            "electric_members": 1,
+            "electric_wage_carry": 0,
+            "ended_at": 0,
+            "generator_seconds": 0,
+            "generator_seconds_base": 0,
+            "other_start_cents": 150,
+            "processed_base": {
+              "den": 1,
+              "rem": 0,
+              "whole": 0
+            },
+            "processed_until": {
+              "den": 1,
+              "rem": 0,
+              "whole": 0
+            },
+            "produced_each_base": 0,
+            "pumps": 3,
+            "raw_ml_base": 0,
+            "source_run": 1,
+            "source_start_revision": 8,
+            "started_at": 0,
+            "treatment_seconds": 0,
+            "water_contract": 2,
+            "water_hourly_cents": 3601,
+            "water_members": 1,
+            "water_start_cents": 550,
+            "water_wage_carry": 0
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "source_snapshot_sha_note": "complete original world and fixed binary retained separately; no native RSS claim",
+        "store_owned": 42850559,
+        "world": "/Volumes/HP P900/dev/MyCity/work/water-treatment-runtime-20261025/shared26-artifacts/mycity-storage-water_treatment_store/water-85649-1792960835304309000/world",
+        "world_owned": 196352
+      },
+      {
+        "base_plus_private_facility_upper": 130144,
+        "common8_target_fit": false,
+        "engine_owned": 3696608,
+        "engine_plus_source_reserve": 3794912,
+        "metadata_workspace": {
+          "backings": [
+            25581060096,
+            25597837312,
+            45931823104,
+            45942636544,
+            45942702080,
+            45942767616,
+            25602031616,
+            45932560384,
+            45911360256,
+            45942833152
+          ],
+          "byte_capacities": [
+            16777216,
+            4194304,
+            32768,
+            65536,
+            65536,
+            65536
+          ],
+          "lexical_capacity_bytes": 1048576,
+          "operations_capacity_bytes": 8192,
+          "owned_bytes": 26665512,
+          "receipt_capacity_bytes": 4407296,
+          "resource_capacity_bytes": 256
+        },
+        "model_workspace": {
+          "candidate": {
+            "backing": [
+              45911851712,
+              45912163168,
+              45933069088,
+              45941637120,
+              45941702656,
+              45941768192,
+              45933035520,
+              45911851648
+            ],
+            "owned_bytes": 262840
+          },
+          "codec": {
+            "backing_bytes": 4920320,
+            "byte_backing": 25576865792,
+            "traversal_backing": 45941899264
+          },
+          "initial": {
+            "background_tables": [
+              45911851328,
+              45912163088,
+              45933068688,
+              45939867648,
+              45939933184,
+              45939998720,
+              45933068768,
+              45912163152
+            ],
+            "engine_tables": [
+              45932086272,
+              45910854656,
+              25572671488
+            ],
+            "owned_model_bytes": 3696608,
+            "preparation_backing": [
+              45940211712,
+              45915348992,
+              45911851392,
+              45912163136,
+              45933068848,
+              45940129792,
+              45941178368,
+              45941243904,
+              45933068928,
+              45912163120,
+              45911851456,
+              45912163104,
+              45933069008,
+              45941374976,
+              45941440512,
+              45941506048,
+              45919309824,
+              45915471872,
+              45932086528,
+              45910856192,
+              45933134064,
+              45912441616,
+              45933150672,
+              45919256976,
+              45911851536,
+              45919257104,
+              45919257040,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45938900992,
+              45915340800
+            ],
+            "world": 45938819072,
+            "world_tables": [
+              45919294464,
+              45932086016,
+              45915105280,
+              45932102144,
+              45919297024,
+              45915198464,
+              45915589632
+            ]
+          },
+          "owned_bytes": 15553864,
+          "restore": {
+            "background_tables": [
+              45911851008,
+              45912163008,
+              45933068288,
+              45937065984,
+              45937131520,
+              45937197056,
+              45933068368,
+              45912163072
+            ],
+            "engine_tables": [
+              45932085504,
+              45910851584,
+              25568477184
+            ],
+            "owned_model_bytes": 3601872,
+            "preparation_backing": [
+              45937328128,
+              45915332608,
+              45911851072,
+              45912163056,
+              45933068448,
+              45938294784,
+              45938360320,
+              45938425856,
+              45933068528,
+              45912163040,
+              45911851136,
+              45912163024,
+              45933068608,
+              45938556928,
+              45938622464,
+              45938688000,
+              45919305728,
+              45915455488,
+              45932085760,
+              45910853120,
+              45933133840,
+              45912440848,
+              45933150224,
+              45919257168,
+              45911851216,
+              45919256912,
+              45919256848,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45936099328,
+              45915324416
+            ],
+            "world": 45936017408,
+            "world_tables": [
+              45919289344,
+              45932085248,
+              45915062272,
+              45932101632,
+              45919291904,
+              45915193344,
+              45915586560
+            ]
+          }
+        },
+        "separately_reported_modules": 66208,
+        "sequence": 9,
+        "source_cursor": 0,
+        "source_declared_workspace_reserve": 98304,
+        "source_encoded": 6302,
+        "source_owned": 5984,
+        "source_segments": [
+          {
+            "constrained_tail": null,
+            "electric_contract": 1,
+            "electric_hourly_cents": 3601,
+            "electric_members": 1,
+            "electric_wage_carry": 0,
+            "ended_at": 0,
+            "generator_seconds": 0,
+            "generator_seconds_base": 0,
+            "other_start_cents": 150,
+            "processed_base": {
+              "den": 1,
+              "rem": 0,
+              "whole": 0
+            },
+            "processed_until": {
+              "den": 1,
+              "rem": 0,
+              "whole": 0
+            },
+            "produced_each_base": 0,
+            "pumps": 3,
+            "raw_ml_base": 0,
+            "source_run": 1,
+            "source_start_revision": 8,
+            "started_at": 0,
+            "treatment_seconds": 0,
+            "water_contract": 2,
+            "water_hourly_cents": 3601,
+            "water_members": 1,
+            "water_start_cents": 550,
+            "water_wage_carry": 0
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "source_snapshot_sha_note": "complete original world and fixed binary retained separately; no native RSS claim",
+        "store_owned": 42850559,
+        "world": "/Volumes/HP P900/dev/MyCity/work/water-treatment-runtime-20261025/shared26-artifacts/mycity-storage-water_treatment_store/water-85649-1792960835464129000/world",
+        "world_owned": 196352
+      },
+      {
+        "base_plus_private_facility_upper": 130144,
+        "common8_target_fit": false,
+        "engine_owned": 3696608,
+        "engine_plus_source_reserve": 3794912,
+        "metadata_workspace": {
+          "backings": [
+            25581060096,
+            25576865792,
+            45931823104,
+            45946830848,
+            45946896384,
+            45946961920,
+            25602031616,
+            45932560384,
+            45911360256,
+            45947027456
+          ],
+          "byte_capacities": [
+            16777216,
+            4194304,
+            32768,
+            65536,
+            65536,
+            65536
+          ],
+          "lexical_capacity_bytes": 1048576,
+          "operations_capacity_bytes": 8192,
+          "owned_bytes": 26665512,
+          "receipt_capacity_bytes": 4407296,
+          "resource_capacity_bytes": 256
+        },
+        "model_workspace": {
+          "candidate": {
+            "backing": [
+              45911851712,
+              45912163088,
+              45933069088,
+              45945831424,
+              45945896960,
+              45945962496,
+              45933035520,
+              45911851648
+            ],
+            "owned_bytes": 262840
+          },
+          "codec": {
+            "backing_bytes": 4920320,
+            "byte_backing": 25597837312,
+            "traversal_backing": 45946093568
+          },
+          "initial": {
+            "background_tables": [
+              45911851328,
+              45912163008,
+              45933068688,
+              45944061952,
+              45944127488,
+              45944193024,
+              45933068768,
+              45912163104
+            ],
+            "engine_tables": [
+              45932086272,
+              45910854656,
+              25572671488
+            ],
+            "owned_model_bytes": 3696608,
+            "preparation_backing": [
+              45944406016,
+              45915348992,
+              45911851392,
+              45912163120,
+              45933068848,
+              45944324096,
+              45945372672,
+              45945438208,
+              45933068928,
+              45912163136,
+              45911851456,
+              45912163152,
+              45933069008,
+              45945569280,
+              45945634816,
+              45945700352,
+              45919309824,
+              45915471872,
+              45932086528,
+              45910856192,
+              45933134064,
+              45912441616,
+              45933150672,
+              45919257168,
+              45911851536,
+              45919257040,
+              45919257104,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45943095296,
+              45915340800
+            ],
+            "world": 45943013376,
+            "world_tables": [
+              45919294464,
+              45932086016,
+              45915105280,
+              45932102144,
+              45919297024,
+              45915198464,
+              45915589632
+            ]
+          },
+          "owned_bytes": 15553864,
+          "restore": {
+            "background_tables": [
+              45911851008,
+              45912163168,
+              45933068288,
+              45941260288,
+              45941325824,
+              45941391360,
+              45933068368,
+              45912163024
+            ],
+            "engine_tables": [
+              45932085504,
+              45910851584,
+              25568477184
+            ],
+            "owned_model_bytes": 3601872,
+            "preparation_backing": [
+              45941522432,
+              45915332608,
+              45911851072,
+              45912163040,
+              45933068448,
+              45942489088,
+              45942554624,
+              45942620160,
+              45933068528,
+              45912163056,
+              45911851136,
+              45912163072,
+              45933068608,
+              45942751232,
+              45942816768,
+              45942882304,
+              45919305728,
+              45915455488,
+              45932085760,
+              45910853120,
+              45933133840,
+              45912440848,
+              45933150224,
+              45919257232,
+              45911851216,
+              45919256848,
+              45919256912,
+              0
+            ],
+            "retained_prepare_bytes": 1536080,
+            "timeline_tables": [
+              45940293632,
+              45915324416
+            ],
+            "world": 45940211712,
+            "world_tables": [
+              45919289344,
+              45932085248,
+              45915062272,
+              45932101632,
+              45919291904,
+              45915193344,
+              45915586560
+            ]
+          }
+        },
+        "separately_reported_modules": 66208,
+        "sequence": 9,
+        "source_cursor": 0,
+        "source_declared_workspace_reserve": 98304,
+        "source_encoded": 6302,
+        "source_owned": 5984,
+        "source_segments": [
+          {
+            "constrained_tail": null,
+            "electric_contract": 1,
+            "electric_hourly_cents": 3601,
+            "electric_members": 1,
+            "electric_wage_carry": 0,
+            "ended_at": 0,
+            "generator_seconds": 0,
+            "generator_seconds_base": 0,
+            "other_start_cents": 150,
+            "processed_base": {
+              "den": 1,
+              "rem": 0,
+              "whole": 0
+            },
+            "processed_until": {
+              "den": 1,
+              "rem": 0,
+              "whole": 0
+            },
+            "produced_each_base": 0,
+            "pumps": 3,
+            "raw_ml_base": 0,
+            "source_run": 1,
+            "source_start_revision": 8,
+            "started_at": 0,
+            "treatment_seconds": 0,
+            "water_contract": 2,
+            "water_hourly_cents": 3601,
+            "water_members": 1,
+            "water_start_cents": 550,
+            "water_wage_carry": 0
+          },
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "source_snapshot_sha_note": "complete original world and fixed binary retained separately; no native RSS claim",
+        "store_owned": 42850559,
+        "world": "/Volumes/HP P900/dev/MyCity/work/water-treatment-runtime-20261025/shared26-artifacts/mycity-storage-water_treatment_store/water-85649-1792960835616893000/world",
+        "world_owned": 196352
+      }
+    ],
+    "scope": "retained Rust ownership and declared finite workspace, actual completed game worlds; original equal model slots counted once each by Store API"
+  },
+  "resource_role": {
+    "events": [
+      {
+        "event": "ready",
+        "allocation_failures": 0,
+        "arena_used_bytes": 56560816,
+        "arena_usable_bytes": 61865528,
+        "lifetime_peak_requested_bytes": 56637902,
+        "grant_bytes": 61865984,
+        "store_owned_bytes": 52101303
+      },
+      {
+        "event": "ready",
+        "allocation_failures": 0,
+        "arena_used_bytes": 56560816,
+        "arena_usable_bytes": 61865528,
+        "lifetime_peak_requested_bytes": 56637902,
+        "grant_bytes": 61865984,
+        "store_owned_bytes": 52101303
+      },
+      {
+        "event": "result",
+        "allocation_failures": 0,
+        "arena_used_bytes": 56655648,
+        "arena_usable_bytes": 61865528,
+        "lifetime_peak_requested_bytes": 56670767,
+        "grant_bytes": 61865984,
+        "store_owned_bytes": 52196039
+      },
+      {
+        "event": "ready",
+        "allocation_failures": 0,
+        "arena_used_bytes": 56560816,
+        "arena_usable_bytes": 61865528,
+        "lifetime_peak_requested_bytes": 56638030,
+        "grant_bytes": 61865984,
+        "store_owned_bytes": 52101303
+      },
+      {
+        "event": "result",
+        "allocation_failures": 0,
+        "arena_used_bytes": 56560904,
+        "arena_usable_bytes": 61865528,
+        "lifetime_peak_requested_bytes": 56653015,
+        "grant_bytes": 61865984,
+        "store_owned_bytes": 52101303
+      }
+    ],
+    "max_peak_requested_bytes": 56670767,
+    "max_used_bytes": 56655648,
+    "max_store_owned_bytes": 52196039,
+    "balance": {
+      "capacity_bytes": 67108864,
+      "available_touched_bytes": 67108864,
+      "granted_capacity_bytes": 0,
+      "workspace_capacity_bytes": 0,
+      "workspace_grants": 3,
+      "workspace_returns": 3,
+      "workspace_fills": 3,
+      "grants": 0,
+      "returns": 0,
+      "fill_acknowledgements": 0,
+      "scans": 11,
+      "rejected_requests": 0,
+      "maximum_prepare_to_fill_or_reap_ns": 25989083
+    },
+    "source32_initial_path_failure": "retained full original; corrected explicit work root only",
+    "normal64_global_m0": "not_accepted; finite actual V2 Sim role only",
+    "native_16GB_speed": "not_run",
+    "recovery_root": "/Volumes/HP P900/dev/MyCity/work/w33",
+    "logical_evidence_bytes_combined": 1770732134
+  },
+  "unrelated_wip_files_preserved": 24,
+  "original_owner_frozen_files": 4,
+  "complete_evidence_roots": [
+    "/Volumes/HP P900/dev/MyCity/work/water-treatment-runtime-20261025",
+    "/Volumes/HP P900/dev/MyCity/work/w33"
+  ],
+  "retained_manifest": "retained-evidence34-sha.json",
+  "retained_original_files": 6636,
+  "retained_logical_bytes": 1770805761,
+  "evidence_budget_bytes": 2147483648,
+  "not_accepted": [
+    "native/OS/stack full-process peak",
+    "global M0/full joint normal64 and diagnostic8",
+    "real16GB",
+    "sustainable speed/long-term growth",
+    "UI/render/GPU",
+    "full parent92/sewage/rights/use certification"
+  ],
+  "pr": null,
+  "publication": "pending v192; no existing tag substituted for gameplay"
+}

@@ -1220,6 +1220,11 @@ impl Engine {
             .is_none_or(|n|n>ENGINE_BYTE_BUDGET){return Err(TxError::WorkingLimit);}
         self.world.continuous_supply.as_deref().map(|r|r.due_view()).transpose()
     }
+    /// Authenticated chemical classification only; no drinking/use certificate.
+    pub fn water_product_quality(&self,stock:u32)->Result<Option<crate::continuous_supply::v2::ProductStockView>,TxError>{
+        if self.world.continuous_supply.is_some()&&self.owned_capacity_bytes().checked_add(crate::continuous_supply::MAX_WORKSPACE_BYTES).is_none_or(|n|n>ENGINE_BYTE_BUDGET){return Err(TxError::WorkingLimit);}
+        self.world.continuous_supply.as_deref().map_or(Ok(None),|r|crate::continuous_supply::v2::product_quality(r,stock))
+    }
     pub fn continuous_supply_receipt_operations(&self)->[Option<u64>;crate::continuous_supply::MAX_RUNS+1]{crate::continuous_supply::restore_operations(&self.world)}
     pub fn begin_continuous_supply_restore(&self)->Result<crate::continuous_supply::RestoreCheck,String>{crate::continuous_supply::begin_restore(&self.world).map_err(|e|format!("supply_restore:{e:?}"))}
     pub fn check_continuous_supply_restore_receipt(&self,c:&mut crate::continuous_supply::RestoreCheck,index:usize,record:&JournalRecord)->Result<(),String>{crate::continuous_supply::check_restore(&self.world,c,index,record).map_err(|e|format!("supply_restore_receipt:{e:?}"))}
@@ -1986,11 +1991,11 @@ impl Engine {
                 .saturating_add(self.world.education.as_ref().map_or(0,|_|crate::education_authority::candidate_bytes()))
                 .saturating_add(self.world.qualification.as_ref().map_or(0,|_|crate::qualification_authority::candidate_bytes()))
                 .saturating_add(self.world.venue.as_ref().map_or(0,|_|crate::venue_runtime::UseCandidate::payload_bytes()));
-            crate::continuous_supply::check_joint_peak(joint,ENGINE_BYTE_BUDGET)?;
+            crate::continuous_supply::check_joint_peak(joint,ENGINE_BYTE_BUDGET,self.world.continuous_supply.as_deref().map_or(0,crate::continuous_supply::Runtime::owned_bytes))?;
         }
         if self.world.facility_work.is_some(){
             let joint=service_working_base
-                .saturating_add(self.world.continuous_supply.as_ref().map_or(0,|_|crate::continuous_supply::Runtime::owned_bytes()+crate::continuous_supply::MAX_WORKSPACE_BYTES))
+                .saturating_add(self.world.continuous_supply.as_deref().map_or(0,|r|r.owned_bytes()+crate::continuous_supply::MAX_WORKSPACE_BYTES))
                 .saturating_add(self.world.service_needs.as_ref().map_or(0,|_|crate::service_needs::Runtime::candidate_bytes()))
                 .saturating_add(self.world.education.as_ref().map_or(0,|_|crate::education_authority::candidate_bytes()))
                 .saturating_add(self.world.qualification.as_ref().map_or(0,|_|crate::qualification_authority::candidate_bytes()))
@@ -2111,7 +2116,12 @@ impl Engine {
                     let mut ledger=BootLedger{base:EconomicLedger{world:&self.world,accounts:&mut accounts,stocks:&mut stocks},resources:&mut resources,leases:&mut leases,next_token:&mut next_token};
                     if matches!(command,crate::facility_authority::Command::Stop{..}){if let Some(supply)=continuous_supply.as_deref_mut(){let root=crate::continuous_supply::source_root(&self.world,supply)?;supply.stop_for_operator(&mut ledger,at,env.operation_id,root,next_revision)?;}}
                     let before=crate::facility_authority::paid_snapshot(self.world.facility_work.as_deref().ok_or(TxError::InvalidOperation)?);
-                    let c=crate::facility_authority::prepare(&self.world,timeline.as_ref(),caller,command,env.operation_id,&mut ledger)?;
+                    let mut c=crate::facility_authority::prepare(&self.world,timeline.as_ref(),caller,command,env.operation_id,&mut ledger)?;
+                    if matches!(command,crate::facility_authority::Command::Stop{..}){
+                        if let Some(supply)=continuous_supply.as_deref().filter(|s|s.treatment_device().is_some()){
+                            crate::facility_authority::close_for_source(&mut c.runtime,&mut c.ledger,supply,env.operation_id,at,&mut ledger)?;
+                        }
+                    }
                     crate::facility_authority::record_actual_wages(&self.world,before,&c.runtime,env.operation_id,at,&mut housing_wage_window)?;
                     facility_work=Some(c.runtime);facility_member=Some(c.ledger);
                 },
@@ -2123,10 +2133,10 @@ impl Engine {
                     let root=crate::continuous_supply::source_root(&self.world,runtime)?;
                     let mut ledger=BootLedger{base:EconomicLedger{world:&self.world,accounts:&mut accounts,stocks:&mut stocks},resources:&mut resources,leases:&mut leases,next_token:&mut next_token};
                     if matches!(command,crate::continuous_supply::Command::Start{..}){crate::facility_authority::authorize_start(&self.world,facility_work.as_deref(),at)?;}
-                    runtime.command(&mut ledger,command,at,env.operation_id,root,next_revision)?;
+                    runtime.command(&self.world,facility_work.as_deref(),&mut ledger,command,at,env.operation_id,root,next_revision)?;
                     if matches!(command,crate::continuous_supply::Command::Start{..}){if let Some(f)=facility_work.as_deref_mut(){crate::facility_authority::bind_started(f,runtime,env.operation_id,next_revision,at)?;}}
                     if matches!(command,crate::continuous_supply::Command::Stop|crate::continuous_supply::Command::Fault{..}){if let (Some(f),Some(m))=(facility_work.as_deref_mut(),facility_member.as_deref_mut()){
-                        crate::facility_authority::close_for_device(f,m,u64::from(runtime.opening().resources[0]),env.operation_id,at,&mut ledger)?;
+                        crate::facility_authority::close_for_source(f,m,runtime,env.operation_id,at,&mut ledger)?;
                     }}
                 },
                 Action::Background { command } => {
@@ -3816,8 +3826,14 @@ impl Engine {
                     }
                 }
                 Action::MoveStock { from, to, quantity } => {
-                    if let Some(runtime)=continuous_supply.as_deref(){for raw in [from,to]{let h=self.world.stocks.resolve(raw).map_err(|_|TxError::InvalidHandle)?;
-                        if runtime.governs(self.world.stocks.get(h).map_err(|_|TxError::InvalidHandle)?.id){return Err(TxError::Unauthorized);}}}
+                    let mut supply_move=false;
+                    if let Some(runtime)=continuous_supply.as_deref(){
+                        let mut ids=[0;2];for(i,raw)in[from,to].into_iter().enumerate(){let h=self.world.stocks.resolve(raw).map_err(|_|TxError::InvalidHandle)?;ids[i]=self.world.stocks.get(h).map_err(|_|TxError::InvalidHandle)?.id;}
+                        if ids.iter().any(|id|runtime.governs(*id)){
+                            supply_move=crate::continuous_supply::v2::product_move(runtime,ids[0],ids[1]);
+                            if !supply_move||env.actions.len()!=1{return Err(TxError::Unauthorized);}
+                        }
+                    }
                     if self.world.town.as_ref().is_some_and(|market| {
                         let chartered =
                             |stock_ref: crate::arena::Handle<crate::arena::InventoryDomain>| {
@@ -3923,6 +3939,12 @@ impl Engine {
                     if !caller.permits(owner) {
                         return Err(TxError::Unauthorized);
                     }
+                    if supply_move{
+                        let at=crate::education_authority::completed(timeline.as_ref())?;
+                        let from_id=stocks[f].1.id;let to_id=stocks[t].1.id;
+                        let mut ledger=BootLedger{base:EconomicLedger{world:&self.world,accounts:&mut accounts,stocks:&mut stocks},resources:&mut resources,leases:&mut leases,next_token:&mut next_token};
+                        crate::continuous_supply::v2::transfer_product(continuous_supply.as_deref_mut().ok_or(TxError::InvalidOperation)?,&mut ledger,from_id,to_id,quantity,at,env.operation_id)?;
+                    }else{
                     let old = stocks[f].1;
                     let left = old
                         .quantity
@@ -3977,6 +3999,7 @@ impl Engine {
                         .basis
                         .checked_add(cost)
                         .map_err(|_| TxError::Overflow)?;
+                    }
                 }
                 Action::Qualification {command}=>{
                     if self.owned_capacity_bytes().checked_add(crate::qualification_authority::candidate_bytes()).is_none_or(|n|n>ENGINE_BYTE_BUDGET) {
@@ -4004,7 +4027,8 @@ impl Engine {
                                 let at=crate::education_authority::completed(timeline.as_ref())?;let root=crate::continuous_supply::source_root(&self.world,supply)?;
                                 let mut ledger=BootLedger{base:EconomicLedger{world:&self.world,accounts:&mut accounts,stocks:&mut stocks},resources:&mut resources,leases:&mut leases,next_token:&mut next_token};
                                 supply.stop_for_operator(&mut ledger,at,env.operation_id,root,next_revision)?;
-                                crate::facility_authority::close_for_device(f,m,device,env.operation_id,at,&mut ledger)?;
+                                if supply.treatment_device().is_some(){crate::facility_authority::close_for_source(f,m,supply,env.operation_id,at,&mut ledger)?;}
+                                else{crate::facility_authority::close_for_device(f,m,device,env.operation_id,at,&mut ledger)?;}
                             }
                         }
                     }
@@ -4180,6 +4204,12 @@ impl Engine {
             .actions
             .iter()
             .any(|a| matches!(a, Action::Timeline { .. } | Action::ContinuousSupply { .. } | Action::FacilityWork{..}) || (self.world.facility_work.is_some()&&matches!(a,Action::Venue{command:crate::venue_runtime::Command::SafeExit{..},..}|Action::SettleExit{..})))
+            // A real V2 product move also advances the original source's
+            // recorded operation. Keep its existing game clock in the receipt
+            // so an immediate checkpoint can reopen that same saved state.
+            ||(env.actions.iter().any(|a|matches!(a,Action::MoveStock{..}))
+                &&continuous_supply.as_deref().is_some_and(|s|s.treatment_device().is_some()&&s.changed_by(env.operation_id))
+                &&self.world.continuous_supply.as_deref().is_none_or(|s|!s.changed_by(env.operation_id)))
         {
             timeline.as_ref().map(|t| t.progress)
         } else {
@@ -4218,7 +4248,7 @@ impl Engine {
                 0,
                 crate::housing_income::PaidWageWindow::owned_capacity_bytes,
             ));
-        let projected=projected.saturating_add(continuous_supply.as_ref().map_or(0,|_|crate::continuous_supply::Runtime::owned_bytes()+crate::continuous_supply::MAX_WORKSPACE_BYTES));
+        let projected=projected.saturating_add(continuous_supply.as_deref().map_or(0,|r|r.owned_bytes()+crate::continuous_supply::MAX_WORKSPACE_BYTES));
         let projected=projected.saturating_add(facility_work.as_ref().map_or(0,|_|crate::facility_authority::Runtime::owned_bytes()+crate::member_activity::Ledger::owned_bytes()+crate::facility_authority::MAX_WORKSPACE_BYTES));
         let projected = projected.saturating_add(service_needs.as_ref().map_or(0, |_|
             crate::service_needs::Runtime::owned_bytes()+crate::service_needs::Runtime::candidate_bytes()));

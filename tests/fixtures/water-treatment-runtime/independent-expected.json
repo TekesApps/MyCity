@@ -1,0 +1,132 @@
+{
+  "schema": "mycity-joint-treatment-independent-reference-v1",
+  "profile": "proposed original twin-pump treatment V2; not implemented/accepted by fixture alone",
+  "original_raw_ml": 100000000,
+  "raw_mass_mq": {
+    "harmful": 100,
+    "suspended": 10,
+    "allowed_dissolved": 0,
+    "other": 0
+  },
+  "full_reagent_mq": 100,
+  "power": {
+    "genset_w": 24000,
+    "pumps_w_each": 6000,
+    "purifier_nominal_w": 200000,
+    "treatment_mwh_per_ml": {
+      "num": 1,
+      "den": 5
+    }
+  },
+  "derived_sample": {
+    "pumps_until_second": 5000,
+    "treatment_until_second": 5500,
+    "at5000": {
+      "processed_ml": {
+        "whole": 83333333,
+        "rem": 1,
+        "den": 3
+      },
+      "raw_taken_ml": 83333334,
+      "raw_wip_ml": {
+        "whole": 0,
+        "rem": 2,
+        "den": 3
+      },
+      "source_ports_net_total_ml": 16666666
+    },
+    "at5500": {
+      "processed_ml": 100000000,
+      "raw_taken_ml": 100000000,
+      "raw_wip_ml": 0,
+      "reagent_wip_mq": 0,
+      "treatment_electricity_mwh": 20000000,
+      "pump_electricity_mwh": {
+        "whole": 16666666,
+        "rem": 2,
+        "den": 3
+      },
+      "generated_electricity_mwh": {
+        "whole": 36666666,
+        "rem": 2,
+        "den": 3
+      },
+      "total_final_heat_mwh": {
+        "whole": 91666666,
+        "rem": 2,
+        "den": 3
+      }
+    }
+  },
+  "outputs": {
+    "product": {
+      "water_ml": 98000000,
+      "harmful_mq": 1,
+      "suspended_mq": 0,
+      "allowed_dissolved_mq": 10,
+      "other_mq": 0
+    },
+    "concentrate": {
+      "water_ml": 2000000,
+      "harmful_mq": 99,
+      "suspended_mq": 0,
+      "allowed_dissolved_mq": 20,
+      "other_mq": 0
+    },
+    "sludge": {
+      "water_ml": 0,
+      "harmful_mq": 0,
+      "suspended_mq": 10,
+      "allowed_dissolved_mq": 70,
+      "other_mq": 0
+    }
+  },
+  "source_cost_oracle": {
+    "physical0to4_cents": 629,
+    "electric_earned0to4_cents": 4,
+    "electric_to_water0to4_cents": 2,
+    "v2_water0to3_cents": 610,
+    "v2_water0to4_cents": 631,
+    "v2_port_cost0to3": [
+      305,
+      305
+    ],
+    "v2_port_cost0to4": [
+      315,
+      316
+    ],
+    "v2_port_delta3to4": [
+      10,
+      11
+    ],
+    "physical_water_full_cents": 99716,
+    "electric_water_full_cents": 2500,
+    "v2_water_gross_full_cents": 102216
+  },
+  "labor": {
+    "experimental_cents_per_member_hour": 3601,
+    "each_role_at5000": {
+      "earned_cents": 5001,
+      "remainder": 1400,
+      "denominator": 3600
+    },
+    "each_role_at5500": {
+      "earned_cents": 5501,
+      "remainder": 1900,
+      "denominator": 3600
+    },
+    "roles_require_distinct_actual_members": true
+  },
+  "twenty_liter_reagent_mq": {
+    "whole": 0,
+    "rem": 1,
+    "den": 50
+  },
+  "not_a_claim": [
+    "Original V1 wire/policy unchanged",
+    "maintenance/custody typed opening and output-costWIP implementation still required",
+    "chemical standard not medical/drinking certificate",
+    "no V2 actual run/build/test yet",
+    "No real16GB/native/speed acceptance"
+  ]
+}

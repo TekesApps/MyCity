@@ -1,6 +1,6 @@
 # MyCity 当前实际派工与交接
 
-**2026-10-25 实际在制：**共享1项（#132及关联缺陷#148），独立准备0项，上限1+2。[当前执行/责任/差项](execution-current.md)与[机器快照](inputs/issue-ledger/execution-flow.json)为准；父任务持续推进、冻结交付和保留WIP不计活跃派工。后续133/134/135–137排队，未授予新写权。
+**2026-10-26 实际在制：**root共享1项（#133完整有限验收已通过，发布/关闭回读中）、独立准备0项，上限1+2。#132/#148已关；#134缺真实交通/用水履约来源，随后消化既有#135–137接线，未新增派工。[当前责任](execution-current.md)与[机器台账](inputs/issue-ledger/execution-flow.json)为准。
 
 **2026-10-25 当前执行入口：**[Issue执行与验收台账](issue-execution-ledger.md)及GitHub #2/#23。
 当前root是唯一共享writer、串行验证和发布/关闭负责人；旧主会话已停止，下面旧派工不再授权。
@@ -1036,3 +1036,11 @@ Actual next root work: original ports104/105 classified consumption and frozen p
 ## v0.5.191 实际关闭与下一轮
 
 #132（新验收业务）和#148（具体缺陷）在v190完整实际证据及发布回填后已关闭，直接父#55/#4清单同步且仍开放。本阶段历史补登记0，当前积压21待集成/0待验证，收尾实际0+0。下一共享项#133排队未激活，随后按来源解阻#134并消化#135–137。起点缺可靠证据的验收耗时仍unknown；见[实际关闭记录](evidence/facility-operation-20261025/closure.json)。v191只是台账同步，不算第二项业务验收；未改M0、WIP/恢复原件，不新增派工或调度器。
+
+## 当前未发布在制：#133
+
+v190的#132/#148已关，v191只同步台账。当前root将#133激活为唯一共享接线，实际1+0，不新增会话/worker或源码批次。确切文件/版本/验收入口见execution-flow.json及Issue133；原water_treatment.rs/facility_work.rs等内核冻结。现有V1在source.advance后补记工资会重算累计出水成本，不能用于V2已出流状态；原advisor窄核确认私有联合prefix→真实劳动/资金暂存→组件及Stock/成本/租约/原票复核→原Prepared一次提交的边界。修订4明确earned成本与paid收入、cycle工资前缀及有来源费用/WIP责任，不修改V1或v188物理曲线。5000/5500、质量守恒和0→3→4成本预期仅算术核对；V2实际生产/编译/测试全部not_run，#133和父#92均开放。证据仍原HP P900 work，既有合同盘预算768MiB；所有M0/World/Engine/role/normal/default栈门及24WIP/旧恢复原件保持。
+
+## v192 有限#133实际验收
+
+[完整证据](evidence/water-treatment-runtime-20261025/STATUS.md)：当前共享33、默认栈原6+新2、普通存读档/原票、实际池内续产/冷开/角色归还通过；24无关WIP与所有失败/恢复原件保留。完整133待发布/回填/实际关闭，尚不增加关闭统计；父92/134和全局M0硬件未代验。共有8MiB是诊断容量，不是Store每实例上限，原normal64/Sim59门不扩大。

@@ -10,6 +10,7 @@ use serde::{Deserialize, Deserializer, Serialize};
 use std::mem::size_of;
 use sha2::{Digest, Sha256};
 mod cost_curve;
+pub mod v2;
 
 pub const VERSION:u32=1;
 pub const MAX_OWNED_BYTES:usize=16*1024;
@@ -24,13 +25,15 @@ pub fn budget_layout()->serde_json::Value{serde_json::json!({
     "genset_candidate_header_bytes":size_of::<g::Candidate>(),
     "seven_stock_read_bytes":7*size_of::<Stock>(),"joint_extra_reserved_bytes":MAX_WORKSPACE_BYTES,
     "max_runs":MAX_RUNS,"native_stack_gpu_and_16gb":"not_measured"
+    ,"v2_opening_backing_bytes":size_of::<v2::Opening>(),"v2_state_backing_bytes":size_of::<v2::State>(),
+    "runtime_owned_bytes_excludes_optional_backing":true
 })}
-pub(crate) fn check_joint_peak(existing_and_other_staged:usize,limit:usize)->Result<(),TxError>{
-    if existing_and_other_staged.checked_add(Runtime::owned_bytes()).and_then(|n|n.checked_add(MAX_WORKSPACE_BYTES)).is_none_or(|n|n>limit){Err(TxError::WorkingLimit)}else{Ok(())}
+pub(crate) fn check_joint_peak(existing_and_other_staged:usize,limit:usize,staged_owned:usize)->Result<(),TxError>{
+    if existing_and_other_staged.checked_add(staged_owned).and_then(|n|n.checked_add(MAX_WORKSPACE_BYTES)).is_none_or(|n|n>limit){Err(TxError::WorkingLimit)}else{Ok(())}
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
-pub enum Profile { ContinuousGensetTwinPumpV1 }
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub enum Profile { ContinuousGensetTwinPumpV1, ContinuousGensetTwinPumpTreatmentV2(Box<v2::Opening>) }
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Opening {
@@ -71,6 +74,8 @@ pub(crate) struct Runtime {
     runs:[Option<Run>;MAX_RUNS],
     tokens:[Option<u64>;crate::exchange::PATH],
     last_operation:u64,
+    #[serde(default,skip_serializing_if="Option::is_none")]
+    v2:Option<Box<v2::State>>,
     #[serde(skip)] ready:bool,
 }
 
@@ -93,6 +98,10 @@ pub struct View {
     pub startup_wip:Money, pub zero_work_expense:Money,
     pub runs:[Option<Run>;MAX_RUNS],
     pub sanitary_quality_known:bool,
+    /// V2 authority includes exact WIP, fee/strategy/cursor and lease state that
+    /// does not appear as spendable Stock. It must still affect state_hash.
+    #[serde(skip_serializing_if="Option::is_none")]
+    pub v2_fingerprint:Option<[u8;32]>,
 }
 
 fn money_is_zero(v:&Money)->bool{*v==Money::ZERO}
@@ -111,32 +120,110 @@ fn lot(s:Stock)->g::InputLot{g::InputLot{stock_id:s.id,lot_ref:u64::from(s.lot_i
 fn instant(r:&Runtime,at:u64)->g::Instant{g::Instant{scope:r.config.scope,clock:r.config.clock,second:at}}
 
 impl Runtime {
-    pub(crate) const fn owned_bytes()->usize{size_of::<Self>()}
+    pub(crate) fn owned_bytes(&self)->usize{
+        size_of::<Self>()+Self::profile_backing_bytes(&self.opening)
+            +self.v2.as_deref().map_or(0,v2::State::owned_bytes)
+    }
+    fn profile_backing_bytes(opening:&Opening)->usize{
+        match opening.profile{Profile::ContinuousGensetTwinPumpV1=>0,Profile::ContinuousGensetTwinPumpTreatmentV2(_)=>size_of::<v2::Opening>()}
+    }
+    pub(crate) fn opening_owned_bytes(opening:&Opening)->usize{
+        size_of::<Self>()+Self::profile_backing_bytes(opening)
+            +if matches!(opening.profile,Profile::ContinuousGensetTwinPumpTreatmentV2(_)){size_of::<v2::State>()}else{0}
+    }
+    fn validate_profile(&self)->Result<(),TxError>{
+        match (&self.opening.profile,self.opening.version,self.v2.as_deref()){
+            (Profile::ContinuousGensetTwinPumpV1,VERSION,None)=>Ok(()),
+            (Profile::ContinuousGensetTwinPumpTreatmentV2(o),v2::VERSION,Some(v))if o.version==v2::VERSION=>{
+                v.validate()?;
+                match (self.genset.run_count,v.batch.as_deref()){
+                    (0,None)=>Ok(()),
+                    (n,Some(b))if n>0=>{
+                        let first=self.runs[0].ok_or(TxError::InvalidOperation)?;
+                        let c=&b.config.material;let binding=c.binding;
+                        if b.config.accrual_policy!=o.wage_settlement.accrual_policy()
+                            ||binding.operation!=first.operation||binding.origin_cursor!=first.started_at
+                            ||binding.world_ref!=self.config.scope.world()||binding.root_epoch!=self.config.scope.branch()
+                            ||binding.city_id!=self.opening.city_id||binding.source_version!=u64::from(v2::VERSION)
+                            ||c.raw!=o.source_quality||c.raw_origin.stock_id!=self.raw_lot.stock_id
+                            ||c.raw_origin.lot_ref!=self.raw_lot.lot_ref||c.raw_origin.quantity_milli!=self.raw_lot.quantity.value()as u64
+                            ||c.raw_origin.basis_cents!=self.raw_lot.basis.value()as u64
+                            ||c.reagent_origin.stock_id!=o.reagent_stock
+                            ||c.raw_basis!=(crate::water_treatment::RawBasisMode::RootConfirmedStream{ports:[self.opening.stocks[3],self.opening.stocks[4]]})
+                            ||c.output_stock!=o.outlet_stocks[0]||c.concentrate_stock!=o.outlet_stocks[1]||c.sludge_stock!=o.outlet_stocks[2]
+                            ||b.checkpoint.physical.cursor>self.cursor(){return Err(TxError::InvalidOperation);}
+                        Ok(())
+                    },
+                    _=>Err(TxError::InvalidOperation),
+                }
+            },
+            _=>Err(TxError::InvalidOperation),
+        }
+    }
+    fn legacy_execution(&self)->Result<(),TxError>{
+        self.validate_profile()?;
+        if self.v2.is_some(){return Err(TxError::InvalidOperation);}
+        Ok(())
+    }
     pub(crate) fn registration(&self)->Result<[u8;32],TxError>{digest(&(&self.opening,&self.config,&self.raw_lot))}
     pub(crate) fn due_view(&self)->Result<DueView,TxError>{
         if !self.ready {return Err(TxError::InvalidOperation);}
-        Ok(DueView{version:VERSION,scope:self.config.scope,city_id:self.opening.city_id,
+        self.validate_profile()?;
+        Ok(DueView{version:self.opening.version,scope:self.config.scope,city_id:self.opening.city_id,
             source_id:self.opening.source_id,fingerprint:digest(self)?,
             registration:self.registration()?,cursor:self.cursor(),status:self.genset.status})
     }
-    pub(crate) fn governs(&self,id:u32)->bool{self.opening.stocks.contains(&id)}
+    pub(crate) fn governs(&self,id:u32)->bool{self.opening.stocks.contains(&id)||matches!(&self.opening.profile,Profile::ContinuousGensetTwinPumpTreatmentV2(o)if o.governs(id))}
     pub(crate) fn is_ready(&self)->bool{self.ready}
     pub(crate) fn cursor(&self)->u64{self.genset.cursor}
+    pub(crate) fn changed_by(&self,operation:u64)->bool{self.last_operation==operation}
     pub(crate) fn opening(&self)->&Opening{&self.opening}
+    pub(crate) fn treatment_device(&self)->Option<u64>{
+        match &self.opening.profile{Profile::ContinuousGensetTwinPumpTreatmentV2(o)=>Some(u64::from(o.purifier_resource)),_=>None}
+    }
+    pub(crate) fn treatment_opening(&self)->Option<&v2::Opening>{match &self.opening.profile{Profile::ContinuousGensetTwinPumpTreatmentV2(o)=>Some(o),_=>None}}
+    pub(crate) fn treatment_batch(&self)->Option<&crate::water_treatment_authority::Batch>{self.v2.as_deref().and_then(|s|s.batch.as_deref())}
+    pub(crate) fn treatment_batch_mut(&mut self)->Option<&mut crate::water_treatment_authority::Batch>{self.v2.as_deref_mut().and_then(|s|s.batch.as_deref_mut())}
+    pub(crate) fn work_covered(&self,device:u64,from:u64,until:u64)->Result<u64,TxError>{
+        if until<from{return Err(TxError::InvalidOperation);}
+        if device==u64::from(self.opening.resources[0]){
+            self.runs.iter().flatten().try_fold(0u64,|n,r|{
+                let end=add(r.started_at,r.production_seconds)?;
+                add(n,until.min(end).saturating_sub(from.max(r.started_at)))
+            })
+        }else if self.treatment_device()==Some(device){
+            let segments=self.v2.as_deref().and_then(|s|s.batch.as_deref()).map(|b|&b.segments);
+            let mut n=0;if let Some(segments)=segments{for s in segments.iter().flatten(){
+                let end=add(s.started_at,s.treatment_seconds)?;
+                n=add(n,until.min(end).saturating_sub(from.max(s.started_at)))?;
+            }}Ok(n)
+        }else{Err(TxError::InvalidOperation)}
+    }
+    pub(crate) fn labor_basis_for_run(&self,run:u64,water:bool)->Result<Money,TxError>{
+        if !water{return self.runs.iter().flatten().find(|r|r.id==run).map(|r|r.operator_labor_basis).ok_or(TxError::InvalidOperation);}
+        let batch=self.v2.as_deref().and_then(|s|s.batch.as_deref()).ok_or(TxError::InvalidOperation)?;
+        let mut cents=0;for s in batch.segments.iter().flatten().filter(|s|s.source_run==run){cents=add(cents,s.earned_at_cells(s.treatment_seconds,true)?)?;}m(cents)
+    }
+    pub(crate) fn all_labor_basis(&self)->Result<Money,TxError>{
+        self.operator_labor_basis.checked_add(m(self.v2.as_deref().and_then(|s|s.batch.as_deref()).map_or(0,|b|b.water_earned_cents))?).map_err(bad)
+    }
     fn run(&self)->Option<&Run>{self.runs.iter().flatten().last()}
     fn run_mut(&mut self)->Option<&mut Run>{self.runs.iter_mut().flatten().last()}
-    fn mask(&self)->u8{if self.genset.status==g::Status::Running{self.run().map_or(0,|r|r.pumps)}else{0}}
+    fn mask(&self)->u8{if self.genset.status==g::Status::Running{
+        if let Some(b)=self.v2.as_deref().and_then(|s|s.batch.as_deref()){b.segments.iter().flatten().last().map_or(0,|s|s.pumps)}
+        else{self.run().map_or(0,|r|r.pumps)}
+    }else{0}}
     fn heat(&self)->Result<(u64,u64),TxError>{
         let total=mul(self.genset.active_seconds,HEAT_NUM)?;
         Ok((total/3,total%3))
     }
     pub(crate) fn view(&self)->Result<View,TxError>{let (heat,rem)=self.heat()?;Ok(View{
-        version:VERSION,city_id:self.opening.city_id,cursor:self.cursor(),genset:self.genset.clone(),
+        version:self.opening.version,city_id:self.opening.city_id,cursor:self.cursor(),genset:self.genset.clone(),
         machine_meters:g::ContinuousGensetV1::meters(&self.config,&self.genset).map_err(bad)?,
         produced_ml:self.produced_ml,output_basis:self.output_basis,raw_used_ml:self.raw_used_ml,operator_labor_basis:self.operator_labor_basis,
         heat_mwh:heat,heat_remainder_numerator:rem,denominator:3,
         startup_wip:self.startup_wip,zero_work_expense:self.zero_work_expense,runs:self.runs,
-        sanitary_quality_known:false})}
+        sanitary_quality_known:false,v2_fingerprint:self.v2.as_ref().map(|_|digest(self)).transpose()?})}
     fn converted_basis(&self)->Result<Money,TxError>{
         let meters=g::ContinuousGensetV1::meters(&self.config,&self.genset).map_err(bad)?;
         meters.fuel_converted_basis.checked_add(meters.water_converted_basis).map_err(bad)?
@@ -165,6 +252,7 @@ impl Runtime {
         Ok(n.min(waste_free/1000))
     }
     pub(crate) fn boundary(&self,l:&mut impl Ledger,now:u64)->Result<Option<u64>,TxError>{
+        if self.v2.is_some(){return v2::boundary(self,l,now);}
         if self.genset.status!=g::Status::Running{return Ok(None);}
         if self.cursor()!=now{return Err(TxError::InvalidOperation);}
         Ok(Some(add(now,self.available_seconds(&self.stocks(l)?,self.mask())?)?))
@@ -192,7 +280,9 @@ impl Runtime {
             fuel_take:f.0,fuel_return:f.1,water_take:w.0,water_return:w.1,fee_paid:d.start_fee}).map_err(bad)?;
         self.genset=candidate.next;Ok(())
     }
-    pub(crate) fn command(&mut self,l:&mut impl Ledger,command:Command,at:u64,operation:u64,root:[u8;32],revision:u64)->Result<(),TxError>{
+    pub(crate) fn command(&mut self,world:&World,facility:Option<&crate::facility_authority::Runtime>,l:&mut impl Ledger,command:Command,at:u64,operation:u64,root:[u8;32],revision:u64)->Result<(),TxError>{
+        if self.v2.is_some(){return v2::command(self,world,facility,l,command,at,operation,root,revision);}
+        self.legacy_execution()?;
         if !self.ready || operation==0 || at!=self.cursor(){return Err(TxError::InvalidOperation);}
         self.validate_stocks(&self.stocks(l)?)?;
         let view=self.authority(l,at,root,revision)?;
@@ -235,11 +325,16 @@ impl Runtime {
     }
     pub(crate) fn stop_for_operator(&mut self,l:&mut impl Ledger,at:u64,operation:u64,root:[u8;32],revision:u64)->Result<(),TxError>{
         if !self.ready||at!=self.cursor()||operation==0{return Err(TxError::InvalidOperation);}
+        if self.v2.is_some(){
+            if self.genset.status==g::Status::Running{return v2::stop(self,l,at,operation,root,revision,StopCause::OperatorBoundary);}
+            return Ok(());
+        }
         if self.genset.status==g::Status::Running{let view=self.authority(l,at,root,revision)?;self.stop(l,&view,StopCause::OperatorBoundary)?;self.last_operation=operation;}
         self.validate_stocks(&self.stocks(l)?)
     }
     /// P5 joint original-ledger prefix. It does not advance or own a second clock.
     pub(crate) fn advance(&mut self,l:&mut impl Ledger,at:u64,operation:u64,root:[u8;32],revision:u64)->Result<(),TxError>{
+        self.legacy_execution()?;
         if !self.ready || at<self.cursor() || at-self.cursor()>3600 || operation==0{return Err(TxError::InvalidOperation);}
         self.validate_stocks(&self.stocks(l)?)?;
         if self.genset.status!=g::Status::Running{
@@ -310,6 +405,8 @@ impl Runtime {
         self.validate_stocks(&self.stocks(l)?)
     }
     fn validate_stocks(&self,s:&[Stock;7])->Result<(),TxError>{
+        self.validate_profile()?;
+        if self.v2.is_some(){return v2::validate_stocks(self,s);}
         let meters=g::ContinuousGensetV1::meters(&self.config,&self.genset).map_err(bad)?;
         for (i,lot,net,held)in[(0,&self.config.fuel,self.genset.fuel_taken_mq.checked_sub(self.genset.fuel_returned_mq).ok_or(TxError::Stock)?,meters.fuel_held_basis),
             (1,&self.config.water,self.genset.water_taken_ml.checked_sub(self.genset.water_returned_ml).ok_or(TxError::Stock)?,meters.water_held_basis),
@@ -377,6 +474,7 @@ impl Runtime {
     }
     pub(crate) fn validate_prepared(&self,l:&mut impl Ledger,t:Option<&crate::timeline::Timeline>)->Result<(),TxError>{
         self.validate_stocks(&self.stocks(l)?)?;
+        if self.v2.is_some(){v2::validate_prepared(self,l)?;}
         if self.genset.status==g::Status::Running {
             let mut requests=[(self.opening.resources[0],1);3];let mut n=1;
             for i in 0..2{if self.mask()&(1<<i)!=0{requests[n]=(self.opening.resources[i+1],1);n+=1;}}
@@ -479,8 +577,11 @@ pub(crate) fn check_restore(world:&World,c:&mut RestoreCheck,index:usize,record:
         match record.actions[0]{
             Some(Action::ContinuousSupply{..}) if record.actor==r.opening.owner&&at==Some(r.cursor())=>{},
             Some(Action::Timeline{command:crate::timeline::Command::Advance{..}})if record.actor==0&&at==Some(r.cursor())=>{},
-            Some(Action::FacilityWork{command:crate::facility_authority::Command::Stop{contract_id}})if at==Some(r.cursor())&&world.facility_work.as_deref().is_some_and(|f|f.state.opening().contracts.iter().flatten().any(|c|c.id==contract_id&&c.device_id==u64::from(r.opening.resources[0])&&c.employer_account==r.opening.owner&&(record.actor==0||record.actor==c.employer_account||record.actor==c.employee_account)))=>{},
-            Some(Action::Venue{use_id,command:crate::venue_runtime::Command::SafeExit{..}})if record.actor==0&&at==Some(r.cursor())&&world.facility_work.as_deref().is_some_and(|f|f.state.opening().contracts.iter().flatten().any(|c|c.venue_use_id==use_id&&c.device_id==u64::from(r.opening.resources[0])&&c.employer_account==r.opening.owner))=>{},
+            Some(Action::MoveStock{from,to,quantity})if (record.actor==0||record.actor==r.opening.owner)&&at==Some(r.cursor())&&quantity!=Quantity::ZERO
+                &&world.stocks.resolve(from).ok().and_then(|h|world.stocks.get(h).ok()).zip(world.stocks.resolve(to).ok().and_then(|h|world.stocks.get(h).ok()))
+                    .is_some_and(|(a,b)|v2::product_move(r,a.id,b.id))=>{},
+            Some(Action::FacilityWork{command:crate::facility_authority::Command::Stop{contract_id}})if at==Some(r.cursor())&&world.facility_work.as_deref().is_some_and(|f|f.state.opening().contracts.iter().flatten().any(|c|c.id==contract_id&&(c.device_id==u64::from(r.opening.resources[0])||r.treatment_device()==Some(c.device_id))&&c.employer_account==r.opening.owner&&(record.actor==0||record.actor==c.employer_account||record.actor==c.employee_account)))=>{},
+            Some(Action::Venue{use_id,command:crate::venue_runtime::Command::SafeExit{..}})if record.actor==0&&at==Some(r.cursor())&&world.facility_work.as_deref().is_some_and(|f|f.state.opening().contracts.iter().flatten().any(|c|c.venue_use_id==use_id&&(c.device_id==u64::from(r.opening.resources[0])||r.treatment_device()==Some(c.device_id))&&c.employer_account==r.opening.owner))=>{},
             _=>return Err(TxError::InvalidOperation),
         }
     }
@@ -516,7 +617,16 @@ fn set_output(l:&mut impl Ledger,id:u32,amount:u64,cost:Money)->Result<(),TxErro
 
 pub(crate) fn initialize(opening:Opening,world:&World)->Result<Box<Runtime>,String>{
     let fail=||"continuous_supply_opening".to_owned();
-    if opening.version!=VERSION||opening.city_id==0||opening.source_id==0||opening.owner==opening.start_supplier
+    let v2=match (&opening.profile,opening.version){
+        (Profile::ContinuousGensetTwinPumpV1,VERSION)=>None,
+        (Profile::ContinuousGensetTwinPumpTreatmentV2(o),v2::VERSION)=>{
+            o.validate_registration(&opening,world,true).map_err(|_|fail())?;
+            Some(Box::new(v2::State::pristine()))
+        },
+        _=>return Err(fail()),
+    };
+    if Runtime::opening_owned_bytes(&opening)>MAX_OWNED_BYTES{return Err(fail());}
+    if opening.city_id==0||opening.source_id==0||opening.owner==opening.start_supplier
         ||opening.stocks.contains(&0)||opening.resources.contains(&0)
         || opening.stocks.iter().enumerate().any(|(i,id)|opening.stocks[..i].contains(id))
         || opening.resources.iter().enumerate().any(|(i,id)|opening.resources[..i].contains(id))
@@ -543,14 +653,20 @@ pub(crate) fn initialize(opening:Opening,world:&World)->Result<Box<Runtime>,Stri
     let genset=g::ContinuousGensetV1::opening(&config,g::Instant{scope:world.scope,clock:config.clock,second:0}).map_err(|_|fail())?;
     let r=Box::new(Runtime{opening,config,genset,raw_lot:lot(s[2]),raw_used_ml:0,produced_ml:[0;2],output_basis:[Money::ZERO;2],operator_labor_basis:Money::ZERO,
         startup_wip:Money::ZERO,zero_work_expense:Money::ZERO,pump_start_fees:Money::ZERO,
-        run_converted_base:Money::ZERO,run_output_base:[Money::ZERO;2],runs:[None;MAX_RUNS],tokens:[None;crate::exchange::PATH],last_operation:0,ready:true});
+        run_converted_base:Money::ZERO,run_output_base:[Money::ZERO;2],runs:[None;MAX_RUNS],tokens:[None;crate::exchange::PATH],last_operation:0,v2,ready:true});
     r.validate_stocks(&s).map_err(|_|fail())?;Ok(r)
 }
 
 pub(crate) fn validate(world:&World,r:Option<&Runtime>,timeline:Option<&crate::timeline::Timeline>,resources:&[Resource],leases:&[Option<Lease>])->Result<(),TxError>{
     let Some(r)=r else{return Ok(());};
     if r.config.scope!=world.scope||r.config.city_id!=r.opening.city_id||r.config.genset_id!=r.opening.source_id
-        ||r.config.reception_denominator!=3||Runtime::owned_bytes()>MAX_OWNED_BYTES{return Err(TxError::InvalidOperation);}
+        ||r.config.reception_denominator!=3||r.owned_bytes()>MAX_OWNED_BYTES{return Err(TxError::InvalidOperation);}
+    if let Profile::ContinuousGensetTwinPumpTreatmentV2(o)=&r.opening.profile{
+        o.validate_registration(&r.opening,world,r.genset.run_count==0)?;
+        o.validate_resources(resources)?;
+        v2::validate_leases(r,leases)?;
+        crate::water_treatment_authority::validate_material_stocks(r,|id|world.stock_handle(id).and_then(|h|world.stocks.get(h).copied().map_err(|e|format!("{e:?}"))).map_err(bad))?;
+    }
     let stocks=r.opening.stocks.map(|id|world.stock_handle(id).ok().and_then(|h|world.stocks.get(h).ok()).copied());
     if stocks.iter().any(Option::is_none){return Err(TxError::Stock);}
     let s=stocks.map(Option::unwrap);r.validate_stocks(&s)?;
@@ -576,12 +692,12 @@ impl crate::restore_into::Restore for Option<Box<Runtime>> {
     use super::*;
     #[test]fn shared_peak_counts_other_original_candidates_before_allocating_supply(){
         let limit=crate::transaction::ENGINE_BYTE_BUDGET;
-        assert!(Runtime::owned_bytes()<=MAX_OWNED_BYTES);
-        let base=limit-Runtime::owned_bytes()-MAX_WORKSPACE_BYTES;
-        assert_eq!(check_joint_peak(base,limit),Ok(()));
-        assert_eq!(check_joint_peak(base+1,limit),Err(TxError::WorkingLimit));
-        assert_eq!(check_joint_peak(usize::MAX,limit),Err(TxError::WorkingLimit));
-        let fixed=2*size_of::<g::Candidate>()+7*size_of::<Stock>()+Runtime::owned_bytes();
+        assert!(size_of::<Runtime>()<=MAX_OWNED_BYTES);
+        let base=limit-size_of::<Runtime>()-MAX_WORKSPACE_BYTES;
+        assert_eq!(check_joint_peak(base,limit,size_of::<Runtime>()),Ok(()));
+        assert_eq!(check_joint_peak(base+1,limit,size_of::<Runtime>()),Err(TxError::WorkingLimit));
+        assert_eq!(check_joint_peak(usize::MAX,limit,size_of::<Runtime>()),Err(TxError::WorkingLimit));
+        let fixed=2*size_of::<g::Candidate>()+7*size_of::<Stock>()+size_of::<Runtime>();
         assert!(fixed<MAX_WORKSPACE_BYTES);
     }
 }

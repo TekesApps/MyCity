@@ -427,3 +427,334 @@ fn idle_policy_bounds_epoch_zero_work_and_terminal_cursor_do_not_wrap() {
     let mut invalid=terminal.checkpoint(); invalid.cursor=0;
     assert_eq!(c.restore(invalid),Err(Error::Stale));
 }
+
+fn funding_config()->FundingConfigV2 {
+    FundingConfigV2 { version:FUNDING_VERSION,profile:FundingProfileV2::ActualFundingV2,
+        material:config(),accrual_policy:None }
+}
+fn funding_evidence(kind:CostKindV2,from:u64,until:u64)->FundingEvidenceV2 {
+    let index=match kind { CostKindV2::RawInput=>0,CostKindV2::ReagentInput=>1,CostKindV2::ElectricityInput=>2,
+        CostKindV2::Personnel=>3,CostKindV2::EquipmentOperation=>4,CostKindV2::MaintenanceUse=>5,
+        CostKindV2::ResidualAcceptance=>6,CostKindV2::ResidualCustody=>7 };
+    let basis=match index { 0=>e(101),1=>e(37),2=>e(17),3=>e(11),4=>e(5),5=>e(7),6=>e(3),_=>e(2) };
+    FundingEvidenceV2 { source_ref:100+index,source_revision:3,from,until,purpose_ref:1000+index,
+        allocation_ref:200+index,cost_from:e(0),cost_until:basis }
+}
+fn funding_facts(c:&FundingConfigV2,from:u64,until:u64,raw:Exact,reagent:Exact)->FundingFactsV2 {
+    let old=facts(&c.material,from,until);
+    let physical=MaterialFactsV2 { binding:old.binding,from,until,read_version:old.read_version,
+        raw_stock_available_ml:old.raw_stock_available_ml,reagent_stock_available_mq:old.reagent_stock_available_mq,
+        electricity_available_mwh:old.electricity_available_mwh,raw_stream_basis_after:old.raw_stream_basis_after,
+        output_free_ml:old.output_free_ml,concentrate_free_ml:old.concentrate_free_ml,sludge_free_mq:old.sludge_free_mq,
+        supply_receipt_ref:old.supply_receipt_ref };
+    let kinds=[CostKindV2::RawInput,CostKindV2::ReagentInput,CostKindV2::ElectricityInput,CostKindV2::Personnel,
+        CostKindV2::EquipmentOperation,CostKindV2::MaintenanceUse,CostKindV2::ResidualAcceptance,CostKindV2::ResidualCustody];
+    let amounts=[raw,reagent,e(17),e(11),e(5),e(7),e(3),e(2)];
+    let mut items=[None;MAX_FUNDING_ITEMS]; let mut n=0;
+    for (i,(kind,basis)) in kinds.into_iter().zip(amounts).enumerate() {
+        if basis.is_zero() { continue; }
+        let mut evidence=funding_evidence(kind,from,until); evidence.cost_until=basis;
+        let coverage=match i { 0..=2=>CoverageV2::OriginalStockConversion { evidence },
+            3..=4=>CoverageV2::SamePreparedPaid { evidence },_=>CoverageV2::PriorReceiptPaid { evidence } };
+        items[n]=Some(FundingItemV2 { kind,basis,coverage }); n+=1;
+    }
+    FundingFactsV2 { version:FUNDING_VERSION,physical,
+        basis:IntervalBasisV2 { electricity_cents:17,personnel_cents:11,equipment_operation_cents:5,
+            maintenance_use_cents:7,residual_acceptance_cents:3,residual_custody_cents:2 },
+        items,cash_available_cents:0,funding_revision:1 }
+}
+/// Exact payload fixture for a single synthetic root view. It proves no real source,
+/// payment, unique global allocation, original Envelope, wallet or Store custody.
+struct FundingFixture { expected:FundingFactsV2, allow_accrual:bool }
+impl RootVerifier for FundingFixture {
+    fn verifies(&self,_:&Config,_:&Checkpoint,_:Request,_:&RootFacts)->bool { true }
+    fn verifies_funding_v2(&self,c:&FundingConfigV2,base:&FundingCheckpointV2,r:Request,f:&FundingFactsV2)->bool {
+        *f==self.expected && f.physical.binding==c.material.binding
+            && f.physical.from==base.physical.cursor && f.physical.until==r.until
+    }
+    fn verifies_accrual_v2(&self,c:&FundingConfigV2,_:&FundingCheckpointV2,_:Request,f:&FundingFactsV2,item:usize)->bool {
+        self.allow_accrual && f==&self.expected && matches!(f.items[item],Some(FundingItemV2 {
+            coverage:CoverageV2::AccruedPayable { policy,.. },..
+        }) if c.accrual_policy==Some(policy))
+    }
+}
+fn funded(c:&FundingConfigV2,s:&FundingStateV2,r:Request,f:&FundingFactsV2)->(FundingStateV2,FundingCandidateV2) {
+    let v=FundingFixture { expected:f.clone(),allow_accrual:false };
+    let can=c.prepare(&v,s,r,f,1).unwrap();
+    let next=c.revalidate(&v,s,&can,f).unwrap(); (next,can)
+}
+#[test]
+fn funding_v2_preserves_legacy_v1_wire_and_cash_gate_including_old_verifiers() {
+    let c=config(); let s=c.open().unwrap(); let mut old=facts(&c,0,3600);
+    let r=Request { until:3600,input_ml:e(100_000_000) };
+    let can=c.prepare(&FixtureVerifier,&s,r,&old,1).unwrap();
+    assert_eq!(can.version,1); assert_eq!(can.delta.root_interval_cost_cents,31);
+    let config_json=serde_json::to_value(&c).unwrap();
+    assert_eq!(config_json.as_object().unwrap().len(),11);
+    assert!(config_json.get("funding").is_none()); assert!(config_json.get("accrual_policy").is_none());
+    assert_eq!(serde_json::to_value(&can.next).unwrap().as_object().unwrap().len(),6);
+    old.cash_available_cents=0;
+    assert_eq!(c.prepare(&FixtureVerifier,&s,r,&old,1),Err(Error::UnresolvedCost));
+    let v2=funding_config(); let f=funding_facts(&v2,0,3600,e(101),e(37));
+    assert_eq!(v2.prepare(&FixtureVerifier,&v2.open().unwrap(),r,&f,1),Err(Error::Unauthorized));
+    // Existing idle and positive-input tests above are unchanged; no new verifier
+    // adapter adds inventory/paid basis to cash or suppresses legacy electricity basis.
+}
+#[test]
+fn funding_v2_zero_cash_keeps_real_stock_electricity_and_paid_wages_in_full_basis() {
+    let c=funding_config(); let s=c.open().unwrap(); let f=funding_facts(&c,0,3600,e(101),e(37));
+    let (next,can)=funded(&c,&s,Request { until:3600,input_ml:e(100_000_000) },&f);
+    assert_eq!(f.cash_available_cents,0); assert_eq!(f.basis.electricity_cents,17);
+    assert_eq!(can.delta.costs.total_basis,e(183)); assert_eq!(can.delta.costs.original_stock,e(155));
+    assert_eq!(can.delta.costs.same_prepared_paid,e(16)); assert_eq!(can.delta.costs.prior_receipt_paid,e(12));
+    assert_eq!(can.delta.costs.cash_due_now,e(0)); assert_eq!(can.delta.costs.accrued_payable,e(0));
+    assert_eq!(can.delta.materials.raw_converted_basis,e(101));
+    assert_eq!(can.delta.materials.reagent_converted_basis,e(37));
+    let saved:FundingCheckpointV2=serde_json::from_slice(&serde_json::to_vec(&next.checkpoint()).unwrap()).unwrap();
+    let restored=c.restore(saved).unwrap(); assert_eq!(c.meters(&restored),c.meters(&next));
+    let oracle:serde_json::Value=serde_json::from_str(include_str!("../../../tests/fixtures/water-treatment/funding-v2.json")).unwrap();
+    assert_eq!(can.delta.costs.total_basis,e(oracle["expected"]["total_basis_cents"].as_u64().unwrap()));
+}
+#[test]
+fn funding_v2_real_cash_fee_is_not_covered_by_rich_inventory_or_already_paid_wage() {
+    let c=funding_config(); let s=c.open().unwrap(); let mut f=funding_facts(&c,0,3600,e(101),e(37));
+    let mut item=f.items[7].unwrap(); item.coverage=CoverageV2::CashDueNow { evidence:funding_evidence(item.kind,0,3600) };
+    f.items[7]=Some(item); f.cash_available_cents=1;
+    let v=FundingFixture { expected:f.clone(),allow_accrual:false };
+    let r=Request { until:3600,input_ml:e(100_000_000) };
+    assert_eq!(c.prepare(&v,&s,r,&f,1),Err(Error::UnresolvedCost));
+    assert_eq!(s,c.open().unwrap());
+    f.cash_available_cents=2;
+    let (_,can)=funded(&c,&s,r,&f);
+    assert_eq!(can.delta.costs.cash_due_now,e(2)); assert_eq!(can.delta.costs.total_basis,e(183));
+}
+#[test]
+fn funding_v2_rejects_wrong_source_interval_amount_duplicate_and_missing_coverage() {
+    let c=funding_config(); let s=c.open().unwrap(); let f=funding_facts(&c,0,3600,e(101),e(37));
+    let r=Request { until:3600,input_ml:e(100_000_000) };
+    let trusted=FundingFixture { expected:f.clone(),allow_accrual:false };
+    let mut wrong=f.clone(); let mut item=wrong.items[2].unwrap();
+    let mut evidence=funding_evidence(item.kind,0,3600); evidence.source_ref=999;
+    item.coverage=CoverageV2::OriginalStockConversion { evidence }; wrong.items[2]=Some(item);
+    assert_eq!(c.prepare(&trusted,&s,r,&wrong,1),Err(Error::Unauthorized));
+    wrong=f.clone(); let mut item=wrong.items[2].unwrap(); item.basis=e(18); wrong.items[2]=Some(item);
+    assert_eq!(c.prepare(&trusted,&s,r,&wrong,1),Err(Error::Unauthorized));
+    // Even a fixture accepting the malformed payload cannot bypass local reconciliation.
+    let bad=FundingFixture { expected:wrong.clone(),allow_accrual:false };
+    assert_eq!(c.prepare(&bad,&s,r,&wrong,1),Err(Error::Invalid));
+    wrong=f.clone(); let mut item=wrong.items[2].unwrap();
+    item.coverage=CoverageV2::OriginalStockConversion { evidence:funding_evidence(item.kind,1,3600) }; wrong.items[2]=Some(item);
+    let bad=FundingFixture { expected:wrong.clone(),allow_accrual:false };
+    assert_eq!(c.prepare(&bad,&s,r,&wrong,1),Err(Error::Invalid));
+    wrong=f.clone(); let mut item=wrong.items[2].unwrap();
+    item.coverage=CoverageV2::OriginalStockConversion { evidence:funding_evidence(CostKindV2::RawInput,0,3600) }; wrong.items[2]=Some(item);
+    let bad=FundingFixture { expected:wrong.clone(),allow_accrual:false };
+    assert_eq!(c.prepare(&bad,&s,r,&wrong,1),Err(Error::Invalid));
+    wrong=f.clone(); wrong.items[7]=None;
+    let bad=FundingFixture { expected:wrong.clone(),allow_accrual:false };
+    assert_eq!(c.prepare(&bad,&s,r,&wrong,1),Err(Error::Invalid));
+    wrong=f.clone(); wrong.items[8]=wrong.items[7]; wrong.items[7]=None;
+    let bad=FundingFixture { expected:wrong.clone(),allow_accrual:false };
+    assert_eq!(c.prepare(&bad,&s,r,&wrong,1),Err(Error::Invalid));
+}
+#[test]
+fn funding_v2_accrual_requires_original_explicit_policy_and_additional_default_deny_gate() {
+    let mut c=funding_config(); let mut f=funding_facts(&c,0,3600,e(101),e(37));
+    let policy=AccrualPolicyV2 { policy_ref:700,version:1 };
+    let mut item=f.items[3].unwrap();
+    item.coverage=CoverageV2::AccruedPayable { evidence:funding_evidence(item.kind,0,3600),policy }; f.items[3]=Some(item);
+    let r=Request { until:3600,input_ml:e(100_000_000) };
+    let v=FundingFixture { expected:f.clone(),allow_accrual:true };
+    assert_eq!(c.prepare(&v,&c.open().unwrap(),r,&f,1),Err(Error::Unauthorized));
+    c.accrual_policy=Some(policy); let s=c.open().unwrap();
+    let no_accrual=FundingFixture { expected:f.clone(),allow_accrual:false };
+    assert_eq!(c.prepare(&no_accrual,&s,r,&f,1),Err(Error::Unauthorized));
+    let can=c.prepare(&v,&s,r,&f,1).unwrap();
+    assert_eq!(can.delta.costs.accrued_payable,e(11)); assert_eq!(can.delta.costs.total_basis,e(183));
+    let next=c.revalidate(&v,&s,&can,&f).unwrap();
+    // No settlement API exists here. Later real payment changes only root's original
+    // cash/paid/debt receipt; these historical production-cost totals stay unchanged.
+    let before=next.checkpoint(); assert_eq!(c.restore(before.clone()).unwrap().checkpoint(),before);
+}
+#[test]
+fn funding_v2_candidate_cas_tamper_versions_sequence_and_overflow_preserve_base() {
+    let c=funding_config(); let base=c.open().unwrap(); let f=funding_facts(&c,0,3600,e(101),e(37));
+    let r=Request { until:3600,input_ml:e(100_000_000) };
+    let (next,can)=funded(&c,&base,r,&f); let v=FundingFixture { expected:f.clone(),allow_accrual:false };
+    assert_eq!(c.revalidate(&v,&next,&can,&f),Err(Error::Stale));
+    let mut altered=can.clone(); altered.delta.costs.total_basis=e(182);
+    assert_eq!(c.revalidate(&v,&base,&altered,&f),Err(Error::Stale));
+    altered=can.clone(); altered.next.physical.sequence+=1;
+    assert_eq!(c.revalidate(&v,&base,&altered,&f),Err(Error::Stale));
+    altered=can.clone(); altered.version=1;
+    assert_eq!(c.revalidate(&v,&base,&altered,&f),Err(Error::Stale));
+    let mut fresh=f.clone(); fresh.funding_revision+=1;
+    assert_eq!(c.revalidate(&v,&base,&can,&fresh),Err(Error::Stale));
+    fresh=f.clone(); fresh.physical.binding.root_epoch+=1;
+    assert_eq!(c.prepare(&v,&base,r,&fresh,1),Err(Error::Stale));
+    fresh=f.clone(); fresh.version=1;
+    assert_eq!(c.prepare(&v,&base,r,&fresh,1),Err(Error::Invalid));
+    assert_eq!(c.prepare(&v,&base,r,&f,0),Err(Error::WorkBudget));
+    assert_eq!(c.prepare(&v,&base,Request { until:3600,input_ml:e(0) },&f,1),Err(Error::Invalid));
+    let mut overflow=can.next.clone(); overflow.funding.original_stock=e(MAX_WHOLE);
+    overflow.funding.same_prepared_paid=e(1); overflow.funding.total_basis=e(MAX_WHOLE);
+    assert_eq!(c.restore(overflow),Err(Error::Overflow));
+    let mut old=can.next.clone(); old.version=1; assert_eq!(c.restore(old),Err(Error::Stale));
+    let v1_bytes=serde_json::to_vec(&config().open().unwrap().checkpoint()).unwrap();
+    assert!(serde_json::from_slice::<FundingCheckpointV2>(&v1_bytes).is_err());
+    assert_eq!(base,c.open().unwrap());
+}
+#[test]
+fn funding_v2_stream_fractional_wip_cost_and_checkpoint_do_not_reset_or_reprice() {
+    let mut c=funding_config(); c.material.raw_basis=RawBasisMode::RootConfirmedStream { ports:[104,105] };
+    let base=c.open().unwrap(); let mut funding=funding_facts(&c,0,1,e(2),f(37,200_000_000));
+    funding.physical.raw_stream_basis_after=Some(StreamBasis { taken_cents:7,converted:e(2),wip:e(5) });
+    let (next,can)=funded(&c,&base,Request { until:1,input_ml:f(1,2) },&funding);
+    assert_eq!(can.delta.materials.raw_take_basis_cents,7); assert_eq!(can.delta.materials.raw_converted_basis,e(2));
+    let saved:FundingCheckpointV2=serde_json::from_slice(&serde_json::to_vec(&next.checkpoint()).unwrap()).unwrap();
+    let restored=c.restore(saved).unwrap(); let m=c.meters(&restored).unwrap();
+    assert_eq!(m.materials.raw_wip_basis,e(5)); assert_eq!(m.materials.raw_wip.water_ml,f(1,2));
+    assert_eq!(m.materials.reagent_wip_mq,e(1).sub(f(1,2_000_000)).unwrap());
+    let mut altered=can.clone(); altered.next.physical.raw_stream_basis=Some(StreamBasis { taken_cents:7,converted:e(3),wip:e(4) });
+    let v=FundingFixture { expected:funding.clone(),allow_accrual:false };
+    assert_eq!(c.revalidate(&v,&base,&altered,&funding),Err(Error::Stale));
+}
+#[test]
+fn funding_v2_one_original_envelope_can_cover_many_distinct_purpose_allocations() {
+    let c=funding_config(); let mut f=funding_facts(&c,0,3600,e(101),e(37));
+    for item in f.items.iter_mut().flatten() {
+        let mut evidence=item.coverage.evidence_for_fixture(); evidence.source_ref=900;
+        item.coverage=match item.coverage {
+            CoverageV2::OriginalStockConversion { .. }=>CoverageV2::OriginalStockConversion { evidence },
+            CoverageV2::SamePreparedPaid { .. }=>CoverageV2::SamePreparedPaid { evidence },
+            _=>CoverageV2::PriorReceiptPaid { evidence },
+        };
+    }
+    let (_,can)=funded(&c,&c.open().unwrap(),Request { until:3600,input_ml:e(100_000_000) },&f);
+    assert_eq!(can.delta.costs.total_basis,e(183));
+}
+// Test-side access, not an extra production authorization API.
+trait FixtureEvidence { fn evidence_for_fixture(self)->FundingEvidenceV2; }
+impl FixtureEvidence for CoverageV2 {
+    fn evidence_for_fixture(self)->FundingEvidenceV2 { match self {
+        Self::OriginalStockConversion { evidence }|Self::SamePreparedPaid { evidence }
+        |Self::PriorReceiptPaid { evidence }|Self::CashDueNow { evidence }
+        |Self::AccruedPayable { evidence,.. }=>evidence,
+    } }
+}
+#[test]
+fn funding_v2_disjoint_cost_spans_are_legal_but_overlap_or_unknown_remaining_is_rejected() {
+    let c=funding_config(); let base=c.open().unwrap(); let mut f=funding_facts(&c,0,3600,e(101),e(37));
+    let mut reagent=f.items[1].unwrap(); let mut evidence=funding_evidence(CostKindV2::ReagentInput,0,3600);
+    evidence.source_ref=100; evidence.allocation_ref=200; evidence.cost_from=e(101); evidence.cost_until=e(138);
+    reagent.coverage=CoverageV2::OriginalStockConversion { evidence }; f.items[1]=Some(reagent);
+    let r=Request { until:3600,input_ml:e(100_000_000) };
+    let (_,can)=funded(&c,&base,r,&f); assert_eq!(can.delta.costs.total_basis,e(183));
+    let trusted=FundingFixture { expected:f.clone(),allow_accrual:false };
+    let mut wrong=f.clone(); evidence.cost_from=e(100); evidence.cost_until=e(137);
+    reagent.coverage=CoverageV2::OriginalStockConversion { evidence }; wrong.items[1]=Some(reagent);
+    let malformed=FundingFixture { expected:wrong.clone(),allow_accrual:false };
+    assert_eq!(c.prepare(&malformed,&base,r,&wrong,1),Err(Error::Invalid));
+    // A disjoint mathematical span is not proof that the original source funded it.
+    evidence.cost_from=e(999); evidence.cost_until=e(1036);
+    reagent.coverage=CoverageV2::OriginalStockConversion { evidence }; wrong.items[1]=Some(reagent);
+    assert_eq!(c.prepare(&trusted,&base,r,&wrong,1),Err(Error::Unauthorized));
+}
+#[test]
+fn funding_v2_prior_prefetch_wip_can_convert_later_without_another_input_take() {
+    let mut c=funding_config(); c.material.raw_basis=RawBasisMode::RootConfirmedStream { ports:[104,105] };
+    let base=c.open().unwrap(); let mut first=funding_facts(&c,0,1,e(2),f(37,200_000_000));
+    first.physical.raw_stream_basis_after=Some(StreamBasis { taken_cents:7,converted:e(2),wip:e(5) });
+    let (after_first,_)=funded(&c,&base,Request { until:1,input_ml:f(1,2) },&first);
+    let mut second=funding_facts(&c,1,2,e(5),f(37,200_000_000));
+    second.physical.raw_stock_available_ml=0; second.physical.reagent_stock_available_mq=0;
+    second.physical.raw_stream_basis_after=Some(StreamBasis { taken_cents:7,converted:e(7),wip:e(0) });
+    for (i,item) in second.items.iter_mut().flatten().enumerate() {
+        let mut evidence=item.coverage.evidence_for_fixture();
+        evidence.cost_from=first.items[i].unwrap().basis;
+        evidence.cost_until=evidence.cost_from.add(item.basis).unwrap();
+        item.coverage=match item.coverage {
+            CoverageV2::OriginalStockConversion { .. }=>CoverageV2::OriginalStockConversion { evidence },
+            CoverageV2::SamePreparedPaid { .. }=>CoverageV2::SamePreparedPaid { evidence },
+            _=>CoverageV2::PriorReceiptPaid { evidence },
+        };
+    }
+    let (after_second,can)=funded(&c,&after_first,Request { until:2,input_ml:f(1,2) },&second);
+    assert_eq!(can.delta.materials.raw_take_ml,0); assert_eq!(can.delta.materials.raw_take_basis_cents,0);
+    assert_eq!(can.delta.materials.reagent_take_mq,0); assert_eq!(can.delta.materials.raw_converted_basis,e(5));
+    assert_eq!(c.meters(&after_second).unwrap().materials.raw_wip_basis,e(0));
+}
+struct FundingIdleFixture { expected:FundingIdleFactsV2, accepted_work:Option<(u64,u64)> }
+impl RootVerifier for FundingIdleFixture {
+    fn verifies(&self,_:&Config,_:&Checkpoint,_:Request,_:&RootFacts)->bool { false }
+    fn verifies_funding_idle_v2(&self,c:&FundingConfigV2,base:&FundingCheckpointV2,f:&FundingIdleFactsV2)->bool {
+        f==&self.expected && f.material.binding==c.material.binding && f.material.from==base.physical.cursor
+            && self.accepted_work.map_or(true,|(from,until)| f.material.until<=from || f.material.from>=until)
+    }
+}
+fn funding_idle_facts(c:&FundingConfigV2,from:u64,until:u64)->FundingIdleFactsV2 {
+    FundingIdleFactsV2 { version:FUNDING_VERSION,material:idle_facts(&c.material,from,until),funding_revision:1 }
+}
+#[test]
+fn funding_v2_idle_has_own_default_deny_gate_preserves_all_funding_and_fractional_wip() {
+    let mut c=funding_config(); c.material.raw_basis=RawBasisMode::RootConfirmedStream { ports:[104,105] };
+    let initial=c.open().unwrap(); let z=funding_idle_facts(&c,0,1);
+    let explicit=FundingIdleFixture { expected:z.clone(),accepted_work:None };
+    let initial_idle=c.cover_idle(&explicit,&initial,&z,1).unwrap();
+    let restored=c.restore(c.revalidate_idle(&explicit,&initial,&initial_idle,&z).unwrap().checkpoint()).unwrap();
+    assert_eq!(c.meters(&initial),c.meters(&restored));
+    let mut physical_facts=funding_facts(&c,0,3,e(2),f(37,200_000_000));
+    physical_facts.physical.raw_stream_basis_after=Some(StreamBasis { taken_cents:7,converted:e(2),wip:e(5) });
+    let (base,_)=funded(&c,&initial,Request { until:3,input_ml:f(1,2) },&physical_facts);
+    let z=funding_idle_facts(&c,3,1000);
+    let old_idle=IdleHistory { from:3,until:1000,accepted_work:None };
+    assert_eq!(c.cover_idle(&old_idle,&base,&z,1),Err(Error::Unauthorized));
+    let production_only=FundingFixture { expected:physical_facts,allow_accrual:false };
+    assert_eq!(c.cover_idle(&production_only,&base,&z,1),Err(Error::Unauthorized));
+    let explicit=FundingIdleFixture { expected:z.clone(),accepted_work:None };
+    let can=c.cover_idle(&explicit,&base,&z,1).unwrap();
+    assert_eq!(can.delta.costs,FundingTotalsV2::ZERO);
+    assert_eq!(can.delta.materials,MaterialDeltaV2::from(Delta::zero_for_fixture()));
+    let next=c.revalidate_idle(&explicit,&base,&can,&z).unwrap();
+    assert_eq!(c.meters(&next),c.meters(&base)); assert_eq!(next.checkpoint().funding,base.checkpoint().funding);
+    let restored=c.restore(next.checkpoint()).unwrap(); assert_eq!(c.meters(&restored),c.meters(&base));
+}
+trait FixtureZeroDelta { fn zero_for_fixture()->Delta; }
+impl FixtureZeroDelta for Delta {
+    fn zero_for_fixture()->Delta { Delta { input_ml:e(0),reagent_mq:e(0),electricity_mwh:e(0),
+        product:Composition::known_zero(e(0)),concentrate:Composition::known_zero(e(0)),sludge:Composition::known_zero(e(0)),
+        raw_take_ml:0,reagent_take_mq:0,raw_take_basis_cents:0,reagent_take_basis_cents:0,
+        raw_converted_basis:e(0),reagent_converted_basis:e(0),root_interval_cost_cents:0 } }
+}
+#[test]
+fn funding_v2_idle_rejects_accepted_work_stale_and_cost_coverage_tampering() {
+    let c=funding_config(); let base=c.open().unwrap(); let z=funding_idle_facts(&c,0,1000);
+    let explicit=FundingIdleFixture { expected:z.clone(),accepted_work:None };
+    let can=c.cover_idle(&explicit,&base,&z,1).unwrap();
+    let accepted=FundingIdleFixture { expected:z.clone(),accepted_work:Some((50,51)) };
+    assert_eq!(c.revalidate_idle(&accepted,&base,&can,&z),Err(Error::Unauthorized));
+    let next=c.revalidate_idle(&explicit,&base,&can,&z).unwrap();
+    assert_eq!(c.revalidate_idle(&explicit,&next,&can,&z),Err(Error::Stale));
+    let mut bad=can.clone(); bad.delta.costs.cash_due_now=e(1);
+    assert_eq!(c.revalidate_idle(&explicit,&base,&bad,&z),Err(Error::Stale));
+    bad=can.clone(); bad.next.funding.total_basis=e(1);
+    assert_eq!(c.revalidate_idle(&explicit,&base,&bad,&z),Err(Error::Stale));
+    bad=can.clone(); bad.delta.materials.reagent_take_mq=1;
+    assert_eq!(c.revalidate_idle(&explicit,&base,&bad,&z),Err(Error::Stale));
+    let mut fresh=z.clone(); fresh.funding_revision+=1;
+    assert_eq!(c.revalidate_idle(&explicit,&base,&can,&fresh),Err(Error::Stale));
+    fresh=z.clone(); fresh.version=1;
+    assert_eq!(c.cover_idle(&explicit,&base,&fresh,1),Err(Error::Invalid));
+    assert_eq!(c.cover_idle(&explicit,&base,&z,0),Err(Error::WorkBudget));
+}
+#[test]
+fn funding_v2_fixed_envelope_checks_are_not_real_root_resource_acceptance() {
+    let c=funding_config(); let (s,can)=funded(&c,&c.open().unwrap(),Request { until:3600,input_ml:e(100_000_000) },
+        &funding_facts(&c,0,3600,e(101),e(37)));
+    assert!(std::mem::size_of::<FundingFactsV2>()+std::mem::size_of::<FundingCandidateV2>()<WORKSPACE_PLANNING_CAP);
+    assert!(std::mem::size_of::<FundingConfigV2>()+std::mem::size_of::<FundingStateV2>()<PERSISTENT_PLANNING_CAP);
+    assert!(serde_json::to_vec(&(c,s.checkpoint())).unwrap().len()<=SAVED_ENVELOPE_ESTIMATE);
+    assert!(serde_json::to_vec(&can).unwrap().len()<=CANDIDATE_ENVELOPE_ESTIMATE);
+    // Original shared root, allocator, stack, revalidation and cold-restore overlap
+    // still need root's actual admission/measurement; these fixed DTO checks do not prove it.
+}

@@ -1,0 +1,132 @@
+[
+  {
+    "target": "mycity_core",
+    "gate": 1,
+    "original_gate": true,
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/water-treatment-runtime-20261025/source27-mycity_core-fixed",
+      "--test-threads=1",
+      "--nocapture",
+      "transaction::tests::equity_contribution_is_allowed_before_timeline_creation_but_not_after_time_advances",
+      "--exact"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.9984377920000043,
+    "sha256": "67c29ebaafd9f1d3f69bae94cc93d36611857f38df480763b3653229a2b74428",
+    "evidence_root": "/Volumes/HP P900/dev/MyCity/work/water-treatment-runtime-20261025/default27-artifacts/1-mycity_core",
+    "stack_override": false
+  },
+  {
+    "target": "town_utility_engine",
+    "gate": 2,
+    "original_gate": true,
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/water-treatment-runtime-20261025/source27-town_utility_engine-fixed",
+      "--test-threads=1",
+      "--nocapture",
+      "accepted_cross_city_quote_uses_shared_pool_before_local_market_and_survives_checkpoint",
+      "--exact"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.8573297089999983,
+    "sha256": "8baf86b2d2166122eec34f06d9234f28791574d0cf378f1bfd8b2038cd7f7015",
+    "evidence_root": "/Volumes/HP P900/dev/MyCity/work/water-treatment-runtime-20261025/default27-artifacts/2-town_utility_engine",
+    "stack_override": false
+  },
+  {
+    "target": "qualification_authority",
+    "gate": 3,
+    "original_gate": true,
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/water-treatment-runtime-20261025/source27-qualification_authority-fixed",
+      "--test-threads=1",
+      "--nocapture",
+      "original_teaching_exam_grant_replay_revoke_and_old_exam_substitution",
+      "--exact"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 36.510482333,
+    "sha256": "7dc4ad3cf61b8241bd54b1d4dbe700c2a3c1559e31024e5b90a424ad6a204f97",
+    "evidence_root": "/Volumes/HP P900/dev/MyCity/work/water-treatment-runtime-20261025/default27-artifacts/3-qualification_authority",
+    "stack_override": false
+  },
+  {
+    "target": "facility_operation",
+    "gate": 4,
+    "original_gate": true,
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/water-treatment-runtime-20261025/source27-facility_operation-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 3.693293541999992,
+    "sha256": "898375d50c1e7b553538db421dacf05f8cb266236ed7d733ab8b901927a8c2b1",
+    "evidence_root": "/Volumes/HP P900/dev/MyCity/work/water-treatment-runtime-20261025/default27-artifacts/4-facility_operation",
+    "stack_override": false
+  },
+  {
+    "target": "facility_operation_store",
+    "gate": 5,
+    "original_gate": true,
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/water-treatment-runtime-20261025/source27-facility_operation_store-fixed",
+      "--test-threads=1",
+      "--nocapture",
+      "original_wal_checkpoint_retry_and_stopped_fraction_are_once",
+      "--exact"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 2.7522703329999985,
+    "sha256": "dec7dba6a1c8014f522933d5c708807fe6c7178994dbbc24a905cc7d0b898a74",
+    "evidence_root": "/Volumes/HP P900/dev/MyCity/work/water-treatment-runtime-20261025/default27-artifacts/5-facility_operation_store",
+    "stack_override": false
+  },
+  {
+    "target": "facility_operation_store",
+    "gate": 6,
+    "original_gate": true,
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/water-treatment-runtime-20261025/source27-facility_operation_store-fixed",
+      "--test-threads=1",
+      "--nocapture",
+      "partial_old_payroll_payment_restores_the_same_shared_income_window",
+      "--exact"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 11.194834499999999,
+    "sha256": "dec7dba6a1c8014f522933d5c708807fe6c7178994dbbc24a905cc7d0b898a74",
+    "evidence_root": "/Volumes/HP P900/dev/MyCity/work/water-treatment-runtime-20261025/default27-artifacts/6-facility_operation_store",
+    "stack_override": false
+  },
+  {
+    "target": "water_treatment_runtime",
+    "gate": 7,
+    "original_gate": false,
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/water-treatment-runtime-20261025/source27-water_treatment_runtime-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 3.9256094579999967,
+    "sha256": "535f276d4f3ba827ff4e24188155220293960eb5aa399f33754dea0c8d89e7b2",
+    "evidence_root": "/Volumes/HP P900/dev/MyCity/work/water-treatment-runtime-20261025/default27-artifacts/7-water_treatment_runtime",
+    "stack_override": false
+  },
+  {
+    "target": "water_treatment_store",
+    "gate": 8,
+    "original_gate": false,
+    "command": [
+      "/Users/frankqin/dev/MyCity/work/water-treatment-runtime-20261025/source27-water_treatment_store-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 28.21347558299999,
+    "sha256": "5486b63e854adfccef623f799cdc7cda6b5f96a2b5b9f18709dc3eca2d45a8b7",
+    "evidence_root": "/Volumes/HP P900/dev/MyCity/work/water-treatment-runtime-20261025/default27-artifacts/8-water_treatment_store",
+    "stack_override": false
+  }
+]

@@ -1198,11 +1198,11 @@ impl World {
         total_world_owned.checked_sub(venue_owned + education_owned + member_owned
             + self.qualification.as_ref().map_or(0, |_| crate::qualification_authority::Runtime::owned_bytes())
             + self.service_needs.as_ref().map_or(0, |_| crate::service_needs::Runtime::owned_bytes())
-            + self.continuous_supply.as_ref().map_or(0, |_| crate::continuous_supply::Runtime::owned_bytes())
+            + self.continuous_supply.as_deref().map_or(0, crate::continuous_supply::Runtime::owned_bytes)
             + self.facility_work.as_ref().map_or(0, |_| crate::facility_authority::Runtime::owned_bytes()))
             .and_then(|base| base.checked_add(validation_scratch))
             .is_some_and(|base| base <= WORLD_BYTE_BUDGET)
-            && self.continuous_supply.as_ref().is_none_or(|_|crate::continuous_supply::Runtime::owned_bytes()<=crate::continuous_supply::MAX_OWNED_BYTES)
+            && self.continuous_supply.as_deref().is_none_or(|r|r.owned_bytes()<=crate::continuous_supply::MAX_OWNED_BYTES)
             && self.facility_work.as_ref().is_none_or(|_|crate::facility_authority::Runtime::owned_bytes()<=crate::facility_authority::MAX_OWNED_BYTES)
             && venue_owned <= crate::venue_runtime::Runtime::max_owned_bytes()
             && self.service_needs.as_ref().is_none_or(|_|crate::service_needs::Runtime::owned_bytes()<=crate::service_needs_authority::MAX_OWNED_BYTES)
@@ -1220,7 +1220,7 @@ impl World {
             + self.member_activity.as_ref().map_or(0, |_| crate::member_activity::Ledger::owned_bytes())
             + self.qualification.as_ref().map_or(0, |_| crate::qualification_authority::Runtime::owned_bytes())
             + self.service_needs.as_ref().map_or(0, |_| crate::service_needs::Runtime::owned_bytes())
-            + self.continuous_supply.as_ref().map_or(0, |_| crate::continuous_supply::Runtime::owned_bytes())
+            + self.continuous_supply.as_deref().map_or(0, crate::continuous_supply::Runtime::owned_bytes)
             + self.facility_work.as_ref().map_or(0, |_| crate::facility_authority::Runtime::owned_bytes())
             + self.operating_owned_bytes()
             + self
@@ -1275,6 +1275,12 @@ impl World {
             object.insert("service_needs_prepare_extra_bytes".into(),(crate::service_needs::Runtime::owned_bytes()+crate::service_needs::Runtime::candidate_bytes()).into());
             object.insert("service_needs_restore_extra_bytes".into(),crate::service_needs::Runtime::restore_workspace_bytes().into());
             object.insert("service_needs_decode_typed_bytes".into(),size_of::<crate::service_needs::Opening>().into());
+        }
+        if let Some(supply)=self.continuous_supply.as_deref(){
+            let object=layout.as_object_mut().expect("layout object");
+            object.insert("continuous_supply_owned_bytes".into(),supply.owned_bytes().into());
+            object.insert("continuous_supply_owned_cap_bytes".into(),crate::continuous_supply::MAX_OWNED_BYTES.into());
+            object.insert("continuous_supply_prepare_workspace_cap_bytes".into(),crate::continuous_supply::MAX_WORKSPACE_BYTES.into());
         }
         if self.qualification.is_some() {
             let object=layout.as_object_mut().expect("layout object");
@@ -1717,7 +1723,7 @@ fn assemble_opening_into(mut input: Opening, world: &mut World) -> Result<(), St
         *world.service_needs_slot_mut()=Some(crate::service_needs_authority::initialize(opening,world)?);
     }
     if let Some(opening)=input.continuous_supply {
-        if world.owned_capacity_bytes().checked_add(crate::continuous_supply::Runtime::owned_bytes()+crate::continuous_supply::MAX_WORKSPACE_BYTES+world.pending_operating_header_bytes()).is_none_or(|n|n>crate::transaction::ENGINE_BYTE_BUDGET){return Err("continuous_supply_opening_budget".into());}
+        if world.owned_capacity_bytes().checked_add(crate::continuous_supply::Runtime::opening_owned_bytes(&opening)+crate::continuous_supply::MAX_WORKSPACE_BYTES+world.pending_operating_header_bytes()).is_none_or(|n|n>crate::transaction::ENGINE_BYTE_BUDGET){return Err("continuous_supply_opening_budget".into());}
         *world.continuous_supply_slot_mut()=Some(crate::continuous_supply::initialize(opening,world)?);
     }
     if let Some(opening)=input.facility_work {

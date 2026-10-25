@@ -296,6 +296,19 @@ pub trait RootVerifier {
     /// Implementations check complete [from,until) history, original source receipts,
     /// accepted-work revision and root epoch/CAS. No use/right renewal or liability release.
     fn verifies_idle(&self, _config:&Config, _base:&Checkpoint, _facts:&IdleFacts)->bool { false }
+    /// Explicit funding-V2 authority. Old production/idle verifiers cannot authorize it.
+    /// Authenticate complete cost basis, real original allocations/payments, exact
+    /// interval/purpose/amount/CAS and globally single-use coverage in original journals.
+    fn verifies_funding_v2(&self, _config:&FundingConfigV2, _base:&FundingCheckpointV2,
+        _request:Request, _facts:&FundingFactsV2)->bool { false }
+    /// Additional default-deny gate for an explicitly permitted original accrual policy.
+    /// This creates no new lending permission and never authorizes a late payment cost.
+    fn verifies_accrual_v2(&self, _config:&FundingConfigV2, _base:&FundingCheckpointV2,
+        _request:Request, _facts:&FundingFactsV2, _item:usize)->bool { false }
+    /// Funding-V2 idle authority is independent of V1 idle and V2 production authority.
+    /// Root authenticates whole original history and all unchanged funding/material facts.
+    fn verifies_funding_idle_v2(&self, _config:&FundingConfigV2, _base:&FundingCheckpointV2,
+        _facts:&FundingIdleFactsV2)->bool { false }
 }
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -446,19 +459,20 @@ impl Config {
             product,concentrate,sludge,raw_taken_ml:raw_taken,raw_wip,reagent_taken_mq:reagent_taken,reagent_wip_mq,
             raw_converted_basis,reagent_converted_basis,raw_held_basis_cents,reagent_held_basis_cents,raw_wip_basis,reagent_wip_basis })
     }
-    pub fn prepare<V:RootVerifier>(&self, verifier:&V, state:&State, request:Request, facts:&RootFacts, work:u32)->Result<Candidate,Error> {
-        if work==0 { return Err(Error::WorkBudget); }
-        let before=self.meters(state)?; let cp=&state.checkpoint;
-        if request.until<=cp.cursor || request.input_ml.is_zero() { return Err(Error::Invalid); }
-        if facts.binding!=self.binding || facts.from!=cp.cursor || facts.until!=request.until || facts.read_version==0 {
-            return Err(Error::Stale);
-        }
-        if facts.supply_receipt_ref==0 || facts.cost_receipt_ref==0 || !verifier.verifies(self,cp,request,facts) { return Err(Error::Unauthorized); }
+    // Shared physical arithmetic only, called after the respective version's root
+    // authorization. No cash augmentation, synthetic ticket or V1 verifier adapter.
+    fn compute_materials(&self, before:&Meters, cp:&Checkpoint, request:Request,
+        facts:&MaterialFactsV2, v1_costs:Option<[u64;3]>)->Result<(Checkpoint,Delta),Error> {
         let input=cp.processed_ml.add(request.input_ml)?;
         let after=self.meters_at(input,facts.raw_stream_basis_after)?;
         let product=composition_delta(after.product,before.product)?;
         let concentrate=composition_delta(after.concentrate,before.concentrate)?;
         let sludge=composition_delta(after.sludge,before.sludge)?;
+        let interval_cost_cents=match v1_costs {
+            Some([electricity,personnel,residual])=>electricity.checked_add(personnel)
+                .and_then(|x|x.checked_add(residual)).ok_or(Error::Overflow)?,
+            None=>0, // V2 returns separate fully reconciled costs, not this legacy field.
+        };
         let delta=Delta { input_ml:request.input_ml,reagent_mq:after.reagent_mq.sub(before.reagent_mq)?,
             electricity_mwh:after.electricity_mwh.sub(before.electricity_mwh)?,product,concentrate,sludge,
             raw_take_ml:after.raw_taken_ml-before.raw_taken_ml,reagent_take_mq:after.reagent_taken_mq-before.reagent_taken_mq,
@@ -466,7 +480,7 @@ impl Config {
             reagent_take_basis_cents:after.reagent_held_basis_cents-before.reagent_held_basis_cents,
             raw_converted_basis:after.raw_converted_basis.sub(before.raw_converted_basis)?,
             reagent_converted_basis:after.reagent_converted_basis.sub(before.reagent_converted_basis)?,
-            root_interval_cost_cents:facts.electricity_basis_cents.checked_add(facts.personnel_cents).and_then(|x|x.checked_add(facts.residual_cents)).ok_or(Error::Overflow)? };
+            root_interval_cost_cents:interval_cost_cents };
         if delta.raw_take_ml==0 && delta.raw_take_basis_cents!=0 { return Err(Error::Invalid); }
         // Available original Stock excludes prior ceil-prefetched WIP. Check both
         // fresh integer takes and exact consumption; WIP is counted precisely once.
@@ -479,9 +493,21 @@ impl Config {
         if product.water_ml.cmp_exact(facts.output_free_ml)?==Ordering::Greater
             || concentrate.water_ml.cmp_exact(facts.concentrate_free_ml)?==Ordering::Greater
             || sludge_mass.cmp_exact(facts.sludge_free_mq)?==Ordering::Greater { return Err(Error::UnresolvedSink); }
-        if delta.root_interval_cost_cents>facts.cash_available_cents || delta.root_interval_cost_cents>MAX_WHOLE { return Err(Error::UnresolvedCost); }
         let next=Checkpoint { version:VERSION,config_digest:cp.config_digest,cursor:request.until,
             sequence:cp.sequence.checked_add(1).ok_or(Error::Overflow)?,processed_ml:input,raw_stream_basis:facts.raw_stream_basis_after };
+        Ok((next,delta))
+    }
+    pub fn prepare<V:RootVerifier>(&self, verifier:&V, state:&State, request:Request, facts:&RootFacts, work:u32)->Result<Candidate,Error> {
+        if work==0 { return Err(Error::WorkBudget); }
+        let before=self.meters(state)?; let cp=&state.checkpoint;
+        if request.until<=cp.cursor || request.input_ml.is_zero() { return Err(Error::Invalid); }
+        if facts.binding!=self.binding || facts.from!=cp.cursor || facts.until!=request.until || facts.read_version==0 {
+            return Err(Error::Stale);
+        }
+        if facts.supply_receipt_ref==0 || facts.cost_receipt_ref==0 || !verifier.verifies(self,cp,request,facts) { return Err(Error::Unauthorized); }
+        let (next,delta)=self.compute_materials(&before,cp,request,&MaterialFactsV2::from_v1(facts),
+            Some([facts.electricity_basis_cents,facts.personnel_cents,facts.residual_cents]))?;
+        if delta.root_interval_cost_cents>facts.cash_available_cents || delta.root_interval_cost_cents>MAX_WHOLE { return Err(Error::UnresolvedCost); }
         Ok(Candidate { version:VERSION,base_digest:digest(cp)?,facts:facts.clone(),request,next,delta })
     }
     /// Advance only the verified historical idle cursor. All persisted material,
@@ -496,12 +522,14 @@ impl Config {
         if facts.until<=facts.from { return Err(Error::Invalid); }
         if facts.read_version==0 || facts.timeline_revision==0 || facts.idle_receipt_ref==0
             || !verifier.verifies_idle(self,cp,facts) { return Err(Error::Unauthorized); }
-        let mut next=cp.clone();
-        next.cursor=facts.until;
-        next.sequence=cp.sequence.checked_add(1).ok_or(Error::Overflow)?;
-        self.restore(next.clone())?;
+        let next=self.idle_next(cp,facts.until)?;
         Ok(IdleCandidate { policy_version:IDLE_POLICY_VERSION,base_digest:digest(cp)?,
             facts:facts.clone(),next,delta:Delta::zero() })
+    }
+    fn idle_next(&self,cp:&Checkpoint,until:u64)->Result<Checkpoint,Error> {
+        let mut next=cp.clone(); next.cursor=until;
+        next.sequence=cp.sequence.checked_add(1).ok_or(Error::Overflow)?;
+        self.restore(next.clone())?; Ok(next)
     }
     pub fn revalidate_idle<V:RootVerifier>(&self, verifier:&V, base:&State, candidate:&IdleCandidate, fresh:&IdleFacts)->Result<State,Error> {
         if candidate.policy_version!=IDLE_POLICY_VERSION || candidate.base_digest!=digest(&base.checkpoint)?
@@ -528,4 +556,298 @@ fn composition_delta(a:Composition,b:Composition)->Result<Composition,Error> {
         suspended_mq:Mass::Known(a.suspended_mq.known()?.sub(b.suspended_mq.known()?)?),
         allowed_dissolved_mq:Mass::Known(a.allowed_dissolved_mq.known()?.sub(b.allowed_dissolved_mq.known()?)?),
         other_mq:Mass::Known(a.other_mq.known()?.sub(b.other_mq.known()?)?) })
+}
+
+/// Independent funding envelope. VERSION/Config/Checkpoint/RootFacts V1 wire stays V1.
+pub const FUNDING_VERSION: u32 = 2;
+pub const MAX_FUNDING_ITEMS: usize = 16;
+pub const FUNDING_COST_KINDS: usize = 8;
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub enum FundingProfileV2 { ActualFundingV2 }
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct AccrualPolicyV2 { pub policy_ref:u64, pub version:u32 }
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct FundingConfigV2 {
+    pub version:u32, pub profile:FundingProfileV2, pub material:Config,
+    /// None by default at the caller: no implicit credit or inherited V1 debt authority.
+    pub accrual_policy:Option<AccrualPolicyV2>,
+}
+/// Only physical facts, not a V1 cash/ticket DTO with fabricated funding values.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct MaterialFactsV2 {
+    pub binding:Binding, pub from:u64, pub until:u64, pub read_version:u64,
+    pub raw_stock_available_ml:u64, pub reagent_stock_available_mq:u64,
+    pub electricity_available_mwh:Exact, pub raw_stream_basis_after:Option<StreamBasis>,
+    pub output_free_ml:Exact, pub concentrate_free_ml:Exact, pub sludge_free_mq:Exact,
+    pub supply_receipt_ref:u64,
+}
+impl MaterialFactsV2 {
+    fn from_v1(f:&RootFacts)->Self {
+        Self { binding:f.binding,from:f.from,until:f.until,read_version:f.read_version,
+            raw_stock_available_ml:f.raw_stock_available_ml,reagent_stock_available_mq:f.reagent_stock_available_mq,
+            electricity_available_mwh:f.electricity_available_mwh,raw_stream_basis_after:f.raw_stream_basis_after,
+            output_free_ml:f.output_free_ml,concentrate_free_ml:f.concentrate_free_ml,
+            sludge_free_mq:f.sludge_free_mq,supply_receipt_ref:f.supply_receipt_ref }
+    }
+}
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub enum CostKindV2 {
+    RawInput, ReagentInput, ElectricityInput, Personnel,
+    EquipmentOperation, MaintenanceUse, ResidualAcceptance, ResidualCustody,
+}
+impl CostKindV2 {
+    fn index(self)->usize { match self {
+        Self::RawInput=>0,Self::ReagentInput=>1,Self::ElectricityInput=>2,Self::Personnel=>3,
+        Self::EquipmentOperation=>4,Self::MaintenanceUse=>5,Self::ResidualAcceptance=>6,Self::ResidualCustody=>7,
+    } }
+}
+/// Original envelope/source plus its immutable specific cost allocation and exact
+/// half-open cumulative basis span (cents). One envelope may have many legitimate
+/// purposes; remaining ceil-prefetched WIP may later consume another disjoint span.
+/// Root authenticates these identities against actual inputs/payments, original allocation
+/// budgets/purpose/remaining WIP and all previous journal claims. New IDs are not proof.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct FundingEvidenceV2 {
+    pub source_ref:u64, pub source_revision:u64, pub from:u64, pub until:u64, pub purpose_ref:u64,
+    pub allocation_ref:u64, pub cost_from:Exact, pub cost_until:Exact,
+}
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub enum CoverageV2 {
+    OriginalStockConversion { evidence:FundingEvidenceV2 },
+    SamePreparedPaid { evidence:FundingEvidenceV2 },
+    PriorReceiptPaid { evidence:FundingEvidenceV2 },
+    CashDueNow { evidence:FundingEvidenceV2 },
+    AccruedPayable { evidence:FundingEvidenceV2, policy:AccrualPolicyV2 },
+}
+impl CoverageV2 {
+    fn evidence(self)->FundingEvidenceV2 { match self {
+        Self::OriginalStockConversion { evidence } | Self::SamePreparedPaid { evidence }
+        | Self::PriorReceiptPaid { evidence } | Self::CashDueNow { evidence }
+        | Self::AccruedPayable { evidence,.. }=>evidence,
+    } }
+}
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct FundingItemV2 { pub kind:CostKindV2, pub basis:Exact, pub coverage:CoverageV2 }
+/// These are original earned/converted interval basis, not a quote or a second payment.
+/// Maintenance/wear-use is distinct from wages/operation; custody is not lawful disposal.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct IntervalBasisV2 {
+    pub electricity_cents:u64, pub personnel_cents:u64, pub equipment_operation_cents:u64,
+    pub maintenance_use_cents:u64, pub residual_acceptance_cents:u64, pub residual_custody_cents:u64,
+}
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct FundingFactsV2 {
+    pub version:u32, pub physical:MaterialFactsV2, pub basis:IntervalBasisV2,
+    pub items:[Option<FundingItemV2>;MAX_FUNDING_ITEMS],
+    /// Real uncommitted cash for CashDueNow ONLY; never add inventory/paid basis here.
+    pub cash_available_cents:u64, pub funding_revision:u64,
+}
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct FundingTotalsV2 {
+    pub total_basis:Exact, pub original_stock:Exact, pub same_prepared_paid:Exact,
+    pub prior_receipt_paid:Exact, pub cash_due_now:Exact, pub accrued_payable:Exact,
+}
+impl FundingTotalsV2 {
+    pub const ZERO:Self=Self { total_basis:Exact::ZERO,original_stock:Exact::ZERO,
+        same_prepared_paid:Exact::ZERO,prior_receipt_paid:Exact::ZERO,cash_due_now:Exact::ZERO,accrued_payable:Exact::ZERO };
+    fn validate(self)->Result<(),Error> {
+        let sum=self.original_stock.add(self.same_prepared_paid)?.add(self.prior_receipt_paid)?
+            .add(self.cash_due_now)?.add(self.accrued_payable)?;
+        if sum!=self.total_basis || self.same_prepared_paid.parts().1!=0 || self.prior_receipt_paid.parts().1!=0
+            || self.cash_due_now.parts().1!=0 || self.accrued_payable.parts().1!=0 { return Err(Error::Invalid); }
+        Ok(())
+    }
+    fn add(self,b:Self)->Result<Self,Error> {
+        let n=Self { total_basis:self.total_basis.add(b.total_basis)?,original_stock:self.original_stock.add(b.original_stock)?,
+            same_prepared_paid:self.same_prepared_paid.add(b.same_prepared_paid)?,prior_receipt_paid:self.prior_receipt_paid.add(b.prior_receipt_paid)?,
+            cash_due_now:self.cash_due_now.add(b.cash_due_now)?,accrued_payable:self.accrued_payable.add(b.accrued_payable)? };
+        n.validate()?; Ok(n)
+    }
+}
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct FundingCheckpointV2 {
+    pub version:u32, pub profile:FundingProfileV2, pub config_digest:[u8;32],
+    pub physical:Checkpoint, pub funding:FundingTotalsV2,
+}
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct FundingStateV2 { checkpoint:FundingCheckpointV2 }
+impl FundingStateV2 { pub fn checkpoint(&self)->FundingCheckpointV2 { self.checkpoint.clone() } }
+/// Physical delta with no ambiguous legacy root_interval_cost_cents cash field.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct MaterialDeltaV2 {
+    pub input_ml:Exact, pub reagent_mq:Exact, pub electricity_mwh:Exact,
+    pub product:Composition, pub concentrate:Composition, pub sludge:Composition,
+    pub raw_take_ml:u64, pub reagent_take_mq:u64,
+    pub raw_take_basis_cents:u64, pub reagent_take_basis_cents:u64,
+    pub raw_converted_basis:Exact, pub reagent_converted_basis:Exact,
+}
+impl From<Delta> for MaterialDeltaV2 {
+    fn from(d:Delta)->Self {
+        Self { input_ml:d.input_ml,reagent_mq:d.reagent_mq,electricity_mwh:d.electricity_mwh,
+            product:d.product,concentrate:d.concentrate,sludge:d.sludge,
+            raw_take_ml:d.raw_take_ml,reagent_take_mq:d.reagent_take_mq,
+            raw_take_basis_cents:d.raw_take_basis_cents,reagent_take_basis_cents:d.reagent_take_basis_cents,
+            raw_converted_basis:d.raw_converted_basis,reagent_converted_basis:d.reagent_converted_basis }
+    }
+}
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct FundingDeltaV2 { pub materials:MaterialDeltaV2, pub costs:FundingTotalsV2 }
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct FundingCandidateV2 {
+    pub version:u32, pub profile:FundingProfileV2, pub base_digest:[u8;32],
+    pub facts:FundingFactsV2, pub request:Request, pub next:FundingCheckpointV2, pub delta:FundingDeltaV2,
+}
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct FundingMetersV2 { pub materials:Meters, pub costs:FundingTotalsV2 }
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct FundingIdleFactsV2 {
+    pub version:u32, pub material:IdleFacts, pub funding_revision:u64,
+}
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct FundingIdleCandidateV2 {
+    pub version:u32, pub profile:FundingProfileV2, pub base_digest:[u8;32],
+    pub facts:FundingIdleFactsV2, pub next:FundingCheckpointV2, pub delta:FundingDeltaV2,
+}
+impl FundingConfigV2 {
+    pub fn validate(&self)->Result<(),Error> {
+        if self.version!=FUNDING_VERSION { return Err(Error::Invalid); }
+        self.material.validate()?;
+        if let Some(p)=self.accrual_policy { if p.policy_ref==0 || p.version==0 { return Err(Error::Invalid); } }
+        Ok(())
+    }
+    pub fn open(&self)->Result<FundingStateV2,Error> {
+        self.validate()?;
+        Ok(FundingStateV2 { checkpoint:FundingCheckpointV2 { version:FUNDING_VERSION,profile:self.profile,
+            config_digest:digest(self)?,physical:self.material.open()?.checkpoint(),funding:FundingTotalsV2::ZERO } })
+    }
+    /// Structural funding envelope restore only. No V1 auto-upgrade, credit grant,
+    /// late payment replay or root opening/coverage receipt authentication is implied.
+    pub fn restore(&self,cp:FundingCheckpointV2)->Result<FundingStateV2,Error> {
+        self.validate()?;
+        if cp.version!=FUNDING_VERSION || cp.profile!=self.profile || cp.config_digest!=digest(self)? { return Err(Error::Stale); }
+        let physical=self.material.restore(cp.physical.clone())?;
+        cp.funding.validate()?;
+        if (cp.physical.processed_ml.is_zero() && cp.funding!=FundingTotalsV2::ZERO)
+            || (self.accrual_policy.is_none() && !cp.funding.accrued_payable.is_zero()) { return Err(Error::Invalid); }
+        let m=self.material.meters(&physical)?;
+        let inputs=m.raw_converted_basis.add(m.reagent_converted_basis)?;
+        if cp.funding.original_stock.cmp_exact(inputs)?==Ordering::Less { return Err(Error::Invalid); }
+        Ok(FundingStateV2 { checkpoint:cp })
+    }
+    pub fn meters(&self,state:&FundingStateV2)->Result<FundingMetersV2,Error> {
+        let state=self.restore(state.checkpoint())?;
+        let physical=self.material.restore(state.checkpoint.physical)?;
+        Ok(FundingMetersV2 { materials:self.material.meters(&physical)?,costs:state.checkpoint.funding })
+    }
+    pub fn prepare<V:RootVerifier>(&self,verifier:&V,state:&FundingStateV2,request:Request,
+        facts:&FundingFactsV2,work:u32)->Result<FundingCandidateV2,Error> {
+        if work==0 { return Err(Error::WorkBudget); }
+        self.restore(state.checkpoint())?;
+        let cp=&state.checkpoint; let p=&facts.physical;
+        if request.until<=cp.physical.cursor || request.input_ml.is_zero() { return Err(Error::Invalid); }
+        if facts.version!=FUNDING_VERSION { return Err(Error::Invalid); }
+        if p.binding!=self.material.binding || p.from!=cp.physical.cursor || p.until!=request.until || p.read_version==0 { return Err(Error::Stale); }
+        if p.supply_receipt_ref==0 || facts.funding_revision==0
+            || !verifier.verifies_funding_v2(self,cp,request,facts) { return Err(Error::Unauthorized); }
+        let before=self.material.meters(&self.material.restore(cp.physical.clone())?)?;
+        let (physical,legacy_delta)=self.material.compute_materials(&before,&cp.physical,request,p,None)?;
+        let materials=MaterialDeltaV2::from(legacy_delta);
+        let costs=self.check_funding(verifier,cp,request,facts,&materials)?;
+        let next=FundingCheckpointV2 { version:FUNDING_VERSION,profile:self.profile,config_digest:cp.config_digest,
+            physical,funding:cp.funding.add(costs)? };
+        self.restore(next.clone())?;
+        Ok(FundingCandidateV2 { version:FUNDING_VERSION,profile:self.profile,base_digest:digest(cp)?,
+            facts:facts.clone(),request,next,delta:FundingDeltaV2 { materials,costs } })
+    }
+    pub fn revalidate<V:RootVerifier>(&self,verifier:&V,base:&FundingStateV2,candidate:&FundingCandidateV2,
+        fresh:&FundingFactsV2)->Result<FundingStateV2,Error> {
+        if candidate.version!=FUNDING_VERSION || candidate.profile!=self.profile
+            || candidate.base_digest!=digest(&base.checkpoint)? || &candidate.facts!=fresh { return Err(Error::Stale); }
+        let expected=self.prepare(verifier,base,candidate.request,fresh,1)?;
+        if expected!=*candidate { return Err(Error::Stale); }
+        self.restore(candidate.next.clone())
+    }
+    pub fn cover_idle<V:RootVerifier>(&self,verifier:&V,base:&FundingStateV2,facts:&FundingIdleFactsV2,
+        work:u32)->Result<FundingIdleCandidateV2,Error> {
+        if work==0 { return Err(Error::WorkBudget); }
+        self.restore(base.checkpoint())?;
+        let cp=&base.checkpoint; let f=&facts.material;
+        if facts.version!=FUNDING_VERSION || f.policy_version!=IDLE_POLICY_VERSION { return Err(Error::Invalid); }
+        if f.binding!=self.material.binding || f.from!=cp.physical.cursor { return Err(Error::Stale); }
+        if f.until<=f.from { return Err(Error::Invalid); }
+        if facts.funding_revision==0 || f.read_version==0 || f.timeline_revision==0 || f.idle_receipt_ref==0
+            || !verifier.verifies_funding_idle_v2(self,cp,facts) { return Err(Error::Unauthorized); }
+        let mut next=cp.clone(); next.physical=self.material.idle_next(&cp.physical,f.until)?;
+        self.restore(next.clone())?;
+        Ok(FundingIdleCandidateV2 { version:FUNDING_VERSION,profile:self.profile,base_digest:digest(cp)?,
+            facts:facts.clone(),next,delta:FundingDeltaV2 { materials:MaterialDeltaV2::from(Delta::zero()),costs:FundingTotalsV2::ZERO } })
+    }
+    pub fn revalidate_idle<V:RootVerifier>(&self,verifier:&V,base:&FundingStateV2,candidate:&FundingIdleCandidateV2,
+        fresh:&FundingIdleFactsV2)->Result<FundingStateV2,Error> {
+        if candidate.version!=FUNDING_VERSION || candidate.profile!=self.profile
+            || candidate.base_digest!=digest(&base.checkpoint)? || &candidate.facts!=fresh { return Err(Error::Stale); }
+        let expected=self.cover_idle(verifier,base,fresh,1)?;
+        if expected!=*candidate { return Err(Error::Stale); }
+        self.restore(candidate.next.clone())
+    }
+    fn check_funding<V:RootVerifier>(&self,verifier:&V,base:&FundingCheckpointV2,request:Request,
+        facts:&FundingFactsV2,materials:&MaterialDeltaV2)->Result<FundingTotalsV2,Error> {
+        let b=facts.basis;
+        let expected=[materials.raw_converted_basis,materials.reagent_converted_basis,
+            Exact::integer(b.electricity_cents)?,Exact::integer(b.personnel_cents)?,Exact::integer(b.equipment_operation_cents)?,
+            Exact::integer(b.maintenance_use_cents)?,Exact::integer(b.residual_acceptance_cents)?,Exact::integer(b.residual_custody_cents)?];
+        let mut by_kind=[Exact::ZERO;FUNDING_COST_KINDS];
+        let mut totals=FundingTotalsV2::ZERO; let mut gap=false;
+        for (i,item) in facts.items.iter().enumerate() {
+            let item=match item { None=> { gap=true;continue; },Some(item)=>item };
+            if gap || item.basis.is_zero() { return Err(Error::Invalid); }
+            let e=item.coverage.evidence(); let p=&facts.physical;
+            if e.source_ref==0 || e.source_revision==0 || e.purpose_ref==0 || e.allocation_ref==0
+                || e.from!=p.from || e.until!=p.until || e.cost_until.sub(e.cost_from)?!=item.basis { return Err(Error::Invalid); }
+            for previous in facts.items[..i].iter().flatten() {
+                let old=previous.coverage.evidence();
+                if old.source_ref==e.source_ref && old.allocation_ref==e.allocation_ref
+                    && e.cost_from.cmp_exact(old.cost_until)?==Ordering::Less
+                    && old.cost_from.cmp_exact(e.cost_until)?==Ordering::Less { return Err(Error::Invalid); }
+            }
+            let raw_or_reagent=matches!(item.kind,CostKindV2::RawInput|CostKindV2::ReagentInput);
+            if raw_or_reagent && !matches!(item.coverage,CoverageV2::OriginalStockConversion { .. }) { return Err(Error::Invalid); }
+            if !matches!(item.coverage,CoverageV2::OriginalStockConversion { .. }) && item.basis.parts().1!=0 { return Err(Error::Precision); }
+            by_kind[item.kind.index()]=by_kind[item.kind.index()].add(item.basis)?;
+            totals.total_basis=totals.total_basis.add(item.basis)?;
+            match item.coverage {
+                CoverageV2::OriginalStockConversion { .. }=> {
+                    if !matches!(item.kind,CostKindV2::RawInput|CostKindV2::ReagentInput|CostKindV2::ElectricityInput) { return Err(Error::Invalid); }
+                    totals.original_stock=totals.original_stock.add(item.basis)?;
+                },
+                CoverageV2::SamePreparedPaid { .. }=>totals.same_prepared_paid=totals.same_prepared_paid.add(item.basis)?,
+                CoverageV2::PriorReceiptPaid { .. }=>totals.prior_receipt_paid=totals.prior_receipt_paid.add(item.basis)?,
+                CoverageV2::CashDueNow { .. }=>totals.cash_due_now=totals.cash_due_now.add(item.basis)?,
+                CoverageV2::AccruedPayable { policy,.. }=> {
+                    if self.accrual_policy!=Some(policy) || !verifier.verifies_accrual_v2(self,base,request,facts,i) { return Err(Error::Unauthorized); }
+                    totals.accrued_payable=totals.accrued_payable.add(item.basis)?;
+                },
+            }
+        }
+        if by_kind!=expected { return Err(Error::Invalid); }
+        totals.validate()?;
+        if facts.cash_available_cents>MAX_WHOLE { return Err(Error::Overflow); }
+        if totals.cash_due_now.cmp_exact(Exact::integer(facts.cash_available_cents)?)?==Ordering::Greater { return Err(Error::UnresolvedCost); }
+        Ok(totals)
+    }
 }

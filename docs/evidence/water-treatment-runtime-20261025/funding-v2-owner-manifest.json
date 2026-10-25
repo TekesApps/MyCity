@@ -1,0 +1,17 @@
+{
+  "observed_at": "2026-10-25T10:38:36.098113+00:00",
+  "owner": "01a16ffe-dbe1-7a62-b610-c5e72d490d7e",
+  "source_only_frozen": true,
+  "compile_test_by_owner": "not_run",
+  "scope": "original existing funding/cash interface gap under133; no source-only new module batch",
+  "files": {
+    "crates/city-core/src/water_treatment.rs": "7a06d60f21e98ca8fa8774624759383aa0e8c4b5606e10732757606abb2e55de",
+    "crates/city-core/tests/water_treatment.rs": "5a8cfe2b7fe18ab245ff365b59ea160d83feb2dcb47b9e3d599293d4edd59976",
+    "tests/fixtures/water-treatment/funding-v2.json": "05d6259677d76ef070827af86c3d2f9301d7ffe5f87057ff942a6137620215f2",
+    "docs/handoffs/issue-92-water-treatment-funding-v2.md": "019b43838695ba2f27aa07bd98f3f8b0441ce085956e7c40f3eb0ddafba3d185"
+  },
+  "archive_sha256": "a8e71d3979a22d40dbef9b765b9ef80da7cc9186886db40e0df91f69e8a1b69a",
+  "patch_sha256": "1e89710f76f8e344840940223ad2f60e08de294eb110f77e674ed2b8af5aeee6",
+  "old_fixture_handoff_unchanged": true,
+  "next": "original advisor narrow review then root serial component and real bridge validation; no complete133 acceptance"
+}

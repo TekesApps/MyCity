@@ -799,6 +799,13 @@ impl Frame<'_, '_> {
                         let root=crate::continuous_supply::source_root(self.world,supply)?;
                         let revision=self.world.revision.checked_add(1).ok_or(TxError::Overflow)?;
                         let mut ledger=ledger!(self);
+                        if supply.treatment_device().is_some(){
+                            let(f,m)=(self.facility_work.as_deref_mut().ok_or(TxError::InvalidOperation)?,self.facility_member.as_deref_mut().ok_or(TxError::InvalidOperation)?);
+                            let before=crate::facility_authority::paid_snapshot(f);
+                            crate::water_treatment_authority::advance(self.world,supply,f,m,&mut ledger,at,self.operation_id,root,revision)?;
+                            drop(ledger);
+                            crate::facility_authority::record_actual_wages(self.world,before,f,self.operation_id,at,self.housing_wage_window)?;
+                        }else{
                         if let Some(f)=self.facility_work.as_deref(){
                             if supply.cursor()==t.progress.last_complete&&!crate::facility_authority::can_continue(self.world,f,t.progress.last_complete)?{
                                 supply.stop_for_operator(&mut ledger,t.progress.last_complete,self.operation_id,root,revision)?;
@@ -812,6 +819,7 @@ impl Frame<'_, '_> {
                             supply.book_operator_wage(&mut ledger,wage,self.operation_id)?;
                             drop(ledger);
                             crate::facility_authority::record_actual_wages(self.world,before,f,self.operation_id,at,self.housing_wage_window)?;
+                        }
                         }
                     }
                     if !crate::service_needs_authority::due_page(self.service_needs,at,self.operation_id,self.service_working_base,crate::transaction::ENGINE_BYTE_BUDGET)? {return Ok(());}

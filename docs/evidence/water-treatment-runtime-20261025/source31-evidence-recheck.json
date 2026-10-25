@@ -1,0 +1,14 @@
+{
+  "observed_at": "2026-10-25T21:04:52.369295+00:00",
+  "compiled_input_files_rechecked": 426,
+  "unchanged_unrelated_wip_files": 24,
+  "shared_groups": 33,
+  "default_stack_groups": 8,
+  "original_default_gates": 6,
+  "all_exit_zero": true,
+  "fixed_program_hashes_rechecked": true,
+  "resource_proof": "resource30-proof.json",
+  "resource_proof_sha256": "94a6d1e6ce0f31c6ceb730dff070ad61c8bf4ccce09ee5b73c0140960a71185c",
+  "closure": "pending resource scope and final full-contract evidence; no issue closure/tag/PR",
+  "game_test_sources_changed": false
+}

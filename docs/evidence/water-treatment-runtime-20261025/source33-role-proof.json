@@ -1,0 +1,72 @@
+{
+  "events": [
+    {
+      "event": "ready",
+      "allocation_failures": 0,
+      "arena_used_bytes": 56560816,
+      "arena_usable_bytes": 61865528,
+      "lifetime_peak_requested_bytes": 56637902,
+      "grant_bytes": 61865984,
+      "store_owned_bytes": 52101303
+    },
+    {
+      "event": "ready",
+      "allocation_failures": 0,
+      "arena_used_bytes": 56560816,
+      "arena_usable_bytes": 61865528,
+      "lifetime_peak_requested_bytes": 56637902,
+      "grant_bytes": 61865984,
+      "store_owned_bytes": 52101303
+    },
+    {
+      "event": "result",
+      "allocation_failures": 0,
+      "arena_used_bytes": 56655648,
+      "arena_usable_bytes": 61865528,
+      "lifetime_peak_requested_bytes": 56670767,
+      "grant_bytes": 61865984,
+      "store_owned_bytes": 52196039
+    },
+    {
+      "event": "ready",
+      "allocation_failures": 0,
+      "arena_used_bytes": 56560816,
+      "arena_usable_bytes": 61865528,
+      "lifetime_peak_requested_bytes": 56638030,
+      "grant_bytes": 61865984,
+      "store_owned_bytes": 52101303
+    },
+    {
+      "event": "result",
+      "allocation_failures": 0,
+      "arena_used_bytes": 56560904,
+      "arena_usable_bytes": 61865528,
+      "lifetime_peak_requested_bytes": 56653015,
+      "grant_bytes": 61865984,
+      "store_owned_bytes": 52101303
+    }
+  ],
+  "max_peak_requested_bytes": 56670767,
+  "max_used_bytes": 56655648,
+  "max_store_owned_bytes": 52196039,
+  "balance": {
+    "capacity_bytes": 67108864,
+    "available_touched_bytes": 67108864,
+    "granted_capacity_bytes": 0,
+    "workspace_capacity_bytes": 0,
+    "workspace_grants": 3,
+    "workspace_returns": 3,
+    "workspace_fills": 3,
+    "grants": 0,
+    "returns": 0,
+    "fill_acknowledgements": 0,
+    "scans": 11,
+    "rejected_requests": 0,
+    "maximum_prepare_to_fill_or_reap_ns": 25989083
+  },
+  "source32_initial_path_failure": "retained full original; corrected explicit work root only",
+  "normal64_global_m0": "not_accepted; finite actual V2 Sim role only",
+  "native_16GB_speed": "not_run",
+  "recovery_root": "/Volumes/HP P900/dev/MyCity/work/w33",
+  "logical_evidence_bytes_combined": 1770732134
+}

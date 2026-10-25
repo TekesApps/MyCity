@@ -155,7 +155,10 @@ fn read_snapshot(store: &Store) -> Result<Option<SupplySnapshot>, DueError> {
         return Ok(None);
     };
     let (scope, _) = engine.world().scope_revision();
-    if due.version != continuous_supply::VERSION
+    // Both explicit supported profiles come from the authenticated original
+    // Runtime. Their immutable registration/fingerprint remain mandatory;
+    // this is not a numeric version range or caller-supplied V2 approval.
+    if !matches!(due.version, continuous_supply::VERSION | continuous_supply::v2::VERSION)
         || due.scope != scope
         || due.city_id == 0
         || due.source_id == 0

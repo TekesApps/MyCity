@@ -1,0 +1,14 @@
+{
+  "command": [
+    "/Volumes/HP P900/dev/MyCity/work/water-treatment-runtime-20261025/source32-water-due-fixed",
+    "--test-threads=1",
+    "--nocapture"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 0.915353125,
+  "sha256": "b4f077056a613b020838f03f39bca72ea8346e41703bb3f4c1528c813ea7ea62",
+  "headless_sha256": "ee36a618844d126eb9a19d49e8034733e388be87c5afbd26608206f5f6b22bcc",
+  "evidence_root": "/Volumes/HP P900/dev/MyCity/work/w33",
+  "scope": "ordinary V2 RunDue and actual original64MiB pool role finite lifecycle; not M0/16GB/speed acceptance",
+  "same_frozen_source32_binary": true
+}

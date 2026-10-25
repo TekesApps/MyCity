@@ -161,20 +161,19 @@ fn presence(world:&World,c:w::Contract,from:u64,until:u64,proposed:Option<&crate
 }
 fn provider<'a>(world:&'a World,c:w::Contract,proposed:Option<&'a crate::continuous_supply::Runtime>)->Result<&'a crate::continuous_supply::Runtime,TxError>{
     let s=proposed.or(world.continuous_supply.as_deref()).ok_or(TxError::InvalidOperation)?;
-    // No Water/other device is inferred from qualification or the presence of a
-    // future plant ID. Its actual provider must be implemented before admission.
-    if c.role!=w::Role::Electric||c.device_id!=u64::from(s.opening().resources[0])||c.employer_account!=s.opening().owner{return Err(TxError::InvalidOperation);}
+    let matches=match c.role{
+        w::Role::Electric=>c.device_id==u64::from(s.opening().resources[0]),
+        w::Role::Water=>s.treatment_device()==Some(c.device_id),
+    };
+    // Water is bound only to the explicit original V2 owner and its actual
+    // segment coverage, never qualification alone or an unrelated plant ID.
+    if !matches||c.employer_account!=s.opening().owner{return Err(TxError::InvalidOperation);}
     Ok(s)
 }
 fn qualified(world:&World,c:w::Contract,at:u64)->Result<q::JobCheck,TxError>{
     q::check_job_at_boundary(world,at,q::JobRequirements{members:c.members,minimum_background:None,minimum_skill:None,required_base_mask:c.role.required_base().bit(),required_endorsement_mask:0})
 }
-fn covered(s:&crate::continuous_supply::Runtime,from:u64,until:u64)->Result<u64,TxError>{
-    let mut n=0u64;for r in s.view()?.runs.iter().flatten(){
-        let end=r.started_at.checked_add(r.production_seconds).ok_or(TxError::Overflow)?;
-        n=n.checked_add(until.min(end).saturating_sub(from.max(r.started_at))).ok_or(TxError::Overflow)?;
-    }Ok(n)
-}
+fn covered(s:&crate::continuous_supply::Runtime,device:u64,from:u64,until:u64)->Result<u64,TxError>{s.work_covered(device,from,until)}
 fn initial_funding(c:w::Contract,r:w::Record)->Result<u64,TxError>{let mut terms=c;terms.start=r.started;terms.maximum_earned_cents().map_err(rule)}
 pub(crate) fn required_protection(r:Option<&Runtime>,account:u32)->Result<Money,TxError>{
     let Some(r)=r else{return Ok(Money::ZERO);};let mut n=0u64;
@@ -218,21 +217,43 @@ pub(crate) fn validate(world:&World,r:Option<&Runtime>,l:Option<&m::Ledger>,time
         if a.phase==w::Phase::Pending{continue;}
         presence(world,*c,a.started,a.settled,venue)?;
         let source=provider(world,*c,supply)?;
-        if covered(source,a.started,a.settled)?!=a.work_seconds{return Err(TxError::InvalidOperation);}
+        if covered(source,c.device_id,a.started,a.settled)?!=a.work_seconds{return Err(TxError::InvalidOperation);}
     }
     if let Some(s)=supply.or(world.continuous_supply.as_deref()) {
         let labor=r.state.records().iter().flatten().try_fold(0u64,|n,a|n.checked_add(a.earned).ok_or(TxError::Overflow))?;
         let device=s.view()?;
-        if device.operator_labor_basis!=money(labor)?{return Err(TxError::Stock);}
+        if s.all_labor_basis()?!=money(labor)?{return Err(TxError::Stock);}
+        // Persisted segment terms are a cache of immutable original contracts,
+        // never a second authority for staffing, rates or wage carry.
+        if let Some(batch)=s.treatment_batch(){for segment in batch.segments.iter().flatten(){
+            for (id,water,rate,members,carry) in [
+                (segment.electric_contract,false,segment.electric_hourly_cents,segment.electric_members,segment.electric_wage_carry),
+                (segment.water_contract,true,segment.water_hourly_cents,segment.water_members,segment.water_wage_carry),
+            ]{
+                let(c,a)=contract(r,id)?;provider(world,c,Some(s))?;
+                let prior=covered(s,c.device_id,a.started,segment.started_at)?;
+                let n=u128::from(c.hourly_cents_per_member).checked_mul(u128::from(c.members.end-c.members.start))
+                    .and_then(|v|v.checked_mul(u128::from(prior))).ok_or(TxError::Overflow)?;
+                if (c.role==w::Role::Water)!=water||c.hourly_cents_per_member!=rate||c.members.end-c.members.start!=members
+                    ||a.started>segment.started_at||carry!=u16::try_from(n%3600).map_err(fail)?
+                    ||!r.runs.iter().flatten().any(|link|link.contract_id==id&&link.run_id==segment.source_run&&link.start_revision==segment.source_start_revision){return Err(TxError::InvalidOperation);}
+            }
+        }}
         // Reverse proof: a source history cannot retain production while its
         // operator responsibility is removed or relabeled as Pending.
         for run in device.runs.iter().flatten() {
             let end=run.started_at.checked_add(run.production_seconds).ok_or(TxError::Overflow)?;
             let links:Vec<_>=r.runs.iter().flatten().filter(|v|v.run_id==run.id&&v.start_operation==run.operation).collect();
-            if links.len()!=1{return Err(TxError::InvalidOperation);}let link=links[0];let(c,a)=contract(r,link.contract_id)?;
-            if a.phase==w::Phase::Pending||c.device_id!=u64::from(s.opening().resources[0])||a.begin!=Some(link.begin)
+            if links.len()!=if s.treatment_device().is_some(){2}else{1}{return Err(TxError::InvalidOperation);}
+            let mut electric=0;let mut water=0;
+            for link in links{let(c,a)=contract(r,link.contract_id)?;provider(world,c,Some(s))?;
+            if c.role==w::Role::Electric{electric+=1;}else{water+=1;}
+            let actual=covered(s,c.device_id,run.started_at,end)?;
+            if a.phase==w::Phase::Pending||a.begin!=Some(link.begin)
                 ||a.started>run.started_at||link.started_at!=run.started_at||link.begin_revision>=link.start_revision
-                ||end.min(a.settled).saturating_sub(run.started_at)!=run.production_seconds||money(a.earned)?!=run.operator_labor_basis{return Err(TxError::InvalidOperation);}
+                ||covered(s,c.device_id,run.started_at,a.settled)?!=actual||money(a.earned)?!=s.labor_basis_for_run(run.id,c.role==w::Role::Water)?{return Err(TxError::InvalidOperation);}
+            }
+            if electric!=1||water!=usize::from(s.treatment_device().is_some()){return Err(TxError::InvalidOperation);}
         }
         for(i,link)in r.runs.iter().enumerate(){if let Some(link)=link{
             let terms=r.state.opening().contracts[i].ok_or(TxError::InvalidOperation)?;
@@ -284,28 +305,51 @@ pub(crate) fn close(r:&mut Runtime,l:&mut m::Ledger,c:w::Contract,op:u64,at:u64,
 pub(crate) fn authorize_start(world:&World,r:Option<&Runtime>,at:u64)->Result<(),TxError>{
     let Some(r)=r else{return Ok(());};if !r.ready{return Err(TxError::InvalidOperation);}
     let s=world.continuous_supply.as_deref().ok_or(TxError::InvalidOperation)?;let device=u64::from(s.opening().resources[0]);
-    let mut n=0;
-    for c in r.state.opening().contracts.iter().flatten().filter(|c|c.device_id==device){let(_,a)=contract(r,c.id)?;if a.phase!=w::Phase::Active{continue;}
+    let mut n=0;let mut water=0;
+    for c in r.state.opening().contracts.iter().flatten().filter(|c|c.device_id==device||Some(c.device_id)==s.treatment_device()){let(_,a)=contract(r,c.id)?;if a.phase!=w::Phase::Active{continue;}
+        provider(world,*c,Some(s))?;
         if at<c.start||at>=c.end||a.settled!=at||qualified(world,*c,at)?.status!=q::JobStatus::Eligible{return Err(TxError::Unauthorized);}presence(world,*c,at,at,None)?;n+=1;
-    }if n!=1{return Err(TxError::InvalidOperation);}Ok(())
+        if c.role==w::Role::Water{water+=1;}
+    }if n!=1+usize::from(s.treatment_device().is_some())||water!=usize::from(s.treatment_device().is_some()){return Err(TxError::InvalidOperation);}Ok(())
 }
 pub(crate) fn bind_started(r:&mut Runtime,source:&crate::continuous_supply::Runtime,op:u64,revision:u64,at:u64)->Result<(),TxError>{
     let view=source.view()?;let run=view.runs.iter().flatten().find(|v|v.operation==op&&v.started_at==at).ok_or(TxError::InvalidOperation)?;
-    let device=u64::from(source.opening().resources[0]);let i=r.state.opening().contracts.iter().enumerate().find_map(|(i,c)|c.filter(|c|c.device_id==device).and_then(|_|r.state.records()[i].filter(|a|a.phase==w::Phase::Active)).map(|_|i)).ok_or(TxError::InvalidOperation)?;
+    let device=u64::from(source.opening().resources[0]);
+    let indices:[Option<usize>;4]=std::array::from_fn(|i|r.state.opening().contracts[i].filter(|c|c.device_id==device||Some(c.device_id)==source.treatment_device()).and_then(|_|r.state.records()[i].filter(|a|a.phase==w::Phase::Active)).map(|_|i));
+    if indices.iter().flatten().count()!=1+usize::from(source.treatment_device().is_some()){return Err(TxError::InvalidOperation);}
+    for i in indices.into_iter().flatten(){
     if r.runs[i].is_some(){return Err(TxError::InvalidOperation);}let a=r.state.records()[i].ok_or(TxError::InvalidOperation)?;let c=r.state.opening().contracts[i].ok_or(TxError::InvalidOperation)?;
-    r.runs[i]=Some(StartedRun{contract_id:c.id,begin:a.begin.ok_or(TxError::InvalidOperation)?,begin_revision:r.begin_revisions[i].ok_or(TxError::InvalidOperation)?,run_id:run.id,start_operation:run.operation,start_revision:revision,started_at:run.started_at});Ok(())
+    r.runs[i]=Some(StartedRun{contract_id:c.id,begin:a.begin.ok_or(TxError::InvalidOperation)?,begin_revision:r.begin_revisions[i].ok_or(TxError::InvalidOperation)?,run_id:run.id,start_operation:run.operation,start_revision:revision,started_at:run.started_at});
+    }Ok(())
+}
+pub(crate) struct JointTerms {pub electric:w::Contract,pub water:w::Contract,pub electric_carry:u16,pub water_carry:u16}
+pub(crate) fn joint_terms(world:&World,r:Option<&Runtime>,at:u64)->Result<JointTerms,TxError>{
+    authorize_start(world,r,at)?;let r=r.ok_or(TxError::InvalidOperation)?;
+    let s=world.continuous_supply.as_deref().ok_or(TxError::InvalidOperation)?;
+    let device=s.treatment_device().ok_or(TxError::InvalidOperation)?;
+    let mut electric=None;let mut water=None;
+    for c in r.state.opening().contracts.iter().flatten(){let(_,a)=contract(r,c.id)?;if a.phase!=w::Phase::Active{continue;}
+        if c.device_id==u64::from(s.opening().resources[0]){electric=Some((*c,a.remainder));}
+        if c.device_id==device{water=Some((*c,a.remainder));}
+    }
+    let(e,ec)=electric.ok_or(TxError::InvalidOperation)?;let(w,wc)=water.ok_or(TxError::InvalidOperation)?;
+    Ok(JointTerms{electric:e,water:w,electric_carry:ec,water_carry:wc})
 }
 pub(crate) fn check_payroll(r:Option<&Runtime>,payee:u32,start:u64,end:u64,working:bool)->Result<(),TxError>{
     if !working{return Ok(());}if let Some(r)=r{for c in r.state.opening().contracts.iter().flatten(){let(_,a)=contract(r,c.id)?;if a.phase==w::Phase::Active&&c.employee_account==payee&&a.started<end&&start<c.end{return Err(TxError::InvalidOperation);}}}Ok(())
 }
 pub(crate) fn can_continue(world:&World,r:&Runtime,at:u64)->Result<bool,TxError>{
-    let device=u64::from(world.continuous_supply.as_deref().ok_or(TxError::InvalidOperation)?.opening().resources[0]);let mut count=0;
-    for c in r.state.opening().contracts.iter().flatten().filter(|c|c.device_id==device){let(_,a)=contract(r,c.id)?;if a.phase!=w::Phase::Active{continue;}
+    let s=world.continuous_supply.as_deref().ok_or(TxError::InvalidOperation)?;let device=u64::from(s.opening().resources[0]);let mut count=0;
+    for c in r.state.opening().contracts.iter().flatten().filter(|c|c.device_id==device||Some(c.device_id)==s.treatment_device()){let(_,a)=contract(r,c.id)?;if a.phase!=w::Phase::Active{continue;}
         if at<c.start||at>=c.end||qualified(world,*c,at)?.status!=q::JobStatus::Eligible||presence(world,*c,at,at,None).is_err(){return Ok(false);}count+=1;
-    }Ok(count==1)
+    }Ok(count==1+usize::from(s.treatment_device().is_some()))
 }
 pub(crate) fn close_for_device(r:&mut Runtime,l:&mut m::Ledger,device:u64,op:u64,at:u64,funds:&mut impl Funds)->Result<(),TxError>{
     for i in 0..w::MAX_CONTRACTS{if let Some(c)=r.state.opening().contracts[i]{if c.device_id==device&&contract(r,c.id)?.1.phase==w::Phase::Active{close(r,l,c,op,at,funds)?;}}}Ok(())
+}
+pub(crate) fn close_for_source(r:&mut Runtime,l:&mut m::Ledger,s:&crate::continuous_supply::Runtime,op:u64,at:u64,funds:&mut impl Funds)->Result<(),TxError>{
+    close_for_device(r,l,u64::from(s.opening().resources[0]),op,at,funds)?;
+    if let Some(device)=s.treatment_device(){close_for_device(r,l,device,op,at,funds)?;}Ok(())
 }
 pub(crate) fn active_device_for_venue(r:&Runtime,use_id:u64)->Option<u64>{r.state.opening().contracts.iter().flatten().find(|c|c.venue_use_id==use_id&&contract(r,c.id).is_ok_and(|(_,a)|a.phase==w::Phase::Active)).map(|c|c.device_id)}
 pub(crate) fn next_boundary(world:&World,r:Option<&Runtime>,t:&Timeline,supply:Option<&crate::continuous_supply::Runtime>)->Result<Option<u64>,TxError>{
@@ -321,12 +365,13 @@ pub(crate) fn next_boundary(world:&World,r:Option<&Runtime>,t:&Timeline,supply:O
 /// Original P5 executes an already admitted real device interval. All downstream
 /// mutations remain transaction-local; dry preparation failures commit no work.
 pub(crate) fn settle_device(world:&World,r:&mut Runtime,l:&mut m::Ledger,source_device:&crate::continuous_supply::Runtime,op:u64,at:u64,funds:&mut impl Funds)->Result<Money,TxError>{
+    let defer=source_device.treatment_opening().is_some_and(|o|matches!(o.wage_settlement,crate::continuous_supply::v2::WageSettlement::RetainProtectedEarned{..}));
     let mut earned=0u64;
     for i in 0..w::MAX_CONTRACTS {
         let Some(c)=r.state.opening().contracts[i]else{continue;};let(_,a)=contract(r,c.id)?;if a.phase!=w::Phase::Active{continue;}
         provider(world,c,Some(source_device))?;
         if a.settled<at {
-            let seconds=covered(source_device,a.settled,at)?;
+            let seconds=covered(source_device,c.device_id,a.settled,at)?;
             if seconds!=0 {
                 if seconds!=at-a.settled||at>c.end{return Err(TxError::InvalidOperation);}
                 presence(world,c,a.settled,at,None)?;
@@ -337,7 +382,7 @@ pub(crate) fn settle_device(world:&World,r:&mut Runtime,l:&mut m::Ledger,source_
                 // Root preflights complete work+payment+close while effects remain
                 // staged; a refused candidate never licenses real production.
                 r.state=p.into_next(&r.state).map_err(rule)?;*l=member.into_next(l).map_err(fail)?;
-                if delta>0{pay(r,c,delta,op,at,funds)?;earned=earned.checked_add(delta).ok_or(TxError::Overflow)?;}
+                if delta>0{if !defer{pay(r,c,delta,op,at,funds)?;}earned=earned.checked_add(delta).ok_or(TxError::Overflow)?;}
             }
         }
         if at>=c.end||source_device.view()?.genset.status!=crate::continuous_genset::Status::Running {close(r,l,c,op,at,funds)?;}
@@ -355,6 +400,20 @@ fn anchors(r:&Runtime)->[Option<w::EventRef>;MAX_ANCHORS]{
 }
 pub(crate) fn restore_operations(world:&World)->[Option<u64>;MAX_ANCHORS]{world.facility_work.as_deref().map_or([None;MAX_ANCHORS],|r|anchors(r).map(|a|a.map(|v|v.operation_id)))}
 pub(crate) fn begin_restore(world:&World)->Result<RestoreCheck,TxError>{let r=world.facility_work.as_deref().ok_or(TxError::InvalidOperation)?;Ok(RestoreCheck{fingerprint:digest(r)?,checked:[false;MAX_ANCHORS]})}
+fn coupled_stop_record(world:&World,r:&Runtime,target:w::Contract,record:&crate::transaction::JournalRecord)->bool{
+    use crate::transaction::Action;
+    let Some(s)=world.continuous_supply.as_deref().filter(|s|s.treatment_device().is_some())else{return false;};
+    if provider(world,target,Some(s)).is_err(){return false;}
+    // The exact target's stopped effect was already authenticated above. This
+    // selector permits only the same original V2 source's other real contract
+    // or venue to trigger its coupled stop; it is not a generic stop grant.
+    match record.actions[0]{
+        Some(Action::FacilityWork{command:Command::Stop{contract_id}})=>r.state.opening().contracts.iter().flatten().any(|c|c.id==contract_id
+            &&provider(world,*c,Some(s)).is_ok()&&(record.actor==0||record.actor==c.employer_account||record.actor==c.employee_account)),
+        Some(Action::Venue{use_id,command:crate::venue_runtime::Command::SafeExit{..}})=>record.actor==0&&r.state.opening().contracts.iter().flatten().any(|c|c.venue_use_id==use_id&&provider(world,*c,Some(s)).is_ok()),
+        _=>false,
+    }
+}
 pub(crate) fn check_restore(world:&World,c:&mut RestoreCheck,index:usize,record:&crate::transaction::JournalRecord)->Result<(),TxError>{
     use crate::transaction::Action;
     let r=world.facility_work.as_deref().ok_or(TxError::InvalidOperation)?;
@@ -398,7 +457,8 @@ pub(crate) fn check_restore(world:&World,c:&mut RestoreCheck,index:usize,record:
             2=>timeline||matches!(record.actions[0],Some(Action::FacilityWork{command:Command::Pay{contract_id,cents}})if contract_id==terms.id&&row.last_payment.is_some_and(|p|p.cents==cents)&&(record.actor==0||record.actor==terms.employer_account)),
             3=>timeline||matches!(record.actions[0],Some(Action::FacilityWork{command:Command::Stop{contract_id}})if contract_id==terms.id&&(record.actor==0||record.actor==terms.employer_account||record.actor==terms.employee_account))
                 ||matches!(record.actions[0],Some(Action::ContinuousSupply{command:crate::continuous_supply::Command::Stop|crate::continuous_supply::Command::Fault{..}})if record.actor==terms.employer_account)
-                ||matches!(record.actions[0],Some(Action::Venue{use_id,command:crate::venue_runtime::Command::SafeExit{..}})if record.actor==0&&use_id==terms.venue_use_id),
+                ||matches!(record.actions[0],Some(Action::Venue{use_id,command:crate::venue_runtime::Command::SafeExit{..}})if record.actor==0&&use_id==terms.venue_use_id)
+                ||coupled_stop_record(world,r,terms,record),
             _=>false,
         };if !accepted{return Err(TxError::InvalidOperation);}
     }c.checked[index]=true;Ok(())

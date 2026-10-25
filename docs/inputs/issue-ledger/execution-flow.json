@@ -1,16 +1,25 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-25T09:13:29.872509+00:00",
+  "last_snapshot_at": "2026-10-25T21:15:16.189770+00:00",
   "source_head": "ea310a0fdb5c620d4aa9c24ec1a6e8e8d2fe621c",
-  "candidate": "v190 finite132/148 actually accepted and closed; v191 docs-only closure metadata",
+  "candidate": "finite133 complete four-item contract verified; v192 publication and actual issue close pending; global M0/native/16GB not accepted",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
     "shared_core_lanes": 1,
     "independent_preparations": 2,
     "reason_for_adjustment_required": true
   },
-  "active_shared_work": [],
+  "active_shared_work": [
+    {
+      "lane": "core-1",
+      "business_issue": 133,
+      "related_defects": [],
+      "owner_session": "01a166fc-e444-7602-ad22-3a8551dda487",
+      "evidence_root": "work/water-treatment-runtime-20261025",
+      "phase": "Current shared26:33 groups passed; default27:original6+new2 passed; actual original64MiB pool finite normal-role source33 passed and narrow advisor accepted. Full133 evidence/release/closure reconciliation next; native/M0/16GB separate."
+    }
+  ],
   "active_independent_preparations": [],
   "counting_rules": {
     "parents_are_not_active_work": true,
@@ -180,33 +189,45 @@
     },
     {
       "issue": 133,
-      "execution_state": "queued:not-dispatched",
-      "implementation_owner_session": null,
+      "execution_state": "active:core-1",
+      "implementation_owner_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "integration_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "files_or_activation_boundary": [
+        "crates/city-core/src/assembly.rs",
+        "crates/city-core/src/assembly_decode_compat_tests.rs",
         "crates/city-core/src/continuous_supply.rs",
         "crates/city-core/src/continuous_supply/cost_curve.rs",
-        "crates/city-core/src/water_treatment_authority.rs (planned new root adapter)",
+        "crates/city-core/src/continuous_supply/v2.rs",
+        "crates/city-core/src/water_treatment_authority.rs",
         "crates/city-core/src/facility_authority.rs",
         "crates/city-core/src/timeline_driver.rs",
-        "crates/city-core/tests/water_treatment_runtime.rs (planned)",
-        "crates/city-storage/tests/water_treatment_store.rs (planned)"
+        "crates/city-core/src/transaction.rs",
+        "crates/city-core/src/transaction/slots.rs",
+        "crates/city-core/src/restore_into.rs",
+        "crates/city-core/src/lib.rs",
+        "crates/city-storage/src/lib.rs",
+        "crates/city-headless/src/required_dispatch/supply.rs",
+        "crates/city-core/tests/water_treatment_runtime.rs",
+        "crates/city-storage/tests/water_treatment_store.rs",
+        "crates/city-headless/tests/water_treatment_due.rs",
+        "tests/fixtures/water-treatment-runtime/opening.rs",
+        "tests/fixtures/water-treatment-runtime/joint-v2-opening.json",
+        "tests/fixtures/water-treatment-runtime/independent-expected.json"
       ],
       "required_specific_capabilities": [
-        "Accepted actual operator/funds/receipt seam from132, limited genset/twinpump144",
-        "Existing water_treatment component v186/187, original cost-curve v188; design revision3 V2 profile/strict substate",
-        "Real source chemistry/use, reagent and finite residual endpoints; no inferred old quality"
+        "132 actual original operator/funds/member/receipt seam accepted ea310a0/v0.5.190, supply144/v185",
+        "water_treatment original frozen FundingV2/component, original cost_curve/kernel retained, root design revision7",
+        "new explicit original source chemistry/reagent/use/finite receivers and fees require typed validated V2 opening; not guessed from V1"
       ],
       "acceptance_entry_and_gaps": [
-        "Implement typed gross/outflow/net and same-P5 true12/24kW/cost closure",
-        "Actual Water labor/wages/permission proof, no future-output startup",
-        "Split/merge, originalStock/receipt retries and cold restore; derive endpoint, no hardcoded5500"
+        "All original finite133 four checklist requirements verified; see docs/evidence/water-treatment-runtime-20261025/STATUS.md and acceptance34-verified.json",
+        "Pending unique annotated v192 publication/independent remote checks, exact implementation+results/not_run/PR backfill and actual issue close; no parent92/global-M0 acceptance"
       ],
-      "real_integration_seam": "Same original source Runtime/V2 state + Root Prepared Stock/quality/member/cost/Store; component water_treatment.rs remains original frozen-owner read-only",
-      "new_write_authority": false,
+      "real_integration_seam": "Same original continuous_supply Runtime strictV2 boxed state, original Prepared/P5/Stock/Resource/Lease/member/wages/cost/Store source context/RunDue; no second pool/clock/ticket archive",
+      "new_write_authority": true,
       "timing": {
         "ready_at": null,
-        "readiness_confirmed_at": null,
+        "readiness_confirmed_at": "2026-10-25T09:53:10.645379+00:00",
         "full_scope_source_delivered_at": null,
         "accepted_at": null,
         "issue_closed_at": null,
@@ -215,10 +236,18 @@
         "unknown_reason": "Historical first-ready/full-scope delivery event not established; no inferred timestamp"
       },
       "canonical_source_identity": {
+        "crates/city-core/src/assembly.rs": "9cd8306b9679a8bf06bfc2291ea5e0bd05cce836b46445198be281db0e915af7",
+        "crates/city-core/src/assembly_decode_compat_tests.rs": "f1673d6b9068ba4b337ff43806b7c91cad4e94bd15e92efe970bcc112bcb5fd0",
         "crates/city-core/src/continuous_supply.rs": "7484756963e7b49a5cbd9b734261faaf97ee1a54ab14847b421778fe9f7f9fb5",
         "crates/city-core/src/continuous_supply/cost_curve.rs": "014b9084c76a788346014d841786fa88f5a9ed6ceec770e5014b97d32f2e67fb",
         "crates/city-core/src/facility_authority.rs": "a8fc092b7035430e53bc213d64665b910f67e25aa24bd0b502749b0fe9b76479",
-        "crates/city-core/src/timeline_driver.rs": "962dd3b593c7f56591732571b24e698ccc6063f2ca6020bc295d3c9adad6cfa3"
+        "crates/city-core/src/timeline_driver.rs": "962dd3b593c7f56591732571b24e698ccc6063f2ca6020bc295d3c9adad6cfa3",
+        "crates/city-core/src/transaction.rs": "7255d0f28d3511b07d0866155fcec40d8846712528f6b401c8c6d27562564dc3",
+        "crates/city-core/src/transaction/slots.rs": "35156443a580bcdcc058f59e427adddf206484737a4f3d4cae8e64a594d28e7e",
+        "crates/city-core/src/restore_into.rs": "2ec15b6881d076664959fd00ad059fa1465cc02544388312bc7bee03fee600b0",
+        "crates/city-core/src/lib.rs": "2a161c5e7c82fb4a0f4c8f59cf98d2a4554caa0b3dc6287d2035d24be608deb1",
+        "crates/city-storage/src/lib.rs": "dfa9798ec5a781939bba7f5d11dd06d4650c81fa84634677cf43a755df7c3475",
+        "crates/city-headless/src/required_dispatch/supply.rs": "c85556cbef3542fdef14f2d0720005f7f30d662b7ee7c1836536762e0e99b8a6"
       },
       "original_frozen_owner_chat": "01a16ffe-dbe1-7a62-b610-c5e72d490d7e"
     },
@@ -544,6 +573,52 @@
       "defect_closure_delta": 1,
       "first_ready": null,
       "first_full_scope_source_delivery": null
+    },
+    {
+      "observed_at": "2026-10-25T09:53:10.645379+00:00",
+      "kind": "activate_original133_root_integration",
+      "issue": 133,
+      "owner_session": "01a166fc-e444-7602-ad22-3a8551dda487",
+      "file_boundary": "work/water-treatment-runtime-20261025/ownership-and-acceptance.json",
+      "design_revision": 4,
+      "business_acceptance_delta": 0,
+      "historical_backfill_delta": 0,
+      "defect_closure_delta": 0,
+      "all_V2_compile_test_run": "not_run",
+      "historical_first_ready_not_inferred": true
+    },
+    {
+      "observed_at": "2026-10-25T10:27:34.330598+00:00",
+      "kind": "original_owner_interface_preparation",
+      "issue": 133,
+      "owner_session": "01a16ffe-dbe1-7a62-b610-c5e72d490d7e",
+      "evidence": "work/water-treatment-runtime-20261025/original-owner-funding-preparation.json",
+      "reason": "confirmed real prepaidStock/paidwage vs cash guard conflict; no richcash workaround",
+      "business_acceptance_delta": 0,
+      "historical_backfill_delta": 0,
+      "defect_closure_delta": 0
+    },
+    {
+      "observed_at": "2026-10-25T10:46:43.970697+00:00",
+      "kind": "original_owner_source_preparation_delivered",
+      "issue": 133,
+      "owner_session": "01a16ffe-dbe1-7a62-b610-c5e72d490d7e",
+      "frozen_manifest": "work/water-treatment-runtime-20261025/funding-v2-owner-manifest.json",
+      "business_acceptance_delta": 0,
+      "historical_backfill_delta": 0,
+      "defect_closure_delta": 0,
+      "not_actual_joint_acceptance": true
+    },
+    {
+      "event": "funding-v2-preparation-frozen-component37-passed",
+      "issue": 133,
+      "at": "2026-10-25T10:57:23.709859+00:00",
+      "evidence": "work/water-treatment-runtime-20261025/funding02-result.json",
+      "scope": "synthetic component37 only, old24+new13; no new business acceptance/closure",
+      "actual_WIP": [
+        1,
+        0
+      ]
     }
   ],
   "current_backlog": {

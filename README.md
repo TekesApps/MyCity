@@ -1,8 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.191`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.192`。已开始Rust模型与headless CLI，当前不做UI。
 
-v0.5.191 同步已实际关闭的#132业务和#148缺陷、父清单及[执行台账](docs/execution-current.md)。本阶段新验收业务1、历史补登记0、缺陷关闭1；当前待集成21、待验证0，可靠起点缺失的验收耗时仍unknown。本tag只含关闭追踪文档，游戏实现与实际验证对应v0.5.190，不重复计一次交付。
+v0.5.192 实际接通#133有限取水—双岗位处理—原库存出水与成本/恢复闭环；[完整验收证据](docs/evidence/water-treatment-runtime-20261025/STATUS.md)。当前共享33组、原6+新2默认栈及有限真实Sim角色通过，GitHub关闭回读另记；父#92、M0/native/16GB/速度与UI/GPU仍未完成。无关WIP和完整失败/恢复原件保留。
 
 v0.5.190 接通[原发电机设施操作、实际工时与工资](docs/evidence/facility-operation-20261025/STATUS.md)：同源18组共享回归、10组受影响回归、6组原默认栈验证和独立资金保护补验通过，原票/WAL/checkpoint/冷恢复有保留证据；修复原18单元住房前置16B越界，未改128KiB/96B断言或M0门。有限范围归#132/#148，完整#55/#86/#92、公服履约、真实16GB/native与完整M0仍开放。后续实际在制和差项见[执行清单](docs/execution-current.md)。
 
