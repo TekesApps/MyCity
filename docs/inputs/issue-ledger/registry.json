@@ -1,0 +1,3675 @@
+{
+  "schema": "mycity-issue-ledger-v1",
+  "date": "2026-10-25",
+  "release": "v0.5.189",
+  "scope": "完整既定产品；本轮只整理Issue/文档，UI单独延期",
+  "coordination": "当前root唯一共享writer/串行验证；旧主会话停用",
+  "states": [
+    "待开发",
+    "开发中",
+    "待集成",
+    "待验证",
+    "阻塞",
+    "完成"
+  ],
+  "ui_deferred_issue": 143,
+  "defects": [
+    122,
+    123,
+    124
+  ],
+  "hardware_issue": 114,
+  "issues": [
+    {
+      "issue": 2,
+      "title": "[总览] MyCity模型、共享机制与验收任务索引：复用既有派工",
+      "url": "https://github.com/TekesApps/MyCity/issues/2",
+      "parent": null,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "原Issue具体接口/有效来源合同；引用领域父不表示整域先完成"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "e8caf0723c7413fba182b28d30f4d6aed88815b2dac3bf1dad7d93dcd6df1b43"
+    },
+    {
+      "issue": 3,
+      "title": "[模型01] 空间、身份与产权：运行时空间版本及合法接入",
+      "url": "https://github.com/TekesApps/MyCity/issues/3",
+      "parent": 2,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "原Issue具体接口/有效来源合同；引用领域父不表示整域先完成"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "dbbc7407d5275bbd45ffd54072c03ad65cc30ac4cfe6393e7beb68be06e72883"
+    },
+    {
+      "issue": 4,
+      "title": "[模型02] 家庭与住房：唯一住所、租金欠费及迁居等待",
+      "url": "https://github.com/TekesApps/MyCity/issues/4",
+      "parent": 2,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "原Issue具体接口/有效来源合同；引用领域父不表示整域先完成"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "c260f7af635fc6a2933071e87b059638945e641549cabde42505e83a5dc1a6ce"
+    },
+    {
+      "issue": 5,
+      "title": "[模型03] 劳动与教育：实际工资、资格及内生匹配",
+      "url": "https://github.com/TekesApps/MyCity/issues/5",
+      "parent": 2,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "原Issue具体接口/有效来源合同；引用领域父不表示整域先完成"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "25d03eb2f56ae5f1c952b7e428f58e8ed1dfb78ea314bcb9ba834a6be3a751f1"
+    },
+    {
+      "issue": 6,
+      "title": "[模型04] 交通分配、道路变化与真实经营proof",
+      "url": "https://github.com/TekesApps/MyCity/issues/6",
+      "parent": 2,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "原Issue具体接口/有效来源合同；引用领域父不表示整域先完成"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "88b713cbefaa50cdb65879cdc3d6059fdb38e2f40fe6a3172eb6a1035cae8a73"
+    },
+    {
+      "issue": 7,
+      "title": "[模型05] 货运与仓储：实际交付及lot所有权",
+      "url": "https://github.com/TekesApps/MyCity/issues/7",
+      "parent": 2,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "原Issue具体接口/有效来源合同；引用领域父不表示整域先完成"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "bdedb6d6a3bbc008a2b3264e10198f12c12e9bb4d007739294d659d946c1d898"
+    },
+    {
+      "issue": 8,
+      "title": "[模型06] 公用供给：共享库存、计量和子网",
+      "url": "https://github.com/TekesApps/MyCity/issues/8",
+      "parent": 2,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "原Issue具体接口/有效来源合同；引用领域父不表示整域先完成"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "6a0e2ff6dc5ca75b41e6c9e17548942cd9686e1489d1179feb13d2a85ab84324"
+    },
+    {
+      "issue": 9,
+      "title": "[模型07] 企业经营与退出：持续业务及真实清算",
+      "url": "https://github.com/TekesApps/MyCity/issues/9",
+      "parent": 2,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "原Issue具体接口/有效来源合同；引用领域父不表示整域先完成"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "d4741ee2a9d6b4f6a71bd303fe060a2300270205cbc47abad2cce33036c47ca1"
+    },
+    {
+      "issue": 10,
+      "title": "[模型08] 账本、税债、股权与分红的剩余范围",
+      "url": "https://github.com/TekesApps/MyCity/issues/10",
+      "parent": 2,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "原Issue具体接口/有效来源合同；引用领域父不表示整域先完成"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "614b65c93d5ad9c3069edcacb801103be12807c080c5af03f047fa57f2376f10"
+    },
+    {
+      "issue": 11,
+      "title": "[模型09] 公共服务与危害：请求、占用和释放",
+      "url": "https://github.com/TekesApps/MyCity/issues/11",
+      "parent": 2,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "原Issue具体接口/有效来源合同；引用领域父不表示整域先完成"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "0d97d1896a91f31e5efc5f21e607b72fe8a7f345b1e279cc52c3a014e7749d09"
+    },
+    {
+      "issue": 12,
+      "title": "[模型10] 工程、维护与设备：实际进度与阶段责任",
+      "url": "https://github.com/TekesApps/MyCity/issues/12",
+      "parent": 2,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "原Issue具体接口/有效来源合同；引用领域父不表示整域先完成"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "cd8d548c9dc4960d2bf3760e5b530f1ccf4499ba1b545d2204db63d60a92e020"
+    },
+    {
+      "issue": 13,
+      "title": "[模型11] 环境与自然：连续场及后续通道",
+      "url": "https://github.com/TekesApps/MyCity/issues/13",
+      "parent": 2,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "原Issue具体接口/有效来源合同；引用领域父不表示整域先完成"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "2fe7844f1a1e305f0c9e5f3e0f216a79db12319912fdb083ce3d6ad46d991629"
+    },
+    {
+      "issue": 14,
+      "title": "[模型12] 需求、满意度与迁居反馈闭环",
+      "url": "https://github.com/TekesApps/MyCity/issues/14",
+      "parent": 2,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "原Issue具体接口/有效来源合同；引用领域父不表示整域先完成"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "e1a5c54a781f19360f5a4b0852d9dfd25383b243b67478eafd04c77834816b2e"
+    },
+    {
+      "issue": 15,
+      "title": "[模型13] 治理法律事项：期限、通知及执行",
+      "url": "https://github.com/TekesApps/MyCity/issues/15",
+      "parent": 2,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "原Issue具体接口/有效来源合同；引用领域父不表示整域先完成"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "53855e100ff5a6f1779866e3092e1033b8b6e89ed0d5d3fbef8e9003f0366373"
+    },
+    {
+      "issue": 16,
+      "title": "[模型14] 跨城、Timeline与持久化：必要来源及完整边界",
+      "url": "https://github.com/TekesApps/MyCity/issues/16",
+      "parent": 2,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "原Issue具体接口/有效来源合同；引用领域父不表示整域先完成"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "d4cf8b5158524db34fc2b7c80f6c8d0f6ad642214ccbd6e9538e62f999e0e2f6"
+    },
+    {
+      "issue": 17,
+      "title": "[共享机制] 模型任务登记、激活与执行方接口 EXEC-1",
+      "url": "https://github.com/TekesApps/MyCity/issues/17",
+      "parent": 2,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "原Issue具体接口/有效来源合同；引用领域父不表示整域先完成"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "ec846aec31c4d9fe48abb582d2b2abe9a84f8e437860cc07bec07dd049779b33"
+    },
+    {
+      "issue": 18,
+      "title": "[共享机制] 模型分级、依赖兼容与全游戏资源协调",
+      "url": "https://github.com/TekesApps/MyCity/issues/18",
+      "parent": 2,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "原Issue具体接口/有效来源合同；引用领域父不表示整域先完成"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "cd6e89d57df5eb4601c5956c6c75bbbcf00afba061361a2a2a3cbdb0ef9e3f57"
+    },
+    {
+      "issue": 19,
+      "title": "[独立候选] Rust/wgpu计算：完整成本、误差和CPU回退",
+      "url": "https://github.com/TekesApps/MyCity/issues/19",
+      "parent": 2,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "原Issue具体接口/有效来源合同；引用领域父不表示整域先完成"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "3b0c4daa150002e03b0ef7529fbbda297a8a61abfefcf4fa34984de1993ac1ac"
+    },
+    {
+      "issue": 20,
+      "title": "[冻结验收] M0原负载、normal、四速、8h与真实16GB",
+      "url": "https://github.com/TekesApps/MyCity/issues/20",
+      "parent": 2,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "原Issue具体接口/有效来源合同；引用领域父不表示整域先完成"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "28ce436b1759f05395b1e6d6730830fb66ea82847766781f51468bb78901e9e5"
+    },
+    {
+      "issue": 21,
+      "title": "[联合集成] 同存档住房—交通—经营—工程—财务因果链",
+      "url": "https://github.com/TekesApps/MyCity/issues/21",
+      "parent": 2,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "原Issue具体接口/有效来源合同；引用领域父不表示整域先完成"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "e79c633b448b929963265125dce62321093b8a1dc8c46e386354e1ea8d62a649"
+    },
+    {
+      "issue": 22,
+      "title": "[独立实验] 业务承载、误差与CPU/GPU预算校准",
+      "url": "https://github.com/TekesApps/MyCity/issues/22",
+      "parent": 2,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "原Issue具体接口/有效来源合同；引用领域父不表示整域先完成"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "1189b47875b7248e91220519babf7aedd49a3cb0d02ee6136d78754762182727"
+    },
+    {
+      "issue": 23,
+      "title": "[全产品非UI覆盖] REQ01—61/37能力逐条映射、子issue及UI边界",
+      "url": "https://github.com/TekesApps/MyCity/issues/23",
+      "parent": 2,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "原Issue具体接口/有效来源合同；引用领域父不表示整域先完成"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "590d573bc1f8980377a73ebc672d19e039aaa3ff45daf3003324fd392509ae8f"
+    },
+    {
+      "issue": 24,
+      "title": "[新增领域父任务] City Team、命令/授权与Agent/语音后端",
+      "url": "https://github.com/TekesApps/MyCity/issues/24",
+      "parent": 2,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "原Issue具体接口/有效来源合同；引用领域父不表示整域先完成"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "5d7c97a5348a24431d9a699eea0956f67ec545da865b1eaec5c16b880897cfa0"
+    },
+    {
+      "issue": 25,
+      "title": "[非UI/F-runtime] 原F运行时空间版本、道路/入口变更与历史proof收口",
+      "url": "https://github.com/TekesApps/MyCity/issues/25",
+      "parent": 3,
+      "stage": "完成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。",
+        "#6：所需版本的道路可达/运输原proof/真实到达接口；有限道路变更可复用#25。新模式#73计划不证明到达，缺实际provider明确unknown。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "aed7e1910195f53db8df06e759a13a2d67b9d31e41e52ecc9f6064a8d0535f75"
+    },
+    {
+      "issue": 26,
+      "title": "[非UI/E-housing] 原E住房/租金欠费接入Timeline和Store收口",
+      "url": "https://github.com/TekesApps/MyCity/issues/26",
+      "parent": 4,
+      "stage": "完成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。",
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。",
+        "#5：有据成员身份、资格/背书与实际时窗；可复用#127/#128资格读取和#129唯一成员账。需要实际劳动时依#132，Eligible不是受雇/工时。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "a49079aa9fac8d6cf597de52c1866bbee0d868ecab912ce153dddb0087490791"
+    },
+    {
+      "issue": 27,
+      "title": "[非UI/terrain-import] 本地灰度/高程导入的有界数据管线",
+      "url": "https://github.com/TekesApps/MyCity/issues/27",
+      "parent": 3,
+      "stage": "待集成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "e039dd9e8fa343dffdbb83f587c641c4f28c710fce440e33ea17bc6b7f4f5e22"
+    },
+    {
+      "issue": 28,
+      "title": "[非UI/terrain-search] 地形provider检索、许可/费用和离线缓存后端",
+      "url": "https://github.com/TekesApps/MyCity/issues/28",
+      "parent": 3,
+      "stage": "待集成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "5862bdd46d65b096563faffcc52976a1e62673420076f03cbb1d6e758929ddab"
+    },
+    {
+      "issue": 29,
+      "title": "[非UI/land-rights] 土地/不动产全款取得、分割及权利转移",
+      "url": "https://github.com/TekesApps/MyCity/issues/29",
+      "parent": 3,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。",
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "0d93f053f65469667007a3752b2cc7ee91e03360fc4c96bed32451774b307f22"
+    },
+    {
+      "issue": 30,
+      "title": "[非UI/vertical-rights] 地下/地上/空域包络、净空和时段许可",
+      "url": "https://github.com/TekesApps/MyCity/issues/30",
+      "parent": 3,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#6：所需版本的道路可达/运输原proof/真实到达接口；有限道路变更可复用#25。新模式#73计划不证明到达，缺实际provider明确unknown。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "96ec49291ad5fc99eb3e83d811bd9fe195470eade65071cfe370c8025917b5cb"
+    },
+    {
+      "issue": 31,
+      "title": "[非UI/facility-profiles] 设施profile构造器：K/T/work/工料与退出引用",
+      "url": "https://github.com/TekesApps/MyCity/issues/31",
+      "parent": 3,
+      "stage": "待集成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。",
+        "#12：原Project阶段、真实投入/工作进度/交付和退出义务；#147固定补偿付款可复用，#31/#32配置候选不直接认证设施。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "42f5eab8895ddc7dba0a8ca8e64868c5bf15e5d4a7fd1e40ed8a235f8d796e90"
+    },
+    {
+      "issue": 32,
+      "title": "[非UI/equipment-packages] 认证设备包及节能/隔声档的约束校验",
+      "url": "https://github.com/TekesApps/MyCity/issues/32",
+      "parent": 3,
+      "stage": "待集成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#8：所需单位/质量/实际收到量及有限接收责任；#144仅有限原连续源/过程水。需要合格水依#133，#85候选/未来产出不作真实供给。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "908461797213397a35b328a1d4b2ea9163ab251a9d39587abc49a55d1db86fef"
+    },
+    {
+      "issue": 33,
+      "title": "[非UI/compound-space] 复合功能、共享空间和跨产权费用分摊",
+      "url": "https://github.com/TekesApps/MyCity/issues/33",
+      "parent": 3,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#4：原Housing genesis成员/账户/唯一住所及已提交租约/收入事实；可复用已验#26有限租金链，不要求整个住房领域完成。",
+        "#9：原公司/业主/经营合同、账户与真实存货/需求事实；引用所需受理/退出能力，不等待全部行业经营先完成。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "249bd9831184137beae6f934e6f321a6fe056588a113d58670132d609afd46b3"
+    },
+    {
+      "issue": 34,
+      "title": "[非UI/custom-definition] 受限自定义定义校验、不可变发布和改造迁移",
+      "url": "https://github.com/TekesApps/MyCity/issues/34",
+      "parent": 3,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "738157fb936f3bb0ba84c9973e68f4b9e6a8cfa47dcdad5ba0efb8de820a2bb5"
+    },
+    {
+      "issue": 35,
+      "title": "[非UI/matter-workflow] 事项调查/比选/协商/许可/拨款到工程的后端流程",
+      "url": "https://github.com/TekesApps/MyCity/issues/35",
+      "parent": 12,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。",
+        "#15：所需actor权限/通知、法律时点和有据执行/救济来源；不将整套立法司法完成设为每项的前置。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "813ba2a5e1721f0a50ec2e25075020a5be87a34b8ee8576ee2dcc0f855db64d2"
+    },
+    {
+      "issue": 36,
+      "title": "[非UI/maintenance] 设备/结构condition、检查到期和实际维护工单",
+      "url": "https://github.com/TekesApps/MyCity/issues/36",
+      "parent": 12,
+      "stage": "待集成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。",
+        "#8：所需单位/质量/实际收到量及有限接收责任；#144仅有限原连续源/过程水。需要合格水依#133，#85候选/未来产出不作真实供给。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "a4a92459eaae1c0844c98912fbcd58e99403be4725a13d72281556fad3872e6f"
+    },
+    {
+      "issue": 37,
+      "title": "[非UI/retirement] 安全停用、拆除/改造和残余物责任交接",
+      "url": "https://github.com/TekesApps/MyCity/issues/37",
+      "parent": 12,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#7：原lot所有权、运单/保管与实际交付原票；只复用已实现运输范围，不用计划/动画造库存或到货。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "dd795ad75e84bcd5f7ee700c46c6759a0d13db3a7a75c6aeeec5a0a6003f8dab"
+    },
+    {
+      "issue": 38,
+      "title": "[非UI/legislation] 类型化法案、独立表决和规则生效",
+      "url": "https://github.com/TekesApps/MyCity/issues/38",
+      "parent": 15,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。",
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "e5c73cb118636b2b85db0e0ab4144b1bb6c5b8a9132b895d298cca38d6a4ff00"
+    },
+    {
+      "issue": 39,
+      "title": "[非UI/elections] 周期选举、选民冻结与任期交接",
+      "url": "https://github.com/TekesApps/MyCity/issues/39",
+      "parent": 15,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "631cf49a4aad0707f3004431c31f6e30604d6d455a87a7db1006952d238a8618"
+    },
+    {
+      "issue": 40,
+      "title": "[非UI/judicial] 通知、申诉/停止令、裁判和赔偿执行",
+      "url": "https://github.com/TekesApps/MyCity/issues/40",
+      "parent": 15,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。",
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "3c85989ea2e93234608645697ad4151f9d48040ed3ec183702ebb5f87497cc06"
+    },
+    {
+      "issue": 41,
+      "title": "[非UI/expropriation] 可选宪章征收：必要性、替代方案和真实补偿",
+      "url": "https://github.com/TekesApps/MyCity/issues/41",
+      "parent": 15,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "611d039a758b376e9ad5f5d701937f1e6ab757e0e27e4adfee637772c69d1034"
+    },
+    {
+      "issue": 42,
+      "title": "[非UI/annual-tax] 完整税期、属地/亏损结转和分红前税保护",
+      "url": "https://github.com/TekesApps/MyCity/issues/42",
+      "parent": 10,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。",
+        "#9：原公司/业主/经营合同、账户与真实存货/需求事实；引用所需受理/退出能力，不等待全部行业经营先完成。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "2fb3bdd0f27729cff4e8555ec1bc516d73c3b5d3caf9dcfa15822f16b023ae77"
+    },
+    {
+      "issue": 43,
+      "title": "[非UI/fiscal-procurement] 年度/跨届财政预算、公共采购及服务补贴",
+      "url": "https://github.com/TekesApps/MyCity/issues/43",
+      "parent": 10,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#11：所需服务请求/实际派遣/到返与残责来源；#145自然代理需求不是疾病或履约，#134实际履约仍待缺失provider。",
+        "#9：原公司/业主/经营合同、账户与真实存货/需求事实；引用所需受理/退出能力，不等待全部行业经营先完成。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "87374c93595850cc05ab0b51d616c0b02e9db2d546a3496a0fa9e2e7abf40358"
+    },
+    {
+      "issue": 44,
+      "title": "[非UI/aid-takeover] 有限援助、最低保障和临时接管退出",
+      "url": "https://github.com/TekesApps/MyCity/issues/44",
+      "parent": 10,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#11：所需服务请求/实际派遣/到返与残责来源；#145自然代理需求不是疾病或履约，#134实际履约仍待缺失provider。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "e02398ee2f476a87f46bd0ac8c8be883bbe1da75203dd77cb71942c9c64a4f12"
+    },
+    {
+      "issue": 45,
+      "title": "[非UI/typed-tools] 市长typed目标、工具授权和幂等命令接口",
+      "url": "https://github.com/TekesApps/MyCity/issues/45",
+      "parent": 24,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#15：所需actor权限/通知、法律时点和有据执行/救济来源；不将整套立法司法完成设为每项的前置。",
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。",
+        "#3：原稳定对象/空间身份、已授权Scene/profile版本与合法接路接口；复用已验#25有限运行时版本，不据此推断全部地籍/空域已实现。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "5c8c3067014230ba63870b533dc5ba45c549bccb16832c04f44b5b20f4b296cd"
+    },
+    {
+      "issue": 46,
+      "title": "[非UI/team-workforce] City Team编制、兼任工时/工资和经验知识",
+      "url": "https://github.com/TekesApps/MyCity/issues/46",
+      "parent": 24,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。",
+        "#5：有据成员身份、资格/背书与实际时窗；可复用#127/#128资格读取和#129唯一成员账。需要实际劳动时依#132，Eligible不是受雇/工时。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "a47d169127f4ad525fc3a729b2374346509670315e8a862a0588dd315452f510"
+    },
+    {
+      "issue": 47,
+      "title": "[非UI/agent-adapter] 公开Agent适配、现实费用与断线/取消恢复",
+      "url": "https://github.com/TekesApps/MyCity/issues/47",
+      "parent": 24,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "0d8bb77a309a2b2b0508724a821b6b6f5c020c03dd694ed03d0fc4bc3041b6f0"
+    },
+    {
+      "issue": 48,
+      "title": "[非UI/voice-backend] ASR转写、关键字段风险校验和隐私后端",
+      "url": "https://github.com/TekesApps/MyCity/issues/48",
+      "parent": 24,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "89e4a88ec0902d4eb5c3f580b7aca09260325a8bc03e78176cb1094e28950da1"
+    },
+    {
+      "issue": 49,
+      "title": "[非UI/query-monitor] 只读分页查询、统一事项进度和因果观察",
+      "url": "https://github.com/TekesApps/MyCity/issues/49",
+      "parent": 16,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#14：原人时暴露/覆盖、满意度来源和有约束行为候选；按属性概率通则保留稳定随机/已发生结果，缺源不能默认零。",
+        "#17：所需TaskKey/source版本、due/dirty覆盖和恢复游标；复用#130已验consumer，通用目录#135尚待接线，无第二时钟/队列。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "73b5c81c09a7e508daa9acd8ac3a5a474842a9d391e71f6514921264e91d1420"
+    },
+    {
+      "issue": 50,
+      "title": "[非UI/time-control] 暂停/四档/到节点推进的后端控制语义",
+      "url": "https://github.com/TekesApps/MyCity/issues/50",
+      "parent": 16,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#17：所需TaskKey/source版本、due/dirty覆盖和恢复游标；复用#130已验consumer，通用目录#135尚待接线，无第二时钟/队列。",
+        "#18：所需最低可信/等价或近似策略的明确资格及兼容转换，预算候选不等于实际授额；额度耗尽只标未解。",
+        "#20：原M0冻结协议/负载与验收门是约束来源，不要求父Issue先关闭；normal/长跑/真实16GB分别沿112/113/114。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "9fb9536bbcb81106166439e39df686bd1bc99e4fa4d9d34c2730a78cd3509c1b"
+    },
+    {
+      "issue": 51,
+      "title": "[非UI/game-modes] 场景模式、成长目标、年度多维报告与安全退出规则",
+      "url": "https://github.com/TekesApps/MyCity/issues/51",
+      "parent": 2,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#21：仅依赖原Issue具体已声明的有效能力，不要求整个领域关闭。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "d8216cd786a8d13cae0b5e20b745227b233c49109b4dafd1671d97204c7ee69d"
+    },
+    {
+      "issue": 52,
+      "title": "[非UI/population-life] 月度年龄/家庭变化、已接受待产和遗产权利交接",
+      "url": "https://github.com/TekesApps/MyCity/issues/52",
+      "parent": 4,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。",
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "003a63d07a467aee03e7b1b29daed0fb59d16da86c5fc61248590b3003e8660f"
+    },
+    {
+      "issue": 53,
+      "title": "[非UI/housing-purchase] 全款住房交易、租买报价与共享权益转移",
+      "url": "https://github.com/TekesApps/MyCity/issues/53",
+      "parent": 4,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "0f712e861d9d80152e38bcfdbbefffa2836536e5b5d1a1710a9f172910d82e9a"
+    },
+    {
+      "issue": 54,
+      "title": "[非UI/education] 班级/课程/教师到岗及基础教育完成条件",
+      "url": "https://github.com/TekesApps/MyCity/issues/54",
+      "parent": 5,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。",
+        "#6：所需版本的道路可达/运输原proof/真实到达接口；有限道路变更可复用#25。新模式#73计划不证明到达，缺实际provider明确unknown。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "2299a66d2f46af3b9b5c84c56e538046c2f9bd254b78a3457aac7481defd2eeb"
+    },
+    {
+      "issue": 55,
+      "title": "[非UI/labor-matching] 资格背书、可达排班招聘与有约束薪资调整",
+      "url": "https://github.com/TekesApps/MyCity/issues/55",
+      "parent": 5,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。",
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。",
+        "#6：所需版本的道路可达/运输原proof/真实到达接口；有限道路变更可复用#25。新模式#73计划不证明到达，缺实际provider明确unknown。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "09f0ae6bda5dea16ee29ad06addc18d0a2270d56a79874f14033172c4c5be52c"
+    },
+    {
+      "issue": 56,
+      "title": "[非UI/household-consumption] 家庭预算保护、基本篮子/烹饪和可选消费",
+      "url": "https://github.com/TekesApps/MyCity/issues/56",
+      "parent": 14,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。",
+        "#9：原公司/业主/经营合同、账户与真实存货/需求事实；引用所需受理/退出能力，不等待全部行业经营先完成。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "9bdd68db58a405eebe29d24348a8980ff37db7a7604ffa89db4bda34d626a5cf"
+    },
+    {
+      "issue": 57,
+      "title": "[非UI/service-core] 公服请求/优先级/队伍床位与跨城共池核心",
+      "url": "https://github.com/TekesApps/MyCity/issues/57",
+      "parent": 11,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。",
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。",
+        "#6：所需版本的道路可达/运输原proof/真实到达接口；有限道路变更可复用#25。新模式#73计划不证明到达，缺实际provider明确unknown。",
+        "#8：所需单位/质量/实际收到量及有限接收责任；#144仅有限原连续源/过程水。需要合格水依#133，#85候选/未来产出不作真实供给。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "2dfdf8e5d2ee4dc79bba1747fc429e51429669c1c19c15964843119181ec6cfa"
+    },
+    {
+      "issue": 58,
+      "title": "[非UI/health-services] 轻症/住院/急症稳定及转诊的有限医疗profile",
+      "url": "https://github.com/TekesApps/MyCity/issues/58",
+      "parent": 11,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#14：原人时暴露/覆盖、满意度来源和有约束行为候选；按属性概率通则保留稳定随机/已发生结果，缺源不能默认零。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "1db2a0ec098058ff37af588de0b4594b25884ad16956cc6cd423a366d8e564d6"
+    },
+    {
+      "issue": 59,
+      "title": "[非UI/police-services] 巡查/秩序和交通事故服务及司法交接",
+      "url": "https://github.com/TekesApps/MyCity/issues/59",
+      "parent": 11,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#6：所需版本的道路可达/运输原proof/真实到达接口；有限道路变更可复用#25。新模式#73计划不证明到达，缺实际provider明确unknown。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "3bf08320dbdfc3d05af7f0aefda5a2be5d705390b3a97fc673bc18d5f0585bf5"
+    },
+    {
+      "issue": 60,
+      "title": "[非UI/fire-services] 检查、有限火情救援/疏散与队伍资源交付",
+      "url": "https://github.com/TekesApps/MyCity/issues/60",
+      "parent": 11,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#6：所需版本的道路可达/运输原proof/真实到达接口；有限道路变更可复用#25。新模式#73计划不证明到达，缺实际provider明确unknown。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "e2fbe96fe1a32854cdc1456019a00a5a3bb8874af4aa9c1aabc0c53751a7999f"
+    },
+    {
+      "issue": 61,
+      "title": "[非UI/exposure] 成员活动人时暴露、未知覆盖及LS42平滑",
+      "url": "https://github.com/TekesApps/MyCity/issues/61",
+      "parent": 14,
+      "stage": "待集成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#13：所需天气/环境活动源、单位、覆盖/age与版本；字段缺失保持unknown，候选或预测不能作为实际排放/交付。",
+        "#6：所需版本的道路可达/运输原proof/真实到达接口；有限道路变更可复用#25。新模式#73计划不证明到达，缺实际provider明确unknown。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "2e88f17b45bf5501ed935ea6b99b31818d27caa4b7454e42b665731316201ed5"
+    },
+    {
+      "issue": 62,
+      "title": "[非UI/behavior-migration] 14日调查/改善门/冷却及可行迁居/诉求闭环",
+      "url": "https://github.com/TekesApps/MyCity/issues/62",
+      "parent": 14,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "ae33ccc17eccc5fbf04dd46dc61d4fb70f0695e06c814f93daa3162968e9ccfb"
+    },
+    {
+      "issue": 63,
+      "title": "[非UI/company-transfers] 公司登记/多O、协议股份和资产关联交易",
+      "url": "https://github.com/TekesApps/MyCity/issues/63",
+      "parent": 10,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#9：原公司/业主/经营合同、账户与真实存货/需求事实；引用所需受理/退出能力，不等待全部行业经营先完成。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "1f1b4ea5e5761f8e073e80f8fa8a1d27441455f45d499daa990d6d8e97088580"
+    },
+    {
+      "issue": 64,
+      "title": "[非UI/agri-forestry] 农业/林业有限资源、季节和真实劳动配方",
+      "url": "https://github.com/TekesApps/MyCity/issues/64",
+      "parent": 9,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#7：原lot所有权、运单/保管与实际交付原票；只复用已实现运输范围，不用计划/动画造库存或到货。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "ee3ebc30b90e420d1b0428677a394e3043399279c6099734864f52634555af81"
+    },
+    {
+      "issue": 65,
+      "title": "[非UI/industry-recipes] 采矿/冶炼/装配与油品炼制的有界转换",
+      "url": "https://github.com/TekesApps/MyCity/issues/65",
+      "parent": 9,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。",
+        "#7：原lot所有权、运单/保管与实际交付原票；只复用已实现运输范围，不用计划/动画造库存或到货。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "24b9bd71ed6f45bb6fadcf52826934e6582f0004243f056eb7ed76ef811623cb"
+    },
+    {
+      "issue": 66,
+      "title": "[非UI/professional-services] 办公/专业/施工园林服务的真实工时交付",
+      "url": "https://github.com/TekesApps/MyCity/issues/66",
+      "parent": 9,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。",
+        "#12：原Project阶段、真实投入/工作进度/交付和退出义务；#147固定补偿付款可复用，#31/#32配置候选不直接认证设施。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "2ba6028ef7790aef35ec4d7e2d671300ea2be695c23b5848546fdd8af21d6585"
+    },
+    {
+      "issue": 67,
+      "title": "[非UI/commercial-leases] 商铺选址、商租/押金和同源客户竞争",
+      "url": "https://github.com/TekesApps/MyCity/issues/67",
+      "parent": 9,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#6：所需版本的道路可达/运输原proof/真实到达接口；有限道路变更可复用#25。新模式#73计划不证明到达，缺实际provider明确unknown。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "d992e910397bc718a1a14e769a561ec1338d19693825f9d881a26d7c0e54a006"
+    },
+    {
+      "issue": 68,
+      "title": "[非UI/catering-stalls] 餐饮/摊位经营、真实食品服务及清场",
+      "url": "https://github.com/TekesApps/MyCity/issues/68",
+      "parent": 9,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#15：所需actor权限/通知、法律时点和有据执行/救济来源；不将整套立法司法完成设为每项的前置。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "438a98be09267ad9de653c3a16bf0ef294006b89e5a94e4b8b7745471e561503"
+    },
+    {
+      "issue": 69,
+      "title": "[非UI/visitor-demand] 旅游/商务/工业出行来源及有限外部访客池",
+      "url": "https://github.com/TekesApps/MyCity/issues/69",
+      "parent": 9,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。",
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "0a275b8ae4cd2976349388de077604d2734731a9bbab155e0f196cf9f3a4a42e"
+    },
+    {
+      "issue": 70,
+      "title": "[非UI/visitor-hospitality] 酒店/活动席位预订、清洁周转及真实消费",
+      "url": "https://github.com/TekesApps/MyCity/issues/70",
+      "parent": 9,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#8：所需单位/质量/实际收到量及有限接收责任；#144仅有限原连续源/过程水。需要合格水依#133，#85候选/未来产出不作真实供给。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "77b1f22b3b83388e2d5dce41ffe4c8c3358819aae5ef5bf9394ec4a6fcd14442"
+    },
+    {
+      "issue": 71,
+      "title": "[非UI/market-prices] 有界价格反馈、供方候选和联合钱货预留",
+      "url": "https://github.com/TekesApps/MyCity/issues/71",
+      "parent": 9,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。",
+        "#6：所需版本的道路可达/运输原proof/真实到达接口；有限道路变更可复用#25。新模式#73计划不证明到达，缺实际provider明确unknown。",
+        "#7：原lot所有权、运单/保管与实际交付原票；只复用已实现运输范围，不用计划/动画造库存或到货。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "487461c760be89c638300602362aba00673ed52964eec475dd7f93f89634c8ed"
+    },
+    {
+      "issue": 72,
+      "title": "[非UI/warehouse-contracts] 仓储保管/多段运输合同、验收和退运责任",
+      "url": "https://github.com/TekesApps/MyCity/issues/72",
+      "parent": 7,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。",
+        "#6：所需版本的道路可达/运输原proof/真实到达接口；有限道路变更可复用#25。新模式#73计划不证明到达，缺实际provider明确unknown。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "f8ee5c19dd9e46928034dfae011d1aa9e742ecd60a21a1ac5386343bda6ab94f"
+    },
+    {
+      "issue": 73,
+      "title": "[非UI/itinerary] 共用门到门多模式旅程、换乘和未完成需求",
+      "url": "https://github.com/TekesApps/MyCity/issues/73",
+      "parent": 6,
+      "stage": "待集成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#6：所需版本的道路可达/运输原proof/真实到达接口；有限道路变更可复用#25。新模式#73计划不证明到达，缺实际provider明确unknown。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "029f5677a30bcb82ec01fdaebd5d13737fbbfaa1238689e860fda04f87c104e8"
+    },
+    {
+      "issue": 74,
+      "title": "[非UI/fleet-crew] 车船机车队/班次位置、机组工时和维护共用状态",
+      "url": "https://github.com/TekesApps/MyCity/issues/74",
+      "parent": 6,
+      "stage": "待集成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。",
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。",
+        "#5：有据成员身份、资格/背书与实际时窗；可复用#127/#128资格读取和#129唯一成员账。需要实际劳动时依#132，Eligible不是受雇/工时。",
+        "#8：所需单位/质量/实际收到量及有限接收责任；#144仅有限原连续源/过程水。需要合格水依#133，#85候选/未来产出不作真实供给。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "722bbd9b0ec66f62afaaea66648a5ad608fa84bf6d0c4bbb21b0c75004aedf07"
+    },
+    {
+      "issue": 75,
+      "title": "[非UI/ticket-clearing] 乘车/联票、承运清分和退款的业务合同",
+      "url": "https://github.com/TekesApps/MyCity/issues/75",
+      "parent": 10,
+      "stage": "待集成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。",
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "690de53560915fe7bd6ddd22be406406ee27eed21e8b76e9f2b7c0c4e01c38fb"
+    },
+    {
+      "issue": 76,
+      "title": "[非UI/bridge-road] 曲路加宽/骑行/桥隧立交与沿路管线工程",
+      "url": "https://github.com/TekesApps/MyCity/issues/76",
+      "parent": 6,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#12：原Project阶段、真实投入/工作进度/交付和退出义务；#147固定补偿付款可复用，#31/#32配置候选不直接认证设施。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "62303422c4f043d14739666d67e2dcb045b737a8bf602bfa1786d3b4dba61953"
+    },
+    {
+      "issue": 77,
+      "title": "[非UI/car-energy] 私人/商用车辆所有权、能源/SOC和实际可用位置",
+      "url": "https://github.com/TekesApps/MyCity/issues/77",
+      "parent": 6,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "9e7647fd9e2d83b323b9753275d5189bb832391bc8c1f740d12f184371bc4c12"
+    },
+    {
+      "issue": 78,
+      "title": "[非UI/parking] 坡道停车楼/机械库、保管/取车和充电队列",
+      "url": "https://github.com/TekesApps/MyCity/issues/78",
+      "parent": 6,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。",
+        "#8：所需单位/质量/实际收到量及有限接收责任；#144仅有限原连续源/过程水。需要合格水依#133，#85候选/未来产出不作真实供给。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "e6635090163653cf5b1e1793dfd2e76a12393107b99747def1425b125b186412"
+    },
+    {
+      "issue": 79,
+      "title": "[非UI/bus] 公交线路、站台上客/车辆周转和服务补贴",
+      "url": "https://github.com/TekesApps/MyCity/issues/79",
+      "parent": 6,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "d44109f338c480784d61d624374d6367c90f7bd1607e2ac0072c91011c9c566f"
+    },
+    {
+      "issue": 80,
+      "title": "[非UI/tram-metro] 电车混行/地铁区间、站内瓶颈与牵引供电",
+      "url": "https://github.com/TekesApps/MyCity/issues/80",
+      "parent": 6,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "089f01a7258b8d53b2a7b04a3cc40367b691181ab50baa49570afc4e80d2f9af"
+    },
+    {
+      "issue": 81,
+      "title": "[非UI/rail-intermodal] 客货铁路共线、编组/装卸与多段保管",
+      "url": "https://github.com/TekesApps/MyCity/issues/81",
+      "parent": 6,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "c2f7ae2b73dc9d8b94e757fb913f7812500154f0dfc52b11ba282fd024456941"
+    },
+    {
+      "issue": 82,
+      "title": "[非UI/ferry-port] 客渡/车客渡/货港的航道、泊位及返程",
+      "url": "https://github.com/TekesApps/MyCity/issues/82",
+      "parent": 6,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "edb3bae36360c5b6fd26edd7386e0b1415abb9cf6fae0d7eea19c875fa175823"
+    },
+    {
+      "issue": 83,
+      "title": "[非UI/airport-ground] AP-S/M/L机场地面设施、共享跑道和空域准入",
+      "url": "https://github.com/TekesApps/MyCity/issues/83",
+      "parent": 6,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "e8571316617e112df298a790bddab1a21946097c21511bdc967a03d9ce2b754e"
+    },
+    {
+      "issue": 84,
+      "title": "[非UI/airline-flight] 航司/航班票货、实际燃油机组/备降和飞机租赁",
+      "url": "https://github.com/TekesApps/MyCity/issues/84",
+      "parent": 6,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "b1e0f9cda55001e0bbe74566f5116352964fc3c7504f73dd1fa29b6ad4bffeec"
+    },
+    {
+      "issue": 85,
+      "title": "[非UI/common-network] 有单位/质量标签的公用网络联合分配框架",
+      "url": "https://github.com/TekesApps/MyCity/issues/85",
+      "parent": 8,
+      "stage": "待集成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。",
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "d018b242f8befdf8b430a937b3bde56bcafa7660296ad8ecf02a43ca1df885f1"
+    },
+    {
+      "issue": 86,
+      "title": "[非UI/electric-dispatch] 电网调度/爬坡/备用和真实储能SOC",
+      "url": "https://github.com/TekesApps/MyCity/issues/86",
+      "parent": 8,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "949f9516a96113346fed15324b5306709ff796e3d916bb133b8cd4570f3721b4"
+    },
+    {
+      "issue": 87,
+      "title": "[非UI/fuel-generation] 煤/油/气/生物质燃料机组及联产实际投入",
+      "url": "https://github.com/TekesApps/MyCity/issues/87",
+      "parent": 8,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "22df4b521f6bf73f247fe89e737c8cd419fe9ef2c038b255b1b59765855e5b4c"
+    },
+    {
+      "issue": 88,
+      "title": "[非UI/renewable-generation] 风光/水电/地热的同源天气/水量及有限热库",
+      "url": "https://github.com/TekesApps/MyCity/issues/88",
+      "parent": 8,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "6cc2c58c32502f66db5394b0a2a4cbcf488db5c55b8d788f43528291121e35f0"
+    },
+    {
+      "issue": 89,
+      "title": "[非UI/controlled-energy] 裂变/明确虚构聚变的受控燃料、安全停机与封存",
+      "url": "https://github.com/TekesApps/MyCity/issues/89",
+      "parent": 8,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "45001b1d3e521b52ee5c1fcb459e610136696815c77c7ffd0cd4e22f36777448"
+    },
+    {
+      "issue": 90,
+      "title": "[非UI/gas-cooking] 天然气源/调压/管阀计量与气电烹饪替代",
+      "url": "https://github.com/TekesApps/MyCity/issues/90",
+      "parent": 8,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "553d122e4a552e4695f1ff2733374bb5ac1d426b15720b0b350cae79e474613a"
+    },
+    {
+      "issue": 91,
+      "title": "[非UI/district-heat] 热源/热网/换热与热损、热泵环境热边界",
+      "url": "https://github.com/TekesApps/MyCity/issues/91",
+      "parent": 8,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "b1f922aa64f0a92ce85f3e8ccefb8e9768526963b529f110b3f35335ecf03f0a"
+    },
+    {
+      "issue": 92,
+      "title": "[非UI/water-treatment] 取供水/储水/净化/污水的体积和污染质量",
+      "url": "https://github.com/TekesApps/MyCity/issues/92",
+      "parent": 8,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "0e3ff39ec23c60e9e687476783a43533dbc814f3cce92cb64c0996d8de19d8d5"
+    },
+    {
+      "issue": 93,
+      "title": "[非UI/rain-flood] 32m雨洪/排水、地下进水和道路容量联动",
+      "url": "https://github.com/TekesApps/MyCity/issues/93",
+      "parent": 8,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#6：所需版本的道路可达/运输原proof/真实到达接口；有限道路变更可复用#25。新模式#73计划不证明到达，缺实际provider明确unknown。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "9f488ad2a439d9ba3958077ab3285f4eff2eb7578c4d7a9155aff256a87dbc60"
+    },
+    {
+      "issue": 94,
+      "title": "[非UI/waste-chain] 垃圾/回收/焚烧/危险残余的保管、终点与关闭后责任",
+      "url": "https://github.com/TekesApps/MyCity/issues/94",
+      "parent": 8,
+      "stage": "待集成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。",
+        "#7：原lot所有权、运单/保管与实际交付原票；只复用已实现运输范围，不用计划/动画造库存或到货。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "ef35bdb93e4f62e7e13b2c4e904f7a208ed3ea926aa0efc47ec39f5c25cd62c7"
+    },
+    {
+      "issue": 95,
+      "title": "[非UI/communications] 游戏内带宽/回传/备用电与远程活动",
+      "url": "https://github.com/TekesApps/MyCity/issues/95",
+      "parent": 8,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。",
+        "#5：有据成员身份、资格/背书与实际时窗；可复用#127/#128资格读取和#129唯一成员账。需要实际劳动时依#132，Eligible不是受雇/工时。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "212a7094dd4ecd10fbeabea0da13cfb921fc951042d7a06c2a826b04a8e10b40"
+    },
+    {
+      "issue": 96,
+      "title": "[非UI/weather-water] 同源天气/季节、有限水域/自然资源边界",
+      "url": "https://github.com/TekesApps/MyCity/issues/96",
+      "parent": 13,
+      "stage": "待集成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。",
+        "#17：所需TaskKey/source版本、due/dirty覆盖和恢复游标；复用#130已验consumer，通用目录#135尚待接线，无第二时钟/队列。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "8cd1e2380b7c6bd4d7ecba7a17091743bcdb3a7eaf4291d75096244fe4a63a06"
+    },
+    {
+      "issue": 97,
+      "title": "[非UI/vegetation] 树种适生、植被斑块生长及真实养护/采伐",
+      "url": "https://github.com/TekesApps/MyCity/issues/97",
+      "parent": 13,
+      "stage": "待集成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "6f3ba537c30d4bd3886d83ff16dc537697c19ab0a29610998aeb4ae1c63f1704"
+    },
+    {
+      "issue": 98,
+      "title": "[非UI/fields-noise] 真实活动源、多通道污染/噪声及跨界积分",
+      "url": "https://github.com/TekesApps/MyCity/issues/98",
+      "parent": 13,
+      "stage": "待集成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#12：原Project阶段、真实投入/工作进度/交付和退出义务；#147固定补偿付款可复用，#31/#32配置候选不直接认证设施。",
+        "#13：所需天气/环境活动源、单位、覆盖/age与版本；字段缺失保持unknown，候选或预测不能作为实际排放/交付。",
+        "#6：所需版本的道路可达/运输原proof/真实到达接口；有限道路变更可复用#25。新模式#73计划不证明到达，缺实际provider明确unknown。",
+        "#7：原lot所有权、运单/保管与实际交付原票；只复用已实现运输范围，不用计划/动画造库存或到货。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "3474b04e35fcb5ef794ba68ec95953a3b4741055c977cd4d48b34ee954557e2c"
+    },
+    {
+      "issue": 99,
+      "title": "[非UI/hazards] 故障/灾害事件源、依赖减容及实际修复/赔偿",
+      "url": "https://github.com/TekesApps/MyCity/issues/99",
+      "parent": 11,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "1358b642f75644f600e7b8c7ab4974447d733ea4b867c475e3ce5f17e816b5b4"
+    },
+    {
+      "issue": 100,
+      "title": "[非UI/regional-market] 全存档机会发现、近远成本及快照增量对齐",
+      "url": "https://github.com/TekesApps/MyCity/issues/100",
+      "parent": 16,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。",
+        "#6：所需版本的道路可达/运输原proof/真实到达接口；有限道路变更可复用#25。新模式#73计划不证明到达，缺实际provider明确unknown。",
+        "#7：原lot所有权、运单/保管与实际交付原票；只复用已实现运输范围，不用计划/动画造库存或到货。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "2f2655b329c27d7aeaac0d33867c718beea2d0f9ad5050dc639e61cfe831070b"
+    },
+    {
+      "issue": 101,
+      "title": "[非UI/task-registry] 通用source/due/dirty登记和依赖覆盖唤醒",
+      "url": "https://github.com/TekesApps/MyCity/issues/101",
+      "parent": 17,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#13：所需天气/环境活动源、单位、覆盖/age与版本；字段缺失保持unknown，候选或预测不能作为实际排放/交付。",
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "7bcf27d6ef1ce2236b52c607264d2000d55c2365a65bbfc4907e67a72c756eb6"
+    },
+    {
+      "issue": 102,
+      "title": "[非UI/worker-protocol] Sim内/worker共用任务票、报告/授予和实际退休",
+      "url": "https://github.com/TekesApps/MyCity/issues/102",
+      "parent": 17,
+      "stage": "待集成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "daf0968f8259a74441e5c8b3e4507d09ec80f512660815681fc273a609e8ea7a"
+    },
+    {
+      "issue": 103,
+      "title": "[非UI/compatible-strategies] 最低可信/等价/近似目录及依赖兼容组合转换",
+      "url": "https://github.com/TekesApps/MyCity/issues/103",
+      "parent": 18,
+      "stage": "待集成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "017fa45d948a6f94e4a7c06d732b30418bf7edab2e6fdfcb89c151263c67c81f"
+    },
+    {
+      "issue": 104,
+      "title": "[非UI/resource-controller] 全游戏CPU/GPU/内存多维额度、动态让额及防抖",
+      "url": "https://github.com/TekesApps/MyCity/issues/104",
+      "parent": 18,
+      "stage": "待集成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#22：所需代表输入/精细oracle/误差单位和校准窗口；规划目标不当承载上限，独立功能测试不替代硬件速度/漂移验收。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "6886275349fccacfa704495c6358e2109b255f06f360d15f3628438b27640ae0"
+    },
+    {
+      "issue": 105,
+      "title": "[非UI/gpu-compute] wgpu紧凑计算包/常驻脏区和CPU/GPU全路径对照",
+      "url": "https://github.com/TekesApps/MyCity/issues/105",
+      "parent": 19,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#13：所需天气/环境活动源、单位、覆盖/age与版本；字段缺失保持unknown，候选或预测不能作为实际排放/交付。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "0dc18cbf941183f2c0ad850349b835040e30c75f426b677a9dfe06ad99451fae"
+    },
+    {
+      "issue": 106,
+      "title": "[非UI/gpu-fallback] GPU代际/超时/设备失效、同策略CPU回退与跨后端能力",
+      "url": "https://github.com/TekesApps/MyCity/issues/106",
+      "parent": 19,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "a75fe5c0f405fae3cf15c8b77ab612129550aa2d448cff9f14177494548d7141"
+    },
+    {
+      "issue": 107,
+      "title": "[非UI/save-migration] 存档schema/规则显式迁移、原根保留和恢复峰值",
+      "url": "https://github.com/TekesApps/MyCity/issues/107",
+      "parent": 16,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。",
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "959cfe287e355bfa96d1e57a8b212a0c4127422fcb733d70fbead97406e08ff5"
+    },
+    {
+      "issue": 108,
+      "title": "[非UI/history-retention] 自动恢复点、责任索引/归档和依赖安全回收",
+      "url": "https://github.com/TekesApps/MyCity/issues/108",
+      "parent": 16,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#22：所需代表输入/精细oracle/误差单位和校准窗口；规划目标不当承载上限，独立功能测试不替代硬件速度/漂移验收。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "161185975f00549878d18d1e3e674dfffaa54df0c2c8da7f7c90de52271f82a5"
+    },
+    {
+      "issue": 109,
+      "title": "[非UI/reference-loads] 代表城市/完整业务输入生成与精细参考oracle",
+      "url": "https://github.com/TekesApps/MyCity/issues/109",
+      "parent": 22,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#21：仅依赖原Issue具体已声明的有效能力，不要求整个领域关闭。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "926dc331cc78bc5717636f55317ae13c77e33cc4d4c5a545d6040a15cfde28a1"
+    },
+    {
+      "issue": 110,
+      "title": "[非UI/capacity-calibration] 目标硬件预算、策略误差/响应与可持续速度资格",
+      "url": "https://github.com/TekesApps/MyCity/issues/110",
+      "parent": 22,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "d01afbd7f9baae4258bfe81bc17ddc5f6cafaff0b8f7f7463f774829b7c19e55"
+    },
+    {
+      "issue": 111,
+      "title": "[非UI/longrun-economy] 长期漂移、业务/存档增长及经济平衡区间",
+      "url": "https://github.com/TekesApps/MyCity/issues/111",
+      "parent": 22,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "e1aa1b2edb07bb73a16a9eacd5b6eb95404caf79e4cce3b4e3010b0ac302b7bd"
+    },
+    {
+      "issue": 112,
+      "title": "[非UI/M0-normal] 原M0 normal归因/准入与provider生命周期收口",
+      "url": "https://github.com/TekesApps/MyCity/issues/112",
+      "parent": 20,
+      "stage": "阻塞",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。",
+        "#20：原M0冻结协议/负载与验收门是约束来源，不要求父Issue先关闭；normal/长跑/真实16GB分别沿112/113/114。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "df782b410edb4c009893c224525b871f6cf2c1836cec0ebbe292a63376311a0f"
+    },
+    {
+      "issue": 113,
+      "title": "[非UI/M0-endurance] 原M0三轮四速/故障及完整28800秒验收记录",
+      "url": "https://github.com/TekesApps/MyCity/issues/113",
+      "parent": 20,
+      "stage": "阻塞",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#20：原M0冻结协议/负载与验收门是约束来源，不要求父Issue先关闭；normal/长跑/真实16GB分别沿112/113/114。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "af77c156b13516cf36333042b996fb51847f685267afb18ba0fe9f29a56598dc"
+    },
+    {
+      "issue": 114,
+      "title": "[非UI/real16-device] 真实16GB硬件环境与原M0/新承载分别签收",
+      "url": "https://github.com/TekesApps/MyCity/issues/114",
+      "parent": 20,
+      "stage": "阻塞",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#20：原M0冻结协议/负载与验收门是约束来源，不要求父Issue先关闭；normal/长跑/真实16GB分别沿112/113/114。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "a1a811388a6434cd40d1194620612ec400c7511859fb8c7a26e0b33c931ba8da"
+    },
+    {
+      "issue": 115,
+      "title": "[非UI/JPROD-integration] JPROD-1全产品非UI输入装配和跨系统协同验收",
+      "url": "https://github.com/TekesApps/MyCity/issues/115",
+      "parent": 21,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。",
+        "#21：仅依赖原Issue具体已声明的有效能力，不要求整个领域关闭。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "2cde84e18daa10c8960207b09f73042dfdaefe10cf80a9063f8323baa6df9748"
+    },
+    {
+      "issue": 116,
+      "title": "[非UI/release-contract] 非UI发行契约：版本/许可证、可复现配置和跨平台核心",
+      "url": "https://github.com/TekesApps/MyCity/issues/116",
+      "parent": 2,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "56076fdda340b487b87ada7365136c81fd4ff30b083d15e0432763913626066d"
+    },
+    {
+      "issue": 117,
+      "title": "[非UI/asset-cost] 固定资产basis、折旧/租赁成本及真实更新资本化",
+      "url": "https://github.com/TekesApps/MyCity/issues/117",
+      "parent": 10,
+      "stage": "待集成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。",
+        "#9：原公司/业主/经营合同、账户与真实存货/需求事实；引用所需受理/退出能力，不等待全部行业经营先完成。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "bf479e22442741d0fc887ef679f2b40f4fe6f2cbc50513cb88c50e8df5d73545"
+    },
+    {
+      "issue": 118,
+      "title": "[非UI/physical-capacity] 全模式canonical物理资源与时窗预留/实际占用共池",
+      "url": "https://github.com/TekesApps/MyCity/issues/118",
+      "parent": 16,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。",
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。",
+        "#6：所需版本的道路可达/运输原proof/真实到达接口；有限道路变更可复用#25。新模式#73计划不证明到达，缺实际provider明确unknown。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "c6ae87bbe7530a632deacb01276b48224f76acf04464e061012492a398bc8183"
+    },
+    {
+      "issue": 119,
+      "title": "[非UI/private-development] 私人开发/扩张候选到真实工程申请",
+      "url": "https://github.com/TekesApps/MyCity/issues/119",
+      "parent": 9,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#10：原现金/保护款/债务/税及权益唯一writer；#146仅固定报价/原型日税/有限原料下已验财务合同。新增税制/转让规则仍需各自具体合同。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "9db0ab1d741ce1b5622170666184135f1959754ea418da39493c74a3313057d7"
+    },
+    {
+      "issue": 120,
+      "title": "[非UI/opening-loader] 版本化开局/配置装配、typed引用和有界schema加载",
+      "url": "https://github.com/TekesApps/MyCity/issues/120",
+      "parent": 16,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "#16：原Scope/Timeline时点、原票/WAL/checkpoint及必要跨城交互来源；#130必要续办和#131指定同槽开局可复用，其它区域规则按所需版本单列。"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "完整父范围及未关子任务仍开放",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "241cca656a0a3e09f3d13f39a9933daa0d350292d27ab6eb3e6b95f1d2ff142f"
+    },
+    {
+      "issue": 121,
+      "title": "[非UI/terrain-project] 真实挖填土/地形与水系改造的工程和版本事务",
+      "url": "https://github.com/TekesApps/MyCity/issues/121",
+      "parent": 3,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "c5e8c125d625498428c1e99f29a061b98ca7b6878e085fdf883c5884decf4975"
+    },
+    {
+      "issue": 122,
+      "title": "[缺陷/equity] 默认测试栈下出资时钟门用例溢出（单独跟踪）",
+      "url": "https://github.com/TekesApps/MyCity/issues/122",
+      "parent": 10,
+      "stage": "完成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "原Issue具体接口/有效来源合同；引用领域父不表示整域先完成"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "6be0c8dd45c451ce4b812735e4d6b1ade27d742a5c271f0db6aec68dba7188d2"
+    },
+    {
+      "issue": 123,
+      "title": "[缺陷/utility] 默认测试栈下跨城共享池与checkpoint用例溢出（单独跟踪）",
+      "url": "https://github.com/TekesApps/MyCity/issues/123",
+      "parent": 8,
+      "stage": "完成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "原Issue具体接口/有效来源合同；引用领域父不表示整域先完成"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "57b04aa3afb22b2597c0b38d10c4977951d5ba661533144d0d656625420cbd3e"
+    },
+    {
+      "issue": 124,
+      "title": "[缺陷/qualification] 默认测试栈下真实资格生命周期与恢复用例溢出",
+      "url": "https://github.com/TekesApps/MyCity/issues/124",
+      "parent": 55,
+      "stage": "完成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "见对应Issue当前执行卡和原handoff/patch文件manifest；未授予新增写入，共享核心仅root"
+      ],
+      "scope": "保留原Issue完整合同；本轮执行卡不缩减其范围",
+      "required_capabilities": [
+        "原Issue具体接口/有效来源合同；引用领域父不表示整域先完成"
+      ],
+      "acceptance": [
+        "原Issue完整验收条件；开发前按有限合同固定真实场景、拒绝/边界、原票重试、恢复和必要资源证据"
+      ],
+      "remaining": "以原Issue实际回填为准；源码候选不当真实provider/业务完成",
+      "evidence": "原Issue正文/评论与关联STATUS；原始API正文/185评论已保留于work/issue-structure-20261025",
+      "implementation_tags": "原Issue回填，文档发布不替代实现/验收",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "dd87868955826bda5d22e11a4f59ea5158f67a16e901c266964b429f90ee88f4"
+    },
+    {
+      "issue": 125,
+      "title": "[业务子任务] 原场所人员共池：预留、实际占用、安全退出与恢复",
+      "url": "https://github.com/TekesApps/MyCity/issues/125",
+      "parent": 118,
+      "stage": "完成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "crates/city-core/src/venue_runtime.rs",
+        "crates/city-core/src/venue_capacity.rs",
+        "crates/city-core/tests/venue_capacity_tests.rs",
+        "crates/city-storage/tests/venue_capacity.rs",
+        "共享World/Engine/Timeline/Store由root唯一写入"
+      ],
+      "scope": "managed_people_v1 purpose1/2整组人员，原Housing人群绑定与场所目录；接受、实际进入、安全退出和取消均沿原Resource/Lease。不含实际交通到达/教学/服务证明、动态许可/人口和其它交通模式。",
+      "required_capabilities": [
+        "原Housing genesis成员来源",
+        "原Resource/Lease及Store原票链"
+      ],
+      "acceptance": [
+        "预留/占用/释放守恒、成员互斥与原actor权限",
+        "闭城/到期不自动删除实际责任",
+        "重试、损坏原票拒绝、WAL/checkpoint、独立进程及legacy slot清理"
+      ],
+      "remaining": "完整#118其它模式/动态人口许可/native和16GB仍开放",
+      "evidence": "docs/evidence/venue-authority-20261024/STATUS.md",
+      "implementation_tags": "v0.5.168 / v0.5.171",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "c2c464d1b57b5adb70c596ba995ff039afc4490914d1dd81d15665b88fb116be"
+    },
+    {
+      "issue": 126,
+      "title": "[业务子任务] 免费线下课程：实际备课/教学工时、成员排他和阶段退出",
+      "url": "https://github.com/TekesApps/MyCity/issues/126",
+      "parent": 54,
+      "stage": "完成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "crates/city-core/src/education_runtime.rs",
+        "crates/city-core/src/education_authority.rs",
+        "crates/city-storage/tests/education_authority.rs"
+      ],
+      "scope": "已注册FreeOfflineWholeGroupV1最多4cohorts，实际教师/学生共享活动、备课不计课时、分段/压缩不抹真实课时、退出保留责任；原Store原票恢复。不是收费课程、基础教育全产品或资格授予本身。",
+      "required_capabilities": [
+        "原场所实际在场与同池能力",
+        "原成员活动账",
+        "原Timeline完成时点"
+      ],
+      "acceptance": [
+        "实际工时与教师/学生成员互斥，备课与教学分开",
+        "分段/Compact/退出不得缩短已发生教学区间",
+        "原票丢失/损坏拒绝、lost reply、WAL/checkpoint/新进程和旧槽清理"
+      ],
+      "remaining": "收费/教师工资、儿童基础教育与转停学独立后续子任务",
+      "evidence": "docs/evidence/education-authority-20261024/STATUS.md",
+      "implementation_tags": "v0.5.177 / v0.5.178",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "dede7f8bf3c9a5be758664d5f929b9da388f8827e8796c7a5f1f6424994b536c"
+    },
+    {
+      "issue": 127,
+      "title": "[业务子任务] 课程资格：真实课时/日历双门、原考试授予撤销与岗位读取",
+      "url": "https://github.com/TekesApps/MyCity/issues/127",
+      "parent": 55,
+      "stage": "完成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "crates/city-core/src/course_completion.rs",
+        "crates/city-core/src/qualification_state.rs",
+        "crates/city-core/src/qualification_authority.rs",
+        "crates/city-storage/tests/qualification_authority.rs"
+      ],
+      "scope": "protocol2固定Electric/Water课程资格责任：实际120小时与90日、内容覆盖/Pass、原最近考试身份，原Complete一次授予及Revoke；来源绑定岗位查询。不是招聘或外部职业认证。",
+      "required_capabilities": [
+        "已注册免费课程实际工时与课程日历",
+        "原Store考试/完成原票及成员身份"
+      ],
+      "acceptance": [
+        "120h/90日/内容和最近原考试同时达标才授予",
+        "旧真实考试替换、context篡改、缺票、Unknown背书拒绝",
+        "授予/撤销、原重试、新进程WAL/checkpoint及默认debug栈恢复"
+      ],
+      "remaining": "实际招聘/跨域岗位consumer、其它资格技术背书仍归#55",
+      "evidence": "docs/evidence/qualification-authority-20261025/STATUS.md",
+      "implementation_tags": "v0.5.178 / v0.5.179",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "b1e76d57514d79cecfcc77bbb097e0616111d87bfa59878e1998cf011476c695"
+    },
+    {
+      "issue": 128,
+      "title": "[业务子任务] 开局资格源：无教育依赖的来源绑定读取与Unknown恢复语义",
+      "url": "https://github.com/TekesApps/MyCity/issues/128",
+      "parent": 55,
+      "stage": "完成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "crates/city-core/src/member_qualification.rs",
+        "crates/city-core/src/qualification_authority.rs",
+        "crates/city-storage/tests/qualification_authority.rs"
+      ],
+      "scope": "protocol3仅原不可变开局baseline，无课程/issuer/rule/result授权；人群指纹、有效期、已知正向资格与缺背书Unknown；Store身份/恢复。不是学位发放或实际雇佣。",
+      "required_capabilities": [
+        "原Housing genesis人群namespace",
+        "原Store genesis版本化registration"
+      ],
+      "acceptance": [
+        "无education/venue/member runtime也可合法初始化和按原钟读取",
+        "版本/来源/时间/人群错配拒绝、缺覆盖和背书Unknown",
+        "raw Engine不自动认证、原票重试、classic/spatial WAL/checkpoint与冷进程"
+      ],
+      "remaining": "招聘/工资/实际岗位consumer不在此子任务",
+      "evidence": "docs/evidence/baseline-qualification-20261025/STATUS.md",
+      "implementation_tags": "v0.5.180",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "485bd2c9e54b11990e6c38e1d85c5260808cb67e15675b8a6063b47062a79149"
+    },
+    {
+      "issue": 129,
+      "title": "[业务子任务] 唯一成员活动账：独立登记、教育借账与恢复排他",
+      "url": "https://github.com/TekesApps/MyCity/issues/129",
+      "parent": 5,
+      "stage": "完成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "crates/city-core/src/member_activity.rs",
+        "crates/city-core/src/member_authority.rs",
+        "crates/city-core/src/education_authority.rs"
+      ],
+      "scope": "从教育内部抽出原唯一member_activity账注册，population/epoch/版本绑定；教育复用同账，孤立服务行拒绝；旧输入/slot恢复不重建另一套人群。不是实际公服出勤。",
+      "required_capabilities": [
+        "原Housing genesis成员身份",
+        "原教育实际活动consumer",
+        "原World/Store恢复边界"
+      ],
+      "acceptance": [
+        "独立账注册与原教育自动兼容身份相同",
+        "孤立/错属/重复活动拒绝，无服务实现不得写ServiceWork事实",
+        "原开局/冷恢复/legacy slot/retry不漏旧活动"
+      ],
+      "remaining": "其它领域真实活动消费者分别接线；不关闭劳动/教育/公服父任务",
+      "evidence": "docs/evidence/independent-member-authority-20261025/STATUS.md",
+      "implementation_tags": "v0.5.181",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "1450491d874a972cafab7ebb967a16aa656339b5668f8e01a63c1dca1e019822"
+    },
+    {
+      "issue": 130,
+      "title": "[业务子任务] 必要任务续办：服务需求与原连续供给RunDue的真实调度/恢复",
+      "url": "https://github.com/TekesApps/MyCity/issues/130",
+      "parent": 101,
+      "stage": "完成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "crates/city-core/src/task_registry.rs",
+        "crates/city-headless/src",
+        "crates/city-storage/tests/opening_continuous_supply_store.rs",
+        "共享Timeline/调度执行方由root唯一写入"
+      ],
+      "scope": "复用现有required dispatch消费已验证服务需求游标与continuous_supply DueView；Running/Stopped/Faulted仍完成已接受目标，原C/Advance一页提交和原Store恢复。不实现全模型目录/授额器或新scheduler。",
+      "required_capabilities": [
+        "原required dispatch与Store准入",
+        "已验证服务需求源及continuous_supply原状态",
+        "原OpeningInput已提供空间输入的Sim"
+      ],
+      "acceptance": [
+        "前序busy/error/unknown不落成NoWork；零宽不是假TaskKey",
+        "每RunDue最多一原页、停机/故障仍保留受理目标和物料/钱/余数",
+        "原C冲突、未读终态、单进程退出后原Store重试及WAL/checkpoint冷恢复"
+      ],
+      "remaining": "全模型目录、实际授额及注入预算拒绝/全负载硬件门仍独立待验，不在此有限consumer合同",
+      "evidence": "docs/evidence/service-due-opening-20261025/STATUS.md; docs/evidence/continuous-supply-due-20261025/STATUS.md",
+      "implementation_tags": "v0.5.183 / v0.5.185",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "6c054f0f86e1bade0ef513935365d6aeac33fec6166eff506210fd60c296c338"
+    },
+    {
+      "issue": 131,
+      "title": "[业务子任务] 开局原字节与同槽发布：指定合法profile的WAL/冷恢复/丢应答",
+      "url": "https://github.com/TekesApps/MyCity/issues/131",
+      "parent": 120,
+      "stage": "完成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "crates/city-core/src/opening_loader.rs",
+        "crates/city-storage/src/lib.rs",
+        "crates/city-storage/tests/opening_venue_store.rs",
+        "crates/city-storage/tests/opening_continuous_supply_store.rs"
+      ],
+      "scope": "OpeningInput::from_json SuppliedBytes指定venue和continuous_supply合法输入；精确字节/来源/hash、原EngineWorkspace同槽与Store genesis一次发布。不宣称通用全产品配置、许可或实际provider认证。",
+      "required_capabilities": [
+        "原EngineWorkspace和Store create/open",
+        "已有venue/continuous_supply固定profile输入",
+        "原槽与backing身份验证接口"
+      ],
+      "acceptance": [
+        "字节/hash/账户库存原来源与同槽backing身份一致",
+        "无效owner拒绝且不发布CURRENT、已发布目录拒绝二次create",
+        "CURRENT丢应答后同路径恢复、原操作重试、WAL/checkpoint新进程无重复资本"
+      ],
+      "remaining": "其余配置/schema/typed引用provider适配仍待集成子任务，不把synthetic输入当现实认证",
+      "evidence": "docs/evidence/opening-venue-store-20261024/STATUS.md; docs/evidence/continuous-supply-due-20261025/STATUS.md",
+      "implementation_tags": "v0.5.170 / v0.5.185",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "a072197350b230f48cbe965b2b6b8cfcd285dfabfff2b8cc6286c4fc3802575d"
+    },
+    {
+      "issue": 132,
+      "title": "[业务子任务] 设施操作工时与工资：原发电机岗位、原资金和原票恢复接线",
+      "url": "https://github.com/TekesApps/MyCity/issues/132",
+      "parent": 55,
+      "stage": "待验证",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "crates/city-core/src/facility_work.rs（原#55 owner已冻结）",
+        "crates/city-core/src/facility_authority.rs",
+        "crates/city-core/tests/facility_operation.rs",
+        "crates/city-storage/tests/facility_operation_store.rs",
+        "全部共享核心仅root"
+      ],
+      "scope": "当前未提交facility_work/authority+共享接线；仅原发电机Electric实际操作。Begin资格/在场、实际P5区间、原成员排他、工资余数和成本、Stop/Payroll互斥、原票恢复；Water设备尚无provider。",
+      "required_capabilities": [
+        "已完成baseline/课程资格按所需角色读取",
+        "已完成member账及实际场所能力",
+        "原continuous_supply、原protected资金和Store原票"
+      ],
+      "acceptance": [
+        "原op ID不作顺序，Begin/Start真实revision绑定",
+        "实际工时=原设备区间；原钱款支付、分段余数不漂、Payroll双向互斥",
+        "begin/interval/payment/stop原票摘要及篡改/冷恢复拒绝",
+        "补齐最新源码workspace/教育资格/旧场景回归与普通布局准入，再发布"
+      ],
+      "remaining": "source08实际core9+Store3+2cold children+旧供给9通过；原module18通过；最终共享/教育资格回归、旧票兼容及发布尚缺；source01/05/06/07失败全保留",
+      "evidence": "work/facility-operation-20261025/source08-build-inputs.json；run08-*固定程序/日志/完整world",
+      "implementation_tags": "未发布；基线v0.5.188",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "0765d59525bf652b43096af5ebd8b55dec5e1866bb16663009b0a04a9fd83143"
+    },
+    {
+      "issue": 133,
+      "title": "[业务子任务] 有限取水—真实处理批—合格出水：原水量/质量/受电/人员与成本闭环",
+      "url": "https://github.com/TekesApps/MyCity/issues/133",
+      "parent": 92,
+      "stage": "开发中",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "crates/city-core/src/water_treatment.rs（如原owner交付路径，以交付manifest为准）",
+        "共享continuous_supply/World/Timeline/Stock/Store仅root",
+        "专属处理批测试/fixture/handoff"
+      ],
+      "scope": "消化原#92/85/86已交付内核，接真实处理批和原Stock/Store；原gen/twinpump切段、泵停后用途分配、污染质量/损耗/辅料/人员与维护保管。保留旧V1，新V2显式版本；不以原源库存或未来出水冒充认证供水。",
+      "required_capabilities": [
+        "当前设施操作工时工资门（Water角色由本业务adapter接入）",
+        "原连续源/同周期成本曲线",
+        "有来源水质/化学品/受电和有限合法残余出口"
+      ],
+      "acceptance": [
+        "水量与污染质量、损耗及辅料守恒；未来出水不启动循环",
+        "5000泵切段/后续发电用途不得重置原费用/进度/随机",
+        "输出真实lot归属与成本，有限残余去向、重试/恢复和原票因果",
+        "实际联合场景及CPU/内存/磁盘增量；未解不能判短缺"
+      ],
+      "remaining": "当前没有V2实际原writer/合格出水消费桥；不新派开发，root按原owner交付集成",
+      "evidence": "docs/handoffs/issue-92-water-treatment.md; docs/water-quality-and-treatment-runtime.md",
+      "implementation_tags": "v0.5.186–188仅组件/idle/成本前置已发布",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "afa6dc8bed132f1b31d2d9fd265df70527bbb3c98fc0755532b5204fbbc05b24"
+    },
+    {
+      "issue": 134,
+      "title": "[业务子任务] 实际公服履约：请求派遣、人员/原容量费用到返程及残责",
+      "url": "https://github.com/TekesApps/MyCity/issues/134",
+      "parent": 57,
+      "stage": "阻塞",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "crates/city-core/src/service_delivery_runtime.rs",
+        "专属公服履约测试/fixture/handoff",
+        "原World/Timeline/Store/资金和共享人时仅root"
+      ],
+      "scope": "消化既有service_delivery_runtime/原#57交付，将实际请求/优先级/派遣到原人时、原Resource/Lease、交通/水电和原费用；保留取消/未解/返程及关城责任。不展开医疗/警务/消防专业profile。",
+      "required_capabilities": [
+        "已完成成员账/场所容量/必要调度及同槽开局能力",
+        "当前设施人时/工资；所需实际交通/水电provider（如水处理子任务）"
+      ],
+      "acceptance": [
+        "计划不当到达/服务事实，缺源unknown和额度耗尽未解",
+        "实际人时、支付、容量与服务产物同Prepared一次提交",
+        "取消/超时/闭城/在途返程不漏义务，原票重试和冷恢复",
+        "完整有限合法服务链+拒绝反例，不用selector测试冒充实际交付"
+      ],
+      "remaining": "原交付已冻结；由原实施方按排程补模块，root唯一集成；当前未派新任务",
+      "evidence": "docs/handoffs/issue-57-service-delivery-runtime.md",
+      "implementation_tags": "父#57自然需求/目录前置已发布；本履约桥未验",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "1725fdeac7f800433d0d69c838a63100fda1c91031991a0a505b170471be655e"
+    },
+    {
+      "issue": 135,
+      "title": "[业务子任务] 通用source/due/dirty目录：原consumer版本/覆盖与恢复唤醒接线",
+      "url": "https://github.com/TekesApps/MyCity/issues/135",
+      "parent": 101,
+      "stage": "待集成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "crates/city-core/src/task_registry.rs",
+        "专属registry tests/fixture/handoff",
+        "原required dispatch/Timeline/Store仅root"
+      ],
+      "scope": "消化task_registry通用模块，把原有效来源/版本、due、dirty、coverage age与原consumer一体登记；复用Timeline/worker，不造独立执行器。各领域业务结果仍由各自owner提交。",
+      "required_capabilities": [
+        "已完成必要consumer和原钟/恢复cursor",
+        "既有#102任务票身份和#103最低可信策略合同（只依赖所需接口，候选未验）"
+      ],
+      "acceptance": [
+        "任务休眠不能遗失必要业务到期/故障，覆盖unknown不假完成",
+        "原source版本/CAS与持久cursor匹配，dirty重复幂等",
+        "恢复重建唤醒目录不补造已发生事实，无第二时钟/队列",
+        "真实原consumer联合恢复和边界/预算拒绝实际验证"
+      ],
+      "remaining": "通用候选到实际目录/全部必要provider未完成；原交付先集成，不新派工",
+      "evidence": "docs/handoffs/issue-101-due-v168.md; docs/handoffs/issue-101-service-needs-due-v182.md",
+      "implementation_tags": "仅部分consumer已发布",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "ca32c76e35031e42ea410654587da3fd877806975d6b632f276c804fc3f6787d"
+    },
+    {
+      "issue": 136,
+      "title": "[业务子任务] canonical时窗容量内核：原Resource/Lease身份、冲突与恢复桥",
+      "url": "https://github.com/TekesApps/MyCity/issues/136",
+      "parent": 118,
+      "stage": "待集成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "原physical_capacity专属模块及测试/fixture（原handoff manifest）",
+        "共享Resource/Lease/World/Store仅root"
+      ],
+      "scope": "消化既有physical_capacity候选，将canonical身份/单位/版本和时窗预留/实际占用/释放接原权威池；场所已验证能力可复用，其它交通/床位/机组consumer由各领域子issue负责。",
+      "required_capabilities": [
+        "已验证原Resource/Lease和场所容量边界",
+        "各consumer提供有来源canonical映射/单位/时间窗，不要求整个交通或公服领域完成"
+      ],
+      "acceptance": [
+        "别名映射同池、时窗冲突/硬峰不平均、不造第二资源池",
+        "候选不冒充实际占用；取消/过期/闭城不释放未退役义务",
+        "原writer原子提交和失效/重试/保存恢复",
+        "多consumer真实冲突反例与联合布局预算"
+      ],
+      "remaining": "限定consumer已验不等于全模式；开工前先固定实际专属路径与原owner，当前无新写授权",
+      "evidence": "原第四批#118完整handoff/patch/恢复原件",
+      "implementation_tags": "原场所能力已发布；本通用内核未完整接线",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "1ffacf7a2aae3ced3c4a3c725e4f36867ae8f23d4d2cdc2faa81d3fac5c3df81"
+    },
+    {
+      "issue": 137,
+      "title": "[业务子任务] 通用开局schema与typed引用：原配置候选到实际provider装配",
+      "url": "https://github.com/TekesApps/MyCity/issues/137",
+      "parent": 120,
+      "stage": "待集成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "crates/city-core/src/opening_loader.rs",
+        "原#120专属tests/fixture/handoff",
+        "原World/Store/decoder/配置schema根仅root"
+      ],
+      "scope": "消化原opening_loader候选，在指定已支持provider范围接版本化schema、typed引用/单位/来源和有界装配；原同槽提交协议已验。unsupported明确拒绝，不伪造认证和默认容量。",
+      "required_capabilities": [
+        "已验证同槽原字节/发布恢复能力",
+        "所需#31/#32等provider固定输入合同（候选未验不作真实provider）"
+      ],
+      "acceptance": [
+        "逐typed引用/重复/缺项/单位/版本错误拒绝，缺配置不默填事实",
+        "layout workspace和临时/恢复峰值有界，同槽身份保持",
+        "旧合法输入兼容、失败不发布、新进程/重试无二次初始化",
+        "新增provider每个有实际装配与恢复证据"
+      ],
+      "remaining": "通用factory/provider/schema连接仍缺；不要求所有领域先完成，不宣称全产品开局可用",
+      "evidence": "原第五批#120交付及opening-input-store相关STATUS",
+      "implementation_tags": "仅指定合法profile同槽路径已验",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "a7edbe1d67fe6d6eca3fe38fb733d518a10f9ac61be05de458c30e277e9059e2"
+    },
+    {
+      "issue": 138,
+      "title": "[业务子任务] 收费课程与教师工资：原合同、实际课时和欠费退出闭环",
+      "url": "https://github.com/TekesApps/MyCity/issues/138",
+      "parent": 54,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "未授予源码写入；计划仅专属收费课程policy/测试/fixture",
+        "既有education_runtime/authority/member/资金/Store仅root或原owner明确排程"
+      ],
+      "scope": "新增明确收费/补贴课程profile，与已验免费课程分离；真实课时、教师原工资/学费/债务保护同步，付款不替代教学。",
+      "required_capabilities": [
+        "已完成免费教学/课程资格合同",
+        "当前原工时工资/资金保护能力",
+        "原课程费用合同与typed来源"
+      ],
+      "acceptance": [
+        "原现金守恒/教师工资按实际人时、免费权益不被错误收费",
+        "欠费/补贴/中途停课的义务与已得课时保留",
+        "默认旧profile语义不变，新版本、实际原票/恢复/拒绝反例"
+      ],
+      "remaining": "尚无实际收费教育业务实现/验收；owner未派工，先消化已有接线",
+      "evidence": "",
+      "implementation_tags": "",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "6cff0442cf7be14e28c6ca33fe469d0b728a260b41443a91070661aa97d7b135"
+    },
+    {
+      "issue": 139,
+      "title": "[业务子任务] 儿童基础教育：年龄/课程日历、实际到课与完成资格",
+      "url": "https://github.com/TekesApps/MyCity/issues/139",
+      "parent": 54,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "未授予源码写入；专属基础教育profile/测试/fixture须开工前固定",
+        "共享成员/教育/资格/Timeline/Store仅root"
+      ],
+      "scope": "儿童基础教育与已有成人免费retraining分离；真实到课/教师/年龄与课程日历完成规则，有据免费教育可零学费。",
+      "required_capabilities": [
+        "已完成成员账/免费教学/原资格读取机制",
+        "原人口年龄来源#52所需有限能力",
+        "原实际在场来源（旅程计划不算到课）"
+      ],
+      "acceptance": [
+        "年龄和日历/实际课时双门、课时缺失unknown",
+        "缺教师/座位/实际到课拒绝，支付不替代资格",
+        "停课/跨期/重复/恢复不重抽或丢进度、资格原票可追"
+      ],
+      "remaining": "基础教育完整实际profile未实现；不等待#52整个生命周期，但缺合法年龄源时阻塞相应验收",
+      "evidence": "",
+      "implementation_tags": "",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "d5eee8eac9e38f277861a667c6f6c51e5bd08c15c892e780ceab24d69254bb53"
+    },
+    {
+      "issue": 140,
+      "title": "[业务子任务] 停学转学与学校退出：已得课时、费用和责任承接",
+      "url": "https://github.com/TekesApps/MyCity/issues/140",
+      "parent": 54,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "未授予源码写入；独立转学命令/候选与测试/fixture先固定",
+        "共享教育原进度/资金/成员/Store仅root"
+      ],
+      "scope": "保留原教学/资格源、课程进度和成员时窗，在有权接纳的新课程/学校中显式承接；不复制学时、免除旧债或凭摘要补历史。",
+      "required_capabilities": [
+        "已完成真实教学/资格原票能力",
+        "目标课程/学校合法接纳和原场所容量",
+        "涉及收费时依赖收费课程有限合同，而非整个#54"
+      ],
+      "acceptance": [
+        "原学时/未知覆盖/费用义务守恒，缺历史unknown",
+        "原学校关闭/中断仍保留可结算责任",
+        "原actor授权、重试和新进程恢复不重复承接"
+      ],
+      "remaining": "通用转停学未实现；当前阶段退出不等于可迁移课程进度",
+      "evidence": "",
+      "implementation_tags": "",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "991ddf1792fa9a48e1942a1fcc4923e43f99630e238500a5f3b035c3104e9a59"
+    },
+    {
+      "issue": 141,
+      "title": "[业务子任务] 实际招聘与可达排班：岗位候选到原雇佣承诺",
+      "url": "https://github.com/TekesApps/MyCity/issues/141",
+      "parent": 55,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "未授予源码写入；专属matching模块/测试/fixture在实施前固定",
+        "共享成员/资格/资金/Timeline/Store仅root"
+      ],
+      "scope": "以有据技能/资格、可达性和成员时窗做有界匹配，雇主真实岗位/薪资预算与居民同意；候选不是已受雇，接受沿原writer。",
+      "required_capabilities": [
+        "已完成来源绑定岗位资格和成员排他账",
+        "原可达性结果#6/#73的所需真实版本接口（未验则拒绝）",
+        "雇主原岗位/资金/时窗来源"
+      ],
+      "acceptance": [
+        "最多候选/迭代额度有界，未解不判真实缺工",
+        "同一成员/岗位/钱包不重复接受，所有硬资格保留",
+        "已接受岗位与原工资/退出义务持久，重试/恢复不重抽"
+      ],
+      "remaining": "招聘与通勤/排班内生匹配未实现；原资格Eligible不等于受雇",
+      "evidence": "",
+      "implementation_tags": "",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "2bb8e527b48cacb31656fbac6313aa97bf92dad474aadc66d0c335fdb984d3d9"
+    },
+    {
+      "issue": 142,
+      "title": "[业务子任务] 受约束薪资调整：原雇佣窗口、工资周期和退出责任",
+      "url": "https://github.com/TekesApps/MyCity/issues/142",
+      "parent": 55,
+      "stage": "待开发",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "未授予源码写入；专属薪资策略/变更候选/测试/fixture先固定",
+        "共享Payroll/实际劳动/资金/Timeline/Store仅root"
+      ],
+      "scope": "以真实雇佣、周期和合法协商调整未来工资，不回写已发生应计/支付或用随机建议直接造工资；保持资金保护、旧债与辞退责任。",
+      "required_capabilities": [
+        "真实雇佣承诺或现有合法Payroll合同",
+        "原实际工时/工资余数及现金保护机制",
+        "原雇主周期/主体同意与有效时点"
+      ],
+      "acceptance": [
+        "变更仅未来生效，原应计/已付/余数和到期不重置",
+        "最低工资/合同/资金等硬门不被建议绕过",
+        "日周月/调速/中途变更/退出/恢复有独立整数oracle"
+      ],
+      "remaining": "当前设施工资是固定有限合同，不是完整招聘或自适应调薪；未派工",
+      "evidence": "",
+      "implementation_tags": "",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "9b907cc7387f79bc522a522a60b6386eaebe56db4755f1b5d8fa6904e6bf369f"
+    },
+    {
+      "issue": 143,
+      "title": "[范围登记/UI延期] UI延期目录：窗口/地图交互/渲染表现与控件验收",
+      "url": "https://github.com/TekesApps/MyCity/issues/143",
+      "parent": 23,
+      "stage": "阻塞",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "当前不授予任何UI/渲染源码写权限；恢复UI实施前独立固定所有权"
+      ],
+      "scope": "仅登记已既定UI延期范围：macOS窗口/全屏高分辨率、地图/3D相机/拾取/预览、文本/语音交互控件、事项面板/可视观察/存档体验。非UI typed命令/查询/ASR后端、GPU计算和原Store逻辑仍归原issue，不混入UI延期。",
+      "required_capabilities": [
+        "用户后续恢复UI实施窗口",
+        "对应后端已经验收的具体能力；不能据此反向篡改业务"
+      ],
+      "acceptance": [
+        "恢复实施时从REQ混合UI列逐项拆出独立原生交互/可视验收任务",
+        "不得把后台日志/候选或截图替代实际UI功能",
+        "延期记录保持开放，不表示UI已实现"
+      ],
+      "remaining": "政策性延期，无开发/编译/测试授权；本轮仅建立范围归属",
+      "evidence": "",
+      "implementation_tags": "",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "0918518208554d7f01cacebfd8ad52cee878b463a48b256271b9e7a29edfd0ce"
+    },
+    {
+      "issue": 144,
+      "title": "[业务子任务] 原连续发电—双泵源：实际投入产出、原成本与停机恢复",
+      "url": "https://github.com/TekesApps/MyCity/issues/144",
+      "parent": 86,
+      "stage": "完成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "crates/city-core/src/continuous_supply.rs",
+        "crates/city-core/src/electric_dispatch/continuous_genset.rs",
+        "crates/city-core/tests/continuous_supply.rs",
+        "crates/city-storage/tests/continuous_supply_store.rs"
+      ],
+      "scope": "已发布ContinuousGensetTwinPumpV1有限旧profile，原7Stock/钱包/3Resource共池、P5实际前缀和硬边界停机。出水是过程水，不是卫生许可/处理合格供水；不含开放电网、备用/爬坡/SOC或新设施人员profile。",
+      "required_capabilities": [
+        "原Stock/成本曲线与现金",
+        "原Resource/Lease和Timeline/P5",
+        "有限原料及热/废水/出水接收容量"
+      ],
+      "acceptance": [
+        "真实燃料/冷却水/原水消耗与电/热/废水/双泵过程水同窗守恒",
+        "原费一次、零工时停机列费用、分数WIP/余数和旧成本保留；满接收/原料耗尽切段",
+        "回滚/原actor/受管lot越权拒绝，原票重试、WAL/checkpoint/冷进程及非零时点重启"
+      ],
+      "remaining": "完整电网、合格水/处理/环境与新人员合同仍待其它子任务；不把旧有限profile扩为全公用设施",
+      "evidence": "docs/evidence/continuous-service-supply-20261025/STATUS.md",
+      "implementation_tags": "v0.5.184 / v0.5.185",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "ad02edab5a8803fbffd5320b1cd986708ab5093f38b5ed32b2ad0d8261ffad13"
+    },
+    {
+      "issue": 145,
+      "title": "[业务子任务] 原住房入住后的自然需求：发生/到期、覆盖与恢复",
+      "url": "https://github.com/TekesApps/MyCity/issues/145",
+      "parent": 57,
+      "stage": "完成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "crates/city-core/src/service_needs.rs",
+        "crates/city-core/src/service_needs_authority.rs",
+        "crates/city-storage/tests/service_needs.rs",
+        "共享Timeline/住房租约/Store仅root"
+      ],
+      "scope": "LocalDevelopmentNaturalNeedsV1绑定原Housing租约受理登记的first_entry和固定LS42三类代理需求，原P5按期发生/到期及未受理零交付结果；不是实际疾病/犯罪/火灾或已交付公服。",
+      "required_capabilities": [
+        "原合法HousingLease受理来源及不变人群来源",
+        "原Timeline/P5/Store",
+        "已声明固定需求profile和有限页面覆盖"
+      ],
+      "acceptance": [
+        "失败租约/重试/再租不重建first_entry，同tick跳过首次发生",
+        "occurrence与deadline原P5先完成才发布时钟，额度耗尽背压不判缺服务",
+        "原合同181日有限功能回放、缺源/分页/覆盖拒绝、WAL/checkpoint/freshprocess及原票重试"
+      ],
+      "remaining": "非零真实交付/held任务未支持仍拒绝；实际公服履约归另一个子任务",
+      "evidence": "docs/evidence/service-natural-needs-20261025/STATUS.md",
+      "implementation_tags": "v0.5.182 / v0.5.183",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "e48af9adc22f639018eb0ca4a3d58fe908815d7e7b96f2977091218dd95b67a6"
+    },
+    {
+      "issue": 146,
+      "title": "[业务子任务] 有限实缴股权：税保护、分红、清算资本返还与持久恢复",
+      "url": "https://github.com/TekesApps/MyCity/issues/146",
+      "parent": 10,
+      "stage": "完成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "crates/city-core/src/town_runtime.rs",
+        "crates/city-core/src/town_economy/equity.rs",
+        "共享资金/World/Timeline/Store仅root",
+        "既有股权Store场景和独立checkpoint oracle"
+      ],
+      "scope": "原固定经营/成本来源的实缴、税前保护、按股尾差、偿债优先、分红与清算资本返还；28日固定经营场景和原Store恢复。不是完整税亏结转、交易转让、动态城市/长期经济或全行业退出。",
+      "required_capabilities": [
+        "原可信经营来源/工资公用费用/税债",
+        "原账户和股权唯一writer",
+        "原经营退出与Store原票"
+      ],
+      "acceptance": [
+        "实缴/税保护/分红/偿债/资本返还逐账户独立整数守恒",
+        "丢应答必须原业务票成功，重放不二次支付",
+        "原WAL/checkpoint、28日固定双场景、独立冷进程和旧根保留"
+      ],
+      "remaining": "#42完整税期/亏损结转、#63股权转让、长期动态经营/16GB仍开放；不是全父任务验收",
+      "evidence": "docs/evidence/core-equity-runtime-144/STATUS.md; docs/evidence/core-dividend-exit-reader-149/STATUS.md; docs/evidence/core-equity-28d-158/STATUS.md",
+      "implementation_tags": "v0.5.144 / v0.5.149 / v0.5.158",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "6ef3edd944c563c4c34398ff0c4df029f8dc0204493f9edf8b8c56f9bd180a6f"
+    },
+    {
+      "issue": 147,
+      "title": "[业务子任务] 有界工程补偿：原合同实际付款、计入工程成本与恢复",
+      "url": "https://github.com/TekesApps/MyCity/issues/147",
+      "parent": 12,
+      "stage": "完成",
+      "owner": "当前root协调/集成/验收；独立实施只沿原owner或明确新派工",
+      "write_authority": [
+        "crates/city-core/src/construction",
+        "crates/city-storage/tests/construction.rs",
+        "既有补偿专属oracle/fixture",
+        "共享资金/World/Engine/Store仅root"
+      ],
+      "scope": "固定有据补偿策略，在原工程Review/阶段责任中由原账户真实支付并记Project.spent；非法律估价、司法征收、escrow或自动退款。",
+      "required_capabilities": [
+        "原有界工程阶段责任",
+        "原账户/受款人权威来源及保护款",
+        "原Store原票/WAL/checkpoint"
+      ],
+      "acceptance": [
+        "原owner向原payee实际支付50000、spent一致、成功原票恰一次",
+        "伪造已付/阶段/历史受款人拒绝，失败不产生副作用",
+        "同源Store/Engine实际测试、7联合CLI原输出、冷WAL/checkpoint与独立核账"
+      ],
+      "remaining": "法律程序/估价/托管/退款/其它施工生命周期及硬件门仍归原父与#40/#41",
+      "evidence": "docs/evidence/core-construction-compensation-135/STATUS.md",
+      "implementation_tags": "v0.5.135",
+      "pr": "本轮无PR；历史直接集成或未发布按各Issue原记录",
+      "issue_body_sha256": "55879cfd7f028e092621ad98255107c3fb7075edfa27466859b2f7836e4f8930"
+    }
+  ],
+  "capability_edges": [
+    {
+      "consumer": 126,
+      "requires": [
+        125,
+        129
+      ]
+    },
+    {
+      "consumer": 127,
+      "requires": [
+        126
+      ]
+    },
+    {
+      "consumer": 128,
+      "requires": [
+        26
+      ]
+    },
+    {
+      "consumer": 129,
+      "requires": [
+        26
+      ]
+    },
+    {
+      "consumer": 130,
+      "requires": [
+        144,
+        145
+      ]
+    },
+    {
+      "consumer": 131,
+      "requires": [
+        125,
+        144
+      ]
+    },
+    {
+      "consumer": 132,
+      "requires": [
+        125,
+        128,
+        129,
+        144
+      ]
+    },
+    {
+      "consumer": 133,
+      "requires": [
+        132,
+        144
+      ],
+      "missing": "Water-role actual adapter/quality/receiving responsibility implemented in own scope, no future output bootstrap"
+    },
+    {
+      "consumer": 134,
+      "requires": [
+        125,
+        129,
+        130,
+        132,
+        133
+      ],
+      "missing": "actual travel/service/energy/water providers; itinerary candidate is not arrival"
+    },
+    {
+      "consumer": 135,
+      "requires": [
+        130
+      ],
+      "missing": "generic source/dirty versions and worker TaskKey contract, not all #102"
+    },
+    {
+      "consumer": 136,
+      "requires": [
+        125
+      ],
+      "missing": "canonical time-window kernel to original pool"
+    },
+    {
+      "consumer": 137,
+      "requires": [
+        131
+      ],
+      "missing": "supported provider typed schema; unverified provider rejects"
+    },
+    {
+      "consumer": 138,
+      "requires": [
+        126,
+        132
+      ]
+    },
+    {
+      "consumer": 139,
+      "requires": [
+        126,
+        127,
+        129
+      ],
+      "missing": "legitimate age source from required #52 capability"
+    },
+    {
+      "consumer": 140,
+      "requires": [
+        126,
+        127,
+        125
+      ]
+    },
+    {
+      "consumer": 141,
+      "requires": [
+        128,
+        129
+      ],
+      "missing": "actual accessibility and original funded jobs; only needed #6/#73 interface"
+    },
+    {
+      "consumer": 142,
+      "requires": [
+        132
+      ],
+      "missing": "accepted employment/contract; original cycles and effective times"
+    },
+    {
+      "consumer": 113,
+      "requires": [
+        112
+      ]
+    },
+    {
+      "consumer": 114,
+      "requires": [],
+      "missing": "real16GiB device + frozen protocol; 32GiB cannot substitute"
+    }
+  ]
+}

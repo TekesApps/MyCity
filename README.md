@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.188`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.189`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.189 整理[业务Issue执行与验收台账](docs/issue-execution-ledger.md)：保留领域父任务，按独立业务能力回填历史实际验收和剩余接线，UI延期、缺陷与真实16GB门单列。仅文档/Issue整理；当前设施工时工资WIP尚缺最终联合回归，不随本tag作为游戏功能发布。
 
 v0.5.188 unifies original source-lot cost arithmetic and verifies [allocation-cycle prefix costs](docs/evidence/continuous-supply-cost-20261025/STATUS.md):3 arithmetic tests and9 original continuous-supply regressions pass. V2 withdrawal/joint treatment/Store integration remains pending. The previous24-test Idle component gate remains limited to synthetic RootVerifier; full #92 stays open.
 

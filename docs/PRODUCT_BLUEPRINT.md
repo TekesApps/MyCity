@@ -12,6 +12,8 @@ v0.5.15执行更新：用户已授权Rust模型与headless CLI，当前不做UI�
 
 ## 2. 四视角与逐需求证据
 
+实施归属与验收状态沿[Issue执行台账](issue-execution-ledger.md)、[61REQ/37能力映射](inputs/issue-ledger/requirements.json)及GitHub #2/#23持续维护。领域父任务保留完整范围，独立业务子任务按真实实现、集成和恢复验收关闭；UI延期、缺陷和硬件门单列。该索引不改变总体需求，也不将D_full或发布tag当实现完成。
+
 从“玩家能做什么、市民如何生活、企业如何经营、城市如何运转”四条完整责任链检查正常／受限／退出，不仅检查建筑。先读[覆盖矩阵及REQ01—61逐条追踪](product-coverage-and-requirements.md)，再按能力卡查具体方案。
 
 每项能力回答需求来源、设施／主体、资源／容量、成本收益、交通环境、法律程序、失败退出、玩家观察和聚合／writer／预算九项。37能力卡和[逐项来源CSV](inputs/product-blueprint/capability-evidence.csv)只是证据导航；完整性依据是全部明确需求与主要功能有方案、依赖可解析，并经过两个独立方向检查，不能由37、23、90等计数推出。

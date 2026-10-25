@@ -1,0 +1,102 @@
+# MyCity Issue 执行与验收台账
+
+2026-10-25，文档发布 v0.5.189。总体入口仍为 [PRODUCT_BLUEPRINT](PRODUCT_BLUEPRINT.md)；需求原文以 [逐条需求矩阵](product-coverage-and-requirements.md) 为准。本轮不修改游戏代码，不重新运行历史测试，不改变 M0 负载/门槛。当前未提交设施操作 WIP 和所有失败/恢复原件保留。
+
+## 覆盖和归属
+
+核对 GitHub 原123个Issue（118开放、5关闭）、185条原评论、61条REQ、37项能力、97个既有业务Issue，以及已发布业务结果与恢复原件。原生已有99个父子关系；保留原关系，补上领域到总览、新拆子任务及独立缺陷的归属，不复制平行树。领域父3–24归总览2；23为覆盖索引，143单列UI延期。已有Issue的原完整合同保留，新执行卡纠正过期owner/状态。
+
+没有发现须另造领域父任务的整块非UI需求缺口。16个Issue原只在能力映射中直接出现；适用业务补入REQ直接映射，112/113保留独立冻结验收映射。这属于索引修正，不是新增需求。声明有界概率/稳定随机的机制仍归14/56/61/62及其具体consumer，通用文档不算通用代码完成。
+
+本轮按独立业务能力补建125–147共23个子任务：11个历史完整合同验收关闭、11个剩余业务接线/扩展保持开放、1个UI延期保持开放。原25/26有限F/E、122–124具体栈缺陷保留关闭。所有领域大父任务保持开放。新台账的“完成”只指各自有限完整合同，不是全领域/当前HEAD重验。
+
+## 状态、负责人及关闭门
+
+|状态|含义|
+|---|---|
+|待开发|尚无本范围合格实现；负责人未派工则无写授权|
+|开发中|完整范围尚在推进；父任务可含已完成切片，非宣称后台worker正在运行|
+|待集成|原模块/候选已交付，但实际writer/provider/消费者接线未闭合|
+|待验证|真实接线存在，完整约定回归/恢复/必要预算或发布证据尚缺|
+|阻塞|有具体前置/硬件或冻结验收缺口，保留差项，不把未解当短缺|
+|完成|完整有限合同已实际验收，Issue实际关闭并保留可恢复证据|
+
+主agent统一集成/关闭，独立issue实施沿原owner和明确文件清单。未派工不赋予写权；候选目录和模块不能越过共享Engine/World/assembly/Timeline/账本/Store/decoder/Cargo/lib边界。每项新开发先固定具体文件所有权与接口。编译测试串行，复用HP P900唯一target/work。
+
+关闭须同时核实现/真实接线、独立业务正常/拒绝/边界结果、原票重试和保存恢复、该合同必要的资源证据。硬件门归114，不能要求每个有限业务先完成整个领域，也不能用32GB代替真实16GB。原M0 normal/四速/故障/28800s和真实16GB保持112/113/114独立追踪。
+
+## 本轮已验历史业务子任务
+
+|子任务|父任务|已验业务合同|实现/验收版本与原结果|
+|---|---|---|---|
+|[#125](https://github.com/TekesApps/MyCity/issues/125)|#118|原场所人员共池：预留、实际占用、安全退出与恢复|v0.5.168 / v0.5.171；[原证据](evidence/venue-authority-20261024/STATUS.md)|
+|[#126](https://github.com/TekesApps/MyCity/issues/126)|#54|免费线下课程：实际备课/教学工时、成员排他和阶段退出|v0.5.177 / v0.5.178；[原证据](evidence/education-authority-20261024/STATUS.md)|
+|[#127](https://github.com/TekesApps/MyCity/issues/127)|#55|课程资格：真实课时/日历双门、原考试授予撤销与岗位读取|v0.5.178 / v0.5.179；[原证据](evidence/qualification-authority-20261025/STATUS.md)|
+|[#128](https://github.com/TekesApps/MyCity/issues/128)|#55|开局资格源：无教育依赖的来源绑定读取与Unknown恢复语义|v0.5.180；[原证据](evidence/baseline-qualification-20261025/STATUS.md)|
+|[#129](https://github.com/TekesApps/MyCity/issues/129)|#5|唯一成员活动账：独立登记、教育借账与恢复排他|v0.5.181；[原证据](evidence/independent-member-authority-20261025/STATUS.md)|
+|[#130](https://github.com/TekesApps/MyCity/issues/130)|#101|必要任务续办：服务需求与原连续供给RunDue的真实调度/恢复|v0.5.183 / v0.5.185；[原证据](evidence/service-due-opening-20261025/STATUS.md)|
+|[#131](https://github.com/TekesApps/MyCity/issues/131)|#120|开局原字节与同槽发布：指定合法profile的WAL/冷恢复/丢应答|v0.5.170 / v0.5.185；[原证据](evidence/opening-venue-store-20261024/STATUS.md)|
+|[#144](https://github.com/TekesApps/MyCity/issues/144)|#86|原连续发电—双泵源：实际投入产出、原成本与停机恢复|v0.5.184 / v0.5.185；[原证据](evidence/continuous-service-supply-20261025/STATUS.md)|
+|[#145](https://github.com/TekesApps/MyCity/issues/145)|#57|原住房入住后的自然需求：发生/到期、覆盖与恢复|v0.5.182 / v0.5.183；[原证据](evidence/service-natural-needs-20261025/STATUS.md)|
+|[#146](https://github.com/TekesApps/MyCity/issues/146)|#10|有限实缴股权：税保护、分红、清算资本返还与持久恢复|v0.5.144 / v0.5.149 / v0.5.158；[原证据](evidence/core-equity-runtime-144/STATUS.md)|
+|[#147](https://github.com/TekesApps/MyCity/issues/147)|#12|有界工程补偿：原合同实际付款、计入工程成本与恢复|v0.5.135；[原证据](evidence/core-construction-compensation-135/STATUS.md)|
+
+闭环范围按各Issue具体限定：代理需求不是疾病；过程水不是认证水；原型日税/固定报价不是完整税制；原场所在场不是交通/教学/服务履约。#130的P0持久阶段未观察、预算拒绝未注入分别如实记录，通用目录/联合门留135。#147不含法律估价/司法托管退款，它们归40/41及原父。
+
+本轮没有将source交付、advisor接受或tag本身作为成功证据。原测试的默认栈/真实world/固定程序、lost reply/原票和独立冷进程证据均在关联STATUS；工作目录原件实际存在，工程补偿原程序及完整源ZIP本轮再次核对原SHA，D28的原业务world/冷读目录仍在。没有重新打开旧缺陷或重跑历史测试。
+
+## 剩余接线和验证积压
+
+|任务|状态|所需具体能力/差项|
+|---|---|---|
+|[#132](https://github.com/TekesApps/MyCity/issues/132)|待验证|source08实际core9+Store3+2cold children+旧供给9通过；原module18通过；最终共享/教育资格回归、旧票兼容及发布尚缺；source01/05/06/07失败全保留|
+|[#133](https://github.com/TekesApps/MyCity/issues/133)|开发中|当前没有V2实际原writer/合格出水消费桥；不新派开发，root按原owner交付集成|
+|[#134](https://github.com/TekesApps/MyCity/issues/134)|阻塞|原交付已冻结；由原实施方按排程补模块，root唯一集成；当前未派新任务|
+|[#135](https://github.com/TekesApps/MyCity/issues/135)|待集成|通用候选到实际目录/全部必要provider未完成；原交付先集成，不新派工|
+|[#136](https://github.com/TekesApps/MyCity/issues/136)|待集成|限定consumer已验不等于全模式；开工前先固定实际专属路径与原owner，当前无新写授权|
+|[#137](https://github.com/TekesApps/MyCity/issues/137)|待集成|通用factory/provider/schema连接仍缺；不要求所有领域先完成，不宣称全产品开局可用|
+|[#138](https://github.com/TekesApps/MyCity/issues/138)|待开发|尚无实际收费教育业务实现/验收；owner未派工，先消化已有接线|
+|[#139](https://github.com/TekesApps/MyCity/issues/139)|待开发|基础教育完整实际profile未实现；不等待#52整个生命周期，但缺合法年龄源时阻塞相应验收|
+|[#140](https://github.com/TekesApps/MyCity/issues/140)|待开发|通用转停学未实现；当前阶段退出不等于可迁移课程进度|
+|[#141](https://github.com/TekesApps/MyCity/issues/141)|待开发|招聘与通勤/排班内生匹配未实现；原资格Eligible不等于受雇|
+|[#142](https://github.com/TekesApps/MyCity/issues/142)|待开发|当前设施工资是固定有限合同，不是完整招聘或自适应调薪；未派工|
+|[#143](https://github.com/TekesApps/MyCity/issues/143)|阻塞|政策性延期，无开发/编译/测试授权；本轮仅建立范围归属|
+
+当前132固定source08已实际通过core9、Store3（另2次独立冷恢复）和原continuous_supply9；原module18也已通过。最终共享/教育资格/旧票与联合布局回归、发布未完成，132及55/92不关闭。source06曾因HotReceipt扩张触原WorkingLimit；改原持久JournalRecord上下文，不升原限，所有失败/固定程序/world原件保留。
+
+前八批交付不是新派工队列；先消化既有源码与未验证provider：
+
+|批次|原Issue|完整持久交付包（HP P900 work）|当前处理|
+|---|---|---|---|
+|1|31/27/96|`issue-31-27-96-source-handoff-20261023`|逐能力复用；后续已验业务见125–147，原包其余部分不继承验收|
+|2|32/36/75|`issue-32-36-75-source-handoff-20261023`|逐能力复用；后续已验业务见125–147，原包其余部分不继承验收|
+|3|85/117/74|`issue-85-117-74-source-handoff-20261023`|逐能力复用；后续已验业务见125–147，原包其余部分不继承验收|
+|4|118/101/73/85增量|`issue-118-101-73-85-source-handoff-20261023`|逐能力复用；后续已验业务见125–147，原包其余部分不继承验收|
+|5|102/120/97|`issue-102-120-97-source-handoff-20261024`|逐能力复用；后续已验业务见125–147，原包其余部分不继承验收|
+|6|103/61/28|`issue-103-61-28-source-handoff-20261024`|逐能力复用；后续已验业务见125–147，原包其余部分不继承验收|
+|7|104/57/98|`issue-104-57-98-source-handoff-20261024`|逐能力复用；后续已验业务见125–147，原包其余部分不继承验收|
+|8|86/94/54|`issue-86-94-54-source-handoff-20261024`|逐能力复用；后续已验业务见125–147，原包其余部分不继承验收|
+
+## 顺序、具体依赖与可并行边界
+
+1. root先完成132最终同源回归与原票/布局门；失败交原实施方/共享唯一writer修复，原advisor仅复核具体反例。
+2. 沿已完成125/128/129/130/131/144能力接133处理水，再接134真实公服。133内补真实Water岗位/质量与有限残余出口；134所需交通/人员/供水来源不能由候选或计划冒充。
+3. 消化135/136/137通用目录/时窗池/typed装配。新consumer只依赖确切接口与版本，不能以整个父领域先关闭为门。供给—需求反馈跨已提交切片，禁止未来输出启动同刻循环。
+4. 并行候选只限已交付模块的原owner补证/独立接口检查：#117资产成本、#28离线provider/许可缓存、#61人时暴露/unknown覆盖；各自专属模块/测试/fixture，不写共享核心，不自行Cargo。它们完整业务验收仍等合法来源与root统一接线。
+5. 新收费/基础教育/转学/招聘/调薪138–142待已有积压消化和所有权固定后再派；本轮未新启动开发会话或worker。
+
+|优先级|可独立推进内容|不能假设已验证的依赖|
+|---|---|---|
+|P0 串行|132当前接线最终验证；133/134真实供给履约|候选策略、实际到达/水质、GPU或native峰值|
+|P1 可并行准备|#117原成本模块补证、#28离线检索许可/缓存、#61暴露分段和unknown oracle|不冒用未集成provider；不先写共享Store/Timeline|
+|P1 后续串行|135/136/137原包接线|不是全上游领域完成；TaskKey/来源/时窗需真实固定合同|
+|P2 待排程|138–142与其它待开发业务|先固定owner/文件与合法输入，未派工不自动写代码|
+|单独冻结门|112/113/114与109–111校准/长漂移|无真实16GB仍未测，不以业务测试替M0或吞吐|
+
+## 全Issue归属与持续流程
+
+机器台账：[registry.json](inputs/issue-ledger/registry.json)；61REQ/37能力及原UI边界：[requirements.json](inputs/issue-ledger/requirements.json)。父子关系与stage标签以GitHub回读为准，台账每次真实状态变化同步。
+
+每轮：核对新需求与已有Issue → 固定独立业务合同/owner/文件/具体能力依赖 → 优先消化既有交付 → 串行实际验证和恢复 → 回填实现/实际结果/not_run/提交tag/PR → 完整子任务关闭 → 刷新父清单及REQ台账。未达标保留开放；父任务仍按自身完整范围验收。见[AGENTS.md](../AGENTS.md)。
+
+本轮结构整理证据保留`work/issue-structure-20261025/`，预算128MiB；原123Issue/185评论/99原生关系、完整修改前后正文、关闭请求/回读、覆盖提案与审计结论均保留。源WIP不入本次文档提交；24个无关观察/M0文件保持字节一致。外置恢复原件不删除；没有新tree/target/timer。

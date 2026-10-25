@@ -1,0 +1,1995 @@
+{
+  "schema": "mycity-issue-requirements-v1",
+  "source": "PRODUCT_BLUEPRINT/product-coverage-and-requirements; existing #23 table",
+  "requirements": [
+    {
+      "id": "REQ01",
+      "requirement": "Rust＋wgpu／macOS全屏高分辨率，2.5D／3D",
+      "issue_ids": [
+        19,
+        106,
+        116
+      ],
+      "ui_boundary_verbatim": "纳入Rust核心/wgpu计算能力与数据边界；全屏、高分辨率、2.5D/3D渲染表现延期。",
+      "ui_deferred_explicit": true,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        19,
+        106,
+        116
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": 143
+    },
+    {
+      "id": "REQ02",
+      "requirement": "自找灰度地图导入、以后检索地图",
+      "issue_ids": [
+        27,
+        28
+      ],
+      "ui_boundary_verbatim": "纳入数据检索/许可/导入后端；搜索/导入预览界面延期。",
+      "ui_deferred_explicit": true,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        27,
+        28
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": 143
+    },
+    {
+      "id": "REQ03",
+      "requirement": "曲线道路，沿路铺水电，路加宽／桥改造",
+      "issue_ids": [
+        76,
+        85,
+        12
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        76,
+        85,
+        12
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ04",
+      "requirement": "交通为第一模型，保存原始交通数据",
+      "issue_ids": [
+        6,
+        25,
+        73
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        6,
+        25,
+        73,
+        74,
+        75
+      ],
+      "proposed_additions": [
+        74,
+        75
+      ],
+      "reason_for_additions": "Add later registered executable seam where this REQ needs it. Existing capability table #23 already maps these issues; this adds direct REQ traceability, not new issues.",
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ05",
+      "requirement": "环境／邻近影响不限本格",
+      "issue_ids": [
+        98,
+        61,
+        100
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        98,
+        61,
+        100
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ06",
+      "requirement": "市长商业负责人组织自动区域交易",
+      "issue_ids": [
+        71,
+        45,
+        43,
+        100
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        71,
+        45,
+        43,
+        100
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ07",
+      "requirement": "市长给City Team命令，AgentKit输入",
+      "issue_ids": [
+        45,
+        47,
+        46
+      ],
+      "ui_boundary_verbatim": "纳入Agent/命令/权限后端；输入控件和AgentKit内部实现不纳入。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        45,
+        47,
+        46,
+        95
+      ],
+      "proposed_additions": [
+        95
+      ],
+      "reason_for_additions": "Add later registered executable seam where this REQ needs it. Existing capability table #23 already maps these issues; this adds direct REQ traceability, not new issues.",
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ08",
+      "requirement": "Agent精确建设／土地／建筑／比例／边界",
+      "issue_ids": [
+        45,
+        29,
+        34
+      ],
+      "ui_boundary_verbatim": "纳入typed几何目标/授权/边界；交互选取与编辑UI延期。",
+      "ui_deferred_explicit": true,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        45,
+        29,
+        34,
+        119,
+        121
+      ],
+      "proposed_additions": [
+        119,
+        121
+      ],
+      "reason_for_additions": "Add later registered executable seam where this REQ needs it. Existing capability table #23 already maps these issues; this adds direct REQ traceability, not new issues.",
+      "ui_tracking_issue": 143
+    },
+    {
+      "id": "REQ09",
+      "requirement": "16GB Mac、避免逐人逐设备，动画可随机",
+      "issue_ids": [
+        18,
+        22,
+        104,
+        109
+      ],
+      "ui_boundary_verbatim": "纳入聚合和预算、表现不得反写事实约束；动画制作延期。",
+      "ui_deferred_explicit": true,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        18,
+        22,
+        104,
+        109,
+        102
+      ],
+      "proposed_additions": [
+        102
+      ],
+      "reason_for_additions": "Add later registered executable seam where this REQ needs it. Existing capability table #23 already maps these issues; this adds direct REQ traceability, not new issues.",
+      "ui_tracking_issue": 143
+    },
+    {
+      "id": "REQ10",
+      "requirement": "统一最小格，大中小是地图容量",
+      "issue_ids": [
+        27,
+        3,
+        22
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        27,
+        3,
+        22
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ11",
+      "requirement": "邻城医院／警消／电力／贸易／交通共享",
+      "issue_ids": [
+        57,
+        86,
+        100,
+        73
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        57,
+        86,
+        100,
+        73,
+        59,
+        60,
+        74,
+        75,
+        95,
+        118
+      ],
+      "proposed_additions": [
+        59,
+        60,
+        74,
+        75,
+        95,
+        118
+      ],
+      "reason_for_additions": "Add later registered executable seam where this REQ needs it. Existing capability table #23 already maps these issues; this adds direct REQ traceability, not new issues.",
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ12",
+      "requirement": "建设和拆除按真实尺度工期，多档时间",
+      "issue_ids": [
+        12,
+        50,
+        31,
+        37
+      ],
+      "ui_boundary_verbatim": "纳入日历/速度控制与工程；速度控件延期。",
+      "ui_deferred_explicit": true,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        12,
+        50,
+        31,
+        37,
+        108,
+        121
+      ],
+      "proposed_additions": [
+        108,
+        121
+      ],
+      "reason_for_additions": "Add later registered executable seam where this REQ needs it. Existing capability table #23 already maps these issues; this adds direct REQ traceability, not new issues.",
+      "ui_tracking_issue": 143
+    },
+    {
+      "id": "REQ13",
+      "requirement": "道路／施工／铁路空气噪声和物件属性",
+      "issue_ids": [
+        98,
+        32,
+        76
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        98,
+        32,
+        76
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ14",
+      "requirement": "阶段交通／人口变化增量重算，常态展示",
+      "issue_ids": [
+        101,
+        103,
+        25,
+        49
+      ],
+      "ui_boundary_verbatim": "纳入任务/失效/查询/数据年龄；常态可视展示延期。",
+      "ui_deferred_explicit": true,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        101,
+        103,
+        25,
+        49,
+        102,
+        108
+      ],
+      "proposed_additions": [
+        102,
+        108
+      ],
+      "reason_for_additions": "Add later registered executable seam where this REQ needs it. Existing capability table #23 already maps these issues; this adds direct REQ traceability, not new issues.",
+      "ui_tracking_issue": 143
+    },
+    {
+      "id": "REQ15",
+      "requirement": "团队随地图／财富扩编，兼任／知识改善",
+      "issue_ids": [
+        46
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        46,
+        95
+      ],
+      "proposed_additions": [
+        95
+      ],
+      "reason_for_additions": "Add later registered executable seam where this REQ needs it. Existing capability table #23 already maps these issues; this adds direct REQ traceability, not new issues.",
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ16",
+      "requirement": "法案、市民议会、司法与行政互动",
+      "issue_ids": [
+        38,
+        40,
+        43
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        38,
+        40,
+        43,
+        59
+      ],
+      "proposed_additions": [
+        59
+      ],
+      "reason_for_additions": "Add later registered executable seam where this REQ needs it. Existing capability table #23 already maps these issues; this adds direct REQ traceability, not new issues.",
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ17",
+      "requirement": "定期选举、代表投票",
+      "issue_ids": [
+        39
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        39
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ18",
+      "requirement": "行业合理岗位、产出和相互作用",
+      "issue_ids": [
+        64,
+        65,
+        66,
+        55
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        64,
+        65,
+        66,
+        55
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ19",
+      "requirement": "教育→就业→收入→消费／住房→心情",
+      "issue_ids": [
+        54,
+        55,
+        56,
+        26,
+        61,
+        62
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        54,
+        55,
+        56,
+        26,
+        61,
+        62
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ20",
+      "requirement": "每次操作有程序、多方参与、预算限制",
+      "issue_ids": [
+        35,
+        45,
+        41,
+        43
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        35,
+        45,
+        41,
+        43
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ21",
+      "requirement": "工资日结／周结／月结是雇主属性",
+      "issue_ids": [
+        5,
+        55,
+        10
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        5,
+        55,
+        10
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ22",
+      "requirement": "Root泛化每物件输入输出、成本／容量／影响",
+      "issue_ids": [
+        31,
+        32,
+        33,
+        85
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        31,
+        32,
+        33,
+        85,
+        117,
+        118
+      ],
+      "proposed_additions": [
+        117,
+        118
+      ],
+      "reason_for_additions": "Add later registered executable seam where this REQ needs it. Existing capability table #23 already maps these issues; this adds direct REQ traceability, not new issues.",
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ23",
+      "requirement": "植被生长／养护、树种差异与地理适生",
+      "issue_ids": [
+        97,
+        96
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        97,
+        96
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ24",
+      "requirement": "共享空间、政务＋商业、站内商业等复合",
+      "issue_ids": [
+        33,
+        34,
+        67
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        33,
+        34,
+        67
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ25",
+      "requirement": "地上地下多层／空域与居民噪声立法",
+      "issue_ids": [
+        30,
+        76,
+        38,
+        98
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        30,
+        76,
+        38,
+        98
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ26",
+      "requirement": "每栋建筑入口／门朝向／合法接路",
+      "issue_ids": [
+        25,
+        6,
+        33
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        25,
+        6,
+        33
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ27",
+      "requirement": "Root→能力→住宅工业商业市政模板→运算指标",
+      "issue_ids": [
+        31,
+        34,
+        49,
+        17
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        31,
+        34,
+        49,
+        17,
+        120
+      ],
+      "proposed_additions": [
+        120
+      ],
+      "reason_for_additions": "Add later registered executable seam where this REQ needs it. Existing capability table #23 already maps these issues; this adds direct REQ traceability, not new issues.",
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ28",
+      "requirement": "不同住宅及风／油／核／聚变等电力路线",
+      "issue_ids": [
+        53,
+        87,
+        88,
+        89,
+        86
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        53,
+        87,
+        88,
+        89,
+        86,
+        91
+      ],
+      "proposed_additions": [
+        91
+      ],
+      "reason_for_additions": "Add later registered executable seam where this REQ needs it. Existing capability table #23 already maps these issues; this adds direct REQ traceability, not new issues.",
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ29",
+      "requirement": "大小水泵及整套水务设施",
+      "issue_ids": [
+        92,
+        93
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        92,
+        93
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ30",
+      "requirement": "设备W、电水、装修／地价／租金决定业态与收益",
+      "issue_ids": [
+        32,
+        29,
+        67,
+        68
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        32,
+        29,
+        67,
+        68
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ31",
+      "requirement": "摊位／广场、纪念物／旅游维护收益",
+      "issue_ids": [
+        68,
+        69,
+        70,
+        97
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        68,
+        69,
+        70,
+        97
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ32",
+      "requirement": "收敛，保留／聚合／延后应有体系",
+      "issue_ids": [
+        18,
+        103,
+        104,
+        22
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        18,
+        103,
+        104,
+        22,
+        102,
+        108
+      ],
+      "proposed_additions": [
+        102,
+        108
+      ],
+      "reason_for_additions": "Add later registered executable seam where this REQ needs it. Existing capability table #23 already maps these issues; this adds direct REQ traceability, not new issues.",
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ33",
+      "requirement": "天然气做饭、电炊／混合、家庭偏好",
+      "issue_ids": [
+        90,
+        56
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        90,
+        56
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ34",
+      "requirement": "单栋楼／独立单元／共享设施兼容开放街区与小区",
+      "issue_ids": [
+        33,
+        26,
+        53
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        33,
+        26,
+        53
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ35",
+      "requirement": "不同产权楼共享庭院通道管线与分摊",
+      "issue_ids": [
+        33,
+        29,
+        36,
+        40
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        33,
+        29,
+        36,
+        40
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ36",
+      "requirement": "欠费／维护不足／实际故障／临时接管及退出",
+      "issue_ids": [
+        36,
+        99,
+        44,
+        40,
+        37
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        36,
+        99,
+        44,
+        40,
+        37
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ37",
+      "requirement": "城市持续财政：税基周期、预算、长期维护",
+      "issue_ids": [
+        42,
+        43,
+        44,
+        36
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        42,
+        43,
+        44,
+        36
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ38",
+      "requirement": "物件覆盖不是90个名字，逐类投入运行废物退出",
+      "issue_ids": [
+        31,
+        32,
+        65,
+        94,
+        37
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        31,
+        32,
+        65,
+        94,
+        37,
+        117,
+        118
+      ],
+      "proposed_additions": [
+        117,
+        118
+      ],
+      "reason_for_additions": "Add later registered executable seam where this REQ needs it. Existing capability table #23 already maps these issues; this adds direct REQ traceability, not new issues.",
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ39",
+      "requirement": "CPU/GPU Metal分工，精度同步与16GB",
+      "issue_ids": [
+        19,
+        105,
+        106,
+        104,
+        114
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        19,
+        105,
+        106,
+        104,
+        114,
+        102,
+        118
+      ],
+      "proposed_additions": [
+        102,
+        118
+      ],
+      "reason_for_additions": "Add later registered executable seam where this REQ needs it. Existing capability table #23 already maps these issues; this adds direct REQ traceability, not new issues.",
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ40",
+      "requirement": "每家公司／商户可查主体独立核算",
+      "issue_ids": [
+        9,
+        10,
+        63,
+        49,
+        72
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        9,
+        10,
+        63,
+        49,
+        72
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ41",
+      "requirement": "机场公司／航空公司、燃油与旅客目的需求",
+      "issue_ids": [
+        83,
+        84,
+        69,
+        87
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        83,
+        84,
+        69,
+        87
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ42",
+      "requirement": "政府和个人投资持股／分红／再财政使用",
+      "issue_ids": [
+        10,
+        63,
+        42,
+        43
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        10,
+        63,
+        42,
+        43
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ43",
+      "requirement": "环境公服满意度迁居，自然需求／跨图／缺测／14日",
+      "issue_ids": [
+        57,
+        58,
+        61,
+        62,
+        100
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        57,
+        58,
+        61,
+        62,
+        100,
+        59,
+        60
+      ],
+      "proposed_additions": [
+        59,
+        60
+      ],
+      "reason_for_additions": "Add later registered executable seam where this REQ needs it. Existing capability table #23 already maps these issues; this adds direct REQ traceability, not new issues.",
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ44",
+      "requirement": "每栋楼／道路／区域都能选并用Agent调整",
+      "issue_ids": [
+        45,
+        49,
+        25
+      ],
+      "ui_boundary_verbatim": "纳入稳定对象ID/查询/受限调整；单楼路段区域点击选取UI延期。",
+      "ui_deferred_explicit": true,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        45,
+        49,
+        25
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": 143
+    },
+    {
+      "id": "REQ45",
+      "requirement": "以后语音指令",
+      "issue_ids": [
+        48,
+        47,
+        45
+      ],
+      "ui_boundary_verbatim": "纳入ASR/转写/风险/隐私/取消后端；录音按钮和转写编辑控件延期。",
+      "ui_deferred_explicit": true,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        48,
+        47,
+        45
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": 143
+    },
+    {
+      "id": "REQ46",
+      "requirement": "所有需求统一待办进度，可加速",
+      "issue_ids": [
+        35,
+        49,
+        50,
+        101
+      ],
+      "ui_boundary_verbatim": "纳入统一待办/程序状态/ETA和推进控制；进度面板延期。",
+      "ui_deferred_explicit": true,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        35,
+        49,
+        50,
+        101,
+        51,
+        108
+      ],
+      "proposed_additions": [
+        51,
+        108
+      ],
+      "reason_for_additions": "Add later registered executable seam where this REQ needs it. Existing capability table #23 already maps these issues; this adds direct REQ traceability, not new issues.",
+      "ui_tracking_issue": 143
+    },
+    {
+      "id": "REQ47",
+      "requirement": "公交站、火车／电车站、货运铁路",
+      "issue_ids": [
+        79,
+        80,
+        81,
+        73
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        79,
+        80,
+        81,
+        73,
+        74,
+        75
+      ],
+      "proposed_additions": [
+        74,
+        75
+      ],
+      "reason_for_additions": "Add later registered executable seam where this REQ needs it. Existing capability table #23 already maps these issues; this adds direct REQ traceability, not new issues.",
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ48",
+      "requirement": "摆渡码头、港口",
+      "issue_ids": [
+        82,
+        72
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        82,
+        72,
+        74,
+        75
+      ],
+      "proposed_additions": [
+        74,
+        75
+      ],
+      "reason_for_additions": "Add later registered executable seam where this REQ needs it. Existing capability table #23 already maps these issues; this adds direct REQ traceability, not new issues.",
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ49",
+      "requirement": "小中大三种机场",
+      "issue_ids": [
+        83,
+        84,
+        31
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        83,
+        84,
+        31,
+        74,
+        75
+      ],
+      "proposed_additions": [
+        74,
+        75
+      ],
+      "reason_for_additions": "Add later registered executable seam where this REQ needs it. Existing capability table #23 already maps these issues; this adds direct REQ traceability, not new issues.",
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ50",
+      "requirement": "独立立体停车建筑",
+      "issue_ids": [
+        78,
+        77,
+        32
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        78,
+        77,
+        32,
+        74
+      ],
+      "proposed_additions": [
+        74
+      ],
+      "reason_for_additions": "Add later registered executable seam where this REQ needs it. Existing capability table #23 already maps these issues; this adds direct REQ traceability, not new issues.",
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ51",
+      "requirement": "完整产品四视角与逐条跟踪，不用23/90证明",
+      "issue_ids": [
+        23,
+        115
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        23,
+        115,
+        51,
+        108,
+        120
+      ],
+      "proposed_additions": [
+        51,
+        108,
+        120
+      ],
+      "reason_for_additions": "Add later registered executable seam where this REQ needs it. Existing capability table #23 already maps these issues; this adds direct REQ traceability, not new issues.",
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ52",
+      "requirement": "所有能力达到统一九项深度",
+      "issue_ids": [
+        23,
+        31,
+        115
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        23,
+        31,
+        115
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ53",
+      "requirement": "总体设计与分版本分离",
+      "issue_ids": [
+        23,
+        116,
+        109
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        23,
+        116,
+        109
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ54",
+      "requirement": "每扩功能都查聚合与增量预算",
+      "issue_ids": [
+        104,
+        109,
+        110
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        104,
+        109,
+        110
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ55",
+      "requirement": "两种独立检查：漏整块与协同",
+      "issue_ids": [
+        23,
+        115,
+        111
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        23,
+        115,
+        111
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ56",
+      "requirement": "GitHub TekesApps公开MIT、文档提交tag递增",
+      "issue_ids": [
+        116
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        116
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ57",
+      "requirement": "城市发展年龄独立，邻城快照＋实际交互增量",
+      "issue_ids": [
+        16,
+        100,
+        107
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        16,
+        100,
+        107
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ58",
+      "requirement": "同存档全城市市场与迁移，近远有别",
+      "issue_ids": [
+        100,
+        69,
+        73,
+        71
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        100,
+        69,
+        73,
+        71
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ59",
+      "requirement": "预测2000实迁1998可接受统计误差",
+      "issue_ids": [
+        52,
+        62,
+        100,
+        103
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        52,
+        62,
+        100,
+        103
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ60",
+      "requirement": "在基本物理规则上尽量模拟现实",
+      "issue_ids": [
+        65,
+        85,
+        96,
+        89,
+        73,
+        115
+      ],
+      "ui_boundary_verbatim": "本条非UI语义全部纳入；展示只通过只读数据接口留给未来UI。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        65,
+        85,
+        96,
+        89,
+        73,
+        115
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    },
+    {
+      "id": "REQ61",
+      "requirement": "空间数据适合wgpu，macOS Metal、后续Windows DX12",
+      "issue_ids": [
+        19,
+        105,
+        106,
+        25,
+        116
+      ],
+      "ui_boundary_verbatim": "纳入CPU/GPU布局/能力/回退与后端验证；渲染及窗口适配不在本轮。",
+      "ui_deferred_explicit": false,
+      "source": "GitHub #23 body, section \"61条需求逐条映射\"; current repo docs/product-coverage-and-requirements.md §4 is the requirement wording authority",
+      "issue_ids_proposed": [
+        19,
+        105,
+        106,
+        25,
+        116
+      ],
+      "proposed_additions": [],
+      "reason_for_additions": null,
+      "ui_tracking_issue": null
+    }
+  ],
+  "capabilities": [
+    {
+      "capability": "G01",
+      "scope": "地形、灰度导入／检索、地图、土地与三维分层",
+      "issue_ids": [
+        25,
+        27,
+        28,
+        29,
+        30,
+        41,
+        45,
+        53,
+        120,
+        121
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "G02",
+      "scope": "Root、受限自定义、复合建筑／共享空间",
+      "issue_ids": [
+        31,
+        32,
+        33,
+        34,
+        67,
+        68,
+        78,
+        83,
+        97,
+        120
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "G03",
+      "scope": "建设、改造／拆除、维护更新",
+      "issue_ids": [
+        31,
+        35,
+        36,
+        37,
+        41,
+        50,
+        76,
+        94,
+        99,
+        119,
+        121
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "G04",
+      "scope": "立法、议会选举、行政、司法／救济",
+      "issue_ids": [
+        29,
+        38,
+        39,
+        40,
+        41,
+        59
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "G05",
+      "scope": "财政、采购／补贴、长期预算与退出",
+      "issue_ids": [
+        42,
+        43,
+        44,
+        46,
+        99,
+        117
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "G06",
+      "scope": "市长／City Team、文本Agent、语音",
+      "issue_ids": [
+        35,
+        45,
+        46,
+        47,
+        48,
+        49
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "G07",
+      "scope": "UI、时间、视听、可访问性／设置、存档",
+      "issue_ids": [
+        48,
+        49,
+        50,
+        51,
+        107,
+        108,
+        111,
+        116
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "L01",
+      "scope": "人口／家庭的群体生命周期",
+      "issue_ids": [
+        26,
+        52
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "L02",
+      "scope": "住房、租买／产权、共享设施、迁居",
+      "issue_ids": [
+        26,
+        33,
+        40,
+        44,
+        53,
+        62,
+        119
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "L03",
+      "scope": "教育、资格、行业就业和薪资",
+      "issue_ids": [
+        54,
+        55,
+        74,
+        95
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "L04",
+      "scope": "消费、休闲／文化、旅游与家庭偏好",
+      "issue_ids": [
+        56,
+        68,
+        69,
+        70,
+        90
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "L05",
+      "scope": "医疗、警务、消防与公共服务",
+      "issue_ids": [
+        57,
+        58,
+        59,
+        60
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "L06",
+      "scope": "暴露、满意度、诉求／迁居后果",
+      "issue_ids": [
+        61,
+        62,
+        98,
+        100
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "E01",
+      "scope": "公司、个人股份／投资、财务与清算",
+      "issue_ids": [
+        29,
+        42,
+        53,
+        63,
+        84,
+        117
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "E02",
+      "scope": "农业／采掘／工业／建筑／专业服务",
+      "issue_ids": [
+        55,
+        64,
+        65,
+        66,
+        87,
+        95,
+        97,
+        117,
+        119
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "E03",
+      "scope": "商业、办公、餐饮、摊位与商户选址",
+      "issue_ids": [
+        33,
+        56,
+        66,
+        67,
+        68,
+        71,
+        119
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "E04",
+      "scope": "旅游／商务／工业活动与出行需求",
+      "issue_ids": [
+        69,
+        70,
+        84
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "E05",
+      "scope": "商品市场、物流、价格／合同与外贸",
+      "issue_ids": [
+        71,
+        72,
+        75,
+        81,
+        82,
+        94,
+        100
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "T01",
+      "scope": "步行／自行车、曲线道路、桥隧／立交",
+      "issue_ids": [
+        25,
+        30,
+        73,
+        76,
+        98,
+        118
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "T02",
+      "scope": "私家车、停车楼／机械库、充电与换乘",
+      "issue_ids": [
+        73,
+        74,
+        77,
+        78,
+        118
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "T03",
+      "scope": "公交、站点／总站／车库与运营",
+      "issue_ids": [
+        73,
+        74,
+        75,
+        79,
+        118
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "T04",
+      "scope": "有轨电车、地铁／轻轨",
+      "issue_ids": [
+        30,
+        73,
+        74,
+        75,
+        80,
+        118
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "T05",
+      "scope": "客运铁路、货运铁路／联运",
+      "issue_ids": [
+        72,
+        73,
+        74,
+        75,
+        81,
+        118
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "T06",
+      "scope": "轮渡／车客渡、货运码头／港口",
+      "issue_ids": [
+        72,
+        73,
+        74,
+        75,
+        82,
+        96,
+        118
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "T07",
+      "scope": "三档机场、航空公司／航空货运",
+      "issue_ids": [
+        30,
+        73,
+        74,
+        75,
+        83,
+        84,
+        118
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "U01",
+      "scope": "电源技术路线、电网／储能",
+      "issue_ids": [
+        32,
+        65,
+        85,
+        86,
+        87,
+        88,
+        89,
+        91,
+        96,
+        118
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "U02",
+      "scope": "天然气、烹饪／供热与能源替代",
+      "issue_ids": [
+        32,
+        56,
+        85,
+        90,
+        91
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "U03",
+      "scope": "取供水、净化／污水、排水与雨洪",
+      "issue_ids": [
+        32,
+        85,
+        92,
+        93,
+        96,
+        118,
+        121
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "U04",
+      "scope": "垃圾、回收／处置、危险残余物",
+      "issue_ids": [
+        37,
+        89,
+        92,
+        94
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "U05",
+      "scope": "通信／数据服务与数字基础设施",
+      "issue_ids": [
+        85,
+        95
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "N01",
+      "scope": "地形水域、天气／植被／绿化生态",
+      "issue_ids": [
+        64,
+        88,
+        91,
+        93,
+        96,
+        97,
+        121
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "N02",
+      "scope": "环境场、噪声／排放／政策与土地反馈",
+      "issue_ids": [
+        61,
+        98
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "N03",
+      "scope": "安全／故障／灾害与韧性",
+      "issue_ids": [
+        36,
+        40,
+        44,
+        57,
+        60,
+        89,
+        93,
+        99
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "R01",
+      "scope": "跨地图、区域市场／共享能力与结算",
+      "issue_ids": [
+        62,
+        100,
+        115,
+        118
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "R02",
+      "scope": "类型契约、唯一writer／调度／精度",
+      "issue_ids": [
+        25,
+        26,
+        31,
+        34,
+        45,
+        47,
+        49,
+        50,
+        85,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        116,
+        118,
+        120
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "R03",
+      "scope": "聚合、16GB／磁盘、保存兼容／性能退化",
+      "issue_ids": [
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    },
+    {
+      "capability": "R04",
+      "scope": "分版本路线、总体输入与验收",
+      "issue_ids": [
+        51,
+        109,
+        111,
+        113,
+        114,
+        115,
+        116,
+        120
+      ],
+      "source": "GitHub #23 body, section \"37能力卡映射\"; capability and nine-factor evidence authority: docs/inputs/product-blueprint/capability-evidence.csv"
+    }
+  ],
+  "existing_leaf_issues": [
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99,
+    100,
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    111,
+    112,
+    113,
+    114,
+    115,
+    116,
+    117,
+    118,
+    119,
+    120,
+    121
+  ],
+  "coverage_note": "61REQ/37cap/97既有业务子任务均已有归属。16个原先仅能力表直接列出的Issue补入适用REQ行；112/113属于冻结验收，不伪装业务需求。新增125–147由parent/registry映射继承具体能力。"
+}
