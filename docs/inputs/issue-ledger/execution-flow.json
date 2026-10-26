@@ -1,9 +1,9 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-26T12:11:35.723611+00:00",
-  "source_head": "v207 baseline plus exact source04 build read-set",
-  "candidate": "v0.5.208 common typed Air/Sim execution report, full102 open",
+  "last_snapshot_at": "2026-10-26T17:06:55.044028+00:00",
+  "source_head": "v0.5.209; exact source08 build read-set",
+  "candidate": "finite common bound request and real observer fault increment verified/frozen",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
     "shared_core_lanes": 1,
@@ -836,8 +836,18 @@
   },
   "queued_next_102": {
     "owner": "root",
-    "state": "not_activated",
+    "state": "activated-owner-files-fixed",
     "capability": "common capability/refinement/grant interface and direct observational fault cutpoints",
     "note": "do not count whole open102 as active worker; fix exact files and acceptance before next activation"
+  },
+  "latest_finite_increment": {
+    "issue": 102,
+    "release": "v0.5.209",
+    "status": "verified-frozen-full102-open",
+    "parent_tests": 40,
+    "actual_cold_children": 3,
+    "evidence": "docs/evidence/task-execution-protocol-20261026/STATUS.md",
+    "remaining": "common refinement/grant/cost-source coverage; no full102 closure",
+    "business_close_delta": 0
   }
 }

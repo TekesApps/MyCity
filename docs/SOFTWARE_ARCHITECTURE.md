@@ -1,10 +1,12 @@
 # MyCity软件总体架构
 
-架构汇总S56；初版v0.5.22，现按W1—W4及T13-A的实际实现更新。历史冻结证据仍归其原发布版本。本篇总结软件如何运行，不再按建筑或游戏功能列策划清单。[完整产品蓝图](PRODUCT_BLUEPRINT.md)说明产品目标，本篇说明模块、状态、事件、进程、提交、恢复及资源归属；细节继承[A55部署契约](process-worker-and-render-architecture.md)和各运行专题。
+架构汇总S57；初版v0.5.22，现按W1—W4及T13-A的实际实现更新。历史冻结证据仍归其原发布版本。本篇总结软件如何运行，不再按建筑或游戏功能列策划清单。[完整产品蓝图](PRODUCT_BLUEPRINT.md)说明产品目标，本篇说明模块、状态、事件、进程、提交、恢复及资源归属；细节继承[A55部署契约](process-worker-and-render-architecture.md)和各运行专题。
 
 标记约定：**已实现**是当前代码存在，**已实测**仅指相应冻结证据的有限范围；**设计**不是已经具备的能力。当前已有单个纯空气worker、独立Sim Host、有界宿主协议及Store接纳／恢复；通用worker池、完整市民／建筑系统、UI、AgentKit和渲染仍未实现。W1—W3各有冻结运行证据；W4正式联合工件、限制和独立结论按[联合运行专题](background-joint-runtime.md)单列，不转用旧测试或文档作通过。实际16GB与全城性能仍未验。
 
 T13-A的当前构造边界见[固定词法容量阶段](evidence/m0-t13a-fixed-lexical/STATUS.md)：Store实际消费core双root／prepare、空间及Meta工作区；v1／genesis／v2收据正文使用Meta保留1MiB bit栈和借用span，区分忽略与Content校验。固定解析不等于整个冷开零分配；当前broker仍只授予既有IO／worker包，完整角色控制暂态及其授权仍在[NEXT](evidence/m0-t13a-fixed-lexical/NEXT.md)，不能据组件构造证明normal64或共享诊断预算已通过。
+
+**v209已实现的共同请求边界：**`DescribeTaskExecution`只描述原Directory当前选择，`RunBoundTask`绑定版本化类型编码、scope/完整来源/sequence/Progress/Continuation/实例和原策略，执行前重算原路由，仍经原handler与Store/原Air接纳提交。预先披露原operation/Job用于不确定回复恢复，过期拒绝不能代替幂等查询。资源/细化/GPU当前明确unsupported/未解；传输8MiB、业务asset2MiB、control64KiB与授权分别表达，无第二writer/授额/退休权。40父测试及3冷进程的有限证据见[状态](evidence/task-execution-protocol-20261026/STATUS.md)，完整102/103/104未验收。
 
 ## 1. 一句话结构与当前部署
 
@@ -188,3 +190,6 @@ v0.5.50执行更新：[联合托管](evidence/m0-t13a-joint-endurance/STATUS.md)
 采样只围住原cpu_log::execute，包括原持久化/诊断IO；同Sim全线程CPU与宿主elapsed分别报告，不称领域独占CPU或queue age。单位为实际提交Advance operation，不能和空气sources/cells/integration/pages相加或当成目标完成；原票重放计0次新提交，提交不确定保留未知。原结果拒绝/不确定与原票确认分别保留。计量失败或报告超界只令观察不可用，不能改业务结果、原责任或退额；物理分配失败仍沿原进程故障和恢复义务处理。
 
 报告只保留每个执行位置最近一次，Sim退出后不从旧票补CPU；继承原Sim角色，不给内部任务重复授权或归还。scratch peak仍未知。新元数据规划64KiB、输出12KiB上界包含在原角色与诊断预算中，规划不是实测峰或新增授权；须经真实原角色联合验证。当前source04的28项限定检查通过，详见evidence/task-execution-report-20261026/STATUS.md；通用能力/细化/授予与成本接口尚缺，#102/#103/#104保持开放。
+
+
+#102 v208 successor (unpublished/not_run): production observation uses the original process-clock and cpu_log::execute functions through a private dependency seam. Tests may supply an unavailable clock or the existing Store write-observer callback to execute real retained transactions under interruption; no product request/env fault switch exists. Unknown observation never changes the original outcome; CurrentRenamed uncertainty is not proof of no commit. The next shared request interface is bound to the original current selection, never arbitrary task/target selection or resource authority.

@@ -1,0 +1,182 @@
+{
+  "issue": 102,
+  "release": "v0.5.209",
+  "baseline": "v0.5.208 b3fdc46b8a5e750b95e7a1999f07a10e997be6f7",
+  "source": "source08-manifest.json",
+  "phase_start": "2026-10-26T12:31:48.783897+00:00",
+  "phase_end": "2026-10-26T17:05:54.275655+00:00",
+  "window_meaning": "finite implementation/verification, not full102 delivery cycle",
+  "passed_parent_tests": 40,
+  "actual_cold_children": 3,
+  "ignored_parent_helpers": 1,
+  "default_stack": true,
+  "results": [
+    {
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/task-execution-protocol-20261026/source08-task_execution_protocol-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "seconds": 19.396984458000002,
+      "source": "source08-manifest.json",
+      "at": "2026-10-26T17:04:37.052969+00:00",
+      "label": "protocol08",
+      "passed": 9,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "label": "faults08",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/task-execution-protocol-20261026/source08-mycity_headless-unit-fixed",
+        "sim_host::task_observation::tests",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "seconds": 5.408894708,
+      "source": "source08-manifest.json",
+      "at": "2026-10-26T17:04:42.643062+00:00",
+      "default_stack": true,
+      "passed": 5,
+      "failed": 0,
+      "ignored": 1
+    },
+    {
+      "label": "observation08",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/task-execution-protocol-20261026/source08-task_execution_observation-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "seconds": 5.998304708,
+      "source": "source08-manifest.json",
+      "at": "2026-10-26T17:04:48.642281+00:00",
+      "default_stack": true,
+      "passed": 3,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "label": "directory08",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/task-execution-protocol-20261026/source08-task_registry_directory-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "seconds": 18.368072458,
+      "source": "source08-manifest.json",
+      "at": "2026-10-26T17:05:07.011320+00:00",
+      "default_stack": true,
+      "passed": 9,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "label": "client08",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/task-execution-protocol-20261026/source08-mycity_headless-unit-fixed",
+        "sim_client::typed_receive_tests",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "seconds": 0.004124624999999327,
+      "source": "source08-manifest.json",
+      "at": "2026-10-26T17:05:07.016161+00:00",
+      "default_stack": true,
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    {
+      "label": "air08",
+      "command": [
+        "/Users/frankqin/dev/MyCity/work/task-execution-protocol-20261026/source08-air_turn_control-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit_code": 0,
+      "seconds": 47.259208791999995,
+      "source": "source08-manifest.json",
+      "at": "2026-10-26T17:05:54.275655+00:00",
+      "default_stack": true,
+      "passed": 13,
+      "failed": 0,
+      "ignored": 0
+    }
+  ],
+  "zero_test_selection": "source07 client07 selected zero tests, excluded; client07b accurate filter passed1; final source08 client08 accurate filter passed1",
+  "full_issue": "open",
+  "new_business_acceptance": 0,
+  "historical_close": 0,
+  "defect_close": 0,
+  "source_backlog": 18,
+  "pending_validation": 0,
+  "not_run": [
+    "full M0 frozen acceptance",
+    "real16GB",
+    "native/process peak",
+    "representative city speed",
+    "long term pressure",
+    "GPU",
+    "UI",
+    "generic refinement/additional-grant interfaces",
+    "actual busy/blocked on this new command separately (same original selector checks retained)"
+  ],
+  "resource": {
+    "actual_bound_air_normal_grant": 61865984,
+    "allocation_failures": 0,
+    "pool_restored": 67108864,
+    "same_original_directory_normal_regression": true,
+    "memory_not_process_peak": true,
+    "actual_bound_air_role_snapshot": {
+      "activation": {
+        "adapter_header_bytes": 160,
+        "arena_bytes": 61865507,
+        "arena_start": 21206401024,
+        "bootstrap_charged_bytes": 317,
+        "grant_bytes": 61865984,
+        "initialized_bytes": 61865507,
+        "pid": 68532
+      },
+      "allocation_failures": 0,
+      "arena_free_bytes": 5173560,
+      "arena_usable_bytes": 61865504,
+      "arena_used_bytes": 56691944,
+      "bootstrap_live_bytes": 317,
+      "bootstrap_peak_bytes": 8793,
+      "bootstrap_quarantined_bytes": 0,
+      "current_requested_bytes": 56692186,
+      "lifetime_peak_requested_bytes": 58291841
+    }
+  },
+  "model_config": {
+    "root": "gpt-6.1-sol/xhigh",
+    "advisor": "gpt-6-astra/medium",
+    "coder_worker": "gpt-6.1-sol/medium",
+    "reader_scout": "gpt-6-luna/high",
+    "default": "gpt-6.1-sol/medium",
+    "project_model_override": "none found",
+    "running_agent_switch": "not attempted; prior completed agents retained; future roles use configured models"
+  },
+  "previous_source": "source07:39pass retained; source08 removes two new duplicate checks and adds actual original-collision boundary test",
+  "model_config_latest_after_verification": {
+    "observed_at": "2026-10-26T22:11:26.338635+00:00",
+    "root": "gpt-6-astra/medium",
+    "advisor": "gpt-6-astra/high",
+    "coder": "gpt-6.1-sol/medium",
+    "reader": "gpt-6-luna/high",
+    "computer_use": "gpt-6.1-terra/medium",
+    "default": "gpt-6.1-sol/medium",
+    "old_roles": "worker/scout no longer selected; completed agents retained",
+    "live_root_model": "Astra confirmed by runtime; medium per thread override/config",
+    "active_child_agents": 0,
+    "new_dispatch": 0,
+    "project_override": "none found",
+    "config_files_mutated": false
+  }
+}

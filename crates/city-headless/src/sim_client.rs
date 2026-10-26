@@ -223,6 +223,7 @@ impl Client {
         self.last_pid.expect("Sim PID exists only after an actual spawn")
     }
     pub fn submit(&mut self, id: u64, command: SimCommand) -> Result<(), String> {
+        if matches!(&command,SimCommand::RunBoundTask{..}) {return self.submit_retained(id,command);}
         if id == 0 || self.outstanding.is_some() {
             return Err("sim_busy_or_id".into());
         }
@@ -289,7 +290,7 @@ impl Client {
             }
             "worker_progress" | "attempt_failed" | "probe_barrier" | "page_boundary" | "page_control_result"
                 | "service_continuation_selected" | "supply_continuation_selected"
-                | "timeline_continuation_selected" if event.id != 0 => (),
+                | "timeline_continuation_selected" | "bound_task_selected" if event.id != 0 => (),
             _ => return Err("sim_event_kind".into()),
         }
         Ok(event)

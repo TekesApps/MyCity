@@ -19,6 +19,9 @@ use std::{
 };
 #[path = "sim_task_observation.rs"]
 mod task_observation;
+#[path = "task_execution_protocol.rs"]
+mod execution_protocol;
+pub use execution_protocol::{BoundTaskRequest,TaskExecutionIntent,TaskExecutionLocation};
 const PROTOCOL: &str = "mycity-sim-v1";
 // required_registry_v2 service continuation; old worlds may already contain C
 // operations. Detect them explicitly instead of treating a historical ticket as
@@ -128,6 +131,8 @@ pub enum Command {
     /// Select one real mandatory job or one page of an already accepted P5
     /// boundary. It never accepts a new future Timeline target.
     RunDue,
+    DescribeTaskExecution,
+    RunBoundTask { binding:BoundTaskRequest },
     RunRequiredSliced { job: u64, plan: String, quota: crate::air_turns::Quota },
     PageControl { control: PageControl },
     ProbeRequired { job: u64, point: ProbePoint },
@@ -353,6 +358,14 @@ fn status(
  "state_sha256":state_sha,"capacity":store.capacity_status().map_err(err)?,"worker_pid":worker.pid_opt(),"source_sha256":env!("MYCITY_SOURCE_SHA256"),"memory_16gb_gate":"not_run"}),
     )
 }
+/// Same original internal operation constructor for disclosure and all handlers.
+fn continuation_envelope(store:&Store,target:u64,limit:u16)->Result<Envelope,String> {
+    let engine=store.engine().map_err(err)?;let(scope,revision)=engine.world().scope_revision();
+    let operation=SERVICE_CONTINUATION_PREFIX|store.committed_sequence().checked_add(1)
+        .filter(|value|*value<=background::JOB_ID_LIMIT).ok_or("sim_control_id")?;
+    Ok(Envelope{world:scope.world(),branch:scope.branch(),operation_id:operation,expected_revision:revision,
+        actions:vec![Action::Timeline{command:mycity_core::timeline::Command::Advance{target,limit}}]})
+}
 /// Continue only the original Store's already-funded Timeline reservation.
 /// A lost response is NOT permission to send another RunDue: retain the selected
 /// envelope, query its original receipt, and inspect recovered outcome/serial.
@@ -365,14 +378,11 @@ fn timeline_run_due(
 ) -> Result<Value,String> {
     crate::task_registry_directory::validate_timeline(store,selected,active_worker).map_err(err)?;
     let e=store.engine().map_err(err)?;
-    let (scope,revision)=e.world().scope_revision();
     let before=e.timeline().ok_or("timeline_due_missing_clock")?.progress;
     let sequence=store.committed_sequence();
-    let operation=SERVICE_CONTINUATION_PREFIX|sequence.checked_add(1)
-        .filter(|v|*v<=background::JOB_ID_LIMIT).ok_or("sim_control_id")?;
+    let envelope=continuation_envelope(store,selected.target(),selected.page_limit())?;
+    let operation=envelope.operation_id;
     if store.receipt(operation).map_err(err)?.is_some(){return Err(format!("timeline_due_namespace_collision:operation={operation};use_original_reserved_manual_advance"));}
-    let envelope=Envelope{world:scope.world(),branch:scope.branch(),operation_id:operation,expected_revision:revision,
-        actions:vec![Action::Timeline{command:mycity_core::timeline::Command::Advance{target:selected.target(),limit:selected.page_limit()}}]};
     event(writer,id,"timeline_continuation_selected",json!({"dispatch":"required_registry_v3","envelope":envelope,
         "before_sequence":sequence,"before_serial":before.serial,"zero_width":before.at==before.last_complete,
         "plan":if selected.is_admission(){"original_next_boundary_admission"}else{"original_funded_continuation"},
@@ -401,16 +411,10 @@ fn service_run_due(
     if active_worker { return Err("sim_dispatch_busy".into()); }
     due::validate_service_continuation(store, &selected, active_worker).map_err(err)?;
     let engine = store.engine().map_err(err)?;
-    let (scope, revision) = engine.world().scope_revision();
     let before = engine.timeline().ok_or("service_due_missing_timeline")?.progress;
     let before_sequence = store.committed_sequence();
-    let operation = SERVICE_CONTINUATION_PREFIX | before_sequence.checked_add(1)
-        .filter(|n| *n <= background::JOB_ID_LIMIT).ok_or("sim_control_id")?;
-    let envelope = Envelope { world:scope.world(), branch:scope.branch(),
-        operation_id:operation, expected_revision:revision,
-        actions:vec![Action::Timeline { command:mycity_core::timeline::Command::Advance {
-            target:selected.target(), limit:selected.page_limit(),
-        }}] };
+    let envelope=continuation_envelope(store,selected.target(),selected.page_limit())?;
+    let operation=envelope.operation_id;
     let mode = match selected.mode() {
         SelectionMode::RegistrySelected => "registry_selected",
         SelectionMode::MandatoryFallback => "mandatory_fallback",
@@ -463,16 +467,10 @@ fn supply_run_due(
     if active_worker { return Err("sim_dispatch_busy".into()); }
     due::validate_supply_continuation(store, &selected, active_worker).map_err(err)?;
     let engine = store.engine().map_err(err)?;
-    let (scope, revision) = engine.world().scope_revision();
     let before = engine.timeline().ok_or("supply_due_missing_timeline")?.progress;
     let before_sequence = store.committed_sequence();
-    let operation = SERVICE_CONTINUATION_PREFIX | before_sequence.checked_add(1)
-        .filter(|n| *n <= background::JOB_ID_LIMIT).ok_or("sim_control_id")?;
-    let envelope = Envelope { world:scope.world(), branch:scope.branch(),
-        operation_id:operation, expected_revision:revision,
-        actions:vec![Action::Timeline { command:mycity_core::timeline::Command::Advance {
-            target:selected.target(), limit:selected.page_limit(),
-        }}] };
+    let envelope=continuation_envelope(store,selected.target(),selected.page_limit())?;
+    let operation=envelope.operation_id;
     let mode = match selected.mode() {
         SupplySelectionMode::RegistrySelected => "registry_selected",
         SupplySelectionMode::MandatoryFallback => "mandatory_fallback",
@@ -1068,6 +1066,7 @@ fn run_owned(
         let owned_bytes = std::mem::size_of::<Codec>()
             .checked_add(std::mem::size_of::<SimTimings>())
             .and_then(|bytes|bytes.checked_add(task_observation::METADATA_PLAN_BYTES))
+            .and_then(|bytes|bytes.checked_add(execution_protocol::METADATA_PLAN_BYTES))
             .ok_or("sim_diagnostics_bytes")?;
         log.set_external_diagnostics_owned_bytes(owned_bytes)?;
     }
@@ -1087,10 +1086,15 @@ fn run_owned(
         if request.protocol != PROTOCOL || request.id == 0 {
             return Err("sim_request_identity".into());
         }
-        let stop = matches!(request.command, Command::Stop);
-        let outcome = match request.command {
+        let(command,bound_request)=match request.command {
+            Command::RunBoundTask{binding}=>(Command::RunDue,Some(binding)),other=>(other,None),
+        };
+        let stop = matches!(command, Command::Stop);
+        let outcome = match command {
             Command::Status => status(&store, worker, &codec, &diag, &timings, &open_memory, &task_observations),
             Command::Progress => progress(&store),
+            Command::DescribeTaskExecution=>execution_protocol::describe(&store,worker),
+            Command::RunBoundTask{..}=>Err("task_request_not_normalized".into()),
             Command::ReceiptProof { operation } => store.receipt(operation).map_err(err).and_then(|record| {
                 let bytes = serde_json::to_vec(&record).map_err(err)?;
                 Ok(json!({"operation":operation,"present":record.is_some(),"sha256":sha256(&bytes),"bytes":bytes.len()}))
@@ -1109,12 +1113,18 @@ fn run_owned(
                         .and_then(|v| serde_json::to_value(v).map_err(err))
                 }
             }
-            Command::RunDue => {
+            Command::RunDue => (|| -> Result<Value,String> {
+                if let Some(binding)=bound_request.as_ref(){execution_protocol::validate_supported_request(binding)?;}
                 use crate::task_registry_directory::{self as directory, Route, Action as Selected};
                 let directory=directory::collect(&store,worker.has_active_execution());
                 match directory {
                     Err(error)=>Err(err(error)),
                     Ok(directory)=>{
+                        let stamp=if let Some(binding)=bound_request.as_ref(){
+                            let prepared=execution_protocol::Prepared::new(&store,worker,&directory)?.ok_or("task_current_route_not_ready")?;
+                            prepared.validate_binding(binding)?;let stamp=prepared.stamp();
+                            event(&mut writer,request.id,"bound_task_selected",stamp.clone())?;Some(stamp)
+                        }else{None};
                         let report=directory.report().map_err(err);
                         // No Store write intervenes here. Each selected original handler
                         // validates its own complete context at the commit/rebind boundary;
@@ -1137,12 +1147,12 @@ fn run_owned(
                                     Route::Selected(Selected::Supply(selected))=>supply_run_due(&mut store,worker.has_active_execution(),&mut diag,request.id,&mut writer,&selected,&mut task_observations,&directory.entries()[2]),
                                     Route::Selected(Selected::Timeline(selected))=>timeline_run_due(&mut store,worker.has_active_execution(),&mut diag,request.id,&mut writer,&selected,&mut task_observations,&directory.entries()[3]),
                                 };
-                                result.map(|mut v|{v["task_directory"]=report;v["execution_observation"]=task_observations.report(worker);v})
+                                result.map(|mut v|{v["task_directory"]=report;v["execution_observation"]=task_observations.report(worker);if let Some(stamp)=stamp{v["bound_request"]=stamp;}v})
                             }
                         }
                     }
                 }
-            }
+            })(),
             Command::RunRequired { job } => required(
                 &mut store,
                 worker,

@@ -1,6 +1,8 @@
 # MyCity
 
-仓库发布版本：`v0.5.208`。已开始Rust模型与headless CLI，当前不做UI。
+仓库发布版本：`v0.5.209`。已开始Rust模型与headless CLI，当前不做UI。
+
+v0.5.209 接入[绑定原任务的共同能力/执行请求](docs/evidence/task-execution-protocol-20261026/STATUS.md)：40父测试与3实际冷恢复子进程通过，仍沿原handler、原票和资源owner。完整#102/103/104开放；未增加业务验收或M0/16GB结论。
 
 v0.5.208 wires [common actual Air/Sim execution reports](docs/evidence/task-execution-report-20261026/STATUS.md) on the existing RunDue/Store path: 28 current-source checks pass, original role grant/return unchanged. Full #102/103/104 remain open; no new business acceptance/closure. Prior #134 remains accepted on v206/207.
 
