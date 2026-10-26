@@ -1,0 +1,117 @@
+[
+  {
+    "path": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected04/01-mycity-core-timeline-fixed",
+    "bytes": 7957344,
+    "sha256": "8d71ed01035a7702bd354ca7b48e2318f9086a41d99a05415d0b2b605b60e86b"
+  },
+  {
+    "path": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected04/02-mycity-core-time_capacity-fixed",
+    "bytes": 8442624,
+    "sha256": "ff1964509db873fea728447ff08419ac1d077fc1b18e9f3933a627f7d54f98e5"
+  },
+  {
+    "path": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected04/03-mycity-core-venue_capacity_tests-fixed",
+    "bytes": 1213296,
+    "sha256": "26cbb6db3f515f568c228c47bbc718eab77c21c4f371f6b9aca25e13648bb527"
+  },
+  {
+    "path": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected04/04-mycity-storage-timeline-fixed",
+    "bytes": 14571088,
+    "sha256": "fae191679a3d6f7912b09c295eb44ce1c1a36f60a4db1e06d87f45bb9424ba13"
+  },
+  {
+    "path": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected04/05-mycity-storage-time_capacity_store-fixed",
+    "bytes": 15111648,
+    "sha256": "6f194aaa81ef3b1f9410fbb13b0a4a63d28e7db5d66a69485ca8ca0bdb51a2b2"
+  },
+  {
+    "path": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/01-mycity-storage-time_capacity_store-fixed",
+    "bytes": 15111648,
+    "sha256": "6f194aaa81ef3b1f9410fbb13b0a4a63d28e7db5d66a69485ca8ca0bdb51a2b2"
+  },
+  {
+    "path": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/02-mycity-storage-venue_capacity-fixed",
+    "bytes": 15951088,
+    "sha256": "3ff96b7b7691de9d0a055cd7eceeb3ccc27b45297c8c490a233e7885ddad0b3c"
+  },
+  {
+    "path": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/03-mycity-storage-checkpoint-fixed",
+    "bytes": 15685328,
+    "sha256": "8aef14be2947d9730d8a6a56572b66af51aa4f17b690949f109ab127b6fac531"
+  },
+  {
+    "path": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/04-mycity-storage-facility_operation_store-fixed",
+    "bytes": 15997264,
+    "sha256": "531103c93784cdec49322b35c0cbd6882e816c9573f6906ef07ff129fe1d5c5b"
+  },
+  {
+    "path": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/05-mycity-headless-task_registry_directory-fixed",
+    "bytes": 15754400,
+    "sha256": "2a3abaa2a60ba1c5a61a81d4e3b817923db5edec999504ee8fe307761c1937cd"
+  },
+  {
+    "path": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/current-headless-fixed",
+    "bytes": 26539216,
+    "sha256": "48aee814469ef03cbdd7ec27311904e498592e01f3d1b3feeb34b668a66e772a"
+  },
+  {
+    "path": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/baseline-repro-fixed",
+    "bytes": 12383464,
+    "sha256": "94786fe66ef927be00f8a2ad0692bf3c653dca9ec070493ac53b532754095e9b"
+  },
+  {
+    "path": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/default07/01-mycity_core-fixed",
+    "bytes": 37904864,
+    "sha256": "d25a9c2a8e35a1f24324456dd6bb97d21d9cca0e43bdde37051b9393ca3f8b0f"
+  },
+  {
+    "path": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/default07/02-town_utility_engine-fixed",
+    "bytes": 30344568,
+    "sha256": "c1ddfe3a63f7988c09ee2934efdf0ae1245e0adc16621fc3b4ef7d75d5bc493e"
+  },
+  {
+    "path": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/default07/03-qualification_authority-fixed",
+    "bytes": 59323944,
+    "sha256": "ad2b84c9e742c7f0fd49c9f8d6b3d8169b1c048d5f4243c55f7995e6619e7f7c"
+  },
+  {
+    "path": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/default07/04-facility_operation-fixed",
+    "bytes": 30717728,
+    "sha256": "98f3f9bf8ca998700dc77e588105a0e4b62f3952a05e11256697d3b3ec7a764a"
+  },
+  {
+    "path": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/default07/05-facility_operation_store-fixed",
+    "bytes": 57971560,
+    "sha256": "d640ae44de9ab2367278becd8096951965519589ed280b6d0b16fe7de3d6902b"
+  },
+  {
+    "path": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/default07/07-opening_typed-fixed",
+    "bytes": 23915136,
+    "sha256": "6ad791f3bc6c5c387fe5c962370cd4c3808343a23f50428787fc09bc04230cd8"
+  },
+  {
+    "path": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/default07/08-opening_typed_provider_store-fixed",
+    "bytes": 53699968,
+    "sha256": "71ca710a3236d54afe775cbece632b4eee12be9dea159a366b2e2ecbc0aedfcf"
+  },
+  {
+    "path": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/default07/09-timeline_cancel_emergency-fixed",
+    "bytes": 55895672,
+    "sha256": "b994b142f95df7892c77015273a0619213510434d62dcf746db896fe25c95fda"
+  },
+  {
+    "path": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/source01-timeline-cancel-fixed",
+    "bytes": 15422160,
+    "sha256": "6c5ac1cad55a40a2373cb7e21b95083311edf69944a8bd19bf9f7cd31d574c94"
+  },
+  {
+    "path": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/source02-role06-fixed",
+    "bytes": 16010248,
+    "sha256": "b031a63ca860b47ccc44d8697bbcc460f7fd057cf3df5034fa62dbf4377214a6"
+  },
+  {
+    "path": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/source02-timeline-cancel-fixed",
+    "bytes": 15422784,
+    "sha256": "5eed3d5a168393d4654ee3032698631e8fdc40fad776231b1e6c39a430349d18"
+  }
+]

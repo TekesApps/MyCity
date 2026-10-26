@@ -1,0 +1,19 @@
+{
+  "command": [
+    "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/source02-role06-fixed",
+    "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/role06",
+    "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/current-headless-fixed",
+    "/Volumes/HP P900/dev/MyCity/work/r46/role06",
+    "deee0c8025b686e799ac8fb3d3842c9e08b24012e1241a8f8ac9b60e5f7c5721",
+    "/Users/frankqin/dev/MyCity/fixtures/m0-e0-opening.json",
+    "/Users/frankqin/dev/MyCity/fixtures/m0-exchange-spatial.json",
+    "/Users/frankqin/dev/MyCity/fixtures/terrain/m0-flat16.png"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 1.043439208,
+  "finished_at": "2026-10-26T04:14:27.081042+00:00",
+  "helper_sha256": "b031a63ca860b47ccc44d8697bbcc460f7fd057cf3df5034fa62dbf4377214a6",
+  "main_sha256": "48aee814469ef03cbdd7ec27311904e498592e01f3d1b3feeb34b668a66e772a",
+  "source": "source02-manifest.json",
+  "scope": "finite original shipping normal Sim role with direct-reference cancellation/exit/cold/replay; not whole-game/native/real16GB/M0/speed"
+}

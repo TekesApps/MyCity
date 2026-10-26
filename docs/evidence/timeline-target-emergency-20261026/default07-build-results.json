@@ -1,0 +1,177 @@
+[
+  {
+    "package": "mycity-core",
+    "target": "mycity_core",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "-j1",
+      "-p",
+      "mycity-core",
+      "--lib",
+      "--no-run",
+      "--message-format=json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 7.566143167,
+    "source": "source02-manifest.json",
+    "executable": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/default07/01-mycity_core-fixed",
+    "sha256": "d25a9c2a8e35a1f24324456dd6bb97d21d9cca0e43bdde37051b9393ca3f8b0f"
+  },
+  {
+    "package": "mycity-core",
+    "target": "town_utility_engine",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "-j1",
+      "-p",
+      "mycity-core",
+      "--test",
+      "town_utility_engine",
+      "--no-run",
+      "--message-format=json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 7.759743749999998,
+    "source": "source02-manifest.json",
+    "executable": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/default07/02-town_utility_engine-fixed",
+    "sha256": "c1ddfe3a63f7988c09ee2934efdf0ae1245e0adc16621fc3b4ef7d75d5bc493e"
+  },
+  {
+    "package": "mycity-storage",
+    "target": "qualification_authority",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "-j1",
+      "-p",
+      "mycity-storage",
+      "--test",
+      "qualification_authority",
+      "--no-run",
+      "--message-format=json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 16.581143665999996,
+    "source": "source02-manifest.json",
+    "executable": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/default07/03-qualification_authority-fixed",
+    "sha256": "ad2b84c9e742c7f0fd49c9f8d6b3d8169b1c048d5f4243c55f7995e6619e7f7c"
+  },
+  {
+    "package": "mycity-core",
+    "target": "facility_operation",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "-j1",
+      "-p",
+      "mycity-core",
+      "--test",
+      "facility_operation",
+      "--no-run",
+      "--message-format=json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5570542919999895,
+    "source": "source02-manifest.json",
+    "executable": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/default07/04-facility_operation-fixed",
+    "sha256": "98f3f9bf8ca998700dc77e588105a0e4b62f3952a05e11256697d3b3ec7a764a"
+  },
+  {
+    "package": "mycity-storage",
+    "target": "facility_operation_store",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "-j1",
+      "-p",
+      "mycity-storage",
+      "--test",
+      "facility_operation_store",
+      "--no-run",
+      "--message-format=json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.9355404579999913,
+    "source": "source02-manifest.json",
+    "executable": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/default07/05-facility_operation_store-fixed",
+    "sha256": "d640ae44de9ab2367278becd8096951965519589ed280b6d0b16fe7de3d6902b"
+  },
+  {
+    "package": "mycity-core",
+    "target": "opening_typed",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "-j1",
+      "-p",
+      "mycity-core",
+      "--test",
+      "opening_typed",
+      "--no-run",
+      "--message-format=json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4270576249999891,
+    "source": "source02-manifest.json",
+    "executable": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/default07/07-opening_typed-fixed",
+    "sha256": "6ad791f3bc6c5c387fe5c962370cd4c3808343a23f50428787fc09bc04230cd8"
+  },
+  {
+    "package": "mycity-storage",
+    "target": "opening_typed_provider_store",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "-j1",
+      "-p",
+      "mycity-storage",
+      "--test",
+      "opening_typed_provider_store",
+      "--no-run",
+      "--message-format=json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5387075409999937,
+    "source": "source02-manifest.json",
+    "executable": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/default07/08-opening_typed_provider_store-fixed",
+    "sha256": "71ca710a3236d54afe775cbece632b4eee12be9dea159a366b2e2ecbc0aedfcf"
+  },
+  {
+    "package": "mycity-storage",
+    "target": "timeline_cancel_emergency",
+    "command": [
+      "cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "-j1",
+      "-p",
+      "mycity-storage",
+      "--test",
+      "timeline_cancel_emergency",
+      "--no-run",
+      "--message-format=json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.9244723749999935,
+    "source": "source02-manifest.json",
+    "executable": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/default07/09-timeline_cancel_emergency-fixed",
+    "sha256": "b994b142f95df7892c77015273a0619213510434d62dcf746db896fe25c95fda"
+  }
+]

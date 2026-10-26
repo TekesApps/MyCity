@@ -1,0 +1,28 @@
+{
+  "hardware": "Mac16,1 /32GiB; Rust1.85.1; HP P900 USB/APFS",
+  "observed_role_allocator_snapshots": 4,
+  "grant_bytes": 61865984,
+  "max_observed_arena_used_bytes": 56602928,
+  "arena_usable_bytes": 61865520,
+  "max_observed_lifetime_peak_requested_bytes": 56682720,
+  "allocation_failures": 0,
+  "max_role_store_owned_bytes": 52143358,
+  "store_owned_is_subset_of_role_not_additive": true,
+  "engine_owned_bytes": 3607584,
+  "pool_final": {
+    "capacity_bytes": 67108864,
+    "available_touched_bytes": 67108864,
+    "granted_capacity_bytes": 0,
+    "workspace_capacity_bytes": 0,
+    "workspace_grants": 2,
+    "workspace_returns": 2,
+    "workspace_fills": 2,
+    "grants": 0,
+    "returns": 0,
+    "fill_acknowledgements": 0,
+    "scans": 8,
+    "rejected_requests": 0,
+    "maximum_prepare_to_fill_or_reap_ns": 21713292
+  },
+  "native_physical_peak_real16GB_sustainable_speed_longterm_M0_GPU_UI": "not_run; finite role evidence does not establish these"
+}

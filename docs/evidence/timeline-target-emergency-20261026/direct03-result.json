@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/source02-timeline-cancel-fixed",
+    "--test-threads=1",
+    "--nocapture"
+  ],
+  "source": "source02",
+  "executable_sha256": "5eed3d5a168393d4654ee3032698631e8fdc40fad776231b1e6c39a430349d18",
+  "RUST_MIN_STACK_override": false,
+  "env": {
+    "MYCITY_TARGET_EMERGENCY_ROOT": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/direct03"
+  },
+  "exit_code": 0,
+  "elapsed_seconds": 1.776518708,
+  "finished_at": "2026-10-26T04:05:21.837680+00:00"
+}

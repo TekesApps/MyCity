@@ -1,9 +1,9 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-26T03:57:38.484908+00:00",
-  "source_head": "v0.5.200 (audit candidate; parent 5fe412b531af4abcd60675cc03e25ec5cfcf3ebf)",
-  "candidate": "149 actual baseline failure reproduced; repair and tests frozen for audit; candidate compilation and all acceptance not_run",
+  "last_snapshot_at": "2026-10-26T04:20:41.023874+00:00",
+  "source_head": "v0.5.201 pending publication; production ea0b7a0 audit200 unchanged",
+  "candidate": "149 finite verification passed;201 publication and actual issue closure pending",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
     "shared_core_lanes": 1,
@@ -18,9 +18,8 @@
         "crates/city-core/src/transaction.rs",
         "crates/city-storage/tests/timeline_cancel_emergency.rs"
       ],
-      "status": "developing; frozen audit candidate, not accepted",
-      "acceptance": "hot/cold cancellation and actual exit; refusal/continuation/once; affected shared/default/resource",
-      "remaining": "candidate compile, direct tests, shared/default/recovery/resource; Issue stays Open"
+      "status": "verification terminal passed; publication and actual backfill/closure pending",
+      "evidence": "docs/evidence/timeline-target-emergency-20261026/STATUS.md"
     }
   ],
   "active_independent_preparations": [],
@@ -506,6 +505,32 @@
         "crates/city-headless/src/opening_source_provider.rs": "5c36fa4aa58bebbcdf6dbcf11e537fd19863438984173f7a57252c22046d1b62",
         "crates/city-storage/src/lib.rs": "dfa9798ec5a781939bba7f5d11dd06d4650c81fa84634677cf43a755df7c3475",
         "crates/city-storage/tests/opening_input_store.rs": "4cef3b4b4426e47bdd931d3ba4f2a87daaa36b1162acf46b5e7f867cbbc1ebc6"
+      }
+    },
+    {
+      "issue": 149,
+      "execution_state": "validation:publication-and-closure-pending",
+      "implementation_owner_session": "01a166fc-e444-7602-ad22-3a8551dda487",
+      "integration_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
+      "files_or_activation_boundary": [
+        "crates/city-core/src/transaction.rs",
+        "crates/city-storage/tests/timeline_cancel_emergency.rs"
+      ],
+      "required_specific_capabilities": [
+        "original completed-boundary Timeline, same-slot Store, original capacity quota"
+      ],
+      "real_integration_seam": "original Prepared emergency eligibility and original Store WAL admission; no driver/continuation changes",
+      "acceptance_entry_and_gaps": [
+        "dedicated4/shared9/default9/normal-role passed; remaining publication and actual issue closure"
+      ],
+      "timing": {
+        "ready_at": null,
+        "full_scope_source_delivered_at": null,
+        "accepted_at": null,
+        "issue_closed_at": null,
+        "ready_to_acceptance_seconds": null,
+        "source_to_acceptance_seconds": null,
+        "unknown_reason": "activation and audit candidate timestamps are not reliable first-ready/full-scope delivery times"
       }
     }
   ],

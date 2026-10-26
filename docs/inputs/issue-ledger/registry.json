@@ -1,7 +1,7 @@
 {
   "schema": "mycity-issue-ledger-v1",
   "date": "2026-10-26",
-  "release": "v0.5.200",
+  "release": "v0.5.201",
   "scope": "完整既定产品；v190有限业务132与缺陷148真实验收关闭，v191仅同步台账，UI单独延期",
   "coordination": "当前root唯一共享writer/串行验证；旧主会话停用",
   "states": [
@@ -3625,7 +3625,7 @@
       "title": "[P1][缺陷] 普通存储额度耗尽时，待完成的 Timeline 目标阻断实际占用退出",
       "url": "https://github.com/TekesApps/MyCity/issues/149",
       "parent": 118,
-      "stage": "开发中",
+      "stage": "待验证",
       "owner": "01a166fc-e444-7602-ad22-3a8551dda487",
       "write_authority": [
         "crates/city-core/src/transaction.rs",
@@ -3639,12 +3639,12 @@
         "actual minimum reproduction and hot/cold results",
         "original-ticket idempotence, unchanged assertions/budget/M0, full recovery originals retained"
       ],
-      "remaining": "baseline actual failure captured; all repair compilation/tests and full acceptance not_run",
-      "evidence": "docs/evidence/audit-main-20261026/STATUS.md; work/timeline-target-emergency-20261026",
-      "implementation_tags": "v0.5.200 audit candidate only; no PR",
+      "remaining": "finite verification passed; publication and actual issue closure pending",
+      "evidence": "docs/evidence/timeline-target-emergency-20261026/STATUS.md",
+      "implementation_tags": "v0.5.200 production; v0.5.201 verified source02 test/evidence; no PR",
       "pr": "none",
       "issue_body_sha256": "6828431322fcb71eb3b2384efec8adbe28c6ff157cd25ad0d21ea7bc71b6457e",
-      "execution_state": "active:root-only-candidate-unvalidated"
+      "execution_state": "validation:publication-and-closure-pending"
     },
     {
       "issue": 150,

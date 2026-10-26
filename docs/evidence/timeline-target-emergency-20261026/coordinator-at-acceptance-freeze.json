@@ -1,0 +1,91 @@
+{
+  "issue": 149,
+  "baseline": "5fe412b531af4abcd60675cc03e25ec5cfcf3ebf",
+  "activated_at": "2026-10-26T03:29:38.332362+00:00",
+  "root_owner": "01a166fc-e444-7602-ad22-3a8551dda487",
+  "phase": "all required finite149 gates terminal passed; final source and complete originals checked; publication/Issue backfill pending",
+  "owned_game_files": [
+    "crates/city-core/src/transaction.rs",
+    "crates/city-storage/tests/timeline_cancel_emergency.rs"
+  ],
+  "conditionally_readonly": [
+    "crates/city-core/src/timeline_driver.rs",
+    "crates/city-storage/src/lib.rs",
+    "crates/city-storage/src/continuation.rs"
+  ],
+  "owned_docs": [
+    "docs/physical-economy-runtime-contract.md",
+    "docs/execution-current.md",
+    "docs/core-task-dispatch-current.md",
+    "docs/issue-execution-ledger.md",
+    "docs/inputs/issue-ledger/execution-flow.json",
+    "docs/inputs/issue-ledger/registry.json",
+    "README.md",
+    "docs/evidence/timeline-target-emergency-20261026/"
+  ],
+  "initial_files": [
+    {
+      "file": "crates/city-core/src/transaction.rs",
+      "bytes": 470712,
+      "sha256": "eb57d22cbb3613d95e607fbbedfeb298ebee26bdd3375feaabb1eb53daa77480"
+    },
+    {
+      "file": "crates/city-core/src/timeline_driver.rs",
+      "bytes": 54617,
+      "sha256": "3e85ee139cab58d10383844762ffd64137ed8ea33ba2bc8f83bb698ff7877175"
+    },
+    {
+      "file": "crates/city-storage/src/lib.rs",
+      "bytes": 189566,
+      "sha256": "dfa9798ec5a781939bba7f5d11dd06d4650c81fa84634677cf43a755df7c3475"
+    },
+    {
+      "file": "crates/city-storage/src/continuation.rs",
+      "bytes": 6766,
+      "sha256": "5c583b06df08c000514a4a534e29d23912619f7333c515e6b14b9ddb8aeaa45b"
+    }
+  ],
+  "retention_budget_bytes": 805306368,
+  "target": "existing /Volumes/HP P900/dev/MyCity/target",
+  "work": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026",
+  "retain": "full source/program/failed world/WAL/checkpoint/requests until complete superseding acceptance explicitly releases dependencies",
+  "shared_WIP": 1,
+  "independent_preparations": 0,
+  "active_command": null,
+  "not_run": [
+    "real16GB/native/longterm/M0/GPU/UI, outside this finite defect contract"
+  ],
+  "frozen_M0_and_limits_unchanged": true,
+  "audit_tag": "v0.5.200",
+  "baseline_reproduction": "baseline01 exit101; cancel/exit/continue Capacity refusal; full originals retained",
+  "current_source": "source02-manifest.json; transaction.rs unchanged from v200, only dedicated quota setup fixed",
+  "updated_at": "2026-10-26T04:12:16.365042+00:00",
+  "retention_budget_reason": "Before shared/default/role runs: retain current+failed fixed programs, source archives, all worlds and child logs; 512MiB cap, no game budget change",
+  "direct03": {
+    "exit_code": 0,
+    "parents_passed": 4,
+    "cold_helpers": "invoked by real parent subprocesses, not counted as business"
+  },
+  "advisor": "advisor-source02.txt; no current source blocker; runtime acceptance pending",
+  "retention_budget_history": [
+    {
+      "bytes": 268435456,
+      "reason": "initial direct reproduction and dedicated tests"
+    },
+    {
+      "bytes": 536870912,
+      "reason": "before affected/default/role runs reserve complete originals"
+    },
+    {
+      "bytes": 805306368,
+      "reason": "before remaining default fixed programs: observed first five plus retained release worlds 449430892B; remaining debug programs estimated another160MiB; preserve originals, no game budget change",
+      "at": "2026-10-26T04:16:21.226634+00:00"
+    }
+  ],
+  "accepted_source": "source02-manifest.json",
+  "shared_gate_count": 9,
+  "default_gate_count": 9,
+  "dedicated_parent_count": 4,
+  "independent_cold_children_per_dedicated_run": 7,
+  "role_result": "role06-execution.json"
+}

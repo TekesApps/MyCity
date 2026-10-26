@@ -1,0 +1,352 @@
+[
+  {
+    "package": "mycity-core",
+    "target": "timeline",
+    "source": "source02-manifest.json",
+    "build_command": [
+      "cargo",
+      "test",
+      "--release",
+      "--locked",
+      "--offline",
+      "-j1",
+      "-p",
+      "mycity-core",
+      "--test",
+      "timeline",
+      "--no-run",
+      "--message-format=json"
+    ],
+    "build_exit_code": 0,
+    "build_seconds": 88.593097666,
+    "executable": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected04/01-mycity-core-timeline-fixed",
+    "executable_sha256": "8d71ed01035a7702bd354ca7b48e2318f9086a41d99a05415d0b2b605b60e86b",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected04/01-mycity-core-timeline-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.5371715830000028,
+    "RUST_MIN_STACK_override": false,
+    "finished_at": "2026-10-26T04:07:48.013781+00:00"
+  },
+  {
+    "package": "mycity-core",
+    "target": "time_capacity",
+    "source": "source02-manifest.json",
+    "build_command": [
+      "cargo",
+      "test",
+      "--release",
+      "--locked",
+      "--offline",
+      "-j1",
+      "-p",
+      "mycity-core",
+      "--test",
+      "time_capacity",
+      "--no-run",
+      "--message-format=json"
+    ],
+    "build_exit_code": 0,
+    "build_seconds": 9.558024416999999,
+    "executable": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected04/02-mycity-core-time_capacity-fixed",
+    "executable_sha256": "ff1964509db873fea728447ff08419ac1d077fc1b18e9f3933a627f7d54f98e5",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected04/02-mycity-core-time_capacity-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5259475830000042,
+    "RUST_MIN_STACK_override": false,
+    "finished_at": "2026-10-26T04:07:58.111191+00:00"
+  },
+  {
+    "package": "mycity-core",
+    "target": "venue_capacity_tests",
+    "source": "source02-manifest.json",
+    "build_command": [
+      "cargo",
+      "test",
+      "--release",
+      "--locked",
+      "--offline",
+      "-j1",
+      "-p",
+      "mycity-core",
+      "--test",
+      "venue_capacity_tests",
+      "--no-run",
+      "--message-format=json"
+    ],
+    "build_exit_code": 0,
+    "build_seconds": 1.8951141250000063,
+    "executable": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected04/03-mycity-core-venue_capacity_tests-fixed",
+    "executable_sha256": "26cbb6db3f515f568c228c47bbc718eab77c21c4f371f6b9aca25e13648bb527",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected04/03-mycity-core-venue_capacity_tests-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.48496791699999164,
+    "RUST_MIN_STACK_override": false,
+    "finished_at": "2026-10-26T04:08:00.494286+00:00"
+  },
+  {
+    "package": "mycity-storage",
+    "target": "timeline",
+    "source": "source02-manifest.json",
+    "build_command": [
+      "cargo",
+      "test",
+      "--release",
+      "--locked",
+      "--offline",
+      "-j1",
+      "-p",
+      "mycity-storage",
+      "--test",
+      "timeline",
+      "--no-run",
+      "--message-format=json"
+    ],
+    "build_exit_code": 0,
+    "build_seconds": 1.8623942920000047,
+    "executable": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected04/04-mycity-storage-timeline-fixed",
+    "executable_sha256": "fae191679a3d6f7912b09c295eb44ce1c1a36f60a4db1e06d87f45bb9424ba13",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected04/04-mycity-storage-timeline-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 41.161000791000006,
+    "RUST_MIN_STACK_override": false,
+    "finished_at": "2026-10-26T04:08:43.541125+00:00"
+  },
+  {
+    "package": "mycity-storage",
+    "target": "time_capacity_store",
+    "source": "source02-manifest.json",
+    "reused_unchanged_compilation": {
+      "package": "mycity-storage",
+      "target": "time_capacity_store",
+      "source": "source02-manifest.json",
+      "build_command": [
+        "cargo",
+        "test",
+        "--release",
+        "--locked",
+        "--offline",
+        "-j1",
+        "-p",
+        "mycity-storage",
+        "--test",
+        "time_capacity_store",
+        "--no-run",
+        "--message-format=json"
+      ],
+      "build_exit_code": 0,
+      "build_seconds": 4.533529000000016,
+      "executable": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected04/05-mycity-storage-time_capacity_store-fixed",
+      "executable_sha256": "6f194aaa81ef3b1f9410fbb13b0a4a63d28e7db5d66a69485ca8ca0bdb51a2b2",
+      "command": [
+        "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected04/05-mycity-storage-time_capacity_store-fixed",
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "exit_code": 101,
+      "elapsed_seconds": 0.5750920830000155,
+      "RUST_MIN_STACK_override": false,
+      "finished_at": "2026-10-26T04:08:48.671296+00:00"
+    },
+    "executable": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/01-mycity-storage-time_capacity_store-fixed",
+    "executable_sha256": "6f194aaa81ef3b1f9410fbb13b0a4a63d28e7db5d66a69485ca8ca0bdb51a2b2",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/01-mycity-storage-time_capacity_store-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 2.517985625,
+    "RUST_MIN_STACK_override": false,
+    "env": {
+      "TMPDIR": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/temp",
+      "MYCITY_TIME_CAPACITY_ROOT": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/time",
+      "MYCITY_VENUE_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/venue",
+      "MYCITY_FACILITY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/facility",
+      "MYCITY_DIRECTORY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/directory",
+      "MYCITY_DIRECTORY_POOL_ROOT": "/Volumes/HP P900/dev/MyCity/work/r46"
+    },
+    "finished_at": "2026-10-26T04:09:23.453487+00:00"
+  },
+  {
+    "package": "mycity-storage",
+    "target": "venue_capacity",
+    "source": "source02-manifest.json",
+    "build_command": [
+      "cargo",
+      "test",
+      "--release",
+      "--locked",
+      "--offline",
+      "-j1",
+      "-p",
+      "mycity-storage",
+      "--test",
+      "venue_capacity",
+      "--no-run",
+      "--message-format=json"
+    ],
+    "build_exit_code": 0,
+    "build_seconds": 3.38718225,
+    "executable": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/02-mycity-storage-venue_capacity-fixed",
+    "executable_sha256": "3ff96b7b7691de9d0a055cd7eceeb3ccc27b45297c8c490a233e7885ddad0b3c",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/02-mycity-storage-venue_capacity-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.3730921660000002,
+    "RUST_MIN_STACK_override": false,
+    "env": {
+      "TMPDIR": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/temp",
+      "MYCITY_TIME_CAPACITY_ROOT": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/time",
+      "MYCITY_VENUE_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/venue",
+      "MYCITY_FACILITY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/facility",
+      "MYCITY_DIRECTORY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/directory",
+      "MYCITY_DIRECTORY_POOL_ROOT": "/Volumes/HP P900/dev/MyCity/work/r46"
+    },
+    "finished_at": "2026-10-26T04:09:28.237927+00:00"
+  },
+  {
+    "package": "mycity-storage",
+    "target": "checkpoint",
+    "source": "source02-manifest.json",
+    "build_command": [
+      "cargo",
+      "test",
+      "--release",
+      "--locked",
+      "--offline",
+      "-j1",
+      "-p",
+      "mycity-storage",
+      "--test",
+      "checkpoint",
+      "--no-run",
+      "--message-format=json"
+    ],
+    "build_exit_code": 0,
+    "build_seconds": 7.030709,
+    "executable": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/03-mycity-storage-checkpoint-fixed",
+    "executable_sha256": "8aef14be2947d9730d8a6a56572b66af51aa4f17b690949f109ab127b6fac531",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/03-mycity-storage-checkpoint-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 16.478414584,
+    "RUST_MIN_STACK_override": false,
+    "env": {
+      "TMPDIR": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/temp",
+      "MYCITY_TIME_CAPACITY_ROOT": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/time",
+      "MYCITY_VENUE_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/venue",
+      "MYCITY_FACILITY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/facility",
+      "MYCITY_DIRECTORY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/directory",
+      "MYCITY_DIRECTORY_POOL_ROOT": "/Volumes/HP P900/dev/MyCity/work/r46"
+    },
+    "finished_at": "2026-10-26T04:09:51.771886+00:00"
+  },
+  {
+    "package": "mycity-storage",
+    "target": "facility_operation_store",
+    "source": "source02-manifest.json",
+    "build_command": [
+      "cargo",
+      "test",
+      "--release",
+      "--locked",
+      "--offline",
+      "-j1",
+      "-p",
+      "mycity-storage",
+      "--test",
+      "facility_operation_store",
+      "--no-run",
+      "--message-format=json"
+    ],
+    "build_exit_code": 0,
+    "build_seconds": 4.1595015410000045,
+    "executable": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/04-mycity-storage-facility_operation_store-fixed",
+    "executable_sha256": "531103c93784cdec49322b35c0cbd6882e816c9573f6906ef07ff129fe1d5c5b",
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/04-mycity-storage-facility_operation_store-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 7.890388207999997,
+    "RUST_MIN_STACK_override": false,
+    "env": {
+      "TMPDIR": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/temp",
+      "MYCITY_TIME_CAPACITY_ROOT": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/time",
+      "MYCITY_VENUE_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/venue",
+      "MYCITY_FACILITY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/facility",
+      "MYCITY_DIRECTORY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/directory",
+      "MYCITY_DIRECTORY_POOL_ROOT": "/Volumes/HP P900/dev/MyCity/work/r46"
+    },
+    "finished_at": "2026-10-26T04:10:03.846070+00:00"
+  },
+  {
+    "package": "mycity-headless",
+    "target": "task_registry_directory",
+    "source": "source02-manifest.json",
+    "build_command": [
+      "cargo",
+      "test",
+      "--release",
+      "--locked",
+      "--offline",
+      "-j1",
+      "-p",
+      "mycity-headless",
+      "--test",
+      "task_registry_directory",
+      "--no-run",
+      "--message-format=json"
+    ],
+    "build_exit_code": 0,
+    "build_seconds": 226.40137425,
+    "executable": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/05-mycity-headless-task_registry_directory-fixed",
+    "executable_sha256": "2a3abaa2a60ba1c5a61a81d4e3b817923db5edec999504ee8fe307761c1937cd",
+    "headless_identity": {
+      "fixed": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/current-headless-fixed",
+      "sha256": "48aee814469ef03cbdd7ec27311904e498592e01f3d1b3feeb34b668a66e772a",
+      "source": "deee0c8025b686e799ac8fb3d3842c9e08b24012e1241a8f8ac9b60e5f7c5721"
+    },
+    "command": [
+      "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/05-mycity-headless-task_registry_directory-fixed",
+      "--test-threads=1",
+      "--nocapture"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 3.1603525000000445,
+    "RUST_MIN_STACK_override": false,
+    "env": {
+      "TMPDIR": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/temp",
+      "MYCITY_TIME_CAPACITY_ROOT": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/time",
+      "MYCITY_VENUE_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/venue",
+      "MYCITY_FACILITY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/facility",
+      "MYCITY_DIRECTORY_TEST_ROOT": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/directory",
+      "MYCITY_DIRECTORY_POOL_ROOT": "/Volumes/HP P900/dev/MyCity/work/r46",
+      "MYCITY_DIRECTORY_HEADLESS_EXE": "/Volumes/HP P900/dev/MyCity/work/timeline-target-emergency-20261026/affected05/current-headless-fixed"
+    },
+    "finished_at": "2026-10-26T04:13:53.490579+00:00"
+  }
+]

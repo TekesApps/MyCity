@@ -1,0 +1,10 @@
+
+running 5 tests
+test active_existing_work_supply_and_venue_survive_goal_cancel_before_explicit_exit ... ok
+test cold_completed_target_reader ... ignored, only invoked by actual parent cold process
+test completed_target_cancellation_preserves_paid_and_future_claims_then_actual_exit_hot_and_cold ... ok
+test interrupted_cancel_and_lost_reply_match_complete_uninterrupted_reference_once ... ok
+test invalid_cancel_never_borrows_emergency_by_its_name ... ok
+
+test result: ok. 4 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 1.25s
+

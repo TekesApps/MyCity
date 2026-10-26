@@ -1,4 +1,8 @@
-# MyCity 最新审计入口：v0.5.200
+# MyCity 当前审计入口：v0.5.201
+
+当前main的#149已完成[有限合同验证](docs/evidence/timeline-target-emergency-20261026/STATUS.md)：生产字节与v200相同，专属测试修正held预留设置；原共享／默认栈／恢复及有限normal角色门通过。Issue实际关闭另看后续回执，不以tag代验收。新审计可固定v0.5.201；已经固定v200的审计继续有效，旧tag不移动。
+
+## v0.5.200 原审计时点与说明（历史保留）
 
 审计请固定附注tag `v0.5.200` 并记录完整commit；main后续可能继续推进，历史tag不移动。当前root是共享核心唯一writer。其他Agent先只读审计，按文件、可复现的正常游戏场景、影响与具体建议回报；构建／测试由root在原外置SSD唯一target/work串行排程。
 

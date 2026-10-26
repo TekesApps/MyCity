@@ -157,10 +157,14 @@ fn make(p: &Path, loans: bool) -> (Store, u64, u64) {
     (s, op, token)
 }
 fn full(s: &mut Store) {
-    let used = s.capacity_status().unwrap().used_bytes;
+    let prior = s.capacity_status().unwrap();
+    let used = prior.used_bytes;
+    // An in-progress phase already owns its original durable continuation.
+    // Preserve that commitment while reducing the normal limit to used / 2.
+    let held = prior.continuation_reserved_bytes + prior.background_reserved_bytes;
     s.reduce_capacity_policy(CapacityPolicy {
-        total_bytes: used + 2 * 1024 * 1024,
-        emergency_bytes: 2 * 1024 * 1024 + used / 2,
+        total_bytes: used + held + 2 * 1024 * 1024,
+        emergency_bytes: held + 2 * 1024 * 1024 + used / 2,
     })
     .unwrap();
     assert!(s.capacity_status().unwrap().normal_blocked);
@@ -390,7 +394,7 @@ fn invalid_cancel_never_borrows_emergency_by_its_name() {
         fs::write(
             p.join("refusal.json"),
             serde_json::to_vec_pretty(
-                &json!({"request":e,"result":format!("{result:?}"),"continuation":reserved}),
+                &json!({"request":e,"result":format!("{result:?}"),"continuation":reserved,"quota":s.capacity_status().unwrap()}),
             )
             .unwrap(),
         )
