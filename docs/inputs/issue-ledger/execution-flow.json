@@ -1,44 +1,16 @@
 {
   "schema": "mycity-execution-flow-v1",
   "baseline_at": "2026-10-25T02:39:00Z",
-  "last_snapshot_at": "2026-10-26T11:17:45.042137+00:00",
-  "source_head": "v0.5.205 baseline plus source10=13/14/15/16 exact build inputs; v206 publication receipt after push",
-  "candidate": "v0.5.206 finite134 full-contract validated; remote closure pending",
+  "last_snapshot_at": "2026-10-26T11:20:41.716310+00:00",
+  "source_head": "a671bb60cdfbd725b37a5e3d9c7426364ce1c20d",
+  "candidate": "v0.5.207 closure ledger; actual implementation206",
   "root_chat": "01a166fc-e444-7602-ad22-3a8551dda487",
   "limits": {
     "shared_core_lanes": 1,
     "independent_preparations": 2,
     "reason_for_adjustment_required": true
   },
-  "active_shared_work": [
-    {
-      "issue": 134,
-      "owner": "01a166fc-e444-7602-ad22-3a8551dda487",
-      "status": "finite contract accepted; publication and remote close in progress",
-      "files": [
-        "crates/city-core/src/service_delivery_authority.rs",
-        "crates/city-core/src/service_delivery_recovery.rs",
-        "crates/city-core/src/housing_income.rs",
-        "crates/city-core/src/transaction.rs",
-        "crates/city-core/src/service_needs_authority.rs",
-        "crates/city-core/tests/service_recovery.rs",
-        "crates/city-storage/tests/service_recovery_store.rs",
-        "crates/city-headless/tests/service_recovery_role.rs",
-        "tests/fixtures/service-delivery/opening.rs",
-        "docs/physical-economy-runtime-contract.md",
-        "docs/execution-current.md",
-        "docs/inputs/issue-ledger/execution-flow.json",
-        "docs/inputs/issue-ledger/registry.json"
-      ],
-      "required_capabilities": [
-        "original admitted drive graph and explicit vehicle-slot resources",
-        "actual original stock/member/qualification/funds facts",
-        "original completed Timeline and same-slot Store"
-      ],
-      "acceptance": "planned service_delivery_store real need→depart/arrive→work/inputs/pay→return/reset, refusal/once/cold/shared/default/resource",
-      "remaining": "publish fixed results, backfill/close134 and read back; no remaining finite business validation gap"
-    }
-  ],
+  "active_shared_work": [],
   "active_independent_preparations": [],
   "counting_rules": {
     "parents_are_not_active_work": true,
@@ -278,7 +250,7 @@
     },
     {
       "issue": 134,
-      "execution_state": "accepted:publication-and-remote-close-pending",
+      "execution_state": "completed:closed",
       "implementation_owner_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "integration_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "files_or_activation_boundary": [
@@ -302,8 +274,8 @@
         "Original resource/lease/funds/need identities"
       ],
       "acceptance_entry_and_gaps": [
-        "current actual core18, oldStore, recovery5parents13cold, shared22 and normal role passed",
-        "metadata publication/remote close pending; entire traffic/profile/hardware separate"
+        "full finite contract accepted, implementation v206/actual issue closed and readback preserved",
+        "parent57/74, special profiles and real16GB/native/fullM0/GPU/UI remain separate"
       ],
       "real_integration_seam": "Root need linkage, original members/ResourceLease, actual delivery and Store; no second workforce/bed/clock",
       "new_write_authority": "initial precise plan in work/service-delivery-runtime-20261026/ownership-and-acceptance.json; additional core paths fixed before edits",
@@ -312,7 +284,7 @@
         "readiness_confirmed_at": null,
         "full_scope_source_delivered_at": null,
         "accepted_at": "2026-10-26T11:17:45.042137+00:00",
-        "issue_closed_at": null,
+        "issue_closed_at": "2026-10-26T11:20:32Z",
         "ready_to_acceptance_seconds": null,
         "source_to_acceptance_seconds": null,
         "unknown_reason": "Historical first-ready/full-scope delivery event not established; no inferred timestamp"
@@ -767,6 +739,19 @@
       "defect_closure_delta": 0,
       "evidence": "docs/evidence/service-recovery-20261026/STATUS.md",
       "remote_close_pending": true
+    },
+    {
+      "at": "2026-10-26T11:20:41.716310+00:00",
+      "event": "finite134-remote-close-readback",
+      "issue": 134,
+      "implementation_commit": "a671bb60cdfbd725b37a5e3d9c7426364ce1c20d",
+      "tag": "v0.5.206",
+      "comment": 6414758650,
+      "closed_at": "2026-10-26T11:20:32Z",
+      "business_acceptance_delta": 0,
+      "historical_backfill_delta": 0,
+      "defect_closure_delta": 0,
+      "meaning": "records closure of already-counted134 acceptance; not second business"
     }
   ],
   "current_backlog": {
@@ -808,7 +793,7 @@
     }
   ],
   "phase_result": {
-    "phase": "134 finite full contract accepted; remote close pending",
+    "phase": "finite134 full contract accepted and actually closed",
     "published_version": "v0.5.206",
     "verification_window": {
       "start": "2026-10-26T09:41:56.426692+00:00",
@@ -820,14 +805,14 @@
     "defects_closed": 0,
     "backlog_pending_integration": 18,
     "backlog_pending_validation": 0,
-    "root_in_progress": 1,
+    "root_in_progress": 0,
     "independent_preparation": 0,
     "full_issue_134_accepted": true,
     "evidence": "docs/evidence/service-recovery-20261026/STATUS.md",
-    "remaining": [
-      "remote publication and issue closure readback"
-    ],
+    "remaining": [],
     "no_m0_budget_change": true,
-    "real16gb_native_speed_longterm_gpu_ui": "not_run"
+    "real16gb_native_speed_longterm_gpu_ui": "not_run",
+    "evidence_release": "v0.5.207",
+    "issue_closed_at": "2026-10-26T11:20:32Z"
   }
 }

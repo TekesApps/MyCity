@@ -1,11 +1,11 @@
 {
-  "at": "2026-10-26T11:18:08.197543+00:00",
+  "at": "2026-10-26T11:21:59.553672+00:00",
   "root": "/Volumes/HP P900/dev/MyCity/work/service-recovery-20261026",
-  "files": 6284,
-  "bytes": 1917313073,
+  "files": 6311,
+  "bytes": 1918472585,
   "budget_bytes": 4294967296,
   "full_originals_retained": true,
-  "index_sha256": "eba3c83ec07466c23ed2fc3c387f5927b6b23767fa608f516435d1537660879b",
+  "index_sha256": "84f400bc093420e2bb5b2452447c855d7ad2ae91054d1e62c00ea469ea7a4fc8",
   "index": "originals-index.jsonl",
   "exclusions": [
     "live coordinator",

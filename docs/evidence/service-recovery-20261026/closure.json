@@ -1,0 +1,16 @@
+{
+  "at": "2026-10-26T11:20:41.716310+00:00",
+  "issue": 134,
+  "state": "closed",
+  "state_reason": "completed",
+  "closed_at": "2026-10-26T11:20:32Z",
+  "comment_id": 6414758650,
+  "comment_url": "https://github.com/TekesApps/MyCity/issues/134#issuecomment-6414758650",
+  "implementation_commit": "a671bb60cdfbd725b37a5e3d9c7426364ce1c20d",
+  "implementation_tag": "v0.5.206",
+  "parent57_state": "open",
+  "related74_state": "open",
+  "related74_comment": 6414762938,
+  "pr": null,
+  "remote_branch_tag_readme_verified": true
+}

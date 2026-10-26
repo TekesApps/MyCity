@@ -3161,7 +3161,7 @@
       "title": "[业务子任务] 实际公服履约：请求派遣、人员/原容量费用到返程及残责",
       "url": "https://github.com/TekesApps/MyCity/issues/134",
       "parent": 57,
-      "stage": "待验证",
+      "stage": "完成",
       "owner": "01a166fc-e444-7602-ad22-3a8551dda487",
       "write_authority": [
         "crates/city-core/src/service_delivery_runtime.rs",
@@ -3179,12 +3179,12 @@
         "取消/超时/闭城/在途返程不漏义务，原票重试和冷恢复",
         "完整有限合法服务链+拒绝反例，不用selector测试冒充实际交付"
       ],
-      "remaining": "finite business checks passed; release and remote closure readback pending",
+      "remaining": "完整有限合同已验收并关闭；父57/74专业profile和完整交通/硬件范围继续开放",
       "evidence": "docs/evidence/service-recovery-20261026/STATUS.md",
-      "implementation_tags": "v0.5.206 full finite contract; remote closure separate",
+      "implementation_tags": "v0.5.206 a671bb60cdfbd725b37a5e3d9c7426364ce1c20d; v0.5.207 closure ledger",
       "pr": "无PR；root直接集成/串行验证",
-      "issue_body_sha256": "6c8457780e1c9c5e8bdc719392de1b9be144bb6920110b9bb35af528f61d06fd",
-      "execution_state": "accepted:publication-and-remote-close-pending",
+      "issue_body_sha256": "83e691d6e1155bc6e9c8308a6c45408d1afbb83aa35cfa257e08eb80ae0388ab",
+      "execution_state": "completed:closed",
       "execution_responsible_session": "01a166fc-e444-7602-ad22-3a8551dda487",
       "execution_contract": "docs/inputs/issue-ledger/execution-flow.json"
     },

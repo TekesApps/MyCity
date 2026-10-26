@@ -3,7 +3,7 @@
   "baseline": "v0.5.205 bbba15d63eba420c7bc64d1a0f372673e0bcc48c",
   "release": "v0.5.206",
   "finite_contract_accepted_at": "2026-10-26T11:17:45.042137+00:00",
-  "remote_close_pending": true,
+  "remote_close_pending": false,
   "owner": "root 01a166fc-e444-7602-ad22-3a8551dda487",
   "verification_window": {
     "start": "2026-10-26T09:41:56.426692+00:00",
@@ -916,5 +916,8 @@
   "backlog_decrement_from134": 0,
   "source_to_acceptance_seconds": null,
   "ready_to_acceptance_seconds": null,
-  "unknown_latency_reason": "no reliable original full-contract ready/source delivery timestamp; do not use close/tag/mtime as origin"
+  "unknown_latency_reason": "no reliable original full-contract ready/source delivery timestamp; do not use close/tag/mtime as origin",
+  "closure": "closure.json",
+  "implementation_commit": "a671bb60cdfbd725b37a5e3d9c7426364ce1c20d",
+  "issue_closed_at": "2026-10-26T11:20:32Z"
 }

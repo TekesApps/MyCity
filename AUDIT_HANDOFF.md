@@ -1,6 +1,6 @@
-# MyCity 当前接线状态：v0.5.206
+# MyCity 当前接线状态：v0.5.207（实现与实际验证v206）
 
-#134完整有限合同已由root核对实际证据通过：[结果及边界](docs/evidence/service-recovery-20261026/STATUS.md)。实现与恢复输入固定，Issue回填/关闭另看closure回读。全体原车内Driver到期后的实际到车牵引、原两车占用、实际费用和欠薪已接通；完整v205可读，缺事实v203候选明确拒绝且完整原件不变，不补历史。
+#134完整有限合同已由root核对实际证据通过：[结果及边界](docs/evidence/service-recovery-20261026/STATUS.md)。实现与恢复输入固定，[#134实际关闭回读](docs/evidence/service-recovery-20261026/closure.json)；v207仅同步台账，不重复计业务或测试。全体原车内Driver到期后的实际到车牵引、原两车占用、实际费用和欠薪已接通；完整v205可读，缺事实v203候选明确拒绝且完整原件不变，不补历史。
 
 18核心、5新增Store父/13冷子进程、原履约Store、22共享/默认组、原normal59MiB角色及归还通过；原advisor仅窄核实际历史关联修复。不是整个交通/公服父领域或全产品验收。32GB Apple M4/HP P900环境，真实16GB/native/快进长期/GPU/UI仍未测，原M0不变。
 
